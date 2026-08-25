@@ -1,0 +1,143 @@
+\chapter{Number-theoretic puzzle technique}
+
+\begin{orient}
+\textbf{What this chapter is for.} Most number-theoretic puzzles are asking you to choose a modulus, and almost all of the difficulty is in that choice. A good modulus makes the problem collapse to a one-line check; a bad one leaves it exactly as opaque as before. So this chapter is organised around the choice itself. Look at the exponents and you are being pointed at Fermat, Euler, and multiplicative order. Look at the digits and you are being pointed at $9$ and $11$. Look at a claim about squares and you are being pointed at $3$, $4$ and $8$, since squares occupy only $\{0,1\}$ modulo $3$ and $4$ and only $\{0,1,4\}$ modulo $8$. Look at an equation with a product plus linear terms and you are being pointed at factoring, not at congruences at all. The rest of the chapter covers the constructions that go beyond a single modulus: the Chinese remainder theorem, base representation, valuations, and the two descent arguments.
+\end{orient}
+
+\section{Choosing the modulus}
+
+\tech{Residue classes and modular reduction}{easy}
+\cue An assertion that some expression is always divisible by $m$, or never equal to something, or that a Diophantine equation has no solutions.
+\method Reduce the whole statement modulo a small $m$ and check the finitely many residue classes. Choose $m$ so that the awkward terms become constant: powers become periodic, squares occupy a small set, and a coefficient divisible by $m$ disappears entirely. For non-existence proofs the standard first attempts are $m=3,4,8,9$ and $16$.
+
+\begin{worked}
+Show that $n^{5}-n$ is divisible by $30$ for every integer $n$. Factor $30=2\cdot3\cdot5$ and treat each prime separately. Modulo $2$ and modulo $3$, Fermat gives $n^{2}\equiv n$ and $n^{3}\equiv n$, so $n^{5}\equiv n$ in both. Modulo $5$, Fermat gives $n^{5}\equiv n$ directly. Three coprime moduli, so $30\mid n^{5}-n$, verified for all $n$ from $-50$ to $50$.
+\end{worked}
+
+\begin{keynote}[The quadratic residues worth memorising]
+Modulo $3$ a square is $0$ or $1$. Modulo $4$ a square is $0$ or $1$. Modulo $8$ a square is $0$, $1$ or $4$. Modulo $9$ a cube is $0$, $1$ or $8$. These four lines settle a surprising fraction of all impossibility questions about sums of squares and cubes.
+\end{keynote}
+
+\begin{trap}
+Choosing a modulus that does not separate the cases. If every residue survives, you have learned nothing and must try another $m$ rather than concluding the statement is true.
+\end{trap}
+
+\begin{seealsob}Digit sums and casting out nines; last digits by multiplicative order; base representation.\end{seealsob}
+
+\tech{Digit sums, casting out nines, and digital roots}{easy}
+\cue The problem mentions the digits of a number in base ten, or asks about a number formed by concatenation, or asserts a divisibility by $9$ or $11$.
+\method Since $10\equiv1\pmod 9$, a number is congruent to its digit sum modulo $9$; since $10\equiv-1\pmod{11}$, it is congruent to its alternating digit sum modulo $11$. Both facts turn a statement about digits into a congruence, which is the only way digits ever become tractable.
+
+\begin{worked}
+Let $N$ be the number formed by writing $1,2,\ldots,2026$ in order. Is $N$ divisible by $9$? The digit sum of $N$ is the sum of the digit sums of the parts, which modulo $9$ is $\sum_{k=1}^{2026}k=2026\cdot2027/2=2053351$. That number's digit sum is $19$, whose digit sum is $10$, so $N\equiv1\pmod 9$ and $N$ is not divisible by $9$.
+\end{worked}
+
+\begin{seealsob}Residue classes; base representation.\end{seealsob}
+
+\tech{Last $k$ digits: multiplicative order, Fermat, and Euler}{medium}
+\cue A large exponent and a question about the last digit, the last two digits, or a remainder modulo a composite.
+\method Compute the multiplicative order of the base modulo $m$, which divides $\varphi(m)$, and reduce the exponent modulo that order. Euler's theorem gives $a^{\varphi(m)}\equiv1\pmod m$ when $\gcd(a,m)=1$, and Fermat is the prime case. When the base and modulus share a factor, split $m$ into prime powers and recombine by the Chinese remainder theorem, since Euler does not apply to the shared part.
+
+\begin{worked}
+Find the last two digits of $7^{222}$. Here $m=100$ and $\varphi(100)=40$, so the order divides $40$; in fact $7^{4}=2401\equiv1\pmod{100}$, so the order is $4$. Then $222\equiv2\pmod4$ and $7^{222}\equiv7^{2}=49\pmod{100}$. Confirmed directly.
+\end{worked}
+
+\begin{trap}
+Reducing the exponent modulo $m$ instead of modulo the order. The exponent lives in a different ring from the base, and confusing the two is the single commonest error in this whole area.
+\end{trap}
+
+\begin{seealsob}Chinese Remainder Theorem; residue classes; lifting the exponent.\end{seealsob}
+
+\section{Constructions beyond one modulus}
+
+\tech{The Chinese Remainder Theorem}{medium}
+\cue Simultaneous congruences with pairwise coprime moduli, or a divisibility by a composite that factors, or the phrase ``find the smallest positive integer such that''.
+\method For pairwise coprime $m_{1},\ldots,m_{r}$ the system $x\equiv a_{i}\pmod{m_{i}}$ has a unique solution modulo $M=\prod m_{i}$. In practice solve two congruences at a time by substitution, which is faster by hand than the general formula and less error-prone. The theorem is also a licence to work one prime at a time and recombine, which is how most divisibility problems should be organised.
+
+\begin{worked}
+Find $x$ with $x\equiv2\pmod3$, $x\equiv3\pmod5$, $x\equiv2\pmod7$. From the first, $x=3t+2$; substituting into the second gives $3t\equiv1\pmod5$, so $t\equiv2\pmod5$ and $x=15s+8$. The third gives $15s+8\equiv2\pmod7$, that is $s\equiv1\pmod7$, so $x=105u+23$. The smallest positive solution is $23$, and the solution set is $23$ modulo $105$, confirmed by search.
+\end{worked}
+
+\begin{trap}
+Applying the theorem with moduli that are not coprime. The system may still be solvable, but only if the congruences agree on every common factor, and the modulus of the answer is the least common multiple rather than the product.
+\end{trap}
+
+\begin{seealsob}Last digits by multiplicative order; residue classes.\end{seealsob}
+
+\tech{Base representation}{medium}
+\cue Digits in a base other than ten, a weighing or measuring problem, a problem about binary operations, or a sum in which each term is used at most once.
+\method Write the quantity in the base the problem is secretly using. Sums of distinct powers of two are binary strings; sums of powers of three with coefficients $-1,0,1$ are balanced ternary, which is what makes the classical weighing problem work; and questions about carrying digits are questions about the base representation of a sum.
+
+\begin{worked}
+With weights placed on both pans of a balance, which sets of weights can measure every integer mass from $1$ to $40$? Balanced ternary gives every integer in that range a representation $\sum \epsilon_{i}3^{i}$ with $\epsilon_{i}\in\{-1,0,1\}$, so the weights $1,3,9,27$ suffice, with $\epsilon=-1$ meaning the weight joins the object's pan. Four weights, and $\left(3^{4}-1\right)/2=40$ is exactly the largest reachable mass, so the set is optimal.
+\end{worked}
+
+\begin{seealsob}The information-theoretic bound for weighings; digit sums.\end{seealsob}
+
+\tech{Lifting the exponent and $p$-adic valuations}{hard}
+\cue An exact power of a prime dividing an expression, the phrase ``the largest $k$ such that $p^{k}$ divides'', or factorials and binomial coefficients with divisibility conditions.
+\method Write $v_{p}(n)$ for the exponent of $p$ in $n$. Legendre's formula gives $v_{p}(n!)=\sum_{i\geq1}\floorb{n/p^{i}}$. The lifting-the-exponent lemma gives, for odd $p$ with $p\mid a-b$ and $p\nmid a,b$,
+\[
+v_{p}\!\left(a^{n}-b^{n}\right)=v_{p}(a-b)+v_{p}(n),
+\]
+with a separate statement at $p=2$ that carries an extra term. These two formulas answer nearly every exact-power question that appears in practice.
+
+\begin{worked}
+The exponent of $2$ in $100!$ is $50+25+12+6+3+1=97$, so $2^{97}$ divides $100!$ and $2^{98}$ does not. And $v_{3}(10^{9}-1)=v_{3}(9)+v_{3}(9)=2+2=4$, so $81$ divides $10^{9}-1$ and $243$ does not.
+\end{worked}
+
+\begin{seealsob}Residue classes; Chinese Remainder Theorem.\end{seealsob}
+
+\section{Factoring, and going downwards}
+
+\tech{Factoring the constraint}{easy}
+\cue A Diophantine equation containing a product of the unknowns together with linear terms, or a divisor-counting question. The shape $xy+ax+by=c$ is the signature.
+\method Add the constant that completes the product:
+\[
+xy+ax+by=c \iff (x+b)(y+a)=c+ab.
+\]
+Then enumerate the divisors of the right-hand side. This converts an equation with infinitely many candidate solutions into a finite list, and it is almost always faster than any congruence argument on the same equation.
+
+\begin{worked}
+Solve $xy+3x+2y=12$ over the integers. Add $6$: $(x+2)(y+3)=18$. The divisor pairs of $18$, positive and negative, give the full solution set, which includes $(x,y)=(1,3)$, $(0,6)$, $(-1,15)$, $(-5,-9)$, $(-8,-6)$, $(-11,-5)$ and the rest, twelve solutions in all, found by enumerating divisors and confirmed by direct search.
+\end{worked}
+
+\begin{trap}
+Enumerating only the positive divisors when the problem allows negative integers. Half the solutions live there.
+\end{trap}
+
+\begin{seealsob}Residue classes; Vieta jumping.\end{seealsob}
+
+\tech{Vieta jumping and infinite descent}{hard}
+\cue A symmetric Diophantine condition, most characteristically a divisibility $ab+c\mid a^{2}+b^{2}+d$, or a claim that a certain quotient is always a perfect square. Also any equation where a solution can be transformed into a smaller one.
+\method Fix the value $k$ of the quotient and regard the equation as a quadratic in one variable. The two roots satisfy Vieta's relations, so from one solution $(a,b)$ you obtain another, $(b, \text{second root})$, and the second root is an integer. Show it is smaller, and descend to a minimal solution, which must have a special form you can analyse directly.
+
+\begin{worked}
+Suppose $ab+1\mid a^{2}+b^{2}$ and write $a^{2}+b^{2}=k(ab+1)$. Fix $k$ and take the solution with $a+b$ minimal, with $a\geq b$. Then $a$ is a root of $x^{2}-kbx+(b^{2}-k)=0$, whose other root is $a'=kb-a=(b^{2}-k)/a$. It is an integer, it is non-negative, and it is smaller than $a$, so by minimality $b=0$, whence $k=a^{2}$ is a perfect square. Brute force over $a,b\leq60$ finds only $k\in\{1,4,9\}$, all squares, as the argument predicts.
+\end{worked}
+
+\begin{trap}
+Descending without checking that the new solution is still admissible. The jump must preserve non-negativity as well as integrality, and the boundary case where the new root is zero is the base of the descent rather than a failure of it.
+\end{trap}
+
+\begin{seealsob}Well-ordering and the minimal counterexample; factoring the constraint.\end{seealsob}
+
+\section{Recognition matrix}
+
+\begin{recog}{@{}p{0.31\textwidth}p{0.35\textwidth}p{0.28\textwidth}@{}}
+\rowcolor{mist}\mh{If you see} & \mh{Reach for} & \mh{If that fails} \\
+\midrule
+\endhead
+``Always divisible by $m$'' & Factor $m$; one prime at a time & Induction on $n$ \\
+``No integer solutions'' & Try mod $3,4,8,9,16$ & Descent or factoring \\
+A claim about squares & Squares mod $4$ are $0,1$; mod $8$ are $0,1,4$ & Mod $3$ for sums of two squares \\
+Digits in base ten & Digit sum mod $9$; alternating mod $11$ & Write the base expansion \\
+A large exponent & Multiplicative order, then reduce it & Euler, then CRT on prime powers \\
+Base and modulus share a factor & Split into prime powers & Euler fails on the shared part \\
+Simultaneous congruences & CRT two at a time by substitution & Check coprimality first \\
+Weights on both pans & Balanced ternary & Information bound \\
+``Largest $k$ with $p^{k}\mid$'' & Legendre for factorials; LTE otherwise & Direct valuation count \\
+$xy+ax+by=c$ & Add $ab$ and factor & Enumerate divisors, both signs \\
+Symmetric divisibility, quotient asked & Vieta jumping & Bound the minimal solution \\
+A solution generates a smaller one & Infinite descent & Well-ordering \\
+\end{recog}

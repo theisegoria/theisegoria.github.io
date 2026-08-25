@@ -1,0 +1,532 @@
+\chapter{Second-order linear equations with constant coefficients}
+
+\begin{orient}
+\textbf{What this chapter is for.} Every linear equation $ay''+by'+cy=f(x)$ with constant $a,b,c$ is solved by one idea, applied twice. Write the equation as $L[y]=f$ where $L=aD^{2}+bD+c$ and $D=\dvop{x}$. Because $a,b,c$ do not depend on $x$, the operator $L$ factors exactly as the polynomial $a r^{2}+br+c$ factors, and the factorisation is the entire theory: the roots of that polynomial give you the homogeneous solutions, their multiplicities tell you when to attach a factor of $x$, and a complex conjugate pair converts to a real oscillation by Euler's formula. That disposes of $L[y]=0$ completely, in every case, forever. What remains is to produce one solution of $L[y]=f$, and there are exactly three ways to do it: guess a function of the same closed family as $f$ and match coefficients, kill $f$ with a second constant-coefficient operator and read the guess off the enlarged homogeneous problem, or integrate your way to it with the Wronskian when $f$ is not of any nice family at all. By the end of the chapter you should be able to look at a constant-coefficient equation and know, before writing anything, which of those three you are going to use and how many undetermined constants you are committing yourself to.
+\end{orient}
+
+\section{The factorisation}
+
+Fix the operator $L=aD^{2}+bD+c$ with $a\ne0$. Two structural facts govern everything below, and both are consequences of linearity alone.
+
+The first is that the solution set of $L[y]=0$ is a vector space of dimension exactly $2$. Existence and uniqueness for the initial value problem $y(x_0)=\alpha$, $y'(x_0)=\beta$ says the map sending a solution to the pair $(\alpha,\beta)$ is a bijection onto $\R^{2}$, so any two independent solutions span everything and a third is redundant. This is why a correct answer to a second-order homogeneous problem always has exactly two arbitrary constants, and why producing three is a symptom, not a style choice.
+
+The second is the structure theorem for the forced problem. If $y_p$ is any solution of $L[y]=f$ and $y$ is another, then $L[y-y_p]=0$, so $y-y_p$ lies in the two-dimensional homogeneous space. Hence
+\[y=y_h+y_p,\qquad y_h=C_1y_1+C_2y_2,\]
+and the two halves are computed by completely different machinery: $y_h$ from the roots of a quadratic, $y_p$ by one of the three methods of the second half of this chapter.
+
+\begin{keynote}[Fit the data last]
+The single most common procedural error in this chapter is applying the initial conditions to $y_h$ before $y_p$ has been found. The constants $C_1,C_2$ are determined by the data \emph{after} $y_p$ is added, because $y_p$ contributes to both $y(x_0)$ and $y'(x_0)$. Find the general solution first, complete it, and only then substitute. The same warning applies in reverse to superposition: if $f=f_1+f_2$, solve $L[y]=f_1$ and $L[y]=f_2$ separately and add the two particular solutions, but add the homogeneous part only once.
+\end{keynote}
+
+The substitution that starts everything is $y=\eu^{rx}$, and the reason it works is that $D\eu^{rx}=r\eu^{rx}$: exponentials are eigenfunctions of differentiation, so a polynomial in $D$ acts on them as the same polynomial in $r$. Formally, $L[\eu^{rx}]=(ar^{2}+br+c)\eu^{rx}$, so $\eu^{rx}$ solves the homogeneous equation precisely when $r$ is a root of the \emph{characteristic polynomial} $ar^{2}+br+c$. Everything after this is bookkeeping about roots.
+
+\tech{The characteristic equation and distinct real roots}{core}
+\cue $ay''+by'+cy=0$ with constant $a,b,c$ and discriminant $b^{2}-4ac>0$. Also any problem that hands you a solution of the form $C_1\eu^{r_1x}+C_2\eu^{r_2x}$ and asks for the coefficients of the equation.
+\method Substitute $y=\eu^{rx}$ to obtain $ar^{2}+br+c=0$. With distinct real roots $r_1\ne r_2$,
+\[y=C_1\eu^{r_1x}+C_2\eu^{r_2x},\]
+and independence is automatic because $\eu^{r_1x}$ and $\eu^{r_2x}$ have different growth rates. Fit $C_1,C_2$ from $y(x_0)$ and $y'(x_0)$; the linear system is always solvable, since its determinant is $(r_2-r_1)\eu^{(r_1+r_2)x_0}\ne0$.
+
+\begin{worked}
+$y''-y'-6y=0$ with $y(0)=1$, $y'(0)=8$. The characteristic polynomial $r^{2}-r-6=(r-3)(r+2)$ gives $r=3,-2$, so $y=C_1\eu^{3x}+C_2\eu^{-2x}$. The data give $C_1+C_2=1$ and $3C_1-2C_2=8$, hence $C_1=2$, $C_2=-1$:
+\[y=2\eu^{3x}-\eu^{-2x}.\]
+Check by substitution: $y''=18\eu^{3x}-4\eu^{-2x}$, $y'=6\eu^{3x}+2\eu^{-2x}$, and $18-6-12=0$ on the first mode, $-4-2+6=0$ on the second.
+\end{worked}
+
+\begin{worked}[The root at the origin]
+$y''-2y'=0$ with $y(0)=y'(0)=\pi$. Here $c=0$, so $r^{2}-2r=r(r-2)$ and the roots are $0$ and $2$. The root $r=0$ contributes $\eu^{0\cdot x}=1$, a genuine mode, so $y=C_1+C_2\eu^{2x}$. Then $y'=2C_2\eu^{2x}$ forces $C_2=\pi/2$ and $C_1=\pi/2$, so
+\[y=\frac{\pi}{2}\bigl(1+\eu^{2x}\bigr),\qquad y(1)=\frac{\pi}{2}\bigl(1+\eu^{2}\bigr)\approx13.177499.\]
+\end{worked}
+
+\begin{worked}[Running the argument backwards]
+Problems often supply the solution and ask for the equation, which is the same correspondence read from right to left. If $\eu^{-x}$ and $\eu^{4x}$ span the solution space, the characteristic polynomial is $(r+1)(r-4)=r^{2}-3r-4$ and the equation is $y''-3y'-4y=0$. If instead a single solution $3\eu^{-x}\cos2x$ is given, the roots must include $-1+2\iu$ and, since the coefficients are real, its conjugate; so the polynomial is $(r+1)^{2}+4=r^{2}+2r+5$ and the equation is $y''+2y'+5y=0$. The constant $3$ carries no information: any nonzero multiple of a solution is a solution.
+\end{worked}
+
+\begin{trap}
+Missing the root $r=0$ when $c=0$. The equation is still second order and still needs two constants; the constant function is one of them, and writing $y=C\eu^{2x}$ alone loses a whole dimension of solution space and makes the initial value problem look overdetermined. The diagnostic is the one from the top of this section: count the arbitrary constants and compare with the order.
+\end{trap}
+
+\begin{seealsob}Repeated root and the factor of $x$; complex roots and the real form; higher-order characteristic polynomials.\end{seealsob}
+
+When the discriminant vanishes the two exponentials collide, and the recipe above returns only one solution. The missing second solution is forced on us by the dimension count, and it is worth seeing where the factor of $x$ comes from rather than memorising it, because the same factor reappears in the resonance rule for particular solutions and in the Cauchy-Euler equation of the next chapter, always for the same reason.
+
+\tech[Repeated root and the factor of x]{Repeated root and the factor of $x$}{core}
+\cue $b^{2}-4ac=0$, or a problem that \emph{specifies} the solution form $(C_1+C_2x)\eu^{\lambda x}$ and asks you to recover a parameter in the equation.
+\method With the double root $r=-b/(2a)$,
+\[y=(C_1+C_2x)\eu^{rx}.\]
+Two derivations, both worth knowing. Algebraically, $L=a(D-r)^{2}$, and $(D-r)^{2}[v\eu^{rx}]=\eu^{rx}v''$ by the shift rule $f(D)[\eu^{rx}v]=\eu^{rx}f(D+r)[v]$; so the homogeneous equation is just $v''=0$ and $v=C_1+C_2x$. Analytically, take the distinct-root solution $\dfrac{\eu^{r_2x}-\eu^{r_1x}}{r_2-r_1}$, which is a legitimate combination for $r_1\ne r_2$, and let $r_2\to r_1$: the limit is $x\eu^{r_1x}$. When a parameter is to be chosen so that the root repeats, set the discriminant to zero rather than solving the two cases separately.
+
+\begin{worked}
+$y''-6y'+9y=0$ with $y(0)=1$, $y'(0)=5$. The polynomial $r^{2}-6r+9=(r-3)^{2}$ has the double root $3$, so $y=(C_1+C_2x)\eu^{3x}$. Now differentiate \emph{with the product rule}:
+\[y'=C_2\eu^{3x}+3(C_1+C_2x)\eu^{3x},\qquad y'(0)=C_2+3C_1.\]
+So $C_1=1$ and $C_2+3=5$, giving $C_2=2$ and $y=(1+2x)\eu^{3x}$.
+\end{worked}
+
+\begin{worked}[Choosing a parameter to force the collision]
+For which $k$ does $y''+ky'+(k+3)y=0$ have a repeated root? The discriminant is $k^{2}-4(k+3)=k^{2}-4k-12=(k-6)(k+2)$, so $k=6$ or $k=-2$. The corresponding double roots are $r=-k/2$, namely $-3$ and $1$. Note that the two admissible $k$ satisfy $k_1+k_2=4$ and $k_1k_2=-12$ by Vieta, which is faster than solving when only the sum or product is wanted.
+\end{worked}
+
+\begin{trap}
+Attaching the factor of $x$ correctly and then differentiating as if it were not there. If you write $y=(C_1+C_2x)\eu^{rx}$ and report $y'(0)=rC_1$ instead of $rC_1+C_2$, every constant you fit afterwards is wrong. The product rule is the whole content of the repeated case; there is nothing else to get wrong, so get that right.
+\end{trap}
+
+\begin{seealsob}The characteristic equation and distinct real roots; the resonance multiplier; higher-order characteristic polynomials.\end{seealsob}
+
+\begin{keynote}[The cascade, and why any of this works]
+Since $L=a(D-r_1)(D-r_2)$ and the two factors commute, every constant-coefficient problem can in principle be solved as two first-order problems in sequence: set $w=(D-r_2)y$, solve $a(D-r_1)w=f$ with the integrating factor $\eu^{-r_1x}$, then solve $(D-r_2)y=w$ the same way. Nobody does this in practice, because the methods of the next section are far quicker. It is worth knowing anyway for three reasons. It proves that $L[y]=f$ has a solution for every continuous $f$, with no assumption about the shape of $f$ at all. It is the only route in the chapter that never needs an inspired guess. And it explains the repeated case at a glance: when $r_1=r_2=r$, the same integrating factor $\eu^{-rx}$ is used twice, the second integration meets a constant, and $\int\dd x=x$ is exactly the missing factor.
+\end{keynote}
+
+A negative discriminant is not a special case of the theory, only of the arithmetic. The formula $y=C_1\eu^{r_1x}+C_2\eu^{r_2x}$ remains correct with complex $r_1,r_2$ and complex $C_1,C_2$; what changes is that we usually want a real answer, and Euler's formula converts one to the other in a line. The conversion is worth doing once, carefully, because it explains why the real form has a real exponential envelope multiplying a pure oscillation.
+
+\tech{Complex roots and the real form}{core}
+\cue $b^{2}-4ac<0$. In applications: any damped oscillator, any $LRC$ circuit below critical damping, any problem asking about an envelope, a decay rate, or a phase.
+\method Write the roots as $r=\alpha\pm\iu\beta$ with
+\[\alpha=-\frac{b}{2a},\qquad \beta=\frac{\sqrt{4ac-b^{2}}}{2a}>0.\]
+Then $\eu^{(\alpha\pm\iu\beta)x}=\eu^{\alpha x}(\cos\beta x\pm\iu\sin\beta x)$, and taking the real and imaginary parts (each of which solves the equation, because the coefficients are real) gives the real basis
+\[y=\eu^{\alpha x}\bigl(C_1\cos\beta x+C_2\sin\beta x\bigr)=A\eu^{\alpha x}\cos(\beta x-\varphi),\]
+with $A=\sqrt{C_1^{2}+C_2^{2}}$ and $\tan\varphi=C_2/C_1$. Use the first form to fit initial data, the second whenever the question mentions amplitude, envelope, or the location of maxima.
+
+\begin{worked}
+$y''+2y'+5y=0$ with $y(0)=1$, $y'(0)=1$. The roots of $r^{2}+2r+5$ are $-1\pm2\iu$, so $\alpha=-1$, $\beta=2$ and $y=\eu^{-x}(C_1\cos2x+C_2\sin2x)$. From $y(0)=1$, $C_1=1$. Differentiating,
+\[y'=-\eu^{-x}(C_1\cos2x+C_2\sin2x)+\eu^{-x}(-2C_1\sin2x+2C_2\cos2x),\]
+so $y'(0)=-C_1+2C_2=1$ and $C_2=1$. Hence $y=\eu^{-x}(\cos2x+\sin2x)=\sqrt2\,\eu^{-x}\cos\bigl(2x-\tfrac{\pi}{4}\bigr)$. At $x=0.8$ both forms return $0.436017$, which is the cheapest possible check that the amplitude-phase conversion was done right.
+\end{worked}
+
+\begin{worked}[Undamped: the pure oscillator]
+$y''+4y=0$ has roots $\pm2\iu$, so $\alpha=0$, $\beta=2$ and $y=A\cos2x+B\sin2x$. With $y(0)=3$ and $y'(0)=5$ we get $A=3$ and $2B=5$, so $y=3\cos2x+\tfrac52\sin2x$. The amplitude is $\sqrt{9+\tfrac{25}{4}}=\tfrac{\sqrt{61}}{2}\approx3.905$, and since $\alpha=0$ that amplitude never decays. Hold on to this equation; it returns under forcing as the standard resonance example.
+\end{worked}
+
+\begin{trap}
+Computing $\beta$ as $\sqrt{b^{2}-4ac}/(2a)$ and carrying a negative number under the radical, so that $\beta$ comes out imaginary and the ``real form'' is secretly a pair of exponentials. Take $\beta=\sqrt{4ac-b^{2}}/(2a)$, positive by construction. Second trap: dropping the envelope. The solution of $y''+2y'+5y=0$ is not $C_1\cos2x+C_2\sin2x$; the factor $\eu^{-x}$ is where all the damping lives, and without it the answer is periodic when it should decay.
+\end{trap}
+
+\begin{seealsob}The characteristic equation and distinct real roots; repeated root and the factor of $x$; the resonance multiplier.\end{seealsob}
+
+\begin{keynote}[The three cases as damping]
+For $my''+cy'+ky=0$ with $m,c,k>0$ the sign of the discriminant $c^{2}-4mk$ decides the qualitative behaviour, and the standard vocabulary is worth attaching to it. Positive: two distinct negative real roots, \emph{overdamped}, and the mass returns to equilibrium crossing it at most once. Zero: a negative double root, \emph{critically damped}, which is the fastest possible return and the reason a door closer is tuned to $c=2\sqrt{mk}$. Negative: a conjugate pair with $\alpha=-c/(2m)<0$, \emph{underdamped}, oscillating inside the envelope $\eu^{-cx/(2m)}$. In all three cases both roots have negative real part, so every solution decays; the general statement behind that is the Routh criterion in its smallest instance, namely that the roots of $ar^{2}+br+c$ have negative real parts exactly when $a$, $b$, $c$ are all of one sign.
+\end{keynote}
+
+\begin{worked}[Transient and steady state]
+$y''+2y'+5y=10\cos x$. The homogeneous part is the underdamped $\eu^{-x}(C_1\cos2x+C_2\sin2x)$ of the previous example, and the forcing exponent $\iu$ is not a root, so the trial $A\cos x+B\sin x$ needs no multiplier:
+\[(-A+2B+5A)\cos x+(-B-2A+5B)\sin x=(4A+2B)\cos x+(4B-2A)\sin x=10\cos x.\]
+So $A=2B$ and $10B=10$, giving $y_p=2\cos x+\sin x=\sqrt5\cos(x-\varphi)$ with $\tan\varphi=\tfrac12$. The full solution is $\eu^{-x}(C_1\cos2x+C_2\sin2x)+2\cos x+\sin x$, and the vocabulary is worth attaching: $y_h$ is the \emph{transient}, which dies out at a rate set by the equation and not by the forcing, and $y_p$ is the \emph{steady state}, which persists and oscillates at the forcing frequency, not the natural one. Initial conditions affect only the transient. That is why a driven damped system eventually forgets how it was started, and why the amplitude $\sqrt5$ of the steady state is the only number a long-run measurement can report.
+\end{worked}
+
+Nothing above used the fact that the order is two. Raise the order and the same three cases recur, now possibly mixed within a single equation, and the only new bookkeeping is that a root may repeat more than twice and that a complex pair may itself repeat.
+
+\tech{Higher-order characteristic polynomials with multiplicities}{medium}
+\cue A constant-coefficient equation of order three or more, typically presented already factorable by inspection or by the rational root test.
+\method Factor the characteristic polynomial completely over $\C$. A real root $r$ of multiplicity $m$ contributes the ladder
+\[\eu^{rx},\ x\eu^{rx},\ \ldots,\ x^{m-1}\eu^{rx};\]
+a complex pair $\alpha\pm\iu\beta$ of multiplicity $m$ contributes $x^{j}\eu^{\alpha x}\cos\beta x$ and $x^{j}\eu^{\alpha x}\sin\beta x$ for $j=0,\ldots,m-1$. Summing the contributions must give exactly $n$ independent solutions for an equation of order $n$; check that count before you go anywhere near the initial data.
+
+\begin{worked}
+$f'''+f''-f'-f=\eu^{x}\sin x$. Group the characteristic polynomial: $r^{3}+r^{2}-r-1=r^{2}(r+1)-(r+1)=(r+1)(r^{2}-1)=(r-1)(r+1)^{2}$. So $r=1$ simple and $r=-1$ double, giving three solutions as required:
+\[f_h=A\eu^{x}+(B+Cx)\eu^{-x}.\]
+For the particular solution, put $f_p=\eu^{x}u$ and use the shift rule with $L=(D-1)(D+1)^{2}$, so $L[\eu^{x}u]=\eu^{x}D(D+2)^{2}[u]=\eu^{x}\bigl(D^{3}+4D^{2}+4D\bigr)[u]$. Taking $u=P\cos x+Q\sin x$, every second derivative flips sign: $D^{2}u=-u$ and $D^{3}u=-Du$, so the bracket collapses to $3Du-4u$. Matching against $\sin x$:
+\[-3P-4Q=1,\qquad 3Q-4P=0\ \Longrightarrow\ P=-\tfrac{3}{25},\ Q=-\tfrac{4}{25},\]
+\[f_p=-\frac{(3\cos x+4\sin x)\eu^{x}}{25}.\]
+Direct substitution confirms the residual is zero to $10^{-6}$ at $x=0.2,0.7,1.4$.
+\end{worked}
+
+\begin{worked}[A repeated complex pair]
+$y''''+2y''+y=0$. The characteristic polynomial is $r^{4}+2r^{2}+1=(r^{2}+1)^{2}$, so $\pm\iu$ are roots of multiplicity two and the ladder runs $\cos x,\sin x,x\cos x,x\sin x$:
+\[y=(A+Bx)\cos x+(C+Dx)\sin x.\]
+Four constants for an order-four equation, as required. Checking $y=x\cos x$: $y''=-2\sin x-x\cos x$ and $y''''=4\sin x+x\cos x$, so $y''''+2y''+y=4\sin x+x\cos x-4\sin x-2x\cos x+x\cos x=0$. The secular growth of $x\cos x$ is the four-dimensional version of resonance: a doubled root always produces it, whether it is real or complex.
+\end{worked}
+
+\begin{trap}
+Counting a double root once, so that an order-four equation is answered with three constants. The dimension check is free and catches this every time. The second failure is arithmetic: factor by grouping or by the rational root test, but do factor. A cubic guessed at rather than factored produces an answer that satisfies nothing.
+\end{trap}
+
+\begin{seealsob}Repeated root and the factor of $x$; the annihilator method; the resonance multiplier.\end{seealsob}
+
+\section{One particular solution}
+
+With $y_h$ known, the remaining task is to produce a single solution of $L[y]=f$. Any one will do, because the difference between two of them is homogeneous and gets absorbed into $C_1y_1+C_2y_2$. That licence is what makes the methods below usable: you may discard any part of a candidate that happens to solve the homogeneous equation, and you may drop every constant of integration along the way.
+
+The three methods differ in cost, not in validity. Undetermined coefficients is cheap but demands that $f$ belong to a closed family under differentiation. Variation of parameters always works but pays for it with two integrals. The annihilator method is undetermined coefficients with the guessing removed. The decision tree at the end of the chapter puts them in order; here they come in the order in which they are usually learned, which is also the order of increasing generality.
+
+\tech{Undetermined coefficients: the trial table}{core}
+\cue Constant coefficients, and a forcing term assembled from polynomials, $\eu^{ax}$, $\cos bx$, $\sin bx$, and products of those. Equivalently: $f$ is annihilated by some constant-coefficient operator, which is the same condition stated invariantly.
+\method Guess $y_p$ in the smallest family containing $f$ that is closed under differentiation, substitute, and match coefficients. The families are:
+\begin{center}
+\footnotesize
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{@{}ll@{}}
+\toprule
+\mh{Forcing $f(x)$} & \mh{Trial $y_p$ (before any resonance factor)} \\
+\midrule
+$P_n(x)$, degree $n$ & $Q_n(x)$, all $n+1$ coefficients unknown \\
+$\eu^{ax}$ & $A\eu^{ax}$ \\
+$P_n(x)\eu^{ax}$ & $Q_n(x)\eu^{ax}$ \\
+$\cos bx$ or $\sin bx$ & $A\cos bx+B\sin bx$ \\
+$\eu^{ax}\cos bx$ or $\eu^{ax}\sin bx$ & $\eu^{ax}(A\cos bx+B\sin bx)$ \\
+$P_n(x)\eu^{ax}\cos bx$ & $\eu^{ax}\bigl(Q_n(x)\cos bx+R_n(x)\sin bx\bigr)$ \\
+$f_1+f_2$ & Solve separately and add \\
+\bottomrule
+\end{tabular}
+\end{center}
+Two rules govern the table. Always carry the \emph{full} polynomial, including terms absent from $f$: forcing $4x$ needs the trial $Ax+B$, not $Ax$. Always carry \emph{both} trigonometric terms, because differentiation exchanges sine and cosine and a one-sided guess yields an inconsistent system.
+
+\begin{worked}
+$y''-3y'+2y=4x$. The trial is $y_p=Ax+B$, so $y_p'=A$ and $y_p''=0$:
+\[0-3A+2(Ax+B)=2Ax+(2B-3A)=4x.\]
+Hence $A=2$ and $B=3$, so $y_p=2x+3$. The roots of $r^{2}-3r+2$ are $1,2$, giving the general solution $y=C_1\eu^{x}+C_2\eu^{2x}+2x+3$.
+\end{worked}
+
+\begin{worked}[A full quadratic, and a shifted exponential]
+$y''-y'-2y=4x^{2}$. Trial $y_p=Ax^{2}+Bx+C$ gives
+\[2A-(2Ax+B)-2(Ax^{2}+Bx+C)=-2Ax^{2}+(-2A-2B)x+(2A-B-2C)=4x^{2},\]
+so $A=-2$, then $B=-A=2$, then $2A-B-2C=0$ gives $C=-3$. Thus $y_p=-2x^{2}+2x-3$.
+
+Now $y''-2y'+y=x\eu^{2x}$. Here $L=(D-1)^{2}$ and the forcing exponent $2$ is not a root, so the trial is $(Ax+B)\eu^{2x}$ with no extra factor. The shift rule is faster than the product rule: $(D-1)^{2}[\eu^{2x}v]=\eu^{2x}(D+1)^{2}[v]$, and with $v=Ax+B$,
+\[(D^{2}+2D+1)[Ax+B]=0+2A+Ax+B=Ax+(2A+B).\]
+Matching $Ax+(2A+B)=x$ gives $A=1$, $B=-2$, so $y_p=(x-2)\eu^{2x}$.
+\end{worked}
+
+\begin{worked}[Superposition across two families]
+$y''-4y=8x^{2}-2x+\eu^{3x}$. Split the forcing. For the polynomial part, $y_{p1}=Ax^{2}+Bx+C$ gives
+\[2A-4(Ax^{2}+Bx+C)=-4Ax^{2}-4Bx+(2A-4C)=8x^{2}-2x,\]
+so $A=-2$, $B=\tfrac12$, and $2A-4C=0$ forces $C=-1$. For the exponential part, $3$ is not a root of $r^{2}-4$, so $y_{p2}=D\eu^{3x}$ with $9D-4D=1$, giving $D=\tfrac15$. Adding,
+\[y=C_1\eu^{2x}+C_2\eu^{-2x}-2x^{2}+\tfrac12x-1+\tfrac15\eu^{3x}.\]
+Note that $y_h$ appears once, not twice. Numerical substitution of the particular part leaves a residual of $4\times10^{-4}$ under finite differences, which is the differencing error and not an algebraic one.
+\end{worked}
+
+\begin{trap}
+Guessing only $\cos$ when only $\cos$ appears in $f$. For $y''+y'=\cos x$ the trial $A\cos x$ produces $-A\cos x-A\sin x=\cos x$, which has no solution; with $A\cos x+B\sin x$ it does. The second habitual error is truncating the polynomial: forcing $x^{2}$ with the trial $Ax^{2}$ fails for exactly the same reason. Include every lower-degree term even when it looks unnecessary, since the cost is one extra unknown and the alternative is an inconsistent system.
+\end{trap}
+
+\begin{seealsob}The resonance multiplier; the annihilator method; variation of parameters.\end{seealsob}
+
+\begin{keynote}[Complexify the forcing]
+For $\eu^{ax}\cos bx$ or $\eu^{ax}\sin bx$ the two-unknown trial can be replaced by a one-unknown complex trial, which is materially faster. Solve $L[z]=F\eu^{(a+\iu b)x}$ instead; since $L$ acts on an exponential by evaluation, $z_p=F\eu^{(a+\iu b)x}/P(a+\iu b)$ whenever $P(a+\iu b)\ne0$, and $y_p$ is the real part when the forcing was the cosine, the imaginary part when it was the sine. Example: $y''+y=5\eu^{2x}\cos x$. Here $P(2+\iu)=(2+\iu)^{2}+1=4+4\iu$, so
+\[z_p=\frac{5\eu^{(2+\iu)x}}{4+4\iu}=\frac{5(1-\iu)}{8}\eu^{2x}\bigl(\cos x+\iu\sin x\bigr),\qquad y_p=\tfrac58\eu^{2x}(\cos x+\sin x).\]
+The condition $P(a+\iu b)=0$ is exactly resonance, and there the shift rule must be used instead.
+\end{keynote}
+
+The table above fails in exactly one situation, and it fails loudly: when a term of the trial already solves the homogeneous equation, substituting it returns zero and no choice of coefficient can match a nonzero right-hand side. This is resonance, and the repair is a single, precisely statable multiplication. It is the same factor of $x$ that appeared for the repeated root, arising for the same reason: a confluence between the forcing exponent and a characteristic root.
+
+\tech[Resonance multiplier x to the s]{The resonance multiplier $x^{s}$}{hard}
+\cue Any term of your undetermined-coefficients trial duplicates a term of $y_h$. In practice: the forcing is $P(x)\eu^{ax}$ and $a$ is a root of the characteristic polynomial, or the forcing is $\eu^{ax}\cos bx$ and $a\pm\iu b$ is a root. For an undamped oscillator, the forcing frequency equals the natural frequency.
+\method Let $s$ be the multiplicity of the forcing exponent as a root of the characteristic polynomial, where the forcing exponent means $a$ for $P(x)\eu^{ax}$ and $a+\iu b$ for $P(x)\eu^{ax}\cos bx$ or $P(x)\eu^{ax}\sin bx$; take $s=0$ if it is not a root at all. Then
+\[y_p=x^{s}\times\bigl(\text{the trial from the table}\bigr),\]
+with the multiplication applied to the \emph{whole} trial, not to the offending term alone. Nothing else changes: substitute and match as before. The resulting system is always consistent, which is the practical statement of why $s$ is the right exponent.
+
+\begin{worked}
+$y''+4y=16\sin2x$, with $y(0)=3$, $y'(0)=5$. The roots are $\pm2\iu$ and the forcing exponent is $0+2\iu$, a simple root, so $s=1$ and $y_p=x(A\cos2x+B\sin2x)$. Differentiating twice,
+\[y_p''=-4x(A\cos2x+B\sin2x)+4(-A\sin2x+B\cos2x),\]
+so $y_p''+4y_p=-4A\sin2x+4B\cos2x$. Matching against $16\sin2x$ gives $B=0$ and $A=-4$:
+\[y_p=-4x\cos2x.\]
+Adding $y_h=3\cos2x+C\sin2x$ from the earlier fit and imposing the data on the \emph{complete} solution: $y(0)=3$ is already satisfied, and
+\[y'=-6\sin2x+2C\cos2x-4\cos2x+8x\sin2x,\qquad y'(0)=2C-4=5,\]
+so $C=\tfrac92$ and $y=3\cos2x+\tfrac92\sin2x-4x\cos2x$. At $x=\pi/4$ every cosine vanishes and $y(\pi/4)=\tfrac92$. The unbounded term $-4x\cos2x$ is the physical content: an undamped oscillator driven at its natural frequency has amplitude growing linearly in time.
+\end{worked}
+
+\begin{worked}[Double resonance]
+$y''-2y'+y=\eu^{x}$. The characteristic polynomial is $(r-1)^{2}$ and the forcing exponent is $1$, a root of multiplicity $2$, so $s=2$ and $y_p=Ax^{2}\eu^{x}$. By the shift rule, $(D-1)^{2}[\eu^{x}Ax^{2}]=\eu^{x}D^{2}[Ax^{2}]=2A\eu^{x}$, so $A=\tfrac12$ and
+\[y_p=\tfrac12x^{2}\eu^{x},\qquad y=(C_1+C_2x)\eu^{x}+\tfrac12x^{2}\eu^{x}.\]
+Note how the trial continues the ladder $\eu^{x},x\eu^{x},x^{2}\eu^{x}$ exactly where $y_h$ stopped.
+\end{worked}
+
+\begin{worked}[Resonance with a complex pair]
+$y''-2y'+5y=8\eu^{x}\sin2x$. The roots are $1\pm2\iu$ and the forcing exponent is $1+2\iu$, a simple root, so $s=1$ and the trial is $x\eu^{x}(A\cos2x+B\sin2x)$. Write $L=(D-1)^{2}+4$ and use the shift rule, $L[\eu^{x}v]=\eu^{x}(D^{2}+4)[v]$. For $v=xu$ with $u=A\cos2x+B\sin2x$, so that $u''=-4u$, the product rule gives $(xu)''=-4xu+2u'$ and hence
+\[(D^{2}+4)[xu]=2u'=-4A\sin2x+4B\cos2x.\]
+Matching against $8\sin2x$: $B=0$ and $A=-2$, so $y_p=-2x\eu^{x}\cos2x$. Resonance against a damped or growing oscillation still produces the factor of $x$; what differs from the undamped case is that here the envelope $\eu^{x}$ dominates the linear growth entirely.
+\end{worked}
+
+\begin{trap}
+Two errors, both producing an unsolvable coefficient system rather than a wrong answer, which is at least a loud failure. The first is multiplying only the term that clashes: for $y''+4y=16\sin2x$ the trial $Ax\cos2x+B\sin2x$ is not a repair. The second is taking $s=1$ when the duplicated root is itself repeated. Read $s$ off the factorisation of the characteristic polynomial, never off the appearance of $y_h$.
+\end{trap}
+
+\begin{seealsob}Undetermined coefficients: the trial table; the annihilator method; repeated root and the factor of $x$.\end{seealsob}
+
+\begin{keynote}[Count the unknowns before substituting]
+The number of undetermined coefficients is fixed by the forcing alone, and the resonance factor never changes it. Forcing $P_n(x)\eu^{ax}$ needs $n+1$ unknowns whether $s$ is $0$, $1$, or $2$; forcing $P_n(x)\eu^{ax}\cos bx$ needs $2(n+1)$. What $x^{s}$ changes is the degree of the trial, not its dimension, and that is why the coefficient system stays square and becomes solvable rather than merely larger. Two practical consequences. If your system has more equations than unknowns, you truncated the polynomial or dropped a trigonometric partner. If it has more unknowns than equations, you multiplied by $x^{s}$ and then also kept the unmultiplied terms, which are already in $y_h$ and contribute nothing; delete them.
+\end{keynote}
+
+Undetermined coefficients, with or without the resonance factor, requires $f$ to sit inside a finite-dimensional space closed under $D$. Forcings such as $\sec x$, $\tan x$, $\ln x$, and $1/x$ do not: differentiating them repeatedly generates new functions forever, so there is no finite trial to make. For those, and for every equation with variable coefficients whose homogeneous solutions you happen to know, there is a formula that produces $y_p$ outright at the cost of two integrations.
+
+\tech{Variation of parameters}{core}
+\cue The forcing is outside the closed family: $\sec x$, $\tan x$, $\ln x$, $1/x$, $\eu^{x^{2}}$, or anything with a variable coefficient in front. Also any second-order linear equation, constant coefficients or not, for which $y_1$ and $y_2$ are already in hand.
+\method Normalise the equation to $y''+p(x)y'+q(x)y=g(x)$ by dividing through by the leading coefficient. With independent homogeneous solutions $y_1,y_2$ and Wronskian $W=y_1y_2'-y_2y_1'$,
+\[y_p=-y_1\int\frac{y_2\,g}{W}\dd x+y_2\int\frac{y_1\,g}{W}\dd x.\]
+The derivation is the ansatz $y_p=u_1y_1+u_2y_2$ with the extra convenience constraint $u_1'y_1+u_2'y_2=0$, which reduces the problem to the two-by-two system $u_1'y_1+u_2'y_2=0$, $u_1'y_1'+u_2'y_2'=g$; Cramer's rule gives $u_1'=-y_2g/W$ and $u_2'=y_1g/W$. Drop the constants of integration: they only rebuild $y_h$.
+
+\begin{worked}
+$y''+y=\sec x$ on $\bigl(-\tfrac{\pi}{2},\tfrac{\pi}{2}\bigr)$. Here $y_1=\cos x$, $y_2=\sin x$, and $W=\cos^{2}x+\sin^{2}x=1$. The equation is already normalised, so $g=\sec x$ and
+\[u_1=-\int\sin x\sec x\dd x=-\int\tan x\dd x=\ln\abs{\cos x},\qquad u_2=\int\cos x\sec x\dd x=x.\]
+Hence
+\[y_p=\cos x\ln\abs{\cos x}+x\sin x,\]
+and the general solution is $C_1\cos x+C_2\sin x+\cos x\ln\abs{\cos x}+x\sin x$. Substituting $y_p$ numerically at $x=0.2,0.6,1.0,1.3$ leaves a residual below $10^{-6}$. The companion result, obtained the same way, is that $y''+y=\tan x$ has $y_p=-\cos x\ln\abs{\sec x+\tan x}$.
+\end{worked}
+
+\begin{worked}[Repeated root, non-elementary forcing]
+$y''-2y'+y=\dfrac{\eu^{x}}{x}$ on $x>0$. The homogeneous solutions are $y_1=\eu^{x}$ and $y_2=x\eu^{x}$, with
+\[W=\eu^{x}\bigl(\eu^{x}+x\eu^{x}\bigr)-x\eu^{x}\cdot\eu^{x}=\eu^{2x}.\]
+The equation is normalised already, so $g=\eu^{x}/x$ and
+\[u_1=-\int\frac{x\eu^{x}\cdot\eu^{x}/x}{\eu^{2x}}\dd x=-\int\dd x=-x,\qquad u_2=\int\frac{\eu^{x}\cdot\eu^{x}/x}{\eu^{2x}}\dd x=\ln x.\]
+Then $y_p=-x\eu^{x}+x\eu^{x}\ln x$, and the first term is a homogeneous solution, so discard it:
+\[y_p=x\eu^{x}\ln x.\]
+No trial form could have produced this; $\ln x$ is not in any closed family.
+\end{worked}
+
+\begin{worked}[Variable coefficients, with $y_1,y_2$ supplied]
+$x^{2}y''-2xy'+2y=x^{3}\eu^{x}$ on $(0,\infty)$. The homogeneous equation is Cauchy-Euler with indicial polynomial $m(m-1)-2m+2=(m-1)(m-2)$, so $y_1=x$ and $y_2=x^{2}$, and $W=x\cdot2x-x^{2}\cdot1=x^{2}$. Normalising divides by $x^{2}$, so $g=x\eu^{x}$ and \emph{not} $x^{3}\eu^{x}$:
+\[u_1=-\int\frac{x^{2}\cdot x\eu^{x}}{x^{2}}\dd x=-\int x\eu^{x}\dd x=-(x-1)\eu^{x},\qquad u_2=\int\frac{x\cdot x\eu^{x}}{x^{2}}\dd x=\eu^{x}.\]
+Hence $y_p=-x(x-1)\eu^{x}+x^{2}\eu^{x}=x\eu^{x}$, and the general solution is $C_1x+C_2x^{2}+x\eu^{x}$. The whole of the next chapter is about producing $y_1$ and $y_2$ in situations like this one.
+\end{worked}
+
+\begin{trap}
+Forgetting to normalise. If the equation reads $ay''+by'+cy=f$ with $a\ne1$, then $g=f/a$, and using $f$ instead scales $y_p$ by $a$. Nearly every error in second-order variation of parameters traces back to this one line. Two smaller traps: the sign convention is attached to the formula as written, so do not reorder the terms from memory, and the Wronskian belongs in the denominator of both integrands, not outside them, whenever $W$ is not constant.
+\end{trap}
+
+\begin{seealsob}The Wronskian and Abel's identity; reduction of order; undetermined coefficients: the trial table.\end{seealsob}
+
+\begin{keynote}[The definite-integral form, which fits the data for free]
+Replacing the indefinite integrals by definite ones from $x_0$ gives a single formula,
+\[y_p(x)=\int_{x_0}^{x}\frac{y_1(t)y_2(x)-y_1(x)y_2(t)}{W(t)}\,g(t)\dd t,\]
+whose kernel vanishes on the diagonal $t=x$ and whose $x$-derivative equals $1$ there. Consequently $y_p(x_0)=0$ and $y_p'(x_0)=0$, so the initial conditions are carried entirely by $y_h$ and $C_1,C_2$ are read off the raw data with no arithmetic. This is the Green's function of the initial value problem, it is the form to use when $g$ has no elementary antiderivative, and it makes the interval of validity explicit: the formula is good on the largest interval containing $x_0$ on which $p$, $q$, $g$ are continuous and $W$ is nonzero.
+\end{keynote}
+
+Variation of parameters needs two independent homogeneous solutions. If the coefficients are constant you always have them. If they are not, you may have only one, handed to you by the problem or guessable from the shape of the equation. One solution is enough: substituting $y=v(x)y_1$ turns the equation into a first-order equation for $v'$, because the terms carrying a bare $v$ cancel by the very fact that $y_1$ solves the equation.
+
+\tech{Reduction of order from one known solution}{medium}
+\cue A second-order linear equation, coefficients arbitrary, with one solution $y_1$ supplied or guessable. Guessable means: try $y_1=x$, $y_1=x^{m}$, $y_1=\eu^{ax}$, $y_1=1/x$ when the coefficients are polynomial, and check whether the coefficients sum to zero, which makes $y_1=\eu^{x}$ a solution.
+\method Set $y=v(x)y_1(x)$. Substituting into $y''+py'+qy=0$ gives
+\[y_1v''+(2y_1'+py_1)v'=0,\]
+with no $v$ term at all. Writing $w=v'$, this is first-order and separable, and integrating twice yields the closed form
+\[y_2=y_1\int\frac{\eu^{-\int p\dd x}}{y_1^{2}}\dd x.\]
+For a forced equation the same substitution leaves a first-order \emph{linear} equation for $w$, so the method also produces a particular solution.
+
+\begin{worked}
+$x^{2}y''-3xy'+4y=0$ with $y_1=x^{2}$ given. Normalise: $p=-3/x$, so $\eu^{-\int p\dd x}=\eu^{3\ln x}=x^{3}$ on $x>0$. Then
+\[y_2=x^{2}\int\frac{x^{3}}{x^{4}}\dd x=x^{2}\ln x,\]
+and the general solution on $(0,\infty)$ is $y=x^{2}(C_1+C_2\ln x)$. Substitution confirms it: with $y=x^{2}\ln x$, $y'=2x\ln x+x$ and $y''=2\ln x+3$, and $x^{2}(2\ln x+3)-3x(2x\ln x+x)+4x^{2}\ln x=0$ identically.
+\end{worked}
+
+\begin{worked}[Guessing $y_1$ from the coefficients]
+$(x+1)y''-(x+2)y'+y=0$. The coefficients sum to $(x+1)-(x+2)+1=0$, which is precisely the condition for $y_1=\eu^{x}$ to be a solution, since substituting $\eu^{x}$ multiplies each coefficient by $\eu^{x}$ and adds them. Normalising, $p=-\dfrac{x+2}{x+1}$, so
+\[\eu^{-\int p\dd x}=\exp\int\Bigl(1+\frac{1}{x+1}\Bigr)\dd x=(x+1)\eu^{x},\]
+and
+\[y_2=\eu^{x}\int\frac{(x+1)\eu^{x}}{\eu^{2x}}\dd x=\eu^{x}\int(x+1)\eu^{-x}\dd x=\eu^{x}\bigl(-(x+2)\eu^{-x}\bigr)=-(x+2).\]
+Dropping the sign, $y=C_1\eu^{x}+C_2(x+2)$ on $(-1,\infty)$. Substitution confirms both modes. The companion guesses are worth listing: coefficients summing to zero give $\eu^{x}$; alternating coefficients summing to zero give $\eu^{-x}$; a coefficient pattern with $c=0$ gives the constant $y_1=1$.
+\end{worked}
+
+\begin{worked}[Reduction of order on a forced equation]
+$xy''-(x+1)y'+y=x^{2}$. The coefficients sum to $x-(x+1)+1=0$, so $y_1=\eu^{x}$ solves the homogeneous equation. Put $y=v\eu^{x}$; then $y'=(v'+v)\eu^{x}$ and $y''=(v''+2v'+v)\eu^{x}$, and the left side collapses:
+\[\eu^{x}\bigl[xv''+(2x-x-1)v'+(x-x-1+1)v\bigr]=\eu^{x}\bigl[xv''+(x-1)v'\bigr],\]
+with the $v$ term gone as promised. Writing $w=v'$, the equation $xw'+(x-1)w=x^{2}\eu^{-x}$ normalises to $w'+\bigl(1-\tfrac1x\bigr)w=x\eu^{-x}$, whose integrating factor is $\eu^{x}/x$. Then $\bigl(\eu^{x}w/x\bigr)'=1$, so $w=(x^{2}+Ax)\eu^{-x}$, and integrating once more,
+\[v=-(x^{2}+2x+2)\eu^{-x}-A(x+1)\eu^{-x}+B.\]
+Multiplying back by $\eu^{x}$ and absorbing constants,
+\[y=C_1\eu^{x}+C_2(x+1)-x^{2}.\]
+One substitution produced the second homogeneous solution $x+1$ and the particular solution $-x^{2}$ together. Checking the last: $x(-2)-(x+1)(-2x)+(-x^{2})=-2x+2x^{2}+2x-x^{2}=x^{2}$.
+\end{worked}
+
+\begin{trap}
+Expecting a term in bare $v$ to survive. If one does, $y_1$ is not a solution and the substitution was performed on a false premise; go back and check $y_1$ before doing any integration. The other trap is the interval: $\eu^{-\int p}$ and the division by $y_1^{2}$ both require $y_1\ne0$ and $p$ continuous, so a zero of $y_1$ or a singular point of the equation cuts the domain, and $x^{2}\ln x$ above is a solution on $(0,\infty)$, not on $\R$.
+\end{trap}
+
+\begin{seealsob}Variation of parameters; the Wronskian and Abel's identity; repeated root and the factor of $x$.\end{seealsob}
+
+\section{Operator methods}
+
+Undetermined coefficients as presented above involves a guess, a resonance rule applied by hand, and a coefficient match. The guess and the rule can both be eliminated. The observation is that the class of forcings for which the trial table works is precisely the class annihilated by some constant-coefficient operator, and once such an operator is found the correct trial, resonance factor and all, falls out of a homogeneous problem.
+
+\tech[Annihilator or D operator method]{The annihilator, or $D$-operator, method}{hard}
+\cue Constant coefficients with a forcing that is itself a solution of some constant-coefficient homogeneous equation. Useful when the resonance count is awkward, when several forcing terms interact, or when you would rather not remember the table.
+\method Write the equation as $L[y]=f$ and find an operator $A$ with $A[f]=0$. The standard annihilators:
+\[D^{n+1}\!\bigl[x^{n}\bigr]=0,\quad (D-a)^{n+1}\!\bigl[x^{n}\eu^{ax}\bigr]=0,\quad \bigl(D^{2}+b^{2}\bigr)\!\bigl[\cos bx\bigr]=0,\]
+\[\bigl((D-a)^{2}+b^{2}\bigr)^{n+1}\!\bigl[x^{n}\eu^{ax}\cos bx\bigr]=0.\]
+Every entry of the trial table is one of these, which is the precise sense in which the table was never a list to memorise: a forcing is amenable to undetermined coefficients exactly when it is annihilated by a constant-coefficient operator, and the operator is read off the forcing by inspection.
+Apply $A$ to both sides: $AL[y]=0$, a homogeneous constant-coefficient equation whose solution space contains every solution of $L[y]=f$. Solve it, strike out the part that is already $y_h$, and what is left is exactly the correct trial, with the resonance factor built in. Determine its coefficients by substituting into the \emph{original} equation.
+
+\begin{worked}
+$y''-y=x\eu^{x}$. Here $L=D^{2}-1=(D-1)(D+1)$ and $y_h=C_1\eu^{x}+C_2\eu^{-x}$. The forcing $x\eu^{x}$ is annihilated by $A=(D-1)^{2}$, so
+\[AL=(D-1)^{3}(D+1),\qquad y=(C_1+ax+bx^{2})\eu^{x}+C_2\eu^{-x}.\]
+Removing $y_h$ leaves the trial $y_p=(ax+bx^{2})\eu^{x}$, which is $x$ times $(a+bx)\eu^{x}$: the resonance factor appeared without anybody applying a rule. Substituting via the shift rule, $(D^{2}-1)[\eu^{x}v]=\eu^{x}\bigl((D+1)^{2}-1\bigr)[v]=\eu^{x}(D^{2}+2D)[v]$ with $v=ax+bx^{2}$ gives $\eu^{x}\bigl(2b+2a+4bx\bigr)$. Matching against $x\eu^{x}$: $4b=1$ and $2a+2b=0$, so $b=\tfrac14$, $a=-\tfrac14$, and
+\[y_p=\frac{x(x-1)\eu^{x}}{4}.\]
+\end{worked}
+
+\begin{worked}[Where the table would be fiddly]
+$y''+4y=16\sin2x$ again. Take $A=D^{2}+4$; then $AL=(D^{2}+4)^{2}$, whose roots are $\pm2\iu$ each doubled, so the solution space is spanned by $\cos2x,\sin2x,x\cos2x,x\sin2x$. Strike the first two as $y_h$ and the trial $x(A\cos2x+B\sin2x)$ is what remains, exactly as the resonance rule prescribed but with no rule invoked.
+\end{worked}
+
+\begin{worked}[A forcing of two kinds at once]
+$y''+y=x+\sin x$. The annihilator of $x$ is $D^{2}$ and of $\sin x$ is $D^{2}+1$, so take their product $A=D^{2}(D^{2}+1)$ and
+\[AL=D^{2}(D^{2}+1)^{2},\]
+whose solution space is spanned by $1,x,\cos x,\sin x,x\cos x,x\sin x$. Striking $y_h=\{\cos x,\sin x\}$ leaves the trial $a+bx+cx\cos x+dx\sin x$: the non-resonant part of the forcing produced no multiplier and the resonant part produced one, in a single stroke. Substituting, $(D^{2}+1)[a+bx]=a+bx$ matches the $x$, giving $a=0$, $b=1$; and $(D^{2}+1)[xu]=2u'$ for $u=c\cos x+d\sin x$ matches $\sin x$, giving $d=0$ and $c=-\tfrac12$. Hence
+\[y_p=x-\tfrac12x\cos x.\]
+\end{worked}
+
+\begin{worked}[Deep resonance, done in three lines]
+$y''-2y'+y=x^{2}\eu^{x}$. Here $L=(D-1)^{2}$ and $A=(D-1)^{3}$, so $AL=(D-1)^{5}$ and the enlarged solution space is $(C_1+C_2x+ax^{2}+bx^{3}+cx^{4})\eu^{x}$. Striking $y_h$ leaves the trial $(ax^{2}+bx^{3}+cx^{4})\eu^{x}$, and the shift rule reduces the substitution to $v''=x^{2}$ with $v=ax^{2}+bx^{3}+cx^{4}$, that is $2a+6bx+12cx^{2}=x^{2}$. Hence $a=b=0$, $c=\tfrac{1}{12}$, and
+\[y_p=\frac{x^{4}\eu^{x}}{12}.\]
+The trial table plus the resonance rule would have reached the same place, with $s=2$ and the trial $x^{2}(Ax^{2}+Bx+C)\eu^{x}$; the annihilator route simply never required the reader to notice that $s=2$.
+\end{worked}
+
+\begin{trap}
+Solving $AL[y]=0$ and reporting the whole thing as the answer. The extra constants are not free: those belonging to the trial are pinned by substitution into $L[y]=f$, and only the $y_h$ constants are then fitted to the initial data. A second point of care: $A$ must annihilate the entire forcing, so for $f=x+\sin x$ take $A=D^{2}(D^{2}+1)$, the product of the two annihilators, not either one alone.
+\end{trap}
+
+\begin{seealsob}The resonance multiplier; undetermined coefficients: the trial table; operator inversion.\end{seealsob}
+
+Treating $D$ as an algebraic symbol is legitimate for polynomials because polynomials in $D$ with constant coefficients commute and factor exactly as ordinary polynomials do. The temptation is to push further and invert, or even to expand a formal power series in $D$. Sometimes that is a genuine shortcut and sometimes it is nonsense, and the distinction is worth stating precisely.
+
+\tech{Operator inversion and formal operator series}{hard}
+\cue The equation arrives as an operator identity, possibly an infinite one, such as $y+y'+y''+\cdots=g$. Also any moment when $L^{-1}$ applied to a simple forcing would be faster than a trial.
+\method Three working identities. The inverse of a first-order factor is an integral,
+\[\frac{1}{D-a}\,g=\eu^{ax}\int\eu^{-ax}g\dd x;\]
+the shift rule $f(D)\bigl[\eu^{ax}u\bigr]=\eu^{ax}f(D+a)[u]$ moves an exponential past any polynomial in $D$; and a geometric series in $D$ terminates when applied to a polynomial, since $D^{k}$ eventually kills it. For an infinite sum of derivatives the honest derivation avoids series algebra altogether: put $S=y+y'+y''+\cdots$, so $S'=y'+y''+\cdots$ and therefore $S-S'=y$. Requiring $S=g$ gives $y=g-g'$ directly, which is the statement $y=(1-D)g$ obtained from $(1-D)^{-1}y=g$.
+
+\begin{worked}
+$y+y'+y''+\cdots=M_Z(t)=\eu^{t^{2}/2}$, the moment generating function of the standard normal. By the telescoping argument, $y=g-g'$ with $g=\eu^{t^{2}/2}$ and $g'=t\eu^{t^{2}/2}$, so
+\[y=(1-t)\eu^{t^{2}/2},\qquad y(2)=-\eu^{2}\approx-7.389056.\]
+The operator $(1-D)^{-1}$ was infinite; its inverse is the two-term operator $1-D$, and it is the inverse that we actually apply.
+\end{worked}
+
+\begin{worked}[Inversion as a shortcut]
+$y''-3y'+2y=\eu^{4x}$. Formally $y_p=\dfrac{1}{D^{2}-3D+2}\eu^{4x}$, and since $D$ acting on $\eu^{4x}$ multiplies by $4$, the operator acts as the number $16-12+2=6$. Hence $y_p=\tfrac16\eu^{4x}$. The rule is: $\dfrac{1}{P(D)}\eu^{ax}=\dfrac{\eu^{ax}}{P(a)}$ whenever $P(a)\ne0$, and $P(a)=0$ is precisely the resonance case, where the shift rule must be used instead.
+\end{worked}
+
+\begin{worked}[The cascade, executed]
+$y''-3y'+2y=\eu^{x}$. Here $P(1)=0$, so the evaluation rule fails and the factored inverse is used instead:
+\[y_p=\frac{1}{D-1}\cdot\frac{1}{D-2}\,\eu^{x}.\]
+The inner step: $\dfrac{1}{D-2}\eu^{x}=\eu^{2x}\displaystyle\int\eu^{-2x}\eu^{x}\dd x=\eu^{2x}(-\eu^{-x})=-\eu^{x}$. The outer step: $\dfrac{1}{D-1}(-\eu^{x})=\eu^{x}\displaystyle\int\eu^{-x}(-\eu^{x})\dd x=-x\eu^{x}$. So $y_p=-x\eu^{x}$, which the resonance rule would have obtained as $Ax\eu^{x}$ with $A=-1$. Constants of integration were dropped at both steps because each would only have rebuilt part of $y_h$.
+\end{worked}
+
+\begin{worked}[A terminating geometric series in $D$]
+$y''-y=x^{3}$. Write $\dfrac{1}{D^{2}-1}=-\dfrac{1}{1-D^{2}}=-\bigl(1+D^{2}+D^{4}+\cdots\bigr)$. Applied to a cubic the series stops after two terms, since $D^{4}x^{3}=0$:
+\[y_p=-\bigl(x^{3}+D^{2}x^{3}\bigr)=-\bigl(x^{3}+6x\bigr).\]
+Checking, $y_p''-y_p=-6x+x^{3}+6x=x^{3}$. This is the one situation in which an infinite operator series is unambiguously safe: the operand is a polynomial, so all but finitely many terms vanish identically and no question of convergence arises. Against $\eu^{x}$ or $1/(1+x)$ the same expansion is meaningless.
+\end{worked}
+
+\begin{trap}
+Applying formal series algebra without asking whether the manipulation has a finite meaning. The computation above is safe because the final operator $1-D$ is a polynomial, and the telescoping derivation never sums anything; the series $\sum y^{(k)}$ for $y=(1-t)\eu^{t^{2}/2}$ does not converge pointwise, so a derivation that manipulates it as a convergent object proves nothing. Use operator series only when the result truncates, and check the truncation.
+\end{trap}
+
+\begin{seealsob}The annihilator method; the resonance multiplier; variation of parameters.\end{seealsob}
+
+\section{Independence and the Wronskian}
+
+Everything above rested on a claim made once and never checked: that the two solutions produced are independent, so that $C_1y_1+C_2y_2$ really is the general solution. For constant coefficients the claim is visible, since distinct exponentials, an exponential and $x$ times it, and a sine against a cosine are all obviously independent. For variable coefficients, and for the variation-of-parameters formula, independence needs a certificate, and the certificate is a determinant.
+
+\tech[Wronskian and Abels identity]{The Wronskian and Abel's identity}{medium}
+\cue You must certify that two solutions are independent, or you need $W$ for variation of parameters without computing $y_1,y_2$ explicitly, or a problem asks for $W$ at one point given its value at another.
+\method For solutions of the same equation $y''+py'+qy=0$ on an interval where $p,q$ are continuous, define
+\[W(x)=\begin{vmatrix}y_1&y_2\\y_1'&y_2'\end{vmatrix}=y_1y_2'-y_2y_1'.\]
+Then $W'=-pW$, so Abel's identity holds:
+\[W(x)=W(x_0)\exp\!\left(-\int_{x_0}^{x}p(t)\dd t\right).\]
+The consequence is dichotomy: $W$ is either identically zero on the interval or nowhere zero, and nonvanishing is equivalent to independence. Abel gives $W$ up to a constant from the coefficient $p$ alone.
+Abel is also constructive. Since $\Bigl(\dfrac{y_2}{y_1}\Bigr)'=\dfrac{W}{y_1^{2}}$, knowing $W$ and one solution recovers the other:
+\[y_2=y_1\int\frac{W}{y_1^{2}}\dd x,\]
+which is reduction of order in one line.
+
+\begin{worked}
+$x^{2}y''-3xy'+4y=0$ on $(0,\infty)$, normalised to $p=-3/x$. Abel predicts $W\propto\exp\bigl(\int3\dd x/x\bigr)=x^{3}$. Checking against the explicit pair $y_1=x^{2}$, $y_2=x^{2}\ln x$ found by reduction of order:
+\[W=x^{2}\bigl(2x\ln x+x\bigr)-x^{2}\ln x\cdot2x=x^{3},\]
+which is nonzero on $(0,\infty)$, so the pair is independent there and $y=x^{2}(C_1+C_2\ln x)$ is genuinely general.
+\end{worked}
+
+\begin{worked}[Recovering the second solution from $W$]
+Take $x^{2}y''+xy'+\bigl(x^{2}-\tfrac14\bigr)y=0$ on $(0,\infty)$, with $y_1=\dfrac{\sin x}{\sqrt x}$ known. Normalised, $p=1/x$, so Abel gives $W=W_0/x$; scale $y_2$ so that $W_0=1$. Then
+\[y_2=y_1\int\frac{W}{y_1^{2}}\dd x=\frac{\sin x}{\sqrt x}\int\frac{1/x}{\sin^{2}x/x}\dd x=\frac{\sin x}{\sqrt x}\int\csc^{2}x\dd x=-\frac{\sin x}{\sqrt x}\cot x=-\frac{\cos x}{\sqrt x}.\]
+Dropping the sign, $y=\dfrac{C_1\sin x+C_2\cos x}{\sqrt x}$. The integral $\int W/y_1^{2}$ was elementary only because the awkward factor $1/x$ in $W$ cancelled against the $1/x$ hidden inside $y_1^{2}$; that cancellation is not luck but the content of Abel's identity, which manufactures exactly the weight that makes the quotient integrable.
+\end{worked}
+
+\begin{worked}[Abel without the solutions]
+For Hermite's equation $y''-2xy'+2ny=0$ we have $p=-2x$, so $W(x)=W(0)\eu^{x^{2}}$ for any pair of solutions. That single line settles independence for every $n$ at once: if $W(0)\ne0$, the pair is independent on all of $\R$, and $W$ grows like $\eu^{x^{2}}$ whether or not either solution is elementary.
+\end{worked}
+
+\begin{trap}
+Using the converse for arbitrary functions. For a general pair, $W\equiv0$ does \emph{not} imply linear dependence: $f=x^{2}$ and $g=x\abs{x}$ have $W\equiv0$ on $\R$ yet are independent. The equivalence requires both functions to solve the same second-order linear equation with continuous coefficients on the interval in question, and that hypothesis fails for the pair above precisely because they would need to solve an equation singular at $0$.
+\end{trap}
+
+\begin{seealsob}Variation of parameters; reduction of order from one known solution.\end{seealsob}
+
+\begin{keynote}[Boundary conditions are not initial conditions]
+Everything asserted in this chapter about existence and uniqueness concerns data given at a single point: $y(x_0)$ and $y'(x_0)$. Two-point data behaves completely differently, and the difference is not a technicality. Consider $y''+y=0$. With $y(0)=0$ and $y(\pi)=0$ the solution is $C\sin x$ for every $C$: infinitely many solutions. With $y(0)=0$ and $y(\pi)=1$ there is none at all, since every solution vanishing at $0$ is a multiple of $\sin x$ and vanishes at $\pi$ too. Change the interval to $[0,\pi/2]$ and both problems become uniquely solvable. The general solution and the method of finding it are unaffected; only the last step, imposing the data, changes character, and a boundary value problem must be checked for solvability rather than assumed to have exactly one answer.
+\end{keynote}
+
+\section{Choosing the particular-solution method}
+
+The homogeneous half of the problem admits no choice: factor the polynomial and read off the answer. The forced half does, and the choice is decided by one question about $f$ and one about $y_h$. Ask them in that order, because the first is cheap and usually terminal.
+
+\begin{worked}[One complete problem, start to finish]
+$y''+2y'+y=3\eu^{-x}+4x$ with $y(0)=0$, $y'(0)=1$.
+
+\emph{Homogeneous part.} $r^{2}+2r+1=(r+1)^{2}$, a double root at $-1$, so $y_h=(C_1+C_2x)\eu^{-x}$. Two constants for a second-order equation: correct.
+
+\emph{First forcing term.} The exponent $-1$ is a root of multiplicity $2$, so $s=2$ and the trial is $Ax^{2}\eu^{-x}$. By the shift rule $(D+1)^{2}[\eu^{-x}Ax^{2}]=\eu^{-x}D^{2}[Ax^{2}]=2A\eu^{-x}$, so $2A=3$ and $A=\tfrac32$.
+
+\emph{Second forcing term.} The exponent $0$ is not a root, so the trial is $ax+b$ with no multiplier, and $0+2a+(ax+b)=ax+(2a+b)=4x$ gives $a=4$, $b=-8$.
+
+\emph{Assemble, then fit.} The general solution is
+\[y=(C_1+C_2x)\eu^{-x}+\tfrac32x^{2}\eu^{-x}+4x-8.\]
+Only now impose the data. $y(0)=C_1-8=0$ gives $C_1=8$. Differentiating the whole expression, $y'(0)=C_2-C_1+4=1$ gives $C_2=5$, so
+\[y=\Bigl(8+5x+\tfrac32x^{2}\Bigr)\eu^{-x}+4x-8.\]
+Finite-difference substitution at $x=0.3,1.2,2.5$ leaves a residual of $2\times10^{-5}$, and $y(0)=0$, $y'(0)=1$ to the accuracy of the difference quotient. The two things that would have gone wrong: fitting $C_1,C_2$ to $y_h$ before adding $y_p$, and taking $s=1$ instead of $2$ for the first forcing term.
+\end{worked}
+
+\begin{center}
+\begin{tikzpicture}[node distance=5mm and 7mm]
+\node[dtest] (a) {Is $f$ built from polynomials,\\ $\eu^{ax}$, $\cos bx$, $\sin bx$\\ and their products?};
+\node[dtest, below left=10mm and 6mm of a] (b) {Does any term of the\\ trial appear in $y_h$?};
+\node[dtest, below right=10mm and 3mm of a] (c) {Are $y_1$ and $y_2$\\ both known?};
+\node[dleaf, below left=10mm and 0mm of b] (d) {Trial from the table;\\ match coefficients};
+\node[dleaf, below right=10mm and 0mm of b] (e) {Multiply the whole trial\\ by $x^{s}$, $s=$ multiplicity;\\ or use the annihilator};
+\node[dleaf, below left=10mm and 0mm of c] (f) {Variation of parameters:\\ normalise, then\\ $-y_1\!\int\!\tfrac{y_2g}{W}+y_2\!\int\!\tfrac{y_1g}{W}$};
+\node[dleaf, below right=10mm and 0mm of c] (g) {Reduction of order on the\\ known $y_1$ first, then\\ variation of parameters};
+\draw[dedge] (a) -- node[dlab,left]{yes} (b);
+\draw[dedge] (a) -- node[dlab,right]{no} (c);
+\draw[dedge] (b) -- node[dlab,left]{no} (d);
+\draw[dedge] (b) -- node[dlab,right]{yes} (e);
+\draw[dedge] (c) -- node[dlab,left]{yes} (f);
+\draw[dedge] (c) -- node[dlab,right]{one only} (g);
+\end{tikzpicture}
+\end{center}
+
+Three remarks the tree cannot carry. First, the left branch is almost always right when it applies: variation of parameters on $y''-3y'+2y=4x$ is correct and costs three times as much as the trial $Ax+B$. Reach for the integrals only when the trial genuinely does not exist. Second, superposition lets you take different branches for different pieces of the same forcing, so $f=x^{2}+\sec x$ is handled by matching coefficients for $x^{2}$ and by the Wronskian formula for $\sec x$, with the two particular solutions simply added. Third, if the coefficients are not constant then the top question is moot: no trial table applies, and the route is reduction of order followed by variation of parameters, unless the equation is one of the reducible types of the next chapter.
+
+\begin{keynote}[What each method costs]
+For a second-order equation forced by $P_n(x)\eu^{ax}$, the arithmetic is easy to compare. Undetermined coefficients: one substitution, then an $(n+1)\times(n+1)$ triangular system solved by back-substitution, and no integration anywhere. The annihilator: one polynomial factorisation whose roots you already know, then exactly the same system, plus the benefit that the resonance exponent is never computed by hand. Variation of parameters: two integrals of products of $y_1$, $y_2$ and $g$, each of which can be harder than the equation you started with, and one normalisation that is the commonest source of error in the chapter. The ordering is therefore stable: match coefficients if you can, annihilate if the resonance bookkeeping is getting awkward, integrate only when the forcing leaves you no choice. The one exception is when $y_1$ and $y_2$ are simple and $g$ is nasty but integrable, as with $\sec x$ against $\cos x$ and $\sin x$; there the two integrals are trivial and no trial exists at all.
+\end{keynote}
+
+\begin{keynote}[The same theory as a first-order system]
+Setting $v=y'$ turns $ay''+by'+cy=0$ into $\begin{pmatrix}y\\v\end{pmatrix}'=\begin{pmatrix}0&1\\-c/a&-b/a\end{pmatrix}\begin{pmatrix}y\\v\end{pmatrix}$, whose matrix has characteristic polynomial $\lambda^{2}+\tfrac ba\lambda+\tfrac ca$: the characteristic equation of this chapter, unchanged. Every case then matches an eigenvalue structure. Distinct real roots are two independent eigenvectors; a complex pair is a rotation combined with a scaling; and a repeated root is a \emph{defective} matrix with only one eigenvector, which is why the second solution needs a generalised eigenvector and why the factor of $x$ appears. Nothing in this chapter is lost in the translation, and one thing is gained: the same language handles equations of any order and coupled systems that are not equations of one variable at all.
+\end{keynote}
+
+\begin{keynote}[Two audits that cost thirty seconds]
+Before reporting an answer, run both. The dimension audit: count arbitrary constants and compare with the order of the equation, remembering that a double root supplies two constants and not one. The substitution audit: put the claimed $y_p$ back into the left-hand side and confirm you recover $f$ exactly, including its coefficient. A numerical version of the second audit is even faster, and it catches the errors that algebra hides: evaluate $ay_p''+by_p'+cy_p-f$ at three or four unrelated points with finite differences and confirm the residual is at the level of rounding. Every closed form printed in this chapter has been checked that way. The failures it detects are the characteristic ones: a dropped factor of $x$ in a resonant case, an unnormalised $g$ in variation of parameters, and a sign flip in $W$.
+\end{keynote}
+
+\section{Recognition matrix}
+\begin{recog}{@{}p{0.31\textwidth}p{0.35\textwidth}p{0.28\textwidth}@{}}
+\rowcolor{mist}\mh{If you see} & \mh{Reach for} & \mh{If that fails} \\
+\midrule
+\endhead
+$ay''+by'+cy=0$, $b^{2}-4ac>0$ & $C_1\eu^{r_1x}+C_2\eu^{r_2x}$ from the roots & Recheck the factorisation \\
+$c=0$ in the equation & Roots $0$ and $-b/a$; keep the constant mode & Count constants against the order \\
+$b^{2}-4ac=0$ & $(C_1+C_2x)\eu^{rx}$, $r=-b/(2a)$ & Shift rule: $(D-r)^{2}[v\eu^{rx}]=\eu^{rx}v''$ \\
+$b^{2}-4ac<0$ & $\eu^{\alpha x}(C_1\cos\beta x+C_2\sin\beta x)$ & $\beta=\sqrt{4ac-b^{2}}/(2a)$, positive \\
+A question about amplitude or envelope & Amplitude-phase form $A\eu^{\alpha x}\cos(\beta x-\varphi)$ & $A=\sqrt{C_1^{2}+C_2^{2}}$ \\
+Order $\geq3$, constant coefficients & Factor fully; ladder $x^{j}\eu^{rx}$ per multiplicity & Rational root test, then grouping \\
+Forcing $P_n(x)$ & Trial $Q_n(x)$, all $n+1$ coefficients & Add $x^{s}$ if $0$ is a root \\
+Forcing $P_n(x)\eu^{ax}$ & Trial $Q_n(x)\eu^{ax}$ & Shift rule beats the product rule \\
+Forcing $\eu^{ax}\cos bx$ or $\eu^{ax}\sin bx$ & Trial $\eu^{ax}(A\cos bx+B\sin bx)$ & Both trig terms, always \\
+Trial term already inside $y_h$ & Multiply the whole trial by $x^{s}$ & Annihilator method instead \\
+Forcing frequency equals natural frequency & $s=1$: expect a term linear in $x$ & Check for damping first \\
+Forcing exponent is a double root & $s=2$: trial $Ax^{2}\eu^{ax}$ & Continue the ladder past $y_h$ \\
+Forcing $\sec x$, $\tan x$, $\ln x$, $1/x$ & Variation of parameters & Normalise before reading off $g$ \\
+$ay''+\cdots=f$ with $a\ne1$ & Divide through: $g=f/a$ & Every sign error lives here \\
+One solution $y_1$ supplied & Reduction of order: $y=vy_1$ & $y_2=y_1\int \eu^{-\int p}/y_1^{2}$ \\
+Polynomial coefficients summing to $0$ & Try $y_1=\eu^{x}$, then reduce the order & Try $y_1=x$ or $y_1=x^{m}$ \\
+A bare $v$ survives the substitution & $y_1$ was not a solution; recheck it & Verify $y_1$ before integrating \\
+$f$ annihilated by a known operator & Apply $A$, solve $AL[y]=0$, strike $y_h$ & Product of annihilators for sums \\
+$\dfrac{1}{P(D)}\eu^{ax}$ with $P(a)\ne0$ & $\eu^{ax}/P(a)$ & $P(a)=0$: shift rule, resonance \\
+$y+y'+y''+\cdots=g$ & Telescope: $S-S'=y$, so $y=g-g'$ & Do not sum the series \\
+Independence in doubt & Wronskian $W=y_1y_2'-y_2y_1'$ & Abel: $W\propto\eu^{-\int p}$ \\
+$W$ needed but $y_1,y_2$ unknown & Abel from $p$ alone, up to a constant & Fix the constant at one point \\
+$W\equiv0$ for two functions & Dependent only if both solve one linear ODE & $x^{2}$ and $x\abs{x}$ are the counterexample \\
+$f=f_1+f_2$ of different types & Superpose: separate $y_p$, one $y_h$ & Add the homogeneous part once \\
+\end{recog}

@@ -1,0 +1,114 @@
+\chapter{Combinatorial games and strategy}
+
+\begin{orient}
+\textbf{What this chapter is for.} A finite two-player game with no chance and no hidden information is, in principle, already solved: work backwards from the terminal positions and every position is labelled a win or a loss for the player to move. In practice that computation is too large to run by hand, and the craft is finding the pattern in the losing positions so that the label can be read off a position directly. This chapter covers backward induction and the two-rule characterisation it produces, the Nim theory and why exclusive-or of all the heap sizes is the right invariant, Grundy values for games that split, and the two non-constructive arguments, pairing and strategy stealing, that prove somebody wins without ever exhibiting a move.
+\end{orient}
+
+\section{Backward induction and the pattern in the losses}
+
+\tech{Winning and losing positions by backward induction}{easy}
+\cue A game with a finite set of positions, alternating moves, and a player who loses when unable to move. The question is ``who wins'' or ``what is the winning first move''.
+\method Label positions from the end. A position is a loss for the player to move, an \emph{$\mathcal{P}$-position}, exactly when every legal move leads to a $\mathcal{W}$-position; it is a win exactly when some legal move leads to a $\mathcal{P}$-position. Compute the labels for small positions, look for the pattern, and then prove the pattern by verifying those two closure conditions. That verification, not the table, is the proof.
+
+\begin{keynote}[The two conditions that characterise a losing set]
+A set $L$ of positions is exactly the set of losing positions if and only if every terminal position is in $L$, no move from a position in $L$ leads to a position in $L$, and from every position outside $L$ some move leads into $L$. Guessing $L$ from a table and then checking these two lines is the standard proof, and it needs no induction hypothesis to be stated.
+\end{keynote}
+
+\begin{worked}
+A pile of $n$ counters; a move removes $1$, $3$ or $4$; the player who cannot move loses. Computing the labels for $n=0,1,2,\ldots$ gives losing positions $0,2,7,9,14,16,\ldots$, which is the set of $n$ congruent to $0$ or $2$ modulo $7$. Verify: from $n\equiv0$ the moves reach $n-1\equiv6$, $n-3\equiv4$, $n-4\equiv3$, none of which is $0$ or $2$; from $n\equiv2$ they reach $1$, $6$, $5$, again none; and from each of $1,3,4,5,6$ modulo $7$ some legal subtraction lands on $0$ or $2$. So the losing positions are exactly $n\equiv0,2\pmod 7$, confirmed by direct computation up to $n=20$.
+\end{worked}
+
+\begin{trap}
+Reading a pattern off four values. Compute at least two full periods before conjecturing, and always finish with the closure check; subtraction games in particular are eventually periodic but frequently have an irregular prefix.
+\end{trap}
+
+\begin{seealsob}Grundy values and the mex rule; Nim and the exclusive-or rule; induction.\end{seealsob}
+
+\section{Nim, and why exclusive-or}
+
+\tech{Nim and the exclusive-or rule}{medium}
+\cue Several independent heaps, a move affecting exactly one of them, and the player unable to move losing.
+\method Compute the \emph{Nim-sum}, the bitwise exclusive-or of the heap sizes. The position is losing for the player to move exactly when the Nim-sum is zero. To win from a nonzero Nim-sum $s$, find a heap $h$ with $h\oplus s<h$, which exists because the leading bit of $s$ must appear in some heap, and reduce that heap to $h\oplus s$.
+
+\begin{keynote}[Why exclusive-or is the right invariant]
+The argument is the closure check again, in two lines. From a position with Nim-sum zero, any move changes exactly one heap, and changing one term of an exclusive-or necessarily changes the total, so every move leaves a nonzero Nim-sum. From a position with Nim-sum $s\neq0$, the move described above produces heaps whose exclusive-or is $s\oplus s=0$. So zero Nim-sum is closed under moving out of, and reachable from everything else, which is exactly the characterisation of the losing set.
+\end{keynote}
+
+\begin{worked}
+Heaps of $3$, $5$ and $7$. The Nim-sum is $3\oplus5\oplus7=1$, nonzero, so the first player wins. The heap to change is one with $h\oplus1<h$, and $7\oplus1=6<7$, so removing one counter from the heap of seven leaves $3,5,6$ with Nim-sum $0$. Heaps of $1,2,3$ have Nim-sum $0$ and are a loss for the player to move.
+\end{worked}
+
+\begin{trap}
+Adding the heap sizes instead of exclusive-oring them. The ordinary sum is not invariant under the losing set and gives the wrong answer as soon as three heaps are unequal.
+\end{trap}
+
+\begin{seealsob}Grundy values and the mex rule; winning and losing positions.\end{seealsob}
+
+\tech{Grundy values and the mex rule}{hard}
+\cue A game that decomposes into independent components, where a move acts on one component, and the components are not themselves Nim heaps. Also any game where a move splits a position into two.
+\method Assign each position a Grundy value $G$, defined recursively as the least non-negative integer not among the Grundy values of its options:
+\[
+G(x)=\operatorname{mex}\{G(y): x\to y\}.
+\]
+A position is losing exactly when $G=0$. The Sprague and Grundy theorem says a disjoint sum of games has Grundy value equal to the exclusive-or of the components' values, so every such game is equivalent to a single Nim heap of that size, and Nim theory then applies unchanged.
+
+\begin{worked}
+For the subtraction game with moves $\{1,3,4\}$ the Grundy values for $n=0,1,\ldots,12$ are
+\[
+0,1,0,1,2,3,2,0,1,0,1,2,3,
+\]
+periodic with period $7$, and the zeros sit at $n\equiv0,2\pmod7$ as computed before. Now play three such piles at once, of sizes $5$, $6$ and $11$. Their Grundy values are $3$, $2$ and $2$, whose exclusive-or is $3\oplus2\oplus2=3$, nonzero, so the first player wins by moving in the pile of five to reach a pile of Grundy value $2\oplus2=0$, that is, to a size congruent to $0$ or $2$ modulo $7$: reduce five to two.
+\end{worked}
+
+\begin{trap}
+Taking the exclusive-or of the heap \emph{sizes} rather than of their Grundy values. The two coincide only for ordinary Nim, where $G(n)=n$.
+\end{trap}
+
+\begin{seealsob}Nim and the exclusive-or rule; backward induction.\end{seealsob}
+
+\section{Winning without a formula}
+
+\tech{Symmetry and pairing strategies}{medium}
+\cue A game on a symmetric board, or a game whose moves come in natural pairs, especially one where the second player is asked to win, or where the total number of moves is fixed and its parity decides the outcome.
+\method Have one player answer every move with its mirror image, or with the partner in a fixed pairing of the resources. The strategy is legal as long as the mirror move is always available when needed, and that availability is the only thing to verify. A pairing argument proves a win without ever computing a Grundy value.
+
+\begin{worked}
+Two players alternately place non-overlapping identical coins anywhere on a circular table; the player who cannot place loses. The first player wins by placing the first coin at the exact centre and thereafter mirroring the opponent through the centre. If the opponent's move was legal, its reflection is legal too, because the table is symmetric and the centre is already occupied, so no reflected coin can overlap the first one or itself. The first player therefore always has a reply and cannot be the one to run out.
+\end{worked}
+
+\begin{trap}
+A mirroring strategy on a board with a fixed point that is not occupied. If the centre cell is free, the opponent can play it and destroy the pairing. Occupying or eliminating the fixed point is what the first move is for.
+\end{trap}
+
+\begin{seealsob}Strategy stealing; parity invariant; the extremal principle.\end{seealsob}
+
+\tech{Strategy stealing}{hard}
+\cue A symmetric game in which having an extra move can never hurt, and the question asks only whether the second player can win, not how anyone wins.
+\method Suppose the second player had a winning strategy. The first player makes an arbitrary move, then adopts that strategy, treating their own extra piece as irrelevant. Since the extra move can never be a disadvantage, the first player now wins, contradicting the assumption that both players cannot win. Therefore the second player has no winning strategy, so with a draw excluded the first player wins. Note carefully what this argument delivers: existence, and nothing else. It never tells you a single move.
+
+\begin{worked}
+In the game of Chomp, players alternately take a cell from a rectangular grid together with everything above and to the right of it, and the player forced to take the bottom-left poisoned cell loses. The first player wins. Suppose the second player had a winning reply to the first player's move at the top-right corner. That reply is itself a position the first player could have created directly on move one, and could then follow the same strategy. So the second player cannot have a winning strategy, and since the game is finite with no draws, the first player does. No winning first move for a general rectangle is known.
+\end{worked}
+
+\begin{trap}
+Using strategy stealing in a game where an extra move can hurt. Many games are not monotone in that sense, and the argument silently fails; the monotonicity is a hypothesis to check, not a convention.
+\end{trap}
+
+\begin{seealsob}Symmetry and pairing strategies; proof by contradiction.\end{seealsob}
+
+\section{Recognition matrix}
+
+\begin{recog}{@{}p{0.31\textwidth}p{0.35\textwidth}p{0.28\textwidth}@{}}
+\rowcolor{mist}\mh{If you see} & \mh{Reach for} & \mh{If that fails} \\
+\midrule
+\endhead
+One pile, a fixed move set & Tabulate labels; find the period & Grundy values, same table \\
+Several independent heaps & Nim-sum by exclusive-or & Grundy values, then exclusive-or \\
+Components that are not heaps & Grundy value by the mex rule & Sprague and Grundy sum \\
+A conjectured losing set & Verify the two closure conditions & Extend the table two periods \\
+A symmetric board & Mirror strategy; handle the fixed point & Pair the resources explicitly \\
+``Show the second player wins'' & Pairing, not strategy stealing & Parity of the total move count \\
+``Show the first player wins'', no move asked & Strategy stealing & Check that an extra move cannot hurt \\
+A fixed total number of moves & Parity decides it & Count the moves exactly \\
+Move splits a position in two & Grundy of the parts, exclusive-ored & Recompute the mex table \\
+\end{recog}

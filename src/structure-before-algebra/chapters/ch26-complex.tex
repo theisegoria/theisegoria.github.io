@@ -1,0 +1,302 @@
+\chapter{Complex-flavoured technique without contours}
+
+\begin{orient}
+\textbf{What this chapter is for.} A large class of real integrals becomes easy the moment you allow $\iu$ into the working, and almost none of them require you to draw a contour. The reason is that Euler's formula $\eu^{\iu\theta}=\cos\theta+\iu\sin\theta$ is an algebraic identity before it is a geometric one: it lets you replace two trigonometric functions by one exponential, replace a stubborn denominator by a product over roots of unity, and replace a pair of integration-by-parts cycles by a single division. Four moves cover the ground. Complexify the exponential and take real parts at the end. Recognise a real integral as the real or imaginary part of a complex antiderivative you already know. Use the roots of unity to filter a series or to factor a denominator. Push a real parameter into the complex plane and continue analytically. This chapter teaches all four, and then draws the line honestly: it says exactly which integrals these methods cannot reach, and what a genuine residue calculation would add if you were willing to set one up.
+\end{orient}
+
+\section{What $\iu$ buys before any geometry}
+
+There is a persistent belief that using complex numbers in an integral commits you to complex analysis: to contours, to Cauchy's theorem, to estimating the contribution of a large semicircular arc. It does not. Every technique in this chapter uses complex numbers as an \emph{algebraic} convenience on the real line, and every one of them can be checked by differentiating a real antiderivative or by rearranging a real series. The complex numbers are scaffolding, and they come down at the end.
+
+The one structural fact behind all of it is that the exponential function absorbs the trigonometric functions. Two real functions, $\cos bx$ and $\sin bx$, satisfying a coupled pair of differentiation rules, become one function $\eu^{\iu bx}$ satisfying the single rule $\dvop{x}\eu^{\iu bx}=\iu b\eu^{\iu bx}$. Differentiation and integration of the exponential are multiplication and division by a constant, and multiplication and division are much easier than solving a two-by-two linear system, which is what a cyclic integration by parts amounts to.
+
+\begin{keynote}[Three habits, one identity]
+Everything downstream is a use of $\eu^{\iu\theta}=\cos\theta+\iu\sin\theta$ read in one of three directions. Read left to right, it turns an exponential into trigonometry: this is how you extract $\operatorname{Re}$ and $\operatorname{Im}$ at the end. Read right to left, it turns trigonometry into an exponential: this is complexification, and it collapses two integrals into one. Read as a statement about $\abs{\eu^{\iu\theta}}=1$, it says the unit circle is the set of $\eu^{\iu\theta}$, which is what turns a $2\pi$-periodic trigonometric integral into an algebraic problem about a rational function on $\abs z=1$. Know which direction you are using at each step and the bookkeeping stays under control.
+\end{keynote}
+
+\begin{keynote}[The algebra of taking parts]
+$\operatorname{Re}$ and $\operatorname{Im}$ are real-linear and nothing more. They commute with sums, with real scalar multiples, with differentiation in a real variable, and with integration over a real interval, which is exactly why every technique below is legitimate. They do \emph{not} commute with multiplication, with division, with taking a power, or with any nonlinear function. The practical consequence is a single rule that prevents most errors in this chapter: carry the complex expression all the way to the end, simplify it to the form $u+\iu v$ with $u$ and $v$ real, and only then read off the part you want. Every intermediate step stays complex.
+\end{keynote}
+
+\section{Collapsing two integrals into one}
+
+The first move is the cheapest and the most frequently useful. Any integrand of the form ``exponential times a sine or cosine'' is the real or imaginary part of a single exponential, and single exponentials integrate in one step.
+
+\tech{Complexify the exponential}{core}
+\cue $\eu^{ax}\cos bx$ or $\eu^{ax}\sin bx$; a product of trigonometric functions with different frequencies that you would otherwise attack with product-to-sum; any integrand where two rounds of integration by parts would return you to the original with a changed coefficient.
+\method Write the trigonometric factor as $\operatorname{Re}\eu^{\iu bx}$ or $\operatorname{Im}\eu^{\iu bx}$, integrate the single exponential, and take the part at the very end:
+\[\int\eu^{(a+\iu b)x}\dd x=\frac{\eu^{(a+\iu b)x}}{a+\iu b},\qquad \frac{1}{a+\iu b}=\frac{a-\iu b}{a^{2}+b^{2}}.\]
+Rationalising the denominator is the whole computation. The real part gives $\int\eu^{ax}\cos bx\dd x$ and the imaginary part gives $\int\eu^{ax}\sin bx\dd x$, both at once, which is the point: you get two answers for the price of one.
+
+\begin{worked}
+The indefinite pair, in three lines. With $a=2$, $b=3$,
+\[\int\eu^{(2+3\iu)x}\dd x=\frac{\eu^{2x}(\cos3x+\iu\sin3x)}{2+3\iu}=\frac{\eu^{2x}(\cos3x+\iu\sin3x)(2-3\iu)}{13}.\]
+Taking the real part,
+\[\int\eu^{2x}\cos3x\dd x=\frac{\eu^{2x}\bigl(2\cos3x+3\sin3x\bigr)}{13}+C,\]
+and the imaginary part gives $\int\eu^{2x}\sin3x\dd x=\eu^{2x}(2\sin3x-3\cos3x)/13+C$. Differentiating the first back numerically at $x=0.7$ returns $-2.04725$, which is $\eu^{1.4}\cos2.1$ to five digits.
+
+The definite version on the half-line is even shorter, because the antiderivative vanishes at $\infty$ when $a<0$:
+\[\int_0^{\infty}\eu^{-x}\cos x\dd x=\operatorname{Re}\Bigl[\frac{-1}{-1+\iu}\Bigr]=\operatorname{Re}\frac{1}{1-\iu}=\operatorname{Re}\frac{1+\iu}{2}=\frac12,\]
+and simultaneously $\int_0^{\infty}\eu^{-x}\sin x\dd x=\tfrac12$. With $a=-3$, $b=4$ the same line gives $\tfrac{3}{25}$ and $\tfrac{4}{25}$.
+\end{worked}
+
+\begin{worked}[Powers of a cosine, without product-to-sum]
+The same identity linearises trigonometric powers mechanically. Since $2\cos x=\eu^{\iu x}+\eu^{-\iu x}$,
+\[16\cos^{4}x=\bigl(\eu^{\iu x}+\eu^{-\iu x}\bigr)^{4}=\eu^{4\iu x}+4\eu^{2\iu x}+6+4\eu^{-2\iu x}+\eu^{-4\iu x}
+=2\cos4x+8\cos2x+6,\]
+by the binomial theorem and pairing conjugate terms. Hence $\cos^{4}x=\tfrac18\cos4x+\tfrac12\cos2x+\tfrac38$, and
+\[\int_0^{\pi/2}\cos^{4}x\dd x=\frac18\cdot0+\frac12\cdot0+\frac38\cdot\frac{\pi}{2}=\frac{3\pi}{16}\approx0.589049.\]
+The binomial coefficients \emph{are} the Fourier coefficients. This scales to any power without a table of product-to-sum identities, and the odd-power case works identically with $2\iu\sin x=\eu^{\iu x}-\eu^{-\iu x}$, where the alternating signs come from the powers of $\iu$.
+\end{worked}
+
+\begin{trap}
+Taking the real part before the algebra is finished. $\operatorname{Re}$ is additive but not multiplicative: $\operatorname{Re}(zw)\neq\operatorname{Re}(z)\operatorname{Re}(w)$, so you may not simplify $\frac{\eu^{\iu bx}}{a+\iu b}$ by taking real parts of numerator and denominator separately. Rationalise first, then take the part. The second trap is at the infinite endpoint: $\eu^{(a+\iu b)x}\to0$ as $x\to\infty$ requires $a<0$, that is $\operatorname{Re}(a+\iu b)<0$. The factor $\eu^{\iu bx}$ has modulus $1$ and never helps convergence; it merely fails to hurt.
+\end{trap}
+
+\begin{seealsob}Cyclic integration by parts; Complex-parameter Gamma and Laplace transforms; Real and imaginary parts of a complex antiderivative; Product-to-sum.\end{seealsob}
+
+Complexification collapses a pair of integrals into one. The dual move takes a complex identity you already know and reads off two real identities from it. This is more powerful than it sounds, because the complex identities worth knowing are few and their real shadows are numerous.
+
+\tech[Real and imaginary parts of a complex antiderivative]{Real and imaginary parts of a complex antiderivative}{medium}
+\cue A real integral or sum that looks like half of something: $\sum\frac{\cos n\theta}{n}$, $\sum\frac{\sin n\theta}{n^{2}}$, $\int\frac{\dd x}{x^{2}+a^{2}}$ with the answer wanted as a logarithm rather than an arctangent, or a real series whose coefficients are those of a familiar complex function.
+\method Identify the complex function whose series or antiderivative you know, evaluate it at a point on the unit circle or on the real axis, and separate. The workhorse is the logarithm: from $-\ln(1-z)=\sum_{n\geq1}\frac{z^{n}}{n}$ with $z=\eu^{\iu\theta}$, and $1-\eu^{\iu\theta}=-2\iu\sin\tfrac\theta2\,\eu^{\iu\theta/2}$, one separation gives both
+\[\sum_{n\geq1}\frac{\cos n\theta}{n}=-\ln\Bigl(2\sin\frac\theta2\Bigr),\qquad \sum_{n\geq1}\frac{\sin n\theta}{n}=\frac{\pi-\theta}{2}\quad(0<\theta<2\pi).\]
+The same reading one rung up the polylogarithm ladder gives $\operatorname{Re}\Li_2(\eu^{\iu\theta})=\frac{\pi^{2}}{6}-\frac{\pi\theta}{2}+\frac{\theta^{2}}{4}$ and $\operatorname{Im}\Li_2(\eu^{\iu\theta})=\operatorname{Cl}_2(\theta)$, the Clausen function.
+
+\begin{worked}
+Check the separation at $\theta=1.1$. Summing $400000$ terms gives $\sum\frac{\cos n\theta}{n}=-0.0443739$ against $-\ln(2\sin0.55)=-0.0443752$, and $\sum\frac{\sin n\theta}{n}=1.0207943$ against $(\pi-1.1)/2=1.0207963$; the small gaps are the expected $O(1/N)$ truncation of a conditionally convergent series.
+
+Now integrate the first identity from $0$ to $\theta$ term by term. The left side becomes $\sum\frac{\sin n\theta}{n^{2}}$ and the right becomes $-\int_0^{\theta}\ln(2\sin\tfrac t2)\dd t$, so
+\[\operatorname{Cl}_2(\theta)=-\int_0^{\theta}\ln\Bigl(2\sin\frac t2\Bigr)\dd t=\sum_{n\geq1}\frac{\sin n\theta}{n^{2}},\]
+which is exactly the Clausen function of the previous chapter, obtained here in two lines from a complex logarithm. At $\theta=\tfrac\pi2$ it gives Catalan's constant, $0.9159655942$. The second-order identity checks at $\theta=1.1$: the series gives $0.2195581074$ and the quadratic gives $0.2195581074$.
+\end{worked}
+
+\begin{worked}[Poisson's integral, from the same logarithm]
+Take the real part before summing rather than after. Since $\abs{1-r\eu^{\iu\theta}}^{2}=1-2r\cos\theta+r^{2}$,
+\[\int_0^{\pi}\ln\bigl(1-2r\cos\theta+r^{2}\bigr)\dd\theta=2\int_0^{\pi}\operatorname{Re}\ln\bigl(1-r\eu^{\iu\theta}\bigr)\dd\theta.\]
+For $\abs r<1$ expand $\ln(1-rz)=-\sum r^{n}z^{n}/n$, which converges uniformly, and integrate term by term: every $\int_0^{\pi}\cos n\theta\dd\theta$ vanishes, so the whole integral is $0$. For $\abs r>1$ factor out the larger term, $1-r\eu^{\iu\theta}=-r\eu^{\iu\theta}(1-r^{-1}\eu^{-\iu\theta})$, and the same argument leaves only the $\ln\abs r$ piece:
+\[\int_0^{\pi}\ln\bigl(1-2r\cos\theta+r^{2}\bigr)\dd\theta=\begin{cases}0,&\abs r<1\\ 2\pi\ln\abs r,&\abs r>1.\end{cases}\]
+Quadrature gives $5\times10^{-17}$ at $r=0.9$ and $6.9027845904$ at $r=3$, against $2\pi\ln3=6.9027845904$. The discontinuity in the formula is not a discontinuity in the integral; it is the two different factorisations meeting at $\abs r=1$, where the integral is $0$ and the integrand has a logarithmic singularity.
+\end{worked}
+
+\begin{trap}
+The branch of the logarithm. Writing $1-\eu^{\iu\theta}=-2\iu\sin\tfrac\theta2\eu^{\iu\theta/2}$ and then taking $\ln$ requires you to fix $\arg$, and the correct choice on $(0,2\pi)$ produces $\frac{\pi-\theta}{2}$, a sawtooth that jumps at $\theta=0$. Applying the formula at $\theta$ outside $(0,2\pi)$ without reducing modulo $2\pi$ gives an answer off by a multiple of $\pi$. The series is $2\pi$-periodic; the closed form as written is not.
+\end{trap}
+
+\begin{seealsob}Polylogarithm ladder; Log-sine integrals and the Clausen function; Complexify the exponential; Fourier series kernels.\end{seealsob}
+
+\section{Roots of unity}
+
+The third move uses complex numbers not to combine two functions but to select. The $n$-th roots of unity sum to zero unless the exponent is a multiple of $n$, and that single fact both filters series and factors denominators. It is the most algebraic of the four moves and requires no analysis whatsoever.
+
+\tech[Roots of unity as a filter]{Roots of unity as a filter and as a factorisation}{hard}
+\cue A sum restricted to indices in an arithmetic progression: $\sum_{n\equiv r\ (m)}a_n$, or $\sum\frac{1}{(3k)!}$, or $\sum_k\binom{N}{3k}$. On the integration side: a denominator $1\pm x^{n}$ with $n\geq3$ that you need in partial fractions.
+\method Let $\omega=\eu^{2\pi\iu/m}$. The orthogonality relation
+\[\frac1m\sum_{j=0}^{m-1}\omega^{j(n-r)}=\begin{cases}1,& n\equiv r\pmod m\\ 0,&\text{otherwise}\end{cases}\]
+converts a restricted sum into $m$ unrestricted ones: $\sum_{n\equiv r}a_n=\frac1m\sum_{j=0}^{m-1}\omega^{-jr}\sum_n a_n\omega^{jn}$. For factorisation, the roots of $1+x^{n}$ are $\eu^{\iu(2k+1)\pi/n}$, and pairing each root with its conjugate gives the real quadratic factorisation
+\[1+x^{n}=\prod_{k}\Bigl(x^{2}-2x\cos\frac{(2k+1)\pi}{n}+1\Bigr)\]
+over conjugate pairs, with a linear factor $x+1$ left over when $n$ is odd. Partial-fraction over those real quadratics; each piece is an arctangent and a logarithm.
+
+\begin{worked}
+Filtering a series. With $m=3$ and $a_n=1/n!$, take $r=0$:
+\[\sum_{k\geq0}\frac{1}{(3k)!}=\frac13\sum_{j=0}^{2}\eu^{\omega^{j}}=\frac13\Bigl(\eu+2\eu^{-1/2}\cos\frac{\sqrt3}{2}\Bigr)\approx1.1680583134,\]
+because $\omega=-\tfrac12+\tfrac{\sqrt3}{2}\iu$ and the two non-real terms are conjugates. Direct summation of the left side agrees to sixteen digits.
+
+Factoring a denominator. For $n=3$, the roots of $1+x^{3}$ are $-1$ and $\eu^{\pm\iu\pi/3}$, so $1+x^{3}=(1+x)(x^{2}-x+1)$ and partial fractions give
+\[\int_0^1\frac{\dd x}{1+x^{3}}=\frac13\int_0^1\frac{\dd x}{1+x}+\frac13\int_0^1\frac{2-x}{x^{2}-x+1}\dd x=\frac{\ln2}{3}+\frac{\pi}{3\sqrt3}\approx0.835649.\]
+For $n=6$ the same recipe gives $1+x^{6}=(x^{2}-\sqrt3x+1)(x^{2}+1)(x^{2}+\sqrt3x+1)$, checked numerically at $x=1.7$, and integrating over $(0,\infty)$ recovers $\pi/3$, in agreement with the reflection formula $\pi/(6\sin\tfrac\pi6)$.
+
+The filter works on any generating function, not just the exponential. Taking $a_n=\binom{N}{n}$, whose generating function is $(1+z)^{N}$,
+\[\sum_{n\equiv r\ (m)}\binom{N}{n}=\frac1m\sum_{j=0}^{m-1}\omega^{-jr}\bigl(1+\omega^{j}\bigr)^{N}.\]
+At $N=10$, $m=3$ this gives $341$, $341$ and $342$ for $r=0,1,2$, summing correctly to $2^{10}=1024$. The imaginary parts cancel exactly, as they must, and watching them cancel is a good check that the sign of the exponent is right.
+\end{worked}
+
+\begin{trap}
+Two bookkeeping errors. First, $\omega^{-jr}$ and not $\omega^{jr}$: the sign of the exponent in the filter is what selects the residue class $r$ rather than $-r$, and at $r=0$ the error is invisible, which is why it survives to the case where it matters. Second, the roots of $1+x^{n}$ are the \emph{odd} $2n$-th roots of unity, $\eu^{\iu(2k+1)\pi/n}$, not the $n$-th roots of unity; using the latter factors $1-x^{n}$ instead and gives a denominator with a pole inside your interval.
+\end{trap}
+
+\begin{seealsob}Geometric expansion; Unit-circle rational-trig formula; Euler reflection and the Mellin transform; Partial fractions over the reals.\end{seealsob}
+
+The same roots-of-unity picture, taken continuously rather than discretely, says that a $2\pi$-periodic trigonometric integral is an integral around the unit circle. That observation converts an entire family of trigonometric integrals into algebra, and it is worth having both as a memorised formula and as a mechanism.
+
+\tech[Unit-circle rational-trig formula]{Unit-circle rational-trig formula}{medium}
+\cue $\int_0^{2\pi}\frac{\dd\theta}{a+b\cos\theta}$, or any rational function of $\cos\theta$ and $\sin\theta$ integrated over a full period. The full period is essential; a partial range does not close up.
+\method Either quote the closed form
+\[\int_0^{2\pi}\frac{\dd\theta}{a+b\cos\theta}=\frac{2\pi}{\sqrt{a^{2}-b^{2}}}\quad(a>\abs b),\qquad
+\int_0^{2\pi}\frac{\dd\theta}{(a+b\cos\theta)^{2}}=\frac{2\pi a}{(a^{2}-b^{2})^{3/2}},\]
+the second being the first differentiated in $a$; or set $z=\eu^{\iu\theta}$, so that $\cos\theta=\tfrac12(z+z^{-1})$, $\sin\theta=\tfrac{1}{2\iu}(z-z^{-1})$ and $\dd\theta=\tfrac{\dd z}{\iu z}$, turning the integral into a rational function on $\abs z=1$ whose value is $2\pi\iu$ times the sum of the residues at the poles \emph{inside} the circle. The second route is a contour integral in name only: the contour is the interval you were already given.
+
+\begin{worked}
+The plain case: $\displaystyle\int_0^{2\pi}\frac{\dd\theta}{5+4\cos\theta}=\frac{2\pi}{\sqrt{25-16}}=\frac{2\pi}{3}\approx2.094395$.
+
+A case where the formula alone is not enough. For $\displaystyle J=\int_0^{2\pi}\frac{\cos^{2}\theta}{5-4\cos\theta}\dd\theta$, write $\cos^{2}\theta=\tfrac12(1+\cos2\theta)$ and reduce the numerator against the denominator by polynomial division in $\cos\theta$. Setting $c=\cos\theta$,
+\[\frac{c^{2}}{5-4c}=-\frac{c}{4}-\frac{5}{16}+\frac{25}{16}\cdot\frac{1}{5-4c},\]
+so $J=-\tfrac14\int_0^{2\pi}\cos\theta\dd\theta-\tfrac{5}{16}\cdot2\pi+\tfrac{25}{16}\cdot\tfrac{2\pi}{3}$. The first integral vanishes, and
+\[J=-\frac{5\pi}{8}+\frac{25\pi}{24}=\frac{-15\pi+25\pi}{24}=\frac{5\pi}{12}\approx1.308997,\]
+matching quadrature to fifteen digits. Reduce first, quote second: that order keeps the algebra trivial. The companion $\int_0^{2\pi}\frac{\sin^{2}\theta}{5-4\cos\theta}\dd\theta=\frac{\pi}{4}$ follows from $\sin^{2}=1-\cos^{2}$ and the two values just computed.
+\end{worked}
+
+\begin{worked}[The substitution itself, once, so you can rebuild the formula]
+Put $z=\eu^{\iu\theta}$ in $\int_0^{2\pi}\frac{\dd\theta}{a+b\cos\theta}$. Then $a+b\cos\theta=a+\tfrac b2(z+z^{-1})=\tfrac{bz^{2}+2az+b}{2z}$, and $\dd\theta=\tfrac{\dd z}{\iu z}$, so the integral becomes
+\[\oint_{\abs z=1}\frac{2z}{bz^{2}+2az+b}\cdot\frac{\dd z}{\iu z}=\frac{2}{\iu}\oint\frac{\dd z}{b(z-z_{+})(z-z_{-})},\qquad z_{\pm}=\frac{-a\pm\sqrt{a^{2}-b^{2}}}{b}.\]
+Since $z_{+}z_{-}=1$, exactly one root lies inside the unit circle when $a>\abs b$, namely $z_{+}$. The residue there is $\tfrac{1}{b(z_{+}-z_{-})}=\tfrac{1}{2\sqrt{a^{2}-b^{2}}}$, and multiplying by $2\pi\iu\cdot\tfrac{2}{\iu}$ gives $\tfrac{2\pi}{\sqrt{a^{2}-b^{2}}}$. Two facts did all the work: the product of the roots is $1$, and the difference of the roots is $2\sqrt{a^{2}-b^{2}}/b$.
+\end{worked}
+
+\begin{trap}
+The hypothesis $a>\abs b$ is not cosmetic. If $\abs b>a$ the denominator vanishes somewhere on $[0,2\pi]$, the integral does not exist as a Lebesgue integral, and the formula returns $2\pi/\sqrt{\text{negative}}$, which should be your warning. The correct object there is a principal value. Also, when using the $z$-substitution, only the poles with $\abs z<1$ contribute; the two roots of $bz^{2}+2az+b=0$ multiply to $1$, so exactly one of them is inside, and picking the wrong one flips the sign of the answer.
+\end{trap}
+
+\begin{seealsob}Weierstrass substitution; Quotable residue results; Roots of unity as a filter; Fourier series kernels.\end{seealsob}
+
+\section{Results worth quoting rather than rebuilding}
+
+The techniques so far have all been constructive: you do something to the integrand and the answer appears. The next group is different in kind. These are results that you look up in your own memory, and the case for memorising them is worth making explicitly, because reflexive derivation from first principles is a habit that costs more than it saves at this level.
+
+There is a small set of real integrals whose standard derivation is a contour argument and whose values are worth memorising outright. Memorising them is not laziness. Each one takes ten minutes to derive properly and two seconds to recall, and in every case the derivation teaches you nothing you did not already know after the first time.
+
+\tech{Quotable residue results}{hard}
+\cue A rational function, or a rational function times $\cos ax$ or $\sin ax$, integrated over the whole real line, with the denominator decaying at least like $x^{2}$.
+\method Learn the following four and the pattern behind them:
+\[\int_{-\infty}^{\infty}\frac{\dd x}{1+x^{2}}=\pi,\qquad \int_{-\infty}^{\infty}\frac{\dd x}{(1+x^{2})^{2}}=\frac{\pi}{2},\qquad
+\int_{-\infty}^{\infty}\frac{\cos x}{1+x^{2}}\dd x=\frac{\pi}{\eu},\qquad
+\int_{-\infty}^{\infty}\frac{\cos ax}{x^{2}+b^{2}}\dd x=\frac{\pi}{b}\eu^{-ab}\]
+for $a,b>0$. The pattern: a simple pole at $x=\iu b$ contributes $\pi/b$, and an oscillation $\cos ax$ contributes the damping factor $\eu^{-ab}$, because $\eu^{\iu a x}$ evaluated at $x=\iu b$ is $\eu^{-ab}$. Higher powers of the denominator come from differentiating in $b$, which is why the second value is half the first.
+
+\begin{worked}
+The first two are elementary and should be checked, not quoted: $\int\frac{\dd x}{1+x^{2}}=\arctan x$ gives $\pi$, and $x=\tan\theta$ turns the second into $\int_{-\pi/2}^{\pi/2}\cos^{2}\theta\dd\theta=\tfrac\pi2$. The third is not elementary, and $\pi/\eu\approx1.1557273498$ is worth knowing by sight.
+
+Differentiating in the parameter generates the rest of the family. From $\int_{-\infty}^{\infty}\frac{\cos ax}{x^{2}+b^{2}}\dd x=\frac{\pi}{b}\eu^{-ab}$ with $b=3$, $a=2$, the value is $\tfrac\pi3\eu^{-6}\approx0.0025957$; and differentiating the $b$-form once in $b$ gives $\int_{-\infty}^{\infty}\frac{\cos ax}{(x^{2}+b^{2})^{2}}\dd x=\frac{\pi(1+ab)}{2b^{3}}\eu^{-ab}$.
+\end{worked}
+
+\begin{worked}[The third value, derived without a contour]
+It is worth seeing that even $\pi/\eu$ is reachable by real methods, so that the memorised value is not a black box. Write the denominator as a Schwinger integral, $\frac{1}{1+x^{2}}=\int_0^{\infty}\eu^{-(1+x^{2})t}\dd t$, and exchange the order of integration, which is legitimate because everything is absolutely convergent once the cosine is bounded by $1$:
+\[\int_{-\infty}^{\infty}\frac{\cos ax}{1+x^{2}}\dd x=\int_0^{\infty}\eu^{-t}\Bigl[\int_{-\infty}^{\infty}\eu^{-tx^{2}}\cos(ax)\dd x\Bigr]\dd t
+=\int_0^{\infty}\eu^{-t}\sqrt{\frac{\pi}{t}}\,\eu^{-a^{2}/4t}\dd t,\]
+the inner integral being the Gaussian-against-a-cosine value of the previous chapter. The remaining integral is a Glasser-type one, $\int_0^{\infty}t^{-1/2}\eu^{-t-a^{2}/4t}\dd t=\sqrt\pi\,\eu^{-a}$ for $a>0$, giving $\pi\eu^{-a}$ and hence $\pi/\eu$ at $a=1$. Checked numerically at $a=1$ and $a=2.3$. Two Gaussian facts and one exchange of order; no contour anywhere.
+\end{worked}
+
+\begin{trap}
+$\int_{-\infty}^{\infty}\frac{\sin x}{1+x^{2}}\dd x=0$ by parity, not by any residue computation; quoting a residue answer for it is a sign you are not looking at the integrand. Conversely $\int_{-\infty}^{\infty}\frac{\sin x}{x}\dd x$ genuinely needs an indented contour, because the pole sits \emph{on} the axis, and the naive residue recipe gives twice the right answer. Finally the damping is $\eu^{-\abs a b}$: the formula as written assumes $a>0$, and for $a<0$ the cosine is unchanged while a careless application of $\eu^{-ab}$ would give exponential growth.
+\end{trap}
+
+\begin{seealsob}Unit-circle rational-trig formula; Cauchy principal value; Complex-parameter Gamma and Laplace transforms; Tangent substitution.\end{seealsob}
+
+\begin{keynote}[When the answer must be real]
+A useful audit at the end of any complexified computation: ask whether the answer was forced to be real, and check that it is. If the original integrand is real on the whole interval, the value is real, so any surviving imaginary part is an error. Conversely, if you complexified and the imaginary part did \emph{not} vanish, you have computed a second integral for free, and it is worth writing down: the same working that gives $\int_0^{\infty}\eu^{-x}\cos x\dd x$ gives $\int_0^{\infty}\eu^{-x}\sin x\dd x$ at no cost. Complexification is a two-for-one deal, and half of it is usually thrown away by accident.
+\end{keynote}
+
+\section{Pushing a real parameter into the complex plane}
+
+The last two techniques are the deepest of the four moves, and they are the ones that come closest to real complex analysis without crossing over. The idea is that a formula proved for real parameters often remains true for complex ones, because both sides are analytic; you then choose a complex value of the parameter that makes the real integral you wanted fall out as a real or imaginary part.
+
+\tech[Complex-parameter Gamma and Laplace transforms]{Complex-parameter Gamma and Laplace transforms}{hard}
+\cue A Gamma-type moment married to an oscillation: $x^{m}\eu^{-x}\sin x$, $x^{m}\eu^{-x}\cos x\ln x$, or any $x^{s-1}\eu^{-px}$ with $p$ complex. Equivalently, a Laplace transform evaluated at a complex argument.
+\method Absorb the oscillation into the exponent. Since $\eu^{-x}\cos x+\iu\eu^{-x}\sin x=\eu^{-(1-\iu)x}$,
+\[\int_0^{\infty}x^{s-1}\eu^{-px}\dd x=\frac{\Gamma(s)}{p^{s}}\quad(\operatorname{Re}p>0),\]
+and for $p=1-\iu$ write $p^{s}=2^{s/2}\eu^{-\iu\pi s/4}$ using the principal argument $\arg(1-\iu)=-\tfrac\pi4$. Take real or imaginary parts at the end. Differentiating the identity in $s$ inserts a factor $\ln x$ on the left and brings in $\psi$ on the right, which is how logarithms enter.
+
+\begin{worked}
+The clean case first. With $s=2$ and $p=1-\iu$, $\Gamma(2)=1$ and $(1-\iu)^{2}=-2\iu$, so
+\[\int_0^{\infty}x\,\eu^{-x}\sin x\dd x=\operatorname{Im}\frac{1}{-2\iu}=\operatorname{Im}\frac{\iu}{2}=\frac12,\]
+and the companion real part gives $\int_0^{\infty}x\eu^{-x}\cos x\dd x=0$. At $s=3$, $(1-\iu)^{3}=-2-2\iu$ and $\Gamma(3)=2$, so $2/(-2-2\iu)=-\tfrac12+\tfrac12\iu$, giving $\int_0^{\infty}x^{2}\eu^{-x}\cos x\dd x=-\tfrac12$ and $\int_0^{\infty}x^{2}\eu^{-x}\sin x\dd x=\tfrac12$.
+
+Now insert a logarithm by differentiating in $s$ at $s=1$. Since $\dvop{s}\bigl[\Gamma(s)p^{-s}\bigr]=\Gamma(s)p^{-s}\bigl(\psi(s)-\ln p\bigr)$ and $\psi(1)=-\gamma$, $\ln(1-\iu)=\tfrac12\ln2-\tfrac{\iu\pi}{4}$,
+\[\int_0^{\infty}\eu^{-(1-\iu)x}\ln x\dd x=\frac{-\gamma-\tfrac12\ln2+\tfrac{\iu\pi}{4}}{1-\iu},\]
+whose imaginary part, after multiplying by $\tfrac{1+\iu}{2}$, gives
+\[\int_0^{\infty}\eu^{-x}\ln x\,\sin x\dd x=\frac12\Bigl(\frac{\pi}{4}-\gamma-\frac{\ln2}{2}\Bigr)\approx-0.0691955459,\]
+confirmed by quadrature to fourteen digits.
+\end{worked}
+
+\begin{trap}
+The branch of $p^{s}$. For $p=1-\iu$ the principal argument is $-\tfrac\pi4$; taking $+\tfrac{7\pi}{4}$ instead is the same complex number but a different power, and the answer changes silently by a factor $\eu^{2\pi\iu s}$, which is $1$ only for integer $s$. Fix $\arg p\in(-\pi,\pi]$ once and use it consistently. Validity also needs $\operatorname{Re}p>0$ strictly: at $\operatorname{Re}p=0$ the integral is only conditionally convergent and the identity has to be justified as a limit, which is the subject of the next technique.
+\end{trap}
+
+\begin{seealsob}Gamma-function moment; Complexify the exponential; Digamma and polygamma; Rotating the contour without contours.\end{seealsob}
+
+The previous technique needed $\operatorname{Re}p>0$. The most interesting integrals in this family sit exactly on the boundary $\operatorname{Re}p=0$, where the integrand no longer decays and convergence is only conditional. Reaching them is the one place in this chapter where you have to say something genuinely analytic, and it is worth saying carefully, because the shortcut version of this argument is a standard way to get a right answer for a wrong reason.
+
+\tech{Rotating the contour without contours}{hard}
+\cue A Gaussian or Gamma integral in which replacing a real parameter by an imaginary one would produce the answer you want. The type case is Fresnel: you know $\int_0^{\infty}\eu^{-ax^{2}}\dd x$ and you want $\int_0^{\infty}\eu^{\iu x^{2}}\dd x$.
+\method Establish the identity on the open right half-plane, where both sides are analytic and the integral converges absolutely:
+\[\int_0^{\infty}\eu^{-ax^{2}}\dd x=\frac12\sqrt{\frac{\pi}{a}},\qquad \operatorname{Re}a>0,\]
+with the principal branch of $\sqrt a$. Both sides are analytic in $a$ on that open set and continuous up to the boundary $\operatorname{Re}a=0$ away from the origin, so the identity extends to the boundary by continuity. Setting $a=-\iu$, for which $\sqrt{-\iu}=\eu^{-\iu\pi/4}$, gives
+\[\int_0^{\infty}\eu^{\iu x^{2}}\dd x=\frac12\sqrt{\frac{\pi}{-\iu}}=\frac12\sqrt{\frac{\pi}{2}}\,(1+\iu),\]
+whose real and imaginary parts are the Fresnel integrals.
+
+\begin{worked}
+Separating the last display,
+\[\int_0^{\infty}\cos(x^{2})\dd x=\int_0^{\infty}\sin(x^{2})\dd x=\frac12\sqrt{\frac{\pi}{2}}\approx0.6266570687,\]
+and the numerical value $\tfrac12\sqrt{\pi/(-\iu)}=0.6266571+0.6266571\iu$ confirms the branch choice. Note what the argument bought: the Fresnel integrals are conditionally convergent and no elementary substitution reaches them, yet the whole derivation is two lines of analytic continuation from an integral every reader already knows.
+
+The same rotation applied to $\int_0^{\infty}x^{s-1}\eu^{-px}\dd x=\Gamma(s)p^{-s}$ at $p=-\iu$ recovers the Mellin transforms of sine and cosine used in the previous chapter: $\int_0^{\infty}x^{s-1}\sin x\dd x=\Gamma(s)\sin\tfrac{\pi s}{2}$ for $0<s<1$, checked at $s=\tfrac12$ where both sides equal $1.2533141373$.
+\end{worked}
+
+\begin{trap}
+The continuity up to the boundary is the entire content of the argument, and it is what people skip. Simply substituting $a=-\iu$ into a formula proved for $a>0$ is not a proof; it is a guess that happens to be right here and is wrong in cases where the boundary behaviour is worse. Concretely, the extension fails at $a=0$ itself, and it fails for $\int_0^{\infty}\eu^{-ax}\dd x$ on the imaginary axis, where the boundary integral does not converge at all. The branch also decides the sign: $\sqrt{-\iu}$ is $\eu^{-\iu\pi/4}$, not $\eu^{3\iu\pi/4}$, and the wrong choice negates both Fresnel integrals.
+\end{trap}
+
+\begin{seealsob}Fresnel integrals; Gaussian and error function; Complex-parameter Gamma and Laplace transforms; Oscillatory convergence.\end{seealsob}
+
+\section{Where this stops, and what a contour would add}
+
+It is worth being precise about the boundary, because the techniques above are so effective that they can create the impression that contour integration is never needed. That impression is false, and the cases where it fails have a common shape: the complex function you would like to integrate has a branch cut, or a pole on the path, or you need a relation between values at many points rather than at one.
+
+Four classes lie outside what this chapter can do. First, integrals of $\ln x$ or $x^{s-1}$ against a rational function on $(0,\infty)$ where the exponent is irrational or the rational function has many poles. The keyhole contour handles all of them uniformly by exploiting the jump of $x^{s-1}$ across the cut; the reflection formula of the previous chapter is the special case that has been pre-digested for you. Second, principal values, where a pole sits on the axis. The indentation gives a clean half-residue rule, $\PV\int=\pi\iu\sum\Res_{\text{on axis}}+2\pi\iu\sum\Res_{\text{upper}}$, and there is no real-variable substitute of comparable generality. Third, rational integrands whose denominator has high degree: residues cost one limit per pole, while partial fractions costs a linear system. Fourth, summation of series by $\pi\cot\pi z$, which converts $\sum f(n)$ into a residue computation and is how $\zeta(2n)$ is evaluated in closed form.
+
+It helps to see the two routes on the same integral, at a size where both are short. Take $\int_{-\infty}^{\infty}\frac{\dd x}{1+x^{4}}$. The contour-free route factors the denominator over conjugate root pairs, $1+x^{4}=(x^{2}-\sqrt2x+1)(x^{2}+\sqrt2x+1)$, partial-fractions into two quadratics, completes the square in each, and integrates two arctangents plus two logarithms whose contributions cancel by symmetry. It takes most of a page and every step is elementary. The residue route observes that the poles in the upper half plane are $z=\eu^{\iu\pi/4}$ and $z=\eu^{3\iu\pi/4}$, that at a simple root of $z^{4}+1$ the residue of $(1+z^{4})^{-1}$ is $\tfrac{1}{4z^{3}}=-\tfrac z4$, and therefore that the answer is
+\[2\pi\iu\cdot\Bigl(-\frac{\eu^{\iu\pi/4}+\eu^{3\iu\pi/4}}{4}\Bigr)=2\pi\iu\cdot\Bigl(-\frac{\iu\sqrt2}{4}\Bigr)=\frac{\pi}{\sqrt2}\approx2.2214414691.\]
+Three lines, once the arc estimate is taken as known. Both answers agree, and the arithmetic also agrees with the reflection formula $2\cdot\frac{\pi}{4\sin(\pi/4)}$ from the previous chapter, which is a third route again. The comparison is the honest summary of this chapter: for one integral, pick whichever route you can execute without error; for a family, the residue calculation is the one that generalises.
+
+\begin{keynote}[A fair account of residues]
+What the residue theorem actually adds is \emph{uniformity}. Every technique in this chapter is a trick keyed to a shape: complexification needs an exponential, the unit-circle formula needs a full period, the roots-of-unity filter needs a cyclic structure. The residue theorem needs only that the integrand extend meromorphically and that the arc contribution vanish, and it then computes the answer by a local calculation at each singularity. The price is real: you must choose a contour, prove the arc estimate (usually Jordan's lemma or an $ML$ bound), track branch cuts, and be honest about poles on the path. For a single integral of the kind in this chapter, the contour-free route is faster. For a family of integrals, or for an integrand with a branch point, the contour pays for itself immediately. Knowing both, and knowing which is cheaper today, is the actual skill.
+\end{keynote}
+
+It is also worth knowing precisely what makes a contour argument work, so that you can tell at a glance whether one is available. Two estimates do almost all of it. The $ML$ bound says that if $\abs{f}\leq M$ on an arc of length $L$ then the integral over that arc is at most $ML$; applied to a semicircle of radius $R$ with $f$ decaying like $R^{-2}$, the arc contributes $O(R^{-1})$ and vanishes. That is why rational integrands need the denominator to exceed the numerator by two degrees. Jordan's lemma does better for oscillatory integrands: if $f\to0$ uniformly on the upper semicircle then $\int f(z)\eu^{\iu az}\dd z\to0$ for $a>0$, because $\eu^{\iu az}$ decays exponentially off the real axis. That is why $\frac{\cos x}{1+x^{2}}$ needs only one degree of decay while $\frac{1}{1+x^{2}}$ needs two, and why the answer carries the factor $\eu^{-ab}$. If neither estimate applies, the contour route is not available either, and the honest move is a real-variable one: damping, parameter differentiation, or a symmetry fold.
+
+\begin{center}
+\begin{tikzpicture}[node distance=6mm and 7mm]
+\node[dtest] (a) {Where does the\\ complexity sit?};
+\node[dtest, below left=9mm and 5mm of a] (b) {In an exponential\\ or a trigonometric\\ factor?};
+\node[dtest, below right=9mm and 2mm of a] (c) {In the denominator?};
+\node[dleaf, below left=9mm and -3mm of b] (d) {Replace $\cos bx$ by\\ $\operatorname{Re}\eu^{\iu bx}$; integrate once};
+\node[dleaf, below right=9mm and -4mm of b] (e) {Power times $\eu^{-x}$ times\\ oscillation: $\Gamma(s)p^{-s}$\\ with $p$ complex};
+\node[dleaf, below left=9mm and -4mm of c] (f) {Full period: $z=\eu^{\iu\theta}$\\ $1\pm x^{n}$: roots of unity};
+\node[dleaf, below right=9mm and -2mm of c] (g) {Rational on $\R$: quote\\ the standard value, or\\ set up a real contour};
+\draw[dedge] (a) -- node[dlab,left]{numerator} (b);
+\draw[dedge] (a) -- node[dlab,right]{denominator} (c);
+\draw[dedge] (b) -- node[dlab,left]{plain} (d);
+\draw[dedge] (b) -- node[dlab,right]{with a power} (e);
+\draw[dedge] (c) -- node[dlab,left]{periodic} (f);
+\draw[dedge] (c) -- node[dlab,right]{on $\R$} (g);
+\end{tikzpicture}
+\end{center}
+
+There is a final habit worth carrying out of this chapter, and it is a discipline rather than a technique: everything here is checkable. A complexified antiderivative can be differentiated back and compared numerically at a random point. A roots-of-unity factorisation can be evaluated at $x=1.7$ and compared with the original polynomial. An analytic continuation can be tested by approaching the boundary along a path, computing $\tfrac12\sqrt{\pi/a}$ at $a=0.01-\iu$ and at $a=0.001-\iu$ and watching it converge. Complex algebra is exactly the kind of manipulation where a sign error produces a plausible answer, and exactly the kind where a thirty-second numerical check catches it.
+
+\section{Recognition matrix}
+\begin{recog}{@{}p{0.31\textwidth}p{0.35\textwidth}p{0.28\textwidth}@{}}
+\rowcolor{mist}\mh{If you see} & \mh{Reach for} & \mh{If that fails} \\
+\midrule
+\endhead
+$\eu^{ax}\cos bx$ or $\eu^{ax}\sin bx$ & Integrate $\eu^{(a+\iu b)x}$, take the part last & Cyclic integration by parts \\
+A parts cycle that returns to the start & Complexify instead; divide by $a+\iu b$ & Solve the two-by-two system \\
+A product of trigonometric functions & Write each as $\eu^{\iu\theta}$ and multiply & Product-to-sum identities \\
+$\sum\frac{\cos n\theta}{n}$ or $\sum\frac{\sin n\theta}{n}$ & Real and imaginary parts of $-\ln(1-\eu^{\iu\theta})$ & Fix the branch on $(0,2\pi)$ \\
+$\sum\frac{\sin n\theta}{n^{2}}$ & $\operatorname{Im}\Li_2(\eu^{\iu\theta})=\operatorname{Cl}_2(\theta)$ & Integrate the $n^{-1}$ identity \\
+A sum over $n\equiv r\pmod m$ & Roots-of-unity filter with $\omega=\eu^{2\pi\iu/m}$ & Check the sign of the exponent \\
+$1+x^{n}$ downstairs, $n\geq3$ & Factor over conjugate root pairs & Reflection formula on $(0,\infty)$ \\
+$\int_0^{2\pi}$ of a rational trigonometric function & $z=\eu^{\iu\theta}$, or quote $\tfrac{2\pi}{\sqrt{a^{2}-b^{2}}}$ & Reduce the numerator first \\
+$(a+b\cos\theta)^{-2}$ over a period & Differentiate the $(a+b\cos\theta)^{-1}$ formula in $a$ & Weierstrass substitution \\
+$a<\abs b$ in $a+b\cos\theta$ & Pole on the interval: principal value & Do not use the closed form \\
+$\dfrac{\cos ax}{x^{2}+b^{2}}$ on $\R$ & $\tfrac\pi b\eu^{-\abs a b}$ & Differentiate in $b$ for higher powers \\
+$\dfrac{\sin ax}{x^{2}+b^{2}}$ on $\R$ & Zero by parity; look again & Parity before machinery \\
+$\dfrac{\sin x}{x}$ on $\R$ & Pole on the axis: indented contour or damping & Feynman with $\eu^{-ax}$ \\
+$x^{m}\eu^{-x}\sin x$ & $\Gamma(s)/(1-\iu)^{s}$, principal branch & Repeated parts \\
+$\ln x$ against $\eu^{-x}\sin x$ & Differentiate $\Gamma(s)p^{-s}$ in $s$; expect $\psi$ and $\gamma$ & Frullani \\
+$\eu^{\iu x^{2}}$, $\cos(x^{2})$, $\sin(x^{2})$ & Continue $\tfrac12\sqrt{\pi/a}$ to $a=-\iu$ & Mellin transform of $\sin$ \\
+A formula proved for real $a>0$ & Continue analytically; check the boundary & State where analyticity holds \\
+$x^{s-1}$ with irrational $s$ on $(0,\infty)$ & Keyhole contour, or quote reflection & Beta and Gamma \\
+A denominator of degree six or more & Residues at the poles, not partial fractions & Symmetry or substitution first \\
+A series you want as an integral & $\pi\cot\pi z$ summation & Abel or Euler-Maclaurin \\
+Any complex manipulation at all & Differentiate back, or check at a random point & Numerical quadrature \\
+\end{recog}

@@ -1,0 +1,393 @@
+\chapter{Several variables, rigour, and limits built to punish reflexes}
+
+\begin{orient}
+\textbf{What this chapter is for.} Three things go wrong once a reader is fluent with one variable limits, and this chapter treats all three. First, in two variables a limit must agree along every approach at once, so the craft splits cleanly in two: disproof is a hunt for two paths with different values, and proof is almost always a polar bound that must be uniform in the angle. Second, the $\varepsilon$-$\delta$ definition stops being ceremony and becomes the only instrument that settles a genuinely ambiguous case; writing one is mechanical once you know the order of the moves. Third, a whole class of limits is engineered so that the first reflex gives a confident wrong answer: L'H\^opital loops back on itself, a floor function is treated as continuous, a parameter hides a case split, or an asymptotic replacement is smuggled across a subtraction. By the end you should be able to decide within thirty seconds whether a two variable limit is a path problem or a polar problem, produce a correct $\varepsilon$-$\delta$ proof for any elementary function, and recognise every one of the standard traps by its shape rather than by having been burnt by it.
+\end{orient}
+
+\section{Two variables: the limit must survive every approach}
+
+In one variable a point has two sides, and checking both is a finite job. In the plane a point has infinitely many, and they are not merely directions: a limit at the origin ranges over every curve, every spiral, every sequence of points tending to $\mathbf 0$. The definition is unchanged in form, $0<\norm{(x,y)}<\delta$ implies $\abs{f(x,y)-L}<\varepsilon$, but its content is enormously stronger, because the punctured disc contains approaches that no one-variable intuition supplies.
+
+That asymmetry organises the whole subject. The two questions, does the limit exist and what is it, are answered by two different and non-interchangeable techniques. To show that a limit fails you need exactly two approaches with different values, and finding them is a search. To show that a limit exists you need a single bound valid on the whole punctured disc, and no number of successful paths will substitute for it. Every mistake in this section is a case of using one tool for the other job.
+
+The practical consequence is that you should decide which job you are doing before touching the algebra. A quick way to decide: substitute $y=mx$ and look at what happens to $m$. If $m$ survives into the answer, you are done in one line and the limit does not exist. If $m$ cancels, you have learned nothing yet, and the next move is either a cleverer path or a polar bound, according to the diagnostic developed below.
+
+\tech{The path test for non-existence}{medium}
+\cue A limit at the origin of a ratio built from monomials, where numerator and denominator have comparable size along the axes. Any $f(x,y)=P(x,y)/Q(x,y)$ with $Q(0,0)=0$ deserves the test before anything else is attempted.
+\method Approach along a family of curves and watch the parameter. Straight lines $y=mx$ come first, together with the vertical approach $x=0$, which the family $y=mx$ does not contain. If the value depends on $m$, the limit does not exist and you are finished. If every line gives the same value, escalate the degree: try $y=kx^{2}$, then $y=kx^{3}$. The rule for choosing the exponent is written into the denominator, as the worked examples show.
+
+\begin{worked}
+The standard counterexample first.
+\[f(x,y)=\frac{x^{2}y}{x^{4}+y^{2}}.\]
+Along $y=mx$ with $m\neq0$, $f=\dfrac{mx^{3}}{x^{4}+m^{2}x^{2}}=\dfrac{mx}{x^{2}+m^{2}}\to0$; along $y=0$ and along $x=0$ the function is identically $0$. Every straight line gives $0$. But along $y=kx^{2}$,
+\[f(x,kx^{2})=\frac{kx^{4}}{x^{4}+k^{2}x^{4}}=\frac{k}{1+k^{2}},\]
+a constant depending on $k$: the value is $\tfrac12$ on $y=x^{2}$, $\tfrac25$ on $y=2x^{2}$, $0$ in the limit $k\to\infty$. Two parabolas with different values, so the limit does not exist.
+
+The denominator dictated the exponent. In $x^{4}+y^{2}$ the two terms balance when $y^{2}\sim x^{4}$, that is on $y=kx^{2}$, and that is exactly the family on which the ratio stops decaying. Push the same construction up one degree:
+\[g(x,y)=\frac{x^{3}y}{x^{6}+y^{2}}.\]
+Here $x^{6}$ balances $y^{2}$ on $y=kx^{3}$, where $g=k/(1+k^{2})$. On $y=kx$ the value is $kx^{2}/(x^{4}+k^{2})\to0$, and on $y=kx^{2}$ it is $kx/(x^{2}+k^{2})\to0$: every polynomial path of degree below three is defeated, and only the cubic separates. Numerically, on $y=5x$ the values at $x=10^{-1},10^{-2},10^{-4}$ are $0.0020$, $2.0\times10^{-5}$, $2.0\times10^{-9}$, while on $y=x^{3}$ they are $0.5$ throughout.
+\end{worked}
+
+\begin{trap}
+Concluding existence from all straight lines. The function $x^{2}y/(x^{4}+y^{2})$ exists precisely to punish that inference, and a reader who has not held it in their hands will make the mistake once. A second, quieter failure: testing $y=mx$ and forgetting $x=0$, which is not a member of that family and is sometimes the only path that misbehaves.
+\end{trap}
+
+\begin{seealsob}Polar squeeze for existence; continuity and iterated limits; the squeeze theorem template.\end{seealsob}
+
+\begin{keynote}[Four specimens worth memorising]
+The examinable stock of two variable counterexamples is small, and knowing it by sight replaces most of the searching. $\dfrac{xy}{x^{2}+y^{2}}$ is constant on every line through the origin, so the lines alone kill it. $\dfrac{x^{2}y}{x^{4}+y^{2}}$ survives all lines and dies on $y=kx^{2}$. $\dfrac{x^{3}y}{x^{6}+y^{2}}$ survives every polynomial path of degree below three. And $\dfrac{x^{3}}{x^{2}+y^{2}}$ is the one that genuinely converges, so it is the specimen against which you calibrate a polar proof. A problem set at this level is almost always one of the four with the variables renamed or a harmless factor attached.
+\end{keynote}
+
+Paths can only ever destroy a limit, never establish one. However many curves agree, the punctured disc contains uncountably many more, and the two examples above show that the disagreeing one can be hidden at any polynomial degree you like. So when the paths all agree, stop searching and switch instruments: convert to polar coordinates, where the whole disc is described by one small parameter and one bounded one.
+
+\tech{Polar squeeze for existence}{medium}
+\cue Every path you have tried gives the same value $L$, and you now want a proof rather than more evidence. Also any $f$ whose numerator visibly carries more total degree than its denominator.
+\method Set $x=r\cos\theta$, $y=r\sin\theta$, so that $(x,y)\to\mathbf 0$ is exactly $r\to0^{+}$, and try to produce a bound
+\[\abs{f(r\cos\theta,r\sin\theta)-L}\leq g(r)\quad\text{for every }\theta,\qquad g(r)\to0 .\]
+The quantifier ``for every $\theta$'' is the entire content of the technique. A bound whose constant depends on $\theta$ proves nothing at all, because the approach is free to send $\theta$ and $r$ to their limits together. The workhorse inequalities are $\abs{\cos\theta}\leq1$, $\abs{\sin\theta}\leq1$ and $\abs{\cos\theta\sin\theta}\leq\tfrac12$, or in Cartesian form $\abs{x}\leq r$, $\abs{y}\leq r$ and $\abs{xy}\leq\tfrac12(x^{2}+y^{2})$.
+
+\begin{worked}
+Three that succeed and one that fails, so the diagnostic is visible.
+\[\lim_{(x,y)\to(0,0)}\frac{x^{3}}{x^{2}+y^{2}}=\frac{r^{3}\cos^{3}\theta}{r^{2}}=r\cos^{3}\theta,\qquad \abs{r\cos^{3}\theta}\leq r\to0 ,\]
+so the limit is $0$, and the bound $r$ contains no $\theta$.
+\[\frac{x^{2}y^{2}}{x^{2}+y^{2}}=r^{2}\cos^{2}\theta\sin^{2}\theta\leq\frac{r^{2}}{4},\qquad (x^{2}+y^{2})\ln(x^{2}+y^{2})=r^{2}\ln r^{2}=2r^{2}\ln r\to0 .\]
+In the last one $\theta$ does not appear at all, which is the ideal case and a signal that the function was really a function of $r$ in disguise.
+
+Now the failure. For $f=x^{2}y/(x^{4}+y^{2})$ the polar form is
+\[f=\frac{r\cos^{2}\theta\,\sin\theta}{r^{2}\cos^{4}\theta+\sin^{2}\theta}.\]
+Fix $\theta$ with $\sin\theta\neq0$ and let $r\to0$: the expression is $O(r)$ and tends to $0$. That computation is worthless. It is the line test wearing polar clothing, and the bound it produces, $r\cos^{2}\theta/\abs{\sin\theta}$, blows up as $\theta\to0$. Indeed choosing $\theta=\theta(r)$ with $\sin\theta=r\cos^{2}\theta$, which is the parabola $y=x^{2}$ again, makes the denominator $2\sin^{2}\theta$ and the whole expression exactly $\tfrac12$ for every $r$.
+\end{worked}
+
+\begin{keynote}[Uniform in $\theta$, or it is not a proof]
+Read the bound aloud with the quantifiers in place: for every $\varepsilon>0$ there is $\delta>0$ such that for every $r<\delta$ \emph{and every} $\theta$, the deviation is below $\varepsilon$. If your $\delta$ came out as a formula containing $\theta$, you have proved something about each ray separately and nothing about the disc. The practical test takes five seconds: strike out every trigonometric factor by replacing it with its worst case, $1$ for a sine or cosine upstairs and, downstairs, whatever value makes the denominator smallest. If what survives still tends to $0$, the proof is sound.
+\end{keynote}
+
+\begin{trap}
+Taking $r\to0$ with $\theta$ held fixed and calling that a proof. It is the line test in disguise, and it certifies the false limit $0$ for $x^{2}y/(x^{4}+y^{2})$. A related error is cancelling $r$ from numerator and denominator and then dropping a factor whose reciprocal is unbounded in $\theta$.
+\end{trap}
+
+\begin{seealsob}The path test for non-existence; the squeeze theorem template; bounded times infinitesimal.\end{seealsob}
+
+Existence of the joint limit is one question; continuity is that question plus a comparison with the function's actual value; and the iterated limits are a third object entirely, which beginners routinely mistake for the first. The relationship between them is not symmetric, and knowing which implication runs which way saves a great deal of wasted work.
+
+\tech{Continuity, and iterated versus joint limits}{medium}
+\cue A piecewise definition with a special value assigned at the origin, or a problem that writes $\lim_{x\to0}\lim_{y\to0}f(x,y)$ with the inner limit taken first.
+\method $f$ is continuous at $\mathbf a$ exactly when the joint limit exists and equals $f(\mathbf a)$, so continuity is never established by computing iterated limits. The logic runs one way only: if the joint limit is $L$, then each iterated limit equals $L$ \emph{provided it exists at all}. The converse fails, and it fails in both available ways. Two iterated limits can exist and agree while the joint limit does not; and the joint limit can exist while an iterated limit does not.
+
+\begin{worked}
+Both failure directions, on two lines each.
+\[f(x,y)=\frac{xy}{x^{2}+y^{2}}:\qquad \lim_{x\to0}\Bigl(\lim_{y\to0}f\Bigr)=\lim_{x\to0}0=0,\qquad \lim_{y\to0}\Bigl(\lim_{x\to0}f\Bigr)=0 .\]
+The iterated limits both exist and agree. Yet along $y=x$ the function is constantly $\tfrac12$, and along $y=-x$ it is $-\tfrac12$, so there is no joint limit and no assignment of $f(0,0)$ makes $f$ continuous. In polar form $f=\cos\theta\sin\theta$, a function of $\theta$ alone, which is the cleanest possible certificate of failure: it does not decay in $r$ at all.
+
+Now the other direction.
+\[h(x,y)=y\sin\frac1x\ (x\neq0),\qquad h(0,y)=0 .\]
+Since $\abs{h}\leq\abs{y}\leq r$, the joint limit at the origin is $0$. But for fixed $y\neq0$ the inner limit $\lim_{x\to0}y\sin(1/x)$ does not exist, so the iterated limit $\lim_{y\to0}\lim_{x\to0}h$ is not even defined. The joint limit is the stronger statement; the iterated ones are shadows of it that may be missing.
+
+A third specimen worth carrying, where the iterated limits exist and \emph{disagree}: $(x^{2}-y^{2})/(x^{2}+y^{2})$ gives $1$ taking $y\to0$ first and $-1$ taking $x\to0$ first. Disagreement is conclusive: no joint limit can exist.
+
+Finally, a continuity question posed the way an examiner poses it. Define $F(x,y)=\dfrac{x^{3}-y^{3}}{x^{2}+y^{2}}$ away from the origin and $F(0,0)=c$. For which $c$ is $F$ continuous at the origin? In polars the quotient is $r(\cos^{3}\theta-\sin^{3}\theta)$, bounded in absolute value by $2r$ for every $\theta$, so the joint limit is $0$ and the answer is $c=0$, uniquely. The whole exercise is one uniform bound; the iterated limits, both $0$, would have suggested the same value without proving anything.
+\end{worked}
+
+\begin{trap}
+Computing an iterated limit and reporting it as the limit. This is the two variable form of the ordering hazard in nested limits, and it is more dangerous here because the notation $\lim_{(x,y)\to(0,0)}$ looks so much like the notation $\lim_{x\to0}\lim_{y\to0}$ that the substitution passes unnoticed.
+\end{trap}
+
+\begin{seealsob}The path test for non-existence; nested limits, taken strictly in order; polar squeeze for existence.\end{seealsob}
+
+The two techniques are complementary, and the choice between them is nearly mechanical once you have looked at the denominator. If the denominator is a sum of two even powers with the \emph{same} exponent, such as $x^{2}+y^{2}$ or $x^{4}+y^{4}$, polar coordinates will decide the matter, because every direction is then on an equal footing and the trigonometric factors are bounded. If the exponents differ, as in $x^{4}+y^{2}$ or $x^{6}+y^{2}$, the denominator has a preferred curve along which its two terms balance, and that curve is where the counterexample lives. The tree records this.
+
+\begin{center}
+\begin{tikzpicture}[node distance=5mm and 6mm]
+\node[dtest] (a) {Do all lines $y=mx$,\\ and $x=0$, give one value $L$?};
+\node[dleaf, below left=9mm and 3mm of a] (b) {No limit. Quote two\\ lines and their values};
+\node[dtest, below right=9mm and 3mm of a] (c) {Denominator a sum of\\ equal even powers?};
+\node[dtest, below left=9mm and 0mm of c] (d) {Polar bound $\abs{f-L}\leq g(r)$\\ with $g$ free of $\theta$?};
+\node[dleaf, below right=9mm and 2mm of c] (e) {Balance the two terms:\\ test $y=kx^{m}$ on that curve};
+\node[dleaf, below left=9mm and 0mm of d] (f) {Limit is $L$. The uniform\\ bound is the whole proof};
+\node[dleaf, below right=9mm and 0mm of d] (g) {Split off the bad sector\\ and bound it separately};
+\draw[dedge] (a) -- node[dlab,left]{no} (b);
+\draw[dedge] (a) -- node[dlab,right]{yes} (c);
+\draw[dedge] (c) -- node[dlab,left]{yes} (d);
+\draw[dedge] (c) -- node[dlab,right]{no} (e);
+\draw[dedge] (d) -- node[dlab,left]{yes} (f);
+\draw[dedge] (d) -- node[dlab,right]{no} (g);
+\end{tikzpicture}
+\end{center}
+
+\begin{keynote}[The degree balance that chooses the path]
+The exponent to test is not guesswork. Assign $x$ the weight $1$ and $y$ the weight $m$, so that the curve $y=kx^{m}$ becomes the statement that both variables have the same weighted size. A monomial $x^{i}y^{j}$ then has weighted degree $i+jm$. Choose $m$ so that the two terms of the denominator have \emph{equal} weighted degree; on that curve neither term dominates and the ratio stops decaying. For $x^{4}+y^{2}$ the equation is $4=2m$, giving $m=2$; for $x^{6}+y^{2}$ it is $6=2m$, giving $m=3$; for $x^{2}+y^{2}$ it is $m=1$, which is why the lines already decide that case and why polar coordinates work there. Then compare the numerator's weighted degree with the denominator's: equal degrees mean a $k$-dependent constant and no limit, a larger numerator degree means the limit survives that family, and a smaller one means the ratio blows up.
+\end{keynote}
+
+The right hand branch is the productive one for problems that were set rather than found. If a problem hands you $x^{4}+y^{2}$ rather than $x^{2}+y^{2}$, somebody chose the mismatch, and the only reason to choose it is to make the parabola work. Reading the exponents as an instruction is faster than any amount of experimenting.
+
+\section{Epsilon and delta, used as a tool}
+
+The definition is usually taught as a rite of passage and then abandoned. That is the wrong reading of it. It is the instrument of last resort, the thing that settles a case where every computational rule has run out: a function defined by cases, a limit that some authority asserts and you doubt, a claim about a function too irregular for expansion. It earns its place by being the only definition of what a limit is; everything else in this book is a theorem downstream of it.
+
+Writing one is also completely mechanical, which is the part most treatments obscure by presenting the finished proof rather than the search. The search runs backwards and the proof runs forwards, and separating those two movements is the whole method. On scratch paper you start from the inequality you want, $\abs{f(x)-L}<\varepsilon$, and manipulate it into a statement about $\abs{x-a}$. On the page you reverse the arrows.
+
+\tech[Epsilon-delta template]{The $\varepsilon$-$\delta$ template}{medium}
+\cue The words ``prove that'' attached to a limit, or any situation where you must certify rather than compute.
+\method The definition: for every $\varepsilon>0$ there exists $\delta>0$ such that $0<\abs{x-a}<\delta$ implies $\abs{f(x)-L}<\varepsilon$. To find $\delta$, factor $f(x)-L$ so that $(x-a)$ appears explicitly, giving $\abs{f(x)-L}=\abs{x-a}\cdot\abs{C(x)}$. Then impose a \emph{preliminary} restriction, conventionally $\abs{x-a}<1$, which confines $x$ to a bounded interval and lets you replace the messy factor by a constant bound $\abs{C(x)}\leq M$. Finally take
+\[\delta=\min\Bigl\{1,\ \frac{\varepsilon}{M}\Bigr\},\]
+and write the argument out in the forward direction.
+
+\begin{worked}
+A polynomial, then a quotient, then a radical.
+
+For $f(x)=x^{2}$ at $a=3$: $\abs{x^{2}-9}=\abs{x-3}\abs{x+3}$. If $\abs{x-3}<1$ then $2<x<4$, so $\abs{x+3}<7$ and $\abs{x^{2}-9}<7\abs{x-3}$. Take $\delta=\min\{1,\varepsilon/7\}$.
+
+For $f(x)=1/x$ at $a=2$, the difficulty is a factor that is unbounded near $0$:
+\[\abs{\frac1x-\frac12}=\frac{\abs{2-x}}{2\abs{x}} .\]
+The preliminary restriction must keep $x$ away from $0$: with $\abs{x-2}<1$ we get $x>1$, so the bound is $\abs{x-2}/2$, and $\delta=\min\{1,2\varepsilon\}$ works.
+
+For $f(x)=\sqrt{x}$ at $a>0$ no preliminary restriction is needed, because rationalising produces a factor that is bounded automatically:
+\[\abs{\sqrt x-\sqrt a}=\frac{\abs{x-a}}{\sqrt x+\sqrt a}\leq\frac{\abs{x-a}}{\sqrt a},\qquad \delta=\varepsilon\sqrt a .\]
+The template transfers to two variables unchanged, and doing it once shows what the polar squeeze of the previous section was really producing. To prove $\lim_{(x,y)\to(0,0)}x^{3}/(x^{2}+y^{2})=0$, note that $\abs{x}\leq\sqrt{x^{2}+y^{2}}$ gives
+\[\abs{\frac{x^{3}}{x^{2}+y^{2}}}\leq\frac{(x^{2}+y^{2})^{3/2}}{x^{2}+y^{2}}=\sqrt{x^{2}+y^{2}} ,\]
+so $\delta=\varepsilon$ works, with no case analysis and no mention of $\theta$. A uniform polar bound $g(r)$ is nothing other than a recipe for $\delta$: solve $g(\delta)=\varepsilon$.
+\end{worked}
+
+\begin{keynote}[Backwards to find it, forwards to write it]
+The scratch work and the proof are different documents. Scratch: assume $\abs{f(x)-L}<\varepsilon$ and solve for $\abs{x-a}$, taking whatever liberties you like. Proof: declare $\delta$, assume $0<\abs{x-a}<\delta$, and derive $\abs{f(x)-L}<\varepsilon$ by a chain of inequalities that never runs the wrong way. A proof that presents the scratch work as the argument has assumed its conclusion, and graders are right to reject it even when the $\delta$ is correct.
+\end{keynote}
+
+\begin{trap}
+Letting $\delta$ depend on $x$. The quantifiers fix $\varepsilon$ first, then $\delta$, then $x$; a $\delta$ containing $x$ is not a number and the proof says nothing. The usual route into this error is bounding $\abs{C(x)}$ by an expression in $x$ instead of by a constant, which is why the preliminary restriction is not optional decoration.
+\end{trap}
+
+\begin{seealsob}The variants at infinity and one-sided; piecewise matching at a junction; the squeeze theorem template.\end{seealsob}
+
+\begin{keynote}[Negating the definition, and what a path test really is]
+To prove that $\lim_{x\to a}f\neq L$ you negate the quantifiers in order: there exists $\varepsilon_0>0$ such that for every $\delta>0$ there is some $x$ with $0<\abs{x-a}<\delta$ and $\abs{f(x)-L}\geq\varepsilon_0$. In practice you exhibit a \emph{sequence} $x_n\to a$ with $x_n\neq a$ along which $f(x_n)$ stays away from $L$, since supplying one point in each shrinking neighbourhood is exactly supplying such a sequence. That is what the path test of the previous section is doing, in the plane rather than on the line: the parabola $y=kx^{2}$ is a family of points, one in every disc about the origin, on which $f$ is pinned at $k/(1+k^{2})$. Seeing the path test as an instance of the negated definition is what makes it a proof rather than a rule of thumb.
+\end{keynote}
+
+The template above covers a finite limit at a finite point. Every other kind of limit in this book is the same idea with the quantifiers rewired, and the rewiring is worth doing explicitly once, because the commonest error at this level is not a bad estimate but a mismatched template: a $\delta$ deployed where an $N$ was needed, or a punctured neighbourhood invented at infinity where none exists.
+
+\tech[Epsilon-N and one-sided variants]{The variants: $\varepsilon$-$N$, at infinity, and one-sided}{medium}
+\cue A sequence, a limit as $x\to\infty$, an infinite limit, or a limit as $x\to a^{\pm}$, in each case with a proof demanded.
+\method Keep the shape ``for every tolerance there is a threshold'' and change only what the threshold constrains.
+\begin{itemize}
+\item Sequences: for every $\varepsilon>0$ there is $N$ with $\abs{a_n-L}<\varepsilon$ for all $n>N$.
+\item At infinity: for every $\varepsilon>0$ there is $M$ with $\abs{f(x)-L}<\varepsilon$ for all $x>M$. There is no punctured neighbourhood here, because $\infty$ is not a point.
+\item Infinite limits: for every $K$ there is $\delta>0$ with $f(x)>K$ whenever $0<\abs{x-a}<\delta$. The tolerance is now a height, not a width.
+\item One-sided: replace $0<\abs{x-a}<\delta$ by $a<x<a+\delta$, or by $a-\delta<x<a$.
+\end{itemize}
+
+\begin{worked}
+A sequence, then a limit at infinity, then an infinite limit.
+\[\lim_{n\to\infty}\frac{2n+1}{n+3}=2:\qquad \abs{\frac{2n+1}{n+3}-2}=\abs{\frac{2n+1-2n-6}{n+3}}=\frac{5}{n+3}<\varepsilon\iff n>\frac5\varepsilon-3 ,\]
+so $N=5/\varepsilon$ suffices, and no absolute value survives because the quantity is positive.
+\[\lim_{x\to\infty}\frac{3x^{2}+1}{x^{2}-5}=3:\qquad \abs{\frac{3x^{2}+1}{x^{2}-5}-3}=\frac{16}{x^{2}-5}\ \ (x>\sqrt5),\]
+which is below $\varepsilon$ once $x^{2}>5+16/\varepsilon$, so $M=\sqrt{5+16/\varepsilon}$ works. Note that the preliminary restriction $x>\sqrt5$ plays exactly the role that $\abs{x-a}<1$ played before: it makes the denominator positive so the absolute value can be removed.
+\[\lim_{x\to1}\frac{1}{(x-1)^{2}}=+\infty:\qquad \frac{1}{(x-1)^{2}}>K\iff\abs{x-1}<\frac{1}{\sqrt K},\]
+so $\delta=1/\sqrt K$, and here the equivalence is exact in both directions, which is unusually convenient. Take $K>0$ without loss, since a threshold that works for a large $K$ works for every smaller one.
+
+One-sided, where the restriction to a side is what makes the algebra legal at all: $\lim_{x\to0^{+}}\sqrt x=0$ requires $\sqrt x<\varepsilon$ for $0<x<\delta$, and squaring gives $\delta=\varepsilon^{2}$. The two-sided statement is not false here, it is undefined, because $\sqrt x$ has no left neighbourhood of $0$ in its domain. Naming the domain before writing the quantifiers avoids a whole family of vacuous arguments.
+\end{worked}
+
+\begin{trap}
+Mixing templates. Writing $\delta$ for a sequence limit is the visible version; the invisible version is asserting a punctured neighbourhood at infinity, or forgetting that an infinite limit has no $\varepsilon$ in it at all. A third: at a one-sided limit, using $\abs{x-a}<\delta$ and then quietly assuming $x>a$ in the algebra.
+\end{trap}
+
+\begin{seealsob}The $\varepsilon$-$\delta$ template; piecewise matching at a junction; expansion at infinity via $t=1/x$.\end{seealsob}
+
+Piecewise functions are where the one-sided machinery pays for itself. They are also where the standard shortcut, matching derivative formulas, is wrong often enough to be worth a technique of its own, because the shortcut is a theorem with hypotheses and the hypotheses are exactly what a well set problem removes.
+
+\tech{Piecewise matching at a junction}{medium}
+\cue A function given by different formulas on either side of $x=a$, with unknown parameters, and a demand for continuity or differentiability there.
+\method Continuity is one equation: $\lim_{x\to a^{-}}f=\lim_{x\to a^{+}}f=f(a)$. Differentiability adds a second condition on the one-sided \emph{difference quotients},
+\[f'(a^{-})=\lim_{h\to0^{-}}\frac{f(a+h)-f(a)}{h},\qquad f'(a^{+})=\lim_{h\to0^{+}}\frac{f(a+h)-f(a)}{h},\]
+which must exist and be equal. When both pieces are differentiable on a neighbourhood of $a$ and $f$ is already continuous at $a$, the mean value theorem lets you replace this by the cheaper test $\lim_{x\to a^{-}}f'(x)=\lim_{x\to a^{+}}f'(x)$. Solve continuity first, always.
+
+\begin{worked}
+Take $f(x)=x^{2}$ for $x\leq1$ and $f(x)=ax+b$ for $x>1$. Continuity at $1$ forces $1=a+b$. Differentiability, with continuity already secured, forces $2=a$, hence $b=-1$. The unique answer is $a=2$, $b=-1$, which is to say the linear piece is the tangent line to $x^{2}$ at $x=1$. That is the geometric content of every problem of this shape.
+
+Now the reason the order matters. Let $g(x)=x^{2}$ for $x<1$ and $g(x)=x^{2}+5$ for $x\geq1$. The derivative formulas are $2x$ on both sides and agree perfectly at $x=1$. But $g$ jumps by $5$ there, so it is not even continuous, let alone differentiable; the difference quotient $\bigl(g(1+h)-g(1)\bigr)/h$ behaves like $-5/h$ as $h\to0^{-}$ and diverges. Matching $f'$ formulas without continuity certifies nothing.
+
+The difference quotient must sometimes be computed by hand, because $f'$ has no one-sided limit. For $f(x)=x^{2}\sin(1/x)$ with $f(0)=0$, the quotient is $h\sin(1/h)\to0$, so $f'(0)=0$ exists; yet $f'(x)=2x\sin(1/x)-\cos(1/x)$ has no limit at $0$. The shortcut would report ``not differentiable'' and be wrong.
+\end{worked}
+
+\begin{trap}
+Matching the derivative formulas before securing continuity, as in the $g$ above. The shortcut $f'(a^{-})=f'(a^{+})$ is a corollary of the mean value theorem applied to a \emph{continuous} function; strip the continuity hypothesis and the corollary is false. The second trap is the reverse: declaring non-differentiability because $\lim f'$ fails, when the difference quotient itself converges.
+\end{trap}
+
+\begin{seealsob}The variants at infinity and one-sided; the limit is a derivative in disguise; floor and fractional-part limits.\end{seealsob}
+
+Three points are worth extracting from this section before leaving it. The preliminary restriction is not a trick but the mechanism by which a variable quantity is turned into a constant, and it recurs under other names throughout analysis. The quantifier order is the content of every definition here, so reciting it in the correct order is half of any proof. And a definition is what you use when the rules run out: if you find yourself unable to decide whether a limit exists, the reason is almost always that you have been trying to compute it instead of estimating it.
+
+\section{Limits built to punish reflexes}
+
+Everything so far has been about what a limit is. This section is about how limits are weaponised. A problem setter who wants to distinguish understanding from fluency does it by building an expression whose most automatic response is wrong, and there are only a handful of ways to do that. The rule you reach for loops instead of resolving; the operation you want to exchange with the limit is not continuous in the relevant sense; the numerics look convincing and are not; a discontinuous function is treated as continuous; a parameter conceals a case split; or an asymptotic replacement is carried across a subtraction where it is illegal. Each of the six has a signature you can learn.
+
+What follows is therefore not a list of curiosities. A trap limit is a diagnostic instrument: it is constructed so that the fast answer and the correct answer differ, which means that getting it right is evidence of something the fast answer cannot supply. Treat each one as a statement about a hypothesis you were in the habit of skipping, and the section becomes an audit of your own reflexes rather than a museum of oddities.
+
+\tech[LHopital loops forever]{Limits where L'H\^opital loops forever}{medium}
+\cue Applying the rule reproduces the original quotient, or its reciprocal, up to constants. The families that do this are built from $\eu^{x}$ and $\eu^{-x}$, or from $x$ and $\sqrt{x^{2}+c}$, or from $\sinh$ and $\cosh$.
+\method Recognise the loop after \emph{one} repetition and abandon the rule. Switch to dividing by the dominant term, which is the correct tool for a quotient of comparable exponentials, or to the substitution that linearises the pair. Continuing the differentiation is not merely slow; it cannot terminate, because the loop is an algebraic identity, not an accident of the first two rounds.
+
+\begin{worked}
+\[\lim_{x\to\infty}\frac{\eu^{x}+\eu^{-x}}{\eu^{x}-\eu^{-x}} .\]
+Both parts tend to $\infty$, so the rule applies and gives $\dfrac{\eu^{x}-\eu^{-x}}{\eu^{x}+\eu^{-x}}$, the reciprocal; a second application returns the original. Dividing by $\eu^{x}$ instead is immediate:
+\[\frac{1+\eu^{-2x}}{1-\eu^{-2x}}\longrightarrow 1 .\]
+The same structure with radicals: $\displaystyle\lim_{x\to\infty}\frac{x}{\sqrt{x^{2}+1}}$ sends L'H\^opital to $\sqrt{x^{2}+1}/x$ and back again, while dividing numerator and denominator by $x$ gives $1/\sqrt{1+x^{-2}}\to1$.
+\end{worked}
+
+\begin{keynote}[The loop is not always useless]
+In both examples the rule reports $L=1/L$. If you already know that the limit exists and is positive, that equation alone finishes the problem: $L=1$. The caveat is real and must be stated. L'H\^opital's conclusion runs one way, from the existence of the new limit to the value of the old one, so the reciprocal identity licenses $L=1/L$ only once existence is established independently, for instance by monotonicity or by the one-line division above. Used as a check on an answer you already have, it is free; used as the proof, it is circular.
+\end{keynote}
+
+\begin{trap}
+Continuing past the second round in the hope that it resolves. It cannot. The clean diagnostic is to compare the third expression with the first: if they match, stop and divide by the dominant term.
+\end{trap}
+
+\begin{seealsob}Divide by the dominant term; the rule's failure modes; illegal asymptotic substitution inside a difference.\end{seealsob}
+
+L'H\^opital loops because a rule was applied outside the situation it was built for. The next trap is the same disease at a higher level: an operation is exchanged with a limit without checking that the exchange is legal, and the operation in question is usually one nobody thinks of as an operation.
+
+\tech{When the leading term lies: non-uniform convergence}{hard}
+\cue A limit of a \emph{functional} of a sequence of functions: an arc length, a total variation, a maximum, an integral of a derivative. The tell is that $f_n$ appears inside something that is not just $\int f_n$.
+\method Do not push the limit inside. Identify the limiting object geometrically, then ask whether the functional is continuous under the mode of convergence you actually have. Pointwise convergence controls almost nothing; uniform convergence controls integrals and continuity but still not arc length, since arc length involves $f_n'$; and $f_n'$ is not controlled by any convergence of $f_n$ alone.
+
+\begin{worked}
+The arc length of $y=x^{n}$ on $[-1,1]$ as $n\to\infty$. The graphs converge pointwise to the function that is $0$ on $(-1,1)$ and $1$ at the endpoints, so a naive interchange inside
+\[\Lambda_n=\int_{-1}^{1}\sqrt{1+n^{2}x^{2n-2}}\dd x\]
+replaces the integrand by $1$ and predicts $\Lambda_n\to2$. The truth is $4$. The limiting curve is not the pointwise limit function but a polyline: the graph flattens onto the segment from $(-1,0)$ to $(1,0)$, of length $2$, and then climbs vertically at each end from $y=0$ to $y=1$, contributing $1$ on each side. Numerically $\Lambda_{50}=3.8356$, $\Lambda_{500}=3.9740$, $\Lambda_{5000}=3.9965$, $\Lambda_{50000}=3.99956$: slow, monotone, and unmistakably heading for $4$ rather than $2$.
+
+Uniform convergence does not rescue the situation either, which is the point most often missed. Let $s_n$ be the sawtooth on $[0,1]$ with $n^{2}$ teeth of amplitude $1/n$. Then $\norm{s_n}_{\infty}=1/n\to0$, so $s_n\to0$ uniformly, yet the graph of $s_n$ has length $\sqrt{1+4n^{2}}\approx2n\to\infty$. Arc length depends on $s_n'$, and uniform control of a function says nothing whatever about its derivative.
+
+A smaller instance of the same disease, where the functional is an ordinary integral. Let $f_n(x)=nx\eu^{-nx^{2}}$ on $[0,1]$. For each fixed $x>0$, $f_n(x)\to0$, and $f_n(0)=0$, so $f_n\to0$ pointwise. Yet
+\[\int_0^1 nx\eu^{-nx^{2}}\dd x=\tfrac12\bigl(1-\eu^{-n}\bigr)\longrightarrow\tfrac12 .\]
+The mass does not vanish; it escapes into a spike of height $\sim\sqrt{n}$ and width $\sim1/\sqrt n$ near $x=0$. Pointwise convergence never sees the spike.
+\end{worked}
+
+\begin{trap}
+Assuming that pointwise convergence of $f_n$ implies convergence of $\int F(f_n,f_n')$. Arc length is not continuous under pointwise convergence, and neither is $\int f_n$ without a domination hypothesis. When a problem asks for the limit of a geometric quantity, draw the limiting picture before writing any integral.
+\end{trap}
+
+\begin{seealsob}Endpoint concentration; convergence of an $n$th power to an indicator; numerically deceptive limits.\end{seealsob}
+
+The arc length example was at least honest about its slowness: every partial value was visibly far from $2$. The next family is worse, because the numbers look like they have converged and they have not.
+
+\tech{Numerically deceptive limits}{hard}
+\cue A limit whose approach carries a correction of order $n^{-1/2}$, $1/\ln n$, or $\ln\ln n/\ln n$. Any limit involving a central limit theorem, a logarithm of a logarithm, or a sum of $\sqrt n$ comparable terms is a candidate.
+\method Prove it, do not probe it. Establish the exact leading behaviour analytically and read the constant off that; then use numerics in the only role they are fit for, checking the \emph{residual} against the predicted correction. If the residual halves when $n$ quadruples, you have confirmed an $n^{-1/2}$ correction and, with it, your constant.
+
+\begin{worked}
+\[\lim_{n\to\infty}\eu^{-n}\sum_{k=0}^{n}\frac{n^{k}}{k!}=\frac12 .\]
+The sum is exactly $\Prob(X\leq n)$ for $X$ Poisson with mean $n$. Such an $X$ is a sum of $n$ independent Poisson$(1)$ variables, so it is asymptotically normal with mean $n$ and standard deviation $\sqrt n$, and the central limit theorem puts half the mass on each side of the mean. Hence the limit is $\tfrac12$, with an error of order $n^{-1/2}$ from the lattice correction.
+
+Now the deception. The values are $0.52656$, $0.50841$, $0.50266$, $0.50119$ at $n=10^{2},10^{3},10^{4},5\times10^{4}$. A reader who computes only $n=1000$ sees $0.5084$ and is invited to guess a wrong closed form near that value. A reader who computes two of them sees the residuals $0.02656$ and $0.00841$, whose ratio is $3.16\approx\sqrt{10}$, and immediately recognises $\tfrac12+c/\sqrt n$.
+
+A second and even slower specimen: $\ln x/x^{0.01}\to0$ as $x\to\infty$. At $x=10^{6}$ it is $12.03$; at $x=10^{30}$ it is $34.62$, still increasing. It peaks at $x=\eu^{100}$ with value $100/\eu=36.79$, and does not fall back below $1$ until roughly $x=\eu^{650}\approx10^{282}$. No amount of computation would suggest the correct answer.
+\end{worked}
+
+\begin{trap}
+Naive dominance reasoning gives $0$ or $1$ for the Poisson sum, depending on which term you decide dominates, and naive numerics at $n=1000$ suggests $0.508$. Both are wrong for the same reason: the sum is a probability that concentrates at a boundary, and boundaries are exactly where dominance arguments have no content.
+\end{trap}
+
+\begin{seealsob}Logarithmic rescaling of a monstrous expression; asymptotics of the named special functions; when the leading term lies.\end{seealsob}
+
+Deception by slow convergence is at least a quantitative failure. The floor function fails qualitatively: it is not continuous anywhere it matters, so substituting the limit into it is not a slightly inaccurate move but a meaningless one.
+
+\tech{Floor and fractional-part limits}{medium}
+\cue A $\floorb{\cdot}$, $\ceilb{\cdot}$ or $\{\cdot\}$ anywhere inside the limit, including inside a summation index.
+\method Use the universal bracket
+\[t-1<\floorb{t}\leq t\qquad\text{for all real }t,\]
+and squeeze. Multiplying it by a negative quantity reverses both inequalities, which is where one-sided answers diverge if they are going to. For averages of fractional parts, Weyl equidistribution supplies the answer directly: for irrational $\alpha$ the sequence $\{k\alpha\}$ is equidistributed in $[0,1)$, so $\frac1n\sum_{k=1}^{n}\{k\alpha\}\to\tfrac12$.
+
+\begin{worked}
+\[\lim_{x\to0^{+}}x\floorb{\frac1x}=1 .\]
+From the bracket with $t=1/x$ and $x>0$: $x\bigl(\tfrac1x-1\bigr)<x\floorb{\tfrac1x}\leq1$, that is $1-x<x\floorb{1/x}\leq1$, and the squeeze closes. For $x<0$ multiplication reverses the inequalities and gives $1\leq x\floorb{1/x}<1-x$, so the left-hand limit is also $1$ and the two-sided limit exists. That coincidence is worth noticing precisely because it does not always happen.
+
+A summation version, where the bracket is applied $n$ times:
+\[\lim_{n\to\infty}\frac{1}{n^{2}}\sum_{k=1}^{n}\floorb{kx}=\frac x2 .\]
+Summing $kx-1<\floorb{kx}\leq kx$ over $k$ gives $x\tfrac{n(n+1)}{2}-n<\sum\floorb{kx}\leq x\tfrac{n(n+1)}{2}$, and dividing by $n^{2}$ squeezes both ends to $x/2$. At $x=\sqrt2$ and $n=10^{5}$ the sum divided by $n^{2}$ is $0.7071089$ against $x/2=0.7071068$; at $x=3.7$ it is $1.850014$ against $1.85$.
+
+The Weyl average, checked at $\alpha=\sqrt2$ with $n=2\times10^{6}$, gives $0.4999999$.
+\end{worked}
+
+\begin{trap}
+Treating $\floorb{\cdot}$ as continuous and substituting the limit. That reflex turns $x\floorb{1/x}$ into $x\cdot\infty$ and produces nothing. The second trap is assuming the one-sided answers agree: they do for $x\floorb{1/x}$ at $0$, but $\lim_{x\to0}\floorb{x}$ genuinely differs on the two sides, being $-1$ from the left and $0$ from the right, so the two-sided limit does not exist.
+\end{trap}
+
+\begin{seealsob}The squeeze theorem template; parameter-dependent limits that branch into cases; the variants at infinity and one-sided.\end{seealsob}
+
+A floor function announces its discontinuity in the notation. A parameter does not announce anything: the expression looks like a single problem, and it is several, joined at values of the parameter where the dominant term changes hands.
+
+\tech{Parameter-dependent limits that branch into cases}{hard}
+\cue A symbol $a$, $p$ or $t$ in the expression with the answer requested as a function of it; or, in the harder direction, a limit value supplied and the parameter to be found.
+\method Locate the critical values where the dominant term changes, and case-split there. In the inverse direction, matching asymptotic orders on numerator and denominator converts the limit into a plain algebraic equation in the parameter, and that equation may have several admissible roots. Report all of them, then check each against any stated restriction on the parameter.
+
+\begin{worked}
+The direct kind first. For $x\geq0$,
+\[F(x)=\lim_{n\to\infty}\frac{x^{2n}-1}{x^{2n}+1}=\begin{cases}-1,&0\leq x<1,\\ 0,&x=1,\\ +1,&x>1,\end{cases}\]
+three cases governed by whether $x^{2n}$ tends to $0$, stays at $1$, or tends to $\infty$. Note in passing that a limit of continuous functions has produced a discontinuous one.
+
+The inverse kind, which is where the real difficulty lies. For $\abs{a}>1$ solve
+\[\lim_{n\to\infty}\frac{\sum_{r=1}^{n}r^{1/3}}{n^{7/3}\sum_{r=1}^{n}(an+r)^{-2}}=54 .\]
+The numerator is a sum of a power, so $\sum_{r\leq n}r^{1/3}\sim\tfrac34n^{4/3}$. The inner sum in the denominator is a Riemann sum after one factor of $n^{-2}$ is extracted:
+\[\sum_{r=1}^{n}\frac{1}{(an+r)^{2}}=\frac{1}{n}\cdot\frac1n\sum_{r=1}^{n}\frac{1}{\bigl(a+\tfrac rn\bigr)^{2}}\longrightarrow\frac1n\int_{0}^{1}\frac{\dd u}{(a+u)^{2}}=\frac1n\cdot\frac{1}{a(a+1)} .\]
+So the denominator behaves like $n^{4/3}/\bigl(a(a+1)\bigr)$, the powers $n^{4/3}$ cancel, and the limit is $\tfrac34a(a+1)$. Setting that to $54$ gives $a^{2}+a-72=0$, hence
+\[a=\frac{-1\pm17}{2}=8\ \text{ or }\ -9 ,\]
+and both satisfy $\abs{a}>1$, so both are admissible. Direct summation at $n=2\times10^{6}$ returns $54.00002$ for $a=8$ and $54.00001$ for $a=-9$.
+\end{worked}
+
+\begin{trap}
+Finding one root and stopping. The quadratic was engineered to have two admissible solutions and the negative one is the one that gets dropped. A second trap: reading the stated range $\abs{a}>1$ as decoration. It is what keeps $a+u$ away from $0$ on $[0,1]$, so that the Riemann sum has a non-singular integrand; without it the interchange is invalid and the answer changes.
+\end{trap}
+
+\begin{seealsob}Riemann sum recognition; integral bounds on a sum; floor and fractional-part limits.\end{seealsob}
+
+The last trap is the most common of all, and the most invisible, because it is a correct technique used one step outside its domain of validity. Asymptotic replacement is legal for factors and illegal for summands, and the boundary between those two situations is easy to cross without noticing.
+
+\tech{Illegal asymptotic substitution inside a difference}{medium}
+\cue You are about to replace a factor by its leading equivalent, and that factor sits inside a sum or difference of comparable terms rather than in a product or quotient.
+\method Replacement of $f$ by $g$ with $f\sim g$ is legal for factors of a product or a quotient, and illegal across a $+$ or $-$ sign whenever the leading terms cancel. Inside a difference, expand \emph{both} sides to a common order, far enough that the first surviving term appears, and only then divide.
+
+\begin{worked}
+\[\lim_{x\to0}\frac{\tan x-\sin x}{x^{3}} .\]
+The illegal move is to substitute $\tan x\sim x$ and $\sin x\sim x$, obtaining $(x-x)/x^{3}=0$. The leading terms cancelled exactly, which is precisely the situation the substitution rule excludes. Expanding both to order $x^{3}$,
+\[\tan x=x+\tfrac{x^{3}}{3}+O(x^{5}),\qquad \sin x=x-\tfrac{x^{3}}{6}+O(x^{5}),\qquad \tan x-\sin x=\tfrac{x^{3}}{2}+O(x^{5}),\]
+so the limit is $\tfrac12$. Numerically the quotient is $0.50001250$ at $x=10^{-2}$ and $0.50000013$ at $x=10^{-3}$.
+
+A second, where the equivalent being smuggled in is a constant:
+\[\lim_{x\to0}\frac{(1+x)^{1/x}-\eu}{x} .\]
+Substituting $(1+x)^{1/x}\to\eu$ gives $0/x$ and then $0$, which is wrong. Write $(1+x)^{1/x}=\exp\bigl(\tfrac1x\ln(1+x)\bigr)=\exp\bigl(1-\tfrac x2+\tfrac{x^{2}}{3}-\cdots\bigr)=\eu\bigl(1-\tfrac x2+O(x^{2})\bigr)$, so the quotient is $-\tfrac{\eu}{2}+O(x)$ and the limit is $-\eu/2\approx-1.359141$. Numerically, at $x=10^{-5}$ the quotient is $-1.359127$.
+\end{worked}
+
+\begin{trap}
+The error is invisible because the same substitution is correct in the neighbouring problem $\dfrac{\tan x\cdot\sin x}{x^{2}}\to1$, where the two factors multiply rather than subtract. Readers generalise from the product case, and nothing in the notation warns them. The rule to carry: before substituting, ask whether the terms you are replacing will cancel to leading order. If they will, you must expand.
+\end{trap}
+
+\begin{seealsob}Asymptotic equivalence and its legal algebra; order bookkeeping across a subtraction; add and subtract a bridging term.\end{seealsob}
+
+\begin{keynote}[The common shape of all six traps]
+Every trap in this section is a legal operation applied where its hypothesis fails. L'H\^opital needs the new limit to exist. Interchanging a limit with a functional needs the functional to be continuous in the right topology. Numerical evidence needs a known error order to be interpretable. Substituting a value needs continuity at that value. A single answer needs the parameter to have a single admissible value. Asymptotic replacement needs a product. The remedy is uniform: name the hypothesis before you use the tool, and check it. That habit costs a few seconds per problem and removes an entire class of confident errors.
+\end{keynote}
+
+One last remark on how these three families relate. They are not three topics but three places where the same gap opens: between what a formula lets you compute and what a definition actually asserts. In two variables the gap is between finitely many paths and the whole punctured disc. In the $\varepsilon$-$\delta$ section it is between a value you can evaluate and a claim you can certify. In the trap section it is between a rule and its hypotheses. A reader who closes that gap by habit will find that the hard problems in later chapters are hard for reasons of technique rather than of rigour, which is the position you want to be in.
+
+The matrix below is arranged in the order of this chapter, and it is meant to be read down the first column only. Almost every problem in the three families is identified by a surface feature: a denominator with mismatched exponents, the words ``prove that'', a floor bracket, a free parameter, a subtraction of two things that are individually equivalent to the same thing. Identification is the expensive step, and it is the one the matrix removes.
+
+\section{Recognition matrix}
+\begin{recog}{@{}p{0.30\textwidth}p{0.36\textwidth}p{0.28\textwidth}@{}}
+\rowcolor{mist}\mh{If you see} & \mh{Reach for} & \mh{If that fails} \\
+\midrule
+\endhead
+$\lim_{(x,y)\to(0,0)}P/Q$, monomials & Lines $y=mx$, and $x=0$ separately & Escalate to $y=kx^{2}$, then $y=kx^{3}$ \\
+Denominator $x^{2}+y^{2}$ or $x^{4}+y^{4}$ & Polar, bound uniform in $\theta$ & Split off the sector that resists \\
+Denominator $x^{2m}+y^{2}$, $m\geq2$ & Path $y=kx^{m}$; the terms balance there & No uniform polar bound exists \\
+A polar bound whose constant holds $\theta$ & Reject it: that is the line test & Strike out every trigonometric factor \\
+$\lim_{x\to0}\lim_{y\to0}f$ written out & An iterated limit, nothing more & Joint limit needs its own argument \\
+``Prove that $\lim_{x\to a}f=L$'' & Factor out $(x-a)$; restrict $\abs{x-a}<1$ & $\delta=\min\{1,\varepsilon/M\}$ \\
+A sequence, or $x\to\infty$ & $\varepsilon$-$N$ or $\varepsilon$-$M$; no punctured ball & Solve the inequality for $n$ or $x$ \\
+Piecewise formulas with parameters & Continuity equation first, then $f'$ & Compute the difference quotient by hand \\
+L'H\^opital returns the same quotient & Divide by the dominant term & $L=1/L$, once existence is known \\
+Arc length, variation, $\int F(f_n,f_n')$ & Draw the limiting object first & Check continuity of the functional \\
+Numerics drifting at the third digit & Prove the constant, then fit the residual & Ratio test on residuals: $\sqrt{10}$ per decade \\
+$\floorb{\cdot}$, $\ceilb{\cdot}$ or $\{\cdot\}$ & $t-1<\floorb t\leq t$, then squeeze & Weyl equidistribution for averages \\
+A parameter with the value prescribed & Match asymptotic orders; solve; keep all roots & Test each root against the stated range \\
+A parameter with the answer requested & Case-split at the critical value & Sketch the limit function \\
+Replacement across $+$ or $-$ & Expand both sides to a common order & Conjugate, or a bridging term \\
+\end{recog}

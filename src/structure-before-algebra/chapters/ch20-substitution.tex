@@ -1,0 +1,679 @@
+\chapter{The substitution families}
+
+\begin{orient}
+\textbf{What this chapter is for.} Substitution is not one technique. It is a small taxonomy, and almost all of the work of using it is deciding which family a given integrand belongs to before you write anything down. There are five families: differential spotting, where the derivative of an inner function is already present; the three trigonometric substitutions, selected by which of $\sqrt{a^2-x^2}$, $\sqrt{a^2+x^2}$, $\sqrt{x^2-a^2}$ you are looking at, together with their hyperbolic alternatives; the rationalising substitutions, which include Euler's three choices for a general quadratic radical and the plain device of setting $u$ equal to the radical itself; the Weierstrass substitution, which rationalises any rational function of $\sin x$ and $\cos x$ at a price; and the involutions $x\mapsto1/x$ and $x\mapsto a/x$, which do not simplify the integrand at all but map the integral to a relative of itself. This chapter teaches the recognition, the mechanics, and one discipline that prevents more errors than any other: for a definite integral, transform the limits at the same instant you transform the variable.
+\end{orient}
+
+\section{Recognising the differential}
+
+The change of variables theorem says that if $g$ is continuously differentiable on $[a,b]$ and $F$ is continuous on the image, then
+\[
+\int_a^b F\bigl(g(x)\bigr)g'(x)\dd x=\int_{g(a)}^{g(b)}F(u)\dd u .
+\]
+Everything in this chapter is that formula, used in one direction or the other. Used left to right it is simplification: a composite disappears and the integral becomes a table entry. Used right to left it is manufacture: you introduce a $g$ that was not there, in order that a radical or a trigonometric expression become algebraic. The two directions feel completely different in practice, and the families below are organised by which direction they use.
+
+It helps to know in advance which direction a given problem wants. Left to right, the integrand contains a composite and a spare factor, and the substitution removes both: this is the situation in which a substitution makes the integrand shorter. Right to left, the integrand contains no composite at all, only a radical or a trigonometric expression that is not in the table, and the substitution makes the integrand longer in the hope that the longer form is one you can finish. A solver who expects every substitution to shorten things will never try $x=a\sec\theta$, and a solver who reaches for a manufactured substitution when a spare factor was sitting in plain sight will do five times the necessary work.
+
+\begin{keynote}[Transform the limits at once]
+For a definite integral, write the new bounds in the same stroke as the substitution, before simplifying anything. A substitution written as $u=\sin^2x$, $x:0\to\pi/4$ becomes $u:0\to1/2$ costs one extra symbol and removes the single most common error in the subject, which is integrating in $u$ and then evaluating at the old bounds. It also removes the need to undo the substitution at the end, which for $x=a\sin\theta$ or $t=\tan\tfrac x2$ is the messiest step in the calculation. The one price is that you must check the substitution is monotone on the interval, since $g(a)$ and $g(b)$ do not determine the integral if $g$ turns around in between.
+\end{keynote}
+
+\tech{Spotting the differential}{easy}
+\cue A composite $F(g(x))$ multiplied by something proportional to $g'(x)$. The recurring pairs are $\sin2x$ beside $\sin^2x$, $x$ beside $x^2$, $\sec^2x$ beside $\tan x$, $1/x$ beside $\ln x$, and $\eu^x$ beside $\eu^x+c$.
+\method Set $u=g(x)$, compute $\dd u=g'(x)\dd x$ explicitly, solve for $\dd x$ rather than eyeballing it, and transform the bounds immediately. If the available factor is a constant multiple of $g'$, that constant comes out in front; if it is anything else, this is not the family you are in.
+
+\begin{worked}
+\[
+\int_0^{\pi/4}\frac{\sin2x}{\sin^2x+2}\dd x .
+\]
+The candidate inner function is $u=\sin^2x$, whose derivative is $2\sin x\cos x=\sin2x$, exactly the numerator. The bounds go $x:0\to\pi/4$, so $u:0\to\tfrac12$, and
+\[
+\int_0^{1/2}\frac{\dd u}{u+2}=\bigl[\ln(u+2)\bigr]_0^{1/2}=\ln\frac{5}{4}\approx0.223144 .
+\]
+A case where the constant is not $1$:
+\[
+\int_0^1\frac{x}{x^4+1}\dd x\;\xrightarrow{\;u=x^2,\;\dd u=2x\dd x\;}\;\frac12\int_0^1\frac{\dd u}{u^2+1}=\frac12\cdot\frac{\pi}{4}=\frac{\pi}{8}\approx0.392699 .
+\]
+The $x$ in the numerator is half of $\dd u/\dd x$; had the numerator been $x^2$ there would be no substitution here at all, and the integral would need partial fractions over $x^4+1=(x^2+\sqrt2x+1)(x^2-\sqrt2x+1)$.
+\end{worked}
+
+\begin{trap}
+Carrying the old bounds into the new variable, which turns $\int_0^{1/2}$ into $\int_0^{\pi/4}$ and produces a number that is wrong but plausible. The second failure is a lost constant: when $\dd u=k\,g'(x)\dd x$, the reciprocal $1/k$ must appear, and eyeballing $\dd x=\dd u$ is how it disappears. Solve for $\dd x$ in writing, every time.
+\end{trap}
+
+\begin{seealsob}The logarithmic form; the Trojan substitution; exponential substitution.\end{seealsob}
+
+One special case of differential spotting is common enough, and disguised often enough, to be worth separating. It is the case where the composite is a logarithm, so that the whole integrand is a quotient whose numerator is the derivative of its denominator.
+
+\tech[The logarithmic form]{The logarithmic form $\int g'/g$}{easy}
+\cue A quotient in which the numerator is exactly, or a constant multiple of, the derivative of the denominator. The disguise is usually one multiplication away: clearing a $\sec x$ or a reciprocal reveals the match.
+\method Confirm by differentiating the denominator and comparing with the numerator, not by pattern matching on shapes. Then
+\[
+\int\frac{g'(x)}{g(x)}\dd x=\ln\abs{g(x)}+C .
+\]
+The absolute value matters only when $g$ changes sign, and if it does inside the interval the integral is improper and $\ln\abs g$ is not an antiderivative across the zero.
+
+\begin{worked}
+The plain form: $\displaystyle\int_1^2\frac{2x+1}{x^2+x+1}\dd x=\bigl[\ln(x^2+x+1)\bigr]_1^2=\ln\frac73\approx0.847298$, the numerator being precisely the derivative of the denominator.
+
+The disguised form is more instructive. Consider
+\[
+\int_0^{\pi}\frac{\eu^x\sec x+1}{\eu^x\sec x+\tan x}\dd x .
+\]
+Nothing matches. Multiply numerator and denominator by $\cos x$, which is legitimate wherever $\cos x\neq0$ and extends by continuity across $x=\pi/2$:
+\[
+\frac{\eu^x\sec x+1}{\eu^x\sec x+\tan x}=\frac{\eu^x+\cos x}{\eu^x+\sin x}.
+\]
+Now the numerator is $\dfrac{\dd}{\dd x}\bigl(\eu^x+\sin x\bigr)$, and since $\eu^x+\sin x>0$ on $[0,\pi]$ the modulus is unnecessary:
+\[
+\bigl[\ln(\eu^x+\sin x)\bigr]_0^{\pi}=\ln \eu^{\pi}-\ln1=\pi ,
+\]
+confirmed numerically as $3.141592653590$.
+\end{worked}
+
+Two more, to fix the shape in the eye. First, $\displaystyle\int_0^{\pi/3}\tan x\dd x=-\int_0^{\pi/3}\frac{-\sin x}{\cos x}\dd x=-\bigl[\ln\abs{\cos x}\bigr]_0^{\pi/3}=\ln2$, where the minus sign is the whole difficulty and is supplied by $g=\cos x$. Second, $\displaystyle\int_1^{\eu}\frac{(\ln x)^2}{x}\dd x=\bigl[\tfrac13(\ln x)^3\bigr]_1^{\eu}=\tfrac13$, which is differential spotting rather than the logarithmic form: here $1/x$ is $g'$ for $g=\ln x$ and the outer function is a square, not a reciprocal. The distinction matters because $\int\dfrac{\dd x}{x\ln x}=\ln\abs{\ln x}$ while $\int\dfrac{\ln x}{x}\dd x=\tfrac12(\ln x)^2$, and the two are confused constantly.
+
+\begin{trap}
+Omitting the absolute value and then integrating across a zero of $g$. For $\int_{-1}^{1}\frac{2x}{x^2-4}\dd x$ the denominator never vanishes and $\ln\abs{x^2-4}$ is fine; for $\int_1^3$ the same expression the denominator vanishes at $x=2$ and the integral diverges, though the naive evaluation $\ln5-\ln3$ returns a finite number without complaint.
+\end{trap}
+
+\begin{seealsob}Spotting the differential; partial fractions with distinct linear factors; the Trojan substitution.\end{seealsob}
+
+Differential spotting fails in an interesting way when the factor in front of the composite is a \emph{sum}, no term of which is the derivative of the inner function, while the sum as a whole is. Solvers trained to match single factors miss these completely, and splitting the sum makes both halves intractable.
+
+\tech{The Trojan substitution}{hard}
+\cue A bracketed sum multiplying a composite, where no individual term looks like a derivative: $(\tan x+\tan^3x)$ beside $\eu^{\tan^2x}$, $(\ln x+1)$ beside $x^x$, $(1-x^{-2})$ beside a function of $x+1/x$.
+\method Differentiate the plausible inner function and compare against the \emph{whole} bracket. The characteristic algebra is that $\tfrac{\dd}{\dd x}\tan^2x=2\tan x\sec^2x=2\tan x(1+\tan^2x)=2(\tan x+\tan^3x)$: the sum is the differential, and the factor of $2$ is the only thing to keep track of.
+
+\begin{worked}
+\[
+\int_0^{\pi/4}\bigl(\tan x+\tan^3x\bigr)\eu^{\tan^2x}\dd x .
+\]
+Put $u=\tan^2x$, so $\dd u=2(\tan x+\tan^3x)\dd x$ and $u:0\to1$. The integral is
+\[
+\frac12\int_0^1\eu^u\dd u=\frac{\eu-1}{2}\approx0.859141 ,
+\]
+which quadrature confirms. The other classic in the family:
+\[
+\int_1^{\eu}\bigl(\ln x+1\bigr)x^x\dd x=\bigl[x^x\bigr]_1^{\eu}=\eu^{\eu}-1\approx14.154262 ,
+\]
+because $x^x=\eu^{x\ln x}$ has derivative $x^x(\ln x+1)$. Neither $\int\ln x\cdot x^x\dd x$ nor $\int x^x\dd x$ is elementary on its own.
+
+The hardest member of the family is the one built on $u=x+\dfrac1x$, whose differential is $\Bigl(1-\dfrac{1}{x^2}\Bigr)\dd x$. The bracket is invisible until you divide numerator and denominator by a power of $x$:
+\[
+\int_1^2\frac{x^2-1}{(x^2+1)\sqrt{x^4+1}}\dd x
+=\int_1^2\frac{1-x^{-2}}{(x+x^{-1})\sqrt{x^2+x^{-2}}}\dd x ,
+\]
+having divided the numerator by $x$, the first factor of the denominator by $x$, and the radical by $x^2$. Now $x^2+x^{-2}=u^2-2$, so with $u:2\to\tfrac52$,
+\[
+\int_2^{5/2}\frac{\dd u}{u\sqrt{u^2-2}}=\frac{1}{\sqrt2}\Bigl[\arccos\frac{\sqrt2}{u}\Bigr]_2^{5/2}
+=\frac{1}{\sqrt2}\Bigl(\arccos\frac{2\sqrt2}{5}-\frac{\pi}{4}\Bigr)\approx0.130202 ,
+\]
+the antiderivative being the secant-substitution collapse $\dfrac{\dd u}{u\sqrt{u^2-a^2}}=\dfrac{\dd\theta}{a}$ from earlier in this chapter.
+\end{worked}
+
+\begin{trap}
+Splitting the bracket and attacking the pieces separately. In both examples above each piece is individually non-elementary, so the split does not merely lengthen the work, it destroys the problem. Whenever a bracketed sum multiplies an awkward composite, differentiate the composite's argument before doing anything else.
+\end{trap}
+
+\begin{seealsob}Spotting the differential; the logarithmic form; rationalising a radical by substitution.\end{seealsob}
+
+\section{The three trigonometric substitutions, and their hyperbolic rivals}
+
+The remaining families run the change of variables formula backwards. You introduce a new variable in order to make an irrational expression rational, and the choice is dictated entirely by the shape of the radical. Three shapes, three substitutions, and the identity that each one exploits is the Pythagorean identity in one of its three forms: $1-\sin^2=\cos^2$, $1+\tan^2=\sec^2$, $\sec^2-1=\tan^2$. Once the quadratic under the radical has been completed and shifted by the previous chapter's method, every radical of a quadratic is in one of the three shapes, so the classification is exhaustive.
+
+The tree below adds the two shapes that are not radicals of quadratics at all: a rational function of $\sin$ and $\cos$, which needs Weierstrass, and a radical of a linear or fractional-power expression, which needs only that you name the radical.
+
+\begin{center}
+\begin{tikzpicture}[node distance=6mm and 8mm]
+\node[dtest] (a) {Radical of a quadratic?};
+\node[dtest, below left=9mm and 8mm of a] (b) {Which sign pattern,\\ after completing the square?};
+\node[dtest, below right=9mm and 2mm of a] (c) {Rational in $\sin x,\cos x$?};
+\node[dleaf, below left=10mm and 2mm of b] (d) {$k^2-u^2$: $u=k\sin\theta$\\ $u^2+k^2$: $u=k\sinh t$\\ $u^2-k^2$: $u=k\cosh t$};
+\node[dnode, below right=10mm and 2mm of b] (e) {Coefficients ugly:\\ Euler substitution};
+\node[dleaf, below left=10mm and 1mm of c] (f) {$t=\tan\tfrac x2$;\\ $t=\tan x$ if even};
+\node[dleaf, below right=10mm and 1mm of c] (g) {Set $u$ equal to\\ the radical itself};
+\draw[dedge] (a) -- node[dlab,left]{yes} (b);
+\draw[dedge] (a) -- node[dlab,right]{no} (c);
+\draw[dedge] (b) -- node[dlab,left]{clean} (d);
+\draw[dedge] (b) -- node[dlab,right]{general} (e);
+\draw[dedge] (c) -- node[dlab,left]{yes} (f);
+\draw[dedge] (c) -- node[dlab,right]{no} (g);
+\end{tikzpicture}
+\end{center}
+
+The three trigonometric rows of that tree are worth setting out in full, because the whole of this section is contained in them and because the last column, the range restriction, is what most solvers omit and later regret.
+
+\begin{center}
+\footnotesize
+\setlength{\tabcolsep}{5pt}
+\renewcommand{\arraystretch}{1.32}
+\begin{tabular}{@{}lllll@{}}
+\toprule
+\mh{Radical} & \mh{Put} & \mh{Radical becomes} & \mh{$\dd x$} & \mh{Range} \\
+\midrule
+$\sqrt{a^2-x^2}$ & $x=a\sin\theta$ & $a\cos\theta$ & $a\cos\theta\dd\theta$ & $\theta\in[-\tfrac\pi2,\tfrac\pi2]$ \\
+$\sqrt{a^2+x^2}$ & $x=a\tan\theta$ & $a\sec\theta$ & $a\sec^2\theta\dd\theta$ & $\theta\in(-\tfrac\pi2,\tfrac\pi2)$ \\
+$\sqrt{x^2-a^2}$ & $x=a\sec\theta$ & $a\tan\theta$ & $a\sec\theta\tan\theta\dd\theta$ & $\theta\in[0,\tfrac\pi2)$, $x\geq a$ \\
+$\sqrt{a^2+x^2}$ & $x=a\sinh t$ & $a\cosh t$ & $a\cosh t\dd t$ & $t\in\R$, no restriction \\
+$\sqrt{x^2-a^2}$ & $x=a\cosh t$ & $a\sinh t$ & $a\sinh t\dd t$ & $t\geq0$, $x\geq a$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{keynote}[The range column is not decoration]
+Each substitution is stated with a range because each is a change of variables, and a change of variables must be invertible on the interval in question. The ranges in the table are exactly the intervals on which $\sin$, $\tan$ and $\sec$ are strictly monotone, so each has a genuine inverse there and the transformed bounds are unambiguous. Three consequences follow, and they are the three errors this section exists to prevent. Since $\cos\theta\geq0$ on $[-\tfrac\pi2,\tfrac\pi2]$, the identity $\sqrt{a^2-x^2}=a\cos\theta$ holds without a modulus, and only there. Since $\sec\theta\geq1$ on $[0,\tfrac\pi2)$, the secant substitution reaches only $x\geq a$, and the branch $x\leq-a$ needs $\theta\in(\tfrac\pi2,\pi]$ with $\sqrt{x^2-a^2}=-a\tan\theta$. And since $\tan\theta$ sweeps all of $\R$ as $\theta$ crosses $(-\tfrac\pi2,\tfrac\pi2)$, the tangent substitution alone imposes no restriction on $x$ at all, which is why it is the only one of the three that never needs a case split.
+\end{keynote}
+
+Read the table as a statement about which identity is being used. The first row is $1-\sin^2=\cos^2$, the second $1+\tan^2=\sec^2$, the third $\sec^2-1=\tan^2$, and the last two are $\cosh^2-\sinh^2=1$ read in its two directions. There is no fourth shape, because after completing the square every quadratic is $\pm u^2\pm k^2$ and the case with both signs negative has no real square root at all.
+
+\tech[Sine substitution]{Sine substitution for $\sqrt{a^2-x^2}$}{easy}
+\cue $\sqrt{a^2-x^2}$, or any power of $a^2-x^2$ with a half-integer exponent, on an interval inside $[-a,a]$.
+\method Put $x=a\sin\theta$ with $\theta\in[-\tfrac\pi2,\tfrac\pi2]$, so that $\dd x=a\cos\theta\dd\theta$ and $\sqrt{a^2-x^2}=a\abs{\cos\theta}=a\cos\theta$, the modulus being removable precisely because of the principal range. The integrand becomes a polynomial in $\sin$ and $\cos$, finished by power reduction.
+
+\begin{worked}
+\[
+\int_0^1\sqrt{1-x^2}\dd x=\int_0^{\pi/2}\cos^2\theta\dd\theta=\frac{\pi}{4},
+\]
+the bounds having moved as $x:0\to1$ gives $\theta:0\to\pi/2$. Two variants that show the pattern:
+\[
+\int_0^1\frac{x^2}{\sqrt{1-x^2}}\dd x=\int_0^{\pi/2}\sin^2\theta\dd\theta=\frac{\pi}{4},
+\qquad
+\int_0^1x^2\sqrt{1-x^2}\dd x=\int_0^{\pi/2}\sin^2\theta\cos^2\theta\dd\theta=\frac{\pi}{16}\approx0.196350 ,
+\]
+the last by $\sin^2\theta\cos^2\theta=\tfrac14\sin^22\theta=\tfrac18(1-\cos4\theta)$. In every case the $\dd x$ supplied one factor of $a\cos\theta$ and the radical supplied another, which is why the powers of cosine come out even. An odd half-integer power behaves the same way, only with more cosines:
+\[
+\int_0^{a}\bigl(a^2-x^2\bigr)^{3/2}\dd x=a^4\int_0^{\pi/2}\cos^4\theta\dd\theta=\frac{3\pi a^4}{16},
+\]
+three factors of $a\cos\theta$ from the radical and one from $\dd x$. At $a=2$ this is $3\pi\approx9.424778$, which quadrature confirms.
+
+The shape rarely arrives already centred. When it does not, complete the square first, exactly as the previous chapter prescribes:
+\[
+\int_0^1\sqrt{2x-x^2}\dd x=\int_0^1\sqrt{1-(x-1)^2}\dd x
+\;\xrightarrow{\;u=x-1\;}\;\int_{-1}^{0}\sqrt{1-u^2}\dd u=\int_{-\pi/2}^{0}\cos^2\theta\dd\theta=\frac{\pi}{4},
+\]
+the geometric reading being that this is a quarter of the unit disc. Two substitutions were made and both moved their bounds at the moment they were written.
+\end{worked}
+
+\begin{trap}
+Dropping the modulus outside the principal range. If a problem forces $\theta$ past $\pi/2$, then $\sqrt{a^2\cos^2\theta}=a\abs{\cos\theta}$ and the sign flips. The other standard error appears when the integral is indefinite: undoing the substitution requires $\sin2\theta=2\sin\theta\cos\theta=\dfrac{2x\sqrt{a^2-x^2}}{a^2}$, and writing $\theta$ where $\sin2\theta$ belongs loses the algebraic term entirely.
+\end{trap}
+
+\begin{seealsob}Tangent substitution; completing the square; hyperbolic substitution.\end{seealsob}
+
+The second shape has no bounded interval and no modulus problem, which makes it the easiest of the three, and it also covers integer powers of $x^2+a^2$ where no factor of $x$ is available to absorb into a differential.
+
+\tech[Tangent substitution]{Tangent substitution for $a^2+x^2$}{easy}
+\cue Any power of $x^2+a^2$, especially a half-integer power, with no $x$ in the numerator to serve as part of $\dd u$.
+\method Put $x=a\tan\theta$, so $\dd x=a\sec^2\theta\dd\theta$ and $a^2+x^2=a^2\sec^2\theta$. The secants cancel against each other and what remains is a plain sine or cosine integral. If $\tan^2\theta$ survives, rewrite it as $\sec^2\theta-1$ rather than converting to sines and cosines.
+
+\begin{worked}
+\[
+\int_0^1\frac{\dd x}{(1+x^2)^{3/2}}=\int_0^{\pi/4}\frac{\sec^2\theta}{\sec^3\theta}\dd\theta=\int_0^{\pi/4}\cos\theta\dd\theta=\frac{1}{\sqrt2}\approx0.707107 .
+\]
+With an integer power the cancellation leaves an even power of cosine:
+\[
+\int_0^{\sqrt3}\frac{\dd x}{(1+x^2)^2}=\int_0^{\pi/3}\cos^2\theta\dd\theta=\Bigl[\frac{\theta}{2}+\frac{\sin2\theta}{4}\Bigr]_0^{\pi/3}=\frac{\pi}{6}+\frac{\sqrt3}{8}\approx0.740105 .
+\]
+Reading the same computation backwards gives the standard antiderivative $\displaystyle\int\frac{\dd x}{(1+x^2)^2}=\frac12\Bigl(\frac{x}{1+x^2}+\arctan x\Bigr)+C$, which is worth memorising because it appears in every partial-fraction problem with a repeated quadratic.
+
+On an unbounded interval the substitution is at its best, because the improperness disappears entirely:
+\[
+\int_0^{\infty}\frac{\dd x}{(1+x^2)^2}=\int_0^{\pi/2}\cos^2\theta\dd\theta=\frac{\pi}{4}\approx0.785398 .
+\]
+The upper bound $\theta=\pi/2$ is a genuine number and the integrand $\cos^2\theta$ is continuous there, so nothing about the transformed problem remembers that the original ran to infinity.
+\end{worked}
+
+\begin{trap}
+Cancelling one power of secant too many by forgetting that $\dd x$ contributed $\sec^2\theta$. Count the powers explicitly: $(a^2+x^2)^{-n}$ contributes $\sec^{-2n}$, the differential contributes $\sec^{+2}$, so the net is $\cos^{2n-2}\theta$. The second point is the bound: on $[0,\infty)$ the new upper limit is $\pi/2$, a finite number, so no improper integral survives the substitution.
+\end{trap}
+
+\begin{seealsob}Sine substitution; numerator alignment; hyperbolic substitution.\end{seealsob}
+
+The third shape is the awkward one. The secant substitution works, but its inverse is two-valued and the interval $\abs x\geq a$ has two components, so it demands care that the other two do not.
+
+\tech[Secant substitution]{Secant substitution for $\sqrt{x^2-a^2}$}{medium}
+\cue $\sqrt{x^2-a^2}$ with $x\geq a$, especially in the combinations $\dfrac{\sqrt{x^2-a^2}}{x}$ and $\dfrac{1}{x^n\sqrt{x^2-a^2}}$.
+\method Put $x=a\sec\theta$ with $\theta\in[0,\tfrac\pi2)$, so $\dd x=a\sec\theta\tan\theta\dd\theta$ and $\sqrt{x^2-a^2}=a\tan\theta$. The two signature simplifications are
+\[
+\frac{\dd x}{x\sqrt{x^2-a^2}}=\frac{\dd\theta}{a},
+\qquad
+\frac{\sqrt{x^2-a^2}}{x}\dd x=a\tan^2\theta\dd\theta ,
+\]
+and the first of these is why the family is worth a separate name: a factor of $x$ in the denominator, which ruins the other substitutions, is exactly what secant wants.
+
+\begin{worked}
+\[
+\int_1^{\infty}\frac{\dd x}{x^5\sqrt{x^2-1}} .
+\]
+With $x=\sec\theta$ the bounds run $\theta:0\to\pi/2$, and the integrand becomes
+\[
+\frac{\sec\theta\tan\theta}{\sec^5\theta\tan\theta}\dd\theta=\cos^4\theta\dd\theta ,
+\]
+so the value is $\int_0^{\pi/2}\cos^4\theta\dd\theta=\dfrac{3\pi}{16}\approx0.589049$ by power reduction. Note that an improper integral in $x$ became a proper one in $\theta$.
+
+A finite version, showing the bounds at work: for $\displaystyle\int_{\sqrt2}^{2}\frac{\dd x}{x^3\sqrt{x^2-1}}$, the bounds go $\theta:\pi/4\to\pi/3$ and the integrand becomes $\cos^2\theta\dd\theta$, giving
+\[
+\Bigl[\frac\theta2+\frac{\sin2\theta}{4}\Bigr]_{\pi/4}^{\pi/3}=\frac{\pi}{24}+\frac{\sqrt3}{8}-\frac14\approx0.097406 .
+\]
+\end{worked}
+
+\begin{trap}
+Applying one secant substitution across an interval that straddles the gap $(-a,a)$. For $x\leq-a$ the correct simplification is $\sqrt{x^2-a^2}=-a\tan\theta$, so an interval such as $[-2,-1]$ needs its own branch and an interval such as $[-2,2]$ is not an integral of a real function at all. Split, or use the symmetry, but never substitute through the gap.
+\end{trap}
+
+\begin{seealsob}Hyperbolic substitution; trigonometric identity pre-processing; completing the square.\end{seealsob}
+
+The second and third shapes have hyperbolic alternatives, and there are three specific reasons to prefer them rather than one general one. Knowing the reasons is what turns this from a matter of taste into a decision.
+
+\tech{Hyperbolic substitution}{medium}
+\cue $\sqrt{x^2+a^2}$ or $\sqrt{x^2-a^2}$, especially on an unbounded interval, or when the expected answer is a logarithm rather than a trigonometric expression, or when the integrand already contains $\cosh$, $\sinh$ or $\sech$.
+\method Put $x=a\sinh t$, giving $\sqrt{x^2+a^2}=a\cosh t$ and $\dd x=a\cosh t\dd t$; or $x=a\cosh t$, giving $\sqrt{x^2-a^2}=a\sinh t$ and $\dd x=a\sinh t\dd t$. The two quotable results are
+\[
+\int\frac{\dd x}{\sqrt{x^2+a^2}}=\operatorname{arsinh}\frac xa+C=\ln\bigl(x+\sqrt{x^2+a^2}\bigr)+C',
+\qquad
+\int\frac{\dd x}{\sqrt{x^2-a^2}}=\ln\bigl(x+\sqrt{x^2-a^2}\bigr)+C .
+\]
+Three reasons to prefer these over tangent and secant: $\cosh t>0$ for all real $t$, so there is never a modulus to track; the substitution is monotone on the whole line, so an unbounded interval maps to an unbounded interval without any endpoint reaching a place where the substitution degenerates; and the answer comes out in logarithms, which is the form a rational or algebraic problem usually wants.
+
+\begin{worked}
+\[
+\int_0^1\frac{\dd x}{\sqrt{x^2+1}}=\operatorname{arsinh}1=\ln\bigl(1+\sqrt2\bigr)\approx0.881374 .
+\]
+With the substitution carried through a harder integrand, $x=\sinh t$ turns $\sqrt{x^2+1}\dd x$ into $\cosh^2t\dd t=\tfrac12(1+\cosh2t)\dd t$, so
+\[
+\int_0^1\sqrt{x^2+1}\dd x=\Bigl[\frac{t}{2}+\frac{\sinh2t}{4}\Bigr]_0^{T}=\frac{T}{2}+\frac{\sinh T\cosh T}{2}
+=\frac{\ln(1+\sqrt2)+\sqrt2}{2}\approx1.147794 ,
+\]
+where $T=\operatorname{arsinh}1$, so $\sinh T=1$ and $\cosh T=\sqrt2$. The tangent substitution reaches the same number through $\int\sec^3\theta\dd\theta$, which requires a cyclic integration by parts; the hyperbolic route needs only $\cosh^2=\tfrac12(1+\cosh2t)$.
+
+The third advantage, monotonicity on an unbounded interval, shows itself here:
+\[
+\int_0^{\infty}\frac{\dd x}{(x^2+1)^{3/2}}=\int_0^{\infty}\frac{\cosh t\dd t}{\cosh^3t}=\int_0^{\infty}\sech^2t\dd t=\bigl[\tanh t\bigr]_0^{\infty}=1 .
+\]
+The transformed integral is still improper, but its integrand decays like $4\eu^{-2t}$ and the antiderivative is a table entry with a finite limit. The tangent substitution reaches the same answer as $\int_0^{\pi/2}\cos\theta\dd\theta$, which is arguably tidier; the point is that neither substitution needed a modulus, a branch, or a split, and $x=\sinh t$ never will, whatever the interval.
+\end{worked}
+
+\begin{trap}
+Treating $\operatorname{arcosh}$ as though it were odd. It is real only for $x\geq a$ and its logarithmic form $\ln(x+\sqrt{x^2-a^2})$ is valid on that branch alone; for $x\leq-a$ the antiderivative is $-\ln\bigl(\abs x+\sqrt{x^2-a^2}\bigr)$. The compensating virtue is that $\operatorname{arsinh}$ has no such restriction at all, which is why $\sqrt{x^2+a^2}$ should essentially always be handled hyperbolically.
+\end{trap}
+
+\begin{seealsob}Secant substitution; completing the square; Euler substitutions.\end{seealsob}
+
+\subsection{One radical, three substitutions}
+
+The choice between secant, cosine hyperbolic, and simply naming the radical is best settled by watching all three act on the same integral. Take
+\[
+I=\int_1^2\frac{\sqrt{x^2-1}}{x}\dd x .
+\]
+
+\emph{By secant.} Put $x=\sec\theta$, so $\sqrt{x^2-1}=\tan\theta$ and $\dd x=\sec\theta\tan\theta\dd\theta$, with $\theta:0\to\pi/3$. The integrand becomes $\tan^2\theta\dd\theta=(\sec^2\theta-1)\dd\theta$, so
+\[
+I=\bigl[\tan\theta-\theta\bigr]_0^{\pi/3}=\sqrt3-\frac{\pi}{3}\approx0.684853 .
+\]
+
+\emph{By cosine hyperbolic.} Put $x=\cosh t$, so $\sqrt{x^2-1}=\sinh t$ and $\dd x=\sinh t\dd t$. The integrand becomes $\dfrac{\sinh^2t}{\cosh t}\dd t=\bigl(\cosh t-\sech t\bigr)\dd t$, whose antiderivative is $\sinh t-\arctan(\sinh t)$. Since $\sinh t=\sqrt{x^2-1}$ and $\arctan\sqrt{x^2-1}=\arcsec x$ for $x\geq1$, this is the same antiderivative in different clothes, and $I=\sqrt3-\tfrac\pi3$ again.
+
+\emph{By naming the radical.} Put $u=\sqrt{x^2-1}$, so $u^2=x^2-1$, $u\dd u=x\dd x$, and $u:0\to\sqrt3$. Then
+\[
+\frac{\sqrt{x^2-1}}{x}\dd x=\frac ux\cdot\frac{u\dd u}{x}=\frac{u^2}{u^2+1}\dd u=\Bigl(1-\frac{1}{u^2+1}\Bigr)\dd u ,
+\]
+so $I=\bigl[u-\arctan u\bigr]_0^{\sqrt3}=\sqrt3-\dfrac{\pi}{3}$, in four lines and with no trigonometry at all.
+
+The third route was shortest, and that is not an accident: whenever the radical appears to an odd power alongside a compensating $x$, naming it is better than any trigonometric substitution. The secant route is best when the radical appears with a bare $x^n$ in the denominator, since $\dfrac{\dd x}{x\sqrt{x^2-a^2}}$ collapses to $\dd\theta/a$. And the hyperbolic route is best when the interval is unbounded or the expected answer is logarithmic. Three tools, three regimes, and knowing the regimes is the whole content of the choice.
+
+\section{Rationalising: Euler, Weierstrass, and naming the radical}
+
+Trigonometric and hyperbolic substitutions convert an algebraic integrand into a trigonometric one, which is progress only if the resulting trigonometric integral is easy. Sometimes it is not, and then the better move is to go the other way: choose a substitution that makes the integrand a \emph{rational function}, which the previous chapter guarantees can always be finished. Euler's substitutions do this for a radical of a general quadratic; the Weierstrass substitution does it for any rational function of $\sin$ and $\cos$; and for a radical of something linear or fractional, naming the radical does it in one line.
+
+\tech{Euler substitutions for a general quadratic radical}{hard}
+\cue $\sqrt{ax^2+bx+c}$ multiplied by a rational function, where completing the square is legal but produces a trigonometric integral you do not want.
+\method Three choices, at least one of which always applies.
+\emph{(i)} If $a>0$, set $\sqrt{ax^2+bx+c}=t-\sqrt a\,x$.
+\emph{(ii)} If $c>0$, set $\sqrt{ax^2+bx+c}=xt+\sqrt c$.
+\emph{(iii)} If the quadratic has real roots $r_1\neq r_2$, set $\sqrt{a(x-r_1)(x-r_2)}=t(x-r_1)$.
+In each case, squaring cancels the leading term and leaves a linear equation for $x$ in terms of $t$, so $x$, $\dd x$ and the radical are all rational in $t$ and the whole integrand becomes a rational function.
+
+\begin{keynote}[Which of the three to use]
+The choices are not interchangeable, and the rule is short. Use \emph{(iii)} whenever the quadratic has real roots, because it is the only one of the three that keeps the radical of one sign across the interval. Otherwise the quadratic is definite, and if it is positive definite both \emph{(i)} and \emph{(ii)} apply: take \emph{(ii)} when the interval has an endpoint at or near $x=0$, since $t=\dfrac{\sqrt{ax^2+bx+c}-\sqrt c}{x}$ is then the well behaved formula, and \emph{(i)} otherwise, since $t=x\sqrt a+\sqrt{ax^2+bx+c}$ is well behaved everywhere else and is the tidiest algebra of the three. If the quadratic is negative definite there is no real radical and no integral to compute. That exhausts the cases, which is why the three substitutions are stated as three and not as a list to be searched.
+\end{keynote}
+
+\begin{worked}
+\[
+\int_0^1\frac{\dd x}{(x+1)\sqrt{x^2+x+1}} .
+\]
+Here $c=1>0$, so take choice (ii): $\sqrt{x^2+x+1}=xt+1$. Squaring, $x^2+x+1=x^2t^2+2xt+1$, so $x+1=xt^2+2t$ and
+\[
+x=\frac{2t-1}{1-t^2},\qquad \sqrt{x^2+x+1}=xt+1=\frac{t^2-t+1}{1-t^2},\qquad
+\dd x=\frac{2(t^2-t+1)}{(1-t^2)^2}\dd t .
+\]
+Also $x+1=\dfrac{2t-t^2}{1-t^2}=\dfrac{t(2-t)}{1-t^2}$. The bounds follow from $t=\dfrac{\sqrt{x^2+x+1}-1}{x}$, so $x=0$ gives $t=\tfrac12$ (by the limit) and $x=1$ gives $t=\sqrt3-1$. Assembling, everything except $\dfrac{2\dd t}{t(2-t)}$ cancels, and partial fractions give
+\[
+\int_{1/2}^{\sqrt3-1}\frac{2\dd t}{t(2-t)}=\Bigl[\ln\frac{t}{2-t}\Bigr]_{1/2}^{\sqrt3-1}
+=\ln\frac{\sqrt3-1}{3-\sqrt3}+\ln3=\ln\frac{1}{\sqrt3}+\ln3=\tfrac12\ln3\approx0.549306 ,
+\]
+using $3-\sqrt3=\sqrt3(\sqrt3-1)$. Quadrature on the original integrand returns $0.549306144334$, and $\tfrac12\ln3=0.549306144334$.
+\end{worked}
+
+The first choice is worth seeing once as well, because it is the one that applies whenever $a>0$ and because it produces the tidiest algebra of the three. With $\sqrt{x^2+1}=t-x$, squaring gives $1=t^2-2tx$, so
+\[
+x=\frac{t^2-1}{2t},\qquad \dd x=\frac{t^2+1}{2t^2}\dd t,\qquad x+\sqrt{x^2+1}=t ,
+\]
+and the bounds follow from $t=x+\sqrt{x^2+1}$, running $t:1\to1+\sqrt2$ as $x:0\to1$. Hence
+\[
+\int_0^1\frac{\dd x}{x+\sqrt{x^2+1}}=\int_1^{1+\sqrt2}\frac{t^2+1}{2t^3}\dd t
+=\frac12\Bigl[\ln t-\frac{1}{2t^2}\Bigr]_1^{1+\sqrt2}
+=\frac{\sqrt2-1+\ln(1+\sqrt2)}{2}\approx0.647794 ,
+\]
+using $(1+\sqrt2)^2=3+2\sqrt2$ and $\dfrac{1}{3+2\sqrt2}=3-2\sqrt2$. The substitution $t=x+\sqrt{x^2+1}$ is of course $\eu^{\operatorname{arsinh}x}$, which is why the answer contains a logarithm and why the hyperbolic substitution would have reached the same place.
+
+The third choice is the one to reach for when the quadratic has real roots, because then the other two produce a radical that changes sign inside the interval while this one does not. Take $\sqrt{x^2-3x+2}=\sqrt{(x-1)(x-2)}$ and set it equal to $t(x-1)$. Squaring and cancelling one factor of $x-1$ gives $x-2=t^2(x-1)$, so
+\[
+x=\frac{2-t^2}{1-t^2},\qquad x-1=\frac{1}{1-t^2},\qquad \dd x=\frac{2t}{(1-t^2)^2}\dd t,\qquad \sqrt{x^2-3x+2}=\frac{t}{1-t^2},
+\]
+and therefore $\dfrac{\dd x}{\sqrt{x^2-3x+2}}=\dfrac{2\dd t}{1-t^2}$, whose antiderivative is $\ln\dfrac{1+t}{1-t}$. With $t=\sqrt{\dfrac{x-2}{x-1}}$ the bounds $x:3\to5$ become $t:\tfrac{1}{\sqrt2}\to\tfrac{\sqrt3}{2}$, so
+\[
+\int_3^5\frac{\dd x}{\sqrt{x^2-3x+2}}=\ln\bigl(7+4\sqrt3\bigr)-\ln\bigl(3+2\sqrt2\bigr)=2\ln\frac{2+\sqrt3}{1+\sqrt2}\approx0.871169 .
+\]
+The same substitution earns its keep when a rational factor is present and completing the square would leave a secant integral. For instance $\sqrt{x-x^2}=\sqrt{x(1-x)}$ has roots $0$ and $1$; setting $\sqrt{x(1-x)}=tx$ gives $x=\dfrac{1}{1+t^2}$, $\dd x=\dfrac{-2t\dd t}{(1+t^2)^2}$, and $\dfrac{\dd x}{\sqrt{x-x^2}}=\dfrac{-2\dd t}{1+t^2}$. The bounds run backwards, $x:0\to1$ giving $t:\infty\to0$, and the two minus signs cancel:
+\[
+\int_0^1\frac{\dd x}{(2-x)\sqrt{x-x^2}}=\int_0^{\infty}\frac{2\dd t}{1+2t^2}=\frac{\pi}{\sqrt2}\approx2.221441 ,
+\]
+since $2-x=\dfrac{1+2t^2}{1+t^2}$ cancels one factor of $1+t^2$. The general statement, worth carrying, is that $\displaystyle\int_0^1\frac{\dd x}{(b-x)\sqrt{x(1-x)}}=\frac{\pi}{\sqrt{b(b-1)}}$ for $b>1$; at $b=2$ that is $\pi/\sqrt2$ and at $b=3$ it is $\pi/\sqrt6\approx1.282550$, both of which quadrature confirms.
+
+\begin{trap}
+The bounds. Each Euler substitution is a Mobius map in disguise, so it has a pole, and the branch of the square root fixed by the choice determines which side of that pole you are on. Compute the new bounds from the explicit formula for $t$ in terms of $x$, never by solving the quadratic afresh at each endpoint, and check that the interval in $t$ does not contain the pole.
+\end{trap}
+
+\begin{seealsob}Rationalising a radical by substitution; completing the square; the Weierstrass substitution.\end{seealsob}
+
+Euler rationalises an algebraic integrand. The corresponding universal tool on the trigonometric side is the Weierstrass substitution, which is guaranteed to work and, for that reason, is usually the wrong first choice: a guarantee that applies to everything gives no information, and the price it charges is a rational function of higher degree than any identity-based route would have produced.
+
+\tech[Weierstrass substitution]{The Weierstrass substitution $t=\tan(x/2)$}{medium}
+\cue A rational function of $\sin x$ and $\cos x$ that has resisted every identity: $\dfrac{1}{a+b\cos x}$, $\dfrac{1}{\sin x+\cos x+1}$, $\dfrac{1}{a\sin x+b\cos x+c}$.
+\method With $t=\tan\tfrac x2$,
+\[
+\sin x=\frac{2t}{1+t^2},\qquad \cos x=\frac{1-t^2}{1+t^2},\qquad \tan x=\frac{2t}{1-t^2},\qquad \dd x=\frac{2\dd t}{1+t^2},
+\]
+together with the derived forms
+\[
+\sec x=\frac{1+t^2}{1-t^2},\qquad \csc x=\frac{1+t^2}{2t},\qquad \cot x=\frac{1-t^2}{2t},\qquad
+1+\cos x=\frac{2}{1+t^2},\qquad 1-\cos x=\frac{2t^2}{1+t^2},
+\]
+and $x=2\arctan t$ for the return trip. Every one of these is a rational function of $t$, which is the content of the substitution: the field generated by $\sin x$ and $\cos x$ over the rationals is the field of rational functions of $t$, so the integrand becomes rational in $t$ unconditionally. The last two entries are worth noticing separately, because they say that the half-angle identities of the previous chapter and this substitution are the same fact written twice. When the integrand is invariant under $x\mapsto x+\pi$, which happens exactly when only even powers of $\sin$ and $\cos$ occur or when the integrand is a function of $\tan x$, prefer the cheaper $t=\tan x$ with $\sin^2x=\dfrac{t^2}{1+t^2}$, $\cos^2x=\dfrac{1}{1+t^2}$, $\dd x=\dfrac{\dd t}{1+t^2}$, which halves the degree.
+
+\begin{worked}
+\[
+\int_0^{\pi/2}\frac{\dd x}{2+\cos x} .
+\]
+With $t=\tan\tfrac x2$ the bounds go $t:0\to1$, and $2+\cos x=\dfrac{2(1+t^2)+(1-t^2)}{1+t^2}=\dfrac{3+t^2}{1+t^2}$, so the $1+t^2$ from $\dd x$ cancels:
+\[
+\int_0^1\frac{2\dd t}{3+t^2}=\frac{2}{\sqrt3}\Bigl[\arctan\frac{t}{\sqrt3}\Bigr]_0^1=\frac{2}{\sqrt3}\cdot\frac{\pi}{6}=\frac{\pi\sqrt3}{9}\approx0.604600 .
+\]
+A case where the rational function is even simpler than the original:
+\[
+\int_0^{\pi/2}\frac{\dd x}{1+\sin x+\cos x}=\int_0^1\frac{1+t^2}{2+2t}\cdot\frac{2\dd t}{1+t^2}=\int_0^1\frac{\dd t}{1+t}=\ln2\approx0.693147 .
+\]
+And the cheaper substitution where it applies: for $\displaystyle\int_0^{\pi/2}\frac{\dd x}{1+\sin^2x}$ only even powers occur, so $t=\tan x$ gives $\int_0^{\infty}\frac{\dd t}{1+2t^2}=\frac{\pi}{2\sqrt2}$, against a quartic in $t$ had you used the half-angle form.
+\end{worked}
+
+\begin{keynote}[What Weierstrass costs]
+The substitution always works, and that is the reason to try it last. It converts a first-degree expression in $\sin$ and $\cos$ into a second-degree rational function, and a second-degree expression into a fourth-degree one, so the price of the guarantee is paid in partial fractions. Compare the two routes on $\displaystyle\int_0^{\pi/2}\frac{\dd x}{1+\sin^2x}$. The half-angle substitution gives $\displaystyle\int_0^{1}\frac{2(1+t^2)}{t^4+6t^2+1}\dd t$, a quartic denominator needing two irreducible quadratic factors. The substitution $t=\tan x$, legitimate because only even powers occur, gives $\displaystyle\int_0^{\infty}\frac{\dd t}{1+2t^2}=\frac{\pi}{2\sqrt2}$, one line. Before reaching for the half angle, ask whether an identity from the previous chapter, or the cheaper $t=\tan x$, will do the job.
+\end{keynote}
+
+One more, in which the rational function factors and the answer comes out of partial fractions rather than an arctangent:
+\[
+\int_0^{\pi/2}\frac{\dd x}{3+5\sin x}=\int_0^1\frac{2\dd t}{3t^2+10t+3}=\int_0^1\frac{2\dd t}{(3t+1)(t+3)}
+=\Bigl[\tfrac14\ln\frac{3t+1}{t+3}\Bigr]_0^1=\tfrac14\ln3\approx0.274653 .
+\]
+Notice that the denominator $a+b\sin x$ with $\abs b>\abs a$ produces a rational function with real roots and hence logarithms, while $\abs b<\abs a$ produces an irreducible quadratic and hence an arctangent. The discriminant of the transformed quadratic is exactly $4(b^2-a^2)$ up to a positive factor, so the sign of $b^2-a^2$ predicts the shape of the answer before the substitution is performed.
+
+The cosine version is worth carrying as a formula, because it is the single most quoted consequence of the substitution. For $a>\abs b$ the denominator $a+b\cos x$ becomes $\dfrac{(a+b)+(a-b)t^2}{1+t^2}$, so the $1+t^2$ from $\dd x$ cancels and
+\[
+\int\frac{\dd x}{a+b\cos x}=\frac{2}{\sqrt{a^2-b^2}}\arctan\left(\sqrt{\frac{a-b}{a+b}}\,\tan\frac x2\right)+C ,
+\qquad
+\int_0^{\pi}\frac{\dd x}{a+b\cos x}=\frac{\pi}{\sqrt{a^2-b^2}} .
+\]
+The definite form over a half period is clean because $\tan\tfrac x2$ runs from $0$ to $+\infty$ and the arctangent contributes $\pi/2$. Two checks: at $a=3$, $b=2$ the half-period value is $\pi/\sqrt5\approx1.404963$, and at $a=5$, $b=3$ it is $\pi/4$, both confirmed by quadrature. The condition $a>\abs b$ is not decoration. If $\abs b>a$ the denominator vanishes somewhere in $[0,\pi]$, the integral is divergent, and the formula returns the square root of a negative number, which is the algebra telling you so.
+
+\begin{trap}
+The substitution $t=\tan\tfrac x2$ has a pole at $x=\pi$. Over a full period $[0,2\pi]$ the map sends both endpoints to $t=0$, so a mechanical application returns $\int_0^0=0$ for an integral that is strictly positive. The fix is either to split at $\pi$ and take one-sided limits, or to use periodicity to move the window to $[-\pi,\pi]$ and treat both endpoints as improper. Check for the pole before substituting, not after getting zero.
+\end{trap}
+
+The repair, carried out. For $\displaystyle\int_0^{2\pi}\frac{\dd x}{2+\cos x}$ split at the pole and treat each half by the half-period formula. On $[0,\pi]$ the value is $\pi/\sqrt{4-1}=\pi/\sqrt3$, the substituted bound $t=\tan\tfrac x2$ running from $0$ to $+\infty$ rather than to a finite number. On $[\pi,2\pi]$ the reflection $x\mapsto2\pi-x$ maps the integral to the first half, so it contributes $\pi/\sqrt3$ again, and
+\[
+\int_0^{2\pi}\frac{\dd x}{2+\cos x}=\frac{2\pi}{\sqrt3}\approx3.627599 .
+\]
+Compare the mechanical answer of $0$. The discipline that catches this is the same one that governs the whole chapter: before transforming the bounds, check that the substitution is monotone and finite across the interval. Here $\tan\tfrac x2$ is monotone on $(0,\pi)$ and on $(\pi,2\pi)$ but not across $\pi$, and the two facts together are the entire diagnosis.
+
+\begin{seealsob}Product to sum, and sum to product; trigonometric identity pre-processing; Euler substitutions.\end{seealsob}
+
+Euler and Weierstrass are the heavy machinery. The light version, and the one you will use twenty times as often, applies when the radical is of something linear or of a fractional power: there is nothing to complete and nothing to rationalise by trigonometry, and the right move is simply to give the radical a name.
+
+\tech{Rationalising a radical by substitution, and peeling nested radicals}{medium}
+\cue An $n$th root of a linear expression, a fractional power of $x$, a radical inside a radical, or two different radicals sharing a hidden common radicand.
+\method Set $u^n$ equal to the radicand, so that the radical becomes $u$ and $\dd x$ becomes polynomial in $u$. For layered radicals, peel one layer per substitution, from the outside inwards, and stack the substitutions; each layer typically simplifies the next. The bounds transform at each layer, and because an even root forces $u\geq0$ you must check that the map is increasing before assuming the orientation is preserved.
+
+\begin{worked}
+The one-layer case: $u=\sqrt x$, $x=u^2$, $\dd x=2u\dd u$, and
+\[
+\int_0^1\frac{\dd x}{1+\sqrt x}=\int_0^1\frac{2u\dd u}{1+u}=2\int_0^1\Bigl(1-\frac{1}{1+u}\Bigr)\dd u=2(1-\ln2)\approx0.613706 .
+\]
+Note what happened: an irrational integrand became an improper rational function, which the previous chapter's division step then finished.
+
+Two layers, with the substitutions stacked. For $\displaystyle\int_0^1\sqrt{1-t^{1/3}}\dd t$, put $t=u^3$ so $\dd t=3u^2\dd u$ and $u:0\to1$:
+\[
+3\int_0^1u^2\sqrt{1-u}\dd u .
+\]
+Now $v=1-u$ gives $3\int_0^1(1-v)^2\sqrt v\dd v=3\int_0^1\bigl(v^{1/2}-2v^{3/2}+v^{5/2}\bigr)\dd v=3\Bigl(\tfrac23-\tfrac45+\tfrac27\Bigr)=\frac{16}{35}\approx0.457143 .$
+
+A shorter one in the same style: $\displaystyle\int_0^1\sqrt{1-\sqrt x}\dd x$ becomes, with $u=\sqrt x$, $2\int_0^1u\sqrt{1-u}\dd u$, and with $v=1-u$ that is $2\int_0^1(1-v)\sqrt v\dd v=2\bigl(\tfrac23-\tfrac25\bigr)=\dfrac{8}{15}$.
+
+When several fractional powers of $x$ appear together, take $n$ to be their least common denominator, so that one substitution clears all of them at once. For $\displaystyle\int_0^1\frac{\dd x}{1+x^{1/3}}$ that is $n=3$, giving $x=u^3$, $\dd x=3u^2\dd u$ and
+\[
+3\int_0^1\frac{u^2}{1+u}\dd u=3\int_0^1\Bigl(u-1+\frac{1}{1+u}\Bigr)\dd u=3\Bigl(\tfrac12-1+\ln2\Bigr)=3\ln2-\tfrac32\approx0.579442 ,
+\]
+where the middle step is the previous chapter's polynomial division applied to the improper fraction the substitution created. With $x^{1/2}$ and $x^{1/3}$ both present the right choice is $n=6$, and choosing $n=2$ or $n=3$ leaves one radical standing.
+
+The full three-layer ladder, worth doing once in its entirety:
+\[
+\int_0^1\arcsin\sqrt{1-\sqrt x}\dd x .
+\]
+Peel from the outside in. First $u=\sqrt x$, $\dd x=2u\dd u$, giving $2\int_0^1u\arcsin\sqrt{1-u}\dd u$. Second $v=1-u$, which reverses the bounds and cancels the minus sign, giving $2\int_0^1(1-v)\arcsin\sqrt v\dd v$. Third $w=\sqrt v$, $\dd v=2w\dd w$, which finally clears the radical from inside the arcsine:
+\[
+4\int_0^1\bigl(w-w^3\bigr)\arcsin w\dd w .
+\]
+Now integrate by parts once on each piece. Since $\int_0^1\dfrac{w^2}{\sqrt{1-w^2}}\dd w=\dfrac{\pi}{4}$ and $\int_0^1\dfrac{w^4}{\sqrt{1-w^2}}\dd w=\dfrac{3\pi}{16}$, both by $w=\sin\theta$,
+\[
+\int_0^1w\arcsin w\dd w=\frac{\pi}{4}-\frac12\cdot\frac{\pi}{4}=\frac{\pi}{8},
+\qquad
+\int_0^1w^3\arcsin w\dd w=\frac{\pi}{8}-\frac14\cdot\frac{3\pi}{16}=\frac{5\pi}{64},
+\]
+so the answer is $4\bigl(\tfrac{\pi}{8}-\tfrac{5\pi}{64}\bigr)=\dfrac{3\pi}{16}\approx0.589049$, confirmed by quadrature. Three substitutions and two integrations by parts, and every substitution was forced: at each stage exactly one radical was outermost and exactly one choice of $u$ removed it.
+\end{worked}
+
+\begin{trap}
+Peeling from the inside out. Substituting for the inner radical first typically leaves the outer radical containing a polynomial of higher degree than before, which is strictly worse. Work outwards in, and stop as soon as the integrand is rational or a beta integral. The second hazard is orientation: with $u^2=x$ the choice $u=-\sqrt x$ is also a solution of the defining equation, and taking it silently reverses the bounds.
+\end{trap}
+
+\begin{seealsob}Euler substitutions; conjugate multiplication; exponential substitution.\end{seealsob}
+
+\section{Exponentials, and substitutions that map the integral to itself}
+
+Two families remain. The first is the exponential substitution, which is differential spotting applied to a base other than $\eu$ and which turns any rational function of $a^x$ into a rational function outright. The second is different in kind from everything else in the chapter: the involutions $x\mapsto1/x$ and $x\mapsto a/x$ do not simplify the integrand at all. They produce a second expression for the same integral, and it is the combination of the two that gives the answer.
+
+\tech[Exponential substitution]{Exponential substitution $u=a^x$}{easy}
+\cue An integrand rational in $\eu^x$ or in $a^x$, a base appearing alongside its own square (as $45^x$ does alongside $2025^x$), or the combinations $\eu^x\pm\eu^{-x}$.
+\method Put $u=a^x$, so $\dd u=u\ln a\dd x$ and therefore $\dd x=\dfrac{\dd u}{u\ln a}$. Every $a^{kx}$ becomes $u^k$, and the $\ln a$ appears exactly once, as an overall constant. The extra $1/u$ contributed by $\dd x$ raises the degree of the denominator by one, which is what makes the resulting rational function proper.
+
+\begin{worked}
+Since $2025=45^2$, the substitution $u=45^x$ collapses the following completely:
+\[
+\int_0^1\frac{45^x}{2025^x+1}\dd x=\frac{1}{\ln45}\int_1^{45}\frac{u}{u^2+1}\cdot\frac{\dd u}{u}
+=\frac{1}{\ln45}\int_1^{45}\frac{\dd u}{u^2+1}=\frac{\arctan45-\tfrac{\pi}{4}}{\ln45}\approx0.200485 .
+\]
+A second, showing the extra $1/u$ doing its work:
+\[
+\int_0^{\ln2}\frac{\dd x}{1+\eu^x}=\int_1^{2}\frac{1}{1+u}\cdot\frac{\dd u}{u}=\Bigl[\ln\frac{u}{1+u}\Bigr]_1^2=\ln\frac43\approx0.287682 .
+\]
+Here the substitution alone would have given $\dfrac{1}{1+u}$, which is not what the integral is; the Jacobian supplied the second factor and turned it into a partial-fraction problem.
+
+A third, where a bare $\eu^x$ in the numerator absorbs the Jacobian and the substitution is pure differential spotting:
+\[
+\int_0^{\ln3}\frac{\eu^x}{\eu^{2x}+1}\dd x=\int_1^{3}\frac{\dd u}{u^2+1}=\arctan3-\frac{\pi}{4}\approx0.463648 .
+\]
+The rule of thumb is that a numerator containing exactly one power of $\eu^x$ makes the substitution free, while a numerator without one forces the $1/u$ into the integrand and raises the degree.
+
+The $\eu^x\pm\eu^{-x}$ pattern is the same substitution wearing a hyperbolic hat. Multiplying above and below by $\eu^x$ turns $\dfrac{1}{\eu^x+\eu^{-x}}$ into $\dfrac{\eu^x}{\eu^{2x}+1}$, which is the free case again:
+\[
+\int_0^{\infty}\frac{\dd x}{\eu^x+\eu^{-x}}=\int_1^{\infty}\frac{\dd u}{u^2+1}=\frac{\pi}{2}-\frac{\pi}{4}=\frac{\pi}{4}\approx0.785398 ,
+\]
+and over the whole line the same computation gives $\pi/2$. Written hyperbolically this is $\tfrac12\int_0^\infty\sech x\dd x=\tfrac12\bigl[2\arctan\eu^x\bigr]_0^{\infty}$, which is why $\arctan\eu^x$ is the antiderivative of $\tfrac12\sech x$ and why the substitution $u=\eu^x$ is the right one for every integrand built from $\sech$, $\tanh$ or $\csch$.
+\end{worked}
+
+\begin{trap}
+Dropping the $1/u$ from $\dd x$. It changes the degree of the rational function and therefore the whole partial-fraction structure, and the resulting answer is typically off by exactly one logarithm. The second point concerns bounds: on $(-\infty,b]$ the new lower bound is $u=0$, where the rational integrand may have a pole that the original integrand did not appear to have.
+\end{trap}
+
+\begin{seealsob}Partial fractions with distinct linear factors; reciprocal substitution; spotting the differential.\end{seealsob}
+
+The last family is the one that changes how you think about substitution. Nothing gets simpler; the integral is mapped to a different-looking integral with the same value, and you then solve for the common value. This is the elementary end of a set of ideas that the symmetry chapter develops in full.
+
+\tech[Reciprocal substitution]{Reciprocal substitution $x\mapsto1/x$ and $x\mapsto a/x$}{hard}
+\cue An integrand on $(0,\infty)$ built from $\ln x$ and a palindromic denominator such as $x^2+x+1$ or $x^2+a^2$; bounds that are reciprocals of each other, as $[\tfrac12,2]$ is; or $x+\tfrac1x$ appearing anywhere in the integrand.
+\method Substitute $x=a/u$, so $\dd x=-\dfrac{a}{u^2}\dd u$. The minus sign and the reversal of the bounds cancel each other. The interval $(0,\infty)$ maps to itself, and a finite interval $[c,a/c]$ maps to itself; a logarithm splits, since $\ln(a/u)=\ln a-\ln u$, and a palindromic denominator is reproduced up to a power of $u$. Add the transformed copy to the original and solve for the integral.
+
+\begin{worked}
+The pure antisymmetric case:
+\[
+I=\int_0^{\infty}\frac{\ln x}{1+x^2}\dd x .
+\]
+Under $x=1/u$ the integrand becomes $\dfrac{-\ln u}{1+u^{-2}}\cdot\dfrac{\dd u}{u^2}=\dfrac{-\ln u}{u^2+1}\dd u$, so $I=-I$ and $I=0$. Convergence must be checked first, and it holds because $\ln x/(1+x^2)$ is $O(\ln x)$ near $0$ and $O(x^{-2}\ln x)$ at infinity. The same argument gives $\displaystyle\int_0^{\infty}\frac{\ln x}{x^2+x+1}\dd x=0$, since $x^2+x+1$ is palindromic, and quadrature confirms both to twelve digits.
+
+Now the scaled involution, whose job is to reduce a general problem to the one just solved:
+\[
+J(a)=\int_0^{\infty}\frac{\ln x}{x^2+a^2}\dd x,\qquad a>0 .
+\]
+The involution that fixes this denominator is $x=a/u$, not $x=1/u$. Then $x^2+a^2=\dfrac{a^2(1+u^2)}{u^2}$ and $\dd x=-\dfrac{a}{u^2}\dd u$, so the two powers of $u^2$ cancel and
+\[
+J(a)=\frac1a\int_0^{\infty}\frac{\ln a-\ln u}{1+u^2}\dd u
+=\frac{\ln a}{a}\cdot\frac{\pi}{2}-\frac1a\underbrace{\int_0^{\infty}\frac{\ln u}{1+u^2}\dd u}_{=\,0}
+=\frac{\pi\ln a}{2a}.
+\]
+The scaled involution did not produce an equation for $J(a)$ in terms of itself; it produced $J(a)$ in terms of $J(1)$, and $J(1)$ was the antisymmetric case above. At $a=2$ this gives $\dfrac{\pi\ln2}{4}\approx0.544397$, which quadrature confirms as $0.544396522576$.
+
+A version on a finite interval. Since $[\tfrac12,2]$ is fixed by $x\mapsto1/x$, and $\arctan\tfrac1x=\tfrac\pi2-\arctan x$ for $x>0$,
+\[
+K=\int_{1/2}^{2}\frac{\arctan x}{x}\dd x=\int_{1/2}^{2}\frac{\arctan(1/u)}{u}\dd u
+\;\Longrightarrow\;
+2K=\frac{\pi}{2}\int_{1/2}^{2}\frac{\dd u}{u}=\frac{\pi}{2}\ln4 ,
+\]
+so $K=\dfrac{\pi\ln2}{2}\approx1.088793$, which is exactly what quadrature returns. Not one antiderivative was computed.
+
+The cleanest demonstration of the whole idea, and the one worth remembering, is that for every real $\alpha$
+\[
+\int_0^{\infty}\frac{\dd x}{(1+x^2)(1+x^{\alpha})}=\frac{\pi}{4}.
+\]
+Under $x=1/u$ the factor $\dfrac{1}{1+x^{\alpha}}$ becomes $\dfrac{u^{\alpha}}{1+u^{\alpha}}$ while the rest is unchanged, so adding the two expressions makes the second factor sum to $1$ and leaves $2I=\int_0^\infty\dfrac{\dd u}{1+u^2}=\dfrac{\pi}{2}$. Quadrature at $\alpha=3$ and at $\alpha=\sqrt2$ both return $0.785398163397$, and the independence of $\alpha$ is the signature of every integral in this family: the parameter is decoration, because the involution removes it.
+\end{worked}
+
+\begin{trap}
+Applying the fold to a divergent integral. The argument ``$I=-I$, so $I=0$'' is valid only if $I$ exists, and for $\int_0^\infty\frac{\ln x}{x}\dd x$ the same manipulation ``proves'' that a divergent integral is zero. Establish convergence first, separately on $(0,1]$ and $[1,\infty)$. The second point is the scale: for $x^2+a^2$ the involution that works is $x\mapsto a/x$, not $x\mapsto1/x$, and using the wrong one produces a true but useless identity.
+\end{trap}
+
+\begin{seealsob}Exponential substitution; conjugate multiplication; the logarithmic form.\end{seealsob}
+
+\subsection{Reciprocal pairing: folding the half line onto an interval}
+
+The involution has a second use, quite separate from producing an equation for the integral. Because $x\mapsto1/x$ exchanges $(0,1)$ with $(1,\infty)$, every integral over the half line can be folded onto a bounded interval:
+\[
+\int_0^{\infty}f(x)\dd x=\int_0^{1}\left[f(x)+\frac{1}{x^{2}}f\!\left(\frac1x\right)\right]\dd x .
+\]
+Nothing has been assumed about $f$ beyond convergence. The fold is worth performing for two reasons. It converts an improper integral into a proper one, which is what makes numerical confirmation of a claimed closed form trivial; and it exposes the symmetry of $f$, because the bracket collapses whenever $f$ has one.
+
+The collapse has two forms. If $x^{-2}f(1/x)=f(x)$, call $f$ self-reciprocal, and the two halves of the half line contribute equally:
+\[
+\int_0^{\infty}f=2\int_0^{1}f .
+\]
+Both $\dfrac{1}{1+x^2}$ and $\dfrac{1}{x^2+x+1}$ are self-reciprocal, the second because its denominator is palindromic. So the previous chapter's computation $\displaystyle\int_0^1\frac{\dd x}{x^2+x+1}=\frac{\pi\sqrt3}{9}$ immediately gives $\displaystyle\int_0^{\infty}\frac{\dd x}{x^2+x+1}=\frac{2\pi\sqrt3}{9}\approx1.209200$, which the direct antiderivative $\tfrac{2}{\sqrt3}\arctan\tfrac{2x+1}{\sqrt3}$ confirms.
+
+If instead $x^{-2}f(1/x)=-f(x)$, call $f$ antireciprocal; the bracket vanishes identically and the integral is $0$. That is exactly the mechanism behind $\displaystyle\int_0^{\infty}\frac{\ln x}{1+x^2}\dd x=0$, and the fold says something the bare argument does not: the two halves are not merely cancelling, they are exact negatives of each other. Numerically,
+\[
+\int_0^1\frac{\ln x}{1+x^2}\dd x=-G\approx-0.915966,
+\qquad
+\int_1^{\infty}\frac{\ln x}{1+x^2}\dd x=+G ,
+\]
+where $G$ is Catalan's constant. Neither half has an elementary closed form; their sum has the elementary value $0$, and the involution is the only reason you can know that without evaluating either one. This is the pattern to expect from every symmetry argument: the symmetry gives you the combination, never the pieces.
+
+\subsection{A family-recognition drill}
+
+For each integrand, name the family and the substitution before computing anything. Every one of these is decidable from the shape alone.
+
+\begin{enumerate}[label=(\roman*)]
+\item $x\eu^{x^2}$. Differential spotting, $u=x^2$: the $x$ is half of $\dd u/\dd x$ and the composite is $\eu^{u}$.
+\item $\dfrac{1}{x^2\sqrt{4-x^2}}$. Sine substitution with $a=2$; the $x^2$ below becomes $4\sin^2\theta$ and the integrand collapses to $\tfrac14\csc^2\theta$. On $[1,2]$ the value is $\tfrac{\sqrt3}{4}$.
+\item $\dfrac{1}{x\sqrt{x^2-9}}$. Secant with $a=3$; this is exactly the signature collapse, so the antiderivative is $\tfrac13\arcsec\tfrac x3$ and no further work is needed.
+\item $\sqrt{x^2+2x+5}$. Complete the square to $\sqrt{(x+1)^2+4}$, then $x+1=2\sinh t$. Hyperbolic, not tangent, because the answer will contain a logarithm.
+\item $\dfrac{1}{2+3\cos x}$. Weierstrass. Since $\abs b>\abs a$ the transformed denominator $5-t^2$ has real roots, so expect logarithms: on $[0,\tfrac\pi2]$ the value is $\tfrac{1}{\sqrt5}\ln\dfrac{\sqrt5+1}{\sqrt5-1}\approx0.430409$.
+\item $\dfrac{1}{x^{1/2}+x^{1/3}}$. Name the radical with $n=\lcm(2,3)=6$, so $x=u^6$ and everything becomes rational at once.
+\item $\dfrac{\ln x}{x^2+9}$ on $(0,\infty)$. Reciprocal, and the correct scale is $x\mapsto3/x$, giving $\dfrac{\pi\ln3}{6}\approx0.575232$.
+\item $\dfrac{\sec^2x}{1+\tan^3x}$. Differential spotting again, $u=\tan x$; the family is decided by the $\sec^2x$, which is $\dd u/\dd x$ and nothing else.
+\item $\dfrac{x^3}{\sqrt{1+x^2}}$. Name the radical, $u=\sqrt{1+x^2}$, so $u\dd u=x\dd x$ and $x^2=u^2-1$: the integrand becomes $(u^2-1)\dd u$. On $[0,1]$ the value is $\bigl[\tfrac13u^3-u\bigr]_1^{\sqrt2}=\tfrac{2-\sqrt2}{3}\approx0.195262$. A trigonometric substitution would work and would take four times as long, because an odd power of $x$ beside the radical is always the naming case.
+\item $\dfrac{1}{x\ln x\ln\ln x}$. The logarithmic form, twice over: $u=\ln\ln x$ has $\dd u=\dfrac{\dd x}{x\ln x}$, so the integrand is $\dd u/u$ and the antiderivative is $\ln\abs{\ln\ln x}$. Stacked logarithms always peel this way, one $\ln$ per layer, and the pattern continues for as many layers as the problem cares to build.
+\end{enumerate}
+
+Items (ii) and (iii) are the pair worth dwelling on. Both have a power of $x$ in the denominator beside a radical, and the family is decided entirely by whether the radical is $\sqrt{a^2-x^2}$ or $\sqrt{x^2-a^2}$. Nothing else about the two integrands differs.
+
+\subsection{The cost of transforming the limits last}
+
+The discipline stated at the top of the chapter is easy to agree with and easy to abandon under pressure, so it is worth pricing. Take $\displaystyle\int_0^1x^2\sqrt{1-x^2}\dd x$ and do it both ways.
+
+\emph{Bounds moved at once.} Put $x=\sin\theta$, $\theta:0\to\pi/2$. The integrand becomes $\sin^2\theta\cos^2\theta\dd\theta=\tfrac18(1-\cos4\theta)\dd\theta$, and
+\[
+\int_0^{\pi/2}\frac{1-\cos4\theta}{8}\dd\theta=\frac{1}{8}\cdot\frac{\pi}{2}=\frac{\pi}{16}.
+\]
+Three lines, and the $\cos4\theta$ term dies at both ends without being evaluated.
+
+\emph{Bounds moved last.} The same computation produces the antiderivative $\dfrac{\theta}{8}-\dfrac{\sin4\theta}{32}$, and now it must be returned to $x$. That requires $\theta=\arcsin x$, then $\sin4\theta=2\sin2\theta\cos2\theta$, then $\sin2\theta=2x\sqrt{1-x^2}$ and $\cos2\theta=1-2x^2$, giving
+\[
+F(x)=\frac{\arcsin x}{8}-\frac{x\sqrt{1-x^2}\bigl(1-2x^2\bigr)}{8},
+\]
+which is correct, as differentiating it confirms, and which took four separate identities to assemble. Each of them is a chance to lose a factor of two or a sign, and none of them was needed: $F(1)-F(0)=\pi/16$ is precisely the number the first route produced without ever writing $F$ down.
+
+The moral generalises past this example. For an indefinite integral you have no choice, and the back-substitution is part of the work. For a definite one the back-substitution is optional, and it is the single longest and least reliable step in the entire calculation. Declining it is free.
+
+\subsection{When the substitution turns around}
+
+The change of variables theorem asks that $g$ be continuously differentiable, and for the definite form with transformed bounds it is safest to insist further that $g$ be monotone on $[a,b]$. The reason is not pedantry. Consider $\int_{-1}^{1}x^2\dd x$, which is $\tfrac23$, and attempt $u=x^2$. Both bounds map to $u=1$, so a mechanical application returns $\int_1^1=0$. The error is that $\dd x=\dfrac{\dd u}{2\sqrt u}$ holds only for $x>0$; on $x<0$ the correct relation is $\dd x=-\dfrac{\dd u}{2\sqrt u}$, and the two halves must be handled separately.
+
+The same failure produces the Weierstrass trap noted above, and it is the reason the secant substitution must not straddle the gap $(-a,a)$. The diagnostic is easy: if the two transformed bounds are equal, or if the transformed integral is negative when the integrand was positive, the substitution turned around somewhere inside the interval. Split at the turning point, substitute separately on each piece, and add.
+
+Read as a whole, the taxonomy answers one question: what do you want the integrand to become? If you want it to become a table entry, spot the differential. If you want a radical of a quadratic to become trigonometric, use sine, tangent or secant according to the sign pattern, and prefer the hyperbolic version whenever the interval is unbounded or the expected answer is a logarithm. If you want any of it to become rational, use Euler for an algebraic radical, Weierstrass for a trigonometric one, and the plain naming substitution for anything with a root of a linear expression. And if you want the integral to become a copy of itself, use the involutions. In every case, transform the bounds in the same stroke as the variable, and check monotonicity on the interval before you do.
+
+\begin{keynote}[The rule, without exceptions]
+Transform the limits at the moment you transform the variable. Not after simplifying, not after finding the antiderivative, not at the end. Write the substitution and its bounds on the same line, as one object: $u=\sin^2x$, $x:0\to\pi/4$, $u:0\to\tfrac12$. The rule costs one line and buys four things. It eliminates the commonest error in the subject, evaluating a $u$ antiderivative at $x$ bounds. It eliminates the second commonest, the back-substitution of a double angle. It forces you to notice a substitution that turns around, because the two bounds come out equal or in the wrong order. And it forces you to notice a pole, because a bound comes out infinite or the map jumps. Every trap in this chapter is a failure of one of those four checks, and all four are performed by the same line of writing.
+\end{keynote}
+
+\section{Recognition matrix}
+\begin{recog}{@{}p{0.30\textwidth}p{0.36\textwidth}p{0.28\textwidth}@{}}
+\rowcolor{mist}\mh{If you see} & \mh{Reach for} & \mh{If that fails} \\
+\midrule
+\endhead
+$F(g(x))$ beside a multiple of $g'(x)$ & $u=g(x)$; solve for $\dd x$; move the bounds & Check the factor really is $g'$ up to a constant \\
+Numerator equal to the derivative of the denominator & $\ln\abs{g}$, after confirming by differentiation & Multiply through by $\cos x$ or a reciprocal first \\
+A bracketed sum beside an awkward composite & Differentiate the composite's argument; compare & Never split the bracket \\
+$\sqrt{a^2-x^2}$ & $x=a\sin\theta$, $\theta\in[-\tfrac\pi2,\tfrac\pi2]$ & Complete the square first, then $u=k\sin\theta$ \\
+$(x^2+a^2)^{\pm n}$ with no spare $x$ & $x=a\tan\theta$; count the powers of $\sec$ & $x=a\sinh t$ if the answer wants logarithms \\
+$\sqrt{x^2-a^2}$, or $x^n\sqrt{x^2-a^2}$ below & $x=a\sec\theta$ on one branch at a time & $x=a\cosh t$; never straddle $(-a,a)$ \\
+$\sqrt{x^2\pm a^2}$ on an unbounded interval & Hyperbolic: no modulus, no wrapping & Read the answer off as a logarithm \\
+$\sqrt{ax^2+bx+c}$ times a rational function & Euler: $t-\sqrt a x$, or $xt+\sqrt c$, or $t(x-r_1)$ & Complete the square, then a trig substitution \\
+A rational function of $\sin x$ and $\cos x$ & $t=\tan\tfrac x2$; watch the pole at $x=\pi$ & $t=\tan x$ if only even powers appear \\
+$\sqrt[n]{\text{linear}}$, or $x^{p/q}$ & $u^n=$ the radicand; $\dd x$ becomes polynomial & Peel layered radicals from the outside in \\
+An integrand rational in $a^x$ & $u=a^x$; remember $\dd x=\dd u/(u\ln a)$ & Look for $a^{2x}=(a^x)^2$ first \\
+$\ln x$ over a palindromic denominator on $(0,\infty)$ & $x\mapsto1/x$; the integral maps to its negative & Confirm convergence before concluding $0$ \\
+$x^2+a^2$ below, with $\ln x$ above & $x\mapsto a/x$, not $x\mapsto1/x$ & Solve $2J=\ln a\int\ldots$ for $J$ \\
+Bounds that are reciprocals, as $[\tfrac1b,b]$ & $x\mapsto1/x$ fixes the interval; add the copies & Use a co-function identity on the numerator \\
+An improper integral over $(0,\infty)$ & Fold: $\int_0^1[f(x)+x^{-2}f(1/x)]\dd x$ & Test for self-reciprocal or antireciprocal \\
+$\dfrac{1}{a+b\cos x}$ with $a>\abs b$ & $t=\tan\tfrac x2$; over $[0,\pi]$ it is $\pi/\sqrt{a^2-b^2}$ & Check $a>\abs b$, or the integral diverges \\
+Any definite integral at all & Transform the bounds in the same stroke & Verify the substitution is monotone there \\
+\end{recog}

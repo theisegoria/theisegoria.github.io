@@ -1,0 +1,433 @@
+\chapter{Integration by parts and its systems}
+
+\begin{orient}
+\textbf{What this chapter is for.} Integration by parts is usually taught as a single move: pick $u$, pick $\dd v$, apply the formula, hope the new integral is easier. That is the smallest thing it does. Parts is a machine with three distinct running modes, and knowing which mode a problem wants is most of the skill. Run it \emph{forwards}, repeatedly, when one factor is a polynomial that differentiates to zero; the bookkeeping is then a table, not a sequence of substitutions. Run it \emph{in a cycle}, when two applications return the original integrand, so that the unknown integral appears on both sides of an equation you can solve algebraically. Run it \emph{once, symbolically}, on an integrand carrying an integer parameter $n$, to obtain a reduction formula relating $I_n$ to $I_{n-1}$ or $I_{n-2}$, and then iterate the recursion instead of the integral. This chapter separates the three modes, gives each its own cue and its own characteristic failure, and adds the two structural tricks that make the machine much wider than it first appears: taking $\dd v=\dd x$ so that $u$ is the entire integrand, and choosing the additive constant in $v$ so that the remaining integral collapses. By the end you should be able to look at a product and say, before writing anything, which mode you are about to run and what the answer will look like.
+\end{orient}
+
+\section{One identity, three machines}
+
+Everything here comes from the product rule, integrated. From $(uv)'=u'v+uv'$ we get
+\[\int_a^b u\dd v=\bigl[uv\bigr]_a^b-\int_a^b v\dd u,\]
+which is not a method for computing integrals so much as a method for \emph{trading} one integral for another. The trade is favourable exactly when $v\dd u$ is simpler than $u\dd v$, and the whole art is in arranging that.
+
+Three things can happen after the trade, and they correspond to the three modes. The new integral can be strictly simpler, in which case repeating the trade eventually terminates: this is the forwards mode, and it is what happens when $u$ is a polynomial, because differentiation drives a polynomial to zero in finitely many steps. The new integral can be the \emph{same} as the old one up to a constant multiple, in which case nothing has been simplified but an equation has been created: this is the cyclic mode. Or the new integral can be a member of the same family with a smaller parameter, in which case you have a recursion rather than an answer: this is the reduction mode. There is no fourth outcome worth naming. If the trade produces something genuinely unrelated and no simpler, you chose $u$ wrongly.
+
+A word on the boundary term before anything else. In an indefinite computation $[uv]$ is just a term you carry along; in a definite computation it is a number, and it is the piece most often lost. When an endpoint is improper it must be evaluated as a limit, and it is frequently exactly the term that cancels a divergence elsewhere. Never write parts on a definite integral without writing the brackets and their limits at the same moment.
+
+\tech[The parts identity and the choice of u]{The parts identity and the choice of $u$}{core}
+\cue A product of two factors drawn from different families: a polynomial against an exponential, a polynomial against a sine or cosine, or anything at all against a logarithm or an inverse trigonometric function. The tell is that one factor gets simpler when differentiated and the other does not get worse when integrated.
+\method Apply
+\[\int_a^b u\dd v=\bigl[uv\bigr]_a^b-\int_a^b v\dd u.\]
+Choose $u$ to be the factor you want to \emph{differentiate away}. The mnemonic LIATE orders the families Logarithmic, Inverse trigonometric, Algebraic, Trigonometric, Exponential, and says: whichever family appears first in that list becomes $u$, and the rest becomes $\dd v$. The ordering is not arbitrary. Logarithms and inverse trigonometric functions differentiate into algebraic functions, which is a large gain; polynomials differentiate down by one degree, a modest gain; trigonometric and exponential factors differentiate to themselves, no gain at all, so they belong in the $\dd v$ slot where they must be antidifferentiated instead.
+
+\begin{worked}
+\[\int_0^{\pi/2}x^{2}\sin x\dd x.\]
+LIATE puts the algebraic factor first, so $u=x^{2}$, $\dd v=\sin x\dd x$, $v=-\cos x$:
+\[\int_0^{\pi/2}x^{2}\sin x\dd x=\bigl[-x^{2}\cos x\bigr]_0^{\pi/2}+2\int_0^{\pi/2}x\cos x\dd x=0+2\int_0^{\pi/2}x\cos x\dd x.\]
+The remaining integral is the same shape with the degree lowered, so parts again with $u=x$, $\dd v=\cos x\dd x$:
+\[2\Bigl(\bigl[x\sin x\bigr]_0^{\pi/2}-\int_0^{\pi/2}\sin x\dd x\Bigr)=2\Bigl(\frac{\pi}{2}-1\Bigr)=\pi-2.\]
+Two applications, because the polynomial had degree two. That count is predictable before you start, and it is what the next technique automates.
+\end{worked}
+
+\begin{keynote}[Where LIATE fails, honestly]
+LIATE is a heuristic about \emph{families}, and it is blind to composition. It fails in three identifiable ways. First, when a factor is a composite whose inner derivative is hiding in the other factor: in $\int x^{3}\eu^{x^{2}}\dd x$, LIATE says $u=x^{3}$ (algebraic before exponential), but $\eu^{x^{2}}$ has no elementary antiderivative, so that split is not merely suboptimal, it is illegal. The right split is $u=x^{2}$ and $\dd v=x\eu^{x^{2}}\dd x$, which is a substitution wearing a parts costume; the answer is $\tfrac12$ on $[0,1]$. Second, when the LIATE-preferred $\dd v$ has no closed-form antiderivative at all: $\int_0^1x^{2}\eu^{-x^{2}}\dd x$ must be split as $u=x$, $\dd v=x\eu^{-x^{2}}\dd x$, giving $-\tfrac{1}{2\eu}+\tfrac{\sqrt{\pi}}{4}\erf(1)\approx0.189472$. Third, when you do not actually want a simpler integral but a \emph{recursion}, as with $\int\sec^{n}x\dd x$, where the productive split puts $\sec^{n-2}x$ in the $u$ slot even though LIATE has no opinion about splitting one trigonometric factor against another. Treat LIATE as a default that costs nothing to check and that you overrule the moment you see a composition.
+\end{keynote}
+
+\begin{trap}
+Evaluating $[uv]$ at one endpoint only, or dropping it because it ``looks like it vanishes''. In $\int_0^{\pi/2}x^{2}\sin x\dd x$ the bracket really is zero at both ends, but that is a fact about $\cos(\pi/2)=0$, not a general licence. When an endpoint is improper the bracket is a limit: in $\int_0^1\ln x\dd x$ the term $[x\ln x]_0^1$ is $0-\lim_{x\to0^+}x\ln x=0$, and asserting that without the limit is guessing.
+\end{trap}
+
+\begin{seealsob}Tabular integration; parts with $\dd v=\dd x$; cyclic integration by parts; engineering the antiderivative $v$.\end{seealsob}
+
+The worked example above took two applications for a quadratic, and a cubic would take three, a quartic four. Each application regenerates the same bracket-minus-integral shape with one lower degree, and the only thing that changes is the sign and which antiderivative of the trigonometric factor is in play. That is precisely the situation where a table beats a narrative.
+
+\tech{Tabular integration}{medium}
+\cue A polynomial (any degree, but the method earns its keep from degree three upwards) multiplied by a factor you can antidifferentiate repeatedly and cheaply: $\eu^{ax}$, $\sin ax$, $\cos ax$, $\sinh ax$, $\cosh ax$.
+\method Make two columns. In the left column write $u$ and differentiate downwards until you reach $0$. In the right column write the other factor and antidifferentiate downwards the same number of times. Then read off the products along the diagonals, alternating in sign:
+\[\int u\dd v=uv_1-u'v_2+u''v_3-u'''v_4+\cdots,\]
+where $v_1$ is the first antiderivative, $v_2$ the second, and so on. It is $n$ applications of parts with the bookkeeping done once instead of $n$ times.
+
+\begin{worked}
+\[\int_0^1x^{3}\eu^{-x}\dd x.\]
+Left column: $x^{3},3x^{2},6x,6,0$. Right column, antidifferentiating $\eu^{-x}$: $-\eu^{-x},\eu^{-x},-\eu^{-x},\eu^{-x}$. Diagonals with alternating signs:
+\[-x^{3}\eu^{-x}-3x^{2}\eu^{-x}-6x\eu^{-x}-6\eu^{-x}=-\eu^{-x}\bigl(x^{3}+3x^{2}+6x+6\bigr).\]
+The two minus signs (one from the alternation, one from antidifferentiating $\eu^{-x}$) reinforce at every step, which is why every term here is negative. Evaluating,
+\[\int_0^1x^{3}\eu^{-x}\dd x=\Bigl[-\eu^{-x}\bigl(x^{3}+3x^{2}+6x+6\bigr)\Bigr]_0^1=6-\frac{16}{\eu}\approx0.113929.\]
+The same table with $x^{4}$ gives $24-65/\eu\approx0.087836$, and the pattern of coefficients $1,n,n(n-1),\ldots$ is just the falling factorials appearing on the left column.
+\end{worked}
+
+\begin{worked}[Second instance, trigonometric]
+\[\int_0^{\pi/2}x^{3}\cos x\dd x.\]
+Left: $x^{3},3x^{2},6x,6,0$. Right: $\sin x,-\cos x,-\sin x,\cos x$. Alternating diagonals give the antiderivative
+\[x^{3}\sin x+3x^{2}\cos x-6x\sin x-6\cos x,\]
+where the signs now cycle with period four rather than reinforcing. At $x=\pi/2$ this is $\tfrac{\pi^{3}}{8}-3\pi$; at $x=0$ it is $-6$. Hence the integral is $\tfrac{\pi^{3}}{8}-3\pi+6\approx0.451007$.
+\end{worked}
+
+\begin{trap}
+Two failures, both mechanical. The alternation of signs is the first: the terms are $+,-,+,-$ reading down, and this is independent of any signs generated inside the right column, so with $\eu^{-x}$ you are combining two independent sign patterns and must track both. The second is termination. The table only closes when the left column reaches $0$, which requires $u$ to be a polynomial. With $u=\ln x$ or $u=\arctan x$ the left column never terminates, and tabular integration is simply the wrong machine; use single-step parts or the cyclic mode instead.
+\end{trap}
+
+\begin{seealsob}The parts identity and the choice of $u$; the factorial ladder; cyclic integration by parts.\end{seealsob}
+
+\section{When $u$ is the whole integrand}
+
+Everything so far assumed a product. The most useful structural observation about parts is that you do not need one. Any integrand $f$ is the product $f(x)\cdot1$, and taking $\dd v=\dd x$ turns parts into a machine for integrating functions that have no obvious antiderivative but a very easy derivative. That describes exactly the logarithms and the inverse trigonometric functions, which is why they sit at the front of LIATE: they are the functions you always want in the $u$ slot, and if there is nothing else in the integrand, you manufacture a $\dd v$ out of the constant $1$.
+
+\tech[Parts with dv = dx]{Parts with $\dd v=\dd x$}{easy}
+\cue A \emph{single} function with an easy derivative and no memorable antiderivative: $\ln x$, $\arctan x$, $\arcsin x$, $\arccos x$, $\ln(x+\sqrt{x^{2}+1})$, $\operatorname{arcosh}x$. Also any such function multiplied by a polynomial, where the same logic applies with $\dd v=x^{k}\dd x$.
+\method Write the integrand as $f(x)\cdot1$ and take $u=f$, $\dd v=\dd x$, so $v=x$:
+\[\int_a^b f(x)\dd x=\bigl[xf(x)\bigr]_a^b-\int_a^b xf'(x)\dd x.\]
+The point is that $f'$ is algebraic for every function on the cue list, so the traded integral is a rational function or a rational function of a radical, and elementary.
+
+\begin{worked}
+Three at once, each in one line.
+\[\int_0^1\ln x\dd x=\bigl[x\ln x\bigr]_0^1-\int_0^1 1\dd x=0-1=-1,\]
+the bracket at $0$ being $\lim_{x\to0^+}x\ln x=0$.
+\[\int_0^1\arctan x\dd x=\bigl[x\arctan x\bigr]_0^1-\int_0^1\frac{x}{1+x^{2}}\dd x=\frac{\pi}{4}-\frac{\ln2}{2}\approx0.438825.\]
+\[\int_0^1\arcsin x\dd x=\bigl[x\arcsin x\bigr]_0^1-\int_0^1\frac{x}{\sqrt{1-x^{2}}}\dd x=\frac{\pi}{2}-1\approx0.570796.\]
+In each case the traded integral was engineered by the derivative: $\tfrac{x}{1+x^{2}}$ is a logarithmic derivative, $\tfrac{x}{\sqrt{1-x^{2}}}$ is a power rule after $w=1-x^{2}$.
+\end{worked}
+
+\begin{worked}[With a polynomial attached]
+\[\int_0^1x\arctan x\dd x.\]
+Now $\dd v=x\dd x$, $v=\tfrac{x^{2}}{2}$, and
+\[\int_0^1x\arctan x\dd x=\Bigl[\frac{x^{2}}{2}\arctan x\Bigr]_0^1-\frac12\int_0^1\frac{x^{2}}{1+x^{2}}\dd x=\frac{\pi}{8}-\frac12\int_0^1\Bigl(1-\frac{1}{1+x^{2}}\Bigr)\dd x.\]
+That last integral is $1-\tfrac{\pi}{4}$, so the answer is $\tfrac{\pi}{8}-\tfrac12+\tfrac{\pi}{8}=\tfrac{\pi}{4}-\tfrac12\approx0.285398$. Note the long division step: $\tfrac{x^{2}}{1+x^{2}}$ is improper as a rational function and must be reduced before anything else happens.
+\end{worked}
+
+\begin{trap}
+With an improper endpoint the term $xf(x)$ can diverge even though the integral converges. That is a signal to choose a different $v$, not to abandon the method: $v=x$ is only one of infinitely many antiderivatives of $\dd x$, and $v=x-c$ is available for any $c$. Choosing $c$ to kill the divergence is the subject of the next technique.
+\end{trap}
+
+\begin{seealsob}Engineering the antiderivative $v$; inverse-function integration; the logarithm ladder.\end{seealsob}
+
+That last remark is the hinge of this section. In $\int u\dd v$ the function $v$ is determined only up to an additive constant, and the constant is free. Almost every textbook silently takes the constant to be zero. Choosing it deliberately is one of the highest-yield habits in the whole subject, because the traded integral $\int v\dd u$ depends on the choice, and a well chosen constant can make it collapse entirely.
+
+\tech[Engineering the antiderivative v]{Engineering the antiderivative $v$}{medium}
+\cue Parts has left you with $\int \dfrac{v}{g(x)}\dd x$ where $v$ \emph{almost} cancels the denominator: the denominator is $x+1$ but $v=x$; the denominator is $(x+a)^{2}$ but $v$ is the wrong shift; the denominator is $x^{2}-1$ but $v=\tfrac{x^{2}}{2}$.
+\method Replace $v$ by $v+c$ and choose $c$ so that $v+c$ shares a factor with the denominator produced by $\dd u$. Concretely, for $\int\ln(x+1)\dd x$ take $v=x+1$ rather than $v=x$; for $\int\dfrac{\ln x}{(x+a)^{2}}\dd x$ take $v=-\dfrac{1}{x+a}+\dfrac1a=\dfrac{x}{a(x+a)}$, which carries a factor $x$ to cancel the $\tfrac1x$ from $\dd u$. The remaining integral then has no logarithm in it at all, and usually no partial fractions either.
+
+\begin{worked}
+\[\int_0^1\ln(1+x)\dd x.\]
+With $v=x$ this becomes $[x\ln(1+x)]_0^1-\int_0^1\tfrac{x}{1+x}\dd x$, and the last integral needs the division $\tfrac{x}{1+x}=1-\tfrac{1}{1+x}$. With $v=x+1$ instead,
+\[\int_0^1\ln(1+x)\dd x=\bigl[(x+1)\ln(1+x)\bigr]_0^1-\int_0^1\frac{x+1}{1+x}\dd x=2\ln2-1\approx0.386294.\]
+The traded integrand is the constant $1$. No division, no partial fractions, one line.
+\end{worked}
+
+\begin{worked}[The case that makes the technique indispensable]
+\[\int_0^1\frac{\ln x}{(1+x)^{2}}\dd x.\]
+Take $u=\ln x$ and $\dd v=\dfrac{\dd x}{(1+x)^{2}}$. The obvious antiderivative is $v=-\dfrac{1}{1+x}$, and it leads to $\int_0^1\dfrac{\dd x}{x(1+x)}$, which diverges at $0$; so does the bracket, and the two divergences cancel only after careful limiting. Add the constant $1$ instead:
+\[v=-\frac{1}{1+x}+1=\frac{x}{1+x}.\]
+Now the bracket is $\Bigl[\dfrac{x\ln x}{1+x}\Bigr]_0^1=0-0=0$, both ends finite because $x\ln x\to0$, and the traded integral is
+\[-\int_0^1\frac{x}{1+x}\cdot\frac1x\dd x=-\int_0^1\frac{\dd x}{1+x}=-\ln2.\]
+So $\displaystyle\int_0^1\frac{\ln x}{(1+x)^{2}}\dd x=-\ln2\approx-0.693147$, obtained without ever meeting a divergent piece.
+\end{worked}
+
+\begin{trap}
+Shifting $v$ but forgetting that the bracket $[uv]_a^b$ changes too. Both halves of the identity contain $v$, and both must be recomputed with the new one. The error is silent: you get a finite, clean, wrong number. A cheap audit is to check that the two versions agree in an easy case, or simply to differentiate your final antiderivative.
+\end{trap}
+
+\begin{seealsob}Parts with $\dd v=\dd x$; the parts identity and the choice of $u$; inverse-function integration.\end{seealsob}
+
+\section{Running the cycle}
+
+The forwards mode terminates because differentiation destroys polynomials. When neither factor can be destroyed, parts does not terminate, and the naive reaction is that the method has failed. It has not. If two applications return you to the original integral multiplied by some constant $\lambda$, you have not computed the integral but you have written down a linear equation satisfied by it, and provided $\lambda\neq1$ that equation has a unique solution. This is the second mode, and it is the reason $\int\eu^{x}\sin x\dd x$ and $\int\sec^{3}x\dd x$ are elementary at all.
+
+\tech{Cyclic integration by parts}{core}
+\cue Two applications of parts return the original integrand up to a constant multiple. The standard members: $\eu^{ax}\sin bx$, $\eu^{ax}\cos bx$, $\sin(\ln x)$, $\cos(\ln x)$, $\sec^{3}x$, and anything of the form $\eu^{ax}$ times a solution of a second-order constant-coefficient equation.
+\method Name the integral. Set $I=\int u\dd v$, apply parts twice \emph{keeping the same family in the $u$ slot both times}, and you will arrive at
+\[I=(\text{boundary terms})+\lambda I\qquad\Longrightarrow\qquad I=\frac{\text{boundary terms}}{1-\lambda}.\]
+For $\eu^{ax}\sin bx$ the constant is $\lambda=-b^{2}/a^{2}$, so $1-\lambda=(a^{2}+b^{2})/a^{2}$ and the denominator $a^{2}+b^{2}$ that appears in every table entry for these integrals is exactly $1-\lambda$ in disguise.
+
+\begin{worked}
+\[I=\int_0^{\pi}\eu^{x}\sin x\dd x.\]
+Take $u=\sin x$, $\dd v=\eu^{x}\dd x$ both times. First pass:
+\[I=\bigl[\eu^{x}\sin x\bigr]_0^{\pi}-\int_0^{\pi}\eu^{x}\cos x\dd x=0-\int_0^{\pi}\eu^{x}\cos x\dd x.\]
+Second pass on the new integral, again with the trigonometric factor as $u$:
+\[\int_0^{\pi}\eu^{x}\cos x\dd x=\bigl[\eu^{x}\cos x\bigr]_0^{\pi}+\int_0^{\pi}\eu^{x}\sin x\dd x=(-\eu^{\pi}-1)+I.\]
+Substituting, $I=\eu^{\pi}+1-I$, so $2I=\eu^{\pi}+1$ and
+\[I=\frac{\eu^{\pi}+1}{2}\approx12.070346,\]
+consistent with the antiderivative $\tfrac12\eu^{x}(\sin x-\cos x)$. Here $\lambda=-1$ and $1-\lambda=2$.
+\end{worked}
+
+\begin{worked}[A cycle with $\lambda\neq-1$]
+\[\int_0^{\pi/2}\eu^{x}\cos x\dd x=\bigl[\eu^{x}\cos x\bigr]_0^{\pi/2}+\int_0^{\pi/2}\eu^{x}\sin x\dd x,\]
+and one more pass on the right gives $\bigl[\eu^{x}\sin x\bigr]_0^{\pi/2}$ minus the original. So $I=(0-1)+\eu^{\pi/2}-I$, giving $I=\tfrac{\eu^{\pi/2}-1}{2}\approx1.905239$. The general antiderivative is $\dfrac{\eu^{ax}(a\cos bx+b\sin bx)}{a^{2}+b^{2}}$, and it is worth deriving once and then quoting.
+\end{worked}
+
+\begin{keynote}[Two ways to avoid the cycle entirely]
+The cycle is elegant but it is not compulsory. For $\eu^{ax}\cos bx$ you may instead complexify: $\eu^{ax}\cos bx=\operatorname{Re}\eu^{(a+\iu b)x}$, and a single exponential antidifferentiates in one step to $\dfrac{\eu^{(a+\iu b)x}}{a+\iu b}$, whose real part is $\dfrac{\eu^{ax}(a\cos bx+b\sin bx)}{a^{2}+b^{2}}$. The denominator $a^{2}+b^{2}$ that the cycle produced as $1-\lambda$ appears here as $\abs{a+\iu b}^{2}$, which is what it always was. Second, a logarithmic argument can be substituted away before parts is applied at all: $\displaystyle\int_1^{\eu^{\pi}}\sin(\ln x)\dd x$ becomes, under $x=\eu^{t}$, the integral $\displaystyle\int_0^{\pi}\eu^{t}\sin t\dd t=\frac{\eu^{\pi}+1}{2}$ already computed above. Reach for the substitution first; it turns an unfamiliar cycle into a familiar one.
+\end{keynote}
+
+\begin{trap}
+Choosing $u$ inconsistently. If you take $u=\sin x$ on the first pass and $u=\eu^{x}$ on the second, the second pass simply undoes the first and you obtain the true but vacuous statement $I=I$. Keep the same family in the $u$ slot throughout. Separately: $\lambda=1$ means the method has failed on this integrand, not that $I$ is infinite. See the next technique.
+\end{trap}
+
+\begin{seealsob}Diagnosing the vacuous cycle; the secant ladder; complexifying the exponential; reduction formulae by parts.\end{seealsob}
+
+The equation $I=B+\lambda I$ is only useful when $1-\lambda\neq0$, and the sign bookkeeping that produces $\lambda$ is where cyclic parts is most often botched. It deserves to be isolated, because a solver who does not know the diagnosis will conclude that a perfectly ordinary integral is impossible.
+
+\tech{Diagnosing the vacuous cycle}{medium}
+\cue You have run parts twice, the original integral has reappeared, and either the two sides cancel identically ($\lambda=1$) or you have simply written $I=I$.
+\method There are exactly two diagnoses, and they have different cures. If you switched which factor plays $u$ between the two passes, the cycle is an artefact and the cure is to redo the second pass with the same choice as the first. If you were consistent and still got $\lambda=1$, the two passes are genuinely inverse to each other on this integrand and parts alone cannot evaluate it; the cure is a different technique. The arithmetic test is quick: track the sign contributed at each pass. Parts contributes one explicit minus sign, differentiating $\sin$ then $\cos$ contributes another, and $\eu^{x}$ contributes none, so the total is $(-1)\cdot(-1)\cdot(-1)=-1$ for $\eu^{x}\sin x$, giving $\lambda=-1$ and $1-\lambda=2$. If your product of signs is $+1$, you are about to write $I=B+I$, and either $B=0$ (vacuous) or you have made an error.
+
+\begin{worked}
+The vacuous run, shown deliberately. Take $I=\int\eu^{x}\sin x\dd x$ with $u=\sin x$, $\dd v=\eu^{x}\dd x$:
+\[I=\eu^{x}\sin x-\int\eu^{x}\cos x\dd x.\]
+Now switch: on the second pass take $u=\eu^{x}$, $\dd v=\cos x\dd x$, so
+\[\int\eu^{x}\cos x\dd x=\eu^{x}\sin x-\int\eu^{x}\sin x\dd x=\eu^{x}\sin x-I.\]
+Substituting back: $I=\eu^{x}\sin x-\eu^{x}\sin x+I=I$. True and useless. Every step is correct; the choice was wrong. Redo the second pass with $u=\cos x$ and the same computation yields $2I=\eu^{x}(\sin x-\cos x)$.
+\end{worked}
+
+\begin{keynote}[Equation or identity]
+The distinction is worth stating flatly. Parts run twice always produces $I=B+\lambda I$. That is an \emph{equation} determining $I$ when $\lambda\neq1$, and an \emph{identity} carrying no information when $\lambda=1$ and $B=0$. The value of $\lambda$ is fixed by the integrand and by your choice of $u$, not by luck, and you can predict it before doing any work by counting minus signs. For $\eu^{ax}\sin bx$ with the trigonometric factor as $u$, $\lambda=-b^{2}/a^{2}$; for the same integrand with the exponential as $u$, $\lambda=+1$ and you get nothing.
+\end{keynote}
+
+\begin{trap}
+Concluding that a cycle with $\lambda=1$ means the integral diverges. It means your two passes composed to the identity map. $\int\eu^{x}\sin x\dd x$ is perfectly finite; the vacuous run above proves nothing about it.
+\end{trap}
+
+\begin{seealsob}Cyclic integration by parts; the secant ladder; complexifying the exponential.\end{seealsob}
+
+\section{Running the ladder}
+
+The third mode is the most powerful and the least often taught as a mode. Instead of applying parts to a specific integral, apply it to a whole family indexed by an integer $n$, and read the result as a recursion. You do not obtain a closed form; you obtain a machine that produces one, and the machine costs a single application of parts no matter how large $n$ is. The four families that matter are powers of sine or cosine, powers of secant, $x^{n}$ against an exponential, and powers of a logarithm. Each has its own base case, and mixing base cases is the standard way to get a factor of $\pi/2$ wrong.
+
+\tech{Reduction formulae by parts}{core}
+\cue An integrand carrying an integer exponent $n$, where one application of parts visibly lowers $n$ by one or two: $\sin^{n}x$, $\cos^{n}x$, $\sec^{n}x$, $x^{n}\eu^{x}$, $(\ln x)^{n}$, $(1+x^{2})^{-n}$, $(1-x^{2})^{n}$.
+\method Split off \emph{one} copy of the repeated factor as $\dd v$ and leave $n-1$ copies in $u$, or split off two if that is what the derivative structure wants. Apply parts once, symbolically, then use a Pythagorean or algebraic identity to re-express the result in terms of $I_{n-2}$ (or $I_{n-1}$). You obtain
+\[I_n=(\text{boundary})+c_nI_{n-2},\]
+and you then iterate the recursion, not the integral. Establish the two base cases $I_0$ and $I_1$ before iterating, and check the parity of $n$ to know which one you will land on.
+
+\begin{worked}
+The sine ladder, derived once. With $u=\sin^{n-1}x$ and $\dd v=\sin x\dd x$,
+\[I_n=\int\sin^{n}x\dd x=-\sin^{n-1}x\cos x+(n-1)\int\sin^{n-2}x\cos^{2}x\dd x.\]
+Replace $\cos^{2}x=1-\sin^{2}x$: the integral splits into $(n-1)I_{n-2}-(n-1)I_n$, so
+\[nI_n=-\sin^{n-1}x\cos x+(n-1)I_{n-2},\qquad I_n=-\frac{\sin^{n-1}x\cos x}{n}+\frac{n-1}{n}I_{n-2}.\]
+The single algebraic move that made this work was writing $\cos^{2}$ in terms of $\sin^{2}$ so that the new integral is in the \emph{same} family. That move is the whole technique; everything else is parts.
+\end{worked}
+
+\begin{keynote}[The three questions to ask of any ladder]
+Before iterating, answer these. (i) Does the recursion step by one or by two? Sine and secant step by two, $x^{n}\eu^{x}$ and $(\ln x)^{n}$ step by one. (ii) Does the boundary term vanish on the given interval? On $[0,\pi/2]$ the sine boundary $-\sin^{n-1}x\cos x$ vanishes at both ends for $n\geq2$; on $[0,\pi/4]$ it does not, and you must carry it. (iii) Which base case do you land on? A two-step recursion from even $n$ lands on $I_0$, from odd $n$ on $I_1$, and those two numbers are usually wildly different.
+\end{keynote}
+
+\begin{trap}
+Iterating the recursion while forgetting that the boundary term is itself $n$-dependent. On an interval where it does not vanish, the closed form is a \emph{sum} of boundary terms, one per rung, each multiplied by the accumulated product of the $c_k$. Writing $I_n=c_nc_{n-2}\cdots I_{0}$ and adding a single boundary term at the end is wrong by several terms.
+\end{trap}
+
+\begin{keynote}[Parts at an improper endpoint]
+Ladders very often live on intervals with a singular endpoint, and the boundary term is then a limit that must be taken, not a value that may be substituted. The model computation:
+\[\int_0^1\frac{\ln x}{\sqrt x}\dd x=\Bigl[2\sqrt x\ln x\Bigr]_0^1-\int_0^1\frac{2\sqrt x}{x}\dd x=0-2\int_0^1x^{-1/2}\dd x=-4.\]
+The bracket at $0$ is $\lim_{x\to0^+}2\sqrt x\ln x=0$, which holds because $\sqrt x$ beats $\ln x$; the traded integral is convergent for the same reason. Both facts need checking, and the discipline is to check them before, not after. When the bracket diverges and the integral does not, shift $v$ by a constant, exactly as in the engineered-$v$ technique.
+\end{keynote}
+
+\begin{seealsob}Wallis' formulae; the secant ladder; the factorial ladder; the logarithm ladder.\end{seealsob}
+
+The sine ladder pays its largest dividend on $[0,\pi/2]$, where the boundary term is identically zero and the recursion becomes purely numerical. The resulting closed forms are old enough to have a name, and they are worth memorising because they appear whenever a trigonometric substitution has been applied to a definite integral.
+
+\tech{Wallis' formulae}{medium}
+\cue $\int_0^{\pi/2}\sin^{n}x\dd x$ or $\int_0^{\pi/2}\cos^{n}x\dd x$, or anything that becomes one of these after $x=a\sin\theta$: powers of $\sqrt{a^{2}-x^{2}}$, and $\int_0^1(1-x^{2})^{m}\dd x$.
+\method On $[0,\pi/2]$ the boundary term in the sine ladder vanishes, so $I_n=\tfrac{n-1}{n}I_{n-2}$ with $I_0=\tfrac{\pi}{2}$ and $I_1=1$. Iterating,
+\[\int_0^{\pi/2}\sin^{2m}\theta\dd\theta=\frac{(2m-1)!!}{(2m)!!}\cdot\frac{\pi}{2},\qquad \int_0^{\pi/2}\sin^{2m+1}\theta\dd\theta=\frac{(2m)!!}{(2m+1)!!},\]
+and the same values for $\cos^{n}$, since $\theta\mapsto\tfrac{\pi}{2}-\theta$ exchanges the two. The double factorial $(2m)!!=2\cdot4\cdots2m$ and $(2m-1)!!=1\cdot3\cdots(2m-1)$.
+
+\begin{worked}
+\[\int_0^{\pi/2}\sin^{6}\theta\dd\theta=\frac{5\cdot3\cdot1}{6\cdot4\cdot2}\cdot\frac{\pi}{2}=\frac{5\pi}{32}\approx0.490874,\qquad \int_0^{\pi/2}\sin^{7}\theta\dd\theta=\frac{6\cdot4\cdot2}{7\cdot5\cdot3}=\frac{16}{35}\approx0.457143.\]
+An application that does not look trigonometric: $\int_0^1(1-x^{2})^{3}\dd x$. Put $x=\sin\theta$. Then $(1-x^{2})^{3}=\cos^{6}\theta$ and $\dd x=\cos\theta\dd\theta$, so the exponent is $6+1=7$, odd, and the integral is $\int_0^{\pi/2}\cos^{7}\theta\dd\theta=\tfrac{16}{35}$ with no $\pi$ in it. The Jacobian supplying the seventh factor is exactly the sort of detail that flips you from one base case to the other. Expanding $(1-x^{2})^{3}$ and integrating term by term gives $1-1+\tfrac35-\tfrac17=\tfrac{16}{35}$, which is the audit.
+\end{worked}
+
+\begin{worked}[Wallis reached through a substitution]
+\[\int_0^{2}x^{2}\sqrt{4-x^{2}}\dd x.\]
+Put $x=2\sin\theta$, so $\sqrt{4-x^{2}}=2\cos\theta$ and $\dd x=2\cos\theta\dd\theta$, giving
+\[\int_0^{\pi/2}4\sin^{2}\theta\cdot2\cos\theta\cdot2\cos\theta\dd\theta=16\int_0^{\pi/2}\sin^{2}\theta\cos^{2}\theta\dd\theta=4\int_0^{\pi/2}\sin^{2}2\theta\dd\theta=4\cdot\frac{\pi}{4}=\pi.\]
+The intermediate step used $\sin\theta\cos\theta=\tfrac12\sin2\theta$ to reduce a mixed product to a single even power, which is always available and always worth doing before reaching for the double factorials. Every integral of the form $\int_0^{a}x^{m}(a^{2}-x^{2})^{k/2}\dd x$ becomes a Wallis integral this way, with total exponent $m+k+1$.
+\end{worked}
+
+\begin{trap}
+The factor $\pi/2$ appears for \emph{even} powers only, because only the even ladder bottoms out at $I_0=\tfrac{\pi}{2}$; odd powers bottom out at $I_1=1$ and give a rational number. Landing on the wrong base case is the single commonest error in this chapter, and it is detectable by inspection: if your answer to $\int_0^{\pi/2}\sin^{7}$ contains $\pi$, it is wrong.
+\end{trap}
+
+\begin{seealsob}Reduction formulae by parts; sine substitution; the Beta function.\end{seealsob}
+
+Secant is the awkward relative. It obeys a two-step recursion like sine, but its base case $\int\sec x\dd x=\ln\abs{\sec x+\tan x}$ is not a number you can guess, and the first interesting rung, $\int\sec^{3}$, is simultaneously a reduction and a cycle. That double character is exactly why it is worth its own block.
+
+\tech[The secant ladder]{The secant ladder, $\int\sec^{n}x\dd x$}{hard}
+\cue Odd powers of $\sec x$, or any integrand that becomes one after $x=a\tan\theta$: $\int\sqrt{a^{2}+x^{2}}\dd x$ produces $\sec^{3}$, and $\int(a^{2}+x^{2})^{3/2}\dd x$ produces $\sec^{5}$.
+\method Split $\sec^{n}x=\sec^{n-2}x\cdot\sec^{2}x$ with $u=\sec^{n-2}x$ and $\dd v=\sec^{2}x\dd x$, so $v=\tan x$. Then use $\tan^{2}=\sec^{2}-1$:
+\[I_n=\sec^{n-2}x\tan x-(n-2)\int\sec^{n-2}x\tan^{2}x\dd x=\sec^{n-2}x\tan x-(n-2)I_n+(n-2)I_{n-2},\]
+so
+\[I_n=\frac{\sec^{n-2}x\tan x}{n-1}+\frac{n-2}{n-1}I_{n-2},\qquad I_1=\ln\abs{\sec x+\tan x},\quad I_2=\tan x.\]
+Notice that the derivation is a cycle, not a pure reduction: $I_n$ appeared on the right and had to be solved for. That is why the denominators are $n-1$ rather than $n$.
+
+\begin{worked}
+\[\int_0^{\pi/4}\sec^{3}x\dd x=\frac12\Bigl[\sec x\tan x\Bigr]_0^{\pi/4}+\frac12\int_0^{\pi/4}\sec x\dd x=\frac{\sqrt2}{2}+\frac12\ln\bigl(\sqrt2+1\bigr),\]
+that is, $\dfrac{\sqrt2+\ln(1+\sqrt2)}{2}\approx1.147794$. One rung higher,
+\[\int_0^{\pi/4}\sec^{5}x\dd x=\frac{\bigl[\sec^{3}x\tan x\bigr]_0^{\pi/4}}{4}+\frac34\int_0^{\pi/4}\sec^{3}x\dd x=\frac{2\sqrt2}{4}+\frac34\cdot1.147794\approx1.567952.\]
+The boundary term here does \emph{not} vanish, unlike the sine case on $[0,\pi/2]$, so each rung contributes its own bracket and the answer is a sum over rungs.
+\end{worked}
+
+\begin{trap}
+Treating $\sec^{3}$ as if it were a Wallis case and expecting the boundary to drop. It never does on a finite interval away from the origin, and on $[0,\pi/2]$ the integral diverges outright because $\sec$ blows up. Also: the even ladder terminates at $I_2=\tan x$ and is elementary, so $\int_0^{\pi/4}\sec^{4}=\bigl[\tan x+\tfrac{\tan^{3}x}{3}\bigr]_0^{\pi/4}=\tfrac43$ with no logarithm; only odd powers need $I_1$.
+\end{trap}
+
+\begin{seealsob}Cyclic integration by parts; reduction formulae by parts; tangent substitution.\end{seealsob}
+
+The next two ladders are one-step rather than two-step, and they are the ones where the closed form is transparent enough to be quoted directly. They also make a good pair, because they are the same recursion read in two directions: $x^{n}\eu^{x}$ generates factorials by counting down, and $(\ln x)^{n}$ generates the same factorials with alternating signs.
+
+\tech[The factorial ladder]{The factorial ladder, $\int x^{n}\eu^{x}\dd x$}{easy}
+\cue $x^{n}$ times $\eu^{ax}$, especially on $[0,\infty)$ where the whole thing collapses to a factorial, or where $n$ is symbolic and a table is not available.
+\method With $u=x^{n}$ and $\dd v=\eu^{x}\dd x$, one pass gives the one-step recursion
+\[I_n=\int x^{n}\eu^{x}\dd x=x^{n}\eu^{x}-nI_{n-1},\qquad I_0=\eu^{x}.\]
+Unwinding it yields $I_n=\eu^{x}\sum_{k=0}^{n}(-1)^{k}\dfrac{n!}{(n-k)!}x^{n-k}$. On $[0,\infty)$ with $\eu^{-x}$ instead, the boundary vanishes at both ends and the recursion is bare: $\int_0^{\infty}x^{n}\eu^{-x}\dd x=n\int_0^{\infty}x^{n-1}\eu^{-x}\dd x=n!$, which is the definition of $\Gfun(n+1)$ and the reason factorials appear in integral tables at all.
+
+\begin{worked}
+\[\int_0^{\infty}x^{5}\eu^{-x}\dd x=5!=120,\]
+each pass killing the boundary term because $x^{k}\eu^{-x}\to0$ at infinity and $x^{k}\to0$ at the origin for $k\geq1$. On a finite interval the boundary survives at every rung: unwinding for $n=3$ on $[0,1]$ with $\eu^{-x}$ gives $\bigl[-\eu^{-x}(x^{3}+3x^{2}+6x+6)\bigr]_0^1=6-\tfrac{16}{\eu}\approx0.113929$, which is the tabular computation from earlier in this chapter, now derived as a recursion rather than read off a table. The two routes are the same computation; the ladder is the one that survives when $n$ is a symbol.
+\end{worked}
+
+\begin{trap}
+Forgetting the sign that $\eu^{-x}$ contributes at every rung. With $\eu^{+x}$ the recursion is $I_n=x^{n}\eu^{x}-nI_{n-1}$; with $\eu^{-x}$ it is $I_n=-x^{n}\eu^{-x}+nI_{n-1}$, and the signs of the unwound sum are then all the same rather than alternating. Deriving the recursion afresh takes ten seconds and is safer than recalling which version you memorised.
+\end{trap}
+
+\begin{seealsob}Tabular integration; the logarithm ladder; the Gamma function.\end{seealsob}
+
+\tech[The logarithm ladder]{The logarithm ladder, $\int(\ln x)^{n}\dd x$}{medium}
+\cue A power of a logarithm, alone or against a power of $x$: $(\ln x)^{n}$, $x^{m}(\ln x)^{n}$, or $\ln^{n}(1/x)$ on $(0,1)$, which is the same thing with the sign flipped.
+\method Take $\dd v=\dd x$, the trick from earlier in this chapter, and $u=(\ln x)^{n}$. Since $\dvop{x}(\ln x)^{n}=\dfrac{n(\ln x)^{n-1}}{x}$, the factor $x$ from $v$ cancels the $\tfrac1x$ exactly:
+\[J_n=\int(\ln x)^{n}\dd x=x(\ln x)^{n}-nJ_{n-1},\qquad J_0=x.\]
+This is the factorial ladder again after $x=\eu^{t}$, which is why the answers are factorials. On $(0,1)$ the boundary vanishes at both ends and
+\[\int_0^1(\ln x)^{n}\dd x=-n\int_0^1(\ln x)^{n-1}\dd x=(-1)^{n}n!.\]
+
+\begin{worked}
+On $[1,\eu]$ the boundary is a clean $\eu$ at every rung: $J_n(\eu)-J_n(1)=\eu-nJ_{n-1}$, so with $J_0=\eu-1$,
+\[J_1=1,\qquad J_2=\eu-2,\qquad J_3=\eu-3(\eu-2)=6-2\eu\approx0.563436.\]
+On $(0,1)$ instead, $\int_0^1(\ln x)^{4}\dd x=4!=24$, positive because the exponent is even; $\int_0^1(\ln x)^{3}\dd x=-6$. The check is worth doing once: substitute $x=\eu^{-t}$, and $\int_0^1(\ln x)^{n}\dd x$ becomes $(-1)^{n}\int_0^{\infty}t^{n}\eu^{-t}\dd t=(-1)^{n}n!$, which is the factorial ladder in disguise.
+\end{worked}
+
+\begin{trap}
+Assuming the bracket $[x(\ln x)^{n}]$ vanishes at $x=0$ without argument. It does, because $x(\ln x)^{n}\to0$ for every fixed $n$, but that is a statement about $t^{n}\eu^{-t}$ at infinity and deserves the substitution rather than a shrug. For $x^{m}(\ln x)^{n}$ with $m\leq-1$ it is false, and those integrals diverge.
+\end{trap}
+
+\begin{seealsob}The factorial ladder; parts with $\dd v=\dd x$; the Gamma function.\end{seealsob}
+
+The last ladder is the one that is not usually recognised as a ladder at all, because the repeated factor sits in a denominator. It matters out of proportion to its appearance, since $\int(1+x^{2})^{-n}\dd x$ is what every tangent substitution eventually produces, and because its recursion is derived by the $\dd v=\dd x$ trick rather than by splitting off a copy of the repeated factor.
+
+\tech[The rational ladder]{The rational ladder, $\int(1+x^{2})^{-n}\dd x$}{medium}
+\cue A power of $1+x^{2}$ (or $a^{2}+x^{2}$) in a denominator with integer exponent $n\geq2$. This is the standard residue of a tangent substitution, of a partial-fraction decomposition with a repeated irreducible quadratic factor, and of Cauchy-type kernels.
+\method There is no factor to split off, so take $u=(1+x^{2})^{-n}$ and $\dd v=\dd x$. Then $v=x$ and $\dd u=-2nx(1+x^{2})^{-n-1}\dd x$, so
+\[I_n=\frac{x}{(1+x^{2})^{n}}+2n\int\frac{x^{2}}{(1+x^{2})^{n+1}}\dd x.\]
+Write $x^{2}=(1+x^{2})-1$ to split the last integral into $I_n-I_{n+1}$, giving $I_{n+1}=\dfrac{1}{2n}\cdot\dfrac{x}{(1+x^{2})^{n}}+\dfrac{2n-1}{2n}I_n$, with $I_1=\arctan x$. Note that the recursion runs \emph{upwards}: parts on $I_n$ produces $I_{n+1}$, and you read it backwards to descend.
+
+\begin{worked}
+On $[0,\infty)$ the boundary term vanishes at both ends for $n\geq1$, so the recursion is purely numerical, $I_{n+1}=\tfrac{2n-1}{2n}I_n$ with $I_1=\tfrac{\pi}{2}$:
+\[\int_0^{\infty}\frac{\dd x}{(1+x^{2})^{2}}=\frac{\pi}{4},\qquad \int_0^{\infty}\frac{\dd x}{(1+x^{2})^{3}}=\frac{3\pi}{16},\qquad \int_0^{\infty}\frac{\dd x}{(1+x^{2})^{4}}=\frac{5\pi}{32}.\]
+Those are the Wallis numbers, and they should be: $x=\tan\theta$ turns $\int_0^{\infty}(1+x^{2})^{-n}\dd x$ into $\int_0^{\pi/2}\cos^{2n-2}\theta\dd\theta$. On a finite interval the bracket survives:
+\[\int_0^{1}\frac{\dd x}{(1+x^{2})^{2}}=\frac12\Bigl[\frac{x}{1+x^{2}}\Bigr]_0^1+\frac12\bigl[\arctan x\bigr]_0^1=\frac14+\frac{\pi}{8}\approx0.642699.\]
+\end{worked}
+
+\begin{trap}
+Reading the recursion in the wrong direction. Parts applied to $I_n$ delivers a relation between $I_n$ and $I_{n+1}$, so to compute $I_5$ you start at $I_1$ and climb, not the reverse. Solvers who expect a reduction formula to descend will write $I_5$ in terms of $I_6$ and never terminate.
+\end{trap}
+
+\begin{seealsob}Wallis' formulae; reduction formulae by parts; tangent substitution.\end{seealsob}
+
+The four ladders are worth seeing side by side, because what distinguishes them is not the algebra of the parts step but the base case and the fate of the boundary term, and those are the two things that get mixed up.
+
+\begin{center}
+\footnotesize
+\setlength{\tabcolsep}{5pt}
+\renewcommand{\arraystretch}{1.32}
+\begin{tabular}{@{}lllll@{}}
+\toprule
+\mh{Family} & \mh{Take $\dd v=$} & \mh{Step} & \mh{Base cases} & \mh{Boundary vanishes on} \\
+\midrule
+$\sin^{n}x$, $\cos^{n}x$ & $\sin x\dd x$ & $n\to n-2$ & $I_0=\tfrac{\pi}{2}$, $I_1=1$ & $[0,\tfrac{\pi}{2}]$ \\
+$\sec^{n}x$ & $\sec^{2}x\dd x$ & $n\to n-2$ & $I_1=\ln\abs{\sec+\tan}$, $I_2=\tan$ & nowhere useful \\
+$x^{n}\eu^{-x}$ & $\eu^{-x}\dd x$ & $n\to n-1$ & $I_0=1$ & $[0,\infty)$ \\
+$(\ln x)^{n}$ & $\dd x$ & $n\to n-1$ & $J_0=1$ & $(0,1)$ \\
+$(1+x^{2})^{-n}$ & $\dd x$ & $n\to n+1$ & $I_1=\arctan x$ & $[0,\infty)$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Read the fourth column as the answer to the question ``which number will my answer be a multiple of''. A ladder ending at $I_0=\tfrac{\pi}{2}$ produces $\pi$; one ending at $I_1=1$ produces a rational number; the secant ladder ends at a logarithm and produces one. The fifth column is the answer to ``how many boundary terms do I have to carry''. On the good intervals the answer is none, and the ladder is pure arithmetic; everywhere else the answer is one per rung, and the closed form is a sum.
+
+\section{Running it sideways}
+
+There is one further way to use the parts identity that is not a mode of iteration at all. Read $\int u\dd v+\int v\dd u=[uv]$ as a statement relating the integral of a function to the integral of its inverse, and it becomes a tool for problems where the integrand is defined implicitly and cannot be written down.
+
+\tech{Inverse-function integration}{hard}
+\cue The integrand is $f^{-1}$ for a function $f$ you can handle; or the problem defines $g$ implicitly by $f(g(x))=x$ and asks for $\int g$; or you are handed both $f$ and its inverse and asked for a combination of their integrals.
+\method Two equivalent routes. Substituting $x=f(t)$ turns $\int g(x)\dd x$ into $\int t\,f'(t)\dd t$, which is parts waiting to happen. Or quote Young's identity directly:
+\[\int_a^b f^{-1}(x)\dd x=b\,f^{-1}(b)-a\,f^{-1}(a)-\int_{f^{-1}(a)}^{f^{-1}(b)}f(t)\dd t.\]
+Geometrically this is the rectangle-minus-region picture: the area under $f^{-1}$ over $[a,b]$ and the area under $f$ over the corresponding $t$-interval together tile a difference of rectangles. Note that $\int\ln x\dd x$ and $\int\arcsin x\dd x$ are the special cases $f=\eu^{x}$ and $f=\sin$, so the technique of taking $\dd v=\dd x$ is Young's identity with the bookkeeping hidden.
+
+\begin{worked}
+Let $g$ be the inverse of $f(t)=t\,2^{t}$ on $[0,1]$, so $g:[0,2]\to[0,1]$ with $g(0)=0$ and $g(2)=1$ (from $t2^{t}=2$, which forces $t=1$: you must \emph{solve}, not guess, and monotonicity of $t2^{t}$ guarantees uniqueness). Young's identity gives
+\[\int_0^{2}g(x)\dd x=2\cdot1-0\cdot0-\int_0^1t\,2^{t}\dd t.\]
+The remaining integral is ordinary parts with $u=t$, $\dd v=2^{t}\dd t$, $v=2^{t}/\ln2$:
+\[\int_0^1t\,2^{t}\dd t=\Bigl[\frac{t\,2^{t}}{\ln2}\Bigr]_0^1-\frac{1}{\ln2}\int_0^12^{t}\dd t=\frac{2}{\ln2}-\frac{1}{\ln^{2}2}.\]
+Hence
+\[\int_0^{2}g(x)\dd x=2-\frac{2}{\ln2}+\frac{1}{\ln^{2}2}\approx1.195979,\]
+and $g$ was never written down, because it cannot be.
+\end{worked}
+
+\begin{worked}[The familiar case, re-derived]
+$\int_0^1\arcsin x\dd x$ with $f=\sin$ on $[0,\pi/2]$: Young gives $1\cdot\tfrac{\pi}{2}-0-\int_0^{\pi/2}\sin t\dd t=\tfrac{\pi}{2}-1$, matching the computation by $\dd v=\dd x$ earlier. When both routes are available they agree, and the identity is the faster one when $f$ is easy and $f^{-1}$ is not.
+\end{worked}
+
+\begin{trap}
+Two hypotheses, both easy to skip. First, $f$ must be monotone on the relevant range, or $f^{-1}$ does not exist and the identity is meaningless. Second, the new limits are $f^{-1}(a)$ and $f^{-1}(b)$, and they must be obtained by solving an equation; guessing from the shape of $f$ is how a correct method produces a wrong number.
+\end{trap}
+
+\begin{seealsob}Parts with $\dd v=\dd x$; engineering the antiderivative $v$; reciprocal substitution.\end{seealsob}
+
+\section{Choosing which machine}
+
+The three modes are distinguished by a single question asked after the first application: what does the new integral look like relative to the old one. Smaller means run forwards. Same means solve. Same family, smaller index, means recurse. The tree below routes on the shape of the integrand rather than on the outcome, so that you can make the decision before spending the first application.
+
+\begin{center}
+\begin{tikzpicture}[node distance=5mm and 7mm]
+\node[dtest] (a) {Is there a polynomial\\ factor?};
+\node[dtest, below left=9mm and 4mm of a] (b) {Other factor cheap to\\ antidifferentiate\\ repeatedly?};
+\node[dtest, below right=9mm and 2mm of a] (c) {Does the integrand carry\\ an integer exponent $n$?};
+\node[dleaf, below left=9mm and 1mm of b] (d) {Tabular integration;\\ read the diagonals};
+\node[dnode, below right=9mm and 0mm of b] (e) {Inner derivative present:\\ substitute first};
+\node[dleaf, below left=9mm and 0mm of c] (f) {Reduction formula;\\ fix $I_0$ and $I_1$ first};
+\node[dtest, below right=9mm and 0mm of c] (g) {Two passes return\\ the integrand?};
+\node[dleaf, below=9mm of g] (h) {Yes: solve for $I$.\\ No: $\dd v=\dd x$,\\ engineer $v$};
+\draw[dedge] (a) -- node[dlab,left]{yes} (b);
+\draw[dedge] (a) -- node[dlab,right]{no} (c);
+\draw[dedge] (b) -- node[dlab,left]{yes} (d);
+\draw[dedge] (b) -- node[dlab,right]{no} (e);
+\draw[dedge] (c) -- node[dlab,left]{yes} (f);
+\draw[dedge] (c) -- node[dlab,right]{no} (g);
+\draw[dedge] (g) -- (h);
+\end{tikzpicture}
+\end{center}
+
+Two cautions about the tree. The left branch is not the easy branch: a polynomial factor guarantees termination but says nothing about how many rungs, and a degree-six polynomial against $\eu^{-x}$ is seven lines of table. The right branch is where the judgement lives, and the bottom right box hides a real decision, because the same integrand can often be attacked either as a cycle or as a ladder. $\int\sec^{3}$ is the canonical example: derived as a rung of the secant ladder it needs the identity $\tan^{2}=\sec^{2}-1$, and derived as a cycle it needs the same identity at the same moment. They are the same computation seen from two sides, and it does not matter which name you give it.
+
+The last thing to internalise is that parts is rarely the first move. It is the move for products that resist everything else, and a solver who reaches for it before simplifying, before checking for an inner derivative, and before looking for a reverse product rule will produce three correct and pointless pages. When the integrand is $\eu^{x}(f(x)+f'(x))$, the answer is $\eu^{x}f(x)$ and parts is a detour. When the integrand is $x^{3}\eu^{x^{2}}$, the answer comes from $w=x^{2}$ and parts is at best a costume. Ask what the integrand was built from before asking how to take it apart.
+
+\section{Recognition matrix}
+\begin{recog}{@{}p{0.30\textwidth}p{0.36\textwidth}p{0.28\textwidth}@{}}
+\rowcolor{mist}\mh{If you see} & \mh{Reach for} & \mh{If that fails} \\
+\midrule
+\endhead
+$P(x)\eu^{ax}$, $P(x)\sin ax$, $P$ a polynomial & Tabular integration, $\deg P+1$ rows & Complexify: $\eu^{(a+\iu b)x}$ \\
+$x^{n}$ against $\eu^{-x}$ on $[0,\infty)$ & The factorial ladder; answer is $n!$ & $\Gfun(n+1)$ and its shifts \\
+$\ln x$, $\arctan x$, $\arcsin x$ alone & $\dd v=\dd x$, so $u$ is the whole integrand & Young's identity for $f^{-1}$ \\
+$\ln(x+c)$ or $\ln(g(x))$ against $\dd x$ & Take $v=x+c$, not $v=x$ & Substitute $w=x+c$ first \\
+$\dfrac{\ln x}{(x+a)^{2}}$ & Shift $v$ to $\dfrac{x}{a(x+a)}$ so $x$ cancels & Partial fractions after parts \\
+$\eu^{ax}\sin bx$, $\eu^{ax}\cos bx$ & Cyclic parts; divide by $a^{2}+b^{2}$ & Take real part of $\eu^{(a+\iu b)x}$ \\
+$\sin(\ln x)$, $\cos(\ln x)$ & $x=\eu^{t}$, then cyclic parts & Cyclic parts directly, $\dd v=\dd x$ \\
+A cycle giving $I=I$ & You switched $u$; redo the second pass & If consistent, parts cannot do it \\
+$\sin^{n}x$, $\cos^{n}x$ on $[0,\tfrac{\pi}{2}]$ & Wallis: $\tfrac{(n-1)!!}{n!!}$, times $\tfrac{\pi}{2}$ if $n$ even & Beta function $\tfrac12\Bfun(\tfrac{n+1}{2},\tfrac12)$ \\
+$\sec^{n}x$, $n$ odd & Secant ladder, $\dd v=\sec^{2}x\dd x$ & $t=\sin x$, then partial fractions \\
+$(\ln x)^{n}$ on $(0,1)$ & Logarithm ladder; answer is $(-1)^{n}n!$ & $x=\eu^{-t}$, then $\Gfun$ \\
+$(1+x^{2})^{-n}$ & Reduction by parts, $\dd v=\dd x$ & $x=\tan\theta$, then Wallis on $\cos^{2n-2}$ \\
+$x^{3}\eu^{x^{2}}$, $x^{5}\sin(x^{2})$ & Substitute the inner function first & Parts on the reduced integral \\
+$\eu^{x}\bigl(f(x)+f'(x)\bigr)$ & Reverse product rule: answer $\eu^{x}f(x)$ & Parts, which returns the same thing \\
+$f^{-1}$ or an implicitly defined $g$ & Young's identity; solve for the new limits & $x=f(t)$, then ordinary parts \\
+\end{recog}

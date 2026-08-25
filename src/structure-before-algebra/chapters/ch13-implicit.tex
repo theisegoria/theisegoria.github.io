@@ -1,0 +1,486 @@
+\chapter{Implicit, inverse, parametric and polar structure}
+
+\begin{orient}
+\textbf{What this chapter is for.} Four presentations of a curve look like four different subjects and are one. An implicit equation $F(x,y)=0$, an inverse relation $f(y)=x$, a parametrisation $x=x(t)$, $y=y(t)$, and a polar equation $r=r(\theta)$ all share the property that $y$ is never handed to you as a formula in $x$. In every case the response is identical: differentiate the relation you were actually given, let the chain rule record the fact that $y$ depends on $x$, and solve the resulting linear equation for $\dv{y}{x}$. This chapter installs that one move, then works through what changes in each costume: how to get a second derivative implicitly without freezing $y'$ into a constant, why the inverse-function theorem turns problems that look unsolvable into one line of arithmetic, how the inverse trigonometric and inverse hyperbolic derivatives are derived rather than memorised, and the two-step formula for $\ddv{y}{x}$ on a parametrised curve that almost everyone gets wrong the first time. At the end you should be able to look at any relation between two variables and produce a derivative without ever solving for $y$.
+\end{orient}
+
+\section{Four costumes, one idea}
+
+The usual complaint is that there is nothing to differentiate, because $y$ has not been given as a function of $x$. The complaint is false. You have been given a \emph{relation}, and a relation can be differentiated exactly as a formula can, provided you keep track of what depends on what.
+
+Assume there is a differentiable function $y=y(x)$ satisfying the relation near the point of interest. That assumption is what the implicit function theorem supplies, and its hypothesis will reappear below as the condition $F_{y}\neq0$. Under that assumption every appearance of $y$ in the relation is a composite function of $x$, so differentiating it emits a factor $y'$ by the chain rule. The relation is an identity in $x$, so its derivative is an identity in $x$ too. That identity contains $y'$ linearly, because $y'$ enters only through single applications of the chain rule, and a linear equation in one unknown is solved by rearrangement.
+
+Here are the four presentations, and here is the same move in each.
+
+\begin{itemize}
+\item \textbf{Implicit.} $F(x,y)=0$. Differentiate: $F_{x}+F_{y}y'=0$, so $y'=-F_{x}/F_{y}$.
+\item \textbf{Inverse.} $y=f^{-1}(x)$ means $f(y)=x$, which is the implicit relation $F(x,y)=f(y)-x=0$. Differentiate: $f'(y)y'=1$, so $y'=1/f'(y)$.
+\item \textbf{Parametric.} $x=x(t)$, $y=y(t)$. The relation is that both coordinates are tied to a common $t$. Differentiate $y(t)=y\bigl(x(t)\bigr)$: $\dot y=\dv{y}{x}\dot x$, so $\dv{y}{x}=\dot y/\dot x$.
+\item \textbf{Polar.} $r=r(\theta)$ is the parametric case with $x=r(\theta)\cos\theta$ and $y=r(\theta)\sin\theta$, so nothing new is needed at all.
+\end{itemize}
+
+\begin{keynote}[The single move]
+Differentiate the relation you were given, with respect to $x$, treating $y$ as an unknown function of $x$. Collect the $y'$ terms on one side. Divide. Everything else in this chapter is bookkeeping about which relation you were given and what you do after the first derivative is in hand. In particular the inverse-function theorem is not a separate theorem: it is implicit differentiation applied to the relation $f(y)=x$, where the collection step is trivial because only one term contains $y'$.
+\end{keynote}
+
+The four costumes do differ in one respect, and it is worth naming before the techniques begin. Implicit and inverse relations are \emph{unparametrised}: they describe a set of points, and a derivative is attached to a point of that set. Parametric and polar descriptions are \emph{parametrised}: they describe a motion, and a derivative can be attached to a time as well as to a point. That distinction is why a parametrised curve can cross itself and still have two perfectly well defined tangents at the crossing, one for each visit, while $F(x,y)=0$ at a crossing has $F_{x}=F_{y}=0$ and offers you nothing.
+
+\begin{center}
+\begin{tikzpicture}
+\node[dtest] (a) at (0,0) {Is the curve given through\\ a parameter, $t$ or $\theta$?};
+\node[dtest] (b) at (-3.0,-1.35) {Is that parameter\\ the polar angle $\theta$?};
+\node[dtest] (e) at (3.0,-1.35) {Does the relation read\\ $f(y)=x$ for a known $f$?};
+\node[dleaf] (c) at (-5.0,-3.0) {Polar formula:\\ $\frac{r'\sin\theta+r\cos\theta}{r'\cos\theta-r\sin\theta}$};
+\node[dleaf] (d) at (-1.4,-3.0) {$\dot y/\dot x$; then divide\\ $\dvop{t}(\dot y/\dot x)$ by $\dot x$ again};
+\node[dleaf] (f) at (1.4,-3.0) {Preimage $a$ with $f(a)=b$;\\ the answer is $1/f'(a)$};
+\node[dleaf] (g) at (5.0,-3.0) {Differentiate $F(x,y)=0$;\\ every $y$ emits a $y'$};
+\draw[dedge] (a) -- node[dlab,above left]{yes} (b);
+\draw[dedge] (a) -- node[dlab,above right]{no} (e);
+\draw[dedge] (b) -- node[dlab,left]{yes} (c);
+\draw[dedge] (b) -- node[dlab,right]{no} (d);
+\draw[dedge] (e) -- node[dlab,left]{yes} (f);
+\draw[dedge] (e) -- node[dlab,right]{no} (g);
+\end{tikzpicture}
+\end{center}
+
+There is a fifth costume, mentioned here and then left to the chapter on applications, because recognising it early saves confusion later. If both $x$ and $y$ depend on a time $t$ and a relation $F(x,y)=0$ holds throughout the motion, differentiating the relation with respect to $t$ rather than $x$ gives $F_{x}\dot x+F_{y}\dot y=0$. That is a related-rates problem, and it is implicit differentiation with the independent variable renamed. On $x^{2}+y^{2}=25$ with $\dot x=3$ at the point $(3,4)$, the relation gives $6\cdot3+8\dot y=0$, so $\dot y=-\tfrac94$; and $\dv{y}{x}=\dot y/\dot x=-\tfrac34$, the slope computed three other ways below. Nothing new happened. The only change was which letter the derivatives were taken with respect to.
+
+\subsection{The same tangent, three ways}
+
+It is worth doing one tangent by every available description, because the agreement is the argument of this chapter in miniature. Take the circle of radius $5$ at the point $(3,4)$.
+
+\emph{As an implicit relation.} $x^{2}+y^{2}=25$ differentiates to $2x+2yy'=0$, so $y'=-x/y=-3/4$.
+
+\emph{As a parametrisation.} $x=5\cos t$, $y=5\sin t$, with $(3,4)$ at the value of $t$ where $\cos t=3/5$ and $\sin t=4/5$. Then $\dot x=-5\sin t$, $\dot y=5\cos t$, and $\dv{y}{x}=-\cot t=-\dfrac{3/5}{4/5}=-3/4$.
+
+\emph{As a polar curve.} $r(\theta)=5$, a constant, so $r'=0$ and the polar formula degenerates to
+\[
+\dv{y}{x}=\frac{0+r\cos\theta}{0-r\sin\theta}=-\cot\theta,
+\]
+which is the parametric answer, as it must be, since $r'=0$ is exactly the statement that the parametrisation is the circular one. Numerically $-\cot\bigl(\arctan(4/3)\bigr)=-0.750000$.
+
+\emph{As an explicit function.} $y=\sqrt{25-x^{2}}$ on the upper semicircle, so $y'=-x/\sqrt{25-x^{2}}=-3/4$. This is the only one of the four that required a branch choice, and it is the only one that fails at $(5,0)$.
+
+Four descriptions, one tangent, and the differences are entirely in the bookkeeping. The lesson generalises: when a curve admits two descriptions, use the one whose derivative is cheapest, and use the other as a check. The astroid $x^{2/3}+y^{2/3}=1$ is a good second exercise in that habit. Implicitly, $\tfrac23x^{-1/3}+\tfrac23y^{-1/3}y'=0$ gives $y'=-\bigl(y/x\bigr)^{1/3}$; parametrically, $x=\cos^{3}t$, $y=\sin^{3}t$ gives $\dot y/\dot x=3\sin^{2}t\cos t\big/\bigl(-3\cos^{2}t\sin t\bigr)=-\tan t$. The two agree because $\bigl(y/x\bigr)^{1/3}=\tan t$, and at $t=0.7$ both return $-0.842288$. The parametric form is the one to use, because it never divides by zero at the cusps.
+
+\section{Implicit relations}
+
+Start with the general case, because the other three are special cases of it. The mechanical instruction is: differentiate every term of $F(x,y)=0$ with respect to $x$; a term in $x$ alone differentiates normally; a term in $y$ alone differentiates and picks up a factor $y'$; a mixed term needs the product rule and then picks up a factor $y'$ on the part that came from $y$. Then collect and divide.
+
+The formula $y'=-F_{x}/F_{y}$ is the same statement in partial-derivative notation, and it is worth having both. The term-by-term version is faster on a small relation and needs no multivariable vocabulary. The partial version is faster on a large one, is the only sensible route to the second derivative in closed form, and makes the failure condition visible: the recipe breaks exactly where $F_{y}=0$.
+
+\tech{Implicit differentiation at a point}{core}
+\cue $x$ and $y$ are algebraically entangled in a single equation that cannot be solved for $y$, or can be solved only at the cost of a radical with a branch choice, and $\dv{y}{x}$ is wanted at a specific point on the curve.
+\method Differentiate every term with respect to $x$, treating $y=y(x)$ so that each appearance of $y$ emits a $y'$; collect the $y'$ terms and solve the resulting linear equation. Equivalently
+\[
+\dv{y}{x}=-\frac{F_{x}(x,y)}{F_{y}(x,y)}\qquad\text{for }F(x,y)=0 .
+\]
+Substitute the numerical coordinates of the point \emph{before} solving whenever a numerical answer is all that is wanted: it turns a symbolic rearrangement into arithmetic.
+
+\begin{worked}
+The folium of Descartes, $x^{3}+y^{3}=6xy$, at the point $(3,3)$.
+
+Differentiating term by term, $3x^{2}+3y^{2}y'=6y+6xy'$. Collecting, $y'\bigl(3y^{2}-6x\bigr)=6y-3x^{2}$, so
+\[
+y'=\frac{6y-3x^{2}}{3y^{2}-6x}=\frac{2y-x^{2}}{y^{2}-2x}.
+\]
+At $(3,3)$ this is $\dfrac{6-9}{9-6}=-1$. The tangent there is $y-3=-(x-3)$, that is $x+y=6$, which is the line of symmetry of the folium reflected: the curve meets its own axis of symmetry $y=x$ at $(3,3)$ at right angles, and $y'=-1$ says exactly that.
+
+Note how much work the point saved. Substituting $x=y=3$ into the differentiated identity gives $27+27y'=18+18y'$ immediately, hence $9y'=-9$ and $y'=-1$, without ever writing the general quotient.
+
+A second instance where solving for $y$ is genuinely impossible. On $\eu^{y}+xy=\eu$ at the point $(0,1)$: differentiating gives $\eu^{y}y'+y+xy'=0$, and at $(0,1)$ this reads $\eu\,y'+1+0=0$, so $y'=-1/\eu$. The relation cannot be inverted in closed form; the derivative took one line.
+
+A third instance, where the whole curve is interrogated rather than one point. On the ellipse $x^{2}+xy+y^{2}=3$, differentiation gives $2x+y+xy'+2yy'=0$, so
+\[
+y'=-\frac{2x+y}{x+2y}.
+\]
+Horizontal tangents are the zeros of the numerator, $y=-2x$; substituting into the relation gives $x^{2}-2x^{2}+4x^{2}=3$, so $x=\pm1$ and the points are $(1,-2)$ and $(-1,2)$. Vertical tangents are the zeros of the denominator, $x=-2y$, giving $(2,-1)$ and $(-2,1)$. A numerical slope on the implicit branch at $(1,-2)$ returns $1.1\times10^{-10}$. Note that the two lists are obtained from the same quotient by reading it twice, once from the top and once from the bottom, which is the standard economy of the implicit form.
+\end{worked}
+
+\begin{trap}
+Differentiating a $y$-term as though $y$ were a constant, so that $\dvop{x}y^{3}$ comes out as $3y^{2}$ instead of $3y^{2}y'$. The reliable check is that every term of the differentiated identity must contain either a $y'$ or no $y$ at all, apart from the ones the product rule split. The second trap is dividing by $F_{y}$ without checking $F_{y}\neq0$: on the folium $F_{y}=3y^{2}-6x$ vanishes at $(0,0)$ and at $\bigl(2\sqrt[3]{4},2\sqrt[3]{2}\bigr)$, and at the latter the tangent is vertical rather than nonexistent, so the correct report is $\dv{x}{y}=0$, not ``undefined''.
+\end{trap}
+
+\begin{seealsob}Second derivatives implicitly; the implicit variable exponent; the inverse-function derivative.\end{seealsob}
+
+\begin{keynote}[What the hypothesis $F_{y}\neq0$ is doing]
+The implicit function theorem says that if $F$ is continuously differentiable near $(x_{0},y_{0})$, if $F(x_{0},y_{0})=0$, and if $F_{y}(x_{0},y_{0})\neq0$, then near that point the solution set of $F=0$ \emph{is} the graph of a differentiable function $y=y(x)$, and its derivative is $-F_{x}/F_{y}$. Every implicit calculation silently assumes this. When $F_{y}=0$ but $F_{x}\neq0$, swap the roles: the solution set is locally the graph of $x=x(y)$ with $\dv{x}{y}=-F_{y}/F_{x}=0$, and the tangent is vertical. When both vanish the point is singular, the curve may cross itself or form a cusp, and no first-order statement is available: the folium of Descartes at the origin is the standard example, where two branches cross and the two tangents are the coordinate axes.
+\end{keynote}
+
+Once $y'$ is in hand as an expression in $x$ and $y$, a concavity or curvature question asks for $y''$, and this is where implicit differentiation acquires its one genuine subtlety. The expression for $y'$ still contains $y$, and $y$ still depends on $x$, so differentiating it a second time produces fresh $y'$ factors that must then be eliminated using the first-derivative result. The order of those two steps is the whole difficulty.
+
+\tech{Second and higher derivatives implicitly}{medium}
+\cue An implicit curve with $\ddv{y}{x}$ requested, usually as part of a concavity, inflection, or curvature question, and occasionally a third derivative.
+\method Differentiate the \emph{expression} already obtained for $y'$, again with respect to $x$, remembering that every $y$ inside that expression still carries a $y'$; then substitute the known $y'$ and simplify using the original relation. In closed form,
+\[
+\ddv{y}{x}=-\frac{F_{xx}F_{y}^{2}-2F_{xy}F_{x}F_{y}+F_{yy}F_{x}^{2}}{F_{y}^{3}} .
+\]
+The three-term numerator is the quadratic form $F_{yy}$, $F_{xy}$, $F_{xx}$ evaluated against the vector $(F_{x},-F_{y})$, which is how to remember its signs.
+
+\begin{worked}
+The circle $x^{2}+y^{2}=r^{2}$ first, because the answer is checkable by eye. Differentiating, $2x+2yy'=0$ gives $y'=-x/y$. Differentiating that quotient,
+\[
+y''=-\dvop{x}\frac{x}{y}=-\frac{y-xy'}{y^{2}}=-\frac{y+x^{2}/y}{y^{2}}=-\frac{y^{2}+x^{2}}{y^{3}}=-\frac{r^{2}}{y^{3}} .
+\]
+The substitution $y'=-x/y$ happened at the second step, after the differentiation, and the last simplification used the original relation. On the upper semicircle $y>0$ and $y''<0$: concave down, as it must be. At $r=5$ and $x=3$ the formula gives $-25/64=-0.390625$, and a central second difference of $\sqrt{25-x^{2}}$ at $x=3$ returns $-0.39062$.
+
+Now the folium at $(3,3)$, where nothing is checkable by eye. Differentiate the identity $3x^{2}+3y^{2}y'=6y+6xy'$ once more:
+\[
+6x+6y(y')^{2}+3y^{2}y''=6y'+6y'+6xy'' .
+\]
+Only now substitute $x=y=3$ and $y'=-1$: $18+18+27y''=-12+18y''$, so $9y''=-48$ and
+\[
+y''=-\frac{16}{3}.
+\]
+A central second difference on the implicit branch through $(3,3)$ returns $-5.33333$, and $-16/3=-5.3\overline{3}$. The closed form agrees: with $F=x^{3}+y^{3}-6xy$ we have $F_{x}=F_{y}=9$, $F_{xx}=F_{yy}=18$, $F_{xy}=-6$ at $(3,3)$, so the numerator is $18\cdot81+2\cdot6\cdot81+18\cdot81=3888$ and $-3888/729=-16/3$.
+
+Third derivatives need no new idea, only stamina and the same discipline: differentiate the identity again, and substitute the now-known $y'$ and $y''$ at the very end. On the circle, differentiating $y''=-r^{2}y^{-3}$ gives $y'''=3r^{2}y^{-4}y'=3r^{2}y^{-4}\bigl(-x/y\bigr)=-3r^{2}x/y^{5}$, which vanishes only on the vertical axis, as the symmetry of the circle demands.
+\end{worked}
+
+\begin{trap}
+Substituting the numerical value of $y'$ into the first-derivative expression \emph{before} the second differentiation. That freezes $y'$ into a constant, so its own derivative is lost, and the reported $y''$ is missing the $6y(y')^{2}$ term entirely. The rule is: differentiate first, substitute second. The related slip is differentiating $y'=-x/y$ with the quotient rule and writing $\dvop{x}y=1$; the denominator's derivative is $y'$, not $1$.
+\end{trap}
+
+\begin{seealsob}Implicit differentiation at a point; the parametric second derivative; curvature.\end{seealsob}
+
+A word on what $y''$ is usually wanted for. Inflection points of an implicit curve are the points where $y''$ changes sign, and the closed form makes them computable without ever separating the variables: set the numerator $F_{xx}F_{y}^{2}-2F_{xy}F_{x}F_{y}+F_{yy}F_{x}^{2}$ to zero and intersect that new curve with $F=0$. Two equations, two unknowns, no branch choice anywhere. Curvature is the same numerator wearing a different denominator, $\kappa=\abs{y''}/\bigl(1+(y')^{2}\bigr)^{3/2}$, so an implicit curvature question is answered by the same computation with one extra substitution at the end.
+
+One family of implicit relations deserves separate treatment, not because the method changes but because the first step is invisible until you have seen it once. When the unknown appears in its own exponent, the relation is not polynomial in $y$ and term-by-term differentiation produces something unusable. Taking logarithms first converts the exponent into a product, and the relation becomes ordinary.
+
+\tech[Implicit variable exponent]{Implicit variable exponent: $y=x^{y}$ and relatives}{hard}
+\cue The unknown appears in its own exponent: $y=x^{y}$, $x^{y}=y^{x}$, $x^{y}=\eu^{x-y}$, $y^{y}=x$.
+\method Take logarithms of the whole relation, which turns every exponent into a multiplier, then differentiate implicitly as usual. For $y=x^{y}$: $\ln y=y\ln x$, so $\dfrac{y'}{y}=y'\ln x+\dfrac{y}{x}$, and collecting,
+\[
+y'=\frac{y^{2}}{x\bigl(1-y\ln x\bigr)} .
+\]
+Always check whether the logged relation happens to be solvable for $y$; sometimes it is, and then no implicit work is needed at all.
+
+\begin{worked}
+$x^{y}=\eu^{x-y}$, and $\dv{y}{x}$ at $x=\eu$.
+
+Logging both sides gives $y\ln x=x-y$, which is linear in $y$, so this relation \emph{is} solvable:
+\[
+y=\frac{x}{1+\ln x}.
+\]
+Then the quotient rule gives
+\[
+\dv{y}{x}=\frac{(1+\ln x)-x\cdot\tfrac1x}{(1+\ln x)^{2}}=\frac{\ln x}{(1+\ln x)^{2}},
+\]
+and at $x=\eu$ this is $\dfrac{1}{4}$. A central difference of $x/(1+\ln x)$ at $x=\eu$ with step $10^{-5}$ returns $0.2500000$.
+
+The implicit route reaches the same place and is the one to use when the logged relation is not solvable. From $y\ln x=x-y$, differentiate: $y'\ln x+\dfrac{y}{x}=1-y'$, so $y'(1+\ln x)=1-\dfrac{y}{x}$. At $x=\eu$ the relation gives $y=\eu/2$, hence $y'\cdot2=1-\tfrac12$ and $y'=\tfrac14$ again.
+
+For a relation that genuinely cannot be solved, take $y=x^{y}$ at $x=1.2$. The relation has root $y=1.2577$, and the formula gives $y'=y^{2}/\bigl(x(1-y\ln x)\bigr)=1.71048$; a central difference of the numerically continued branch returns $1.71048$.
+
+The most-set member of the family is $x^{y}=y^{x}$, whose logged form is $y\ln x=x\ln y$. Differentiating,
+\[
+y'\ln x+\frac{y}{x}=\ln y+\frac{x}{y}\,y',\qquad\text{so}\qquad y'=\frac{y\bigl(x\ln y-y\bigr)}{x\bigl(y\ln x-x\bigr)} .
+\]
+The curve has two components: the line $y=x$, on which the formula is $0/0$ and useless, and a nontrivial branch through $(2,4)$, since $2^{4}=4^{2}=16$. There the formula gives
+\[
+y'=\frac{4\bigl(2\ln4-4\bigr)}{2\bigl(4\ln2-2\bigr)}=-3.177399 ,
+\]
+and a central difference along the numerically continued branch returns $-3.177399$. The $0/0$ on the diagonal is the algebra telling you that the two components cross, and that a point on the diagonal belongs to both.
+\end{worked}
+
+\begin{trap}
+Forgetting the $y'\ln x$ term, that is, treating the $y$ in the exponent as a constant while remembering the $y$ elsewhere. The other failure is dividing by $1-y\ln x$ without asking whether it vanishes: $1-y\ln x=0$ together with $y=x^{y}$ occurs at $x=\eu^{1/\eu}$, which is precisely the fold where the two branches of $y=x^{y}$ meet and the tangent turns vertical. That is a feature of the curve, not an accident of the algebra.
+\end{trap}
+
+\begin{seealsob}Logarithmic differentiation of many-factor products; implicit differentiation at a point; the general power rule.\end{seealsob}
+
+\section{Inverse functions}
+
+An inverse relation is an implicit relation with one term. Writing $y=f^{-1}(x)$ is the same as writing $f(y)=x$, and differentiating that gives $f'(y)y'=1$ at once. The consequence is a formula so short that its value is easy to miss.
+
+\begin{keynote}[The derivative of an inverse, and where it is evaluated]
+If $f$ is differentiable at $a$, $f(a)=b$, and $f'(a)\neq0$, then $f^{-1}$ is differentiable at $b$ and
+\[
+\bigl(f^{-1}\bigr)'(b)=\frac{1}{f'(a)} .
+\]
+The derivative of the inverse at $b$ is evaluated using the derivative of $f$ at the \emph{preimage} $a$, never at $b$. Geometrically, the graph of $f^{-1}$ is the graph of $f$ reflected in $y=x$, reflection swaps rise and run, and a slope becomes its reciprocal. Note also what the hypothesis $f'(a)\neq0$ costs: where $f'(a)=0$ the reflected tangent is vertical and $f^{-1}$ is not differentiable at $b$ at all.
+\end{keynote}
+
+The reason this is more than a curiosity is that problems are set on functions whose inverse has no closed form whatsoever. If $f(x)=x^{5}+x^{3}+2x$, then $f^{-1}$ cannot be written down: a general quintic has no radical solution. But $f(1)=4$, so $\bigl(f^{-1}\bigr)'(4)=1/f'(1)=1/10$, and the problem that looked impossible is one line. The work in such problems is never the differentiation. It is finding the preimage.
+
+\tech{The inverse-function derivative and preimage hunting}{core}
+\cue $\bigl(f^{-1}\bigr)'(b)$ is requested, or the derivative of an inverse branch, and the evaluation point $b$ has been written in a form designed to hide the preimage.
+\method Use $\bigl(f^{-1}\bigr)'(b)=1/f'(a)$ with $f(a)=b$. Spend all the effort on finding $a$ exactly: try small integers first, then rational points, then the algebraic identity that the value of $b$ was built from. Conjugates and surd norms crack most of the engineered cases. When several branches exist the theorem applies to each separately, so name the branch before answering.
+
+\begin{worked}
+$f(x)=\sqrt{x}+\sqrt{x+1}$ on $x\geq0$. Find $\bigl(f^{-1}\bigr)'(s)$ where $s=\bigl(1+\sqrt2\bigr)^{2}=3+2\sqrt2$.
+
+The function is strictly increasing, so the inverse exists and there is exactly one preimage. The decisive structural fact is the conjugate identity
+\[
+\sqrt{x+1}-\sqrt{x}=\frac{(x+1)-x}{\sqrt{x+1}+\sqrt{x}}=\frac{1}{f(x)} .
+\]
+So if $f(a)=s$, then subtracting the identity from the definition gives $2\sqrt a=s-\dfrac1s$. With $s=3+2\sqrt2$ we have $1/s=3-2\sqrt2$, so $2\sqrt a=4\sqrt2$, $\sqrt a=2\sqrt 2$, and $a=8$. Check: $\sqrt8+\sqrt9=2\sqrt2+3=5.82843=s$.
+
+Now the easy half. $f'(x)=\dfrac{1}{2\sqrt x}+\dfrac{1}{2\sqrt{x+1}}$, so $f'(8)=\dfrac{1}{4\sqrt2}+\dfrac16$, and
+\[
+\bigl(f^{-1}\bigr)'(s)=\frac{1}{f'(8)}=\frac{24\sqrt2}{6+4\sqrt2}=\frac{12\sqrt2}{3+2\sqrt2}=12\sqrt2\bigl(3-2\sqrt2\bigr)=36\sqrt2-48 .
+\]
+Numerically $2.911688$, and $1/f'(8)$ evaluated directly is $2.911688$. The rationalisation used $\bigl(3+2\sqrt2\bigr)\bigl(3-2\sqrt2\bigr)=9-8=1$, which is the same surd norm that made $s$ a natural choice of evaluation point in the first place. That is the tell: when $b$ is presented as $\bigl(1+\sqrt2\bigr)^{2}$ rather than as $5.828$, the setter is telling you which identity to use.
+
+A second instance, chosen because the answer can be checked against a known inverse. Let $f(x)=\ln\bigl(x+\sqrt{x^{2}+1}\bigr)$ and find $\bigl(f^{-1}\bigr)'(\ln2)$. The preimage solves $\ln\bigl(a+\sqrt{a^{2}+1}\bigr)=\ln 2$, that is $\sqrt{a^{2}+1}=2-a$, which squares to $a^{2}+1=4-4a+a^{2}$ and gives $a=\tfrac34$. Then
+\[
+f'(x)=\frac{1+\dfrac{x}{\sqrt{x^{2}+1}}}{x+\sqrt{x^{2}+1}}=\frac{1}{\sqrt{x^{2}+1}},\qquad f'\bigl(\tfrac34\bigr)=\frac{1}{5/4}=\frac45,
+\]
+so the answer is $\tfrac54$. The check: $f=\operatorname{arsinh}$, so $f^{-1}=\sinh$, and $\sinh'(\ln2)=\cosh(\ln2)=\tfrac12\bigl(2+\tfrac12\bigr)=\tfrac54$. Squaring introduced the constraint $a\leq2$, which the root satisfies, so no spurious solution was created.
+\end{worked}
+
+\begin{trap}
+Writing $\bigl(f^{-1}\bigr)'(b)=1/f'(b)$. The derivative is taken at the preimage, and the two agree only in the accidental case $f(b)=b$. The second failure is answering without naming a branch when $f$ is not injective: $f(x)=x^{3}-3x$ has three preimages of $b=1$, and the three inverse branches have three different derivatives there.
+\end{trap}
+
+\begin{seealsob}Inverse trigonometric and inverse hyperbolic derivatives; Lagrange inversion; composition bookkeeping.\end{seealsob}
+
+The multi-branch case is worth one further remark, because it has a surprising and useful closed form. When the preimages of $b$ under a polynomial $p$ are the roots $r_{1},\dots,r_{n}$ of $p(x)-b=0$, the sum of the derivatives of all the inverse branches is $\sum_{i}1/p'(r_{i})$, and that sum is computable without finding a single root.
+
+\begin{keynote}[All the branches at once]
+For a polynomial $p$ of degree $n\geq2$ with distinct roots $r_{1},\dots,r_{n}$, partial fractions of $1/p$ give $\dfrac{1}{p(x)}=\sum_{i}\dfrac{1}{p'(r_{i})(x-r_{i})}$; multiplying by $x$ and letting $x\to\infty$ forces
+\[
+\sum_{i=1}^{n}\frac{1}{p'(r_{i})}=0 .
+\]
+Applied to $p(x)=x^{3}-3x-1$, whose roots are the three preimages of $b=1$ under $f(x)=x^{3}-3x$, the sum of $\bigl(f^{-1}\bigr)'(1)$ over all three branches is $0$ exactly, and a numerical root-find confirms $\sum_{i}1/(3r_{i}^{2}-3)=-4\times10^{-16}$. The companion identity $\sum_{i}\dfrac{1}{r_{i}-c}=-\dfrac{p'(c)}{p(c)}$ handles the weighted versions of the same question.
+\end{keynote}
+
+The second derivative of an inverse is obtained by the same one move, and its shape is worth noticing. Differentiating $y'=1/f'(y)$ with respect to $x$ gives $y''=-f''(y)y'/f'(y)^{2}$, and substituting $y'=1/f'(y)$ leaves
+\[
+\bigl(f^{-1}\bigr)''(b)=-\frac{f''(a)}{f'(a)^{3}},\qquad f(a)=b .
+\]
+A cube in the denominator, exactly as in the parametric second derivative, and for exactly the same reason: converting a $y$-derivative into an $x$-derivative costs one factor of $f'$, and doing it twice through a quotient costs three. For $f(x)=x^{3}+x$ and $b=10$ the preimage is $a=2$, so the formula gives $-12/13^{3}=-0.0054620$, and a numerical second difference of the inverted function returns $-0.0054620$.
+
+The inverse trigonometric and inverse hyperbolic derivatives are the inverse-function theorem applied seven times, and they are worth deriving once rather than memorising, for two reasons. The derivation takes ten seconds, which is faster than recovering a half-remembered sign under pressure; and it explains the shape of the answers, which is what makes them stick.
+
+\tech{Inverse trigonometric and inverse hyperbolic derivatives}{easy}
+\cue Any of $\arcsin$, $\arccos$, $\arctan$, $\arcsec$, $\operatorname{arsinh}$, $\operatorname{arcosh}$, $\operatorname{artanh}$ appearing as an outer or an inner layer of a composite.
+\method Derive, do not recall. For $y=\arcsin x$ write $\sin y=x$, differentiate to get $y'\cos y=1$, and eliminate $\cos y=\sqrt{1-\sin^{2}y}=\sqrt{1-x^{2}}$ using the Pythagorean identity, taking the positive root because $\arcsin$ has range $[-\pi/2,\pi/2]$ where cosine is nonnegative. The same three lines give every entry. With the chain rule,
+\[
+\dvop{x}\arcsin u=\frac{u'}{\sqrt{1-u^{2}}},\quad
+\dvop{x}\arctan u=\frac{u'}{1+u^{2}},\quad
+\dvop{x}\operatorname{arsinh}u=\frac{u'}{\sqrt{u^{2}+1}},\quad
+\dvop{x}\operatorname{artanh}u=\frac{u'}{1-u^{2}} .
+\]
+
+\begin{center}
+\footnotesize
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.34}
+\begin{tabular}{@{}llll@{}}
+\toprule
+\mh{$g$} & \mh{Relation} & \mh{Eliminate} & \mh{$g'(x)$} \\
+\midrule
+$\arcsin x$ & $\sin y=x$ & $\cos y=\sqrt{1-x^{2}}$ & $\dfrac{1}{\sqrt{1-x^{2}}}$ \\
+$\arccos x$ & $\cos y=x$ & $\sin y=\sqrt{1-x^{2}}$ & $-\dfrac{1}{\sqrt{1-x^{2}}}$ \\
+$\arctan x$ & $\tan y=x$ & $\sec^{2}y=1+x^{2}$ & $\dfrac{1}{1+x^{2}}$ \\
+$\arccot x$ & $\cot y=x$ & $\csc^{2}y=1+x^{2}$ & $-\dfrac{1}{1+x^{2}}$ \\
+$\arcsec x$ & $\sec y=x$ & $\tan y=\pm\sqrt{x^{2}-1}$ & $\dfrac{1}{\abs{x}\sqrt{x^{2}-1}}$ \\
+$\operatorname{arsinh}x$ & $\sinh y=x$ & $\cosh y=\sqrt{x^{2}+1}$ & $\dfrac{1}{\sqrt{x^{2}+1}}$ \\
+$\operatorname{arcosh}x$ & $\cosh y=x$ & $\sinh y=\sqrt{x^{2}-1}$ & $\dfrac{1}{\sqrt{x^{2}-1}}$ \\
+$\operatorname{artanh}x$ & $\tanh y=x$ & $\operatorname{sech}^{2}y=1-x^{2}$ & $\dfrac{1}{1-x^{2}}$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Three structural facts compress the table. The co-functions carry a minus sign and nothing else, because $\arccos x+\arcsin x=\pi/2$ is constant, so their derivatives must cancel. The hyperbolic column is the circular column with the sign inside the radical or the denominator flipped, which is the usual circular-to-hyperbolic correspondence. And $\arcsec$ is the only entry needing an absolute value, because $\sec$ is even on its two branches while its derivative is odd.
+
+The hyperbolic entries admit a second derivation which is worth knowing, because it is a check that uses none of the same steps. Solving $\sinh y=x$ by the quadratic in $\eu^{y}$ gives the closed form $\operatorname{arsinh}x=\ln\bigl(x+\sqrt{x^{2}+1}\bigr)$, and differentiating that logarithm directly,
+\[
+\dvop{x}\ln\bigl(x+\sqrt{x^{2}+1}\bigr)=\frac{1+x/\sqrt{x^{2}+1}}{x+\sqrt{x^{2}+1}}=\frac{1}{\sqrt{x^{2}+1}},
+\]
+because the numerator is $\bigl(x+\sqrt{x^{2}+1}\bigr)\big/\sqrt{x^{2}+1}$. The same manoeuvre gives $\operatorname{artanh}x=\tfrac12\ln\dfrac{1+x}{1-x}$ and hence $1/(1-x^{2})$ by partial fractions. Nothing analogous exists for the circular functions, which is the real reason the hyperbolic entries feel easier.
+
+\begin{worked}
+$f(x)=\eu^{\arcsin x}\cosh(2x+2)$, and $f'(1/2)$.
+
+This is a product, each factor a composite. The product rule gives
+\[
+f'(x)=\eu^{\arcsin x}\left[\frac{\cosh(2x+2)}{\sqrt{1-x^{2}}}+2\sinh(2x+2)\right].
+\]
+At $x=\tfrac12$ the two special values do the rest: $\arcsin\tfrac12=\tfrac{\pi}{6}$ and $\sqrt{1-\tfrac14}=\tfrac{\sqrt3}{2}$, while $2x+2=3$. Hence
+\[
+f'\bigl(\tfrac12\bigr)=\eu^{\pi/6}\left[\frac{2}{\sqrt3}\cosh3+2\sinh3\right]\approx53.4465 .
+\]
+A central difference of $f$ at $x=0.5$ returns $53.4465$. Notice that the evaluation point was chosen so that $\arcsin$ lands on a special angle and the radical lands on a surd; that is the standard design of these problems, and spotting it tells you the point is not arbitrary.
+
+A second instance, where the table is the slow route. Differentiate $g(x)=\arctan\!\left(\dfrac{2x}{1-x^{2}}\right)$. Mechanically, with $u=2x/(1-x^{2})$,
+\[
+g'=\frac{u'}{1+u^{2}},\qquad u'=\frac{2(1-x^{2})+2x\cdot2x}{(1-x^{2})^{2}}=\frac{2(1+x^{2})}{(1-x^{2})^{2}},\qquad 1+u^{2}=\frac{(1+x^{2})^{2}}{(1-x^{2})^{2}},
+\]
+so $g'=\dfrac{2}{1+x^{2}}$, and at $x=0.3$ that is $1.834862$, matching a central difference to seven figures. But the double-angle identity $\tan2\alpha=2\tan\alpha/(1-\tan^{2}\alpha)$ says $g(x)=2\arctan x$ outright for $\abs{x}<1$, and the derivative is one line. Both routes agree, which is the point: recognising the identity is faster, and the mechanical route is the insurance.
+\end{worked}
+
+\begin{trap}
+Sign confusion between $\arcsin$ and $\arccos$, and between $\arctan$ (denominator $1+u^{2}$) and $\operatorname{artanh}$ (denominator $1-u^{2}$). Derive rather than recall and both vanish. The domain trap is $\arcsec$: the derivative is $1/\bigl(\abs{u}\sqrt{u^{2}-1}\bigr)u'$, and dropping the absolute value gives the wrong sign on the whole branch $u\leq-1$.
+\end{trap}
+
+\begin{seealsob}The inverse-function derivative; inverse-trig identity collapse; conjugate log collapse.\end{seealsob}
+
+\section{Parametric and polar curves}
+
+A parametrised curve replaces one relation between $x$ and $y$ by two relations to a common parameter. Nothing about the tangent line changes: the tangent to a curve at a point is a geometric object and cannot depend on how the curve was described. What changes is the route to it. The chain rule applied to $y(t)=y\bigl(x(t)\bigr)$ gives $\dot y=\dv{y}{x}\cdot\dot x$, and dividing is the first derivative. The second derivative is where nearly everyone loses a step.
+
+\tech{Parametric first and second derivatives}{medium}
+\cue The curve is given as $x=x(t)$, $y=y(t)$, and a slope, a tangent line, or a concavity is wanted at a value of the parameter.
+\method First derivative: $\dv{y}{x}=\dot y/\dot x$, valid wherever $\dot x\neq0$. For the second derivative, differentiate that quotient \emph{with respect to $t$} and then divide by $\dot x$ once more, because converting a $t$-derivative into an $x$-derivative always costs one factor of $\dot x$:
+\[
+\ddv{y}{x}=\frac{\dvop{t}\!\left(\dfrac{\dot y}{\dot x}\right)}{\dot x}=\frac{\ddot y\,\dot x-\dot y\,\ddot x}{\dot x^{3}} .
+\]
+In practice the left-hand form is faster, because $\dot y/\dot x$ usually simplifies before you differentiate it.
+
+\begin{worked}
+$x=t^{2}-1$, $y=t^{3}-3t$, at $t=2$.
+
+First, $\dot x=2t$ and $\dot y=3t^{2}-3$, so
+\[
+\dv{y}{x}=\frac{3t^{2}-3}{2t}=\frac{3t}{2}-\frac{3}{2t},
+\]
+which at $t=2$ is $\dfrac94$. Now differentiate that simplified form with respect to $t$: $\dfrac32+\dfrac{3}{2t^{2}}=\dfrac{3t^{2}+3}{2t^{2}}$. Divide by $\dot x=2t$:
+\[
+\ddv{y}{x}=\frac{3t^{2}+3}{4t^{3}},
+\]
+and at $t=2$ this is $\dfrac{15}{32}=0.46875$. A numerical differentiation of the slope function divided by $\dot x$ returns $0.468750$. Note that the curve crosses itself at $t=\pm\sqrt3$, both visits landing on $(2,0)$, with slopes $3/t=\pm\sqrt3$; a parametrised curve carries one tangent per visit, which is exactly the information a single equation $F(x,y)=0$ cannot record.
+
+The cycloid, where simplifying first pays even better: $x=t-\sin t$, $y=1-\cos t$. Then
+\[
+\dv{y}{x}=\frac{\sin t}{1-\cos t}=\frac{2\sin\tfrac t2\cos\tfrac t2}{2\sin^{2}\tfrac t2}=\cot\frac t2 .
+\]
+Differentiating that with respect to $t$ gives $-\tfrac12\csc^{2}\tfrac t2$, and dividing by $\dot x=1-\cos t=2\sin^{2}\tfrac t2$ gives
+\[
+\ddv{y}{x}=-\frac{1}{4\sin^{4}(t/2)} ,
+\]
+negative everywhere, so every arch of the cycloid is concave down. At $t=1.1$ the formula gives $-3.34944$ and the numerical value is $-3.34944$. Attempting this without the half-angle simplification means differentiating $\sin t/(1-\cos t)$ by the quotient rule and then simplifying a four-term numerator, which is three times the work for the same answer.
+\end{worked}
+
+\begin{trap}
+Computing $\ddv{y}{x}$ as $\ddot y/\ddot x$. This is the single most common error in the chapter and it is not a slip of the pen: it is a false analogy with the correct first-derivative formula $\dot y/\dot x$. On the example above it would give $6t/2=3t$, which is $6$ at $t=2$ rather than $15/32$. The extra division by $\dot x$ is mandatory, and the reason is that $\dvop{x}=\dfrac{1}{\dot x}\dvop{t}$ as operators, so applying it twice produces two factors of $1/\dot x$ and a derivative of the first one.
+\end{trap}
+
+\begin{seealsob}Second derivatives implicitly; polar tangents; curvature.\end{seealsob}
+
+The condition $\dot x\neq0$ is not a technicality to be waved past. Where $\dot x=0$ and $\dot y\neq0$ the tangent is vertical and the curve is perfectly smooth; where both vanish the point is a candidate cusp and the slope must be recovered as a limit of $\dot y/\dot x$. On the cycloid, $\dot x=1-\cos t$ and $\dot y=\sin t$ both vanish at $t=2k\pi$, and the limit of $\cot(t/2)$ there is infinite from one side and infinite with the opposite sign from the other: those are the cusps where the wheel touches the ground. On $x=t^{2}$, $y=t^{3}$ the same test at $t=0$ gives $\dot y/\dot x=3t/2\to0$, so that famous cusp has a horizontal tangent rather than no tangent at all. The test costs one line and settles which of the two pictures you are looking at.
+
+\begin{keynote}[Why the parametric second derivative has a cube]
+Converting a $t$-derivative into an $x$-derivative is an operator identity:
+\[
+\dvop{x}=\frac{1}{\dot x}\,\dvop{t}.
+\]
+Apply it once to $y$ and you get $\dot y/\dot x$. Apply it a second time to that quotient and you pay two prices: a fresh factor $1/\dot x$ out front, and the quotient rule acting on $\dot y/\dot x$, which contributes $\dot x^{2}$ in its own denominator. That is where the $\dot x^{3}$ comes from. The same reasoning gives the third derivative without any new idea, and explains why parametric derivatives of order $k$ carry $\dot x^{2k-1}$ in the denominator: the powers accumulate, they do not repeat.
+\end{keynote}
+
+Polar coordinates need no new theory at all, only the discipline to remember that $r=r(\theta)$ is not a graph of $y$ against $x$. The polar equation is a parametrisation in disguise, with $\theta$ as the parameter, and the moment you write $x=r(\theta)\cos\theta$ and $y=r(\theta)\sin\theta$ the previous technique applies verbatim.
+
+\tech{Polar tangents}{medium}
+\cue A curve given as $r=r(\theta)$, and a slope, a horizontal tangent, a vertical tangent, or a tangent at the pole is wanted.
+\method Treat $\theta$ as the parameter. Both $\dot x$ and $\dot y$ need the product rule, since $r$ and the trigonometric factor both depend on $\theta$:
+\[
+\dv{y}{x}=\frac{\dot y}{\dot x}=\frac{r'(\theta)\sin\theta+r(\theta)\cos\theta}{r'(\theta)\cos\theta-r(\theta)\sin\theta} .
+\]
+Horizontal tangents are the zeros of the numerator, vertical tangents the zeros of the denominator, and a point where both vanish needs a limit. At the pole, where $r(\theta_{0})=0$ and $r'(\theta_{0})\neq0$, the formula collapses to $\dv{y}{x}=\tan\theta_{0}$: the tangent line at the pole is the ray $\theta=\theta_{0}$ itself.
+
+\begin{worked}
+The cardioid $r=1+\cos\theta$. Find its horizontal and vertical tangents.
+
+Here $r'=-\sin\theta$, so the numerator is
+\[
+-\sin^{2}\theta+(1+\cos\theta)\cos\theta=\cos\theta+\cos^{2}\theta-\sin^{2}\theta=2\cos^{2}\theta+\cos\theta-1=(2\cos\theta-1)(\cos\theta+1),
+\]
+using $\sin^{2}=1-\cos^{2}$. It vanishes when $\cos\theta=\tfrac12$, that is $\theta=\pm\pi/3$, and when $\cos\theta=-1$, that is $\theta=\pi$, where $r=0$ as well and the point is the pole. So the honest horizontal tangents are at $\theta=\pm\pi/3$, where $r=\tfrac32$ and the point is $\bigl(\tfrac34,\pm\tfrac{3\sqrt3}{4}\bigr)$. A numerical slope at $\theta=\pi/3$ returns $0$ to fourteen digits, and the denominator there is $-\sqrt3\neq0$, so the tangent really is horizontal and not indeterminate.
+
+The denominator is
+\[
+-\sin\theta\cos\theta-(1+\cos\theta)\sin\theta=-\sin\theta\,(2\cos\theta+1),
+\]
+vanishing at $\theta=0$, at $\theta=\pi$, and where $\cos\theta=-\tfrac12$, that is $\theta=\pm2\pi/3$. At $\theta=0$ the point is $(2,0)$, the nose of the cardioid, and the tangent is vertical. At $\theta=\pm2\pi/3$ the radius is $r=\tfrac12$ and the tangents are vertical there too. At $\theta=\pi$ both numerator and denominator vanish; that is the cusp at the pole, and the tangent-at-the-pole rule gives the direction $\theta=\pi$, the negative $x$-axis, which is the cusp axis.
+
+The pole rule is worth one clean instance of its own. The four-petalled rose $r=\sin2\theta$ has $r=0$ at $\theta=0,\pi/2,\pi,3\pi/2$, and $r'=2\cos2\theta$ is nonzero at each. So the curve passes through the origin four times, and on each visit the tangent is the ray $\theta=\theta_{0}$: the two coordinate axes, each traversed twice. Every petal is therefore tangent to an axis at the origin, which is exactly what the picture shows, and the general formula never had to be evaluated.
+\end{worked}
+
+\begin{trap}
+Writing $\dv{y}{x}=r'(\theta)$ or $\dv{y}{x}=\dv{r}{\theta}$. Neither is a slope in the Cartesian sense; $r'$ measures how fast the radius grows, which is a different question. The second trap is reporting a horizontal tangent at a $\theta$ where the numerator vanishes without checking the denominator: on the cardioid $\theta=\pi$ kills both, and calling that a horizontal tangent misses the cusp.
+\end{trap}
+
+\begin{seealsob}Parametric first and second derivatives; implicit differentiation at a point; related rates.\end{seealsob}
+
+\begin{keynote}[The angle between the radius and the tangent]
+Polar problems often ask not for the Cartesian slope but for $\psi$, the angle from the radius vector to the tangent line. The parametric formula rearranges into a much simpler statement:
+\[
+\tan\psi=\frac{r(\theta)}{r'(\theta)} ,
+\]
+with $\psi$ measured at the point $\theta$. The Cartesian slope is then $\tan(\theta+\psi)$, which is often the fastest route to it. The formula also identifies the one curve on which $\psi$ is constant: $r/r'$ constant means $r'/r=1/a$, so $r=\eu^{\theta/a}$, the logarithmic spiral. For $r=\eu^{0.4\theta}$ at $\theta=1$ the numerical angle between radius and tangent is $1.190290$, and $\arctan(1/0.4)=1.190290$. That constancy is why the logarithmic spiral is called equiangular, and why it is the shape a moth flying at a fixed angle to a light traces out.
+\end{keynote}
+
+One last member of the family sits between inverse functions and series. When the inverse is defined by a simple equation but a \emph{high} derivative of it is wanted, the inverse-function theorem gives only the first order and repeated implicit differentiation becomes unmanageable. The right tool then is coefficient matching, which converts the whole question into linear algebra on a power series.
+
+\tech{Lagrange inversion and series reversion}{hard}
+\cue The inverse is defined implicitly by a compact equation, such as $x=y+ay^{3}$ or $w\eu^{w}=x$, and a high derivative of the inverse at $0$ is wanted.
+\method Posit a power series for $y$ in $x$ that respects the parity or symmetry of the relation, substitute it into the relation, and match coefficients order by order; each order determines one new coefficient from those already found. Then read the derivative off with $y^{(n)}(0)=n!\,[x^{n}]y$. For a formula rather than a recursion, Lagrange inversion gives
+\[
+[x^{n}]\,f^{-1}(x)=\frac1n\,[y^{n-1}]\left(\frac{y}{f(y)}\right)^{n}.
+\]
+
+\begin{worked}
+$x=y+ay^{3}$ defines $y=y(x)$ near the origin with $y(0)=0$. Find $y^{(5)}(0)$.
+
+The relation is odd in the pair $(x,y)$: replacing $y$ by $-y$ replaces $x$ by $-x$. So $y$ is an odd function of $x$ and only odd powers survive. Write $y=x+c_{3}x^{3}+c_{5}x^{5}+O(x^{7})$, the leading coefficient being $1$ because $x=y+O(y^{3})$. Substituting,
+\[
+y+ay^{3}=\bigl(x+c_{3}x^{3}+c_{5}x^{5}\bigr)+a\bigl(x^{3}+3c_{3}x^{5}\bigr)+O(x^{7})
+=x+(c_{3}+a)x^{3}+(c_{5}+3ac_{3})x^{5}+O(x^{7}),
+\]
+where $y^{3}=x^{3}+3c_{3}x^{5}+O(x^{7})$ came from the binomial expansion. Matching against $x$ forces $c_{3}=-a$ and then $c_{5}=-3ac_{3}=3a^{2}$. Hence
+\[
+y=x-ax^{3}+3a^{2}x^{5}-12a^{3}x^{7}+\cdots,\qquad y^{(5)}(0)=5!\cdot3a^{2}=360a^{2}.
+\]
+At $a=0.3$ that is $32.4$; evaluating the fifth derivative of the numerically inverted function by the Cauchy integral formula on a circle of radius $0.25$ returns $32.400000$. The same computation at order $7$ gives $7!\cdot(-12a^{3})=-1632.96$, confirmed to six figures.
+
+The named case is $w\eu^{w}=x$, whose solution is the Lambert function $W$. Here Lagrange inversion is worth using as a formula rather than as a recursion. With $f(w)=w\eu^{w}$ we have $w/f(w)=\eu^{-w}$, so
+\[
+[x^{n}]\,W(x)=\frac1n\,[w^{n-1}]\,\eu^{-nw}=\frac1n\cdot\frac{(-n)^{n-1}}{(n-1)!}=\frac{(-n)^{n-1}}{n!},
+\]
+and therefore $W^{(n)}(0)=n!\,[x^{n}]W=(-n)^{n-1}$. That is a startlingly clean answer for a function with no closed form: $W'(0)=1$, $W''(0)=-2$, $W'''(0)=9$, $W^{(4)}(0)=-64$, $W^{(5)}(0)=625$. The Cauchy integral formula applied to a numerically inverted $W$ on a circle of radius $0.15$ returns $1.000$, $-2.000$, $9.000$, $-64.000$, $625.000$. The series itself, $W(x)=x-x^{2}+\tfrac32x^{3}-\tfrac83x^{4}+\cdots$, is the one quoted in the chapter on expansion; this is where it comes from.
+\end{worked}
+
+\begin{trap}
+Reporting the coefficient $3a^{2}$ instead of $n!$ times it. The other failure is not exploiting parity: without the observation that $y$ is odd, the matching has to carry $c_{2}$ and $c_{4}$ through every step, and the bookkeeping doubles for coefficients that are all zero.
+\end{trap}
+
+\begin{seealsob}Maclaurin coefficient extraction; the inverse-function derivative; Faa di Bruno for composites.\end{seealsob}
+
+\subsection{Choosing the description}
+
+The four costumes are not equally convenient, and a curve presented in one form can often be moved to another. Three rules of thumb decide the move.
+
+Convert to parametric when the implicit form has singular points you care about. A self-intersection, a cusp, or a vertical tangent is invisible to $-F_{x}/F_{y}$, which simply reports a division by zero, but a parametrisation walks through the point with a well defined velocity and tells you which branch you are on. The folium of Descartes is the model case: implicitly it has an unusable origin, and under the rational parametrisation $x=6t/(1+t^{3})$, $y=6t^{2}/(1+t^{3})$ the origin is visited at $t=0$ and at $t=\infty$, giving the two tangents separately.
+
+Convert to implicit when the parameter is a nuisance and only a relation is wanted. If $x=\cos t$ and $y=\cos2t$, do not differentiate twice; note that $y=2x^{2}-1$ and the curve is a parabolic arc, whose slope is $4x$ everywhere.
+
+Do not convert at all when the question is about a specific point and one description already reaches it. Most of the work lost in this chapter is lost by solving for $y$ when nobody asked for $y$. The derivative at a point needs one linear equation, and that equation is available in whatever form the curve arrived in.
+
+\section{Recognition matrix}
+\begin{recog}{@{}p{0.30\textwidth}p{0.36\textwidth}p{0.28\textwidth}@{}}
+\rowcolor{mist}\mh{If you see} & \mh{Reach for} & \mh{If that fails} \\
+\midrule
+\endhead
+One equation in $x$ and $y$, not solvable for $y$ & Differentiate term by term; every $y$ emits a $y'$ & $y'=-F_{x}/F_{y}$ \\
+An implicit curve with $\ddv{y}{x}$ wanted & Differentiate the expression for $y'$, then substitute & The closed form in $F_{xx},F_{xy},F_{yy}$ \\
+$F_{y}=0$ at the point & Vertical tangent: report $\dv{x}{y}=0$ & Parametrise the curve near the point \\
+The unknown in its own exponent & Log the relation, then differentiate implicitly & Check whether the logged form solves for $y$ \\
+$\bigl(f^{-1}\bigr)'(b)$ requested & Find $a$ with $f(a)=b$; answer $1/f'(a)$ & Conjugate or surd identity to crack $a$ \\
+$b$ written as $\bigl(1+\sqrt2\bigr)^{2}$ or similar & The surd norm is the hint; use it & Small integer preimages first \\
+Several inverse branches & One answer per branch & $\sum_{i}1/p'(r_{i})=0$ for the total \\
+$\arcsin,\arctan,\arcsec$ as a layer & Derive from $\sin y=x$ and a Pythagorean identity & The table, with $\abs{u}$ for $\arcsec$ \\
+$x=x(t)$, $y=y(t)$, slope wanted & $\dot y/\dot x$ & Eliminate $t$ only if it is easy \\
+$x=x(t)$, $y=y(t)$, concavity wanted & $\dvop{t}(\dot y/\dot x)$, then divide by $\dot x$ & $(\ddot y\dot x-\dot y\ddot x)/\dot x^{3}$ \\
+$r=r(\theta)$ & $\dfrac{r'\sin\theta+r\cos\theta}{r'\cos\theta-r\sin\theta}$ & Convert to $x,y$ and use the parametric rule \\
+$r(\theta_{0})=0$, tangent wanted & The tangent at the pole is $\theta=\theta_{0}$ & Take a limit of the quotient \\
+High derivative of an implicit inverse & Match coefficients in a series ansatz & Lagrange inversion \\
+$f^{(n)}(0)$ from a reverted series & $n!\,[x^{n}]y$, not $[x^{n}]y$ & Use parity to halve the work \\
+Angle between radius and tangent & $\tan\psi=r/r'$ & Cartesian slope is $\tan(\theta+\psi)$ \\
+$\bigl(f^{-1}\bigr)''(b)$ & $-f''(a)/f'(a)^{3}$ at the preimage $a$ & Differentiate $y'=1/f'(y)$ by hand \\
+$\dot x=\dot y=0$ at the parameter value & Candidate cusp: take the limit of $\dot y/\dot x$ & Expand $x(t)$ and $y(t)$ about $t_{0}$ \\
+Both $x$ and $y$ moving in time & Differentiate the relation in $t$: $F_{x}\dot x+F_{y}\dot y=0$ & Solve for the wanted rate \\
+$w\eu^{w}=x$ & Lagrange inversion: $W^{(n)}(0)=(-n)^{n-1}$ & Match coefficients directly \\
+Inflections of an implicit curve & Set the $y''$ numerator to zero, intersect with $F=0$ & Parametrise and use $\ddot y\dot x-\dot y\ddot x$ \\
+A self-intersection of the curve & Parametrise: one tangent per visit & Factor $F$ near the singular point \\
+\end{recog}

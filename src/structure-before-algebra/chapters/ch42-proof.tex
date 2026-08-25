@@ -1,0 +1,162 @@
+\chapter{Proof technique as puzzle technique}
+
+\begin{orient}
+\textbf{What this chapter is for.} The standard proof methods are usually taught as ways of writing down an argument you have already found. That is not what they are. Each one is a search strategy: it tells you what to assume, what to aim at, and therefore where to look. Contradiction hands you an extra hypothesis for free. Contraposition swaps an unusable starting point for a usable one. Induction converts a statement about all $n$ into a statement about one step. The extremal principle manufactures an object with a property nothing in the problem mentioned. Choosing among them is the same recognition skill the calculus parts of this book train, applied to a different kind of object, and the cue is almost always the logical shape of the claim rather than its subject matter.
+\end{orient}
+
+\section{Forward, backward, and sideways}
+
+\tech{Direct construction and forward chaining}{easy}
+\cue A claim of the form ``there exists an object with property $P$'', or a claim whose hypothesis is concrete and whose conclusion is a computation away. Also any problem that asks for a number, a configuration, or a strategy rather than for an impossibility.
+\method Start from the hypothesis and push forward, keeping every derived fact written down. When the target is an existence claim, build the object explicitly; a construction is a complete proof of existence and is usually shorter than any argument about it. Keep a separate list of what you have used, because an unused hypothesis in a competition problem is nearly always a signal that the intended route is different.
+
+\begin{worked}
+Show that every integer $n\geq 8$ is a sum of threes and fives. Construct: $8=3+5$, $9=3+3+3$, $10=5+5$. Given a representation of $n$, add a three to get one of $n+3$. Since the three base cases cover the residues modulo three, induction on the step of three covers everything above. The construction is the proof.
+\end{worked}
+
+\begin{trap}
+Chaining forward past the target. Solvers routinely derive the conclusion, fail to notice, and continue until the chain closes on something circular. Write the target at the top of the page and check each new line against it.
+\end{trap}
+
+\begin{seealsob}Induction: ordinary, strong, and structural; exhaustive casework with a discipline.\end{seealsob}
+
+\tech{Proof by contrapositive}{easy}
+\cue An implication $A\to B$ where $A$ is a negative or a non-constructive hypothesis (``$n$ is not a perfect square'', ``the set is not connected'') and $\lnot B$ is concrete. The general cue: you cannot get a grip on $A$, but you can get a grip on $\lnot B$.
+\method Prove $\lnot B\to\lnot A$ instead. The two statements are logically identical, so nothing is lost, and the direction that starts from a concrete object is the direction you can compute in. This is the single highest-yield rewrite in elementary proof, and it costs one line to try.
+
+\begin{worked}
+Show that if $n^{2}$ is even then $n$ is even. The hypothesis gives you $n^{2}=2k$, from which extracting information about $n$ requires a factorisation argument. The contrapositive is: if $n$ is odd then $n^{2}$ is odd. Now $n=2m+1$ is concrete, and $n^{2}=4m^{2}+4m+1=2(2m^{2}+2m)+1$ finishes it in one line.
+\end{worked}
+
+\begin{trap}
+Proving the converse $B\to A$ or the inverse $\lnot A\to\lnot B$ by accident. Only the contrapositive is equivalent. Write both statements out before you start rather than trusting the flip.
+\end{trap}
+
+\begin{seealsob}Rewriting a conditional; proof by contradiction; quantifier negation.\end{seealsob}
+
+\tech{Proof by contradiction}{medium}
+\cue A claim of impossibility, of irrationality, of uniqueness, or of infinitude. Also the shape ``no such object exists'', which offers nothing to work with until you assume one does.
+\method Assume the negation, which gives you a concrete object to manipulate, and derive a contradiction with a hypothesis, a known fact, or the assumption itself. The value is entirely in the extra hypothesis: assuming a counterexample exists turns a statement about all objects into a statement about one object you can name.
+
+\begin{worked}
+Show that $\log_{2}3$ is irrational. Suppose $\log_{2}3=p/q$ in lowest terms with $q>0$. Then $2^{p}=3^{q}$. The left side is even for $p\geq1$ and the right side is odd, and $p=0$ gives $1=3^{q}$, impossible for $q>0$. The assumption is untenable, so no such $p,q$ exist.
+\end{worked}
+
+\begin{trap}
+Reaching for contradiction where a direct argument is shorter. A proof that assumes $\lnot B$, never uses the assumption, and derives $B$ is a direct proof wearing a costume, and the costume hides errors. If you finish and find the assumption unused, rewrite it forward.
+\end{trap}
+
+\begin{seealsob}Well-ordering and the minimal counterexample; proof by contrapositive; the extremal principle.\end{seealsob}
+
+\section{Splitting the problem, and climbing it}
+
+\tech{Exhaustive casework with a discipline}{easy}
+\cue A finite classification is available and the argument is easy inside each class: residues modulo a small number, parity, the sign of a quantity, which of several objects is largest, or which of a small set of positions an item occupies.
+\method Choose the partition before you start, and state it. The two obligations are exhaustiveness (the cases cover everything) and, ideally, disjointness (no configuration is counted twice), and both should be visible on the page. Then look for symmetry: a good partition usually lets you dispose of several cases with the phrase ``by the same argument with the roles exchanged'', and a partition that does not is often the wrong partition.
+
+\begin{worked}
+Show that $n(n+1)(2n+1)$ is divisible by $6$ for every integer $n$. Divisibility by $2$: of $n$ and $n+1$ one is even. Divisibility by $3$: take $n\equiv0,1,2\pmod 3$. If $n\equiv0$ the first factor is divisible by three; if $n\equiv2$ then $n+1\equiv0$; if $n\equiv1$ then $2n+1\equiv3\equiv0$. Three exhaustive, disjoint cases, each one line, and $2$ and $3$ are coprime.
+\end{worked}
+
+\begin{trap}
+A partition that is exhaustive on the surface but not underneath. ``Either $x>y$ or $x<y$'' silently omits equality; ``either the largest element is in $A$ or in $B$'' omits the possibility of a tie. Check the boundary of every case split.
+\end{trap}
+
+\begin{seealsob}Truth-table exhaustion; residue classes and modular reduction; when hand enumeration is the right method.\end{seealsob}
+
+\tech{Induction: ordinary, strong, and structural}{medium}
+\cue A statement indexed by a natural number, or by any object built up from smaller objects of the same kind: a formula for a sum, a claim about a recursively defined sequence, a property of every tree or every expression.
+\method Ordinary induction assumes $P(n)$ and proves $P(n+1)$. Strong induction assumes $P(k)$ for all $k<n$ and proves $P(n)$, and is the right form whenever the recursive step reaches back more than one place, as it does for the Fibonacci recurrence, for prime factorisation, and for anything defined by splitting into two smaller pieces. Structural induction is the same idea over a recursively defined set: prove the property for the base constructors and prove it is preserved by each building operation.
+
+\begin{keynote}[The inductive step is where the work is]
+State the hypothesis you are assuming and the target you are proving, in full, before manipulating anything. Most failed inductions are failures to notice that the step needs more than $P(n)$, and the repair is almost always to strengthen the statement being proved rather than to work harder on the step.
+\end{keynote}
+
+\begin{worked}
+Prove $\sum_{k=1}^{n}k^{3}=\left(\frac{n(n+1)}{2}\right)^{2}$. Base $n=1$: both sides are $1$. Step: assume the identity for $n$. Then
+\[
+\sum_{k=1}^{n+1}k^{3}=\frac{n^{2}(n+1)^{2}}{4}+(n+1)^{3}=\frac{(n+1)^{2}\left(n^{2}+4n+4\right)}{4}=\left(\frac{(n+1)(n+2)}{2}\right)^{2},
+\]
+which is the statement for $n+1$.
+\end{worked}
+
+\begin{worked}[Strengthening the hypothesis]
+Try to prove by induction that $\sum_{k=1}^{n}1/k^{2}<2$. The step fails: knowing the partial sum is below $2$ says nothing about the next one. Prove the stronger claim $\sum_{k=1}^{n}1/k^{2}\leq 2-1/n$ instead. Base $n=1$ gives $1\leq1$. Step: $2-\frac1n+\frac{1}{(n+1)^{2}}\leq 2-\frac{1}{n+1}$ reduces to $\frac{1}{(n+1)^{2}}\leq\frac{1}{n}-\frac{1}{n+1}=\frac{1}{n(n+1)}$, which is true. The stronger statement is easier to prove, because it carries more into the step.
+\end{worked}
+
+\begin{trap}
+Verifying a base case that the step does not actually reach. If the step is valid only for $n\geq3$, a base at $n=1$ proves nothing about $n=4$. Check the smallest $n$ for which the step's algebra is legitimate.
+\end{trap}
+
+\begin{seealsob}Well-ordering and the minimal counterexample; recursion, state DP, and generating functions; monovariants and the termination argument.\end{seealsob}
+
+\tech{Well-ordering and the minimal counterexample}{medium}
+\cue A statement about all positive integers, or about all finite configurations, where the inductive step is awkward to phrase but where a smallest bad case would be easy to attack. Also the phrase ``show that this process always terminates''.
+\method Suppose the claim fails, and let $n$ be the smallest index at which it fails; well-ordering guarantees such an $n$ exists. Then derive a smaller failure, contradicting minimality. This is logically equivalent to strong induction, and it is often much easier to write, because it gives you a concrete object with an extra property (nothing smaller is bad) rather than an abstract hypothesis.
+
+\begin{worked}
+Show that every integer $n>1$ has a prime factor. Suppose not, and let $n$ be the smallest counterexample. Then $n$ is not prime, so $n=ab$ with $1<a<n$. By minimality $a$ has a prime factor $p$, and $p\mid a\mid n$. Contradiction.
+\end{worked}
+
+\begin{trap}
+Applying well-ordering to a set that is not a set of non-negative integers. The principle fails for the positive rationals and for the integers, and a descent argument in those settings must be recast in terms of an integer quantity such as a numerator, a denominator, or an exponent.
+\end{trap}
+
+\begin{seealsob}Vieta jumping and infinite descent; induction; monovariants and the termination argument.\end{seealsob}
+
+\section{Manufacturing an object}
+
+\tech{The extremal principle}{hard}
+\cue A configuration problem with no obvious starting point, especially one that asserts something must exist, must be equal, or cannot happen, in a finite arrangement of points, people, numbers, or edges.
+\method Consider the extreme: the largest, the smallest, the leftmost, the pair at minimum distance, the vertex of highest degree, the configuration with fewest crossings. Extremality is a free hypothesis, because whatever you do to the extremal object must not produce something more extreme, and that impossibility is the contradiction. The whole art is choosing the right quantity to extremise.
+
+\begin{worked}
+Finitely many points in the plane, not all collinear, and every line through two of them passes through a third. Show this is impossible. Among all pairs consisting of a point $P$ and a line $\ell$ through two of the points with $P\notin\ell$, choose the pair minimising the distance from $P$ to $\ell$; finiteness makes this possible. By hypothesis $\ell$ carries at least three of the points, so two of them lie on the same side of the foot of the perpendicular from $P$; call the nearer one $B$ and the further one $C$. The distance from $B$ to the line $PC$ is strictly less than the distance from $P$ to $\ell$, contradicting minimality.
+\end{worked}
+
+\begin{trap}
+Extremising a quantity that the operation does not decrease. The argument only closes if your move provably produces a strictly more extreme configuration; check the strictness, since ties are where these proofs fail.
+\end{trap}
+
+\begin{seealsob}Monovariants and the termination argument; extremal configurations in geometry; the minimal counterexample.\end{seealsob}
+
+\section{Choosing the method}
+
+\begin{center}
+\begin{tikzpicture}[node distance=6mm and 6mm]
+\node[dtest] (a) {What shape is\\ the claim?};
+\node[dnode, below left=11mm and 20mm of a] (ex) {``There exists\ldots''};
+\node[dnode, below left=11mm and 0mm of a] (all) {``For all $n$\ldots''};
+\node[dnode, below right=11mm and 0mm of a] (imp) {``$A$ implies $B$''};
+\node[dnode, below right=11mm and 20mm of a] (no) {``No such thing''};
+\node[dleaf, below=7mm of ex] (exl) {Construct it};
+\node[dleaf, below=7mm of all] (alll) {Induction, or\\ minimal counterexample};
+\node[dleaf, below=7mm of imp] (impl) {Is $\lnot B$ concrete?\\ then contrapositive};
+\node[dleaf, below=7mm of no] (nol) {Contradiction, or\\ an invariant};
+\draw[dedge] (a) -- (ex); \draw[dedge] (a) -- (all);
+\draw[dedge] (a) -- (imp); \draw[dedge] (a) -- (no);
+\draw[dedge] (ex) -- (exl); \draw[dedge] (all) -- (alll);
+\draw[dedge] (imp) -- (impl); \draw[dedge] (no) -- (nol);
+\end{tikzpicture}
+\end{center}
+
+The tree is a first move, not a decision. Two refinements matter in practice. If the claim is an impossibility and the objects are produced by a repeated operation, skip contradiction and look for an invariant, since that is what a proof by contradiction in this setting will end up constructing anyway. And if the claim is about all $n$ but the step reaches back further than one, take the strong form immediately rather than discovering the need halfway through.
+
+\section{Recognition matrix}
+
+\begin{recog}{@{}p{0.31\textwidth}p{0.35\textwidth}p{0.28\textwidth}@{}}
+\rowcolor{mist}\mh{If you see} & \mh{Reach for} & \mh{If that fails} \\
+\midrule
+\endhead
+``There exists a configuration'' & Construct one explicitly & Counting or probabilistic existence \\
+Hypothesis is a negation & Contrapositive & Contradiction \\
+``Irrational'', ``infinitely many'' & Contradiction & Descent on an integer \\
+``Impossible'', with a process & An invariant & Colouring or parity \\
+A statement indexed by $n$ & Induction & Strengthen the statement \\
+The step reaches back more than one & Strong induction & Minimal counterexample \\
+Recursively built objects & Structural induction & Induction on size \\
+Finite arrangement, no entry point & Extremal principle & Pigeonhole \\
+Small finite classification available & Casework, stated and exhaustive & Symmetry to halve the cases \\
+Induction step fails, claim seems true & Prove a stronger claim & Check the base the step reaches \\
+Unused hypothesis at the end & Wrong route; find where it enters & Re-read for a hidden constraint \\
+\end{recog}

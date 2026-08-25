@@ -1,0 +1,98 @@
+\chapter{Knights, knaves, and self-reference}
+
+\begin{orient}
+\textbf{What this chapter is for.} A puzzle in which people make claims about who is lying looks like a test of verbal cleverness and is nothing of the kind. Once each speaker is given a Boolean variable and each utterance is turned into a biconditional, the puzzle becomes a small system of equations, and solving it is mechanical. This chapter gives the encoding, the consistency check that solves the system, the family of existential claims that behave differently from the rest, and the metapuzzles, where the information is carried not by what was said but by the fact that somebody was unable to answer. The technique generalises well past its recreational origin: any problem in which the reliability of a source is itself unknown has this shape.
+\end{orient}
+
+\section{The encoding}
+
+\tech{The standard Boolean encoding}{easy}
+\cue Speakers who are known to be either always truthful or always lying, making statements about themselves or about each other. Also any variant with a third type who alternates or answers arbitrarily, which is handled by adding a variable rather than by changing the method.
+\method Give speaker $i$ a Boolean $k_{i}$, true when the speaker is truthful. If speaker $i$ utters the statement $S$, the content of the utterance is exactly
+\[
+k_{i}\leftrightarrow S.
+\]
+This one line is the whole technique. A truthful speaker's statement is true, and a lying speaker's statement is false, and the biconditional says both at once. Conjoin the biconditionals from every utterance and solve the resulting propositional system.
+
+\begin{keynote}[Why a biconditional and not an implication]
+Writing $k_{i}\to S$ records only half the information: it captures that knights tell the truth and forgets that knaves lie. The forgotten half is usually the half that determines the answer, because it is what makes a knave's statement informative.
+\end{keynote}
+
+\begin{worked}
+Two islanders. $A$ says ``I am a knave''. Encode: $k_{A}\leftrightarrow \lnot k_{A}$, which is unsatisfiable. So no islander can say this, and a puzzle containing it is malformed. Change it to $A$ says ``$B$ is a knave'', $B$ says ``$A$ and I are of the same type''. The system is $k_{A}\leftrightarrow\lnot k_{B}$ and $k_{B}\leftrightarrow(k_{A}\leftrightarrow k_{B})$. From the first, $k_{B}=\lnot k_{A}$. Substitute into the second: $\lnot k_{A}\leftrightarrow(k_{A}\leftrightarrow\lnot k_{A})$, and since $k_{A}\leftrightarrow\lnot k_{A}$ is always false, this reads $\lnot k_{A}\leftrightarrow F$, giving $k_{A}$ true and $k_{B}$ false. Verified by enumerating all four assignments.
+\end{worked}
+
+\begin{trap}
+Encoding what a speaker means rather than what the speaker says. ``I am not a knight'' is $\lnot k_{i}$, not $k_{i}$; the negation belongs inside $S$, and the truthfulness belongs in the biconditional. Keeping the two layers separate is the single discipline that makes these puzzles routine.
+\end{trap}
+
+\begin{seealsob}Consistency checking as the solution method; truth-table exhaustion; existential claims.\end{seealsob}
+
+\tech{Consistency checking as the solution method}{easy}
+\cue A system of biconditionals with three or more speakers, where substitution is getting messy.
+\method Case on one variable, propagate, and reject the branches that produce a contradiction. With $n$ speakers there are $2^{n}$ branches, but the first constraint usually kills half of them immediately, so choose to case on the speaker who appears in the most utterances. The surviving branches are the answer; report the whole surviving set, not the first branch you find.
+
+\begin{worked}
+Three islanders. $A$: ``exactly one of us is a knight''. $B$: ``$A$ is a knave''. $C$: ``$B$ and I are not both knaves''.
+
+Case $k_{B}$ true: then $A$ is a knave, so $A$'s statement is false and the number of knights is not one. $C$'s statement $\lnot(\lnot k_{B}\wedge \lnot k_{C})$ is true because $k_{B}$ holds, so $k_{C}$ must be true. Knights are $B$ and $C$, two of them, and ``not one'' is satisfied. Consistent.
+
+Case $k_{B}$ false: then $A$ is a knight, so exactly one is a knight, so $C$ is a knave. Then $C$'s statement is false, meaning $B$ and $C$ are both knaves, which is true. But a knave's statement must be false. Contradiction.
+
+Unique solution: $A$ knave, $B$ and $C$ knights. Confirmed by exhaustive enumeration of all eight assignments.
+\end{worked}
+
+\begin{trap}
+Stopping at the first consistent branch. A puzzle is only well posed if exactly one branch survives, and checking the others is how you find out that it does. A second surviving branch means the intended answer was underdetermined, and that is worth reporting rather than hiding.
+\end{trap}
+
+\begin{seealsob}The standard Boolean encoding; truth-table exhaustion; branch-and-contradict.\end{seealsob}
+
+\section{Statements that behave differently}
+
+\tech{Existential claims and the asymmetry they create}{medium}
+\cue A statement of the form ``at least one of us is a knave'', ``someone here is lying'', or ``not all of us are knights''.
+\method These are the workhorses of the genre because their negations are universal and therefore very strong. Suppose speaker $i$ says ``at least one of us is a knave'', that is $S=\lnot(k_{1}\wedge\cdots\wedge k_{n})$. If $i$ were a knave then $S$ is false, so everyone including $i$ is a knight, contradicting that $i$ is a knave. So $i$ is a knight and $S$ is true, which then forces at least one knave among the others. One utterance determines the speaker outright and constrains the rest.
+
+\begin{worked}
+Four islanders, and $D$ says ``at least one of us is a knave''. By the argument above $D$ is a knight, and at least one of $A,B,C$ is a knave. If additionally $A$ says ``all four of us are knights'', then $A$'s statement contradicts $D$'s, so $A$ is a knave, and the two utterances together are consistent with any assignment of $B$ and $C$: four surviving branches. The puzzle needs a third utterance to be well posed.
+\end{worked}
+
+\begin{trap}
+Reading ``at least one of us'' as excluding the speaker. It does not, and the self-inclusion is exactly what makes the argument work. When a puzzle intends exclusion it says ``one of the others''.
+\end{trap}
+
+\begin{seealsob}Quantifier negation; the standard Boolean encoding; consistency checking.\end{seealsob}
+
+\tech{Reasoning from an agent's inability to answer}{hard}
+\cue A puzzle in which a participant says ``I do not know'', or fails to act, or in which the same question is asked repeatedly and produces the same non-answer until suddenly it does not. The information is carried by the failure.
+\method Model each participant's knowledge as the set of worlds consistent with what that participant has observed. A declaration of ignorance eliminates every world in which that participant would have known, which is a constraint on the world visible to everybody else. Iterate: each round of announced ignorance shrinks the common set, and the puzzle resolves at the round where exactly one world survives.
+
+\begin{worked}
+Two players each wear a hat with a positive integer, each sees only the other's, and they are told the two numbers are consecutive. They are asked in turn whether they know their own number, and both say no, repeatedly, until one says yes.
+
+A player seeing $1$ knows immediately: their own number must be $2$. So the first ``no'' eliminates the worlds in which the opponent sees $1$, that is, the worlds in which the first speaker wears $1$. A player seeing $2$ can then reason: my number is $1$ or $3$, and if it were $1$ the opponent would already have answered, so it is $3$. Each round eliminates one more level, and a player wearing $n$ answers on round $n-1$ or so, depending on the ordering. The chain of ignorance is a ladder, and its rungs are the numbers.
+\end{worked}
+
+\begin{trap}
+Forgetting that ignorance announcements are public and therefore compound. The second ``no'' is not the same statement as the first: it is made with the first already known to both, and it eliminates a different set of worlds. Track the common knowledge, not just the private observations.
+\end{trap}
+
+\begin{seealsob}Consistency checking; states, transitions, and absorbing reasoning; symmetry arguments.\end{seealsob}
+
+\section{Recognition matrix}
+
+\begin{recog}{@{}p{0.31\textwidth}p{0.35\textwidth}p{0.28\textwidth}@{}}
+\rowcolor{mist}\mh{If you see} & \mh{Reach for} & \mh{If that fails} \\
+\midrule
+\endhead
+Speaker $i$ utters $S$ & Record $k_{i}\leftrightarrow S$ & Never $k_{i}\to S$ alone \\
+``I am a knave'' & Unsatisfiable; the puzzle is malformed & Re-read for a third type \\
+``At least one of us is a knave'' & Speaker is a knight; a knave exists elsewhere & Check whether ``us'' includes the speaker \\
+``All of us are knights'' & Speaker is a knave & Then at least one other is too \\
+Three or more speakers & Case on the most-mentioned variable & Enumerate all $2^{n}$ rows \\
+Two branches survive & Underdetermined; say so & Look for an unencoded sentence \\
+``I do not know'' & Eliminate worlds where they would know & Iterate over rounds \\
+Repeated identical questions & Each round is new common knowledge & Count the rungs of the ladder \\
+A third type who alternates & Add a variable, keep the method & Case on the position in the cycle \\
+\end{recog}

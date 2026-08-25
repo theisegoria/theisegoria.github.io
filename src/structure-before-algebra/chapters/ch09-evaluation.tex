@@ -1,0 +1,412 @@
+\chapter{Series: finding what it converges to}
+
+\begin{orient}
+\textbf{What this chapter is for.} A convergence test is an existence proof and nothing more: it certifies that $\sum a_n$ has a sum without producing one digit of it. Evaluation is a separate craft, and a surprisingly small one. There are essentially five moves. Collapse the series, so that almost every term cancels against a neighbour. Manufacture it from the geometric series by differentiating or integrating. Recognise it as a Taylor series read at a particular point. Read it off a Fourier expansion at a well chosen point, which is where $\zeta(2)$, $\zeta(4)$ and the Leibniz series come from. Or convert it into an object you can already handle, by an integral representation, a generating function, or summation by parts. This chapter treats each move as a recognisable technique with a cue, a mechanism and a characteristic failure, and it closes with the one structural hazard that runs through all of them: a conditionally convergent series has no fixed value under regrouping, and treating it as though it does will produce a confident wrong answer.
+\end{orient}
+
+\section{Collapse it}
+
+The cheapest exact evaluation in mathematics is the one where you never sum anything. If the general term is the difference of consecutive values of a single sequence, the partial sum has only boundary terms in it, and the infinite sum is a limit of two or three numbers rather than of infinitely many. Everything in this section is a variation on that observation, and the variations differ only in how well the difference is hidden.
+
+Telescoping deserves to come first for a second reason. It is the one method whose answer needs no analytic licence at all: the partial sum is an identity between finitely many rational numbers, so the only limit taken is the harmless one at the end. Every other technique in this chapter needs a theorem to justify some interchange. Telescoping needs none.
+
+There is also a standing procedural point. Almost every series in this chapter was built backwards by whoever set the problem, and the fastest route to the answer is often to reconstruct the construction. If a denominator factors into two pieces that are one expression at $k$ and at $k+1$, somebody arranged that; if a numerator is a peculiar quadratic, somebody chose it to be the numerator of a difference. Reading a problem as a piece of engineering rather than as a natural object is the habit this chapter is trying to install.
+
+\tech{Telescoping}{easy}
+\cue The general term can be written as $c_k-c_{k+1}$ for some explicit sequence $c$, or as $c_{k-1}-c_{k+1}$ for a two step telescope. The tell is a denominator that factors into two pieces which are the same expression evaluated at $k$ and at $k+1$.
+\method Identify $c$, then write
+\[\sum_{k=1}^{n}(c_k-c_{k+1})=c_1-c_{n+1},\qquad \sum_{k=1}^{n}(c_{k-1}-c_{k+1})=c_0+c_1-c_n-c_{n+1},\]
+and take $n\to\infty$. The whole discipline is bookkeeping: a one step telescope leaves one term at each end, a two step telescope leaves two.
+
+\begin{worked}
+\[S=\sum_{r=1}^{\infty}\frac{4r^{2}-2}{4r^{4}+1}.\]
+The Sophie Germain identity factors the denominator, $4r^{4}+1=(2r^{2}-2r+1)(2r^{2}+2r+1)$, and the two factors are one sequence at consecutive arguments: if $g(r)=2r^{2}-2r+1$ then $g(r+1)=2r^{2}+2r+1$. Set
+\[d_r=\frac{2r-1}{2r^{2}-2r+1},\qquad\text{so}\qquad d_{r+1}=\frac{2r+1}{2r^{2}+2r+1}.\]
+Then $d_r-d_{r+1}$ has numerator $(2r-1)(2r^{2}+2r+1)-(2r+1)(2r^{2}-2r+1)=(4r^{3}+2r^{2}-1)-(4r^{3}-2r^{2}+1)=4r^{2}-2$, which is exactly the numerator we were handed. Hence the partial sum is $d_1-d_{n+1}$, and $d_1=1$, $d_{n+1}\to0$, so $S=1$.
+\end{worked}
+
+\begin{keynote}[Finding $c_k$ by ansatz]
+You are rarely handed $c_k$. Factor the denominator as $g(k)g(k+1)$, then look for $c_k=P(k)/g(k)$ with $P$ of degree one less than $g$, and fix the coefficients of $P$ by matching numerators in $c_k-c_{k+1}$. For $g(k)=2k^{2}-2k+1$ the ansatz $P(k)=\alpha k+\beta$ produces the numerator $2\alpha k^{2}\cdot 2+\cdots$, and comparing with $4k^{2}-2$ forces $\alpha=2$, $\beta=-1$. Two unknowns, two equations, and no cleverness required once the factorisation is in hand.
+\end{keynote}
+
+\begin{trap}
+Two failures dominate. The first is dropping a surviving boundary term: in the two step telescope the answer is $c_0+c_1$, and writing only $c_1$ costs you a whole term. The second is telescoping a series that is only conditionally convergent, where regrouping is not a legal operation and the collapse is an illusion.
+\end{trap}
+
+\begin{seealsob}Partial fractions engineered to telescope; arctangent difference telescoping; infinite products.\end{seealsob}
+
+The hard part is never the collapse; it is seeing that a collapse is available. In the example above the numerator $4r^{2}-2$ was engineered backwards from the difference, and the reader's job was to run the engineering in reverse. The next two techniques are the two standard factories for that engineering: rational terms, where partial fractions expose the difference, and arctangent terms, where the subtraction formula does.
+
+\tech{Partial fractions engineered to telescope}{easy}
+\cue A rational general term whose denominator factors into consecutive integers, or into an arithmetic progression such as $2n-1$ and $2n+1$. The presence of two or three factors spaced by a constant is the signature.
+\method Decompose, but decompose into \emph{blocks that already differ by a shift}, not into individual simple fractions. The two identities worth memorising are
+\[\frac{1}{n(n+1)(n+2)}=\frac12\left[\frac{1}{n(n+1)}-\frac{1}{(n+1)(n+2)}\right],\qquad \frac{1}{4n^{2}-1}=\frac12\left[\frac{1}{2n-1}-\frac{1}{2n+1}\right].\]
+In the first, the bracketed pieces are one function of $n$ at consecutive arguments; in the second they are one function at arguments two apart, which is why the factor $\tfrac12$ appears in front.
+The general statement behind the first is worth carrying: for a run of $m+1$ consecutive factors,
+\[\frac{1}{n(n+1)\cdots(n+m)}=\frac{1}{m}\left[\frac{1}{n(n+1)\cdots(n+m-1)}-\frac{1}{(n+1)(n+2)\cdots(n+m)}\right],\]
+so the sum from $n=1$ collapses to $\dfrac{1}{m\cdot m!}$. The case $m=2$ gives $\tfrac14$; $m=1$ gives $1$; $m=3$ gives $\tfrac1{18}$.
+
+\begin{worked}
+Both standard sums fall out at once. From the first identity,
+\[\sum_{n=1}^{N}\frac{1}{n(n+1)(n+2)}=\frac12\left[\frac{1}{1\cdot2}-\frac{1}{(N+1)(N+2)}\right]\longrightarrow\frac14.\]
+From the second,
+\[\sum_{n=1}^{N}\frac{1}{4n^{2}-1}=\frac12\left[1-\frac{1}{2N+1}\right]\longrightarrow\frac12.\]
+A third, with a gap of two rather than one: $\dfrac{1}{n(n+2)}=\tfrac12\bigl[\tfrac1n-\tfrac1{n+2}\bigr]$ telescopes with \emph{two} surviving head terms, giving $\tfrac12(1+\tfrac12)=\tfrac34$.
+Notice how the gap governs the answer. With a gap of $1$ one head term survives, with a gap of $2$ two survive, and with a gap of $q$ the value is $\tfrac1q\bigl(1+\tfrac12+\cdots+\tfrac1q\bigr)=\tfrac{H_q}{q}$. Checking that formula against the two computations above is a thirty second audit of the whole technique.
+\end{worked}
+
+\begin{trap}
+Decomposing $\tfrac{1}{n(n+1)(n+2)}$ as $\tfrac{A}{n}+\tfrac{B}{n+1}+\tfrac{C}{n+2}$ and then summing the three pieces separately. Each piece diverges, so the split is meaningless as a statement about infinite series; it is legal only inside a partial sum, where the divergences are finite and cancel. Group first, split second.
+\end{trap}
+
+\begin{seealsob}Telescoping; digamma and harmonic number closed forms; arctangent difference telescoping.\end{seealsob}
+
+Rational terms are the obvious factory. The less obvious one is inverse trigonometric, where the subtraction formula for $\arctan$ turns a difference of two simple angles into a single ugly one. Reading that formula backwards is the entire technique, and it is worth isolating because the ugly form is what a problem will actually hand you.
+
+\tech{Arctangent difference telescoping}{medium}
+\cue An $\arctan$ of a rational function of $n$. The diagnostic denominator is $n^{2}+n+1$, and its relatives $n^{2}$, $2n^{2}$, $n^{2}+n$, all of which are $1+ab$ for a simple pair $a,b$.
+\method Use $\arctan a-\arctan b=\arctan\dfrac{a-b}{1+ab}$ from right to left. With $a=\tfrac1n$ and $b=\tfrac1{n+1}$ the right side is $\arctan\dfrac{1}{n^{2}+n+1}$; with $a=n+1$ and $b=n-1$ it is $\arctan\dfrac{2}{n^{2}}$. Once the term is a difference of two arctangents, telescope and use $\arctan t\to\pi/2$.
+
+\begin{worked}
+\[\sum_{n=1}^{\infty}\arctan\frac{2}{n^{2}}.\]
+Here $\dfrac{(n+1)-(n-1)}{1+(n+1)(n-1)}=\dfrac{2}{n^{2}}$, so the term is $\arctan(n+1)-\arctan(n-1)$, a two step telescope. The partial sum is
+\[\arctan(N+1)+\arctan N-\arctan1-\arctan0\longrightarrow\frac{\pi}{2}+\frac{\pi}{2}-\frac{\pi}{4}=\frac{3\pi}{4}.\]
+The one step cousin is $\displaystyle\sum_{n=1}^{\infty}\arctan\frac{1}{n^{2}+n+1}=\arctan1-\lim\arctan\frac{1}{N+1}=\frac{\pi}{4}$.
+\end{worked}
+
+\begin{trap}
+Ignoring the branch. The subtraction formula as written requires $ab>-1$; outside that range the true value differs from the principal $\arctan$ by $\pm\pi$. In the example this is safe because $(n+1)(n-1)=n^{2}-1\geq0$ for all $n\geq1$, but a problem with a sign flip in it will punish an unchecked application.
+\end{trap}
+
+\begin{seealsob}Telescoping; partial fractions engineered to telescope.\end{seealsob}
+
+\section{Differentiate or integrate the parent}
+
+When nothing collapses, the next question is whether the series is a known one in disguise. The single most productive parent is the geometric series, because term by term differentiation and integration are legal inside the radius of convergence and each operation moves a factor of $n$ up or down. An entire family of closed forms descends from one line.
+
+\tech{Differentiating or integrating a known power series}{medium}
+\cue Coefficients that carry a factor of $n$, $n^{2}$ or $\tfrac1n$ relative to a geometric progression. A sum such as $\sum n/2^{n}$ or $\sum x^{n}/n$ is the geometric series with one derivative or one integral applied.
+\method Start from $\displaystyle\sum_{n\geq0}x^{n}=\frac{1}{1-x}$ on $\abs{x}<1$. Differentiate and multiply by $x$ to raise the power of $n$; integrate from $0$ to $x$ to lower it:
+\[\sum_{n\geq1}nx^{n}=\frac{x}{(1-x)^{2}},\qquad \sum_{n\geq1}n^{2}x^{n}=\frac{x(1+x)}{(1-x)^{3}},\qquad \sum_{n\geq1}\frac{x^{n}}{n}=-\ln(1-x).\]
+The operator $x\dvop{x}$ is the machine: applying it to $\tfrac{1}{1-x}$ once, twice, three times generates the whole ladder.
+
+\begin{worked}
+Evaluate $\displaystyle\sum_{n=1}^{\infty}\frac{n^{2}}{2^{n}}$. Put $x=\tfrac12$ into the second identity:
+\[\frac{x(1+x)}{(1-x)^{3}}=\frac{\tfrac12\cdot\tfrac32}{\bigl(\tfrac12\bigr)^{3}}=\frac{3/4}{1/8}=6.\]
+The same machine gives $\sum n/2^{n}=2$ and, after one more application of $x\dvop{x}$, $\sum n^{3}/2^{n}=26$ from $\dfrac{x(1+4x+x^{2})}{(1-x)^{4}}$.
+
+A limit that looks like something else entirely: $\displaystyle\lim_{n\to\infty}n\sum_{k=0}^{\infty}\frac{k}{n^{k}}$. The inner sum is the first identity at $x=1/n$, namely $\dfrac{1/n}{(1-1/n)^{2}}$, so the whole expression is $\dfrac{1}{(1-1/n)^{2}}\to1$.
+\end{worked}
+
+\begin{keynote}[The operator $x\,\mathrm{d}/\mathrm{d}x$]
+Write $\theta=x\dvop{x}$. Then $\theta$ multiplies the $n$th coefficient by $n$, so $\sum_{n\geq0}P(n)x^{n}=P(\theta)\bigl[\tfrac{1}{1-x}\bigr]$ for any polynomial $P$. Two consequences are worth stating. First, the answer is always a rational function with denominator $(1-x)^{\deg P+1}$, so you can predict its shape before computing. Second, the inverse operation, $\int_0^x\tfrac{\dd t}{t}$, divides coefficients by $n$ and is what produces $-\ln(1-x)$, $\Li_2(x)$, and the whole polylogarithm ladder from the same parent.
+\end{keynote}
+
+\begin{trap}
+Differentiating termwise outside the radius of convergence, or evaluating the result at the endpoint $\abs{x}=1$ without comment. Term by term differentiation is legal on the open disc only; $\sum x^{n}/n$ at $x=-1$ does equal $-\ln2$, but that equality is Abel's theorem, not termwise integration.
+\end{trap}
+
+\begin{seealsob}Known Maclaurin series evaluated at a point; generating functions and binomial closed forms; Abel summation.\end{seealsob}
+
+The geometric parent handles coefficients that are polynomial in $n$. Factorials need a different parent, and there the recognition problem is sharper: the reader must match a numerator that has been deliberately roughened against a clean standard series. The remedy is almost always algebraic surgery on the numerator before any matching is attempted.
+
+\tech{Known Maclaurin series evaluated at a point}{medium}
+\cue Factorials of the form $n!$, $(2n)!$ or $(2n+1)!$ in the denominator, usually with an alternating sign and a low degree polynomial in $n$ upstairs.
+\method Match against the three standard expansions
+\[\eu^{x}=\sum_{n\geq0}\frac{x^{n}}{n!},\qquad \cos x=\sum_{n\geq0}\frac{(-1)^{n}x^{2n}}{(2n)!},\qquad \sin x=\sum_{n\geq0}\frac{(-1)^{n}x^{2n+1}}{(2n+1)!},\]
+evaluated at $x=1$ or another convenient point. If the numerator is a polynomial in $n$, split it into pieces that each cancel part of the factorial: write the polynomial in terms of $(2n+1)$, or of $n$ so that $n/n!=1/(n-1)!$.
+
+\begin{worked}
+\[T=\sum_{n=0}^{\infty}(-1)^{n}\frac{n+1}{(2n+1)!}.\]
+Write $n+1=\tfrac12(2n+1)+\tfrac12$. The first half gives $\dfrac{(2n+1)}{2(2n+1)!}=\dfrac{1}{2(2n)!}$, and the second gives $\dfrac{1}{2(2n+1)!}$. So
+\[T=\frac12\sum_{n\geq0}\frac{(-1)^{n}}{(2n)!}+\frac12\sum_{n\geq0}\frac{(-1)^{n}}{(2n+1)!}=\frac{\cos1+\sin1}{2}\approx0.690887.\]
+\end{worked}
+A second instance, with $n!$ rather than $(2n+1)!$ and no alternation:
+\[\sum_{n=0}^{\infty}\frac{n^{2}+1}{n!}.\]
+Here the useful rewriting is $n^{2}=n(n-1)+n$, because $\dfrac{n(n-1)}{n!}=\dfrac{1}{(n-2)!}$ and $\dfrac{n}{n!}=\dfrac{1}{(n-1)!}$. Every piece is then $\eu$, and the sum is $\eu+\eu+\eu=3\eu\approx8.154845$. The general rule: against $n!$, expand the numerator in \emph{falling factorials} $n(n-1)\cdots(n-j+1)$, not in powers of $n$.
+
+\begin{trap}
+Trying to force the entire sum onto a single standard series. The algebraic split is not a step in the technique, it \emph{is} the technique; a numerator of $n+1$ against $(2n+1)!$ has no chance of matching anything until it is rewritten in terms of $2n+1$.
+\end{trap}
+
+\begin{seealsob}Differentiating or integrating a known power series; known zeta and eta values; special function series identities.\end{seealsob}
+
+\section{Fourier series, and where the zeta values come from}
+
+Power series are read at points inside a disc. Fourier series are read at points of an interval, and because the coefficients of a Fourier expansion involve $1/n$ or $1/n^{2}$, evaluating one at a well chosen point is the standard manufacturing route for the closed forms of $\sum n^{-2}$, $\sum n^{-4}$ and the alternating odd reciprocals. A reader who knows only that these values exist is helpless; a reader who knows where they come from can generate the next one.
+
+\tech[Known zeta and eta values]{Known $\zeta$ and $\eta$ values}{easy}
+\cue A clean power of $n$ downstairs, possibly with alternating signs, possibly restricted to odd indices. There is nothing to manipulate; the task is to recognise and to perform the odd/even split correctly.
+\method Quote the table
+\[\zeta(2)=\frac{\pi^{2}}{6},\quad \zeta(4)=\frac{\pi^{4}}{90},\quad \eta(1)=\sum_{n\geq1}\frac{(-1)^{n+1}}{n}=\ln2,\quad \sum_{n\geq0}\frac{(-1)^{n}}{2n+1}=\frac{\pi}{4},\]
+and generate the restricted variants by splitting. Since the even indexed terms of $\sum n^{-s}$ are $2^{-s}$ times the whole sum,
+\[\sum_{n\ \mathrm{odd}}\frac{1}{n^{s}}=\bigl(1-2^{-s}\bigr)\zeta(s),\qquad \eta(s)=\sum_{n\geq1}\frac{(-1)^{n+1}}{n^{s}}=\bigl(1-2^{1-s}\bigr)\zeta(s).\]
+In particular $\sum_{k\geq0}(2k+1)^{-2}=\tfrac34\zeta(2)=\tfrac{\pi^{2}}{8}$ and $\sum(-1)^{n+1}n^{-2}=\tfrac12\zeta(2)=\tfrac{\pi^{2}}{12}$.
+
+\begin{worked}
+Where $\zeta(2)$ comes from. On $[-\pi,\pi]$ the function $x^{2}$ has the cosine expansion
+\[x^{2}=\frac{\pi^{2}}{3}+4\sum_{n\geq1}\frac{(-1)^{n}}{n^{2}}\cos nx.\]
+At $x=\pi$ every $\cos n\pi=(-1)^{n}$, so the signs cancel and $\pi^{2}=\tfrac{\pi^{2}}{3}+4\zeta(2)$, giving $\zeta(2)=\tfrac{\pi^{2}}{6}$.
+
+Now apply Parseval to the same expansion. With $a_0=\tfrac{2\pi^{2}}{3}$ and $a_n=\tfrac{4(-1)^{n}}{n^{2}}$,
+\[\frac{1}{\pi}\int_{-\pi}^{\pi}x^{4}\dd x=\frac{a_0^{2}}{2}+\sum_{n\geq1}a_n^{2}\ \Longrightarrow\ \frac{2\pi^{4}}{5}=\frac{2\pi^{4}}{9}+16\,\zeta(4),\]
+so $16\zeta(4)=2\pi^{4}\bigl(\tfrac15-\tfrac19\bigr)=\tfrac{8\pi^{4}}{45}$ and $\zeta(4)=\tfrac{\pi^{4}}{90}$.
+
+The Leibniz series is the same trick on a square wave: the odd function equal to $1$ on $(0,\pi)$ has expansion $\tfrac{4}{\pi}\sum_{k\geq0}\tfrac{\sin(2k+1)x}{2k+1}$, and reading it at $x=\pi/2$ gives $1=\tfrac{4}{\pi}\bigl(1-\tfrac13+\tfrac15-\cdots\bigr)$, that is $\tfrac{\pi}{4}$.
+\end{worked}
+
+\begin{keynote}[Which point to read at]
+The choice of evaluation point is the only creative step. Read a cosine expansion at an endpoint of the interval, where $\cos n\pi=(-1)^{n}$ collapses an alternating series into a positive one. Read a sine expansion at the midpoint, where $\sin\tfrac{n\pi}{2}$ kills the even terms and leaves the odd ones with alternating signs. If neither point gives the series you want, apply Parseval instead: it squares the coefficients and therefore doubles the exponent, taking you from $\zeta(2)$ to $\zeta(4)$, and from $\zeta(4)$ to $\zeta(8)$.
+\end{keynote}
+
+\begin{trap}
+Inventing a closed form for $\zeta(3)$, or for any odd zeta value. None is known. If a computation lands on $\zeta(3)$ and the problem promises an elementary answer, the error is upstream. The second trap is misapplying the even/odd split: the factor is $1-2^{-s}$ for the odd part and $1-2^{1-s}$ for the alternating sum, and confusing them costs a factor of two.
+\end{trap}
+
+\begin{seealsob}Known Maclaurin series evaluated at a point; integral representation and interchange; special function series identities.\end{seealsob}
+
+Fourier expansions also work in the other direction. If a series has a $\cos n\theta$ or $\sin n\theta$ in it, or acquires one after an integral is performed inside the summand, the closed form may be a Fourier series read backwards. That is the second half of the next technique, whose first half is the more common manoeuvre: replacing a reciprocal by an integral so that the sum becomes geometric.
+
+\tech{Integral representation and sum integral interchange}{hard}
+\cue A denominator that is linear or quadratic in the index, most often $n$, $2n+1$ or $3n+1$, and no visible telescope. Such a denominator is an integral: $\dfrac1n=\displaystyle\int_0^1t^{n-1}\dd t$ and $\dfrac{1}{2r+1}=\displaystyle\int_0^1t^{2r}\dd t$.
+\method Substitute the integral for the reciprocal, exchange sum and integral, sum the resulting geometric series in closed form, and integrate what is left. The exchange needs a licence: monotone convergence for non-negative terms, dominated convergence otherwise, or uniform convergence on compact subsets followed by a limit at the endpoint.
+
+\begin{worked}
+\[\sum_{n=0}^{\infty}\frac{(-1)^{n}}{3n+1}=\sum_{n\geq0}(-1)^{n}\int_0^1 t^{3n}\dd t=\int_0^1\sum_{n\geq0}(-t^{3})^{n}\dd t=\int_0^1\frac{\dd t}{1+t^{3}}.\]
+Partial fractions on $1+t^{3}=(1+t)(t^{2}-t+1)$ then give
+\[\int_0^1\frac{\dd t}{1+t^{3}}=\frac{\ln2}{3}+\frac{\pi}{3\sqrt3}\approx0.835649,\]
+which agrees with the alternating sum to six places. The interchange is licensed on $[0,1-\epsilon]$ by uniform convergence and extended to $t=1$ by Abel's theorem.
+
+A harder instance, where an integral is already present. Consider
+\[\lim_{n\to\infty}\sum_{r=0}^{n}\frac{1}{2r+1}\int_{0}^{1}\sin\bigl((2r+1)x\bigr)\dd x.\]
+The inner integral is $\dfrac{1-\cos(2r+1)}{2r+1}$, so the object is $\displaystyle\sum_{r\geq0}\frac{1-\cos(2r+1)}{(2r+1)^{2}}$. Split it: the constant part is $\tfrac{\pi^{2}}{8}$, and the cosine part is a Fourier series read at $t=1$, namely $\sum_{r\geq0}\tfrac{\cos(2r+1)t}{(2r+1)^{2}}=\tfrac{\pi(\pi-2t)}{8}$ on $[0,\pi]$. Hence the value is
+\[\frac{\pi^{2}}{8}-\frac{\pi(\pi-2)}{8}=\frac{\pi}{4}.\]
+\end{worked}
+
+\begin{trap}
+Swapping sum and integral without justification. For a family with mixed signs and no dominating function the interchange is not a technicality that can be waved through; it is sometimes simply false, and the two orders give different numbers. Note also that the second example is engineered so that a reader who evaluates only the constant part reports $\pi^{2}/8$ and stops one step early.
+\end{trap}
+
+\begin{seealsob}Known zeta and eta values; double sums and order interchange; generating functions and binomial closed forms.\end{seealsob}
+
+\section{Generating functions, products, and summation by parts}
+
+The remaining techniques all convert the series into a different kind of object. A generating function turns it into a function of a dummy variable to be evaluated at a point; a product turns into a sum of logarithms; summation by parts turns it into a different series with better behaviour. The common cost is that all three routinely need an evaluation on the boundary of a disc, which is exactly where Abel's theorem is required and exactly where careless work fails.
+
+\tech{Generating functions and binomial closed forms}{hard}
+\cue Coefficients that are combinatorial rather than analytic: central binomials $\binom{2n}{n}$, Catalan numbers, harmonic numbers $H_n$, or anything defined by a recurrence.
+\method Attach the coefficients to $x^{n}$, identify the resulting function, evaluate at the required $x$. The three workhorses are
+\[\sum_{n\geq0}\binom{2n}{n}x^{n}=\frac{1}{\sqrt{1-4x}}\ \ \bigl(\abs{x}<\tfrac14\bigr),\qquad \sum_{n\geq1}H_nx^{n}=\frac{-\ln(1-x)}{1-x},\qquad \sum_{n\geq0}C_nx^{n}=\frac{1-\sqrt{1-4x}}{2x}.\]
+The harmonic one is worth deriving rather than memorising: $H_n$ is the $n$th partial sum of $\sum1/k$, so its generating function is the Cauchy product of $-\ln(1-x)$ with $\tfrac{1}{1-x}$.
+
+\begin{worked}
+\[\sum_{n=1}^{\infty}\frac{H_n}{2^{n}}=\left.\frac{-\ln(1-x)}{1-x}\right|_{x=1/2}=\frac{\ln2}{1/2}=2\ln2\approx1.386294.\]
+A deeper one, where the generating function is read at the edge of its disc. The identity
+\[\sum_{n\geq1}\frac{(2x)^{2n}}{n^{2}\binom{2n}{n}}=2\arcsin^{2}x\]
+at $x=\tfrac12$ gives $\displaystyle\sum_{n\geq1}\frac{1}{n^{2}\binom{2n}{n}}=2\left(\frac{\pi}{6}\right)^{2}=\frac{\pi^{2}}{18}\approx0.548311$.
+\end{worked}
+And a Catalan sum, which is nothing more than the generating function at a point inside its disc:
+\[\sum_{n\geq0}\frac{C_n}{8^{n}}=\left.\frac{1-\sqrt{1-4x}}{2x}\right|_{x=1/8}=\frac{1-\sqrt{1/2}}{1/4}=4-2\sqrt2\approx1.171573.\]
+
+\begin{trap}
+Evaluating a generating function at a boundary point of its disc of convergence without invoking Abel's theorem. The central binomial series has radius $\tfrac14$, and $x=\tfrac14$ is on the circle, where $1/\sqrt{1-4x}$ blows up while the series diverges: the identity survives the limit only where both sides do.
+\end{trap}
+
+\begin{seealsob}Differentiating or integrating a known power series; infinite products; Abel summation and summation by parts.\end{seealsob}
+
+A product over $k$ is a sum of logarithms, and the previous techniques therefore apply to it verbatim. In practice the more efficient move is the reverse: recognise that the product itself telescopes, usually because the factors split into two families each of which telescopes separately, and evaluate without ever taking a logarithm.
+
+\tech{Infinite products: Euler, Viete, and telescoping}{hard}
+\cue A product over $k$, or a sum of logarithms, which is the same object. Factorable numerators and denominators are the cue for a telescope; a $\sin$ or $\cos$ in the problem is the cue for a named product.
+\method Either factor and telescope, or match one of
+\[\frac{\sin x}{x}=\prod_{n\geq1}\left(1-\frac{x^{2}}{n^{2}\pi^{2}}\right),\qquad \prod_{k\geq1}\cos\frac{x}{2^{k}}=\frac{\sin x}{x},\]
+the second of which is Viete's formula, obtained by applying $\sin2\theta=2\sin\theta\cos\theta$ repeatedly to get $\prod_{k=1}^{n}\cos\tfrac{x}{2^{k}}=\dfrac{\sin x}{2^{n}\sin(x/2^{n})}$ and letting $n\to\infty$.
+
+\begin{worked}
+\[P=\prod_{k=2}^{\infty}\frac{k^{3}-1}{k^{3}+1}.\]
+Factor both: $k^{3}-1=(k-1)(k^{2}+k+1)$ and $k^{3}+1=(k+1)(k^{2}-k+1)$. Two families telescope independently. The linear family gives
+\[\prod_{k=2}^{n}\frac{k-1}{k+1}=\frac{1\cdot2\cdots(n-1)}{3\cdot4\cdots(n+1)}=\frac{2}{n(n+1)}.\]
+For the quadratic family put $g(k)=k^{2}-k+1$; then $k^{2}+k+1=g(k+1)$, so the product is $\dfrac{g(n+1)}{g(2)}=\dfrac{n^{2}+n+1}{3}$. Multiplying,
+\[\prod_{k=2}^{n}\frac{k^{3}-1}{k^{3}+1}=\frac{2(n^{2}+n+1)}{3n(n+1)}\longrightarrow\frac23.\]
+Viete's formula at $x=\pi/2$ gives the companion $\displaystyle\prod_{i\geq1}\cos\frac{\pi}{2^{i+1}}=\frac{\sin(\pi/2)}{\pi/2}=\frac{2}{\pi}$, equivalently $\sum_{i\geq1}\ln\cos\tfrac{\pi}{2^{i+1}}=\ln\tfrac{2}{\pi}\approx-0.451583$.
+\end{worked}
+
+\begin{trap}
+Telescoping one of the two factor families and quietly discarding the boundary constants of the other. In the example the limit $\tfrac23$ is manufactured entirely out of those constants, $\tfrac{2}{n(n+1)}$ against $\tfrac{n^{2}+n+1}{3}$; the tails contribute nothing. Losing a boundary constant here does not perturb the answer, it replaces it.
+\end{trap}
+
+\begin{seealsob}Telescoping; known zeta and eta values; generating functions and binomial closed forms.\end{seealsob}
+
+Summation by parts is the last of the conversion techniques and the most general. It is the discrete integration by parts, and like its continuous original it is used in two different modes: to evaluate, by trading a hard sum for an easy one, and to prove convergence, since Dirichlet's and Abel's tests are corollaries of the identity rather than independent results.
+
+\tech{Abel summation and summation by parts}{hard}
+\cue A sum $\sum a_nb_n$ in which one factor has simple \emph{partial sums} and the other is monotone or smooth. The classic pattern is $a_n$ oscillating with bounded partial sums against $b_n$ decreasing to zero.
+\method With $A_N=\sum_{n\leq N}a_n$,
+\[\sum_{n=1}^{N}a_nb_n=A_Nb_N-\sum_{n=1}^{N-1}A_n\bigl(b_{n+1}-b_n\bigr).\]
+Choose $a$ to be the factor whose partial sums you can write down. If $A_n$ is bounded and $b_n$ decreases to $0$, the boundary term vanishes and the new series converges absolutely, which is Dirichlet's test.
+
+\begin{worked}
+Accelerate $\displaystyle\sum_{n\geq1}\frac{(-1)^{n+1}}{n}$. Take $a_n=(-1)^{n+1}$, so $A_n=1$ for odd $n$ and $A_n=0$ for even $n$, and $b_n=\tfrac1n$, so $b_{n+1}-b_n=-\dfrac{1}{n(n+1)}$. The identity gives
+\[\sum_{n=1}^{N}\frac{(-1)^{n+1}}{n}=\frac{A_N}{N}+\sum_{n=1}^{N-1}\frac{A_n}{n(n+1)}=\frac{A_N}{N}+\sum_{\substack{n<N\\ n\ \mathrm{odd}}}\frac{1}{n(n+1)}.\]
+Letting $N\to\infty$ kills the boundary term and leaves
+\[\ln2=\sum_{k\geq0}\frac{1}{(2k+1)(2k+2)}=\frac{1}{1\cdot2}+\frac{1}{3\cdot4}+\frac{1}{5\cdot6}+\cdots,\]
+whose terms decay like $\tfrac{1}{4k^{2}}$ instead of $\tfrac1n$. Ten terms of the new series beat ten thousand of the old.
+\end{worked}
+
+\begin{keynote}[Two tests, one identity]
+Both standard tests for non-absolute convergence are readings of the same line. Dirichlet: if $A_N$ is bounded and $b_n$ decreases to $0$, then $A_Nb_N\to0$ and $\sum\abs{A_n}\abs{b_{n+1}-b_n}\leq M\sum(b_n-b_{n+1})<\infty$, so $\sum a_nb_n$ converges. Abel: if $\sum a_n$ converges and $b_n$ is monotone and bounded, the same two estimates apply with $A_N$ convergent rather than merely bounded. Memorising the identity makes both tests unmemorisable in the good sense: you can rederive them in a line.
+\end{keynote}
+
+\begin{trap}
+Dropping the boundary term $A_Nb_N$ before checking that it vanishes, and mis-indexing the second sum, which runs to $N-1$ and not to $N$ because the shift $b_{n+1}-b_n$ consumes one index. Both errors are silent: they produce a plausible number.
+\end{trap}
+
+\begin{seealsob}Digamma and harmonic number closed forms; telescoping; rearrangement and its dangers.\end{seealsob}
+
+\tech{Digamma and harmonic number closed forms}{hard}
+\cue Reciprocals of an arithmetic progression, or a sign pattern that repeats with period $3$, $4$ or $6$. Individually the pieces diverge; only the grouped combination converges.
+\method Write partial sums through the digamma function $\dig(x)=\dvop{x}\ln\Gfun(x)$, using
+\[\sum_{k=0}^{K}\frac{1}{qk+a}=\frac{1}{q}\left[\dig\!\left(K+1+\frac{a}{q}\right)-\dig\!\left(\frac{a}{q}\right)\right].\]
+Because $\dig(K+c)=\ln K+O(1/K)$ for any fixed $c$, the $K$ dependent digammas cancel exactly when the signs in the group sum to zero, leaving a combination of special values. The ones to know are $\dig(1)=-\gamma$, $\dig(\tfrac12)=-\gamma-2\ln2$, and the reflection formula $\dig(1-x)-\dig(x)=\pi\cot\pi x$, whence $\dig(\tfrac34)-\dig(\tfrac14)=\pi$.
+
+\begin{worked}
+\[S=\sum_{k=1}^{\infty}\left(\frac{1}{4k+1}+\frac{1}{4k+2}-\frac{1}{4k+3}-\frac{1}{4k+4}\right).\]
+Let $T$ be the same sum started at $k=0$, so $S=T-\bigl(1+\tfrac12-\tfrac13-\tfrac14\bigr)=T-\tfrac{11}{12}$. With $q=4$ the four digamma arguments are $K+1+\tfrac14,\,K+1+\tfrac12,\,K+1+\tfrac34,\,K+2$, carrying signs $+,+,-,-$; each is $\ln K+o(1)$, so they cancel and
+\[T=\frac14\left[-\dig\!\left(\tfrac14\right)-\dig\!\left(\tfrac12\right)+\dig\!\left(\tfrac34\right)+\dig(1)\right] =\frac14\Bigl[\pi+\bigl(-\gamma+\gamma+2\ln2\bigr)\Bigr]=\frac{\pi}{4}+\frac{\ln2}{2}.\]
+Hence $S=\dfrac{\pi}{4}+\dfrac{\ln2}{2}-\dfrac{11}{12}\approx0.215305$, confirmed numerically as $0.2153045$ after $4\times10^{5}$ groups.
+\end{worked}
+
+\begin{keynote}[Splitting is not rearranging]
+$T$ can also be found without digamma: its odd indexed terms are $1-\tfrac13+\tfrac15-\cdots=\tfrac{\pi}{4}$ and its even indexed terms are $\tfrac12\bigl(1-\tfrac12+\tfrac13-\cdots\bigr)=\tfrac{\ln2}{2}$. This is legal, even though $T$ is only conditionally convergent, because we are not reordering anything: the partial sum $T_{4m}$ is written as $P_{2m}+Q_{2m}$ where both $P$ and $Q$ converge, and a sum of two convergent sequences converges to the sum of the limits. The illegal operation is reordering, not splitting a partial sum.
+\end{keynote}
+
+\begin{trap}
+Breaking the group of four into four separate infinite sums. Each of $\sum\tfrac{1}{4k+1}$, $\sum\tfrac{1}{4k+2}$ and the rest diverges logarithmically; only their signed combination is finite. The grouping is load bearing and must survive to the end of the calculation.
+\end{trap}
+
+\begin{seealsob}Abel summation and summation by parts; partial fractions engineered to telescope; special function series identities.\end{seealsob}
+
+\tech{Special function series identities}{hard}
+\cue A named constant appearing as the \emph{coefficient} of the summand: $\zeta(n)$, a dilogarithm value, $\ln\Gfun$, or a Lambert $W$. The sum is then a Taylor series of a special function, usually read at the edge of its disc.
+\method Recognise the expansion. Two that recur:
+\[\ln\Gfun(1+x)=-\gamma x+\sum_{n\geq2}\frac{(-1)^{n}\zeta(n)}{n}x^{n}\ \ (\abs{x}<1),\qquad \Li_2(-x)+\Li_2(-1/x)=-\frac{\pi^{2}}{6}-\frac12\ln^{2}x\ \ (x>0).\]
+The second is the dilogarithm inversion formula, and its usual role is to cancel a divergence that has been engineered into a limit.
+
+\begin{worked}
+Put $x=1$ in the $\ln\Gfun$ expansion. The left side is $\ln\Gfun(2)=\ln1=0$, so
+\[0=-\gamma+\sum_{n\geq2}\frac{(-1)^{n}\zeta(n)}{n}\qquad\Longrightarrow\qquad \sum_{n=2}^{\infty}\frac{(-1)^{n}\zeta(n)}{n}=\gamma\approx0.5772157.\]
+The series converges slowly, since $\zeta(n)\to1$ and the terms behave like $(-1)^{n}/n$; splitting off $\sum_{n\geq2}(-1)^{n}/n=1-\ln2$ and summing $\sum_{n\geq2}(-1)^{n}(\zeta(n)-1)/n$, whose terms fall like $2^{-n}$, confirms the value in a dozen terms.
+
+The dilogarithm identity, used as a cancellation: as $x\to\infty$, $-\Li_2(-x)=\tfrac{\pi^{2}}{6}+\tfrac12\ln^{2}x+\Li_2(-1/x)$, and $\tfrac12\ln^{2}(x+1)-\tfrac12\ln^{2}x\to0$, so
+\[\lim_{x\to\infty}\left(-\Li_2(-x)-\tfrac12\ln^{2}(x+1)\right)=\frac{\pi^{2}}{6}.\]
+Both divergent $\ln^{2}$ pieces were placed there to annihilate each other.
+\end{worked}
+The dilogarithm's other functional equation, $\Li_2(x)+\Li_2(1-x)=\tfrac{\pi^{2}}{6}-\ln x\ln(1-x)$, evaluates the one dilogarithm value a reader is likely to meet: at $x=\tfrac12$ the two sides are equal, so
+\[\Li_2\!\left(\tfrac12\right)=\sum_{n\geq1}\frac{1}{n^{2}2^{n}}=\frac{\pi^{2}}{12}-\frac{\ln^{2}2}{2}\approx0.582241.\]
+
+\begin{trap}
+Substituting the boundary point without checking that the series converges there. The $\ln\Gfun(1+x)$ expansion has radius exactly $1$, and $x=1$ sits on the circle; the substitution is legitimate only because the series converges at that point and $\ln\Gfun$ is continuous up to it.
+\end{trap}
+
+\begin{seealsob}Known zeta and eta values; infinite products; digamma and harmonic number closed forms.\end{seealsob}
+
+\section{Two indices, and the order you take them in}
+
+Everything so far has been a single sum. Once there are two indices, or one index and one integration variable, a new question appears that has no analogue in the one dimensional case: whether the answer depends on the order in which the limits are taken. It usually does not, and there is a clean theorem saying when. When the theorem's hypotheses fail, the answer usually does depend on the order, and the failure is not detectable by inspecting either order alone.
+
+\tech{Double sums and order interchange}{hard}
+\cue A visible $\sum_m\sum_n$, or a single sum whose summand is itself a sum or an integral, or a limit in which two parameters go to infinity in a stated order.
+\method Swap freely when the terms are non-negative (Tonelli) or when $\sum_{m,n}\abs{a_{mn}}<\infty$ (Fubini). Choose the order in which the inner sum has a closed form. If the index ranges are dependent, redraw the region and rewrite the limits before swapping.
+
+\begin{worked}
+\[L=\lim_{m\to\infty}\lim_{n\to\infty}\sum_{k=1}^{m}\ \sum_{r=kn+1}^{(k+1)n}\frac{n}{r^{2}}.\]
+Fix $k$ and take $n\to\infty$ first. Writing $r=kn+j$ with $1\leq j\leq n$,
+\[\sum_{r=kn+1}^{(k+1)n}\frac{n}{r^{2}}=\frac1n\sum_{j=1}^{n}\frac{1}{\bigl(k+\tfrac jn\bigr)^{2}}\longrightarrow\int_{k}^{k+1}\frac{\dd x}{x^{2}}=\frac1k-\frac{1}{k+1}.\]
+The inner limit is a Riemann sum in disguise. The outer sum then telescopes: $\sum_{k=1}^{m}\bigl(\tfrac1k-\tfrac1{k+1}\bigr)=1-\tfrac1{m+1}\to1$, so $L=1$.
+\end{worked}
+A genuine interchange, where the swap is the whole idea:
+\[\sum_{n=2}^{\infty}\bigl(\zeta(n)-1\bigr)=\sum_{n\geq2}\sum_{k\geq2}\frac{1}{k^{n}}=\sum_{k\geq2}\sum_{n\geq2}\frac{1}{k^{n}}=\sum_{k\geq2}\frac{1/k^{2}}{1-1/k}=\sum_{k\geq2}\frac{1}{k(k-1)}=1.\]
+Every term is positive, so Tonelli licenses the swap without further comment, the inner sum becomes geometric, and the outer sum telescopes. Three of this chapter's techniques in one line.
+
+\begin{trap}
+Swapping a doubly indexed family with mixed signs and no absolute summability. The standard counterexample is $a_{mn}=1$ when $m=n$, $a_{mn}=-1$ when $n=m+1$, and $0$ otherwise: every row sums to $0$, so one order gives $0$, while every column sums to $0$ except the first, which sums to $1$, so the other order gives $1$. Nothing in either single computation reveals the problem.
+\end{trap}
+
+\begin{seealsob}Integral representation and interchange; telescoping; rearrangement and its dangers.\end{seealsob}
+
+The counterexample above is the two index version of a one index hazard, and it is worth meeting the one index version head on, because it is the single most common way a correct evaluation is turned into an incorrect one. A conditionally convergent series does not have a sum in the way an absolutely convergent one does. It has a sum \emph{in the given order}, and reordering it destroys that number completely.
+
+\tech{Rearrangement and its dangers}{medium}
+\cue A conditionally convergent series being reordered, regrouped across sign changes, or split into two infinite subsums. Also any manipulation that treats $\sum a_n$ as though addition were commutative in the infinite case.
+\method Riemann's theorem: if $\sum a_n$ converges but $\sum\abs{a_n}$ diverges, then for \emph{any} prescribed $L\in\R\cup\{\pm\infty\}$ there is a rearrangement converging to $L$. The construction is greedy and completely explicit: add positive terms in order until the running total first exceeds $L$, then add negative terms until it first drops below $L$, and repeat forever. It works because the positive terms alone sum to $+\infty$ and the negative terms alone to $-\infty$, so each phase must terminate, while $a_n\to0$ forces the overshoot at each turn to $0$.
+
+\begin{worked}
+Rearrange $1-\tfrac12+\tfrac13-\tfrac14+\cdots$, whose sum is $\ln2\approx0.693147$, to converge to $2$. Run the greedy algorithm on the odd and even reciprocals:
+\begin{itemize}
+\item $1+\tfrac13+\tfrac15+\cdots+\tfrac{1}{15}=2.021800$, the first time the total exceeds $2$ (eight terms);
+\item subtract $\tfrac12$: $1.521800$;
+\item add $\tfrac{1}{17}+\tfrac{1}{19}+\cdots+\tfrac{1}{41}=$ thirteen more odd terms, reaching $2.004063$;
+\item subtract $\tfrac14$: $1.754063$, and so on.
+\end{itemize}
+The overshoots are $0.021800$, then $0.004063$, then smaller still, and the running total converges to $2$. Every term of the original series is used exactly once.
+
+The structured version is cleaner. Taking $r$ positive terms for each negative term gives
+\[\sum_{j=1}^{rm}\frac{1}{2j-1}-\sum_{j=1}^{m}\frac{1}{2j}\approx\Bigl(\tfrac12\ln(rm)+\ln2+\tfrac{\gamma}{2}\Bigr)-\tfrac12\bigl(\ln m+\gamma\bigr)=\ln2+\tfrac12\ln r.\]
+So $r=2$ gives $\tfrac32\ln2\approx1.039721$, confirmed numerically as $1.0397195$, and not $\ln2$.
+\end{worked}
+
+\begin{trap}
+Writing $\sum\frac{(-1)^{n+1}}{n}=\sum_{\mathrm{odd}}\frac1n-\sum_{\mathrm{even}}\frac1n$. Neither sum on the right exists, so the identity is not false, it is meaningless. Contrast the digamma computation earlier in this chapter, where a partial sum was split into two convergent partial sums: that is legal, and this is not.
+\end{trap}
+
+\begin{seealsob}Double sums and order interchange; Abel summation and summation by parts; telescoping.\end{seealsob}
+
+\section{Choosing the move}
+
+The techniques in this chapter are close to disjoint in their cues, so the choice is nearly mechanical. Look at the general term and ask, in order: does it collapse, is it geometric with polynomial decoration, is it a standard expansion read at a point. Only if all three fail do you spend effort on a conversion. The tree below is that order, and it is worth internalising because the expensive techniques at the bottom are also the ones with hypotheses to check.
+
+\begin{center}
+\begin{tikzpicture}[node distance=5mm and 6mm]
+\node[dtest] (a) {Is the term a difference\\ of consecutive values\\ of one sequence?};
+\node[dleaf, below left=9mm and 2mm of a] (b) {Telescope; keep\\ every boundary term};
+\node[dtest, below right=9mm and 2mm of a] (c) {Coefficients elementary\\ in $n$: powers, $1/n$,\\ or factorials?};
+\node[dtest, below left=9mm and 0mm of c] (d) {Factorials present?};
+\node[dleaf, below right=9mm and 2mm of c] (e) {Integral representation;\\ generating function;\\ summation by parts};
+\node[dleaf, below left=9mm and 0mm of d] (f) {Match $\eu^{x}$, $\sin$, $\cos$;\\ split the numerator};
+\node[dleaf, below right=9mm and 0mm of d] (g) {Differentiate or integrate\\ the geometric series;\\ or a $\zeta$ value};
+\draw[dedge] (a) -- node[dlab,left]{yes} (b);
+\draw[dedge] (a) -- node[dlab,right]{no} (c);
+\draw[dedge] (c) -- node[dlab,left]{yes} (d);
+\draw[dedge] (c) -- node[dlab,right]{no} (e);
+\draw[dedge] (d) -- node[dlab,left]{yes} (f);
+\draw[dedge] (d) -- node[dlab,right]{no} (g);
+\end{tikzpicture}
+\end{center}
+
+One caution about the tree. It routes on the shape of the term, not on difficulty, and the left branch is not always the easy one: a telescope can be very deeply buried, as the Sophie Germain example shows. What the tree guarantees is that you will not reach for a generating function before you have checked whether the sum simply collapses.
+
+A second caution concerns the bottom right box, which is not one technique but three, ordered by cost. An integral representation is cheapest and should be tried first: it needs only that some factor of the term be writable as $\int_0^1t^{\alpha}\dd t$. A generating function is next, and requires that you recognise the coefficients as a named combinatorial family. Summation by parts is last, because it does not by itself produce a closed form; it produces a different series, and you still have to evaluate that.
+
+\begin{keynote}[Confirm before you commit]
+Every closed form in this chapter can be checked in under a minute by summing a few thousand terms numerically. Do it. The characteristic error in series evaluation is not a wrong method but a lost constant, a dropped boundary term, or a factor of two from a mishandled odd/even split, and all three show up instantly as a mismatch in the third decimal place. If the partial sums approach your answer but do not reach it, compare the residual against the expected tail: a discrepancy of size $1/N$ is a truncation artefact, a discrepancy that stops shrinking is a mistake.
+\end{keynote}
+
+\section{Recognition matrix}
+\begin{recog}{@{}p{0.30\textwidth}p{0.36\textwidth}p{0.28\textwidth}@{}}
+\rowcolor{mist}\mh{If you see} & \mh{Reach for} & \mh{If that fails} \\
+\midrule
+\endhead
+Denominator factoring as $g(k)g(k+1)$ & Telescope with $c_k=\text{(linear)}/g(k)$ & Partial fractions, then group \\
+$\dfrac{1}{n(n+1)(n+2)}$, $\dfrac{1}{4n^{2}-1}$ & Partial fractions into blocks that shift & Digamma partial sums \\
+$\arctan$ of a rational function & $\arctan a-\arctan b$ read backwards & Check the branch, $ab>-1$ \\
+$n$, $n^{2}$ or $1/n$ against $x^{n}$ & Apply $x\dvop{x}$ or $\int_0^x$ to $\dfrac{1}{1-x}$ & Generating function of the coefficients \\
+$n!$, $(2n)!$, $(2n+1)!$ downstairs & Split the numerator, match $\eu^{x}$, $\sin$, $\cos$ & Integral representation \\
+$1/n^{2}$, $1/n^{4}$, odd or alternating & $\zeta(2),\zeta(4)$ and the $1-2^{-s}$ split & Fourier series at a chosen point \\
+$1/(qn+a)$ with no telescope & $\int_0^1t^{qn+a-1}\dd t$, then swap & Digamma special values \\
+$\binom{2n}{n}$, $C_n$, $H_n$ & Named generating function & Abel's theorem at the edge \\
+A product over $k$ & Factor into two telescoping families & Take logs; Viete or Euler \\
+$\sum a_nb_n$, $A_N$ simple & Summation by parts & Dirichlet's test for convergence only \\
+$\zeta(n)$ or $\Li_2$ as a coefficient & Taylor series of $\ln\Gfun$ or $\Li_2$ & Inversion formula to cancel divergences \\
+$\sum_m\sum_n$ with mixed signs & Test absolute summability first & Compute both orders and compare \\
+Any reordering of an alternating sum & Stop: Riemann's theorem applies & Restore the original order \\
+\end{recog}

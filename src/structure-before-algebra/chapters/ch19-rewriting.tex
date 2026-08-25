@@ -1,0 +1,697 @@
+\chapter{Structural rewriting before integrating}
+
+\begin{orient}
+\textbf{What this chapter is for.} An integrand that resists every technique in the book usually resists because it has not been simplified. This chapter covers the pass you make \emph{before} choosing a method: cancel what cancels, divide when the numerator is too big, decompose what is rational, complete the square under every quadratic, multiply by a conjugate when two surds refuse to combine, and linearise every product of trigonometric functions. None of these operations is an integration technique. All of them decide which integration technique you will need, and several of them finish the problem outright. The organising fact is that the standard integral table is short, so the whole art is manoeuvring an expression into one of its entries. At the end you should be able to look at a rational function and know in advance exactly which of four shapes its antiderivative has, and you should never again attempt integration by parts on something that was secretly a constant.
+\end{orient}
+
+\section{The first move is never a technique}
+
+Beginners reach for a method. Experienced solvers reach for a pencil and rewrite. The reason is not aesthetic. Every technique in the remaining chapters of this part has a precondition: substitution needs a visible inner function, parts needs a factor that improves when differentiated, partial fractions needs a proper rational function. Rewriting is what establishes those preconditions, and an integrand that satisfies none of them is usually one algebraic step away from satisfying one.
+
+There is a second reason, less obvious and more important. Problems are constructed, and the construction almost always runs backwards from a simple answer. A setter picks $\int_1^2\ln x\dd x$, then multiplies numerator and denominator by $\cos^4x$ written in three different disguises, then expands. The forward direction looks hopeless; the backward direction is one cancellation. If an integrand looks engineered, it was, and the design is nearly always a factor hidden on both sides of a fraction bar.
+
+\begin{keynote}[The rewriting pass]
+Before choosing a method, run this list. \emph{One}: are numerator and denominator sharing a factor once you expand and apply $\sin^2+\cos^2=1$ to each separately? \emph{Two}: do the exponent and logarithm laws collapse anything? \emph{Three}: is the fraction improper, so that division comes first? \emph{Four}: does every quadratic appear as a completed square? \emph{Five}: is every product of trigonometric functions at distinct frequencies written as a sum? Only when all five answers are no have you earned the right to pick a technique.
+\end{keynote}
+
+There is a practical test for whether you are looking at an engineered problem, and it costs nothing. Evaluate the integrand at one or two convenient points and compare with something simple. If $f(1)$ and $f(2)$ both equal $\ln1$ and $\ln2$, you are looking at $\ln x$ in a costume. If the integrand is constant at three points, it is constant. This is not a proof and it is not meant to be; it is a way of deciding, in ten seconds, whether to spend the next ten minutes simplifying or the next ten minutes integrating.
+
+\begin{keynote}[Problems are built backwards]
+A setter starts from an answer, not from a question. The usual construction is to take an easy integrand $h(x)$, choose a nonzero function $\varphi$, and present $\dfrac{h(x)\varphi(x)}{\varphi(x)}$ with numerator and denominator expanded and rearranged so that the shared factor is invisible. Every symptom of this construction is a symptom of a cancellation: an unusually high degree in both numerator and denominator, trigonometric squares at more than one frequency, a numerator whose terms all carry the same transcendental factor. When you see them, look for $\varphi$ rather than for a technique.
+\end{keynote}
+
+\tech{Algebraic camouflage collapse}{core}
+\cue An integrand engineered to look terrible: stacked trigonometric squares over a product of trigonometric factors, a tower of logarithms, a ratio of two near-identical polynomials. Nothing suggests a substitution because there is nothing to substitute.
+\method Treat the integrand as raw algebra. Expand, apply the Pythagorean identities to the numerator and to the denominator \emph{separately}, and cancel. The design principle behind such problems is that the numerator is secretly $(\text{denominator})\times(\text{something elementary})$, so the entire difficulty evaporates in one line and what remains is a table integral.
+
+\begin{worked}
+\[
+\int_1^2\frac{\ln x-\ln x\,\sin^2x-\tfrac14\ln x\,\sin^2(2x)}{\cos^2x\,(1-\sin^2x)}\dd x .
+\]
+The denominator is $\cos^2x\cdot\cos^2x=\cos^4x$. For the numerator, factor out $\ln x$ and use $\sin^2(2x)=4\sin^2x\cos^2x$:
+\[
+\ln x\Bigl(1-\sin^2x-\sin^2x\cos^2x\Bigr)=\ln x\Bigl(\cos^2x-\sin^2x\cos^2x\Bigr)=\ln x\,\cos^2x\bigl(1-\sin^2x\bigr)=\ln x\,\cos^4x .
+\]
+Since $\cos x\neq0$ on $[1,2]$, the quotient is $\ln x$ and the integral is $\bigl[x\ln x-x\bigr]_1^2=2\ln2-1\approx0.386294$, confirmed by quadrature to twelve digits.
+
+A second instance where the camouflage is a genuine identity rather than a manufactured factor:
+\[
+\int_0^{\pi/2}\Bigl(\sin^6x+\cos^6x+3\sin^2x\cos^2x\Bigr)\dd x .
+\]
+Cubing $\sin^2x+\cos^2x=1$ gives $\sin^6x+\cos^6x=1-3\sin^2x\cos^2x$, so the integrand is identically $1$ and the integral is $\pi/2$. Anyone who reaches for power reduction here will produce four correct pages and the same answer.
+\end{worked}
+
+\begin{trap}
+Cancelling a factor without checking that it is nonzero on the interval of integration. Dividing by $\cos^4x$ is legitimate on $[1,2]$ because $\pi/2\approx1.5708$ lies outside it, but only just; on $[1,2.5]$ the same cancellation would be removing a genuine singularity from both sides and the resulting integral would be improper. State the check, do not skip it.
+\end{trap}
+
+\begin{seealsob}Exponent and logarithm law collapse; factorisation identities; trigonometric identity pre-processing.\end{seealsob}
+
+The camouflage above was trigonometric. The same trick is played with exponents and logarithms, and there the collapse is even more complete, because the laws involved are unconditional identities rather than a single Pythagorean relation.
+
+\tech{Exponent and logarithm law collapse}{easy}
+\cue The same base carrying two different exponents, several logarithm bases in one expression, $\eu^{-\ln A}$, or a constant exponent written in a deliberately irrational way.
+\method Apply the laws before doing anything else. $x^ax^b=x^{a+b}$, and if $a+b=\sin^2x+\cos^2x$ the exponent is $1$. Every logarithm reduces to $\ln$ via $\log_bx=\ln x/\ln b$, so mixed bases produce constants that cancel. And $\eu^{-\ln A}=1/A$, $\eu^{k\ln A}=A^k$. The point is that these steps cost nothing and can reduce a transcendental-looking integrand to a polynomial.
+
+\begin{worked}
+\[
+\int_0^{\sqrt{2\pi}}x^{\sin^2x}\,x^{\cos^2x}\dd x=\int_0^{\sqrt{2\pi}}x^{\sin^2x+\cos^2x}\dd x=\int_0^{\sqrt{2\pi}}x\dd x=\frac{2\pi}{2}=\pi .
+\]
+A second, with mixed bases:
+\[
+\int_1^{\eu^2}\frac{\log_3x}{x\,\log_3\eu}\dd x=\int_1^{\eu^2}\frac{\ln x/\ln3}{x\,(1/\ln3)}\dd x=\int_1^{\eu^2}\frac{\ln x}{x}\dd x=\Bigl[\tfrac12(\ln x)^2\Bigr]_1^{\eu^2}=2 .
+\]
+The factor $\ln 3$ was never going to matter, and noticing that in advance saves you from carrying it through a substitution. A third, one line long:
+\[
+\int_0^1\eu^{-\ln(1+x)}\dd x=\int_0^1\frac{\dd x}{1+x}=\ln2 .
+\]
+\end{worked}
+
+\begin{trap}
+The collapse changes the domain. The expression $x^{f(x)}$ is defined only for $x>0$, so $x^{\sin^2x}x^{\cos^2x}$ agrees with $x$ on $(0,b]$ and is undefined at $x=0$; the integral is improper at the left endpoint and converges because the integrand extends continuously by $0$. Write the identity on the open interval, then take the limit.
+\end{trap}
+
+\begin{seealsob}Algebraic camouflage collapse; exponential substitution; factorisation identities.\end{seealsob}
+
+Both of the collapses so far relied on identities you already know. The third kind relies on recognising that the denominator in front of you is one factor of a familiar factorisation, and that the partner factor is sitting in the numerator waiting to cancel.
+
+\tech{Factorisation identities}{easy}
+\cue A quotient whose denominator is a recognisable piece of a standard factorisation: $\dfrac{1-x^n}{1-x}$, $1-x^{1/3}+x^{2/3}$, $x^2-x+1$, $x^4+x^2+1$, $x^3\pm1$.
+\method Identify the partner factor and cancel. The workhorses are the geometric identity $\dfrac{1-x^n}{1-x}=1+x+\cdots+x^{n-1}$; the sum and difference of cubes $a^3\pm b^3=(a\pm b)(a^2\mp ab+b^2)$, which handles $x^2-x+1=\dfrac{x^3+1}{x+1}$ and its cube-root analogues; and the Sophie Germain style split
+\[
+x^4+x^2+1=(x^2+x+1)(x^2-x+1),
+\]
+obtained by adding and subtracting $x^2$. Each of these turns a fourth-degree or fractional-power denominator into something already in the table.
+
+\begin{worked}
+Take $\displaystyle\int_0^1\frac{1+x}{1-x^{1/3}+x^{2/3}}\dd x$. Write $a=1$, $b=x^{1/3}$, so $1+x=a^3+b^3=(1+x^{1/3})(1-x^{1/3}+x^{2/3})$. The denominator cancels entirely and
+\[
+\int_0^1\bigl(1+x^{1/3}\bigr)\dd x=1+\tfrac34=\frac74 ,
+\]
+confirmed numerically as $1.750000000000$.
+
+Now the quartic split. In $\displaystyle\int_0^1\frac{x^2+x+1}{x^4+x^2+1}\dd x$ the denominator factors as $(x^2+x+1)(x^2-x+1)$, so the integrand is $\dfrac{1}{x^2-x+1}$. Completing the square gives $\bigl(x-\tfrac12\bigr)^2+\tfrac34$ and
+\[
+\int_0^1\frac{\dd x}{x^2-x+1}=\Bigl[\frac{2}{\sqrt3}\arctan\frac{2x-1}{\sqrt3}\Bigr]_0^1=\frac{2}{\sqrt3}\Bigl(\frac{\pi}{6}+\frac{\pi}{6}\Bigr)=\frac{2\pi\sqrt3}{9}\approx1.209200 .
+\]
+Finally the geometric one: $\displaystyle\int_0^1\frac{1-x^5}{1-x}\dd x=\int_0^1(1+x+x^2+x^3+x^4)\dd x=1+\tfrac12+\tfrac13+\tfrac14+\tfrac15=\frac{137}{60}$.
+
+And the sum of cubes in its plainest form, where the whole integral disappears:
+\[
+\int_0^1\frac{x^3+1}{x^2-x+1}\dd x=\int_0^1(x+1)\dd x=\frac32 .
+\]
+Compare the work required if the factorisation is missed: the denominator is irreducible with $\Delta=-3$, the fraction is improper, and an honest solver would divide, decompose and produce a logarithm and an arctangent that must then cancel exactly.
+\end{worked}
+
+\begin{trap}
+Treating $x=1$ as a singularity of $\dfrac{1-x^5}{1-x}$ and splitting the integral there. The singularity is removable: the function equals a polynomial everywhere except at one point, and the definite integral is entirely ordinary. Splitting at a removable singularity is harmless but signals that you have not seen the factorisation, and on a quotient like $\dfrac{1-x^n}{1-x}$ it usually precedes an attempt at partial fractions on a denominator with $n$ complex roots.
+\end{trap}
+
+\begin{seealsob}Polynomial long division; partial fractions with distinct linear factors; completing the square.\end{seealsob}
+
+So far the hidden structure was finite: a factor, an identity, a law. It can also be infinite, and then the collapse is a fixed-point calculation rather than an algebraic one. This is rarer, but the recognition is unmistakable once you have seen it once.
+
+\tech{Self-similar collapse: nested radicals and continued fractions}{hard}
+\cue The integrand contains an object that repeats inside itself: $\sqrt{g(x)+\sqrt{g(x)+\cdots}}$ continuing forever, an infinite continued fraction, or a power tower.
+\method Name the repeating object $y$, write down the equation it satisfies by substituting the whole into a copy of itself, and solve. From $y=\sqrt{g+y}$ we get $y^2-y-g=0$, hence
+\[
+y=\tfrac12\bigl(1+\sqrt{1+4g}\bigr),
+\]
+taking the positive root because $y\geq0$. A \emph{finite} nesting is not a fixed point and must instead be collapsed bottom upwards as ordinary algebra; confusing the two changes the answer completely.
+
+\begin{worked}
+The infinite case first. For $x\in[0,1]$,
+\[
+\int_0^1\sqrt{x+\sqrt{x+\sqrt{x+\cdots}}}\dd x=\int_0^1\frac{1+\sqrt{1+4x}}{2}\dd x=\frac12+\frac12\Bigl[\frac{(1+4x)^{3/2}}{6}\Bigr]_0^1=\frac12+\frac{5\sqrt5-1}{12},
+\]
+which is $1.348361657292$; direct quadrature on the truncated nesting agrees to twelve digits by the tenth level.
+
+The finite case, where the fixed-point reflex would be wrong. The three-level fraction
+\[
+\left(1+\cfrac{1}{1+\cfrac{1}{1+x}}\right)^{-1}
+\]
+collapses from the bottom, one level at a time: $1+\dfrac{1}{1+x}=\dfrac{2+x}{1+x}$, its reciprocal is $\dfrac{1+x}{2+x}$, adding $1$ gives $\dfrac{3+2x}{2+x}$, and the reciprocal of that is $\dfrac{2+x}{2x+3}$. Then, writing $\dfrac{2+x}{2x+3}=\tfrac12\Bigl(1+\dfrac{1}{2x+3}\Bigr)$,
+\[
+\int_0^1\frac{2+x}{2x+3}\dd x=\frac12+\frac14\ln\frac53\approx0.627706 .
+\]
+The corresponding infinite continued fraction is a different function entirely. If $z=x+\cfrac{1}{x+\cfrac{1}{x+\cdots}}$ then $z=x+\dfrac1z$, so $z^2-xz-1=0$ and $z=\tfrac12\bigl(x+\sqrt{x^2+4}\bigr)$, the positive root. Hence
+\[
+\int_0^1 z\dd x=\frac14+\frac12\int_0^1\sqrt{x^2+4}\dd x=\frac14+\frac{\sqrt5}{4}+\ln\frac{1+\sqrt5}{2}\approx1.290229 ,
+\]
+using $\int\sqrt{x^2+a^2}\dd x=\tfrac{x}{2}\sqrt{x^2+a^2}+\tfrac{a^2}{2}\operatorname{arsinh}\tfrac xa$. Nothing about the written expression distinguishes the finite three-level fraction from the infinite one except the word ``infinite'', and the two answers are not close.
+\end{worked}
+
+\begin{trap}
+Taking the wrong root of the fixed-point quadratic. The equation $y^2=g+y$ has two solutions and only the one that is real, nonnegative and continuous on the whole interval is the limit of the nesting. The second error is treating a three-level fraction as though it were infinite: an infinite continued fraction $z=x+1/z$ gives $z=\tfrac12(x+\sqrt{x^2+4})$, which is nothing like the rational function a finite one produces.
+\end{trap}
+
+\begin{seealsob}Rationalising a radical by substitution; algebraic camouflage collapse; conjugate multiplication.\end{seealsob}
+
+The last of the collapse family concerns inverse trigonometric functions, where the simplification is a triangle rather than an identity, and where the branch restrictions are the whole difficulty.
+
+\tech{Inverse-function and co-function collapse}{medium}
+\cue Nested inverse trigonometric functions: $\sin(\arcsec x)$, $\tan(\arccot u)$, $\arctan\dfrac{1-x}{1+x}$, $\arctan\dfrac{2x}{1-x^2}$, or $\arctan t$ next to $\arctan(1/t)$.
+\method Peel with a right triangle and the standard identities: $\arccot z=\tfrac{\pi}{2}-\arctan z$; $\arctan a-\arctan b=\arctan\dfrac{a-b}{1+ab}$ when the result stays in $(-\tfrac{\pi}{2},\tfrac{\pi}{2})$; $\arctan t+\arctan\tfrac1t=\tfrac{\pi}{2}$ for $t>0$; $\sin(\arcsec x)=\dfrac{\sqrt{x^2-1}}{x}$ for $x\geq1$; and $\arctan\dfrac{2x}{1-x^2}=2\arctan x$ for $\abs{x}<1$.
+
+\begin{worked}
+\[
+\int_1^2\sin(\arcsec x)\dd x=\int_1^2\frac{\sqrt{x^2-1}}{x}\dd x .
+\]
+Differentiating $\sqrt{x^2-1}-\arcsec x$ gives $\dfrac{x}{\sqrt{x^2-1}}-\dfrac{1}{x\sqrt{x^2-1}}=\dfrac{x^2-1}{x\sqrt{x^2-1}}=\dfrac{\sqrt{x^2-1}}{x}$, so the value is $\sqrt3-\dfrac{\pi}{3}\approx0.684853$.
+
+The subtraction identity in action:
+\[
+\int_0^1\arctan\frac{1-x}{1+x}\dd x=\int_0^1\Bigl(\frac{\pi}{4}-\arctan x\Bigr)\dd x ,
+\]
+valid because $\dfrac{1-x}{1+x}=\dfrac{\tan(\pi/4)-\tan(\arctan x)}{1+\tan(\pi/4)\tan(\arctan x)}$ and both angles lie in $[0,\pi/4]$. Since $\int_0^1\arctan x\dd x=\tfrac{\pi}{4}-\tfrac12\ln2$ by parts, the answer is $\tfrac12\ln2\approx0.346574$.
+
+The doubling identity, used inside its branch:
+\[
+\int_0^{1/2}\arctan\frac{2x}{1-x^2}\dd x=2\int_0^{1/2}\arctan x\dd x
+=2\Bigl[x\arctan x-\tfrac12\ln(1+x^2)\Bigr]_0^{1/2}=\arctan\tfrac12-\ln\tfrac54\approx0.240504 .
+\]
+The upper limit $\tfrac12$ was chosen to stay inside $\abs x<1$; at $x=1$ the argument $\dfrac{2x}{1-x^2}$ blows up and the identity changes form.
+\end{worked}
+
+\begin{trap}
+Crossing a branch cut in the middle of the interval. The identity $\arctan\dfrac{2x}{1-x^2}=2\arctan x$ holds only on $\abs{x}<1$; for $x>1$ the correct statement is $2\arctan x-\pi$. An integral over $[0,2]$ that uses the unrestricted form is wrong by $\pi$ times the length of the offending piece, and nothing in the algebra warns you.
+\end{trap}
+
+\begin{seealsob}Trigonometric identity pre-processing; conjugate multiplication; completing the square.\end{seealsob}
+
+\section{Rational integrands: divide, align, decompose}
+
+Every rational function has an elementary antiderivative, and there are exactly four shapes it can be built from: a polynomial, a logarithm $\ln\abs{x-r}$, a negative power $(x-r)^{-k}$, and an arctangent. Knowing this in advance changes how you work, because it means the entire problem is bookkeeping: get the fraction proper, factor the denominator, allocate one term per factor, and read off which of the four shapes each term produces. Nothing is ever discovered along the way.
+
+The order of operations is forced. Division comes first, because a partial-fraction ansatz on an improper fraction has no solution and the linear system silently returns nonsense. Factoring the denominator comes second, because the shape of the decomposition depends only on the factorisation. Only then do you solve for coefficients, and the cover-up rule makes most of that solving unnecessary. The tree below is the whole procedure.
+
+The claim that there are only four shapes is worth stating precisely, because it is what makes the whole procedure mechanical. Factor the denominator over the reals into linear and irreducible quadratic pieces, which the fundamental theorem of algebra guarantees is possible. Then each piece contributes exactly the terms in the table below, and each of those terms has an antiderivative you already know.
+
+\begin{center}
+\footnotesize
+\setlength{\tabcolsep}{5pt}
+\renewcommand{\arraystretch}{1.30}
+\begin{tabular}{@{}lll@{}}
+\toprule
+\mh{Factor of $Q$} & \mh{Terms allocated} & \mh{Antiderivative produced} \\
+\midrule
+$x-r$, appearing once & $\dfrac{A}{x-r}$ & $A\ln\abs{x-r}$ \\
+$(x-r)^{m}$ & $\dfrac{A_1}{x-r}+\cdots+\dfrac{A_m}{(x-r)^{m}}$ & one $\ln$, plus $\dfrac{-A_k}{(k-1)(x-r)^{k-1}}$ \\
+$x^{2}+bx+c$, $\Delta<0$ & $\dfrac{Bx+C}{x^{2}+bx+c}$ & $\tfrac{B}{2}\ln(x^{2}+bx+c)$ plus an $\arctan$ \\
+$(x^{2}+bx+c)^{m}$, $\Delta<0$ & $\displaystyle\sum_{k=1}^{m}\dfrac{B_kx+C_k}{(x^{2}+bx+c)^{k}}$ & negative powers, one $\ln$, one $\arctan$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Count the unknowns and you find exactly $\deg Q$ of them, which is exactly the number of equations that matching coefficients supplies, so the system is square and, because the decomposition is unique, nonsingular. That is the theoretical guarantee. In practice you almost never solve the square system: cover-up delivers the coefficients attached to the highest power of each factor for free, and the remaining ones fall out of one or two coefficient comparisons at convenient values of $x$.
+
+\begin{center}
+\begin{tikzpicture}[node distance=6mm and 8mm]
+\node[dtest] (a) {Is $\deg P\geq\deg Q$?};
+\node[dleaf, below left=9mm and 6mm of a] (b) {Divide first;\\ integrate the quotient\\ by the power rule};
+\node[dtest, below right=9mm and 1mm of a] (c) {Does $Q$ split into\\ linear factors over $\R$?};
+\node[dtest, below left=9mm and 1mm of c] (d) {Any factor repeated?};
+\node[dnode, below right=9mm and 1mm of c] (g) {Complete the square in\\ the quadratic factor};
+\node[dleaf, below left=9mm and 0mm of d] (e) {One term per power\\ $(x-r)^{-1}\ldots(x-r)^{-m}$};
+\node[dleaf, below right=9mm and 0mm of d] (f) {Cover-up rule:\\ pure logarithms};
+\draw[dedge] (a) -- node[dlab,left]{yes} (b);
+\draw[dedge] (a) -- node[dlab,right]{no} (c);
+\draw[dedge] (c) -- node[dlab,left]{yes} (d);
+\draw[dedge] (c) -- node[dlab,right]{no} (g);
+\draw[dedge] (d) -- node[dlab,left]{yes} (e);
+\draw[dedge] (d) -- node[dlab,right]{no} (f);
+\end{tikzpicture}
+\end{center}
+
+\tech{Polynomial long division}{easy}
+\cue A rational integrand whose numerator has degree greater than or equal to that of its denominator.
+\method Divide, obtaining $\dfrac{P(x)}{Q(x)}=S(x)+\dfrac{R(x)}{Q(x)}$ with $\deg R<\deg Q$. The polynomial part $S$ integrates by the power rule and the proper remainder is what the rest of the section handles. For a linear divisor, synthetic division is faster than the long form; for $x^2+1$ as divisor, repeated use of $x^2=(x^2+1)-1$ is faster still.
+
+\begin{worked}
+\[
+\int_0^1\frac{x^3}{x+1}\dd x .
+\]
+Dividing, $x^3=(x+1)(x^2-x+1)-1$, so the integrand is $x^2-x+1-\dfrac{1}{x+1}$ and
+\[
+\int_0^1\Bigl(x^2-x+1-\frac{1}{x+1}\Bigr)\dd x=\frac13-\frac12+1-\ln2=\frac56-\ln2\approx0.140186 .
+\]
+With an even denominator the division is worth doing by the $x^2=(x^2+1)-1$ route:
+\[
+\frac{x^4}{x^2+1}=\frac{(x^2+1)^2-2(x^2+1)+1}{x^2+1}=x^2-1+\frac{1}{x^2+1},
+\]
+so $\displaystyle\int_0^1\frac{x^4}{x^2+1}\dd x=\frac13-1+\frac{\pi}{4}=\frac{\pi}{4}-\frac23\approx0.118731$.
+\end{worked}
+
+\begin{trap}
+Setting up a partial-fraction ansatz on an improper fraction. Matching $\dfrac{x^3}{x+1}$ against $\dfrac{A}{x+1}$ gives $x^3=A$, which has no solution, and a solver who instead ``fits'' the constant at $x=-1$ obtains $A=-1$ and an answer short by $\int_0^1(x^2-x+1)\dd x$. Check degrees before writing a single letter.
+\end{trap}
+
+\begin{seealsob}Numerator alignment; partial fractions with distinct linear factors; factorisation identities.\end{seealsob}
+
+Division handles the case where the numerator is too big outright. There is a softer version of the same idea, used when the degrees are already fine but the numerator nearly matches the denominator, and it is the cheapest way to reduce a power in the denominator without setting up any system at all.
+
+\tech{Numerator alignment: add and subtract the denominator}{medium}
+\cue A numerator that almost is the denominator, or almost is a factor of it: $x^2$ over $(1+x^2)^2$, $\sin^2x$ over $1+\sin^2x$, $x^2$ over $x^2+a^2$.
+\method Force the denominator into the numerator and split. Writing $x^2=(x^2+a^2)-a^2$ gives the identity that does most of the work in this family,
+\[
+\frac{x^2}{(x^2+a^2)^2}=\frac{1}{x^2+a^2}-\frac{a^2}{(x^2+a^2)^2},
+\]
+in which each piece has one power fewer or is already a table entry. Iterating drops the exponent one step at a time until you land on $\arctan$ or $\ln$.
+
+\begin{worked}
+\[
+\int_0^1\frac{x^2}{(1+x^2)^2}\dd x=\int_0^1\frac{\dd x}{1+x^2}-\int_0^1\frac{\dd x}{(1+x^2)^2}.
+\]
+The first is $\pi/4$. The second is the standard $\Bigl[\dfrac{x}{2(1+x^2)}+\tfrac12\arctan x\Bigr]_0^1=\tfrac14+\tfrac{\pi}{8}$. Subtracting, the value is $\dfrac{\pi}{8}-\dfrac14\approx0.142699$.
+
+The same move works when the ``denominator'' is trigonometric:
+\[
+\int_0^{\pi/2}\frac{\sin^2x}{1+\sin^2x}\dd x=\int_0^{\pi/2}\Bigl(1-\frac{1}{1+\sin^2x}\Bigr)\dd x=\frac{\pi}{2}-\frac{\pi}{2\sqrt2}\approx0.460076 ,
+\]
+using $\displaystyle\int_0^{\pi/2}\frac{\dd x}{1+\sin^2x}=\frac{\pi}{2\sqrt2}$, which the substitution $t=\tan x$ delivers in one line.
+\end{worked}
+
+\begin{keynote}[Splitting a numerator is the general move]
+Alignment, the derivative-plus-constant split of $Bx+C$, and the decomposition of a partial fraction are three faces of one principle: a numerator should be written as a sum of pieces, each of which matches a table entry against the denominator in front of it. There are only three pieces worth aiming at. A multiple of $Q'(x)$ gives $\ln\abs{Q}$. A multiple of $Q(x)$ itself cancels and drops the degree. Anything left over is a constant, and a constant over a completed square is an arctangent, an arcsine, or a negative power. Write every numerator as (multiple of $Q'$) plus (multiple of $Q$) plus (remainder) and there is nothing left to decide.
+\end{keynote}
+
+\begin{trap}
+Splitting into two divergent pieces. On an infinite interval $\displaystyle\int_1^\infty\frac{x^2}{(1+x^2)^2}\dd x$ converges, but the alignment produces $\int_1^\infty\frac{\dd x}{1+x^2}$ and $\int_1^\infty\frac{\dd x}{(1+x^2)^2}$, and here both happen to converge. Change the numerator to $x^3$ and the two fragments diverge individually while their difference does not. Verify convergence of each piece before separating.
+\end{trap}
+
+\begin{seealsob}Polynomial long division; partial fractions with repeated and irreducible factors; completing the square.\end{seealsob}
+
+Alignment is opportunistic. Partial fractions is the systematic version: it decomposes any proper rational function, once and for all, into pieces whose antiderivatives are known. The simplest case, distinct linear factors, also admits a shortcut that removes the linear system entirely.
+
+\tech{Partial fractions with distinct linear factors, and the cover-up rule}{core}
+\cue A denominator that factors into distinct linear pieces. Often the factorisation appears only after a substitution: a cubic in $\eu^x$, a quartic in $u=\sin x$, a quadratic in $x^2$.
+\method Write
+\[
+\frac{P(x)}{\prod_{k}(x-r_k)}=\sum_k\frac{A_k}{x-r_k},\qquad
+A_k=\frac{P(r_k)}{\prod_{j\neq k}(r_k-r_j)} .
+\]
+The formula for $A_k$ is the cover-up rule: cover the factor $(x-r_k)$ with a finger and evaluate everything that remains at $x=r_k$. Each term integrates to $A_k\ln\abs{x-r_k}$, and the sum should be combined into a single logarithm of a product before any limit is taken.
+
+\begin{worked}
+Cover-up on a small example first. For $\dfrac{2x+3}{(x-1)(x+2)}$: cover $(x-1)$ and evaluate $\dfrac{2x+3}{x+2}$ at $x=1$, giving $\tfrac53$; cover $(x+2)$ and evaluate $\dfrac{2x+3}{x-1}$ at $x=-2$, giving $\dfrac{-1}{-3}=\tfrac13$. Hence
+\[
+\int_2^3\frac{2x+3}{(x-1)(x+2)}\dd x=\tfrac53\ln2+\tfrac13\ln\tfrac54\approx1.229626 .
+\]
+
+Now the case that shows why combining matters. With $u=\eu^x$,
+\[
+\int_1^{\infty}\frac{6\dd u}{u(u+1)(u+2)(u+3)} .
+\]
+The four cover-up values are $\dfrac{6}{1\cdot2\cdot3}=1$ at $u=0$, $\dfrac{6}{(-1)(1)(2)}=-3$ at $u=-1$, $\dfrac{6}{(-2)(-1)(1)}=3$ at $u=-2$, and $\dfrac{6}{(-3)(-2)(-1)}=-1$ at $u=-3$: the signed binomial row $1,-3,3,-1$, which is what a numerator of $3!$ over four consecutive shifts always produces. The antiderivative is
+\[
+\ln u-3\ln(u+1)+3\ln(u+2)-\ln(u+3)=\ln\frac{u(u+2)^3}{(u+1)^3(u+3)},
+\]
+whose argument tends to $1$ as $u\to\infty$, so the upper limit contributes $0$, and the value is $-\ln\dfrac{27}{32}=\ln\dfrac{32}{27}\approx0.169899$.
+\end{worked}
+
+\begin{keynote}[The denominator may factor only after a substitution]
+Partial fractions is an operation on rational functions, but the integrand does not have to be rational to start with. A great many trigonometric, exponential and radical integrals become rational under one substitution, and the decomposition then applies verbatim. The signals are a lone $\cos x$ beside a polynomial in $\sin x$, a lone $\eu^x$ beside a polynomial in $\eu^x$, and a lone $x$ beside a polynomial in $x^2$. For instance $u=\sin x$ turns
+\[
+\int_0^{\pi/2}\frac{\cos x\dd x}{\sin^2x-5\sin x+6}
+\quad\text{into}\quad
+\int_0^{1}\frac{\dd u}{(u-2)(u-3)}=\Bigl[\ln\frac{\abs{u-3}}{\abs{u-2}}\Bigr]_0^{1}=2\ln2-\ln3=\ln\frac43 ,
+\]
+and the fact that neither root lies in $[0,1]$ is what makes the integral proper. Always ask what the denominator is a polynomial in, not merely what it is a polynomial in $x$ in.
+\end{keynote}
+
+\begin{trap}
+Evaluating the four logarithms separately at the infinite endpoint. Each one diverges; only the combination converges, because the coefficients sum to $1-3+3-1=0$. That vanishing sum is exactly the condition for convergence at infinity, and it is worth checking before you integrate rather than after.
+\end{trap}
+
+\begin{seealsob}Polynomial long division; partial fractions with repeated and irreducible factors; exponential substitution.\end{seealsob}
+
+The cover-up rule computes a residue at a simple pole, so it stops working the moment a factor repeats or fails to be linear. Both cases have fixed remedies, and the remedy for the irreducible quadratic is the single most useful splitting move in the chapter.
+
+\tech{Partial fractions with repeated and irreducible factors}{medium}
+\cue A denominator carrying $(x-r)^m$ with $m\geq2$, or a quadratic $x^2+bx+c$ with negative discriminant.
+\method Allocate one term per power for a repeated root and a linear numerator for an irreducible quadratic:
+\[
+\frac{A_1}{x-r}+\frac{A_2}{(x-r)^2}+\cdots+\frac{A_m}{(x-r)^m},
+\qquad
+\frac{Bx+C}{x^2+bx+c}.
+\]
+Cover-up still gives $A_m$ instantly (cover $(x-r)^m$, evaluate at $r$) and, for the quadratic, the crucial step is to split $Bx+C$ into a multiple of the derivative of the denominator plus a constant. The first half integrates to a logarithm, the second to an arctangent after completing the square.
+
+\begin{keynote}[Split the numerator in two]
+Given $\dfrac{Bx+C}{x^2+bx+c}$, write
+\[
+Bx+C=\frac{B}{2}\bigl(2x+b\bigr)+\Bigl(C-\frac{Bb}{2}\Bigr),
+\]
+so the integral is $\dfrac{B}{2}\ln\abs{x^2+bx+c}$ plus $\bigl(C-\tfrac{Bb}{2}\bigr)$ times the arctangent piece. This is the general form of the rule that a numerator should be broken into parts that each match a table entry, and it removes every guess from the irreducible-quadratic case. Compute $\Delta=b^2-4ac$ first: $\Delta>0$ means the quadratic was not irreducible and you should have used two logarithms, $\Delta<0$ means an arctangent, $\Delta=0$ means a perfect square and a negative power.
+\end{keynote}
+
+\begin{keynote}[Cover-up with a derivative]
+Cover-up is usually taught as a trick for simple poles, but it extends to a repeated factor and removes the linear system there too. Set $h(x)=\dfrac{(x-r)^mP(x)}{Q(x)}$, which is what remains after the factor $(x-r)^m$ is covered. Then
+\[
+A_{m-j}=\frac{1}{j!}\,h^{(j)}(r),\qquad j=0,1,\ldots,m-1 .
+\]
+The case $j=0$ is ordinary cover-up. The case $j=1$ is the one worth learning, because a single differentiation replaces a whole coefficient comparison: for $\dfrac{x+4}{(x+1)(x+2)^2}$ we have $h(x)=\dfrac{x+4}{x+1}$, so $h(-2)=-2$ gives $A_2=-2$ and $h'(x)=\dfrac{-3}{(x+1)^2}$ gives $A_1=h'(-2)=-3$. Both coefficients of the repeated factor, with no system solved.
+\end{keynote}
+
+\begin{worked}
+A repeated linear factor. For $\dfrac{x+4}{(x+1)(x+2)^2}$, cover-up gives the coefficient of $\dfrac{1}{x+1}$ as $\dfrac{-1+4}{(-1+2)^2}=3$ and the coefficient of $\dfrac{1}{(x+2)^2}$ as $\dfrac{-2+4}{-2+1}=-2$. The remaining coefficient follows from matching the $x^2$ term: $A_1+B_1=0$ forces $B_1=-3$. Then
+\[
+\int_0^1\frac{x+4}{(x+1)(x+2)^2}\dd x=\Bigl[3\ln\frac{x+1}{x+2}+\frac{2}{x+2}\Bigr]_0^1=3\ln\frac43-\frac13\approx0.529713 .
+\]
+
+An irreducible quadratic. For $\dfrac{1}{(x+1)(x^2+1)}$ the ansatz is $\dfrac{A}{x+1}+\dfrac{Bx+C}{x^2+1}$; cover-up gives $A=\tfrac12$, and matching the $x^2$ and constant terms gives $B=-\tfrac12$, $C=\tfrac12$. So
+\[
+\int_0^1\frac{\dd x}{(x+1)(x^2+1)}
+=\tfrac12\ln2-\tfrac14\ln2+\tfrac12\cdot\frac{\pi}{4}
+=\tfrac14\ln2+\frac{\pi}{8}\approx0.565986 .
+\]
+\end{worked}
+
+\begin{trap}
+Writing $\dfrac{A}{x^2+1}$ instead of $\dfrac{Bx+C}{x^2+1}$. The system then has one equation too few and is inconsistent, and the usual response is to force a solution by ignoring one equation, producing a confidently wrong answer. The mirror error is allocating $\dfrac{Bx+C}{(x-r)^2}$ to a repeated \emph{linear} factor, which is not wrong but is redundant, since $\dfrac{Bx+C}{(x-r)^2}=\dfrac{B}{x-r}+\dfrac{Br+C}{(x-r)^2}$.
+\end{trap}
+
+\begin{seealsob}Completing the square; numerator alignment; partial fractions with distinct linear factors.\end{seealsob}
+
+\subsection{When the irreducible factor itself repeats}
+
+A denominator such as $(x^2+a^2)^m$ needs one linear numerator per power, so the ansatz carries $\dfrac{B_1x+C_1}{x^2+a^2}+\cdots+\dfrac{B_mx+C_m}{(x^2+a^2)^m}$. The $B_kx$ halves are harmless: each is a constant times $\dfrac{\dd}{\dd x}(x^2+a^2)$ over a power, so each integrates by the power rule to $-\dfrac{B_k}{2(k-1)(x^2+a^2)^{k-1}}$, and only $k=1$ produces a logarithm. The $C_k$ halves need the reduction formula
+\[
+I_m=\int\frac{\dd x}{(x^2+a^2)^m}
+=\frac{x}{2a^2(m-1)(x^2+a^2)^{m-1}}+\frac{2m-3}{2a^2(m-1)}\,I_{m-1},
+\qquad I_1=\frac1a\arctan\frac xa ,
+\]
+which is exactly numerator alignment applied repeatedly and then tidied with one integration by parts. For $m=2$ and $a=1$ it gives the entry used twice already, $I_2=\tfrac12\bigl(\tfrac{x}{1+x^2}+\arctan x\bigr)$.
+
+Putting the pieces together on a full example: for $\dfrac{x^2+x+2}{(x^2+1)^2}$, matching coefficients in $(B_1x+C_1)(x^2+1)+B_2x+C_2=x^2+x+2$ gives $B_1=0$, $C_1=1$, $B_2=1$, $C_2=1$. Hence
+\[
+\int_0^1\frac{x^2+x+2}{(x^2+1)^2}\dd x
+=\underbrace{\frac{\pi}{4}}_{C_1}
++\underbrace{\Bigl[-\frac{1}{2(x^2+1)}\Bigr]_0^1}_{B_2}
++\underbrace{\Bigl(\frac14+\frac{\pi}{8}\Bigr)}_{C_2}
+=\frac{3\pi}{8}+\frac12\approx1.678097 ,
+\]
+which quadrature confirms. Note that the whole calculation was reading off four numbers and consulting two table entries; at no point was anything discovered.
+
+\subsection{Splitting a numerator to create a derivative}
+
+Alignment was described above as adding and subtracting the denominator. The wider principle is that you may add and subtract \emph{anything} that makes one half of the numerator the derivative of something in sight, and the two most productive targets are a repeated linear factor and the biquadratic $x^4+1$.
+
+Against a repeated linear factor the target is a power of the factor itself. To integrate $\dfrac{2x+1}{(x+1)^3}$, write the numerator in terms of $x+1$: since $2x+1=2(x+1)-1$,
+\[
+\frac{2x+1}{(x+1)^3}=\frac{2}{(x+1)^2}-\frac{1}{(x+1)^3},
+\qquad
+\int_0^1\frac{2x+1}{(x+1)^3}\dd x=\Bigl[-\frac{2}{x+1}+\frac{1}{2(x+1)^2}\Bigr]_0^1=\frac58 .
+\]
+That is the entire partial-fraction decomposition of a repeated linear factor, obtained by rewriting a linear numerator rather than by solving anything. The same one-line move gives $\displaystyle\int_0^1\frac{x\dd x}{(x+1)^3}=\int_0^1\Bigl(\frac{1}{(x+1)^2}-\frac{1}{(x+1)^3}\Bigr)\dd x=\frac18$. Whenever the denominator is $(x-r)^m$ and nothing else, expand the numerator in powers of $x-r$ and the problem is finished.
+
+The biquadratic is the more interesting case, because there the split is engineered so that each half acquires a derivative it did not have. Neither $\displaystyle\int\frac{\dd x}{x^4+1}$ nor a partial-fraction attack on $x^4+1=(x^2+\sqrt2x+1)(x^2-\sqrt2x+1)$ is pleasant. Instead split the constant numerator into two:
+\[
+\frac{1}{x^4+1}=\frac12\cdot\frac{x^2+1}{x^4+1}-\frac12\cdot\frac{x^2-1}{x^4+1},
+\]
+and divide each half above and below by $x^2$. The first becomes $\dfrac{1+x^{-2}}{x^2+x^{-2}}$, whose numerator is the derivative of $x-x^{-1}$ and whose denominator is $\bigl(x-x^{-1}\bigr)^2+2$; the second becomes $\dfrac{1-x^{-2}}{x^2+x^{-2}}$, whose numerator is the derivative of $x+x^{-1}$ and whose denominator is $\bigl(x+x^{-1}\bigr)^2-2$. Each half is now a table entry:
+\[
+\int\frac{x^2+1}{x^4+1}\dd x=\frac{1}{\sqrt2}\arctan\frac{x^2-1}{\sqrt2\,x}+C,
+\qquad
+\int\frac{x^2-1}{x^4+1}\dd x=\frac{1}{2\sqrt2}\ln\frac{x^2-\sqrt2x+1}{x^2+\sqrt2x+1}+C .
+\]
+On $[0,1]$ the first gives $\dfrac{\pi}{2\sqrt2}$, the argument of the arctangent running from $-\infty$ to $0$; the second gives $\dfrac{1}{2\sqrt2}\ln\bigl(3-2\sqrt2\bigr)=-\dfrac{\ln(1+\sqrt2)}{\sqrt2}$, using $3-2\sqrt2=(\sqrt2-1)^2$. Halving and subtracting,
+\[
+\int_0^1\frac{\dd x}{x^4+1}=\frac{\pi+2\ln\bigl(1+\sqrt2\bigr)}{4\sqrt2}\approx0.866973 ,
+\]
+which quadrature confirms to twelve digits. The lesson generalises past this one integrand: when a denominator is a polynomial in $x^2$ with no odd terms, dividing by $x^2$ and looking at $x\pm x^{-1}$ is the standard move, and the two signs are two different substitutions that must both be used.
+
+\subsection{One rational integrand from start to finish}
+
+The individual moves are easy. Running them in the right order on a single problem is the skill, so here is one integrand taken all the way through. Consider
+\[
+\int_1^2\frac{x^5+2}{x^3+x}\dd x .
+\]
+\emph{Step one, degrees.} The numerator has degree $5$ and the denominator degree $3$, so the fraction is improper and division comes first. Since $(x^3+x)(x^2-1)=x^5-x$, we get $x^5+2=(x^3+x)(x^2-1)+(x+2)$ and
+\[
+\frac{x^5+2}{x^3+x}=x^2-1+\frac{x+2}{x^3+x}.
+\]
+\emph{Step two, factor.} $x^3+x=x(x^2+1)$, one simple linear factor and one irreducible quadratic with $\Delta=-4$. The table above allocates $\dfrac{A}{x}+\dfrac{Bx+C}{x^2+1}$ and no more.
+
+\emph{Step three, coefficients.} Cover-up at $x=0$ gives $A=\dfrac{0+2}{0+1}=2$. Matching the $x^2$ coefficient in $2(x^2+1)+(Bx+C)x=x+2$ gives $2+B=0$, so $B=-2$; matching the $x$ coefficient gives $C=1$.
+
+\emph{Step four, split the quadratic numerator.} Write $\dfrac{-2x+1}{x^2+1}=-\dfrac{2x}{x^2+1}+\dfrac{1}{x^2+1}$, the first piece being $g'/g$ and the second a table arctangent. Assembling,
+\[
+\int_1^2\Bigl(x^2-1+\frac2x-\frac{2x}{x^2+1}+\frac{1}{x^2+1}\Bigr)\dd x
+=\Bigl[\frac{x^3}{3}-x+2\ln x-\ln(x^2+1)+\arctan x\Bigr]_1^2 ,
+\]
+which evaluates to $\dfrac43+3\ln2-\ln5+\arctan2-\dfrac{\pi}{4}\approx2.125088$, matching quadrature to twelve digits. Four steps, no cleverness, and every step decided by the shape of the expression rather than by inspiration.
+
+\subsection{A shape-recognition drill}
+
+For each integrand, name the shape of the antiderivative before computing anything. The point is that this is decidable by inspection, and that deciding it first tells you whether you are about to make an error.
+
+\begin{enumerate}[label=(\roman*)]
+\item $\dfrac{x^4}{x^2+1}$. Improper, so a quadratic polynomial plus one arctangent. No logarithm can appear, because the denominator has no real root.
+\item $\dfrac{2x+1}{x^2+4}$. Proper, irreducible quadratic; split as $\dfrac{2x}{x^2+4}+\dfrac{1}{x^2+4}$, giving one logarithm and one arctangent, namely $\ln\tfrac54+\tfrac12\arctan\tfrac12$ on $[0,1]$.
+\item $\dfrac{x^3}{(x^2+1)^2}$. Proper, repeated irreducible; but the numerator is odd, so $u=x^2$ reduces it to $\tfrac12\int\dfrac{u\dd u}{(u+1)^2}$ and only logarithms and negative powers appear. On $[0,1]$ the value is $\tfrac12\bigl(\ln2-\tfrac12\bigr)$.
+\item $\dfrac{1}{x^3+x}$. Simple linear times irreducible quadratic; two logarithms and no arctangent, since cover-up gives $A=1$ and matching gives $B=-1$, $C=0$.
+\item $\dfrac{x+4}{(x+1)(x+2)^2}$. Repeated linear; two logarithms and one reciprocal term. No arctangent is possible.
+\item $\dfrac{1}{x^4+x^2+1}$. The denominator is not irreducible: it splits as $(x^2+x+1)(x^2-x+1)$, so the answer is two arctangents and two logarithms, and anyone who declares it irreducible will spend the afternoon on complex roots.
+\item $\dfrac{1-x^5}{1-x}$. Not a rational function in any interesting sense; the factor cancels and the answer is a polynomial.
+\end{enumerate}
+
+Item (vi) is the one that catches people, and it is the reason the very first question about a quartic denominator should be whether it factors, not whether it looks factorable.
+
+\section{Quadratics under a radical, and conjugates}
+
+The arctangent case above needed the denominator written as a completed square. That is not a special trick for partial fractions: it is the universal normal form for a quadratic, and it is what converts the three standard radicals into the three standard substitutions of the next chapter. Anywhere a quadratic appears with a nonzero linear term, complete the square first and read the result.
+
+\tech{Completing the square}{medium}
+\cue A general quadratic $ax^2+bx+c$ under a radical or in a denominator, with no obvious factorisation and a linear term present.
+\method Write
+\[
+ax^2+bx+c=a\Bigl(x+\frac{b}{2a}\Bigr)^2+\Bigl(c-\frac{b^2}{4a}\Bigr)
+\]
+and shift with $u=x+\dfrac{b}{2a}$, transforming the bounds at the same moment. Three outcomes exhaust the cases: $\dfrac{1}{u^2+k^2}$ gives $\arctan$, $\dfrac{1}{\sqrt{k^2-u^2}}$ gives $\arcsin$, and $\dfrac{1}{\sqrt{u^2\pm k^2}}$ gives an inverse hyperbolic function, equivalently a logarithm.
+
+\begin{worked}
+\[
+\int_1^2\frac{\dd x}{\sqrt{2x-x^2}}=\int_1^2\frac{\dd x}{\sqrt{1-(x-1)^2}}=\bigl[\arcsin(x-1)\bigr]_1^2=\frac{\pi}{2}.
+\]
+The completed square also records the domain: $2x-x^2=1-(x-1)^2$ is negative outside $[0,2]$, so the integrand is real exactly where the square root of a nonnegative number is being taken, and $x=2$ is an endpoint singularity that the arcsine handles without difficulty.
+
+Two more, one of each remaining type:
+\[
+\int_0^1\frac{\dd x}{x^2+2x+5}=\int_0^1\frac{\dd x}{(x+1)^2+4}=\Bigl[\tfrac12\arctan\frac{x+1}{2}\Bigr]_0^1=\tfrac12\Bigl(\frac{\pi}{4}-\arctan\tfrac12\Bigr)\approx0.160875 ,
+\]
+\[
+\int_0^1\frac{\dd x}{\sqrt{x^2+4x+5}}=\int_0^1\frac{\dd x}{\sqrt{(x+2)^2+1}}=\bigl[\operatorname{arsinh}(x+2)\bigr]_0^1=\ln\bigl(3+\sqrt{10}\bigr)-\ln\bigl(2+\sqrt5\bigr)\approx0.374811 .
+\]
+A leading coefficient other than $1$, handled by pulling it out before completing:
+\[
+\int_0^1\frac{\dd x}{4x^2+4x+2}=\int_0^1\frac{\dd x}{(2x+1)^2+1}=\Bigl[\tfrac12\arctan(2x+1)\Bigr]_0^1=\tfrac12\Bigl(\arctan3-\frac{\pi}{4}\Bigr)\approx0.231824 ,
+\]
+where the outer $\tfrac12$ is the Jacobian of $u=2x+1$ and is precisely the factor that goes missing when the square is completed carelessly. Finally the case that trips people, a negative leading coefficient:
+\[
+\int_0^1\frac{\dd x}{\sqrt{3+2x-x^2}}=\int_0^1\frac{\dd x}{\sqrt{4-(x-1)^2}}
+=\Bigl[\arcsin\frac{x-1}{2}\Bigr]_0^1=0-\arcsin\Bigl(-\tfrac12\Bigr)=\frac{\pi}{6}\approx0.523599 .
+\]
+Here $3+2x-x^2=-\bigl(x^2-2x-3\bigr)=-\bigl((x-1)^2-4\bigr)$, and the sign must be extracted before the square is completed, not after. A negative leading coefficient always produces the arcsine form, never the arctangent or the logarithm, because $k^2-u^2$ is the only one of the three shapes it can reach.
+\end{worked}
+
+\begin{trap}
+Two omissions account for nearly every error here. The first is forgetting the overall $1/\sqrt a$ or $1/a$ when $a\neq1$: $\sqrt{2x^2+4x+5}=\sqrt2\sqrt{(x+1)^2+\tfrac32}$, and the $\sqrt2$ must come out front. The second is leaving the bounds in terms of $x$ after shifting to $u$. Shift the bounds in the same stroke as the variable, every time, and the error cannot occur.
+\end{trap}
+
+\begin{seealsob}Sine substitution; hyperbolic substitution; partial fractions with repeated and irreducible factors.\end{seealsob}
+
+A completed square handles one quadratic. When two irrational expressions sit next to each other and neither can be completed into anything useful, the move is to manufacture a difference of squares, which is what multiplication by a conjugate does.
+
+\tech{Conjugate multiplication}{medium}
+\cue A sum or difference of two surds in a numerator or a denominator, or the trigonometric analogues $\sec x\pm\tan x$ and $1\pm\sin x$, with nothing cancelling.
+\method Multiply above and below by the conjugate and use $(A+B)(A-B)=A^2-B^2$. For surds this rationalises: $\dfrac{1}{\sqrt{x+1}+\sqrt x}=\sqrt{x+1}-\sqrt x$, since the product of the two is $1$. For trigonometric pairs it exploits the Pythagorean identities: $\sec^2-\tan^2=1$ gives $\dfrac{1}{\sec x+\tan x}=\sec x-\tan x$, and $\dfrac{1}{1-\sin u}=\dfrac{1+\sin u}{\cos^2u}=\sec^2u+\sec u\tan u$.
+
+\begin{worked}
+\[
+\int_0^1\frac{\dd x}{\sqrt{x+1}+\sqrt x}=\int_0^1\bigl(\sqrt{x+1}-\sqrt x\bigr)\dd x=\Bigl[\tfrac23(x+1)^{3/2}-\tfrac23x^{3/2}\Bigr]_0^1=\frac{4\sqrt2-4}{3}\approx0.552285 .
+\]
+When the conjugate product is a constant other than $1$, that constant is the only bookkeeping: $\bigl(\sqrt{x+2}-\sqrt x\bigr)\bigl(\sqrt{x+2}+\sqrt x\bigr)=2$, so
+\[
+\int_0^1\frac{\dd x}{\sqrt{x+2}-\sqrt x}=\frac12\int_0^1\bigl(\sqrt{x+2}+\sqrt x\bigr)\dd x
+=\frac13\Bigl(3\sqrt3-2\sqrt2+1\Bigr)\approx1.122575 .
+\]
+The trigonometric version, and the reason the combined form matters:
+\[
+\int_0^{\pi/2}\frac{\dd x}{\sec x+\tan x}=\int_0^{\pi/2}(\sec x-\tan x)\dd x=\bigl[\ln(1+\sin x)\bigr]_0^{\pi/2}=\ln2\approx0.693147 .
+\]
+The antiderivative is found by noting that $\sec x-\tan x=\dfrac{1-\sin x}{\cos x}=\dfrac{\cos x}{1+\sin x}$, which is $g'/g$ with $g=1+\sin x$. A third, in the same family:
+\[
+\int_0^{\pi/2}\frac{\dd x}{1+\sin x}=\int_0^{\pi/2}\frac{1-\sin x}{\cos^2x}\dd x=\bigl[\tan x-\sec x\bigr]_0^{\pi/2}=\Bigl[\frac{\sin x-1}{\cos x}\Bigr]_0^{\pi/2}=0-(-1)=1 .
+\]
+The companion, which the same conjugate handles and which the identity table also handles: $\dfrac{1}{1+\cos x}=\dfrac{1-\cos x}{\sin^2 x}$, so
+\[
+\int_0^{\pi/2}\frac{\dd x}{1+\cos x}=\Bigl[\frac{1-\cos x}{\sin x}\Bigr]_0^{\pi/2}=1 ,
+\]
+the value at the lower endpoint being the limit $0$. Alternatively $1+\cos x=2\cos^2\tfrac x2$ gives $\tfrac12\int\sec^2\tfrac x2\dd x=\bigl[\tan\tfrac x2\bigr]_0^{\pi/2}=1$, and the agreement of the two routes is a useful check on both.
+
+Finally the two antiderivatives that this technique exists to produce. Multiplying $\sec x$ by $\dfrac{\sec x+\tan x}{\sec x+\tan x}$ makes the numerator $\sec^2x+\sec x\tan x$, which is exactly the derivative of the denominator, so
+\[
+\int\sec x\dd x=\ln\abs{\sec x+\tan x}+C,
+\qquad
+\int\csc x\dd x=-\ln\abs{\csc x+\cot x}+C ,
+\]
+the second by the same multiplication with $\csc x+\cot x$. Both are worth deriving once rather than memorising, because the derivation is the technique: on $[0,\pi/4]$ the first gives $\ln\bigl(\sqrt2+1\bigr)\approx0.881374$, and on $[\pi/4,\pi/2]$ the second gives the same number, as the substitution $x\mapsto\pi/2-x$ requires.
+\end{worked}
+
+\begin{trap}
+Splitting $\int_0^{\pi/2}(\sec x-\tan x)\dd x$ into $\int\sec x\dd x-\int\tan x\dd x$. Both diverge at $\pi/2$ and only the difference converges. The same discipline saves the last example: $\tan x$ and $\sec x$ each blow up at $\pi/2$, and it is the combination $\dfrac{\sin x-1}{\cos x}$, whose limit is $0$, that must be evaluated. Never separate a conjugate pair after having formed it.
+\end{trap}
+
+\begin{seealsob}Rationalising a radical by substitution; self-similar collapse; trigonometric identity pre-processing.\end{seealsob}
+
+\section{Trigonometric identities as pre-processing}
+
+Trigonometric integrands come in two states: linearised, meaning written as a sum of $\sin(kx)$ and $\cos(kx)$ terms, and unlinearised, meaning written as products and powers. Every table entry is in the first state, so the pre-processing pass is the work of getting there. Power reduction handles even powers, product-to-sum handles products at different frequencies, and the half-angle identities handle $1\pm\cos x$ and the radicals built on it. These are not substitutions and they are not integration; they are the trigonometric analogue of expanding a bracket.
+
+The identities worth having by heart are few, and they are listed here in the direction you actually use them, which is always from the product side to the sum side.
+
+\begin{center}
+\footnotesize
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.32}
+\begin{tabular}{@{}ll@{}}
+\toprule
+\mh{Identity} & \mh{What it is for} \\
+\midrule
+$\sin^{2}x=\tfrac12(1-\cos2x)$, \quad $\cos^{2}x=\tfrac12(1+\cos2x)$ & every even power, by repetition \\
+$\sin^{3}x=\tfrac14(3\sin x-\sin3x)$, \quad $\cos^{3}x=\tfrac14(3\cos x+\cos3x)$ & odd powers, without a substitution \\
+$1+\cos x=2\cos^{2}\tfrac x2$, \quad $1-\cos x=2\sin^{2}\tfrac x2$ & making $\sqrt{1\pm\cos x}$ elementary \\
+$\sin x\cos x=\tfrac12\sin2x$ & halving the frequency count \\
+$\sin^{4}x+\cos^{4}x=1-\tfrac12\sin^{2}2x$ & the engineered even-power sums \\
+$\sin^{6}x+\cos^{6}x=1-\tfrac34\sin^{2}2x$ & the same, one level up \\
+$\tan\tfrac x2=\dfrac{1-\cos x}{\sin x}=\dfrac{\sin x}{1+\cos x}$ & the bridge to the Weierstrass substitution \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Two of these deserve comment. The odd-power identities remove the need for the substitution $u=\cos x$ on $\int\sin^3x\dd x$, which matters when the odd power is buried inside a larger expression at a different frequency, as $\cos^3(2x)$ is. And the last line is not a pre-processing identity at all: it is the statement that the half-angle tangent is a rational function of $\sin x$ and $\cos x$, which is the whole reason the substitution of the next chapter works.
+
+\tech{Trigonometric identity pre-processing}{easy}
+\cue $1\pm\cos x$, $1\pm\cos2x$, $\sqrt{1+\cos x}$, an even power of $\sin$ or $\cos$, or the combination $\sin^4x+\cos^4x$.
+\method Apply the identity before choosing any method. The power reduction pair $\sin^2x=\tfrac12(1-\cos2x)$ and $\cos^2x=\tfrac12(1+\cos2x)$ turns every even power into a linear combination of cosines by repetition. The half-angle forms $1+\cos x=2\cos^2\tfrac x2$ and $1-\cos x=2\sin^2\tfrac x2$ are what make $\sqrt{1\pm\cos x}$ rational. And $\sin^4x+\cos^4x=1-\tfrac12\sin^2 2x=\tfrac12\bigl(1+\cos^2 2x\bigr)$.
+
+\begin{worked}
+Power reduction, twice:
+\[
+\int_0^{\pi/2}\sin^4x\dd x=\int_0^{\pi/2}\Bigl(\frac{1-\cos2x}{2}\Bigr)^2\dd x
+=\frac14\int_0^{\pi/2}\Bigl(1-2\cos2x+\frac{1+\cos4x}{2}\Bigr)\dd x
+=\frac14\Bigl(\frac{\pi}{2}-0+\frac{\pi}{4}\Bigr)=\frac{3\pi}{16},
+\]
+matching $0.589049$ numerically. The half-angle form, where the identity is what makes the radical elementary:
+\[
+\int_0^{\pi}\sqrt{1+\cos x}\dd x=\sqrt2\int_0^{\pi}\Bigl|\cos\tfrac x2\Bigr|\dd x=\sqrt2\int_0^{\pi}\cos\tfrac x2\dd x=2\sqrt2\approx2.828427 ,
+\]
+the modulus being removable because $\cos\tfrac x2\geq0$ on $[0,\pi]$. A harder one in which two identities cooperate:
+\[
+\int_{-\pi/2}^{\pi/2}\sqrt{\cos x}\,\sqrt{1+\cos x}\dd x
+=\sqrt2\int_{-\pi/2}^{\pi/2}\cos\tfrac x2\,\sqrt{\cos x}\dd x .
+\]
+Now put $s=\sin\tfrac x2$, so $\dd s=\tfrac12\cos\tfrac x2\dd x$ and $\cos x=1-2s^2$, with $s$ running from $-\tfrac{1}{\sqrt2}$ to $\tfrac1{\sqrt2}$. The integral becomes $2\sqrt2\int_{-1/\sqrt2}^{1/\sqrt2}\sqrt{1-2s^2}\dd s$, and $s=\tfrac{1}{\sqrt2}\sin\theta$ turns that into $2\int_{-\pi/2}^{\pi/2}\cos^2\theta\dd\theta=\pi$.
+\end{worked}
+
+\begin{trap}
+Writing $\sqrt{2\cos^2\tfrac x2}=\sqrt2\cos\tfrac x2$ without the modulus. On $[0,\pi]$ this is harmless because the cosine is nonnegative; on $[0,3\pi]$ it is fatal, and the resulting antiderivative decreases where the integrand is positive. The general rule is that $\sqrt{f^2}=\abs f$ always, and you drop the bars only after checking the sign on the actual interval.
+\end{trap}
+
+\begin{seealsob}Product to sum, and sum to product; the Weierstrass substitution; algebraic camouflage collapse.\end{seealsob}
+
+Power reduction linearises powers at a single frequency. Products at different frequencies need the other half of the identity table, and its reverse direction, sum to product, is what cancels shared factors out of a ratio of trigonometric sums.
+
+\tech{Product to sum, and sum to product}{medium}
+\cue A product of trigonometric functions at different frequencies, such as $\sin3x\cos5x$ or $\cos^3(2x)$, or a quotient in which sums of trigonometric functions at nearby frequencies appear above and below.
+\method In the linearising direction,
+\begin{align*}
+\cos A\cos B&=\tfrac12\bigl[\cos(A-B)+\cos(A+B)\bigr], &
+\sin A\sin B&=\tfrac12\bigl[\cos(A-B)-\cos(A+B)\bigr],\\
+\sin A\cos B&=\tfrac12\bigl[\sin(A+B)+\sin(A-B)\bigr]. &&
+\end{align*}
+In the factoring direction, $\sin A+\sin B=2\sin\tfrac{A+B}{2}\cos\tfrac{A-B}{2}$ and $\cos A-\cos B=-2\sin\tfrac{A+B}{2}\sin\tfrac{A-B}{2}$, so a common factor $\sin\tfrac{A+B}{2}$ cancels between numerator and denominator.
+
+\begin{worked}
+Linearising a product:
+\[
+\int_0^{\pi/4}\sin3x\cos5x\dd x=\tfrac12\int_0^{\pi/4}\bigl(\sin8x-\sin2x\bigr)\dd x
+=\tfrac12\Bigl[-\frac{\cos8x}{8}+\frac{\cos2x}{2}\Bigr]_0^{\pi/4}=\tfrac12\Bigl(-\tfrac18-\tfrac38\Bigr)=-\frac14 .
+\]
+Linearising an odd power: $\cos^3\theta=\tfrac34\cos\theta+\tfrac14\cos3\theta$, so with $\theta=2x$,
+\[
+\int_0^{\pi/4}\cos^3(2x)\dd x=\tfrac34\cdot\tfrac12\bigl[\sin2x\bigr]_0^{\pi/4}+\tfrac14\cdot\tfrac16\bigl[\sin6x\bigr]_0^{\pi/4}=\tfrac38-\tfrac1{24}=\frac13 .
+\]
+Now the factoring direction, which is where signs are lost. With $A=6x$ and $B=7x$, the half-sum is $\tfrac{13x}{2}$ and the half-difference is $-\tfrac x2$. Therefore $\sin6x+\sin7x=2\sin\tfrac{13x}{2}\cos\tfrac x2$ and $\cos6x-\cos7x=-2\sin\tfrac{13x}{2}\sin\bigl(-\tfrac x2\bigr)=+2\sin\tfrac{13x}{2}\sin\tfrac x2$, so the quotient is $+\cot\tfrac x2$ and
+\[
+\int_{\pi}^{3\pi/2}\frac{\sin6x+\sin7x}{\cos6x-\cos7x}\dd x=\Bigl[2\ln\Bigl|\sin\tfrac x2\Bigr|\Bigr]_{\pi}^{3\pi/2}=2\ln\frac{1}{\sqrt2}=-\ln2\approx-0.693147 ,
+\]
+which direct quadrature on the original quotient confirms to twelve digits.
+\end{worked}
+
+One further use of the linearising direction is worth naming, because it is the mechanism behind Fourier series and it costs one line here. On a full or half period, integrals of $\cos mx\cos nx$ and $\sin mx\sin nx$ vanish whenever $m\neq n$, because product-to-sum turns them into cosines at the frequencies $m\pm n$, both of which integrate to zero over the period. So $\int_0^{\pi/2}\cos2x\cos4x\dd x=\tfrac12\int_0^{\pi/2}(\cos2x+\cos6x)\dd x=0$ without any computation beyond the identity. When the interval is not a period the cancellation is only partial and the arithmetic must be done: $\int_0^{\pi/6}\cos x\cos3x\dd x=\tfrac12\int_0^{\pi/6}(\cos2x+\cos4x)\dd x=\tfrac{\sqrt3}{8}+\tfrac{\sqrt3}{16}\approx0.324760$.
+
+\begin{trap}
+The double sign in $\cos A-\cos B$. The formula carries an explicit minus, and the half-difference $\tfrac{A-B}{2}$ is itself negative when $A<B$; the two cancel. Getting one of them and not the other turns $+\cot\tfrac x2$ into $-\cot\tfrac x2$ and flips the answer. The second hazard is cancelling $\sin\tfrac{13x}{2}$ without noticing that it vanishes inside $[\pi,3\pi/2]$: the cancellation is valid off a finite set, which is enough for the integral, but you must say so.
+\end{trap}
+
+\begin{seealsob}Trigonometric identity pre-processing; the Weierstrass substitution; algebraic camouflage collapse.\end{seealsob}
+
+\subsection{Repetition is the whole of power reduction}
+
+Power reduction is stated for squares, and readers therefore assume it stops there. It does not: applying it to the result of applying it is how every even power is linearised, and the only cost is bookkeeping. Take $\cos^6x$. One application gives $\Bigl(\dfrac{1+\cos2x}{2}\Bigr)^3=\dfrac{1+3\cos2x+3\cos^22x+\cos^32x}{8}$. Now reduce the two surviving powers, $\cos^22x=\tfrac12(1+\cos4x)$ and $\cos^32x=\tfrac34\cos2x+\tfrac14\cos6x$, and collect:
+\[
+\cos^6x=\frac{5}{16}+\frac{15}{32}\cos2x+\frac{3}{16}\cos4x+\frac{1}{32}\cos6x .
+\]
+Every term after the first integrates to a sine that vanishes at both ends of $[0,\pi/2]$ except $\cos2x$, whose integral over that interval is $0$ as well, so
+\[
+\int_0^{\pi/2}\cos^6x\dd x=\frac{5}{16}\cdot\frac{\pi}{2}=\frac{5\pi}{32}\approx0.490874 ,
+\]
+in agreement with the Wallis product $\tfrac56\cdot\tfrac34\cdot\tfrac12\cdot\tfrac{\pi}{2}$. The constant term of the linearised form is $\binom{6}{3}/2^6=20/64=5/16$, and that is the general rule: the mean value of $\cos^{2n}x$ over a period is $\binom{2n}{n}/4^{n}$, which is Wallis in disguise and a thirty second check on any power reduction you perform.
+
+\subsection{Five integrands that need no technique at all}
+
+Collected here, without commentary between them, are five problems whose entire content is the rewriting pass. Each looks as though it belongs to a later chapter and none of them does.
+
+\emph{One.} $\displaystyle\int_0^{\pi/4}\frac{\cos2x}{\cos x+\sin x}\dd x$. Since $\cos2x=\cos^2x-\sin^2x=(\cos x-\sin x)(\cos x+\sin x)$, the denominator cancels and
+\[
+\int_0^{\pi/4}(\cos x-\sin x)\dd x=\bigl[\sin x+\cos x\bigr]_0^{\pi/4}=\sqrt2-1\approx0.414214 .
+\]
+
+\emph{Two.} $\displaystyle\int_1^2\frac{x^4+3x^2+2}{x^3+x}\dd x$. The numerator is $(x^2+1)(x^2+2)$ and the denominator is $x(x^2+1)$, so the quotient is $\dfrac{x^2+2}{x}=x+\dfrac2x$ and the value is $\Bigl[\dfrac{x^2}{2}+2\ln x\Bigr]_1^2=\dfrac32+2\ln2\approx2.886294$. A solver who divides without factoring gets a quotient of $x$ and a remainder of $2x^2+2$, then decomposes $\dfrac{2x^2+2}{x^3+x}$ and arrives at the same place three steps later.
+
+\emph{Three.} $\displaystyle\int_0^{\pi/2}\bigl(\sin^4x-\cos^4x\bigr)\dd x$. The difference of two squares gives $(\sin^2x-\cos^2x)(\sin^2x+\cos^2x)=-\cos2x$, so the integral is $-\bigl[\tfrac12\sin2x\bigr]_0^{\pi/2}=0$. Power reduction on each term separately gives $\tfrac{3\pi}{16}-\tfrac{3\pi}{16}$, which is the same answer after four times the work.
+
+\emph{Four.} $\displaystyle\int_0^{\pi/4}\frac{1-\tan^2x}{1+\tan^2x}\dd x$. The denominator is $\sec^2x$, so the quotient is $\cos^2x-\sin^2x=\cos2x$ and the value is $\bigl[\tfrac12\sin2x\bigr]_0^{\pi/4}=\tfrac12$. The Weierstrass substitution would also work and would take fifteen lines.
+
+\emph{Five.} $\displaystyle\int_0^{\pi/2}\frac{\sin x-\cos x}{\sqrt{1+\sin2x}}\dd x$. Since $1+\sin2x=(\sin x+\cos x)^2$ and $\sin x+\cos x>0$ on $[0,\pi/2]$, the radical is $\sin x+\cos x$ and the integrand is $-\dfrac{g'}{g}$ for $g=\sin x+\cos x$. Hence the value is $-\bigl[\ln(\sin x+\cos x)\bigr]_0^{\pi/2}=-(\ln1-\ln1)=0$. Note that the answer is zero for a structural reason, not by cancellation of two computed halves: $g$ takes the same value at both endpoints.
+
+One more remark about order, because it is the only thing in this chapter that is genuinely easy to get wrong. Completing the square and factoring are in competition: $x^2-x+1$ can be completed into $\bigl(x-\tfrac12\bigr)^2+\tfrac34$, which is right when it sits in a denominator by itself, and can be recognised as $\dfrac{x^3+1}{x+1}$, which is right when a numerator carrying $x^3+1$ is nearby. Look for the cancellation first, always, because completing the square destroys the visible factorisation while factoring destroys nothing. The same principle explains why linearising trigonometric products comes last: $\sin6x+\sin7x$ over $\cos6x-\cos7x$ must be factored before either half is expanded, and a solver who linearises first is left with four terms at four frequencies and no cancellation in sight.
+
+Two habits carry everything in this chapter. The first is that you never integrate an expression you have not first tried to shorten, because a shorter expression is not merely more pleasant, it is often in the table. The second is that rewriting has a fixed order: collapse, divide, factor, decompose, complete, linearise. Run it in that order and the rational case is finished before it starts, the radical case is handed to the substitution families of the next chapter in its normal form $\sqrt{u^2\pm k^2}$ or $\sqrt{k^2-u^2}$, and the trigonometric case arrives as a sum of $\sin(kx)$ and $\cos(kx)$ with nothing left to do. Run it out of order and you will complete the square inside something that was about to cancel.
+
+\section{Recognition matrix}
+\begin{recog}{@{}p{0.30\textwidth}p{0.36\textwidth}p{0.28\textwidth}@{}}
+\rowcolor{mist}\mh{If you see} & \mh{Reach for} & \mh{If that fails} \\
+\midrule
+\endhead
+An integrand engineered to look terrible & Expand; apply $\sin^2+\cos^2=1$ to each side separately & Look for a common factor top and bottom \\
+$x^{a}x^{b}$ with $a+b$ simple, or mixed log bases & Exponent and logarithm laws, before anything & Convert every log to $\ln$ and cancel \\
+$\dfrac{1-x^{n}}{1-x}$, $1-x^{1/3}+x^{2/3}$, $x^4+x^2+1$ & The partner factor of a standard identity & Sum or difference of cubes; add and subtract $x^2$ \\
+An infinitely repeating radical or fraction & Name it $y$, solve the fixed-point equation & Check the nesting is infinite, not finite \\
+$\sin(\arcsec x)$, $\arctan\dfrac{1-x}{1+x}$ & Right triangle, or the arctangent subtraction law & Verify the branch on the whole interval \\
+$\deg P\geq\deg Q$ in a quotient & Divide first, then treat the remainder & Repeated use of $x^2=(x^2+1)-1$ \\
+Numerator almost equal to the denominator & Add and subtract the denominator, then split & Check each fragment converges \\
+Distinct linear factors below & Cover-up rule, then one combined logarithm & Match coefficients if a numerator is awkward \\
+$(x-r)^m$ below & Expand the numerator in powers of $x-r$ & Cover-up with $j$ derivatives for $A_{m-j}$ \\
+$x^4+1$, or any even polynomial below & Split into $x^2+1$ and $x^2-1$; divide by $x^2$ & Read $x\pm x^{-1}$ as the new variable \\
+$x^2+bx+c$ with $\Delta<0$ below & $\dfrac{B}{2}(2x+b)$ plus a constant, then $\arctan$ & Compute $\Delta$; it may factor after all \\
+$(x^2+a^2)^m$ below & Reduction formula for $I_m$; power rule on the $x$ halves & Numerator alignment, repeatedly \\
+Any quadratic with a linear term & Complete the square and shift the bounds & Keep the $1/\sqrt a$ out front \\
+Two surds added, or $\sec x\pm\tan x$ & Multiply by the conjugate & Keep the pair together when integrating \\
+Even powers of $\sin$ or $\cos$ & Power reduction to $\cos 2x$, $\cos 4x$ & Half angle if a radical is present \\
+$\sqrt{1\pm\cos x}$ & $1+\cos x=2\cos^2\tfrac x2$, with a modulus & Check the sign on the actual interval \\
+A product at two frequencies & Product-to-sum, then integrate term by term & Write odd powers as $\cos\theta$, $\cos3\theta$ \\
+A ratio of trigonometric sums & Sum-to-product; cancel the shared factor & Watch the sign of the half-difference \\
+\end{recog}

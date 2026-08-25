@@ -1,0 +1,334 @@
+\chapter{Cauchy-Euler and reducible variable-coefficient equations}
+
+\begin{orient}
+\textbf{What this chapter is for.} There is no general method for second-order linear equations with variable coefficients, and there never will be: most of them define new transcendental functions rather than reduce to old ones. But a small, sharply defined family is not really variable-coefficient at all. Those equations are constant-coefficient equations written in the wrong coordinates, and the whole of this chapter is a catalogue of the coordinate changes that straighten them. The Cauchy-Euler equation becomes constant-coefficient under $x=\eu^{t}$; an equation missing $y$ becomes first order under $p=y'$; an equation missing $x$ becomes first order under $p=y'$ regarded as a function of $y$; an exact equation is already the derivative of something shorter; and any linear second-order equation whatever loses its first-derivative term under one fixed substitution, which is how the shape of its solutions becomes visible. Learn to test for the five symptoms and you will convert a large fraction of the variable-coefficient problems you meet into problems you already know how to finish. Throughout, watch the leading coefficient: where it vanishes the equation is singular, the existence theorem does not apply, and the answer must be stated on an interval that excludes the bad point.
+\end{orient}
+
+\section{One equation in the wrong coordinates}
+
+The Cauchy-Euler equation
+\[a x^{2}y''+bxy'+cy=f(x),\qquad a\ne0,\]
+is recognised by a matching of powers: each derivative carries exactly as many powers of $x$ as its order. That matching is a scale invariance. Replace $x$ by $\lambda x$ and every term picks up the same factor, so the homogeneous equation is unchanged in form. The natural coordinate for a scaling is a logarithm, and that is the whole idea.
+
+Put $t=\ln x$ on $x>0$, so $x=\eu^{t}$. Then $\dfrac{\dd t}{\dd x}=\dfrac1x$, and the chain rule gives
+\[\dv{y}{x}=\frac1x\dv{y}{t},\qquad\text{so}\qquad x\dv{y}{x}=\dv{y}{t}.\]
+Write $\theta=x\dvop{x}$ for that operator, so $\theta$ is exactly $\dvop{t}$ in the new variable. For the second derivative, differentiate once more with the product rule:
+\[\ddv{y}{x}=\dvop{x}\!\left(\frac1x\dv{y}{t}\right)=-\frac{1}{x^{2}}\dv{y}{t}+\frac{1}{x}\cdot\frac{1}{x}\ddv{y}{t},\]
+so that
+\[x^{2}\ddv{y}{x}=\ddv{y}{t}-\dv{y}{t}=\theta(\theta-1)y.\]
+The equation becomes $a\,y_{tt}+(b-a)\,y_{t}+c\,y=f(\eu^{t})$: constant coefficients, and every technique of the previous chapter applies unchanged. The general pattern continues, with $x^{k}\dfrac{\dd^{k}}{\dd x^{k}}=\theta(\theta-1)\cdots(\theta-k+1)$.
+
+\begin{keynote}[Where the solution lives]
+The substitution $t=\ln x$ requires $x>0$, and this is not a technicality. The leading coefficient $ax^{2}$ vanishes at $x=0$, so the normalised equation $y''+\tfrac{b}{ax}y'+\tfrac{c}{ax^{2}}y=0$ has coefficients that blow up there. The existence and uniqueness theorem guarantees a solution only on an interval where the normalised coefficients are continuous, and $x=0$ splits the line into two such intervals. Solve on $(0,\infty)$ or on $(-\infty,0)$, never across. On the negative side put $t=\ln(-x)$, which replaces $x^{m}$ by $\abs{x}^{m}$ and $\ln x$ by $\ln\abs{x}$. Two symptoms tell you the point is genuinely singular rather than an artefact: solutions such as $x^{-2}$ are unbounded at $0$, and solutions such as $x^{2}\ln x$ are bounded but not twice differentiable there. An initial condition given at $x=0$ for a Cauchy-Euler equation is not an initial value problem at all.
+\end{keynote}
+
+For the homogeneous equation the substitution need not be performed. Since $\eu^{rt}=x^{r}$, the exponential trial of the constant-coefficient theory becomes a power trial directly in $x$, and the three root cases translate one for one.
+
+\tech[Cauchy-Euler power trial]{The Cauchy-Euler power trial $y=x^{m}$}{core}
+\cue Every coefficient is a constant times $x^{k}$ against the $k$-th derivative: $ax^{2}y''+bxy'+cy=0$. The tell is that the powers step down in lockstep with the derivative order.
+\method Substitute $y=x^{m}$. Since $x^{2}(x^{m})''=m(m-1)x^{m}$ and $x(x^{m})'=mx^{m}$, the indicial equation is
+\[am(m-1)+bm+c=0,\]
+which is the characteristic polynomial of the transformed equation, $am^{2}+(b-a)m+c=0$. On $(0,\infty)$ the three cases are:
+\begin{itemize}
+\item distinct real $m_1\ne m_2$: $\quad y=C_1x^{m_1}+C_2x^{m_2}$;
+\item repeated $m$: $\quad y=x^{m}\bigl(C_1+C_2\ln x\bigr)$;
+\item complex $m=\alpha\pm\iu\beta$: $\quad y=x^{\alpha}\bigl(C_1\cos(\beta\ln x)+C_2\sin(\beta\ln x)\bigr)$.
+\end{itemize}
+The $\ln x$ in the repeated case is the image of the $x\eu^{rx}$ of the constant-coefficient theory under $x=\eu^{t}$, and the trigonometric functions of $\ln x$ are the image of $\eu^{\alpha t}\cos\beta t$, obtained from $x^{\alpha\pm\iu\beta}=x^{\alpha}\eu^{\pm\iu\beta\ln x}$.
+
+\begin{worked}
+$x^{2}y''+2xy'-2y=0$. The indicial equation is $m(m-1)+2m-2=m^{2}+m-2=(m+2)(m-1)$, with roots $1$ and $-2$, so
+\[y=C_1x+\frac{C_2}{x^{2}}\qquad\text{on }(0,\infty).\]
+The second mode is unbounded at the origin, which is the singular point announcing itself.
+
+Repeated root: $x^{2}y''-xy'+y=0$ gives $m(m-1)-m+1=(m-1)^{2}$, so $y=x(C_1+C_2\ln x)$. Substituting $y=x\ln x$ confirms it: $y'=\ln x+1$, $y''=1/x$, and $x^{2}(1/x)-x(\ln x+1)+x\ln x=x-x\ln x-x+x\ln x=0$.
+
+Complex roots: $x^{2}y''+xy'+y=0$ gives $m(m-1)+m+1=m^{2}+1$, so $m=\pm\iu$ and $y=C_1\cos(\ln x)+C_2\sin(\ln x)$. This solution oscillates infinitely often as $x\to0^{+}$ while remaining bounded, a behaviour no constant-coefficient equation exhibits at a finite point.
+\end{worked}
+
+\begin{worked}[Third order, and the general pattern]
+$x^{3}y'''+2x^{2}y''-xy'+y=0$. Use $x^{k}\dfrac{\dd^{k}}{\dd x^{k}}=\theta(\theta-1)\cdots(\theta-k+1)$ rather than substituting $x^{m}$ and expanding by hand:
+\[\theta(\theta-1)(\theta-2)+2\theta(\theta-1)-\theta+1=\theta^{3}-\theta^{2}-\theta+1=(\theta-1)^{2}(\theta+1).\]
+So $m=1$ is a double root and $m=-1$ simple, giving
+\[y=x\bigl(A+B\ln x\bigr)+\frac{C}{x}\qquad\text{on }(0,\infty),\]
+three constants for a third-order equation. Substituting each mode leaves a residual below $10^{-4}$ under finite differences.
+\end{worked}
+
+\begin{trap}
+Writing the indicial equation as $am^{2}+bm+c=0$. The contribution of $ax^{2}y''$ is $am(m-1)$, not $am^{2}$, so the linear coefficient is $b-a$ and not $b$. When $a=1$ the error costs exactly one unit in the coefficient of $m$, which usually still factors and therefore still looks plausible: for $x^{2}y''+2xy'-2y=0$ the wrong equation $m^{2}+2m-2=0$ has irrational roots and no visible alarm. Derive $m(m-1)$ each time rather than recalling the finished polynomial.
+\end{trap}
+
+\begin{seealsob}The substitution $x=\eu^{t}$; disguised Cauchy-Euler in $(ax+b)$; reduction of order from one known solution.\end{seealsob}
+
+The power trial handles the homogeneous equation and nothing else. As soon as there is forcing, and especially forcing of the form $x^{k}\ln^{j}x$, the substitution must actually be carried out, because it is in the $t$-variable that the resonance rule of the constant-coefficient theory can be applied. The translation dictionary is short: $x^{k}$ becomes $\eu^{kt}$ and $\ln x$ becomes $t$, so $x^{k}\ln^{j}x$ becomes $t^{j}\eu^{kt}$, which is exactly the closed family the trial table covers.
+
+\tech[Cauchy-Euler via x equals e to the t]{The substitution $x=\eu^{t}$ and resonance in $t$}{core}
+\cue A Cauchy-Euler equation with forcing, above all forcing of the form $x^{k}\ln^{j}x$, and any Cauchy-Euler problem where $k$ coincides with an indicial root.
+\method Put $t=\ln x$ and $\theta=\dvop{t}$. Using $x\dvop{x}=\theta$ and $x^{2}\dfrac{\dd^{2}}{\dd x^{2}}=\theta(\theta-1)$ derived above, the equation becomes
+\[a\theta(\theta-1)y+b\theta y+cy=f(\eu^{t}),\]
+a constant-coefficient equation in $t$. Solve it by the trial table with the multiplier $x^{s}$ replaced by $t^{s}$, then substitute $t=\ln x$ back. Resonance in $t$ means the forcing exponent $k$ is an indicial root, and the resulting factor $t^{s}$ appears in $x$ as $\ln^{s}x$.
+
+\begin{worked}
+$x^{2}y''-3xy'+4y=x^{2}\ln x$ with $y(1)=y'(1)=0$. In $t$ the operator is $\theta(\theta-1)-3\theta+4=\theta^{2}-4\theta+4=(\theta-2)^{2}$, and the forcing $x^{2}\ln x$ becomes $t\eu^{2t}$. So
+\[(\theta-2)^{2}y=t\eu^{2t}.\]
+The exponent $2$ is a double indicial root, so write $y=\eu^{2t}u$ and use the shift rule: $(\theta-2)^{2}[\eu^{2t}u]=\eu^{2t}\theta^{2}u=\eu^{2t}u''$. The equation collapses to $u''=t$, so $u=t^{3}/6$ up to homogeneous terms and
+\[y_p=\frac{t^{3}\eu^{2t}}{6}=\frac{x^{2}\ln^{3}x}{6}.\]
+Both initial conditions at $x=1$, that is $t=0$, are satisfied by $y_p$ alone, since $y_p$ and $y_p'$ each carry a factor of $\ln^{2}x$; so $C_1=C_2=0$ and $y=\tfrac16x^{2}\ln^{3}x$. Then $y(\eu)=\eu^{2}/6\approx1.231509$. Direct substitution leaves a residual of order $10^{-4}$ under finite differences, consistent with rounding.
+\end{worked}
+
+\begin{worked}[No resonance: the operator acts as a number]
+$x^{2}y''-2y=x^{3}$. In $t$: $\bigl(\theta(\theta-1)-2\bigr)y=\eu^{3t}$, and $\theta^{2}-\theta-2=(\theta-2)(\theta+1)$ has roots $2,-1$. The forcing exponent $3$ is not a root, so the operator acts on $\eu^{3t}$ as the number $(3-2)(3+1)=4$ and $y_p=\tfrac14\eu^{3t}=\tfrac14x^{3}$. The general solution on $(0,\infty)$ is
+\[y=C_1x^{2}+\frac{C_2}{x}+\frac{x^{3}}{4}.\]
+Checking: $y_p''=\tfrac{3x}{2}$, and $x^{2}\cdot\tfrac{3x}{2}-2\cdot\tfrac{x^{3}}{4}=\tfrac{3x^{3}}{2}-\tfrac{x^{3}}{2}=x^{3}$.
+\end{worked}
+
+\begin{trap}
+Translating the initial conditions without the chain rule. A condition $y'(x_0)=\beta$ becomes $\dv{y}{t}\big|_{t_0}=x_0\beta$, because $\dv{y}{t}=x\dv{y}{x}$. The condition $y'(1)=0$ above translates without a visible factor only because $x_0=1$; at $x_0=\eu$ the factor is $\eu$ and omitting it corrupts every constant. The second trap is forgetting that $\ln x$ has no meaning at $x\le0$: the answer $\tfrac16x^{2}\ln^{3}x$ is a solution on $(0,\infty)$ only.
+\end{trap}
+
+\begin{seealsob}The Cauchy-Euler power trial; the resonance multiplier; disguised Cauchy-Euler in $(ax+b)$.\end{seealsob}
+
+The scale invariance that makes a Cauchy-Euler equation work is invariance under scaling about the origin. Nothing forces the centre to be the origin, and an equation that scales about $x=-b/a$ instead is the same equation shifted. Recognising it is a matter of noticing that the leading coefficient is a perfect square of a linear form and that the lower coefficients carry matching powers of that same form.
+
+\tech[Disguised Cauchy-Euler in ax plus b]{Disguised Cauchy-Euler in $(ax+b)$}{medium}
+\cue A quadratic leading coefficient that is the square of a linear form, with the first-derivative coefficient carrying that same linear form to the first power: $(ax+b)^{2}y''+c(ax+b)y'+dy=0$. The leading coefficient is often written expanded, so $4x^{2}+4x+1$ is the disguise for $(2x+1)^{2}$.
+\method Substitute $u=ax+b$. Then $\dvop{x}=a\dvop{u}$ and $\dfrac{\dd^{2}}{\dd x^{2}}=a^{2}\dfrac{\dd^{2}}{\dd u^{2}}$, so the equation becomes
+\[a^{2}u^{2}Y_{uu}+acuY_{u}+dY=0,\]
+a standard Cauchy-Euler in $u$ with the constants rescaled by powers of $a$. Solve by the power trial and substitute back, remembering that the singular point is now $u=0$, that is $x=-b/a$.
+
+\begin{worked}
+$(4x^{2}+4x+1)y''-2(2x+1)y'+4y=0$, that is $(2x+1)^{2}y''-2(2x+1)y'+4y=0$. With $u=2x+1$ and $a=2$:
+\[4u^{2}Y_{uu}-4uY_{u}+4Y=0\quad\Longleftrightarrow\quad u^{2}Y_{uu}-uY_{u}+Y=0.\]
+The indicial equation is $m(m-1)-m+1=(m-1)^{2}=0$, a double root at $m=1$, so $Y=u(A+B\ln u)$ and
+\[y=(2x+1)\bigl(A+B\ln(2x+1)\bigr)\qquad\text{on }x>-\tfrac12.\]
+Verify the second mode directly: with $y=(2x+1)\ln(2x+1)$ we get $y'=2\ln(2x+1)+2$ and $y''=4/(2x+1)$, so
+\[(2x+1)^{2}\frac{4}{2x+1}-2(2x+1)\bigl(2\ln(2x+1)+2\bigr)+4(2x+1)\ln(2x+1)=0\]
+identically. At $x=\tfrac{\eu-1}{2}$ we have $2x+1=\eu$, so $y=\eu(A+B)$, which is why problems in this family choose that evaluation point.
+\end{worked}
+
+\begin{trap}
+Losing the chain-rule factors $a$ and $a^{2}$. They do not cancel: in the worked example the surviving equation is $u^{2}Y_{uu}-uY_{u}+Y=0$, whose double root is $m=1$, whereas dropping the factors gives $u^{2}Y_{uu}-2uY_{u}+4Y$ and roots $\tfrac{3\pm\iu\sqrt{7}}{2}$, a wholly different answer that still looks like a legitimate complex case. Convert the derivatives explicitly. As a check, note that the equation $(2x+1)^{2}y''+2(2x+1)y'+y=0$, which differs only in the middle sign and coefficient, yields $4m(m-1)+4m+1=4m^{2}+1$ and hence $m=\pm\tfrac{\iu}{2}$, with solutions $\cos\bigl(\tfrac12\ln(2x+1)\bigr)$ and $\sin\bigl(\tfrac12\ln(2x+1)\bigr)$: small changes in the coefficients move you between root cases, so recompute the indicial equation every time.
+\end{trap}
+
+\begin{seealsob}The Cauchy-Euler power trial; the substitution $x=\eu^{t}$.\end{seealsob}
+
+\section{Reducing the order}
+
+The Cauchy-Euler family is straightened by a change of variable. A second family is reduced instead: the order drops from two to one because one of the three ingredients $x$, $y$, $y'$ is missing from the equation. These reductions do not require linearity, which is what makes them valuable; they are often the only route into a nonlinear second-order equation.
+
+Which reduction applies is decided by which variable is absent, and the two are not interchangeable. If $y$ is missing, $p=y'$ is a function of $x$ and $y''=p'$. If $x$ is missing, the equation is autonomous, $p$ is best regarded as a function of $y$, and $y''=p\dv{p}{y}$ by the chain rule.
+
+\begin{keynote}[Which reduction, and what the constants mean]
+Read the equation and ask which of $x$ and $y$ fails to appear. Only $y$ absent: use $p(x)$, and the two constants enter at two successive integrations in $x$. Only $x$ absent: use $p(y)$, and the first constant is the energy while the second is a translation in $x$, which it must be, since translating a solution of an autonomous equation gives another solution. Both absent, as in $y''=(y')^{2}$: either route works, and $p(x)$ is usually the shorter. Neither absent: neither reduction applies, and you are back to the linear techniques. The commonest error is not choosing wrongly but mixing the two, writing $y''=p\,p_y$ in a problem that still contains $x$, which produces an equation in three variables and no way forward.
+\end{keynote}
+
+\tech[Missing y reduction]{The missing-$y$ reduction $p=y'$}{medium}
+\cue A second-order equation in which $y$ itself never appears, only $x$, $y'$, and $y''$: $F(x,y',y'')=0$.
+\method Set $p=y'$, so $y''=\dv{p}{x}$ and the equation becomes first order in $p(x)$. Solve it by any first-order method, then recover $y$ by a second integration. Two constants appear, one from each integration, and they must both be kept.
+
+\begin{worked}
+$xy''+y'=0$. With $p=y'$ this is $xp'+p=0$, and the left side is exactly $(xp)'$, so $xp=C_1$ and $p=C_1/x$. Integrating again,
+\[y=C_1\ln\abs{x}+C_2,\]
+valid on $(0,\infty)$ or on $(-\infty,0)$: the leading coefficient of the original equation vanishes at $x=0$, so the two branches are separate problems and the constants need not agree across them.
+\end{worked}
+
+\begin{worked}[A first integral in disguise]
+$(1+x^{2})y''+2xy'=0$. With $p=y'$ the equation is $(1+x^{2})p'+2xp=\bigl((1+x^{2})p\bigr)'=0$, so $(1+x^{2})p=C_1$ and
+\[y=C_1\arctan x+C_2\qquad\text{on all of }\R.\]
+Here the leading coefficient never vanishes, so a single interval carries the whole solution, in contrast with $xy''+y'=0$ above. Notice also that the left side was already a total derivative, which is the exactness test of the next section arriving early: with $a=1+x^{2}$, $b=2x$, $c=0$ we have $a''-b'+c=2-2+0=0$.
+\end{worked}
+
+\begin{worked}[Nonlinear, and none the harder]
+$y''=1+(y')^{2}$ with $y(0)=y'(0)=0$. In $p$: $\dv{p}{x}=1+p^{2}$, separable, giving $\arctan p=x+A$ and $p=\tan(x+A)$. From $p(0)=0$, $A=0$, so $y'=\tan x$ and
+\[y=-\ln\abs{\cos x}+B,\qquad B=0,\qquad y=-\ln\cos x,\]
+on $\bigl(-\tfrac{\pi}{2},\tfrac{\pi}{2}\bigr)$. The interval is forced by the solution, not by the equation: $y$ blows up as $x\to\tfrac{\pi}{2}^{-}$ even though the right-hand side is perfectly smooth everywhere. This is the standard example of finite-time blow-up in a nonlinear problem.
+\end{worked}
+
+\begin{worked}[The catenary]
+A flexible cable hanging under its own weight satisfies $y''=k\sqrt{1+(y')^{2}}$, with $y$ absent. Setting $p=y'$,
+\[\frac{\dd p}{\sqrt{1+p^{2}}}=k\dd x\ \Longrightarrow\ \operatorname{arsinh}p=kx+C_1\ \Longrightarrow\ y'=\sinh(kx+C_1),\]
+and one more integration gives $y=\tfrac1k\cosh(kx+C_1)+C_2$. The hyperbolic cosine is not assumed anywhere; it is produced by the reduction. Checking the case $C_1=C_2=0$: $y'=\sinh kx$, $y''=k\cosh kx$, and $k\sqrt{1+\sinh^{2}kx}=k\cosh kx$.
+\end{worked}
+
+\begin{trap}
+Applying $y'(x_0)$ to $p$ correctly and then losing the second constant, so that the answer has one arbitrary constant for a second-order equation. Equally common: using the missing-$x$ reduction here. If $y$ is absent but $x$ is present, $p$ is a function of $x$ and $y''=p'$; writing $y''=p\dv{p}{y}$ introduces a variable the equation does not contain.
+\end{trap}
+
+\begin{seealsob}The missing-$x$ reduction and the energy integral; exact second-order equations.\end{seealsob}
+
+When $x$ is the missing variable the equation is autonomous, and the reduction takes a different shape. Because the independent variable never appears, $y$ itself can serve as the independent variable, and the resulting first-order equation in the phase plane is the energy integral of mechanics.
+
+\tech[Missing x reduction and the energy integral]{The missing-$x$ reduction $p\,\dv{p}{y}$ and the energy integral}{hard}
+\cue A second-order autonomous equation: no explicit $x$, only $y$, $y'$, $y''$. The archetype is $y''=f(y)$, a particle on a line under a force depending only on position.
+\method Set $p=y'$ but regard $p$ as a function of $y$. Then
+\[y''=\dv{p}{x}=\dv{p}{y}\dv{y}{x}=p\dv{p}{y},\]
+and $F(y,p,p\,p_y)=0$ is first order in $p(y)$. For $y''=f(y)$ it integrates at once:
+\[\tfrac12p^{2}=\int f(y)\dd y+C,\]
+the conservation of energy, and the remaining equation $\dv{y}{x}=\pm\sqrt{2\bigl(\int f+C\bigr)}$ is separable.
+
+\begin{worked}
+$y''=2y^{3}$ with $y(0)=1$, $y'(0)=1$. The energy integral gives $\tfrac12p^{2}=\tfrac12y^{4}+C$, and the data $y=1$, $p=1$ force $C=0$. Hence $p^{2}=y^{4}$ and, taking the branch with $p>0$ that the data select, $y'=y^{2}$. Separating, $-1/y=x-1$ and
+\[y=\frac{1}{1-x}\qquad\text{on }(-\infty,1).\]
+RK4 integration of the original second-order system from $x=0$ to $x=0.5$ returns $y=2.00000000$, matching $1/(1-0.5)=2$ to eight places. The solution escapes to infinity at $x=1$, which the energy integral predicted: $p$ grows like $y^{2}$, so the time to reach infinity is a convergent integral.
+\end{worked}
+
+\begin{worked}[The pendulum, qualitatively]
+$y''+\sin y=0$ has $f(y)=-\sin y$, so $\tfrac12p^{2}=\cos y+C$. Every trajectory is a level curve of $\tfrac12(y')^{2}-\cos y$. If $C<1$ the motion is trapped between the turning points $y=\pm\arccos(-C)$, where $p=0$ and the sign of $y'$ reverses; if $C>1$ then $p$ never vanishes and the pendulum rotates. No closed form is needed to read that off, which is the point of the energy integral.
+\end{worked}
+
+\begin{worked}[Not of the form $y''=f(y)$]
+$2yy''=1+(y')^{2}$. The equation is autonomous but nonlinear in $y$ as well, so the energy shortcut does not apply directly; the substitution still does. With $y''=p\dv{p}{y}$,
+\[2yp\dv{p}{y}=1+p^{2}\ \Longrightarrow\ \frac{2p\dd p}{1+p^{2}}=\frac{\dd y}{y}\ \Longrightarrow\ 1+p^{2}=Ay.\]
+Then $y'=\sqrt{Ay-1}$ separates to $\tfrac2A\sqrt{Ay-1}=x+B$, that is
+\[y=\frac1A+\frac{A}{4}(x+B)^{2},\]
+a family of parabolas. Checking $A=2$, $B=0$, so $y=\tfrac12+\tfrac12x^{2}$: then $y'=x$, $y''=1$, and $2yy''=1+x^{2}=1+(y')^{2}$.
+\end{worked}
+
+\begin{trap}
+Taking the positive square root of $p^{2}$ unconditionally. The sign of $y'$ is fixed by the initial data and can reverse at a turning point, where $p=0$; past that point the other branch applies. State the interval on which your branch is valid, as in the pendulum example above, and check that the initial data really do select the branch you took.
+\end{trap}
+
+\begin{seealsob}The missing-$y$ reduction; equidimensional in $y$; the Cauchy-Euler power trial.\end{seealsob}
+
+A third reduction exploits a symmetry rather than a missing variable. If replacing $y$ by $ky$ leaves the equation unchanged, then the equation constrains only the logarithmic derivative of $y$, and substituting for that derivative directly drops the order.
+
+\tech[Equidimensional in y]{Equidimensional in $y$: the substitution $y=\eu^{\int v\dd x}$}{hard}
+\cue The equation is unchanged when $y$ is replaced by $ky$ for every constant $k$, which happens exactly when every term has total degree one in $\{y,y',y''\}$ jointly. The signature is a term such as $yy''$ balanced against $(y')^{2}$.
+\method Substitute $y=\eu^{\int v\dd x}$, so that $v=y'/y$ and
+\[y'=vy,\qquad y''=(v'+v^{2})y.\]
+Every term acquires a factor $y$ or $y^{2}$, which cancels by the scaling hypothesis, and the equation drops to first order in $v$. Recover $y$ by one further integration, which supplies the second constant.
+
+\begin{worked}
+$yy''-(y')^{2}=0$. Substituting, $y^{2}(v'+v^{2})-v^{2}y^{2}=y^{2}v'=0$, so $v=C_1$ and $y=C_2\eu^{C_1x}$. The equation says the logarithmic derivative is constant, which is exactly the characterisation of the exponential.
+
+A forced variant: $yy''=(y')^{2}+y^{2}$ becomes $y^{2}(v'+v^{2})=v^{2}y^{2}+y^{2}$, that is $v'=1$, so $v=x+C_1$ and $y=C_2\exp\bigl(\tfrac12x^{2}+C_1x\bigr)$. Checking the case $C_1=0$, $C_2=1$: with $y=\eu^{x^{2}/2}$ we have $y'=xy$ and $y''=(1+x^{2})y$, and $y\cdot(1+x^{2})y-x^{2}y^{2}-y^{2}=0$.
+\end{worked}
+
+\begin{trap}
+Confusing this symmetry with the others. Scaling $y$ alone ($y\mapsto ky$) calls for $y=\eu^{\int v}$; scaling both variables together ($x\mapsto\lambda x$, $y\mapsto\lambda y$) is the homogeneous case and calls for $y=xu$; scaling with different weights is the isobaric case. Test which invariance the equation actually has by substituting $ky$, or $\lambda x$ and $\lambda y$, and seeing what cancels. Guessing costs a page.
+\end{trap}
+
+\begin{seealsob}The missing-$x$ reduction and the energy integral; the Cauchy-Euler power trial.\end{seealsob}
+
+\section{Rewriting the operator}
+
+The last family is recognised not by a missing variable but by a relation among the coefficients. Sometimes the left-hand side is already a derivative, and one integration is free. Sometimes a change of the independent or the dependent variable removes the first-derivative term and exposes the equation's real content.
+
+\tech{Exact second-order equations}{medium}
+\cue Variable coefficients that look as though they came from a product rule: $a(x)y''+b(x)y'+c(x)y=f(x)$ with $b$ close to $a'$. Test the identity below; it costs two derivatives.
+\method The left-hand side is a total derivative exactly when
+\[a''-b'+c=0,\]
+and in that case
+\[a y''+by'+cy=\dvop{x}\Bigl[a y'+(b-a')y\Bigr].\]
+Verify by expanding the right side: it is $ay''+by'+(b'-a'')y$. Integrating once gives the first-order linear equation $ay'+(b-a')y=\int f\dd x+C_1$, which an integrating factor finishes. If the test fails, multiply the equation by a trial function and test again; that is the integrating-factor problem for second-order equations, and it is only worth attempting when a factor such as $x^{k}$ or $\eu^{kx}$ is suggested by the coefficients.
+
+\begin{worked}
+$xy''+(x+2)y'+y=\eu^{x}$. Here $a=x$, $b=x+2$, $c=1$, so $a''-b'+c=0-1+1=0$ and the equation is exact. The first integral is
+\[a y'+(b-a')y=xy'+(x+1)y=\eu^{x}+C_1.\]
+Divide by $x$ and use the integrating factor $\exp\!\int\bigl(1+\tfrac1x\bigr)\dd x=x\eu^{x}$:
+\[\bigl(x\eu^{x}y\bigr)'=x\eu^{x}\cdot\frac{\eu^{x}+C_1}{x}=\eu^{2x}+C_1\eu^{x},\]
+so $x\eu^{x}y=\tfrac12\eu^{2x}+C_1\eu^{x}+C_2$ and
+\[y=\frac{\eu^{x}}{2x}+\frac{C_1}{x}+\frac{C_2\eu^{-x}}{x}\qquad\text{on }(0,\infty).\]
+Two constants, as required, and both homogeneous modes are singular at $x=0$, which is where the leading coefficient vanishes. Substitution confirms the residual vanishes for several choices of $C_1,C_2$.
+\end{worked}
+
+\begin{worked}[Two routes to the same answer]
+$xy''+3y'=0$. Exactness: $a=x$, $b=3$, $c=0$, so $a''-b'+c=0$ and the first integral is $xy'+(3-1)y=C_1$. Dividing by $x$ and using the integrating factor $x^{2}$ gives $(x^{2}y)'=C_1x$, so
+\[y=A+\frac{B}{x^{2}}\qquad\text{on }(0,\infty).\]
+Multiplying by $x$ turns the same equation into $x^{2}y''+3xy'=0$, a Cauchy-Euler equation with indicial polynomial $m(m-1)+3m=m(m+2)$ and roots $0$ and $-2$: the same answer by a different route. Notice, though, that the multiplied form is \emph{not} exact, since there $a''-b'+c=2-3+0=-1$. Exactness is a property of how the equation is written and not of its solution set, so multiplying through by a function can create it or destroy it. That is exactly why searching for an integrating factor is worth a try when the raw test fails.
+\end{worked}
+
+\begin{trap}
+Testing exactness with the wrong sign pattern. The condition is $a''-b'+c=0$, alternating in sign; $a''+b'+c=0$ and $a''-b'-c=0$ are both wrong and both easy to write. Derive it once by expanding $\bigl[ay'+(b-a')y\bigr]'$ rather than trusting memory, and note that the equation must be in its unnormalised form: dividing by $a$ first changes $a$ to $1$ and destroys the test.
+\end{trap}
+
+\begin{seealsob}The missing-$y$ reduction; the normal form.\end{seealsob}
+
+Exactness is a coincidence among the coefficients. The two remaining techniques manufacture a coincidence instead, by choosing a new variable so that an unwanted term cancels. Changing the independent variable can be made to kill the first-derivative term and, with luck, to turn the whole equation into one with constant coefficients; changing the dependent variable kills the first-derivative term always, at the cost of a modified potential.
+
+\tech{Change of independent variable}{hard}
+\cue A variable-coefficient equation whose $y'$ term looks as though it should cancel against the $y''$ term, for instance $xy''-y'+\cdots$, or one where the ratio of the coefficients suggests a natural new variable such as $t=x^{2}$ or $t=\ln x$.
+\method Try $t=g(x)$. Then
+\[y'=g'(x)Y_t,\qquad y''=g''(x)Y_t+\bigl(g'(x)\bigr)^{2}Y_{tt},\]
+and the coefficient of $Y_t$ in the transformed equation is $ag''+bg'$ for an original $ay''+by'+cy$. Choose $g$ to annihilate it. For the normalised equation $y''+py'+qy=0$ the choice $t=\int\sqrt{q}\dd x$ produces constant coefficients precisely when $\dfrac{q'+2pq}{q^{3/2}}$ is constant, which is the invariant test worth applying before attempting the substitution.
+
+\begin{worked}
+$xy''-y'+4x^{3}y=0$ with $y(\sqrt{\pi})=-1$ and $y'(\sqrt{\pi})=2\sqrt{\pi}$. Try $t=x^{2}$, so $g'=2x$ and $g''=2$:
+\[y'=2xY_t,\qquad y''=2Y_t+4x^{2}Y_{tt},\]
+whence $xy''-y'=2xY_t+4x^{3}Y_{tt}-2xY_t=4x^{3}Y_{tt}$. The equation becomes $4x^{3}(Y_{tt}+Y)=0$, that is
+\[Y_{tt}+Y=0,\qquad Y=A\cos t+B\sin t.\]
+Transfer the data at $t_0=\pi$: $Y(\pi)=-1$ gives $-A=-1$, so $A=1$; and $Y_t(\pi)=y'(\sqrt{\pi})/g'(\sqrt{\pi})=2\sqrt{\pi}/(2\sqrt{\pi})=1$ gives $-B=1$, so $B=-1$. Hence $Y=\cos t-\sin t$ and $y=\cos(x^{2})-\sin(x^{2})$. At $x=\sqrt{\pi}/2$, $t=\pi/4$ and $y=\cos\tfrac{\pi}{4}-\sin\tfrac{\pi}{4}=0$.
+\end{worked}
+
+\begin{trap}
+Transferring the derivative data without the chain-rule factor. The relation is $y'(x_0)=g'(x_0)\,Y_t(t_0)$, so above $Y_t(\pi)=1$, not $2\sqrt{\pi}$. Using the raw value gives $B=-2\sqrt{\pi}$ and an answer that satisfies the equation but not the data, which is the hardest kind of error to notice because the substitution check passes.
+\end{trap}
+
+\begin{seealsob}The substitution $x=\eu^{t}$; the normal form.\end{seealsob}
+
+The change of independent variable is opportunistic: it works when the coefficients cooperate. The change of \emph{dependent} variable that removes the first-derivative term always works, and although it does not solve the equation it puts every second-order linear equation into a canonical shape in which two equations are equivalent exactly when one function agrees.
+
+\tech{The normal form: removing the first-derivative term}{hard}
+\cue Any linear $y''+p(x)y'+q(x)y=0$ whose solutions you want to understand rather than merely write down: oscillation, decay envelopes, comparison with $u''+u=0$, or recognition that the equation is a known one in disguise.
+\method Substitute
+\[y=u(x)\exp\!\left(-\tfrac12\int p\dd x\right).\]
+The first-derivative term cancels identically and what remains is
+\[u''+I(x)\,u=0,\qquad I=q-\tfrac14p^{2}-\tfrac12p',\]
+where $I$ is the \emph{invariant} of the equation. Two equations with the same $I$ are the same equation up to that exponential factor. If $I$ turns out to be a constant, the equation is elementary; if $I>0$ and bounded away from zero, solutions oscillate; if $I<0$, they do not.
+
+\begin{worked}
+$y''-2xy'+(x^{2}-1)y=0$. Here $p=-2x$ and $q=x^{2}-1$, so
+\[I=(x^{2}-1)-\tfrac14(4x^{2})-\tfrac12(-2)=x^{2}-1-x^{2}+1=0.\]
+The normal form is $u''=0$, so $u=A+Bx$, and the exponential factor is $\exp\bigl(\tfrac12\int2x\dd x\bigr)=\eu^{x^{2}/2}$. Hence
+\[y=(A+Bx)\,\eu^{x^{2}/2}.\]
+Verify the case $A=1,B=0$: $y'=x\eu^{x^{2}/2}$, $y''=(1+x^{2})\eu^{x^{2}/2}$, and $(1+x^{2})-2x^{2}+(x^{2}-1)=0$. An equation with no elementary-looking solutions turned out to have only elementary ones, and the invariant is what revealed it.
+\end{worked}
+
+\begin{worked}[A Bessel equation in disguise]
+$x^{2}y''+xy'+\bigl(x^{2}-\tfrac14\bigr)y=0$. Normalise: $p=1/x$ and $q=1-\tfrac{1}{4x^{2}}$, so
+\[I=1-\frac{1}{4x^{2}}-\frac{1}{4x^{2}}+\frac{1}{2x^{2}}=1.\]
+The normal form is exactly $u''+u=0$, and the factor is $\exp\bigl(-\tfrac12\int\tfrac{\dd x}{x}\bigr)=x^{-1/2}$, so
+\[y=\frac{A\cos x+B\sin x}{\sqrt{x}}\qquad\text{on }(0,\infty).\]
+This is Bessel's equation of order $\tfrac12$, and the normal form has produced its closed solution in three lines. For Bessel of order $0$, $x^{2}y''+xy'+x^{2}y=0$, the same computation gives $I=1+\tfrac{1}{4x^{2}}$, which tends to $1$: the solutions are not elementary, but they oscillate with an envelope decaying like $x^{-1/2}$, and that is read straight off the substitution.
+\end{worked}
+
+\begin{trap}
+Using $p$ from the unnormalised equation. Divide by the leading coefficient first: for $x^{2}y''+xy'+\cdots$ the value of $p$ is $1/x$, not $x$. The other slip is the sign in the exponent, which is $-\tfrac12\int p$, so that the factor \emph{decays} when $p>0$; getting it backwards inverts the envelope and reverses every qualitative conclusion drawn from it.
+\end{trap}
+
+\begin{seealsob}Change of independent variable; the substitution $x=\eu^{t}$; reduction of order from one known solution.\end{seealsob}
+
+\begin{keynote}[What the invariant is good for]
+Two uses beyond solving. First, comparison: if $I(x)\geq M^{2}>0$ on an interval, then every solution of $u''+Iu=0$ has a zero in any subinterval of length $\pi/M$, because $u''+M^{2}u=0$ oscillates that fast and Sturm's comparison theorem transfers the zeros upward. If $I\leq0$, no solution has two zeros at all. Since $y$ differs from $u$ only by a nonvanishing exponential factor, the zeros of $y$ are exactly the zeros of $u$, so these conclusions apply to the original equation unchanged. Second, identification: $I$ is unchanged by the substitution, so two equations with the same invariant are the same equation in disguise, and computing $I$ is the quickest way to recognise a standard equation hidden behind a change of dependent variable.
+\end{keynote}
+
+Two closing observations tie the chapter together. The first is that every technique here has been a change of variable chosen to make a structural feature visible: a scaling becomes a translation under $\ln$, an absent variable becomes an absent order, a symmetry becomes a lower-order equation, a first-derivative term becomes a modified potential. Nothing was solved by force. The second is the recurring warning about the domain. A variable-coefficient equation has singular points wherever its leading coefficient vanishes, and at such points the existence theorem is silent, solutions may be unbounded or merely non-smooth, and initial data may fail to determine a solution or may determine several. Report the interval with the answer. For the Cauchy-Euler family that interval is $(0,\infty)$ or $(-\infty,0)$; for the disguised family it is one side of $x=-b/a$; for a nonlinear reduction it can be smaller than either, cut short by a blow-up the equation gave no warning of.
+
+\section{Recognition matrix}
+\begin{recog}{@{}p{0.31\textwidth}p{0.35\textwidth}p{0.28\textwidth}@{}}
+\rowcolor{mist}\mh{If you see} & \mh{Reach for} & \mh{If that fails} \\
+\midrule
+\endhead
+$ax^{2}y''+bxy'+cy=0$ & Trial $y=x^{m}$; indicial $am(m-1)+bm+c$ & Substitute $x=\eu^{t}$ and redo \\
+Powers matching derivative orders & Cauchy-Euler; expect $x^{m}$ modes & Check for a shifted centre \\
+Repeated indicial root & $y=x^{m}(C_1+C_2\ln x)$ & Image of $x\eu^{rt}$ under $x=\eu^{t}$ \\
+Complex indicial root $\alpha\pm\iu\beta$ & $x^{\alpha}\bigl(C_1\cos(\beta\ln x)+C_2\sin(\beta\ln x)\bigr)$ & From $x^{\iu\beta}=\eu^{\iu\beta\ln x}$ \\
+Cauchy-Euler with forcing $x^{k}\ln^{j}x$ & $x=\eu^{t}$; forcing becomes $t^{j}\eu^{kt}$ & Trial table in $t$, then $t=\ln x$ \\
+$k$ equals an indicial root & Resonance: expect $\ln^{s}x$ in $y_p$ & Shift rule on $(\theta-k)^{s}$ \\
+$(ax+b)^{2}y''+c(ax+b)y'+dy$ & $u=ax+b$; keep the factors $a,a^{2}$ & Expand $4x^{2}+4x+1$ to spot it \\
+$y$ absent from the equation & $p=y'$, $y''=p'$; first order in $x$ & Two integrations, two constants \\
+$x$ absent from the equation & $p=y'$, $y''=p\dv{p}{y}$; first order in $y$ & Energy integral $\tfrac12p^{2}=\int f$ \\
+$y''=f(y)$ & $\tfrac12(y')^{2}=\int f(y)\dd y+C$, then separate & Fix the branch sign from the data \\
+$p=0$ somewhere on the trajectory & Turning point; the branch of $\sqrt{p^{2}}$ flips & State the interval of validity \\
+Equation unchanged under $y\mapsto ky$ & $y=\eu^{\int v\dd x}$, $y'=vy$, $y''=(v'+v^{2})y$ & Compare with $y\mapsto\lambda y$, $x\mapsto\lambda x$ \\
+$yy''$ balanced against $(y')^{2}$ & Equidimensional in $y$; substitute for $y'/y$ & Check the degree term by term \\
+Coefficients that look like a product rule & Test $a''-b'+c=0$; integrate once & Seek an integrating factor $x^{k}$ \\
+$xy''-y'+\cdots$ & Change of independent variable, try $t=x^{2}$ & Kill $Y_t$: solve $ag''+bg'=0$ \\
+$(q'+2pq)/q^{3/2}$ constant & $t=\int\sqrt{q}\dd x$ gives constant coefficients & Otherwise use the normal form \\
+Want oscillation or envelope & Normal form: $u''+Iu=0$, $I=q-\tfrac14p^{2}-\tfrac12p'$ & $y=u\exp(-\tfrac12\int p)$ \\
+$I$ constant after normalising & Elementary solutions; read them off & $I=1$ means $\sin$ and $\cos$ \\
+$x^{2}y''+xy'+(x^{2}-\nu^{2})y=0$ & Bessel; normal form gives the envelope $x^{-1/2}$ & Elementary only for $\nu=\tfrac12$ \\
+Leading coefficient vanishing at $x_0$ & Singular point; solve on one side only & Data at $x_0$ is not an IVP \\
+Data given at $x=0$ for Cauchy-Euler & Not an initial value problem; recheck & Ask for behaviour as $x\to0^{+}$ \\
+A nonlinear reduction that separates & Integrate, then watch for blow-up & Report the maximal interval \\
+\end{recog}

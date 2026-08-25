@@ -1,0 +1,399 @@
+\chapter{Linear first-order equations and integrating factors}
+
+\begin{orient}
+\textbf{What this chapter is for.} A first-order equation is linear when the unknown and its derivative appear only to the first power and only separately: $y'+P(x)y=Q(x)$. Every such equation is solved by the same two-line manoeuvre, and the manoeuvre is not a trick. Multiplying by $\mu=\exp\bigl(\int P\dd x\bigr)$ is forced: it is the unique multiplier, up to a constant factor, that converts the left side into the derivative of a single product, and once you have derived it once you never have to remember it again. This chapter derives the factor from that requirement, imposes the standard-form discipline that makes the derivation apply (divide by the coefficient of $y'$ first, and know what that division costs you), and then generalises in two directions. Outward, to equations that are not linear at all: the same demand ``make this an exact derivative'' produces integrating factors depending on $x$ alone, on $y$ alone, or on the product $xy$, and turns a non-exact equation into an exact one. Inward, to equations that become linear after a change of dependent variable: Bernoulli through $u=y^{1-n}$, exponential nonlinearities through $v=\eu^{y}$, Riccati through a second-order linear equation, and integral equations through one differentiation. By the end you should be able to look at a first-order equation and say, within a few seconds, which of these it is, and you should never again write down an integrating factor you cannot derive.
+\end{orient}
+
+\section{The multiplier that has to exist}
+
+Start from what you want rather than from what you are told to do. You are given
+\[y'+P(x)y=Q(x),\]
+and the obstruction to integrating both sides is that the left-hand side is not the derivative of anything. It is $y'$ plus a term in $y$, which is what the product rule produces only by accident. So ask: is there a function $\mu(x)$, not identically zero, for which $\mu(x)\bigl(y'+Py\bigr)$ \emph{is} the derivative of a single product? The only candidate product is $\mu y$, since $\mu y'$ has to come from somewhere. Expand it:
+\[(\mu y)'=\mu y'+\mu' y,\qquad \mu\bigl(y'+Py\bigr)=\mu y'+\mu P y.\]
+The two agree for every $y$ exactly when $\mu'=\mu P$. That is a separable equation for $\mu$ with solution
+\[\boxed{\;\mu(x)=\exp\Bigl(\int P(x)\dd x\Bigr).\;}\]
+Nothing was guessed. The requirement $(\mu y)'=\mu y'+\mu Py$ has one solution family and we have written it down. Multiplying the original equation by this $\mu$ and integrating gives
+\[\mu y=\int \mu Q\dd x+C,\qquad y=\frac{1}{\mu(x)}\left(\int\mu(x)Q(x)\dd x+C\right).\]
+
+Two features of that formula are worth fixing in place immediately. First, the constant of integration inside $\int P\dd x$ is genuinely free: replacing $\mu$ by $k\mu$ multiplies both sides of $\mu y=\int\mu Q+C$ by $k$ and changes nothing, so take the constant to be zero every time. Second, the $C$ sits inside the bracket, which means that after dividing by $\mu$ it is attached to $1/\mu$ and not to the whole solution. The function $C/\mu=C\eu^{-\int P}$ is precisely the general solution of the homogeneous equation $y'+Py=0$, so the structure of the answer is the structure every linear problem has: one particular solution plus the kernel.
+
+\begin{keynote}[Why the constant belongs inside]
+Write the answer as $y=y_p+C\eu^{-\int P\dd x}$ and you can check it in one line: the exponential kills the left side of the homogeneous equation, so it can be added to any particular solution. Write it as $y=\bigl(\int\mu Q\dd x\bigr)/\mu+C$ instead and the added constant is required to satisfy $C'+PC=0$, which forces $C=0$ unless $P\equiv0$. That is the difference between a one-parameter family of solutions and one solution with a decorative letter attached.
+\end{keynote}
+
+\begin{keynote}[The definite form, and where it comes from]
+For an initial value problem the tidiest statement of the answer never mentions $C$ at all:
+\[y(x)=\frac{\mu(x_0)}{\mu(x)}y(x_0)+\frac{1}{\mu(x)}\int_{x_0}^{x}\mu(t)Q(t)\dd t,\qquad \mu(x)=\exp\Bigl(\int_{x_0}^{x}P(s)\dd s\Bigr).\]
+With that choice of $\mu$ the first factor is $\eu^{-\int_{x_0}^{x}P}$ and the formula reads: the initial value decays according to the homogeneous equation, and every increment of forcing $Q(t)\dd t$ injected at time $t$ decays from $t$ onward. This is variation of parameters written out, and it is the form to use whenever $Q$ has no elementary antiderivative, since the answer is then legitimately an integral and there is nothing further to do. It is also the form that survives into linear systems and into the Laplace transform, where the same convolution reappears.
+\end{keynote}
+
+Before any of this applies, the equation must actually be in the form $y'+Py=Q$, with the coefficient of $y'$ equal to $1$. Equations are almost never handed over that way. The discipline is: get the equation into the shape $a_1(x)y'+a_0(x)y=f(x)$, divide through by $a_1$, and only then read off $P=a_0/a_1$ and $Q=f/a_1$. Skipping the division and computing $\mu=\exp\bigl(\int a_0\dd x\bigr)$ is the commonest error in the whole subject, and it produces a $\mu$ that is not an integrating factor for anything.
+
+The division also has a cost, and it is the one thing about linear equations that is genuinely subtle. Wherever $a_1(x)=0$ the division is illegal, and those points are \emph{singular points} of the equation. The standard form is valid only on an interval free of them, and the solution you construct is a solution on that interval. At a singular point the usual existence and uniqueness guarantee is void, and the failure is visible in the answer.
+
+\begin{keynote}[What linearity is, and what breaks it]
+The unknown must appear to the first power, undifferentiated or differentiated once, and nowhere else. So $x^{3}y'+\eu^{x}\sin(x)\,y=\ln x$ is linear, however forbidding it looks, because $y$ and $y'$ each appear alone and to the first power; the coefficients may be as ugly as they please. What breaks linearity is any of: a power $y^{n}$ with $n\neq1$, a product $yy'$ or $(y')^{2}$, a composition $\sin y$, $\eu^{y}$, $\ln y$, or $y$ inside a denominator. Each of those has its own repair in this chapter, so the diagnosis is worth making precisely: a power calls for Bernoulli, an exponential for $v=\eu^{y}$, a quadratic for Riccati, and a $y$ downstairs usually means the equation is linear in $x$ instead.
+\end{keynote}
+
+\tech[Exponential integrating factor for a linear equation]{The $\mu=\eu^{\int P\dd x}$ machine}{core}
+\cue The equation is in, or reduces by algebra to, $y'+P(x)y=Q(x)$: the unknown appears linearly, its derivative appears linearly, and nothing else involves $y$. Products such as $yy'$, powers such as $y^{2}$, and compositions such as $\sin y$ all disqualify it.
+\method Divide by the coefficient of $y'$. Compute $\mu=\exp\bigl(\int P\dd x\bigr)$, dropping the constant of integration. Multiply through; the left side is now $(\mu y)'$ by construction, not by inspection. Integrate once and divide:
+\[y=\frac{1}{\mu(x)}\left(\int\mu(x)Q(x)\dd x+C\right).\]
+For an initial value problem it is usually faster to keep the definite form $\mu(x)y(x)-\mu(x_0)y(x_0)=\int_{x_0}^{x}\mu Q$, which applies the condition without ever isolating $C$.
+
+\begin{worked}
+\[y'+y\tan x=\cos^{2}x,\qquad y(0)=5.\]
+Already in standard form, with $P=\tan x$ and $Q=\cos^{2}x$. Then $\int\tan x\dd x=-\ln\abs{\cos x}$, so $\mu=\sec x$ on $(-\tfrac{\pi}{2},\tfrac{\pi}{2})$. Multiplying,
+\[(y\sec x)'=\sec x\cos^{2}x=\cos x,\qquad y\sec x=\sin x+C,\qquad y=(\sin x+C)\cos x.\]
+The condition $y(0)=5$ gives $C=5$, so $y=(\sin x+5)\cos x$, and $y(1)\approx3.156160$. Note where this solution lives: $\mu=\sec x$ blows up at $x=\pm\tfrac{\pi}{2}$, which are exactly the singular points of the original equation, since $\tan x$ is undefined there.
+\end{worked}
+
+\begin{worked}[With the division done first]
+\[(x^{2}+1)y'+4xy=x,\qquad y(0)=1.\]
+Divide by $x^{2}+1$, which never vanishes, so there are no singular points and the solution will be global:
+\[y'+\frac{4x}{x^{2}+1}y=\frac{x}{x^{2}+1},\qquad \int\frac{4x\dd x}{x^{2}+1}=2\ln(x^{2}+1),\qquad \mu=(x^{2}+1)^{2}.\]
+Then $\bigl((x^{2}+1)^{2}y\bigr)'=(x^{2}+1)^{2}\cdot\dfrac{x}{x^{2}+1}=x^{3}+x$, so $(x^{2}+1)^{2}y=\tfrac14x^{4}+\tfrac12x^{2}+C$ and
+\[y=\frac{x^{4}+2x^{2}+4C}{4(x^{2}+1)^{2}}.\]
+With $y(0)=1$ we get $4C=4$, hence $y=\dfrac{x^{4}+2x^{2}+4}{4(x^{2}+1)^{2}}$, giving $y(1)=\tfrac{7}{16}=0.4375$ and $y(2)=\tfrac{28}{100}=0.28$. Had you used $\mu=\exp\bigl(\int4x\dd x\bigr)=\eu^{2x^{2}}$, forgetting the division, the product $\eu^{2x^{2}}\bigl((x^{2}+1)y'+4xy\bigr)$ would be the derivative of nothing at all.
+\end{worked}
+
+\begin{trap}
+Two errors dominate, and they are unrelated. The first is placing the constant: $y=\bigl(\int\mu Q\dd x\bigr)/\mu+C$ is wrong, because the added constant must be divided by $\mu$ along with everything else. The second is $Q$: after dividing by $a_1$, the right-hand side changes too, and using the original $f(x)$ against the new $P$ mixes two different equations. Divide the \emph{whole} equation, then read off both $P$ and $Q$.
+\end{trap}
+
+\begin{seealsob}Bernoulli via $u=y^{1-n}$; integrating factors depending on one variable; separable equations; equations linear in the other variable.\end{seealsob}
+
+\begin{keynote}[Split the forcing, not the equation]
+Because the map $Q\mapsto y_p$ is linear, a forcing that is a sum can be handled term by term: if $y_1'+Py_1=Q_1$ and $y_2'+Py_2=Q_2$, then $y_1+y_2$ solves the equation with forcing $Q_1+Q_2$. The same $\mu$ serves all the pieces, so this costs nothing and often converts one impossible integral into two easy ones. For $y'+y=x+\eu^{-x}$ with $\mu=\eu^{x}$ we get $\bigl(y\eu^{x}\bigr)'=x\eu^{x}+1$, whose two terms integrate independently to $(x-1)\eu^{x}$ and $x$, giving $y=x-1+(x+C)\eu^{-x}$. Substituting back, $y'+y=1+\eu^{-x}+x-1=x+\eu^{-x}$, as required. Superposition is the only structural property linear equations have that nonlinear ones do not, and it is worth exploiting every time it appears.
+\end{keynote}
+
+One consequence of the definite form is worth having explicitly, because it is how linear equations are used in practice. If the forcing $Q$ is piecewise continuous, with a jump at $x=c$, the solution is still perfectly well behaved: $y$ is continuous there and only $y'$ jumps, because $y'=Q-Py$ inherits the discontinuity directly. So you solve on $[x_0,c]$, evaluate $y(c)$, and use that value as the initial condition for the next piece. Nothing about the method changes; you simply apply it twice and glue. Solving each piece with an independent constant and forgetting to match at $c$ is the standard error, and it produces a solution that is discontinuous where the physics is not.
+
+The singular points deserve one worked look, because the standard form conceals them and the answer exposes them. Consider $xy'-y=x^{2}$. Dividing by $x$ gives $y'-y/x=x$ with $\mu=1/x$, so $(y/x)'=1$ and $y=x^{2}+Cx$. Every member of that family satisfies $y(0)=0$, so the initial value problem with $y(0)=0$ has infinitely many solutions, and the problem with $y(0)=1$ has none: substituting $x=0$ into $xy'-y=x^{2}$ forces $y(0)=0$. Neither pathology is visible in the standard form, and both are visible in the original equation at the point where $a_1(x)=x$ vanishes. When a problem specifies an initial condition at a point where the leading coefficient dies, that is the question being asked.
+
+\section{Reading the equation the other way round}
+
+Linearity is a property of the equation together with a choice of which variable is the unknown, and problems are frequently set up so that the wrong choice is the obvious one. An equation that is a hopeless nonlinear mess for $y$ as a function of $x$ can be a two-line linear problem for $x$ as a function of $y$. The reflex worth building is this: if $y'$ appears as a quotient whose \emph{denominator} carries the complicated $y$ dependence while $x$ enters only linearly, invert the derivative and start again.
+
+The mechanism is nothing more than $\dv{x}{y}=1\big/\dv{y}{x}$, valid wherever the derivative is nonzero, together with the observation that ``linear'' now means $\dv{x}{y}+P(y)x=Q(y)$. The integrating factor is $\exp\bigl(\int P(y)\dd y\bigr)$ and every other word of the previous section carries over verbatim, with the roles of the letters exchanged.
+
+\begin{worked}[Linear in $x$, not in $y$]
+\[\dv{y}{x}=\frac{y}{x+y^{2}},\qquad y(2)=1.\]
+As an equation for $y$ this is neither separable nor linear: the $y^{2}$ in the denominator ruins both. Invert it:
+\[\dv{x}{y}=\frac{x+y^{2}}{y}=\frac{x}{y}+y,\qquad \dv{x}{y}-\frac{1}{y}x=y.\]
+That is linear in $x$ with $P(y)=-1/y$, so $\mu=\exp\bigl(-\int\dd y/y\bigr)=1/y$, and $\bigl(x/y\bigr)'=1$. Hence $x/y=y+C$, that is $x=y^{2}+Cy$. The condition $x=2$ at $y=1$ gives $C=1$ and $x=y^{2}+y$. Check it directly: $\dv{x}{y}=2y+1$, so $\dv{y}{x}=\dfrac{1}{2y+1}$, while $\dfrac{y}{x+y^{2}}=\dfrac{y}{2y^{2}+y}=\dfrac{1}{2y+1}$ as required.
+
+A second instance, where the obstruction is an exponential rather than a power:
+\[\dv{y}{x}=\frac{1}{\eu^{y}-x}\ \Longrightarrow\ \dv{x}{y}+x=\eu^{y},\qquad \mu=\eu^{y},\qquad \bigl(x\eu^{y}\bigr)'=\eu^{2y},\]
+so $x\eu^{y}=\tfrac12\eu^{2y}+C$ and $x=\tfrac12\eu^{y}+C\eu^{-y}$. The solution is a perfectly explicit function of $y$ and an implicit one of $x$, which is the normal price of the manoeuvre and almost never a real cost.
+\end{worked}
+
+\begin{worked}[A third, where the power sits on the unknown]
+\[\dv{y}{x}=\frac{y^{3}}{1-2xy^{2}}.\]
+As an equation for $y$ this is Bernoulli-looking but is not Bernoulli, because $x$ appears in the denominator. Inverting,
+\[\dv{x}{y}=\frac{1-2xy^{2}}{y^{3}}=\frac{1}{y^{3}}-\frac{2x}{y},\qquad \dv{x}{y}+\frac{2}{y}x=\frac{1}{y^{3}}.\]
+This is linear with $P(y)=2/y$, so $\mu=\eu^{2\ln\abs{y}}=y^{2}$ and $\bigl(xy^{2}\bigr)'=y^{-1}$. Hence $xy^{2}=\ln\abs{y}+C$ and
+\[x=\frac{\ln\abs{y}+C}{y^{2}}.\]
+Taking $C=0.4$ and starting at $y=1$, where $x=0.4$, the trajectory reaches $x\approx0.273287$ at $y=2$, agreeing with the closed form to eleven places.
+\end{worked}
+
+Notice what the diagnostic actually was. In both cases $x$ appeared to the first power and undifferentiated, while $y$ appeared inside a nonlinear expression; and the derivative appeared as an isolated quotient, so inverting it cost nothing. Write $M\dd x+N\dd y=0$ if it helps: the equation is linear in $y$ when $N$ is free of $y$ and $M$ is affine in $y$, and linear in $x$ when $M$ is free of $x$ and $N$ is affine in $x$. Both tests are one glance.
+
+\section{Integrating factors for equations that are not linear}
+
+The derivation at the head of this chapter demanded that $\mu$ turn a specific two-term expression into a derivative. The same demand can be made of any first-order equation once it is written in differential form
+\[M(x,y)\dd x+N(x,y)\dd y=0,\]
+where now ``derivative'' means the total differential of a potential $F(x,y)$, and the condition for one to exist is $\pdv{M}{y}=\pdv{N}{x}$. When that test fails, we look for $\mu(x,y)$ with $\mu M\dd x+\mu N\dd y=0$ exact, which is the condition
+\[\pdv{(\mu M)}{y}=\pdv{(\mu N)}{x}.\]
+Expanded, this is a partial differential equation for $\mu$, and in general it is harder than the equation we started with. It becomes tractable exactly when we restrict $\mu$ to depend on one thing: on $x$ alone, on $y$ alone, or on some combination such as $xy$ or $x^{a}y^{b}$. Each restriction collapses the partial differential equation into an ordinary one, and each comes with a test that tells you in advance whether the restriction was legitimate. That test is the whole content of the next three techniques, and it is worth deriving once rather than memorising three times.
+
+Suppose $\mu=\mu(x)$. Then $\pdv{(\mu M)}{y}=\mu M_y$ while $\pdv{(\mu N)}{x}=\mu'N+\mu N_x$, so exactness demands $\mu M_y=\mu'N+\mu N_x$, that is
+\[\frac{\mu'}{\mu}=\frac{M_y-N_x}{N}.\]
+The left side is a function of $x$ only, so the right side must be too, and if it is not then no integrating factor of that restricted form exists. Run the identical computation with $\mu=\mu(y)$ and the roles of $M$ and $N$ swap, along with a sign: $\mu'/\mu=(N_x-M_y)/M$. There is no need to remember which numerator is which. Remember the derivation and the sign takes care of itself.
+
+Both derivations are instances of one calculation, and doing it in general costs no more than doing it twice. Let $\mu=\mu(z)$ where $z=z(x,y)$ is any chosen combination. Then $\partial_y(\mu M)=\mu'z_yM+\mu M_y$ and $\partial_x(\mu N)=\mu'z_xN+\mu N_x$, so exactness requires
+\[\frac{\mu'(z)}{\mu(z)}=\frac{M_y-N_x}{z_xN-z_yM},\]
+and the whole method is: choose $z$, compute that quotient, and check whether it is a function of $z$ alone. If it is, integrate; if it is not, choose another $z$. The standard choices and what the master formula gives for each are worth tabulating, since the third and fourth rows are exactly as easy to use as the first two and are almost never taught.
+
+\begin{center}
+\footnotesize
+\setlength{\tabcolsep}{5pt}
+\renewcommand{\arraystretch}{1.32}
+\begin{tabular}{@{}lll@{}}
+\toprule
+\mh{Take $\mu=\mu(z)$ with} & \mh{Compute} & \mh{Legitimate when} \\
+\midrule
+$z=x$ & $\dfrac{M_y-N_x}{N}$ & the quotient is free of $y$ \\
+$z=y$ & $\dfrac{N_x-M_y}{M}$ & the quotient is free of $x$ \\
+$z=xy$ & $\dfrac{M_y-N_x}{yN-xM}$ & the quotient depends only on $xy$ \\
+$z=x+y$ & $\dfrac{M_y-N_x}{N-M}$ & the quotient depends only on $x+y$ \\
+$z=x^{2}+y^{2}$ & $\dfrac{M_y-N_x}{2(xN-yM)}$ & the quotient depends only on $x^{2}+y^{2}$ \\
+$\mu=x^{a}y^{b}$ & exponent matching & the linear system in $a,b$ is consistent \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+In every case the factor is $\mu=\exp\bigl(\int(\cdot)\dd z\bigr)$ with the tabulated quotient as the integrand, written in terms of $z$. The last row is different in kind, because it fixes the shape of $\mu$ rather than its argument, and the test is algebraic rather than differential.
+
+\tech[Integrating factor depending on x only]{Integrating factor depending on $x$ only}{medium}
+\cue $M\dd x+N\dd y=0$ fails the test $M_y=N_x$, and the quotient $\dfrac{M_y-N_x}{N}$ simplifies to an expression in which $y$ does not appear.
+\method Set
+\[\mu(x)=\exp\left(\int\frac{M_y-N_x}{N}\dd x\right),\]
+multiply through, confirm exactness on the new pair, and recover the potential by the two-step integration. A linear equation is the special case: for $y'+Py=Q$ written as $(Py-Q)\dd x+\dd y=0$ we have $M_y=P$, $N_x=0$, $N=1$, and the recipe returns $\mu=\eu^{\int P\dd x}$ exactly as before.
+
+\begin{worked}
+\[(x+y^{2})\dd x-2xy\dd y=0.\]
+Here $M_y=2y$ and $N_x=-2y$, so the equation is not exact and $M_y-N_x=4y$. Divide by $N$:
+\[\frac{M_y-N_x}{N}=\frac{4y}{-2xy}=-\frac{2}{x},\]
+free of $y$, so the recipe applies and $\mu=\exp\bigl(-2\ln\abs{x}\bigr)=x^{-2}$. The rescaled equation is
+\[\Bigl(\frac1x+\frac{y^{2}}{x^{2}}\Bigr)\dd x-\frac{2y}{x}\dd y=0,\]
+and it is exact, since both cross-derivatives equal $2y/x^{2}$. Integrating the first component in $x$ gives $F=\ln\abs{x}-\dfrac{y^{2}}{x}+g(y)$, and $F_y=-2y/x$ already matches the second component, so $g'=0$ and the solution is
+\[\ln\abs{x}-\frac{y^{2}}{x}=C.\]
+The sign of the $y^{2}$ term is the whole difficulty: $\int y^{2}x^{-2}\dd x=-y^{2}/x$, not $+y^{2}/x$. Through the point $(1,1)$ the constant is $-1$, and following the trajectory numerically to $x=2.5$ gives $y\approx1.8708$, for which $\ln2.5-y^{2}/2.5=-1.000000$ as it must.
+\end{worked}
+
+\begin{worked}[A factor that is an exponential rather than a power]
+\[(x^{2}+y^{2}+2x)\dd x+2y\dd y=0.\]
+Here $M_y=2y$ and $N_x=0$, so $\dfrac{M_y-N_x}{N}=\dfrac{2y}{2y}=1$, free of $y$, and $\mu=\eu^{x}$. The rescaled pair is $\eu^{x}(x^{2}+y^{2}+2x)$ and $2y\eu^{x}$, whose cross-derivatives are both $2y\eu^{x}$. Integrating the second in $y$ is the shorter route: $F=y^{2}\eu^{x}+h(x)$, and matching $F_x$ against the first component gives $h'=\eu^{x}(x^{2}+2x)$, whose antiderivative is $x^{2}\eu^{x}$. So
+\[\eu^{x}\bigl(x^{2}+y^{2}\bigr)=C.\]
+Through $(0,1)$ the constant is $1$, and the curve reaches $y\approx0.597102$ at $x=0.5$, where $\eu^{0.5}(0.25+y^{2})=1.000000$. The level curve turns back at $y=0$, near $x\approx0.7035$, which is where the solution ceases to be a function of $x$.
+\end{worked}
+
+\begin{trap}
+Computing $\dfrac{M_y-N_x}{M}$, getting something that still contains $y$, and simplifying it into submission anyway. If the quotient is not a pure function of the single variable the recipe is about, that recipe does not apply, full stop. Try the other one before inventing anything. The second error is dividing by $N$ in a region where $N$ vanishes: the factor you produce is then valid only on one side of the curve $N=0$.
+\end{trap}
+
+\begin{seealsob}Integrating factor depending on $y$ only; integrating factors of the form $x^{a}y^{b}$; recovering the potential from $M$ and $N$; the $\mu=\eu^{\int P\dd x}$ machine.\end{seealsob}
+
+The companion recipe is not a new idea but the same one with the letters exchanged, and it is worth stating separately only because the sign reversal in the numerator catches everybody at least once. The pair should be learned together and, better, derived together: both come from $\partial_y(\mu M)=\partial_x(\mu N)$ in three lines.
+
+\tech[Integrating factor depending on y only]{Integrating factor depending on $y$ only}{medium}
+\cue Not exact, and $\dfrac{N_x-M_y}{M}$ is free of $x$. The numerator is the reverse of the one in the $x$-only recipe.
+\method Set $\displaystyle\mu(y)=\exp\left(\int\frac{N_x-M_y}{M}\dd y\right)$ and proceed as before. The reversal is not a convention: it comes from $\mu'M=\mu(N_x-M_y)$, which is what $\partial_y(\mu M)=\partial_x(\mu N)$ becomes when $\mu$ depends on $y$ alone.
+
+\begin{worked}
+\[y\dd x+(2x-y\eu^{y})\dd y=0.\]
+Now $M_y=1$ and $N_x=2$, so $M_y-N_x=-1$ and the $x$-only quotient is $-1/(2x-y\eu^{y})$, which certainly involves $y$. Try the other:
+\[\frac{N_x-M_y}{M}=\frac{2-1}{y}=\frac1y,\]
+free of $x$, so $\mu=\exp\bigl(\int\dd y/y\bigr)=y$. Multiplying gives $y^{2}\dd x+(2xy-y^{2}\eu^{y})\dd y=0$, whose cross-derivatives are both $2y$. Integrating the first component in $x$: $F=xy^{2}+g(y)$, so $F_y=2xy+g'(y)$ must equal $2xy-y^{2}\eu^{y}$, forcing $g'=-y^{2}\eu^{y}$. Two integrations by parts give $\int y^{2}\eu^{y}\dd y=(y^{2}-2y+2)\eu^{y}$, hence
+\[xy^{2}-(y^{2}-2y+2)\eu^{y}=C.\]
+Through $(x,y)=(1,1)$ the constant is $1-\eu\approx-1.718282$; integrating $\dv{x}{y}=(y\eu^{y}-2x)/y$ from $y=1$ to $y=2$ gives $x\approx1.7869$, and $xy^{2}-(y^{2}-2y+2)\eu^{y}=-1.718282$ there.
+\end{worked}
+
+\begin{worked}[A negative power]
+\[2xy\dd x+(y^{2}-3x^{2})\dd y=0.\]
+$M_y=2x$ and $N_x=-6x$, so $M_y-N_x=8x$ and the $x$-only quotient $8x/(y^{2}-3x^{2})$ still carries $y$. The other quotient is $\dfrac{N_x-M_y}{M}=\dfrac{-8x}{2xy}=-\dfrac{4}{y}$, so $\mu=\eu^{-4\ln\abs{y}}=y^{-4}$. Then $F=\int2xy^{-3}\dd x=x^{2}y^{-3}+g(y)$, and $F_y=-3x^{2}y^{-4}+g'$ must equal $y^{-2}-3x^{2}y^{-4}$, so $g'=y^{-2}$ and $g=-1/y$. The solution is
+\[\frac{x^{2}}{y^{3}}-\frac{1}{y}=C,\qquad\text{equivalently}\qquad x^{2}-y^{2}=Cy^{3}.\]
+Through $(2,1)$ the constant is $3$; at $y=1.6$ the trajectory gives $x\approx3.853310$ and $x^{2}/y^{3}-1/y=3.000000$. The special case $C=0$ is the pair of lines $y=\pm x$, which are genuine solutions and are easy to lose.
+\end{worked}
+
+\begin{trap}
+Using the $x$-only numerator ordering with the $y$-only denominator, producing $\mu=\eu^{-\int\dd y/y}=1/y$ in the example above. That factor makes the equation \emph{less} exact rather than more, and the error survives to the end of the calculation because the two-step integration will still produce some $F$; it simply will not be a potential. Verify exactness after multiplying, every time.
+\end{trap}
+
+\begin{seealsob}Integrating factor depending on $x$ only; integrating factors of the form $x^{a}y^{b}$; recovering the potential from $M$ and $N$.\end{seealsob}
+
+When both single-variable tests fail there is still a large family of equations within reach, and it is the family in which $M$ and $N$ are built from monomials. The reason a monomial factor helps is structural: multiplying by $x^{a}y^{b}$ shifts every exponent in $M$ and $N$ by the same amounts, so the exactness condition becomes a system of linear equations in $a$ and $b$ rather than a differential equation in anything.
+
+\tech[Monomial and product integrating factors]{Integrating factors $x^{a}y^{b}$ and $\mu(xy)$}{hard}
+\cue Neither single-variable quotient is clean, but $M$ and $N$ are sums of monomials in $x$ and $y$; or the combination $xy$ runs through the whole equation.
+\method For the monomial form, posit $\mu=x^{a}y^{b}$, impose $\partial_y(\mu M)=\partial_x(\mu N)$, and match the coefficient of each distinct monomial. This gives a small linear system in $a$ and $b$; an inconsistent system is a proof that no factor of this shape exists. For the product form, the same derivation as before with $\mu=\mu(z)$, $z=xy$, gives $\mu'(xM-yN)=\mu(N_x-M_y)$, so
+\[\frac{\mu'}{\mu}=\frac{M_y-N_x}{yN-xM},\]
+and the factor exists in this family precisely when the right-hand side is a function of $z$ alone.
+
+\begin{worked}
+\[(2y-6x)\dd x+\Bigl(3x-\frac{4x^{2}}{y}\Bigr)\dd y=0.\]
+With $\mu=x^{a}y^{b}$ the two products are $\mu M=2x^{a}y^{b+1}-6x^{a+1}y^{b}$ and $\mu N=3x^{a+1}y^{b}-4x^{a+2}y^{b-1}$. Differentiate and compare monomial by monomial:
+\[2(b+1)x^{a}y^{b}-6b\,x^{a+1}y^{b-1}=3(a+1)x^{a}y^{b}-4(a+2)x^{a+1}y^{b-1}.\]
+Matching $x^{a}y^{b}$ gives $2b+2=3a+3$; matching $x^{a+1}y^{b-1}$ gives $6b=4a+8$. Solving, $a=1$ and $b=2$, so $\mu=xy^{2}$. Multiplying and integrating, $F=\int(2xy^{3}-6x^{2}y^{2})\dd x=x^{2}y^{3}-2x^{3}y^{2}+g(y)$, and $F_y=3x^{2}y^{2}-4x^{3}y$ already equals $\mu N$, so $g'=0$ and the solution is
+\[x^{2}y^{3}-2x^{3}y^{2}=C.\]
+Through $(1,1)$ the constant is $-1$, confirmed numerically at $x=1.6$ where $y\approx0.68975$ and $F=-1.000000$.
+\end{worked}
+
+\begin{worked}[The product form, and a second route to the same answer]
+\[y(1+xy)\dd x-x\dd y=0.\]
+Here $M=y+xy^{2}$ and $N=-x$, so $M_y=1+2xy$, $N_x=-1$, and $M_y-N_x=2+2xy$. The denominator in the product recipe is $yN-xM=-xy-xy-x^{2}y^{2}=-(2z+z^{2})$ with $z=xy$, so
+\[\frac{\mu'}{\mu}=-\frac{2(1+z)}{z(z+2)}=-\frac{1}{z}-\frac{1}{z+2},\qquad \mu=\frac{1}{z(z+2)}=\frac{1}{xy(xy+2)}.\]
+Carrying out the two-step integration in the variable $z$ and simplifying, the potential is $\tfrac12\ln\abs{z(z+2)}-\ln\abs{y}$, and exponentiating twice turns the level curves into
+\[x^{2}+\frac{2x}{y}=C.\]
+The same equation is Bernoulli in disguise, since $y'=y/x+y^{2}$; solving it that way with $u=y^{-1}$ gives $u'+u/x=-1$, then $xu=-\tfrac12x^{2}+C_1$, that is $x^{2}+2x/y=2C_1$. Two routes, one answer, which is the cheapest possible check.
+\end{worked}
+
+\begin{trap}
+Solving the exponent system and then not verifying exactness. The matching step usually gives more equations than unknowns, and if you drop one of them by accident you will get an $(a,b)$ that satisfies part of the condition and nothing else. Substitute the factor back and compute both cross-derivatives before going on. Note also that an inconsistent system is information, not a mistake: it proves that no monomial factor works, and you should stop looking for one.
+\end{trap}
+
+\begin{seealsob}Integrating factor depending on $x$ only; integrating factor depending on $y$ only; grouping and solving by inspection; recovering the potential from $M$ and $N$.\end{seealsob}
+
+\section{Substitutions that linearise}
+
+The techniques so far preserve the equation and change the multiplier. The remaining family does the opposite: it leaves the multiplier problem alone and changes the unknown, choosing a new dependent variable in which the equation is linear. There are exactly three changes worth knowing, and each is matched to a specific shape of nonlinearity: a power of $y$, an exponential of $y$, and a quadratic in $y$ with a variable coefficient.
+
+The first is Bernoulli's, and it is not a guess either. Given $y'+Py=Qy^{n}$ with $n\neq0,1$, divide through by $y^{n}$ to isolate the nonlinearity on the left:
+\[y^{-n}y'+Py^{1-n}=Q.\]
+Now the second term already contains $y^{1-n}$, so set $u=y^{1-n}$; then $u'=(1-n)y^{-n}y'$, which is exactly $(1-n)$ times the first term. Multiplying the whole equation by $(1-n)$ therefore turns it into
+\[u'+(1-n)Pu=(1-n)Q,\]
+linear in $u$. The substitution is forced by the requirement that $u'$ reproduce $y^{-n}y'$, in the same way that $\mu$ was forced by the requirement that $(\mu y)'$ reproduce $\mu y'+\mu Py$.
+
+\tech[Bernoulli substitution]{Bernoulli via $u=y^{1-n}$}{medium}
+\cue $y'+P(x)y=Q(x)y^{n}$ with $n$ neither $0$ nor $1$. The exponent may be negative or fractional; only $0$ and $1$ are excluded, and for the good reason that those two cases are already linear.
+\method Divide by $y^{n}$, substitute $u=y^{1-n}$, and solve the linear equation $u'+(1-n)Pu=(1-n)Q$ by the integrating factor $\exp\bigl((1-n)\int P\dd x\bigr)$. Recover $y=u^{1/(1-n)}$. For $n>0$ the constant function $y\equiv0$ also solves the original equation and is destroyed by the division; restore it by hand if the problem calls for all solutions.
+
+\begin{worked}
+\[y'+2xy=x\eu^{-2x^{2}}y^{4},\qquad y(0)=1.\]
+Here $n=4$, so $1-n=-3$ and $u=y^{-3}$. Dividing by $y^{4}$ and multiplying by $-3$:
+\[u'-6xu=-3x\eu^{-2x^{2}}.\]
+The integrating factor is $\exp\bigl(-\int6x\dd x\bigr)=\eu^{-3x^{2}}$, and
+\[\bigl(u\eu^{-3x^{2}}\bigr)'=-3x\eu^{-5x^{2}},\qquad u\eu^{-3x^{2}}=\tfrac{3}{10}\eu^{-5x^{2}}+C.\]
+Hence $u=\tfrac{3}{10}\eu^{-2x^{2}}+C\eu^{3x^{2}}$, and $u(0)=1$ gives $C=\tfrac{7}{10}$. Therefore
+\[y=\Bigl(\tfrac{3}{10}\eu^{-2x^{2}}+\tfrac{7}{10}\eu^{3x^{2}}\Bigr)^{-1/3},\qquad y(1)=\Bigl(\tfrac{3}{10}\eu^{-2}+\tfrac{7}{10}\eu^{3}\Bigr)^{-1/3}\approx0.413925.\]
+The bracket is positive for every $x$, so the cube root is unambiguous and the solution is global.
+\end{worked}
+
+\begin{trap}
+Taking the final root without tracking sign and domain. When $1-n$ is even, $y=u^{1/(1-n)}$ has two branches and the initial condition chooses one; when $1-n$ is odd there is no ambiguity but $u$ may pass through zero, and $y$ blows up there. Also, $n$ is the exponent on the right-hand side after the equation is in standard form: for $2y'+4xy=6xy^{3}$ you must divide by $2$ first, and $Q=3x$, not $6x$.
+\end{trap}
+
+\begin{seealsob}The $\mu=\eu^{\int P\dd x}$ machine; exponential linearisation $v=\eu^{y}$; homogeneous equations via $y=vx$; Riccati and the second-order linear equation.\end{seealsob}
+
+Bernoulli handles a power of $y$ on the right. If the nonlinearity is an exponential of $y$ instead, the same strategy applies with a different new variable, chosen by the same criterion: pick $v$ so that $v'$ absorbs the offending term. The choice $v=\eu^{y}$ gives $v'=\eu^{y}y'=vy'$, which turns a term $\eu^{-y}$ into a constant, and that is precisely what is needed.
+
+\tech[Exponential linearisation]{Exponential linearisation $v=\eu^{y}$}{medium}
+\cue The nonlinearity is $\eu^{\pm y}$ rather than a power of $y$, most often as $y'=g(x)+\eu^{-y}$ or $y'+g(x)=h(x)\eu^{-y}$.
+\method Put $v=\eu^{y}$, so that $v'=vy'$. Multiplying the equation through by $v$ converts $\eu^{-y}$ into $1$ and every term $c(x)$ into $c(x)v$, giving a linear equation for $v$. Solve it, then $y=\ln v$, and report the interval on which $v>0$.
+
+\begin{worked}
+\[y'=\frac{2}{t}+\eu^{-y},\qquad y(1)=0.\]
+Multiply by $v=\eu^{y}$: the left side becomes $v'$, the first term becomes $2v/t$, and the second becomes $1$. So
+\[v'-\frac{2}{t}v=1,\qquad \mu=t^{-2},\qquad \bigl(vt^{-2}\bigr)'=t^{-2},\qquad vt^{-2}=-\frac1t+C.\]
+Thus $v=-t+Ct^{2}$, and $v(1)=\eu^{0}=1$ gives $C=2$, so $v=2t^{2}-t$ and $y=\ln(2t^{2}-t)$. In particular $y(1.5)=\ln3\approx1.098612$. The solution is valid on $t>\tfrac12$, where $v>0$; the initial point $t=1$ lies in that interval and the interval of validity is $(\tfrac12,\infty)$.
+\end{worked}
+
+\begin{trap}
+Forgetting that $v=\eu^{y}$ is strictly positive, and reporting $y=\ln(2t^{2}-t)$ as though it were defined for all $t$. The closed form has a logarithmic singularity where $v$ vanishes, and the honest answer names the interval containing the initial point. A solution formula without its interval of validity is only half an answer for any equation whose coefficients are singular somewhere.
+\end{trap}
+
+\begin{seealsob}Bernoulli via $u=y^{1-n}$; the $\mu=\eu^{\int P\dd x}$ machine; equations linear in the other variable.\end{seealsob}
+
+The last of the three linearising substitutions is the deepest, because it does not produce a first-order linear equation at all. A Riccati equation $y'=q_0(x)+q_1(x)y+q_2(x)y^{2}$ is the general first-order equation quadratic in $y$, and it is not solvable in closed form in general. If a single particular solution is known, subtracting it reduces the problem to Bernoulli with $n=2$ and the matter is finished in three lines. If none is known, there is still one thing to do: trade the nonlinear first-order equation for a linear second-order one.
+
+\tech[Riccati to second-order linear]{Riccati to a second-order linear equation}{hard}
+\cue A Riccati equation with no particular solution supplied, especially one where the associated second-order equation is recognisable: constant coefficients, Cauchy and Euler type, or Airy.
+\method Substitute $y=-\dfrac{u'}{q_2u}$. Expanding and cancelling the $(u')^{2}$ terms gives
+\[q_2u''-\bigl(q_2'+q_1q_2\bigr)u'+q_2^{2}q_0\,u=0,\]
+a linear second-order equation. Solve it, then differentiate back. Since $u$ and $\lambda u$ give the same $y$, the two constants of the second-order equation collapse to the one constant a first-order equation is entitled to.
+
+\begin{worked}
+\[y'=y^{2}-\frac{2}{x^{2}}.\]
+Here $q_2=1$, $q_1=0$, $q_0=-2/x^{2}$, so the formula gives $u''-\dfrac{2}{x^{2}}u=0$, that is $x^{2}u''-2u=0$. This is a Cauchy and Euler equation: trying $u=x^{r}$ gives $r(r-1)=2$, so $r=2$ or $r=-1$ and $u=Ax^{2}+Bx^{-1}$. Then
+\[y=-\frac{u'}{u}=-\frac{2Ax-Bx^{-2}}{Ax^{2}+Bx^{-1}}=\frac{k-2x^{3}}{x(x^{3}+k)},\qquad k=\frac{B}{A}.\]
+Only the ratio $k$ survives, as promised. At $k=0$ this is $y=-2/x$, which checks instantly: $y'=2/x^{2}$ and $y^{2}-2/x^{2}=4/x^{2}-2/x^{2}=2/x^{2}$. At $k=1$ and $x=1$ the solution starts at $y=-\tfrac12$ and reaches $y(1.7)\approx-0.878025$, matching the closed form to six places.
+\end{worked}
+
+\begin{worked}[When the answer is that there is no answer]
+\[y'=y^{2}-x.\]
+Same substitution, now with $q_0=-x$: the second-order equation is $u''-xu=0$, the Airy equation. Its solutions are not elementary, so the honest conclusion is that this Riccati equation has no elementary closed form, and the substitution is what proves it rather than what solves it. That is a useful outcome: it tells you to stop searching and to switch to a series solution or a numerical method.
+\end{worked}
+
+\begin{worked}[The short route, when one solution can be guessed]
+\[y'=x^{2}+1-y^{2}.\]
+Guess $y_1=x$: then $y_1'=1$ and $x^{2}+1-x^{2}=1$, so it solves the equation. Now put $y=x+\dfrac{1}{w}$. Then $y'=1-\dfrac{w'}{w^{2}}$, while the right-hand side becomes $1-\dfrac{2x}{w}-\dfrac{1}{w^{2}}$. Cancelling the $1$ and multiplying by $-w^{2}$,
+\[w'-2xw=1,\qquad \mu=\eu^{-x^{2}},\qquad \bigl(w\eu^{-x^{2}}\bigr)'=\eu^{-x^{2}},\]
+so $w\eu^{-x^{2}}=\tfrac{\sqrt{\pi}}{2}\erf(x)+C$ and
+\[y=x+\frac{\eu^{-x^{2}}}{\tfrac{\sqrt{\pi}}{2}\erf(x)+C}.\]
+The answer is not elementary, but it is explicit and one line long, which the second-order route would not have delivered. With $C=1$ the solution starts at $y(0)=1$ and reaches $y(1.2)\approx1.331135$, matching numerical integration to eleven places. The general lesson: a Riccati equation with a known solution is a Bernoulli equation with $n=2$ in the variable $y-y_1$, hence a linear equation in $w=1/(y-y_1)$, and the whole reduction is three lines.
+\end{worked}
+
+\begin{trap}
+Reaching for this substitution when a particular solution is available or guessable. If $y_1$ solves the equation, then $y=y_1+1/w$ turns it into a \emph{linear first-order} equation for $w$, which is far shorter. Try the standard guesses first: a constant, a multiple of $1/x$, a linear function. Only when they all fail is the second-order route the right one.
+\end{trap}
+
+\begin{seealsob}Bernoulli via $u=y^{1-n}$; the $\mu=\eu^{\int P\dd x}$ machine; second-order linear equations with variable coefficients.\end{seealsob}
+
+\section{Equations that become linear after one differentiation}
+
+Each of the three substitutions in the previous section was chosen by the same criterion, and the criterion is worth naming because it transfers to equations not covered here. Look at the nonlinearity, ask what new variable would have that nonlinearity as its derivative or as a factor of its derivative, and adopt it. For $Qy^{n}$ the answer is $u=y^{1-n}$; for $\eu^{-y}$ it is $v=\eu^{y}$; for $q_2y^{2}$ it is the logarithmic derivative $y=-u'/(q_2u)$, which is exactly the substitution that turns a quadratic term into a linear one at the cost of one order. Nothing about any of them is memorised, and if you ever meet a nonlinearity not on the list, that question is where to start.
+
+There is one more way a linear first-order equation arrives in disguise, and it is not an algebraic disguise but an integral one. When the unknown function appears inside an integral with a variable upper limit, the Fundamental Theorem of Calculus converts the problem into a differential equation in one step, and the equation it produces is almost always linear. The only skill involved is remembering where the initial condition went.
+
+\tech{Integral equations differentiated into ODEs}{medium}
+\cue The unknown appears under an integral sign with a variable limit: $y(x)=A+\int_{a}^{x}K(t)y(t)\dd t$, or any relation in which $y$ is defined self-referentially by such an integral.
+\method Differentiate both sides. The Fundamental Theorem turns $\int_a^{x}K(t)y(t)\dd t$ into $K(x)y(x)$, so the relation becomes an ordinary differential equation. Then recover the initial condition by setting $x=a$ in the \emph{original} integral relation, where the integral is zero and the value of $y(a)$ can be read straight off. Solve the resulting linear equation as usual.
+
+\begin{worked}
+\[y(x)=3+\int_0^{x}\frac{y(t)}{t^{2}+1}\dd t.\]
+Differentiating, $y'=\dfrac{y}{1+x^{2}}$; setting $x=0$ in the original, $y(0)=3$. The equation is separable as well as linear, and the integrating factor $\mu=\exp\bigl(-\arctan x\bigr)$ gives $\bigl(y\eu^{-\arctan x}\bigr)'=0$, so $y=3\eu^{\arctan x}$ and
+\[y(1)=3\eu^{\pi/4}\approx6.579840.\]
+A second instance where the integral carries an inhomogeneous term:
+\[y(x)=2+\int_1^{x}\frac{t-y(t)}{t}\dd t\ \Longrightarrow\ y'=1-\frac{y}{x},\quad y(1)=2.\]
+Then $y'+y/x=1$, $\mu=x$, $(xy)'=x$, $xy=\tfrac12x^{2}+C$, and $y(1)=2$ gives $C=\tfrac32$, so $y=\dfrac{x}{2}+\dfrac{3}{2x}$ and $y(3)=2$ exactly.
+\end{worked}
+
+\begin{trap}
+Losing the initial condition. Differentiation destroys the additive constant $A$, so the differential equation alone has a one-parameter family of solutions and only the original integral relation knows which one is meant. Go back to $x=a$ and read $y(a)=A$ off there. A second trap: if $x$ appears both inside the integrand and as the limit, as in $y(x)=\int_0^{x}(x-t)y(t)\dd t$, you must differentiate under the integral sign as well as at the limit, and the result is second order, not first.
+\end{trap}
+
+\begin{seealsob}The $\mu=\eu^{\int P\dd x}$ machine; separable equations; Laplace transforms and convolution kernels.\end{seealsob}
+
+\section{Choosing the integrating factor}
+
+The decision is quick because the tests are cheap. Put the equation in differential form $M\dd x+N\dd y=0$, or in standard form $y'+Py=Q$ if it is already linear, and then work down the list: linear in $y$, linear in $x$, exact, one-variable factor, monomial or product factor. Every step of the list costs one derivative and one division, so the whole search takes less time than a single wrong integration.
+
+\begin{center}
+\begin{tikzpicture}[node distance=6mm and 7mm]
+\node[dtest] (a) {Is it linear in $y$?\\ $y'+P(x)y=Q(x)$};
+\node[dleaf, below left=9mm and 6mm of a] (b) {Divide by the coefficient\\ of $y'$; $\mu=\eu^{\int P\dd x}$};
+\node[dtest, below right=9mm and 1mm of a] (c) {Linear in $x$, or a\\ power or $\eu^{y}$ on the right?};
+\node[dleaf, below left=9mm and 1mm of c] (d) {Invert to $\dv{x}{y}$;\\ or $u=y^{1-n}$, $v=\eu^{y}$};
+\node[dtest, below right=9mm and 0mm of c] (e) {Write $M\dd x+N\dd y=0$.\\ Is $\dfrac{M_y-N_x}{N}$ free of $y$?};
+\node[dleaf, below left=9mm and 0mm of e] (f) {$\mu(x)=\eu^{\int(M_y-N_x)/N\dd x}$};
+\node[dtest, below right=9mm and 0mm of e] (g) {Is $\dfrac{N_x-M_y}{M}$ free of $x$?};
+\node[dleaf, below=9mm of g] (h) {Yes: $\mu(y)$. No: try\\ $x^{a}y^{b}$, then $\mu(xy)$};
+\draw[dedge] (a) -- node[dlab,left]{yes} (b);
+\draw[dedge] (a) -- node[dlab,right]{no} (c);
+\draw[dedge] (c) -- node[dlab,left]{yes} (d);
+\draw[dedge] (c) -- node[dlab,right]{no} (e);
+\draw[dedge] (e) -- node[dlab,left]{yes} (f);
+\draw[dedge] (e) -- node[dlab,right]{no} (g);
+\draw[dedge] (g) -- (h);
+\end{tikzpicture}
+\end{center}
+
+Two remarks about how to walk the tree. First, the order matters: test linearity in $y$ before writing anything in differential form, because the linear route is shorter and because converting to $M\dd x+N\dd y=0$ throws away the information that told you which variable was the unknown. Second, the tests are not exclusive. An equation can be linear in $y$, linear in $x$, and exact all at once, and when that happens any of the three routes is correct; take the one whose integrals you can do. The example $y(1+xy)\dd x-x\dd y=0$ earlier in this chapter was solvable both as a product-factor problem and as a Bernoulli equation, and agreement between the two was worth more than either derivation on its own.
+
+The tree has a deliberate omission at the bottom. If every branch fails, the equation may still be separable, homogeneous of degree zero, or reducible by a substitution such as $u=ax+by$, and those tests belong to a different chapter; nothing in this one will help. What the tree does guarantee is that you will never multiply by a factor you cannot justify, because every leaf is the conclusion of a derivation rather than a rule to be recalled.
+
+\begin{keynote}[Verify the factor, not the answer]
+The characteristic failure in this chapter is not a wrong method but a factor that is nearly right: a sign reversed in a numerator, a constant of integration carried through an exponential, a division by $a_1(x)$ omitted. All of them produce a plausible $\mu$ and a plausible final formula. The check that catches every one of them costs two derivatives: after multiplying by $\mu$, compute $\partial_y(\mu M)$ and $\partial_x(\mu N)$ and confirm they agree. For a linear equation the equivalent check is even faster: differentiate $\mu y$ and see whether you get $\mu(y'+Py)$. Do this before integrating, not after, because an integration performed against the wrong factor is entirely wasted work.
+\end{keynote}
+
+\begin{keynote}[Audit the solution numerically]
+Every closed form in this chapter can be checked to six decimal places in under a minute, and two checks between them catch essentially all errors. The algebraic one: substitute the claimed solution back into the \emph{original} equation, not the standard form, since the division by $a_1(x)$ is itself a common place to slip. The numerical one: integrate the equation by fourth-order Runge and Kutta from the initial point to some interior point and compare with the formula. That second check is decisive for implicit answers too, where substitution is awkward: evaluate the claimed first integral $F(x,y)$ at both ends of a numerically computed trajectory and confirm that the two numbers agree. Every worked example in this chapter was verified that way, and the discrepancies quoted are the real ones, of order $10^{-11}$, which is what a correct closed form against a fine step size looks like. An error in a sign or an exponent shows up in the third digit, not the eleventh.
+\end{keynote}
+
+A final habit. When an equation resists every route in the tree, go back and ask what the equation would look like if it were meant to be solved by one of them. Linear equations are built by differentiating a product, so a solvable one has a $\mu$ with a recognisable antiderivative behind it; exact equations are built by differentiating a potential, so a solvable one has cross-derivatives that agree after one cancellation. Problems in this family are constructed forwards and presented backwards, and reconstructing the forward step is usually faster than grinding through the backward one.
+
+\section{Recognition matrix}
+\begin{recog}{@{}p{0.30\textwidth}p{0.36\textwidth}p{0.28\textwidth}@{}}
+\rowcolor{mist}\mh{If you see} & \mh{Reach for} & \mh{If that fails} \\
+\midrule
+\endhead
+$y'+P(x)y=Q(x)$ & $\mu=\eu^{\int P\dd x}$; integrate $(\mu y)'=\mu Q$ & Check you divided by the coefficient of $y'$ \\
+$a_1(x)y'+a_0(x)y=f(x)$ & Divide by $a_1$ first, then read $P$ and $Q$ & Locate the zeros of $a_1$: singular points \\
+An initial condition where $a_1$ vanishes & Substitute the point into the original equation & Expect no solution or infinitely many \\
+$y'$ as a quotient, $y$ ugly downstairs & Invert: solve $\dv{x}{y}+P(y)x=Q(y)$ & Test whether $M$ is free of $x$ \\
+$y'+Py=Qy^{n}$, $n\neq0,1$ & Bernoulli: $u=y^{1-n}$, then linear in $u$ & Restore the lost solution $y\equiv0$ \\
+$\eu^{-y}$ on the right-hand side & $v=\eu^{y}$; multiply through by $v$ & Report the interval where $v>0$ \\
+$y'=q_0+q_1y+q_2y^{2}$, $y_1$ known & $y=y_1+1/w$: linear first order in $w$ & Bernoulli with $n=2$ on $y-y_1$ \\
+$y'=q_0+q_1y+q_2y^{2}$, nothing known & $y=-u'/(q_2u)$; second-order linear in $u$ & Airy or Bessel means no elementary form \\
+$M\dd x+N\dd y=0$, $M_y=N_x$ & Exact: recover the potential directly & Recheck both partial derivatives \\
+Not exact, $\dfrac{M_y-N_x}{N}$ free of $y$ & $\mu(x)=\exp\int\dfrac{M_y-N_x}{N}\dd x$ & Try the $y$-only recipe instead \\
+Not exact, $\dfrac{N_x-M_y}{M}$ free of $x$ & $\mu(y)=\exp\int\dfrac{N_x-M_y}{M}\dd y$ & Note the reversed numerator \\
+$M$, $N$ sums of monomials & Posit $\mu=x^{a}y^{b}$; match exponents & Inconsistent system: no such factor \\
+$xy$ appearing throughout & $\mu(z)$ with $\dfrac{\mu'}{\mu}=\dfrac{M_y-N_x}{yN-xM}$, $z=xy$ & Group the exact blocks by inspection \\
+$y=A+\int_a^{x}K(t)y(t)\dd t$ & Differentiate; read $y(a)=A$ off at $x=a$ & Check whether $x$ is also inside the integrand \\
+A factor $\mu$ you cannot derive & Recompute from $\partial_y(\mu M)=\partial_x(\mu N)$ & Verify exactness before integrating \\
+$Q$ a sum of unlike terms & Superpose: one $\mu$, several particular solutions & Integrate $\mu Q$ term by term \\
+$Q$ piecewise, with a jump at $c$ & Solve each piece; match $y$ at $c$, not $y'$ & The definite form does this for you \\
+$Q$ with no elementary antiderivative & Leave the definite integral in the answer & Variation of parameters is the same formula \\
+\end{recog}

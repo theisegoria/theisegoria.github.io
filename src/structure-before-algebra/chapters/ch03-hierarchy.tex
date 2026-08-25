@@ -1,0 +1,531 @@
+\chapter{The asymptotic hierarchy and the indeterminate forms}
+
+\begin{orient}
+\textbf{What this chapter is for.} Almost every limit that a course or a competition will put in front of you is decided by a single question: which term wins? A quotient at infinity is settled by the fastest-growing term on the top and the fastest-growing term on the bottom; a quotient at a point is settled by the lowest-order term of each. The apparatus of ``indeterminate forms'' is not a separate subject. It is a lookup table whose only purpose is to tell you which algebraic rewrite converts an unrecognisable expression into a dominance question you can already answer. This chapter installs the growth hierarchy as a memorised total order, teaches the four ways of exploiting it (divide by the dominant term, replace factors by their asymptotic equivalents, carry explicit remainders, and rescale logarithmically), and then classifies the seven indeterminate forms by the single conversion move each one demands. At the end you should be able to look at a limit, name its form in two seconds, name the rewrite in two more, and know before you start what the answer will depend on.
+\end{orient}
+
+\section{The hierarchy, and why it beats reflexive L'Hopital}
+
+Everything in this chapter descends from one displayed statement. Write $f\ll g$ to mean $\lim_{x\to\infty}f(x)/g(x)=0$. Then, for every fixed $M>0$, every $\varepsilon>0$, and all $0<a<b$ and $c>0$,
+\[
+1\ \ll\ \ln\ln x\ \ll\ \ln x\ \ll\ (\ln x)^{M}\ \ll\ x^{\varepsilon}\ \ll\ x^{a}\ \ll\ x^{b}\ \ll\ \eu^{cx}\ \ll\ \eu^{x^{2}}\ \ll\ n!\ \ll\ n^{n}.
+\]
+Read it as a chain of strict classes, not a list of examples. The three facts worth internalising are these. First, the relation is transitive, so a single glance places any two of these objects. Second, no fixed power rescues a slower class: $(\ln x)^{100}\ll x^{1/100}$, even though the crossover does not occur until $x$ is around $\eu^{1.2\times10^{5}}$. Third, the last two entries are sequence-only, since $n!$ and $n^{n}$ are not defined for continuous $x$ without invoking $\Gamma$.
+
+The chain has a mirror image at the origin, and you will use it as often. Writing $f\ll g$ now for $\lim_{x\to0^{+}}f/g=0$,
+\[
+\eu^{-1/x}\ \ll\ x^{b}\ \ll\ x^{a}\ \ll\ \frac{1}{\ln(1/x)}\ \ll\ 1\qquad(0<a<b).
+\]
+The two ends are the interesting ones. On the left, $\eu^{-1/x}$ vanishes faster than every power, which is why the standard example of a smooth non-analytic function is built from it. On the right, $1/\ln(1/x)$ vanishes more slowly than every power, which is why logarithmic factors are so hard to dislodge. In between, the rule is the reverse of the rule at infinity: at a point, the \emph{lowest} power dominates, because it is the one that vanishes most slowly. Every technique in this chapter is one of these two readings applied to a specific shape.
+
+The pedagogical claim of this chapter is that the hierarchy should be your first instrument and L'Hopital's rule your third. There are three reasons, and they are not matters of taste.
+
+\emph{Cost.} L'Hopital reduces the exponent of a power by one per application. On $(\ln x)^{100}/x^{1/100}$ it needs one hundred differentiations, each producing a longer expression than the last, to reach a conclusion the hierarchy delivers in one line. On a ratio of cubics it needs three rounds where factoring $x^{3}$ needs none.
+
+\emph{Failure.} L'Hopital can cycle. On $\sqrt{1+x^{2}}/x$ as $x\to\infty$, differentiating gives $x/\sqrt{1+x^{2}}$, and differentiating that gives $\sqrt{1+x^{2}}/x$ again; the rule loops forever on a limit whose value, $1$, follows immediately from dividing by $x$. It can also report ``no limit'' when a limit exists, which is the subject of the next chapter's final technique.
+
+\emph{Information.} Dominance reasoning tells you \emph{why} the answer is what it is, and therefore tells you what happens when a coefficient or an exponent in the problem is perturbed. A stack of derivatives tells you a number.
+
+\begin{keynote}[Why class beats exponent]
+Substitute $x=\eu^{t}$ and the whole left half of the chain collapses into a single comparison. The claim $(\ln x)^{M}\ll x^{\varepsilon}$ becomes $t^{M}\ll \eu^{\varepsilon t}$, which is one fact about one pair of functions. The right half comes from the crude bound $n!\geq(n/2)^{n/2}$, obtained by discarding the smaller half of the factors: taking logarithms, $(n/2)\ln(n/2)>cn$ as soon as $n>2\eu^{2c}$, so $\eu^{cn}\ll n!$ for every $c$. The hierarchy is two facts, not eleven.
+\end{keynote}
+
+It is worth watching the cost difference once, on a limit small enough to write out in full. Take $\displaystyle\lim_{x\to\infty}\frac{x^{3}+5x}{2x^{3}-x^{2}+7}$. By hierarchy: divide by $x^{3}$ and read $\dfrac{1+5x^{-2}}{2-x^{-1}+7x^{-3}}\to\dfrac12$, one line, and the line also tells you that the answer depends only on the leading coefficients. By L'Hopital: $\dfrac{3x^{2}+5}{6x^{2}-2x}$, still $\tfrac{\infty}{\infty}$, then $\dfrac{6x}{12x-2}$, still $\tfrac{\infty}{\infty}$, then $\dfrac{6}{12}=\tfrac12$. Three rounds, three form checks, and at no point does the calculation reveal that the constant $7$ and the linear term $5x$ were irrelevant from the start. Now replace the exponent $3$ by $30$ and the second method costs thirty rounds while the first costs the same single line.
+
+None of this makes L'Hopital useless. It makes it a specialised tool with a narrow best case, which is exactly how the next chapter treats it. Here we build the instrument that replaces it in the majority of cases.
+
+\tech{The growth hierarchy}{easy}
+\cue A quotient at infinity whose numerator and denominator are drawn from \emph{different} growth classes: a logarithm against a power, a power against an exponential, an exponential against a factorial.
+\method Place both against the chain above and read off the answer: if the denominator's class strictly dominates, the limit is $0$; if the numerator's does, the limit is $\pm\infty$ according to sign; only same-class competitors require further work. The useful strengthening is that class beats exponent, so $(\ln x)^{M}\ll x^{\varepsilon}$ and $x^{M}\ll \eu^{\varepsilon x}$ hold for every fixed $M$ however large and every fixed $\varepsilon>0$ however small.
+
+\begin{worked}
+Two limits that look like they need work and do not.
+\[
+\lim_{x\to\infty}\frac{(\ln x)^{100}}{x^{1/100}}=0,\qquad
+\lim_{n\to\infty}\frac{n^{10}\,2^{n}}{n!}=0.
+\]
+The first is a logarithm against a power, so the power wins regardless of the exponents; substituting $x=\eu^{t}$ turns it into $t^{100}/\eu^{t/100}$ if you want to see the mechanism. The second is a product of a power and an exponential against a factorial, and the factorial is above both in the chain. Numerically the second is already $1.4\times10^{-20}$ at $n=40$, whereas the first is still enormous at $x=\eu^{200}$ and does not fall below $1$ until $\ln x$ exceeds about $1.17\times10^{5}$.
+
+A third, to show how to place an object that is not literally in the chain:
+\[
+\lim_{x\to\infty}\frac{x^{x}}{\eu^{x^{2}}}=0 .
+\]
+Write $x^{x}=\eu^{x\ln x}$ and compare exponents. Since $x\ln x\ll x^{2}$, the quotient is $\eu^{x\ln x-x^{2}}\to0$. The general principle: to place two exponentials, compare their exponents; to place an exponential against anything else, take logarithms of both.
+\end{worked}
+
+\begin{trap}
+Believing that a huge exponent on the slower function wins. It only delays the crossover; it never changes the limit. The companion error is reaching for L'Hopital on the first of these, where one hundred differentiations are needed to say what one line of hierarchy says.
+\end{trap}
+
+\begin{seealsob}Divide by the dominant term; logarithmic rescaling; L'Hopital's failure modes.\end{seealsob}
+
+A remark on how to use the chain when an object is not literally in it. Every function you meet can be placed by one of three moves: rewrite it as an exponential and compare exponents, as was done above with $x^{x}$; take logarithms of both competitors and compare the results, which is safe because $\ln$ is increasing; or bound it between two entries of the chain, which is enough whenever both bounds give the same verdict. Nothing else is needed, and the chain is short enough to be memorised in an afternoon.
+
+The hierarchy answers questions in which the two sides live in different classes, and it answers them without any arithmetic at all. When the two sides live in the \emph{same} class the answer is finite and nonzero, and it is a ratio of coefficients. Extracting that ratio is pure algebra, and the algebra always takes the same shape: identify the one term that dominates each sum, divide it out, and let the hierarchy annihilate the remainder.
+
+\tech{Divide by the dominant term}{easy}
+\cue A ratio of sums as $x\to\infty$ or $n\to\infty$ in which one term of the numerator and one term of the denominator visibly outgrow everything else in their own sum.
+\method Factor the single dominant term out of the top and out of the bottom, then kill the rest with the hierarchy. For polynomials this is
+\[
+\frac{a_mx^{m}+\cdots}{b_nx^{n}+\cdots}=x^{m-n}\cdot\frac{a_m+O(1/x)}{b_n+O(1/x)}\longrightarrow
+\begin{cases}0,& m<n,\\[2pt] a_m/b_n,& m=n,\\[2pt] \pm\infty,& m>n,\end{cases}
+\]
+and the same move works verbatim when the ``terms'' are exponentials, factorials, or logarithms rather than powers.
+
+\begin{worked}
+\[
+\lim_{x\to\infty}\frac{\sqrt{x^{4}+x^{2}+1}+\ln x}{3x^{2}-\arctan x}.
+\]
+The dominant term upstairs is $\sqrt{x^{4}}=x^{2}$, since $\ln x\ll x^{2}$; downstairs it is $3x^{2}$, since $\arctan x$ is bounded. Divide top and bottom by $x^{2}$:
+\[
+\frac{\sqrt{1+x^{-2}+x^{-4}}+x^{-2}\ln x}{3-x^{-2}\arctan x}\longrightarrow\frac{1+0}{3-0}=\frac13 .
+\]
+Confirmed numerically: the quotient is $0.33333333334$ at $x=10^{6}$.
+
+The same move at a sequence, where the dominant terms are factorials:
+\[
+\lim_{n\to\infty}\frac{n!+3^{n}}{(n+1)!-3^{n+1}}
+=\lim_{n\to\infty}\frac{1+3^{n}/n!}{(n+1)-3^{n+1}/n!}=0 ,
+\]
+after dividing top and bottom by $n!$ and using $3^{n}\ll n!$ from the hierarchy. The value at $n=50$ is $0.0196$, which is $1/51$ to four figures, exactly as the surviving $(n+1)$ downstairs predicts.
+\end{worked}
+
+\begin{trap}
+Applying L'Hopital instead. On a ratio of cubics it works but costs three rounds and produces no insight; on $\sqrt{1+x^{2}}/x$ it cycles forever, because each differentiation swaps the two functions back. The second trap is dividing by $x^{m}$ from the numerator's degree rather than by a single consistent power, which scrambles the bookkeeping when $m\neq n$. The third is forgetting that ``dominant'' is decided separately in the numerator and in the denominator: in $\dfrac{\eu^{x}+x^{100}}{x^{100}+\ln x}$ the dominant terms are $\eu^{x}$ and $x^{100}$, from different classes, and the limit is $+\infty$.
+\end{trap}
+
+\begin{seealsob}The growth hierarchy; radicals at infinity; expansion at infinity via $t=1/x$.\end{seealsob}
+
+The same move works when the competing terms are exponentials rather than powers, and it is worth seeing once in that setting because the notation obscures it. In $\bigl(2^{n}+3^{n}\bigr)^{1/n}$ the dominant term is $3^{n}$, so the expression equals $3\bigl(1+(2/3)^{n}\bigr)^{1/n}$ and the limit is $3$; the bracket tends to $1$ because $(2/3)^{n}\to0$ and the exponent tends to $0$. Nothing about the exponent $1/n$ changed the analysis. It was still a question of which term dominates.
+
+Dominance at infinity has an exact mirror at a point: as $x\to0$ the lowest power wins rather than the highest, and the statement ``$\sin x$ behaves like $x$'' is the same kind of statement as ``$3x^{3}-x$ behaves like $3x^{3}$''. The formal device that lets you use it is asymptotic equivalence, and the whole of its difficulty lies in knowing which operations preserve it.
+
+\tech{Asymptotic equivalence and its legal algebra}{easy}
+\cue A product or quotient in which every factor has a known leading behaviour: $\sin u\sim u$, $\tan u\sim u$, $\eu^{u}-1\sim u$, $\ln(1+u)\sim u$, $\arcsin u\sim u$, $\arctan u\sim u$, $\sinh u\sim u$, $1-\cos u\sim u^{2}/2$, all as $u\to0$.
+\method Write $f\sim g$ for $\lim f/g=1$. Equivalence is closed under multiplication, division, and fixed real powers, so in a pure product or quotient you may replace each factor by its equivalent independently:
+\[
+\lim\frac{\prod_i f_i}{\prod_j g_j}=\lim\frac{\prod_i \tilde f_i}{\prod_j \tilde g_j}\quad\text{whenever }f_i\sim\tilde f_i,\ g_j\sim\tilde g_j .
+\]
+It is \emph{not} closed under addition, subtraction, or substitution into an outer function.
+
+\begin{worked}
+\[
+\lim_{x\to0}\frac{(\eu^{3x}-1)\arcsin 2x}{\tan 5x\,\ln(1+4x)}
+=\lim_{x\to0}\frac{(3x)(2x)}{(5x)(4x)}=\frac{6}{20}=\frac{3}{10}.
+\]
+Every factor is a composition of a standard function with a linear argument, so each contributes only its multiplier. A second instance shows the same mechanism cancelling a circular function against its hyperbolic sibling:
+\[
+\lim_{x\to0^{+}}\frac{\sin(\sqrt{x})\,\arcsin(x^{2})}{\sinh(\sqrt{x})\,\operatorname{arsinh}(x^{2})}=1,
+\]
+because $\sin u$ and $\sinh u$ share the leading term $u$, as do $\arcsin$ and $\operatorname{arsinh}$, and the four leading terms cancel pairwise.
+
+Fixed powers are legal too, and that is often the whole trick:
+\[
+\lim_{x\to0}\frac{(1-\cos x)^{3/2}}{x^{3}}=\lim_{x\to0}\frac{(x^{2}/2)^{3/2}}{x^{3}}=2^{-3/2}=\frac{1}{2\sqrt2}\approx0.353553 ,
+\]
+verified as $0.3535533$ at $x=10^{-3}$. Note that $1-\cos x\sim x^{2}/2$ is not a leading term of the form $cu$; equivalence does not require the equivalent to be linear, only that the ratio tends to $1$.
+\end{worked}
+
+\begin{trap}
+Substituting equivalents inside a difference. From $\tan x\sim x$ and $\sin x\sim x$ one ``deduces'' $\tan x-\sin x\sim0$; the truth is $\tan x-\sin x\sim\tfrac12 x^{3}$. Every difference of same-order quantities requires full expansion, not equivalence.
+\end{trap}
+
+\begin{seealsob}Big-O and little-o bookkeeping; order bookkeeping across a subtraction; the standard expansion table.\end{seealsob}
+
+\begin{keynote}[Equivalence is a statement about ratios, not about differences]
+$f\sim g$ asserts that $f/g\to1$, which controls the \emph{relative} error and says nothing whatever about the absolute one. Two functions can be equivalent while their difference grows without bound: $x^{2}+x\sim x^{2}$, and yet the difference is $x$. That single observation explains both halves of the closure rule. Ratios of equivalent things are equivalent because relative errors multiply; differences of equivalent things are uncontrolled because relative errors say nothing about what survives a cancellation.
+\end{keynote}
+
+Composition deserves a sentence of its own, because the failure there is less familiar than the failure under subtraction and just as fatal. From $x^{2}+x\sim x^{2}$ it does not follow that $\eu^{x^{2}+x}\sim\eu^{x^{2}}$: the ratio is $\eu^{x}$, which tends to infinity. The reason is that $\sim$ controls a ratio, and the exponential converts a ratio into a difference, which $\sim$ never controlled. Two compositions are safe. Fixed real powers are safe, since $f\sim g$ gives $f^{r}\sim g^{r}$ directly. Logarithms of quantities tending to infinity are safe, since $\ln f=\ln g+\ln(f/g)$ and the correction tends to $0$ while $\ln g$ does not. Everything else must be checked, and the practical rule is that if the outer function is not a power or a logarithm, expand instead of substituting.
+
+That trap is the reason the next technique exists. Equivalence throws away all information beyond the leading term, which is fine in a product and fatal in a difference. The repair is to keep a named remainder rather than an ellipsis, so that the moment a leading term cancels you still know what is left.
+
+\tech{Big-O and little-o bookkeeping}{medium}
+\cue You are about to truncate a series, and you need to certify that the discarded tail cannot affect the answer.
+\method Carry an explicit remainder and use its algebra: $x^{m}O(x^{n})=O(x^{m+n})$, $O(x^{m})\pm O(x^{n})=O(x^{\min(m,n)})$, $O(x^{m})\,O(x^{n})=O(x^{m+n})$, and $O(x^{n})/x^{k}\to0$ whenever $n>k$. The operational rule that follows: expand every ingredient to the same \emph{absolute order}, never to the same number of terms.
+
+\begin{worked}
+\[
+\lim_{x\to0}\frac{1-\cos x-\tfrac12x^{2}}{x^{4}}.
+\]
+Write $\cos x=1-\tfrac{x^{2}}{2}+\tfrac{x^{4}}{24}+O(x^{6})$. Then $1-\cos x-\tfrac12x^{2}=-\tfrac{x^{4}}{24}+O(x^{6})$ exactly, and dividing by $x^{4}$ gives $-\tfrac1{24}+O(x^{2})$. The limit is $-\dfrac1{24}$. The remainder is what licenses the conclusion: without it, ``the next terms are small'' is an assertion, and with it, $O(x^{6})/x^{4}=O(x^{2})\to0$ is a proof. Numerically the quotient is $-0.0416665$ at $x=10^{-2}$ against $-1/24=-0.0416667$.
+
+A second instance, chosen to expose the term-count error:
+\[
+\lim_{x\to0}\frac{\eu^{x}-1-\ln(1+x)}{x^{2}}=1 .
+\]
+Three terms of $\eu^{x}$ reach order $2$; three terms of $\ln(1+x)$ reach order $3$. Expanded to a common order $2$, the numerator is $\bigl(x+\tfrac{x^{2}}{2}\bigr)-\bigl(x-\tfrac{x^{2}}{2}\bigr)+O(x^{3})=x^{2}+O(x^{3})$, so the limit is $1$; a solver who matched term counts rather than orders would have carried an unnecessary cubic through the whole calculation.
+
+A third instance, showing the remainder algebra doing real work inside a product:
+\[
+\lim_{x\to0}\frac{\sin x\,\ln(1+x)-x^{2}}{x^{3}}=-\frac12 .
+\]
+Target order $3$, so expand each factor through order $2$ and keep the $O$: $\sin x=x+O(x^{3})$ and $\ln(1+x)=x-\tfrac{x^{2}}{2}+O(x^{3})$. The product is $x^{2}-\tfrac{x^{3}}{2}+O(x^{4})$, since $x\cdot O(x^{3})=O(x^{4})$ and $O(x^{3})\cdot O(x)=O(x^{4})$ absorb everything discarded. Subtracting $x^{2}$ and dividing by $x^{3}$ gives $-\tfrac12+O(x)$. Verified as $-0.49983$ at $x=10^{-3}$.
+\end{worked}
+
+\begin{trap}
+Expanding ``three terms of each'' rather than ``to order $x^{4}$ of each''. Different functions reach a given order after different numbers of terms, so a term-count rule silently drops a surviving contribution from the function whose series is sparse. Here $\cos$ needs three terms to reach order $4$ while $\ln(1+x)$ would need four.
+\end{trap}
+
+\begin{seealsob}Asymptotic equivalence and its legal algebra; expand to the first surviving order; order bookkeeping across a subtraction.\end{seealsob}
+
+Those four techniques are the complete toolkit for a limit whose ingredients are already in a comparable shape. The next section deals with the three shapes that are not, and its message is that each one needs a specific piece of preprocessing before dominance can be read off at all. Skipping the preprocessing does not produce a harder calculation; it produces a wrong sign, an overflow, or a confident answer that is off by a term nobody looked for.
+
+\begin{keynote}[The two-second protocol]
+Before writing anything, answer three questions. Where is the limit point, $0$ or a finite $a$ or $\pm\infty$? What does direct substitution produce, a number or one of the seven symbols? And which single term dominates on the top and which on the bottom, remembering that at a point the lowest order dominates and at infinity the highest does? A solver who answers these three has already chosen the method. A solver who starts differentiating has not.
+\end{keynote}
+
+\subsection{Two things the hierarchy does not settle}
+
+The chain sorts classes. Inside a class it says nothing, and there are two situations where that silence matters.
+
+The first is a comparison that is finer than the chain. All of $\ln x$, $\ln(3x)$, $\ln(x^{2})$ and $\ln(x^{100})$ sit in the same class, but they are not interchangeable: $\ln(3x)/\ln x\to1$, so those two are equivalent, whereas $\ln(x^{2})/\ln x=2$ exactly, so those two are not. The rule is that a constant \emph{factor} inside a logarithm is asymptotically invisible while a constant \emph{exponent} is not, because $\ln(cx)=\ln x+\ln c$ but $\ln(x^{k})=k\ln x$. The same distinction runs through the exponential class: $\eu^{x+1}$ and $\eu^{x}$ differ by the fixed factor $\eu$, while $\eu^{2x}$ and $\eu^{x}$ are in different classes altogether. Whenever a problem is engineered so that a ratio is finite and nonzero, this is usually where the engineering happened.
+
+The second is oscillation. Nothing in the chain applies to $\sin x$, which neither grows nor decays, and the correct instrument there is the squeeze theorem. Three examples fix the pattern: $\dfrac{\sin x}{x}\to0$ as $x\to\infty$ because a bounded numerator over an unbounded denominator is squeezed between $\pm1/x$; $\dfrac{x+\sin x}{x}\to1$ because the perturbation is bounded and the main term is not; and $\dfrac{x\sin x}{x^{2}}=\dfrac{\sin x}{x}\cdot 1$ has no limit at all, because the oscillation is not damped relative to the denominator. Dominance reasoning tells you which of these three situations you are in, and then hands the problem to the squeeze.
+
+\section{Radicals, logarithms, and the named asymptotics}
+
+The three techniques in this section are dominance reasoning applied to the three shapes that most often disguise it: a radical, which hides an absolute value; a factorial or a tower, which is too large to compare directly and must be examined on a logarithmic scale; and a named special function, whose growth is standard but which no table of elementary limits covers. In all three, the analysis is the analysis of the previous section. What changes is the preprocessing needed before the hierarchy can be read off, and each of the three has a characteristic failure attached to it: a lost minus sign, an overflowed calculation, and a numerical probe that lies.
+
+\tech{Radicals at infinity, and the sign of the dominant power}{easy}
+\cue A square root or $k$-th root of a polynomial inside a limit as $x\to\pm\infty$.
+\method Pull the dominant power out through the radical, and write it as an absolute value:
+\[
+\sqrt{a_nx^{n}+\cdots}=\abs{x}^{n/2}\sqrt{a_n+O(1/x)},\qquad \sqrt{x^{2}}=\abs{x}=\begin{cases}x,&x\to+\infty,\\ -x,&x\to-\infty.\end{cases}
+\]
+The absolute value is the entire content of the technique. When $x\to-\infty$, substitute $x=-t$ with $t\to+\infty$ and the sign takes care of itself.
+
+\begin{worked}
+\[
+\lim_{x\to-\infty}\frac{\sqrt{4x^{2}+1}}{x+3}.
+\]
+Here $\sqrt{4x^{2}+1}=\abs{x}\sqrt{4+x^{-2}}=-x\sqrt{4+x^{-2}}$, so the quotient equals $-\sqrt{4+x^{-2}}\big/(1+3/x)\to-2$. The same expression tends to $+2$ as $x\to+\infty$. A second instance, where the sign decides more than a sign: with $x=-t$,
+\[
+\lim_{x\to-\infty}\bigl(x+\sqrt{x^{2}+3x}\bigr)=\lim_{t\to\infty}\bigl(t\sqrt{1-3/t}-t\bigr)=\lim_{t\to\infty}t\Bigl(-\frac{3}{2t}+O(t^{-2})\Bigr)=-\frac32 ,
+\]
+verified as $-1.50000001$ at $x=-10^{8}$.
+
+Finally, a quotient that mixes an odd root with an even one, where only one of the two carries a sign:
+\[
+\lim_{x\to-\infty}\frac{\sqrt[3]{x^{3}+2x}}{\sqrt{x^{2}+1}}
+=\lim_{x\to-\infty}\frac{x\sqrt[3]{1+2x^{-2}}}{\abs{x}\sqrt{1+x^{-2}}}
+=\lim_{x\to-\infty}\frac{x}{-x}=-1 ,
+\]
+verified as $-1.0000000$ at $x=-10^{6}$. The cube root contributed $x$, the square root contributed $-x$, and the entire answer is the mismatch.
+\end{worked}
+
+\begin{trap}
+Cancelling $\sqrt{x^{2}}$ against $x$ and reporting $+2$ on both sides. This is the single most common sign error in the subject, and it is invisible in the algebra because $\sqrt{x^{2}}$ and $x$ are typeset differently but read identically. The defence is mechanical: whenever the limit point is $-\infty$, substitute $x=-t$ on the first line and never write $\abs{x}$ at all.
+\end{trap}
+
+\begin{seealsob}Divide by the dominant term; conjugate multiplication; expansion at infinity via $t=1/x$.\end{seealsob}
+
+The absolute value appears only for even roots. For odd $k$ the function $\sqrt[k]{\cdot}$ is defined and increasing on the whole line, so $\sqrt[3]{x^{3}}=x$ with no case split, and the technique reduces to factoring. The practical consequence is that a problem mixing $\sqrt{\cdot}$ with $\sqrt[3]{\cdot}$ at $-\infty$ has exactly one place where a sign can be lost, and you should mark it before doing anything else.
+
+Radicals hide a sign. Factorials and towers hide a scale: they are so large that direct comparison overflows both arithmetic and intuition, and the problem itself is usually posed on a logarithmic scale to compensate.
+
+\tech{Logarithmic rescaling of a monstrous expression}{hard}
+\cue Factorials, towers, or products so large that the question is posed logarithmically: $\log_{n}(\cdot)$, or $\ln(\cdot)/n^{2}$, or the $n$-th root of a product.
+\method Take logarithms first, insert Stirling's expansion
+\[
+\ln(n!)=n\ln n-n+\tfrac12\ln(2\pi n)+O(1/n),
+\]
+keep only what survives the stated normalisation, and read off the answer. Discard subdominant terms only after the normalisation is applied, since a term that is negligible before dividing by $n^{2}$ may not be negligible after.
+
+\begin{worked}
+\[
+\lim_{n\to\infty}\log_{n}\!\left(\ln\frac{(n^{2})!}{(n!)^{n}}\right).
+\]
+Stirling gives $\ln (n^{2})!=2n^{2}\ln n-n^{2}+O(\ln n)$ and $n\ln(n!)=n^{2}\ln n-n^{2}+O(n\ln n)$, so the inner logarithm is $n^{2}\ln n\,(1+o(1))$. Then
+\[
+\log_{n}\bigl(n^{2}\ln n\bigr)=2+\frac{\ln\ln n}{\ln n}\longrightarrow 2 .
+\]
+At $n=4000$ the true value is $2.25505$ and the predicted correction $\ln\ln n/\ln n$ is $2.25507$: the agreement of the \emph{residual}, not the closeness of the raw number to $2$, is what confirms the analysis.
+
+The same preprocessing settles the standard root-of-a-factorial limit:
+\[
+\lim_{n\to\infty}\frac{\sqrt[n]{n!}}{n}
+=\exp\left(\lim_{n\to\infty}\Bigl[\frac{\ln(n!)}{n}-\ln n\Bigr]\right)
+=\exp\left(\lim_{n\to\infty}\Bigl[\ln n-1+\frac{\ln(2\pi n)}{2n}-\ln n\Bigr]\right)=\eu^{-1}.
+\]
+Verified as $0.36808$ at $n=10^{4}$ against $\eu^{-1}=0.36788$; the residual decays like $\ln n/(2n)$, which is $0.00046$ at that $n$, and that too matches.
+\end{worked}
+
+\begin{trap}
+Probing a doubly-logarithmic limit numerically and concluding that the answer is $2.25$. Convergence at rate $1/\ln n$ is invisible to floating point: even $n=10^{40}$ leaves an error above $0.05$. Any limit whose correction term contains $\ln\ln n$ must be settled symbolically. The second trap is arithmetic rather than analytic: computing $(n^{2})!$ directly overflows every floating-point format for $n$ above about $7$, so the logarithm must be taken symbolically before any number is evaluated, using $\ln(m!)=\sum_{k\leq m}\ln k$ or Stirling, never $\ln(\text{a computed factorial})$.
+\end{trap}
+
+\begin{seealsob}The growth hierarchy; Stirling's approximation; numerically deceptive limits.\end{seealsob}
+
+Stirling is the first entry in a small catalogue of asymptotics you are expected to quote rather than derive. The rest of that catalogue is the subject of the next block, and it shares Stirling's defining hazard: the corrections decay so slowly that numerical evidence is worthless.
+
+\tech{Asymptotics of the named special functions}{hard}
+\cue A harmonic number $H_n$, a Lambert $W$, a digamma $\psi$, a $\Gamma(1+x)$ near zero, or a polylogarithm appears, and the problem plainly does not want an exact evaluation.
+\method Substitute the headline asymptotic and stop. The four that carry most problems are
+\[
+H_n=\ln n+\gamma+\frac{1}{2n}+O(n^{-2}),\quad
+W(x)=\ln x-\ln\ln x+o(1),
+\]
+\[
+\psi(x)=\ln x-\frac{1}{2x}+O(x^{-2}),\quad
+\Gamma(1+x)=1-\gamma x+O(x^{2})\ \ (x\to0).
+\]
+
+\begin{worked}
+Two limits with the same moral. First,
+\[
+\lim_{x\to\infty}\frac{\ln x}{W(x)}=1,
+\]
+since $W(x)=\ln x-\ln\ln x+o(1)=\ln x\,(1-\ln\ln x/\ln x+o(1))$ and $\ln\ln x\ll\ln x$. Second, a case where two terms of the expansion are needed:
+\[
+\lim_{n\to\infty}n\bigl(H_{2n}-H_n-\ln 2\bigr)
+=\lim_{n\to\infty}n\Bigl(\ln 2+\frac{1}{4n}-\frac{1}{2n}+O(n^{-2})\Bigr)-n\ln 2=-\frac14 ,
+\]
+verified as $-0.2499969$ at $n=2\times10^{4}$. Note that the leading terms $\ln n+\gamma$ cancelled and the answer came entirely from the $1/(2n)$ correction.
+
+The small-argument entry works the same way and is worth having by reflex:
+\[
+\lim_{x\to0}\frac{\Gamma(1+x)-1}{x}=-\gamma\approx-0.5772156 ,
+\]
+since $\Gamma(1+x)=1-\gamma x+O(x^{2})$. Verified as $-0.577206$ at $x=10^{-5}$. This is nothing more than the statement $\Gamma'(1)=-\gamma$, which is where $\gamma$ comes from in the first place.
+\end{worked}
+
+\begin{trap}
+Trusting a numerical probe on the first of these. The ratio $\ln x/W(x)$ is still $1.0193$ at $x=\eu^{300}$ and $1.0069$ at $x=\eu^{1000}$; a machine will never show you the limit. Every asymptotic in this list carries an $O(\ln\ln x/\ln x)$ or $O(1/\ln n)$ error, so $10^{100}$ is not large.
+\end{trap}
+
+\begin{seealsob}Logarithmic rescaling; Stirling's approximation; Stolz-Cesaro for harmonic sums.\end{seealsob}
+
+The two hard techniques just given share a discipline that is worth stating separately, because it is the only defence against a whole class of wrong answers. When an asymptotic expansion is substituted, decide before substituting how many correction terms the normalisation can see. If the problem divides by $n$, then an $O(1/n)$ correction contributes and an $O(n^{-2})$ correction does not. If the problem divides by $\ln n$, then a $\ln\ln n$ term contributes and a constant does not. Substituting one term more than necessary is harmless; substituting one term fewer produces an answer that is wrong by a finite amount and looks entirely plausible.
+
+\begin{keynote}[When a numerical probe is evidence and when it is noise]
+A probe is evidence when the correction term decays like a power: if the true behaviour is $L+c/n$, then computing at $n$ and at $10n$ and watching the discrepancy shrink by a factor of ten confirms both $L$ and $c$. A probe is noise when the correction decays like $1/\ln n$ or $\ln\ln n/\ln n$, because then a factor of ten in $n$ buys almost nothing: the correction $\ln\ln n/\ln n$ falls only from $0.2551$ at $n=4\times10^{3}$ to $0.2315$ at $n=2\times10^{4}$. The discipline is to predict the correction first and then check that the residual matches it, rather than to read the limit off the raw number.
+\end{keynote}
+
+\section{The seven indeterminate forms and their conversions}
+
+Direct substitution either produces a number, in which case you are finished, or produces one of exactly seven symbols. Those seven are
+\[
+\frac00,\qquad \frac{\infty}{\infty},\qquad 0\cdot\infty,\qquad \infty-\infty,\qquad 1^{\infty},\qquad 0^{0},\qquad \infty^{0}.
+\]
+Nothing else is indeterminate. In particular $0^{\infty}=0$, $\infty^{\infty}=\infty$, $0^{-\infty}=\infty$, $\infty+\infty=\infty$ and $\infty\cdot\infty=\infty$ are determinate, and treating them as though they were not is a reliable way to introduce an error into a problem that had none.
+
+There is a reason the list has exactly seven entries, and it is worth stating because it makes the list memorable rather than arbitrary. A form is indeterminate precisely when it combines two competing monotonicities: one ingredient pushing the value up and the other pushing it down, at rates that the symbol does not record. In $0\cdot\infty$ one factor is shrinking while the other grows. In $1^{\infty}$ the base's excess over $1$ is shrinking while the exponent that amplifies it grows. By contrast $0^{\infty}$ has both ingredients pushing the same way, base below $1$ and exponent large, so the answer is forced. Run that test over the possible combinations of $0$, $1$, $\infty$ in a quotient, a product, a difference and a power, and exactly seven survive.
+
+The taxonomy then earns its place because each of the seven has exactly one standard conversion, and every conversion terminates in $\tfrac00$ or $\tfrac{\infty}{\infty}$, which is to say in a dominance question. The three power forms all go through the logarithm; the two remaining non-quotient forms go through algebra. The decision tree below is the whole system.
+
+\begin{center}
+\begin{tikzpicture}[node distance=6mm and 8mm]
+\node[dtest] (a) {Are the base and the\\ exponent both variable?};
+\node[dleaf, right=13mm of a] (b) {Write $\exp(g\ln f)$;\\ the exponent is now $0\cdot\infty$};
+\node[dtest, below=9mm of a] (c) {A product with one factor\\ $\to0$ and one $\to\infty$?};
+\node[dleaf, right=13mm of c] (d) {Invert one factor:\\ $f\big/(1/g)$ or $g\big/(1/f)$};
+\node[dtest, below=9mm of c] (e) {A difference of two\\ quantities both $\to\infty$?};
+\node[dleaf, right=13mm of e] (f) {Common denominator,\\ conjugate, or factor\\ out the dominant term};
+\node[dleaf, below=9mm of e] (g) {Now $\tfrac00$ or $\tfrac{\infty}{\infty}$: expand\\ near a point, divide by the\\ dominant term at $\infty$};
+\draw[dedge] (a) -- node[dlab,above]{yes} (b);
+\draw[dedge] (a) -- node[dlab,left]{no} (c);
+\draw[dedge] (c) -- node[dlab,above]{yes} (d);
+\draw[dedge] (c) -- node[dlab,left]{no} (e);
+\draw[dedge] (e) -- node[dlab,above]{yes} (f);
+\draw[dedge] (e) -- node[dlab,left]{no} (g);
+\end{tikzpicture}
+\end{center}
+
+Read the tree top-down and note that the arrows out of the three leaves on the right all point, conceptually, back into the bottom box. That is the organising claim of this chapter in one picture: the forms are not seven problems, they are one problem with six pieces of packaging.
+
+One walk-through, to show that the tree is meant to be executed rather than admired. Take $\displaystyle\lim_{x\to0^{+}}\bigl(\tfrac1x\bigr)^{\tan x}$. First test: base and exponent both variable, so take the right branch and write $\exp\bigl(\tan x\cdot\ln\tfrac1x\bigr)=\exp(-\tan x\ln x)$. The exponent is now a product with $\tan x\to0$ and $\ln x\to-\infty$, which is the second test's yes branch: invert the algebraic factor to get $-\dfrac{\ln x}{\cot x}$. That is $\tfrac{\infty}{\infty}$, and since $\tan x\sim x$ the exponent behaves like $-x\ln x\to0$. The answer is $\eu^{0}=1$. Three tests, three conversions, no differentiation.
+
+One caution before the blocks. A form is a statement about a specific approach, and a two-sided limit can present different forms from the two sides. As $x\to0^{+}$ the expression $x^{1/x}$ has form $0^{\infty}$ and value $0$; as $x\to0^{-}$ it is not even defined for most $x$, since a negative base with a non-integer exponent is not real. Similarly $\eu^{1/x}$ has limit $+\infty$ from the right and $0$ from the left, so anything built from it must be treated one side at a time. Whenever the expression contains $1/x$, a logarithm, or a non-integer power, decide which side you are on before naming the form.
+
+\tech{Classifying the form before touching it}{easy}
+\cue Direct substitution produces a symbol rather than a number.
+\method Name the form out loud before writing anything: $\tfrac00$, $\tfrac{\infty}{\infty}$, $0\cdot\infty$, $\infty-\infty$, $1^{\infty}$, $0^{0}$, or $\infty^{0}$. If the substitution produced anything else, the expression is determinate and must simply be evaluated. If it produced one of the seven, apply the conversion the tree assigns and do not improvise.
+
+\begin{worked}
+Classify, then act.
+\[
+\lim_{x\to0^{+}}x^{1/x}=0 .
+\]
+The base tends to $0$ and the exponent to $+\infty$, so the form is $0^{\infty}$, which is \emph{not} on the list: a quantity below $\tfrac12$ raised to an unboundedly large power tends to $0$, and no machinery is required. Contrast
+\[
+\lim_{x\to0^{+}}(\cot x)^{1/\ln x}=\eu^{-1},
+\]
+where base $\to\infty$ and exponent $\to0$, form $\infty^{0}$, genuinely indeterminate. Taking logarithms, $\ln\cot x\sim-\ln x$ because $\cot x\sim1/x$, so the exponent limit is $\lim(-\ln x)/\ln x=-1$. Verified: the value is $0.3678794$ at $x=10^{-6}$ against $\eu^{-1}=0.3678794$.
+
+One more pair, to show that the classification is about the pair of behaviours and not about the notation. In $\lim_{x\to0^{+}}x^{x}$ the base and the exponent both tend to $0$: form $0^{0}$, indeterminate, and the answer is $1$. In $\lim_{x\to0^{+}}x^{1/\ln x}$ the base tends to $0$ and the exponent to $0^{-}$: also form $0^{0}$, and the answer is $\eu$, because $x^{1/\ln x}=\exp(\ln x/\ln x)=\eu$ for every $x>0$. Two limits of the same form with different values is what ``indeterminate'' means, stated concretely.
+\end{worked}
+
+\begin{trap}
+Reflexively logarithmising or differentiating a determinate form. The reverse error is worse: assuming that because the base tends to $1$ the answer is $1$. It is the co-occurrence of a base tending to $1$ with an exponent tending to $\infty$ that makes $1^{\infty}$ indeterminate, and the three limits $(1+x)^{1/x}\to\eu$, $(1+x)^{1/x^{2}}\to\infty$, $(1+x^{2})^{1/x}\to1$, all as $x\to0^{+}$, show that every answer in $[1,\infty]$ is available. The same demonstration works for $0^{0}$: $x^{x}\to1$ while $x^{1/\ln x}=\eu$ identically, so two limits of the same form give different values.
+\end{trap}
+
+\begin{seealsob}The $0\cdot\infty$ conversion; the $\infty-\infty$ conversion; the exponential conversion for power forms.\end{seealsob}
+
+\begin{keynote}[The determinate cousins, and why they are theorems]
+$0^{\infty}=0$, $0^{-\infty}=+\infty$, $\infty^{\infty}=\infty$, $\infty^{-\infty}=0$, $\infty+\infty=\infty$, $\infty\cdot\infty=\infty$, $c/\infty=0$, and $c/0^{+}=+\infty$ for $c>0$. None of these is a convention. Each is a one-line consequence of monotonicity, and each can be proved by the same logarithmic conversion used for the indeterminate cases, with the difference that the exponent limit comes out as $-\infty$, $+\infty$ or a definite number rather than as a further indeterminate form.
+\end{keynote}
+
+Of the four non-quotient forms, the product is the easiest, because there is only one thing to do and the only decision is which of two ways to do it.
+
+\tech[Zero times infinity conversion]{$0\cdot\infty$: move one factor into the denominator}{easy}
+\cue A product $f\cdot g$ with $f\to0$ and $g\to\infty$.
+\method Rewrite as $\dfrac{f}{1/g}$, which is $\tfrac00$, or as $\dfrac{g}{1/f}$, which is $\tfrac{\infty}{\infty}$. Both are legal; choose the one whose denominator is a plain power, because that is the one Taylor expansion or a single L'Hopital round will finish. As a rule of thumb, put the transcendental factor on top and the algebraic factor underneath.
+
+\begin{worked}
+\[
+\lim_{x\to0^{+}}x\ln x=\lim_{x\to0^{+}}\frac{\ln x}{1/x}=\lim_{x\to0^{+}}\frac{1/x}{-1/x^{2}}=\lim_{x\to0^{+}}(-x)=0 .
+\]
+The choice mattered: the reciprocal $\dfrac{x}{1/\ln x}$ has derivative $-1/(x\ln^{2}x)$ downstairs and gets worse at every round. A second instance where the product hides at infinity:
+\[
+\lim_{x\to\infty}x\Bigl(\frac{\pi}{2}-\arctan x\Bigr)=\lim_{x\to\infty}\frac{\tfrac{\pi}{2}-\arctan x}{1/x}
+=\lim_{x\to\infty}\frac{-1/(1+x^{2})}{-1/x^{2}}=\lim_{x\to\infty}\frac{x^{2}}{1+x^{2}}=1 ,
+\]
+confirmed as $0.99999999836$ at $x=10^{7}$.
+\end{worked}
+
+\begin{trap}
+Choosing the wrong reciprocal and then persevering. If after one round the expression is longer than it was, undo the choice rather than differentiating again; the two options are genuinely unequal in cost, often by a factor of five. A subtler failure is converting a $0\cdot\infty$ product in which \emph{neither} factor is transcendental, for instance $x\cdot x^{-1}$ dressed up: there the product simplifies algebraically and no conversion is needed at all. Always cancel before converting.
+\end{trap}
+
+\begin{seealsob}Classifying the form before touching it; the exponential conversion for power forms; choosing the profitable conversion.\end{seealsob}
+
+The difference form is harder, because it admits three distinct moves and the wrong one produces a correct but unusable expression. It is also the form where the naive guess is most often wrong, and the reason is structural: in a product or a quotient the leading terms multiply, so the leading behaviour of the answer is visible immediately, whereas in a difference the leading terms cancel by construction and the answer is hiding one or more orders down. A solver who has internalised that fact will reach for expansion the moment a difference appears, and will not be tempted to guess.
+
+\tech[Infinity minus infinity conversion]{$\infty-\infty$: common denominator, conjugate, or dominant factor}{medium}
+\cue A difference of two quantities each tending to $\infty$, most often two reciprocals of vanishing quantities, or two radicals that both grow.
+\method Three moves, in order of preference. (i) Put the difference over a common denominator, producing $\tfrac00$. (ii) Multiply and divide by the conjugate if the difference is of radicals, using $\sqrt{A}-\sqrt{B}=(A-B)/(\sqrt A+\sqrt B)$. (iii) Factor out the dominant term: $f-g=f\bigl(1-g/f\bigr)$, which turns the difference into a product and refers you back to the previous technique.
+
+\begin{worked}
+\[
+\lim_{x\to0}\left(\frac{1}{x^{2}}-\frac{1}{\sin^{2}x}\right)
+=\lim_{x\to0}\frac{\sin^{2}x-x^{2}}{x^{2}\sin^{2}x}.
+\]
+The denominator is $x^{4}+O(x^{6})$. The numerator needs the cube term of $\sin$: from $\sin x=x-\tfrac{x^{3}}{6}+O(x^{5})$ we get $\sin^{2}x=x^{2}-\tfrac{x^{4}}{3}+O(x^{6})$, so the numerator is $-\tfrac{x^{4}}{3}+O(x^{6})$ and the limit is $-\dfrac13$. Verified as $-0.3333334$ at $x=10^{-3}$. A radical instance handled by move (iii):
+\[
+\lim_{x\to\infty}\Bigl(\sqrt[3]{x^{3}+x^{2}}-\sqrt{x^{2}-x}\Bigr)
+=\lim_{x\to\infty}\Bigl[\Bigl(x+\tfrac13\Bigr)-\Bigl(x-\tfrac12\Bigr)\Bigr]+o(1)=\frac56 ,
+\]
+verified as $0.8333333$ at $x=10^{7}$.
+
+Move (i) at a finite point other than the origin, which is the commonest examination form of all:
+\[
+\lim_{x\to1}\left(\frac{1}{\ln x}-\frac{1}{x-1}\right)
+=\lim_{h\to0}\frac{h-\ln(1+h)}{h\ln(1+h)}
+=\lim_{h\to0}\frac{h^{2}/2+O(h^{3})}{h^{2}+O(h^{3})}=\frac12 ,
+\]
+after setting $h=x-1$. Verified as $0.4999985$ at $x=1+10^{-5}$.
+\end{worked}
+
+\begin{trap}
+``Both blow up at the same rate, so the difference is $0$.'' Equal rates guarantee only that the difference is finite. Its value is the next-order coefficient, which is precisely the quantity you have not yet computed. The second trap is applying the conjugate to a difference of cube roots as though it were a difference of square roots; there the correct factor is $A^{2/3}+A^{1/3}B^{1/3}+B^{2/3}$.
+\end{trap}
+
+\begin{seealsob}Choosing the profitable conversion; conjugate multiplication; when the third order is genuinely needed.\end{seealsob}
+
+The three power forms are the only ones with a mandatory first move, and it is always the same move.
+
+\tech[Exponential conversion for power forms]{$1^{\infty}$, $0^{0}$, $\infty^{0}$: the $\exp(g\ln f)$ conversion}{easy}
+\cue A variable base raised to a variable exponent, where substitution gives $1^{\infty}$, $0^{0}$, or $\infty^{0}$.
+\method Always write
+\[
+f(x)^{g(x)}=\exp\bigl(g(x)\ln f(x)\bigr),
+\]
+evaluate the exponent limit (which is now $0\cdot\infty$, and refers you back two techniques), and exponentiate at the very end. In the $1^{\infty}$ case there is a shortcut worth memorising: if $f\to1$ and $g\to\infty$ then $\ln f\sim f-1$, so $f^{g}\to\exp\bigl(\lim g\,(f-1)\bigr)$, which removes the logarithm entirely.
+
+\begin{worked}
+\[
+\lim_{x\to0^{+}}(\sin x)^{x}=\exp\Bigl(\lim_{x\to0^{+}}x\ln\sin x\Bigr)=\exp\Bigl(\lim_{x\to0^{+}}\bigl(x\ln x+x\ln\tfrac{\sin x}{x}\bigr)\Bigr)=\eu^{0}=1 .
+\]
+The split isolates the only dangerous piece, $x\ln x\to0$, while $\ln(\sin x/x)\to0$ is harmless. A $1^{\infty}$ instance using the shortcut:
+\[
+\lim_{x\to0}\left(\frac{\arcsin x}{x}\right)^{1/x^{2}}
+=\exp\left(\lim_{x\to0}\frac{1}{x^{2}}\left(\frac{\arcsin x}{x}-1\right)\right)
+=\exp\left(\lim_{x\to0}\frac{x^{2}/6+O(x^{4})}{x^{2}}\right)=\eu^{1/6},
+\]
+verified as $1.18137$ at $x=10^{-2}$ against $\eu^{1/6}=1.18136$.
+
+And a sequence version, where the shortcut removes all the work:
+\[
+\lim_{n\to\infty}\left(\cos\frac{a}{\sqrt n}\right)^{n}
+=\exp\left(\lim_{n\to\infty}n\left(\cos\frac{a}{\sqrt n}-1\right)\right)
+=\exp\left(\lim_{n\to\infty}n\cdot\left(-\frac{a^{2}}{2n}\right)\right)=\eu^{-a^{2}/2}.
+\]
+For $a=1.3$ this predicts $0.4295574$, and the value at $n=10^{6}$ is $0.4295573$.
+\end{worked}
+
+\begin{trap}
+Reporting the exponent as the answer. Having worked out that $g\ln f\to\tfrac16$, it is startlingly easy to write $\tfrac16$ and stop. The other classic is taking limits of base and exponent separately: that is precisely the operation whose invalidity makes $1^{\infty}$ indeterminate.
+\end{trap}
+
+\begin{seealsob}The $0\cdot\infty$ conversion; the standard $\eu$ limit; classifying the form before touching it.\end{seealsob}
+
+One technique remains, and it is the metaskill the rest of the chapter has been building towards. Naming the form tells you which conversions are legal; it does not tell you which is cheap. That is a separate judgement, and it is where a competent solver is distinguished from a fast one. The judgement has a single criterion, and it is worth stating before the block that formalises it: a conversion is good when it leaves a plain power of $x$, or of $x-a$, in the denominator, because a plain power is the one denominator that a series can be divided by term for term. Every other denominator, however innocuous it looks, forces you either to expand it as well or to differentiate it repeatedly.
+
+\tech{Choosing the profitable conversion}{medium}
+\cue You have converted a form once and the result is worse than what you started with: a denominator that is a product of three transcendental factors, or a numerator whose derivative will need the product rule twice.
+\method Rank the available rewrites by what the denominator becomes, and prefer the one whose denominator is a plain power of $x$ or of $x-a$, because that is the version a single Taylor expansion resolves. If no rewrite achieves that, substitute $t=1/x$ or $h=x-a$ first so that a power is available to divide by. Two minutes of re-planning routinely saves six lines of quotient rule.
+
+\begin{worked}
+\[
+\lim_{x\to0}\left(\frac{1}{\operatorname{arsinh}x}-\frac{1}{\ln(1+x)}\right).
+\]
+The obvious move, a common denominator, gives $\dfrac{\ln(1+x)-\operatorname{arsinh}x}{\operatorname{arsinh}x\,\ln(1+x)}$: a $\tfrac00$ form whose denominator is a product of two transcendental functions, so L'Hopital on it is unpleasant. The profitable move is to expand each reciprocal separately about its pole. Since $\operatorname{arsinh}x=x\bigl(1-\tfrac{x^{2}}{6}+O(x^{4})\bigr)$ and $\ln(1+x)=x\bigl(1-\tfrac{x}{2}+\tfrac{x^{2}}{3}+O(x^{3})\bigr)$,
+\[
+\frac{1}{\operatorname{arsinh}x}=\frac1x+\frac{x}{6}+O(x^{3}),\qquad
+\frac{1}{\ln(1+x)}=\frac1x+\frac12-\frac{x}{12}+O(x^{2}).
+\]
+The $1/x$ poles cancel on sight and the answer is $-\dfrac12$, verified as $-0.499975$ at $x=10^{-4}$.
+
+The same judgement applied to a power form: for $\lim_{x\to0}\bigl(\tfrac{\sin x}{x}\bigr)^{1/x^{2}}$, the conversion $\exp\bigl(\ln(\sin x/x)/x^{2}\bigr)$ leaves a logarithm of a quotient, whereas the $1^{\infty}$ shortcut $\exp\bigl(\lim x^{-2}(\sin x/x-1)\bigr)$ leaves a plain power downstairs and finishes at once with $\eu^{-1/6}$. Both are legal; only one has a denominator you can divide into a series.
+\end{worked}
+
+\begin{trap}
+Grinding on the first rewrite that came to mind because you have already invested three lines in it. Sunk cost is not a mathematical argument. The diagnostic is simple: if the expression after a conversion has more distinct transcendental factors in its denominator than before, the conversion was the wrong one. A second diagnostic, for power forms: if after taking logarithms you are looking at a logarithm of a quotient rather than at a plain power, the $1^{\infty}$ shortcut was available and you did not use it.
+\end{trap}
+
+\begin{seealsob}The $\infty-\infty$ conversion; series division and reciprocal series; expansion at a point other than zero.\end{seealsob}
+
+\subsection{A classification drill}
+
+The whole chapter compresses into a habit: name the form, choose the conversion, compare orders. The point of the drill below is speed, so the target is two lines per item and no differentiation anywhere. Read each statement, decide the form before reading the solution, and check whether your first instinct was the conversion that was actually used.
+
+\begin{enumerate}[label=(\roman*)]
+\item $\displaystyle\lim_{x\to\infty}\Bigl(\frac{x+1}{x-1}\Bigr)^{x}$. Form $1^{\infty}$. The base exceeds $1$ by $\frac{2}{x-1}$, so the shortcut gives $\exp\bigl(\lim x\cdot\tfrac{2}{x-1}\bigr)=\eu^{2}$. Verified as $7.389056$ at $x=10^{6}$.
+\item $\displaystyle\lim_{x\to\infty}\bigl(x-\ln(\eu^{x}+1)\bigr)$. Form $\infty-\infty$; factor the dominant term out of the logarithm. Since $\ln(\eu^{x}+1)=x+\ln(1+\eu^{-x})$, the difference is $-\ln(1+\eu^{-x})\to0$.
+\item $\displaystyle\lim_{x\to\infty}x^{1/x}$. Form $\infty^{0}$, indeterminate, so convert: $\exp(\ln x/x)$, and $\ln x\ll x$ by the hierarchy, so the answer is $\eu^{0}=1$.
+\item $\displaystyle\lim_{x\to\infty}x^{2}\bigl(\eu^{1/x}-1-\tfrac1x\bigr)$. Form $\infty\cdot0$; set $t=1/x$ to convert it into $\lim_{t\to0^{+}}(\eu^{t}-1-t)/t^{2}=\tfrac12$. Verified as $0.49996$ at $x=10^{6}$.
+\item $\displaystyle\lim_{x\to0^{+}}x^{1/x}$. Base $\to0$, exponent $\to+\infty$: form $0^{\infty}$, determinate, answer $0$. No conversion, no logarithm, no rule.
+\item $\displaystyle\lim_{x\to0^{+}}(\cot x)^{1/\ln x}$. Base $\to\infty$, exponent $\to0$: form $\infty^{0}$, indeterminate. Convert, use $\cot x\sim1/x$ so that $\ln\cot x\sim-\ln x$, and get $\eu^{-1}$. Items (v) and (vi) are typographically almost the same object and are settled by opposite reasoning: in (v) the base and the exponent push the value the same way, so nothing is in doubt; in (vi) they compete, so everything is.
+\end{enumerate}
+
+In every case the conversion was chosen before any calculation began, and in every case it produced a denominator that was a plain power. That is the diagnostic to carry into the next chapter, where the tool that resolves those powers is built properly.
+
+\begin{keynote}[The one sentence to carry forward]
+Every indeterminate form is converted into $\tfrac00$ or $\tfrac{\infty}{\infty}$, and every $\tfrac00$ or $\tfrac{\infty}{\infty}$ is answered by comparing orders: lowest order wins at a point, highest order wins at infinity.
+\end{keynote}
+
+What the chapter has built is a single reflex with two halves. The first half is dominance: at a point the lowest order wins, at infinity the highest order wins, and the growth hierarchy tells you which is which without computation. The second half is the conversion table: each of the seven indeterminate forms has one standard rewrite whose purpose is to expose a dominance question, and the quality of a solution is largely decided by whether the rewrite left a plain power in the denominator. The next chapter supplies the instrument that answers the dominance question at a point in full generality, namely Taylor expansion, and demotes L'Hopital's rule to the special case it actually is.
+
+The matrix below is a compression of the chapter, not a substitute for it. Read the middle column as the first move only. Every row terminates, after that move, in a comparison of orders, and the third column is what to do when the first move produces something worse than it started with.
+
+\section{Recognition matrix}
+\begin{recog}{@{}p{0.30\textwidth}p{0.36\textwidth}p{0.28\textwidth}@{}}
+\rowcolor{mist}\mh{If you see} & \mh{Reach for} & \mh{If that fails} \\
+\midrule
+\endhead
+Log against power, power against exponential, exponential against factorial & The growth hierarchy; the answer is $0$ or $\infty$ & Substitute $x=\eu^{t}$ and re-read the chain \\
+Ratio of sums, $x\to\infty$ & Divide by the dominant term of each sum & Expansion at infinity via $t=1/x$ \\
+Pure product or quotient of standard functions, $x\to0$ & Replace each factor by its equivalent & Full Taylor expansion \\
+A difference whose leading terms cancel & Explicit $O(\cdot)$ bookkeeping to one order past the cancellation & Push to the next order and recheck \\
+$\sqrt{\cdot}$ with $x\to-\infty$ & $\sqrt{x^{2}}=\abs{x}=-x$; substitute $x=-t$ & Conjugate multiplication \\
+$n!$, $n^{n}$, or $\log_{n}(\cdot)$ & Take logarithms, insert Stirling & Normalise first, discard second \\
+$H_n$, $W(x)$, $\psi(x)$, $\Gamma(1+x)$ & Quote the headline asymptotic & Keep the next correction term \\
+Substitution gives $0\cdot\infty$ & Invert the algebraic factor & Invert the other factor instead \\
+Substitution gives $\infty-\infty$ & Common denominator, then expand & Conjugate; or factor out the dominant term \\
+Substitution gives $1^{\infty}$, $0^{0}$, $\infty^{0}$ & $\exp(g\ln f)$, then treat the exponent as $0\cdot\infty$ & For $1^{\infty}$, use $\exp\bigl(\lim g(f-1)\bigr)$ \\
+Substitution gives $0^{\infty}$, $\infty^{\infty}$, $\infty+\infty$ & Nothing: the form is determinate & Recheck the one-sided behaviour of the base \\
+A conversion that made the expression worse & Re-rank the rewrites by what the denominator becomes & Substitute $t=1/x$ or $h=x-a$ first \\
+A bounded oscillation added to an unbounded term & Squeeze; the oscillation cannot change the class & Bound above and below, then compare \\
+$\ln$ of a product, quotient or power & Log laws first, so that only $\ln x$ remains & Compare $k\ln x$ against $\ln x$ honestly \\
+\end{recog}

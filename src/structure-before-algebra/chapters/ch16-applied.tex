@@ -1,0 +1,598 @@
+\chapter{Applied structure: rates, optimisation, approximation}
+
+\begin{orient}
+\textbf{What this chapter is for.} Applied derivative problems are won or lost before any differentiation happens. The calculus in a related-rates problem is one chain rule; the calculus in a constrained optimisation is one derivative and one sign check; the calculus in a linearisation is one evaluation. What separates a solved problem from an unsolved one is the setup: which quantities get names, which relation among them is true at every instant rather than only at the instant of interest, which variable the constraint eliminates, and what the domain actually is. This chapter therefore teaches setup as an explicit discipline, family by family: related rates, constrained optimisation, tangents and normals, linearisation and differentials, Newton's method, curvature, sign charts, and mean-value arguments used as instruments rather than as theory. Each block states its protocol first and its differentiation second, because that is the order in which the work is done and the order in which it goes wrong. At the end you should be able to turn a paragraph of English into a correctly parameterised equation on the first attempt, and to know before differentiating what your answer will be a function of.
+\end{orient}
+
+\section{Related rates: the relation comes first}
+
+A related-rates problem hands you a physical situation, one known rate, and one wanted rate. The mechanism is trivial, being nothing but the chain rule applied to a relation between quantities. Everything difficult lies in producing that relation, and there is a discipline that makes it reliable.
+
+The reason the mechanism is trivial deserves saying plainly, because it is what licenses the whole procedure. If $Q$ and $u$ are both functions of time and $Q=g(u)$ holds \emph{identically} in $t$, then differentiating the identity gives $\dot Q=g'(u)\dot u$ at every $t$, including the instant of interest. The word ``identically'' carries the entire load. An equation that happens to hold at one moment, such as $r=18$, is not an identity and must not be differentiated; an equation that holds at all moments, such as $V=\tfrac43\pi r^{3}$, may be. Every error in this family is a violation of that distinction, either by differentiating something only instantaneously true, or by treating as constant a quantity that is in fact varying.
+
+\begin{keynote}[The five-step protocol, in order]
+\textbf{1. Name.} Give every varying quantity a symbol and say out loud that it is a function of $t$. Draw the figure and label it with symbols, never with numbers. \textbf{2. Relate.} Write one equation among those symbols that is true at \emph{every} time. This step decides the problem. \textbf{3. Reduce.} Use the geometry to eliminate every quantity whose rate is neither known nor wanted. \textbf{4. Differentiate.} Apply $\dvop{t}$ to both sides, chain rule on every symbol. \textbf{5. Substitute last.} Only now put in the instantaneous numbers, and only now reconcile the units.
+\end{keynote}
+
+Step five carries the warning that gives the family its character. A number substituted before differentiation becomes a constant, and constants have zero derivative, so an early substitution silently deletes a term. If the radius of a sphere is $18$ at the instant asked about, writing $V=\tfrac43\pi(18)^{3}$ makes $V$ constant and $\dot V=0$, which is the exact opposite of the truth.
+
+\tech{Related rates: the standard pipeline}{core}
+\cue Language of the form ``at what rate'', ``how fast is $\ldots$ changing'', with two or more quantities varying in time, one rate given and another wanted.
+\method Run the five steps above. The differentiation itself is always the same shape: from $Q=g(u)$ follows $\dot Q=g'(u)\dot u$. Power relations are the commonest, and for $Q=cu^{k}$ the relative form
+\[
+\frac{\dot Q}{Q}=k\,\frac{\dot u}{u}
+\]
+is often the fastest route, since it needs neither $c$ nor the absolute size of $u$. Check units at the end and convert only then.
+
+\begin{worked}
+A spherical balloon deflates at $72\ \mathrm{cm^{3}/s}$. How fast is the radius shrinking when $r=18\ \mathrm{cm}$?
+
+Name $r(t)$ and $V(t)$. Relate: $V=\tfrac43\pi r^{3}$, true at all times. Differentiate: $\dot V=4\pi r^{2}\dot r$. Substitute last, with $\dot V=-72$ and $r=18$:
+\[
+\dot r=\frac{-72}{4\pi(18)^{2}}=\frac{-72}{1296\pi}=-\frac{1}{18\pi}\ \mathrm{cm/s}=-0.0176839\ \mathrm{cm/s},
+\]
+which in centimetres per minute is $-\dfrac{60}{18\pi}=-\dfrac{10}{3\pi}=-1.0610330$. The relative form gets there in one line: $\dot V/V=3\dot r/r$ with $V=\tfrac43\pi(18)^{3}$.
+
+A second, where the reduction step does real work. Water pours into an inverted cone of top radius $5$ and height $10$ at $8\ \mathrm{m^{3}/min}$. How fast is the depth rising at $h=6$?
+
+Name $h(t)$, $r(t)$, $V(t)$. Relate: $V=\tfrac13\pi r^{2}h$, but this has two unknown rates. Reduce using similar triangles, $r/h=5/10$, so $r=h/2$ at all times and
+\[
+V=\frac{\pi}{3}\cdot\frac{h^{2}}{4}\cdot h=\frac{\pi h^{3}}{12},\qquad \dot V=\frac{\pi h^{2}}{4}\dot h .
+\]
+At $h=6$: $8=\dfrac{36\pi}{4}\dot h=9\pi\dot h$, so $\dot h=\dfrac{8}{9\pi}=0.2829421\ \mathrm{m/min}$. Had the reduction been skipped, the answer would have needed $\dot r$, which was never given.
+
+The ladder, which exists to punish early substitution. A ladder of length $10$ leans against a wall; its foot is pulled away at $1\ \mathrm{m/s}$. How fast does the top descend when the foot is $6$ from the wall?
+
+Name $x(t)$ and $y(t)$. Relate: $x^{2}+y^{2}=100$, true at every instant because the ladder is rigid. Differentiate: $2x\dot x+2y\dot y=0$, so $\dot y=-\dfrac{x\dot x}{y}$. Substitute last: at $x=6$ we get $y=8$ from the relation, and
+\[
+\dot y=-\frac{6\cdot1}{8}=-0.75\ \mathrm{m/s} .
+\]
+Now watch the error. Writing the relation as $6^{2}+y^{2}=100$ at the outset, because $x=6$ ``now'', gives $2y\dot y=0$ and hence $\dot y=0$: the top of the ladder never moves. The relation was true at that instant and false as an identity, and differentiating it destroyed the problem. As $x\to10$ the formula gives $\dot y\to-\infty$, which is the physical statement that the top accelerates without bound as the ladder flattens.
+\end{worked}
+
+\begin{trap}
+Substituting the instantaneous numbers before differentiating, which turns a variable into a constant and kills its rate. Next in frequency are the unit traps: per second against per minute, and diameter against radius. Third is differentiating a relation that holds only at the instant in question, such as the Pythagorean relation for a ladder written with the current lengths already inserted.
+\end{trap}
+
+\begin{seealsob}Related rates by geometric reduction; implicit differentiation; the multivariable chain rule.\end{seealsob}
+
+The pipeline is not where these problems are lost. They are lost at step two, and the reason is that the obvious relation usually has too many variables in it. What distinguishes a fluent solver is a stock of geometric reductions that collapse a three-variable picture into a two-variable one before any calculus starts.
+
+\begin{keynote}[Relative rates]
+For any power relation $Q=cu^{k}$, dividing the differentiated equation by the original gives $\dot Q/Q=k\,\dot u/u$, a statement about \emph{percentages} that needs neither $c$ nor the absolute size of anything. A sphere whose radius grows by one per cent gains three per cent of volume and two per cent of surface area, at any radius. Reach for this form whenever the data or the question is phrased as a rate of change relative to current size, and for products and quotients generally, where it becomes a sum of relative rates.
+\end{keynote}
+
+\tech{Related rates by geometric reduction}{medium}
+\cue A configuration whose naive relation carries more variables than you have rates for: a conical tank, a ladder, a shadow, a hinged pair of covers, a triangle with a changing vertex angle, a chain of inscribed and circumscribed figures.
+\method Find the \emph{single} clean formula before differentiating anything. The reductions that recur are worth knowing by name: similar triangles, giving a constant ratio such as $r/h$; the chord $d=2R\sin(\theta/2)$ for a fixed-length hinge; the law of sines $R=\dfrac{a}{2\sin A}$ for a circumradius; and ratio chaining through an intermediate quantity, where each link contributes its own chain-rule factor. Choose the parameter that makes the relation shortest, which is frequently an angle rather than a length.
+
+\begin{worked}
+Two book covers each of length $25\ \mathrm{cm}$ are hinged at the spine, and the opening angle $\theta$ increases at $0.1\ \mathrm{rad/s}$. How fast do the free edges separate when $\theta=\pi/2$?
+
+The law of cosines would give $d^{2}=25^{2}+25^{2}-2\cdot25^{2}\cos\theta$, which is correct and clumsy. The chord formula reduces it at sight: the free edges lie on a circle of radius $25$ centred at the hinge, so
+\[
+d=2\cdot25\sin\frac{\theta}{2}=50\sin\frac\theta2,\qquad \dot d=25\cos\frac\theta2\,\dot\theta .
+\]
+At $\theta=\pi/2$: $\dot d=25\cdot\dfrac{\sqrt2}{2}\cdot0.1=1.25\sqrt2=1.7677670\ \mathrm{cm/s}$.
+
+A chaining example. A lamp $6\ \mathrm{m}$ high, a walker $1.8\ \mathrm{m}$ tall moving away at $1.5\ \mathrm{m/s}$: how fast does the tip of the shadow move, and how fast does the shadow lengthen?
+
+Let $x$ be the walker's distance from the lamp base and $s$ the shadow length, so the tip is at $x+s$. Similar triangles give $\dfrac{s}{x+s}=\dfrac{1.8}{6}$, hence $6s=1.8x+1.8s$ and $s=\tfrac37x$ at all times. Then $\dot s=\tfrac37(1.5)=\tfrac{9}{14}=0.6428571$ and the tip moves at $\dot x+\dot s=\tfrac{10}{7}(1.5)=\dfrac{15}{7}=2.1428571\ \mathrm{m/s}$. The two answers are different questions and are routinely confused; the tip moves faster than the walker, the shadow grows more slowly.
+
+An angular reduction, where choosing the angle as the parameter is what makes the problem short. A camera stands $50\ \mathrm{m}$ from a straight track and turns to keep a car in frame; the car travels at $30\ \mathrm{m/s}$. How fast does the camera rotate when the car is $50\ \mathrm{m}$ from the point of closest approach?
+
+Let $x$ be the car's displacement from that point and $\theta$ the camera's angle from the perpendicular. Then $\tan\theta=\dfrac{x}{50}$ at all times, and differentiating,
+\[
+\sec^{2}\theta\,\dot\theta=\frac{\dot x}{50}.
+\]
+At $x=50$ the angle is $\pi/4$ and $\sec^{2}\theta=2$, so $\dot\theta=\dfrac{30}{50\cdot2}=0.3\ \mathrm{rad/s}$. Solving instead for $\theta=\arctan(x/50)$ and differentiating gives $\dot\theta=\dfrac{50\dot x}{2500+x^{2}}$, the same number by a longer route; the implicit form avoids the arctangent entirely.
+\end{worked}
+
+\begin{trap}
+Grinding the law of cosines when the chord formula is available, and more generally differentiating a relation before checking whether a shorter one exists. The second trap belongs to chaining: when a rate passes through an intermediate variable, every link contributes a factor, and dropping one link produces an answer with the right units and the wrong size.
+\end{trap}
+
+\begin{seealsob}Related rates: the standard pipeline; parametric derivatives; constrained optimisation by one-variable reduction.\end{seealsob}
+
+\begin{keynote}[Answer the question that was asked]
+A configuration usually contains several rates, and they are not interchangeable. The shadow's \emph{length} and the shadow's \emph{tip} move at different speeds; the water's depth and the water's surface radius do too; the ladder's top and the area of the triangle it forms do too. Before substituting, reread the sentence and identify which single quantity the question names. Producing a correct rate for the wrong quantity is the most expensive way to be right.
+\end{keynote}
+
+\section{Constrained optimisation}
+
+Optimisation problems have the same character: the calculus is one derivative, and the difficulty is in reducing a description to a single-variable function together with the interval on which it lives. Two things get forgotten with remarkable regularity, and both are part of the setup rather than the calculus. The first is the constraint, which is what makes the problem one-dimensional. The second is the domain, which is what makes the answer global rather than merely local.
+
+\begin{center}
+\begin{tikzpicture}[node distance=6mm and 8mm]
+\node[dtest] (a) {Is there a constraint\\ linking the variables?};
+\node[dleaf, right=15mm of a] (b) {Solve it for one variable\\ and substitute; never differentiate\\ two variables at once};
+\node[dtest, below=9mm of a] (c) {What is the domain\\ of the reduced objective?};
+\node[dleaf, right=15mm of c] (d) {Write the interval down.\\ Closed: interior points\\ \emph{and} endpoints};
+\node[dtest, below=10mm of c] (e) {Is the interval open\\ or unbounded?};
+\node[dleaf, right=15mm of e] (f) {Check the limits at the ends;\\ the extremum may be\\ an unattained infimum};
+\node[dnode, below=9mm of e] (g) {Solve $f'=0$, classify by $f''$ or a sign chart,\\ compare every candidate value,\\ then answer the question that was asked};
+\draw[dedge] (a) -- node[dlab,above]{yes} (b);
+\draw[dedge] (a) -- node[dlab,left]{no} (c);
+\draw[dedge] (c) -- node[dlab,above]{closed} (d);
+\draw[dedge] (c) -- node[dlab,left]{} (e);
+\draw[dedge] (e) -- node[dlab,above]{yes} (f);
+\draw[dedge] (e) -- node[dlab,left]{no} (g);
+\end{tikzpicture}
+\end{center}
+
+The tree's lowest box is the only place any differentiation occurs, and that is the point of drawing it. Two of the three questions above it are about bookkeeping, and they are where marks are lost: a constraint left unused leaves a function of two variables that a single derivative cannot handle, and a domain left unstated turns a correct critical point into an unjustified claim of a global optimum.
+
+\begin{keynote}[The optimisation protocol]
+\textbf{1.} Name the variables and write the objective, in as many variables as it naturally needs. \textbf{2.} Write the constraint as an equation. \textbf{3.} Solve the constraint for one variable and substitute, obtaining a function of one variable. \textbf{4.} State the domain explicitly, deduced from the physical or algebraic restrictions, not guessed. \textbf{5.} Solve $f'=0$ inside the domain. \textbf{6.} Evaluate the objective at every interior critical point \emph{and} at every endpoint, and compare the numbers. \textbf{7.} Answer the question actually asked, which may be the optimising variable, the optimal value, or a ratio.
+\end{keynote}
+
+\tech{Constrained optimisation by one-variable reduction}{core}
+\cue Maximise or minimise a quantity subject to a stated constraint: a wire cut into two shapes, a box of fixed volume, the closest point of a curve to a given point, a rectangle inscribed in a region.
+\method Eliminate one variable with the constraint, differentiate the resulting one-variable objective, solve $f'=0$, and classify with $f''$ or a sign chart. Then compare against the endpoints: an interior critical point is not automatically a global optimum, and on an open region the extremum may be an infimum that is never attained. Two standing simplifications: minimise squared distance rather than distance, since $t\mapsto\sqrt t$ is increasing and the square root only complicates the derivative; and substitute $u=x^{2}$ when the objective is even, which halves the degree. Lagrange multipliers, $\nabla f=\lambda\nabla g$, are the multivariable alternative when the constraint will not solve cleanly.
+
+\begin{worked}
+A wire of length $16$ is cut into two pieces, one bent into a circle and the other into a square. Minimise the total area.
+
+Let $c$ be the circle's perimeter, so the square's is $16-c$ and $0\leq c\leq16$, a closed interval: both endpoints are legal and must be checked. The circle has radius $c/2\pi$ and area $c^{2}/4\pi$, so
+\[
+A(c)=\frac{c^{2}}{4\pi}+\left(\frac{16-c}{4}\right)^{2},\qquad
+A'(c)=\frac{c}{2\pi}-\frac{16-c}{8}=0 .
+\]
+Clearing denominators, $8c=2\pi(16-c)$, so $c=\dfrac{16\pi}{4+\pi}=7.0384135$. Since $A''=\dfrac{1}{2\pi}+\dfrac18>0$ everywhere, this is the global minimum on the interval, with
+\[
+A_{\min}=\frac{64}{4+\pi}=8.9615865 ,
+\]
+and the square receives $16-c=\dfrac{64}{4+\pi}$, numerically equal to $A_{\min}$ by coincidence of this data, and the larger of the two pieces. The endpoints tell the other half of the story: $A(0)=16$, all wire to the square, and $A(16)=\dfrac{256}{4\pi}=20.3718327$, all wire to the circle. So the \emph{maximum} sits at an endpoint, where $A'\neq0$, and no derivative would ever have found it.
+
+Now the squared-distance simplification. Find the point of $y=x^{2}$ closest to $(0,3)$. Minimise
+\[
+D(x)=x^{2}+(x^{2}-3)^{2},
+\]
+not its square root. Substituting $u=x^{2}\geq0$ gives $D=u+(u-3)^{2}=u^{2}-5u+9$, a parabola with minimum at $u=\tfrac52$, which lies in the domain $u\geq0$. Then $D=\tfrac{11}{4}$ and the distance is $\dfrac{\sqrt{11}}{2}=1.6583124$, attained at $x=\pm\sqrt{5/2}$: two closest points, by symmetry. Verified by a grid search: $2.7500000$.
+
+A third, where the constraint is a volume and the objective is material. An open-topped box has a square base of side $x$ and height $h$, with volume $32000\ \mathrm{cm^{3}}$; minimise the surface area. The constraint $x^{2}h=32000$ gives $h=32000/x^{2}$, and the objective, base plus four sides, becomes
+\[
+S(x)=x^{2}+4xh=x^{2}+\frac{128000}{x},\qquad x>0 .
+\]
+Then $S'(x)=2x-\dfrac{128000}{x^{2}}=0$ gives $x^{3}=64000$, so $x=40$ and $h=20$: the optimal box is twice as wide as it is tall, a ratio independent of the volume. The minimum is $S=1600+3200=4800\ \mathrm{cm^{2}}$, confirmed by a grid search. The domain here is the open ray $(0,\infty)$, on which $S\to\infty$ at both ends, so the single interior critical point must be the global minimum and no endpoint comparison is possible or needed.
+
+A fourth, on a closed interval where an endpoint is genuinely a candidate. Inscribe a rectangle with its base on the $x$-axis under the parabola $y=12-x^{2}$. With half-width $x$, the height is $12-x^{2}$ and
+\[
+A(x)=2x\bigl(12-x^{2}\bigr)=24x-2x^{3},\qquad 0\leq x\leq2\sqrt3 .
+\]
+Then $A'(x)=24-6x^{2}=0$ gives $x=2$, and $A(2)=32$. The endpoints give $A(0)=0$ and $A(2\sqrt3)=0$, degenerate rectangles of zero width and zero height respectively, so the interior point wins and the maximum area is $32$. The endpoint check took one line and is the difference between a proof and an assertion.
+
+And the open-domain warning. The condition $\operatorname{Re}(z^{2})>0$ says $x^{2}>y^{2}$, that is $\abs{x}>\abs{y}$, an \emph{open} double wedge. The least value of $\abs{z+\iu}$ over that set is the distance from $(0,-1)$ to the line $y=x$, namely $\dfrac{\sqrt2}{2}=0.7071068$, but that value is an infimum and is not attained, because the boundary line is excluded. A problem asking for the minimum has no answer; a problem asking for the greatest lower bound has this one.
+\end{worked}
+
+\begin{trap}
+Reporting an interior critical point as the global optimum without checking the endpoints, which in the wire problem would have you announce a maximum area that is actually the minimum. Second, ignoring a stated restriction such as $-8<x<8$, which can move the answer to a boundary or destroy it. Third, minimising distance rather than squared distance, which is not wrong but manufactures an unnecessary chain rule and a denominator that can hide a sign.
+\end{trap}
+
+\begin{seealsob}Optimising a power constraint via logarithms; sign charts for monotonicity and concavity; common tangents and prescribed-angle tangents.\end{seealsob}
+
+\subsection{Classifying a critical point, and when the second derivative is silent}
+
+Once $f'(c)=0$ has been solved, something must decide whether $c$ is a maximum, a minimum, or neither. Three instruments are available and they are not equally good in all situations.
+
+The \emph{second-derivative test} says that $f''(c)>0$ gives a local minimum and $f''(c)<0$ a local maximum. It is fast when $f''$ is cheap, and it is completely silent when $f''(c)=0$: at the origin $x^{4}$ has a minimum, $-x^{4}$ has a maximum, and $x^{3}$ has neither, and all three have vanishing first and second derivatives there. A vanishing $f''$ is not evidence of an inflection; it is the absence of evidence.
+
+The \emph{sign chart} of $f'$ never fails and needs no second derivative, which makes it the right choice when $f'$ arrives already factored or when $f''$ is unpleasant. It also handles endpoints and points where $f'$ does not exist, both invisible to the second-derivative test.
+
+The \emph{global comparison} is the only one that answers the question actually asked in an optimisation problem. Local classification tells you the shape near $c$; the problem wants the best value on the whole domain. Evaluate the objective at every interior critical point and at every endpoint, then compare the numbers. In the wire problem of the previous block, $A''>0$ everywhere settled the interior point instantly, but the maximum lived at an endpoint where the second-derivative test had nothing to say.
+
+A convexity shortcut is worth keeping in reserve. If $f''>0$ on the whole domain, any critical point is the unique global minimum and no comparison is needed; the same with the signs reversed for a concave objective. This is what makes the wire, box and closest-point problems collapse to a single line of justification.
+
+Reduction by substitution assumes the constraint can be solved. When the constraint is exponential, with the unknowns in both base and exponent, the direct solution is unusable and the right first move is not calculus at all: take logarithms, which linearises the constraint and makes the elimination trivial.
+
+\tech{Optimising a power constraint via logarithms}{hard}
+\cue The constraint is itself a power relation, $x^{y}=C$ or $x^{2}y^{3}=C$, with a product or a sum to be optimised.
+\method Take logarithms of the constraint, turning it into a linear relation among $\ln x$ and $\ln y$, solve for one of them, and reduce to a single variable. One structural payoff recurs so often it is worth memorising:
+\[
+\dvop{x}\frac{x}{\ln x}=\frac{\ln x-1}{(\ln x)^{2}}=0\ \text{ at } x=\eu ,
+\]
+independently of every constant in the problem. Keep track of the domain that the logarithm imposes, which is usually $x>1$ so that $\ln x>0$.
+
+\begin{worked}
+Let $x^{y}=2026$ with $x,y>0$. Minimise $xy$.
+
+Taking logarithms, $y\ln x=\ln2026$, so $y=\dfrac{\ln2026}{\ln x}$, which requires $x>1$ for $y>0$. The objective becomes a one-variable function on $(1,\infty)$:
+\[
+P(x)=xy=\ln2026\cdot\frac{x}{\ln x} .
+\]
+The constant $\ln2026>0$ is inert, so the minimiser is the minimiser of $x/\ln x$, which by the displayed identity is $x=\eu$. Checking the ends, $P\to\infty$ as $x\to1^{+}$ and as $x\to\infty$, so $x=\eu$ is the global minimum, and
+\[
+\min(xy)=\eu\ln2026=20.6965050 ,
+\]
+confirmed by a grid search over $(1,21)$ giving $20.6965050$. Note the structure of the answer: it is $\eu\ln C$ for every $C>1$, and the optimising $x$ never depends on $C$ at all. The corresponding $y$ is $\ln 2026=7.6138$.
+\end{worked}
+
+A second instance, where the logarithm is a convenience rather than a necessity but still shortens the work. Maximise $x^{2}y^{3}$ subject to $x+y=5$ with $x,y>0$. Taking logarithms turns the product into a sum, so maximise
+\[
+\Lambda(x)=2\ln x+3\ln(5-x),\qquad 0<x<5 ,
+\]
+whose derivative $\dfrac2x-\dfrac{3}{5-x}$ vanishes when $2(5-x)=3x$, that is $x=2$, and then $y=3$. The maximum value is $2^{2}3^{3}=108$, confirmed by a grid search over $(0,5)$. Note the shape of the answer: the constraint total $5$ is split in the ratio $2:3$ of the exponents, which is the general rule for maximising $x^{p}y^{q}$ on $x+y=c$, and the logarithm is what makes it visible.
+
+\begin{trap}
+Differentiating $x^{y}$ with $y$ treated as a constant, which is the general power rule applied where both base and exponent vary. Second, losing the branch condition: on $0<x<1$ the logarithm is negative, $y<0$, and the constraint has no solution in the intended range, so the domain is $(1,\infty)$ and not $(0,\infty)$.
+\end{trap}
+
+\begin{seealsob}Constrained optimisation by one-variable reduction; the general power rule for $f(x)^{g(x)}$; implicit differentiation with a variable exponent.\end{seealsob}
+
+\section{Lines attached to a curve}
+
+Tangents and normals are the simplest applied objects and they are also the connective tissue of this chapter: the linearisation is the tangent read as an approximation, Newton's method is the tangent read as a root-finder, and the mean value theorem is a statement that some tangent is parallel to a chord. Getting the two formulas exactly right, including which point each ingredient is evaluated at, pays repeatedly.
+
+\tech{Tangent lines and normal lines}{easy}
+\cue ``The tangent at $x=a$'', ``the normal at $P$'', an intercept of one of them, or unknown parameters constrained by values \emph{and} slopes simultaneously.
+\method The tangent is $y=f(a)+f'(a)(x-a)$. The normal has slope $-1/f'(a)$, so $y=f(a)-\dfrac{x-a}{f'(a)}$. Two intercepts are worth knowing outright: the tangent meets the $x$-axis at
+\[
+a-\frac{f(a)}{f'(a)},
+\]
+which is exactly Newton's step, and the normal meets it at $a+f(a)f'(a)$. When parameters are unknown, the value conditions and the slope conditions together form a small system; solve it before differentiating anything else.
+
+\begin{worked}
+Let $f(x)=\eu^{ax^{2}+bx+1}$ and suppose $f(1)=f(0)=f'(0)$. Find the normal at $x=1$ and its $x$-intercept.
+
+The exponential never vanishes, so $f'(x)=(2ax+b)f(x)$. At $x=0$: $f(0)=\eu$ and $f'(0)=b\eu$, and the condition $f'(0)=f(0)$ gives $b=1$. The condition $f(1)=f(0)$ reads $\eu^{a+b+1}=\eu$, so $a+b+1=1$ and $a=-1$. Then
+\[
+f'(1)=(2a+b)f(1)=(-2+1)\eu=-\eu .
+\]
+The normal at $(1,\eu)$ therefore has slope $-1/(-\eu)=1/\eu$ and equation $y-\eu=\dfrac{x-1}{\eu}$. Setting $y=0$ gives $x-1=-\eu^{2}$, so the $x$-intercept is $1-\eu^{2}=-6.3890561$. The shortcut formula agrees: $a+f(a)f'(a)=1+\eu(-\eu)=1-\eu^{2}$.
+
+A tangent from an external point, which is the same formula with the unknown moved. Find every line through $(0,-1)$ tangent to $y=x^{2}$. The point of tangency is unknown, so call it $a$; the tangent there is $y=a^{2}+2a(x-a)$, and requiring it to pass through $(0,-1)$ gives
+\[
+-1=a^{2}-2a^{2}=-a^{2},
+\]
+so $a=\pm1$ and the two tangents are $y=2x-1$ and $y=-2x-1$. Note what was \emph{not} done: no attempt was made to write the line as $y=mx-1$ and impose a repeated root, which works for a quadratic and for nothing else. Parametrising by the point of tangency is the move that generalises.
+
+A lemma worth carrying, since tangent problems on cubics recur. The tangent to $y=x^{3}$ at $x=a$ meets the curve again at $x=-2a$. To see it, subtract:
+\[
+x^{3}-\bigl(a^{3}+3a^{2}(x-a)\bigr)=x^{3}-3a^{2}x+2a^{3}=(x-a)^{2}(x+2a),
+\]
+where the double factor $(x-a)^{2}$ is the algebraic signature of tangency and the remaining linear factor names the second intersection. At $a=2$ the tangent is $y=12x-16$ and it recrosses at $x=-4$, as the identity predicts. The same subtract-and-factor move identifies tangency for any polynomial: a tangent produces a repeated root, and the leftover factor tells you where else the line goes.
+\end{worked}
+
+\begin{trap}
+Writing $-1/f'(a)$ when $f'(a)=0$. There the tangent is horizontal and the normal is the vertical line $x=a$, which has no slope; the formula must be abandoned, not patched. The mirror case is a vertical tangent, where the normal is horizontal. Second, confusing the point on the curve with the point of evaluation: every ingredient of both formulas is evaluated at $a$, and $f(a)$ is a number, not a function.
+\end{trap}
+
+\begin{seealsob}Common tangents and prescribed-angle tangents; linearisation and differentials; Newton's method as one step of an iteration.\end{seealsob}
+
+One line and one curve is a single condition. One line and two curves is a system, and it is the standard way a tangent problem is made hard. The essential recognition is that the two points of tangency are independent unknowns, so there are two of them and you need two equations.
+
+\tech{Common tangents and prescribed-angle tangents}{medium}
+\cue One line tangent to \emph{two} curves; or a line required to meet a given tangent, or another curve, at a stated angle.
+\method For a common tangent, let the line touch $f$ at $a$ and $g$ at $b$, with $a$ and $b$ unrelated, and impose two conditions:
+\[
+f'(a)=g'(b)\qquad\text{(equal slopes)},\qquad f'(a)=\frac{g(b)-f(a)}{b-a}\qquad\text{(collinearity)} .
+\]
+Solve for $(a,b)$; expect more than one solution. For a prescribed angle, use
+\[
+\tan\theta=\left|\frac{m_{2}-m_{1}}{1+m_{1}m_{2}}\right| ,
+\]
+solved for the unknown slope, and remember that the angle between two \emph{curves} means the angle between their tangents at the intersection point.
+
+\begin{worked}
+Find every common tangent to $y=x^{2}$ and $y=-(x-2)^{2}$.
+
+Touch the first at $a$ and the second at $b$. Equal slopes: $2a=-2(b-2)$, so $a=2-b$, that is $b=2-a$. Collinearity, with $f(a)=a^{2}$ and $g(b)=-(b-2)^{2}=-a^{2}$ after substituting $b-2=-a$:
+\[
+2a=\frac{-a^{2}-a^{2}}{b-a}=\frac{-2a^{2}}{2-2a}=\frac{-a^{2}}{1-a}.
+\]
+Cross-multiplying, $2a(1-a)=-a^{2}$, so $2a-2a^{2}=-a^{2}$ and $a^{2}=2a$, giving $a=0$ or $a=2$. For $a=0$: $b=2$, the line is $y=0$, tangent to the parabola at its vertex and to the downward parabola at its vertex. For $a=2$: $b=0$, slope $4$, through $(2,4)$, so $y=4x-4$; checking on the second curve, $g(0)=-4$ and $g'(0)=4$, and the line gives $y(0)=-4$. Both check exactly. Note that the two tangency points are different in both solutions, which is the whole reason two unknowns were needed.
+
+A prescribed angle. Let $f(x)=\sin\!\left(\dfrac{\pi x}{2}\right)\cos\!\left(\dfrac{\pi x}{4}\right)$. Then
+\[
+f'(x)=\frac\pi2\cos\frac{\pi x}{2}\cos\frac{\pi x}{4}-\frac\pi4\sin\frac{\pi x}{2}\sin\frac{\pi x}{4},
+\]
+and at $x=4$ the second term dies because $\sin2\pi=0$, while the first is $\dfrac\pi2\cdot1\cdot(-1)$, so $f'(4)=-\dfrac\pi2=-1.5707963$, verified by central difference. Now find the line through that point of tangency meeting the tangent at $60^{\circ}$ with the larger slope. With $m_{1}=-\pi/2$ and $\tan60^{\circ}=\sqrt3$, dropping the absolute value in the direction that gives $m_{2}>m_{1}$,
+\[
+m_{2}=\frac{\sqrt3+m_{1}}{1-\sqrt3\,m_{1}}=\frac{\sqrt3-\pi/2}{1+\sqrt3\,\pi/2}=0.0433398 ,
+\]
+and substituting back, $\dfrac{m_{2}-m_{1}}{1+m_{1}m_{2}}=1.7320508=\sqrt3$ exactly as required.
+
+The angle between two curves is the same formula with both slopes known. The curves $y=x^{2}$ and $y=x^{3}$ meet where $x^{2}=x^{3}$, at $x=0$ and $x=1$. At the origin the slopes are $0$ and $0$, so the curves are tangent and the angle is zero. At $(1,1)$ the slopes are $2$ and $3$, so
+\[
+\tan\theta=\left|\frac{3-2}{1+6}\right|=\frac17,\qquad\theta=\arctan\frac17=0.1418971\ \text{rad}=8.13^{\circ}.
+\]
+Nothing about the curves is used beyond their derivatives at the shared point, which is why the notion is well defined at all.
+\end{worked}
+
+\begin{trap}
+Assuming a common tangent must touch both curves at the same $x$. It need not, and imposing $a=b$ turns a solvable system into an inconsistent one. Second, taking only one root of the angle equation: the absolute value produces two candidate slopes, symmetric about the given line, and the problem usually specifies which by a side condition.
+\end{trap}
+
+\begin{seealsob}Tangent lines and normal lines; differentiating an area function and the tangent-chord lemmas; constrained optimisation by one-variable reduction.\end{seealsob}
+
+\section{Approximation: the tangent as a numerical instrument}
+
+The tangent line is the best linear model of a function near a point, and two entire techniques are nothing but that sentence used in opposite directions. Linearisation asks what $f$ is worth near $a$, given $f(a)$ and $f'(a)$. Newton's method asks where $f$ vanishes near $a$, given the same two numbers. Both are exact statements about the tangent and approximate statements about $f$, and the error in both is governed by $f''$.
+
+\tech{Linearisation and differentials}{easy}
+\cue ``Approximate'', ``estimate the change in'', a small perturbation $\Delta x$, a propagated measurement error, or a percentage change.
+\method Use $L(x)=f(a)+f'(a)(x-a)$ with $a$ the nearest point where $f$ is known exactly. In differential notation, $\dd y=f'(x)\dd x$ so $\Delta y\approx f'(x)\Delta x$. For relative error, divide:
+\[
+\frac{\dd y}{y}=\frac{f'(x)}{f(x)}\dd x ,
+\]
+which is the logarithmic derivative, so for $y=cx^{k}$ a relative error of $\epsilon$ in $x$ produces $k\epsilon$ in $y$. The size of the error is controlled by the Lagrange remainder $\tfrac12f''(\xi)(x-a)^{2}$, and its \emph{sign} is the sign of $f''$: a convex $f$ lies above its tangent, so $L$ underestimates.
+
+\begin{worked}
+Estimate $\sqrt{101}$. Take $f(x)=\sqrt x$ and $a=100$, where $f(a)=10$ and $f'(a)=\tfrac{1}{20}$:
+\[
+\sqrt{101}\approx10+\frac{1}{20}=10.05 .
+\]
+The true value is $10.0498756$, so the error is $1.244\times10^{-4}$. The remainder bound predicts this well: $f''(x)=-\tfrac14x^{-3/2}$, so $\bigl|\tfrac12f''(\xi)\bigr|\leq\tfrac18\cdot100^{-3/2}=1.25\times10^{-4}$. And the sign is right: $\sqrt{\cdot}$ is concave, $f''<0$, so the tangent lies above the curve and $10.05$ is an overestimate.
+
+Error propagation, where the relative form does all the work. A sphere's radius is measured as $12\ \mathrm{cm}$ with uncertainty $0.05\ \mathrm{cm}$. From $V=\tfrac43\pi r^{3}$,
+\[
+\frac{\dd V}{V}=3\frac{\dd r}{r}=3\cdot\frac{0.05}{12}=1.25\% ,
+\]
+so the volume is uncertain by $1.25$ per cent, and in absolute terms $\dd V=4\pi(12)^{2}(0.05)=90.4778656\ \mathrm{cm^{3}}$. No value of $V$ was needed for the percentage, which is the advantage of the logarithmic form.
+
+The comparison question, in full. For $f(x)=\sqrt x$ at $a=100$ with $\Delta x=1$: the differential is $\dd y=f'(100)\cdot1=0.0500000$, while the true change is $\Delta y=\sqrt{101}-10=0.0498756$. So $\dd y>\Delta y$ here, and the reason is structural rather than numerical: $f''<0$ makes $f$ concave, the tangent lies above the curve, and the linear estimate of the increase therefore overshoots. Reverse the concavity and the inequality reverses with it. Any question of the form ``is $\dd y$ larger or smaller than $\Delta y$'' is a question about the sign of $f''$ and can be answered without computing either quantity.
+
+And the refinement, since the remainder term is not merely a bound but the leading correction. Adding the quadratic term of the Taylor expansion,
+\[
+\sqrt{101}\approx10+\frac{1}{20}+\frac{f''(100)}{2}(1)^{2}=10.05-\frac{1}{8000}=10.0498750 ,
+\]
+against the true $10.0498756$: the error has fallen from $1.24\times10^{-4}$ to $6\times10^{-7}$, roughly the cube of the displacement over the appropriate scale. That is the general pattern, and it is the reason a linearisation is trusted near $a$ and abandoned away from it.
+\end{worked}
+
+\begin{trap}
+Using the estimate far from $a$, where the quadratic remainder is no longer small; the linearisation is a local statement and its error grows like the square of the displacement. Second, confusing $\dd y$ with $\Delta y$ when the question asks which is larger. They differ by the remainder, so the comparison is decided entirely by the sign of $f''$, and answering without checking it is a coin flip.
+\end{trap}
+
+\begin{seealsob}Newton's method as one step of an iteration; tangent lines and normal lines; the total differential.\end{seealsob}
+
+Reading the same tangent line the other way turns approximation into root-finding. It is worth presenting Newton's method as a fixed-point iteration rather than as a formula, because that framing explains both why it converges so fast and exactly when it stops doing so.
+
+\tech{Newton's method as one step of an iteration}{easy}
+\cue ``One iteration of Newton's method'', ``improve the approximation to the root'', or a recursion presented without its origin.
+\method The iteration is
+\[
+x_{n+1}=N(x_{n}),\qquad N(x)=x-\frac{f(x)}{f'(x)} ,
+\]
+which is the $x$-intercept of the tangent at $x_{n}$. Read it as a fixed-point iteration for $N$: a root $r$ of $f$ is a fixed point of $N$, and
+\[
+N'(x)=\frac{f(x)f''(x)}{f'(x)^{2}} ,
+\]
+which vanishes at a simple root because $f(r)=0$ while $f'(r)\neq0$. A fixed-point iteration with $N'(r)=0$ converges quadratically, which is the whole explanation. At a root of multiplicity $m$ the limit of $N'$ is $1-1/m\neq0$, so convergence degrades to linear with exactly that ratio. It fails outright when $f'(x_{n})$ is near zero.
+
+\begin{worked}
+Take $f(x)=x^{2}-2$ and $x_{0}=1$. Then $f'(x)=2x$ and
+\[
+x_{1}=1-\frac{1-2}{2}=\frac32,\qquad x_{2}=\frac32-\frac{\tfrac94-2}{3}=\frac32-\frac{1}{12}=\frac{17}{12}=1.4166667 ,
+\]
+against $\sqrt2=1.4142136$: the error falls from $8.6\times10^{-2}$ to $2.5\times10^{-3}$, roughly squaring, as promised.
+
+Now a multiple root, to see the degradation concretely. Take $f(x)=(x-1)^{3}$ and $x_{0}=2$. Here $f/f'=(x-1)^{3}/3(x-1)^{2}=(x-1)/3$, so the iteration is exactly
+\[
+x_{n+1}=x_{n}-\frac{x_{n}-1}{3}=\frac{2x_{n}+1}{3},
+\]
+whose error satisfies $e_{n+1}=\tfrac23e_{n}$ precisely. That is $1-1/m$ with $m=3$. Starting from $e_{0}=1$, four steps give $x_{4}=1.1975309$ with $e_{4}=(2/3)^{4}=0.1975309$: linear, not quadratic, and no amount of iterating changes the ratio.
+
+A failure, so that the hypotheses are not decorative. Take $f(x)=x^{3}-2x+2$ with $x_{0}=0$. Then $f(0)=2$ and $f'(0)=-2$, so $x_{1}=0-\dfrac{2}{-2}=1$; and $f(1)=1$ with $f'(1)=1$, so $x_{2}=1-\dfrac11=0$. The iteration cycles between $0$ and $1$ forever and never approaches the real root near $-1.7693$. Nothing is wrong with the arithmetic: $N$ simply has a two-cycle, and a fixed-point iteration is under no obligation to converge from an arbitrary start. Quadratic convergence is a statement about starting \emph{near} a simple root, not about starting anywhere.
+\end{worked}
+
+The fixed-point framing pays a second dividend: it tells you what to expect from iterations that are \emph{not} Newton's. Any rearrangement of $f(x)=0$ into $x=g(x)$ gives an iteration, and it converges near a fixed point $r$ exactly when $\abs{g'(r)}<1$, at a linear rate equal to $\abs{g'(r)}$. Solving $x=\cos x$ by the naive iteration $x_{n+1}=\cos x_{n}$ from $x_{0}=1$ converges to $r=0.7390851$, because $g'=-\sin$ and $\abs{g'(r)}=0.6736120<1$; each step buys about $0.17$ of a decimal digit. Newton's method on $f(x)=x-\cos x$ uses $N(x)=x-\dfrac{x-\cos x}{1+\sin x}$ and reaches $0.7390851$ from the same start in four steps, with the iterates $0.7503639$, $0.7391129$, $0.7390851$. The difference is entirely accounted for by $N'(r)=0$ against $g'(r)=-0.67$.
+
+\begin{trap}
+The sign of the correction. It is $x-f/f'$, and writing $x+f/f'$ produces an iteration that runs away from the root at exactly the same speed. Second, claiming quadratic convergence at a repeated root: the observed ratio is $1-1/m$, and reporting the number of correct digits as doubling per step is then simply false. Third, iterating without checking $f'(x_{n})$: a near-horizontal tangent throws the next iterate arbitrarily far away.
+\end{trap}
+
+\begin{seealsob}Linearisation and differentials; tangent lines and normal lines; fixed-point iteration and contraction.\end{seealsob}
+
+Linearisation uses $f'$ and treats $f''$ as an error term. Curvature does the opposite: it is the invariant built from $f''$ that says how far the curve departs from its tangent, and it is the natural second-order companion to the two techniques above.
+
+\begin{keynote}[The error hierarchy]
+Three statements about the same tangent, in increasing strength. \emph{Zeroth order:} $f(x)\approx f(a)$, error $O(x-a)$, controlled by $f'$. \emph{First order:} $f(x)\approx L(x)$, error $\tfrac12f''(\xi)(x-a)^{2}$, controlled by $f''$. \emph{Second order:} add $\tfrac12f''(a)(x-a)^{2}$, error controlled by $f'''$. Each extra derivative buys one more power of the displacement, which is why linearisation is excellent nearby and worthless far away, and why curvature, the next block's subject, is the first quantity that says anything the tangent line does not.
+\end{keynote}
+
+\tech{Curvature and the osculating circle}{hard}
+\cue ``Radius of curvature'', ``osculating circle'', ``where does the curve bend most sharply'', or a request for the circle that best fits a curve at a point.
+\method For a graph $y=f(x)$,
+\[
+\kappa=\frac{\abs{y''}}{\bigl(1+(y')^{2}\bigr)^{3/2}},\qquad R=\frac1\kappa .
+\]
+For a parametrised curve,
+\[
+\kappa=\frac{\abs{\dot x\ddot y-\dot y\ddot x}}{\bigl(\dot x^{2}+\dot y^{2}\bigr)^{3/2}} ,
+\]
+whose numerator and denominator are exactly the ingredients of the parametric second-derivative formula. The osculating circle has radius $R$, lies on the concave side, and has centre at distance $R$ along the normal. At a point where $y'=0$ the graph formula collapses to $\kappa=\abs{y''}$, which is worth choosing the coordinates to arrange.
+
+\begin{worked}
+For $y=x^{2}$ at the origin, $y'=0$ and $y''=2$, so $\kappa=2$ and $R=\tfrac12$: the osculating circle is centred at $(0,\tfrac12)$ with radius $\tfrac12$. Every parabola $y=ax^{2}$ has $R=1/2\abs{a}$ at its vertex. The centre is found by walking a distance $R$ from the point along the normal, towards the concave side: here the normal at the origin is the $y$-axis and the curve opens upward, so the centre is at $(0,\tfrac12)$ and the osculating circle is $x^{2}+(y-\tfrac12)^{2}=\tfrac14$. Solving the circle for its lower branch, $y=\tfrac12-\tfrac12\sqrt{1-4x^{2}}=x^{2}+x^{4}+\cdots$, which agrees with the parabola to second order and first differs at fourth order; that agreement to second order is what ``osculating'' means.
+
+Parametrically, take the ellipse $x=3\cos t$, $y=2\sin t$ at $t=0$, the end of the major axis. Then $\dot x=-3\sin t=0$, $\dot y=2\cos t=2$, $\ddot x=-3\cos t=-3$, $\ddot y=-2\sin t=0$, so
+\[
+\kappa=\frac{\abs{0\cdot0-2\cdot(-3)}}{(0+4)^{3/2}}=\frac{6}{8}=\frac34,\qquad R=\frac43 ,
+\]
+in agreement with the classical value $b^{2}/a=4/3$ at the end of the major axis. The Cartesian formula would first require solving for $y$ and would meet a vertical tangent at exactly this point.
+
+Where does $y=\eu^{x}$ bend most sharply? With $u=\eu^{x}$, $\kappa=u(1+u^{2})^{-3/2}$, and
+\[
+\dv{\kappa}{u}=(1+u^{2})^{-5/2}\bigl(1+u^{2}-3u^{2}\bigr)=0\quad\text{at } u=\frac{1}{\sqrt2},
+\]
+that is $x=-\tfrac12\ln2=-0.3465736$, giving $\kappa_{\max}=\dfrac{2}{3\sqrt3}=0.3849002$; a grid search over $[-3,3]$ returns $0.3849002$.
+\end{worked}
+
+\begin{trap}
+Omitting the exponent $3/2$ or the absolute value in the numerator, both of which produce a quantity that is not curvature and is not even dimensionally right. Second, applying the Cartesian formula to a parametric curve without first eliminating the parameter, which is invalid and, at a vertical tangent, impossible. Third, forgetting that curvature is not invariant under rescaling the axes, so a picture cannot be used to check it.
+\end{trap}
+
+\begin{seealsob}Parametric derivatives; higher implicit derivatives; sign charts for monotonicity and concavity.\end{seealsob}
+
+\section{Extracting shape, and the mean value theorems as tools}
+
+Everything so far produced a number: a rate, an optimal value, an approximation, a curvature. What remains asks instead for a description: how many extrema, on which intervals $f$ increases, how many zeros $f'$ can have. That change of goal changes the technique. Where a numerical answer wants $f'$ evaluated, a qualitative answer wants $f'$ \emph{factored}, because sign information lives in the factors and is destroyed by expansion. And where no formula for $f$ is supplied at all, the mean value theorems replace computation with a bound or a count.
+
+The two instruments below are therefore the sign chart and the pair of mean value theorems, and both are used here as working tools rather than as items of theory.
+
+\tech{Sign charts: monotonicity, concavity, and counting critical points}{medium}
+\cue $f'$ arrives in \emph{factored} form, or the question asks for a count of extrema, a sum of stationary values, or the integers satisfying an inequality built from $f$, $f'$ and $f''$.
+\method Keep $f'$ factored; never expand. A factor changes sign only at a root of \emph{odd} multiplicity, and at such a root $+$ to $-$ marks a local maximum and $-$ to $+$ a local minimum. Positive factors may be discarded outright: since $\eu^{g}>0$ always, $\sgn\bigl(\eu^{g}\bigr)'=\sgn g'$, so $\eu^{g}$ has exactly the extrema of $g$. When the derivative carries an oscillatory phase, stop drawing and start counting lattice points: extrema of $\cos\varphi(x)$ occur where $\varphi(x)=k\pi$, so tally the integers $k$ lying in the image interval $\varphi([a,b])$.
+
+\begin{worked}
+Let $f(x)=\cos\bigl(3^{x+1}\bigr)$ on $[0,3]$. Then
+\[
+f'(x)=-3^{x+1}\ln3\,\sin\bigl(3^{x+1}\bigr),
+\]
+and the prefactor $-3^{x+1}\ln3$ never vanishes, so the critical points are exactly the solutions of $3^{x+1}=k\pi$. The phase $\varphi(x)=3^{x+1}$ is increasing and maps $[0,2)$ onto $[3,27)$ and $[2,3]$ onto $[27,81]$. Counting integers $k$ with $k\pi$ in each: from $3/\pi=0.955$ to $27/\pi=8.594$ gives $k=1,\dots,8$, so $8$ extrema; from $27/\pi$ to $81/\pi=25.783$ gives $k=9,\dots,25$, so $17$. The ratio is $8/17$, and no equation was ever solved.
+
+A nested case, where the sign chart is about which factor can vanish. Let $f(x)=\tan\bigl(\cos(\sin x)\bigr)$ on $[-\pi/2,\pi/2]$. The chain rule gives
+\[
+f'(x)=\sec^{2}\bigl(\cos\sin x\bigr)\cdot\bigl(-\sin(\sin x)\bigr)\cdot\cos x .
+\]
+The first factor is never zero. The second vanishes when $\sin(\sin x)=0$, that is $\sin x=0$, that is $x=0$. The third vanishes at $x=\pm\pi/2$. So the stationary points are $x=0,\pm\pi/2$, and the corresponding values are $f(0)=\tan(\cos0)=\tan1$ and $f(\pm\pi/2)=\tan(\cos1)$ twice. Hence
+\[
+\sum f=\tan1+2\tan(\cos1)=1.5574077+2(0.5998406)=2.7570890 .
+\]
+\end{worked}
+
+The pure multiplicity count deserves an instance of its own, since it is the form in which the technique is usually tested. Suppose
+\[
+f'(x)=x^{2}(x-1)^{3}(x-2)(x+3)^{4} .
+\]
+How many local extrema does $f$ have? Four roots, but only those of odd multiplicity switch the sign: $x=1$ with multiplicity $3$ and $x=2$ with multiplicity $1$. The roots at $0$ and $-3$ have even multiplicity and are stationary points that are not extrema. So the answer is two, and their types follow from one sign test each: at $x=3$ the product is positive, at $x=1.5$ it is negative, and at $x=0.5$ it is positive, so $f$ has a local maximum at $x=1$ and a local minimum at $x=2$. Expanding $f'$ into a degree-ten polynomial would have destroyed every bit of this in one step.
+
+Two further reductions belong here because they save whole pages. First, an inert positive wrapper: to locate the extrema of $\eu^{x^{3}-3x}$, do not differentiate the exponential at all. Since $\eu^{g}>0$, the derivative $\eu^{g}g'$ has the sign of $g'=3x^{2}-3$, so the extrema sit at $x=\pm1$, a maximum at $-1$ and a minimum at $1$, exactly as for $g$ itself. The same argument disposes of any strictly increasing wrapper: $\ln$, $\arctan$, odd powers, and $\sinh$ all preserve the location and the type of every extremum.
+
+Second, poles. To solve $\dfrac{(x-1)(x-4)^{2}}{x-3}>0$, mark the boundary points $1,3,4$ and remember that $3$ is a pole rather than a zero but still separates sign regions, while $4$ is a double zero and therefore does \emph{not}. Testing one point in each region gives positive on $(-\infty,1)$, negative on $(1,3)$, positive on $(3,4)$ and positive on $(4,\infty)$, so the solution set is $(-\infty,1)\cup(3,4)\cup(4,\infty)$, with $4$ removed because the expression vanishes there. A chart that lists only the zeros of the numerator gets this wrong twice over: it invents a sign change at $4$ and misses the one at $3$.
+
+\begin{trap}
+Counting a double root as a sign change. The factor $(x-2)^{2}$ produces a stationary point that is not an extremum, and expanding $f'$ destroys exactly the information needed to see that. Second, forgetting that a rational expression changes sign at its \emph{poles} as well as its zeros, so an inequality such as $\dfrac{(x-1)}{(x-3)}>0$ has its boundary at $3$ even though nothing vanishes there.
+\end{trap}
+
+\begin{seealsob}Constrained optimisation by one-variable reduction; one-sided derivatives, corners and cusps; Rolle and mean-value arguments as tools.\end{seealsob}
+
+Sign charts need a formula for $f'$. The mean value theorems need none, which is exactly why they are the tool of choice when the problem withholds one and asks a question about counting or bounding anyway.
+
+\tech{Rolle and mean-value arguments as tools}{hard}
+\cue A conclusion about how many zeros some derivative-built expression has, or a bound on $f(b)$ from bounds on $f'$, with no explicit formula for $f$ anywhere in the problem.
+\method Two statements, used in opposite directions. \emph{Mean value theorem:} $\dfrac{f(b)-f(a)}{b-a}=f'(c)$ for some $c\in(a,b)$, so bounds on $f'$ convert directly into bounds on an endpoint value. \emph{Rolle:} between consecutive zeros of $g$ lies a zero of $g'$, so $n$ zeros of $g$ force at least $n-1$ zeros of $g'$. The strong form handles first-order operators: for $(1+\lambda D)g$, multiply by the integrating factor $\eu^{x/\lambda}$ and note that
+\[
+\bigl(\eu^{x/\lambda}g\bigr)'=\frac{\eu^{x/\lambda}}{\lambda}\bigl(g+\lambda g'\bigr),
+\]
+so since $\eu^{x/\lambda}g$ has exactly the zeros of $g$, Rolle gives $(1+\lambda D)g$ at least $n-1$ zeros. Iterate for powers of the operator.
+
+\begin{worked}
+A bound from the mean value theorem. Suppose $f$ is differentiable on $[0,3]$ with $f(0)=10$ and $-6.5\leq f'\leq8$ throughout. Applying the theorem on $[0,3]$,
+\[
+-6.5\leq\frac{f(3)-10}{3}\leq8\ \Longrightarrow\ -19.5\leq f(3)-10\leq24\ \Longrightarrow\ -9.5\leq f(3)\leq34 .
+\]
+The integers available to $f(3)$ run from $-9$ to $34$, and there are $44$ of them. Both bounds are attained by linear functions, so none can be improved.
+
+A count from Rolle, in operator form. Let
+\[
+F=f+6f'+12f''+8f''' .
+\]
+Recognise the coefficients: $1,6,12,8$ are $\binom3k2^{k}$ for $k=0,1,2,3$, so $F=(1+2D)^{3}f$ with $D=\dvop{x}$. Suppose $f$ has $5$ zeros. Each application of $(1+2D)$ costs at most one zero by the integrating-factor argument with $\lambda=2$, so $(1+2D)f$ has at least $4$, then at least $3$, then at least $2$. Therefore $F$ has at least $2$ zeros. The binomial recognition is the whole trick; expanded, the expression looks like an arbitrary linear combination and nothing follows from it.
+
+The mean value theorem also proves inequalities, which is its most useful everyday role. For any $a,b$, applying it to $\sin$ gives $\sin b-\sin a=(b-a)\cos c$ for some $c$, and since $\abs{\cos c}\leq1$,
+\[
+\abs{\sin b-\sin a}\leq\abs{b-a} ,
+\]
+so $\sin$ is a contraction in the weak sense, with no trigonometric identity used anywhere. Similarly, for $0<a<b$ apply it to $\ln$: $\ln b-\ln a=\dfrac{b-a}{c}$ with $a<c<b$, and since $\dfrac1b<\dfrac1c<\dfrac1a$,
+\[
+\frac{b-a}{b}<\ln\frac ba<\frac{b-a}{a} .
+\]
+Setting $b=1+x$ and $a=1$ recovers $\dfrac{x}{1+x}<\ln(1+x)<x$ for $x>0$, two of the standard logarithm bounds, from one application of the theorem.
+
+And Rolle used as an upper bound, which is the direction people forget. How many real roots can $p(x)=x^{3}-3x+c$ have? Its derivative $3x^{2}-3$ has exactly two zeros, so by Rolle $p$ can have at most three, and the count is settled by comparing $c$ with the two stationary values $p(\pm1)=c\mp2$.
+\end{worked}
+
+One structural consequence is worth recording, because it constrains what a derivative can look like and therefore what answers are possible. Darboux's theorem says that $f'$ has the intermediate value property on any interval where it exists, even when $f'$ is discontinuous. So a derivative can never jump: a function defined piecewise with slopes $1$ on the left and $2$ on the right is not the derivative of anything, and a problem asserting that it is has an error in it. The proof is a Rolle argument applied to $f(x)-cx$, which is exactly the kind of use this block is about.
+
+\begin{trap}
+Asserting an exact zero count when Rolle supplies only a lower bound in one direction and only an upper bound in the other. ``At least $n-1$'' and ``at most $k+1$'' are different claims and neither is ``exactly''. Second, applying the mean value theorem without checking its hypotheses: continuity on the \emph{closed} interval and differentiability on the \emph{open} one. On $[-1,1]$ the function $\abs{x}$ satisfies neither conclusion nor hypothesis, and the failure is instructive.
+\end{trap}
+
+\begin{seealsob}Sign charts for monotonicity and concavity; the Leibniz rule for higher derivatives and binomial recognition; differentiable but not $C^{1}$.\end{seealsob}
+
+The last technique in the chapter is where the two halves of Part III meet: a quantity defined as an area, so that differentiating it needs the Leibniz rule, and an optimisation whose answer is a statement about tangents. Both of the lemmas below are worth carrying, because they turn a page of integration into a line.
+
+\tech{Differentiating an area function; tangent-chord lemmas}{hard}
+\cue A quantity defined as an area that depends on a moving point, with its rate wanted; sometimes with the moving point itself parametrised by a further variable.
+\method Write the area as a definite integral with the moving point in the limits \emph{and} inside the integrand, then apply the full Leibniz rule. The boundary term usually vanishes, because a tangent meets its curve at the very point in question. Two lemmas result. \emph{First:} for the region between a curve and its tangent at $x_{P}$, cut off by the $y$-axis,
+\[
+\dv{A}{x_{P}}=\tfrac12x_{P}^{2}f''(x_{P}) .
+\]
+\emph{Second, Archimedes' lemma:} among points of a smooth arc, the one maximising the area of the triangle with two fixed endpoints is where the tangent is parallel to the chord, which is the mean value theorem read geometrically.
+
+\begin{worked}
+Derive the first lemma, since its sign is the part that gets lost. With $T(x)=f(p)+f'(p)(x-p)$ the tangent at $x_{P}=p$, put $A(p)=\int_{0}^{p}\bigl(f(x)-T(x)\bigr)\dd x$. Leibniz gives a boundary term $f(p)-T(p)=0$ and an interior term $-\int_{0}^{p}\pdv{T}{p}\dd x$, where
+\[
+\pdv{T}{p}=f'(p)+f''(p)(x-p)-f'(p)=f''(p)(x-p).
+\]
+Hence
+\[
+\dv{A}{p}=-f''(p)\int_{0}^{p}(x-p)\dd x=-f''(p)\left(\frac{p^{2}}{2}-p^{2}\right)=\frac{p^{2}}{2}f''(p).
+\]
+Sanity check on $f(x)=x^{2}$: the tangent at $p$ is $2px-p^{2}$, the gap is $(x-p)^{2}$, so $A(p)=p^{3}/3$ and $A'(p)=p^{2}$, matching $\tfrac12p^{2}\cdot2$. Numerically at $p=1.3$ the derivative is $1.6900000$ both ways. The sign is positive for a convex $f$, as it must be, since the region grows as $p$ moves right.
+
+Now the parametrised version. Suppose $f''(x)=\arctan(3^{x})$ and the moving point is $x_{P}=\sin t$; find $\dv{A}{t}$ at $t=\pi/6$. Chain the lemma with $\dv{x_{P}}{t}=\cos t$:
+\[
+\dv{A}{t}=\frac{x_{P}^{2}}{2}f''(x_{P})\cos t .
+\]
+At $t=\pi/6$: $x_{P}=\tfrac12$, $f''(\tfrac12)=\arctan\sqrt3=\dfrac\pi3$, and $\cos\tfrac\pi6=\dfrac{\sqrt3}{2}$, so
+\[
+\dv{A}{t}=\frac12\cdot\frac14\cdot\frac\pi3\cdot\frac{\sqrt3}{2}=\frac{\pi\sqrt3}{48}=0.1133625 .
+\]
+Nothing about $f$ beyond its second derivative was ever needed, which is the point of having the lemma.
+
+Archimedes' lemma, proved and used. Fix $A=(a,f(a))$ and $B=(b,f(b))$ on a smooth arc and let $P=(p,f(p))$ move between them. The triangle $ABP$ has base $AB$ fixed, so its area is maximal exactly when the distance from $P$ to the line $AB$ is maximal. That distance is proportional to
+\[
+D(p)=f(p)-\left(f(a)+\frac{f(b)-f(a)}{b-a}(p-a)\right),
+\]
+and $D'(p)=0$ precisely when $f'(p)=\dfrac{f(b)-f(a)}{b-a}$: the tangent at $P$ is parallel to the chord $AB$. That is the mean value theorem, and it guarantees such a $p$ exists. For the parabola $f(x)=x^{2}$ on $[a,b]$ the condition reads $2p=a+b$, so the optimal $P$ is always at the midpoint abscissa, whatever $a$ and $b$ are; the resulting triangle has area $\tfrac18(b-a)^{3}$, which is Archimedes' quadrature constant of $4/3$ away from the parabolic segment.
+\end{worked}
+
+\begin{trap}
+Dropping the chain factor $\dv{x_{P}}{t}$ when the moving point is itself parametrised, which is the single commonest failure here and costs a factor of $\cos t$. Second, substituting the numerical value of the moving point into the area formula before differentiating, which is the related-rates error in a new costume. Third, getting the sign backwards by integrating tangent minus curve when the region is curve minus tangent; check it against $f(x)=x^{2}$, where the answer must be positive.
+\end{trap}
+
+\begin{seealsob}The full Leibniz integral rule; constrained optimisation by one-variable reduction; common tangents and prescribed-angle tangents.\end{seealsob}
+
+\subsection{The same chain rule, four times over}
+
+It is worth seeing that the families in this chapter are not four subjects but one, differently packaged. In every case the object is a relation between quantities and the instrument is the chain rule; what changes is which variable is doing the driving.
+
+In a related-rates problem the driving variable is time, which appears nowhere in the geometry. The relation $Q=g(u)$ is timeless, and $\dot Q=g'(u)\dot u$ merely records that both sides are being watched as $t$ advances. In a constrained optimisation the driving variable is the one surviving degree of freedom, and the constraint is what reduced the count to one; the derivative that is set to zero is a derivative along the constraint. In a linearisation the driving variable is the displacement from a base point, and the chain rule appears as the statement that $\Delta y\approx f'\Delta x$ composes correctly through several stages. In a curvature or area calculation the driving variable may itself be parametrised, and then a further factor $\dv{x_{P}}{t}$ appears, which is the error people make most often here.
+
+The practical consequence is a single diagnostic question, applicable to all four: \emph{what is varying, and with respect to what?} Answer it in writing before differentiating, and the correct chain rule follows mechanically. Leave it unanswered, and you will substitute a number where a function belonged, or differentiate along the wrong variable, or omit a factor that was never named.
+
+One habit unifies the chapter, and it is worth stating as a sentence rather than a slogan: before differentiating, write down what is varying, what is fixed, and on what set. In a related-rates problem that means naming every time-dependent quantity and refusing to insert an instantaneous number. In an optimisation problem it means using the constraint to reach one variable and then stating the interval. In a linearisation it means choosing the base point and knowing the sign of $f''$. In a counting problem it means keeping $f'$ factored and asking which factors can actually vanish. The differentiation that follows is, in every one of these families, the shortest part of the work.
+
+\section{Recognition matrix}
+\begin{recog}{@{}p{0.30\textwidth}p{0.36\textwidth}p{0.28\textwidth}@{}}
+\rowcolor{mist}\mh{If you see} & \mh{Reach for} & \mh{If that fails} \\
+\midrule
+\endhead
+``At what rate'', two quantities in time & Name, relate, reduce, differentiate, substitute last & Never insert the instant before differentiating \\
+A relation with more variables than rates & Reduce by geometry first: similar triangles, chord, law of sines & Chain through an intermediate, one factor per link \\
+Two hinged segments of fixed length & Chord $d=2R\sin(\theta/2)$; parametrise by the angle & Law of cosines, if the chord will not serve \\
+A power relation $Q=cu^{k}$ & Relative rates: $\dot Q/Q=k\dot u/u$ & No constant $c$ is needed \\
+``Maximise subject to'' & Eliminate with the constraint, then one derivative & State the domain before solving $f'=0$ \\
+A closed interval of feasible values & Compare interior critical points \emph{and} both endpoints & The maximum often sits where $f'\neq0$ \\
+An open or unbounded feasible set & Take limits at the ends; expect an unattained infimum & Report an infimum, not a minimum \\
+``Closest point on a curve'' & Minimise squared distance; substitute $u=x^{2}$ if even & Expect a symmetric pair of minimisers \\
+A constraint $x^{y}=C$ & Take logarithms; $x/\ln x$ is minimised at $x=\eu$ & Keep the branch $x>1$ \\
+``The normal at $P$'' & Slope $-1/f'(a)$; $x$-intercept $a+f(a)f'(a)$ & If $f'(a)=0$ the normal is $x=a$ \\
+One line tangent to two curves & Two unknowns $a,b$: equal slopes and collinearity & The touch points are generally different \\
+A stated angle between lines & $\tan\theta=\abs{(m_{2}-m_{1})/(1+m_{1}m_{2})}$ & Two roots; a side condition picks one \\
+``Approximate'' or ``estimate the change'' & $L(x)=f(a)+f'(a)(x-a)$; error $\tfrac12f''(\xi)(x-a)^{2}$ & Sign of $f''$ decides over or under \\
+A percentage or propagated error & $\dd y/y=(f'/f)\dd x$; for $cx^{k}$ multiply by $k$ & No absolute values are needed \\
+``One Newton iteration'' & $x_{n+1}=x_{n}-f(x_{n})/f'(x_{n})$ & At a root of multiplicity $m$, ratio $1-1/m$ \\
+``Radius of curvature'' & $\kappa=\abs{y''}/(1+y'^{2})^{3/2}$; $R=1/\kappa$ & Parametric: $\abs{\dot x\ddot y-\dot y\ddot x}/(\dot x^{2}+\dot y^{2})^{3/2}$ \\
+$f'$ given factored & Sign chart; odd multiplicity only; discard positive factors & Never expand $f'$ \\
+$\cos\varphi(x)$ or $\sin\varphi(x)$ on an interval & Count integers $k$ with $k\pi$ in the image of $\varphi$ & Solving the equation is unnecessary \\
+Bounds on $f'$, a value of $f$ wanted & Mean value theorem on the whole interval & Both bounds are attained by lines \\
+$n$ zeros of $g$, zeros of $g+\lambda g'$ wanted & Rolle on $\eu^{x/\lambda}g$; at least $n-1$ & Recognise $\binom{n}{k}\lambda^{k}$ as $(1+\lambda D)^{n}$ \\
+Area between a curve and its tangent & $\dv{A}{x_{P}}=\tfrac12x_{P}^{2}f''(x_{P})$ & Chain in $\dv{x_{P}}{t}$ if the point is parametrised \\
+Largest triangle on an arc & Archimedes: tangent parallel to the chord & The mean value theorem, read geometrically \\
+An angle tracking a moving object & Relate by $\tan\theta$, differentiate implicitly & $\sec^{2}\theta$ is cheaper than an arctangent \\
+$f'(c)=0$ and $f''(c)=0$ & The second-derivative test is silent; use a sign chart & $x^{4},-x^{4},x^{3}$ all look alike here \\
+A strictly increasing wrapper around $g$ & Extrema of $\eu^{g}$, $\ln g$, $\arctan g$ are those of $g$ & Differentiate the wrapper only if you must \\
+A rational inequality & Mark zeros \emph{and} poles; even multiplicity does not switch & Test one point per region \\
+\end{recog}

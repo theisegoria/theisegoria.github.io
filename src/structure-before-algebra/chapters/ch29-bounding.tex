@@ -1,0 +1,268 @@
+\chapter{Bounding, estimation, and numerical technique}
+
+\begin{orient}
+\textbf{What this chapter is for.} Sometimes the right answer to ``evaluate'' is ``bound''. A great many integrals have no closed form, a great many questions about integrals do not ask for one (compare these two numbers; show that this is positive; how does $I_{n}$ behave for large $n$), and a great many closed forms that do exist are worth less than a tight inequality with a proof attached. This chapter collects the machinery for those situations, in increasing order of how much apparatus it requires: pointwise envelopes and the mean value theorem for integrals, then the two inequalities that handle products and convexity (Cauchy-Schwarz and Jensen), then the correspondence between sums and integrals in both directions, then quadrature proper (trapezoid and Simpson with their error terms, Gaussian nodes, Richardson extrapolation), then series truncation with an honest tail bound, then asymptotics by Laplace's method. It ends with the technique that should be applied to everything else in this book: numerical cross-checking as a discipline. Running through the chapter is a judgement you must make each time, and the chapter states it plainly at both ends. A numeric answer is the correct deliverable when the question is quantitative and no structure exists; it is a failure when structure exists and you did not see it.
+\end{orient}
+
+\section{When a bound is the answer}
+
+Read the question before choosing the tool. ``Evaluate'' asks for a number. ``Show that $\int_0^{1}f>\int_0^{1}g$'' asks for an inequality, and producing both integrals in closed form to compare them is usually more work and always more fragile than comparing the integrands pointwise. ``Estimate to three decimals'' asks for a number \emph{and} an error bound, and a number without an error bound is not an answer to that question. ``How does $I_{n}$ behave as $n\to\infty$'' asks for an asymptotic, which is a statement about a family and cannot be obtained by evaluating any single member.
+
+The organising fact is that integration is monotone and linear, and that is nearly all you need. Monotonicity says that pointwise domination survives integration; linearity says that bounds add. Between them they convert almost any inequality between functions into an inequality between numbers, at no cost, and without any antiderivative appearing anywhere.
+
+There is a second reason to reach for a bound even when a closed form is available, and it is worth stating because it runs against instinct. A bound carries information that a value does not: it tells you which features of the integrand the answer depends on. Knowing that $\int_0^{1}\eu^{-x^{2}}\dd x$ lies between $\tfrac23$ and $\tfrac{\pi}{4}$ tells you that the integral is insensitive to the fine shape of the Gaussian and is essentially determined by its values at the two ends of the interval; knowing that it equals $0.746824$ tells you nothing of the kind. In applied settings, where the integrand is a model rather than a fact, that sensitivity information is frequently the deliverable and the number is not.
+
+\tech{Bounding by envelopes}{core}
+\cue The question asks you to \emph{show} $a<I<b$, to compare two integrals, to decide a sign, or to prove convergence with a quantitative rate. Also: an integrand that is intractable but visibly trapped between two tractable ones.
+\method Bound the integrand pointwise by something you can integrate. The basic chain, from crudest to sharpest:
+\[m\leq f\leq M\ \text{on}\ [a,b]\ \Longrightarrow\ m(b-a)\leq I\leq M(b-a);\qquad f\leq g\ \Longrightarrow\ \int_a^bf\leq\int_a^bg.\]
+The mean value theorem for integrals sharpens the first to an equality: for continuous $f$ there is $\xi\in(a,b)$ with $I=f(\xi)(b-a)$, and in weighted form, for $w\geq0$, $\int_a^bf w=f(\xi)\int_a^bw$. For products use Cauchy-Schwarz, $\bigl(\int fg\bigr)^{2}\leq\int f^{2}\int g^{2}$; for a convex $\varphi$ use Jensen, $\varphi\bigl(\int_0^{1}f\bigr)\leq\int_0^{1}\varphi(f)$.
+
+\begin{worked}
+On $[0,1]$, $x^{2}\leq x$, hence $1+x^{2}\leq1+x$, hence
+\[\frac{1}{1+x^{2}}\geq\frac{1}{1+x}\quad\Longrightarrow\quad\frac{\pi}{4}\geq\ln2.\]
+A one-line proof of $0.785398\geq0.693147$ with no evaluation of either side beyond naming its antiderivative. The same move in the other direction: $1-x^{2}\leq\eu^{-x^{2}}\leq\dfrac{1}{1+x^{2}}$ on $[0,1]$ gives
+\[\frac23\leq\int_0^{1}\eu^{-x^{2}}\dd x\leq\frac{\pi}{4},\qquad 0.666667\leq0.746824\leq0.785398,\]
+bracketing a non-elementary integral to within $0.12$ using only two elementary ones.
+\end{worked}
+
+\begin{worked}[Cauchy-Schwarz and Jensen, one line each]
+Cauchy-Schwarz with $g=1$: $\bigl(\int_0^{1}f\bigr)^{2}\leq\int_0^{1}f^{2}$. Applied to $f=\sqrt{1+x^{4}}$,
+\[\int_0^{1}\sqrt{1+x^{4}}\dd x\leq\sqrt{\int_0^{1}(1+x^{4})\dd x}=\sqrt{\frac65}\approx1.095445,\]
+against the true $1.089429$: a $0.6\%$ overestimate for one line of work.
+
+Jensen with the convex $\varphi(t)=\eu^{t}$ on the probability measure $\dd x$ on $[0,1]$:
+\[\int_0^{1}\eu^{x^{2}}\dd x\geq\exp\Bigl(\int_0^{1}x^{2}\dd x\Bigr)=\eu^{1/3}\approx1.395612,\]
+against the true $1.462652$. Both inequalities go the way convexity dictates, and getting the direction right is the only thing to remember: $\varphi$ convex pushes the average of $\varphi$ above $\varphi$ of the average.
+\end{worked}
+
+\begin{worked}[The mean value theorem doing real work]
+The theorem is usually presented as an existence statement and dismissed. Its weighted form is a computational tool. For continuous $f$ and $w\geq0$ there is $\xi\in(a,b)$ with $\int_a^bfw=f(\xi)\int_a^bw$; taking $w=x^{n}$ on $[0,1]$ gives
+\[\int_0^{1}x^{n}f(x)\dd x=\frac{f(\xi_{n})}{n+1},\qquad \xi_{n}\in(0,1).\]
+Because $x^{n}$ concentrates all of its mass near $1$ as $n$ grows, $\xi_{n}\to1$, and therefore
+\[\lim_{n\to\infty}(n+1)\int_0^{1}x^{n}f(x)\dd x=f(1).\]
+With $f=\eu^{x}$ the left side at $n=1000$ is $2.715572$ against $\eu=2.718282$, converging like $n^{-1}$. An asymptotic obtained from an existence theorem, with no integration performed. The unweighted version is the same statement with $w=1$: on $[0,1]$, $\int_0^{1}\tfrac{\dd x}{1+x^{2}}=\tfrac{\pi}{4}$ forces $\tfrac{1}{1+\xi^{2}}=\tfrac{\pi}{4}$, so $\xi=\sqrt{\tfrac{4}{\pi}-1}\approx0.522723$, which is a fact about where the average is attained rather than about the value.
+\end{worked}
+
+\begin{trap}
+Bounding the integrand where it is not bounded. Near a singularity $M=\infty$ and the rectangle bound says nothing; split the interval, handle the singular piece by comparison with a power, and use the crude bound only on the rest. The second failure is a bound that is tight at one end and useless at the other: on $[0,10]$ the estimate $\eu^{-x^{2}}\leq1$ is exact at $0$ and catastrophic beyond $2$, giving $I\leq10$ against a true value below $0.89$. Split at the point where the behaviour changes and bound each piece with its own envelope.
+\end{trap}
+
+\begin{seealsob}Comparison and limit comparison; series truncation with a tail bound; Laplace's method and Watson's lemma; numerical cross-check as verification discipline.\end{seealsob}
+
+Envelopes bound an integral by other integrals. The next correspondence bounds an integral by a \emph{sum}, and it runs in both directions: a sum you cannot evaluate becomes an integral you can, and an integral you cannot evaluate becomes a sum you can truncate. This is the oldest estimation technique there is and still the most used.
+
+\section{Sums and integrals}
+
+\tech{Riemann sum recognition, in both directions}{medium}
+\cue A limit of a sum with an $n$ in every denominator, $\dfrac1n\sum_{k=1}^{n}f\bigl(\tfrac kn\bigr)$ or anything reducible to it; or conversely a definite integral you want to convert into a sum in order to estimate or to recognise it.
+\method The correspondence is
+\[\lim_{n\to\infty}\frac1n\sum_{k=1}^{n}f\Bigl(\frac kn\Bigr)=\int_0^{1}f(x)\dd x\]
+for $f$ Riemann integrable on $[0,1]$, with the obvious variants for $[a,b]$ and for left, right, or midpoint tags. Reading it left to right evaluates limits of sums. Reading it right to left converts an integral into a sum whose partial sums are computable, which is what every quadrature rule refines. The essential manoeuvre is to factor out the width: the $\tfrac1n$ must appear exactly once, as $\Delta x$, and everything else must be a function of $\tfrac kn$ alone.
+
+\begin{worked}
+\[\lim_{n\to\infty}\sum_{k=1}^{n}\frac{1}{n+k}=\lim_{n\to\infty}\frac1n\sum_{k=1}^{n}\frac{1}{1+\tfrac kn}=\int_0^{1}\frac{\dd x}{1+x}=\ln2\approx0.693147.\]
+The step that does the work is dividing numerator and denominator by $n$ so that the summand becomes a function of $\tfrac kn$ times $\tfrac1n$.
+
+A second instance where the factoring is less obvious:
+\[\lim_{n\to\infty}\frac{(n!)^{1/n}}{n}=\exp\Bigl(\lim_{n\to\infty}\frac1n\sum_{k=1}^{n}\ln\frac kn\Bigr)=\exp\Bigl(\int_0^{1}\ln x\dd x\Bigr)=\eu^{-1},\]
+the integral being improper at $0$ but convergent, with value $-1$.
+\end{worked}
+
+\begin{trap}
+Mis-identifying $\Delta x$. If the $\tfrac1n$ is counted twice (once as the width and once inside $f$) the limit is off by a factor of $n$ and typically comes out as $0$ or $\infty$. Write the summand explicitly in the form $\tfrac1n\,g(\tfrac kn)$ before taking any limit. Second, the correspondence needs $f$ integrable on the \emph{closed} interval; when $f$ has an endpoint singularity, as $\ln x$ does at $0$, the limit still holds but requires a separate argument bounding the contribution of the first few terms, and for a non-integrable singularity it fails outright.
+\end{trap}
+
+\begin{seealsob}Bounding by envelopes; Newton-Cotes rules with error terms; the Euler-Maclaurin correction; self-similar collapse.\end{seealsob}
+
+The correspondence also runs as an inequality rather than a limit, and in that form it is the integral test. For $f$ positive and decreasing on $[1,\infty)$,
+\[\int_1^{N+1}f(x)\dd x\leq\sum_{k=1}^{N}f(k)\leq f(1)+\int_1^{N}f(x)\dd x,\]
+because each term $f(k)$ is trapped between the areas of the two unit rectangles flanking it. That single picture proves the convergence of $\sum n^{-p}$ for $p>1$, bounds the harmonic sum between $\ln(N+1)$ and $1+\ln N$, and supplies the tail bound used later in this chapter for truncated series. It is the same monotonicity argument as the envelope technique, applied to a step function rather than a smooth one.
+
+The Riemann sum is a crude approximation to the integral, with error $O(n^{-1})$ for the left-endpoint tag. The Euler-Maclaurin formula says exactly what the error is, and in doing so converts the correspondence from a limit statement into a computational tool that works in both directions with high accuracy.
+
+\begin{keynote}[Euler-Maclaurin]
+For $f$ smooth on $[a,b]$ with $a,b$ integers,
+\[\sum_{k=a}^{b}f(k)=\int_a^{b}f(x)\dd x+\frac{f(a)+f(b)}{2}+\sum_{j\geq1}\frac{B_{2j}}{(2j)!}\Bigl[f^{(2j-1)}\Bigr]_a^{b}+R,\]
+with $B_{2}=\tfrac16$, $B_{4}=-\tfrac{1}{30}$, $B_{6}=\tfrac{1}{42}$. Read left to right it evaluates sums: with $f(x)=\tfrac1x$ it gives $\sum_{k=1}^{n}\tfrac1k=\ln n+\gamma+\tfrac{1}{2n}-\tfrac{1}{12n^{2}}+\cdots$, which at $n=10$ reads $2.9289674$ against the true $2.9289683$, five correct digits from three terms. Read right to left it evaluates integrals: the trapezoid rule is precisely the first two terms rearranged, which is why its error is $O(h^{2})$ with only \emph{even} powers of $h$ in the expansion. That last fact is what makes Richardson extrapolation work.
+\end{keynote}
+
+\section{Quadrature}
+
+When no closed form exists, or when the integrand is available only as data, the deliverable is a number with an error bar. The classical rules interpolate the integrand by a polynomial on each panel and integrate the interpolant; the error term is then the integration of the interpolation error, which is why every error constant carries a high derivative of $f$ evaluated at an unknown interior point.
+
+\tech[Newton-Cotes rules with error terms]{Newton-Cotes rules with error terms}{medium}
+\cue No closed form is wanted or available; the integrand is given as data; or you need three or four digits fast and honestly.
+\method With $h=\tfrac{b-a}{n}$ and $f_{k}=f(a+kh)$:
+\[\int_a^bf\approx\frac{h}{2}\bigl[f_{0}+2f_{1}+\cdots+2f_{n-1}+f_{n}\bigr],\qquad E_{T}=-\frac{(b-a)h^{2}}{12}f''(\xi),\]
+\[\int_a^bf\approx\frac{h}{3}\bigl[f_{0}+4f_{1}+2f_{2}+4f_{3}+\cdots+4f_{n-1}+f_{n}\bigr],\qquad E_{S}=-\frac{(b-a)h^{4}}{180}f^{(4)}(\xi),\]
+the second requiring $n$ even. Simpson is exact for cubics despite being built from parabolas, which is the source of its unreasonable accuracy. Bound the error by maximising the stated derivative over $[a,b]$; that bound is rigorous, unlike the difference between two successive refinements.
+
+\begin{worked}
+$\displaystyle\int_0^{1}\eu^{-x^{2}}\dd x$ with $n=4$, $h=\tfrac14$. The five ordinates are $1$, $\eu^{-1/16}$, $\eu^{-1/4}$, $\eu^{-9/16}$, $\eu^{-1}$. Trapezoid gives $0.7429841$; Simpson gives
+\[\frac{1/4}{3}\bigl[f_{0}+4f_{1}+2f_{2}+4f_{3}+f_{4}\bigr]=0.7468554,\]
+against the true $\tfrac{\sqrt\pi}{2}\erf(1)=0.7468241$. Simpson is wrong by $3.12\times10^{-5}$ from five evaluations; the trapezoid, from the same five, is wrong by $3.84\times10^{-3}$, a factor of $123$ worse. The rigorous Simpson bound: $f^{(4)}=(16x^{4}-48x^{2}+12)\eu^{-x^{2}}$ has $\abs{f^{(4)}}\leq12$ on $[0,1]$, so $\abs{E_{S}}\leq\tfrac{1\cdot(1/4)^{4}}{180}\cdot12=2.60\times10^{-4}$, comfortably containing the actual error.
+\end{worked}
+
+\begin{worked}[Richardson, and where the extra digits come from]
+The trapezoid error expansion contains only even powers of $h$, so $T(h)=I+c_{2}h^{2}+c_{4}h^{4}+\cdots$ and the combination
+\[\frac{4T(h/2)-T(h)}{3}=I+O(h^{4})\]
+kills the leading term. On the same integral, $T(0.5)=0.7313703$ and $T(0.25)=0.7429841$ give $\tfrac{4(0.7429841)-0.7313703}{3}=0.7468554$, which is \emph{exactly} Simpson with $h=0.25$. That identity is not a coincidence: Simpson is the first Richardson extrapolate of the trapezoid rule, and repeating the process is Romberg integration. One more level, from $T(0.25)$ and $T(0.125)=0.7458656$, gives $0.7468261$, now wrong by $2\times10^{-6}$.
+\end{worked}
+
+\begin{trap}
+Simpson requires an \emph{even} number of subintervals; with $n$ odd the alternating $4,2,4,2$ pattern does not close and the rule silently computes something else. More seriously, every error bound above is worthless when the stated derivative is unbounded on $[a,b]$. For $\int_0^{1}\tfrac{\dd x}{\sqrt x}$, $f''$ is infinite at $0$ and Simpson converges at a rate governed by the singularity, not by $h^{4}$; the fix is to remove the singularity by substitution ($x=u^{2}$ here, or a tanh-sinh transformation in general) \emph{before} applying any Newton-Cotes rule. Finally, do not use the difference of two refinements as an error estimate when the integrand is oscillatory: successive panels can agree closely and both be wrong.
+\end{trap}
+
+\begin{seealsob}Riemann sum recognition, in both directions; the Euler-Maclaurin correction; numerical cross-check as verification discipline; bounding by envelopes.\end{seealsob}
+
+Newton-Cotes fixes the nodes at equal spacing and chooses the weights. Gaussian quadrature chooses both, and the extra freedom doubles the achievable degree of exactness. With $n$ nodes placed at the roots of the Legendre polynomial $P_{n}$ (rescaled from $[-1,1]$ to $[a,b]$) and weights chosen accordingly, the rule is exact for every polynomial of degree $2n-1$, against $n-1$ or $n+1$ for the equal-spaced rules. On the running example, two-node Gauss-Legendre gives $0.7465947$ from \emph{two} evaluations, three-node gives $0.7468146$, and five-node gives $0.7468241$, which is the correct value to nine decimals. That is the practical reason every serious quadrature library is Gaussian at its core: for a smooth integrand, nodes are expensive and accuracy per node is what matters.
+
+The Gaussian idea generalises by changing the weight. Choosing nodes at the roots of the Chebyshev polynomials with weight $(1-x^{2})^{-1/2}$ gives a rule tailored to integrands with inverse-square-root endpoint singularities; Gauss-Laguerre with weight $\eu^{-x}$ handles $[0,\infty)$; Gauss-Hermite with $\eu^{-x^{2}}$ handles $\R$. In each case the singular or slowly decaying factor is absorbed into the weight and the rule is exact for polynomials against it, which is why a well-chosen Gaussian rule can be accurate on an integrand where every equal-spaced rule fails outright. The price is that the nodes are irrational and must be looked up or computed, and that refining the rule means recomputing every node rather than reusing the old ones. Gauss-Kronrod extensions exist precisely to recover the reuse, and they are what a general-purpose adaptive routine actually runs.
+
+\section{Truncating a series honestly}
+
+The third route to a number is through a series. Termwise integration frequently produces a series with no closed form, or one whose closed form is itself a special value you would have to look up. Reporting a truncation is legitimate; reporting it without a tail bound is not.
+
+\tech{Series truncation with a tail bound}{medium}
+\cue A termwise expansion whose sum has no closed form; an alternating series that must be reported numerically; any answer of the form $\sum_{n\geq1}a_{n}$ where the question wants digits.
+\method Truncate at $N$ and bound the tail. For an alternating series with terms decreasing in absolute value to zero, the tail is bounded by the first omitted term, which is the cheapest useful bound in mathematics. Otherwise compare the tail with a geometric series or with an integral,
+\[\sum_{n>N}a_{n}\leq\int_{N}^{\infty}a(t)\dd t\]
+for $a$ positive and decreasing. Then report exactly as many digits as the bound justifies, and not one more.
+
+\begin{worked}
+The sophomore's dream: $\displaystyle\int_0^{1}x^{x}\dd x=\sum_{n\geq1}\frac{(-1)^{n-1}}{n^{n}}$, obtained by expanding $x^{x}=\eu^{x\ln x}$ and integrating termwise. The series alternates with rapidly decreasing terms. Six terms give
+\[1-\tfrac14+\tfrac{1}{27}-\tfrac{1}{256}+\tfrac{1}{3125}-\tfrac{1}{46656}=0.7834294,\]
+and the first omitted term is $7^{-7}=1.21\times10^{-6}$, so the value lies in $[0.7834294,0.7834306]$. The true value is $0.7834305$, and the actual error $1.16\times10^{-6}$ sits just inside the bound. Report $0.78343$ and stop.
+\end{worked}
+
+\begin{worked}[An alternating series where the bound is the whole answer]
+$\displaystyle\int_0^{1}\frac{\sin x}{x}\dd x=\Si(1)=\sum_{k\geq0}\frac{(-1)^{k}}{(2k+1)(2k+1)!}$. Three terms give $1-\tfrac{1}{18}+\tfrac{1}{600}=0.9461111$; the first omitted term is $\tfrac{1}{7\cdot7!}=2.83\times10^{-5}$, and the true value is $0.9460831$, in error by $2.80\times10^{-5}$. Three terms and one division supply four correct digits with a certificate.
+\end{worked}
+
+\begin{trap}
+Reporting more digits than the tail bound justifies. This is the characteristic failure of the technique, and it is invisible: the extra digits are produced by the arithmetic and look exactly like the correct ones. The second trap is applying the alternating-series bound when the terms are not monotone decreasing, which happens more often than expected in series with factorials in both numerator and denominator: check monotonicity for $n\geq N$ explicitly. Third, note the difference in cost between a super-geometric series such as $\sum n^{-n}$, where six terms suffice, and a $\zeta$-type series such as $\sum n^{-2}$, where six terms give one digit and acceleration or Euler-Maclaurin is essential.
+\end{trap}
+
+\begin{seealsob}Termwise integration of a Maclaurin series; the Euler-Maclaurin correction; numerical cross-check as verification discipline; recognising the emergent constant.\end{seealsob}
+
+When the terms decay only polynomially, truncation is hopeless and acceleration is mandatory. The cheapest acceleration is the one already in this chapter: apply Euler-Maclaurin to the \emph{tail} rather than summing it. For $\zeta(2)=\sum n^{-2}$, ten bare terms give $1.5497677$, in error by $0.095$, which is one correct digit. Ten terms plus the three-term Euler-Maclaurin tail $\tfrac1n-\tfrac{1}{2n^{2}}+\tfrac{1}{6n^{3}}$ at $n=10$ give
+\[1.5497677+0.0951667=1.6449344,\]
+in error by $3.3\times10^{-7}$ against $\tfrac{\pi^{2}}{6}=1.6449341$: six correct digits from the same ten terms and three lines of algebra. For alternating series that converge slowly, the Euler transform plays the same role, replacing the terms by their repeated forward differences and typically converting an $O(N^{-1})$ error into an exponentially small one. The general principle is that a slow series should never be summed directly; it should be split into a computed head and an analysed tail.
+
+\section{Asymptotics}
+
+The questions that no amount of quadrature answers are the ones about a family. ``How does $I_{n}$ behave as $n\to\infty$'' cannot be settled by computing $I_{100}$, because a single number carries no information about a rate. Computing $I_{n}$ for a range of $n$ and fitting is better but still weak: it will not distinguish $n^{-1/2}$ from $n^{-1/2}\ln n$, and it gives no constant. The asymptotic argument gives both the exponent and the constant, and it gives them from the local behaviour of the integrand at one point. The technique for the commonest such family is a localisation argument, and it is the continuous analogue of the observation that a sum of positive terms is dominated by its largest.
+
+\tech[Laplaces method and Watsons lemma]{Laplace's method and Watson's lemma}{hard}
+\cue $\displaystyle\int\eu^{-n\phi(x)}g(x)\dd x$ with a large parameter $n$; a factorial or a Gamma value with a large argument; or any question phrased as ``how does this behave for large $n$''.
+\method The integral localises at the minimum $x_{0}$ of $\phi$. Expand $\phi(x)\approx\phi(x_{0})+\tfrac12\phi''(x_{0})(x-x_{0})^{2}$ and integrate the resulting Gaussian. For an \emph{interior} minimum with $\phi''(x_{0})>0$,
+\[\int\eu^{-n\phi(x)}g(x)\dd x\sim g(x_{0})\eu^{-n\phi(x_{0})}\sqrt{\frac{2\pi}{n\phi''(x_{0})}}.\]
+If the minimum sits at an endpoint, take \emph{half} of this, because only half of the Gaussian lies in the domain. Watson's lemma handles the degenerate case where $\phi$ is linear: $\int_0^{\infty}\eu^{-nt}g(t)\dd t\sim\sum_{k\geq0}\dfrac{g^{(k)}(0)}{n^{k+1}}$.
+
+\begin{worked}
+\[\int_0^{\pi/2}\eu^{-n\sin^{2}x}\dd x.\]
+Here $\phi(x)=\sin^{2}x$ has its minimum at the endpoint $x_{0}=0$, with $\phi(0)=0$ and $\phi''(0)=2$. The interior formula would give $\sqrt{2\pi/(2n)}=\sqrt{\pi/n}$; halving for the endpoint,
+\[\int_0^{\pi/2}\eu^{-n\sin^{2}x}\dd x\sim\frac12\sqrt{\frac{\pi}{n}}.\]
+At $n=400$ this predicts $0.0443113$ against the true $0.0443391$, an error of $0.06\%$, and the relative error decays like $n^{-1}$. Forgetting the halving would give $0.0886227$, wrong by a factor of two, and no amount of care in the rest of the computation would recover it.
+\end{worked}
+
+\begin{worked}[Watson, and Stirling]
+$\displaystyle\int_0^{\infty}\frac{\eu^{-nt}}{1+t}\dd t$. Here $g(t)=(1+t)^{-1}$ has $g(0)=1$, $g'(0)=-1$, $g''(0)=2$, so Watson gives $\tfrac1n-\tfrac{1}{n^{2}}+\tfrac{2}{n^{3}}+\cdots$. At $n=20$ this is $0.047750$ against the true $0.0477185$, three correct digits from three terms.
+
+Stirling's formula is Laplace's method applied to $\Gfun(n+1)=\int_0^{\infty}t^{n}\eu^{-t}\dd t$: write the integrand as $\eu^{-(t-n\ln t)}$, whose exponent has an interior minimum at $t=n$ with second derivative $n^{-1}$, giving $n!\sim\sqrt{2\pi n}\,(n/\eu)^{n}$. At $n=10$ this is $3598696$ against $10!=3628800$, low by $0.83\%$, and the relative error is $\sim\tfrac{1}{12n}$ exactly as the next term of the expansion predicts.
+\end{worked}
+
+\begin{trap}
+The endpoint halving, as above: a minimum \emph{at} an endpoint contributes half of the interior formula, and forgetting it doubles every answer in the family. The second trap is a degenerate minimum: if $\phi''(x_{0})=0$ the Gaussian model is wrong, the local scaling is $n^{-1/4}$ rather than $n^{-1/2}$, and the leading constant involves $\Gfun(\tfrac14)$ rather than $\sqrt{2\pi}$. Third, an asymptotic series is not a convergent series: adding more terms of the Watson expansion eventually makes the answer worse, and the optimal truncation is near the smallest term.
+\end{trap}
+
+\begin{seealsob}Nascent delta and limiting kernels; the Gamma-function moment; bounding by envelopes; series truncation with a tail bound.\end{seealsob}
+
+\section{Verification}
+
+The last technique in this chapter is the one that should be applied to every other chapter. It is not a method of evaluation. It is the habit that catches the errors the methods produce, and in a subject where a wrong answer is usually a clean-looking closed form rather than a mess, it is the only reliable defence.
+
+\tech[Numerical cross-check as verification discipline]{Numerical cross-check as verification discipline}{core}
+\cue Every closed form you are about to assert. Without exception, and especially when the derivation felt elegant.
+\method Evaluate the \emph{original} integral numerically and compare with the claimed value to at least six digits. Choose the method to match the pathology: substitute away endpoint singularities before quadrature, transform oscillatory infinite ranges into alternating series and accelerate, place break points at every discontinuity of the integrand or of its derivative. Then run three structural checks that cost nothing: the \emph{sign}, the \emph{scale} (is the answer of the order of the integrand times the interval length?), and a \emph{limiting case} of any parameter, where the integral should reduce to something you already know.
+
+\begin{worked}
+A corpus asserts $\displaystyle\int_0^{\pi/2}\frac{\dd x}{\sec x+\tan x}=1$. Quadrature returns $0.6931471806$, which is $\ln2$, exposing the error immediately. The structural reason: $\sec x+\tan x=\dfrac{1+\sin x}{\cos x}$, so the integrand is $\dfrac{\cos x}{1+\sin x}$, whose antiderivative is $\ln(1+\sin x)$, giving $\ln2-\ln1=\ln2$. Note that the claimed $1$ is not far from $0.693$, which is exactly why the check is necessary: a wrong answer of the right order of magnitude is invisible to inspection.
+
+A second, where the error is catastrophic rather than subtle: the same corpus asserts
+\[\int_0^{\infty}\frac{\ln x\,(\pi^{2}+\ln^{2}x)}{(1+x)^{2}\sqrt x}\dd x=0,\]
+presumably by an inversion argument. Splitting at $x=1$ and integrating each half numerically gives $-124.0251067$, which is $-4\pi^{3}=-124.0251067$. The claimed $0$ is wrong by an infinite factor, and one minute of quadrature says so.
+\end{worked}
+
+\begin{worked}[The three structural checks in action]
+Suppose you have derived $\displaystyle\int_0^{\infty}\frac{x^{s-1}}{1+x^{n}}\dd x=\frac{\pi}{n\sin(\pi s/n)}$. \emph{Sign}: the integrand is positive on the stated strip $0<s<n$, and $\sin(\pi s/n)>0$ there, so the sign is right. \emph{Scale}: as $s\to0^{+}$ or $s\to n^{-}$ the integral must blow up, since the corresponding $p$-test fails, and $\sin(\pi s/n)\to0$ delivers exactly that. \emph{Limiting case}: at $s=1$, $n=2$ the formula gives $\tfrac{\pi}{2\sin(\pi/2)}=\tfrac{\pi}{2}$, which is $\int_0^{\infty}\tfrac{\dd x}{1+x^{2}}$, known independently. Three checks, no quadrature, and a formula that survives all three is very unlikely to be wrong.
+\end{worked}
+
+\begin{trap}
+Trusting a quadrature routine on a conditionally convergent or endpoint-singular integrand without transforming first. A routine that truncates $\int_0^{\infty}\tfrac{\sin x}{x}\dd x$ at $x=50$ returns a number in error by $O(10^{-2})$, and a routine that samples $\int_0^{1}\ln x\dd x$ near $0$ can return anything at all; either can ``confirm'' a wrong closed form to two digits. Always validate the numerical method against a known value on the same interval with the same pathology before trusting it on the unknown one. And check the \emph{original} integral, not the transformed one: verifying the last line of your own derivation cannot detect an error made in the second line.
+\end{trap}
+
+\begin{seealsob}Constant or zero integrand in disguise; Newton-Cotes rules with error terms; series truncation with a tail bound; endpoint limit discipline.\end{seealsob}
+
+\section{Choosing the deliverable}
+
+The decision is about the question, not about the integrand, and it is usually settled by the verb.
+
+\begin{center}
+\begin{tikzpicture}[node distance=5mm and 7mm]
+\node[dtest] (a) {What is actually asked?};
+\node[dleaf, below left=9mm and 8mm of a] (b) {Compare, or show\\ $a<I<b$: envelopes,\\ Cauchy-Schwarz, Jensen};
+\node[dtest, below right=9mm and 2mm of a] (c) {A number, or a\\ closed form?};
+\node[dleaf, below left=9mm and 0mm of c] (d) {Large parameter:\\ Laplace or Watson,\\ not quadrature};
+\node[dtest, below right=9mm and 0mm of c] (e) {Does the structure\\ close?};
+\node[dleaf, below left=8mm and 2mm of e] (f) {Yes: closed form,\\ then cross-check};
+\node[dleaf, below right=8mm and 0mm of e] (g) {No: Simpson or Gauss\\ with an error bound,\\ or a truncated series};
+\draw[dedge] (a) -- node[dlab,left]{inequality} (b);
+\draw[dedge] (a) -- node[dlab,right]{value} (c);
+\draw[dedge] (c) -- node[dlab,left]{asymptotic} (d);
+\draw[dedge] (c) -- node[dlab,right]{exact} (e);
+\draw[dedge] (e) -- node[dlab,left]{yes} (f);
+\draw[dedge] (e) -- node[dlab,right]{no} (g);
+\end{tikzpicture}
+\end{center}
+
+The branch that requires judgement is the last one, and the chapter promised to say plainly when a numeric answer is right and when it is a confession. A number is the correct deliverable when the integrand is genuinely non-elementary and the question is quantitative: $\int_0^{1}\eu^{-x^{2}}\dd x$, $\int_0^{1}x^{x}\dd x$, an integral whose values arrive as measurements, or any integral over a region described by data. A number is also correct when the closed form exists but is a special value nobody can read, since $0.9460831$ communicates more than an unsimplified hypergeometric expression. In both cases the number must come with an error bound, because a number without one is not an estimate but a guess.
+
+A number is a failure when the structure was there and you did not look. The signals are the same ones this book has been cataloguing throughout: a parameter that plays no role in the answer, an interval symmetric about something, a numerator that is the derivative of a denominator, bounds engineered to land on a clean value, an integrand that is secretly a constant. Quadrature will happily return $0.785398$ for an integral whose exact value is $\tfrac{\pi}{4}$ and never tell you that a two-line symmetry argument existed. That is why the verification technique in this chapter is stated as a check on a closed form rather than as a substitute for one: numerics confirm structure, and cannot discover it.
+
+\begin{keynote}[Rigorous, heuristic, and the difference]
+An error bound is \emph{rigorous} when it follows from a theorem plus a proved bound on the relevant quantity: $\abs{E_{S}}\leq\tfrac{(b-a)h^{4}}{180}\max\abs{f^{(4)}}$ once you have bounded $f^{(4)}$; the alternating tail bound once you have proved the terms decrease; the envelope bounds always. It is \emph{heuristic} when it is inferred from the behaviour of the computation: the difference between two refinements, the number of digits that stopped changing, the agreement of two different routines. Heuristic bounds are usually right and occasionally catastrophically wrong, and they fail exactly where the theorem's hypotheses fail, which is to say on oscillatory integrands and near singularities. Use heuristics to decide when to stop computing and rigorous bounds to decide what to write down.
+\end{keynote}
+
+\begin{keynote}[The honest report]
+Three digits with a rigorous error bound beats six digits with none, and both are beaten by an exact value that has been cross-checked numerically. When you report a number, say how it was obtained and what bounds it: ``Simpson, $n=8$, error below $2\times10^{-5}$'' is an answer; ``approximately $0.7468$'' is a rumour. When you report a closed form, say that you checked it and against what. The two habits together are what make a result usable by somebody else, and they cost about a minute each.
+\end{keynote}
+
+\section{Recognition matrix}
+\begin{recog}{@{}p{0.30\textwidth}p{0.36\textwidth}p{0.28\textwidth}@{}}
+\rowcolor{mist}\mh{If you see} & \mh{Reach for} & \mh{If that fails} \\
+\midrule
+\endhead
+``Show that $a<I<b$'' & Pointwise envelopes; integrate the bounds & Split and bound each piece \\
+``Which is larger?'' & Compare integrands, not integrals & Subtract and check the sign \\
+A weighted average shape $\int fw$ & Mean value theorem: $f(\xi)\int w$ & Requires $w\geq0$ \\
+A product $\int fg$ to bound & Cauchy-Schwarz; take $g=1$ if unsure & Holder for other exponents \\
+$\varphi$ convex applied to an average & Jensen: $\varphi(\int f)\leq\int\varphi(f)$ on $[0,1]$ & Reverse for concave $\varphi$ \\
+$\dfrac1n\sum f(\tfrac kn)$ as $n\to\infty$ & Riemann sum: $\int_0^{1}f$ & Factor out $\Delta x$ exactly once \\
+$\sum\dfrac{1}{n+k}$, $(n!)^{1/n}/n$ & Divide through by $n$, then integrate & Take logs first if it is a product \\
+A sum needing many digits & Euler-Maclaurin with $\tfrac{f(a)+f(b)}{2}$ & $B_{2}=\tfrac16$ term next \\
+Data, or no closed form, few digits & Simpson, $n$ even, with $\tfrac{(b-a)h^{4}}{180}\max\abs{f^{(4)}}$ & Halve $h$ and extrapolate \\
+Two trapezoid values at $h$, $h/2$ & Richardson: $\tfrac{4T(h/2)-T(h)}{3}$ & Romberg: iterate the table \\
+Smooth integrand, few evaluations & Gauss-Legendre: exact to degree $2n-1$ & Five nodes give nine digits here \\
+An endpoint singularity before quadrature & Substitute it away ($x=u^{2}$, tanh-sinh) & Error bounds are void otherwise \\
+An alternating series answer & Tail $\leq$ first omitted term & Verify terms decrease monotonically \\
+A positive decreasing series & Tail $\leq\int_{N}^{\infty}a(t)\dd t$ & Geometric bound if faster \\
+$\sum n^{-n}$-type terms & Six terms give six digits & $\zeta$-type: accelerate instead \\
+$\eu^{-n\phi(x)}g(x)$, $n$ large & Laplace at the minimum of $\phi$ & Halve if the minimum is an endpoint \\
+$\int_0^{\infty}\eu^{-nt}g(t)\dd t$, $n$ large & Watson: $\sum g^{(k)}(0)/n^{k+1}$ & Truncate near the smallest term \\
+$n!$ or $\Gfun(n)$ for large $n$ & Stirling $\sqrt{2\pi n}(n/\eu)^{n}$ & Relative error $\sim\tfrac{1}{12n}$ \\
+$\phi''(x_{0})=0$ at the minimum & Rescale by $n^{-1/4}$; expect $\Gfun(\tfrac14)$ & Not the Gaussian formula \\
+Any closed form you just derived & Quadrature to six digits on the original & Sign, scale, limiting case \\
+A suspiciously clean value & Check the original, not your last line & Wrong answers here look right \\
+\end{recog}

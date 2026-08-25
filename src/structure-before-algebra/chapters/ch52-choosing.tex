@@ -1,0 +1,127 @@
+\chapter{Choosing the right weapon}
+
+\begin{orient}
+\textbf{What this chapter is for.} Eleven chapters of technique are useless if you cannot tell, looking at an unfamiliar puzzle, which of them applies. This chapter is the triage layer. It gives the five diagnostic questions that route a problem to a chapter, the specific signs that a puzzle is an invariant problem wearing a disguise, the discipline of small cases as both a discovery tool and a check, and an honest account of when brute-force enumeration by hand is the correct method rather than an admission of defeat. It closes the content of the book by returning to the claim Chapter 1 opened with.
+\end{orient}
+
+\section{Five questions, asked in order}
+
+\tech{Technique triage: reading the cue before reading the problem}{core}
+\cue Any unfamiliar puzzle.
+\method Ask five questions before attempting anything. Each one, answered yes, names a chapter.
+
+\begin{enumerate}[label=\textbf{\arabic*.},leftmargin=2.0em]
+\item \textbf{Is there a process?} Something repeated, a move, an operation applied any number of times. If yes, ask what the move fails to change, and go to invariants. If the question is whether it stops, go to monovariants.
+\item \textbf{Does it assert that something must exist, without saying which?} ``Some two of them share'', ``there is always a pair''. If yes, go to pigeonhole, and if pigeonhole fails, to the extremal principle or the probabilistic method.
+\item \textbf{Is it a count?} If yes, ask what standard set it bijects to, and go to counting. A count with overlapping forbidden traits goes to inclusion and exclusion; a count up to a symmetry goes to Burnside.
+\item \textbf{Is there a hidden modulus?} Exponents, digits, divisibility, or an impossibility claim about integers. If yes, go to number theory and choose the modulus from the shape of the expression.
+\item \textbf{Is it finite and adversarial?} Two players, alternating, no chance. If yes, go to games, and start by labelling small positions.
+\end{enumerate}
+
+If none of the five fires, the puzzle is probably a constraint satisfaction problem in disguise, and the grid chapter applies. That fallback is more often right than it sounds, because scheduling, seating, ordering and identification puzzles all reduce to it.
+
+\begin{center}
+\begin{tikzpicture}[node distance=4.5mm and 4mm]
+\node[dtest] (q1) {A repeated move\\ or operation?};
+\node[dleaf, left=14mm of q1] (inv) {Invariant;\\ monovariant if\\ ``does it stop''};
+\node[dtest, below=8mm of q1] (q2) {``Some object\\ must exist''?};
+\node[dleaf, left=14mm of q2] (pig) {Pigeonhole;\\ then extremal,\\ then probabilistic};
+\node[dtest, below=8mm of q2] (q3) {Asking for\\ a number?};
+\node[dleaf, left=14mm of q3] (cnt) {Bijection, double\\ count, IE, Burnside};
+\node[dtest, below=8mm of q3] (q4) {Exponents, digits,\\ divisibility?};
+\node[dleaf, left=14mm of q4] (nt) {Choose a modulus;\\ or factor it};
+\node[dtest, below=8mm of q4] (q5) {Two players,\\ alternating?};
+\node[dleaf, left=14mm of q5] (gm) {Label small positions;\\ Grundy};
+\node[dleaf, below=8mm of q5] (cs) {Constraint grid};
+\draw[dedge] (q1) -- node[dlab,above]{yes} (inv);
+\draw[dedge] (q2) -- node[dlab,above]{yes} (pig);
+\draw[dedge] (q3) -- node[dlab,above]{yes} (cnt);
+\draw[dedge] (q4) -- node[dlab,above]{yes} (nt);
+\draw[dedge] (q5) -- node[dlab,above]{yes} (gm);
+\draw[dedge] (q1) -- node[dlab,right]{no} (q2);
+\draw[dedge] (q2) -- node[dlab,right]{no} (q3);
+\draw[dedge] (q3) -- node[dlab,right]{no} (q4);
+\draw[dedge] (q4) -- node[dlab,right]{no} (q5);
+\draw[dedge] (q5) -- node[dlab,right]{no} (cs);
+\end{tikzpicture}
+\end{center}
+
+\begin{trap}
+Answering the questions out of order. Question one is first because an invariant, when it exists, is both the shortest argument and the one that makes every other approach unnecessary, and a solver who reaches for counting first will often produce a correct but enormous calculation of something that a parity check settles in a line.
+\end{trap}
+
+\begin{seealsob}Detecting a disguised invariant; sanity-checking by small cases.\end{seealsob}
+
+\section{The disguise that matters most}
+
+\tech{Detecting a disguised invariant}{hard}
+\cue A problem that mentions no process at all, but whose objects are naturally produced by one. Three specific disguises account for most cases.
+\method The first disguise is a \emph{reachability question phrased as an equality}: ``can the numbers $a,b,c$ be transformed into $x,y,z$'' is obviously a process, but ``is there a sequence of operations after which all entries are equal'' hides the target. Write the target explicitly and compare invariants.
+
+The second is a \emph{tiling or covering question}, which is a process in which pieces are laid down one at a time; the invariant is a colouring, and the chapter on invariants applies verbatim.
+
+The third, and the one people miss, is a \emph{claim about a final state}: ``show that the last number on the board is odd'', ``prove that the process ends with a single pile''. Any statement about the terminal configuration of a repeated operation is an invariant question, whether or not the word ``invariant'' or even the word ``process'' appears.
+
+\begin{worked}
+A set of numbers is written down; repeatedly, two numbers are erased and their sum written. Prove that the final number does not depend on the choices made. Nothing in the statement is phrased as an invariant, and yet the sum is one: it is unchanged by every move, so the terminal value equals the initial sum. Contrast with the version in which $\abs{a-b}$ is written instead, where the sum is not invariant but its parity is, and the terminal value is therefore determined only up to parity, which is exactly what that version's question asks about.
+\end{worked}
+
+\begin{seealsob}Parity invariant; monovariants; technique triage.\end{seealsob}
+
+\section{Small cases, and honest enumeration}
+
+\tech{Sanity-checking by small cases}{core}
+\cue Every problem, at two moments: before solving, to find the pattern, and after solving, to check the formula.
+\method Compute the answer for $n=1,2,3$ and, if it is cheap, $4$. Use the values twice. Before solving, they suggest the shape of the answer and often the mechanism; a sequence that starts $1,2,5,14$ is telling you Catalan and therefore telling you to look for a bracket encoding. After solving, they test the formula, and a formula that fails at $n=1$ is wrong or is missing a hypothesis. Small cases are also where degenerate behaviour lives, so a formula that works from $n=3$ onward and fails at $n=2$ usually indicates a case the argument silently assumed away.
+
+\begin{trap}
+Checking only a case that the derivation used. If the formula was fitted to $n=1,2,3$, those three values test nothing. Verify at a value the derivation never touched.
+\end{trap}
+
+\begin{seealsob}Induction; recursion and generating functions; verification.\end{seealsob}
+
+\tech{When hand enumeration is the right method}{easy}
+\cue A finite search space small enough to exhaust, and a problem whose structure has resisted two or three genuine attempts at a technique.
+\method Enumerate, but enumerate with a discipline: fix an ordering of the cases, use symmetry to cut the space before starting, and record what has been eliminated rather than only what has survived. Enumeration is the right method when the space is small (a few dozen cases), when the answer is a specific configuration rather than a general formula, or when you need one concrete example to see the pattern. It is the wrong method when the space grows with a parameter that the problem leaves free, because then you are proving a special case of a general claim.
+
+\begin{keynote}[Enumeration as a step, not an answer]
+The most productive use of enumeration is not to answer the question but to generate data for the previous technique. Exhaust the small cases, look at the sequence, conjecture, then prove. That loop is how most of the results in this part were originally found.
+\end{keynote}
+
+\begin{seealsob}Sanity-checking by small cases; exhaustive casework with a discipline; branch and contradict.\end{seealsob}
+
+\section{What the book has been arguing}
+
+The first chapter claimed that a hard problem is hard because of what you fail to notice in the first thirty seconds, and that difficulty is layers of camouflage rather than depth of technique. Fifty chapters later that claim can be stated more precisely, because we now have the catalogue of what the camouflage hides.
+
+In every part of this book the same structure appeared. A small number of genuine ideas, perhaps a dozen per domain, are dressed in a large number of surfaces. The integral chapters found that reflection, parameter differentiation and series expansion account for most of what looks impossible, and that the exponent which appears to make a problem hard is very often the exponent that cancels. The derivative chapters found that the difficulty in a hard derivative is always algebraic, never differential. The limit chapters found that dominance and expansion do the work that L'Hopital appears to do. The differential-equation chapters found that classification is the whole game. And this part found that invariants, pigeonhole, bijection, modulus and backward induction cover nearly the entire ground of combinatorial puzzles.
+
+Two consequences follow, and they are the reason the book is organised by recognition cue rather than by subject.
+
+The first is that expertise in this material is mostly a matter of catalogue size. A solver who has seen forty surfaces of the reflection trick recognises the forty-first instantly, not because they compute faster but because the surface is no longer camouflage. That is a practical claim, and it makes practice a matter of collecting surfaces deliberately rather than of doing many problems of the kind you already solve.
+
+The second is that the recognition cue is a better organising principle than the technique name. You will never be told which chapter a problem belongs to. What you will be given is a surface: an exponent that looks arbitrary, an interval that happens to be symmetric, a process with a move, a count that resists direct attack. This book is a map from those surfaces to the methods that dissolve them, and the recognition matrices at the end of each chapter are that map in its most compressed form. They are the part worth returning to.
+
+The techniques will not change. The surfaces will keep changing, which is the whole pleasure of the subject.
+
+\section{Recognition matrix}
+
+\begin{recog}{@{}p{0.31\textwidth}p{0.35\textwidth}p{0.28\textwidth}@{}}
+\rowcolor{mist}\mh{If you see} & \mh{Reach for} & \mh{If that fails} \\
+\midrule
+\endhead
+A repeated move & What does it not change? & What does it change one way? \\
+A claim about a final state & An invariant, disguised & A monovariant for termination \\
+A tiling or covering & A colouring matched to the piece & Area or weighting \\
+``Some pair must'' & Pigeonhole; name the holes & Extremal principle \\
+``There exists a configuration'' & Construct it & Probabilistic method \\
+A count that resists & Biject to a standard set & Double count, or recurse \\
+Overlapping forbidden traits & Inclusion and exclusion & Complementary count \\
+Exponents or digits & Choose a modulus & Factor the constraint \\
+Two players, no chance & Label small positions & Grundy values \\
+Categories and relational clues & Elimination grid & Branch on the smallest domain \\
+Nothing fires & Constraint satisfaction & Enumerate small cases and look \\
+A formula you just derived & Test it at an untouched $n$ & Check $n=1$ and $n=2$ \\
+A sequence $1,2,5,14,42$ & Catalan; find the bracket encoding & Search the recursion \\
+A search space of a few dozen & Enumerate with a discipline & Symmetry-reduce first \\
+\end{recog}

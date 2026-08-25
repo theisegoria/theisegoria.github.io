@@ -1,0 +1,389 @@
+\chapter{Series: deciding whether it converges}
+
+\begin{orient}
+\textbf{What this chapter is for.} Deciding whether $\sum a_n$ converges is not a creative act. There are seven or eight tests, each with a hypothesis that fits one recognisable shape of general term, and the whole skill is matching the term to the test before writing anything down. A student who reaches for the ratio test on $\sum(n^2+3)/(n^4-n+1)$ has not made a small error: the ratio there tends to $1$ for structural reasons, the test is inconclusive by construction, and no amount of algebra afterwards rescues the attempt. This chapter gives an explicit selection protocol, works each test in the situation it was designed for, and then treats the two things students most often get wrong once they can run the tests: that $a_n\to0$ proves nothing, and that conditional convergence is a genuinely weaker property than absolute convergence, with consequences.
+\end{orient}
+
+\section{Test selection is the whole skill}
+
+The tests are not equally powerful, and they are not in competition. Each one is a machine that consumes a particular structural feature: the ratio test consumes factorials and $n$th powers because those are the things whose consecutive ratio simplifies; limit comparison consumes rational and algebraic terms because those have a clean dominant power; the integral test consumes terms that are values of a function you can antidifferentiate. Applied to the shape it was built for, each test is two lines. Applied to any other shape, it either fails to conclude or turns into an unbounded computation.
+
+It is worth being precise about what ``fails'' means, because the three failure modes are different and call for different repairs. A test can be \emph{inapplicable}, when its hypothesis is false: the integral test on a term that is not decreasing, the alternating test on magnitudes that do not decrease monotonically. A test can be \emph{inconclusive}, when its hypothesis holds but its verdict is the neutral value: ratio or root giving $L=1$, limit comparison giving $c=0$ or $c=\infty$. And a test can be \emph{unusable}, when it applies and would conclude but the computation does not close: the integral test on $f$ with no elementary antiderivative. Inapplicable means you have made an error; inconclusive means you must switch tests; unusable means you must switch tests for a different reason. Only the first is your fault.
+
+So the failure mode in this chapter is not arithmetic. It is selection. Almost every lost mark comes from picking a test whose hypothesis does not fit, grinding through it correctly, and arriving at $L=1$ or an incomputable integral. The remedy is to spend the first ten seconds looking at the \emph{shape} of $a_n$ and nothing else.
+
+There is a second reason to take selection seriously, beyond economy. Several of the tests are not merely inefficient outside their domain; they are silent there in a way that is easy to mistake for evidence. A ratio limit of $1$ feels like a near miss, as though a little more care would push it below $1$. It is not a near miss. It is the test reporting that it cannot see the distinction you are asking about, and the correct response is to put it down. Students who do not internalise this spend their time refining a computation that was structurally incapable of answering the question.
+
+\begin{keynote}[LOOK AT THE SHAPE FIRST]
+Factorials and $n$th powers go to the ratio or root test. Rational and algebraic terms go to limit comparison with a $p$-series. A decreasing $f(n)$ with a computable $\int f$ goes to the integral test. Alternating with decreasing magnitude goes to Leibniz. An oscillating factor times a monotone one goes to Dirichlet. The shape selects the test; you do not.
+\end{keynote}
+
+\tech{The selection protocol}{easy}
+\cue Any $\sum a_n$ whose convergence is in question. This is the technique you run before every other technique in the chapter.
+\method Work the checklist in order and stop at the first line that applies. (1) Does $a_n\to0$? If not, the series diverges and you are finished. (2) Is it geometric or a $p$-series? Quote the answer. (3) Does $a_n$ contain a factorial or an $n$th power? Ratio or root test. (4) Is $a_n$ a rational or algebraic function of $n$? Limit comparison against the $p$-series of matching degree. (5) Is $a_n=f(n)$ with $f$ positive, decreasing and integrable in closed form? Integral test. (6) Does $a_n$ alternate? Leibniz for convergence, then test $\sum\abs{a_n}$ separately. (7) Is $a_n$ a product of an oscillating factor and a monotone one? Dirichlet or Abel.
+
+\begin{worked}
+Six series, six lines, no computation off the checklist.
+
+$\displaystyle\sum\frac{n^2}{2n^2+1}$: step (1). The term tends to $\tfrac12\neq0$, so it diverges. Stop.
+
+$\displaystyle\sum\frac{n^2+3}{n^4-n+1}$: step (4). Dominant powers give $n^2/n^4=n^{-2}$; limit comparison with $\sum n^{-2}$ gives a finite nonzero ratio, so it converges.
+
+$\displaystyle\sum\frac{(n!)^2}{(2n)!}$: step (3). The ratio is $\dfrac{(n+1)^2}{(2n+1)(2n+2)}\to\tfrac14<1$, so it converges. (Its value is $\tfrac43+\tfrac{2\pi\sqrt3}{27}=1.7363999$, but the test was never asked for that.)
+
+$\displaystyle\sum_{n\geq2}\frac{\sin n}{\ln n}$: steps (1) to (6) all fail; step (7) applies, and Dirichlet gives convergence.
+
+$\displaystyle\sum_{n\geq2}\frac{1}{n(\ln n)^{3/2}}$: step (5). The term is decreasing and $\int\dfrac{\dd x}{x(\ln x)^{3/2}}=-\dfrac{2}{\sqrt{\ln x}}$ is finite at $\infty$, so it converges. (Equivalently, benchmark three with $p=\tfrac32>1$.)
+
+$\displaystyle\sum\frac{(-1)^{n}}{\sqrt{n}+1}$: step (6). The magnitudes decrease to $0$, so Leibniz gives convergence; but $\sum\dfrac{1}{\sqrt n+1}$ diverges by comparison with $\sum n^{-1/2}$, so the convergence is conditional and must be reported as such.
+\end{worked}
+
+Two operational notes on running the checklist. First, the steps are ordered by cost, and the first one is free: glancing at $\lim a_n$ takes no work and ends a nontrivial fraction of all problems on the spot, usually the ones designed to look hardest. Second, the checklist is a routing table, not a hierarchy of power; a series routed to limit comparison is not thereby an easy series, and one routed to Dirichlet is not thereby a hard one. What the routing buys is that the test you run is the test that can answer the question, so the work you do is work that terminates.
+
+\begin{trap}
+Reaching for the ratio test on an algebraic term. If $a_n$ is a rational function of $n$, then $a_{n+1}/a_n\to1$ identically, whatever the degrees: the test cannot distinguish $\sum1/n$ from $\sum1/n^2$ because both give $L=1$. The ratio test is blind to polynomial scale by design, and running it on a rational term is a guaranteed waste of a page.
+\end{trap}
+
+\begin{seealsob}The $n$th-term test and the benchmark series; limit comparison; ratio and root tests.\end{seealsob}
+
+The protocol renders as a decision tree, and it is worth reading the tree rather than the list, because the tree makes the exclusions visible: each ``no'' branch is a shape you have ruled out.
+
+\begin{center}
+\begin{tikzpicture}[node distance=5mm and 7mm]
+\node[dtest] (a) {Does $a_n\to0$?};
+\node[dleaf, below left=9mm and 3mm of a] (b) {Diverges by the\\ $n$th-term test. Stop.};
+\node[dtest, below right=9mm and 1mm of a] (c) {Factorial or $n$th\\ power in $a_n$?};
+\node[dleaf, below left=9mm and 3mm of c] (d) {Ratio or root test;\\ Raabe if $L=1$};
+\node[dtest, below right=9mm and 1mm of c] (e) {Algebraic in $n$,\\ one sign?};
+\node[dleaf, below left=9mm and 3mm of e] (f) {Limit comparison\\ with $\sum n^{-p}$};
+\node[dnode, below right=9mm and 1mm of e] (g) {Alternating: Leibniz, then\\ test $\sum\abs{a_n}$. Otherwise:\\ integral, condensation,\\ Dirichlet.};
+\draw[dedge] (a) -- node[dlab,left]{no} (b);
+\draw[dedge] (a) -- node[dlab,right]{yes} (c);
+\draw[dedge] (c) -- node[dlab,left]{yes} (d);
+\draw[dedge] (c) -- node[dlab,right]{no} (e);
+\draw[dedge] (e) -- node[dlab,left]{yes} (f);
+\draw[dedge] (e) -- node[dlab,right]{no} (g);
+\end{tikzpicture}
+\end{center}
+
+Read the tree left to right and notice what it refuses to do: there is no branch on which you evaluate anything. Convergence tests are deliberately insensitive to the value of the series, which is what makes them cheap, and any attempt to sum the thing first is a much harder problem introduced for no reason. The one exception is a geometric series or a telescoping one, where the closed form of the partial sum is easier than any test; those are handled by inspection at step (2) and never reach the rest of the tree.
+
+The other thing the tree encodes is precedence. Several branches can apply at once. For $\sum n!/n^n$ both the ratio test and the root test work; for $\sum1/(n^2+1)$ both the integral test and limit comparison work. When that happens, take the branch that appears first, because the ordering is by cost: an $n$th-term check is free, a comparison is one limit, an integral is an antiderivative, and Dirichlet is a partial-sum bound you may have to construct.
+
+\section{The benchmarks and the two comparisons}
+
+Every convergence test in the positive-term world is ultimately a comparison with something known. The benchmarks are therefore not optional background; they are the entire supply of known answers, and a series is decided by being matched against one of them.
+
+\tech[The nth term test and the benchmarks]{The $n$th-term test and the benchmark series}{easy}
+\cue The first look at any series, and the last resort when nothing else fits.
+\method If $a_n\not\to0$ the series diverges, because convergence of the partial sums forces $a_n=S_n-S_{n-1}\to0$. The converse is false and its failure is the single most common error in the subject. Memorise the benchmarks: $\sum_{n\geq0}r^n$ converges exactly when $\abs{r}<1$, to $\tfrac{1}{1-r}$; $\sum n^{-p}$ converges exactly when $p>1$; and $\sum_{n\geq2}\dfrac{1}{n(\ln n)^{p}}$ converges exactly when $p>1$.
+
+\begin{worked}
+$\sum\tfrac1n$ diverges even though $\tfrac1n\to0$: the partial sums are $H_n\sim\ln n$, unbounded. $\sum\tfrac{1}{n^2}$ converges, to $\tfrac{\pi^2}{6}=1.6449341$. The two general terms differ only in an exponent, they both tend to $0$, and they have opposite fates. That is the content of the benchmark list: the boundary between convergence and divergence sits at $p=1$ and the $n$th-term test cannot see it.
+
+The divergence of $\sum1/n$ deserves to be seen once rather than quoted, because the argument is the model for the condensation test later in the chapter. Group the terms in blocks of doubling length:
+\[\underbrace{\tfrac12}_{\geq1/2}+\underbrace{\tfrac13+\tfrac14}_{\geq1/2}+\underbrace{\tfrac15+\cdots+\tfrac18}_{\geq1/2}+\cdots\]
+Each block of length $2^{k}$ has smallest term $2^{-(k+1)}$, so contributes at least $\tfrac12$. Hence $H_{2^k}\geq1+\tfrac{k}{2}$, which is unbounded. (At $k=14$, $H_{2^{14}}=10.281$ against the guaranteed $8$.) The growth is logarithmic and therefore invisible numerically: you would need about $10^{43}$ terms to reach a partial sum of $100$, which is why no amount of computation can settle a borderline series and why the tests exist.
+
+The third benchmark refines the boundary. $\sum\tfrac{1}{n\ln n}$ diverges while $\sum\tfrac{1}{n(\ln n)^2}$ converges, to $2.10974$. So between the divergent $\sum n^{-1}$ and every convergent $\sum n^{-p}$ there is a further scale of series, and the boundary is not attained from either side.
+\end{worked}
+
+One structural fact underlies every positive-term test and is worth stating separately: for $a_n\geq0$ the partial sums are increasing, so $\sum a_n$ converges if and only if the partial sums are \emph{bounded}. Every test in the next three techniques is a device for producing that bound by comparison with something whose partial sums are known. This is also why sign matters so much: once the terms change sign the partial sums stop being monotone, boundedness stops being sufficient, and an entirely different set of tools is needed.
+
+\begin{trap}
+``$a_n\to0$, therefore the series converges.'' This one error accounts for more wrong answers than every other in the chapter combined. The $n$th-term test is a disproof instrument only: it can end a problem with the word diverges, and it can never end one with the word converges.
+\end{trap}
+
+\begin{seealsob}The selection protocol; direct comparison; the integral test with an explicit tail bound.\end{seealsob}
+
+With benchmarks in hand, the two comparison tests do the work. Direct comparison is sharper and more demanding, since it wants a genuine inequality; limit comparison is blunter and far more usable, since it wants only matching asymptotics. In practice you reach for limit comparison first and fall back to direct comparison at the boundary cases where limit comparison goes silent.
+
+\tech{Direct comparison}{easy}
+\cue Non-negative terms that are visibly bounded above, or below, by a benchmark, usually because a bounded factor such as $\abs{\sin n}$ or $\arctan n$ can simply be thrown away.
+\method If $0\leq a_n\leq b_n$ for all large $n$ and $\sum b_n$ converges, then $\sum a_n$ converges. If $a_n\geq b_n\geq0$ for all large $n$ and $\sum b_n$ diverges, then $\sum a_n$ diverges. Only the tail matters: finitely many terms can be anything at all.
+
+\begin{worked}
+$\displaystyle\sum\frac{\abs{\sin n}}{n^2}$. Since $\abs{\sin n}\leq1$, the terms are at most $n^{-2}$, and $\sum n^{-2}$ converges; hence so does this, and its partial sum to $10^6$ is $1.279889$. Note what the argument avoids: any attempt to understand the distribution of $\sin n$, which is a genuinely hard question and completely irrelevant here.
+
+In the other direction, $\displaystyle\sum_{n\geq2}\frac{1}{\ln n}$ diverges, because $\ln n<n$ gives $\dfrac{1}{\ln n}>\dfrac1n$ and $\sum\tfrac1n$ diverges.
+
+Two more where the discarded piece is a nuisance rather than a difficulty. $\displaystyle\sum\frac{1}{2^{n}+n}<\sum\frac{1}{2^{n}}=1$, so it converges (to $0.697277$); the $+n$ can only help and is simply dropped. And $\displaystyle\sum_{n\geq1}\frac{1}{n!}$ converges because $n!\geq2^{\,n-1}$ for $n\geq1$, so the terms are at most $2^{1-n}$ and the sum is at most $2$; the true value is $\eu-1=1.718282$.
+\end{worked}
+
+The reason direct comparison is worth keeping, given that limit comparison is easier to apply, is that it survives where limit comparison dies. Limit comparison requires the ratio $a_n/b_n$ to have a limit, and for terms carrying a bounded oscillating factor it has none: $\abs{\sin n}/n^2$ divided by $n^{-2}$ is $\abs{\sin n}$, which oscillates forever. Direct comparison needs only an inequality, and inequalities are indifferent to oscillation. As a rule: if the term contains $\sin$, $\cos$, $\{n\alpha\}$ or any other bounded factor with no limit, go straight to direct comparison and throw the factor away.
+
+\begin{trap}
+Comparing in the useless direction. Bounding a suspected-convergent series \emph{below} by a convergent series proves nothing, and bounding a suspected-divergent series \emph{above} by a divergent one proves nothing. Half of all direct-comparison attempts produce a true inequality pointing the wrong way.
+\end{trap}
+
+\begin{seealsob}Limit comparison; the $n$th-term test and the benchmark series; the integral test with an explicit tail bound.\end{seealsob}
+
+\tech{Limit comparison}{easy}
+\cue Terms that are asymptotically a benchmark but algebraically messy: roots, sums of unlike powers, differences that nearly cancel.
+\method If $a_n,b_n>0$ and $\lim a_n/b_n=c$ with $0<c<\infty$, then $\sum a_n$ and $\sum b_n$ converge or diverge together. Choose $b_n$ by keeping only the dominant power in the numerator and in the denominator and discarding everything else.
+
+\begin{worked}
+$\displaystyle\sum\frac{2n+\sqrt n}{n^3-5}$. The dominant powers are $2n$ over $n^3$, so take $b_n=2/n^2$. Then
+\[\frac{a_n}{b_n}=\frac{(2n+\sqrt n)n^2}{2(n^3-5)}\to1,\]
+(numerically $1.0158$ at $n=1000$), so the series converges with $\sum n^{-2}$.
+
+Two more where the asymptotics have to be extracted rather than read off. $\displaystyle\sum\sin\frac1n$: since $\sin t/t\to1$ as $t\to0$, the ratio of $\sin(1/n)$ to $1/n$ tends to $1$ (it is $0.99833$ already at $n=10$), so the series diverges with the harmonic series, despite every term being smaller than $1/n$. And $\displaystyle\sum\bigl(\sqrt[n]{n}-1\bigr)$: writing $\sqrt[n]{n}-1=\eu^{(\ln n)/n}-1\sim\dfrac{\ln n}{n}$, limit comparison with $\sum\dfrac{\ln n}{n}$ (divergent, being termwise larger than the harmonic series past $n=3$) gives divergence.
+
+A case where the shape hides the answer: $\displaystyle\sum\frac{1}{n^{1+1/n}}$. The ratio test is useless here. Limit comparison with $\sum\tfrac1n$ gives $a_n/b_n=n^{-1/n}=\eu^{-(\ln n)/n}\to1$, so the series \emph{diverges}, despite every term being strictly smaller than $1/n$. Numerically the ratio is $0.99999$ at $n=10^6$.
+\end{worked}
+
+\begin{trap}
+The boundary cases. If $c=0$ then convergence of $\sum b_n$ still gives convergence of $\sum a_n$, but divergence of $\sum b_n$ gives nothing; if $c=\infty$ the implications reverse. Both boundary cases are one-directional and must be run as direct comparisons, so quoting ``limit comparison'' with $c=0$ and drawing a two-way conclusion is a genuine error.
+\end{trap}
+
+There is a useful reformulation for terms that are messy differences rather than messy quotients. If $a_n=g(1/n)$ for a function $g$ with $g(0)=0$, expand $g$ in a Taylor series about $0$ and read off the first nonvanishing term: $a_n\sim g^{(m)}(0)n^{-m}/m!$, so the series converges exactly when $m\geq2$. This settles $\sum\bigl(1-\cos\tfrac1n\bigr)$ (first term $\tfrac{1}{2n^2}$, convergent), $\sum\bigl(\tfrac1n-\sin\tfrac1n\bigr)$ (first term $\tfrac{1}{6n^3}$, convergent) and $\sum\bigl(\eu^{1/n}-1\bigr)$ (first term $\tfrac1n$, divergent) without any algebraic rearrangement at all. Taylor expansion is the standard way to produce the $b_n$ that limit comparison needs.
+
+\begin{seealsob}Direct comparison; the selection protocol; the $n$th-term test and the benchmark series.\end{seealsob}
+
+A word on how to pick $b_n$ in practice, since this is where limit comparison is actually lost. Do not simplify the term; extract its dominant behaviour factor by factor. In a quotient, take the highest power in the numerator over the highest power in the denominator and discard all constants you like (constants cannot change $c$ from finite-and-nonzero). Bounded factors with a limit, such as $\arctan n\to\pi/2$, may be replaced by that limit. Bounded factors with no limit may not, and send you to direct comparison instead. Logarithms may never be discarded and may never be compared to a power: $\ln n$ grows faster than every constant and slower than every positive power, so a term containing one is not settled by any $p$-series comparison, and you should be reaching for condensation or the integral test.
+
+\section{Tests driven by the shape of the term}
+
+The comparisons handle anything algebraic. Factorials and $n$th powers are not algebraic, and they need tests that look at the multiplicative structure instead of the polynomial degree. The distinction is worth naming precisely, because it is what the selection protocol is keying on. An algebraic term has $a_{n+1}/a_n\to1$: the terms change by a vanishing proportion at each step, and their size is a power of $n$. A term built multiplicatively has $a_{n+1}/a_n\to L\neq1$: the terms change by a fixed proportion at each step, and their size is exponential. The comparisons resolve the first kind because the $p$-series are indexed by exactly the parameter that varies; the ratio and root tests resolve the second because the ratio itself is the parameter. Neither can do the other's job, and the boundary between the two families, where the ratio tends to $1$ but the decay is faster than any power, is exactly where the remaining tests in this section live.
+
+\tech{Ratio and root tests}{easy}
+\cue Factorials, $n$th powers, products of consecutive integers, or any term built by multiplying something on at each step.
+\method Compute $L=\lim\abs{a_{n+1}/a_n}$ (ratio) or $L=\lim\sqrt[n]{\abs{a_n}}$ (root). Both give absolute convergence when $L<1$, divergence when $L>1$, and \textbf{nothing at all} when $L=1$. Divergence for $L>1$ is not an accident of the proof: it follows because $\abs{a_n}$ is eventually increasing, so $a_n\not\to0$. The root test succeeds strictly more often than the ratio test, since a ratio limit always forces the same root limit but not conversely.
+
+\begin{worked}
+\emph{Ratio.} $\displaystyle\sum\frac{n!}{n^n}$ has
+\[\frac{a_{n+1}}{a_n}=\frac{(n+1)!}{(n+1)^{n+1}}\cdot\frac{n^n}{n!}=\Bigl(1+\frac1n\Bigr)^{-n}\to\frac1\eu<1,\]
+so the series converges (its value is $1.879854$).
+
+\emph{Root.} $\displaystyle\sum\Bigl(\frac{n+1}{3n+2}\Bigr)^{n}$ has $\sqrt[n]{a_n}=\dfrac{n+1}{3n+2}\to\dfrac13<1$, so it converges. The ratio here is a mess; the root test reads the answer off the base.
+
+\emph{A constant that matters.} $\displaystyle\sum\frac{c^{n}n!}{n^{n}}$ has ratio $c\bigl(1+\tfrac1n\bigr)^{-n}\to\dfrac{c}{\eu}$, so it converges for $c<\eu$ and diverges for $c>\eu$. At $c=2$ the sum is $12.94895$; at $c=3$ the terms grow without bound. The borderline $c=\eu$ is exactly the case the test cannot decide, and it in fact diverges, as Raabe or Stirling will show.
+\end{worked}
+
+\begin{trap}
+Treating $L=1$ as divergence. Both $\sum\tfrac1n$ (divergent) and $\sum\tfrac{1}{n^2}$ (convergent) give $L=1$ under both tests, so $L=1$ carries exactly zero information and you must start again with a different test. The correct response to $L=1$ is to look at the shape again, not to push harder.
+\end{trap}
+
+These two tests are also the engine of power series. For $\sum c_nx^n$ the root test gives $\limsup\sqrt[n]{\abs{c_n}}\,\abs{x}<1$, that is $\abs{x}<R$ with $1/R=\limsup\sqrt[n]{\abs{c_n}}$, and the interval of convergence follows immediately. The two endpoints $x=\pm R$ are precisely where $L=1$, which is why every power series problem ends with two separate boundary investigations run by other tests. The blind spot of the ratio and root tests is not a defect to be patched; it is where all the interesting behaviour lives.
+
+\begin{seealsob}Raabe's test at the ratio-test boundary; the selection protocol; Cauchy condensation.\end{seealsob}
+
+The instruction ``start again'' is unsatisfying when the term really is a product of factorials, so that nothing but a ratio test is natural, and the ratio nonetheless tends to $1$. That happens whenever the term decays like a power of $n$ while being built multiplicatively. There is a sharper test for exactly this case: it measures how fast the ratio approaches $1$.
+
+\tech{Raabe's test at the ratio-test boundary}{hard}
+\cue A term built from factorials or double factorials whose ratio tends to $1$, so that the ratio and root tests are both inconclusive, and the decay is evidently a power of $n$.
+\method Compute
+\[R=\lim_{n\to\infty}n\left(\frac{a_n}{a_{n+1}}-1\right).\]
+If $R>1$ the series converges; if $R<1$ it diverges; $R=1$ is again inconclusive. The interpretation is direct: $R$ is the effective power $p$ in $a_n\approx Cn^{-p}$, so Raabe's test simply reads off which $p$-series the term matches.
+
+\begin{worked}
+Decide $\displaystyle\sum_{n\geq1}\left(\frac{(2n-1)!!}{(2n)!!}\right)^{p}$ for $p>0$, where $(2n)!!=2\cdot4\cdots(2n)$ and $(2n-1)!!=1\cdot3\cdots(2n-1)$.
+
+The ratio is $\left(\dfrac{2n+1}{2n+2}\right)^{p}\to1$ for every $p$, so the ratio test is dead on arrival. Raabe:
+\[n\left(\Bigl(\frac{2n+2}{2n+1}\Bigr)^{p}-1\right)=n\left(\Bigl(1+\frac{1}{2n+1}\Bigr)^{p}-1\right)\to\frac{p}{2}.\]
+So the series converges exactly when $p>2$. Numerically, with the sum truncated at $n=2000$: $p=1$ gives $49.47$ and is climbing like $\sqrt n$, $p=2$ gives $2.486$ and is climbing like $\ln n$, and $p=3$ gives $0.385$ and has stopped moving. The Raabe values at $p=3$ are $1.4977$, $1.49998$, $1.4999998$ at $n=10,10^2,10^3$, converging to $\tfrac32>1$ as predicted.
+\end{worked}
+
+Raabe's test is the first rung of a ladder. If $R=1$ as well, Gauss's test looks at the next term, expanding $a_n/a_{n+1}=1+\tfrac{h}{n}+O(n^{-1-\delta})$ and concluding convergence exactly when $h>1$; beyond that lies Bertrand's test with its $\ln n$ correction. Each rung resolves the previous rung's boundary and creates a new one, and there is no last rung: no single test decides every series. That is a theorem, not an accident, and it is the reason this chapter is a protocol rather than a formula.
+
+Why does the test look the way it does? If $a_n=Cn^{-p}$ exactly, then
+\[\frac{a_n}{a_{n+1}}=\Bigl(1+\frac1n\Bigr)^{p}=1+\frac{p}{n}+O(n^{-2}),\]
+so $n(a_n/a_{n+1}-1)\to p$. Raabe's test is therefore nothing more than the $p$-series comparison, carried out on the ratio rather than on the term itself, which is what makes it usable when the term is a product of factorials with no closed form. Read $R$ as the exponent and the convergence criterion $R>1$ is the familiar $p>1$.
+
+\begin{worked}
+A second instance, and the one that explains the ratio test's blind spot for central binomial coefficients. Decide $\displaystyle\sum_{n\geq1}\frac{1}{4^{n}}\binom{2n}{n}$.
+
+The ratio is $\dfrac{a_{n+1}}{a_n}=\dfrac{(2n+1)(2n+2)}{4(n+1)^2}=\dfrac{2n+1}{2n+2}\to1$: inconclusive, and the shape offers nothing else. Raabe:
+\[n\left(\frac{2n+2}{2n+1}-1\right)=\frac{n}{2n+1}\to\frac12<1,\]
+so the series diverges. The reading is exact: $R=\tfrac12$ says the term behaves like $n^{-1/2}$, and indeed $4^{-n}\binom{2n}{n}\sim(\pi n)^{-1/2}$, and the two sides agree to within $1.3\times10^{-5}$ at $n=10^4$.
+\end{worked}
+
+\begin{trap}
+Getting the fraction upside down. The quantity is $n(a_n/a_{n+1}-1)$, with the \emph{earlier} term on top, so that a convergent series gives a positive $R$. Writing $n(a_{n+1}/a_n-1)$ flips every sign and reverses the conclusion.
+\end{trap}
+
+\begin{seealsob}Ratio and root tests; limit comparison; the integral test with an explicit tail bound.\end{seealsob}
+
+Both of the last two tests answer yes or no. Often the real question is quantitative: given that $\sum a_n$ converges, how far is $S_{100}$ from $S$? The integral test is the one positive-term test that answers this, because its proof is a pair of inequalities rather than a limit.
+
+\tech{The integral test with an explicit tail bound}{medium}
+\cue $a_n=f(n)$ where $f$ is positive, continuous and decreasing on $[N,\infty)$, and $\int f$ is computable in closed form. Logarithms in the denominator are the standard signal.
+\method The series and the integral converge together. Better, the rectangles that prove it give a two-sided bound on the tail:
+\[\int_{N+1}^{\infty}f(x)\dd x\;\leq\;\sum_{n>N}f(n)\;\leq\;\int_{N}^{\infty}f(x)\dd x,\]
+which converts a partial sum into an interval containing the true value.
+
+\begin{worked}
+\emph{Convergence.} $\displaystyle\sum_{n\geq2}\frac{1}{n\ln n}$ diverges, since
+\[\int_2^{\infty}\frac{\dd x}{x\ln x}=\bigl[\ln\ln x\bigr]_2^{\infty}=\infty.\]
+Replacing $\ln n$ by $(\ln n)^2$ makes the antiderivative $-1/\ln x$, which is finite, so $\sum1/(n(\ln n)^2)$ converges.
+
+\emph{A term with an antiderivative and nothing else.} $\displaystyle\sum\frac{1}{n^2+1}$ is decreasing and $\int_1^{\infty}\dfrac{\dd x}{x^2+1}=\dfrac{\pi}{2}-\dfrac{\pi}{4}=\dfrac{\pi}{4}$ is finite, so it converges (to $1.0766739$). Limit comparison with $\sum n^{-2}$ also settles it in one line; the point of doing it this way is that the integral test additionally hands you the tail bracket, which limit comparison never does.
+
+\emph{Error bound.} For $\sum n^{-2}$ with $N=10$: the partial sum is $S_{10}=1.5497677$ and $\int_N^\infty x^{-2}\dd x=1/N$, so
+\[1.5497677+\tfrac{1}{11}\leq S\leq1.5497677+\tfrac{1}{10},\qquad\text{i.e.}\qquad 1.6406768\leq S\leq1.6497677.\]
+The true value $\pi^2/6=1.6449341$ sits inside, and ten terms have located it to within $0.01$.
+\end{worked}
+
+Two more uses of the bracket. First, as a stopping rule: to compute $\sum n^{-2}$ to within $10^{-6}$ you need $\int_N^\infty x^{-2}\dd x=1/N\leq10^{-6}$, so $N=10^{6}$ terms, and you know this before summing anything. Second, as a convergence test on a term the comparisons cannot reach: $\sum\dfrac{\ln n}{n^2}$ has an increasing numerator, so no benchmark comparison is immediate, but $\int_1^\infty\dfrac{\ln x}{x^2}\dd x=\Bigl[-\dfrac{1+\ln x}{x}\Bigr]_1^\infty=1$ is finite (the function is decreasing past $x=\eu$), so the series converges; its value is $0.9375483$.
+
+\begin{trap}
+Believing the integral's value is the series' value. Here the integral from $1$ is $1$ and the series is $1.6449$; they are not close and were never meant to be. Only the convergence verdict and the tail bracket transfer, and the bracket is what you should actually quote.
+\end{trap}
+
+The same rectangles give more than a verdict and more than a bracket. For $f$ positive and decreasing, the difference $D_N=\sum_{n\leq N}f(n)-\int_1^{N}f$ is itself decreasing and bounded below by $0$, hence convergent, whether or not the series converges. For $f(x)=1/x$ this is the statement that $H_N-\ln N$ tends to a limit, the Euler-Mascheroni constant $\gamma=0.5772157$ (the value at $N=10$ is already $0.6264$). So the integral test does not only compare a series to an integral; it measures the gap, and the gap is often the interesting object.
+
+\begin{seealsob}Cauchy condensation; the $n$th-term test and the benchmark series; the alternating series test and its error bound.\end{seealsob}
+
+The integral test needs an antiderivative. When the term is decreasing but the integral is unavailable, or when you want the logarithmic benchmarks proved rather than memorised, there is a purely discrete substitute that samples the sequence at powers of $2$.
+
+\tech{Cauchy condensation}{medium}
+\cue A positive decreasing $a_n$ with iterated logarithms, or any term where doubling $n$ has a clean effect. The signal is that $a_{2n}/a_n$ simplifies.
+\method For $a_n\geq0$ decreasing,
+\[\sum_{n\geq1}a_n\quad\text{converges}\iff\quad\sum_{k\geq0}2^{k}a_{2^{k}}\quad\text{converges}.\]
+Group the terms in blocks of length $2^k$ and bound each block above and below by its endpoint. The effect is to turn a slowly varying series into a geometric-looking one.
+
+\begin{worked}
+\emph{The $p$-series in one line.} With $a_n=n^{-p}$, the condensed series is $\sum_k2^k2^{-kp}=\sum_k\bigl(2^{1-p}\bigr)^{k}$, geometric with ratio $2^{1-p}$, convergent exactly when $2^{1-p}<1$, that is $p>1$.
+
+\emph{A second level of logarithm.} With $a_n=\dfrac{1}{n\ln n\,(\ln\ln n)^{p}}$ the condensed term is
+\[2^{k}\cdot\frac{1}{2^{k}\,(k\ln2)\,\bigl(\ln(k\ln2)\bigr)^{p}}=\frac{1}{\ln2}\cdot\frac{1}{k\bigl(\ln k+\ln\ln2\bigr)^{p}},\]
+which is the previous benchmark again and converges exactly when $p>1$. Condensation handles the whole iterated-logarithm tower by repeating one move, where the integral test needs a new substitution at every level.
+
+\emph{The logarithmic benchmark.} With $a_n=\dfrac{1}{n(\ln n)^{p}}$ the condensed series is
+\[\sum_{k}2^{k}\cdot\frac{1}{2^{k}(k\ln2)^{p}}=\frac{1}{(\ln2)^{p}}\sum_{k}\frac{1}{k^{p}},\]
+convergent exactly when $p>1$. So the third benchmark is the second benchmark in disguise, and the same trick applied again gives $\sum\dfrac{1}{n\ln n(\ln\ln n)^{p}}$, convergent exactly when $p>1$.
+\end{worked}
+
+The economy of the method is worth appreciating. Condensation replaces $2^{k}$ terms by one, so it collapses a series whose terms vary slowly (which is exactly when convergence is delicate) into one whose terms vary geometrically (which is exactly when convergence is obvious). It is the discrete shadow of the substitution $x=2^{u}$ in the integral test, and it needs no antiderivative, which is its whole advantage: it settles the entire iterated-logarithm family at a stroke, where the integral test needs a fresh substitution at every level.
+
+\begin{trap}
+Applying it without monotonicity. The block-bounding argument replaces every term in a block by an endpoint, which is legitimate only if the terms are ordered. For a non-monotone $a_n$ the condensed series can converge while the original diverges.
+\end{trap}
+
+\begin{seealsob}The integral test with an explicit tail bound; the $n$th-term test and the benchmark series; direct comparison.\end{seealsob}
+
+\section{Signs, and what convergence is worth}
+
+Everything above assumed a single sign, so that partial sums are monotone and the only question is boundedness. Mixed signs change the subject. Cancellation can rescue a series whose magnitudes are far too large to sum, and the rescued object turns out to be a weaker thing than it looks.
+
+The strategic point is that with mixed signs there are now two questions where before there was one, and they must be answered in the right order. Question one: does $\sum\abs{a_n}$ converge? That is a positive-term problem and everything above applies to it unchanged. If the answer is yes you are finished, because absolute convergence implies convergence and carries every good property with it. Only if the answer is no does the second question arise: does $\sum a_n$ nonetheless converge by cancellation? That is what the alternating test, Dirichlet and Abel are for, and a positive answer must always be reported with the word conditionally attached, because the qualifier is what tells the next reader which manipulations are forbidden.
+
+\tech{The alternating series test and its error bound}{easy}
+\cue $\sum(-1)^{n}b_n$ with $b_n>0$, where $b_n$ is decreasing to $0$.
+\method If $b_n$ is \emph{eventually decreasing} and $b_n\to0$, the series converges. Moreover the partial sums straddle the answer, $S_{2k}<S<S_{2k+1}$ or the reverse, and therefore
+\[\abs{S-S_N}\leq b_{N+1}:\]
+the first omitted term bounds the error. No other elementary test hands you an error bound this cheaply.
+
+\begin{worked}
+$\displaystyle\sum_{n=1}^{\infty}\frac{(-1)^{n+1}}{n}=\ln2$. The magnitudes decrease to $0$, so it converges, and after $N$ terms the error is at most $1/(N+1)$: to get three decimals you need a thousand terms, which is a bound worth knowing before you start computing.
+
+$\displaystyle\sum_{n=1}^{\infty}\frac{(-1)^{n+1}}{\sqrt{n}}=0.6048986$. The magnitudes decrease to $0$, so it converges, but very slowly: after $10^{6}$ terms the partial sum is $0.6043986$, an error of $5.0\times10^{-4}$, comfortably inside the guaranteed $b_{N+1}=10^{-3}$ and nowhere near enough for four decimals. The error bound is honest about how bad the situation is, which is its main value.
+
+$\displaystyle\sum_{n=1}^{\infty}\frac{(-1)^{n+1}}{n^{3}}=\frac{3\zeta(3)}{4}=0.9015427$. To force the error below $10^{-3}$ take $b_{N+1}=(N+1)^{-3}\leq10^{-3}$, that is $N\geq9$. And indeed $S_9=0.9021165$, an error of $5.74\times10^{-4}$, comfortably inside the promised $10^{-3}$.
+\end{worked}
+
+Two refinements of the hypothesis. ``Eventually decreasing'' is genuinely enough: the first thousand terms may do anything, since altering finitely many terms changes the sum but not its convergence. And when the magnitudes are given by a formula, the cleanest monotonicity proof is to differentiate the corresponding function of a real variable: $b_n=n/(n^2+1)$ is decreasing for $n\geq1$ because $t/(t^2+1)$ has derivative $(1-t^2)/(t^2+1)^2\leq0$ there, which is faster than any inequality manipulation.
+
+It is worth knowing why the bound is so clean, because the reason also tells you when it is sharp. With $b_n$ decreasing, the partial sums $S_1,S_3,S_5,\ldots$ decrease and $S_2,S_4,S_6,\ldots$ increase, and every odd partial sum exceeds every even one; the limit is trapped in every one of the nested intervals $[S_{2k},S_{2k+1}]$, whose length is exactly $b_{2k+1}$. So the bound $\abs{S-S_N}\leq b_{N+1}$ is not an estimate that could be improved by working harder: it is the length of an interval you have actually produced, and the true error is typically about half of it.
+
+\begin{trap}
+Skipping the monotonicity check. That $b_n\to0$ is not enough. Take $b_{2k}=\tfrac1k$ and $b_{2k+1}=\tfrac{1}{k^2}$, both tending to $0$; then pairing the terms gives $\sum_k\bigl(\tfrac1k-\tfrac{1}{k^2}\bigr)$, which diverges. Alternation plus decay to zero does not suffice; the decay must be monotone.
+\end{trap}
+
+\begin{seealsob}Absolute versus conditional convergence; Dirichlet and Abel tests; the selection protocol.\end{seealsob}
+
+A series that converges by the alternating test may or may not converge when you delete the signs, and the difference is not bookkeeping. It determines which manipulations are legal.
+
+\tech{Absolute versus conditional convergence}{medium}
+\cue Any series with mixed signs, once you have established that it converges.
+\method Test $\sum\abs{a_n}$ as a separate problem, with the positive-term machinery. If it converges the original is \emph{absolutely} convergent, and you may rearrange the terms freely, multiply two such series by the Cauchy product, and split the sum into positive and negative parts. If $\sum a_n$ converges while $\sum\abs{a_n}=\infty$, the convergence is \emph{conditional}, and none of those operations is licensed.
+
+The structural statement behind all of this is a decomposition. Write $a_n^{+}=\max(a_n,0)$ and $a_n^{-}=\max(-a_n,0)$, so that $a_n=a_n^{+}-a_n^{-}$ and $\abs{a_n}=a_n^{+}+a_n^{-}$. Then $\sum a_n$ converges absolutely exactly when both $\sum a_n^{+}$ and $\sum a_n^{-}$ converge, and converges conditionally exactly when both diverge to $+\infty$ while their difference settles down. There is no third possibility: if one half converges and the other does not, the partial sums are unbounded and the series diverges. Conditional convergence is therefore always a cancellation between two infinities, which is exactly why it is fragile under reordering.
+
+\begin{worked}
+$\sum\dfrac{(-1)^{n+1}}{n}$ converges to $\ln2$ but $\sum\tfrac1n$ diverges: conditional. $\sum\dfrac{(-1)^{n+1}}{n^2}$ converges to $\tfrac{\pi^2}{12}=0.8224670$ and $\sum\tfrac{1}{n^2}$ converges: absolute.
+
+Here is what conditional costs. Rearrange the alternating harmonic series to take two positive terms for every negative one:
+\[1+\tfrac13-\tfrac12+\tfrac15+\tfrac17-\tfrac14+\cdots\]
+Summing $3\times10^5$ blocks numerically gives $1.0397199$, and the exact value is $\tfrac32\ln2=1.0397208$. The same terms, reordered, sum to something else. Riemann's theorem says more: a conditionally convergent series can be rearranged to converge to \emph{any} prescribed real number, or to diverge. Absolute convergence is exactly the hypothesis that rules this out.
+\end{worked}
+
+The Cauchy product failure is worth seeing concretely, since it is the one that appears in analysis rather than in trick questions. Let $a_n=b_n=\dfrac{(-1)^{n}}{\sqrt{n+1}}$, both series convergent by Leibniz and neither absolutely. Their Cauchy product has terms
+\[c_n=\sum_{k=0}^{n}a_kb_{n-k}=(-1)^{n}\sum_{k=0}^{n}\frac{1}{\sqrt{(k+1)(n-k+1)}},\]
+and the sum is a Riemann sum for $\displaystyle\int_0^1\frac{\dd t}{\sqrt{t(1-t)}}=\pi$. So $\abs{c_n}\to\pi$: the product's terms do not tend to $0$ and the product diverges by the $n$th-term test, even though both factors converge. Absolute convergence of one factor is exactly what Mertens' theorem needs to rule this out.
+
+Riemann's rearrangement theorem is worth understanding constructively rather than as a slogan, because the construction shows exactly which hypothesis fails. If $\sum a_n$ converges conditionally, then the positive terms alone sum to $+\infty$ and the negative terms alone sum to $-\infty$; if either were finite, both would be, and the series would converge absolutely. Given a target $t$, take positive terms until the partial sum first exceeds $t$, then negative terms until it first falls below $t$, then positives again, and so on. Each switch overshoots by at most the last term used, and the terms tend to $0$, so the overshoots tend to $0$ and the rearranged series converges to $t$. Every step of that construction uses the divergence of the two halves. Absolute convergence is precisely the hypothesis that makes both halves finite and the construction impossible.
+
+\begin{trap}
+Manipulating a conditionally convergent series as if it were absolutely convergent: reordering it, splitting it into $\sum(\text{positives})-\sum(\text{negatives})$ (both halves are $+\infty$), or forming a Cauchy product. Each of these silently assumes the property you failed to check.
+\end{trap}
+
+\begin{seealsob}The alternating series test and its error bound; Dirichlet and Abel tests; the selection protocol.\end{seealsob}
+
+One family of mixed-sign series defeats the whole battery so far: the signs do not alternate regularly, so Leibniz does not apply, and the magnitudes are not summable, so absolute convergence is unavailable. The resolution is to stop treating the oscillation as a sign pattern and start treating it as a factor with bounded partial sums.
+
+\tech{Dirichlet and Abel tests}{hard}
+\cue $\sum a_nb_n$ where $b_n$ is monotone and $a_n$ oscillates with bounded partial sums, typically $a_n=\sin n\theta$ or $\cos n\theta$.
+\method \textbf{Dirichlet}: if the partial sums $A_N=\sum_{n\leq N}a_n$ are bounded and $b_n$ decreases monotonically to $0$, then $\sum a_nb_n$ converges. \textbf{Abel}: if $\sum a_n$ converges and $b_n$ is monotone and bounded (not necessarily to $0$), then $\sum a_nb_n$ converges. Both are proved by summation by parts, which is the discrete integration by parts: it moves the difference off $b_n$ and onto the bounded $A_N$.
+
+The mechanism deserves to be written once, because both tests are corollaries of it and because it is the discrete analogue of integration by parts. With $A_n=\sum_{k\leq n}a_k$ and $A_0=0$, substituting $a_n=A_n-A_{n-1}$ and regrouping gives Abel's summation formula
+\[\sum_{n=1}^{N}a_nb_n=A_Nb_N+\sum_{n=1}^{N-1}A_n\bigl(b_n-b_{n+1}\bigr).\]
+The left side is a sum of products with no structure; the right side is a bounded quantity times $b_N$, plus a sum whose terms are $\abs{A_n}$ times the increments of $b_n$. If $\abs{A_n}\leq M$ and $b_n$ decreases, that second sum is dominated by $M\sum(b_n-b_{n+1})$, which telescopes to $M(b_1-b_N)$ and is therefore absolutely convergent. Everything in Dirichlet and Abel is contained in that one line.
+
+\begin{worked}
+$\displaystyle\sum_{n=1}^{\infty}\frac{\sin n}{n}$. Take $a_n=\sin n$, $b_n=1/n$. The partial sums are computable in closed form,
+\[\sum_{n=1}^{N}\sin n=\frac{\sin(N/2)\sin\bigl((N+1)/2\bigr)}{\sin(1/2)},\qquad\text{so}\qquad\Bigl|\sum_{n=1}^{N}\sin n\Bigr|\leq\frac{1}{\sin(1/2)}=2.0858\]
+for every $N$ (the observed maximum over $N\leq10^5$ is $1.9582$). Since $1/n$ decreases to $0$, Dirichlet applies and the series converges. Its value is $\dfrac{\pi-1}{2}=1.0707963$; the partial sum at $10^7$ terms is $1.0707964$. Note that $\sum\abs{\sin n}/n$ diverges, so this convergence is conditional and purely a cancellation effect.
+
+The same bound settles a whole family at once. Since $b_n=1/\ln n$ also decreases to $0$, Dirichlet gives convergence of $\displaystyle\sum_{n\geq2}\frac{\sin n}{\ln n}$, which no other test in this chapter can touch: the magnitudes are nowhere near summable, the signs do not alternate in any regular pattern, and there is no monotone $f$ to integrate. Dirichlet is the test for series that are held together by cancellation alone.
+
+Abel, by contrast, upgrades a known convergence: since $\sum(-1)^{n+1}/n$ converges and $b_n=n^{1/n}$ is monotone and bounded for $n\geq3$, the series $\sum(-1)^{n+1}n^{1/n}/n$ converges as well, to $0.573252$.
+\end{worked}
+
+Both tests are stated for real sequences but are used constantly in complex form. Taking $a_n=z^n$ with $\abs{z}=1$ and $z\neq1$ gives $\abs{A_N}=\left|\dfrac{z(z^{N}-1)}{z-1}\right|\leq\dfrac{2}{\abs{z-1}}$, bounded, so $\sum b_nz^{n}$ converges for every $b_n$ decreasing to $0$ and every such $z$. Taking real and imaginary parts recovers the convergence of $\sum b_n\cos n\theta$ and $\sum b_n\sin n\theta$ for all $\theta$ that are not multiples of $2\pi$, in one line, and shows precisely where the single excluded case comes from: $z=1$ is the one point where the geometric partial sums fail to be bounded.
+
+\begin{trap}
+Using Dirichlet when the partial sums are unbounded. If $\theta$ is a multiple of $2\pi$ then $\sum\cos n\theta=N$ grows linearly, the hypothesis fails, and the conclusion fails with it: $\sum\cos(2\pi n)/n=\sum1/n$ diverges. Always produce the bound on $A_N$ explicitly; it is the only hypothesis that is ever in doubt.
+\end{trap}
+
+\begin{seealsob}The alternating series test and its error bound; absolute versus conditional convergence; the selection protocol.\end{seealsob}
+
+A final word on what a convergence verdict is worth. Nothing in this chapter produces the value of a series; the tests are built to be insensitive to it, which is exactly why they are cheap. The next chapter takes up evaluation, and it is a different subject with a different set of moves, none of which can be started until the question settled here has been settled. Attempting to sum a divergent series is the one error in this material that cannot be partially credited.
+
+\subsection{Four series, start to finish}
+
+The protocol is only worth anything if it runs quickly under pressure, so here it is on four terms chosen to look similar and behave differently. In each case the first move is to name the shape.
+
+$\displaystyle\sum_{n\geq1}\frac{n^{3}+2n}{n^{5}-n^{2}+7}$. Algebraic, one sign eventually. Degree gap $5-3=2$, so limit comparison with $\sum n^{-2}$: the ratio tends to $1$. Converges.
+
+$\displaystyle\sum_{n\geq1}\frac{3^{n}(n!)^{2}}{(2n)!}$. Factorials: ratio test. The ratio is $\dfrac{3(n+1)^2}{(2n+1)(2n+2)}\to\dfrac34<1$. Converges.
+
+$\displaystyle\sum_{n\geq2}\frac{1}{\sqrt{n}\,\ln n}$. Algebraic times a logarithm, positive and decreasing. Limit comparison against $\sum n^{-p}$ is inconclusive because $\ln n$ sits between every pair of powers, so use condensation: the condensed series is $\sum_k2^k\cdot\dfrac{1}{2^{k/2}k\ln2}=\dfrac{1}{\ln2}\sum_k\dfrac{2^{k/2}}{k}$, whose terms grow without bound. Diverges. (Direct comparison also works, since $\ln n<\sqrt n$ gives terms exceeding $1/n$.)
+
+$\displaystyle\sum_{n\geq1}\frac{2+\cos n}{n}$. Mixed-looking but positive, since $2+\cos n\geq1$. So it is a positive-term series with $a_n\geq1/n$, and direct comparison gives divergence. The oscillating factor is a decoy: Dirichlet is not applicable because the partial sums of $2+\cos n$ grow linearly, and no cancellation is available because there are no sign changes.
+
+$\displaystyle\sum_{n\geq1}\frac{(-1)^{n}n}{n^{2}+1}$. Mixed signs, so first check absolute convergence: $\dfrac{n}{n^2+1}\sim\dfrac1n$, so $\sum\abs{a_n}$ diverges. Then Leibniz: the magnitudes decrease (the derivative of $t/(t^2+1)$ is negative for $t>1$) and tend to $0$. Converges conditionally, and the answer must say ``conditionally'', because that is the part with content.
+
+Five series, five different tests, and in each case the test was fixed by the shape before any computation began. That is what the chapter is asking you to be able to do. Notice too how short each argument is once the routing is right: two lines, sometimes one. Length is a symptom. If a convergence argument is running past half a page, the usual cause is not that the series is hard but that the test is wrong, and the right response is to go back to the general term and look at its shape again.
+
+\begin{keynote}[THE VERDICT IS NOT THE VALUE]
+No test in this chapter computes a sum, and none is meant to. Two of them do produce numbers: the integral test brackets the tail between two integrals, and the alternating test bounds the truncation error by the first omitted term. If a problem demands a numerical answer to a stated accuracy, those two are the only tools here that finish it.
+\end{keynote}
+
+\section{Recognition matrix}
+\begin{recog}{@{}p{0.30\textwidth}p{0.34\textwidth}p{0.28\textwidth}@{}}
+\rowcolor{mist}\mh{If you see} & \mh{Reach for} & \mh{If that fails} \\
+\midrule
+\endhead
+$a_n\not\to0$ & $n$th-term test: diverges, stop & Nothing else is needed \\
+$n!$, $(2n)!$, $c^n$, $n^n$ & Ratio test & Root test, then Raabe \\
+$\bigl(g(n)\bigr)^{n}$ & Root test on the base & Logarithms, then compare \\
+Rational or algebraic in $n$ & Limit comparison with $\sum n^{-p}$, $p$ the degree gap & Direct comparison at $c=0$ or $c=\infty$ \\
+Ratio or root gives $L=1$ & Raabe's test, or limit comparison & Condensation \\
+$\ln n$ or $\ln\ln n$ in the denominator & Cauchy condensation & Integral test \\
+$f(n)$ decreasing with $\int f$ known & Integral test, and quote the tail bracket & Condensation \\
+Bounded factor times a benchmark & Direct comparison & Limit comparison \\
+$(-1)^n b_n$, $b_n$ decreasing to $0$ & Leibniz; error $\leq b_{N+1}$ & Test $\sum\abs{a_n}$ separately \\
+$\sin n\theta$ or $\cos n\theta$ times monotone $b_n$ & Dirichlet, with an explicit bound on $A_N$ & Abel if $\sum a_n$ already converges \\
+Converges, signs mixed & Test $\sum\abs{a_n}$ before rearranging & Assume nothing: treat as conditional \\
+\end{recog}

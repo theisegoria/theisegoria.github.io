@@ -1,0 +1,118 @@
+\chapter{Deduction grids and constraint propagation}
+
+\begin{orient}
+\textbf{What this chapter is for.} The attribute puzzle, in which five houses have five owners with five drinks and five pets and a list of clues relates them, is a constraint satisfaction problem, and solving one by hand efficiently means running, by hand, the algorithm a solver would run. That algorithm has four parts: represent the state so that no deduction is lost, propagate every consequence of every new fact immediately, recognise the two kinds of forced move, and, when propagation stalls, branch at the point where branching is cheapest. This chapter is that algorithm. The same machinery solves scheduling puzzles, Sudoku, seating arrangements, and any problem in which a bijection between finite sets must be pinned down by relational clues.
+\end{orient}
+
+\section{Representation}
+
+\tech{The elimination grid}{easy}
+\cue Several categories of the same size, a bijection between them, and clues that are mostly negative or relational.
+\method Draw a grid with one row per value of one category and one column per value of another, one such block for every pair of categories. Mark a cell with a cross when the pairing is excluded and a tick when it is forced. Never hold a deduction only in your head: the entire efficiency of the method comes from the fact that a written cross participates in later reasoning and a remembered one does not.
+
+\begin{keynote}[Two rules that fire automatically]
+A tick in a cell crosses out the rest of its row and the rest of its column, because the relation is a bijection. And a row or column with exactly one surviving cell converts that cell to a tick. Applying these two rules to exhaustion after every single new mark is what propagation means.
+\end{keynote}
+
+\begin{center}
+\begin{tikzpicture}[node distance=5mm and 9mm]
+\node[dnode] (a) {Ada is not\\ in house 1};
+\node[dnode, right=of a] (b) {house 1 has\\ the cat};
+\node[dleaf, right=of b] (c) {Ada does not\\ own the cat};
+\draw[dedge] (a) -- (b); \draw[dedge] (b) -- (c);
+\end{tikzpicture}
+\end{center}
+
+The figure is the move that makes grids worth drawing. Two facts in different blocks combine through the shared category to give a fact in a third block, and the transitive step is invisible unless both parents are written down. Most stalled grids are stalled because a cross in one block was never carried across.
+
+\begin{trap}
+Recording only the positive information. The crosses carry most of the content, and a grid with ticks alone loses the ability to make transitive deductions at all.
+\end{trap}
+
+\begin{seealsob}Constraint propagation; forced-move reasoning.\end{seealsob}
+
+\tech{Constraint propagation}{easy}
+\cue Any point at which you have just learned something.
+\method Maintain, for each variable, the set of values it can still take. Every new fact removes values; every removal may reduce another variable's set to a single value, which is a new fact. Loop until nothing changes. Positional clues of the form ``$X$ is immediately left of $Y$'' should be converted into explicit domain restrictions at the start: in a row of four, ``immediately left'' already forbids $X$ from position $4$ and $Y$ from position $1$, and those two crosses are free.
+
+\begin{trap}
+Propagating one consequence and moving on. The loop must run to a fixed point, because the second and third rounds are where the useful deductions usually appear.
+\end{trap}
+
+\begin{seealsob}The elimination grid; minimal-remaining-values branching.\end{seealsob}
+
+\tech{Forced moves: the naked single and the hidden single}{easy}
+\cue Propagation has stalled and you are looking for the next deduction.
+\method Two distinct patterns produce a forced assignment and they must both be checked, because scanning for one and not the other is the commonest reason a solvable puzzle looks stuck. A \emph{naked single} is a variable whose domain has shrunk to one value: read it off. A \emph{hidden single} is a value that can be placed in only one variable, even though that variable still has several candidates: it must go there. The naked single is found by scanning variables; the hidden single is found by scanning values, and that second scan is the one people skip.
+
+\begin{seealsob}Constraint propagation; branch and contradict.\end{seealsob}
+
+\section{Working a puzzle}
+
+Four houses stand in a row, numbered $1$ to $4$ from left to right. Each is occupied by one of Ada, Bo, Cy and Di, who each drink one of tea, coffee, cocoa and juice, and keep one of a cat, a dog, a finch and a gecko. The clues are these.
+
+\begin{enumerate}[label=(\arabic*),leftmargin=2.2em]
+\item Ada lives immediately to the left of the coffee drinker.
+\item The dog is in house $1$ or house $4$.
+\item Cy drinks cocoa.
+\item Bo lives somewhere to the right of the cat.
+\item The juice drinker keeps the finch.
+\item Di lives in house $2$.
+\item The gecko keeper drinks tea.
+\item The cat keeper does not drink coffee.
+\item The juice drinker lives to the left of the tea drinker.
+\end{enumerate}
+
+\begin{worked}
+Start with the free domain restrictions. Clue (1) puts Ada in $1$, $2$ or $3$ and coffee in $2$, $3$ or $4$; clue (6) puts Di in $2$, so Ada is in $1$ or $3$, and coffee is in $2$ or $4$. Clue (4) puts the cat in $1$, $2$ or $3$ and Bo in $2$, $3$ or $4$, and since Di holds $2$, Bo is in $3$ or $4$.
+
+Now combine (3) with (1). If Ada were in $3$ then coffee is in $4$, so Bo is in $4$ and Cy in $1$, giving cocoa to house $1$. If Ada were in $1$ then coffee is in $2$, so Di drinks coffee, and Cy is in $3$ or $4$ with cocoa there. Keep both branches open and use the pet clues.
+
+Clue (7) ties gecko to tea and clue (5) ties finch to juice, so cocoa and coffee are held by the cat and the dog in some order. Clue (8) forbids cat with coffee, so the cat keeper drinks cocoa and the dog keeper drinks coffee. By (3), Cy keeps the cat.
+
+Take the second branch first: Ada in $1$, coffee in $2$, so Di keeps the dog in house $2$, contradicting clue (2). That branch dies, and the whole puzzle collapses to the first.
+
+So Ada is in $3$, coffee is in $4$, Bo is in $4$ with the dog, and Cy is in $1$ with the cat and cocoa. Houses $2$ and $3$ hold juice and tea in some order, and clue (9) puts juice left of tea, so Di in house $2$ drinks juice and keeps the finch, and Ada in house $3$ drinks tea and keeps the gecko. Every clue checks. Exhaustive search over all $24^{3}=13824$ assignments confirms this is the unique solution.
+\end{worked}
+
+Notice where the work actually happened. The two pet clues (5) and (7), combined with (8), determined the entire drink-to-pet block before a single house was fixed, and that block then did all the remaining work. Looking for a pair of categories that the clues over-determine, and solving that block first, is the practical version of the branching heuristic in the next section.
+
+\section{When propagation stalls}
+
+\tech{Minimal-remaining-values branching}{medium}
+\cue The fixed point has been reached and no cell is forced, but the puzzle is not solved.
+\method Branch, and branch where the branching factor is smallest: choose the variable with the fewest remaining candidates. Two candidates means two subproblems, and one of them will usually die within a few propagation steps. Branching on a variable with five candidates multiplies your work by five for the same information.
+
+\begin{trap}
+Branching before propagation has genuinely reached a fixed point. Every deduction you could have made for free becomes a deduction you now make twice, once in each branch.
+\end{trap}
+
+\begin{seealsob}Branch and contradict; exhaustive casework with a discipline.\end{seealsob}
+
+\tech{Branch and contradict}{medium}
+\cue A variable with exactly two candidates, and a suspicion that one of them is impossible.
+\method Assume one candidate, propagate aggressively, and look for a contradiction. If one appears, the other candidate is forced and you have gained a fact without the bookkeeping of a genuine case split. If no contradiction appears in a dozen steps, abandon the trial and keep both branches properly. The technique in the worked puzzle above, where assuming Ada in house $1$ died against clue (2), is exactly this.
+
+\begin{trap}
+Carrying marks made during a failed trial back into the main grid. Use a separate sheet, or mark trial deductions in a way you can erase; a contaminated grid is worse than no grid.
+\end{trap}
+
+\begin{seealsob}Minimal-remaining-values branching; proof by contradiction.\end{seealsob}
+
+\section{Recognition matrix}
+
+\begin{recog}{@{}p{0.31\textwidth}p{0.35\textwidth}p{0.28\textwidth}@{}}
+\rowcolor{mist}\mh{If you see} & \mh{Reach for} & \mh{If that fails} \\
+\midrule
+\endhead
+Equal-sized categories, relational clues & An elimination grid, all pairs & Domain lists per variable \\
+``Immediately left of'' & Free crosses at both ends & Enumerate the possible positions \\
+``Somewhere to the right of'' & Cross the extreme cells of both & Combine with a second ordering clue \\
+A new tick placed & Cross its row and its column & Then carry across to other blocks \\
+A row with one survivor & Naked single: assign it & Scan values for a hidden single \\
+A value with one home & Hidden single: assign it & Scan variables for a naked single \\
+Two blocks over-determined & Solve that pair first & Look for a clue chain linking them \\
+Propagation stalled & Branch on the smallest domain & Trial one candidate for contradiction \\
+Two candidates left & Branch and contradict & Keep both branches cleanly separated \\
+Two full solutions found & The clue set is incomplete & Re-read for an unencoded clue \\
+\end{recog}

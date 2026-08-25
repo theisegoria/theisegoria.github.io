@@ -1,0 +1,163 @@
+\chapter{Probability and expectation}
+
+\begin{orient}
+\textbf{What this chapter is for.} One tool dominates this subject, and it is worth stating before anything else: expectation is linear, always, with no hypothesis whatever about independence. That single fact solves problems whose direct computation is hopeless, because it lets you break a complicated random quantity into a sum of indicators, compute each indicator's probability in isolation, and add. Everything else in the chapter is either a way of computing one of those probabilities (conditioning, Bayes, symmetry) or a way of handling quantities that are not sums (states and transitions, tail sums). The chapter also treats the classical paradoxes seriously, because each of them fails in the same way: the intuition is answering a correctly posed question about a different sample space, and naming that sample space is the repair.
+\end{orient}
+
+\section{The master tool}
+
+\tech{Linearity of expectation}{easy}
+\cue A random quantity that counts something: the number of fixed points, of matches, of records, of empty boxes, of adjacent pairs. Any question beginning ``what is the expected number of''.
+\method Write $X=X_{1}+\cdots+X_{n}$ and use
+\[
+\E[X]=\E[X_{1}]+\cdots+\E[X_{n}],
+\]
+which holds whether or not the $X_{i}$ are independent, and whether or not they are even defined on comprehensible events. The distribution of $X$ is irrelevant and usually much harder than the answer.
+
+\begin{worked}
+A random permutation of $n$ objects: what is the expected number of fixed points? Let $X_{i}$ be $1$ if $i$ is fixed. Then $\E[X_{i}]=1/n$ by symmetry, so $\E[X]=n\cdot(1/n)=1$, independent of $n$. The indicators are dependent (knowing $n-1$ points are fixed forces the last), and it does not matter. Verified by averaging over all $120$ permutations of five objects, which gives exactly $1$.
+\end{worked}
+
+\begin{trap}
+Trying to compute the distribution first. The number of fixed points has a messy distribution built out of derangement numbers; the mean does not need any of it.
+\end{trap}
+
+\begin{seealsob}Indicator random variables; symmetry arguments in probability; inclusion and exclusion.\end{seealsob}
+
+\tech{Indicator random variables as a protocol}{easy}
+\cue Any application of linearity. This is the mechanical half of the previous technique and deserves to be run as a checklist.
+\method Four steps, in order. Name the thing being counted. Introduce one indicator per potential contribution, saying exactly what event it indicates. Compute each indicator's probability, using symmetry wherever the situation is exchangeable. Sum. The step people skip is the second, and skipping it is how an index gets counted twice.
+
+\begin{worked}
+Coupon collector. With $n$ distinct coupons, the expected number of purchases to collect all of them is not a sum of indicators over coupons but a sum over \emph{stages}: once $k-1$ distinct coupons are held, the number of further purchases to get a new one is geometric with success probability $(n-k+1)/n$, so its expectation is $n/(n-k+1)$. Summing over $k$,
+\[
+\E[T]=n\sum_{j=1}^{n}\frac{1}{j}=nH_{n},
+\]
+which for $n=6$ is $14.7$ exactly. Note that the decomposition is into stages, not into coupons; choosing the right decomposition is the whole of step two.
+\end{worked}
+
+\begin{seealsob}Linearity of expectation; tail-sum expectation; states and transitions.\end{seealsob}
+
+\section{Conditioning}
+
+\tech{Conditional probability and Bayes as a mechanical update}{medium}
+\cue New information arrives and a probability must be revised. Also any problem in which a rare condition is tested by an imperfect test.
+\method Write the update as odds, not as fractions, because the odds form removes the denominator that causes most errors:
+\[
+\underbrace{\frac{\Prob(H\mid E)}{\Prob(\lnot H\mid E)}}_{\text{posterior odds}}=\underbrace{\frac{\Prob(H)}{\Prob(\lnot H)}}_{\text{prior odds}}\times\underbrace{\frac{\Prob(E\mid H)}{\Prob(E\mid \lnot H)}}_{\text{likelihood ratio}}.
+\]
+Then convert back to a probability at the end if the question asks for one.
+
+\begin{worked}
+A condition affects one person in a thousand. A test has a $99\%$ detection rate and a $2\%$ false positive rate. A random person tests positive. Prior odds $1:999$. Likelihood ratio $0.99/0.02=49.5$. Posterior odds $49.5:999$, that is about $1:20.2$, so the probability is roughly $0.0472$. The test is informative, multiplying the odds by fifty, and the person is still very probably unaffected, because fifty is small compared with a thousand.
+\end{worked}
+
+\begin{trap}
+Confusing $\Prob(E\mid H)$ with $\Prob(H\mid E)$. The detection rate is a statement about the test given the condition, and reporting it as the answer inverts the conditioning entirely.
+\end{trap}
+
+\begin{seealsob}Repairing the sample space; symmetry arguments.\end{seealsob}
+
+\tech{Repairing the sample space: the anatomy of a paradox}{medium}
+\cue An answer that everybody finds obvious and that is wrong, or a problem where two defensible answers exist. The universal cue is a phrase like ``you are told that at least one'' or ``the host then opens'', where the mechanism generating the information is left implicit.
+\method Every classical paradox in this subject has the same anatomy. The intuitive answer is the correct answer to a well-posed question about a different sample space, and the fix is to write down explicitly what random experiment generated the information you were given. Do that before computing anything.
+
+\begin{worked}[Three doors]
+A prize sits behind one of three doors. You choose one; the host, who knows where the prize is and always opens a different door with no prize behind it, opens one; you may switch. Switching wins with probability $2/3$. The intuition that says $1/2$ is answering the question ``a door has been eliminated at random, what now'', which would indeed give $1/2$. The host's knowledge is what breaks the symmetry: the door he opens is not a random door, and his choice carries information about the two doors you did not pick. If instead the host opens a door at random and it happens to be empty, the answer really is $1/2$, and the two versions differ only in a sentence about the host.
+\end{worked}
+
+\begin{worked}[Two children]
+A family has two children. Told only that at least one is a boy, the probability both are boys is $1/3$, since the sample space $\{BB,BG,GB,GG\}$ loses only $GG$. Told instead that the elder is a boy, the answer is $1/2$. The two pieces of information are different, and the difference is which subset of the four equally likely families survives. Verified by enumeration.
+\end{worked}
+
+\begin{worked}[Shared birthdays]
+With $23$ people the probability that some pair shares a birthday is $1-\prod_{k=0}^{22}(365-k)/365\approx0.5073$. The intuition that expects a much larger group is comparing against the wrong count: there are $\binom{23}{2}=253$ pairs, not $23$ people, and the relevant quantity is the number of opportunities for a collision.
+\end{worked}
+
+\begin{trap}
+Arguing about the answer instead of about the sample space. Two people who disagree about one of these problems are almost always modelling different experiments, and until that is settled no amount of arithmetic helps.
+\end{trap}
+
+\begin{seealsob}Conditional probability and Bayes; symmetry arguments; complementary counting.\end{seealsob}
+
+\tech{Symmetry arguments in probability}{medium}
+\cue Exchangeable objects, a uniformly random arrangement, or a question about a particular position among many identical ones.
+\method If a relabelling of the objects leaves the probability model unchanged, then quantities related by that relabelling have equal probability. This converts a question about a specific position into an averaging argument and often gives the answer with no computation at all.
+
+\begin{worked}
+A deck is shuffled uniformly. What is the probability that the ace of spades lies immediately above the ace of hearts? By symmetry every ordered pair of distinct positions is equally likely for the two cards, so the answer is the number of adjacent ordered pairs over the total: $51/(52\cdot51)=1/52$. Equivalently, consider the $52$ possible positions of the hearts ace relative to the spades ace.
+\end{worked}
+
+\begin{seealsob}Linearity of expectation; repairing the sample space.\end{seealsob}
+
+\section{Quantities that are not sums}
+
+\tech{States, transitions, and absorbing reasoning}{hard}
+\cue An expected time until something happens, a probability of reaching one outcome before another, or a process with memory. The words ``on average how long'' are the strongest cue.
+\method Define $E_{i}$ as the expected time to absorption from state $i$, write one equation per state by conditioning on the first step, and solve the linear system. The equation is always of the form
+\[
+E_{i}=1+\sum_{j}p_{ij}E_{j},
+\]
+with $E=0$ at the absorbing states. Choosing the right state space is the whole difficulty, and the right state space is the smallest one in which the process is Markov.
+
+\begin{worked}
+Expected number of fair coin tosses until the pattern HH appears. States: no progress, one H, done. From no progress, $E_{0}=1+\tfrac12E_{1}+\tfrac12E_{0}$. From one H, $E_{1}=1+\tfrac12\cdot0+\tfrac12E_{0}$. Solving gives $E_{0}=6$. For the pattern HT the same method gives $4$. The asymmetry surprises people and is entirely explained by what a failure costs: a failed HH attempt (seeing T) throws away all progress, while a failed HT attempt (seeing H) leaves you exactly where you were.
+\end{worked}
+
+\begin{worked}[Random walk with two absorbing ends]
+A walker on $0,1,\ldots,N$ moves left or right with probability $\tfrac12$, absorbed at both ends. The probability of absorption at $N$ starting from $k$ is $k/N$ by the martingale (or by solving the linear recurrence $p_{k}=\tfrac12p_{k-1}+\tfrac12p_{k+1}$), and the expected time to absorption is $k(N-k)$. With $N=5$ and $k=2$ this gives an expected $6$ steps.
+\end{worked}
+
+\begin{trap}
+A state space that is not Markov. If the answer depends on how you arrived at a state, the state is under-specified, and the system of equations you write down will be inconsistent or simply wrong.
+\end{trap}
+
+\begin{seealsob}Tail-sum expectation; linearity of expectation.\end{seealsob}
+
+\tech{Tail-sum expectation and hitting times}{medium}
+\cue A non-negative integer random variable whose tail probabilities $\Prob(X\geq k)$ are easier to compute than its point probabilities. Common for maxima, for waiting times, and for records.
+\method Use
+\[
+\E[X]=\sum_{k\geq1}\Prob(X\geq k),
+\]
+which for maxima is far easier than the distribution, since $\Prob(\max\geq k)=1-\Prob(\text{all}<k)$ is a product.
+
+\begin{worked}
+Roll a fair die repeatedly until a six appears. Then $\Prob(X\geq k)=(5/6)^{k-1}$, so $\E[X]=\sum_{k\geq1}(5/6)^{k-1}=6$, recovering the geometric mean without differentiating a series.
+\end{worked}
+
+\begin{seealsob}States and transitions; indicator random variables.\end{seealsob}
+
+\tech{The probabilistic method}{hard}
+\cue An existence claim about a large combinatorial structure: a colouring with no monochromatic piece, a set with no three in arithmetic progression, a tournament with a property.
+\method Put a probability measure on the candidate objects and show that a random one has the desired property with positive probability, or that the expected number of defects is less than one. Either conclusion proves that a good object exists, without constructing one.
+
+\begin{worked}
+Any $2$-colouring question of the following shape: colour the edges of the complete graph on $n$ vertices at random. The expected number of monochromatic copies of $K_{k}$ is $\binom{n}{k}2^{1-\binom{k}{2}}$. If that quantity is less than $1$, some colouring has none, which gives the classical lower bound on the Ramsey number. For $k=3$ and $n=5$ the expectation is $10\cdot2^{-2}=2.5$, too large to conclude; for $k=4$ and $n=17$ it is $2380\cdot2^{-5}\approx74$, also too large, which is why the useful bounds appear only for larger $k$.
+\end{worked}
+
+\begin{trap}
+Concluding that the random object almost always works. Positive probability is all you get, and it is all you need; claiming more is claiming something the argument does not support.
+\end{trap}
+
+\begin{seealsob}Linearity of expectation; pigeonhole with structure; the extremal principle.\end{seealsob}
+
+\section{Recognition matrix}
+
+\begin{recog}{@{}p{0.31\textwidth}p{0.35\textwidth}p{0.28\textwidth}@{}}
+\rowcolor{mist}\mh{If you see} & \mh{Reach for} & \mh{If that fails} \\
+\midrule
+\endhead
+``Expected number of'' & Indicators, then linearity & Decompose into stages \\
+Dependence looks fatal & Linearity does not care & Check the indicator definitions \\
+Collect all $n$ types & Stages; $\E=nH_{n}$ & Tail-sum formula \\
+A test result revises a belief & Odds form of Bayes & Tree of the four outcomes \\
+``At least one is a boy'' & Enumerate the sample space & Ask what generated the information \\
+A host who knows and chooses & The choice carries information & Compare the random-host variant \\
+Two defensible answers & The experiment is under-specified & Write the mechanism down \\
+Exchangeable objects & Symmetry: all positions alike & Count ordered pairs \\
+``On average how long until'' & States, one equation per state & Check the state is Markov \\
+Waiting for a pattern & Progress states, first-step conditioning & Correlation of the pattern with itself \\
+Maximum of several variables & Tail sum with a product & Order statistics \\
+``Show such an object exists'' & Random object, expected defects ${}<1$ & Explicit construction \\
+\end{recog}

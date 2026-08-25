@@ -1,0 +1,481 @@
+\chapter{Laplace transforms and series solutions}
+
+\begin{orient}
+\textbf{What this chapter is for.} The methods of the preceding chapters solve a linear equation when the coefficients are constant and the forcing is a polynomial, an exponential, or a sinusoid. Two things break them. Forcing that switches on at a fixed time, or arrives as an instantaneous blow, is not in the undetermined-coefficients table and destroys the smoothness that variation of parameters quietly assumes. Coefficients that genuinely vary, with no Cauchy-Euler or reducible structure to exploit, leave no closed form to find at all. This chapter supplies one escape hatch for each. The Laplace transform converts a constant-coefficient initial-value problem with data at $t=0$ into an algebra problem, absorbs steps and impulses without a special case, and turns the initial conditions into terms rather than constants to be fitted afterwards. Power series and the Frobenius method construct the solution coefficient by coefficient at a point, whether or not the answer has a name. The organising decision is simple and worth fixing before any of the machinery: constant coefficients with awkward forcing means Laplace, variable coefficients with no closed form means series, and if the coefficients are constant and the forcing is smooth you should not be here at all.
+\end{orient}
+
+\section{Two escape hatches and the rule for choosing}
+
+Both methods trade the differential equation for something algebraic, and they differ in what they algebraise. Laplace replaces the function $y(t)$ by a single new function $Y(s)$, and the whole equation collapses to one linear equation in $Y$; the price is that the transform of $y^{(n)}$ needs the values $y(0),\dots,y^{(n-1)}(0)$, so the method demands data at the origin and constant coefficients (otherwise the transform of $a(t)y'$ is not $a\cdot\mathcal{L}\{y'\}$ and nothing collapses). Series replaces $y$ by its coefficient sequence $(a_n)$, and the equation becomes a recurrence; the price is that you get an infinite list of numbers rather than a formula, and a radius of convergence to worry about.
+
+The choice is therefore made by inspecting the equation and not by taste:
+
+\begin{keynote}[Which hatch]
+Use \textbf{Laplace} when the coefficients are constant, the data are at $t=0$, and the forcing is discontinuous, impulsive, piecewise, delayed, or left as an unspecified function $f(t)$. Use \textbf{series} when the coefficients are non-constant and not of a reducible type, or when a solution near a specific point is wanted and no closed form exists. Use \textbf{neither} when the coefficients are constant and the forcing is a polynomial times an exponential times a sinusoid: characteristic roots and undetermined coefficients are faster and give a formula directly. The two methods overlap in exactly one place, the linear $t$ coefficient, where differentiation in $s$ turns the transformed equation into a first-order ODE.
+\end{keynote}
+
+\section{The transform, and the table that gets used}
+
+There is a third option that the rule above deliberately omits, and it should be named so that it is chosen rather than fallen into. If the coefficients vary, the point of interest is irregular, and no closed form is wanted, then neither hatch opens and the answer is numerical: convert to a first-order system and integrate. That is not a failure. Series methods are local and Laplace is global but structurally restricted, and there are perfectly ordinary equations that fall outside both. What matters is recognising the case in the first minute rather than the fortieth.
+
+The transform itself is the integral
+\[\mathcal{L}\{f\}(s)=F(s)=\int_0^{\infty}\eu^{-st}f(t)\dd t,\]
+defined for $s$ large enough that the integral converges, which for functions of exponential order is a half-line $s>a$. Nobody computes it from the definition after the first week. What gets used is a short table together with three structural rules (the two shifts and differentiation in $s$), and it is worth having the table genuinely memorised, because inversion is pattern-matching and you cannot match a pattern you do not know.
+
+\begin{center}
+\footnotesize
+\setlength{\tabcolsep}{5pt}
+\renewcommand{\arraystretch}{1.34}
+\begin{tabular}{@{}lll@{}}
+\toprule
+\mh{$f(t)$} & \mh{$F(s)$} & \mh{Remark} \\
+\midrule
+$1$ & $\dfrac1s$ & $s>0$ \\
+$t^{n}$ & $\dfrac{n!}{s^{n+1}}$ & $t^{p}\mapsto\Gamma(p+1)/s^{p+1}$ for real $p>-1$ \\
+$\eu^{at}$ & $\dfrac{1}{s-a}$ & the first shift applied to $1$ \\
+$\sin bt$ & $\dfrac{b}{s^{2}+b^{2}}$ & numerator $b$, not $s$ \\
+$\cos bt$ & $\dfrac{s}{s^{2}+b^{2}}$ & \\
+$\sinh bt,\ \cosh bt$ & $\dfrac{b}{s^{2}-b^{2}},\ \dfrac{s}{s^{2}-b^{2}}$ & sign of $b^{2}$ is the only difference \\
+$\eu^{at}f(t)$ & $F(s-a)$ & first shift \\
+$u_c(t)f(t-c)$ & $\eu^{-cs}F(s)$ & second shift, $c>0$ \\
+$\delta(t-c)$ & $\eu^{-cs}$ & the limit of a tall thin pulse \\
+$t\,f(t)$ & $-F'(s)$ & differentiation in $s$ \\
+$f'(t)$ & $sF(s)-f(0)$ & \\
+$f''(t)$ & $s^{2}F(s)-sf(0)-f'(0)$ & \\
+$(f*g)(t)$ & $F(s)G(s)$ & convolution, not pointwise product \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Two facts about the table are worth stating rather than absorbing silently. Every entry decays as $s\to\infty$, so a proper rational function is a plausible transform and an improper one is not: if your algebra yields $Y(s)=s+\tfrac1s$ you have made a mistake, because no function of exponential order transforms to something unbounded. And the transform is injective on continuous functions, so ``invert by recognition'' is legitimate: if you find any $f$ whose transform is $Y$, it is the answer.
+
+One point of hygiene before the machine. The integral defining $F(s)$ converges when $f$ is piecewise continuous on $[0,\infty)$ and of exponential order, meaning $\abs{f(t)}\le M\eu^{at}$ for some constants and all large $t$; then $F(s)$ exists for $s>a$. Every function that arises from a constant-coefficient linear equation with forcing of exponential order satisfies this, which is why the method never has to worry about convergence in practice. What does fail the test is worth knowing: $\eu^{t^{2}}$ grows too fast and has no transform, and $t^{-1}$ has a non-integrable singularity at the origin, though $t^{-1/2}$ is fine and transforms to $\sqrt{\pi/s}$.
+
+\begin{keynote}[Initial conditions become terms, not constants]
+This is the structural advantage of the transform and the reason to reach for it even when the forcing is tame. In the characteristic-root method you build a general solution containing $n$ arbitrary constants and then solve an $n\times n$ linear system to fit the data. In the transform method the data appear in the numerator the moment you transform, so the answer that comes out of the inversion already satisfies them. There is no fitting step, hence no opportunity to fit at the wrong stage, and for piecewise problems there is no matching of constants across the switching times either: continuity of $y$ and $y'$ is automatic.
+\end{keynote}
+
+\tech{The Laplace-transform machine for an initial-value problem}{core}
+\cue A constant-coefficient linear initial-value problem with data specified at $t=0$, especially one whose forcing is discontinuous, impulsive, delayed, or piecewise.
+\method Transform every term. Using $\mathcal{L}\{y'\}=sY-y(0)$ and $\mathcal{L}\{y''\}=s^{2}Y-sy(0)-y'(0)$, the equation $ay''+by'+cy=f(t)$ becomes
+\[\bigl(as^{2}+bs+c\bigr)Y(s)=F(s)+a\bigl(sy(0)+y'(0)\bigr)+by(0),\]
+a linear equation in $Y$. Solve it, then invert. The polynomial $as^{2}+bs+c$ is the characteristic polynomial with $r$ renamed $s$, so the transform method and the characteristic-root method share a denominator; what differs is that the initial data enter as numerator terms, algebraically, with no constants to fit at the end.
+
+\begin{worked}
+\[y''+2y'+5y=0,\qquad y(0)=1,\ y'(0)=-1.\]
+Transforming: $s^{2}Y-s+1+2(sY-1)+5Y=0$, so $(s^{2}+2s+5)Y=s+1$ and
+\[Y=\frac{s+1}{s^{2}+2s+5}=\frac{s+1}{(s+1)^{2}+4}\ \Longrightarrow\ y=\eu^{-t}\cos2t,\]
+the completed square being the whole of the work. Note that no constants were fitted: the numerator $s+1$ \emph{is} the initial data.
+
+Forced, with a polynomial right side:
+\[y''+y=t,\qquad y(0)=0,\ y'(0)=2.\]
+Then $s^{2}Y-2+Y=\tfrac1{s^{2}}$, so $Y=\dfrac{1}{s^{2}(s^{2}+1)}+\dfrac{2}{s^{2}+1}$. Since $\dfrac{1}{s^{2}(s^{2}+1)}=\dfrac1{s^{2}}-\dfrac1{s^{2}+1}$, we get $y=t-\sin t+2\sin t=t+\sin t$. Check: $y''+y=-\sin t+t+\sin t=t$, and $y'(0)=1+\cos0=2$. Runge-Kutta at $t=2.3$ returns $3.0457052$ against $2.3+\sin2.3=3.0457052$.
+\end{worked}
+
+\begin{worked}[A system, with no eigenvectors computed]
+The transform does not care how many unknowns there are. Take
+\[\dot x=x+y,\quad \dot y=4x+y,\qquad x(0)=3,\ y(0)=2.\]
+Transforming both equations gives the linear system
+\[(s-1)X-Y=3,\qquad -4X+(s-1)Y=2,\]
+whose determinant is $(s-1)^{2}-4=(s-3)(s+1)$, the characteristic polynomial of the matrix. Cramer's rule gives
+\[X=\frac{3(s-1)+2}{(s-3)(s+1)}=\frac{3s-1}{(s-3)(s+1)}=\frac{2}{s-3}+\frac{1}{s+1},\]
+\[Y=\frac{2(s-1)+12}{(s-3)(s+1)}=\frac{2s+10}{(s-3)(s+1)}=\frac{4}{s-3}-\frac{2}{s+1},\]
+so $x=2\eu^{3t}+\eu^{-t}$ and $y=4\eu^{3t}-2\eu^{-t}$. This is the same solution the eigenvector method produces for this system, obtained without finding a single eigenvector: the eigenvalues appear as poles and the eigenvector combination is done for you by the partial fractions.
+\end{worked}
+
+\begin{trap}
+Using Laplace when the data are given at $t=t_0\ne0$. The formula $\mathcal{L}\{y'\}=sY-y(0)$ refers to the value at the origin and nothing else, so data at $t=2$ cannot be inserted. Substitute $\tau=t-t_0$ first, transform in $\tau$, and translate back at the end. The other structural error is transforming a variable coefficient as though it were constant: $\mathcal{L}\{ty'\}$ is not $t(sY-y(0))$, and indeed is not a multiple of $Y$ at all.
+\end{trap}
+
+\begin{seealsob}Partial fractions for the inverse transform; the first shifting theorem; the second shifting theorem and Heaviside steps.\end{seealsob}
+
+Transforming is mechanical; inverting is where the work is. Every $Y(s)$ produced by the machine above from rational forcing is a proper rational function, possibly multiplied by exponentials $\eu^{-cs}$ that the second shift will strip off. So the core inversion skill is partial fractions, executed with the transform table in mind rather than with the calculus-of-integration habits that produce logarithms.
+
+\tech{Partial fractions for the inverse transform}{core}
+\cue $Y(s)$ is a proper rational function, or becomes one after an exponential factor is set aside.
+\method Factor the denominator over the reals. A linear factor $(s-a)^{m}$ contributes $\dfrac{A_1}{s-a}+\cdots+\dfrac{A_m}{(s-a)^{m}}$, inverting to $\bigl(A_1+A_2t+\cdots+A_m\tfrac{t^{m-1}}{(m-1)!}\bigr)\eu^{at}$. An irreducible quadratic $(s-a)^{2}+b^{2}$ contributes $\dfrac{B(s-a)+Cb}{(s-a)^{2}+b^{2}}$, inverting to $\eu^{at}(B\cos bt+C\sin bt)$. Find the constants by covering up at the roots and by matching one or two coefficients; do not expand everything.
+
+\begin{worked}
+\[y''+4y=\eu^{t},\qquad y(0)=y'(0)=0.\]
+The transform is $Y=\dfrac{1}{(s-1)(s^{2}+4)}$. Write $Y=\dfrac{A}{s-1}+\dfrac{Bs+C}{s^{2}+4}$, so $1=A(s^{2}+4)+(Bs+C)(s-1)$. Setting $s=1$ gives $A=\tfrac15$. Matching $s^{2}$: $0=A+B$, so $B=-\tfrac15$. Matching constants: $1=4A-C$, so $C=-\tfrac15$. Hence
+\[Y=\frac15\left(\frac{1}{s-1}-\frac{s+1}{s^{2}+4}\right),\qquad y=\frac15\left(\eu^{t}-\cos2t-\tfrac12\sin2t\right).\]
+Audit by substitution: $y''+4y=\tfrac15\bigl(\eu^{t}+4\cos2t+2\sin2t\bigr)+\tfrac45\bigl(\eu^{t}-\cos2t-\tfrac12\sin2t\bigr)=\eu^{t}$, and $y(0)=y'(0)=0$. At $t=1.7$ the value is $1.3137032$, matched by Runge-Kutta.
+
+A repeated factor: $\dfrac{3s+2}{s^{2}(s+2)}=\dfrac1s+\dfrac1{s^{2}}-\dfrac1{s+2}$ inverts to $1+t-\eu^{-2t}$.
+\end{worked}
+
+\begin{worked}[A repeated irreducible quadratic, where partial fractions is the wrong tool]
+Resonance produces $(s^{2}+\omega^{2})^{2}$ in the denominator, and expanding that into $\dfrac{As+B}{s^{2}+\omega^{2}}+\dfrac{Cs+D}{(s^{2}+\omega^{2})^{2}}$ is legal but leaves you needing the inverse of the second term anyway. Go the other way, through $\mathcal{L}\{tf\}=-F'(s)$. Solve $y''+y=\cos t$ with $y(0)=y'(0)=0$:
+\[Y=\frac{s}{\bigl(s^{2}+1\bigr)^{2}}.\]
+Differentiate the known transform $F(s)=\dfrac1{s^{2}+1}$ of $\sin t$: $F'(s)=\dfrac{-2s}{(s^{2}+1)^{2}}$, so $\mathcal{L}\{t\sin t\}=-F'(s)=\dfrac{2s}{(s^{2}+1)^{2}}$ and therefore
+\[y=\frac{t\sin t}{2}.\]
+The amplitude grows linearly, which is resonance, and the growth appears as a repeated pole on the imaginary axis rather than as a special rule. The same three companions are worth deriving once and keeping: $\mathcal{L}^{-1}\bigl\{\tfrac{1}{(s^{2}+\omega^{2})^{2}}\bigr\}=\tfrac{1}{2\omega^{3}}\bigl(\sin\omega t-\omega t\cos\omega t\bigr)$, $\mathcal{L}^{-1}\bigl\{\tfrac{s}{(s^{2}+\omega^{2})^{2}}\bigr\}=\tfrac{t\sin\omega t}{2\omega}$, and $\mathcal{L}^{-1}\bigl\{\tfrac{s^{2}}{(s^{2}+\omega^{2})^{2}}\bigr\}=\tfrac{1}{2\omega}\bigl(\sin\omega t+\omega t\cos\omega t\bigr)$.
+\end{worked}
+
+\begin{trap}
+Two omissions, both silent. Writing only $\dfrac{A}{(s-a)^{m}}$ for a repeated factor and dropping the lower-order terms; and putting a constant over an irreducible quadratic when it needs $Bs+C$. Both produce an answer with the right exponentials and the wrong amplitudes. A third, specific to transforms: reducing $\dfrac{5}{s^{2}+9}$ to $5\cdot\dfrac1{s^{2}+9}$ and calling it $5\sin3t$. The table entry has numerator $b$, so it is $\tfrac53\sin3t$.
+\end{trap}
+
+\begin{seealsob}The first shifting theorem; the Laplace-transform machine; logistic growth and the odds substitution.\end{seealsob}
+
+\begin{keynote}[Cover up, do not expand]
+For a simple pole at $s=a$ the coefficient is $A=\lim_{s\to a}(s-a)Y(s)$, computed by deleting the factor $(s-a)$ from the denominator and evaluating what remains at $s=a$. For a pole of order $m$ the top coefficient is found the same way and the lower ones by differentiating $(s-a)^{m}Y(s)$ before evaluating, $A_{m-k}=\dfrac{1}{k!}\dvop{s}^{k}\bigl[(s-a)^{m}Y\bigr]_{s=a}$. For an irreducible quadratic, do not clear denominators over the whole expression; substitute the complex root and match real and imaginary parts, which gives both constants at once. Expanding everything into a polynomial identity and solving a four-by-four system works, but it is where the arithmetic errors live.
+\end{keynote}
+
+A completed square in the denominator is the signature of a damped oscillation, and it is handled by the first of the two shifting theorems. The theorem is trivial to prove (absorb $\eu^{at}$ into the exponential of the defining integral) and easy to misapply, because shifting the denominator without shifting the numerator is a mistake the algebra does not object to.
+
+\tech[First shifting theorem]{The first shifting theorem, $F(s)\mapsto F(s-a)$}{core}
+\cue A factor $\eu^{at}$ multiplying something whose transform you know, or a denominator that completes the square to $(s-a)^{2}+b^{2}$ or $(s-a)^{m}$.
+\method The statement is
+\[\mathcal{L}\bigl\{\eu^{at}f(t)\bigr\}=F(s-a).\]
+Forward, absorb the exponential and shift the argument. Backward, complete the square in the denominator, rewrite the \emph{numerator} in terms of $s-a$ as well, invert the resulting expression as a function of $u=s-a$, and multiply the result by $\eu^{at}$.
+
+\begin{worked}
+\[\mathcal{L}^{-1}\left\{\frac{s+3}{s^{2}+6s+13}\right\}.\]
+The denominator is $(s+3)^{2}+4$ and the numerator is already $s+3$, so with $u=s+3$ the expression is $\dfrac{u}{u^{2}+4}$, whose inverse is $\cos2t$. Therefore the answer is $\eu^{-3t}\cos2t$.
+
+Now the same denominator with a bare numerator, $\mathcal{L}^{-1}\left\{\dfrac{s}{(s+3)^{2}+4}\right\}$. Write $s=(s+3)-3$:
+\[\frac{(s+3)}{(s+3)^{2}+4}-\frac{3}{(s+3)^{2}+4}
+=\frac{u}{u^{2}+4}-\frac32\cdot\frac{2}{u^{2}+4},\]
+giving $\eu^{-3t}\bigl(\cos2t-\tfrac32\sin2t\bigr)$.
+\end{worked}
+
+\begin{worked}[The shift on a repeated factor]
+Resonant forcing produces repeated factors, and the first shift handles them with no extra apparatus. Solve $y''-4y'+4y=\eu^{2t}$ with $y(0)=y'(0)=0$. Transforming, $(s^{2}-4s+4)Y=\dfrac1{s-2}$, so
+\[Y=\frac{1}{(s-2)^{3}}.\]
+Since $\mathcal{L}\{t^{2}\}=2/s^{3}$, the first shift gives $\mathcal{L}\{t^{2}\eu^{2t}\}=2/(s-2)^{3}$, hence $y=\tfrac12t^{2}\eu^{2t}$. Check: $y'=(t+t^{2})\eu^{2t}$ and $y''=(1+4t+2t^{2})\eu^{2t}$, so $y''-4y'+4y=(1+4t+2t^{2}-4t-4t^{2}+2t^{2})\eu^{2t}=\eu^{2t}$. The double resonance that would need the multiplier $t^{2}$ in undetermined coefficients appears here as the exponent $3$ on a linear factor, and requires no rule of its own.
+\end{worked}
+
+\begin{trap}
+Shifting the denominator and leaving the numerator alone, which in the second example above would give $\eu^{-3t}\cos2t$ and lose the entire sine term. Whenever you complete a square, immediately rewrite every $s$ in the numerator as $(s-a)+a$. A second trap: applying the shift to a numerator that already contains a shifted quantity, and shifting twice.
+\end{trap}
+
+\begin{seealsob}Partial fractions for the inverse transform; the second shifting theorem and Heaviside steps; complex roots and the real form.\end{seealsob}
+
+\section{Forcing that is not smooth}
+
+This is the reason the transform exists. Undetermined coefficients has no entry for ``zero until $t=3$, then one'', and variation of parameters can be pushed through piecewise but demands that solutions be matched at each switching time, with two continuity conditions per switch. The transform handles all of it by a single rule, because a delay in $t$ is a factor $\eu^{-cs}$ in $s$, and factors are cheap.
+
+\tech[Second shifting theorem and Heaviside steps]{The second shifting theorem and the step $u_c(t)$}{hard}
+\cue Forcing that switches on or off at a stated time (``the voltage is applied at $t=2$''), a right side defined by cases, or an equation containing $u(t-c)$ explicitly.
+\method Write the unit step $u_c(t)=u(t-c)$, which is $0$ for $t<c$ and $1$ for $t>c$. A function equal to $g_1$ before $c$ and $g_2$ after is $g_1+(g_2-g_1)u_c$. The theorem is
+\[\mathcal{L}\bigl\{u_c(t)f(t-c)\bigr\}=\eu^{-cs}F(s),\qquad
+\mathcal{L}^{-1}\bigl\{\eu^{-cs}F(s)\bigr\}=u_c(t)f(t-c).\]
+Everything hinges on the argument $t-c$. To transform $u_c(t)g(t)$, first rewrite $g(t)=g\bigl((t-c)+c\bigr)$ and expand until every occurrence of $t$ appears as $t-c$.
+
+\begin{worked}
+\[y''+4y=f(t),\quad f(t)=\begin{cases}1,&0\le t<3\\0,&t\ge3\end{cases},\qquad y(0)=y'(0)=0.\]
+Here $f=1-u_3(t)$, so $F=\tfrac1s-\dfrac{\eu^{-3s}}{s}$ and
+\[Y=\frac{1-\eu^{-3s}}{s(s^{2}+4)}.\]
+Since $\dfrac{1}{s(s^{2}+4)}=\dfrac14\left(\dfrac1s-\dfrac{s}{s^{2}+4}\right)$ inverts to $\tfrac14(1-\cos2t)$, the second shift gives
+\[y=\tfrac14\bigl(1-\cos2t\bigr)-\tfrac14\bigl(1-\cos(2t-6)\bigr)u_3(t).\]
+For $t\ge3$ the constants cancel and $y=\tfrac14\bigl(\cos(2t-6)-\cos2t\bigr)=\tfrac12\sin3\,\sin(2t-3)$: after the forcing stops the system rings at its natural frequency with fixed amplitude $\tfrac12\abs{\sin3}\approx0.070560$. At $t=2$ the formula gives $0.4134109$ and at $t=6$ it gives $0.0290791$, both reproduced by numerical integration of the piecewise problem.
+\end{worked}
+
+\begin{worked}[A ramp that saturates]
+\[y'+y=f(t),\quad f(t)=\begin{cases}t,&0\le t<2\\2,&t\ge2\end{cases},\qquad y(0)=0.\]
+The decomposition that keeps the shifts honest is $f(t)=t-(t-2)u_2(t)$, in which the second piece is already written as a function of $t-2$, so
+\[F(s)=\frac1{s^{2}}-\frac{\eu^{-2s}}{s^{2}},\qquad Y=\frac{1}{s^{2}(s+1)}-\eu^{-2s}\frac{1}{s^{2}(s+1)}.\]
+Partial fractions give $\dfrac{1}{s^{2}(s+1)}=-\dfrac1s+\dfrac1{s^{2}}+\dfrac1{s+1}$, inverting to $g(t)=t-1+\eu^{-t}$, so
+\[y(t)=g(t)-g(t-2)\,u_2(t).\]
+For $t\ge2$ the linear parts cancel and $y=2+\eu^{-t}\bigl(1-\eu^{2}\bigr)$, a constant with an exponentially decaying correction. At $t=1.5$ this gives $0.7231302$, at $t=4$ it gives $1.8829804$, and at $t=8$ it gives $1.9978567$, all reproduced by numerical integration of the piecewise problem. The output tracks the ramp with a lag of one time constant and then relaxes to the held value $2$.
+\end{worked}
+
+\begin{trap}
+Transforming $u_c(t)g(t)$ as $\eu^{-cs}G(s)$ without re-expressing $g$ in terms of $t-c$. For $g(t)=t$ and $c=2$, the correct route is $t=(t-2)+2$, giving
+\[\mathcal{L}\{u_2(t)\,t\}=\eu^{-2s}\left(\frac1{s^{2}}+\frac2s\right),\]
+not $\eu^{-2s}/s^{2}$. The two differ by a term of the same order as the answer. Verified numerically at $s=1.3$: the defining integral of the ramp $f(t)=t$ on $[0,2]$, zero after, is $0.43350007$, matching $\tfrac1{s^{2}}-\eu^{-2s}\bigl(\tfrac1{s^{2}}+\tfrac2s\bigr)$ and not the shorter expression.
+\end{trap}
+
+\begin{seealsob}The Dirac delta and the impulse response; the first shifting theorem; RC and RL circuits.\end{seealsob}
+
+A forcing that switches repeatedly, such as a square wave or a sawtooth, would need infinitely many steps written out. It does not, because the geometric series sums them. If $f$ is $T$-periodic on $[0,\infty)$ then
+\[\mathcal{L}\{f\}(s)=\frac{1}{1-\eu^{-sT}}\int_0^{T}\eu^{-st}f(t)\dd t,\]
+the factor $(1-\eu^{-sT})^{-1}=1+\eu^{-sT}+\eu^{-2sT}+\cdots$ being exactly the sum of the delayed copies. Only one period has to be integrated. Inverting such a transform means expanding the geometric series again and reading the result as an infinite sum of shifted responses, which is how the ringing of a repeatedly kicked oscillator is computed.
+
+Push the switching interval to zero while holding the total impulse fixed and the step becomes a delta. This is not a new theory but the limiting case of the last one, and it is the cheapest forcing of all to transform: the delta has transform $\eu^{-cs}$ with no $F(s)$ attached, because it is the identity for convolution.
+
+\tech{The Dirac delta and the impulse response}{hard}
+\cue ``A hammer blow'', ``an instantaneous impulse of magnitude $I$ at time $c$'', a sudden kick with no duration given, or $\delta(t-c)$ written outright.
+\method Use $\mathcal{L}\{\delta(t-c)\}=\eu^{-cs}$ for $c\ge0$, and more generally $\int_0^{\infty}\delta(t-c)g(t)\dd t=g(c)$. For $ay''+by'+cy=I\delta(t-t_0)$ the solution is continuous at $t_0$ while $y'$ jumps by $I/a$ there. The solution of $ay''+by'+cy=\delta(t)$ with zero data is the \emph{impulse response} $h(t)$, and $H(s)=1/(as^{2}+bs+c)$ is the transfer function: every other forcing is handled by convolving with $h$.
+
+\begin{worked}
+\[y''+4y=\delta(t-\pi),\qquad y(0)=y'(0)=0.\]
+Transforming, $(s^{2}+4)Y=\eu^{-\pi s}$, so $Y=\dfrac{\eu^{-\pi s}}{s^{2}+4}$ and, since $\mathcal{L}^{-1}\{(s^{2}+4)^{-1}\}=\tfrac12\sin2t$,
+\[y=\tfrac12\sin\bigl(2(t-\pi)\bigr)u_\pi(t)=\tfrac12\sin(2t)\,u_\pi(t),\]
+the last simplification because $\sin$ has period $2\pi$ in its argument $2t$. The system is at rest until $t=\pi$, then oscillates forever with amplitude $\tfrac12$. Check the jump: $y(\pi^{+})=0$ and $y'(\pi^{+})=\cos2\pi=1$, which is exactly the impulse magnitude divided by the leading coefficient. Integrating $y''+4y=0$ forward from $(0,1)$ at $t=\pi$ reproduces $y(5)=-0.2720106=\tfrac12\sin10$.
+\end{worked}
+
+\begin{trap}
+Expecting $y$ itself to jump. For a second-order equation the impulse is absorbed by the highest derivative: $y''$ contains a delta, $y'$ has a step, and $y$ is continuous with a corner. If your solution has a discontinuity in $y$, an algebra error has occurred. Conversely, for a \emph{first}-order equation $y'+ay=I\delta(t-c)$ it is $y$ that jumps, by $I$; the rule is that the jump lands on the derivative one order below the leading one.
+\end{trap}
+
+\begin{seealsob}Convolution and the transfer function; the second shifting theorem and Heaviside steps; nonhomogeneous systems and the Duhamel formula.\end{seealsob}
+
+\begin{keynote}[The transfer function says everything at once]
+For $ay''+by'+cy=f$ with zero data, $H(s)=1/(as^{2}+bs+c)$ contains the whole system. Its poles are the characteristic roots, so the free behaviour is read off the denominator: poles in the left half plane mean a stable system, a pole pair on the imaginary axis means an undamped oscillator. Its value at $s=\iu\omega$ is the complex gain applied to a sinusoidal input of frequency $\omega$, with $\abs{H(\iu\omega)}$ the amplitude ratio and $\arg H(\iu\omega)$ the phase lag; the resonance peak sits near the frequency that minimises $\abs{as^{2}+bs+c}$ on that line. And its inverse transform is the impulse response. One rational function, three readings.
+\end{keynote}
+
+Once the impulse response is in hand, arbitrary forcing costs nothing extra. The transform of a product is not the product of transforms, but there is an operation on functions whose transform \emph{is} the product, and identifying it is the single most useful theorem in the subject.
+
+\tech{Convolution and the transfer function}{hard}
+\cue $Y(s)$ is a product in which one factor has no elementary inverse, or the forcing is deliberately left as an unspecified $f(t)$ and a formula valid for all $f$ is wanted.
+\method Define
+\[(f*g)(t)=\int_0^{t}f(\tau)g(t-\tau)\dd\tau,\]
+which is commutative and satisfies $\mathcal{L}\{f*g\}=F(s)G(s)$. Hence $\mathcal{L}^{-1}\{FG\}=f*g$. Applied to $ay''+by'+cy=f$ with zero data, $Y=H(s)F(s)$ with $H$ the transfer function, so $y=h*f$: the solution is the forcing convolved with the impulse response. For $y''+\omega^{2}y=f(t)$ this is Duhamel's formula,
+\[y(t)=\frac1{\omega}\int_0^{t}\sin\bigl(\omega(t-\tau)\bigr)f(\tau)\dd\tau.\]
+
+\begin{worked}
+For $y''+y=f(t)$ with $y(0)=y'(0)=0$ the impulse response is $\sin t$, so
+\[y(t)=\int_0^{t}\sin(t-\tau)f(\tau)\dd\tau\quad\text{for every }f.\]
+Test it on $f(\tau)=\tau$. Substituting $u=t-\tau$ turns $\int_0^{t}\sin(t-\tau)\,\tau\dd\tau$ into
+\[\int_0^{t}\sin u\,(t-u)\dd u=t(1-\cos t)-\bigl[\sin u-u\cos u\bigr]_0^{t}=t-\sin t,\]
+which is the answer the machine gave for $y''+y=t$ with zero data. Test it on $f(\tau)=\eu^{-\tau}$: the convolution equals $\tfrac12\bigl(\eu^{-t}-\cos t+\sin t\bigr)$, and at $t=2$ that is $0.7303898$, matched by Runge-Kutta on the original problem to twelve figures.
+\end{worked}
+
+\begin{worked}[An integral equation, solved as algebra]
+The convolution theorem is not only for differential equations. Consider the Volterra equation
+\[y(t)=t+\int_0^{t}y(\tau)\sin(t-\tau)\dd\tau,\]
+in which the unknown appears under an integral. The integral is exactly $y*\sin$, so transforming gives
+\[Y=\frac1{s^{2}}+Y\cdot\frac{1}{s^{2}+1}\ \Longrightarrow\ Y\left(1-\frac1{s^{2}+1}\right)=\frac1{s^{2}}\ \Longrightarrow\ Y\cdot\frac{s^{2}}{s^{2}+1}=\frac1{s^{2}},\]
+so $Y=\dfrac{s^{2}+1}{s^{4}}=\dfrac1{s^{2}}+\dfrac1{s^{4}}$ and
+\[y(t)=t+\frac{t^{3}}{6}.\]
+Verified by quadrature: at $t=0.8$ the right side of the original equation evaluates to $0.88533333$ and $y(0.8)=0.88533333$; at $t=1.7$ both are $2.51883333$. Nothing here was differentiated. An equation that is hard in the time domain became a linear equation in one unknown, which is the whole promise of the transform delivered in its cleanest form.
+\end{worked}
+
+\begin{trap}
+Writing $(f*g)(t)=\int_0^{t}f(\tau)g(\tau)\dd\tau$. The reversal $t-\tau$ in the second argument is the entire content of the theorem, and without it the identity $\mathcal{L}\{f*g\}=FG$ is false. Equally: $\mathcal{L}\{fg\}\ne F\cdot G$, so you cannot transform a product of two known functions by multiplying their transforms. And the lower limit is $0$, not $-\infty$; the one-sided transform only ever sees $t\ge0$.
+\end{trap}
+
+\begin{seealsob}The Dirac delta and the impulse response; nonhomogeneous systems and the Duhamel formula; variation of parameters.\end{seealsob}
+
+\section{The one variable coefficient the transform can absorb}
+
+The transform method dies on variable coefficients because $\mathcal{L}\{a(t)y'\}$ is not $a\cdot\mathcal{L}\{y'\}$. There is exactly one exception worth knowing, and it comes from the rule $\mathcal{L}\{tf(t)\}=-F'(s)$: a coefficient \emph{linear} in $t$ produces a derivative in $s$, so the transformed equation is a first-order ODE in $Y$. That is progress if and only if the original was second order.
+
+\tech[Differentiation in s]{Differentiation in $s$ for a linear $t$ coefficient}{hard}
+\cue A coefficient linear in $t$, as in $ty''+(1-t)y'+y=0$ or $ty''+2y'+ty=0$. Laguerre, Bessel, and their relatives all present this way.
+\method Differentiate the transform:
+\[\mathcal{L}\{t\,f(t)\}=-F'(s),\qquad \mathcal{L}\{t\,y'\}=-\dvop{s}\bigl(sY-y(0)\bigr),\qquad \mathcal{L}\{t\,y''\}=-\dvop{s}\bigl(s^{2}Y-sy(0)-y'(0)\bigr).\]
+The result is a first-order linear equation for $Y(s)$, solved by an integrating factor. Invert at the end. Check the degree of the $t$ coefficient first: a $t^{2}$ coefficient produces $Y''$ and you have gained nothing.
+
+\begin{worked}
+\[t y''+(1-t)y'+y=0,\qquad y(0)=1.\]
+Transform term by term. With $\mathcal{L}\{ty''\}=-\bigl(2sY+s^{2}Y'-y(0)\bigr)$, $\mathcal{L}\{y'\}=sY-y(0)$ and $\mathcal{L}\{ty'\}=-\bigl(Y+sY'\bigr)$, the equation becomes
+\[-2sY-s^{2}Y'+y(0)+sY-y(0)+Y+sY'+Y=0,\]
+in which $y(0)$ cancels, leaving
+\[(s-s^{2})Y'+(2-s)Y=0\ \Longrightarrow\ \frac{Y'}{Y}=\frac{s-2}{s(1-s)}=-\frac2s-\frac1{1-s}.\]
+Integrating, $\ln Y=-2\ln s+\ln(1-s)+\text{const}$, so
+\[Y=C\,\frac{1-s}{s^{2}}=C\left(\frac1{s^{2}}-\frac1s\right),\qquad y=C\,(t-1).\]
+Imposing $y(0)=1$ gives $C=-1$ and $y=1-t$, the first Laguerre polynomial. Direct check: $t\cdot0+(1-t)(-1)+(1-t)=0$.
+\end{worked}
+
+\begin{worked}[The same equation, from both sides of the chapter]
+\[t y''+2y'+t y=0,\qquad y(0)=1.\]
+This is the equation whose Frobenius treatment appears later in this chapter. Transform it. With $\mathcal{L}\{ty''\}=-\bigl(2sY+s^{2}Y'-y(0)\bigr)$, $\mathcal{L}\{2y'\}=2sY-2y(0)$ and $\mathcal{L}\{ty\}=-Y'$, the equation collapses to
+\[-\bigl(s^{2}+1\bigr)Y'-y(0)=0\ \Longrightarrow\ Y'=\frac{-1}{s^{2}+1},\]
+so $Y=C-\arctan s$. Now use the fact that every transform tends to $0$ as $s\to\infty$: that forces $C=\tfrac{\pi}{2}$, so
+\[Y(s)=\frac{\pi}{2}-\arctan s=\arctan\frac1s,\qquad y(t)=\frac{\sin t}{t}.\]
+The transform of $\sin t/t$ is indeed $\arctan(1/s)$; at $s=1.3$ numerical quadrature of the defining integral returns $0.6556956$ against $\arctan(1/1.3)=0.6556956$. Notice what the transform did and did not find. It produced the branch that is analytic at the origin, and it was the decay condition at $s=\infty$, not an initial condition, that pinned the constant. The second solution $\cos t/t$ is unbounded at $t=0$, has no transform of this type, and is simply invisible to the method.
+\end{worked}
+
+\begin{trap}
+Two things. First, applying the method when the coefficient is quadratic or worse: $\mathcal{L}\{t^{2}y''\}$ involves $Y''$, so a second-order equation stays second order and nothing has been gained. Second, believing you have found the general solution. In the example the point $t=0$ is a regular singular point with a repeated indicial root, so the second solution contains $\ln t$ and has no transform of the assumed type; the transform recovers only the analytic branch. The single arbitrary constant $C$ is a warning sign, not an accident.
+\end{trap}
+
+\begin{seealsob}The Laplace-transform machine; Frobenius at a regular singular point; Frobenius with repeated roots.\end{seealsob}
+
+\section{Series: constructing a solution that has no name}
+
+When the coefficients vary and no substitution reduces the equation to a solved family, there may simply be no closed form. Series methods respond by lowering the ambition: instead of a formula, produce the Taylor coefficients of the solution about a chosen point, in a recurrence that generates as many as you like. This is not a defeat. The recurrence is often more informative than a formula would be, and the classical special functions are all defined this way.
+
+Everything depends on the character of the expansion point. Write the equation in normalised form $y''+p(x)y'+q(x)y=0$. The point $x_0$ is \emph{ordinary} if $p$ and $q$ are analytic there, and then a plain power series works and two free constants appear, matching the two initial conditions. It is a \emph{regular singular} point if $p$ or $q$ blows up but $(x-x_0)p(x)$ and $(x-x_0)^{2}q(x)$ are analytic; then a power series alone fails and must be multiplied by $x^{r}$ for an $r$ determined by an auxiliary quadratic. Anything worse is irregular and outside the method.
+
+\tech{Power series about an ordinary point}{medium}
+\cue Polynomial or analytic coefficients, the leading coefficient nonzero at the expansion point, and no name-brand method applicable.
+\method Substitute $y=\sum_{n\ge0}a_nx^{n}$, differentiate term by term, and re-index every sum so that all of them run over the same power of $x$. Reading off the coefficient of $x^{n}$ gives a recurrence, and $a_0$ and $a_1$ remain free, corresponding to $y(0)$ and $y'(0)$. The radius of convergence is at least the distance from $x_0$ to the nearest singularity of $p$ or $q$ in the complex plane, which you can therefore state without summing anything.
+
+\begin{worked}
+\[y''+3ty'-6y=2,\qquad y(0)=y'(0)=0.\]
+With $y=\sum a_nt^{n}$, the three sums are $\sum(n+2)(n+1)a_{n+2}t^{n}$, $3\sum na_nt^{n}$ and $-6\sum a_nt^{n}$, already at a common power. Matching $t^{0}$: $2a_2-6a_0=2$, and since $a_0=0$ this gives $a_2=1$. For $n\ge1$,
+\[a_{n+2}=\frac{(6-3n)a_n}{(n+2)(n+1)}.\]
+Since $a_1=0$, all odd coefficients vanish. Since $a_2=1$ and the factor $6-3n$ vanishes at $n=2$, we get $a_4=0$ and hence every later even coefficient is zero. The series terminates: $y=t^{2}$ exactly. Substituting back, $2+3t(2t)-6t^{2}=2$. Runge-Kutta at $t=1.3$ returns $(1.69,2.6)$ for $(y,y')$, that is $(1.3^{2},2\cdot1.3)$.
+
+A non-terminating instance, $y''=xy$ with $y(0)=1$, $y'(0)=0$. Matching gives $(n+2)(n+1)a_{n+2}=a_{n-1}$, so $a_2=0$ and
+\[y=1+\frac{x^{3}}{6}+\frac{x^{6}}{180}+\frac{x^{9}}{12960}+\cdots.\]
+Five terms give $y(1)=1.17229997$ against $1.17229997$ from Runge-Kutta. The coefficients have no closed form; the function is an Airy function, and the recurrence is the definition.
+\end{worked}
+
+\begin{worked}[A recurrence that is recognisable]
+$y''+xy'+y=0$ with $y(0)=1$, $y'(0)=0$. Substituting and matching the coefficient of $x^{n}$ gives $(n+2)(n+1)a_{n+2}+na_n+a_n=0$, that is
+\[a_{n+2}=\frac{-a_n}{n+2},\]
+a two-step recurrence that never mixes parities. With $a_1=0$ every odd coefficient vanishes, and from $a_0=1$ we get $a_2=-\tfrac12$, $a_4=\tfrac18$, $a_6=-\tfrac1{48}$, and in general $a_{2k}=\dfrac{(-1)^{k}}{2^{k}k!}$. That is a series you should recognise:
+\[y=\sum_{k\ge0}\frac{(-1)^{k}}{k!}\left(\frac{x^{2}}{2}\right)^{k}=\eu^{-x^{2}/2}.\]
+Confirm directly: $y'=-x\eu^{-x^{2}/2}$ and $y''=(x^{2}-1)\eu^{-x^{2}/2}$, so $y''+xy'+y=(x^{2}-1-x^{2}+1)\eu^{-x^{2}/2}=0$. At $x=1.4$ both the closed form and Runge-Kutta give $0.37531110$. The lesson is worth the space: always look at the recurrence before summing it, because a factorial in the denominator and alternating signs almost always name an exponential, a sine, or a Bessel function.
+\end{worked}
+
+\begin{trap}
+Comparing coefficients before re-indexing. The sum $\sum n(n-1)a_nx^{n-2}$ and the sum $\sum a_nx^{n}$ are indexed on different powers, and matching them term by term relates $a_n$ to itself instead of to $a_{n-2}$. Shift one index so that both run over $x^{n}$, and note that the lower limits move too: $\sum_{n\ge2}n(n-1)a_nx^{n-2}=\sum_{n\ge0}(n+2)(n+1)a_{n+2}x^{n}$. A second trap: forgetting that a nonzero right side contributes only at the powers it actually contains, so the recurrence is inhomogeneous at finitely many $n$ and homogeneous thereafter.
+\end{trap}
+
+\begin{seealsob}Frobenius at a regular singular point; the standard expansion table; ratio and root tests.\end{seealsob}
+
+\begin{keynote}[The radius is a geometry question, not a series question]
+For $y''+p(x)y'+q(x)y=0$ with $p$ and $q$ analytic at $x_0$, every power-series solution about $x_0$ converges at least on the disc reaching the nearest singularity of $p$ or $q$ \emph{in the complex plane}. Two consequences. For Legendre's equation $(1-x^{2})y''-2xy'+\lambda y=0$ the singularities are at $\pm1$, so a series about $0$ has radius at least $1$ and cannot be expected to say anything at the endpoints, which is exactly where the boundary conditions of the classical problem live. And for $(1+x^{2})y''+y=0$ the coefficients are perfectly well behaved for every real $x$, yet the radius about $0$ is $1$, because the singularities sit at $\pm\iu$. A real-variable inspection would miss that entirely; look for complex zeros of the leading coefficient.
+\end{keynote}
+
+At a regular singular point the plain series fails for a reason that is easy to see: the equation forces the leading behaviour to be a power $x^{r}$ with $r$ not necessarily an integer, and no power series can produce $\sqrt{x}$. Frobenius fixes this by putting the power in by hand and letting the equation decide what it is. The quadratic that decides is the same one that Cauchy-Euler equations produce, which is no coincidence: near the singular point the equation is a Cauchy-Euler equation perturbed by analytic corrections.
+
+\tech{Frobenius at a regular singular point}{hard}
+\cue The leading coefficient vanishes at the expansion point, but $xp(x)$ and $x^{2}q(x)$ are analytic there (taking $x_0=0$ after a shift).
+\method Write $p_0=\lim_{x\to0}xp(x)$ and $q_0=\lim_{x\to0}x^{2}q(x)$. Substitute $y=x^{r}\sum_{n\ge0}a_nx^{n}$ with $a_0\ne0$. The lowest power of $x$ gives the \textbf{indicial equation}
+\[r(r-1)+p_0r+q_0=0,\]
+whose roots $r_1\ge r_2$ are the admissible exponents. For each root, the remaining powers give a recurrence for $a_n$ in terms of earlier coefficients. The larger root always works; the smaller root works unless the roots coincide or differ by an integer.
+
+\begin{worked}
+\[2xy''+y'+y=0.\]
+Normalising, $p=\tfrac1{2x}$ and $q=\tfrac1{2x}$, so $p_0=\tfrac12$ and $q_0=0$, and the indicial equation is $r(r-1)+\tfrac12r=r\bigl(r-\tfrac12\bigr)=0$ with roots $r=0,\tfrac12$. Substituting $y=\sum a_nx^{n+r}$ and collecting the coefficient of $x^{n+r-1}$ gives
+\[a_n(n+r)(2n+2r-1)=-a_{n-1},\qquad\text{that is}\qquad a_n=\frac{-a_{n-1}}{(n+r)(2n+2r-1)}.\]
+For $r=0$ this is $a_n=-a_{n-1}/\bigl(n(2n-1)\bigr)$, giving $1,-1,\tfrac16,-\tfrac1{90},\dots$ and
+\[y_1=1-x+\frac{x^{2}}{6}-\frac{x^{3}}{90}+\cdots=\cos\sqrt{2x}.\]
+For $r=\tfrac12$ it is $a_n=-a_{n-1}/\bigl(n(2n+1)\bigr)$, giving
+\[y_2=\sqrt{x}\left(1-\frac x3+\frac{x^{2}}{30}-\frac{x^{3}}{630}+\cdots\right)=\frac{\sin\sqrt{2x}}{\sqrt2}.\]
+Both closed forms follow from the substitution $t=\sqrt{2x}$, which turns the equation into $\ddot y+y=0$, and both were checked against twenty-five terms of the recurrence at $x=0.3,1,2.5$, agreeing to fifteen figures.
+\end{worked}
+
+\begin{worked}[The generic case: roots that are not an integer apart]
+\[2x^{2}y''+3xy'-(1+x)y=0.\]
+Dividing by $2x^{2}$ gives $p_0=\tfrac32$ and $q_0=-\tfrac12$, so the indicial equation is $r(r-1)+\tfrac32r-\tfrac12=0$, that is $2r^{2}+r-1=(2r-1)(r+1)=0$ with roots $r=\tfrac12$ and $r=-1$. Their difference is $\tfrac32$, not an integer, so both branches go through cleanly. Substituting $y=\sum a_nx^{n+r}$ and writing $u=n+r$, the coefficient of $x^{n+r}$ is
+\[a_n\bigl(2u^{2}+u-1\bigr)=a_{n-1},\qquad\text{that is}\qquad a_n=\frac{a_{n-1}}{\bigl(2(n+r)-1\bigr)(n+r+1)}.\]
+For $r=\tfrac12$ the denominator is $n(2n+3)$, giving $1,\tfrac15,\tfrac1{70},\tfrac1{1890},\dots$ and
+\[y_1=\sqrt{x}\left(1+\frac x5+\frac{x^{2}}{70}+\frac{x^{3}}{1890}+\cdots\right).\]
+For $r=-1$ it is $n(2n-3)$, giving $1,-1,-\tfrac12,-\tfrac1{18},-\tfrac1{360},\dots$ and
+\[y_2=\frac1x\left(1-x-\frac{x^{2}}{2}-\frac{x^{3}}{18}-\frac{x^{4}}{360}-\cdots\right).\]
+Neither has a closed form. Substituting forty terms of each back into the equation leaves a residual below $2\times10^{-7}$ at $x=0.6$ and $x=1.4$, which is the finite-difference error of the check. Note that $n(2n-3)$ never vanishes for a positive integer $n$, which is the arithmetic fact behind ``the roots differ by $\tfrac32$, so nothing breaks''.
+\end{worked}
+
+\begin{trap}
+Assuming $a_0\ne0$ and then finding that the recurrence forces $a_0=0$. That means either the wrong indicial root was used or the point is irregular, not that the method failed. Also: the two roots generally have \emph{different} recurrences, since $r$ appears in the denominator; computing one recurrence and reusing it for the other root is the commonest way to produce a second ``solution'' that solves nothing. Finally, check that the point really is regular singular. For $x^{3}y''+y=0$, $x^{2}q=1/x$ is not analytic, and no Frobenius series exists.
+\end{trap}
+
+\begin{seealsob}Frobenius with repeated roots; the Cauchy-Euler power trial; power series about an ordinary point.\end{seealsob}
+
+The canonical instance of all of this is Bessel's equation,
+\[x^{2}y''+xy'+\bigl(x^{2}-\nu^{2}\bigr)y=0,\]
+for which $p_0=1$ and $q_0=-\nu^{2}$, so the indicial equation is $r^{2}-\nu^{2}=0$ with roots $\pm\nu$. The larger root generates
+\[J_{\nu}(x)=\sum_{k\ge0}\frac{(-1)^{k}}{k!\,\Gamma(k+\nu+1)}\left(\frac x2\right)^{2k+\nu},\]
+and the whole taxonomy of the method is visible in the single parameter $\nu$. Non-integer $\nu$ with $2\nu$ not an integer: the roots differ by a non-integer and both branches work, giving $J_{\nu}$ and $J_{-\nu}$. Half-integer $\nu$: the roots differ by an integer, yet no logarithm appears, and indeed $J_{1/2}=\sqrt{2/(\pi x)}\,\sin x$ and $J_{-1/2}=\sqrt{2/(\pi x)}\,\cos x$ are both elementary. Integer $\nu$: the roots differ by an even integer, $J_{-n}=(-1)^{n}J_n$ is not independent, and a logarithm is forced, producing $Y_n$. Every case in the next block is a value of $\nu$.
+
+The two exceptional cases have to be treated because they are not rare: they are exactly what happens for Bessel's equation of integer order and for every equation whose singular behaviour is a repeated power. The mechanism in both is the same. A logarithm appears whenever the second exponent cannot support an independent series of its own, and it appears because $\dvop{r}x^{r}=x^{r}\ln x$ is what a repeated root of the indicial equation produces, exactly as $t\eu^{rt}$ arises from a repeated characteristic root.
+
+It is worth seeing where the logarithm comes from rather than accepting it as a rule. Write $L$ for the differential operator and let $y(x,r)=x^{r}\sum a_n(r)x^{n}$ be the Frobenius series with the recurrence solved formally as a function of $r$, without imposing the indicial equation. Then $L[y(x,r)]=a_0\,I(r)\,x^{r}$, where $I$ is the indicial polynomial: everything cancels except the lowest term. If $r_1$ is a double root of $I$, then $I(r_1)=I'(r_1)=0$, so differentiating with respect to $r$ gives $L[\pdv{y}{r}]=0$ at $r=r_1$ as well. And $\pdv{}{r}x^{r}=x^{r}\ln x$, so the second solution is $y_1\ln x$ plus the series obtained by differentiating the coefficients. The logarithm is the derivative of the exponent, exactly as $t\eu^{rt}$ is the derivative of $\eu^{rt}$ with respect to the repeated characteristic root.
+
+\tech{Frobenius with repeated roots or roots differing by an integer}{hard}
+\cue The indicial roots coincide, or $r_1-r_2=N$ is a positive integer.
+\method Build $y_1$ from the larger root $r_1$ as usual. Then:
+\begin{itemize}
+\item \textbf{Equal roots.} The second solution necessarily contains a logarithm:
+$y_2=y_1\ln x+x^{r_1}\sum_{n\ge1}b_nx^{n}$, and substituting produces a recurrence for $b_n$ whose right side involves the already known $a_n$.
+\item \textbf{Roots differing by $N$.} Run the recurrence for $r_2$. At $n=N$ the coefficient of $a_N$ vanishes. If the right side also vanishes, $a_N$ is free, no logarithm is needed, and the resulting series contains $y_1$ inside it. If the right side does not vanish, take
+$y_2=Cy_1\ln x+x^{r_2}\sum_{n\ge0}b_nx^{n}$ and solve for $C$ along with the $b_n$.
+\end{itemize}
+
+\begin{worked}[Equal roots]
+\[xy''+y'-y=0.\]
+Here $p_0=1$ and $q_0=0$, so the indicial equation is $r^{2}=0$: a double root at $r=0$. The recurrence from the coefficient of $x^{n-1}$ is $n^{2}a_n=a_{n-1}$, so $a_n=1/(n!)^{2}$ and
+\[y_1=\sum_{n\ge0}\frac{x^{n}}{(n!)^{2}},\]
+which happens to be $I_0(2\sqrt x)$. For the second solution put $y_2=y_1\ln x+\sum_{n\ge1}b_nx^{n}$. Since $x(u\ln x)''+(u\ln x)'-(u\ln x)=\ln x\cdot\bigl(xu''+u'-u\bigr)+2u'$, the bracket vanishes and the substitution leaves $2y_1'+\sum\bigl(n^{2}b_n-b_{n-1}\bigr)x^{n-1}=0$, that is
+\[n^{2}b_n-b_{n-1}=\frac{-2n}{(n!)^{2}},\qquad b_1=-2,\ b_2=-\tfrac34,\ b_3=-\tfrac{11}{108},\ \dots\]
+Substituting the truncated $y_2$ back into the equation numerically leaves a residual below $10^{-7}$ at $x=0.8$ and $x=1.3$, which is the discretisation error of the check and not a defect of the series.
+\end{worked}
+
+\begin{worked}[Roots differing by an integer, with no logarithm]
+\[xy''+2y'+xy=0.\]
+Now $p_0=2$, $q_0=0$, indicial $r(r+1)=0$, roots $r_1=0$ and $r_2=-1$ differing by $N=1$. The recurrence is $a_n(n+r)(n+r+1)=-a_{n-2}$. For $r=-1$ it reads $n(n-1)a_n=-a_{n-2}$, and at $n=1$ the left side is $0\cdot a_1$ while the right side is $-a_{-1}=0$. The equation $0=0$ is satisfiable, $a_1$ is free, and no logarithm is required. The two solutions are
+\[y_1=\frac{\sin x}{x},\qquad y_2=\frac{\cos x}{x},\]
+as the substitution $w=xy$ confirms: the equation becomes $w''+w=0$. Both were checked by numerical integration from $x=0.4$ to $x=1.9$.
+\end{worked}
+
+\begin{worked}[Roots differing by an integer, with the logarithm forced]
+\[xy''-y=0.\]
+Here $p_0=0$ and $q_0=0$, so the indicial equation is $r(r-1)=0$ with roots $1$ and $0$, again differing by $N=1$. Substituting $y=\sum a_nx^{n+r}$ and collecting $x^{n+r-1}$ gives
+\[a_n(n+r)(n+r-1)=a_{n-1}.\]
+For the larger root $r=1$ this is $a_n=\dfrac{a_{n-1}}{n(n+1)}$, so
+\[y_1=x\left(1+\frac x2+\frac{x^{2}}{12}+\frac{x^{3}}{144}+\cdots\right).\]
+For $r=0$ it is $n(n-1)a_n=a_{n-1}$, and at $n=1$ that reads $0\cdot a_1=a_0$. Since $a_0\ne0$ by assumption, this is impossible: contrast the previous example, where the same position gave $0=0$. The logarithm is therefore unavoidable. Writing $y_2=y_1\ln x+\sum_{n\ge0}b_nx^{n}$ and using $x(u\ln x)''-u\ln x=\ln x\,(xu''-u)+2u'-\dfrac ux$, the bracket vanishes and what remains is
+\[n(n-1)b_n-b_{n-1}=-(2n-1)c_n,\qquad y_1=\sum_{m\ge1}c_mx^{m},\]
+giving $b_0=1$, $b_1$ free (it merely adds a multiple of $y_1$, so set it to $0$), $b_2=-\tfrac34$, $b_3=-\tfrac7{36}$, $b_4=-\tfrac{35}{1728}$. Substituting thirty terms of $y_2$ back into $xy''-y$ leaves a residual of order $10^{-8}$ at $x=0.5$ and $x=1.2$, the size of the finite-difference error in the check. The single arithmetic fact that decided the whole structure was whether $0\cdot a_N$ was being set equal to zero or to something else.
+\end{worked}
+
+\begin{trap}
+Assuming a logarithm is always needed when the roots differ by an integer. As the second example shows, the obstruction is an equation of the form $0\cdot a_N=(\text{something})$, and when that something is zero the series goes through cleanly. Test it before importing the log machinery. The reverse error is also common: for equal roots the logarithm is \emph{never} optional, and no choice of $a_0$ avoids it.
+\end{trap}
+
+\begin{seealsob}Frobenius at a regular singular point; the Cauchy-Euler power trial; forcing that is exactly an eigenfunction.\end{seealsob}
+
+\section{Laplace, series, or neither}
+
+The decision is made from the coefficients first and the forcing second, and never from how difficult the equation looks. The tree below is the whole rule.
+
+\begin{center}
+\begin{tikzpicture}[x=1cm,y=1cm]
+\node[dtest] (a) at (0,0) {Are the coefficients\\ constant?};
+\node[dtest] (b) at (-3.7,-1.55) {Forcing discontinuous,\\ impulsive, delayed,\\ or unspecified?};
+\node[dtest] (e) at (3.7,-1.55) {Does the leading coefficient\\ vanish at the expansion point?};
+\node[dleaf] (c) at (-5.7,-3.45) {Laplace: transform,\\ solve for $Y(s)$, invert};
+\node[dleaf] (d) at (-2.4,-3.55) {Neither: characteristic\\ roots and undetermined\\ coefficients};
+\node[dleaf] (f) at (1.6,-3.5) {Ordinary point: power\\ series, two free constants};
+\node[dtest] (g) at (5.6,-3.45) {Are $xp$ and $x^{2}q$\\ analytic there?};
+\node[dleaf] (h) at (5.6,-5.1) {Frobenius: indicial\\ equation, then each root};
+\draw[dedge] (a) -- node[dlab,above left,pos=0.55]{yes} (b);
+\draw[dedge] (a) -- node[dlab,above right,pos=0.55]{no} (e);
+\draw[dedge] (b) -- node[dlab,left,pos=0.6]{yes} (c);
+\draw[dedge] (b) -- node[dlab,right,pos=0.6]{no} (d);
+\draw[dedge] (e) -- node[dlab,left,pos=0.6]{no} (f);
+\draw[dedge] (e) -- node[dlab,right,pos=0.6]{yes} (g);
+\draw[dedge] (g) -- node[dlab,right]{yes} (h);
+\end{tikzpicture}
+\end{center}
+
+One branch is missing on purpose, the ``no'' out of the last test. An irregular singular point admits neither a power series nor a Frobenius series, and the honest answers there are asymptotic expansion, a numerical solution, or a change of variable that moves the singularity. Recognising the case is the useful part: for $x^{3}y''+y=0$ the quantity $x^{2}q=1/x$ is not analytic at $0$, so no amount of persistence with $y=x^{r}\sum a_nx^{n}$ will succeed, and time spent on it is time lost.
+
+Two further remarks on the tree. The left half assumes data at $t=0$; data anywhere else must be translated there first, and if the problem gives boundary data at two points instead, neither Laplace nor the initial-value machinery applies and the problem belongs to the eigenvalue chapter. And the right half is silent about which point to expand at, which is usually dictated: expand where the data are given, or where the behaviour is asked about, and if that point is singular you are in Frobenius territory whether you like it or not.
+
+\begin{keynote}[The two limit theorems, and what they audit]
+Two identities read the endpoints of $y$ straight off $Y$, without inverting. The initial-value theorem says $y(0^{+})=\lim_{s\to\infty}sY(s)$, always, for any transform of a function continuous at the origin. The final-value theorem says $\lim_{t\to\infty}y(t)=\lim_{s\to0}sY(s)$, but only when every pole of $sY(s)$ lies strictly in the left half plane; applied to $Y=1/(s^{2}+1)$ it would predict that $\sin t$ has a limit, which is the standard way the hypothesis is discovered. Used correctly they are the cheapest possible check on a long calculation. For the ramp example above, $sY=\bigl(1-\eu^{-2s}\bigr)/\bigl(s(s+1)\bigr)$ tends to $0$ as $s\to\infty$, matching $y(0)=0$, and tends to $2$ as $s\to0$, matching the saturated value.
+\end{keynote}
+
+\begin{keynote}[Audit the transform, not the algebra]
+Every step in a Laplace calculation is reversible, and each has a cheap check. After transforming, confirm that $Y(s)\to0$ as $s\to\infty$; a transform that does not decay is wrong. After partial fractions, evaluate both sides at one convenient value of $s$ that is not a pole. After inverting, substitute the answer into the original equation and check both initial conditions; this catches every sign error in the shifting theorems, which are otherwise invisible. For series, the analogous audit is to sum ten terms numerically and compare against a Runge-Kutta solution started just off the singular point. Both audits take a minute and both catch the errors that reading cannot.
+\end{keynote}
+
+One closing observation about the two halves of this chapter, since they are usually taught as unrelated. Both replace a differential equation by an algebraic object indexed by a new variable: Laplace by a function of $s$, series by a sequence indexed by $n$. Both turn differentiation into multiplication, by $s$ in one case and by a shift of index in the other. Both encode the initial conditions in the object itself rather than in constants fitted at the end. And both are blind in the same way, to solutions that are not of the assumed shape: Laplace cannot see a solution of super-exponential growth or one singular at the origin, and a Frobenius series cannot see a solution at an irregular point. When a method returns fewer solutions than the order of the equation, that is not a mistake in the algebra. It is the method reporting the boundary of what it can represent.
+
+\section{Recognition matrix}
+\begin{recog}{@{}p{0.31\textwidth}p{0.35\textwidth}p{0.28\textwidth}@{}}
+\rowcolor{mist}\mh{If you see} & \mh{Reach for} & \mh{If that fails} \\
+\midrule
+\endhead
+Constant coefficients, data at $t=0$ & Laplace: $\mathcal{L}\{y''\}=s^{2}Y-sy(0)-y'(0)$ & Characteristic roots if forcing is smooth \\
+Data at $t=t_0\ne0$ & Substitute $\tau=t-t_0$ first & Then transform in $\tau$ \\
+$Y(s)$ proper rational & Partial fractions, then the table & Complete the square, first shift \\
+$(s-a)^{2}+b^{2}$ downstairs & First shift; rewrite the numerator in $s-a$ & $\eu^{at}(B\cos bt+C\sin bt)$ \\
+Repeated linear factor $(s-a)^{m}$ & All $m$ terms; gives $t^{k}\eu^{at}/k!$ & Cover-up at $s=a$ for the top one \\
+$\eu^{-cs}$ in $Y(s)$ & Second shift: $u_c(t)f(t-c)$ & Rewrite $f$ in terms of $t-c$ \\
+Forcing defined by cases & $g_1+(g_2-g_1)u_c(t)$ & Solve piecewise and match at $c$ \\
+``Applied at $t=c$'', ``switched off'' & Heaviside step, then $\eu^{-cs}F(s)$ & Check the argument is $t-c$ \\
+``Hammer blow'', ``impulse $I$'' & $\mathcal{L}\{\delta(t-c)\}=\eu^{-cs}$ & $y'$ jumps by $I/a$, $y$ does not \\
+$Y=H(s)F(s)$, $f$ unspecified & Convolution $h*f$; Duhamel & Impulse response first \\
+$\int_0^{t}f(\tau)g(t-\tau)\dd\tau$ appears & Recognise a convolution; transform to $FG$ & Interchange the roles of $f$ and $g$ \\
+An integral equation for $y$ & Transform it; convolution becomes a product & Differentiate to get an ODE \\
+Coefficient linear in $t$ & $\mathcal{L}\{tf\}=-F'(s)$; first-order ODE in $s$ & Frobenius instead \\
+Coefficient quadratic in $t$ & Not Laplace; use series & $Y''$ appears, no progress \\
+Analytic coefficients, $x_0$ ordinary & $y=\sum a_nx^{n}$; re-index; recurrence & Two free constants $a_0,a_1$ \\
+Leading coefficient vanishes at $x_0$ & Test $xp$, $x^{2}q$ analytic; Frobenius & Irregular: asymptotics or numerics \\
+Indicial roots distinct, not integer apart & Two independent Frobenius series & Different recurrence for each root \\
+Indicial roots equal & $y_2=y_1\ln x+x^{r}\sum b_nx^{n}$ & The log is not optional \\
+Roots differing by an integer $N$ & Run the small root; check $0\cdot a_N$ & If the right side is nonzero, add $Cy_1\ln x$ \\
+Recurrence forces $a_0=0$ & Wrong indicial root, or irregular point & Recheck $p_0$ and $q_0$ \\
+Series terminates & The solution is a polynomial; verify directly & Check the vanishing factor in the recurrence \\
+Boundary data at two points & Neither method; eigenvalue problem & Separation of variables \\
+\end{recog}

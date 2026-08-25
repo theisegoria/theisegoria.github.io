@@ -1,0 +1,248 @@
+% !TEX program = xelatex
+% ============================================================
+%  STRUCTURE BEFORE ALGEBRA  —  master preamble
+%  Isegoria mathematics series, Volume II
+% ============================================================
+\PassOptionsToPackage{table}{xcolor}
+\usepackage[letterpaper,inner=0.80in,outer=0.66in,top=0.74in,bottom=0.80in,
+            headsep=0.20in,footskip=0.36in,marginparwidth=0.42in,marginparsep=0.07in]{geometry}
+\usepackage{fontspec,unicode-math}
+\usepackage{microtype,graphicx,xcolor,tikz,amsmath,mathtools,booktabs,tabularx,longtable,
+            multicol,tcolorbox,fancyhdr,enumitem,titlesec,needspace,ragged2e,array,pifont}
+\usepackage[hidelinks]{hyperref}
+\usepackage{imakeidx}
+\usetikzlibrary{positioning,arrows.meta,shapes.geometric,calc,fit,backgrounds}
+\tcbuselibrary{skins,breakable}
+
+% ---------- fonts ----------
+\setmainfont{TeX Gyre Pagella}
+\setsansfont{TeX Gyre Heros}[Scale=MatchLowercase]
+\setmonofont{TeX Gyre Cursor}[Scale=MatchLowercase]
+\setmathfont{TeX Gyre Pagella Math}
+
+% ---------- palette (Isegoria house) ----------
+\definecolor{ink}{HTML}{172A3A}
+\definecolor{navy}{HTML}{0B304F}
+\definecolor{emerald}{HTML}{147F70}
+\definecolor{cyan}{HTML}{238EA5}
+\definecolor{coral}{HTML}{C85B49}
+\definecolor{gold}{HTML}{B8872C}
+\definecolor{plum}{HTML}{6B4E7A}
+\definecolor{paper}{HTML}{FBF8F0}
+\definecolor{mist}{HTML}{EEF5F3}
+\definecolor{sand}{HTML}{F6EFE1}
+\definecolor{blush}{HTML}{FBEEEB}
+\definecolor{rulegray}{HTML}{D8E0DD}
+\pagecolor{paper}\color{ink}
+
+\hypersetup{colorlinks=true,linkcolor=emerald,urlcolor=cyan,citecolor=emerald,
+  hypertexnames=false,
+  pdftitle={Structure Before Algebra},
+  pdfauthor={Isegoria},
+  pdfsubject={A complete textbook of solution technique in calculus and logic}}
+
+% ---------- type scale ----------
+\makeatletter
+\renewcommand\normalsize{\@setfontsize\normalsize{9.6pt}{12.6pt}}
+\renewcommand\small{\@setfontsize\small{8.6pt}{11.0pt}}
+\renewcommand\footnotesize{\@setfontsize\footnotesize{7.8pt}{9.8pt}}
+\renewcommand\scriptsize{\@setfontsize\scriptsize{6.9pt}{8.4pt}}
+\renewcommand\large{\@setfontsize\large{11.4pt}{14pt}}
+\renewcommand\Large{\@setfontsize\Large{14pt}{17pt}}
+\makeatother
+\normalsize
+\frenchspacing
+\raggedbottom
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{3.6pt}
+\setlength{\headheight}{14pt}
+\emergencystretch=2.4em
+\clubpenalty=10000 \widowpenalty=10000 \displaywidowpenalty=10000
+\setlist{leftmargin=1.3em,itemsep=2.0pt,topsep=2.6pt,parsep=0pt}
+\setlength{\abovedisplayskip}{5pt}\setlength{\belowdisplayskip}{5pt}
+\setlength{\abovedisplayshortskip}{2pt}\setlength{\belowdisplayshortskip}{3pt}
+
+% ---------- headings ----------
+\setcounter{secnumdepth}{0}
+\setcounter{tocdepth}{1}
+
+\titleformat{\part}[display]
+  {\centering\sffamily\bfseries\color{navy}}
+  {\fontsize{8.4}{10}\selectfont\color{emerald}\MakeUppercase{Part \thepart}}
+  {10pt}{\fontsize{28}{32}\selectfont}
+  [\vspace{8pt}{\color{emerald}\rule{2.2in}{0.7pt}}]
+\titlespacing*{\part}{0pt}{1.05in}{0pt}
+
+\titleformat{\chapter}[display]
+  {\sffamily\bfseries\color{navy}}
+  {\fontsize{7.6}{9}\selectfont\color{emerald}\MakeUppercase{Chapter \thechapter}}
+  {4pt}{\fontsize{20}{23}\selectfont}
+  [\vspace{3pt}{\color{rulegray}\rule{\textwidth}{0.6pt}}]
+\titlespacing*{\chapter}{0pt}{-14pt}{14pt}
+
+\titleformat{\section}
+  {\sffamily\bfseries\color{emerald}\fontsize{12.0}{14}\selectfont}{}{0pt}{}
+\titlespacing*{\section}{0pt}{13pt}{4pt}
+
+\titleformat{\subsection}
+  {\sffamily\bfseries\color{navy}\fontsize{10.2}{12}\selectfont}{}{0pt}{}
+\titlespacing*{\subsection}{0pt}{9pt}{2pt}
+
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\footnotesize\sffamily\color{emerald}\nouppercase{\leftmark}}
+\fancyhead[R]{\footnotesize\sffamily\color{ink!50}\nouppercase{\rightmark}}
+\fancyfoot[C]{\footnotesize\sffamily\color{ink!52}\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\fancypagestyle{plain}{\fancyhf{}\fancyfoot[C]{\footnotesize\sffamily\color{ink!52}\thepage}\renewcommand{\headrulewidth}{0pt}}
+
+% ---------- math shorthands ----------
+\newcommand{\dd}{\,\mathrm{d}}
+\newcommand{\dv}[2]{\frac{\mathrm{d}#1}{\mathrm{d}#2}}
+\newcommand{\dvop}[1]{\frac{\mathrm{d}}{\mathrm{d}#1}}
+\newcommand{\ddv}[2]{\frac{\mathrm{d}^{2}#1}{\mathrm{d}#2^{2}}}
+\newcommand{\pdv}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\abs}[1]{\left\lvert #1\right\rvert}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+\newcommand{\floorb}[1]{\left\lfloor #1\right\rfloor}
+\newcommand{\ceilb}[1]{\left\lceil #1\right\rceil}
+\newcommand{\R}{\mathbb{R}}\newcommand{\C}{\mathbb{C}}
+\newcommand{\N}{\mathbb{N}}\newcommand{\Z}{\mathbb{Z}}\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\E}{\mathbb{E}}\newcommand{\Prob}{\mathbb{P}}
+\DeclareMathOperator{\sech}{sech}
+\DeclareMathOperator{\csch}{csch}
+\DeclareMathOperator{\arcsec}{arcsec}
+\DeclareMathOperator{\arccot}{arccot}
+\DeclareMathOperator{\arccsc}{arccsc}
+\DeclareMathOperator{\Li}{Li}
+\DeclareMathOperator{\erf}{erf}
+\DeclareMathOperator{\erfc}{erfc}
+\DeclareMathOperator{\Ci}{Ci}
+\DeclareMathOperator{\Si}{Si}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\Res}{Res}
+\DeclareMathOperator{\lcm}{lcm}
+\DeclareMathOperator{\ord}{ord}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\newcommand{\PV}{\operatorname{p.v.}\!}
+\newcommand{\Bfun}{\mathrm{B}}
+\newcommand{\Gfun}{\Gamma}
+\newcommand{\dig}{\psi}
+\newcommand{\eu}{\mathrm{e}}
+\newcommand{\iu}{\mathrm{i}}
+\newcommand{\To}{\longrightarrow}
+\newcommand{\ra}{\rightarrow}
+
+% ---------- technique apparatus ----------
+\newcounter{tech}[chapter]
+\renewcommand{\thetech}{\thechapter.\arabic{tech}}
+
+% tier chips
+\makeatletter
+\newcommand{\tierchip}[1]{%
+  \begingroup
+  \sffamily\bfseries\fontsize{6.4}{7}\selectfont
+  \setlength{\fboxsep}{2.4pt}%
+  \tb@tierchip{#1}%
+  \endgroup}
+\def\tb@tierchip#1{%
+  \def\tb@ta{#1}%
+  \def\tb@ttE{easy}\def\tb@ttM{medium}\def\tb@ttH{hard}\def\tb@ttC{core}%
+  \ifx\tb@ta\tb@ttE\colorbox{emerald!15}{\textcolor{emerald!85!ink}{EASY}}\else
+  \ifx\tb@ta\tb@ttM\colorbox{gold!20}{\textcolor{gold!72!ink}{MEDIUM}}\else
+  \ifx\tb@ta\tb@ttH\colorbox{coral!16}{\textcolor{coral!82!ink}{HARD}}\else
+  \ifx\tb@ta\tb@ttC\colorbox{cyan!15}{\textcolor{cyan!82!ink}{CORE}}\else
+  \colorbox{plum!15}{\textcolor{plum!82!ink}{\MakeUppercase{#1}}}\fi\fi\fi\fi}
+\makeatother
+
+% \tech{Name}{tier}
+\makeatletter
+\newcommand{\tech}[3][NOKEY]{%
+  \par\needspace{4.2\baselineskip}%
+  \vspace{7pt}%
+  \refstepcounter{tech}%
+  \phantomsection
+  \def\tb@key{#1}\def\tb@nokey{NOKEY}%
+  \ifx\tb@key\tb@nokey\index{#2}\else\index{#1}\fi
+  \noindent\parbox[t]{\dimexpr\textwidth-0.95in\relax}{%
+    \raggedright\sffamily\bfseries\color{navy}\fontsize{10.4}{12.4}\selectfont
+    {\color{emerald}\thetech}\hspace{0.45em}#2}%
+  \hfill\raisebox{0.12\baselineskip}{\tierchip{#3}}%
+  \par\nobreak\vspace{2.4pt}%
+  \nobreak}
+\makeatother
+
+% run-in labelled paragraphs
+\newcommand{\runin}[2]{\par\nobreak{\sffamily\bfseries\fontsize{8.2}{10}\selectfont\color{#1}\MakeUppercase{#2}}\hspace{0.5em}\ignorespaces}
+\newcommand{\cue}{\runin{emerald}{Cue}}
+\newcommand{\method}{\runin{navy}{Method}}
+\newenvironment{seealsob}%
+  {\par\vspace{1pt}\begingroup\small\color{ink!58}%
+   {\sffamily\bfseries\fontsize{7.4}{9}\selectfont SEE ALSO}\hspace{0.5em}\ignorespaces}%
+  {\endgroup\par}
+
+% worked example
+\newtcolorbox{worked}[1][Worked example]{%
+  enhanced,breakable,frame hidden,
+  colback=mist,arc=1.1mm,
+  left=3.0mm,right=3.0mm,top=1.9mm,bottom=1.9mm,
+  before skip=5pt,after skip=5pt,
+  borderline west={1.1pt}{0pt}{emerald!70!ink},
+  fontupper=\normalsize,
+  overlay unbroken and first={\node[anchor=north east,font=\sffamily\bfseries\fontsize{6.4}{7}\selectfont,
+     text=emerald!72!ink,inner xsep=3pt,inner ysep=2pt] at (frame.north east) {\MakeUppercase{#1}};}}
+
+% trap / failure mode
+\newtcolorbox{trap}[1][Where this goes wrong]{%
+  enhanced,breakable,frame hidden,
+  colback=blush,arc=1.1mm,
+  left=3.0mm,right=3.0mm,top=1.9mm,bottom=1.9mm,
+  before skip=5pt,after skip=5pt,
+  borderline west={1.1pt}{0pt}{coral!80!ink},
+  fontupper=\small,
+  overlay unbroken and first={\node[anchor=north east,font=\sffamily\bfseries\fontsize{6.4}{7}\selectfont,
+     text=coral!78!ink,inner xsep=3pt,inner ysep=2pt] at (frame.north east) {\MakeUppercase{#1}};}}
+
+% general highlighted note
+\newtcolorbox{keynote}[1][]{%
+  enhanced,breakable,frame hidden,
+  colback=sand,arc=1.1mm,
+  left=3.0mm,right=3.0mm,top=2.0mm,bottom=2.0mm,
+  before skip=6pt,after skip=6pt,
+  borderline west={1.1pt}{0pt}{gold!80!ink},
+  fontupper=\small,
+  overlay unbroken and first={\node[anchor=north east,font=\sffamily\bfseries\fontsize{6.4}{7}\selectfont,
+     text=gold!70!ink,inner xsep=3pt,inner ysep=2pt] at (frame.north east) {\MakeUppercase{#1}};}}
+
+% chapter opener orientation panel
+\newtcolorbox{orient}{%
+  enhanced,breakable,frame hidden,
+  colback=white!62!paper,arc=1.2mm,
+  left=3.4mm,right=3.4mm,top=2.4mm,bottom=2.4mm,
+  before skip=2pt,after skip=10pt,
+  borderline west={1.3pt}{0pt}{navy!70!paper},
+  fontupper=\small}
+
+% decision-tree helper styles
+\tikzset{
+  dnode/.style={draw=navy!55,fill=white!70!paper,rounded corners=1.1pt,line width=0.4pt,
+                font=\sffamily\fontsize{6.9}{8.2}\selectfont,text=ink,align=center,inner sep=2.6pt},
+  dtest/.style={draw=emerald!60,fill=mist,rounded corners=1.1pt,line width=0.4pt,
+                font=\sffamily\bfseries\fontsize{6.9}{8.2}\selectfont,text=emerald!75!ink,align=center,inner sep=2.6pt},
+  dleaf/.style={draw=gold!65,fill=sand,rounded corners=1.1pt,line width=0.4pt,
+                font=\sffamily\fontsize{6.9}{8.2}\selectfont,text=ink,align=center,inner sep=2.6pt},
+  dedge/.style={draw=ink!45,-{Stealth[length=1.5mm]},line width=0.4pt},
+  dlab/.style={font=\sffamily\fontsize{6.0}{7}\selectfont,text=ink!58,inner sep=1.2pt}
+}
+
+% recognition matrix
+\newcommand{\mh}[1]{\textcolor{emerald!80!ink}{\sffamily\bfseries\footnotesize #1}}
+\newenvironment{recog}[1]
+  {\par\vspace{3pt}\needspace{5\baselineskip}%
+   \begingroup\footnotesize
+   \setlength{\tabcolsep}{4pt}\renewcommand{\arraystretch}{1.18}%
+   \begin{longtable}{#1}}
+  {\end{longtable}\endgroup\par\vspace{2pt}}
+
+\newcommand{\bigskipx}{\vspace{7pt}}
+\makeindex[title=Index of techniques,columns=3,intoc]

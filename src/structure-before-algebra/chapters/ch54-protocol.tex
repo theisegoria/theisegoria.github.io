@@ -1,0 +1,62 @@
+\chapter{The final checking protocol}
+
+\begin{orient}
+\textbf{What this chapter is for.} Chapter 2 argued that verification is a technique rather than a virtue, and gave the ladder of checks. This chapter is the operational version: a protocol short enough to run on every problem, organised by what kind of answer you are holding. It is deliberately mechanical. The point of a protocol is that it catches errors you did not suspect, which means it must be applied without first deciding whether it is needed.
+\end{orient}
+
+\section{The universal five}
+
+Run these on any answer, in any domain, before writing it down. They cost under a minute between them.
+
+\begin{enumerate}[label=\textbf{\arabic*.},leftmargin=2.0em]
+\item \textbf{Sign and magnitude.} Is the answer the right sign? Is it plausibly the right size? A definite integral of a positive integrand that comes out negative is wrong, and a probability outside $[0,1]$ is wrong, and both errors are common enough to be worth one second of attention.
+\item \textbf{Units and dimensions.} If the problem has physical content, do the units match? If it has a parameter, does the answer scale with it correctly? An answer that should double when a length doubles, and does not, is wrong.
+\item \textbf{Degenerate cases.} Set a parameter to $0$, to $1$, or to infinity. The answer should degenerate to something you can check independently. This is the single most productive check in the list.
+\item \textbf{One numerical evaluation.} Put in a concrete value and compare against a direct computation. Two or three matching digits is enough to catch essentially every algebraic slip.
+\item \textbf{Symmetry.} If the problem is symmetric in two quantities, the answer must be. If it is invariant under a substitution, the answer must be too.
+\end{enumerate}
+
+\section{Checks by the shape of the answer}
+
+\begin{recog}{@{}p{0.28\textwidth}p{0.38\textwidth}p{0.28\textwidth}@{}}
+\rowcolor{mist}\mh{You are holding} & \mh{The check that catches an error in it} & \mh{The error it catches} \\
+\midrule
+\endhead
+An antiderivative & Differentiate it & A missed chain-rule factor \\
+A definite integral & Numerical quadrature at the given bounds & Bounds not transformed \\
+An integral with a $\ln$ & Is the argument's sign controlled on the interval? & Missing absolute value \\
+An integral after substitution & Do the new bounds match the new variable? & Bounds transformed at the end \\
+A trigonometric substitution result & Is $\theta$ in the range the substitution allows? & Wrong branch of the inverse \\
+A parameter-differentiation answer & Set the parameter to its trivial value & Wrong constant of integration \\
+A derivative & Complex-step or central difference at a point & Sign slip in a product \\
+An $n$th derivative formula & Test it at $n=1$ and $n=2$ & Off-by-one in the pattern \\
+A limit & Evaluate at three points approaching & Expansion truncated too early \\
+A limit from L'Hopital & Were both hypotheses actually true? & Applied to a non-indeterminate form \\
+A series sum & Partial sums against the closed form & Index shifted by one \\
+A convergence verdict & Does the general term tend to zero? & Test misapplied \\
+A rearranged series & Is it absolutely convergent? & Conditional rearrangement \\
+An ODE solution & Substitute it back into the equation & Sign in the integrating factor \\
+A general solution & Does it have the right number of constants? & A lost solution from division \\
+An ODE with an initial condition & Does it satisfy the condition, as written? & Condition applied after a root \\
+A closed-form model answer & Does it degenerate correctly as $t\to\infty$? & Wrong sign in an exponent \\
+A count & Brute force it for $n=1,2,3,4$ & Over- or undercounting by symmetry \\
+A probability & Is it in $[0,1]$? Does it sum to one over all cases? & A missing or duplicated case \\
+An expectation & Simulate, or enumerate exactly for small $n$ & Wrong indicator decomposition \\
+A game verdict & Verify the two closure conditions & A pattern read from too few values \\
+An invariant argument & Check the invariant on every move type & A move you did not consider \\
+A pigeonhole argument & Do the holes cover everything, exactly once? & An object with no hole \\
+A number-theoretic claim & Enumerate the residues & A modulus that separates nothing \\
+A grid-puzzle solution & Does it satisfy every clue, re-read? & A clue used in the wrong direction \\
+A proof by induction & Does the step reach the base you checked? & Base case below the step's validity \\
+Any answer at all & Test it at a value the derivation never used & A formula fitted to its own data \\
+\end{recog}
+
+\section{The three questions to ask when the check fails}
+
+A failed check is information, and there is a productive order in which to use it.
+
+First, \emph{where does the discrepancy start}? Evaluate both the answer and an independent computation at an intermediate stage. Binary-search the working: check the halfway line, then the quarter or three-quarter line. Three or four evaluations locate the bad step in a page of algebra, which is far faster than re-reading.
+
+Second, \emph{is the error in the answer or in the check}? A numerical check can be wrong: quadrature on an oscillatory integrand, finite differences on a badly conditioned derivative, and Monte Carlo with too few samples all produce confident nonsense. When the analytic answer is clean and the numeric one is not, suspect the numerics first, and re-run the check by a different method before rewriting the solution.
+
+Third, \emph{does the failure reveal a missing hypothesis rather than a mistake}? An answer that is correct on part of the domain and wrong elsewhere is usually not an algebra error at all. It is a branch, an interval of validity, or a case split that the working assumed away. That failure mode is the most valuable of the three, because the repair improves the answer rather than merely correcting it.

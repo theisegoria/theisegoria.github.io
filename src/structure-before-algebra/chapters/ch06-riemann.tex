@@ -1,0 +1,267 @@
+\chapter{Limits that are secretly integrals or derivatives}
+
+\begin{orient}
+\textbf{What this chapter is for.} Two recognitions in this chapter are worth more than any other pair in the limits part of the book. The first: a sum of $n$ terms carrying a factor of $\tfrac1n$, in which the index $k$ appears only through the ratio $k/n$, is a Riemann sum, and its limit is an integral. The second: a quotient whose numerator is the difference of one function evaluated at two nearby points is a derivative, and you should quote it rather than compute it. Both are pattern-matching skills, so this chapter teaches the matching explicitly: how to read the interval and the integrand off a sum, what to do when the interval is not $[0,1]$, when the partition is geometric rather than uniform, and when the object is a product that must be logged before it becomes a sum. The chapter closes with the concentration limits, where an $n$th power inside an integral collapses the integral onto a single point.
+\end{orient}
+
+\section{Reading a sum as an integral}
+
+The definition of the Riemann integral is usually presented as a definition and then abandoned in favour of the fundamental theorem. That is a mistake of emphasis. The definition is a \emph{recognition tool}: it says that a particular kind of limit of a particular kind of sum equals a particular integral, and it can be read from left to right (to define the integral) or from right to left (to evaluate a limit). This chapter reads it from left to right, and the reading is worth more in competition and in analysis than most of the integration technique that follows it.
+
+The pattern to match is small and rigid. You need three things at once: exactly $n$ terms (or $cn$ terms, or $n$ terms shifted), a factor of $\tfrac1n$ multiplying the whole sum, and every occurrence of $k$ appearing inside a single function of the ratio $k/n$. If all three are present, the limit is an integral. If any one is missing, either it can be manufactured by algebra, in which case do so, or it cannot, in which case the sum belongs to the squeeze and integral-bound techniques of the previous chapter.
+
+\begin{center}
+\begin{tikzpicture}[node distance=6mm and 8mm]
+\node[dtest] (a) {Is there a sum of $n$ terms,\\ or a product of $n$ factors?};
+\node[dtest, below left=9mm and 4mm of a] (b) {Can you force it into\\ $\tfrac1n\sum g(k/n)$?};
+\node[dtest, below right=9mm and 2mm of a] (c) {Is it a difference of one\\ function at two near points?};
+\node[dleaf, below left=9mm and 0mm of b] (d) {Integral on $[0,1]$;\\ take $\ln$ first if a product};
+\node[dnode, below right=9mm and 0mm of b] (e) {Squeeze, or\\ integral bounds};
+\node[dleaf, below left=9mm and 0mm of c] (f) {Quote $f'(a)$,\\ or the FTC};
+\node[dnode, below right=9mm and 0mm of c] (g) {Concentration:\\ rescale the mass};
+\draw[dedge] (a) -- node[dlab,left]{yes} (b);
+\draw[dedge] (a) -- node[dlab,right]{no} (c);
+\draw[dedge] (b) -- node[dlab,left]{yes} (d);
+\draw[dedge] (b) -- node[dlab,right]{no} (e);
+\draw[dedge] (c) -- node[dlab,left]{yes} (f);
+\draw[dedge] (c) -- node[dlab,right]{no} (g);
+\end{tikzpicture}
+\end{center}
+
+\tech{Riemann sum recognition}{medium}
+\cue A factor $\tfrac1n$, or $\tfrac{b-a}{n}$, multiplying a sum of $n$ terms in which $k$ appears only through the ratio $k/n$. The factor is often hidden: it may sit inside a radical, or appear as an $n$ in a numerator that has to be divided into the summand before it becomes visible.
+\method For $f$ Riemann integrable on $[0,1]$,
+\[\lim_{n\to\infty}\frac1n\sum_{k=1}^{n}f\!\left(\frac{k}{n}\right)=\int_{0}^{1}f(x)\dd x,\]
+and more generally $\dfrac{b-a}{n}\displaystyle\sum_{k=1}^{n}f\!\left(a+\frac{k(b-a)}{n}\right)\to\int_{a}^{b}f$. The left endpoint version, with $k$ running from $0$ to $n-1$, has the same limit; so does any choice of sample point inside each subinterval, which is what makes the recognition robust.
+
+\begin{keynote}[The three-step match]
+\textbf{One.} Count the terms and locate the mesh factor $\tfrac1n$. If you cannot see one, factor the largest power of $n$ out of the summand until one appears. \textbf{Two.} Substitute $u=k/n$ everywhere and read off $f(u)$. \textbf{Three.} Verify that no free $n$ survives inside $f$. A single leftover $n$ means the summand is not a fixed function sampled at $n$ points, and the conversion is invalid.
+\end{keynote}
+
+\begin{worked}
+\[\lim_{n\to\infty}\sum_{k=1}^{n}\frac{n}{n^{2}+k^{2}}.\]
+There is no visible $\tfrac1n$. Divide numerator and denominator by $n^{2}$: the summand becomes $\dfrac{1/n}{1+(k/n)^{2}}$, so the sum is $\dfrac1n\displaystyle\sum_{k=1}^{n}\dfrac{1}{1+(k/n)^{2}}$ and $f(u)=\dfrac{1}{1+u^{2}}$. Hence
+\[\lim_{n\to\infty}\sum_{k=1}^{n}\frac{n}{n^{2}+k^{2}}=\int_{0}^{1}\frac{\dd x}{1+x^{2}}=\frac{\pi}{4}\approx0.785398,\]
+and the sum at $n=10^{6}$ is $0.7853979$. Note that the crude bounds of the previous chapter give only $\tfrac12\leq S_{n}\leq1$, so the squeeze cannot resolve this one and the integral is genuinely needed.
+\end{worked}
+
+The interval $[0,1]$ is a convention, not a constraint, and the two ways of leaving it are worth separating. Extending the range of $k$ moves the right endpoint; shifting the range of $k$ moves both endpoints. Both are read off the same way: the smallest and largest values of $k/n$ are the limits of integration.
+
+\begin{worked}
+\emph{A longer range.} $\displaystyle\sum_{k=1}^{3n}\frac{n}{n^{2}+k^{2}}=\frac1n\sum_{k=1}^{3n}\frac{1}{1+(k/n)^{2}}$ now samples $u=k/n$ across $[0,3]$, so the limit is $\displaystyle\int_{0}^{3}\frac{\dd x}{1+x^{2}}=\arctan3\approx1.249046$; the sum at $n=10^{6}$ is $1.2490453$.
+
+\emph{A shifted range.} $\displaystyle\sum_{k=n+1}^{2n}\frac1k$. Put $k=n+j$ with $j$ from $1$ to $n$: the summand is $\dfrac{1}{n+j}=\dfrac1n\cdot\dfrac{1}{1+j/n}$, so the limit is $\displaystyle\int_{0}^{1}\frac{\dd x}{1+x}=\ln2\approx0.693147$. Equivalently, read $u=k/n$ directly on $[1,2]$ and get $\int_{1}^{2}\dfrac{\dd x}{x}$, which is the same number, as it must be.
+\end{worked}
+
+Partitions do not have to be uniform, and the case that actually occurs is the geometric one, where the sample points are $a^{k/n}$ rather than $k/n$. It looks unfamiliar and is not: the substitution $x=a^{t}$ converts it into a uniform partition, and you may work on whichever side is more convenient.
+
+\begin{keynote}[Geometric partitions are uniform in the exponent]
+The points $x_{k}=a^{k/n}$, $k=0,\ldots,n$, partition $[1,a]$ with ratio $a^{1/n}$ between consecutive points, so the mesh $x_{k}-x_{k-1}=a^{(k-1)/n}\bigl(a^{1/n}-1\bigr)$ tends to $0$ and
+\[\sum_{k=1}^{n}f(x_{k})\bigl(x_{k}-x_{k-1}\bigr)\longrightarrow\int_{1}^{a}f(x)\dd x .\]
+Under $x=a^{t}$ this is the uniform statement $\tfrac1n\sum_{k}g(k/n)\to\int_{0}^{1}g$ with $g(t)=f(a^{t})a^{t}\ln a$. Concretely,
+\[\lim_{n\to\infty}\sum_{k=1}^{n}\frac{2^{k/n}-2^{(k-1)/n}}{2^{k/n}}=\int_{1}^{2}\frac{\dd x}{x}=\ln2,\]
+verified as $0.693146$ at $n=2\times10^{5}$; while the same content in uniform form is
+\[\lim_{n\to\infty}\frac1n\sum_{k=1}^{n}\frac{1}{1+2^{k/n}}=\int_{0}^{1}\frac{\dd t}{1+2^{t}}=\frac{1}{\ln2}\ln\frac43\approx0.415037,\]
+where the substitution $x=2^{t}$ turns the integral into $\dfrac{1}{\ln2}\displaystyle\int_{1}^{2}\dfrac{\dd x}{x(1+x)}$.
+\end{keynote}
+
+\begin{trap}
+The $\tfrac1n$ is hidden, and you conclude too early that there is none. It may be inside a radical ($\sqrt{n^{2}+k^{2}}$ contributes an $n$ when factored), or it may be an $n$ in a numerator that has to be divided into the summand. Conversely, if after honest effort you cannot manufacture an explicit $\tfrac1n\sum g(k/n)$, then it is not a Riemann sum, and the squeeze or the integral bounds of the previous chapter are the correct tools.
+\end{trap}
+
+\begin{seealsob}Riemann sum via the logarithm of a product; Riemann sums that need algebraic massage first; squeeze on a sum whose length is the limit variable.\end{seealsob}
+
+A product of $n$ factors is a sum of $n$ logarithms, so every product whose factors depend on $k/n$ is a Riemann sum waiting for one line of preparation. This is the single most reliable way to evaluate limits of products, and the $n$th root that usually accompanies them is exactly the $\tfrac1n$ the recognition needs.
+
+\tech{Riemann sum via the logarithm of a product}{medium}
+\cue An $n$th root of a product of $n$ factors, each depending on $k$ only through $k/n$; or a factorial expression such as $\tfrac{1}{n}(n!)^{1/n}$ or $\tfrac1n\bigl[(n+1)\cdots(2n)\bigr]^{1/n}$, which is the same shape once the factorials are written as products.
+\method Take logarithms, so that the $n$th root becomes the factor $\tfrac1n$ and the product becomes a sum:
+\[\ln\left[\prod_{k=1}^{n}c_{k}\right]^{1/n}=\frac1n\sum_{k=1}^{n}\ln c_{k}.\]
+Arrange each $c_{k}$ to depend on $k/n$ alone, evaluate the resulting integral, and exponentiate at the end. The outer normalising factor (usually a $\tfrac1n$ in front of the root) must be distributed across all $n$ factors as $n^{-1}=\bigl(n^{-n}\bigr)^{1/n}$ before the substitution is made.
+
+\begin{worked}
+\[\lim_{n\to\infty}\frac1n\bigl[(n+1)(n+2)\cdots(2n)\bigr]^{1/n}.\]
+Distribute the outer $\tfrac1n$ into the root, one factor of $n$ per term:
+\[\frac1n\prod_{k=1}^{n}(n+k)^{1/n}=\prod_{k=1}^{n}\left(\frac{n+k}{n}\right)^{1/n}=\prod_{k=1}^{n}\left(1+\frac{k}{n}\right)^{1/n}=:P_{n}.\]
+Now take logarithms and recognise the Riemann sum:
+\[\ln P_{n}=\frac1n\sum_{k=1}^{n}\ln\left(1+\frac kn\right)\longrightarrow\int_{0}^{1}\ln(1+x)\dd x=\bigl[(1+x)\ln(1+x)-x\bigr]_{0}^{1}=2\ln2-1 .\]
+Exponentiating, the limit is $\eu^{2\ln2-1}=\dfrac{4}{\eu}\approx1.4715178$, and the product at $n=2\times10^{5}$ gives $1.4715203$.
+\end{worked}
+
+Two variations are worth having in hand. First, the factorial itself: $\dfrac{(n!)^{1/n}}{n}=\left[\prod_{k=1}^{n}\dfrac kn\right]^{1/n}$, whose logarithm is $\tfrac1n\sum\ln(k/n)\to\int_{0}^{1}\ln x\dd x=-1$, so the limit is $\eu^{-1}$. The integral is improper at $0$ but convergent, and the sum's smallest term $\tfrac1n\ln\tfrac1n\to0$, so the recognition survives. Second, a product with no factorial interpretation at all:
+
+\begin{worked}
+\[\lim_{n\to\infty}\left[\prod_{k=1}^{n}\left(1+\frac{k^{2}}{n^{2}}\right)\right]^{1/n}.\]
+Logarithm first: $\tfrac1n\sum_{k=1}^{n}\ln\bigl(1+(k/n)^{2}\bigr)\to\displaystyle\int_{0}^{1}\ln(1+x^{2})\dd x$. Integrate by parts with $u=\ln(1+x^{2})$:
+\[\int_{0}^{1}\ln(1+x^{2})\dd x=\Bigl[x\ln(1+x^{2})-2x+2\arctan x\Bigr]_{0}^{1}=\ln2-2+\frac{\pi}{2}.\]
+So the limit is $\exp\bigl(\ln2-2+\tfrac\pi2\bigr)=2\eu^{\pi/2-2}\approx1.3020546$, against $1.3020569$ for the product at $n=2\times10^{5}$.
+\end{worked}
+
+\begin{trap}
+Forgetting to distribute the outer $\tfrac1n$ across \emph{all} $n$ factors, or losing it altogether. In the worked example, $\tfrac1n$ becomes one factor of $\tfrac1n$ inside each of the $n$ roots, and omitting it leaves a product that diverges. The check is dimensional: after the distribution, every factor must tend to a finite nonzero limit, so that the geometric mean of the factors is finite.
+\end{trap}
+
+\begin{seealsob}Riemann sum recognition; log-transform a product or a nested power; Riemann sums that need algebraic massage first.\end{seealsob}
+
+The recognition is exact only after the algebra is exact, and problems designed to be hard are designed so that the Riemann structure appears only after two or three terms have been combined. The technique below is the recognition applied with the algebra of the previous chapter placed in front of it.
+
+\tech{Riemann sums that need algebraic massage first}{hard}
+\cue A sum that is \emph{almost} $\tfrac1n\sum f(k/n)$ but has two or more terms inside, or a mismatched index range, or a residual $n$ that looks fatal. Also any expression in which a Riemann sum is buried under an outer operation such as a reciprocal, a power, or a root.
+\method Combine the terms over a common denominator first, then substitute $u=k/n$ symbolically and confirm that every $n$ has vanished except the overall $\tfrac1n$. Only then name the integral. Shifted or lengthened ranges give integrals over shifted or lengthened intervals, and outer operations are applied to the integral's value at the very end.
+
+\begin{worked}
+\[\lim_{n\to\infty}\left[\sum_{k=1}^{n}\left(\frac{n}{\pi\sqrt{n^{4}+k^{4}}}-\frac{2nk^{2}}{\pi\bigl(n^{2}+k^{2}\bigr)\sqrt{n^{4}+k^{4}}}\right)\right]^{-2}.\]
+Work on the bracket, writing $u=k/n$. For the first term, $\sqrt{n^{4}+k^{4}}=n^{2}\sqrt{1+u^{4}}$, so it equals $\dfrac1n\cdot\dfrac{1}{\pi\sqrt{1+u^{4}}}$. For the second, $n^{2}+k^{2}=n^{2}(1+u^{2})$ and $k^{2}=n^{2}u^{2}$, so it equals $\dfrac1n\cdot\dfrac{2u^{2}}{\pi(1+u^{2})\sqrt{1+u^{4}}}$. Every $n$ has gone except the mesh factor. Combining over the common denominator,
+\[\frac{1}{\pi}\cdot\frac{(1+u^{2})-2u^{2}}{(1+u^{2})\sqrt{1+u^{4}}}=\frac{1}{\pi}\cdot\frac{1-u^{2}}{(1+u^{2})\sqrt{1+u^{4}}},\]
+so the bracket tends to $\dfrac1\pi\displaystyle\int_{0}^{1}\frac{1-u^{2}}{(1+u^{2})\sqrt{1+u^{4}}}\dd u$.
+
+The integral yields to Glasser's substitution. Divide numerator and denominator by $u^{2}$ and set $w=u+\tfrac1u$, so that $\dd w=\bigl(1-\tfrac{1}{u^{2}}\bigr)\dd u$ and $u^{2}+\tfrac{1}{u^{2}}=w^{2}-2$:
+\[\int_{0}^{1}\frac{\bigl(\tfrac{1}{u^{2}}-1\bigr)\dd u}{\bigl(u+\tfrac1u\bigr)\sqrt{u^{2}+\tfrac{1}{u^{2}}}}=\int_{2}^{\infty}\frac{\dd w}{w\sqrt{w^{2}-2}}=\frac{1}{\sqrt2}\Bigl[\arcsec\frac{w}{\sqrt2}\Bigr]_{2}^{\infty}=\frac{1}{\sqrt2}\left(\frac\pi2-\frac\pi4\right)=\frac{\pi}{4\sqrt2},\]
+the orientation reversing because $w$ decreases from $\infty$ to $2$ as $u$ increases from $0$ to $1$. Hence the bracket tends to $\dfrac1\pi\cdot\dfrac{\pi}{4\sqrt2}=\dfrac{1}{4\sqrt2}$, and the answer is $\bigl(4\sqrt2\bigr)^{2}=32$. Numerically the bracket at $n=4\times10^{5}$ is $0.1767763$ against $\tfrac{1}{4\sqrt2}=0.1767767$, and its inverse square is $32.0001$.
+\end{worked}
+
+\begin{trap}
+Declaring ``Riemann sum'' before checking that the residual $n$-dependence really cancels. A single stray $n$ inside $f$ invalidates the whole conversion, because then the summand is not one fixed function sampled at $n$ points but a different function for each $n$. The habit that prevents this is to perform the substitution $u=k/n$ literally, in writing, and to look at what is left.
+\end{trap}
+
+\begin{seealsob}Riemann sum recognition; Riemann sum via the logarithm of a product; squeeze on a sum whose length is the limit variable.\end{seealsob}
+
+\section{Reading a quotient as a derivative}
+
+The second recognition of the chapter is smaller than the first and even cheaper to execute. A derivative is defined by a limit; therefore any limit of that shape has already been evaluated, and quoting the answer is not a shortcut but the definition read in the direction it was written.
+
+\tech{The limit is a derivative in disguise}{easy}
+\cue $\displaystyle\lim_{h\to0}\frac{f(a+h)-f(a)}{h}$ or $\displaystyle\lim_{x\to a}\frac{f(x)-f(a)}{x-a}$, possibly with the constant $f(a)$ written as a number so that the structure is hidden. The signature is a numerator that is one function evaluated at two points approaching each other, over the distance between them.
+\method Do not differentiate anything by rule inside the limit: recognise the expression as the \emph{definition} of $f'(a)$ and quote the derivative. The scaled and symmetric variants follow from the same definition:
+\[\lim_{h\to0}\frac{f(a+\alpha h)-f(a+\beta h)}{h}=(\alpha-\beta)f'(a),\qquad \lim_{h\to0}\frac{f(a+h)-2f(a)+f(a-h)}{h^{2}}=f''(a),\]
+the second requiring $f''$ to exist and be continuous at $a$.
+
+\begin{worked}
+\[\lim_{x\to0}\frac{\sqrt[5]{32+x}-2}{x}.\]
+Write $g(t)=t^{1/5}$ and note $g(32)=2$, so the quotient is $\dfrac{g(32+x)-g(32)}{x}$, which is the difference quotient for $g$ at $32$. Since $g'(t)=\tfrac15t^{-4/5}$ and $32^{-4/5}=\tfrac{1}{16}$, the limit is $\dfrac{1}{80}=0.0125$.
+
+A second disguise, at $h=1/n$: $\displaystyle\lim_{n\to\infty}n\bigl(a^{1/n}-1\bigr)=\lim_{h\to0}\frac{a^{h}-a^{0}}{h}=\ln a$, since $\dvop{t}a^{t}=a^{t}\ln a$. At $a=5$ and $n=10^{7}$ the value is $1.6094380$ against $\ln5=1.6094379$.
+
+A third, a second difference: $\displaystyle\lim_{h\to0}\frac{\sin(a+2h)-2\sin(a+h)+\sin a}{h^{2}}=-\sin a$, matching $f''(a)$ for $f=\sin$; at $a=0.7$, $h=10^{-4}$ the quotient is $-0.644294$ against $-\sin0.7=-0.644218$.
+\end{worked}
+
+\begin{trap}
+Using L'H\^opital, which requires differentiating $f$ and is therefore circular when $f'$ is precisely what is being defined. This is the standard fallacy in ``proving'' $\displaystyle\lim_{x\to0}\tfrac{\sin x}{x}=1$ by L'H\^opital: the derivative of $\sin$ at $0$ is that limit. The second error is applying the symmetric second-difference formula to a function whose second derivative does not exist; the symmetric quotient can converge when $f''(a)$ does not, and then it is not $f''(a)$.
+\end{trap}
+
+\begin{seealsob}Mean-value forms and FTC-driven limits; factor out the removable singularity; the standard limits at zero.\end{seealsob}
+
+The integral analogue of the difference quotient is the fundamental theorem, and it produces the same kind of instant evaluation for expressions in which an integral over a shrinking interval is divided by the length of that interval.
+
+\tech{Mean-value forms and FTC-driven limits}{medium}
+\cue An integral with a variable endpoint divided by a power of that endpoint, or divided by the length of the interval of integration. Also any $\tfrac00$ quotient in which one storey is an integral.
+\method For $f$ continuous at $a$,
+\[\lim_{h\to0}\frac1h\int_{a}^{a+h}f(t)\dd t=f(a),\]
+which is the fundamental theorem, or equivalently the integral mean value theorem: the average of $f$ over a shrinking interval is a value of $f$ inside it. For a $\tfrac00$ quotient of integrals, L'H\^opital combined with the Leibniz rule differentiates the bounds:
+\[\dvop{x}\int_{u(x)}^{v(x)}f(t)\dd t=f\bigl(v(x)\bigr)v'(x)-f\bigl(u(x)\bigr)u'(x).\]
+
+\begin{worked}
+\[\lim_{x\to0}\frac{1}{x^{3}}\int_{0}^{x}\frac{t^{2}}{1+t^{4}}\dd t.\]
+Both storeys vanish, and the numerator is differentiable by the FTC. One application of L'H\^opital gives
+\[\lim_{x\to0}\frac{x^{2}/(1+x^{4})}{3x^{2}}=\frac13 ,\]
+confirmed at $x=10^{-3}$ by numerical quadrature. The structural reading is the same: the integrand is $t^{2}\bigl(1+O(t^{4})\bigr)$, so the integral is $\tfrac{x^{3}}{3}+O(x^{7})$.
+
+A case where the chain-rule factors matter:
+\[\lim_{x\to0^{+}}\frac{1}{x^{3}}\int_{0}^{x^{2}}\sin\sqrt{t}\dd t .\]
+Here $v(x)=x^{2}$, so the derivative of the numerator is $\sin\bigl(\sqrt{x^{2}}\bigr)\cdot 2x=2x\sin x$ for $x>0$, and the limit is $\displaystyle\lim_{x\to0^{+}}\frac{2x\sin x}{3x^{2}}=\frac23$, matching $0.6666666$ by quadrature at $x=10^{-3}$.
+\end{worked}
+
+\begin{trap}
+Differentiating the integral without the chain-rule factors $v'$ and $u'$, or dropping the minus sign on the lower limit. In the second worked example, omitting the factor $2x$ turns the answer from $\tfrac23$ into an infinite limit. The other frequent error is applying L'H\^opital to a quotient that is not indeterminate, which happens whenever the integrand fails to vanish at the endpoint.
+\end{trap}
+
+\begin{seealsob}The limit is a derivative in disguise; endpoint concentration; Riemann sum recognition.\end{seealsob}
+
+\section{When the mass concentrates}
+
+The last three techniques share one mechanism and it is worth stating before any of them. An integral $\int_{0}^{1}\varphi_{n}(x)g(x)\dd x$ in which $\varphi_{n}$ carries an $n$th power does not converge by anything happening across the whole interval. The power kills the integrand everywhere except on a shrinking window, and the entire value of the limit comes from that window. The technique in each case is the same: find the window, rescale so that the window becomes fixed, and identify the limiting profile. What differs between the three is where the window is (an endpoint, an interior maximum, a level set) and how wide it is ($1/n$, $1/\sqrt n$, or vanishing).
+
+The warning that goes with all three is also common. Passing the limit inside the integral before rescaling gives $0$, because $x^{n}\to0$ pointwise on $[0,1)$; the outside factor of $n$ or $\sqrt n$ is exactly what compensates, and its presence in the problem is the signal that pointwise convergence is the wrong lens.
+
+\tech[Endpoint concentration]{Endpoint concentration: $n\int_{0}^{1}x^{n}f(x)\dd x\to f(1)$}{hard}
+\cue A high power $x^{n}$ (or $\sin^{n}$, $\cos^{n}$) weighting a continuous function on an interval where the power attains its maximum at an endpoint, with a factor of $n$ or $\sqrt n$ outside the integral.
+\method The weight $x^{n}$ concentrates its mass in a window of width $O(1/n)$ at $x=1$, and $n\,x^{n}$ acts as an approximate identity there:
+\[\lim_{n\to\infty}n\int_{0}^{1}x^{n}f(x)\dd x=f(1)\qquad\text{for }f\text{ continuous on }[0,1].\]
+The substitution $x=1-s/n$ makes this explicit: the integral becomes $\int_{0}^{n}\bigl(1-\tfrac sn\bigr)^{n}f\bigl(1-\tfrac sn\bigr)\dd s$, whose integrand is dominated by $\eu^{-s}\sup\abs{f}$ and converges pointwise to $\eu^{-s}f(1)$, and $\int_{0}^{\infty}\eu^{-s}\dd s=1$.
+
+\begin{worked}
+\[\lim_{n\to\infty}\left(n+\tfrac12\right)\int_{0}^{1}x^{n}\eu^{x}\dd x=\eu .\]
+The extra $\tfrac12$ changes nothing in the limit, since $\tfrac{n+1/2}{n}\to1$, and it improves the rate: integrating by parts, $\int_{0}^{1}x^{n}\eu^{x}\dd x=\tfrac{\eu}{n+1}-\tfrac{1}{n+1}\int_{0}^{1}x^{n+1}\eu^{x}\dd x$, so $n\int\to\eu$ with an error of order $1/n$. The convergence is genuinely slow: quadrature gives $2.6982$ at $n=200$ and $2.71826$ at $n=2\times10^{5}$, against $\eu=2.718282$.
+
+A cleaner instance of the same statement: $\displaystyle\lim_{n\to\infty}n\int_{0}^{1}\frac{x^{n}}{1+x}\dd x=\frac{1}{1+1}=\frac12$, with $0.499996$ at $n=5\times10^{4}$.
+\end{worked}
+
+\begin{trap}
+Passing the limit inside the integral, which gives $0$ because $x^{n}\to0$ pointwise on $[0,1)$. The $n$ prefactor is exactly what rescues a finite answer, and the correct interchange happens only \emph{after} the substitution $x=1-s/n$ has made the window fixed. A second error is assuming continuity of $f$ only on $[0,1)$; the value $f(1)$ is the answer, so $f$ must be continuous at the endpoint where the mass sits.
+\end{trap}
+
+\begin{seealsob}Wallis and Laplace concentration; convergence of an $n$th power to an indicator; mean-value forms and FTC-driven limits.\end{seealsob}
+
+When the maximum of the weight is interior rather than at an endpoint, the window is wider (of order $n^{-1/2}$ rather than $n^{-1}$) and the limiting profile is Gaussian rather than exponential. This is Laplace's method, and its most familiar instance is the Wallis integral.
+
+\tech{Wallis and Laplace concentration}{hard}
+\cue $\sin^{n}x$ or $\cos^{n}x$ integrated over an interval containing a peak of the weight, with a $\sqrt{n}$ normalisation outside; more generally $\int \eu^{-n\varphi(x)}g(x)\dd x$ with $\varphi$ attaining an interior minimum.
+\method The mass concentrates in a window of width $O(n^{-1/2})$ around the peak, and a quadratic expansion there gives the profile. For $\sin^{n}$ on $[0,\pi/2]$, put $x=\tfrac\pi2-t/\sqrt n$, so $\sin^{n}x=\cos^{n}(t/\sqrt n)=\exp\bigl(n\ln\cos\tfrac{t}{\sqrt n}\bigr)\to \eu^{-t^{2}/2}$, whence
+\[\int_{0}^{\pi/2}\sin^{n}x\dd x\sim\frac{1}{\sqrt n}\int_{0}^{\infty}\eu^{-t^{2}/2}\dd t=\sqrt{\frac{\pi}{2n}} .\]
+The general statement is $\displaystyle\int_{a}^{b}\eu^{-n\varphi(x)}g(x)\dd x\sim g(x_{0})\eu^{-n\varphi(x_{0})}\sqrt{\dfrac{2\pi}{n\varphi''(x_{0})}}$ for an interior minimum $x_{0}$ with $\varphi''(x_{0})>0$.
+
+\begin{worked}
+\[\lim_{n\to\infty}\sqrt{n}\int_{0}^{\pi}\sin^{n}x\dd x .\]
+On $[0,\pi]$ the weight $\sin^{n}$ peaks at the interior point $\pi/2$, and by symmetry $\int_{0}^{\pi}\sin^{n}=2\int_{0}^{\pi/2}\sin^{n}$. Using the asymptotic above,
+\[\sqrt n\int_{0}^{\pi}\sin^{n}x\dd x\sim 2\sqrt{n}\cdot\sqrt{\frac{\pi}{2n}}=2\sqrt{\frac\pi2}=\sqrt{2\pi}\approx2.506628 .\]
+Quadrature at $n=400$ gives $2.505062$, the discrepancy being the expected $O(1/n)$ correction. The half-interval sibling is $\displaystyle\lim_{n\to\infty}\sqrt n\int_{0}^{\pi/2}\cos^{n}x\dd x=\sqrt{\pi/2}\approx1.253314$, with $1.252531$ at $n=400$.
+\end{worked}
+
+\begin{trap}
+Forgetting the factor $2$ from $\int_{0}^{\pi}=2\int_{0}^{\pi/2}$, which silently halves the answer, and its mirror image, forgetting that a peak sitting at an \emph{endpoint} contributes only half the Gaussian and therefore half the constant. Decide where the peak is before you write the constant, and count how much of the window lies inside the interval of integration.
+\end{trap}
+
+\begin{seealsob}Endpoint concentration; convergence of an $n$th power to an indicator; Stirling's approximation.\end{seealsob}
+
+The third form of concentration produces not a point mass but a set. When the $n$th power sits in a denominator, the integrand does not vanish everywhere: it tends to $1$ where the base is below $1$ and to $0$ where the base is above, so the limit measures a region rather than sampling a point.
+
+\tech[Convergence of an nth power to an indicator]{Convergence of an $n$th power to an indicator}{hard}
+\cue $\displaystyle\int\frac{\dd x}{1+g(x)^{n}}$ or a similar expression in which an $n$th power appears in a denominator and $g$ crosses the value $1$ somewhere in the domain.
+\method Pointwise, $\dfrac{1}{1+g(x)^{n}}\to\mathbf{1}\{g(x)<1\}$, with the value $\tfrac12$ on the crossing set, which has measure zero when $g$ is strictly monotone through the crossing. Since the integrand is bounded by $1$ on a set of finite measure, dominated convergence applies and the limit is the \emph{measure} of $\{x:g(x)<1\}$.
+
+\begin{worked}
+\[\lim_{n\to\infty}\int_{0}^{1}\frac{\dd x}{1+\bigl(x\sec x\bigr)^{n}} .\]
+On $[0,1]$ we have $\cos x>0$, since $1<\pi/2$, and $x/\cos x$ is strictly increasing from $0$ to $1/\cos1\approx1.851$. So $x\sec x<1$ exactly when $x<\cos x$, that is on $[0,x^{*})$ where $x^{*}$ is the unique root of $\cos x=x$, the Dottie number. The integrand is bounded by $1$, which supplies the dominating function, so
+\[\lim_{n\to\infty}\int_{0}^{1}\frac{\dd x}{1+(x\sec x)^{n}}=\bigl\lvert\{x\in[0,1]:x<\cos x\}\bigr\rvert=x^{*}\approx0.7390851 .\]
+Fixed-point iteration on $x\mapsto\cos x$ gives $x^{*}=0.7390851332$, and quadrature at $n=200$ gives $0.7390851$.
+\end{worked}
+
+\begin{trap}
+Assuming the pointwise limit may be integrated without a dominating function. Here $0\leq\text{integrand}\leq1$ on a set of finite measure supplies one, but that must be \emph{said}, and on an unbounded domain it would not be enough. The second error is ignoring the crossing set: if $g\equiv1$ on an interval, the limit picks up $\tfrac12$ of that interval's length, and the answer is not the measure of $\{g<1\}$ alone.
+\end{trap}
+
+\begin{seealsob}Endpoint concentration; Wallis and Laplace concentration; dominated convergence.\end{seealsob}
+
+Seen together, the eight techniques of this chapter are one idea applied at three scales. A Riemann sum is an integral read at the scale of the whole interval, where every part of the domain contributes and the mesh is the only thing that shrinks. A difference quotient is an integral's inverse read at the scale of a single point, where the interval itself shrinks. A concentration limit sits between them: the domain stays fixed but the weight shrinks the effective interval to a window, and the answer depends on how fast. When you meet a limit involving many terms or an integral with a parameter, the first question is which of the three scales the problem lives at, because that question decides the technique before any calculation begins.
+
+\section{Recognition matrix}
+\begin{recog}{@{}p{0.32\textwidth}p{0.34\textwidth}p{0.28\textwidth}@{}}
+\rowcolor{mist}\mh{If you see} & \mh{Reach for} & \mh{If that fails} \\
+\midrule
+\endhead
+$\tfrac1n\sum_{k=1}^{n}f(k/n)$ & $\displaystyle\int_{0}^{1}f$ & Check for a stray $n$ inside $f$ \\
+$\sum_{k=1}^{n}\dfrac{n}{n^{2}+k^{2}}$, no visible $\tfrac1n$ & Divide by $n^{2}$ to expose the mesh & Squeeze if the mesh will not appear \\
+$k$ ranging to $cn$, or from $n$ to $2n$ & Integral over $[0,c]$ or $[1,2]$ & Reindex $k=n+j$ and re-read \\
+Sample points $a^{k/n}$ & Geometric partition of $[1,a]$ & Substitute $x=a^{t}$ for uniformity \\
+$\bigl[\prod_{k=1}^{n}c_{k}\bigr]^{1/n}$ & $\ln$ first, then Riemann sum & Distribute the outer $\tfrac1n$ into the root \\
+$\tfrac1n(n!)^{1/n}$ or $[(n+1)\cdots(2n)]^{1/n}$ & $\ln$ gives $\tfrac1n\sum\ln(k/n)$ & Watch the improper endpoint at $0$ \\
+Two summands, neither a clean $f(k/n)$ & Common denominator, then substitute & Split into two separate integrals \\
+$\dfrac{f(a+h)-f(a)}{h}$, however disguised & Quote $f'(a)$ & Rewrite as $g(t)$ with $t=a+h$ \\
+$\dfrac{f(a+\alpha h)-f(a+\beta h)}{h}$ & $(\alpha-\beta)f'(a)$ & Bridge through $f(a)$ \\
+$n\bigl(a^{1/n}-1\bigr)$ & Derivative of $a^{t}$ at $t=0$: $\ln a$ & Logarithm machine \\
+$\tfrac1h\int_{a}^{a+h}f$ & $f(a)$, by the FTC & Mean value theorem for integrals \\
+Integral with variable bounds over $x^{p}$ & L'H\^opital plus the Leibniz rule & Expand the integrand and integrate \\
+$n\int_{0}^{1}x^{n}f(x)\dd x$ & $f(1)$; substitute $x=1-s/n$ & Integrate by parts for the rate \\
+$\sqrt n\int\sin^{n}$ or $\int \eu^{-n\varphi}g$ & Laplace: expand at the peak & Count which half of the peak is inside \\
+$\displaystyle\int\frac{\dd x}{1+g(x)^{n}}$ & Measure of $\{g<1\}$ & Name the dominating function \\
+\end{recog}

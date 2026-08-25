@@ -1,0 +1,420 @@
+\chapter{Systems, the phase plane, and qualitative technique}
+
+\begin{orient}
+\textbf{What this chapter is for.} A first-order linear system $\dot{\mathbf{x}}=A\mathbf{x}$ is solved by one idea and one idea only: guess $\mathbf{x}=\mathbf{v}\eu^{\lambda t}$, discover that the guess works exactly when $A\mathbf{v}=\lambda\mathbf{v}$, and read every qualitative feature of every solution off the spectrum of $A$. Growth or decay is the sign of the real part; rotation is the imaginary part; the invariant directions are the eigenvectors. That is the whole of the linear theory, and the rest of this chapter is the discovery that it is also most of the nonlinear theory, because near an equilibrium a nonlinear field is its Jacobian plus something too small to matter. The chapter covers the eigenvalue solution in all three of its cases (real distinct, complex, defective), the matrix exponential, the trace-determinant classification of equilibria, linearisation with an honest account of the one place it goes silent, and the two low-technology tools (the phase line and the direction field) that answer qualitative questions when no closed form exists. At the end you should be able to look at a $2\times2$ matrix and say what the picture is before computing anything, and to look at a nonlinear field and know which of your conclusions are safe.
+\end{orient}
+
+\section{Why a system, and why eigenvalues}
+
+The scalar equation $\dot y=ay$ has solution $y=C\eu^{at}$, and every question about it is answered by the sign of $a$. Write the same equation for a vector unknown, $\dot{\mathbf{x}}=A\mathbf{x}$ with $A$ a constant $n\times n$ matrix, and the obvious guess is $\mathbf{x}=\mathbf{v}\eu^{\lambda t}$ for a constant vector $\mathbf{v}$. Substituting gives $\lambda\mathbf{v}\eu^{\lambda t}=A\mathbf{v}\eu^{\lambda t}$, and since $\eu^{\lambda t}$ never vanishes this is
+\[A\mathbf{v}=\lambda\mathbf{v}.\]
+The guess succeeds precisely on the eigenvectors. Nothing about this reasoning is two-dimensional or even finite-dimensional; it is the statement that the exponential is the eigenfunction of $\dvop{t}$, transported to a space where $\dvop{t}$ acts componentwise and $A$ does the mixing.
+
+Two consequences organise everything that follows. First, the equation is linear and homogeneous, so sums of solutions are solutions: if $A$ has $n$ independent eigenvectors, the $n$ modes $\mathbf{v}_i\eu^{\lambda_it}$ span the solution space and the general solution is their combination. Second, the qualitative picture is a statement about $\lambda$ alone. A negative real part contracts, a positive one expands, a nonzero imaginary part rotates. Two systems with the same spectrum have the same portrait up to a linear change of coordinates, which is why a classification with only a handful of cases is possible at all.
+
+\begin{keynote}[The spectrum is the answer]
+For $\dot{\mathbf{x}}=A\mathbf{x}$, every long-time question is decided by $\operatorname{Re}\lambda$ and every short-time geometric question by $\operatorname{Im}\lambda$ and the eigenvectors. All solutions tend to $\mathbf{0}$ if and only if every eigenvalue has negative real part; all solutions stay bounded if additionally the purely imaginary eigenvalues are non-defective. Compute the spectrum before you compute anything else, and in the $2\times2$ case compute it from the trace and the determinant, since $\lambda^2-T\lambda+\Delta=0$ with $T=\operatorname{tr}A$ and $\Delta=\det A$.
+\end{keynote}
+
+Nothing above used $n=2$, and it is worth being explicit about what survives in higher dimensions, because the planar pictures that follow can leave a false impression. The mode decomposition is dimension-free: $n$ independent eigenvectors give $n$ modes and the general solution is their span. Stability is dimension-free: all solutions decay if and only if every eigenvalue has negative real part. What is special to the plane is the \emph{classification}, because only in two dimensions is the list of pictures short enough to name. In three dimensions a real eigenvalue and a complex pair produce a spiral in one plane multiplied by exponential motion along a transverse line, and the useful description is exactly that product, not a new noun.
+
+One practical consequence. Deciding stability in dimension three without computing roots is a determinant question: for $\lambda^{3}+a_2\lambda^{2}+a_1\lambda+a_0$ with real coefficients, every root has negative real part if and only if $a_2>0$, $a_0>0$ and $a_2a_1>a_0$. The strict inequality is where a pair of roots crosses the imaginary axis, which is the three-dimensional analogue of $T=0$ and the place where oscillations are born.
+
+Before the machinery, the reduction that makes it universally applicable. Every scalar equation of order $n$ is a first-order system in $n$ unknowns, and the translation is mechanical. It is worth doing first because it means the eigenvalue theory of this chapter and the characteristic-polynomial theory of constant-coefficient scalar equations are literally the same theorem, and because every numerical integrator on earth expects its input in first-order form.
+
+\tech{Reducing a scalar equation to a first-order system}{easy}
+\cue A scalar equation of order $n$ that you want to feed to a numerical integrator, an eigenvalue routine, or a phase-plane argument. Also any second-order equation whose \emph{qualitative} behaviour is wanted rather than its formula.
+\method Name the derivatives as new unknowns: $x_1=y$, $x_2=\dot y$, up to $x_n=y^{(n-1)}$. Then $\dot x_i=x_{i+1}$ for $i<n$ automatically, and $\dot x_n$ is whatever the equation says $y^{(n)}$ is. For $y^{(n)}+a_{n-1}y^{(n-1)}+\cdots+a_0y=0$ the result is $\dot{\mathbf{x}}=C\mathbf{x}$ with the companion matrix
+\[C=\begin{pmatrix}0&1&0&\cdots&0\\0&0&1&\cdots&0\\ \vdots&&&\ddots&\vdots\\ 0&0&0&\cdots&1\\ -a_0&-a_1&-a_2&\cdots&-a_{n-1}\end{pmatrix},\]
+whose characteristic polynomial is exactly $\lambda^{n}+a_{n-1}\lambda^{n-1}+\cdots+a_0$, the original characteristic polynomial. The order matters: the coefficients occupy the \emph{last} row when the state is ordered from $y$ upward.
+
+\begin{worked}
+Take $\ddot y+4y=0$. Set $x_1=y$, $x_2=\dot y$; then $\dot x_1=x_2$ and $\dot x_2=\ddot y=-4y=-4x_1$, so
+\[\dot{\mathbf{x}}=\begin{pmatrix}0&1\\-4&0\end{pmatrix}\mathbf{x},\qquad \det(C-\lambda I)=\lambda^{2}+4,\]
+giving $\lambda=\pm2\iu$, which is the same pair the characteristic equation $r^{2}+4=0$ produces. The phase portrait is therefore a family of closed orbits in the $(y,\dot y)$ plane, which is the statement that the undamped oscillator conserves energy, obtained without ever writing $\cos2t$.
+
+Damping it, $\ddot y+\tfrac12\dot y+4y=0$ gives the last row $(-4,-\tfrac12)$, trace $-\tfrac12$, determinant $4$, and $T^{2}-4\Delta=\tfrac14-16<0$: a stable spiral, which is underdamped decay.
+\end{worked}
+
+\begin{trap}
+Ordering the state as $(\dot y,y)$ rather than $(y,\dot y)$, which transposes the two off-diagonal entries and gives $\begin{pmatrix}-\tfrac12&-4\\1&0\end{pmatrix}$ for the damped example. The eigenvalues survive the relabelling, so a check based on them detects nothing, but the phase portrait is drawn in swapped axes and every statement about direction of rotation is reversed. Fix the order once, write it down beside the matrix, and keep it.
+\end{trap}
+
+\begin{seealsob}Real distinct eigenvalues; the characteristic equation and distinct real roots; Euler's method and step-by-step numerical integration.\end{seealsob}
+
+\section{Solving the linear system}
+
+With the reduction in hand, the linear problem is finite: find the eigenvalues, and handle each of the three things that can happen to them. Real and distinct is the generic case and the easiest. A complex conjugate pair carries the same information but must be repackaged into real functions before it is usable. A repeated eigenvalue is harmless if it still has enough eigenvectors and requires one extra construction if it does not. There is no fourth case.
+
+\tech{Real distinct eigenvalues: the mode decomposition}{core}
+\cue A first-order linear system with a constant matrix, or a pair of coupled linear equations such as $\dot x=x+y$, $\dot y=4x+y$, which is the same thing written out.
+\method Solve $\det(A-\lambda I)=0$. For each real eigenvalue $\lambda_i$, solve $(A-\lambda_iI)\mathbf{v}_i=\mathbf{0}$ for an eigenvector, and form the mode $\mathbf{v}_i\eu^{\lambda_it}$. The general solution is
+\[\mathbf{x}(t)=\sum_iC_i\mathbf{v}_i\eu^{\lambda_it}.\]
+Initial data are fitted by solving the single algebraic system $\sum_iC_i\mathbf{v}_i=\mathbf{x}(0)$, that is, by expressing the initial vector in the eigenbasis. In the $2\times2$ case use $\lambda^{2}-T\lambda+\Delta=0$ directly; there is no reason to expand the determinant by hand.
+
+\begin{worked}
+\[A=\begin{pmatrix}1&1\\4&1\end{pmatrix},\qquad \mathbf{x}(0)=\begin{pmatrix}3\\2\end{pmatrix}.\]
+Here $T=2$ and $\Delta=1-4=-3$, so $\lambda^{2}-2\lambda-3=0$ and $\lambda=3,-1$. For $\lambda=3$, $(A-3I)=\begin{pmatrix}-2&1\\4&-2\end{pmatrix}$ has kernel spanned by $(1,2)^{T}$; for $\lambda=-1$, $(A+I)=\begin{pmatrix}2&1\\4&2\end{pmatrix}$ has kernel spanned by $(1,-2)^{T}$. So
+\[\mathbf{x}(t)=C_1\begin{pmatrix}1\\2\end{pmatrix}\eu^{3t}+C_2\begin{pmatrix}1\\-2\end{pmatrix}\eu^{-t}.\]
+Fitting the data: $C_1+C_2=3$ and $2C_1-2C_2=2$, so $C_1=2$, $C_2=1$ and
+\[\mathbf{x}(t)=2\begin{pmatrix}1\\2\end{pmatrix}\eu^{3t}+\begin{pmatrix}1\\-2\end{pmatrix}\eu^{-t}.\]
+At $t=0.7$ this reads $(16.828925,\,31.671509)$, confirmed to six figures by Runge-Kutta from the same data. Since $\Delta<0$ the origin is a saddle: the line spanned by $(1,-2)^{T}$ is the stable direction and every other trajectory eventually runs parallel to $(1,2)^{T}$.
+\end{worked}
+
+\begin{worked}[A zero eigenvalue, and what it means]
+Two hundred-litre tanks exchange brine at ten litres per minute in each direction, with $x$ and $y$ the grams of salt in each. Then
+\[\dot x=-\tfrac1{10}x+\tfrac1{10}y,\qquad \dot y=\tfrac1{10}x-\tfrac1{10}y,\qquad
+A=\frac1{10}\begin{pmatrix}-1&1\\1&-1\end{pmatrix}.\]
+Here $T=-\tfrac15$ and $\Delta=0$, so the eigenvalues are $0$ and $-\tfrac15$, with eigenvectors $(1,1)^{T}$ and $(1,-1)^{T}$. A zero eigenvalue means a whole line of equilibria, namely the line $x=y$, and it also means a conserved quantity: the eigenvalue $0$ of $A$ pairs with the left eigenvector $(1,1)$, so $\dvop{t}(x+y)=0$ and the total salt never changes. Starting with $20$ grams in the first tank and none in the second,
+\[x(t)=10+10\eu^{-t/5},\qquad y(t)=10-10\eu^{-t/5},\]
+which at $t=7$ is $(12.465970,\,7.534030)$, confirmed numerically. The system relaxes to equal concentrations with time constant $5$ minutes, and \emph{which} equilibrium it relaxes to is decided entirely by the conserved total.
+\end{worked}
+
+\begin{trap}
+Fitting the constants componentwise, as though $C_1$ belonged to the first component and $C_2$ to the second. Both constants appear in both components. The correct step is to solve the $2\times2$ system $C_1\mathbf{v}_1+C_2\mathbf{v}_2=\mathbf{x}(0)$, which is a change of basis, not a matching of exponentials. A second and quieter error: normalising eigenvectors to unit length halfway through, so that the constants found earlier no longer correspond to the vectors written later.
+\end{trap}
+
+\begin{seealsob}Complex eigenvalues and the real form; defective eigenvalues and generalised eigenvectors; the trace-determinant classification.\end{seealsob}
+
+A real matrix can perfectly well have complex eigenvalues, and when it does the algebra above still works: $\mathbf{v}\eu^{\lambda t}$ is a genuine solution of the system, taking values in $\C^{2}$. What is wanted is a real solution, and the bridge is the observation that the real and imaginary parts of a complex solution of a \emph{real} linear equation are each solutions in their own right. That single remark converts one complex mode into the two real modes you need, and it explains why the conjugate eigenvalue supplies nothing new.
+
+\tech{Complex eigenvalues and the real form}{core}
+\cue The characteristic equation $\lambda^{2}-T\lambda+\Delta=0$ has negative discriminant $T^{2}-4\Delta<0$, giving a conjugate pair $\lambda=\alpha\pm\iu\beta$ with $\beta>0$.
+\method Work with one root only, say $\lambda=\alpha+\iu\beta$, find a complex eigenvector $\mathbf{v}=\mathbf{p}+\iu\mathbf{q}$, and expand
+\[\mathbf{v}\eu^{(\alpha+\iu\beta)t}=\eu^{\alpha t}\bigl(\mathbf{p}+\iu\mathbf{q}\bigr)\bigl(\cos\beta t+\iu\sin\beta t\bigr).\]
+Its real and imaginary parts,
+\[\mathbf{x}_1=\eu^{\alpha t}\bigl(\mathbf{p}\cos\beta t-\mathbf{q}\sin\beta t\bigr),\qquad
+\mathbf{x}_2=\eu^{\alpha t}\bigl(\mathbf{p}\sin\beta t+\mathbf{q}\cos\beta t\bigr),\]
+are two independent real solutions. Geometrically the orbit is a spiral of angular rate $\beta$ on an exponential envelope $\eu^{\alpha t}$: outward if $\alpha>0$, inward if $\alpha<0$, and a closed ellipse if $\alpha=0$.
+
+\begin{worked}
+\[A=\begin{pmatrix}-1&2\\-2&-1\end{pmatrix}.\]
+$T=-2$, $\Delta=1+4=5$, so $\lambda^{2}+2\lambda+5=0$ and $\lambda=-1\pm2\iu$. For $\lambda=-1+2\iu$,
+\[A-\lambda I=\begin{pmatrix}-2\iu&2\\-2&-2\iu\end{pmatrix},\]
+whose first row gives $-2\iu v_1+2v_2=0$, that is $\mathbf{v}=(1,\iu)^{T}$. Thus $\mathbf{p}=(1,0)^{T}$ and $\mathbf{q}=(0,1)^{T}$, and the two real solutions are
+\[\mathbf{x}_1=\eu^{-t}\begin{pmatrix}\cos2t\\-\sin2t\end{pmatrix},\qquad
+\mathbf{x}_2=\eu^{-t}\begin{pmatrix}\sin2t\\\cos2t\end{pmatrix}.\]
+Both were checked against Runge-Kutta at $t=1.3$, agreeing to twelve figures. Since $\alpha=-1<0$ the origin is a stable spiral; since $\beta=2$, one full turn takes time $\pi$, and the amplitude shrinks by the factor $\eu^{-\pi}\approx0.0432$ per turn.
+\end{worked}
+
+\begin{worked}[The same computation read as a damped oscillator]
+The equation $\ddot y+\tfrac12\dot y+4y=0$ has companion matrix $\begin{pmatrix}0&1\\-4&-\tfrac12\end{pmatrix}$, with $T=-\tfrac12$ and $\Delta=4$, so $\lambda=-\tfrac14\pm\iu\sqrt{4-\tfrac1{16}}=-\tfrac14\pm1.984313\iu$. The real part fixes the decay time constant at $4$ and the imaginary part fixes the damped frequency, slightly below the undamped $2$. In the phase plane $(y,\dot y)$ the orbit is a clockwise spiral, clockwise because at the point $(1,0)^{T}$ the velocity is $(0,-4)^{T}$, pointing down. Reading these three numbers off $T$ and $\Delta$ takes longer to describe than to do, and it is the entire qualitative content of the solution.
+\end{worked}
+
+\begin{trap}
+Building four solutions by using both $\alpha+\iu\beta$ and $\alpha-\iu\beta$. The conjugate eigenvector is the conjugate of $\mathbf{v}$ and its complex solution is the conjugate of the first, so its real part is $\mathbf{x}_1$ and its imaginary part is $-\mathbf{x}_2$: nothing new, and a two-dimensional problem cannot have four independent solutions anyway. The other frequent slip is dropping the $\eu^{\alpha t}$ envelope when $\alpha$ is small, which converts a slow spiral into a false centre.
+\end{trap}
+
+\begin{seealsob}Real distinct eigenvalues; the trace-determinant classification; complex roots and the real form.\end{seealsob}
+
+Repetition is the remaining case, and it splits. A repeated eigenvalue may still have a full set of eigenvectors, in which case $A$ is a multiple of the identity on that eigenspace and there is nothing to do. The interesting case is \emph{defective}: the algebraic multiplicity exceeds the number of independent eigenvectors, the mode construction runs out of vectors, and a solution of a genuinely new shape is required. The shape is dictated by the scalar analogy $y=(C_1+C_2t)\eu^{rt}$, but the vector version has a term the scalar version cannot show you.
+
+\tech{Defective eigenvalues and generalised eigenvectors}{hard}
+\cue A repeated root of the characteristic equation ($T^{2}=4\Delta$ in the plane) together with a matrix that is not a scalar multiple of $I$; equivalently, $(A-\lambda I)$ has rank $1$ rather than rank $0$.
+\method Find the eigenvector $\mathbf{v}$ from $(A-\lambda I)\mathbf{v}=\mathbf{0}$, then solve the \emph{inhomogeneous} system
+\[(A-\lambda I)\mathbf{w}=\mathbf{v}\]
+for a generalised eigenvector $\mathbf{w}$. This is always solvable in the defective $2\times2$ case, and $\mathbf{w}$ is determined only up to adding a multiple of $\mathbf{v}$, which is harmless. The two solutions are
+\[\mathbf{x}_1=\mathbf{v}\eu^{\lambda t},\qquad \mathbf{x}_2=\bigl(t\mathbf{v}+\mathbf{w}\bigr)\eu^{\lambda t}.\]
+The check is direct: $\dot{\mathbf{x}}_2=\mathbf{v}\eu^{\lambda t}+\lambda(t\mathbf{v}+\mathbf{w})\eu^{\lambda t}$, while $A\mathbf{x}_2=(t\lambda\mathbf{v}+A\mathbf{w})\eu^{\lambda t}$, and the two agree exactly because $A\mathbf{w}=\lambda\mathbf{w}+\mathbf{v}$.
+
+\begin{worked}
+\[A=\begin{pmatrix}3&-1\\1&1\end{pmatrix}.\]
+$T=4$, $\Delta=3+1=4$, so $\lambda^{2}-4\lambda+4=0$ and $\lambda=2$ twice. Now $A-2I=\begin{pmatrix}1&-1\\1&-1\end{pmatrix}$ has rank $1$, so the eigenvalue is defective; its kernel is spanned by $\mathbf{v}=(1,1)^{T}$. Solve $(A-2I)\mathbf{w}=\mathbf{v}$, that is $w_1-w_2=1$, and take $\mathbf{w}=(1,0)^{T}$. Hence
+\[\mathbf{x}(t)=C_1\begin{pmatrix}1\\1\end{pmatrix}\eu^{2t}+C_2\begin{pmatrix}t+1\\t\end{pmatrix}\eu^{2t}.\]
+Starting from $\mathbf{x}(0)=(1,0)^{T}$ forces $C_1=0$, $C_2=1$, giving $\mathbf{x}=(t+1,t)^{T}\eu^{2t}$, which at $t=0.9$ is $(11.494330,\,5.444683)$, matched by Runge-Kutta to eleven figures. Every trajectory leaves the origin tangent to $\mathbf{v}$ and returns to that direction as $t\to\pm\infty$, because $t\mathbf{v}$ dominates $\mathbf{w}$ at large $\abs{t}$: this is the degenerate node.
+\end{worked}
+
+\begin{trap}
+Writing $t\mathbf{v}\eu^{\lambda t}$ alone as the second solution, by false analogy with the scalar $x\eu^{rx}$. Substituting it gives $\dot{\mathbf{x}}-A\mathbf{x}=\mathbf{v}\eu^{\lambda t}\ne\mathbf{0}$; the term $\mathbf{w}\eu^{\lambda t}$ exists exactly to cancel that residue, and it is \emph{added} to $t\mathbf{v}$, never multiplied by $t$. Second trap: solving $(A-\lambda I)\mathbf{w}=\mathbf{v}$ with the wrong scaling of $\mathbf{v}$. If you rescale $\mathbf{v}$ after finding $\mathbf{w}$, the pair no longer satisfies the relation and $\mathbf{x}_2$ stops being a solution.
+\end{trap}
+
+\begin{seealsob}Real distinct eigenvalues; the matrix exponential; repeated root and the factor of $x$.\end{seealsob}
+
+The non-defective repeated case deserves one sentence so that it is not mistaken for the one above. If $\lambda$ is repeated and $A-\lambda I=0$, then $A=\lambda I$, every nonzero vector is an eigenvector, and the solution is $\mathbf{x}=\eu^{\lambda t}\mathbf{x}(0)$: every trajectory is a straight ray through the origin, traversed at exponential speed. This is the star node, and it is the only planar case in which the portrait has no distinguished directions at all. The test that separates it from the degenerate node is the rank of $A-\lambda I$, not the multiplicity of $\lambda$.
+
+The three cases can be packaged into a single object. The matrix exponential is not a computational shortcut in small examples, where the mode decomposition is faster, but it is the right language for the nonhomogeneous problem, for estimating growth rates, and for any argument in which the solution operator itself, rather than one solution, is the thing being studied.
+
+\tech{The matrix exponential}{hard}
+\cue You want the solution operator, a single formula $\mathbf{x}(t)=\eu^{At}\mathbf{x}(0)$, or the variation-of-parameters formula for a forced system.
+\method Define $\eu^{At}=\sum_{k\ge0}\frac{A^{k}t^{k}}{k!}$, which converges for every $A$ and satisfies $\dvop{t}\eu^{At}=A\eu^{At}$ with $\eu^{A\cdot0}=I$. Two ways to evaluate it. If $A=P\Lambda P^{-1}$ is diagonalisable, then $\eu^{At}=P\eu^{\Lambda t}P^{-1}$ with $\eu^{\Lambda t}$ diagonal. If $A$ has a single eigenvalue $\lambda$, split $A=\lambda I+N$ with $N=A-\lambda I$ nilpotent; since $\lambda I$ commutes with $N$,
+\[\eu^{At}=\eu^{\lambda t}\Bigl(I+Nt+\tfrac{N^{2}t^{2}}{2}+\cdots\Bigr),\]
+a terminating sum. In the plane $N^{2}=0$ always, so this is just $\eu^{\lambda t}(I+Nt)$.
+
+\begin{worked}
+For the defective $A=\begin{pmatrix}3&-1\\1&1\end{pmatrix}$ above, $N=A-2I=\begin{pmatrix}1&-1\\1&-1\end{pmatrix}$ and $N^{2}=0$, so
+\[\eu^{At}=\eu^{2t}\begin{pmatrix}1+t&-t\\t&1-t\end{pmatrix}.\]
+Its first column is $(1+t,t)^{T}\eu^{2t}$, exactly the solution found above from $\mathbf{x}(0)=(1,0)^{T}$, as it must be.
+
+For the diagonalisable $A=\begin{pmatrix}1&1\\4&1\end{pmatrix}$ with $P=\begin{pmatrix}1&1\\2&-2\end{pmatrix}$ and $\Lambda=\operatorname{diag}(3,-1)$, carrying out $P\eu^{\Lambda t}P^{-1}$ gives
+\[\eu^{At}=\begin{pmatrix}\tfrac{\eu^{3t}+\eu^{-t}}{2}&\tfrac{\eu^{3t}-\eu^{-t}}{4}\\[2pt]\eu^{3t}-\eu^{-t}&\tfrac{\eu^{3t}+\eu^{-t}}{2}\end{pmatrix}.\]
+Two audits, both cheap and both worth doing every time: at $t=0$ the matrix is $I$, and differentiating at $t=0$ returns $\begin{pmatrix}1&1\\4&1\end{pmatrix}=A$. Numerically at $t=0.6$ the columns agree with Runge-Kutta from $(1,0)^{T}$ and $(0,1)^{T}$ to eleven figures.
+\end{worked}
+
+\begin{trap}
+Writing $\eu^{A+B}=\eu^{A}\eu^{B}$ for matrices that do not commute. It is false in general, and the splitting trick above is legitimate only because $\lambda I$ commutes with everything. A related error is computing $\eu^{At}$ entrywise, as though it meant the matrix of $\eu^{a_{ij}t}$; the exponential of a matrix is defined by the series and has nothing to do with exponentiating entries. The diagonal case is the only one where the two coincide.
+\end{trap}
+
+\begin{seealsob}Defective eigenvalues and generalised eigenvectors; nonhomogeneous systems and the Duhamel formula; convolution and the transfer function.\end{seealsob}
+
+Forcing is handled exactly as it is for scalar linear equations, by variation of parameters, and the matrix exponential makes the formula memorable. The structural point is that the forced solution is a superposition of impulse responses, one for each instant $s$ at which the forcing acts, propagated forward for the remaining time $t-s$. That reading is worth internalising here, because it recurs verbatim as Duhamel's formula in the Laplace chapter.
+
+\tech{Nonhomogeneous systems and the Duhamel formula}{hard}
+\cue $\dot{\mathbf{x}}=A\mathbf{x}+\mathbf{g}(t)$ with $\mathbf{g}$ not identically zero, or a forced higher-order equation converted to a system.
+\method Let $\Phi(t)$ be a fundamental matrix, meaning a matrix whose columns are independent homogeneous solutions. Variation of parameters gives
+\[\mathbf{x}(t)=\Phi(t)\int\Phi^{-1}(t)\mathbf{g}(t)\dd t.\]
+With $\Phi=\eu^{At}$ (so $\Phi^{-1}(s)=\eu^{-As}$) and data at $t=0$ this becomes the clean form
+\[\mathbf{x}(t)=\eu^{At}\mathbf{x}_0+\int_0^{t}\eu^{A(t-s)}\mathbf{g}(s)\dd s.\]
+Read the integrand: at time $s$ the forcing injects $\mathbf{g}(s)\dd s$, and the free flow carries it for the remaining time $t-s$.
+
+\begin{worked}
+\[\dot{\mathbf{x}}=\begin{pmatrix}2&1\\0&2\end{pmatrix}\mathbf{x}+\begin{pmatrix}0\\1\end{pmatrix},\qquad \mathbf{x}(0)=\mathbf{0}.\]
+The matrix is triangular, so the second component decouples: $\dot x_2=2x_2+1$ with $x_2(0)=0$ gives $x_2=\tfrac{\eu^{2t}-1}{2}$. The first component is then $\dot x_1=2x_1+x_2$, and Duhamel gives $x_1=\int_0^{t}\eu^{2(t-s)}x_2(s)\dd s$. Evaluate:
+\[x_1=\frac12\int_0^{t}\bigl(\eu^{2t}-\eu^{2t-2s}\bigr)\dd s=\frac{t\eu^{2t}}{2}-\frac{\eu^{2t}-1}{4}.\]
+Audit by substitution: $\dot x_1=\tfrac12\eu^{2t}+t\eu^{2t}-\tfrac12\eu^{2t}=t\eu^{2t}$, while $2x_1+x_2=t\eu^{2t}-\tfrac{\eu^{2t}-1}{2}+\tfrac{\eu^{2t}-1}{2}=t\eu^{2t}$. At $t=1.1$ the pair is $(2.957504,\,4.012507)$, reproduced by Runge-Kutta.
+\end{worked}
+
+\begin{worked}[Duhamel detects resonance without a special case]
+Take the undamped oscillator forced at its own frequency: $\ddot y+y=\cos t$ with zero data, that is $\dot{\mathbf{x}}=\begin{pmatrix}0&1\\-1&0\end{pmatrix}\mathbf{x}+\begin{pmatrix}0\\\cos t\end{pmatrix}$. The impulse response of $\ddot y+y$ is $\sin t$, so Duhamel gives
+\[y(t)=\int_0^{t}\sin(t-s)\cos s\dd s=\frac12\int_0^{t}\bigl(\sin t+\sin(t-2s)\bigr)\dd s=\frac{t\sin t}{2},\]
+using the product-to-sum identity and noting that the second term integrates to zero over the symmetric range. The linear growth appears by itself: no resonance rule, no multiplier $t^{s}$, no separate case. At $t=3.4$ the formula gives $-0.4344199$, reproduced by numerical integration. Compare this with undetermined coefficients, where forgetting the resonance multiplier produces a contradiction rather than an answer.
+\end{worked}
+
+\begin{trap}
+Inverting $\Phi$ at the wrong argument. Inside the integral the inverse carries the \emph{dummy} variable, $\Phi^{-1}(s)$, and the factor outside carries $t$; writing $\Phi^{-1}(t)$ inside and pulling it out turns a convolution into a product and produces a function that is not a solution. Equally common: forgetting that $\eu^{A(t-s)}\ne\eu^{At}\eu^{As}$, the sign in the exponent is what makes the propagation forward rather than backward.
+\end{trap}
+
+\begin{seealsob}The matrix exponential; variation of parameters; convolution and the transfer function.\end{seealsob}
+
+\begin{keynote}[Liouville's formula, and a free check on every $\eu^{At}$]
+The determinant of a fundamental matrix obeys $\dvop{t}\det\Phi=(\operatorname{tr}A)\det\Phi$, so for constant $A$
+\[\det\eu^{At}=\eu^{t\operatorname{tr}A}.\]
+In particular $\eu^{At}$ is invertible for every $t$, which is why the Duhamel formula never divides by zero, and why solutions of a linear system exist for all time rather than blowing up in finite time as nonlinear ones can. It is also a one-line audit. For $A=\begin{pmatrix}3&-1\\1&1\end{pmatrix}$ with $\operatorname{tr}A=4$, the computed $\eu^{2t}\begin{pmatrix}1+t&-t\\t&1-t\end{pmatrix}$ has determinant $\eu^{4t}\bigl[(1+t)(1-t)+t^{2}\bigr]=\eu^{4t}$, as required. For $A=\begin{pmatrix}1&1\\4&1\end{pmatrix}$ with $\operatorname{tr}A=2$, the computed exponential has determinant $\tfrac14\bigl[(\eu^{3t}+\eu^{-t})^{2}-(\eu^{3t}-\eu^{-t})^{2}\bigr]=\eu^{2t}$. Any error in a single entry breaks this identity, and it costs two multiplications to test.
+\end{keynote}
+
+\section{The phase plane}
+
+Stop solving and start looking. A planar autonomous system assigns a velocity vector to each point, and the solutions are the curves everywhere tangent to that field. The equilibria (points where the velocity vanishes) organise the picture, because they are the only places where a trajectory can begin or end in finite or infinite time, and the behaviour near each one is what the classification names.
+
+For $\dot{\mathbf{x}}=A\mathbf{x}$ there is exactly one equilibrium when $\det A\ne0$, namely the origin, and its type is a function of two numbers. Write $T=\operatorname{tr}A$ and $\Delta=\det A$, so that $\lambda^{2}-T\lambda+\Delta=0$ and $\lambda_{\pm}=\tfrac12\bigl(T\pm\sqrt{T^{2}-4\Delta}\bigr)$. The whole classification is the sign chart of $\Delta$, of $T^{2}-4\Delta$, and of $T$, and it is best carried in the head as a picture rather than a list.
+
+\begin{center}
+\begin{tikzpicture}[x=0.95cm,y=0.85cm]
+\fill[sand] plot[domain=-3.9:3.9,samples=100] (\x,{\x*\x/4}) -- (3.9,0) -- (-3.9,0) -- cycle;
+\fill[mist] plot[domain=-3.9:3.9,samples=100] (\x,{\x*\x/4}) -- (3.9,4.5) -- (-3.9,4.5) -- cycle;
+\fill[blush] (-3.9,-1.6) rectangle (3.9,0);
+\draw[emerald!70!ink,line width=0.7pt,domain=-3.9:3.9,samples=100] plot (\x,{\x*\x/4});
+\draw[ink!45,-{Stealth[length=1.6mm]},line width=0.45pt] (-4.15,0) -- (4.3,0)
+  node[right,font=\sffamily\fontsize{7.4}{9}\selectfont,text=ink]{$T$};
+\draw[ink!45,-{Stealth[length=1.6mm]},line width=0.45pt] (0,-0.62) -- (0,4.7);
+\node[font=\sffamily\fontsize{7.4}{9}\selectfont,text=ink] at (0.36,4.62) {$\Delta$};
+\draw[coral,line width=1.1pt] (0,0.08) -- (0,4.45);
+\node[font=\sffamily\fontsize{6.9}{8.2}\selectfont,text=ink,align=center] at (-1.05,2.60) {stable\\ spiral};
+\node[font=\sffamily\fontsize{6.9}{8.2}\selectfont,text=ink,align=center] at (1.05,2.60) {unstable\\ spiral};
+\node[font=\sffamily\fontsize{6.9}{8.2}\selectfont,text=ink] at (-3.00,0.62) {stable node};
+\node[font=\sffamily\fontsize{6.9}{8.2}\selectfont,text=ink] at (3.00,0.62) {unstable node};
+\node[font=\sffamily\fontsize{6.9}{8.2}\selectfont,text=ink] at (0,-0.92) {saddle: unstable for every $T$};
+\node[font=\sffamily\fontsize{6.4}{7.6}\selectfont,text=coral!80!ink] at (-2.45,4.02) {$T=0$: centre};
+\draw[coral!80!ink,-{Stealth[length=1.2mm]},line width=0.35pt] (-1.42,4.00) -- (-0.08,3.82);
+\node[font=\sffamily\fontsize{6.4}{7.6}\selectfont,text=emerald!75!ink,align=center] at (2.60,4.02) {$T^{2}=4\Delta$:\\ degenerate node};
+\draw[emerald!75!ink,-{Stealth[length=1.2mm]},line width=0.35pt] (2.40,3.58) -- (2.28,1.35);
+\node[font=\sffamily\fontsize{6.4}{7.6}\selectfont,text=ink!62] at (-2.60,-1.36) {$T<0$: contracting};
+\node[font=\sffamily\fontsize{6.4}{7.6}\selectfont,text=ink!62] at (2.60,-1.36) {$T>0$: expanding};
+\end{tikzpicture}
+\end{center}
+
+Three features of the picture deserve saying out loud. The parabola $T^{2}=4\Delta$ and the positive $\Delta$ axis are boundaries of measure zero, so the degenerate node and the centre are exactly the cases that an arbitrarily small perturbation of $A$ destroys. The lower half plane is entirely saddle, with no dependence on $T$ at all, because $\Delta<0$ forces one positive and one negative eigenvalue. And the vertical line $T=0$ separates contraction from expansion everywhere in the upper half plane, which is why $T<0$ together with $\Delta>0$ is the complete criterion for asymptotic stability in two dimensions.
+
+\tech[Trace determinant classification]{Equilibria and the trace-determinant classification}{core}
+\cue ``Classify the equilibrium'', ``is it stable'', ``sketch the phase portrait'', or any question about long-time behaviour of a planar linear system.
+\method Compute $T=\operatorname{tr}A$ and $\Delta=\det A$ and read the chart. If $\Delta<0$: saddle, unstable. If $\Delta>0$ and $T^{2}>4\Delta$: node, stable when $T<0$ and unstable when $T>0$. If $\Delta>0$ and $T^{2}<4\Delta$: spiral, stable when $T<0$ and unstable when $T>0$. If $\Delta>0$ and $T=0$: centre, with closed orbits and neutral stability. If $T^{2}=4\Delta$: degenerate or star node, stable when $T<0$. If $\Delta=0$ the matrix is singular and the equilibria form a line, which must be handled directly.
+
+\begin{worked}
+$A=\begin{pmatrix}-1&2\\-2&-1\end{pmatrix}$: $T=-2$, $\Delta=5$, $T^{2}-4\Delta=4-20=-16<0$, so a spiral, and $T<0$ makes it stable. This agrees with the explicit solution $\eu^{-t}(\cos2t,-\sin2t)^{T}$ found earlier.
+
+$A=\begin{pmatrix}1&1\\4&1\end{pmatrix}$: $\Delta=-3<0$, saddle, and no further computation is needed to know it is unstable.
+
+$A=\begin{pmatrix}3&-1\\1&1\end{pmatrix}$: $T=4$, $\Delta=4$, $T^{2}=4\Delta$ exactly, so a degenerate node, unstable since $T>0$. Note how the chart delivers all three verdicts from six multiplications, without an eigenvector in sight.
+\end{worked}
+
+\begin{worked}[Reading a parameter sweep off the chart]
+The mass-spring-damper $m\ddot x+c\dot x+kx=0$ has companion matrix with $T=-c/m$ and $\Delta=k/m$, both of which are fixed by the physics. Since $\Delta>0$ always and $T<0$ whenever there is any damping, the equilibrium is stable for every $c>0$; what the parameter changes is only which kind. The boundary $T^{2}=4\Delta$ reads $c^{2}/m^{2}=4k/m$, that is $c^{2}=4mk$, which is the classical critical damping. Take $m=1$ and $k=4$, so the critical value is $c=4$. Then $c=1$ gives $T^{2}-4\Delta=1-16<0$, a stable spiral (underdamped, the system rings); $c=5$ gives $25-16>0$, a stable node (overdamped, no ring at all); and $c=4$ sits exactly on the parabola, the degenerate node, which is critical damping and the fastest approach to rest without overshoot. A single trajectory in the $(T,\Delta)$ plane, moving leftward along the horizontal line $\Delta=4$ as $c$ increases, is the whole story of damping.
+\end{worked}
+
+\begin{trap}
+Applying the chart to a nonlinear system without linearising, and applying it to a \emph{nonzero} equilibrium of a linear system without first translating that equilibrium to the origin. For $\dot{\mathbf{x}}=A\mathbf{x}+\mathbf{b}$ with $\det A\ne0$ the equilibrium is $\mathbf{x}^{*}=-A^{-1}\mathbf{b}$, and the classification uses $A$, not the matrix of the affine map. The third habitual error is reading stability off $\Delta$: a large positive determinant with positive trace is an unstable spiral, not a stable one.
+\end{trap}
+
+\begin{seealsob}Linearising at an equilibrium; complex eigenvalues and the real form; the phase line for a scalar autonomous equation.\end{seealsob}
+
+The chart names the equilibrium. Drawing it takes three more observations, and they are worth practising until they are automatic. For a node or a saddle, the eigenvectors are invariant lines: a trajectory starting on one stays on it forever, moving outward if the corresponding eigenvalue is positive and inward if it is negative, so sketch those two lines first and let every other trajectory be asymptotic to them. For a node, the slower mode dominates as $t\to\infty$, so all trajectories except those on the fast line arrive tangent to the \emph{slow} eigenvector. For a spiral there are no invariant lines; get the sense of rotation by evaluating $A\mathbf{x}$ at a single convenient point, say $(1,0)^{T}$, and seeing whether the resulting velocity points up (counterclockwise) or down (clockwise).
+
+\begin{keynote}[Sketching a linear portrait in four strokes]
+One: compute $T$ and $\Delta$ and name the type. Two: if there are real eigenvalues, draw the eigenvector lines with arrows set by the sign of each $\lambda$. Three: if the eigenvalues are complex, evaluate the velocity at one point to fix the rotation sense, and choose the envelope from the sign of $T$. Four: fill in the remaining trajectories so that they never cross, are tangent to the slow direction at the origin for a node, and are asymptotic to the unstable direction at infinity for a saddle. The picture is then determined; there is nothing else to decide.
+\end{keynote}
+
+Now the claim that makes this chapter worth more than its linear content. Near an equilibrium $\mathbf{x}^{*}$ of a nonlinear field $\mathbf{F}$, Taylor's theorem gives $\mathbf{F}(\mathbf{x}^{*}+\mathbf{u})=D\mathbf{F}(\mathbf{x}^{*})\mathbf{u}+O(\norm{\mathbf{u}}^{2})$, so the deviation $\mathbf{u}$ obeys a linear system plus a remainder that is quadratically small. If the linear part is strongly hyperbolic (no eigenvalue on the imaginary axis), the remainder cannot change the verdict and the linear portrait is the local truth. If an eigenvalue sits on the imaginary axis, the remainder decides, and the linearisation tells you nothing.
+
+\tech{Linearising at an equilibrium}{core}
+\cue $\dot{\mathbf{x}}=\mathbf{F}(\mathbf{x})$ with $\mathbf{F}$ nonlinear, and a question about stability, classification, or a phase portrait.
+\method Find every equilibrium by solving $\mathbf{F}(\mathbf{x})=\mathbf{0}$, which is an algebraic system, usually by factoring each component. At each equilibrium evaluate the Jacobian
+\[J=D\mathbf{F}(\mathbf{x}^{*})=\begin{pmatrix}\pdv{F_1}{x}&\pdv{F_1}{y}\\[3pt]\pdv{F_2}{x}&\pdv{F_2}{y}\end{pmatrix}_{\mathbf{x}=\mathbf{x}^{*}}\]
+and classify $J$ by trace and determinant. The Hartman-Grobman theorem says that if no eigenvalue of $J$ has zero real part, the nonlinear portrait near $\mathbf{x}^{*}$ is a continuous deformation of the linear one: saddles stay saddles, stable nodes and spirals stay stable, unstable stay unstable. Nodes and spirals may swap with each other under perturbation, so the honest conclusion in a borderline node/spiral case is ``attracting'' rather than a specific shape.
+
+\begin{worked}
+Two competing species,
+\[\dot x=x(3-x-2y),\qquad \dot y=y(2-x-y).\]
+Equilibria: each factor may vanish, giving $(0,0)$, $(3,0)$, $(0,2)$, and the interior point where $3-x-2y=0$ and $2-x-y=0$, whose difference is $1-y=0$, so $(1,1)$. The Jacobian is
+\[J(x,y)=\begin{pmatrix}3-2x-2y&-2x\\-y&2-x-2y\end{pmatrix}.\]
+At $(0,0)$: $J=\operatorname{diag}(3,2)$, $T=5$, $\Delta=6$, $T^{2}-4\Delta=1>0$, an unstable node. At $(3,0)$: $J=\begin{pmatrix}-3&-6\\0&-1\end{pmatrix}$, eigenvalues $-3$ and $-1$, a stable node. At $(0,2)$: $J=\begin{pmatrix}-1&0\\-2&-2\end{pmatrix}$, eigenvalues $-1$ and $-2$, a stable node. At $(1,1)$: $J=\begin{pmatrix}-1&-2\\-1&-1\end{pmatrix}$, $\Delta=1-2=-1<0$, a saddle.
+
+The portrait is therefore bistable: the interior coexistence state is a saddle, and its stable manifold is a curve dividing the first quadrant into two basins. Runge-Kutta confirms it: starting at $(1.05,1)$ the orbit runs to $(3,0)$, starting at $(0.95,1)$ it runs to $(0,2)$, and the same split occurs for $(1,0.95)$ and $(1,1.05)$ with the destinations exchanged. A one-percent difference in initial abundance decides which species survives.
+\end{worked}
+
+\begin{worked}[When the inconclusive case can be settled]
+The undamped pendulum $\ddot\theta+\sin\theta=0$ becomes $\dot x=y$, $\dot y=-\sin x$ with $x=\theta$. Equilibria are $(n\pi,0)$, and
+\[J(x,y)=\begin{pmatrix}0&1\\-\cos x&0\end{pmatrix}.\]
+At $(\pi,0)$, $J=\begin{pmatrix}0&1\\1&0\end{pmatrix}$ has $\Delta=-1<0$: a saddle, and being hyperbolic the verdict is safe. The inverted pendulum really is unstable, and the two eigendirections $(1,\pm1)^{T}$ are the tangents to the trajectories that fall away from and creep toward the upright position.
+
+At $(0,0)$, $J=\begin{pmatrix}0&1\\-1&0\end{pmatrix}$ has $T=0$ and $\Delta=1$: a centre, and by the previous paragraph that is inconclusive. Here it can be settled, because the system has a conserved quantity. Set $E=\tfrac12y^{2}+1-\cos x$; then
+\[\dot E=y\dot y+\sin x\,\dot x=-y\sin x+y\sin x=0.\]
+$E$ has a strict local minimum at the origin, so the level curves near it are closed, and the origin is a genuine centre. Numerically, starting from $(0.4,0)$, $(2,0)$ and $(3,0)$, the value of $E$ is preserved to fourteen figures over $9$ units of time, which is the sort of check a conserved quantity makes cheap. The moral: linearisation raises the question, and structure (energy, a Lyapunov function, a polar computation) answers it.
+\end{worked}
+
+\begin{trap}
+Concluding ``centre'' because the Jacobian has purely imaginary eigenvalues. This is the one verdict linearisation cannot deliver. Take
+\[\dot x=-y+ax(x^{2}+y^{2}),\qquad \dot y=x+ay(x^{2}+y^{2}).\]
+For every $a$ the Jacobian at the origin is $\begin{pmatrix}0&-1\\1&0\end{pmatrix}$, a perfect centre. But in polar coordinates $\dot r=ar^{3}$ and $\dot\theta=1$, so the origin is an unstable spiral for $a>0$, a stable spiral for $a<0$, and a centre only for $a=0$. Starting at $r=0.2$, the exact solution $r(t)=\bigl(r_0^{-2}-2at\bigr)^{-1/2}$ gives $r(6)=0.229416$ for $a=\tfrac12$ and $r(6)=0.179605$ for $a=-\tfrac12$, both reproduced numerically. The linearisation is identical in all three cases. A centre in the linearisation is a licence to investigate, never a conclusion; look for a conserved quantity, a Lyapunov function, or a polar computation.
+\end{trap}
+
+\begin{seealsob}The trace-determinant classification; direction fields, isoclines, and nullclines; the phase line for a scalar autonomous equation.\end{seealsob}
+
+Linearisation is local by construction, and a phase portrait is a global object. The bridge is the nullcline picture. For a planar system, the curves $F_1=0$ and $F_2=0$ are where the velocity is purely vertical and purely horizontal respectively; they intersect exactly at the equilibria, and they cut the plane into regions in which the pair of signs $(\sgn F_1,\sgn F_2)$ is constant, so the velocity lies in a fixed quadrant of directions. Draw those regions, mark each with its arrow quadrant, and the global flow is visible without solving anything. In the competing-species example the nullclines are the two lines $x+2y=3$ and $x+y=2$ together with the axes, and the four regions they cut from the first quadrant are exactly what forces every orbit to one of the two stable nodes.
+
+That construction also supplies trapping regions. If every arrow on the boundary of a bounded region points inward, no trajectory can leave, and in the plane the Poincare-Bendixson theorem then guarantees that whatever is inside is an equilibrium or a closed orbit. This is the standard route to proving that a limit cycle exists, and it is purely qualitative: no formula for the cycle is produced or needed.
+
+\section{One dimension, and no dimensions at all}
+
+Below the plane the geometry collapses to something even easier. A scalar autonomous equation $\dot y=f(y)$ has a one-dimensional state space, trajectories can only move left or right along it, and they cannot pass an equilibrium because uniqueness forbids two solutions through the same point. So the entire qualitative theory is the sign chart of $f$, and monotonicity is automatic: a solution of an autonomous scalar equation is monotone on its whole interval of existence. Nothing oscillates in one dimension.
+
+\tech[Phase line for a scalar autonomous equation]{The phase line for $\dot y=f(y)$}{easy}
+\cue $\dot y=f(y)$ with no explicit $t$, and a question about long-time limits, monotonicity, the number of equilibria, or which equilibrium a given initial value runs to.
+\method Mark the zeros of $f$ on a line. On each interval between consecutive zeros the sign of $f$ is constant and gives the direction of motion: rightward where $f>0$, leftward where $f<0$. An equilibrium $y^{*}$ is asymptotically stable if $f'(y^{*})<0$ and unstable if $f'(y^{*})>0$. If $f'(y^{*})=0$ the test is silent and you must read the sign of $f$ on the two sides; equal signs mean semi-stable.
+
+\begin{worked}
+$\dot y=y^{3}-4y=y(y-2)(y+2)$. Equilibria $-2,0,2$; $f'(y)=3y^{2}-4$, so $f'(0)=-4<0$ (stable) and $f'(\pm2)=8>0$ (both unstable). The sign chart confirms it: $f<0$ on $(-\infty,-2)$ and on $(0,2)$, $f>0$ on $(-2,0)$ and on $(2,\infty)$. Every initial value in $(-2,2)$ decays to $0$; anything outside runs to $\pm\infty$, and in fact in finite time, since $\dot y\sim y^{3}$ there. Numerically, $y(0)=2.1$ blows up before $t=0.3$ while $y(0)=1.9$ has fallen to $3.7\times10^{-5}$ by $t=3$.
+
+$\dot y=y^{2}(1-y)$. Equilibria $0$ (a double zero) and $1$. At $y=1$, $f'(1)=2-3=-1<0$, stable. At $y=0$ the derivative test is silent, and the sign of $f$ is positive on both sides, so the flow crosses $0$ upward: $0$ is semi-stable, attracting from below and repelling above. Numerically, $y(0)=-0.4$ creeps toward $0$ from below while $y(0)=0.3$, $y(0)=0.9$ and $y(0)=1.4$ all converge to $1$.
+\end{worked}
+
+\begin{trap}
+Reading $f'(y^{*})=0$ as evidence of stability. It is evidence of nothing. Both $\dot y=-y^{3}$ (stable at $0$) and $\dot y=y^{3}$ (unstable at $0$) and $\dot y=y^{2}$ (semi-stable at $0$) have $f'(0)=0$; only the sign chart separates them. A second and worse error is concluding that a solution which increases toward an equilibrium reaches it: it never does in finite time when the equilibrium is hyperbolic, since uniqueness forbids two solutions through $y^{*}$.
+\end{trap}
+
+\begin{seealsob}Direction fields, isoclines, and nullclines; autonomous recognition; the trace-determinant classification.\end{seealsob}
+
+One thing the phase line makes visible that a formula hides: how the answer changes when a parameter moves. In $\dot y=ry-y^{3}$ the equilibria are $y=0$ for every $r$, together with $y=\pm\sqrt r$ when $r>0$. For $r<0$ the only equilibrium is $0$ and $f'(0)=r<0$ makes it stable. As $r$ passes through zero the stability of $0$ flips and two new stable equilibria appear on either side. Nothing in the algebra is difficult; what matters is that the qualitative answer changed at a single value of the parameter, and that the value is exactly where the linear test went silent. Parameters worth studying are the ones that make $f'(y^{*})$ vanish, which is another reason to compute that derivative even when the sign chart has already settled the question.
+
+When the equation is not autonomous the state space is the $(x,y)$ plane again, but now $x$ is the independent variable and the picture is a field of slopes rather than a field of velocities. The tools are the same in spirit: find the curves along which the slope is constant, and let uniqueness do the rest.
+
+\tech{Direction fields, isoclines, and nullclines}{easy}
+\cue ``Sketch the solution curves'', ``describe the behaviour as $x\to\infty$'', or any qualitative question about $y'=f(x,y)$ where no closed form is available or wanted.
+\method Draw the isoclines $f(x,y)=k$ for a few values of $k$; along each, every slope element has the same slope $k$. The nullcline $k=0$ separates regions where solutions increase from regions where they decrease, and is where solution curves have horizontal tangents. Where $f$ blows up, tangents are vertical. Then use uniqueness: wherever the hypotheses of the existence theorem hold, distinct solution curves never meet, so any special solution you can find acts as a barrier that no other solution can cross.
+
+\begin{worked}
+$y'=y-x^{2}$. The isoclines $y=x^{2}+k$ are congruent upward parabolas, and along $y=x^{2}$ every tangent is horizontal. This equation is linear, so we can name the barrier exactly: $y=C\eu^{x}+x^{2}+2x+2$, and the choice $C=0$ gives the parabola $y=x^{2}+2x+2$. Solutions above it have $C>0$ and are swept up to $+\infty$; solutions below have $C<0$ and are swept down. Starting from $y(0)=2$ (which is $C=0$) the numerical solution reaches $7.25$ at $x=1.5$, exactly $1.5^{2}+3+2$; starting from $y(0)=2.1$ it reaches $19.0086$ at $x=3$ against the predicted $0.1\eu^{3}+17$; starting from $y(0)=1.9$ it reaches $14.9914$ against $-0.1\eu^{3}+17$. The sketch and the formula agree.
+
+$y'=x^{2}+y^{2}$, $y(0)=1$. The isoclines are the circles $x^{2}+y^{2}=k$, every slope is nonnegative, and the slope grows at least like $y^{2}$, so comparison with $y'=y^{2}$ predicts blow-up in finite time. Numerically the solution passes $5.85$ at $x=0.8$, $14.3$ at $x=0.9$, and diverges near $x\approx0.97$.
+\end{worked}
+
+\begin{worked}[The planar version: nullclines and arrow quadrants]
+Return to the competing species $\dot x=x(3-x-2y)$, $\dot y=y(2-x-y)$ and sketch the first quadrant without solving anything. The $x$-nullclines (where $\dot x=0$) are the line $x=0$ and the line $x+2y=3$; the $y$-nullclines are $y=0$ and $x+y=2$. The two slanted lines cross at $(1,1)$. Inside the triangle nearest the origin both brackets are positive, so both populations grow and the arrows point up and to the right. Cross $x+2y=3$ and $\dot x$ turns negative while $\dot y$ is still positive: arrows point up and to the left, driving the state toward $(0,2)$. Cross $x+y=2$ instead and the arrows point down and to the right, driving it toward $(3,0)$. Beyond both lines everything decreases. Four regions, four arrow quadrants, and the bistable picture is complete before a single trajectory is drawn. On a nullcline the arrows are exactly vertical or exactly horizontal, which is what makes the boundaries easy to draw correctly.
+\end{worked}
+
+\begin{trap}
+Sketching solution curves that cross. Where $f$ and $\pdv{f}{y}$ are continuous, two distinct solutions cannot meet, so a crossing in your picture is a proof that the picture is wrong. The related failure is drawing a solution that passes through an equilibrium of an autonomous equation, or through the nullcline transversally when the nullcline is itself a solution. Check whether the nullcline satisfies the equation before letting curves cross it: for $y'=y-x^{2}$ the nullcline $y=x^{2}$ is \emph{not} a solution and may be crossed, while for $y'=(y-x)^{2}$ the line $y=x$ is not a solution either but $y=x-1$ is.
+\end{trap}
+
+\begin{seealsob}The phase line for a scalar autonomous equation; Picard-Lindelof: when a unique solution is guaranteed; Euler's method and step-by-step numerical integration.\end{seealsob}
+
+The trapping-region idea deserves its standard example, because it is the one case where qualitative technique produces a result that no formula can. Van der Pol's equation $\ddot x-\mu(1-x^{2})\dot x+x=0$ with $\mu>0$ has, at the origin, the Jacobian $\begin{pmatrix}0&1\\-1&\mu\end{pmatrix}$ with $T=\mu>0$ and $\Delta=1$: an unstable spiral for $0<\mu<2$ and an unstable node beyond. So trajectories are pushed away from the origin. But for $\abs{x}>1$ the coefficient $-\mu(1-x^{2})$ is a positive damping, so large orbits lose energy and are pushed back inward. Nothing can escape and nothing can rest, and Poincare-Bendixson then forces the existence of a closed orbit. Numerically, for $\mu=1$, trajectories started at $x=0.05$ and at $x=3$ both settle onto the same cycle with $\max\abs{x}=2.00862$; the cycle has no closed form, and the argument that it exists never needed one.
+
+\section{When nothing closes}
+
+Qualitative technique tells you where a solution goes; it does not tell you what it is at $x=1$. When a number is wanted and no closed form exists, the remaining option is to march. The point of including a numerical method in a book about structure is that the arithmetic is trivial and the accounting is not: almost every error in a hand-computed Euler table is a bookkeeping error about which argument goes where.
+
+\tech{Euler's method and step-by-step numerical integration}{medium}
+\cue No closed form, or an explicit instruction to use a step size $h$, or a request for a value of the solution rather than a formula.
+\method Euler's method is the tangent line applied repeatedly:
+\[y_{k+1}=y_k+h\,f(x_k,y_k),\qquad x_{k+1}=x_k+h.\]
+Both arguments of $f$ are the \emph{current} point. Local truncation error is $O(h^{2})$ and global error is $O(h)$, so halving $h$ halves the error, which is poor. The classical fourth-order Runge-Kutta method, with $k_1=f(x_k,y_k)$, $k_2=f(x_k+\tfrac h2,y_k+\tfrac h2k_1)$, $k_3=f(x_k+\tfrac h2,y_k+\tfrac h2k_2)$, $k_4=f(x_k+h,y_k+hk_3)$ and $y_{k+1}=y_k+\tfrac h6(k_1+2k_2+2k_3+k_4)$, has global error $O(h^{4})$ at four function evaluations per step, and is the default worth remembering.
+
+\begin{worked}
+$y'=\dfrac{1}{3+3x+x^{2}}$, $y(0)=1$, $h=\tfrac1{10}$, in exact rationals. First step: $f(0,1)=\tfrac13$, so
+\[y_1=1+\tfrac1{10}\cdot\tfrac13=\tfrac{31}{30}.\]
+Second step: $f(\tfrac1{10},y_1)=\dfrac{1}{3+\tfrac3{10}+\tfrac1{100}}=\dfrac{100}{331}$, so
+\[y_2=\frac{31}{30}+\frac1{10}\cdot\frac{100}{331}=\frac{31}{30}+\frac{10}{331}=\frac{10561}{9930},\]
+already in lowest terms, since $9930=2\cdot3\cdot5\cdot331$ and $10561$ is divisible by none of those.
+
+How good is it? Here the right side depends on $x$ only, so the exact solution is available: completing the square, $x^{2}+3x+3=(x+\tfrac32)^{2}+\tfrac34$, and
+\[y(1)=1+\frac{2}{\sqrt3}\left(\arctan\frac{5}{\sqrt3}-\frac{\pi}{3}\right)=1.219538.\]
+Ten Euler steps of size $0.1$ give $1.229255$. Halving the step repeatedly makes the order visible:
+\begin{center}
+\footnotesize
+\setlength{\tabcolsep}{7pt}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{@{}llll@{}}
+\toprule
+\mh{$h$} & \mh{Euler $y(1)$} & \mh{Error} & \mh{Ratio} \\
+\midrule
+$0.1$ & $1.2292546$ & $9.72\times10^{-3}$ & \\
+$0.05$ & $1.2243482$ & $4.81\times10^{-3}$ & $2.02$ \\
+$0.025$ & $1.2219311$ & $2.39\times10^{-3}$ & $2.01$ \\
+$0.0125$ & $1.2207316$ & $1.19\times10^{-3}$ & $2.01$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+The error halves when the step halves, which is global order one made visible. Runge-Kutta with $h=0.1$ gives $1.2195381549$, an error of $1.8\times10^{-8}$, and with $h=0.05$ it gives $1.2195381377$, an error of $1.1\times10^{-9}$: a factor of $16$ for a halving, which is order four. Ten steps of RK4 beat ten thousand steps of Euler on this problem.
+\end{worked}
+
+\begin{trap}
+Using $f(x_{k+1},y_k)$, a hybrid that is neither Euler nor anything else, or switching to decimals partway through a problem that asks for an exact fraction. In the example above, evaluating $f$ at $x_1$ but with $y_0$ would be invisible here (since $f$ does not depend on $y$) and catastrophic in general. The structural trap is different: Euler applied to a stiff equation such as $\dot y=-100y$ is unstable unless $h<0.02$, and produces oscillating garbage rather than an obviously wrong number. If successive values alternate in sign and grow, the step size is the problem, not the arithmetic.
+\end{trap}
+
+\begin{seealsob}Direction fields, isoclines, and nullclines; reducing a scalar equation to a first-order system; interval of validity and finite-time blow-up.\end{seealsob}
+
+A numerical solution answers a quantitative question and can suggest a qualitative one, but it certifies nothing on its own. It cannot distinguish a slow spiral from a centre, because both look like a closed curve over any finite time; it cannot distinguish a trajectory that converges to an equilibrium from one that passes very close and leaves later; and near a saddle it is unreliable in the worst way, since the unstable direction amplifies rounding error at exactly the rate that the true solution amplifies real perturbations. Use it to check a formula you have derived, to explore before you conjecture, and to produce numbers. Do not use it to decide stability. That is what the trace, the determinant and the conserved quantities are for.
+
+\begin{keynote}[The order of operations for a system]
+Given $\dot{\mathbf{x}}=\mathbf{F}(\mathbf{x})$, do these in order and stop when the question is answered. One: is $\mathbf{F}$ linear? If not, solve $\mathbf{F}=\mathbf{0}$ for the equilibria and linearise at each. Two: for each matrix, compute $T$ and $\Delta$ and read the chart, which costs six multiplications. Three: only if a formula is wanted, find eigenvectors and assemble modes. Four: if an eigenvalue of a Jacobian is purely imaginary, discard the linear verdict and look for a conserved quantity. Most exam questions are answered at step two, and most wrong answers come from starting at step three.
+\end{keynote}
+
+Two habits close the chapter. First, name the equilibrium before you solve for anything, because the name is cheap and it tells you what the formula must look like: a saddle must produce one growing and one decaying exponential, a stable spiral must produce $\eu^{\alpha t}$ times a sinusoid with $\alpha<0$, and a formula that disagrees with the chart contains an arithmetic error. Second, when a problem hands you a nonlinear system and asks for a sketch, resist the urge to find trajectories. Find the equilibria, linearise, draw the nullclines, mark the arrow quadrants, and only then draw curves. The picture assembled that way is correct by construction; a picture assembled from guessed trajectories is usually wrong in a way that is invisible until someone asks what happens near the third equilibrium.
+
+\section{Recognition matrix}
+\begin{recog}{@{}p{0.31\textwidth}p{0.35\textwidth}p{0.28\textwidth}@{}}
+\rowcolor{mist}\mh{If you see} & \mh{Reach for} & \mh{If that fails} \\
+\midrule
+\endhead
+$\dot{\mathbf{x}}=A\mathbf{x}$, $A$ constant & Eigenvalues from $\lambda^{2}-T\lambda+\Delta=0$ & Matrix exponential $\eu^{At}$ \\
+Two coupled linear equations & Write as a matrix; same method & Eliminate one unknown, get order two \\
+$T^{2}-4\Delta<0$ & Complex pair; take real and imaginary parts of one mode & Convert to polar; spiral of rate $\beta$ \\
+$T^{2}-4\Delta=0$, $A\ne\lambda I$ & Defective: solve $(A-\lambda I)\mathbf{w}=\mathbf{v}$ & Jordan form, or $\eu^{\lambda t}(I+Nt)$ \\
+$\Delta<0$ & Saddle, unstable; stop & Find the two invariant lines \\
+$\Delta>0$, $T<0$, $T^{2}>4\Delta$ & Stable node; both modes decay & Compare the two decay rates \\
+$T=0<\Delta$ in a linear system & Centre; closed orbits & Conserved quantity confirms it \\
+$T=0<\Delta$ from a Jacobian & Inconclusive; do not conclude centre & Polar form, Lyapunov function \\
+$\dot{\mathbf{x}}=\mathbf{F}(\mathbf{x})$, $\mathbf{F}$ nonlinear & Solve $\mathbf{F}=\mathbf{0}$, then Jacobian at each root & Nullclines and trapping regions \\
+Equilibria hard to solve & Factor each component separately & Intersect the nullcline curves \\
+$\dot{\mathbf{x}}=A\mathbf{x}+\mathbf{b}$, $\mathbf{b}$ constant & Shift to $\mathbf{x}^{*}=-A^{-1}\mathbf{b}$; classify $A$ & $\Delta=0$: a whole line of equilibria \\
+$\dot{\mathbf{x}}=A\mathbf{x}+\mathbf{g}(t)$ & Duhamel: $\eu^{At}\mathbf{x}_0+\int_0^{t}\eu^{A(t-s)}\mathbf{g}(s)\dd s$ & $\Phi(t)\int\Phi^{-1}(s)\mathbf{g}(s)\dd s$ \\
+$\mathbf{g}$ piecewise or impulsive & Laplace transform the system & Duhamel with a step in the integrand \\
+Scalar equation, order $n$ & $x_i=y^{(i-1)}$; companion matrix & Characteristic polynomial is unchanged \\
+$\dot y=f(y)$, no explicit $t$ & Phase line: zeros of $f$, then signs & Separate variables for a formula \\
+$f'(y^{*})<0$ & Asymptotically stable & $f'(y^{*})=0$: read signs on both sides \\
+$f'(y^{*})=0$ & Semi-stable if $f$ has equal signs & Higher-order term decides \\
+$y'=f(x,y)$, sketch wanted & Isoclines $f=k$; nullcline $f=0$ & Special solutions act as barriers \\
+Solution curves appear to cross & The sketch is wrong; uniqueness forbids it & Check $\pdv{f}{y}$ is continuous there \\
+$y'\ge cy^{2}$ for large $y$ & Finite-time blow-up; find the interval & Comparison with a separable equation \\
+``Use step size $h$'' & Euler: $y_{k+1}=y_k+hf(x_k,y_k)$ & RK4 if accuracy matters \\
+Numerical values alternating and growing & Stiffness; shrink $h$ or go implicit & Eigenvalue of large negative real part \\
+\end{recog}

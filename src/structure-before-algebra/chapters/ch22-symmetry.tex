@@ -1,0 +1,525 @@
+\chapter{Symmetry and transformation of definite integrals}
+
+\begin{orient}
+\textbf{What this chapter is for.} A definite integral is not an antiderivative evaluated at two points. It is a number attached to a function \emph{and} an interval, and the pairing carries information that the antiderivative alone does not have. Symmetry is how you extract that information, and the extraction is often complete: many of the integrals in this chapter have no elementary antiderivative and yet have a one-line exact value. The master move is always the same. Write the integral a second time under a substitution that maps the interval to itself, then add the two expressions or subtract them. If the substitution sends the integrand to its own negative, the sum is zero. If it sends the integrand to a constant minus itself, the sum is a rectangle. If it merely permutes the pieces, you have halved the work. This chapter works through the standard involutions in order of how often they pay: parity on $[-a,a]$, reflection $x\mapsto a+b-x$ on any interval, the sine and cosine exchange on $[0,\tfrac{\pi}{2}]$, translation by a period, splitting at a sign change, and $x\mapsto1/x$ on $(0,\infty)$ with its powerful specialisation, Glasser's master theorem. Running through all of them is one structural fact worth stating at the outset: when a symmetry argument closes, the answer very often does not depend on a parameter that looked essential to the problem, and noticing that in advance is a reliable way to tell that a symmetry argument is the intended route.
+\end{orient}
+
+\section{The fold}
+
+Every technique in this chapter is an instance of one manoeuvre. Let $\varphi:[a,b]\to[a,b]$ be a substitution mapping the interval onto itself. Then
+\[I=\int_a^bf(x)\dd x=\int_a^bf(\varphi(x))\abs{\varphi'(x)}\dd x,\]
+and adding the two expressions gives $2I=\int_a^b\bigl[f(x)+f(\varphi(x))\abs{\varphi'(x)}\bigr]\dd x$. Call this the \emph{fold}. It is worth nothing at all unless the bracket is simpler than $f$, and the entire skill of this chapter is recognising in advance when it will be. There are only a few $\varphi$ worth trying, because there are only a few natural involutions of an interval: $x\mapsto-x$ and $x\mapsto a+b-x$ on a finite interval, $x\mapsto x+T$ on a periodic domain, and $x\mapsto1/x$ or $x\mapsto a/x$ on $(0,\infty)$.
+
+Three outcomes are worth naming. If the bracket is identically zero, $I=0$ and you have finished before starting. If the bracket is a constant $c$, then $I=\tfrac{c(b-a)}{2}$, a rectangle, again with no antiderivative anywhere in sight. If the bracket is merely a nicer function than $f$, you have traded an integral for an easier one, which is the ordinary case: King's rule usually lands here, converting $x\,K(x)$ into $\tfrac{a+b}{2}K(x)$.
+
+\begin{keynote}[The parameter that does not matter]
+When a fold closes, the resulting answer is a functional of the \emph{symmetry}, not of the integrand. That is why $\int_0^{\pi/2}\dfrac{\dd x}{1+\tan^{p}x}=\dfrac{\pi}{4}$ for every $p$, why $\int_0^{\infty}\dfrac{\dd x}{(1+x^{2})(1+x^{a})}=\dfrac{\pi}{4}$ for every real $a$, and why $\int_0^{\infty}\dfrac{x^{2}\dd x}{x^{4}-(2c-1)x^{2}+c^{2}}=\dfrac{\pi}{2}$ for every $c>0$. Turn the observation around and use it diagnostically: if a problem carries a parameter that appears nowhere in the requested answer, or an exponent chosen to look deliberately absurd, a fold is being asked for. Conversely, if you produce an answer that still contains the decorative parameter, you have not used the symmetry.
+\end{keynote}
+
+The candidate maps are few enough to tabulate, and the table is the working checklist for the rest of the chapter. Column three is the only one that requires thought.
+
+\begin{center}
+\footnotesize
+\setlength{\tabcolsep}{5pt}
+\renewcommand{\arraystretch}{1.32}
+\begin{tabular}{@{}llll@{}}
+\toprule
+\mh{Domain} & \mh{Map $\varphi$} & \mh{$\abs{\varphi'}$} & \mh{Test the fold on} \\
+\midrule
+$[-a,a]$ & $x\mapsto-x$ & $1$ & $f(x)+f(-x)$: parity \\
+$[a,b]$ & $x\mapsto a+b-x$ & $1$ & $f(x)+f(a+b-x)$: constant? \\
+$[0,\tfrac{\pi}{2}]$ & $x\mapsto\tfrac{\pi}{2}-x$ & $1$ & $\sin\leftrightarrow\cos$, $\tan\leftrightarrow\cot$ \\
+Period $T$ & $x\mapsto x+\tfrac{T}{2}$ & $1$ & $f(x)+f(x+\tfrac T2)$ \\
+$(0,\infty)$ & $x\mapsto\tfrac1x$ & $\tfrac{1}{x^{2}}$ & $f(x)+\tfrac{1}{x^{2}}f(\tfrac1x)$ \\
+$(0,\infty)$ & $x\mapsto\tfrac ax$ & $\tfrac{a}{x^{2}}$ & Glasser: $u=x-\tfrac ax$ \\
+$(0,\infty)$ & $x\mapsto\lambda x$ & $\lambda$ & Scale invariance of $\tfrac{\dd x}{x}$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The last row is not an involution, and it is included because scaling is the one transformation of the half-line that is not self-inverse yet still produces exact answers, by generating a one-parameter family from a single known value rather than by folding.
+
+\section{Parity, and how to expose it}
+
+Parity is the cheapest symmetry and the first thing to test. It is also the one most often present in disguise, because a problem designed around parity will rarely hand you the interval $[-a,a]$ centred where you need it, and will rarely present the integrand already factored into pieces of definite parity.
+
+\tech{Even and odd parity on a symmetric interval}{core}
+\cue Bounds $[-a,a]$, and an integrand that factors into pieces each of which is visibly even or visibly odd. The characteristic decoration is a high odd power multiplied by an even weight such as $\sqrt{a^{2}-x^{2}}$ or $\eu^{-x^{2}}$, put there to make the integral look laborious.
+\method Classify every factor as even, odd, or neither. The product of two odds is even, odd times even is odd. Then
+\[\int_{-a}^{a}f_{\text{odd}}(x)\dd x=0,\qquad \int_{-a}^{a}f_{\text{even}}(x)\dd x=2\int_0^{a}f_{\text{even}}(x)\dd x.\]
+Discard the odd part before computing anything. When the integrand is a sum, split it first: the two halves have independent parities and only the even half survives.
+
+\begin{worked}
+\[\int_{-2}^{2}\Bigl(x^{3}\cos\tfrac{x}{2}+\tfrac12\Bigr)\sqrt{4-x^{2}}\dd x.\]
+The weight $\sqrt{4-x^{2}}$ is even. In the bracket, $x^{3}\cos\tfrac x2$ is odd times even, hence odd, so its product with the weight is odd and contributes nothing. Only the constant $\tfrac12$ survives:
+\[\frac12\int_{-2}^{2}\sqrt{4-x^{2}}\dd x=\frac12\cdot\frac{\pi\cdot2^{2}}{2}=\pi.\]
+The remaining integral is the area of a semicircle of radius $2$, read off geometrically rather than computed. Total: $\pi\approx3.141593$. Every symbol in $x^{3}\cos\tfrac x2$ was decoration.
+\end{worked}
+
+\begin{trap}
+The odd part must be \emph{separately integrable} for the cancellation to be legitimate. If it has a non-integrable singularity at an interior point, the two halves are $+\infty$ and $-\infty$ and their difference is a principal value, not zero: $\int_{-1}^{1}\tfrac{\dd x}{x}$ does not equal $0$, it does not exist. Separately, watch the functions that break naive parity bookkeeping: $\abs{x}$ is even but not smooth, $x^{2/3}$ is even while $x^{1/3}$ is odd, and a real cube root implemented as $\exp(\tfrac13\ln x)$ is not defined for $x<0$ at all.
+\end{trap}
+
+\begin{keynote}[The parity of the building blocks]
+Worth having by heart, because parity of a product is decided factor by factor and a single misclassification flips the answer. Even: $\cos$, $\cosh$, $\sech$, $\abs{x}$, $x^{2k}$, $\eu^{-x^{2}}$, $\ln\abs{x}$, and any $g(x^{2})$. Odd: $\sin$, $\sinh$, $\tan$, $\arctan$, $\operatorname{arsinh}$, $\sgn$, $x^{2k+1}$, and $\ln\bigl(\tfrac{1+x}{1-x}\bigr)$. Neither, and therefore the factors that destroy an otherwise clean argument: $\eu^{x}$, $\tfrac{1}{1+\eu^{x}}$, $\arccos$, and every polynomial with both even and odd terms. Note that $\eu^{x}$ is not merely ``not odd''; it is the standard way a problem is disguised, since $\eu^{x}=\cosh x+\sinh x$ splits into an even and an odd part, and only one of them survives the integration.
+\end{keynote}
+
+\begin{seealsob}Recentring to expose parity; disguised zero; splitting at a sign change; Cauchy principal value.\end{seealsob}
+
+Parity as stated needs the interval centred at the origin, and problems are rarely so obliging. But the fold does not care where the centre is: any interval $[a,b]$ has a midpoint, and translating it to the origin costs one substitution. Making that translation a reflex is what turns parity from an occasional gift into a routine test.
+
+\tech{Recentring to expose parity}{easy}
+\cue An interval $[a,b]$ whose midpoint $m=\tfrac{a+b}{2}$ appears somewhere in the integrand, or an integrand built out of $x-m$, or a trigonometric integrand on $[0,\pi]$ where the natural centre is $\pi/2$.
+\method Substitute $t=x-m$, which sends $[a,b]$ to $[-h,h]$ with $h=\tfrac{b-a}{2}$, and then test parity in $t$. The useful trigonometric instance is $t=x-\tfrac{\pi}{2}$ on $[0,\pi]$, under which $\sin x=\cos t$ (even) and $\cos x=-\sin t$ (odd), so every trigonometric integrand on $[0,\pi]$ has a definite parity about the midpoint as soon as you write it in $t$.
+
+\begin{worked}
+\[\int_0^{2}\ln\!\Bigl(\frac{x}{2-x}\Bigr)\dd x.\]
+The midpoint is $1$; put $t=x-1$, so the integrand becomes $\ln\dfrac{1+t}{1-t}$ on $[-1,1]$. That is odd in $t$, and it is integrable at both endpoints because $\ln$ has an integrable singularity. Hence the integral is $0$. The two endpoint singularities are genuine but harmless, and the answer required no antiderivative.
+
+A second, purely trigonometric instance: $\int_0^{\pi}\sin^{3}x\cos x\dd x$. With $t=x-\tfrac{\pi}{2}$ the integrand is $\cos^{3}t\cdot(-\sin t)$, odd, so the value is $0$. Confirmed by the antiderivative $\tfrac14\sin^{4}x$, which returns to $0$ at $x=\pi$.
+\end{worked}
+
+\begin{trap}
+Recentring and then testing parity in the \emph{old} variable. After $t=x-1$ the question is whether $f(1+t)$ is odd in $t$, which is the statement $f(1+t)=-f(1-t)$, not $f(-x)=-f(x)$. Write the substituted integrand out in full before judging it; the shape of the original is not evidence.
+\end{trap}
+
+\begin{seealsob}Even and odd parity on a symmetric interval; King's rule; splitting at a sign change.\end{seealsob}
+
+\section{Reflection}
+
+Parity is the special case of reflection where the fixed constant happens to be zero. The general reflection $x\mapsto a+b-x$ maps $[a,b]$ to itself for every $a$ and $b$, has Jacobian of absolute value $1$, and requires nothing of the integrand at all. It is therefore always available, which makes it the single most useful move in this chapter and also the one most often applied without checking that it helps.
+
+\tech[Kings rule]{King's rule, $x\mapsto a+b-x$}{core}
+\cue A definite integral on $[a,b]$ carrying a stray linear factor $x$ against a kernel that looks reflection-invariant, or a quotient whose numerator and denominator swap under the reflection. Most often the interval is $[0,\pi]$, $[0,1]$, or $[0,\tfrac{\pi}{2}]$.
+\method The identity is free:
+\[\int_a^bf(x)\dd x=\int_a^bf(a+b-x)\dd x.\]
+Add the two forms. The productive special case: if the kernel satisfies $K(a+b-x)=K(x)$, then
+\[\int_a^bxK(x)\dd x=\frac{a+b}{2}\int_a^bK(x)\dd x,\]
+because $x+(a+b-x)=a+b$ is constant. The linear weight is replaced by the midpoint. This is the whole content of King's rule in its commonest use: it removes an $x$ that had no business being there.
+
+\begin{worked}
+\[I=\int_0^{\pi}\frac{x\sin x}{1+\cos^{2}x}\dd x.\]
+The kernel is $K(x)=\dfrac{\sin x}{1+\cos^{2}x}$. Check invariance: $\sin(\pi-x)=\sin x$ and $\cos^{2}(\pi-x)=\cos^{2}x$, so $K(\pi-x)=K(x)$ and the rule applies with $a+b=\pi$:
+\[I=\frac{\pi}{2}\int_0^{\pi}\frac{\sin x}{1+\cos^{2}x}\dd x=\frac{\pi}{2}\Bigl[-\arctan(\cos x)\Bigr]_0^{\pi}=\frac{\pi}{2}\Bigl(\frac{\pi}{4}+\frac{\pi}{4}\Bigr)=\frac{\pi^{2}}{4}\approx2.467401.\]
+Without the rule you would be integrating $x\sin x/(1+\cos^{2}x)$ by parts and meeting a dilogarithm.
+\end{worked}
+
+\begin{worked}[The same move on a rational integrand]
+\[\int_0^{\pi}\frac{x}{1+\sin x}\dd x.\]
+Again $\sin(\pi-x)=\sin x$, so the kernel is invariant and $I=\tfrac{\pi}{2}\int_0^{\pi}\tfrac{\dd x}{1+\sin x}$. The remaining integral yields to $t=\tan\tfrac x2$: it becomes $\int_0^{\infty}\tfrac{2\dd t}{(1+t)^{2}}=2$. Hence $I=\pi\approx3.141593$.
+\end{worked}
+
+\begin{trap}
+Assuming the kernel is invariant without testing it on the actual denominator. $\cos^{2}\tfrac{x}{2}$ is \emph{not} invariant under $x\mapsto\pi-x$: it becomes $\sin^{2}\tfrac x2$. Reflecting anyway produces a clean-looking wrong answer, which is worse than a mess. Substitute $\pi-x$ into the denominator symbol by symbol and simplify before you commit.
+\end{trap}
+
+\begin{seealsob}Constant-sum reflection; complementary sine and cosine; mirror symmetry about an interior point; recentring to expose parity.\end{seealsob}
+
+King's rule as stated needs an invariant kernel and a linear weight. The richer family is the one where the integrand and its reflection are not equal but \emph{sum to a constant}. Then the fold gives the answer outright, with no residual integral of any kind, and this is where the parameter-independence phenomenon is most spectacular.
+
+\tech[Constant-sum reflection]{Constant-sum reflection, $f(x)+f(a+b-x)=c$}{core}
+\cue A quotient $\dfrac{g(x)}{g(x)+\tilde g(x)}$ where the reflection swaps $g$ and $\tilde g$; a denominator of the form $1+\varphi(x)$ where $\varphi(x)\varphi(a+b-x)=1$; the Fermi weight $\dfrac{1}{1+\eu^{x}}$ or $\dfrac{1}{1+b^{x}}$ on an interval symmetric about the point where the exponent vanishes.
+\method If $f(x)+f(a+b-x)=c$ identically on $[a,b]$, then folding gives $2I=c(b-a)$, so
+\[\int_a^bf(x)\dd x=\frac{c(b-a)}{2}.\]
+No antiderivative is needed and none may exist. The Fermi instance is worth memorising in its own right: since $\dfrac{1}{1+\eu^{x}}+\dfrac{1}{1+\eu^{-x}}=1$,
+\[\int_{-a}^{a}\frac{g(x)}{1+\eu^{x}}\dd x=\int_0^{a}g(x)\dd x\quad\text{for even }g,\]
+which converts a two-sided integral with an ugly weight into a one-sided integral with no weight at all.
+
+\begin{worked}
+\[\int_1^{3}\frac{\sqrt{x}}{\sqrt{x}+\sqrt{4-x}}\dd x.\]
+Here $a+b=4$, and reflection sends $\sqrt x\mapsto\sqrt{4-x}$, so $f(x)+f(4-x)=1$ identically. Hence $I=\tfrac{1\cdot(3-1)}{2}=1$ exactly. The integrand is not elementary in any useful sense; the answer is a rectangle.
+
+The Fermi case, with a parameter that vanishes:
+\[\int_{-1}^{1}\frac{x^{2}}{1+\eu^{x}}\dd x=\int_0^{1}x^{2}\dd x=\frac13.\]
+And with a general base, $\int_3^{7}\dfrac{\dd x}{1+2^{\,x-5}}$: the interval is symmetric about $5$, where the exponent vanishes, and $\dfrac{1}{1+2^{t}}+\dfrac{1}{1+2^{-t}}=1$, so the value is $\tfrac{7-3}{2}=2$. The base $2$ never appears in the answer.
+\end{worked}
+
+\begin{worked}[The classic, where the constant sum has to be manufactured]
+\[\int_0^1\frac{\ln(1+x)}{1+x^{2}}\dd x.\]
+No reflection of $[0,1]$ helps directly. Substitute $x=\tan\theta$ first, which turns the integral into $\displaystyle\int_0^{\pi/4}\ln(1+\tan\theta)\dd\theta$ and puts you on an interval whose reflection is $\theta\mapsto\tfrac{\pi}{4}-\theta$. Under that reflection,
+\[1+\tan\Bigl(\frac{\pi}{4}-\theta\Bigr)=1+\frac{1-\tan\theta}{1+\tan\theta}=\frac{2}{1+\tan\theta},\]
+so the two integrands sum to $\ln(1+\tan\theta)+\ln2-\ln(1+\tan\theta)=\ln2$, a constant. Hence
+\[2I=\frac{\pi}{4}\ln2,\qquad I=\frac{\pi\ln2}{8}\approx0.272198.\]
+The lesson is that the constant-sum structure is often one substitution away rather than absent: choose the substitution that makes the interval reflect into itself \emph{and} makes the reflection act simply on the integrand.
+\end{worked}
+
+\begin{trap}
+The identity must hold \emph{identically} on the interval, not at a convenient sample point. Verifying $f(x)+f(a+b-x)=c$ at the midpoint is no verification at all, since the midpoint is a fixed point of the reflection and the identity there reduces to $2f(m)=c$, which merely defines $c$. Substitute the symbol $a+b-x$ and simplify.
+\end{trap}
+
+\begin{seealsob}King's rule; complementary sine and cosine; disguised zero.\end{seealsob}
+
+On $[0,\tfrac{\pi}{2}]$ the reflection $x\mapsto\tfrac{\pi}{2}-x$ has a name of its own because of what it does to the trigonometric functions rather than to the interval: it exchanges sine and cosine. That makes an entire class of symmetrically built integrands satisfy the constant-sum hypothesis automatically.
+
+\tech[Complementary sine and cosine]{Complementary sine and cosine on $[0,\tfrac{\pi}{2}]$}{medium}
+\cue An integrand on $[0,\tfrac{\pi}{2}]$ built symmetrically from $\sin x$ and $\cos x$: $\dfrac{\sin^{p}x}{\sin^{p}x+\cos^{p}x}$, $\dfrac{1}{1+\tan^{p}x}$, $\ln\sin x$ played against $\ln\cos x$, or any $\dfrac{h(\sin x)}{h(\sin x)+h(\cos x)}$.
+\method Under $x\mapsto\tfrac{\pi}{2}-x$ the pair $(\sin,\cos)$ is exchanged and $\tan\mapsto\cot$. Adding the original to its reflection frequently produces an integrand identically equal to $1$, whereupon $I=\tfrac{\pi}{4}$. For the logarithmic pair, the reflection shows that $\int_0^{\pi/2}\ln\sin x\dd x$ and $\int_0^{\pi/2}\ln\cos x\dd x$ are equal, and their sum is computed from $\sin x\cos x=\tfrac12\sin2x$.
+
+\begin{worked}
+\[I=\int_0^{\pi/2}\frac{\dd x}{1+\tan^{\sqrt2}x}.\]
+Reflecting, $\tan^{\sqrt2}\mapsto\cot^{\sqrt2}$, and
+\[\frac{1}{1+\tan^{p}x}+\frac{1}{1+\cot^{p}x}=\frac{1}{1+\tan^{p}x}+\frac{\tan^{p}x}{\tan^{p}x+1}=1.\]
+Hence $2I=\tfrac{\pi}{2}$ and $I=\tfrac{\pi}{4}\approx0.785398$, independent of the exponent. The same computation gives $\int_0^{\pi/2}\dfrac{\sin^{3/2}x}{\sin^{3/2}x+\cos^{3/2}x}\dd x=\tfrac{\pi}{4}$.
+\end{worked}
+
+\begin{worked}[The log-sine integral]
+Let $L=\int_0^{\pi/2}\ln\sin x\dd x$. Reflection gives $L=\int_0^{\pi/2}\ln\cos x\dd x$, so
+\[2L=\int_0^{\pi/2}\ln(\sin x\cos x)\dd x=\int_0^{\pi/2}\ln\frac{\sin2x}{2}\dd x=-\frac{\pi}{2}\ln2+\frac12\int_0^{\pi}\ln\sin u\dd u,\]
+using $u=2x$. The last integral is $2L$ by symmetry of $\sin$ about $\tfrac{\pi}{2}$, so $2L=-\tfrac{\pi}{2}\ln2+L$, giving
+\[L=-\frac{\pi}{2}\ln2\approx-1.088793.\]
+Two folds, one reflection and one doubling, and a self-referential equation exactly like a cyclic integration by parts.
+\end{worked}
+
+\begin{keynote}[Two folds beat one]
+The log-sine computation used a reflection and a doubling in succession, and that pairing is worth naming, because a single fold rarely closes on logarithmic integrands. The immediate dividend: $\int_0^{\pi}\ln\sin x\dd x=2\int_0^{\pi/2}\ln\sin x\dd x=-\pi\ln2\approx-2.177586$, by mirror symmetry about $\tfrac{\pi}{2}$ applied to the value just computed. The same two folds evaluate $\int_0^{\pi/2}\ln\tan x\dd x$ instantly: it is $\int\ln\sin-\int\ln\cos=0$, since the reflection exchanges the two.
+\end{keynote}
+
+\begin{trap}
+Pattern-matching on the appearance of symmetry rather than on the identity. A mismatched pair such as $\dfrac{\sin^{\cos x}x}{\sin^{\cos x}x+\cos^{\sin x}x}$ still integrates to $\tfrac{\pi}{4}$, but only because the reflection genuinely sends the integrand $f$ to $1-f$; and an integrand that merely \emph{looks} symmetric may not. Verify $f(x)+f(\tfrac{\pi}{2}-x)=1$ by substitution, every time.
+\end{trap}
+
+\begin{seealsob}Constant-sum reflection; King's rule; mirror symmetry about an interior point.\end{seealsob}
+
+There is one more reflection worth separating out. When the symmetry point is interior to the interval and the integrand is invariant rather than anti-invariant, the fold does not give the answer, it halves the domain. That is a smaller gain than a rectangle but it is available far more often, and it is what makes $[0,\pi]$ and $[0,2\pi]$ integrals of $\sin$ tractable.
+
+\tech{Mirror symmetry about an interior point}{easy}
+\cue An integrand on $[0,\pi]$ depending on $x$ only through $\sin x$, or on $[0,2\pi]$ through $\cos x$, or any $f$ with $f(a+b-x)=f(x)$ where the half-interval is easier.
+\method If $f(a+b-x)=f(x)$ then the two halves of $[a,b]$ contribute equally:
+\[\int_a^bf(x)\dd x=2\int_a^{(a+b)/2}f(x)\dd x.\]
+For $[0,\pi]$ and an integrand $f(\sin x)$ this reads $\int_0^{\pi}f(\sin x)\dd x=2\int_0^{\pi/2}f(\sin x)\dd x$, which puts you on the interval where the sine and cosine exchange is available and where Wallis' formulae live.
+
+\begin{worked}
+\[\int_0^{\pi}\frac{\dd x}{1+\sin^{2}x}=2\int_0^{\pi/2}\frac{\dd x}{1+\sin^{2}x}=2\cdot\frac{\pi}{2\sqrt2}=\frac{\pi}{\sqrt2}\approx2.221441.\]
+The half-interval value comes from $t=\tan x$, under which $\dfrac{\dd x}{1+\sin^{2}x}=\dfrac{\dd t}{1+2t^{2}}$ and the integral over $t\in(0,\infty)$ is $\tfrac{\pi}{2\sqrt2}$. Doing this on $[0,\pi]$ directly is unpleasant, because $\tan$ has a pole at the midpoint; the mirror argument moves the pole to an endpoint, where it is harmless.
+\end{worked}
+
+\begin{trap}
+Applying the halving when the symmetry is about the wrong point. On $[0,2\pi]$ an integrand in $\sin x$ is symmetric about $\tfrac{\pi}{2}$ and about $\tfrac{3\pi}{2}$, not about $\pi$; the correct statement is $\int_0^{2\pi}f(\sin x)\dd x=2\int_{-\pi/2}^{\pi/2}f(\sin x)\dd x$ after a shift, and blindly writing $2\int_0^{\pi}$ is right for $f(\sin x)$ only by the accident that $\int_{\pi}^{2\pi}f(\sin x)\dd x=\int_0^{\pi}f(-\sin x)\dd x$, which differs unless $f$ is even.
+\end{trap}
+
+\begin{seealsob}King's rule; periodicity and window shifting; Wallis' formulae.\end{seealsob}
+
+\section{Translation}
+
+Reflection is an involution; translation is not, but on a periodic domain it is still a symmetry of the interval, and it generates two distinct manoeuvres. The first is bookkeeping: an integral over many periods is a multiple of an integral over one, and the window may be slid anywhere. The second is a genuine fold: shifting by half a period often sends the integrand to a partner that sums with it to something trivial.
+
+\tech{Periodicity and window shifting}{easy}
+\cue A periodic integrand over an interval that is a whole number of periods, or over a window whose placement is inconvenient, or an absolute value of a periodic function.
+\method For $f$ of period $T$,
+\[\int_a^{a+T}f(x)\dd x=\int_0^{T}f(x)\dd x\quad\text{for every }a,\qquad \int_0^{nT}f(x)\dd x=n\int_0^{T}f(x)\dd x.\]
+Use the first to slide a window off a singularity of an intended substitution (the Weierstrass substitution $t=\tan\tfrac x2$ has a pole at $x=\pi$, and sliding the window is how you avoid it). Use the second to reduce $n$ periods to one. And use the half-period shift $x\mapsto x+\tfrac{T}{2}$ as a fold when the integrand has a sign symmetry.
+
+\begin{worked}
+\[\int_0^{10\pi}\abs{\sin x}\dd x=10\int_0^{\pi}\sin x\dd x=20,\]
+since $\abs{\sin x}$ has period $\pi$, not $2\pi$. A harder instance, using the half-period shift as a fold:
+\[I=\int_0^{2\pi}\frac{\dd x}{1+\eu^{\sin x}}.\]
+The integrand has period $2\pi$, so $I=\int_0^{2\pi}\dfrac{\dd x}{1+\eu^{\sin(x+\pi)}}=\int_0^{2\pi}\dfrac{\dd x}{1+\eu^{-\sin x}}$. Adding, the two integrands sum to $1$ identically, so $2I=2\pi$ and $I=\pi\approx3.141593$. The translation supplied the constant-sum hypothesis that reflection could not.
+\end{worked}
+
+\begin{keynote}[Sliding a window off a pole]
+The freedom to place the window is not cosmetic. The Weierstrass substitution $t=\tan\tfrac x2$ sends $x=\pi$ to $t=\infty$, so applying it to $\displaystyle\int_0^{2\pi}\frac{\dd x}{2+\cos x}$ as written puts a pole of the substitution strictly inside the interval, and the naive computation returns $0$. Slide the window first: the integrand has period $2\pi$, so the integral equals $\displaystyle\int_{-\pi}^{\pi}\frac{\dd x}{2+\cos x}$, where the pole is now at both endpoints and the substitution is a genuine bijection onto $\R$. It gives $\displaystyle\int_{-\infty}^{\infty}\frac{2\dd t}{3+t^{2}}=\frac{2\pi}{\sqrt3}\approx3.627599$. One line of translation converted a wrong answer into a right one.
+\end{keynote}
+
+\begin{trap}
+Two period errors dominate. The interval must be an exact whole number of periods, or the leftover fragment must be integrated separately: $\int_0^{7}\abs{\sin x}\dd x$ is $2\lfloor7/\pi\rfloor$ plus a genuine fragment, not $\tfrac{7}{\pi}\cdot2$. And the period of a transformed function is not the period of the original: $\abs{\sin x}$ and $\sin^{2}x$ both have period $\pi$, and using $2\pi$ doubles the answer.
+\end{trap}
+
+\begin{seealsob}Mirror symmetry about an interior point; splitting at a sign change; Lobachevsky's formula; Weierstrass substitution.\end{seealsob}
+
+Absolute values arrived in that last example without comment, and they deserve their own treatment, because they are the standard way a problem forces you to break the interval before any symmetry argument can start. Splitting is the least glamorous technique in this chapter and the one whose omission causes the most wrong answers.
+
+\tech{Splitting at a symmetry or sign-change point}{medium}
+\cue An absolute value, a $\max$ or $\min$ of two or more functions, a nested radical such as $\sqrt{x+\sqrt{\abs{1-2x}}}$, a floor or fractional part, or any piecewise definition.
+\method Locate \emph{every} point in $[a,b]$ where the inner expression changes sign or the active branch changes. Split the integral there, resolve the absolute value with the correct sign on each piece, and then treat each piece independently: each will usually admit its own substitution. For $\max$ and $\min$ of several functions, the crossing points are the solutions of all the pairwise equations, and you must then determine which function is active on each subinterval.
+
+\begin{worked}
+\[\int_0^{\pi}\abs{\cos x}\dd x=\int_0^{\pi/2}\cos x\dd x-\int_{\pi/2}^{\pi}\cos x\dd x=1+1=2.\]
+A case where the split point is not the midpoint:
+\[\int_0^{3}\abs{x^{2}-2x}\dd x=\int_0^{2}(2x-x^{2})\dd x+\int_2^{3}(x^{2}-2x)\dd x=\frac43+\frac43=\frac83,\]
+the two pieces having lengths $2$ and $1$ and, by coincidence, equal values. A case where the split is disguised by an identity:
+\[\int_0^{2\pi}\sqrt{1-\cos2x}\dd x=\int_0^{2\pi}\sqrt{2\sin^{2}x}\dd x=\sqrt2\int_0^{2\pi}\abs{\sin x}\dd x=\sqrt2\cdot4=4\sqrt2\approx5.656854.\]
+The step that everything depends on is $\sqrt{\sin^{2}x}=\abs{\sin x}$ and not $\sin x$. Writing $\sin x$ gives $0$, which is not merely wrong but wrong in a way that looks like a symmetry argument succeeding.
+\end{worked}
+
+\begin{worked}[A minimum, split then folded]
+\[\int_0^{\pi/2}\min(\sin x,\cos x)\dd x.\]
+The two curves cross where $\tan x=1$, that is at $x=\tfrac{\pi}{4}$, and $\sin$ is the smaller one to the left of it. So
+\[\int_0^{\pi/4}\sin x\dd x+\int_{\pi/4}^{\pi/2}\cos x\dd x=\Bigl(1-\frac{\sqrt2}{2}\Bigr)+\Bigl(1-\frac{\sqrt2}{2}\Bigr)=2-\sqrt2\approx0.585786.\]
+The two pieces are equal, and not by accident: the reflection $x\mapsto\tfrac{\pi}{2}-x$ exchanges $\sin$ and $\cos$, hence fixes the function $\min(\sin,\cos)$, so the interval folds about $\tfrac{\pi}{4}$ and one piece would have sufficed. Splitting and folding are complementary here: the split identifies the branches, the fold halves the work.
+\end{worked}
+
+\begin{trap}
+Missing a crossing. For $\min(\sin x,\cos x,\tan x)$ on $[\tfrac{3\pi}{4},\tfrac{5\pi}{4}]$ there are three pairwise equations to solve, not one, and the active branch can change without any two of the curves meeting at the obvious place. Never assume the split point is the midpoint: for $\abs{x^{2}-2x}$ on $[0,3]$ it is $x=2$, and the two pieces have quite different lengths.
+\end{trap}
+
+\begin{seealsob}Even and odd parity on a symmetric interval; periodicity and window shifting; absolute value and the modulus in the logarithm.\end{seealsob}
+
+\section{Inversion}
+
+The half-line $(0,\infty)$ has its own involution, $x\mapsto1/x$, and it is exactly as fundamental there as $x\mapsto-x$ is on $\R$. Indeed it is the same involution: the substitution $x=\eu^{t}$ identifies $(0,\infty)$ with $\R$ and carries $x\mapsto1/x$ to $t\mapsto-t$. Everything in this section is a consequence of that identification, and moving back and forth between the multiplicative and additive pictures is the main skill.
+
+\tech[Inversion on the positive half line]{Inversion, $x\mapsto1/x$ on $(0,\infty)$}{hard}
+\cue An integral over $(0,\infty)$ whose integrand is built from a self-reciprocal denominator such as $1+x^{2}$ or $x+\tfrac1x$, weighted by a power $x^{s}$ or by $\ln^{k}x$.
+\method Under $x=1/u$ the interval maps to itself with $\dd x=-\dfrac{\dd u}{u^{2}}$, the sign absorbed by the reversal of limits. Compute $I$ in the new variable and compare with the original: either the two expressions add, halving the work, or they are negatives of each other, forcing $I=0$. The key transformation rules are $\ln(1/u)=-\ln u$ and $1+(1/u)^{2}=\dfrac{1+u^{2}}{u^{2}}$, the latter being why $\dfrac{\dd x}{1+x^{2}}$ is invariant.
+
+\begin{worked}
+\[I=\int_0^{\infty}\frac{\dd x}{(1+x^{2})(1+x^{a})}.\]
+Put $x=1/u$: $\dfrac{\dd x}{1+x^{2}}$ is invariant, and $\dfrac{1}{1+u^{-a}}=\dfrac{u^{a}}{1+u^{a}}$. So
+\[I=\int_0^{\infty}\frac{u^{a}}{(1+u^{2})(1+u^{a})}\dd u.\]
+Adding this to the original, the two numerators are $1$ and $u^{a}$ over the same denominator, so they combine to $1$:
+\[2I=\int_0^{\infty}\frac{\dd u}{1+u^{2}}=\frac{\pi}{2},\qquad I=\frac{\pi}{4}\approx0.785398,\]
+for every real $a$, positive or negative. This is the constant-sum fold transported to the multiplicative group.
+\end{worked}
+
+\begin{worked}[The vanishing case, and a scaling companion]
+$\int_0^{\infty}\dfrac{\ln x}{1+x^{2}}\dd x$: inversion sends $\ln x\mapsto-\ln u$ and leaves $\dfrac{\dd x}{1+x^{2}}$ alone, so $I=-I$ and $I=0$.
+
+Combine that with a scaling to get a family: in $\int_0^{\infty}\dfrac{\ln x}{x^{2}+a^{2}}\dd x$ put $x=at$, giving $\dfrac1a\int_0^{\infty}\dfrac{\ln a+\ln t}{1+t^{2}}\dd t$. The $\ln t$ piece vanishes by the inversion just performed, and the $\ln a$ piece is $\ln a\cdot\tfrac{\pi}{2}$, so
+\[\int_0^{\infty}\frac{\ln x}{x^{2}+a^{2}}\dd x=\frac{\pi\ln a}{2a}.\]
+At $a=3$ this is $\tfrac{\pi\ln3}{6}\approx0.575232$. Scaling and inversion together generate the whole family from one vanishing integral.
+\end{worked}
+
+\begin{trap}
+The fold is legitimate only when both halves converge separately. Applying it to $\int_0^{\infty}\tfrac{\dd x}{x}$ ``proves'' that a divergent integral equals itself, which is true and worthless; applying it to a conditionally convergent integral and then splitting the sum can produce a finite wrong number. Check convergence at $0$ and at $\infty$ before folding.
+\end{trap}
+
+\begin{seealsob}Exponential substitution and multiplicative parity; scaling on the half line; Glasser's master theorem; disguised zero.\end{seealsob}
+
+The scaling that appeared at the end of that example deserves separating out, because it is a different kind of tool. Inversion is an involution and produces a single number; scaling is a one-parameter group and produces a whole family of numbers from one. The two are almost always used together, and the reason is structural: on $(0,\infty)$ the natural measure is $\tfrac{\dd x}{x}$, which is invariant under scaling, and the natural symmetry of that measure is inversion.
+
+\tech[Scaling on the half line]{Scaling, $x\mapsto\lambda x$ on $(0,\infty)$}{medium}
+\cue A half-line integral carrying a positive parameter inside the integrand: $a^{2}+x^{2}$, $\eu^{-ax}$, $1+x^{n}$ with a power weight, or a logarithm of a scaled argument.
+\method Substitute $x=\lambda t$ and pull the parameter out. Two consequences do most of the work. First, the measure $\tfrac{\dd x}{x}$ is scale-invariant, so an integrand of the form $g(x)\tfrac{\dd x}{x}$ gives $\int_0^{\infty}g(\lambda x)\tfrac{\dd x}{x}=\int_0^{\infty}g(x)\tfrac{\dd x}{x}$ for every $\lambda>0$: the parameter cannot appear in the answer. Second, $\ln(\lambda t)=\ln\lambda+\ln t$, so scaling converts a logarithm into a constant plus a logarithm, and the constant comes out of the integral while the $\ln t$ piece is frequently killed by inversion.
+
+\begin{worked}
+\[\int_0^{\infty}\frac{\ln(ax)}{x^{2}+b^{2}}\dd x.\]
+Put $x=bt$: the integral becomes $\dfrac1b\displaystyle\int_0^{\infty}\frac{\ln(ab)+\ln t}{1+t^{2}}\dd t$. The $\ln t$ piece vanishes by inversion, and $\int_0^{\infty}\tfrac{\dd t}{1+t^{2}}=\tfrac{\pi}{2}$, so
+\[\int_0^{\infty}\frac{\ln(ax)}{x^{2}+b^{2}}\dd x=\frac{\pi\ln(ab)}{2b}.\]
+At $a=2$, $b=3$ this is $\tfrac{\pi\ln6}{6}\approx0.938163$. Notice that the answer depends on $a$ and $b$ only through the product $ab$, which is exactly the invariance the scaling predicted.
+\end{worked}
+
+\begin{worked}[Scale invariance forcing the shape of an answer]
+\[\int_0^{\infty}\frac{x^{s-1}}{1+x^{n}}\dd x.\]
+Write this as $\int_0^{\infty}\dfrac{x^{s}}{1+x^{n}}\cdot\dfrac{\dd x}{x}$ and substitute $x=t^{1/n}$, which turns it into $\tfrac1n\int_0^{\infty}\dfrac{t^{s/n}}{1+t}\cdot\dfrac{\dd t}{t}$. Scale-invariance of $\tfrac{\dd t}{t}$ says the answer can depend on $s$ and $n$ only through the ratio $s/n$ and the overall factor $\tfrac1n$, before any evaluation is attempted. The value is $\dfrac{\pi}{n\sin(\pi s/n)}$; at $s=1,n=3$ that is $\dfrac{\pi}{3\sin(\pi/3)}\approx1.209200$, and at $s=2,n=5$ it is $\approx0.660653$. The structural prediction was free; only the constant needed work.
+\end{worked}
+
+\begin{trap}
+Scaling changes the measure, and a missing Jacobian is silent. Under $x=bt$, $\dd x=b\dd t$ and $x^{2}+b^{2}=b^{2}(1+t^{2})$, so the net factor is $\tfrac1b$, not $1$ and not $b$. Also, scaling requires $\lambda>0$: with $\lambda<0$ the half-line maps to the negative axis and the limits reverse.
+\end{trap}
+
+\begin{seealsob}Inversion on the positive half line; splitting the half line at one; Glasser's master theorem.\end{seealsob}
+
+Both inversion and scaling are easier to run, and far easier to see, once the multiplicative structure of the half-line has been made additive. That conversion is a single substitution, and it is worth performing as a matter of course whenever a half-line integral has a reciprocal symmetry in it: under it, scaling becomes translation and inversion becomes reflection, which are symmetries the eye is already trained on.
+
+\tech[Exponential substitution and multiplicative parity]{$x=\eu^{t}$: turning inversion into parity}{medium}
+\cue An integral on $(0,\infty)$ containing $\ln x$, or a denominator invariant under $x\mapsto1/x$, or powers $x^{s}$ with $s$ a parameter. Any integral where you have already noticed that $x\mapsto1/x$ does something useful.
+\method Substitute $x=\eu^{t}$, so $\dd x=\eu^{t}\dd t$, $\ln x=t$, and $(0,\infty)$ becomes $\R$. The inversion $x\mapsto1/x$ becomes $t\mapsto-t$, so every reciprocal symmetry becomes ordinary parity and every self-reciprocal denominator becomes a hyperbolic cosine. The characteristic collapse is
+\[\frac{\eu^{t}}{1+\eu^{2t}}=\frac{1}{2\cosh t},\qquad \frac{\eu^{t/2}}{1+\eu^{t}}=\frac{1}{2\cosh(t/2)}.\]
+
+\begin{worked}
+\[\int_0^{\infty}\frac{\ln^{2}x}{1+x^{2}}\dd x.\]
+With $x=\eu^{t}$ this becomes $\displaystyle\int_{-\infty}^{\infty}\frac{t^{2}\eu^{t}}{1+\eu^{2t}}\dd t=\int_{-\infty}^{\infty}\frac{t^{2}}{2\cosh t}\dd t$, manifestly even, and equal to $\displaystyle\int_0^{\infty}\frac{t^{2}}{\cosh t}\dd t=\frac{\pi^{3}}{8}\approx3.875785$.
+
+The same substitution shows instantly why the odd-power version vanishes: $\int_0^{\infty}\dfrac{\ln x}{1+x^{2}}\dd x$ becomes $\int_{-\infty}^{\infty}\dfrac{t\dd t}{2\cosh t}$, odd times even, hence $0$. The parity is visible in $t$ and invisible in $x$.
+\end{worked}
+
+\begin{trap}
+Forgetting the Jacobian $\eu^{t}$, which is exactly the factor that converts $1+\eu^{2t}$ into $2\cosh t$ and makes the parity visible. Without it the integrand is neither even nor odd and the whole point is lost. Write $\dd x=\eu^{t}\dd t$ before touching the rest.
+\end{trap}
+
+\begin{seealsob}Inversion on the positive half line; disguised zero; Glasser's master theorem.\end{seealsob}
+
+Inversion has a second mode of use, and it is the one to reach for when the fold over the whole half-line does not close. The point $x=1$ is the fixed point of $x\mapsto1/x$, so it cuts $(0,\infty)$ into two pieces that the involution exchanges. Comparing the pieces is weaker than folding the whole, but it is available in cases where folding is not, and it converts a half-line problem into a statement about $(0,1)$ alone.
+
+\tech[Splitting the half line at one]{Splitting the half-line at $x=1$}{medium}
+\cue A half-line integral where the fold $x\mapsto1/x$ almost closes but not quite, or where you want to compare $(0,1)$ against $(1,\infty)$, or where the integrand's behaviour genuinely changes across $x=1$ (a power weight $x^{s}$ that is singular at one end and decaying at the other).
+\method Write $\int_0^{\infty}=\int_0^1+\int_1^{\infty}$ and apply $x=1/u$ to the second piece only, which lands it on $(0,1)$. You obtain
+\[\int_0^{\infty}f(x)\dd x=\int_0^1\Bigl[f(x)+\frac{1}{x^{2}}f\Bigl(\frac1x\Bigr)\Bigr]\dd x,\]
+a single integral over a compact interval, with a bracketed integrand that is often much better behaved than either piece. If the two terms cancel identically, the original integral is zero; if they coincide, it is twice one of them.
+
+\begin{worked}
+\[\int_0^{\infty}\frac{\ln x}{(1+x)^{2}}\dd x.\]
+On $(1,\infty)$ put $x=1/u$: then $\ln x=-\ln u$, $(1+x)^{2}=\dfrac{(1+u)^{2}}{u^{2}}$ and $\dd x=\dfrac{\dd u}{u^{2}}$, so the piece becomes $-\displaystyle\int_0^1\frac{\ln u}{(1+u)^{2}}\dd u$, exactly the negative of the first piece. The integral is $0$.
+
+The same split applied to $\dfrac{\ln x}{1+x^{2}}$ shows something sharper. The two halves are
+\[\int_0^1\frac{\ln x}{1+x^{2}}\dd x=-G\approx-0.915966,\qquad \int_1^{\infty}\frac{\ln x}{1+x^{2}}\dd x=+G,\]
+where $G$ is Catalan's constant, which has no known closed form in terms of elementary constants. The whole integral is $0$ regardless, and the inaccessible constant cancels. This is worth internalising: a symmetry argument can deliver an exact value for an integral whose \emph{pieces} are individually beyond reach.
+\end{worked}
+
+\begin{trap}
+Splitting a divergent integral and cancelling the halves. If $\int_0^1$ and $\int_1^{\infty}$ each diverge, their formal difference is meaningless, and the bracketed form above is the only honest statement: it converges precisely when the bracket is integrable on $(0,1)$, which is a stronger condition than the two pieces separately being finite in the principal-value sense.
+\end{trap}
+
+\begin{seealsob}Inversion on the positive half line; scaling on the half line; disguised zero.\end{seealsob}
+
+The most striking consequence of inversion is a theorem that looks, on first reading, too strong to be true: for a large class of substitutions built out of $x-\tfrac ax$, the substitution does not change the value of the integral at all.
+
+\tech{Glasser's master theorem}{hard}
+\cue The combination $x-\dfrac{a}{x}$ hidden inside the integrand, usually disguised as a quartic denominator. The standard disguise is
+\[x^{4}-(2c-1)x^{2}+c^{2}=x^{2}\Bigl[\Bigl(x-\frac{c}{x}\Bigr)^{2}+1\Bigr],\]
+so a quartic in $x^{2}$ with an $x^{2}$ available in the numerator is the signature.
+\method For $a>0$ and $F$ even,
+\[\int_0^{\infty}F\Bigl(x-\frac{a}{x}\Bigr)\dd x=\int_0^{\infty}F(u)\dd u.\]
+The proof is the fold: under $x=a/t$ the argument $x-\tfrac ax$ becomes $-(t-\tfrac at)$, so evenness of $F$ gives $I=\int_0^{\infty}F(t-\tfrac at)\tfrac{a}{t^{2}}\dd t$, and adding the two expressions produces $2I=\int_0^{\infty}F(x-\tfrac ax)\bigl(1+\tfrac{a}{x^{2}}\bigr)\dd x$, which is exactly $\int_{-\infty}^{\infty}F(u)\dd u$ under $u=x-\tfrac ax$. The odd part of the Jacobian is what integrates away. Glasser's general form allows $u=x-\sum_n\dfrac{a_n}{x-b_n}$ with every $a_n>0$, over the whole line.
+
+\begin{worked}
+Two direct applications, with $F(u)=\eu^{-u^{2}}$ and $F(u)=\dfrac{1}{u^{2}+1}$:
+\[\int_0^{\infty}\exp\Bigl[-\Bigl(x-\frac1x\Bigr)^{2}\Bigr]\dd x=\int_0^{\infty}\eu^{-u^{2}}\dd u=\frac{\sqrt{\pi}}{2}\approx0.886227,\]
+\[\int_0^{\infty}\frac{\dd x}{\bigl(x-\tfrac1x\bigr)^{2}+1}=\int_0^{\infty}\frac{\dd u}{u^{2}+1}=\frac{\pi}{2}\approx1.570796.\]
+Now the disguised version. Using the quartic identity above,
+\[\int_0^{\infty}\frac{x^{2}\dd x}{x^{4}-(2c-1)x^{2}+c^{2}}=\int_0^{\infty}\frac{\dd x}{\bigl(x-\tfrac cx\bigr)^{2}+1}=\frac{\pi}{2}\]
+for every $c>0$. At $c=3$ the denominator is $x^{4}-5x^{2}+9$, which has no obvious symmetry at all, and the answer is still $\tfrac{\pi}{2}$. This is the parameter-independence signature in its purest form.
+\end{worked}
+
+\begin{keynote}[The general form, and why it is believable]
+Glasser's theorem in full says that for $a_n>0$,
+\[\int_{-\infty}^{\infty}F\Bigl(x-\sum_{n=1}^{N}\frac{a_n}{x-b_n}\Bigr)\dd x=\int_{-\infty}^{\infty}F(u)\dd u,\]
+with no evenness required, because the domain is now the whole line. The reason it works: the map $u(x)=x-\sum a_n(x-b_n)^{-1}$ is increasing on each of the $N+1$ intervals between its poles, and each branch carries $(-\infty,\infty)$ onto $(-\infty,\infty)$ once. Summing the $N+1$ branches reconstructs $\int F(u)\dd u$ exactly once for each, and the change-of-variables factors are what the sum of branches supplies. A concrete instance with two poles:
+\[\int_{-\infty}^{\infty}\frac{\dd x}{1+\bigl(x-\tfrac{1}{x-1}-\tfrac{1}{x+1}\bigr)^{2}}=\int_{-\infty}^{\infty}\frac{\dd u}{1+u^{2}}=\pi.\]
+The inner expression simplifies to $\dfrac{x^{3}-3x}{x^{2}-1}$, so the integrand is the rational function $\dfrac{(x^{2}-1)^{2}}{(x^{2}-1)^{2}+(x^{3}-3x)^{2}}$, degree four over degree six, vanishing to second order at $x=\pm1$. Nothing about it suggests $\pi$.
+\end{keynote}
+
+\begin{trap}
+$F$ must be even, or the odd part of the Jacobian survives and the theorem is false as stated. And every $a_n$ must be strictly positive: a negative coefficient destroys the monotonicity of $u(x)$ on each branch, the map is no longer a bijection onto $\R$, and the conclusion fails. Check the sign before quoting the theorem.
+\end{trap}
+
+\begin{seealsob}Cauchy and Schlomilch's transformation; inversion on the positive half line; reciprocal substitution.\end{seealsob}
+
+Glasser's theorem has an older two-parameter relative that is used more often in practice, because it handles the scaled combination $ax-\tfrac bx$ and therefore covers integrands where the reciprocal symmetry is present but not at unit scale.
+
+\tech[Cauchy and Schlomilch transformation]{The Cauchy and Schlomilch transformation}{hard}
+\cue A squared combination $\bigl(ax-\tfrac bx\bigr)^{2}$ inside a function, with $a\neq1$: the tell is a Gaussian or a rational function whose argument is $a^{2}x^{2}-2ab+\tfrac{b^{2}}{x^{2}}$.
+\method For $a,b>0$ and any integrable $f$,
+\[\int_0^{\infty}f\Bigl(\Bigl(ax-\frac bx\Bigr)^{2}\Bigr)\dd x=\frac1a\int_0^{\infty}f\bigl(y^{2}\bigr)\dd y.\]
+The scale $a$ appears as an overall factor and $b$ disappears entirely. Derive it from Glasser by first substituting $x\mapsto x/a$, which converts $ax-\tfrac bx$ into $x-\tfrac{ab}{x}$ at the cost of a factor $\tfrac1a$.
+
+\begin{worked}
+\[\int_0^{\infty}\exp\Bigl[-\Bigl(2x-\frac3x\Bigr)^{2}\Bigr]\dd x=\frac12\int_0^{\infty}\eu^{-y^{2}}\dd y=\frac{\sqrt{\pi}}{4}\approx0.443113.\]
+Expanding the exponent as $-4x^{2}+12-\tfrac{9}{x^{2}}$ shows what has been avoided: the integrand is $\eu^{12}\exp(-4x^{2}-9x^{-2})$, and the constant $\eu^{12}$ is what makes the direct approach look hopeless. The transformation absorbs it without comment, because the cross term $-2ab$ was part of the perfect square all along.
+\end{worked}
+
+\begin{trap}
+Both $a$ and $b$ must be positive, and the argument must be the \emph{square} of the combination, not the combination itself: $f$ is applied to $y^{2}$ on the right, so an odd function of $ax-\tfrac bx$ is outside the scope and must be handled by Glasser's version with an explicit evenness check.
+\end{trap}
+
+\begin{seealsob}Glasser's master theorem; inversion on the positive half line; Gaussian integrals.\end{seealsob}
+
+\section{Zero, and the fold that only looks impossible}
+
+The most valuable thing a symmetry argument can tell you is that the answer is zero, because the alternative is an evaluation that may not be possible at all. Problems in this family are constructed to be intimidating: the integrand is assembled from special functions, unusual powers, and awkward domains, and none of it matters. The correct first move on any monstrous definite integral is to spend thirty seconds testing the standard involutions for anti-invariance.
+
+\tech{Disguised zero}{hard}
+\cue A monstrous integrand on a symmetric or reciprocal-symmetric domain; two special-function terms of equal magnitude and opposite sign; a ratio whose numerator and denominator are the same integral with the limits reversed; an odd-looking factor such as $\ln x$ or $\sin$ multiplying something with matching symmetry.
+\method Before computing anything, test whether some involution of the domain sends the integrand to its own negative. The standard involutions, in the order worth trying: $x\mapsto-x$ on $[-a,a]$, $x\mapsto a+b-x$ on $[a,b]$, $x\mapsto1/x$ on $(0,\infty)$, and $x=\eu^{2y}$ followed by $y\mapsto-y$. If the integrand is odd under one of them and is absolutely integrable, the answer is $0$ and there is nothing left to do.
+
+\begin{worked}
+\[\int_0^{\infty}\frac{\ln x\,(\pi^{2}+\ln^{2}x)}{(1+x)\sqrt{x}}\dd x.\]
+Substitute $x=\eu^{2y}$, so $\dd x=2\eu^{2y}\dd y$, $\sqrt x=\eu^{y}$, and $\ln x=2y$. The integrand becomes
+\[\frac{2y(\pi^{2}+4y^{2})}{(1+\eu^{2y})\eu^{y}}\cdot2\eu^{2y}\dd y=\frac{4y(\pi^{2}+4y^{2})}{\eu^{-y}+\eu^{y}}\dd y=\frac{2y(\pi^{2}+4y^{2})\dd y}{\cosh y}.\]
+That is an odd polynomial in $y$ divided by an even function, hence odd on $\R$, and it decays exponentially, so the integral converges absolutely and equals $0$.
+\end{worked}
+
+\begin{worked}[A second, on a finite interval]
+\[\int_{-\pi/2}^{\pi/2}\ln\!\Bigl(\frac{2+\sin x}{2-\sin x}\Bigr)\dd x.\]
+The interval is symmetric about $0$ and $\sin$ is odd, so $x\mapsto-x$ exchanges numerator and denominator, sending the logarithm to its own negative. The integrand is bounded (the argument stays in $[\tfrac13,3]$), so integrability is not in question and the value is $0$. Nothing about the constant $2$ mattered; any $c>1$ gives the same answer, which is the parameter-independence signature again.
+\end{worked}
+
+\begin{keynote}[One power destroys it]
+The same integrand with $(1+x)^{2}$ in place of $(1+x)$ is \emph{not} zero. Under $x=\eu^{2y}$ the same substitution now gives, using $(1+\eu^{2y})^{2}=4\eu^{2y}\cosh^{2}y$,
+\[\frac{4y(\pi^{2}+4y^{2})\eu^{y}}{(1+\eu^{2y})^{2}}\dd y=\frac{y(\pi^{2}+4y^{2})\eu^{-y}}{\cosh^{2}y}\dd y,\]
+and the stray factor $\eu^{-y}$ destroys the parity: an odd polynomial times a function that is neither even nor odd, over an even one. The true value is
+\[\int_0^{\infty}\frac{\ln x\,(\pi^{2}+\ln^{2}x)}{(1+x)^{2}\sqrt{x}}\dd x=-4\pi^{3}\approx-124.025107,\]
+a long way from zero. The lesson is that the fold is a property of the exact exponent, not of the general shape, and the only safe procedure is to perform the substitution and look at what you get.
+\end{keynote}
+
+\begin{trap}
+``Odd on a symmetric interval'' is not enough when the integral is only conditionally convergent: then the two halves are $+\infty$ and $-\infty$, the object is a principal value rather than an integral, and calling it zero is a claim about a regularisation rather than about the integral. State which you mean.
+\end{trap}
+
+\begin{seealsob}Even and odd parity on a symmetric interval; inversion on the positive half line; exponential substitution and multiplicative parity; Cauchy principal value.\end{seealsob}
+
+The last technique in the chapter is a fold of a different kind: instead of mapping the interval to itself, it maps an infinite interval onto a compact one by exploiting the periodicity of one factor against the decay of another. It is the natural place to end, because it shows that ``symmetry'' need not mean an involution.
+
+\tech{Lobachevsky's formula}{hard}
+\cue $\dfrac{\sin x}{x}$ or $\dfrac{\sin^{2}x}{x^{2}}$ multiplied by a $\pi$-periodic function, integrated over $(0,\infty)$.
+\method Two statements, with different hypotheses. If $f$ is $\pi$-periodic then
+\[\int_0^{\infty}f(x)\frac{\sin^{2}x}{x^{2}}\dd x=\int_0^{\pi/2}f(x)\dd x;\]
+if in addition $f(\pi-x)=f(x)$, that is, $f$ is symmetric about $\tfrac{\pi}{2}$, then also
+\[\int_0^{\infty}f(x)\frac{\sin x}{x}\dd x=\int_0^{\pi/2}f(x)\dd x.\]
+The mechanism is to cut $(0,\infty)$ into intervals of length $\pi$, translate each back to $[0,\pi]$ where $f$ repeats, and sum the resulting series $\sum(x+n\pi)^{-2}$ into $\csc^{2}$; the whole half-line folds onto a quarter period.
+
+\begin{worked}
+Taking $f=1$ in the first formula gives $\displaystyle\int_0^{\infty}\Bigl(\frac{\sin x}{x}\Bigr)^{2}\dd x=\frac{\pi}{2}$, and in the second, $\displaystyle\int_0^{\infty}\frac{\sin x}{x}\dd x=\frac{\pi}{2}$.
+
+Taking $f(x)=\sin^{2}x$, which is $\pi$-periodic and symmetric about $\tfrac{\pi}{2}$, the second formula gives
+\[\int_0^{\infty}\frac{\sin^{3}x}{x}\dd x=\int_0^{\pi/2}\sin^{2}x\dd x=\frac{\pi}{4},\]
+and the first gives $\displaystyle\int_0^{\infty}\frac{\sin^{4}x}{x^{2}}\dd x=\frac{\pi}{4}$ as well.
+
+A harder choice: $f(x)=\dfrac{1}{1+\sin^{2}x}$ is $\pi$-periodic, so
+\[\int_0^{\infty}\frac{\sin^{2}x}{x^{2}\bigl(1+\sin^{2}x\bigr)}\dd x=\int_0^{\pi/2}\frac{\dd x}{1+\sin^{2}x}=\frac{\pi}{2\sqrt2}\approx1.110721.\]
+No other method available at this level touches that integral.
+\end{worked}
+
+\begin{trap}
+The symmetry hypothesis in the second formula is not decoration. Take $f(x)=\sin2x$, which is $\pi$-periodic but antisymmetric about $\tfrac{\pi}{2}$. The formula would predict $\int_0^{\pi/2}\sin2x\dd x=1$, whereas the true value of $\int_0^{\infty}\dfrac{\sin2x\sin x}{x}\dd x$ is $\tfrac12\ln3\approx0.549306$, obtained from Frullani after the product-to-sum identity. A clean wrong answer, produced by applying the right theorem to the wrong symmetry class. Also note the companion value $\int_0^{\infty}(\sin x/x)^{4}\dd x=\tfrac{\pi}{3}$, which is \emph{not} a Lobachevsky consequence, since $\sin^{2}x/x^{2}$ is not periodic; it comes from Parseval or from repeated integration by parts.
+\end{trap}
+
+\begin{seealsob}Periodicity and window shifting; the Dirichlet integral; mirror symmetry about an interior point.\end{seealsob}
+
+\section{Choosing the involution}
+
+The decision here is faster than in most chapters, because the candidate substitutions are determined by the interval rather than by the integrand. A finite interval offers reflection about its midpoint and nothing else; a periodic domain offers translation; the half-line offers inversion. What the integrand determines is only whether the fold is worth performing, and that is a question about the \emph{sum} $f(x)+f(\varphi(x))\abs{\varphi'(x)}$, which takes one line to compute.
+
+\begin{center}
+\begin{tikzpicture}[node distance=5mm and 7mm]
+\node[dtest] (a) {What is the interval?};
+\node[dtest, below left=9mm and 5mm of a] (b) {Finite $[a,b]$: does\\ $f(x)+f(a{+}b{-}x)$\\ simplify?};
+\node[dtest, below right=9mm and 3mm of a] (c) {$(0,\infty)$ or periodic?};
+\node[dleaf, below left=9mm and 0mm of b] (d) {Constant: $I=\tfrac{c(b-a)}{2}$.\\ Zero: $I=0$.\\ Kernel invariant: King};
+\node[dnode, below right=9mm and 0mm of b] (e) {Recentre at the midpoint\\ and retest parity};
+\node[dleaf, below left=9mm and 0mm of c] (f) {Periodic: shift the window,\\ or shift by $T/2$ and add};
+\node[dleaf, below right=9mm and 0mm of c] (g) {$x\mapsto1/x$, or $x=\eu^{t}$;\\ $x-\tfrac ax$ present: Glasser};
+\draw[dedge] (a) -- node[dlab,left]{finite} (b);
+\draw[dedge] (a) -- node[dlab,right]{infinite} (c);
+\draw[dedge] (b) -- node[dlab,left]{yes} (d);
+\draw[dedge] (b) -- node[dlab,right]{no} (e);
+\draw[dedge] (c) -- node[dlab,left]{periodic} (f);
+\draw[dedge] (c) -- node[dlab,right]{half-line} (g);
+\end{tikzpicture}
+\end{center}
+
+The tree omits one branch deliberately, and it is the branch to take when every box fails: split the interval. An integral that has no symmetry as a whole very often has one on each piece, and the splitting points are the same ones you would find for an absolute value, namely the zeros and the branch changes of the inner expressions. $\int_0^{\infty}$ split at $x=1$ is the canonical instance, because the two halves are exchanged by $x\mapsto1/x$; the fold that seemed unavailable on $(0,\infty)$ becomes a comparison between $(0,1)$ and $(1,\infty)$.
+
+One final habit, worth more than any individual technique in this chapter. When a definite integral is presented with a parameter that plays no visible role, an exponent chosen to be ugly, or a large decorative term added to the integrand, the problem is telling you that a fold is intended and that the decoration is designed to cancel. Answer the question ``what would have to cancel for this to be clean'' before answering ``how do I integrate this''. In this family of problems those are different questions, and the first one is much easier.
+
+\begin{keynote}[Audit the fold numerically]
+Every exact value in this chapter can be checked to three decimal places in under a minute with any numerical quadrature. Do it, because the characteristic failure here is not a wrong method but a symmetry that does not quite hold: a kernel that is invariant under $x\mapsto\pi-x$ except for one factor, an exponent that is $\tfrac12$ rather than $1$, an interval that is $0.99$ periods rather than $1$. All of those produce a clean, plausible, wrong closed form, and none of them is visible in the algebra. The two useful diagnostics: evaluate the claimed identity $f(x)+f(\varphi(x))\abs{\varphi'(x)}$ at three or four random interior points and see whether it really is constant, and compare the final number against a coarse quadrature. If the identity fails at a random point, no amount of rearrangement will save the argument.
+\end{keynote}
+
+\section{Recognition matrix}
+\begin{recog}{@{}p{0.31\textwidth}p{0.35\textwidth}p{0.28\textwidth}@{}}
+\rowcolor{mist}\mh{If you see} & \mh{Reach for} & \mh{If that fails} \\
+\midrule
+\endhead
+Bounds $[-a,a]$, factored integrand & Classify parities; discard the odd part & Check integrability of the odd part \\
+Bounds $[a,b]$ with $\tfrac{a+b}{2}$ visible & Recentre with $t=x-\tfrac{a+b}{2}$ & Reflect instead: $x\mapsto a+b-x$ \\
+$xK(x)$ with $K(a+b-x)=K(x)$ & King: replace $x$ by $\tfrac{a+b}{2}$ & Test the kernel symbol by symbol \\
+$\dfrac{g(x)}{g(x)+g(a+b-x)}$ & Constant-sum fold: $I=\tfrac{b-a}{2}$ & Verify the identity, do not assume it \\
+$\dfrac{1}{1+\tan^{p}x}$ on $[0,\tfrac{\pi}{2}]$ & Sine and cosine exchange; $I=\tfrac{\pi}{4}$ & Weierstrass substitution $t=\tan x$ \\
+$\dfrac{g(x)}{1+\eu^{x}}$ on $[-a,a]$, $g$ even & Fermi fold: $I=\int_0^{a}g$ & Same with base $b$: $\tfrac{1}{1+b^{x}}$ \\
+$\ln\sin x$ or $\ln\cos x$ on $[0,\tfrac{\pi}{2}]$ & Reflect, add, then $u=2x$; get $-\tfrac{\pi}{2}\ln2$ & Fourier series of $\ln\sin$ \\
+$f(\sin x)$ on $[0,\pi]$ & Halve: $2\int_0^{\pi/2}$, then Wallis & Recentre at $\tfrac{\pi}{2}$ for parity \\
+Periodic $f$ over $nT$ & $n\int_0^{T}f$; slide the window freely & Check the true period first \\
+Periodic $f$ with a sign symmetry & Shift by $T/2$ and add & Split at the sign changes \\
+$\abs{\cdot}$, $\max$, $\min$, floor, radicals & Split at every crossing, resolve signs & Solve all pairwise equations \\
+$\ln x$ or $x^{s}$ against $1+x^{2}$ on $(0,\infty)$ & $x\mapsto1/x$; add or cancel & $x=\eu^{t}$, then parity in $t$ \\
+Reciprocal-symmetric denominator & $x=\eu^{t}$, expect $2\cosh$ & Split at $x=1$ and compare halves \\
+A fold on $(0,\infty)$ that nearly closes & Split at $x=1$; map $(1,\infty)$ back by $1/u$ & Bracketed form on $(0,1)$ \\
+A positive parameter inside the integrand & Scale it out: $x=\lambda t$, watch the Jacobian & $\dd x/x$ is scale-invariant \\
+$\ln(ax)$ against $x^{2}+b^{2}$ & Scale by $b$, then kill $\ln t$ by inversion & Answer depends on $ab$ only \\
+$x^{4}-(2c-1)x^{2}+c^{2}$ downstairs & Glasser: $\bigl(x-\tfrac cx\bigr)^{2}+1$, answer $\tfrac{\pi}{2}$ & Check $F$ is even \\
+$\bigl(ax-\tfrac bx\bigr)^{2}$ inside $f$ & Cauchy and Schlomilch: $\tfrac1a\int_0^{\infty}f(y^{2})$ & Complete the square first \\
+A monstrous integrand, symmetric domain & Test the four involutions for oddness & Principal value if only conditional \\
+$\tfrac{\sin x}{x}$ or $\tfrac{\sin^{2}x}{x^{2}}$ times $\pi$-periodic $f$ & Lobachevsky: $\int_0^{\pi/2}f$ & Check $f(\pi-x)=f(x)$ for the first form \\
+A parameter absent from the answer & A fold is intended; find the involution & Differentiate under the integral sign \\
+\end{recog}

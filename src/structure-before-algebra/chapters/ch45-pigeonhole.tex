@@ -1,0 +1,110 @@
+\chapter{Pigeonhole and its strong forms}
+
+\begin{orient}
+\textbf{What this chapter is for.} The pigeonhole principle is the most trivial theorem in this book and one of the most useful, and the gap between those two facts is where the technique lives. Stating it takes one line: if more than $k$ objects are placed into $k$ classes, some class holds at least two. Using it takes judgment, because the problem never tells you what the objects are or what the classes are, and choosing them is the entire creative act. This chapter drills that choice. The recognition cue is sharp and worth memorising: when a problem asks you to show that some object with a property must exist, without giving you any way to identify which one, pigeonhole is the first thing to try.
+\end{orient}
+
+\section{The principle and its strengthenings}
+
+\tech{Basic pigeonhole}{easy}
+\cue An existence claim with no constructive route: ``show that two of them must share'', ``prove some pair differs by'', ``there are always two with the same''. The number of objects usually exceeds some natural classification by exactly one, which is a deliberate signal.
+\method Name the pigeons and the holes explicitly, in that order, and count both. If $n$ objects go into $m$ classes with $n>m$, some class holds at least two. The proof is by contradiction and is never worth writing out; what must be written out is the map from objects to classes.
+
+\begin{worked}
+Among any five points chosen inside a unit square, two are at distance at most $\sqrt2/2$. Divide the square into four closed quadrant squares of side $1/2$. Five points, four squares, so two points lie in the same small square, and the diameter of a square of side $1/2$ is $\sqrt2/2$.
+\end{worked}
+
+\begin{trap}
+Choosing holes that do not cover everything, or that overlap in a way that breaks the count. If a point lands on a boundary line, decide once and for all which square owns it; the argument survives, but only if the assignment is a genuine function.
+\end{trap}
+
+\begin{seealsob}Generalised pigeonhole; pigeonhole on residues and differences; the extremal principle.\end{seealsob}
+
+\tech{Generalised pigeonhole}{easy}
+\cue The conclusion asks for three or more objects sharing a class, or asks for a class with at least a stated number of members, or the problem gives a ratio rather than a plus-one.
+\method With $n$ objects in $m$ classes, some class holds at least $\ceilb{n/m}$ objects, and some class holds at most $\floorb{n/m}$. Both halves are useful; the second is the one people forget, and it is what proves that something must be small.
+
+\begin{worked}
+A group of $100$ people, each born in one of the twelve months. Some month contains at least $\ceilb{100/12}=9$ of them. And some month contains at most $\floorb{100/12}=8$, so the distribution cannot be uniform, which is occasionally the point.
+\end{worked}
+
+\begin{trap}
+Rounding the wrong way. The guaranteed maximum uses the ceiling and the guaranteed minimum uses the floor, and swapping them produces a claim that is false whenever $m\nmid n$.
+\end{trap}
+
+\begin{seealsob}Basic pigeonhole; averaging arguments; double counting.\end{seealsob}
+
+\tech{Infinite pigeonhole}{medium}
+\cue Infinitely many objects distributed into finitely many classes, or a sequence from which you need an infinite subsequence with a shared property. Common in analysis proofs and in Ramsey-flavoured combinatorics.
+\method If infinitely many objects fall into finitely many classes, at least one class is infinite. Iterating this is how one extracts nested subsequences: apply it, restrict to the infinite class, apply it again with a new classification, and repeat. Finitely many iterations are free; infinitely many need a diagonal argument.
+
+\begin{worked}
+Every sequence of real numbers has a monotone subsequence. Call an index $n$ a peak if $a_{n}\geq a_{m}$ for all $m>n$. Either there are infinitely many peaks, and the peaks form a non-increasing subsequence, or there are finitely many, and past the last peak every index is followed by a strictly larger term, giving an increasing subsequence. The two cases are exhaustive, which is pigeonhole with two holes over an infinite set.
+\end{worked}
+
+\begin{seealsob}Erdos and Szekeres; the Bolzano and Weierstrass argument; casework with a discipline.\end{seealsob}
+
+\section{Choosing the holes}
+
+The examples above chose obvious holes. The interesting problems do not, and there are three constructions that recur often enough to be worth naming as techniques in their own right: residues, intervals, and sums.
+
+\tech{Pigeonhole on residues and differences}{medium}
+\cue A conclusion about divisibility, about a difference being a multiple of something, or about a subset summing to a multiple of $n$.
+\method Take the holes to be residue classes modulo $n$ and the pigeons to be a cleverly chosen set of $n+1$ numbers, very often the partial sums of the given sequence. Two partial sums in the same class have a difference divisible by $n$, and a difference of partial sums is a contiguous block, which is usually exactly what the problem wanted.
+
+\begin{worked}
+Given any $n$ integers $a_{1},\ldots,a_{n}$, some nonempty consecutive block sums to a multiple of $n$. Form the $n+1$ partial sums $S_{0}=0$, $S_{k}=a_{1}+\cdots+a_{k}$. These are $n+1$ numbers in $n$ residue classes modulo $n$, so $S_{i}\equiv S_{j}$ for some $i<j$, and then $a_{i+1}+\cdots+a_{j}=S_{j}-S_{i}\equiv0\pmod n$. Note that $S_{0}$ is doing essential work: without it the count is $n$ and the argument fails.
+\end{worked}
+
+\begin{trap}
+Forgetting the empty partial sum. It is the extra pigeon, and it is what lets the chosen block start at the first element.
+\end{trap}
+
+\begin{seealsob}Residue classes and modular reduction; basic pigeonhole; double counting.\end{seealsob}
+
+\tech{Pigeonhole on intervals and on structure}{hard}
+\cue A conclusion about two objects being close, about an approximation by a rational with bounded denominator, or about a monochromatic structure appearing in any colouring.
+\method Partition the ambient space into finitely many small pieces and let the objects be points of that space. For approximation problems the classic construction takes the fractional parts $\{k\alpha\}$ for $k=0,\ldots,N$ as the pigeons and the $N$ intervals $[j/N,(j+1)/N)$ as the holes.
+
+\begin{worked}
+Dirichlet's approximation theorem. For irrational $\alpha$ and any $N$, there are integers $p,q$ with $1\leq q\leq N$ and $\abs{\alpha-p/q}<1/(qN)$. The $N+1$ fractional parts $\{0\cdot\alpha\},\ldots,\{N\alpha\}$ lie in $N$ intervals of length $1/N$, so two of them, say at indices $k<l$, lie in the same interval. Then $\abs{(l-k)\alpha-m}<1/N$ for the appropriate integer $m$, and dividing by $q=l-k\leq N$ gives the claim. This single argument is the source of the continued-fraction convergents being as good as they are.
+\end{worked}
+
+\begin{trap}
+Using half-open intervals inconsistently, so that a point at an endpoint is counted twice or not at all. Fix the convention before counting.
+\end{trap}
+
+\begin{seealsob}Pigeonhole on residues; Erdos and Szekeres; extremal configurations in geometry.\end{seealsob}
+
+\tech{Erdos and Szekeres, and pigeonhole with structure}{hard}
+\cue A claim that any sufficiently long sequence, or any sufficiently large colouring, contains a structured piece: a monotone run, a monochromatic triangle, a repeated pattern.
+\method Attach to each object a label that encodes the structure you want, then pigeonhole on labels. For monotone subsequences, label position $i$ with the pair (length of the longest increasing subsequence ending at $i$, length of the longest decreasing subsequence ending at $i$). Distinct positions get distinct labels, so a sequence of length exceeding the number of available labels forces a long run.
+
+\begin{worked}
+Any sequence of $mn+1$ distinct reals contains an increasing subsequence of length $m+1$ or a decreasing subsequence of length $n+1$. Suppose not. Then every label $(x_{i},y_{i})$ has $1\leq x_{i}\leq m$ and $1\leq y_{i}\leq n$, giving at most $mn$ labels for $mn+1$ positions, so two positions $i<j$ share a label. But if $a_{i}<a_{j}$ then $x_{j}\geq x_{i}+1$, and if $a_{i}>a_{j}$ then $y_{j}\geq y_{i}+1$; either way the labels differ. Contradiction.
+\end{worked}
+
+\begin{worked}[Ramsey, the smallest case]
+Among any six people, three are mutual acquaintances or three are mutual strangers. Fix a person $P$. Of the five others, by generalised pigeonhole at least $\ceilb{5/2}=3$ stand in the same relation to $P$, say acquainted. If any two of those three know each other, they and $P$ form an acquainted triple; if none do, those three are mutual strangers.
+\end{worked}
+
+\begin{seealsob}Pigeonhole on intervals; the extremal principle; double counting.\end{seealsob}
+
+\section{Recognition matrix}
+
+\begin{recog}{@{}p{0.31\textwidth}p{0.35\textwidth}p{0.28\textwidth}@{}}
+\rowcolor{mist}\mh{If you see} & \mh{Reach for} & \mh{If that fails} \\
+\midrule
+\endhead
+``Two of them must share'' & Basic pigeonhole; name the holes & Averaging \\
+``At least three share'' & Generalised form, $\ceilb{n/m}$ & Count the classes again \\
+``Some class is small'' & The floor half, $\floorb{n/m}$ & Complementary counting \\
+$n+1$ objects, $n$ natural classes & The plus-one is the signal & Find the intended classification \\
+Divisibility of a block sum & Partial sums modulo $n$, including $S_{0}$ & Residues of the terms \\
+``Two are within distance $d$'' & Partition into cells of diameter $d$ & Finer grid, then generalised form \\
+Rational approximation & Fractional parts into $N$ intervals & Continued fractions \\
+Infinitely many, finitely many types & One type occurs infinitely often & Iterate, then diagonalise \\
+Monotone subsequence & Label by longest run ending here & Peaks and non-peaks \\
+Monochromatic structure & Fix a vertex; pigeonhole its edges & Induct on the Ramsey bound \\
+No constructive handle at all & Suspect pigeonhole & Extremal principle \\
+\end{recog}

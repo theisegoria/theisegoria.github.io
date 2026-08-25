@@ -1,0 +1,467 @@
+\chapter{First-order equations: the classification decision}
+
+\begin{orient}
+\textbf{What this chapter is for.} A first-order ordinary differential equation is solved by naming its type. There is no general method; there is a short list of named families, each with its own machine, and the entire difficulty of the subject at this level is deciding which family the equation in front of you belongs to. Almost every hour wasted on a first-order problem is a misclassification: an integrating factor computed for an equation that was not linear, a homogeneous substitution attempted on an equation that was not homogeneous, three pages of exactness machinery on an equation that separated in one line. This chapter gives the decision procedure three times over: as prose, as a numbered test order you can run in ninety seconds, and as a decision tree. For each family the emphasis is on the test you actually apply to the equation \emph{as written}, which is usually not the definition. By the end you should be able to classify any first-order equation you meet, know which rearrangements to attempt before declaring a test failed, and recognise the common situation in which an equation belongs to two families at once and one of the two routes is six times shorter.
+\end{orient}
+
+\section{The audit}
+
+Classification is cheap and solving is expensive, so classify completely before solving at all. The audit below takes about a minute on paper and it is not optional: half of these tests can only be run on a particular arrangement of the equation, so running them in the wrong order means running them on the wrong object. In particular, separability and linearity are tests on the \emph{derivative} form $y'=f(x,y)$, while exactness is a test on the \emph{differential} form $M\dd x+N\dd y=0$, and an equation can pass one while the other arrangement makes it look hopeless.
+
+\tech{The classification audit before any solving}{core}
+\cue Every first-order problem, without exception. Run this before writing a single line of solution.
+\method Record, in this order: (i) order and degree, and whether $y'$ appears to a power higher than one or inside a function; (ii) is it linear in $y$, that is $y'+P(x)y=Q(x)$; (iii) does it separate, $y'=g(x)h(y)$; (iv) written as $y'=f(x,y)$, is $f$ homogeneous of degree zero, $f(tx,ty)=f(x,y)$; (v) written as $M\dd x+N\dd y=0$, is $M_y=N_x$; (vi) does it match Bernoulli, Riccati, Clairaut, or Lagrange in form. Only then choose a method. Write the verdict of each test down; the discipline of writing ``not linear: $y^{2}$ on the right'' is what stops you from reaching for the integrating factor twenty seconds later.
+
+\begin{worked}
+Classify $\dv{y}{x}=\dfrac{2x+y}{x+2y}$.
+
+(ii) Not linear in $y$: $y$ appears in a denominator. (iii) Not separable: the numerator and denominator are sums, and sums do not factor into a pure-$x$ times a pure-$y$ piece. (iv) Homogeneous of degree zero: replace $(x,y)$ by $(tx,ty)$ and the factor $t$ cancels top and bottom. That verdict decides the method, and the substitution $v=y/x$ is the move. With $y=vx$, $y'=v+xv'$:
+\[v+x\dv{v}{x}=\frac{2+v}{1+2v},\qquad x\dv{v}{x}=\frac{2-2v^{2}}{1+2v}.\]
+Separating and using $\dfrac{1+2v}{2(1-v^{2})}=\dfrac{3/4}{1-v}-\dfrac{1/4}{1+v}$ gives $-\tfrac34\ln\abs{1-v}-\tfrac14\ln\abs{1+v}=\ln\abs x+c$, and clearing logarithms leaves the first integral
+\[(x-y)^{3}(x+y)=C.\]
+Numerical check: integrating from $(1,\tfrac12)$ to $x=2$ gives $y=1.6274956$, and $(x-y)^{3}(x+y)=0.187500$ at both ends, against $(1-\tfrac12)^{3}(1+\tfrac12)=0.1875$.
+\end{worked}
+
+\begin{trap}
+Reaching for $\mu=\eu^{\int P}$ on sight of a $y$ on the left-hand side. The integrating-factor machine applies only once the equation is genuinely linear \emph{in $y$}: any of $y^{2}$, $\sqrt y$, $\eu^{y}$, $\ln y$, $1/y$, or $yy'$ disqualifies it, and $x^{2}$, $\sin x$, $\eu^{x}$ do not. The variable that must appear linearly is the unknown, not the independent one.
+\end{trap}
+
+\begin{seealsob}Every technique in this chapter; the separable machine; the integrating-factor machine.\end{seealsob}
+
+Here is the audit as an ordered checklist. The order is not arbitrary: it runs cheapest test first, and it runs the tests that can be settled by looking at the equation before the tests that require a computation.
+
+\begin{enumerate}
+\item \textbf{Simplify.} Factor every coefficient completely and cancel. Bloated coefficients hide two-line problems.
+\item \textbf{Is $x$ absent from the right side?} Then it is autonomous, hence separable, and the phase line answers qualitative questions without integrating.
+\item \textbf{Is $y$ absent from the right side?} Then it is a bare quadrature, $y=\int f(x)\dd x$.
+\item \textbf{Does $f(x,y)$ factor as $g(x)h(y)$?} Separable. Cheapest real method; always test it first.
+\item \textbf{Is it linear in $y$?} Put it in standard form $y'+Py=Q$ and run the integrating factor.
+\item \textbf{Is it linear in $x$ instead?} Write $\dd x/\dd y+P(y)x=Q(y)$ and solve for $x(y)$.
+\item \textbf{Is $f(tx,ty)=f(x,y)$?} Homogeneous of degree zero; substitute $y=vx$.
+\item \textbf{Written as $M\dd x+N\dd y=0$, is $M_y=N_x$?} Exact; find the potential $F$ with $F=C$.
+\item \textbf{Is it $y'+Py=Qy^{n}$?} Bernoulli; substitute $v=y^{1-n}$.
+\item \textbf{Is it quadratic in $y$ with all three coefficients present?} Riccati; you need a particular solution.
+\item \textbf{Does $y$ sit alone with a term $x\cdot y'$?} Clairaut if the rest is a function of $y'$ only; Lagrange if the coefficient of $x$ is a nonidentity function of $y'$.
+\item \textbf{Does a weighting $x\sim1$, $y\sim m$ make all terms equal?} Isobaric; substitute $y=vx^{m}$.
+\item \textbf{Does the right side depend on $x$ and $y$ only through $ax+by+c$?} Substitute $u=ax+by+c$.
+\end{enumerate}
+
+The same procedure, compressed to its branch points, is the tree below. It omits Riccati, isobaric, and Lagrange deliberately, since those are the rare cases you reach only after everything above has failed.
+
+\begin{center}
+\begin{tikzpicture}[node distance=6mm and 8mm]
+\node[dtest] (a) {Does $f(x,y)$ factor\\ as $g(x)h(y)$?};
+\node[dleaf, below left=9mm and 6mm of a] (b) {Separate and integrate;\\ record lost constants};
+\node[dtest, below right=9mm and 3mm of a] (c) {Linear in $y$, or\\ linear in $x$?};
+\node[dleaf, below left=9mm and 1mm of c] (d) {$\mu=\eu^{\int P}$;\\ swap roles if needed};
+\node[dtest, below right=9mm and 1mm of c] (e) {$M_y=N_x$ in\\ differential form?};
+\node[dleaf, below left=9mm and 1mm of e] (f) {Exact: build $F$,\\ answer $F=C$};
+\node[dleaf, below right=9mm and 1mm of e] (g) {Degree $0$: $y=vx$.\\ Else $y^{n}$: Bernoulli};
+\draw[dedge] (a) -- node[dlab,left]{yes} (b);
+\draw[dedge] (a) -- node[dlab,right]{no} (c);
+\draw[dedge] (c) -- node[dlab,left]{yes} (d);
+\draw[dedge] (c) -- node[dlab,right]{no} (e);
+\draw[dedge] (e) -- node[dlab,left]{yes} (f);
+\draw[dedge] (e) -- node[dlab,right]{no} (g);
+\end{tikzpicture}
+\end{center}
+
+Three remarks about the tree. It is a tree of \emph{tests}, not of methods, so a leaf tells you what the equation is rather than how much work solving it will be. It is ordered by cost, so an equation that reaches the bottom right leaf has already failed four cheaper tests and you have lost nothing by asking them. And it deliberately runs separability first even though linearity is the more powerful method, because separation is shorter whenever both apply.
+
+\section{Rearrangement comes before classification}
+
+Half of all misclassifications are not misjudgements about the equation but about its arrangement. Separability and linearity are tests on $y'=f(x,y)$; exactness is a test on $M\dd x+N\dd y=0$; Clairaut and Lagrange are tests on the relation among $x$, $y$, and $p=y'$ with $y$ isolated; and linearity in $x$ is a test on $\dd x/\dd y$. An equation handed to you in one of these arrangements will fail tests belonging to the others, and the failure says nothing. Before recording any verdict, put the equation into the arrangement the test is about.
+
+Four short recognitions make the point. First, $\dv{y}{x}=\dfrac{y}{x+y^{2}}$. It is not separable, not linear in $y$ (the $y^{2}$ sits in the denominator), and not degree-zero homogeneous. Invert it: $\dv{x}{y}=\dfrac{x+y^{2}}{y}=\dfrac xy+y$, which is linear in $x$. With $\mu=1/y$, $\left(\dfrac xy\right)'=1$, so $x=y^{2}+Cy$. Taking $C=1$ and the point $(2,1)$, the curve reaches $x=6$ at $y=2$, which numerical integration confirms to eleven figures.
+
+Second, $2xy\dv{y}{x}=y^{2}-x^{2}$. As written the derivative is not isolated and no test applies. Isolating it gives $y'=\dfrac{y^{2}-x^{2}}{2xy}$, in which every term upstairs and downstairs is degree $2$: degree-zero homogeneous. With $y=vx$, $x v'=-\dfrac{1+v^{2}}{2v}$, so $\ln(1+v^{2})=-\ln\abs x+c$ and $x^{2}+y^{2}=Cx$: the family of circles through the origin with centres on the $x$-axis. From $y(1)=1$, $C=2$ and $y(1.5)=\sqrt{3}/2=0.8660254$, confirmed numerically.
+
+Third, $(y')^{2}-xy'+y=0$. Nothing in the audit applies to an equation quadratic in $y'$. Solve it for $y$ instead: $y=xy'-(y')^{2}$, which is exactly the Clairaut shape with $f(p)=-p^{2}$.
+
+Fourth, $\dv{y}{x}=-\dfrac{\cos y+y\cos x}{\sin x-x\sin y}$, which looks unapproachable. Cross-multiplying into differential form gives $(\cos y+y\cos x)\dd x+(\sin x-x\sin y)\dd y=0$, and now $M_y=-\sin y+\cos x$ and $N_x=\cos x-\sin y$ agree: it is exact, with potential $F=x\cos y+y\sin x$, so the solution is
+\[x\cos y+y\sin x=C.\]
+Starting from $(1,0.5)$, where $F=1.2983181$, numerical integration to $x=1.4$ gives $y=-0.0965647$, at which $F=1.2983181$ again.
+
+\begin{keynote}[Four arrangements, four families of tests]
+Derivative form $y'=f(x,y)$: separable, autonomous, degree-zero homogeneous, Bernoulli, Riccati. Standard linear form $y'+P(x)y=Q(x)$: the integrating factor. Differential form $M\dd x+N\dd y=0$: exactness, integrating factors, the reverse product and quotient rules. Solved-for-$y$ form $y=x\varphi(p)+\psi(p)$: Clairaut and Lagrange. Reciprocal form $\dd x/\dd y$: linearity in $x$. Converting between them is free; failing a test in the wrong arrangement costs the problem.
+\end{keynote}
+
+\section{Tests on the shape of $f$}
+
+The first three tests look only at how $x$ and $y$ enter the right-hand side, and none of them requires a derivative to be computed. They are therefore the cheapest tests available and they should be exhausted first.
+
+\tech[Separability test and the g h factorisation]{Separability test and the $g(x)h(y)$ factorisation}{easy}
+\cue $y'=f(x,y)$ where $f$ factors into a pure-$x$ piece times a pure-$y$ piece, including the degenerate cases $f=g(x)$ alone and $f=h(y)$ alone.
+\method Confirm the factorisation algebraically rather than by eye. The reliable test: compute $\dfrac{\partial}{\partial y}\ln\abs f$ and check that it is free of $x$, or simply attempt the factorisation and see whether it closes. Then write $\dfrac{\dd y}{h(y)}=g(x)\dd x$ and integrate both sides, with a single constant on one side only.
+
+\begin{worked}
+$y'=x(1+y)$ with $y(0)=0$ separates on sight: $\dfrac{\dd y}{1+y}=x\dd x$, so $\ln\abs{1+y}=\tfrac{x^{2}}{2}+c$ and $y=\eu^{x^{2}/2}-1$.
+
+The instructive case is one that separates only after factoring. Consider $y'=xy+x+y+1$. As a sum of four terms it looks like nothing at all; grouped, it is $x(y+1)+(y+1)=(x+1)(y+1)$, which separates:
+\[\ln\abs{1+y}=\frac{x^{2}}{2}+x+c,\qquad y=A\eu^{x^{2}/2+x}-1.\]
+With $y(0)=0$, $A=1$ and $y(1)=\eu^{3/2}-1=3.4816891$, matching Runge-Kutta to ten figures. Note also the constant solution $y=-1$, which is $A=0$ and was lost at the moment we divided by $1+y$.
+\end{worked}
+
+\begin{worked}[Worked example: separable with an awkward integral]
+$\dv{y}{x}=\dfrac{x\eu^{x}}{y\sqrt{1+y^{2}}}$ with $y(0)=0$. The factorisation is immediate, $g(x)=x\eu^{x}$ and $h(y)=\bigl(y\sqrt{1+y^{2}}\bigr)^{-1}$, so separability is settled before any integration is attempted. That matters, because both integrals then need work and it would be wasteful to discover halfway through that the equation was not separable after all. Separating,
+\[\int y\sqrt{1+y^{2}}\dd y=\int x\eu^{x}\dd x,\qquad \tfrac13\bigl(1+y^{2}\bigr)^{3/2}=(x-1)\eu^{x}+c,\]
+the left by $u=1+y^{2}$ and the right by parts. From $y(0)=0$, $\tfrac13=-1+c$, so
+\[\bigl(1+y^{2}\bigr)^{3/2}=3(x-1)\eu^{x}+4,\]
+and at $x=1$ this gives $y=\sqrt{4^{2/3}-1}=1.2328188$. The moral is procedural: classification is a test on the \emph{form} of the equation and is complete before any antiderivative is computed. Difficulty of integration is not evidence against separability.
+\end{worked}
+
+\begin{trap}
+Declaring $y'=x+y$ separable. Sums do not separate; only products do. The trap is worth stating in its general form: separability is a property of the factored expression, and no amount of rearrangement makes $x+y$ into a product of a function of $x$ and a function of $y$. Conversely, refusing to factor is how $xy+x+y+1$ gets sent to the integrating-factor machine when one line of grouping would have finished it.
+\end{trap}
+
+\begin{seealsob}The classification audit; hidden separability by factoring; autonomous recognition.\end{seealsob}
+
+Separability fails for most equations, and the next question is whether the failure is superficial. Degree-zero homogeneity is the most common repair: an equation whose right side depends on $x$ and $y$ only through their ratio is separable in disguise, and the disguise is removed by one substitution. The test is a single algebraic check that costs nothing.
+
+\tech{Homogeneous-of-degree-zero test}{medium}
+\cue Replacing $(x,y)$ by $(tx,ty)$ leaves $f$ unchanged. Equivalently, in the form $M\dd x+N\dd y=0$, every term of $M$ and every term of $N$ carries the same total degree in $x$ and $y$ jointly.
+\method Test $f(tx,ty)=f(x,y)$ by substituting $t$ literally and cancelling. If it holds, $f$ can be written as a function of $v=y/x$ alone, and $y=vx$ reduces the equation to a separable one. The degree count is the fast version: in $\dfrac{2x+y}{x+2y}$ every term upstairs and downstairs is degree $1$, so the quotient is degree $0$.
+
+\begin{worked}
+$y'=\dfrac{x^{2}+y^{2}}{xy}$. Numerator and denominator are both homogeneous of degree $2$, so the quotient is degree $0$. Substituting $y=vx$:
+\[v+x\dv{v}{x}=\frac{1+v^{2}}{v},\qquad x\dv{v}{x}=\frac{1+v^{2}-v^{2}}{v}=\frac1v,\]
+so $v\dd v=\dfrac{\dd x}{x}$, giving $\tfrac12v^{2}=\ln\abs x+c$ and
+\[y^{2}=2x^{2}\ln\abs x+Cx^{2}.\]
+With $y(1)=1$ we get $C=1$ and $y(2)=\sqrt{8\ln2+4}=3.0895271$, confirmed numerically to nine figures.
+\end{worked}
+
+A second instance shows how little the family cares about what $F$ looks like. In $\dv{y}{x}=\dfrac yx+\tan\dfrac yx$ the right side is a function of $y/x$ by inspection, so the degree test passes without any cancelling. With $y=vx$ the $v$ terms cancel as they always do:
+\[x\dv{v}{x}=\tan v,\qquad \cot v\dd v=\frac{\dd x}{x},\qquad \ln\abs{\sin v}=\ln\abs x+c,\]
+so $\sin\dfrac yx=Cx$. With $y(1)=\tfrac{\pi}{6}$ we get $C=\tfrac12$ and $y=x\arcsin\dfrac x2$, valid for $\abs x\leq2$; then $y(1.5)=1.5\arcsin0.75=1.2720931$, confirmed numerically to ten figures. The lost solutions are the roots of $\tan v=0$, that is $v=k\pi$, giving the lines $y=k\pi x$.
+
+\begin{trap}
+Confusing the two uses of the word ``homogeneous''. Here it means the right-hand side has degree zero. In the linear theory it means the forcing term $Q(x)$ is zero. The two senses are unrelated, they both appear in this chapter, and $y'=y/x$ happens to satisfy both, which is exactly the sort of coincidence that entrenches the confusion. When in doubt, say ``degree-zero homogeneous'' or ``unforced'' and the ambiguity disappears.
+\end{trap}
+
+\begin{seealsob}The substitution $y=vx$; isobaric equations, which are the weighted generalisation; the classification audit.\end{seealsob}
+
+When the degree test fails, it sometimes fails only because $x$ and $y$ were weighted equally. Counting $y$ with a weight $m\neq1$ produces a larger family that behaves identically, and the weight is determined by a small linear system rather than guessed. This is the last resort among the shape tests, and it is worth knowing chiefly because equations built to defeat the standard tests are often built this way.
+
+\tech{Isobaric and weighted-homogeneous equations}{hard}
+\cue The equation is not degree-zero homogeneous, but the failure looks systematic: one term is off by a fixed power of $x$. Assign weight $1$ to $x$, weight $m$ to $y$, weight $1$ to $\dd x$, weight $m$ to $\dd y$, and hence weight $m-1$ to $y'$.
+\method Demand that all terms carry equal weight. This is one linear equation in $m$; solve it, then substitute $y=vx^{m}$, which makes the equation separable in $(x,v)$. If different pairs of terms force different values of $m$, the equation is not isobaric and you must stop, not average.
+
+\begin{worked}
+$\dv{y}{x}=\dfrac{y}{2x}+\dfrac{x^{2}}{2y}$. Weights: the left side is $m-1$; the first term on the right is $m-1$; the second is $2-m$. Equating the first and third, $m-1=2-m$ gives $m=\tfrac32$, and all three then read $\tfrac12$. Substitute $y=vx^{3/2}$, so $y'=v'x^{3/2}+\tfrac32vx^{1/2}$:
+\[v'x^{3/2}+\tfrac32vx^{1/2}=\tfrac12vx^{1/2}+\tfrac{1}{2v}x^{1/2}\quad\Longrightarrow\quad x\dv{v}{x}=\frac{1-2v^{2}}{2v},\]
+which separates to $-\tfrac12\ln\abs{1-2v^{2}}=\ln\abs x+c$, hence $1-2v^{2}=Ax^{-2}$ and, since $y^{2}=v^{2}x^{3}$,
+\[y^{2}=\tfrac12x^{3}+Cx.\]
+With $y(1)=1$: $C=\tfrac12$, so $y(2)=\sqrt{4+1}=\sqrt5=2.2360680$, confirmed numerically.
+
+The shortcut worth noticing: setting $w=y^{2}$ turns the original equation into the linear equation $w'-\dfrac{w}{x}=x^{2}$ in two lines, because $w'=2yy'$ absorbs both terms. Every isobaric equation of this shape is a Bernoulli equation wearing a different hat, and if you spot the Bernoulli form first you never need the weight calculation.
+\end{worked}
+
+Finding $m$ is quicker in practice than the description suggests, because you only need two terms to determine it and the rest are then a consistency check. Write the weight of each term as a number: $x^{a}y^{b}\dd x$ has weight $a+bm+1$ and $x^{a}y^{b}\dd y$ has weight $a+bm+m$. Set any two equal, solve the resulting linear equation for $m$, and verify the remaining terms. A useful sanity check: a degree-zero homogeneous equation is the case $m=1$, so if your weight calculation returns $m=1$ you should have caught the equation one test earlier.
+
+\begin{trap}
+Solving the weight equation from an inconsistent set of terms. If terms one and two force $m=\tfrac32$ and terms one and three force $m=2$, the equation is not isobaric; there is no correct $m$ and no substitution $y=vx^{m}$ will separate it. The other trap is arithmetic: $\dd y$ carries weight $m$, so $y'=\dd y/\dd x$ carries weight $m-1$, not $m$. Getting that wrong shifts every equation by one and produces a plausible wrong $m$.
+\end{trap}
+
+\begin{seealsob}The homogeneous-of-degree-zero test; Bernoulli recognition; the substitution $y=vx$.\end{seealsob}
+
+\section{Tests on how $y$ enters algebraically}
+
+The second group of tests ignores $x$ entirely and asks only about the algebraic degree in which the unknown appears. Linear, Bernoulli, and Riccati form a ladder: first power only, first power plus one extra power, and full quadratic. Recognising which rung you are on is usually a matter of reading the right-hand side once.
+
+\tech[Linearity test and standard form]{Linearity test and the standard form $y'+P(x)y=Q(x)$}{core}
+\cue $y$ and $y'$ each appear to the first power only, with no product $yy'$ and no $y$ inside a transcendental function. Coefficients of $x$ may be arbitrarily ugly; that is irrelevant to linearity.
+\method Divide through by the coefficient of $y'$ to reach standard form \emph{before} computing anything. The coefficient you divide by may vanish; record those points, because they bound the interval on which the solution exists and is unique. Only then form $\mu=\eu^{\int P\dd x}$.
+
+\begin{worked}
+$\dv{y}{x}(x+x^{2})+y(x^{3}+x^{4})=x^{3}+x^{4}$ with $y(0)=2$.
+
+Do not reach for $\mu$ yet. Factor: $x(1+x)y'+x^{3}(1+x)y=x^{3}(1+x)$. The common factor $x(1+x)$ divides out on the whole equation, leaving
+\[y'+x^{2}y=x^{2},\]
+whose integrating factor is $\mu=\eu^{x^{3}/3}$. Then $(\mu y)'=x^{2}\eu^{x^{3}/3}$, so $\mu y=\eu^{x^{3}/3}+C$ and $y=1+C\eu^{-x^{3}/3}$. With $y(0)=2$, $C=1$ and
+\[y(1)=1+\eu^{-1/3}=1.7165313,\]
+which a numerical integration reproduces to ten figures. Had you not factored, you would have computed $P=\dfrac{x^{3}+x^{4}}{x+x^{2}}$ and $\int P$ anyway, arriving at the same place after considerably more work; had you not divided at all, you would have used $P=x^{3}+x^{4}$ and got a wrong answer with no warning.
+\end{worked}
+
+\begin{trap}
+Applying $\mu=\eu^{\int P}$ before dividing by the leading coefficient. This silently uses the wrong $P$ and there is no internal check that catches it. The second trap is failing to factor: coefficients like $(x+x^{2})$ and $(x^{3}+x^{4})$ are put there precisely so that a solver who does not factor will drown. The third is ignoring the vanishing of the leading coefficient at $x=0$ and $x=-1$; here the factor cancels and the reduced equation is fine at $x=0$, but in general those are the endpoints of the interval of validity.
+\end{trap}
+
+\begin{seealsob}The integrating-factor machine; swapping the roles of $x$ and $y$; the classification audit.\end{seealsob}
+
+If the equation fails linearity by exactly one power of $y$ on the right, it is not lost: the failure is repairable by substitution, and the repair is completely mechanical. This is the most valuable single recognition in first-order theory, because Bernoulli equations look nonlinear and are not.
+
+\tech{Bernoulli recognition}{medium}
+\cue $y'+P(x)y=Q(x)y^{n}$ with $n\neq0,1$: a linear equation spoiled by exactly one power of $y$ on the right. The exponent $n$ need not be an integer, and $n=\tfrac12$ and $n=2$ are the common cases.
+\method Divide by $y^{n}$ and set $v=y^{1-n}$. Since $v'=(1-n)y^{-n}y'$, the equation becomes
+\[v'+(1-n)P(x)\,v=(1-n)Q(x),\]
+which is linear in $v$. Solve, then invert. Note that $y\equiv0$ solves the original whenever $n>0$ and is lost by the division; record it.
+
+\begin{worked}
+$y'+\dfrac yx=xy^{2}$ with $y(1)=\tfrac13$. Here $n=2$, so $v=y^{-1}$ and $1-n=-1$:
+\[v'-\frac vx=-x.\]
+Integrating factor $\mu=1/x$: $\left(\dfrac vx\right)'=-1$, so $\dfrac vx=-x+C$ and $v=Cx-x^{2}$. The condition $y(1)=\tfrac13$ means $v(1)=3$, so $C=4$ and
+\[y=\frac{1}{4x-x^{2}},\qquad y(3)=\frac{1}{12-9}=\frac13,\]
+confirmed numerically. The solution exists on $(0,4)$ and blows up at both ends, which the closed form shows and the original equation does not.
+
+A fractional instance: $xy'=y+x^{2}\sqrt y$ with $y(1)=1$. In standard form $y'-\dfrac yx=x\sqrt y$, so $n=\tfrac12$, $v=\sqrt y$, and $v'-\dfrac{v}{2x}=\dfrac x2$. With $\mu=x^{-1/2}$ this gives $v=\dfrac{x^{2}}{3}+C\sqrt x$; from $v(1)=1$, $C=\tfrac23$, so $y=\left(\dfrac{x^{2}}{3}+\dfrac{2\sqrt x}{3}\right)^{2}$ and $y(4)=\left(\dfrac{16}{3}+\dfrac43\right)^{2}=\dfrac{400}{9}=44.4444$, verified numerically.
+\end{worked}
+
+\begin{trap}
+Sign errors in the factor $(1-n)$, which is negative for every $n>1$ and therefore flips the sign of both $P$ and $Q$. Verify by differentiating $v=y^{1-n}$ explicitly rather than quoting the formula. And do not forget the lost solution $y\equiv0$: for $n=2$ it is a genuine solution of $y'+y/x=xy^{2}$, and no choice of $C$ in $y=1/(Cx-x^{2})$ produces it.
+\end{trap}
+
+\begin{seealsob}The integrating-factor machine; Riccati recognition; isobaric equations, which frequently reduce to Bernoulli.\end{seealsob}
+
+Bernoulli equations are also the family most likely to be soluble by a shorter route, because the substitution $v=y^{1-n}$ is often the same thing as a reverse product rule that is already visible. Compare the two treatments of $xy'+y=x^{2}y^{2}$. As Bernoulli: divide by $x$ to reach $y'+\dfrac yx=xy^{2}$, set $v=y^{-1}$, solve $v'-\dfrac vx=-x$ with $\mu=1/x$, obtain $v=Cx-x^{2}$, invert. Six steps. As a product rule: the left-hand side \emph{is} $(xy)'$, and the right-hand side is $(xy)^{2}$, so with $w=xy$ the equation is $w'=w^{2}$, giving $-\dfrac1w=x+c$ and $w=\dfrac{1}{C-x}$, hence $y=\dfrac{1}{x(C-x)}$. Two steps. With $y(1)=1$ both give $C=2$ and $y(1.5)=\tfrac43$, which the numerics confirm. Looking for the packaged derivative before running the machine is worth the ten seconds it costs.
+
+One more power of $y$ and the equation becomes Riccati, at which point the mechanical guarantee disappears. Riccati equations are the first family in this chapter that is not solvable in closed form in general, and the recognition therefore has a different purpose: it tells you what extra ingredient you must find or be given.
+
+\tech{Riccati recognition}{medium}
+\cue $y'=q_0(x)+q_1(x)y+q_2(x)y^{2}$: quadratic in $y$, with the quadratic coefficient not identically zero. If the problem hands you one solution unprompted, that is the tell; it is not a hint, it is the missing ingredient.
+\method With a known particular solution $y_1$, substitute $y=y_1+\dfrac1v$. The quadratic terms cancel identically and what remains is linear:
+\[v'+\bigl(q_1+2q_2y_1\bigr)v=-q_2.\]
+Solve for $v$ and add back. If no particular solution is offered, hunt for one among the simple shapes: a constant, a polynomial of low degree, $a/x$, or $ax$. Substitute the ansatz and see whether the coefficients can be matched.
+
+\begin{worked}
+$y'=1+x^{2}-2xy+y^{2}$ with $y(0)=2$. The shape is Riccati with $q_0=1+x^{2}$, $q_1=-2x$, $q_2=1$. Guess $y_1=x$: then $y_1'=1$ and the right side is $1+x^{2}-2x^{2}+x^{2}=1$, so the guess works. Put $y=x+\dfrac1v$; since $q_1+2q_2y_1=-2x+2x=0$, the linear equation is simply $v'=-1$, giving $v=C-x$ and
+\[y=x+\frac{1}{C-x}.\]
+From $y(0)=2$ we get $C=\tfrac12$, so $y(0.3)=0.3+\dfrac{1}{0.2}=5.3$, confirmed numerically.
+
+A case where the particular solution must be hunted: $y'=y^{2}-\dfrac{2}{x^{2}}$ with $y(1)=2$. Try $y_1=a/x$: then $-\dfrac{a}{x^{2}}=\dfrac{a^{2}-2}{x^{2}}$, so $a^{2}+a-2=0$ and $a=1$ or $a=-2$. Take $y_1=\dfrac1x$. With $q_1=0$, $q_2=1$, the linear equation is $v'+\dfrac{2}{x}v=-1$, whose solution with $\mu=x^{2}$ is $v=-\dfrac x3+\dfrac{C}{x^{2}}$. Hence
+\[y=\frac1x+\frac{3x^{2}}{3C-x^{3}},\]
+and $y(1)=2$ forces $3C=4$, giving $y=\dfrac1x+\dfrac{3x^{2}}{4-x^{3}}$. At $x=1.4$ this is $5.3958144$, matching Runge-Kutta to eight figures.
+\end{worked}
+
+\begin{trap}
+Assuming that a Riccati equation has an elementary closed form. Generically it does not: $y'=x^{2}+y^{2}$ has no elementary solution at all, and its solutions are ratios of Bessel functions. If no particular solution is offered and none of the simple ansatzes matches, the honest answer is a series solution or a numerical one, not a longer search.
+\end{trap}
+
+\begin{seealsob}Bernoulli recognition; the integrating-factor machine; series solutions about an ordinary point.\end{seealsob}
+
+Two further facts about Riccati equations are worth carrying, because they tell you what is possible before you spend time. First, the substitution $y=-\dfrac{u'}{q_2u}$ converts any Riccati equation into a \emph{second-order linear} equation for $u$,
+\[u''-\left(q_1+\frac{q_2'}{q_2}\right)u'+q_0q_2\,u=0,\]
+which is why Riccati equations are exactly as hard as second-order linear equations and no harder. When the second-order equation is one you recognise, the Riccati equation is solved; when it is Bessel's, as for $y'=x^{2}+y^{2}$, the solution is a ratio of Bessel functions and there is no elementary form to find. Second, one particular solution unlocks everything, but two unlock more: if $y_1$ and $y_2$ are both known, the general solution follows by a single quadrature, and if three are known it follows by pure algebra, since the cross-ratio of any four solutions of a Riccati equation is constant in $x$. That last fact is the practical reason to keep hunting after finding one solution: the second one is usually cheaper than the linear equation it would otherwise cost.
+
+\section{A test on the differential form}
+
+Exactness is the only test in the audit that requires you to rewrite the equation before testing, and the only one that requires computing derivatives of the coefficients. It repays the effort, because when it passes the solution is immediate and needs no integration of the unknown at all.
+
+\tech{Exactness test}{medium}
+\cue The equation is already written, or is trivially written, as $M(x,y)\dd x+N(x,y)\dd y=0$. Any $y'=f(x,y)$ can be put in this shape, so the real cue is that the natural arrangement makes $M$ and $N$ symmetric and tidy.
+\method Compute the two mixed partials:
+\[\pdv{M}{y}\quad\text{against}\quad\pdv{N}{x}.\]
+Equality on a simply connected region means $M\dd x+N\dd y=\dd F$ for some potential $F$, and the general solution is $F(x,y)=C$. Recover $F$ by integrating $M$ in $x$, differentiating the result in $y$, and matching against $N$ to pin down the function of $y$ alone.
+
+\begin{worked}
+$2xy^{3}\dd x+(3x^{2}y^{2}+4y)\dd y=0$ with $y(1)=2$. Test: $M_y=6xy^{2}$ and $N_x=6xy^{2}$, so the form is exact. Integrate $M$ in $x$: $F=x^{2}y^{3}+g(y)$. Differentiate in $y$: $F_y=3x^{2}y^{2}+g'(y)$, which must equal $3x^{2}y^{2}+4y$, so $g'=4y$ and $g=2y^{2}$. Hence
+\[x^{2}y^{3}+2y^{2}=C,\qquad C=1\cdot8+2\cdot4=16.\]
+The answer is implicit and correctly left so; solving the cubic for $y$ would be a service to nobody.
+\end{worked}
+
+\begin{trap}
+Testing $M_x$ against $N_y$, which is the wrong pair and which is right roughly half the time by accident. The mnemonic: each coefficient is differentiated with respect to the variable it is \emph{not} paired with, so $M$, which multiplies $\dd x$, gets differentiated in $y$. The second trap is domain: $M_y=N_x$ guarantees a potential only on a simply connected region. On an annulus it does not, and $\dfrac{-y\dd x+x\dd y}{x^{2}+y^{2}}$ is the standard counterexample, passing the test everywhere off the origin while having no single-valued potential there.
+\end{trap}
+
+\begin{seealsob}Integrating factors that make a form exact; the total differential; recognising a differential as $\dd$ of something.\end{seealsob}
+
+A failed exactness test is not the end of the enquiry, and this is the one place in the audit where a failure carries useful information. If $M_y\neq N_x$, ask whether a multiplier $\mu$ can be found that makes the form exact. Two cases are cheap enough to test on sight:
+\[\frac{M_y-N_x}{N}\ \text{free of }y\ \Longrightarrow\ \mu(x)=\exp\!\int\frac{M_y-N_x}{N}\dd x,\qquad \frac{N_x-M_y}{M}\ \text{free of }x\ \Longrightarrow\ \mu(y)=\exp\!\int\frac{N_x-M_y}{M}\dd y.\]
+Compute the first quotient; if $y$ survives in it, compute the second; if $x$ survives in that one too, neither single-variable factor exists and you should go back to the audit.
+
+\begin{worked}[Worked example: two integrating factors]
+$(2y^{2}+3x)\dd x+2xy\dd y=0$. Here $M_y=4y$ and $N_x=2y$, so the form is not exact. The first quotient is $\dfrac{4y-2y}{2xy}=\dfrac1x$, free of $y$, so $\mu=\eu^{\int\dd x/x}=x$. Multiplying through,
+\[(2xy^{2}+3x^{2})\dd x+2x^{2}y\dd y=0,\qquad M_y=4xy=N_x,\]
+and $F=x^{2}y^{2}+x^{3}=C$. From $y(1)=1$, $C=2$ and $y=\sqrt{(2-x^{3})/x^{2}}$; at $x=1.2$ this is $0.4346135$, matching Runge-Kutta to eleven figures, and the solution ends at $x=2^{1/3}$ where $y$ reaches zero.
+
+The other case: $y\dd x+(2x-y\eu^{y})\dd y=0$ has $M_y=1$, $N_x=2$, and $\dfrac{M_y-N_x}{N}$ is not free of $y$. Try the second quotient: $\dfrac{N_x-M_y}{M}=\dfrac1y$, free of $x$, so $\mu=y$. Then $y^{2}\dd x+(2xy-y^{2}\eu^{y})\dd y=0$ is exact with
+\[F=xy^{2}-\eu^{y}\bigl(y^{2}-2y+2\bigr)=C.\]
+Starting from $(1,1)$, where $F=1-\eu=-1.7182818$, integration to $x=1.4$ gives $y=1.3306544$, at which $F$ is $-1.7182818$ again.
+\end{worked}
+
+\section{Degree, and equations that must be factored in $y'$}
+
+Item (i) of the audit asks for the degree, and it is the item most often skipped because it usually returns the answer ``one''. When it does not, everything downstream changes: an equation of degree two in $y'$ is not one differential equation but two, glued together, and no test in the audit applies until they are separated.
+
+The procedure is to treat the equation as a polynomial in $p=y'$ and factor it. If it factors over the rationals, each factor is a first-order equation of degree one, each is classified and solved independently, and the general solution is the union of the families. Written as a single relation, the general solution is the product of the individual first integrals set equal to zero.
+
+\begin{worked}[Worked example: degree two, factorable]
+$(y')^{2}+2xy'-3x^{2}=0$. As a quadratic in $p$, the discriminant is $4x^{2}+12x^{2}=16x^{2}$, a perfect square, so
+\[p=\frac{-2x\pm4x}{2}=x\quad\text{or}\quad p=-3x,\]
+equivalently $(p-x)(p+3x)=0$. Each branch is a bare quadrature: $y=\tfrac{x^{2}}{2}+C$ and $y=-\tfrac{3x^{2}}{2}+C$. The general solution is the pair of families, and written as one relation it is
+\[\left(y-\frac{x^{2}}{2}-C\right)\left(y+\frac{3x^{2}}{2}-C\right)=0.\]
+Through every point of the plane pass exactly two solution curves, one from each family, which is what degree two means geometrically: the equation prescribes two slopes at each point rather than one, and uniqueness fails everywhere.
+\end{worked}
+
+When the polynomial in $p$ does not factor, three classical escapes remain, and which one applies depends on which variable can be isolated. If the equation can be solved for $y$, differentiate with respect to $x$ and hope for an equation in $x$ and $p$; this is exactly the Clairaut and Lagrange manoeuvre. If it can be solved for $x$, differentiate with respect to $y$ instead, obtaining an equation in $y$ and $p$. If neither is possible but the equation admits a parametrisation, for instance $x=\varphi(t)$, $p=\psi(t)$, use $\dd y=p\dd x$ to recover $y$ by a single integration. All three end with a parametric solution in $p$ or $t$, which is a complete answer and should not be forced into explicit form.
+
+\begin{keynote}[Degree changes what a solution is]
+For a first-order equation of degree one, the initial condition $y(x_0)=y_0$ picks out a single solution wherever the standard hypotheses hold. For degree $n$ it picks out up to $n$, one for each root $p$ of the polynomial at $(x_0,y_0)$, and a well-posed problem must specify the slope as well as the value. This is also where singular solutions live: the locus where two roots coincide is the discriminant curve, and it is a solution of the equation whenever it is a curve at all. The Clairaut envelope is the standard example, and it is no accident that Clairaut equations are of degree at least two in $p$ whenever $f$ is nonlinear.
+\end{keynote}
+
+\section{Tests on how $y'$ itself enters}
+
+Every family so far has had $y'$ isolated. Two important families do not, and they are recognised not by the shape of $f$ but by the shape of the equation as a relation among $x$, $y$, and $p=y'$. Both are solved by differentiating the equation, which is a move that appears nowhere else in the chapter and should be reserved for exactly these two shapes.
+
+\tech{Clairaut recognition}{hard}
+\cue The exact shape $y=xp+f(p)$ with $p=y'$: the unknown isolated on the left, a bare product $x\cdot p$, and a function of $p$ alone. The presence of $(y')^{2}$ or $\sqrt{1+(y')^{2}}$ with $y$ solved for is the usual disguise.
+\method Differentiate the whole equation with respect to $x$. Since $y'=p$, the terms $p$ cancel and what remains factors:
+\[\bigl(x+f'(p)\bigr)\dv{p}{x}=0.\]
+The branch $p'=0$ gives $p=C$ and hence the general solution $y=Cx+f(C)$, a family of straight lines. The branch $x+f'(p)=0$ gives the \textbf{singular solution}, the envelope of that family, in parametric form $\bigl(x,y\bigr)=\bigl(-f'(p),\,-pf'(p)+f(p)\bigr)$.
+
+\begin{worked}
+$y=xy'+(y')^{2}$. General solution: $y=Cx+C^{2}$. Singular: $x+2p=0$, so $p=-\tfrac x2$ and
+\[y=x\left(-\frac x2\right)+\frac{x^{2}}{4}=-\frac{x^{2}}{4}.\]
+Check by substitution: $y'=-\tfrac x2$, and $xy'+(y')^{2}=-\tfrac{x^{2}}{2}+\tfrac{x^{2}}{4}=-\tfrac{x^{2}}{4}=y$. The parabola is tangent to every line $y=Cx+C^{2}$ and is not a member of the family.
+
+A second, geometrically famous instance: $y=xp+\sqrt{1+p^{2}}$. The lines $y=Cx+\sqrt{1+C^{2}}$ are exactly the lines at distance $1$ from the origin. The singular branch is $x+\dfrac{p}{\sqrt{1+p^{2}}}=0$, so $p=-\dfrac{x}{\sqrt{1-x^{2}}}$ and
+\[y=-\frac{x^{2}}{\sqrt{1-x^{2}}}+\frac{1}{\sqrt{1-x^{2}}}=\sqrt{1-x^{2}},\]
+the unit circle, which is precisely the envelope of the family of tangent lines to it. At $x=0.6$ both sides give $0.8$.
+\end{worked}
+
+\begin{trap}
+Reporting only the line family and stopping. The singular solution is usually the one being asked for, it satisfies the equation, and it is not obtainable from the general solution by any choice of $C$. Uniqueness fails on the envelope, which is the structural reason it exists at all: through each of its points passes both the envelope and a tangent line.
+\end{trap}
+
+\begin{seealsob}Lagrange equations; singular solutions and envelopes; the classification audit.\end{seealsob}
+
+The envelope deserves a paragraph of its own, since it is the only object in this chapter that is a solution without being a member of the general family, and its existence tends to be treated as a curiosity rather than as the structural fact it is. A one-parameter family of curves $G(x,y,C)=0$ has an envelope wherever the system $G=0$, $\partial G/\partial C=0$ has a solution: geometrically, the envelope is the locus of points where two infinitesimally near members of the family meet. For the Clairaut family $y=Cx+f(C)$ the second equation is $x+f'(C)=0$, which is precisely the branch discarded when the differentiated equation was factored. So the two branches of the factorisation are not an accident of the algebra; they are the family and its envelope, and the singular solution is exactly the curve that the general solution touches everywhere and contains nowhere. Uniqueness fails at each of its points because two solution curves pass through, the envelope and the tangent line, with the same slope.
+
+Loosening Clairaut's requirement that the coefficient of $x$ be $p$ itself gives the Lagrange family. The same differentiation trick applies, but the result is no longer a factorisation; it is a linear equation, and the twist is that it is linear in $x$ as a function of $p$, so the roles of dependent and independent variable must be exchanged.
+
+\tech[Lagrange and dAlembert equations]{Lagrange and d'Alembert equations}{hard}
+\cue $y=x\varphi(p)+\psi(p)$ with $\varphi(p)\not\equiv p$: the Clairaut shape, but with the coefficient of $x$ a nontrivial function of $p$.
+\method Differentiate in $x$ and rearrange, treating $p$ as the new independent variable and $x$ as the unknown. The result is linear:
+\[\dv{x}{p}+\frac{\varphi'(p)}{\varphi(p)-p}\,x=\frac{-\psi'(p)}{\varphi(p)-p}.\]
+Solve for $x(p)$ by the integrating factor, back-substitute into the original relation to get $y(p)$, and report the solution parametrically in $p$. Do not attempt to eliminate $p$ unless it comes out cleanly.
+
+\begin{worked}
+$y=2xp-p^{2}$, so $\varphi(p)=2p$ and $\psi(p)=-p^{2}$. Differentiating with respect to $x$ gives $p=2p+2xp'-2pp'$, that is $-p=(2x-2p)\dv{p}{x}$, and inverting,
+\[\dv{x}{p}+\frac{2x}{p}=2.\]
+With $\mu=p^{2}$, $(xp^{2})'=2p^{2}$, so $xp^{2}=\tfrac23p^{3}+C$ and
+\[x=\frac{2p}{3}+\frac{C}{p^{2}},\qquad y=2xp-p^{2}=\frac{p^{2}}{3}+\frac{2C}{p}.\]
+Taking $C=0$ gives $x=\tfrac23p$ and $y=\tfrac13p^{2}=\tfrac34x^{2}$, a genuine solution. The parametrisation is verified by $\dfrac{\dd y/\dd p}{\dd x/\dd p}=p$, which is what $p=y'$ demands.
+\end{worked}
+
+A second instance, with a genuinely two-parameter-looking answer that is not: $y=xp^{2}+p^{2}$, so $\varphi(p)=p^{2}$ and $\psi(p)=p^{2}$. Differentiating gives $p=p^{2}+2p(x+1)\dv{p}{x}$, and inverting with $w=x+1$,
+\[\dv{w}{p}=\frac{2w}{1-p},\qquad \ln\abs w=-2\ln\abs{1-p}+c,\qquad w=\frac{C}{(1-p)^{2}}.\]
+Hence $x=\dfrac{C}{(1-p)^{2}}-1$ and $y=(x+1)p^{2}=\dfrac{Cp^{2}}{(1-p)^{2}}$. The parametrisation is confirmed by $\dfrac{\dd y/\dd p}{\dd x/\dd p}=\dfrac{2Cp(1-p)^{-3}}{2C(1-p)^{-3}}=p$, and by direct substitution: with $C=1$ and $p=\tfrac12$ the pair is $(x,y)=(3,1)$, and $xp^{2}+p^{2}=\tfrac34+\tfrac14=1$. The roots of $\varphi(p)-p=p(p-1)$ give the two singular lines $y\equiv0$ and $y=x+1$, both of which satisfy the original equation and neither of which is in the parametric family.
+
+\begin{trap}
+Dividing by $\varphi(p)-p$ without checking its roots. Each root $p_0$ with $\varphi(p_0)=p_0$ supplies an extra straight-line solution $y=p_0x+\psi(p_0)$ that the parametric family misses. In the worked example $\varphi(p)-p=p$, whose root $p=0$ gives the solution $y=0$, and indeed $y\equiv0$ satisfies $y=2xp-p^{2}$.
+\end{trap}
+
+\begin{seealsob}Clairaut recognition; singular solutions and envelopes; the integrating-factor machine.\end{seealsob}
+
+\section{Tests on what is absent}
+
+The last two recognitions are about structure rather than algebra. One notices that a variable is missing; the other notices that the equation is in the wrong orientation. Both are cheap, both are frequently decisive, and both are routinely overlooked because they ask you to look at what is not there.
+
+\tech{Autonomous recognition}{easy}
+\cue $y'=f(y)$: the independent variable does not appear on the right at all. In applied problems this is the norm, since a law that does not depend explicitly on the clock is autonomous by construction.
+\method Three facts, in order of usefulness. First, autonomous equations are always separable. Second, they are translation-invariant: if $y(x)$ solves, so does $y(x-x_0)$, so the initial time is a free parameter and never affects the shape of the solution. Third, and most important, the entire qualitative behaviour is determined by the zeros and sign pattern of $f$: equilibria are the roots of $f$, and a solution starting between two consecutive roots is monotone and converges to one of them. Do the phase line before integrating.
+
+\begin{worked}
+$y'=y(1-y)$, the logistic equation. Equilibria at $y=0$ and $y=1$. On $(0,1)$, $f>0$, so solutions increase; on $(1,\infty)$, $f<0$, so solutions decrease; on $(-\infty,0)$, $f<0$, so solutions decrease. Reading the arrows, $y=0$ is unstable and $y=1$ is stable, and every solution with $y(0)>0$ tends to $1$. That is the entire qualitative answer and it took no integration.
+
+The closed form, if genuinely wanted, is $y=\dfrac{1}{1+A\eu^{-x}}$; with $y(0)=\tfrac12$, $A=1$ and $y(2)=\dfrac{1}{1+\eu^{-2}}=0.8807971$, which the numerics confirm. Note how much less this tells you than the phase line about, say, the behaviour of a solution starting at $y(0)=-0.1$, which the formula describes only after you notice that $A=-11$ makes the denominator vanish at a finite $x$.
+\end{worked}
+
+\begin{trap}
+Grinding out the closed form when the question asks only for $\lim_{x\to\infty}y$ or for the stability of an equilibrium. The phase line answers both in one line and the closed form invites algebra errors. The complementary trap: reading stability off the sign of $f'$ at the equilibrium without checking that $f'\neq0$ there. If $f'(y_0)=0$ the test is silent, and a double root such as $y'=(y-1)^{2}$ gives an equilibrium that attracts from below and repels from above.
+\end{trap}
+
+\begin{seealsob}The separable machine; phase-line analysis; the classification audit.\end{seealsob}
+
+The phase line deserves one more paragraph, because it is the cheapest analytical tool in the whole subject and it is routinely ignored. To draw it: mark the roots of $f$ on a vertical axis, determine the sign of $f$ on each interval between them, and draw an upward arrow where $f>0$ and a downward arrow where $f<0$. A root with arrows pointing in from both sides is stable; out from both sides, unstable; in from one side and out from the other, semistable. That is the entire classification, and it is exact rather than approximate. For $y'=(y-1)^{2}(y-3)$ the roots are $y=1$ (double) and $y=3$. On $(-\infty,1)$ and on $(1,3)$ the sign is negative; on $(3,\infty)$ it is positive. So $y=1$ is semistable, attracting from above and repelling from below, and $y=3$ is unstable. The derivative test $f'(y_0)$ is silent at $y=1$, where it vanishes, and the sign pattern is not; that is why the sign pattern is the primary tool and the derivative test is the shortcut.
+
+\tech[Swapping the roles of x and y]{Swapping the roles of $x$ and $y$}{medium}
+\cue $\dv{y}{x}$ is a hopeless nonlinear mess, but the reciprocal is not. The specific pattern to watch for: $y$ appears inside transcendental functions while $x$ appears only to the first power, which is exactly the signature of an equation that is linear in $x$.
+\method Write $\dv{x}{y}=\dfrac{1}{f(x,y)}$, put it in the standard linear form $\dv{x}{y}+P(y)x=Q(y)$, and run the integrating-factor machine with $x$ as the unknown function. Invert at the very end, and only if the question insists on $y$ explicitly.
+
+\begin{worked}
+$\dv{y}{x}=\dfrac{1}{\eu^{y}-x}$. In $y$ this is hopeless. Inverted, $\dv{x}{y}=\eu^{y}-x$, that is $\dv{x}{y}+x=\eu^{y}$, which is linear with $\mu=\eu^{y}$:
+\[\bigl(x\eu^{y}\bigr)'=\eu^{2y},\qquad x\eu^{y}=\tfrac12\eu^{2y}+C,\qquad x=\tfrac12\eu^{y}+C\eu^{-y}.\]
+Verify directly: $\dv{x}{y}=\tfrac12\eu^{y}-C\eu^{-y}$, while $\eu^{y}-x=\eu^{y}-\tfrac12\eu^{y}-C\eu^{-y}$ is the same thing. The solution is a perfectly good answer in the form $x=x(y)$; inverting it would require the Lambert function and would tell you nothing new.
+\end{worked}
+
+A second instance, and the one whose shape you should learn to spot: $\dv{y}{x}=\dfrac{1}{2y-x}$. Any equation whose right side is the reciprocal of something linear in $x$ is linear in $x$ after inversion. Here $\dv{x}{y}+x=2y$, so with $\mu=\eu^{y}$, $\bigl(x\eu^{y}\bigr)'=2y\eu^{y}$ and $x\eu^{y}=2(y-1)\eu^{y}+C$, giving
+\[x=2y-2+C\eu^{-y}.\]
+Numerically, following the solution with $C=1$ from $y=0.5$ to $y=1.2$ reproduces the formula to twelve figures. Attempting this in the original orientation leads nowhere: the equation is not separable, not linear in $y$, not homogeneous, and not a function of any single linear combination.
+
+\begin{trap}
+Solving for $x(y)$ correctly and then burning effort inverting to $y(x)$ when the quantity actually requested (a value, a constant of integration, an asymptote, an intercept) can be read off the implicit form directly. The other trap is forgetting that $\dd x/\dd y=1/(\dd y/\dd x)$ requires $\dd y/\dd x\neq0$; the swap loses exactly the points where the original solution has a horizontal tangent.
+\end{trap}
+
+\begin{seealsob}The integrating-factor machine; the linearity test; implicit differentiation in differential form.\end{seealsob}
+
+\section{The audit run five times}
+
+The procedure is easier to trust once you have watched it run. Below are five equations, each with its verdict list written out as it would appear on paper. The point is not the answers, which are short, but the shape of the reasoning: a sequence of one-line verdicts terminating in a decision.
+
+\emph{One.} $\dv{y}{x}=\dfrac{y^{2}+2xy}{x^{2}}$, $y(1)=1$. Separable: no, the numerator is a sum in $y$. Linear in $y$: no, $y^{2}$. Degree-zero homogeneous: yes, everything is degree $2$ over degree $2$. Bernoulli: also yes, since $y'-\dfrac{2y}{x}=\dfrac{y^{2}}{x^{2}}$ with $n=2$. Two hits, and Bernoulli is shorter: $v=y^{-1}$ gives $v'+\dfrac{2v}{x}=-\dfrac{1}{x^{2}}$, so $x^{2}v=C-x$ and
+\[y=\frac{x^{2}}{C-x},\qquad C=2\ \text{from}\ y(1)=1,\qquad y(1.5)=4.5,\]
+confirmed numerically. The solution ends at $x=2$.
+
+\emph{Two.} $(3x^{2}+2y)\dd x+2x\dd y=0$, $y(1)=1$. It is already in differential form, so test exactness first: $M_y=2=N_x$. Exact. $F=x^{3}+2xy=C$, so $y=\dfrac{C-x^{3}}{2x}$ with $C=3$, and $y(2)=-1.25$. Notice that the same equation is linear ($2xy'+2y=-3x^{2}$, whose left side is $(2xy)'$) and reaches the same place; the exactness route needed no division.
+
+\emph{Three.} $\dv{y}{x}=\eu^{x+y}$, $y(0)=0$. Separable: it looks like a sum and is not, since $\eu^{x+y}=\eu^{x}\eu^{y}$. Separating, $\eu^{-y}\dd y=\eu^{x}\dd x$ gives $\eu^{-y}=C-\eu^{x}$ with $C=2$, so $y=-\ln\bigl(2-\eu^{x}\bigr)$ and $y(0.5)=1.0461753$, confirmed numerically. The solution exists only for $x<\ln2$.
+
+\emph{Four.} $\dv{y}{x}=\dfrac{1}{x+y}$. Separable: no. Linear in $y$: no. Homogeneous: no, the constant $1$ upstairs is degree $0$ against degree $1$ downstairs. Depends on $x+y$ only: yes, so $u=x+y$ works and gives $u-\ln\abs{u+1}=x+C$, implicit. But run the remaining tests: linear in $x$? Inverting, $\dv{x}{y}-x=y$, which is linear with $\mu=\eu^{-y}$ and yields
+\[x=C\eu^{y}-y-1\]
+in three lines, with no implicit form at all. Two routes again, and the one nobody tries is the short one.
+
+\emph{Five.} $y=xy'+\ln y'$. Nothing in the shape tests applies, because $y'$ sits inside a logarithm. But $y$ is isolated, there is a bare $x\cdot y'$, and the rest is a function of $y'$ alone: Clairaut, with $f(p)=\ln p$. General solution $y=Cx+\ln C$ for $C>0$. Singular: $x+\dfrac1p=0$ gives $p=-\dfrac1x$ and
+\[y=-1-\ln(-x)\qquad (x<0),\]
+which substitution confirms: at $x=-2$, both $xp+\ln p$ and $-1-\ln2$ equal $-1.6931472$.
+
+\section{When two families both apply}
+
+The tests are not exclusive. A great many equations pass two of them, and the two routes are almost never comparable in length. The habit worth building is to finish the audit rather than stopping at the first hit, because the first hit is often not the cheapest.
+
+The cleanest illustration is $2xy\dd x+(x^{2}+3y^{2})\dd y=0$. Exactness: $M_y=2x$ and $N_x=2x$, so the form is exact, $F=x^{2}y+y^{3}$, and the answer is $x^{2}y+y^{3}=C$. Two lines. Degree-zero homogeneity: $M$ and $N$ are both degree $2$, so $y'=-\dfrac{2xy}{x^{2}+3y^{2}}$ is degree $0$ and $y=vx$ applies. Following that route, $x\dv{v}{x}=-\dfrac{3v(1+v^{2})}{1+3v^{2}}$, which requires the partial fraction decomposition $\dfrac{1+3v^{2}}{v(1+v^{2})}=\dfrac1v+\dfrac{2v}{1+v^{2}}$, then $\tfrac13\bigl(\ln\abs v+\ln(1+v^{2})\bigr)=-\ln\abs x+c$, then clearing to $v(1+v^{2})x^{3}=K$, then unwinding $v=y/x$ to get $x^{2}y+y^{3}=K$. Same answer, six times the work. Numerically, starting from $(1,1)$ the value of $x^{2}y+y^{3}$ stays at $2$ to eleven digits out to $x=2$, where $y=0.4734658$.
+
+Several further overlaps are worth having in mind, and each carries a standing recommendation.
+
+\emph{Autonomous and separable.} Every autonomous equation is separable, so the autonomous test is really a test for whether the phase line can replace the integration entirely. Take the phase line when the question is qualitative and the closed form only when it is not.
+
+\emph{Isobaric and Bernoulli.} Every isobaric equation of the shape $y'=\dfrac{y}{kx}+\dfrac{g(x)}{y}$ is also Bernoulli with $n=-1$, since multiplying by $y$ makes $w=y^{2}$ the natural unknown. The Bernoulli route needs no weight computation, so it wins. This is exactly what happened in the worked example above, where $w=y^{2}$ turned a weight calculation into a two-line linear equation.
+
+\emph{Separable and linear.} An equation such as $y'=2y/x$ passes both tests. Separate it: $\ln\abs y=2\ln\abs x+c$ and $y=Cx^{2}$. The integrating factor is correct but slower and introduces an integral $\int P$ where none was needed. In general, when separability and linearity both hold, the forcing term $Q$ is proportional to the coefficient of $y$, and separation is shorter.
+
+\emph{Homogeneous and Bernoulli.} $y'=\dfrac yx+\dfrac xy$ is degree-zero homogeneous, and it is also Bernoulli with $n=-1$. The homogeneous route via $v=y/x$ gives $xv'=1/v$, one line; the Bernoulli route via $w=y^{2}$ gives $w'-\dfrac{2w}{x}=2x$, also one line. Both land on $y^{2}=2x^{2}\ln\abs x+Cx^{2}$. When two routes are genuinely comparable, take the one whose integral you trust.
+
+\emph{Exact and separable.} An equation that is both, such as $(3x^{2}y+2xy)\dd x+(x^{3}+x^{2})\dd y=0$, should be checked for exactness first, because building $F$ requires no division and therefore loses no solutions. Here $M_y=N_x=3x^{2}+2x$ and $F=(x^{3}+x^{2})y$, so $y=\dfrac{C}{x^{2}(x+1)}$ immediately. The separable route reaches the same place after a partial fraction decomposition and a division by $y$ that discards $y\equiv0$.
+
+When every test fails, the failure is itself informative and there are three honest responses. Look again for an integrating factor, including forms $\mu=x^{a}y^{b}$ and $\mu(xy)$ that the two single-variable tests miss. Look for a substitution suggested by the structure rather than by a named family: any repeated block in the equation, such as $x^{2}+y^{2}$ or $y/x^{2}$ or $\eu^{y}$, is a candidate for a new variable, and the test is whether the substituted equation is shorter than the original. Failing both, the equation may simply have no elementary solution, in which case a series solution about an ordinary point or a numerical integration is the correct answer and not an admission of defeat. The equation $y'=x^{2}+y^{2}$ is the standard reminder: it is Riccati, it is as simple as an equation can look, and its solutions are ratios of Bessel functions.
+
+One diagnostic is worth adopting as a habit. Whenever an equation is presented with unusually bloated coefficients, or with a term that looks deliberately out of place, the problem is signalling that a factorisation or a cancellation is intended. The equation in the linearity example, with its $(x+x^{2})$ and $(x^{3}+x^{4})$, is exactly this: the bloat exists so that a solver who does not factor will compute a genuine but useless $\int P$. Ask ``what would have to cancel for this to be clean'' before asking ``which family is this''.
+
+\begin{keynote}[Finish the audit]
+The cost of the full audit is under two minutes and the cost of a misclassification is the whole problem. Two rules follow. Run every test even after one has passed, because a second pass may be far cheaper. And when a test fails, ask whether it fails on the equation or on the arrangement: separability and linearity are tests on $y'=f(x,y)$, exactness is a test on $M\dd x+N\dd y=0$, and Clairaut and Lagrange are tests on the relation among $x$, $y$, and $p$. An equation that fails a test in one arrangement may pass it in another, and rearranging costs nothing.
+\end{keynote}
+
+\section{Recognition matrix}
+\begin{recog}{@{}p{0.32\textwidth}p{0.34\textwidth}p{0.28\textwidth}@{}}
+\rowcolor{mist}\mh{If you see} & \mh{Reach for} & \mh{If that fails} \\
+\midrule
+\endhead
+Any first-order equation at all & The full audit, in order, before solving & Rearrange and audit again \\
+$f$ visibly a product $g(x)h(y)$ & Separate; record the roots of $h$ & Factor the sum first \\
+A sum of four terms, no factor visible & Group in pairs: $xy+x+y+1=(x+1)(y+1)$ & Test linearity instead \\
+$x$ absent from the right side & Autonomous: phase line first & Separate if a formula is needed \\
+$y$ absent from the right side & Bare quadrature $y=\int f$ & Check the integral is elementary \\
+$y$ and $y'$ both to the first power & Divide by the coefficient of $y'$, then $\mu=\eu^{\int P}$ & Factor the coefficients first \\
+$y$ transcendental, $x$ linear & Swap: $\dv{x}{y}+P(y)x=Q(y)$ & Leave the answer as $x(y)$ \\
+$f(tx,ty)=f(x,y)$, or equal degrees & Degree zero: $y=vx$, then separate & Try exactness on $M\dd x+N\dd y$ \\
+Terms off by a fixed power of $x$ & Weights $x\sim1$, $y\sim m$; solve for $m$; $y=vx^{m}$ & Bernoulli in $y^{2}$ instead \\
+$y'+Py=Qy^{n}$, $n\neq0,1$ & $v=y^{1-n}$; watch the factor $(1-n)$ & Record the lost solution $y\equiv0$ \\
+Quadratic in $y$, three coefficients & Riccati: need a particular $y_1$ & Guess $a/x$, $ax$, or a constant \\
+$M\dd x+N\dd y=0$ with $M_y=N_x$ & Build $F$; the answer is $F=C$ & Integrating factor $\mu(x)$ or $\mu(y)$ \\
+$M_y\neq N_x$ & $\dfrac{M_y-N_x}{N}$ free of $y$: $\mu(x)$ exists & Try $\dfrac{N_x-M_y}{M}$ for $\mu(y)$ \\
+$y=xp+f(p)$ exactly & Clairaut: lines $y=Cx+f(C)$, plus the envelope & Differentiate and factor \\
+$y=x\varphi(p)+\psi(p)$, $\varphi\neq p$ & Lagrange: linear in $x(p)$; report parametrically & Check roots of $\varphi(p)-p$ \\
+Right side a function of $ax+by+c$ & $u=ax+by+c$; then $u'=a+bf(u)$ & Do not drop the $+a$ \\
+$x\dd y-y\dd x$ present & Divide by $x^{2}$, $xy$, or $x^{2}+y^{2}$ & Homogeneous substitution \\
+Two tests both pass & Take the shorter route; usually exactness & Compare before committing \\
+Nothing passes any test & Series solution, or numerical integration & Check for a typo in the sign \\
+\end{recog}

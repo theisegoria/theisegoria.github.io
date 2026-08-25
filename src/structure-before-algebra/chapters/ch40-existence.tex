@@ -1,0 +1,188 @@
+\chapter{Existence, uniqueness, and lost solutions}
+
+\begin{orient}
+\textbf{What this chapter is for.} Every previous chapter in this part produced a formula. This one asks whether the formula is an answer. Three separate things can go wrong, and they go wrong at three different points in the working. A solution can fail to exist, or fail to be unique, so that the question itself was malformed. A solution can exist on a smaller interval than the equation suggests, so that a perfectly smooth problem blows up in finite time and your closed form is valid only up to that instant. And a solution can be quietly destroyed by your own algebra, most often by dividing through by an expression that is allowed to vanish. We cover Picard and Lindelof and what Lipschitz continuity actually buys, the interval of validity, singular and envelope solutions, the discipline of applying an initial condition at the right moment, and then the boundary-value flavour, where the count of solutions is zero, one, or infinite depending on a sign, and where that trichotomy generates the eigenvalue problems that the whole of separation of variables rests on.
+\end{orient}
+
+\section{When a solution exists, and when it is the only one}
+
+An initial-value problem is a promise that the future is determined by the present. The promise is not free. It holds under hypotheses that are easy to state and easy to check, and it fails in a way that is easy to recognise once you have seen it once.
+
+\tech{Picard and Lindelof: continuity gives existence, Lipschitz gives uniqueness}{medium}
+\cue Any initial-value problem $y'=f(x,y)$, $y(x_0)=y_0$, where you are asked whether the solution is unique, or where the answer you found does not look like the only possibility. The strongest cue is a right-hand side with a fractional power of $y$, such as $y^{1/3}$ or $\sqrt{\abs{y}}$, at a point where $y=0$.
+\method Continuity of $f$ near $(x_0,y_0)$ gives at least one solution on some interval. Uniqueness needs more: $f$ must be Lipschitz in $y$, meaning $\abs{f(x,y_1)-f(x,y_2)}\leq L\abs{y_1-y_2}$ near the point, and in practice you check the sufficient condition that $\pdv{f}{y}$ exists and is bounded there. The two hypotheses do different jobs and it is worth keeping them apart.
+\[
+f \text{ continuous} \implies \text{a solution exists};\qquad
+\pdv{f}{y}\ \text{bounded near }(x_0,y_0) \implies \text{it is the only one.}
+\]
+
+\begin{worked}
+Consider $y'=3y^{2/3}$ with $y(0)=0$. Separating gives $y^{-2/3}\dd y=3\dd x$, so $3y^{1/3}=3x+C$ and $y=(x+c)^3$. With the initial condition, $y=x^3$. But $y\equiv0$ also solves the problem, and so does the hybrid
+\[
+y(x)=\begin{cases}0,& x\leq a,\\ (x-a)^3,& x>a,\end{cases}
+\]
+for every $a\geq0$, which is continuously differentiable at $x=a$ because both the value and the slope vanish there. The problem has infinitely many solutions. Nothing is wrong with the separation; what is wrong is the question. Here $f(x,y)=3y^{2/3}$ is continuous everywhere, so existence holds, but $\pdv{f}{y}=2y^{-1/3}$ is unbounded as $y\to0$, so uniqueness fails at exactly the point the initial condition names.
+\end{worked}
+
+\begin{trap}
+Testing the Lipschitz condition at a generic point instead of at the initial point. The failure in the example above is invisible at $y=1$ and total at $y=0$. Check the hypothesis where the initial condition sits, not where the algebra is comfortable.
+\end{trap}
+
+\begin{seealsob}Lost solutions from division; singular and envelope solutions; the interval of validity.\end{seealsob}
+
+The theorem is local, and the word local carries the second failure mode. It promises a solution on some interval around $x_0$, and says nothing about how long that interval is. For linear equations the interval is as long as the coefficients are continuous, which makes linear problems well behaved and slightly misleading. For nonlinear problems the solution can end while the equation is still perfectly smooth.
+
+\tech{The interval of validity}{medium}
+\cue A nonlinear initial-value problem whose closed-form solution has a denominator, a logarithm, or an even root that can go bad at a finite $x$, even though $f$ itself is a polynomial. Also any question phrased as ``for how long'' or ``on what interval is the solution defined''.
+\method Solve, then find the largest open interval containing $x_0$ on which the closed form is defined and satisfies the equation. The answer depends on the initial condition, not only on the equation, which is the point that surprises people.
+
+\begin{worked}
+Take $y'=y^2$, $y(0)=y_0>0$. Separation gives $-1/y=x+C$, so $y=y_0/(1-y_0x)$. The right-hand side of the equation is a polynomial, defined and smooth on the whole plane, and yet the solution blows up at $x=1/y_0$ and exists only on $(-\infty,1/y_0)$. Doubling the initial value halves the lifetime. If instead $y_0<0$ the solution exists for all $x>0$ and decays to zero, so the same equation is globally solvable or not depending entirely on where you start.
+\end{worked}
+
+\begin{trap}
+Reporting the closed form without its interval, then evaluating it on the far side of the singularity. The formula $y_0/(1-y_0x)$ is a perfectly good function at $x=2/y_0$; it is simply not the solution there, since no solution exists there.
+\end{trap}
+
+\begin{seealsob}Picard and Lindelof; implicit general solutions; separable equations and the constant-solution check.\end{seealsob}
+
+\section{The solutions your algebra destroyed}
+
+The commonest error in this whole part is not a mistake in calculus. It is a division.
+
+\tech{Lost solutions from division}{easy}
+\cue Any separation in which you divided by a function of $y$, or any cancellation of a factor that is not identically nonzero. The signature is a general solution that visibly cannot produce a constant that the equation obviously admits.
+\method Before dividing by $g(y)$, solve $g(y)=0$. Each root $y=r$ gives a constant function; check whether it satisfies the original equation, and if it does, record it as a solution of the problem. It will usually not be recoverable from the general solution by any choice of the constant, which is precisely why it must be recorded separately.
+
+\begin{worked}
+Solve $\dv{y}{x}=y(1-y)$. Dividing by $y(1-y)$ and integrating gives the logistic family $y=\left(1+A\eu^{-x}\right)^{-1}$. But the division required $y\neq0$ and $y\neq1$, and both constants satisfy the equation. The solution $y\equiv1$ is the limit $A\to0$ and might be forgiven as a boundary case; the solution $y\equiv0$ is not obtainable from the family for any finite $A$, because the family is never zero. The full solution set is the logistic family together with $y\equiv0$ and $y\equiv1$.
+\end{worked}
+
+\begin{trap}
+Writing $\abs{y}$ inside the logarithm and then dropping the absolute value when exponentiating without noting that the sign is absorbed into the arbitrary constant. That step is legitimate, but only because $\pm\eu^{C}$ ranges over all nonzero reals, and it is the zero that gets lost.
+\end{trap}
+
+\begin{seealsob}Separable equations and the constant-solution check; singular and envelope solutions; equilibria on the phase line.\end{seealsob}
+
+\tech{Singular and envelope solutions}{hard}
+\cue A first-order equation that is nonlinear in $y'$, most visibly a Clairaut or Lagrange equation, whose general solution is a family of straight lines. Also any problem where the general solution is a one-parameter family of curves and the question asks for ``all solutions''.
+\method A singular solution is one not obtainable from the general solution by any value of the constant. For a family $F(x,y,C)=0$ the candidate is the envelope, found by eliminating $C$ between $F=0$ and $\pdv{F}{C}=0$; then verify by substitution that the eliminant really solves the equation. Geometrically the envelope is tangent to every member of the family, which is why it satisfies the same first-order relation at each of its points.
+
+\begin{worked}
+The Clairaut equation $y=xp+p^{2}$, where $p=y'$, has general solution $y=Cx+C^{2}$, a family of lines. Differentiating with respect to $C$ gives $0=x+2C$, so $C=-x/2$, and substituting back gives $y=-x^{2}/2+x^{2}/4=-x^{2}/4$. Check: $y'=-x/2$, and $xy'+(y')^{2}=-x^{2}/2+x^{2}/4=-x^{2}/4=y$. The parabola is a genuine solution and belongs to no line of the family.
+\end{worked}
+
+\begin{trap}
+Producing the eliminant and declaring victory without substituting it back. The envelope construction is a necessary condition on the candidate, not a proof that it solves anything; for Lagrange equations it frequently produces curves that fail.
+\end{trap}
+
+\begin{seealsob}Clairaut and Lagrange equations; lost solutions from division; implicit general solutions.\end{seealsob}
+
+\section{Where in the working the condition goes}
+
+An initial condition is a constraint on a solution, and the order in which you impose it changes how much work the rest of the problem takes and, in a few cases, whether the answer is right at all.
+
+\tech{Applying the initial condition at the right stage}{easy}
+\cue A separable or exact equation with an initial condition, where the general solution is implicit or involves a logarithm, and where the constant is awkward to isolate.
+\method Impose the condition at the earliest point at which it is legitimate, which is normally immediately after the first integration, and prefer definite integrals with the initial point as the lower limit. Writing
+\[
+\int_{y_0}^{y}\frac{\dd t}{g(t)}=\int_{x_0}^{x}h(s)\dd s
+\]
+eliminates the constant entirely and removes both the sign ambiguity of the logarithm and the temptation to solve for $y$ before you need to.
+\begin{trap}
+Imposing the condition after squaring, after exponentiating, or after taking a root. Each of those steps can introduce a branch, and the condition is what selects the branch; used afterwards, it cannot. If the general solution is $y^{2}=x^{2}+C$ and $y(0)=-3$, the answer is $y=-\sqrt{x^{2}+9}$, and a solver who fixed $C=9$ and then wrote the positive root has produced a function that does not satisfy the condition it was given.
+\end{trap}
+
+\begin{seealsob}Implicit general solutions; the interval of validity; lost solutions from division.\end{seealsob}
+
+\tech{Leaving the general solution implicit}{easy}
+\cue An answer of the form $F(x,y)=C$ where solving for $y$ requires a root, a Lambert function, or a case split that the problem never asked for.
+\method Leave it implicit, state the interval, and if an initial condition is given, substitute it to fix $C$ rather than to solve for $y$. An implicit relation together with an initial point is a complete answer; a wrong explicit branch is not. Solve explicitly only when the question asks for a value of $y$, when you need to differentiate the answer, or when the branch is forced and easy to name.
+
+\begin{worked}
+The exact equation $(2xy+\cos y)\dd x+(x^{2}-x\sin y+2y)\dd y=0$ has potential $F=x^{2}y+x\cos y+y^{2}$, so the general solution is $x^{2}y+x\cos y+y^{2}=C$. With $y(1)=0$ we get $C=1$. There is no elementary way to solve for $y$, and none is needed: the relation, plus the point, plus the observation that $\pdv{F}{y}=x^{2}-x\sin y+2y$ equals $1$ at $(1,0)$ and so is nonzero nearby, tells you a unique differentiable branch through that point exists by the implicit function theorem.
+\end{worked}
+
+\begin{seealsob}Exact equations and potential functions; applying the initial condition at the right stage.\end{seealsob}
+
+\section{Boundary conditions and the eigenvalue trichotomy}
+
+Replacing two conditions at one point by one condition at each of two points changes the character of the problem completely. Existence and uniqueness stop being generic. The same equation, with the same boundary points, can have no solution, exactly one, or a whole family, and which of the three happens is decided by an arithmetic condition on a parameter.
+
+\tech{Counting solutions of a two-point boundary-value problem}{medium}
+\cue Two conditions imposed at different values of the independent variable, typically $y(0)=\alpha$ and $y(L)=\beta$.
+\method Write the general solution with its two constants, impose both conditions, and read off the resulting $2\times2$ linear system. If the coefficient matrix is invertible there is exactly one solution. If it is singular, there is either no solution or a one-parameter family, decided by whether the right-hand side lies in the column space.
+
+\begin{worked}
+For $y''+y=0$ the general solution is $y=A\cos x+B\sin x$. Impose $y(0)=0$ and $y(\pi)=\beta$. The first gives $A=0$; the second gives $B\sin\pi=0=\beta$. So if $\beta\neq0$ there is no solution at all, and if $\beta=0$ every $y=B\sin x$ works, an infinite family. Move the right endpoint to $\pi/2$ and the same equation has exactly one solution $y=\beta\sin x$ for every $\beta$. The equation did not change; the interval did.
+\end{worked}
+
+\begin{trap}
+Assuming that because the equation is linear and smooth, a solution must exist. That intuition is imported from initial-value problems and is simply false here.
+\end{trap}
+
+\begin{seealsob}The three sign cases for the separation constant; Sturm and Liouville problems.\end{seealsob}
+
+\tech{The three sign cases for the separation constant}{medium}
+\cue An eigenvalue problem $y''+\lambda y=0$ with homogeneous boundary conditions, arising from separation of variables in a partial differential equation, and the instruction to find all $\lambda$ for which a nontrivial solution exists.
+\method Do not assume a sign. Treat $\lambda<0$, $\lambda=0$ and $\lambda>0$ as three separate computations, because the general solution has a different shape in each. Only in the oscillatory case do the boundary conditions have infinitely many chances to be satisfied, which is why the nontrivial eigenvalues live there.
+
+\begin{center}
+\begin{tikzpicture}[node distance=6mm and 7mm]
+\node[dtest] (a) {$y''+\lambda y=0$,\\ $y(0)=y(L)=0$};
+\node[dnode, below left=10mm and 12mm of a] (n) {$\lambda=-\mu^{2}<0$:\\ $y=A\cosh\mu x+B\sinh\mu x$};
+\node[dnode, below=10mm of a] (z) {$\lambda=0$:\\ $y=A+Bx$};
+\node[dnode, below right=10mm and 12mm of a] (p) {$\lambda=\mu^{2}>0$:\\ $y=A\cos\mu x+B\sin\mu x$};
+\node[dleaf, below=7mm of n] (nl) {only $y\equiv0$};
+\node[dleaf, below=7mm of z] (zl) {only $y\equiv0$};
+\node[dleaf, below=7mm of p] (pl) {$\lambda_n=(n\pi/L)^{2}$,\\ $y_n=\sin(n\pi x/L)$};
+\draw[dedge] (a) -- (n); \draw[dedge] (a) -- (z); \draw[dedge] (a) -- (p);
+\draw[dedge] (n) -- (nl); \draw[dedge] (z) -- (zl); \draw[dedge] (p) -- (pl);
+\end{tikzpicture}
+\end{center}
+
+\begin{worked}
+With $y(0)=y(L)=0$: in the negative case $y(0)=0$ forces $A=0$ and $y(L)=B\sinh\mu L=0$ forces $B=0$, since $\sinh$ vanishes only at zero. In the zero case $y=A+Bx$ with both endpoints zero forces $A=B=0$. In the positive case $y(0)=0$ forces $A=0$ and $y(L)=B\sin\mu L=0$ is satisfied without killing $B$ whenever $\mu L=n\pi$. Hence $\lambda_{n}=n^{2}\pi^{2}/L^{2}$ with eigenfunctions $\sin(n\pi x/L)$, $n=1,2,3,\ldots$
+\end{worked}
+
+\begin{trap}
+Writing the negative case as $y=A\cos\mu x+B\sin\mu x$ with imaginary $\mu$ and then treating $\sin$ as though it still had zeros. Use the real hyperbolic form and the argument is immediate.
+\end{trap}
+
+\begin{seealsob}Counting solutions of a two-point boundary-value problem; Sturm and Liouville problems.\end{seealsob}
+
+\tech{Sturm and Liouville structure}{hard}
+\cue A second-order eigenvalue problem with variable coefficients, written or writable as $\left(p(x)y'\right)'+q(x)y+\lambda w(x)y=0$ on $[a,b]$ with separated homogeneous boundary conditions, and $p,w>0$ on the open interval.
+\method Put the equation into that self-adjoint form first, multiplying by the integrating factor $\mu=\frac{1}{p_{2}}\exp\left(\int \frac{p_{1}}{p_{2}}\dd x\right)$ if it is given as $p_{2}y''+p_{1}y'+p_{0}y+\lambda wy=0$. The structure then guarantees three facts you may use without proof: the eigenvalues are real and form an increasing sequence tending to infinity, the $n$th eigenfunction has exactly $n-1$ interior zeros, and eigenfunctions for distinct eigenvalues are orthogonal with respect to the weight,
+\[
+\int_{a}^{b} y_{m}(x)\,y_{n}(x)\,w(x)\dd x=0\qquad (m\neq n).
+\]
+That orthogonality is the entire reason expansions in eigenfunctions work: it is what lets you extract a coefficient by integrating against a single mode.
+
+\begin{worked}
+Bessel's equation $x^{2}y''+xy'+(\lambda x^{2}-n^{2})y=0$ on $(0,b)$ becomes, after dividing by $x$, the self-adjoint form $\left(xy'\right)'-\frac{n^{2}}{x}y+\lambda xy=0$, so $p=x$, $q=-n^{2}/x$ and the weight is $w=x$. The orthogonality relation for the eigenfunctions $J_{n}(\sqrt{\lambda_{k}}\,x)$ therefore carries a factor of $x$ in the integrand, which is exactly the factor that appears in the Fourier and Bessel coefficient formula and which is otherwise mysterious.
+\end{worked}
+
+\begin{trap}
+Applying the plain unweighted orthogonality $\int y_{m}y_{n}=0$ to an equation whose weight is not $1$. It is false, and the coefficients extracted from it are wrong.
+\end{trap}
+
+\begin{seealsob}The three sign cases for the separation constant; series solutions about a regular singular point.\end{seealsob}
+
+\section{Recognition matrix}
+
+\begin{recog}{@{}p{0.31\textwidth}p{0.35\textwidth}p{0.28\textwidth}@{}}
+\rowcolor{mist}\mh{If you see} & \mh{Reach for} & \mh{If that fails} \\
+\midrule
+\endhead
+$f$ has a fractional power of $y$ & Check Lipschitz at the initial point & Expect a family of solutions \\
+Nonlinear, closed form has a pole & State the interval of validity & Solve for the blow-up time \\
+You divided by $g(y)$ & Solve $g(y)=0$; test each constant & Compare against the general family \\
+General solution is a line family & Envelope: eliminate $C$ from $F=\partial_{C}F=0$ & Verify by substitution \\
+Implicit answer, ugly to invert & Leave it implicit; fix $C$ from the point & Use the implicit function theorem \\
+Condition given, root or square taken & Impose the condition before the branch & Definite integrals from $(x_{0},y_{0})$ \\
+Conditions at two different points & Build the $2\times2$ system; test invertibility & Singular: zero or infinitely many \\
+$y''+\lambda y=0$, homogeneous ends & Three sign cases, separately & Oscillatory case carries the spectrum \\
+Variable coefficients, eigenvalue asked & Self-adjoint form; read off $p$ and $w$ & Orthogonality is weighted by $w$ \\
+Expansion coefficients look wrong & Check the weight in the inner product & Recompute the normalisation \\
+\end{recog}
