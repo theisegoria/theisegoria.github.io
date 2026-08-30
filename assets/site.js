@@ -2,10 +2,20 @@ document.documentElement.classList.remove('no-js');
 
 const root = document.documentElement;
 const isJapanese = root.lang.toLowerCase().startsWith('ja');
+const currentLanguage = isJapanese ? 'ja' : 'en';
+const storedLanguage = localStorage.getItem('isegoria-language');
 const themeButton = document.querySelector('.theme-toggle');
 const themeLabel = document.querySelector('.theme-label');
 const storedTheme = localStorage.getItem('isegoria-theme');
 const preferredTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+
+if (storedLanguage && storedLanguage !== currentLanguage) {
+  const preferredLink = document.querySelector(`[data-language-select="${storedLanguage}"]`);
+  if (preferredLink?.href) {
+    const destination = new URL(preferredLink.href, window.location.href);
+    if (destination.origin === window.location.origin) window.location.replace(destination.href);
+  }
+}
 
 function applyTheme(theme) {
   root.dataset.theme = theme;
