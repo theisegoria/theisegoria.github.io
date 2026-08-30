@@ -1,0 +1,1134 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A visual research pass through the internal architecture of Bungie's Myth II: Soulblighter.">
+  <meta name="theme-color" content="#eaece6">
+  <link rel="canonical" href="https://theisegoria.github.io/soulblighter-internals.html">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <title>Soulblighter Internals</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@400;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    --ground: #EAECE6;
+    --surface: #F6F7F3;
+    --surface-2: #DFE3D9;
+    --ink: #181B16;
+    --muted: #5C6459;
+    --rule: #C9CFC1;
+    --accent: #8E2F26;
+    --accent-soft: #8E2F2618;
+    --fact: #37624A;
+    --infer: #7E5E15;
+    --gap: #6A5A78;
+
+    --f-display: "Zilla Slab", Georgia, serif;
+    --f-body: "IBM Plex Sans", system-ui, -apple-system, sans-serif;
+    --f-mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground: #121410;
+      --surface: #1B1F19;
+      --surface-2: #262B20;
+      --ink: #E5E8E0;
+      --muted: #98A292;
+      --rule: #333A2D;
+      --accent: #DA7A6D;
+      --accent-soft: #DA7A6D1F;
+      --fact: #85B594;
+      --infer: #D3B063;
+      --gap: #AC97BC;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --ground: #121410;
+    --surface: #1B1F19;
+    --surface-2: #262B20;
+    --ink: #E5E8E0;
+    --muted: #98A292;
+    --rule: #333A2D;
+    --accent: #DA7A6D;
+    --accent-soft: #DA7A6D1F;
+    --fact: #85B594;
+    --infer: #D3B063;
+    --gap: #AC97BC;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--f-body);
+    font-size: 16px;
+    line-height: 1.62;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .shell {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 0 28px 96px;
+  }
+
+  /* ---------- masthead ---------- */
+
+  .masthead {
+    border-bottom: 2px solid var(--ink);
+    padding: 64px 0 28px;
+    margin-bottom: 44px;
+  }
+
+  .eyebrow {
+    font-family: var(--f-mono);
+    font-size: 11.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  h1 {
+    font-family: var(--f-display);
+    font-weight: 700;
+    font-size: clamp(2.6rem, 6.4vw, 4.4rem);
+    line-height: 0.98;
+    letter-spacing: -0.015em;
+    margin: 14px 0 0;
+    text-wrap: balance;
+  }
+
+  .standfirst {
+    font-size: 1.16rem;
+    line-height: 1.55;
+    color: var(--muted);
+    max-width: 62ch;
+    margin: 18px 0 0;
+  }
+
+  .standfirst strong { color: var(--ink); font-weight: 500; }
+
+  /* ---------- layout ---------- */
+
+  .layout { display: block; }
+
+  nav.toc { display: none; }
+
+  @media (min-width: 1040px) {
+    .layout {
+      display: grid;
+      grid-template-columns: 210px minmax(0, 1fr);
+      gap: 56px;
+      align-items: start;
+    }
+    nav.toc {
+      display: block;
+      position: sticky;
+      top: 28px;
+      font-family: var(--f-mono);
+      font-size: 12.5px;
+      line-height: 1.5;
+    }
+    nav.toc ol { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 9px; }
+    nav.toc a { color: var(--muted); text-decoration: none; display: block; border-left: 2px solid var(--rule); padding-left: 10px; }
+    nav.toc a:hover, nav.toc a:focus-visible { color: var(--accent); border-left-color: var(--accent); }
+    nav.toc .tocnum { color: var(--rule); margin-right: 7px; }
+  }
+
+  main { min-width: 0; display: flex; flex-direction: column; gap: 56px; }
+
+  section { scroll-margin-top: 20px; }
+
+  .prose { max-width: 68ch; }
+
+  h2 {
+    font-family: var(--f-display);
+    font-weight: 600;
+    font-size: clamp(1.6rem, 3.2vw, 2.05rem);
+    line-height: 1.12;
+    letter-spacing: -0.01em;
+    margin: 0 0 6px;
+    text-wrap: balance;
+  }
+
+  .sectionmark {
+    font-family: var(--f-mono);
+    font-size: 11.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  h3 {
+    font-family: var(--f-display);
+    font-weight: 600;
+    font-size: 1.14rem;
+    letter-spacing: 0;
+    margin: 34px 0 4px;
+  }
+
+  p { margin: 0 0 14px; }
+  section > .prose > p:last-child { margin-bottom: 0; }
+
+  code, .m { font-family: var(--f-mono); font-size: 0.875em; }
+
+  code {
+    background: var(--surface-2);
+    padding: 0.08em 0.34em;
+    border-radius: 2px;
+  }
+
+  a { color: var(--accent); text-underline-offset: 2px; }
+  a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 2px; }
+
+  ul.plain { margin: 0 0 14px; padding-left: 1.15em; }
+  ul.plain li { margin-bottom: 7px; }
+
+  /* ---------- chips ---------- */
+
+  .chip {
+    font-family: var(--f-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border: 1px solid currentColor;
+    border-radius: 2px;
+    padding: 1px 5px;
+    white-space: nowrap;
+    vertical-align: 0.12em;
+  }
+  .chip.fact { color: var(--fact); }
+  .chip.infer { color: var(--infer); }
+  .chip.gap { color: var(--gap); }
+
+  /* ---------- panels ---------- */
+
+  .panel {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    padding: 20px 22px;
+  }
+
+  .panel.lead {
+    border-left: 3px solid var(--accent);
+  }
+
+  .panel p:last-child { margin-bottom: 0; }
+
+  .panel-label {
+    font-family: var(--f-mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+
+  blockquote {
+    margin: 18px 0;
+    padding: 2px 0 2px 18px;
+    border-left: 2px solid var(--accent);
+    font-family: var(--f-display);
+    font-size: 1.06rem;
+    line-height: 1.5;
+  }
+  blockquote p:last-child { margin-bottom: 0; }
+  blockquote cite {
+    display: block;
+    margin-top: 8px;
+    font-family: var(--f-mono);
+    font-size: 11.5px;
+    font-style: normal;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+  }
+
+  /* ---------- key decisions grid ---------- */
+
+  .decisions {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .decisions > div { background: var(--surface); padding: 18px 18px 20px; }
+  .decisions h4 {
+    font-family: var(--f-display);
+    font-size: 1.02rem;
+    font-weight: 600;
+    margin: 8px 0 6px;
+  }
+  .decisions p { font-size: 0.9rem; color: var(--muted); margin: 0; }
+  .decisions .tag {
+    font-family: var(--f-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  /* ---------- tables ---------- */
+
+  .tablewrap { overflow-x: auto; margin: 18px 0; border: 1px solid var(--rule); border-radius: 3px; }
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 0.885rem;
+    background: var(--surface);
+  }
+  caption {
+    caption-side: top;
+    text-align: left;
+    font-family: var(--f-mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 12px 14px 10px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--rule);
+  }
+  th, td {
+    text-align: left;
+    padding: 8px 14px;
+    border-bottom: 1px solid var(--rule);
+    vertical-align: top;
+  }
+  tbody tr:last-child td { border-bottom: none; }
+  th {
+    font-family: var(--f-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    font-weight: 500;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+  td.f { font-family: var(--f-mono); font-size: 0.8rem; white-space: nowrap; color: var(--ink); }
+  td.n { font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+  /* ---------- struct block ---------- */
+
+  pre {
+    font-family: var(--f-mono);
+    font-size: 0.775rem;
+    line-height: 1.6;
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    padding: 16px 18px;
+    overflow-x: auto;
+    margin: 18px 0;
+  }
+  pre .c { color: var(--muted); }
+  pre .k { color: var(--accent); }
+
+  /* ---------- figures ---------- */
+
+  figure {
+    margin: 26px 0;
+    padding: 20px 20px 16px;
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    overflow-x: auto;
+  }
+  figure svg { display: block; max-width: 100%; height: auto; color: var(--ink); }
+  figcaption {
+    margin-top: 14px;
+    font-size: 0.86rem;
+    line-height: 1.5;
+    color: var(--muted);
+    max-width: 70ch;
+  }
+  figcaption b { color: var(--ink); font-weight: 500; }
+
+  .dnode { fill: var(--surface-2); stroke: currentColor; stroke-width: 1.25; }
+  .dnode-key { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1.6; }
+  .dlabel { font-family: "IBM Plex Mono", monospace; font-size: 13px; fill: currentColor; }
+  .dsub { font-family: "IBM Plex Sans", sans-serif; font-size: 10.5px; fill: currentColor; opacity: 0.62; }
+  .dedge { stroke: currentColor; stroke-width: 1.25; fill: none; opacity: 0.75; }
+  .dedge-key { stroke: var(--accent); stroke-width: 1.5; fill: none; }
+  .dtext { font-family: "IBM Plex Sans", sans-serif; font-size: 11px; fill: currentColor; opacity: 0.72; }
+  .dtext-key { font-family: "IBM Plex Sans", sans-serif; font-size: 11px; fill: var(--accent); }
+
+  /* ---------- footer ---------- */
+
+  .sources { font-size: 0.9rem; }
+  .sources ol { padding-left: 1.3em; margin: 0; }
+  .sources li { margin-bottom: 10px; }
+
+  hr.rule { border: none; border-top: 1px solid var(--rule); margin: 0; }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+  }
+</style>
+
+<style>
+  .isegoria-bar {
+    position: relative;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    min-height: 48px;
+    padding: 0.55rem max(18px, calc((100vw - 1184px) / 2));
+    border-bottom: 1px solid var(--rule);
+    background: var(--surface);
+    color: var(--ink);
+    font: 600 12px/1.2 var(--f-body);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .isegoria-bar a { color: inherit; text-decoration: none; }
+  .isegoria-bar a:hover { color: var(--accent); }
+  .isegoria-home { display: inline-flex; align-items: center; gap: 0.55rem; }
+  .isegoria-mark {
+    display: inline-grid;
+    width: 26px;
+    height: 26px;
+    place-items: center;
+    border: 1px solid var(--accent);
+    border-radius: 50%;
+    color: var(--accent);
+    font: italic 700 15px/1 Georgia, serif;
+  }
+  .isegoria-bar nav { display: flex; gap: 1rem; }
+  @media (max-width: 560px) {
+    .isegoria-bar nav a:first-child { display: none; }
+  }
+  @media print {
+    @page { size: A4; margin: 14mm 14mm 17mm; }
+    .isegoria-bar { display: none !important; }
+    .shell { max-width: none !important; padding: 0 !important; }
+    .masthead { padding-top: 0 !important; margin-bottom: 9mm !important; }
+    .layout { display: block !important; }
+    nav.toc { display: none !important; }
+    body { background: #fff !important; font-size: 10pt !important; }
+    h1 { font-size: 34pt !important; }
+    h2 { font-size: 24pt !important; break-after: avoid; }
+    h3, h4 { break-after: avoid; }
+    figure, blockquote, .callout, .cards > *, .command-card { break-inside: avoid; }
+    table { break-inside: auto; }
+    thead { display: table-header-group; }
+    tr { break-inside: avoid; }
+    section { break-inside: auto; }
+    a { color: inherit; }
+  }
+</style>
+
+</head>
+<body>
+
+<header class="isegoria-bar">
+  <a class="isegoria-home" href="index.html"><span class="isegoria-mark" aria-hidden="true">I</span><span>Isegoria</span></a>
+  <nav aria-label="Isegoria"><a href="index.html#library">Library</a><a href="projects.html">Projects</a><a href="index.html">Home</a></nav>
+</header>
+
+  <div class="shell">
+
+  <header class="masthead">
+    <div class="eyebrow">Research pass · Bungie, 1998 · engine reference</div>
+    <h1>Soulblighter Internals</h1>
+    <p class="standfirst">How <em>Myth II</em> actually runs a battle behind the sprites: a <strong>30&nbsp;Hz integer simulation</strong> driven entirely by player commands, where a soldier, an arrow and a severed head are all the same kind of object, and the random-number seed doubles as the multiplayer checksum.</p>
+  </header>
+
+  <div class="layout">
+
+    <nav class="toc" aria-label="Contents">
+      <ol>
+        <li><a href="#shape"><span class="tocnum">00</span>The shape of it</a></li>
+        <li><a href="#graph"><span class="tocnum">01</span>The tag graph</a></li>
+        <li><a href="#numbers"><span class="tocnum">02</span>Integer substrate</a></li>
+        <li><a href="#monster"><span class="tocnum">03</span>The monster</a></li>
+        <li><a href="#damage"><span class="tocnum">04</span>Damage</a></li>
+        <li><a href="#ballistics"><span class="tocnum">05</span>Ballistics</a></li>
+        <li><a href="#world"><span class="tocnum">06</span>World &amp; collision</a></li>
+        <li><a href="#move"><span class="tocnum">07</span>Movement &amp; AI</a></li>
+        <li><a href="#orders"><span class="tocnum">08</span>The command stream</a></li>
+        <li><a href="#sync"><span class="tocnum">09</span>Determinism</a></li>
+        <li><a href="#script"><span class="tocnum">10</span>Map scripting</a></li>
+        <li><a href="#gaps"><span class="tocnum">11</span>Open questions</a></li>
+        <li><a href="#sources"><span class="tocnum">12</span>Sources</a></li>
+      </ol>
+    </nav>
+
+    <main>
+
+      <!-- ============ 00 ============ -->
+      <section id="shape">
+        <span class="sectionmark">00 — Orientation</span>
+        <h2>The shape of it</h2>
+        <div class="prose">
+          <p>Five decisions do almost all the work in this engine. Everything else in this document is a consequence of one of them.</p>
+        </div>
+
+        <div class="decisions" style="margin-top:20px">
+          <div>
+            <span class="tag">obje</span>
+            <h4>One physical body type</h4>
+            <p>Units, projectiles, scenery and severed limbs all reference the same 64-byte object tag: gravity, elasticity, terminal velocity, vitality, resistances. There is no separate "unit physics" and "debris physics".</p>
+          </div>
+          <div>
+            <span class="tag">1 / 30 s</span>
+            <h4>Integer time, integer space</h4>
+            <p>30 ticks per second, positions in 1/512 of a World Unit, fractions in 16.16 or 8.8 fixed point. No float touches gameplay. Floats appear only in fog density and reverb.</p>
+          </div>
+          <div>
+            <span class="tag">prgr</span>
+            <h4>Effects are projectiles</h4>
+            <p>Explosions, gore, contrails and blood are not a particle system. They are recursive projectile groups spawning more projectiles, each with its own physics and optionally its own damage.</p>
+          </div>
+          <div>
+            <span class="tag">seed</span>
+            <h4>The RNG seed is the checksum</h4>
+            <p>Out-of-sync detection compares the current random seed between players. Because nearly every decision draws from the LCG, the seed is a running hash of the entire divergence history.</p>
+          </div>
+          <div>
+            <span class="tag">reco</span>
+            <h4>Commands, never state</h4>
+            <p>Only seven verbs command units, and only those cross the wire. A saved film is not a recording — it is a recipe for re-simulating the match from a seed.</p>
+          </div>
+        </div>
+
+        <div class="panel lead" style="margin-top:24px">
+          <div class="panel-label">How to read the confidence markers</div>
+          <p style="margin-bottom:8px"><span class="chip fact">Documented</span> — stated in Bungie's <em>Fear</em>/<em>Loathing</em> editor documentation, the shipped manual, a Bungie or Project Magma postmortem, or read directly off a reverse-engineered struct definition whose field names are Bungie's own.</p>
+          <p style="margin-bottom:8px"><span class="chip infer">Inferred</span> — community interpretation, or a reading assembled from patch notes and behaviour. Plausible, not attested.</p>
+          <p><span class="chip gap">Unresolved</span> — I could not establish this from any reachable source, and I am not guessing.</p>
+        </div>
+      </section>
+
+      <hr class="rule">
+
+      <!-- ============ 01 ============ -->
+      <section id="graph">
+        <span class="sectionmark">01 — Data model</span>
+        <h2>The tag graph</h2>
+        <div class="prose">
+          <p>Myth II's content is a flat pool of four-character-code tags in container files, resolved by ID at load time. Gameplay is almost entirely a question of which tag points at which.</p>
+          <p>The surprising part is the indirection depth. A <code>unit</code> tag — the thing a map marker places and a netgame roster counts — is <strong>eight bytes</strong>: a monster reference and a colour reference. Everything a player thinks of as "the unit" lives one level down in <code>mons</code>, and everything physical lives one level below that in <code>obje</code>.</p>
+        </div>
+
+        <figure>
+          <svg viewBox="0 0 900 340" role="img" aria-label="Tag reference graph: unit points to mons, mons spawns projectiles through its attacks, projectiles detonate into projectile groups which spawn more projectiles, and monsters, projectiles and scenery all share the same object tag for physics">
+            <defs>
+              <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"/>
+              </marker>
+              <marker id="ark" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--accent)"/>
+              </marker>
+            </defs>
+
+            <!-- top chain -->
+            <rect class="dnode" x="24" y="56" width="100" height="44" rx="3"/>
+            <text class="dlabel" x="74" y="76" text-anchor="middle">unit</text>
+            <text class="dsub" x="74" y="90" text-anchor="middle">8 bytes</text>
+
+            <rect class="dnode" x="186" y="56" width="116" height="44" rx="3"/>
+            <text class="dlabel" x="244" y="76" text-anchor="middle">mons</text>
+            <text class="dsub" x="244" y="90" text-anchor="middle">1024 bytes</text>
+
+            <rect class="dnode" x="430" y="56" width="110" height="44" rx="3"/>
+            <text class="dlabel" x="485" y="76" text-anchor="middle">proj</text>
+            <text class="dsub" x="485" y="90" text-anchor="middle">256 bytes</text>
+
+            <rect class="dnode" x="610" y="56" width="120" height="44" rx="3"/>
+            <text class="dlabel" x="670" y="76" text-anchor="middle">prgr</text>
+            <text class="dsub" x="670" y="90" text-anchor="middle">group</text>
+
+            <line class="dedge" x1="124" y1="78" x2="180" y2="78" marker-end="url(#ar)"/>
+            <text class="dtext" x="152" y="70" text-anchor="middle">mons</text>
+
+            <line class="dedge" x1="302" y1="78" x2="424" y2="78" marker-end="url(#ar)"/>
+            <text class="dtext" x="363" y="70" text-anchor="middle">attacks[4]</text>
+
+            <line class="dedge" x1="540" y1="78" x2="604" y2="78" marker-end="url(#ar)"/>
+            <text class="dtext" x="572" y="70" text-anchor="middle">detonates</text>
+
+            <!-- recursion -->
+            <polyline class="dedge-key" points="670,52 670,24 485,24 485,50" marker-end="url(#ark)"/>
+            <text class="dtext-key" x="578" y="17" text-anchor="middle">spawns N × proj  (recursive)</text>
+
+            <!-- collection -->
+            <rect class="dnode" x="186" y="166" width="116" height="44" rx="3"/>
+            <text class="dlabel" x="244" y="186" text-anchor="middle">coll .256</text>
+            <text class="dsub" x="244" y="200" text-anchor="middle">sprites + sequences</text>
+            <line class="dedge" x1="244" y1="102" x2="244" y2="160" marker-end="url(#ar)"/>
+            <text class="dtext" x="252" y="136">sequence timing</text>
+
+            <!-- scenery -->
+            <rect class="dnode" x="700" y="166" width="110" height="44" rx="3"/>
+            <text class="dlabel" x="755" y="192" text-anchor="middle">scen</text>
+
+            <!-- obje -->
+            <rect class="dnode-key" x="400" y="262" width="130" height="46" rx="3"/>
+            <text class="dlabel" x="465" y="282" text-anchor="middle" fill="var(--accent)">obje</text>
+            <text class="dsub" x="465" y="296" text-anchor="middle">64 bytes · physics</text>
+
+            <polyline class="dedge-key" points="256,212 256,285 394,285" marker-end="url(#ark)"/>
+            <text class="dtext-key" x="322" y="277" text-anchor="middle">object_tag</text>
+
+            <polyline class="dedge-key" points="470,102 470,256" marker-end="url(#ark)"/>
+            <text class="dtext-key" x="478" y="184">object_tag</text>
+
+            <polyline class="dedge-key" points="755,212 755,285 536,285" marker-end="url(#ark)"/>
+            <text class="dtext-key" x="648" y="277" text-anchor="middle">object_tag</text>
+          </svg>
+          <figcaption><b>A soldier, an arrow and a rock are the same kind of body.</b> Gravity, elasticity, terminal velocity, vitality and per-damage-type resistance all live in <code>obje</code>, shared by monsters, projectiles and scenery — which is why an explosion can launch a corpse using the identical code path that launches debris. The accent path is the one that surprises people: a projectile's detonation names a <em>group</em>, which spawns further projectiles, each of which can detonate into another group. That recursion is Myth's entire explosion and gore system.</figcaption>
+        </figure>
+
+        <div class="prose">
+          <p>Two structural notes that catch out anyone reading the tags for the first time. <span class="chip fact">Documented</span></p>
+          <ul class="plain">
+            <li><strong>There is no <code>vitality</code> field on the monster tag.</strong> Health is <code>obje.vitality_lower_bound</code> plus <code>vitality_delta</code>, rolled per instance — so no two soldiers have identical health. (In the original <em>Myth: The Fallen Lords</em>, <code>maximum_vitality</code> <em>was</em> on the monster; it moved down a level for Myth II.)</li>
+            <li><strong>Monsters carry no damage numbers at all.</strong> A unit's offensive power is entirely a property of the projectiles its attacks spawn. Rebalancing a warrior means editing an arrow.</li>
+          </ul>
+        </div>
+      </section>
+
+      <hr class="rule">
+
+      <!-- ============ 02 ============ -->
+      <section id="numbers">
+        <span class="sectionmark">02 — Numeric substrate</span>
+        <h2>Integer substrate</h2>
+        <div class="prose">
+          <p>Every gameplay quantity in the engine is a scaled integer. This is the single decision that makes cross-platform lockstep possible, and it is enforced ruthlessly: the only IEEE floats anywhere in the gameplay tag set are <code>reverb_volume</code>, <code>reverb_decay_time</code>, <code>reverb_damping</code>, <code>fog_density</code> and <code>minimum_zoom_factor</code> — all presentation, none of it touching the simulation. <span class="chip fact">Documented</span></p>
+        </div>
+
+        <div class="tablewrap">
+          <table>
+            <caption>Fixed-point scale factors</caption>
+            <thead>
+              <tr><th>Codec</th><th>Divisor</th><th>Represents</th><th>Used for</th></tr>
+            </thead>
+            <tbody>
+              <tr><td class="f">World</td><td class="n">512</td><td>World Units (WU)</td><td>positions, velocities, radii, gravity, terminal velocity, knockback</td></tr>
+              <tr><td class="f">Fixed</td><td class="n">65536</td><td>16.16, 0.0–1.0</td><td><code>absorbed_fraction</code>, <code>flinch_system_shock</code>, <code>berserk_vitality</code>, <code>miss_fraction</code></td></tr>
+              <tr><td class="f">ShortFixed</td><td class="n">256</td><td>8.8</td><td>vitality, damage, scale, elasticity, mana, resistance multipliers</td></tr>
+              <tr><td class="f">Percent</td><td class="n">65535</td><td>probability</td><td>detonation frequency, contrail frequency, acceleration detonation</td></tr>
+              <tr><td class="f">ShortPercent</td><td class="n">255</td><td>probability, 1 byte</td><td><code>healing_fraction</code>, terrain <code>movement_modifiers</code></td></tr>
+              <tr><td class="f">Time</td><td class="n">30</td><td>seconds</td><td>every duration in the engine, stored as ticks</td></tr>
+              <tr><td class="f">Angle</td><td class="n">65536 / 360</td><td>degrees</td><td>facing; a full circle is 65536, so angle arithmetic wraps for free</td></tr>
+              <tr><td class="f">AngularVelocity</td><td class="n">65536 / 10800</td><td>degrees / second</td><td><code>turning_speed</code>, <code>guided_turning_speed</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="prose">
+          <p>The 30&nbsp;Hz tick is independently confirmed three ways: Project Magma's postmortem states it outright ("the base unit of time in Myth, equivalent to 1/30th of a second"); <code>ANGULAR_VELOCITY_SF</code> is literally defined as <code>65536 / (360 × 30)</code>; and a stock <code>turning_speed</code> of <code>0x071C</code> decodes to exactly 300.0 deg/sec under that scale, matching <em>Fear</em>'s stated units. <span class="chip fact">Documented</span></p>
+
+          <h3>The lower-bound / delta idiom</h3>
+          <p>Randomised ranges are everywhere — vitality, scale, initial velocity, ammunition, lifespan, animation rate, spawn counts, spawn positions, attack frequency, trigger delays. They are all encoded the same way, as a <code>X_lower_bound</code> plus an <code>X_delta</code>, and the delta has an off-by-one convention: the stored value is one greater than the true span when non-zero, so that "no randomness" and "a span of exactly zero" stay distinguishable.</p>
+          <p>This is how Myth gets its organic, never-quite-identical feel while staying bit-deterministic. Every roll comes from the seeded LCG in integer arithmetic, so the variation is identical on every machine.</p>
+        </div>
+      </section>
+
+      <hr class="rule">
+
+      <!-- ============ 03 ============ -->
+      <section id="monster">
+        <span class="sectionmark">03 — mons</span>
+        <h2>The monster</h2>
+        <div class="prose">
+          <p>The monster tag is 1024 bytes and reads like an inventory of every question the AI and combat systems ask about a unit. Grouped by what it actually controls:</p>
+        </div>
+
+        <div class="tablewrap">
+          <table>
+            <caption>Monster tag — selected fields, with Bungie's own descriptions where the editor documents them</caption>
+            <thead><tr><th>Field</th><th>Group</th><th>Meaning</th></tr></thead>
+            <tbody>
+              <tr><td class="f">warning_distance</td><td>Awareness</td><td>Distance at which the unit becomes aware of other units' <em>cries for help</em>. Stock ≈ 4 WU.</td></tr>
+              <tr><td class="f">critical_distance</td><td>Awareness</td><td>Distance at which the unit is warned of another unit's presence; also the radius it searches when its target dies. Stock ≈ 8 WU.</td></tr>
+              <tr><td class="f">activation_distance</td><td>Awareness</td><td>Distance at which the unit acts of its own volition on another unit.</td></tr>
+              <tr><td class="f">visibility_type</td><td>Awareness</td><td>Field of vision; can be set to none, making a unit blind.</td></tr>
+              <tr><td class="f">pathfinding_radius</td><td>Movement</td><td>The unit's "space bubble" — the minimum distance it keeps from an allied unit. ≈ 0.30 WU for infantry.</td></tr>
+              <tr><td class="f">base_movement_speed</td><td>Movement</td><td>≈ 2.2 WU/sec for infantry.</td></tr>
+              <tr><td class="f">turning_speed</td><td>Movement</td><td>Degrees per second.</td></tr>
+              <tr><td class="f">terrain_costs[16]</td><td>Movement</td><td>Signed per-terrain route bias. Negative means impassable.</td></tr>
+              <tr><td class="f">movement_modifiers[16]</td><td>Movement</td><td>Unsigned per-terrain speed scale. Zero means impassable.</td></tr>
+              <tr><td class="f">absorbed_fraction</td><td>Defence</td><td>"The fraction of blows that a unit will absorb without damage."</td></tr>
+              <tr><td class="f">healing_fraction</td><td>Defence</td><td>Fraction of health restorable by healing. 0.00 means healing kills — this is how undead are encoded.</td></tr>
+              <tr><td class="f">flinch_system_shock</td><td>Reaction</td><td>How hard a hit must be to interrupt the unit. Trow are set very high.</td></tr>
+              <tr><td class="f">hard_death_system_shock</td><td>Reaction</td><td>Damage needed to trigger the violent death rather than the normal one.</td></tr>
+              <tr><td class="f">propelled_system_shock</td><td>Reaction</td><td>Impact force needed to launch the unit. Requires the <code>CAN_BE_PROPELLED</code> flag.</td></tr>
+              <tr><td class="f">damage_to_propulsion</td><td>Reaction</td><td>Propulsion speed and duration, 0–1.0.</td></tr>
+              <tr><td class="f">berserk_vitality</td><td>Morale</td><td>Health fraction at which the unit goes berserk. Myrkridia sit at 0.25.</td></tr>
+              <tr><td class="f">berserk_system_shock</td><td>Morale</td><td>Single-impact threshold for the same state.</td></tr>
+              <tr><td class="f">combined_power</td><td>AI</td><td>The AI's own threat metric, used for target prioritisation.</td></tr>
+              <tr><td class="f">longest_range</td><td>AI</td><td>Maximum attack distance. A bow is 24 WU.</td></tr>
+              <tr><td class="f">sequence_indexes[26]</td><td>Animation</td><td>Indices into the sprite collection's sequence table. See below.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="prose">
+          <h3>Animation gates gameplay, directly</h3>
+          <p>This is the most consequential coupling in the whole engine and it is easy to miss. An attack's <em>duration is not stored on the attack</em>. It emerges from the sprite sequence: <code>frames_per_view × ticks_per_frame</code> sets the floor, and the attack's <code>recovery_time</code> adds on top. Lengthening a monster's swing animation directly nerfs its DPS. <span class="chip fact">Documented</span></p>
+          <p>More striking: <strong>a unit can block if and only if it has a blocking sequence.</strong> There is no "can block" flag — <code>sequence_indexes[5] &gt; -1</code> is the capability check. Animation data <em>is</em> gameplay data here. <span class="chip fact">Documented</span></p>
+        </div>
+
+        <pre><span class="c">// the 26 sequence slots; 19–25 remain undocumented</span>
+ 0 idle_1        1 moving       2 placeholder   3 pause        4 turning
+ 5 <span class="k">blocking</span>      6 damage       7 pickup        8 head_shots   9 celebration
+10 trans_1-2    11 idle_2      12 trans_2-1    13 running     14 ammo
+15 holding      16 taunting    17 gliding      18 propelled</pre>
+
+        <div class="prose">
+          <h3>The extended-flags hack</h3>
+          <p>Post-1.4 Myth ran out of room in the monster tag and did something remarkable: when the <code>USE_EXTENDED</code> flag is set, the <strong>unused terrain-cost bytes are reinterpreted as extra fields</strong>. The <code>sloped</code>, <code>grass</code> and <code>desert</code> slots become bitfields of behaviour flags; <code>steep</code> becomes the block-timer modifier; <code>rocky</code> becomes the run-speed percentage; <code>marsh</code> becomes the veterancy cap; <code>snow</code> becomes charge range. <span class="chip fact">Documented</span> (the decode is <span class="chip infer">Inferred</span> from community reverse-engineering)</p>
+          <p>It is load-bearing rather than cosmetic — running speed (default +20%), block timing (default 30 ticks, tunable from 0.033&nbsp;s to 5.2&nbsp;s) and the veterancy cap (default 5 kills) are only tunable because of this overlay. The flags it unlocks are the interesting AI switches: <code>CHASES_ENEMIES_INTELLIGENTLY</code>, <code>MOVES_TO_POSITION_TO_SHOOT_UPHILL</code>, <code>WALKS_AROUND_LARGE_UNIT_BLOCKAGES</code>, <code>MIXES_MISSILE_MELEE_BEHAVIOUR</code>, <code>DOESNT_CLOSE_ON_TARGET</code>, <code>EXTRA_AGGRESSIVE_MISSILE_UNIT</code>, <code>WALKS_ON_THE_SURFACE_OF_WATER</code>.</p>
+        </div>
+      </section>
+
+      <hr class="rule">
+
+      <!-- ============ 04 ============ -->
+      <section id="damage">
+        <span class="sectionmark">04 — Combat</span>
+        <h2>Damage</h2>
+        <div class="prose">
+          <p>Damage is a 16-byte struct embedded in the projectile (and in the lightning tag). Every field of it is doing something:</p>
+        </div>
+
+        <pre><span class="c">ProjDmg — 16 bytes</span>
+type                <span class="c">short   DamageType</span>
+flags               <span class="c">ushort  16 behaviour bits</span>
+damage_lower_bound  <span class="c">short   ShortFixed  /256</span>
+damage_delta        <span class="c">short</span>
+radius_lower_bound  <span class="c">short   World       /512</span>
+radius_delta        <span class="c">short</span>
+<span class="k">rate_of_expansion</span>   <span class="c">short   World  — blast grows over time</span>
+<span class="k">damage_to_velocity</span>  <span class="c">short   World  — damage → knockback coefficient</span></pre>
+
+        <div class="prose">
+          <p>Note what is <em>not</em> there: no minimum-damage radius, no falloff curve. Instead there is <code>rate_of_expansion</code>, which makes a blast a <strong>growing sphere</strong> rather than a static falloff. <span class="chip infer">Inferred</span> — that is almost certainly why Myth explosions read as an expanding shockwave that catches units as it passes, and why a distant unit can be hit a tick or two after a near one.</p>
+
+          <h3>Twelve damage types, nine resistance slots</h3>
+          <p>The runtime damage types are <code>EXPLOSION</code>, <code>MAGICAL</code>, <code>HOLDING</code>, <code>HEALING</code>, <code>KINETIC</code>, <code>SLASHING_METAL</code>, <code>STONING</code>, <code>SLASHING_CLAWS</code>, <code>EXPLOSIVE_ELECTRICITY</code>, <code>FIRE</code>, <code>GAS</code>, <code>CHARM</code>. There is no separate holy/unholy type — that is <code>MAGICAL</code>. <strong>Healing is a damage type</strong>, not a separate system, which is exactly why Project Magma had to ship a fix for "too much negative (healing) damage could kill a unit". <span class="chip fact">Documented</span></p>
+          <p>Resistance lives on the object tag as nine <code>ShortFixed</code> multipliers — <code>slashing_damage</code>, <code>kinetic_damage</code>, <code>explosive_damage</code>, <code>electric_damage</code>, <code>fire_damage</code>, <code>paralysis_duration</code>, <code>stone</code>, <code>gas_damage</code>, <code>confusion</code> — where 1.000 is neutral and 0 is immunity. Note that <code>paralysis_duration</code> and <code>confusion</code> modulate <em>effect duration</em>, not damage. The 12→9 mapping is many-to-one and <span class="chip gap">Unresolved</span>: both lists are known, the correspondence between them is not documented anywhere I could reach.</p>
+
+          <h3>Absorption is probabilistic, not fractional</h3>
+          <p>Despite the name, <code>absorbed_fraction</code> is read by the community as the <em>probability of shrugging off an attack entirely</em>, not a percentage of damage removed. <span class="chip infer">Inferred</span> — but the supporting evidence is good: the monster tag carries separate <code>absorbed_impact_projectile_group_tag</code> and <code>blocked_impact_projectile_group_tag</code> effects, which only makes sense if absorption is a discrete per-hit outcome that can fire its own sound and spark.</p>
+
+          <h3>Knockback is simulation, not decoration</h3>
+          <p>The chain is fully explicit: <code>damage_to_velocity</code> converts damage into speed → <code>propelled_system_shock</code> and <code>damage_to_propulsion</code> gate and scale it per unit type → the <code>CAN_BE_PROPELLED</code> flag permits it → the body then flies under <code>obje.gravity</code>, bounces on <code>obje.elasticity</code>, and plays the dedicated <code>propelled</code> sequence.</p>
+          <p>The decisive proof is historical: when Project Magma added a propulsion feature in 1.5 using floating-point maths, it <strong>desynced multiplayer</strong>. A purely visual effect cannot desync a lockstep simulation. Flying bodies are in the deterministic sim. <span class="chip fact">Documented</span></p>
+          <p>"Ragdoll" is the wrong word, though. There is no articulated body — a propelled corpse is a single point mass with gravity and elasticity, playing one animation, skipping along the height field. That is precisely what it looks like.</p>
+
+          <h3>Gore is a projectile group</h3>
+          <p>Dismemberment is not a special system. <code>exploding_projectile_group_tag</code>, <code>dying_projectile_group_tag</code> and <code>burning_death_projectile_group_tag</code> each name a group that spawns a randomised count of debris projectiles at randomised offsets, each with its own <code>debris_sequence</code>, <code>bounce_sequence</code>, object physics, and flags like <code>IS_BLOODY</code>, <code>BLOODIES_LANDSCAPE</code> and <code>DETONATES_AT_REST</code>. Body parts are fully simulated projectiles — deterministic, counted against the projectile budget, and in principle capable of carrying damage. <span class="chip fact">Documented</span></p>
+          <p>Blood itself goes further. Bungie's TFL postmortem: "blood was made to destructively alter the terrain's color map." It is not a decal layer; it edits the landscape texture. Fire goes further still — <code>CELL_WAS_OR_IS_ON_FIRE_BIT</code> is a per-cell state bit <em>in the mesh</em>, so terrain fire spreads inside the simulation.</p>
+        </div>
+
+        <div class="panel">
+          <div class="panel-label">The visual / simulation dividing line</div>
+          <p>Two parallel effect systems exist. <code>prgr</code> — "projectile groups" — spawn real <code>proj</code> with damage and physics. <code>lpgr</code> — <em>local</em> projectile groups — carry no damage struct at all and reference their own separate <code>phys</code> ("Local Physics") tag, with their own budgets (raised in 1.7.2 from 512 to 768 local projectiles per map). Nearly every tag that can spawn a <code>prgr</code> also has an <code>lpgr</code> field beside it. <span class="chip infer">Inferred</span>: "local" means client-local and non-networked — the sparks, splashes and dust that need not match across machines and can therefore run on cheaper, non-deterministic physics.</p>
+        </div>
+      </section>
+
+      <hr class="rule">
+
+      <!-- ============ 05 ============ -->
+      <section id="ballistics">
+        <span class="sectionmark">05 — Attacks</span>
+        <h2>Ballistics</h2>
+        <div class="prose">
+          <p>Every monster has up to four 64-byte attack definitions. The attack owns aiming, timing and veterancy; the projectile it names owns damage and flight.</p>
+        </div>
+
+        <pre><span class="c">AttackDef — 64 bytes, 4 per monster</span>
+flags                                 <span class="c">16 aiming/targeting bits</span>
+miss_fraction                         <span class="c">Fixed — flat chance to simply miss</span>
+projectile_tag
+minimum_range / maximum_range         <span class="c">World</span>
+sequences[4]                          <span class="c">{flags, sequence_index, skip_fraction}</span>
+repetitions                           <span class="c">attacks carried out per command</span>
+initial_velocity_lower_bound / _delta <span class="c">World</span>
+<span class="k">initial_velocity_error</span>                <span class="c">World — scatter; the de facto accuracy stat</span>
+recovery_time                         <span class="c">Time — seconds between attacks</span>
+recovery_time_experience_delta        <span class="c">Time — removed per kill</span>
+velocity_improvement_with_experience  <span class="c">World — removed per kill</span>
+mana_cost                             <span class="c">ShortFixed</span></pre>
+
+        <div class="prose">
+          <p>The aiming behaviour is entirely flag-driven, and the flag names give away that the engine solves a real ballistic problem rather than hit-scanning:</p>
+          <ul class="plain">
+            <li><code>LEADS_TARGET</code> — predictive aim at a moving target.</li>
+            <li><code>IS_INDIRECT</code> — arcing / mortar trajectory.</li>
+            <li><code>IS_FIXED_PITCH</code> — fixed launch angle; solve for speed instead.</li>
+            <li><code>DOES_NOT_REQUIRE_A_FIRING_SOLUTION</code> — the phrase "firing solution" is the engine's own, and its existence implies the projectile equation is actually being solved against <code>obje.gravity</code>.</li>
+            <li><code>AIMED_AT_TARGETS_FEET</code> — aim at the ground under the target, which for an area-of-effect projectile is strictly better.</li>
+            <li><code>DONT_SHOOT_OVER_NEARBY_UNITS</code>, <code>LOB_TO_HIT_LOWER_NEARBY_UNITS</code>, <code>AVOIDS_FRIENDLY_UNITS</code> — the engine tests the <em>arc</em> against intervening friendlies. Three separate flags exist just to govern shooting past allies, which tells you how much friendly fire mattered to the design.</li>
+          </ul>
+
+          <h3>Veterancy</h3>
+          <p>Two experience terms sit on every attack: kills reduce <code>recovery_time</code> and reduce <code>initial_velocity_error</code>. Veterans therefore fire both faster and straighter. The cap is 5 kills by default, overridable through the extended-flags overlay. Kill credit also propagates — <code>experience_kill_bonus</code> is granted to allies within <code>experience_bonus_radius</code>, and <code>enemy_experience_kill_bonus</code> can grant it to nearby enemies too. <span class="chip fact">Documented</span></p>
+
+          <h3>Wind</h3>
+          <p>Projectiles carry an <code>AFFECTED_BY_WIND</code> flag and the mesh header names a <code>wind</code> tag, so wind is per-map, global, and opt-in per projectile. Whether it is a constant vector or time-varying is <span class="chip gap">Unresolved</span> — no reachable source decodes that tag.</p>
+        </div>
+      </section>
+
+      <hr class="rule">
+
+      <!-- ============ 06 ============ -->
+      <section id="world">
+        <span class="sectionmark">06 — mesh</span>
+        <h2>World &amp; collision</h2>
+        <div class="prose">
+          <p>A Myth II map is a <strong>regular grid height field</strong>, not a polygon soup and not a navmesh. Bungie's own postmortem: "The game's terrain is a 3D polygonal mesh constructed from square cells, each of which is tessellated into two triangles." The tag confirms it exactly — each cell is 12 bytes carrying a height, two normals, flags, a packed terrain byte, a media height and a model index. <span class="chip fact">Documented</span></p>
+          <p>The terrain byte packs <strong>two 4-bit terrain codes per cell</strong>, one per triangle — so terrain type is stored at twice the resolution of the height grid. A submesh is 32×32 cells textured by a 256×256 colormap chunk, i.e. 8 colormap pixels per cell. Working from cell counts, stock maps land somewhere around 190–230 WU per side. <span class="chip infer">Inferred</span></p>
+        </div>
+
+        <div class="tablewrap">
+          <table>
+            <caption>The 16 terrain types — a 4-bit enum shared by the mesh and by every monster's cost array</caption>
+            <thead><tr><th>0–3 · Media depth</th><th>4–7</th><th>8–11</th><th>12–15</th></tr></thead>
+            <tbody>
+              <tr>
+                <td class="f">MEDIA_DWARF_DEPTH<br>MEDIA_HUMAN_DEPTH<br>MEDIA_GIANT_DEPTH<br>MEDIA_DEEP</td>
+                <td class="f">SLOPED<br>STEEP<br>GRASS<br>DESERT</td>
+                <td class="f">ROCKY<br>MARSH<br>SNOW<br>FOREST</td>
+                <td class="f">LOATHING_SPECIAL<br>UNUSED<br>WALKING_IMPASSABLE<br>FLYING_IMPASSABLE</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="prose">
+          <p>Water is a <em>terrain type</em>, not a volume — depth is quantised into four classes that gate which unit sizes may enter. Dwarf-depth passes most units; giant-depth admits Trow, large Myrkridia and dead bodies; deep media admits the dead and the amphibious. <code>FLYING_IMPASSABLE</code> is the map-edge fence. And because the <code>Mesh Cell Modifier</code> script action can rewrite terrain nibbles at runtime, <strong>passability is mutable mid-level</strong> — collapsing bridges and opening gates are terrain edits.</p>
+        </div>
+
+        <figure>
+          <svg viewBox="0 0 900 250" role="img" aria-label="Three tiers of collision in Myth II: a height field grid for ground contact, sprite-derived cylinders for unit and projectile intersection, and true polygon models for a small number of large solids">
+            <defs>
+              <marker id="ar2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"/>
+              </marker>
+            </defs>
+
+            <!-- tier 1 -->
+            <text class="dlabel" x="30" y="30">Tier 1 · height field</text>
+            <text class="dsub" x="30" y="46">every ground contact</text>
+            <g class="dedge">
+              <path d="M 30 96 L 90 78 L 150 92 L 210 74 L 270 88"/>
+              <path d="M 30 130 L 90 112 L 150 126 L 210 108 L 270 122"/>
+              <line x1="30" y1="96" x2="30" y2="130"/>
+              <line x1="90" y1="78" x2="90" y2="112"/>
+              <line x1="150" y1="92" x2="150" y2="126"/>
+              <line x1="210" y1="74" x2="210" y2="108"/>
+              <line x1="270" y1="88" x2="270" y2="122"/>
+              <line x1="30" y1="96" x2="90" y2="112" stroke-dasharray="3 3"/>
+              <line x1="90" y1="78" x2="150" y2="126" stroke-dasharray="3 3"/>
+              <line x1="150" y1="92" x2="210" y2="108" stroke-dasharray="3 3"/>
+              <line x1="210" y1="74" x2="270" y2="122" stroke-dasharray="3 3"/>
+            </g>
+            <text class="dtext" x="30" y="156">2 triangles per cell</text>
+            <text class="dtext" x="30" y="172">2 terrain codes per cell</text>
+            <text class="dtext" x="30" y="188">1 cell ≈ 1 World Unit</text>
+
+            <!-- tier 2 -->
+            <text class="dlabel" x="340" y="30">Tier 2 · sprite cylinder</text>
+            <text class="dsub" x="340" y="46">units and projectiles</text>
+            <ellipse class="dnode-key" cx="415" cy="76" rx="42" ry="13"/>
+            <line class="dedge-key" x1="373" y1="76" x2="373" y2="130"/>
+            <line class="dedge-key" x1="457" y1="76" x2="457" y2="130"/>
+            <ellipse class="dnode-key" cx="415" cy="130" rx="42" ry="13"/>
+            <line class="dedge" x1="415" y1="76" x2="457" y2="76" marker-end="url(#ar2)"/>
+            <text class="dtext" x="436" y="68" text-anchor="middle">radius</text>
+            <line class="dedge" x1="484" y1="76" x2="484" y2="130" marker-start="url(#ar2)" marker-end="url(#ar2)"/>
+            <text class="dtext" x="492" y="106">height0 → height1</text>
+            <text class="dtext" x="340" y="156">authored in sprite pixels,</text>
+            <text class="dtext" x="340" y="172">converted at load by</text>
+            <text class="dtext" x="340" y="188">pixels_to_world</text>
+
+            <!-- tier 3 -->
+            <text class="dlabel" x="660" y="30">Tier 3 · polygon model</text>
+            <text class="dsub" x="660" y="46">a handful of large solids</text>
+            <g class="dedge">
+              <polygon points="700,120 740,72 800,72 840,120 800,142 740,142" fill="none"/>
+              <line x1="740" y1="72" x2="740" y2="142"/>
+              <line x1="800" y1="72" x2="800" y2="142"/>
+              <line x1="700" y1="120" x2="800" y2="72"/>
+            </g>
+            <text class="dtext" x="660" y="156">real vertices + bounds</text>
+            <text class="dtext" x="660" y="172">walls, gates, the ball</text>
+            <text class="dtext" x="660" y="188">on Venice</text>
+          </svg>
+          <figcaption><b>There is no general 3D collision.</b> Ground contact is against the height field; unit-and-projectile intersection uses a vertical cylinder whose radius and height band are authored <em>in sprite pixels</em> and converted at load time via <code>pixels_to_world</code>; and a separate, harder polygon path handles a small number of large solid models. That third path is where Myth's famous collision bugs lived — Project Magma's changelog includes "improved precision in model collision detection code (fixes the Fetchball invisible wall bug)" and "fixed some cases where an object could pass through a model."</figcaption>
+        </figure>
+      </section>
+
+      <hr class="rule">
+
+      <!-- ============ 07 ============ -->
+      <section id="move">
+        <span class="sectionmark">07 — Movement &amp; AI</span>
+        <h2>Movement &amp; AI</h2>
+        <div class="prose">
+          <p>Pathfinding is the one system Bungie filed under <em>What Went Wrong</em>, and they described the algorithm plainly:</p>
+        </div>
+
+        <blockquote>
+          <p>"First, we ignore all obstacles and calculate the A* path based solely on the terrain impassability… If the planned path would cause us to hit an obstacle, we need to deviate our path. We recursively consider both left and right deviations, and choose the direction that causes us to deviate least from our A* path."</p>
+          <cite>Bungie — Myth: The Fallen Lords postmortem</cite>
+        </blockquote>
+
+        <div class="prose">
+          <p>So: a coarse A* over <em>static</em> terrain cost only, then a periodic vector-based local refinement that branches recursively around dynamic obstacles and picks minimum deviation. <span class="chip fact">Documented</span></p>
+          <p>That split is also a determinism win — A* over static terrain is trivially identical everywhere, and the local avoidance is a bounded recursive search with a deterministic tie-break. But it is exactly why units bunch and slide: <code>pathfinding_radius</code> is a purely <em>local</em> pairwise separation rule with no global crowd model, so dense groups compress rather than reflow. <span class="chip infer">Inferred</span>, though the patch history supports it: 1.7.1 fixed the community-named "magic dirt" bug (a Trow half-surrounded by enemies, unable to escape an open route) and units becoming stuck together; 1.8.4/5 fixed "counter-intuitive source/destination pairings" in group moves, meaning formation slot assignment was originally not distance-optimal and generated crossing traffic. <code>USES_ANTICLUMP</code> remains an <em>opt-in</em> per-map and per-game flag, because turning it on changes combat outcomes.</p>
+
+          <h3>Awareness is social, not just optical</h3>
+          <p>The three awareness radii are not three sizes of the same idea. <code>critical_distance</code> is presence detection and doubles as the retarget radius when a unit's current target dies — which is why units re-engage locally instead of sprinting across the map after a kill. But <code>warning_distance</code> is defined by Bungie as the distance at which a unit hears <em>other units' cries for help</em>. That makes alarm a propagating chain through a formation rather than each unit independently spotting a threat.</p>
+        </div>
+
+        <figure>
+          <svg viewBox="0 0 760 260" role="img" aria-label="Alarm propagation: a unit under attack alerts a neighbour within its warning distance, and that neighbour's own warning radius alerts a third unit further away, chaining alarm through a formation">
+            <defs>
+              <marker id="ar3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"/>
+              </marker>
+            </defs>
+
+            <!-- warning circles -->
+            <circle cx="230" cy="140" r="112" fill="none" stroke="var(--accent)" stroke-width="1.3" stroke-dasharray="5 4" opacity="0.85"/>
+            <circle cx="368" cy="96" r="112" fill="none" stroke="var(--accent)" stroke-width="1.3" stroke-dasharray="5 4" opacity="0.45"/>
+
+            <!-- attacker -->
+            <polygon points="86,132 106,148 86,164" fill="currentColor" opacity="0.8"/>
+            <text class="dtext" x="96" y="184" text-anchor="middle">enemy</text>
+            <line class="dedge" x1="112" y1="148" x2="212" y2="144" marker-end="url(#ar3)"/>
+            <text class="dtext" x="162" y="136" text-anchor="middle">attacks</text>
+
+            <!-- unit B -->
+            <circle cx="230" cy="140" r="10" fill="var(--accent)"/>
+            <text class="dlabel" x="230" y="172" text-anchor="middle" fill="var(--accent)">B</text>
+            <text class="dtext" x="230" y="190" text-anchor="middle">cries for help</text>
+
+            <!-- unit C -->
+            <circle cx="368" cy="96" r="10" class="dnode"/>
+            <text class="dlabel" x="368" y="76" text-anchor="middle">C</text>
+            <text class="dtext" x="368" y="60" text-anchor="middle">alerted · relays</text>
+
+            <!-- unit D -->
+            <circle cx="466" cy="150" r="10" class="dnode"/>
+            <text class="dlabel" x="466" y="182" text-anchor="middle">D</text>
+            <text class="dtext" x="466" y="200" text-anchor="middle">alerted via C, not B</text>
+
+            <!-- unit E outside -->
+            <circle cx="640" cy="120" r="10" class="dnode"/>
+            <text class="dlabel" x="640" y="100" text-anchor="middle">E</text>
+            <text class="dtext" x="640" y="146" text-anchor="middle">unaware</text>
+
+            <text class="dtext-key" x="230" y="30" text-anchor="middle">warning_distance ≈ 4 WU</text>
+          </svg>
+          <figcaption><b>Alarm spreads as a chain, not a radius.</b> Each unit hears help-cries only within its own <code>warning_distance</code>, so a formation propagates alarm hop by hop — which is why a Myth II line wakes up in a wave rather than all at once, and why an isolated unit can be killed quietly a short distance from its allies.</figcaption>
+        </figure>
+
+        <div class="prose">
+          <h3>Formations are a tag, not code</h3>
+          <p>The <code>form</code> tag is a flat parameter block — row counts and separations for the three line types, a staggered offset, a box separation (with rows derived as <code>round(sqrt(n))</code>), a rabble separation plus x-bias, a shared encircle radius with two different arc angles, three vanguard separations, and a circle separation. Ten formations, bound to number keys 1–0: Short Line, Long Line, Loose Line, Staggered Line, Box, Rabble, Shallow Encirclement, Deep Encirclement, Vanguard, Circle. <span class="chip fact">Documented</span></p>
+          <p>Crucially, a movement command carries the formation <strong>by index</strong>, not as resolved positions — the engine expands it deterministically on every machine — alongside an explicit <code>final_facing</code> angle. Shape and heading are decoupled, which is what makes drag-to-orient a single 16-bit number on the wire. Each formation also has a <em>reference point</em>, the anchor that lands under your cursor; 1.8.2 had to fix Vanguard so the tip rather than a point ahead of it sat at the click.</p>
+
+          <h3>Ambient life is first-class</h3>
+          <p>Not decoration: <code>AMBIENT_LIFE</code> is a monster class, markers carry <code>AMBIENT_LIFE</code> and <code>HUNTED_CREATURE</code> flags, and the script layer has dedicated <code>Chicken</code>, <code>Deer</code> and <code>Bear</code> action types (bears attack nearby non-bears). The full class list is <code>MELEE</code>, <code>MISSILE</code>, <code>SUICIDE</code>, <code>SPECIAL</code>, <code>HARMLESS</code>, <code>AMBIENT_LIFE</code>, <code>INVISIBLE_OBSERVER</code>.</p>
+        </div>
+      </section>
+
+      <hr class="rule">
+
+      <!-- ============ 08 ============ -->
+      <section id="orders">
+        <span class="sectionmark">08 — reco</span>
+        <h2>The command stream</h2>
+        <div class="prose">
+          <p>Because films record commands rather than state, the film format <em>is</em> the order grammar. Every command is an 8-byte header — <code>size</code>, <code>verb</code>, <code>player_index</code>, <code>time</code> (an absolute tick) — plus a payload. Bungie's own grouping comments survive in the reverse-engineered enum, including the self-deprecating one on the community's later additions.</p>
+        </div>
+
+        <pre><span class="c">// used by the server when no one is giving orders (0-1)</span>
+NULL, SYNC
+<span class="c">// monster commands (2-8)</span>
+<span class="k">GENERAL, MOVEMENT, TARGET, ATTACK_LOCATION, PICK_UP, RENAME, ROTATION</span>
+<span class="c">// player commands (9-14)</span>
+DROP_PLAYER, CHAT, DETACH, UNIT_ADJUSTMENT, SKETCH, ALLY
+<span class="c">// commands intended only to encode information in saved games (15-16)</span>
+PRESET_SELECTION, SYNC_FORMATION
+<span class="c">// extra commands hacked on by rank amateurs (17-20)</span>
+INVENTORY, INVENTORY_DROP, INVENTORY_PREV, INVENTORY_NEXT
+FORCED_ENDGAME, ADD_PLAYER, PAUSE, GAME_SPEED, SAVE_LOADED,
+REPLACE_PLAYER, SET_TEAM_CAPTAIN</pre>
+
+        <div class="prose">
+          <p>Three things fall out of this that are worth sitting with.</p>
+
+          <p><strong>Seven verbs command units.</strong> That is the entire tactical vocabulary. <code>GENERAL</code> covers the stateless one-shots — <code>STOP</code>, <code>SCATTER</code>, <code>RETREAT</code>, <code>SPECIAL_ABILITY</code>, <code>GUARD</code>, <code>TAUNT</code>, <code>CELEBRATE</code>. The nuance lives in flags, not verbs: <code>TargetFlags</code> carries <code>CLOSE</code> (close distance with the target — the attack-in-place versus advance-to-contact distinction), <code>ATTACK_CLOSEST</code>, <code>ATTACK_INDIVIDUAL</code>, <code>DONT_OVERRIDE_LOCAL_AI</code>, <code>DONT_OVERRIDE_EXISTING_TARGET</code> and <code>PLAYER_INITIATED</code>.</p>
+
+          <p><strong>There is no SELECT command.</strong> Selection never crosses the wire. Every unit command carries its own explicit list of 16-bit monster IDs. Band-select, double-click type-select (gated per unit type by <code>DOUBLE_CLICK_SELECTS_MONSTER_TYPE</code>), shift-add and preset groups are all pure client-side UI; only the resulting order is transmitted. <code>PRESET_SELECTION</code> exists solely to record group assignments into <em>saved games</em>. <span class="chip fact">Documented</span></p>
+
+          <p><strong>Orders are not queued.</strong> A new command replaces the current one. The single exception is the waypoint array inside one <code>MOVEMENT</code> command: shift-click accumulates waypoints, and the <code>LOOP</code> / <code>LOOP_BACK_AND_FORTH</code> flags turn that array into a patrol. "Queuing" is a property of one order's payload, not of a scheduler.</p>
+
+          <p>And a design decision worth stealing: <strong>map scripts inject the same verbs a human issues.</strong> The <code>General Action</code> script type's command codes are byte-identical to the player <code>GeneralCommands</code> enum. Scripts have no private AI channel — which is exactly why <code>FROM_MAP_ACTION</code> and <code>PLAYER_INITIATED</code> flags exist to tell the two provenances apart, and why Myth II scripting composes so cleanly with player control.</p>
+        </div>
+      </section>
+
+      <hr class="rule">
+
+      <!-- ============ 09 ============ -->
+      <section id="sync">
+        <span class="sectionmark">09 — Determinism</span>
+        <h2>Determinism</h2>
+        <div class="prose">
+          <p>The topology is client/server; the simulation is deterministic lockstep. The host is a command relay and arbiter, not a state authority.</p>
+        </div>
+
+        <blockquote>
+          <p>"All copies of Myth in a network game run deterministically and merely interpret the commands that they receive. This makes cheating difficult; if you hack the game to perform something illegal, such as making all your units invincible, you'll go out of sync with other players."</p>
+          <cite>Bungie — Myth: The Fallen Lords postmortem</cite>
+        </blockquote>
+
+        <div class="prose">
+          <h3>The random seed is the checksum</h3>
+          <p>This is the cleverest thing in the engine. Project Magma: <em>"Myth detects 'Out of Sync' errors by periodically comparing the current random seeds of all players in the game to make sure they match."</em> <span class="chip fact">Documented</span></p>
+          <p>Myth does not hash the world. It compares a 32-bit RNG seed. Because virtually every non-deterministic decision draws from the generator, the seed is a running hash of the entire divergence history — if two machines have consumed a different <em>number</em> of draws, or fed the generator different values, their seeds separate immediately and never re-converge. Thirty-two bits per player per check, and it catches everything.</p>
+          <p>The generator itself is a textbook LCG, and it is worth writing out because the whole architecture rests on it:</p>
+        </div>
+
+        <pre>seed′ = (1664525 · seed + 1013904223) mod 2³²
+result = (seed′ &gt;&gt; 16) &amp; 0xFFFF        <span class="c">// discard the weak low bits</span></pre>
+
+        <div class="prose">
+          <p>Two seeds are stored, not one: a 32-bit <code>random_seed</code> for the world, and a separate 16-bit <code>initial_team_random_seed</code> used only for pre-game team composition and slot assignment. Splitting them means lobby shuffling never perturbs in-game RNG. <span class="chip fact">Documented</span></p>
+        </div>
+
+        <figure>
+          <svg viewBox="0 0 880 300" role="img" aria-label="Lockstep flow: both clients send orders to the host, the host relays identical commands to both, each client independently simulates the same tick, and the resulting random seeds are periodically compared to detect divergence">
+            <defs>
+              <marker id="ar4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"/>
+              </marker>
+            </defs>
+
+            <rect class="dnode" x="20" y="34" width="150" height="46" rx="3"/>
+            <text class="dlabel" x="95" y="54" text-anchor="middle">Client A</text>
+            <text class="dsub" x="95" y="68" text-anchor="middle">issues order</text>
+
+            <rect class="dnode" x="20" y="220" width="150" height="46" rx="3"/>
+            <text class="dlabel" x="95" y="240" text-anchor="middle">Client B</text>
+            <text class="dsub" x="95" y="254" text-anchor="middle">issues order</text>
+
+            <rect class="dnode" x="330" y="126" width="170" height="50" rx="3"/>
+            <text class="dlabel" x="415" y="146" text-anchor="middle">Host</text>
+            <text class="dsub" x="415" y="161" text-anchor="middle">relay · turn boundary</text>
+
+            <polyline class="dedge" points="170,57 250,57 250,140 324,140" marker-end="url(#ar4)"/>
+            <polyline class="dedge" points="170,243 250,243 250,162 324,162" marker-end="url(#ar4)"/>
+            <text class="dtext" x="252" y="100">commands only</text>
+
+            <rect class="dnode" x="610" y="34" width="220" height="46" rx="3"/>
+            <text class="dlabel" x="720" y="54" text-anchor="middle">Sim A · tick N</text>
+            <text class="dsub" x="720" y="68" text-anchor="middle">integer state, seed A</text>
+
+            <rect class="dnode" x="610" y="220" width="220" height="46" rx="3"/>
+            <text class="dlabel" x="720" y="240" text-anchor="middle">Sim B · tick N</text>
+            <text class="dsub" x="720" y="254" text-anchor="middle">integer state, seed B</text>
+
+            <polyline class="dedge" points="500,140 556,140 556,57 604,57" marker-end="url(#ar4)"/>
+            <polyline class="dedge" points="500,162 556,162 556,243 604,243" marker-end="url(#ar4)"/>
+            <text class="dtext" x="512" y="118">identical stream</text>
+
+            <line x1="720" y1="86" x2="720" y2="214" stroke="var(--accent)" stroke-width="1.4" stroke-dasharray="5 4"/>
+            <circle cx="720" cy="150" r="5" fill="var(--accent)"/>
+            <text class="dtext-key" x="736" y="140">SYNC: compare seeds</text>
+            <text class="dtext-key" x="736" y="166">seed A ≠ seed B → out of sync</text>
+            <text class="dtext" x="736" y="186">no rollback, no resync</text>
+          </svg>
+          <figcaption><b>Nothing but commands crosses the wire.</b> Units are addressed by 16-bit index — "move units 12, 47, 93" is only meaningful if every machine agrees what unit 47 is — which is the signature of true lockstep. On mismatch there is no recovery path, and there cannot be: with no state on the wire, there is nothing to resynchronise from. Bungie's own phrasing was "a message will indicate that you're out of sync (and out of luck)."</figcaption>
+        </figure>
+
+        <div class="prose">
+          <h3>The cross-platform bug, and how they found it</h3>
+          <p>Mac and PC players desynced against each other while playing fine among themselves. Cause: "the floating point result of a division operation would contain a different number of significant digits after the decimal point on the x86 PC than on the PowerPC Mac."</p>
+          <p>The fix was to move all decimal logic to fixed integers. The <em>diagnosis</em> is the elegant part: Magma macro-replaced every <code>myth_random()</code> call with <code>debug_myth_random(__FILE__, __LINE__)</code>, logged every draw with its call site on both platforms, and diffed the logs. The first divergent line named both the exact tick and the exact source line. That technique works precisely because the seed is the sync token. <span class="chip fact">Documented</span></p>
+
+          <h3>Why films break between versions</h3>
+          <p>A film is a recipe, not a recording — playback re-simulates the match from the stored seed. Any change to game logic makes the replay diverge, and it surfaces as the same out-of-sync error a live game would give. Hence a fixed 2,606-byte preamble carrying <code>version</code>, <code>buildnum</code>, and version-gate option flags (<code>USES_TFL</code>, <code>VERSION_151</code>, <code>PATCH_VERSION_0/1</code>, <code>USES_ANTICLUMP</code>) so the engine can re-enter the <em>old</em> rules on playback.</p>
+          <p>The breaks are syntactic as well as semantic. After 1.8.4 the <code>player_index</code> byte changed meaning from a roster index to a unique player identifier, and <code>USES_184_MATCHING</code> flags appear on movement and target commands to append a trailing centerpoint — old films must still replay under the old, worse formation-matching algorithm. Tag sets are checked too: <code>public_tags_checksum</code> and <code>private_tags_checksum</code> are compared at join, because a tag difference guarantees an immediate desync.</p>
+          <p>Films are correspondingly tiny — they scale with <em>orders issued</em>, not with match length or unit count, which is why Myth's film-sharing culture worked at all.</p>
+        </div>
+      </section>
+
+      <hr class="rule">
+
+      <!-- ============ 10 ============ -->
+      <section id="script">
+        <span class="sectionmark">10 — Loathing</span>
+        <h2>Map scripting</h2>
+        <div class="prose">
+          <p>Bungie's scripting story is a cautionary one — they filed <em>Scripting</em> under What Went Wrong, having abandoned a Java-based language mid-development when the responsible programmer left. What shipped instead is not a language at all. It is a <strong>trigger graph</strong>.</p>
+          <p>Actions live in the mesh tag as a fixed 64-byte header array plus a packed parameter blob. Each header carries an id, an expiration mode, a four-character type code, flags, a randomised trigger delay (<code>lower_bound</code> + <code>delta</code>, in ticks), a parameter count, and — charmingly — the editor's visual outline <code>indent</code>, persisted to disk. <span class="chip fact">Documented</span></p>
+          <p>Parameters are a self-describing TLV format with 21 types, including <code>WORLD_POINT_3D</code>, <code>MONSTER_IDENTIFIER</code>, <code>ACTION_IDENTIFIER</code> and — the escape hatch — <code>FIELD_NAME</code>, which lets one action name and write into <em>a field of another action</em>. That is how the <code>Mathematics</code> action returns results, and how the community's "param munging" works. Because parameters are self-describing, the editor can round-trip action types it does not understand.</p>
+          <p>Control flow is event-driven, not polled. Each action is a small state machine wired to others by edges: <em>activates on</em> success / failure / trigger / execution / activation / deactivation / error / inhibition / missing prerequisites, plus <em>deactivates on</em> the same set, plus prerequisites, inhibitions and simultaneous activation. There is no loop construct, no variables beyond <code>FIELD_NAME</code> writes, and no expressions at all until <code>Mathematics</code> arrived in 1.7.0. Since <code>ACTION_IDENTIFIER</code> parameters can point anywhere, the script is a <em>graph</em>, not a tree.</p>
+          <p>Around 68 action types shipped, and the distribution tells you what Bungie actually spent scripting on: roughly half are unit-AI orchestration (<code>Melee</code>, <code>Harass</code>, <code>Surround</code>, <code>Rout</code>, <code>Squad</code>, <code>Platoon</code>, <code>Legion</code>, <code>Group Guard</code>, <code>Invisible Pursuit</code>, <code>Wandering Movement</code>), with a long tail of presentation, game-rule and archetype actions (<code>Assassin</code>, <code>Shaman</code>, <code>Peasant</code>, <code>Bear</code>). Two were documented but never implemented: <code>CD Audio</code> and <code>Connector</code>.</p>
+          <p>One more nice touch: the editor's entire action palette and help system is <em>generated from tags</em>. Each action type ships a <code>temp</code> string-list tag holding its display name, expiration mode and per-parameter documentation. Adding an action type to the engine means shipping a new tag, not rebuilding the editor.</p>
+        </div>
+      </section>
+
+      <hr class="rule">
+
+      <!-- ============ 11 ============ -->
+      <section id="gaps">
+        <span class="sectionmark">11 — Limits of this pass</span>
+        <h2>Open questions</h2>
+        <div class="prose">
+          <p>Myth II's source has never been published — it went to MythDevelopers and Project Magma under licence. Everything above comes from Bungie's shipped editor documentation, two postmortems, Project Magma's changelogs, and a community reverse-engineering of the binary tag structures whose field names are recovered from the game itself. That leaves real holes, and it is worth naming them rather than papering over them.</p>
+          <ul class="plain">
+            <li><span class="chip gap">Unresolved</span> <strong>Ticks per network turn, and input delay.</strong> Commands are timestamped at tick granularity, so turn length is invisible in the file format, and nothing stores a negotiated latency value — suggesting a compile-time constant. Decoding <code>RecordingBlockHeader.flags</code> across real films, or measuring command-time gaps at block boundaries, would settle it.</li>
+            <li><span class="chip gap">Unresolved</span> <strong>Per-tick update ordering.</strong> The order is certainly fixed and identical on every client — lockstep requires it — but no reachable source states it.</li>
+            <li><span class="chip gap">Unresolved</span> <strong>Render-side interpolation.</strong> Neither postmortem discusses whether the renderer interpolates between the last two tick states or simply redraws the latest one.</li>
+            <li><span class="chip gap">Unresolved</span> <strong>The 12 damage types → 9 resistance slots mapping.</strong> Both lists are known; the correspondence is not.</li>
+            <li><span class="chip gap">Unresolved</span> <strong>The <code>phys</code> ("Local Physics") and <code>wind</code> tag layouts</strong>, and the meaning of <code>skip_fraction</code> on attack sequences, <code>hack_flags</code>, <code>visibility_type</code> values, and sequence indices 19–25.</li>
+          </ul>
+          <p>Three leads would close most of this. Bungie released the <strong>bungie.net metaserver source</strong> (stripped but runnable) through The Tain — it will not contain the simulation, but it is the most likely public source for the join handshake and seed distribution. Road's <strong>Map Action Script Guide (draft)</strong> explicitly promises chapters on runtime architecture and AI orchestration. And the <strong>MythingOak wiki</strong> hosts tag documentation that hard-blocks automated fetching but opens fine in a browser.</p>
+        </div>
+      </section>
+
+      <hr class="rule">
+
+      <!-- ============ 12 ============ -->
+      <section id="sources">
+        <span class="sectionmark">12 — Provenance</span>
+        <h2>Sources</h2>
+        <div class="prose sources">
+          <ol>
+            <li><a href="https://www.gamedeveloper.com/design/postmortem-bungie-s-i-myth-the-fallen-lords-i-">Postmortem: Bungie's <em>Myth: The Fallen Lords</em></a> — the terrain mesh, the two-tier pathfinding algorithm, the deterministic network model, destructive blood on the colour map, and the <em>Fear</em>/<em>Loathing</em> toolchain.</li>
+            <li><a href="https://www.gamedeveloper.com/programming/postmortem-project-magma-s-i-myth-ii-i-1-5-and-1-5-1">Postmortem: Project Magma's <em>Myth II</em> 1.5 and 1.5.1</a> — the 1/30 s tick, the fixed-integer conversion, seed comparison as OOS detection, and the <code>debug_myth_random</code> diagnosis.</li>
+            <li><a href="https://github.com/jwheare/mythextract">jwheare/mythextract</a> — reverse-engineered parsers for the tag, mesh, collection and recording formats. Every struct layout, flag enum, scale factor and command verb quoted above comes from here; the field names are Bungie's own, recovered from the binaries.</li>
+            <li><a href="https://projectmagma.net/downloads/myth2docs/fear.html">Fear documentation v1.8.5</a> and <a href="https://projectmagma.net/downloads/myth2docs/loathing.html">Loathing documentation v1.8.5</a> — Bungie's own editor manuals; the source for every quoted field description, the formation list and the map-action catalogue.</li>
+            <li><a href="https://projectmagma.net/downloads/myth2_180/Readme_1.8.0.pdf">Project Magma release notes</a> (1.7.1, 1.7.2, 1.8.0, 1.8.2–1.8.5) — engine behaviour changes, collision and pathfinding fixes, film compatibility work, and the projectile budget constants.</li>
+            <li><a href="https://tain.projectmagma.net/mythii/source_code">The Tain — source code archive</a>, including Bungie's released bungie.net metaserver code, and <a href="https://tain.totalcodex.net/mythii">The Tain's Myth II archive</a> generally.</li>
+            <li><a href="https://mythingoak.miraheze.org/wiki/Category:Tags">MythingOak — Category:Tags</a> — confirmed to exist and to document these tags, but it rejects automated fetching; open it in a browser.</li>
+          </ol>
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div>
+</body>
+</html>
