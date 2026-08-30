@@ -6,6 +6,9 @@
   <meta name="description" content="A visual research pass through the internal architecture of Bungie's Myth II: Soulblighter.">
   <meta name="theme-color" content="#eaece6">
   <link rel="canonical" href="https://theisegoria.github.io/soulblighter-internals.html">
+  <link rel="alternate" hreflang="en" href="https://theisegoria.github.io/soulblighter-internals.html">
+  <link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/soulblighter-internals.html">
+  <link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/soulblighter-internals.html">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <title>Soulblighter Internals</title>
 <style>
@@ -405,6 +408,7 @@
     font: italic 700 15px/1 Georgia, serif;
   }
   .isegoria-bar nav { display: flex; gap: 1rem; }
+  .isegoria-bar .article-lang { padding: 0.25rem 0.55rem; border: 1px solid var(--rule); border-radius: 999px; text-transform: none; }
   @media (max-width: 560px) {
     .isegoria-bar nav a:first-child { display: none; }
   }
@@ -433,7 +437,7 @@
 
 <header class="isegoria-bar">
   <a class="isegoria-home" href="index.html"><span class="isegoria-mark" aria-hidden="true">I</span><span>Isegoria</span></a>
-  <nav aria-label="Isegoria"><a href="index.html#library">Library</a><a href="projects.html">Projects</a><a href="index.html">Home</a></nav>
+  <nav aria-label="Isegoria"><a href="index.html#library">Library</a><a href="projects.html">Projects</a><a href="index.html">Home</a><a class="article-lang" href="ja/soulblighter-internals.html" hreflang="ja" lang="ja" data-language-select="ja">日本語</a></nav>
 </header>
 
   <div class="shell">
@@ -1129,5 +1133,6 @@ result = (seed′ &gt;&gt; 16) &amp; 0xFFFF        <span class="c">// discard th
     </main>
   </div>
 </div>
+<script src="assets/site.js"></script>
 </body>
 </html>

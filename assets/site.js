@@ -1,6 +1,7 @@
 document.documentElement.classList.remove('no-js');
 
 const root = document.documentElement;
+const isJapanese = root.lang.toLowerCase().startsWith('ja');
 const themeButton = document.querySelector('.theme-toggle');
 const themeLabel = document.querySelector('.theme-label');
 const storedTheme = localStorage.getItem('isegoria-theme');
@@ -10,8 +11,12 @@ function applyTheme(theme) {
   root.dataset.theme = theme;
   if (themeButton) {
     const next = theme === 'dark' ? 'light' : 'dark';
-    themeButton.setAttribute('aria-label', `Switch to ${next} theme`);
-    if (themeLabel) themeLabel.textContent = next[0].toUpperCase() + next.slice(1);
+    themeButton.setAttribute('aria-label', isJapanese
+      ? `${next === 'dark' ? 'ダーク' : 'ライト'}テーマに切り替える`
+      : `Switch to ${next} theme`);
+    if (themeLabel) themeLabel.textContent = isJapanese
+      ? (next === 'dark' ? '暗く' : '明るく')
+      : next[0].toUpperCase() + next.slice(1);
   }
 }
 
@@ -21,6 +26,12 @@ themeButton?.addEventListener('click', () => {
   const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
   localStorage.setItem('isegoria-theme', next);
   applyTheme(next);
+});
+
+document.querySelectorAll('[data-language-select]').forEach((link) => {
+  link.addEventListener('click', () => {
+    localStorage.setItem('isegoria-language', link.dataset.languageSelect || 'en');
+  });
 });
 
 const searchInput = document.querySelector('#publication-search');
@@ -46,7 +57,7 @@ function updateLibrary() {
   });
 
   if (visibleCount) visibleCount.textContent = String(count);
-  if (publicationWord) publicationWord.textContent = count === 1 ? 'publication' : 'publications';
+  if (publicationWord) publicationWord.textContent = isJapanese ? '冊' : (count === 1 ? 'publication' : 'publications');
   if (noResults) noResults.hidden = count !== 0;
 }
 
@@ -90,7 +101,7 @@ function updateProjects() {
   });
 
   if (projectVisibleCount) projectVisibleCount.textContent = String(count);
-  if (repositoryWord) repositoryWord.textContent = count === 1 ? 'repository' : 'repositories';
+  if (repositoryWord) repositoryWord.textContent = isJapanese ? '件のリポジトリ' : (count === 1 ? 'repository' : 'repositories');
   if (projectNoResults) projectNoResults.hidden = count !== 0;
 }
 

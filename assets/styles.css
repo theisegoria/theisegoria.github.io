@@ -47,6 +47,17 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+html[lang="ja"] body {
+  font-family: "Hiragino Sans", "Yu Gothic", Meiryo, var(--sans);
+  line-break: strict;
+}
+html[lang="ja"] h1,
+html[lang="ja"] h2,
+html[lang="ja"] h3,
+html[lang="ja"] .wordmark {
+  font-family: "Hiragino Mincho ProN", "Yu Mincho", YuMincho, var(--serif);
+}
+
 img { display: block; max-width: 100%; }
 a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 0.2em; }
 button, input { font: inherit; }
@@ -120,6 +131,26 @@ button, a { -webkit-tap-highlight-color: transparent; }
   text-transform: uppercase;
 }
 .site-nav > a:hover, .site-nav > a[aria-current="page"] { color: var(--teal-deep); }
+.language-switch {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.18rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+}
+.language-switch a {
+  min-width: 2.15rem;
+  padding: 0.22rem 0.5rem;
+  border-radius: 999px;
+  color: var(--ink-soft);
+  font-size: 0.7rem;
+  font-weight: 800;
+  line-height: 1.45;
+  text-align: center;
+  text-decoration: none;
+}
+.language-switch a[aria-current="true"] { background: var(--ink); color: var(--paper); }
+.language-switch a:hover { color: var(--teal-deep); }
 .theme-toggle {
   display: inline-flex;
   align-items: center;
@@ -414,6 +445,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .repo-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid var(--line); border-left: 1px solid var(--line); }
 .repo-card { position: relative; display: flex; min-height: 335px; flex-direction: column; padding: clamp(1.35rem, 2.8vw, 2.25rem); border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
 .repo-card[hidden] { display: none; }
+.repo-card:target { outline: 3px solid var(--coral); outline-offset: -3px; background: color-mix(in srgb, var(--teal) 9%, var(--card)); }
 .repo-lead { background: color-mix(in srgb, var(--teal) 8%, var(--card)); }
 .repo-top { display: flex; align-items: center; justify-content: space-between; }
 .repo-index { color: var(--coral); font-family: var(--serif); font-size: 0.9rem; }
@@ -437,6 +469,9 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .error-code { margin: 0; color: var(--teal-deep); font-family: var(--serif); font-size: clamp(6rem, 18vw, 12rem); line-height: 0.8; opacity: 0.3; }
 .error-card h1 { margin: 1.5rem 0 0; font-family: var(--serif); font-size: clamp(2.3rem, 6vw, 4.5rem); line-height: 1; }
 .error-card > p:not(.error-code) { max-width: 520px; margin: 1.5rem auto 2rem; color: var(--ink-soft); }
+.error-language { display: flex; justify-content: center; gap: 0.8rem; margin-top: 1.5rem; }
+.error-language a { color: var(--ink-soft); font-size: 0.78rem; font-weight: 800; text-decoration: none; }
+.error-language a[aria-current="true"] { color: var(--teal-deep); text-decoration: underline; }
 
 :focus-visible { outline: 3px solid var(--coral); outline-offset: 4px; }
 
@@ -453,14 +488,16 @@ button, a { -webkit-tap-highlight-color: transparent; }
 }
 
 @media (max-width: 680px) {
-  .site-header { width: min(100% - 28px, 1180px); }
-  .site-nav { gap: 0.8rem; }
+  .site-header { width: min(100% - 28px, 1180px); flex-wrap: wrap; row-gap: 0.65rem; }
+  .site-nav { width: 100%; gap: 0.35rem; justify-content: space-between; }
   .site-nav > a { font-size: 0.7rem; }
+  .language-switch a { min-width: 1.9rem; padding-inline: 0.38rem; }
   .theme-label { display: none; }
   .theme-toggle { width: 2.4rem; padding: 0; justify-content: center; }
   .hero, .featured, .essay-feature, .library, .project-preview, .principle, .about-main, .projects-main, .site-footer { width: min(100% - 28px, 1180px); }
   .hero { padding: 4rem 0 5rem; gap: 3.5rem; }
   .hero h1, .about-hero h1 { font-size: clamp(3.35rem, 17vw, 5rem); }
+  html[lang="en"] .hero h1 { font-size: clamp(3rem, 14.5vw, 4.7rem); }
   .hero-actions { align-items: stretch; flex-direction: column; }
   .hero-actions .button { width: 100%; }
   .hero-stats { justify-content: space-between; gap: 0.6rem; }

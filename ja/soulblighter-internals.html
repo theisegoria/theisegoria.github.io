@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="ja" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Soulblighter Internals — Myth II エンジンの内部構造</title>
+  <meta name="description" content="Myth IIの30 Hz整数シミュレーション、タググラフ、弾道、経路探索、決定論的ロックステップ、マップスクリプトを図解します。">
+  <meta name="theme-color" content="#f4efe5">
+  <link rel="canonical" href="https://theisegoria.github.io/ja/soulblighter-internals.html">
+  <link rel="alternate" hreflang="en" href="https://theisegoria.github.io/soulblighter-internals.html">
+  <link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/soulblighter-internals.html">
+  <link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/soulblighter-internals.html">
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../assets/styles.css">
+  <link rel="stylesheet" href="../assets/article-ja.css">
+</head>
+<body>
+  <a class="skip-link" href="#article">本文へ移動</a>
+
+  <header class="site-header">
+    <a class="wordmark" href="index.html" aria-label="Isegoria ホーム"><span class="wordmark-mark" aria-hidden="true">I</span><span>Isegoria</span></a>
+    <nav class="site-nav" aria-label="メインナビゲーション">
+      <a href="index.html#library">書籍</a>
+      <a href="projects.html">プロジェクト</a>
+      <a href="about.html">理念</a>
+      <div class="language-switch" role="group" aria-label="言語"><a href="../soulblighter-internals.html" hreflang="en" lang="en" data-language-select="en">EN</a><a href="soulblighter-internals.html" hreflang="ja" lang="ja" aria-current="true">日本語</a></div>
+      <button class="theme-toggle" type="button" aria-label="ダークテーマに切り替える"><span class="theme-icon" aria-hidden="true">◐</span><span class="theme-label">暗く</span></button>
+    </nav>
+  </header>
+
+  <div class="article-shell">
+    <header class="article-masthead">
+      <p class="eyebrow">技術調査 · Bungie, 1998 · エンジン資料</p>
+      <h1>Soulblighter<br>Internals</h1>
+      <p class="article-standfirst"><em>Myth II</em> は、スプライトの裏で戦闘をどう動かしているのか。答えは、プレイヤーの命令だけで進む<strong>30 Hzの整数シミュレーション</strong>です。兵士・矢・切断された頭部はすべて同じ種類の物体で、乱数シードはマルチプレイのチェックサムも兼ねます。</p>
+      <span class="edition-note">日本語構成版 — 原資料の主要な論証・数値・図を再構成</span>
+    </header>
+
+    <div class="article-layout">
+      <nav class="article-toc" aria-label="目次">
+        <ol>
+          <li><a href="#shape"><span class="toc-number">00</span><span>全体像</span></a></li>
+          <li><a href="#graph"><span class="toc-number">01</span><span>タググラフ</span></a></li>
+          <li><a href="#numbers"><span class="toc-number">02</span><span>整数の基盤</span></a></li>
+          <li><a href="#monster"><span class="toc-number">03</span><span>モンスター</span></a></li>
+          <li><a href="#damage"><span class="toc-number">04</span><span>ダメージ</span></a></li>
+          <li><a href="#ballistics"><span class="toc-number">05</span><span>弾道</span></a></li>
+          <li><a href="#world"><span class="toc-number">06</span><span>世界と衝突</span></a></li>
+          <li><a href="#movement"><span class="toc-number">07</span><span>移動とAI</span></a></li>
+          <li><a href="#orders"><span class="toc-number">08</span><span>命令ストリーム</span></a></li>
+          <li><a href="#sync"><span class="toc-number">09</span><span>決定論</span></a></li>
+          <li><a href="#script"><span class="toc-number">10</span><span>マップスクリプト</span></a></li>
+          <li><a href="#questions"><span class="toc-number">11</span><span>未解決点</span></a></li>
+          <li><a href="#sources"><span class="toc-number">12</span><span>出典</span></a></li>
+        </ol>
+      </nav>
+
+      <main id="article" class="article-body">
+        <section id="shape">
+          <span class="section-mark">00 — Orientation</span>
+          <h2>全体像</h2>
+          <p>このエンジンを形づくる判断は、ほぼ次の5つです。残りの仕組みは、いずれかの判断から自然に導かれます。</p>
+          <div class="decision-grid">
+            <article><span class="tech-tag">obje</span><h3>物理ボディは1種類</h3><p>ユニット、飛翔体、背景物、切断された手足まで、重力・弾性・終端速度・生命力・耐性を持つ同じ64バイトの物体タグを参照します。</p></article>
+            <article><span class="tech-tag">1 / 30 s</span><h3>時間も空間も整数</h3><p>毎秒30ティック、位置は1 World Unitの1/512、比率は16.16または8.8固定小数点。ゲームプレイに浮動小数点は入りません。</p></article>
+            <article><span class="tech-tag">prgr</span><h3>効果も飛翔体</h3><p>爆発、血飛沫、軌跡は独立した粒子系ではなく、さらに飛翔体を生む再帰的な飛翔体グループです。</p></article>
+            <article><span class="tech-tag">seed</span><h3>乱数シードがチェックサム</h3><p>各クライアントは現在の乱数シードを比較します。ほぼすべての分岐が同じLCGを消費するため、シードは差異の履歴を圧縮した指紋になります。</p></article>
+            <article><span class="tech-tag">reco</span><h3>状態ではなく命令を送る</h3><p>ネットワークを流れるのは、ユニットを動かす7種類の動詞だけです。保存フィルムは映像ではなく、初期シードから試合を再実行するレシピです。</p></article>
+          </div>
+          <div class="article-callout">
+            <p><span class="status-chip">文書で確認</span> Bungie／Project Magmaの資料、出荷されたエディタ文書、逆解析された構造体定義で裏づけられる項目。</p>
+            <p><span class="status-chip inferred">推論</span> パッチノートと観察された挙動を組み合わせた、妥当だが直接の証言がない解釈。</p>
+            <p><span class="status-chip open">未解決</span> 到達できた資料から確定できず、推測で埋めない項目。</p>
+          </div>
+        </section>
+
+        <hr class="article-rule">
+
+        <section id="graph">
+          <span class="section-mark">01 — Data model</span>
+          <h2>タググラフ</h2>
+          <p><em>Myth II</em> のコンテンツは、コンテナ内に置かれた4文字コードのタグ群です。ロード時にIDで解決され、ゲームプレイは「どのタグがどれを指すか」で組み立てられます。</p>
+          <p>驚くのは間接参照の深さです。マップ上に置かれる <code>unit</code> タグはわずか8バイトで、モンスターと色への参照しかありません。プレイヤーが「ユニット」と考える性質は <code>mons</code> に、物理的な性質はさらに下の <code>obje</code> にあります。</p>
+          <figure class="diagram">
+            <svg viewBox="0 0 900 350" role="img" aria-labelledby="tag-graph-title tag-graph-desc">
+              <title id="tag-graph-title">Myth IIのタグ参照グラフ</title>
+              <desc id="tag-graph-desc">unitがmonsを参照し、monsの攻撃がprojを生み、projがprgrへ爆発し、prgrが再びprojを生む。mons、proj、scenは共通のobje物理タグを参照する。</desc>
+              <defs><marker id="arrow-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10Z" fill="currentColor"/></marker><marker id="arrow-key" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10Z" fill="var(--coral)"/></marker></defs>
+              <rect class="node" x="25" y="62" width="110" height="52" rx="6"/><text x="80" y="84" text-anchor="middle">unit</text><text class="sub" x="80" y="101" text-anchor="middle">8 bytes</text>
+              <rect class="node" x="205" y="62" width="125" height="52" rx="6"/><text x="268" y="84" text-anchor="middle">mons</text><text class="sub" x="268" y="101" text-anchor="middle">1024 bytes</text>
+              <rect class="node" x="460" y="62" width="115" height="52" rx="6"/><text x="518" y="84" text-anchor="middle">proj</text><text class="sub" x="518" y="101" text-anchor="middle">256 bytes</text>
+              <rect class="node" x="675" y="62" width="125" height="52" rx="6"/><text x="738" y="84" text-anchor="middle">prgr</text><text class="sub" x="738" y="101" text-anchor="middle">飛翔体グループ</text>
+              <line class="edge" x1="135" y1="88" x2="199" y2="88" marker-end="url(#arrow-a)"/><text class="sub" x="167" y="78" text-anchor="middle">参照</text>
+              <line class="edge" x1="330" y1="88" x2="454" y2="88" marker-end="url(#arrow-a)"/><text class="sub" x="392" y="78" text-anchor="middle">attacks[4]</text>
+              <line class="edge" x1="575" y1="88" x2="669" y2="88" marker-end="url(#arrow-a)"/><text class="sub" x="622" y="78" text-anchor="middle">爆発</text>
+              <polyline class="accent-edge" points="738,57 738,27 518,27 518,56" marker-end="url(#arrow-key)"/><text class="sub" x="628" y="18" text-anchor="middle">N個のprojを生成（再帰）</text>
+              <rect class="node" x="205" y="175" width="125" height="52" rx="6"/><text x="268" y="197" text-anchor="middle">coll .256</text><text class="sub" x="268" y="214" text-anchor="middle">スプライト + シーケンス</text>
+              <line class="edge" x1="268" y1="114" x2="268" y2="169" marker-end="url(#arrow-a)"/><text class="sub" x="278" y="146">時間</text>
+              <rect class="node" x="710" y="175" width="110" height="52" rx="6"/><text x="765" y="207" text-anchor="middle">scen</text>
+              <rect class="key-node" x="405" y="277" width="150" height="55" rx="6"/><text x="480" y="300" text-anchor="middle">obje</text><text class="sub" x="480" y="318" text-anchor="middle">64 bytes · 物理</text>
+              <polyline class="accent-edge" points="268,227 268,305 399,305" marker-end="url(#arrow-key)"/><text class="sub" x="333" y="295" text-anchor="middle">object_tag</text>
+              <line class="accent-edge" x1="518" y1="114" x2="500" y2="271" marker-end="url(#arrow-key)"/><text class="sub" x="520" y="200">object_tag</text>
+              <polyline class="accent-edge" points="765,227 765,305 561,305" marker-end="url(#arrow-key)"/><text class="sub" x="665" y="295" text-anchor="middle">object_tag</text>
+            </svg>
+            <figcaption><strong>兵士、矢、岩は同じ種類のボディ。</strong> 重力・弾性・終端速度・生命力・ダメージ耐性は共通の <code>obje</code> にあります。飛翔体がグループへ爆発し、そのグループが新しい飛翔体を生む再帰が、爆発と流血表現の中心です。</figcaption>
+          </figure>
+          <ul>
+            <li><strong><code>mons</code> に生命力はありません。</strong> 体力は <code>obje.vitality_lower_bound + vitality_delta</code> で個体ごとに決まり、同じ兵種でも完全に同じ体力にはなりません。</li>
+            <li><strong>モンスター自身はダメージ値を持ちません。</strong> 攻撃力は、攻撃が生成する飛翔体の性質です。戦士を再調整するには「矢」を編集します。</li>
+          </ul>
+        </section>
+
+        <hr class="article-rule">
+
+        <section id="numbers">
+          <span class="section-mark">02 — Numeric substrate</span>
+          <h2>整数の基盤</h2>
+          <p>ゲームプレイに使う量はすべてスケールされた整数です。これはMacとPCを同じロックステップで動かすための根本条件でした。IEEE浮動小数点が現れるのは霧や残響など表示側の量だけです。<span class="status-chip">文書で確認</span></p>
+          <div class="article-table">
+            <table>
+              <caption>固定小数点のスケール</caption>
+              <thead><tr><th>型</th><th>除数</th><th>表すもの</th><th>主な用途</th></tr></thead>
+              <tbody>
+                <tr><td><code>World</code></td><td>512</td><td>World Unit</td><td>位置、速度、半径、重力、反動</td></tr>
+                <tr><td><code>Fixed</code></td><td>65,536</td><td>16.16</td><td>吸収率、怯み、狂戦士化、ミス率</td></tr>
+                <tr><td><code>ShortFixed</code></td><td>256</td><td>8.8</td><td>生命力、ダメージ、弾性、マナ、耐性</td></tr>
+                <tr><td><code>Percent</code></td><td>65,535</td><td>確率</td><td>爆発頻度、軌跡頻度</td></tr>
+                <tr><td><code>Time</code></td><td>30</td><td>秒</td><td>全継続時間をティックで保存</td></tr>
+                <tr><td><code>Angle</code></td><td>65,536 / 360</td><td>度</td><td>向き。1周で自然に桁あふれする</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <h3>下限 + デルタ</h3>
+          <p>生命力、速度、弾薬、寿命、出現数などのランダム範囲は、すべて <code>X_lower_bound</code> と <code>X_delta</code> の組で表します。ゼロでないデルタは真の幅より1大きく保存され、「乱数なし」と「幅0」を区別します。乱数はシード付きLCGから整数で得られるため、自然なばらつきとビット単位の決定性が両立します。</p>
+        </section>
+
+        <hr class="article-rule">
+
+        <section id="monster">
+          <span class="section-mark">03 — mons</span>
+          <h2>モンスター</h2>
+          <p>1,024バイトの <code>mons</code> タグは、AIと戦闘システムがユニットに尋ねる質問の一覧のようなものです。</p>
+          <div class="field-grid">
+            <article><span class="tech-tag">warning_distance</span><h3>警告を聞く距離</h3><p>味方の「助けを求める声」に気づく距離。標準的な歩兵で約4 WU。</p></article>
+            <article><span class="tech-tag">critical_distance</span><h3>存在検出の距離</h3><p>敵の存在を察知し、現在の目標が死んだとき次を探す半径。約8 WU。</p></article>
+            <article><span class="tech-tag">pathfinding_radius</span><h3>空間バブル</h3><p>味方との最小間隔。歩兵では約0.30 WUで、局所的な混雑回避に使われます。</p></article>
+            <article><span class="tech-tag">terrain_costs[16]</span><h3>地形コスト</h3><p>地形ごとの経路選好。負の値は通行不能。移動速度係数とは別に保持します。</p></article>
+            <article><span class="tech-tag">absorbed_fraction</span><h3>攻撃吸収</h3><p>名前に反して、ダメージの一部を減らす率ではなく、攻撃全体を無効化する確率と解釈されています。</p></article>
+            <article><span class="tech-tag">combined_power</span><h3>脅威の指標</h3><p>AIが目標の優先度を決めるための総合的な戦力値。</p></article>
+          </div>
+          <h3>アニメーションがゲームプレイを決める</h3>
+          <p>攻撃時間は攻撃定義に直接保存されません。<strong>ビュー当たりのフレーム数 × 1フレームのティック数</strong>が下限になり、そこへ回復時間が加わります。振りのアニメーションを長くすれば、そのままDPSが下がります。</p>
+          <p>さらに、ブロック能力の専用フラグはありません。<code>sequence_indexes[5] &gt; -1</code>、つまりブロック用シーケンスを持つこと自体が能力判定です。ここではアニメーションデータが、そのままゲームプレイデータです。<span class="status-chip">文書で確認</span></p>
+        </section>
+
+        <hr class="article-rule">
+
+        <section id="damage">
+          <span class="section-mark">04 — Combat</span>
+          <h2>ダメージ</h2>
+          <p>ダメージは飛翔体に埋め込まれた16バイトの構造体です。種類、振る舞いフラグ、下限とデルタ、半径、拡大率、ダメージから速度へ変換する係数を持ちます。</p>
+          <div class="formula">damage → damage_to_velocity → propelled_system_shock
+→ damage_to_propulsion → obje.gravity → obje.elasticity</div>
+          <p><strong>距離に応じた減衰曲線はありません。</strong> 代わりに <code>rate_of_expansion</code> があり、爆発は静的な球ではなく、時間とともに広がる球面として扱われます。遠いユニットが近いユニットより1〜2ティック遅れて被弾する挙動と整合します。<span class="status-chip inferred">推論</span></p>
+          <p>回復も独立した治療系ではなくダメージ種類の一つです。投射、反動、重力、跳ね返りは決定論的なシミュレーションに含まれます。いわゆるラグドールではなく、死体は1点の物体として専用アニメーションを再生しながら地形上を跳ねます。</p>
+          <h3>血と破片も飛翔体グループ</h3>
+          <p>死亡・爆発・燃焼時のタグは、ランダムな数と位置で破片飛翔体を生むグループを指します。身体部位も物理を持つ飛翔体で、投射物の上限数に数えられ、理論上はダメージさえ運べます。血は地形の色マップを破壊的に書き換え、火はメッシュセルの状態ビットとして伝播します。</p>
+        </section>
+
+        <hr class="article-rule">
+
+        <section id="ballistics">
+          <span class="section-mark">05 — Attacks</span>
+          <h2>弾道</h2>
+          <p>各モンスターは最大4つの64バイト攻撃定義を持ちます。攻撃側が照準・タイミング・経験値補正を持ち、参照先の飛翔体がダメージと飛行を持ちます。</p>
+          <ul>
+            <li><code>LEADS_TARGET</code> — 移動目標を先読みする。</li>
+            <li><code>IS_INDIRECT</code> — 迫撃弾のような弧を使う。</li>
+            <li><code>IS_FIXED_PITCH</code> — 射出角を固定し、必要速度を解く。</li>
+            <li><code>AIMED_AT_TARGETS_FEET</code> — 範囲攻撃を目標の足元へ向ける。</li>
+            <li><code>AVOIDS_FRIENDLY_UNITS</code> — 弾道が味方を横切るか調べる。</li>
+          </ul>
+          <p>エンジン自身が「firing solution」という語を使い、重力を受ける飛翔体方程式を解いています。経験を積むと <code>recovery_time</code> と <code>initial_velocity_error</code> が減り、兵士はより速く、より正確に攻撃します。</p>
+        </section>
+
+        <hr class="article-rule">
+
+        <section id="world">
+          <span class="section-mark">06 — mesh</span>
+          <h2>世界と衝突</h2>
+          <p>マップは一般的なポリゴン集合でもナビメッシュでもなく、<strong>規則的な高さ場</strong>です。正方形セルを2つの三角形へ分割し、セルごとに高さ、法線、フラグ、2種類の地形コード、媒体の高さ、モデル番号を持ちます。</p>
+          <div class="collision-grid">
+            <article><span class="tech-tag">Tier 1</span><h3>高さ場</h3><p>すべての地面接触。1セルを2三角形にし、三角形ごとに4ビットの地形コードを持ちます。</p></article>
+            <article><span class="tech-tag">Tier 2</span><h3>スプライト円柱</h3><p>ユニットと飛翔体の交差判定。スプライト画素で記述した半径・高さをロード時にWorld Unitへ変換します。</p></article>
+            <article><span class="tech-tag">Tier 3</span><h3>ポリゴンモデル</h3><p>壁、門、巨大な固体など少数の例外。本物の頂点と境界を使う、より高価で不具合の多かった経路です。</p></article>
+            <article><span class="tech-tag">terrain nibble</span><h3>変化する通行可能性</h3><p>スクリプトが地形の4ビット値を書き換えられるため、橋の崩落や門の開放は移動可能性そのものの編集です。</p></article>
+          </div>
+          <figure class="diagram">
+            <svg viewBox="0 0 900 260" role="img" aria-labelledby="collision-title collision-desc">
+              <title id="collision-title">3段階の衝突表現</title><desc id="collision-desc">高さ場、円柱、ポリゴンモデルという3つの衝突層を示す。</desc>
+              <path class="edge" d="M35 184L95 134L155 166L215 95L275 130L335 74"/><path class="edge" d="M35 205L95 155L155 187L215 116L275 151L335 95"/>
+              <line class="edge" x1="35" y1="184" x2="35" y2="205"/><line class="edge" x1="95" y1="134" x2="95" y2="155"/><line class="edge" x1="155" y1="166" x2="155" y2="187"/><line class="edge" x1="215" y1="95" x2="215" y2="116"/><line class="edge" x1="275" y1="130" x2="275" y2="151"/><line class="edge" x1="335" y1="74" x2="335" y2="95"/>
+              <text x="180" y="235" text-anchor="middle">Tier 1 · 高さ場</text>
+              <ellipse class="node" cx="500" cy="188" rx="70" ry="22"/><ellipse class="node" cx="500" cy="83" rx="70" ry="22"/><line class="edge" x1="430" y1="83" x2="430" y2="188"/><line class="edge" x1="570" y1="83" x2="570" y2="188"/><text x="500" y="139" text-anchor="middle">円柱</text><text x="500" y="235" text-anchor="middle">Tier 2 · スプライト境界</text>
+              <polygon class="key-node" points="685,188 705,97 760,58 825,112 810,190"/><line class="accent-edge" x1="705" y1="97" x2="810" y2="190"/><line class="accent-edge" x1="760" y1="58" x2="685" y2="188"/><text x="755" y="235" text-anchor="middle">Tier 3 · ポリゴン</text>
+            </svg>
+            <figcaption>一般的な3D衝突系はありません。地面・小さな物体・例外的な大きな固体を、それぞれ別の表現で処理します。</figcaption>
+          </figure>
+        </section>
+
+        <hr class="article-rule">
+
+        <section id="movement">
+          <span class="section-mark">07 — Movement &amp; AI</span>
+          <h2>移動とAI</h2>
+          <p>経路探索は二段階です。まず動的障害物を無視し、静的な地形コストだけでA*経路を作ります。その経路が障害物へ当たると、左右の迂回を再帰的に試し、元のA*経路から最も小さく外れる方を選びます。<span class="status-chip">文書で確認</span></p>
+          <p>この分割は決定性に有利ですが、密集したユニットが詰まりやすい理由でもあります。<code>pathfinding_radius</code> は局所的な二者間の分離しか表さず、群衆全体を組み替えるモデルを持ちません。</p>
+          <h3>警戒は視覚だけでなく社会的に伝わる</h3>
+          <p><code>warning_distance</code> は、味方の助けを求める声を聞く距離です。警報は全員へ一度に届くのではなく、隣から隣へ連鎖します。</p>
+          <figure class="diagram">
+            <svg viewBox="0 0 800 250" role="img" aria-labelledby="alarm-title alarm-desc">
+              <title id="alarm-title">警報が隊列を連鎖する図</title><desc id="alarm-desc">敵がBを攻撃し、Bの警告範囲でCが気づき、Cの範囲でDが気づく。Eは範囲外で気づかない。</desc>
+              <defs><marker id="arrow-b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10Z" fill="var(--coral)"/></marker></defs>
+              <circle cx="190" cy="125" r="72" fill="none" stroke="var(--teal)" stroke-dasharray="5 5"/><circle cx="345" cy="125" r="72" fill="none" stroke="var(--teal)" stroke-dasharray="5 5"/>
+              <rect class="key-node" x="35" y="102" width="90" height="46" rx="6"/><text x="80" y="130" text-anchor="middle">敵</text>
+              <rect class="node" x="155" y="102" width="70" height="46" rx="6"/><text x="190" y="130" text-anchor="middle">B</text>
+              <rect class="node" x="310" y="102" width="70" height="46" rx="6"/><text x="345" y="130" text-anchor="middle">C</text>
+              <rect class="node" x="465" y="102" width="70" height="46" rx="6"/><text x="500" y="130" text-anchor="middle">D</text>
+              <rect class="node" x="650" y="102" width="70" height="46" rx="6"/><text x="685" y="130" text-anchor="middle">E</text>
+              <line class="accent-edge" x1="125" y1="125" x2="149" y2="125" marker-end="url(#arrow-b)"/><line class="accent-edge" x1="225" y1="125" x2="304" y2="125" marker-end="url(#arrow-b)"/><line class="accent-edge" x1="380" y1="125" x2="459" y2="125" marker-end="url(#arrow-b)"/>
+              <text class="sub" x="267" y="88" text-anchor="middle">助けを求める声</text><text class="sub" x="422" y="88" text-anchor="middle">Cが中継</text><text class="sub" x="685" y="88" text-anchor="middle">未警戒</text>
+            </svg>
+            <figcaption>隊列は波のように目を覚まします。孤立したユニットなら、短い距離に味方がいても静かに倒せる可能性があります。</figcaption>
+          </figure>
+          <p>編隊もハードコードではなく <code>form</code> タグです。行間、ずらし、箱形、包囲半径などのパラメータから、各クライアントが同じ配置を決定論的に展開します。移動命令は配置済み座標ではなく編隊番号と最終方位を運びます。</p>
+        </section>
+
+        <hr class="article-rule">
+
+        <section id="orders">
+          <span class="section-mark">08 — reco</span>
+          <h2>命令ストリーム</h2>
+          <p>フィルム形式は状態の記録ではなく命令の文法です。各命令は8バイトのヘッダー（サイズ、動詞、プレイヤー番号、絶対ティック）とペイロードからなります。</p>
+          <div class="formula">GENERAL · MOVEMENT · TARGET · ATTACK_LOCATION
+PICK_UP · RENAME · ROTATION</div>
+          <p><strong>ユニットを操作する動詞は7つだけ。</strong> これが戦術語彙のすべてです。停止、散開、後退、特殊能力などの差はフラグで表されます。</p>
+          <p><strong>SELECT命令はありません。</strong> 選択UIはローカルだけで働き、各命令が16ビットのユニットID一覧を直接持ちます。範囲選択、種類選択、追加選択はネットワークへ送られません。</p>
+          <p><strong>命令は一般にはキューされません。</strong> 新しい命令が現在の命令を置き換えます。例外は単一の <code>MOVEMENT</code> ペイロード内にあるウェイポイント配列です。</p>
+          <div class="article-callout"><p><strong>マップスクリプトも、人間と同じ動詞を発行します。</strong> 専用のAI制御路を持たないため、スクリプトとプレイヤー制御が自然に合成されます。</p></div>
+        </section>
+
+        <hr class="article-rule">
+
+        <section id="sync">
+          <span class="section-mark">09 — Determinism</span>
+          <h2>決定論</h2>
+          <p>ネットワーク形態はクライアント／サーバですが、シミュレーションは決定論的ロックステップです。ホストは状態の権威ではなく、命令を中継してターンを裁定します。</p>
+          <h3>乱数シードがチェックサム</h3>
+          <p>世界全体をハッシュしません。各プレイヤーの32ビット乱数シードを定期的に比較します。異なる回数だけ乱数を引いたり、異なる値を生成器へ渡したりすれば、シードはすぐ分岐し、再び一致しません。</p>
+          <div class="formula">seed′ = (1664525 × seed + 1013904223) mod 2³²
+result = (seed′ &gt;&gt; 16) &amp; 0xFFFF</div>
+          <figure class="diagram">
+            <svg viewBox="0 0 900 300" role="img" aria-labelledby="lockstep-title lockstep-desc">
+              <title id="lockstep-title">決定論的ロックステップ</title><desc id="lockstep-desc">2つのクライアントがホストへ命令を送り、同じ命令列を受けて各自が同じティックを計算し、シードを比較する。</desc>
+              <defs><marker id="arrow-c" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10Z" fill="currentColor"/></marker></defs>
+              <rect class="node" x="25" y="35" width="155" height="54" rx="6"/><text x="103" y="57" text-anchor="middle">クライアントA</text><text class="sub" x="103" y="75" text-anchor="middle">命令を発行</text>
+              <rect class="node" x="25" y="215" width="155" height="54" rx="6"/><text x="103" y="237" text-anchor="middle">クライアントB</text><text class="sub" x="103" y="255" text-anchor="middle">命令を発行</text>
+              <rect class="key-node" x="340" y="123" width="175" height="58" rx="6"/><text x="428" y="147" text-anchor="middle">ホスト</text><text class="sub" x="428" y="165" text-anchor="middle">中継 · ターン境界</text>
+              <polyline class="edge" points="180,62 260,62 260,139 334,139" marker-end="url(#arrow-c)"/><polyline class="edge" points="180,242 260,242 260,165 334,165" marker-end="url(#arrow-c)"/>
+              <rect class="node" x="640" y="35" width="220" height="54" rx="6"/><text x="750" y="57" text-anchor="middle">Sim A · tick N</text><text class="sub" x="750" y="75" text-anchor="middle">整数状態 · seed A</text>
+              <rect class="node" x="640" y="215" width="220" height="54" rx="6"/><text x="750" y="237" text-anchor="middle">Sim B · tick N</text><text class="sub" x="750" y="255" text-anchor="middle">整数状態 · seed B</text>
+              <polyline class="edge" points="515,139 570,139 570,62 634,62" marker-end="url(#arrow-c)"/><polyline class="edge" points="515,165 570,165 570,242 634,242" marker-end="url(#arrow-c)"/>
+              <line class="accent-edge" x1="750" y1="96" x2="750" y2="208" stroke-dasharray="5 4"/><circle cx="750" cy="152" r="5" fill="var(--coral)"/><text class="sub" x="765" y="143">SYNC · シード比較</text><text class="sub" x="765" y="164">不一致 → OOS</text>
+            </svg>
+            <figcaption><strong>ネットワークを流れるのは命令だけ。</strong> ユニットID 47が全機で同じ対象を指すことが前提です。不一致が起きても、送り直す状態が存在しないためロールバックも再同期もありません。</figcaption>
+          </figure>
+          <h3>Mac／PC差をどう見つけたか</h3>
+          <p>x86とPowerPCで除算結果の有効桁が異なり、クロスプラットフォーム対戦だけが同期を失いました。Project Magmaは全 <code>myth_random()</code> 呼び出しを、ファイル名と行番号を記録するデバッグ版へ置換し、両機のログを比較しました。最初に違った乱数呼び出しが、正確なティックとソース行を同時に示しました。</p>
+          <p>保存フィルムがバージョン間で壊れやすいのも同じ理由です。フィルムは映像でなく再実行レシピなので、ゲームロジックが変われば同じ命令列でも違う世界へ進みます。</p>
+        </section>
+
+        <hr class="article-rule">
+
+        <section id="script">
+          <span class="section-mark">10 — Loathing</span>
+          <h2>マップスクリプト</h2>
+          <p>Bungieは開発途中でJavaベースの言語を断念しました。最終的に出荷されたのは言語というより<strong>トリガーグラフ</strong>です。</p>
+          <p>アクションは64バイトのヘッダー配列と、型付きパラメータ列としてメッシュタグに入ります。各ノードは成功・失敗・実行・有効化・無効化・抑制・前提不足などのイベントで他ノードを有効／無効にします。<code>ACTION_IDENTIFIER</code> はどこへでも向けられるため、構造は木ではなくグラフです。</p>
+          <div class="formula">イベント → Action A → 成功 → Action B
+                      ↘ 失敗 → Action C
+FIELD_NAME → 別アクションのフィールドを書き換える</div>
+          <p>約68種類のアクションの半数は、近接、嫌がらせ、包囲、敗走、分隊、軍団、警備などのユニットAI編成に使われます。エディタのアクション一覧とヘルプもタグから生成されるため、エンジンへ新しい種類を追加するとき、エディタ本体を再ビルドする必要がありません。</p>
+        </section>
+
+        <hr class="article-rule">
+
+        <section id="questions">
+          <span class="section-mark">11 — Limits</span>
+          <h2>未解決点</h2>
+          <p><em>Myth II</em> のソースコードは公開されていません。利用できる根拠は、Bungieのエディタ文書と事後分析、Project Magmaの変更履歴、バイナリタグ構造のコミュニティ解析です。残る空白を、推測で埋めないことも重要です。</p>
+          <ul>
+            <li><span class="status-chip open">未解決</span> ネットワーク1ターン当たりのティック数と入力遅延。</li>
+            <li><span class="status-chip open">未解決</span> 1ティック内の更新順序。</li>
+            <li><span class="status-chip open">未解決</span> 描画側がティック間を補間するかどうか。</li>
+            <li><span class="status-chip open">未解決</span> 12種類のダメージから9個の耐性スロットへの対応。</li>
+            <li><span class="status-chip open">未解決</span> <code>phys</code>（ローカル物理）と <code>wind</code> タグの完全な配置。</li>
+          </ul>
+          <p>有力な次の資料は、The Tainにあるbungie.netメタサーバの公開ソース、RoadのMap Action Script Guide草稿、MythingOak wikiのタグ資料です。</p>
+        </section>
+
+        <hr class="article-rule">
+
+        <section id="sources">
+          <span class="section-mark">12 — Provenance</span>
+          <h2>出典</h2>
+          <ol class="source-list">
+            <li><a href="https://www.gamedeveloper.com/design/postmortem-bungie-s-i-myth-the-fallen-lords-i-">Bungie: <em>Myth: The Fallen Lords</em> 事後分析</a> — 地形メッシュ、二段階経路探索、決定論的ネットワーク、地形へ書き込む血、Fear／Loathing。</li>
+            <li><a href="https://www.gamedeveloper.com/programming/postmortem-project-magma-s-i-myth-ii-i-1-5-and-1-5-1">Project Magma: <em>Myth II</em> 1.5／1.5.1 事後分析</a> — 30 Hzティック、固定小数点化、シード比較、乱数ログによる診断。</li>
+            <li><a href="https://github.com/jwheare/mythextract">jwheare/mythextract</a> — タグ、メッシュ、コレクション、記録形式の逆解析パーサー。</li>
+            <li><a href="https://projectmagma.net/downloads/myth2docs/fear.html">Fear documentation v1.8.5</a>／<a href="https://projectmagma.net/downloads/myth2docs/loathing.html">Loathing documentation v1.8.5</a> — Bungieのエディタ資料。</li>
+            <li><a href="https://projectmagma.net/downloads/myth2_180/Readme_1.8.0.pdf">Project Magma リリースノート</a> — 衝突、経路探索、フィルム互換性、飛翔体上限の変更。</li>
+            <li><a href="https://tain.projectmagma.net/mythii/source_code">The Tain ソースコード・アーカイブ</a> — 公開されたbungie.netメタサーバコードを含む。</li>
+            <li><a href="https://mythingoak.miraheze.org/wiki/Category:Tags">MythingOak — Category:Tags</a> — コミュニティによるタグ資料。</li>
+          </ol>
+          <p><a class="button button-quiet" href="../soulblighter-internals.pdf">英語版PDFをダウンロード</a></p>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div><a class="wordmark footer-wordmark" href="index.html"><span class="wordmark-mark" aria-hidden="true">I</span><span>Isegoria</span></a><p>数学を、丁寧な図解で。</p></div>
+    <div class="footer-links"><a href="index.html#library">書籍</a><a href="projects.html">プロジェクト</a><a href="about.html">理念</a><a href="../soulblighter-internals.html" hreflang="en">English edition</a></div>
+    <p class="copyright">© <span id="current-year">2026</span> Isegoria</p>
+  </footer>
+  <script src="../assets/site.js"></script>
+</body>
+</html>
