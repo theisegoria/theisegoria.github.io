@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Scharr Gradient - Interactive visual guide | Isegoria</title>
+  <meta name="description" content="Edit a 3 by 3 image patch and see the Scharr gradient, magnitude, angle, and edge direction update live.">
+  <meta name="theme-color" content="#f4efe5">
+  <link rel="canonical" href="https://theisegoria.github.io/explore/scharr-gradient.html">
+  <link rel="alternate" hreflang="en" href="https://theisegoria.github.io/explore/scharr-gradient.html">
+  <link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/explore/scharr-gradient.html">
+  <link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/explore/scharr-gradient.html">
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../assets/styles.css">
+  <link rel="stylesheet" href="../assets/interactive.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to the interactive guide</a>
+  <header class="site-header">
+    <a class="wordmark" href="../index.html" aria-label="Isegoria home"><span class="wordmark-mark" aria-hidden="true">I</span><span>Isegoria</span></a>
+    <nav class="site-nav" aria-label="Primary navigation">
+      <a href="../index.html#library">Library</a><a href="../projects.html">Projects</a><a href="../about.html">About</a>
+      <div class="language-switch" role="group" aria-label="Language">
+        <a href="scharr-gradient.html" lang="en" aria-current="true">EN</a>
+        <a href="../ja/explore/scharr-gradient.html" lang="ja" hreflang="ja" data-language-select="ja">日本語</a>
+      </div>
+      <button class="theme-toggle" type="button" aria-label="Switch to dark theme"><span class="theme-icon" aria-hidden="true">◐</span><span class="theme-label">Dark</span></button>
+    </nav>
+  </header>
+
+  <main class="lesson-main" id="main" data-lesson="scharr">
+    <section class="lesson-hero">
+      <div>
+        <p class="eyebrow">Interactive image calculus</p>
+        <h1>The Scharr<br><em>gradient.</em></h1>
+        <p class="lesson-deck">A gradient is not an edge. It is an arrow pointing across the edge, toward the fastest increase in image intensity.</p>
+      </div>
+      <p class="lesson-promise"><strong>What you can see here</strong>Change nine pixels and watch two signed derivative estimates become a magnitude, a direction, and an edge tangent.</p>
+    </section>
+
+    <section class="lesson-workbench" aria-label="Interactive Scharr convolution laboratory" data-interactive-mount></section>
+
+    <section class="lesson-sections" aria-label="Scharr gradient theory">
+      <article class="lesson-card is-wide">
+        <p class="cue">The central idea</p>
+        <h2>Smooth across one axis; differentiate along the other</h2>
+        <p>Each Scharr kernel is separable. For <em>G</em><sub>x</sub>, the weights 3:10:3 smooth vertically while −1:0:1 takes a left-to-right difference. The roles swap for <em>G</em><sub>y</sub>.</p>
+        <span class="formula">K<sub>x</sub> = (1/32) [3, 10, 3]<sup>T</sup>[−1, 0, 1]</span>
+        <p>The factor 1/32 calibrates the operator: on an exact linear ramp <em>I</em>(x,y) = ax + b, the normalized response is <em>G</em><sub>x</sub> = a and <em>G</em><sub>y</sub> = 0.</p>
+      </article>
+      <article class="lesson-card">
+        <p class="cue">Why Scharr?</p>
+        <h2>Less directional bias</h2>
+        <p>Sobel uses perpendicular weights 1:2:1. Scharr's 3:10:3 weighting is tuned so a 3 × 3 derivative responds more evenly as an edge rotates through the pixel lattice.</p>
+      </article>
+      <article class="lesson-card">
+        <p class="cue">Calculate</p>
+        <h2>From components to an arrow</h2>
+        <span class="formula">|G| = √(G<sub>x</sub>² + G<sub>y</sub>²)<br>θ = atan2(G<sub>y</sub>, G<sub>x</sub>)</span>
+        <p><code>atan2</code> preserves the signs of both components, so the direction lands in the correct quadrant.</p>
+      </article>
+      <article class="lesson-card">
+        <p class="cue">Interpret</p>
+        <h2>Gradient normal, edge tangent</h2>
+        <p>The gradient is perpendicular to a level curve of intensity. The visible edge runs at θ + 90°. In image coordinates, positive <em>y</em> points downward—exactly as in the dial above.</p>
+      </article>
+      <article class="lesson-card is-full">
+        <p class="cue">Reliable workflow</p>
+        <h2>Four checks before using the result</h2>
+        <ul>
+          <li>Convolve in signed floating point; an 8-bit output destroys negative derivatives.</li>
+          <li>State whether your implementation returns raw values or divides by 32.</li>
+          <li>Choose an explicit border rule for patches at the image boundary.</li>
+          <li>Threshold magnitude for edge strength; use orientation only where the magnitude is meaningful.</li>
+        </ul>
+      </article>
+    </section>
+
+    <nav class="lesson-footer-nav" aria-label="Lesson navigation"><a href="../index.html#library">← Back to the library</a><a href="jacobians-wronskians-hessians.html">Next: derivative arrays →</a></nav>
+  </main>
+  <script src="../assets/site.js"></script>
+  <script src="../assets/interactive.js"></script>
+</body>
+</html>

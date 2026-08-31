@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="ja" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Scharr 勾配 - インタラクティブ図解 | Isegoria</title>
+  <meta name="description" content="3 × 3 の画像パッチを編集し、Scharr 勾配・大きさ・角度・エッジ方向をリアルタイムで確かめます。">
+  <meta name="theme-color" content="#f4efe5">
+  <link rel="canonical" href="https://theisegoria.github.io/ja/explore/scharr-gradient.html">
+  <link rel="alternate" hreflang="en" href="https://theisegoria.github.io/explore/scharr-gradient.html">
+  <link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/explore/scharr-gradient.html">
+  <link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/explore/scharr-gradient.html">
+  <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../../assets/styles.css">
+  <link rel="stylesheet" href="../../assets/interactive.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">インタラクティブ図解へ移動</a>
+  <header class="site-header">
+    <a class="wordmark" href="../index.html" aria-label="Isegoria ホーム"><span class="wordmark-mark" aria-hidden="true">I</span><span>Isegoria</span></a>
+    <nav class="site-nav" aria-label="メインナビゲーション">
+      <a href="../index.html#library">ライブラリ</a><a href="../projects.html">プロジェクト</a><a href="../about.html">紹介</a>
+      <div class="language-switch" role="group" aria-label="言語">
+        <a href="../../explore/scharr-gradient.html" lang="en" hreflang="en" data-language-select="en">EN</a>
+        <a href="scharr-gradient.html" lang="ja" aria-current="true">日本語</a>
+      </div>
+      <button class="theme-toggle" type="button" aria-label="ダークテーマに切り替える"><span class="theme-icon" aria-hidden="true">◐</span><span class="theme-label">暗く</span></button>
+    </nav>
+  </header>
+
+  <main class="lesson-main" id="main" data-lesson="scharr">
+    <section class="lesson-hero">
+      <div>
+        <p class="eyebrow">インタラクティブ画像微分</p>
+        <h1>Scharr<br><em>勾配。</em></h1>
+        <p class="lesson-deck">勾配はエッジそのものではありません。エッジを横切り、画像強度が最も速く増える方向を指す矢印です。</p>
+      </div>
+      <p class="lesson-promise"><strong>ここで見えること</strong>9 個の画素を変え、2 つの符号付き微分推定値が大きさ・方向・エッジ接線へ変わる様子を観察できます。</p>
+    </section>
+
+    <section class="lesson-workbench" aria-label="Scharr 畳み込み実験室" data-interactive-mount></section>
+
+    <section class="lesson-sections" aria-label="Scharr 勾配の理論">
+      <article class="lesson-card is-wide">
+        <p class="cue">中心となる考え</p>
+        <h2>一方の軸で平滑化し、他方で差分を取る</h2>
+        <p>Scharr カーネルは分離可能です。<em>G</em><sub>x</sub> では 3:10:3 が縦方向を平滑化し、−1:0:1 が左から右への差分を取ります。<em>G</em><sub>y</sub> では役割が入れ替わります。</p>
+        <span class="formula">K<sub>x</sub> = (1/32) [3, 10, 3]<sup>T</sup>[−1, 0, 1]</span>
+        <p>1/32 は演算子を較正します。厳密な線形ランプ <em>I</em>(x,y) = ax + b に対し、正規化後は <em>G</em><sub>x</sub> = a、<em>G</em><sub>y</sub> = 0 です。</p>
+      </article>
+      <article class="lesson-card">
+        <p class="cue">なぜ Scharr か</p>
+        <h2>方向による偏りが小さい</h2>
+        <p>Sobel は垂直方向の重みに 1:2:1 を使います。Scharr の 3:10:3 は、エッジが画素格子の中で回転しても 3 × 3 微分の応答がより均一になるよう調整されています。</p>
+      </article>
+      <article class="lesson-card">
+        <p class="cue">計算</p>
+        <h2>成分から矢印へ</h2>
+        <span class="formula">|G| = √(G<sub>x</sub>² + G<sub>y</sub>²)<br>θ = atan2(G<sub>y</sub>, G<sub>x</sub>)</span>
+        <p><code>atan2</code> は両成分の符号を保ち、正しい象限の方向を返します。</p>
+      </article>
+      <article class="lesson-card">
+        <p class="cue">解釈</p>
+        <h2>勾配は法線、エッジは接線</h2>
+        <p>勾配は強度の等高線に垂直です。見えているエッジは θ + 90° の方向に走ります。画像座標では正の <em>y</em> は下向きで、上のダイヤルも同じ約束です。</p>
+      </article>
+      <article class="lesson-card is-full">
+        <p class="cue">信頼できる手順</p>
+        <h2>結果を使う前の 4 つの確認</h2>
+        <ul>
+          <li>符号付き浮動小数点で畳み込む。8 ビット出力では負の微分が失われます。</li>
+          <li>実装が生の値を返すのか、32 で割るのかを明示する。</li>
+          <li>画像境界のパッチに対する境界規則を明示する。</li>
+          <li>エッジ強度には大きさをしきい値処理し、方向は大きさが十分な場所だけで使う。</li>
+        </ul>
+      </article>
+    </section>
+
+    <nav class="lesson-footer-nav" aria-label="教材ナビゲーション"><a href="../index.html#library">← ライブラリへ戻る</a><a href="jacobians-wronskians-hessians.html">次へ：微分配列 →</a></nav>
+  </main>
+  <script src="../../assets/site.js"></script>
+  <script src="../../assets/interactive.js"></script>
+</body>
+</html>
