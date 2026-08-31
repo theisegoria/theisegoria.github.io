@@ -8,6 +8,7 @@
   const fmt = (v, d = 2) => Math.abs(v) < 10 ** (-d) / 2 ? '0' : v.toLocaleString(ja ? 'ja-JP' : 'en-US', { maximumFractionDigits: d });
   const css = getComputedStyle(document.documentElement);
   const colors = { ink: css.getPropertyValue('--ink').trim(), soft: css.getPropertyValue('--ink-soft').trim(), line: css.getPropertyValue('--line').trim(), teal: css.getPropertyValue('--teal').trim(), coral: css.getPropertyValue('--coral').trim(), gold: css.getPropertyValue('--gold').trim(), card: css.getPropertyValue('--card').trim() };
+  const rgb = (hex) => /^#[0-9a-f]{6}$/i.test(hex) ? [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16)) : [244, 239, 229];
   const state = { mode: 'jacobian', x: 1, y: 2, pair: 'trig', time: 0, a: 2, b: 0.7, c: 1, theta: 28 };
 
   mount.innerHTML = `
@@ -108,7 +109,7 @@
       const th=state.theta*Math.PI/180, curvature=a*Math.cos(th)**2+2*b*Math.sin(th)*Math.cos(th)+c*Math.sin(th)**2;
       controls.querySelector('[data-matrix]').innerHTML=[a,b,b,c].map(n=>`<span>${fmt(n)}</span>`).join('');
       const image=ctx.createImageData(720,420); let p=0;
-      for(let py=0;py<420;py++){for(let px=0;px<720;px++){const u=(px-360)/95,v=(210-py)/95,q=.5*(a*u*u+2*b*u*v+c*v*v), n=Math.tanh(q/3); const pos=[11,141,160],neg=[223,106,69],base=[244,239,229],mix=n>=0?pos:neg,amt=Math.min(.75,Math.abs(n)*.75); image.data[p++]=base[0]*(1-amt)+mix[0]*amt;image.data[p++]=base[1]*(1-amt)+mix[1]*amt;image.data[p++]=base[2]*(1-amt)+mix[2]*amt;image.data[p++]=255;}}
+      const base=rgb(colors.card);for(let py=0;py<420;py++){for(let px=0;px<720;px++){const u=(px-360)/95,v=(210-py)/95,q=.5*(a*u*u+2*b*u*v+c*v*v), n=Math.tanh(q/3); const pos=[11,141,160],neg=[223,106,69],mix=n>=0?pos:neg,amt=Math.min(.75,Math.abs(n)*.75); image.data[p++]=base[0]*(1-amt)+mix[0]*amt;image.data[p++]=base[1]*(1-amt)+mix[1]*amt;image.data[p++]=base[2]*(1-amt)+mix[2]*amt;image.data[p++]=255;}}
       ctx.putImageData(image,0,0); axes(360,210,1.55); arrow(360,210,115*Math.cos(th),115*Math.sin(th),colors.coral,'u');
       ctx.fillStyle=colors.ink;ctx.textAlign='left';ctx.font='800 13px system-ui';ctx.fillText(t('teal: q > 0','青緑：q > 0'),24,30);ctx.fillText(t('coral: q < 0','珊瑚：q < 0'),24,50);
       let kind=t('inconclusive / flat','判定不能・平坦'); if(l2>1e-7)kind=t('local minimum','局所最小');else if(l1< -1e-7)kind=t('local maximum','局所最大');else if(l1>1e-7&&l2< -1e-7)kind=t('saddle','鞍点');
