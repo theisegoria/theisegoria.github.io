@@ -1,8 +1,204 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="refresh" content="0;url=library.html"><link rel="canonical" href="https://theisegoria.github.io/"><meta name="description" content="Projects, interactive guides, and research by Isegoria."><title>Isegoria - Projects, interactive guides, and research</title><script>location.replace('library.html')</script></head>
-<body><header class="hero" id="top"><nav><a class="brand" href="library.html">Isegoria</a><div><a href="library.html#guides">Math labs</a><a href="library.html#work">Projects</a><a href="ja/" lang="ja">日本語</a><a href="#movement">Watch lab</a></div></nav><div class="hero-copy"><p class="kicker">A mechanical watch, slowed down</p><h1>How motion<br>becomes time.</h1><p>An automatic watch is a tiny energy-management machine. Your wrist winds a spring; gears carry its power; an oscillator and escapement divide that power into equal, countable beats.</p><a class="cta" href="#movement">Open the movement ↓</a></div><div class="hero-orbit" aria-hidden="true"><div class="hero-wheel"><i></i><i></i><i></i><i></i></div></div></header>
-<main><section class="chapter" id="movement"><div class="section-head"><p>01 / Energy path</p><h2>The whole movement</h2><span>Select a component to reveal its job.</span></div><div class="movement-grid"><div class="movement-stage"><svg id="movement-svg" viewBox="0 0 760 600" role="img" aria-labelledby="movement-title movement-desc"><title id="movement-title">Interactive cutaway of an automatic watch movement</title><desc id="movement-desc">A rotor winds a mainspring barrel, which powers a sequence of gears, an escapement, and the balance oscillator.</desc><circle class="case" cx="370" cy="300" r="270"/><circle class="plate" cx="370" cy="300" r="254"/><path class="energy-path" d="M150 438C120 340 180 235 260 235C350 235 390 278 455 292C520 306 551 345 540 410"/><g class="part" data-part="rotor" role="button" tabindex="0"><circle class="hit" cx="370" cy="300" r="235"/><g id="rotor"><path class="rotor" d="M370 300L145 382A239 239 0 0 0 595 382Z"/><circle class="jewel" cx="370" cy="300" r="13"/></g></g><g class="part gear" data-part="barrel" data-x="275" data-y="250" data-rate="8"><circle class="hit" cx="275" cy="250" r="80"/><circle class="disc" cx="275" cy="250" r="62"/><circle class="teeth" cx="275" cy="250" r="69"/><circle class="hub" cx="275" cy="250" r="11"/></g><g class="part gear" data-part="center" data-x="390" data-y="286" data-rate="-13"><circle class="hit" cx="390" cy="286" r="59"/><circle class="disc" cx="390" cy="286" r="41"/><circle class="teeth" cx="390" cy="286" r="48"/><circle class="hub" cx="390" cy="286" r="9"/></g><g class="part gear" data-part="third" data-x="466" data-y="260" data-rate="23"><circle class="hit" cx="466" cy="260" r="45"/><circle class="disc" cx="466" cy="260" r="27"/><circle class="teeth" cx="466" cy="260" r="34"/><circle class="hub" cx="466" cy="260" r="7"/></g><g class="part gear" data-part="fourth" data-x="518" data-y="309" data-rate="-38"><circle class="hit" cx="518" cy="309" r="40"/><circle class="disc" cx="518" cy="309" r="22"/><circle class="teeth" cx="518" cy="309" r="29"/><circle class="hub" cx="518" cy="309" r="6"/></g><g class="part gear" data-part="escape" data-x="574" data-y="346" data-rate="62"><circle class="hit" cx="574" cy="346" r="41"/><circle class="disc" cx="574" cy="346" r="23"/><circle class="teeth escape-teeth" cx="574" cy="346" r="30"/><circle class="hub" cx="574" cy="346" r="6"/></g><g class="part" data-part="balance" role="button" tabindex="0"><circle class="hit" cx="542" cy="455" r="70"/><g id="movement-balance"><circle class="balance-ring" cx="542" cy="455" r="57"/><path class="spokes" d="M485 455h114M542 398v114M502 415l80 80M582 415l-80 80"/><circle class="jewel" cx="542" cy="455" r="8"/></g></g><g class="hands"><path d="M390 286v-74M390 286l55 28"/><circle cx="390" cy="286" r="7"/></g><text x="103" y="487">ROTOR</text><text x="218" y="154">MAINSPRING</text><text x="383" y="200">GOING TRAIN</text><text x="559" y="289">ESCAPEMENT</text><text x="571" y="535">BALANCE</text></svg></div><aside class="info-card" aria-live="polite"><p>Selected component</p><h3 id="part-name">Center wheel</h3><div class="rule"></div><p id="part-copy">Receives power from the barrel and traditionally turns once per hour.</p><div class="energy-chain"><span>Wrist</span><b>→</b><span>Spring</span><b>→</b><span>Gears</span><b>→</b><span>Tick</span></div></aside></div></section>
-<section class="chapter dark" id="train"><div class="section-head"><p>02 / Going train</p><h2>The gear train,<br>slowed down</h2><span>Meshing wheels reverse direction and exchange torque for speed.</span></div><div class="controls"><button id="motion-toggle" type="button" aria-pressed="true">Pause motion</button><label>Simulation speed <strong id="speed-value">1×</strong><input id="speed" type="range" min=".25" max="2" step=".25" value="1"></label></div><div class="train-wrap"><svg id="train-svg" viewBox="0 0 1000 440" role="img" aria-label="Detailed five-wheel watch gear train"><path class="power-line" d="M70 225H925"/><g class="train-gear" data-x="125" data-rate="8"><circle cx="125" cy="225" r="76"/><circle class="tooth-ring" cx="125" cy="225" r="84"/><circle class="pinion" cx="125" cy="225" r="16"/></g><g class="train-gear" data-x="310" data-rate="-13"><circle cx="310" cy="225" r="66"/><circle class="tooth-ring" cx="310" cy="225" r="74"/><circle class="pinion" cx="310" cy="225" r="17"/></g><g class="train-gear" data-x="470" data-rate="22"><circle cx="470" cy="225" r="57"/><circle class="tooth-ring" cx="470" cy="225" r="65"/><circle class="pinion" cx="470" cy="225" r="15"/></g><g class="train-gear" data-x="610" data-rate="-35"><circle cx="610" cy="225" r="48"/><circle class="tooth-ring" cx="610" cy="225" r="56"/><circle class="pinion" cx="610" cy="225" r="13"/></g><g class="train-gear" data-x="730" data-rate="56"><circle cx="730" cy="225" r="38"/><circle class="tooth-ring" cx="730" cy="225" r="47"/><circle class="pinion" cx="730" cy="225" r="9"/></g><path id="train-pallet" class="pallet" d="M770 193l55 32-55 32 13-32z"/><g id="train-balance"><circle class="balance-ring" cx="900" cy="225" r="60"/><path class="spokes" d="M840 225h120M900 165v120"/><circle class="jewel" cx="900" cy="225" r="8"/></g><g class="train-labels"><text x="125" y="348">BARREL</text><text x="310" y="348">CENTER</text><text x="470" y="348">THIRD</text><text x="610" y="348">FOURTH</text><text x="730" y="348">ESCAPE</text><text x="900" y="348">BALANCE</text><text class="small" x="125" y="372">slow · high torque</text><text class="small" x="310" y="372">hour rate*</text><text class="small" x="470" y="372">transmission</text><text class="small" x="610" y="372">minute rate*</text><text class="small" x="730" y="372">one tooth at a time</text><text class="small" x="900" y="372">oscillates</text></g><text class="footnote" x="36" y="420">* Conventional layout. Exact wheel ratios and hand-driving arrangements vary by calibre.</text></svg></div><div class="concept-grid"><article><b>Large wheel → small pinion</b><p>Stacking compound ratios turns the barrel’s slow release into useful hour, minute, and seconds rates.</p></article><article><b>Every mesh reverses direction</b><p>Clockwise becomes counter-clockwise at each contact. The animation makes that alternation visible.</p></article><article><b>The escapement is the gate</b><p>The train wants to unwind continuously. The pallet fork permits one tooth at each balance beat.</p></article></div></section>
-<section class="chapter" id="oscillator"><div class="section-head"><p>03 / The timekeeper</p><h2>Where the watch gets its “time”</h2><span>A wristwatch uses a balance wheel and hairspring—not a gravity pendulum.</span></div><div class="osc-grid"><svg class="oscillator" viewBox="0 0 740 480" role="img" aria-label="Animated escapement and balance oscillator"><path class="impulse-line" d="M160 244H320c48 0 62 44 91 50"/><g id="osc-escape"><circle class="disc" cx="160" cy="244" r="66"/><circle class="teeth escape-teeth" cx="160" cy="244" r="76"/><circle class="jewel" cx="160" cy="244" r="8"/></g><path id="osc-pallet" class="pallet-large" d="M245 208l112 36-109 40 20-40z"/><circle class="jewel" cx="330" cy="244" r="8"/><g id="osc-balance"><circle class="balance-ring" cx="535" cy="240" r="118"/><path class="spokes" d="M417 240h236M535 122v236"/><circle class="jewel" cx="535" cy="240" r="11"/></g><path class="hairspring-static" d="M535 240c0-25 35-25 35 0 0 45-70 45-70 0 0-66 105-66 105 0 0 88-140 88-140 0 0-110 175-110 175 0"/><text x="160" y="370">ESCAPE WHEEL</text><text x="315" y="370">PALLET FORK</text><text x="535" y="405">BALANCE + HAIRSPRING</text></svg><ol class="beat-steps"><li><b>1</b><div><strong>Restore</strong><p>The hairspring pulls the rotated balance back toward its neutral position.</p></div></li><li><b>2</b><div><strong>Unlock</strong><p>The balance moves the pallet fork, freeing one escape-wheel tooth.</p></div></li><li><b>3</b><div><strong>Impulse</strong><p>The tooth gives a tiny push, replacing energy lost to friction.</p></div></li><li><b>4</b><div><strong>Count</strong><p>The train converts releases into seconds, minutes, and hours.</p></div></li></ol></div></section>
-<section class="chapter lab" id="lab"><div class="section-head"><p>04 / Balance + hairspring lab</p><h2>Change the oscillator.<br>Watch the rate respond.</h2><span>Frequency is governed mainly by spring stiffness and balance inertia.</span></div><div class="lab-controls"><label>Balance inertia <strong id="inertia-value">1.00×</strong><input id="inertia" type="range" min=".6" max="1.6" step=".05" value="1"></label><label>Hairspring stiffness <strong id="stiffness-value">1.00×</strong><input id="stiffness" type="range" min=".6" max="1.6" step=".05" value="1"></label><label>Starting amplitude <strong id="amplitude-value">240°</strong><input id="amplitude" type="range" min="100" max="300" step="10" value="240"></label></div><div class="stats"><div><small>Beat rate</small><strong id="rate">28,800 vph</strong><span>set by inertia + stiffness</span></div><div><small>Full oscillation</small><strong id="period">0.250 s</strong><span>out and back</span></div><div><small>Instantaneous state</small><strong id="state">Centre crossing</strong><span id="energy">maximum kinetic energy</span></div></div><div class="lab-stage"><svg viewBox="0 0 800 520" role="img" aria-labelledby="lab-title lab-desc"><title id="lab-title">Interactive balance wheel and hairspring oscillator</title><desc id="lab-desc">Controls alter inertia, stiffness, and amplitude while the visualization shows the resulting oscillation.</desc><defs><marker id="arrow-gold" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0l10 5-10 5z"/></marker><marker id="arrow-mint" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0l10 5-10 5z"/></marker></defs><line class="neutral" x1="400" y1="45" x2="400" y2="455"/><circle id="impulse-flash" class="flash" cx="400" cy="255" r="65"/><g id="lab-wheel"><circle class="balance-ring" cx="400" cy="255" r="150"/><path class="spokes" d="M250 255h300M400 105v300M294 149l212 212M506 149L294 361"/><circle class="jewel" cx="400" cy="255" r="14"/></g><path id="lab-spring" class="lab-spring"/><circle class="fixed" cx="683" cy="255" r="9"/><path id="torque" class="torque" d="M300 370a155 155 0 0 1-55-115"/><path id="motion" class="motion" d="M500 140a155 155 0 0 1 55 115"/><text class="lab-label" x="400" y="488">BALANCE WHEEL</text><text class="lab-sub" x="400" y="508">inertia carries motion through the centre</text><text class="lab-label" x="680" y="225">FIXED STUD</text><text class="lab-sub" x="680" y="244">outer spring end</text><text class="lab-label left" x="45" y="355">RESTORING TORQUE</text><text class="lab-sub left" x="45" y="375">always pulls toward centre</text></svg></div><div class="lab-actions"><button id="lab-toggle" type="button" aria-pressed="true">Pause</button><button id="impulse-toggle" class="secondary" type="button" aria-pressed="true">Escapement impulse on</button></div><p id="lab-detail" class="lab-detail" aria-live="polite"><strong>Centre crossing:</strong> the spring is relaxed and the wheel is moving fastest.</p><div class="formula"><span>The useful mental model</span><strong>frequency ∝ √(spring stiffness ÷ balance inertia)</strong><p>A stiffer spring raises the beat rate; a heavier or larger balance lowers it. Amplitude changes travel, but in an ideal oscillator it does not set the basic period. Real watches need careful geometry, adjustment, lubrication, and temperature compensation.</p></div></section>
-<section class="closing"><p>The governing idea</p><h2>Power is continuous.<br>Time is released in steps.</h2><p>The mainspring always pushes, but the escapement keeps the train locked most of the time. Each half-swing unlocks a tooth, receives a tiny impulse, and locks the train again. The watch counts these regularly spaced releases and displays their accumulation as time.</p></section></main><footer><span>Automatic Watch Lab</span><p>Educational schematic · proportions, tooth counts, and layouts are simplified.</p><a href="#top">Back to top ↑</a></footer></body></html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Isegoria — Research, software, and interactive explanations</title>
+<meta name="description" content="Interactive explanations you can operate, long-form technical research, and the software behind both. Bilingual, free, and open in the browser.">
+<link rel="canonical" href="https://theisegoria.github.io/">
+<link rel="alternate" hreflang="en" href="https://theisegoria.github.io/">
+<link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/">
+<link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#faf8f4" media="(prefers-color-scheme:light)">
+<meta name="theme-color" content="#12100e" media="(prefers-color-scheme:dark)">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Isegoria — Research, software, and interactive explanations">
+<meta property="og:description" content="Interactive explanations, technical research, and the software behind both.">
+<meta property="og:url" content="https://theisegoria.github.io/">
+<meta property="og:image" content="https://theisegoria.github.io/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..600&family=Inter:wght@400;500&display=swap">
+<link rel="stylesheet" href="/assets/isegoria.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="wrap">
+
+<header class="site-header">
+  <a class="wordmark" href="/" aria-current="page">Isegoria</a>
+  <nav class="site-nav" aria-label="Primary">
+    <a href="#guides">Interactive</a>
+    <a href="#research">Research</a>
+    <a href="/projects.html">Projects</a>
+    <a href="/about.html">About</a>
+    <a href="/ja/" hreflang="ja" lang="ja">日本語</a>
+    <a href="https://github.com/theisegoria">GitHub</a>
+  </nav>
+</header>
+
+<main id="main">
+
+  <section class="hero">
+    <p class="label">Research · Software · Interactive explanations</p>
+    <h1>Complex systems, taken <em>apart.</em></h1>
+    <p class="deck">Mechanisms, molecules, engines and proofs, explained by building the thing that explains them. No accounts, no paywalls, no trackers: everything opens directly in the browser.</p>
+  </section>
+
+  <section class="section" id="guides">
+    <div class="section-head">
+      <h2>Interactive explanations</h2>
+      <p class="label">Seven · English &amp; 日本語</p>
+      <p class="section-note">Each one is a working instrument rather than an illustration: change the inputs and the system responds. Pure mathematics, image processing, and mechanical escapements all get the same treatment.</p>
+    </div>
+    <div class="index">
+      <a href="/lebesgue-integration/lab.html">
+        <span class="t">Lebesgue Integration Lab</span>
+        <span class="d">Compare Riemann strips with Lebesgue level sets, build simple functions, and test the convergence theorems.</span>
+      </a>
+      <a href="/explore/structure-before-algebra.html">
+        <span class="t">Structure Before Algebra</span>
+        <span class="d">Search all fifty-four chapters by the visible cue in a problem, then choose the right first move.</span>
+      </a>
+      <a href="/explore/jacobians-wronskians-hessians.html">
+        <span class="t">Jacobians, Wronskians &amp; Hessians</span>
+        <span class="d">Three derivative arrays from one geometry: local maps, state-space area, and directional curvature.</span>
+      </a>
+      <a href="/explore/mobius-schwarzian.html">
+        <span class="t">Möbius Transformations &amp; the Schwarzian</span>
+        <span class="d">Bend complex grids through poles, then measure the first genuinely projective invariant.</span>
+      </a>
+      <a href="/explore/integrating-factors.html">
+        <span class="t">Integrating Factors, Two Ways</span>
+        <span class="d">Watch one multiplier produce a product derivative and a potential function at the same time.</span>
+      </a>
+      <a href="/explore/scharr-gradient.html">
+        <span class="t">The Scharr Gradient</span>
+        <span class="d">Edit a 3 × 3 pixel patch and see magnitude and edge direction update live.</span>
+      </a>
+      <a href="/explore/automatic-watch.html">
+        <span class="t">Inside an Automatic Watch</span>
+        <span class="d">Follow energy from rotor and mainspring through the going train to escapement, balance, and hands.</span>
+      </a>
+    </div>
+  </section>
+
+  <section class="section" id="research">
+    <div class="section-head">
+      <h2>Research and writing</h2>
+      <p class="label">Durable web editions</p>
+      <p class="section-note">Long-form technical reports across pharmacology, acoustics, graphics and game engines, plus textbooks. Published as pages that stay readable, with PDF and EPUB editions where they exist.</p>
+    </div>
+    <div class="index">
+      <a href="/concerta-catecholamine-model/">
+        <span class="t">Concerta: Extracellular NE and DA</span>
+        <span class="d">An evidence-bounded dose–time model linking OROS exposure, transporter occupancy, and relative catecholamine signals.</span>
+      </a>
+      <a href="/creatine-brain-cognition/">
+        <span class="t">Creatine, the Brain, and Cognition</span>
+        <span class="d">A critical report on brain energy, cognitive performance under sleep loss, neurological disease, and safety.</span>
+      </a>
+      <a href="/vortioxetine-creatine-neural-efficiency/">
+        <span class="t">Two Routes to a Cheaper Brain</span>
+        <span class="d">Vortioxetine, creatine, and whether a lower BOLD signal is really evidence of a more efficient brain.</span>
+      </a>
+      <a href="/t-rex-vortioxetine-brexpiprazole/">
+        <span class="t">The Best Argument for T-Rex</span>
+        <span class="d">Vortioxetine plus brexpiprazole, audited for cognition, mood and anxiety, and what the dendrite claim actually rests on.</span>
+      </a>
+      <a href="/real-time-natural-worlds/">
+        <span class="t">Real-Time Natural Worlds</span>
+        <span class="d">Current research on procedural terrain, procedural flora, and water rendering for videogames.</span>
+      </a>
+      <a href="/frontier-coding-atlas/">
+        <span class="t">Frontier Coding Atlas</span>
+        <span class="d">Models, reasoning effort, published coding evidence, and what parallel subagents actually change.</span>
+        <span class="tail"><span>Interactive report</span><span><span>PDF</span></span></span>
+      </a>
+      <a href="https://theisegoria.github.io/bose-lifestyle-ultra-report/">
+        <span class="t">Computational Acoustics</span>
+        <span class="d">A patent-led comparison of Apple HomePod 2 and Bose Lifestyle Ultra, with interactive acoustic-path diagrams.</span>
+      </a>
+      <a href="/soulblighter-internals.html">
+        <span class="t">Soulblighter Internals</span>
+        <span class="d">A field guide to the simulation architecture of Myth II: integer physics, tag graphs, and deterministic lockstep.</span>
+      </a>
+      <a href="/medical-textbook/">
+        <span class="t">Integrated Medical Foundations</span>
+        <span class="d">Bilingual English and Japanese textbook editions, with EPUB and PDF downloads.</span>
+      </a>
+      <a href="/watch-lab/">
+        <span class="t">Automatic Watch Deep Lab</span>
+        <span class="d">A larger movement, gear-train, escapement, and hairspring simulation in English.</span>
+      </a>
+    </div>
+    <div class="links-row">
+      <a class="link" href="/structure-before-algebra.pdf">Structure Before Algebra — print edition (PDF)</a>
+      <a class="link" href="/jacobians-wronskians-hessians.pdf">Jacobians, Wronskians &amp; Hessians — print edition (PDF)</a>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head">
+      <h2>Selected software</h2>
+      <p class="label"><a href="/projects.html">All twenty-four repositories →</a></p>
+    </div>
+    <div class="index">
+      <a href="https://github.com/theisegoria/game-development-studio">
+        <span class="t">Game Development Studio</span>
+        <span class="d">Local-first asset production, vendoring, visual debugging, and performance tooling.</span>
+        <span class="tail"><span>TypeScript</span></span>
+      </a>
+      <a href="https://github.com/theisegoria/game-debug-mcp">
+        <span class="t">Game Debug MCP</span>
+        <span class="d">Sealed-frame evidence, first-divergence diagnosis, and identity-safe performance comparison.</span>
+        <span class="tail"><span>MCP · CLI</span></span>
+      </a>
+      <a href="https://github.com/theisegoria/systems-lab">
+        <span class="t">Systems Lab</span>
+        <span class="d">A native workspace for drawing schematics, simulating systems, and plotting Modelica results.</span>
+        <span class="tail"><span>macOS</span></span>
+      </a>
+      <a href="https://github.com/theisegoria/structure-studio">
+        <span class="t">Structure Studio</span>
+        <span class="d">Turns text descriptions into fully authored 3D building structures.</span>
+        <span class="tail"><span>macOS</span></span>
+      </a>
+      <a href="https://github.com/theisegoria/neural-biped-trainer">
+        <span class="t">Neural Biped Trainer</span>
+        <span class="d">A standalone animation trainer built on SwiftUI, Metal, MuJoCo, and Apple Silicon worker tooling.</span>
+        <span class="tail"><span>Python</span></span>
+      </a>
+      <a href="https://github.com/theisegoria/algebraic-varieties-introduction">
+        <span class="t">Algebraic Varieties</span>
+        <span class="d">A visual primer on algebraic varieties with an interactive curve laboratory.</span>
+        <span class="tail"><span>Interactive</span></span>
+      </a>
+    </div>
+  </section>
+
+  <section class="statement">
+    <p class="label">Why the name</p>
+    <blockquote>Isegoria means an <em>equal right</em> to speak.</blockquote>
+    <p class="after">Here it names an equal invitation into technical conversation, whatever the subject. The aim is not to remove sophistication, but to remove needless opacity.</p>
+    <div class="links-row"><a class="link" href="/about.html">Read the approach →</a></div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <span>© 2026 Isegoria</span>
+  <nav aria-label="Footer">
+    <a href="/about.html">About</a>
+    <a href="/projects.html">Projects</a>
+    <a href="/ja/" hreflang="ja" lang="ja">日本語</a>
+    <a href="https://github.com/theisegoria/theisegoria.github.io">Source</a>
+  </nav>
+</footer>
+
+</div>
+</body>
+</html>
