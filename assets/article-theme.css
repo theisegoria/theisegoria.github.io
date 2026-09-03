@@ -1,0 +1,162 @@
+/* Isegoria — brings the guides and articles onto the editorial system.
+   Load AFTER styles.css and interactive.css. Those two files take every colour
+   and face from the tokens below, so retuning the tokens reskins the lesson
+   chrome and the interactive workbenches together.
+
+   --teal / --coral / --gold are NOT decoration: interactive*.js reads them at
+   runtime via getComputedStyle and uses them as data colours (positive vs
+   negative determinant, first vs second column), and some copy names them
+   aloud. They stay three distinguishable hues; only their tuning changes. */
+
+:root {
+  --paper:      #faf8f4;
+  --paper-deep: #f3f0e9;
+  --card:       #f6f3ed;
+  --ink:        #1b1917;
+  --ink-soft:   #5d574f;
+  --ink-faint:  #736c62;
+  --line:       #e0dad0;
+  --line-firm:  #c9c1b4;
+  --accent:     #8a4b26;
+
+  --teal:       #1d6f7a;
+  --teal-deep:  #175a63;
+  --coral:      #b4553a;
+  --gold:       #8a6a1f;
+  --navy:       #1b1917;
+  --shadow:     none;
+
+  --serif: "Newsreader", ui-serif, Georgia, "Times New Roman", serif;
+  --sans:  "Inter", ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+:root:lang(ja), html[lang="ja"] {
+  --serif: "Noto Serif JP", "Hiragino Mincho ProN", "Yu Mincho", serif;
+}
+html[lang="ja"] { line-break: strict; word-break: normal; }
+
+/* dark: both the explicit toggle (site.js sets data-theme) and the system default */
+html[data-theme="dark"] {
+  --paper:#12100e; --paper-deep:#0d0c0a; --card:#191714;
+  --ink:#ece7df; --ink-soft:#a49c91; --ink-faint:#918879;
+  --line:#2b2724; --line-firm:#3d3833; --accent:#d99a68;
+  --teal:#5fb9c6; --teal-deep:#7fcdd8; --coral:#e08a6a; --gold:#d2a94e;
+  --navy:#0d0c0a; --shadow:none;
+}
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]) {
+    color-scheme: dark;
+    --paper:#12100e; --paper-deep:#0d0c0a; --card:#191714;
+    --ink:#ece7df; --ink-soft:#a49c91; --ink-faint:#918879;
+    --line:#2b2724; --line-firm:#3d3833; --accent:#d99a68;
+    --teal:#5fb9c6; --teal-deep:#7fcdd8; --coral:#e08a6a; --gold:#d2a94e;
+    --navy:#0d0c0a; --shadow:none;
+  }
+}
+
+/* ---------- page ground ---------- */
+body {
+  background: var(--paper) !important;   /* drop the teal radial wash */
+  font-family: var(--serif);
+  font-size: 1.0625rem;
+  line-height: 1.6;
+}
+html[lang="ja"] body { line-height: 1.85; }
+::selection { background: #e7ddcd; }
+html[data-theme="dark"] ::selection { background: #3a322a; }
+
+/* ---------- header, matched to the rest of the site ---------- */
+.site-header {
+  position: static;
+  width: min(68rem, calc(100% - clamp(2.5rem, 10vw, 8rem)));
+  padding: 1.9rem 0 1.6rem;
+  border-bottom: 1px solid var(--line-firm);
+  background: none;
+  backdrop-filter: none;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+.wordmark {
+  gap: 0;
+  font-size: 1.2rem;
+  font-weight: 400;
+  letter-spacing: .005em;
+  white-space: nowrap;
+}
+.wordmark-mark { display: none; }          /* the circled "I" badge is retired */
+.site-nav { gap: 1.5rem; flex-wrap: wrap; align-items: baseline; }
+.site-nav > a {
+  font-family: var(--sans);
+  font-size: .8125rem;
+  font-weight: 400;
+  letter-spacing: .01em;
+  text-transform: none;
+  color: var(--ink-soft);
+  padding-bottom: .15rem;
+  border-bottom: 1px solid transparent;
+}
+.site-nav > a:hover { color: var(--ink); border-bottom-color: var(--line-firm); }
+.site-nav > a[aria-current="page"] { color: var(--ink); border-bottom-color: var(--ink); }
+.language-switch { padding: 0; border: 0; background: none; gap: .75rem; }
+.language-switch a {
+  font-family: var(--sans); font-size: .8125rem; font-weight: 400;
+  text-transform: none; letter-spacing: .01em; padding: 0; border-radius: 0;
+  background: none; color: var(--ink-soft);
+}
+.language-switch a[aria-current="true"] { background: none; color: var(--ink); }
+.theme-toggle {
+  min-height: 0; padding: .2rem .6rem; border-radius: 999px;
+  border-color: var(--line-firm);
+  font-family: var(--sans); font-size: .75rem;
+}
+.theme-toggle:hover { border-color: var(--ink-faint); color: var(--ink); }
+
+/* ---------- lesson chrome: hairlines instead of rounded cards ---------- */
+.lesson-main, .article-main { width: min(68rem, calc(100% - clamp(2.5rem, 10vw, 8rem))); }
+.eyebrow {
+  font-family: var(--sans);
+  font-size: .6875rem; font-weight: 500; letter-spacing: .14em;
+  color: var(--ink-faint);
+}
+.lesson-hero h1 { font-family: var(--serif); font-weight: 400; letter-spacing: -.03em; }
+.lesson-hero h1 em { color: var(--accent); font-style: italic; }
+.lesson-deck { color: var(--ink-soft); }
+.lesson-promise { border-left-color: var(--line-firm); color: var(--ink-soft); }
+
+.lesson-card {
+  border: 0;
+  border-top: 1px solid var(--line);
+  border-radius: 0;
+  background: none;
+  padding: 1.6rem 1.75rem 1.6rem 0;
+}
+.lesson-card h2 { font-weight: 400; letter-spacing: -.02em; }
+.lesson-card .cue {
+  font-family: var(--sans);
+  font-size: .6875rem; font-weight: 500; letter-spacing: .14em;
+  color: var(--ink-faint);                 /* coral stays reserved for data marks */
+}
+.formula {
+  border-left: 2px solid var(--accent);
+  background: none;
+  padding-left: 1.1rem;
+}
+.lesson-footer-nav { border-top-color: var(--line-firm); }
+.lesson-footer-nav a { font-family: var(--sans); font-size: .8125rem; font-weight: 400; color: var(--ink); border-bottom: 1px solid var(--accent); padding-bottom: .18rem; text-decoration: none; }
+.lesson-footer-nav a:hover { color: var(--accent); }
+.atlas-domain { font-family: var(--sans); font-weight: 500; letter-spacing: .12em; color: var(--ink-faint); }
+.workbench-status { font-family: var(--sans); font-weight: 500; letter-spacing: .12em; color: var(--ink-faint); }
+.lesson-button, .segmented button, .lesson-select { font-family: var(--sans); border-radius: 999px; }
+
+/* soften the workbench frame without touching its internals */
+.lesson-workbench, .workbench-stage { border-radius: 0; }
+.lesson-canvas { border-radius: 0; border-color: var(--line); }
+
+/* ---------- site footer on article pages ---------- */
+.site-footer { border-top: 1px solid var(--line-firm); }
+.footer-wordmark .wordmark-mark { display: none; }
+
+@media (max-width: 700px) {
+  .lesson-card { padding-right: 0; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
