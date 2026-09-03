@@ -1,0 +1,433 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Vortioxetine and creatine both lower task-evoked BOLD. I argue they do it by two mechanistically independent routes, and that only one of them has any claim on general intelligence.">
+  <meta name="theme-color" content="#f7f7f5">
+  <link rel="canonical" href="https://theisegoria.github.io/vortioxetine-creatine-neural-efficiency/">
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <title>Two Routes to a Cheaper Brain</title>
+<style>
+  :root {
+    --ground:#F7F7F5; --surface:#FFFFFF; --surface-2:#F0F1EC;
+    --ink:#17191B; --muted:#63686D; --rule:#DEE0DC;
+    --accent:#1F5FA8; --accent-soft:#1F5FA814;
+    --blue:#2a78d6; --orange:#c8501f; --aqua:#12805a; --violet:#4a3aa7; --red:#c33a39;
+    --f-display:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    --f-body:"Inter",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+    --f-mono:ui-monospace,SFMono-Regular,Menlo,monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground:#101214; --surface:#181B1E; --surface-2:#1F2327;
+      --ink:#EDEFF1; --muted:#9BA3AA; --rule:#2C3237;
+      --accent:#69ABE3; --accent-soft:#69ABE31C;
+      --blue:#5c9ce8; --orange:#f08050; --aqua:#3cc493; --violet:#9085e9; --red:#e66767;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground:#101214; --surface:#181B1E; --surface-2:#1F2327;
+    --ink:#EDEFF1; --muted:#9BA3AA; --rule:#2C3237;
+    --accent:#69ABE3; --accent-soft:#69ABE31C;
+    --blue:#5c9ce8; --orange:#f08050; --aqua:#3cc493; --violet:#9085e9; --red:#e66767;
+  }
+
+  * { box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body {
+    margin:0; background:var(--ground); color:var(--ink);
+    font-family:var(--f-body); font-size:17px; line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  a { color:var(--accent); text-underline-offset:.18em; }
+
+  .wrap { width:min(760px, calc(100% - 40px)); margin-inline:auto; }
+  .wide { width:min(1080px, calc(100% - 40px)); margin-inline:auto; }
+
+  header.site {
+    border-bottom:1px solid var(--rule);
+  }
+  header.site .wide {
+    min-height:64px; display:flex; align-items:center;
+    justify-content:space-between; gap:20px;
+  }
+  header.site .name { font-weight:750; letter-spacing:-.02em; text-decoration:none; color:var(--ink); }
+  header.site nav { display:flex; gap:20px; flex-wrap:wrap; }
+  header.site nav a { color:var(--muted); font-size:.88rem; text-decoration:none; }
+  header.site nav a:hover { color:var(--ink); }
+
+  .hero { padding:76px 0 46px; }
+  .label { color:var(--muted); font-size:.74rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; }
+  h1 {
+    font-family:var(--f-display); font-weight:600;
+    margin:14px 0 16px; font-size:clamp(2.5rem,6.4vw,4rem);
+    line-height:1.02; letter-spacing:-.03em;
+  }
+  .standfirst { font-size:1.2rem; color:var(--muted); margin:0 0 26px; max-width:62ch; }
+  .herometa { display:flex; flex-wrap:wrap; gap:10px 18px; align-items:center;
+              font-size:.86rem; color:var(--muted); border-top:1px solid var(--rule); padding-top:18px; }
+  .pill {
+    display:inline-flex; align-items:center; gap:7px; padding:7px 14px;
+    border:1px solid var(--rule); border-radius:999px; background:var(--surface);
+    text-decoration:none; color:var(--ink); font-weight:600; font-size:.85rem;
+  }
+  .pill:hover { border-color:var(--accent); color:var(--accent); }
+
+  .toc { border-top:1px solid var(--rule); border-bottom:1px solid var(--rule); padding:22px 0 24px; margin-bottom:14px; }
+  .toc ol { margin:10px 0 0; padding-left:1.2em; columns:2; column-gap:34px; }
+  .toc li { margin:0 0 6px; color:var(--muted); font-size:.92rem; break-inside:avoid; }
+  .toc a { color:var(--ink); text-decoration:none; }
+  .toc a:hover { color:var(--accent); }
+
+  article { padding:8px 0 40px; }
+  h2 {
+    font-family:var(--f-display); font-weight:600; letter-spacing:-.02em;
+    font-size:1.72rem; line-height:1.18; margin:58px 0 4px;
+  }
+  h2 .num { color:var(--muted); font-family:var(--f-body); font-size:.8rem;
+            font-weight:700; letter-spacing:.1em; display:block; margin-bottom:10px; }
+  h3 { font-size:1.06rem; letter-spacing:-.01em; margin:34px 0 2px; }
+  p { margin:14px 0; }
+  strong { font-weight:650; }
+  em { font-style:italic; }
+  .lede { font-size:1.09rem; }
+  ul, ol.body { padding-left:1.25em; }
+  ul li, ol.body li { margin:9px 0; }
+
+  .fig { margin:36px 0 30px; }
+  .fig .plate {
+    background:#fff; border:1px solid var(--rule); border-radius:12px;
+    padding:16px 14px; overflow-x:auto;
+  }
+  .fig img { display:block; width:100%; height:auto; min-width:520px; }
+  .fig figcaption { color:var(--muted); font-size:.86rem; line-height:1.55; margin-top:12px; }
+  .fig figcaption b { color:var(--ink); font-weight:650; }
+
+  .key {
+    background:var(--surface); border:1px solid var(--rule);
+    border-left:3px solid var(--accent);
+    border-radius:10px; padding:18px 20px; margin:32px 0;
+  }
+  .key .kt { font-size:.74rem; font-weight:700; letter-spacing:.1em;
+             text-transform:uppercase; color:var(--accent); }
+  .key p:first-of-type { margin-top:8px; }
+  .key p:last-child, .key ol:last-child, .key ul:last-child { margin-bottom:0; }
+
+  .tablewrap { overflow-x:auto; margin:30px 0; }
+  table { border-collapse:collapse; width:100%; min-width:600px; font-size:.9rem; }
+  th, td { text-align:left; vertical-align:top; padding:11px 12px; border-bottom:1px solid var(--rule); }
+  thead th { border-bottom:2px solid var(--rule); font-size:.76rem; letter-spacing:.07em;
+             text-transform:uppercase; color:var(--muted); }
+  td.low { color:var(--red); font-weight:650; }
+  td.mid { color:var(--muted); }
+  td.high { color:var(--aqua); font-weight:650; }
+  caption { caption-side:bottom; text-align:left; color:var(--muted);
+            font-size:.85rem; padding-top:12px; }
+
+  .kicker { font-family:var(--f-display); font-size:1.34rem; line-height:1.45;
+            letter-spacing:-.015em; border-top:1px solid var(--rule);
+            padding-top:34px; margin-top:52px; }
+
+  .sources { border-top:1px solid var(--rule); margin-top:46px; padding-top:26px;
+             font-size:.82rem; color:var(--muted); line-height:1.6; }
+  .sources h2 { font-size:1.1rem; margin:0 0 12px; }
+  .sources b { color:var(--ink); }
+
+  footer.site { border-top:1px solid var(--rule); margin-top:56px; }
+  footer.site .wide { display:flex; justify-content:space-between; gap:20px;
+                      padding:26px 0 46px; color:var(--muted); font-size:.85rem; flex-wrap:wrap; }
+  footer.site a { color:var(--muted); }
+
+  @media (max-width:700px) {
+    body { font-size:16px; }
+    .hero { padding:54px 0 36px; }
+    .toc ol { columns:1; }
+    .fig .plate { padding:10px 8px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="wide">
+    <a class="name" href="../library.html">Isegoria</a>
+    <nav aria-label="Primary navigation">
+      <a href="#hypothesis">The hypothesis</a>
+      <a href="#predictions">Predictions</a>
+      <a href="#wrong">Objections</a>
+      <a href="../library.html">All projects</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="wrap">
+
+  <div class="hero">
+    <p class="label">Research report / 3 September 2026</p>
+    <h1>Two routes to a cheaper brain.</h1>
+    <p class="standfirst">Vortioxetine and creatine both lower task-evoked BOLD. I argue that they do it by two mechanistically independent routes, that only one of those routes has anything to do with intelligence, and that the most likely explanation for both findings is the one nobody has measured.</p>
+    <div class="herometa">
+      <a class="pill" href="two-routes-to-a-cheaper-brain.pdf">Read the PDF &middot; 14 pages</a>
+      <span>Vortioxetine &middot; creatine &middot; neural efficiency &middot; <span style="font-style:italic">g</span></span>
+    </div>
+  </div>
+
+  <nav class="toc" aria-label="Contents">
+    <p class="label">Contents</p>
+    <ol>
+      <li><a href="#bold">What a reduced BOLD signal actually is</a></li>
+      <li><a href="#efficiency">Neural efficiency has a sign that flips</a></li>
+      <li><a href="#vortioxetine">Disinhibition is a signal-to-noise operation</a></li>
+      <li><a href="#three">Acetylcholine, histamine and glutamate</a></li>
+      <li><a href="#cognition">What the cognition data will carry</a></li>
+      <li><a href="#creatine">Creatine changes the price, not the product</a></li>
+      <li><a href="#budget">The bill is synaptic</a></li>
+      <li><a href="#hypothesis">Two orthogonal coordinates</a></li>
+      <li><a href="#wrong">Where this is most likely wrong</a></li>
+      <li><a href="#experiment">The experiment I would run</a></li>
+    </ol>
+  </nav>
+
+  <article>
+
+  <p class="lede"><strong>The claim I want to test is not that vortioxetine and creatine raise <em>g</em>. It is that they move a brain along the two coordinates that the neuroimaging literature has been calling "neural efficiency" all along, and that they move along different ones.</strong> Vortioxetine, if the preclinical circuit story is right, changes how much information a cortical circuit carries per spike. Creatine changes how much ATP the brain can deliver per unit of demand. Those are orthogonal quantities. Both of them, pushed in the right direction, produce a lower task-evoked BOLD response. Neither of them, on its own, licenses the inference that the person doing the task has become smarter. What follows is the mechanistic case for each route, the reason the two should not be conflated, and the experiment that would tell them apart.</p>
+
+  <h2 id="bold"><span class="num">Section one</span>What a reduced BOLD signal actually is, and the five things it can mean</h2>
+
+  <p>The BOLD signal is not a measurement of neural activity. It is a measurement of deoxyhaemoglobin concentration, which is a function of cerebral blood flow, cerebral blood volume and the cerebral metabolic rate of oxygen consumption. A positive BOLD response happens because CBF overshoots CMRO<sub>2</sub>, and the ratio of those two responses is not a constant. Buxton and colleagues (2014) demonstrated exactly how badly it misbehaves: under caffeine, baseline CBF fell 25 per cent, baseline CMRO<sub>2</sub> rose, the absolute CMRO<sub>2</sub> response to visual stimulation rose 60 per cent, and the BOLD response did not change at all. In the same body of work, a stimulus contrast manipulation produced BOLD modulation roughly twice the size of the underlying metabolic change, while an attention manipulation produced large CMRO<sub>2</sub> amplification with almost no BOLD change. A signal that can overshoot by a factor of two in one condition and sit flat through a 60 per cent metabolic change in another cannot be read as a linear meter of neural work.</p>
+
+  <p>So when a drug lowers task BOLD, there are five live explanations, and only two of them are about cognition getting cheaper.</p>
+
+  <figure class="fig">
+    <div class="plate"><img src="figures/fig1_bold_ambiguity.svg" alt="Diagram: five candidate explanations for a drug-induced BOLD decrease, split into two that mean cheaper computation and three that are confounds."></div>
+    <figcaption><b>Figure 1. The inferential problem.</b> Three of the five candidate explanations for a drug-induced BOLD decrease have nothing to do with the brain computing more cheaply. The efficiency claim in this report is a claim about the two leftmost boxes, and the report's central methodological argument is that nobody has run the experiment that separates them from the rightmost one.</figcaption>
+  </figure>
+
+  <p>I want to be exact about the last box, because it is the one that could sink the whole thesis and it recurs for both compounds. Vortioxetine is a 5-HT<sub>1B</sub> partial agonist and a 5-HT<sub>1D</sub> antagonist. 5-HT<sub>1B/1D</sub> are the triptan receptors, the principal mediators of cerebral and meningeal vasoconstriction. A 2025 pharmacological MRI study found that citalopram 20 mg produced significant arterial-spin-labelling CBF reductions in hippocampus, amygdala and insula that tracked 5-HT<sub>1A</sub> and 5-HT<sub>4</sub> receptor density, while producing no significant effect on resting BOLD fluctuations. That is precisely the dissociation that would manufacture a spurious efficiency effect in a task-BOLD contrast. There is, to my knowledge, no published human ASL, PET-CBF or CMR<sub>glc</sub> study of vortioxetine at all. Hold that thought; it returns in section nine.</p>
+
+  <h2 id="efficiency"><span class="num">Section two</span>Neural efficiency is a real effect whose sign flips</h2>
+
+  <p>The hypothesis starts with Haier's PET work. In the 1988 study, cortical glucose metabolic rate correlated negatively with Raven's performance, with regional coefficients reported between &minus;0.72 and &minus;0.84. The more interesting result is the 1992 Tetris study: after four to eight weeks of daily practice, whole-cortex glucose metabolic rate fell from 39.2 to 28.8 &micro;mol/100g/min, a drop of about a quarter, while task performance rose more than sevenfold, and the participants who improved most showed the largest metabolic decreases. Learning makes a computation cheaper. That much is solid and it is the durable core of the hypothesis.</p>
+
+  <p>What is not solid is the leap from there to "high-<em>g</em> brains use less energy." The decisive counter-experiment is Larson and colleagues (1995), who scanned 14 high-Raven and 14 average-Raven men on a backwards digit-span task adaptively titrated to 90 per cent and 75 per cent accuracy. When difficulty was equated to ability instead of held objectively constant, the sign reversed: the high-ability group showed <em>higher</em> cortical metabolic rates (Group &times; Condition <em>F</em>(1,26) = 7.04, <em>p</em> = .013). The original inverse correlations were, at least partly, an artefact of able people finding the standard task easy.</p>
+
+  <figure class="fig">
+    <div class="plate"><img src="figures/fig6_crossover.svg" alt="Curves showing task-related activation against subjective demand for higher and average ability, crossing at moderate demand."></div>
+    <figcaption><b>Figure 2. The crossover.</b> Documented by Neubauer and Fink (2009) and shown directly by Dunst et al. (2014). Efficiency appears at low-to-moderate <em>subjective</em> demand and inverts at high demand. Because difficulty is defined relative to the individual, the same objective task sits at different points on this axis for different people, which is why the effect's sign is so easy to manipulate by task selection.</figcaption>
+  </figure>
+
+  <p>Basten, Stelzel and Fiebach (2013) sharpen the picture further. In 52 participants across an IQ range of 77 to 139, higher intelligence predicted <em>stronger</em> task-positive network activation (<em>F</em>(1,50) = 4.29, <em>p</em> = .044) and <em>less</em> effort needed to suppress the default mode network (<em>F</em>(1,50) = 8.87, <em>p</em> = .004). Efficiency lived in the task-negative network; capacity lived in the task-positive one. And at scale, the network-topology version of the story collapses: Metzen et al. (2024), pooling four datasets and more than 2,000 participants, found no reliable association between global efficiency or small-world propensity and intelligence, with global clustering managing <em>r</em> &asymp; 0.10. The <em>n</em> = 19 path-length results do not replicate.</p>
+
+  <p>Barbey's (2018) network neuroscience theory is the framing I find most useful, because it dissolves the efficiency-versus-capacity argument rather than picking a side. Crystallised ability draws on easy-to-reach network states; fluid ability requires driving the network into difficult-to-reach states. Cheap access to easy states looks like efficiency. The ability to reach expensive states looks like capacity. They are two regimes of one control problem, and which one you observe is set by where the task sits relative to the person.</p>
+
+  <div class="key">
+    <p class="kt">Why this matters for the drug argument</p>
+    <p>If "neural efficiency" has a sign that flips with subjective demand, then <em>a drug that lowers BOLD is not thereby doing something <span style="font-style:normal">g</span>-like</em>. It is only doing something <em>g</em>-like if it lowers BOLD in the efficiency regime while preserving or extending performance in the capacity regime. That is a two-part, falsifiable prediction, and it is different for the two compounds. It is the whole argument of this report.</p>
+  </div>
+
+  <h2 id="vortioxetine"><span class="num">Section three</span>Vortioxetine's mechanism is disinhibition, and disinhibition is a signal-to-noise operation</h2>
+
+  <p>Start with the pharmacology, because the usual receptor table is misleading. Vortioxetine's binding affinities run SERT 1.6 nM, 5-HT<sub>3A</sub> 3.7, 5-HT<sub>1A</sub> 15, 5-HT<sub>7</sub> 19, 5-HT<sub>1B</sub> 33, 5-HT<sub>1D</sub> 54 and NET 113 (Bang-Andersen 2011; M&oslash;rk 2012). Functional potency does not follow that order. 5-HT<sub>7</sub> has a respectable <em>K</em><sub>i</sub> of 19 nM but a functional <em>K</em><sub>b</sub> of 450 nM, a 24-fold gap, and 5-HT<sub>1B</sub> intrinsic activity falls from 55 per cent to 22 per cent depending on assay coupling.</p>
+
+  <figure class="fig">
+    <div class="plate"><img src="figures/fig2_targets.svg" alt="Left: binding affinity versus functional potency for vortioxetine's targets on a log scale. Right: SERT occupancy against dose."></div>
+    <figcaption><b>Figure 3. Target engagement.</b> Left: binding affinity against functional potency for each target. The gap is the reason "modes and nodes" framings overstate 5-HT<sub>7</sub> and 5-HT<sub>1A</sub> involvement at clinical doses. Right: PET SERT occupancy (Stenkrona 2013; fitted ED<sub>50</sub> &asymp; 8.5 mg, S&oslash;rensen 2022). Vortioxetine is efficacious at 5 mg, where occupancy is roughly half. That is the single strongest argument that the non-SERT mechanisms carry real clinical weight, because an SSRI at 50 per cent occupancy does very little.</figcaption>
+  </figure>
+
+  <p>What is confidently engaged at 5 to 20 mg is SERT inhibition and 5-HT<sub>3</sub> antagonism. And 5-HT<sub>3</sub> antagonism is the interesting one, because of where the receptor sits.</p>
+
+  <figure class="fig">
+    <div class="plate"><img src="figures/fig3_circuit.svg" alt="Circuit diagram: vortioxetine blocks 5-HT3A receptors on GABAergic interneurons, disinhibiting pyramidal cells and raising regional glutamate, acetylcholine, histamine, dopamine, noradrenaline and serotonin."></div>
+    <figcaption><b>Figure 4. The disinhibition chain.</b> The key experimental result is Dale et al. (2014): in rat CA1, applied 5-HT raised spontaneous IPSC frequency by 301 &plusmn; 34 per cent and amplitude by 261 &plusmn; 26 per cent; vortioxetine suppressed both in 14 of 15 cells; the 5-HT<sub>3</sub> agonist m-CPBG reproduced the 5-HT effect in 68 per cent of cells and vortioxetine blocked it in <em>all</em> of them. Riga et al. (2016) then showed in vivo that subchronic vortioxetine, but not escitalopram, raises mPFC pyramidal activity.</figcaption>
+  </figure>
+
+  <p>This is why the compound is not just an SSRI with extra receptors. An SSRI raises 5-HT everywhere, and a good deal of that extra 5-HT lands on 5-HT<sub>3</sub> receptors on GABAergic interneurons, which increases inhibitory tone on pyramidal cells. Vortioxetine raises 5-HT and simultaneously blocks the receptor through which the increase would otherwise suppress pyramidal output. The net effect is regionally selective disinhibition rather than global excitation, and the difference between those two matters enormously for the efficiency argument.</p>
+
+  <p>The downstream transmitter increases follow from that disinhibition. M&oslash;rk et al. (2012) showed dose-dependent increases in 5-HT, dopamine and noradrenaline in medial prefrontal cortex and ventral hippocampus, including at subchronic doses giving only 41 per cent rat SERT occupancy. M&oslash;rk et al. (2013) added acetylcholine and histamine in mPFC at 1 to 10 mg/kg. Pehrson et al. (2013) is the source of the "regionally selective increases in multiple neurotransmitters" framing.</p>
+
+  <p>I should flag the weakest link honestly. Pehrson et al. (2016) found the acute hippocampal ACh rise to be modest and short-lived, found no change in basal hippocampal ACh with subchronic dosing, and found that vortioxetine failed to reverse scopolamine-induced attention deficits. The cholinergic claim is real in prefrontal cortex and thin in hippocampus, and reviews tend to blur that.</p>
+
+  <p>A second flag, on the oscillations. The rodent story does not translate. Leiser (2014) and Dale (2014) report increased frontal theta and gamma in rat, but the only human EEG study, Nissen, Gram and colleagues (2020, four-way crossover in 32 healthy men across vortioxetine 10 mg, 20 mg, escitalopram 15 mg and placebo), found <em>decreased</em> resting theta, increased beta, and an effect profile broadly indistinguishable from an SSRI. Anyone leaning on theta as the translational bridge is leaning on rodent data that the human recording contradicts, and Figure 4 should be read with that in mind.</p>
+
+  <h2 id="three"><span class="num">Section four</span>Why acetylcholine, histamine and glutamate are the pro-cognitive three</h2>
+
+  <p>The reason these three transmitters matter is not that they are "activating." Noradrenaline is activating. Caffeine is activating. What distinguishes these three is that each one, in the right regime, changes the <em>ratio</em> of task-relevant to task-irrelevant activity rather than scaling both together.</p>
+
+  <h3>Acetylcholine: raise the signal, suppress the echo</h3>
+
+  <p>The computational account, developed by Hasselmo and consolidated in Hasselmo and Sarter (2011), is asymmetric modulation. Nicotinic receptors on thalamocortical terminals enhance glutamatergic transmission at feedforward afferent synapses, so new evidence from the world is weighted more heavily. Presynaptic muscarinic receptors simultaneously produce heterosynaptic inhibition of glutamate release at <em>recurrent</em> excitatory synapses: CA3 associational fibres, piriform layer Ib, intracortical layer II/III collaterals. The numerator rises and the denominator falls. This is signal-to-noise in the strict sense, and the component being suppressed is self-sustaining internally generated spiking, which costs energy without carrying new information.</p>
+
+  <p>The empirical texture is good. Parikh et al. (2007), recording prefrontal cholinergic transients at sub-second resolution in rats doing a cued detection task, found that detected cues evoked transients and missed cues evoked none; a 1 &micro;M increase in the choline signal predicted a 1.75 s reduction in response latency; and slow tonic changes correlated with transient amplitude at <em>r</em> = 0.72, meaning tonic ACh sets the gain on the phasic detection signal. Parikh et al. (2010) dissociated the receptor families: &beta;2*-containing receptors control transient amplitude, &alpha;7 controls duration.</p>
+
+  <p>And here is the finding that makes the whole efficiency argument non-hypothetical. Furey et al. (2008) gave ten healthy volunteers a parametric delayed match-to-sample task at delays of 1, 6, 11 and 16 s under saline and under intravenous physostigmine. Under saline, prefrontal rCBF scaled systematically with delay, which is the normal difficulty-recruitment pattern. Under physostigmine, reaction time fell and prefrontal rCBF fell selectively at the longest delays, <em>abolishing the correlation between task delay and prefrontal rCBF entirely</em>. A cholinergic drug did not add activation. It removed the activation that difficulty would otherwise have demanded. That is the closest thing in the human literature to a proof of concept that a neuromodulator can move a healthy brain along the efficiency axis rather than the arousal axis.</p>
+
+  <h3>Histamine: necessary, and by itself not sufficient</h3>
+
+  <p>All CNS histamine originates in the tuberomammillary nucleus and projects diffusely. H<sub>1</sub> blocks leak potassium conductances and depolarises cortical pyramidal cells; H<sub>2</sub> reduces the calcium-activated afterhyperpolarisation, raising firing gain. H<sub>3</sub> is the interesting one: a constitutively active Gi/o receptor acting both as an autoreceptor on histaminergic terminals and as a heteroreceptor on cholinergic, noradrenergic, dopaminergic and glutamatergic terminals. Blocking H<sub>3</sub> therefore disinhibits histamine release <em>and</em> cortical ACh release, converging on the mechanism above. Ciproxifan in cats suppressed 0.8 to 5 Hz slow activity and spindles, markedly increased 25 to 45 Hz fast rhythms, and improved five-choice accuracy specifically at the hardest stimulus duration (Ligneau 1998).</p>
+
+  <p>The clinical record is where the caution comes from. Pitolisant is approved for narcolepsy, so the arousal effect is real. The cognition programmes are a graveyard: ABT-288 failed in Alzheimer's disease and produced psychosis in schizophrenia; MK-0249 failed; GSK239512 moved episodic memory only. Nishii et al. (2025), pooling 11 RCTs and 754 participants, found no cognitive benefit for the class, with the only positive signal from betahistine (composite SMD &minus;0.61, 95% CI &minus;1.03 to &minus;0.18). The converse evidence is everyday and strong: H<sub>1</sub> antagonists reliably impair cognition.</p>
+
+  <p>I take the lesson to be specific and important for this report's thesis: <em>global, tonic elevation of an arousal transmitter reliably produces wakefulness and unreliably produces cognition</em>. Whatever is pro-cognitive about vortioxetine's histaminergic effect cannot be the histamine per se. It has to be that the histamine rise is regional and permissive of phasic signalling rather than a tonic ceiling.</p>
+
+  <h3>Glutamate: the narrowest window of the three</h3>
+
+  <p>Glutamate is where the inverted U is sharpest in both directions. On the left arm, Wang et al. (2013) recorded primate dlPFC Delay cells and found NMDA antagonism reduced delay firing in 14 of 15 cells against AMPA antagonism in 10 of 16, with substantially greater maximum reduction; NR2B in dlPFC sits exclusively within the postsynaptic density, unlike sensory cortex; and their model showed that reducing NMDAR conductance to 70 per cent of control produced near-complete loss of network persistent firing. A 30 per cent reduction is catastrophic. On the right arm, Yizhar et al. (2011) showed optogenetically that elevating cortical E/I ratio <em>degrades</em> information processing, with partial rescue by co-elevating inhibition, and beyond that lies frank excitotoxicity. The ampakine programmes, which were the direct pharmacological test of "just add glutamatergic drive," returned inconsistent-to-negative clinical results inside a window bounded by seizure risk.</p>
+
+  <p>The mediating variable is oscillatory. Glutamatergic drive onto fast-spiking parvalbumin interneurons generates the PING loop that produces gamma, and Sohal et al. (2009) showed optogenetically that gamma-frequency modulation of excitatory input enhances cortical signal transmission by reducing circuit noise and amplifying circuit signals. Same currency as acetylcholine, different door.</p>
+
+  <p>The human correlational data points the same way. Marsman et al. (2017), using 7T MRS, found the prefrontal GABA/glutamate <em>ratio</em> correlated <em>r</em> = &minus;0.80 (<em>p</em> = 0.01) with working memory index, and occipital glutamate concentration <em>r</em> = &minus;0.79. Take the first coefficient with care: the study enrolled 23 adults but that correlation carries <em>df</em> = 7, so it rests on about nine of them, and an <em>r</em> of that size on nine subjects is a fragile estimate. The direction is what I am relying on, not the magnitude. Better performers did not have more glutamate. They had a more favourable excitation-inhibition balance.</p>
+
+  <div class="key">
+    <p class="kt">The through-line</p>
+    <p>Each of the three works by changing what fraction of cortical spiking is task-relevant. Acetylcholine does it by suppressing recurrent transmission while enhancing afferent transmission. Glutamate does it through PV-mediated gamma, which is a temporal sorting mechanism. Histamine does it by permitting the other two. None of them works by making the cortex uniformly more active, and the histamine trial record is the empirical proof that uniform activation does not buy cognition.</p>
+  </div>
+
+  <h2 id="cognition"><span class="num">Section five</span>What the vortioxetine cognition data will and will not carry</h2>
+
+  <p>The FOCUS trial (McIntyre 2014, <em>n</em> = 602) gave a DSST effect of <em>d</em> = 0.51 at 10 mg and <em>d</em> = 0.52 at 20 mg, with RAVLT delayed recall at 0.31 and 0.28, and a path analysis attributing 66 and 56 per cent of the DSST effect to a direct route rather than a mood-mediated one. CONNECT (Mahableshwarkar 2015, <em>n</em> = 602) gave a smaller DSST effect, <em>d</em> = 0.254, <em>p</em> = 0.019, with duloxetine 60 mg failing to separate from placebo (<em>d</em> = 0.176, <em>p</em> = 0.099) and a path analysis attributing 75.7 per cent of vortioxetine's effect to the direct route against 48.7 per cent for duloxetine. Baune's network meta-analysis (2018, 12 RCTs, 3,738 patients) found vortioxetine the only antidepressant significantly superior to placebo on DSST, SMD 0.325 (95% CI 0.120 to 0.529).</p>
+
+  <figure class="fig">
+    <div class="plate"><img src="figures/fig4_forest.svg" alt="Forest plot of standardised effect sizes for vortioxetine and creatine cognitive outcomes."></div>
+    <figcaption><b>Figure 5. Effect sizes for both compounds on a common axis.</b> Open circles are point estimates whose confidence intervals I could not obtain from the primary source; grey entries are nulls or comparators. Two observations. First, the vortioxetine effects are consistent in direction and modest in size, and the largest of them come from the trial designed to detect them. Second, the creatine memory effects rest almost entirely on older adults; in young healthy people the meta-analytic estimate is 0.03.</figcaption>
+  </figure>
+
+  <p>Now the part that the enthusiast literature skips. The path analyses are structural equation models fitted to trial data, not experimental dissociations. Nothing in FOCUS or CONNECT manipulated mood and cognition independently. Baune's own 2018 trial in employed MDD patients found vortioxetine, paroxetine and placebo indistinguishable on DSST. Nierenberg et al. (2019) found no treatment differences in remitted patients with residual cognitive symptoms. Vieta et al. (2018) found no significant separation from escitalopram. CONNECT's RAVLT and Stroop outcomes were null even while its DSST outcome was positive. And the regulator did not buy it: the FDA advisory committee voted 8 to 2 in favour in 2016, the FDA declined the cognition indication, and the 2018 label revision states that the DSST effects "may reflect improvement in depression" and that no comparative advantage over other antidepressants has been demonstrated.</p>
+
+  <p>The imaging result that motivates this whole report is Smith et al. (2018, <em>Molecular Psychiatry</em>): 96 participants, 48 in remitted MDD and 48 healthy controls, randomised to vortioxetine 20 mg or placebo for a fortnight, scanned on an N-back. BOLD fell in right dlPFC (<em>Z</em> = 3.34, <em>p</em> = 0.030) and left hippocampus (<em>Z</em> = 3.72, <em>p</em> = 0.029). N-back accuracy did not change. Trail Making A and B improved (<em>p</em> = 0.01 and <em>p</em> = 0.02); DSST and RAVLT were null in this healthy-weighted sample. The authors interpreted the pattern as increased neural efficiency and noted it runs opposite to the BOLD increases seen in depressed patients who maintain performance.</p>
+
+  <p>Note what that study is and is not. It is a real, adequately powered, placebo-controlled demonstration that vortioxetine lowers task-evoked BOLD with performance held constant. It is not a demonstration that the reduction is neural in origin, because no CBF measure was taken, and it is not a demonstration in the efficiency regime specifically, because N-back load was not titrated to individual capacity.</p>
+
+  <h2 id="creatine"><span class="num">Section six</span>Creatine changes the price, not the product</h2>
+
+  <p>Creatine's mechanism has nothing to do with representation. The phosphocreatine/creatine kinase system is a near-equilibrium buffer whose unidirectional flux far exceeds net ATP synthesis, and it does two jobs: temporal buffering, holding &Delta;<em>G</em><sub>ATP</sub> nearly constant through demand transients faster than oxidative phosphorylation can respond, and spatial buffering, since PCr and Cr diffuse faster and at higher concentration than adenine nucleotides. Mitochondrial creatine kinase sits in the intermembrane space coupled to the adenine nucleotide translocase, so mitochondrial ATP is converted to PCr essentially at the point of export.</p>
+
+  <p>The single most important measurement in this literature is Chen et al. (1997): during photic stimulation, the creatine kinase forward rate constant in human visual cortex rose 34 per cent <em>with no significant change in steady-state PCr or ATP concentrations</em>. Activity modulates flux, not pool size. Almost every creatine supplementation study measures the pool.</p>
+
+  <figure class="fig">
+    <div class="plate"><img src="figures/fig5_creatine_dose.svg" alt="Scatter plot of creatine dose against percentage change in brain phosphocreatine or total creatine."></div>
+    <figcaption><b>Figure 6. Brain target engagement.</b> Kondo et al. (2016) is the only clean dose-response: frontal PCr rose 4.6, 4.1 and 9.1 per cent on 2, 4 and 10 g/day against &minus;0.7 per cent for placebo. Dechent (1999) found +8.7 per cent mean total creatine on 20 g/day for four weeks, with thalamus at +14.6 per cent and an individual range of 3.5 to 13.3 per cent. Solis et al. (2017) found no measurable change at all in healthy children after seven days. Creatine crosses the barrier via SLC6A8, which astrocytes and their perivascular endfeet do not express, so peripheral creatine must cross endothelium and then reach neurons past a non-transporting glial sheath.</figcaption>
+  </figure>
+
+  <p>The behavioural payoff is small, conditional and contested. It concentrates in memory and speeded tasks, and it is largest under bioenergetic stress: 20 g/day for seven days restored complex attention by 21 per cent against placebo under hypoxia at FiO<sub>2</sub> 0.10 (Turner 2015); a single 0.35 g/kg dose under 21 hours of sleep deprivation raised processing speed by 24 to 29 per cent and word memory by 10.3 per cent (Gordji-Nejad 2024). In unstressed healthy young adults it is close to nothing. The largest preregistered crossover, Sandk&uuml;hler et al. (2023, <em>n</em> = 123, 5 g/day for six weeks), failed to replicate Rae's classic vegetarian result: backward digit span <em>d</em> = 0.17, Raven's <em>d</em> = 0.09. And the meta-analytic effect sizes are inflated by a real statistical error: Prokopidis (2023) and Xu (2024) pooled multiple correlated subtests from the same participants as independent effects, so the number of observations exceeded the number of randomised people. When Eckert and Pascher re-analysed Prokopidis correctly, the memory effect survived only in older adults, and EFSA (2024) rejected the cognitive health claim outright.</p>
+
+  <p>Here is the part relevant to this report. Three studies have looked at what creatine does to the task-evoked haemodynamic response, and all three found it shrinks.</p>
+
+  <ul>
+    <li><strong>Hammett et al. (2010).</strong> 20 g/day for five days then 5 g/day for two reduced the visual-cortex BOLD response to visual stimulation by 16 per cent, with no comparable change in the placebo arm, alongside improved backwards digit span (<em>F</em>(1,20) = 8.58, <em>p</em> = 0.008) and a null result on Raven's. This was a parallel-groups design with 11 participants per arm, not a crossover, so the effect rests on a between-subjects comparison of eleven people. The authors interpreted it as a change in the coupling between neural activity and the haemodynamic response.</li>
+    <li><strong>Watanabe, Kato and Kato (2002).</strong> 8 g/day for five days reduced mental fatigue on a serial calculation test, with NIRS showing reduced task-related oxyhaemoglobin and increased deoxyhaemoglobin. These authors read the same direction of change as <em>increased</em> cerebral oxygen utilisation.</li>
+    <li><strong>Moriarty et al. (2023).</strong> A trend toward decreased prefrontal oxyhaemoglobin during a processing speed task at 10 g/day (<em>p</em> = 0.06), with no behavioural change.</li>
+  </ul>
+
+  <p>Three studies agree on the direction and disagree on the interpretation, and no human study has measured CMRO<sub>2</sub> under creatine supplementation. Turner et al. explicitly rejected a pure oxygen-sparing account, and found that the magnitude of brain creatine accumulation did not predict cognitive protection at all (<em>R</em><sup>2</sup> = 0.002).</p>
+
+  <h2 id="budget"><span class="num">Section seven</span>The bill is synaptic, so the savings must be synaptic</h2>
+
+  <p>The reason the two routes are worth distinguishing becomes clear once you look at what cortical energy is actually spent on.</p>
+
+  <figure class="fig">
+    <div class="plate"><img src="figures/fig7_energy.svg" alt="Stacked bars comparing the Attwell and Laughlin 2001 and Howarth 2012 partitions of grey-matter signalling energy."></div>
+    <figcaption><b>Figure 7. Grey-matter signalling energy.</b> Attwell and Laughlin (2001) apportioned it at 4 Hz; Howarth et al. (2012) revised it using a realistic sodium-potassium current-overlap factor of 1.24 rather than 4, cutting the action-potential share by about 69 per cent. Either partition says the same thing: the dominant cost is postsynaptic glutamate receptor currents and the Na<sup>+</sup>/K<sup>+</sup>-ATPase work of restoring the ion gradients that follow.</figcaption>
+  </figure>
+
+  <p>Lennie (2003) rescaled this to human cortex: roughly 2.4 &times; 10<sup>9</sup> ATP per spike, with neocortex consuming 44 per cent of total brain energy, and the budget capable of sustaining a mean of only 0.16 spikes per second per neuron. That implies concurrent signalling in about one cortical neuron in 312. The cortex is not energy-limited in some abstract sense; it is energy-limited to a specific, quantified sparseness.</p>
+
+  <p>This is where the theory closes. Barlow's efficient coding hypothesis and Olshausen and Field's (1996) demonstration that a sparseness penalty on a generative model of natural images spontaneously produces V1-like receptive fields say that a better representation <em>is</em> a sparser one. Levy and Baxter (1996) derived the complementary result: when metabolic cost per spike enters the objective, the information-maximising code has a low optimal firing probability. Sparse coding is simultaneously the information-theoretic and the energetic optimum.</p>
+
+  <p>So: if a drug increases the weight of afferent evidence and suppresses recurrent self-excitation, the resulting code is sparser and more selective; a sparser code costs less because postsynaptic currents and pumping dominate the bill; and less cost at equal or better behaviour is what neural efficiency means. That is a complete mechanistic chain from receptor to metabolism, and it applies to vortioxetine and not to creatine.</p>
+
+  <h2 id="hypothesis"><span class="num">Section eight</span>The hypothesis proper: two orthogonal coordinates</h2>
+
+  <p><strong>Here is the claim.</strong> What the imaging literature calls neural efficiency is not one quantity. It is at least two, and they are independent.</p>
+
+  <p>The first is <strong>representational efficiency</strong>: how much task-relevant information a circuit carries per spike. This is the quantity that Hasselmo's cholinergic asymmetry manipulates, that Sohal's gamma manipulates, that Marsman's GABA/glutamate ratio indexes, and that Jensen's and Kail's neural-noise accounts of <em>g</em> have always been about. Its behavioural signatures are the ones that load on <em>g</em> most cleanly: inspection time, choice reaction time, and above all intraindividual reaction-time variability, which the worst-performance rule tells us predicts <em>g</em> at least as well as mean speed. Improving it lowers the metabolic cost of a fixed computation because it deletes spiking that carried no information.</p>
+
+  <p>The second is <strong>bioenergetic headroom</strong>: how much ATP the tissue can deliver per unit of demand, and how well it holds &Delta;<em>G</em><sub>ATP</sub> constant through transients. This is Geary's (2018) mitochondrial account of <em>g</em>, and it is what the creatine kinase system is for. Improving it does not change the computation at all. It changes the size of the perfusion excursion required to service the same computation, and it moves the load at which the system falls over.</p>
+
+  <figure class="fig">
+    <div class="plate"><img src="figures/fig8_plane.svg" alt="Two-dimensional plane with representational efficiency on the x-axis and bioenergetic headroom on the y-axis, showing baseline, vortioxetine, creatine and combined positions."></div>
+    <figcaption><b>Figure 8. The two coordinates,</b> with the predicted metabolic cost of a fixed computation as background shading. Vortioxetine's mechanism moves horizontally: disinhibition plus cholinergic, glutamatergic and histaminergic modulation raises information per spike. Creatine's moves vertically: a larger and faster-cycling phosphagen buffer raises supply per unit demand. Both reduce measured BOLD. Only the horizontal move has any claim on the construct of <em>g</em>, and even that claim is about expression rather than capacity.</figcaption>
+  </figure>
+
+  <p>The reason this matters is that the two coordinates make different predictions about <em>where on the load axis</em> the effect should appear, and the crossover in section two tells us exactly how to read that.</p>
+
+  <figure class="fig" id="predictions">
+    <div class="plate"><img src="figures/fig9_predictions.svg" alt="Two panels of predicted curves: task BOLD amplitude and accuracy against cognitive load for placebo, vortioxetine, creatine and both."></div>
+    <figcaption><b>Figure 9. The falsifiable core.</b> A representational-efficiency agent should lower BOLD amplitude at low-to-moderate load while leaving the load at which performance collapses roughly where it was. A bioenergetic agent should do the opposite: leave the low-load amplitude roughly alone and move the collapse point rightward, which in the moderate-to-high range means <em>more</em> BOLD, not less, because the system is still able to respond where the unsupplemented system has given up. If both drugs simply lower BOLD everywhere and equally, the two-coordinate model is wrong and the vascular explanation gains a great deal of ground.</figcaption>
+  </figure>
+
+  <div class="key">
+    <p class="kt">The specific predictions</p>
+    <ol class="body">
+      <li>Under calibrated fMRI, vortioxetine reduces task CMRO<sub>2</sub> at fixed titrated accuracy. Creatine does not; it reduces the CBF excursion required to deliver the same CMRO<sub>2</sub>.</li>
+      <li>Vortioxetine's BOLD reduction is largest at low-to-moderate subjective demand and shrinks or reverses when difficulty is titrated upward. Creatine's effect grows with load and with bioenergetic stress.</li>
+      <li>Creatine's cognitive benefit tracks <sup>31</sup>P-MRS creatine kinase <em>flux</em>, not static PCr or total creatine concentration. This predicts that Turner's null correlation between brain creatine accumulation and cognitive protection (<em>R</em><sup>2</sup> = 0.002) is not a failure of the mechanism but a failure of the measure.</li>
+      <li>Vortioxetine's benefit tracks intraindividual reaction-time variability and the slowest RT quantiles more than mean RT, because a signal-to-noise mechanism should clean up the tail of the distribution first.</li>
+      <li>In a 2&times;2 factorial, the two effects are additive on performance and dissociable on imaging. If they interact, the mechanisms are not independent and this framework is wrong.</li>
+    </ol>
+  </div>
+
+  <h2 id="wrong"><span class="num">Section nine</span>Where this is most likely to be wrong</h2>
+
+  <p>I will state the strongest version of the case against, because I think it is genuinely strong.</p>
+
+  <p><strong>Both BOLD reductions may be vascular, and the fields have not checked.</strong> Vortioxetine is a 5-HT<sub>1B</sub> partial agonist, that is, an agonist at the principal vasoconstrictive cerebral serotonin receptor, and citalopram has already been shown to cut hippocampal and amygdala perfusion without moving BOLD fluctuations. Smith et al. reported reduced BOLD in hippocampus and dlPFC and took no perfusion measure. On the creatine side it is worse: Hammett and colleagues, who found the 16 per cent reduction, explicitly interpreted their own result as a change in neurovascular coupling and offered it as an explanation for between-subject variability in fMRI. If they are right, creatine's "efficiency" effect is a measurement artefact of precisely the kind that would counterfeit efficiency. Two compounds, two BOLD reductions, one uncontrolled confound shared between them. That is the hypothesis I would bet against my own thesis on.</p>
+
+  <p><strong>The efficiency construct may not survive scrutiny at all.</strong> Poldrack (2015) argues that efficiency is invoked post hoc whenever activation decreases, that the literature contains both directions, and that either result can be and has been labelled. He also notes the cross-species tension: training <em>increases</em> prefrontal firing in primate single-unit recordings while human fMRI shows decreased activation on the same kind of task. Reduced BOLD is equally consistent with representational sharpening, strategy substitution, reduced time-on-task, a shifted regional locus, and genuine metabolic saving. Amplitude cannot distinguish them.</p>
+
+  <p><strong>The cognition data on both compounds is weaker than its reputation.</strong> Vortioxetine's DSST effect has three published nulls, a failed active comparator inside its own positive trial, and a regulator that declined the indication and required a label caveat. Creatine's memory meta-analyses contain a unit-of-analysis error that, corrected, leaves the effect standing only in older adults, and EFSA and the UK committee both rejected the claim. The honest summary is that vortioxetine has the better-designed trials and creatine has the better-understood mechanism, and neither has both.</p>
+
+  <p><strong>And the trait/state distinction is not a technicality.</strong> <em>g</em> is a latent trait estimated across diverse tasks. Nothing described here plausibly moves it. What these mechanisms could move is the fraction of trait capacity that gets expressed on a given day, which in depression is substantially depressed and in sleep deprivation and hypoxia is substantially depressed for entirely different reasons. Every large creatine effect in the literature comes from a stressed or depleted state. Every vortioxetine cognitive effect comes from a depressed sample. That is not a coincidence; it is the shape of the phenomenon. These agents narrow the gap between capacity and expression. Reading that as an increase in capacity is the same error as reading a fever reduction as an improvement in immune function.</p>
+
+  <div class="tablewrap">
+  <table>
+    <caption>Table 1. Graded confidence in each component claim. The thesis of this report sits on rows 1, 2 and 6; the objection that would kill it sits on row 4.</caption>
+    <thead><tr><th>Claim</th><th>Confidence</th><th>Load-bearing evidence or gap</th></tr></thead>
+    <tbody>
+      <tr><td>Vortioxetine disinhibits pyramidal cells via 5-HT<sub>3</sub> antagonism on GABAergic interneurons</td><td class="high">High</td><td>Dale 2014 (14/15 cells, m-CPBG blocked in all); Riga 2016 in vivo</td></tr>
+      <tr><td>Vortioxetine regionally raises ACh, histamine, glutamate, DA and NE in mPFC</td><td class="mid">Moderate to high (rat)</td><td>M&oslash;rk 2012, 2013; Pehrson 2013. Hippocampal ACh effect is weak (Pehrson 2016)</td></tr>
+      <tr><td>Vortioxetine lowers task-evoked BOLD in humans</td><td class="high">High that it happens</td><td>Smith 2018, <em>n</em> = 96, placebo-controlled, two regions</td></tr>
+      <tr><td>That BOLD reduction is neural rather than vascular</td><td class="low">Low</td><td>No human ASL, PET-CBF or CMR<sub>glc</sub> study of vortioxetine exists</td></tr>
+      <tr><td>Creatine supplementation raises brain PCr dose-dependently</td><td class="high">High at 10 to 20 g/day</td><td>Kondo 2016; Dechent 1999; Smith 2025. Near zero at 5 g/day in the young</td></tr>
+      <tr><td>Creatine lowers the task-evoked haemodynamic response</td><td class="mid">Moderate</td><td>Hammett 2010 (&minus;16%, but <em>n</em> = 11 per arm, parallel groups), Watanabe 2002, Moriarty 2023; all indirect, one interpreted oppositely</td></tr>
+      <tr><td>Creatine improves cognition in unstressed healthy young adults</td><td class="low">Low</td><td>Sandk&uuml;hler 2023 (<em>d</em> = 0.17, 0.09); Prokopidis young-adult SMD 0.03; EFSA rejection</td></tr>
+      <tr><td>Reduced BOLD indexes higher <em>g</em></td><td class="low">Low as stated</td><td>Sign flips with subjective demand (Larson 1995; Dunst 2014); reverses in the task-positive network (Basten 2013)</td></tr>
+      <tr><td>The two compounds act on independent coordinates</td><td class="mid">Speculative, testable</td><td>The 2&times;2 factorial in section eight has not been run</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h2 id="experiment"><span class="num">Section ten</span>The experiment I would actually run</h2>
+
+  <p>One study settles most of this. Take healthy adults, screen for vegetarian status and baseline processing speed, and run a 2&times;2 factorial: vortioxetine 20 mg or placebo for 14 days, crossed with creatine 20 g/day or placebo for the same period, with brain total creatine confirmed by <sup>1</sup>H-MRS and creatine kinase forward flux by <sup>31</sup>P magnetisation transfer, because concentration is the wrong variable and Chen (1997) proved it. Scan on an N-back whose load is titrated per participant to fixed accuracy, following Larson's design rather than a fixed 2-back, and acquire ASL and BOLD simultaneously with a hypercapnia calibration so CMRO<sub>2</sub> is recoverable. Take DSST, and take the full reaction-time distribution rather than the mean, because if the mechanism is signal-to-noise then the effect should appear first in the slowest quantiles.</p>
+
+  <p>The predicted result, if this report is right: vortioxetine lowers CMRO<sub>2</sub> at matched accuracy and compresses RT variability; creatine leaves low-load CMRO<sub>2</sub> alone, lowers the CBF excursion needed to deliver it, and moves the load at which performance falls apart; the two do not interact; and the BOLD-only analysis would have shown both as "reduced activation" and told you nothing about which was which.</p>
+
+  <p>The predicted result, if the sceptics are right: both compounds reduce baseline CBF, both reduce BOLD, neither touches CMRO<sub>2</sub>, and neural efficiency remains what Poldrack said it was.</p>
+
+  <p class="kicker">The interesting claim was never that either of these makes anyone smarter. It is that a brain can be made to cost less to run at the intelligence it already has, and that we have spent thirty years measuring that with an instrument that cannot tell cheap thought from thin blood.</p>
+
+  <div class="sources">
+    <h2>Sources</h2>
+    <p><b>Vortioxetine pharmacology and circuits.</b> Bang-Andersen et al., <em>J Med Chem</em> 54:3206, 2011; M&oslash;rk et al., <em>JPET</em> 340:666, 2012; M&oslash;rk et al., <em>Pharmacol Biochem Behav</em> 105:41, 2013; Pehrson et al., <em>Eur Neuropsychopharmacol</em>, 2013; Pehrson et al., <em>Front Pharmacol</em> 9:162, 2018; Dale et al., <em>J Psychopharmacol</em> 28:891, 2014; Riga et al., <em>Neuropharmacology</em>, 2016; B&eacute;try et al., <em>IJNP</em> 16:1115, 2013; Leiser et al., <em>Br J Pharmacol</em> 171:4255, 2014; Waller et al., <em>J Psychopharmacol</em> 31:365, 2017; Stenkrona, Halldin &amp; Varrone, <em>Eur Neuropsychopharmacol</em> 23:1190, 2013; S&oslash;rensen et al., <em>Mol Psychiatry</em>, 2022; Sanchez, Asin &amp; Artigas, <em>Pharmacol Ther</em> 145:43, 2015.</p>
+    <p><b>Vortioxetine clinical and imaging.</b> McIntyre et al., <em>IJNP</em> 17:1557, 2014 (FOCUS); Mahableshwarkar et al., <em>Neuropsychopharmacology</em> 40:2025, 2015 (CONNECT); Baune, Brignone &amp; Larsen, <em>IJNP</em> 21:97, 2018; Vieta et al., <em>J Affect Disord</em>, 2018; Smith et al., <em>Mol Psychiatry</em> 23:1127, 2018; Nissen, Gram et al., <em>Neuroscience</em> 424:172, 2020; FDA NDA 204447 pharmacology review and 2018 sNDA label revision.</p>
+    <p><b>Creatine.</b> Chen, Zhu, Adriany &amp; U&#287;urbil, <em>Magn Reson Med</em> 38:551, 1997; Dechent et al., <em>Am J Physiol</em> 277:R698, 1999; Lyoo et al., <em>Psychiatry Res</em> 123:87, 2003; Pan &amp; Takahashi, <em>Am J Physiol</em> 292:R1745, 2007; Kondo et al., <em>Amino Acids</em> 48:1941, 2016; Merege-Filho/Solis et al., <em>Appl Physiol Nutr Metab</em> 42:128, 2017; Smith et al., <em>Alzheimers Dement TRCI</em> 11:e70101, 2025; Braissant, <em>J Inherit Metab Dis</em> 35:655, 2012; Roschel et al., <em>Nutrients</em> 13:586, 2021; Wallimann et al., <em>Amino Acids</em> 40:1271, 2011; Rae et al., <em>Proc R Soc B</em> 270:2147, 2003; Turner, Byblow &amp; Gant, <em>J Neurosci</em> 35:1773, 2015; Gordji-Nejad et al., <em>Sci Rep</em> 14:4937, 2024; Sandk&uuml;hler et al., <em>BMC Med</em> 21:440, 2023; Prokopidis et al., <em>Nutr Rev</em> 81:416, 2023; Xu et al., <em>Front Nutr</em> 11:1424972, 2024; Hammett, Wall, Edwards &amp; Smith, <em>Neurosci Lett</em> 479:201, 2010; Watanabe, Kato &amp; Kato, <em>Neurosci Res</em> 42:279, 2002; Moriarty et al., <em>Brain Sci</em> 13:1276, 2023; Lyoo et al., <em>Am J Psychiatry</em> 169:937, 2012; Kious, Kondo &amp; Renshaw, <em>Biomolecules</em> 9:406, 2019; McMorris et al., <em>Behav Brain Res</em> 466:114986, 2024; EFSA NDA Panel, <em>EFSA J</em> 22:e9100, 2024.</p>
+    <p><b>Neural efficiency and <em>g</em>.</b> Haier et al., <em>Intelligence</em> 12:199, 1988; Haier et al., <em>Intelligence</em> 16:415, 1992; Haier et al., <em>Brain Res</em> 570:134, 1992; Larson, Haier, LaCasse &amp; Hazen, <em>Intelligence</em> 21:267, 1995; Neubauer &amp; Fink, <em>Neurosci Biobehav Rev</em> 33:1004, 2009; Dunst et al., <em>Intelligence</em> 42:22, 2014; Rypma et al., <em>NeuroImage</em> 33, 2006; Basten, Stelzel &amp; Fiebach, <em>Intelligence</em> 41:517, 2013; Jung &amp; Haier, <em>Behav Brain Sci</em> 30:135, 2007; van den Heuvel et al., <em>J Neurosci</em> 29:7619, 2009; Metzen et al., <em>Sci Rep</em> 14:1368, 2024; Barbey, <em>Trends Cogn Sci</em> 22:8, 2018; Geary, <em>Psychol Rev</em> 125:1028, 2018; Grudnik &amp; Kranzler, <em>Intelligence</em> 29:523, 2001; Poldrack, <em>Dev Cogn Neurosci</em> 11:12, 2015; Buxton et al., <em>Front Neurosci</em> 8:139, 2014; Egan et al., <em>PNAS</em> 98:6917, 2001; Mattay et al., <em>PNAS</em> 100:6186, 2003; Cools &amp; D'Esposito, <em>Biol Psychiatry</em> 69:e113, 2011.</p>
+    <p><b>Neuromodulation and energetics.</b> Hasselmo &amp; Sarter, <em>Neuropsychopharmacology</em> 36:52, 2011; Parikh, Kozak, Martinez &amp; Sarter, <em>Neuron</em> 56:141, 2007; Parikh, Ji, Decker &amp; Sarter, <em>J Neurosci</em> 30:3518, 2010; Furey, Ricciardi, Schapiro, Rapoport &amp; Pietrini, <em>J Cogn Neurosci</em> 20:1342, 2008; Furey, Pietrini &amp; Haxby, <em>Science</em> 290:2315, 2000; Kukolja, Thiel &amp; Fink, <em>J Neurosci</em> 29:8119, 2009; Ligneau et al., <em>JPET</em> 287:658, 1998; Ghamari &amp; Sadek et al., <em>Front Pharmacol</em> 13:861094, 2022; Nishii et al., <em>Neuropsychopharmacol Rep</em> 45:e70034, 2025; Wang, Yang, Arnsten et al., <em>Neuron</em> 77:736, 2013; Sohal, Zhang, Yizhar &amp; Deisseroth, <em>Nature</em> 459:698, 2009; Yizhar et al., <em>Nature</em> 477:171, 2011; Marsman et al., <em>Front Psychiatry</em> 8:154, 2017; Vijayraghavan et al., <em>Nat Neurosci</em> 10:376, 2007; Attwell &amp; Laughlin, <em>JCBFM</em> 21:1133, 2001; Howarth, Gleeson &amp; Attwell, <em>JCBFM</em> 32:1222, 2012; Harris, Jolivet &amp; Attwell, <em>Neuron</em> 75:762, 2012; Lennie, <em>Curr Biol</em> 13:493, 2003; Olshausen &amp; Field, <em>Nature</em> 381:607, 1996; Levy &amp; Baxter, <em>Neural Comput</em> 8:531, 1996; Barlow, in <em>Sensory Communication</em>, 1961.</p>
+    <p style="margin-top:16px">This page is a speculative synthesis, not clinical advice. Every numerical claim was checked against a primary source before publication.</p>
+  </div>
+
+  </article>
+</div>
+</main>
+
+<footer class="site">
+  <div class="wide">
+    <span>&copy; 2026 Isegoria</span>
+    <a href="../library.html">Back to the project library</a>
+  </div>
+</footer>
+
+</body>
+</html>
