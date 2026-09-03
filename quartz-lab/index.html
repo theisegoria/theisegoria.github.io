@@ -1,0 +1,523 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#101715">
+<meta name="description" content="Interactive visual guide to the quartz watch: piezoelectric tuning fork, Pierce oscillator, 15-stage divider chain, Lavet stepper motor, and the gear train that drives the hands.">
+<meta property="og:title" content="Inside a Quartz Watch">
+<meta property="og:description" content="How a vibrating sliver of silicon dioxide becomes a stepping seconds hand.">
+<meta property="og:image" content="https://theisegoria.github.io/og.png">
+<title>Inside a Quartz Watch</title>
+<link rel="canonical" href="https://theisegoria.github.io/quartz-lab/">
+<link rel="alternate" hreflang="en" href="https://theisegoria.github.io/quartz-lab/">
+<link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/quartz-lab/">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="styles.css"><script src="quartz.js" defer></script></head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0l10 5-10 5z"/></marker>
+<marker id="ag" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0l10 5-10 5z"/></marker>
+<marker id="as" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0l10 5-10 5z"/></marker>
+</defs></svg>
+
+<header class="hero" id="top">
+<nav><a class="brand" href="#top">Quartz Watch Lab</a>
+<div><a href="#chain">Signal path</a><a href="#crystal">Crystal</a><a href="#circuit">Circuit</a><a href="#osc">Oscillator</a><a href="#divider">Divider</a><a href="#motor">Motor</a><a href="#train">Train</a><a href="#accuracy">Accuracy</a><a href="#versus">vs mechanical</a><a href="inside-a-quartz-watch.pdf">PDF</a><a href="../watch-lab/">Automatic lab</a></div></nav>
+<div class="hero-copy">
+<p class="kicker">A quartz watch, slowed down</p>
+<h1>A stone that<br>keeps counting.</h1>
+<p>A mechanical watch counts swings of a wheel. A quartz watch counts vibrations of a laser-trimmed sliver of silicon dioxide, 32,768 of them every second, then divides that number in half fifteen times until one pulse is left over, and spends that pulse turning a magnet through half a revolution.</p>
+<a class="cta" href="#chain">Follow the signal ↓</a></div>
+<div class="hero-orbit" aria-hidden="true"><div class="fork-glyph"><svg viewBox="0 0 200 200"><g><path class="tine a" d="M78 150V44"/><path class="tine b" d="M122 150V44"/><path d="M60 150h80" stroke="#5aa9c83d" stroke-width="18" stroke-linecap="round" fill="none"/></g></svg></div></div>
+</header>
+
+<main>
+
+<!-- ============ 01 SIGNAL PATH ============ -->
+<section class="chapter" id="chain">
+<div class="section-head"><p>01 / The whole chain</p><h2>Seven stages,<br>two domains</h2><span>Select a stage. Everything left of the motor is electronics; everything right of it is a watch in the ordinary sense.</span></div>
+<div class="chainwrap"><div class="stage">
+<svg id="chain-svg" viewBox="0 0 1200 400" role="img" aria-labelledby="chain-t chain-d" style="min-width:960px">
+<title id="chain-t">Signal path through a quartz watch</title><desc id="chain-d">Battery, oscillator with quartz crystal, fifteen-stage divider, motor driver, Lavet stepper motor, reduction gear train, and hands.</desc>
+<path class="wire" d="M40 45h660"/><path class="wire mech" d="M720 45h440"/>
+<text class="sub" x="370" y="34">ELECTRICAL DOMAIN &#183; no moving parts</text>
+<text class="sub" x="940" y="34">MECHANICAL DOMAIN</text>
+
+<g class="node" data-part="battery" tabindex="0" role="button"><rect x="20" y="90" width="140" height="140" rx="4"/><text class="lbl" x="90" y="118">BATTERY</text><g transform="translate(34,0)"><path class="wave" d="M0 152h112"/><path class="wave" d="M20 138v28M44 144v16M68 138v28M92 144v16"/></g><text class="val" x="90" y="200">1.55 V DC</text><text class="sub" x="90" y="216">silver oxide, 25 mAh</text></g>
+<g class="node" data-part="crystal" tabindex="0" role="button"><rect x="190" y="90" width="140" height="140" rx="4"/><text class="lbl" x="260" y="118">OSCILLATOR</text><g transform="translate(204,0)"><path class="wave" d="M0 152q4.67-21 9.33 0t9.33 0t9.33 0t9.33 0t9.33 0t9.33 0t9.33 0t9.33 0t9.33 0t9.33 0t9.33 0t9.33 0"/></g><text class="val" x="260" y="200">32 768 Hz</text><text class="sub" x="260" y="216">quartz fork + CMOS</text></g>
+<g class="node" data-part="divider" tabindex="0" role="button"><rect x="360" y="90" width="140" height="140" rx="4"/><text class="lbl" x="430" y="118">DIVIDER</text><g transform="translate(374,0)"><path class="wave" d="M0 168h14v-32h14v32h14v-32h14v32h14v-32h14v32h14v-32h14"/></g><text class="val" x="430" y="200">&#247; 2&#185;&#8309;</text><text class="sub" x="430" y="216">15 toggle flip-flops</text></g>
+<g class="node" data-part="driver" tabindex="0" role="button"><rect x="530" y="90" width="140" height="140" rx="4"/><text class="lbl" x="600" y="118">DRIVER</text><g transform="translate(544,0)"><path class="wave" d="M0 152h16v-22h10v22h34v22h10v-22h42"/></g><text class="val" x="600" y="200">1 pulse / s</text><text class="sub" x="600" y="216">alternating polarity</text></g>
+<g class="node" data-part="motor" tabindex="0" role="button"><rect x="700" y="90" width="140" height="140" rx="4"/><text class="lbl" x="770" y="118" style="font-size:10px;letter-spacing:.05em">LAVET MOTOR</text><g transform="translate(714,0)"><path class="wave mech" d="M0 176h16v-11h16v-11h16v-11h16v-11h16v-11h16v-11h16"/></g><text class="val" x="770" y="200">180&#176; / step</text><text class="sub" x="770" y="216">30 rpm mean</text></g>
+<g class="node" data-part="train" tabindex="0" role="button"><rect x="870" y="90" width="140" height="140" rx="4"/><text class="lbl" x="940" y="118">GEAR TRAIN</text><g transform="translate(884,0)"><path class="wave mech" d="M0 174L112 130"/><circle cx="24" cy="164" r="11" fill="none" stroke="#c49a54" stroke-width="2"/><circle cx="62" cy="152" r="15" fill="none" stroke="#c49a54" stroke-width="2"/><circle cx="98" cy="138" r="8" fill="none" stroke="#c49a54" stroke-width="2"/></g><text class="val" x="940" y="200">21 600 : 1</text><text class="sub" x="940" y="216">rotor to hour hand</text></g>
+<g class="node" data-part="hands" tabindex="0" role="button"><rect x="1040" y="90" width="140" height="140" rx="4"/><text class="lbl" x="1110" y="118">HANDS</text><g transform="translate(1054,0)"><circle cx="56" cy="152" r="20" fill="none" stroke="#c49a54" stroke-width="2"/><path class="wave mech" d="M56 152V137M56 152l11 7"/></g><text class="val" x="1110" y="200">1 step / s</text><text class="sub" x="1110" y="216">6&#176; of dial per tick</text></g>
+
+<g class="power-budget">
+<text class="sub" x="600" y="284" style="font-size:11px;letter-spacing:.12em">AVERAGE CURRENT BUDGET &#183; total &#8776; 1.3 &#181;A from a 25 mAh cell &#8776; 2.2 years</text>
+<rect x="240" y="300" width="720" height="26" fill="none" stroke="#a9a397" stroke-width="1.5"/>
+<rect x="240" y="300" width="166" height="26" fill="#5aa9c8" opacity=".55"/><rect x="406" y="300" width="277" height="26" fill="#9bc9b3" opacity=".55"/><rect x="683" y="300" width="277" height="26" fill="#c49a54" opacity=".7"/>
+<text class="tick" x="323" y="345">oscillator 0.3 &#181;A</text><text class="tick" x="544" y="345">divider + logic 0.5 &#181;A</text><text class="tick" x="821" y="345">motor pulses 0.5 &#181;A</text>
+<text class="sub" x="600" y="374">The motor is the only part that does mechanical work, and it costs about as much as all of the silicon put together.</text>
+</g>
+</svg>
+</div>
+<aside class="info-card" aria-live="polite">
+<p>Selected stage</p><h3 id="chain-name">Quartz oscillator</h3><div class="rule"></div>
+<p id="chain-copy">A CMOS inverter kept in its linear region drives a tuning-fork crystal and feeds its output back to its input. The crystal is so sharply resonant that the loop can only sustain oscillation at one frequency.</p>
+<dl class="spec" id="chain-spec"></dl>
+</aside></div>
+<p class="note">Educational schematic. Tooth counts, currents, and layouts are typical rather than specific to any one calibre.</p>
+</section>
+
+<!-- ============ 02 THE CRYSTAL ============ -->
+<section class="chapter tint" id="crystal">
+<div class="section-head"><p>02 / The resonator</p><h2>Why a stone<br>vibrates on cue</h2><span>Quartz is piezoelectric because its lattice has no centre of symmetry. Squeeze it and it produces a voltage; apply a voltage and it changes shape.</span></div>
+
+<div class="controls">
+<button class="btn" id="fork-toggle" type="button" aria-pressed="true">Pause vibration</button>
+<label class="ctl">Displayed amplitude <strong id="fork-amp-v">&#215;1.0</strong><input id="fork-amp" type="range" min=".2" max="1.6" step=".1" value="1"></label>
+<label class="ctl">Animation slowdown <strong id="fork-slow-v">&#215;1/32 768</strong><input id="fork-slow" type="range" min="0" max="3" step="1" value="0"></label>
+<button class="btn ghost" id="fork-mode" type="button" aria-pressed="true">Show in-phase mode</button>
+</div>
+
+<div class="split"><div class="stage">
+<svg id="fork-svg" viewBox="0 0 640 572" role="img" aria-labelledby="fork-t fork-d" style="min-width:520px">
+<title id="fork-t">Quartz tuning fork vibrating in its flexural mode</title><desc id="fork-d">Two etched tines bend in antiphase; their momenta cancel at the base so almost no energy escapes into the mount.</desc>
+<path class="ghost-path" d="M235 390V80h30v310M375 390V80h30v310"/>
+<path id="tine-l" class="tine-body"/><path id="tine-r" class="tine-body"/>
+<path id="el-l" class="electrode"/><path id="el-r" class="electrode"/>
+<path class="fork-base" d="M180 386h280v66H180z"/>
+<path class="fork-base" d="M280 452h80v58h-80z"/>
+<circle cx="300" cy="481" r="7" fill="#c2685a"/><circle cx="340" cy="481" r="7" fill="#5aa9c8"/>
+<text class="sub" x="320" y="530">hermetically sealed mount &#183; vacuum can</text>
+<g id="momentum">
+<path class="arrow-m" id="mom-l" d="M250 108h0"/><path class="arrow-m" id="mom-r" d="M390 108h0"/>
+</g>
+<text class="lbl" x="320" y="62">FLEXURAL MODE &#183; TINES IN ANTIPHASE</text>
+<g class="dim" stroke="#a9a397" stroke-width="1.5" fill="none"><path d="M496 80v310M488 80h16M488 390h16"/></g>
+<text class="tick" x="530" y="228" transform="rotate(90 530 228)">L &#8776; 2.4 mm</text>
+<path class="axis" d="M198 92h42"/><text class="tick" x="192" y="96" style="font-size:9px;text-anchor:end">t &#8776; 0.1 mm (tine thickness)</text>
+<text class="tick" x="90" y="140" style="text-anchor:start">tip travel shown</text><text class="tick" x="90" y="154" style="text-anchor:start">&#215;2000 exaggerated:</text><text class="tick" x="90" y="168" style="text-anchor:start">real excursion &#8776; 1 &#181;m</text>
+<text class="tick" x="90" y="300" style="text-anchor:start" id="fork-phase-l">tine A: +</text>
+<text class="tick" x="90" y="316" style="text-anchor:start" id="fork-phase-r">tine B: &#8722;</text>
+<text class="sub" x="320" y="556" id="fork-net">net momentum at the base &#8776; 0</text>
+</svg>
+</div>
+<ol class="steps">
+<li><b>1</b><div><strong>No centre of symmetry</strong><p>&#945;-quartz belongs to trigonal class 32. Strain displaces the Si&#8308;&#8314; and O&#178;&#8315; sublattices by different amounts, so a deformed crystal carries a net dipole and a surface charge.</p></div></li>
+<li><b>2</b><div><strong>The converse effect drives it</strong><p>Electrodes patterned along each tine apply a field that makes one side of the tine extend and the other contract. A bar that lengthens on one face and shortens on the other bends.</p></div></li>
+<li><b>3</b><div><strong>The direct effect reads it back</strong><p>The same electrodes pick up the charge generated by bending. That is what closes the feedback loop: the crystal is simultaneously the actuator and the sensor.</p></div></li>
+<li><b>4</b><div><strong>Antiphase is the whole trick</strong><p>The tines carry equal and opposite momentum, so the reaction forces cancel where the fork meets its mount. Almost nothing leaks out, which is why <em>Q</em> reaches 10&#8308; to 10&#8309;. Drive the tines in phase instead and the base shakes, energy escapes, and the resonance collapses.</p></div></li>
+</ol></div>
+
+<div class="stats">
+<div><small>Nominal frequency</small><strong>32 768 Hz</strong><span>2&#185;&#8309; exactly</span></div>
+<div><small>Quality factor</small><strong>5&#215;10&#8308; &#8211; 10&#8309;</strong><span>in a sealed vacuum can</span></div>
+<div><small>Motional resistance</small><strong>20 &#8211; 50 k&#937;</strong><span>the loss the circuit must beat</span></div>
+<div><small>Ringdown time</small><strong>&#8776; 0.5 s</strong><span>2Q/&#969; after drive removed</span></div>
+</div>
+
+<div class="concept-grid">
+<article><b>Geometry sets the pitch</b><p>For a flexural tine, <span class="mono">f &#8733; (t/L&#178;)&#8730;(E/&#961;)</span>. Frequency scales with tine thickness and with the <em>inverse square</em> of tine length, which is why the fork is photolithographically etched to micron tolerances and then finished by laser.</p></article>
+<article><b>Trimming by evaporation</b><p>Final tuning removes or adds mass at the tine tips, where the mode shape has maximum displacement and therefore maximum sensitivity. Ablate gold and the frequency rises; deposit gold and it falls. A few parts per million per pass.</p></article>
+<article><b>Why 32 768 and not 100 000</b><p>It is 2&#185;&#8309;, so fifteen halvings land exactly on 1 Hz with nothing but toggle flip-flops. It is also a sweet spot for power: CMOS dynamic power goes as <span class="mono">C V&#178; f</span>, so a higher-frequency crystal buys short-term stability at a linear cost in battery life.</p></article>
+</div>
+
+<div class="formula"><span>The resonator, in one line</span><strong>f &#8776; 0.162 &#183; (t / L&#178;) &#183; &#8730;(E / &#961;)</strong>
+<p>With <span class="mono">E &#8776; 78 GPa</span> and <span class="mono">&#961; = 2650 kg/m&#179;</span> for quartz, a tine roughly 2.4 mm long and 0.1 mm thick lands near 32 kHz. Everything after this point in the watch is counting; nothing after this point decides the rate.</p></div>
+</section>
+
+<!-- ============ 03 THE CRYSTAL AS A CIRCUIT ============ -->
+<section class="chapter dark" id="circuit">
+<div class="section-head"><p>03 / The electrical twin</p><h2>A mechanical<br>resonator, in ohms</h2><span>To the circuit the fork looks like an <em>LCR</em> branch of absurd values in parallel with the capacitance of its own electrodes. Those values are the mechanics in disguise.</span></div>
+
+<div class="split even"><div class="stage">
+<svg viewBox="0 0 560 440" role="img" aria-labelledby="bvd-t bvd-d" style="min-width:420px">
+<title id="bvd-t">Butterworth&#8211;Van Dyke equivalent circuit of a quartz crystal</title><desc id="bvd-d">A motional branch of inductance, capacitance and resistance in parallel with the static electrode capacitance.</desc>
+<path class="wireline" d="M30 230h50M480 230h50"/>
+<circle class="dot" cx="30" cy="230" r="5"/><circle class="dot" cx="530" cy="230" r="5"/>
+<path class="wireline" d="M80 230V120h165M275 120h165v110"/>
+<path class="comp" d="M245 96v48M275 96v48"/>
+<text class="cname" x="260" y="80">C&#8320;</text><text class="sub" x="260" y="164">1.4 pF &#183; electrodes + can</text>
+<path class="wireline" d="M80 230v110h40M200 340h40M280 340h30M390 340h50v-110"/>
+<path class="comp" d="M120 340q10-24 20 0t20 0t20 0t20 0"/>
+<text class="cname" x="160" y="308">L&#8321;</text><text class="sub" x="160" y="384">7 863 H &#183; tine inertia</text>
+<path class="comp" d="M240 316v48M270 316v48"/>
+<text class="cname" x="255" y="308">C&#8321;</text><text class="sub" x="255" y="384">3.0 fF &#183; stiffness</text>
+<path class="comp" d="M310 340l10-16 16 32 16-32 16 32 12-16h10"/>
+<text class="cname" x="350" y="308">R&#8321;</text><text class="sub" x="350" y="384">30 k&#937; &#183; all losses</text>
+<circle class="dot" cx="80" cy="230" r="5"/><circle class="dot" cx="440" cy="230" r="5"/>
+<text class="lbl" x="280" y="42">BUTTERWORTH&#8211;VAN DYKE MODEL</text>
+<text class="sub" x="280" y="418">Q = &#969;L&#8321;/R&#8321; &#8776; 54 000</text>
+</svg>
+</div>
+<div class="stage">
+<svg id="imp-svg" viewBox="0 0 560 440" role="img" aria-labelledby="imp-t imp-d" style="min-width:420px">
+<title id="imp-t">Crystal impedance against frequency</title><desc id="imp-d">A deep series-resonance minimum and a sharp parallel-resonance maximum separated by about a thousand parts per million.</desc>
+<path class="axis" d="M78 60v300h450"/>
+<g id="imp-grid"></g>
+<rect id="imp-band" x="0" y="60" width="0" height="300" fill="#5aa9c8" opacity=".1"/>
+<path id="imp-curve" class="plotline"/>
+<line id="imp-fs" class="grid-l" y1="60" y2="360" stroke="#c2685a" stroke-dasharray="4 4"/>
+<line id="imp-fp" class="grid-l" y1="60" y2="360" stroke="#c2685a" stroke-dasharray="4 4"/>
+<line id="imp-fl" y1="60" y2="360" stroke="#c49a54" stroke-width="2.5"/>
+<circle id="imp-dot" class="marker" r="6" cy="360"/>
+<text class="sub" x="303" y="404">frequency &#183; Hz (span &#8776; 63 Hz, or 1 900 ppm)</text>
+<text class="sub" x="26" y="210" transform="rotate(-90 26 210)">|Z| &#183; ohms (log)</text>
+<text class="tick" id="imp-lbl-fs" y="52" style="fill:#c2685a">f&#8347;</text>
+<text class="tick" id="imp-lbl-fp" y="52" style="fill:#c2685a">f&#8346;</text>
+<text class="tick" id="imp-lbl-fl" y="428" style="fill:#c49a54">operating point</text>
+</svg>
+</div></div>
+
+<div class="controls" style="margin-top:34px">
+<label class="ctl"><span>Load capacitance C<sub>L</sub></span> <strong id="cl-v">9.0 pF</strong><input id="cl" type="range" min="4" max="20" step=".5" value="9"></label>
+<label class="ctl">Motional capacitance C&#8321; <strong id="c1-v">3.0 fF</strong><input id="c1" type="range" min="1.5" max="5" step=".1" value="3"></label>
+<label class="ctl">Motional resistance R&#8321; <strong id="r1-v">30 k&#937;</strong><input id="r1" type="range" min="10" max="90" step="5" value="30"></label>
+</div>
+
+<div class="stats">
+<div><small>Series resonance</small><strong id="s-fs">32 768.0 Hz</strong><span>|Z| minimum, = R&#8321;</span></div>
+<div><small>Parallel resonance</small><strong id="s-fp">32 803.1 Hz</strong><span>|Z| maximum</span></div>
+<div><small>Operating frequency</small><strong id="s-fl">32 772.7 Hz</strong><span id="s-ppm">+144 ppm above f&#8347;</span></div>
+<div><small>Quality factor</small><strong id="s-q">54 000</strong><span id="s-ring">rings for 0.52 s</span></div>
+</div>
+
+<div class="concept-grid">
+<article><b>Eight thousand henries</b><p>No real inductor of that value exists at this size. L&#8321; is not an inductor. It is the <em>mass</em> of the vibrating tines expressed in electrical units, because a series LCR and a mass&#8211;spring&#8211;damper obey the same second-order equation. C&#8321; is the tine stiffness; R&#8321; is every loss mechanism added together.</p></article>
+<article><b>The gap is the stability</b><p>The circuit can only pull the frequency inside the window between f&#8347; and f&#8346;, and that window is only about <span class="mono">C&#8321;/2C&#8320; &#8776; 1000 ppm</span> wide. The crystal simply refuses to run anywhere else. Compare a balance wheel, whose rate moves with amplitude, position, and mainspring torque.</p></article>
+<article><b>What the trimmer really does</b><p>Sliding C<sub>L</sub> from 4 pF to 20 pF moves the operating point by roughly 200 ppm, about nine minutes a month of adjustment authority. That is the entire regulation range of a quartz watch, and in a modern movement it is done digitally instead.</p></article>
+</div>
+</section>
+
+<!-- ============ 04 THE OSCILLATOR ============ -->
+<section class="chapter" id="osc">
+<div class="section-head"><p>04 / Sustaining the vibration</p><h2>One inverter,<br>run backwards</h2><span>A digital gate biased into its own forbidden analogue region becomes an amplifier. Wrap the crystal around it and it has no choice but to oscillate at 32 768 Hz.</span></div>
+
+<div class="split even"><div class="stage">
+<svg id="pierce-svg" viewBox="0 0 720 480" role="img" aria-labelledby="pi-t pi-d" style="min-width:520px">
+<title id="pi-t">CMOS Pierce oscillator schematic</title><desc id="pi-d">An inverter with a feedback bias resistor, a series drive resistor, the crystal, and two load capacitors to ground.</desc>
+<path class="wireline" d="M140 230h110M332 230h88M490 230h110"/>
+<path class="wireline" d="M600 230v110H140V230"/>
+<path class="wireline" d="M420 230V120H200v110"/>
+<path class="comp" d="M250 190v80l70-40z"/><circle class="comp" cx="327" cy="230" r="7"/>
+<text class="cname" x="278" y="256" style="fill:#c49a54">&#8211;A</text>
+<path class="comp" d="M260 120l10-16 16 32 16-32 16 32 12-16h10"/>
+<text class="cname" x="300" y="102">R<tspan dy="3" style="font-size:9px">f</tspan><tspan dy="-3"> </tspan> &#8776; 20 M&#937;</text>
+<path class="comp" d="M424 230l10-16 16 32 16-32 16 32 12-16h10"/>
+<text class="cname" x="455" y="204">R<tspan dy="3" style="font-size:9px">d</tspan><tspan dy="-3"> </tspan></text>
+<rect class="comp" x="330" y="318" width="72" height="44" rx="2"/><path class="comp" d="M322 322v36M410 322v36"/>
+<text class="cname" x="366" y="392">32 768 Hz fork</text>
+<path class="wireline" d="M186 230v130M562 230v130"/>
+<path class="comp" d="M164 360h44M164 378h44M186 378v22M562 360h44M540 360h44M540 378h44M562 378v22"/>
+<path class="comp" d="M166 400h40M172 410h28M178 420h16M542 400h40M548 410h28M554 420h16"/>
+<text class="cname" x="150" y="352" style="text-anchor:end">C<tspan dy="3" style="font-size:9px">g</tspan><tspan dy="-3"> </tspan></text><text class="cname" x="612" y="352" style="text-anchor:start">C<tspan dy="3" style="font-size:9px">d</tspan><tspan dy="-3"> </tspan></text>
+<circle class="dot" cx="186" cy="230" r="5"/><circle class="dot" cx="562" cy="230" r="5"/><circle class="dot" cx="200" cy="230" r="5"/><circle class="dot" cx="420" cy="230" r="5"/>
+<text class="sub" x="186" y="212">gate node</text><text class="sub" x="562" y="212">drain node</text>
+<text class="lbl" x="360" y="52">CMOS PIERCE OSCILLATOR</text>
+<text class="sub" x="360" y="72">inverter 180&#176; &#43; pi-network 180&#176; &#61; 360&#176; &#183; loop gain &#62; 1 &#8594; oscillation</text>
+<circle id="pi-runner" r="7" fill="#c2685a" opacity=".9"/>
+</svg>
+</div>
+<div class="stage">
+<svg id="wave-svg" viewBox="0 0 560 480" role="img" aria-labelledby="wv-t wv-desc" style="min-width:420px">
+<title id="wv-t">Oscillator waveforms and startup envelope</title><desc id="wv-desc">Gate and drain voltages in antiphase, and the exponential growth of amplitude from thermal noise at power-on.</desc>
+<text class="lbl" x="280" y="30">STEADY STATE &#183; ONE CYCLE = 30.5 &#181;s</text>
+<path class="axis" d="M60 60v150h470"/>
+<path id="wv-g" class="plotline"/><path id="wv-d" class="plotline alt"/>
+<line id="wv-play" y1="60" y2="210" stroke="#c2685a" stroke-width="1.5" stroke-dasharray="3 3"/>
+<text class="tick" x="46" y="80" style="text-anchor:end;fill:#5aa9c8">gate</text><text class="tick" x="46" y="196" style="text-anchor:end;fill:#c49a54">drain</text>
+<text class="sub" x="295" y="238">the two nodes are always 180&#176; apart</text>
+
+<text class="lbl" x="280" y="292">START-UP FROM THERMAL NOISE</text>
+<path class="axis" d="M60 320v110h470"/><line class="grid-l" x1="60" y1="375" x2="530" y2="375" stroke-dasharray="4 4"/>
+<path id="wv-env" class="plotline"/><path id="wv-env2" class="plotline" opacity=".35"/>
+<line id="wv-envplay" y1="320" y2="430" stroke="#c2685a" stroke-width="1.5" stroke-dasharray="3 3"/>
+<text class="tick" x="60" y="450">0</text><text class="tick" x="295" y="450">0.5 s</text><text class="tick" x="530" y="450">1.0 s</text>
+<text class="sub" x="295" y="470" id="wv-startup">amplitude envelope &#183; &#964; = 0.12 s</text>
+</svg>
+</div></div>
+
+<div class="controls" style="margin-top:30px">
+<button class="btn" id="pi-restart" type="button">Replay start-up</button>
+<label class="ctl"><span>Inverter transconductance g<sub>m</sub></span> <strong id="gm-v">1.00 &#181;S</strong><input id="gm" type="range" min=".1" max="4" step=".05" value="1"></label>
+<label class="ctl"><span>Load capacitors C<sub>g</sub> = C<sub>d</sub></span> <strong id="cc-v">12 pF</strong><input id="cc" type="range" min="4" max="24" step="1" value="12"></label>
+</div>
+
+<div class="stats">
+<div><small>Negative resistance</small><strong id="s-rneg">&#8722;164 k&#937;</strong><span>&#8722;g<sub>m</sub>/(&#969;&#178;C<sub>g</sub>C<sub>d</sub>)</span></div>
+<div><small>Gain margin</small><strong id="s-margin">5.5&#215;</strong><span id="s-start">oscillation sustains</span></div>
+<div><small>Start-up time constant</small><strong id="s-tau">0.12 s</strong><span>2L&#8321;/(|R<sub>neg</sub>| &#8722; R&#8321;)</span></div>
+<div><small>Oscillator draw</small><strong id="s-power">0.3 &#181;A</strong><span>&#8776; 0.45 &#181;W</span></div>
+</div>
+
+<div class="concept-grid">
+<article><b>Negative resistance, not gain</b><p>The tidiest way to see a Pierce oscillator is that the inverter and its two capacitors present <span class="mono">&#8722;g<sub>m</sub>/(&#969;&#178;C<sub>g</sub>C<sub>d</sub>)</span> to the crystal. If that negative resistance is larger in magnitude than R&#8321;, net loss is negative and any disturbance grows. Designers want three to five times margin, no more, because excess margin wastes current and overdrives the fork.</p></article>
+<article><b>Why it takes a second to start</b><p>Amplitude grows as <span class="mono">e^(t/&#964;)</span> with <span class="mono">&#964; = 2L&#8321;/(|R<sub>neg</sub>|&#8722;R&#8321;)</span>. The same enormous L&#8321; that makes the fork stable makes it slow to wake. A high-Q resonator is a flywheel: hard to disturb, and equally hard to spin up.</p></article>
+<article><b>Drive level matters</b><p>R<sub>d</sub> limits how hard the fork is driven. Overdrive causes non-linear bending, accelerated ageing, and in extreme cases fracture at the tine roots. Watch crystals are typically driven at well under a microwatt, and the tines move about a micron.</p></article>
+</div>
+</section>
+
+<!-- ============ 05 DIVIDER ============ -->
+<section class="chapter dark" id="divider">
+<div class="section-head"><p>05 / Counting down</p><h2>Fifteen halvings<br>land on one</h2><span>32 768 is 2&#185;&#8309;. A chain of fifteen toggle flip-flops turns the crystal&#8217;s buzz into exactly one pulse per second, using nothing but binary arithmetic.</span></div>
+
+<div class="controls">
+<button class="btn" id="div-toggle" type="button" aria-pressed="true">Pause counter</button>
+<label class="ctl">Time scale <strong id="div-speed-v">real time</strong><input id="div-speed" type="range" min="0" max="4" step="1" value="0"></label>
+<span class="mono" style="font-size:.85rem">counter <strong id="div-count">00000000000000</strong> &#183; <span id="div-elapsed">0.000 s</span></span>
+</div>
+
+<div class="stage">
+<svg id="div-svg" viewBox="0 0 1160 262" role="img" aria-labelledby="dv-t dv-d" style="min-width:900px">
+<title id="dv-t">Fifteen-stage binary divider chain</title><desc id="dv-d">Each toggle flip-flop halves the frequency of the previous stage, ending at one hertz.</desc>
+<text class="lbl" x="580" y="34">RIPPLE DIVIDER &#183; EACH STAGE TOGGLES ON ITS INPUT&#8217;S FALLING EDGE</text>
+<path class="wire" d="M0 142h22"/><text class="tick" x="0" y="96" style="text-anchor:start">32 768 Hz in</text>
+<g id="ff-row"></g>
+<path class="wire mech" d="M1120 142h34"/><text class="tick" x="1150" y="126" style="text-anchor:end">1 Hz</text>
+<text class="sub" x="580" y="252">The first stages are a blur even in slow motion. That blur is the precision: everything downstream inherits it.</text>
+</svg>
+</div>
+
+<div class="split even" style="margin-top:50px">
+<div class="stage">
+<svg id="ladder-svg" viewBox="0 0 560 400" role="img" aria-labelledby="ld-t ld-d" style="min-width:420px">
+<title id="ld-t">Waveform ladder of the first five divider stages</title><desc id="ld-d">Each trace has twice the period of the one above it.</desc>
+<text class="lbl" x="280" y="26">ONE PERIOD OF STAGE 5</text>
+<g id="ladder-rows"></g>
+<line id="ladder-play" y1="40" y2="356" stroke="#c2685a" stroke-width="1.5"/>
+<text class="sub" x="280" y="388">every stage is a perfect 50 % square wave &#183; edges never drift relative to one another</text>
+</svg>
+</div>
+<div>
+<ol class="steps">
+<li><b>1</b><div><strong>A toggle flip-flop</strong><p>A D flip-flop with its inverted output wired back to its own input. Each active clock edge flips its state, so the output changes once per two input cycles. That is division by two, exactly, with no analogue error term.</p></div></li>
+<li><b>2</b><div><strong>The chain is free</strong><p>Fifteen stages is a few hundred transistors. In 1969 this was the expensive part; today the divider is a rounding error on the die and the crystal is the costly component.</p></div></li>
+<li><b>3</b><div><strong>Power lives in the first stage</strong><p>Dynamic power is <span class="mono">C V&#178; f</span> per stage, and f halves each time. The whole chain therefore costs about twice what stage one costs. Designers shrink the first flip-flop and let the rest be lazy.</p></div></li>
+<li><b>4</b><div><strong>The pulse is shaped, not just tapped</strong><p>The motor does not want a 50 % duty cycle at 1 Hz. It wants a 4&#8211;8 ms kick. The driver gates a fast stage (say 256 Hz) with the 1 Hz stage to cut a short pulse, then alternates its polarity every second.</p></div></li>
+</ol>
+</div></div>
+</section>
+
+<!-- ============ 06 LAVET MOTOR ============ -->
+<section class="chapter" id="motor">
+<div class="section-head"><p>06 / Back into the world</p><h2>The most-built<br>motor on Earth</h2><span>Every second, one pulse turns a magnet the size of a grain of rice through exactly half a revolution, and it must never turn the wrong way.</span></div>
+
+<div class="split even">
+<div class="stage">
+<svg id="motor-svg" viewBox="0 0 620 560" role="img" aria-labelledby="mo-t mo-d" style="min-width:460px">
+<title id="mo-t">Lavet-type single-phase stepper motor</title><desc id="mo-d">A bipolar magnet rotor in a notched soft-iron stator bore, driven by one coil with alternating pulse polarity.</desc>
+<path class="stator" fill-rule="evenodd" d="M198 150H402A38 38 0 0 1 440 188V312A38 38 0 0 1 402 350H198A38 38 0 0 1 160 312V282H62V218H160V188A38 38 0 0 1 198 150ZM360 250A60 60 0 1 1 240 250A60 60 0 1 1 360 250Z"/>
+<rect class="coil-core" x="86" y="228" width="76" height="44" rx="4" opacity="0"/>
+<g id="coil"><ellipse class="coil-turn" cx="80" cy="250" rx="7" ry="34"/><ellipse class="coil-turn" cx="94" cy="250" rx="7" ry="34"/><ellipse class="coil-turn" cx="108" cy="250" rx="7" ry="34"/><ellipse class="coil-turn" cx="122" cy="250" rx="7" ry="34"/><ellipse class="coil-turn" cx="136" cy="250" rx="7" ry="34"/><ellipse class="coil-turn" cx="150" cy="250" rx="7" ry="34"/></g>
+<path id="flux" class="flux" d="M112 214C112 178 150 172 210 172H386C420 172 428 200 428 250C428 300 420 328 386 328H210C150 328 112 322 112 286"/>
+<circle class="notch-mark" cx="342.4" cy="207.6" r="15" fill="var(--paper)" stroke="var(--ink)" stroke-dasharray="0"/>
+<circle class="notch-mark" cx="257.6" cy="292.4" r="15" fill="var(--paper)" stroke="var(--ink)" stroke-dasharray="0"/>
+<g id="rotor"><path class="rot-n" d="M254 250a46 46 0 0 1 92 0z"/><path class="rot-s" d="M346 250a46 46 0 0 1-92 0z"/><circle class="rot-edge" cx="300" cy="250" r="46"/><path class="rot-edge" d="M254 250h92"/><text x="300" y="228" class="lbl" style="fill:#f3f0e7">N</text><text x="300" y="284" class="lbl" style="fill:#f3f0e7">S</text></g>
+<circle cx="300" cy="250" r="9" fill="#c49a54" stroke="#17201d" stroke-width="2"/>
+<line class="grid-l" x1="300" y1="250" x2="428" y2="250" stroke="#5aa9c8" stroke-width="2" stroke-dasharray="6 5"/>
+<line class="grid-l" x1="300" y1="250" x2="390" y2="340" stroke="#c2685a" stroke-width="2" stroke-dasharray="6 5"/>
+<text class="tick" x="452" y="240" style="text-anchor:start;fill:#5aa9c8">stator field axis</text>
+<text class="tick" x="392" y="356" style="text-anchor:start;fill:#c2685a">detent axis, 45&#176; off</text>
+<text class="tick" x="366" y="188" style="text-anchor:start">index notch</text>
+<text class="tick" x="196" y="316" style="text-anchor:end">index notch</text>
+<text class="lbl" x="112" y="200" id="coil-lbl">COIL</text>
+<text class="sub" x="112" y="304" id="coil-cur">i = 0</text>
+<text class="lbl" x="310" y="412" id="motor-state">RESTING &#183; held by detent torque</text>
+<text class="sub" x="310" y="426" id="motor-count">step 0 &#183; rotor angle 0&#176; &#183; pulse polarity +</text>
+<text class="sub" x="310" y="470">coil &#8776; 12 000 turns of 20 &#181;m wire &#183; 2 k&#937; &#183; rotor &#8776; 1.4 mm SmCo, magnetised across a diameter</text>
+<text class="sub" x="310" y="492">soft-iron stator &#183; saturable isthmus at each notch sets the rest orientation</text>
+<text class="sub" x="310" y="530">Polarity alternates every second, so the rotor sees a reversing field but always turns the same way.</text>
+</svg>
+</div>
+<div class="stage">
+<svg id="torque-svg" viewBox="0 0 560 560" role="img" aria-labelledby="tq-t tq-d" style="min-width:440px">
+<title id="tq-t">Torque against rotor angle, and the simulated step</title><desc id="tq-d">Detent torque, coil torque, their sum, and the resulting angle-versus-time trajectory of one step.</desc>
+<text class="lbl" x="280" y="26">TORQUE vs ROTOR ANGLE</text>
+<path class="axis" d="M64 44v200h466"/>
+<line class="grid-l" x1="64" y1="144" x2="530" y2="144"/>
+<path id="tq-detent" class="plotline dim"/>
+<path id="tq-coil" class="plotline alt" opacity=".65"/>
+<path id="tq-total" class="plotline" stroke-width="3"/>
+<circle id="tq-dot" class="marker" r="6"/>
+<text class="tick" x="64" y="262">0&#176;</text><text class="tick" x="180" y="262">90&#176;</text><text class="tick" x="297" y="262">180&#176;</text><text class="tick" x="413" y="262">270&#176;</text><text class="tick" x="530" y="262">360&#176;</text>
+<text class="tick" x="52" y="148" style="text-anchor:end">0</text><text class="tick" x="52" y="70" style="text-anchor:end">&#181;N&#183;m</text>
+<text class="sub" x="297" y="288">grey = detent &#183; gold = coil &#183; blue = total</text><text class="sub" x="297" y="304">the coil pushes the rotor the whole way past 90&#176;, then the detent captures it at 180&#176;</text>
+
+<text class="lbl" x="280" y="330">SIMULATED STEP &#183; ANGLE vs TIME</text>
+<rect id="pulse-band" x="64" y="348" width="60" height="150" fill="#c49a54" opacity=".18"/>
+<path class="axis" d="M64 348v150h466"/>
+<line class="grid-l" x1="64" y1="431" x2="530" y2="431" stroke-dasharray="4 4"/><line class="grid-l" x1="64" y1="363" x2="530" y2="363" stroke-dasharray="4 4"/>
+<path id="step-curve" class="plotline" stroke-width="3"/>
+<text class="tick" x="52" y="435" style="text-anchor:end">180&#176;</text><text class="tick" x="52" y="367" style="text-anchor:end">360&#176;</text><text class="tick" x="52" y="502" style="text-anchor:end">0&#176;</text>
+<text class="tick" x="64" y="518">0</text><text class="tick" x="297" y="518">20 ms</text><text class="tick" x="530" y="518">40 ms</text>
+<text class="lbl" x="297" y="546" id="step-verdict">STEP COMPLETED</text>
+</svg>
+</div></div>
+
+<div class="controls" style="margin-top:34px">
+<button class="btn" id="motor-toggle" type="button" aria-pressed="true">Pause motor</button>
+<label class="ctl">Pulse duration <strong id="tp-v">4.9 ms</strong><input id="tp" type="range" min="1" max="10" step=".1" value="4.9"></label>
+<label class="ctl">Chopper drive level <strong id="duty-v">15 %</strong><input id="duty" type="range" min="4" max="60" step="1" value="15"></label>
+<label class="ctl">Detent torque <strong id="tc-v">0.50 &#181;N&#183;m</strong><input id="tc" type="range" min=".1" max="1.4" step=".05" value=".5"></label>
+<label class="ctl">Rotor damping <strong id="bd-v">2.0&#215;10&#8315;&#8313;</strong><input id="bd" type="range" min=".5" max="6" step=".1" value="2"></label>
+</div>
+
+<div class="stats">
+<div><small>Coil current, pulse mean</small><strong id="s-ipk">116 &#181;A</strong><span>1.55 V / 2 k&#937;, chopped</span></div>
+<div><small>Energy per step</small><strong id="s-epulse">0.88 &#181;J</strong><span>86 400 steps a day</span></div>
+<div><small>Mean current</small><strong id="s-iavg">1.37 &#181;A</strong><span>motor + logic</span></div>
+<div><small>Predicted cell life</small><strong id="s-life">2.1 years</strong><span>from 25 mAh</span></div>
+</div>
+
+<div class="concept-grid">
+<article><b>Why the notches exist</b><p>With a symmetric bore the rotor would rest exactly along the stator field axis. A pulse would then produce <em>zero</em> starting torque and no preferred direction: a dead centre. The notches saturate locally and rotate the rest orientation about 45&#176; away, guaranteeing both a starting torque and a sign for it.</p></article>
+<article><b>Why polarity alternates</b><p>After one step the rotor has turned 180&#176;, so the same field polarity would now push it backwards. Reversing the pulse each second restores the geometry. The bonus is zero net DC through the coil: no electrolytic corrosion, no progressive demagnetisation.</p></article>
+<article><b>Adaptive drive</b><p>Modern ICs cut the pulse short, then sense the rotor&#8217;s own back-EMF to confirm it moved. If the step landed, the next pulse is trimmed shorter still; if it failed, a full-power correction pulse fires immediately. The motor therefore runs permanently a few percent above its own failure threshold, which is where the battery life comes from.</p></article>
+</div>
+</section>
+
+<!-- ============ 07 TRAIN ============ -->
+<section class="chapter tint" id="train">
+<div class="section-head"><p>07 / Reduction</p><h2>The gear train,<br>running backwards</h2><span>A mechanical watch gears <em>up</em> from a slow barrel to a fast escapement. A quartz watch gears <em>down</em> from a fast rotor to slow hands. Same wheels, opposite errand.</span></div>
+
+<div class="controls">
+<button class="btn" id="train-toggle" type="button" aria-pressed="true">Pause train</button>
+<label class="ctl">Time compression <strong id="train-speed-v">&#215;60</strong><input id="train-speed" type="range" min="1" max="4" step="1" value="2"></label>
+</div>
+
+<div class="stage">
+<svg id="train-svg" viewBox="0 0 1010 452" role="img" aria-labelledby="tr-t tr-d" style="min-width:900px">
+<title id="tr-t">Reduction train from stepper rotor to hour hand</title><desc id="tr-d">Successive reductions take thirty revolutions per minute down to one revolution per twelve hours.</desc>
+<path class="wire mech" d="M40 212h930"/>
+<g class="gr" data-x="92" data-y="212" data-r="38" data-rate="-180"></g>
+<g class="gr" data-x="202" data-y="212" data-r="84" data-rate="36"></g>
+<g class="gr" data-x="369" data-y="212" data-r="102" data-rate="-6"></g>
+<g class="gr" data-x="543" data-y="212" data-r="91" data-rate="2.4"></g>
+<g class="gr" data-x="723" data-y="212" data-r="109" data-rate="-0.1"></g>
+<g class="gr" data-x="889" data-y="212" data-r="76" data-rate="0.008333"></g>
+<g class="train-labels">
+<text class="lbl" x="92" y="352">ROTOR</text><text class="sub" x="92" y="370">30 rpm mean</text>
+<text class="lbl" x="202" y="384">INTERMEDIATE</text><text class="sub" x="202" y="402">6 rpm</text>
+<text class="lbl" x="369" y="352">FOURTH</text><text class="sub" x="369" y="370">1 rpm &#183; seconds hand</text>
+<text class="lbl" x="543" y="384">THIRD</text><text class="sub" x="543" y="402">transmission</text>
+<text class="lbl" x="723" y="352">CENTRE / CANNON</text><text class="sub" x="723" y="370">1 rph &#183; minute hand</text>
+<text class="lbl" x="889" y="384">HOUR WHEEL</text><text class="sub" x="889" y="402">1 turn / 12 h</text>
+</g>
+<text class="sub" x="505" y="436">30 &#215; 60 &#215; 12 = 21 600 : 1 from rotor to hour hand &#183; no escapement anywhere in this chain</text>
+<text class="tick" x="20" y="30" style="text-anchor:start">Wheel sizes and ratios are schematic; real calibres split the reduction differently and often add a second motor for the date.</text>
+</svg>
+</div>
+
+<div class="split even" style="margin-top:46px">
+<div class="stage">
+<svg id="dial-svg" viewBox="0 0 560 320" role="img" aria-labelledby="di-t di-d" style="min-width:440px">
+<title id="di-t">Stepping seconds hand versus sweeping seconds hand</title><desc id="di-d">The quartz dial jumps six degrees once a second; the mechanical dial advances in small beats.</desc>
+<g id="dial-q"><circle class="dial-face" cx="150" cy="160" r="112"/><g id="dial-q-ticks"></g><path class="hand-h" d="M150 160V96"/><path class="hand-m" d="M150 160l44 28"/><path class="hand-s" id="hand-sq" d="M150 160V70"/><circle cx="150" cy="160" r="5" fill="#c2685a"/></g>
+<text class="lbl" x="150" y="300">QUARTZ &#183; 1 step / s</text>
+<g id="dial-m"><circle class="dial-face" cx="410" cy="160" r="112"/><g id="dial-m-ticks"></g><path class="hand-h" d="M410 160V96"/><path class="hand-m" d="M410 160l44 28"/><path class="hand-s" id="hand-sm" d="M410 160V70"/><circle cx="410" cy="160" r="5" fill="#c2685a"/></g>
+<text class="lbl" x="410" y="300">MECHANICAL &#183; 8 beats / s</text>
+</svg>
+</div>
+<div>
+<ol class="steps">
+<li><b>1</b><div><strong>The tick is a signature</strong><p>A quartz seconds hand advances 6&#176; once per second because the rotor makes exactly half a turn per second and the train divides by sixty. The &#8220;sweep&#8221; of a mechanical watch is really 28 800 tiny steps an hour, also discrete, just below the threshold where the eye separates them.</p></div></li>
+<li><b>2</b><div><strong>Loads are trivial</strong><p>The train carries roughly a microjoule per second. Pivots need no jewelling for wear, wheels are often moulded polymer, and lubrication requirements are mild. The engineering difficulty moved upstream into the silicon.</p></div></li>
+<li><b>3</b><div><strong>Nothing here regulates anything</strong><p>This is the deepest structural difference. In a mechanical watch the train is inside the timing loop, so friction and torque variation reach the balance and change the rate. In a quartz watch the train is strictly downstream: gum it up and the hands stop, but until they do they are never <em>late</em>.</p></div></li>
+<li><b>4</b><div><strong>More hands, more motors</strong><p>Quartz chronographs use two to four independent Lavet motors, one per subdial, because adding a motor is cheaper than adding a differential. Perpetual-calendar quartz drives the date ring from its own motor with an independent counter.</p></div></li>
+</ol>
+</div></div>
+</section>
+
+<!-- ============ 08 ACCURACY ============ -->
+<section class="chapter lab" id="accuracy">
+<div class="section-head"><p>08 / What is left to go wrong</p><h2>One parabola,<br>and a trick</h2><span>A tuning-fork crystal&#8217;s rate falls off as the <em>square</em> of temperature away from its turnover point. Almost the entire error budget of an ordinary quartz watch is that one curve.</span></div>
+
+<div class="controls">
+<label class="ctl">Temperature <strong id="temp-v">25.0 &#176;C</strong><input id="temp" type="range" min="0" max="50" step=".5" value="25"></label>
+<label class="ctl">Inhibited pulses / minute <strong id="inh-v">0</strong><input id="inh" type="range" min="0" max="40" step="1" value="0"></label>
+<button class="btn" id="tc-toggle" type="button" aria-pressed="false">Thermocompensation off</button>
+<button class="btn ghost" id="wear-toggle" type="button" aria-pressed="false">Use worn-on-wrist duty cycle</button>
+</div>
+
+<div class="stage">
+<svg id="temp-svg" viewBox="0 0 1120 420" role="img" aria-labelledby="tp-t tp-d" style="min-width:800px">
+<title id="tp-t">Frequency deviation against temperature</title><desc id="tp-d">A downward parabola with its turnover near 25 degrees Celsius, and the flat residual after digital thermocompensation.</desc>
+<path class="axis" d="M90 40v320h980"/>
+<g id="temp-grid"></g>
+<path id="temp-curve" class="plotline"/>
+<path id="temp-comp" class="plotline alt" opacity="0"/>
+<line id="temp-trim" x1="90" x2="1070" stroke="#9bc9b3" stroke-width="2" stroke-dasharray="5 5" opacity="0"/>
+<circle id="temp-dot" class="marker" r="7"/>
+<g id="temp-wear" opacity="0"><circle id="wear-a" class="marker" r="6" fill="#9bc9b3"/><circle id="wear-b" class="marker" r="6" fill="#9bc9b3"/><line id="wear-line" stroke="#9bc9b3" stroke-width="2" stroke-dasharray="4 4"/></g>
+<text class="sub" x="580" y="404">temperature &#183; &#176;C</text>
+<text class="sub" x="34" y="200" transform="rotate(-90 34 200)">rate deviation &#183; ppm</text>
+<text class="tick" x="595" y="24" id="temp-caption">&#916;f/f = &#8722;&#946;(T &#8722; 25 &#176;C)&#178; &#183; &#946; &#8776; 0.035 ppm/&#176;C&#178;</text>
+</svg>
+</div>
+
+<div class="stats">
+<div><small>Rate deviation</small><strong id="s-ppm">0.00 ppm</strong><span id="s-src">at the turnover point</span></div>
+<div><small>Per day</small><strong id="s-day">0.00 s</strong><span>&#177;0.07 s/day = ISO quartz chronometer</span></div>
+<div><small>Per month</small><strong id="s-mon">0.0 s</strong><span>&#177;15 s/month = ordinary quartz</span></div>
+<div><small>Per year</small><strong id="s-yr">0 s</strong><span>&#177;10 s/year = thermocompensated</span></div>
+</div>
+
+<div class="concept-grid">
+<article><b>The error only goes one way</b><p>The parabola opens downward, so <em>every</em> departure from about 25 &#176;C makes the watch run slow. A watch on a 33 &#176;C wrist by day and a 20 &#176;C nightstand by night is slow in both states. This is why ordinary quartz watches, as a class, lose rather than gain.</p></article>
+<article><b>Trimming by deletion</b><p>The crystal is deliberately left running slightly fast. Once a minute the IC <em>deletes</em> a few counted pulses. One pulse per minute out of 32 768&#215;60 is 0.51 ppm, about 1.3 seconds a month of resolution, adjusted in the digital domain where the adjustment itself cannot drift.</p></article>
+<article><b>Thermocompensation</b><p>Add a temperature sensor, sample it every ten to sixty seconds, and look up how many extra pulses to inhibit. The parabola is a known, stable, per-crystal curve, so it can be cancelled almost entirely. What remains is ageing, roughly 1&#8211;2 ppm in the first year, less thereafter, from stress relaxation in the mount and mass transfer on the tines.</p></article>
+</div>
+
+<div class="formula"><span>The whole error budget</span><strong>&#916;f/f = &#8722;&#946;(T &#8722; T&#8320;)&#178; &#43; ageing &#43; trim residual</strong>
+<p>No amplitude term. No positional term. No torque term. A mechanical watch has all three, and they interact. That absence, not the raw frequency, is what makes quartz timekeeping a different category rather than a better version of the same thing.</p></div>
+</section>
+
+<!-- ============ 09 VERSUS ============ -->
+<section class="chapter dark" id="versus">
+<div class="section-head"><p>09 / The comparison</p><h2>Two ways to<br>divide a second</h2><span>Both watches do the same three jobs: hold energy, generate a repeating interval, count it. They differ in where the interval comes from, and in one number.</span></div>
+
+<div class="split even">
+<div class="stage">
+<svg id="q-svg" viewBox="0 0 560 400" role="img" aria-labelledby="q-t q-d" style="min-width:440px">
+<title id="q-t">Ring-down comparison of a balance wheel and a quartz fork</title><desc id="q-d">Amplitude decay against number of cycles on a logarithmic axis; the quartz fork survives hundreds of times more cycles.</desc>
+<text class="lbl" x="280" y="28">FREE RING-DOWN &#183; AMPLITUDE vs CYCLES</text>
+<path class="axis" d="M70 50v250h460"/>
+<g id="q-grid"></g>
+<path id="q-bal" class="plotline alt"/><path id="q-xtal" class="plotline"/>
+<text class="tick" x="70" y="322">1</text><text class="tick" x="162" y="322">10</text><text class="tick" x="254" y="322">10&#178;</text><text class="tick" x="346" y="322">10&#179;</text><text class="tick" x="438" y="322">10&#8308;</text><text class="tick" x="530" y="322">10&#8309;</text>
+<text class="tick" x="300" y="344">cycles of free oscillation</text>
+<text class="tick" x="150" y="86" style="fill:#c49a54;text-anchor:start">balance wheel &#183; Q &#8776; 250</text>
+<text class="tick" x="330" y="120" style="fill:#5aa9c8;text-anchor:start">quartz fork &#183; Q &#8776; 54 000</text>
+<text class="sub" x="300" y="368">Q counts the radians of oscillation a resonator keeps before losing 1/e of its energy,</text><text class="sub" x="300" y="384">which is the same thing as how hard it is to talk out of its own frequency.</text>
+</svg>
+</div>
+<div>
+<div class="formula" style="margin:0;border-left-color:var(--sig)"><span>The one number that decides it</span><strong>&#948;f/f &#8776; &#966; / 2Q</strong>
+<p>For a resonator perturbed by a phase error &#966; per cycle (friction, an off-centre impulse, a change in position) the fractional rate error scales inversely with Q. A quartz fork has roughly two hundred times the Q of a balance wheel, so it converts the same disturbance into two hundred times less error. Everything else (the divider, the motor, the trim) is bookkeeping around that fact.</p></div>
+<p class="note" style="margin-top:24px">Two hybrids sit between the categories. Seiko&#8217;s Kinetic replaces the battery with a rotor-driven generator but keeps the quartz timebase. Spring Drive keeps the mainspring, barrel and gear train of a mechanical watch and deletes only the escapement, replacing it with an electromagnetically braked glide wheel that a quartz oscillator holds to exactly eight turns per second, which is why its seconds hand genuinely sweeps.</p>
+</div></div>
+
+<div style="overflow-x:auto;margin-top:52px">
+<table class="compare">
+<thead><tr><th></th><th>Mechanical, chronometer grade</th><th>Quartz, ordinary</th><th>Quartz, thermocompensated</th></tr></thead>
+<tbody>
+<tr><th>Timebase</th><td>balance wheel &#43; hairspring</td><td class="q">etched quartz tuning fork</td><td class="q">quartz fork &#43; temperature sensor</td></tr>
+<tr><th>Frequency</th><td class="q">4 Hz &#183; 28 800 vph</td><td class="q">32 768 Hz</td><td class="q">32 768 Hz</td></tr>
+<tr><th>Quality factor</th><td class="q">200 &#8211; 300</td><td class="q">5&#215;10&#8308; &#8211; 10&#8309;</td><td class="q">5&#215;10&#8308; &#8211; 10&#8309;</td></tr>
+<tr><th>Rate spec</th><td class="q">&#8722;4 / &#43;6 s per day</td><td class="q">&#177;15 s per month</td><td class="q win">&#177;10 s per year</td></tr>
+<tr><th>Fractional</th><td class="q">&#8776; 5&#215;10&#8315;&#8309;</td><td class="q">&#8776; 6&#215;10&#8315;&#8310;</td><td class="q win">&#8776; 3&#215;10&#8315;&#8311;</td></tr>
+<tr><th>Dominant error</th><td>position, amplitude, mainspring torque, temperature</td><td>the temperature parabola</td><td>crystal ageing</td></tr>
+<tr><th>Regulation</th><td>alter effective hairspring length or balance inertia</td><td>trimmer capacitor or fixed digital inhibition</td><td>temperature-indexed digital inhibition</td></tr>
+<tr><th>Energy source</th><td>mainspring, ~40 h reserve, rewound by the wrist</td><td class="q">25 mAh cell, 2&#8211;3 years</td><td class="q">cell, 5&#8211;10 years with a low-drain IC</td></tr>
+<tr><th>Train&#8217;s role</th><td>inside the timing loop; friction changes the rate</td><td colspan="2">downstream only; friction can stop the hands but cannot make them late</td></tr>
+<tr><th>Failure mode</th><td>drifts, then stops</td><td colspan="2">keeps perfect time, then stops dead</td></tr>
+</tbody></table>
+</div>
+</section>
+
+<section class="closing">
+<p>The governing idea</p>
+<h2>Mechanical watches<br>measure. Quartz<br>watches count.</h2>
+<p>An escapement is an analogue negotiation: energy goes in, the balance answers with an interval, and every imperfection in the negotiation shows up as rate. A quartz watch removes the negotiation. The crystal decides the interval alone, in a domain where a divider can be exact and a trim can be an integer. What is left for the mechanism to do is to spend one pulse a second turning a magnet, the only place in the whole watch where anything is still allowed to be difficult.</p>
+</section>
+</main>
+
+<footer><span>Quartz Watch Lab</span><p style="margin:0">Educational schematic &#183; component values, currents, and ratios are typical rather than specific to any calibre. Companion to the <a href="../watch-lab/">Automatic Watch Lab</a>.</p><a href="inside-a-quartz-watch.pdf">Print edition (PDF)</a><a href="#top">Back to top &#8593;</a></footer>
+</body></html>

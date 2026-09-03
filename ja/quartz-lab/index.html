@@ -1,0 +1,574 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#101715">
+<meta name="description" content="クオーツ時計の内部をインタラクティブに解説します。圧電音叉、ピアース発振回路、15段の分周器、ラベット型ステッピングモーター、そして針を動かす輪列まで。">
+<meta property="og:title" content="クオーツ時計の内部">
+<meta property="og:description" content="振動する二酸化ケイ素の薄片が、どうやって歩む秒針になるのか。">
+<meta property="og:image" content="https://theisegoria.github.io/og.png">
+<title>クオーツ時計の内部</title>
+<link rel="canonical" href="https://theisegoria.github.io/ja/quartz-lab/">
+<link rel="alternate" hreflang="en" href="https://theisegoria.github.io/quartz-lab/">
+<link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/quartz-lab/">
+<link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500&family=Noto+Sans+JP:wght@400;500&display=swap">
+<link rel="stylesheet" href="../../quartz-lab/styles.css">
+<style>
+:root{--serif:'Noto Serif JP',Georgia,'Hiragino Mincho ProN','Yu Mincho',serif;
+      --sans:'Noto Sans JP',Inter,ui-sans-serif,-apple-system,'Hiragino Sans','Yu Gothic',sans-serif}
+.hero h1,.section-head h2,.closing h2{letter-spacing:-.01em;line-height:1.12}
+.hero h1{font-size:clamp(2.6rem,6.4vw,5.4rem)}
+.section-head h2{font-size:clamp(2rem,4.2vw,4.2rem)}
+.closing h2{font-size:clamp(2.1rem,5vw,4.6rem)}
+.kicker,.section-head>p,.closing>p:first-child,.stats small,.info-card>p:first-child,label.ctl,button.btn,.hero nav a{letter-spacing:.05em}
+body{line-height:1.8}
+.formula strong{font-size:clamp(1.15rem,2.4vw,1.9rem)}
+.lbl{letter-spacing:.04em}
+</style>
+<script>window.QLAB_I18N={
+ forkPause:'振動を止める', forkRun:'振動させる',
+ forkModeIn:'同相モードを見る', forkModeAnti:'逆位相モード（実際）に戻す',
+ tineA:'腕A: ', tineB:'腕B: ',
+ netOk:'基部での正味の運動量 ≈ 0',
+ netBad:'基部での正味の運動量 ≠ 0 · エネルギーがマウントへ漏れ、Qは崩れる',
+ oscSustain:'発振は持続する', oscFail:'起動しない',
+ envOk:(tau,full)=>'振幅エンベロープ · τ = '+tau+' s · 約'+full+' sで飽和',
+ envFail:'ループ利得が1未満：水晶は減衰して沈黙する',
+ divPause:'カウンタを止める', divRun:'カウンタを動かす',
+ scales:['実時間','×1/8','×1/64','×1/512','×1/4096'],
+ motorPause:'モーターを止める', motorRun:'モーターを動かす',
+ verdictOk:'ステップ完了 · ローターは180°で捕捉された',
+ verdictDouble:d=>'二重ステップ · ローターは'+d+'°まで行き過ぎ · 秒針が二つ飛ぶ',
+ verdictFail:'ステップ失敗 · ディテントが元の位置へ引き戻した',
+ statePulse:'パルス印加中 · ステータ磁界がローターを駆動',
+ stateCoast:'惰走中 · ディテントトルクがローターを捕捉',
+ stateRest:'静止中 · ディテントトルクが保持',
+ motorCount:(n,a,pol,ms)=>'ステップ '+n+' · ローター角 '+a+'° · パルス極性 '+pol+' · t = '+ms+' ms',
+ trainPause:'輪列を止める', trainRun:'輪列を動かす',
+ tcOn:'温度補償 オン', tcOff:'温度補償 オフ',
+ wearOn:'単一の固定温度に戻す', wearOff:'腕に着けた場合の温度履歴を使う',
+ srcTurnover:'転回点にて', srcFrom:d=>'転回点から '+d+' °C',
+ srcDuty:'33 °Cの手首で14時間、21 °Cで10時間',
+ capPlain:'Δf/f = −β(T − 25 °C)² · β ≈ 0.035 ppm/°C²',
+ capComp:'温度補償あり · 放物線を測定し、間引き回数を温度に索引づけて打ち消す',
+ yearsUnit:'年',
+ chain:{
+  battery:['酸化銀電池','1.55 Vの酸化銀電池の容量はおよそ25 mAh。時計全体の消費はおよそ1.3マイクロアンペアなので、点検の周期を決めるのは機構ではなく化学です。電圧は最後まで平坦を保ち、そして落ちます。クオーツ時計が止まる直前まで完璧な時を刻むのはそのためです。',[['化学系','Ag₂O / Zn, 1.55 V'],['容量','≈25 mAh'],['寿命','2–3年'],['終わり方','緩やかでなく突然']]],
+  crystal:['水晶発振回路','線形領域にバイアスされたCMOSインバータが、エッチングされた音叉型水晶を駆動し、その結果を自らの入力へ戻します。共振が鋭いため、ループは事実上ただ一つの周波数でしか発振を維持できません。',[['周波数','32 768 Hz = 2¹⁵'],['Q値','≈5×10⁴'],['駆動電力','< 1 µW'],['起動時間','≈0.5 s']]],
+  divider:['二進分周器','トグルフリップフロップを十五段直列に。各段は入力の二周期に一度だけ状態を変えるので、前段の周波数をきっかり半分にします。二分周はアナログのどの過程とも違って厳密で、蓄積する誤差項が存在しません。',[['段数','15'],['入力','32 768 Hz'],['出力','1.000 Hz'],['誤差','厳密にゼロ']]],
+  driver:['モータードライバ','速い分周段を1 Hzの段でゲートして短いパルスを切り出し、毎秒その極性を反転させます。現代のドライバはパルスを高周波でチョッピングし、コイルが本来引く電流のごく一部に平均を抑えます。',[['パルス幅','4–8 ms'],['極性','毎秒反転'],['チョッパ','デューティ約15 %'],['帰還','逆起電力によるローター検出']]],
+  motor:['ラベット型ステッピングモーター','米粒ほどの二極磁石が、切り欠きのある軟鉄の穴に収まっています。電流パルス一発でちょうど180度回ります。切り欠きはパルスの合間にローターを保持し、そして何より、どちらへ回り出すかを決めます。',[['1歩','パルスあたり180°'],['平均回転','30 rpm'],['コイル','約12 000回巻 / 2 kΩ'],['エネルギー','1歩あたり約1 µJ']]],
+  train:['減速輪列','普通の時計の輪列ですが、向きが逆です。遅い香箱から速い脱進機へ増速するのではなく、速いローターから遅い針へ減速します。ここに歩度を左右するものは何もありません。',[['総減速比','21 600 : 1'],['四番車','1 rpm'],['筒かな','1 rph'],['脱進機','なし']]],
+  hands:['表示','毎秒6度の文字盤。目に見えるこの一歩は、分周器が1 Hzに到達しパルスを使い切ったことの直接の署名です。クオーツで秒針が掃く機種は、分周を高い段で取り出してモーターをより頻繁に歩ませているだけです。',[['1歩','6°'],['頻度','毎秒1回'],['掃き秒針','毎秒4・8・32歩など'],['パワーリザーブ','なし。電池が尽きれば止まる']]]
+ }};</script>
+<script src="../../quartz-lab/quartz.js" defer></script></head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0l10 5-10 5z"/></marker>
+<marker id="ag" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0l10 5-10 5z"/></marker>
+<marker id="as" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0l10 5-10 5z"/></marker>
+</defs></svg>
+
+<header class="hero" id="top">
+<nav><a class="brand" href="#top">クオーツ時計ラボ</a>
+<div><a href="#chain">信号の流れ</a><a href="#crystal">水晶振動子</a><a href="#circuit">等価回路</a><a href="#osc">発振回路</a><a href="#divider">分周器</a><a href="#motor">モーター</a><a href="#train">輪列</a><a href="#accuracy">精度</a><a href="#versus">機械式との比較</a><a href="../../quartz-lab/inside-a-quartz-watch.pdf">PDF</a><a href="../../watch-lab/">自動巻きラボ</a></div></nav>
+<div class="hero-copy">
+<p class="kicker">クオーツ時計を、ゆっくり見る</p>
+<h1>数え続ける<br>ひとつの石。</h1>
+<p>機械式時計はテンプの振れを数える。クオーツ時計は、レーザーで整形された二酸化ケイ素の薄片の振動を数える。毎秒32,768回。その数を十五回半分にしていき、最後に残った一発のパルスで、磁石を半回転させる。</p>
+<a class="cta" href="#chain">信号を追う ↓</a></div>
+<div class="hero-orbit" aria-hidden="true"><div class="fork-glyph"><svg viewBox="0 0 200 200"><g><path class="tine a" d="M78 150V44"/><path class="tine b" d="M122 150V44"/><path d="M60 150h80" stroke="#5aa9c83d" stroke-width="18" stroke-linecap="round" fill="none"/></g></svg></div></div>
+</header>
+
+<main>
+
+<!-- ============ 01 SIGNAL PATH ============ -->
+<section class="chapter" id="chain">
+<div class="section-head"><p>01 / 全体の流れ</p><h2>七つの段階、<br>二つの領域</h2><span>段階を選んでください。モーターより左は電子回路、右から先は普通の意味での時計です。</span></div>
+<div class="chainwrap"><div class="stage">
+<svg id="chain-svg" viewBox="0 0 1200 400" role="img" aria-labelledby="chain-t chain-d" style="min-width:960px">
+<title id="chain-t">クオーツ時計の信号経路</title><desc id="chain-d">電池、水晶振動子を含む発振回路、十五段の分周器、モータードライバ、ラベット型ステッピングモーター、減速輪列、そして針。</desc>
+<path class="wire" d="M40 45h660"/><path class="wire mech" d="M720 45h440"/>
+<text class="sub" x="370" y="34">電気の領域 &#183; 可動部なし</text>
+<text class="sub" x="940" y="34">機械の領域</text>
+
+<g class="node" data-part="battery" tabindex="0" role="button"><rect x="20" y="90" width="140" height="140" rx="4"/><text class="lbl" x="90" y="118">電池</text><g transform="translate(34,0)"><path class="wave" d="M0 152h112"/><path class="wave" d="M20 138v28M44 144v16M68 138v28M92 144v16"/></g><text class="val" x="90" y="200">1.55 V 直流</text><text class="sub" x="90" y="216">酸化銀 &#183; 25 mAh</text></g>
+<g class="node" data-part="crystal" tabindex="0" role="button"><rect x="190" y="90" width="140" height="140" rx="4"/><text class="lbl" x="260" y="118">発振回路</text><g transform="translate(204,0)"><path class="wave" d="M0 152q4.67-21 9.33 0t9.33 0t9.33 0t9.33 0t9.33 0t9.33 0t9.33 0t9.33 0t9.33 0t9.33 0t9.33 0t9.33 0"/></g><text class="val" x="260" y="200">32 768 Hz</text><text class="sub" x="260" y="216">水晶音叉 + CMOS</text></g>
+<g class="node" data-part="divider" tabindex="0" role="button"><rect x="360" y="90" width="140" height="140" rx="4"/><text class="lbl" x="430" y="118">分周器</text><g transform="translate(374,0)"><path class="wave" d="M0 168h14v-32h14v32h14v-32h14v32h14v-32h14v32h14v-32h14"/></g><text class="val" x="430" y="200">&#247; 2&#185;&#8309;</text><text class="sub" x="430" y="216">15段のトグルFF</text></g>
+<g class="node" data-part="driver" tabindex="0" role="button"><rect x="530" y="90" width="140" height="140" rx="4"/><text class="lbl" x="600" y="118">ドライバ</text><g transform="translate(544,0)"><path class="wave" d="M0 152h16v-22h10v22h34v22h10v-22h42"/></g><text class="val" x="600" y="200">毎秒1パルス</text><text class="sub" x="600" y="216">極性は交互</text></g>
+<g class="node" data-part="motor" tabindex="0" role="button"><rect x="700" y="90" width="140" height="140" rx="4"/><text class="lbl" x="770" y="118" style="font-size:10px;letter-spacing:.05em">ラベット式</text><g transform="translate(714,0)"><path class="wave mech" d="M0 176h16v-11h16v-11h16v-11h16v-11h16v-11h16v-11h16"/></g><text class="val" x="770" y="200">1歩あたり180&#176;</text><text class="sub" x="770" y="216">平均30 rpm</text></g>
+<g class="node" data-part="train" tabindex="0" role="button"><rect x="870" y="90" width="140" height="140" rx="4"/><text class="lbl" x="940" y="118">減速輪列</text><g transform="translate(884,0)"><path class="wave mech" d="M0 174L112 130"/><circle cx="24" cy="164" r="11" fill="none" stroke="#c49a54" stroke-width="2"/><circle cx="62" cy="152" r="15" fill="none" stroke="#c49a54" stroke-width="2"/><circle cx="98" cy="138" r="8" fill="none" stroke="#c49a54" stroke-width="2"/></g><text class="val" x="940" y="200">21 600 : 1</text><text class="sub" x="940" y="216">ローターから時針まで</text></g>
+<g class="node" data-part="hands" tabindex="0" role="button"><rect x="1040" y="90" width="140" height="140" rx="4"/><text class="lbl" x="1110" y="118">針</text><g transform="translate(1054,0)"><circle cx="56" cy="152" r="20" fill="none" stroke="#c49a54" stroke-width="2"/><path class="wave mech" d="M56 152V137M56 152l11 7"/></g><text class="val" x="1110" y="200">毎秒1歩</text><text class="sub" x="1110" y="216">1目盛りで文字盤6&#176;</text></g>
+
+<g class="power-budget">
+<text class="sub" x="600" y="284" style="font-size:11px;letter-spacing:.12em">平均消費電流の内訳 &#183; 合計 &#8776; 1.3 &#181;A &#183; 25 mAh電池で &#8776; 2.2年</text>
+<rect x="240" y="300" width="720" height="26" fill="none" stroke="#a9a397" stroke-width="1.5"/>
+<rect x="240" y="300" width="166" height="26" fill="#5aa9c8" opacity=".55"/><rect x="406" y="300" width="277" height="26" fill="#9bc9b3" opacity=".55"/><rect x="683" y="300" width="277" height="26" fill="#c49a54" opacity=".7"/>
+<text class="tick" x="323" y="345">発振 0.3 &#181;A</text><text class="tick" x="544" y="345">分周+論理 0.5 &#181;A</text><text class="tick" x="821" y="345">モーター 0.5 &#181;A</text>
+<text class="sub" x="600" y="374">機械的な仕事をするのはモーターだけで、その消費はシリコン全体とほぼ同じです。</text>
+</g>
+</svg>
+</div>
+<aside class="info-card" aria-live="polite">
+<p>選択中の段階</p><h3 id="chain-name">水晶発振回路</h3><div class="rule"></div>
+<p id="chain-copy">線形領域に保たれたCMOSインバータが音叉型水晶を駆動し、その出力を自らの入力へ戻します。水晶の共振が極めて鋭いため、ループはただ一つの周波数でしか発振を維持できません。</p>
+<dl class="spec" id="chain-spec"></dl>
+</aside></div>
+<p class="note">教育用の模式図です。歯数・電流・配置は代表的な値であり、特定のキャリバーのものではありません。</p>
+</section>
+
+<!-- ============ 02 THE CRYSTAL ============ -->
+<section class="chapter tint" id="crystal">
+<div class="section-head"><p>02 / 共振子</p><h2>石はなぜ<br>命令どおり震えるのか</h2><span>水晶が圧電性をもつのは、結晶格子に対称心がないからです。圧すれば電圧が生じ、電圧をかければ形が変わります。</span></div>
+
+<div class="controls">
+<button class="btn" id="fork-toggle" type="button" aria-pressed="true">振動を止める</button>
+<label class="ctl">表示振幅<strong id="fork-amp-v">&#215;1.0</strong><input id="fork-amp" type="range" min=".2" max="1.6" step=".1" value="1"></label>
+<label class="ctl">アニメーションの減速<strong id="fork-slow-v">&#215;1/32 768</strong><input id="fork-slow" type="range" min="0" max="3" step="1" value="0"></label>
+<button class="btn ghost" id="fork-mode" type="button" aria-pressed="true">同相モードを見る</button>
+</div>
+
+<div class="split"><div class="stage">
+<svg id="fork-svg" viewBox="0 0 640 572" role="img" aria-labelledby="fork-t fork-d" style="min-width:520px">
+<title id="fork-t">たわみモードで振動する水晶音叉</title><desc id="fork-d">エッチングされた二本の腕が逆位相で曲がり、運動量が基部で打ち消し合うため、エネルギーはほとんど外へ逃げません。</desc>
+<path class="ghost-path" d="M235 390V80h30v310M375 390V80h30v310"/>
+<path id="tine-l" class="tine-body"/><path id="tine-r" class="tine-body"/>
+<path id="el-l" class="electrode"/><path id="el-r" class="electrode"/>
+<path class="fork-base" d="M180 386h280v66H180z"/>
+<path class="fork-base" d="M280 452h80v58h-80z"/>
+<circle cx="300" cy="481" r="7" fill="#c2685a"/><circle cx="340" cy="481" r="7" fill="#5aa9c8"/>
+<text class="sub" x="320" y="530">気密封止のマウント &#183; 真空容器</text>
+<g id="momentum">
+<path class="arrow-m" id="mom-l" d="M250 108h0"/><path class="arrow-m" id="mom-r" d="M390 108h0"/>
+</g>
+<text class="lbl" x="320" y="62">たわみモード &#183; 二本の腕は逆位相</text>
+<g class="dim" stroke="#a9a397" stroke-width="1.5" fill="none"><path d="M496 80v310M488 80h16M488 390h16"/></g>
+<text class="tick" x="530" y="228" transform="rotate(90 530 228)">L &#8776; 2.4 mm</text>
+<path class="axis" d="M198 92h42"/><text class="tick" x="192" y="96" style="font-size:9px;text-anchor:end">t &#8776; 0.1 mm（腕の厚み）</text>
+<text class="tick" x="90" y="140" style="text-anchor:start">先端の振れは</text><text class="tick" x="90" y="154" style="text-anchor:start">&#215;2000に誇張:</text><text class="tick" x="90" y="168" style="text-anchor:start">実際は &#8776; 1 &#181;m</text>
+<text class="tick" x="90" y="300" style="text-anchor:start" id="fork-phase-l">腕A: +</text>
+<text class="tick" x="90" y="316" style="text-anchor:start" id="fork-phase-r">腕B: &#8722;</text>
+<text class="sub" x="320" y="556" id="fork-net">基部での正味の運動量 &#8776; 0</text>
+</svg>
+</div>
+<ol class="steps">
+<li><b>1</b><div><strong>対称心をもたない格子</strong><p>&#945;-水晶は三方晶系32群に属します。ひずみによってSi&#8308;&#8314;とO&#178;&#8315;の副格子が異なる量だけ変位するため、変形した結晶は正味の双極子をもち、表面に電荷が現れます。</p></div></li>
+<li><b>2</b><div><strong>逆圧電効果が駆動する</strong><p>各腕に沿って形成された電極が電界をかけ、腕の片側を伸ばし反対側を縮めます。片面が伸び反対面が縮む棒は、曲がります。</p></div></li>
+<li><b>3</b><div><strong>圧電効果が読み返す</strong><p>同じ電極が、曲がりによって生じた電荷を拾います。これが帰還ループを閉じます。水晶はアクチュエータであると同時にセンサーなのです。</p></div></li>
+<li><b>4</b><div><strong>逆位相こそが要点</strong><p>二本の腕は大きさが等しく向きが逆の運動量をもつため、音叉がマウントと接する場所で反力が打ち消し合います。外へ漏れるものがほとんどないので、<em>Q</em>は10&#8308;から10&#8309;に達します。逆に同相で駆動すると基部が揺れ、エネルギーが逃げ、共振は崩れます。</p></div></li>
+</ol></div>
+
+<div class="stats">
+<div><small>公称周波数</small><strong>32 768 Hz</strong><span>2&#185;&#8309; ちょうど</span></div>
+<div><small>Q値</small><strong>5&#215;10&#8308; &#8211; 10&#8309;</strong><span>真空封止の容器内で</span></div>
+<div><small>等価直列抵抗</small><strong>20 &#8211; 50 k&#937;</strong><span>回路が打ち勝つべき損失</span></div>
+<div><small>リングダウン時間</small><strong>&#8776; 0.5 s</strong><span>駆動を切った後 2Q/&#969;</span></div>
+</div>
+
+<div class="concept-grid">
+<article><b>寸法が音程を決める</b><p>たわみ振動する腕では、<span class="mono">f &#8733; (t/L&#178;)&#8730;(E/&#961;)</span>。周波数は腕の厚みに比例し、腕の長さの<em>逆二乗</em>に比例します。だからこそ音叉はフォトリソグラフィでミクロン精度にエッチングされ、最後にレーザーで仕上げられます。</p></article>
+<article><b>蒸着による微調整</b><p>最終調整では腕の先端で質量を削るか加えます。そこはモード形状の変位が最大、すなわち感度が最大の場所です。金を飛ばせば周波数は上がり、金を載せれば下がります。一回あたり数ppmの世界です。</p></article>
+<article><b>なぜ100 000ではなく32 768なのか</b><p>2&#185;&#8309;だからです。トグルFFだけで十五回半分にすれば、ちょうど1 Hzに着地します。同時に消費電力の勘所でもあります。CMOSの動的電力は<span class="mono">C V&#178; f</span>に比例するので、高い周波数の水晶は短期安定度を買う代わりに電池寿命を線形に支払います。</p></article>
+</div>
+
+<div class="formula"><span>共振子を一行で</span><strong>f &#8776; 0.162 &#183; (t / L&#178;) &#183; &#8730;(E / &#961;)</strong>
+<p>水晶では<span class="mono">E &#8776; 78 GPa</span>、<span class="mono">&#961; = 2650 kg/m&#179;</span>なので、長さ約2.4 mm・厚さ0.1 mmの腕は32 kHz付近に落ち着きます。この先の時計は、すべて「数える」仕事です。ここから先に速度を決めるものはありません。</p></div>
+</section>
+
+<!-- ============ 03 THE CRYSTAL AS A CIRCUIT ============ -->
+<section class="chapter dark" id="circuit">
+<div class="section-head"><p>03 / 電気的な分身</p><h2>機械の共振子を、<br>オームで書く</h2><span>回路から見ると、音叉は途方もない値の<em>LCR</em>枝が、自らの電極容量と並列につながったものに見えます。その値は、姿を変えた力学そのものです。</span></div>
+
+<div class="split even"><div class="stage">
+<svg viewBox="0 0 560 440" role="img" aria-labelledby="bvd-t bvd-d" style="min-width:420px">
+<title id="bvd-t">水晶振動子のバターワース&#8211;ヴァン・ダイク等価回路</title><desc id="bvd-d">インダクタンス・キャパシタンス・抵抗の直列（モーショナル）枝と、電極の静電容量との並列。</desc>
+<path class="wireline" d="M30 230h50M480 230h50"/>
+<circle class="dot" cx="30" cy="230" r="5"/><circle class="dot" cx="530" cy="230" r="5"/>
+<path class="wireline" d="M80 230V120h165M275 120h165v110"/>
+<path class="comp" d="M245 96v48M275 96v48"/>
+<text class="cname" x="260" y="80">C&#8320;</text><text class="sub" x="260" y="164">1.4 pF &#183; 電極と容器</text>
+<path class="wireline" d="M80 230v110h40M200 340h40M280 340h30M390 340h50v-110"/>
+<path class="comp" d="M120 340q10-24 20 0t20 0t20 0t20 0"/>
+<text class="cname" x="160" y="308">L&#8321;</text><text class="sub" x="160" y="384">7 863 H &#183; 腕の慣性</text>
+<path class="comp" d="M240 316v48M270 316v48"/>
+<text class="cname" x="255" y="308">C&#8321;</text><text class="sub" x="255" y="384">3.0 fF &#183; 剛性</text>
+<path class="comp" d="M310 340l10-16 16 32 16-32 16 32 12-16h10"/>
+<text class="cname" x="350" y="308">R&#8321;</text><text class="sub" x="350" y="384">30 k&#937; &#183; 損失のすべて</text>
+<circle class="dot" cx="80" cy="230" r="5"/><circle class="dot" cx="440" cy="230" r="5"/>
+<text class="lbl" x="280" y="42">バターワース&#8211;ヴァン・ダイク モデル</text>
+<text class="sub" x="280" y="418">Q = &#969;L&#8321;/R&#8321; &#8776; 54 000</text>
+</svg>
+</div>
+<div class="stage">
+<svg id="imp-svg" viewBox="0 0 560 440" role="img" aria-labelledby="imp-t imp-d" style="min-width:420px">
+<title id="imp-t">周波数に対する水晶のインピーダンス</title><desc id="imp-d">深い直列共振の谷と鋭い並列共振の山が、約1000 ppm離れて並びます。</desc>
+<path class="axis" d="M78 60v300h450"/>
+<g id="imp-grid"></g>
+<rect id="imp-band" x="0" y="60" width="0" height="300" fill="#5aa9c8" opacity=".1"/>
+<path id="imp-curve" class="plotline"/>
+<line id="imp-fs" class="grid-l" y1="60" y2="360" stroke="#c2685a" stroke-dasharray="4 4"/>
+<line id="imp-fp" class="grid-l" y1="60" y2="360" stroke="#c2685a" stroke-dasharray="4 4"/>
+<line id="imp-fl" y1="60" y2="360" stroke="#c49a54" stroke-width="2.5"/>
+<circle id="imp-dot" class="marker" r="6" cy="360"/>
+<text class="sub" x="303" y="404">周波数 &#183; Hz（表示幅 &#8776; 63 Hz、約1 900 ppm）</text>
+<text class="sub" x="26" y="210" transform="rotate(-90 26 210)">|Z| &#183; オーム（対数）</text>
+<text class="tick" id="imp-lbl-fs" y="52" style="fill:#c2685a">f&#8347;</text>
+<text class="tick" id="imp-lbl-fp" y="52" style="fill:#c2685a">f&#8346;</text>
+<text class="tick" id="imp-lbl-fl" y="428" style="fill:#c49a54">動作点</text>
+</svg>
+</div></div>
+
+<div class="controls" style="margin-top:34px">
+<label class="ctl"><span>負荷容量 C<sub>L</sub></span> <strong id="cl-v">9.0 pF</strong><input id="cl" type="range" min="4" max="20" step=".5" value="9"></label>
+<label class="ctl">モーショナル容量 C&#8321;<strong id="c1-v">3.0 fF</strong><input id="c1" type="range" min="1.5" max="5" step=".1" value="3"></label>
+<label class="ctl">等価直列抵抗 R&#8321;<strong id="r1-v">30 k&#937;</strong><input id="r1" type="range" min="10" max="90" step="5" value="30"></label>
+</div>
+
+<div class="stats">
+<div><small>直列共振</small><strong id="s-fs">32 768.0 Hz</strong><span>|Z|最小、= R&#8321;</span></div>
+<div><small>並列共振</small><strong id="s-fp">32 803.1 Hz</strong><span>|Z|最大</span></div>
+<div><small>動作周波数</small><strong id="s-fl">32 772.7 Hz</strong><span id="s-ppm">f&#8347;より +144 ppm</span></div>
+<div><small>Q値</small><strong id="s-q">54 000</strong><span id="s-ring">0.52 s 鳴り続ける</span></div>
+</div>
+
+<div class="concept-grid">
+<article><b>八千ヘンリー</b><p>この寸法にそんなインダクタは存在しません。L&#8321;はインダクタではなく、振動する腕の<em>質量</em>を電気の単位で表したものです。直列LCRとばね質量ダンパは同じ二階の方程式に従うからです。C&#8321;は腕の剛性、R&#8321;はあらゆる損失機構の総和です。</p></article>
+<article><b>この隙間が安定性そのもの</b><p>回路が周波数を引っ張れるのはf&#8347;とf&#8346;の間だけで、その窓の幅はおよそ<span class="mono">C&#8321;/2C&#8320; &#8776; 1000 ppm</span>しかありません。水晶はそれ以外の場所で動くことを端的に拒みます。振幅・姿勢・ゼンマイトルクで歩度が動くテンプと比べてみてください。</p></article>
+<article><b>トリマは実際に何をしているのか</b><p>微調整で C<sub>L</sub>を4 pFから20 pFまで動かしても、動作点はおよそ200 ppm、つまり月差にして約九分ぶんしか動きません。それがクオーツ時計の調整幅のすべてであり、現代のムーブメントではこれをデジタルで行います。</p></article>
+</div>
+</section>
+
+<!-- ============ 04 THE OSCILLATOR ============ -->
+<section class="chapter" id="osc">
+<div class="section-head"><p>04 / 振動を維持する</p><h2>インバータ一つを、<br>逆向きに使う</h2><span>デジタルゲートを、それ自身にとって禁じられたアナログ領域にバイアスすると増幅器になります。そこに水晶を巻きつければ、32 768 Hzで発振する以外に道はありません。</span></div>
+
+<div class="split even"><div class="stage">
+<svg id="pierce-svg" viewBox="0 0 720 480" role="img" aria-labelledby="pi-t pi-d" style="min-width:520px">
+<title id="pi-t">CMOSピアース発振回路の回路図</title><desc id="pi-d">帰還バイアス抵抗をもつインバータ、直列の駆動抵抗、水晶、そして接地された二つの負荷容量。</desc>
+<path class="wireline" d="M140 230h110M332 230h88M490 230h110"/>
+<path class="wireline" d="M600 230v110H140V230"/>
+<path class="wireline" d="M420 230V120H200v110"/>
+<path class="comp" d="M250 190v80l70-40z"/><circle class="comp" cx="327" cy="230" r="7"/>
+<text class="cname" x="278" y="256" style="fill:#c49a54">&#8211;A</text>
+<path class="comp" d="M260 120l10-16 16 32 16-32 16 32 12-16h10"/>
+<text class="cname" x="300" y="102">R<tspan dy="3" style="font-size:9px">f</tspan><tspan dy="-3"> </tspan> &#8776; 20 M&#937;</text>
+<path class="comp" d="M424 230l10-16 16 32 16-32 16 32 12-16h10"/>
+<text class="cname" x="455" y="204">R<tspan dy="3" style="font-size:9px">d</tspan><tspan dy="-3"> </tspan></text>
+<rect class="comp" x="330" y="318" width="72" height="44" rx="2"/><path class="comp" d="M322 322v36M410 322v36"/>
+<text class="cname" x="366" y="392">32 768 Hz 音叉</text>
+<path class="wireline" d="M186 230v130M562 230v130"/>
+<path class="comp" d="M164 360h44M164 378h44M186 378v22M562 360h44M540 360h44M540 378h44M562 378v22"/>
+<path class="comp" d="M166 400h40M172 410h28M178 420h16M542 400h40M548 410h28M554 420h16"/>
+<text class="cname" x="150" y="352" style="text-anchor:end">C<tspan dy="3" style="font-size:9px">g</tspan><tspan dy="-3"> </tspan></text><text class="cname" x="612" y="352" style="text-anchor:start">C<tspan dy="3" style="font-size:9px">d</tspan><tspan dy="-3"> </tspan></text>
+<circle class="dot" cx="186" cy="230" r="5"/><circle class="dot" cx="562" cy="230" r="5"/><circle class="dot" cx="200" cy="230" r="5"/><circle class="dot" cx="420" cy="230" r="5"/>
+<text class="sub" x="186" y="212">ゲート節点</text><text class="sub" x="562" y="212">ドレイン節点</text>
+<text class="lbl" x="360" y="52">CMOS ピアース発振回路</text>
+<text class="sub" x="360" y="72">インバータ180&#176; &#43; π形回路180&#176; &#61; 360&#176; &#183; ループ利得 &#62; 1 &#8594; 発振</text>
+<circle id="pi-runner" r="7" fill="#c2685a" opacity=".9"/>
+</svg>
+</div>
+<div class="stage">
+<svg id="wave-svg" viewBox="0 0 560 480" role="img" aria-labelledby="wv-t wv-desc" style="min-width:420px">
+<title id="wv-t">発振波形と起動時のエンベロープ</title><desc id="wv-desc">逆位相のゲート電圧とドレイン電圧、そして電源投入時に熱雑音から指数関数的に成長する振幅。</desc>
+<text class="lbl" x="280" y="30">定常状態 &#183; 1周期 = 30.5 &#181;s</text>
+<path class="axis" d="M60 60v150h470"/>
+<path id="wv-g" class="plotline"/><path id="wv-d" class="plotline alt"/>
+<line id="wv-play" y1="60" y2="210" stroke="#c2685a" stroke-width="1.5" stroke-dasharray="3 3"/>
+<text class="tick" x="46" y="80" style="text-anchor:end;fill:#5aa9c8">ゲート</text><text class="tick" x="46" y="196" style="text-anchor:end;fill:#c49a54">ドレイン</text>
+<text class="sub" x="295" y="238">二つの節点は常に180&#176;ずれている</text>
+
+<text class="lbl" x="280" y="292">熱雑音からの起動</text>
+<path class="axis" d="M60 320v110h470"/><line class="grid-l" x1="60" y1="375" x2="530" y2="375" stroke-dasharray="4 4"/>
+<path id="wv-env" class="plotline"/><path id="wv-env2" class="plotline" opacity=".35"/>
+<line id="wv-envplay" y1="320" y2="430" stroke="#c2685a" stroke-width="1.5" stroke-dasharray="3 3"/>
+<text class="tick" x="60" y="450">0</text><text class="tick" x="295" y="450">0.5 s</text><text class="tick" x="530" y="450">1.0 s</text>
+<text class="sub" x="295" y="470" id="wv-startup">振幅エンベロープ &#183; &#964; = 0.12 s</text>
+</svg>
+</div></div>
+
+<div class="controls" style="margin-top:30px">
+<button class="btn" id="pi-restart" type="button">起動を再生</button>
+<label class="ctl"><span>インバータの相互コンダクタンス g<sub>m</sub></span> <strong id="gm-v">1.00 &#181;S</strong><input id="gm" type="range" min=".1" max="4" step=".05" value="1"></label>
+<label class="ctl"><span>負荷容量 C<sub>g</sub> = C<sub>d</sub></span> <strong id="cc-v">12 pF</strong><input id="cc" type="range" min="4" max="24" step="1" value="12"></label>
+</div>
+
+<div class="stats">
+<div><small>負性抵抗</small><strong id="s-rneg">&#8722;164 k&#937;</strong><span>&#8722;g<sub>m</sub>/(&#969;&#178;C<sub>g</sub>C<sub>d</sub>)</span></div>
+<div><small>利得余裕</small><strong id="s-margin">5.5&#215;</strong><span id="s-start">発振は持続する</span></div>
+<div><small>起動時定数</small><strong id="s-tau">0.12 s</strong><span>2L&#8321;/(|R<sub>neg</sub>| &#8722; R&#8321;)</span></div>
+<div><small>発振回路の消費</small><strong id="s-power">0.3 &#181;A</strong><span>&#8776; 0.45 &#181;W</span></div>
+</div>
+
+<div class="concept-grid">
+<article><b>利得ではなく負性抵抗</b><p>ピアース発振回路をいちばん整理して見るなら、インバータと二つの容量が水晶に対して<span class="mono">&#8722;g<sub>m</sub>/(&#969;&#178;C<sub>g</sub>C<sub>d</sub>)</span>を提示している、と考えることです。この負性抵抗の大きさがR&#8321;を上回れば正味の損失は負になり、あらゆる擾乱が成長します。設計上は三〜五倍の余裕が望ましく、それ以上は電流を無駄にし、音叉を過剰駆動します。</p></article>
+<article><b>起動に一秒かかる理由</b><p>振幅は<span class="mono">e^(t/&#964;)</span>に従って成長します。ここで<span class="mono">&#964; = 2L&#8321;/(|R<sub>neg</sub>|&#8722;R&#8321;)</span>。音叉を安定にしているあの巨大なL&#8321;が、同時に目覚めを遅くします。高Q共振子ははずみ車です。乱しにくく、同じだけ回し始めにくい。</p></article>
+<article><b>駆動レベルの問題</b><p>R<sub>d</sub>は音叉をどれだけ強く駆動するかを制限します。過剰駆動は非線形なたわみ、加速する経年変化、極端な場合には腕の付け根の破断を招きます。時計用水晶の駆動は通常1マイクロワットをはるかに下回り、腕の振れは約1ミクロンです。</p></article>
+</div>
+</section>
+
+<!-- ============ 05 DIVIDER ============ -->
+<section class="chapter dark" id="divider">
+<div class="section-head"><p>05 / 数え下ろす</p><h2>十五回半分にすると<br>1になる</h2><span>32 768は2&#185;&#8309;です。十五段のトグルフリップフロップが、水晶のうなりを毎秒ちょうど一発のパルスに変えます。使うのは二進法の算術だけです。</span></div>
+
+<div class="controls">
+<button class="btn" id="div-toggle" type="button" aria-pressed="true">カウンタを止める</button>
+<label class="ctl">時間スケール<strong id="div-speed-v">実時間</strong><input id="div-speed" type="range" min="0" max="4" step="1" value="0"></label>
+<span class="mono" style="font-size:.85rem">カウンタ<strong id="div-count">00000000000000</strong> &#183; <span id="div-elapsed">0.000 s</span></span>
+</div>
+
+<div class="stage">
+<svg id="div-svg" viewBox="0 0 1160 262" role="img" aria-labelledby="dv-t dv-d" style="min-width:900px">
+<title id="dv-t">十五段の二進分周器</title><desc id="dv-d">各トグルフリップフロップが前段の周波数を半分にし、1ヘルツで終わります。</desc>
+<text class="lbl" x="580" y="34">リプル分周器 &#183; 各段は入力の立ち下がりでトグルする</text>
+<path class="wire" d="M0 142h22"/><text class="tick" x="0" y="96" style="text-anchor:start">32 768 Hz 入力</text>
+<g id="ff-row"></g>
+<path class="wire mech" d="M1120 142h34"/><text class="tick" x="1150" y="126" style="text-anchor:end">1 Hz</text>
+<text class="sub" x="580" y="252">最初の数段はスローモーションでもぼやけたままです。そのぼやけこそが精度であり、下流のすべてがそれを受け継ぎます。</text>
+</svg>
+</div>
+
+<div class="split even" style="margin-top:50px">
+<div class="stage">
+<svg id="ladder-svg" viewBox="0 0 560 400" role="img" aria-labelledby="ld-t ld-d" style="min-width:420px">
+<title id="ld-t">最初の五段の波形はしご</title><desc id="ld-d">どの段も、一つ上の段の二倍の周期をもちます。</desc>
+<text class="lbl" x="280" y="26">第5段の1周期</text>
+<g id="ladder-rows"></g>
+<line id="ladder-play" y1="40" y2="356" stroke="#c2685a" stroke-width="1.5"/>
+<text class="sub" x="280" y="388">どの段も完全な50 %の方形波 &#183; 縁が互いにずれることはない</text>
+</svg>
+</div>
+<div>
+<ol class="steps">
+<li><b>1</b><div><strong>トグルフリップフロップ</strong><p>反転出力を自らの入力に戻したDフリップフロップです。有効クロック縁ごとに状態が反転するので、出力は入力二周期に一度だけ変わります。これが厳密な二分周であり、アナログ的な誤差項は存在しません。</p></div></li>
+<li><b>2</b><div><strong>分周器はほとんど無料</strong><p>十五段は数百トランジスタです。1969年にはここが高価な部分でしたが、今日では分周器はダイ上の誤差のようなもので、高価なのは水晶のほうです。</p></div></li>
+<li><b>3</b><div><strong>電力は最初の段に宿る</strong><p>動的電力は<span class="mono">C V&#178; f</span>、fは段ごとに半分になります。したがって鎖全体は第一段のおよそ二倍しか要りません。設計者は最初のフリップフロップを小さく作り、残りは怠けさせます。</p></div></li>
+<li><b>4</b><div><strong>パルスは取り出すのではなく整形する</strong><p>モーターが欲しいのは1 Hzの50 %デューティではなく、4&#8211;8 msの一蹴りです。ドライバは速い段（たとえば256 Hz）を1 Hzの段でゲートして短いパルスを切り出し、毎秒その極性を反転させます。</p></div></li>
+</ol>
+</div></div>
+</section>
+
+<!-- ============ 06 LAVET MOTOR ============ -->
+<section class="chapter" id="motor">
+<div class="section-head"><p>06 / ふたたび世界へ</p><h2>地球上で最も<br>作られたモーター</h2><span>毎秒一発のパルスが、米粒ほどの磁石をきっかり半回転させる。しかも決して逆へ回ってはならない。</span></div>
+
+<div class="split even">
+<div class="stage">
+<svg id="motor-svg" viewBox="0 0 620 560" role="img" aria-labelledby="mo-t mo-d" style="min-width:460px">
+<title id="mo-t">ラベット型 単相ステッピングモーター</title><desc id="mo-d">切り欠きのある軟鉄ステータの穴に収まった二極永久磁石ローターを、極性を交互に反転させる一つのコイルで駆動します。</desc>
+<path class="stator" fill-rule="evenodd" d="M198 150H402A38 38 0 0 1 440 188V312A38 38 0 0 1 402 350H198A38 38 0 0 1 160 312V282H62V218H160V188A38 38 0 0 1 198 150ZM360 250A60 60 0 1 1 240 250A60 60 0 1 1 360 250Z"/>
+<rect class="coil-core" x="86" y="228" width="76" height="44" rx="4" opacity="0"/>
+<g id="coil"><ellipse class="coil-turn" cx="80" cy="250" rx="7" ry="34"/><ellipse class="coil-turn" cx="94" cy="250" rx="7" ry="34"/><ellipse class="coil-turn" cx="108" cy="250" rx="7" ry="34"/><ellipse class="coil-turn" cx="122" cy="250" rx="7" ry="34"/><ellipse class="coil-turn" cx="136" cy="250" rx="7" ry="34"/><ellipse class="coil-turn" cx="150" cy="250" rx="7" ry="34"/></g>
+<path id="flux" class="flux" d="M112 214C112 178 150 172 210 172H386C420 172 428 200 428 250C428 300 420 328 386 328H210C150 328 112 322 112 286"/>
+<circle class="notch-mark" cx="342.4" cy="207.6" r="15" fill="var(--paper)" stroke="var(--ink)" stroke-dasharray="0"/>
+<circle class="notch-mark" cx="257.6" cy="292.4" r="15" fill="var(--paper)" stroke="var(--ink)" stroke-dasharray="0"/>
+<g id="rotor"><path class="rot-n" d="M254 250a46 46 0 0 1 92 0z"/><path class="rot-s" d="M346 250a46 46 0 0 1-92 0z"/><circle class="rot-edge" cx="300" cy="250" r="46"/><path class="rot-edge" d="M254 250h92"/><text x="300" y="228" class="lbl" style="fill:#f3f0e7">N</text><text x="300" y="284" class="lbl" style="fill:#f3f0e7">S</text></g>
+<circle cx="300" cy="250" r="9" fill="#c49a54" stroke="#17201d" stroke-width="2"/>
+<line class="grid-l" x1="300" y1="250" x2="428" y2="250" stroke="#5aa9c8" stroke-width="2" stroke-dasharray="6 5"/>
+<line class="grid-l" x1="300" y1="250" x2="390" y2="340" stroke="#c2685a" stroke-width="2" stroke-dasharray="6 5"/>
+<text class="tick" x="452" y="240" style="text-anchor:start;fill:#5aa9c8">ステータ磁界の軸</text>
+<text class="tick" x="392" y="356" style="text-anchor:start;fill:#c2685a">ディテント軸（45&#176;ずれ）</text>
+<text class="tick" x="366" y="188" style="text-anchor:start">インデックス切り欠き</text>
+<text class="tick" x="196" y="316" style="text-anchor:end">インデックス切り欠き</text>
+<text class="lbl" x="112" y="200" id="coil-lbl">コイル</text>
+<text class="sub" x="112" y="304" id="coil-cur">i = 0</text>
+<text class="lbl" x="310" y="412" id="motor-state">静止中 &#183; ディテントトルクが保持</text>
+<text class="sub" x="310" y="426" id="motor-count">ステップ 0 &#183; ローター角 0&#176; &#183; パルス極性 +</text>
+<text class="sub" x="310" y="470">コイル &#8776; 20 &#181;m線を12 000回巻 &#183; 2 k&#937; &#183; ローター &#8776; 1.4 mm SmCo、直径方向に着磁</text>
+<text class="sub" x="310" y="492">軟鉄ステータ &#183; 各切り欠きの飽和くびれが静止方位を決める</text>
+<text class="sub" x="310" y="530">極性は毎秒反転するので、ローターは反転する磁界を見ながら、常に同じ向きに回ります。</text>
+</svg>
+</div>
+<div class="stage">
+<svg id="torque-svg" viewBox="0 0 560 560" role="img" aria-labelledby="tq-t tq-d" style="min-width:440px">
+<title id="tq-t">ローター角に対するトルクと、シミュレートした一歩</title><desc id="tq-d">ディテントトルク、コイルトルク、その和、そして一歩の角度‐時間軌跡。</desc>
+<text class="lbl" x="280" y="26">トルク vs ローター角</text>
+<path class="axis" d="M64 44v200h466"/>
+<line class="grid-l" x1="64" y1="144" x2="530" y2="144"/>
+<path id="tq-detent" class="plotline dim"/>
+<path id="tq-coil" class="plotline alt" opacity=".65"/>
+<path id="tq-total" class="plotline" stroke-width="3"/>
+<circle id="tq-dot" class="marker" r="6"/>
+<text class="tick" x="64" y="262">0&#176;</text><text class="tick" x="180" y="262">90&#176;</text><text class="tick" x="297" y="262">180&#176;</text><text class="tick" x="413" y="262">270&#176;</text><text class="tick" x="530" y="262">360&#176;</text>
+<text class="tick" x="52" y="148" style="text-anchor:end">0</text><text class="tick" x="52" y="70" style="text-anchor:end">&#181;N&#183;m</text>
+<text class="sub" x="297" y="288">灰 = ディテント &#183; 金 = コイル &#183; 青 = 合計</text><text class="sub" x="297" y="304">コイルが90&#176;の先までローターを押し切り、そこからディテントが180&#176;で捕まえる</text>
+
+<text class="lbl" x="280" y="330">シミュレートした一歩 &#183; 角度 vs 時間</text>
+<rect id="pulse-band" x="64" y="348" width="60" height="150" fill="#c49a54" opacity=".18"/>
+<path class="axis" d="M64 348v150h466"/>
+<line class="grid-l" x1="64" y1="431" x2="530" y2="431" stroke-dasharray="4 4"/><line class="grid-l" x1="64" y1="363" x2="530" y2="363" stroke-dasharray="4 4"/>
+<path id="step-curve" class="plotline" stroke-width="3"/>
+<text class="tick" x="52" y="435" style="text-anchor:end">180&#176;</text><text class="tick" x="52" y="367" style="text-anchor:end">360&#176;</text><text class="tick" x="52" y="502" style="text-anchor:end">0&#176;</text>
+<text class="tick" x="64" y="518">0</text><text class="tick" x="297" y="518">20 ms</text><text class="tick" x="530" y="518">40 ms</text>
+<text class="lbl" x="297" y="546" id="step-verdict">ステップ完了</text>
+</svg>
+</div></div>
+
+<div class="controls" style="margin-top:34px">
+<button class="btn" id="motor-toggle" type="button" aria-pressed="true">モーターを止める</button>
+<label class="ctl">パルス幅<strong id="tp-v">4.9 ms</strong><input id="tp" type="range" min="1" max="10" step=".1" value="4.9"></label>
+<label class="ctl">チョッパ駆動レベル<strong id="duty-v">15 %</strong><input id="duty" type="range" min="4" max="60" step="1" value="15"></label>
+<label class="ctl">ディテントトルク<strong id="tc-v">0.50 &#181;N&#183;m</strong><input id="tc" type="range" min=".1" max="1.4" step=".05" value=".5"></label>
+<label class="ctl">ローターの制動<strong id="bd-v">2.0&#215;10&#8315;&#8313;</strong><input id="bd" type="range" min=".5" max="6" step=".1" value="2"></label>
+</div>
+
+<div class="stats">
+<div><small>コイル電流（パルス平均）</small><strong id="s-ipk">116 &#181;A</strong><span>1.55 V / 2 k&#937;、チョッパ駆動</span></div>
+<div><small>1ステップのエネルギー</small><strong id="s-epulse">0.88 &#181;J</strong><span>1日86 400ステップ</span></div>
+<div><small>平均電流</small><strong id="s-iavg">1.37 &#181;A</strong><span>モーター + 論理回路</span></div>
+<div><small>電池寿命の予測</small><strong id="s-life">2.1年</strong><span>25 mAhから</span></div>
+</div>
+
+<div class="concept-grid">
+<article><b>切り欠きが要る理由</b><p>穴が対称なら、ローターはステータ磁界の軸にぴったり静止してしまいます。するとパルスは起動トルクを<em>まったく</em>生まず、回る向きも決まりません。死点です。切り欠きは局所的に磁気飽和を起こして静止方位を約45&#176;ずらし、起動トルクとその符号の両方を保証します。</p></article>
+<article><b>極性が交互になる理由</b><p>一歩で180&#176;回った後は、同じ極性では逆向きに押してしまいます。毎秒パルスを反転させれば幾何が回復します。おまけにコイルを流れる正味の直流がゼロになり、電食も進行性の減磁も起きません。</p></article>
+<article><b>適応駆動</b><p>現代のICはパルスを短く切り、その後ローター自身の逆起電力を読んで動いたかを確認します。成功していれば次のパルスをさらに短く、失敗していれば即座に全力の補正パルスを打ちます。つまりモーターは常に自身の失敗しきい値のわずか数パーセント上で動いており、そこから電池寿命が生まれます。</p></article>
+</div>
+</section>
+
+<!-- ============ 07 TRAIN ============ -->
+<section class="chapter tint" id="train">
+<div class="section-head"><p>07 / 減速</p><h2>逆向きに回る<br>輪列</h2><span>機械式時計は、遅い香箱から速い脱進機へと<em>増速</em>します。クオーツ時計は、速いローターから遅い針へと<em>減速</em>します。同じ歯車、逆の使命です。</span></div>
+
+<div class="controls">
+<button class="btn" id="train-toggle" type="button" aria-pressed="true">輪列を止める</button>
+<label class="ctl">時間圧縮<strong id="train-speed-v">&#215;60</strong><input id="train-speed" type="range" min="1" max="4" step="1" value="2"></label>
+</div>
+
+<div class="stage">
+<svg id="train-svg" viewBox="0 0 1010 452" role="img" aria-labelledby="tr-t tr-d" style="min-width:900px">
+<title id="tr-t">ステッピングローターから時針までの減速輪列</title><desc id="tr-d">毎分三十回転を、十二時間に一回転まで順に落としていきます。</desc>
+<path class="wire mech" d="M40 212h930"/>
+<g class="gr" data-x="92" data-y="212" data-r="38" data-rate="-180"></g>
+<g class="gr" data-x="202" data-y="212" data-r="84" data-rate="36"></g>
+<g class="gr" data-x="369" data-y="212" data-r="102" data-rate="-6"></g>
+<g class="gr" data-x="543" data-y="212" data-r="91" data-rate="2.4"></g>
+<g class="gr" data-x="723" data-y="212" data-r="109" data-rate="-0.1"></g>
+<g class="gr" data-x="889" data-y="212" data-r="76" data-rate="0.008333"></g>
+<g class="train-labels">
+<text class="lbl" x="92" y="352">ローター</text><text class="sub" x="92" y="370">平均30 rpm</text>
+<text class="lbl" x="202" y="384">中間車</text><text class="sub" x="202" y="402">6 rpm</text>
+<text class="lbl" x="369" y="352">四番車</text><text class="sub" x="369" y="370">1 rpm &#183; 秒針</text>
+<text class="lbl" x="543" y="384">三番車</text><text class="sub" x="543" y="402">伝達</text>
+<text class="lbl" x="723" y="352">二番車 / 筒かな</text><text class="sub" x="723" y="370">1 rph &#183; 分針</text>
+<text class="lbl" x="889" y="384">時車</text><text class="sub" x="889" y="402">12時間に1回転</text>
+</g>
+<text class="sub" x="505" y="436">30 &#215; 60 &#215; 12 = 21 600 : 1（ローターから時針まで）&#183; この鎖のどこにも脱進機はない</text>
+<text class="tick" x="20" y="30" style="text-anchor:start">歯車の大きさと比は模式的です。実際のキャリバーは減速の配分が異なり、日付用に第二のモーターを持つことも多くあります。</text>
+</svg>
+</div>
+
+<div class="split even" style="margin-top:46px">
+<div class="stage">
+<svg id="dial-svg" viewBox="0 0 560 320" role="img" aria-labelledby="di-t di-d" style="min-width:440px">
+<title id="di-t">歩む秒針と、掃く秒針</title><desc id="di-d">クオーツの文字盤は毎秒6度跳び、機械式の文字盤は細かい拍で進みます。</desc>
+<g id="dial-q"><circle class="dial-face" cx="150" cy="160" r="112"/><g id="dial-q-ticks"></g><path class="hand-h" d="M150 160V96"/><path class="hand-m" d="M150 160l44 28"/><path class="hand-s" id="hand-sq" d="M150 160V70"/><circle cx="150" cy="160" r="5" fill="#c2685a"/></g>
+<text class="lbl" x="150" y="300">クオーツ &#183; 毎秒1歩</text>
+<g id="dial-m"><circle class="dial-face" cx="410" cy="160" r="112"/><g id="dial-m-ticks"></g><path class="hand-h" d="M410 160V96"/><path class="hand-m" d="M410 160l44 28"/><path class="hand-s" id="hand-sm" d="M410 160V70"/><circle cx="410" cy="160" r="5" fill="#c2685a"/></g>
+<text class="lbl" x="410" y="300">機械式 &#183; 毎秒8拍</text>
+</svg>
+</div>
+<div>
+<ol class="steps">
+<li><b>1</b><div><strong>あの一歩が署名になる</strong><p>クオーツの秒針が毎秒6&#176;進むのは、ローターがきっかり半回転し、輪列が六十で割るからです。機械式時計の「掃くような動き」も実際は一時間28 800回の微細な歩みで、これも離散的です。ただ、目が分解できるしきい値のすぐ下にあるだけです。</p></div></li>
+<li><b>2</b><div><strong>負荷は無視できる</strong><p>輪列が運ぶのは毎秒およそ1マイクロジュールです。摩耗対策の石は要らず、歯車は成形樹脂であることも多く、注油の要求も穏やかです。工学的な難所は上流のシリコンへ移りました。</p></div></li>
+<li><b>3</b><div><strong>ここには歩度を決めるものが何もない</strong><p>これが最も深い構造上の違いです。機械式では輪列が時間ループの内側にあり、摩擦やトルク変動がテンプに届いて歩度を変えます。クオーツでは輪列は厳密に下流です。詰まれば針は止まりますが、止まるまでは決して<em>遅れない</em>。</p></div></li>
+<li><b>4</b><div><strong>針が増えれば、モーターも増える</strong><p>クオーツクロノグラフはインダイヤルごとに独立したラベットモーターを二〜四個使います。差動機構を足すよりモーターを足すほうが安いからです。パーペチュアルカレンダーのクオーツは、日付リングを独立したカウンタと専用モーターで駆動します。</p></div></li>
+</ol>
+</div></div>
+</section>
+
+<!-- ============ 08 ACCURACY ============ -->
+<section class="chapter lab" id="accuracy">
+<div class="section-head"><p>08 / 残された誤差</p><h2>ひとつの放物線と、<br>ひとつの工夫</h2><span>音叉型水晶の歩度は、転回点から離れた温度差の<em>二乗</em>で落ちていきます。普通のクオーツ時計の誤差収支は、ほぼこの一本の曲線だけです。</span></div>
+
+<div class="controls">
+<label class="ctl">温度<strong id="temp-v">25.0 &#176;C</strong><input id="temp" type="range" min="0" max="50" step=".5" value="25"></label>
+<label class="ctl">1分あたりの間引きパルス数<strong id="inh-v">0</strong><input id="inh" type="range" min="0" max="40" step="1" value="0"></label>
+<button class="btn" id="tc-toggle" type="button" aria-pressed="false">温度補償 オフ</button>
+<button class="btn ghost" id="wear-toggle" type="button" aria-pressed="false">腕に着けた場合の温度履歴を使う</button>
+</div>
+
+<div class="stage">
+<svg id="temp-svg" viewBox="0 0 1120 420" role="img" aria-labelledby="tp-t tp-d" style="min-width:800px">
+<title id="tp-t">温度に対する周波数偏差</title><desc id="tp-d">転回点が摂氏25度付近にある下向きの放物線と、デジタル温度補償後の平坦な残差。</desc>
+<path class="axis" d="M90 40v320h980"/>
+<g id="temp-grid"></g>
+<path id="temp-curve" class="plotline"/>
+<path id="temp-comp" class="plotline alt" opacity="0"/>
+<line id="temp-trim" x1="90" x2="1070" stroke="#9bc9b3" stroke-width="2" stroke-dasharray="5 5" opacity="0"/>
+<circle id="temp-dot" class="marker" r="7"/>
+<g id="temp-wear" opacity="0"><circle id="wear-a" class="marker" r="6" fill="#9bc9b3"/><circle id="wear-b" class="marker" r="6" fill="#9bc9b3"/><line id="wear-line" stroke="#9bc9b3" stroke-width="2" stroke-dasharray="4 4"/></g>
+<text class="sub" x="580" y="404">温度 &#183; &#176;C</text>
+<text class="sub" x="34" y="200" transform="rotate(-90 34 200)">歩度偏差 &#183; ppm</text>
+<text class="tick" x="595" y="24" id="temp-caption">&#916;f/f = &#8722;&#946;(T &#8722; 25 &#176;C)&#178; &#183; &#946; &#8776; 0.035 ppm/&#176;C&#178;</text>
+</svg>
+</div>
+
+<div class="stats">
+<div><small>歩度偏差</small><strong id="s-ppm">0.00 ppm</strong><span id="s-src">転回点にて</span></div>
+<div><small>1日あたり</small><strong id="s-day">0.00 s</strong><span>&#177;0.07 s/日 = ISOクオーツクロノメーター</span></div>
+<div><small>1か月あたり</small><strong id="s-mon">0.0 s</strong><span>&#177;15 s/月 = 一般的なクオーツ</span></div>
+<div><small>1年あたり</small><strong id="s-yr">0 s</strong><span>&#177;10 s/年 = 温度補償型</span></div>
+</div>
+
+<div class="concept-grid">
+<article><b>誤差は一方向にしか出ない</b><p>放物線は下に開くので、25 &#176;Cから<em>どちらへ</em>外れても時計は遅れます。昼は33 &#176;Cの手首、夜は20 &#176;Cのナイトスタンド。どちらの状態でも遅れます。普通のクオーツ時計が全体として進むより遅れる側に出るのはこのためです。</p></article>
+<article><b>間引きによる調整</b><p>水晶はわざとわずかに速く走らせてあります。ICは一分に一度、数えたパルスを<em>間引きます</em>。32 768&#215;60発のうち毎分1発は0.51 ppm、月差にしておよそ1.3秒の分解能です。しかもデジタル領域での調整なので、調整そのものが経年でずれることがありません。</p></article>
+<article><b>温度補償</b><p>温度センサーを載せ、十〜六十秒ごとに読み、間引くパルス数を引き当てます。放物線は水晶ごとに既知で安定した曲線なので、ほぼ完全に打ち消せます。残るのは経年変化です。マウントの応力緩和と腕の質量移動により、初年でおよそ1&#8211;2 ppm、その後はさらに小さくなります。</p></article>
+</div>
+
+<div class="formula"><span>誤差収支のすべて</span><strong>&#916;f/f = &#8722;&#946;(T &#8722; T&#8320;)&#178; &#43; 経年変化 &#43; 微調整残差</strong>
+<p>振幅の項がない。姿勢の項がない。トルクの項がない。機械式時計にはその三つがあり、しかも互いに絡み合います。この「ない」ことこそが、生の周波数の大小ではなく、クオーツの計時を同じものの上位版ではなく別の範疇にしています。</p></div>
+</section>
+
+<!-- ============ 09 VERSUS ============ -->
+<section class="chapter dark" id="versus">
+<div class="section-head"><p>09 / 比較</p><h2>一秒を分ける<br>二つのやり方</h2><span>どちらの時計も同じ三つの仕事をします。エネルギーを蓄え、繰り返す間隔を作り、それを数える。違うのは、その間隔がどこから来るか。そして、ある一つの数字です。</span></div>
+
+<div class="split even">
+<div class="stage">
+<svg id="q-svg" viewBox="0 0 560 400" role="img" aria-labelledby="q-t q-d" style="min-width:440px">
+<title id="q-t">テンプと水晶音叉のリングダウン比較</title><desc id="q-d">対数軸上の振動回数に対する振幅の減衰。水晶音叉は数百倍の回数を生き延びます。</desc>
+<text class="lbl" x="280" y="28">自由リングダウン &#183; 振幅 vs 振動回数</text>
+<path class="axis" d="M70 50v250h460"/>
+<g id="q-grid"></g>
+<path id="q-bal" class="plotline alt"/><path id="q-xtal" class="plotline"/>
+<text class="tick" x="70" y="322">1</text><text class="tick" x="162" y="322">10</text><text class="tick" x="254" y="322">10&#178;</text><text class="tick" x="346" y="322">10&#179;</text><text class="tick" x="438" y="322">10&#8308;</text><text class="tick" x="530" y="322">10&#8309;</text>
+<text class="tick" x="300" y="344">自由振動の回数</text>
+<text class="tick" x="150" y="86" style="fill:#c49a54;text-anchor:start">テンプ &#183; Q &#8776; 250</text>
+<text class="tick" x="330" y="120" style="fill:#5aa9c8;text-anchor:start">水晶音叉 &#183; Q &#8776; 54 000</text>
+<text class="sub" x="300" y="368">Qは、共振子がエネルギーの1/eを失うまでに保つ振動のラジアン数を数えたものであり、</text><text class="sub" x="300" y="384">それは同時に、その共振子を自分の周波数から説き伏せることの難しさでもあります。</text>
+</svg>
+</div>
+<div>
+<div class="formula" style="margin:0;border-left-color:var(--sig)"><span>すべてを決める一つの数</span><strong>&#948;f/f &#8776; &#966; / 2Q</strong>
+<p>1周期あたり位相誤差&#966;を受ける共振子では（摩擦、中心を外れた衝撃、姿勢の変化）、相対的な歩度誤差はQに反比例します。水晶音叉のQはテンプのおよそ二百倍なので、同じ擾乱を二百分の一の誤差に変換します。ほかのすべて（分周器、モーター、微調整）は、その事実のまわりの帳簿仕事です。</p></div>
+<p class="note" style="margin-top:24px">二つのハイブリッドが両者の間に位置します。セイコーのキネティックは電池をローター駆動の発電機に置き換えつつ、時間基準はクオーツのままです。スプリングドライブは機械式時計のゼンマイ・香箱・輪列をそのまま残し、脱進機だけを削除して、電磁的に制動される滑走車に置き換えます。その回転を水晶発振器が毎秒きっかり八回転に保つため、秒針は本当に掃きます。</p>
+</div></div>
+
+<div style="overflow-x:auto;margin-top:52px">
+<table class="compare">
+<thead><tr><th></th><th>機械式（クロノメーター級）</th><th>クオーツ（一般）</th><th>クオーツ（温度補償型）</th></tr></thead>
+<tbody>
+<tr><th>時間基準</th><td>テンプ &#43; ひげぜんまい</td><td class="q">エッチングされた水晶音叉</td><td class="q">水晶音叉 &#43; 温度センサー</td></tr>
+<tr><th>周波数</th><td class="q">4 Hz &#183; 28 800 振動/時</td><td class="q">32 768 Hz</td><td class="q">32 768 Hz</td></tr>
+<tr><th>Q値</th><td class="q">200 &#8211; 300</td><td class="q">5&#215;10&#8308; &#8211; 10&#8309;</td><td class="q">5&#215;10&#8308; &#8211; 10&#8309;</td></tr>
+<tr><th>歩度規格</th><td class="q">&#8722;4 / &#43;6 秒/日</td><td class="q">&#177;15 秒/月</td><td class="q win">&#177;10 秒/年</td></tr>
+<tr><th>相対値</th><td class="q">&#8776; 5&#215;10&#8315;&#8309;</td><td class="q">&#8776; 6&#215;10&#8315;&#8310;</td><td class="q win">&#8776; 3&#215;10&#8315;&#8311;</td></tr>
+<tr><th>主要な誤差要因</th><td>姿勢、振り角、ゼンマイトルク、温度</td><td>温度の放物線</td><td>水晶の経年変化</td></tr>
+<tr><th>調整</th><td>ひげぜんまいの有効長またはテンプ慣性を変える</td><td>トリマコンデンサまたは固定のデジタル間引き</td><td>温度に索引づけたデジタル間引き</td></tr>
+<tr><th>エネルギー源</th><td>ゼンマイ、約40時間、手首で巻かれる</td><td class="q">25 mAh電池、2&#8211;3年</td><td class="q">電池、低消費ICなら5&#8211;10年</td></tr>
+<tr><th>輪列の役割</th><td>時間ループの内側。摩擦が歩度を変える</td><td colspan="2">下流のみ。摩擦は針を止められても、遅らせることはできない</td></tr>
+<tr><th>壊れ方</th><td>ずれていき、やがて止まる</td><td colspan="2">完璧な時を刻み、そして突然止まる</td></tr>
+</tbody></table>
+</div>
+</section>
+
+<section class="closing">
+<p>すべてを貫く考え</p>
+<h2>機械式時計は測る。<br>クオーツ時計は<br>数える。</h2>
+<p>脱進機はアナログの交渉です。エネルギーが入り、テンプが間隔で答え、交渉の不完全さはすべて歩度として現れます。クオーツ時計はその交渉を取り除きました。間隔は水晶だけが決め、しかも分周が厳密であり微調整が整数でありうる領域で決めます。機構に残された仕事は、毎秒一発のパルスで磁石を回すことだけ。この時計の中で、いまも難しくあることを許されている唯一の場所です。</p>
+</section>
+</main>
+
+<footer><span>クオーツ時計ラボ</span><p style="margin:0">教育用の模式図 &#183; 部品定数・電流・比は代表的な値であり、特定のキャリバーのものではありません。姉妹編は<a href="../../watch-lab/">自動巻き時計ラボ</a>.</p><a href="../../quartz-lab/inside-a-quartz-watch.pdf">印刷版（PDF・英語）</a><a href="#top">ページ先頭へ &#8593;</a></footer>
+</body></html>
