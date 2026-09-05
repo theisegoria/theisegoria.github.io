@@ -40,6 +40,12 @@ Active transport moves a substance against its electrochemical gradient and ther
 
 Vesicular transport moves larger material. Endocytosis brings material into the cell. Exocytosis releases material, including neurotransmitters and many hormones.
 
+### Compartments, concentration, and total amount
+
+Extracellular fluid includes plasma inside blood vessels and interstitial fluid around tissue cells. Capillary walls separate these spaces, whereas cell membranes separate extracellular from intracellular fluid. The barriers have different permeabilities: water and many small solutes exchange readily across most systemic capillaries, while plasma proteins are more restricted. Sodium is the principal extracellular cation and potassium the principal intracellular cation. These distributions are maintained dynamically rather than by an impermeable wall.
+
+Concentration must be distinguished from total amount. A concentration is an amount divided by a volume, so it can change because solute changes, water changes, or both change. Losing water without proportionate solute loss concentrates the remaining fluid; adding water dilutes it. A concentration measurement therefore cannot, by itself, reveal the size of a compartment or the total quantity of a substance within the body. This distinction connects membrane transport to later reasoning about fluid balance: ask which compartment is sampled, what crosses its boundary, and whether the observation describes concentration, volume, or total content.
+
 ## Tissues as functional systems
 
 Epithelial tissue covers surfaces, lines cavities, and forms glands. Closely packed cells and selective junctions make epithelia effective barriers. Their functions include protection, absorption, secretion, filtration, and sensation.
@@ -175,6 +181,12 @@ Neurons maintain unequal ion distributions across their membranes. Potassium is 
 A graded potential is a local change whose size depends on stimulus strength. If depolarisation at the trigger zone reaches threshold, voltage-gated sodium channels open. Sodium enters rapidly and produces the rising phase of an action potential. Sodium channels then inactivate while voltage-gated potassium channels open. Potassium leaves, repolarising the membrane. Continued potassium conductance can briefly cause hyperpolarisation.
 
 An action potential is all or none. A stronger stimulus does not create a taller action potential. It usually increases firing frequency or recruits more neurons. The refractory period limits firing rate and promotes one-way propagation. Myelin increases speed by allowing current to travel efficiently between nodes of Ranvier, a process called saltatory conduction.
+
+### Channel availability and local propagation
+
+The absolute refractory period reflects sodium-channel inactivation: affected channels cannot immediately reopen even if the stimulus is strong. During the relative refractory period, some sodium channels have recovered, but continuing potassium conductance makes another action potential harder to initiate. A stronger input may then succeed. Refractoriness is therefore a changing molecular state, rather than a pause imposed by exhaustion of all the cell's energy.
+
+Propagation occurs because current from an active region depolarises adjacent membrane, opening further voltage-gated channels and regenerating the signal. Ions do not travel the entire axon as a single packet. In a myelinated axon, current spreads beneath the insulating sheath and action potentials regenerate at successive nodes of Ranvier. The signal is thus repeatedly renewed at excitable sites. Distinguish this propagation from the graded potentials that initiate it: a graded response varies with the input, whereas an action potential is regenerated once threshold is reached. This sequence connects receptor activation, local integration, and long-distance communication without treating them as the same electrical event.
 
 ## Synapses and networks
 
