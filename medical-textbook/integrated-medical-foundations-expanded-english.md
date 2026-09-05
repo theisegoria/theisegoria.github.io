@@ -2396,6 +2396,14 @@ Diagnosis combines syndrome and imaging, with cultures and antigen or molecular 
 
 Tuberculosis spreads through airborne particles and can remain latent or cause active disease. Pulmonary disease may produce prolonged cough, weight loss, fever, night sweats, haemoptysis, and upper-lobe or disseminated patterns. Diagnosis uses microbiology and imaging; immune tests show infection but do not alone prove active disease. Multidrug therapy and public-health measures are necessary because resistance emerges rapidly with inadequate treatment.
 
+### From inflammatory exudate to clinical uncertainty
+
+In pneumonia, inflammatory cells and fluid can occupy spaces that normally contain air. Consolidation describes this replacement of alveolar gas by material; it is a structural pattern rather than the name of a pathogen. Follow the consequences separately. Less gas reaches affected exchange surfaces, while perfusion may continue. The radiograph becomes more opaque because tissue and fluid attenuate X-rays more than air. Local crackles or reduced breath sounds may accompany the process, but their absence does not exclude it.
+
+Do not reverse the reasoning too quickly. An opacity does not by itself establish infection: oedema, haemorrhage, collapse, and other processes can also increase lung density. Fever, time course, exposure, immune status, examination, oxygenation, and appropriate investigations determine how plausible pneumonia is. Likewise, improvement in fever does not prove that gas exchange has recovered. Reassess the physiological consequence as well as the suspected cause.
+
+For retrieval, distinguish three questions: what compartment is abnormal, what process produced the abnormality, and how severely function is impaired? A good clinical explanation answers all three rather than using one imaging label as the entire diagnosis.
+
 ## Interstitial and occupational lung disease
 
 Interstitial lung disease includes many disorders causing inflammation, fibrosis, or both in alveolar walls and supporting tissue. Patients often develop progressive exertional dyspnoea, dry cough, fine crackles, reduced volumes, impaired diffusion, and exertional desaturation. High-resolution computed tomography patterns narrow the differential.
