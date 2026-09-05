@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Apple M3 to M5 Floorplans - Interactive visual guide | Benjamin Michael Haire</title>
+  <meta name="description" content="Top-down die floorplans of the Apple M3, M4, M5 and the two-die M5 Pro and M5 Max, with a block-by-block inspector.">
+  <meta name="theme-color" content="#faf8f4" media="(prefers-color-scheme:light)">
+  <meta name="theme-color" content="#12100e" media="(prefers-color-scheme:dark)">
+  <link rel="canonical" href="https://theisegoria.github.io/explore/apple-silicon-floorplans.html">
+  <link rel="alternate" hreflang="en" href="https://theisegoria.github.io/explore/apple-silicon-floorplans.html">
+  <link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/explore/apple-silicon-floorplans.html">
+  <link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/explore/apple-silicon-floorplans.html">
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..600&family=Inter:wght@400;500&display=swap">
+  <link rel="stylesheet" href="../assets/styles.css">
+  <link rel="stylesheet" href="../assets/interactive.css">
+  <link rel="stylesheet" href="/assets/article-theme.css">
+  <link rel="stylesheet" href="../assets/interactive-silicon.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to the interactive guide</a>
+  <header class="site-header">
+    <a class="wordmark" href="/" aria-label="Isegoria home">Benjamin Michael Haire</a>
+    <nav class="site-nav" aria-label="Primary navigation">
+      <a href="/#guides">Guides</a><a href="/projects.html">Projects</a><a href="/about.html">About</a>
+      <div class="language-switch" role="group" aria-label="Language">
+        <a href="apple-silicon-floorplans.html" lang="en" aria-current="true">EN</a>
+        <a href="../ja/explore/apple-silicon-floorplans.html" lang="ja" hreflang="ja" data-language-select="ja">日本語</a>
+      </div>
+      <button class="theme-toggle" type="button" aria-label="Switch to dark theme"><span class="theme-icon" aria-hidden="true">◐</span><span class="theme-label">Dark</span></button>
+    </nav>
+  </header>
+
+  <main class="lesson-main" id="main" data-lesson="silicon">
+    <section class="lesson-hero">
+      <div>
+        <p class="eyebrow">Apple silicon · N3B → N3E → N3P</p>
+        <h1>Apple M3 to M5<br><em>floorplans.</em></h1>
+        <p class="lesson-deck">Three generations on the same 3 nm family, seen from above. The interesting story is not core counts. It is where the matrix arithmetic moved, and then, at M5 Pro, the die splitting in two.</p>
+      </div>
+      <p class="lesson-promise"><strong>What you can see here</strong>Switch between four floorplans and select any block to read what it does and how it changed between M3, M4 and M5.</p>
+    </section>
+
+    <section class="lesson-workbench" aria-label="Interactive Apple silicon floorplan viewer" data-interactive-mount></section>
+
+    <section class="lesson-sections" aria-label="Apple M-series architecture">
+      <article class="lesson-card is-full">
+        <p class="cue">What this drawing is</p>
+        <h2>Topology is real, geometry is illustrative</h2>
+        <p>Block identities, core counts, process nodes and bandwidths are taken from Apple's own specifications and from the Counterpoint teardown of the M5 Pro. Block positions and relative sizes are schematic: they are arranged the way published die-shot annotations of M3 and M4 show Apple organising these SoCs, with the GPU array at one end, the CPU clusters and NPU adjacent, and cache and memory controllers along the perimeter. Nothing here is traced from a photograph, so read the topology as accurate and the geometry as illustrative.</p>
+      </article>
+
+      <article class="lesson-card is-wide">
+        <p class="cue">Zoom · one GPU core</p>
+        <h2>Where the matrix unit landed</h2>
+        <p>M3 gave every GPU core a ray-tracing unit and a flexible on-chip memory pool. M4 sharpened both. M5 added something categorically different: a Neural Accelerator, a small FP16 and INT8 matrix engine, inside each of the ten cores. That is the whole "over four times the peak GPU compute for AI" claim, and it is why the M5's AI story lives in the GPU rather than in the Neural Engine.</p>
+        <figure class="fp-figure" data-figure="gpucore"></figure>
+        <p class="fp-caption">One GPU core, three generations. The shader ALUs, the shared Dynamic Caching pool and the ray-tracing unit persist. M5 inserts a dedicated matrix-multiply block next to the ALUs, sharing the same core-local memory rather than sitting off on the Neural Engine across the fabric.</p>
+      </article>
+
+      <article class="lesson-card is-full">
+        <p class="cue">M5 Pro and M5 Max</p>
+        <h2>One SoC, two dies</h2>
+        <p>This is the real break with M3 and M4. The M5 Pro and M5 Max are not monolithic. Apple splits the SoC into a CPU die and a GPU and IO die, and bonds them with TSMC's SoIC-mH hybrid bonding; the marketing name is Fusion Architecture. Both dies are N3P, and Pro and Max ship the same CPU die, differing only in the GPU die.</p>
+        <p>The consequence worth staring at is this. The four LPDDR5X-9600 memory controllers live on the GPU die. So do the media engine and the display engines. Every CPU access to unified memory therefore crosses the bond interface. Hybrid bonding is what makes that affordable: direct copper-to-copper pads at a pitch fine enough that the inter-die hop costs a fraction of the energy an organic-substrate link would.</p>
+        <figure class="fp-figure" data-figure="xsec"></figure>
+        <p class="fp-caption">Package cross-section. The CPU die is bonded face-to-face onto the GPU and IO die, and only the lower die talks to the package substrate and therefore to the LPDDR5X stacks. The traced path is a CPU load missing in cache: it descends through the bond, is serviced by a memory controller that physically sits on the other die, and returns.
+        <span class="fp-src">Structure per the Counterpoint Research teardown: TSMC SoIC-mH, N3P on both dies, unified memory maintained across the pair.</span></p>
+      </article>
+
+      <article class="lesson-card">
+        <p class="cue">M3 → M4</p>
+        <h2>Width, not layout</h2>
+        <p>N3B to N3E, 25 billion to 28 billion transistors. Two extra efficiency cores, wider decode and better branch prediction on the performance cores, second-generation ray tracing, and a Neural Engine that roughly doubles to 38 TOPS. The floorplan is recognisably the same chip, grown.</p>
+      </article>
+      <article class="lesson-card">
+        <p class="cue">M4 → M5</p>
+        <h2>AI moves into the GPU</h2>
+        <p>N3P, and identical core counts on paper. That is the point. The gain comes from ten new matrix engines inside the GPU cores, second-generation Dynamic Caching, and 153 GB/s of bandwidth to feed them. Metal 4's Tensor API is the software half of the same change.</p>
+      </article>
+      <article class="lesson-card">
+        <p class="cue">M5 → M5 Pro and Max</p>
+        <h2>The die splits</h2>
+        <p>Monolithic becomes two hybrid-bonded dies. One CPU die serves both Pro and Max, while the GPU die carries 20 or 40 cores plus all four memory controllers. This is the reticle-and-yield escape hatch that lets Apple keep scaling the GPU without growing one enormous die.</p>
+      </article>
+
+      <article class="lesson-card is-full">
+        <p class="cue">Reference</p>
+        <h2>The whole family, three generations</h2>
+        <div data-figure="table"></div>
+        <p class="fp-caption">On the M5 Pro and Max core names: Apple and the teardown both describe the 18-core CPU as six Super Cores plus twelve Performance Cores on Armv9, not the familiar performance and efficiency split. Read literally, that is a renaming of the tiers, with what was a P-core becoming a Super Core and what was an E-core becoming a Performance Core. Apple has not said this outright, so treat the mapping as inference rather than fact. The base M5 of October 2025 still used the old wording: four performance and six efficiency cores.
+        <span class="fp-src">Figures as published by Apple, except die areas (third-party measurement, marked est.) and the M5 transistor count, which Apple has not disclosed. Bandwidth is peak unified-memory bandwidth. Sources: apple.com/newsroom, M3 family 2023-10, M4 2024-05, M5 2025-10, M5 Pro and M5 Max 2026-03; Counterpoint Research, Apple M5 Pro chip teardown analysis.</span></p>
+      </article>
+    </section>
+
+    <nav class="lesson-footer-nav" aria-label="Lesson navigation"><a href="/#preoccupations">← Back to the index</a><a href="apple-silicon-floorplans.pdf">Download the PDF</a><a href="/quartz-lab/">Next: the quartz lab →</a></nav>
+  </main>
+  <script src="../assets/site.js"></script>
+  <script src="../assets/interactive-silicon.js"></script>
+<script src="/assets/lang.js" defer></script>
+</body>
+</html>

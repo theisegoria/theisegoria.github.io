@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="ja" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Apple M3〜M5 のダイ設計図 - インタラクティブ図解 | Benjamin Michael Haire</title>
+  <meta name="description" content="Apple M3・M4・M5、そして 2 ダイ構成の M5 Pro / M5 Max のダイ上面図を、ブロックごとの解説つきで示します。">
+  <meta name="theme-color" content="#faf8f4" media="(prefers-color-scheme:light)">
+  <meta name="theme-color" content="#12100e" media="(prefers-color-scheme:dark)">
+  <link rel="canonical" href="https://theisegoria.github.io/ja/explore/apple-silicon-floorplans.html">
+  <link rel="alternate" hreflang="en" href="https://theisegoria.github.io/explore/apple-silicon-floorplans.html">
+  <link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/explore/apple-silicon-floorplans.html">
+  <link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/explore/apple-silicon-floorplans.html">
+  <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..600&family=Noto+Serif+JP:wght@300;400;500&family=Inter:wght@400;500&display=swap">
+  <link rel="stylesheet" href="../../assets/styles.css">
+  <link rel="stylesheet" href="../../assets/interactive.css">
+  <link rel="stylesheet" href="/assets/article-theme.css">
+  <link rel="stylesheet" href="../../assets/interactive-silicon.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">インタラクティブ図解へ移動</a>
+  <header class="site-header">
+    <a class="wordmark" href="/ja/" aria-label="Isegoria ホーム">Benjamin Michael Haire</a>
+    <nav class="site-nav" aria-label="メインナビゲーション">
+      <a href="/ja/#guides">学習ガイド</a><a href="/ja/projects.html">プロジェクト</a><a href="/ja/about.html">理念</a>
+      <div class="language-switch" role="group" aria-label="言語">
+        <a href="../../explore/apple-silicon-floorplans.html" lang="en" hreflang="en" data-language-select="en">EN</a>
+        <a href="apple-silicon-floorplans.html" lang="ja" aria-current="true">日本語</a>
+      </div>
+      <button class="theme-toggle" type="button" aria-label="ダークテーマに切り替える"><span class="theme-icon" aria-hidden="true">◐</span><span class="theme-label">暗く</span></button>
+    </nav>
+  </header>
+
+  <main class="lesson-main" id="main" data-lesson="silicon">
+    <section class="lesson-hero">
+      <div>
+        <p class="eyebrow">Apple シリコン · N3B → N3E → N3P</p>
+        <h1>Apple M3〜M5 の<br><em>ダイ設計図。</em></h1>
+        <p class="lesson-deck">同じ 3 nm 世代に属する 3 つのチップを、上から眺めます。読みどころはコア数ではありません。行列演算がどこへ移ったか、そして M5 Pro でダイが 2 つに分かれたことです。</p>
+      </div>
+      <p class="lesson-promise"><strong>ここで見えること</strong>4 種類の設計図を切り替え、任意のブロックを選ぶと、その役割と M3・M4・M5 間の変化が読めます。</p>
+    </section>
+
+    <section class="lesson-workbench" aria-label="Apple シリコン設計図ビューア" data-interactive-mount></section>
+
+    <section class="lesson-sections" aria-label="Apple M シリーズのアーキテクチャ">
+      <article class="lesson-card is-full">
+        <p class="cue">この図の性格</p>
+        <h2>トポロジーは実測、配置は模式</h2>
+        <p>ブロックの種類、コア数、プロセスノード、帯域は Apple 自身の仕様と、Counterpoint による M5 Pro の分解解析にもとづきます。一方でブロックの位置と相対サイズは模式的なものです。M3 と M4 のダイ写真の注釈から知られる Apple の構成（GPU 配列を一端に置き、CPU クラスタと NPU を隣接させ、キャッシュとメモリコントローラを周縁に並べる）に沿って配置しています。写真をトレースしたものではないため、トポロジーは正確、配置は説明用と読んでください。</p>
+      </article>
+
+      <article class="lesson-card is-wide">
+        <p class="cue">拡大 · GPU コア 1 基</p>
+        <h2>行列ユニットが着地した場所</h2>
+        <p>M3 はすべての GPU コアにレイトレーシングユニットと柔軟なオンチップメモリプールを与えました。M4 はその両方を磨きました。M5 が加えたのは質の違うものです。FP16 と INT8 の小さな行列エンジン、Neural Accelerator を 10 コアそれぞれの内部に置きました。「AI 向けピーク GPU 演算性能が 4 倍超」という主張はすべてこれによるもので、M5 の AI の中心が Neural Engine ではなく GPU にある理由でもあります。</p>
+        <figure class="fp-figure" data-figure="gpucore"></figure>
+        <p class="fp-caption">GPU コア 1 基の 3 世代比較。シェーダ ALU、共有の Dynamic Caching プール、レイトレーシングユニットは共通です。M5 は専用の行列積ブロックを ALU の隣に挿入し、ファブリックの向こうの Neural Engine ではなく、同じコア内メモリを共有させています。</p>
+      </article>
+
+      <article class="lesson-card is-full">
+        <p class="cue">M5 Pro と M5 Max</p>
+        <h2>1 つの SoC、2 つのダイ</h2>
+        <p>ここが M3・M4 との本当の断絶です。M5 Pro と M5 Max はモノリシックではありません。Apple は SoC を CPU ダイと GPU / IO ダイに分割し、TSMC の SoIC-mH ハイブリッドボンディングで接合しました。製品名としては Fusion アーキテクチャと呼ばれます。両ダイとも N3P で、Pro と Max は同じ CPU ダイを積み、GPU ダイだけが異なります。</p>
+        <p>注目すべき帰結はこうです。LPDDR5X-9600 のメモリコントローラ 4 基は GPU ダイ側にあります。メディアエンジンとディスプレイエンジンも同様です。したがって CPU からユニファイドメモリへのアクセスは、すべてボンド界面を越えます。それが成立するのはハイブリッドボンディングのおかげです。銅パッドを直接接合するピッチが十分に細かいため、ダイ間の 1 ホップは有機基板の配線に比べてわずかなエネルギーで済みます。</p>
+        <figure class="fp-figure" data-figure="xsec"></figure>
+        <p class="fp-caption">パッケージ断面。CPU ダイは GPU / IO ダイへ face-to-face で接合され、パッケージ基板、ひいては LPDDR5X スタックと通信するのは下側のダイだけです。図中の経路はキャッシュをミスした CPU のロードで、ボンドを下って越え、物理的にはもう一方のダイにあるメモリコントローラで処理され、戻ってきます。
+        <span class="fp-src">構成は Counterpoint Research の分解解析による。TSMC SoIC-mH、両ダイとも N3P、ユニファイドメモリは両ダイにまたがって維持される。</span></p>
+      </article>
+
+      <article class="lesson-card">
+        <p class="cue">M3 → M4</p>
+        <h2>配置ではなく幅の拡張</h2>
+        <p>N3B から N3E へ、トランジスタは 250 億から 280 億へ。高効率コアが 2 基増え、高性能コアはデコード幅と分岐予測が改善し、レイトレーシングは第2世代、Neural Engine はおよそ倍の 38 TOPS になりました。設計図としては、同じチップが育った姿です。</p>
+      </article>
+      <article class="lesson-card">
+        <p class="cue">M4 → M5</p>
+        <h2>AI が GPU へ移る</h2>
+        <p>N3P。カタログ上のコア数は同じで、そこが要点です。性能向上は GPU コア内の 10 基の新しい行列エンジン、第2世代の Dynamic Caching、そしてそれらを養う 153 GB/s の帯域から来ています。Metal 4 の Tensor API は、同じ変化のソフトウェア側の半分です。</p>
+      </article>
+      <article class="lesson-card">
+        <p class="cue">M5 → M5 Pro / Max</p>
+        <h2>ダイが分かれる</h2>
+        <p>モノリシックから、ハイブリッドボンドされた 2 ダイへ。1 つの CPU ダイが Pro と Max の両方を担い、GPU ダイが 20 または 40 コアとメモリコントローラ 4 基すべてを載せます。巨大な単一ダイを作らずに GPU を拡張し続けるための、レチクル制約と歩留まりに対する逃げ道です。</p>
+      </article>
+
+      <article class="lesson-card is-full">
+        <p class="cue">一覧</p>
+        <h2>3 世代、全ラインナップ</h2>
+        <div data-figure="table"></div>
+        <p class="fp-caption">M5 Pro / Max のコア名称について。Apple も分解解析も、18 コア CPU を「Armv9 のスーパーコア 6 基 + パフォーマンスコア 12 基」と記述しており、従来の高性能 / 高効率という分け方ではありません。文字どおり読めば階層の呼称変更であり、従来の P コアがスーパーコアに、E コアがパフォーマンスコアになったことになります。Apple はそう明言していないため、この対応づけは事実ではなく推論として扱ってください。2025 年 10 月の標準 M5 では従来どおり「高性能 4 基、高効率 6 基」と表記されていました。
+        <span class="fp-src">数値は Apple 公表値による。ただしダイ面積は第三者計測（est. と表記）、M5 のトランジスタ数は非公開。帯域はユニファイドメモリのピーク値。出典：apple.com/newsroom（M3 系 2023-10、M4 2024-05、M5 2025-10、M5 Pro / M5 Max 2026-03）、Counterpoint Research「Apple M5 Pro chip teardown analysis」。</span></p>
+      </article>
+    </section>
+
+    <nav class="lesson-footer-nav" aria-label="ページ内ナビゲーション"><a href="/ja/#preoccupations">← 一覧へ戻る</a><a href="../../explore/apple-silicon-floorplans.pdf">PDF をダウンロード</a><a href="/ja/quartz-lab/">次へ：クオーツラボ →</a></nav>
+  </main>
+  <script src="../../assets/site.js"></script>
+  <script src="../../assets/interactive-silicon.js"></script>
+<script src="/assets/lang.js" defer></script>
+</body>
+</html>
