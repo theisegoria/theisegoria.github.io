@@ -1010,6 +1010,12 @@ The volume remaining after ejection is end-systolic volume. Stroke volume equals
 
 As ventricles relax, pressure falls below arterial pressure and the semilunar valves close, producing the second heart sound. Isovolumetric relaxation follows until ventricular pressure falls below atrial pressure and filling resumes. The cycle shortens as heart rate rises, with disproportionate loss of diastolic time. Extreme tachycardia can impair filling and coronary perfusion.
 
+### Follow a leaking valve from anatomy to symptoms
+
+Imagine blood entering the left atrium from the lungs, crossing the mitral valve into the left ventricle during filling, and leaving through the aortic valve during ejection. If the mitral valve fails to close effectively, ventricular contraction sends some blood backward into the atrium as well as forward into the aorta. The ventricular volume lost during systole now includes both flows. Consequently, the calculated ejection fraction can appear reassuring even when effective forward output is reduced.
+
+The atrium must receive this returning volume in addition to pulmonary venous inflow. In acute severe regurgitation, an atrium that has not adapted can develop a large pressure rise, transmitted upstream toward the pulmonary circulation. Breathlessness can therefore result from a valve lesion even though the primary defect is not in the lungs. With chronic regurgitation, atrial enlargement and increased compliance can accommodate more volume before pressure rises markedly, delaying symptoms. This verbal route links the valve's location to backward congestion and forward circulatory impairment, while explaining why chamber size, loading conditions, and regurgitant flow matter alongside ejection fraction.
+
 ## Preload, afterload, and contractility
 
 Preload describes myocardial fibre stretch before contraction and is related to ventricular filling, venous return, compliance, and end-diastolic volume and pressure. Within a physiological range, increased filling increases contraction force through the Frank-Starling mechanism. This helps match right- and left-ventricular output and adjusts stroke volume to venous return.
