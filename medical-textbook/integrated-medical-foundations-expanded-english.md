@@ -1178,6 +1178,14 @@ Veins are compliant capacitance vessels containing much of the blood volume. Sma
 
 Standing causes gravitational pooling below the heart. Baroreflexes increase heart rate, contractility, and vasoconstriction. Muscle contraction and venous valves limit pooling. Failure of compensation causes orthostatic symptoms. Prolonged immobility promotes venous stasis and thrombosis.
 
+### Follow congestion back toward an organ
+
+A kidney receives blood through an artery but must also discharge it through a vein. If downstream venous pressure rises, an unchanged arterial pressure no longer guarantees an unchanged pressure gradient across the organ. Increased venous pressure can also favour interstitial fluid accumulation. The arterial cuff therefore describes only one part of the circulation relevant to organ function.
+
+In decompensated heart failure, observational studies have associated higher central venous pressure with worsening renal function. That association does not prove that congestion is the sole cause in every patient. Low output, altered vascular resistance, medicines, and intrinsic kidney disease may coexist. Nevertheless, it supplies a useful clinical question: is impaired function occurring because blood cannot arrive adequately, because it cannot leave adequately, or because both processes are disturbed?
+
+Raised jugular venous pressure, peripheral oedema, and changing kidney function can support a congestion hypothesis when interpreted together, but none is a direct measurement of renal blood flow. The physiological lesson is to consider inlet pressure, outlet pressure, tissue pressure, and resistance together rather than equating a satisfactory arterial pressure with satisfactory perfusion.
+
 ## Rapid and long-term pressure control
 
 Baroreceptors in the carotid sinus and aortic arch respond to stretch. When pressure rises, firing increases, promoting parasympathetic activity and reducing sympathetic output. Heart rate, contractility, resistance, and venous tone fall. When pressure drops, the opposite occurs. Baroreflexes act within seconds but reset during sustained pressure change, so they are not the sole mechanism of long-term control.
