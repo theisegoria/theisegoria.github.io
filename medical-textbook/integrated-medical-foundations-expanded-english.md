@@ -2012,6 +2012,12 @@ Alveolar ventilation equals respiratory rate multiplied by tidal volume minus de
 
 Regional ventilation is affected by gravity and mechanics. At resting lung volume, dependent alveoli are smaller but often more compliant, so they receive more tidal ventilation. Disease, position, obesity, anaesthesia, pain, and airway closure alter this pattern.
 
+### A breathing-rate example that changes the interpretation
+
+Assume a simplified dead-space volume of one hundred and fifty millilitres per breath. Twelve breaths per minute, each five hundred millilitres, produce six litres of minute ventilation. Subtract dead space from each breath first: three hundred and fifty millilitres reach the gas-exchanging compartment, giving four point two litres per minute of alveolar ventilation. Now keep minute ventilation at six litres but use twenty-four breaths of two hundred and fifty millilitres. Only one hundred millilitres per breath remain after subtracting dead space, so alveolar ventilation falls to two point four litres per minute.
+
+The faster pattern therefore removes less carbon dioxide under these assumptions despite moving the same total air volume. This is why rate alone cannot establish effective ventilation in a tired or painful patient taking shallow breaths. Real dead space can change with disease and equipment, and carbon dioxide production can also change. The calculation explains a mechanism; it does not prescribe a breathing pattern or ventilator setting.
+
 ## Alveolar gas and partial pressure
 
 Gas molecules exert partial pressures according to their fraction of total gas. Inspired oxygen pressure falls after humidification because water vapour contributes pressure. In alveoli, oxygen is continually removed and carbon dioxide added. Alveolar oxygen therefore depends on inspired oxygen, barometric pressure, and carbon dioxide relative to ventilation.
