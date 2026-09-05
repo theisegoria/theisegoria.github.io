@@ -2580,6 +2580,14 @@ Auscultate systematically. Vesicular breath sounds are soft with longer inspirat
 
 Assess vocal resonance when consolidation or effusion is suspected. Examine cardiovascular status, jugular venous pressure, oedema, calf asymmetry, skin, joints, muscle strength, and abdomen because respiratory disease can be systemic or secondary.
 
+### Making a reproducible examination map
+
+A useful verbal examination record specifies side, surface, height, respiratory phase, and comparison. For example, describe a finding as right posterior basal inspiratory crackles rather than simply abnormal lungs. This does not assign a definitive pathological diagnosis or precisely identify a bronchopulmonary segment. It does allow another examiner to revisit the same region and ask whether the finding persists.
+
+Move between corresponding right and left sites before moving to a different height. Include anterior, lateral, and posterior regions as the patient's condition permits. Listen through inspiration and expiration, and distinguish a sound heard only during one phase from a persistent reduction in sound intensity. Position, effort, clothing friction, and listening over bone can change what reaches the stethoscope. A technically poor comparison should not be converted into confident localisation.
+
+When a new asymmetry is found, return to the mechanism. Is ventilation reduced, is sound transmission altered, or is the patient limiting movement because of pain? Compare expansion, percussion, symptoms, and oxygenation rather than allowing one sound to determine the diagnosis. Document any regions that could not be assessed and why. In an unstable patient, this mapping exercise must not delay immediate assessment and support.
+
 ## Arterial and venous blood gases
 
 An arterial gas measures pH, carbon dioxide, oxygen, and derived bicarbonate. A venous gas often estimates pH and carbon dioxide sufficiently for initial metabolic assessment but cannot replace arterial oxygen measurement. Sampling errors include air bubbles, delay, venous contamination, and failure to document oxygen therapy.
