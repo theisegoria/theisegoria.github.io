@@ -342,6 +342,12 @@ Dominant means that one altered allele can influence phenotype; it does not mean
 
 Penetrance is the proportion of people with a genotype who express the associated phenotype. Expressivity describes variation in degree or form. Environment, age, modifier genes, mosaicism, and chance events can all alter presentation. Most common diseases are multifactorial: many variants interact with behaviour, exposures, development, and ageing.
 
+### Why an altered allele can be dominant
+
+Loss of function reduces the activity or amount of a gene product. It often behaves recessively because one functioning allele supplies enough product, but this is not guaranteed. In haploinsufficiency, that remaining output is inadequate for normal function, so loss of one allele can produce a dominant phenotype. Dominant-negative effects are different: an altered protein interferes with the normal protein, for example when both enter a complex whose function requires properly working subunits.
+
+Gain of function increases activity, permits activity in an inappropriate setting, or introduces a new property. Consequently, the same gene can be associated with different disorders depending on how a variant changes its product. A pedigree describes inheritance; it does not identify the molecular mechanism by itself. To connect genotype with disease, ask whether functional product is insufficient, whether an abnormal product disrupts its partners, or whether excessive or novel activity is present. These questions distinguish superficially similar dominant patterns without assuming that every variant in one gene has the same consequence.
+
 ## Cellular adaptation
 
 Hypertrophy is increased cell size. It occurs when cells face increased workload or hormonal stimulation and have limited capacity to divide. Skeletal muscle hypertrophies with resistance training. The left ventricle hypertrophies in response to pressure overload. Initially this can preserve function; later, increased oxygen demand, fibrosis, altered gene expression, and impaired relaxation may make the adaptation harmful.
