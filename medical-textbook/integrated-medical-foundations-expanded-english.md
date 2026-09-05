@@ -2184,6 +2184,14 @@ Transpulmonary pressure is alveolar minus pleural pressure and keeps lungs expan
 
 Pneumothorax introduces gas into pleural space, reduces the normal pressure difference, and permits lung recoil. Tension physiology occurs when pressure progressively impairs venous return and compresses cardiopulmonary structures. Pleural fluid separates lung from chest wall and can compress dependent lung.
 
+### A verbal route from chest wall to alveolus
+
+Imagine moving inward from a rib through the chest wall. You meet the parietal pleura, then a normally very thin fluid-containing pleural space, then visceral pleura covering the lung. Continue inward into lung tissue and finally an air-filled alveolus. The pleural space and the alveolar airspace are different compartments; neither is a passage through which inspired air normally travels to reach the other.
+
+During quiet inspiration, expansion of the thorax makes pleural pressure more negative. The pressure difference between alveolus and pleural space increases, distending the lung. Alveolar pressure briefly falls below atmospheric pressure, drawing air through the conducting airways. Airflow stops when alveolar and atmospheric pressures equalise, even though the expanded lung still requires a distending pressure.
+
+Now place air in the pleural space. This disrupts normal mechanical coupling and can allow the lung to recoil inward: the key defect is outside the alveolus, not simply a blocked bronchus. In contrast, fluid within alveoli directly replaces gas at the exchange surface. Both can impair oxygenation, but tracing the affected compartment explains why they are anatomically and mechanically different problems.
+
 ## Compliance and elastic recoil
 
 Compliance is volume change per pressure change. High compliance means a structure expands easily; low compliance means it is stiff. Fibrosis, oedema, acute respiratory distress syndrome, obesity, ascites, and chest-wall deformity reduce respiratory-system compliance. Emphysema increases lung compliance but reduces elastic recoil, making expiration and airway stability difficult.
