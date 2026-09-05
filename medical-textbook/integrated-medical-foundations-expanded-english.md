@@ -1676,6 +1676,12 @@ Normocytic anaemia includes acute blood loss, haemolysis, chronic inflammation, 
 
 Haemolysis may be intrinsic to the red cell, as in membrane, enzyme, or haemoglobin disorders, or extrinsic through antibodies, mechanical destruction, infection, toxins, burns, or hypersplenism. Findings can include increased unconjugated bilirubin and lactate dehydrogenase, reduced haptoglobin, reticulocytosis, jaundice, dark urine, and abnormal blood film. Intravascular and extravascular haemolysis produce overlapping but different patterns.
 
+### Follow iron from storage to the marrow
+
+Iron must leave intestinal cells and recycling macrophages before it can circulate to developing red cells. Ferroportin is an iron-export protein in these cell membranes. Hepcidin binds ferroportin and promotes its removal from the surface, reducing iron export. This provides a mechanism by which iron can remain within storage and recycling cells while less becomes available to the marrow. A shortage of circulating usable iron therefore need not mean that every store is empty.
+
+Connect this mechanism with the earlier distinction between iron deficiency and inflammation-associated iron restriction. In the former, the total available reserve is depleted; in the latter, distribution and access can be impaired despite retained stores. Both processes may coexist. For retrieval, explain why low circulating iron alone cannot identify which mechanism is operating. The answer is that the measurement describes the circulating compartment, whereas production of haemoglobin also depends on storage, release, transport, uptake, and the marrow's ability to use the delivered iron.
+
 ## Platelets and primary haemostasis
 
 Vascular injury causes local vasoconstriction and exposes subendothelial matrix. Von Willebrand factor links platelets to collagen through platelet glycoprotein receptors. Platelet activation changes shape, releases granule contents, synthesises thromboxane, and activates glycoprotein two b three a receptors. Fibrinogen bridges these receptors between platelets, forming the primary plug.
