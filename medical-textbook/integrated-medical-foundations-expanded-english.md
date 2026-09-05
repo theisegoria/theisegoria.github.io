@@ -1318,6 +1318,12 @@ Myocardial infarction means myocardial injury with evidence of acute ischaemia. 
 
 Early management prioritises recognition, electrocardiography, monitoring, antiplatelet and antithrombotic decisions, relief of ischaemia, and timely reperfusion when an occluded coronary artery is suspected. Oxygen is used for hypoxaemia rather than automatically. Hypotension, bleeding risk, kidney function, drug exposure, and alternative diagnoses influence treatment.
 
+### Dated terminology update: September 2026
+
+The Fifth Universal Definition reorganises infarction into primary, secondary, and procedure-related categories. Primary infarction concerns acute coronary pathology, including mechanisms beyond plaque thrombosis. Secondary infarction concerns another acute condition producing oxygen supply–demand imbalance, with additional objective diagnostic requirements. Procedure-related infarction concerns a complication of a cardiac procedure within thirty days. Older numbered labels will still appear in textbooks and records; they should not be translated mechanically without checking the underlying mechanism and revised criteria.
+
+For clinical reasoning, separate three questions: what evidence establishes myocardial injury, what establishes ischaemia, and what explains its cause? A biomarker answers only part of this sequence. Neither a stressful illness nor a troponin rise alone establishes the mechanism of infarction. This dated overview introduces the classification rather than replacing the full diagnostic criteria.
+
 ## Heart failure
 
 Heart failure is a clinical syndrome in which cardiac abnormality produces symptoms or signs from inadequate output, elevated filling pressure, or both. Ejection fraction may be reduced, mildly reduced, or preserved. A preserved ejection fraction does not mean normal function; impaired relaxation, stiffness, atrial disease, vascular load, and limited reserve can raise filling pressure despite apparently preserved fractional emptying.
