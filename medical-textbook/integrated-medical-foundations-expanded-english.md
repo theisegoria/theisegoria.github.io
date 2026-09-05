@@ -490,6 +490,12 @@ Innate immune cells recognise recurring microbial structures and signals release
 
 Mast cells, macrophages, dendritic cells, and tissue-resident lymphocytes can respond rapidly. Histamine increases arteriolar dilation and venular permeability. Lipid mediators, cytokines, chemokines, complement fragments, and bradykinin coordinate vascular change, pain, fever, leukocyte recruitment, and systemic responses.
 
+### Distinguishing complement outputs
+
+Complement produces several different effects through cleavage of circulating proteins. C3 convertases split complement component three, releasing C3a and generating C3b. Surface-bound C3b and its processed fragments help phagocytes recognise coated targets through complement receptors. This is opsonisation: the target becomes easier to ingest, rather than being killed simply by attachment of the label. C5 convertases generate C5a, a powerful inflammatory and chemotactic signal, and C5b, which initiates terminal-complex assembly. Components C6, C7, C8, and C9 then participate in forming the membrane attack complex, which can damage susceptible membranes.
+
+These outcomes should be kept separate when reasoning about host defence. Recruiting a phagocyte, improving recognition of a target, and perforating a membrane are different operations. An organism may resist one while remaining vulnerable to another. Complement activation therefore does not imply that every microbe is directly lysed; much of its protective effect depends on cooperation with other immune mechanisms.
+
 ## Acute inflammation
 
 Increased blood flow produces redness and warmth. Increased microvascular permeability allows protein-rich fluid to enter tissue, producing swelling. Pain reflects mediators and mechanical pressure. Loss of function can follow pain, swelling, and direct tissue damage. These classic features are useful patterns, not requirements for every inflammatory process.
@@ -671,6 +677,12 @@ A loading dose rapidly achieves a target concentration and depends mainly on vol
 Peak-to-trough fluctuation depends on dosing interval, absorption, distribution, and half-life. Short intervals reduce fluctuation but can complicate adherence. Modified-release formulations smooth concentrations but must not always be crushed. In zero-order elimination, a constant amount rather than a constant fraction is removed per unit time; capacity becomes saturated and small dose increases can cause disproportionate concentration rises.
 
 Therapeutic drug monitoring is most useful when concentration relates predictably to response, the therapeutic range is narrow, clinical effect is difficult to measure directly, and substantial pharmacokinetic variability exists. Sampling time matters. A concentration without dose history, timing, adherence, kidney and liver function, and clinical response can mislead.
+
+### Following the units in a dosing model
+
+Consider an invented drug in a linear, single-compartment model, with complete intravenous availability. A target concentration of two milligrams per litre and a distribution volume of twenty litres imply forty milligrams in the body. If clearance is three litres per hour, maintaining that concentration requires replacement of six milligrams per hour. Multiplying concentration by volume gives an amount; multiplying concentration by clearance gives an amount per time. These are different questions and require different units.
+
+If clearance halves while distribution volume remains unchanged, the model's loading amount remains forty milligrams, but the maintenance input falls to three milligrams per hour. For an oral formulation with one-half bioavailability, the administered input must be twice the systemic input, assuming linear kinetics and unchanged clearance. This is a conceptual calculation, not a regimen for a real drug. Distribution phases, absorption, active metabolites, changing organ function, and safe administration rates can make actual dosing more complex.
 
 ## Receptors and response
 
