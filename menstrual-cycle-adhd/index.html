@@ -1,0 +1,405 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A critical narrative review of menstrual-cycle variation in catecholamine signalling and CNS function in relation to ADHD. Eight competing hypotheses, a staged research programme, and what the evidence does not establish.">
+  <meta name="theme-color" content="#f7f7f5">
+  <link rel="canonical" href="https://theisegoria.github.io/menstrual-cycle-adhd/">
+  <link rel="alternate" hreflang="en" href="https://theisegoria.github.io/menstrual-cycle-adhd/">
+  <link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/menstrual-cycle-adhd/">
+  <link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/menstrual-cycle-adhd/">
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <title>The Menstrual Cycle and ADHD</title>
+<style>
+  :root {
+    --ground:#F7F7F5; --surface:#FFFFFF; --surface-2:#F0F1EC;
+    --ink:#17191B; --muted:#63686D; --rule:#DEE0DC;
+    --accent:#1F5FA8; --accent-soft:#1F5FA814;
+    --blue:#2a78d6; --orange:#c8501f; --aqua:#12805a; --violet:#4a3aa7; --red:#c33a39;
+    --f-display:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    --f-body:"Inter",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+    --f-mono:ui-monospace,SFMono-Regular,Menlo,monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground:#101214; --surface:#181B1E; --surface-2:#1F2327;
+      --ink:#EDEFF1; --muted:#9BA3AA; --rule:#2C3237;
+      --accent:#69ABE3; --accent-soft:#69ABE31C;
+      --blue:#5c9ce8; --orange:#f08050; --aqua:#3cc493; --violet:#9085e9; --red:#e66767;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground:#101214; --surface:#181B1E; --surface-2:#1F2327;
+    --ink:#EDEFF1; --muted:#9BA3AA; --rule:#2C3237;
+    --accent:#69ABE3; --accent-soft:#69ABE31C;
+    --blue:#5c9ce8; --orange:#f08050; --aqua:#3cc493; --violet:#9085e9; --red:#e66767;
+  }
+
+  * { box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body {
+    margin:0; background:var(--ground); color:var(--ink);
+    font-family:var(--f-body); font-size:17px; line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  a { color:var(--accent); text-underline-offset:.18em; }
+
+  .wrap { width:min(760px, calc(100% - 40px)); margin-inline:auto; }
+  .wide { width:min(1080px, calc(100% - 40px)); margin-inline:auto; }
+
+  header.site { border-bottom:1px solid var(--rule); }
+  header.site .wide {
+    min-height:64px; display:flex; align-items:center;
+    justify-content:space-between; gap:20px;
+  }
+  header.site .name { font-weight:750; letter-spacing:-.02em; text-decoration:none; color:var(--ink); }
+  header.site nav { display:flex; gap:20px; flex-wrap:wrap; }
+  header.site nav a { color:var(--muted); font-size:.88rem; text-decoration:none; }
+  header.site nav a:hover { color:var(--ink); }
+
+  .hero { padding:76px 0 46px; }
+  .label { color:var(--muted); font-size:.74rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; }
+  h1 {
+    font-family:var(--f-display); font-weight:600;
+    margin:14px 0 16px; font-size:clamp(2.3rem,5.8vw,3.6rem);
+    line-height:1.04; letter-spacing:-.03em;
+  }
+  .standfirst { font-size:1.2rem; color:var(--muted); margin:0 0 26px; max-width:62ch; }
+  .herometa { display:flex; flex-wrap:wrap; gap:10px 18px; align-items:center;
+              font-size:.86rem; color:var(--muted); border-top:1px solid var(--rule); padding-top:18px; }
+  .pill {
+    display:inline-flex; align-items:center; gap:7px; padding:7px 14px;
+    border:1px solid var(--rule); border-radius:999px; background:var(--surface);
+    text-decoration:none; color:var(--ink); font-weight:600; font-size:.85rem;
+  }
+  .pill:hover { border-color:var(--accent); color:var(--accent); }
+
+  .toc { border-top:1px solid var(--rule); border-bottom:1px solid var(--rule); padding:22px 0 24px; margin-bottom:14px; }
+  .toc ol { margin:10px 0 0; padding-left:1.2em; columns:2; column-gap:34px; }
+  .toc li { margin:0 0 6px; color:var(--muted); font-size:.92rem; break-inside:avoid; }
+  .toc a { color:var(--ink); text-decoration:none; }
+  .toc a:hover { color:var(--accent); }
+
+  article { padding:8px 0 40px; }
+  h2 {
+    font-family:var(--f-display); font-weight:600; letter-spacing:-.02em;
+    font-size:1.72rem; line-height:1.18; margin:58px 0 4px;
+  }
+  h2 .num { color:var(--muted); font-family:var(--f-body); font-size:.8rem;
+            font-weight:700; letter-spacing:.1em; display:block; margin-bottom:10px; }
+  h3 { font-size:1.06rem; letter-spacing:-.01em; margin:34px 0 2px; }
+  p { margin:14px 0; }
+  strong { font-weight:650; }
+  .lede { font-size:1.09rem; }
+  ul, ol.body { padding-left:1.25em; }
+  ul li, ol.body li { margin:9px 0; }
+
+  .fig { margin:36px 0 30px; }
+  .fig .plate {
+    background:#fff; border:1px solid var(--rule); border-radius:12px;
+    padding:16px 14px; overflow-x:auto;
+  }
+  .fig img { display:block; width:100%; height:auto; min-width:520px; }
+  .fig figcaption { color:var(--muted); font-size:.86rem; line-height:1.55; margin-top:12px; }
+  .fig figcaption b { color:var(--ink); font-weight:650; }
+
+  .key {
+    background:var(--surface); border:1px solid var(--rule);
+    border-left:3px solid var(--accent);
+    border-radius:10px; padding:18px 20px; margin:32px 0;
+  }
+  .key .kt { font-size:.74rem; font-weight:700; letter-spacing:.1em;
+             text-transform:uppercase; color:var(--accent); }
+  .key p:first-of-type { margin-top:8px; }
+  .key p:last-child, .key ol:last-child, .key ul:last-child { margin-bottom:0; }
+
+  .tablewrap { overflow-x:auto; margin:30px 0; }
+  table { border-collapse:collapse; width:100%; min-width:620px; font-size:.9rem; }
+  th, td { text-align:left; vertical-align:top; padding:11px 12px; border-bottom:1px solid var(--rule); }
+  thead th { border-bottom:2px solid var(--rule); font-size:.76rem; letter-spacing:.07em;
+             text-transform:uppercase; color:var(--muted); }
+  td.h { font-weight:650; color:var(--ink); }
+  caption { caption-side:bottom; text-align:left; color:var(--muted);
+            font-size:.85rem; padding-top:12px; }
+
+  .kicker { font-family:var(--f-display); font-size:1.34rem; line-height:1.45;
+            letter-spacing:-.015em; border-top:1px solid var(--rule);
+            padding-top:34px; margin-top:52px; }
+
+  .sources { border-top:1px solid var(--rule); margin-top:46px; padding-top:26px;
+             font-size:.82rem; color:var(--muted); line-height:1.6; }
+  .sources h2 { font-size:1.1rem; margin:0 0 12px; }
+  .sources b { color:var(--ink); }
+
+  footer.site { border-top:1px solid var(--rule); margin-top:56px; }
+  footer.site .wide { display:flex; justify-content:space-between; gap:20px;
+                      padding:26px 0 46px; color:var(--muted); font-size:.85rem; flex-wrap:wrap; }
+  footer.site a { color:var(--muted); }
+
+  @media (max-width:700px) {
+    body { font-size:16px; }
+    .hero { padding:54px 0 36px; }
+    .toc ol { columns:1; }
+    .fig .plate { padding:10px 8px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="wide">
+    <a class="name" href="/">Benjamin Michael Haire</a>
+    <nav aria-label="Primary navigation">
+      <a href="#exposure">Exposure</a>
+      <a href="#catecholamines">Catecholamines</a>
+      <a href="#adhd">Direct evidence</a>
+      <a href="#hypotheses">Hypotheses</a>
+      <a href="/ja/menstrual-cycle-adhd/" hreflang="ja" lang="ja">日本語</a>
+      <a href="/">All projects</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="wrap">
+
+  <div class="hero">
+    <p class="label">Critical narrative review / 5 September 2026</p>
+    <h1>The menstrual cycle and ADHD, without the neurotransmitter shortcut.</h1>
+    <p class="standfirst">Ovarian steroids clearly influence neural signalling, and many people report that attention, regulation and medication benefit move with their cycle. The step everyone takes next, that falling estrogen lowers dopamine and therefore worsens ADHD, is the one the evidence does not support. This review works through what is actually established at each level of measurement, and what would have to be measured to settle it.</p>
+    <div class="herometa">
+      <a class="pill" href="menstrual-cycle-adhd-review-en.pdf">English PDF &middot; 20 pages</a>
+      <a class="pill" href="menstrual-cycle-adhd-review-ja.pdf" hreflang="ja" lang="ja">日本語版 PDF</a>
+      <a class="pill" href="menstrual-cycle-adhd-review-bilingual.pdf">Bilingual edition &middot; 40 pages</a>
+    </div>
+    <p class="label" style="margin-top:18px">Estradiol &middot; progesterone &middot; dopamine &middot; norepinephrine &middot; PMDD &middot; stimulant exposure</p>
+  </div>
+
+  <nav class="toc" aria-label="Contents">
+    <p class="label">Contents</p>
+    <ol>
+      <li><a href="#question">The question, stated carefully</a></li>
+      <li><a href="#methods">How the literature was assembled</a></li>
+      <li><a href="#exposure">Hormone exposure is a dynamic variable</a></li>
+      <li><a href="#catecholamines">Catecholamine mechanisms and their limits</a></li>
+      <li><a href="#neurosteroid">Neurosteroids and the PMDD comparison</a></li>
+      <li><a href="#cognition">Cognition, imaging and everyday functioning</a></li>
+      <li><a href="#adhd">Direct evidence concerning ADHD</a></li>
+      <li><a href="#hypotheses">Eight competing hypotheses</a></li>
+      <li><a href="#programme">A staged empirical programme</a></li>
+      <li><a href="#limits">Limitations and conclusions</a></li>
+    </ol>
+  </nav>
+
+  <article>
+
+  <p class="lede"><strong>Three explanations are usually bundled together whenever menstrual variation in ADHD is discussed: that ovarian steroid variation alters the neurobiology of the disorder, that it adds a partly independent burden, and that it changes how impairment is perceived and managed.</strong> They imply different measurements and different interventions, and the literature does not currently choose between them. What it does support is heterogeneous sensitivity to ovarian hormone context, with the mediating pathways unresolved. This review takes the human ADHD observations alongside the mechanistic and contrary evidence, rather than assigning a neurotransmitter explanation in advance.</p>
+
+  <h2 id="question"><span class="num">Section one</span>The question, stated carefully</h2>
+
+  <p>Reports of menstrual variation in attention, emotional regulation and treatment benefit raise a real question. Recent reviews identify a small and heterogeneous literature spanning menstrual symptoms and other reproductive transitions. Treating those observations as a single demonstration that low estrogen reduces dopamine and worsens ADHD would exceed the available evidence by a considerable margin.</p>
+
+  <p>The difficulty is partly one of scale. Cellular regulation of a catecholamine enzyme, striatal receptor binding, performance on a working-memory task, and difficulty completing everyday responsibilities are related but distinct outcomes. Evidence at one level can motivate a hypothesis at another without establishing its magnitude, its direction, or its clinical importance.</p>
+
+  <figure class="fig">
+    <div class="plate"><img src="figures/fig2_scale_ladder.svg" alt="Four levels of measurement from cell to day, each with what the human evidence at that level actually shows."></div>
+    <figcaption><b>Figure 1. Four levels of evidence, and what each one has actually established.</b> The COMT result is a promoter effect in a cancer-cell preparation. The receptor result is three null human imaging studies. The task result is a meta-analysis finding no robust average phase effect. The level where the reported difficulty actually lives, daily functioning, is the least measured of the four.</figcaption>
+  </figure>
+
+  <p>That distinction matters most when interpreting menstrual symptoms during stimulant treatment. Greater impairment while on medication does not, by itself, indicate a smaller treatment effect. Pregnancy, postpartum, menopause and hormonal contraception provide context here, but they are not pooled with natural ovulatory cycles.</p>
+
+  <h2 id="methods"><span class="num">Section two</span>How the literature was assembled</h2>
+
+  <p>The review was developed from a broad discovery exercise run on 5 September 2026. Eleven title-and-abstract query families in the Europe PMC API covered ADHD and reproductive hormones, menstrual catecholamines, cognition, imaging, neurosteroids, sleep and stress and autonomic function, neurological symptoms, ovarian-hormone catecholamine mechanisms, stimulant pharmacology, hormonal contraception, and PMDD, over first-publication dates from 1800 to the search date. No language filter was applied at retrieval, which is not the same as evaluating every language.</p>
+
+  <p>The discovery corpus contained 11,383 deduplicated records. Removing 455 patent and 29 thesis records and adding 14 targeted records produced a candidate library of 10,913. <strong>Those are retrieval counts, not screened studies and not independent samples.</strong> The source report prioritised 136 references; this article selects a narrower subset for clinical relevance, mechanistic specificity, informative design and counterevidence. There was no prospectively registered protocol, no independent human duplicate screening, no exhaustive citation chasing and no standardised risk-of-bias scoring. Where only abstract-level evidence was available, interpretation was restricted to reported findings and the access limitation was kept visible. Preprints were not used as evidential anchors.</p>
+
+  <h2 id="exposure"><span class="num">Section three</span>Hormone exposure is a dynamic variable</h2>
+
+  <p>In an ovulatory cycle, estradiol generally rises before ovulation, falls, and shows a smaller luteal rise; progesterone increases after ovulation and declines before menstruation. That produces four physiologically distinct conditions, and the luteal phase in particular cannot be treated as a uniformly low-estrogen interval.</p>
+
+  <figure class="fig">
+    <div class="plate"><img src="figures/fig1_exposure_states.svg" alt="Estradiol and progesterone across a 28-day cycle, with four distinct exposure states shaded."></div>
+    <figcaption><b>Figure 2. The four exposure states a single cycle contains.</b> Early follicular low-steroid exposure, the immediate postovulatory transition, mid-luteal progesterone exposure, and late-luteal withdrawal are different physiological conditions with different predictions. Cycle length and ovulation timing vary, so calendar dates alone can misclassify any of them.</figcaption>
+  </figure>
+
+  <p><strong>Concentration and change require separate interpretation, and this is the distinction most often collapsed.</strong> A concentration below a participant's own average need not be actively declining. Testing withdrawal sensitivity requires sampling frequent enough to estimate a trajectory; a person-centred concentration model answers a different question. Duration of exposure and prior hormonal state may matter if receptor or circuit adaptation makes rising and falling trajectories behave differently.</p>
+
+  <p>Hormonal contraception is a different exposure again. Synthetic formulations and hormone-free intervals cannot be inferred from endogenous-cycle phase labels, and a withdrawal bleed does not establish ovulation. Much of the existing research enrolled participants described as women or females with regular cycles, so its generalisability to gender-diverse menstruating populations, irregular or anovulatory cycles, and different contraceptive formulations remains uncertain. Those are limitations of sampling and physiology; they do not imply that menstrual sensitivity is universal within any sex or gender category.</p>
+
+  <h2 id="catecholamines"><span class="num">Section four</span>Catecholamine mechanisms and their translational limits</h2>
+
+  <h3>Dopamine synthesis, release and receptor availability</h3>
+
+  <p>Prefrontal catecholamine modulation is often described by an inverted-U: both insufficient and excessive stimulation can impair particular control functions. That framework cautions against assuming every increase in dopamine improves cognition, or that a diagnosis identifies where an individual sits on a neurochemical response curve.</p>
+
+  <p>Rodent preparations do demonstrate rapid estradiol effects on stimulated striatal dopamine release, and receptor-manipulation work implicates interactions between estrogen signalling and metabotropic glutamate receptors under particular conditions. These establish biological plausibility and give tractable pathways. They do not establish the size of an intact human menstrual-cycle effect, and ovariectomy with hormone replacement is not equivalent to natural cycling.</p>
+
+  <p><strong>Direct human evidence is less consistent with a simple monotonic account.</strong> A small repeated-measures PET study detected no phase difference in D<sub>2</sub> receptor density. A study of ten women detected no follicular-to-luteal difference in striatal dopamine-transporter availability. A later D<sub>2</sub>-type PET investigation also reported no significant cycle-related binding change despite endocrine separation; its inconsistent sample counts across sections limit precise sample reporting but do not justify discarding the null.</p>
+
+  <p>These studies constrain specific markers rather than all dopamine function. Binding potential depends on available sites, affinity, endogenous competition and analytic assumptions, and transporter availability does not measure phasic release. Conversely, a null in a small sample is not an equivalence demonstration. A cross-sectional PET study comparing 15 hormonal-contraception users, 21 naturally cycling women and 20 male comparators found higher synthesis capacity among users without corresponding differences in D<sub>2</sub>/D<sub>3</sub> binding or methylphenidate-evoked release. The separation among endpoints is the informative part; nonrandomised exposure prevents a causal contraceptive reading.</p>
+
+  <h3>Catecholamine metabolism and cell context</h3>
+
+  <p>Estradiol reduced COMT transcription in cellular experiments using human regulatory sequences. Follow-up work found suppression in MCF-7 cells but no COMT-mRNA response in a U138MG glial line. That cell specificity is the whole translational problem in miniature: <strong>a promoter effect in a cancer-cell preparation is not a measurement of cortical catecholamine clearance during menstruation.</strong></p>
+
+  <p>A study of 24 women linked estradiol, COMT genotype and working-memory performance, which is a genuine human hypothesis about state-dependent modulation. It remains an indirect inference about dopamine, not a validated biomarker and not a basis for genotype-guided ADHD treatment. Replication has to address task dependence, repeated testing, genotype subgroup size and multiple comparisons, and mechanistic work should connect transcription to protein, enzyme activity and clearance in relevant neural preparations before assuming those steps move together.</p>
+
+  <h3>Norepinephrine and arousal</h3>
+
+  <p>Norepinephrine is the more obviously relevant transmitter for ADHD, since locus-coeruleus and prefrontal pathways contribute to arousal and control. The direct longitudinal human evidence connecting menstrual hormones, central norepinephrine and ADHD is sparse, and the animal results differ by endpoint rather than converging. Estradiol increased expression of norepinephrine-synthetic enzymes in one protocol, while electrophysiological work found suppressed spontaneous locus-coeruleus firing after estradiol and increased firing after progesterone in estradiol-primed rats. A rhesus study found no steroid-related change in locus-coeruleus norepinephrine-transporter mRNA. These cannot be summarised as a uniform rise in norepinephrine output.</p>
+
+  <p>Peripheral measures need similar restraint. A placebo-controlled reboxetine crossover in 16 healthy women found phase- and posture-dependent cardiovascular responses to transporter inhibition, which is not cortical transporter activity and not ADHD efficacy. Plasma catecholamines, cardiovascular responses and integrated CSF metabolites do not selectively quantify synaptic norepinephrine in a particular region. Pupillometry can contribute to a convergent case, but pupil diameter reflects other neural and autonomic processes too.</p>
+
+  <h2 id="neurosteroid"><span class="num">Section five</span>Neurosteroids and the PMDD comparison</h2>
+
+  <p>Progesterone-derived allopregnanolone positively modulates GABA-A receptors, but the behavioural consequences depend on receptor composition, exposure history and circuit context. Molecular enhancement of inhibition does not predict a uniformly calming clinical response. Neurosteroid sensitivity is a plausible alternative to, or complement of, catecholamine explanations of cycle-linked emotional and attentional difficulty.</p>
+
+  <p><strong>PMDD supplies the most informative human manipulation evidence anywhere in this literature.</strong> Ovarian suppression followed by hormone add-back elicited symptom recurrence in susceptible participants, with different responses in controls. A later experiment associated recurrence with the transition to add-back, followed by improvement during continued stable exposure. That supports sensitivity to <em>changing</em> exposure rather than a necessary abnormality in absolute circulating concentrations. It does not establish that withdrawal is the only relevant transition, or that ADHD without PMDD shares the mechanism.</p>
+
+  <p>A small dutasteride experiment further implicated progesterone conversion pathways, with symptom mitigation in the higher-dose PMDD cohort. Several steroid products are affected and the relevant cohort contained eight participants, so it does not isolate one receptor mechanism or establish an ADHD intervention. Receptor-manipulation experiments in mice support inhibitory adaptation as a biological possibility while preserving the species and disease boundaries. And the larger randomised sepranolone trial did not meet its primary symptom endpoint, which is the useful reminder that pathway plausibility does not guarantee clinical efficacy.</p>
+
+  <div class="key">
+    <p class="kt">What PMDD suggests for ADHD research</p>
+    <p>Ascertain cyclic affective symptoms prospectively, and test neurosteroid-sensitive phenotypes separately from persistent ADHD symptoms. What it does not license is assigning all menstrual inattention to either PMDD or dopamine deficiency.</p>
+  </div>
+
+  <h2 id="cognition"><span class="num">Section six</span>Cognition, imaging and everyday functioning</h2>
+
+  <h3>Objective performance and clinical heterogeneity</h3>
+
+  <p>A 2025 meta-analysis of 102 articles, 3,943 participants and 730 comparisons found no robust systematic phase differences across objectively scored cognitive domains. That argues against a universal average menstrual cognitive deficit, and it is the single strongest constraint on the popular version of the story. Calendar-phase harmonisation, imputation of some missing information, heterogeneous ascertainment and the populations represented all limit how far it goes: <strong>a nonsignificant pooled contrast is not evidence that all individuals and all clinical subgroups are equivalent across phases.</strong></p>
+
+  <p>Repeated-cycle work shows why replication matters here. Initial hormone-cognition associations in 88 participants did not recur in the 68 assessed in a second cycle. Against that, a randomised estradiol crossover in a sample enriched for recent suicidal ideation reported perimenstrual effects on working memory and verbal fluency but not inhibition, with 44 participants in the intention-to-treat analysis and 23 per protocol. That was not an ADHD trial and cannot establish general cognitive enhancement.</p>
+
+  <p>Objective task performance, effort and daily functioning should stay separate endpoints. Preserved laboratory accuracy can coexist with greater fatigue, reduced persistence, or difficulty organising unstructured activity. Perceived cognitive fog can occur without a measurable working-memory deficit. Both possibilities require measurement rather than an assumption that either subjective or objective evidence is intrinsically decisive.</p>
+
+  <h3>Imaging and physiological specificity</h3>
+
+  <p>Dense neuroimaging has identified hormone-associated variation in network organisation and brain structure, including a six-phase 7T study in 27 participants linking hormones to medial temporal measures while accounting for blood flow and water content. That demonstrates the value of repeated sampling. Structural or connectivity changes alone do not establish functional impairment, and they do not identify dopamine as the mediator.</p>
+
+  <p>Hemodynamic interpretation deserves particular care. In a three-phase study of 26 participants, higher estradiol and progesterone were associated with greater perfusion and shorter arterial arrival time. Hormone-associated BOLD changes may therefore carry vascular as well as neural contributions. Joint assessment of perfusion, vascular reactivity, electrophysiology and performance can distinguish some of these alternatives; a visually compelling activation map cannot do it alone.</p>
+
+  <h3>Sleep, stress and pain</h3>
+
+  <p>Sleep research reports relatively consistent menstrual variation in spindle activity and luteal temperature, with more heterogeneous changes in perceived sleep. A meta-analysis of 121 longitudinal studies involving 2,641 participants found a small follicular-to-luteal basal cortisol difference rather than a uniformly large menstrual stress effect. Cortisol, vagal activity and catecholamine signalling are different physiological outcomes and should not be traded for one another.</p>
+
+  <p>Migraine, menstrual pain and catamenial epilepsy demonstrate clinically meaningful hormone-associated vulnerability in specific disorders, but their mechanisms and treatment findings are diagnosis-specific. A randomised progesterone trial in 294 participants with epilepsy was negative on its primary responder comparison, and subgroup signals there cannot be generalised to ADHD. A community study relating ADHD-screen status to heavy bleeding did not establish iron deficiency as a mechanism; ferritin was not measured, and the observational design could not establish mediation. Sleep, pain, mood and longer-term iron status are potential contributors to be characterised, not presumed mediators.</p>
+
+  <h2 id="adhd"><span class="num">Section seven</span>Direct evidence concerning ADHD</h2>
+
+  <h3>Prospective trajectories and lived experience</h3>
+
+  <p>Roberts and colleagues followed 32 regularly cycling young women for 35 days, collecting saliva daily and assaying steroids every other day alongside daily ADHD symptom reports. Low person-relative estradiol in high progesterone or testosterone contexts predicted more next-day symptoms, particularly at higher trait impulsivity, with phase analyses suggesting early postovulatory and early follicular vulnerability. This was a community symptom sample rather than a cohort of 32 diagnosed patients, and the concentration models do not demonstrate effects of the <em>rate</em> of estradiol decline.</p>
+
+  <p>Zaritsky and colleagues extended prospective observation to 30 participants treated with amphetamine salts. Across 35 daily surveys, symptoms were greatest during menstruation and lower in the mid-follicular interval, with associated negative mood variation. The available abstract supports symptoms varying during treatment; it does not establish serial drug concentrations or a randomised efficacy comparison. Padilla and colleagues reported exploratory cognitive profiles across two cycle sessions in 30 adolescent girls with ADHD, at a level of access insufficient to appraise hormone confirmation and medication handling.</p>
+
+  <p>Qualitative interviews with ten stimulant-treated participants described perceived cycle-linked changes, including mid-luteal difficulty and uncertainty about medication benefit. Those accounts identify outcomes and hypotheses that laboratory studies miss, but selected interviews cannot estimate prevalence or a causal effect. <strong>Across these designs the vulnerable interval is not uniform</strong>, and the differences may reflect hormone ascertainment, age, treatment, affective comorbidity, outcome selection, or real biological heterogeneity.</p>
+
+  <div class="tablewrap">
+  <table>
+    <caption>Table 1. The principal direct clinical evidence, with what each study can and cannot support. Note that none of them establishes a cycle-dependent central catecholamine mechanism.</caption>
+    <thead><tr><th>Study and design</th><th>Sample and assessment</th><th>Finding and interpretive limit</th></tr></thead>
+    <tbody>
+      <tr><td class="h">Roberts et al. 2018</td><td>32 community participants; 35 days; saliva daily, steroids assayed every other day</td><td>Relative hormone levels predicted next-day symptoms in some hormonal and impulsivity contexts. Not a diagnosed ADHD cohort; does not establish hormone-slope effects.</td></tr>
+      <tr><td class="h">Zaritsky et al. 2026</td><td>30 amphetamine-treated participants; 35 daily surveys</td><td>Greater menstrual than mid-follicular symptoms, associated with negative mood. Abstract-level appraisal; no demonstrated exposure or treatment-effect change.</td></tr>
+      <tr><td class="h">Padilla et al. 2026</td><td>30 adolescent girls with ADHD; two cognitive-testing visits</td><td>Exploratory declining and stable profiles. Abstract-only methods; small derived groups need replication.</td></tr>
+      <tr><td class="h">Bürger et al. 2024</td><td>10 selected stimulant-treated participants; qualitative interviews</td><td>Perceived cycle-linked functioning and medication variation, including mid-luteal difficulty. No prevalence or causal estimate.</td></tr>
+      <tr><td class="h">Broughton et al. 2025</td><td>715 online respondents; overlapping ADHD definitions; retrospective PMDD screening</td><td>Provisional PMDD 31.4% in reported clinical ADHD versus 9.8% in the reference group. Selected screening proportions, not population diagnostic prevalence.</td></tr>
+      <tr><td class="h">de Jong et al. 2023</td><td>9 ADHD clinic patients; individualised premenstrual stimulant increases; 6 to 24 months</td><td>All reported improvement and continuation. Uncontrolled and unblinded; generates a trial hypothesis rather than an efficacy or safety estimate.</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>ADHD, PMDD and premenstrual exacerbation are three different things</h3>
+
+  <p>They describe different temporal patterns. Persistent developmental ADHD symptoms can coexist with a cyclic affective syndrome, or worsen alongside pain, sleep disruption and mood symptoms. A high late-luteal symptom score alone does not distinguish these possibilities, and most of the survey literature cannot either.</p>
+
+  <p>In the online survey of 715 participants, provisional PMDD was reported in 31.4% of those reporting a clinical ADHD diagnosis against 9.8% of the non-ADHD reference group, with a higher proportion in an overlapping ASRS-defined group. These are recruited-group screening estimates rather than population diagnostic prevalence, and retrospective screening cannot reliably separate prospectively confirmed PMDD from exacerbation of another condition. A small clinical-ADHD subgroup without reported depression or anxiety yielded imprecise estimates, leaving the contribution of affective comorbidity unresolved.</p>
+
+  <p>A repeated-phase study of 58 participants with PMDD and 50 controls found attention-related and impulsivity difficulties, including greater late-luteal burden, though these were self-reported rather than objective cognitive results. A larger specialist ADHD clinic sample also reported reproductive mood-symptom burden, with selection and retrospective measurement limiting causal interpretation. The comparison that would actually advance this crosses clinically established ADHD with prospectively assessed PMDD, retaining both comorbid and single-diagnosis groups.</p>
+
+  <h3>Medication benefit and exposure</h3>
+
+  <p>Small placebo-controlled laboratory studies in healthy women reported phase-related differences in subjective d-amphetamine effects under some conditions. Those endpoints concern acute drug experience and cannot be equated with sustained symptom control. The nine-patient case series describing improvement after individualised premenstrual stimulant increases, followed for 6 to 24 months, has no blinding and no concurrent control, heterogeneous medications and comorbidities, and evolving assessment procedures, which together preclude a general efficacy or safety estimate.</p>
+
+  <figure class="fig">
+    <div class="plate"><img src="figures/fig3_medication_benefit.svg" alt="One reported experience branching into four distinct explanations, each requiring different measurement."></div>
+    <figcaption><b>Figure 3. Four explanations that produce the same report.</b> Stable prescribed dose does not demonstrate stable exposure. Equivalent plasma exposure would not establish equal brain exposure or equal drug effect. A predose measurement during chronic treatment is not necessarily an untreated baseline, and a pre-post dose comparison can be affected by time and practice. Estimating treatment benefit requires an appropriate randomised contrast.</figcaption>
+  </figure>
+
+  <p>The evidence reviewed therefore leaves a universal cycle-adjusted dosing algorithm unestablished. That is not an argument that individuals do not experience this, and it is not an argument against characterising it carefully in a given person. It is an argument against generalising a rule from evidence that cannot support one.</p>
+
+  <h2 id="hypotheses"><span class="num">Section eight</span>Eight competing hypotheses, each with a way to break it</h2>
+
+  <p>The evidence favours a multilevel model in which hormone context can affect several pathways while daily functioning also depends on treatment and environmental demand. That is a set of testable alternatives, not a claim that every pathway operates in every patient. The total association between hormone trajectory and functioning is a different quantity from a treatment-by-hormone interaction, which is different again from a pathway-specific causal effect. Adjusting for mood may remove a mediated component of interest; ignoring pre-existing affective illness may leave confounding. Covariate selection has to follow the question being asked.</p>
+
+  <div class="tablewrap">
+  <table>
+    <caption>Table 2. Eight hypotheses and the observations that would discriminate among them. Each is stated with a finding that would weaken it, which is the part usually left out.</caption>
+    <thead><tr><th>Hypothesis</th><th>Discriminating experiment</th><th>Finding that would weaken it</th></tr></thead>
+    <tbody>
+      <tr><td class="h">1. Hormone transitions</td><td>Repeated dense endocrine sampling; compare level and trajectory models in held-out cycles.</td><td>Trajectory terms add no meaningful predictive information beyond concentration, with adequate measurement precision.</td></tr>
+      <tr><td class="h">2. Neurosteroid sensitivity</td><td>Cross ADHD with prospectively confirmed PMDD; compare endocrine transition against stable exposure.</td><td>No reproducible transition sensitivity in the proposed subgroup despite appropriate exposure and target engagement.</td></tr>
+      <tr><td class="h">3. Altered drug exposure</td><td>Observed dosing and serial concentrations in verified hormone states; prespecified equivalence margins.</td><td>Exposure equivalence alongside reproducible functional variation weakens a systemic pharmacokinetic explanation.</td></tr>
+      <tr><td class="h">4. Sleep, pain or mood pathways</td><td>Prospective temporal measurement followed by a targeted intervention and matched control.</td><td>Reliable mediator improvement without meaningful functional benefit weakens the proposed causal pathway.</td></tr>
+      <tr><td class="h">5. State-dependent catecholamines</td><td>Hormone-state by task-demand or randomised perturbation interaction; independent baseline and replication.</td><td>No reproducible prespecified interaction despite adequate exposure and task sensitivity.</td></tr>
+      <tr><td class="h">6. Vascular contribution or compensation</td><td>Combine perfusion-calibrated imaging, EEG, performance equivalence and effort outcomes.</td><td>Convergent neural change after vascular control weakens a vascular-only account; no added effort weakens compensation.</td></tr>
+      <tr><td class="h">7. Stress-related arousal vulnerability</td><td>Randomised stress and neutral conditions across verified phases; lapses and convergent physiology.</td><td>Effects limited to peripheral resting measures, without a replicable phase-by-stress behavioural interaction.</td></tr>
+      <tr><td class="h">8. Cell-specific COMT regulation</td><td>Multiple donor neural cultures; changing versus matched constant exposure; COMT knockdown and rescue.</td><td>Absent neural COMT effects with receptor engagement, or clearance effects that persist after COMT removal.</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <p>Hypotheses 1 and 2 concern exposure history. Hypothesis 3 is pharmacokinetic. Hypothesis 4 concerns burden that may be added or transmitted. Hypotheses 5 through 8 are more constrained mechanistic questions. All eight arise from the reviewed evidence but none of them is an established finding, and each should be prespecified and tested against its nearest alternative, including informative negative results.</p>
+
+  <h2 id="programme"><span class="num">Section nine</span>A staged empirical programme</h2>
+
+  <p><strong>The first priority is a reproducible clinical phenotype, and almost nothing else can be settled without one.</strong> A longitudinal study should distinguish ADHD and PMDD status across four groups, establish cyclic symptoms prospectively over at least two screening cycles, and observe additional cycles for estimation and validation. Hormone-informed sampling should distinguish concentration from change, with denser measurement around transitions. Brief daily functional outcomes, medication timing, mood, sleep, pain and bleeding should accompany the endocrine measures. Repeated laboratory visits can add objective control, response-time variability and effort outcomes, but longer-recall ADHD scales should not simply be relabelled as validated daily measures.</p>
+
+  <p>A pharmacokinetic substudy should use observed, formulation-specific dosing and serial concentrations at verified endocrine states, together with adherence and relevant physiological information. Exposure equivalence requires a prespecified margin and adequate precision, not a nonsignificant test. A clinical crossover trial can then compare a clinician-selected adjustment against an indistinguishable control during prospectively established vulnerable windows, maintaining the underlying regimen where appropriate. Randomisation, allocation blinding, adverse-effect assessment and repeated cycles are what separate benefit from expectancy. These are research proposals, not prescribing schedules.</p>
+
+  <p>The analysis matters as much as the design. Distinguish participant, cycle and day. Separate within-person hormone deviations from between-person differences. Address serial correlation and informative missingness, which will tend to increase on exactly the most impaired days. Defining vulnerability and testing it in the same data risks optimistic subgroup claims, and more daily observations do not replace independent participants for estimating an interaction. Sample size should come from simulation of the actual design, incorporating measurement error, missingness and a clinically meaningful primary estimand.</p>
+
+  <h2 id="limits"><span class="num">Section ten</span>Limitations, and what this leaves standing</h2>
+
+  <p>This review prioritised explanatory coherence and counterevidence over exhaustive eligibility-based coverage. The broad retrieval library contains adjacent literature and does not provide a denominator for the prevalence of positive findings. Selection was purposive, access depth varied, and formal risk-of-bias assessment and independent duplicate screening were not completed. Quantitative effects were not pooled across heterogeneous populations and outcomes. All of that limits any claim of completeness or graded certainty.</p>
+
+  <p>The underlying clinical evidence carries its own constraints: small samples, selected recruitment, retrospective symptom attribution, inconsistent hormone confirmation and limited control of medication exposure. Several recent ADHD reports were accessible only at abstract level. Repeated measures improve temporal resolution without establishing population representativeness. General-cognition findings do not settle clinical subgroups, and disease-specific endocrine manipulation does not transfer automatically from PMDD or epilepsy to ADHD. Animal and cellular experiments isolate mechanisms at the cost of physiological and clinical comparability.</p>
+
+  <div class="key">
+    <p class="kt">What the evidence does and does not establish</p>
+    <p><b>Supported:</b> individual cycle-associated impairment merits careful characterisation, and sensitivity appears heterogeneous rather than universal. PMDD manipulation experiments establish clinically relevant steroid sensitivity in a susceptible population.</p>
+    <p><b>Not established:</b> a menstrual catecholamine deficiency syndrome, a diagnostic hormone threshold, or a generally effective cycle-based medication strategy. No direct ADHD study in the selected evidence set established a cycle-dependent central dopamine or norepinephrine mechanism.</p>
+  </div>
+
+  <p>Menstrual-cycle variation offers a plausible context for changes in ADHD-related functioning, but the direct evidence linking those changes to central catecholamines remains incomplete. Preclinical findings support several hormone-sensitive mechanisms, while human dopamine imaging and general cognitive research constrain a universal impairment model. PMDD experiments motivate analogous mechanisms in ADHD rather than confirming them.</p>
+
+  <p class="kicker">Progress here depends on three distinctions that are cheap to state and expensive to measure: hormone levels from hormone transitions, symptoms under treatment from treatment effects, and direct neural measurement from physiological proxies. Prospective phenotyping followed by targeted and randomised experiments is what converts those distinctions into evidence a clinician could act on.</p>
+
+  <div class="sources">
+    <h2>Sources</h2>
+    <p><b>Reviews and cycle methodology.</b> Osianlis E, Thomas EHX, Jenkins LM, Gurvich C, <em>J Atten Disord</em> 29:706, 2025; Kennedy G, Baran-Goldwax M, Lippé S, <em>Womens Health (Lond)</em> 22, 2026; Schmalenberger KM, Tauseef HA, Barone JC, et al., <em>Psychoneuroendocrinology</em> 123:104895, 2021.</p>
+    <p><b>Dopamine, COMT and norepinephrine.</b> Cools R, D'Esposito M, <em>Biol Psychiatry</em> 69:e113, 2011; Becker JB, <em>Synapse</em> 5:157, 1990 and <em>Neurosci Lett</em> 118:169, 1990; Song Z, Yang H, Peckham EM, Becker JB, <em>eNeuro</em> 6, 2019; Nordström AL, Olsson H, Halldin C, <em>Psychiatry Res</em> 83:1, 1998; Best SE, Sarrel PM, Malison RT, et al., <em>Psychopharmacology</em> 183:181, 2005; Petersen N, Rapkin AJ, Okita K, et al., <em>Mol Psychiatry</em> 26:2038, 2021; Taylor CM, Furman DJ, Berry AS, et al., <em>Cereb Cortex</em> 33:8485, 2023; Xie T, Ho SL, Ramsden D, <em>Mol Pharmacol</em> 56:31, 1999; Jiang H, Xie T, Ramsden DB, Ho SL, <em>Neuropharmacology</em> 45:1011, 2003; Jacobs E, D'Esposito M, <em>J Neurosci</em> 31:5286, 2011; Serova L, Rivkin M, Nakashima A, Sabban EL, <em>Neuroendocrinology</em> 75:193, 2002; Szawka RE, Rodovalho GV, Monteiro PM, et al., <em>J Neuroendocrinol</em> 21:629, 2009; Schutzer WE, Bethea CL, <em>Psychoneuroendocrinology</em> 22:325, 1997; Moldovanova I, Schroeder C, Jacob G, et al., <em>Hypertension</em> 51:1203, 2008; Parry BL, et al., <em>Neuropsychopharmacology</em> 5:127, 1991; Eriksson E, et al., <em>Neuropsychopharmacology</em> 11:201, 1994; Joshi S, Li Y, Kalwani RM, Gold JI, <em>Neuron</em> 89, 2016.</p>
+    <p><b>Neurosteroids and PMDD.</b> Hantsoo L, Epperson CN, <em>Neurobiol Stress</em> 12:100213, 2020; Schmidt PJ, Nieman LK, Danaceau MA, et al., <em>N Engl J Med</em> 338:209, 1998; Schmidt PJ, Martinez PE, Nieman LK, et al., <em>Am J Psychiatry</em> 174:980, 2017; Martinez PE, Rubinow DR, Nieman LK, et al., <em>Neuropsychopharmacology</em> 41:1093, 2016; Maguire JL, Stell BM, Rafizadeh M, Mody I, <em>Nat Neurosci</em> 8:797, 2005; Maguire J, Mody I, <em>J Neurosci</em> 27:2155, 2007; Bäckström T, Ekberg K, Hirschberg AL, et al., <em>Psychoneuroendocrinology</em> 133:105426, 2021; Sacher J, Zsido RG, Barth C, et al., <em>Biol Psychiatry</em> 93:1081, 2023.</p>
+    <p><b>Cognition, imaging, sleep, stress and pain.</b> Jang D, Zhang J, Elfenbein HA, <em>PLoS One</em> 20:e0318576, 2025; Leeners B, Kruger THC, Geraedts K, et al., <em>Front Behav Neurosci</em> 11:120, 2017; Schmalenberger KM, Mulligan EM, Barone JC, et al., <em>Psychiatry Res</em> 342:116188, 2024; Pritschet L, Santander T, Taylor CM, et al., <em>Neuroimage</em> 220:117091, 2020; Zsido RG, et al., <em>Nature Mental Health</em> 1:761, 2023; Wright ME, Driver ID, Crofts C, et al., <em>J Cereb Blood Flow Metab</em> 46:1889, 2026; Baker FC, Driver HS, <em>Sleep Med</em> 8:613, 2007; Alzueta E, Baker FC, <em>Sleep Med Clin</em> 18:399, 2023; Klusmann H, Schulze L, Engel S, et al., <em>Front Neuroendocrinol</em> 66:100998, 2022; MacGregor EA, Frith A, Ellis J, et al., <em>Neurology</em> 67:2154, 2006; Iacovides S, Avidon I, Baker FC, <em>Eur J Pain</em> 19:1389, 2015; Herzog AG, Fowler KM, Smithson SD, et al., <em>Neurology</em> 78:1959, 2012; MacLean B, Buissink P, Louw V, et al., <em>Nutrients</em> 17:785, 2025.</p>
+    <p><b>ADHD-specific evidence.</b> Roberts B, Eisenlohr-Moul T, Martel MM, <em>Psychoneuroendocrinology</em> 88:105, 2018; Zaritsky R, Reed SC, Evans SM, <em>J Atten Disord</em> 30:329, 2026; Padilla M, Varela P, Hernandez H, et al., <em>Eur Child Adolesc Psychiatry</em> 35:1997, 2026; Bürger I, Erlandsson K, Borneskog C, <em>Sex Reprod Healthc</em> 40:100975, 2024; Broughton T, Lambert E, Wertz J, Agnew-Blais J, <em>Br J Psychiatry</em> 226:410, 2025; de Jong M, Wynchank DSMR, van Andel E, et al., <em>Front Psychiatry</em> 14:1306194, 2023; Lin PC, Long CY, Ko CH, Yen JY, <em>J Womens Health</em> 33:1267, 2024; Dorani F, Bijlenga D, Beekman ATF, et al., <em>J Psychiatr Res</em> 133:10, 2021; White TL, Justice AJ, de Wit H, <em>Pharmacol Biochem Behav</em> 73:729, 2002; Justice AJ, de Wit H, <em>Psychopharmacology</em> 145:67, 1999 and <em>Pharmacol Biochem Behav</em> 66:509, 2000.</p>
+    <p style="margin-top:16px">The full reference list, with DOIs, and both supplementary materials (the search strategy with retrieval accounting, and the proposed experimental designs) are in the PDF editions. The reference list and its numbering are identical in the English and Japanese editions; the Japanese edition is a translation of the same review rather than an independent study.</p>
+    <p><b>Disclosure of AI assistance.</b> AI assistance was used for literature discovery, source summarisation, evidence organisation, drafting and revision, hypothesis development, bilingual translation, and preparation of tables and supplementary materials. This does not constitute independent human screening or peer review. No original human-participant data were collected. This page is a research review, not clinical advice.</p>
+  </div>
+
+  </article>
+</div>
+</main>
+
+<footer class="site">
+  <div class="wide">
+    <span>&copy; 2026 Benjamin Michael Haire</span>
+    <a href="/">Back to all projects</a>
+  </div>
+</footer>
+
+<script src="/assets/lang.js" defer></script>
+</body>
+</html>
