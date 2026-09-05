@@ -1496,6 +1496,12 @@ Obstructive shock blocks filling or outflow. Causes include massive pulmonary em
 
 Patients often have mixed shock. Sepsis can include hypovolaemia and cardiomyopathy. Myocardial infarction may cause pump failure and mechanical obstruction. Trauma can combine haemorrhage, tension pneumothorax, and neurogenic physiology.
 
+### Picture obstructed filling without a diagram
+
+The right and left ventricles share a septum and lie within the same pericardial enclosure. When pressurised pericardial fluid restricts expansion, filling one side increasingly competes with filling the other. During spontaneous inspiration, greater right-sided venous return can displace the septum leftward and reduce left-ventricular filling. The subsequent fall in left-ventricular stroke volume contributes to an exaggerated inspiratory fall in systolic pressure, called pulsus paradoxus. This is one interacting mechanism rather than a complete account of every respiratory pressure change.
+
+The anatomical problem is therefore external restriction of filling, not necessarily failure of myocardial contraction. A vigorously contracting but underfilled ventricle can still deliver little blood. The volume of an effusion alone does not establish its haemodynamic effect, because accumulation rate and pericardial compliance matter. Nor is pulsus paradoxus unique to tamponade; severe obstructive airway disease can also produce it. Connect the observed sign with filling mechanics and the overall clinical state before assigning a cause.
+
 ## Recognition and monitoring
 
 Concerning features include altered mental state, cool or mottled skin, delayed capillary refill, weak pulses, oliguria, tachypnoea, increasing lactate, metabolic acidosis, hypotension, narrow pulse pressure, or deteriorating liver and kidney function. Warm vasodilated shock can have bounding pulses early. A normal single blood pressure does not exclude compensated shock.
