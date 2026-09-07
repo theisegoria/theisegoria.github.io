@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Claude Fable 5.1 の 5 段階の推論エフォート設定を、コーディング用途で評価する。熟慮の限界収益がどこで崩れるのか、なぜレイテンシがコストより悪くスケールするのか、そして公開ベンチマークが決着させられないことは何か。">
+  <meta name="theme-color" content="#f7f7f5">
+  <link rel="canonical" href="https://theisegoria.github.io/ja/fable-5-1-reasoning-effort/">
+  <link rel="alternate" hreflang="en" href="https://theisegoria.github.io/fable-5-1-reasoning-effort/">
+  <link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/fable-5-1-reasoning-effort/">
+  <link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/fable-5-1-reasoning-effort/">
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500;600&family=Inter:wght@400;500;600;700&display=swap">
+  <title>推論エフォートの曲線はどこで採算が合わなくなるか</title>
+<style>
+  :root {
+    --ground:#F7F7F5; --surface:#FFFFFF; --surface-2:#F0F1EC;
+    --ink:#17191B; --muted:#63686D; --rule:#DEE0DC;
+    --accent:#1F5FA8;
+    --f-display:"Noto Serif JP","Hiragino Mincho ProN",serif;
+    --f-body:"Inter","Hiragino Sans","Yu Gothic",Meiryo,ui-sans-serif,system-ui,sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground:#101214; --surface:#181B1E; --surface-2:#1F2327;
+      --ink:#EDEFF1; --muted:#9BA3AA; --rule:#2C3237; --accent:#69ABE3;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground:#101214; --surface:#181B1E; --surface-2:#1F2327;
+    --ink:#EDEFF1; --muted:#9BA3AA; --rule:#2C3237; --accent:#69ABE3;
+  }
+  * { box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body {
+    margin:0; background:var(--ground); color:var(--ink);
+    font-family:var(--f-body); font-size:16.5px; line-height:1.9;
+    -webkit-font-smoothing:antialiased;
+  }
+  a { color:var(--accent); text-underline-offset:.18em; }
+  .wrap { width:min(740px, calc(100% - 40px)); margin-inline:auto; }
+  .wide { width:min(1080px, calc(100% - 40px)); margin-inline:auto; }
+  header.site { border-bottom:1px solid var(--rule); }
+  header.site .wide { min-height:64px; display:flex; align-items:center; justify-content:space-between; gap:20px; }
+  header.site .name { font-weight:750; letter-spacing:-.02em; text-decoration:none; color:var(--ink); }
+  header.site nav { display:flex; gap:20px; flex-wrap:wrap; }
+  header.site nav a { color:var(--muted); font-size:.86rem; text-decoration:none; }
+  header.site nav a:hover { color:var(--ink); }
+  .hero { padding:72px 0 44px; }
+  .label { color:var(--muted); font-size:.74rem; font-weight:700; letter-spacing:.1em; }
+  h1 { font-family:var(--f-display); font-weight:600; margin:14px 0 18px;
+       font-size:clamp(1.9rem,4.6vw,2.8rem); line-height:1.35; letter-spacing:-.01em; }
+  .standfirst { font-size:1.08rem; color:var(--muted); margin:0 0 26px; }
+  .herometa { display:flex; flex-wrap:wrap; gap:10px 18px; align-items:center;
+              font-size:.86rem; color:var(--muted); border-top:1px solid var(--rule); padding-top:18px; }
+  .pill { display:inline-flex; align-items:center; gap:7px; padding:7px 14px;
+    border:1px solid var(--rule); border-radius:999px; background:var(--surface);
+    text-decoration:none; color:var(--ink); font-weight:600; font-size:.85rem; }
+  .pill:hover { border-color:var(--accent); color:var(--accent); }
+  .toc { border-top:1px solid var(--rule); border-bottom:1px solid var(--rule); padding:22px 0 24px; margin-bottom:14px; }
+  .toc ol { margin:10px 0 0; padding-left:1.4em; columns:2; column-gap:34px; }
+  .toc li { margin:0 0 6px; color:var(--muted); font-size:.9rem; break-inside:avoid; }
+  .toc a { color:var(--ink); text-decoration:none; }
+  .toc a:hover { color:var(--accent); }
+  article { padding:8px 0 40px; }
+  h2 { font-family:var(--f-display); font-weight:600; font-size:1.5rem; line-height:1.5; margin:58px 0 4px; }
+  h2 .num { color:var(--muted); font-family:var(--f-body); font-size:.78rem;
+            font-weight:700; letter-spacing:.1em; display:block; margin-bottom:10px; }
+  h3 { font-size:1.02rem; margin:34px 0 2px; }
+  p { margin:16px 0; }
+  strong { font-weight:650; }
+  ul, ol.body { padding-left:1.4em; }
+  ul li, ol.body li { margin:9px 0; }
+  .fig { margin:36px 0 30px; }
+  .fig .plate { background:#fff; border:1px solid var(--rule); border-radius:12px; padding:16px 14px; overflow-x:auto; }
+  .fig img { display:block; width:100%; height:auto; min-width:520px; }
+  .fig figcaption { color:var(--muted); font-size:.85rem; line-height:1.8; margin-top:12px; }
+  .fig figcaption b { color:var(--ink); font-weight:650; }
+  .key { background:var(--surface); border:1px solid var(--rule); border-left:3px solid var(--accent);
+         border-radius:10px; padding:18px 20px; margin:32px 0; }
+  .key .kt { font-size:.74rem; font-weight:700; letter-spacing:.1em; color:var(--accent); }
+  .key p:first-of-type { margin-top:8px; }
+  .key p:last-child { margin-bottom:0; }
+  .tablewrap { overflow-x:auto; margin:30px 0; }
+  table { border-collapse:collapse; width:100%; min-width:620px; font-size:.88rem; line-height:1.7; }
+  th, td { text-align:left; vertical-align:top; padding:11px 12px; border-bottom:1px solid var(--rule); }
+  thead th { border-bottom:2px solid var(--rule); font-size:.76rem; letter-spacing:.05em; color:var(--muted); }
+  td.h { font-weight:650; color:var(--ink); }
+  caption { caption-side:bottom; text-align:left; color:var(--muted); font-size:.84rem; padding-top:12px; line-height:1.8; }
+  .kicker { font-family:var(--f-display); font-size:1.2rem; line-height:1.85;
+            border-top:1px solid var(--rule); padding-top:34px; margin-top:52px; }
+  .sources { border-top:1px solid var(--rule); margin-top:46px; padding-top:26px;
+             font-size:.82rem; color:var(--muted); line-height:1.8; }
+  .sources h2 { font-size:1.05rem; margin:0 0 12px; }
+  .sources b { color:var(--ink); }
+  footer.site { border-top:1px solid var(--rule); margin-top:56px; }
+  footer.site .wide { display:flex; justify-content:space-between; gap:20px;
+                      padding:26px 0 46px; color:var(--muted); font-size:.85rem; flex-wrap:wrap; }
+  footer.site a { color:var(--muted); }
+  @media (max-width:700px) { body { font-size:16px; } .hero { padding:52px 0 34px; } .toc ol { columns:1; } .fig .plate { padding:10px 8px; } }
+  .lede { font-size:1.04rem; }
+  .note { color:var(--muted); font-size:.85rem; line-height:1.8; margin-top:10px; }
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="wide">
+    <a class="name" href="/ja/">Benjamin Michael Haire</a>
+    <nav aria-label="メインナビゲーション">
+      <a href="#frontier">フロンティア</a>
+      <a href="#coding">コーディング</a>
+      <a href="#marginal">限界収益</a>
+      <a href="#latency">レイテンシ</a>
+      <a href="/fable-5-1-reasoning-effort/" hreflang="en" lang="en">EN</a>
+      <a href="/ja/">すべてのプロジェクト</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="wrap">
+
+  <div class="hero">
+    <p class="label">ベンチマーク分析 / 2026年9月8日</p>
+    <h1>推論エフォートの曲線は、最上段に達するはるか手前で採算が合わなくなる。</h1>
+    <p class="standfirst">Claude Fable 5.1 は 5 段階の推論エフォート設定を備えており、その範囲は出力トークン数で 10 倍、レイテンシで 47 倍に及ぶ。公開されているエビデンスに照らす限り、その上端をコーディング用途で正当化することは難しい。xhigh から max への移行では、追加の 100 万出力トークンが買えるのは指数にしておよそ 0.01 ポイントである。本稿では、曲線がどこで平坦化するのか、なぜ他ならぬその地点で平坦化するのか、そして公開データが決着させられない部分はどこかを順に検討する。</p>
+    <div class="herometa">
+      <a class="pill" href="/fable-5-1-reasoning-effort/fable-5-1-reasoning-effort-ja.pdf">日本語版 PDF</a>
+      <a class="pill" href="/fable-5-1-reasoning-effort/fable-5-1-reasoning-effort-en.pdf" hreflang="en" lang="en">English PDF</a>
+      <a class="pill" href="/fable-5-1-reasoning-effort/fable-5-1-reasoning-effort-bilingual.pdf">対訳版 PDF</a>
+    </div>
+    <p class="label" style="margin-top:18px">推論エフォート &middot; Terminal-Bench &middot; トークン経済 &middot; レイテンシ &middot; エージェント型コーディング</p>
+  </div>
+
+  <nav class="toc" aria-label="目次">
+    <p class="label">目次</p>
+    <ol>
+      <li><a href="#dial">エフォートが実際に制御しているもの</a></li>
+      <li><a href="#frontier">投じたトークンに対して得られる知能</a></li>
+      <li><a href="#coding">コーディングでは曲線が最も早く死ぬ</a></li>
+      <li><a href="#marginal">限界収益は 18 分の 1 に崩れる</a></li>
+      <li><a href="#latency">最も悪くスケールするのはレイテンシである</a></li>
+      <li><a href="#table">全データ表</a></li>
+      <li><a href="#practice">実務上の帰結</a></li>
+      <li><a href="#limits">このエビデンスが決着させられないこと</a></li>
+    </ol>
+  </nav>
+
+  <article>
+
+  <p class="lede"><strong>推論エフォートは品質のつまみではない。すでにコンテキストウィンドウに入っている材料に対して、どれだけ熟慮に費やしてよいかという予算である。</strong>この区別が分析全体を決定する。エフォートを上げるとは、モデルが答えを確定する前により多くのトークンを推論に費やせるようにすることであり、モデルがすでに見ている材料から答えを導くこと自体が難しい場合には有効である。しかし目の前にある材料が誤っている場合には、まったく効かない。したがって Fable 5.1 の 5 段階は、熟慮予算曲線上の 5 点として読むのが適切であり、問うべきはその曲線がどこでコストを回収しなくなるかである。</p>
+
+  <h2 id="dial"><span class="num">第一節</span>エフォートが実際に制御しているもの</h2>
+
+  <p>Fable 5.1 には low、medium、high、xhigh、max の 5 段階が用意されている。Anthropic は Claude Code では high を、コンシューマ向けの各面では medium を既定値とし、5.1 の low および medium がすでに全エフォートの Fable 5 に匹敵すると述べている（Anthropic、2026年9月）。Artificial Analysis はリリース前に 5 段階すべてを評価し、同一の Intelligence Index v4.2 スイートを各設定で実行した。これはワークロードを固定したままエフォート引数のみを変動させた、唯一の公開データセットである。</p>
+
+  <p>ワークロードを固定している点は、見た目以上に重要である。公開されているエフォート設定の比較はいずれも、固定された課題集合に対してモデルがどれだけ熟慮に費やしたかの比較であって、形の異なる課題における性能の比較ではない。したがって以下の曲線が精確に測定しているのは一点、すなわち問題が固定され正しく指定されている条件下での、追加的熟慮の収益である。大規模な実コードベースで支配的となる失敗様式、つまり誤ったファイルから問題が指定されるという事態については、この曲線は何も語らない。この点は最終節で改めて扱う。最も重要でありながら、ベンチマークが最も不得手とする部分だからである。</p>
+
+  <h2 id="frontier"><span class="num">第二節</span>投じたトークンに対して得られる知能</h2>
+
+  <p>下図の横軸は対数である。この選択は装飾ではない。対数軸上では、支出が倍増するごとに一定の収益が得られる関係は直線として現れる。したがって下向きの屈曲は尺度の産物ではなく、実際の収穫逓減を意味する。Fable 5.1 はほぼ即座に屈曲する。</p>
+
+  <figure class="fig">
+    <div class="plate"><img src="figures/fig1_frontier.svg" alt="Fable 5.1 の 5 段階のエフォート設定について、出力トークン数を対数軸に取り Intelligence Index v4.2 をプロットした図。支出が増えるにつれて曲線が平坦化する。"></div>
+    <figcaption><b>図 1. エフォートのフロンティア。</b>各点は、同一の Intelligence Index v4.2 スイートを実行した 1 つのエフォート設定である。最も安い設定と最も高い設定の差は指数で 6 ポイントであり、同時に出力トークン数では 10 倍の差がある。曲線の最も急峻な部分は、low から high までの下半分に完全に収まっている。</figcaption>
+  </figure>
+
+  <p>この形状は、有限の解空間をもつ探索過程に共通するものである。初期の熟慮は数の多い安価な誤りを除去し、後期の熟慮は残余に取り組む。残余はより小さく、かつより困難である。モデルごとに異なるのは、その肘がどこに位置するかである。Fable 5.1 では肘は high にあり、high より上はすべて残余を買っていることになる。</p>
+
+  <h2 id="coding"><span class="num">第三節</span>コーディングでは曲線が最も早く死ぬ</h2>
+
+  <p>Terminal-Bench v2.1 は同指数のエージェント型コーディング要素であり、長時間にわたるターミナル作業を対象とする。コーディングエージェントが実際に与えられる種類の課題に対する、公開されたもののなかで最も近い代理指標である。Artificial Analysis はこれを上位 3 段階についてのみ公表している。</p>
+
+  <figure class="fig">
+    <div class="plate"><img src="figures/fig2_coding.svg" alt="high、xhigh、max の Terminal-Bench v2.1 スコア。low と medium は未公開として示されている。"></div>
+    <figcaption><b>図 2. 上位 3 段階におけるエージェント型コーディング。</b>軸に注意されたい。公開されている全範囲は 3.8 パーセントポイント幅であり、3 点はそのうち 1.5 ポイントを占めるにすぎない。この範囲で棒グラフを用いると、実際には小さい差を誇張することになる。そのため本図は長さではなく位置によって符号化している。low と medium には公開された Terminal-Bench スコアが存在しない。</figcaption>
+  </figure>
+
+  <p>89.9、91.0、91.4 という数値をスコアとして読めば、控えめではあるが実質的な進歩に見える。しかし誤り予算として読むと、像はより率直になる。high では 100 課題あたり 10.1 件が失敗し、max では 8.6 件が失敗する。4.3 倍のトークンを投じて除去できるのは 100 件あたり 1.5 件であり、残る 8.6 件はそのまま残る。この残余は熟慮不足による失敗ではない。もしそうであれば、より多くの熟慮が解消していたはずである。それらは別種の失敗であり、エフォートのつまみはそこに作用しない。</p>
+
+  <p>この領域ではベンチマークの飽和も問題になり始める。ベンチマーク上端における 1.5 ポイントの幅は、ベンチマーク自体の分解能に近い。公開された数値から言えるのは max が high より大きく優れてはいないということであり、そもそも優れているかどうかを確信をもって述べるには粗すぎる。</p>
+
+  <h2 id="marginal"><span class="num">第四節</span>限界収益は 18 分の 1 に崩れる</h2>
+
+  <p>フロンティアを階差にとると、意思決定を実際に駆動すべき量が得られる。すなわち、各段階の引き上げにおいて追加的に投じた 100 万出力トークンあたりに得られる指数ポイントである。</p>
+
+  <figure class="fig">
+    <div class="plate"><img src="figures/fig3_marginal.svg" alt="各エフォート段階の引き上げにおける、追加 100 万出力トークンあたりの指数ポイントの棒グラフ。0.200 から 0.011 へ低下する。"></div>
+    <figcaption><b>図 3. 段階ごとの限界トークンの価値。</b>low から medium では追加 100 万トークンあたり 0.200 ポイント、xhigh から max では 0.011 ポイントである。梯子の最後の一段は、最初の一段に比べてトークンあたりおよそ 18 倍不利である。この範囲でモデルが劣化しているわけではない。評価の側に伸びしろがなくなるだけである。</figcaption>
+  </figure>
+
+  <p>high はこの値が 0.04 を下回る直前の設定であり、どこかに線を引く必要があるならば妥当な位置である。絶対量で見ても同じ崩壊が効率として現れる。low では 100 万トークンあたり 2.68 指数ポイント、high では 1.23、max では 0.30 である。</p>
+
+  <div class="key">
+    <p class="kt">中核となる取引</p>
+    <p>high は、出力トークンの 23 パーセントで、max の Terminal-Bench 性能の 98 パーセントを実現する。この 1 つの比が実務上の議論の大半を担っており、Claude Code の既定値がその位置に置かれている理由でもある。</p>
+  </div>
+
+  <h2 id="latency"><span class="num">第五節</span>最も悪くスケールするのはレイテンシである</h2>
+
+  <p>トークンは請求書に現れるコストである。最初のトークンまでの時間は体感されるコストであり、価格よりもはるかに悪くスケールする。出力速度自体はエフォートとともに毎秒 52.8 トークンから 69.5 トークンへ上昇する。そのため課題あたりのコストが全域で 3.6 倍にとどまる一方、何かが現れるまでの待ち時間は 47 倍に伸びる。</p>
+
+  <figure class="fig">
+    <div class="plate"><img src="figures/fig4_latency.svg" alt="5 段階のエフォート設定における最初のトークンまでの時間を対数軸で示した図。5.8 秒から 272.3 秒へ上昇する。"></div>
+    <figcaption><b>図 4. レイテンシ税。</b>max では最初のトークンの中央値が 4 分半後に到着する。Anthropic 自身のローンチ報道もこの数値を前面に出した。単発の調査的問い合わせではなく対話的な編集ループにおいては、支出が制約になるよりはるかに手前で、これが律速となる。</figcaption>
+  </figure>
+
+  <p>機序は単純である。エフォート予算は最初の出力トークンが放出される前に消費されるため、熟慮のコスト全体が待ち時間に前倒しされる。4 分の停止は 4 分の損失にとどまらない。開発者が仮説をワーキングメモリに保持したままエージェントにそれを検証させる、というループを断ち切る。そしてそのループこそが、対話的コーディングエージェントの価値の大半である。</p>
+
+  <h2 id="table"><span class="num">データ</span>全データ表</h2>
+
+  <div class="tablewrap">
+  <table>
+    <thead>
+      <tr><th>エフォート</th><th>指数 v4.2</th><th>Terminal-Bench</th><th>出力トークン</th><th>課題あたり</th><th>初トークンまで</th><th>100万トークンあたり</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>low</td><td>51</td><td>未公開</td><td>19M</td><td>$1.70</td><td>5.8秒</td><td>2.68</td></tr>
+      <tr><td>medium</td><td>53</td><td>未公開</td><td>29M</td><td>$2.14</td><td>12.7秒</td><td>1.83</td></tr>
+      <tr><td><b>high</b></td><td><b>54</b></td><td><b>89.9%</b></td><td><b>44M</b></td><td><b>$2.86</b></td><td><b>27.6秒</b></td><td><b>1.23</b></td></tr>
+      <tr><td>xhigh</td><td>56</td><td>91.0%</td><td>98M</td><td>$4.64</td><td>107.3秒</td><td>0.57</td></tr>
+      <tr><td>max</td><td>57</td><td>91.4%</td><td>190M</td><td>$6.12</td><td>272.3秒</td><td>0.30</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <p class="note">出力トークン数とコストは Intelligence Index スイート全体の実行に対するものであり、Artificial Analysis が Adaptive Reasoning, Default Fallback の各構成について測定した値である。価格は入力 100 万トークンあたり 10 ドル、出力 100 万トークンあたり 50 ドル、キャッシュ読み出しは 100 万トークンあたり 0.25 ドルである。</p>
+
+  <h2 id="practice"><span class="num">第六節</span>実務上の帰結</h2>
+
+  <p>high が擁護可能な既定値であり、Claude Code ではすでに既定値になっている。曲線の肘に位置しており、上に挙げた「23 パーセントで 98 パーセント」という取引がその根拠のすべてである。</p>
+
+  <p>medium は通常受けている以上の検討に値する。Anthropic の同等性の主張が成り立つならば、5.1 の medium は全エフォートの Fable 5 に相当し、しかも最初のトークンまで 27.6 秒ではなく 12.7 秒である。足場づくり、テスト記述、機械的なリファクタリング、その他答えの形がすでに分かっている作業では、レイテンシが半減することの価値は指数 2 ポイントを上回る。これはベンチマークではなく作業構成に依存するため、推論するよりも直接試すべき事柄である。</p>
+
+  <p>xhigh は課題単位のエスカレーションであってセッション既定値ではない。2.2 倍のトークンで Terminal-Bench 1.1 パーセントポイントを買うのは常設の取り決めとしては拙劣であり、特定の問題にすでに 1 時間を費やした場面での単発の判断としてはまったく妥当である。max はコーディング用途ではさらに正当化が難しい。1.9 倍のトークンと 2.5 倍の待ち時間に対して、xhigh より 0.4 ポイントである。その用途は編集ループではなく、単発の研究水準の推論にある。</p>
+
+  <h2 id="limits"><span class="num">第七節</span>このエビデンスが決着させられないこと</h2>
+
+  <p>同一の出典から、2 組の数値が食い違っている。Artificial Analysis のローンチ記事は Intelligence Index を 58 から 66、出力トークンを 1310 万から 1 億 4370 万と記載している。一方、同社のモデル別ページおよびリリース比較表は 51 から 57、1900 万から 1 億 9000 万としている。本稿は一貫してモデル別ページを採用した。5 段階すべてで内的に整合しており、設定ごとのコストとレイテンシを載せているのがこちらだけだからである。曲線の形状はいずれの組でも変わらない。絶対水準は確定しておらず、筆者はこの不一致を解消できていない。</p>
+
+  <p>low と medium には公開された Terminal-Bench スコアがないため、コーディングの曲線は 5 点ではなく 3 点に依拠しており、最も安価な 2 設定は複合指数のみから推定されている。low と medium に関する Anthropic の同等性の主張はベンダーによる主張であり、コーディングベンチマークの水準で独立に評価されてはいない。</p>
+
+  <p>より大きな限界は測定ではなく構成概念にある。これらは、ハーネスによってコンテキストが正しく供給された課題群にわたる評価スイートの集計値である。ある程度の規模をもつコードベースにおいて支配的な失敗様式は、正しいファイルに対する浅い推論ではない。誤ったファイルに対する確信に満ちた推論である。エフォートを上げることはこの失敗を改善するのではなく悪化させる。同じ誤った前提から、より精緻でより尤もらしい推論を生み出すからである。エフォートのつまみとコンテキスト取得の問題はほぼ直交しており、前者をいくら増やしても後者の代替にはならない。</p>
+
+  <div class="key">
+    <p class="kt">保持すべき区別</p>
+    <p>推論の失敗とは、関連するコードが目の前にありながら誤った結論を導いた場合である。取得の失敗とは、誤ったファイルを編集した、呼び出し元を見落とした、リポジトリ内に別名で存在するインタフェースを捏造した、といった場合である。前者こそがエフォートのつまみの用途である。後者はスコープ指定の領分であり、リポジトリ規模とともに拡大するのはこちらである。</p>
+  </div>
+
+  <p class="kicker">公開データが答えているのは、多くの人がそれに問うている問いよりも狭い問いである。Fable 5.1 において追加的熟慮が high のあたりで採算を失うことは、かなり説得的に示されている。しかしモデルが正しいコードを見ているかどうかについては何も語らない。大規模なリポジトリでは、まさにそれが結果を決める問いである。</p>
+
+  <div class="sources">
+    <h2>出典</h2>
+    <p><b>一次データ。</b>Artificial Analysis、Claude Fable 5.1 の low / medium / high / xhigh / max 各モデルページ、Claude Fable 5.1 リリース比較表、Terminal-Bench v2.1 ベンチマークリーダーボード、および記事 "Claude Fable 5.1 tops the Artificial Analysis Intelligence Index"。いずれも 2026 年 9 月 7 日取得。</p>
+    <p><b>ベンダー資料。</b>Anthropic「Introducing Claude Fable 5.1 and Claude Mythos 5.1」2026 年 9 月。各面における既定エフォート、および low・medium の同等性の主張について。</p>
+    <p style="margin-top:16px">本ページの導出量（100 万トークンあたりの指数ポイント、段階ごとの限界収益、誤り予算による定式化、トークンおよびレイテンシの倍率）はすべて第六節の表から計算したものであり、出典からそのまま引いたものではない。同表から再現できる。Artificial Analysis の 2 組の数値が食い違う箇所については、第七節で解消せずに明示している。</p>
+    <p><b>AI 支援の開示。</b>データ取得、計算、図版生成、草稿作成および対訳翻訳に AI 支援を用いた。本稿のためにベンダーから直接提供されたデータはなく、ベンチマークを独自に実行してもいない。ここに示したスコアはすべて公開された第三者またはベンダーの数値である。</p>
+    <p style="margin-top:16px">日本語版は英語版と同一の分析の翻訳であり、独立した検討ではない。<a href="/fable-5-1-reasoning-effort/">英語版はこちら</a>。</p>
+  </div>
+
+  </article>
+</div>
+</main>
+
+<footer class="site">
+  <div class="wide">
+    <span>&copy; 2026 Benjamin Michael Haire</span>
+    <a href="/ja/">すべてのプロジェクトへ戻る</a>
+  </div>
+</footer>
+
+<script src="/assets/lang.js" defer></script>
+</body>
+</html>

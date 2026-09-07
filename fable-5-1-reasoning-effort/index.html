@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Claude Fable 5.1 across its five reasoning-effort settings, scored for coding. Where the marginal return on deliberation collapses, why latency scales worse than cost, and what the published benchmarks cannot settle.">
+  <meta name="theme-color" content="#f7f7f5">
+  <link rel="canonical" href="https://theisegoria.github.io/fable-5-1-reasoning-effort/">
+  <link rel="alternate" hreflang="en" href="https://theisegoria.github.io/fable-5-1-reasoning-effort/">
+  <link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/fable-5-1-reasoning-effort/">
+  <link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/fable-5-1-reasoning-effort/">
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <title>Where the reasoning-effort curve stops paying</title>
+<style>
+  :root {
+    --ground:#F7F7F5; --surface:#FFFFFF; --surface-2:#F0F1EC;
+    --ink:#17191B; --muted:#63686D; --rule:#DEE0DC;
+    --accent:#1F5FA8; --accent-soft:#1F5FA814;
+    --blue:#2a78d6; --orange:#c8501f; --aqua:#12805a; --violet:#4a3aa7; --red:#c33a39;
+    --f-display:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    --f-body:"Inter",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+    --f-mono:ui-monospace,SFMono-Regular,Menlo,monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground:#101214; --surface:#181B1E; --surface-2:#1F2327;
+      --ink:#EDEFF1; --muted:#9BA3AA; --rule:#2C3237;
+      --accent:#69ABE3; --accent-soft:#69ABE31C;
+      --blue:#5c9ce8; --orange:#f08050; --aqua:#3cc493; --violet:#9085e9; --red:#e66767;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground:#101214; --surface:#181B1E; --surface-2:#1F2327;
+    --ink:#EDEFF1; --muted:#9BA3AA; --rule:#2C3237;
+    --accent:#69ABE3; --accent-soft:#69ABE31C;
+    --blue:#5c9ce8; --orange:#f08050; --aqua:#3cc493; --violet:#9085e9; --red:#e66767;
+  }
+
+  * { box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body {
+    margin:0; background:var(--ground); color:var(--ink);
+    font-family:var(--f-body); font-size:17px; line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  a { color:var(--accent); text-underline-offset:.18em; }
+
+  .wrap { width:min(760px, calc(100% - 40px)); margin-inline:auto; }
+  .wide { width:min(1080px, calc(100% - 40px)); margin-inline:auto; }
+
+  header.site { border-bottom:1px solid var(--rule); }
+  header.site .wide {
+    min-height:64px; display:flex; align-items:center;
+    justify-content:space-between; gap:20px;
+  }
+  header.site .name { font-weight:750; letter-spacing:-.02em; text-decoration:none; color:var(--ink); }
+  header.site nav { display:flex; gap:20px; flex-wrap:wrap; }
+  header.site nav a { color:var(--muted); font-size:.88rem; text-decoration:none; }
+  header.site nav a:hover { color:var(--ink); }
+
+  .hero { padding:76px 0 46px; }
+  .label { color:var(--muted); font-size:.74rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; }
+  h1 {
+    font-family:var(--f-display); font-weight:600;
+    margin:14px 0 16px; font-size:clamp(2.3rem,5.8vw,3.6rem);
+    line-height:1.04; letter-spacing:-.03em;
+  }
+  .standfirst { font-size:1.2rem; color:var(--muted); margin:0 0 26px; max-width:62ch; }
+  .herometa { display:flex; flex-wrap:wrap; gap:10px 18px; align-items:center;
+              font-size:.86rem; color:var(--muted); border-top:1px solid var(--rule); padding-top:18px; }
+  .pill {
+    display:inline-flex; align-items:center; gap:7px; padding:7px 14px;
+    border:1px solid var(--rule); border-radius:999px; background:var(--surface);
+    text-decoration:none; color:var(--ink); font-weight:600; font-size:.85rem;
+  }
+  .pill:hover { border-color:var(--accent); color:var(--accent); }
+
+  .toc { border-top:1px solid var(--rule); border-bottom:1px solid var(--rule); padding:22px 0 24px; margin-bottom:14px; }
+  .toc ol { margin:10px 0 0; padding-left:1.2em; columns:2; column-gap:34px; }
+  .toc li { margin:0 0 6px; color:var(--muted); font-size:.92rem; break-inside:avoid; }
+  .toc a { color:var(--ink); text-decoration:none; }
+  .toc a:hover { color:var(--accent); }
+
+  article { padding:8px 0 40px; }
+  h2 {
+    font-family:var(--f-display); font-weight:600; letter-spacing:-.02em;
+    font-size:1.72rem; line-height:1.18; margin:58px 0 4px;
+  }
+  h2 .num { color:var(--muted); font-family:var(--f-body); font-size:.8rem;
+            font-weight:700; letter-spacing:.1em; display:block; margin-bottom:10px; }
+  h3 { font-size:1.06rem; letter-spacing:-.01em; margin:34px 0 2px; }
+  p { margin:14px 0; }
+  strong { font-weight:650; }
+  .lede { font-size:1.09rem; }
+  ul, ol.body { padding-left:1.25em; }
+  ul li, ol.body li { margin:9px 0; }
+
+  .fig { margin:36px 0 30px; }
+  .fig .plate {
+    background:#fff; border:1px solid var(--rule); border-radius:12px;
+    padding:16px 14px; overflow-x:auto;
+  }
+  .fig img { display:block; width:100%; height:auto; min-width:520px; }
+  .fig figcaption { color:var(--muted); font-size:.86rem; line-height:1.55; margin-top:12px; }
+  .fig figcaption b { color:var(--ink); font-weight:650; }
+
+  .key {
+    background:var(--surface); border:1px solid var(--rule);
+    border-left:3px solid var(--accent);
+    border-radius:10px; padding:18px 20px; margin:32px 0;
+  }
+  .key .kt { font-size:.74rem; font-weight:700; letter-spacing:.1em;
+             text-transform:uppercase; color:var(--accent); }
+  .key p:first-of-type { margin-top:8px; }
+  .key p:last-child, .key ol:last-child, .key ul:last-child { margin-bottom:0; }
+
+  .tablewrap { overflow-x:auto; margin:30px 0; }
+  table { border-collapse:collapse; width:100%; min-width:620px; font-size:.9rem; }
+  th, td { text-align:left; vertical-align:top; padding:11px 12px; border-bottom:1px solid var(--rule); }
+  thead th { border-bottom:2px solid var(--rule); font-size:.76rem; letter-spacing:.07em;
+             text-transform:uppercase; color:var(--muted); }
+  td.h { font-weight:650; color:var(--ink); }
+  caption { caption-side:bottom; text-align:left; color:var(--muted);
+            font-size:.85rem; padding-top:12px; }
+
+  .kicker { font-family:var(--f-display); font-size:1.34rem; line-height:1.45;
+            letter-spacing:-.015em; border-top:1px solid var(--rule);
+            padding-top:34px; margin-top:52px; }
+
+  .sources { border-top:1px solid var(--rule); margin-top:46px; padding-top:26px;
+             font-size:.82rem; color:var(--muted); line-height:1.6; }
+  .sources h2 { font-size:1.1rem; margin:0 0 12px; }
+  .sources b { color:var(--ink); }
+
+  footer.site { border-top:1px solid var(--rule); margin-top:56px; }
+  footer.site .wide { display:flex; justify-content:space-between; gap:20px;
+                      padding:26px 0 46px; color:var(--muted); font-size:.85rem; flex-wrap:wrap; }
+  footer.site a { color:var(--muted); }
+
+  @media (max-width:700px) {
+    body { font-size:16px; }
+    .hero { padding:54px 0 36px; }
+    .toc ol { columns:1; }
+    .fig .plate { padding:10px 8px; }
+  }
+  .note { color:var(--muted); font-size:.86rem; line-height:1.55; margin-top:10px; }
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="wide">
+    <a class="name" href="/">Benjamin Michael Haire</a>
+    <nav aria-label="Primary navigation">
+      <a href="#frontier">Frontier</a>
+      <a href="#coding">Coding</a>
+      <a href="#marginal">Marginal return</a>
+      <a href="#latency">Latency</a>
+      <a href="/ja/fable-5-1-reasoning-effort/" hreflang="ja" lang="ja">日本語</a>
+      <a href="/">All projects</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="wrap">
+
+  <div class="hero">
+    <p class="label">Benchmark analysis / 8 September 2026</p>
+    <h1>The reasoning-effort dial stops paying long before it reaches the top.</h1>
+    <p class="standfirst">Claude Fable 5.1 exposes five reasoning-effort settings that span ten times the output tokens and forty-seven times the latency. On the published evidence the top of that range is very hard to justify for coding: from xhigh to max, each additional million output tokens buys about one hundredth of an index point. This piece works through where the curve flattens, why it flattens there rather than somewhere else, and which parts of the question the public data cannot settle.</p>
+    <div class="herometa">
+      <a class="pill" href="fable-5-1-reasoning-effort-en.pdf">English PDF</a>
+      <a class="pill" href="fable-5-1-reasoning-effort-ja.pdf" hreflang="ja" lang="ja">日本語版 PDF</a>
+      <a class="pill" href="fable-5-1-reasoning-effort-bilingual.pdf">Bilingual edition</a>
+    </div>
+    <p class="label" style="margin-top:18px">Reasoning effort &middot; Terminal-Bench &middot; token economics &middot; latency &middot; agentic coding</p>
+  </div>
+
+  <nav class="toc" aria-label="Contents">
+    <p class="label">Contents</p>
+    <ol>
+      <li><a href="#dial">What the dial actually controls</a></li>
+      <li><a href="#frontier">Intelligence bought against tokens spent</a></li>
+      <li><a href="#coding">Coding is where the curve dies earliest</a></li>
+      <li><a href="#marginal">Marginal return collapses eighteenfold</a></li>
+      <li><a href="#latency">Latency is the cost that scales worst</a></li>
+      <li><a href="#table">The full table</a></li>
+      <li><a href="#practice">What follows in practice</a></li>
+      <li><a href="#limits">What this evidence cannot settle</a></li>
+    </ol>
+  </nav>
+
+  <article>
+
+  <p class="lede"><strong>Reasoning effort is not a quality dial; it is a budget for deliberation over whatever is already in the context window.</strong> That distinction decides the whole analysis. Raising effort lets the model spend more tokens reasoning before it commits to an answer, which helps when the answer is genuinely hard to derive from material the model can already see. It does nothing at all when the material in front of the model is the wrong material. Fable 5.1's five settings are therefore best read as five points on a deliberation-budget curve, and the interesting question is where that curve stops repaying its cost.</p>
+
+  <h2 id="dial"><span class="num">Section one</span>What the dial actually controls</h2>
+
+  <p>Fable 5.1 ships with five effort settings: low, medium, high, xhigh and max. Anthropic sets high as the default in Claude Code and medium in the consumer surfaces, and states that low and medium effort on 5.1 already match full-effort Fable 5 (Anthropic, September 2026). Artificial Analysis evaluated all five settings before release, running each one through the same Intelligence Index v4.2 suite, which is the only public dataset that holds the workload constant while varying only the effort parameter.</p>
+
+  <p>Holding the workload constant matters more than it might appear. Every published comparison of effort settings is a comparison of how much deliberation the model spends on a fixed set of tasks, not of how well it performs on tasks of different shapes. So the curve below measures one thing precisely: the return on additional deliberation, given a fixed and correctly specified problem. It is silent on the failure mode that dominates large real codebases, which is the problem being specified from the wrong files. I return to that at the end, because it is the part that matters most and the part the benchmarks are worst at.</p>
+
+  <h2 id="frontier"><span class="num">Section two</span>Intelligence bought against tokens spent</h2>
+
+  <p>The x-axis below is logarithmic. That choice is not cosmetic: on a log axis a constant return per doubling of spend appears as a straight line, so any downward bend is a real diminishing return rather than an artefact of the scale. Fable 5.1 bends almost immediately.</p>
+
+  <figure class="fig">
+    <div class="plate"><img src="figures/fig1_frontier.svg" alt="Intelligence Index v4.2 plotted against output tokens on a logarithmic axis, for the five Fable 5.1 effort settings, showing a curve that flattens as spend rises."></div>
+    <figcaption><b>Figure 1. The effort frontier.</b> Each point is one effort setting running the identical Intelligence Index v4.2 suite. Six index points separate the cheapest setting from the most expensive; ten times the output tokens separate them as well. The steepest part of the curve is entirely in its lower half, between low and high.</figcaption>
+  </figure>
+
+  <p>The shape is the familiar one for any search process with a finite answer space. Early deliberation eliminates the cheap errors, which are numerous; later deliberation works on the residue, which is both smaller and harder. What varies between models is where the elbow sits. On Fable 5.1 it sits at high, and everything above high is buying the residue.</p>
+
+  <h2 id="coding"><span class="num">Section three</span>Coding is where the curve dies earliest</h2>
+
+  <p>Terminal-Bench v2.1 is the agentic-coding component of the index: long-horizon terminal work, and the closest public proxy for the sort of task a coding agent is actually given. Artificial Analysis publishes it for the top three effort settings only.</p>
+
+  <figure class="fig">
+    <div class="plate"><img src="figures/fig2_coding.svg" alt="Terminal-Bench v2.1 scores for high, xhigh and max effort, with low and medium marked as not published."></div>
+    <figcaption><b>Figure 2. Agentic coding across the top three settings.</b> Note the axis: the entire published spread is 3.8 percentage points wide, and the three points occupy 1.5 of them. Bars on this range would exaggerate a difference that is genuinely small, so the figure uses position rather than length. Low and medium have no published Terminal-Bench score.</figcaption>
+  </figure>
+
+  <p>Read as scores, 89.9, 91.0 and 91.4 look like a modest but real progression. Read as an error budget the picture is blunter. At high the model fails 10.1 tasks in every hundred; at max it fails 8.6. Spending 4.3 times the tokens removes 1.5 failures per hundred and leaves the other 8.6 exactly where they were. Those remaining failures are not failures of insufficient deliberation, or more deliberation would have cleared them. They are failures of a different kind, and the effort dial has no purchase on them.</p>
+
+  <p>This is also the regime where benchmark saturation starts to matter. A 1.5-point spread at the top of a benchmark is close to the resolution of the benchmark itself. The published numbers can tell us that max is not much better than high; they are too coarse to tell us confidently that it is better at all.</p>
+
+  <h2 id="marginal"><span class="num">Section four</span>Marginal return collapses eighteenfold</h2>
+
+  <p>Differencing the frontier gives the quantity that should actually drive the decision: index points gained per additional million output tokens spent on each step up.</p>
+
+  <figure class="fig">
+    <div class="plate"><img src="figures/fig3_marginal.svg" alt="Bar chart of index points gained per extra million output tokens for each step up in effort, falling from 0.200 to 0.011."></div>
+    <figcaption><b>Figure 3. The value of the marginal token, by step.</b> 0.200 points per additional million tokens from low to medium; 0.011 from xhigh to max. The last rung of the ladder is roughly eighteen times worse value per token than the first. Nothing about the model degrades across this range; the evaluation simply runs out of headroom.</figcaption>
+  </figure>
+
+  <p>High is the last setting before this figure falls below 0.04, which is a reasonable place to draw the line if a line has to be drawn somewhere. In absolute terms the same collapse is visible as efficiency: 2.68 index points per million tokens at low, 1.23 at high, 0.30 at max.</p>
+
+  <div class="key">
+    <p class="kt">The core trade</p>
+    <p>High delivers 98 per cent of max-effort Terminal-Bench performance for 23 per cent of the output tokens. That single ratio carries most of the practical argument, and it is why the default in Claude Code is set where it is.</p>
+  </div>
+
+  <h2 id="latency"><span class="num">Section five</span>Latency is the cost that scales worst</h2>
+
+  <p>Tokens are the cost that appears on an invoice. Time to first token is the cost that is felt, and it scales far worse than price does. Output speed actually rises with effort, from 52.8 to 69.5 tokens per second, which is why cost per task grows by only 3.6 times across the range while the wait before anything appears grows by 47 times.</p>
+
+  <figure class="fig">
+    <div class="plate"><img src="figures/fig4_latency.svg" alt="Time to first answer token on a logarithmic axis across the five effort settings, rising from 5.8 seconds to 272.3 seconds."></div>
+    <figcaption><b>Figure 4. The latency tax.</b> At max effort the median first token arrives after four and a half minutes. Anthropic's own launch coverage led on this figure. For an interactive editing loop, rather than a single-shot research query, this is usually the binding constraint well before spend is.</figcaption>
+  </figure>
+
+  <p>The mechanism is straightforward: effort budgets are spent before the first output token is emitted, so the entire deliberation cost is front-loaded into the wait. A four-minute pause does not merely cost four minutes. It breaks the loop in which a developer holds a hypothesis in working memory while the agent tests it, and that loop is most of the value of an interactive coding agent in the first place.</p>
+
+  <h2 id="table"><span class="num">The data</span>The full table</h2>
+
+  <div class="tablewrap">
+  <table>
+    <thead>
+      <tr><th>Effort</th><th>Index v4.2</th><th>Terminal-Bench</th><th>Output tokens</th><th>Cost per task</th><th>Time to first token</th><th>Points per 1M tokens</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>low</td><td>51</td><td>not published</td><td>19M</td><td>$1.70</td><td>5.8s</td><td>2.68</td></tr>
+      <tr><td>medium</td><td>53</td><td>not published</td><td>29M</td><td>$2.14</td><td>12.7s</td><td>1.83</td></tr>
+      <tr><td><b>high</b></td><td><b>54</b></td><td><b>89.9%</b></td><td><b>44M</b></td><td><b>$2.86</b></td><td><b>27.6s</b></td><td><b>1.23</b></td></tr>
+      <tr><td>xhigh</td><td>56</td><td>91.0%</td><td>98M</td><td>$4.64</td><td>107.3s</td><td>0.57</td></tr>
+      <tr><td>max</td><td>57</td><td>91.4%</td><td>190M</td><td>$6.12</td><td>272.3s</td><td>0.30</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <p class="note">Output tokens and cost are for running the full Intelligence Index suite, as measured by Artificial Analysis on the Adaptive Reasoning, Default Fallback variants. Pricing is $10 per million input tokens and $50 per million output tokens, with cache reads at $0.25 per million.</p>
+
+  <h2 id="practice"><span class="num">Section six</span>What follows in practice</h2>
+
+  <p>High is the defensible default, and it is already the default in Claude Code. It sits at the elbow of the curve, and the 98-per-cent-for-23-per-cent trade above is the whole argument for it.</p>
+
+  <p>Medium deserves more consideration than it usually gets. If Anthropic's parity claim holds, medium on 5.1 is full-effort Fable 5, at 12.7 seconds to first token rather than 27.6. For scaffolding, test writing, mechanical refactors and anything where the shape of the answer is already known, the halved latency is worth more than two index points. This is worth testing directly rather than reasoning about, because the answer depends on the mix of work rather than on the benchmark.</p>
+
+  <p>Xhigh is a per-task escalation, not a session default. Buying 1.1 percentage points of Terminal-Bench for 2.2 times the tokens is a poor standing arrangement and a perfectly reasonable one-off when a specific problem has already consumed an hour. Max is harder still to justify for coding: 0.4 points over xhigh for 1.9 times the tokens and 2.5 times the wait. Its case is single-shot research-grade reasoning, not an editing loop.</p>
+
+  <h2 id="limits"><span class="num">Section seven</span>What this evidence cannot settle</h2>
+
+  <p>Two sets of numbers from the same source disagree. Artificial Analysis' launch article quotes an Intelligence Index range of 58 to 66 across 13.1M to 143.7M output tokens; its per-model pages and release comparison table give 51 to 57 across 19M to 190M. This analysis uses the model pages throughout, because they are internally consistent across all five settings and are the only ones carrying per-setting cost and latency. The shape of the curve is the same on either set. The absolute levels are not settled, and I have not been able to reconcile them.</p>
+
+  <p>Low and medium have no published Terminal-Bench score, so the coding curve rests on three points rather than five, and the two cheapest settings are inferred from the composite index alone. Anthropic's parity claim for low and medium is a vendor claim and has not been independently evaluated at the level of a coding benchmark.</p>
+
+  <p>The larger limitation is one of construct rather than measurement. These are eval-suite aggregates over tasks whose context is supplied correctly by the harness. On a codebase of any real size, the dominant failure mode is not shallow reasoning over the right files; it is confident reasoning over the wrong ones. Raising effort makes that failure worse rather than better, because it produces more elaborate and more plausible inference from the same faulty premises. The effort dial and the retrieval problem are close to orthogonal, and no amount of the former substitutes for the latter.</p>
+
+  <div class="key">
+    <p class="kt">The distinction worth keeping</p>
+    <p>A reasoning failure is one where the model had the relevant code in front of it and still derived the wrong conclusion. A retrieval failure is one where it edited the wrong file, missed a caller, or invented an interface that exists elsewhere in the repository under another name. The first is what the effort dial is for. The second is what scoping is for, and it is the one that scales with repository size.</p>
+  </div>
+
+  <p class="kicker">The published data answers a narrower question than the one most people are asking of it. It establishes, fairly convincingly, that additional deliberation on Fable 5.1 stops paying somewhere around high. It says nothing whatever about whether the model is looking at the right code, which on any large repository is the question that decides the outcome.</p>
+
+  <div class="sources">
+    <h2>Sources</h2>
+    <p><b>Primary data.</b> Artificial Analysis, Claude Fable 5.1 model pages for low, medium, high, xhigh and max effort; the Claude Fable 5.1 release comparison table; the Terminal-Bench v2.1 benchmark leaderboard; and the article "Claude Fable 5.1 tops the Artificial Analysis Intelligence Index". All retrieved 7 September 2026.</p>
+    <p><b>Vendor material.</b> Anthropic, "Introducing Claude Fable 5.1 and Claude Mythos 5.1", September 2026, for effort defaults by surface and the low and medium parity claim.</p>
+    <p style="margin-top:16px">Every derived quantity on this page (points per million tokens, marginal return per step, error-budget framing, and the token and latency multipliers) is computed from the table in section six rather than taken from a source, and can be reproduced from it. Where the two Artificial Analysis figure sets conflict, the discrepancy is stated in section seven rather than resolved.</p>
+    <p><b>Disclosure of AI assistance.</b> AI assistance was used for data retrieval, computation, figure generation, drafting and bilingual translation. No vendor supplied data directly for this piece, and no benchmark was run independently; every score here is a published third-party or vendor figure.</p>
+  </div>
+
+  </article>
+</div>
+</main>
+
+<footer class="site">
+  <div class="wide">
+    <span>&copy; 2026 Benjamin Michael Haire</span>
+    <a href="/">Back to all projects</a>
+  </div>
+</footer>
+
+<script src="/assets/lang.js" defer></script>
+</body>
+</html>
