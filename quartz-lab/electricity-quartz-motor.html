@@ -1,0 +1,501 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Electricity → Quartz → Motor</title>
+<style>
+:root{--ink:#17201d;--paper:#f3f0e7;--dark:#101715;--deep:#25483d;--mint:#9bc9b3;--gold:#c49a54;
+      --sig:#5aa9c8;--hot:#c2685a;--line:rgba(23,32,29,.16);
+      --serif:Georgia,'Times New Roman',serif;
+      --sans:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+      --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);line-height:1.6}
+.wrap{max-width:1000px;margin:0 auto;padding:clamp(28px,5vw,64px) clamp(18px,4vw,48px) 90px}
+h1{font-family:var(--serif);font-weight:400;font-size:clamp(2.1rem,5vw,3.4rem);line-height:1.02;
+   letter-spacing:-.03em;margin:.1em 0 .35em}
+h2{font-family:var(--serif);font-weight:400;font-size:clamp(1.45rem,3vw,2.1rem);letter-spacing:-.02em;
+   margin:0 0 .1em}
+.kicker{color:var(--gold);text-transform:uppercase;letter-spacing:.16em;font-size:.7rem;font-weight:700;margin:0}
+.lede{font-size:1.08rem;max-width:70ch}
+section{padding:38px 0;border-top:1px solid var(--line)}
+section>.kicker{margin-bottom:.5em}
+p{max-width:72ch}
+.fig{margin:26px 0 10px;overflow-x:auto}
+.fig svg{display:block;width:100%;min-width:560px;height:auto}
+figcaption{font-size:.86rem;color:#68716d;max-width:74ch;margin-top:10px}
+.mono{font-family:var(--mono);font-size:.88em}
+.note{background:#e9e3d6;border-left:4px solid var(--gold);padding:16px 20px;margin:26px 0;max-width:76ch}
+.note.deep{border-left-color:var(--deep)}
+.note p{margin:.35em 0}
+.note b{font-family:var(--serif);font-weight:400;font-size:1.12em}
+.row{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:1px;background:var(--line);
+     border:1px solid var(--line);margin:24px 0}
+.row div{background:var(--paper);padding:15px 17px}
+.row small{display:block;text-transform:uppercase;letter-spacing:.1em;font-size:.63rem;color:#6c756f}
+.row strong{font-family:var(--serif);font-weight:400;font-size:1.5rem;display:block;margin:.12em 0}
+.row span{font-size:.76rem;color:#6c756f}
+.ctl{display:flex;flex-wrap:wrap;gap:14px 22px;align-items:center;margin:18px 0 4px}
+button{border:0;background:var(--gold);color:var(--dark);padding:9px 16px;font:inherit;font-size:.72rem;
+       font-weight:700;letter-spacing:.09em;text-transform:uppercase;cursor:pointer}
+button.ghost{background:transparent;border:1px solid var(--ink);color:var(--ink)}
+label{display:grid;grid-template-columns:1fr auto;gap:4px 10px;font-size:.72rem;text-transform:uppercase;
+      letter-spacing:.08em;min-width:210px}
+label b{font-family:var(--mono);font-weight:600;text-transform:none;letter-spacing:0}
+label input{grid-column:1/-1;width:100%;accent-color:var(--gold)}
+text{font-family:var(--sans)}
+.lbl{font-size:11px;font-weight:700;letter-spacing:.09em;text-anchor:middle;fill:var(--ink)}
+.sub{font-size:10px;text-anchor:middle;fill:#6c756f}
+.val{font-family:var(--mono);font-size:11px;text-anchor:middle;fill:var(--gold)}
+.tick{font-family:var(--mono);font-size:9.5px;fill:#7d867f;text-anchor:middle}
+.ax{stroke:#a9a397;stroke-width:1.4;fill:none}
+.gl{stroke:rgba(169,163,151,.35);stroke-width:1;fill:none}
+@keyframes flow{to{stroke-dashoffset:-30}}
+.pwr{fill:none;stroke:var(--gold);stroke-width:7;stroke-linecap:round;opacity:.85}
+.trickle{fill:none;stroke:var(--sig);stroke-width:2;stroke-linecap:round}
+.info{fill:none;stroke:var(--deep);stroke-width:2;stroke-dasharray:6 6;animation:flow 1.1s linear infinite}
+.bx{fill:#e8e2d6;stroke:var(--ink);stroke-width:2}
+@media (max-width:620px){.fig svg{min-width:520px}}
+
+/* ---------- print ---------- */
+@page{size:A4;margin:15mm 14mm 16mm}
+@media print{
+  html,body{background:#f3f0e7;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .wrap{max-width:none;padding:0}
+  .ctl{display:none !important}
+  .fig{overflow:visible}
+  .fig svg{min-width:0 !important;width:100% !important}
+  figure,.note,.row,.fig{break-inside:avoid;page-break-inside:avoid}
+  h2{break-after:avoid;page-break-after:avoid}
+  section{break-inside:auto;padding:22px 0}
+  p,figcaption{max-width:none}
+  .printonly{display:block !important}
+  .row{grid-template-columns:repeat(2,1fr) !important}
+  a{color:inherit;text-decoration:none}
+  h1{font-size:2.4rem}
+  h2{font-size:1.55rem}
+  body{font-size:10.5pt;line-height:1.5}
+  .lede{font-size:11pt}
+}
+.printonly{display:none}
+
+</style></head>
+<body><div class="wrap">
+
+<div class="printonly" style="border-bottom:1px solid rgba(23,32,29,.16);padding-bottom:8px;margin-bottom:22px;
+     font-size:8.5pt;color:#68716d;overflow:hidden">
+  <span style="float:right">theisegoria.github.io/quartz-lab/</span>Quartz Watch Lab &#183; supplement</div>
+
+<p class="kicker">The part that is actually confusing</p>
+<h1>Electricity → quartz → motor</h1>
+<p class="lede">The block diagram makes it look like a relay race, with something being handed from the crystal to the motor. It is not. Almost nothing crosses that gap. What follows is the chain again, but drawn at the two places where energy genuinely changes form, and one place where it deliberately does not.</p>
+
+<!-- ============================================================ 0 -->
+<section>
+<p class="kicker">00 / The correction</p>
+<h2>The crystal never drives anything</h2>
+<p>There are two separate paths out of the battery. A thin one keeps the crystal ringing, at about <span class="mono">4 nanowatts</span>. A fat one drives the motor, at about <span class="mono">0.9 microjoules</span> per second. Between them runs a third line that carries no useful power at all: a logic edge, once a second, saying <em>now</em>.</p>
+
+<figure class="fig">
+<svg viewBox="0 0 940 340" role="img" aria-label="Two power paths from the battery and one information path between them">
+  <rect class="bx" x="20" y="130" width="112" height="86" rx="3"/>
+  <text class="lbl" x="76" y="163">BATTERY</text><text class="sub" x="76" y="182">1.55 V</text><text class="val" x="76" y="202">25 mAh</text>
+
+  <path class="trickle" d="M132 156C190 156 190 92 250 92" stroke-dasharray="5 5" style="animation:flow 1.6s linear infinite"/>
+  <path class="pwr" d="M132 190C210 190 210 262 300 262"/>
+
+  <rect class="bx" x="250" y="52" width="150" height="80" rx="3"/>
+  <text class="lbl" x="325" y="82">OSCILLATOR</text><text class="sub" x="325" y="100">fork + inverter</text><text class="val" x="325" y="120">≈ 4 nW into the fork</text>
+
+  <rect class="bx" x="440" y="52" width="150" height="80" rx="3"/>
+  <text class="lbl" x="515" y="82">DIVIDER</text><text class="sub" x="515" y="100">15 flip-flops</text><text class="val" x="515" y="120">counts, does not push</text>
+  <path class="trickle" d="M400 92h40" stroke-dasharray="5 5" style="animation:flow 1.6s linear infinite"/>
+
+  <rect class="bx" x="300" y="230" width="150" height="80" rx="3"/>
+  <text class="lbl" x="375" y="260">DRIVER</text><text class="sub" x="375" y="278">a switch, nothing more</text><text class="val" x="375" y="298">gated by the edge</text>
+
+  <path class="info" d="M515 132v66h-140v28"/>
+  <text class="sub" x="600" y="180" style="text-anchor:start;fill:#25483d">information only</text>
+  <text class="sub" x="600" y="196" style="text-anchor:start;fill:#25483d">one rising edge per second</text>
+  <text class="sub" x="600" y="212" style="text-anchor:start;fill:#25483d">carries ≈ 10⁻¹² J</text>
+
+  <path class="pwr" d="M450 270h60"/>
+  <rect class="bx" x="510" y="230" width="150" height="80" rx="3"/>
+  <text class="lbl" x="585" y="260">MOTOR</text><text class="sub" x="585" y="278">Lavet stepper</text><text class="val" x="585" y="298">0.88 µJ per step</text>
+
+  <path class="pwr" d="M660 270h60"/>
+  <rect class="bx" x="720" y="230" width="150" height="80" rx="3"/>
+  <text class="lbl" x="795" y="260">TRAIN + HANDS</text><text class="sub" x="795" y="278">6° of dial</text><text class="val" x="795" y="298">once a second</text>
+
+  <g>
+    <line x1="700" y1="60" x2="740" y2="60" stroke="#c49a54" stroke-width="7" stroke-linecap="round" opacity=".85"/>
+    <text class="sub" x="750" y="64" style="text-anchor:start">power</text>
+    <line x1="700" y1="82" x2="740" y2="82" stroke="#5aa9c8" stroke-width="2" stroke-dasharray="5 5"/>
+    <text class="sub" x="750" y="86" style="text-anchor:start">standing current</text>
+    <line x1="700" y1="104" x2="740" y2="104" stroke="#25483d" stroke-width="2" stroke-dasharray="6 6"/>
+    <text class="sub" x="750" y="108" style="text-anchor:start">timing signal</text>
+  </g>
+</svg>
+<figcaption>The battery does all the work in both branches. The crystal's job is to decide <em>when</em> the fat branch is allowed to fire, and it exerts that decision through a gate voltage, not through a force. Energy stored in the vibrating fork is about <span class="mono">1 nJ</span>, roughly one nine-hundredth of a single motor pulse. Even if you could tap it, it could not move a hand.</figcaption>
+</figure>
+
+<div class="note deep"><p><b>If you take one thing from this page:</b> the crystal is a clock, not an engine. Nothing mechanical propagates from the crystal to the hands. The two mechanical systems in the watch, the vibrating fork and the turning rotor, are never connected to each other.</p></div>
+</section>
+
+<!-- ============================================================ 1 -->
+<section>
+<p class="kicker">01 / First transduction</p>
+<h2>How a voltage moves a rock</h2>
+<p>Quartz is SiO₂ in a lattice with no centre of symmetry. Push the silicon and oxygen sublattices in opposite directions with an electric field and they do not slide back symmetrically, so the unit cell changes shape. That is the converse piezoelectric effect, and its size for quartz is <span class="mono">d₁₁ ≈ 2.3 pm/V</span>: two picometres of strain per volt, about a hundredth of an atomic diameter.</p>
+
+<div class="ctl">
+  <button id="latt-btn">Pause field</button>
+  <label>Field strength <b id="latt-v">×1.0</b><input id="latt-amp" type="range" min="0" max="2" step=".1" value="1"></label>
+</div>
+
+<figure class="fig">
+<svg id="latt" viewBox="0 0 940 300" role="img" aria-label="Quartz unit cell distorting under an applied field">
+  <text class="lbl" x="200" y="34">NO FIELD</text>
+  <text class="lbl" x="640" y="34">FIELD APPLIED</text>
+  <g id="cell-static"></g>
+  <g id="cell-live"></g>
+  <path id="fieldarrow" class="ax" stroke="#c2685a" stroke-width="2.5" marker-end="url(#ar)"/>
+  <defs><marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0l10 5-10 5z" fill="#c2685a"/></marker></defs>
+  <text class="lbl" x="540" y="62" id="elab" fill="#c2685a">E</text>
+  <text class="sub" x="640" y="278" id="latt-cap">E field displaces Si⁴⁺ and O²⁻ by different amounts</text>
+  <text class="sub" x="200" y="278">the cell is neutral and undistorted</text>
+  <g>
+    <circle cx="770" cy="60" r="8" fill="#c2685a"/><text class="sub" x="800" y="64" style="text-anchor:start">Si⁴⁺</text>
+    <circle cx="770" cy="82" r="6" fill="#5aa9c8"/><text class="sub" x="800" y="86" style="text-anchor:start">O²⁻</text>
+  </g>
+</svg>
+<figcaption>Displacements here are drawn thousands of times larger than reality. The real distortion at watch drive levels is a fraction of a picometre per cycle. On its own this is a useless amount of motion, which is why the next step matters more than this one.</figcaption>
+</figure>
+</section>
+
+<!-- ============================================================ 2 -->
+<section>
+<p class="kicker">02 / Turning stretch into bending</p>
+<h2>Four electrodes make a lever</h2>
+<p>A tine that simply got longer would be no use. The electrodes are patterned so that the field points one way through the left half of the tine's cross-section and the opposite way through the right half. One side elongates while the other contracts, and a bar that does that has no choice but to curve.</p>
+
+<figure class="fig">
+<svg id="bend" viewBox="0 0 940 330" role="img" aria-label="Electrode arrangement in cross-section and the resulting bending of the tine">
+  <text class="lbl" x="180" y="34">CROSS-SECTION</text>
+  <text class="lbl" x="640" y="34">SIDE VIEW</text>
+  <rect id="xs" x="96" y="80" width="168" height="120" fill="#cfe4ec" stroke="#17201d" stroke-width="2.5"/>
+  <line x1="180" y1="80" x2="180" y2="200" stroke="#17201d" stroke-width="1.5" stroke-dasharray="4 4"/>
+  <rect id="e1" x="96" y="66" width="80" height="12" fill="#c2685a"/>
+  <rect id="e2" x="184" y="66" width="80" height="12" fill="#5aa9c8"/>
+  <rect id="e3" x="96" y="202" width="80" height="12" fill="#5aa9c8"/>
+  <rect id="e4" x="184" y="202" width="80" height="12" fill="#c2685a"/>
+  <g id="xarrows"></g>
+  <text class="sub" x="137" y="238" id="lbl-left">this half elongates</text>
+  <text class="sub" x="223" y="256" id="lbl-right">this half contracts</text>
+  <text class="sub" x="180" y="292">the field reverses across the mid-plane</text>
+
+  <path id="tine" fill="#cfe4ec" stroke="#17201d" stroke-width="2.5"/>
+  <path d="M540 250h200" stroke="#17201d" stroke-width="2" fill="none"/>
+  <rect x="556" y="250" width="168" height="34" fill="#b9cfd8" stroke="#17201d" stroke-width="2"/>
+  <path id="tine-mid" class="gl" stroke-dasharray="4 4"/>
+  <text class="sub" x="640" y="304">elongation on one face, contraction on the other, so it curves</text>
+</svg>
+<figcaption>This is the whole mechanical trick of the resonator. Everything after it is resonance and counting.</figcaption>
+</figure>
+</section>
+
+<!-- ============================================================ 3 -->
+<section>
+<p class="kicker">03 / The amplifier that is not electronic</p>
+<h2>Q turns picometres into microns</h2>
+<p>A single cycle's push is worth roughly <span class="mono">20 pm</span> at the tine tip. The tip actually travels about <span class="mono">1 µm</span>. The factor of fifty thousand between those numbers is not the transistor. It is <em>Q</em>: because the pushes arrive exactly in step with the motion, each one adds to the last, and amplitude grows until the energy fed in per cycle equals the energy lost per cycle. That balance point is reached at about <span class="mono">Q</span> times the single-push deflection.</p>
+
+<div class="ctl">
+  <button id="ring-btn">Replay build-up</button>
+  <label>Quality factor Q <b id="q-v">54 000</b><input id="q" type="range" min="200" max="90000" step="200" value="54000"></label>
+</div>
+
+<figure class="fig">
+<svg id="ring" viewBox="0 0 940 300" role="img" aria-label="Amplitude building up over cycles at a rate set by Q">
+  <path class="ax" d="M78 40v200h820"/>
+  <g id="ring-grid"></g>
+  <path id="ring-env" fill="none" stroke="#5aa9c8" stroke-width="2.5"/>
+  <path id="ring-env2" fill="none" stroke="#5aa9c8" stroke-width="2.5" opacity=".35"/>
+  <path id="ring-osc" fill="none" stroke="#c49a54" stroke-width="1"/>
+  <line id="ring-play" y1="40" y2="240" stroke="#c2685a" stroke-width="1.4" stroke-dasharray="3 3"/>
+  <text class="sub" x="488" y="272">cycles since start-up</text>
+  <text class="sub" x="30" y="140" transform="rotate(-90 30 140)">tip amplitude</text>
+  <text class="tick" x="500" y="30" id="ring-read">settles at Q × 20 pm ≈ 1.1 µm after ≈ 0.5 s</text>
+</svg>
+<figcaption>Lower <em>Q</em> and the curve settles sooner and lower. A balance wheel sits at <span class="mono">Q ≈ 250</span>, which is the same reason it is both quicker to start and two hundred times easier to knock off frequency.</figcaption>
+</figure>
+
+<div class="note"><p><b>The loop, stated plainly.</b> Bending generates charge on the electrodes. The inverter amplifies that charge signal and returns it to the same electrodes with the phase that makes the tine bend further. Loss removes energy in proportion to amplitude; gain adds it at a fixed rate; the amplitude where those cross is where it lives. The crystal is simultaneously the sensor and the actuator, which is the only reason a single inverter is enough.</p></div>
+</section>
+
+<!-- ============================================================ 4 -->
+<section>
+<p class="kicker">04 / The gap where nothing physical crosses</p>
+<h2>Fifteen flip-flops, one wire, one edge</h2>
+<p>Between the crystal and the motor there is only a divider chain, and a divider does not conduct force, torque, or any meaningful power. It changes the voltage on one wire from low to high, once a second. That transition is the entire output of the timekeeping half of the watch.</p>
+<div class="row">
+  <div><small>Crystal stored energy</small><strong>≈ 1 nJ</strong><span>never leaves the fork</span></div>
+  <div><small>Power to keep it ringing</small><strong>≈ 4 nW</strong><span>replaces damping losses only</span></div>
+  <div><small>Energy in one motor pulse</small><strong>0.88 µJ</strong><span>≈ 900× the crystal's store</span></div>
+  <div><small>Energy in the timing edge</small><strong>≈ 10⁻¹² J</strong><span>charging a gate capacitance</span></div>
+</div>
+<p>So the correct mental picture is not <span class="mono">crystal → motor</span>. It is <span class="mono">battery → motor</span>, with the crystal standing beside the wire holding a stopwatch.</p>
+</section>
+
+<!-- ============================================================ 5 -->
+<section>
+<p class="kicker">05 / Second transduction</p>
+<h2>Current → flux → torque</h2>
+<p>Here the energy genuinely does change form, twice: electrical into magnetic, then magnetic into mechanical. The coil has roughly twelve thousand turns, so even a very small current produces a usable magnetomotive force. The soft-iron stator is there to carry that flux around and squeeze it into the two small faces either side of the rotor.</p>
+
+<div class="ctl">
+  <button id="mot-btn">Pause</button>
+  <label>Coil current <b id="i-v">116 µA</b><input id="i" type="range" min="20" max="400" step="4" value="116"></label>
+</div>
+
+<figure class="fig">
+<svg id="motor" viewBox="0 0 940 400" role="img" aria-label="Coil current producing flux in the stator and torque on the rotor magnet">
+  <path id="core" fill="#d9d3c6" stroke="#17201d" stroke-width="2.5" fill-rule="evenodd"
+        d="M270 60H740A20 20 0 0 1 760 80V290A20 20 0 0 1 740 310H270A20 20 0 0 1 250 290V220H66V150H250V80A20 20 0 0 1 270 60ZM587 185A82 82 0 1 1 423 185A82 82 0 1 1 587 185Z"/>
+  <g id="coil"></g>
+  <path id="flux" fill="none" stroke="#c49a54" stroke-width="3.5" stroke-dasharray="9 9" opacity="0"
+        d="M250 160C300 108 400 92 505 92C620 92 706 128 706 185C706 242 620 278 505 278C400 278 300 262 250 210"/>
+  <defs>
+    <marker id="arg" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto-start-reverse"><path d="M0 0l10 5-10 5z" fill="#c49a54"/></marker>
+    <marker id="ark" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto-start-reverse"><path d="M0 0l10 5-10 5z" fill="#17201d"/></marker>
+  </defs>
+  <g id="rotor">
+    <path d="M567 185a62 62 0 0 0-124 0z" fill="#c2685a"/>
+    <path d="M443 185a62 62 0 0 0 124 0z" fill="#5aa9c8"/>
+    <circle cx="505" cy="185" r="62" fill="none" stroke="#17201d" stroke-width="2.5"/>
+    <path d="M443 185h124" stroke="#17201d" stroke-width="2.5"/>
+    <text class="lbl" x="505" y="158" fill="#f3f0e7">N</text>
+    <text class="lbl" x="505" y="212" fill="#f3f0e7">S</text>
+    <path d="M505 185V107" stroke="#17201d" stroke-width="3.5" marker-end="url(#ark)"/>
+    <text class="lbl" x="505" y="98" fill="#17201d">m</text>
+  </g>
+  <g id="bgrp" opacity="0">
+    <line x1="596" y1="185" x2="418" y2="185" stroke="#f3f0e7" stroke-width="9" stroke-linecap="round"/>
+    <line id="bvec" x1="592" y1="185" x2="424" y2="185" stroke="#c49a54" stroke-width="4" marker-end="url(#arg)"/>
+  </g>
+  <circle cx="505" cy="185" r="9" fill="#c49a54" stroke="#17201d" stroke-width="2"/>
+  <text class="lbl" x="158" y="136" id="ilab">i = 0</text>
+  <text class="sub" x="158" y="120">coil, ≈ 12 000 turns</text>
+  <text class="sub" x="800" y="181" style="text-anchor:start" id="blab">B = 0</text>
+  <text class="sub" x="800" y="197" style="text-anchor:start">across the gap</text>
+  <text class="sub" x="505" y="332">m, the rotor&#8217;s own moment, 1.8 mA&#183;m&#178; &#183; fixed, the coil never magnetises it</text>
+  <text class="lbl" x="505" y="364" id="tau" style="font-size:13px">&#964; = m &#215; B = 0.00 &#181;N&#183;m</text>
+  <text class="sub" x="505" y="384" id="taupk">peak, at 90&#176;: 0.00 &#181;N&#183;m &#183; the magnet turns until m lines up with B</text>
+</svg>
+<figcaption>The rotor is a permanent magnet, so it arrives with its own moment <span class="mono">m</span> already fixed. The coil does not magnetise the rotor; it produces a field <em>across</em> it, and a magnetic moment in an external field feels a torque proportional to the sine of the angle between them. That is the entire electromechanical conversion.</figcaption>
+</figure>
+
+<div class="note"><p><b>The numbers work out.</b> The rotor is about <span class="mono">1.4 mm</span> across and <span class="mono">1.5 mm</span> long, so its volume is <span class="mono">2.3 × 10⁻⁹ m³</span>. SmCo with a remanence near <span class="mono">1 T</span> gives a magnetisation of <span class="mono">8 × 10⁵ A/m</span>, hence a moment <span class="mono">m ≈ 1.8 mA·m²</span>. Twelve thousand turns carrying <span class="mono">116 µA</span> give <span class="mono">1.4 ampere-turns</span>, which across a total air gap of a few tenths of a millimetre lands the gap field at a couple of milliteslas once reluctance is accounted for. Then <span class="mono">τ = mB ≈ 3.5 µN·m</span>, which is exactly the peak torque the step simulation on the lab page needs to clear the detent barrier.</p></div>
+</section>
+
+<!-- ============================================================ 6 -->
+<section>
+<p class="kicker">06 / Third conversion, and the only ordinary one</p>
+<h2>Torque → half a turn → six degrees</h2>
+<p>Once there is torque on the rotor the rest is unremarkable watchmaking. The rotor swings 180°, the notches in the stator bore catch it there, and a reduction train divides that half-turn down by sixty to the seconds hand and by another seven hundred and twenty to the hour hand.</p>
+
+<figure class="fig">
+<svg id="ledger" viewBox="0 0 940 250" role="img" aria-label="Energy ledger for one second of operation">
+  <text class="lbl" x="470" y="30">WHERE ONE SECOND OF ENERGY GOES</text>
+  <rect x="90" y="60" width="760" height="34" fill="none" stroke="#a9a397" stroke-width="1.4"/>
+  <rect x="90" y="60" width="486" height="34" fill="#c49a54" opacity=".75"/>
+  <rect x="576" y="60" width="271" height="34" fill="#9bc9b3" opacity=".7"/>
+  <rect x="847" y="60" width="3" height="34" fill="#5aa9c8"/>
+  <text class="tick" x="333" y="116">motor pulse 0.88 µJ</text>
+  <text class="tick" x="711" y="116">oscillator + divider circuit ≈ 0.47 µJ</text>
+  <text class="tick" x="848" y="140" style="text-anchor:end">fork itself 0.004 µJ</text>
+  <line x1="848" y1="98" x2="848" y2="128" stroke="#5aa9c8" stroke-width="1.2"/>
+  <text class="sub" x="470" y="176">Of the motor's 0.88 µJ, roughly a third becomes mechanical work against the detent and bearing friction.</text>
+  <text class="sub" x="470" y="196">The rest is I²R in the coil. The fork's share of the whole budget is under half a percent.</text>
+  <text class="sub" x="470" y="228">Nothing in this ledger flows from the fork to the rotor.</text>
+</svg>
+</figure>
+</section>
+
+<!-- ============================================================ 7 -->
+<section>
+<p class="kicker">07 / The chain, restated</p>
+<h2>Five sentences</h2>
+<p>A voltage on patterned electrodes distorts the quartz lattice by picometres, and because the field reverses across the tine's mid-plane the distortion appears as bending rather than stretching.</p>
+<p>Because the drive arrives in phase with the motion, roughly fifty thousand of those picometre pushes accumulate before losses catch up, so the tip ends up moving about a micron at exactly 32 768 Hz.</p>
+<p>The bending generates charge on the same electrodes, one inverter amplifies it and sends it back, and the loop sustains itself. The frequency is set by the tine's own geometry, not by anything electrical.</p>
+<p>Fifteen flip-flops divide that frequency to one hertz. The output is a voltage edge on one wire, carrying no meaningful energy: it opens a switch between the battery and the motor coil.</p>
+<p>Current through twelve thousand turns produces a field of a few milliteslas across a permanent-magnet rotor, the rotor turns to line up with it, the notches in the stator catch it half a revolution later, and the train divides that down to six degrees of dial.</p>
+</section>
+
+<div class="printonly" style="border-top:1px solid rgba(23,32,29,.16);margin-top:28px;padding-top:10px;
+     font-size:8.5pt;color:#68716d">
+  Educational schematic. Material constants (d&#8321;&#8321;, quartz E and &#961;, SmCo remanence) are standard values;
+  currents, gap fields, and the per-cycle tip increment are order-of-magnitude reconstructions consistent with the
+  step simulation in the interactive edition. Companion to <em>Inside a Quartz Watch</em>.
+</div>
+</div>
+<script>
+(() => {
+'use strict';
+const NS='http://www.w3.org/2000/svg', $=s=>document.querySelector(s);
+const mk=(t,a,p)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e;};
+const poly=p=>p.map((q,i)=>(i?'L':'M')+q[0].toFixed(2)+' '+q[1].toFixed(2)).join('');
+const clamp=(v,a,b)=>v<a?a:v>b?b:v;
+const grp=n=>n.toLocaleString('en-US').replace(/,/g,' ');
+let last=performance.now(), t=0;
+
+/* ---------- 01 lattice ---------- */
+const SI=[[0,-1],[0.866,0.5],[-0.866,0.5]], OX=[[0.5,-0.866],[1,0],[0.5,0.866],[-0.5,0.866],[-1,0],[-0.5,-0.866]];
+function drawCell(host,cx,cy,R,d){
+  host.innerHTML='';
+  mk('circle',{cx,cy,r:R*1.28,fill:'none',stroke:'rgba(169,163,151,.45)','stroke-dasharray':'3 4'},host);
+  OX.forEach(([x,y])=>mk('circle',{cx:cx+x*R+d*10,cy:cy+y*R,r:9,fill:'#5aa9c8'},host));
+  SI.forEach(([x,y])=>mk('circle',{cx:cx+x*R-d*22,cy:cy+y*R,r:12,fill:'#c2685a'},host));
+}
+let lattRun=true;
+$('#latt-btn').addEventListener('click',e=>{lattRun=!lattRun;e.target.textContent=lattRun?'Pause field':'Run field';});
+$('#latt-amp').addEventListener('input',()=>$('#latt-v').textContent='×'+(+$('#latt-amp').value).toFixed(1));
+drawCell($('#cell-static'),200,155,66,0);
+
+/* ---------- 02 bending ---------- */
+const XA=$('#xarrows');
+function bend(s){
+  // cross-section field arrows: opposite senses either side of the mid-plane
+  XA.innerHTML='';
+  const dir=s>=0?1:-1;
+  for(const [x0,sgn] of [[137,1],[223,-1]]){
+    const up=sgn*dir>0;
+    mk('path',{d:`M${x0} ${up?196:88}V${up?88:196}`,stroke:'#c2685a','stroke-width':2.5,fill:'none','marker-end':'url(#ar)'},XA);
+  }
+  $('#e1').setAttribute('fill',dir>0?'#c2685a':'#5aa9c8');
+  $('#e4').setAttribute('fill',dir>0?'#c2685a':'#5aa9c8');
+  $('#e2').setAttribute('fill',dir>0?'#5aa9c8':'#c2685a');
+  $('#e3').setAttribute('fill',dir>0?'#5aa9c8':'#c2685a');
+  $('#lbl-left').textContent = dir>0?'this half elongates':'this half contracts';
+  $('#lbl-right').textContent= dir>0?'this half contracts':'this half elongates';
+  // side view: a tine of constant curvature
+  const y0=252,y1=64,L=y0-y1,W=17,A=30*s,N=24,l=[],r=[];
+  for(let i=0;i<=N;i++){const f=i/N,y=y0-f*L,u=A*f*f;l.push([640+u-W,y]);r.push([640+u+W,y]);}
+  $('#tine').setAttribute('d',poly(l)+`A${W} ${W} 0 0 1 ${r[N][0].toFixed(2)} ${r[N][1].toFixed(2)}`+poly(r.slice().reverse()).replace('M','L')+'Z');
+  $('#tine-mid').setAttribute('d',poly(l.map((p,i)=>[p[0]+W,p[1]])));
+}
+
+/* ---------- 03 ring-up ---------- */
+const RX0=78,RX1=898,RY=140,RH=96;
+let ringT=0;
+function ringDraw(){
+  const Q=+$('#q').value, tau=Q/Math.PI;        // cycles to 1/e of final amplitude
+  const N=Math.max(4*tau,2000);                  // cycles shown
+  const env=[],env2=[],osc=[];
+  for(let i=0;i<=300;i++){
+    const n=i/300*N, a=1-Math.exp(-n/tau), x=RX0+i/300*(RX1-RX0);
+    env.push([x,RY-a*RH]); env2.push([x,RY+a*RH]);
+    osc.push([x,RY-a*RH*Math.sin(i*0.9)]);
+  }
+  $('#ring-env').setAttribute('d',poly(env));
+  $('#ring-env2').setAttribute('d',poly(env2));
+  $('#ring-osc').setAttribute('d',poly(osc));
+  const amp=Q*20e-12, MARGIN=5.5;            // loop gain margin of a watch oscillator
+  const secs=4*(tau/(MARGIN-1))/32768;       // start-up is faster than free decay by (margin-1)
+  const amps = amp < 1e-7 ? (amp*1e9).toFixed(0)+' nm' : (amp*1e6).toFixed(2)+' µm';
+  const ts   = secs < 0.1 ? (secs*1000).toFixed(0)+' ms' : secs.toFixed(2)+' s';
+  $('#ring-read').textContent=`settles at Q × 20 pm ≈ ${amps}, reached in ≈ ${ts} at 5.5× gain margin`;
+  $('#q-v').textContent=grp(+$('#q').value);
+  return N;
+}
+const RG=$('#ring-grid');
+[0,.5,1].forEach(f=>{mk('line',{class:'gl',x1:RX0,x2:RX1,y1:RY-f*RH,y2:RY-f*RH},RG);});
+$('#q').addEventListener('input',()=>{ringDraw();});
+$('#ring-btn').addEventListener('click',()=>{ringT=0;});
+ringDraw();
+
+/* ---------- 05 motor ---------- */
+const CO=$('#coil');
+for(let i=0;i<11;i++) mk('ellipse',{cx:80+i*16,cy:185,rx:6.5,ry:50,fill:'none',stroke:'#a8763a','stroke-width':3},CO);
+const M_MOMENT=1.84e-3;                              // A m^2
+const B_PER_A=17.0;                                  // T per amp of coil current, calibrated to 116 uA -> ~2 mT
+let motRun=true, motPhase=0;
+$('#mot-btn').addEventListener('click',e=>{motRun=!motRun;e.target.textContent=motRun?'Pause':'Run';});
+$('#i').addEventListener('input',()=>$('#i-v').textContent=$('#i').value+' µA');
+
+/* ---------- master loop ---------- */
+function frame(now){
+  const dt=Math.min((now-last)/1000,.05); last=now; t+=dt;
+
+  // lattice
+  if(lattRun){
+    const s=Math.sin(t*1.6)*(+$('#latt-amp').value);
+    drawCell($('#cell-live'),640,155,66,s);
+    $('#fieldarrow').setAttribute('d',`M540 ${s>=0?238:72}V${s>=0?72:238}`);
+    $('#elab').setAttribute('y',s>=0?62:252);
+    $('#latt-cap').textContent = Math.abs(s)<0.12
+      ? 'field passing through zero, cell relaxed'
+      : (s>0 ? 'field up: cell shears one way' : 'field down: cell shears the other way');
+  }
+
+  // bending
+  bend(Math.sin(t*1.6));
+
+  // ring-up
+  ringT+=dt;
+  const N=ringDraw();
+  const u=clamp(ringT/6,0,1), px=RX0+u*(RX1-RX0);
+  $('#ring-play').setAttribute('x1',px); $('#ring-play').setAttribute('x2',px);
+
+  // motor
+  if(motRun) motPhase+=dt;
+  const cyc=motPhase%2.4, pulsing=cyc<0.85;
+  const iA=(+$('#i').value)*1e-6;
+  const B=pulsing?B_PER_A*iA:0;
+  // rotor starts 90 deg from B (which points left, i.e. m must swing to -90) and settles at 180
+  const ang=pulsing? -90*Math.min(1,cyc/0.7) : (-90-90*Math.min(1,(cyc-0.85)/0.55));
+  $('#rotor').setAttribute('transform',`rotate(${ang.toFixed(1)} 505 185)`);
+  $('#flux').setAttribute('opacity',pulsing?0.95:0);
+  $('#flux').setAttribute('style',pulsing?'animation:flow .6s linear infinite':'');
+  document.querySelectorAll('#coil ellipse').forEach(el=>el.setAttribute('stroke',pulsing?'#c2685a':'#a8763a'));
+  $('#bgrp').setAttribute('opacity',pulsing?1:0);
+  $('#ilab').textContent=pulsing?`i = ${$('#i').value} µA`:'i = 0';
+  $('#ilab').setAttribute('fill',pulsing?'#c2685a':'#17201d');
+  const tq=M_MOMENT*B*Math.sin((-90-ang)*Math.PI/180);
+  $('#tau').textContent='τ = m B sin θ = '+(Math.abs(tq)*1e6).toFixed(2)+' µN·m';
+  $('#taupk').textContent=`peak, at 90°: ${(M_MOMENT*B_PER_A*iA*1e6).toFixed(2)} µN·m · the magnet turns until m lines up with B`;
+  $('#blab').textContent=pulsing?`B ≈ ${(B*1e3).toFixed(1)} mT`:'B = 0, no field';
+  $('#bvec').setAttribute('stroke-width',pulsing?(2+Math.min(5,B*1400)).toFixed(1):4);
+  if(!stopped) raf=requestAnimationFrame(frame);
+}
+let stopped=false, raf=requestAnimationFrame(frame);
+
+/* freeze every figure in a state worth printing, then stop animating */
+window.__print=()=>{
+  stopped=true; cancelAnimationFrame(raf);
+  document.querySelectorAll('[style*="animation"]').forEach(e=>e.style.animation='none');
+  document.querySelectorAll('.info,.flux').forEach(e=>e.style.animation='none');
+  // 01 lattice: field at full deflection
+  drawCell($('#cell-live'),640,155,66,1);
+  $('#fieldarrow').setAttribute('d','M540 238V72'); $('#elab').setAttribute('y',62);
+  $('#latt-cap').textContent='field up: cell shears one way';
+  // 02 bending: full curvature
+  bend(1);
+  // 03 ring-up: complete
+  ringDraw();
+  $('#ring-play').setAttribute('x1',RX1); $('#ring-play').setAttribute('x2',RX1);
+  // 05 motor: mid-swing, torque non-zero
+  const iA=(+$('#i').value)*1e-6, B=B_PER_A*iA, ang=-40;
+  $('#rotor').setAttribute('transform',`rotate(${ang} 505 185)`);
+  $('#flux').setAttribute('opacity',0.95); $('#flux').style.animation='none';
+  document.querySelectorAll('#coil ellipse').forEach(el=>el.setAttribute('stroke','#c2685a'));
+  $('#bgrp').setAttribute('opacity',1);
+  $('#ilab').textContent=`i = ${$('#i').value} µA`; $('#ilab').setAttribute('fill','#c2685a');
+  $('#blab').textContent=`B ≈ ${(B*1e3).toFixed(1)} mT`;
+  const tq=M_MOMENT*B*Math.sin((-90-ang)*Math.PI/180);
+  $('#tau').textContent='τ = m B sin θ = '+(Math.abs(tq)*1e6).toFixed(2)+' µN·m';
+  $('#taupk').textContent=`peak, at 90°: ${(M_MOMENT*B*1e6).toFixed(2)} µN·m · the magnet turns until m lines up with B`;
+  return true;
+};
+})();
+</script>
+</body></html>
