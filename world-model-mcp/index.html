@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>World Model MCP — Evidence-aware research memory</title>
+    <meta
+      name="description"
+      content="Local research memory for Codex and Claude: findings, evidence, assumptions, human review, and revision history. Explore a clearly labeled synthetic demo."
+    />
+    <link rel="canonical" href="https://theisegoria.github.io/world-model-mcp/" />
+    <link rel="stylesheet" href="style.css" />
+    <script src="demo.js" defer></script>
+    <meta name="theme-color" content="#173f35" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="wordmark" href="https://theisegoria.github.io/">ISEGORIA <span>/ SOFTWARE</span></a>
+      <nav aria-label="Page navigation">
+        <a href="#demo">Try the example</a><a href="#install">Run locally</a
+        ><a href="https://github.com/theisegoria/world-model-mcp">Source ↗</a>
+      </nav>
+    </header>
+    <main>
+      <section class="hero">
+        <div class="hero-copy">
+          <span class="eyebrow">WORLD MODEL MCP</span>
+          <h1>Keep the finding.<br />Keep the evidence.<br /><em>Keep room to revise.</em></h1>
+          <p class="lead">
+            Research memory for Codex and Claude that preserves what a source reports, what an
+            assistant infers, and why you might change your mind.
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#demo">Explore a synthetic example <span>↓</span></a
+            ><a class="quiet-link" href="https://github.com/theisegoria/world-model-mcp"
+              >Read the source ↗</a
+            >
+          </div>
+          <div class="local-line">
+            <span>●</span> Local on your Mac · Human review · No hosted AI required
+          </div>
+        </div>
+        <div
+          class="hero-art"
+          aria-label="The knowledge model connects a source, evidence, a claim, an inference, and review history"
+        >
+          <div class="art-heading"><span>ONE RESEARCH CHECKPOINT</span><span>◈</span></div>
+          <div class="model-node source">
+            <span>01 / SOURCE</span><strong>What was actually reported?</strong
+            ><small>Original material + a precise locator</small>
+          </div>
+          <div class="connector">↓</div>
+          <div class="model-node claim">
+            <span>02 / CLAIM</span><strong>A finding, with its conditions.</strong
+            ><small>Scope · assessment · uncertainty</small>
+          </div>
+          <div class="connector">↓</div>
+          <div class="model-node inference">
+            <span>03 / INFERENCE</span><strong>A conclusion you can inspect.</strong
+            ><small>Premises + explicit assumptions</small>
+          </div>
+          <div class="art-foot"><span>✓ Human review</span><span>↺ Revision history</span></div>
+        </div>
+      </section>
+      <div class="thesis">
+        <span>THE IMPORTANT DISTINCTION</span>
+        <p>
+          “Accepted” means reviewed for inclusion.<br /><strong
+            >It does not mean proven true.</strong
+          >
+        </p>
+        <p>
+          An accepted hypothesis remains a hypothesis. Similarity and repeated citations do not turn
+          it into a fact.
+        </p>
+      </div>
+      <section class="demo-section" id="demo">
+        <div class="section-heading">
+          <div>
+            <span class="eyebrow">INTERACTIVE EXAMPLE</span>
+            <h2>Watch a finding become revisable knowledge.</h2>
+          </div>
+          <p>
+            Follow one checkpoint across recording, human review, a fresh assistant session, and
+            conflicting evidence.
+          </p>
+        </div>
+        <div class="demo-banner">
+          <strong>FICTIONAL DEMONSTRATION</strong
+          ><span
+            >In-memory browser example. No connection to a real knowledge store. Nothing is saved or
+            uploaded.</span
+          >
+        </div>
+        <div class="demo-app">
+          <aside class="demo-nav">
+            <div class="demo-brand">◈ World Model</div>
+            <div class="step-list" aria-label="Example stages">
+              <button data-stage="0" class="active">01 <span>Record a checkpoint</span></button
+              ><button data-stage="1">02 <span>Human review</span></button
+              ><button data-stage="2">03 <span>Fresh-session recall</span></button
+              ><button data-stage="3">04 <span>Conflicting evidence</span></button>
+            </div>
+            <button id="reset" class="reset">↺ Reset example</button>
+          </aside>
+          <div class="demo-workspace">
+            <div class="demo-top">
+              <span>SYNTHETIC / GENERAL</span
+              ><span id="state-badge" class="pill">Not recorded</span>
+            </div>
+            <h3 id="stage-title"></h3>
+            <p id="stage-description"></p>
+            <div id="demo-content"></div>
+            <div class="demo-action">
+              <button id="advance" class="button primary"></button><span id="action-note"></span>
+            </div>
+            <div class="demo-timeline">
+              <span>HISTORY</span>
+              <ol id="timeline" aria-live="polite"></ol>
+            </div>
+          </div>
+        </div>
+        <p class="demo-caption">
+          The actual application uses a persistent SQLite store, independent MCP processes, and an
+          authenticated local inspector. This example illustrates that workflow with deliberately
+          fictional findings.
+        </p>
+      </section>
+      <section class="features">
+        <div>
+          <span class="eyebrow">THE LOCAL PRODUCT</span>
+          <h2>A durable research record,<br />with a useful interface.</h2>
+          <p>
+            Browse evidence and assumptions, compare proposal changes, explore a bounded graph, and
+            recover earlier accepted revisions.
+          </p>
+          <a
+            href="https://github.com/theisegoria/world-model-mcp/blob/main/IMPLEMENTATION_STATUS.md"
+            class="quiet-link"
+            >Read the verification report ↗</a
+          >
+        </div>
+        <div class="feature-grid">
+          <article>
+            <span>01</span>
+            <h3>Evidence stays attached</h3>
+            <p>
+              Source passages, locators, applicable conditions, and provenance travel with a claim.
+            </p>
+          </article>
+          <article>
+            <span>02</span>
+            <h3>Review comes first</h3>
+            <p>Assistants preserve pending proposals. A person reviews them before acceptance.</p>
+          </article>
+          <article>
+            <span>03</span>
+            <h3>Disagreement stays visible</h3>
+            <p>
+              Challenges do not silently rewrite accepted knowledge. Revision history remains
+              inspectable.
+            </p>
+          </article>
+          <article>
+            <span>04</span>
+            <h3>Retrieval stays local</h3>
+            <p>
+              English/Japanese keyword and graph search work offline. A verified multilingual model
+              is optional.
+            </p>
+          </article>
+        </div>
+      </section>
+      <section class="inspector-section">
+        <div class="section-heading">
+          <div>
+            <span class="eyebrow">FROM THE RUNNING APPLICATION</span>
+            <h2>The evidence inspector.</h2>
+          </div>
+          <p>Captured from the local browser workflow using labeled synthetic data.</p>
+        </div>
+        <a href="inspector.png"
+          ><img
+            src="inspector.png"
+            width="1440"
+            height="2147"
+            alt="World Model local inspector showing a synthetic sleep finding, its population and conditions, and linked evidence."
+            loading="lazy"
+        /></a>
+      </section>
+      <section class="install" id="install">
+        <div>
+          <span class="eyebrow">RUN IT ON YOUR MAC</span>
+          <h2>One local store.<br />More than one assistant.</h2>
+          <p>
+            Apple Silicon macOS. The setup script installs an isolated Node.js 24 runtime and the
+            locked dependencies. Connect Codex or Claude using generated absolute-path MCP
+            configuration.
+          </p>
+          <div class="links">
+            <a href="https://github.com/theisegoria/world-model-mcp#readme">Installation guide ↗</a
+            ><a href="https://github.com/theisegoria/world-model-mcp/blob/main/docs/CLIENTS.md"
+              >Client setup ↗</a
+            ><a href="https://github.com/theisegoria/world-model-mcp/blob/main/docs/API.md"
+              >API and schemas ↗</a
+            >
+          </div>
+        </div>
+        <div class="terminal">
+          <div><span>LOCAL INSTALLATION</span><button id="copy-install">Copy</button></div>
+          <pre id="install-command">
+git clone https://github.com/theisegoria/world-model-mcp.git
+cd world-model-mcp
+./scripts/setup.sh
+./bin/world-model-mcp open</pre>
+          <p>
+            Optional model downloads require an explicit install action. Personal research is not
+            imported automatically.
+          </p>
+        </div>
+      </section>
+      <section class="boundaries">
+        <h2>What this does—and what it cannot promise.</h2>
+        <p>
+          It supplies durable, inspectable, revisable knowledge to connected assistants. It does not
+          change model weights, guarantee truth, or guarantee that an assistant follows research
+          instructions. Human review is a workflow safeguard, not a security boundary against
+          unrestricted programs running under the same OS account.
+        </p>
+        <p>
+          Build, protocol, browser, semantic, benchmark, and real-client evidence are reported
+          separately in the repository. Any unverified client integration is identified there.
+        </p>
+      </section>
+    </main>
+    <footer>
+      <span>World Model MCP · Benjamin Michael Haire</span
+      ><a href="https://theisegoria.github.io/">Back to Isegoria ↗</a>
+    </footer>
+  </body>
+</html>
