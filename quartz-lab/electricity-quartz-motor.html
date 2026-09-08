@@ -1,5 +1,8 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Where energy actually changes form between the battery and the hands of a quartz watch: two transductions, one gap that nothing physical crosses, and the Lavet stepper at the end.">
+<link rel="canonical" href="https://theisegoria.github.io/quartz-lab/electricity-quartz-motor.html">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
 <title>Electricity → Quartz → Motor</title>
 <style>
 :root{--ink:#17201d;--paper:#f3f0e7;--dark:#101715;--deep:#25483d;--mint:#9bc9b3;--gold:#c49a54;
@@ -77,8 +80,33 @@ text{font-family:var(--sans)}
 }
 .printonly{display:none}
 
+
+.sitebar{background:var(--dark);color:#cfd8d4;padding:0 clamp(18px,4vw,48px)}
+.sitebar nav{max-width:1000px;margin:0 auto;height:64px;display:flex;align-items:center;
+  justify-content:space-between;gap:20px;flex-wrap:wrap}
+.sitebar .brand{font-family:var(--serif);font-size:1rem;letter-spacing:.04em;color:var(--paper);
+  text-decoration:none;white-space:nowrap}
+.sitebar .links{display:flex;gap:14px;flex-wrap:wrap}
+.sitebar .links a{color:#9ba6a1;text-decoration:none;font-size:.78rem;letter-spacing:.04em}
+.sitebar .links a:hover{color:var(--mint)}
+footer.sitefoot{background:var(--dark);color:#9ba6a1;padding:30px clamp(18px,4vw,48px);
+  display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;font-size:.76rem}
+footer.sitefoot a{color:var(--mint);text-decoration:none}
+@media(max-width:700px){footer.sitefoot{flex-direction:column;align-items:flex-start}}
 </style></head>
-<body><div class="wrap">
+<body><header class="sitebar">
+<nav>
+  <a class="brand" href="/">Benjamin Michael Haire</a>
+  <div class="links">
+    <a href="/quartz-lab/">Quartz Watch Lab</a>
+    <a href="/watch-lab/">Automatic Watch Lab</a>
+    <a href="/watch-mechanisms/">Mechanical Watch Atlas</a>
+    <a href="electricity-quartz-motor.pdf">PDF</a>
+    <a href="/">All projects</a>
+  </div>
+</nav>
+</header>
+<div class="wrap">
 
 <div class="printonly" style="border-bottom:1px solid rgba(23,32,29,.16);padding-bottom:8px;margin-bottom:22px;
      font-size:8.5pt;color:#68716d;overflow:hidden">
@@ -498,4 +526,10 @@ window.__print=()=>{
 };
 })();
 </script>
+<footer class="sitefoot">
+  <span>&copy; 2026 Benjamin Michael Haire</span>
+  <span>Companion to the <a href="/quartz-lab/">Quartz Watch Lab</a>. Educational schematic: component values and ratios are typical rather than specific to any calibre.</span>
+  <a href="electricity-quartz-motor.pdf">Print edition (PDF)</a>
+  <a href="/">Back to all projects</a>
+</footer>
 </body></html>
