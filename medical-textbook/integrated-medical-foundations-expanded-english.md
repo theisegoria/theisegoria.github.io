@@ -40,6 +40,12 @@ Active transport moves a substance against its electrochemical gradient and ther
 
 Vesicular transport moves larger material. Endocytosis brings material into the cell. Exocytosis releases material, including neurotransmitters and many hormones.
 
+### Compartments, concentration, and total amount
+
+Extracellular fluid includes plasma inside blood vessels and interstitial fluid around tissue cells. Capillary walls separate these spaces, whereas cell membranes separate extracellular from intracellular fluid. The barriers have different permeabilities: water and many small solutes exchange readily across most systemic capillaries, while plasma proteins are more restricted. Sodium is the principal extracellular cation and potassium the principal intracellular cation. These distributions are maintained dynamically rather than by an impermeable wall.
+
+Concentration must be distinguished from total amount. A concentration is an amount divided by a volume, so it can change because solute changes, water changes, or both change. Losing water without proportionate solute loss concentrates the remaining fluid; adding water dilutes it. A concentration measurement therefore cannot, by itself, reveal the size of a compartment or the total quantity of a substance within the body. This distinction connects membrane transport to later reasoning about fluid balance: ask which compartment is sampled, what crosses its boundary, and whether the observation describes concentration, volume, or total content.
+
 ## Tissues as functional systems
 
 Epithelial tissue covers surfaces, lines cavities, and forms glands. Closely packed cells and selective junctions make epithelia effective barriers. Their functions include protection, absorption, secretion, filtration, and sensation.
@@ -175,6 +181,12 @@ Neurons maintain unequal ion distributions across their membranes. Potassium is 
 A graded potential is a local change whose size depends on stimulus strength. If depolarisation at the trigger zone reaches threshold, voltage-gated sodium channels open. Sodium enters rapidly and produces the rising phase of an action potential. Sodium channels then inactivate while voltage-gated potassium channels open. Potassium leaves, repolarising the membrane. Continued potassium conductance can briefly cause hyperpolarisation.
 
 An action potential is all or none. A stronger stimulus does not create a taller action potential. It usually increases firing frequency or recruits more neurons. The refractory period limits firing rate and promotes one-way propagation. Myelin increases speed by allowing current to travel efficiently between nodes of Ranvier, a process called saltatory conduction.
+
+### Channel availability and local propagation
+
+The absolute refractory period reflects sodium-channel inactivation: affected channels cannot immediately reopen even if the stimulus is strong. During the relative refractory period, some sodium channels have recovered, but continuing potassium conductance makes another action potential harder to initiate. A stronger input may then succeed. Refractoriness is therefore a changing molecular state, rather than a pause imposed by exhaustion of all the cell's energy.
+
+Propagation occurs because current from an active region depolarises adjacent membrane, opening further voltage-gated channels and regenerating the signal. Ions do not travel the entire axon as a single packet. In a myelinated axon, current spreads beneath the insulating sheath and action potentials regenerate at successive nodes of Ranvier. The signal is thus repeatedly renewed at excitable sites. Distinguish this propagation from the graded potentials that initiate it: a graded response varies with the input, whereas an action potential is regenerated once threshold is reached. This sequence connects receptor activation, local integration, and long-distance communication without treating them as the same electrical event.
 
 ## Synapses and networks
 
@@ -330,6 +342,12 @@ Dominant means that one altered allele can influence phenotype; it does not mean
 
 Penetrance is the proportion of people with a genotype who express the associated phenotype. Expressivity describes variation in degree or form. Environment, age, modifier genes, mosaicism, and chance events can all alter presentation. Most common diseases are multifactorial: many variants interact with behaviour, exposures, development, and ageing.
 
+### Why an altered allele can be dominant
+
+Loss of function reduces the activity or amount of a gene product. It often behaves recessively because one functioning allele supplies enough product, but this is not guaranteed. In haploinsufficiency, that remaining output is inadequate for normal function, so loss of one allele can produce a dominant phenotype. Dominant-negative effects are different: an altered protein interferes with the normal protein, for example when both enter a complex whose function requires properly working subunits.
+
+Gain of function increases activity, permits activity in an inappropriate setting, or introduces a new property. Consequently, the same gene can be associated with different disorders depending on how a variant changes its product. A pedigree describes inheritance; it does not identify the molecular mechanism by itself. To connect genotype with disease, ask whether functional product is insufficient, whether an abnormal product disrupts its partners, or whether excessive or novel activity is present. These questions distinguish superficially similar dominant patterns without assuming that every variant in one gene has the same consequence.
+
 ## Cellular adaptation
 
 Hypertrophy is increased cell size. It occurs when cells face increased workload or hormonal stimulation and have limited capacity to divide. Skeletal muscle hypertrophies with resistance training. The left ventricle hypertrophies in response to pressure overload. Initially this can preserve function; later, increased oxygen demand, fibrosis, altered gene expression, and impaired relaxation may make the adaptation harmful.
@@ -471,6 +489,12 @@ Physical barriers are the first defence. Skin provides keratin, lipids, low surf
 Innate immune cells recognise recurring microbial structures and signals released by damaged cells. Pattern-recognition receptors activate inflammatory gene expression, antimicrobial pathways, and inflammasomes. Complement proteins circulate as inactive precursors. Activation can mark targets for phagocytosis, recruit leukocytes, and form membrane attack complexes. Complement is powerful and therefore tightly regulated to limit host injury.
 
 Mast cells, macrophages, dendritic cells, and tissue-resident lymphocytes can respond rapidly. Histamine increases arteriolar dilation and venular permeability. Lipid mediators, cytokines, chemokines, complement fragments, and bradykinin coordinate vascular change, pain, fever, leukocyte recruitment, and systemic responses.
+
+### Distinguishing complement outputs
+
+Complement produces several different effects through cleavage of circulating proteins. C3 convertases split complement component three, releasing C3a and generating C3b. Surface-bound C3b and its processed fragments help phagocytes recognise coated targets through complement receptors. This is opsonisation: the target becomes easier to ingest, rather than being killed simply by attachment of the label. C5 convertases generate C5a, a powerful inflammatory and chemotactic signal, and C5b, which initiates terminal-complex assembly. Components C6, C7, C8, and C9 then participate in forming the membrane attack complex, which can damage susceptible membranes.
+
+These outcomes should be kept separate when reasoning about host defence. Recruiting a phagocyte, improving recognition of a target, and perforating a membrane are different operations. An organism may resist one while remaining vulnerable to another. Complement activation therefore does not imply that every microbe is directly lysed; much of its protective effect depends on cooperation with other immune mechanisms.
 
 ## Acute inflammation
 
@@ -653,6 +677,12 @@ A loading dose rapidly achieves a target concentration and depends mainly on vol
 Peak-to-trough fluctuation depends on dosing interval, absorption, distribution, and half-life. Short intervals reduce fluctuation but can complicate adherence. Modified-release formulations smooth concentrations but must not always be crushed. In zero-order elimination, a constant amount rather than a constant fraction is removed per unit time; capacity becomes saturated and small dose increases can cause disproportionate concentration rises.
 
 Therapeutic drug monitoring is most useful when concentration relates predictably to response, the therapeutic range is narrow, clinical effect is difficult to measure directly, and substantial pharmacokinetic variability exists. Sampling time matters. A concentration without dose history, timing, adherence, kidney and liver function, and clinical response can mislead.
+
+### Following the units in a dosing model
+
+Consider an invented drug in a linear, single-compartment model, with complete intravenous availability. A target concentration of two milligrams per litre and a distribution volume of twenty litres imply forty milligrams in the body. If clearance is three litres per hour, maintaining that concentration requires replacement of six milligrams per hour. Multiplying concentration by volume gives an amount; multiplying concentration by clearance gives an amount per time. These are different questions and require different units.
+
+If clearance halves while distribution volume remains unchanged, the model's loading amount remains forty milligrams, but the maintenance input falls to three milligrams per hour. For an oral formulation with one-half bioavailability, the administered input must be twice the systemic input, assuming linear kinetics and unchanged clearance. This is a conceptual calculation, not a regimen for a real drug. Distribution phases, absorption, active metabolites, changing organ function, and safe administration rates can make actual dosing more complex.
 
 ## Receptors and response
 
@@ -980,6 +1010,12 @@ The volume remaining after ejection is end-systolic volume. Stroke volume equals
 
 As ventricles relax, pressure falls below arterial pressure and the semilunar valves close, producing the second heart sound. Isovolumetric relaxation follows until ventricular pressure falls below atrial pressure and filling resumes. The cycle shortens as heart rate rises, with disproportionate loss of diastolic time. Extreme tachycardia can impair filling and coronary perfusion.
 
+### Follow a leaking valve from anatomy to symptoms
+
+Imagine blood entering the left atrium from the lungs, crossing the mitral valve into the left ventricle during filling, and leaving through the aortic valve during ejection. If the mitral valve fails to close effectively, ventricular contraction sends some blood backward into the atrium as well as forward into the aorta. The ventricular volume lost during systole now includes both flows. Consequently, the calculated ejection fraction can appear reassuring even when effective forward output is reduced.
+
+The atrium must receive this returning volume in addition to pulmonary venous inflow. In acute severe regurgitation, an atrium that has not adapted can develop a large pressure rise, transmitted upstream toward the pulmonary circulation. Breathlessness can therefore result from a valve lesion even though the primary defect is not in the lungs. With chronic regurgitation, atrial enlargement and increased compliance can accommodate more volume before pressure rises markedly, delaying symptoms. This verbal route links the valve's location to backward congestion and forward circulatory impairment, while explaining why chamber size, loading conditions, and regurgitant flow matter alongside ejection fraction.
+
 ## Preload, afterload, and contractility
 
 Preload describes myocardial fibre stretch before contraction and is related to ventricular filling, venous return, compliance, and end-diastolic volume and pressure. Within a physiological range, increased filling increases contraction force through the Frank-Starling mechanism. This helps match right- and left-ventricular output and adjusts stroke volume to venous return.
@@ -1142,6 +1178,14 @@ Veins are compliant capacitance vessels containing much of the blood volume. Sma
 
 Standing causes gravitational pooling below the heart. Baroreflexes increase heart rate, contractility, and vasoconstriction. Muscle contraction and venous valves limit pooling. Failure of compensation causes orthostatic symptoms. Prolonged immobility promotes venous stasis and thrombosis.
 
+### Follow congestion back toward an organ
+
+A kidney receives blood through an artery but must also discharge it through a vein. If downstream venous pressure rises, an unchanged arterial pressure no longer guarantees an unchanged pressure gradient across the organ. Increased venous pressure can also favour interstitial fluid accumulation. The arterial cuff therefore describes only one part of the circulation relevant to organ function.
+
+In decompensated heart failure, observational studies have associated higher central venous pressure with worsening renal function. That association does not prove that congestion is the sole cause in every patient. Low output, altered vascular resistance, medicines, and intrinsic kidney disease may coexist. Nevertheless, it supplies a useful clinical question: is impaired function occurring because blood cannot arrive adequately, because it cannot leave adequately, or because both processes are disturbed?
+
+Raised jugular venous pressure, peripheral oedema, and changing kidney function can support a congestion hypothesis when interpreted together, but none is a direct measurement of renal blood flow. The physiological lesson is to consider inlet pressure, outlet pressure, tissue pressure, and resistance together rather than equating a satisfactory arterial pressure with satisfactory perfusion.
+
 ## Rapid and long-term pressure control
 
 Baroreceptors in the carotid sinus and aortic arch respond to stretch. When pressure rises, firing increases, promoting parasympathetic activity and reducing sympathetic output. Heart rate, contractility, resistance, and venous tone fall. When pressure drops, the opposite occurs. Baroreflexes act within seconds but reset during sustained pressure change, so they are not the sole mechanism of long-term control.
@@ -1273,6 +1317,12 @@ Stable exertional angina reflects transient demand exceeding supply, commonly pr
 Myocardial infarction means myocardial injury with evidence of acute ischaemia. Troponin elevation shows myocardial injury but has many causes, including myocarditis, tachyarrhythmia, heart failure, pulmonary embolism, critical illness, and kidney disease. Diagnosis uses rise and fall, symptoms, electrocardiographic change, imaging, and context.
 
 Early management prioritises recognition, electrocardiography, monitoring, antiplatelet and antithrombotic decisions, relief of ischaemia, and timely reperfusion when an occluded coronary artery is suspected. Oxygen is used for hypoxaemia rather than automatically. Hypotension, bleeding risk, kidney function, drug exposure, and alternative diagnoses influence treatment.
+
+### Dated terminology update: September 2026
+
+The Fifth Universal Definition reorganises infarction into primary, secondary, and procedure-related categories. Primary infarction concerns acute coronary pathology, including mechanisms beyond plaque thrombosis. Secondary infarction concerns another acute condition producing oxygen supply–demand imbalance, with additional objective diagnostic requirements. Procedure-related infarction concerns a complication of a cardiac procedure within thirty days. Older numbered labels will still appear in textbooks and records; they should not be translated mechanically without checking the underlying mechanism and revised criteria.
+
+For clinical reasoning, separate three questions: what evidence establishes myocardial injury, what establishes ischaemia, and what explains its cause? A biomarker answers only part of this sequence. Neither a stressful illness nor a troponin rise alone establishes the mechanism of infarction. This dated overview introduces the classification rather than replacing the full diagnostic criteria.
 
 ## Heart failure
 
@@ -1445,6 +1495,12 @@ Distributive shock features pathological vasodilation and maldistribution. Sepsi
 Obstructive shock blocks filling or outflow. Causes include massive pulmonary embolism, cardiac tamponade, tension pneumothorax, and dynamic hyperinflation. Treatment requires relieving obstruction, not simply giving escalating fluid or vasopressor doses.
 
 Patients often have mixed shock. Sepsis can include hypovolaemia and cardiomyopathy. Myocardial infarction may cause pump failure and mechanical obstruction. Trauma can combine haemorrhage, tension pneumothorax, and neurogenic physiology.
+
+### Picture obstructed filling without a diagram
+
+The right and left ventricles share a septum and lie within the same pericardial enclosure. When pressurised pericardial fluid restricts expansion, filling one side increasingly competes with filling the other. During spontaneous inspiration, greater right-sided venous return can displace the septum leftward and reduce left-ventricular filling. The subsequent fall in left-ventricular stroke volume contributes to an exaggerated inspiratory fall in systolic pressure, called pulsus paradoxus. This is one interacting mechanism rather than a complete account of every respiratory pressure change.
+
+The anatomical problem is therefore external restriction of filling, not necessarily failure of myocardial contraction. A vigorously contracting but underfilled ventricle can still deliver little blood. The volume of an effusion alone does not establish its haemodynamic effect, because accumulation rate and pericardial compliance matter. Nor is pulsus paradoxus unique to tamponade; severe obstructive airway disease can also produce it. Connect the observed sign with filling mechanics and the overall clinical state before assigning a cause.
 
 ## Recognition and monitoring
 
@@ -1619,6 +1675,12 @@ Macrocytosis can reflect vitamin B twelve or folate deficiency, alcohol, liver d
 Normocytic anaemia includes acute blood loss, haemolysis, chronic inflammation, kidney disease, endocrine disease, marrow failure, and mixed deficiency. Inflammation raises hepcidin, reducing intestinal iron absorption and trapping iron in storage cells. Kidney disease reduces erythropoietin and shortens red-cell survival.
 
 Haemolysis may be intrinsic to the red cell, as in membrane, enzyme, or haemoglobin disorders, or extrinsic through antibodies, mechanical destruction, infection, toxins, burns, or hypersplenism. Findings can include increased unconjugated bilirubin and lactate dehydrogenase, reduced haptoglobin, reticulocytosis, jaundice, dark urine, and abnormal blood film. Intravascular and extravascular haemolysis produce overlapping but different patterns.
+
+### Follow iron from storage to the marrow
+
+Iron must leave intestinal cells and recycling macrophages before it can circulate to developing red cells. Ferroportin is an iron-export protein in these cell membranes. Hepcidin binds ferroportin and promotes its removal from the surface, reducing iron export. This provides a mechanism by which iron can remain within storage and recycling cells while less becomes available to the marrow. A shortage of circulating usable iron therefore need not mean that every store is empty.
+
+Connect this mechanism with the earlier distinction between iron deficiency and inflammation-associated iron restriction. In the former, the total available reserve is depleted; in the latter, distribution and access can be impaired despite retained stores. Both processes may coexist. For retrieval, explain why low circulating iron alone cannot identify which mechanism is operating. The answer is that the measurement describes the circulating compartment, whereas production of haemoglobin also depends on storage, release, transport, uptake, and the marrow's ability to use the delivered iron.
 
 ## Platelets and primary haemostasis
 
@@ -1950,6 +2012,12 @@ Alveolar ventilation equals respiratory rate multiplied by tidal volume minus de
 
 Regional ventilation is affected by gravity and mechanics. At resting lung volume, dependent alveoli are smaller but often more compliant, so they receive more tidal ventilation. Disease, position, obesity, anaesthesia, pain, and airway closure alter this pattern.
 
+### A breathing-rate example that changes the interpretation
+
+Assume a simplified dead-space volume of one hundred and fifty millilitres per breath. Twelve breaths per minute, each five hundred millilitres, produce six litres of minute ventilation. Subtract dead space from each breath first: three hundred and fifty millilitres reach the gas-exchanging compartment, giving four point two litres per minute of alveolar ventilation. Now keep minute ventilation at six litres but use twenty-four breaths of two hundred and fifty millilitres. Only one hundred millilitres per breath remain after subtracting dead space, so alveolar ventilation falls to two point four litres per minute.
+
+The faster pattern therefore removes less carbon dioxide under these assumptions despite moving the same total air volume. This is why rate alone cannot establish effective ventilation in a tired or painful patient taking shallow breaths. Real dead space can change with disease and equipment, and carbon dioxide production can also change. The calculation explains a mechanism; it does not prescribe a breathing pattern or ventilator setting.
+
 ## Alveolar gas and partial pressure
 
 Gas molecules exert partial pressures according to their fraction of total gas. Inspired oxygen pressure falls after humidification because water vapour contributes pressure. In alveoli, oxygen is continually removed and carbon dioxide added. Alveolar oxygen therefore depends on inspired oxygen, barometric pressure, and carbon dioxide relative to ventilation.
@@ -2115,6 +2183,14 @@ Air moves when alveolar pressure differs from atmospheric pressure. During quiet
 Transpulmonary pressure is alveolar minus pleural pressure and keeps lungs expanded. The chest wall tends outward at lower volumes while lungs recoil inward. Their balance defines functional residual capacity, the volume after a normal expiration.
 
 Pneumothorax introduces gas into pleural space, reduces the normal pressure difference, and permits lung recoil. Tension physiology occurs when pressure progressively impairs venous return and compresses cardiopulmonary structures. Pleural fluid separates lung from chest wall and can compress dependent lung.
+
+### A verbal route from chest wall to alveolus
+
+Imagine moving inward from a rib through the chest wall. You meet the parietal pleura, then a normally very thin fluid-containing pleural space, then visceral pleura covering the lung. Continue inward into lung tissue and finally an air-filled alveolus. The pleural space and the alveolar airspace are different compartments; neither is a passage through which inspired air normally travels to reach the other.
+
+During quiet inspiration, expansion of the thorax makes pleural pressure more negative. The pressure difference between alveolus and pleural space increases, distending the lung. Alveolar pressure briefly falls below atmospheric pressure, drawing air through the conducting airways. Airflow stops when alveolar and atmospheric pressures equalise, even though the expanded lung still requires a distending pressure.
+
+Now place air in the pleural space. This disrupts normal mechanical coupling and can allow the lung to recoil inward: the key defect is outside the alveolus, not simply a blocked bronchus. In contrast, fluid within alveoli directly replaces gas at the exchange surface. Both can impair oxygenation, but tracing the affected compartment explains why they are anatomically and mechanically different problems.
 
 ## Compliance and elastic recoil
 
@@ -2320,6 +2396,14 @@ Diagnosis combines syndrome and imaging, with cultures and antigen or molecular 
 
 Tuberculosis spreads through airborne particles and can remain latent or cause active disease. Pulmonary disease may produce prolonged cough, weight loss, fever, night sweats, haemoptysis, and upper-lobe or disseminated patterns. Diagnosis uses microbiology and imaging; immune tests show infection but do not alone prove active disease. Multidrug therapy and public-health measures are necessary because resistance emerges rapidly with inadequate treatment.
 
+### From inflammatory exudate to clinical uncertainty
+
+In pneumonia, inflammatory cells and fluid can occupy spaces that normally contain air. Consolidation describes this replacement of alveolar gas by material; it is a structural pattern rather than the name of a pathogen. Follow the consequences separately. Less gas reaches affected exchange surfaces, while perfusion may continue. The radiograph becomes more opaque because tissue and fluid attenuate X-rays more than air. Local crackles or reduced breath sounds may accompany the process, but their absence does not exclude it.
+
+Do not reverse the reasoning too quickly. An opacity does not by itself establish infection: oedema, haemorrhage, collapse, and other processes can also increase lung density. Fever, time course, exposure, immune status, examination, oxygenation, and appropriate investigations determine how plausible pneumonia is. Likewise, improvement in fever does not prove that gas exchange has recovered. Reassess the physiological consequence as well as the suspected cause.
+
+For retrieval, distinguish three questions: what compartment is abnormal, what process produced the abnormality, and how severely function is impaired? A good clinical explanation answers all three rather than using one imaging label as the entire diagnosis.
+
 ## Interstitial and occupational lung disease
 
 Interstitial lung disease includes many disorders causing inflammation, fibrosis, or both in alveolar walls and supporting tissue. Patients often develop progressive exertional dyspnoea, dry cough, fine crackles, reduced volumes, impaired diffusion, and exertional desaturation. High-resolution computed tomography patterns narrow the differential.
@@ -2495,6 +2579,14 @@ Palpate expansion and tactile fremitus when useful. Fremitus increases over cons
 Auscultate systematically. Vesicular breath sounds are soft with longer inspiration. Bronchial breathing over peripheral lung suggests transmission through consolidation or a cavity. Crackles arise from airway opening or secretions; fine late inspiratory crackles support fibrosis or oedema, while coarse sounds suggest larger-airway secretions, but overlap is substantial. Wheeze is musical airflow through narrowed airways. A pleural rub is grating and localised.
 
 Assess vocal resonance when consolidation or effusion is suspected. Examine cardiovascular status, jugular venous pressure, oedema, calf asymmetry, skin, joints, muscle strength, and abdomen because respiratory disease can be systemic or secondary.
+
+### Making a reproducible examination map
+
+A useful verbal examination record specifies side, surface, height, respiratory phase, and comparison. For example, describe a finding as right posterior basal inspiratory crackles rather than simply abnormal lungs. This does not assign a definitive pathological diagnosis or precisely identify a bronchopulmonary segment. It does allow another examiner to revisit the same region and ask whether the finding persists.
+
+Move between corresponding right and left sites before moving to a different height. Include anterior, lateral, and posterior regions as the patient's condition permits. Listen through inspiration and expiration, and distinguish a sound heard only during one phase from a persistent reduction in sound intensity. Position, effort, clothing friction, and listening over bone can change what reaches the stethoscope. A technically poor comparison should not be converted into confident localisation.
+
+When a new asymmetry is found, return to the mechanism. Is ventilation reduced, is sound transmission altered, or is the patient limiting movement because of pain? Compare expansion, percussion, symptoms, and oxygenation rather than allowing one sound to determine the diagnosis. Document any regions that could not be assessed and why. In an unstable patient, this mapping exercise must not delay immediate assessment and support.
 
 ## Arterial and venous blood gases
 
@@ -11974,6 +12066,8 @@ The standard anatomical position is upright, facing forward, with upper limbs at
 
 Superior means toward the head and inferior toward the feet. Anterior is toward the front and posterior toward the back. Medial is toward the midline and lateral away from it. Proximal and distal describe relative distance from a limb attachment or structure of origin. Superficial and deep indicate distance from the body surface. Internal and external may describe walls, cavities, or rotation and require context.
 
+Internal and external describe an inside–outside relationship to a specified structure; they do not generally mean medial and lateral. A point inside the wall of a hollow organ is not necessarily nearer the body's midline. Similarly, superficial and deep refer to distance from a surface, whereas proximal and distal require a stated origin. Ask which reference makes each relationship true. In anatomical position, the thumb is lateral to the little finger, and the elbow is proximal to the wrist. Turning the whole person to face away from an observer changes the observer's view but leaves these relationships unchanged. For retrieval, explain why a structure can be both deep and lateral. The answer is that depth and distance from the midline describe different spatial relationships, so neither determines the other.
+
 A median sagittal plane divides the body into equal right and left parts, while parasagittal planes are parallel. Coronal planes divide anterior and posterior portions. Transverse or axial planes divide superior and inferior portions. Oblique planes cross these axes. A section is the exposed surface created by a cut; its apparent relationships depend on plane and viewing convention.
 
 Imaging commonly displays axial sections as though viewed from the feet, placing the patient’s right on the viewer’s left. Coronal images are commonly viewed facing the patient. Sagittal images may be viewed from either side and require orientation markers. Never infer laterality from habit when labels are available.
@@ -16745,3 +16839,127 @@ Biodiversity loss and land-use change alter food systems, water regulation, live
 Air, water, soil, noise, plastics, and chemical pollution create burdens distributed unevenly. Regulation often requires acting before every individual causal pathway is proven because exposure is widespread and delayed harm may be irreversible. Precaution is not evidence-free prohibition; it combines plausible hazard, exposure, alternatives, uncertainty, and consequence. Polluters and beneficiaries should not externalise costs onto communities with the least political power.
 
 Burden measurement and implementation meet in accountability. A metric should reveal need, guide action, and show who benefits without reducing complex lives to one rank. Programmes should be judged by reach, quality, outcome, cost, equity, and sustainability, not announcement or pilot success. Global and planetary health extend clinical responsibility across borders and generations: today's allocation and production decisions shape whose disease becomes visible, whose care is feasible, and which future risks are inherited.
+
+# Chapter 104: Exercise, Adaptation, Thermoregulation, Altitude, and Extreme Environments
+
+## TTS module 1: Exercise energetics and integrated physiological response
+
+Exercise is a controlled disturbance of homeostasis in which skeletal muscle converts chemical energy into force, movement, and heat. Performance depends on more than muscle. Ventilation, cardiac output, blood flow, oxygen transport, substrate supply, temperature control, neural drive, endocrine signals, and perception must change together. The limiting process depends on task intensity and duration, environment, training, health, and motivation. A single measure such as maximal oxygen uptake summarises important capacity but does not explain every form of performance.
+
+Adenosine triphosphate directly powers cross-bridge cycling, calcium pumps, and ion gradients, yet intramuscular stores sustain maximal contraction for only seconds. Phosphocreatine rapidly donates phosphate to adenosine diphosphate through creatine kinase, buffering energy during abrupt demand. Anaerobic glycolysis produces ATP rapidly from glucose or glycogen and forms pyruvate, which can be reduced to lactate while regenerating oxidised nicotinamide cofactor. Oxidative phosphorylation produces ATP more slowly but with far greater capacity from carbohydrate, fat, and, to a smaller extent, amino acids.
+
+These energy systems operate simultaneously rather than replacing one another in sequence. Their relative contribution changes with power, duration, fibre recruitment, oxygen delivery, substrate availability, and training. A short sprint has high phosphagen and glycolytic flux while oxidative metabolism rises rapidly. Prolonged moderate exercise relies heavily on mitochondria but still uses glycolysis. Lactate production does not mean oxygen is absent; it reflects glycolytic flux and redox balance, and lactate can be oxidised by muscle and heart or used for hepatic glucose production.
+
+Oxygen consumption is the product of cardiac output and the arterial-venous oxygen-content difference. Cardiac output equals heart rate multiplied by stroke volume. During dynamic exercise, sympathetic activation and vagal withdrawal raise heart rate and contractility. Venous return increases through muscle and respiratory pumps, venoconstriction, and redistribution. Stroke volume rises through filling and contractility before often approaching a plateau, although endurance-trained people may continue increasing it at high intensity.
+
+Blood flow is redistributed through local metabolic vasodilation in active muscle, sympathetic vasoconstriction in less active beds, and increased cardiac output. Active muscle produces adenosine, potassium, carbon dioxide, hydrogen ions, nitric-oxide-related signals, and other mediators that oppose vasoconstriction locally, a phenomenon sometimes called functional sympatholysis. Skin flow later increases for heat loss. Coronary flow rises with myocardial oxygen demand. Mean arterial pressure usually increases moderately because cardiac output rises more than systemic resistance falls.
+
+Static or heavy resistance exercise creates a different haemodynamic pattern. Contracting muscle compresses vessels, resistance rises, and blood pressure can become very high transiently, especially with breath holding and the Valsalva manoeuvre. During straining, intrathoracic pressure changes venous return, arterial pressure, and baroreflex responses across phases. Proper breathing, technique, load selection, and clinical context influence risk. The acute pressure response does not mean resistance training inevitably causes chronic hypertension.
+
+Ventilation increases immediately through central command and sensory feedback, then follows metabolic carbon dioxide production and acid-base demands. At moderate steady exercise, arterial oxygen and carbon dioxide pressures remain near normal in healthy people despite much larger gas exchange. Tidal volume rises first, and breathing frequency contributes increasingly at higher intensity. Beyond a ventilatory threshold, ventilation increases disproportionately as bicarbonate buffering of accumulating hydrogen ions produces additional carbon dioxide and neural drive rises.
+
+Diffusion capacity and pulmonary perfusion increase during exercise through recruitment and distension of pulmonary capillaries. Healthy lungs usually possess reserve, but elite endurance demand, altitude, lung disease, or cardiac disease can expose limitations. Exercise-induced arterial desaturation can occur when red-cell transit becomes short, ventilation-perfusion matching is imperfect, or diffusion is limited. Breathlessness reflects respiratory drive, mechanics, gas exchange, affect, and prior experience, not one oxygen reading alone.
+
+Arterial oxygen content depends mainly on haemoglobin concentration and saturation, with little oxygen dissolved in plasma. Anaemia reduces content even when saturation is normal, requiring higher cardiac output for the same oxygen delivery. Carbon monoxide can reduce oxygen carriage and distort some saturation measurements. During exercise, increased temperature, carbon dioxide, and acidity shift haemoglobin affinity to facilitate unloading in active tissue, while pulmonary conditions support reloading.
+
+Muscle oxygen extraction rises as capillary perfusion, diffusion gradients, myoglobin transfer, and mitochondrial use increase. Endurance training expands capillary and mitochondrial capacity. However, oxygen delivery and utilisation are interdependent: more mitochondria cannot compensate fully for severely limited flow, and high flow cannot produce oxidative ATP without functional muscle mitochondria. Maximal oxygen uptake reflects the integrated maximum of delivery and extraction under a specific test mode.
+
+Skeletal muscle recruits motor units according to force and control demands. Lower-threshold fatigue-resistant units are generally recruited first, followed by larger faster units as force rises. Fibre phenotypes differ in contractile proteins, oxidative enzymes, mitochondria, capillaries, glycolytic capacity, and fatigue, but exist on continua and adapt. Recruitment order can be modified by rapid ballistic tasks, electrical stimulation, injury, and specialised movement. Whole-muscle function cannot be inferred from one fibre label alone.
+
+Carbohydrate provides ATP at higher rates and per unit oxygen more efficiently than fat. Muscle glycogen supplies local glucose rapidly, while liver glycogen and gluconeogenesis support blood glucose. Fatty acids derive from adipose lipolysis and intramuscular stores and dominate more at lower relative intensities and longer durations. As intensity rises, carbohydrate use generally increases because rapid ATP demand and fibre recruitment favour glycolysis. Training, diet, sex hormones, temperature, and prior exercise alter the crossover.
+
+Hormonal responses maintain substrate and circulation. Catecholamines increase cardiac function, glycogenolysis, and lipolysis. Insulin concentration often falls while muscle glucose uptake rises through contraction-dependent transporter movement; glucagon and catecholamines support hepatic glucose output. Cortisol and growth hormone contribute during longer or stressful exercise. These responses are graded by relative intensity and training, so the same absolute workload causes a smaller stress response after adaptation.
+
+Fluid moves among vascular, interstitial, and intracellular compartments as pressure, osmolality, metabolism, and sweating change. Plasma volume can fall during prolonged exercise, reducing stroke volume and increasing heart rate for the same output, termed cardiovascular drift. Drinking needs depend on duration, environment, sweat rate, access, and starting status. Both excessive dehydration and overdrinking hypotonic fluid can be dangerous. Body-mass change gives a practical retrospective estimate but includes substrate and metabolic-water effects.
+
+Mechanical efficiency is external work divided by metabolic energy expenditure. Much energy becomes heat rather than work. Efficiency varies with movement, speed, muscle action, skill, and biomechanics. Economy describes oxygen or energy cost at a given submaximal speed or power and can improve through technique and elastic energy storage without changing maximal oxygen uptake. Running, cycling, swimming, and upper-body exercise recruit different muscle mass and skill, so test results are mode-specific.
+
+Perceived exertion integrates corollary neural signals, respiratory and muscular sensations, temperature, metabolites, emotion, expectation, and motivation. It correlates with intensity but is not merely a disguised heart rate or lactate value. Pain and discomfort can protect against damaging effort, yet pacing also reflects learned predictions about remaining distance and capacity. Deception about time or distance can alter output, demonstrating that performance is regulated by both physiological state and information.
+
+Fatigue during one bout is a reversible reduction in ability to produce required force or power. Peripheral mechanisms include metabolite accumulation, altered excitation-contraction coupling, ion shifts, substrate depletion, and muscle damage. Central fatigue reflects reduced effective neural drive and can be influenced by temperature, neurotransmission, afferent feedback, motivation, and threat. These are interacting safety and performance processes rather than evidence that fatigue is either entirely muscular or entirely mental.
+
+Exercise testing uses standardised protocols to connect workload with symptoms, electrocardiography, pressure, ventilation, gas exchange, or performance. Interpretation requires mode, calibration, effort, medication, environment, and termination reason. A peak value may be limited by symptoms or protocol before a physiological maximum is reached. Submaximal thresholds and response patterns can be more clinically informative than one maximum, especially when locating cardiac, pulmonary, vascular, muscular, or motivational constraints.
+
+The integrated response can be summarised as matching ATP demand with oxygen, substrate, and heat removal while preserving pressure and brain function. Training changes every link, but disease can shift the bottleneck. Exercise physiology is therefore a stress test of reserve: it reveals interactions that remain hidden at rest and explains why the same workload is trivial for one person, maximal for another, and unsafe for a third.
+
+## TTS module 2: Training adaptation, fatigue, recovery, and performance
+
+Training is repeated exercise that produces persistent adaptation when the stimulus exceeds accustomed demand and recovery permits remodelling. Adaptation is specific to the muscles, movement, force, velocity, duration, energy systems, and environment trained, but transfer occurs when tasks share limiting processes. Progressive overload increases stimulus as capacity grows. Variation prevents one pattern from exhausting the same tissues continually, while reversibility means adaptations decline when the stimulus is removed. More work is not automatically better because adaptation depends on the balance between signal and recoverable cost.
+
+An exercise bout alters calcium, energy charge, redox state, mechanical tension, metabolites, hormones, temperature, and local inflammation. These signals modify kinases, transcription factors, gene expression, protein synthesis, mitochondrial turnover, capillaries, connective tissue, and neural control. The early molecular response does not itself prove a useful long-term adaptation. Repeated bouts must accumulate into altered structure and function. Training status changes the response: a workload that strongly perturbs a novice may be maintenance for an experienced athlete.
+
+Endurance training increases mitochondrial content and enzyme capacity, capillary supply, fat oxidation, lactate transport and use, plasma volume, and autonomic efficiency. Cardiac stroke volume often rises through expanded filling, chamber adaptation, and contractile function, allowing a lower heart rate at a given submaximal output. Maximal oxygen uptake can increase through central delivery and peripheral extraction, while performance also improves through economy, threshold, glycogen preservation, and fatigue resistance. One adaptation may improve even if maximal oxygen uptake changes little.
+
+High-intensity intervals produce repeated periods near severe metabolic and cardiorespiratory demand separated by recovery. They can stimulate oxidative and performance adaptations with lower total time, but the physiological and perceptual burden can be high. Work interval, recovery, number, mode, and intensity create different sessions. A label such as interval training is insufficient to prescribe or compare them. Low-intensity volume remains valuable for accumulating work with manageable fatigue and for developing tissue tolerance and skill.
+
+Resistance training increases strength through neural and muscular adaptations. Early gains often reflect better motor-unit recruitment, firing, coordination, and skill. Hypertrophy follows net accumulation of contractile and supporting proteins when repeated synthesis exceeds breakdown. Mechanical tension is a major signal; high force can be produced with heavy load or with lighter load taken close to fatigue, although joint stress, discomfort, power, and efficiency differ. Muscle size explains much but not all strength because architecture, leverage, tendon properties, and neural control matter.
+
+Power is force multiplied by velocity and often declines with age before maximal strength. Training power requires intent to move rapidly with loads that permit useful velocity and safe control. Eccentric contractions can produce high force at lower metabolic cost but cause greater initial muscle damage in unaccustomed exercise. Repeated exposure produces a protective repeated-bout effect. Isometric, concentric, eccentric, open-chain, and closed-chain tasks transfer according to joint angle, velocity, range, and coordination.
+
+Bone adapts to dynamic strain magnitude, rate, direction, and novelty. Short bouts of varied impact and high muscle force can be osteogenic, while continuous low strain may saturate the response. Adaptation is slow and site-specific. Tendons respond to repeated high tension through matrix turnover and changes in stiffness, but their timescale may lag muscle. Rapid strength gain can therefore exceed connective-tissue readiness. Cartilage benefits from cyclic loading within capacity, whereas immobilisation and excessive injurious load are harmful.
+
+Flexibility is the available range of motion and depends on joint structure, muscle-tendon properties, neural tolerance, temperature, and measurement. Stretching can increase range, often through greater tolerance as well as structural change. Prolonged intense static stretching immediately before maximal power may temporarily reduce output, while dynamic preparation can raise temperature and rehearse movement. More flexibility is not universally protective; the required range and control depend on the activity.
+
+Motor learning improves efficiency, timing, and accuracy through task practice and feedback. External focus on the movement effect can support automatic control, while excessive internal instructions can disrupt skilled performance. Variable practice may reduce immediate success but improve transfer. Fatigue changes technique and error, so practising only when fresh may not prepare performance under realistic demand, but practising complex high-risk skills when severely fatigued can reinforce unsafe patterns.
+
+Concurrent endurance and resistance training can improve both capacities, but high volumes with poor sequencing or recovery can attenuate selected strength and hypertrophy adaptations. Interference is influenced by total load, modality, nutritional support, training status, and proximity of sessions, not an absolute molecular prohibition. Combining modalities is essential for health and many sports. Prioritisation means placing the most important quality when fatigue is lowest and allocating enough recovery for its adaptation.
+
+Training load has external and internal components. External load is work performed, such as distance, power, repetitions, or force. Internal load is the physiological and perceptual response, such as heart rate, oxygen consumption, lactate, or perceived exertion. The same external load creates different internal stress with heat, illness, sleep loss, altitude, or improved fitness. Monitoring one without the other can mistake declining capacity for increased effort or improved fitness for undertraining.
+
+Acute fatigue is expected after sufficient training and resolves with recovery. Functional overreaching is a short, planned period of reduced performance followed by improvement after recovery. Nonfunctional overreaching produces longer impairment without compensating gain. Overtraining syndrome is persistent performance reduction with fatigue and disturbances that cannot be explained by another condition, and diagnosis is difficult. Infection, iron deficiency, low energy availability, sleep disorder, endocrine disease, mental illness, medication, and life stress must be considered.
+
+Delayed-onset muscle soreness develops after unfamiliar loading, especially eccentric work, and peaks after the exercise rather than during it. It reflects structural disturbance and inflammatory sensitisation, not retained lactate. Soreness correlates poorly with the quality of adaptation and is not a required training goal. Severe pain, marked swelling, weakness, dark urine, systemic illness, or focal dysfunction should not be normalised as ordinary soreness.
+
+Recovery restores performance and enables adaptation through substrate replacement, protein turnover, fluid balance, autonomic settling, tissue repair, sleep, and psychological decompression. Different systems recover on different timescales. Heart rate may normalise while glycogen remains low, or soreness may persist after force returns. Passive rest is not always superior; low-intensity movement can support comfort and circulation without accelerating every repair process. Recovery strategies should be judged by meaningful outcomes rather than transient sensations or biomarkers.
+
+Sleep supports attention, motor learning, endocrine regulation, immunity, appetite, and tissue recovery. Training late does not universally impair sleep, but high arousal close to bedtime affects some people. Sleep need varies and cannot be reduced to one ideal number. Travel, shift work, pain, anxiety, breathing disorders, and stimulant use can impair sleep opportunity or quality. Extending opportunity and stabilising timing often have greater evidence than specialised recovery devices.
+
+Nutrition supports training by supplying energy, carbohydrate, protein, fat, micronutrients, and fluid. Protein distribution across meals can support repeated synthesis, while total daily intake and training stimulus remain central. Carbohydrate availability should match demand; strategic low availability may alter signalling but can reduce quality and increase stress. Low energy availability impairs reproductive, bone, immune, metabolic, cardiovascular, and psychological function and can occur in any sex or body size, with or without a formal eating disorder.
+
+Hydration planning should begin from individual sweat rate, climate, duration, and opportunities. Sodium replacement matters with large prolonged sweat loss, but concentration and need vary. Pre-exercise overdrinking does not create a useful reservoir and increases hyponatraemia risk. Supplements should be evaluated for mechanism, evidence, dose, contamination, interaction, and whether the basic limitation is already addressed. Small performance effects may matter in competition but do not transform an unsafe programme into a sound one.
+
+Injury risk emerges from tissue capacity interacting with load, technique, environment, recovery, prior injury, and chance. Sudden changes can exceed adaptation, but no single acute-to-chronic ratio reliably predicts all injury. Pain does not map perfectly to tissue damage, and imaging abnormalities can occur without symptoms. Management should identify serious pathology, then restore tolerable function progressively. Complete rest can reduce capacity, while forced training through escalating dysfunction can worsen injury.
+
+Periodisation organises training stress and recovery across time. It may vary volume, intensity, specificity, and competition preparation, but no template is universally superior. Plans should adapt to measured response rather than demand that biology follow a calendar. The practical sequence is to define the performance or health goal, identify limiting capacities, apply the minimum effective progressive stimulus, monitor function and wellbeing, and revise before fatigue becomes persistent harm.
+
+## TTS module 3: Heat, cold, altitude, diving, and microgravity
+
+Human physiology maintains internal function across changing environments by exchanging heat, gases, fluid, and mechanical load with the surroundings. Environmental stress depends on intensity, duration, rate of change, clothing or equipment, activity, acclimatisation, illness, medicines, age, and access to shelter. A condition tolerated at rest may become dangerous during exercise because metabolic heat and oxygen demand rise. Adaptation extends the operating range but does not abolish physical limits.
+
+Core temperature reflects the balance between metabolic heat production and heat exchange by radiation, convection, conduction, and evaporation. Radiation and convection can remove heat when surroundings are cooler than skin but add heat when they are hotter. Evaporation can still cool in hot air if sweat reaches the skin and vapour pressure permits it. High humidity, impermeable clothing, low airflow, and dripping unevaporated sweat reduce efficiency. A thermometer alone does not describe total heat strain.
+
+Thermoregulatory sensors in skin and core inform hypothalamic and brainstem networks. Heat activates skin vasodilation and sweating, while behaviour seeks shade, reduces work, removes clothing, or drinks. Skin blood flow competes with active muscle and central blood volume. As sweating reduces plasma volume, heart rate rises and stroke volume can fall. Dehydration increases cardiovascular and thermal strain, but forced drinking beyond loss risks dilutional hyponatraemia.
+
+Heat acclimation develops over repeated exposure, especially when core and skin temperature and sweating are sufficiently challenged. Plasma volume expands, sweating begins earlier and becomes more distributed, sweat can become more dilute through aldosterone-mediated sodium conservation, and cardiovascular strain falls at a given workload. Adaptation begins within days and develops over roughly one to two weeks, then decays without exposure. Fitness provides partial cross-adaptation but does not replace heat-specific preparation.
+
+Heat exhaustion is inability to continue activity with heavy sweating, weakness, dizziness, headache, nausea, tachycardia, or collapse, generally without severe central nervous dysfunction from heat injury. Heat stroke is a medical emergency defined by dangerous hyperthermia with central nervous system dysfunction, often accompanied by liver, kidney, muscle, coagulation, and circulatory injury. A normal-looking skin or continued sweating does not exclude it. Immediate rapid cooling and supportive emergency care should not wait for a perfect temperature measurement.
+
+Exertional heat stroke often affects active people and can develop rapidly, whereas classic heat stroke commonly occurs during environmental heat in vulnerable people with limited cooling, mobility, or support. Medicines that impair sweating, alter circulation, increase heat production, or change judgement can raise risk. Cooling method should maximise heat transfer without delaying transport or resuscitation. Antipyretics do not correct heat stroke because the hypothalamic set point is not elevated as it is in fever.
+
+Cold exposure increases heat conservation through skin vasoconstriction and behaviour and increases production through shivering and non-shivering thermogenesis. Clothing traps insulating air, but wind, water, compression, and moisture reduce protection. Water removes heat far faster than still air. Exercise generates heat but can increase convective loss, sweating, and later cooling. Alcohol creates a sensation of warmth through skin vasodilation while accelerating heat loss and impairing judgement.
+
+Hypothermia slows metabolism, neural function, ventilation, and cardiac conduction. Early shivering and confusion can progress to loss of coordination, reduced consciousness, arrhythmia, and cardiac arrest. Peripheral vasoconstriction can conceal low circulating volume, and movement of severely cold patients requires care because the myocardium is irritable. Rewarming may be passive, active external, or internal according to severity and circulation. Apparent death should be interpreted cautiously in profound cold, although resuscitation decisions depend on context and injuries.
+
+Frostbite is freezing tissue injury involving ice, osmotic stress, endothelial damage, thrombosis, inflammation, and reperfusion. Numb pale or waxy tissue may later develop blistering and necrosis. Refreezing after thawing greatly worsens injury, so thawing should occur only when refreezing can be prevented. Non-freezing cold injury arises from prolonged wet cold above freezing and damages nerves and microvasculature. Rubbing frozen tissue adds mechanical injury.
+
+At altitude, barometric pressure falls while the fraction of oxygen remains about the same. Inspired and alveolar oxygen partial pressures therefore decline, reducing arterial oxygenation. Immediate hypoxic ventilatory response lowers carbon dioxide and causes respiratory alkalosis, which initially restrains further ventilation. Over days the kidney excretes bicarbonate, permitting sustained hyperventilation. Heart rate and cardiac output rise initially, while maximal aerobic performance falls because oxygen delivery is limited.
+
+Hypoxia increases erythropoietin and red-cell production over weeks, but plasma-volume contraction can raise haemoglobin concentration before true cell mass grows. Tissue adaptations include changes in capillaries, mitochondria, transport, and metabolism, varying with duration and population. More red cells improve oxygen content but excessive viscosity can impede flow. Long-resident high-altitude populations show different inherited adaptations, demonstrating that acclimatisation within a lifetime and evolutionary adaptation are distinct.
+
+Acute mountain sickness causes headache with symptoms such as nausea, fatigue, dizziness, or sleep disturbance after ascent. Risk depends strongly on ascent rate, attained sleeping altitude, prior response, and individual susceptibility, not simply fitness. Continued ascent with symptoms increases danger. High-altitude cerebral oedema presents with ataxia, altered mental state, and progressive neurological dysfunction; high-altitude pulmonary oedema causes breathlessness, reduced exercise tolerance, cough, hypoxaemia, and pulmonary hypertension-related fluid leakage. Descent and oxygen are central emergency responses.
+
+Hypoxic pulmonary vasoconstriction diverts blood from poorly ventilated lung regions at sea level but becomes widespread at altitude, raising pulmonary arterial pressure. Uneven vasoconstriction and high flow contribute to oedema. Acetazolamide promotes bicarbonate loss, supports ventilation, and aids acclimatisation in appropriate use. Glucocorticoids can reduce cerebral symptoms but do not produce normal acclimatisation. Preventive drugs complement, rather than justify ignoring, graded ascent.
+
+Diving increases ambient pressure by roughly one atmosphere for each ten metres of seawater. Boyle's law means gas volume decreases as pressure rises and expands on ascent. Failure to equalise can injure gas-filled ears, sinuses, mask spaces, or lungs. Breath holding during ascent after compressed-gas breathing can expand pulmonary gas, causing barotrauma and arterial gas embolism. Even shallow ascent can be dangerous if expanding gas cannot escape.
+
+Henry's law describes greater dissolution of gas in tissues at higher partial pressure. Nitrogen accumulates during depth and time, then leaves during ascent. If ambient pressure falls too quickly, supersaturation can produce bubbles and decompression sickness affecting joints, skin, nervous system, lungs, and other organs. Controlled ascent and decompression stops allow elimination. Treatment of serious decompression illness or arterial gas embolism involves high-concentration oxygen, supportive care, and urgent specialist recompression assessment.
+
+Gas partial pressures create additional hazards. Nitrogen narcosis impairs cognition and motor control at depth. Excess oxygen can cause central nervous system toxicity with seizures at high pressure or pulmonary toxicity with prolonged exposure. Carbon dioxide retention can result from exertion, equipment dead space, dense-gas work, or inadequate ventilation and worsens narcosis and oxygen toxicity risk. Breathing-gas mixtures and exposure limits are selected for depth and task.
+
+Immersion itself shifts blood centrally through hydrostatic pressure, increasing cardiac filling and promoting diuresis. Cold water adds vasoconstriction and respiratory responses; sudden immersion can provoke gasping and hyperventilation before hypothermia develops. Breath-hold diving combines hypoxia, carbon dioxide rise, pressure, and strong autonomic reflexes. Hyperventilation before breath holding lowers carbon dioxide and delays the urge to breathe without adding much oxygen, increasing the risk of underwater loss of consciousness.
+
+Microgravity removes normal weight-bearing and redistributes fluid toward the chest and head. Initial central volume expansion promotes diuresis and reduces plasma volume. Over time, cardiovascular deconditioning, reduced baroreflex tolerance, bone loss, muscle atrophy, altered sensorimotor control, and changes in vision and immunity can occur. On return to gravity, reduced volume and vascular control contribute to orthostatic intolerance. Resistance exercise, aerobic conditioning, nutrition, and other countermeasures reduce but do not eliminate adaptation.
+
+Bone loss in microgravity reflects reduced mechanical loading and altered remodelling, with site-specific loss in weight-bearing skeleton and increased urinary calcium that can raise stone risk. Antigravity muscles lose size and strength. The vestibular system must reinterpret absent gravitational cues, causing motion sickness and later readaptation. Radiation exposure outside much of Earth's protection adds stochastic and tissue risks that increase with dose, mission duration, shielding, and solar events.
+
+Extreme-environment medicine is applied integrative physiology. Heat stresses circulation and evaporation; cold challenges insulation and metabolism; altitude lowers oxygen pressure; diving raises pressure and dissolved gas; microgravity removes loading and redistributes fluid. In every setting, prevention begins by identifying the governing physical exposure, matching work and equipment to human reserve, allowing graded adaptation, and recognising early failure before compensation becomes irreversible injury.
