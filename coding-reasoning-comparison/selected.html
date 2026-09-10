@@ -1026,7 +1026,7 @@ html>body{padding:0}</style>
 <body>
 <div id="astra-sol-comparison">
   <h3>Astra, Sol and Fable at selected reasoning levels</h3>
-  <div class="text-small text-muted">GPT-6 Astra · GPT-5.6 Sol · Claude Fable 5.1 · Artificial Analysis · 9 Sep 2026</div>
+  <div class="text-small text-muted">GPT-6 Astra · GPT-5.6 Sol · Claude Fable 5.1 · Artificial Analysis · 10 Sep 2026</div>
   <div class="as-plots"></div>
   <div class="text-small text-muted">Coding: benchmark pass rates. Tokens/cost: mixed Intelligence Index v4.3 tasks. Latency: separate API prompts; first answer, not a completed patch.</div>
 </div>
@@ -1042,20 +1042,20 @@ html>body{padding:0}</style>
 <script>
 (()=>{
 const root=document.getElementById('astra-sol-comparison');
-const labels=['Astra med','Astra high','Sol xhigh','Sol max','Fable xhigh'];
-const full=['GPT-6 Astra medium','GPT-6 Astra high','GPT-5.6 Sol xhigh','GPT-5.6 Sol max','Claude Fable 5.1 xhigh (adaptive reasoning, default fallback)'];
-const colors=[1,4,2,3,5];
+const labels=['Astra med','Astra high','Astra xhigh','Sol xhigh','Sol max','Fable xhigh'];
+const full=['GPT-6 Astra medium','GPT-6 Astra high','GPT-6 Astra xhigh','GPT-5.6 Sol xhigh','GPT-5.6 Sol max','Claude Fable 5.1 xhigh (adaptive reasoning, default fallback)'];
+const colors=[1,4,6,2,3,5];
 const specs=[
- {name:'Terminal coding',detail:'Terminal-Bench v4.0 · higher is better',unit:'Pass rate (%)',values:[49,54,25,40,55],format:v=>v+'%'},
- {name:'Scientific coding',detail:'SciCode · higher is better',unit:'Pass rate (%)',values:[54,55,57,57,61],format:v=>v+'%'},
- {name:'Total output tokens',detail:'Mixed-suite task · includes reasoning',unit:'Thousands of tokens',values:[10,12,20,29,61],format:v=>v+'k'},
- {name:'Reasoning tokens',detail:'Mixed-suite task · subset of output',unit:'Thousands of tokens',values:[3,5,10,17,34],format:v=>v+'k'},
- {name:'API cost',detail:'Mixed-suite task · lower is better',unit:'USD per task',values:[1.54,1.72,1.18,1.99,5.98],format:v=>'$'+v.toFixed(2)},
- {name:'Time to first answer',detail:'Separate API prompts · lower is better',unit:'Seconds',values:[5.21,45.63,50.59,138.22,138.44],format:v=>v.toFixed(2)+'s'}
+ {name:'Terminal coding',detail:'Terminal-Bench v4.0 · higher is better',unit:'Pass rate (%)',values:[49,54,60,25,40,55],format:v=>v+'%'},
+ {name:'Scientific coding',detail:'SciCode · higher is better',unit:'Pass rate (%)',values:[54,55,56,57,57,61],format:v=>v+'%'},
+ {name:'Total output tokens',detail:'Mixed-suite task · includes reasoning',unit:'Thousands of tokens',values:[10,12,17,20,29,61],format:v=>v+'k'},
+ {name:'Reasoning tokens',detail:'Mixed-suite task · subset of output',unit:'Thousands of tokens',values:[3,5,9,10,17,34],format:v=>v+'k'},
+ {name:'API cost',detail:'Mixed-suite task · lower is better',unit:'USD per task',values:[1.54,1.72,2.31,1.18,1.99,5.98],format:v=>'$'+v.toFixed(2)},
+ {name:'Time to first answer',detail:'Separate API prompts · lower is better',unit:'Seconds',values:[5.42,93.34,208.73,54.15,140.25,138.38],format:v=>v.toFixed(2)+'s'}
 ];
 const charts=specs.map(spec=>{const div=document.createElement('div');div.innerHTML='<div class="as-title"></div><div class="text-small text-muted as-detail"></div><svg class="as-chart" role="img"></svg>';div.querySelector('.as-title').textContent=spec.name;div.querySelector('.as-detail').textContent=spec.detail;root.querySelector('.as-plots').append(div);return {spec,div};});
 function draw({spec,div}){
- const w=div.clientWidth,h=340,left=85,right=57,top=28,bottom=46;
+ const w=div.clientWidth,h=390,left=85,right=57,top=28,bottom=46;
  const svg=d3.select(div.querySelector('svg')).attr('width',w).attr('height',h).attr('viewBox',`0 0 ${w} ${h}`);svg.selectAll('*').remove();
  svg.append('title').text(spec.name);
  svg.append('desc').text(spec.detail+'. '+full.map((m,i)=>m+': '+spec.format(spec.values[i])).join('; '));
