@@ -96,6 +96,25 @@ Japanese pages use `--f-display: "Hiragino Mincho ProN"` and set
 `line-height` around 1.85. Long-form Japanese in LaTeX needs
 `\XeTeXlinebreaklocale "ja"`, otherwise nothing wraps.
 
+## Automatic language routing
+
+`assets/lang.js` sends readers to the Japanese edition when the device time
+zone is Asia/Tokyo or the browser lists Japanese ahead of English, and to
+English otherwise. It only moves pages that declare a counterpart with
+`<link rel="alternate" hreflang>`, never redirects crawlers, and any click on
+a language link (`a[hreflang]`) is remembered in localStorage and overrides
+detection. It must be loaded in `<head>` **without** `defer`, after the
+alternate links, so the redirect happens before first paint:
+
+```
+<script src="/assets/lang.js"></script>
+</head>
+```
+
+Every new page with an alternate-language edition needs that tag, and its
+language switch link needs a `hreflang` attribute, otherwise a reader's
+choice is not remembered and detection bounces them back.
+
 ## Other sessions push here
 
 Several Claude sessions work on this repo concurrently. Always
