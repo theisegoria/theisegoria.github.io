@@ -37,19 +37,38 @@ python3 tools/latest.py --lang en \
     --tail "English / 日本語" --tail PDF
 ```
 
-The script puts the new entry at the front, demotes the old lead into the
-first row (trimming its description to one sentence, since rows read better
-short), drops whatever falls past the fourth row, and restamps the section
-date. `--dry-run` prints the block without writing. `--date YYYY-MM-DD`
-overrides today.
+**Latest and its actual section, in one command.** The script does both,
+because Latest holds only five things and a piece with no permanent home
+vanishes from the site once four newer ones push it off. It:
+
+- puts the new entry at the front as the featured lead
+- demotes the old lead into the first row, trimming its description to one
+  sentence, since rows read better short
+- drops whatever falls past the fourth row
+- restamps the section date
+- files the piece at the top of a catalogue section and bumps that section's
+  count label
+
+`--section` chooses the catalogue section, default `preoccupations`, also
+`guides` or `books`. `--section-desc` overrides the card's description if the
+trimmed sentence does not read well. `--no-section` skips filing, and is only
+right for a sub-page whose parent is already filed. `--dry-run` prints the
+Latest block without writing. `--date YYYY-MM-DD` overrides today.
 
 Run it once per language. The two indexes are maintained independently
 because not every piece has a Japanese edition, and a Japanese reader should
 never be dropped into an English page from the Japanese index.
 
-Falling off the Latest list is not a problem **provided the piece also has a
-permanent home** in Preoccupations, Books or Guides. Add it there in the same
-change, and update that section's count label.
+## Check before pushing
+
+```
+python3 tools/check-index.py
+```
+
+Verifies that every Latest entry is also filed in a catalogue section, that
+every count label matches the number of entries beneath it, and that no
+internal link is dead. It exits non-zero on failure. Run it after merging
+another session's push, which is when count labels drift.
 
 ## The stylesheet is cache-busted
 

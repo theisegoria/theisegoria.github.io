@@ -10,7 +10,9 @@ and holds one featured lead plus four dated rows. This script parses that
 block, puts the new entry at the front, demotes the old lead into the first
 row, drops whatever falls past the fourth row, and rewrites the block.
 
-Nothing else on the page is touched.
+It also files the piece in a catalogue section, since Latest holds only
+five things and a piece with no permanent home vanishes once four newer
+ones push it off. Pass --no-section to skip that.
 
 Usage
 -----
@@ -82,6 +84,72 @@ def full_date(date, lang):
     if lang == "ja":
         return "{y}年{m}月{d}日".format(y=date.year, m=date.month, d=date.day)
     return "{d} {mon} {y}".format(d=date.day, mon=EN_FULL[date.month - 1], y=date.year)
+
+
+ONES = ["", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight",
+        "Nine", "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen",
+        "Sixteen", "Seventeen", "Eighteen", "Nineteen"]
+TENS = ["", "", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy",
+        "Eighty", "Ninety"]
+
+
+def number_word(n):
+    """English count labels are spelled out: 18 -> Eighteen."""
+    if n < 20:
+        return ONES[n]
+    tens, ones = divmod(n, 10)
+    return TENS[tens] + ("-" + ONES[ones].lower() if ones else "")
+
+
+def file_in_section(page, section, entry, lang):
+    """Insert an entry at the top of a catalogue section and fix its count label.
+
+    Latest holds five things and is ordered by time. A piece also needs a
+    permanent home ordered by subject, or it disappears from the site once
+    four newer pieces push it off the list.
+    """
+    m = re.search(r'<section class="section" id="%s">.*?</section>' % section,
+                  page, re.S)
+    if not m:
+        raise SystemExit("No section id=%r on this page" % section)
+    block = m.group(0)
+
+    idx = re.search(r'(<div class="index">)(.*?)(\n    </div>)', block, re.S)
+    if not idx:
+        raise SystemExit("Could not find the index list inside id=%r" % section)
+
+    card = ['      <a href="%s">' % entry["url"],
+            '        <span class="t">%s</span>' % entry["title"],
+            '        <span class="d">%s</span>' % entry["desc"]]
+    if entry["tails"]:
+        card.append('        <span class="tail">%s</span>'
+                    % "".join("<span>%s</span>" % t for t in entry["tails"]))
+    card.append("      </a>")
+
+    body = "\n" + "\n".join(card) + idx.group(2)
+    new_block = block[:idx.start(2)] + body + block[idx.end(2):]
+
+    count = len(re.findall(r'<a href=', body + idx.group(3)))
+    new_block = retag_count(new_block, count, lang)
+    return page[:m.start()] + new_block + page[m.end():]
+
+
+def retag_count(block, count, lang):
+    """Rewrite the leading count on a section label, if it carries one."""
+    def sub(m):
+        label = m.group(1)
+        if lang == "ja":
+            fixed = re.sub(r'^\d+\u7de8', "%d\u7de8" % count, label)
+        else:
+            fixed = re.sub(r'^[A-Za-z-]+(?= (?:&middot;|\u00b7) )',
+                           number_word(count), label)
+        return '<p class="label">%s</p>' % fixed
+
+    head = re.search(r'<div class="section-head">.*?</div>', block, re.S)
+    if not head:
+        return block
+    fixed_head = re.sub(r'<p class="label">([^<]*)</p>', sub, head.group(0), count=1)
+    return block[:head.start()] + fixed_head + block[head.end():]
 
 
 def first_sentence(text, lang):
@@ -185,6 +253,14 @@ def main():
     ap.add_argument("--tail", action="append", default=[],
                     help="Repeatable, e.g. --tail PDF --tail Interactive")
     ap.add_argument("--date", default=None, help="YYYY-MM-DD, defaults to today")
+    ap.add_argument("--section", default="preoccupations",
+                    choices=["preoccupations", "guides", "books"],
+                    help="Catalogue section that becomes the piece's permanent home")
+    ap.add_argument("--section-desc", default=None,
+                    help="Shorter description for the catalogue card. "
+                         "Defaults to the first sentence of --desc.")
+    ap.add_argument("--no-section", action="store_true",
+                    help="Latest only. Use for a sub-page whose parent is already filed.")
     ap.add_argument("--dry-run", action="store_true")
     a = ap.parse_args()
 
@@ -218,14 +294,26 @@ def main():
         sys.stdout.write(block + "\n")
         return
 
+    if not a.no_section:
+        if ('href="%s"' % a.url) in (page[:i] + page[j:]):
+            print("Already filed under a section, leaving the catalogue alone")
+        else:
+            updated = file_in_section(
+                updated, a.section,
+                dict(url=a.url, title=a.title, tails=a.tail,
+                     desc=a.section_desc or first_sentence(a.desc, a.lang)),
+                a.lang)
+
     io.open(path, "w", encoding="utf-8").write(updated)
     dropped = entries[1 + ROWS:]
     print("Updated %s" % STRINGS[a.lang]["path"])
     print("  lead:    %s" % a.title)
     for e in entries[1:1 + ROWS]:
         print("  row:     %s  %s" % (e["date"], e["title"]))
+    if not a.no_section:
+        print("  filed:   %s" % a.section)
     for e in dropped:
-        print("  dropped: %s (still filed in its own section)" % e["title"])
+        print("  dropped: %s (off the list, still in its section)" % e["title"])
 
 
 if __name__ == "__main__":
