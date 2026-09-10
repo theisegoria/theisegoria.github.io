@@ -1,0 +1,560 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="言語モデルが実際に保持している専門知識の量を測るための、三十問のクローズドブック検査。棄権を許す設計、確信度の申告、解答鍵、そして「知っていること」と「当てずっぽう」を分離する採点方式を全文公開する。">
+  <meta name="theme-color" content="#f7f7f5">
+  <link rel="canonical" href="https://theisegoria.github.io/ja/fable-5-1-reasoning-effort/probe/">
+  <link rel="alternate" hreflang="en" href="https://theisegoria.github.io/fable-5-1-reasoning-effort/probe/">
+  <link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/fable-5-1-reasoning-effort/probe/">
+  <link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/fable-5-1-reasoning-effort/probe/">
+  <link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml">
+  <title>棄権できるモデルは、当てずっぽうを言うモデルより価値がある</title>
+<style>
+  :root {
+    --ground:#F7F7F5; --surface:#FFFFFF; --surface-2:#F0F1EC;
+    --ink:#17191B; --muted:#63686D; --rule:#DEE0DC;
+    --accent:#1F5FA8; --accent-soft:#1F5FA814;
+    --blue:#2a78d6; --orange:#c8501f; --aqua:#12805a; --violet:#4a3aa7; --red:#c33a39;
+    --f-display:"Hiragino Mincho ProN","Yu Mincho","Noto Serif JP",Georgia,serif;
+    --f-body:"Hiragino Sans","Yu Gothic","Noto Sans JP",ui-sans-serif,system-ui,-apple-system,sans-serif;
+    --f-mono:ui-monospace,SFMono-Regular,Menlo,monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground:#101214; --surface:#181B1E; --surface-2:#1F2327;
+      --ink:#EDEFF1; --muted:#9BA3AA; --rule:#2C3237;
+      --accent:#69ABE3; --accent-soft:#69ABE31C;
+      --blue:#5c9ce8; --orange:#f08050; --aqua:#3cc493; --violet:#9085e9; --red:#e66767;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground:#101214; --surface:#181B1E; --surface-2:#1F2327;
+    --ink:#EDEFF1; --muted:#9BA3AA; --rule:#2C3237;
+    --accent:#69ABE3; --accent-soft:#69ABE31C;
+    --blue:#5c9ce8; --orange:#f08050; --aqua:#3cc493; --violet:#9085e9; --red:#e66767;
+  }
+
+  * { box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body {
+    margin:0; background:var(--ground); color:var(--ink);
+    font-family:var(--f-body); font-size:16.5px; line-height:1.85;
+    -webkit-font-smoothing:antialiased;
+  }
+  a { color:var(--accent); text-underline-offset:.18em; }
+
+  .wrap { width:min(760px, calc(100% - 40px)); margin-inline:auto; }
+  .wide { width:min(1080px, calc(100% - 40px)); margin-inline:auto; }
+
+  header.site { border-bottom:1px solid var(--rule); }
+  header.site .wide {
+    min-height:64px; display:flex; align-items:center;
+    justify-content:space-between; gap:20px;
+  }
+  header.site .name { font-weight:750; letter-spacing:-.01em; text-decoration:none; color:var(--ink); }
+  header.site nav { display:flex; gap:20px; flex-wrap:wrap; }
+  header.site nav a { color:var(--muted); font-size:.88rem; text-decoration:none; }
+  header.site nav a:hover { color:var(--ink); }
+
+  .hero { padding:76px 0 46px; }
+  .label { color:var(--muted); font-size:.74rem; font-weight:700; letter-spacing:.1em; }
+  h1 {
+    font-family:var(--f-display); font-weight:600;
+    margin:14px 0 16px; font-size:clamp(1.9rem,4.6vw,2.9rem);
+    line-height:1.28; letter-spacing:-.01em;
+  }
+  .standfirst { font-size:1.08rem; color:var(--muted); margin:0 0 26px; max-width:44em; }
+  .herometa { display:flex; flex-wrap:wrap; gap:10px 18px; align-items:center;
+              font-size:.86rem; color:var(--muted); border-top:1px solid var(--rule); padding-top:18px; }
+  .pill {
+    display:inline-flex; align-items:center; gap:7px; padding:7px 14px;
+    border:1px solid var(--rule); border-radius:999px; background:var(--surface);
+    text-decoration:none; color:var(--ink); font-weight:600; font-size:.85rem;
+  }
+  .pill:hover { border-color:var(--accent); color:var(--accent); }
+
+  .toc { border-top:1px solid var(--rule); border-bottom:1px solid var(--rule); padding:22px 0 24px; margin-bottom:14px; }
+  .toc ol { margin:10px 0 0; padding-left:1.4em; columns:2; column-gap:34px; }
+  .toc li { margin:0 0 6px; color:var(--muted); font-size:.92rem; break-inside:avoid; }
+  .toc a { color:var(--ink); text-decoration:none; }
+  .toc a:hover { color:var(--accent); }
+
+  article { padding:8px 0 40px; }
+  h2 {
+    font-family:var(--f-display); font-weight:600; letter-spacing:-.01em;
+    font-size:1.5rem; line-height:1.45; margin:58px 0 4px;
+  }
+  h2 .num { color:var(--muted); font-family:var(--f-body); font-size:.8rem;
+            font-weight:700; letter-spacing:.1em; display:block; margin-bottom:10px; }
+  h3 { font-size:1.04rem; margin:34px 0 2px; }
+  p { margin:16px 0; }
+  strong { font-weight:700; }
+  .lede { font-size:1.05rem; }
+  ul, ol.body { padding-left:1.5em; }
+  ul li, ol.body li { margin:10px 0; }
+
+  .key {
+    background:var(--surface); border:1px solid var(--rule);
+    border-left:3px solid var(--accent);
+    border-radius:10px; padding:18px 20px; margin:32px 0;
+  }
+  .key .kt { font-size:.76rem; font-weight:700; letter-spacing:.08em; color:var(--accent); }
+  .key p:first-of-type { margin-top:8px; }
+  .key p:last-child, .key ol:last-child, .key ul:last-child { margin-bottom:0; }
+  .key.warn { border-left-color:var(--orange); }
+  .key.warn .kt { color:var(--orange); }
+
+  .tablewrap { overflow-x:auto; margin:30px 0; }
+  table { border-collapse:collapse; width:100%; min-width:480px; font-size:.9rem; }
+  th, td { text-align:left; vertical-align:top; padding:11px 12px; border-bottom:1px solid var(--rule); }
+  thead th { border-bottom:2px solid var(--rule); font-size:.78rem; letter-spacing:.05em; color:var(--muted); }
+  td.h { font-weight:700; color:var(--ink); }
+  caption { caption-side:bottom; text-align:left; color:var(--muted);
+            font-size:.85rem; padding-top:12px; }
+
+  .kicker { font-family:var(--f-display); font-size:1.22rem; line-height:1.75;
+            border-top:1px solid var(--rule); padding-top:34px; margin-top:52px; }
+
+  .sources { border-top:1px solid var(--rule); margin-top:46px; padding-top:26px;
+             font-size:.82rem; color:var(--muted); line-height:1.8; }
+  .sources h2 { font-size:1.06rem; margin:0 0 12px; }
+  .sources b { color:var(--ink); }
+
+  footer.site { border-top:1px solid var(--rule); margin-top:56px; }
+  footer.site .wide { display:flex; justify-content:space-between; gap:20px;
+                      padding:26px 0 46px; color:var(--muted); font-size:.85rem; flex-wrap:wrap; }
+  footer.site a { color:var(--muted); }
+
+  .toolbar { display:flex; flex-wrap:wrap; gap:10px; margin:20px 0 0; }
+  button.copy {
+    font-family:var(--f-body); font-size:.85rem; font-weight:600;
+    padding:9px 15px; border-radius:999px; cursor:pointer;
+    border:1px solid var(--rule); background:var(--surface); color:var(--ink);
+  }
+  button.copy:hover { border-color:var(--accent); color:var(--accent); }
+  button.copy:active { background:var(--accent-soft); }
+  button.copy[data-done="1"] { border-color:var(--aqua); color:var(--aqua); }
+  button.copy:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+
+  pre.prompt {
+    background:var(--surface-2); border:1px solid var(--rule); border-radius:10px;
+    padding:18px 20px; overflow-x:auto; margin:22px 0 0;
+    font-family:var(--f-mono); font-size:.82rem; line-height:1.72;
+    white-space:pre-wrap; word-break:break-word;
+  }
+
+  .block { border-top:1px solid var(--rule); padding-top:22px; margin-top:30px; }
+  .block h3 { margin:0 0 2px; }
+  .block .bsub { color:var(--muted); font-size:.86rem; margin:2px 0 6px; }
+  ol.items { padding-left:2.1em; margin:12px 0 0; }
+  ol.items li { margin:12px 0; }
+
+  details.keyfold {
+    border:1px solid var(--rule); border-radius:10px; background:var(--surface);
+    padding:0 20px; margin:26px 0;
+  }
+  details.keyfold > summary {
+    cursor:pointer; padding:16px 0; font-weight:700; list-style:none;
+    display:flex; align-items:center; gap:10px;
+  }
+  details.keyfold > summary::-webkit-details-marker { display:none; }
+  details.keyfold > summary::before {
+    content:"+"; font-family:var(--f-mono); color:var(--accent);
+    font-weight:700; font-size:1.05rem; width:1em; text-align:center;
+  }
+  details.keyfold[open] > summary::before { content:"\2212"; }
+  details.keyfold[open] > summary { border-bottom:1px solid var(--rule); }
+  details.keyfold .inner { padding:4px 0 22px; }
+  details.keyfold ol { padding-left:2.1em; }
+  details.keyfold ol li { margin:12px 0; }
+  .flagged { color:var(--orange); font-weight:700; font-family:var(--f-mono); font-size:.85em; }
+
+  @media (max-width:700px) {
+    body { font-size:16px; }
+    .hero { padding:54px 0 36px; }
+    .toc ol { columns:1; }
+  }
+
+  @media print {
+    header.site nav, .toolbar, .herometa, .toc { display:none; }
+    body { font-size:10.5pt; background:#fff; color:#000; }
+    details.keyfold { border:none; padding:0; }
+    details.keyfold > summary { display:none; }
+    details.keyfold .inner { padding:0; }
+    .block, h2 { break-inside:avoid; }
+    pre.prompt { border:1px solid #ccc; background:#fff; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="wide">
+    <a class="name" href="/ja/">Benjamin Michael Haire</a>
+    <nav aria-label="主要ナビゲーション">
+      <a href="../">本編の分析</a>
+      <a href="#prompt">プロンプト</a>
+      <a href="#items">設問</a>
+      <a href="#scoring">採点</a>
+      <a href="/fable-5-1-reasoning-effort/probe/" hreflang="en" lang="en">English</a>
+      <a href="/ja/">全プロジェクト</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="wrap">
+
+  <div class="hero">
+    <p class="label">測定器具 / 2026年9月10日</p>
+    <h1>棄権できるモデルは、当てずっぽうを言うモデルより価値がある。</h1>
+    <p class="standfirst">公開されている知識ベンチマークが報告するのは、正答数である。しかし答えを自分で検証できない立場の者にとって、それは測るべき量ではない。重要なのは正答数から「自信をもって誤った回答」の数を差し引いた値である。自信のある誤りが招く損失は、無知の告白が節約する労力を上回るからだ。本稿は、その差を測るために作った三十問のクローズドブック検査であり、プロンプト、設問、解答鍵、採点方式のすべてを公開する。</p>
+    <div class="herometa">
+      <a class="pill" href="../">推論努力の分析</a>
+      <a class="pill" href="/fable-5-1-reasoning-effort/probe/probe-ja.pdf">日本語版 PDF</a>
+      <a class="pill" href="/fable-5-1-reasoning-effort/probe/probe-en.pdf" hreflang="en" lang="en">English PDF</a>
+    </div>
+    <p class="label" style="margin-top:18px">知識測定 ・ ハルシネーション率 ・ 較正 ・ 棄権 ・ ゲームエンジン領域</p>
+  </div>
+
+  <nav class="toc" aria-label="目次">
+    <p class="label">目次</p>
+    <ol>
+      <li><a href="#why">なぜ自作の検査が要るのか</a></li>
+      <li><a href="#burned">公開した時点でこの設問群は死ぬ</a></li>
+      <li><a href="#design">設計が果たしている役割</a></li>
+      <li><a href="#prompt">プロンプト</a></li>
+      <li><a href="#items">三十問</a></li>
+      <li><a href="#answers">解答鍵</a></li>
+      <li><a href="#scoring">採点</a></li>
+      <li><a href="#method">実施上の注意</a></li>
+      <li><a href="#limits">この検査で分からないこと</a></li>
+    </ol>
+  </nav>
+
+  <article>
+
+  <p class="lede"><strong>推論努力を上げても、検索の失敗は修復されない。</strong>本稿はその知見から出発している。すでに文脈に入っている材料から難しい結論を導く場面では、熟考を増やせば結果は改善する。その改善幅は本編の分析が正確に測っている。しかしモデルがそもそも事実を保持していない場合、熟考を増やすことは事態を悪化させる。より長く、より首尾一貫した、より説得力のある虚偽の記述が生まれるだけだからである。したがって、二つのモデルが大規模なコードベース上で明らかに違って感じられ、かつ推論スコアが横並びであるならば、測るべきは思考の質ではない。知識の量と、その縁における振る舞いの誠実さである。</p>
+
+  <h2 id="why"><span class="num">第一節</span>なぜ自作の検査が要るのか</h2>
+
+  <p>この目的に合致する公開ベンチマークは存在する。もっとも直接的なのは AA-Omniscience であり、知識をハルシネーション込みで相殺して採点するため、知っている以上に断言するモデルには負の値がつく。Humanity's Last Exam は専門家水準の深い知識を問う。いずれも有用であり、いずれも本編の分析に登場する。ただしどちらも、実務者が本当に抱えている問いには答えない。その問いは「このモデルはどれだけ知っているか」ではなく「このモデルは、私が毎日尋ねている当の事柄をどれだけ知っているか」である。</p>
+
+  <p>これはリーダーボードからは分からない。リーダーボードは他人が選んだ主題分布の上での平均だからである。総合で二点劣るモデルが、自分の一週間を構成する八つの主題においては明確に上ということは十分にありうる。確かめる方法は、自分の主題を自分で尋ねること以外にない。</p>
+
+  <p>理由はもう一つあり、そちらのほうが鋭い。公開されたベンチマークは、いずれ訓練データに入る。ウェブ上に公開された設問は収集され、収集後に訓練されたモデルは、答えを導出するのではなく設問ごと想起しうる。この影響はスコア上まったく見えず、しかし推論としては致命的である。自分で書き、どこにも公開していない設問群だけがこれを免れる。だからこそ、妥当性を自分で保証できる知識測定は、私的な検査だけなのである。</p>
+
+  <div class="key warn">
+    <p class="kt" id="burned">公開した時点でこの設問群は死ぬ</p>
+    <p>このページを公開することは、ここに並ぶ三十問を清潔な測定器具としては破壊する行為である。クロールされた瞬間から、以後に訓練されたモデルは設問と解答を対にして見ている可能性があり、高得点はもはや知識の証拠ではなくなる。これは意図的な取引である。手続き、採点方式、良い設問の形は、共有したほうが設問そのものを秘匿するより価値が高いと判断した。</p>
+    <p>したがって以下は、実例つきの雛形として扱ってほしい。プロンプトと採点方式は公開しても損なわれず、そのまま無期限に再利用できる。設問のほうは自分の領域から自分の言葉で書き直し、どこにも投稿しないこと。二十分の執筆で、誰にも汚染できない器具が手に入る。</p>
+  </div>
+
+  <h2 id="design"><span class="num">第二節</span>設計が果たしている役割</h2>
+
+  <p>この器具を支えているのは四つの選択であり、それぞれが特定の逃げ道を塞いでいる。</p>
+
+  <p><strong>クローズドブック、ツール停止。</strong>モデルが検索できる瞬間から、この検査は蓄積された知識ではなく検索基盤を測ることになる。どちらも価値ある能力だが、同一のハーネス上でモデル間の差として現れるのは一方だけである。だからツールは、言及しないのではなく明示的に停止させねばならない。</p>
+
+  <p><strong>棄権に代償を課さない。</strong>UNKNOWN が減点されないと明言されていれば、回答を控えるモデルは損を被るのではなく正直な報告をしていることになる。この一文がないと全問に何らかの回答がつき、棄権の信号は消える。まさにその信号を測りに来たのに、である。</p>
+
+  <p><strong>確信度は必須、かつ定義つき。</strong>基準のない評定尺度は装飾にすぎない。HIGH を「技術的判断をそれに賭けられる水準」と定義することで、評定が現実の帰結に結びつく。較正の分析が意味を持つのはそのときだけである。</p>
+
+  <p><strong>回答形式を固定する。</strong>自由記述は曖昧に濁る。濁った回答は採点できない。正解の周辺を回りながら決して確言しない一段落は、採点者の判断を大量に注入しない限り正誤を判定できないからである。設問ごとに二行の固定形式を課すことが、再現可能な採点を成立させる。</p>
+
+  <p>設問を多肢選択ではなく短答としたのも同じ理由による。多肢選択は、保持していない事実を選択肢の形から復元させてしまい、当て推量の分だけ全モデルの得点を底上げする。短答が測るのは再認ではなく想起であり、購入対象はそちらである。</p>
+
+  <div class="key">
+    <p class="kt">言語について</p>
+    <p>以下のプロンプトと設問は日本語で示すが、英語版のページには英語の同一物がある。検査は、自分が実際に作業している言語で実施すること。そして言語をまたいだ得点の比較は行わないこと。訳文は別の設問であり、専門用語の想起しやすさは言語によって変わる。比較したいのはモデルであって、翻訳ではない。</p>
+  </div>
+
+  <h2 id="prompt"><span class="num">第三節</span>プロンプト</h2>
+
+  <p>まずこれを貼り、続けて設問群を貼る。比較するすべてのモデル構成に同一の文言を用いること。負けると予想している構成に対しても同様である。書き換えられたプロンプトは、別の実験だからである。</p>
+
+  <pre class="prompt" id="promptbox">これから短い技術的な設問をいくつか出す。自分の知識のみで答えること。
+
+規則:
+- ツール、検索、外部参照を一切使用しないこと。ツールが利用可能であっても
+  呼び出さないこと。
+- 各設問には独立に、簡潔に答えること。一文か二文、あるいは式のみ。前置き
+  も設問の言い換えも不要。
+- 答えが分からない場合は UNKNOWN と書くこと。これは完全に許容される回答
+  であり、減点しない。誤答と UNKNOWN は別々に採点するため、有用に見せる
+  ために推測しないこと。また、実際に保持している答えを出し惜しまないこと。
+- 各回答のあとに確信度を HIGH、MEDIUM、LOW のいずれかで付すこと。
+  HIGH は「技術的判断をそれに賭けられる」水準を意味する。
+
+すべての設問について、以下の形式のみを用い、他の文字を加えないこと:
+
+N. ANSWER: &lt;回答、または UNKNOWN&gt;
+   CONFIDENCE: &lt;HIGH | MEDIUM | LOW&gt;
+
+末尾に要約を付けないこと。設問そのものについて論評しないこと。</pre>
+
+  <div class="toolbar">
+    <button class="copy" type="button" data-mode="prompt">プロンプトをコピー</button>
+    <button class="copy" type="button" data-mode="full">プロンプトと三十問をコピー</button>
+  </div>
+
+  <h2 id="items"><span class="num">第四節</span>三十問</h2>
+
+  <p>この五つのブロックは、リアルタイムゲームエンジンを念頭に選んである。レンダリングの数学、拘束ソルバ、浮動小数点の決定性、C++ のオブジェクト意味論、そしてロックステップ通信である。各設問には、その分野の有能な技術者なら何も参照せずに答えられる確定した解が存在し、かつ設問の文面から解を復元することはできない。自分の技術構成に合わないブロックは捨て、自作の設問六問と差し替えること。</p>
+
+  <div class="block">
+    <h3>ブロック A. レンダリングとシェーディングの数学</h3>
+    <p class="bsub">マイクロファセット理論、エネルギー保存、深度精度。</p>
+    <ol class="items">
+      <li data-n="1">GGX / Trowbridge-Reitz の法線分布関数において、分母は何か。</li>
+      <li data-n="2">Cook-Torrance の鏡面反射 BRDF において、鏡面項の分母は何か。</li>
+      <li data-n="3">Lambert 拡散 BRDF における 1/pi の係数は何のためにあるか。</li>
+      <li data-n="4">Smith の高さ相関マスキング・シャドウイング項は、分離型 Smith 形式が扱えない何を扱っているか。</li>
+      <li data-n="5">浮動小数点の深度フォーマットを用いる場合、なぜ反転 Z 深度バッファが好まれるのか。</li>
+      <li data-n="6">画像ベースライティングの split-sum 近似において、鏡面積分はどの二つの部分に分割されるか。</li>
+      <li data-n="7">Unreal のシェーディングコードの多くにおいて、アーティストが操作する roughness と NDF で用いる alpha の関係はどうなっているか。</li>
+      <li data-n="8">標準的な二次(L2)球面調和による放射照度表現の係数はいくつか。</li>
+    </ol>
+  </div>
+
+  <div class="block">
+    <h3>ブロック B. 剛体力学と拘束ソルバ</h3>
+    <p class="bsub">安定化、収束、積分器の選択。</p>
+    <ol class="items">
+      <li data-n="9">拘束ソルバにおいて Baumgarte 安定化は何のために用いられるか。</li>
+      <li data-n="10">Gauss-Seidel 型のソルバにおいて、拘束の処理順序がなぜ決定性に影響するのか。</li>
+      <li data-n="11">ソフト拘束の定式化において、CFM と ERP はそれぞれ何を制御するか。</li>
+      <li data-n="12">反発速度の閾値(restitution slop)はどのような問題を防ぐか。</li>
+      <li data-n="13">ゲームのシミュレーションにおいて、なぜ半陰的(シンプレクティック)Euler 法が陽的 Euler 法より一般に好まれるのか。</li>
+      <li data-n="14">連続衝突判定の conservative advancement において、安全なタイムステップを上から抑える量は何か。</li>
+      <li data-n="15">力積ベースのソルバにおける warm starting とは何であり、何を改善するか。</li>
+    </ol>
+  </div>
+
+  <div class="block">
+    <h3>ブロック C. 数値的決定性と浮動小数点</h3>
+    <p class="bsub">IEEE 754 が保証すること、そして保証が終わる地点。</p>
+    <ol class="items">
+      <li data-n="16">浮動小数点の加算はなぜ結合的でないのか。またそれは並列リダクションに何を意味するか。</li>
+      <li data-n="17">IEEE 754 は準拠実装間で +、-、*、/、sqrt の結果について何を保証しているか。</li>
+      <li data-n="18">広く用いられる数学関数のうち、プラットフォーム間でビット単位の一致が保証されないものはどれか。またそれはなぜか。</li>
+      <li data-n="19">積和融合演算(FMA)は、乗算と加算を別個に行う場合と比べて丸めの何を変えるか。</li>
+      <li data-n="20">ロックステップ方式のマルチプレイヤーゲームが、シミュレーション状態に浮動小数点ではなく固定小数点をしばしば用いるのはなぜか。</li>
+    </ol>
+  </div>
+
+  <div class="block">
+    <h3>ブロック D. C++ のオブジェクト意味論</h3>
+    <p class="bsub">値カテゴリ、単一定義規則、オブジェクト生存期間。</p>
+    <ol class="items">
+      <li data-n="21">std::move は何にキャストするか。また std::forward はどう異なるか。</li>
+      <li data-n="22">いわゆる「5 の規則」が列挙する五つの特殊メンバ関数は何か。</li>
+      <li data-n="23">inline 関数を二つの翻訳単位で異なる定義として書いた場合、何が起こるか。</li>
+      <li data-n="24">std::launder はどのような問題を解決するか。</li>
+      <li data-n="25">ポインタキャストによる型のすり替えが strict aliasing の下でなぜ壊れうるのか。また正規の代替手段は何か。</li>
+      <li data-n="26">非仮想デストラクタを持つ基底クラスのポインタ経由で派生オブジェクトを delete すると何が起こるか。</li>
+    </ol>
+  </div>
+
+  <div class="block">
+    <h3>ブロック E. ネットワークとロックステップ・シミュレーション</h3>
+    <p class="bsub">乖離、補正の適用時点、復旧。</p>
+    <ol class="items">
+      <li data-n="27">決定論的ロックステップ構成において、ピア間で一致していなければならないものは何か。また安全に異なってよいものは何か。</li>
+      <li data-n="28">クライアント側予測とロールバック・ネットコードは、補正を適用する時点においてどう異なるか。</li>
+      <li data-n="29">予測ベースの方式において、入力遅延を入れるとなぜ目に見える補正の頻度が下がるのか。</li>
+      <li data-n="30">ロックステップにおける desync が、通常は完全な状態再同期なしには復旧不能である主な理由は何か。</li>
+    </ol>
+  </div>
+
+  <h2 id="answers"><span class="num">第五節</span>解答鍵</h2>
+
+  <p>回答をすべて集め終えるまで、ここは開かないこと。先に鍵を読むと、まさに判断の余地が最も大きい境界的な設問において先入観が入り、しかも採点の途中でそれを取り消すことはできない。</p>
+
+  <p>鍵そのものについて一点断っておく。これは私自身の知識から書いたものであり、誤りが含まれていれば、この検査はモデルの誤りではなく私の誤りを測ることになる。<span class="flagged">(!)</span> を付した項目は、誤答と判定する前に一次資料で確認する対象である。モデルが確信をもって具体的に鍵と異なる主張をした場合には、同じ扱いをしてほしい。確信をもった具体的な反論は、誤ったモデルであるより正しいモデルであることのほうが多い。</p>
+
+  <details class="keyfold" id="keyfold">
+    <summary>三十問すべての解答鍵を表示する</summary>
+    <div class="inner">
+
+      <h3>ブロック A. レンダリングとシェーディングの数学</h3>
+      <ol class="items">
+        <li data-n="1">pi * ((n&middot;h)^2 * (alpha^2 - 1) + 1)^2。分子は alpha^2。</li>
+        <li data-n="2">4 * (n&middot;l) * (n&middot;v)。</li>
+        <li data-n="3">正規化のため。これがないと半球上で積分した BRDF がアルベドを超え、エネルギーが保存されない。</li>
+        <li data-n="4">同一のマイクロファセット高さにおけるマスキングとシャドウイングの相関。分離型は両者を独立として扱うため、斜入射でエネルギーを失う。</li>
+        <li data-n="5">浮動小数点の精度はゼロ近傍で最も密である。反転 Z は遠クリップ面をゼロに写すため、精度が深度方向にはるかに均等に配分され、遠方の z ファイティングがほぼ解消する。</li>
+        <li data-n="6">事前フィルタ済み環境マップと、roughness および n&middot;v で引く 2 次元の BRDF 積分ルックアップテーブル。</li>
+        <li data-n="7">alpha = roughness^2。<span class="flagged">(!)</span> 対象とするシェーディングモデルの版で確認すること。二乗の慣行はほぼ普遍的だが例外がある。</li>
+        <li data-n="8">9 個。</li>
+      </ol>
+
+      <h3>ブロック B. 剛体力学と拘束ソルバ</h3>
+      <ol class="items">
+        <li data-n="9">位置誤差(貫通やドリフト)の補正。その誤差の一定割合を、速度拘束のバイアス項として戻す。</li>
+        <li data-n="10">拘束は更新済みの状態に対して逐次的に解かれるため、結果は訪問順序に依存する。順序を変えれば結果はビット単位で変わる。</li>
+        <li data-n="11">CFM は系の対角にコンプライアンスを加えて拘束を軟らかくする。ERP は 1 ステップあたりに除去する位置誤差の割合を制御する。</li>
+        <li data-n="12">ジッタ。相対速度がほぼゼロの接触に反発を適用すると、静止しているはずの接触が延々と跳ね続ける。</li>
+        <li data-n="13">更新済みの速度を用いて位置を積分するため、陽的 Euler 法の系統的なエネルギー増大ではなく、時間を通じて有界なエネルギー挙動が得られる。</li>
+        <li data-n="14">分離距離を、相対接近速度の上界で割った量。</li>
+        <li data-n="15">前フレームで蓄積した力積を今フレームの初期推定として再利用すること。持続的な接触において収束を大幅に改善する。</li>
+      </ol>
+
+      <h3>ブロック C. 数値的決定性と浮動小数点</h3>
+      <ol class="items">
+        <li data-n="16">各演算で丸めが生じるため、丸め誤差は累積の順序に依存する。異なる順序で結合する並列リダクションは異なるビットパターンを生む。</li>
+        <li data-n="17">正しく丸められた結果。入力、丸めモード、演算順序が同一であれば、準拠実装はこの五演算についてビット単位で同一の結果を返さねばならない。</li>
+        <li data-n="18">超越関数、すなわち sin、cos、tan、exp、log、pow の類。IEEE 754 はこれらに正しい丸めを要求しないため、ライブラリ実装はプラットフォームや版によって異なる。</li>
+        <li data-n="19">a*b+c を二回ではなく一回だけ丸める。結果は乗算と加算を別個に行った場合と異なりうるため、FMA の縮約を禁止しない限りビット単位の再現性は壊れる。</li>
+        <li data-n="20">固定小数点は厳密な整数演算であり、コンパイラ、アーキテクチャ、最適化設定をまたいでビット単位で同一だからである。浮動小数点が保証されるのは基本演算のみであり、超越関数、FMA 縮約、x87 の拡張精度が絡めばそれも失われる。</li>
+      </ol>
+
+      <h3>ブロック D. C++ のオブジェクト意味論</h3>
+      <ol class="items">
+        <li data-n="21">std::move は無条件に右辺値参照へキャストする。std::forward は条件付きでキャストし、転送参照を通じて元の値カテゴリを保存する。</li>
+        <li data-n="22">デストラクタ、コピーコンストラクタ、コピー代入演算子、ムーブコンストラクタ、ムーブ代入演算子。</li>
+        <li data-n="23">未定義動作であり、しかも実際には沈黙する類のものである。リンカが一方の定義を任意に選び、両方の呼び出し側がそれを得る。</li>
+        <li data-n="24">以前は別のオブジェクトが占めていた記憶域に新たに構築したオブジェクトへの、使用可能なポインタを得られるようにする。これがなければ、オブジェクト同一性に関するコンパイラの仮定によって再利用したポインタが無効になる。</li>
+        <li data-n="25">コンパイラは異なる型のポインタが別名を持たないと仮定し、それに応じてアクセスを並べ替えたり削除したりしうるため。正規の代替は memcpy または std::bit_cast である。</li>
+        <li data-n="26">未定義動作。実際には派生クラスのデストラクタが走らず、派生メンバが漏れ、派生側の後始末が一切行われない。</li>
+      </ol>
+
+      <h3>ブロック E. ネットワークとロックステップ・シミュレーション</h3>
+      <ol class="items">
+        <li data-n="27">シミュレーション状態と、それに適用される入力の系列が一致していなければならない。レンダリング、音声、補間、カメラなど提示のみに関わる状態は自由に異なってよい。</li>
+        <li data-n="28">クライアント側予測は権威ある更新が届いた時点で補正を適用し、現在の状態からブレンドまたはスナップして前へ進む。ロールバックは最後に正しいと分かっている状態まで巻き戻し、修正済みの入力で途中フレームを再実行し、改めて現在に到達する。</li>
+        <li data-n="29">ローカル入力をおよそ往復遅延の分だけ遅らせると、遠隔の入力がそれを必要とするフレームより前に届くことが多くなる。結果として予測が当たる頻度が上がり、補正すべき量が減る。</li>
+        <li data-n="30">ロックステップのピアは状態ではなく入力を交換しており、その時点でシミュレーションはすでに乖離しているからである。突き合わせるべき共有状態が存在しないため、復旧には権威ある状態の全体を送るほかない。</li>
+      </ol>
+
+    </div>
+  </details>
+
+  <h2 id="scoring"><span class="num">第六節</span>採点</h2>
+
+  <p>各設問は四つの区分のいずれか一つに、ちょうど一度だけ入る。二つの誤答区分の区別こそがこの器具の核心であるから、まとめてしまいたくなる誘惑には抗うこと。</p>
+
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>区分</th><th>定義</th></tr></thead>
+    <tbody>
+      <tr><td class="h">正答</td><td>実質的に正しい。付された確信度は問わない。</td></tr>
+      <tr><td class="h">自信のある誤答</td><td>誤りであり、かつ HIGH または MEDIUM。</td></tr>
+      <tr><td class="h">留保つき誤答</td><td>誤りであり、かつ LOW。モデルは信用するなと告げており、その点については正しかった。</td></tr>
+      <tr><td class="h">棄権</td><td>UNKNOWN。</td></tr>
+    </tbody>
+    <caption>四区分、三十問、一問につき一区分。部分点は比較を壊す。</caption>
+  </table>
+  </div>
+
+  <p>この四つの度数から、四つの指標が導かれる。</p>
+
+  <ul>
+    <li><strong>知識量</strong>は正答数を 30 で割った値である。公開ベンチマークが報告するのはこの数値であり、単独では四つのうち最も役に立たない。</li>
+    <li><strong>ハルシネーション率</strong>は、自信のある誤答数を実際に回答した設問数、すなわち 30 から棄権数を引いた値で割ったものである。分母を 30 にすると棄権に報酬を与えることになり、別の指標がすでに捉えている美点を二重に数えてしまう。</li>
+    <li><strong>較正</strong>は、確信度と正誤の対応関係である。LOW の回答が HIGH の回答よりはるかに高い頻度で誤っているモデルは、使える情報を伝えている。すべてを HIGH と評定するモデルは何も伝えておらず、そのモデルについては確信度の欄を捨ててよい。</li>
+    <li><strong>正味有用値</strong>は、正答数から自信のある誤答数を引いた値である。</li>
+  </ul>
+
+  <div class="key">
+    <p class="kt">正味有用値が最も重要である理由</p>
+    <p>二十問に正答し八問を自信をもって誤るモデルは 12 点である。十六問に正答し、十二問棄権し、二問だけ自信をもって誤るモデルは 14 点である。知識量では前者が上回る。しかし共に働く相手として優れているのは後者である。前者の八つの自信ある誤りは、自分の労力で検証するか、そのまま出荷するかのいずれかになるからだ。</p>
+    <p>この重み付けは恣意的ではないが、普遍的でもない。正味有用値は、自信のある誤り一つの費用を正答一つの価値とちょうど等しいと置いている。検証の手間が回答の価値と同程度である場合には妥当である。どのみち全件検証するのであれば重みを下げてよい。逆に、細部を完全には理解していない系の上で感覚的に開発しているのなら、重みは相当に上げるべきである。もっともらしい誤りが誰にも捕まらないまま最も遠くまで届くのは、まさにその状況だからである。</p>
+  </div>
+
+  <h2 id="method"><span class="num">第七節</span>実施上の注意</h2>
+
+  <ul>
+    <li><strong>各構成を最低二回実施する。</strong>同一設問に対する同一モデルの実行間分散は実在し、モデル間の差を信用する前にその大きさを見ておく必要がある。</li>
+    <li><strong>どのモデルを先に走らせるかをセッションごとに無作為化する。</strong>最初の一枚を読んで得た知見が、特定の構成に系統的に有利に働かないようにするためである。</li>
+    <li><strong>答案単位ではなく設問単位で採点する。</strong>全モデルの第一問を採点し、次に第二問へ進む。あるモデルの答案を最後まで採点してから次に移ると、その間に基準が動く。しかも最初に見たものの方向へ動く。</li>
+    <li><strong>可能なら答案を盲検化する。</strong>モデル名を剥がして採点し、あとで突き合わせる。費用はほぼゼロで、この手続き全体で最大の偏りを取り除ける。</li>
+    <li><strong>三問未満の差は雑音として扱う。</strong>三十問を一回実施した条件では、三問あたりが「標本変動で無理なく説明できる」範囲の境目である。それ未満の差で行動を変えないこと。</li>
+  </ul>
+
+  <h2 id="limits"><span class="num">第八節</span>この検査で分からないこと</h2>
+
+  <p>三十問は小さな器具である。領域知識の大きな差を検出するには足りるが、接近した二つのモデルを順位づけるにはまるで足りない。前節の雑音下限をあの位置に置いたのはそのためである。改善したいなら、どれか一つのブロックを深掘りするよりブロックの幅を広げるほうが効く。関心のある分散は主題内ではなく主題間に存在するからである。</p>
+
+  <p>この検査が測るのは、クローズドブック条件下で蓄積されている知識である。それは意図した設計だが、同時に、ツールと検索と実際のコードベースを文脈に持つ条件、つまり実際に作業している条件での性能を記述していないということでもある。知識は劣るが検索がうまいモデルのほうが、結果として役に立つことはありうる。この検査はその帰結を予測するのではなく、帰結に寄与する一つの入力を分離しているにすぎない。</p>
+
+  <p>そして何より、設問の質がすべてを支配する。解が議論の余地を残す設問は採点者の判断を測り、設問文から解を復元できる設問は何も測らず、広く引用されているチュートリアルから採った設問はそのチュートリアルの暗記を測る。採点方式は頑健である。脆いのは設問のほうであり、そこだけは自分で書かねばならない。</p>
+
+  <p class="kicker">知識が多いことと、信頼できることは別の性質である。両者の隔たりこそが、モデルが時間を奪う場所にほかならない。その隔たりを、自分の材料で、自分の言葉で測り、設問は手元に置いておくこと。</p>
+
+  <div class="sources">
+    <h2>注記</h2>
+    <p><b>関連記事。</b>本稿は<a href="../">「努力が買えるものは、向ける先のモデルほどには多くない」</a>から派生している。同記事は Artificial Analysis Intelligence Index v4.3 上で、Claude Fable 5.1、GPT-6 Astra、Claude Opus 5 について推論努力と収益の関係を測っている。ここに関係する結果は、本稿に最も精神が近い公開ベンチマークである AA-Omniscience において、上位二モデルがハルシネーション相殺後のスコアで並ぶ一方、素の正答率では明確に差がついたという点である。この観察が、より狭い器具を作る動機となった。</p>
+    <p><b>関連する公開ベンチマーク。</b>Artificial Analysis, AA-Omniscience(ハルシネーションを相殺して知識を採点)。Phan L, Gatti A, Han Z, et al., "Humanity's Last Exam", 2025.</p>
+    <p><b>解答鍵の出所。</b>鍵は私自身の知識から書いたものであり、一問ずつ独立に検証されてはいない。(!) を付した項目は、擁護可能な別解を許しうると私が考えるものである。</p>
+    <p><b>AI 利用の開示。</b>草稿作成、整形、および対訳作成に AI を利用した。設問と採点方式は筆者による。このページ上でモデルの採点は行っていない。</p>
+  </div>
+
+  </article>
+</div>
+</main>
+
+<footer class="site">
+  <div class="wide">
+    <span>&copy; 2026 Benjamin Michael Haire</span>
+    <a href="../">本編の分析へ戻る</a>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var promptEl = document.getElementById('promptbox');
+
+  function itemsText() {
+    var out = [];
+    document.querySelectorAll('.block').forEach(function (b) {
+      var h = b.querySelector('h3');
+      if (!h) return;
+      out.push(h.textContent.trim());
+      out.push('');
+      b.querySelectorAll('ol.items > li').forEach(function (li) {
+        out.push(li.getAttribute('data-n') + '. ' + li.textContent.trim());
+      });
+      out.push('');
+    });
+    return out.join('\n').trim();
+  }
+
+  function flash(btn, msg) {
+    var old = btn.textContent;
+    btn.textContent = msg;
+    btn.setAttribute('data-done', '1');
+    setTimeout(function () {
+      btn.textContent = old;
+      btn.removeAttribute('data-done');
+    }, 1800);
+  }
+
+  document.querySelectorAll('button.copy').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var text = btn.getAttribute('data-mode') === 'prompt'
+        ? promptEl.textContent
+        : promptEl.textContent + '\n\n' + itemsText();
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(function () {
+          flash(btn, 'コピーしました');
+        }).catch(function () {
+          flash(btn, 'コピー失敗、手動で選択してください');
+        });
+      } else {
+        flash(btn, 'コピー失敗、手動で選択してください');
+      }
+    });
+  });
+
+  window.addEventListener('beforeprint', function () {
+    var d = document.getElementById('keyfold');
+    if (d) d.open = true;
+  });
+})();
+</script>
+<script src="/assets/lang.js" defer></script>
+</body>
+</html>

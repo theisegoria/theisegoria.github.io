@@ -1,0 +1,562 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A thirty-item closed-book probe for measuring how much domain knowledge a language model actually holds, with a forced-abstention protocol, a confidence rating, an answer key and a scoring scheme that separates knowing from guessing.">
+  <meta name="theme-color" content="#f7f7f5">
+  <link rel="canonical" href="https://theisegoria.github.io/fable-5-1-reasoning-effort/probe/">
+  <link rel="alternate" hreflang="en" href="https://theisegoria.github.io/fable-5-1-reasoning-effort/probe/">
+  <link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/fable-5-1-reasoning-effort/probe/">
+  <link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/fable-5-1-reasoning-effort/probe/">
+  <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+  <title>A model that abstains is worth more than one that guesses</title>
+<style>
+  :root {
+    --ground:#F7F7F5; --surface:#FFFFFF; --surface-2:#F0F1EC;
+    --ink:#17191B; --muted:#63686D; --rule:#DEE0DC;
+    --accent:#1F5FA8; --accent-soft:#1F5FA814;
+    --blue:#2a78d6; --orange:#c8501f; --aqua:#12805a; --violet:#4a3aa7; --red:#c33a39;
+    --f-display:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    --f-body:"Inter",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+    --f-mono:ui-monospace,SFMono-Regular,Menlo,monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground:#101214; --surface:#181B1E; --surface-2:#1F2327;
+      --ink:#EDEFF1; --muted:#9BA3AA; --rule:#2C3237;
+      --accent:#69ABE3; --accent-soft:#69ABE31C;
+      --blue:#5c9ce8; --orange:#f08050; --aqua:#3cc493; --violet:#9085e9; --red:#e66767;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground:#101214; --surface:#181B1E; --surface-2:#1F2327;
+    --ink:#EDEFF1; --muted:#9BA3AA; --rule:#2C3237;
+    --accent:#69ABE3; --accent-soft:#69ABE31C;
+    --blue:#5c9ce8; --orange:#f08050; --aqua:#3cc493; --violet:#9085e9; --red:#e66767;
+  }
+
+  * { box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body {
+    margin:0; background:var(--ground); color:var(--ink);
+    font-family:var(--f-body); font-size:17px; line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  a { color:var(--accent); text-underline-offset:.18em; }
+
+  .wrap { width:min(760px, calc(100% - 40px)); margin-inline:auto; }
+  .wide { width:min(1080px, calc(100% - 40px)); margin-inline:auto; }
+
+  header.site { border-bottom:1px solid var(--rule); }
+  header.site .wide {
+    min-height:64px; display:flex; align-items:center;
+    justify-content:space-between; gap:20px;
+  }
+  header.site .name { font-weight:750; letter-spacing:-.02em; text-decoration:none; color:var(--ink); }
+  header.site nav { display:flex; gap:20px; flex-wrap:wrap; }
+  header.site nav a { color:var(--muted); font-size:.88rem; text-decoration:none; }
+  header.site nav a:hover { color:var(--ink); }
+
+  .hero { padding:76px 0 46px; }
+  .label { color:var(--muted); font-size:.74rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; }
+  h1 {
+    font-family:var(--f-display); font-weight:600;
+    margin:14px 0 16px; font-size:clamp(2.3rem,5.8vw,3.6rem);
+    line-height:1.04; letter-spacing:-.03em;
+  }
+  .standfirst { font-size:1.2rem; color:var(--muted); margin:0 0 26px; max-width:62ch; }
+  .herometa { display:flex; flex-wrap:wrap; gap:10px 18px; align-items:center;
+              font-size:.86rem; color:var(--muted); border-top:1px solid var(--rule); padding-top:18px; }
+  .pill {
+    display:inline-flex; align-items:center; gap:7px; padding:7px 14px;
+    border:1px solid var(--rule); border-radius:999px; background:var(--surface);
+    text-decoration:none; color:var(--ink); font-weight:600; font-size:.85rem;
+  }
+  .pill:hover { border-color:var(--accent); color:var(--accent); }
+
+  .toc { border-top:1px solid var(--rule); border-bottom:1px solid var(--rule); padding:22px 0 24px; margin-bottom:14px; }
+  .toc ol { margin:10px 0 0; padding-left:1.2em; columns:2; column-gap:34px; }
+  .toc li { margin:0 0 6px; color:var(--muted); font-size:.92rem; break-inside:avoid; }
+  .toc a { color:var(--ink); text-decoration:none; }
+  .toc a:hover { color:var(--accent); }
+
+  article { padding:8px 0 40px; }
+  h2 {
+    font-family:var(--f-display); font-weight:600; letter-spacing:-.02em;
+    font-size:1.72rem; line-height:1.18; margin:58px 0 4px;
+  }
+  h2 .num { color:var(--muted); font-family:var(--f-body); font-size:.8rem;
+            font-weight:700; letter-spacing:.1em; display:block; margin-bottom:10px; }
+  h3 { font-size:1.06rem; letter-spacing:-.01em; margin:34px 0 2px; }
+  p { margin:14px 0; }
+  strong { font-weight:650; }
+  .lede { font-size:1.09rem; }
+  ul, ol.body { padding-left:1.25em; }
+  ul li, ol.body li { margin:9px 0; }
+
+  .key {
+    background:var(--surface); border:1px solid var(--rule);
+    border-left:3px solid var(--accent);
+    border-radius:10px; padding:18px 20px; margin:32px 0;
+  }
+  .key .kt { font-size:.74rem; font-weight:700; letter-spacing:.1em;
+             text-transform:uppercase; color:var(--accent); }
+  .key p:first-of-type { margin-top:8px; }
+  .key p:last-child, .key ol:last-child, .key ul:last-child { margin-bottom:0; }
+  .key.warn { border-left-color:var(--orange); }
+  .key.warn .kt { color:var(--orange); }
+
+  .tablewrap { overflow-x:auto; margin:30px 0; }
+  table { border-collapse:collapse; width:100%; min-width:520px; font-size:.9rem; }
+  th, td { text-align:left; vertical-align:top; padding:11px 12px; border-bottom:1px solid var(--rule); }
+  thead th { border-bottom:2px solid var(--rule); font-size:.76rem; letter-spacing:.07em;
+             text-transform:uppercase; color:var(--muted); }
+  td.h { font-weight:650; color:var(--ink); }
+  caption { caption-side:bottom; text-align:left; color:var(--muted);
+            font-size:.85rem; padding-top:12px; }
+
+  .kicker { font-family:var(--f-display); font-size:1.34rem; line-height:1.45;
+            letter-spacing:-.015em; border-top:1px solid var(--rule);
+            padding-top:34px; margin-top:52px; }
+
+  .sources { border-top:1px solid var(--rule); margin-top:46px; padding-top:26px;
+             font-size:.82rem; color:var(--muted); line-height:1.6; }
+  .sources h2 { font-size:1.1rem; margin:0 0 12px; }
+  .sources b { color:var(--ink); }
+
+  footer.site { border-top:1px solid var(--rule); margin-top:56px; }
+  footer.site .wide { display:flex; justify-content:space-between; gap:20px;
+                      padding:26px 0 46px; color:var(--muted); font-size:.85rem; flex-wrap:wrap; }
+  footer.site a { color:var(--muted); }
+  .note { color:var(--muted); font-size:.86rem; line-height:1.55; margin-top:10px; }
+
+  /* Instrument-specific */
+  .toolbar { display:flex; flex-wrap:wrap; gap:10px; margin:20px 0 0; }
+  button.copy {
+    font-family:var(--f-body); font-size:.85rem; font-weight:600;
+    padding:9px 15px; border-radius:999px; cursor:pointer;
+    border:1px solid var(--rule); background:var(--surface); color:var(--ink);
+  }
+  button.copy:hover { border-color:var(--accent); color:var(--accent); }
+  button.copy:active { background:var(--accent-soft); }
+  button.copy[data-done="1"] { border-color:var(--aqua); color:var(--aqua); }
+  button.copy:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+
+  pre.prompt {
+    background:var(--surface-2); border:1px solid var(--rule); border-radius:10px;
+    padding:18px 20px; overflow-x:auto; margin:22px 0 0;
+    font-family:var(--f-mono); font-size:.82rem; line-height:1.62;
+    white-space:pre-wrap; word-break:break-word;
+  }
+
+  .block { border-top:1px solid var(--rule); padding-top:22px; margin-top:30px; }
+  .block h3 { margin:0 0 2px; }
+  .block .bsub { color:var(--muted); font-size:.86rem; margin:2px 0 6px; }
+  ol.items { padding-left:1.9em; margin:12px 0 0; }
+  ol.items li { margin:11px 0; }
+
+  details.keyfold {
+    border:1px solid var(--rule); border-radius:10px; background:var(--surface);
+    padding:0 20px; margin:26px 0;
+  }
+  details.keyfold > summary {
+    cursor:pointer; padding:16px 0; font-weight:650; list-style:none;
+    display:flex; align-items:center; gap:10px;
+  }
+  details.keyfold > summary::-webkit-details-marker { display:none; }
+  details.keyfold > summary::before {
+    content:"+"; font-family:var(--f-mono); color:var(--accent);
+    font-weight:700; font-size:1.05rem; width:1em; text-align:center;
+  }
+  details.keyfold[open] > summary::before { content:"\2212"; }
+  details.keyfold[open] > summary { border-bottom:1px solid var(--rule); }
+  details.keyfold .inner { padding:4px 0 22px; }
+  details.keyfold ol { padding-left:1.9em; }
+  details.keyfold ol li { margin:11px 0; }
+  .flagged { color:var(--orange); font-weight:650; font-family:var(--f-mono); font-size:.85em; }
+
+  @media (max-width:700px) {
+    body { font-size:16px; }
+    .hero { padding:54px 0 36px; }
+    .toc ol { columns:1; }
+  }
+
+  @media print {
+    header.site nav, .toolbar, .herometa, .toc { display:none; }
+    body { font-size:11pt; background:#fff; color:#000; }
+    details.keyfold { border:none; padding:0; }
+    details.keyfold > summary { display:none; }
+    details.keyfold .inner { padding:0; }
+    .block, h2 { break-inside:avoid; }
+    pre.prompt { border:1px solid #ccc; background:#fff; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="wide">
+    <a class="name" href="/">Benjamin Michael Haire</a>
+    <nav aria-label="Primary navigation">
+      <a href="../">Main analysis</a>
+      <a href="#prompt">The prompt</a>
+      <a href="#items">The items</a>
+      <a href="#scoring">Scoring</a>
+      <a href="/ja/fable-5-1-reasoning-effort/probe/" hreflang="ja" lang="ja">日本語</a>
+      <a href="/">All projects</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="wrap">
+
+  <div class="hero">
+    <p class="label">Instrument / 10 September 2026</p>
+    <h1>A model that abstains is worth more than one that guesses.</h1>
+    <p class="standfirst">Public knowledge benchmarks report how many questions a model answers correctly. That is the wrong quantity for anyone who cannot check the answers. What matters is the count of correct answers minus the count of confident wrong ones, because a confident wrong answer costs you more than an admission of ignorance saves you. This is a thirty-item closed-book probe built to measure that difference, with the prompt, the items, the answer key and the scoring scheme published in full.</p>
+    <div class="herometa">
+      <a class="pill" href="../">The reasoning-effort analysis</a>
+      <a class="pill" href="probe-en.pdf">English PDF</a>
+      <a class="pill" href="probe-ja.pdf" hreflang="ja" lang="ja">日本語版 PDF</a>
+    </div>
+    <p class="label" style="margin-top:18px">Knowledge measurement &middot; hallucination rate &middot; calibration &middot; abstention &middot; game engine domain</p>
+  </div>
+
+  <nav class="toc" aria-label="Contents">
+    <p class="label">Contents</p>
+    <ol>
+      <li><a href="#why">Why a private probe</a></li>
+      <li><a href="#burned">This published set is burned</a></li>
+      <li><a href="#design">What the design is doing</a></li>
+      <li><a href="#prompt">The prompt</a></li>
+      <li><a href="#items">The thirty items</a></li>
+      <li><a href="#answers">The answer key</a></li>
+      <li><a href="#scoring">Scoring</a></li>
+      <li><a href="#method">Method notes</a></li>
+      <li><a href="#limits">What this cannot tell you</a></li>
+    </ol>
+  </nav>
+
+  <article>
+
+  <p class="lede"><strong>Reasoning effort cannot fix a retrieval failure.</strong> That is the finding this instrument exists to follow up. When a model has to derive something hard from material it can already see, more deliberation helps, and the companion analysis measures exactly how much. When the model simply does not hold the fact, more deliberation makes matters worse: it produces a longer, more internally consistent, more persuasive account of something untrue. So if two models feel different on a large codebase and their reasoning scores are level, the difference worth measuring is not how well they think but how much they know, and how honestly they behave at the edge of it.</p>
+
+  <h2 id="why"><span class="num">Section one</span>Why a private probe</h2>
+
+  <p>There are public benchmarks for exactly this. AA-Omniscience is the most direct: it scores knowledge net of hallucination and reports negative numbers for models that assert more than they know. Humanity's Last Exam probes deep expert knowledge. Both are useful and both appear in the companion analysis. Neither answers the question a working developer actually has, which is not "how much does this model know" but "how much does this model know about the specific things I ask it about all day".</p>
+
+  <p>That question is not answerable from a leaderboard, because a leaderboard averages over a distribution of topics chosen by someone else. A model can sit two points behind another on an aggregate and still be markedly stronger on the eight subjects that make up your working week. The only way to find out is to ask about your subjects.</p>
+
+  <p>There is a second reason, and it is the sharper one. Every public benchmark eventually enters training data. Items published on the open web are scraped, and a model trained after the scrape may recall the item rather than derive the answer. The effect is invisible in the score and fatal to the inference. A set of items you wrote yourself, and never published, is immune to it, which makes a private probe the only knowledge measurement whose validity you can personally vouch for.</p>
+
+  <div class="key warn">
+    <p class="kt" id="burned">This published set is burned</p>
+    <p>Publishing this page destroys these thirty items as a clean instrument. From the moment it is crawled, any model trained afterwards may have seen the items and the answers together, and a high score stops being evidence of knowledge. That is a deliberate trade: the protocol, the scoring scheme and the shape of good items are worth more shared than the items are worth kept.</p>
+    <p>So treat what follows as a worked template. The prompt and the scoring survive publication intact and can be reused indefinitely. The items should be replaced with your own, drawn from your own domain, and never posted anywhere. Twenty minutes of writing gets you an instrument nobody can contaminate.</p>
+  </div>
+
+  <h2 id="design"><span class="num">Section two</span>What the design is doing</h2>
+
+  <p>Four choices carry the whole instrument, and each is there to close a specific escape route.</p>
+
+  <p><strong>Closed book, tools off.</strong> The moment a model can search, the probe measures retrieval infrastructure instead of stored knowledge. Both are worth having, but only one of them is the thing that varies between models on an identical harness, so the tools have to be shut off explicitly rather than merely left unmentioned.</p>
+
+  <p><strong>Abstention is free.</strong> If UNKNOWN is unpenalised and the prompt says so plainly, a model that withholds an answer is making an honest report rather than absorbing a cost. Without that clause, everything gets an answer and the abstention signal disappears, which is precisely the signal you came for.</p>
+
+  <p><strong>Confidence is compulsory and defined.</strong> A rating scale with no anchor is decoration. Defining HIGH as "you would stake a technical decision on it" ties the rating to a real consequence, which is the only thing that makes the calibration analysis meaningful.</p>
+
+  <p><strong>The answer format is rigid.</strong> Free-form answers hedge, and hedged answers are unscorable: a paragraph that circles the right idea while never committing cannot be marked correct or wrong without your judgement doing the work. A fixed two-line format per item forces the commitment that makes scoring reproducible.</p>
+
+  <p>Items are short-answer rather than multiple choice for the same reason. Multiple choice lets a model recover a fact it does not hold from the shape of the distractors, and it inflates every score by the guess rate. Short answer measures recall rather than recognition, which is what you are buying.</p>
+
+  <h2 id="prompt"><span class="num">Section three</span>The prompt</h2>
+
+  <p>Paste this first, then the item block. Use the same wording for every model configuration you compare, including the ones you expect to lose, because a rewritten prompt is a different experiment.</p>
+
+  <pre class="prompt" id="promptbox">I am going to ask you a set of short technical questions. Answer them from
+your own knowledge only.
+
+Rules:
+- Do not use any tools, search, or external lookup. If you have tools
+  available, do not call them.
+- Answer each item independently and concisely. One or two sentences, or a
+  formula. No preamble, no restating the question.
+- If you do not know an answer, write UNKNOWN. This is a perfectly acceptable
+  response and is not penalised. A wrong answer and an UNKNOWN are scored
+  differently, so do not guess in order to appear useful, and do not withhold
+  an answer you actually hold.
+- After each answer, give a confidence rating: HIGH, MEDIUM or LOW.
+  HIGH means you would stake a technical decision on it.
+
+Use exactly this format for every item, with no other text:
+
+N. ANSWER: &lt;your answer, or UNKNOWN&gt;
+   CONFIDENCE: &lt;HIGH | MEDIUM | LOW&gt;
+
+Do not summarise at the end. Do not comment on the questions themselves.</pre>
+
+  <div class="toolbar">
+    <button class="copy" type="button" data-mode="prompt">Copy the prompt</button>
+    <button class="copy" type="button" data-mode="full">Copy prompt and all thirty items</button>
+  </div>
+
+  <h2 id="items"><span class="num">Section four</span>The thirty items</h2>
+
+  <p>These five blocks are chosen for a real-time game engine: rendering mathematics, constraint solvers, floating-point determinism, C++ object semantics, and lockstep networking. Each item has a definite answer that a competent engineer in that subfield would give without looking anything up, and none of them is answerable from the wording of the question. Drop any block that does not match your stack and write six of your own in its place.</p>
+
+  <div class="block">
+    <h3>Block A. Rendering and shading mathematics</h3>
+    <p class="bsub">Microfacet theory, energy conservation, depth precision.</p>
+    <ol class="items">
+      <li data-n="1">In the GGX / Trowbridge-Reitz normal distribution function, what is the denominator?</li>
+      <li data-n="2">In the Cook-Torrance specular BRDF, what is the denominator of the specular term?</li>
+      <li data-n="3">What is the purpose of the 1/pi factor in the Lambertian diffuse BRDF?</li>
+      <li data-n="4">What does the Smith height-correlated masking-shadowing term account for that the separable Smith form does not?</li>
+      <li data-n="5">Why is a reversed-Z depth buffer preferred when using a floating-point depth format?</li>
+      <li data-n="6">In the split-sum approximation for image-based lighting, what two parts is the specular integral split into?</li>
+      <li data-n="7">In most Unreal shading code, what is the relationship between the artist-facing roughness parameter and the alpha used in the NDF?</li>
+      <li data-n="8">How many coefficients are in a standard order-2 (L2) spherical harmonics irradiance representation?</li>
+    </ol>
+  </div>
+
+  <div class="block">
+    <h3>Block B. Rigid body dynamics and constraint solvers</h3>
+    <p class="bsub">Stabilisation, convergence, integrator choice.</p>
+    <ol class="items">
+      <li data-n="9">What is Baumgarte stabilisation used for in a constraint solver?</li>
+      <li data-n="10">Why does the ordering of constraints affect determinism in a Gauss-Seidel style solver?</li>
+      <li data-n="11">In a soft-constraint formulation, what do CFM and ERP each control?</li>
+      <li data-n="12">What problem does a restitution velocity threshold (restitution slop) prevent?</li>
+      <li data-n="13">Why is semi-implicit (symplectic) Euler generally preferred over explicit Euler for game simulation?</li>
+      <li data-n="14">In conservative advancement for continuous collision detection, what quantity bounds the safe timestep?</li>
+      <li data-n="15">What is warm starting in an impulse-based solver, and what does it improve?</li>
+    </ol>
+  </div>
+
+  <div class="block">
+    <h3>Block C. Numerical determinism and floating point</h3>
+    <p class="bsub">What IEEE 754 promises, and where the promise stops.</p>
+    <ol class="items">
+      <li data-n="16">Why is floating-point addition non-associative, and what does that imply for parallel reductions?</li>
+      <li data-n="17">What does IEEE 754 guarantee about the results of +, -, *, / and sqrt across conforming implementations?</li>
+      <li data-n="18">Which commonly used maths functions are NOT guaranteed to be bit-identical across platforms, and why?</li>
+      <li data-n="19">What does a fused multiply-add change about rounding compared to a separate multiply then add?</li>
+      <li data-n="20">Why do lockstep multiplayer games often use fixed-point rather than floating-point arithmetic for simulation state?</li>
+    </ol>
+  </div>
+
+  <div class="block">
+    <h3>Block D. C++ object semantics</h3>
+    <p class="bsub">Value categories, the one-definition rule, object lifetime.</p>
+    <ol class="items">
+      <li data-n="21">What does std::move cast to, and how does std::forward differ?</li>
+      <li data-n="22">What five special member functions does the "rule of five" enumerate?</li>
+      <li data-n="23">What is the consequence of defining an inline function differently in two translation units?</li>
+      <li data-n="24">What problem does std::launder solve?</li>
+      <li data-n="25">Why can type-punning through pointer casts break under strict aliasing, and what is the sanctioned alternative?</li>
+      <li data-n="26">What happens when you delete a derived object through a base pointer whose class has a non-virtual destructor?</li>
+    </ol>
+  </div>
+
+  <div class="block">
+    <h3>Block E. Networking and lockstep simulation</h3>
+    <p class="bsub">Divergence, correction timing, recovery.</p>
+    <ol class="items">
+      <li data-n="27">In a deterministic lockstep architecture, what must be identical across peers, and what may safely differ?</li>
+      <li data-n="28">What is the difference between client-side prediction and rollback netcode in terms of when the correction is applied?</li>
+      <li data-n="29">Why does input delay reduce the frequency of visible corrections in a prediction-based scheme?</li>
+      <li data-n="30">What is the primary reason a desync in lockstep is usually unrecoverable without a full state resync?</li>
+    </ol>
+  </div>
+
+  <h2 id="answers"><span class="num">Section five</span>The answer key</h2>
+
+  <p>Collect every response before opening this. Reading a key first primes your judgement on exactly the borderline items where your judgement is doing the most work, and there is no way to unsee it partway through a scoring pass.</p>
+
+  <p>One warning about the key itself. It is written from my own knowledge, so where an entry is wrong the probe measures my error rather than the model's. Items marked <span class="flagged">(!)</span> are the ones I would check against a primary source before scoring an answer as wrong, and you should extend that habit to any item where a model disagrees with the key confidently and specifically. A confident specific disagreement is more often a correct model than a wrong one.</p>
+
+  <details class="keyfold" id="keyfold">
+    <summary>Show the answer key for all thirty items</summary>
+    <div class="inner">
+
+      <h3>Block A. Rendering and shading mathematics</h3>
+      <ol class="items">
+        <li data-n="1">pi * ((n&middot;h)^2 * (alpha^2 - 1) + 1)^2, with alpha^2 in the numerator.</li>
+        <li data-n="2">4 * (n&middot;l) * (n&middot;v).</li>
+        <li data-n="3">Normalisation. Without it the BRDF integrated over the hemisphere would exceed the albedo, so energy would not be conserved.</li>
+        <li data-n="4">Correlation between masking and shadowing at the same microfacet height. The separable form treats them as independent and loses energy at grazing angles.</li>
+        <li data-n="5">Floating-point precision is densest near zero. Reversed-Z maps the far plane to zero, which distributes precision far more evenly across depth and largely removes z-fighting at distance.</li>
+        <li data-n="6">A pre-filtered environment map, and a 2D BRDF integration lookup table indexed by roughness and n&middot;v.</li>
+        <li data-n="7">alpha = roughness^2. <span class="flagged">(!)</span> Confirm against the shading model version you care about; the squaring convention is near-universal but has exceptions.</li>
+        <li data-n="8">Nine.</li>
+      </ol>
+
+      <h3>Block B. Rigid body dynamics and constraint solvers</h3>
+      <ol class="items">
+        <li data-n="9">Correcting positional error (penetration or drift) by feeding a fraction of that error back as a bias term in the velocity constraint.</li>
+        <li data-n="10">Constraints are solved sequentially against already-updated state, so the result depends on the order in which they are visited. Change the order, change the result bit for bit.</li>
+        <li data-n="11">CFM adds compliance to the diagonal of the system, softening the constraint. ERP controls how much of the positional error is removed per step.</li>
+        <li data-n="12">Jitter. Applying restitution to near-zero relative velocities makes resting contacts bounce indefinitely.</li>
+        <li data-n="13">It integrates position using the already-updated velocity, which gives bounded energy behaviour over time rather than the systematic energy gain of explicit Euler.</li>
+        <li data-n="14">The separation distance divided by an upper bound on the relative closing speed.</li>
+        <li data-n="15">Reusing the previous frame's accumulated impulses as the initial guess for this frame. It improves convergence substantially for persistent contacts.</li>
+      </ol>
+
+      <h3>Block C. Numerical determinism and floating point</h3>
+      <ol class="items">
+        <li data-n="16">Each operation rounds, so the rounding error depends on the order of accumulation. Parallel reductions that combine in a different order produce different bit patterns.</li>
+        <li data-n="17">Correctly rounded results. Given the same inputs, rounding mode and operation order, conforming implementations must produce bit-identical results for those five operations.</li>
+        <li data-n="18">Transcendentals: sin, cos, tan, exp, log, pow and friends. IEEE 754 does not require them to be correctly rounded, so library implementations differ across platforms and versions.</li>
+        <li data-n="19">A single rounding of a*b+c rather than two. The result can differ from a separate multiply followed by an add, which is why FMA contraction breaks bit-identical reproducibility unless disabled.</li>
+        <li data-n="20">Fixed-point arithmetic is exact integer arithmetic, so it is bit-identical across compilers, architectures and optimisation settings. Float is only guaranteed for the basic operations, and not once transcendentals, FMA contraction or x87 extended precision enter.</li>
+      </ol>
+
+      <h3>Block D. C++ object semantics</h3>
+      <ol class="items">
+        <li data-n="21">std::move unconditionally casts to an rvalue reference. std::forward casts conditionally, preserving the original value category through a forwarding reference.</li>
+        <li data-n="22">Destructor, copy constructor, copy assignment operator, move constructor, move assignment operator.</li>
+        <li data-n="23">Undefined behaviour, and in practice a silent one: the linker typically picks one definition arbitrarily and both call sites get it.</li>
+        <li data-n="24">It gives you a usable pointer to a new object created in storage that previously held a different object, defeating compiler assumptions about object identity that would otherwise make the reused pointer invalid.</li>
+        <li data-n="25">The compiler may assume that pointers of distinct types do not alias and reorder or elide accesses accordingly. The sanctioned alternatives are memcpy or std::bit_cast.</li>
+        <li data-n="26">Undefined behaviour. In practice the derived destructor does not run, so derived members leak and derived cleanup never happens.</li>
+      </ol>
+
+      <h3>Block E. Networking and lockstep simulation</h3>
+      <ol class="items">
+        <li data-n="27">The simulation state and the sequence of inputs applied to it must be identical. Rendering, audio, interpolation, camera and any presentation-only state may differ freely.</li>
+        <li data-n="28">Client-side prediction applies the correction when the authoritative update arrives, blending or snapping forward from the current state. Rollback rewinds to the last known-good state, replays the intervening frames with corrected inputs, and re-arrives at the present.</li>
+        <li data-n="29">Delaying local input by roughly the round-trip time means remote inputs usually arrive before the frame that needs them, so the prediction is correct more often and there is less to correct.</li>
+        <li data-n="30">Because lockstep peers exchange inputs rather than state, and the simulations have already diverged. There is no shared state to reconcile against, so recovery requires transmitting the full authoritative state.</li>
+      </ol>
+
+    </div>
+  </details>
+
+  <h2 id="scoring"><span class="num">Section six</span>Scoring</h2>
+
+  <p>Every item lands in exactly one of four buckets. The distinction between the two wrong buckets is the entire point of the instrument, so resist the urge to collapse them.</p>
+
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>Bucket</th><th>Definition</th></tr></thead>
+    <tbody>
+      <tr><td class="h">Correct</td><td>Substantively right, whatever the confidence attached to it.</td></tr>
+      <tr><td class="h">Confidently wrong</td><td>Wrong, and rated HIGH or MEDIUM.</td></tr>
+      <tr><td class="h">Hedged wrong</td><td>Wrong, and rated LOW. The model told you not to trust it, and it was right about that.</td></tr>
+      <tr><td class="h">Abstained</td><td>UNKNOWN.</td></tr>
+    </tbody>
+    <caption>Four buckets, thirty items, one bucket per item. Partial credit defeats the comparison.</caption>
+  </table>
+  </div>
+
+  <p>From those four counts, four numbers follow.</p>
+
+  <ul>
+    <li><strong>Knowledge</strong> is correct divided by thirty. This is the number a public benchmark would report, and on its own it is the least useful of the four.</li>
+    <li><strong>Hallucination rate</strong> is confidently wrong divided by the number of items actually attempted, meaning thirty minus abstentions. Dividing by thirty instead would reward a model for abstaining, which double-counts a virtue already captured elsewhere.</li>
+    <li><strong>Calibration</strong> is the relationship between confidence and correctness. A model whose LOW ratings are wrong far more often than its HIGH ratings is telling you something usable. A model that rates everything HIGH is telling you nothing, and the rating can be discarded for that model.</li>
+    <li><strong>Net usable</strong> is correct minus confidently wrong.</li>
+  </ul>
+
+  <div class="key">
+    <p class="kt">Why net usable is the number that matters</p>
+    <p>A model that answers twenty items correctly and eight confidently wrong scores twelve. A model that answers sixteen correctly, abstains twelve times and is confidently wrong twice scores fourteen. The first model knows more. The second is better to work with, because every one of those eight confident errors is a thing you will either verify at your own cost or ship.</p>
+    <p>The weighting is not arbitrary and it is not universal. Net usable implicitly prices one confident error as costing exactly one correct answer, which is right when verification is roughly as expensive as the answer is valuable. If you verify everything anyway, weight it lower. If you are vibe coding on a system you do not fully understand, weight it considerably higher, because that is precisely the setting in which a plausible wrong answer travels furthest before anything catches it.</p>
+  </div>
+
+  <h2 id="method"><span class="num">Section seven</span>Method notes</h2>
+
+  <ul>
+    <li><strong>Run each configuration at least twice</strong> on the same items. Sampling variance between runs of the same model is real, and you want to have seen its size before you trust a gap between models.</li>
+    <li><strong>Randomise which model you run first</strong> across sessions, so that whatever you learn from reading the first sheet does not systematically favour one configuration.</li>
+    <li><strong>Score by item, not by sheet.</strong> Take item one across all models, then item two, and so on. Scoring one model's full sheet before starting the next lets your standard drift between them, and it drifts in the direction of whatever you saw first.</li>
+    <li><strong>Blind the sheets if you can.</strong> Strip the model names, score, then match them back up. This costs almost nothing and removes the largest bias in the whole procedure.</li>
+    <li><strong>Treat a gap under three items as noise.</strong> On thirty items with a single administration, three is roughly the point where a difference stops being comfortably attributable to sampling. Below that, do not act on it.</li>
+  </ul>
+
+  <h2 id="limits"><span class="num">Section eight</span>What this cannot tell you</h2>
+
+  <p>Thirty items is a small instrument. It is enough to detect a large difference in domain knowledge and nowhere near enough to rank two close models, which is why the noise floor above is set where it is. Widening the blocks helps more than deepening any one of them, because the variance you care about lives between subjects rather than within them.</p>
+
+  <p>The probe measures stored knowledge under closed-book conditions. That is deliberate, and it means the result does not describe how a model performs with tools, retrieval and a real codebase in context, which is the condition you actually work in. A model that knows less but searches well may serve you better. The probe isolates one input to that outcome rather than predicting the outcome.</p>
+
+  <p>Item quality dominates everything else here. An item with an arguable answer measures your judgement, an item whose answer is recoverable from its own wording measures nothing, and an item drawn from a widely quoted tutorial measures memorisation of that tutorial. The scoring scheme is robust; the items are the fragile part, and they are the part you have to write yourself.</p>
+
+  <p class="kicker">Knowing more and being trustworthy are different properties, and the gap between them is exactly where a model costs you time. Measure the gap on your own material, in your own words, and keep the items to yourself.</p>
+
+  <div class="sources">
+    <h2>Notes</h2>
+    <p><b>Companion piece.</b> This instrument follows from <a href="../">Effort buys less than the model you point it at</a>, which measures reasoning effort against return across Claude Fable 5.1, GPT-6 Astra and Claude Opus 5 on Artificial Analysis Intelligence Index v4.3. The relevant result there is that on AA-Omniscience, the public benchmark closest in spirit to this one, the two leading models tie on the net-of-hallucination score while differing markedly in raw accuracy, which is what prompted building something narrower.</p>
+    <p><b>Related public benchmarks.</b> Artificial Analysis, AA-Omniscience (knowledge scored net of hallucination). Phan L, Gatti A, Han Z, et al., "Humanity's Last Exam", 2025.</p>
+    <p><b>Answer key provenance.</b> The key is written from my own knowledge and has not been independently verified item by item. Items marked (!) are the ones I consider most likely to admit a defensible alternative answer.</p>
+    <p><b>Disclosure of AI assistance.</b> AI assistance was used for drafting, formatting and bilingual translation. The items and the scoring scheme are mine. No model was scored on this page.</p>
+  </div>
+
+  </article>
+</div>
+</main>
+
+<footer class="site">
+  <div class="wide">
+    <span>&copy; 2026 Benjamin Michael Haire</span>
+    <a href="../">Back to the main analysis</a>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var promptEl = document.getElementById('promptbox');
+
+  function itemsText() {
+    var out = [];
+    document.querySelectorAll('.block').forEach(function (b) {
+      var h = b.querySelector('h3');
+      if (!h) return;
+      out.push(h.textContent.trim());
+      out.push('');
+      b.querySelectorAll('ol.items > li').forEach(function (li) {
+        out.push(li.getAttribute('data-n') + '. ' + li.textContent.trim());
+      });
+      out.push('');
+    });
+    return out.join('\n').trim();
+  }
+
+  function flash(btn, msg) {
+    var old = btn.textContent;
+    btn.textContent = msg;
+    btn.setAttribute('data-done', '1');
+    setTimeout(function () {
+      btn.textContent = old;
+      btn.removeAttribute('data-done');
+    }, 1800);
+  }
+
+  document.querySelectorAll('button.copy').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var text = btn.getAttribute('data-mode') === 'prompt'
+        ? promptEl.textContent
+        : promptEl.textContent + '\n\n' + itemsText();
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(function () {
+          flash(btn, 'Copied');
+        }).catch(function () {
+          flash(btn, 'Copy failed, select manually');
+        });
+      } else {
+        flash(btn, 'Copy failed, select manually');
+      }
+    });
+  });
+
+  window.addEventListener('beforeprint', function () {
+    var d = document.getElementById('keyfold');
+    if (d) d.open = true;
+  });
+})();
+</script>
+<script src="/assets/lang.js" defer></script>
+</body>
+</html>

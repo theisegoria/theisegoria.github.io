@@ -156,6 +156,7 @@
       <a href="#models">Model choice</a>
       <a href="#sweep">The sweep</a>
       <a href="#matched">Matched effort</a>
+      <a href="probe/">Knowledge probe</a>
       <a href="/ja/fable-5-1-reasoning-effort/" hreflang="ja" lang="ja">日本語</a>
       <a href="/">All projects</a>
     </nav>
@@ -173,6 +174,7 @@
       <a class="pill" href="fable-5-1-reasoning-effort-en.pdf">English PDF</a>
       <a class="pill" href="fable-5-1-reasoning-effort-ja.pdf" hreflang="ja" lang="ja">日本語版 PDF</a>
       <a class="pill" href="fable-5-1-reasoning-effort-bilingual.pdf">Bilingual edition</a>
+      <a class="pill" href="probe/">Companion: the knowledge probe</a>
     </div>
     <p class="label" style="margin-top:18px">Reasoning effort &middot; token economics &middot; latency &middot; agentic coding &middot; model selection</p>
   </div>
@@ -287,6 +289,11 @@
   <p>Several of the gaps are small enough to be within benchmark noise. A two-point CritPt difference and a four-point AA-LCR difference should not carry much weight individually; they matter here only as part of a consistent pattern across ten evaluations, and the pattern is the claim rather than any single row.</p>
 
   <p>The larger limitation is one of construct rather than measurement. These are eval-suite aggregates over tasks whose context is supplied correctly by the harness. On a codebase of any real size the dominant failure mode is not shallow reasoning over the right files; it is confident reasoning over the wrong ones. Raising effort makes that failure worse rather than better, because it produces more elaborate and more plausible inference from the same faulty premises. Neither the effort dial nor the model choice substitutes for getting the right material in front of the model, and nothing measured here touches that problem.</p>
+
+  <div class="key">
+    <p class="kt">A companion instrument</p>
+    <p>The one thing measured here that effort cannot improve is knowledge, and the public benchmark closest to it, AA-Omniscience, has the two leading models tied. That is a poor place to leave the question, because a leaderboard averages over subjects somebody else chose. <a href="probe/">A closed-book probe</a> publishes the prompt, thirty items, an answer key and a scoring scheme for measuring the same thing on your own material, in your own words.</p>
+  </div>
 
   <p class="kicker">The dial is nearly exhausted by the time it reaches high, and entirely exhausted above xhigh. The model choice is not exhausted at all, and on the one benchmark that measures both at matched settings it is worth as much as the whole dial. Most of the attention spent on effort settings would be better spent on which model is reading the code, and almost all of it would be better spent on which code the model is reading.</p>
 
