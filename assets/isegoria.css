@@ -327,3 +327,61 @@ p { margin: 0; }
   body { background: #fff; color: #000; }
   .site-nav, .controls, .site-footer nav { display: none; }
 }
+
+/* ---------- latest updates ---------- */
+.latest {
+  padding: clamp(2.75rem, 5.5vw, 4.25rem) 0 clamp(2.25rem, 4.5vw, 3.25rem);
+  border-top: 1px solid var(--rule-firm);
+}
+.latest-lead {
+  display: block; text-decoration: none;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  padding: 1.9rem 0 1.8rem;
+  margin-inline: calc(var(--gutter) / -3);
+  padding-inline: calc(var(--gutter) / 3);
+  transition: background-color .18s ease;
+}
+.latest-lead:hover { background: var(--paper-sunk); }
+.latest-lead .stamp {
+  display: block;
+  font-family: var(--sans); font-size: .6875rem;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--accent); font-feature-settings: "tnum";
+}
+.latest-lead .stamp .sep { color: var(--ink-faint); margin: 0 .55rem; }
+.latest-lead .t {
+  display: block;
+  font-size: clamp(1.45rem, 2.9vw, 2rem); letter-spacing: -.025em;
+  line-height: 1.14; margin: .65rem 0 .75rem;
+  text-wrap: balance; max-width: min(30ch, 24rem);
+}
+.latest-lead:hover .t { color: var(--accent); }
+.latest-lead .d {
+  display: block; color: var(--ink-soft);
+  font-size: 1.0625rem; max-width: min(66ch, 41rem); text-wrap: pretty;
+}
+.latest-lead .tail {
+  display: block; margin-top: .95rem;
+  font-family: var(--sans); font-size: .6875rem;
+  letter-spacing: .1em; text-transform: uppercase; color: var(--ink-faint);
+}
+.latest-lead .tail span + span::before { content: "\00b7"; margin: 0 .5rem; }
+
+.index.dated { border-top: 0; }
+.index.dated > a { grid-template-columns: 5rem minmax(0, 17rem) minmax(0, 1fr); }
+.index.dated > a::before {
+  content: attr(data-date);
+  counter-increment: none;
+  white-space: nowrap;
+}
+.latest .more { margin-top: 1.6rem; }
+
+@media (max-width: 860px) {
+  .index.dated > a { grid-template-columns: 4.5rem minmax(0, 1fr); }
+}
+@media (max-width: 560px) {
+  .index.dated > a { grid-template-columns: 1fr; }
+  .index.dated > a::before { display: block; margin-bottom: .35rem; }
+  .latest-lead .t { max-width: none; }
+}
