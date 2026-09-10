@@ -102,7 +102,7 @@ Japanese pages use `--f-display: "Hiragino Mincho ProN"` and set
 zone is Asia/Tokyo or the browser lists Japanese ahead of English, and to
 English otherwise. It only moves pages that declare a counterpart with
 `<link rel="alternate" hreflang>`, never redirects crawlers, and any click on
-a language link (`a[hreflang]`) is remembered in localStorage and overrides
+a language link (`a[hreflang]` or `a[data-language-select]`) is remembered in localStorage and overrides
 detection. It must be loaded in `<head>` **without** `defer`, after the
 alternate links, so the redirect happens before first paint:
 
@@ -112,7 +112,7 @@ alternate links, so the redirect happens before first paint:
 ```
 
 Every new page with an alternate-language edition needs that tag, and its
-language switch link needs a `hreflang` attribute, otherwise a reader's
+language switch link needs a `hreflang` (or `data-language-select`) attribute, otherwise a reader's
 choice is not remembered and detection bounces them back.
 
 ## Other sessions push here

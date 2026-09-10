@@ -34,9 +34,11 @@
 
   // Remember explicit choices from any language link on any page.
   document.addEventListener('click', function (e) {
-    var a = e.target && e.target.closest ? e.target.closest('a[hreflang]') : null;
+    var a = e.target && e.target.closest
+      ? e.target.closest('a[hreflang], a[data-language-select]') : null;
     if (!a) return;
-    var l = String(a.getAttribute('hreflang')).slice(0, 2).toLowerCase();
+    var l = String(a.getAttribute('hreflang') || a.getAttribute('data-language-select'))
+      .slice(0, 2).toLowerCase();
     if (l === 'ja' || l === 'en') store(l);
   }, true);
 
