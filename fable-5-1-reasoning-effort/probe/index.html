@@ -215,7 +215,7 @@
   <div class="hero">
     <p class="label">Instrument / 10 September 2026</p>
     <h1>A model that abstains is worth more than one that guesses.</h1>
-    <p class="standfirst">Public knowledge benchmarks report how many questions a model answers correctly. That is the wrong quantity for anyone who cannot check the answers. What matters is the count of correct answers minus the count of confident wrong ones, because a confident wrong answer costs you more than an admission of ignorance saves you. This is a thirty-item closed-book probe built to measure that difference, with the prompt, the items, the answer key and the scoring scheme published in full.</p>
+    <p class="standfirst">Public knowledge benchmarks report how many questions a model answers correctly. That is the wrong quantity for anyone who cannot check the answers. What matters is the count of correct answers minus the count of confident wrong ones, because a confident wrong answer costs you more than an admission of ignorance saves you. So I built a thirty-item closed-book probe to measure that difference, and I publish the prompt, the items, the answer key and the scoring scheme in full.</p>
     <div class="herometa">
       <a class="pill" href="../">The reasoning-effort analysis</a>
       <a class="pill" href="probe-en.pdf">English PDF</a>
@@ -240,20 +240,20 @@
 
   <article>
 
-  <p class="lede"><strong>Reasoning effort cannot fix a retrieval failure.</strong> That is the finding this instrument exists to follow up. When a model has to derive something hard from material it can already see, more deliberation helps, and the companion analysis measures exactly how much. When the model simply does not hold the fact, more deliberation makes matters worse: it produces a longer, more internally consistent, more persuasive account of something untrue. So if two models feel different on a large codebase and their reasoning scores are level, the difference worth measuring is not how well they think but how much they know, and how honestly they behave at the edge of it.</p>
+  <p class="lede"><strong>Reasoning effort cannot fix a retrieval failure.</strong> That is the finding I built this instrument to follow up. When a model has to derive something hard from material it can already see, more deliberation helps, and the companion analysis measures exactly how much. When the model simply does not hold the fact, more deliberation makes matters worse: it produces a longer, more internally consistent, more persuasive account of something untrue. So when two models feel different on a large codebase and their reasoning scores are level, the difference I want to measure is not how well they think but how much they know, and how honestly they behave at the edge of it.</p>
 
   <h2 id="why"><span class="num">Section one</span>Why a private probe</h2>
 
-  <p>There are public benchmarks for exactly this. AA-Omniscience is the most direct: it scores knowledge net of hallucination and reports negative numbers for models that assert more than they know. Humanity's Last Exam probes deep expert knowledge. Both are useful and both appear in the companion analysis. Neither answers the question a working developer actually has, which is not "how much does this model know" but "how much does this model know about the specific things I ask it about all day".</p>
+  <p>There are public benchmarks for exactly this. AA-Omniscience is the most direct: it scores knowledge net of hallucination and reports negative numbers for models that assert more than they know. Humanity's Last Exam probes deep expert knowledge. Both are useful and both appear in the companion analysis. Neither answers the question I actually have, which is not "how much does this model know" but "how much does this model know about the specific things I ask it about all day".</p>
 
   <p>That question is not answerable from a leaderboard, because a leaderboard averages over a distribution of topics chosen by someone else. A model can sit two points behind another on an aggregate and still be markedly stronger on the eight subjects that make up your working week. The only way to find out is to ask about your subjects.</p>
 
-  <p>There is a second reason, and it is the sharper one. Every public benchmark eventually enters training data. Items published on the open web are scraped, and a model trained after the scrape may recall the item rather than derive the answer. The effect is invisible in the score and fatal to the inference. A set of items you wrote yourself, and never published, is immune to it, which makes a private probe the only knowledge measurement whose validity you can personally vouch for. Read what follows as a worked template rather than a set to reuse: the prompt and the scoring hold up indefinitely, and the items are the part to rewrite from your own domain and keep to yourself.</p>
+  <p>There is a second reason, and it is the sharper one. Every public benchmark eventually enters training data. Items published on the open web are scraped, and a model trained after the scrape may recall the item rather than derive the answer. The effect is invisible in the score and fatal to the inference. A set of items you wrote yourself, and never published, is immune to it, which makes a private probe the only knowledge measurement whose validity you can personally vouch for. I offer mine as a worked template rather than a set to reuse: the prompt and the scoring hold up indefinitely, and the items are the part to rewrite from your own domain and keep to yourself.</p>
 
 
   <h2 id="design"><span class="num">Section two</span>What the design is doing</h2>
 
-  <p>Four choices carry the whole instrument, and each is there to close a specific escape route.</p>
+  <p>Four choices carry the whole instrument, and I put each one there to close a specific escape route.</p>
 
   <p><strong>Closed book, tools off.</strong> The moment a model can search, the probe measures retrieval infrastructure instead of stored knowledge. Both are worth having, but only one of them is the thing that varies between models on an identical harness, so the tools have to be shut off explicitly rather than merely left unmentioned.</p>
 
@@ -263,7 +263,7 @@
 
   <p><strong>The answer format is rigid.</strong> Free-form answers hedge, and hedged answers are unscorable: a paragraph that circles the right idea while never committing cannot be marked correct or wrong without your judgement doing the work. A fixed two-line format per item forces the commitment that makes scoring reproducible.</p>
 
-  <p>Items are short-answer rather than multiple choice for the same reason. Multiple choice lets a model recover a fact it does not hold from the shape of the distractors, and it inflates every score by the guess rate. Short answer measures recall rather than recognition, which is what you are buying.</p>
+  <p>I made the items short-answer rather than multiple choice for the same reason. Multiple choice lets a model recover a fact it does not hold from the shape of the distractors, and it inflates every score by the guess rate. Short answer measures recall rather than recognition, which is what you are buying.</p>
 
   <h2 id="prompt"><span class="num">Section three</span>The prompt</h2>
 
@@ -298,7 +298,7 @@ Do not summarise at the end. Do not comment on the questions themselves.</pre>
 
   <h2 id="items"><span class="num">Section four</span>The thirty items</h2>
 
-  <p>These five blocks are chosen for a real-time game engine: rendering mathematics, constraint solvers, floating-point determinism, C++ object semantics, and lockstep networking. Each item has a definite answer that a competent engineer in that subfield would give without looking anything up, and none of them is answerable from the wording of the question. Drop any block that does not match your stack and write six of your own in its place.</p>
+  <p>I chose these five blocks for a real-time game engine: rendering mathematics, constraint solvers, floating-point determinism, C++ object semantics, and lockstep networking. Each item has a definite answer that a competent engineer in that subfield would give without looking anything up, and none of them is answerable from the wording of the question. Drop any block that does not match your stack and write six of your own in its place.</p>
 
   <div class="block">
     <h3>Block A. Rendering and shading mathematics</h3>
@@ -430,7 +430,7 @@ Do not summarise at the end. Do not comment on the questions themselves.</pre>
 
   <h2 id="scoring"><span class="num">Section six</span>Scoring</h2>
 
-  <p>Every item lands in exactly one of four buckets. The distinction between the two wrong buckets is the entire point of the instrument, so resist the urge to collapse them.</p>
+  <p>Every item lands in exactly one of four buckets. The distinction between the two wrong buckets is the whole point of the instrument as I built it, so resist the urge to collapse them.</p>
 
   <div class="tablewrap">
   <table>
@@ -448,7 +448,7 @@ Do not summarise at the end. Do not comment on the questions themselves.</pre>
   <p>From those four counts, four numbers follow.</p>
 
   <ul>
-    <li><strong>Knowledge</strong> is correct divided by thirty. This is the number a public benchmark would report, and on its own it is the least useful of the four.</li>
+    <li><strong>Knowledge</strong> is correct divided by thirty. This is the number a public benchmark would report, and on its own I find it the least useful of the four.</li>
     <li><strong>Hallucination rate</strong> is confidently wrong divided by the number of items actually attempted, meaning thirty minus abstentions. Dividing by thirty instead would reward a model for abstaining, which double-counts a virtue already captured elsewhere.</li>
     <li><strong>Calibration</strong> is the relationship between confidence and correctness. A model whose LOW ratings are wrong far more often than its HIGH ratings is telling you something usable. A model that rates everything HIGH is telling you nothing, and the rating can be discarded for that model.</li>
     <li><strong>Net usable</strong> is correct minus confidently wrong.</li>
@@ -457,7 +457,7 @@ Do not summarise at the end. Do not comment on the questions themselves.</pre>
   <div class="key">
     <p class="kt">Why net usable is the number that matters</p>
     <p>A model that answers twenty items correctly and eight confidently wrong scores twelve. A model that answers sixteen correctly, abstains twelve times and is confidently wrong twice scores fourteen. The first model knows more. The second is better to work with, because every one of those eight confident errors is a thing you will either verify at your own cost or ship.</p>
-    <p>The weighting is not arbitrary and it is not universal. Net usable implicitly prices one confident error as costing exactly one correct answer, which is right when verification is roughly as expensive as the answer is valuable. If you verify everything anyway, weight it lower. If you are vibe coding on a system you do not fully understand, weight it considerably higher, because that is precisely the setting in which a plausible wrong answer travels furthest before anything catches it.</p>
+    <p>The weighting is not arbitrary and it is not universal. Net usable implicitly prices one confident error as costing exactly one correct answer, which I take to be right when verification is roughly as expensive as the answer is valuable. If you verify everything anyway, weight it lower. If you are vibe coding on a system you do not fully understand, weight it considerably higher, because that is precisely the setting in which a plausible wrong answer travels furthest before anything catches it.</p>
   </div>
 
   <h2 id="method"><span class="num">Section seven</span>Method notes</h2>
@@ -472,9 +472,9 @@ Do not summarise at the end. Do not comment on the questions themselves.</pre>
 
   <h2 id="limits"><span class="num">Section eight</span>What this cannot tell you</h2>
 
-  <p>Thirty items is a small instrument. It is enough to detect a large difference in domain knowledge and nowhere near enough to rank two close models, which is why the noise floor above is set where it is. Widening the blocks helps more than deepening any one of them, because the variance you care about lives between subjects rather than within them.</p>
+  <p>Thirty items is a small instrument. It is enough to detect a large difference in domain knowledge and nowhere near enough to rank two close models, which is why I set the noise floor above where I did. Widening the blocks helps more than deepening any one of them, because the variance you care about lives between subjects rather than within them.</p>
 
-  <p>The probe measures stored knowledge under closed-book conditions. That is deliberate, and it means the result does not describe how a model performs with tools, retrieval and a real codebase in context, which is the condition you actually work in. A model that knows less but searches well may serve you better. The probe isolates one input to that outcome rather than predicting the outcome.</p>
+  <p>The probe measures stored knowledge under closed-book conditions. That is deliberate, and it means nothing here tells me how a model performs with tools, retrieval and a real codebase in context, which is the condition you actually work in. A model that knows less but searches well may serve you better. The probe isolates one input to that outcome rather than predicting the outcome.</p>
 
   <p>Item quality dominates everything else here. An item with an arguable answer measures your judgement, an item whose answer is recoverable from its own wording measures nothing, and an item drawn from a widely quoted tutorial measures memorisation of that tutorial. The scoring scheme is robust; the items are the fragile part, and they are the part you have to write yourself.</p>
 
@@ -482,10 +482,10 @@ Do not summarise at the end. Do not comment on the questions themselves.</pre>
 
   <div class="sources">
     <h2>Notes</h2>
-    <p><b>Companion piece.</b> This instrument follows from <a href="../">Effort buys less than the model you point it at</a>, which measures reasoning effort against return across Claude Fable 5.1, GPT-6 Astra and Claude Opus 5 on Artificial Analysis Intelligence Index v4.3. The relevant result there is that on AA-Omniscience, the public benchmark closest in spirit to this one, the two leading models tie on the net-of-hallucination score while differing markedly in raw accuracy, which is what prompted building something narrower.</p>
+    <p><b>Companion piece.</b> This instrument follows from <a href="../">Effort buys less than the model you point it at</a>, which measures reasoning effort against return across Claude Fable 5.1, GPT-6 Astra and Claude Opus 5 on Artificial Analysis Intelligence Index v4.3. The relevant result there is that on AA-Omniscience, the public benchmark closest in spirit to this one, the two leading models tie on the net-of-hallucination score while differing markedly in raw accuracy, which is what prompted me to build something narrower.</p>
     <p><b>Related public benchmarks.</b> Artificial Analysis, AA-Omniscience (knowledge scored net of hallucination). Phan L, Gatti A, Han Z, et al., "Humanity's Last Exam", 2025.</p>
-    <p><b>Answer key provenance.</b> The key is written from my own knowledge and has not been independently verified item by item. Items marked (!) are the ones I consider most likely to admit a defensible alternative answer.</p>
-    <p><b>Disclosure of AI assistance.</b> AI assistance was used for drafting, formatting and bilingual translation. The items and the scoring scheme are mine. No model was scored on this page.</p>
+    <p><b>Answer key provenance.</b> I wrote the key from my own knowledge and have not been able to check it item by item against a primary source. Items marked (!) are the ones I consider most likely to admit a defensible alternative answer.</p>
+    <p><b>Disclosure of AI assistance.</b> I used AI assistance for drafting, formatting and bilingual translation. The items and the scoring scheme are mine. I have not scored any model on this page.</p>
   </div>
 
   </article>

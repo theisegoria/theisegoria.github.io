@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>World Model MCP — Evidence-aware research memory</title>
+    <title>World Model MCP: evidence-aware research memory</title>
     <meta
       name="description"
       content="Local research memory for Codex and Claude: findings, evidence, assumptions, human review, and revision history. Explore a clearly labeled synthetic demo."
@@ -27,8 +27,8 @@
           <span class="eyebrow">WORLD MODEL MCP</span>
           <h1>Keep the finding.<br />Keep the evidence.<br /><em>Keep room to revise.</em></h1>
           <p class="lead">
-            Research memory for Codex and Claude that preserves what a source reports, what an
-            assistant infers, and why you might change your mind.
+            I built research memory for Codex and Claude that keeps three things apart: what a
+            source reports, what an assistant infers, and why you might change your mind.
           </p>
           <div class="hero-actions">
             <a class="button primary" href="#demo">Explore a synthetic example <span>↓</span></a
@@ -71,7 +71,7 @@
         </p>
         <p>
           An accepted hypothesis remains a hypothesis. Similarity and repeated citations do not turn
-          it into a fact.
+          it into a fact, and holding that line is the reason I structured the store this way.
         </p>
       </div>
       <section class="demo-section" id="demo">
@@ -121,9 +121,9 @@
           </div>
         </div>
         <p class="demo-caption">
-          The actual application uses a persistent SQLite store, independent MCP processes, and an
-          authenticated local inspector. This example illustrates that workflow with deliberately
-          fictional findings.
+          The application itself uses a persistent SQLite store, independent MCP processes, and an
+          authenticated local inspector. I wrote this example to walk through that workflow, with
+          deliberately fictional findings.
         </p>
       </section>
       <section class="features">
@@ -177,7 +177,7 @@
             <span class="eyebrow">FROM THE RUNNING APPLICATION</span>
             <h2>The evidence inspector.</h2>
           </div>
-          <p>Captured from the local browser workflow using labeled synthetic data.</p>
+          <p>I captured this from the local browser workflow using labeled synthetic data.</p>
         </div>
         <a href="inspector.png"
           ><img
@@ -193,8 +193,8 @@
           <span class="eyebrow">RUN IT ON YOUR MAC</span>
           <h2>One local store.<br />More than one assistant.</h2>
           <p>
-            Apple Silicon macOS. The setup script installs an isolated Node.js 24 runtime and the
-            locked dependencies. Connect Codex or Claude using generated absolute-path MCP
+            Apple Silicon macOS. The setup script I ship installs an isolated Node.js 24 runtime and
+            the locked dependencies. Connect Codex or Claude using generated absolute-path MCP
             configuration.
           </p>
           <div class="links">
@@ -220,16 +220,16 @@ cd world-model-mcp
         </div>
       </section>
       <section class="boundaries">
-        <h2>What this does—and what it cannot promise.</h2>
+        <h2>What I claim for this, and what I cannot promise.</h2>
         <p>
           It supplies durable, inspectable, revisable knowledge to connected assistants. It does not
           change model weights, guarantee truth, or guarantee that an assistant follows research
-          instructions. Human review is a workflow safeguard, not a security boundary against
-          unrestricted programs running under the same OS account.
+          instructions. I treat human review as a workflow safeguard, not as a security boundary
+          against unrestricted programs running under the same OS account.
         </p>
         <p>
-          Build, protocol, browser, semantic, benchmark, and real-client evidence are reported
-          separately in the repository. Any unverified client integration is identified there.
+          I report build, protocol, browser, semantic, benchmark, and real-client evidence separately
+          in the repository, and I name there any client integration I have not verified.
         </p>
       </section>
     </main>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Soulblighter Internals — Myth II エンジンの内部構造</title>
+  <title>Soulblighter Internals：Myth II エンジンの内部構造</title>
   <meta name="description" content="Myth IIの30 Hz整数シミュレーション、タググラフ、弾道、経路探索、決定論的ロックステップ、マップスクリプトを図解します。">
   <meta name="theme-color" content="#faf8f4" media="(prefers-color-scheme:light)">
   <meta name="theme-color" content="#12100e" media="(prefers-color-scheme:dark)">
@@ -38,7 +38,7 @@
       <p class="eyebrow">技術調査 · Bungie, 1998 · エンジン資料</p>
       <h1>Soulblighter<br>Internals</h1>
       <p class="article-standfirst"><em>Myth II</em> は、スプライトの裏で戦闘をどう動かしているのか。答えは、プレイヤーの命令だけで進む<strong>30 Hzの整数シミュレーション</strong>です。兵士・矢・切断された頭部はすべて同じ種類の物体で、乱数シードはマルチプレイのチェックサムも兼ねます。</p>
-      <span class="edition-note">日本語構成版 — 原資料の主要な論証・数値・図を再構成</span>
+      <span class="edition-note">日本語構成版：主要な論証・数値・図を組み直しました</span>
     </header>
 
     <div class="article-layout">
@@ -62,9 +62,9 @@
 
       <main id="article" class="article-body">
         <section id="shape">
-          <span class="section-mark">00 — Orientation</span>
+          <span class="section-mark">00 · Orientation</span>
           <h2>全体像</h2>
-          <p>このエンジンを形づくる判断は、ほぼ次の5つです。残りの仕組みは、いずれかの判断から自然に導かれます。</p>
+          <p>読んだかぎり、このエンジンを形づくる判断はほぼ次の5つです。以下に書くことは、いずれかの判断から導かれます。</p>
           <div class="decision-grid">
             <article><span class="tech-tag">obje</span><h3>物理ボディは1種類</h3><p>ユニット、飛翔体、背景物、切断された手足まで、重力・弾性・終端速度・生命力・耐性を持つ同じ64バイトの物体タグを参照します。</p></article>
             <article><span class="tech-tag">1 / 30 s</span><h3>時間も空間も整数</h3><p>毎秒30ティック、位置は1 World Unitの1/512、比率は16.16または8.8固定小数点。ゲームプレイに浮動小数点は入りません。</p></article>
@@ -75,14 +75,14 @@
           <div class="article-callout">
             <p><span class="status-chip">文書で確認</span> Bungie／Project Magmaの資料、出荷されたエディタ文書、逆解析された構造体定義で裏づけられる項目。</p>
             <p><span class="status-chip inferred">推論</span> パッチノートと観察された挙動を組み合わせた、妥当だが直接の証言がない解釈。</p>
-            <p><span class="status-chip open">未解決</span> 到達できた資料から確定できず、推測で埋めない項目。</p>
+            <p><span class="status-chip open">未解決</span> 到達できた資料からは確定できず、推測で埋めなかった項目。</p>
           </div>
         </section>
 
         <hr class="article-rule">
 
         <section id="graph">
-          <span class="section-mark">01 — Data model</span>
+          <span class="section-mark">01 · Data model</span>
           <h2>タググラフ</h2>
           <p><em>Myth II</em> のコンテンツは、コンテナ内に置かれた4文字コードのタグ群です。ロード時にIDで解決され、ゲームプレイは「どのタグがどれを指すか」で組み立てられます。</p>
           <p>驚くのは間接参照の深さです。マップ上に置かれる <code>unit</code> タグはわずか8バイトで、モンスターと色への参照しかありません。プレイヤーが「ユニット」と考える性質は <code>mons</code> に、物理的な性質はさらに下の <code>obje</code> にあります。</p>
@@ -118,7 +118,7 @@
         <hr class="article-rule">
 
         <section id="numbers">
-          <span class="section-mark">02 — Numeric substrate</span>
+          <span class="section-mark">02 · Numeric substrate</span>
           <h2>整数の基盤</h2>
           <p>ゲームプレイに使う量はすべてスケールされた整数です。これはMacとPCを同じロックステップで動かすための根本条件でした。IEEE浮動小数点が現れるのは霧や残響など表示側の量だけです。<span class="status-chip">文書で確認</span></p>
           <div class="article-table">
@@ -142,7 +142,7 @@
         <hr class="article-rule">
 
         <section id="monster">
-          <span class="section-mark">03 — mons</span>
+          <span class="section-mark">03 · mons</span>
           <h2>モンスター</h2>
           <p>1,024バイトの <code>mons</code> タグは、AIと戦闘システムがユニットに尋ねる質問の一覧のようなものです。</p>
           <div class="field-grid">
@@ -161,12 +161,12 @@
         <hr class="article-rule">
 
         <section id="damage">
-          <span class="section-mark">04 — Combat</span>
+          <span class="section-mark">04 · Combat</span>
           <h2>ダメージ</h2>
           <p>ダメージは飛翔体に埋め込まれた16バイトの構造体です。種類、振る舞いフラグ、下限とデルタ、半径、拡大率、ダメージから速度へ変換する係数を持ちます。</p>
           <div class="formula">damage → damage_to_velocity → propelled_system_shock
 → damage_to_propulsion → obje.gravity → obje.elasticity</div>
-          <p><strong>距離に応じた減衰曲線はありません。</strong> 代わりに <code>rate_of_expansion</code> があり、爆発は静的な球ではなく、時間とともに広がる球面として扱われます。遠いユニットが近いユニットより1〜2ティック遅れて被弾する挙動と整合します。<span class="status-chip inferred">推論</span></p>
+          <p><strong>距離に応じた減衰曲線はありません。</strong> 代わりに <code>rate_of_expansion</code> があり、爆発は静的な球ではなく、時間とともに広がる球面として扱われます。遠いユニットが近いユニットより1〜2ティック遅れて被弾する挙動とも整合すると読んでいます。<span class="status-chip inferred">推論</span></p>
           <p>回復も独立した治療系ではなくダメージ種類の一つです。投射、反動、重力、跳ね返りは決定論的なシミュレーションに含まれます。いわゆるラグドールではなく、死体は1点の物体として専用アニメーションを再生しながら地形上を跳ねます。</p>
           <h3>血と破片も飛翔体グループ</h3>
           <p>死亡・爆発・燃焼時のタグは、ランダムな数と位置で破片飛翔体を生むグループを指します。身体部位も物理を持つ飛翔体で、投射物の上限数に数えられ、理論上はダメージさえ運べます。血は地形の色マップを破壊的に書き換え、火はメッシュセルの状態ビットとして伝播します。</p>
@@ -175,15 +175,15 @@
         <hr class="article-rule">
 
         <section id="ballistics">
-          <span class="section-mark">05 — Attacks</span>
+          <span class="section-mark">05 · Attacks</span>
           <h2>弾道</h2>
           <p>各モンスターは最大4つの64バイト攻撃定義を持ちます。攻撃側が照準・タイミング・経験値補正を持ち、参照先の飛翔体がダメージと飛行を持ちます。</p>
           <ul>
-            <li><code>LEADS_TARGET</code> — 移動目標を先読みする。</li>
-            <li><code>IS_INDIRECT</code> — 迫撃弾のような弧を使う。</li>
-            <li><code>IS_FIXED_PITCH</code> — 射出角を固定し、必要速度を解く。</li>
-            <li><code>AIMED_AT_TARGETS_FEET</code> — 範囲攻撃を目標の足元へ向ける。</li>
-            <li><code>AVOIDS_FRIENDLY_UNITS</code> — 弾道が味方を横切るか調べる。</li>
+            <li><code>LEADS_TARGET</code>：移動目標を先読みする。</li>
+            <li><code>IS_INDIRECT</code>：迫撃弾のような弧を使う。</li>
+            <li><code>IS_FIXED_PITCH</code>：射出角を固定し、必要速度を解く。</li>
+            <li><code>AIMED_AT_TARGETS_FEET</code>：範囲攻撃を目標の足元へ向ける。</li>
+            <li><code>AVOIDS_FRIENDLY_UNITS</code>：弾道が味方を横切るか調べる。</li>
           </ul>
           <p>エンジン自身が「firing solution」という語を使い、重力を受ける飛翔体方程式を解いています。経験を積むと <code>recovery_time</code> と <code>initial_velocity_error</code> が減り、兵士はより速く、より正確に攻撃します。</p>
         </section>
@@ -191,7 +191,7 @@
         <hr class="article-rule">
 
         <section id="world">
-          <span class="section-mark">06 — mesh</span>
+          <span class="section-mark">06 · mesh</span>
           <h2>世界と衝突</h2>
           <p>マップは一般的なポリゴン集合でもナビメッシュでもなく、<strong>規則的な高さ場</strong>です。正方形セルを2つの三角形へ分割し、セルごとに高さ、法線、フラグ、2種類の地形コード、媒体の高さ、モデル番号を持ちます。</p>
           <div class="collision-grid">
@@ -216,10 +216,10 @@
         <hr class="article-rule">
 
         <section id="movement">
-          <span class="section-mark">07 — Movement &amp; AI</span>
+          <span class="section-mark">07 · Movement &amp; AI</span>
           <h2>移動とAI</h2>
           <p>経路探索は二段階です。まず動的障害物を無視し、静的な地形コストだけでA*経路を作ります。その経路が障害物へ当たると、左右の迂回を再帰的に試し、元のA*経路から最も小さく外れる方を選びます。<span class="status-chip">文書で確認</span></p>
-          <p>この分割は決定性に有利ですが、密集したユニットが詰まりやすい理由でもあります。<code>pathfinding_radius</code> は局所的な二者間の分離しか表さず、群衆全体を組み替えるモデルを持ちません。</p>
+          <p>この分割は決定性に有利ですが、密集したユニットが詰まりやすい理由でもあると見ています。<code>pathfinding_radius</code> は局所的な二者間の分離しか表さず、群衆全体を組み替えるモデルを持ちません。</p>
           <h3>警戒は視覚だけでなく社会的に伝わる</h3>
           <p><code>warning_distance</code> は、味方の助けを求める声を聞く距離です。警報は全員へ一度に届くのではなく、隣から隣へ連鎖します。</p>
           <figure class="diagram">
@@ -243,7 +243,7 @@
         <hr class="article-rule">
 
         <section id="orders">
-          <span class="section-mark">08 — reco</span>
+          <span class="section-mark">08 · reco</span>
           <h2>命令ストリーム</h2>
           <p>フィルム形式は状態の記録ではなく命令の文法です。各命令は8バイトのヘッダー（サイズ、動詞、プレイヤー番号、絶対ティック）とペイロードからなります。</p>
           <div class="formula">GENERAL · MOVEMENT · TARGET · ATTACK_LOCATION
@@ -257,7 +257,7 @@ PICK_UP · RENAME · ROTATION</div>
         <hr class="article-rule">
 
         <section id="sync">
-          <span class="section-mark">09 — Determinism</span>
+          <span class="section-mark">09 · Determinism</span>
           <h2>決定論</h2>
           <p>ネットワーク形態はクライアント／サーバですが、シミュレーションは決定論的ロックステップです。ホストは状態の権威ではなく、命令を中継してターンを裁定します。</p>
           <h3>乱数シードがチェックサム</h3>
@@ -287,7 +287,7 @@ result = (seed′ &gt;&gt; 16) &amp; 0xFFFF</div>
         <hr class="article-rule">
 
         <section id="script">
-          <span class="section-mark">10 — Loathing</span>
+          <span class="section-mark">10 · Loathing</span>
           <h2>マップスクリプト</h2>
           <p>Bungieは開発途中でJavaベースの言語を断念しました。最終的に出荷されたのは言語というより<strong>トリガーグラフ</strong>です。</p>
           <p>アクションは64バイトのヘッダー配列と、型付きパラメータ列としてメッシュタグに入ります。各ノードは成功・失敗・実行・有効化・無効化・抑制・前提不足などのイベントで他ノードを有効／無効にします。<code>ACTION_IDENTIFIER</code> はどこへでも向けられるため、構造は木ではなくグラフです。</p>
@@ -300,9 +300,9 @@ FIELD_NAME → 別アクションのフィールドを書き換える</div>
         <hr class="article-rule">
 
         <section id="questions">
-          <span class="section-mark">11 — Limits</span>
+          <span class="section-mark">11 · Limits</span>
           <h2>未解決点</h2>
-          <p><em>Myth II</em> のソースコードは公開されていません。利用できる根拠は、Bungieのエディタ文書と事後分析、Project Magmaの変更履歴、バイナリタグ構造のコミュニティ解析です。残る空白を、推測で埋めないことも重要です。</p>
+          <p><em>Myth II</em> のソースコードは公開されていません。利用できる根拠は、Bungieのエディタ文書と事後分析、Project Magmaの変更履歴、バイナリタグ構造のコミュニティ解析です。残る空白は、推測で埋めずにそのまま挙げます。</p>
           <ul>
             <li><span class="status-chip open">未解決</span> ネットワーク1ターン当たりのティック数と入力遅延。</li>
             <li><span class="status-chip open">未解決</span> 1ティック内の更新順序。</li>
@@ -310,22 +310,22 @@ FIELD_NAME → 別アクションのフィールドを書き換える</div>
             <li><span class="status-chip open">未解決</span> 12種類のダメージから9個の耐性スロットへの対応。</li>
             <li><span class="status-chip open">未解決</span> <code>phys</code>（ローカル物理）と <code>wind</code> タグの完全な配置。</li>
           </ul>
-          <p>有力な次の資料は、The Tainにあるbungie.netメタサーバの公開ソース、RoadのMap Action Script Guide草稿、MythingOak wikiのタグ資料です。</p>
+          <p>次に当たるべき資料は、The Tainにあるbungie.netメタサーバの公開ソース、RoadのMap Action Script Guide草稿、MythingOak wikiのタグ資料だと考えています。</p>
         </section>
 
         <hr class="article-rule">
 
         <section id="sources">
-          <span class="section-mark">12 — Provenance</span>
+          <span class="section-mark">12 · Provenance</span>
           <h2>出典</h2>
           <ol class="source-list">
-            <li><a href="https://www.gamedeveloper.com/design/postmortem-bungie-s-i-myth-the-fallen-lords-i-">Bungie: <em>Myth: The Fallen Lords</em> 事後分析</a> — 地形メッシュ、二段階経路探索、決定論的ネットワーク、地形へ書き込む血、Fear／Loathing。</li>
-            <li><a href="https://www.gamedeveloper.com/programming/postmortem-project-magma-s-i-myth-ii-i-1-5-and-1-5-1">Project Magma: <em>Myth II</em> 1.5／1.5.1 事後分析</a> — 30 Hzティック、固定小数点化、シード比較、乱数ログによる診断。</li>
-            <li><a href="https://github.com/jwheare/mythextract">jwheare/mythextract</a> — タグ、メッシュ、コレクション、記録形式の逆解析パーサー。</li>
-            <li><a href="https://projectmagma.net/downloads/myth2docs/fear.html">Fear documentation v1.8.5</a>／<a href="https://projectmagma.net/downloads/myth2docs/loathing.html">Loathing documentation v1.8.5</a> — Bungieのエディタ資料。</li>
-            <li><a href="https://projectmagma.net/downloads/myth2_180/Readme_1.8.0.pdf">Project Magma リリースノート</a> — 衝突、経路探索、フィルム互換性、飛翔体上限の変更。</li>
-            <li><a href="https://tain.projectmagma.net/mythii/source_code">The Tain ソースコード・アーカイブ</a> — 公開されたbungie.netメタサーバコードを含む。</li>
-            <li><a href="https://mythingoak.miraheze.org/wiki/Category:Tags">MythingOak — Category:Tags</a> — コミュニティによるタグ資料。</li>
+            <li><a href="https://www.gamedeveloper.com/design/postmortem-bungie-s-i-myth-the-fallen-lords-i-">Bungie: <em>Myth: The Fallen Lords</em> 事後分析</a>：地形メッシュ、二段階経路探索、決定論的ネットワーク、地形へ書き込む血、Fear／Loathing。</li>
+            <li><a href="https://www.gamedeveloper.com/programming/postmortem-project-magma-s-i-myth-ii-i-1-5-and-1-5-1">Project Magma: <em>Myth II</em> 1.5／1.5.1 事後分析</a>：30 Hzティック、固定小数点化、シード比較、乱数ログによる診断。</li>
+            <li><a href="https://github.com/jwheare/mythextract">jwheare/mythextract</a>：タグ、メッシュ、コレクション、記録形式の逆解析パーサー。</li>
+            <li><a href="https://projectmagma.net/downloads/myth2docs/fear.html">Fear documentation v1.8.5</a>／<a href="https://projectmagma.net/downloads/myth2docs/loathing.html">Loathing documentation v1.8.5</a>：Bungieのエディタ資料。</li>
+            <li><a href="https://projectmagma.net/downloads/myth2_180/Readme_1.8.0.pdf">Project Magma リリースノート</a>：衝突、経路探索、フィルム互換性、飛翔体上限の変更。</li>
+            <li><a href="https://tain.projectmagma.net/mythii/source_code">The Tain ソースコード・アーカイブ</a>：公開されたbungie.netメタサーバコードを含む。</li>
+            <li><a href="https://mythingoak.miraheze.org/wiki/Category:Tags">MythingOak, Category:Tags</a>：コミュニティによるタグ資料。</li>
           </ol>
         </section>
       </main>

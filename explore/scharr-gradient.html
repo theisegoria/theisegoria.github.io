@@ -38,7 +38,7 @@
       <div>
         <p class="eyebrow">Interactive image calculus</p>
         <h1>The Scharr<br><em>gradient.</em></h1>
-        <p class="lesson-deck">A gradient is not an edge. It is an arrow pointing across the edge, toward the fastest increase in image intensity.</p>
+        <p class="lesson-deck">The first thing I correct is this: a gradient is not an edge. It is an arrow pointing across the edge, toward the fastest increase in image intensity.</p>
       </div>
       <p class="lesson-promise"><strong>What you can see here</strong>Change nine pixels and watch two signed derivative estimates become a magnitude, a direction, and an edge tangent.</p>
     </section>
@@ -56,7 +56,7 @@
       <article class="lesson-card">
         <p class="cue">Why Scharr?</p>
         <h2>Less directional bias</h2>
-        <p>Sobel uses perpendicular weights 1:2:1. Scharr's 3:10:3 weighting is tuned so a 3 × 3 derivative responds more evenly as an edge rotates through the pixel lattice.</p>
+        <p>I use Scharr rather than Sobel throughout, and this is why. Sobel uses perpendicular weights 1:2:1. Scharr's 3:10:3 weighting is tuned so a 3 × 3 derivative responds more evenly as an edge rotates through the pixel lattice.</p>
       </article>
       <article class="lesson-card">
         <p class="cue">Calculate</p>
@@ -67,10 +67,10 @@
       <article class="lesson-card">
         <p class="cue">Interpret</p>
         <h2>Gradient normal, edge tangent</h2>
-        <p>The gradient is perpendicular to a level curve of intensity. The visible edge runs at θ + 90°. In image coordinates, positive <em>y</em> points downward—exactly as in the dial above.</p>
+        <p>The gradient is perpendicular to a level curve of intensity. The visible edge runs at θ + 90°. In image coordinates, positive <em>y</em> points downward, exactly as in the dial above.</p>
       </article>
       <article class="lesson-card is-full">
-        <p class="cue">Reliable workflow</p>
+        <p class="cue">The checks I insist on</p>
         <h2>Four checks before using the result</h2>
         <ul>
           <li>Convolve in signed floating point; an 8-bit output destroys negative derivatives.</li>

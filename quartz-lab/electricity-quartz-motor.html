@@ -112,9 +112,9 @@ footer.sitefoot a{color:var(--mint);text-decoration:none}
      font-size:8.5pt;color:#68716d;overflow:hidden">
   <span style="float:right">theisegoria.github.io/quartz-lab/</span>Quartz Watch Lab &#183; supplement</div>
 
-<p class="kicker">The part that is actually confusing</p>
+<p class="kicker">The part I found actually confusing</p>
 <h1>Electricity → quartz → motor</h1>
-<p class="lede">The block diagram makes it look like a relay race, with something being handed from the crystal to the motor. It is not. Almost nothing crosses that gap. What follows is the chain again, but drawn at the two places where energy genuinely changes form, and one place where it deliberately does not.</p>
+<p class="lede">The block diagram makes it look like a relay race, with something being handed from the crystal to the motor. It is not. Almost nothing crosses that gap. I have drawn the chain again here, at the two places where energy genuinely changes form and the one place where it deliberately does not.</p>
 
 <!-- ============================================================ 0 -->
 <section>
@@ -165,7 +165,7 @@ footer.sitefoot a{color:var(--mint);text-decoration:none}
 <figcaption>The battery does all the work in both branches. The crystal's job is to decide <em>when</em> the fat branch is allowed to fire, and it exerts that decision through a gate voltage, not through a force. Energy stored in the vibrating fork is about <span class="mono">1 nJ</span>, roughly one nine-hundredth of a single motor pulse. Even if you could tap it, it could not move a hand.</figcaption>
 </figure>
 
-<div class="note deep"><p><b>If you take one thing from this page:</b> the crystal is a clock, not an engine. Nothing mechanical propagates from the crystal to the hands. The two mechanical systems in the watch, the vibrating fork and the turning rotor, are never connected to each other.</p></div>
+<div class="note deep"><p><b>The one thing I would keep from all of this:</b> the crystal is a clock, not an engine. Nothing mechanical propagates from the crystal to the hands. The two mechanical systems in the watch, the vibrating fork and the turning rotor, are never connected to each other.</p></div>
 </section>
 
 <!-- ============================================================ 1 -->
@@ -256,21 +256,21 @@ footer.sitefoot a{color:var(--mint);text-decoration:none}
 <figcaption>Lower <em>Q</em> and the curve settles sooner and lower. A balance wheel sits at <span class="mono">Q ≈ 250</span>, which is the same reason it is both quicker to start and two hundred times easier to knock off frequency.</figcaption>
 </figure>
 
-<div class="note"><p><b>The loop, stated plainly.</b> Bending generates charge on the electrodes. The inverter amplifies that charge signal and returns it to the same electrodes with the phase that makes the tine bend further. Loss removes energy in proportion to amplitude; gain adds it at a fixed rate; the amplitude where those cross is where it lives. The crystal is simultaneously the sensor and the actuator, which is the only reason a single inverter is enough.</p></div>
+<div class="note"><p><b>The loop, stated plainly.</b> Bending generates charge on the electrodes. The inverter amplifies that charge signal and returns it to the same electrodes with the phase that makes the tine bend further. Loss removes energy in proportion to amplitude; gain adds it at a fixed rate; the amplitude where those cross is where it lives. The crystal is simultaneously the sensor and the actuator, which is, I think, the only reason a single inverter is enough.</p></div>
 </section>
 
 <!-- ============================================================ 4 -->
 <section>
 <p class="kicker">04 / The gap where nothing physical crosses</p>
 <h2>Fifteen flip-flops, one wire, one edge</h2>
-<p>Between the crystal and the motor there is only a divider chain, and a divider does not conduct force, torque, or any meaningful power. It changes the voltage on one wire from low to high, once a second. That transition is the entire output of the timekeeping half of the watch.</p>
+<p>This gap is the part I did not expect. Between the crystal and the motor there is only a divider chain, and a divider does not conduct force, torque, or any meaningful power. It changes the voltage on one wire from low to high, once a second. That transition is the entire output of the timekeeping half of the watch.</p>
 <div class="row">
   <div><small>Crystal stored energy</small><strong>≈ 1 nJ</strong><span>never leaves the fork</span></div>
   <div><small>Power to keep it ringing</small><strong>≈ 4 nW</strong><span>replaces damping losses only</span></div>
   <div><small>Energy in one motor pulse</small><strong>0.88 µJ</strong><span>≈ 900× the crystal's store</span></div>
   <div><small>Energy in the timing edge</small><strong>≈ 10⁻¹² J</strong><span>charging a gate capacitance</span></div>
 </div>
-<p>So the correct mental picture is not <span class="mono">crystal → motor</span>. It is <span class="mono">battery → motor</span>, with the crystal standing beside the wire holding a stopwatch.</p>
+<p>So the mental picture I would keep is not <span class="mono">crystal → motor</span>. It is <span class="mono">battery → motor</span>, with the crystal standing beside the wire holding a stopwatch.</p>
 </section>
 
 <!-- ============================================================ 5 -->
@@ -321,14 +321,14 @@ footer.sitefoot a{color:var(--mint);text-decoration:none}
 <figcaption>The rotor is a permanent magnet, so it arrives with its own moment <span class="mono">m</span> already fixed. The coil does not magnetise the rotor; it produces a field <em>across</em> it, and a magnetic moment in an external field feels a torque proportional to the sine of the angle between them. That is the entire electromechanical conversion.</figcaption>
 </figure>
 
-<div class="note"><p><b>The numbers work out.</b> The rotor is about <span class="mono">1.4 mm</span> across and <span class="mono">1.5 mm</span> long, so its volume is <span class="mono">2.3 × 10⁻⁹ m³</span>. SmCo with a remanence near <span class="mono">1 T</span> gives a magnetisation of <span class="mono">8 × 10⁵ A/m</span>, hence a moment <span class="mono">m ≈ 1.8 mA·m²</span>. Twelve thousand turns carrying <span class="mono">116 µA</span> give <span class="mono">1.4 ampere-turns</span>, which across a total air gap of a few tenths of a millimetre lands the gap field at a couple of milliteslas once reluctance is accounted for. Then <span class="mono">τ = mB ≈ 3.5 µN·m</span>, which is exactly the peak torque the step simulation on the lab page needs to clear the detent barrier.</p></div>
+<div class="note"><p><b>The numbers work out, as far as I can check them.</b> The rotor is about <span class="mono">1.4 mm</span> across and <span class="mono">1.5 mm</span> long, so its volume is <span class="mono">2.3 × 10⁻⁹ m³</span>. SmCo with a remanence near <span class="mono">1 T</span> gives a magnetisation of <span class="mono">8 × 10⁵ A/m</span>, hence a moment <span class="mono">m ≈ 1.8 mA·m²</span>. Twelve thousand turns carrying <span class="mono">116 µA</span> give <span class="mono">1.4 ampere-turns</span>, which across a total air gap of a few tenths of a millimetre lands the gap field at a couple of milliteslas once reluctance is accounted for. Then <span class="mono">τ = mB ≈ 3.5 µN·m</span>, which is exactly the peak torque the step simulation on the lab page needs to clear the detent barrier.</p></div>
 </section>
 
 <!-- ============================================================ 6 -->
 <section>
 <p class="kicker">06 / Third conversion, and the only ordinary one</p>
 <h2>Torque → half a turn → six degrees</h2>
-<p>Once there is torque on the rotor the rest is unremarkable watchmaking. The rotor swings 180°, the notches in the stator bore catch it there, and a reduction train divides that half-turn down by sixty to the seconds hand and by another seven hundred and twenty to the hour hand.</p>
+<p>Once there is torque on the rotor, the rest is, to my eye, unremarkable watchmaking. The rotor swings 180°, the notches in the stator bore catch it there, and a reduction train divides that half-turn down by sixty to the seconds hand and by another seven hundred and twenty to the hour hand.</p>
 
 <figure class="fig">
 <svg id="ledger" viewBox="0 0 940 250" role="img" aria-label="Energy ledger for one second of operation">
@@ -362,8 +362,8 @@ footer.sitefoot a{color:var(--mint);text-decoration:none}
 <div class="printonly" style="border-top:1px solid rgba(23,32,29,.16);margin-top:28px;padding-top:10px;
      font-size:8.5pt;color:#68716d">
   Educational schematic. Material constants (d&#8321;&#8321;, quartz E and &#961;, SmCo remanence) are standard values;
-  currents, gap fields, and the per-cycle tip increment are order-of-magnitude reconstructions consistent with the
-  step simulation in the interactive edition. Companion to <em>Inside a Quartz Watch</em>.
+  the currents, gap fields, and per-cycle tip increment are order-of-magnitude reconstructions I have kept consistent with
+  the step simulation in the interactive edition. Companion to <em>Inside a Quartz Watch</em>.
 </div>
 </div>
 <script>

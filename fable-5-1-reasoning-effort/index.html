@@ -169,7 +169,7 @@
   <div class="hero">
     <p class="label">Benchmark analysis / 8 September 2026</p>
     <h1>Effort buys less than the model you point it at.</h1>
-    <p class="standfirst">Claude Fable 5.1 exposes five reasoning-effort settings spanning six times the output tokens and forty-two times the latency. On the current Artificial Analysis index the top two settings score identically, so the last 68 million tokens buy nothing at all. Meanwhile, swapping between Fable 5.1 and GPT-6 Astra at a fixed effort level moves the result by roughly as much as the entire effort dial does. This works through both axes, and through which one deserves your attention.</p>
+    <p class="standfirst">Claude Fable 5.1 exposes five reasoning-effort settings spanning six times the output tokens and forty-two times the latency. On the current Artificial Analysis index the top two settings score identically, so the last 68 million tokens buy nothing at all. Meanwhile, swapping between Fable 5.1 and GPT-6 Astra at a fixed effort level moves the result by roughly as much as the entire effort dial does. I work through both axes here, and which one I now think deserves the attention.</p>
     <div class="herometa">
       <a class="pill" href="fable-5-1-reasoning-effort-en.pdf">English PDF</a>
       <a class="pill" href="fable-5-1-reasoning-effort-ja.pdf" hreflang="ja" lang="ja">日本語版 PDF</a>
@@ -196,7 +196,7 @@
 
   <article>
 
-  <p class="lede"><strong>Reasoning effort is not a quality dial; it is a budget for deliberation over whatever is already in the context window.</strong> That distinction decides the whole analysis. Raising effort lets the model spend more tokens reasoning before it commits to an answer, which helps when the answer is genuinely hard to derive from material the model can already see. It does nothing when the material in front of the model is the wrong material. The five settings are therefore five points on a deliberation-budget curve, and the question is where that curve stops repaying its cost. The answer on the current index turns out to be earlier than anyone would guess, and the more consequential choice turns out to be a different one entirely.</p>
+  <p class="lede"><strong>Reasoning effort is not a quality dial; it is a budget for deliberation over whatever is already in the context window.</strong> That distinction decides the whole analysis. Raising effort lets the model spend more tokens reasoning before it commits to an answer, which helps when the answer is genuinely hard to derive from material the model can already see. It does nothing when the material in front of the model is the wrong material. The five settings are therefore five points on a deliberation-budget curve, and the question is where that curve stops repaying its cost. The answer on the current index is earlier than I would have guessed, and the choice I now think matters more is a different one entirely.</p>
 
   <div class="key">
     <p class="kt">A note on the index version</p>
@@ -207,7 +207,7 @@
 
   <p>Fable 5.1 ships with five effort settings: low, medium, high, xhigh and max. Anthropic sets high as the default in Claude Code and medium in the consumer surfaces. Artificial Analysis evaluates all five, running each through the identical Intelligence Index v4.3 suite, which is the only public dataset holding the workload constant while varying only the effort parameter.</p>
 
-  <p>Holding the workload constant matters more than it appears. Every published comparison of effort settings measures how much deliberation a model spends on a fixed set of tasks, not how well it performs on tasks of different shapes. The curve below measures one thing precisely: the return on additional deliberation, given a problem that is fixed and correctly specified. It is silent on the failure mode that dominates large real codebases, which is the problem being specified from the wrong files.</p>
+  <p>Holding the workload constant matters more than it appears. Every published comparison of effort settings measures how much deliberation a model spends on a fixed set of tasks, not how well it performs on tasks of different shapes. The curve below measures one thing precisely: the return on additional deliberation, given a problem that is fixed and correctly specified. It is silent on the failure mode I take to dominate large real codebases: the problem being specified from the wrong files.</p>
 
   <h2 id="curve"><span class="num">Section two</span>The curve, and where it goes flat</h2>
 
@@ -218,7 +218,7 @@
     <figcaption><b>Figure 1. The effort frontier on index v4.3.</b> Six index points separate low from xhigh, and 87 million output tokens separate them. Between xhigh and max the line is horizontal: both settings score 53, and the additional 68 million tokens purchase nothing measurable.</figcaption>
   </figure>
 
-  <p>That terminal flat segment is new to v4.3. On the previous index there was still a single point of separation between xhigh and max. There is now none, which means the most expensive setting Fable offers is, on this evaluation, indistinguishable from the setting below it.</p>
+  <p>That terminal flat segment is new to v4.3. On the previous index there was still a single point of separation between xhigh and max. There is now none, so I read the most expensive setting Fable offers as indistinguishable, on this evaluation, from the setting below it.</p>
 
   <h2 id="marginal"><span class="num">Section three</span>The last setting buys nothing</h2>
 
@@ -227,7 +227,7 @@
     <figcaption><b>Figure 2. The value of the marginal token, by step.</b> 0.182 index points per additional million tokens from low to medium, 0.034 from high to xhigh, and exactly zero from xhigh to max. The model is not degrading across this range; the evaluation has run out of headroom.</figcaption>
   </figure>
 
-  <p>High remains the last setting where the marginal token is still doing recognisable work. Expressed as absolute efficiency the same collapse appears: 1.42 index points per million tokens at low, 0.82 at high, 0.28 at max.</p>
+  <p>High is the last setting where I can see the marginal token doing recognisable work. Expressed as absolute efficiency the same collapse appears: 1.42 index points per million tokens at low, 0.82 at high, 0.28 at max.</p>
 
   <h2 id="latency"><span class="num">Section four</span>Latency is the cost that scales worst</h2>
 
@@ -247,7 +247,7 @@
     <figcaption><b>Figure 4. Intelligence against what it costs to buy.</b> Astra sits to the left of Fable throughout. Both reach 51 on the index, Astra for $2,917 and Fable for $5,242. Both reach 53, Astra for $5,324 and Fable for $9,063 at xhigh. On this measure Astra is straightforwardly the cheaper way to a given score.</figcaption>
   </figure>
 
-  <p>If the index score were the whole story the conclusion would be simple and would not favour Fable. It is worth being clear about that before going further, because the rest of this section complicates it and the complication should not be mistaken for the starting position.</p>
+  <p>If the index score were the whole story the conclusion would be simple and would not favour Fable. I want to be clear about that before going further, because the rest of this section complicates it, and I do not want the complication mistaken for the starting position.</p>
 
   <h2 id="sweep"><span class="num">Section six</span>Ten benchmarks, and a split decision</h2>
 
@@ -258,7 +258,7 @@
     <figcaption><b>Figure 5. Every component of index v4.3, at max effort for both models.</b> Fable takes five, Astra takes four, and AA-Omniscience ties. Two of Astra's four wins are the largest margins on the chart. This is a split decision, not a verdict.</figcaption>
   </figure>
 
-  <p>Two results deserve singling out because they cut against the obvious narratives. <b>CritPt goes to Astra</b>, 32 against 30. CritPt is research-level physics reasoning: 71 unpublished frontier problems contributed by more than fifty physics researchers across eleven subfields, in guess-resistant formats. If Fable's advantage were fundamentally about depth of physical-science knowledge, that is the benchmark it should win, and it does not. <b>AA-Omniscience ties at 43</b>, but underneath the tie Fable posts 67 per cent raw factual accuracy, the highest figure on the entire leaderboard. The index penalises confident wrong answers and rewards abstention, so Astra reaches parity by declining more often rather than by knowing more.</p>
+  <p>I want to single out two results, because they cut against the obvious narratives. <b>CritPt goes to Astra</b>, 32 against 30. CritPt is research-level physics reasoning: 71 unpublished frontier problems contributed by more than fifty physics researchers across eleven subfields, in guess-resistant formats. If Fable's advantage were fundamentally about depth of physical-science knowledge, that is the benchmark it should win, and it does not. <b>AA-Omniscience ties at 43</b>, but underneath the tie Fable posts 67 per cent raw factual accuracy, the highest figure on the entire leaderboard. The index penalises confident wrong answers and rewards abstention, so I read Astra's parity as bought by declining more often rather than by knowing more.</p>
 
   <h2 id="matched"><span class="num">Section seven</span>The only matched-effort comparison</h2>
 
@@ -269,13 +269,13 @@
     <figcaption><b>Figure 6. AA-Briefcase Elo at matched effort.</b> Fable leads at every setting, by 231 points at low and by 84 at high. Fable at high (1578) scores above Astra at max (1562), and Fable at medium (1531) above Astra at high (1494). Fable 5.1 holds the top two places on the whole leaderboard.</figcaption>
   </figure>
 
-  <p>The magnitudes here are worth comparing directly against the effort dial, because they are in the same units. Moving Fable across its entire effort range, from low to max, gains 178 Elo. Swapping Astra for Fable at a fixed effort gains between 84 and 231, with a typical value near 100. On this benchmark the choice of model is worth somewhere between half and the whole of the choice of effort setting. That is the claim in the title, and AA-Briefcase is where it is measured rather than asserted.</p>
+  <p>The magnitudes here are worth comparing directly against the effort dial, because they are in the same units. Moving Fable across its entire effort range, from low to max, gains 178 Elo. Swapping Astra for Fable at a fixed effort gains between 84 and 231, with a typical value near 100. On this benchmark the choice of model is worth somewhere between half and the whole of the choice of effort setting. That is the claim I put in the title, and AA-Briefcase is where I can point to it measured rather than asserted.</p>
 
   <h2 id="shape"><span class="num">Section eight</span>What the split is actually tracking</h2>
 
   <p>The wins are not scattered at random. Fable takes AA-Briefcase, GDPval-AA v2, AA-LCR, Humanity's Last Exam and SciCode: long-horizon work over dense inputs, long-context reasoning, and knowledge recall and synthesis. Astra takes Terminal-Bench v4.0, AutomationBench-AA, GDP.pdf and CritPt: shorter-horizon tool execution, automation, extraction, and constrained problem solving. AA-Omniscience fits the pattern as well once the tie is decomposed, since raw recall favours Fable and calibrated abstention favours Astra.</p>
 
-  <p>The mechanism this suggests is not that one model is smarter. It is that the two have different profiles across context length and horizon. Sustained reasoning over a large amount of already-loaded material is where Fable separates; short, well-scoped, tool-driven tasks are where Astra does. Those are different jobs, and a codebase of serious size imposes the first one on almost every task, because the context is always large and the reasoning always has to hold many pieces at once.</p>
+  <p>The mechanism I read out of this is not that one model is smarter. It is that the two have different profiles across context length and horizon. Sustained reasoning over a large amount of already-loaded material is where Fable separates; short, well-scoped, tool-driven tasks are where Astra does. Those are different jobs, and a codebase of serious size imposes the first one on almost every task, because the context is always large and the reasoning always has to hold many pieces at once.</p>
 
   <div class="key">
     <p class="kt">The distinction worth keeping</p>
@@ -284,25 +284,25 @@
 
   <h2 id="limits"><span class="num">Section nine</span>What this evidence cannot settle</h2>
 
-  <p>Nine of the ten sweep comparisons are at max effort for both models, which is neither of the settings most people run. AA-Briefcase is the only matched-effort series, so the central claim of section seven rests on a single benchmark. Terminal-Bench v4.0 publishes only xhigh and max for either model, so the coding-specific comparison has no entry at all at high or medium.</p>
+  <p>Nine of the ten sweep comparisons are at max effort for both models, which is neither of the settings most people run. AA-Briefcase is the only matched-effort series, so the central claim I make in section seven rests on a single benchmark. Terminal-Bench v4.0 publishes only xhigh and max for either model, so the coding-specific comparison has no entry at all at high or medium.</p>
 
-  <p>Several of the gaps are small enough to be within benchmark noise. A two-point CritPt difference and a four-point AA-LCR difference should not carry much weight individually; they matter here only as part of a consistent pattern across ten evaluations, and the pattern is the claim rather than any single row.</p>
+  <p>Several of the gaps are small enough to be within benchmark noise. I would not act on a two-point CritPt difference or a four-point AA-LCR difference on its own; they matter here only as part of a consistent pattern across ten evaluations, and the pattern is the claim rather than any single row.</p>
 
-  <p>The larger limitation is one of construct rather than measurement. These are eval-suite aggregates over tasks whose context is supplied correctly by the harness. On a codebase of any real size the dominant failure mode is not shallow reasoning over the right files; it is confident reasoning over the wrong ones. Raising effort makes that failure worse rather than better, because it produces more elaborate and more plausible inference from the same faulty premises. Neither the effort dial nor the model choice substitutes for getting the right material in front of the model, and nothing measured here touches that problem.</p>
+  <p>The limitation I cannot get past is one of construct rather than measurement. These are eval-suite aggregates over tasks whose context is supplied correctly by the harness. On a codebase of any real size the dominant failure mode is not shallow reasoning over the right files; it is confident reasoning over the wrong ones. Raising effort makes that failure worse rather than better, because it produces more elaborate and more plausible inference from the same faulty premises. Neither the effort dial nor the model choice substitutes for getting the right material in front of the model, and nothing measured here lets me put a number on what that costs.</p>
 
   <div class="key">
     <p class="kt">A companion instrument</p>
-    <p>The one thing measured here that effort cannot improve is knowledge, and the public benchmark closest to it, AA-Omniscience, has the two leading models tied. That is a poor place to leave the question, because a leaderboard averages over subjects somebody else chose. <a href="probe/">A closed-book probe</a> publishes the prompt, thirty items, an answer key and a scoring scheme for measuring the same thing on your own material, in your own words.</p>
+    <p>The one thing measured here that effort cannot improve is knowledge, and the public benchmark closest to it, AA-Omniscience, has the two leading models tied. I think that is a poor place to leave the question, because a leaderboard averages over subjects somebody else chose. <a href="probe/">A closed-book probe</a> publishes the prompt, thirty items, an answer key and a scoring scheme for measuring the same thing on your own material, in your own words.</p>
   </div>
 
-  <p class="kicker">The dial is nearly exhausted by the time it reaches high, and entirely exhausted above xhigh. The model choice is not exhausted at all, and on the one benchmark that measures both at matched settings it is worth as much as the whole dial. Most of the attention spent on effort settings would be better spent on which model is reading the code, and almost all of it would be better spent on which code the model is reading.</p>
+  <p class="kicker">The dial is nearly exhausted by the time it reaches high, and entirely exhausted above xhigh. The model choice is not exhausted at all, and on the one benchmark that measures both at matched settings it is worth as much as the whole dial. Most of the attention I see spent on effort settings would be better spent on which model is reading the code, and almost all of it would be better spent on which code the model is reading.</p>
 
   <div class="sources">
     <h2>Sources</h2>
     <p><b>Primary data.</b> Artificial Analysis: Claude Fable 5.1 model pages for low, medium, high, xhigh and max effort; GPT-6 Astra model pages for medium, high and max; the GPT-6 Astra versus Claude Fable 5.1 comparison page; and the leaderboards for AA-Briefcase, AA-Omniscience, CritPt, SciCode and Terminal-Bench v4.0. All figures are Intelligence Index v4.3. Retrieved 8 September 2026.</p>
     <p><b>Vendor and benchmark material.</b> Anthropic, "Introducing Claude Fable 5.1 and Claude Mythos 5.1", September 2026. OpenAI, "GPT-6 Astra", September 2026. Tian M, Gao L, Peng H, et al., "SciCode: A Research Coding Benchmark Curated by Scientists", NeurIPS Datasets and Benchmarks, 2024.</p>
-    <p style="margin-top:16px">Every derived quantity on this page, including index points per million tokens, marginal return per step, relative benchmark gaps and the Elo comparisons in section seven, is computed from the published figures rather than taken from a source, and can be reproduced from the tables above.</p>
-    <p><b>Disclosure of AI assistance.</b> AI assistance was used for data retrieval, computation, figure generation, drafting and bilingual translation. No benchmark was run independently for this piece; every score is a published third-party or vendor figure.</p>
+    <p style="margin-top:16px">I computed every derived quantity on this page, including index points per million tokens, marginal return per step, relative benchmark gaps and the Elo comparisons in section seven, from the published figures rather than taking it from a source, and it can be reproduced from the tables above.</p>
+    <p><b>Disclosure of AI assistance.</b> I used AI assistance for data retrieval, computation, figure generation, drafting and bilingual translation. I have run no benchmark myself for this piece; every score is a published third-party or vendor figure.</p>
   </div>
 
   </article>

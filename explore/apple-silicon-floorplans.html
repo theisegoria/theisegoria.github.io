@@ -39,7 +39,7 @@
       <div>
         <p class="eyebrow">Apple silicon · N3B → N3E → N3P</p>
         <h1>Apple M3 to M5<br><em>floorplans.</em></h1>
-        <p class="lesson-deck">Three generations on the same 3 nm family, seen from above. The interesting story is not core counts. It is where the matrix arithmetic moved, and then, at M5 Pro, the die splitting in two.</p>
+        <p class="lesson-deck">Three generations on the same 3 nm family, seen from above. The story I care about is not core counts. It is where the matrix arithmetic moved, and then, at M5 Pro, the die splitting in two.</p>
       </div>
       <p class="lesson-promise"><strong>What you can see here</strong>Switch between four floorplans and select any block to read what it does and how it changed between M3, M4 and M5.</p>
     </section>
@@ -50,7 +50,7 @@
       <article class="lesson-card is-full">
         <p class="cue">What this drawing is</p>
         <h2>Topology is real, geometry is illustrative</h2>
-        <p>Block identities, core counts, process nodes and bandwidths are taken from Apple's own specifications and from the Counterpoint teardown of the M5 Pro. Block positions and relative sizes are schematic: they are arranged the way published die-shot annotations of M3 and M4 show Apple organising these SoCs, with the GPU array at one end, the CPU clusters and NPU adjacent, and cache and memory controllers along the perimeter. Nothing here is traced from a photograph, so read the topology as accurate and the geometry as illustrative.</p>
+        <p>I took block identities, core counts, process nodes and bandwidths from Apple's own specifications and from the Counterpoint teardown of the M5 Pro. I drew block positions and relative sizes schematically: I arranged them the way published die-shot annotations of M3 and M4 show Apple organising these SoCs, with the GPU array at one end, the CPU clusters and NPU adjacent, and cache and memory controllers along the perimeter. I traced nothing here from a photograph, so read the topology as accurate and the geometry as illustrative.</p>
       </article>
 
       <article class="lesson-card is-wide">
@@ -65,7 +65,7 @@
         <p class="cue">M5 Pro and M5 Max</p>
         <h2>One SoC, two dies</h2>
         <p>This is the real break with M3 and M4. The M5 Pro and M5 Max are not monolithic. Apple splits the SoC into a CPU die and a GPU and IO die, and bonds them with TSMC's SoIC-mH hybrid bonding; the marketing name is Fusion Architecture. Both dies are N3P, and Pro and Max ship the same CPU die, differing only in the GPU die.</p>
-        <p>The consequence worth staring at is this. The four LPDDR5X-9600 memory controllers live on the GPU die. So do the media engine and the display engines. Every CPU access to unified memory therefore crosses the bond interface. Hybrid bonding is what makes that affordable: direct copper-to-copper pads at a pitch fine enough that the inter-die hop costs a fraction of the energy an organic-substrate link would.</p>
+        <p>The consequence I keep coming back to is this. The four LPDDR5X-9600 memory controllers live on the GPU die. So do the media engine and the display engines. Every CPU access to unified memory therefore crosses the bond interface. Hybrid bonding is what makes that affordable: direct copper-to-copper pads at a pitch fine enough that the inter-die hop costs a fraction of the energy an organic-substrate link would.</p>
         <figure class="fp-figure" data-figure="xsec"></figure>
         <p class="fp-caption">Package cross-section. The CPU die is bonded face-to-face onto the GPU and IO die, and only the lower die talks to the package substrate and therefore to the LPDDR5X stacks. The traced path is a CPU load missing in cache: it descends through the bond, is serviced by a memory controller that physically sits on the other die, and returns.
         <span class="fp-src">Structure per the Counterpoint Research teardown: TSMC SoIC-mH, N3P on both dies, unified memory maintained across the pair.</span></p>
