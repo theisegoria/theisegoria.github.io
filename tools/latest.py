@@ -56,7 +56,7 @@ EN_FULL = ["January", "February", "March", "April", "May", "June", "July",
 STRINGS = {
     "en": {
         "path": "index.html",
-        "heading": "Latest",
+        "heading": "Latest work",
         "updated": "Updated {stamp}",
         "note": ("What I have been working on most recently, newest first. "
                  "Everything here also lives in the sections below, filed by subject."),
@@ -65,7 +65,7 @@ STRINGS = {
     },
     "ja": {
         "path": "ja/index.html",
-        "heading": "最新",
+        "heading": "最新の記事と作品",
         "updated": "{stamp} 更新",
         "note": "最近取り組んだものを新しい順に並べている。いずれも下の各セクションに主題別で収めてある。",
         "new": "新着",

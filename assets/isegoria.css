@@ -386,3 +386,57 @@ p { margin: 0; }
   .index.dated > a::before { display: block; margin-bottom: .35rem; }
   .latest-lead .t { max-width: none; }
 }
+
+/* ---------- latest: work beside GitHub activity ---------- */
+.latest-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr);
+  gap: 0 clamp(2.25rem, 5vw, 4.5rem);
+  align-items: start;
+  padding: clamp(2.75rem, 5.5vw, 4.25rem) 0 clamp(2.25rem, 4.5vw, 3.25rem);
+  border-top: 1px solid var(--rule-firm);
+}
+.latest-row > .latest { padding: 0; border-top: 0; }
+.latest-row .index.dated > a { grid-template-columns: 4.5rem minmax(0, 1fr); }
+.latest-row .index.dated .d { grid-column: 2; margin-top: .3rem; }
+.latest-row .index.dated .tail { grid-column: 2; }
+
+.gh-activity .section-head { grid-template-columns: minmax(0, 1fr); }
+.gh-activity .section-head .label { justify-self: start; text-align: left; }
+.gh-feed { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--rule); transition: opacity .2s ease; }
+.gh-feed[aria-busy="true"] { opacity: .65; }
+.gh-feed li { border-bottom: 1px solid var(--rule); }
+.gh-feed a {
+  display: block; text-decoration: none; color: inherit;
+  padding: 1.05rem calc(var(--gutter) / 3);
+  margin-inline: calc(var(--gutter) / -3);
+  transition: background-color .18s ease;
+}
+.gh-feed a:hover { background: var(--paper-sunk); }
+.gh-repo {
+  display: block;
+  font-family: var(--sans); font-size: .8125rem; font-weight: 500; letter-spacing: .01em;
+  color: var(--ink); overflow-wrap: anywhere;
+}
+.gh-feed a:hover .gh-repo { color: var(--accent); }
+.gh-msg {
+  margin-top: .3rem; color: var(--ink-soft); font-size: .9875rem; line-height: 1.45;
+  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2;
+  overflow: hidden; overflow-wrap: anywhere;
+}
+.gh-meta {
+  display: block; margin-top: .45rem;
+  font-family: var(--sans); font-size: .6875rem; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--ink-faint); font-feature-settings: "tnum";
+}
+.gh-meta span + span::before { content: "\00b7"; margin: 0 .5rem; }
+.gh-activity .more { margin-top: 1.6rem; }
+
+@media (max-width: 960px) {
+  .latest-row { grid-template-columns: minmax(0, 1fr); }
+  .gh-activity { margin-top: clamp(2.5rem, 7vw, 3.5rem); padding-top: clamp(2.5rem, 7vw, 3.5rem); border-top: 1px solid var(--rule); }
+}
+@media (max-width: 560px) {
+  .latest-row .index.dated > a { grid-template-columns: 1fr; }
+  .latest-row .index.dated .d, .latest-row .index.dated .tail { grid-column: 1; }
+}

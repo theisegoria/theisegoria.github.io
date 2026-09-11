@@ -27,6 +27,12 @@ index pages, and holds one featured lead plus four dated rows. It is
 hand-maintained, so **anything published to the site has to be promoted into
 it**, or the site goes on claiming something older is the newest work.
 
+On both index pages the block sits inside `<div class="latest-row">`, the
+left of two columns. The right column is `<aside class="gh-activity">`, which
+lives outside the markers so `tools/latest.py` never touches it; it is filled
+in the browser by `assets/github-activity.js` from the public GitHub API, with
+a static link to github.com/theisegoria as the no-JavaScript fallback.
+
 Do not hand-edit the block. Run:
 
 ```
