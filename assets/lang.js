@@ -29,8 +29,8 @@
   'use strict';
   var KEY = 'isegoria:lang';
 
-  function store(v) { try { localStorage.setItem(KEY, v); } catch (e) {} }
-  function read() { try { return localStorage.getItem(KEY); } catch (e) { return null; } }
+  function store(v) { try { localStorage.setItem(KEY, v); localStorage.setItem('isegoria-language', v); } catch (e) {} }
+  function read() { try { return localStorage.getItem(KEY) || localStorage.getItem('isegoria-language'); } catch (e) { return null; } }
 
   // Remember explicit choices from any language link on any page.
   document.addEventListener('click', function (e) {
@@ -47,13 +47,16 @@
   var alt = document.querySelector('link[rel="alternate"][hreflang="' + other + '"]');
   if (!alt || !alt.href) return;                       // no counterpart published
 
+  var counterpart = new URL(alt.href, location.href);
+  var counterpartHref = counterpart.hostname === 'theisegoria.github.io' ? counterpart.pathname + counterpart.search + counterpart.hash : counterpart.href;
+
   var ua = navigator.userAgent || '';
   if (navigator.webdriver ||
       /bot|crawl|spider|slurp|mediapartners|facebookexternalhit|embedly|preview|lighthouse|pagespeed/i.test(ua)) return;
 
   var saved = read();
   if (saved === here || saved === 'dismissed') return; // chose this language
-  if (saved === other) { location.replace(alt.href); return; }
+  if (saved === other) { location.replace(counterpartHref); return; }
 
   // Signal 1: time zone.
   var tz = '';
@@ -70,7 +73,7 @@
   }
 
   var target = (inJapan || reads === 'ja') ? 'ja' : 'en';
-  if (target !== here) { location.replace(alt.href); return; }
+  if (target !== here) { location.replace(counterpartHref); return; }
 
   // Staying put. Offer the other edition only if the browser prefers it.
   if (reads !== other) return;
@@ -101,7 +104,7 @@
 
     var inner = document.createElement('div');
     var msg = document.createElement('p'); msg.textContent = copy.msg;
-    var a = document.createElement('a'); a.href = alt.href; a.textContent = copy.go + ' →'; a.hreflang = other;
+    var a = document.createElement('a'); a.href = counterpartHref; a.textContent = copy.go + ' →'; a.hreflang = other;
     var b = document.createElement('button'); b.type = 'button'; b.textContent = copy.off;
     b.addEventListener('click', function () { store(here); bar.remove(); });
 

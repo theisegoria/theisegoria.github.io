@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class=" ig-document ig-editorial">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Coding reasoning: Astra, Sol and Fable | Isegoria</title>
@@ -8,14 +8,27 @@
 <style>
 :root{color-scheme:light dark;--bg:light-dark(#fff,#181818);--ink:light-dark(#19282f,#eee);--muted:light-dark(#566168,#b8b8b8);--line:light-dark(#d9dfe3,#444);--link:light-dark(#006d87,#8fcde0)}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 system-ui,sans-serif}main{max-width:1000px;margin:auto;padding:28px 24px 60px}h1{font-size:clamp(29px,5vw,44px);line-height:1.15;font-weight:500;max-width:800px}h2{font-size:25px;font-weight:500;margin:40px 0 8px}a{color:var(--link)}p{max-width:850px}.meta{color:var(--muted);font-size:14px}.actions{display:flex;flex-wrap:wrap;gap:12px 26px;margin:24px 0}iframe{width:100%;border:0;display:block;min-height:400px}section{border-top:1px solid var(--line);margin-top:30px;padding-top:5px}summary{cursor:pointer}table{width:100%;border-collapse:collapse;font-size:14px}td,th{text-align:left;padding:9px;border-bottom:1px solid var(--line)}.table-scroll{overflow-x:auto}li{margin:7px 0}footer{margin-top:35px;color:var(--muted);font-size:13px} @media(max-width:500px){main{padding:20px 12px}h2{font-size:23px}}
-</style>
+</style><!-- ISEGORIA:HEAD -->
+<link rel="stylesheet" href="/assets/site-shell.css?v=47b7776797">
+<script src="/assets/site-shell.js?v=47b7776797" ></script>
+<!-- /ISEGORIA:HEAD -->
 </head>
-<body><main>
-<nav><a href="/">← Home</a></nav>
+<body class=" ig-site" data-site-kind="editorial" data-site-route="/coding-reasoning-comparison/">
+<!-- ISEGORIA:NAV -->
+<a class="ig-skip" href="#ig-content">Skip to content</a>
+<header id="ig-header"><div class="ig-nav-inner">
+<a class="ig-brand" href="/" aria-label="Isegoria, home"><strong>ISEGORIA</strong><span>Benjamin Haire</span></a>
+<button class="ig-menu" type="button" aria-expanded="false" aria-controls="ig-primary">Menu</button>
+<nav id="ig-primary" aria-label="Primary navigation"><a href="/">Home</a><a href="/library.html">Library</a><a href="/#guides">Guides</a><a href="/#preoccupations" aria-current="location">Research</a><a href="/projects.html">Projects</a><a href="/about.html">About</a><a class="ig-language" href="/ja/" hreflang="ja" lang="ja">日本語</a><button class="ig-theme" type="button" hidden>Theme</button></nav>
+</div></header>
+<nav id="ig-breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><a href="/#preoccupations">Research</a><span aria-hidden="true">/</span><span aria-current="page">Coding reasoning: Astra, Sol and Fable</span></nav>
+<span id="ig-content" tabindex="-1"></span>
+<!-- /ISEGORIA:NAV --><main>
+
 <p class="meta">Research note · Expanded edition · Visualizations updated 10 September 2026</p>
 <h1>Coding performance, cost and waiting</h1>
 <p>I put GPT-6 Astra, GPT-5.6 Sol and Claude Fable 5.1 side by side across selected reasoning levels. For this expanded edition I have brought together Astra medium/high/xhigh, Sol xhigh/max and Fable extra-high (xhigh), alongside the full Astra/Fable effort sweep.</p>
-<div class="actions"><a href="report.pdf">Read the seven-page PDF (9 September edition)</a><a href="#selected">Six-way comparison</a><a href="#curves">Full effort curves</a><a href="#sources">Sources and data</a></div>
+<div class="actions"><a href="report.pdf" target="_blank" rel="noopener" title="PDF, opens in a new tab">Read the seven-page PDF (9 September edition)</a><a href="#selected">Six-way comparison</a><a href="#curves">Full effort curves</a><a href="#sources">Sources and data</a></div>
 <p><strong>Astra medium is where I would start for interactive work.</strong> High improves the displayed terminal score, but its initial wait is much longer. Astra xhigh leads terminal coding, while Fable xhigh leads scientific coding in this six-way selection, with substantially higher mixed-suite token use and cost. I offer these as observations to trial against your own work, not as a universal best setting I claim to have found.</p>
 <section id="selected"><h2>The six-way comparison</h2>
 <p class="meta">10 September 2026 snapshot · Fable uses adaptive reasoning with default fallback.</p>
@@ -36,11 +49,13 @@
 <section id="sources"><h2>Sources and reusable data</h2>
 <p>For the selected comparison I used Artificial Analysis readings retrieved on 10 September. In the full sweep I have preserved the original 8 September source data and my reading of it at the time.</p>
 <ul id="source-list"><li><a href="https://artificialanalysis.ai/models/comparisons/gpt-6-astra-medium-vs-gpt-5-6-sol-xhigh">Artificial Analysis: Astra medium / Sol xhigh</a></li><li><a href="https://artificialanalysis.ai/models/comparisons/gpt-6-astra-medium-vs-gpt-5-6-sol">Artificial Analysis: Astra medium / Sol max</a></li><li><a href="https://artificialanalysis.ai/models/comparisons/gpt-6-astra-high-vs-claude-fable-5-1-xhigh">Artificial Analysis: Astra high / Fable xhigh</a></li><li><a href="https://artificialanalysis.ai/models/comparisons/gpt-6-astra-xhigh-vs-gpt-5-6-sol-xhigh">Artificial Analysis: Astra xhigh / Sol xhigh</a></li></ul>
-<div class="actions"><a href="selected-data.json">Selected configuration data</a><a href="curves-data.json">Full sweep data and source register</a><a href="report.pdf">Complete PDF report</a></div>
+<div class="actions"><a href="selected-data.json">Selected configuration data</a><a href="curves-data.json">Full sweep data and source register</a><a href="report.pdf" target="_blank" rel="noopener" title="PDF, opens in a new tab">Complete PDF report</a></div>
 </section>
 <footer>Published measurements, with my interpretation kept separate from them. Benchmark values retain the source's displayed precision. Visualizations updated 10 September 2026; PDF remains the 9 September edition.</footer>
 </main>
 <script>
 for(const frame of document.querySelectorAll('iframe'))frame.addEventListener('load',()=>{const doc=frame.contentDocument;const root=doc.querySelector('#astra-sol-comparison,#astra-fable-curves');const fit=()=>{frame.style.height=Math.ceil(root.getBoundingClientRect().height+32)+'px'};new ResizeObserver(fit).observe(root);fit()});
-</script>
+</script><!-- ISEGORIA:FOOT -->
+<footer id="ig-footer"><div><a href="/">Isegoria · Benjamin Haire</a><nav aria-label="Site links"><a href="/">Back to home</a><a href="/library.html">Browse the library</a><a href="#ig-content">Back to top</a></nav></div></footer>
+<!-- /ISEGORIA:FOOT -->
 </body></html>

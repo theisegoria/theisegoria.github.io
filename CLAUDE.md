@@ -139,3 +139,33 @@ Figures are hand-authored SVG using the stylesheet's theme tokens, so they
 work in both light and dark. Every long-form piece carries a Sources block
 that discloses AI assistance and states what was and was not independently
 verified.
+
+## Shared site navigation
+
+Every HTML entry point uses the generated Isegoria header, breadcrumbs and footer.
+The common visual tokens and mobile/theme/language controls live in
+`assets/site-shell.css` and `assets/site-shell.js`. Preserve application chart
+colours and controls when changing the surrounding site theme.
+
+After adding a page or editing the shell, run:
+
+```
+python3 tools/update-library.py
+python3 tools/site-shell.py
+python3 tools/check-index.py
+python3 tools/audit-site.py
+```
+
+The generator writes static links, requires no runtime framework, and versions
+its CSS/JS by content hash. Do not hand-edit the `ISEGORIA` marker blocks.
+The library generator keeps every article and companion page discoverable.
+
+Separate Pages repositories share the same root assets. Their routes and
+metadata live in `tools/project-pages.json`; refresh those entries when adding
+a project. Apply `site-shell.py --project PATH --prefix /repository-name/` to
+static projects. For Monster's React layout, regenerate `app/site-navigation.tsx`
+from `shell()` and update the two shell version URLs before `npm run build:pages`.
+Run `audit-site.py --projects PATH` against sibling project checkouts to also
+check their HTML and Monster's `dist/client` build. Publish the main site's
+shared assets first, then the project pages. Verify the live pages after each
+Pages deployment completes.

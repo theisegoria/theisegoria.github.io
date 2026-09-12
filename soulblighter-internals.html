@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class=" ig-document ig-editorial">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -432,14 +432,22 @@
   }
 </style>
 
-<script src="/assets/lang.js"></script>
+<script src="/assets/lang.js"></script><!-- ISEGORIA:HEAD -->
+<link rel="stylesheet" href="/assets/site-shell.css?v=47b7776797">
+<script src="/assets/site-shell.js?v=47b7776797" ></script>
+<!-- /ISEGORIA:HEAD -->
 </head>
-<body>
-
-<header class="isegoria-bar">
-  <a class="isegoria-home" href="index.html"><span class="isegoria-mark" aria-hidden="true">B</span><span>Benjamin Michael Haire</span></a>
-  <nav aria-label="Isegoria"><a href="index.html">Home</a><a href="index.html#library">Library</a><a href="projects.html">Projects</a><a class="article-lang" href="ja/soulblighter-internals.html" hreflang="ja" lang="ja" data-language-select="ja">日本語</a></nav>
-</header>
+<body class=" ig-site" data-site-kind="editorial" data-site-route="/soulblighter-internals.html">
+<!-- ISEGORIA:NAV -->
+<a class="ig-skip" href="#ig-content">Skip to content</a>
+<header id="ig-header"><div class="ig-nav-inner">
+<a class="ig-brand" href="/" aria-label="Isegoria, home"><strong>ISEGORIA</strong><span>Benjamin Haire</span></a>
+<button class="ig-menu" type="button" aria-expanded="false" aria-controls="ig-primary">Menu</button>
+<nav id="ig-primary" aria-label="Primary navigation"><a href="/">Home</a><a href="/library.html">Library</a><a href="/#guides">Guides</a><a href="/#preoccupations" aria-current="location">Research</a><a href="/projects.html">Projects</a><a href="/about.html">About</a><a class="ig-language" href="/ja/soulblighter-internals.html" hreflang="ja" lang="ja">日本語</a><button class="ig-theme" type="button" hidden>Theme</button></nav>
+</div></header>
+<nav id="ig-breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><a href="/#preoccupations">Research</a><span aria-hidden="true">/</span><span aria-current="page">Soulblighter Internals</span></nav>
+<span id="ig-content" tabindex="-1"></span>
+<!-- /ISEGORIA:NAV --><nav class="ig-page-nav" aria-label="On this page"><a class="isegoria-home" href="index.html"><span class="isegoria-mark" aria-hidden="true">B</span><span>Benjamin Michael Haire</span></a><a href="index.html">Home</a><a href="projects.html">Projects</a></nav>
 
   <div class="shell">
 
@@ -1124,7 +1132,7 @@ result = (seed′ &gt;&gt; 16) &amp; 0xFFFF        <span class="c">// discard th
             <li><a href="https://www.gamedeveloper.com/programming/postmortem-project-magma-s-i-myth-ii-i-1-5-and-1-5-1">Postmortem: Project Magma's <em>Myth II</em> 1.5 and 1.5.1</a>. The 1/30 s tick, the fixed-integer conversion, seed comparison as OOS detection, and the <code>debug_myth_random</code> diagnosis.</li>
             <li><a href="https://github.com/jwheare/mythextract">jwheare/mythextract</a>: reverse-engineered parsers for the tag, mesh, collection and recording formats. Every struct layout, flag enum, scale factor and command verb quoted above comes from here; the field names are Bungie's own, recovered from the binaries.</li>
             <li><a href="https://projectmagma.net/downloads/myth2docs/fear.html">Fear documentation v1.8.5</a> and <a href="https://projectmagma.net/downloads/myth2docs/loathing.html">Loathing documentation v1.8.5</a>: Bungie's own editor manuals; the source for every quoted field description, the formation list and the map-action catalogue.</li>
-            <li><a href="https://projectmagma.net/downloads/myth2_180/Readme_1.8.0.pdf">Project Magma release notes</a> (1.7.1, 1.7.2, 1.8.0, 1.8.2–1.8.5): engine behaviour changes, collision and pathfinding fixes, film compatibility work, and the projectile budget constants.</li>
+            <li><a href="https://projectmagma.net/downloads/myth2_180/Readme_1.8.0.pdf" target="_blank" rel="noopener" title="PDF, opens in a new tab">Project Magma release notes</a> (1.7.1, 1.7.2, 1.8.0, 1.8.2–1.8.5): engine behaviour changes, collision and pathfinding fixes, film compatibility work, and the projectile budget constants.</li>
             <li><a href="https://tain.projectmagma.net/mythii/source_code">The Tain: source code archive</a>, including Bungie's released bungie.net metaserver code, and <a href="https://tain.totalcodex.net/mythii">The Tain's Myth II archive</a> generally.</li>
             <li><a href="https://mythingoak.miraheze.org/wiki/Category:Tags">MythingOak, Category:Tags</a>. Confirmed to exist and to document these tags, but it rejects automated fetching; open it in a browser.</li>
           </ol>
@@ -1134,6 +1142,8 @@ result = (seed′ &gt;&gt; 16) &amp; 0xFFFF        <span class="c">// discard th
     </main>
   </div>
 </div>
-<script src="assets/site.js"></script>
+<script src="assets/site.js"></script><!-- ISEGORIA:FOOT -->
+<footer id="ig-footer"><div><a href="/">Isegoria · Benjamin Haire</a><nav aria-label="Site links"><a href="/">Back to home</a><a href="/library.html">Browse the library</a><a href="#ig-content">Back to top</a></nav></div></footer>
+<!-- /ISEGORIA:FOOT -->
 </body>
 </html>

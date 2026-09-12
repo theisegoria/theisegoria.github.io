@@ -19,8 +19,11 @@ import io
 import os
 import re
 import sys
+import subprocess
+from urllib.parse import urlsplit, unquote
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+TRACKED = set(subprocess.check_output(["git", "ls-tree", "-r", "--name-only", "-z", "HEAD"], cwd=ROOT, text=True).split("\0"))
 PAGES = ["index.html", "ja/index.html"]
 ONES = ["", "one", "two", "three", "four", "five", "six", "seven", "eight",
         "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen",
@@ -88,15 +91,17 @@ def check_page(rel):
 
     # 3. Internal links must resolve.
     for href in sorted(set(re.findall(r'href="([^"#]+)"', page))):
-        href = href.split("?")[0]
-        if href.startswith(("http", "mailto")) or href in ("", "/"):
+        if urlsplit(href).scheme or href in ("", "/"):
+            continue
+        href = unquote(urlsplit(href).path)
+        if not href:
             continue
         target = href[1:] if href.startswith("/") else os.path.normpath(
             os.path.join(os.path.dirname(rel), href))
         full = os.path.join(ROOT, target)
         if os.path.isdir(full) or href.endswith("/"):
             full = os.path.join(full, "index.html")
-        if not os.path.exists(full):
+        if not os.path.exists(full) and os.path.relpath(full, ROOT) not in TRACKED:
             problems.append("dead link: %s" % href)
 
     return problems

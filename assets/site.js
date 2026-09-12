@@ -3,7 +3,7 @@ document.documentElement.classList.remove('no-js');
 const root = document.documentElement;
 const isJapanese = root.lang.toLowerCase().startsWith('ja');
 const currentLanguage = isJapanese ? 'ja' : 'en';
-const storedLanguage = localStorage.getItem('isegoria-language');
+const storedLanguage = localStorage.getItem('isegoria:lang') || localStorage.getItem('isegoria-language');
 const themeButton = document.querySelector('.theme-toggle');
 const themeLabel = document.querySelector('.theme-label');
 const storedTheme = localStorage.getItem('isegoria-theme');

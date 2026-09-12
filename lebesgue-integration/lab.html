@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class=" ig-document ig-editorial">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -17,13 +17,24 @@
     footer{display:flex;justify-content:space-between;gap:20px;padding:30px 0 48px;color:var(--muted);font-size:.85rem}
     @media(max-width:800px){.intro{display:block}.intro-links{justify-content:flex-start;margin-top:20px}.plots,.simple-grid,.theorem-layout{grid-template-columns:1fr}.section-head{grid-template-columns:1fr}.toolbar{flex-wrap:wrap}.mode{margin-left:0}.readout{grid-template-columns:1fr}.readout div{border-right:0;border-bottom:1px solid var(--line)}}
     @media(max-width:500px){.bar,main,footer{width:min(100% - 24px,1180px)}.bar{height:auto;padding:16px 0;align-items:flex-start}.bar nav{gap:11px;flex-wrap:wrap;justify-content:flex-end}.intro{padding-top:30px}.plot{padding:12px}.toolbar input{width:100%}.toolbar label{width:100%}.mode{width:100%}.mode button{flex:1}.row{grid-template-columns:52px 1fr 48px}}
-  </style>
+  </style><!-- ISEGORIA:HEAD -->
+<link rel="stylesheet" href="/assets/site-shell.css?v=47b7776797">
+<script src="/assets/site-shell.js?v=47b7776797" ></script>
+<!-- /ISEGORIA:HEAD -->
 </head>
-<body>
-  <a class="skip" href="#experiment">Skip to experiment</a>
-  <header class="bar"><a class="brand" href="/">Benjamin Michael Haire</a><nav><a href="/">Home</a><a href="#simple">Simple functions</a><a href="#limits">Limits</a><a href="lebesgue-integration.pdf">PDF</a></nav></header>
+<body class=" ig-site" data-site-kind="editorial" data-site-route="/lebesgue-integration/lab.html">
+<!-- ISEGORIA:NAV -->
+<a class="ig-skip" href="#ig-content">Skip to content</a>
+<header id="ig-header"><div class="ig-nav-inner">
+<a class="ig-brand" href="/" aria-label="Isegoria, home"><strong>ISEGORIA</strong><span>Benjamin Haire</span></a>
+<button class="ig-menu" type="button" aria-expanded="false" aria-controls="ig-primary">Menu</button>
+<nav id="ig-primary" aria-label="Primary navigation"><a href="/">Home</a><a href="/library.html">Library</a><a href="/#guides" aria-current="location">Guides</a><a href="/#preoccupations">Research</a><a href="/projects.html">Projects</a><a href="/about.html">About</a><a class="ig-language" href="/ja/" hreflang="ja" lang="ja">日本語</a><button class="ig-theme" type="button" hidden>Theme</button></nav>
+</div></header>
+<nav id="ig-breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><a href="/#guides">Guides</a><span aria-hidden="true">/</span><a href="/lebesgue-integration/">Lebesgue Integration - Visual Guide</a><span aria-hidden="true">/</span><span aria-current="page">Lebesgue Integration Lab</span></nav>
+<span id="ig-content" tabindex="-1"></span>
+<!-- /ISEGORIA:NAV --><nav class="ig-page-nav" aria-label="On this page"><a href="#simple">Simple functions</a><a href="#limits">Limits</a><a href="lebesgue-integration.pdf" target="_blank" rel="noopener" title="PDF, opens in a new tab">PDF</a></nav>
   <main>
-    <section class="intro"><div><p class="eyebrow">Interactive measure theory</p><h1>Build area from level sets.</h1><p>I put the two constructions side by side, because that contrast is what makes the definition click. Compare vertical Riemann strips with horizontal Lebesgue bands, then calculate simple functions and test convergence theorems.</p></div><div class="intro-links"><a href="lebesgue-integration.pdf">Read the 13-page guide</a><a href="lebesgue-integration.tex">LaTeX source</a></div></section>
+    <section class="intro"><div><p class="eyebrow">Interactive measure theory</p><h1>Build area from level sets.</h1><p>I put the two constructions side by side, because that contrast is what makes the definition click. Compare vertical Riemann strips with horizontal Lebesgue bands, then calculate simple functions and test convergence theorems.</p></div><div class="intro-links"><a href="lebesgue-integration.pdf" target="_blank" rel="noopener" title="PDF, opens in a new tab">Read the 13-page guide</a><a href="lebesgue-integration.tex">LaTeX source</a></div></section>
 
     <section class="workspace" id="experiment" aria-labelledby="experiment-title">
       <div class="toolbar"><label for="bands">Partition resolution</label><input id="bands" type="range" min="3" max="24" value="8"><output id="band-count" for="bands">8</output><div class="mode" aria-label="Function shape"><button type="button" data-shape="bell" aria-pressed="true">Bell</button><button type="button" data-shape="waves" aria-pressed="false">Waves</button><button type="button" data-shape="steps" aria-pressed="false">Steps</button></div></div>
@@ -56,6 +67,8 @@
       function drawSeq(type){const g=document.querySelector('.sequence-lines');g.replaceChildren();const colors=['var(--blue)','var(--teal)','var(--gold)','var(--coral)'];[1,2,4,8].forEach((n,k)=>{let p='';for(let i=0;i<=300;i++){const x=i/300;let y;if(type==='monotone')y=Math.min(1,Math.sqrt(x)*n/2);else if(type==='dominated')y=x**n;else y=x<1/n?Math.min(1,n/8):0;p+=(i?'L':'M')+(44+x*550).toFixed(1)+','+(275-y*240).toFixed(1)}const path=el('path','',{d:p,fill:'none',stroke:colors[k], 'stroke-width':2});g.appendChild(path)});const s=seq[type];document.getElementById('theorem-label').textContent=s.label;document.getElementById('theorem-title').textContent=s.title;const body=document.getElementById('theorem-body');body.textContent=s.body;body.className=s.warning?'warning':'';const ul=document.getElementById('theorem-checks');ul.replaceChildren(...s.checks.map(t=>{const li=document.createElement('li');li.textContent=t;return li}))}
       document.querySelectorAll('[data-seq]').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('[data-seq]').forEach(x=>x.setAttribute('aria-pressed',x===b));drawSeq(b.dataset.seq)}));drawSeq('monotone');
     })();
-  </script>
+  </script><!-- ISEGORIA:FOOT -->
+<footer id="ig-footer"><div><a href="/">Isegoria · Benjamin Haire</a><nav aria-label="Site links"><a href="/">Back to home</a><a href="/library.html">Browse the library</a><a href="#ig-content">Back to top</a></nav></div></footer>
+<!-- /ISEGORIA:FOOT -->
 </body>
 </html>
