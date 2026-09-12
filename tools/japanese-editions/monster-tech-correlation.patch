@@ -1,0 +1,625 @@
+--- a/app/analysis-client.tsx
++++ b/app/analysis-client.tsx
+@@ -47,29 +47,29 @@
+ type CountryPoint = (typeof countrySalesData)[number];
+ 
+ const stockConfig = {
+-  monster: { label: 'Monster Beverage', color: 'var(--chart-1)' },
+-  apple: { label: 'Apple', color: 'var(--chart-2)' },
+-  nvidia: { label: 'Nvidia', color: 'var(--chart-4)' },
+-  microsoft: { label: 'Microsoft', color: 'var(--chart-3)' },
+-  qqq: { label: 'Nasdaq-100 ETF', color: 'var(--chart-5)' },
+-  spy: { label: 'S&P 500 ETF', color: 'var(--muted-foreground)' },
++  monster: { label: "モンスター・ビービー", color: 'var(--chart-1)' },
++  apple: { label: "Apple", color: 'var(--chart-2)' },
++  nvidia: { label: "Nvidia", color: 'var(--chart-4)' },
++  microsoft: { label: "Microsoft", color: 'var(--chart-3)' },
++  qqq: { label: "Nasdaq-100 ETF", color: 'var(--chart-5)' },
++  spy: { label: "S&P 500 ETF", color: 'var(--muted-foreground)' },
+ } satisfies ChartConfig;
+ 
+ const regionConfig = {
+-  sales: { label: 'Net sales', color: 'var(--chart-1)' },
++  sales: { label: "売上高", color: 'var(--chart-1)' },
+ } satisfies ChartConfig;
+ 
+ const stateConfig = {
+-  interest: { label: 'Google search interest', color: 'var(--chart-1)' },
+-  tech: { label: 'Tech employment share', color: 'var(--chart-3)' },
++  interest: { label: "Google検索関心", color: 'var(--chart-1)' },
++  tech: { label: "テック業界雇用シェア", color: 'var(--chart-3)' },
+ } satisfies ChartConfig;
+ 
+ const countryConfig = {
+-  monsterShare: { label: 'MEC retail value share', color: 'var(--chart-1)' },
+-  ictEmployment: { label: 'ICT specialists in employment', color: 'var(--chart-3)' },
++  monsterShare: { label: "MEC販売価値シェア", color: 'var(--chart-1)' },
++  ictEmployment: { label: "ICT専門職の雇用", color: 'var(--chart-3)' },
+ } satisfies ChartConfig;
+ 
+-const money = new Intl.NumberFormat('en-US', {
++const money = new Intl.NumberFormat('ja-JP', {
+   style: 'currency',
+   currency: 'USD',
+   maximumFractionDigits: 0,
+@@ -111,13 +111,13 @@
+           <a href="#top" className="font-mono text-xs uppercase tracking-[0.18em] text-primary">
+             Monster × Tech
+           </a>
+-          <nav aria-label="Report sections" className="hidden items-center gap-6 text-sm text-muted-foreground sm:flex">
+-            <a className="transition-colors hover:text-foreground" href="#returns">Returns</a>
+-            <a className="transition-colors hover:text-foreground" href="#regions">Regions</a>
+-            <a className="transition-colors hover:text-foreground" href="#sales-test">Sales test</a>
+-            <a className="transition-colors hover:text-foreground" href="#correlation">Correlation</a>
++          <nav aria-label="レポートセクション" className="hidden items-center gap-6 text-sm text-muted-foreground sm:flex">
++            <a className="transition-colors hover:text-foreground" href="#returns">リターン</a>
++            <a className="transition-colors hover:text-foreground" href="#regions">地域</a>
++            <a className="transition-colors hover:text-foreground" href="#sales-test">販売テスト</a>
++            <a className="transition-colors hover:text-foreground" href="#correlation">相関</a>
+           </nav>
+-          <a href="./monster-energy-tech-correlation.pdf" download className={buttonVariants({ size: 'sm', variant: 'outline' })}>
++          <a href="/monster-tech-correlation/monster-energy-tech-correlation.pdf" download className={buttonVariants({ size: 'sm', variant: 'outline' })}>
+             <ArrowDownToLine data-icon="inline-start" /> PDF
+           </a>
+         </div>
+@@ -127,21 +127,20 @@
+         <div aria-hidden="true" className="absolute -right-24 top-8 h-72 w-72 rounded-full bg-primary/10 blur-3xl" />
+         <div className="relative grid gap-10 lg:grid-cols-[minmax(0,1.35fr)_minmax(280px,.65fr)] lg:items-end">
+           <div>
+-            <p className="mb-5 font-mono text-xs uppercase tracking-[0.2em] text-primary">Evidence brief · 31 August 2026</p>
++            <p className="mb-5 font-mono text-xs uppercase tracking-[0.2em] text-primary">証拠要旨 · 2026年8月31日</p>
+             <h1 className="max-w-5xl text-4xl font-medium tracking-[-0.045em] sm:text-6xl lg:text-7xl">
+-              Monster drank the tech sector’s lunch.
++              Monsterはテックセクターのランチを飲んだ。
+             </h1>
+             <p className="mt-6 max-w-3xl text-base leading-7 text-muted-foreground sm:text-lg sm:leading-8">
+-              A split- and dividend-adjusted $1,000 investment in Monster Beverage at the August 2001 close grew to about $2.32 million by 28 August 2026—more than Apple or Nvidia over the same 25-year window.
+-            </p>
++              2001年8月の終値を基準とした1,000ドルの投資を、2026年8月28日に約232万ドルに成長させた。この期間（25年間）において、AppleやNvidiaよりも高い成長を示した。</p>
+           </div>
+           <Card className="bg-primary text-primary-foreground ring-0">
+             <CardHeader>
+-              <CardDescription className="text-primary-foreground/70">The geographic result</CardDescription>
+-              <CardTitle className="text-3xl tracking-[-0.03em]">Not a tech-hub story</CardTitle>
++              <CardDescription className="text-primary-foreground/70">地理的結果</CardDescription>
++              <CardTitle className="text-3xl tracking-[-0.03em]">テクノロジー中心の都市の話ではない</CardTitle>
+             </CardHeader>
+             <CardContent className="text-sm leading-6 text-primary-foreground/85">
+-              The direct test also points the other way: across 14 European markets, Monster-company retail value share is lower where ICT employment is more concentrated (r = −0.51). The separate U.S. search-interest test is negative too (r = −0.37).
++              同じ直接的な検証も逆方向を示す。14の欧州市場において、ICT分野の雇用が集中する地域では、Monster社の販売シェアが低い（r = −0.51）。同様に、米国での検索関心のテストも負の相関を示す（r = −0.37）。
+             </CardContent>
+           </Card>
+         </div>
+@@ -149,24 +148,24 @@
+         <div className="relative mt-10 grid gap-4 sm:grid-cols-3">
+           <Card>
+             <CardHeader>
+-              <CardDescription>Monster ending value</CardDescription>
++              <CardDescription>Monsterの終値</CardDescription>
+               <CardTitle className="text-3xl tabular-nums">$2.32m</CardTitle>
+             </CardHeader>
+-            <CardContent className="text-muted-foreground">$1,000 invested at the August 2001 close</CardContent>
++            <CardContent className="text-muted-foreground">2001年8月の終値を基準とした1,000ドル投資</CardContent>
+           </Card>
+           <Card>
+             <CardHeader>
+-              <CardDescription>Annualised return</CardDescription>
++              <CardDescription>年間化されたリターン</CardDescription>
+               <CardTitle className="text-3xl tabular-nums">36.3%</CardTitle>
+             </CardHeader>
+-            <CardContent className="text-muted-foreground">25-year compound annual growth rate</CardContent>
++            <CardContent className="text-muted-foreground">25年間の複利年間成長率</CardContent>
+           </Card>
+           <Card>
+             <CardHeader>
+-              <CardDescription>Largest audited market</CardDescription>
++              <CardDescription>最も大きな検証市場</CardDescription>
+               <CardTitle className="text-3xl tabular-nums">61.4%</CardTitle>
+             </CardHeader>
+-            <CardContent className="text-muted-foreground">U.S. & Canada share of 2025 segment net sales</CardContent>
++            <CardContent className="text-muted-foreground">2025年セグメントの総売上額における米国およびカナダの割合</CardContent>
+           </Card>
+         </div>
+       </section>
+@@ -175,16 +174,16 @@
+         <div className="mx-auto max-w-7xl px-5 py-14 sm:px-8 sm:py-20">
+           <div className="flex flex-wrap items-end justify-between gap-5">
+             <div>
+-              <p className="font-mono text-xs uppercase tracking-[0.18em] text-primary">01 · Long-run performance</p>
+-              <h2 className="mt-2 text-3xl font-medium tracking-[-0.035em] sm:text-4xl">Growth of a hypothetical $1,000</h2>
+-              <p className="mt-3 max-w-3xl leading-7 text-muted-foreground">
+-                Adjusted closes at each August month-end; the logarithmic axis makes both the early and late compounding visible. Values exclude fees, taxes, and inflation.
+-              </p>
+-            </div>
+-            <p className="font-mono text-xs text-muted-foreground">31 Aug 2001 → 28 Aug 2026</p>
+-          </div>
+-
+-          <div className="mt-7 flex flex-wrap gap-x-4 gap-y-2" aria-label="Toggle stock series">
++              <p className="font-mono text-xs uppercase tracking-[0.18em] text-primary">01 · 長期パフォーマンス</p>
++              <h2 className="mt-2 text-3xl font-medium tracking-[-0.035em] sm:text-4xl">
++                各8月終わりの調整済み終値。対数軸により、初期および後期の複利効果が明確に見える。この値には手数料、税金、インフレが含まれていない。
++              </h2>
++              <p className="mt-3 max-w-3xl leading-7 text-muted-foreground">2001年8月31日 → 2026年8月28日</p>
++            </div>
++            <p className="font-mono text-xs text-muted-foreground">株式シリーズの切り替え</p>
++          </div>
++
++          <div className="mt-7 flex flex-wrap gap-x-4 gap-y-2" aria-label="2001年から2026年までの6銘柄およびETFにおける1,000ドルの調整済み成長">
+             {stockSummary.map((stock) => {
+               const active = visibleStocks.includes(stock.key);
+               return (
+@@ -202,7 +201,7 @@
+             })}
+           </div>
+ 
+-          <ChartContainer config={stockConfig} className="mt-3 h-[430px] w-full aspect-auto" aria-label="Adjusted growth of one thousand dollars across six stocks and ETFs from 2001 to 2026">
++          <ChartContainer config={stockConfig} className="mt-3 h-[430px] w-full aspect-auto" aria-label="投資">
+             <ComposedChart data={stockSeries} margin={{ top: 18, right: 18, left: 18, bottom: 8 }}>
+               <CartesianGrid vertical={false} strokeDasharray="3 5" />
+               <XAxis dataKey="year" tickLine={false} axisLine={false} minTickGap={28} />
+@@ -239,10 +238,10 @@
+             <table className="w-full min-w-[680px] border-collapse text-sm">
+               <thead>
+                 <tr className="border-b border-border text-left font-mono text-xs uppercase tracking-[0.12em] text-muted-foreground">
+-                  <th className="py-3 pr-5 font-normal">Investment</th>
+-                  <th className="py-3 pr-5 text-right font-normal">Ending value</th>
+-                  <th className="py-3 pr-5 text-right font-normal">Multiple</th>
+-                  <th className="py-3 text-right font-normal">Annualised</th>
++                  <th className="py-3 pr-5 font-normal">終値</th>
++                  <th className="py-3 pr-5 text-right font-normal">期末評価額</th>
++                  <th className="py-3 pr-5 text-right font-normal">複数</th>
++                  <th className="py-3 text-right font-normal">年次化</th>
+                 </tr>
+               </thead>
+               <tbody>
+@@ -263,25 +262,25 @@
+       <section id="regions" className="mx-auto max-w-7xl px-5 py-14 sm:px-8 sm:py-20">
+         <div className="grid gap-10 lg:grid-cols-[.82fr_1.18fr] lg:items-start">
+           <div>
+-            <p className="font-mono text-xs uppercase tracking-[0.18em] text-primary">02 · Where demand is largest</p>
+-            <h2 className="mt-2 text-3xl font-medium tracking-[-0.035em] sm:text-4xl">North America dominates audited sales</h2>
++            <p className="font-mono text-xs uppercase tracking-[0.18em] text-primary">02 · 需要が最も高い地域</p>
++            <h2 className="mt-2 text-3xl font-medium tracking-[-0.035em] sm:text-4xl">北米が審査された販売額を独占</h2>
+             <p className="mt-4 leading-7 text-muted-foreground">
+-              Monster does not publish a global regional table of cans consumed. Its strongest comparable public measure is 2025 net sales for the broader Monster Energy Drinks segment, which includes Monster, Reign, and Bang.
++              Monsterは世界全体の地域別消費量の表を公表していない。最も信頼できる公表データは、2025年のモンスターエネルギードリンクズセグメント（モンスター、リーグ、バンを含む）の純売上額である。
+             </p>
+             <Card className="mt-7 bg-secondary/55">
+               <CardHeader>
+-                <CardDescription>Evidence boundary</CardDescription>
+-                <CardTitle>Sales dollars are not litres</CardTitle>
++                <CardDescription>証拠の境界</CardDescription>
++                <CardTitle>売上高はリットルではない</CardTitle>
+               </CardHeader>
+               <CardContent className="leading-6 text-muted-foreground">
+-                Regional prices, product mix, exchange rates, and distributor timing differ. The chart supports “largest sales market,” not a literal per-capita consumption ranking.
++                地域ごとの価格、製品構成、為替、ディストリビューターのタイミングが異なる。このチャートは「売上額が最も高い市場」という意味で解釈されるが、個人消費量ランキングとは限らない。
+               </CardContent>
+             </Card>
+           </div>
+ 
+           <div>
+-            <p className="mb-3 text-sm text-muted-foreground">Monster Energy Drinks segment net sales · US$ billions · FY2025</p>
+-            <ChartContainer config={regionConfig} className="h-[330px] w-full aspect-auto" aria-label="Monster Energy Drinks segment net sales by broad global region in 2025">
++            <p className="mb-3 text-sm text-muted-foreground">モンスターエネルギードリンクズセグメントの純売上額 · 米ドル単位 · 2025年財年</p>
++            <ChartContainer config={regionConfig} className="h-[330px] w-full aspect-auto" aria-label="2025年におけるモンスターエネルギードリンクズセグメントの売上額（グローバル地域別）">
+               <BarChart data={regionalSales} layout="vertical" margin={{ top: 4, right: 58, left: 16, bottom: 4 }}>
+                 <CartesianGrid horizontal={false} strokeDasharray="3 5" />
+                 <XAxis type="number" domain={[0, 5]} tickLine={false} axisLine={false} tickFormatter={(value) => `$${value}b`} />
+@@ -300,12 +299,12 @@
+             <div className="flex items-center gap-3">
+               <MapPin className="text-primary" aria-hidden="true" />
+               <div>
+-                <p className="font-mono text-xs uppercase tracking-[0.15em] text-muted-foreground">U.S. demand proxy</p>
+-                <h3 className="text-2xl font-medium">Highest relative search interest</h3>
++                <p className="font-mono text-xs uppercase tracking-[0.15em] text-muted-foreground">米国市場の代替指標</p>
++                <h3 className="text-2xl font-medium">相対的な検索関心が最も高い</h3>
+               </div>
+             </div>
+             <p className="mt-4 leading-7 text-muted-foreground">
+-              Google Trends normalises each state against all searches there; 100 means the strongest relative interest, not the largest number of searches or cans sold. Small states can be noisier.
++              Google Trendsは各州に対して全検索を基に標準化しており、100は相対的な関心の強さを意味する。これは検索数の総数または消費された缶数とは関係ない。小規模な州ではノイズが大きくなる可能性がある。
+             </p>
+           </div>
+           <ol className="grid grid-cols-1 gap-x-8 sm:grid-cols-2">
+@@ -325,25 +324,25 @@
+         <div className="mx-auto max-w-7xl px-5 py-14 sm:px-8 sm:py-20">
+           <div className="grid gap-8 lg:grid-cols-[1.2fr_.8fr] lg:items-end">
+             <div>
+-              <p className="font-mono text-xs uppercase tracking-[0.18em] text-primary">03 · Direct sales-share test</p>
+-              <h2 className="mt-2 text-3xl font-medium tracking-[-0.035em] sm:text-4xl">Actual retail sales do not cluster in tech economies</h2>
++              <p className="font-mono text-xs uppercase tracking-[0.18em] text-primary">03 · 直接販売シェアテスト</p>
++              <h2 className="mt-2 text-3xl font-medium tracking-[-0.035em] sm:text-4xl">実際の販売はテクノロジー分野の経済に集中していない</h2>
+               <p className="mt-4 max-w-3xl leading-7 text-muted-foreground">
+-                Monster’s latest NielsenIQ scanner tables make a cleaner comparison possible. Across 14 consistently scoped European markets, Monster Energy Company’s share of retail energy-drink value is lower—not higher—where ICT specialists make up more of the workforce.
++                Monsterの最新NielsenIQスキャナー表は、より正確な比較が可能になる。14の継続的に統一されたヨーロッパ市場において、ICT専門職が労働力の多くを占める地域では、モンスターエネルギー社の販売シェアは低い（逆に高いわけではない）。
+               </p>
+             </div>
+             <div className="grid grid-cols-3 gap-3">
+-              <div className="border-l border-border pl-4"><p className="font-mono text-2xl tabular-nums">−0.51</p><p className="mt-1 text-xs text-muted-foreground">Pearson r</p></div>
+-              <div className="border-l border-border pl-4"><p className="font-mono text-2xl tabular-nums">−0.44</p><p className="mt-1 text-xs text-muted-foreground">Spearman ρ</p></div>
+-              <div className="border-l border-border pl-4"><p className="font-mono text-2xl tabular-nums">14</p><p className="mt-1 text-xs text-muted-foreground">Markets</p></div>
++              <div className="border-l border-border pl-4"><p className="font-mono text-2xl tabular-nums">−0.51</p><p className="mt-1 text-xs text-muted-foreground">ピアソンr</p></div>
++              <div className="border-l border-border pl-4"><p className="font-mono text-2xl tabular-nums">−0.44</p><p className="mt-1 text-xs text-muted-foreground">スパーマンρ</p></div>
++              <div className="border-l border-border pl-4"><p className="font-mono text-2xl tabular-nums">14</p><p className="mt-1 text-xs text-muted-foreground">市場</p></div>
+             </div>
+           </div>
+ 
+           <div className="mt-9 grid gap-6 xl:grid-cols-[minmax(0,1fr)_300px]">
+-            <ChartContainer config={countryConfig} className="h-[455px] w-full aspect-auto" aria-label="Scatter plot of Monster Energy Company retail value share against ICT specialists as a share of national employment">
++            <ChartContainer config={countryConfig} className="h-[455px] w-full aspect-auto" aria-label="ICT専門職が雇用構成の何％を占めるかと、Monster Energy社の販売価値シェアとの散点図">
+               <ScatterChart margin={{ top: 22, right: 22, left: 12, bottom: 22 }}>
+                 <CartesianGrid strokeDasharray="3 5" />
+-                <XAxis type="number" dataKey="ictEmployment" name="ICT employment" unit="%" domain={[2, 8.2]} tickLine={false} axisLine={false} label={{ value: 'ICT specialists as share of employment (%)', position: 'insideBottom', offset: -14 }} />
+-                <YAxis type="number" dataKey="monsterShare" name="MEC retail share" unit="%" domain={[10, 45]} tickLine={false} axisLine={false} width={52} label={{ value: 'MEC retail value share (%)', angle: -90, position: 'insideLeft' }} />
++                <XAxis type="number" dataKey="ictEmployment" name="ICT雇用" unit="%" domain={[2, 8.2]} tickLine={false} axisLine={false} label={{ value: "ICT専門職が雇用構成に占める割合（％）", position: 'insideBottom', offset: -14 }} />
++                <YAxis type="number" dataKey="monsterShare" name="MECの小売シェア" unit="%" domain={[10, 45]} tickLine={false} axisLine={false} width={52} label={{ value: "MEC販売価値シェア（％）", angle: -90, position: 'insideLeft' }} />
+                 <ZAxis range={[110, 110]} />
+                 <ReferenceLine segment={[{ x: 2.23, y: countryCorrelation.employmentIntercept + countryCorrelation.employmentSlope * 2.23 }, { x: 7.83, y: countryCorrelation.employmentIntercept + countryCorrelation.employmentSlope * 7.83 }]} stroke="var(--muted-foreground)" strokeDasharray="5 5" />
+                 <ChartTooltip
+@@ -374,16 +373,16 @@
+ 
+             <Card className="self-start">
+               <CardHeader>
+-                <CardDescription>Selected market</CardDescription>
++                <CardDescription>選択された市場</CardDescription>
+                 <CardTitle className="text-2xl">{selectedCountry.country}</CardTitle>
+               </CardHeader>
+               <CardContent>
+                 <dl className="space-y-4">
+-                  <div className="flex items-end justify-between gap-4 border-b border-border pb-3"><dt className="text-muted-foreground">MEC value share</dt><dd className="font-mono text-2xl tabular-nums">{selectedCountry.monsterShare.toFixed(1)}%</dd></div>
+-                  <div className="flex items-end justify-between gap-4 border-b border-border pb-3"><dt className="text-muted-foreground">ICT employment</dt><dd className="font-mono text-2xl tabular-nums">{selectedCountry.ictEmployment.toFixed(2)}%</dd></div>
+-                  <div className="flex items-end justify-between gap-4"><dt className="text-muted-foreground">ICT service exports</dt><dd className="font-mono text-lg tabular-nums">{selectedCountry.ictExports.toFixed(1)}%</dd></div>
++                  <div className="flex items-end justify-between gap-4 border-b border-border pb-3"><dt className="text-muted-foreground">MEC価値シェア</dt><dd className="font-mono text-2xl tabular-nums">{selectedCountry.monsterShare.toFixed(1)}%</dd></div>
++                  <div className="flex items-end justify-between gap-4 border-b border-border pb-3"><dt className="text-muted-foreground">ICT雇用</dt><dd className="font-mono text-2xl tabular-nums">{selectedCountry.ictEmployment.toFixed(2)}%</dd></div>
++                  <div className="flex items-end justify-between gap-4"><dt className="text-muted-foreground">ICTサービス輸出</dt><dd className="font-mono text-lg tabular-nums">{selectedCountry.ictExports.toFixed(1)}%</dd></div>
+                 </dl>
+-                <p className="mt-5 text-sm leading-6 text-muted-foreground">Choose a dot to inspect the market. Great Britain’s OECD workforce observation is from 2019; the rest are 2023.</p>
++                <p className="mt-5 text-sm leading-6 text-muted-foreground">マーケットのドットをクリックして詳細を確認します。オーケストラ（OECD）の英国の労働力データは2019年、他のデータは2023年です。</p>
+               </CardContent>
+             </Card>
+           </div>
+@@ -391,20 +390,20 @@
+           <div className="mt-9 grid gap-4 md:grid-cols-2">
+             <Card>
+               <CardHeader>
+-                <CardDescription>Second technology measure</CardDescription>
+-                <CardTitle>ICT-service exports: r = −0.06</CardTitle>
++                <CardDescription>第2の技術指標</CardDescription>
++                <CardTitle>ICTサービス輸出：r = −0.06</CardTitle>
+               </CardHeader>
+               <CardContent className="leading-6 text-muted-foreground">
+-                The same retail shares are essentially unrelated to ICT services as a share of service exports. Ireland is an extreme export outlier; excluding it changes Pearson r to −0.58, still not a positive link.
++                同じ販売シェアは、サービス輸出におけるICTサービスの割合と基本的に関連性がありません。アイルランドは極端な輸出外れです。そのデータを除外すると、ピアソン相関係数は−0.58になりますが、依然としてポジティブな関連性は見られません。
+               </CardContent>
+             </Card>
+             <Card className="bg-secondary/55">
+               <CardHeader>
+-                <CardDescription>Evidence boundary</CardDescription>
+-                <CardTitle>Scanner share is close to sales, not consumption</CardTitle>
++                <CardDescription>証拠の境界</CardDescription>
++                <CardTitle>スキャナーシェアは売上に近いが消費とは異なる</CardTitle>
+               </CardHeader>
+               <CardContent className="leading-6 text-muted-foreground">
+-                NielsenIQ value share captures measured retail channels and prices. It does not count litres, identify buyers, or prove causation; Monster states that its proprietary scanner figures are not independently verified.
++                NielsenIQ価値シェアは測定された販売チャネルと価格を反映しています。リットル数、購入者を特定、因果関係を証明することはできません。モンスター社は、自社のスキャナーデータが独立して検証されていないと述べています。
+               </CardContent>
+             </Card>
+           </div>
+@@ -415,25 +414,25 @@
+         <div className="mx-auto max-w-7xl px-5 py-14 sm:px-8 sm:py-20">
+           <div className="grid gap-8 lg:grid-cols-[1.25fr_.75fr] lg:items-end">
+             <div>
+-              <p className="font-mono text-xs uppercase tracking-[0.18em] text-primary">04 · U.S. proxy test</p>
+-              <h2 className="mt-2 text-3xl font-medium tracking-[-0.035em] sm:text-4xl">Monster interest rises away from tech-heavy states</h2>
++              <p className="font-mono text-xs uppercase tracking-[0.18em] text-primary">04 · 米国プロキシテスト</p>
++              <h2 className="mt-2 text-3xl font-medium tracking-[-0.035em] sm:text-4xl">テクノロジーに強い州からモンスターの関心は減少</h2>
+               <p className="mt-4 max-w-3xl leading-7 text-muted-foreground">
+-                Across 50 states and D.C., the correlation between relative “Monster Energy” search interest and tech workers as a share of employment is moderately negative, not positive.
++                50州およびワシントンD.C.において、相対的な「Monster Energy」検索関心と、技術従事者比率の間の相関は、やや負の相関であり、ポジティブとは言えません。
+               </p>
+             </div>
+             <div className="grid grid-cols-3 gap-3">
+-              <div className="border-l border-border pl-4"><p className="font-mono text-2xl tabular-nums">−0.37</p><p className="mt-1 text-xs text-muted-foreground">Pearson r</p></div>
+-              <div className="border-l border-border pl-4"><p className="font-mono text-2xl tabular-nums">−0.44</p><p className="mt-1 text-xs text-muted-foreground">Spearman ρ</p></div>
++              <div className="border-l border-border pl-4"><p className="font-mono text-2xl tabular-nums">−0.37</p><p className="mt-1 text-xs text-muted-foreground">ピアソンr</p></div>
++              <div className="border-l border-border pl-4"><p className="font-mono text-2xl tabular-nums">−0.44</p><p className="mt-1 text-xs text-muted-foreground">スパーマンρ</p></div>
+               <div className="border-l border-border pl-4"><p className="font-mono text-2xl tabular-nums">0.13</p><p className="mt-1 text-xs text-muted-foreground">R²</p></div>
+             </div>
+           </div>
+ 
+           <div className="mt-9 grid gap-6 xl:grid-cols-[minmax(0,1fr)_300px]">
+-            <ChartContainer config={stateConfig} className="h-[470px] w-full aspect-auto" aria-label="Scatter plot of Monster Energy Google search interest against state tech employment share">
++            <ChartContainer config={stateConfig} className="h-[470px] w-full aspect-auto" aria-label="Monster EnergyのGoogle検索関心と州レベルの技術従事者比率との散点図">
+               <ScatterChart margin={{ top: 22, right: 22, left: 12, bottom: 20 }}>
+                 <CartesianGrid strokeDasharray="3 5" />
+-                <XAxis type="number" dataKey="tech" name="Tech employment share" unit="%" domain={[2, 10]} tickLine={false} axisLine={false} label={{ value: 'Tech employment share (%)', position: 'insideBottom', offset: -12 }} />
+-                <YAxis type="number" dataKey="interest" name="Search interest" domain={[10, 105]} tickLine={false} axisLine={false} width={46} label={{ value: 'Google Trends index', angle: -90, position: 'insideLeft' }} />
++                <XAxis type="number" dataKey="tech" name="テック業界雇用シェア" unit="%" domain={[2, 10]} tickLine={false} axisLine={false} label={{ value: "テック雇用比率（％）", position: 'insideBottom', offset: -12 }} />
++                <YAxis type="number" dataKey="interest" name="検索関心" domain={[10, 105]} tickLine={false} axisLine={false} width={46} label={{ value: "グーグルトレンド指数", angle: -90, position: 'insideLeft' }} />
+                 <ZAxis range={[90, 90]} />
+                 <ReferenceLine segment={[{ x: 2.5, y: correlation.intercept + correlation.slope * 2.5 }, { x: 9.3, y: correlation.intercept + correlation.slope * 9.3 }]} stroke="var(--muted-foreground)" strokeDasharray="5 5" />
+                 <ChartTooltip
+@@ -464,15 +463,15 @@
+ 
+             <Card className="self-start">
+               <CardHeader>
+-                <CardDescription>Selected area</CardDescription>
++                <CardDescription>選択された面積</CardDescription>
+                 <CardTitle className="text-2xl">{selectedState.state}</CardTitle>
+               </CardHeader>
+               <CardContent>
+                 <dl className="space-y-4">
+-                  <div className="flex items-end justify-between gap-4 border-b border-border pb-3"><dt className="text-muted-foreground">Search interest</dt><dd className="font-mono text-2xl tabular-nums">{selectedState.interest}</dd></div>
+-                  <div className="flex items-end justify-between gap-4 border-b border-border pb-3"><dt className="text-muted-foreground">Tech employment</dt><dd className="font-mono text-2xl tabular-nums">{selectedState.tech.toFixed(1)}%</dd></div>
++                  <div className="flex items-end justify-between gap-4 border-b border-border pb-3"><dt className="text-muted-foreground">検索関心</dt><dd className="font-mono text-2xl tabular-nums">{selectedState.interest}</dd></div>
++                  <div className="flex items-end justify-between gap-4 border-b border-border pb-3"><dt className="text-muted-foreground">テック雇用</dt><dd className="font-mono text-2xl tabular-nums">{selectedState.tech.toFixed(1)}%</dd></div>
+                 </dl>
+-                <p className="mt-5 text-sm leading-6 text-muted-foreground">Choose a dot or a state in the ranking above to inspect it.</p>
++                <p className="mt-5 text-sm leading-6 text-muted-foreground">上記のランキングにあるドットまたは州を選択してその内容を確認してください。</p>
+               </CardContent>
+             </Card>
+           </div>
+@@ -481,13 +480,13 @@
+             <Card>
+               <CardHeader className="flex-row items-start gap-3">
+                 <TrendingUp className="mt-0.5 text-primary" aria-hidden="true" />
+-                <div><CardTitle>The result survives Wyoming</CardTitle><CardDescription className="mt-1">Pearson r becomes −0.39 when the 100-index outlier is removed.</CardDescription></div>
++                <div><CardTitle>結果はウタバ州を含む</CardTitle><CardDescription className="mt-1">100指数の外れ値を除外した場合、ピアソン相関係数は−0.39になります。</CardDescription></div>
+               </CardHeader>
+             </Card>
+             <Card>
+               <CardHeader className="flex-row items-start gap-3">
+                 <FlaskConical className="mt-0.5 text-primary" aria-hidden="true" />
+-                <div><CardTitle>But it is not causal</CardTitle><CardDescription className="mt-1">Search interest is not consumption; state age, rurality, income, retail mix, and sampling can confound the association.</CardDescription></div>
++                <div><CardTitle>因果関係とは言えない</CardTitle><CardDescription className="mt-1">検索関心は消費とは限らない。州の年齢、農村性、収入、小売構成、およびサンプルの性質が関連性を混同する可能性がある。</CardDescription></div>
+               </CardHeader>
+             </Card>
+           </div>
+@@ -497,14 +496,14 @@
+       <section className="mx-auto max-w-7xl px-5 py-14 sm:px-8 sm:py-20">
+         <div className="grid gap-10 lg:grid-cols-[.72fr_1.28fr]">
+           <div>
+-            <p className="font-mono text-xs uppercase tracking-[0.18em] text-primary">05 · Bottom line</p>
+-            <h2 className="mt-2 text-3xl font-medium tracking-[-0.035em]">The stock story is real. The tech-consumption story is not.</h2>
++            <p className="font-mono text-xs uppercase tracking-[0.18em] text-primary">05 · 結論</p>
++            <h2 className="mt-2 text-3xl font-medium tracking-[-0.035em]">株価の話は現実である。テック消費の話はそうではない。</h2>
+           </div>
+           <div className="space-y-5 text-base leading-8 text-muted-foreground">
+-            <p><strong className="font-medium text-foreground">Investment performance:</strong> Monster was an extraordinary long-run compounder and beat the selected tech comparators in this particular 25-year window.</p>
+-            <p><strong className="font-medium text-foreground">Geography:</strong> The audited sales centre is U.S. and Canada. Relative online interest is strongest in Wyoming, Utah, Idaho, West Virginia, and Kansas—not the canonical coastal tech hubs.</p>
+-            <p><strong className="font-medium text-foreground">Direct sales test:</strong> Retail value share across 14 European markets is negatively associated with ICT-workforce concentration (r = −0.51) and essentially unrelated to ICT-service exports (r = −0.06).</p>
+-            <p><strong className="font-medium text-foreground">U.S. proxy:</strong> State search interest also points to a modest negative association with tech concentration. Neither test tells us what individual tech workers drink, and no public brand-level consumption-by-state dataset was found.</p>
++            <p><strong className="font-medium text-foreground">投資成績:</strong>モンスターは非常に優れた長期複利成長を遂げ、この特定の25年間において選択されたテック比較対象を上回った。</p>
++            <p><strong className="font-medium text-foreground">地理:</strong>検証された販売拠点は米国およびカナダである。オンライン関心は、ウタバ、ユタ、アイダホ、ウェストバージンニア、カンザスで最も高いが、伝統的な沿岸テックハブとは異なる。</p>
++            <p><strong className="font-medium text-foreground">直接販売テスト:</strong>14か国における小売価値比率は、ICT労働力の集中度と負の相関（r = −0.51）を示し、ICTサービス輸出とほとんど関係がない（r = −0.06）。</p>
++            <p><strong className="font-medium text-foreground">米国プロキシ：</strong>州別の検索関心は、テック分野の集中度とわずかな負の相関関係を示唆している。しかし、どちらの分析も個人的なテック従事者の飲料の種類を明らかにできず、公開されている州別ブランド消費データセットは見つからなかった。</p>
+           </div>
+         </div>
+       </section>
+@@ -513,8 +512,8 @@
+         <div className="mx-auto max-w-7xl px-5 py-12 sm:px-8">
+           <div className="grid gap-8 lg:grid-cols-[.7fr_1.3fr]">
+             <div>
+-              <p className="font-mono text-xs uppercase tracking-[0.18em] text-primary">Sources & method</p>
+-              <p className="mt-3 max-w-md text-sm leading-6 text-background/65">Returns use adjusted closes. Regional sales are FY2025. Country shares use 13-week NielsenIQ scanner periods ending March 2026. OECD ICT employment is 2023 except Great Britain (2019). Trends covers the 12 months through 30 August 2026. U.S. tech concentration is CompTIA’s 2024 estimate.</p>
++              <p className="font-mono text-xs uppercase tracking-[0.18em] text-primary">出典・方法</p>
++              <p className="mt-3 max-w-md text-sm leading-6 text-background/65">リターンは調整済み終値を使用。地域売上は2025年財政年度。国別株式割合は、2026年3月を終了するニーサイア13週間スキャナ期間に基づく。OECDのICT労働力データは2023年を基準とし、イギリスを除く。トレンドデータは2026年8月30日までの12ヶ月間をカバー。米国テック分野の集中度は、CompTIAの2024年推定値を使用。</p>
+             </div>
+             <ul className="grid gap-x-8 gap-y-3 sm:grid-cols-2">
+               {sources.map((source) => (
+--- a/lib/analysis-data.ts
++++ b/lib/analysis-data.ts
+@@ -28,39 +28,39 @@
+ ] as const;
+ 
+ export const stockSummary = [
+-  { key: 'monster', name: 'Monster Beverage', ticker: 'MNST', ending: 2318884, multiple: 2318.88, cagr: 36.34 },
+-  { key: 'apple', name: 'Apple', ticker: 'AAPL', ending: 1152438, multiple: 1152.44, cagr: 32.58 },
+-  { key: 'nvidia', name: 'Nvidia', ticker: 'NVDA', ending: 673092, multiple: 673.09, cagr: 29.75 },
+-  { key: 'microsoft', name: 'Microsoft', ticker: 'MSFT', ending: 29658, multiple: 29.66, cagr: 14.52 },
+-  { key: 'qqq', name: 'Nasdaq-100 ETF', ticker: 'QQQ', ending: 23211, multiple: 23.21, cagr: 13.40 },
+-  { key: 'spy', name: 'S&P 500 ETF', ticker: 'SPY', ending: 10585, multiple: 10.59, cagr: 9.90 },
++  { key: 'monster', name: "モンスター・ビービー", ticker: 'MNST', ending: 2318884, multiple: 2318.88, cagr: 36.34 },
++  { key: 'apple', name: "Apple", ticker: 'AAPL', ending: 1152438, multiple: 1152.44, cagr: 32.58 },
++  { key: 'nvidia', name: "Nvidia", ticker: 'NVDA', ending: 673092, multiple: 673.09, cagr: 29.75 },
++  { key: 'microsoft', name: "Microsoft", ticker: 'MSFT', ending: 29658, multiple: 29.66, cagr: 14.52 },
++  { key: 'qqq', name: "Nasdaq-100 ETF", ticker: 'QQQ', ending: 23211, multiple: 23.21, cagr: 13.40 },
++  { key: 'spy', name: "S&P 500 ETF", ticker: 'SPY', ending: 10585, multiple: 10.59, cagr: 9.90 },
+ ] as const;
+ 
+ export const regionalSales = [
+   { region: 'U.S. & Canada', sales: 4.704483, share: 61.37 },
+   { region: 'EMEA', sales: 1.702767, share: 22.21 },
+-  { region: 'Latin America & Caribbean', sales: 0.677331, share: 8.84 },
+-  { region: 'Asia-Pacific & Oceania', sales: 0.581290, share: 7.58 },
++  { region: "ラテンアメリカおよびカリブ海諸国", sales: 0.677331, share: 8.84 },
++  { region: "アジア・太平洋およびオーストラリア", sales: 0.581290, share: 7.58 },
+ ] as const;
+ 
+ // Latest consistently scoped EMEA retail scanner data published by Monster.
+ // "MEC" is Monster Energy Company; value share is share of retail energy-drink sales.
+ // ICT-specialist shares are OECD 2023 unless the country label notes otherwise.
+ export const countrySalesData = [
+-  { country: 'Belgium', code: 'BEL', monsterShare: 20.0, ictEmployment: 5.01, ictExports: 14.87, exportYear: 2025 },
+-  { country: 'Czech Republic', code: 'CZE', monsterShare: 28.0, ictEmployment: 4.35, ictExports: 18.17, exportYear: 2025 },
+-  { country: 'Denmark', code: 'DNK', monsterShare: 30.5, ictEmployment: 5.33, ictExports: 7.46, exportYear: 2024 },
+-  { country: 'France', code: 'FRA', monsterShare: 31.1, ictEmployment: 3.81, ictExports: 6.84, exportYear: 2025 },
+-  { country: 'Great Britain', code: 'GBR', monsterShare: 35.7, ictEmployment: 5.20, ictEmploymentYear: 2019, ictExports: 9.03, exportYear: 2025 },
+-  { country: 'Greece', code: 'GRC', monsterShare: 38.5, ictEmployment: 2.23, ictExports: 3.19, exportYear: 2024 },
+-  { country: 'Germany', code: 'DEU', monsterShare: 20.9, ictEmployment: 4.36, ictExports: 11.47, exportYear: 2025 },
+-  { country: 'Italy', code: 'ITA', monsterShare: 33.2, ictEmployment: 3.54, ictExports: 6.26, exportYear: 2025 },
+-  { country: 'Netherlands', code: 'NLD', monsterShare: 15.8, ictEmployment: 6.14, ictExports: 9.52, exportYear: 2024 },
+-  { country: 'Norway', code: 'NOR', monsterShare: 41.1, ictEmployment: 4.53, ictExports: 8.93, exportYear: 2025 },
+-  { country: 'Poland', code: 'POL', monsterShare: 23.2, ictEmployment: 4.00, ictExports: 16.89, exportYear: 2025 },
+-  { country: 'Ireland', code: 'IRL', monsterShare: 34.3, ictEmployment: 5.93, ictExports: 57.37, exportYear: 2024 },
+-  { country: 'Spain', code: 'ESP', monsterShare: 41.2, ictEmployment: 4.05, ictExports: 10.43, exportYear: 2025 },
+-  { country: 'Sweden', code: 'SWE', monsterShare: 19.0, ictEmployment: 7.83, ictExports: 20.66, exportYear: 2025 },
++  { country: "ベルギー", code: 'BEL', monsterShare: 20.0, ictEmployment: 5.01, ictExports: 14.87, exportYear: 2025 },
++  { country: "チェコ共和国", code: 'CZE', monsterShare: 28.0, ictEmployment: 4.35, ictExports: 18.17, exportYear: 2025 },
++  { country: "デンマーク", code: 'DNK', monsterShare: 30.5, ictEmployment: 5.33, ictExports: 7.46, exportYear: 2024 },
++  { country: "フランス", code: 'FRA', monsterShare: 31.1, ictEmployment: 3.81, ictExports: 6.84, exportYear: 2025 },
++  { country: "イギリス", code: 'GBR', monsterShare: 35.7, ictEmployment: 5.20, ictEmploymentYear: 2019, ictExports: 9.03, exportYear: 2025 },
++  { country: "ギリシャ", code: 'GRC', monsterShare: 38.5, ictEmployment: 2.23, ictExports: 3.19, exportYear: 2024 },
++  { country: "ドイツ", code: 'DEU', monsterShare: 20.9, ictEmployment: 4.36, ictExports: 11.47, exportYear: 2025 },
++  { country: "イタリア", code: 'ITA', monsterShare: 33.2, ictEmployment: 3.54, ictExports: 6.26, exportYear: 2025 },
++  { country: "オランダ", code: 'NLD', monsterShare: 15.8, ictEmployment: 6.14, ictExports: 9.52, exportYear: 2024 },
++  { country: "ノルウェイ", code: 'NOR', monsterShare: 41.1, ictEmployment: 4.53, ictExports: 8.93, exportYear: 2025 },
++  { country: "ポーランド", code: 'POL', monsterShare: 23.2, ictEmployment: 4.00, ictExports: 16.89, exportYear: 2025 },
++  { country: "アイルランド", code: 'IRL', monsterShare: 34.3, ictEmployment: 5.93, ictExports: 57.37, exportYear: 2024 },
++  { country: "スペイン", code: 'ESP', monsterShare: 41.2, ictEmployment: 4.05, ictExports: 10.43, exportYear: 2025 },
++  { country: "スウェーデン", code: 'SWE', monsterShare: 19.0, ictEmployment: 7.83, ictExports: 20.66, exportYear: 2025 },
+ ] as const;
+ 
+ export const countryCorrelation = {
+@@ -76,57 +76,57 @@
+ } as const;
+ 
+ export const stateData = [
+-  { state: 'Wyoming', interest: 100, tech: 2.5 },
+-  { state: 'Utah', interest: 43, tech: 7.1 },
+-  { state: 'Idaho', interest: 43, tech: 4.3 },
+-  { state: 'West Virginia', interest: 41, tech: 3.2 },
+-  { state: 'Kansas', interest: 37, tech: 4.5 },
+-  { state: 'Arizona', interest: 36, tech: 6.0 },
+-  { state: 'Alaska', interest: 36, tech: 3.0 },
+-  { state: 'North Dakota', interest: 36, tech: 2.9 },
+-  { state: 'Nebraska', interest: 35, tech: 5.0 },
+-  { state: 'South Dakota', interest: 34, tech: 3.3 },
+-  { state: 'Iowa', interest: 34, tech: 4.0 },
+-  { state: 'Arkansas', interest: 34, tech: 3.1 },
+-  { state: 'Oklahoma', interest: 33, tech: 3.5 },
+-  { state: 'Washington', interest: 32, tech: 9.3 },
+-  { state: 'Ohio', interest: 31, tech: 4.5 },
+-  { state: 'Missouri', interest: 31, tech: 5.1 },
+-  { state: 'Texas', interest: 31, tech: 6.5 },
+-  { state: 'Michigan', interest: 31, tech: 4.7 },
+-  { state: 'Indiana', interest: 31, tech: 3.7 },
+-  { state: 'Kentucky', interest: 30, tech: 3.3 },
+-  { state: 'Montana', interest: 30, tech: 3.3 },
+-  { state: 'California', interest: 30, tech: 7.5 },
+-  { state: 'Tennessee', interest: 30, tech: 4.1 },
+-  { state: 'New Mexico', interest: 30, tech: 4.4 },
+-  { state: 'Alabama', interest: 29, tech: 4.3 },
+-  { state: 'Mississippi', interest: 29, tech: 2.6 },
+-  { state: 'Nevada', interest: 29, tech: 3.4 },
+-  { state: 'Vermont', interest: 29, tech: 5.2 },
+-  { state: 'Maine', interest: 29, tech: 3.8 },
+-  { state: 'Illinois', interest: 29, tech: 5.2 },
+-  { state: 'Georgia', interest: 28, tech: 5.9 },
+-  { state: 'Pennsylvania', interest: 28, tech: 4.9 },
+-  { state: 'New Hampshire', interest: 27, tech: 7.7 },
+-  { state: 'Minnesota', interest: 27, tech: 5.9 },
+-  { state: 'North Carolina', interest: 27, tech: 6.2 },
+-  { state: 'Florida', interest: 27, tech: 5.2 },
+-  { state: 'Oregon', interest: 27, tech: 6.5 },
+-  { state: 'Wisconsin', interest: 26, tech: 4.6 },
+-  { state: 'Hawaii', interest: 26, tech: 3.3 },
+-  { state: 'Louisiana', interest: 26, tech: 2.5 },
+-  { state: 'Virginia', interest: 26, tech: 8.7 },
+-  { state: 'Colorado', interest: 26, tech: 8.3 },
+-  { state: 'New York', interest: 24, tech: 5.7 },
+-  { state: 'South Carolina', interest: 23, tech: 4.1 },
+-  { state: 'Delaware', interest: 23, tech: 4.8 },
+-  { state: 'Connecticut', interest: 22, tech: 5.6 },
+-  { state: 'Rhode Island', interest: 21, tech: 5.6 },
+-  { state: 'Maryland', interest: 21, tech: 7.7 },
+-  { state: 'Massachusetts', interest: 20, tech: 8.0 },
+-  { state: 'New Jersey', interest: 19, tech: 6.7 },
+-  { state: 'District of Columbia', interest: 16, tech: 9.0 },
++  { state: "ワイオミング", interest: 100, tech: 2.5 },
++  { state: "ユタ", interest: 43, tech: 7.1 },
++  { state: "アイダホ", interest: 43, tech: 4.3 },
++  { state: "ウェストバージンニア州", interest: 41, tech: 3.2 },
++  { state: "カンザス", interest: 37, tech: 4.5 },
++  { state: "アリゾナ", interest: 36, tech: 6.0 },
++  { state: "アラスカ", interest: 36, tech: 3.0 },
++  { state: "ノースダコタ州", interest: 36, tech: 2.9 },
++  { state: "ネブラスカ", interest: 35, tech: 5.0 },
++  { state: "サウスダコタ州", interest: 34, tech: 3.3 },
++  { state: "アイオワ", interest: 34, tech: 4.0 },
++  { state: "アーカンサス", interest: 34, tech: 3.1 },
++  { state: "オクラホマ", interest: 33, tech: 3.5 },
++  { state: "ワシントン", interest: 32, tech: 9.3 },
++  { state: "オハイオ", interest: 31, tech: 4.5 },
++  { state: "ミズーリ", interest: 31, tech: 5.1 },
++  { state: "テキサス", interest: 31, tech: 6.5 },
++  { state: "ミシガン", interest: 31, tech: 4.7 },
++  { state: "インディアナ", interest: 31, tech: 3.7 },
++  { state: "ケンタッキー", interest: 30, tech: 3.3 },
++  { state: "モンタナ", interest: 30, tech: 3.3 },
++  { state: "カリフォルニア", interest: 30, tech: 7.5 },
++  { state: "テネシー", interest: 30, tech: 4.1 },
++  { state: "ニューメキシコ州", interest: 30, tech: 4.4 },
++  { state: "アルバマ", interest: 29, tech: 4.3 },
++  { state: "ミシシッピ", interest: 29, tech: 2.6 },
++  { state: "ネバダ", interest: 29, tech: 3.4 },
++  { state: "ベルモント", interest: 29, tech: 5.2 },
++  { state: "ミネソタ", interest: 29, tech: 3.8 },
++  { state: "イリノイ", interest: 29, tech: 5.2 },
++  { state: "ジョージア", interest: 28, tech: 5.9 },
++  { state: "ペンシルベニア", interest: 28, tech: 4.9 },
++  { state: "ニューハンプシャー州", interest: 27, tech: 7.7 },
++  { state: "ミナソタ", interest: 27, tech: 5.9 },
++  { state: "ノースカロライナ州", interest: 27, tech: 6.2 },
++  { state: "フロリダ", interest: 27, tech: 5.2 },
++  { state: "オレゴン", interest: 27, tech: 6.5 },
++  { state: "ウィスコンシン", interest: 26, tech: 4.6 },
++  { state: "ハワイ", interest: 26, tech: 3.3 },
++  { state: "ルイジアナ", interest: 26, tech: 2.5 },
++  { state: "バージンニア", interest: 26, tech: 8.7 },
++  { state: "コロラド", interest: 26, tech: 8.3 },
++  { state: "ニューヨーク州", interest: 24, tech: 5.7 },
++  { state: "サウスカロライナ州", interest: 23, tech: 4.1 },
++  { state: "デラウェア", interest: 23, tech: 4.8 },
++  { state: "コネクティカット", interest: 22, tech: 5.6 },
++  { state: "ロードアイランド州", interest: 21, tech: 5.6 },
++  { state: "マリランド", interest: 21, tech: 7.7 },
++  { state: "マサチューセッツ", interest: 20, tech: 8.0 },
++  { state: "ニュージャージー州", interest: 19, tech: 6.7 },
++  { state: "コロンビア特別区", interest: 16, tech: 9.0 },
+ ] as const;
+ 
+ export const correlation = {
+@@ -139,12 +139,12 @@
+ } as const;
+ 
+ export const sources = [
+-  { label: 'Monster Beverage 2025 Form 10-K', href: 'https://www.sec.gov/Archives/edgar/data/865752/000110465926020831/mnst-20251231x10k.htm' },
+-  { label: 'Monster Q1 2026 scanner data by country', href: 'https://www.sec.gov/Archives/edgar/data/865752/000110465926057188/tm2613885d1_ex99-2.htm' },
+-  { label: 'OECD Digital Economy Outlook 2024, ICT specialists', href: 'https://www.oecd.org/content/dam/oecd/en/publications/reports/2024/11/oecd-digital-economy-outlook-2024-volume-2_9b2801fc/3adf705b-en.pdf' },
+-  { label: 'World Bank ICT service exports indicator', href: 'https://data.worldbank.org/indicator/BX.GSR.CCIS.ZS?name_desc=true' },
+-  { label: 'Google Trends: Monster Energy, U.S., past 12 months', href: 'https://trends.google.com/trends/explore?date=today%2012-m&geo=US&q=Monster%20Energy&hl=en' },
+-  { label: 'Google Trends regional-interest methodology', href: 'https://support.google.com/trends/answer/4355212?hl=en-GB' },
+-  { label: 'CompTIA State of the Tech Workforce 2025', href: 'https://lecbyo.files.cmp.optimizely.com/download/808ea63053b111f08b6ca695fc160b1a' },
+-  { label: 'Yahoo Finance historical adjusted prices', href: 'https://finance.yahoo.com/quote/MNST/history/' },
++  { label: "モンスター・ビービー 2025年 Form 10-K", href: 'https://www.sec.gov/Archives/edgar/data/865752/000110465926020831/mnst-20251231x10k.htm' },
++  { label: "モンスター Q1 2026年 国別スキャナーデータ", href: 'https://www.sec.gov/Archives/edgar/data/865752/000110465926057188/tm2613885d1_ex99-2.htm' },
++  { label: "OECD デジタル経済展望2024、ICTスペシャリスト", href: 'https://www.oecd.org/content/dam/oecd/en/publications/reports/2024/11/oecd-digital-economy-outlook-2024-volume-2_9b2801fc/3adf705b-en.pdf' },
++  { label: "世界銀行 ICTサービス輸出指標", href: 'https://data.worldbank.org/indicator/BX.GSR.CCIS.ZS?name_desc=true' },
++  { label: "Google Trends: モンスター・エネルギー、米国、過去12ヶ月", href: 'https://trends.google.com/trends/explore?date=today%2012-m&geo=US&q=Monster%20Energy&hl=en' },
++  { label: "Google Trends 地域興味指標手法", href: 'https://support.google.com/trends/answer/4355212?hl=en-GB' },
++  { label: "CompTIA テック職業力調査2025", href: 'https://lecbyo.files.cmp.optimizely.com/download/808ea63053b111f08b6ca695fc160b1a' },
++  { label: "Yahoo!ファイナンス 収支調整済価格歴史データ", href: 'https://finance.yahoo.com/quote/MNST/history/' },
+ ] as const;
+--- /dev/null
++++ b/japanese-entry.tsx
+@@ -0,0 +1,5 @@
++import React from 'react';
++import {createRoot} from 'react-dom/client';
++import AnalysisClient from './app/analysis-client';
++import './app/globals.css';
++createRoot(document.getElementById('root')!).render(<AnalysisClient/>);
+--- /dev/null
++++ b/japanese.html
+@@ -0,0 +1,2 @@
++<!doctype html>
++<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Monster Beverage・テック株・需要の地理</title><meta name="description" content="Monster Beverage とテクノロジー株の25年間のリターンを比較し、地域別売上とテック産業の集積の関係を検討します。"><style>:root{--font-manrope:system-ui,sans-serif;--font-ibm-plex-mono:ui-monospace,monospace}</style></head><body><div id="root"></div><script type="module" src="/japanese-entry.tsx"></script></body></html>
+--- /dev/null
++++ b/vite.japanese.config.ts
+@@ -0,0 +1,5 @@
++import {defineConfig} from 'vite';
++import react from '@vitejs/plugin-react';
++import tailwindcss from '@tailwindcss/postcss';
++import {fileURLToPath} from 'node:url';
++export default defineConfig({base:'/ja/monster-tech-correlation/',publicDir:false,plugins:[react()],resolve:{alias:{'@':fileURLToPath(new URL('.',import.meta.url))}},css:{postcss:{plugins:[tailwindcss()]}},build:{outDir:'dist-japanese',rollupOptions:{input:'japanese.html'}}});

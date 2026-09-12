@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+
+<html class=" ig-document ig-editorial" lang="ja">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="Part I of Game Design as the Dynamics of Learning: Play is universal. The Universality of Play; The Evolutionary Function of Play" name="description"/>
+<meta content="#f7f7f5" name="theme-color"/>
+<link href="/assets/favicon.svg" rel="icon" type="image/svg+xml"/>
+<title>第1部：プレイは普遍的である</title>
+<style>
+  :root {
+    --ground:#F7F7F5; --surface:#FFFFFF; --surface-2:#F0F1EC;
+    --ink:#17191B; --muted:#63686D; --rule:#DEE0DC;
+    --accent:#1F5FA8; --accent-soft:#1F5FA814; --mark:#C05621;
+    --f-display:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    --f-read:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    --f-ui:"Inter",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground:#101214; --surface:#181B1E; --surface-2:#1F2327;
+      --ink:#EDEFF1; --muted:#9BA3AA; --rule:#2C3237;
+      --accent:#69ABE3; --accent-soft:#69ABE31C; --mark:#E8A87C;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground:#101214; --surface:#181B1E; --surface-2:#1F2327;
+    --ink:#EDEFF1; --muted:#9BA3AA; --rule:#2C3237;
+    --accent:#69ABE3; --accent-soft:#69ABE31C; --mark:#E8A87C;
+  }
+  * { box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { margin:0; background:var(--ground); color:var(--ink);
+         font-family:var(--f-ui); font-size:17px; line-height:1.65; -webkit-font-smoothing:antialiased; }
+  a { color:var(--accent); text-underline-offset:.18em; }
+  .wrap { width:min(720px, calc(100% - 40px)); margin-inline:auto; }
+  .wide { width:min(1080px, calc(100% - 40px)); margin-inline:auto; }
+  header.site { border-bottom:1px solid var(--rule); }
+  header.site .wide { min-height:64px; display:flex; align-items:center; justify-content:space-between; gap:20px; }
+  header.site .name { font-weight:750; letter-spacing:-.02em; text-decoration:none; color:var(--ink); }
+  header.site nav { display:flex; gap:20px; flex-wrap:wrap; }
+  header.site nav a { color:var(--muted); font-size:.88rem; text-decoration:none; }
+  header.site nav a:hover { color:var(--ink); }
+  .label { color:var(--muted); font-size:.74rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; }
+  .hero { padding:72px 0 40px; }
+  h1 { font-family:var(--f-display); font-weight:600; margin:14px 0 16px;
+       font-size:clamp(2.3rem,5.6vw,3.6rem); line-height:1.04; letter-spacing:-.03em; }
+  .standfirst { font-size:1.15rem; color:var(--muted); margin:0 0 26px; max-width:60ch; font-family:var(--f-read); font-style:italic; }
+  .herometa { display:flex; flex-wrap:wrap; gap:10px 18px; align-items:center;
+              font-size:.86rem; color:var(--muted); border-top:1px solid var(--rule); padding-top:18px; }
+  .pill { display:inline-flex; align-items:center; gap:7px; padding:7px 14px; border:1px solid var(--rule);
+          border-radius:999px; background:var(--surface); text-decoration:none; color:var(--ink);
+          font-weight:600; font-size:.85rem; }
+  .pill:hover { border-color:var(--accent); color:var(--accent); }
+  article.book { font-family:var(--f-read); font-size:1.075rem; line-height:1.72; }
+  article.book p { margin:0 0 1.15em; }
+  article.book h2 { font-family:var(--f-display); font-weight:600; letter-spacing:-.02em;
+               font-size:clamp(1.6rem,3.4vw,2.15rem); line-height:1.15; margin:2.6em 0 .2em; scroll-margin-top:24px; }
+  article.book h2 .num { display:block; font-family:var(--f-ui); font-size:.72rem; font-weight:700;
+                    letter-spacing:.12em; text-transform:uppercase; color:var(--mark); margin-bottom:.7em; }
+  article.book h3 { font-family:var(--f-ui); font-weight:650; font-size:1.02rem; letter-spacing:-.005em;
+               margin:2.1em 0 .5em; color:var(--ink); }
+  article.book .epigraph { font-style:italic; color:var(--muted); margin:.4em 0 2em; padding-left:1.1em;
+                      border-left:2px solid var(--rule); }
+  article.book blockquote { margin:1.6em 0; padding:1.1em 1.3em; background:var(--surface); border:1px solid var(--rule);
+                       border-radius:.7rem; font-style:italic; }
+  article.book blockquote p { margin:0 0 .6em; } article.book blockquote p:last-child { margin:0; }
+  article.book ul, article.book ol { margin:0 0 1.2em; padding-left:1.35em; }
+  article.book li { margin:0 0 .45em; }
+  article.book strong { font-weight:650; }
+  .partsplash { padding:56px 0 8px; }
+  .partsplash .kicker { font-family:var(--f-ui); font-size:.74rem; font-weight:700; letter-spacing:.12em;
+                        text-transform:uppercase; color:var(--mark); }
+  .partsplash h1 { font-size:clamp(2rem,4.8vw,3rem); margin-top:10px; }
+  .toc { margin:2rem 0 0; }
+  nav.toc h2 { font-family:var(--f-ui); font-size:.74rem; font-weight:700; letter-spacing:.1em;
+            text-transform:uppercase; color:var(--muted); margin:0 0 .9rem; }
+  .toc ol { list-style:none; margin:0; padding:0; }
+  .toc li { border-top:1px solid var(--rule); }
+  .toc a { display:flex; gap:14px; padding:.72rem 0; text-decoration:none; color:var(--ink); align-items:baseline; }
+  .toc a:hover { color:var(--accent); }
+  .toc .n { font-family:var(--f-ui); font-size:.78rem; font-weight:700; color:var(--muted); min-width:5.4em; }
+  .toc .t { font-family:var(--f-read); font-size:1.02rem; }
+  .contents .part { margin:2.6rem 0 0; }
+  .contents .part > h3 { font-family:var(--f-ui); font-size:.74rem; font-weight:700; letter-spacing:.1em;
+                         text-transform:uppercase; color:var(--mark); margin:0 0 .2rem; }
+  .contents .part > .pt { font-family:var(--f-display); font-size:1.5rem; font-weight:600; letter-spacing:-.02em;
+                          margin:0 0 .7rem; display:block; text-decoration:none; color:var(--ink); }
+  .contents .part > .pt:hover { color:var(--accent); }
+  .cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:14px; margin:1.6rem 0 0; }
+  .card { border:1px solid var(--rule); border-radius:.8rem; padding:1rem 1.1rem; background:var(--surface); }
+  .card h3 { font-family:var(--f-ui); font-size:.78rem; letter-spacing:.08em; text-transform:uppercase;
+             color:var(--muted); margin:0 0 .45rem; font-weight:700; }
+  .card p { margin:0; font-family:var(--f-read); font-size:.98rem; }
+  .pagenav { display:flex; justify-content:space-between; gap:16px; margin:4rem 0 0; padding-top:1.4rem;
+             border-top:1px solid var(--rule); font-family:var(--f-ui); font-size:.9rem; }
+  .pagenav a { text-decoration:none; font-weight:600; }
+  .pagenav span { color:var(--muted); }
+  div.sources { margin:3.4rem 0 0; padding:1.4rem 1.5rem; background:var(--surface-2); border-radius:.8rem;
+             font-family:var(--f-ui); font-size:.92rem; color:var(--muted); }
+  div.sources h2 { font-size:.74rem; letter-spacing:.1em; text-transform:uppercase; margin:0 0 .7rem; color:var(--ink);
+                font-family:var(--f-ui); font-weight:700; }
+  div.sources p { margin:0 0 .7rem; } .sources p:last-child { margin:0; }
+  footer.site { border-top:1px solid var(--rule); margin-top:64px; }
+  footer.site .wide { min-height:72px; display:flex; align-items:center; justify-content:space-between;
+                      gap:16px; font-size:.86rem; color:var(--muted); }
+  @media (max-width:560px) { header.site .wide { flex-direction:column; align-items:flex-start; gap:6px; padding:12px 0; }
+                             .hero { padding:44px 0 28px; } }
+</style>
+
+
+
+<link rel="canonical" href="https://theisegoria.github.io/ja/game-design-dynamics-of-learning/part-1.html">
+<link rel="alternate" hreflang="en" href="https://theisegoria.github.io/game-design-dynamics-of-learning/part-1.html">
+<link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/game-design-dynamics-of-learning/part-1.html">
+<link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/game-design-dynamics-of-learning/part-1.html"><script src="/assets/lang.js"></script>
+<!-- ISEGORIA:HEAD -->
+<link rel="stylesheet" href="/assets/site-shell.css?v=08342b869b">
+<script src="/assets/site-shell.js?v=08342b869b" ></script>
+<!-- /ISEGORIA:HEAD -->
+</head>
+<body class=" ig-site" data-site-kind="editorial" data-site-route="/ja/game-design-dynamics-of-learning/part-1.html">
+<!-- ISEGORIA:NAV -->
+<a class="ig-skip" href="#ig-content">本文へ移動</a>
+<header id="ig-header"><div class="ig-nav-inner">
+<a class="ig-brand" href="/ja/" aria-label="Isegoria, ホーム"><strong>ISEGORIA</strong><span>Benjamin Haire</span></a>
+<div class="ig-header-actions"><a class="ig-language" href="/game-design-dynamics-of-learning/part-1.html" hreflang="en" lang="en">English</a><button class="ig-menu" type="button" aria-expanded="false" aria-controls="ig-primary">メニュー</button></div>
+<nav id="ig-primary" aria-label="メインナビゲーション"><a href="/ja/">ホーム</a><a href="/ja/library.html">全コンテンツ</a><a href="/ja/#guides">学習ガイド</a><a href="/ja/#preoccupations">研究と解説</a><a href="/ja/#books" aria-current="location">書籍</a><a href="/ja/projects.html">プロジェクト</a><a href="/ja/about.html">このサイトについて</a><a class="ig-language" href="/game-design-dynamics-of-learning/part-1.html" hreflang="en" lang="en">English</a><button class="ig-theme" type="button" hidden>表示切替</button></nav>
+</div></header>
+<nav id="ig-breadcrumb" aria-label="パンくずリスト"><a href="/ja/">ホーム</a><span aria-hidden="true">/</span><a href="/ja/#books">書籍</a><span aria-hidden="true">/</span><a href="/ja/game-design-dynamics-of-learning/">学習のダイナミクスとしてのゲームデザイン</a><span aria-hidden="true">/</span><span aria-current="page">第1部：プレイは普遍的である</span></nav>
+<span id="ig-content" tabindex="-1"></span>
+<!-- /ISEGORIA:NAV --><nav aria-label="このページで" class="ig-page-nav"><a href="/ja/game-design-dynamics-of-learning/">目次</a><a href="/ja/game-design-dynamics-of-learning/part-1.html">I</a><a href="/ja/game-design-dynamics-of-learning/part-2.html">II</a><a href="/ja/game-design-dynamics-of-learning/part-3.html">III</a><a href="/ja/game-design-dynamics-of-learning/part-4.html">IV</a><a href="/ja/game-design-dynamics-of-learning/part-5.html">V</a><a href="/ja/game-design-dynamics-of-learning/part-6.html">VI</a><a href="/ja/game-design-dynamics-of-learning/part-7.html">VII</a></nav>
+<main>
+<div class="wrap">
+<section class="partsplash">
+<p class="kicker">7部の第1部</p>
+<h1>遊びは普遍的である</h1>
+</section>
+<nav aria-label="この部分の章" class="toc"><h2>この部分では</h2><ol>
+<li><a href="#ch-1"><span class="n">第1章</span><span class="t">遊びの普遍性</span></a></li>
+<li><a href="#ch-2"><span class="n">第2章</span><span class="t">遊びの進化的機能</span></a></li>
+</ol></nav>
+<article class="book">
+<h2 id="ch-1"><span class="num">第1章</span>プレイの普遍性</h2>
+<p class="epigraph">種間・文化間で共通して見られるプレイの持続性――ゲームの考古学的記録――そして、ゲームの存在は文化的現象の単なる結果ではなく、説明が必要な現象である理由について。</p>
+<h3 id="1-1-the-problem-games-exist-everywhere">1.1 問題：すべての文化でゲームが存在する</h3>
+<p>あるシンプルな観察事実がある。その事実を明確に述べたとき、無視するのは非常に難しい。すべての知られている人類文化がゲームをプレイしている。</p>
+<p>これは現代のエンターテインメント産業やデジタルメディアについての話ではない。これは、時間と地理を越えて人類の行動に関する話である。考古学的証拠は、古代メソポタミア（ロイヤルゲーム・オブ・アール）、エジプト（セネット）、インド（チャトランガ）、中国（ゴ）、メソアメリカ（ボールゲーム）、中世ヨーロッパ（チェス）において構造的なゲームの存在を示している。これらのシステムは表面的な特徴――素材、ルール、象徴的意味――において異なるが、より深い構造的性質を持っている。すなわち、ルールに基づいた環境で、行動主体が不確実性のもとで定義された結果を目指して行動している。</p>
+<p>さらに顕著なのは、これらのシステムが独立して出現していることである。チェスはゴの派生ではない。ロイヤルゲーム・オブ・アールはメソアメリカのボールゲームの前身でもない。異なる文化においてゲームが繰り返し現れる現象は、拡散だけでは説明できない。それは繰り返し発明された結果である。</p>
+<p>その意味は即座に導かれる。ある行動が出現したとき、</p>
+<ul>
+<li>地理的に孤立した集団において</li>
+<li>歴史的時代を越えて</li>
+<li>類似した構造を持つ形で</li>
+</ul>
+<p>その場合、偶然である可能性は低い。むしろ、人間の認知におけるある種の制約の表れである可能性が高い。</p>
+<p>この意味でのゲームは、文化的アーティファクトにとどまらない。ゲームは、まだ完全に定義されていない問題への解決策である。</p>
+<h3 id="1-2-play-is-older-than-culture">1.2 プレイは文化より古い</h3>
+<p>ゲームの人類学的普遍性は、より広い生物的文脈において見直すとさらに説得力を持つ。プレイは人類よりも前に存在していた。</p>
+<p>すべての四つの大きな猿——チンパンジー、ボノボ、ゴリラ、オランウータン——は構造的で規則的な遊び行動を実施している。これには以下のような行動が含まれる：</p>
+<ul>
+<li>荒々しい遊び（rough-and-tumble play）：攻撃を模倣しながらもその強度を増幅させない</li>
+<li>役割の逆転：支配的な個体が一時的に支配下の立場を仮にとる</li>
+<li>自らの優位性を制限する遊び（self-handicapping）：強さをもつ個体が意図的に自らの優位性を制限する</li>
+<li>いじめや挑発行動：反応を予測するような行動を含む</li>
+</ul>
+<p>2024年にラウマー、ウィンクラー、ロッサノ、カートミルによって実施された重要な研究（<em>Proceedings of the Royal Society B</em>）では、すべての四種の大きな猿に見られる、自発的な遊びの挑発行動が記録された。その行動は意図的に挑発的で、一方向性を持つもので、驚きを含む要素を含んでおり、ユーモアの認知的前提（期待、違反、解決）は、ヒモニード系において少なくとも1300万年前に存在していた可能性がある。笑いのような声は、大きな猿間で同様の音響的構造を持つことから、遊び関連の感情の進化連続性が強調される。</p>
+<p>これらの行動はランダムではない。明示的にルールが支配している。たとえば、遊びによる戦いは次の制約に従う：</p>
+<ul>
+<li>噛みは抑制される</li>
+<li>信号（遊びの顔、声）は非認真性を示す</li>
+<li>これらの制約に違反すると相互作用は終了する</li>
+</ul>
+<p>つまり、非人間の動物においても、遊びはゲームの核心的特徴を示している：</p>
+<ul>
+<li>相互作用の境界空間が存在する</li>
+<li>暗黙のルール</li>
+<li>不明な結果</li>
+<li>その自体のための繰り返し参加</li>
+</ul>
+<p>ジョーン・グッドールがゴンベで行った基礎的な観察結果（1986年、<em>The Chimpanzees of Gombe</em>）では、野生のチムパンジーのすべての年齢層が遊びを実施していることが示された。その後、ロンスドーフら（2017年）が33年間のゴンベデータを分析した結果、遊び時間を長く過ごす乳児チムパンジーは、独立した移動、非母性の親族との最初のグローミング、最初の交尾試みといった運動的および社会的達成点を、明らかに早い年齢で達成した。これは、グレートアピースにおいて、遊びが発達結果と直接関連していることを示す最初の研究であった。</p>
+<p>結論を回避するのは難しい。人間文化において「ゲーム」と呼んでいるものは、まったく無から生まれたものではない。それは、文化そのものよりも前に存在していた行動システムの形式的な拡張である。</p>
+<h3 id="1-3-from-play-to-games-formalisation-and-abstraction">1.3 遊びからゲームへ：形式化と抽象化</h3>
+<p>遊びが生物的基盤であれば、ゲームはその文化的な結晶である。</p>
+<p>遊びからゲームへの移行には3つの変化が関与する。</p>
+<p><strong>第一、制約が明示される。</strong> 動物の遊びではルールは暗黙的であり、社会的信号を通じて強化される。人間のゲームではルールが外部化され、形式化される。『咬むな』は『フールなし』に、『順番を取る』は『順番制システム』に、空間的境界はボード、フィールド、またはアリーナに変換される。この外部化により、ルールが個人間で伝達され、世代を超えて安定し、意図的に変更されるようになる。</p>
+<p><strong>第二、不確性が構造化される。</strong> 遊びには不確性が含まれるが、ゲームはそれを設計する。サイコロは確率的結果を導入する。隠された情報は情報の非対称性を生じさせる。スキルベースのシステムはパフォーマンスの不確性を生じさせる。結果として、単なる予測不可能性ではなく、制御された不確性、すなわち、単に無意味でもなく、過剰でもない不確性が得られる。</p>
+<p><strong>第三、相互作用が象徴的になる。</strong> ゲームは即時的な物理的現実から離れて、抽象的な空間で動作する。ボード上の石は領土を表す（囲碁）。駒は階層的権力の構造を表す（チェス）。カードは確率分布を表す（ポーカー）。この抽象化により、ゲームは純粋な遊び行動よりもはるかに複雑なスケールで発展できる。</p>
+<p>考古学的記録は、この転換を非常に明確に記している。<strong>Senet</strong>は、最も象徴的な古エジプトのゲームで、紀元前3100年にアブ・ラワッシュで発見された第一王朝の埋葬遺跡に、断片的な形で出現している。30平方のグリッド上にプレイされ、移動を決定するのは投げた棒の結果である。当初は世俗的な娯楽として機能していたが、新王国（紀元前1550〜1077年）になると、深い宗教的意味を帯び、『死の書』第17章に登場し、魂が冥界を旅する様子を表現するものとなった。ピッコイン・ペーターの1990年のシカゴ大学の博士論文では、この進化が詳細に描かれた。トターンカムンの墓には4枚のSenetの盤が発見され、このゲームは複数の社会階級でプレイされた。複雑な彫刻盤から、石の床に刻まれたグリッドまで、多様な形で行われていた。</p>
+<p><strong>ロイヤル・ゲーム・オブ・アーウ</strong>は、1922年から1934年にかけて、ウルの王陵を発掘したレオナルド・ウォーリーによって発見された。その年代は紀元前2600〜2400年頃である。イーリング・フィンケル（ブリテン博物館）は、177〜176年頃、書士イティ・マルダク・バルアトが記した楔形文字の板から、このゲームの基本ルールを再構築した。戦略と運の両方を組み合わせたレースゲームで、バックギャンモンに類似している。最も古い可能性のあるゲーム盤は、現代のアイン・ガザルで発見されたもので、年代は約5870 BCEである。</p>
+<p>ジョーダン、その年代は約5870 BCEである。</p>
+<h3 id="1-4-independent-invention-and-convergent-structure">1.4 独立発明と収束した構造</h3>
+<p>ゲームの最も重要な特徴の一つは、その多様性ではなく、その収束である。</p>
+<p>さまざまな文化において、類似した構造的解決が繰り返し観察される。</p>
+<ul>
+<li>領域ベースの領土ゲーム（ゴ、さまざまな土著戦略ゲーム）</li>
+<li>確率的移動を含むレースゲーム（Senet、ロイヤル・ゲーム・オブ・アーウ、パチシ）</li>
+<li>階層的ピースを持つ抽象戦略ゲーム（チェスおよびその類）</li>
+<li>物理的競技ゲームで、制限されたアリーナを持つ（大陸全域にわたるボールスポーツ）</li>
+</ul>
+<p>これらは偶然の分類ではない。空間的制御、時間的進行、階層的相互作用、および運動技能の実行という異なる方法で、不確実性と行動を構造化している。このような形式の繰り返しは、人間の認知能力の制約の下で、魅力的なシステムを構築するための有限の方法しか存在しないことを示唆している。各文化がこれらの解決策を独立して発見したのは、共通の設計空間において、地元で最適であるためである。</p>
+<p>Roberts、Arth、およびBushの基礎的な跨文化研究『Cultureにおけるゲーム』（1959、<em>American Anthropologist</em>）は、三つの分類に従った標準的な分類を確立した。それは、身体的スキルを用いるゲーム、戦略を用いるゲーム、そして運を用いるゲームである。50の社会を分析した結果、戦略ゲームは<strong>社会的階層構造</strong>と相関関係があり、運のゲームは超自然的制御可能性に関する信念と相関関係があった。彼らは、ゲームが現実世界の活動を「表現モデル」として機能していると主張した。身体的スキルのゲームは狩猟や戦闘をモデル化し、戦略のゲームは政治的競争をモデル化し、運のゲームは自然の予測不可能性をモデル化する。</p>
+<p>いくつかの児童のゲームは、文化的に普遍的であるように見える。隠れ探し、タグや追跡ゲーム、レスリング、キャッチは、歴史的に関連のないさまざまな社会で見られる。アボリジニのオーストラリアからアーミクにかけて、サハラ以南アフリカ、南アメリカまで、そのようなゲームが出現している。進化心理学は、この収束を、深い生物的機能の証拠として解釈している。これらのゲームは、捕食者回避、地形ナビゲーション、ストレス下での感情調整をシミュレートしている。</p>
+<h3 id="1-5-the-invariants-of-games">1.5 ゲームの不変性</h3>
+<p>表面的な変異を除いても、ゲームは一組の不変性を持つ性質を持つ。</p>
+<ol>
+<li><strong>ルール。</strong> ゲームは行動に対して制約を定める。これらの制約は、行動が発生する可能性空間を形成する。</li>
+<li><strong>主体性。</strong> プレイヤーはシステム内で行動できる。結果は観察的なものに限られない。</li>
+<li><strong>不確実性。</strong> 結果は事前に完全に決定されていない。これはランダム性、隠された情報、またはスキルによるものである可能性がある。</li>
+<li><strong>フィードバック。</strong> 行動は明確な結果をもたらす。システムはプレイヤーに対して反応する。</li>
+<li><strong>自己目的性。</strong> 活動はその自体のために行われるもので、外部の報酬を得るためだけではない。</li>
+</ol>
+<p>これらの性質は定義上の便宜にすぎないものではない。これらは必要条件である。その中でどれか一つを除去すれば、システムはゲームとして機能しなくなる：</p>
+<ul>
+<li>不確実性を除去するとシステムは単純化される</li>
+<li>主体性を除去するとそれは見世物に過ぎなくなる</li>
+<li>フィードバックを除去するとシステムは透過性を失う</li>
+<li>ルールを除去すると無秩序な遊びに陥る</li>
+</ul>
+<p>これらの不変性が文化間で維持されていることにより、中心的な主張が強化される：ゲームは偶然の構造ではない。人間の心の構造によって形成された制約されたシステムである。</p>
+<h3 id="1-6-the-inadequacy-of-cultural-explanations">1.6 文化的説明の不十分性</h3>
+<p>ゲームの普遍性に対する一般的な反応として、ゲームを文化の副産物として扱う考え方がある。人間は競争を楽しむ、物語を楽しむ、社会的相互作用を楽しむ。この見解では、ゲームはこれらの傾向の合成物であるとされる。</p>
+<p>この説明は、二つの理由で不十分である。</p>
+<p>まず、説明的であるにすぎず、説明的ではない。関連する特徴を挙げているだけで、ゲームが魅力的であるためのメカニズムを特定していない。</p>
+<p>其次、なぜゲームが特定の形をとるのかを説明していない。競争はルール付きのシステムや構造的不確実性を必要としない。社会的相互作用も抽象的な記号空間を必要としない。ゲームの特徴的な構造――ルール、不確実性、フィードバック――は説明されていない。</p>
+<p>ゲームを説明するには、表面的な動機を越えて、より深い問いを投げかける必要がある。</p>
+<blockquote>
+<p><em>脳が本質的に魅力的に感じるのはどのようなシステムか、そしてなぜか。</em></p>
+</blockquote>
+<h3 id="1-7-games-as-a-problem-in-cognitive-science">1.7 ゲームとしての認知科学上の問題</h3>
+<p>ゲームの存在は、人類学、神経科学、計算科学の交差点に位置する問題を提示している。</p>
+<p>我々は以下の3つの事実を確立している。</p>
+<ol>
+<li>遊びは進化的に古く、哺乳類の種に共通しており、特に霊長類において発達している。</li>
+<li>ゲームは文化的に普遍的であり、人間の社会において独立して出現している。</li>
+<li>ゲームは不変な構造的性質を持つことから、共通の基本的な制約がある可能性を示唆している。</li>
+</ol>
+<p>これらの事実には統合的な説明が求められている。</p>
+<p>この本の残りの部分で導く仮説は次の通りである。</p>
+<blockquote>
+<p><em>ゲームは、脳の学習および不確実性処理システムの基本的性質を活かした構造化された環境である。</em></p>
+</blockquote>
+<p>これはまだ理論ではない。方向性である。これを正確に定義するには、脳が不確実性をどのように処理し、世界に対する内部モデルをどのように更新するか、そしてどのような相互作用のパターンが本質的に報酬を与えるのかを理解しなければならない。その上で、ゲームが存在する理由だけでなく、なぜあるゲームが成功するのか、他のゲームが失敗するのかを説明できるようになる。</p>
+<h3 id="1-8-transition">1.8 進行</h3>
+<p>人類学はゲームが普遍的であることを示している。進化生物学は遊びが機能的であることを示唆しているが、どちらもゲームがメカニズムレベルでどのように機能するかを教えていない。</p>
+<p>その答えを得るには、行動のレベルから生物学的レベルに下りる必要がある。</p>
+<p>次の章では、遊びの進化的機能およびそのを支える神経系について検討する。その中で、以下のような主張が中心となる。</p>
+<blockquote>
+<p><em>遊びは贅沢ではない。それは、不安の状態で行動する能力を訓練するための生物的システムである。</em></p>
+</blockquote>
+<h2 id="ch-2"><span class="num">第2章</span>遊びの進化的機能</h2>
+<p class="epigraph">遊びが、生物が不安の状態で行動する能力を訓練するための生物的システムであるという点について、その遊びを生成する神経回路と、その行動が種間で継続していることから、機能的であることを示す理由。</p>
+<h3 id="2-1-play-is-not-optional">2.1 遊びは選択されない</h3>
+<p>行動が代謝的に高いコストを要し、発達段階で長期間にわたって行われ、進化的に保存されている場合、その行動が偶然の結果である可能性は低い。</p>
+<p>遊びはこの3つの条件をすべて満たしている。</p>
+<ul>
+<li>時間とエネルギーを消費するが、即時的な生存上の報酬を得ない</li>
+<li>発達期に最も顕著に現れ、その段階では資源が最も制約されている</li>
+<li>哺乳類の種間で共通して見られるが、特に霊長類では特に複雑な形をとる</li>
+</ul>
+<p>進化的視点から見ると、これはパラドックスである。自然選択は、機能を持たないコストの高い行動を維持することに意図していない。したがって、遊びの存在は説明を必要とする。</p>
+<p>最も簡潔な仮説は、遊びがレジャーであるというのではなく、別の種類の「仕事」として機能していることである。</p>
+<blockquote>
+<p><em>遊びは訓練システムである。</em></p>
+</blockquote>
+<p>問われるのは、どのような訓練のために遊びが行われているのかである。</p>
+<h3 id="2-2-the-structure-of-play-behaviour">2.2 遊び行動の構造</h3>
+<p>種間で、遊び行動は驚くほど共通した構造を持つ。</p>
+<p>例えば、幼年期の哺乳類における「乱暴遊び」を考えてみよう。個体は模擬的な攻撃行動を行う：追いかける、取り合い、支配を試みる。しかし、重要な制約が設けられている。噛みは抑制され、脆弱な状態が許容され、対立が悪化する前に終了する。この行動には現実的な運動パターン——追いかける、打つ、バランスを保つ——が含まれているが、致命的な結果を伴わない。</p>
+<p>同様に、対象操作において、動物は採餌や道具使用に似た行動をとる。行動は繰り返され、変化し、再組み立てられる。結果は探索されるだけで最適化されない。そして社会的遊びにおいては、個体は境界をテストする：彼らは刺激をかける、退却し、再び関与する。彼らは相互作用の条件を学ぶ。</p>
+<p>すべての形態において、同じパターンが現れる。</p>
+<ul>
+<li>不安の下での行動</li>
+<li>即時的なフィードバック</li>
+<li>失敗のコストが低い</li>
+<li>変化を含む繰り返し</li>
+</ul>
+<p>これはランダムな行動ではない。可能性空間の構造的探索である。</p>
+<h3 id="2-3-the-play-system">2.3 PLAYシステム</h3>
+<p>ジャック・パンクセップの感情的神経科学に関する研究は、遊びの生物学的説明において最も明確なものである。</p>
+<p>彼は、SEEKING（求める）、FEAR（恐怖）、RAGE（怒り）、CARE（愛情）、LUST（情動）、PANIC/GRIEF（恐慌・悲しみ）のほかに、遊びに特化した感情的システムを特定した。それは<strong>PLAYシステム</strong>である。彼の代表作<em>Affective Neuroscience</em>（オックスフォード大学出版社、1998年）およびその続編<em>The Archaeology of Mind</em>（2012年、ルーシー・ビンと共同）は、電気的脳刺激、薬理的挑戦、損傷研究を用いてこれらのシステムをマップした。重要な点として、すべての7つのシステムは<strong>皮質下脳領域</strong>から生じており、哺乳類間で同源である。これらは新皮質に依存しない。脳皮質を除去したラットも遊びをし、脳皮質が全く存在しないハイドランエネンシスの子ども（脳皮質が欠如した）も笑ったり、微笑んだりする（Merker, 2007）。</p>
+<p>PLAYシステムの主要な性質は以下の通りである：</p>
+<ul>
+<li>皮質下に位置しており、古来の脳構造から発生する</li>
+<li>内発的動機を持ち、遊びは自体のために行われる</li>
+<li>社会的に調整され、特に哺乳類においてはその性質が顕著である</li>
+<li>ホメオスタシス的反発を示す：欠如はその後の遊びの強度を増加させる</li>
+</ul>
+<p>Panksepp の最も有名な実験は、ラットをくすぐるものだった。2000〜2003 年の論文（<em>Behavioural Brain Research</em>、<em>Physiology &amp; Behavior</em>）では、ラットがじゃれ合いや取っ組み合いの遊びの最中、また人の手で首の後ろをくすぐられた際に、<strong>50 kHz の超音波発声</strong>を行うことを示した。首の後ろは、ラット同士の遊びでも刺激される部位である。周波数が変調されたこれらの声は、人間の笑いと相同である可能性が提案されている。くすぐり刺激の報酬価値と正に相関し、録音を再生すると他のラットの接近行動を誘発しうる（Wöhr &amp; Schwarting, 2007）。また、苦痛時に発せられる嫌悪性の 22 kHz の声とは異なる。50 kHz の発声が多くなるよう選択交配されたラットでは、遊び行動も増加した（Burgdorf et al., 2005, <em>Behavior Genetics</em>）。</p>
+<p>遊びが基本的な動機（学習されず、第二性の動機ではない）であることは、複数の証拠から支持される。遊びは緊張を保つ性質を持つ：社会的孤立の期間を変化させることでその量を調整でき、孤立期間が長いほど、その回復増加が見られる。ネズミは遊びに関連した環境に対して条件付き場所好適性を形成し、遊びの機会を得るための操作応答行動を行う。新生児期の脳皮質の除去（decortication）は遊び行動を完全に消滅させない（Panksepp et al., 1994）、その行動が皮質下起源であることを確認する。逆に、前頭葉の損傷は遊び行動を増加させ（Panksepp et al., 2003）、成熟する皮質が、皮質下の遊び行動の欲求を抑制している可能性を示唆する。</p>
+<p>神経化学的基盤には、4つの相互作用するシステムが関与している。</p>
+<ul>
+<li><strong>ドパミン</strong>は、接近と関与（動機的「欲求」）を促進する</li>
+<li><strong>オピオイド</strong>は、快感（快感的「好き」）を媒介する</li>
+<li><strong>内生カンナビノイド</strong>は、ポジティブな感情と柔軟性を強化する</li>
+<li><strong>オキシトシン</strong>は、社会的結びつきを支援する</li>
+</ul>
+<p>神経回路の構造は、皮質下構造を中心に分布された回路に由来する。シビとパンクセップ（2011, <em>Neuroscience &amp; Biobehavioral Reviews</em>）は、主過程の執行回路として、<strong>脳橋の付属領域（PFA）</strong>、<strong>背側および腹側のストリアム</strong>、および<strong>前頭葉</strong>を含む回路を提案した。また、アミグダラ、ペリアクウエドゥールグレ、および上昇型ドパミン系の貢献も含まれる。PFAは重要な統合ノードとして機能していると考えられる：PFAの電解損傷は、遊びの「固定」行動を73％減少させ、他の感覚運動行動には最小の影響を与えた（Siviy &amp; Panksepp, 1985, <em>Behavioral Neuroscience</em>）。</p>
+<p>PLAYシステムは文化的な上書きではありません。それは、 Hungerや恐怖と同程度に基本的な生物的動機です。</p>
+<h3 id="2-4-neuroplasticity-and-skill-acquisition">2.4 神経可塑性とスキル獲得</h3>
+<p>遊びが訓練システムであるならば、脳に測定可能な変化をもたらさなければなりません。</p>
+<p>その通りです。</p>
+<p>遊びの欠如を実験的に検証することは、重要な洞察を提供します。発達段階で遊びを欠いた動物は、次のような特徴を示します：</p>
+<ul>
+<li>前頭前野におけるシナプス密度の低下</li>
+<li>認知的柔軟性の損失</li>
+<li>社会的スキルの欠如</li>
+<li>不安行動の増加</li>
+</ul>
+<p>Bijlsma et al. (2022) は、遊びを欠いたマウスにおいて、前頭前野での抑制シナプスの減少および認知的柔軟性の損失を示しました。前頭前野は遊びを生成するための必須構成要素ではありませんが、その構造は遊びによって深く形成されています。Gordon et al. (2003) は、遊び後にBDNFの上昇を示しました。BDNFは脳全体におけるシナプス可塑性を支える主要な成長因子です。</p>
+<p>逆に、遊びは次のようないくつかの効果を高めます：</p>
+<ul>
+<li>脳由来神経栄養因子（BDNF）濃度の上昇</li>
+<li>シナプス可塑性の強化</li>
+<li>運動協調性の向上</li>
+<li>社会的予測能力の向上</li>
+</ul>
+<p>これらの効果は微々たるものではありません。遊びが、適応的行動に必要な神経構造を形成する直接的な関与を示しています。スチュアート・ブラウンは、臨床的実務において、26人の若年男性殺人犯のうち、正常な遊びの記憶を全く持たないことを発見しました。これは、遊びの欠如と社会的調整の重大な失敗との間の顕著で、初期段階の相関関係を示しています。</p>
+<p>その意味は明確です：</p>
+<blockquote>
+<p><em>遊びは特定の行動の再現ではなく、学習、適応、そして新規性への反応能力を育成するための訓練である。</em></p>
+</blockquote>
+<h3 id="2-5-safe-failure-and-error-tolerance">2.5 安全な失敗とエラー耐性</h3>
+<p>遊びの特徴の一つは、失敗があっても災害的結果を伴わないことである。</p>
+<p>これは偶然ではない。それは中心的な設計の特徴である。</p>
+<p>非遊びの文脈では、失敗はけがや死亡を引き起こす可能性があり、誤りはコストが高く、最小限に抑える必要がある。遊びでは、失敗は予想されるものであり、誤りは耐容され、探索が促進される。これにより、生物は仮説の検証、極端なケースの探索、そして近い失敗状態を繰り返して経験できるユニークな学習環境が形成される。</p>
+<p>学習の観点から言えば、これは理想的である。誤りを補正することで学習を行うシステムは、誤り信号、調整の機会、そして繰り返された曝露を必要とする。遊びはこれらすべてを提供する。遊びのコスト構造がその効果的な訓練システムである理由は、予測誤りが頻発し情報的であり、誤りを起こした結果のコストは極めて低いからである。これはゲームが機能する仕組みと直接対応している。<em>Dark Souls</em>での死亡は数分の進展と一部の仮想通貨の損失に過ぎず、現実の戦闘での死亡はすべてを失う。予測誤りの構造は類似しているが、コストの差はまったく異なる。</p>
+<h3 id="2-6-uncertainty-as-the-core-variable">2.6 不確実性が核心変数</h3>
+<p>すべての遊び形式に共通するテーマは、不確実性である。</p>
+<ul>
+<li>物理的遊びでは：運動の結果の不確実性</li>
+<li>社会的遊びでは：他者の反応の不確実性</li>
+<li>物的遊びでは：環境との相互作用の不確実性</li>
+</ul>
+<p>遊びは単なる活動に過ぎない。未知の構造を持つ活動である。</p>
+<p>特に、この不確実性は：</p>
+<ul>
+<li><strong>非自明</strong>：結果は事前に決まっているわけではない</li>
+<li><strong>再帰可能</strong>：時間とともにパターンが学習可能</li>
+</ul>
+<p>これにより、遊びは特定の領域に位置付けられる。純粋なランダム性（学習不可能）ではなく、完全な決定性（学習を必要としない）でもなく、予測は可能だがまだ達成されていない状況に位置付けられる。これは、学習システムが最も効果的に動作する領域である。</p>
+<h3 id="2-7-social-calibration-and-boundary-testing">2.7 社会的調整と境界テスト</h3>
+<p>社会性の高い種において、遊びは追加の機能を持つ。それは、相互作用の調整である。</p>
+<p>遊びを通じて、個人は他人にどれほど強く振る舞えるか、他人が誘発に対してどのように反応するか、意図を伝える方法、そして違反を修復する方法を学ぶ。そのメカニズムは微妙である。遊びの表情は非認真の意図を示すものであり、過度に攻撃的な行動は対応の断絶を引き起こす。成功した相互作用には継続的な調整が必要である。これは、他の行動主体の行動をリアルタイムでモデル化するものである。個体は、他者の行動を予測し、自らの行動を調整し、協調的な均衡を維持する能力を学ぶことになる。これは、複雑な社会的環境をナビゲートする上で必要なスキルである。</p>
+<h3 id="2-8-the-paradox-of-inefficiency">2.8 不効率のパラドックス</h3>
+<p>狭い視点から見れば、遊びは効率的ではない。遊びに費やされた時間は、獲物を求める時間に相当する。エネルギーは即効性の報酬を得ずに消費され、リスクは必要性のないものである。</p>
+<p>しかし、進化はそれを維持している。</p>
+<p>このパラドックスの解決は、時間スケールにある。遊びは短期的には効率的ではないが、長期的には効率的である。柔軟性、適応性、学習能力への投資によって、個体は新しい状況下での生存確率を高め、社会的統合を強化し、問題解決能力を向上させる。遊びはしたがって、資源の浪費ではない。それは、一般的な能力への投資である。</p>
+<p>ステファン・ジェイ・ゴールドは、人間を<strong>ネオテノスな種</strong>と呼んだ。幼少期の特徴、すなわち好奇心、行動の柔軟性、新鮮さへの関心を成年期まで維持している。すべての人間文化において、遊びはスポーツ、ボードゲーム、音楽、ダンス、ユーモア、創造的表現を通じて継続している。ヨハン・フーリンガの<em>ホモ・ルデンス</em>（1938）は、文化が遊びの形で生まれるとし、文明が遊びを失うにつれてその活力を失すと主張した。遊びの機能について、6つの進化理論が提示されている：グロスの実践理論、スペンサーの余剰エネルギー理論、バーグハルトの発達モデル、スピンカらの「予期しないことへの訓練」、グレイの自己教育仮説、そしてベイツンの創造性エンジン。すべては、遊びが新たな状況への対応能力を構築することに共通の洞察をもつ。</p>
+<p>グロスの実践理論、スペンサーの余剰エネルギー理論、バーハルトの発達モデル、スピンカらの「予想外の経験への訓練」、グレイの自己教育仮説、バーテソンの創造性エンジン。すべては、遊びが新しい状況に対処する能力を構築することにあるという共通の洞察に達している。</p>
+<h3 id="2-9-from-play-to-games-revisited">2.9 遊びからゲームへ（再考）</h3>
+<p>こうして、遊びの機能をもとに、ゲームを再検討できる。</p>
+<p>遊びは、不安の存在下での訓練を生物的システムとして機能するものであるならば、ゲームはその訓練プロセスを再現・拡大する<strong>人工環境である</strong>。ゲームは、遊びの核心的な特徴——不安、フィードバック、安全な失敗、繰り返し——をより構造化し、制御可能でスケーラブルなものにすることで、それらをより効果的に実現する。結果として、ゲームはエンジニアリングされた遊びシステムである。</p>
+<p>この視点は設計問題そのものを根本から変容させる。問われていること自体が「ゲームを楽しくする方法は何か？」ではなく、次のように変化する。</p>
+<blockquote>
+<p><em>環境をどのように構築すれば、脳の学習システムを最適に刺激できるか？</em></p>
+</blockquote>
+<h3 id="2-10-transition">2.10 トランジション</h3>
+<p>遊びが機能的であることが確認された。それは生物学的に根付いており、神経発達を形成し、不安の存在下で行動する能力を訓練するものである。また、ゲームは遊びの形式的な拡張であると我々は確認している。</p>
+<p>次に、機能からメカニズムへと移行する必要がある。遊びが不安との相互作用を通じて生物を訓練するならば、その中で何が不安の減少を示す神経信号か、どのような相互作用が報酬を生むのか、そしてなぜあるパターンがエンゲージメントを維持するのか、他のパターンはそうしないのか、という問いに答えるためには、脳の報酬および学習システムを直接検討しなければならない。</p>
+<p>これらの問いに答えるためには、脳の報酬および学習システムを直接検証しなければならない。</p>
+<p>次の章は、本書のあらゆる議論を支える主張から始まる。</p>
+<blockquote>
+<p><em>脳は結果を報酬として感じない。脳は不安の減少を報酬として感じる。</em></p>
+</blockquote>
+</article>
+<nav class="pagenav">
+<span>目次</span>
+<a href="/ja/game-design-dynamics-of-learning/part-2.html">Part II →</a>
+</nav>
+</div>
+</main>
+<footer class="site">
+<div class="wide">
+<span>© 2026 Benjamin Michael Haire</span>
+<a href="/ja/">プロジェクトライブラリへ戻る</a>
+</div>
+</footer>
+<p class="ig-translation-note">日本語版（AI翻訳） · <a href="/game-design-dynamics-of-learning/part-1.html" hreflang="en" lang="en">英語原文</a></p><!-- ISEGORIA:FOOT -->
+<footer id="ig-footer"><div><a href="/ja/">Isegoria · Benjamin Haire</a><nav aria-label="サイト内リンク"><a href="/ja/">ホームに戻る</a><a href="/ja/library.html">全コンテンツ</a><a href="#ig-content">ページ上部へ</a></nav></div></footer>
+<!-- /ISEGORIA:FOOT -->
+</body>
+</html>
+

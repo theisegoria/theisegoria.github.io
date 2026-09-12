@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+
+<html class=" ig-document" lang="ja"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta content="水晶時計の電池から時計の針までエネルギーが実際に形を変える場所：2つの変換、1つのギャップ（物理的に通過しないもの）、そして最終段階のLavetステッパー。" name="description"/>
+<link href="/assets/favicon.svg" rel="icon" type="image/svg+xml"/>
+<title>電気 → クォーツ → モーター</title>
+<style>
+:root{--ink:#17201d;--paper:#f3f0e7;--dark:#101715;--deep:#25483d;--mint:#9bc9b3;--gold:#c49a54;
+      --sig:#5aa9c8;--hot:#c2685a;--line:rgba(23,32,29,.16);
+      --serif:Georgia,'Times New Roman',serif;
+      --sans:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+      --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);line-height:1.6}
+.wrap{max-width:1000px;margin:0 auto;padding:clamp(28px,5vw,64px) clamp(18px,4vw,48px) 90px}
+h1{font-family:var(--serif);font-weight:400;font-size:clamp(2.1rem,5vw,3.4rem);line-height:1.02;
+   letter-spacing:-.03em;margin:.1em 0 .35em}
+h2{font-family:var(--serif);font-weight:400;font-size:clamp(1.45rem,3vw,2.1rem);letter-spacing:-.02em;
+   margin:0 0 .1em}
+.kicker{color:var(--gold);text-transform:uppercase;letter-spacing:.16em;font-size:.7rem;font-weight:700;margin:0}
+.lede{font-size:1.08rem;max-width:70ch}
+section{padding:38px 0;border-top:1px solid var(--line)}
+section>.kicker{margin-bottom:.5em}
+p{max-width:72ch}
+.fig{margin:26px 0 10px;overflow-x:auto}
+.fig svg{display:block;width:100%;min-width:560px;height:auto}
+figcaption{font-size:.86rem;color:#68716d;max-width:74ch;margin-top:10px}
+.mono{font-family:var(--mono);font-size:.88em}
+.note{background:#e9e3d6;border-left:4px solid var(--gold);padding:16px 20px;margin:26px 0;max-width:76ch}
+.note.deep{border-left-color:var(--deep)}
+.note p{margin:.35em 0}
+.note b{font-family:var(--serif);font-weight:400;font-size:1.12em}
+.row{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:1px;background:var(--line);
+     border:1px solid var(--line);margin:24px 0}
+.row div{background:var(--paper);padding:15px 17px}
+.row small{display:block;text-transform:uppercase;letter-spacing:.1em;font-size:.63rem;color:#6c756f}
+.row strong{font-family:var(--serif);font-weight:400;font-size:1.5rem;display:block;margin:.12em 0}
+.row span{font-size:.76rem;color:#6c756f}
+.ctl{display:flex;flex-wrap:wrap;gap:14px 22px;align-items:center;margin:18px 0 4px}
+button{border:0;background:var(--gold);color:var(--dark);padding:9px 16px;font:inherit;font-size:.72rem;
+       font-weight:700;letter-spacing:.09em;text-transform:uppercase;cursor:pointer}
+button.ghost{background:transparent;border:1px solid var(--ink);color:var(--ink)}
+label{display:grid;grid-template-columns:1fr auto;gap:4px 10px;font-size:.72rem;text-transform:uppercase;
+      letter-spacing:.08em;min-width:210px}
+label b{font-family:var(--mono);font-weight:600;text-transform:none;letter-spacing:0}
+label input{grid-column:1/-1;width:100%;accent-color:var(--gold)}
+text{font-family:var(--sans)}
+.lbl{font-size:11px;font-weight:700;letter-spacing:.09em;text-anchor:middle;fill:var(--ink)}
+.sub{font-size:10px;text-anchor:middle;fill:#6c756f}
+.val{font-family:var(--mono);font-size:11px;text-anchor:middle;fill:var(--gold)}
+.tick{font-family:var(--mono);font-size:9.5px;fill:#7d867f;text-anchor:middle}
+.ax{stroke:#a9a397;stroke-width:1.4;fill:none}
+.gl{stroke:rgba(169,163,151,.35);stroke-width:1;fill:none}
+@keyframes flow{to{stroke-dashoffset:-30}}
+.pwr{fill:none;stroke:var(--gold);stroke-width:7;stroke-linecap:round;opacity:.85}
+.trickle{fill:none;stroke:var(--sig);stroke-width:2;stroke-linecap:round}
+.info{fill:none;stroke:var(--deep);stroke-width:2;stroke-dasharray:6 6;animation:flow 1.1s linear infinite}
+.bx{fill:#e8e2d6;stroke:var(--ink);stroke-width:2}
+@media (max-width:620px){.fig svg{min-width:520px}}
+
+/* ---------- print ---------- */
+@page{size:A4;margin:15mm 14mm 16mm}
+@media print{
+  html,body{background:#f3f0e7;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .wrap{max-width:none;padding:0}
+  .ctl{display:none !important}
+  .fig{overflow:visible}
+  .fig svg{min-width:0 !important;width:100% !important}
+  figure,.note,.row,.fig{break-inside:avoid;page-break-inside:avoid}
+  h2{break-after:avoid;page-break-after:avoid}
+  section{break-inside:auto;padding:22px 0}
+  p,figcaption{max-width:none}
+  .printonly{display:block !important}
+  .row{grid-template-columns:repeat(2,1fr) !important}
+  a{color:inherit;text-decoration:none}
+  h1{font-size:2.4rem}
+  h2{font-size:1.55rem}
+  body{font-size:10.5pt;line-height:1.5}
+  .lede{font-size:11pt}
+}
+.printonly{display:none}
+
+
+.sitebar{background:var(--dark);color:#cfd8d4;padding:0 clamp(18px,4vw,48px)}
+.sitebar nav{max-width:1000px;margin:0 auto;height:64px;display:flex;align-items:center;
+  justify-content:space-between;gap:20px;flex-wrap:wrap}
+.sitebar .brand{font-family:var(--serif);font-size:1rem;letter-spacing:.04em;color:var(--paper);
+  text-decoration:none;white-space:nowrap}
+.sitebar .links{display:flex;gap:14px;flex-wrap:wrap}
+.sitebar .links a{color:#9ba6a1;text-decoration:none;font-size:.78rem;letter-spacing:.04em}
+.sitebar .links a:hover{color:var(--mint)}
+footer.sitefoot{background:var(--dark);color:#9ba6a1;padding:30px clamp(18px,4vw,48px);
+  display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;font-size:.76rem}
+footer.sitefoot a{color:var(--mint);text-decoration:none}
+@media(max-width:700px){footer.sitefoot{flex-direction:column;align-items:flex-start}}
+</style>
+
+
+
+<link rel="canonical" href="https://theisegoria.github.io/ja/quartz-lab/electricity-quartz-motor.html">
+<link rel="alternate" hreflang="en" href="https://theisegoria.github.io/quartz-lab/electricity-quartz-motor.html">
+<link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/quartz-lab/electricity-quartz-motor.html">
+<link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/quartz-lab/electricity-quartz-motor.html"><script src="/assets/lang.js"></script>
+<!-- ISEGORIA:HEAD -->
+<link rel="stylesheet" href="/assets/site-shell.css?v=08342b869b">
+<script src="/assets/site-shell.js?v=08342b869b" ></script>
+<!-- /ISEGORIA:HEAD -->
+</head>
+<body class=" ig-site" data-site-kind="editorial" data-site-route="/ja/quartz-lab/electricity-quartz-motor.html">
+<!-- ISEGORIA:NAV -->
+<a class="ig-skip" href="#ig-content">本文へ移動</a>
+<header id="ig-header"><div class="ig-nav-inner">
+<a class="ig-brand" href="/ja/" aria-label="Isegoria, ホーム"><strong>ISEGORIA</strong><span>Benjamin Haire</span></a>
+<div class="ig-header-actions"><a class="ig-language" href="/quartz-lab/electricity-quartz-motor.html" hreflang="en" lang="en">English</a><button class="ig-menu" type="button" aria-expanded="false" aria-controls="ig-primary">メニュー</button></div>
+<nav id="ig-primary" aria-label="メインナビゲーション"><a href="/ja/">ホーム</a><a href="/ja/library.html">全コンテンツ</a><a href="/ja/#guides">学習ガイド</a><a href="/ja/#preoccupations" aria-current="location">研究と解説</a><a href="/ja/#books">書籍</a><a href="/ja/projects.html">プロジェクト</a><a href="/ja/about.html">このサイトについて</a><a class="ig-language" href="/quartz-lab/electricity-quartz-motor.html" hreflang="en" lang="en">English</a><button class="ig-theme" type="button" hidden>表示切替</button></nav>
+</div></header>
+<nav id="ig-breadcrumb" aria-label="パンくずリスト"><a href="/ja/">ホーム</a><span aria-hidden="true">/</span><a href="/ja/#preoccupations">研究と解説</a><span aria-hidden="true">/</span><a href="/ja/quartz-lab/">クオーツ時計の内部</a><span aria-hidden="true">/</span><span aria-current="page">電気 → クォーツ → モーター</span></nav>
+<span id="ig-content" tabindex="-1"></span>
+<!-- /ISEGORIA:NAV --><nav aria-label="このページで" class="ig-page-nav"><a href="/ja/quartz-lab/">クォーツ時計実験室</a><a href="/ja/watch-lab/">自動巻き時計実験室</a><a href="/watch-mechanisms/ja/">機械時計図解</a><a data-document-language="en" href="/quartz-lab/electricity-quartz-motor.pdf" rel="noopener" target="_blank" title="PDF、新しいタブで開きます">PDF（英語PDF）</a></nav>
+<div class="wrap">
+<div class="printonly" style="border-bottom:1px solid rgba(23,32,29,.16);padding-bottom:8px;margin-bottom:22px;
+     font-size:8.5pt;color:#68716d;overflow:hidden">
+<span style="float:right">theisegoria.github.io/quartz-lab/</span>クォーツ時計実験室 · 補足資料</div>
+<p class="kicker">実際にわからなかった部分</p>
+<h1>電気 → クォーツ → モーター</h1>
+<p class="lede">ブロック図は、水晶からモーターへ何かが渡されるレリーフェースのように見えますが、実際にはそうではありません。そのギャップを越えるものはほとんどありません。ここでは、エネルギーが実際に形を変える場所の2か所と、意図的に変化しない1か所を再描画しています。</p>
+<!-- ============================================================ 0 -->
+<section>
+<p class="kicker">00 / 修正</p>
+<h2>水晶は何かを動かすことはありません</h2>
+<p>電池から2つの別々の経路が出ます。細い経路は水晶を振動させ続け、約 <span class="mono">4 ナノワット</span> を維持します。一方、太い経路はモーターを駆動し、約 <span class="mono">0.9 マイクロジュール</span> ごとに駆動します。それらの間には、有用な電力を持たない3番目の線があります。それは1秒ごとに1回だけ発生する論理信号、<em>now</em> です。</p>
+<figure class="fig">
+<svg aria-label="電池から2つの電力経路と1つの情報経路が存在する" role="img" viewbox="0 0 940 340">
+<rect class="bx" height="86" rx="3" width="112" x="20" y="130"></rect>
+<text class="lbl" x="76" y="163">バッテリー</text><text class="sub" x="76" y="182">1.55 V</text><text class="val" x="76" y="202">25 mAh</text>
+<path class="trickle" d="M132 156C190 156 190 92 250 92" stroke-dasharray="5 5" style="animation:flow 1.6s linear infinite"></path>
+<path class="pwr" d="M132 190C210 190 210 262 300 262"></path>
+<rect class="bx" height="80" rx="3" width="150" x="250" y="52"></rect>
+<text class="lbl" x="325" y="82">振動子</text><text class="sub" x="325" y="100">フォーク + インバータ</text><text class="val" x="325" y="120">フォークへの出力約4 nW</text>
+<rect class="bx" height="80" rx="3" width="150" x="440" y="52"></rect>
+<text class="lbl" x="515" y="82">ディーバイダー</text><text class="sub" x="515" y="100">15ビットのフリップフロップ</text><text class="val" x="515" y="120">カウントするが、プッシュはしない</text>
+<path class="trickle" d="M400 92h40" stroke-dasharray="5 5" style="animation:flow 1.6s linear infinite"></path>
+<rect class="bx" height="80" rx="3" width="150" x="300" y="230"></rect>
+<text class="lbl" x="375" y="260">ドライバー</text><text class="sub" x="375" y="278">スイッチ、それ以上はない</text><text class="val" x="375" y="298">エッジでゲートされる</text>
+<path class="info" d="M515 132v66h-140v28"></path>
+<text class="sub" style="text-anchor:start;fill:#25483d" x="600" y="180">情報のみ</text>
+<text class="sub" style="text-anchor:start;fill:#25483d" x="600" y="196">1回の上昇エッジごと1秒</text>
+<text class="sub" style="text-anchor:start;fill:#25483d" x="600" y="212">約10⁻¹² Jを運ぶ</text>
+<path class="pwr" d="M450 270h60"></path>
+<rect class="bx" height="80" rx="3" width="150" x="510" y="230"></rect>
+<text class="lbl" x="585" y="260">モーター</text><text class="sub" x="585" y="278">ラベットステッパー</text><text class="val" x="585" y="298">1ステップあたり0.88 µJ</text>
+<path class="pwr" d="M660 270h60"></path>
+<rect class="bx" height="80" rx="3" width="150" x="720" y="230"></rect>
+<text class="lbl" x="795" y="260">トレイン＋手</text><text class="sub" x="795" y="278">ダイアルの6°</text><text class="val" x="795" y="298">1秒ごと1回</text>
+<g>
+<line opacity=".85" stroke="#c49a54" stroke-linecap="round" stroke-width="7" x1="700" x2="740" y1="60" y2="60"></line>
+<text class="sub" style="text-anchor:start" x="750" y="64">電力</text>
+<line stroke="#5aa9c8" stroke-dasharray="5 5" stroke-width="2" x1="700" x2="740" y1="82" y2="82"></line>
+<text class="sub" style="text-anchor:start" x="750" y="86">立ち上がり電流</text>
+<line stroke="#25483d" stroke-dasharray="6 6" stroke-width="2" x1="700" x2="740" y1="104" y2="104"></line>
+<text class="sub" style="text-anchor:start" x="750" y="108">タイミング信号</text>
+</g>
+</svg>
+<figcaption>電池が両方の経路ですべての作業を行います。水晶の役割は、<em>いつ</em> フット経路が動作できるかを決定することであり、その決定はゲート電圧を通じて行われ、力ではなく、エネルギーが振動するフォークに蓄えられている量は約 <span class="mono">1 nJ</span> で、1モーターのパルスの1/900に相当します。そのエネルギーをすべて取り出しても、手を動かすことはできません。</figcaption>
+</figure>
+<div class="note deep"><p><b>このすべての内容から残すべき1つのこと:</b> クォーツは時計であり、エンジンではありません。機械的な要素が水晶から時計の手に伝わることはありません。時計内の2つの機械的システム、振動するフォークと回転するローターは、互いに接続されていません。</p></div>
+</section>
+<!-- ============================================================ 1 -->
+<section>
+<p class="kicker">01 / 最初のエネルギー変換</p>
+<h2>電圧が岩を動かす方法</h2>
+<p>クォーツは、中心対称性を持たない格子構造にSiO₂が存在しています。電場でシリコンと酸素のサブラットを逆方向に押し、それらが対称に戻らないため、単位セルの形状が変化します。これは逆ピエゾ電気効果であり、クォーツにおけるその大きさは <span class="mono">d₁₁ ≈ 2.3 pm/V</span> で、1ボルトあたり2ピコメートルの変形、原子直径の100分の1程度です。</p>
+<div class="ctl">
+<button id="latt-btn">電場の停止</button>
+<label>電場強度 <b id="latt-v">×1.0</b><input id="latt-amp" max="2" min="0" step=".1" type="range" value="1"/></label>
+</div>
+<figure class="fig">
+<svg aria-label="水晶単位が応力磁場に由来する変形" id="latt" role="img" viewbox="0 0 940 300">
+<text class="lbl" x="200" y="34">フィールドなし</text>
+<text class="lbl" x="640" y="34">フィールドが適用されている</text>
+<g id="cell-static"></g>
+<g id="cell-live"></g>
+<path class="ax" id="fieldarrow" marker-end="url(#ar)" stroke="#c2685a" stroke-width="2.5"></path>
+<defs><marker id="ar" markerheight="6" markerwidth="6" orient="auto-start-reverse" refx="8" refy="5" viewbox="0 0 10 10"><path d="M0 0l10 5-10 5z" fill="#c2685a"></path></marker></defs>
+<text class="lbl" fill="#c2685a" id="elab" x="540" y="62">E</text>
+<text class="sub" id="latt-cap" x="640" y="278">EフィールドはSi⁴⁺およびO²⁻を異なる量だけずらす</text>
+<text class="sub" x="200" y="278">セルは中性で歪んでいない</text>
+<g>
+<circle cx="770" cy="60" fill="#c2685a" r="8"></circle><text class="sub" style="text-anchor:start" x="800" y="64">Si⁴⁺</text>
+<circle cx="770" cy="82" fill="#5aa9c8" r="6"></circle><text class="sub" style="text-anchor:start" x="800" y="86">O²⁻</text>
+</g>
+</svg>
+<figcaption>ここでの変位は実際よりも何千倍も大きくなっています。実際のウォッチドライブレベルでの歪みは、サイクルごとにピコメートルの分数程度です。単体ではこれほど小さい動きは無意味です。そのため、次のステップがこのステップよりも重要なのです。</figcaption>
+</figure>
+</section>
+<!-- ============================================================ 2 -->
+<section>
+<p class="kicker">02 / ストレッチを曲げに変える</p>
+<h2>4つの電極でレバーを構成</h2>
+<p>単に長さが増えるだけのチネは役に立ちません。電極はパターン化されており、チネの断面の左半分では電場が一方に、右半分ではその反対方向に作用しています。一方が伸びて、もう一方が収縮し、そのようなバーは曲がるしかないのです。</p>
+<figure class="fig">
+<svg aria-label="断面における電極配置とその結果としての針の曲げ" id="bend" role="img" viewbox="0 0 940 330">
+<text class="lbl" x="180" y="34">断面</text>
+<text class="lbl" x="640" y="34">側面図</text>
+<rect fill="#cfe4ec" height="120" id="xs" stroke="#17201d" stroke-width="2.5" width="168" x="96" y="80"></rect>
+<line stroke="#17201d" stroke-dasharray="4 4" stroke-width="1.5" x1="180" x2="180" y1="80" y2="200"></line>
+<rect fill="#c2685a" height="12" id="e1" width="80" x="96" y="66"></rect>
+<rect fill="#5aa9c8" height="12" id="e2" width="80" x="184" y="66"></rect>
+<rect fill="#5aa9c8" height="12" id="e3" width="80" x="96" y="202"></rect>
+<rect fill="#c2685a" height="12" id="e4" width="80" x="184" y="202"></rect>
+<g id="xarrows"></g>
+<text class="sub" id="lbl-left" x="137" y="238">この半分が伸びる</text>
+<text class="sub" id="lbl-right" x="223" y="256">この半分は収縮する</text>
+<text class="sub" x="180" y="292">フィールドは中央面を越えて反転する</text>
+<path fill="#cfe4ec" id="tine" stroke="#17201d" stroke-width="2.5"></path>
+<path d="M540 250h200" fill="none" stroke="#17201d" stroke-width="2"></path>
+<rect fill="#b9cfd8" height="34" stroke="#17201d" stroke-width="2" width="168" x="556" y="250"></rect>
+<path class="gl" id="tine-mid" stroke-dasharray="4 4"></path>
+<text class="sub" x="640" y="304">一方の面では伸び、他方では収縮し、その結果曲がる</text>
+</svg>
+<figcaption>これが共振器の全体的な機械的トリックです。それ以降は共振とカウントの話になります。</figcaption>
+</figure>
+</section>
+<!-- ============================================================ 3 -->
+<section>
+<p class="kicker">03 / 電子的なものではないアンプ</p>
+<h2>Qがピコメートルをマイクメートルに変換</h2>
+<p>1サイクルの推力は、チネ先端で約 <span class="mono">20 pm</span> に相当します。実際の移動距離は約 <span class="mono">1 µm</span> です。その5万倍の差はトランジスタではありません。それは <em>Q</em> によるものです。なぜなら、推力は動きに正確に同期して届き、それぞれが前の動きに加わって、サイクルごとの投入エネルギーがサイクルごとの損失エネルギーと等しくなるまで増幅されます。そのバランス点は、約 <span class="mono">Q</span> 倍の単一推力の変位に達するのです。</p>
+<div class="ctl">
+<button id="ring-btn">リプレイの増幅</button>
+<label>品質要因 Q <b id="q-v">54 000</b><input id="q" max="90000" min="200" step="200" type="range" value="54000"/></label>
+</div>
+<figure class="fig">
+<svg aria-label="サイクルごとに振幅がQによって決まる速度で増幅される" id="ring" role="img" viewbox="0 0 940 300">
+<path class="ax" d="M78 40v200h820"></path>
+<g id="ring-grid"></g>
+<path fill="none" id="ring-env" stroke="#5aa9c8" stroke-width="2.5"></path>
+<path fill="none" id="ring-env2" opacity=".35" stroke="#5aa9c8" stroke-width="2.5"></path>
+<path fill="none" id="ring-osc" stroke="#c49a54" stroke-width="1"></path>
+<line id="ring-play" stroke="#c2685a" stroke-dasharray="3 3" stroke-width="1.4" y1="40" y2="240"></line>
+<text class="sub" x="488" y="272">起動からのサイクル</text>
+<text class="sub" transform="rotate(-90 30 140)" x="30" y="140">先端振幅</text>
+<text class="tick" id="ring-read" x="500" y="30">約0.5秒後にQ×20 pm ≈ 1.1 µmに落ち着く</text>
+</svg>
+<figcaption><em>Q</em> を下げると、曲線はより早く、より低い値に落ち着きます。テンプでは <span class="mono">Q ≈ 250</span> であり、同じ理由から、始動が速い一方、周波数を乱されやすさは約 200 倍になります。</figcaption>
+</figure>
+<div class="note"><p><b>ループを明確に述べる。</b> 電極に電荷が発生する。インバータはその電荷信号を増幅し、同じ電極へ戻すが、その位相は、歯がさらに曲がるようにする。損失は振幅に比例してエネルギーを除去し、増益は一定の割合でエネルギーを追加する。その両者が交わる振幅が、その動作の定常状態である。結晶は同時にセンサとアクチュエータであり、これは、単一のインバータで十分であると考えられる理由だ。</p></div>
+</section>
+<!-- ============================================================ 4 -->
+<section>
+<p class="kicker">04 / 物理的に何が通過するかないギャップ</p>
+<h2>十五個のフリップフロップ、一つのワイヤ、一つのエッジ</h2>
+<p>このギャップは予想外だった。結晶とモーターの間には、ただのディビデーションチェーンしか存在せず、ディビデーションは力、トルク、または意味のあるエネルギーを伝達しない。電圧は1秒間に1回、低い状態から高い状態に変化する。その変化が、時計の時間測定部分の唯一の出力である。</p>
+<div class="row">
+<div><small>結晶内の蓄えられたエネルギー</small><strong>≈ 1 nJ</strong><span>フォークから離れない</span></div>
+<div><small>振動を維持するためのエネルギー</small><strong>≈ 4 nW</strong><span>減衰損失を補うだけ</span></div>
+<div><small>1つのモーターのパルス内のエネルギー</small><strong>0.88 µJ</strong><span>結晶の蓄えられたエネルギーの約900倍</span></div>
+<div><small>タイミングエッジ内のエネルギー</small><strong>≈ 10⁻¹² J</strong><span>ゲート電容を充電する</span></div>
+</div>
+<p>よって、頭の中にあるイメージは、<span class="mono">結晶 → モーター</span> ではなく、<span class="mono">バッテリー → モーター</span> である。結晶はワイヤのそばにストップウォッチを持ち、その場に立っていると考えるべきだ。</p>
+</section>
+<!-- ============================================================ 5 -->
+<section>
+<p class="kicker">05 / 2秒間の変換</p>
+<h2>電流 → フラックス → タービン</h2>
+<p>ここではエネルギーが実際に2回、形を変える。電気エネルギーから磁気エネルギー、そして磁気エネルギーから機械エネルギーへ。コイルは約12,000回の巻きで、非常に小さな電流でも利用可能な磁動力を作り出す。軟鉄のスタターは、そのフラックスを運び、ロータの両端の小さな面に集中させるために存在する。</p>
+<div class="ctl">
+<button id="mot-btn">一時停止</button>
+<label>コイル電流 <b id="i-v">116 µA</b><input id="i" max="400" min="20" step="4" type="range" value="116"/></label>
+</div>
+<figure class="fig">
+<svg aria-label="コイルによる定子における磁束とロータの磁石に作用するトルク" id="motor" role="img" viewbox="0 0 940 400">
+<path d="M270 60H740A20 20 0 0 1 760 80V290A20 20 0 0 1 740 310H270A20 20 0 0 1 250 290V220H66V150H250V80A20 20 0 0 1 270 60ZM587 185A82 82 0 1 1 423 185A82 82 0 1 1 587 185Z" fill="#d9d3c6" fill-rule="evenodd" id="core" stroke="#17201d" stroke-width="2.5"></path>
+<g id="coil"></g>
+<path d="M250 160C300 108 400 92 505 92C620 92 706 128 706 185C706 242 620 278 505 278C400 278 300 262 250 210" fill="none" id="flux" opacity="0" stroke="#c49a54" stroke-dasharray="9 9" stroke-width="3.5"></path>
+<defs>
+<marker id="arg" markerheight="5.5" markerwidth="5.5" orient="auto-start-reverse" refx="8" refy="5" viewbox="0 0 10 10"><path d="M0 0l10 5-10 5z" fill="#c49a54"></path></marker>
+<marker id="ark" markerheight="5.5" markerwidth="5.5" orient="auto-start-reverse" refx="8" refy="5" viewbox="0 0 10 10"><path d="M0 0l10 5-10 5z" fill="#17201d"></path></marker>
+</defs>
+<g id="rotor">
+<path d="M567 185a62 62 0 0 0-124 0z" fill="#c2685a"></path>
+<path d="M443 185a62 62 0 0 0 124 0z" fill="#5aa9c8"></path>
+<circle cx="505" cy="185" fill="none" r="62" stroke="#17201d" stroke-width="2.5"></circle>
+<path d="M443 185h124" stroke="#17201d" stroke-width="2.5"></path>
+<text class="lbl" fill="#f3f0e7" x="505" y="158">N</text>
+<text class="lbl" fill="#f3f0e7" x="505" y="212">S</text>
+<path d="M505 185V107" marker-end="url(#ark)" stroke="#17201d" stroke-width="3.5"></path>
+<text class="lbl" fill="#17201d" x="505" y="98">m</text>
+</g>
+<g id="bgrp" opacity="0">
+<line stroke="#f3f0e7" stroke-linecap="round" stroke-width="9" x1="596" x2="418" y1="185" y2="185"></line>
+<line id="bvec" marker-end="url(#arg)" stroke="#c49a54" stroke-width="4" x1="592" x2="424" y1="185" y2="185"></line>
+</g>
+<circle cx="505" cy="185" fill="#c49a54" r="9" stroke="#17201d" stroke-width="2"></circle>
+<text class="lbl" id="ilab" x="158" y="136">i = 0</text>
+<text class="sub" x="158" y="120">コイル、約12,000巻</text>
+<text class="sub" id="blab" style="text-anchor:start" x="800" y="181">B = 0</text>
+<text class="sub" style="text-anchor:start" x="800" y="197">ギャップにおいて</text>
+<text class="sub" x="505" y="332">m、ロータの自発的なモーメント、1.8 mA·m²。固定値であり、コイルはロータを磁化しない</text>
+<text class="lbl" id="tau" style="font-size:13px" x="505" y="364">τ = m × B = 0.00 µN·m</text>
+<text class="sub" id="taupk" x="505" y="384">ピークは90°で0.00 µN·m。磁石はB方向と一致するまで回転する</text>
+</svg>
+<figcaption>ロータは永久磁石なので、すでにそのモーメント <span class="mono">m</span> が決まっている。コイルはロータを磁化しない。コイルはその上に電場 <em>across</em> を生成し、外部電場中の磁気モーメントは、その間の角度の正弦に比例してトルクを感じる。これが完全な電気・機械変換である。</figcaption>
+</figure>
+<div class="note"><p><b>数値の計算は、できるだけ確認した結果、正しいようです。</b> ロータは約 <span class="mono">1.4 mm</span> の幅で、<span class="mono">1.5 mm</span> の長さなので、その体積は <span class="mono">2.3 × 10⁻⁹ m³</span> です。SmCoで、残留磁気約 <span class="mono">1 T</span> をもつと、磁化は <span class="mono">8 × 10⁵ A/m</span> となり、モーメントは <span class="mono">m ≈ 1.8 mA·m²</span> になります。一万二千回の巻きで、<span class="mono">116 µA</span> を流すと、<span class="mono">1.4 安ペア（アンペア・ターン）</span> となり、総空隙が数tenths of a millimetre（ミリメートルの数分）の場合、反発を考慮した結果、空隙磁場は数ミリテスラに達します。その結果、<span class="mono">τ = mB ≈ 3.5 µN·m</span> となり、これは実験ページのステップシミュレーションが、ダンテントバリアを越えるために必要なピークトルクと一致します。</p></div>
+</section>
+<!-- ============================================================ 6 -->
+<section>
+<p class="kicker">06 / 3回目の変換で、唯一の普通の変換</p>
+<h2>トルク → 半回転 → 6度</h2>
+<p>ロータにトルクが生じると、私の目には、その以降は、時計作りの普通の作業に過ぎません。ロータは180°まで振動し、ステータのボア内の溝がそれをその位置に保持し、減速機構によりその半回転は60倍に縮められて秒針に、さらに720倍に縮められて時針に変換されます。</p>
+<figure class="fig">
+<svg aria-label="1秒間の動作におけるエネルギー記録" id="ledger" role="img" viewbox="0 0 940 250">
+<text class="lbl" x="470" y="30">1秒のエネルギーがどこにいくか</text>
+<rect fill="none" height="34" stroke="#a9a397" stroke-width="1.4" width="760" x="90" y="60"></rect>
+<rect fill="#c49a54" height="34" opacity=".75" width="486" x="90" y="60"></rect>
+<rect fill="#9bc9b3" height="34" opacity=".7" width="271" x="576" y="60"></rect>
+<rect fill="#5aa9c8" height="34" width="3" x="847" y="60"></rect>
+<text class="tick" x="333" y="116">モーターのパルス 0.88 µJ</text>
+<text class="tick" x="711" y="116">オシレータ＋ディバイダー回路 ≈ 0.47 µJ</text>
+<text class="tick" style="text-anchor:end" x="848" y="140">フォーク自体 0.004 µJ</text>
+<line stroke="#5aa9c8" stroke-width="1.2" x1="848" x2="848" y1="98" y2="128"></line>
+<text class="sub" x="470" y="176">モーターの0.88 µJのうち、約1/3はデテンと軸受の摩擦に抵抗する機械的仕事に変換される。</text>
+<text class="sub" x="470" y="196">残りはコイル内のI²R損失である。フォークが全体の予算に占める割合は1%未満。</text>
+<text class="sub" x="470" y="228">この明細書には、フォークからロータにエネルギーが流れていることは一切ない。</text>
+</svg>
+</figure>
+</section>
+<!-- ============================================================ 7 -->
+<section>
+<p class="kicker">07 / チェーン、再確認</p>
+<h2>5文</h2>
+<p>パターン電極に電圧を印加すると、水晶格子がピコメートル（10⁻¹² m）の範囲で歪み、そして、針の中央面で磁場が反転するため、その歪みは伸びではなく、湾曲として現れます。</p>
+<p>駆動信号が運動と同相に到達するため、約5万回のそのピコメートルの推力が累積され、損失が追いつくまで、最終的に先端はちょうど32 768 Hzで約1マイクロメートルの移動を実現します。</p>
+<p>その湾曲によって、同じ電極に電荷が発生し、1つのインバータがそれを増幅して戻し、そのループは自立して維持されます。周波数は、針の幾何学的構造によって決まり、電気的な要素とは無関係です。</p>
+<p>15段のフリップフロップでその周波数を1Hzに分割します。出力は1本の線に電圧のエッジとして現れ、意味のあるエネルギーを含んでいません。それは電池とモーターコイルの間のスイッチを開放するための信号になります。</p>
+<p>12,000回の巻き上げによる電流は、永久磁石ロータに数ミリテスラの磁場を生じ、ロータはその磁場と一致するように回転し、ステータの溝はその半回転後にそのロータを捕らえ、そして電車はその値を6度のダイアルに分割する。</p>
+</section>
+<div class="printonly" style="border-top:1px solid rgba(23,32,29,.16);margin-top:28px;padding-top:10px;
+     font-size:8.5pt;color:#68716d">  教育用回路図。材料定数（d₁₁、水晶の誘電率Eおよびρ、SmCoの残留磁気）は標準値である；
+  電流、ギャップ磁場、および周期あたりの先端変位は、インタラクティブ版のシミュレーションと整合性を保つために、順量的再構築されたものである。
+  『Inside a Quartz Watch』の補足資料。<em>『Quartz Watch の内部』</em>.
+</div>
+</div>
+<script>
+(() => {
+'use strict';
+const NS='http://www.w3.org/2000/svg', $=s=>document.querySelector(s);
+const mk=(t,a,p)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e;};
+const poly=p=>p.map((q,i)=>(i?'L':'M')+q[0].toFixed(2)+' '+q[1].toFixed(2)).join('');
+const clamp=(v,a,b)=>v<a?a:v>b?b:v;
+const grp=n=>n.toLocaleString('en-US').replace(/,/g,' ');
+let last=performance.now(), t=0;
+
+/* ---------- 01 lattice ---------- */
+const SI=[[0,-1],[0.866,0.5],[-0.866,0.5]], OX=[[0.5,-0.866],[1,0],[0.5,0.866],[-0.5,0.866],[-1,0],[-0.5,-0.866]];
+function drawCell(host,cx,cy,R,d){
+  host.innerHTML='';
+  mk('circle',{cx,cy,r:R*1.28,fill:'none',stroke:'rgba(169,163,151,.45)','stroke-dasharray':'3 4'},host);
+  OX.forEach(([x,y])=>mk('circle',{cx:cx+x*R+d*10,cy:cy+y*R,r:9,fill:'#5aa9c8'},host));
+  SI.forEach(([x,y])=>mk('circle',{cx:cx+x*R-d*22,cy:cy+y*R,r:12,fill:'#c2685a'},host));
+}
+let lattRun=true;
+$('#latt-btn').addEventListener('click',e=>{lattRun=!lattRun;e.target.textContent=lattRun?"電場の停止":"フィールドの運搬。";});
+$('#latt-amp').addEventListener('input',()=>$('#latt-v').textContent='×'+(+$('#latt-amp').value).toFixed(1));
+drawCell($('#cell-static'),200,155,66,0);
+
+/* ---------- 02 bending ---------- */
+const XA=$('#xarrows');
+function bend(s){
+  // cross-section field arrows: opposite senses either side of the mid-plane
+  XA.innerHTML='';
+  const dir=s>=0?1:-1;
+  for(const [x0,sgn] of [[137,1],[223,-1]]){
+    const up=sgn*dir>0;
+    mk('path',{d:`M${x0} ${up?196:88}V${up?88:196}`,stroke:'#c2685a','stroke-width':2.5,fill:'none','marker-end':'url(#ar)'},XA);
+  }
+  $('#e1').setAttribute('fill',dir>0?'#c2685a':'#5aa9c8');
+  $('#e4').setAttribute('fill',dir>0?'#c2685a':'#5aa9c8');
+  $('#e2').setAttribute('fill',dir>0?'#5aa9c8':'#c2685a');
+  $('#e3').setAttribute('fill',dir>0?'#5aa9c8':'#c2685a');
+  $('#lbl-left').textContent = dir>0?"この半分が伸びる":"この半分は収縮する";
+  $('#lbl-right').textContent= dir>0?"この半分は収縮する":"この半分が伸びる";
+  // side view: a tine of constant curvature
+  const y0=252,y1=64,L=y0-y1,W=17,A=30*s,N=24,l=[],r=[];
+  for(let i=0;i<=N;i++){const f=i/N,y=y0-f*L,u=A*f*f;l.push([640+u-W,y]);r.push([640+u+W,y]);}
+  $('#tine').setAttribute('d',poly(l)+`A${W} ${W} 0 0 1 ${r[N][0].toFixed(2)} ${r[N][1].toFixed(2)}`+poly(r.slice().reverse()).replace('M','L')+'Z');
+  $('#tine-mid').setAttribute('d',poly(l.map((p,i)=>[p[0]+W,p[1]])));
+}
+
+/* ---------- 03 ring-up ---------- */
+const RX0=78,RX1=898,RY=140,RH=96;
+let ringT=0;
+function ringDraw(){
+  const Q=+$('#q').value, tau=Q/Math.PI;        // cycles to 1/e of final amplitude
+  const N=Math.max(4*tau,2000);                  // cycles shown
+  const env=[],env2=[],osc=[];
+  for(let i=0;i<=300;i++){
+    const n=i/300*N, a=1-Math.exp(-n/tau), x=RX0+i/300*(RX1-RX0);
+    env.push([x,RY-a*RH]); env2.push([x,RY+a*RH]);
+    osc.push([x,RY-a*RH*Math.sin(i*0.9)]);
+  }
+  $('#ring-env').setAttribute('d',poly(env));
+  $('#ring-env2').setAttribute('d',poly(env2));
+  $('#ring-osc').setAttribute('d',poly(osc));
+  const amp=Q*20e-12, MARGIN=5.5;            // loop gain margin of a watch oscillator
+  const secs=4*(tau/(MARGIN-1))/32768;       // start-up is faster than free decay by (margin-1)
+  const amps = amp < 1e-7 ? (amp*1e9).toFixed(0)+' nm' : (amp*1e6).toFixed(2)+' µm';
+  const ts   = secs < 0.1 ? (secs*1000).toFixed(0)+' ms' : secs.toFixed(2)+' s';
+  $('#ring-read').textContent=`Q × 20 pm ≈ ${amps} に落ち着き、約 ${ts} で 5.5× のゲインマージンで達成される。`;
+  $('#q-v').textContent=grp(+$('#q').value);
+  return N;
+}
+const RG=$('#ring-grid');
+[0,.5,1].forEach(f=>{mk('line',{class:'gl',x1:RX0,x2:RX1,y1:RY-f*RH,y2:RY-f*RH},RG);});
+$('#q').addEventListener('input',()=>{ringDraw();});
+$('#ring-btn').addEventListener('click',()=>{ringT=0;});
+ringDraw();
+
+/* ---------- 05 motor ---------- */
+const CO=$('#coil');
+for(let i=0;i<11;i++) mk('ellipse',{cx:80+i*16,cy:185,rx:6.5,ry:50,fill:'none',stroke:'#a8763a','stroke-width':3},CO);
+const M_MOMENT=1.84e-3;                              // A m^2
+const B_PER_A=17.0;                                  // T per amp of coil current, calibrated to 116 uA -> ~2 mT
+let motRun=true, motPhase=0;
+$('#mot-btn').addEventListener('click',e=>{motRun=!motRun;e.target.textContent=motRun?"一時停止":"動かす";});
+$('#i').addEventListener('input',()=>$('#i-v').textContent=$('#i').value+' µA');
+
+/* ---------- master loop ---------- */
+function frame(now){
+  const dt=Math.min((now-last)/1000,.05); last=now; t+=dt;
+
+  // lattice
+  if(lattRun){
+    const s=Math.sin(t*1.6)*(+$('#latt-amp').value);
+    drawCell($('#cell-live'),640,155,66,s);
+    $('#fieldarrow').setAttribute('d',`M540 ${s>=0?238:72}V${s>=0?72:238}`);
+    $('#elab').setAttribute('y',s>=0?62:252);
+    $('#latt-cap').textContent = Math.abs(s)<0.12
+      ? "フィールドがゼロを通過し、セルがリラックスする。"
+      : (s>0 ? "フィールドが上昇：セルは一方の方向にシアーする。" : "フィールドが下降：セルはもう一方の方向にシアーする。");
+  }
+
+  // bending
+  bend(Math.sin(t*1.6));
+
+  // ring-up
+  ringT+=dt;
+  const N=ringDraw();
+  const u=clamp(ringT/6,0,1), px=RX0+u*(RX1-RX0);
+  $('#ring-play').setAttribute('x1',px); $('#ring-play').setAttribute('x2',px);
+
+  // motor
+  if(motRun) motPhase+=dt;
+  const cyc=motPhase%2.4, pulsing=cyc<0.85;
+  const iA=(+$('#i').value)*1e-6;
+  const B=pulsing?B_PER_A*iA:0;
+  // rotor starts 90 deg from B (which points left, i.e. m must swing to -90) and settles at 180
+  const ang=pulsing? -90*Math.min(1,cyc/0.7) : (-90-90*Math.min(1,(cyc-0.85)/0.55));
+  $('#rotor').setAttribute('transform',`rotate(${ang.toFixed(1)} 505 185)`);
+  $('#flux').setAttribute('opacity',pulsing?0.95:0);
+  $('#flux').setAttribute('style',pulsing?'animation:flow .6s linear infinite':'');
+  document.querySelectorAll('#coil ellipse').forEach(el=>el.setAttribute('stroke',pulsing?'#c2685a':'#a8763a'));
+  $('#bgrp').setAttribute('opacity',pulsing?1:0);
+  $('#ilab').textContent=pulsing?`i = ${$('#i').value} µA`:'i = 0';
+  $('#ilab').setAttribute('fill',pulsing?'#c2685a':'#17201d');
+  const tq=M_MOMENT*B*Math.sin((-90-ang)*Math.PI/180);
+  $('#tau').textContent='τ = m B sin θ = '+(Math.abs(tq)*1e6).toFixed(2)+' µN·m';
+  $('#taupk').textContent=`ピーク、90°で：${(M_MOMENT*B_PER_A*iA*1e6).toFixed(2)} µN·m · 電磁石は磁化ベクトルが B と一致するまで回転する。`;
+  $('#blab').textContent=pulsing?`B ≈ ${(B*1e3).toFixed(1)} mT`:'B = 0, no field';
+  $('#bvec').setAttribute('stroke-width',pulsing?(2+Math.min(5,B*1400)).toFixed(1):4);
+  if(!stopped) raf=requestAnimationFrame(frame);
+}
+let stopped=false, raf=requestAnimationFrame(frame);
+
+/* freeze every figure in a state worth printing, then stop animating */
+window.__print=()=>{
+  stopped=true; cancelAnimationFrame(raf);
+  document.querySelectorAll('[style*="animation"]').forEach(e=>e.style.animation='none');
+  document.querySelectorAll('.info,.flux').forEach(e=>e.style.animation='none');
+  // 01 lattice: field at full deflection
+  drawCell($('#cell-live'),640,155,66,1);
+  $('#fieldarrow').setAttribute('d','M540 238V72'); $('#elab').setAttribute('y',62);
+  $('#latt-cap').textContent="フィールドが上昇：セルは一方の方向にシアーする。";
+  // 02 bending: full curvature
+  bend(1);
+  // 03 ring-up: complete
+  ringDraw();
+  $('#ring-play').setAttribute('x1',RX1); $('#ring-play').setAttribute('x2',RX1);
+  // 05 motor: mid-swing, torque non-zero
+  const iA=(+$('#i').value)*1e-6, B=B_PER_A*iA, ang=-40;
+  $('#rotor').setAttribute('transform',`rotate(${ang} 505 185)`);
+  $('#flux').setAttribute('opacity',0.95); $('#flux').style.animation='none';
+  document.querySelectorAll('#coil ellipse').forEach(el=>el.setAttribute('stroke','#c2685a'));
+  $('#bgrp').setAttribute('opacity',1);
+  $('#ilab').textContent=`i = ${$('#i').value} µA`; $('#ilab').setAttribute('fill','#c2685a');
+  $('#blab').textContent=`B ≈ ${(B*1e3).toFixed(1)} mT`;
+  const tq=M_MOMENT*B*Math.sin((-90-ang)*Math.PI/180);
+  $('#tau').textContent='τ = m B sin θ = '+(Math.abs(tq)*1e6).toFixed(2)+' µN·m';
+  $('#taupk').textContent=`ピーク、90°で：${(M_MOMENT*B*1e6).toFixed(2)} µN·m · 電磁石は磁化ベクトルが B と一致するまで回転する。`;
+  return true;
+};
+})();
+</script>
+<footer class="sitefoot">
+<span>© 2026 Benjamin Michael Haire</span>
+<span>『Quartz Watch の内部』の補足資料。<a href="/ja/quartz-lab/">クォーツ時計実験室</a>教育用回路図：各部品の値と比率は、特定のモデルに特化したものではなく、典型的な値である。</span>
+<a data-document-language="en" href="/quartz-lab/electricity-quartz-motor.pdf" rel="noopener" target="_blank" title="PDF、新しいタブで開きます">印刷版（PDF）（英語PDF）</a>
+<a href="/ja/">すべてのプロジェクトへ戻る</a>
+</footer>
+<p class="ig-translation-note">日本語版（AI翻訳） · <a href="/quartz-lab/electricity-quartz-motor.html" hreflang="en" lang="en">英語原文</a></p><!-- ISEGORIA:FOOT -->
+<footer id="ig-footer"><div><a href="/ja/">Isegoria · Benjamin Haire</a><nav aria-label="サイト内リンク"><a href="/ja/">ホームに戻る</a><a href="/ja/library.html">全コンテンツ</a><a href="#ig-content">ページ上部へ</a></nav></div></footer>
+<!-- /ISEGORIA:FOOT -->
+</body></html>
+

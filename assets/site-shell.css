@@ -94,3 +94,10 @@ nav.ig-page-nav a:first-child{margin-right:0;font-weight:400}
 #ig-header .ig-theme{background:transparent;border:1px solid var(--ig-rule);border-radius:3px;color:var(--ig-muted);font:13px var(--ig-sans);padding:10px 12px;min-height:44px;margin:0 0 0 8px;cursor:pointer}
 #ig-header .ig-theme[hidden]{display:none}
 #ig-header .ig-theme:hover{background:var(--ig-panel);color:var(--ig-ink)}
+
+/* Japanese prose needs comfortable line height and natural character breaks. */
+html[lang="ja"] .ig-site h1,html[lang="ja"] .ig-site h2,html[lang="ja"] .ig-site h3{line-height:1.45;letter-spacing:0;overflow-wrap:anywhere}
+html[lang="ja"] article.book{font-family:"Hiragino Mincho ProN","Yu Mincho",serif;line-height:1.95}
+html[lang="ja"] .lab-heading p,html[lang="ja"] .lab-explanation p{line-height:1.8}
+.ig-translation-note{width:min(1180px,100% - 36px);margin:24px auto;font:12px/1.8 var(--ig-sans);color:var(--ig-muted)}
+.ig-translation-note a{color:inherit;text-underline-offset:.2em}

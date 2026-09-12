@@ -99,8 +99,9 @@ def apply(path,route,known):
     if candidate in known and candidate not in ['/','/ja/'] and known[candidate][1]==ja:parent=(known[candidate][0],candidate)
     if ja:s=s.replace('aria-label="On this page"','aria-label="このページの目次"')
     nav,foot=shell(route,title,ja,alt,parent)
-    kind='app' if route in ['/kef-coda-w/','/carrera-panda/','/neuron-action-potential/','/watch-mechanisms/','/watch-mechanisms/ja/','/monster-tech-correlation/'] else 'embed' if 'srcdoc=' in s or route.endswith(('/curves.html','/selected.html')) else 'editorial'
-    fixed=route.startswith(('/watch-lab/','/quartz-lab/','/ja/quartz-lab/','/real-time-natural-worlds/','/concerta-catecholamine-model/'))
+    base_route=route.removeprefix('/ja') if route.startswith('/ja/') else route
+    kind='app' if base_route in ['/kef-coda-w/','/carrera-panda/','/neuron-action-potential/','/watch-mechanisms/','/watch-mechanisms/ja/','/monster-tech-correlation/','/bose-lifestyle-ultra-report/3d/'] else 'embed' if 'srcdoc=' in s or route.endswith(('/curves.html','/selected.html')) else 'editorial'
+    fixed=base_route.startswith(('/watch-lab/','/quartz-lab/','/real-time-natural-worlds/','/concerta-catecholamine-model/'))
     def html_attrs(m):
         t=m[0];t=re.sub(r'\sclass=["\']([^"\']*)["\']',lambda c:' class="'+re.sub(r'\big-(?:document|editorial)\b','',c[1]).strip()+'"',t)
         classes='ig-document'+(' ig-editorial' if kind=='editorial' and not fixed else '')
@@ -112,6 +113,10 @@ def apply(path,route,known):
         return t[:-1]+f' data-site-kind="{kind}" data-site-route="{escape(route)}">\n'+nav
     s=re.sub(r'<body\b[^>]*>',body_attrs,s,count=1,flags=re.I)
     head=f'{HEAD_START}\n<link rel="stylesheet" href="/assets/site-shell.css?v={VERSION}">\n<script src="/assets/site-shell.js?v={VERSION}" ></script>\n{HEAD_END}'
+    # The synchronous language router must follow the alternate links it reads.
+    if re.search(r'<script\b[^>]*src=["\']/assets/lang\.js(?:\?[^"\']*)?["\']',s):
+        s=re.sub(r'<script\b[^>]*src=["\']/assets/lang\.js(?:\?[^"\']*)?["\'][^>]*>\s*</script>\s*','',s)
+        head='<script src="/assets/lang.js"></script>\n'+head
     s=re.sub(r'</head>',head+'\n</head>',s,count=1,flags=re.I)
     s=re.sub(r'</body>',foot+'\n</body>',s,count=1,flags=re.I)
     # Allow the shared first-party shell in wrapper CSPs without changing iframe sandboxing.

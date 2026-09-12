@@ -48,6 +48,8 @@
   if (!alt || !alt.href) return;                       // no counterpart published
 
   var counterpart = new URL(alt.href, location.href);
+  if (location.search) counterpart.search = location.search;
+  if (!counterpart.hash && location.hash) counterpart.hash = location.hash;
   var counterpartHref = counterpart.hostname === 'theisegoria.github.io' ? counterpart.pathname + counterpart.search + counterpart.hash : counterpart.href;
 
   var ua = navigator.userAgent || '';

@@ -10,6 +10,7 @@ class Document(HTMLParser):
  def handle_starttag(self,tag,pairs):
   a=dict(pairs)
   if a.get('id'):self.ids.add(a['id'])
+  self.ids.update(a.get('data-route-fragments','').split())
   if a.get('id')=='ig-header':self.shells+=1
   if a.get('id')=='root':self.dynamic=True
   if tag=='meta' and a.get('http-equiv','').lower()=='refresh':self.refresh=True
@@ -18,7 +19,7 @@ class Document(HTMLParser):
   if tag=='link' and a.get('rel') in ['stylesheet','icon','manifest'] and a.get('href'):self.assets.append(a['href'])
 
 def inventory(root,prefix):
- tracked=subprocess.check_output(['git','ls-tree','-r','--name-only','-z','HEAD'],cwd=root,text=True).split("\0")
+ tracked=subprocess.check_output(['git','ls-files','--cached','--others','--exclude-standard','-z'],cwd=root,text=True).split("\0")
  paths={prefix+p for p in tracked if p}
  docs={}
  for p in root.rglob('*.html'):

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+
+<html class=" ig-document ig-editorial" lang="ja">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta content="light dark" name="color-scheme"/>
+<title>計算音響：HomePod 2 と Bose Lifestyle Ultra の比較</title>
+<meta content="Apple HomePod 2およびBose Lifestyle Ultraが低音、空間音、部屋認識再生をどのように実現するかを、特許に基づいた視覚的調査によって検証した内容。" name="description"/>
+<meta content="計算音響：HomePod 2 と Bose Lifestyle Ultra の比較" property="og:title"/>
+<meta content="2つのコンパクトなスピーカー、それぞれ異なるアプローチによる低音制御と空間音の実現。" property="og:description"/>
+<meta content="article" property="og:type"/>
+<meta content="https://theisegoria.github.io/bose-lifestyle-ultra-report/assets/homepod-report-cover.png" property="og:image"/>
+<style>
+    :root { color-scheme:light dark; --bg:light-dark(#f4f1ea,#0b1116); --paper:light-dark(#fffdf8,#111b23); --ink:light-dark(#142536,#edf4f6); --muted:light-dark(#5b6e77,#a8bbc3); --line:light-dark(#d8d5cc,#2a3b45); --blue:light-dark(#176b87,#5fb4cf); --teal:light-dark(#168b7d,#52cdb9); --amber:light-dark(#ba7a16,#efb94c); --purple:light-dark(#6f53a6,#ae91e4); --shadow:0 24px 70px light-dark(#24384b18,#0008); font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
+    * { box-sizing:border-box; } html { scroll-behavior:smooth; } body { margin:0; background:var(--bg); color:var(--ink); } a { color:inherit; }
+    .shell { width:min(1120px,calc(100% - 36px)); margin-inline:auto; }
+    .nav { position:sticky; top:0; z-index:20; border-bottom:1px solid var(--line); background:color-mix(in srgb,var(--bg) 88%,transparent); backdrop-filter:blur(14px); }
+    .nav .shell { min-height:58px; display:flex; align-items:center; justify-content:space-between; gap:20px; }
+    .brand { font-size:.78rem; font-weight:750; letter-spacing:.11em; text-transform:uppercase; text-decoration:none; }
+    .links { display:flex; gap:19px; color:var(--muted); font-size:.86rem; } .links a { text-decoration:none; }
+    .hero { padding:86px 0 68px; position:relative; overflow:hidden; }
+    .hero::after { content:""; position:absolute; width:430px; height:430px; right:-140px; top:-120px; border-radius:50%; background:radial-gradient(circle,var(--teal),transparent 67%); opacity:.12; pointer-events:none; }
+    .eyebrow { color:var(--teal); font-size:.78rem; font-weight:750; letter-spacing:.13em; text-transform:uppercase; }
+    h1 { max-width:900px; margin:14px 0 22px; font-size:clamp(3rem,8.2vw,6.8rem); line-height:.91; letter-spacing:-.06em; }
+    .lede { max-width:790px; color:var(--muted); font-size:clamp(1.08rem,2vw,1.34rem); line-height:1.55; }
+    .actions { display:flex; flex-wrap:wrap; gap:12px; margin-top:30px; }
+    .button { min-height:46px; display:inline-flex; align-items:center; justify-content:center; padding:0 19px; border:1px solid var(--line); border-radius:999px; text-decoration:none; font-weight:720; }
+    .button.primary { color:var(--paper); background:var(--ink); border-color:var(--ink); }
+    .thesis { display:grid; grid-template-columns:1.1fr .9fr; gap:44px; align-items:start; padding:56px 0; border-top:1px solid var(--line); }
+    h2 { margin:0 0 18px; font-size:clamp(2rem,4.5vw,3.5rem); line-height:1; letter-spacing:-.045em; } h3 { margin:0 0 8px; font-size:1.1rem; } p { line-height:1.62; }
+    .muted { color:var(--muted); } .verdict { margin:0; font-size:clamp(1.28rem,2.5vw,1.75rem); line-height:1.42; letter-spacing:-.02em; }
+    .mini-grid { display:grid; grid-template-columns:1fr 1fr; gap:18px; } .mini { padding-top:16px; border-top:3px solid var(--line); } .mini.apple { border-color:var(--blue); } .mini.bose { border-color:var(--purple); }
+    section { padding:68px 0; } .section-head { display:grid; grid-template-columns:.8fr 1.2fr; gap:32px; align-items:end; margin-bottom:30px; } .section-head p { margin:0; color:var(--muted); }
+    .architecture { display:grid; grid-template-columns:1fr 1fr; gap:22px; }
+    .system { background:var(--paper); border:1px solid var(--line); border-radius:22px; overflow:hidden; box-shadow:var(--shadow); }
+    .system img { display:block; width:100%; aspect-ratio:1.42; object-fit:cover; object-position:top; border-bottom:1px solid var(--line); }
+    .system-copy { padding:24px; } .tag { display:inline-block; margin-bottom:10px; color:var(--muted); font-size:.72rem; font-weight:750; letter-spacing:.1em; text-transform:uppercase; }
+    .path-list { display:grid; gap:0; margin-top:16px; } .path { display:grid; grid-template-columns:112px 1fr; gap:14px; padding:12px 0; border-top:1px solid var(--line); font-size:.92rem; } .path strong { color:var(--muted); }
+    .explainer-frame { overflow:hidden; border:1px solid var(--line); border-radius:22px; background:var(--paper); box-shadow:var(--shadow); } iframe { display:block; width:100%; height:620px; border:0; }
+    .comparison { display:grid; gap:1px; border:1px solid var(--line); background:var(--line); border-radius:18px; overflow:hidden; }
+    .row { display:grid; grid-template-columns:1.05fr .9fr .9fr 1.6fr; gap:1px; } .cell { padding:15px; background:var(--paper); line-height:1.4; }
+    .row.head .cell { color:var(--muted); font-size:.74rem; font-weight:750; letter-spacing:.08em; text-transform:uppercase; }
+    .winner { font-weight:750; } .homepod { color:var(--blue); } .bose { color:var(--purple); }
+    .evidence { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; } .patent { padding:20px; border-top:3px solid var(--amber); background:var(--paper); } .patent code { color:var(--amber); font-size:.78rem; } .patent p { margin-bottom:0; color:var(--muted); font-size:.9rem; }
+    .downloads { display:grid; grid-template-columns:1.25fr 1fr 1fr; gap:18px; }
+    .download { display:flex; flex-direction:column; min-height:220px; padding:25px; border:1px solid var(--line); border-radius:20px; background:var(--paper); text-decoration:none; transition:transform .18s ease,border-color .18s ease; }
+    .download:hover { transform:translateY(-3px); border-color:var(--teal); } .download.featured { background:var(--ink); color:var(--paper); } .download span { margin-top:auto; font-weight:750; } .download small { color:var(--muted); } .download.featured small { color:color-mix(in srgb,var(--paper) 65%,transparent); }
+    footer { padding:28px 0 46px; border-top:1px solid var(--line); color:var(--muted); font-size:.84rem; }
+    @media (max-width:800px) { .links{display:none}.thesis,.section-head{grid-template-columns:1fr}.architecture,.downloads{grid-template-columns:1fr}.evidence{grid-template-columns:1fr 1fr}.row{grid-template-columns:1fr}.row.head{display:none}.cell{padding:10px 14px}.cell:first-child{padding-top:16px;font-weight:750}.cell:last-child{padding-bottom:16px}iframe{height:560px} }
+    @media (max-width:480px) { .hero{padding-top:58px}.mini-grid,.evidence{grid-template-columns:1fr}.path{grid-template-columns:1fr;gap:4px}iframe{height:600px} }
+  </style>
+<link href="https://theisegoria.github.io/ja/bose-lifestyle-ultra-report/" rel="canonical"/>
+<link href="https://theisegoria.github.io/bose-lifestyle-ultra-report/" hreflang="en" rel="alternate"/>
+<link href="https://theisegoria.github.io/ja/bose-lifestyle-ultra-report/" hreflang="ja" rel="alternate"/>
+<link href="https://theisegoria.github.io/bose-lifestyle-ultra-report/" hreflang="x-default" rel="alternate"/><script src="/assets/lang.js"></script>
+<!-- ISEGORIA:HEAD -->
+<link rel="stylesheet" href="/assets/site-shell.css?v=08342b869b">
+<script src="/assets/site-shell.js?v=08342b869b" ></script>
+<!-- /ISEGORIA:HEAD -->
+</head>
+<body class=" ig-site" data-site-kind="editorial" data-site-route="/ja/bose-lifestyle-ultra-report/">
+<!-- ISEGORIA:NAV -->
+<a class="ig-skip" href="#ig-content">本文へ移動</a>
+<header id="ig-header"><div class="ig-nav-inner">
+<a class="ig-brand" href="/ja/" aria-label="Isegoria, ホーム"><strong>ISEGORIA</strong><span>Benjamin Haire</span></a>
+<div class="ig-header-actions"><a class="ig-language" href="/bose-lifestyle-ultra-report/" hreflang="en" lang="en">English</a><button class="ig-menu" type="button" aria-expanded="false" aria-controls="ig-primary">メニュー</button></div>
+<nav id="ig-primary" aria-label="メインナビゲーション"><a href="/ja/">ホーム</a><a href="/ja/library.html">全コンテンツ</a><a href="/ja/#guides">学習ガイド</a><a href="/ja/#preoccupations" aria-current="location">研究と解説</a><a href="/ja/#books">書籍</a><a href="/ja/projects.html">プロジェクト</a><a href="/ja/about.html">このサイトについて</a><a class="ig-language" href="/bose-lifestyle-ultra-report/" hreflang="en" lang="en">English</a><button class="ig-theme" type="button" hidden>表示切替</button></nav>
+</div></header>
+<nav id="ig-breadcrumb" aria-label="パンくずリスト"><a href="/ja/">ホーム</a><span aria-hidden="true">/</span><a href="/ja/#preoccupations">研究と解説</a><span aria-hidden="true">/</span><span aria-current="page">計算音響：HomePod 2 と Bose Lifestyle Ultra の比較</span></nav>
+<span id="ig-content" tabindex="-1"></span>
+<!-- /ISEGORIA:NAV --><nav aria-label="主要ナビゲーション" class="nav"><div class="shell"><a class="brand" href="#top">計算音響</a><div class="links"><a href="#systems">システム</a><a href="#explore">探求</a><a href="#performance">性能</a><a href="#patents">特許</a><a href="#reports">報告書</a></div></div></nav>
+<main id="top">
+<header class="hero"><div class="shell"><div class="eyebrow">特許に基づく視覚的調査</div><h1>小型スピーカー。<br/>大規模な音響概念。</h1><p class="lede">Apple HomePod 2 および Bose Lifestyle Ultra が、ドライバーの幾何学、フィードバック、コンテンツ分析、そして部屋そのものを利用して、物理的サイズを越える低音と空間的スケールを実現する方法。</p><div class="actions"><a class="button primary" data-document-language="en" href="/bose-lifestyle-ultra-report/combined-technical-report.pdf" rel="noopener" target="_blank" title="PDF、新しいタブで開きます">合併版報告書をダウンロード（英語PDF）</a><a class="button" href="/ja/bose-lifestyle-ultra-report/3d/">3Dでスピーカーを探索</a><a class="button" href="#explore">元の音響経路図</a><a class="button" href="/ja/kef-coda-w/">KEF Coda W：Uni-Q の内部へ →</a></div></div></header>
+<div class="shell thesis"><div><div class="eyebrow">主要な発見</div><p class="verdict">HomePod 2 はより野心的な <em>自己適応型フルレンジシステム</em>であり、Bose Lifestyle Ultra はより明確に <em>直接音と反射音による空間効果スピーカー</em>である。</p></div><div class="mini-grid"><div class="mini apple"><h3>HomePod の優位性</h3><p class="muted">より深い低音、ほぼ360度の一貫性、ネイティブなAtmos、および自動的に壁または自由空間に適応する機能。</p></div><div class="mini bose"><h3>Bose の優位性</h3><p class="muted">前方焦点を強調し、広範な入力、および専用の上向き発振経路が高さの視認性を強化できる。</p></div></div></div>
+<section id="systems"><div class="shell"><div class="section-head"><h2>2つの音響アーキテクチャ</h2><p>これらの製品は、コンパクトスピーカー問題に対して対立したアプローチを取っている。Appleはケースの周囲に個別に制御されたハイファイターを配置し、Boseは前方の詳細と反射された高さにそれぞれ対応する放射器を割り当てている。</p></div><div class="architecture">
+<article class="system"><img alt="HomePod 2技術報告のカバー図" src="/bose-lifestyle-ultra-report/assets/homepod-report-cover.png"/><div class="system-copy"><span class="tag">Apple HomePod 2</span><h3>軸対称、密封、フィードバック制御型</h3><p class="muted">公称振幅 20 mm の大振幅対応 4 インチウーファーを、底部の周囲に配置した五つのホーン付きツイーターの上に搭載する。低音補正用マイクと外側のマイクアレイの情報を使い、継続的に処理を調整する。</p><div class="path-list"><div class="path"><strong>ボイス</strong><span>密封ドライバー + EQ +マイクロフォンフィードバック + レベル依存保護</span></div><div class="path"><strong>空間的</strong><span>相関分析 + 選択可能なビームパターン + 部屋認識型直接音/周囲音指向</span></div><div class="path"><strong>部屋</strong><span>壁、角、本棚、または自由空間の配置を分類し、それに応じて適応</span></div></div><div class="actions"><a class="button" href="/ja/bose-lifestyle-ultra-report/3d/?speaker=homepod&amp;chapter=inside">HomePodの内部を3Dで見る →</a></div></div></article>
+<article class="system"><img alt="Bose Lifestyle Ultra技術報告のカバー図" src="/bose-lifestyle-ultra-report/assets/bose-report-cover.png"/><div class="system-copy"><span class="tag">Bose Lifestyle Ultra</span><h3>前方、ポート付き、反射高さ型</h3><p class="muted">前方3インチウーティーと背面のQuietPortが低音システムを構成する。前方のハイファイターは詳細を担当し、専用の1.5インチ上向き発振ドライバーが選択されたエネルギーを天井および壁へ向けて送る。</p><div class="path-list"><div class="path"><strong>CleanBass</strong><span>チューニングされたケース + 静音ポート + 活性EQ + 振動保護</span></div><div class="path"><strong>TrueSpatial</strong><span>共鳴成分は前方に保たれ、拡散性素材は反射音の高さに供給できる</span></div><div class="path"><strong>部屋</strong><span>高さとボイスは配置に敏感；独立した自動校正が記載されていない</span></div></div><div class="actions"><a class="button" href="/ja/bose-lifestyle-ultra-report/3d/?speaker=bose&amp;chapter=inside">Boseの内部を3Dで見る →</a></div></div></article>
+</div></div></section>
+<section id="explore"><div class="shell"><div class="section-head"><h2>音響経路に沿って進む</h2><p>製品や配置を切り替え、概念的な直接音、拡散音、反射音、および低音経路を確認できる。このモデルは記録された関係を説明するものであり、特許情報のフィルタ値を再現するものではない。</p></div><div class="explainer-frame"><iframe src="/ja/bose-lifestyle-ultra-report/comparison-explainer.html" title="インタラクティブなHomePod 2およびBose Lifestyle Ultraの音響比較"></iframe></div></div></section>
+<section id="performance"><div class="shell"><div class="section-head"><h2>期待される音響性能</h2><p>HomePodは独立した測定値および成熟した特許出願履歴を持つ。Boseは比較的新しいもので、共有実験室との比較が存在しないため、これらは証拠に基づく重み付けされた期待値であり、意図的に作られたスコアではない。</p></div><div aria-label="期待される音声性能比較" class="comparison" role="table">
+<div class="row head" role="row"><div class="cell">次元</div><div class="cell">期待されるリーダー</div><div class="cell">信頼性</div><div class="cell">なぜ</div></div>
+<div class="row" role="row"><div class="cell">国内レベルでの深い低音</div><div class="cell winner homepod">HomePod 2</div><div class="cell">高い</div><div class="cell">大きな密封ドライバー、20mmの記載された移動量、および測定された延長が約40Hzに近い。</div></div>
+<div class="row" role="row"><div class="cell">360度の一貫性</div><div class="cell winner homepod">HomePod 2</div><div class="cell">高い</div><div class="cell">5つのトゥイーターのリング構成 plus 測定されたほぼ全方向性の振る舞い。</div></div>
+<div class="row" role="row"><div class="cell">焦点を当てる前面の音像</div><div class="cell winner bose">Bose LS Ultra</div><div class="cell">中程度</div><div class="cell">前方専用トゥイーターおよび明確に前面を向いたアーキテクチャ。</div></div>
+<div class="row" role="row"><div class="cell">単一スピーカーによる高さのヒント</div><div class="cell winner bose">Bose LS Ultra</div><div class="cell">中程度</div><div class="cell">専用の上向きドライバーが ceiling 方向に明確な音響パスを生成するが、性能は部屋によって異なる。</div></div>
+<div class="row" role="row"><div class="cell">自動配置適応</div><div class="cell winner homepod">HomePod 2</div><div class="cell">高い</div><div class="cell">マイクロフォン、移動検出、部屋分類、低周波補正、およびAppleの特許に近い技術。</div></div>
+<div class="row" role="row"><div class="cell">接続性</div><div class="cell winner bose">Bose LS Ultra</div><div class="cell">高い</div><div class="cell">Wi-Fi、Bluetooth 5.3、および3.5mm入力に対し、HomePodのApple中心のネットワーク経路とは対照的。</div></div>
+</div></div></section>
+<section id="patents"><div class="shell"><div class="section-head"><h2>特許出願履歴</h2><p>特許は企業が公表したメカニズムを示すものであり、確定的なファームウェアの構成リストとは限らない。これらの4つの公表は、製品と特に機能的または幾何学的に密接に関連している。</p></div><div class="evidence">
+<article class="patent"><code>APPLE US 10,244,314 B2</code><h3>音響の部屋適応</h3><p>壁、書棚、コーナー、または自由空間を分類し、低音を補正し、周囲環境や直接音に対して異なる調整を行う。</p></article>
+<article class="patent"><code>APPLE US 9,942,686 B1</code><h3>ビームフォーミング空間レンダラー</h3><p>相関のあるコンテンツと相関のないコンテンツを分離し、全方向および高次のビームパターンを選択する。</p></article>
+<article class="patent"><code>APPLE US 12,192,698 B2</code><h3>反射を考慮した幾何学</h3><p>支持面に近づけたホンロードリングドライバーを配置することで、色調歪みとコムフィルタリングを減少させる。</p></article>
+<article class="patent"><code>BOSE US 12,008,998 B2</code><h3>高さチャンネルアップミクス</h3><p>相関、エネルギー、パンの保持、および非相関を用いて、従来のミックスから高さ成分を導出する。</p></article>
+</div></div></section>
+<section id="reports"><div class="shell"><div class="section-head"><h2>完全な報告書を読む</h2><p>合併版は元の研究とその出典ノートを両方保持しており、個別版は専門的な読書に適している。</p></div><div class="downloads">
+<a class="download featured" data-document-language="en" href="/bose-lifestyle-ultra-report/combined-technical-report.pdf" rel="noopener" target="_blank" title="PDF、新しいタブで開きます"><small>20ページ · 合併版</small><h3>HomePod 2 および Bose Lifestyle Ultra</h3><p>1冊の印刷可能技術書に、両方の特許に基づく調査を収録。</p><span>合併PDFをダウンロード →</span>（英語PDF）</a>
+<a class="download" data-document-language="en" href="/bose-lifestyle-ultra-report/homepod-vs-bose-report.pdf" rel="noopener" target="_blank" title="PDF、新しいタブで開きます"><small>10ページ</small><h3>HomePod 2 がどのように機能するか</h3><p>アーキテクチャ、フィードバックベース、ルームセンシング、ビームフォーミング、特許、および比較性能。</p><span>PDFをダウンロード →</span>（英語PDF）</a>
+<a class="download" data-document-language="en" href="/bose-lifestyle-ultra-report/bose-report.pdf" rel="noopener" target="_blank" title="PDF、新しいタブで開きます"><small>10ページ</small><h3>Bose Lifestyle Ultra の内部構造</h3><p>CleanBass、QuietPort、TrueSpatial、上向き反射、制限、および特許の系譜。</p><span>PDFをダウンロード →</span>（英語PDF）</a>
+</div></div></section>
+</main>
+<footer><div class="shell">公開ドキュメント、特許、規制資料、分解調査、および独立したテストから構成された独立した技術的分析。Apple、HomePod、Bose、Lifestyle、CleanBass、TrueSpatial、QuietPortはそれぞれの所有者による商標です。</div></footer>
+<p class="ig-translation-note">日本語版（AI翻訳） · <a href="/bose-lifestyle-ultra-report/" hreflang="en" lang="en">英語原文</a></p><!-- ISEGORIA:FOOT -->
+<footer id="ig-footer"><div><a href="/ja/">Isegoria · Benjamin Haire</a><nav aria-label="サイト内リンク"><a href="/ja/">ホームに戻る</a><a href="/ja/library.html">全コンテンツ</a><a href="#ig-content">ページ上部へ</a></nav></div></footer>
+<!-- /ISEGORIA:FOOT -->
+</body>
+</html>
+

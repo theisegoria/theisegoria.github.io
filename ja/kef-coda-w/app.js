@@ -1,0 +1,79 @@
+import * as THREE from 'three';
+import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
+import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
+import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const state={mode:'product',camera:'hero',part:'all',explode:0,layout:'coincident',angle:30,frequency:2000};
+const reduced=matchMedia('(prefers-reduced-motion: reduce)');
+const host=$('#scene');let renderer;
+try{renderer=new THREE.WebGLRenderer({antialias:true,alpha:false});}catch(e){$('#load').textContent="このブラウザでは3Dレンダリングが利用できません。以下の説明およびソースリンクは依然として利用可能です。";throw e;}
+renderer.setPixelRatio(Math.min(devicePixelRatio,1.7));renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.05;host.appendChild(renderer.domElement);
+renderer.domElement.setAttribute('aria-hidden','true');
+const scene=new THREE.Scene();scene.background=new THREE.Color('#e9edef');
+const camera=new THREE.PerspectiveCamera(35,1,.01,60);camera.position.set(4.1,2.1,5.5);
+const controls=new OrbitControls(camera,renderer.domElement);controls.enableDamping=false;controls.enablePan=false;controls.enableZoom=false;controls.minDistance=2;controls.maxDistance=12;controls.maxPolarAngle=Math.PI*.84;
+// Wheel scrolling belongs to the page; two-finger pinch remains a zoom gesture.
+controls.touches.TWO=THREE.TOUCH.DOLLY_ROTATE;
+renderer.domElement.addEventListener('touchstart',e=>{controls.enableZoom=e.touches.length>1;},{passive:true});
+const pmrem=new THREE.PMREMGenerator(renderer);const room=new RoomEnvironment();const env=pmrem.fromScene(room,.04);scene.environment=env.texture;room.dispose();pmrem.dispose();
+scene.add(new THREE.HemisphereLight(0xffffff,0x6e8090,2));const key=new THREE.DirectionalLight(0xffffff,3);key.position.set(3,5,5);scene.add(key);const fill=new THREE.DirectionalLight(0xd1e4fa,1.5);fill.position.set(-5,1,2);scene.add(fill);
+const product=new THREE.Group(),driver=new THREE.Group(),paths=new THREE.Group();scene.add(product,driver,paths);driver.visible=false;paths.visible=false;
+const mat=(color,metalness=.3,roughness=.4)=>new THREE.MeshStandardMaterial({color,metalness,roughness,side:THREE.DoubleSide});
+const floor=new THREE.Mesh(new THREE.CircleGeometry(2.1,72),new THREE.MeshBasicMaterial({color:0xdbe1e5,transparent:true,opacity:.55}));floor.rotation.x=-Math.PI/2;floor.position.y=-1.45;product.add(floor);
+let frame=0,transition=null;function render(){frame=0;if(document.hidden)return;if(transition){const t=Math.min(1,(performance.now()-transition.start)/650),s=1-Math.pow(1-t,3);camera.position.lerpVectors(transition.from,transition.to,s);controls.target.lerpVectors(transition.fromTarget,transition.target,s);controls.update();if(t===1)transition=null;else invalidate();}renderer.render(scene,camera);}
+function invalidate(){if(!frame&&!document.hidden)frame=requestAnimationFrame(render)}
+controls.addEventListener('change',invalidate);controls.addEventListener('start',()=>{transition=null});
+new ResizeObserver(()=>{const {width,height}=host.getBoundingClientRect();renderer.setSize(width,height);camera.aspect=width/height;camera.updateProjectionMatrix();invalidate()}).observe(host);
+document.addEventListener('visibilitychange',()=>{if(document.hidden){cancelAnimationFrame(frame);frame=0;}else invalidate()});
+renderer.domElement.addEventListener('webglcontextlost',e=>{e.preventDefault();$('#load').hidden=false;$('#load').textContent="3Dビューが一時的に停止しました。このページを再読み込みして復元してください。"});
+new GLTFLoader().load('/kef-coda-w/coda-w.glb',g=>{const box=new THREE.Box3().setFromObject(g.scene),size=box.getSize(new THREE.Vector3()),center=box.getCenter(new THREE.Vector3());const wrapper=new THREE.Group();wrapper.add(g.scene);g.scene.position.sub(center);wrapper.scale.setScalar(2.85/size.y);product.add(wrapper);$('#load').hidden=true;window.modelEvidence={size:size.toArray(),meshes:0};g.scene.traverse(o=>{if(o.isMesh)window.modelEvidence.meshes++});invalidate();},undefined,()=>{$('#load').textContent="製品モデルを読み込めませんでした。「Inside Uni-Q」にアクセスして説明されたドライバーを確認してください。";});
+function ring(radius,tube,material,z,parent=driver){const m=new THREE.Mesh(new THREE.TorusGeometry(radius,tube,16,100),material);m.position.z=z;parent.add(m);return m;}
+const coneGroup=new THREE.Group(),tweetGroup=new THREE.Group(),guideGroup=new THREE.Group();driver.add(coneGroup,tweetGroup,guideGroup);driver.scale.setScalar(2);
+const coneMat=mat('#849db0',.7,.29),rubberMat=mat('#253440',.05,.8),tweeterMat=mat('#d4c4a3',.8,.25),guideMat=mat('#344d60',.55,.4);
+ring(.70,.027,rubberMat,0,coneGroup);ring(.645,.033,rubberMat,.025,coneGroup);
+const pts=[new THREE.Vector2(.14,-.19),new THREE.Vector2(.2,-.18),new THREE.Vector2(.34,-.11),new THREE.Vector2(.48,-.025),new THREE.Vector2(.62,.055)];const cone=new THREE.Mesh(new THREE.LatheGeometry(pts,120),coneMat);cone.rotation.x=Math.PI/2;coneGroup.add(cone);
+for(let i=0;i<24;i++){const a=i*Math.PI/12;const geom=new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(.24*Math.cos(a),.24*Math.sin(a),-.161),new THREE.Vector3(.6*Math.cos(a),.6*Math.sin(a),.044)]);coneGroup.add(new THREE.Line(geom,new THREE.LineBasicMaterial({color:0x647f91,transparent:true,opacity:.45})));}
+const dome=new THREE.Mesh(new THREE.SphereGeometry(.125,48,24,0,Math.PI*2,0,Math.PI/2),tweeterMat);dome.rotation.x=Math.PI/2;dome.position.z=-.145;tweetGroup.add(dome);ring(.13,.012,guideMat,-.12,tweetGroup);
+for(let i=0;i<8;i++){const a=i*Math.PI/4;const shape=new THREE.Shape();shape.moveTo(.025,-.005);shape.lineTo(.122,-.018);shape.lineTo(.122,.018);shape.lineTo(.025,.005);shape.closePath();const petal=new THREE.Mesh(new THREE.ExtrudeGeometry(shape,{depth:.01,bevelEnabled:true,bevelSize:.003,bevelThickness:.003,bevelSegments:2,steps:1}),guideMat);petal.rotation.z=a;petal.position.z=-.015;guideGroup.add(petal);}ring(.127,.009,guideMat,-.008,guideGroup);
+function label(text,color='#233b4a'){const c=document.createElement('canvas');c.width=640;c.height=100;const ctx=c.getContext('2d');ctx.fillStyle='rgba(249,251,252,.94)';ctx.fillRect(0,0,640,100);ctx.fillStyle=color;ctx.font='500 52px Arial';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(text,320,52);const tex=new THREE.CanvasTexture(c);tex.colorSpace=THREE.SRGBColorSpace;const sprite=new THREE.Sprite(new THREE.SpriteMaterial({map:tex,depthTest:false,toneMapped:false}));sprite.scale.set(2.7,.48,1);return sprite;}
+driver.traverse(o=>{if(o.isMesh)o.material=o.material.clone()});
+const pathLines=new THREE.Group();paths.add(pathLines);
+const sourceLF=new THREE.Mesh(new THREE.SphereGeometry(.10,24,16),mat('#355f80'));
+const sourceHF=new THREE.Mesh(new THREE.SphereGeometry(.065,24,16),mat('#b77730'));paths.add(sourceLF,sourceHF);
+const listener=new THREE.Mesh(new THREE.SphereGeometry(.1,24,16),mat('#172632'));paths.add(listener);
+const lfLabel=label("ベース／ミッドレンジ",'#355f80'),hfLabel=label("トゥーティー",'#915b25'),earLabel=label("聴取方向");paths.add(lfLabel,hfLabel,earLabel);
+const pathTitle=label("重なり合う理想的な出力源");pathTitle.position.set(0,1.7,0);pathTitle.scale.set(3,.46,1);paths.add(pathTitle);
+function clearLines(){while(pathLines.children.length){const o=pathLines.children[0];pathLines.remove(o);o.geometry.dispose();o.material.dispose();}}
+function addLine(points,color,dashed=false){const m=dashed?new THREE.LineDashedMaterial({color,dashSize:.08,gapSize:.055,transparent:true,opacity:.45}):new THREE.LineBasicMaterial({color,transparent:true,opacity:.85});if(!dashed){m.dispose();const l=new THREE.Mesh(new THREE.TubeGeometry(new THREE.LineCurve3(points[0],points[1]),1,.012,6,false),new THREE.MeshBasicMaterial({color}));pathLines.add(l);return;}const l=new THREE.Line(new THREE.BufferGeometry().setFromPoints(points),m);l.computeLineDistances();pathLines.add(l)}
+function updatePaths(){clearLines();const sep=state.layout==='separated',d=sep?.13:0,displayD=sep?.75:0,a=state.angle*Math.PI/180;sourceLF.position.set(0,-displayD/2,0);sourceHF.position.set(0,displayD/2,.006);listener.position.set(0,Math.sin(a)*2.4,Math.cos(a)*2.4);lfLabel.position.set(0,-displayD/2-.38,-.6);hfLabel.position.set(0,displayD/2+.38,-.6);earLabel.position.copy(listener.position).add(new THREE.Vector3(0,.35,0));addLine([sourceLF.position,listener.position],0x355f80);addLine([sourceHF.position,listener.position],0xb77730);addLine([new THREE.Vector3(0,0,0),new THREE.Vector3(0,0,2.8)],0x6e8090,true);const arc=[];for(let i=-70;i<=70;i++)arc.push(new THREE.Vector3(0,Math.sin(i*Math.PI/180)*2.4,Math.cos(i*Math.PI/180)*2.4));addLine(arc,0xa5b4bd,true);pathTitle.visible=false;const delta=Math.abs(d*Math.sin(a)),phase=360*state.frequency*delta/343;$('#path-value').textContent=(delta*1000).toFixed(1)+' mm';$('#phase-value').textContent=phase.toFixed(0)+'°';$('#angle-value').textContent=state.angle+'°';$('#frequency-value').textContent=state.frequency.toLocaleString()+' Hz';invalidate();}
+function cameraView(which,instant=false){state.camera=which;const mode=state.mode;let to,target=new THREE.Vector3(0,0,0);if(mode==='paths'){target.set(0,0,1);to=which==='front'?new THREE.Vector3(8.8,0,1):which==='rear'?new THREE.Vector3(-8.4,3.2,5.5):new THREE.Vector3(8.4,3.2,5.5);}else if(mode==='driver')to=which==='front'?new THREE.Vector3(0,0,6.2):which==='rear'?new THREE.Vector3(3,.8,-5):new THREE.Vector3(2.9,1.4,5.5);else to=which==='front'?new THREE.Vector3(0,.1,6.6):which==='rear'?new THREE.Vector3(-3.5,1.8,-5.5):new THREE.Vector3(4.1,2.1,5.5);$$('[data-camera]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.camera===which)));if(instant||reduced.matches){transition=null;camera.position.copy(to);controls.target.copy(target);controls.update();}else transition={from:camera.position.clone(),to,fromTarget:controls.target.clone(),target,start:performance.now()};invalidate();}
+const copy={product:['01 / PRODUCT',"ステレオシステム。<br>音の中心を共有する。","コダWは、25mmのアルミニウムトゥーティーを130mmのバス/ミッドレンジコンスに内蔵。各スピーカーは12世代のユニーキー配列を使用。","KEF製品モデル · ミッドナイトブルー"],driver:["02 / ドライバーの構造","2つのドライバー。<br>内側にネストされている。","中央の小さなドームはハイフレクレンジを扱い、周囲の円盤はベースおよびミッドレンジを扱う。その共通軸はUni-Qの出発点となる。","説明用のUni-Q配列 · 検証モデル"],paths:["03 / ジオメトリ","共鳴までの短い経路<br>","同じ位置にある理想的な出力源と、縦に離れた出力源を比較し、聴取角度を変えて経路差を観察してください。","理想的な出力源の幾何構造 · 距離は正確なスケールではありません"]};
+function setMode(mode){state.mode=mode;product.visible=mode==='product';driver.visible=mode==='driver';paths.visible=mode==='paths';$$('[data-mode]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.mode===mode)));for(const m of Object.keys(copy))$('#'+m+'-panel').hidden=m!==mode;const c=copy[mode];$('#panel-number').textContent=c[0];$('#panel-title').innerHTML=c[1];$('#panel-copy').textContent=c[2];$('#scene-caption').textContent=c[3];host.setAttribute('aria-label',c[3]+'. Use view buttons for keyboard navigation.');$('#load').style.display=mode==='product'?'':'none';updatePaths();cameraView('hero');}
+const parts={all:"コンは高周波源を囲んでいる。選択された部品の役割を確認できます。",cone:"ボイス/ミッドレンジコンスは低周波数を放射する。その形状は、中央のハイファイーティーティーより音を導く。",tweeter:"ドームは、大きなコンスの中心から高周波数を放射する。まだ2つのドライバーは別々の周波数帯で動作している。",guide:"タンジェリン波導はドームの前に位置する。KEFは、空気との結合と分散の改善を説明している。ここでの形状はスケッチである。"};
+function setPart(part){state.part=part;$$('[data-part]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.part===part)));$('#part-note').textContent=parts[part];for(const [name,g] of [['cone',coneGroup],['tweeter',tweetGroup],['guide',guideGroup]])g.traverse(o=>{if(o.isMesh){const selected=part==='all'||part===name;o.material.transparent=!selected;o.material.opacity=selected?1:.14;o.material.depthWrite=selected;}});invalidate();}
+$$('[data-mode]').forEach(b=>b.onclick=()=>setMode(b.dataset.mode));$$('[data-camera]').forEach(b=>b.onclick=()=>cameraView(b.dataset.camera));$$('[data-part]').forEach(b=>b.onclick=()=>setPart(b.dataset.part));$$('[data-layout]').forEach(b=>b.onclick=()=>{state.layout=b.dataset.layout;$$('[data-layout]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));updatePaths()});$('#inspect').onclick=()=>setMode('driver');$('#reset').onclick=()=>cameraView('hero');
+$('#explode').oninput=e=>{state.explode=+e.target.value;$('#explode-value').textContent=state.explode+'%';tweetGroup.position.z=state.explode*.0035;guideGroup.position.z=state.explode*.009;invalidate()};$('#angle').oninput=e=>{state.angle=+e.target.value;updatePaths()};$('#frequency').oninput=e=>{state.frequency=+e.target.value;updatePaths()};
+window.experience={state,setMode,cameraView,renderer};cameraView('hero',true);updatePaths();
+
+function zoom(factor){transition=null;const delta=camera.position.clone().sub(controls.target);delta.setLength(THREE.MathUtils.clamp(delta.length()*factor,3.7,10));camera.position.copy(controls.target).add(delta);controls.update();invalidate();}
+$('#zoom-in').onclick=()=>zoom(.85);$('#zoom-out').onclick=()=>zoom(1/.85);
+if(document.modelContext?.registerTool){
+ const lifecycle=new AbortController();
+ const tool={name:'configure_acoustic_explorer',title:"Coda WおよびUni-Qを探索",description:"表示されている3D章を選択し、必要に応じて理想的なソース幾何学または説明的なドライバー分離を設定できる。このページの変更にのみ影響する。",inputSchema:{type:'object',properties:{mode:{type:'string',enum:['product','driver','paths']},layout:{type:'string',enum:['coincident','separated']},angle:{type:'number',minimum:-70,maximum:70},frequency:{type:'number',minimum:500,maximum:5000,multipleOf:100},separation:{type:'number',minimum:0,maximum:100},part:{type:'string',enum:['all','cone','tweeter','guide']}},required:['mode'],additionalProperties:false},annotations:{readOnlyHint:false,untrustedContentHint:false},execute(input){
+  if(!input||!['product','driver','paths'].includes(input.mode))throw new Error("製品、ドライバー、またはパスを選択。");
+  if(Object.keys(input).some(k=>!['mode','layout','angle','frequency','separation','part'].includes(k)))throw new Error("不明なパラメータ。");
+  for(const [key,min,max] of [['angle',-70,70],['frequency',500,5000],['separation',0,100]])if(key in input&&(typeof input[key]!=='number'||!Number.isFinite(input[key])||input[key]<min||input[key]>max))throw new Error("許容範囲外のパラメータ: "+key);
+  if('frequency' in input&&input.frequency%100!==0)throw new Error("周波数は100Hzステップでなければならない。");
+  if('layout' in input&&!['coincident','separated'].includes(input.layout))throw new Error("無効なソースレイアウト。");
+  if('part' in input&&!Object.keys(parts).includes(input.part))throw new Error("無効なコンポーネント。");
+  setMode(input.mode);
+  if(input.layout){state.layout=input.layout;$$('[data-layout]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.layout===state.layout)));}
+  for(const key of ['angle','frequency'])if(key in input){state[key]=input[key];$('#'+key).value=input[key];}
+  if('separation' in input){$('#explode').value=input.separation;$('#explode').oninput({target:$('#explode')});}
+  if(input.part)setPart(input.part);
+  updatePaths();cameraView('hero',true);
+  return {...state,pathDifference:$('#path-value').textContent,phaseDifference:$('#phase-value').textContent};
+ }};
+ try{Promise.resolve(document.modelContext.registerTool(tool,{signal:lifecycle.signal})).catch(()=>{});}catch{}
+ addEventListener('pagehide',()=>lifecycle.abort(),{once:true});
+}

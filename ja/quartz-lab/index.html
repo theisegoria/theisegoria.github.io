@@ -5,9 +5,9 @@
 <meta property="og:description" content="振動する二酸化ケイ素の薄片が、どうやって歩む秒針になるのか。">
 <meta property="og:image" content="https://theisegoria.github.io/og.png">
 <title>クオーツ時計の内部</title>
-<link rel="canonical" href="https://theisegoria.github.io/ja/quartz-lab/">
-<link rel="alternate" hreflang="en" href="https://theisegoria.github.io/quartz-lab/">
-<link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/quartz-lab/">
+
+
+
 <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500&family=Noto+Sans+JP:wght@400;500&display=swap">
@@ -60,9 +60,13 @@ body{line-height:1.8}
   train:['減速輪列','普通の時計の輪列ですが、向きが逆です。遅い香箱から速い脱進機へ増速するのではなく、速いローターから遅い針へ減速します。ここに歩度を左右するものは何もありません。',[['総減速比','21 600 : 1'],['四番車','1 rpm'],['筒かな','1 rph'],['脱進機','なし']]],
   hands:['表示','毎秒6度の文字盤。目に見えるこの一歩は、分周器が1 Hzに到達しパルスを使い切ったことの直接の署名です。クオーツで秒針が掃く機種は、分周を高い段で取り出してモーターをより頻繁に歩ませているだけです。',[['1歩','6°'],['頻度','毎秒1回'],['掃き秒針','毎秒4・8・32歩など'],['パワーリザーブ','なし。電池が尽きれば止まる']]]
  }};</script>
-<script src="../../quartz-lab/quartz.js" defer></script><script src="/assets/lang.js"></script><!-- ISEGORIA:HEAD -->
-<link rel="stylesheet" href="/assets/site-shell.css?v=8d4143495a">
-<script src="/assets/site-shell.js?v=8d4143495a" ></script>
+<script src="../../quartz-lab/quartz.js" defer></script><link rel="canonical" href="https://theisegoria.github.io/ja/quartz-lab/">
+<link rel="alternate" hreflang="en" href="https://theisegoria.github.io/quartz-lab/">
+<link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/quartz-lab/">
+<link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/quartz-lab/"><script src="/assets/lang.js"></script>
+<!-- ISEGORIA:HEAD -->
+<link rel="stylesheet" href="/assets/site-shell.css?v=08342b869b">
+<script src="/assets/site-shell.js?v=08342b869b" ></script>
 <!-- /ISEGORIA:HEAD -->
 </head>
 <body class=" ig-site" data-site-kind="editorial" data-site-route="/ja/quartz-lab/">
@@ -83,7 +87,7 @@ body{line-height:1.8}
 
 <header class="hero" id="top">
 <nav><a class="brand" href="#top">クオーツ時計ラボ</a>
-<div><a href="/ja/">ホーム</a><a href="#chain">信号の流れ</a><a href="#crystal">水晶振動子</a><a href="#circuit">等価回路</a><a href="#osc">発振回路</a><a href="#divider">分周器</a><a href="#motor">モーター</a><a href="#train">輪列</a><a href="#accuracy">精度</a><a href="#versus">機械式との比較</a><a href="../../quartz-lab/inside-a-quartz-watch.pdf" target="_blank" rel="noopener" title="PDF、新しいタブで開く">PDF</a><a href="../../watch-lab/">自動巻きラボ</a></div></nav>
+<div><a href="/ja/">ホーム</a><a href="#chain">信号の流れ</a><a href="#crystal">水晶振動子</a><a href="#circuit">等価回路</a><a href="#osc">発振回路</a><a href="#divider">分周器</a><a href="#motor">モーター</a><a href="#train">輪列</a><a href="#accuracy">精度</a><a href="#versus">機械式との比較</a><a href="/quartz-lab/inside-a-quartz-watch.pdf" target="_blank" rel="noopener" title="PDF、新しいタブで開く">PDF</a><a href="/ja/watch-lab/">自動巻きラボ</a></div></nav>
 <div class="hero-copy">
 <p class="kicker">クオーツ時計を、ゆっくり見る</p>
 <h1>数え続ける<br>ひとつの石。</h1>
@@ -239,7 +243,7 @@ body{line-height:1.8}
 <div class="stats">
 <div><small>直列共振</small><strong id="s-fs">32 768.0 Hz</strong><span>|Z|最小、= R&#8321;</span></div>
 <div><small>並列共振</small><strong id="s-fp">32 803.1 Hz</strong><span>|Z|最大</span></div>
-<div><small>動作周波数</small><strong id="s-fl">32 772.7 Hz</strong><span id="s-ppm">f&#8347;より +144 ppm</span></div>
+<div><small>動作周波数</small><strong id="s-fl">32 772.7 Hz</strong><span id="s-pull-ppm">f&#8347;より +144 ppm</span></div>
 <div><small>Q値</small><strong id="s-q">54 000</strong><span id="s-ring">0.52 s 鳴り続ける</span></div>
 </div>
 
@@ -583,7 +587,7 @@ body{line-height:1.8}
 </section>
 </main>
 
-<footer><span>クオーツ時計ラボ</span><p style="margin:0">教育用の模式図 &#183; 部品定数・電流・比には代表的な値を選んでおり、特定のキャリバーのものではありません。姉妹編は<a href="../../watch-lab/">自動巻き時計ラボ</a>.</p><a href="../../quartz-lab/inside-a-quartz-watch.pdf" target="_blank" rel="noopener" title="PDF、新しいタブで開く">印刷版（PDF・英語）</a><a href="#top">ページ先頭へ &#8593;</a></footer><!-- ISEGORIA:FOOT -->
+<footer><span>クオーツ時計ラボ</span><p style="margin:0">教育用の模式図 &#183; 部品定数・電流・比には代表的な値を選んでおり、特定のキャリバーのものではありません。姉妹編は<a href="/ja/watch-lab/">自動巻き時計ラボ</a>.</p><a href="/quartz-lab/inside-a-quartz-watch.pdf" target="_blank" rel="noopener" title="PDF、新しいタブで開く">印刷版（PDF・英語）</a><a href="#top">ページ先頭へ &#8593;</a></footer><!-- ISEGORIA:FOOT -->
 <footer id="ig-footer"><div><a href="/ja/">Isegoria · Benjamin Haire</a><nav aria-label="サイト内リンク"><a href="/ja/">ホームに戻る</a><a href="/ja/library.html">全コンテンツ</a><a href="#ig-content">ページ上部へ</a></nav></div></footer>
 <!-- /ISEGORIA:FOOT -->
 </body></html>

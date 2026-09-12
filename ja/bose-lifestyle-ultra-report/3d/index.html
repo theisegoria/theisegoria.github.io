@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+
+<html class=" ig-document" lang="ja">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta content="light dark" name="color-scheme"/>
+<title>音の内側 · HomePod および Bose で3D空間で</title>
+<meta content="HomePod（2世代）およびボーゼ・ライフスタイル・ユーロのインタラクティブ3D切断図：ドライバー、ボイス制御、そして部屋内の音響経路を探索できる。" name="description"/>
+<link href="data:," rel="icon"/>
+
+
+<link href="/bose-lifestyle-ultra-report/3d/style.css" rel="stylesheet"/>
+<script type="importmap">{"imports": {"three": "/bose-lifestyle-ultra-report/3d/vendor/three.module.min.js"}}</script>
+
+
+
+
+<link rel="canonical" href="https://theisegoria.github.io/ja/bose-lifestyle-ultra-report/3d/">
+<link rel="alternate" hreflang="en" href="https://theisegoria.github.io/bose-lifestyle-ultra-report/3d/">
+<link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/bose-lifestyle-ultra-report/3d/">
+<link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/bose-lifestyle-ultra-report/3d/"><script src="/assets/lang.js"></script>
+<!-- ISEGORIA:HEAD -->
+<link rel="stylesheet" href="/assets/site-shell.css?v=08342b869b">
+<script src="/assets/site-shell.js?v=08342b869b" ></script>
+<!-- /ISEGORIA:HEAD -->
+</head>
+<body class=" ig-site" data-site-kind="app" data-site-route="/ja/bose-lifestyle-ultra-report/3d/">
+<!-- ISEGORIA:NAV -->
+<a class="ig-skip" href="#ig-content">本文へ移動</a>
+<header id="ig-header"><div class="ig-nav-inner">
+<a class="ig-brand" href="/ja/" aria-label="Isegoria, ホーム"><strong>ISEGORIA</strong><span>Benjamin Haire</span></a>
+<div class="ig-header-actions"><a class="ig-language" href="/bose-lifestyle-ultra-report/3d/" hreflang="en" lang="en">English</a><button class="ig-menu" type="button" aria-expanded="false" aria-controls="ig-primary">メニュー</button></div>
+<nav id="ig-primary" aria-label="メインナビゲーション"><a href="/ja/">ホーム</a><a href="/ja/library.html">全コンテンツ</a><a href="/ja/#guides">学習ガイド</a><a href="/ja/#preoccupations" aria-current="location">研究と解説</a><a href="/ja/#books">書籍</a><a href="/ja/projects.html">プロジェクト</a><a href="/ja/about.html">このサイトについて</a><a class="ig-language" href="/bose-lifestyle-ultra-report/3d/" hreflang="en" lang="en">English</a><button class="ig-theme" type="button" hidden>表示切替</button></nav>
+</div></header>
+<nav id="ig-breadcrumb" aria-label="パンくずリスト"><a href="/ja/">ホーム</a><span aria-hidden="true">/</span><a href="/ja/#preoccupations">研究と解説</a><span aria-hidden="true">/</span><a href="/ja/bose-lifestyle-ultra-report/">計算音響：HomePod 2 と Bose Lifestyle Ultra の比較</a><span aria-hidden="true">/</span><span aria-current="page">音の内側 · HomePod および Bose で3D空間で</span></nav>
+<span id="ig-content" tabindex="-1"></span>
+<!-- /ISEGORIA:NAV --><nav aria-label="このページで" class="ig-page-nav"><a href="#sources">出典およびモデル</a></nav>
+<main id="main-content">
+<header class="intro"><div><p class="eyebrow">計算音響 / インタラクティブな補助ツール</p><h1>音の内側。</h1><p class="intro-copy">2つのコンパクトスピーカー。ハードウェアを探索した後、音を部屋へと導いてみましょう。</p></div><a class="report-link" data-document-language="en" href="/bose-lifestyle-ultra-report/combined-technical-report.pdf" rel="noopener" target="_blank" title="PDF、新しいタブで開きます">研究を読む<span aria-hidden="true">↗</span>（英語PDF）</a></header>
+<div aria-label="スピーカーを選択" class="product-switch" role="group">
+<button aria-pressed="true" data-product="homepod"><span aria-hidden="true" class="product-icon homepod-icon"></span><span><strong>HomePod</strong><small>2世代 · Apple</small></span><span class="product-number">01</span></button>
+<button aria-pressed="false" data-product="bose"><span aria-hidden="true" class="product-icon bose-icon"></span><span><strong>Lifestyle Ultra</strong><small>Bose · セパレートスピーカー</small></span><span class="product-number">02</span></button>
+</div>
+<div class="lab">
+<div class="viewer-column">
+<div class="stage" id="stage">
+<div class="stage-heading"><span id="scene-kicker">APPLE / HOMEPOD 2</span><span id="scene-mode">外部</span></div>
+<canvas aria-describedby="model-note" aria-label="3Dスピーカー。ドラッグで回転。矢印キーで回転、プラス・マイナスでズーム、または下のカメラボタンを使用。" id="scene" tabindex="0">インタラクティブ3Dモデル。以下のコンポーネントリストおよび説明には、同じ教育情報が含まれています。</canvas>
+<div id="loading" role="status">3Dモデルの準備中…</div>
+<div hidden="" id="fallback"><strong>3Dビューは利用できません。</strong><p>説明や構成要素をまだ探索できます。WebGL 2が有効なブラウザを使ってみましょう。</p><a href="/ja/bose-lifestyle-ultra-report/comparison-explainer.html">2D音響図をオープン →</a></div>
+<div aria-hidden="true" id="scene-labels"></div>
+<div class="stage-foot"><span id="view-hint">ドラッグで回転 · + / − でズーム</span><span class="scale-tag" id="scale-tag">説明的な再構成</span></div>
+</div>
+<div aria-label="カメラ操作" class="view-tools" role="group"><span>ビュー</span><button aria-pressed="true" data-camera="hero">3分の1</button><button aria-pressed="false" data-camera="front">正面</button><button aria-pressed="false" data-camera="rear">背面</button><button aria-pressed="false" data-camera="top">上面</button><button aria-label="ズームイン" id="zoom-in">+</button><button aria-label="ズームアウト" id="zoom-out">−</button><button class="reset" id="reset">↺ リセット</button></div>
+<div class="transport" hidden="" id="transport"><button aria-pressed="false" id="play">動画を再生</button><label for="phase">サイクル <output id="phase-value">0%</output></label><input id="phase" max="100" min="0" step="1" type="range" value="0"/><span>遅延表示</span></div>
+<p class="model-note" id="model-note">メーカーの写真、公式な断面図、HomePodの分解データから再構築。未発表の幾何学は近似値です。 <a href="#reference-views">参照先を比較 →</a></p>
+</div>
+<aside aria-label="スピーカー説明" class="lesson">
+<nav aria-label="説明章" class="chapter-tabs"><button aria-pressed="true" data-chapter="design"><span>01</span>設計</button><button aria-pressed="false" data-chapter="inside"><span>02</span>内部</button><button aria-pressed="false" data-chapter="bass"><span>03</span>低音</button><button aria-pressed="false" data-chapter="room"><span>04</span>空間</button></nav>
+<div class="lesson-body"><p class="eyebrow" id="lesson-kicker">01 / ケーブルの周辺</p><h2 id="lesson-title">音の輪が形成される。</h2><p id="lesson-copy">五つのツイーターが一つのウーファーを囲む。円形に配置することで、プロセッサは高域の音を複数の方向へ送り出せる。</p>
+<div class="control-block" id="design-controls"><span class="control-label">終了</span><div aria-label="説明的な仕上げ" class="finish-options" role="group"><button aria-pressed="true" data-finish="light"><i class="swatch light"></i>光</button><button aria-pressed="false" data-finish="dark"><i class="swatch dark"></i>暗い</button></div><p class="small">光と暗い仕上げの製品に基づく素材の研究。</p></div>
+<div class="control-block" hidden="" id="inside-controls"><label for="explode">分離された部品 <output id="explode-value">0%</output></label><input id="explode" max="100" min="0" type="range" value="0"/><p class="small">分解検証モード。部品が離れて視認性を高める。</p></div>
+<div class="control-block" hidden="" id="room-controls"><label for="placement">配置</label><select id="placement"><option value="open">開いたテーブル上</option><option value="wall">壁の近く</option><option value="shelf">棚の下</option></select><label for="ceiling">天井高さ <output id="ceiling-value">2.7 m</output></label><input id="ceiling" max="3.8" min="2.2" step="0.1" type="range" value="2.7"/><div class="room-legend"><span><i class="key direct"></i>直接経路</span><span><i class="key reflected"></i>反射経路</span></div><div class="readout"><span id="path-label">追加の反射経路</span><strong id="path-value">—</strong><small id="delay-value">—</small></div><p class="small" id="placement-note"></p></div>
+<div class="control-block" hidden="" id="bass-diagram"><p class="control-label" id="bass-title">補償ループ</p><div class="signal-flow" id="signal-flow"></div><p class="small" id="bass-note"></p></div>
+<div id="component-area"><h3 class="control-label">要素を探索</h3><div aria-label="スピーカー部品" class="components" id="components" role="group"></div><div aria-live="polite" class="component-detail"><span class="evidence-tag" id="component-evidence">記載されたハードウェア</span><h3 id="component-title"></h3><p id="component-copy"></p><a href="https://www.apple.com/homepod-2nd-generation/specs/" id="component-source" rel="noopener" target="_blank">ソース ↗</a></div></div>
+<div class="next-step"><button id="next">次に、<span aria-hidden="true">→</span> 内部を確認</button><span id="step-count">1 / 4</span></div>
+</div>
+</aside>
+</div>
+<section class="comparison-notes"><p class="eyebrow">建築的差異</p><div class="compare-grid"><article><span class="compare-index">01 / APPLE</span><h2>キャビネット周辺の制御</h2><p>HomePod は、ウーファー、五つのツイーターからなるリング、マイクの情報を用いた処理を組み合わせる。室内の状態を検出し、近くの壁などの面に合わせて再生を調整する。</p><button class="text-button" data-jump="homepod">HomePodの空間経路を探索 →</button></article><article><span class="compare-index">02 / BOSE</span><h2>反射を通じた制御</h2><p>ライフスタイル・ユーロは、前方音響と上方放射器を組み合わせ、別々のポートが低音システムに貢献し、その上部に空間を確保することが高さ経路に重要である。</p><button class="text-button" data-jump="bose">Boseの空間経路を探索 →</button></article></div></section>
+<section class="reference-views" id="reference-views"><p class="eyebrow">視覚的証拠</p><h2>再構築を比較</h2><div class="reference-grid"><a href="https://www.apple.com/newsroom/images/product/homepod/lifestyle/Apple-HomePod-internals-230118_inline.jpg.large_2x.jpg" rel="noopener" target="_blank"><strong>HomePod · 公式解体図 ↗</strong><span>ウーティーモーター、上部の制御部、下部の電子機器および5つの傾斜したアセンブリ。</span></a><a href="https://assets.bosecreative.com/transform/d15df9bf-27f2-4b2e-bf1a-ab26528072c1/LSUS-NueBlack_SF_PDP_Desktop_Carousel-Image1_2720x1420?format=png" rel="noopener" target="_blank"><strong>Bose · 公式解体図 ↗</strong><span>前面ドライバー、上向きの放射部および成型された後部ダクト。</span></a><a href="https://assets.bosecreative.com/transform/3b20b927-c715-4da4-9a92-403906ae37ca/LSUS-NueBlack_SF_PDP_E-Comm_Gallery_4_1500x1120?format=png" rel="noopener" target="_blank"><strong>ボーゼ · 上部の写真 ↗</strong><span>カプセルの外観、制御溝および上部の網目状グリル。</span></a><a href="https://assets.bosecreative.com/transform/ab22a38a-3a97-4e6a-ba49-b0870727b400/LSUS-NueBlack_SF_PDP_E-Comm_Gallery_5_1500x1120?format=png" rel="noopener" target="_blank"><strong>ボーゼ · 後面の写真 ↗</strong><span>織物の境界、長方形のポート、補助入力および電源インレット。</span></a></div></section>
+<section class="sources" id="sources"><div><p class="eyebrow">出典およびモデル境界</p><h2>モデルが示すことができる内容。</h2><p>この補足資料は <a href="/ja/bose-lifestyle-ultra-report/">公開された技術的調査</a>を拡張している。製品の寸法および視覚的に確認可能な構成要素の配置は、公表された参考資料に従っている。マッシュの編み方、正確な曲面、角の通路、回路の詳細、および管の断面は、近似値である。</p><p>部屋内のルートは、長さ343m/sの音速を用いて、長方形の部屋内で理想的な単一反射を表すもので、音の大きさ、方向性、周波数応答、または認識された高さを予測しない。棚は描かれたボーズレーアの端を切っているが、屈折はモデル化されていない。</p><p>元の報告書に記載された特許は、提示された手法について述べているだけで、確認されたファームウェアとは限らない。ボーズのFCC内部写真資料は2026年11月11日に公開される予定であり、その内部モデルは検査された生産品ではなく、公表されたマーケティング用切断図に依拠している。</p><a class="text-button" href="/bose-lifestyle-ultra-report/3d/MODEL_SOURCES.md">詳細モデルおよび参考ノート →</a></div><ol><li><a href="https://www.apple.com/homepod-2nd-generation/specs/" rel="noopener" target="_blank">Apple · HomePod の技術仕様 ↗</a><span>ドライバー配列、カーライズマイクロフォン、168 × 142 mm の外縁。</span></li><li><a href="https://www.apple.com/newsroom/2023/01/apple-introduces-the-new-homepod-with-breakthrough-sound-and-intelligence/" rel="noopener" target="_blank">Apple · HomePod のアーキテクチャと部屋認識 ↗</a><span>直接音響と周囲音響のレンダリング；壁および自由空間の検出。</span></li><li><a href="https://www.ifixit.com/News/71957/the-homepod-2-teardown-small-changes-make-a-big-difference" rel="noopener" target="_blank">iFixit · HomePod 2 の分解 ↗</a><span>生産用ハードウェア、論理基板、ウーファー、アンプおよびヒートシンク。</span></li><li><a href="https://www.bose.com/pressroom/bose-lifestyle-collection" rel="noopener" target="_blank">Bose · Lifestyle Collection の導入 ↗</a><span>3つのドライバー、TrueSpatial、CleanBass、QuietPort。</span></li><li><a href="https://www.bose.com/p/sale/bose-lifestyle-ultra-speaker/LSULT-SPEAKERWIRELESS.html" rel="noopener" target="_blank">Bose · 商品写真および設置ガイド ↗</a><span>天井面の開放空間、壁との距離、設置制限。</span></li><li><a href="https://www.soundguys.com/bose-lifestyle-ultra-speaker-review-better-than-sonos-157251/" rel="noopener" target="_blank">SoundGuys · Bose の実機レビュー ↗</a><span>外部寸法が184 × 121 × 167 mmと報告された。これを使用して概算スケールを設定。</span></li><li><a href="https://fccid.io/A94443508/Test-Report/Test-Report-1-9301897" rel="noopener" target="_blank">Bose FCC提出書類 · 見本の入手可能状況 ↗</a><span>モデル番号 443508。内部写真は2026年9月12日にメタデータとして記載されている。</span></li><li><a data-document-language="en" href="/bose-lifestyle-ultra-report/combined-technical-report.pdf" rel="noopener" target="_blank" title="PDF、新しいタブで開きます">オリジナルの図解レポート · PDF ↗（英語PDF）</a><span>詳細な分析、補助測定値および特許文献の参照。</span></li></ol></section>
+</main>
+
+<noscript><p class="no-script">3DインタラクションにはJavaScriptが必要です。両方のスピーカー構造について、<a data-document-language="en" href="/bose-lifestyle-ultra-report/combined-technical-report.pdf" rel="noopener" target="_blank" title="PDF、新しいタブで開きます">図解レポート（英語PDF）</a> を参照してください。</p></noscript>
+<script type="module">import('./app.js').catch(error=>{document.querySelector('#loading').hidden=true;document.querySelector('#fallback').hidden=false;console.error(error);});</script>
+<p class="ig-translation-note">日本語版（AI翻訳） · <a href="/bose-lifestyle-ultra-report/3d/" hreflang="en" lang="en">英語原文</a></p><!-- ISEGORIA:FOOT -->
+<footer id="ig-footer"><div><a href="/ja/">Isegoria · Benjamin Haire</a><nav aria-label="サイト内リンク"><a href="/ja/">ホームに戻る</a><a href="/ja/library.html">全コンテンツ</a><a href="#ig-content">ページ上部へ</a></nav></div></footer>
+<!-- /ISEGORIA:FOOT -->
+</body></html>
+

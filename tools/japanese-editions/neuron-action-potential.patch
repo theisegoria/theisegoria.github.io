@@ -1,0 +1,429 @@
+--- a/app/page.tsx
++++ b/app/page.tsx
+@@ -91,30 +91,30 @@
+           <Activity size={24} strokeWidth={1.4} />
+           <span>MEMBRANE</span>
+         </div>
+-        <span className="eyebrow">INTERACTIVE NEUROSCIENCE</span>
++        <span className="eyebrow">インタラクティブ・ニューロサイエンス</span>
+         <span className="edition">
+-          FIGURE <b>01</b>
++          図 <b>01</b>
+           <span className="edition-line" />
+-          LIVE MODEL
++          ライブ・モデル
+         </span>
+       </header>
+       <div className="workspace">
+         <div className="figure-column">
+-          <section className="visual" aria-label="Interactive 3D neuron">
++          <section className="visual" aria-label="インタラクティブな3Dニューロン">
+             <div className="figure-title">
+-              <p className="eyebrow">CELLULAR ELECTROPHYSIOLOGY</p>
+-              <h1>Action potential</h1>
+-              <p>One neuron. A travelling electrical signal.</p>
++              <p className="eyebrow">細胞電生理学</p>
++              <h1>行動電位</h1>
++              <p>1つの神経細胞。移動する電気信号。</p>
+             </div>
+             <div className="scene-badge">
+               <span className="na-dot" />{" "}
+-              {focus ? "MEMBRANE CLOSE-UP" : "MULTIPOLAR NEURON"}
++              {focus ? "膜の近景" : "多極神経細胞"}
+             </div>
+             <div className="scene-canvas">
+               {mounted && (
+                 <Suspense
+                   fallback={
+-                    <div className="scene-loading">Preparing the neuron…</div>
++                    <div className="scene-loading">神経細胞を準備中…</div>
+                   }
+                 >
+                   <NeuronScene
+@@ -133,14 +133,14 @@
+               <button
+                 aria-pressed={focus}
+                 onClick={() => setFocus(!focus)}
+-                title="Inspect channels at the recording site"
++                title="記録地点のチャネルを確認"
+               >
+                 <Focus size={16} />
+-                {focus ? "Whole neuron" : "Inspect membrane"}
++                {focus ? "全体の神経細胞" : "膜を確認"}
+               </button>
+               <button
+                 className="icon-button"
+-                aria-label="Reset camera"
++                aria-label="カメラをリセット"
+                 onClick={() => {
+                   setFocus(false);
+                   setViewRevision((n) => n + 1);
+@@ -150,7 +150,7 @@
+               </button>
+             </div>
+             <div className="voltage-legend">
+-              <span>MEMBRANE POTENTIAL</span>
++              <span>膜電位</span>
+               <div className="voltage-ramp" />
+               <div>
+                 <span>−80</span>
+@@ -160,10 +160,8 @@
+             </div>
+             <div className="scene-foot">
+               <span>
+-                <Move size={13} /> Drag to orbit · Scroll to zoom · Right-drag
+-                to pan
+-              </span>
+-              <span>Click axon to move probe</span>
++                <Move size={13} />ドラッグで軌道を描く · スクロールでズーム · 右クリックでパン</span>
++              <span>軸索をクリックしてプローブを移動</span>
+             </div>
+             <span role="status" className="pulse-note">
+               {pulseNote}
+@@ -171,23 +169,18 @@
+           </section>
+           <section
+             className="trace-panel"
+-            aria-label="Membrane potential recording"
++            aria-label="膜電位の記録"
+           >
+             <div className="trace-header">
+               <div>
+-                <p className="eyebrow">
+-                  MEMBRANE POTENTIAL <span className="unit">mV</span>
++                <p className="eyebrow">膜電位<span className="unit">mV</span>
+                 </p>
+                 <div className="trace-key">
+                   <span>
+-                    <i />
+-                    Recording site · {Math.round((model.probe / 63) * 100)}%
+-                    along axon
+-                  </span>
++                    <i />記録地点 · {Math.round((model.probe / 63) * 100)}%
++軸索のどこか</span>
+                   <span>
+-                    <i />
+-                    Hillock
+-                  </span>
++                    <i />ヒルロック</span>
+                 </div>
+               </div>
+               <div className="live-voltage">
+@@ -200,7 +193,7 @@
+             </div>
+             <VoltageGraph model={model} />
+             <div className="trace-foot">
+-              <span>40 ms window · Resting reference −65 mV</span>
++              <span>40msのウィンドウ · 静止時の参照電位 −65 mV</span>
+               <span>
+                 t = <b>{live.time.toFixed(1)}</b> ms
+               </span>
+@@ -226,55 +219,38 @@
+       <footer>
+         <div className="figure-caption">
+           <span className="caption-number">01</span>
+-          <p>
+-            Depolarization admits <span className="sodium-text">Na⁺</span>.
+-            Delayed <span className="potassium-text">K⁺</span> efflux restores
+-            the membrane potential.
++          <p>脱極化が認められる<span className="sodium-text">Na⁺</span>.
++            遅延<span className="potassium-text">K⁺</span> efflux は膜電位を回復させます。
+             <br />
+             <span>
+-              Follow the green wave along the axon; inspect a membrane patch to
+-              see the gates respond.
++              軸突を沿って緑色の波を追ってみましょう。膜のパッチを確認することで、ゲートの反応を観察できます。
+             </span>
+           </p>
+         </div>
+         <details className="model-details">
+           <summary>
+-            About the model <ChevronDown size={14} />
++            モデルについて<ChevronDown size={14} />
+           </summary>
+           <div>
+             <p>
+-              64 electrically coupled compartments solve a Hodgkin–Huxley cable
+-              with voltage-dependent m, h and n gates. Injected current enters
+-              the first four compartments. Each segment’s local voltage colours
+-              the membrane; its ionic currents drive the particle crossings.
++              64つの電気的に結合されたコンパートメントが、電位に依存するm、h、nゲートを持つHodgkin–Huxleyのケーブル方程式を解きます。注入電流は最初の4つのコンパートメントに流入します。各セグメントの局所電位は膜を色付けし、そのイオン電流は粒子の通過を駆動します。
+             </p>
+             <p className="equation">
+               Cₘ dV/dt = Iᵢₙⱼ + Iₐₓᵢₐₗ − ḡNa m³h(V − ENa) − ḡK n⁴(V − EK) − gL(V
+               − EL)
+             </p>
+             <p>
+-              Classic squid-axon kinetics at 6.3 °C: Cₘ = 1 μF/cm²; ENa = +50
+-              mV; EK = −77 mV; EL = −54.387 mV; gL = 0.3 mS/cm². Sealed cable
+-              ends; neighbour coupling 4 mS/cm²; time step 0.01 ms. Gates use an
+-              exponential update and voltage uses frozen conductances within
+-              each step.
++              クラシックなイカの軸突の動力学（6.3°C）：Cₘ = 1 μF/cm²；ENa = +50 mV；EK = −77 mV；EL = −54.387 mV；gL = 0.3 mS/cm²。密封ケーブルの端；隣接コンパートメント間の結合は4 mS/cm²；時間ステップは0.01 ms。ゲートは指数的更新を使用し、電位は各ステップ内で固定された電導を使用します。
+             </p>
+             <p>
+-              An educational approximation: a stylized multipolar morphology
+-              carries an unmyelinated, uniform cable. Dendrites and soma share
+-              the hillock colour; terminal branches share the distal voltage.
+-              Shapes, channel sizes and ion counts are illustrative. Pore width
+-              depicts an ensemble open fraction, not individual stochastic
+-              gates; particle flux is scaled for visibility. Distances and
+-              conduction speed are not calibrated to a specific neuron. Reset
+-              restores all electrical settings and clears the recording.
++              教育的な近似：簡略化された多極構造を持つ細胞が、未被覆かつ一様なケーブルを有しています。樹突および細胞体はヒルロックの色で共有され、末端枝は遠端電位を共有します。形状、チャネルサイズ、イオン数は説明的であり、ポア幅は開いている確率の集合を表しており、個々の確率的ゲートとは異なります。粒子の流れは可視性のためにスケーリングされています。距離や伝導速度は特定のニューロンに準拠したわけではありません。リセットはすべての電気的設定を復元し、記録をクリアします。
+             </p>
+             <a
+               href="https://neuronaldynamics.epfl.ch/online/Ch2.S2.html"
+               target="_blank"
+               rel="noreferrer"
+             >
+-              Hodgkin–Huxley model · Neuronal Dynamics{" "}
++              Hodgkin–Huxleyモデル · 神経細胞動力学{" "}
+               <ArrowUpRight size={13} />
+             </a>
+             <a
+@@ -282,7 +258,7 @@
+               target="_blank"
+               rel="noreferrer"
+             >
+-              Hodgkin & Huxley, 1952 · original model <ArrowUpRight size={13} />
++              Hodgkin &amp; Huxley, 1952 · 原始モデル<ArrowUpRight size={13} />
+             </a>
+           </div>
+         </details>
+--- a/components/neuron/VoltageGraph.tsx
++++ b/components/neuron/VoltageGraph.tsx
+@@ -98,7 +98,7 @@
+       ref={ref}
+       className="voltage-canvas"
+       role="img"
+-      aria-label="Live membrane voltage at the recording site in mint, compared with the axon hillock in grey. The horizontal window is 40 milliseconds."
++      aria-label="記録地点での膜電位（緑）と、軸突ヒルロック（灰色）を比較。水平ウィンドウは40ミリ秒です。"
+     />
+   );
+ }
+--- a/components/neuron/MembraneInset.tsx
++++ b/components/neuron/MembraneInset.tsx
+@@ -7,19 +7,19 @@
+   return (
+     <div className="membrane-inset">
+       <div className="inset-head">
+-        <span>MEMBRANE DETAIL</span>
+-        <span>schematic section</span>
++        <span>膜詳細</span>
++        <span>スケッチ断面</span>
+       </div>
+       <svg
+         viewBox="0 0 286 135"
+         role="img"
+-        aria-label="Membrane cross-section. Sodium flows inward through mint channels; potassium flows outward through gold channels. Pore width represents the open fraction."
++        aria-label="膜の断面。ナトリウムは緑色のチャネルを通じて内側へ流入し、カリウムは金色のチャネルを通じて外側へ流出します。ポアの幅は開いている確率を表します。"
+       >
+         <text x="4" y="19" className="space-label">
+-          EXTRACELLULAR
++          エクストラセルラー
+         </text>
+         <text x="4" y="128" className="space-label">
+-          INTRACELLULAR
++          イントラセルラー
+         </text>
+         <rect x="0" y="49" width="286" height="31" fill="#1a2d37" />
+         {Array.from({ length: 25 }, (_, i) => (
+@@ -100,15 +100,15 @@
+           Na⁺
+           <strong>
+             {s.m > 0.45 && s.h < 0.3
+-              ? "Inactivated"
++              ? "不活性化"
+               : s.openNa > 0.03
+-                ? "Open"
+-                : "Mostly closed"}
++                ? "開いた状態"
++                : "ほとんど閉じている"}
+           </strong>
+         </div>
+         <div>
+           <span className="k-dot" />
+-          K⁺<strong>{s.openK > 0.06 ? "Open" : "Mostly closed"}</strong>
++          K⁺<strong>{s.openK > 0.06 ? "開いた状態" : "ほとんど閉じている"}</strong>
+         </div>
+       </div>
+       <div className="open-fractions">
+--- a/components/neuron/SimulationControls.tsx
++++ b/components/neuron/SimulationControls.tsx
+@@ -28,10 +28,10 @@
+       element.setAttribute(
+         "aria-label",
+         [
+-          "Injected current",
+-          "Sodium conductance",
+-          "Potassium conductance",
+-          "Simulation speed",
++          "注入電流",
++          "ナトリウム導電性",
++          "カリウム導電性",
++          "シミュレーション速度",
+         ][i],
+       );
+     });
+@@ -39,23 +39,23 @@
+   return (
+     <div ref={root}>
+       <div className="control-heading">
+-        <p className="eyebrow">EXPERIMENT</p>
++        <p className="eyebrow">実験</p>
+         <span className="live-indicator">
+           <i className={p.paused ? "paused" : ""} />
+-          {p.paused ? "PAUSED" : "RUNNING"}
++          {p.paused ? "一時停止" : "動作中"}
+         </span>
+       </div>
+-      <h2>Drive the signal.</h2>
++      <h2>信号を駆動します。</h2>
+       <div className="transport">
+         <button className="primary-button" onClick={p.togglePause}>
+           {p.paused ? <Play size={15} /> : <Pause size={15} />}{" "}
+-          {p.paused ? "Resume" : "Pause"}
++          {p.paused ? "再開" : "一時停止"}
+         </button>
+         <button
+           className="icon-button"
+           onClick={p.reset}
+-          title="Reset parameters, voltage and time"
+-          aria-label="Reset simulation"
++          title="パラメータ、電位、時間のリセット"
++          aria-label="シミュレーションのリセット"
+         >
+           <RotateCcw size={16} />
+         </button>
+@@ -63,35 +63,35 @@
+           className="pulse-button"
+           onClick={p.pulse}
+           disabled={p.paused}
+-          title="Add 35 μA/cm² for 1 simulated ms"
++          title="1シミュレートされたmsあたり35 μA/cm²を追加"
+         >
+-          <Zap size={14} /> Pulse
++          <Zap size={14} />パルス
+         </button>
+       </div>
+       {[
+         {
+           key: "current" as const,
+-          label: "Injected current",
++          label: "注入電流",
+           unit: "μA/cm²",
+           max: 40,
+           step: 0.5,
+-          note: "Continuous input at the axon hillock.",
++          note: "軸索のヒルロック付近での連続入力。",
+         },
+         {
+           key: "gNa" as const,
+-          label: "Sodium conductance",
++          label: "ナトリウム導電性",
+           unit: "mS/cm²",
+           max: 200,
+           step: 1,
+-          note: "ḡNa · fast activation, then inactivation.",
++          note: "ḡNa · 高速活性化、その後非活性化。",
+         },
+         {
+           key: "gK" as const,
+-          label: "Potassium conductance",
++          label: "カリウム導電性",
+           unit: "mS/cm²",
+           max: 80,
+           step: 1,
+-          note: "ḡK · delayed activation and recovery.",
++          note: "ḡK · 遅延活性化および回復。",
+         },
+       ].map((o) => (
+         <div className={"control-field " + o.key} key={o.key}>
+@@ -114,7 +114,7 @@
+       ))}
+       <div className="speed-control">
+         <label id="speed-label">
+-          Simulation speed <output>{p.params.speed.toFixed(1)}×</output>
++          シミュレーション速度 <output>{p.params.speed.toFixed(1)}×</output>
+         </label>
+         <Slider
+           aria-labelledby="speed-label"
+@@ -124,15 +124,15 @@
+           step={0.1}
+           onValueChange={(v) => p.setParam("speed", v[0])}
+         />
+-        <p>1× = 8 ms of activity per second</p>
++        <p>1× = 1秒あたり8msの活動</p>
+       </div>
+       <div className="view-options">
+         <label htmlFor="show-ions">
+-          Ion particles
++          結晶粒子
+           <Switch id="show-ions" checked={p.ions} onCheckedChange={p.setIons} />
+         </label>
+         <label htmlFor="show-labels">
+-          Anatomy labels
++          解剖学的ラベル
+           <Switch
+             id="show-labels"
+             checked={p.labels}
+--- a/components/neuron/NeuronScene.tsx
++++ b/components/neuron/NeuronScene.tsx
+@@ -252,20 +252,20 @@
+       {labels && (
+         <>
+           <Html position={[-6.9, 2.7, 0]} center className="anatomy-label">
+-            <span>DENDRITES</span>
+-            <small>receive</small>
++            <span>樹状突起</span>
++            <small>受信</small>
+           </Html>
+           <Html position={[-4.7, -1.65, 0.2]} center className="anatomy-label">
+             <span>SOMA</span>
+-            <small>integrate</small>
++            <small>統合</small>
+           </Html>
+           <Html position={[2, -1.3, 0.2]} center className="anatomy-label">
+-            <span>AXON</span>
+-            <small>propagate →</small>
++            <span>軸突</span>
++            <small>伝播 →</small>
+           </Html>
+           <Html position={[7.7, 2.05, 0]} center className="anatomy-label">
+-            <span>TERMINALS</span>
+-            <small>transmit</small>
++            <span>終端</span>
++            <small>伝達</small>
+           </Html>
+         </>
+       )}
+@@ -281,7 +281,7 @@
+         center
+         className="probe-label"
+       >
+-        RECORDING SITE
++        記録場所
+       </Html>
+     </group>
+   );
+@@ -365,8 +365,7 @@
+   render() {
+     return this.state.failed ? (
+       <div className="webgl-error">
+-        The 3D view needs WebGL 2. Enable hardware acceleration or try a current
+-        browser. The model and voltage trace remain available.
++        3DビューはWebGL 2が必要です。ハードウェアアクセラレーションを有効にしたり、最新のブラウザを使用してみてください。モデルおよび電位トレースはそのまま利用可能です。
+       </div>
+     ) : (
+       this.props.children
+@@ -386,8 +385,7 @@
+         }}
+         fallback={
+           <div className="webgl-error">
+-            WebGL is unavailable. The live model and graph remain available
+-            below.
++            WebGLが利用できません。ライブモデルおよびグラフは下記で利用可能です。
+           </div>
+         }
+       >

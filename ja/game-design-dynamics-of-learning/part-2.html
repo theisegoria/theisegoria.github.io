@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+
+<html class=" ig-document ig-editorial" lang="ja">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="Part II of Game Design as the Dynamics of Learning: What games do to the brain. The Reward System and Prediction Error; Curiosity and Exploration; Learning Systems and Skill Acquisition" name="description"/>
+<meta content="#f7f7f5" name="theme-color"/>
+<link href="/assets/favicon.svg" rel="icon" type="image/svg+xml"/>
+<title>Part II. ゲームが脳に与える影響</title>
+<style>
+  :root {
+    --ground:#F7F7F5; --surface:#FFFFFF; --surface-2:#F0F1EC;
+    --ink:#17191B; --muted:#63686D; --rule:#DEE0DC;
+    --accent:#1F5FA8; --accent-soft:#1F5FA814; --mark:#C05621;
+    --f-display:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    --f-read:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    --f-ui:"Inter",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground:#101214; --surface:#181B1E; --surface-2:#1F2327;
+      --ink:#EDEFF1; --muted:#9BA3AA; --rule:#2C3237;
+      --accent:#69ABE3; --accent-soft:#69ABE31C; --mark:#E8A87C;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground:#101214; --surface:#181B1E; --surface-2:#1F2327;
+    --ink:#EDEFF1; --muted:#9BA3AA; --rule:#2C3237;
+    --accent:#69ABE3; --accent-soft:#69ABE31C; --mark:#E8A87C;
+  }
+  * { box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { margin:0; background:var(--ground); color:var(--ink);
+         font-family:var(--f-ui); font-size:17px; line-height:1.65; -webkit-font-smoothing:antialiased; }
+  a { color:var(--accent); text-underline-offset:.18em; }
+  .wrap { width:min(720px, calc(100% - 40px)); margin-inline:auto; }
+  .wide { width:min(1080px, calc(100% - 40px)); margin-inline:auto; }
+  header.site { border-bottom:1px solid var(--rule); }
+  header.site .wide { min-height:64px; display:flex; align-items:center; justify-content:space-between; gap:20px; }
+  header.site .name { font-weight:750; letter-spacing:-.02em; text-decoration:none; color:var(--ink); }
+  header.site nav { display:flex; gap:20px; flex-wrap:wrap; }
+  header.site nav a { color:var(--muted); font-size:.88rem; text-decoration:none; }
+  header.site nav a:hover { color:var(--ink); }
+  .label { color:var(--muted); font-size:.74rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; }
+  .hero { padding:72px 0 40px; }
+  h1 { font-family:var(--f-display); font-weight:600; margin:14px 0 16px;
+       font-size:clamp(2.3rem,5.6vw,3.6rem); line-height:1.04; letter-spacing:-.03em; }
+  .standfirst { font-size:1.15rem; color:var(--muted); margin:0 0 26px; max-width:60ch; font-family:var(--f-read); font-style:italic; }
+  .herometa { display:flex; flex-wrap:wrap; gap:10px 18px; align-items:center;
+              font-size:.86rem; color:var(--muted); border-top:1px solid var(--rule); padding-top:18px; }
+  .pill { display:inline-flex; align-items:center; gap:7px; padding:7px 14px; border:1px solid var(--rule);
+          border-radius:999px; background:var(--surface); text-decoration:none; color:var(--ink);
+          font-weight:600; font-size:.85rem; }
+  .pill:hover { border-color:var(--accent); color:var(--accent); }
+  article.book { font-family:var(--f-read); font-size:1.075rem; line-height:1.72; }
+  article.book p { margin:0 0 1.15em; }
+  article.book h2 { font-family:var(--f-display); font-weight:600; letter-spacing:-.02em;
+               font-size:clamp(1.6rem,3.4vw,2.15rem); line-height:1.15; margin:2.6em 0 .2em; scroll-margin-top:24px; }
+  article.book h2 .num { display:block; font-family:var(--f-ui); font-size:.72rem; font-weight:700;
+                    letter-spacing:.12em; text-transform:uppercase; color:var(--mark); margin-bottom:.7em; }
+  article.book h3 { font-family:var(--f-ui); font-weight:650; font-size:1.02rem; letter-spacing:-.005em;
+               margin:2.1em 0 .5em; color:var(--ink); }
+  article.book .epigraph { font-style:italic; color:var(--muted); margin:.4em 0 2em; padding-left:1.1em;
+                      border-left:2px solid var(--rule); }
+  article.book blockquote { margin:1.6em 0; padding:1.1em 1.3em; background:var(--surface); border:1px solid var(--rule);
+                       border-radius:.7rem; font-style:italic; }
+  article.book blockquote p { margin:0 0 .6em; } article.book blockquote p:last-child { margin:0; }
+  article.book ul, article.book ol { margin:0 0 1.2em; padding-left:1.35em; }
+  article.book li { margin:0 0 .45em; }
+  article.book strong { font-weight:650; }
+  .partsplash { padding:56px 0 8px; }
+  .partsplash .kicker { font-family:var(--f-ui); font-size:.74rem; font-weight:700; letter-spacing:.12em;
+                        text-transform:uppercase; color:var(--mark); }
+  .partsplash h1 { font-size:clamp(2rem,4.8vw,3rem); margin-top:10px; }
+  .toc { margin:2rem 0 0; }
+  nav.toc h2 { font-family:var(--f-ui); font-size:.74rem; font-weight:700; letter-spacing:.1em;
+            text-transform:uppercase; color:var(--muted); margin:0 0 .9rem; }
+  .toc ol { list-style:none; margin:0; padding:0; }
+  .toc li { border-top:1px solid var(--rule); }
+  .toc a { display:flex; gap:14px; padding:.72rem 0; text-decoration:none; color:var(--ink); align-items:baseline; }
+  .toc a:hover { color:var(--accent); }
+  .toc .n { font-family:var(--f-ui); font-size:.78rem; font-weight:700; color:var(--muted); min-width:5.4em; }
+  .toc .t { font-family:var(--f-read); font-size:1.02rem; }
+  .contents .part { margin:2.6rem 0 0; }
+  .contents .part > h3 { font-family:var(--f-ui); font-size:.74rem; font-weight:700; letter-spacing:.1em;
+                         text-transform:uppercase; color:var(--mark); margin:0 0 .2rem; }
+  .contents .part > .pt { font-family:var(--f-display); font-size:1.5rem; font-weight:600; letter-spacing:-.02em;
+                          margin:0 0 .7rem; display:block; text-decoration:none; color:var(--ink); }
+  .contents .part > .pt:hover { color:var(--accent); }
+  .cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:14px; margin:1.6rem 0 0; }
+  .card { border:1px solid var(--rule); border-radius:.8rem; padding:1rem 1.1rem; background:var(--surface); }
+  .card h3 { font-family:var(--f-ui); font-size:.78rem; letter-spacing:.08em; text-transform:uppercase;
+             color:var(--muted); margin:0 0 .45rem; font-weight:700; }
+  .card p { margin:0; font-family:var(--f-read); font-size:.98rem; }
+  .pagenav { display:flex; justify-content:space-between; gap:16px; margin:4rem 0 0; padding-top:1.4rem;
+             border-top:1px solid var(--rule); font-family:var(--f-ui); font-size:.9rem; }
+  .pagenav a { text-decoration:none; font-weight:600; }
+  .pagenav span { color:var(--muted); }
+  div.sources { margin:3.4rem 0 0; padding:1.4rem 1.5rem; background:var(--surface-2); border-radius:.8rem;
+             font-family:var(--f-ui); font-size:.92rem; color:var(--muted); }
+  div.sources h2 { font-size:.74rem; letter-spacing:.1em; text-transform:uppercase; margin:0 0 .7rem; color:var(--ink);
+                font-family:var(--f-ui); font-weight:700; }
+  div.sources p { margin:0 0 .7rem; } .sources p:last-child { margin:0; }
+  footer.site { border-top:1px solid var(--rule); margin-top:64px; }
+  footer.site .wide { min-height:72px; display:flex; align-items:center; justify-content:space-between;
+                      gap:16px; font-size:.86rem; color:var(--muted); }
+  @media (max-width:560px) { header.site .wide { flex-direction:column; align-items:flex-start; gap:6px; padding:12px 0; }
+                             .hero { padding:44px 0 28px; } }
+</style>
+
+
+
+<link rel="canonical" href="https://theisegoria.github.io/ja/game-design-dynamics-of-learning/part-2.html">
+<link rel="alternate" hreflang="en" href="https://theisegoria.github.io/game-design-dynamics-of-learning/part-2.html">
+<link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/game-design-dynamics-of-learning/part-2.html">
+<link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/game-design-dynamics-of-learning/part-2.html"><script src="/assets/lang.js"></script>
+<!-- ISEGORIA:HEAD -->
+<link rel="stylesheet" href="/assets/site-shell.css?v=08342b869b">
+<script src="/assets/site-shell.js?v=08342b869b" ></script>
+<!-- /ISEGORIA:HEAD -->
+</head>
+<body class=" ig-site" data-site-kind="editorial" data-site-route="/ja/game-design-dynamics-of-learning/part-2.html">
+<!-- ISEGORIA:NAV -->
+<a class="ig-skip" href="#ig-content">本文へ移動</a>
+<header id="ig-header"><div class="ig-nav-inner">
+<a class="ig-brand" href="/ja/" aria-label="Isegoria, ホーム"><strong>ISEGORIA</strong><span>Benjamin Haire</span></a>
+<div class="ig-header-actions"><a class="ig-language" href="/game-design-dynamics-of-learning/part-2.html" hreflang="en" lang="en">English</a><button class="ig-menu" type="button" aria-expanded="false" aria-controls="ig-primary">メニュー</button></div>
+<nav id="ig-primary" aria-label="メインナビゲーション"><a href="/ja/">ホーム</a><a href="/ja/library.html">全コンテンツ</a><a href="/ja/#guides">学習ガイド</a><a href="/ja/#preoccupations">研究と解説</a><a href="/ja/#books" aria-current="location">書籍</a><a href="/ja/projects.html">プロジェクト</a><a href="/ja/about.html">このサイトについて</a><a class="ig-language" href="/game-design-dynamics-of-learning/part-2.html" hreflang="en" lang="en">English</a><button class="ig-theme" type="button" hidden>表示切替</button></nav>
+</div></header>
+<nav id="ig-breadcrumb" aria-label="パンくずリスト"><a href="/ja/">ホーム</a><span aria-hidden="true">/</span><a href="/ja/#books">書籍</a><span aria-hidden="true">/</span><a href="/ja/game-design-dynamics-of-learning/">学習のダイナミクスとしてのゲームデザイン</a><span aria-hidden="true">/</span><span aria-current="page">Part II. ゲームが脳に与える影響</span></nav>
+<span id="ig-content" tabindex="-1"></span>
+<!-- /ISEGORIA:NAV --><nav aria-label="このページで" class="ig-page-nav"><a href="/ja/game-design-dynamics-of-learning/">目次</a><a href="/ja/game-design-dynamics-of-learning/part-1.html">I</a><a href="/ja/game-design-dynamics-of-learning/part-2.html">II</a><a href="/ja/game-design-dynamics-of-learning/part-3.html">III</a><a href="/ja/game-design-dynamics-of-learning/part-4.html">IV</a><a href="/ja/game-design-dynamics-of-learning/part-5.html">V</a><a href="/ja/game-design-dynamics-of-learning/part-6.html">VI</a><a href="/ja/game-design-dynamics-of-learning/part-7.html">VII</a></nav>
+<main>
+<div class="wrap">
+<section class="partsplash">
+<p class="kicker">Part II of 7</p>
+<h1>ゲームが脳に与える影響</h1>
+</section>
+<nav aria-label="この部分の章" class="toc"><h2>この部分では</h2><ol>
+<li><a href="#ch-3"><span class="n">第3章</span><span class="t">報酬システムと予測誤差</span></a></li>
+<li><a href="#ch-4"><span class="n">第4章</span><span class="t">好奇心と探索</span></a></li>
+<li><a href="#ch-5"><span class="n">第5章</span><span class="t">学習システムとスキル獲得</span></a></li>
+</ol></nav>
+<article class="book">
+<h2 id="ch-3"><span class="num">Chapter 3</span>報酬システムと予測誤差</h2>
+<p class="epigraph">ドーパミンが、期待値と実際の結果の差（予測誤差）を信号として機能するという点について説明し、エンゲージメントが報酬そのものではなく、構造的不安によって最大限に高められる理由を説明する。</p>
+<h3 id="3-1-the-brain-is-a-prediction-machine">3.1 脳は予測機械である</h3>
+<p>現代神経科学の基本的な洞察は、脳は感覚入力の単なる受容体ではない、という点である。脳は積極的に予測を生成する装置である。神経的階層のあらゆるレベル、視覚網膜の感光細胞から前頭葉まで、脳は次に何が起こるかをモデル化し、実際に起こったことと比較する。その予測と現実の差、すなわち「予測誤差」は、神経計算の基本的な通貨である。</p>
+<p>この洞察は、予測処理（Friston, 2010; Clark, 2013）というフレームワークの下で形式化され、感覚、行動、感情のすべてに再解釈を与える。感覚は脳が「世界を視覚的に認識している」というものではなく、脳が世界について仮説を立て、その仮説を入力された感覚データと比較することである。行動は脳が「何かを実行している」というものではなく、脳が世界がその予測に従っているようにするための試みである。感情は出来事に対する反応ではない。感情は脳の予測がどの程度正確に機能しているかを示す信号である。</p>
+<p>ゲームにおいては、このフレームワークが基本的である。脳が予測し、誤差を訂正する仕組みを持っているならば、ゲームは、構造的で解決可能な予測誤差を、制御された頻度で生成する環境である。その問いは、どのような神経系がこれらの誤差を処理し、どのような誤差パターンが報酬を感じさせ、どのような誤差が不満をもたらすのかである。</p>
+<h3 id="3-2-dopamine-encodes-reward-prediction-error">3.2 ドパミンは報酬予測誤差をエンコードする</h3>
+<p>その答えは、中脳に存在する小さな神経細胞群から始まる。これらの細胞は神経伝達物質であるドパミンを放出する。</p>
+<p>Wolfram Schultz、Peter Dayan、およびP. Read Montagueは、1997年に発表した論文『A Neural Substrate of Prediction and Reward』（<em>Science</em>）で、現代のこのフレームワークを確立した。マクアクのモンキーの中脳ドパミン神経細胞からの記録を通じ、彼らは3つの典型的な反応パターンを特定した。</p>
+<ul>
+<li>報酬が<strong>予想外に</strong>得られると、ドパミンニューロンは基礎水準を超える一過性のバースト発火を起こす。これは正の予測誤差、すなわち現実が予想より良かったことを意味する。</li>
+<li>報酬が<strong>予測どおりに</strong>得られると、ニューロンの発火頻度は変化しない。予測誤差はゼロであり、モデルが正しかったことを意味する。</li>
+<li>予測していた報酬が<strong>得られない</strong>と、ニューロンの発火は基礎水準より低く抑えられる。これは負の予測誤差、すなわち現実が予想より悪かったことを意味する。</li>
+</ul>
+<p>この信号が表すのは報酬そのものではなく、予想と実際の出来事の<strong>差</strong>である。音の後にジュースが出ると学習したサルは、予定どおりにジュースが出てもドパミン反応を示さない。報酬は完全に予測されており、新しい情報をもたらさないからである。しかし音の後にジュースが出なければ、ドパミンニューロンの活動は積極的に抑制される。脳のモデルが誤っていたためであり、この抑制信号がモデルの更新を促す。</p>
+<p>このパターンは、Montague、Dayan、およびSejnowski（1996）が形式化した時差（TD）学習アルゴリズムを実装しています。誤差信号 δ(t) = r(t) + γV(t+1) - V(t) です。この信号の優れた点は、評価（これは期待よりも良かったか悪かったか？）であり、教育信号（モデルを更新すべきである）の両方を含んでいることになります。学習が進むにつれて、ドパミン反応 <strong>時間軸上に前進</strong>します：報酬の瞬間から、報酬を予測する最初のヒントにまで移動します。関連性が完全に学習された後、ヒントが発生するとドパミンのブーストが発生し、報酬そのものが反応をもたらさず、報酬の欠如は抑制を引き起こします。Schultzの1998年 <em>Journal of Neurophysiology</em>のレビューは、このパターンが報酬の種類や実験的パラダイムにおいて一般に適用可能であることを確認しました。</p>
+<p>ゲームへの影響は即座かつ広範で、その意義は非常に大きい。</p>
+<h3 id="3-3-what-this-means-for-games">3.3 ゲームにおける意味</h3>
+<p>予測された結果だけを生み出すゲームは、ドーパミン系の報酬信号を生成しない。プレイヤーが優れていて、完璧に操作を行っており、すべての戦闘で勝利し、すべての障害を克服している場合でも、驚きがなければドーパミン系は何の報告もしない。このため、完全にマスターされたゲームは、プレイヤーが高水準でプレーしているにもかかわらず、つまらないと感じられる。驚きのないパフォーマンスは信号を生成しない。ゲームは「解かれた」という状態に達しており、かつてエンゲージメントを支えていた予測誤差はゼロにまで減少している。</p>
+<p>予想より<strong>悪い</strong>結果を生むゲームは、ドパミンの活動を抑制する。これは、プレイヤーが「不公平」と表現する体験の神経化学的な特徴である。ゲームが、プレイヤー自身の誤りでは説明できない形で、そのモデルを裏切ったのである。壁越しにプレイヤーを倒す敵、正しいタイミングでも当たり判定の不具合で失敗するジャンプ、回避不能な攻撃を持つボス。これらは「この仕組みの動作についてのあなたのモデルは誤っている」という負の予測誤差を生むが、プレイヤーは修正できる原因を見いだせない。抑制は嫌悪的に経験され、解消されない負の予測誤差が繰り返されると、ゲームから離れるようになる。</p>
+<p><strong>予測より良い結果、または予測と異なっていても学びにつながる結果</strong>を定期的に生むゲームだけが、没入に伴う神経化学的な特徴を維持する。Elite の背後に手榴弾を投げると、相手が回避して自分の射線に入ると発見したプレイヤーは、正の予測誤差を経験している。結果が自分のモデルの予測より良かったのである。特定のカードの組合せが予想外の相乗効果を生むと気づいたプレイヤーも、同じことを経験する。「思った以上にうまくいった」「予想しなかったが、今なら理由がわかる」という瞬間こそ、没入の素材となる。ドパミン系はそれぞれの瞬間をバースト発火で印づけ、「モデルを更新し、このような体験をもっと探せ」と伝える。</p>
+<h3 id="3-4-variable-rewards-drive-dopamine-fixed-rewards-do-not">3.4 変動報酬はドーパミンを刺激し、固定報酬はそうしない</h3>
+<p>ゲームデザインに特に関係する知見として、Zald ら（2004, <em>Journal of Neuroscience</em>）の研究がある。PET を用い、<strong>予測不能な変動比率スケジュールによる金銭報酬</strong>は尾状核内側部で有意なドパミン放出を引き起こす一方、同等の予測可能な固定比率報酬では測定可能な増加が生じないことを示した。脳の報酬系は、とりわけ予測不能性に反応する。固定された報酬は、どれほど大きくても完全に予測されるようになり、ドパミン信号を生まなくなる。</p>
+<p>これは、ゲームにおいて変動報酬システムが普遍的に効果的である理由を説明する。確率的に追加ダメージを与えるクリティカルヒット、開けるまで内容が不明なロットドロップ、または新しい配置で再現される既知要素を含むプロシージャル生成環境など、すべてのシステムはプレイヤーがどの行動の結果を完全に予測できないようにすることで、予測誤差を維持している。報酬はアイテムそのものやダメージ数ではない；その代わりに、何が起こるかを知らずにいる「<strong>驚き</strong>」そのものである。</p>
+<p>もちろん、変動報酬システムは学習なしにエンゲージメントを維持できる危険性がある。スロットマシンは、ランダム数生成器のモデルを改善できない（還元不能）ため、非常に高い予測誤差を生み出す。プレイヤーはドパミン系の不確実性への反応によってエンゲージメントを維持するが、それは空虚なエンゲージメントである；「欲求」があるものの、実際のスキル向上は一切ない。ここでは、還元可能と還元不能な不確実性の区別が重要となる。</p>
+<h3 id="3-5-uncertainty-itself-is-rewarding-the-fiorillo-signal">3.5 不確実性そのものが報酬となる：Fiorillo信号</h3>
+<p>シュルツのフレームワークは、驚くべき結果が「気持ちがよい」と感じられる理由を説明するが、ゲームは主に報酬を受け取ることに依存しているわけではない。ゲームは不確実性の下で動作することにある。結果はまだ確定されていないため、プレイヤーは成功するかどうかをまだ知らない状態であり、システムは未解決の緊張状態にある。</p>
+<p>Fiorillo、ToblerおよびSchultz（2003、<em>Science</em>）は、不確実性そのものが特異なドパミン信号を生成することを示した。同じ脳幹ニューロンからの記録により、報酬予測シグナルと報酬配達までの間の遅延期間中に、報酬の有無が不明な状態を反映する<strong>持続的なランプ活動</strong>が観察された。このランプ活動は、予測誤差を示す瞬時のブーストとは異なり、遅延期間中に徐々に増加し、<strong>P = 0.5</strong> でピークをとる（最大の不確実性）とし、P = 0（報酬が確実に存在しない）およびP = 1.0（報酬が確実に到達する）の両方に対称的に減少した。この関数はベルヌーイ分布の数学的分散、すなわちp(1 - p)に従い、最大の不確実性で頂点を持つ倒されたU字の関数であった。</p>
+<p>報酬の大きさの分散をP = 0.5を固定した状態で調整した結果、可能な結果の間の分散が大きくなるにつれてランプ活動は増加した。これにより、信号が不確実性を追跡していること、そして期待値とは無関係であることが確認された。この結果については議論が続いている。Niv、DuffおよびDayan（2005）は、バックプロパゲートするTD誤差を介した代替解釈を提示しているが、メカニズムに関わらず、機能的意義は同じである。<strong>ドパミン系は、最大の減算可能な不確実性の下で最も活性化される</strong>。ゲーム設計者たちが「最適な挑戦」と呼ぶ、または「バランスの取れた難易度」と呼ぶ状態は、エンゲージメントの神経化学的基盤が最も強みを持つ状態である。</p>
+<p>この結果は、難易度に基づくゲーム設計モデルが解決できない謎を解明する。同じ難易度を持つ2つの状況が、まったく異なる体験をもたらすことができる。コインを投げることと、緊張のあるチェス対戦は、どちらもP = 0.5の不確実性を含んでいるが、チェスはエンゲージメントをもたらし、コインの投げ方はそれとは異なる。その違いは、チェスの不確実性が<strong>学習を通じて減少可能である</strong>ことにある。プレイヤーの予測は改善できる。一方、コインの投げ方の不確実性は減少不可能である；どんなに学習を重ねても、正確性は50％を超えられない。適切に理解されたドパミン系は、単に不確実性を報酬として与えるものではなく、<strong>行動を通じて不確実性を減少させる機会</strong>を報酬として提供する。</p>
+<h3 id="3-6-the-brain-treats-information-as-reward">3.6 脳は情報を報酬として扱う</h3>
+<p>補足的な結果は、Bromberg-Martin および Hikosaka (2009, <em>Neuron</em>) の研究から得られる。彼らは、報酬の大きさを予測する情報が結果に影響を与えない場合でも、マカクがその情報を提供するようなシグナルを好むことを見出した。報酬の大きさを示すシグナル（結果を変化させない）と、何も示さないシグナルの間で選択される場合、マカクは情報が得られる選択を圧倒的に好む。報酬の期待を示す同様のドパミンニューロンは、情報の<strong>期待</strong>をも示す。Blanchard, Hayden, および Bromberg-Martin (2015) は、マカクが実際に得られる報酬を犠牲にしても、事前に情報を得ることを選び得ることを示した。</p>
+<p>脳は、確実性の増加を目的としてではなく、その自体として価値あるものと捉えている。これは好奇心の神経的基礎であり、ゲームの特徴の一つを説明する。探索が、外部報酬が現れる前にすでに報酬を感じさせるのは、この理由による。ドアを開けて新しいエリアを発見したプレイヤーは、ゲーム内の通貨や経験値を得ていない。彼らはただ<strong>情報</strong>を得ただけであり、ゲーム世界に関する不確実性が減少したという状態である。そして、これは食べ物、水、社会的報酬と同様に処理されるドパミン系回路によって処理されている。</p>
+<h3 id="3-7-distributional-reward-coding">3.7 報酬の分布的エンコード</h3>
+<p>Dabney ら (2020, <em>Nature</em>) は、Schultzの枠組みを大幅に拡張した。彼らは、異なるドパミンニューロンが報酬分布の異なる<strong>クォンティル</strong>を同時にエンコードしていることを示した。その中で、ポジティブな誤差に対しては非対称に敏感であり、ポジティブな誤差に対してはより反応が強く、ネガティブな誤差に対してはより反応が弱いニューロンが存在する。一部のニューロンは楽観的（より期待を上回る結果に対して反応が強い）であり、他のニューロンは悲観的（より期待を下回る結果に対して反応が強い）であり、これらは可能な結果の確率分布全体を維持する。単に期待値だけではなく、確率分布を保持している。</p>
+<p>この分布的コーディングはゲームデザインに直接的な関連がある。変動する結果を持つゲーム（クリティカルヒット、アイテムドロップ、プロシージャル生成など）は、決定論的結果を持つゲームとは異なる感覚をもたらす理由を説明している。脳は単に平均結果を追跡しているわけではない。脳は不安定性の <strong>形状</strong> をモデル化しているのである。すべての攻撃が正確に10ダメージを与えるゲームと、攻撃が1〜19ダメージの範囲（平均10ダメージ）を与えるゲームは、期待されるダメージは同じだが、分布的予測誤差は異なる。変動するゲームは、上側に常に驚かされるニューロンと下側に常に驚かされるニューロンをもたらし、より広範な神経反応を維持し、主観的にもより魅力的な体験をもたらす。</p>
+<h3 id="3-8-games-and-the-dopamine-system-direct-evidence">3.8 ゲームとドーパミン系：直接的な証拠</h3>
+<p>ゲームへの関与とドーパミンの関連を説明する理論的枠組みは、直接的な実証測定によって支持されている。</p>
+<p>Koeppら（1998, <em>Nature</em>）は、基礎的な研究を行い、[11C]raclopride PETを用いて、タンク操作型ビデオゲームをプレイした際に、腹側ストリatumで放射性追跡剤の結合が約13％減少することを示した。これは、ゲームプレイ中に内因的ドーパミン放出が起こっている直接的な証拠である。パフォーマンススコアはドーパミンの移動量と相関しており、中脳-感情系経路がゲームの成功にパラメトリカルに応答していることを示している。</p>
+<p>その後のfMRI研究では、ストリatumの活性化が一貫して再現されている。Hoeftら（2008, <em>Journal of Psychiatric Research</em>）は、シンプルな空間侵犯ゲームがナクルス・アッカーベン、オルビフォーフロントアル、およびアミグダラを活性化させることを示した。Klasenら（2012, <em>Social Cognitive and Affective Neuroscience</em>；2020, <em>Brain Structure and Function</em>）は、第一人称シューティングゲームの自由プレイ中に、成功イベントがコアドゥス、ナクルス・アッカーベン、およびプテマを活性化させ、非暴力的成果に対する腹側ストリatumの活性化と暴力的成果に対する背側ストリatumの活性化が分離していることを示した。</p>
+<p>重要な発見の一つは、<strong>アクティブな行動が報酬信号を強化する</strong>という点である。Kätsyri 他（2013、<em>Frontiers in Human Neuroscience</em>）は、ストラテルの報酬反応が、同じゲームの映像をただ観察する場合と、実際にゲームをプレイする場合に比べて著しく強くなることを示した。特に、前側のプテマテムでは、勝利イベントにおける反応の違いが顕著であった。他人がゲームをプレイしている様子を観るよりも、自分自身で同じゲームをプレイする場合に、ドパミン信号が弱い。このことから、ゲームは映画よりもより没入感があること、そして「プレイしてみよう」という動画は、実際にゲームをプレイするときの神経化学的強度を再現できないこと、つまり、行動の「主体性（agency）」が、強いストラテルドパミン放出に必要であることがわかる。</p>
+<h3 id="3-9-wanting-without-liking-the-dark-side-of-game-reward">3.9 「欲求」があるが「喜び」はない：ゲーム報酬の暗黒の側面</h3>
+<p>Berridge と Robinson のインセンティブ・サインス理論は、ゲームのエンゲージメントを完全に説明するためには必ず考慮すべき重要な補足である。30年間にわたり、複数の基礎的レビュー（Robinson &amp; Berridge, 1993、<em>Brain Research Reviews</em>；Berridge &amp; Robinson, 2016、<em>American Psychologist</em>；Robinson &amp; Berridge, 2025、<em>Annual Review of Psychology</em>）を通じて、彼らは「欲求（incentive salience）」と「喜び（hedonic liking）」の分離を確立した。この分離は、ゲームデザインにおいて極めて重要である。<strong>ドパミンは、大きな、強い中脳-限界系の投射を通じて「欲求（incentive salience）」を媒介する</strong>が、<strong>喜び（hedonic liking）は、核アカーベンス殻および下部パリッドの小さなオピオイドおよび内生カンナビノイドの熱スポットに依存する</strong>。</p>
+<p>この分離は、変動的な報酬に対するドパミン系の反応が繰り返し曝露されることで感度が高まり、結果として「欲求（craving、 強迫的な engagement）」が強化される一方で、実際の「喜び（hedonic enjoyment）」は平坦または減少する。これは行動的依存の典型的なパターンであり、ゲームプレーヤーが「楽しめなくなったにもかかわらず、続けなければならない」と感じることに直接対応している。Singer 他（2012）および Mascia 他（2018、<em>Neuropsychopharmacology</em>）は、継続的な変動比率の報酬がドパミン系の感度を高めることが示された。</p>
+<p>「望ましさ／好意の分離」は、学習を通じて本物の没入を維持するゲーム（報酬が不確実性の減少であり、「好意」が「望ましさ」と一致する場合）と、変動的な強化スケジュールによって 強迫的な な没入を維持するゲーム（「望ましさ」が増加しながら「好意」は停滞する場合）の違いを、神経化学的根拠で説明する。本書が提案する統合モデルは前者を扱うものであり、後者はその同じ回路の病的な利用である。</p>
+<h3 id="3-10-transition">3.10 トランジション</h3>
+<p>ドーパミン予測誤差理論は、統合モデルの第一の柱となる。脳は予測の失敗時に特定の神経化学的信号を生成し、その信号が没入の基盤となる。変動的かつ減少可能な不確実性は、この信号を最大化する。</p>
+<p>主体性がそれを強化する。そして脳は情報そのものに内在的な報酬を与える。</p>
+<p>しかし、予測誤差だけでは十分ではない。ドーパミン系は驚くべき結果が「気持ちがよい」と感じられる理由を説明するが、脳が不確実性の状況を積極的に探求しようとする理由を説明しない。その理由は、好奇心（探索、実験、情報収集を促す動機）を理解することにある。外部報酬が与えられることなく、情報の獲得を求める動機が、その背後にある。</p>
+<h2 id="ch-4"><span class="num">Chapter 4</span>Curiosity and Exploration</h2>
+<p class="epigraph">内在的動機と外部的動機（＝不確実性の解決を求める脳の動機）の違い、および外部報酬が与えられる前に探索が報酬をもたらす理由。</p>
+<h3 id="4-1-curiosity-as-a-drive-state">4.1 好奇心という動機状態</h3>
+<p>好奇心は贅沢ではない。それは、食欲や渇きと同様に、神経構造的に類似する生物的動機状態であり、生物が環境に関する情報を求めて不確実性を減少させようとする動機をもたらす。前章で説明した予測誤差系と好奇心の違いは、反応的かつ proactive な行動の違いに相当する。予測誤差は期待が破れたときの反応であり、好奇心は、期待が破れることをもたらす状況を求める動機である。</p>
+<p>グリバー、ゲルマン、およびランガナス（2014、<em>Neuron</em>）は、好奇心と報酬回路の間の重要な実証的関連を提示した。fMRI実験中、彼らは好奇心を誘発するレベルの異なるトリビア問題を提示した。高好奇心状態では、ターゲットのトリビア答えだけでなく、好奇心の期間中に遭遇した全く無関係な顔の刺激についても記憶が強化された。質問と答えの間に表示された顔は、質問が参加者が好奇心をもっていたものであった場合、その記憶がより良くなることが示された。この記憶の強化は、中脳（SN/VTA）およびナクセムブン（核アカベン）における<strong>予測活動</strong>によって説明され、中脳と海馬間の機能的接続がその効果を介している。</p>
+<p>この結果は顕著である：好奇心は、特定の情報の学習を準備するだけではなく、脳全体に拡大した学習を可能にする「窓口」を開く。海馬記憶系をドパミン由来の調節によって準備させ、学習を促進する。ゲームデザインの観点から言えば、プレイヤーが次のドアの向こうに何があるか、新しいメカニズムがどう働くか、あるいは2つのシステムがどう相互作用するかと、その謎に興味をもつ状態にあるとき、その脳はすべての種類の学習に適応した神経化学的状態にあり、元の好奇心とは無関係な学習にも同様の効果をもたらす。</p>
+<p>グリバーおよびランガナス（2019、<em>Trends in Cognitive Sciences</em>）のPACEフレームワークはこれを形式化した。好奇心は、大きな予測誤差によって誘発され、その重要性（興味あるか、脅威あるか）を評価され、安全で情報的価値があると評価された場合、海馬へのドパミン調節を通じて記憶のエンコードを強化する。評価段階はゲームにおいて極めて重要である。同じ予測誤差が、プレイヤーが環境を探索できると認識している場合、好奇心を生み出すが、その環境が危険であると認識している場合、不安を引き起こす。そのため、ホラーゲームは脅威を慎重に調整しなければならず、現実の危険が大きすぎると好奇心は恐怖に変換され、探索的学習の勾配が崩れる。</p>
+<h3 id="4-2-the-goldilocks-effect">4.2 ゴールディック効果</h3>
+<p>興味は、不安のレベルにおいて一様に分布しているわけではない。KiddおよびHayden（2015、<em>Neuron</em>）は、彼らが「ゴールディロッキー効果」と呼ぶものについての証拠をレビューした。その中で、生物は複雑さの適度な刺激に対して優先的に注意を向ける傾向がある。その刺激は、まったく予測可能（つまらない）でもなく、まったく予測できない（混乱を招く）ものでなければならない。乳児は、確率が中間的な視覚的シーケンスに対してより長い時間を見つめる。成人は、中間難度のトリビア質問を最も興味を引くものとして評価する。カーダート核および下部前頭葉（Kang et al., 2009、<em>Psychological Science</em>）では、興味を引き起こす情報ギャップが、興味を引くほど大きくて、解決できるように思えるほど小さい場合に最大の活性化が見られる。</p>
+<p>Gottlieb、Oudeyer、Lopes、およびBaranes（2013、<em>Trends in Cognitive Sciences</em>）およびGottliebとOudeyer（2018、<em>Nature Reviews Neuroscience</em>）は、このメカニズムを、期待される情報獲得（<strong>expected information gain</strong>）に基づくフレームワークに統合した。脳は、ある経験がモデルの改善に与える可能性のある情報量を推定し、その経験が不確実性の減少をもたらす可能性が高いものに注意力を向ける。これは単なる新鮮さ追求ではない。むしろ、脳が現在理解していることと理解していないことの間のギャップに基づいて、戦略的に不確実性を減少させる行動である。</p>
+<p>ゲームデザインにおいては、最も興味を引く要素は、最も新鮮なもの（理解できない可能性がある）または最も馴染みのあるもの（つまらない）ではなく、プレイヤーの現在の理解の境界付近にあるものである。その要素は、馴染みが十分にあり、新鮮さが十分に感じられるものである。これは、興味の観点から「フロー・チャンネル」の類似体であり、優れたレベル設計が新しい要素を段階的に導入することで、一気に導入しない理由を説明している。</p>
+<h3 id="4-3-intrinsic-versus-extrinsic-motivation">4.3 内在的動機と外在的動機</h3>
+<p>RyanおよびDeciの自己決定理論（SDT）は、人々が自発的に活動に参加する理由を理解する上で最も影響力のあるフレームワークである。SDTは、3つの基本的な心理的ニーズを識別している。<strong>自主性</strong>（自らの行動の起源を感じる感覚）、<strong>能力感</strong>（相互作用において効果的であると感じること）、および<strong>つながり</strong>（他者とのつながりを感じること）である。活動がこれらのニーズを満たす場合、その活動は内在的に動機付けされる。人々は、外部のインセンティブを必要とせずに、その活動自体のために行う。</p>
+<p>Rigby と Ryan (2011) はゲームにおいて SDT（自己決定理論）を適用し、プレイヤーのモチベーションがこの3つのニーズの満足に沿っていることを示した。選択を提供するゲームは自主性を満たす。適切なチャレンジとフィードバックを提供するゲームは能力感を満たす。多人数参加型ゲームが意味のある社会的相互作用を可能にするものはつながりのニーズを満たす。</p>
+<p>このフレームワークは、広範なモチベーションパターンを正確に予測する。プレイヤーは、選択を提供され、適切なチャレンジを受け、他者とのつながりを得られるゲームを好む。</p>
+<p>しかし、SDTはフロー理論と同じく静的なフレームワークである。人々のモチベーションを説明するのではなく、時間の経過とともに起こる動的プロセスを記述しない。ゲームが3つのニーズをすべて満たしても、その瞬間ごとの予測誤差率が適切でなければ、プレイヤーを惹きつけられない可能性がある。SDTはプレイヤーが自主性、能力感、つながりを感じるべきだと述べているが、その感情を維持するために次の10秒間のゲームプレイで何が起こるべきかについては教えてくれない。その役割は学習勾配（learning gradient）に任される。後述の章でその詳細が説明される。</p>
+<h3 id="4-4-the-undermining-effect">4.4 モチベーションの損なわれる効果</h3>
+<p>モチベーション研究における最も確実な発見の一つが、<strong>損なわれる効果</strong>である。外部的報酬は内部的モチベーションを低下させる可能性がある。Deci（1971）は、パズルを解くことに報酬を支払った参加者に対して、その後の無料でのパズル解きの意欲が低下することを示した。行動の外部的要因（"お金のためにしている"）が内部的要因（"興味があるからしている"）を置き換えることにより、外部報酬が除去されると、その行動は報酬導入前の基準値よりも低下する。</p>
+<p>ゲームデザインにおいては、この効果は本物の学習によってエンゲージメントを維持するゲームと、トークンの蓄積によってエンゲージメントを維持するゲームの間の差として現れる。明示的な報酬システム（XPバー、達成通知、毎日ログインボーナス、進行率など）は、不確実性の減少という内在的報酬を置き換える外的マーカーを提供する。ダンジョンを探索して中に何があるかを発見しようとするプレイヤーは、内面的な動機付けを受けている。彼らの動機は好奇心であり、報酬は理解そのものである。一方、ダンジョンをクリアして進行バーを埋めるプレイヤーは、外的動機付けを受けている。彼らのエンゲージメントはバーに依存しており、バーがなければ動機も失われる。</p>
+<p>この設計上の意味は、外的報酬を一切使用すべきではないということではなく、その報酬が内在的な学習に従属すべきであるということである。外的報酬は、本物の達成（このスキルをマスターした）を示す場合に最も効果的であり、単に活動（ここに時間を使った）を示す場合に最も効果が薄い。特に、外的報酬がエンゲージメントの主な理由になることで、好奇心に基づく探索がトークン収集のための任務に変質してしまう。</p>
+<p><em>Breath of the Wild</em> と Ubisoft のマーカー重視のオープンワールド構成の間の対比がこの点を示している。<em>Breath of the Wild</em> は、世界が視覚的に明確であるように非常に大きな設計努力を注いでいる。ランドマークは遠くからも視認可能で、異常な構造は隠されたコンテンツを示し、地形の特徴はUIマーカーなしに興味のあるポイントへ視線を導く。プレイヤー自身の感覚系が「クエストマーカー」の仕事を担うため、探索プロセスそのものが積極的な注意を向けている。一方、Ubiquitiのフォーマルなアプローチ（地図のタワー、目的マーカー、進行率のトラッカー）は不安を軽減するが、同時に自発的動機を殺してしまう。探索を「やっておくことリスト」として変換してしまう。すべてのアイコンが地図上に見えるとき、探索は発見ではなく、任務執行に過ぎなくなる。</p>
+<h3 id="4-5-exploration-versus-exploitation">4.5 探索と利潤のバランス</h3>
+<p>探索と利潤のトレードオフは、適応的行動における基本的な問題であり、強化学習において「多腕バンディット問題」として形式化されている。行動体は、既知の報酬を維持すべきか、あるいは未知のより優れた選択肢を探索すべきかという選択を迫られる。</p>
+<p>青斑核―ノルアドレナリン（LC-NE）系は、脳内でこのトレードオフを調整する。Aston-Jones と Cohen（2005）は、二つの動作モードからなるモデルを提案した。</p>
+<ul>
+<li><strong>フェーズモード</strong>：NEの基準値が低い。タスクに応じた一時的なブースト。注意は焦点を絞られる。その状態では、既知の知識を活かすことができる。これは「フロー」と呼ばれる状態に連動しており、よく理解されているタスクに継続的に取り組むことによって生じる。</li>
+<li><strong>トニックモード</strong>：NEの基準値が高い。広範な注意のサンプリングが行われる。行動は探索的であり、注意は頻繁に変化する。これは、好奇心、分散、より優れた選択の探求と関連付けられる。</li>
+</ul>
+<p>ゲームは両方のモードを管理しなければならない。現在のタスクが尽きるまでフェーズモードを維持することは、フローを生み出すが、最終的にはプレイヤーを飽きさせてしまう。一方、トニックモードを無限に維持することは、深い集中を伴わない、不安定な探索を生み出す。最も優れたゲームは、両者を振動させることで、探索フェーズ（トニックモード）で新しい課題を発見し、それらをマスターするための集中（フェーズモード）へと移行する。</p>
+<p><em>ブレアオブザワイルド</em>の構造は、この振動を具体化している。神社や興味深いポイント間を移動することは探索的（トニックモード）である。プレイヤーは地平線をスキャンし、遠くに見えるランドマークに注目し、調査することを決定する。神社のパズルは焦点を絞った状態（フェーズモード）である。注意は1つの課題に集中し、フィードバックが即座に得られ、プレイヤーはフロー状態に入る。戦闘シーンも同様に、探索と集中された体験を繰り返す。このゲームの優れた点は、プレイヤーがどちらのモードに長時間滞在することを強制しないことである。移行はプレイヤーの意思に基づき、自然に感じられる。</p>
+<h3 id="4-6-how-games-structure-curiosity">4.6 ゲームが好奇心をどのように構築するか</h3>
+<p>ゲームは、プレイヤーが質問を立てられるが、その答えを知っているわけではない状況、すなわち<strong>情報のギャップ</strong>を、体系的に構築することで好奇心を生み出す。</p>
+<p>戦略の煙は地図の一部を隠し、空間的な情報のギャップを生じさせます。閉じられたドアは、その向こうに何があるかを示唆し、構造的な情報のギャップを生じさせます。一部しか明らかにされていない報酬テーブルは、より優れたアイテムが存在することを示すものの、その具体的な内容は隠し、報酬に関する情報のギャップを生じさせます。スキルツリーはまだ未開放の能力を示しており、能力に関する情報のギャップを生じさせます。物語のヒントは、キャラクターと衝突を紹介しながらも解決を示さず、物語的な情報のギャップを生じさせます。</p>
+<p>これらすべてのシステムは、同じメカニズムで動作しています。プレイヤーがゲーム世界について持つモデルは完全ではなく、知られていることと知らないことの間のギャップが、予測誤差を生じさせ、その誤差が好奇心システムによって「探求価値がある」と評価されます。このギャップは、興味を引くほど大きければよい（ゴールディロックス効果）が、プレイヤーが解決が可能であると信じられるほどに制限されなければなりません。</p>
+<p><em>Outer Wilds</em> は、好奇心に基づくゲームデザインにおける最も純粋な実装を表しています。このゲームには戦闘、アップグレード、永久的な進化が一切ありません。ループごとに変化するのは、プレイヤーが知っていることだけです。ゲーム内のすべての情報は最初の1分から利用可能であり、「進化」は完全に知識に基づくものです。学習の勾配は、プレイヤーが太陽系の仕組みやノマイの出来事についてどのように理解を深めているかに依存しており、従来の報酬構造を一切持たないにもかかわらず、その年の最も優れたデザインの一つとして広く評価されました。</p>
+<h3 id="4-7-transition">4.7 ティランス</h3>
+<p>好奇心は、反応的な予測誤差システムに補完的な役割を果たします。この2つは、なぜゲームがプレイヤーの注意を引きつけ、その注意を維持するのかを説明します。予測誤差はプレイヤーが予想外の結果に遭遇したときに報酬を与え、好奇心はそのような遭遇を最初に探求する動機を提供します。</p>
+<p>しかし、誘導と報酬は物語の半分しかありません。もう半分は、プレイヤーが継続して関与する過程で起こる脳の変化です。スキルの獲得、知識の定着、そして初心者の努力的な処理が、専門家のような自動的で流暢な状態へと変化する過程です。この変化――意識的な無能から無意識的な能動性へ――が、次の章のテーマです。</p>
+<h2 id="ch-5"><span class="num">Chapter 5</span>学習システムとスキルの獲得</h2>
+<p class="epigraph">努力的で宣言的な処理から自動的で手続き的な実行への転換――繰り返された相互作用が神経回路を再構成する仕組み――そして、マスターを定義する皮質から皮質下への転移のメカニズム。</p>
+<h3 id="5-1-two-memory-systems">5.1 二つの記憶システム</h3>
+<p>脳には単一の学習システムは存在しません。少なくとも二つがあり、並行して動作しており、異なる計算特性と異なる神経基盤を持っています。</p>
+<p>マイケル・ウルマンの宣言的／手続き的（DP）モデルは、最初に<em>Nature Reviews Neuroscience</em>（Ullman, 2001a）で提示され、<em>Cognition</em>（Ullman, 2004）および<em>Neurobiology of Language</em>ハンドブック（Ullman, 2016）で拡張されています。このモデルは、最も明確な枠組みを提供しています。<strong>宣言記憶システム</strong>は、海馬を中心とする時間帯の構造に根ざしており、事実や出来事、経験、場所、ルールの内容といった情報を扱います。これは意識的で明示的で、習得は速いものの、時間圧がかかると検索が遅くなります。<strong>手続き記憶システム</strong>は、前頭葉および基底核（特に尾状核、前側脳下核、およびブロカ野）に根ざしており、スキルや習慣の処理、ルールの自動適用、無意識の状態で複雑なシーケンスを実行する能力を扱います。これは無意識的で潜在的で、習得には時間がかかりますが、習得後は迅速に実行できます。</p>
+<p>この分離は正確にゲーム認知にマッピングされています。ゲームの事実――敵が200HP、その武器は火属性ダメージ、ボスは3秒ごとに攻撃する――は宣言的です。ゲームのスキル――ボスの3番目の攻撃を回避滾動、コマボを実行、対戦ゲームで相手のポジションを読み取る――は手続き的です。ゲームの事実を知っている状態から、それを実際にうまくプレーできる状態へと進化する過程は、海馬処理からストリアル処理への転換に相当します。</p>
+<p>特に重要なのは、DPモデルが手続き的システムが<strong>領域一般</strong>であると主張している点である。Ullman (2004) はこれを「運動および認知スキル、特にシーケンスを含むスキルの学習と処理を支える」と説明している。これにはナビゲーション、運動シーケンス、ルール、カテゴリ、および習慣が含まれる。Ullman (2016) はさらに、手続き的システムが「予測学習（特に確率的結果）に特化している可能性がある」と指定しており、たとえばシーケンス内の次のアイテムやルールの出力といったものに該当する。この予測機能は、ルール制約の下で行動の結果を予測しなければならないゲーム認知と直接対応している。</p>
+<p>臨床的証拠は領域一般性の主張を支持している。パーキンソン病は、ストリアムへの多巴胺能投射を劣化させ、運動シーケンスおよび文法処理の両方に平行して欠損を引き起こす。Ullman et al. (1997, <em>Journal of Cognitive Neuroscience</em>) は、パーキンソン病患者が規則的過去形（ルール計算を必要とする）に対して不正解を多く、不規則形（語彙の検索を必要とする）に対しては少ないというパターンを示した。アルツハイマー病患者とは逆に、アルツハイマー病患者は海馬の記憶的システムが損なわれているため、過去形の処理に誤りが多い。もし同じ回路がゲームルールの適用に関与しているなら、パーキンソン病患者はゲームルールの学習および適用において同様の欠損を示すはずである。これは実証的に検証できる予測である。</p>
+<h3 id="5-2-the-three-stages-of-motor-learning">5.2 運動学習の三段階</h3>
+<p>Fitts および Posner (1967) は、運動スキルの獲得に必要な三段階を説明しており、その構造は二系統理論と正確に一致している。</p>
+<p><strong>認知段階</strong>では、学習者は自分が何をやっているかを認識しているが、スムーズに動作を実行できない。運動は言語的および明示的なプロセスによって導かれ、プレイヤーは自分自身に「Xを押して回避、その後Yを押して攻撃」というように指示を与える。注意は運動タスクに完全に消費され、戦略的思考の余裕がなくなる。誤りは頻発し、パフォーマンスは不一致である。この段階はシステム2が支配しており、前頭葉、前側側縁縁回（ACC）、および背側前頭葉（dlPFC）が強く関与しており、タスクルールを作業記憶に保持し、誤りを監視している。</p>
+<p><strong>アソシエーティブ段階</strong>では、パフォーマンスがより流暢で信頼性が高まります。行動とその結果との間のリンクが形成され、誤りが減少します。神経活性は前頭前野領域からセンサーモーター皮質およびストラーティアル領域へと移行します。コルチカル・セレブレーラーループは内部モデルの改善に伴い徐々に離脱します（Doyon et al., 2002）。<em>Celeste</em>プレイヤーが壁ジャンプについて考えず、それでも時々ダッシュの角度を誤る状態は、この過渡的な段階にあります。</p>
+<p><strong>自動段階</strong>では、パフォーマンスは正確で一貫しており、ほぼ自動的になります。活性化は感覚運動ストラテム、主要運動皮質、補助運動領域、および小脳核に集中します。dlPFCの活性は著しく減少します。重要な点として、プレイヤーは現在、より高いレベルの情報を注意を向けることができるようになります——ゲーム戦略、環境のヒント、相手の行動——なぜなら、運動実行に監視的注意が不要になったためです。ギター・ヒーローの専門家が、未経験の楽曲をExpert難易度で視聴読むことにより、この段階にあります。</p>
+<p>Kim et al. (2015, <em>PLOS Biology</em>) は、初期段階では注意、空間的作業記憶、運動計画に関与する前頭および対側領域が活性化され、高度なパフォーマンスでは感覚運動および小脳回路にシフトすることを確認しました。</p>
+<h3 id="5-3-cortical-to-subcortical-transfer-the-neural-mechanism-of">5.3 コルチカルからサブコルチカルへの転移：マスタリーの神経メカニズム</h3>
+<p>スキル習得過程におけるSystem 2からSystem 1処理への移行は比喩的ではありません。これは、測定可能なコルチカルからサブコルチカルへの転移であり、複数の研究プログラムを通じて詳細にマップされています。</p>
+<p><strong>Poldrack et al. (2005, <em>Journal of Neuroscience</em>)</strong> は、連続反応時間タスク中にfMRIを用いて、自動性を双タスク干渉の消失によって評価した。トレーニング前には、順序的パフォーマンスが広範な前頭葉および基底核領域を活性化させた。トレーニング後では、dlPFC、前庭運動皮質、下部前頭回、右側頭側核の活性が<strong>減少</strong>した。自動性は、前頭葉の参加が減少することによって特徴づけられ、前頭運動皮質および補助運動領域は安定した活性を維持した。基本的な運動プログラム層は維持され、監視層は徐々に退縮した。</p>
+<p><strong>Lehéricy ら（2005, <em>PNAS</em>）</strong>は、運動系列の学習を 4 週間追跡し、大脳基底核そのものの<em>内部</em>で処理が移行することを発見した。初期学習では、dlPFC と運動前野に加え、<strong>吻背側の連合性被殻</strong>が活動した。熟達すると、活動は<strong>尾腹側の感覚運動性被殻</strong>へ移った。誤り率は初期学習領域の活動と正に相関し、反応時間は後期学習領域の活動と負に相関した。大脳基底核は大脳皮質から制御を引き継ぐだけでなく、内部でも認知回路から感覚運動回路へと再編される。</p>
+<p><strong>Haier 他（1992）</strong>は、おそらく最も鮮明な証拠を提示した。PET画像を使用して、Tetrisの練習が<strong>7倍のパフォーマンス向上</strong>をもたらすとともに、<em>減少</em>した皮質グルコース代謝を示した。このタスクの処理効率が劇的に向上した一方で、消費エネルギーは劇的に減少した。これは自動化の神経的特徴であり、マスターの主観的な体験を説明するものである。難しいことの「簡単さ」は、処理量が減ったことによるものではなく、処理が代謝的に安い、計算的に速い回路に移行したためである。</p>
+<p>ゲームデザインにおいて、皮質から副皮質への移行は、すべてのゲームが隠れた時計をもつことを意味する。プレイヤーが練習を重ねるにつれて、処理は皮質（遅い、努力が必要、注意を消費する）から基底核および小脳（速い、自動的、注意を解放する）へと移行する。ゲームは、既存の課題が副皮質に自動化される速度に合わせて、新しい課題を導入しなければならない。新しい課題が遅すぎると、プレイヤーの皮質に何かをすることがなく、 boredom（うんざり）が生じる。新しい課題が速すぎると、皮質は未自動化の要求に圧倒され、挫折が生じる。最適な課題導入速度は、プレイヤーの皮質から副皮質への移行速度に一致する。</p>
+<h3 id="5-4-the-chunking-mechanism">5.4 チャンクング機構</h3>
+<p>アーン・グレイビルの研究は、基底核が自動化を獲得するメカニズムを説明するための理論的枠組みを提供している。長年にわたり、マウスの習慣形成に関する研究を通じて、ストリatumが<strong>チャンクング機構</strong>を実装していることを示している。複雑な行動シーケンスは、段階的に単一の自動化されたルーチンに統合される。</p>
+<p>重要な発見は、学習された順序の開始と終了時に強く活性化し、実行中は無音になるというストラテアルの神経活動の特徴的なパターン、すなわち<strong>task-bracketing</strong>である。ラットが迷路をナビゲートするようになるにつれて、初期段階ではストラテアルのニューロンが走行中に全域的に活性化する。しかし、練習を重ねるにつれて、活動は開始点と終了点に集中し、順序の中央部分は単一の自動化されたブロックとして実行される。この順序は、複数の個々の決定から構成された系列が、単一の習慣的行動に「コンパイル」されたものである。</p>
+<p>これは、ファイティングゲームにおける複雑なコマボが、個々のボタン操作の連続ではなく、単一の行動として感じられるときにプレイヤーが経験する神経的実装である。最初は意識的に各方向入力の監視が必要だった四分円前進プラスパンチの順序が、単一の運動プログラムとして単位として実行されるようになる。チャイスとシモン（1973, <em>Cognitive Psychology</em>）のチェンク実験は、チェスの認知レベルで同様の原理を明らかにした。マスターは5秒間の視認で約16個の駒の配置を記憶できるが、初心者は約4個しか記憶できなかった。しかし、駒の配置がランダムに置かれた場合、マスターは初心者と同等の性能を示した。専門性は記憶力の優位性ではなく、約5万から10万のドメイン特有のパターンが長期記憶に蓄積された「パターンライブラリ」によるものである。各パターンは、妥当な反応に結び付けられている。</p>
+<h3 id="5-5-expert-cognition-the-endpoint-of-the-transition">5.5 専門的認知：転換の最終段階</h3>
+<p>ゲームにおける二系統理論の最も有力な証拠は、専門的パフォーマンスの研究から得られている。</p>
+<p><strong>Wan 他（2011, <em>Science</em>）</strong>は、fMRIを用いて11人のプロおよび17人のアマチュアの将棋（日本将棋）プレーヤーを比較した。1秒以内で最も適切な次の手を生成する（直感的処理を強制する）際、プロは特定の<strong>尾状核</strong>の活性化を示した。これは基底核構造であり、アマチュアは同じタスク中にまったく活性化が観察されなかった。8秒の意図的検索時間を与えた際、プロにおいても尾状核は活性化しなかった。また、盤面認識の段階でプロに特有の活性化が<strong>前回帰野</strong>で観察され、前回帰野と尾状核の活動が相関関係を示した。これはパターン認識から直感的行動選択への回路の存在を示唆している。Wan 他（2012, <em>Journal of Neuroscience</em>）の追跡研究では、初心者を15週間訓練し、尾状核の活性化が直感的パフォーマンスの向上とともに発展することが示された。これは、直感的スキルが学習によって獲得されたものであり、先天的であるわけではないことを確認した。</p>
+<p>これは専門家と初心者との間の徐々に現れる差ではない。むしろ、タスクを処理する脳のシステムが質的に変化した結果である。完全な初心者（すべての決定においてシステム2）から中間レベル（基本的な戦術がシステム1のパターン認識に変化）へ、そしてグランドマスター（約5万～10万のブロックを備えた知識庫により迅速な位置評価が可能）へと進化する過程は、実際の実践を通じて数年間にわたり、双過程モデルが示す道筋を最も明確に示している。</p>
+<p>カーナマン自身がそのように述べた。シモンを引用して「直感とは、単に認識のことであり、それ以上のものではない」とした。専門家のシステム1は、かつてはシステム2に依存していた知識をすでに内面的に吸収している。</p>
+<h3 id="5-6-competing-memory-systems">5.6 競合する記憶システム</h3>
+<p>フォード、ノルトン、およびポルダック（2006, <em>PNAS</em>）は、学習中の副タスクの重要性を追加した。学習中、記憶の依存が宣言的（海馬系）から習慣的（ストラタル）学習へと移行するという重要な発見を示した。この2つの記憶システムは競合する。海馬系が並行タスクに割り当てられている際、ストラタル系がその役割を担い、その結果として得られる学習はより習慣的で柔軟性が低い。</p>
+<p>これはマルチタスクを必要とするゲームに対して直接的な影響を与える。リアルタイム戦略ゲームにおいて、基地管理と戦闘の両方を同時に実行する場合、ストラチアルの手続き学習経路が刺激され、自動化が促進されるが、その代償として明示的な戦略的認識が損なわれる可能性がある。プレイヤーは、なぜそれが効果的なのかを理解せずに良い習慣を形成する可能性がある。一方、ターンベース戦略ゲームは、時間的反射を可能にし、海馬系を活性化させ、より柔軟だが遅い学習を促進する。</p>
+<h3 id="5-7-games-and-language-share-procedural-circuits">5.7 ゲームと言語は手続き的回路を共有している</h3>
+<p>本書の新しい理論的貢献の一つは、ゲームと言語が階層的順序構造を処理するため進化した前頭-基底核回路を共有しているという主張である。その証拠は非常に充実している。</p>
+<p>文法規則を計算する手続き記憶系（尾状核、尾状核、およびブロカ野（BA 44/45））は、ゲームルールの学習、戦略的ブロック化、そして専門的直感を支えている。ゲームと言語はともに <strong>離散的無限</strong> を特徴としている：有限のルールが無限の組み合わせ空間を生成する。有限な文法に再帰的ルールを持つと無限の文が生成される。同様に、有限なゲームルールセットは、チェス（約10^120ノード）やゴ（約10^360ノード）のような、極めて大きなゲームツリーを生成する。両者は、巨大な空間をナビゲートする上で、階層的ブロック化とヒューティック検索という同じ計算的課題に直面している。</p>
+<p>Thibault、Py、Gervasi ら（2021, <em>Science</em>）は、道具使用に伴う階層的な運動計画と言語の統語処理に、<strong>大脳基底核の共通する神経機能基盤</strong>があることを示した。一方の機能を訓練すると他方も改善し、双方向の転移が認められた。ここから示唆される進化の道筋は、階層的な行動計画（霊長類に存在）→ 道具使用（下前頭回と大脳基底核を動員）→ 言語（同じ回路を記号の組合せへ転用）→ ゲーム（階層的で規則に従う系列行動を文化の領域へ拡張）である。</p>
+<p>Riggins（2020, IEEE Conference on Games）は、ゲームに文法のような形式的構造を明確に定義し、ゲームシステムを文法に類似した形式的構造として捉えた。Browne（2016）は、Ludii一般ゲームシステムに対して文脈自由文法を構築し、ゲームを「ルデム（ゲームの原子）」の木構造として表現することで、文を構文的構成要素の木構造として表現するのと直接対応している。ゲームルールと形式文法との間の形式的類似は、比喩に過ぎないものではない。それは計算的に正確な対応である。</p>
+<h3 id="5-8-games-as-conversion-engines">5.8 ゲームが変換エンジンとして機能する</h3>
+<p>すべてのゲームは、本質的にシステム2の判断をシステム1の自動反応に変換するための機械である。この変換の質――適切なレベルでシステム2を刺激する課題を提供し、パターンの抽出を支援するフィードバックを提供し、難易度を自動反応の獲得に合わせる――は、プレイヤーの体験において主要な決定要因となる。</p>
+<p>変換をうまく管理したゲームは、フロー、マスター感、そしてコスターが「学習」と呼んだ特徴的な喜びを生み出す。変換をうまく管理できなかったゲームは、飽き（システム1が何も学べない状態）または挫折（システム2が変換能力を超えてしまう状態）を引き起こす。</p>
+<p>最も長期間にわたって存続するゲームは、複数の時間スケールで<strong>ネストされた自動性サイクル</strong>を生成する。秒単位の瞬間的な運動学習、分単位の遭遇レベルでのパターン獲得、時間単位での戦略的理解（時間単位で数時間から数時間）、そしてメタレベルでの分野の専門知識（週から年単位）――これらすべてがそれぞれ独立したシステム2→システム1のパイプラインとして機能し、次の段階へとつながる。脳は一つのシステムだけではなく、両方を使ってゲームをプレイする。ゲームデザインの芸術とは、その両者の相互作用を演出することである。</p>
+<h3 id="5-9-transition">5.9 トランジション</h3>
+<p>報酬、好奇心、スキル獲得の神経メカニズムは、一つの像に収束する：脳は「不確実性の減少」を目的とした機械であり、その過程そのものが内面的に報酬を与える。ドーパミン信号は予測誤差を示す。好奇心は情報的体験の探求を促す。そして手続き記憶システムは、努力を要する学習を自動的スキルに変換し、次の一層の課題に必要な認知リソースを解放する。</p>
+<p>ゲームは、構造化された環境を提供することで、不確実性を調整し、フィードバックが即座に得られ、スキル獲得が測定可能な速度で進むことで、この3つのシステムを同時に活用する。次のセクションでは、この構造がプレイヤーが実際に報告するプレイの主観的体験、すなわち「現象学」にどのように対応しているかを検討する。</p>
+</article>
+<nav class="pagenav">
+<a href="/ja/game-design-dynamics-of-learning/part-1.html">← Part I</a>
+<a href="/ja/game-design-dynamics-of-learning/part-3.html">Part III →</a>
+</nav>
+</div>
+</main>
+<footer class="site">
+<div class="wide">
+<span>© 2026 Benjamin Michael Haire</span>
+<a href="/ja/">プロジェクトライブラリへ戻る</a>
+</div>
+</footer>
+<p class="ig-translation-note">日本語版（AI翻訳） · <a href="/game-design-dynamics-of-learning/part-2.html" hreflang="en" lang="en">英語原文</a></p><!-- ISEGORIA:FOOT -->
+<footer id="ig-footer"><div><a href="/ja/">Isegoria · Benjamin Haire</a><nav aria-label="サイト内リンク"><a href="/ja/">ホームに戻る</a><a href="/ja/library.html">全コンテンツ</a><a href="#ig-content">ページ上部へ</a></nav></div></footer>
+<!-- /ISEGORIA:FOOT -->
+</body>
+</html>
+

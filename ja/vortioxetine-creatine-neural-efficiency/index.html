@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+
+<html class=" ig-document ig-editorial" lang="ja">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="ボルチオキセチンおよびクレアチンは、タスク誘発BOLDの低下を引き起こすが、そのメカニズムは独立しており、そのうちの一つだけが一般知能に寄与すると主張する。" name="description"/>
+<meta content="#f7f7f5" name="theme-color"/>
+<link href="/assets/favicon.svg" rel="icon" type="image/svg+xml"/>
+<title>より安価な脳への2つの道</title>
+<style>
+  :root {
+    --ground:#F7F7F5; --surface:#FFFFFF; --surface-2:#F0F1EC;
+    --ink:#17191B; --muted:#63686D; --rule:#DEE0DC;
+    --accent:#1F5FA8; --accent-soft:#1F5FA814;
+    --blue:#2a78d6; --orange:#c8501f; --aqua:#12805a; --violet:#4a3aa7; --red:#c33a39;
+    --f-display:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    --f-body:"Inter",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+    --f-mono:ui-monospace,SFMono-Regular,Menlo,monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground:#101214; --surface:#181B1E; --surface-2:#1F2327;
+      --ink:#EDEFF1; --muted:#9BA3AA; --rule:#2C3237;
+      --accent:#69ABE3; --accent-soft:#69ABE31C;
+      --blue:#5c9ce8; --orange:#f08050; --aqua:#3cc493; --violet:#9085e9; --red:#e66767;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground:#101214; --surface:#181B1E; --surface-2:#1F2327;
+    --ink:#EDEFF1; --muted:#9BA3AA; --rule:#2C3237;
+    --accent:#69ABE3; --accent-soft:#69ABE31C;
+    --blue:#5c9ce8; --orange:#f08050; --aqua:#3cc493; --violet:#9085e9; --red:#e66767;
+  }
+
+  * { box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body {
+    margin:0; background:var(--ground); color:var(--ink);
+    font-family:var(--f-body); font-size:17px; line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  a { color:var(--accent); text-underline-offset:.18em; }
+
+  .wrap { width:min(760px, calc(100% - 40px)); margin-inline:auto; }
+  .wide { width:min(1080px, calc(100% - 40px)); margin-inline:auto; }
+
+  header.site {
+    border-bottom:1px solid var(--rule);
+  }
+  header.site .wide {
+    min-height:64px; display:flex; align-items:center;
+    justify-content:space-between; gap:20px;
+  }
+  header.site .name { font-weight:750; letter-spacing:-.02em; text-decoration:none; color:var(--ink); }
+  header.site nav { display:flex; gap:20px; flex-wrap:wrap; }
+  header.site nav a { color:var(--muted); font-size:.88rem; text-decoration:none; }
+  header.site nav a:hover { color:var(--ink); }
+
+  .hero { padding:76px 0 46px; }
+  .label { color:var(--muted); font-size:.74rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; }
+  h1 {
+    font-family:var(--f-display); font-weight:600;
+    margin:14px 0 16px; font-size:clamp(2.5rem,6.4vw,4rem);
+    line-height:1.02; letter-spacing:-.03em;
+  }
+  .standfirst { font-size:1.2rem; color:var(--muted); margin:0 0 26px; max-width:62ch; }
+  .herometa { display:flex; flex-wrap:wrap; gap:10px 18px; align-items:center;
+              font-size:.86rem; color:var(--muted); border-top:1px solid var(--rule); padding-top:18px; }
+  .pill {
+    display:inline-flex; align-items:center; gap:7px; padding:7px 14px;
+    border:1px solid var(--rule); border-radius:999px; background:var(--surface);
+    text-decoration:none; color:var(--ink); font-weight:600; font-size:.85rem;
+  }
+  .pill:hover { border-color:var(--accent); color:var(--accent); }
+
+  .toc { border-top:1px solid var(--rule); border-bottom:1px solid var(--rule); padding:22px 0 24px; margin-bottom:14px; }
+  .toc ol { margin:10px 0 0; padding-left:1.2em; columns:2; column-gap:34px; }
+  .toc li { margin:0 0 6px; color:var(--muted); font-size:.92rem; break-inside:avoid; }
+  .toc a { color:var(--ink); text-decoration:none; }
+  .toc a:hover { color:var(--accent); }
+
+  article { padding:8px 0 40px; }
+  h2 {
+    font-family:var(--f-display); font-weight:600; letter-spacing:-.02em;
+    font-size:1.72rem; line-height:1.18; margin:58px 0 4px;
+  }
+  h2 .num { color:var(--muted); font-family:var(--f-body); font-size:.8rem;
+            font-weight:700; letter-spacing:.1em; display:block; margin-bottom:10px; }
+  h3 { font-size:1.06rem; letter-spacing:-.01em; margin:34px 0 2px; }
+  p { margin:14px 0; }
+  strong { font-weight:650; }
+  em { font-style:italic; }
+  .lede { font-size:1.09rem; }
+  ul, ol.body { padding-left:1.25em; }
+  ul li, ol.body li { margin:9px 0; }
+
+  .fig { margin:36px 0 30px; }
+  .fig .plate {
+    background:#fff; border:1px solid var(--rule); border-radius:12px;
+    padding:16px 14px; overflow-x:auto;
+  }
+  .fig img { display:block; width:100%; height:auto; min-width:520px; }
+  .fig figcaption { color:var(--muted); font-size:.86rem; line-height:1.55; margin-top:12px; }
+  .fig figcaption b { color:var(--ink); font-weight:650; }
+
+  .key {
+    background:var(--surface); border:1px solid var(--rule);
+    border-left:3px solid var(--accent);
+    border-radius:10px; padding:18px 20px; margin:32px 0;
+  }
+  .key .kt { font-size:.74rem; font-weight:700; letter-spacing:.1em;
+             text-transform:uppercase; color:var(--accent); }
+  .key p:first-of-type { margin-top:8px; }
+  .key p:last-child, .key ol:last-child, .key ul:last-child { margin-bottom:0; }
+
+  .tablewrap { overflow-x:auto; margin:30px 0; }
+  table { border-collapse:collapse; width:100%; min-width:600px; font-size:.9rem; }
+  th, td { text-align:left; vertical-align:top; padding:11px 12px; border-bottom:1px solid var(--rule); }
+  thead th { border-bottom:2px solid var(--rule); font-size:.76rem; letter-spacing:.07em;
+             text-transform:uppercase; color:var(--muted); }
+  td.low { color:var(--red); font-weight:650; }
+  td.mid { color:var(--muted); }
+  td.high { color:var(--aqua); font-weight:650; }
+  caption { caption-side:bottom; text-align:left; color:var(--muted);
+            font-size:.85rem; padding-top:12px; }
+
+  .kicker { font-family:var(--f-display); font-size:1.34rem; line-height:1.45;
+            letter-spacing:-.015em; border-top:1px solid var(--rule);
+            padding-top:34px; margin-top:52px; }
+
+  .sources { border-top:1px solid var(--rule); margin-top:46px; padding-top:26px;
+             font-size:.82rem; color:var(--muted); line-height:1.6; }
+  .sources h2 { font-size:1.1rem; margin:0 0 12px; }
+  .sources b { color:var(--ink); }
+
+  footer.site { border-top:1px solid var(--rule); margin-top:56px; }
+  footer.site .wide { display:flex; justify-content:space-between; gap:20px;
+                      padding:26px 0 46px; color:var(--muted); font-size:.85rem; flex-wrap:wrap; }
+  footer.site a { color:var(--muted); }
+
+  @media (max-width:700px) {
+    body { font-size:16px; }
+    .hero { padding:54px 0 36px; }
+    .toc ol { columns:1; }
+    .fig .plate { padding:10px 8px; }
+  }
+</style>
+
+
+
+<link rel="canonical" href="https://theisegoria.github.io/ja/vortioxetine-creatine-neural-efficiency/">
+<link rel="alternate" hreflang="en" href="https://theisegoria.github.io/vortioxetine-creatine-neural-efficiency/">
+<link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/vortioxetine-creatine-neural-efficiency/">
+<link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/vortioxetine-creatine-neural-efficiency/"><script src="/assets/lang.js"></script>
+<!-- ISEGORIA:HEAD -->
+<link rel="stylesheet" href="/assets/site-shell.css?v=08342b869b">
+<script src="/assets/site-shell.js?v=08342b869b" ></script>
+<!-- /ISEGORIA:HEAD -->
+</head>
+<body class=" ig-site" data-site-kind="editorial" data-site-route="/ja/vortioxetine-creatine-neural-efficiency/">
+<!-- ISEGORIA:NAV -->
+<a class="ig-skip" href="#ig-content">本文へ移動</a>
+<header id="ig-header"><div class="ig-nav-inner">
+<a class="ig-brand" href="/ja/" aria-label="Isegoria, ホーム"><strong>ISEGORIA</strong><span>Benjamin Haire</span></a>
+<div class="ig-header-actions"><a class="ig-language" href="/vortioxetine-creatine-neural-efficiency/" hreflang="en" lang="en">English</a><button class="ig-menu" type="button" aria-expanded="false" aria-controls="ig-primary">メニュー</button></div>
+<nav id="ig-primary" aria-label="メインナビゲーション"><a href="/ja/">ホーム</a><a href="/ja/library.html">全コンテンツ</a><a href="/ja/#guides">学習ガイド</a><a href="/ja/#preoccupations" aria-current="location">研究と解説</a><a href="/ja/#books">書籍</a><a href="/ja/projects.html">プロジェクト</a><a href="/ja/about.html">このサイトについて</a><a class="ig-language" href="/vortioxetine-creatine-neural-efficiency/" hreflang="en" lang="en">English</a><button class="ig-theme" type="button" hidden>表示切替</button></nav>
+</div></header>
+<nav id="ig-breadcrumb" aria-label="パンくずリスト"><a href="/ja/">ホーム</a><span aria-hidden="true">/</span><a href="/ja/#preoccupations">研究と解説</a><span aria-hidden="true">/</span><span aria-current="page">より安価な脳への2つの道</span></nav>
+<span id="ig-content" tabindex="-1"></span>
+<!-- /ISEGORIA:NAV --><nav aria-label="このページで" class="ig-page-nav"><a href="#hypothesis">仮説</a><a href="#predictions">予測</a><a href="#wrong">反論</a></nav>
+<main>
+<div class="wrap">
+<div class="hero">
+<p class="label">研究報告書 / 2026年9月3日</p>
+<h1>より安価な脳への2つの道。</h1>
+<p class="standfirst">ボルティオキシテインとクレアチンは、タスク誘発BOLD信号を低下させます。私は、それらが異なるメカニズムを通じてその効果をもたらしていると主張し、そのうちの一つだけが知能と関係しているとし、両者の発見を説明する最も可能性の高い説明は、これまで誰も測定していないものであると述べます。</p>
+<div class="herometa">
+<a class="pill" data-document-language="en" href="/vortioxetine-creatine-neural-efficiency/two-routes-to-a-cheaper-brain.pdf" rel="noopener" target="_blank" title="PDF、新しいタブで開きます">PDFを読む · 14ページ（英語PDF）</a>
+<span>ボルチオキセチン · クレアチン · ニューロン効率 · <span style="font-style:italic">g</span></span>
+</div>
+</div>
+<nav aria-label="目次" class="toc">
+<p class="label">目次</p>
+<ol>
+<li><a href="#bold">BOLD信号の低下が実際に何を意味するか</a></li>
+<li><a href="#efficiency">ニューロン効率のサインが反転する</a></li>
+<li><a href="#vortioxetine">抑制解除は信号対ノイズの操作である</a></li>
+<li><a href="#three">アセチルコリン、ヒスタミン、グルタミン酸</a></li>
+<li><a href="#cognition">認知データがもたらす情報</a></li>
+<li><a href="#creatine">クレアチンは価格を変えるだけで、製品を変えない</a></li>
+<li><a href="#budget">請求額はシナプス的である</a></li>
+<li><a href="#hypothesis">2つの直交座標</a></li>
+<li><a href="#wrong">これは最も間違っている可能性が高い</a></li>
+<li><a href="#experiment">私が実施したい実験</a></li>
+</ol>
+</nav>
+<article>
+<p class="lede"><strong>検証したい主張は、ボルティオキシテインとクレアチンが<em>g</em>を増加させたことではありません。むしろ、彼らが脳を「ニューロン効率」と呼ばれる2つの座標軸に沿って移動させたこと、そしてその軸が異なることであると主張しています。</strong> ボルティオキシテインが臨床前研究の回路モデルが正しい場合、コルチカル回路が1スパイクあたり伝える情報量を変化させます。クレアチンは、脳が需要に応じて供給できるATPの量を変化させます。これらは直交する量です。どちらも適切な方向に推進されれば、タスク誘発BOLD信号の低下をもたらします。しかし、それぞれが単独で、そのタスクを実行した人が賢くなったと結論づけることはできません。以下に、それぞれの経路について私が述べたいメカニズム的根拠、なぜ両者を混同すべきでないのか、そしてそれらを区別するための実験について説明します。</p>
+<h2 id="bold"><span class="num">第1節</span>BOLD信号の低下が実際に何を意味するか、そしてその5つの可能性</h2>
+<p>BOLD 信号は神経活動そのものの測定ではない。脱酸素化ヘモグロビン濃度を反映し、それは脳血流量、脳血液量、脳酸素消費量に依存する。正の BOLD 反応は CBF の増加が CMRO<sub>2</sub> の増加を上回るために生じるが、両反応の比は一定ではない。Buxton ら（2014）は、そのずれの大きさを示した。カフェイン投与で基準 CBF は 25% 低下し、基準 CMRO<sub>2</sub> は上昇、視覚刺激への絶対的 CMRO<sub>2</sub> 反応は 60% 増えたのに、BOLD 反応は変わらなかった。同じ一連の研究で、刺激コントラストの操作は代謝変化の約 2 倍の BOLD 変化を生む一方、注意の操作は CMRO<sub>2</sub> を大きく増強しても BOLD をほぼ変えなかった。ある条件では 2 倍に過大反応し、別の条件では 60% の代謝変化にも反応しない信号を、神経の仕事量を測る線形の計器として読むことはできないと思う。</p>
+<p>したがって、薬剤がタスク中のBOLDを低下させた場合、私は5つの現実的な説明を挙げ、そのうちの2つだけが「脳の計算コストが低い」という意味で説明しています。</p>
+<figure class="fig">
+<div class="plate"><img alt="図：薬剤誘発BOLD低下の5つの候補説明を、より経済的な計算を意味する2つと、混同を引き起こす3つに分類。" src="/ja/vortioxetine-creatine-neural-efficiency/figures/fig1_bold_ambiguity.svg"/></div>
+<figcaption><b>図1。推論上の問題。</b>薬剤による BOLD 低下の五つの候補説明のうち、三つは脳がより少ないエネルギーで計算することとは関係がない。本報告の効率という主張は左端の二つの枠を指す。そして、その二つを右端の枠から区別する実験がまだ行われていないことが、本報告の方法論上の中心的な論点である。</figcaption>
+</figure>
+<p>最後の枠は仮説全体を崩しうるうえ、両化合物に共通するため、正確に扱いたい。ボルチオキセチンは 5-HT<sub>1B</sub> 部分作動薬であり、5-HT<sub>1D</sub> 拮抗薬でもある。5-HT<sub>1B/1D</sub> はトリプタンが作用する受容体で、脳血管・髄膜血管の収縮を主に仲介する。2025 年の薬理学的 MRI 研究では、シタロプラム 20 mg により、動脈スピン標識法で測った CBF が海馬、扁桃体、島皮質で有意に低下し、その変化は 5-HT<sub>1A</sub> と 5-HT<sub>4</sub> の受容体密度に対応した。一方、安静時 BOLD 変動には有意な影響がなかった。これは、課題 BOLD の比較で見かけの効率改善を生みうると私が予想する、まさにその解離である。私の知る限り、ボルチオキセチンについて公表されたヒト ASL、PET-CBF、CMR<sub>glc</sub> 研究はない。この点は第9節で再び取り上げる。</p>
+<h2 id="efficiency"><span class="num">2節</span>神経効率は現実の効果で、その符号が反転する</h2>
+<p>この仮説はハイヤーのPET研究から始まる。1988年の研究では、皮質グルコース代謝率はラーヴァンスのパフォーマンスと逆相関を示し、地域的な係数は−0.72から−0.84の範囲であった。より興味深い結果は1992年のテトリス研究である。4〜8週間の毎日練習後、全体皮質のグルコース代謝率は39.2から28.8 µmol/100g/minに低下し、約四分の一減少し、タスクパフォーマンスは7倍以上上昇し、最も改善した参加者は最も顕著な代謝低下を示した。学習は計算をより安価にしている。これだけは確実に受け入れられ、この仮説の持続的な核であると私は考える。</p>
+<p>私があまり確固ではないのは、その結果から「高<em>g</em>の脳はエネルギー消費が少ない」という飛躍の部分です。私にとって決定的な反実験は、Larsonら（1995）によるもので、14人の高Raven能力者と14人の平均Raven能力者の男性を、逆方向の数字記憶タスクで、90％と75％の正確性に適応的に調整した実験です。難易度を能力に応じて定義した場合、その符号が逆転したのです：能力が高いグループは、<em>より高い</em>皮質の代謝率を示しました（グループ×条件 <em>F</em>(1,26) = 7.04, <em>p</em> = .013）。私は元の逆相関を、少なくとも一部は、能力の高い人々が標準的なタスクを容易にこなしたという結果のアーテファクトだと解釈しています。</p>
+<figure class="fig">
+<div class="plate"><img alt="タスク関連活性と、主観的な要求の高い能力および平均能力に対する曲線が、中程度の要求で交わる。" src="/ja/vortioxetine-creatine-neural-efficiency/figures/fig6_crossover.svg"/></div>
+<figcaption><b>図2. クロスオーバーの現象。</b> NeubauerおよびFink（2009）によって記録され、Dunstら（2014）によって直接確認されています。効率は低到中程度の<em>主観</em>な負荷で現れ、高負荷では逆転します。難易度は個人ごとに定義されるため、同じ客観的タスクも異なる個人によって異なる位置に位置づけられ、その結果、タスク選択によって効果の符号を操作するのは非常に簡単です。</figcaption>
+</figure>
+<p>Basten、StelzelおよびFiebach（2013）はこの現象をさらに明確にしています。77から139のIQ範囲を含む52人の参加者において、高い知能は<em>より強い</em>タスクポジティブネットワークの活性化（<em>F</em>(1,50) = 4.29, <em>p</em> = .044）および<em>より少ない</em>、デフォルトモードネットワークの抑制に必要な努力（<em>F</em>(1,50) = 8.87, <em>p</em> = .004）を予測しました。効率はタスクネガティブネットワークに、能力はタスクポジティブネットワークに存在していました。そしてスケールを拡大すると、ネットワーク構造の視点から見ると、その物語は崩れています：Metzenら（2024）は4つのデータセットと2,000人以上の参加者を統合し、グローバル効率または小世界性との間の信頼性のある関連性は見られず、グローバルクラスタリングは<em>r</em> ≈ 0.10にとどまり、<em>n</em> = 19のパス長結果は再現されませんでした。</p>
+<p>Barbey（2018）のネットワーク神経科学理論は、効率か容量かという対立で一方を選ぶのではなく、対立自体を解きほぐすため、最も有用な枠組みだと思う。結晶性能力は到達しやすいネットワーク状態を利用し、流動性能力は到達しにくい状態へネットワークを動かす必要がある。容易な状態へ低コストで到達できることが効率に見え、高コストな状態へ到達できることが容量に見える。両者は同じ制御問題の二つの領域であり、どちらが観察されるかは、その人に対する課題の位置づけで決まる。</p>
+<div class="key">
+<p class="kt">これは薬剤議論においてなぜ重要なのか</p>
+<p>「神経効率」の符号が主観的な課題要求に応じて反転するなら、<em>BOLD を低下させる薬が、それだけで <span style="font-style:normal">g</span> に似た作用をしているとはいえない</em>。効率が中心となる領域で BOLD を下げる一方、処理容量が中心となる領域で成績を維持または拡張して初めて、<em>g</em> に似た作用といえる。これは二つの条件からなる反証可能な予測であり、二つの化合物では異なる予測となる。これが本報告全体の論点である。</p>
+</div>
+<h2 id="vortioxetine"><span class="num">第3節</span>ボルチオキセチンのメカニズムは抑制解除であり、抑制解除は信号対ノイズの操作である</h2>
+<p>通常の受容体表は誤解を招きうるため、薬理から始める。ボルチオキセチンの結合親和性は SERT 1.6 nM、5-HT<sub>3A</sub> 3.7、5-HT<sub>1A</sub> 15、5-HT<sub>7</sub> 19、5-HT<sub>1B</sub> 33、5-HT<sub>1D</sub> 54、NET 113 である（Bang-Andersen 2011; Mørk 2012）。しかし、機能的効力はこの順序に従わない。5-HT<sub>7</sub> の <em>K</em><sub>i</sub> は 19 nM だが、機能的 <em>K</em><sub>b</sub> は 450 nM と 24 倍の隔たりがある。また、5-HT<sub>1B</sub> の内在活性は、測定系の受容体共役の条件によって 55% から 22% へ低下する。</p>
+<figure class="fig">
+<div class="plate"><img alt="左：ボルチオキセチンのターゲットに対する結合親和性と機能的効力の対数スケールでの関係。右：SERTの占有量と用量の関係。" src="/ja/vortioxetine-creatine-neural-efficiency/figures/fig2_targets.svg"/></div>
+<figcaption><b>図3. ターゲットエンゲージメント。</b> 左：各ターゲットに対する結合親和性と機能的効力の関係。そのギャップは、臨床用量において「モードとノード」のフレーミングが5-HT<sub>7</sub>および5-HT<sub>1A</sub>の関与を過大評価している理由である。右：PETによるSERTの占有（Stenkrona 2013；適合ED<sub>50</sub> ≈ 8.5 mg、Sørensen 2022）。ボルチオキセチンは5 mgで効果的であり、そのときの占有は約半分である。これは、SSRIが50％の占有でほとんど効果を発揮しないことから、非SERTメカニズムが臨床的に実質的な影響を持つことを最も強く示している。</figcaption>
+</figure>
+<p>5〜20 mgで確実に作用するのはSERT阻害および5-HT<sub>3</sub>受容体の拮抗作用である。そして5-HT<sub>3</sub>受容体の拮抗作用は、その受容体の位置にあることから興味深い。</p>
+<figure class="fig">
+<div class="plate"><img alt="回路図：ボルチオキセチンはGABA能介在ニューロン上の5-HT3A受容体をブロッキングし、錐体細胞を解離させ、その結果、局所的なグルタミン酸、アセチルコリン、ヒスタミン、ドパミン、ノルアドレナリン、セロトニンの濃度が上昇する。" src="/ja/vortioxetine-creatine-neural-efficiency/figures/fig3_circuit.svg"/></div>
+<figcaption><b>図4。脱抑制の連鎖。</b>重要な実験結果は Dale ら（2014）による。ラット CA1 で 5-HT を投与すると、自発性 IPSC の頻度は 301 ± 34%、振幅は 261 ± 26% 増加した。ボルチオキセチンは 15 細胞中 14 細胞で両者を抑えた。5-HT<sub>3</sub> 作動薬 m-CPBG は 68% の細胞で 5-HT の効果を再現し、ボルチオキセチンはその<em>すべて</em>で効果を遮断した。その後、Riga ら（2016）は生体内で、亜慢性のボルチオキセチン投与が mPFC の錐体細胞活動を増やす一方、エスシタロプラムでは増えないことを示した。</figcaption>
+</figure>
+<p>このため、この化合物は受容体作用を追加しただけの SSRI ではない。SSRI は広く 5-HT を増やし、その増加分のかなりの部分が GABA 作動性介在ニューロン上の 5-HT<sub>3</sub> 受容体に作用して、錐体細胞への抑制を強める。ボルチオキセチンは 5-HT を増やすと同時に、その増加が錐体細胞出力を抑える経路の受容体を遮断する。正味の効果は全般的な興奮ではなく、領域選択的な脱抑制である。両者の違いは効率の議論にとって極めて大きいと思う。</p>
+<p>その結果として生じる下流の神経伝達物質の増加は、その抑制解除の結果から導かれる。Mørkら（2012）は、中前頭皮質および下部海馬において、5-HT、ドパミン、ノルアドレナリンの濃度が用量に依存して増加することを示した。その中で、SERTの占有率が41％にとどまる、慢性投与でもその効果が観察された。Mørkら（2013）は、1〜10 mg/kgでmPFCにおいてアセチルコリンおよびヒスタミンを追加した。Pehrsonら（2013）が「領域に特異的に複数の神経伝達物質が増加する」というフレームワークを提供した。</p>
+<p>私は、最も弱い点を正直に指摘すべきである。Pehrsonら（2016）は、急性の海馬におけるAChの増加が小さく、一時的であり、慢性投与では基本的な海馬ACh濃度に変化がなかったこと、またボルチオキセチンがコポラミン誘導された注意障害を逆転させなかったことを見出した。私は、そのアセチルコリンの主張を、前頭皮質では明確で、海馬では薄いものと解釈しており、レビューではその違いが曖昧にされている傾向がある。</p>
+<p>2つ目のフラグは、振動の部分にある。小哺乳類の研究は翻訳されない。Leiser（2014）およびDale（2014）は、マウスにおいて前頭野のθ波およびγ波の増加を報告しているが、人間のEEG研究として唯一のデータ、Nissen、Gramら（2020、32人の健康的な男性を対象とした4wayクロスオーバー設計、vortioxetine 10 mg、20 mg、escitalopram 15 mg、およびプラセボ）では、<em>θ波の減少</em>、β波の増加、およびSSRIと同等の効果プロファイルが観察された。θ波を人間のデータと結びつけることのできる根拠は、人間の記録が反証する小哺乳類データに依存しており、その点を意識して図4を読むべきである。</p>
+<h2 id="three"><span class="num">第4節</span>なぜアセチルコリン、ヒスタミン、グルタミン酸が認知促進の3つの主要物質なのか</h2>
+<p>これらの3つの神経伝達物質が重要である理由は、それらが「活性化する」ということではない。ノルアドレナリンは活性化する。カフェインも活性化する。これら3つが特徴づけられるのは、それぞれが適切な条件下で、タスクに関連する活動とタスクに無関係な活動の<em>比率</em>を変化させることであり、両者を一様にスケーリングすることではない。</p>
+<h3>アセチルコリン：信号を強化し、エコを抑制</h3>
+<p>Hasselmoが開発し、HasselmoおよびSarter（2011）で整理された計算モデルは、非対称モジュレーションである。脳幹-皮質終末に存在するニコチニック受容体は、前向きな感覚入力の突触でグルタミン酸伝達を強化し、新しい情報がより強く重み付けされる。一方、プリシンプス的マスカリン受容体は、同時に、<em>再帰</em>的興奮性突触（CA3の関連性纏、ピリオマ層Ib、皮質内層II/IIIのコラーティブ部分）でのグルタミン酸放出を異常抑制する。分子の分子の分母が減少し、分子が増加する。これは厳密な信号対ノイズであり、抑制される成分は内部で自己維持されるスパイクであり、情報の獲得に貢献しないエネルギー消費に過ぎない。</p>
+<p>私は実証的なテクスチャを好む。Parikhら（2007）は、ラットがキューディ検出タスクを実施しながら、前頭葉のコリンergicの急激な変動をサブ秒分解能で記録した。検出されたキューティは変動を誘発し、検出されなかったキューティは変動を誘発しなかった。コリン信号の1 µM増加は、応答遅延が1.75秒減少することを予測した。また、遅いトニックな変化は変動の振幅と相関（<em>r</em> = 0.72）を示し、トニックなAChはフェーズ的な検出信号のゲインを設定している。Parikhら（2010）は、受容体のファミリーを分離した。β2*-含有受容体は変動の振幅を制御し、α7はその持続時間を制御する。</p>
+<p>そして、私にとってこの発見が、全体の効率性に関する議論を仮説的でないものにしている。Fureyら（2008）は、10名の健康な被験者に、1秒、6秒、11秒、16秒の遅延を持つパラメトリックな遅延マッチ・ツー・サンプルタスクを実施させ、塩水および静脈内にフィスチグミンを投与した。塩水条件下では、前頭葉のrCBFは遅延にシステム的に変化し、これは正常な難度に応じた活動のパターンである。フィスチグミン投与では、反応時間は減少し、特に長時間遅延において前頭葉のrCBFは選択的に減少し、<em>遅延と前頭葉rCBFとの相関を完全に消滅</em>した。コリンergic薬は活性化を追加しなかった。むしろ、難度が要求する活動を「削除」した。これは、人間の研究文献の中で、神経調節物質が健康な脳を「効率性軸」に移動させることを示す、最も近い例である。</p>
+<h3>ヒスタミン：必要であるが、それだけでは十分でない</h3>
+<p>中枢神経系のヒスタミンはすべて結節乳頭体核に由来し、広く投射する。H<sub>1</sub> はカリウム漏洩コンダクタンスを抑え、大脳皮質の錐体細胞を脱分極させる。H<sub>2</sub> はカルシウム活性化性の後過分極を減らし、発火の利得を高める。興味深いのは H<sub>3</sub> である。恒常的活性を持つ Gi/o 受容体で、ヒスタミン神経終末では自己受容体、コリン作動性・ノルアドレナリン作動性・ドパミン作動性・グルタミン酸作動性の終末では異種受容体として働く。したがって H<sub>3</sub> 遮断は、ヒスタミン放出<em>と</em>皮質 ACh 放出の抑制を解除し、先ほどの機序に合流する。ネコでシプロキシファンは 0.8〜5 Hz の徐波活動と睡眠紡錘波を抑え、25〜45 Hz の速い律動を大きく増やし、五肢選択課題では特に最も難しい刺激提示時間で正答率を改善した（Ligneau 1998）。</p>
+<p>臨床記録が注意を促す理由である。ポチリサントはナレッピー症に承認されているため、興奮効果は現実にある。認知プログラムは墓場である：ABT-288はアルツハイマー病で失敗し、精神分裂症で幻覚を引き起こした；MK-0249も失敗した；GSK239512はエピソード記憶のみを改善した。Nishiiら（2025）は11件のRCTと754人の参加者をプールし、そのクラスに対して認知的効果がなかったと結論付け、唯一のポジティブな信号はベタヒスチン（総合SMD −0.61、95％CI −1.03 〜 −0.18）であった。逆の証拠は日常的で強く、H<sub>1</sub>反応性阻害薬は認知機能を確実に損なう。</p>
+<p>この報告の主張に与える教訓として、特に重要で明確なのは：<em>グローバルかつトニクな興奮伝達物質の恒常的上昇は、覚醒を確実に生み出し、認知を確実に生み出さない</em>。ボルチオキセチンのヒスタミン効果が認知的であるという点は、ヒスタミンそのものに由来しない。ヒスタミンの上昇が地域的で、瞬時の信号を可能にする「許容的」な状態であるべきである。</p>
+<h3>グルタミン酸：3つのうち最も狭い窓</h3>
+<p>グルタミン酸では、逆U字の両側が最も急峻になる。左側について、Wang ら（2013）は霊長類の dlPFC の遅延期細胞を記録し、NMDA 拮抗作用が 15 細胞中 14 細胞の遅延期発火を減らすのに対し、AMPA 拮抗作用では 16 細胞中 10 細胞で減少し、最大低下幅も NMDA 拮抗作用の方がかなり大きいことを見いだした。dlPFC の NR2B は感覚皮質と異なり、シナプス後肥厚部だけに存在する。さらに、そのモデルでは NMDAR コンダクタンスを対照の 70% に下げると、ネットワークの持続的発火がほぼ完全に失われた。30% の低下が破局的な結果をもたらすのである。右側では、Yizhar ら（2011）が光遺伝学によって、大脳皮質の興奮／抑制比（E/I比）を上げると情報処理が<em>悪化する</em>こと、抑制も同時に増やすと部分的に回復することを示した。それを超えると、明らかな興奮毒性に至る。「グルタミン酸作動性の駆動を増やせばよい」という考えを直接検証したアンパキン開発では、発作リスクによって制限される範囲内で、臨床結果は一貫しないものから否定的なものまでとなった。</p>
+<p>中間変数は振動的である。グルタミン酸性刺激が高速発火型パルバルブミンインテーネンに与えられることでPINGループが生成され、ガンマ波が生じる。Sohalら（2009）は光遺伝学的に、興奮性入力のガンマ周波数モジュレーションが、皮質信号伝達を強化し、回路ノイズを減少させ、信号を強化することを示した。アセチルコリンと同様の通貨だが、異なるドア。</p>
+<p>人間の相関データも同じ方向を示している。Marsmanら（2017）は7T MRSを使用し、前頭部のGABA/グルタミン酸比<em>ratio</em>が、工作記憶指数と相関<em>r</em> = −0.80（<em>p</em> = 0.01）に、そして視床部のグルタミン酸濃度<em>r</em> = −0.79と相関した。最初の係数には注意を払うべきである。この研究では23人の成人を対象としたが、その相関は<em>df</em> = 7に基づいており、約9人のデータに依存している。その大きさの<em>r</em>が9人のサンプルで得られたという推定は脆弱である。方向性が重要であり、大きさは関係ない。より優れたパフォーマンスを示した人々は、グルタミン酸の量が多かったわけではない。彼らは、より適切な興奮・抑制バランスを持っており、その点で優れていた。</p>
+<div class="key">
+<p class="kt">貫通する線</p>
+<p>各3つの作用は、皮質のスパイクの何割がタスクに関連しているかを変化させている。アセチルコリンは、再帰的な伝達を抑制しつつ、afferent伝達を強化することでそれを実現する。グルタミン酸は、PVを介したガンマ振動を通じて、時間的分離メカニズムを用いることによってそれを実現する。ヒスタミンは、他の2つを許容することでそれを実現する。これらすべては、皮質を一様に活性化させることで機能を実現していない。私はヒスタミンの試験記録を、一様な活性化が認知をもたらすとは限らないという実証的証拠として取っている。</p>
+</div>
+<h2 id="cognition"><span class="num">第5節</span>ヴォルティクセチンの認知データがもたらすものと、もたらさないもの</h2>
+<p>FOCUS試験（McIntyre 2014, <em>n</em> = 602）では、10mgではDSST効果が<em>d</em> = 0.51、20mgでは<em>d</em> = 0.52、RAVLTの遅延記憶では0.31および0.28、パス分析によりDSST効果の66％および56％が直接経路に帰属しており、感情媒介経路ではなく直接経路によるものであると示された。CONNECT（Mahableshwarkar 2015, <em>n</em> = 602）ではDSST効果が小さく、<em>d</em> = 0.254、<em>p</em> = 0.019、デルオキセチン60mgはプラセボと差別化できず（<em>d</em> = 0.176、<em>p</em> = 0.099）、パス分析ではボルチオキセチンの効果の75.7％が直接経路に、デルオキセチンの48.7％が直接経路に帰属している。Bauneのネットワークメタアナリシス（2018、12件のRCT、3,738人）では、ボルチオキセチンが唯一、プラセボよりもDSSTで有意に優れた抗うつ薬であった（SMD 0.325（95％CI 0.120～0.529））。</p>
+<figure class="fig">
+<div class="plate"><img alt="ボルチオキセチンおよびクレアチンの認知効果に関する標準化された効果サイズのフォレストプロット。" src="/ja/vortioxetine-creatine-neural-efficiency/figures/fig4_forest.svg"/></div>
+<figcaption><b>図5. 両化合物の効果サイズを共通の軸上に示す。</b> 開円は、主な資料から信頼区間を取得できなかった点推定値であり、グレーの項目は無効または比較対象である。2つの観察点。第一に、ボルチオキセチンの効果は方向が一貫しており、規模は小さく、その中で最も大きな効果は、その効果を検出するために設計された試験からのものである。第二に、クレアチンによる記憶効果は、特に高齢者に強く、若年健康な人々においてはメタアナリシスの推定値は0.03に近い。</figcaption>
+</figure>
+<p>今度は、愛好家向けの文献が飛ばす部分です。パス分析は、試験データに適合された構造方程式モデルであり、実験的解離とは異なります。FOCUSまたはCONNECTにおけるどの試験も、感情や認知を独立して操作していません。Baune自身が行った2018年の試験では、MDD患者において、ボルチオキセチン、パロキセチン、プライスコープの3つはDSSTにおいて区別がつかなかった。Nierenbergら（2019）は、症状が残っている患者において治療の違いが見られなかった。Vietaら（2018）は、エスチロロプラマムと比較して有意な差が見られなかった。CONNECTのRAVLTおよびストロップ試験の結果はすべて無意味であり、DSSTの結果だけが正の結果であった。そして規制当局もそれを認めなかった。2016年にFDAのアドバイザリーコミットteeは8対2で支持したものの、FDAは認知機能改善の効果を認めず、2018年のラベル改訂では、DSSTの効果が「うつ病の改善を反映している可能性」があると述べ、他の抗うつ薬と比較して優位性が示されていないと明言している。</p>
+<p>この報告の動機となっている画像データは、Smithら（2018、<em>Molecular Psychiatry</em>）の研究です。96名の参加者、うつ病の回復した患者48名と健康なコントロール48名、それぞれにボルチオキセチン20mgまたはプライスコープを2週間投与。N-back試験でスキャン。BOLDは右側dlPFC（<em>Z</em> = 3.34、<em>p</em> = 0.030）および左側海馬（<em>Z</em> = 3.72、<em>p</em> = 0.029）で低下した。N-backの正確性は変化しなかった。Trail Making AおよびBは改善（<em>p</em> = 0.01、<em>p</em> = 0.02）したが、この健康体重サンプルにおいてDSSTおよびRAVLTの結果は無意味であった。著者はこのパターンを「神経効率の向上」と解釈し、うつ病患者がパフォーマンスを維持している場合に観察されるBOLDの増加とは逆方向にあると述べている。</p>
+<p>この研究について、慎重に説明しなければなりません。これは、実際に十分な力を持ち、プライスコープ対照の実証的試験であり、タスク誘発BOLDの低下がパフォーマンスが一定である状態で確認されたものです。しかし、その低下が神経的起源であることを示すものでもなく、CBF測定が行われていないためです。また、効率性の領域において確認されたものでもなく、N-backの負荷は個人の能力に応じて調整されていないためです。</p>
+<h2 id="creatine"><span class="num">第6節</span>クレアチンの変化は価格を変えるだけで、製品そのものは変えない</h2>
+<p>クレアチンのメカニズムは表現と関係がありません。リン酸クレアチン／クレアチンキナーゼ系は近似的に均衡を保つバッファであり、一方向的な流れはネットワークでのATP合成を大きく上回り、二つの機能を担っています。その一つは時間的バッファリングであり、需要の急変に対してATPのΔ<em>G</em><sub>ATP</sub>をほぼ一定に保つことで、酸化リン酸化が反応できるほど速く反応しています。もう一つは空間的バッファリングであり、PCrとCrはアデニン核苷がより速く拡散し、より高い濃度で存在するためです。ミトコンドリア内のクレアチンキナーゼは膜間空間に位置しており、アデニン核苷輸送酵素と結合しており、ミトコンドリア内のATPは輸出の場所でほぼ即座にPCrに変換されます。</p>
+<p>この文献において私が最も重要な測定と考えているのは、Chen et al. (1997) の結果です。光刺激中に、人間の視覚皮質におけるクレアチンキナーゼの前向き反応速度定数は34％増加しましたが、安定状態のPCrまたはATP濃度には有意な変化は見られませんでした<em>。活動は流れを変化させ、プールサイズを変化させません。ほぼすべてのクレアチン補給研究はプールサイズを測定しています</em>。</p>
+<figure class="fig">
+<div class="plate"><img alt="クレアチン投与量と脳内のリン酸クレアチンまたは総クレアチンの変化率の散点図。" src="/ja/vortioxetine-creatine-neural-efficiency/figures/fig5_creatine_dose.svg"/></div>
+<figcaption><b>図6．脳への効果的達成。</b> Kondo et al. (2016) は唯一、明確な濃度対応関係を示しています。前頭野のPCrは2g、4g、10g/日でそれぞれ4.6％、4.1％、9.1％上昇し、プラセボでは−0.7％の増加でした。Dechent (1999) では、4週間の20g/日の補給で総クレアチンが+8.7％増加し、脳下垂体では+14.6％、個人間の範囲は3.5％から13.3％でした。Solis et al. (2017) では、健康な子どもたちに7日間補給しても、測定可能な変化は全く見られませんでした。クレアチンはSCL6A8経由でバリアを越えますが、星形細胞およびその周縁の血管内側の末端はこの輸送タンパク質を発現していません。したがって、外周のクレアチンは内皮を越えてから、神経細胞に到達するため、非輸送性の膠質細胞の間の層を越えなければなりません。</figcaption>
+</figure>
+<p>行動的報酬を読み解くと、その大きさは小さいもので、条件付きであり、議論の余地がある。記憶や速度を求めるタスクにおいて顕著であり、生物エネルギー的ストレス下では特に顕著である。20 g/日、7日間の投与は、FiO<sub>2</sub> 0.10 の低酸素状態下でプラセボ対照で複雑な注意を21％向上させた（Turner 2015）；一方、1回の0.35 g/kgの投与は、21時間の睡眠欠如下で処理速度を24〜29％、語彙記憶を10.3％向上させた（Gordji-Nejad 2024）。ストレスのない健康的な若年成人においては、その効果はほとんどない。最も大きな事前登録されたクロスオーバー研究、Sandkühler et al. (2023, <em>n</em> = 123, 5 g/日、6週間) は、Raeの古典的な植物性食生活の結果を再現できなかった：逆順数字記憶 <em>d</em> = 0.17、Raven's <em>d</em> = 0.09。また、メタアナリシスの効果サイズは、現実の統計的誤りによって上昇している。Prokopidis (2023) および Xu (2024) は、同じ参加者からの複数の相関のあるサブテストを独立した効果として集計したため、観測値の数がランダム化された参加者数を上回っている。Eckert および Pascher が Prokopidis の分析を正しく再検証した結果、記憶効果は高齢者においてのみ残り、EFSA (2024) は認知健康に関する主張を完全に否定した。</p>
+<p>このレポートにおいて私が注目している部分は、クレアチンがタスク誘発型の血流動態反応に与える影響についての3つの研究である。その3つの研究はすべて、その効果が縮小することを示した。</p>
+<ul>
+<li><strong>Hammett et al. (2010).</strong> 5日間20 g/日、その後2日間5 g/日で、視覚皮質のBOLD反応を視覚刺激に対して16％減少させ、プラセボグループでは同等の変化が観察されなかった。逆順数字記憶 (<em>F</em>(1,20) = 8.58, <em>p</em> = 0.008) が改善されたが、Raven'sでは有意な効果が見られなかった。これは並列グループ設計で、各グループに11名の参加者が含まれており、クロスオーバー設計ではないため、効果は11人の間の被験者比較に基づく。著者は、神経活動と血流動態反応の結合が変化したと解釈した。</li>
+<li><strong>渡辺、高橋、高橋（2002）</strong>。5日間、8g/日で精神的疲労を減少させ、連続計算テストにおいてNIRSにより、タスク関連の酸素ヘモグロビンの減少と脱酸素ヘモグロビンの増加が観察された。これらの研究者たちは、その変化の方向を<em>増加</em>した脳内酸素消費量と解釈した。</li>
+<li><strong>Moriarty 他 (2023).</strong> 10 g/日の摂取において、前頭野の酸素ヘモグロビン濃度が減少する傾向が見られた（<em>p</em> = 0.06）が、行動的変化は観察されなかった。</li>
+</ul>
+<p>三つの研究は変化の方向では一致するが、解釈は異なる。クレアチン補給中の CMRO<sub>2</sub> を測定したヒト研究は見つからなかった。Turner らは単純な酸素節約説を明確に退け、脳内クレアチン蓄積量の大きさが認知機能の保護をまったく予測しないことも示した（<em>R</em><sup>2</sup> = 0.002）。</p>
+<h2 id="budget"><span class="num">第7節</span>この法案はシナプスに依存するため、節約されるのはシナプスに帰属されるべきである</h2>
+<p>実際に皮質エネルギーがどのような用途に使われているかを確認することで、この2つの経路を区別する価値が明らかになる。</p>
+<figure class="fig">
+<div class="plate"><img alt="重ねた棒グラフで、AttwellとLaughlin（2001）およびHowarth（2012）のグレイマター信号分離を比較。" src="/ja/vortioxetine-creatine-neural-efficiency/figures/fig7_energy.svg"/></div>
+<figcaption><b>図7. 脳の灰質内シグナルエネルギー。</b> Attwell および Laughlin (2001) は4 Hzで分配したが、Howarth 他 (2012) は現実的なナトリウム・カリウムイオンの現在値重複係数1.24を使用して再評価し、4 Hzより低い値に修正した。これにより、行動電位の割合は約69％減少した。どちらの分配も同じ結論を導く：主要なコストは突発的なグルタミン酸受容体電流であり、電解離の回復に必要なナトリウム<sup>+</sup>/カリウム<sup>+</sup>-ATPaseの活動である。</figcaption>
+</figure>
+<p>Lennie (2003) はこれを人間の脳皮質に再スケーリングした。約2.4 × 10<sup>9</sup> ATPあたり1回のシグナルに相当し、新皮質は脳全体のエネルギー消費の44％を占め、その予算は1つのニューロンあたり平均0.16回のシグナルを維持できると評価された。これは、同時に活動している皮質ニューロンが約312個に1つであることを意味する。皮質は抽象的な意味でエネルギー制限されているわけではない。特定の、定量的な稀度に制限されているということである。</p>
+<p>ここでは理論が終了する。Barlowの効率的なコーディング仮説およびOlshausenとField（1996）が、自然画像の生成モデルにスパース性ペナルティを導入することでV1様の受容野が自然に生成されることを示した。つまり、より良い表現<em>は</em>スパースな表現であるとされる。LevyおよびBaxter（1996）は補足的な結果を得た：シナプスの発火コストが目的関数に含まれる場合、情報量を最大化するコードは最適発火確率が低い。スパースコーディングは情報理論的かつエネルギー的最適である。</p>
+<p>したがって、薬剤がafferent側の証拠の重みを増加させ、再帰的自己興奮を抑制する場合、その結果として生成されるコードはよりスパースで選択的になる。スパースなコードは、突触後電流およびポンプのコストが主を占めるため、コストが少なくなる。同等またはより優れた行動においてコストが低いことは、神経効率を意味する。これは受容体から代謝までを含む完全なメカニズム的連鎖であり、これはボルチオキセチンに対して成り立つが、クレアチンには当てはまらない。</p>
+<h2 id="hypothesis"><span class="num">第8節</span> 本仮説：2つの直交座標</h2>
+<p><strong>ここに主張がある。</strong> 脳画像学界が「神経効率」と呼んでいるのは一つの量ではない。少なくとも2つあり、それらは独立している。</p>
+<p>その1つは<strong>表現効率</strong>：回路が1発のスパイクあたりどれだけのタスク関連情報を伝達するかである。これはHasselmoのコリンergic非対称性操作、Sohalのガンマ調整、MarsmanのGABA/グルタミン酸比、そしてJensenおよびKailの神経ノイズ理論<em>g</em>が常に扱ってきた量である。その行動的特徴は、<em>g</em>に最も明確に負荷される。すなわち、検査時間、選択反応時間、そして特に個人内反応時間の変動であり、最も悪いパフォーマンスルールによれば、<em>g</em>において平均速度よりも少なくとも同等の精度で予測できる。この効率を向上させることで、固定された計算の代謝コストを削減できる。なぜなら、情報を持たないスパイクの発火を削除できるからである。</p>
+<p>2つ目の要素は<strong>生体力的余裕</strong>である。組織が需要に対してどれだけATPを供給できるか、そしてその変動中にΔ<em>G</em><sub>ATP</sub>を一定に保つ能力である。これはGeary（2018）のミトコンドリアモデルの<em>g</em>であり、クレアチンキナーゼ系がその役割を果たす。この要素を改善しても、計算そのものは全く変化しない。計算のための血流変動の大きさが変化し、システムが倒れる負荷の閾値が変化するだけである。</p>
+<figure class="fig">
+<div class="plate"><img alt="x軸に表現効率、y軸に生物エネルギー余裕をもつ2次元平面上で、基準値、ボルチオキセチン、クレアチンおよび組み合わせの位置を示す。" src="/ja/vortioxetine-creatine-neural-efficiency/figures/fig8_plane.svg"/></div>
+<figcaption><b>図8．2つの座標、</b> で、固定された計算の予測される代謝コストを背景の陰影で示す。ボルチオキセチンの作用は水平方向に移動する：抑制の解除に加え、コリン能、グルタマミン能、ヒスタミン能の調節により、1スパイクあたりの情報量が増加する。クレアチンの作用は垂直方向に移動する：より大きなサイズでより高速にサイクルを繰り返すリン酸性バッファーにより、単位需要あたりの供給量が増加する。両者の効果は測定されたBOLDを減少させる。しかし、水平方向の移動だけが<em>g</em>の構造に言及できるものであり、その言及も表現の面に関するものであって、能力そのものではない。</figcaption>
+</figure>
+<p>このことが重要である理由は、この2つの座標が、負荷軸上の<em>どこに効果が現れるか</em>について異なる予測を提示し、第2節における交差点が、その読み方を正確に示しているからである。</p>
+<figure class="fig" id="predictions">
+<div class="plate"><img alt="2つのパネルの予測曲線：タスクBOLD振幅および正確性が認知負荷に対してどのように変化するか、プラセボ、ボルチオキセチン、クレアチン、および両方の条件を示す。" src="/ja/vortioxetine-creatine-neural-efficiency/figures/fig9_predictions.svg"/></div>
+<figcaption><b>図9．検証可能な核心</b>。表現効率性を持つアグエントは、低〜中程度の負荷においてBOLDの振幅を低下させ、性能が崩壊する負荷点はほぼ元の位置を維持すべきである。一方、生物エネルギー系のアグエントはその逆を行う：低負荷時の振幅はほぼ変化せず、崩壊点を右に移動させ、中〜高負荷範囲では、補助なしのシステムが脱落した場所でまだ応答できるため、<em>より多く</em>のBOLDが観測される。もし両薬品がどこでもBOLDを同等に減少させれば、2座標モデルは誤りであり、血管的説明がその場で大きな支持を得る。</figcaption>
+</figure>
+<div class="key">
+<p class="kt">具体的な予測</p>
+<ol class="body">
+<li>カーブ調整されたfMRIにおいて、ボルチオキセチンは、固定された正確性でタスクのCMRO<sub>2</sub>を減少させる。クレアチンはそれとは異なる：CMRO<sub>2</sub>を同じ量供給するために必要なCBFの変動幅を減少させる。</li>
+<li>ボルチオキセチンのBOLD減少は、主観的負荷が低〜中程度のとき最も顕著であり、難度を上昇させることで縮小または逆転する。クレアチンの効果は負荷の増加とともに、バイオエネルギーストレスとともに増大する。</li>
+<li>クレアチンの認知的利益は、静的な PCr や総クレアチン濃度ではなく、<sup>31</sup>P-MRS で測るクレアチンキナーゼの<em>フラックス</em>に対応する、という予測である。この予測に従えば、Turner が示した脳内クレアチン蓄積と認知保護の相関の欠如（<em>R</em><sup>2</sup> = 0.002）は、機序の失敗ではなく測定指標の問題となる。</li>
+<li>ボルチオキセチンの効果は、個人内反応時間の変動性および最も遅いRTのクォンティルをより強く追跡しており、平均RTよりも優先される。これは、信号対ノイズメカニズムが分布の尾部を最初にクリーンアップすべきであるためである。</li>
+<li>2×2の要因設計において、両方の効果はパフォーマンスにおいて加算的であり、画像学的観点では分離できる。もし相互作用があるならば、そのメカニズムは独立していないことになり、この枠組みは誤りである。</li>
+</ol>
+</div>
+<h2 id="wrong"><span class="num">第9節</span>これは最も間違いやすい場面</h2>
+<p>最も強い反論の形で述べる。なぜなら、それは本当に強く思えるからである。</p>
+<p><strong>両方のBOLD減少が血管的要因による可能性があり、関連分野が検証していない。</strong> ボルチオキセチンは5-HT<sub>1B</sub>部分作動薬であり、主な脳内血流収縮性セロトニン受容体に作用する効薬であり、シタロプラムがすでに海馬およびアミグダラの灌流を減少させることを示している。その灌流変化を測定せずに、スミスらは海馬およびdlPFCでのBOLD減少を報告している。クレアチン側では、ハメットらが16％の減少を観測したが、その結果を脳神経-血管連携の変化として解釈し、fMRIにおける被験者間の変動を説明するものとして提示している。もし彼らが正しいなら、クレアチンの「効率性」効果は、正確に効率性を偽装する測定誤差に過ぎない。二つの化合物、二つのBOLD減少、その共通の未制御の混じり合わせ。これが私の主張に反する仮説である。</p>
+<p><strong>効率という概念自体が、精査に耐えない可能性もある。</strong>Poldrack（2015）は、活動が低下するたびに効率が事後的な説明として持ち出されること、文献には活動増加と低下の両方が存在し、どちらの結果にもその名称が付けられうるし、実際に付けられてきたことを指摘する。種間の食い違いもある。霊長類の単一細胞記録では、訓練が前頭前野の発火を<em>増加</em>させる一方、同種の課題に対するヒトの fMRI では活動の低下が見られる。BOLD の低下は、表象の精緻化、戦略の置換、課題に費やす時間の短縮、活動部位の移動、実際の代謝的節約のいずれとも整合する。振幅だけでは区別できない。</p>
+<p><strong>両者の認知データは、その評価を上回るほど弱い。</strong> ボルチオキセチンのDSST効果には3つの公開された無効性の報告があり、自らのポジティブ試験内で活性比較試験が失敗しており、規制当局はその示唆を却下し、追加の注意書きを要求している。クレアチンの記憶に関するメタアナリシスには、分析単位の誤りがあり、その誤りを訂正した結果、効果は高齢者においてのみ残るという結果となる。EFSAおよび英国委員会はその主張を拒否している。私の結論は、ボルチオキセチンにはより設計が適切な試験があり、クレアチンにはより理解されているメカニズムがあるが、両者ともその両方を備えていない。</p>
+<p><strong>そして、性質と状態の区別は技術的細部ではない。</strong> <em>g</em> は、多様なタスクにおいて推定される潜在的性質である。ここまでの説明に基づくものは、その性質を移動させるようなものとは思えない。これらのメカニズムが移動できるのは、ある日における性質の容量の一部がどの程度表現されるかである。うつ病ではその表現は著しく低下し、睡眠不足や低酸素状態では全く異なる理由でその表現が著しく低下する。文献に記載されているすべてのクレアチンの大きな効果は、ストレスまたは耗尽状態からのものである。すべてのボルチオンキセチンの認知効果は、うつ病のサンプルから来ている。これは偶然ではない。これは現象の形状そのものである。これらの薬剤は、能力とその表現の間のギャップを縮めるものである。その表現を能力の増加と解釈するのは、発熱の低下を免疫機能の改善と解釈することと同じ誤謬である。</p>
+<div class="tablewrap">
+<table>
+<caption>表1. 各構成主張に対する評価の信頼度。本報告の主張は1、2、6行にあり、その主張を否定する反論は4行に存在する。</caption>
+<thead><tr><th>主張</th><th>信頼性</th><th>支持的証拠またはギャップ</th></tr></thead>
+<tbody>
+<tr><td>ボルティオキセティンは、GABA能抑制細胞に作用する5-HT<sub>3</sub> 受容体拮抗により、ピラミッド細胞を解離させる</td><td class="high">高い</td><td>Dale 2014（14/15細胞、m-CPBGがすべて阻害された）；Riga 2016（in vivo）</td></tr>
+<tr><td>ボルティオキセティンはmPFCにおいて、ACh、ヒスタミン、グルタミン酸、DAおよびNEを地域的に上昇させる</td><td class="mid">中程度から高い（ラット）</td><td>Mørk 2012, 2013; Pehrson 2013。海馬内のACh効果は弱い（Pehrson 2016）</td></tr>
+<tr><td>ボルティオキセティンは人間でタスク誘発BOLD信号を低下させる</td><td class="high">その現象が起きる可能性は非常に高い</td><td>Smith 2018, <em>n</em> = 96, プラスコントロール、2領域</td></tr>
+<tr><td>そのBOLDの低下が神経的であるか、あるいは血管的であるか</td><td class="low">低い</td><td>ボルティオキセティンについて人間のASL、PET-CBF、またはCMR<sub>glc</sub>研究は存在しない</td></tr>
+<tr><td>クレアチン補給は脳内のPCr濃度を用量に応じて上昇させる</td><td class="high">10〜20g/日で高い</td><td>Kondo 2016; Dechent 1999; Smith 2025。若年者において5g/日ではほぼゼロ</td></tr>
+<tr><td>クレアチンはタスク誘発性の血流反応を低下させる</td><td class="mid">中程度</td><td>Hammett 2010（−16％、ただし<em>n</em> = 11（各グループ）、並行グループ）、Watanabe 2002、Moriarty 2023；すべて間接的で、1つは解釈が逆にされている</td></tr>
+<tr><td>クレアチンはストレスを受けない健康的な若年成人の認知機能を改善する</td><td class="low">低い</td><td>Sandkühler 2023（<em>d</em> = 0.17, 0.09）；Prokopidisの若年成人におけるSMD 0.03；EFSAの却下</td></tr>
+<tr><td>BOLDインデックスの低下は<em>g</em>に相当</td><td class="low">述べられた通りに低い</td><td>主観的要請に応じて符号が反転（Larson 1995；Dunst 2014）；タスクポジティブネットワークで反転（Basten 2013）</td></tr>
+<tr><td>この2つの化合物は独立した座標に作用する</td><td class="mid">推測的で検証可能な内容</td><td>第8節に記載された2×2の要因設計は実施されていない</td></tr>
+</tbody>
+</table>
+</div>
+<h2 id="experiment"><span class="num">第10節</span>実際に実施する実験</h2>
+<p>この問題の大半を決着させる研究を一つ考えたい。健康成人を対象に、菜食の有無と基準となる処理速度を確認し、2×2 要因計画を組む。ボルチオキセチン 20 mg またはプラセボを 14 日間投与し、同期間のクレアチン 20 g/日またはプラセボと組み合わせる。脳内総クレアチンは <sup>1</sup>H-MRS、クレアチンキナーゼの順方向フラックスは <sup>31</sup>P 磁化移動法で確認する。濃度は適切な変数ではないことを Chen（1997）が示したためである。固定した 2-back ではなく Larson の設計に従い、参加者ごとに一定の正答率となるよう N-back 負荷を調整する。ASL と BOLD を同時に取得し、高炭酸ガス負荷で校正して CMRO<sub>2</sub> を推定可能にする。DSST に加え、平均だけでなく反応時間の分布全体を測る。信号対ノイズが機序なら、最も遅い分位にまず効果が現れるはずだからである。</p>
+<p>この報告が正しい場合の予測結果は、vortioxetineは同等の精度でCMRO<sub>2</sub>を低下させ、RTの変動を圧縮し、クレアチンは低負荷時のCMRO<sub>2</sub>には影響を与えないが、必要なCBFの変動を減少させ、パフォーマンスが崩れる負荷を変更する。2つの化合物は相互作用しない。BOLDのみの分析では、両方を「活性低下」として示すだけで、どちらがどちらかを明らかにできない。</p>
+<p>疑義を唱える者たちが正しい場合の予測結果は、両方の化合物が基準CBFを低下させ、BOLDを低下させ、CMRO<sub>2</sub>には影響を与えない、そして神経効率はPoldrackが述べた通りである。</p>
+<p class="kicker">興味深い主張は、これらいずれかが誰かの知能を高めるということではない。むしろ、脳が既に持っている知能で動作する際の運営コストを下げることができるということであり、そのことを30年間、その装置が安い思考と薄い血の違いを区別できないという限界を持って測定してきたことである。</p>
+<div class="sources">
+<h2>出典</h2>
+<p><b>ボルチオキセチンの薬理学と回路。</b> バンク・アンダーセンら、<em>J Med Chem</em> 54:3206, 2011；モーカら、<em>JPET</em> 340:666, 2012；モーカら、<em>Pharmacol Biochem Behav</em> 105:41, 2013；ペルソンら、<em>Eur Neuropsychopharmacol</em>, 2013；ペルソンら、<em>Front Pharmacol</em> 9:162, 2018；デールら、<em>J Psychopharmacol</em> 28:891, 2014；リガら、<em>Neuropharmacology</em>, 2016；ベトリら、<em>IJNP</em> 16:1115, 2013；レイザーら、<em>Br J Pharmacol</em> 171:4255, 2014；ウォーラーら、<em>J Psychopharmacol</em> 31:365, 2017；ステンクロンァ、ハルディンおよびヴァルノー、<em>Eur Neuropsychopharmacol</em> 23:1190, 2013；ソレンセンら、<em>Mol Psychiatry</em>, 2022；サンチェス、アシンおよびアルティガス、<em>Pharmacol Ther</em> 145:43, 2015。</p>
+<p><b>ボルチオキセチンの臨床的および画像的データ。</b> マクインテアら、<em>IJNP</em> 17:1557, 2014（FOCUS）；マハーブレーシャワーカら、<em>Neuropsychopharmacology</em> 40:2025, 2015（CONNECT）；バーヌ、ブリグノネおよびラルセン、<em>IJNP</em> 21:97, 2018；ビエタら、<em>J Affect Disord</em>, 2018；スミスら、<em>Mol Psychiatry</em> 23:1127, 2018；ニッセン、グラムら、<em>Neuroscience</em> 424:172, 2020；FDA NDA 204447 薬理学的レビューおよび2018年sNDAラベル改訂。</p>
+<p><b>クレアチン。</b> Chen, Zhu, Adriany &amp; Uğurbil, <em>マグネス・リソナント・メディカル</em> 38:551, 1997; Dechent et al., <em>アマ・ジャーナル・オブ・フィジオロジー</em> 277:R698, 1999; Lyoo et al., <em>パシオメトリ・リサーチ</em> 123:87, 2003; Pan &amp; Takahashi, <em>アマ・ジャーナル・オブ・フィジオロジー</em> 292:R1745, 2007; Kondo et al., <em>アミノ酸</em> 48:1941, 2016; Merege-Filho/Solis et al., <em>アピル・フィジオロジー・ニュートリション・メタボリズム</em> 42:128, 2017; Smith et al., <em>アルツハイマー病・デメンシア・TRCI</em> 11:e70101, 2025; Braissant, <em>ジャーナル・オブ・インヒビット・メタボリズム</em> 35:655, 2012; Roschel et al., <em>ナチュリーツ</em> 13:586, 2021; Wallimann et al., <em>アミノ酸</em> 40:1271, 2011; Rae et al., <em>プロ・R・ソシ・B</em> 270:2147, 2003; Turner, Byblow &amp; Gant, <em>ジャーナル・オブ・ニューロサイエンス</em> 35:1773, 2015; Gordji-Nejad et al., <em>サイエンス・レポート</em> 14:4937, 2024; Sandkühler et al., <em>BMC・メディカル</em> 21:440, 2023; Prokopidis et al., <em>ナトリ・リビュー</em> 81:416, 2023; Xu et al., <em>フロント・ナトリ</em> 11:1424972, 2024; Hammett, Wall, Edwards &amp; Smith, <em>ニューロサイエンス・レター</em> 479:201, 2010; Watanabe, Kato &amp; Kato, <em>ニューロサイエンス・リサーチ</em> 42:279, 2002; Moriarty et al., <em>ブレイン・スカイ</em> 13:1276, 2023; Lyoo et al., <em>アマ・ジャーナル・オブ・パシオメトリー</em> 169:937, 2012; Kious, Kondo &amp; Renshaw, <em>バイオマテリアルズ</em> 9:406, 2019; McMorris et al., <em>ベハービ・ブレイン・リサーチ</em> 466:114986, 2024; EFSA NDA Panel, <em>EFSA J</em> 22:e9100, 2024。</p>
+<p><b>神経効率と <em>g</em>。</b> Haier et al., <em>インテリジェンス</em> 12:199, 1988; Haier et al., <em>インテリジェンス</em> 16:415, 1992; Haier et al., <em>ブレイン・リサーチ</em> 570:134, 1992; Larson, Haier, LaCasse &amp; Hazen, <em>インテリジェンス</em> 21:267, 1995; Neubauer &amp; Fink, <em>ニューロサイエンス・バイオバーチ・リビューア</em> 33:1004, 2009; Dunst et al., <em>インテリジェンス</em> 42:22, 2014; Rypma et al., <em>ニューロイメージ</em> 33, 2006; Basten, Stelzel &amp; Fiebach, <em>インテリジェンス</em> 41:517, 2013; Jung &amp; Haier, <em>ベハービ・ブレイン・スカイ</em> 30:135, 2007; van den Heuvel et al., <em>ジャーナル・オブ・ニューロサイエンス</em> 29:7619, 2009; Metzen et al., <em>サイエンス・レポート</em> 14:1368, 2024; Barbey, <em>トレンド・イン・コグニティブ・サイエンス</em> 22:8, 2018; Geary, <em>パシオロギ・リビュー</em> 125:1028, 2018; Grudnik &amp; Kranzler, <em>インテリジェンス</em> 29:523, 2001; Poldrack, <em>デヴ・コグ・ニューロスカイ</em> 11:12, 2015; Buxton et al., <em>フロント・ニューロスカイ</em> 8:139, 2014; Egan et al., <em>PNAS</em> 98:6917, 2001; Mattay et al., <em>PNAS</em> 100:6186, 2003; Cools &amp; D'Esposito, <em>バイオ・パシオロジー</em> 69:e113, 2011。</p>
+<p><b>神経調節とエネルギー。</b> Hasselmo &amp; Sarter, <em>Neuropsychopharmacology</em> 36:52, 2011; Parikh, Kozak, Martinez &amp; Sarter, <em>Neuron</em> 56:141, 2007; Parikh, Ji, Decker &amp; Sarter, <em>J Neurosci</em> 30:3518, 2010; Furey, Ricciardi, Schapiro, Rapoport &amp; Pietrini, <em>J Cogn Neurosci</em> 20:1342, 2008; Furey, Pietrini &amp; Haxby, <em>Science</em> 290:2315, 2000; Kukolja, Thiel &amp; Fink, <em>J Neurosci</em> 29:8119, 2009; Ligneau et al., <em>JPET</em> 287:658, 1998; Ghamari &amp; Sadek et al., <em>Front Pharmacol</em> 13:861094, 2022; Nishii et al., <em>Neuropsychopharmacol Rep</em> 45:e70034, 2025; Wang, Yang, Arnsten et al., <em>Neuron</em> 77:736, 2013; Sohal, Zhang, Yizhar &amp; Deisseroth, <em>Nature</em> 459:698, 2009; Yizhar et al., <em>Nature</em> 477:171, 2011; Marsman et al., <em>Front Psychiatry</em> 8:154, 2017; Vijayraghavan et al., <em>Nat Neurosci</em> 10:376, 2007; Attwell &amp; Laughlin, <em>JCBFM</em> 21:1133, 2001; Howarth, Gleeson &amp; Attwell, <em>JCBFM</em> 32:1222, 2012; Harris, Jolivet &amp; Attwell, <em>Neuron</em> 75:762, 2012; Lennie, <em>Curr Biol</em> 13:493, 2003; Olshausen &amp; Field, <em>Nature</em> 381:607, 1996; Levy &amp; Baxter, <em>Neural Comput</em> 8:531, 1996; Barlow, in <em>Sensory Communication</em>, 1961。</p>
+<p style="margin-top:16px">このページは推測的合成であり、臨床的アドバイスではありません。すべての数値的主張は、初回文献を確認した上で公開前に検証されました。</p>
+</div>
+</article>
+</div>
+</main>
+<footer class="site">
+<div class="wide">
+<span>© 2026 Isegoria</span>
+<a href="/ja/">プロジェクトライブラリへ戻る</a>
+</div>
+</footer>
+<p class="ig-translation-note">日本語版（AI翻訳） · <a href="/vortioxetine-creatine-neural-efficiency/" hreflang="en" lang="en">英語原文</a></p><!-- ISEGORIA:FOOT -->
+<footer id="ig-footer"><div><a href="/ja/">Isegoria · Benjamin Haire</a><nav aria-label="サイト内リンク"><a href="/ja/">ホームに戻る</a><a href="/ja/library.html">全コンテンツ</a><a href="#ig-content">ページ上部へ</a></nav></div></footer>
+<!-- /ISEGORIA:FOOT -->
+</body>
+</html>
+

@@ -1,6 +1,8 @@
 /* Navigation enhancement is optional: all routes remain ordinary HTML links. */
 (()=>{
   'use strict';
+  if(document.documentElement.dataset.igShellLoaded)return;
+  document.documentElement.dataset.igShellLoaded='true';
   const themeable=document.documentElement.classList.contains('ig-editorial');
   let theme;try{theme=localStorage.getItem('isegoria-theme')}catch{}
   theme=theme==='light'||theme==='dark'?theme:(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');
@@ -31,6 +33,13 @@
     matchMedia('(min-width:1001px)').addEventListener('change',close);
     // One language preference shared with lang.js and older guide controls.
     document.addEventListener('click',e=>{const a=e.target.closest?.('a[hreflang]');if(!a)return;const lang=a.hreflang.slice(0,2);if(!['en','ja'].includes(lang))return;try{localStorage.setItem('isegoria:lang',lang);localStorage.setItem('isegoria-language',lang)}catch{}});
+    // Matching editions keep the selected chapter or experiment.
+    const counterpart=document.querySelector(`link[rel="alternate"][hreflang="${ja?'en':'ja'}"]`);
+    if(counterpart){
+      const syncLanguageLinks=()=>{const target=new URL(counterpart.href,location.href);target.hash=location.hash;if(location.search)target.search=location.search;header.querySelectorAll('.ig-language').forEach(a=>{a.href=target.pathname+target.search+target.hash})};
+      syncLanguageLinks();window.addEventListener('hashchange',syncLanguageLinks);
+      header.addEventListener('click',e=>{if(e.target.closest?.('.ig-language'))syncLanguageLinks()},true);
+    }
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',ready);else ready();
 })();

@@ -182,7 +182,7 @@ const CHAIN = {
     $('#s-fs').textContent = grp(FS) + '.0 Hz';
     $('#s-fp').textContent = grp(Math.round(fp)) + '.' + (fp % 1 * 10).toFixed(0) + ' Hz';
     $('#s-fl').textContent = fl.toFixed(1).replace(/^(\d\d)(\d\d\d)/, '$1 $2') + ' Hz';
-    $('#s-ppm').textContent = '+' + ((fl-FS)/FS*1e6).toFixed(0) + ' ppm above fₛ';
+    $('#s-pull-ppm').textContent = '+' + ((fl-FS)/FS*1e6).toFixed(0) + (document.documentElement.lang==='ja'?' ppm（fₛからの偏差）':' ppm above fₛ');
     $('#s-q').textContent = grp(Math.round(Q/1000)*1000);
     $('#s-ring').textContent = 'rings for ' + ring.toFixed(2) + ' s';
     window.__L1 = L1; window.__R1 = R1; window.__Q = Q;

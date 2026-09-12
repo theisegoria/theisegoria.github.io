@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+
+<html class=" ig-document ig-editorial" lang="ja">
+<head>
+<meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>コーディングの論理的思考：Astra、Sol、Fable | Isegoria</title>
+<meta content="コーディングベンチマーキングのパフォーマンス、トークン使用量、コスト、および遅延に関する分析。拡張された研究報告書にインタラクティブな比較と7ページのPDFが含まれます。" name="description"/>
+<style>
+:root{color-scheme:light dark;--bg:light-dark(#fff,#181818);--ink:light-dark(#19282f,#eee);--muted:light-dark(#566168,#b8b8b8);--line:light-dark(#d9dfe3,#444);--link:light-dark(#006d87,#8fcde0)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 system-ui,sans-serif}main{max-width:1000px;margin:auto;padding:28px 24px 60px}h1{font-size:clamp(29px,5vw,44px);line-height:1.15;font-weight:500;max-width:800px}h2{font-size:25px;font-weight:500;margin:40px 0 8px}a{color:var(--link)}p{max-width:850px}.meta{color:var(--muted);font-size:14px}.actions{display:flex;flex-wrap:wrap;gap:12px 26px;margin:24px 0}iframe{width:100%;border:0;display:block;min-height:400px}section{border-top:1px solid var(--line);margin-top:30px;padding-top:5px}summary{cursor:pointer}table{width:100%;border-collapse:collapse;font-size:14px}td,th{text-align:left;padding:9px;border-bottom:1px solid var(--line)}.table-scroll{overflow-x:auto}li{margin:7px 0}footer{margin-top:35px;color:var(--muted);font-size:13px} @media(max-width:500px){main{padding:20px 12px}h2{font-size:23px}}
+</style>
+
+
+
+<link rel="canonical" href="https://theisegoria.github.io/ja/coding-reasoning-comparison/">
+<link rel="alternate" hreflang="en" href="https://theisegoria.github.io/coding-reasoning-comparison/">
+<link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/coding-reasoning-comparison/">
+<link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/coding-reasoning-comparison/"><script src="/assets/lang.js"></script>
+<!-- ISEGORIA:HEAD -->
+<link rel="stylesheet" href="/assets/site-shell.css?v=08342b869b">
+<script src="/assets/site-shell.js?v=08342b869b" ></script>
+<!-- /ISEGORIA:HEAD -->
+</head>
+<body class=" ig-site" data-site-kind="editorial" data-site-route="/ja/coding-reasoning-comparison/">
+<!-- ISEGORIA:NAV -->
+<a class="ig-skip" href="#ig-content">本文へ移動</a>
+<header id="ig-header"><div class="ig-nav-inner">
+<a class="ig-brand" href="/ja/" aria-label="Isegoria, ホーム"><strong>ISEGORIA</strong><span>Benjamin Haire</span></a>
+<div class="ig-header-actions"><a class="ig-language" href="/coding-reasoning-comparison/" hreflang="en" lang="en">English</a><button class="ig-menu" type="button" aria-expanded="false" aria-controls="ig-primary">メニュー</button></div>
+<nav id="ig-primary" aria-label="メインナビゲーション"><a href="/ja/">ホーム</a><a href="/ja/library.html">全コンテンツ</a><a href="/ja/#guides">学習ガイド</a><a href="/ja/#preoccupations" aria-current="location">研究と解説</a><a href="/ja/#books">書籍</a><a href="/ja/projects.html">プロジェクト</a><a href="/ja/about.html">このサイトについて</a><a class="ig-language" href="/coding-reasoning-comparison/" hreflang="en" lang="en">English</a><button class="ig-theme" type="button" hidden>表示切替</button></nav>
+</div></header>
+<nav id="ig-breadcrumb" aria-label="パンくずリスト"><a href="/ja/">ホーム</a><span aria-hidden="true">/</span><a href="/ja/#preoccupations">研究と解説</a><span aria-hidden="true">/</span><span aria-current="page">コーディングの論理的思考：Astra、Sol、Fable</span></nav>
+<span id="ig-content" tabindex="-1"></span>
+<!-- /ISEGORIA:NAV --><main>
+<p class="meta">研究ノート · 扩張版 · 可視化が2026年9月10日に更新</p>
+<h1>コーディングのパフォーマンス、コスト、待ち時間</h1>
+<p>私はGPT-6 Astra、GPT-5.6 Sol、Claude Fable 5.1を、選択された論理的レベルで並べて比較しました。この拡張版では、Astraの中規模/高規模/極高規模、Solの極高規模/最大規模、Fableの極高規模（xhigh）を含め、完全なAstra/Fableの努力スケールを統合しました。</p>
+<div class="actions"><a data-document-language="en" href="/coding-reasoning-comparison/report.pdf" rel="noopener" target="_blank" title="PDF、新しいタブで開きます">7ページのPDF（9月9日版）を参照（英語PDF）</a><a href="#selected">6方向比較</a><a href="#curves">完全な努力曲線</a><a href="#sources">ソースとデータ</a></div>
+<p><strong>対話的な作業なら、私は Astra medium から始める。</strong>high は表示されたターミナル操作のスコアを改善するが、最初の待ち時間がかなり長い。今回選んだ六つの設定では、ターミナルでのコーディングは Astra xhigh、科学分野のコーディングは Fable xhigh が首位となった。ただし、後者は混合スイートでのトークン使用量と費用がかなり高い。これは各自の作業で試すための観察結果であり、普遍的な最適設定を発見したという主張ではない。</p>
+<section id="selected"><h2>6つの設定の比較</h2>
+<p class="meta">2026年9月10日のスナップショット · Fableは適応的推論を用い、デフォルトでフォールバックを実施。</p>
+<iframe src="/ja/coding-reasoning-comparison/selected.html" title="6つの設定：コーディングベンチマーキング、トークン、コスト、遅延"></iframe>
+<p>Astra highは、中レベルに対して5パーセントの終端値を上回り、約12%の混合スイートコスト増加および最初の回答までの待機時間の17.2倍に達する。Fable xhighはAstra highを1点の終端値で上回り、6点のSciCodeを上回るが、混合スイートコストは3.48倍となる。1点のリードを有意とは読まない。Astra xhighは60%の終端値および56%のSciCodeを達成し、17kの出力トークン、$2.31の混合スイートコスト、および208.73秒の最初の回答までの待機時間を記録する。</p>
+<details><summary>6つの値をテーブルとして読む</summary><div class="table-scroll" id="selected-table"><table><caption>2026年9月10日選定の構成</caption><tr><th>構成</th><th>終端値</th><th>SciCode</th><th>出力</th><th>推論サブセット</th><th>USD/タスク</th><th>最初の回答</th></tr><tr><td>Astra medium</td><td>49%</td><td>54%</td><td>10k</td><td>3k</td><td>$1.54</td><td>5.42s</td></tr><tr><td>Astra high</td><td>54%</td><td>55%</td><td>12k</td><td>5k</td><td>$1.72</td><td>93.34s</td></tr><tr><td>Astra xhigh</td><td>60%</td><td>56%</td><td>17k</td><td>9k</td><td>$2.31</td><td>208.73s</td></tr><tr><td>Sol xhigh</td><td>25%</td><td>57%</td><td>20k</td><td>10k</td><td>$1.18</td><td>54.15s</td></tr><tr><td>Sol max</td><td>40%</td><td>57%</td><td>29k</td><td>17k</td><td>$1.99</td><td>140.25s</td></tr><tr><td>Fable 5.1 xhigh</td><td>55%</td><td>61%</td><td>61k</td><td>34k</td><td>$5.98</td><td>138.38s</td></tr></table></div></details>
+</section>
+<section id="curves"><h2>完全なAstra/Fable推論の連鎖</h2>
+<p class="meta">元の8月9日2026年スナップショット・ローカル、中、ハイ、xハイ、マックス。</p>
+<p>両方の終端曲線を観察したところ、すべてのケースでxハイでピークを迎える。ファブルの科学的コーディングスコアはマックスでさらに上昇している。努力は順序的設定であり、つながり線を視覚的ガイドとして描いた。ここではAstraとFableのみをスキャン。ソルは上記の2つの設定でしか出現せず、その他の設定では出現しない。</p>
+<iframe src="/ja/coding-reasoning-comparison/curves.html" title="AstraとFableの完全な推論効率曲線"></iframe>
+</section>
+<section><h2>私はこのデータをどのように解釈したか</h2>
+<p><strong>作業負荷を分離して扱う。</strong> Terminal-Bench v4.0 および SciCode はコーディング評価に用いられる。コストおよびトークンの値は、より広範なツールセットにおけるインテリジェンスインデックスv4.3の加重平均値である。最初の回答までの遅延は、別々のAPIパフォーマンスプロンプトから得られたものであり、テストされたパッチを完成させるまでの経過時間とは異なる。論理的トークンはすでに総出力に含まれている。</p>
+<p><strong>スナップショットの日付は意図的に明記している。</strong>Fable xhigh の最初の回答までの時間は、9月8日の一連の測定では 99.86 秒、9月10日の比較では 138.38 秒だった。これを性能低下の測定結果とは読まない。応答時間は変動するため、この標本から完了時間の安定した倍率は決められない。</p>
+<p>私が書いたPDFでは、Astra/Fableの単トークン価格、努力の代替のトレードオフ、手法、限界、そして私が提案するペア評価プロトコルについて記載している。新たに有料モデルの試験は実施していない。APIコストは直接的にサブスクリプション使用許容量に換算されない。</p>
+</section>
+<section id="sources"><h2>ソースと再利用可能なデータ</h2>
+<p>選抜比較には、9月10日に取得した Artificial Analysis の測定値を用いた。全設定の比較では、9月8日の元データと、その時点での私の解釈を保持している。</p>
+<ul id="source-list"><li><a href="https://artificialanalysis.ai/models/comparisons/gpt-6-astra-medium-vs-gpt-5-6-sol-xhigh">Artificial Analysis: Astra medium / Sol xhigh</a></li><li><a href="https://artificialanalysis.ai/models/comparisons/gpt-6-astra-medium-vs-gpt-5-6-sol">Artificial Analysis: Astra medium / Sol max</a></li><li><a href="https://artificialanalysis.ai/models/comparisons/gpt-6-astra-high-vs-claude-fable-5-1-xhigh">Artificial Analysis: Astra high / Fable xhigh</a></li><li><a href="https://artificialanalysis.ai/models/comparisons/gpt-6-astra-xhigh-vs-gpt-5-6-sol-xhigh">Artificial Analysis: Astra xhigh / Sol xhigh</a></li></ul>
+<div class="actions"><a href="/coding-reasoning-comparison/selected-data.json">選択された設定データ</a><a href="/coding-reasoning-comparison/curves-data.json">完全スキャンデータおよびソースログ</a><a data-document-language="en" href="/coding-reasoning-comparison/report.pdf" rel="noopener" target="_blank" title="PDF、新しいタブで開きます">完全PDFレポート（英語PDF）</a></div>
+</section>
+<footer>公開された測定値で、私の解釈はそれらから分離されています。ベンチマーキング値は元の表示精度を維持しています。可視化は2026年9月10日に更新され、PDFは2026年9月9日の版を保持しています。</footer>
+</main>
+<script>
+for(const frame of document.querySelectorAll('iframe'))frame.addEventListener('load',()=>{const doc=frame.contentDocument;const root=doc.querySelector('#astra-sol-comparison,#astra-fable-curves');const fit=()=>{frame.style.height=Math.ceil(root.getBoundingClientRect().height+32)+'px'};new ResizeObserver(fit).observe(root);fit()});
+</script>
+<p class="ig-translation-note">日本語版（AI翻訳） · <a href="/coding-reasoning-comparison/" hreflang="en" lang="en">英語原文</a></p><!-- ISEGORIA:FOOT -->
+<footer id="ig-footer"><div><a href="/ja/">Isegoria · Benjamin Haire</a><nav aria-label="サイト内リンク"><a href="/ja/">ホームに戻る</a><a href="/ja/library.html">全コンテンツ</a><a href="#ig-content">ページ上部へ</a></nav></div></footer>
+<!-- /ISEGORIA:FOOT -->
+</body></html>
+

@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+
+<html class=" ig-document ig-editorial" lang="ja">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta content="light dark" name="color-scheme"/>
+<title>滑らかで単純な3次曲線実験室</title>
+<style>
+    :root {
+      color-scheme: light dark;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --surface: light-dark(#ffffff, #102536);
+      --ink: light-dark(#172b3a, #edf6fb);
+      --muted: light-dark(#5d7180, #afc2ce);
+      --line: light-dark(#d6e0e6, #385366);
+      --grid: light-dark(#dfe7ec, #294456);
+      --blue: light-dark(#2c7be5, #76a9ff);
+      --coral: light-dark(#e9695b, #ff887b);
+      --teal: light-dark(#009b8d, #55d7ca);
+      --soft: light-dark(#f5f8fa, #0b1d2a);
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: transparent; color: var(--ink); }
+    .lab { padding: 24px; }
+    .presets { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+    button { min-height: 42px; padding: 0 15px; border: 1px solid var(--line); border-radius: 999px; background: transparent; color: var(--ink); font: inherit; font-weight: 680; cursor: pointer; }
+    button[aria-pressed="true"] { border-color: var(--ink); background: var(--ink); color: var(--surface); }
+    .layout { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 24px; align-items: start; }
+    .plot { min-width: 0; }
+    svg { display: block; width: 100%; height: auto; border-radius: 14px; background: var(--soft); }
+    .axis, .grid { vector-effect: non-scaling-stroke; }
+    .grid { stroke: var(--grid); stroke-width: 1; }
+    .axis { stroke: var(--muted); stroke-width: 1.2; }
+    .curve { fill: none; stroke: var(--blue); stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+    .singular { fill: var(--coral); stroke: var(--surface); stroke-width: 2; vector-effect: non-scaling-stroke; }
+    .tick, .axis-label { fill: var(--muted); font-size: 13px; }
+    .formula { margin: 12px 0 0; font-size: 1.04rem; font-weight: 720; text-align: center; }
+    .controls { padding: 18px; border: 1px solid var(--line); border-radius: 14px; }
+    .control + .control { margin-top: 20px; }
+    .control label { display: flex; justify-content: space-between; gap: 12px; margin-bottom: 8px; font-weight: 680; }
+    output { color: var(--teal); font-variant-numeric: tabular-nums; }
+    input[type="range"] { width: 100%; accent-color: var(--teal); }
+    .discriminant { margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--line); }
+    .discriminant span { display: block; color: var(--muted); font-size: .82rem; }
+    .discriminant strong { display: block; margin-top: 5px; font-size: 1.25rem; font-variant-numeric: tabular-nums; }
+    .status { margin: 16px 0 0; color: var(--muted); font-size: .92rem; line-height: 1.48; }
+    .status b { color: var(--ink); }
+    @media (max-width: 720px) {
+      .lab { padding: 18px; }
+      .layout { grid-template-columns: 1fr; }
+      .controls { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+      .control + .control { margin-top: 0; }
+      .discriminant { grid-column: 1 / -1; margin-top: 0; padding-top: 14px; }
+      .status { grid-column: 1 / -1; margin-top: 0; }
+    }
+  </style>
+
+
+
+<link rel="canonical" href="https://theisegoria.github.io/ja/algebraic-varieties-introduction/curve-lab.html">
+<link rel="alternate" hreflang="en" href="https://theisegoria.github.io/algebraic-varieties-introduction/curve-lab.html">
+<link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/algebraic-varieties-introduction/curve-lab.html">
+<link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/algebraic-varieties-introduction/curve-lab.html"><script src="/assets/lang.js"></script>
+<!-- ISEGORIA:HEAD -->
+<link rel="stylesheet" href="/assets/site-shell.css?v=08342b869b">
+<script src="/assets/site-shell.js?v=08342b869b" ></script>
+<!-- /ISEGORIA:HEAD -->
+</head>
+<body class=" ig-site" data-site-kind="editorial" data-site-route="/ja/algebraic-varieties-introduction/curve-lab.html">
+<!-- ISEGORIA:NAV -->
+<a class="ig-skip" href="#ig-content">本文へ移動</a>
+<header id="ig-header"><div class="ig-nav-inner">
+<a class="ig-brand" href="/ja/" aria-label="Isegoria, ホーム"><strong>ISEGORIA</strong><span>Benjamin Haire</span></a>
+<div class="ig-header-actions"><a class="ig-language" href="/algebraic-varieties-introduction/curve-lab.html" hreflang="en" lang="en">English</a><button class="ig-menu" type="button" aria-expanded="false" aria-controls="ig-primary">メニュー</button></div>
+<nav id="ig-primary" aria-label="メインナビゲーション"><a href="/ja/">ホーム</a><a href="/ja/library.html">全コンテンツ</a><a href="/ja/#guides" aria-current="location">学習ガイド</a><a href="/ja/#preoccupations">研究と解説</a><a href="/ja/#books">書籍</a><a href="/ja/projects.html">プロジェクト</a><a href="/ja/about.html">このサイトについて</a><a class="ig-language" href="/algebraic-varieties-introduction/curve-lab.html" hreflang="en" lang="en">English</a><button class="ig-theme" type="button" hidden>表示切替</button></nav>
+</div></header>
+<nav id="ig-breadcrumb" aria-label="パンくずリスト"><a href="/ja/">ホーム</a><span aria-hidden="true">/</span><a href="/ja/#guides">学習ガイド</a><span aria-hidden="true">/</span><a href="/ja/algebraic-varieties-introduction/">代数的多様体への視覚的導入</a><span aria-hidden="true">/</span><span aria-current="page">滑らかで単純な3次曲線実験室</span></nav>
+<span id="ig-content" tabindex="-1"></span>
+<!-- /ISEGORIA:NAV --><main class="lab">
+<div aria-label="曲線のプリセット" class="presets">
+<button aria-pressed="true" data-a="-1" data-b="0" type="button">滑らか</button>
+<button aria-pressed="false" data-a="-3" data-b="2" type="button">ノード</button>
+<button aria-pressed="false" data-a="0" data-b="0" type="button">クスプ</button>
+</div>
+<div class="layout">
+<div class="plot">
+<svg aria-labelledby="curve-title curve-desc" id="curve" role="img" viewbox="0 0 760 430">
+<title id="curve-title">3次曲線の実数上の点</title>
+<desc id="curve-desc">係数aおよびbが変化するとグラフが更新される。</desc>
+<g id="grid"></g>
+<g id="axes"></g>
+<path class="curve" id="upper"></path>
+<path class="curve" id="lower"></path>
+<circle class="singular" hidden="" id="singular-point" r="7"></circle>
+</svg>
+<p class="formula" id="formula">y² = x³ - x</p>
+</div>
+<div class="controls">
+<div class="control">
+<label for="a">係数a <output id="a-value">-1.00</output></label>
+<input id="a" max="2" min="-4" step="0.05" type="range" value="-1"/>
+</div>
+<div class="control">
+<label for="b">係数b <output id="b-value">0.00</output></label>
+<input id="b" max="3" min="-3" step="0.05" type="range" value="0"/>
+</div>
+<div class="discriminant">
+<span>重解テスト：4a³ + 27b²</span>
+<strong id="disc-value">-4.000</strong>
+</div>
+<p aria-live="polite" class="status" id="status"><b>滑らか。</b> 3次曲線は重解を持たないため、勾配は曲線上で消えず、常に非ゼロである。</p>
+</div>
+</div>
+</main>
+<script>
+    const svg = document.getElementById('curve');
+    const upper = document.getElementById('upper');
+    const lower = document.getElementById('lower');
+    const point = document.getElementById('singular-point');
+    const aInput = document.getElementById('a');
+    const bInput = document.getElementById('b');
+    const aValue = document.getElementById('a-value');
+    const bValue = document.getElementById('b-value');
+    const discValue = document.getElementById('disc-value');
+    const formula = document.getElementById('formula');
+    const status = document.getElementById('status');
+    const buttons = [...document.querySelectorAll('[data-a]')];
+
+    const frame = { left: 58, right: 730, top: 28, bottom: 390 };
+    const domain = { xmin: -3.2, xmax: 3.2, ymin: -4.2, ymax: 4.2 };
+    const sx = x => frame.left + (x - domain.xmin) / (domain.xmax - domain.xmin) * (frame.right - frame.left);
+    const sy = y => frame.bottom - (y - domain.ymin) / (domain.ymax - domain.ymin) * (frame.bottom - frame.top);
+
+    function makeSvg(name, attrs, parent) {
+      const el = document.createElementNS('http://www.w3.org/2000/svg', name);
+      Object.entries(attrs).forEach(([key, value]) => el.setAttribute(key, value));
+      parent.appendChild(el);
+      return el;
+    }
+
+    function drawAxes() {
+      const grid = document.getElementById('grid');
+      const axes = document.getElementById('axes');
+      [-2, -1, 1, 2].forEach(x => makeSvg('line', { x1: sx(x), x2: sx(x), y1: frame.top, y2: frame.bottom, class: 'grid' }, grid));
+      [-3, -2, -1, 1, 2, 3].forEach(y => makeSvg('line', { x1: frame.left, x2: frame.right, y1: sy(y), y2: sy(y), class: 'grid' }, grid));
+      makeSvg('line', { x1: frame.left, x2: frame.right, y1: sy(0), y2: sy(0), class: 'axis' }, axes);
+      makeSvg('line', { x1: sx(0), x2: sx(0), y1: frame.top, y2: frame.bottom, class: 'axis' }, axes);
+      makeSvg('text', { x: frame.right - 10, y: sy(0) - 8, class: 'axis-label', 'text-anchor': 'end' }, axes).textContent = 'x';
+      makeSvg('text', { x: sx(0) + 10, y: frame.top + 17, class: 'axis-label' }, axes).textContent = 'y';
+      [-3, -2, -1, 1, 2, 3].forEach(x => {
+        const t = makeSvg('text', { x: sx(x), y: sy(0) + 20, class: 'tick', 'text-anchor': 'middle' }, axes);
+        t.textContent = x;
+      });
+    }
+
+    function pathFor(sign, a, b) {
+      let path = '';
+      let drawing = false;
+      const samples = 900;
+      for (let i = 0; i <= samples; i += 1) {
+        const x = domain.xmin + (domain.xmax - domain.xmin) * i / samples;
+        const rhs = x * x * x + a * x + b;
+        if (rhs >= 0) {
+          const y = sign * Math.sqrt(rhs);
+          if (y >= domain.ymin && y <= domain.ymax) {
+            path += `${drawing ? 'L' : 'M'}${sx(x).toFixed(2)},${sy(y).toFixed(2)} `;
+            drawing = true;
+            continue;
+          }
+        }
+        drawing = false;
+      }
+      return path;
+    }
+
+    function singularX(a, b) {
+      if (Math.abs(a) < 1e-9 && Math.abs(b) < 1e-9) return 0;
+      if (a >= 0) return null;
+      const candidates = [Math.sqrt(-a / 3), -Math.sqrt(-a / 3)];
+      return candidates.find(x => Math.abs(x * x * x + a * x + b) < 1e-6) ?? null;
+    }
+
+    function term(value, symbol) {
+      if (Math.abs(value) < 1e-9) return '';
+      const sign = value > 0 ? ' + ' : ' - ';
+      const magnitude = Math.abs(value);
+      const coefficient = Math.abs(magnitude - 1) < 1e-9 && symbol ? '' : Number(magnitude.toFixed(2));
+      return `${sign}${coefficient}${symbol}`;
+    }
+
+    function update() {
+      const a = Number(aInput.value);
+      const b = Number(bInput.value);
+      const test = 4 * a * a * a + 27 * b * b;
+      const singular = Math.abs(test) < 1e-7;
+      upper.setAttribute('d', pathFor(1, a, b));
+      lower.setAttribute('d', pathFor(-1, a, b));
+      aValue.value = a.toFixed(2);
+      bValue.value = b.toFixed(2);
+      discValue.textContent = test.toFixed(3);
+      formula.textContent = `y² = x³${term(a, 'x')}${term(b, '')}`;
+
+      const x0 = singular ? singularX(a, b) : null;
+      if (x0 !== null) {
+        point.hidden = false;
+        point.setAttribute('cx', sx(x0));
+        point.setAttribute('cy', sy(0));
+        const kind = Math.abs(a) < 1e-9 && Math.abs(b) < 1e-9 ? "クスプ" : "ノード";
+        status.innerHTML = `<b>${kind} において (${x0.toFixed(2)}, 0)。</b> 3次関数は重解を持つため、両方の偏導関数はその点でゼロになる。`;
+      } else {
+        point.hidden = true;
+        status.innerHTML = "<b>滑らか。</b> 3次曲線は重解を持たないため、勾配は曲線上で消えず、常に非ゼロである。";
+      }
+
+      buttons.forEach(button => {
+        const active = Math.abs(Number(button.dataset.a) - a) < 1e-9 && Math.abs(Number(button.dataset.b) - b) < 1e-9;
+        button.setAttribute('aria-pressed', String(active));
+      });
+      document.getElementById('curve-desc').textContent = `${formula.textContent}. ${status.textContent}`;
+    }
+
+    buttons.forEach(button => button.addEventListener('click', () => {
+      aInput.value = button.dataset.a;
+      bInput.value = button.dataset.b;
+      update();
+    }));
+    aInput.addEventListener('input', update);
+    bInput.addEventListener('input', update);
+    drawAxes();
+    update();
+  </script>
+<p class="ig-translation-note">日本語版（AI翻訳） · <a href="/algebraic-varieties-introduction/curve-lab.html" hreflang="en" lang="en">英語原文</a></p><!-- ISEGORIA:FOOT -->
+<footer id="ig-footer"><div><a href="/ja/">Isegoria · Benjamin Haire</a><nav aria-label="サイト内リンク"><a href="/ja/">ホームに戻る</a><a href="/ja/library.html">全コンテンツ</a><a href="#ig-content">ページ上部へ</a></nav></div></footer>
+<!-- /ISEGORIA:FOOT -->
+</body>
+</html>
+
