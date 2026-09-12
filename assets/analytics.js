@@ -1,16 +1,26 @@
-/* First-party aggregate event collection; no visitor identifiers or cookies. */
+/* First-party aggregate event collection; short-lived anonymous sessions; no cookies or persistent visitor IDs. */
 (()=>{
   'use strict';
   const endpoint='https://isegoria-analytics.isegoria-analytics.workers.dev/collect';
   if(!endpoint||location.hostname!=='theisegoria.github.io'||window.self!==window.top||window.__isegoriaAnalytics)return;
   if(navigator.globalPrivacyControl||navigator.doNotTrack==='1'||window.doNotTrack==='1')return;
   window.__isegoriaAnalytics=true;
+  const session=()=>{
+    try{
+      const now=Date.now(),key='isegoria.analytics.session.v1';
+      let value;try{value=JSON.parse(localStorage.getItem(key));}catch{}
+      if(!value||!/^[a-f0-9]{32}$/.test(value.id)||!Number.isFinite(value.last)||now-value.last>=1800000||now<value.last){
+        value={id:[...crypto.getRandomValues(new Uint8Array(16))].map(b=>b.toString(16).padStart(2,'0')).join(''),last:now};
+      }
+      value.last=now;localStorage.setItem(key,JSON.stringify(value));return value.id;
+    }catch{return null;}
+  };
   const language=()=>document.documentElement.lang.startsWith('ja')?'ja':'en';
   const emit=(event,path,lang=language())=>{
     let referrer='';try{referrer=document.referrer?new URL(document.referrer).origin:'';}catch{}
     fetch(endpoint,{method:'POST',mode:'cors',credentials:'omit',keepalive:true,
       headers:{'Content-Type':'text/plain;charset=UTF-8'},
-      body:JSON.stringify({event,path,language:lang,referrer})}).catch(()=>{});
+      body:JSON.stringify({event,path,language:lang,referrer,session_id:session()})}).catch(()=>{});
   };
   emit('pageview',location.pathname);
   window.addEventListener('pageshow',event=>{if(event.persisted)emit('pageview',location.pathname);});
