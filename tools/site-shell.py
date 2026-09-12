@@ -35,8 +35,8 @@ def category(route,ja=False):
 
 def shell(route,title,ja,alternate=None,parent=None):
     home='/ja/' if ja else '/'; cat=category(route,ja)
-    labels=['ホーム','全コンテンツ','学習ガイド','研究と解説','プロジェクト','このサイトについて'] if ja else ['Home','Library','Guides','Research','Projects','About']
-    urls=[home,home+'library.html',home+'#guides',home+'#preoccupations',home+'projects.html',home+'about.html']
+    labels=['ホーム','全コンテンツ','学習ガイド','研究と解説','書籍','プロジェクト','このサイトについて'] if ja else ['Home','Library','Guides','Research','Books','Projects','About']
+    urls=[home,home+'library.html',home+'#guides',home+'#preoccupations',home+'#books',home+'projects.html',home+'about.html']
     links=[]
     for label,url in zip(labels,urls):
         current='page' if route==url else 'location' if cat and cat[1]==url else None
