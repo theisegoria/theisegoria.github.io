@@ -29,7 +29,7 @@ def category(route,ja=False):
     if r.startswith('/sheets/'):return ('参考シート' if ja else 'Sheets',('/ja' if ja else '')+'/sheets/')
     if r.startswith(('/medical-textbook/','/game-design-dynamics-of-learning/')):return ('書籍' if ja else 'Books',('/ja' if ja else '')+'/#books')
     if r.startswith('/stem-genius/'):return ('プロジェクト' if ja else 'Projects',('/ja' if ja else '')+'/projects.html')
-    if r.startswith('/algebraic-varieties-introduction/') or r.startswith('/lebesgue-integration/') or (r.startswith('/explore/') and not any(x in r for x in ['automatic-watch','apple-silicon'])):
+    if r.startswith('/algebraic-varieties-introduction/') or r.startswith('/lebesgue-integration/') or r.startswith('/gamma-beta/') or (r.startswith('/explore/') and not any(x in r for x in ['automatic-watch','apple-silicon'])):
         return ('学習ガイド' if ja else 'Guides',('/ja' if ja else '')+'/#guides')
     return ('研究と解説' if ja else 'Research',('/ja' if ja else '')+'/#preoccupations')
 
