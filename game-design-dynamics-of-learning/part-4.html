@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="en" class="ig-document ig-editorial">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Part IV of Game Design as the Dynamics of Learning: The missing variable. Fun Is Learning (But That Is Not Enough); The Temporal Dimension; The Critical Variable: Learning Rate">
+  <meta name="theme-color" content="#f7f7f5">
+  <link rel="canonical" href="https://theisegoria.github.io/game-design-dynamics-of-learning/part-4.html">
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <title>The missing variable · Game Design as the Dynamics of Learning</title>
+<style>
+  :root {
+    --ground:#F7F7F5; --surface:#FFFFFF; --surface-2:#F0F1EC;
+    --ink:#17191B; --muted:#63686D; --rule:#DEE0DC;
+    --accent:#1F5FA8; --accent-soft:#1F5FA814; --mark:#C05621;
+    --f-display:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    --f-read:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    --f-ui:"Inter",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground:#101214; --surface:#181B1E; --surface-2:#1F2327;
+      --ink:#EDEFF1; --muted:#9BA3AA; --rule:#2C3237;
+      --accent:#69ABE3; --accent-soft:#69ABE31C; --mark:#E8A87C;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground:#101214; --surface:#181B1E; --surface-2:#1F2327;
+    --ink:#EDEFF1; --muted:#9BA3AA; --rule:#2C3237;
+    --accent:#69ABE3; --accent-soft:#69ABE31C; --mark:#E8A87C;
+  }
+  * { box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { margin:0; background:var(--ground); color:var(--ink);
+         font-family:var(--f-ui); font-size:17px; line-height:1.65; -webkit-font-smoothing:antialiased; }
+  a { color:var(--accent); text-underline-offset:.18em; }
+  .wrap { width:min(720px, calc(100% - 40px)); margin-inline:auto; }
+  .wide { width:min(1080px, calc(100% - 40px)); margin-inline:auto; }
+  header.site { border-bottom:1px solid var(--rule); }
+  header.site .wide { min-height:64px; display:flex; align-items:center; justify-content:space-between; gap:20px; }
+  header.site .name { font-weight:750; letter-spacing:-.02em; text-decoration:none; color:var(--ink); }
+  header.site nav { display:flex; gap:20px; flex-wrap:wrap; }
+  header.site nav a { color:var(--muted); font-size:.88rem; text-decoration:none; }
+  header.site nav a:hover { color:var(--ink); }
+  .label { color:var(--muted); font-size:.74rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; }
+  .hero { padding:72px 0 40px; }
+  h1 { font-family:var(--f-display); font-weight:600; margin:14px 0 16px;
+       font-size:clamp(2.3rem,5.6vw,3.6rem); line-height:1.04; letter-spacing:-.03em; }
+  .standfirst { font-size:1.15rem; color:var(--muted); margin:0 0 26px; max-width:60ch; font-family:var(--f-read); font-style:italic; }
+  .herometa { display:flex; flex-wrap:wrap; gap:10px 18px; align-items:center;
+              font-size:.86rem; color:var(--muted); border-top:1px solid var(--rule); padding-top:18px; }
+  .pill { display:inline-flex; align-items:center; gap:7px; padding:7px 14px; border:1px solid var(--rule);
+          border-radius:999px; background:var(--surface); text-decoration:none; color:var(--ink);
+          font-weight:600; font-size:.85rem; }
+  .pill:hover { border-color:var(--accent); color:var(--accent); }
+  article.book { font-family:var(--f-read); font-size:1.075rem; line-height:1.72; }
+  article.book p { margin:0 0 1.15em; }
+  article.book h2 { font-family:var(--f-display); font-weight:600; letter-spacing:-.02em;
+               font-size:clamp(1.6rem,3.4vw,2.15rem); line-height:1.15; margin:2.6em 0 .2em; scroll-margin-top:24px; }
+  article.book h2 .num { display:block; font-family:var(--f-ui); font-size:.72rem; font-weight:700;
+                    letter-spacing:.12em; text-transform:uppercase; color:var(--mark); margin-bottom:.7em; }
+  article.book h3 { font-family:var(--f-ui); font-weight:650; font-size:1.02rem; letter-spacing:-.005em;
+               margin:2.1em 0 .5em; color:var(--ink); }
+  article.book .epigraph { font-style:italic; color:var(--muted); margin:.4em 0 2em; padding-left:1.1em;
+                      border-left:2px solid var(--rule); }
+  article.book blockquote { margin:1.6em 0; padding:1.1em 1.3em; background:var(--surface); border:1px solid var(--rule);
+                       border-radius:.7rem; font-style:italic; }
+  article.book blockquote p { margin:0 0 .6em; } article.book blockquote p:last-child { margin:0; }
+  article.book ul, article.book ol { margin:0 0 1.2em; padding-left:1.35em; }
+  article.book li { margin:0 0 .45em; }
+  article.book strong { font-weight:650; }
+  .partsplash { padding:56px 0 8px; }
+  .partsplash .kicker { font-family:var(--f-ui); font-size:.74rem; font-weight:700; letter-spacing:.12em;
+                        text-transform:uppercase; color:var(--mark); }
+  .partsplash h1 { font-size:clamp(2rem,4.8vw,3rem); margin-top:10px; }
+  .toc { margin:2rem 0 0; }
+  nav.toc h2 { font-family:var(--f-ui); font-size:.74rem; font-weight:700; letter-spacing:.1em;
+            text-transform:uppercase; color:var(--muted); margin:0 0 .9rem; }
+  .toc ol { list-style:none; margin:0; padding:0; }
+  .toc li { border-top:1px solid var(--rule); }
+  .toc a { display:flex; gap:14px; padding:.72rem 0; text-decoration:none; color:var(--ink); align-items:baseline; }
+  .toc a:hover { color:var(--accent); }
+  .toc .n { font-family:var(--f-ui); font-size:.78rem; font-weight:700; color:var(--muted); min-width:5.4em; }
+  .toc .t { font-family:var(--f-read); font-size:1.02rem; }
+  .contents .part { margin:2.6rem 0 0; }
+  .contents .part > h3 { font-family:var(--f-ui); font-size:.74rem; font-weight:700; letter-spacing:.1em;
+                         text-transform:uppercase; color:var(--mark); margin:0 0 .2rem; }
+  .contents .part > .pt { font-family:var(--f-display); font-size:1.5rem; font-weight:600; letter-spacing:-.02em;
+                          margin:0 0 .7rem; display:block; text-decoration:none; color:var(--ink); }
+  .contents .part > .pt:hover { color:var(--accent); }
+  .cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:14px; margin:1.6rem 0 0; }
+  .card { border:1px solid var(--rule); border-radius:.8rem; padding:1rem 1.1rem; background:var(--surface); }
+  .card h3 { font-family:var(--f-ui); font-size:.78rem; letter-spacing:.08em; text-transform:uppercase;
+             color:var(--muted); margin:0 0 .45rem; font-weight:700; }
+  .card p { margin:0; font-family:var(--f-read); font-size:.98rem; }
+  .pagenav { display:flex; justify-content:space-between; gap:16px; margin:4rem 0 0; padding-top:1.4rem;
+             border-top:1px solid var(--rule); font-family:var(--f-ui); font-size:.9rem; }
+  .pagenav a { text-decoration:none; font-weight:600; }
+  .pagenav span { color:var(--muted); }
+  div.sources { margin:3.4rem 0 0; padding:1.4rem 1.5rem; background:var(--surface-2); border-radius:.8rem;
+             font-family:var(--f-ui); font-size:.92rem; color:var(--muted); }
+  div.sources h2 { font-size:.74rem; letter-spacing:.1em; text-transform:uppercase; margin:0 0 .7rem; color:var(--ink);
+                font-family:var(--f-ui); font-weight:700; }
+  div.sources p { margin:0 0 .7rem; } .sources p:last-child { margin:0; }
+  footer.site { border-top:1px solid var(--rule); margin-top:64px; }
+  footer.site .wide { min-height:72px; display:flex; align-items:center; justify-content:space-between;
+                      gap:16px; font-size:.86rem; color:var(--muted); }
+  @media (max-width:560px) { header.site .wide { flex-direction:column; align-items:flex-start; gap:6px; padding:12px 0; }
+                             .hero { padding:44px 0 28px; } }
+</style>
+<!-- ISEGORIA:HEAD -->
+<link rel="stylesheet" href="/assets/site-shell.css?v=47b7776797">
+<script src="/assets/site-shell.js?v=47b7776797" ></script>
+<!-- /ISEGORIA:HEAD -->
+</head>
+<body class="ig-site" data-site-kind="editorial" data-site-route="/game-design-dynamics-of-learning/part-4.html">
+<!-- ISEGORIA:NAV -->
+<a class="ig-skip" href="#ig-content">Skip to content</a>
+<header id="ig-header"><div class="ig-nav-inner">
+<a class="ig-brand" href="/" aria-label="Isegoria, home"><strong>ISEGORIA</strong><span>Benjamin Haire</span></a>
+<button class="ig-menu" type="button" aria-expanded="false" aria-controls="ig-primary">Menu</button>
+<nav id="ig-primary" aria-label="Primary navigation"><a href="/">Home</a><a href="/library.html">Library</a><a href="/#guides">Guides</a><a href="/#preoccupations">Research</a><a href="/projects.html">Projects</a><a href="/about.html">About</a><a class="ig-language" href="/ja/" hreflang="ja" lang="ja">日本語</a><button class="ig-theme" type="button" hidden>Theme</button></nav>
+</div></header>
+<nav id="ig-breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><a href="/#books">Books</a><span aria-hidden="true">/</span><a href="/game-design-dynamics-of-learning/">Game Design as the Dynamics of Learning</a><span aria-hidden="true">/</span><span aria-current="page">The missing variable · Game Design as the Dynamics of Learning</span></nav>
+<span id="ig-content" tabindex="-1"></span>
+<!-- /ISEGORIA:NAV -->
+
+<nav class="ig-page-nav" aria-label="On this page"><a href="/game-design-dynamics-of-learning/">Contents</a><a href="/game-design-dynamics-of-learning/part-1.html">I</a><a href="/game-design-dynamics-of-learning/part-2.html">II</a><a href="/game-design-dynamics-of-learning/part-3.html">III</a><a href="/game-design-dynamics-of-learning/part-4.html">IV</a><a href="/game-design-dynamics-of-learning/part-5.html">V</a><a href="/game-design-dynamics-of-learning/part-6.html">VI</a><a href="/game-design-dynamics-of-learning/part-7.html">VII</a></nav>
+
+<main>
+<div class="wrap">
+  <section class="partsplash">
+    <p class="kicker">Part IV of 7</p>
+    <h1>The missing variable</h1>
+  </section>
+  <nav class="toc" aria-label="Chapters in this part"><h2>In this part</h2><ol>
+    <li><a href="#ch-9"><span class="n">Chapter 9</span><span class="t">Fun Is Learning (But That Is Not Enough)</span></a></li>
+    <li><a href="#ch-10"><span class="n">Chapter 10</span><span class="t">The Temporal Dimension</span></a></li>
+    <li><a href="#ch-11"><span class="n">Chapter 11</span><span class="t">The Critical Variable: Learning Rate</span></a></li>
+  </ol></nav>
+  <article class="book">
+    <h2 id="ch-9"><span class="num">Chapter 9</span>Fun Is Learning (But That Is Not Enough)</h2>
+    <p class="epigraph">On Koster's insight that fun is learning; why it is correct but incomplete; and what it means for a theory to identify the right variable without specifying the right function.</p>
+    <h3 id="9-1-koster-was-right">9.1 Koster was right</h3>
+<p>The previous chapter surveyed six frameworks and found each wanting. Koster's theory of fun came closest to the mark, and this chapter begins by acknowledging why.</p>
+<p>Fun is the emotional response to learning patterns. This is not a metaphor. It is a claim about mechanism, and it is supported by the neuroscience reviewed in Part II. The dopamine system rewards prediction error resolution (Schultz, Dayan, &amp; Montague, 1997). The curiosity system drives the search for informative experiences (Gruber, Gelman, &amp; Ranganath, 2014). The procedural memory system converts effortful learning into automatic skill (Poldrack et al., 2005; Lehéricy et al., 2005). The brain is built to learn, and it finds the process intrinsically rewarding. Koster identified this at the level of design intuition before the neuroscience existed to confirm it.</p>
+<p>His theory also correctly identifies the endpoint. When a game's patterns are fully absorbed - when the player has "grokked" the system - the game becomes boring. The prediction error rate has dropped to zero, and the dopamine system has nothing to signal. This explains why tic-tac-toe is interesting for approximately three games and chess is interesting for a lifetime: the pattern space of tic-tac-toe is exhausted almost immediately, while the pattern space of chess exceeds any human's capacity to fully absorb.</p>
+<p>Daniel Cook's skill atom framework operationalises Koster's insight at the design level: the minimal feedback loop of action → simulation → feedback → modelling describes the micro-structure of game learning with considerable precision. Cook explicitly locates fun at the moment of model crystallisation: "This moment of understanding and mastery is at the heart of what we call Fun."</p>
+<p>So far, so good. The problem is that this is not enough.</p>
+    <h3 id="9-2-three-learning-scenarios">9.2 Three learning scenarios</h3>
+<p>Consider three scenarios that share the same variable (learning is occurring) but produce completely different experiences.</p>
+<p><strong>Scenario 1: The steep gradient.</strong> A player encounters a new boss in <em>Dark Souls</em>. The first attempt is bewildering; attacks arrive from unexpected angles, the arena's geometry is unfamiliar, and death comes within seconds. The second attempt lasts thirty seconds longer because the player now recognises the opening attack and dodges it. The third attempt reaches the boss's second phase. The fifth attempt makes it to 50% health. By the tenth attempt, the player's model of the boss has crystallised sufficiently that victory feels imminent. Each death generates a large prediction error that is immediately resolvable; the player knows exactly what killed them and what to do differently. The learning rate is high, and the experience is deeply engaging.</p>
+<p><strong>Scenario 2: The stalled gradient.</strong> A student is studying organic chemistry. The material is new, the concepts are challenging, and the student has been reading the same chapter for three hours. They can define the terms; they can recite the mechanisms; but the intuitive understanding refuses to arrive. Learning is occurring (each pass through the material strengthens memory traces), but the rate is so slow that it is imperceptible from session to session.</p>
+<p>The student knows they are not getting worse, but they cannot feel themselves getting better. The experience is tedious, draining, and unfun.</p>
+<p><strong>Scenario 3: The exhausted gradient.</strong> A player replays the opening world of <em>Super Mario Bros.</em> for the hundredth time. They can complete it with their eyes half-closed. Every enemy position is memorised, every jump arc is automatic, and every block location is known. Learning is no longer occurring because the player's model is complete. The experience is mildly pleasant (the motor execution is satisfying in a low-key way) but not engaging in the sense that matters. There is no absorption, no challenge, no sense of improvement.</p>
+<p>Koster's theory correctly predicts that Scenario 3 (no learning) will be boring and that Scenario 1 (rapid learning) will be engaging. But it does not explain the difference between Scenario 1 and Scenario</p>
+<ol start="2">
+  <li>Both involve active engagement with a system that contains learnable patterns. The student in Scenario 2 has not exhausted the patterns; there is much more to learn. But the experience is aversive rather than pleasurable.</li>
+</ol>
+<p>The theory correctly identifies the variable (learning). It does not specify the function (the rate of learning relative to the learner's expectation).</p>
+    <h3 id="9-3-the-musician-s-paradox">9.3 The musician's paradox</h3>
+<p>The gap in Koster's theory is sharpest in cases of deliberate practice.</p>
+<p>A guitarist practising scales is learning. Each repetition refines motor coordination, improves timing, and strengthens the cortical-to-subcortical transfer that will eventually make the scale automatic. By Koster's theory, this should be fun. Sometimes it is. But sometimes it is tedious, and the difference is not whether learning is occurring but how fast.</p>
+<p>When the guitarist can hear their improvement - when each pass through the scale is noticeably cleaner, faster, and more accurate than the last - the practice is engaging. The rate of improvement is perceptible, and the experience has the quality of productive absorption. When the guitarist has been practising the same scale for an hour and can no longer detect any improvement - when each pass sounds identical to the last - the practice becomes tedious, even though learning is still occurring at the neural level. Hebbian plasticity continues to strengthen synaptic connections; the power law of practice ensures that each repetition produces some marginal improvement. But the improvement is below the threshold of conscious detection, and the subjective experience shifts from "I am getting better" to "nothing is happening."</p>
+<p>The power law of practice (first described in the context of Bryan and Harter's 1899 study of telegraph operators, and subsequently confirmed across motor, perceptual, and cognitive domains) predicts this precisely: the logarithm of reaction time decreases linearly with the logarithm of practice trials. Initial learning is rapid and perceptible. Later learning is slow and imperceptible. The transition from perceptible to imperceptible improvement marks the transition from engagement to tedium, even though learning never actually stops.</p>
+<p>Wilson, Shenhav, Straccia, and Cohen (2019, <em>Nature Communications</em>) provided the quantitative frame: for gradient-descent learning systems, the optimal error rate is approximately 15.87% (equivalently, approximately 85% accuracy). When the guitarist is making one mistake per seven notes, improvement is rapid and perceivable. When they are making one mistake per fifty notes, improvement is still occurring but at a rate too slow to register. The experience shifts from "I am getting better" to "nothing is happening" even though something is.</p>
+    <h3 id="9-4-productive-failure-and-the-role-of-struggle">9.4 Productive failure and the role of struggle</h3>
+<p>Manu Kapur's productive failure research (2008, <em>Cognition and Instruction</em>; 2014, <em>Cognitive Science</em>) adds a crucial nuance. Students who struggle with problems before receiving instruction learn more than students who receive instruction first. Both approaches yield high levels of procedural knowledge. The critical difference: students who problem-solved first demonstrated significantly greater conceptual understanding and ability to transfer to novel problems. The struggle itself, even when it produced "suboptimal or even incorrect solutions," prepared the learner for deeper subsequent understanding.</p>
+<p>This finding maps directly onto game design. A <em>Dark Souls</em> player who dies to a boss twenty times before defeating it has a deeper model of the boss's behaviour than a player who defeats it on the first attempt with an overpowered build. The deaths were not wasted time; they were productive failures that built the conceptual framework necessary for genuine mastery. Jesper Juul's <em>The Art of Failure</em> (MIT Press, 2013) captures this from the player's perspective: games exploit a "paradox of failure" in which humans have a basic desire to succeed yet voluntarily engage in activities where they are nearly certain to fail. The resolution is that the feeling of escaping failure - often through improving skills - is a central enjoyment of games.</p>
+<p>Robert and Elizabeth Bjork's "desirable difficulties" framework complements this: conditions that slow apparent learning (spacing, interleaving, variation) actually accelerate long-term retention and transfer. The difficulty is desirable because it forces deeper processing; the struggle is productive because it builds more robust models. In game design terms, a desirable difficulty is one where prediction errors are slightly larger than comfortable but remain resolvable with effort. This describes exactly the experience of a well-designed difficulty curve: each new section feels slightly too hard at first, but the player's model catches up within a few attempts.</p>
+<p>But productive failure works only when the failure is <strong>informative</strong>. When failure provides clear error signals that the player can use to update their model, each death generates genuine learning. When failure provides only "you died" with no causal information, each death generates frustration without learning. And failure with no consequence at all (unlimited retries, no stakes) is proven less effective because players can fail continuously without strategic engagement. The productive failure literature confirms what Koster's theory implies but does not specify: the quality of learning depends not on whether errors occur but on the rate at which errors convert into model improvements.</p>
+    <h3 id="9-5-what-the-missing-piece-is">9.5 What the missing piece is</h3>
+<p>The missing piece is not learning itself but the <strong>rate</strong> of learning; and not the absolute rate, but the rate relative to the brain's expectation.</p>
+<p>Koster identified the right variable: learning. Cook operationalised it: the skill atom feedback loop. But neither specified the function that determines whether the learning process feels rewarding or aversive. That function is the first temporal derivative of model accuracy: how fast the player's predictions are improving, evaluated against how fast the brain expects them to improve.</p>
+<p>The next chapter introduces the temporal dimension that transforms this observation into a dynamic theory. Chapter 11 then identifies the precise quantity - converging from three independent theoretical traditions - that governs the experiential landscape of play.</p>
+    <h2 id="ch-10"><span class="num">Chapter 10</span>The Temporal Dimension</h2>
+    <p class="epigraph">On learning as a process characterised by change over time; skill acquisition as trajectory rather than position; and the empirical evidence that engagement follows predictable temporal patterns.</p>
+    <h3 id="10-1-position-versus-velocity">10.1 Position versus velocity</h3>
+<p>The core limitation of existing game design theories - every one of the six examined in Chapter 8 - is that they describe the player's position in a design space without describing their <strong>velocity</strong>: how fast and in what direction they are moving.</p>
+<p>Csikszentmihalyi's flow channel describes a position: the player is in the zone where challenge approximately equals skill. But two players can occupy the same position with completely different velocities. One is improving rapidly; each encounter teaches something new, and their skill curve is steep. The other is stagnating; their skill curve is flat, and the challenge-skill match is maintained only because neither variable is changing. Both are in the flow channel. Their experiences are qualitatively different, and their futures are different: the first player will remain engaged; the second is one boring session away from quitting.</p>
+<p>In physics, position is insufficient to predict the future of a system; you need velocity and acceleration. In game design, skill level is insufficient to predict engagement; you need the rate of skill change and, ideally, the rate of change of that rate. The unified model is, fundamentally, a velocity-based theory of engagement where existing theories are position-based.</p>
+    <h3 id="10-2-the-shape-of-engagement-over-time">10.2 The shape of engagement over time</h3>
+<p>Player engagement is not uniform across the lifecycle of a game. Empirical data on retention and completion reveals a consistent pattern.</p>
+<p>Mobile games lose over 75% of new users within 24 hours. After one week, 85% have stopped playing. Only approximately 4% of mobile gamers remain active at 30 days. Industry benchmarks place Day 1 retention at approximately 40-50%, Day 7 at approximately 20%, and Day 30 at approximately 10%. The retention curve typically flattens around day 20-25, meaning Day 30 closely resembles Day 365; players who survive early attrition become long-term players.</p>
+<p>On PC, the pattern is similar in shape if not magnitude. The average game completion rate on Steam is approximately 35%; roughly three out of four purchasers do not finish the main story. Specific examples are instructive: <em>Tomb Raider</em> (2013) at 42.4%, <em>BioShock Infinite</em> at 38.2%, <em>The Witcher 3</em> at 24.6%, <em>Red Dead Redemption 2</em> at 23.9%. <em>Spider-Man: Miles Morales</em> at 65% is the outlier, attributed to its relatively short runtime of 6-8 hours. The correlation between game length and completion rate is robust: shorter, tighter narratives show significantly higher completion.</p>
+<p>These numbers are not merely industry statistics. They are the empirical signature of the learning gradient's temporal dynamics. The steep early drop-off corresponds to the overload phase: players whose error resolution rate cannot keep pace with the game's initial prediction error density quit. The gradual mid-game decline corresponds to the exhaustion phase: players whose learning gradient has flattened lose motivation. The completion-rate correlation with game length reflects the prediction that <strong>content volume and learning depth are not the same thing</strong>; a 60-hour game with 10 hours of unique prediction errors will lose players after 10 hours regardless of how much additional content remains.</p>
+    <h3 id="10-3-the-learning-curve-as-trajectory">10.3 The learning curve as trajectory</h3>
+<p>Skill acquisition follows a characteristic trajectory, and the shape of that trajectory determines the shape of engagement.</p>
+<p>The power law of practice, first documented by Bryan and Harter in their 1899 study of Morse Code telegraph operators and subsequently confirmed across hundreds of studies, describes the overall shape: rapid initial improvement that gradually decelerates toward an asymptote. Initial learning is fast and perceptible; later learning is slow and often imperceptible. This explains why the first hour of a new game is frequently the most exciting and why late-game engagement is always at risk.</p>
+<p>But learning curves are not smooth. Bryan and Harter's original study identified distinct <strong>plateaus</strong>: periods when subjects seemed unable to attain further improvement despite continued practice. The mechanism they identified remains relevant: stagnation occurred because learners had mastered lower-order elements (individual letters, words) but had not yet developed higher-order organisational skills (phrases, contextual meaning). The plateau represented the time required for the nervous system to reorganise and integrate disparate elements into a more efficient, automated system. A more recent piecewise model (2015, <em>PMC</em>) frames this as a sequence of <strong>strategy shifts</strong>: locally, gradual improvement follows a power law within a specific strategy; globally, progress involves a discrete sequence of strategy shifts, each better in the long term than the ones preceding it.</p>
+<p>Each feature of the learning curve has implications for game design:</p>
+<p><strong>Plateaus</strong> are the most dangerous phase for engagement. The player is practising but not perceivably improving. The learning gradient appears to be zero. In Bryan and Harter's terms, the player has mastered the current level of organisation but has not yet reorganised into the next level. Physical fitness plateaus typically last 2-3 weeks; complex procedural learning plateaus can extend to months. Effective game design recognises plateaus and introduces new challenges, perspectives, or system combinations that prompt the reorganisation. <em>Dark Souls</em>'s introduction of new enemy types and environments across its mid-game serves this function: each new area forces the player to reorganise their combat model for a new context.</p>
+<p><strong>Breakthroughs</strong> are the most rewarding moments. The player suddenly "gets it"; a pattern clicks, a strategy crystallises, a skill snaps into place. In the piecewise model, this is a strategy shift: the player abandons a suboptimal approach for a fundamentally better one. The resulting jump in performance produces a spike in the learning gradient that generates intense positive affect. This is the "aha" moment that puzzle games are structured around and that boss-fight victories in Soulslike games deliver; a sudden resolution of accumulated prediction errors that produces Van de Cruys's amplified positive valence (the rate of error reduction far exceeds the brain's expectation).</p>
+<p><strong>Regressions</strong> are confusing and potentially frustrating. The player was performing well, and now they are performing worse. This often occurs during strategy shifts: the old model is being dismantled before the new one is complete. A player who has been playing <em>Dota 2</em> with a fixed hero pool and begins experimenting with new heroes will see their win rate decline temporarily as they build new models. Effective game design manages regressions by providing clear signals that the player is on the right track despite temporarily worse performance, or by creating safe spaces for experimentation (practice modes, low-stakes matches, optional challenges).</p>
+    <h3 id="10-4-the-lifecycle-of-game-engagement">10.4 The lifecycle of game engagement</h3>
+<p>The learning curve framework maps onto a characteristic five-phase engagement lifecycle:</p>
+<p><strong>Phase 1: First contact.</strong> The player knows nothing. Prediction error density is at maximum. The risk is overload; the opportunity is the exhilarating novelty of a system that is entirely unknown. Design requirement: controlled revelation, one system at a time.</p>
+<p><strong>Phase 2: Rapid learning.</strong> Basic systems are understood; the learning gradient is steep. New mechanics arrive frequently, and each encounter teaches something new. This is typically the most enjoyable phase. Design requirement: pacing new introductions to sustain the gradient without tipping into overload.</p>
+<p><strong>Phase 3: Deepening.</strong> The introduction rate of new mechanics decreases. Engagement depends on combinatorial depth: discovering new interactions between familiar elements. The player develops macro-level strategic frameworks. Design requirement: systems whose interactions produce emergent complexity exceeding the sum of their parts.</p>
+<p><strong>Phase 4: Mastery.</strong> The player's model is nearly complete. Remaining prediction errors are fine-grained. The learning gradient is shallow. Design requirement: depth sufficient to sustain refinement-level engagement for the player's remaining interest, or an acknowledgement that the game's learning content has been consumed.</p>
+<p><strong>Phase 5: Exhaustion and renewal.</strong> The gradient reaches zero. Engagement ends unless the game introduces new prediction error sources: procedural generation, human opponents, user-generated content, meta-game evolution, or expansion content.</p>
+    <h3 id="10-5-why-static-theories-fail">10.5 Why static theories fail</h3>
+<p>The five-phase lifecycle explains why static theories cannot account for engagement. A game that satisfies MDA's structural criteria, produces Salen and Zimmerman's meaningful play, deploys Costikyan's uncertainty, satisfies SDT's three needs, and places the player in Csikszentmihalyi's flow channel can still fail to sustain engagement if the learning gradient collapses during Phase 3 or Phase 4.</p>
+<p>The player's relationship to the game changes over time as their model improves. A theory that describes the game's structural properties without describing the trajectory of the player's understanding will correctly predict initial engagement (the structure is sound) but fail to predict sustained engagement (the gradient has flattened). This is why some games receive strong early reviews and strong early player counts but suffer steep engagement decline after the first week: the structural criteria were satisfied, but the temporal dynamics were not managed.</p>
+<p>The missing dimension is rate: how fast the player's model is improving, and how fast that rate compares to the brain's expectation. The next chapter identifies this variable precisely and shows that three independent theoretical traditions converge on the same quantity as the hedonic signal governing the experiential landscape of play.</p>
+    <h2 id="ch-11"><span class="num">Chapter 11</span>The Critical Variable: Learning Rate</h2>
+    <p class="epigraph">On the isolation of learning rate as the hidden variable governing player experience; and the convergence between Van de Cruys's affective error dynamics, Schmidhuber's compression progress, and the predictive processing account of play.</p>
+    <h3 id="11-1-the-first-derivative-of-prediction-error">11.1 The first derivative of prediction error</h3>
+<p>The critical insight that transforms "fun is learning" from a descriptive observation into a predictive theory comes from Sander Van de Cruys's 2017 contribution to <em>Philosophy and Predictive Processing</em>, "Affective Value in the Predictive Mind."</p>
+<p>Van de Cruys proposed that <strong>affective valence tracks the first temporal derivative of prediction error</strong>; the rate at which errors are being reduced or increased over time. Positive valence corresponds to prediction errors that are <strong>decreasing</strong>: the world is becoming more predictable, the model is improving. Negative valence corresponds to prediction errors that are <strong>increasing</strong>: the world is becoming less predictable, the model is failing.</p>
+<p>This is not merely a refinement of the reward prediction error framework. It is a shift in what the brain is tracking. The raw prediction error signal says "something unexpected happened." The derivative signal says "am I getting better or worse at predicting what happens?" The first is a snapshot; the second is a trajectory. And it is the trajectory that determines how the experience feels.</p>
+<p>The formulation connects to a deeper biological principle. The reward value of water depends on thirst. The reward value of warmth depends on cold. What matters for affective experience is not the absolute state of the organism but the <strong>direction and speed of change</strong> relative to homeostatic setpoints. Prediction error operates the same way:</p>
+<ul>
+  <li>A <strong>large error that is shrinking</strong> feels good (the player is learning, the puzzle is yielding)</li>
+  <li>A <strong>small error that is growing</strong> feels bad (the player is losing ground, strategies are failing)</li>
+  <li>A <strong>stable error</strong> produces neutral affect (the plateau that plagues musicians and gamers alike)</li>
+</ul>
+    <h3 id="11-2-the-meta-level-expectations-about-the-rate-of-learning">11.2 The meta-level: expectations about the rate of learning</h3>
+<p>Van de Cruys's framework contains a further level that is critical for understanding games: the brain builds predictions not only about external events but about the <strong>rate of error reduction itself</strong>. When the rate of progress matches the brain's expectation, the experience is pleasant but unremarkable. When the rate of progress is <strong>faster than expected</strong>, the resulting positive affect is amplified.</p>
+<p>Van de Cruys argues this is the processing signature of humour: a steep, sudden gradient of prediction error leads to a prediction of low rate of error reduction. If errors can in fact be reduced (through restructuring, through seeing the joke), the reduction rate will be much higher than expected, resulting in intensely positive affect. The punchline of a joke, the "aha" moment of a puzzle, and the moment a boss pattern clicks in <em>Dark Souls</em> all share this structure: the brain expected to be confused for longer, and the resolution arrived faster than predicted.</p>
+<p>This meta-level explains why <strong>difficulty is not the enemy of fun</strong>. A difficult game that generates large prediction errors is not inherently aversive; it is aversive only if those errors resist resolution. A difficult game whose errors yield to study produces the sharpest possible positive affect, because the brain expected the resolution to take longer than it did. This is the "aha" experience that <em>Dark Souls</em> players describe: the boss seemed impossible, and then suddenly the pattern clicked, and the resolution was faster than expected. The magnitude of the positive affect is proportional to the gap between the expected rate of resolution and the actual rate.</p>
+    <h3 id="11-3-schmidhuber-s-compression-progress">11.3 Schmidhuber's compression progress</h3>
+<p>Jürgen Schmidhuber arrived at an equivalent conclusion from a completely different direction. His compression progress theory (2006-2010; formalised in "Formal Theory of Creativity, Fun, and Intrinsic Motivation," <em>IEEE Transactions on Autonomous Mental Development</em>, 2010) proposes a single optimisation criterion: maximise <strong>compression progress</strong>.</p>
+<p>Beauty is compressibility: a data stream is beautiful to the extent that it can be compressed into a shorter representation. <strong>Interestingness is the first derivative of beauty</strong>: the rate at which compressibility increases; the steepness of the learning curve. Curiosity is the drive to seek data that promises compression progress. Fun is the intrinsic reward signal generated by that progress. Boredom is the state in which no further compression progress is achievable (the data has been fully compressed).</p>
+<p>Schmidhuber's formulation converges precisely with Van de Cruys's: both identify the same mathematical quantity - the rate of model improvement over time - as the hedonic signal. That two independent theoretical traditions, approaching the problem from opposite directions (predictive processing neuroscience and algorithmic information theory), converge on an equivalent formulation is strong evidence that the underlying insight is correct.</p>
+    <h3 id="11-4-andersen-et-al-s-predictive-processing-account-of-play">11.4 Andersen et al.'s predictive processing account of play</h3>
+<p>The final convergence comes from Andersen, Kiverstein, Miller, and Roepstorff (2023, <em>Psychological Review</em>), who proposed that play seeks "sweet spots" of relative complexity where prediction error is reduced faster than expected. Their analysis accommodates both idle games (continuous micro-uncertainty resolution through accumulation) and Soulslike games (massive uncertainty reduction upon eventual success after extended failure) within the same framework. This is a significant theoretical achievement: previously, idle games and <em>Dark Souls</em> seemed to require completely different explanatory models. Under the prediction-error-rate framework, they are instances of the same process operating at different timescales and magnitudes.</p>
+<p>Deterding, Andersen, Kiverstein, and Miller (2022, <em>Frontiers in Psychology</em>) extended this framework to video games explicitly, finding the model explains "momentary jolts of positive affect whenever uncertainty is reduced faster than expected."</p>
+    <h3 id="11-5-the-hidden-variable-specified">11.5 The hidden variable, specified</h3>
+<p>The critical variable governing player experience can now be stated precisely:</p>
+<blockquote>
+  <p><strong><em>The learning rate (ΔL) is the first derivative of the player's model accuracy with respect to time, evaluated relative to the brain's expected rate of progress.</em></strong></p>
+</blockquote>
+<p>When ΔL exceeds expectations: fun, engagement, the "aha" moment. When ΔL matches expectations: sustained engagement, flow. When ΔL falls below expectations: boredom, grinding, disengagement. When ΔL is negative: frustration, helplessness, quitting.</p>
+<p>This is the variable that Koster identified but did not formalise. It is the variable that Csikszentmihalyi's flow theory implies but does not measure. It is the variable that the dopamine prediction error system encodes. And it is the variable that game designers manipulate, often intuitively, through every decision about difficulty, feedback, pacing, and content.</p>
+<p>The next chapter formalises this into the unified model and shows how it subsumes existing theories as special cases.</p>
+  </article>
+  <nav class="pagenav">
+    <a href="/game-design-dynamics-of-learning/part-3.html">&larr; Part III</a>
+    <a href="/game-design-dynamics-of-learning/part-5.html">Part V &rarr;</a>
+  </nav>
+</div>
+</main>
+
+<footer class="site">
+  <div class="wide">
+    <span>&copy; 2026 Benjamin Michael Haire</span>
+    <a href="/">Back to the project library</a>
+  </div>
+</footer>
+
+<!-- ISEGORIA:FOOT -->
+<footer id="ig-footer"><div><a href="/">Isegoria · Benjamin Haire</a><nav aria-label="Site links"><a href="/">Back to home</a><a href="/library.html">Browse the library</a><a href="#ig-content">Back to top</a></nav></div></footer>
+<!-- /ISEGORIA:FOOT -->
+</body>
+</html>

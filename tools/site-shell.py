@@ -27,7 +27,7 @@ def category(route,ja=False):
     r=route.removeprefix('/ja')
     if r in ['/','/index.html','/about.html','/projects.html','/library.html','/404.html']:return None
     if r.startswith('/sheets/'):return ('参考シート' if ja else 'Sheets',('/ja' if ja else '')+'/sheets/')
-    if r.startswith('/medical-textbook/'):return ('書籍' if ja else 'Books',('/ja' if ja else '')+'/#books')
+    if r.startswith(('/medical-textbook/','/game-design-dynamics-of-learning/')):return ('書籍' if ja else 'Books',('/ja' if ja else '')+'/#books')
     if r.startswith('/stem-genius/'):return ('プロジェクト' if ja else 'Projects',('/ja' if ja else '')+'/projects.html')
     if r.startswith('/algebraic-varieties-introduction/') or r.startswith('/lebesgue-integration/') or (r.startswith('/explore/') and not any(x in r for x in ['automatic-watch','apple-silicon'])):
         return ('学習ガイド' if ja else 'Guides',('/ja' if ja else '')+'/#guides')

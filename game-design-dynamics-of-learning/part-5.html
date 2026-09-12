@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="en" class="ig-document ig-editorial">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Part V of Game Design as the Dynamics of Learning: The unified model. The Unified Model: Fun, Learning, and the Dynamics of Flow">
+  <meta name="theme-color" content="#f7f7f5">
+  <link rel="canonical" href="https://theisegoria.github.io/game-design-dynamics-of-learning/part-5.html">
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <title>The unified model · Game Design as the Dynamics of Learning</title>
+<style>
+  :root {
+    --ground:#F7F7F5; --surface:#FFFFFF; --surface-2:#F0F1EC;
+    --ink:#17191B; --muted:#63686D; --rule:#DEE0DC;
+    --accent:#1F5FA8; --accent-soft:#1F5FA814; --mark:#C05621;
+    --f-display:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    --f-read:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    --f-ui:"Inter",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground:#101214; --surface:#181B1E; --surface-2:#1F2327;
+      --ink:#EDEFF1; --muted:#9BA3AA; --rule:#2C3237;
+      --accent:#69ABE3; --accent-soft:#69ABE31C; --mark:#E8A87C;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground:#101214; --surface:#181B1E; --surface-2:#1F2327;
+    --ink:#EDEFF1; --muted:#9BA3AA; --rule:#2C3237;
+    --accent:#69ABE3; --accent-soft:#69ABE31C; --mark:#E8A87C;
+  }
+  * { box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { margin:0; background:var(--ground); color:var(--ink);
+         font-family:var(--f-ui); font-size:17px; line-height:1.65; -webkit-font-smoothing:antialiased; }
+  a { color:var(--accent); text-underline-offset:.18em; }
+  .wrap { width:min(720px, calc(100% - 40px)); margin-inline:auto; }
+  .wide { width:min(1080px, calc(100% - 40px)); margin-inline:auto; }
+  header.site { border-bottom:1px solid var(--rule); }
+  header.site .wide { min-height:64px; display:flex; align-items:center; justify-content:space-between; gap:20px; }
+  header.site .name { font-weight:750; letter-spacing:-.02em; text-decoration:none; color:var(--ink); }
+  header.site nav { display:flex; gap:20px; flex-wrap:wrap; }
+  header.site nav a { color:var(--muted); font-size:.88rem; text-decoration:none; }
+  header.site nav a:hover { color:var(--ink); }
+  .label { color:var(--muted); font-size:.74rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; }
+  .hero { padding:72px 0 40px; }
+  h1 { font-family:var(--f-display); font-weight:600; margin:14px 0 16px;
+       font-size:clamp(2.3rem,5.6vw,3.6rem); line-height:1.04; letter-spacing:-.03em; }
+  .standfirst { font-size:1.15rem; color:var(--muted); margin:0 0 26px; max-width:60ch; font-family:var(--f-read); font-style:italic; }
+  .herometa { display:flex; flex-wrap:wrap; gap:10px 18px; align-items:center;
+              font-size:.86rem; color:var(--muted); border-top:1px solid var(--rule); padding-top:18px; }
+  .pill { display:inline-flex; align-items:center; gap:7px; padding:7px 14px; border:1px solid var(--rule);
+          border-radius:999px; background:var(--surface); text-decoration:none; color:var(--ink);
+          font-weight:600; font-size:.85rem; }
+  .pill:hover { border-color:var(--accent); color:var(--accent); }
+  article.book { font-family:var(--f-read); font-size:1.075rem; line-height:1.72; }
+  article.book p { margin:0 0 1.15em; }
+  article.book h2 { font-family:var(--f-display); font-weight:600; letter-spacing:-.02em;
+               font-size:clamp(1.6rem,3.4vw,2.15rem); line-height:1.15; margin:2.6em 0 .2em; scroll-margin-top:24px; }
+  article.book h2 .num { display:block; font-family:var(--f-ui); font-size:.72rem; font-weight:700;
+                    letter-spacing:.12em; text-transform:uppercase; color:var(--mark); margin-bottom:.7em; }
+  article.book h3 { font-family:var(--f-ui); font-weight:650; font-size:1.02rem; letter-spacing:-.005em;
+               margin:2.1em 0 .5em; color:var(--ink); }
+  article.book .epigraph { font-style:italic; color:var(--muted); margin:.4em 0 2em; padding-left:1.1em;
+                      border-left:2px solid var(--rule); }
+  article.book blockquote { margin:1.6em 0; padding:1.1em 1.3em; background:var(--surface); border:1px solid var(--rule);
+                       border-radius:.7rem; font-style:italic; }
+  article.book blockquote p { margin:0 0 .6em; } article.book blockquote p:last-child { margin:0; }
+  article.book ul, article.book ol { margin:0 0 1.2em; padding-left:1.35em; }
+  article.book li { margin:0 0 .45em; }
+  article.book strong { font-weight:650; }
+  .partsplash { padding:56px 0 8px; }
+  .partsplash .kicker { font-family:var(--f-ui); font-size:.74rem; font-weight:700; letter-spacing:.12em;
+                        text-transform:uppercase; color:var(--mark); }
+  .partsplash h1 { font-size:clamp(2rem,4.8vw,3rem); margin-top:10px; }
+  .toc { margin:2rem 0 0; }
+  nav.toc h2 { font-family:var(--f-ui); font-size:.74rem; font-weight:700; letter-spacing:.1em;
+            text-transform:uppercase; color:var(--muted); margin:0 0 .9rem; }
+  .toc ol { list-style:none; margin:0; padding:0; }
+  .toc li { border-top:1px solid var(--rule); }
+  .toc a { display:flex; gap:14px; padding:.72rem 0; text-decoration:none; color:var(--ink); align-items:baseline; }
+  .toc a:hover { color:var(--accent); }
+  .toc .n { font-family:var(--f-ui); font-size:.78rem; font-weight:700; color:var(--muted); min-width:5.4em; }
+  .toc .t { font-family:var(--f-read); font-size:1.02rem; }
+  .contents .part { margin:2.6rem 0 0; }
+  .contents .part > h3 { font-family:var(--f-ui); font-size:.74rem; font-weight:700; letter-spacing:.1em;
+                         text-transform:uppercase; color:var(--mark); margin:0 0 .2rem; }
+  .contents .part > .pt { font-family:var(--f-display); font-size:1.5rem; font-weight:600; letter-spacing:-.02em;
+                          margin:0 0 .7rem; display:block; text-decoration:none; color:var(--ink); }
+  .contents .part > .pt:hover { color:var(--accent); }
+  .cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:14px; margin:1.6rem 0 0; }
+  .card { border:1px solid var(--rule); border-radius:.8rem; padding:1rem 1.1rem; background:var(--surface); }
+  .card h3 { font-family:var(--f-ui); font-size:.78rem; letter-spacing:.08em; text-transform:uppercase;
+             color:var(--muted); margin:0 0 .45rem; font-weight:700; }
+  .card p { margin:0; font-family:var(--f-read); font-size:.98rem; }
+  .pagenav { display:flex; justify-content:space-between; gap:16px; margin:4rem 0 0; padding-top:1.4rem;
+             border-top:1px solid var(--rule); font-family:var(--f-ui); font-size:.9rem; }
+  .pagenav a { text-decoration:none; font-weight:600; }
+  .pagenav span { color:var(--muted); }
+  div.sources { margin:3.4rem 0 0; padding:1.4rem 1.5rem; background:var(--surface-2); border-radius:.8rem;
+             font-family:var(--f-ui); font-size:.92rem; color:var(--muted); }
+  div.sources h2 { font-size:.74rem; letter-spacing:.1em; text-transform:uppercase; margin:0 0 .7rem; color:var(--ink);
+                font-family:var(--f-ui); font-weight:700; }
+  div.sources p { margin:0 0 .7rem; } .sources p:last-child { margin:0; }
+  footer.site { border-top:1px solid var(--rule); margin-top:64px; }
+  footer.site .wide { min-height:72px; display:flex; align-items:center; justify-content:space-between;
+                      gap:16px; font-size:.86rem; color:var(--muted); }
+  @media (max-width:560px) { header.site .wide { flex-direction:column; align-items:flex-start; gap:6px; padding:12px 0; }
+                             .hero { padding:44px 0 28px; } }
+</style>
+<!-- ISEGORIA:HEAD -->
+<link rel="stylesheet" href="/assets/site-shell.css?v=47b7776797">
+<script src="/assets/site-shell.js?v=47b7776797" ></script>
+<!-- /ISEGORIA:HEAD -->
+</head>
+<body class="ig-site" data-site-kind="editorial" data-site-route="/game-design-dynamics-of-learning/part-5.html">
+<!-- ISEGORIA:NAV -->
+<a class="ig-skip" href="#ig-content">Skip to content</a>
+<header id="ig-header"><div class="ig-nav-inner">
+<a class="ig-brand" href="/" aria-label="Isegoria, home"><strong>ISEGORIA</strong><span>Benjamin Haire</span></a>
+<button class="ig-menu" type="button" aria-expanded="false" aria-controls="ig-primary">Menu</button>
+<nav id="ig-primary" aria-label="Primary navigation"><a href="/">Home</a><a href="/library.html">Library</a><a href="/#guides">Guides</a><a href="/#preoccupations">Research</a><a href="/projects.html">Projects</a><a href="/about.html">About</a><a class="ig-language" href="/ja/" hreflang="ja" lang="ja">日本語</a><button class="ig-theme" type="button" hidden>Theme</button></nav>
+</div></header>
+<nav id="ig-breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><a href="/#books">Books</a><span aria-hidden="true">/</span><a href="/game-design-dynamics-of-learning/">Game Design as the Dynamics of Learning</a><span aria-hidden="true">/</span><span aria-current="page">The unified model · Game Design as the Dynamics of Learning</span></nav>
+<span id="ig-content" tabindex="-1"></span>
+<!-- /ISEGORIA:NAV -->
+
+<nav class="ig-page-nav" aria-label="On this page"><a href="/game-design-dynamics-of-learning/">Contents</a><a href="/game-design-dynamics-of-learning/part-1.html">I</a><a href="/game-design-dynamics-of-learning/part-2.html">II</a><a href="/game-design-dynamics-of-learning/part-3.html">III</a><a href="/game-design-dynamics-of-learning/part-4.html">IV</a><a href="/game-design-dynamics-of-learning/part-5.html">V</a><a href="/game-design-dynamics-of-learning/part-6.html">VI</a><a href="/game-design-dynamics-of-learning/part-7.html">VII</a></nav>
+
+<main>
+<div class="wrap">
+  <section class="partsplash">
+    <p class="kicker">Part V of 7</p>
+    <h1>The unified model</h1>
+  </section>
+  <nav class="toc" aria-label="Chapters in this part"><h2>In this part</h2><ol>
+    <li><a href="#ch-12"><span class="n">Chapter 12</span><span class="t">The Unified Model: Fun, Learning, and the Dynamics of Flow</span></a></li>
+  </ol></nav>
+  <article class="book">
+    <h2 id="ch-12"><span class="num">Chapter 12</span>The Unified Model: Fun, Learning, and the Dynamics of Flow</h2>
+    <h3 id="12-1-the-problem-no-theory-fully-solves">12.1 The problem no theory fully solves</h3>
+<p>Game design theory has made remarkable progress over the past three decades. We now have formal frameworks for rules and player interaction (Hunicke, LeBlanc, and Zubek's MDA model), for meaningful play as discernible and integrated outcomes (Salen and Zimmerman, 2003), for uncertainty as a prerequisite for engagement (Costikyan, 2013), for intrinsic motivation through autonomy, competence, and relatedness (Ryan and Deci's self-determination theory, applied to games by Rigby and Ryan, 2011), for flow as optimal experience arising from challenge-skill balance (Csikszentmihalyi, 1990; applied to games by Chen, 2007), and for fun as learning (Koster, 2004). Each of these claims is well-supported. Together, they still fail to explain a central phenomenon: why do some games sustain engagement for hundreds or thousands of hours while others, built on similar principles, fail to hold attention beyond a few sessions?</p>
+<p>The issue is not that existing theories are wrong. It is that they are <strong>incomplete</strong>. They describe structures, relationships, inputs, motivations, and subjective states, but they do not describe the <strong>dynamic process</strong> that unfolds over time as a player interacts with a game. MDA tells you what a game is made of. Flow theory tells you what the optimal experience feels like. SDT tells you what motivates people in general. None of them tells you what is happening, moment to moment, inside the player's nervous system that makes one session feel transcendent and the next feel tedious, even when the game has not changed.</p>
+<p>This chapter proposes that the missing piece is <strong>learning as a regulated process</strong>, and that fun and flow emerge from how that process is managed. The argument synthesises four converging theoretical frameworks from outside game design; Schultz's reward prediction error, Van de Cruys's affective error dynamics, Schmidhuber's compression progress, and Andersen et al.'s predictive processing account of play; with the practitioner traditions of Koster, Swink, Cook, and Chen. The central claim can be stated simply:</p>
+<p><strong>Fun is the subjective experience of reducing uncertainty at an optimal rate. Flow is the cognitive state that emerges when this process is stable over time.</strong></p>
+<p>Everything that follows is an attempt to prove this claim is not a metaphor.</p>
+    <h3 id="12-2-revisiting-koster-what-fun-is-learning-actually-means">12.2 Revisiting Koster: what "fun is learning" actually means</h3>
+<p>Raph Koster's <em>A Theory of Fun for Game Design</em> (2004; revised 2013) remains the most influential single-sentence theory in the field: fun is the emotional response to learning patterns. The brain is "a voracious consumer of patterns," and games are "exceptionally tasty patterns to eat up." When a game's patterns are fully absorbed, the game becomes boring. The player has "grokked" it. There is nothing left to learn.</p>
+<p>This insight explains a great deal. It explains why players enjoy mastering enemy behaviours, why puzzle solving is satisfying, why the first hour of a new game is often the most exciting, and why repetition becomes tedious once patterns are exhausted. It correctly predicts that games with deeper pattern spaces (chess, Go, <em>Dota 2</em>) sustain engagement longer than games with shallow ones (tic-tac-toe). It correctly identifies the relationship between novelty and enjoyment. And Koster himself, in his 2014 GDC retrospective, connected the theory to dopamine: "It is a teaching signal to the brain. It gets dumped in you when there are unpredictable situations as well, in order to encourage you to solve them."</p>
+<p>But the theory, as stated, leaves several questions unanswered. Why is some learning enjoyable and other learning frustrating? A student struggling with differential equations is learning, but the experience is rarely described as fun. Why does repetition sometimes feel rewarding (a musician practising scales, a basketball player shooting free throws) and sometimes tedious (grinding trivial enemies in an RPG)? Why can players feel deeply engaged even when they are not consciously aware of learning anything, as when navigating a familiar open world or replaying a beloved campaign?</p>
+<p>The answer lies in a variable Koster identified but did not formalise: <strong>the rate at which learning occurs</strong>. Not whether the player is learning. Not what the player is learning. How fast, relative to what the brain expects. This is the hidden variable governing the entire experiential landscape of play.</p>
+    <h3 id="12-3-the-three-core-variables">12.3 The three core variables</h3>
+<p>Every moment of gameplay can be described as an interaction between three variables.</p>
+<p><strong>Pattern complexity (C)</strong> is the structure the player is attempting to understand. This is not the same as difficulty. A chess endgame with king and rook versus king is not difficult for a grandmaster, but the underlying pattern space of chess is extraordinarily complex. Complexity refers to how much structure must be internalised to predict and control outcomes. In <em>Dark Souls</em>, it includes the attack timing of an enemy, the spatial geometry of an arena, the properties of available weapons, and the interaction rules governing stamina, poise, and damage types. In <em>Dota 2</em>, it includes 120+ hero abilities, 200+ items, creep mechanics, vision rules, terrain elevation, and the behaviours of nine other human players. In <em>Portal</em>, it includes the non-Euclidean spatial logic of linked surfaces. Pattern complexity determines the ceiling of possible learning.</p>
+<p><strong>Player skill (S)</strong> is the set of patterns the player has already learned. At low skill, actions are conscious and slow, errors are frequent, and systems feel opaque. This corresponds to what Fitts and Posner (1967) called the <strong>cognitive stage</strong> of motor learning: movements are guided by verbal and declarative processes, attention is fully consumed, and performance is inconsistent. At high skill, actions are automatic, predictions are accurate, and the system feels intuitive. This is the <strong>autonomous stage</strong>: execution occurs without conscious supervision, freeing attention for higher-order strategy. The transition between these stages corresponds to the shift from declarative to procedural memory systems documented by Ullman (2004, <em>Cognition</em>) and from cortical to subcortical processing documented by Poldrack et al. (2005, <em>Journal of Neuroscience</em>) and Lehéricy et al. (2005, <em>PNAS</em>). Player skill determines where the player currently stands in the learning space.</p>
+<p><strong>Learning rate (ΔL)</strong> is the rate at which the player reduces uncertainty about the system. This is the hidden variable. It is not directly visible to the player, and it is rarely discussed in design documentation, but it determines whether a player feels bored, frustrated, engaged, or deeply absorbed. When ΔL is zero (nothing new is being learned), the experience is boredom. When ΔL is negative (the player is getting worse, or the system is becoming less predictable faster than the player can adapt), the experience is frustration or helplessness. When ΔL is positive but slow, the experience is grinding. When ΔL is positive and matched to the brain's expected rate of progress, the experience is fun. And when that match is sustained over time, the experience is flow.</p>
+    <h3 id="12-4-the-neuroscience-of-prediction-error-applying-the-frame">12.4 The neuroscience of prediction error: applying the framework</h3>
+<p>Chapter 3 established that the dopamine system encodes reward prediction error (Schultz, Dayan, &amp; Montague, 1997), that uncertainty itself generates a sustained dopamine signal peaking at maximum unpredictability (Fiorillo, Tobler, &amp; Schultz, 2003), that the brain treats information as intrinsically rewarding (Bromberg-Martin &amp; Hikosaka, 2009), and that different dopamine neurons maintain a full probability distribution over possible outcomes rather than a single expected value (Dabney et al., 2020). Chapter 5 established that skill acquisition involves measurable cortical-to-subcortical transfer (Poldrack et al., 2005; Lehéricy et al., 2005) and that expert performance activates qualitatively different brain circuits than novice performance (Wan et al., 2011).</p>
+<p>These findings converge on a picture of the brain as a prediction-and-correction machine that finds the correction process intrinsically rewarding. The question for game design is: if prediction error is the neurochemical currency of engagement, what determines whether a given pattern of prediction errors produces sustained fun rather than frustration, boredom, or compulsion?</p>
+<p>The answer is not in the errors themselves but in their <strong>temporal dynamics</strong>; the rate at which they are generated and resolved. This is the insight that transforms neuroscience into design theory.</p>
+    <h3 id="12-5-from-mechanism-to-dynamics">12.5 From mechanism to dynamics</h3>
+<p>Chapter 3 established that uncertainty itself generates a sustained dopamine signal (Fiorillo et al., 2003), that the brain treats information as intrinsically rewarding (Bromberg-Martin &amp; Hikosaka, 2009), and that reducible uncertainty (chess) produces fundamentally different engagement than irreducible uncertainty (slot machines). But reducibility is binary, and engagement is continuous. Two games with equally reducible uncertainty can produce wildly different levels of engagement. The prediction error framework explains why games are rewarding in general; it does not explain what determines whether a specific pattern of prediction errors produces sustained fun, grinding tedium, or overwhelming frustration.</p>
+<p>The resolution requires a shift from the errors themselves to their <strong>temporal dynamics</strong>: not what the prediction error is at any given moment, but how fast it is changing.</p>
+    <h3 id="12-6-the-critical-insight-applied-what-the-derivative-means-">12.6 The critical insight applied: what the derivative means for games</h3>
+<p>Chapter 11 established the critical variable: affective valence tracks the first temporal derivative of prediction error (Van de Cruys, 2017), and interestingness is the first derivative of compressibility (Schmidhuber, 2010). Both frameworks, arriving from independent theoretical traditions, identify the same quantity as the hedonic signal: <strong>the rate of model improvement over time</strong>.</p>
+<p>What does this mean concretely for game design?</p>
+<p>It means that a large prediction error that is <strong>shrinking</strong> feels good. The player is learning; the puzzle is yielding; the boss pattern is crystallising. It means that a small prediction error that is <strong>growing</strong> feels bad. The player is losing ground; previously reliable strategies are failing. And it means that a stable error; one that neither grows nor shrinks; produces the plateau that plagues both musicians practising scales and gamers grinding experience points.</p>
+<p>The framework also explains the <strong>meta-level of emotional intensity</strong> that characterises the best moments in games. The brain builds predictions not only about external events but about the rate of error reduction itself. When the rate of progress matches expectations, the experience is pleasant but unremarkable. When progress is <strong>faster than expected</strong>, the resulting affect is amplified. This is the processing signature of the "aha" moment: the brain expected to be confused for longer, and the resolution arrived faster than predicted. The punchline of a joke, the moment a <em>Portal</em> puzzle clicks, and the moment a <em>Dark Souls</em> boss pattern resolves all share this structure. The magnitude of the positive affect is proportional to the gap between the expected rate of resolution and the actual rate.</p>
+<p>This is why difficulty is not the enemy of fun. A difficult game that generates large prediction errors is not inherently aversive; it is aversive only if those errors resist resolution. A difficult game whose errors yield to study produces the <strong>sharpest possible positive affect</strong>, because the brain expected the resolution to take longer than it did.</p>
+    <h3 id="12-7-the-core-claim-restated-with-teeth">12.7 The core claim, restated with teeth</h3>
+<p>We can now state the unified model with full neuroscientific grounding:</p>
+<blockquote>
+  <p><strong><em>Fun is the subjective experience of reducing prediction error at a rate that matches or exceeds the brain's expected rate of progress. Flow is the cognitive state that emerges when this rate is sustained and stable over time.</em></strong></p>
+</blockquote>
+<p>The model has three components. First, games generate <strong>prediction errors</strong> through uncertainty, variability, and challenge. Every action a player takes produces an outcome that either confirms or violates their internal model. Second, players act to <strong>reduce</strong> those errors through practice, experimentation, and pattern extraction. This reduction is intrinsically rewarding because the dopamine system treats uncertainty resolution as valuable (Bromberg-Martin &amp; Hikosaka, 2009). Third, the <strong>rate</strong> of this reduction determines affective valence (Van de Cruys, 2017; Schmidhuber, 2010) and the sustainability of engagement.</p>
+<p>This differs from existing theories in a specific way. Csikszentmihalyi's flow model identifies challenge-skill balance as the key variable. But challenge-skill balance is a static snapshot; it tells you about the current moment, not the trajectory. Two players can have identical challenge-skill ratios and completely different experiences if one is improving and the other is stagnating. The learning rate model adds the temporal dimension that flow theory lacks: it is not the balance itself that produces engagement but the <strong>dynamics of the balance as it evolves</strong>.</p>
+    <h3 id="12-8-prediction-error-as-the-engine-of-engagement-the-loop">12.8 Prediction error as the engine of engagement: the loop</h3>
+<p>Games produce engagement through a continuous loop that maps directly onto the neural machinery described above:</p>
+<ol>
+  <li>The player forms an <strong>expectation</strong> about what will happen next (an enemy will attack from the left, a jump will clear the gap, a card combination will score well).</li>
+  <li>The game produces an <strong>outcome</strong> (the enemy flanks from the right, the gap was wider than expected, the combination triggers an unexpected synergy).</li>
+  <li>A <strong>prediction error</strong> occurs; the difference between expectation and reality.</li>
+  <li>The player <strong>updates their internal model</strong> to account for the new information (the enemy has a flanking behaviour, the gap requires a running start, that card combination is powerful).</li>
+  <li>The cycle repeats, with the updated model generating better predictions next time.</li>
+</ol>
+<p>This loop is not unique to games. It operates in every domain of learning. What makes games unique is that they are <strong>engineered to optimise this loop</strong>. Unlike natural environments, where prediction errors arrive unpredictably and often in domains the learner would prefer to avoid (financial loss, social rejection, physical injury), games curate prediction errors to be frequent, manageable, domain-specific, and free from lasting consequence. Games are safe laboratories for a process the brain finds intrinsically rewarding.</p>
+    <h3 id="12-9-the-four-states-of-player-experience">12.9 The four states of player experience</h3>
+<p>From the model, four distinct experiential states emerge, corresponding to different learning rate regimes.</p>
+<p><strong>Boredom</strong> occurs when ΔL approaches zero. The player has fully learned the system. No new prediction errors are generated. The dopamine system has nothing to signal because outcomes are fully predicted. Examples: replaying an early Mario level after mastery, farming trivial enemies in an RPG.</p>
+<p><strong>Overload</strong> occurs when prediction errors arrive faster than the player can resolve them. The system is too complex or too opaque. Pattern extraction fails because the noise-to-signal ratio is too high. Examples: a new player entering a high-level <em>Dota</em> match, poorly tutorialised mechanics with no legible feedback.</p>
+<p><strong>Grinding</strong> occurs when ΔL is positive but far below the brain's expected rate. The player is active but not meaningfully improving. Repetition occurs without insight. Progress is measured in numbers (XP, currency, levels) rather than in understanding. Examples: repetitive resource farming, artificial progression systems that gate content behind time investment rather than skill development.</p>
+<p><strong>Flow</strong> occurs when ΔL is positive and matched to the brain's expected rate of progress. Prediction errors are frequent enough to demand processing but not so frequent as to overwhelm it. Feedback is immediate and legible. The player is continuously improving. The LC-NE system sustains phasic mode (Aston-Jones &amp; Cohen, 2005), with task-evoked norepinephrine bursts facilitating focused attention while tonic levels remain moderate. The continuous model improvement generates the positive-valence signal that Van de Cruys's framework predicts. The absence of metacognitive interference (Dietrich's prefrontal suppression) prevents self-consciousness from interrupting the loop. Examples: learning boss patterns in <em>Dark Souls</em>, refining movement in <em>Celeste</em>, improving aim and positioning in <em>Halo</em>.</p>
+    <h3 id="12-10-rethinking-difficulty">12.10 Rethinking difficulty</h3>
+<p>Traditional game design frames engagement as a balance between <strong>challenge and skill</strong>. This is imprecise in a way that matters.</p>
+<p>Consider two situations with identical difficulty. In the first, a player faces a boss in <em>Dark Souls</em> whose attack patterns are consistent, telegraphed, and varied. Each death reveals new information: the overhead slam has a two-second wind-up - the sweep always follows the thrust - the charge attack tracks for 45 degrees and can be dodge-rolled to the right. In the second, a player faces a boss whose attacks are randomly selected from a uniform distribution with minimal wind-up and inconsistent timing. Both bosses kill the player at the same rate. Both produce the same measurable difficulty. But the first is widely beloved and the second would be universally hated.</p>
+<p>The difference is <strong>learnability</strong>. The first boss generates prediction errors that systematically reduce with exposure. Each death teaches something specific, and the player's model of the boss's behaviour becomes measurably more accurate after each attempt. The second boss generates prediction errors that do not reduce because the underlying process is stochastic. No model can predict a random number generator. The errors are irresolvable.</p>
+<p>What matters is not the magnitude of prediction errors (difficulty) but the rate at which they can be reduced (learnability). A game can be extremely difficult and extremely fun if its difficulty arises from patterns that yield to study. A game can be moderately difficult and extremely frustrating if its difficulty arises from randomness that resists modelling. Hidetaka Miyazaki, director of the <em>Dark Souls</em> series, has articulated exactly this principle: "It's not a matter of simply cranking up the difficulty; it's doing so fairly."</p>
+<p>Wilson, Shenhav, Straccia, and Cohen (2019, <em>Nature Communications</em>) formalised this with the <strong>85% rule for optimal learning</strong>: for gradient descent-based learning systems (including biological neural networks), the optimal error rate is approximately <strong>15.87%</strong>; equivalently, an accuracy rate of approximately 85%. Training at this optimal difficulty produced exponentially faster learning compared to training at suboptimal difficulty. The paper explicitly connects this to flow theory, Vygotsky's zone of proximal development, and the Goldilocks effect. The 85% figure provides a quantitative target for something game designers have always understood intuitively: the best games produce a success rate high enough that the player feels competent but low enough that genuine learning is occurring.</p>
+<p>Robert Bjork's concept of <strong>desirable difficulties</strong> (1994; Bjork &amp; Bjork, 2011) adds a further nuance. Certain conditions that slow apparent learning - spacing practice, interleaving different skills, varying conditions - actually accelerate long-term retention and transfer. A desirable difficulty in game design terms is one where prediction errors are slightly larger than comfortable but remain resolvable with effort. This describes exactly the experience of a well-designed difficulty curve: each new section feels slightly too hard at first, but the player's model catches up within a few attempts.</p>
+    <h3 id="12-11-the-learning-gradient">12.11 The learning gradient</h3>
+<p>We define the <strong>learning gradient</strong> as the rate at which a player improves their internal model of the game system. A well-designed game maintains a stable, positive learning gradient throughout its duration. Not flat (boredom). Not chaotic (overload). Not stagnant (grinding). But steadily advancing: a consistent reduction of prediction error across time, producing the sustained positive valence that Van de Cruys's framework predicts and that players experience as engagement.</p>
+<p>The learning gradient is shaped by two forces. The first is the <strong>rate at which the game introduces new prediction errors</strong>. This is controlled by difficulty curves, new mechanic introductions, enemy variety, level design progression, and narrative revelations. The second is the <strong>rate at which the player can resolve existing prediction errors</strong>. This depends on the legibility of game feedback, the consistency of game rules, the player's prior experience, and the availability of practice opportunities.</p>
+<p>When the introduction rate exceeds the resolution rate, the gradient tips toward overload. When the resolution rate exceeds the introduction rate, the gradient tips toward boredom. The designer's task is to keep these two rates in approximate equilibrium; or more precisely, to ensure that the resolution rate stays slightly ahead of the introduction rate, producing a continuous sense of progress.</p>
+<p>Learning in games occurs at multiple levels simultaneously:</p>
+<ul>
+  <li><strong>Micro-learning (seconds)</strong>: Input timing, movement precision, reaction speed. Landing a jump in <em>Mario</em>. Hitting a headshot in <em>Halo</em>.</li>
+  <li><strong>Meso-learning (minutes)</strong>: Encounter strategies, puzzle logic, tactical decision-making. Solving a room in <em>Zelda</em>. Clearing an encounter in <em>Dark Souls</em>.</li>
+  <li><strong>Macro-learning (hours)</strong>: System mastery, build optimisation, strategic frameworks. Understanding the <em>Dota</em> meta. Mastering the <em>Celeste</em> movement vocabulary.</li>
+</ul>
+<p>A strong game maintains a learning gradient at <strong>all three levels simultaneously</strong>. This is why Griesemer's nested loop architecture in <em>Halo</em> was so effective: by distributing prediction errors across three temporal scales (3-second motor loops, 30-second encounters, 3-minute combat spaces), the system had multiple redundant sources of learning gradient. If the motor loop was momentarily flat, the encounter loop might still be generating fresh tactical errors. Three nested learning gradients are more robust than one.</p>
+    <h3 id="12-12-play-as-epistemic-niche-construction">12.12 Play as epistemic niche construction</h3>
+<p>A crucial further insight: play is a form of <strong>epistemic niche construction</strong>. Organisms do not passively encounter optimal challenges; they create them. Children stack blocks to knock them down. They pretend to be monsters. They modify rules when games get too easy or too hard. This maps directly to how players engage with game systems: seeking self-imposed challenges, ignoring dominant strategies, creating house rules, speedrunning, and modding. The prediction error landscape of a game is not fixed by the designer; it is co-constructed by the player's choices about how to engage.</p>
+<p>Deterding, Andersen, Kiverstein, and Miller (2022, <em>Frontiers in Psychology</em>) extended this framework to video games explicitly, finding the model explains "momentary jolts of positive affect whenever uncertainty is reduced faster than expected." Their analysis accommodates both idle games (continuous micro-uncertainty resolution through accumulation) and Soulslike games (massive uncertainty reduction upon eventual success after extended failure sequences) within the same framework. This is a significant theoretical achievement: previously, idle games and <em>Dark Souls</em> seemed to require completely different explanatory models. Under the prediction-error-rate framework, they are instances of the same process operating at different timescales and magnitudes.</p>
+    <h3 id="12-13-the-roguelike-structure-as-a-compressed-learning-cycle">12.13 The roguelike structure as a compressed learning cycle</h3>
+<p>Roguelikes provide a natural experiment in learning gradient management. The genre's defining structure - short runs, permadeath, procedural generation, and iterative improvement - creates what may be the purest prediction error feedback loop in game design.</p>
+<p>Each run follows a trajectory: encounter (high surprise, many prediction errors) → death (error signal, model fails) → reflection (update model with new information) → re-attempt (test updated model against novel procedural variation) → gradual mastery (prediction errors decrease across runs). The cycle is compressed into 15-45 minutes per run, compared to the hours-long arcs of conventional game campaigns. This compression means the learning gradient is steep and the reinforcement cycle is tight.</p>
+<p>Procedural generation is essential because it prevents rote memorisation from substituting for genuine model-building. If levels were identical each run, the player would eventually reduce all prediction errors to zero through memorisation, and the learning gradient would collapse. By varying the specific instantiation while preserving the underlying rules, roguelikes ensure that each run generates fresh prediction errors that test the player's general model rather than their specific recall.</p>
+<p><em>Hades</em> innovates further by integrating narrative scaffolding into the death cycle. Each death returns the player to the House of Hades, where new dialogue, character development, and story progression await. Greg Kasavin, Supergiant's creative director, described the design philosophy: "It was an explicit goal of our early development, to take the pain out of dying and having to restart." In prediction-error terms, <em>Hades</em> converts what would be a purely negative event (negative prediction error from death) into a mixed-valence event (negative combat error plus positive narrative surprise). The learning gradient is sustained not only through mechanical improvement but through a parallel narrative learning gradient; the player is simultaneously building a model of the combat system and a model of the story, and death advances the latter even as it resets the former.</p>
+    <h3 id="12-14-flow-as-a-stable-system">12.14 Flow as a stable system</h3>
+<p>We can now describe flow not merely as a subjective feeling but as a <strong>stable configuration of the player-game system</strong>.</p>
+<p>In this configuration, attention is fully engaged because prediction errors are frequent enough to demand processing but not so frequent as to overwhelm it. The LC-NE system sustains phasic mode (Aston-Jones &amp; Cohen, 2005), with task-evoked norepinephrine bursts facilitating focused attention while tonic levels remain moderate. Feedback is immediate because the game's output follows the player's input without perceptible delay. The temporal contiguity between action and outcome is essential for the dopamine RPE signal to assign credit correctly; delayed feedback impairs the brain's ability to identify which prediction was wrong. Actions map clearly to outcomes because the game's rules are consistent and legible. This does not mean simple; <em>Dota 2</em>'s rules are immensely complex. It means that outcomes follow from rules in a way the player can, in principle, learn to predict. Learning is continuous because new prediction errors are introduced at approximately the same rate as old ones are resolved. The learning gradient remains positive and stable.</p>
+<p>This configuration is self-reinforcing but fragile. The sustained phasic LC-NE mode suppresses exploratory attention-shifting, keeping the player locked onto the task. The continuous model improvement generates the positive-valence signal that Van de Cruys's framework predicts. The absence of metacognitive interference (Dietrich's prefrontal suppression) prevents self-consciousness from interrupting the loop. But any disruption; a spike in difficulty, a confusing design decision, a broken mechanic, an unjust death, a loading screen; can knock the system out of its stable state, and re-establishing it requires recalibrating the learning rate from scratch.</p>
+    <h3 id="12-15-implications-for-design">12.15 Implications for design</h3>
+<p>This model changes the role of the designer. You are not designing mechanics, levels, rewards, or narratives in isolation. You are designing <strong>a system that regulates the player's rate of learning</strong>.</p>
+<p>Every design decision should be evaluated against this criterion. Does this increase <strong>meaningful prediction errors</strong>? A new enemy type generates fresh errors; a reskinned version of an existing enemy does not. Does it make <strong>feedback clearer</strong>? A legible damage indicator helps the player identify which prediction failed; a confusing death screen obscures the connection between action and outcome. Does it support <strong>adaptation</strong>? A difficulty system that lets the player self-select into their optimal challenge zone (like <em>Halo</em>'s four tiers or <em>Celeste</em>'s Assist Mode) serves different learning rates simultaneously. Does it sustain engagement <strong>over time</strong>? A game that front-loads all its prediction errors in the first hour and repeats them for the remaining ten will produce a declining learning gradient regardless of how polished the mechanics are.</p>
+<p>The model also identifies a common design failure: confusing <strong>content volume</strong> with <strong>learning depth</strong>. A game with 100 hours of content but only 10 hours of unique prediction errors will sustain engagement for 10 hours. The remaining 90 hours will feel like grinding, because the player's model has been fully built and the additional content generates only trivially small errors. Conversely, a game with 10 hours of content but 10 hours of unique prediction errors will sustain engagement for its entire duration. Content volume is a proxy for learning depth, but the relationship is not linear.</p>
+    <h3 id="12-16-synthesis-unifying-the-theories">12.16 Synthesis: unifying the theories</h3>
+<p>We can now place existing game design theories within the unified model as special cases.</p>
+<p><strong>Koster</strong> correctly identified that fun is learning. The unified model specifies what makes learning fun: the rate of error reduction must be positive and matched to the brain's expected rate of progress. Learning that is too slow (grinding) or too fast (trivial) fails to produce the rate-of-change signal that Van de Cruys's framework identifies as the hedonic variable.</p>
+<p><strong>Csikszentmihalyi</strong> correctly identified that flow requires challenge-skill balance. The unified model adds the temporal dimension: it is not the balance at any given moment that matters but the <strong>dynamics</strong> of the balance as it evolves. A stable balance with zero learning is not flow; it is stasis. Flow requires the balance to be continuously shifting in a direction that sustains prediction error generation and resolution.</p>
+<p><strong>Schultz and the neuroscience of reward</strong> correctly identified that dopamine encodes prediction error. The unified model connects this to game design by specifying that the rate and resolvability of prediction errors, not their raw magnitude, determines whether the experience is rewarding.</p>
+<p><strong>Van de Cruys and Schmidhuber</strong> correctly identified that valence tracks the first derivative of prediction error. The unified model applies this to games: the subjective quality of a gaming experience is determined by the rate at which the player is reducing uncertainty about the game system, relative to their expected rate of progress.</p>
+<p><strong>Andersen et al.</strong> correctly identified that play seeks sweet spots of relative complexity. The unified model operationalises this for design: the designer's task is to maintain the player in the zone where prediction errors are being generated and resolved at the rate that maximises compression progress.</p>
+<p>The missing link that connects all of these theories is the learning rate itself; the first derivative of the player's model accuracy over time. This is the hidden variable that each theory touches on without fully formalising, and that the unified model places at the centre of the analysis.</p>
+    <h3 id="12-17-boundary-conditions-where-the-model-is-weakest">12.17 Boundary conditions: where the model is weakest</h3>
+<p>A model that claims to explain everything explains nothing. The learning gradient framework claims to identify the <strong>primary</strong> variable governing moment-to-moment gameplay engagement. It does not claim to be the only variable that matters, and intellectual honesty requires identifying the cases where its explanatory power is weakest.</p>
+<p><strong>Comfort-food replays.</strong> Players replay <em>Final Fantasy VII</em>, <em>Chrono Trigger</em>, and <em>Stardew Valley</em> with genuine enjoyment despite having fully internalised the game's patterns. The learning gradient is at zero; no new prediction errors are generated. The model predicts this should produce boredom, yet the experience is pleasurable.</p>
+<p>The resolution is that replay engagement is driven by systems the model does not claim to subsume. Aesthetic pleasure (music, visual beauty, the satisfaction of a well-crafted world), emotional resonance (attachment to characters encountered during a formative period), and the hedonic value of motor automaticity itself (the satisfying feel of executing well-learned skills without cognitive effort) are genuine sources of positive affect that operate through different neural circuitry than the prediction error system. The model covers the primary driver of <strong>first-play</strong> engagement; the learning gradient explains why the player was absorbed the first time through. Replay engagement involves additional affective systems; opioidergic hedonic responses, nostalgia-mediated memory reconsolidation, aesthetic appreciation circuits; that are outside the model's scope. The model draws its boundary here: it explains why <em>Final Fantasy VII</em> was captivating the first time, not why it feels like home the fifteenth time.</p>
+<p><strong>Social belonging.</strong> MMO players log in for guild chat, raid nights with friends, and community events. Their engagement is sustained by relatedness (SDT's third need) rather than by a learning gradient. A player whose mechanical skill has plateaued and whose strategic model is complete may continue playing for years because the social bonds make the game their primary social environment.</p>
+<p>The model acknowledges this directly: social belonging is a real motivator that operates through oxytocin, mentalising networks (Gallagher et al., 2002; Rilling et al., 2002), and the human need for connection. The learning gradient explains why the game's <strong>mechanics</strong> sustain engagement; it does not claim that mechanics are the only reason people play. Social games are often sustained by social bonds long after their mechanical learning gradients have collapsed, and this is not a failure of the model but a delineation of its domain. The model's claim is about the game-as-system; the player's relationship to the game's rules, patterns, and challenges. Social motivations operate at a different level of analysis.</p>
+<p><strong>Aesthetic experience.</strong> Walking simulators (<em>Dear Esther</em>, <em>Firewatch</em>), meditative games (<em>Flower</em>, <em>Journey</em>), and ambient experiences (<em>Proteus</em>) sustain engagement with minimal challenge and minimal mechanical learning. The model predicts these should produce boredom, yet they produce absorbed, contemplative engagement.</p>
+<p>The resolution requires broadening "prediction error" from the narrow sense (mechanical challenge) to the broad sense that predictive processing theory intends. In these games, the player IS building and refining a model, but the model is of the environment's aesthetic and narrative structure rather than its mechanical rules. The player explores <em>Firewatch</em>'s wilderness and builds a model of the landscape, the story, the relationship between the two characters. Each new vista, each dialogue exchange, each environmental detail generates a prediction error in the player's narrative-aesthetic model. The learning gradient is present; it is simply operating in a domain (emotional understanding, spatial appreciation, narrative comprehension) that looks different from the mechanical domain the model was primarily designed to address. The model accommodates aesthetic games if "prediction error" is understood at the level of generality that predictive processing theory operates at: any discrepancy between the brain's model and incoming sensory evidence, in any domain.</p>
+<p><strong>Meditative and zen states.</strong> Some players use games as tools for relaxation and mental decompression. They replay familiar levels, engage in repetitive farming, or play simple mobile games not for learning but for the calming effect of structured, low-demand activity. This is a case where the game functions as a different kind of tool than the model addresses; more like a fidget spinner than a learning environment. The model does not claim that every interaction with a game is engagement in the technical sense the model defines; some interactions are relaxation, socialisation, or habit, and these are outside the model's primary explanatory target.</p>
+<p><strong>The honest boundary.</strong> The model's claim is specific: the learning gradient is the primary variable governing the quality of <strong>gameplay engagement</strong>; the absorbed, attentive, improving state that characterises the best moments of play. It is not the only reason people interact with games. Social connection, aesthetic appreciation, nostalgia, relaxation, habit, and community belonging are all real motivators that can sustain game-related behaviour independently of the learning gradient. The model explains why some games produce deeper and more sustained gameplay engagement than others; it does not explain every reason a person might choose to spend time with a game.</p>
+<p>This boundary is a strength, not a weakness. A model that tried to explain social belonging AND mechanical engagement AND aesthetic appreciation AND nostalgia AND relaxation within a single framework would be too diffuse to make testable predictions. By specifying its domain precisely; the moment-to-moment quality of gameplay engagement as a function of the learning gradient; the model makes specific, falsifiable predictions about which design decisions will improve or degrade that engagement. That specificity is what makes it useful.</p>
+    <h3 id="12-18-final-statement">12.18 Final statement</h3>
+<p>We conclude:</p>
+<p><strong>Games are systems that generate and regulate prediction error. Players engage by reducing that error through action. When this process occurs at a rate that matches or exceeds the brain's expected rate of progress, it is experienced as fun. When that rate stabilises over time across multiple timescales, it becomes flow. When it collapses, engagement ends.</strong></p>
+<p>Fun is not a property of the game. It is not a property of the player. It is a property of the <strong>dynamic relationship</strong> between the game's pattern generation and the player's pattern absorption; a relationship that must be actively maintained through design decisions at every scale, from millisecond input responsiveness to hundred-hour content pacing. The designer who understands this relationship; who sees their work not as creating content but as engineering a learning gradient; has the most powerful lens available for predicting, diagnosing, and improving player engagement.</p>
+<p>This is the foundation for everything that follows.</p>
+  </article>
+  <nav class="pagenav">
+    <a href="/game-design-dynamics-of-learning/part-4.html">&larr; Part IV</a>
+    <a href="/game-design-dynamics-of-learning/part-6.html">Part VI &rarr;</a>
+  </nav>
+</div>
+</main>
+
+<footer class="site">
+  <div class="wide">
+    <span>&copy; 2026 Benjamin Michael Haire</span>
+    <a href="/">Back to the project library</a>
+  </div>
+</footer>
+
+<!-- ISEGORIA:FOOT -->
+<footer id="ig-footer"><div><a href="/">Isegoria · Benjamin Haire</a><nav aria-label="Site links"><a href="/">Back to home</a><a href="/library.html">Browse the library</a><a href="#ig-content">Back to top</a></nav></div></footer>
+<!-- /ISEGORIA:FOOT -->
+</body>
+</html>

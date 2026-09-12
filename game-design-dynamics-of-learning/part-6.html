@@ -1,0 +1,508 @@
+<!doctype html>
+<html lang="en" class="ig-document ig-editorial">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Part VI of Game Design as the Dynamics of Learning: Game design as control of learning. The Learning Gradient: Designing the Rate of Learning; Core Game Systems as Learning Structures; The Design Laws: Turning Theory into Practice; Explor">
+  <meta name="theme-color" content="#f7f7f5">
+  <link rel="canonical" href="https://theisegoria.github.io/game-design-dynamics-of-learning/part-6.html">
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <title>Game design as control of learning · Game Design as the Dynamics of Learning</title>
+<style>
+  :root {
+    --ground:#F7F7F5; --surface:#FFFFFF; --surface-2:#F0F1EC;
+    --ink:#17191B; --muted:#63686D; --rule:#DEE0DC;
+    --accent:#1F5FA8; --accent-soft:#1F5FA814; --mark:#C05621;
+    --f-display:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    --f-read:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    --f-ui:"Inter",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground:#101214; --surface:#181B1E; --surface-2:#1F2327;
+      --ink:#EDEFF1; --muted:#9BA3AA; --rule:#2C3237;
+      --accent:#69ABE3; --accent-soft:#69ABE31C; --mark:#E8A87C;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground:#101214; --surface:#181B1E; --surface-2:#1F2327;
+    --ink:#EDEFF1; --muted:#9BA3AA; --rule:#2C3237;
+    --accent:#69ABE3; --accent-soft:#69ABE31C; --mark:#E8A87C;
+  }
+  * { box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { margin:0; background:var(--ground); color:var(--ink);
+         font-family:var(--f-ui); font-size:17px; line-height:1.65; -webkit-font-smoothing:antialiased; }
+  a { color:var(--accent); text-underline-offset:.18em; }
+  .wrap { width:min(720px, calc(100% - 40px)); margin-inline:auto; }
+  .wide { width:min(1080px, calc(100% - 40px)); margin-inline:auto; }
+  header.site { border-bottom:1px solid var(--rule); }
+  header.site .wide { min-height:64px; display:flex; align-items:center; justify-content:space-between; gap:20px; }
+  header.site .name { font-weight:750; letter-spacing:-.02em; text-decoration:none; color:var(--ink); }
+  header.site nav { display:flex; gap:20px; flex-wrap:wrap; }
+  header.site nav a { color:var(--muted); font-size:.88rem; text-decoration:none; }
+  header.site nav a:hover { color:var(--ink); }
+  .label { color:var(--muted); font-size:.74rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; }
+  .hero { padding:72px 0 40px; }
+  h1 { font-family:var(--f-display); font-weight:600; margin:14px 0 16px;
+       font-size:clamp(2.3rem,5.6vw,3.6rem); line-height:1.04; letter-spacing:-.03em; }
+  .standfirst { font-size:1.15rem; color:var(--muted); margin:0 0 26px; max-width:60ch; font-family:var(--f-read); font-style:italic; }
+  .herometa { display:flex; flex-wrap:wrap; gap:10px 18px; align-items:center;
+              font-size:.86rem; color:var(--muted); border-top:1px solid var(--rule); padding-top:18px; }
+  .pill { display:inline-flex; align-items:center; gap:7px; padding:7px 14px; border:1px solid var(--rule);
+          border-radius:999px; background:var(--surface); text-decoration:none; color:var(--ink);
+          font-weight:600; font-size:.85rem; }
+  .pill:hover { border-color:var(--accent); color:var(--accent); }
+  article.book { font-family:var(--f-read); font-size:1.075rem; line-height:1.72; }
+  article.book p { margin:0 0 1.15em; }
+  article.book h2 { font-family:var(--f-display); font-weight:600; letter-spacing:-.02em;
+               font-size:clamp(1.6rem,3.4vw,2.15rem); line-height:1.15; margin:2.6em 0 .2em; scroll-margin-top:24px; }
+  article.book h2 .num { display:block; font-family:var(--f-ui); font-size:.72rem; font-weight:700;
+                    letter-spacing:.12em; text-transform:uppercase; color:var(--mark); margin-bottom:.7em; }
+  article.book h3 { font-family:var(--f-ui); font-weight:650; font-size:1.02rem; letter-spacing:-.005em;
+               margin:2.1em 0 .5em; color:var(--ink); }
+  article.book .epigraph { font-style:italic; color:var(--muted); margin:.4em 0 2em; padding-left:1.1em;
+                      border-left:2px solid var(--rule); }
+  article.book blockquote { margin:1.6em 0; padding:1.1em 1.3em; background:var(--surface); border:1px solid var(--rule);
+                       border-radius:.7rem; font-style:italic; }
+  article.book blockquote p { margin:0 0 .6em; } article.book blockquote p:last-child { margin:0; }
+  article.book ul, article.book ol { margin:0 0 1.2em; padding-left:1.35em; }
+  article.book li { margin:0 0 .45em; }
+  article.book strong { font-weight:650; }
+  .partsplash { padding:56px 0 8px; }
+  .partsplash .kicker { font-family:var(--f-ui); font-size:.74rem; font-weight:700; letter-spacing:.12em;
+                        text-transform:uppercase; color:var(--mark); }
+  .partsplash h1 { font-size:clamp(2rem,4.8vw,3rem); margin-top:10px; }
+  .toc { margin:2rem 0 0; }
+  nav.toc h2 { font-family:var(--f-ui); font-size:.74rem; font-weight:700; letter-spacing:.1em;
+            text-transform:uppercase; color:var(--muted); margin:0 0 .9rem; }
+  .toc ol { list-style:none; margin:0; padding:0; }
+  .toc li { border-top:1px solid var(--rule); }
+  .toc a { display:flex; gap:14px; padding:.72rem 0; text-decoration:none; color:var(--ink); align-items:baseline; }
+  .toc a:hover { color:var(--accent); }
+  .toc .n { font-family:var(--f-ui); font-size:.78rem; font-weight:700; color:var(--muted); min-width:5.4em; }
+  .toc .t { font-family:var(--f-read); font-size:1.02rem; }
+  .contents .part { margin:2.6rem 0 0; }
+  .contents .part > h3 { font-family:var(--f-ui); font-size:.74rem; font-weight:700; letter-spacing:.1em;
+                         text-transform:uppercase; color:var(--mark); margin:0 0 .2rem; }
+  .contents .part > .pt { font-family:var(--f-display); font-size:1.5rem; font-weight:600; letter-spacing:-.02em;
+                          margin:0 0 .7rem; display:block; text-decoration:none; color:var(--ink); }
+  .contents .part > .pt:hover { color:var(--accent); }
+  .cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:14px; margin:1.6rem 0 0; }
+  .card { border:1px solid var(--rule); border-radius:.8rem; padding:1rem 1.1rem; background:var(--surface); }
+  .card h3 { font-family:var(--f-ui); font-size:.78rem; letter-spacing:.08em; text-transform:uppercase;
+             color:var(--muted); margin:0 0 .45rem; font-weight:700; }
+  .card p { margin:0; font-family:var(--f-read); font-size:.98rem; }
+  .pagenav { display:flex; justify-content:space-between; gap:16px; margin:4rem 0 0; padding-top:1.4rem;
+             border-top:1px solid var(--rule); font-family:var(--f-ui); font-size:.9rem; }
+  .pagenav a { text-decoration:none; font-weight:600; }
+  .pagenav span { color:var(--muted); }
+  div.sources { margin:3.4rem 0 0; padding:1.4rem 1.5rem; background:var(--surface-2); border-radius:.8rem;
+             font-family:var(--f-ui); font-size:.92rem; color:var(--muted); }
+  div.sources h2 { font-size:.74rem; letter-spacing:.1em; text-transform:uppercase; margin:0 0 .7rem; color:var(--ink);
+                font-family:var(--f-ui); font-weight:700; }
+  div.sources p { margin:0 0 .7rem; } .sources p:last-child { margin:0; }
+  footer.site { border-top:1px solid var(--rule); margin-top:64px; }
+  footer.site .wide { min-height:72px; display:flex; align-items:center; justify-content:space-between;
+                      gap:16px; font-size:.86rem; color:var(--muted); }
+  @media (max-width:560px) { header.site .wide { flex-direction:column; align-items:flex-start; gap:6px; padding:12px 0; }
+                             .hero { padding:44px 0 28px; } }
+</style>
+<!-- ISEGORIA:HEAD -->
+<link rel="stylesheet" href="/assets/site-shell.css?v=47b7776797">
+<script src="/assets/site-shell.js?v=47b7776797" ></script>
+<!-- /ISEGORIA:HEAD -->
+</head>
+<body class="ig-site" data-site-kind="editorial" data-site-route="/game-design-dynamics-of-learning/part-6.html">
+<!-- ISEGORIA:NAV -->
+<a class="ig-skip" href="#ig-content">Skip to content</a>
+<header id="ig-header"><div class="ig-nav-inner">
+<a class="ig-brand" href="/" aria-label="Isegoria, home"><strong>ISEGORIA</strong><span>Benjamin Haire</span></a>
+<button class="ig-menu" type="button" aria-expanded="false" aria-controls="ig-primary">Menu</button>
+<nav id="ig-primary" aria-label="Primary navigation"><a href="/">Home</a><a href="/library.html">Library</a><a href="/#guides">Guides</a><a href="/#preoccupations">Research</a><a href="/projects.html">Projects</a><a href="/about.html">About</a><a class="ig-language" href="/ja/" hreflang="ja" lang="ja">日本語</a><button class="ig-theme" type="button" hidden>Theme</button></nav>
+</div></header>
+<nav id="ig-breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><a href="/#books">Books</a><span aria-hidden="true">/</span><a href="/game-design-dynamics-of-learning/">Game Design as the Dynamics of Learning</a><span aria-hidden="true">/</span><span aria-current="page">Game design as control of learning · Game Design as the Dynamics of Learning</span></nav>
+<span id="ig-content" tabindex="-1"></span>
+<!-- /ISEGORIA:NAV -->
+
+<nav class="ig-page-nav" aria-label="On this page"><a href="/game-design-dynamics-of-learning/">Contents</a><a href="/game-design-dynamics-of-learning/part-1.html">I</a><a href="/game-design-dynamics-of-learning/part-2.html">II</a><a href="/game-design-dynamics-of-learning/part-3.html">III</a><a href="/game-design-dynamics-of-learning/part-4.html">IV</a><a href="/game-design-dynamics-of-learning/part-5.html">V</a><a href="/game-design-dynamics-of-learning/part-6.html">VI</a><a href="/game-design-dynamics-of-learning/part-7.html">VII</a></nav>
+
+<main>
+<div class="wrap">
+  <section class="partsplash">
+    <p class="kicker">Part VI of 7</p>
+    <h1>Game design as control of learning</h1>
+  </section>
+  <nav class="toc" aria-label="Chapters in this part"><h2>In this part</h2><ol>
+    <li><a href="#ch-13"><span class="n">Chapter 13</span><span class="t">The Learning Gradient: Designing the Rate of Learning</span></a></li>
+    <li><a href="#ch-14"><span class="n">Chapter 14</span><span class="t">Core Game Systems as Learning Structures</span></a></li>
+    <li><a href="#ch-15"><span class="n">Chapter 15</span><span class="t">The Design Laws: Turning Theory into Practice</span></a></li>
+    <li><a href="#ch-16"><span class="n">Chapter 16</span><span class="t">Exploration and Curiosity in Design</span></a></li>
+    <li><a href="#ch-17"><span class="n">Chapter 17</span><span class="t">Pacing and Session Design</span></a></li>
+    <li><a href="#ch-18"><span class="n">Chapter 18</span><span class="t">Failure Modes</span></a></li>
+    <li><a href="#ch-19"><span class="n">Chapter 19</span><span class="t">Cross-Genre Analysis</span></a></li>
+  </ol></nav>
+  <article class="book">
+    <h2 id="ch-13"><span class="num">Chapter 13</span>The Learning Gradient: Designing the Rate of Learning</h2>
+    <h3 id="13-1-from-theory-to-control">13.1 From theory to control</h3>
+<p>In the previous chapter, we established the core idea:</p>
+<blockquote>
+  <p><em>Fun is the subjective experience of reducing uncertainty at an optimal rate.</em></p>
+</blockquote>
+<p>This raises an immediate question: <strong>how does a designer actually control that rate?</strong></p>
+<p>If games are systems that regulate learning, then design is not about creating isolated mechanics. It is about shaping the <strong>trajectory of understanding over time</strong>. This trajectory is what we call the <strong>learning gradient</strong>.</p>
+    <h3 id="13-2-what-is-the-learning-gradient">13.2 What is the learning gradient?</h3>
+<p>The learning gradient is:</p>
+<blockquote>
+  <p><strong><em>The rate at which a player improves their internal model of the game.</em></strong></p>
+</blockquote>
+<p>It is not difficulty, not complexity, and not progression speed, but rather the <strong>speed and quality of insight</strong>.</p>
+<p>A steep gradient means rapid improvement and frequent "aha" moments. A shallow gradient means slow or stalled understanding. An unstable gradient means oscillation between confusion and triviality.</p>
+    <h3 id="13-3-the-shape-of-good-learning">13.3 The shape of good learning</h3>
+<p>A well-designed learning gradient has three properties.</p>
+<p><strong>First, it is continuous.</strong> The player is always learning something. Even small refinements matter: tighter timing, better positioning, improved prediction. There should be no extended periods where the player's internal model is static. This does not mean every moment must introduce new mechanics; refinement of existing skills counts as learning. A <em>Celeste</em> player who shaves 0.3 seconds off a room clear by optimising their dash arc is learning, even though no new mechanic was introduced.</p>
+<p><strong>Second, it is legible.</strong> The player can understand why outcomes occur. Without legibility, errors do not produce learning; repetition becomes noise. This is the principle of <strong>feedback clarity</strong>: the player must be able to trace the causal chain from their action to the outcome. When a <em>Dark Souls</em> player dies to a boss, the death must communicate which attack killed them, when they should have dodged, and what pattern they failed to read. If the death communicates only "you are dead," no model update occurs and the gradient stalls.</p>
+<p><strong>Third, it is layered.</strong> New knowledge builds on prior knowledge. Good systems recombine existing mechanics, deepen understanding, and avoid replacing knowledge entirely. When <em>Portal</em> introduces fling mechanics, it does not replace the player's existing understanding of portal placement; it extends it. The new skill layer integrates with and builds upon the old one, producing a sense of growing competence rather than perpetual starting over.</p>
+    <h3 id="13-4-the-units-of-learning">13.4 The units of learning</h3>
+<p>Learning in games occurs at multiple levels simultaneously, and a well-designed game maintains a gradient at all of them:</p>
+<ul>
+  <li><strong>Micro-learning (seconds)</strong>: Input timing, movement precision, reaction speed. Landing a jump in <em>Mario</em>. Hitting a headshot in <em>Halo</em>. Parrying an attack in <em>Sekiro</em>. These are processed through motor cortex and cerebellum, with automaticity developing through the cortico-striatal-cerebellar loop.</li>
+  <li><strong>Meso-learning (minutes)</strong>: Encounter strategies, puzzle logic, tactical decision-making. Solving a shrine in <em>Zelda</em>. Clearing a room in <em>Doom Eternal</em>. Choosing which items to buy in a <em>Dota 2</em> mid-game transition. These engage prefrontal working memory and strategic planning circuits.</li>
+  <li><strong>Macro-learning (hours)</strong>: System mastery, build optimisation, strategic frameworks. Understanding the <em>Dota</em> meta. Mastering the <em>Elden Ring</em> weapon upgrade system. Developing a coherent strategy in <em>Civilisation</em>. These involve the construction of abstract mental models that organise lower-level skills into coherent frameworks.</li>
+</ul>
+<p>A strong game maintains a learning gradient at <strong>all three levels simultaneously</strong>. The nested structure is what prevents the gradient from flattening; it provides multiple simultaneous channels of uncertainty reduction, each operating at a different timescale and a different level of cognitive abstraction.</p>
+    <h3 id="13-5-designing-for-insight">13.5 Designing for insight</h3>
+<p>The core unit of the learning gradient is <strong>insight</strong>. An insight occurs when a pattern becomes visible, a prediction becomes reliable, or a system becomes intuitive. Design must maximise:</p>
+<blockquote>
+  <p><strong><em>Insight frequency × insight clarity</em></strong></p>
+</blockquote>
+<p>Every design element should be evaluated against this product. A new mechanic that generates frequent but ambiguous insights (the player keeps discovering things but cannot tell what caused them) is poorly designed. A mechanic that generates rare but crystal-clear insights (the player rarely learns something new, but each learning moment is unmistakable) may be well-designed for a particular pacing target. The ideal is both: frequent insights that are immediately understandable.</p>
+    <h3 id="13-6-the-role-of-feedback">13.6 The role of feedback</h3>
+<p>Learning depends on feedback, and feedback must satisfy three criteria.</p>
+<p><strong>Immediate.</strong> Delay destroys the connection between action and outcome. The dopamine RPE signal requires temporal contiguity to assign credit correctly. Steve Swink's <em>Game Feel</em> (2008) established that real-time control exists within the constraints of human perceptual timing: below approximately 240ms response loops, input feels responsive. Above that threshold, the connection between action and outcome degrades. Every millisecond of input lag is a tax on the learning gradient.</p>
+<p><strong>Precise.</strong> The player must know exactly what happened. A health bar that decreases tells the player they took damage. A health bar that flashes red at the point of impact and shows a directional damage indicator tells the player they took damage from a specific source at a specific moment. The second provides richer error signals and supports faster model updating.</p>
+<p><strong>Interpretable.</strong> The player must understand why it happened. This is the most commonly violated criterion. Many games provide immediate, precise feedback about outcomes without making the causal chain legible. A player who dies to an off-screen enemy received immediate feedback (death) with zero interpretability (no idea what killed them or how to prevent it). The prediction error is generated but cannot be resolved, and the learning gradient stalls.</p>
+    <h3 id="13-7-hidden-assistance-and-gradient-smoothing">13.7 Hidden assistance and gradient smoothing</h3>
+<p>Many great games secretly assist the player without their knowledge. "Coyote time" in platformers gives the player a brief grace period after leaving a ledge during which they can still jump. Aim assist in console shooters subtly guides the reticle toward targets. Input buffering in action games queues the next input during an animation so it executes at the earliest possible frame. These do not reduce difficulty. They <strong>smooth the learning gradient</strong> by preventing meaningless failure; deaths that teach the player nothing because they resulted from a frame-level timing error rather than a strategic mistake. The distinction is between failures that generate informative prediction errors (the player positioned badly, chose the wrong weapon, misread the enemy pattern) and failures that generate uninformative noise (the player pressed the button 30ms too late due to input lag). Smoothing eliminates the latter while preserving the former.</p>
+<p>A 2024 CHI study (n=1,699) on "juice" (redundant, amplified sensory feedback) found that juicy feedback's effect on enjoyment was almost fully mediated by <strong>competence and curiosity</strong>, not by deliberative evaluation. But overloading amplified feedback "interferes with competence and effectance by occluding action-feedback links"; when juice overwhelms perceptual processing, it breaks the System 1 feedback loop. The lesson is that feedback amplification supports the learning gradient only when it increases signal clarity, not when it adds noise.</p>
+    <h3 id="13-8-avoiding-gradient-collapse">13.8 Avoiding gradient collapse</h3>
+<p>Three common design failures map directly onto gradient pathologies.</p>
+<p><strong>Plateau</strong>: no new patterns are introduced. The player's model is complete for the current level of engagement, but no new structure is offered. Result: boredom. The fix is not more content but more <strong>structure</strong>; new combinations of existing mechanics that generate novel prediction errors without requiring new systems.</p>
+<p><strong>Spike</strong>: sudden increase in complexity. The game introduces multiple new mechanics, enemy types, or systems simultaneously. The player's error resolution rate cannot keep pace with the error introduction rate. Result: overload and frustration. The fix is pacing; introducing one new element at a time and allowing consolidation before the next.</p>
+<p><strong>Noise</strong>: unclear or inconsistent feedback. The game's rules are inconsistent, or the connection between action and outcome is obscured. The player cannot extract patterns because the signal is buried in noise. Result: frustration and helplessness. The fix is not reducing difficulty but increasing <strong>legibility</strong>; making the rules clearer, the feedback more precise, the causal chains more visible.</p>
+    <h3 id="13-9-player-controlled-gradient">13.9 Player-controlled gradient</h3>
+<p>The best games allow players to regulate their own learning gradient through mechanisms including optional challenges, exploration-based progression, build diversity, and nonlinear level selection.</p>
+<p><em>Breath of the Wild</em> is the paradigm case. Players choose where to go, what to fight, and when to engage. This allows them to maintain their own optimal gradient, avoid overload, and seek challenge when ready. The player who finds Hyrule Castle too difficult can leave and explore elsewhere, building skills and equipment that reduce the castle's prediction error density to a manageable level. The player who finds the early game too easy can head directly to difficult areas and self-select into a steeper gradient.</p>
+<p>This creates agency (the player feels in control of their experience), stability (overload is self-correcting because the player can retreat), and personalisation (different players with different skill levels find different optimal paths through the same content).</p>
+    <h3 id="13-10-the-gradient-over-time">13.10 The gradient over time</h3>
+<p>The learning gradient should evolve across the arc of the game:</p>
+<ul>
+  <li><strong>Early game</strong>: steep gradient, frequent insights, rapid onboarding. The player is learning basic systems and building foundational models. New mechanics should arrive quickly but one at a time.</li>
+  <li><strong>Mid game</strong>: layered complexity, recombination, deeper systems. Existing mechanics interact in novel ways. The player's model grows more sophisticated. New prediction errors arise from combinations rather than introductions.</li>
+  <li><strong>Late game</strong>: refinement, mastery, emergent play. The player's model is nearly complete for the game's core systems. Remaining prediction errors are fine-grained; precision timing, optimal routing, creative problem-solving. Engagement is sustained through the depth of the existing system rather than the breadth of new additions.</li>
+</ul>
+    <h3 id="13-11-the-end-of-learning">13.11 The end of learning</h3>
+<p>All games eventually face the exhaustion of the learning gradient. When patterns are fully internalised and no new structure remains, the game ceases to generate meaningful prediction errors and engagement declines. This is not a design flaw; it is an inevitability. Every finite system has a finite learning gradient.</p>
+<p>Solutions include introducing new systems (DLC, expansion content), enabling emergence (combinatorial systems whose interaction space exceeds any player's capacity to fully explore), relying on social complexity (competition against other human beings, whose behaviour generates an inexhaustible prediction error landscape), and supporting player-generated content (modding, map editors, custom challenges).</p>
+    <h3 id="13-12-the-designer-s-task">13.12 The designer's task</h3>
+<p>The designer's role is now clear:</p>
+<blockquote>
+  <p><strong><em>Design the slope, not just the system.</em></strong></p>
+</blockquote>
+<p>This means controlling complexity, structuring feedback, pacing new information, and enabling adaptation. A great game is not one that is fun. It is one that <strong>continuously teaches at the right rate.</strong></p>
+    <h2 id="ch-14"><span class="num">Chapter 14</span>Core Game Systems as Learning Structures</h2>
+    <p class="epigraph">On how combat, movement, puzzles, and strategy each generate and resolve uncertainty through different mechanisms; and why genre distinctions map onto distinct prediction error profiles.</p>
+    <h3 id="14-1-systems-not-genres">14.1 Systems, not genres</h3>
+<p>Game genres are marketing categories. From the perspective of the unified model, what matters is not whether a game is labelled an "action RPG" or a "puzzle platformer" but what kind of prediction errors its core systems generate, at what timescale, and through what neural circuitry. A game's core system determines the shape of its learning gradient: the type of uncertainty the player must resolve, the feedback that supports resolution, and the cognitive resources the resolution demands.</p>
+<p>This chapter analyses five core system types - combat, movement, puzzles, strategy, and narrative - as distinct structures for generating and resolving prediction errors. Each maps onto different neural circuitry and different regions of the System 1/System 2 spectrum established in Part II.</p>
+    <h3 id="14-2-combat-systems-prediction-error-through-opponent-modell">14.2 Combat systems: prediction error through opponent modelling</h3>
+<p>Combat systems generate prediction errors through enemy behaviour, timing, and spatial positioning. The learning gradient is motor-heavy at the micro level (can I execute the dodge in time?), tactical at the meso level (which enemies should I prioritise?), and strategic at the macro level (what build or loadout optimises my approach?).</p>
+<p>The neural profile of combat engagement is dominated by the <strong>cortical-to-subcortical transfer</strong> described in Chapter 5. A novice player fighting a <em>Dark Souls</em> boss operates in the cognitive stage: dlPFC maintains attack patterns in working memory, ACC monitors for timing errors, and every action requires conscious planning. After twenty attempts, processing has migrated toward basal ganglia pattern recognition and cerebellar motor timing. The player has not merely "learned the boss"; their brain has physically reorganised which circuits handle the task (Poldrack et al., 2005; Lehéricy et al., 2005).</p>
+<p>Combat systems vary along two dimensions that determine their learning gradient profile:</p>
+<p><strong>Readability</strong> determines how efficiently prediction errors convert into model updates. <em>Halo</em>'s Covenant enemies display their internal state through animation and vocalisation; every interaction is an informative prediction error. The Flood's mindless rush provides no readable state changes; prediction errors cannot be resolved. Miyazaki's <em>Dark Souls</em> bosses telegraph attacks with distinct wind-up animations, making difficulty arise from learnable patterns rather than irreducible randomness.</p>
+<p><strong>Combinatorial depth</strong> determines how long the learning gradient persists. A combat system with three enemy types in fixed configurations exhausts its prediction errors quickly. A system like <em>Halo</em>'s, where three enemy types combine into dozens of compositionally distinct encounters, sustains the gradient far longer because the combinatorial space exceeds any individual's capacity to fully model it. <em>Doom Eternal</em> extends this further by requiring the player to match specific weapons to specific enemy weak points, creating a moment-to-moment weapon-selection decision that generates tactical prediction errors layered on top of the motor execution errors.</p>
+<p>The genre-level mapping from the dual-process research confirms this: fighting games are the most System 1-dominant at expert level (sub-second decisions, pattern-based reads, motor automaticity), while action RPGs layer System 1 combat under System 2 strategic planning (Bediou et al., 2018; Konsolaki et al., 2024).</p>
+    <h3 id="14-3-movement-systems-prediction-error-through-physics">14.3 Movement systems: prediction error through physics</h3>
+<p>Movement systems generate prediction errors through spatial reasoning, momentum, timing, and physics. The learning gradient is dominated by the cortical-to-subcortical transfer of motor schemas; the player is building an internal model of how the game's physics work and automating that model through repetition.</p>
+<p><em>Super Mario</em>'s jump is the paradigm case. The physics are not realistic; they include mid-air control, variable jump height based on button hold duration, and momentum that can be redirected after launch. Each of these properties generates prediction errors for a new player whose model is calibrated to real-world physics. The learning gradient is steep because the feedback is immediate (you either make the platform or you do not), precise (the gap between your landing point and the target is visible), and interpretable (the causal chain from button press to outcome is unambiguous).</p>
+<p><em>Celeste</em> extends the movement vocabulary to include dashes, wall-climbs, and momentum chains, each of which generates its own prediction error profile. Every room in <em>Celeste</em> teaches a specific movement concept; the level design is a structured curriculum in spatial physics. Maddy Thorson's design ensures that failure is immediate, respawn is instantaneous, and the learning loop (attempt → fail → adjust → retry) cycles in seconds rather than minutes. A 2024 study in the <em>International Journal of Human-Computer Studies</em> (n=10) found that players who enjoy challenging games like <em>Celeste</em> persist after failure because they make meaning from it, see purpose in it, and draw persistence from the design itself; the game's architecture converts failure from punishment into information.</p>
+<p>Steve Swink's <em>Game Feel</em> (2008) identified the perceptual foundation: game feel operates at timescales below ~240ms, in System 1 territory. Empirical research on input latency confirms the importance: Long and Gutwin (2018, CHI PLAY) developed predictive performance models showing latency thresholds as low as 50ms cause problems depending on game speed, and Liu et al. (2021, CHI) found even 25ms of additional latency negatively affected competitive FPS accuracy.</p>
+    <h3 id="14-4-puzzle-systems-prediction-error-through-logical-structu">14.4 Puzzle systems: prediction error through logical structure</h3>
+<p>Puzzle systems generate prediction errors through logical structure, spatial reasoning, and rule discovery. Unlike combat and movement systems, where the learning gradient is continuous (each attempt refines motor execution by a small amount), puzzle systems produce <strong>discrete learning events</strong>; the "aha" moment when the solution becomes visible.</p>
+<p>This discontinuous profile maps onto a different neural signature. Puzzle-solving is predominantly System 2: working memory maintains candidate solutions, the ACC monitors for contradictions, and the dlPFC evaluates logical relationships. The shift to System 1 is minimal because puzzles are typically solved once; there is no repetition to drive automaticity. Instead, the reward comes from the single moment of restructuring when the solution appears.</p>
+<p>Van de Cruys's framework explains why this moment feels so good. Before the insight, prediction errors are large and apparently irresolvable; the puzzle seems impossible, and the brain predicts a low rate of error resolution. When the insight arrives, the prediction error collapses to zero in a single cognitive event. The rate of error reduction spikes far above the brain's expectation, producing the amplified positive valence that Van de Cruys identifies as the processing signature of humour and the "aha" experience.</p>
+<p><em>Portal</em> is the paradigm case. Shute, Ventura, and Ke (2015, <em>Computers &amp; Education</em>; n=77) conducted a randomised controlled experiment comparing Portal 2 and Lumosity: Portal 2 players showed significant advantages on problem solving, spatial skill, and persistence, while Lumosity players showed no gains on any measure. The game's single mechanic (linked portals) generates an enormous space of spatial reasoning puzzles, each requiring the player to restructure their spatial model of the environment. The learning gradient is sustained not through new mechanics but through increasing spatial complexity applied to the same mechanic.</p>
+<p><em>The Witness</em> extends this further with a meta-puzzle structure: the player must first learn the local rules of each puzzle family (what do the dots mean? the stars? the coloured blocks?), then apply those rules in novel configurations, then discover that the entire island is a puzzle whose solution requires integrating knowledge across all families. The learning gradient operates at three nested scales: individual puzzles (minutes), puzzle families (hours), and the meta-puzzle (the full game).</p>
+    <h3 id="14-5-strategy-systems-prediction-error-through-opponent-mode">14.5 Strategy systems: prediction error through opponent modelling and long-term planning</h3>
+<p>Strategy systems generate prediction errors through resource management, opponent modelling, and long-term planning. The learning gradient operates at longer timescales and deeper abstraction levels than combat or movement systems.</p>
+<p>In turn-based strategy (<em>Chess</em>, <em>Civilisation</em>, <em>XCOM</em>), the prediction errors are predominantly cognitive: the player's model of the game state, their prediction of the opponent's response, and their evaluation of long-term consequences. The learning gradient is sustained by the combinatorial depth of the decision space; chess has approximately 10^120 possible game positions, and no human player can exhaust its prediction error landscape in a lifetime.</p>
+<p>In real-time strategy (<em>StarCraft</em>, <em>Age of Empires</em>), the prediction errors are split between cognitive strategy and motor execution. The player must simultaneously manage base construction, resource gathering, unit production, and combat; each generating its own prediction error stream. Foerde, Knowlton, and Poldrack (2006, <em>PNAS</em>) showed that multitasking during learning shifts reliance from hippocampal declarative memory to striatal habit learning, which may explain why RTS mastery feels qualitatively different from turn-based mastery: RTS players develop automatic habits (build orders, hotkey sequences) that free cognitive resources for strategic decision-making.</p>
+<p>Competitive multiplayer strategy adds the deepest layer: the opponent is another human whose behaviour generates an <strong>inexhaustible prediction error landscape</strong>. Zhu, Mathewson, and Hsu (2012, <em>PNAS</em>) demonstrated two neurally dissociable learning signals in competitive games: reinforcement prediction errors (tracked by bilateral putamen) and belief prediction errors about opponents' strategies (tracked by dmPFC/TPJ). The strategic learning gradient in competitive games persists indefinitely because the opponent adapts, meta-games evolve, and the prediction error landscape shifts faster than any individual can fully model.</p>
+    <h3 id="14-6-narrative-systems-prediction-error-through-expectation-">14.6 Narrative systems: prediction error through expectation violation</h3>
+<p>Narrative systems generate prediction errors through story structure: plot twists, character revelations, moral dilemmas, and emotional surprises. Unlike the other system types, narrative prediction errors are typically unrepeatable; once a twist is known, the prediction error it generated cannot be regenerated.</p>
+<p>This creates a distinctive learning gradient profile: narrative engagement is front-loaded and non-renewable. The first playthrough of <em>The Last of Us</em> generates intense prediction errors through character development and plot revelation. The second playthrough generates far fewer, because the narrative model is already complete. Narrative games compensate through branching structures (multiple paths create multiple prediction error sequences), emergent storytelling (procedurally generated events that even the designer cannot predict), and environmental narrative (world-building details that reward close observation with model-expanding discoveries).</p>
+<p>Anderson, Karzmark, and Wardrip-Fruin (2019, FDG; n=39) conducted the first empirical test of Bogost's procedural rhetoric, finding that players accurately identified rhetorical arguments in persuasive games and that <em>September 12th</em> significantly shifted anti-war attitudes (t(38) = 3.73, p = .001). Narrative systems, when integrated with mechanical systems, can generate prediction errors that operate simultaneously at the level of story (what will happen next?) and the level of meaning (what does this game system imply about the world?).</p>
+    <h3 id="14-7-the-spectrum-and-its-hybrids">14.7 The spectrum and its hybrids</h3>
+<p>The most acclaimed games typically operate at <strong>multiple points on this spectrum simultaneously</strong>. <em>Hades</em> combines fighting-game System 1 combat with strategy-game System 2 build planning and narrative-game prediction errors through its death-cycle storytelling. <em>Elden Ring</em> layers Soulslike combat, open-world exploration, RPG character building, and environmental narrative into a system where multiple learning gradients operate concurrently. <em>Dota 2</em> fuses real-time motor execution, tactical encounter planning, strategic resource management, and social opponent modelling into five simultaneous prediction error streams.</p>
+<p>The design principle is redundancy: by generating prediction errors across multiple system types at multiple timescales, the probability that all gradients simultaneously reach zero is kept very low. When motor execution is automatised, tactical decisions continue to generate errors. When tactical patterns become familiar, strategic depth sustains the gradient. When even strategy is mastered, the opponent adapts.</p>
+    <h2 id="ch-15"><span class="num">Chapter 15</span>The Design Laws: Turning Theory into Practice</h2>
+    <p class="epigraph">On the five principles that emerge directly from the learning gradient model; their manifestation across genres; and how they function as diagnostic tools for identifying and fixing engagement failures.</p>
+    <h3 id="15-1-from-model-to-method">15.1 From model to method</h3>
+<p>The unified model tells us that fun equals optimal-rate learning and that flow equals stable learning over time. But a model is not enough. Design requires <strong>actionable principles that can be applied to real systems</strong>. This chapter presents five design laws derived directly from the learning gradient, illustrates each with examples across genres, and shows how violations of each law produce specific, diagnosable engagement failures.</p>
+<p>These laws are not rules to follow mechanically. They are lenses for evaluating design decisions against a single criterion: does this system support the player's learning process?</p>
+    <h3 id="15-2-law-1-maintain-the-learning-gradient">15.2 Law 1: Maintain the learning gradient</h3>
+<blockquote>
+  <p><strong><em>The player must always be learning something.</em></strong></p>
+</blockquote>
+<p>If learning stops, engagement collapses. If learning is too fast, overload occurs. The gradient must remain positive and sustainable across the player's entire engagement with the game.</p>
+<p>This does not mean every moment must introduce new mechanics. Refinement of existing skills counts as learning. A <em>Celeste</em> player who shaves 0.3 seconds off a room clear by optimising their dash arc is learning, even though no new mechanic was introduced. A <em>Halo</em> player whose grenade placement improves from "near the enemy" to "where the enemy will be in 1.5 seconds" is learning. The gradient must be positive; it need not be steep.</p>
+<p><strong>Manifestation across genres:</strong></p>
+<p>In <em>Halo</em>, the gradient is maintained through combinatorial encounter design. Each combat space recombines enemy types, weapons, and terrain in novel configurations. The game introduces no new mechanics after the first few hours, but the combinations of existing mechanics continue to generate fresh prediction errors throughout the campaign because the combinatorial space is vastly larger than the number of individual elements.</p>
+<p>In <em>Celeste</em>, the gradient is maintained through level design that sequences movement concepts with precise pacing. Each screen introduces one spatial challenge, allows the player to master it through rapid death-and-retry cycles, and then combines it with previously mastered concepts in subsequent screens. The mechanical vocabulary is fixed by the second chapter; everything after that is combinatorial application.</p>
+<p>In <em>Civilisation VI</em>, the gradient is maintained through the intersection of multiple strategic systems (technology, civics, diplomacy, warfare, religion, trade) whose interactions produce emergent strategic situations that no individual system generates alone. A player who has mastered each system individually still faces novel prediction errors when the systems interact in unexpected ways (a religious victory creates diplomatic tension that triggers a surprise war during a technology race).</p>
+<p>In <em>Stardew Valley</em>, the gradient is maintained through seasonal revelation. Each in-game season introduces new crops, new fish, new events, and new relationship opportunities. The player cannot exhaust the game's content in a single season because the system withholds information until the appropriate time. The gradient is paced by the calendar rather than by the player's skill, which creates a different temporal profile: anticipatory curiosity (what will happen next season?) rather than mastery-driven engagement (can I execute this challenge?).</p>
+<p><strong>Diagnostic:</strong> When a player reports boredom, the first question is: what is the player currently learning? If the answer is "nothing" - if their model of the game is complete and no new prediction errors are being generated - then Law 1 has been violated. The fix is not more content (which may generate no new errors if it reuses existing patterns) but more <strong>structure</strong>: new combinations, new contexts, new applications of existing mechanics.</p>
+    <h3 id="15-3-law-2-hide-the-learning">15.3 Law 2: Hide the learning</h3>
+<blockquote>
+  <p><strong><em>Players should feel like they are playing, not studying.</em></strong></p>
+</blockquote>
+<p>Explicit instruction breaks immersion and slows engagement. Implicit learning feels natural and sustains flow. The brain's procedural memory system acquires patterns through exposure and practice without requiring conscious awareness; games should target this system rather than the declarative system that processes tutorials and tooltips.</p>
+<p><strong>Manifestation across genres:</strong></p>
+<p><em>Zelda: Breath of the Wild</em> teaches its physics chemistry system entirely through environmental interaction. The player discovers that metal conducts electricity not because a tutorial says so, but because they hold a metal weapon during a thunderstorm and get struck by lightning. The prediction error is vivid, the feedback is immediate, and the learning is permanent. No tutorial could produce the same retention because the discovery pathway engages both the error signal (surprising outcome) and the curiosity reward (I figured this out myself).</p>
+<p><em>Super Mario Bros.</em> World 1-1 teaches running, jumping, blocks, power-ups, enemies, and pits through spatial design alone. Shigeru Miyamoto's level design places a Goomba in the player's path early enough that collision is likely, teaching the death mechanic. It places a block at the right height to encourage jumping, teaching the block-breaking mechanic. It places a mushroom inside a block positioned so the player will naturally hit it, teaching the power-up mechanic. No text appears on screen.</p>
+<p><em>Dark Souls</em> teaches through lethal consequence. The Undead Burg's first encounter with a hollow soldier teaches blocking and attacking. The first encounter with a firebomb-throwing hollow teaches spatial awareness. The first mimic (a chest that attacks when opened) teaches the player to verify before grabbing. Every lesson is delivered through gameplay experience rather than instruction, and the lessons are retained because they are emotionally salient; death is a powerful mnemonic.</p>
+<p><em>Portal</em> teaches through chamber design, as detailed in Chapter 23: each room is a controlled experiment that introduces one concept, provides the materials for the player to discover that concept through interaction, and requires application of the concept to progress. The tutorial is the game; the game is the tutorial. They are indistinguishable.</p>
+<p><strong>Diagnostic:</strong> When a player skips tutorials, ignores tooltips, or expresses frustration with "hand-holding," the game is likely violating Law 2 by attempting to teach declaratively what should be taught procedurally. The fix is to redesign the teaching as gameplay: create situations where the correct behaviour is the natural response to the game's stimuli, rather than the prescribed response to an instruction.</p>
+    <h3 id="15-4-law-3-player-regulated-challenge">15.4 Law 3: Player-regulated challenge</h3>
+<blockquote>
+  <p><strong><em>The player must be able to control their own difficulty.</em></strong></p>
+</blockquote>
+<p>Fixed difficulty risks boredom for skilled players and overload for beginners. Player-controlled systems stabilise the learning gradient by allowing each player to find their own optimal challenge zone. The mechanism of control varies widely across genres, but the principle is universal: the player must have some influence over the rate at which prediction errors arrive.</p>
+<p><strong>Manifestation across genres:</strong></p>
+<p><em>Halo</em>'s four difficulty tiers (Easy, Normal, Heroic, Legendary) are the most transparent implementation. The player explicitly selects their gradient steepness before beginning and commits to it. Bungie was explicit about the intended experience: "Normal is for beginners who are embarrassed to pick Easy. Heroic is what we intended." The transparency preserves the sense of control that Csikszentmihalyi identified as a prerequisite for flow.</p>
+<p><em>Celeste</em>'s Assist Mode provides granular sub-controls: the player can individually adjust game speed, dash count, and invincibility. This deconstructs "difficulty" into its component prediction error sources, allowing the player to reduce motor-execution errors (slower speed, more dashes) while preserving spatial-reasoning errors (the puzzles are unchanged). The design acknowledges that "difficulty" is not a single variable but a composite of multiple prediction error types, and players may want to control each independently.</p>
+<p><em>Breath of the Wild</em> and <em>Elden Ring</em> implement difficulty regulation through geography. The player can go anywhere, but some areas are much harder than others. A player who finds the current region too difficult can leave and explore elsewhere, building skills and equipment in lower-difficulty areas before returning. The difficulty is not set by a menu; it is set by the player's choice of destination. This preserves immersion (no menus break the fiction) while providing the same gradient-matching function as explicit difficulty tiers.</p>
+<p><em>Dota 2</em>'s MMR system implements difficulty regulation through matchmaking. The system automatically adjusts the difficulty of each match by selecting opponents of approximately equal skill. The player's difficulty is their opponent's skill, and the system calibrates this continuously. The player has no explicit control over this process, but their MMR rises or falls in response to their performance, maintaining the challenge-skill balance automatically.</p>
+<p>Roguelikes implement difficulty regulation through persistence mechanics. <em>Hades</em> offers permanent upgrades (Mirror of Night, weapon aspects) that reduce difficulty over repeated runs. A player who cannot clear a boss with base equipment may succeed after investing persistent resources in damage and survivability upgrades. The game adjusts to the player through accumulated progress rather than through an explicit setting.</p>
+<p><strong>Diagnostic:</strong> When a player reports that a game is "too hard" or "too easy" and there is no mechanism for adjustment, Law 3 has been violated. The fix depends on genre: explicit difficulty settings for linear games, geographic difficulty variation for open-world games, matchmaking for competitive games, or persistence mechanics for roguelikes.</p>
+    <h3 id="15-5-law-4-immediate-legible-feedback">15.5 Law 4: Immediate, legible feedback</h3>
+<blockquote>
+  <p><strong><em>Learning requires clear and immediate error signals.</em></strong></p>
+</blockquote>
+<p>Without feedback, prediction errors cannot be resolved, learning stalls, and the gradient collapses. Feedback must be immediate (millisecond-scale response to input), precise (the player knows exactly what happened), and interpretable (the player understands why it happened). These three criteria are independently necessary: a system can be immediate but imprecise (the player died but does not know what killed them), precise but uninterpretable (the player knows they took 47 damage from "environmental hazard" but does not know which environmental hazard), or interpretable but delayed (the player understands what went wrong but only after a loading screen and respawn sequence).</p>
+<p><strong>Manifestation across genres:</strong></p>
+<p><em>Mario</em>'s jump exemplifies perfect micro-level feedback. The response to the button press is instantaneous (zero perceptible input lag). The physics are predictable (the same input always produces the same arc). The outcome is immediately visible (you either land on the platform or you do not). Long and Gutwin (2018, CHI PLAY) demonstrated that latency thresholds as low as 50ms degrade performance depending on game speed; Mario's sub-frame response time is a necessary condition for the motor-level learning gradient that its platforming demands.</p>
+<p><em>Halo</em>'s Covenant enemies exemplify perfect meso-level feedback, as detailed in Chapter 24. Grunts panic and flee when their leader dies. Elites stagger when their shields break. Jackals turn in surprise when flanked. Each reaction is readable confirmation that the player's action had the intended effect. The Flood's absence of readable state changes demonstrates the converse: without legible feedback, the learning gradient collapses even when the difficulty is appropriate.</p>
+<p><em>Dota 2</em>'s damage numbers, status effect icons, and ability cooldown indicators exemplify information-dense feedback in complex systems. The game provides enough information for the player to reconstruct the causal chain of any encounter, but the information is presented in layers: essential combat feedback (health bars, damage numbers) is pre-attentive, while detailed tactical information (exact cooldown timers, buff durations) requires deliberate attention. This layered approach ensures that novice players can extract the most important error signals without being overwhelmed by the full information density.</p>
+<p><em>Dark Souls</em>'s death screen exemplifies feedback through consequence. The screen goes dark, "YOU DIED" appears, and the player respawns at the last bonfire. There is no kill-cam, no damage breakdown, no suggestion of what to do differently. The feedback is the death itself: which attack killed you (visible in the final animation before the screen fades) and where you were standing when it happened (visible from the respawn position relative to the death location). The austerity of the feedback forces the player to extract the lesson from their own memory of the encounter, which engages deeper processing than a post-death analysis screen would.</p>
+<p><strong>Diagnostic:</strong> When a player reports that deaths feel "random" or "unfair" - when they cannot explain why they failed - Law 4 has been violated. The fix is not reducing difficulty but increasing <strong>legibility</strong>: making the causal chain from player action to outcome visible, consistent, and traceable. The player must be able to answer "what killed me and what should I have done differently?" after every failure.</p>
+    <h3 id="15-6-law-5-never-fully-solve-the-system">15.6 Law 5: Never fully solve the system</h3>
+<blockquote>
+  <p><strong><em>The game must stay slightly ahead of the player.</em></strong></p>
+</blockquote>
+<p>If the system is fully understood, the learning gradient reaches zero and engagement ends. The game must maintain a horizon of unresolved prediction errors that recedes as the player advances.</p>
+<p>This law creates an apparent tension with Law 4 (legible feedback): if the system is fully legible, won't the player eventually learn everything? The resolution is that <strong>legibility and depth are not the same thing</strong>. A system can be perfectly legible (every outcome is traceable to its cause) and infinitely deep (the combinatorial space of outcomes exceeds any individual's capacity to fully explore). Chess is the paradigm: every move's consequence is deterministic and visible, yet the game has never been "solved" by a human player because the decision tree is too vast to fully compute.</p>
+<p><strong>Manifestation across genres:</strong> <em>Dota 2</em> exemplifies the infinitely deep system. 120+ heroes, 200+ items, five human teammates, five human opponents. The combinatorial space is astronomical, and human opponents ensure that the system's prediction error landscape shifts faster than any individual can fully model. The game can never be "solved" because the solution space includes the adaptive behaviour of nine other humans.</p>
+<p><em>Breath of the Wild</em>'s physics chemistry system achieves depth through emergence. The rules are simple (fire burns wood, metal conducts electricity), but their interactions produce outcomes that neither the player nor the designer anticipated. A player who has spent 200 hours in Hyrule can still discover new interactions because the combinatorial space of physics objects, terrain features, weather conditions, and rune abilities exceeds what any single player can exhaustively explore.</p>
+<p><em>Spelunky</em> achieves unsolvability through procedural generation. Each run presents a new configuration of rooms, enemies, items, and traps. The underlying rules are learnable (spike traps kill on contact, arrow traps fire when a line-of-sight trigger is crossed), but the specific configurations are unpredictable. The player's general model improves continuously, but the specific instantiation always contains novel prediction errors.</p>
+<p><em>Tetris</em> achieves unsolvability through speed scaling and random piece generation. The rules are deterministic and fully known, but the combination of increasing speed and unpredictable piece sequences ensures that the player is always operating at the boundary of their motor automaticity. There is always a faster level.</p>
+<p><em>Chess</em> achieves unsolvability through sheer combinatorial depth. The rules are complete and have been known for centuries. The decision tree contains approximately 10^120 possible game positions. No human has exhausted this space, and none will.</p>
+<p><strong>Diagnostic:</strong> When a player reports "grinding" - repetitive engagement without meaningful learning - Law 5 has likely been violated. The system's prediction errors have been exhausted, but the game continues to demand engagement through numerical progression (XP, currency, levels) rather than genuine learning. The fix is introducing new structure (emergence, combination, social complexity) rather than new content (more of the same enemies in a different skin).</p>
+    <h3 id="15-7-the-interaction-of-laws">15.7 The interaction of laws</h3>
+<p>These laws are not independent. They form a reinforcing system:</p>
+<ul>
+  <li>Learning requires feedback (Law 4 enables Law 1)</li>
+  <li>Feedback enables gradient maintenance (Law 4 sustains Law 1)</li>
+  <li>Gradient stability requires player control (Law 3 stabilises Law 1)</li>
+  <li>Player control depends on hidden learning (Law 2 supports Law 3; a player who understands the teaching mechanism can game it, collapsing the gradient)</li>
+  <li>Sustained engagement requires unsolved systems (Law 5 extends Law 1)</li>
+</ul>
+<p>The most acclaimed games satisfy all five laws simultaneously. <em>Breath of the Wild</em> maintains the gradient through physics emergence (Law 1), teaches through environmental interaction (Law 2), lets the player choose their own path and difficulty (Law 3), provides immediate physics feedback (Law 4), and generates emergent interactions that no player can fully exhaust (Law 5). <em>Halo</em> maintains the gradient through combinatorial encounter design (Law 1), teaches through encounter structure rather than tutorials (Law 2), offers four explicit difficulty tiers (Law 3), provides multi-layered combat feedback (Law 4), and uses the nested loop architecture to prevent any single gradient from flattening (Law 5).</p>
+    <h3 id="15-8-diagnosing-failure-with-the-laws">15.8 Diagnosing failure with the laws</h3>
+<p>When a game fails, one or more laws have been violated. The diagnostic framework:</p>
+<ul>
+  <li><strong>Boredom</strong>: Law 1 (no learning) and/or Law 5 (system exhausted). The gradient has reached zero.</li>
+  <li><strong>Frustration</strong>: Law 4 (unclear feedback). Prediction errors are present but irresolvable because the player cannot identify what went wrong.</li>
+  <li><strong>Overload</strong>: Law 3 (no control over difficulty) and/or Law 2 violation (explicit instruction overwhelming the player with declarative information rather than letting them learn procedurally).</li>
+  <li><strong>Grinding</strong>: Law 5 (system exhausted, engagement sustained through token accumulation rather than genuine learning).</li>
+  <li><strong>Tutorial fatigue</strong>: Law 2 (the game is teaching declaratively when it should be teaching procedurally).</li>
+</ul>
+<p>Each diagnosis points to a specific corrective. The laws do not tell the designer what to build, but they tell the designer what to fix.</p>
+    <h3 id="15-9-final-principle">15.9 Final principle</h3>
+<p>All five laws reduce to one:</p>
+<blockquote>
+  <p><strong><em>Design for sustained, interpretable learning.</em></strong></p>
+</blockquote>
+<p>If the player understands what is happening, can improve over time, encounters new structure regularly, and continues to find the system deeper than their current understanding, then the game will be engaging. The five laws are the operational decomposition of this single principle into actionable design criteria.</p>
+    <h2 id="ch-16"><span class="num">Chapter 16</span>Exploration and Curiosity in Design</h2>
+    <p class="epigraph">On the design principles that transform open worlds from checklists into curiosity engines; the structural differences between directed and self-directed learning gradients; and practical techniques for sustaining exploration-driven engagement.</p>
+    <h3 id="16-1-the-design-problem-of-exploration">16.1 The design problem of exploration</h3>
+<p>Chapter 4 established the neuroscience: curiosity is a dopaminergic drive state that transforms information gaps into intrinsic rewards (Gruber et al., 2014), organisms preferentially attend to stimuli of intermediate complexity (Kidd &amp; Hayden, 2015), and extrinsic markers can undermine intrinsic motivation (Deci, Koestner, &amp; Ryan, 1999). Chapter 25's analysis of <em>Breath of the Wild</em> demonstrates these principles in a single game.</p>
+<p>This chapter addresses the <strong>design problem</strong> that sits between the neuroscience and the case study: how do you build a world that sustains curiosity-driven exploration across dozens of hours? What are the structural techniques, and how do they differ from the challenge-driven techniques that sustain combat or puzzle engagement?</p>
+    <h3 id="16-2-directed-versus-self-directed-gradients">16.2 Directed versus self-directed gradients</h3>
+<p>Combat and puzzle games impose a learning gradient: the designer controls which challenges appear, in what order, at what difficulty. The player's role is to resolve the prediction errors the designer has placed in their path. This is a <strong>directed gradient</strong>; the designer is the author of the learning trajectory.</p>
+<p>Exploration-driven games invert this relationship. The designer creates a world full of potential prediction errors, and the player chooses which ones to pursue. The learning trajectory is co-constructed: the designer provides the raw material (a world with consistent rules and discoverable secrets), and the player provides the direction (where to go, what to investigate, when to engage). This is a <strong>self-directed gradient</strong>, and it requires fundamentally different design techniques.</p>
+<p>The directed gradient's failure mode is overload or boredom (the designer's pacing is wrong for this player). The self-directed gradient's failure mode is aimlessness (the player cannot identify which direction offers productive prediction errors) or exhaustion (the player has explored everything accessible and cannot find new territory).</p>
+    <h3 id="16-3-techniques-for-sustaining-self-directed-gradients">16.3 Techniques for sustaining self-directed gradients</h3>
+<p>Successful exploration-driven games share a set of structural techniques that keep the self-directed gradient positive:</p>
+<p><strong>Visible horizons.</strong> The player must be able to see, from their current position, at least one point of interest that they have not yet investigated. <em>Breath of the Wild</em>'s triangle rule (peaks, towers, and unusual structures visible from great distances) and <em>Elden Ring</em>'s Erdtree (a constant landmark orienting the player in the world) both serve this function. The horizon provides a continuous source of spatial prediction errors: what is that? What is over there? How do I get to it?</p>
+<p><strong>Layered information density.</strong> The world should reveal different information at different distances. From far away, a landmark communicates "something is here." From medium distance, the player can identify what kind of thing it is (a ruin, a camp, a shrine). From close range, the player discovers the specific content (what enemies guard it, what puzzle it contains, what reward it offers). This layering ensures that the prediction error resolves gradually rather than all at once, sustaining the curiosity signal across the approach.</p>
+<p><strong>Consistent environmental language.</strong> The player must learn to read the world. Consistent visual cues (a specific architectural style signals a specific type of challenge, a specific plant signals a specific resource) allow the player to build a model of the environment that generates productive predictions. When the player sees a familiar cue, they predict what they will find, and the prediction is tested upon arrival. <em>Elden Ring</em>'s glowing skulls signal rune drops. <em>Breath of the Wild</em>'s Sheikah structures signal shrines. <em>Dark Souls</em>'s fog gates signal boss encounters. Each cue is a learned environmental rule that transforms visual scanning into model-based prediction.</p>
+<p><strong>Density calibration.</strong> Points of interest must be spaced so that the player always encounters something new before the curiosity signal decays. Too sparse, and the player traverses empty space with no prediction errors (boredom). Too dense, and the player is overwhelmed with options (overload). <em>Breath of the Wild</em>'s designers described calibrating density so that the player always discovers something interesting within approximately 30-60 seconds of traversal in any direction. This calibration is the exploration equivalent of <em>Halo</em>'s encounter pacing: it maintains the gradient by controlling the rate at which new prediction errors appear.</p>
+<p><strong>Reward variety.</strong> If every exploration target produces the same reward (a small amount of currency, a generic collectible), the prediction error resolves after the first discovery: "this is just another coin." Variety in reward type (mechanical upgrades, cosmetics, lore, shortcuts, new abilities, narrative revelations, environmental puzzles) preserves uncertainty about what each target contains. The prediction error "what will I find?" remains open because the answer is different each time.</p>
+<p><strong>Return value.</strong> Previously explored areas should change over time or reveal new information after the player has acquired new abilities or knowledge. <em>Metroidvania</em> design is built entirely on this principle: areas the player passed through early in the game contain paths accessible only with later abilities, creating a second (and third) exploration pass through familiar territory with fresh prediction errors. <em>Tears of the Kingdom</em>'s construction abilities transform previously explored terrain into engineering playgrounds, adding a new prediction error layer to locations the player thought they already understood.</p>
+    <h3 id="16-4-why-markers-fail-the-mechanism">16.4 Why markers fail: the mechanism</h3>
+<p>The previous chapters noted that quest markers undermine exploration. The design mechanism is worth specifying precisely because it illustrates how a well-intentioned feature can destroy a learning gradient.</p>
+<p>A quest marker converts an exploration problem (where is this thing?) into a navigation problem (follow the line on the map). The exploration problem generates prediction errors about the world's structure: the player must build a spatial model, identify landmarks, read environmental cues, and make inferences about where interesting content might be. The navigation problem generates zero prediction errors: the line tells the player exactly where to go; the only remaining uncertainty is whether they can walk there without dying.</p>
+<p>By eliminating the spatial prediction errors, markers eliminate the learning gradient that makes exploration engaging. The player is no longer building a model of the world; they are following instructions. The transition is from System 2 spatial reasoning (rewarding) to System 1 waypoint-following (automatic and disengaging). The exploration gradient collapses to a traversal grind.</p>
+<p>The design lesson: every navigation aid should be evaluated against the question "does this help the player build their own model of the world, or does it replace the need for a model?" Compasses that point toward a general direction (north, toward a region) help the player orient without replacing spatial reasoning. Map markers that identify exact locations replace spatial reasoning entirely. The former supports the gradient; the latter destroys it.</p>
+    <h3 id="16-5-transition">16.5 Transition</h3>
+<p>The techniques described in this chapter provide the structural toolkit for exploration-driven engagement. The next chapter examines a different design challenge: how to manage the learning gradient across the temporal arc of a complete game, from the first minute to the last.</p>
+    <h2 id="ch-17"><span class="num">Chapter 17</span>Pacing and Session Design</h2>
+    <p class="epigraph">On the micro-structure of engagement within and across play sessions; why the first five minutes and the transition between sessions are the hardest design problems; and how pacing mechanics regulate the learning gradient at timescales below the lifecycle.</p>
+    <h3 id="17-1-below-the-lifecycle">17.1 Below the lifecycle</h3>
+<p>Chapter 10 described the macro-scale lifecycle of engagement: first contact, rapid learning, deepening, mastery, exhaustion. That analysis operates at the timescale of hours to hundreds of hours. But engagement is also structured at shorter timescales: individual play sessions (30 minutes to 4 hours), encounter sequences (5-20 minutes), and moment-to-moment pacing (seconds to minutes). This chapter examines how the learning gradient is managed at these shorter timescales.</p>
+    <h3 id="17-2-the-first-five-minutes">17.2 The first five minutes</h3>
+<p>The opening minutes of a game are the highest-risk moment in the entire experience. The player's model is empty, prediction errors arrive at maximum density, and the risk of overload is acute. Industry retention data confirms this: mobile games lose over 75% of new users within 24 hours, and the steepest drop occurs in the first session.</p>
+<p>The design challenge is threading between two failure modes. <strong>Too much information</strong> produces overload: the player cannot identify which prediction errors to focus on and disengages. <strong>Too little information</strong> produces confusion: the player does not understand what the game is or what they should do and disengages for different reasons.</p>
+<p>Successful openings share a structure: <strong>a single, clear action with immediate, vivid feedback</strong>. <em>Mario</em> starts with running and jumping. <em>Portal</em> starts with walking through a portal. <em>Dark Souls</em> starts with rolling and hitting. The first action teaches the most fundamental mechanic, and the feedback confirms that the player's input matters. Everything else; story, systems, menus, options; is deferred.</p>
+<p>The onboarding gradient should introduce one system per learning cycle. A learning cycle is the minimum sequence of: encounter the system → attempt to use it → receive feedback → adjust understanding. The length of a learning cycle varies by system complexity (10 seconds for "press A to jump," several minutes for "manage your inventory"), but the principle is constant: one new system per cycle, with consolidation time before the next introduction.</p>
+<p><em>Breath of the Wild</em>'s Great Plateau solves this by gating four rune abilities behind four separate shrines, each teaching one concept in isolation. <em>Halo</em>'s first level introduces the control scheme, then adds weapons, then adds grenades, then adds vehicles across a sequence of encounters that each focus on one new element. The worst onboarding designs (<em>Dota 2</em>'s new player experience, many complex RPGs) present multiple interlocking systems simultaneously and expect the player to sort them out; this is the design equivalent of teaching someone to drive by putting them on a motorway.</p>
+    <h3 id="17-3-session-rhythm">17.3 Session rhythm</h3>
+<p>Within a single play session, the learning gradient benefits from a <strong>rhythm of tension and release</strong> that maps onto the LC-NE phasic/tonic oscillation.</p>
+<p>Sustained phasic mode (intense focus) is metabolically expensive. Wiehler et al. (2022, <em>Current Biology</em>) demonstrated that prolonged cognitive control produces glutamate accumulation in the lateral prefrontal cortex, which may drive the subjective experience of mental fatigue. Games that demand constant high-intensity engagement without breaks produce exhaustion rather than flow.</p>
+<p>Effective session rhythm alternates between:</p>
+<ul>
+  <li><strong>High-intensity segments</strong> (combat encounters, puzzle chambers, boss attempts) that demand focused attention and generate dense prediction errors</li>
+  <li><strong>Low-intensity segments</strong> (traversal, dialogue, exploration, inventory management) that allow cognitive recovery while maintaining engagement through lower-density prediction errors</li>
+</ul>
+<p><em>Halo</em>'s campaign paces encounters with traversal and vehicle sections. <em>Dark Souls</em> paces boss fights with bonfire-to-boss runs that allow mental preparation. <em>Zelda</em> paces shrine puzzles with overworld exploration. <em>Portal</em> paces test chambers with transitional spaces that deliver narrative without mechanical challenge. Martin O'Donnell's use of silence between combat music cues serves the same function at the audio level: contrast that prevents habituation and allows autonomic recovery.</p>
+<p>The optimal rhythm depends on the intensity of the high segments. More intense challenges (boss fights, competitive matches) require longer recovery periods. Lower-intensity challenges (standard encounters, simple puzzles) can be paced more densely. The design principle is that the player should feel ready to re-engage by the time the next high-intensity segment arrives; if they feel fatigued, the recovery period was too short.</p>
+    <h3 id="17-4-session-boundaries-and-the-return-problem">17.4 Session boundaries and the return problem</h3>
+<p>The transition between play sessions is a design problem that most games ignore and few handle well. When a player stops playing and returns hours or days later, they face a <strong>re-entry problem</strong>: their working model of the game's current state has partially decayed, and they must reconstruct context before they can resume productive engagement.</p>
+<p>Games that handle this well provide <strong>re-entry scaffolding</strong>: recaps of recent events (<em>Witcher 3</em>'s loading screen summaries), persistent UI elements that show current objectives (quest logs, map markers), or environments designed so that the player's position communicates their current goal (standing outside a boss fog gate, at the entrance to a new area).</p>
+<p>Games that handle this poorly expect the player to remember exactly where they were and what they were doing. A player who returns to a complex RPG after a two-week break and finds themselves in the middle of a dungeon with a full inventory and no recollection of which quest they were pursuing faces a re-entry gradient so steep that many players simply start over or quit.</p>
+<p>The save system is a pacing tool, not merely a convenience feature. Save points at natural transition moments (between levels, after boss defeats, at the start of new areas) align session boundaries with gradient boundaries: the player stops at a point where one learning arc is complete and the next has not yet begun. Saving mid-challenge forces the player to resume in the middle of an unresolved gradient, which may produce confusion on return.</p>
+    <h3 id="17-5-the-endgame-problem">17.5 The endgame problem</h3>
+<p>The final hours of a game present the inverse of the opening problem. During onboarding, the gradient is too steep (too many errors, too fast). During the endgame, the gradient is approaching zero (the player's model is nearly complete, and few new prediction errors remain).</p>
+<p>Games address this in several ways. <strong>Escalation</strong> introduces the most complex challenges at the end, testing the full range of skills the player has developed (final boss fights, endgame dungeons, climactic encounters that combine every mechanic). <strong>Narrative climax</strong> provides a non-mechanical gradient: the player's model of the story is approaching resolution, and narrative prediction errors (how will it end?) sustain engagement through the mechanical gradient's decline. <strong>New Game Plus</strong> extends the gradient by modifying the game's parameters (harder enemies, different item placements, new abilities) so that the same content generates fresh prediction errors on a second pass.</p>
+<p>The games that handle the endgame best are those where the mechanical gradient and the narrative gradient converge: the final challenge is both the hardest test of skill and the resolution of the story's central tension. <em>Portal</em>'s final encounter with GLaDOS. <em>Halo 3</em>'s Warthog run. <em>Dark Souls</em>'s final boss. Each is simultaneously a mechanical climax (the most demanding test of the skills the game has trained) and a narrative climax (the resolution of the story's central conflict). The learning gradient and the narrative gradient peak at the same moment, producing the most intense engagement of the entire experience.</p>
+    <h3 id="17-6-transition">17.6 Transition</h3>
+<p>Pacing and session design operate at the timescale below the lifecycle, managing the learning gradient across minutes and hours rather than across the full arc of the game. The next chapter examines what happens when this management fails: the specific pathologies that emerge when the gradient collapses, spikes, stalls, or oscillates.</p>
+    <h2 id="ch-18"><span class="num">Chapter 18</span>Failure Modes</h2>
+    <p class="epigraph">On boredom, frustration, grind, and anxiety as breakdowns in learning dynamics rather than isolated design flaws.</p>
+    <h3 id="18-1-failure-is-gradient-failure">18.1 Failure is gradient failure</h3>
+<p>When a game stops being engaging, the cause is always a breakdown in the learning gradient. The specific phenomenology of the breakdown - whether the player feels bored, frustrated, anxious, or stuck in a grind - corresponds to a specific pathology of the prediction error dynamics.</p>
+<p>This chapter provides a systematic taxonomy of engagement failures, each mapped to a specific gradient pathology and illustrated with concrete game examples.</p>
+    <h3 id="18-2-boredom-gradient-at-zero">18.2 Boredom: gradient at zero</h3>
+<p>Boredom occurs when the learning gradient reaches zero. The player has fully internalised the game's patterns, and no new prediction errors are being generated. Outcomes are fully predicted, and the dopamine system has nothing to signal (Schultz, 1997: zero prediction error produces no dopaminergic response).</p>
+<p><strong>Symptoms</strong>: the player feels that nothing is happening, that they are going through the motions, that the game has nothing left to teach. Time drags. Attention wanders. The LC-NE system drifts from phasic mode (focused engagement) to tonic mode (broad scanning for better options).</p>
+<p><strong>Common causes</strong>:</p>
+<ul>
+  <li>Repetitive content with no variation (identical enemy encounters, copy-pasted side quests)</li>
+  <li>Insufficient combinatorial depth (systems that do not interact in surprising ways)</li>
+  <li>Player skill exceeding game challenge with no mechanism for self-regulation</li>
+</ul>
+<p><strong>Design diagnosis</strong>: Law 1 (maintain the learning gradient) and/or Law 5 (never fully solve the system) have been violated.</p>
+<p><strong>Examples</strong>: The late-game grind in many open-world RPGs, where clearing the 47th identical bandit camp generates no prediction errors that the first camp did not already provide. The final hours of <em>Assassin's Creed</em> games, where the map is covered in icons but none represents a genuinely new challenge.</p>
+    <h3 id="18-3-frustration-irresolvable-errors">18.3 Frustration: irresolvable errors</h3>
+<p>Frustration occurs when prediction errors are being generated but cannot be resolved. The player is failing, but they cannot identify why or what to do differently. The error signal is noise rather than information.</p>
+<p><strong>Symptoms</strong>: the player feels that the game is unfair, that deaths are random, that improvement is impossible. Negative valence is high because prediction errors are increasing rather than decreasing (Van de Cruys, 2017: negative affect tracks errors that are growing).</p>
+<p><strong>Common causes</strong>:</p>
+<ul>
+  <li>Unclear feedback (the player cannot trace the causal chain from action to outcome)</li>
+  <li>Inconsistent rules (the same action produces different results in different contexts)</li>
+  <li>Stochastic difficulty (challenge arising from randomness rather than learnable patterns)</li>
+  <li>Off-screen or undodgeable attacks (prediction errors that are irresolvable by design)</li>
+</ul>
+<p><strong>Design diagnosis</strong>: Law 4 (immediate, legible feedback) has been violated.</p>
+<p><strong>Examples</strong>: <em>Halo 2</em>'s Legendary Jackal Snipers, which kill the player from off-screen with hitscan weapons; the error signal is "I got one-shot by something I couldn't see," which teaches nothing actionable. Poorly designed camera systems in 3D platformers where the player cannot see the next platform. Boss attacks that have no telegraph and cannot be dodged.</p>
+<p>Jesper Juul's <em>The Art of Failure</em> (2013, MIT Press) provides the theoretical framework: players enjoy feeling responsible for failure, and "fairness" is the perception that the player's actions, not external randomness, determined the outcome. Frustration arises when this attribution is impossible.</p>
+    <h3 id="18-4-grinding-gradient-near-zero-with-token-progress">18.4 Grinding: gradient near zero with token progress</h3>
+<p>Grinding occurs when the learning gradient is near zero but the game continues to demand engagement through repetition. The player is active but not improving; prediction errors are trivially small and immediately resolvable, producing token progress (XP accumulation, currency farming, percentage completion) without genuine learning.</p>
+<p><strong>Symptoms</strong>: the player feels that they are "doing their time" rather than engaging with meaningful challenges. The activity is repetitive but not difficult. Progress is measured in numbers rather than understanding. The wanting/liking dissociation (Berridge &amp; Robinson, 2016) may be evident: the player feels compelled to continue (dopaminergic "wanting" driven by variable-ratio reinforcement) without enjoying the experience (opioidergic "liking" is flat or declining).</p>
+<p><strong>Common causes</strong>:</p>
+<ul>
+  <li>Content padding (stretching 10 hours of unique prediction errors across 40 hours of gameplay)</li>
+  <li>Artificial progression gates (requiring players to reach a numerical threshold before accessing new content, regardless of skill)</li>
+  <li>Variable-ratio reinforcement schedules that sustain engagement without learning (loot grinding, gacha mechanics)</li>
+</ul>
+<p><strong>Design diagnosis</strong>: Law 5 (never fully solve the system) has been violated; the system has been exhausted, but the game pretends otherwise through numerical inflation.</p>
+<p><strong>Examples</strong>: MMO daily quests that require completing the same activities for incremental currency rewards. Mobile games that gate progress behind timers or premium currency rather than skill development. The middle sections of JRPGs where random encounters generate no new tactical challenges but are required to reach an adequate level for the next story boss.</p>
+    <h3 id="18-5-anxiety-unstable-gradient">18.5 Anxiety: unstable gradient</h3>
+<p>Anxiety occurs when prediction errors arrive unpredictably, alternating between trivial and overwhelming without a stable rhythm. The player cannot establish a consistent model-building process because the demands are chaotic.</p>
+<p><strong>Symptoms</strong>: the player feels uncertain about what the game expects, unable to prepare for what comes next, and unable to trust that their improving model will generalise to future challenges. The LC-NE system oscillates between phasic and tonic mode without settling into either.</p>
+<p><strong>Common causes</strong>:</p>
+<ul>
+  <li>Sudden difficulty spikes (a boss fight orders of magnitude harder than the preceding content)</li>
+  <li>Inconsistent pacing (long stretches of trivial challenge punctuated by punishing encounters)</li>
+  <li>Genre confusion (the game shifts between system types without warning, e.g. a platformer that suddenly becomes a bullet-hell shooter)</li>
+</ul>
+<p><strong>Design diagnosis</strong>: Law 3 (player-regulated challenge) has been violated; the player has no mechanism to control the rate of prediction error delivery.</p>
+<p><strong>Examples</strong>: Games that alternate between cutscenes and combat without establishing a rhythm. Difficulty curves that oscillate wildly between trivial and punishing. <em>Halo: Reach</em>'s hybrid health system, which reintroduced the goal-displacement problem of health packs after Halo CE had solved it with regenerating shields.</p>
+<p>Andersen et al. (2020, <em>Psychological Science</em>; n=110) empirically demonstrated the principle in a non-game context: enjoyment of a haunted house showed an inverted-U relationship with fear, with heart rate data confirming that "just-right" deviations from physiological baseline maximised enjoyment, while excessive deviations (too scary) and insufficient deviations (not scary enough) both reduced it.</p>
+    <h3 id="18-6-overload-gradient-exceeding-processing-capacity">18.6 Overload: gradient exceeding processing capacity</h3>
+<p>Overload occurs when prediction errors arrive faster than the player can process them. The system is too complex, too fast, or too opaque for the player's current skill level.</p>
+<p><strong>Symptoms</strong>: the player feels overwhelmed, confused, and unable to extract any pattern from the chaos. Cognitive load exceeds working memory capacity. The learning gradient is technically steep (there is much to learn) but the player cannot access it because the signal is buried in noise.</p>
+<p><strong>Common causes</strong>:</p>
+<ul>
+  <li>Insufficient onboarding (too many systems introduced simultaneously)</li>
+  <li>Expert-level content without adequate scaffolding</li>
+  <li>UI clutter that competes for attention with gameplay-relevant information</li>
+</ul>
+<p><strong>Design diagnosis</strong>: Law 2 (hide the learning) and Law 3 (player-regulated challenge) have been violated.</p>
+<p><strong>Examples</strong>: The new-player experience in <em>Dota 2</em> or <em>Path of Exile</em>, where dozens of interacting systems are presented simultaneously with minimal guidance. Flight simulators that present every cockpit control at once rather than introducing them sequentially.</p>
+    <h3 id="18-7-the-diagnostic-framework">18.7 The diagnostic framework</h3>
+<p>Every engagement failure reduces to a gradient pathology:</p>
+<ul>
+  <li><strong>Boredom</strong> = gradient at zero (no errors to resolve)</li>
+  <li><strong>Frustration</strong> = errors present but irresolvable (feedback is noise)</li>
+  <li><strong>Grinding</strong> = gradient near zero, masked by token progress</li>
+  <li><strong>Anxiety</strong> = gradient unstable (errors arrive unpredictably)</li>
+  <li><strong>Overload</strong> = gradient exceeds processing capacity (too many errors to process)</li>
+</ul>
+<p>The designer's diagnostic task is to identify which pathology is present and apply the corresponding corrective: introduce new structure (boredom), improve feedback legibility (frustration), replace padding with depth (grinding), stabilise pacing (anxiety), or improve onboarding and scaffolding (overload).</p>
+    <h2 id="ch-19"><span class="num">Chapter 19</span>Cross-Genre Analysis</h2>
+    <p class="epigraph">On how the learning gradient manifests differently across genres; why content volume is not learning depth; and the design trade-offs that determine where on the gradient spectrum a game can operate.</p>
+    <h3 id="19-1-the-gradient-spectrum">19.1 The gradient spectrum</h3>
+<p>The case studies in Part VII demonstrate the learning gradient in action across individual games. This chapter steps back to examine how the gradient's properties vary systematically across genres, identifying the design trade-offs that shape different gradient profiles.</p>
+    <h3 id="19-2-content-volume-versus-learning-depth">19.2 Content volume versus learning depth</h3>
+<p>The model identifies a design failure that content-based analyses consistently miss: confusing <strong>content volume</strong> with <strong>learning depth</strong>.</p>
+<p>A game with 100 hours of content but only 10 hours of unique prediction errors will sustain engagement for 10 hours. The remaining 90 hours will feel like grinding, because the player's model has been fully built and the additional content generates only trivially small errors. Conversely, a game with 10 hours of content but 10 hours of unique prediction errors will sustain engagement for its entire duration.</p>
+<p>This explains the recurring pattern in critical reception where short, focused games (<em>Portal</em> at 3 hours, <em>Celeste</em> at 8 hours, <em>Outer Wilds</em> at 20 hours) receive higher per-hour critical acclaim than sprawling 100-hour RPGs. It is not that short games are inherently better; it is that their <strong>prediction error density</strong> (unique informative errors per hour) is higher. Every hour contains genuine learning. Long games that maintain high prediction error density (<em>Dota 2</em>, <em>Dark Souls</em> across multiple playthroughs, <em>Breath of the Wild</em>) sustain engagement for their full duration. Long games that front-load their prediction errors and pad the rest (<em>Assassin's Creed</em>, many Ubisoft open-world games) sustain engagement only until the errors are exhausted.</p>
+<p>The correlation is not with length but with the ratio of learning depth to content volume. When the ratio approaches 1:1 (every hour of content contains an hour of unique learning), the game sustains engagement throughout. When the ratio drops (10 hours of learning spread across 60 hours of content), the back half becomes a grind regardless of production quality.</p>
+    <h3 id="19-3-genre-gradient-profiles">19.3 Genre gradient profiles</h3>
+<p>Different genres generate characteristically different gradient profiles:</p>
+<p><strong>Action games</strong> (<em>Halo</em>, <em>Doom Eternal</em>, <em>Devil May Cry</em>) generate steep, continuous, motor-dominant gradients. The learning is primarily cortical-to-subcortical transfer: aiming, timing, positioning. The gradient is sustained by combinatorial encounter design and enemy variety. Typical learning depth: 15-30 hours for a single campaign, extended indefinitely by competitive multiplayer.</p>
+<p><strong>Puzzle games</strong> (<em>Portal</em>, <em>The Witness</em>, <em>Baba Is You</em>) generate discontinuous "aha" gradients with peaks separated by plateaus. The learning is primarily System 2 cognitive restructuring. The gradient is sustained by conceptual deepening rather than mechanical novelty. Typical learning depth: the full runtime, because every puzzle generates a unique prediction error by design.</p>
+<p><strong>Roguelikes</strong> (<em>Hades</em>, <em>Spelunky</em>, <em>Slay the Spire</em>) generate compressed, repeated gradients through the death-and-retry loop.</p>
+<p>Each run is a mini-lifecycle (first contact → rapid learning → mastery attempt → death). Procedural generation ensures that the general model improves across runs while specific configurations remain novel. Typical learning depth: 50-200 hours before the general model stabilises.</p>
+<p><strong>Open-world exploration</strong> (<em>Breath of the Wild</em>, <em>Elden Ring</em>, <em>Outer Wilds</em>) generate self-directed, curiosity-driven gradients. The learning is spatial (building a world model) and systemic (discovering rule interactions). The gradient is sustained by combinatorial physics, environmental density, and the player's freedom to choose their own challenge level. Typical learning depth: 40-100 hours, bounded by world size and system complexity.</p>
+<p><strong>Competitive multiplayer</strong> (<em>Dota 2</em>, <em>Counter-Strike</em>, <em>Chess</em>) generate the deepest gradients because human opponents provide an inexhaustible prediction error source. The learning is layered (mechanical, tactical, strategic, social, meta-game) with each layer operating at a different timescale. Typical learning depth: effectively infinite; professional players continue improving after 10,000+ hours.</p>
+<p><strong>Narrative games</strong> (<em>Disco Elysium</em>, <em>Planescape: Torment</em>, <em>Firewatch</em>) generate front-loaded, non-renewable gradients. The learning is model-building about characters, plot, and thematic meaning. The gradient is bounded by the story's length and collapses to zero upon completion, with limited replay value unless the game offers branching paths or hidden content. Typical learning depth: the full runtime of a single playthrough.</p>
+    <h3 id="19-4-the-dda-trade-off">19.4 The DDA trade-off</h3>
+<p>Dynamic difficulty adjustment attempts to regulate the learning gradient algorithmically: if the player is succeeding too easily (gradient flattening), increase difficulty; if the player is failing too often (gradient approaching overload), decrease difficulty. Mortazavi, Moradi, and Vahabie (2024, <em>Multimedia Tools and Applications</em>) reviewed the literature and found that most studies showed significant DDA effects on enjoyment, flow, and immersion.</p>
+<p>But DDA introduces a trade-off that the learning gradient framework makes explicit. Baldwin et al. (2017, CHI PLAY) found that player-oriented DDA preserved sense of control while system-oriented DDA reduced self-consciousness. The trade-off: transparent DDA (the player knows difficulty is being adjusted) preserves agency but may undermine the sense of genuine achievement. Hidden DDA (the player does not know) preserves the feeling of achievement but undermines agency if discovered, and Csikszentmihalyi identified sense of control as a prerequisite for flow.</p>
+<p>The model suggests that <strong>player-directed difficulty regulation</strong> (geographic freedom in <em>Elden Ring</em>, difficulty settings in <em>Halo</em>, build diversity in <em>Dark Souls</em>) is generally superior to algorithmic DDA because it preserves both agency and achievement. The player chose this challenge; they know the system did not adjust for them; and their success is therefore attributable to their own improvement. DDA is most useful in contexts where player-directed regulation is impractical: educational games for children, rehabilitation games for patients, and casual games where explicit difficulty settings would be stigmatising.</p>
+    <h3 id="19-5-transition">19.5 Transition</h3>
+<p>The cross-genre analysis confirms that the learning gradient framework applies across every major game genre, though the specific gradient profile; its shape, its timescale, its dominant prediction error type; varies characteristically. The case studies that follow demonstrate these principles in depth through individual games.</p>
+  </article>
+  <nav class="pagenav">
+    <a href="/game-design-dynamics-of-learning/part-5.html">&larr; Part V</a>
+    <a href="/game-design-dynamics-of-learning/part-7.html">Part VII &rarr;</a>
+  </nav>
+</div>
+</main>
+
+<footer class="site">
+  <div class="wide">
+    <span>&copy; 2026 Benjamin Michael Haire</span>
+    <a href="/">Back to the project library</a>
+  </div>
+</footer>
+
+<!-- ISEGORIA:FOOT -->
+<footer id="ig-footer"><div><a href="/">Isegoria · Benjamin Haire</a><nav aria-label="Site links"><a href="/">Back to home</a><a href="/library.html">Browse the library</a><a href="#ig-content">Back to top</a></nav></div></footer>
+<!-- /ISEGORIA:FOOT -->
+</body>
+</html>
