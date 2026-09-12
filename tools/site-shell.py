@@ -10,6 +10,7 @@ from html import escape, unescape
 import argparse, hashlib, re
 
 ROOT=Path(__file__).resolve().parents[1]
+ANALYTICS_ORIGIN='https://isegoria-analytics.isegoria-analytics.workers.dev'
 VERSION=hashlib.sha256((ROOT/'assets/site-shell.css').read_bytes()+(ROOT/'assets/site-shell.js').read_bytes()).hexdigest()[:10]
 HEAD_START='<!-- ISEGORIA:HEAD -->'; HEAD_END='<!-- /ISEGORIA:HEAD -->'
 NAV_START='<!-- ISEGORIA:NAV -->'; NAV_END='<!-- /ISEGORIA:NAV -->'
@@ -121,7 +122,12 @@ def apply(path,route,known):
     s=re.sub(r'</body>',foot+'\n</body>',s,count=1,flags=re.I)
     # Allow the shared first-party shell in wrapper CSPs without changing iframe sandboxing.
     def csp(m):
-        return re.sub(r'(script-src|style-src|font-src) (?!\x27self\x27)',r"\1 'self' ",m[0])
+        tag=re.sub(r'(script-src|style-src|font-src) (?!\x27self\x27)',r"\1 'self' ",m[0])
+        def connect(c):
+            sources=c[1].split()
+            if ANALYTICS_ORIGIN not in sources:sources.append(ANALYTICS_ORIGIN)
+            return 'connect-src '+' '.join(x for x in sources if x!="'none'")
+        return re.sub(r'connect-src\s+([^;\"]+)',connect,tag)
     s=re.sub(r'<meta\b[^>]*http-equiv="Content-Security-Policy"[^>]*>',csp,s,flags=re.I)
     # A document opens beside its containing page, keeping the site's navigation available.
     def pdf(m):
