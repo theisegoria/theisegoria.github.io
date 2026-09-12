@@ -52,10 +52,10 @@ Unless explicitly noted, all evidence columns are unassessed: lesson EN/JA, card
 | S02 | Learning and behaviour / 学習と行動 | Unassessed |
 | S03 | Identity and interaction / 自己と相互作用 | Unassessed |
 | S04 | Institutions and inequality / 制度と不平等 | Unassessed |
-| R01 | Argument comprehension / 議論の理解 | Unassessed; require original passages, not recall alone |
-| R02 | Inference and transfer / 推論と応用 | Unassessed; require justified distractor analysis |
+| R01 | Argument comprehension / 議論の理解 | R01 Public libraries bilingual draft: original passage, six questions, answer explanations; review and canonical module mapping pending |
+| R02 | Inference and transfer / 推論と応用 | R01 question 4 provides one transfer item with distractor explanations; broader practice pending |
 | R03 | Literary interpretation / 文学的解釈 | Unassessed; original prose and poetry exercises |
-| W01 | Thesis and counterargument / 主張と反論 | Unassessed; original writing prompts and rubric |
+| W01 | Thesis and counterargument / 主張と反論 | R01 includes one original writing extension and non-official self-review criteria; worked essays and broader practice pending |
 | W02 | Structure and revision / 構成と推敲 | Unassessed; annotated original example and revision task |
 
 ## Immediate release gates
