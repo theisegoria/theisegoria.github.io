@@ -9,6 +9,14 @@
   function ready(){
     const header=document.getElementById('ig-header');if(!header)return;
     const menu=header.querySelector('.ig-menu'),nav=header.querySelector('nav');
+    if(!menu||!nav)return;
+    // Older project releases share these assets but may still have the old header.
+    if(!header.querySelector('.ig-header-actions')){
+      const actions=document.createElement('div');actions.className='ig-header-actions';
+      const language=nav.querySelector('.ig-language');
+      if(language)actions.append(language.cloneNode(true));
+      actions.append(menu);nav.before(actions);
+    }
     header.dataset.enhanced='';
     const themeButton=header.querySelector('.ig-theme'),ja=document.documentElement.lang.startsWith('ja');
     if(themeable&&themeButton){

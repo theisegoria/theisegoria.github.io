@@ -42,13 +42,14 @@ def shell(route,title,ja,alternate=None,parent=None):
         current='page' if route==url else 'location' if cat and cat[1]==url else None
         links.append(f'<a href="{url}"'+(f' aria-current="{current}"' if current else '')+f'>{label}</a>')
     other='en' if ja else 'ja'; other_url=(alternate or ('/' if ja else '/ja/')).replace('https://theisegoria.github.io','')
-    links.append(f'<a class="ig-language" href="{escape(other_url,quote=True)}" hreflang="{other}" lang="{other}">'+('English' if ja else '日本語')+'</a>')
+    language=f'<a class="ig-language" href="{escape(other_url,quote=True)}" hreflang="{other}" lang="{other}">'+('English' if ja else '日本語')+'</a>'
+    links.append(language)
     links.append('<button class="ig-theme" type="button" hidden>'+('表示切替' if ja else 'Theme')+'</button>')
     nav=f'''{NAV_START}
 <a class="ig-skip" href="#ig-content">{'本文へ移動' if ja else 'Skip to content'}</a>
 <header id="ig-header"><div class="ig-nav-inner">
 <a class="ig-brand" href="{home}" aria-label="Isegoria, {'ホーム' if ja else 'home'}"><strong>ISEGORIA</strong><span>Benjamin Haire</span></a>
-<button class="ig-menu" type="button" aria-expanded="false" aria-controls="ig-primary">{'メニュー' if ja else 'Menu'}</button>
+<div class="ig-header-actions">{language}<button class="ig-menu" type="button" aria-expanded="false" aria-controls="ig-primary">{'メニュー' if ja else 'Menu'}</button></div>
 <nav id="ig-primary" aria-label="{'メインナビゲーション' if ja else 'Primary navigation'}">{''.join(links)}</nav>
 </div></header>'''
     if route not in ['/', '/ja/']:

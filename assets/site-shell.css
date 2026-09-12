@@ -29,6 +29,7 @@ html.ig-editorial{--paper:var(--ig-paper);--paper-sunk:var(--ig-panel);--paper-d
 #ig-header nav a[aria-current]{color:var(--ig-ink);text-decoration:underline;text-decoration-color:var(--ig-accent);text-underline-offset:7px;text-decoration-thickness:2px}
 #ig-header .ig-language{border-left:1px solid var(--ig-rule);border-radius:0;margin-left:7px;padding-left:17px}
 #ig-header .ig-menu{display:none;border:1px solid var(--ig-rule);background:transparent;color:var(--ig-ink);padding:10px 13px;font:13px var(--ig-sans);border-radius:3px;cursor:pointer}
+#ig-header .ig-header-actions{display:none}
 #ig-breadcrumb{width:min(var(--ig-width),100% - var(--ig-gutter)*2);margin:0 auto;padding:15px 0;color:var(--ig-muted);font:12px/1.6 var(--ig-sans);display:flex;gap:9px;align-items:baseline;flex-wrap:wrap;border:0;background:none;position:static}
 #ig-breadcrumb a{font:inherit;color:inherit;text-decoration:none;margin:0;padding:0;letter-spacing:0;text-transform:none}
 #ig-breadcrumb a:hover{color:var(--ig-accent);text-decoration:underline}
@@ -54,6 +55,10 @@ html.ig-embedded #ig-header,html.ig-embedded #ig-breadcrumb,html.ig-embedded #ig
 html.ig-embedded{scroll-padding-top:0;--ig-nav-height:0px}
 @media(max-width:1000px){
  #ig-header .ig-nav-inner{flex-wrap:wrap;gap:0;min-height:70px}
+ #ig-header .ig-header-actions{display:flex;align-items:center;gap:6px;margin-left:auto}
+ #ig-header .ig-header-actions .ig-language{display:flex;align-items:center;justify-content:center;min-height:44px;padding:10px 9px;color:var(--ig-ink);font:14px/1.4 var(--ig-sans);text-decoration:none;white-space:nowrap}
+ #ig-header .ig-header-actions .ig-language:hover{color:var(--ig-accent);background:var(--ig-panel)}
+ #ig-header:has(.ig-header-actions) nav .ig-language{display:none}
  #ig-header nav{width:100%;padding:0 0 12px;gap:0}
  #ig-header nav a{padding:11px 12px}
  #ig-header[data-enhanced] .ig-menu{display:block}
