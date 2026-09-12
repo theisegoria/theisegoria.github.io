@@ -98,7 +98,7 @@ def apply(path,route,known):
     if candidate in known and candidate not in ['/','/ja/'] and known[candidate][1]==ja:parent=(known[candidate][0],candidate)
     if ja:s=s.replace('aria-label="On this page"','aria-label="このページの目次"')
     nav,foot=shell(route,title,ja,alt,parent)
-    kind='app' if route in ['/carrera-panda/','/neuron-action-potential/','/watch-mechanisms/','/watch-mechanisms/ja/','/monster-tech-correlation/'] else 'embed' if 'srcdoc=' in s or route.endswith(('/curves.html','/selected.html')) else 'editorial'
+    kind='app' if route in ['/kef-coda-w/','/carrera-panda/','/neuron-action-potential/','/watch-mechanisms/','/watch-mechanisms/ja/','/monster-tech-correlation/'] else 'embed' if 'srcdoc=' in s or route.endswith(('/curves.html','/selected.html')) else 'editorial'
     fixed=route.startswith(('/watch-lab/','/quartz-lab/','/ja/quartz-lab/','/real-time-natural-worlds/','/concerta-catecholamine-model/'))
     def html_attrs(m):
         t=m[0];t=re.sub(r'\sclass=["\']([^"\']*)["\']',lambda c:' class="'+re.sub(r'\big-(?:document|editorial)\b','',c[1]).strip()+'"',t)
