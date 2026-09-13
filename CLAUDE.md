@@ -169,3 +169,21 @@ Run `audit-site.py --projects PATH` against sibling project checkouts to also
 check their HTML and Monster's `dist/client` build. Publish the main site's
 shared assets first, then the project pages. Verify the live pages after each
 Pages deployment completes.
+
+## Analytics on every page
+
+After adding any HTML entry point or changing `assets/analytics.js`, run:
+
+```
+python3 tools/track-pages.py
+python3 tools/track-pages.py --check
+node --test tests/analytics.test.mjs
+```
+
+This adds a deferred, versioned collector without changing custom layouts.
+The collector handles PDF links and actual document-language changes, so
+custom language controls must set `document.documentElement.lang` when the
+language changes. It waits for application initialization before recording
+the initial language. Shared-shell loading is a compatibility fallback for
+separate project repositories; repeated script execution is guarded.
+Tests intercept collection locally. Never send synthetic events to production.

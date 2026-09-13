@@ -25,21 +25,39 @@
   };
   const language=()=>document.documentElement.lang.startsWith('ja')?'ja':'en';
   const emit=(event,path,lang=language())=>{
+    if(navigator.globalPrivacyControl||navigator.doNotTrack==='1'||window.doNotTrack==='1')return;
     let referrer='';try{referrer=document.referrer?new URL(document.referrer).origin:'';}catch{}
     const current=session();
     fetch(endpoint,{method:'POST',mode:'cors',credentials:'omit',keepalive:true,
       headers:{'Content-Type':'text/plain;charset=UTF-8'},
       body:JSON.stringify({event,path,language:lang,referrer,session_id:current.id,attribution:current.attribution})}).catch(()=>{});
   };
-  emit('pageview',location.pathname);
-  window.addEventListener('pageshow',event=>{if(event.persisted)emit('pageview',location.pathname);});
-  document.addEventListener('click',event=>{
-    if(event.defaultPrevented||event.button>0)return;
-    const anchor=event.target.closest?.('a[href]');if(!anchor)return;
-    let target;try{target=new URL(anchor.href,location.href);}catch{return;}
-    if(target.origin!==location.origin)return;
-    if(/\.pdf$/i.test(target.pathname))emit('pdf',target.pathname);
-    const lang=(anchor.hreflang||anchor.dataset.languageSelect||'').slice(0,2);
-    if(['en','ja'].includes(lang))emit('language',location.pathname,lang);
-  });
+  const start=()=>{
+    let lastLanguage=language();
+    emit('pageview',location.pathname);
+    window.addEventListener('pageshow',event=>{if(event.persisted){lastLanguage=language();emit('pageview',location.pathname);}});
+    const linkEvent=event=>{
+      if(event.defaultPrevented||(event.type==='auxclick'?event.button!==1:event.button>0))return;
+      const anchor=event.target.closest?.('a[href]');if(!anchor)return;
+      let target;try{target=new URL(anchor.href,location.href);}catch{return;}
+      if(target.origin!==location.origin)return;
+      if(/\.pdf$/i.test(target.pathname))emit('pdf',target.pathname);
+      const lang=(anchor.hreflang||anchor.dataset.languageSelect||'').slice(0,2);
+      if(['en','ja'].includes(lang)&&lang!==lastLanguage){
+        emit('language',location.pathname,lang);lastLanguage=lang;
+      }
+    };
+    document.addEventListener('click',linkEvent);
+    document.addEventListener('auxclick',linkEvent);
+    // Custom buttons/selects change the document language without navigating.
+    // Observe the actual result, so unrelated buttons and repeated selections
+    // do not create language events. Anchor events above share this deduplication.
+    new MutationObserver(()=>{
+      const current=language();
+      if(current!==lastLanguage){lastLanguage=current;emit('language',location.pathname,current);}
+    }).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+  };
+  // Deferred application modules initialize query-selected translations first.
+  if(document.readyState==='loading'||(document.currentScript?.defer&&document.readyState==='interactive'))document.addEventListener('DOMContentLoaded',start,{once:true});
+  else start();
 })();

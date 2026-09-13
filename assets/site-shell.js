@@ -9,7 +9,7 @@
   if(themeable){document.documentElement.dataset.theme=theme;document.documentElement.style.colorScheme=theme}
   if(window.self!==window.top)document.documentElement.classList.add('ig-embedded');
   function ready(){
-    if(location.hostname==='theisegoria.github.io'&&window.self===window.top&&!navigator.globalPrivacyControl&&navigator.doNotTrack!=='1'&&window.doNotTrack!=='1'){
+    if(!document.querySelector('script[data-isegoria-analytics]')&&location.hostname==='theisegoria.github.io'&&window.self===window.top&&!navigator.globalPrivacyControl&&navigator.doNotTrack!=='1'&&window.doNotTrack!=='1'){
       const analytics=document.createElement('script');analytics.src='/assets/analytics.js?v=20260913';analytics.async=true;document.head.append(analytics);
     }
     const header=document.getElementById('ig-header');if(!header)return;
