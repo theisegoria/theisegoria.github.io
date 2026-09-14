@@ -66,8 +66,14 @@ function updateLibrary() {
     if (!card.hidden) count += 1;
   });
 
+  // A section heading with nothing under it reads as a broken page, so it goes too.
+  document.querySelectorAll('[data-group]').forEach((group) => {
+    const rows = [...group.querySelectorAll('.publication-card')];
+    group.hidden = rows.length > 0 && rows.every((row) => row.hidden);
+  });
+
   if (visibleCount) visibleCount.textContent = String(count);
-  if (publicationWord) publicationWord.textContent = isJapanese ? '冊' : (count === 1 ? 'publication' : 'publications');
+  if (publicationWord) publicationWord.textContent = isJapanese ? '件' : (count === 1 ? 'page' : 'pages');
   if (noResults) noResults.hidden = count !== 0;
 }
 

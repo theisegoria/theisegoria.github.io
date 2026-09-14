@@ -440,3 +440,48 @@ p { margin: 0; }
   .latest-row .index.dated > a { grid-template-columns: 1fr; }
   .latest-row .index.dated .d, .latest-row .index.dated .tail { grid-column: 1; }
 }
+
+/* ---------- the landing page bio, folded ---------- */
+/* The work is the point of the site, so the long version of the biography sits
+   behind a disclosure rather than three screens of scrolling on a phone. */
+.bio-more { margin-top: 1.1rem; }
+.bio-more > summary {
+  font-family: var(--sans); font-size: .8125rem; letter-spacing: .02em;
+  color: var(--ink-soft); cursor: pointer; list-style: none;
+  display: inline-flex; align-items: center; gap: .5rem;
+  border-bottom: 1px solid var(--rule-firm); padding-bottom: .3rem;
+  min-height: 2.75rem;
+}
+.bio-more > summary::-webkit-details-marker { display: none; }
+.bio-more > summary::after {
+  content: ""; width: .42rem; height: .42rem; border-right: 1.4px solid currentColor;
+  border-bottom: 1.4px solid currentColor; transform: translateY(-.14em) rotate(45deg);
+  transition: transform .18s ease;
+}
+.bio-more[open] > summary::after { transform: translateY(.06em) rotate(-135deg); }
+.bio-more > summary:hover { color: var(--ink); border-bottom-color: var(--accent); }
+.bio-more[open] > summary { margin-bottom: .35rem; }
+.bio-more .deck:first-of-type { margin-top: 1rem; }
+
+/* ---------- the library filter bar ---------- */
+.library-controls { margin: 2.25rem 0 0; }
+.library-controls .filters { gap: .4rem; }
+.library-controls .filters button { min-height: 2.25rem; }
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
+  overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;
+}
+.no-results[hidden] { display: none; }
+.section[hidden] { display: none; }
+/* .index > a sets display:grid, which outranks the browser rule for [hidden],
+   so a filtered-out card stays on screen unless it is hidden explicitly. */
+.publication-card[hidden], .index > a[hidden] { display: none !important; }
+@media (max-width: 560px) {
+  /* On a phone the chips wrap to three rows, so they need room to be tapped. */
+  .library-controls { margin-top: 1.75rem; }
+  .library-controls .filters button { min-height: 2.5rem; padding: .45rem .85rem; }
+  .search-field input { font-size: 1rem; }
+}
+
+/* ---------- the activity column, when it has nothing to show yet ---------- */
+.gh-activity .gh-list:empty { min-height: 6rem; }

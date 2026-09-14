@@ -254,7 +254,7 @@ def main():
                     help="Repeatable, e.g. --tail PDF --tail Interactive")
     ap.add_argument("--date", default=None, help="YYYY-MM-DD, defaults to today")
     ap.add_argument("--section", default="preoccupations",
-                    choices=["preoccupations", "guides", "books"],
+                    choices=["preoccupations", "guides", "books", "interactive"],
                     help="Catalogue section that becomes the piece's permanent home")
     ap.add_argument("--section-desc", default=None,
                     help="Shorter description for the catalogue card. "

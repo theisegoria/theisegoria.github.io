@@ -15,10 +15,18 @@ tools/                Maintenance scripts (see below)
 ja/<piece>/index.html Its Japanese edition, where one exists
 ```
 
-The English index has five sections: **Latest**, Guides for students,
-Preoccupations, Books, Selected software. Each of the last four is a
-subject-ordered catalogue with a count in its label. Latest is the only
-one ordered by time.
+The English index has six sections: **Latest**, Guides for students,
+Interactive explainers, Preoccupations, Books, Selected software. Each of the
+last five is a subject-ordered catalogue with a count in its label. Latest is
+the only one ordered by time.
+
+**Interactive explainers** (`id="interactive"`) holds the labs: a mechanism or
+device taken apart and made operable in the browser. **Preoccupations** holds
+written research, which may carry figures but is read rather than driven. The
+split exists because Preoccupations had grown past twenty entries and the two
+kinds of page are read for different reasons. A piece that is mostly prose with
+one diagram is a Preoccupation; a piece whose point is the thing you can turn
+is Interactive.
 
 ## The Latest section
 
@@ -56,7 +64,7 @@ vanishes from the site once four newer ones push it off. It:
   count label
 
 `--section` chooses the catalogue section, default `preoccupations`, also
-`guides` or `books`. `--section-desc` overrides the card's description if the
+`guides`, `books` or `interactive`. `--section-desc` overrides the card's description if the
 trimmed sentence does not read well. `--no-section` skips filing, and is only
 right for a sub-page whose parent is already filed. `--dry-run` prints the
 Latest block without writing. `--date YYYY-MM-DD` overrides today.
@@ -159,6 +167,29 @@ python3 tools/audit-site.py
 The generator writes static links, requires no runtime framework, and versions
 its CSS/JS by content hash. Do not hand-edit the `ISEGORIA` marker blocks.
 The library generator keeps every article and companion page discoverable.
+
+## The library is filtered, and the filter is optional
+
+`library.html` and `ja/library.html` carry a search box and a row of filter
+chips above the catalogue. Both are progressive enhancement: the full list is
+in the HTML, and `assets/site.js` hides rows only once it loads, so a reader
+without JavaScript still gets everything. `tools/update-library.py` writes the
+controls, and tags every row with `data-tags` and `data-search`.
+
+Three tags are derived from the page itself rather than declared by hand:
+`interactive` when the page ships something the reader can operate (a canvas,
+a range input, an app.js, a model-viewer), `pdf` when it links one, and
+`bilingual` when it declares an alternate-language edition. If a lab is not
+showing up under Interactive, widen the `INTERACTIVE` pattern in that script
+rather than tagging the page by hand.
+
+Book chapter pages are deliberately left out of the catalogue: the book's own
+contents page lists them, and seven part pages beside it read as clutter.
+That exclusion lives in `SUBPAGE` in the same script.
+
+Every catalogue row needs a real `<meta name="description">`, because the card
+falls back to "Explore this page" without one. `tools/update-library.py` prints
+nothing about this, so check for the placeholder after adding a page.
 
 Separate Pages repositories share the same root assets. Their routes and
 metadata live in `tools/project-pages.json`; refresh those entries when adding
