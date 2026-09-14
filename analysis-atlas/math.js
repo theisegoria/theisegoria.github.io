@@ -1,0 +1,21 @@
+// Explicit text-to-TeX pairs keep prose editable while rendering accessible MathML.
+const TEX_PAIRS=[
+['f′(z)=lim h→0 [f(z+h)−f(z)]/h',String.raw`f'(z)=\lim_{h\to0}\frac{f(z+h)-f(z)}h`],
+['‖w‖∞ ≤ ‖w‖₂ ≤ ‖w‖₁ ≤ 2‖w‖∞',String.raw`\|w\|_\infty\le\|w\|_2\le\|w\|_1\le2\|w\|_\infty`],
+['bₖ=⟨x,sin(kx)⟩/π=2(−1)ᵏ⁺¹/k',String.raw`b_k=\frac{\langle x,\sin(kx)\rangle}{\pi}=\frac{2(-1)^{k+1}}k`],
+['δ=min(1, ε/(2|a|+1))',String.raw`\delta=\min\!\left(1,\frac{\varepsilon}{2|a|+1}\right)`],
+['|x²−a²|=|x−a||x+a|',String.raw`|x^2-a^2|=|x-a||x+a|`],
+['d(x,z)≤d(x,y)+d(y,z)',String.raw`d(x,z)\le d(x,y)+d(y,z)`],
+['τ = {∅,{a},{a,b},X}',String.raw`\tau=\{\varnothing,\{a\},\{a,b\},X\}`],
+['‖fₙ′‖₂=√π',String.raw`\|f_n'\|_2=\sqrt\pi`],['‖fₙ‖₂=√π/n',String.raw`\|f_n\|_2=\sqrt\pi/n`],
+['d(x,y)=d(y,x)',String.raw`d(x,y)=d(y,x)`],['d(u,v)=‖u−v‖',String.raw`d(u,v)=\|u-v\|`],
+['0<|x−a|<δ',String.raw`0<|x-a|<\delta`],['|f(x)−L|<ε',String.raw`|f(x)-L|<\varepsilon`],['d(xₘ,xₙ)<ε',String.raw`d(x_m,x_n)<\varepsilon`],
+['fₙ(x)=sin(nx)/n',String.raw`f_n(x)=\sin(nx)/n`],['fₙ=sin(nx)/n',String.raw`f_n=\sin(nx)/n`],['sin(nx)/n',String.raw`\sin(nx)/n`],['sin(x),…,sin(Nx)',String.raw`\sin x,\ldots,\sin(Nx)`],
+['2π³/3−4π',String.raw`\frac{2\pi^3}3-4\pi`],['‖Tv‖≤C‖v‖',String.raw`\|Tv\|\le C\|v\|`],['2|a|δ+δ²',String.raw`2|a|\delta+\delta^2`],['|x+a|<2|a|+1',String.raw`|x+a|<2|a|+1`],
+['∮ dz/(z−a)',String.raw`\oint\frac{dz}{z-a}`],['1/(z−a)',String.raw`1/(z-a)`],['fₙ(x)=x/n',String.raw`f_n(x)=x/n`],['xₙ=1/n',String.raw`x_n=1/n`],['f(x)=x²',String.raw`f(x)=x^2`],['f(x)=x',String.raw`f(x)=x`],
+['√(u²+v²)',String.raw`\sqrt{u^2+v^2}`],['max(|u|,|v|)',String.raw`\max(|u|,|v|)`],['d(x,y)<1',String.raw`d(x,y)<1`],['d(x,y)=0',String.raw`d(x,y)=0`],['m,n≥N',String.raw`m,n\ge N`],
+['x²−a²',String.raw`x^2-a^2`],['−π,π',String.raw`-\pi,\pi`],['[−π,π]',String.raw`[-\pi,\pi]`],['(X,τ)',String.raw`(X,\tau)`],['A={b}',String.raw`A=\{b\}`],['X = {a,b,c}',String.raw`X=\{a,b,c\}`],['f=u+iv',String.raw`f=u+iv`],['f⁻¹(V)',String.raw`f^{-1}(V)`],
+['z=1+i',String.raw`z=1+i`],['z²=2i',String.raw`z^2=2i`],['bⁿ→0',String.raw`b^n\to0`],['xⁿ',String.raw`x^n`],['xₙ',String.raw`x_n`],['fₙ',String.raw`f_n`],['x²',String.raw`x^2`],['z²',String.raw`z^2`],['eᶻ',String.raw`e^z`],['h̄/h',String.raw`\overline h/h`],['h̄',String.raw`\overline h`],['ℝⁿ',String.raw`\mathbb R^n`],['ℝ²',String.raw`\mathbb R^2`],['ℝ',String.raw`\mathbb R`],['L²',String.raw`L^2`],['‖v‖',String.raw`\|v\|`],['{b,c}',String.raw`\{b,c\}`],['{a,b}',String.raw`\{a,b\}`],['{a}',String.raw`\{a\}`],['{b}',String.raw`\{b\}`],['∅',String.raw`\varnothing`],['ε>0',String.raw`\varepsilon>0`],['δ>0',String.raw`\delta>0`],['δ≤1',String.raw`\delta\le1`],['δ=0.2',String.raw`\delta=0.2`],['δ=0.3',String.raw`\delta=0.3`],['ε=0.5',String.raw`\varepsilon=0.5`],['a=1',String.raw`a=1`],['x<1',String.raw`x<1`],['x=1',String.raw`x=1`],['b<1',String.raw`b<1`],['N=1',String.raw`N=1`],['x=y',String.raw`x=y`],['y=x',String.raw`y=x`],['2sin(x)',String.raw`2\sin x`],['|x|/n',String.raw`|x|/n`],['1/N',String.raw`1/N`],['1/n',String.raw`1/n`],['2πi',String.raw`2\pi i`],['±π',String.raw`\pm\pi`],['ε',String.raw`\varepsilon`],['δ',String.raw`\delta`],['τ',String.raw`\tau`],['[0,1]',String.raw`[0,1]`],['(0,1]',String.raw`(0,1]`],['(0,1)',String.raw`(0,1)`],['[0,b]',String.raw`[0,b]`]
+].sort((a,b)=>b[0].length-a[0].length);
+const TEX_MAP=new Map(TEX_PAIRS),TEX_RE=new RegExp(TEX_PAIRS.map(([s])=>s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')).join('|'),'g');
+function typesetProse(root){const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode:n=>n.parentElement.closest('.katex,script,style,select,option,svg')?NodeFilter.FILTER_REJECT:NodeFilter.FILTER_ACCEPT});let nodes=[],n;while(n=walker.nextNode())nodes.push(n);for(const node of nodes){let source=node.textContent,last=0,hit=false,fragment=document.createDocumentFragment();TEX_RE.lastIndex=0;for(const m of source.matchAll(TEX_RE)){hit=true;fragment.append(document.createTextNode(source.slice(last,m.index)));const span=document.createElement('span');span.innerHTML=katex.renderToString(TEX_MAP.get(m[0]),{throwOnError:true,output:'htmlAndMathml'});fragment.append(span);last=m.index+m[0].length;}if(hit){fragment.append(document.createTextNode(source.slice(last)));node.replaceWith(fragment)}}}
