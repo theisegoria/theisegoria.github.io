@@ -12,7 +12,7 @@ Priority: bring English and Japanese retrieval cards into parity with every cano
 
 Each module needs cards for its substantive learning objectives, not a fixed quota: mechanisms, anatomy/localisation, pathology, discriminating findings, calculations where appropriate, and common reasoning errors. Keep answers focused; split multi-part lists. Use short clinical vignettes after prerequisite cards. Avoid patient-specific prescribing. Track source modules and review changed text before updating cards. Semantic bilingual review and actual Anki import tests remain required.
 
-Local source snapshot, 2026-09-13: 182 paired objectives across 11 populated modules, including 16 in module 101-1. No claim of whole-module or curriculum completeness is made. The coverage ledger inventories 244 modules, including those with zero cards. GAMSAT/MCAT prerequisites now take priority while existing clinical material is preserved. Local exports may be ahead of public downloads. Publish downloadable packages only after package/import QA; retain editable source alongside them.
+Local source snapshot, 2026-09-14: 254 paired objectives across 14 populated modules, including 16 in 101-1, 28 in 102-1, and 22 each in 105-1 and 105-2. These are 254 English plus 254 Japanese notes. The coverage ledger inventories 246 modules; 232 still have no cards. No claim of whole-module or curriculum completeness is made. General-chemistry prerequisites now have two full matched narration lessons and 44 paired objectives. See `105 coverage and sources.md` for the teaching/source crosswalk and limitations. Local exports may be ahead of public downloads. Publish native packages only after package/import QA; retain editable source alongside them.
 
 ## Release checks
 

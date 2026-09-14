@@ -27,9 +27,9 @@ Unless explicitly noted, all evidence columns are unassessed: lesson EN/JA, card
 | Q05 | Uncertainty and sampling / 不確実性と標本抽出 | 101-1: cards 0006–0008 and practice address selected ideas only |
 | Q06 | Experimental design / 実験計画 | 101-1 practice covers session confounding; audit controls, randomisation and replication |
 | C01 | Atoms and bonding / 原子と結合 | Unassessed |
-| C02 | Stoichiometry and solutions / 化学量論と溶液 | Bilingual 101-1 Stoichiometry bridge supplement: eight worked questions; arithmetic checked, full lesson/cards/review/release pending |
+| C02 | Stoichiometry and solutions / 化学量論と溶液 | New full bilingual module 105-1 and 22 paired objectives; original worked examples, source crosswalk and numerical tests. Earlier eight-question bridge preserved. Scientific/translation review remains pending; redox and other listed prerequisites still incomplete. |
 | C03 | Gases / 気体 | Unassessed |
-| C04 | Equilibrium and buffers / 平衡と緩衝液 | Unassessed |
+| C04 | Equilibrium and buffers / 平衡と緩衝液 | New full bilingual module 105-2 and 22 paired objectives: proton transfer, pH, weak-acid approximation, buffer capacity, titration regions and conjugate equilibria. Not a complete equilibrium curriculum; solubility and broader cases remain. |
 | C05 | Thermodynamics and kinetics / 熱力学と反応速度 | Unassessed |
 | C06 | Redox / 酸化還元 | Unassessed |
 | O01 | Functional groups / 官能基 | Unassessed |

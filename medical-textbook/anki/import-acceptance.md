@@ -14,7 +14,7 @@ Create one custom note type with fields in this order: ID, Front, Back, Source. 
 
 1. Import module 101-1 EN and JA: expect 16 notes and 16 cards in each language for this release. Inspect Japanese text, punctuation, source text and tags. No ID should appear as the question.
 2. Import the same two files again using existing-note update matching: expect zero additional notes/cards. Record the result screen.
-3. Import combined EN and JA files: expect 182 notes per language, not 198. This checks module-to-combined deduplication with unchanged IDs.
+3. Import combined EN and JA files: expect 254 notes per language, not 270. This checks module-to-combined deduplication with unchanged IDs. The two chemistry module files each contain 22 notes per language, also already included in the combined total.
 4. Repeat in a fresh disposable profile with combined files first, then module files. Expect the same final totals.
 5. Review one test card. Record its card ID, due value, interval, repetitions and review-history count. Edit only its answer in a temporary input copy, preserving ID. Reimport. The answer must change while card identity and scheduling/history remain unchanged. Do not edit the canonical source for this test.
 6. Confirm the corresponding card in the other language is unchanged by the single-language update.

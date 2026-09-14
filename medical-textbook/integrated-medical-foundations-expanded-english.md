@@ -12,6 +12,8 @@ The prose is an original synthesis informed by the local reference library: Open
 
 # Chapter 1: Homeostasis, Cellular Energetics, and Physiological Reserve
 
+## TTS module 1: Foundations
+
 ## Listening guidance
 
 This review explains how the body keeps internal conditions within workable ranges. Pause after each retrieval prompt and answer aloud before continuing.
@@ -165,6 +167,8 @@ Five. Epithelium forms barriers and exchange surfaces. Connective tissue support
 Original private-study synthesis. Primary references: OpenStax Anatomy and Physiology 2e, chapters 1, 3, and 4; Guyton and Hall Textbook of Medical Physiology, chapter 1; Robbins Basic Pathology, cellular adaptation and injury. OpenStax content is licensed under Creative Commons Attribution NonCommercial ShareAlike 4.0.
 
 # Chapter 2: Membranes, Signalling, and Excitable Cells
+
+## TTS module 1: Foundations
 
 ## Listening guidance
 
@@ -322,6 +326,8 @@ Original private-study synthesis. Primary references: OpenStax Anatomy and Physi
 
 # Chapter 3: Genes, Proteins, Adaptation, Injury, and Cell Death
 
+## TTS module 1: Foundations
+
 ## Orientation
 
 Disease often begins when a cell cannot maintain its structure, energy supply, information, or environment. The outcome depends on the nature of the stress, its intensity and duration, the affected cell type, and the cell's previous state. A mild stress may produce adaptation. A more severe but brief stress may produce reversible injury. Persistent or overwhelming injury causes death by necrosis, apoptosis, or related pathways. These cellular events scale upward into tissue dysfunction, clinical signs, and organ failure.
@@ -477,6 +483,8 @@ Six. Biomarkers show injury and have specific kinetics, but different mechanisms
 Original private-study synthesis informed by OpenStax Biology 2e and Anatomy and Physiology 2e; Robbins Basic Pathology, cellular adaptation, injury, and death; Guyton and Hall Textbook of Medical Physiology, cellular function and homeostasis; and Katzung Basic and Clinical Pharmacology for examples of toxic and therapeutic mechanisms.
 
 # Chapter 4: Inflammation, Healing, Immunity, and Infection
+
+## TTS module 1: Foundations
 
 ## Orientation
 
@@ -640,6 +648,8 @@ Original private-study synthesis informed by OpenStax Microbiology, Biology 2e, 
 
 # Chapter 5: Pharmacokinetics, Pharmacodynamics, and Safe Prescribing
 
+## TTS module 1: Foundations
+
 ## Orientation
 
 Pharmacology connects a dose given to a patient with a concentration at a target and a biological response. Pharmacokinetics asks what the body does to a drug through absorption, distribution, metabolism, and excretion. Pharmacodynamics asks what the drug does to the body through receptors, enzymes, channels, transporters, and non-specific physical or chemical actions. Safe prescribing adds indication, evidence, patient factors, interactions, monitoring, adherence, cost, and a plan to stop or adjust treatment.
@@ -801,6 +811,8 @@ Six. Indication, goal, patient factors, drug and dose, administration, benefits,
 Original private-study synthesis informed by OpenStax Pharmacology for Nurses; Katzung Basic and Clinical Pharmacology, pharmacokinetics, pharmacodynamics, and autonomic principles; OpenStax Medical-Surgical Nursing for medication administration and monitoring; Guyton and Hall for organ physiology affecting disposition; and Robbins for organ dysfunction and adverse tissue responses.
 
 # Chapter 6: Clinical Reasoning, History, Examination, and Diagnostic Probability
+
+## TTS module 1: Foundations
 
 ## Orientation
 
@@ -972,6 +984,8 @@ Original private-study synthesis informed by Talley and O'Connor's Clinical Exam
 
 # Chapter 7: Cardiac Electrophysiology and the Cardiac Cycle
 
+## TTS module 1: Foundations
+
 ## Orientation
 
 The heart converts coordinated electrical activation into pressure and flow. Electrical impulses must arise automatically, spread in the correct sequence, trigger calcium-dependent contraction, and then terminate so chambers can relax and refill. Mechanical output depends on preload, contractility, afterload, heart rate, rhythm, valve function, and myocardial oxygen supply. Disturbance at any level can cause syncope, congestion, ischaemia, shock, or sudden death.
@@ -1131,6 +1145,8 @@ Six. A circuit, unidirectional block, and conduction slow enough for previously 
 Original synthesis informed by Guyton and Hall, cardiac muscle, rhythm, electrocardiography, cardiac output, and coronary circulation; OpenStax Anatomy and Physiology 2e; Katzung and OpenStax Pharmacology for autonomic and antiarrhythmic mechanisms; Robbins for myocardial adaptation and injury; and Talley and O'Connor for clinical rhythm assessment.
 
 # Chapter 8: Haemodynamics, Vascular Control, and Blood Pressure
+
+## TTS module 1: Foundations
 
 ## Orientation
 
@@ -1302,6 +1318,8 @@ Original synthesis informed by Guyton and Hall, circulation, microcirculation, v
 
 # Chapter 9: Ischaemia, Heart Failure, Valve Disease, and Arrhythmia
 
+## TTS module 1: Foundations
+
 ## Orientation
 
 Cardiovascular disease often reflects failure of supply, pump, valve, rhythm, or vascular control, with overlap between categories. Coronary ischaemia impairs myocardium and can trigger arrhythmia. Valve disease changes pressure and volume loads and can lead to heart failure. Heart failure activates compensations that initially support perfusion but later worsen congestion and remodelling. Diagnosis requires combining symptoms, examination, electrocardiography, biomarkers, and imaging rather than relying on one finding.
@@ -1471,6 +1489,8 @@ Six. It may be ventricular tachycardia and can deteriorate rapidly; inappropriat
 Original synthesis informed by Guyton and Hall, coronary circulation, cardiac failure, valves, and arrhythmia; Robbins, atherosclerosis, ischaemic heart disease, myocardium, and valves; Katzung and OpenStax Pharmacology, cardiovascular drugs; OpenStax Medical-Surgical Nursing; and Talley and O'Connor, cardiovascular assessment.
 
 # Chapter 10: Shock, Perfusion Failure, Fluids, and Vasoactive Therapy
+
+## TTS module 1: Foundations
 
 ## Orientation
 
@@ -1652,6 +1672,8 @@ Original synthesis informed by Guyton and Hall, circulatory shock and cardiac ou
 
 # Chapter 11: Red Cells, Anaemia, Haemostasis, Thrombosis, and Transfusion
 
+## TTS module 1: Foundations
+
 ## Orientation
 
 Blood transports respiratory gases, nutrients, hormones, heat, immune cells, and waste. Red cells carry haemoglobin; platelets and coagulation preserve vascular integrity; plasma proteins maintain oncotic pressure and transport molecules. Disorders can reduce oxygen delivery, cause bleeding, promote thrombosis, or create both simultaneously. Interpretation begins with physiology, cell counts, morphology, coagulation tests, clinical context, and time course.
@@ -1822,6 +1844,8 @@ Original synthesis informed by Guyton and Hall, red cells, immunity, blood group
 
 # Chapter 12: Cardiovascular History, Examination, and Core Investigations
 
+## TTS module 1: Foundations
+
 ## Orientation
 
 Cardiovascular assessment identifies instability, characterises symptoms, estimates haemodynamics, localises disease, and selects investigations. The same finding can arise from different mechanisms, so history, examination, electrocardiography, biomarkers, and imaging must be integrated. Assessment should establish functional impact and trajectory, not merely name a lesion.
@@ -1991,6 +2015,8 @@ Six. The suspected mechanism, pre-test probability, patient factors, test accura
 Original synthesis informed by Talley and O'Connor's Clinical Examination, cardiovascular history and examination; Guyton and Hall, cardiovascular physiology; Robbins, cardiac and vascular pathology; OpenStax Medical-Surgical Nursing; and Katzung and OpenStax Pharmacology for medication and test interpretation context.
 
 # Chapter 13: Ventilation, Perfusion, Diffusion, and Gas Transport
+
+## TTS module 1: Foundations
 
 ## Orientation
 
@@ -2171,6 +2197,8 @@ Six. Low inspired oxygen, hypoventilation, diffusion limitation, ventilation-per
 Original synthesis informed by Guyton and Hall, pulmonary ventilation, gas exchange, gas transport, and respiratory regulation; OpenStax Anatomy and Physiology 2e; Robbins, pulmonary pathology; OpenStax Medical-Surgical Nursing; and Talley and O'Connor, respiratory assessment.
 
 # Chapter 14: Respiratory Mechanics, Control, and Respiratory Failure
+
+## TTS module 1: Foundations
 
 ## Orientation
 
@@ -2358,6 +2386,8 @@ Original synthesis informed by Guyton and Hall, respiratory mechanics, regulatio
 
 # Chapter 15: Obstructive, Restrictive, Vascular, Infectious, and Neoplastic Lung Disease
 
+## TTS module 1: Foundations
+
 ## Orientation
 
 Respiratory diseases alter airways, alveoli, interstitium, vessels, pleura, respiratory muscles, or control. Similar symptoms can arise from different compartments, while several mechanisms often coexist. Diagnosis uses exposure history, tempo, physiology, imaging, microbiology, and pathology. Treatment combines removal of causes, disease-specific therapy, vaccination and prevention, rehabilitation, oxygen or ventilation when indicated, and management of systemic effects.
@@ -2543,6 +2573,8 @@ Six. Causes have different mechanisms, and drugs useful for pulmonary arterial d
 Original synthesis informed by Robbins, pulmonary pathology; Guyton and Hall, respiratory pathophysiology; OpenStax Microbiology and Medical-Surgical Nursing; Katzung and OpenStax Pharmacology, respiratory and antimicrobial therapy; and Talley and O'Connor, respiratory disease correlation.
 
 # Chapter 16: Respiratory History, Examination, Blood Gases, and Investigations
+
+## TTS module 1: Foundations
 
 ## Orientation
 
@@ -2734,6 +2766,8 @@ Original synthesis informed by Talley and O'Connor's Clinical Examination, respi
 
 # Chapter 17: Glomerular Filtration, Tubular Transport, Concentration, and Clearance
 
+## TTS module 1: Foundations
+
 ## Orientation
 
 The kidneys filter plasma, selectively reclaim useful substances, secrete others, regulate water and electrolytes, control acidity, participate in blood-pressure regulation, produce erythropoietin, and activate vitamin D. Renal function depends on perfusion, glomerular barrier integrity, tubular transport, interstitial architecture, drainage, and hormonal control. A normal urine volume does not guarantee normal filtration, and a reduced filtration estimate does not reveal mechanism by itself.
@@ -2909,6 +2943,8 @@ Six. Production varies with muscle and diet, secretion contributes, and concentr
 Original synthesis informed by Guyton and Hall, renal circulation, filtration, tubular transport, concentration, and clearance; OpenStax Anatomy and Physiology 2e; Robbins, glomerular and tubular pathology; Katzung and OpenStax Pharmacology, diuretics and renal drug handling; and OpenStax Medical-Surgical Nursing.
 
 # Chapter 18: Sodium, Water, Potassium, and Volume Regulation
+
+## TTS module 1: Foundations
 
 ## Orientation
 
@@ -3091,6 +3127,8 @@ Six. Stabilise the myocardium, shift potassium intracellularly, and remove it fr
 Original synthesis informed by Guyton and Hall, body fluids, sodium, potassium, and volume regulation; OpenStax Anatomy and Physiology 2e; Robbins, oedema and kidney disease; Katzung and OpenStax Pharmacology, diuretics and electrolyte-altering drugs; and OpenStax Medical-Surgical Nursing.
 
 # Chapter 19: Acid-Base Physiology and Clinical Interpretation
+
+## TTS module 1: Foundations
 
 ## Orientation
 
@@ -3279,6 +3317,8 @@ Six. Opposing or compensated disorders can bring pH toward normal while carbon d
 Original synthesis informed by Guyton and Hall, acid-base regulation and respiratory control; OpenStax Anatomy and Physiology 2e; Robbins, shock and kidney disease; Katzung and OpenStax Pharmacology, diuretics, toxins, and bicarbonate; and OpenStax Medical-Surgical Nursing.
 
 # Chapter 20: Acute Kidney Injury, Chronic Kidney Disease, and Renal Pharmacology
+
+## TTS module 1: Foundations
 
 ## Orientation
 
@@ -3470,6 +3510,8 @@ Original synthesis informed by Robbins, glomerular, tubular, vascular, and chron
 
 # Chapter 21: Digestion, Absorption, Liver Function, and Nutrition
 
+## TTS module 1: Foundations
+
 ## Orientation
 
 The gastrointestinal system converts food into absorbable molecules, moves water and electrolytes between lumen and blood, excludes pathogens, and communicates with neural, endocrine, immune, and metabolic networks. The liver receives portal blood, processes nutrients and toxins, synthesises essential proteins, produces bile, and regulates whole-body fuel availability. Clinical disease follows when motility, secretion, mucosal integrity, perfusion, digestion, absorption, or hepatic processing fails.
@@ -3635,6 +3677,8 @@ Six. Insulin-driven intracellular shifts can rapidly deplete circulating phospha
 Original synthesis informed by Guyton and Hall, gastrointestinal physiology, hepatic metabolism, and nutrition; Robbins, gastrointestinal and liver pathology; Katzung and OpenStax Pharmacology, acid suppression, motility, and hepatic drug handling; OpenStax Anatomy and Physiology, Biology, Microbiology, and Medical-Surgical Nursing; and Talley and O'Connor, abdominal and nutritional assessment.
 
 # Chapter 22: Diabetes, Energy Metabolism, Obesity, and Metabolic Emergencies
+
+## TTS module 1: Foundations
 
 ## Orientation
 
@@ -3822,6 +3866,8 @@ Original synthesis informed by Guyton and Hall, insulin, glucagon, fuel metaboli
 
 # Chapter 23: Hypothalamic-Pituitary Control and Endocrine Feedback
 
+## TTS module 1: Foundations
+
 ## Orientation
 
 Endocrine systems communicate through hormones carried in blood to receptors in distant or local tissues. Their concentrations reflect secretion, distribution, binding, metabolism, and clearance rather than gland activity alone. The hypothalamus and pituitary link neural information to thyroid, adrenal, gonadal, growth, lactation, and water-balance systems. Most axes use negative feedback, pulsatility, and circadian timing. Clinical interpretation therefore depends on paired hormones, physiological context, and dynamic response.
@@ -3999,6 +4045,8 @@ Six. Thyroid hormone increases metabolic demand and cortisol clearance, potentia
 Original synthesis informed by Guyton and Hall, hypothalamic-pituitary physiology, growth, prolactin, and vasopressin; Robbins, pituitary pathology; Katzung and OpenStax Pharmacology, endocrine diagnostics and therapy; OpenStax Anatomy and Physiology and Medical-Surgical Nursing; and Talley and O'Connor, endocrine examination and visual-field assessment.
 
 # Chapter 24: Thyroid, Adrenal, Calcium, and Bone Physiology and Disease
+
+## TTS module 1: Foundations
 
 ## Orientation
 
@@ -4190,6 +4238,8 @@ Original synthesis informed by Guyton and Hall, thyroid, adrenal, calcium, and b
 
 # Chapter 25: Reproductive Physiology, Pregnancy, and Lactation
 
+## TTS module 1: Foundations
+
 ## Orientation
 
 Reproduction coordinates hypothalamic, pituitary, gonadal, anatomical, and developmental processes. Meiosis produces gametes, fertilisation restores diploidy, and implantation connects embryo with maternal circulation. Pregnancy requires cardiovascular, respiratory, renal, haematological, and metabolic adaptation. Reproductive care includes puberty, fertility, contraception, sexual function, pregnancy complications, menopause, and medication safety.
@@ -4377,6 +4427,8 @@ Six. Prolactin drives synthesis, oxytocin causes ejection, and frequent effectiv
 Original synthesis informed by Guyton and Hall, gonadal physiology, pregnancy, fetal circulation, and lactation; Robbins, reproductive and placental pathology; Katzung and OpenStax Pharmacology, contraception, fertility, and pregnancy prescribing; OpenStax Anatomy and Physiology, Biology, and Medical-Surgical Nursing; and Talley and O'Connor, reproductive and pregnancy assessment.
 
 # Chapter 26: Endocrine and Reproductive Examination and Investigation
+
+## TTS module 1: Foundations
 
 ## Orientation
 
@@ -4568,6 +4620,8 @@ Original synthesis informed by Talley and O'Connor, endocrine, diabetic, reprodu
 
 # Chapter 27: Neural Coding, Synapses, Sensory Systems, and Pain
 
+## TTS module 1: Foundations
+
 ## Orientation
 
 The nervous system represents the body and environment through patterns of electrical activity. Receptors transduce energy into graded potentials; neurons convert those signals into action-potential timing; synapses select, amplify, inhibit, and reshape information. Sensation is not a direct recording of reality but an inference constructed from receptor properties, pathways, context, attention, and prior experience. Pain adds protective meaning, autonomic response, emotion, and learning to nociceptive input.
@@ -4751,6 +4805,8 @@ Six. Different mechanisms respond differently, while combining approaches improv
 Original synthesis informed by Guyton and Hall, membrane physiology, synapses, sensory pathways, special senses, and pain; Robbins, neural injury and degeneration; Katzung and OpenStax Pharmacology, neurotransmission and analgesia; OpenStax Anatomy and Physiology and Biology; OpenStax Medical-Surgical Nursing; and Talley and O'Connor, sensory and pain assessment.
 
 # Chapter 28: Motor Control, Reflexes, Cerebellum, and Basal Nuclei
+
+## TTS module 1: Foundations
 
 ## Orientation
 
@@ -4944,6 +5000,8 @@ Original synthesis informed by Guyton and Hall, spinal reflexes, descending path
 
 # Chapter 29: Higher Function, Sleep, Consciousness, and Autonomic Control
 
+## TTS module 1: Foundations
+
 ## Orientation
 
 Higher function emerges from interacting networks. Attention selects information; memory preserves and reconstructs it; language maps concepts to symbols; executive systems maintain goals. Consciousness requires arousal and organised awareness. Sleep cycles through states supporting memory and physiology. Autonomic networks coordinate viscera with emotion, posture, temperature, and threat.
@@ -5088,6 +5146,8 @@ Original synthesis informed by Guyton and Hall, cortical function, memory, sleep
 
 # Chapter 30: Stroke, Seizure, Neuropathy, Neurodegeneration, and Raised Intracranial Pressure
 
+## TTS module 1: Foundations
+
 ## Orientation
 
 Neurological disease is interpreted through anatomy, mechanism, and time course. Sudden focal deficit suggests vascular injury until proven otherwise; episodic stereotyped dysfunction suggests seizure or transient disturbance; progressive decline suggests degeneration, tumour, inflammation, or compression. Immediate priorities are airway, breathing, circulation, glucose, temperature, seizures, and rapidly reversible causes. Definitive treatment often depends on minutes, so localisation and stabilisation proceed together.
@@ -5219,6 +5279,8 @@ Six. The initial pattern of memory, behaviour, language, movement, fluctuation, 
 Original synthesis informed by Guyton and Hall, cerebral blood flow, seizures, pressure, and neural systems; Robbins, vascular, infectious, demyelinating, peripheral-nerve, and neurodegenerative pathology; Katzung and OpenStax Pharmacology, reperfusion, antiseizure, and neurological therapy; OpenStax Medical-Surgical Nursing; and Talley and O'Connor, acute neurological assessment.
 
 # Chapter 31: Neurological History, Examination, Localisation, and Investigations
+
+## TTS module 1: Foundations
 
 ## Orientation
 
@@ -5368,6 +5430,8 @@ Original synthesis informed principally by Talley and O'Connor, neurological his
 
 # Chapter 32: Skeletal Muscle, Bone, Joint, and Connective Tissue Physiology
 
+## TTS module 1: Foundations
+
 ## Orientation
 
 The musculoskeletal system converts chemical energy into force, transmits that force through tendons and joints, supports and protects organs, stores mineral, houses marrow, and adapts to load. Function depends on muscle fibres, motor control, extracellular matrix, bone architecture, cartilage, synovium, ligaments, tendons, fascia, vessels, and nerves. Disease can arise from failure of contractile machinery, connective tissue, mineralisation, perfusion, innervation, immune tolerance, or mechanical adaptation.
@@ -5514,6 +5578,8 @@ Original synthesis informed by Guyton and Hall, skeletal-muscle contraction, ene
 
 # Chapter 33: Injury, Degeneration, Inflammatory Arthritis, and Autoimmune Disease
 
+## TTS module 1: Foundations
+
 ## Orientation
 
 Musculoskeletal symptoms arise from trauma, mechanical overload, degeneration, infection, crystal deposition, immune inflammation, vascular disease, malignancy, or referred pain. The first distinction is often urgent versus non-urgent: threatened limb, open fracture, compartment syndrome, septic joint, spinal compression, or systemic vasculitis cannot wait. The second is inflammatory versus predominantly mechanical disease. Pattern, tempo, distribution, extra-articular features, and targeted tests are more informative than indiscriminate antibody panels.
@@ -5655,6 +5721,8 @@ Six. Infection can mimic inflammatory flare and may worsen catastrophically unde
 Original synthesis informed by Robbins, bone, joint, muscle, autoimmune, and vascular pathology; Guyton and Hall, tissue and immune physiology; Katzung and OpenStax Pharmacology, analgesic, anti-inflammatory, urate-lowering, and immunomodulatory therapy; OpenStax Medical-Surgical Nursing; OpenStax Microbiology; and Talley and O'Connor, musculoskeletal and rheumatological assessment.
 
 # Chapter 34: Skin Function, Wounds, Infection, Tumours, and Clinical Examination
+
+## TTS module 1: Foundations
 
 ## Orientation
 
@@ -5806,6 +5874,8 @@ Original synthesis informed by Robbins, skin inflammation, infection, blistering
 
 # Chapter 35: Bacteria, Viruses, Fungi, Parasites, and Microbial Genetics
 
+## TTS module 1: Foundations
+
 ## Orientation
 
 Microorganisms differ fundamentally in cellular organisation, replication, metabolism, and dependence on hosts. These differences determine diagnosis, transmission, immune response, and therapy. Bacteria are prokaryotic cells; fungi and parasites are eukaryotic; viruses are genetic programmes packaged for transfer between cells. Normal microbiota support colonisation resistance and metabolism, while pathogens exploit particular niches. Detection of microbial material does not always prove that an organism is causing disease.
@@ -5953,6 +6023,8 @@ Six. It may detect colonisation, contamination, latent infection, or nucleic aci
 Original synthesis informed principally by OpenStax Microbiology, bacterial, viral, fungal, parasitic, and genetic foundations; OpenStax Biology and Chemistry, cell and molecular mechanisms; Robbins, infectious pathology; Katzung and OpenStax Pharmacology, microbial targets and resistance; OpenStax Medical-Surgical Nursing; and Guyton and Hall, host physiological context.
 
 # Chapter 36: Transmission, Virulence, Host Defence, and Diagnostic Microbiology
+
+## TTS module 1: Foundations
 
 ## Orientation
 
@@ -6106,6 +6178,8 @@ Original synthesis informed principally by OpenStax Microbiology, transmission, 
 
 # Chapter 37: Antibacterial, Antiviral, Antifungal, and Antiparasitic Therapy
 
+## TTS module 1: Foundations
+
 ## Orientation
 
 Antimicrobial therapy succeeds when an active drug reaches the site at sufficient exposure, the pathogen is vulnerable, source control occurs, and host defence completes clearance. Choice integrates syndrome, likely organisms, resistance, specimens, allergy, organ function, pregnancy, interactions, toxicity, route, and urgency. Empirical breadth can save life but also selects resistance and causes harm.
@@ -6255,6 +6329,8 @@ Six. Site, organism, susceptibility, dose exposure, source control, organ functi
 Original synthesis informed principally by Katzung and OpenStax Pharmacology, antimicrobial mechanisms, kinetics, toxicity, and resistance; OpenStax Microbiology, microbial targets and resistance; Robbins, infectious pathology; OpenStax Medical-Surgical Nursing; OpenStax Biology and Chemistry; Guyton and Hall, organ function and drug handling; and Talley and O'Connor, clinical monitoring.
 
 # Chapter 38: Sepsis, Antimicrobial Stewardship, and Infection Prevention
+
+## TTS module 1: Foundations
 
 ## Orientation
 
@@ -6418,6 +6494,8 @@ Original synthesis informed by OpenStax Microbiology, epidemiology, infection co
 
 # Chapter 39: White-Cell Disorders, Marrow Failure, and Haematological Malignancy
 
+## TTS module 1: Foundations
+
 ## Orientation
 
 Bone marrow continually produces red cells, platelets, and diverse leukocytes from self-renewing stem cells. Abnormal counts may reflect altered production, maturation, release, distribution, consumption, destruction, or clonal expansion. A count is not a diagnosis: morphology, lineage, tempo, symptoms, organ enlargement, and molecular findings establish mechanism. Immediate threats include febrile neutropenia, hyperleukocytosis, tumour lysis, severe cytopenia, disseminated coagulation, and spinal or airway compression.
@@ -6571,6 +6649,8 @@ Six. Hyperkalaemia, hyperphosphataemia, secondary hypocalcaemia, hyperuricaemia,
 Original synthesis informed principally by Robbins, marrow failure, leukaemia, lymphoma, plasma-cell, and myeloid pathology; Guyton and Hall, blood-cell production and immune physiology; Katzung and OpenStax Pharmacology, growth factors and antineoplastic therapy; OpenStax Anatomy and Physiology and Medical-Surgical Nursing; OpenStax Microbiology, infection risk; and Talley and O'Connor, haematological examination.
 
 # Chapter 40: Cancer Biology, Invasion, Metastasis, and Treatment Principles
+
+## TTS module 1: Foundations
 
 ## Orientation
 
@@ -6732,6 +6812,8 @@ Original synthesis informed principally by Robbins, neoplasia, invasion, metasta
 
 # Chapter 41: Multisystem Autoimmune Disease and Vasculitis
 
+## TTS module 1: Foundations
+
 ## Orientation
 
 Autoimmune disease develops when immune tolerance fails and adaptive responses injure self tissues. The same diagnosis can affect different organs, and similar syndromes can arise from infection, malignancy, drugs, or inherited immune dysregulation. Diagnosis rests on phenotype and objective organ involvement; autoantibodies modify probability but do not replace clinical reasoning. Treatment balances suppression of damaging immunity against infection, malignancy, metabolic toxicity, and loss of vaccine response.
@@ -6879,6 +6961,8 @@ Six. Infection can mimic flare and deteriorate rapidly under additional immune s
 Original synthesis informed principally by Robbins, autoimmunity, immune-complex disease, connective-tissue disease, and vasculitis; Katzung and OpenStax Pharmacology, glucocorticoid and immunomodulatory therapy; Guyton and Hall, immune and organ physiology; OpenStax Biology, Microbiology, and Medical-Surgical Nursing; and Talley and O'Connor, multisystem rheumatological and vascular assessment.
 
 # Chapter 42: Paediatric and Neonatal Physiology and Assessment
+
+## TTS module 1: Foundations
 
 ## Orientation
 
@@ -7036,6 +7120,8 @@ Original synthesis informed by Guyton and Hall, neonatal transition, growth, and
 
 # Chapter 43: Ageing, Frailty, Polypharmacy, and Geriatric Assessment
 
+## TTS module 1: Foundations
+
 ## Orientation
 
 Ageing is heterogeneous. Chronological age does not define physiological reserve, cognition, function, or goals. Normal ageing narrows homeostatic range; disease, inactivity, nutrition, environment, and social conditions determine how much reserve is lost. Frailty is increased vulnerability to stress across systems, not simply old age or disability. Good geriatric medicine integrates diagnoses with medicines, mobility, cognition, continence, nutrition, support, and what matters to the person.
@@ -7192,6 +7278,8 @@ Original synthesis informed by Guyton and Hall, ageing physiology and reserve; R
 
 # Chapter 44: Trauma, Resuscitation, Altered Consciousness, and Perioperative Assessment
 
+## TTS module 1: Foundations
+
 ## Orientation
 
 Acute care prioritises reversible threats before diagnosis. Trauma uses repeated primary survey, intervention, and secondary survey. Altered consciousness requires simultaneous stabilisation and cause-finding. Perioperative assessment estimates whether surgery, anaesthesia, disease, and reserve can be managed safely. Trajectory and treatment response matter more than one normal observation.
@@ -7345,6 +7433,8 @@ Six. Analgesia, pulmonary care, mobilisation, thrombosis prevention, nutrition, 
 Original synthesis informed by Guyton and Hall, shock, circulation, ventilation, brain perfusion, and stress physiology; Robbins, trauma and organ injury; Katzung and OpenStax Pharmacology, emergency, anaesthetic, anticoagulant, and perioperative medicines; OpenStax Medical-Surgical Nursing; and Talley and O'Connor, resuscitation, trauma, coma, and preoperative assessment.
 
 # Chapter 45: Mental State Examination, Capacity, Risk, and Common Syndromes
+
+## TTS module 1: Foundations
 
 ## Orientation
 
@@ -7503,6 +7593,8 @@ Six. Arrhythmia, hypotension, electrolyte and glucose disturbance, organ injury,
 Original synthesis informed by Talley and O'Connor, mental state, cognition, capacity, and risk assessment; Katzung and OpenStax Pharmacology, psychotropic and substance-related therapy; Guyton and Hall, neural, sleep, stress, and autonomic physiology; Robbins, neurological and systemic mimics; and OpenStax Medical-Surgical Nursing, crisis, safety, and therapeutic communication.
 
 # Chapter 46: Integrated Ward Presentation, Handover, and Longitudinal Care
+
+## TTS module 1: Foundations
 
 ## Orientation
 
@@ -7664,6 +7756,8 @@ Original synthesis informed by Talley and O'Connor, clinical presentation, exami
 
 # Chapter 47: Oesophageal, Gastric, Intestinal, and Anorectal Disease
 
+## TTS module 1: Foundations
+
 ## Orientation
 
 The gastrointestinal tract propels contents, protects its lining, digests food, absorbs nutrients and water, and hosts a dense microbiome. Disease appears through dysphagia, reflux, pain, vomiting, bleeding, altered stool, malabsorption, obstruction, inflammation, and nutritional change. Reasoning should localise the process, identify mechanism and tempo, estimate consequence, and recognise haemorrhage, perforation, ischaemia, obstruction, or cancer early.
@@ -7795,6 +7889,8 @@ Six. Benign anorectal disease can coexist with colorectal cancer, inflammation, 
 Original synthesis informed by Guyton and Hall, gastrointestinal motility, secretion, digestion, and absorption; Robbins, oesophageal, gastric, intestinal, inflammatory, vascular, and neoplastic pathology; Katzung and OpenStax Pharmacology, acid suppression, antimicrobial therapy, anti-inflammatory treatment, laxatives, and supportive drugs; Talley and O'Connor, gastrointestinal history and examination; OpenStax Medical-Surgical Nursing, bleeding, obstruction, inflammatory bowel disease, nutrition, ostomy, and perioperative care; and OpenStax Microbiology, enteric pathogens and host-microbiome interactions.
 
 # Chapter 48: Liver, Biliary Tract, and Pancreatic Disease
+
+## TTS module 1: Foundations
 
 ## Orientation
 
@@ -7928,6 +8024,8 @@ Original synthesis informed by Guyton and Hall, hepatic blood flow, bile, metabo
 
 # Chapter 49: Gastrointestinal History, Examination, Investigations, and Acute Presentations
 
+## TTS module 1: Foundations
+
 ## Orientation
 
 Gastrointestinal assessment converts symptoms into an anatomical and physiological model while simultaneously judging urgency at the bedside. Pain, vomiting, bleeding, altered stool, jaundice, distension, weight change, and dysphagia can each arise from benign, inflammatory, obstructive, vascular, infectious, metabolic, toxic, or malignant disease. The safest approach defines onset and trajectory, localises the likely compartment, assesses hydration and perfusion, searches for peritonitis or obstruction, and uses investigations to answer explicit questions.
@@ -8051,6 +8149,8 @@ Six. Disease evolves, treatment changes physiology, and serial findings often di
 Original synthesis informed by Talley and O'Connor, gastrointestinal history, general inspection, abdominal, rectal, hernia, and systemic examination; Guyton and Hall, pain referral, vomiting, motility, fluid, and acid-base consequences; Robbins, inflammatory, obstructive, vascular, hepatic, pancreatic, and malignant patterns; Katzung and OpenStax Pharmacology, medicine adverse effects, analgesia, antiemetics, fluids, and acute treatment; OpenStax Medical-Surgical Nursing, bedside assessment, stomas, procedures, bleeding, abdominal emergencies, and reassessment; and OpenStax Chemistry, Biology, and Microbiology, laboratory principles, metabolism, and infectious diagnostics.
 
 # Chapter 50: Malnutrition, Micronutrients, Enteral and Parenteral Support, and Obesity Care
+
+## TTS module 1: Foundations
 
 ## Orientation
 
@@ -8182,6 +8282,8 @@ Original synthesis informed by Guyton and Hall, fuel metabolism, fasting adaptat
 
 # Chapter 51: Urinary Tract Disease, Obstruction, Stones, Continence, and Urological Assessment
 
+## TTS module 1: Foundations
+
 ## Orientation
 
 The urinary tract transports urine from renal collecting systems through ureters to a low-pressure reservoir, then empties through coordinated bladder contraction and outlet relaxation. Disease may impair drainage, storage, voiding, continence, or protection from infection. Presentations include flank or pelvic pain, dysuria, frequency, urgency, haematuria, altered stream, retention, incontinence, fever, and kidney dysfunction. Immediate priorities are infected obstruction, acute retention, anuria, severe bleeding, testicular emergencies, and rapidly deteriorating renal function.
@@ -8309,6 +8411,8 @@ Six. Stress leaks with pressure, urgency with compelling need, overflow from ret
 Original synthesis informed by Guyton and Hall, urine transport, bladder storage, micturition, and obstruction physiology; Robbins, urinary infection, stones, obstruction, and renal, urothelial, and prostate pathology; Katzung and OpenStax Pharmacology, antibiotics, outlet drugs, bladder medicines, analgesia, and cancer therapy; Talley and O'Connor, urinary history, abdominal, genital, rectal, pelvic, and neurological examination; OpenStax Medical-Surgical Nursing, catheter care, retention, diversion, continence, infection, stones, and urological procedures; and OpenStax Microbiology, urinary pathogens, biofilm, culture, and resistance.
 
 # Chapter 52: Male Reproductive and Sexual Health
+
+## TTS module 1: Foundations
 
 ## Orientation
 
@@ -8441,6 +8545,8 @@ Six. Exogenous testosterone suppresses gonadotropins and intratesticular testost
 Original synthesis informed by Guyton and Hall, male reproductive endocrinology, spermatogenesis, erection, and ejaculation; Robbins, testicular, penile, and prostate pathology; Katzung and OpenStax Pharmacology, androgen therapy, erectile medicines, prostate drugs, antibiotics, and cancer therapy; Talley and O'Connor, sexual history and genital, groin, rectal, endocrine, vascular, and neurological examination; OpenStax Medical-Surgical Nursing, urological procedures, sexual counselling, cancer, infection, and postoperative care; and OpenStax Anatomy and Physiology and Microbiology, reproductive anatomy and sexually transmitted infection.
 
 # Chapter 53: Gynaecological Disease, Menstruation, Fertility, and Contraception
+
+## TTS module 1: Foundations
 
 ## Orientation
 
@@ -8579,6 +8685,8 @@ Six. Unopposed oestrogen stimulates endometrium and increases hyperplasia and ca
 Original synthesis informed by Guyton and Hall, ovarian cycles, reproductive endocrinology, pregnancy, and menopause; Robbins, uterine, ovarian, cervical, vulval, inflammatory, and neoplastic pathology; Katzung and OpenStax Pharmacology, hormonal contraception, fertility, bleeding, pain, infection, and menopause therapy; Talley and O'Connor, menstrual, sexual, fertility, pelvic, abdominal, and endocrine assessment; OpenStax Medical-Surgical Nursing, gynaecological procedures, cancer, infection, fertility, trauma-informed care, and education; and OpenStax Anatomy and Physiology and Microbiology, reproductive anatomy and sexually transmitted infection.
 
 # Chapter 54: Antenatal Care, Pregnancy Complications, Labour, and the Puerperium
+
+## TTS module 1: Foundations
 
 ## Orientation
 
@@ -8722,6 +8830,8 @@ Original synthesis informed by Guyton and Hall, maternal adaptation, placental e
 
 # Chapter 55: The Eye: Visual Physiology, Examination, and Common Disease
 
+## TTS module 1: Foundations
+
 ## Orientation
 
 Vision depends on transparent optical media, accurate focus, retinal phototransduction, intact optic pathways, coordinated eye movement, and cortical interpretation. Eye symptoms can reveal local disease, neurological emergencies, vascular injury, infection, inflammation, toxicity, or systemic illness. Sudden visual loss, a painful red eye with reduced vision, chemical injury, penetrating trauma, acute angle closure, retinal arterial occlusion, endophthalmitis, and giant-cell arteritis require immediate action.
@@ -8858,6 +8968,8 @@ Original synthesis informed by Guyton and Hall, optics, accommodation, retina, v
 
 # Chapter 56: Ear, Nose, Throat, Hearing, Balance, Voice, and Swallowing
 
+## TTS module 1: Foundations
+
 ## Orientation
 
 The ear, nose, pharynx, larynx, and upper airway concentrate sensory, respiratory, swallowing, speech, and immune functions in a small anatomical region. Minor swelling can obstruct airflow; infection can spread to orbit, skull base, deep neck, or brain. Assessment must first recognise stridor, drooling, respiratory effort, rapidly expanding neck swelling, severe haemorrhage, deep-space infection, sudden sensorineural hearing loss, and central vertigo.
@@ -8992,6 +9104,8 @@ Original synthesis informed by Guyton and Hall, cochlear transduction, auditory 
 
 # Chapter 57: Oral and Dental Disease, Salivary Function, and Maxillofacial Warning Signs
 
+## TTS module 1: Foundations
+
 ## Orientation
 
 Oral health affects nutrition, communication, social participation, infection risk, and chronic disease. Dental disorders can progress into deep-neck infection, sepsis, airway compromise, or tooth loss. Oral lesions can reveal haematological, immune, endocrine, nutritional, infectious, gastrointestinal, or malignant disease. Assessment should respect pain, anxiety, trauma, disability, culture, and barriers to care.
@@ -9123,6 +9237,8 @@ Six. Hold the crown, rinse gently, replant promptly when safe or use appropriate
 Original synthesis informed by Guyton and Hall, salivary secretion, mastication, swallowing, taste, and autonomic control; Robbins, dental, periodontal, salivary, immune, infectious, and oral neoplastic pathology; Katzung and OpenStax Pharmacology, analgesia, antimicrobials, saliva-modifying drugs, anticoagulation, and antiresorptive therapy; Talley and O'Connor, oral, facial, salivary, neck, cranial-nerve, and systemic examination; OpenStax Medical-Surgical Nursing, oral care, nutrition, cancer therapy, airway infection, trauma, and education; and OpenStax Anatomy and Physiology and Microbiology, tooth structure, salivary physiology, biofilm, and infection.
 
 # Chapter 58: Allergy, Anaphylaxis, Immunodeficiency, Transplantation, and Immune Therapy
+
+## TTS module 1: Foundations
 
 ## Orientation
 
@@ -9270,6 +9386,8 @@ Original synthesis informed by Guyton and Hall, immune regulation, mast-cell med
 
 # Chapter 59: Poisoning, Overdose, Envenomation, and Environmental Exposure
 
+## TTS module 1: Foundations
+
 ## Orientation
 
 Toxicology applies physiology under uncertainty. Substance, dose, route, formulation, time, patient, and prior treatment matter, but histories are incomplete and products mixed. Protect staff, stop exposure, stabilise airway, breathing, circulation, temperature, glucose, and seizures, then identify toxidromes, test selectively, contact a poisons service, and consider antidotes or enhanced elimination.
@@ -9413,6 +9531,8 @@ Six. Hyperthermia with central neurological dysfunction and evolving organ injur
 Original synthesis informed by Guyton and Hall, ventilation, acid-base physiology, temperature control, neural function, and shock; Robbins, toxic liver, kidney, lung, blood, neurological, and thermal injury; Katzung and OpenStax Pharmacology, toxidromes, antidotes, drug interactions, elimination, and overdose treatment; Talley and O'Connor, exposure history, neurological, cardiovascular, respiratory, skin, and mental-state assessment; OpenStax Medical-Surgical Nursing, poisoning, substance withdrawal, environmental emergencies, bites, and decontamination; and OpenStax Chemistry, Biology, and Microbiology, chemical reactions, metabolism, venoms, and wound infection.
 
 # Chapter 60: Occupational, Travel, and Population Infection Risks
+
+## TTS module 1: Foundations
 
 ## Orientation
 
@@ -9558,6 +9678,8 @@ Original synthesis informed by Guyton and Hall, respiratory, temperature, altitu
 
 # Chapter 61: Pain Medicine, Analgesia, Anaesthesia, Sedation, and Procedural Safety
 
+## TTS module 1: Foundations
+
 ## Orientation
 
 Pain is protective but causes disability when persistent or poorly controlled. Analgesia should relieve suffering while preserving breathing, circulation, cognition, mobility, and reassessment. Anaesthesia and sedation alter consciousness, sensation, reflexes, or movement and can rapidly create airway and haemodynamic emergencies. Safe care combines mechanism-based treatment, consent, preparation, monitoring, rescue, and recovery planning.
@@ -9697,6 +9819,8 @@ Six. Airway, ventilation, circulation, consciousness, pain, nausea, temperature,
 Original synthesis informed by Guyton and Hall, nociception, central modulation, consciousness, neuromuscular function, ventilation, and circulation; Robbins, tissue injury, inflammation, neuropathy, and anaesthetic complications; Katzung and OpenStax Pharmacology, analgesics, opioids, local and general anaesthetics, sedatives, reversal agents, and interactions; Talley and O'Connor, pain, airway, cardiorespiratory, neurological, and preoperative assessment; OpenStax Medical-Surgical Nursing, perioperative care, pain measurement, sedation monitoring, recovery, and education; and OpenStax Anatomy and Physiology and Chemistry, neural signalling and drug physicochemistry.
 
 # Chapter 62: Critical Care Physiology, Oxygen Support, Ventilation, and Organ Support
+
+## TTS module 1: Foundations
 
 ## Orientation
 
@@ -9846,6 +9970,8 @@ Original synthesis informed by Guyton and Hall, oxygen delivery, ventilation, ci
 
 # Chapter 63: Fever, Collapse, Dizziness, Weakness, and Undifferentiated Acute Illness
 
+## TTS module 1: Foundations
+
 ## Orientation
 
 Undifferentiated symptoms are not diagnoses. Fever, collapse, dizziness, and weakness can arise from benign self-limited illness or time-critical failure of circulation, respiration, brain, metabolism, or host defence. The clinician must stabilise first, define the symptom precisely, identify dangerous patterns, build a mechanism-based differential, and use repeated examination and response to treatment to revise probability.
@@ -9981,6 +10107,8 @@ Six. Defined repeat observations, examinations, tests, functional challenges, ti
 Original synthesis informed by Guyton and Hall, thermoregulation, cerebral perfusion, posture, vestibular function, neuromuscular transmission, and fatigue; Robbins, infection, inflammation, infarction, neurological and muscle pathology; Katzung and OpenStax Pharmacology, antimicrobials, vasoactive drugs, vestibular medicines, toxins, and medicine adverse effects; Talley and O'Connor, fever, collapse, dizziness, weakness, neurological, cardiovascular, and gait assessment; OpenStax Medical-Surgical Nursing, rapid assessment, sepsis, falls, observation, mobility, and discharge safety; and OpenStax Anatomy and Physiology, Biology, Chemistry, and Microbiology, homeostasis, metabolism, and infection.
 
 # Chapter 64: Common Laboratory Tests, Diagnostic Imaging, and Test Stewardship
+
+## TTS module 1: Foundations
 
 ## Orientation
 
@@ -10130,6 +10258,8 @@ Original synthesis informed by Guyton and Hall, physiological measurement, blood
 
 # Chapter 65: Epidemiology, Screening, Vaccination, Prevention, and Population Health
 
+## TTS module 1: Foundations
+
 ## Orientation
 
 Population health asks why disease occurs unevenly and how to prevent suffering before clinical care. Treatment remains essential, but housing, income, education, food, work, discrimination, environment, commercial influence, and access determine illness and recovery. Prevention combines evidence with fairness, feasibility, trust, and attention to harm.
@@ -10275,6 +10405,8 @@ Six. Equality supplies the same resources; equity adjusts resources and design t
 Original synthesis informed by Guyton and Hall, physiological risk and adaptation; Robbins, environmental, infectious, neoplastic, metabolic, and vascular disease causation; Katzung and OpenStax Pharmacology, vaccines, tobacco and alcohol therapy, cardiometabolic prevention, and chemoprevention; Talley and O'Connor, preventive, family, occupational, and social history; OpenStax Medical-Surgical Nursing, screening, vaccination, community health, education, and chronic-disease prevention; and OpenStax Biology, Chemistry, and Microbiology, evolution, immunity, ecology, transmission, and population measurement.
 
 # Chapter 66: Evidence-Based Medicine, Causation, Bias, and Interpreting Clinical Research
+
+## TTS module 1: Foundations
 
 ## Orientation
 
@@ -10436,6 +10568,8 @@ Original synthesis informed by OpenStax Biology and Chemistry, experimental desi
 
 # Chapter 67: Ethics, Consent, Confidentiality, Safeguarding, and Medical Law Principles
 
+## TTS module 1: Foundations
+
 ## Orientation
 
 Clinical ethics addresses interactions among values, duties, evidence, rights, and consequences. Law sets jurisdiction-specific minimum standards; ethics often asks more. Practice protects autonomy, welfare, fairness, trust, and integrity amid uncertainty and unequal power. Use current local law, policy, indemnity, and senior advice for specific legal questions.
@@ -10583,6 +10717,8 @@ Six. Legality, necessity, effectiveness, proportionality, least restriction, rec
 Original synthesis informed by Talley and O'Connor, consent, communication, capacity, sensitive examination, documentation, and professionalism; OpenStax Medical-Surgical Nursing, advocacy, safeguarding, privacy, error disclosure, end-of-life decisions, and culturally safe care; Katzung and OpenStax Pharmacology, research ethics, conflicts, adverse events, and access; Robbins and Guyton and Hall, uncertainty, prognosis, brain function, and treatment limitation; and OpenStax Biology, Microbiology, and Chemistry, research integrity, genetics, public-health ethics, and environmental justice.
 
 # Chapter 68: Palliative Medicine, Symptom Control, Dying, Grief, and Bereavement
+
+## TTS module 1: Foundations
 
 ## Orientation
 
@@ -16466,6 +16602,12 @@ The integrated approach starts by defining the decision and the behaviour needed
 
 ## TTS module 1: Variables, distributions, sampling, and estimation
 
+### Pre-med bridge: quantities before arithmetic
+
+For an original dilution example, suppose a stock solution contains two millimoles per litre. You transfer five millilitres into a vessel and add solvent until the final volume is twenty millilitres. The transferred solute amount is conserved, provided no reaction or loss occurs. Final concentration is two multiplied by five divided by twenty: zero point five millimoles per litre. Twenty millilitres is the final volume, not the amount of solvent added. Both volumes use the same units, so their ratio is dimensionless. This reasoning connects concentration, amount, and volume without confusing them.
+
+Now suppose an experimental response rises from twenty to thirty arbitrary units. The absolute increase is ten units; the relative increase is ten divided by twenty, or fifty percent. Reversing the change, from thirty back to twenty, is a decrease of one third, not fifty percent, because the reference value changes. Before calculating any percentage, name its denominator. Neither percentage alone tells you whether the result is reproducible or causal: those conclusions require study design and uncertainty information.
+
 Biostatistics uses probability to reason from variable observations to uncertain conclusions about populations and mechanisms. It does not convert imperfect data into certainty. Every analysis begins by defining the population, sampling process, variables, timing, and target quantity. A mathematically correct calculation can still answer the wrong question if eligibility, measurement, or follow-up differs from the intended target. Statistical reasoning is therefore inseparable from study design and biological interpretation.
 
 A variable may be categorical or quantitative. Nominal categories have no intrinsic order, while ordinal categories have an order but not necessarily equal spacing. Quantitative variables may be discrete counts or continuous measurements. These distinctions guide summaries but do not dictate them mechanically. A pain scale labelled from zero to ten is ordered and often analysed numerically, yet a one-unit difference may not have identical meaning across its range or across people.
@@ -16963,3 +17105,93 @@ Microgravity removes normal weight-bearing and redistributes fluid toward the ch
 Bone loss in microgravity reflects reduced mechanical loading and altered remodelling, with site-specific loss in weight-bearing skeleton and increased urinary calcium that can raise stone risk. Antigravity muscles lose size and strength. The vestibular system must reinterpret absent gravitational cues, causing motion sickness and later readaptation. Radiation exposure outside much of Earth's protection adds stochastic and tissue risks that increase with dose, mission duration, shielding, and solar events.
 
 Extreme-environment medicine is applied integrative physiology. Heat stresses circulation and evaporation; cold challenges insulation and metabolism; altitude lowers oxygen pressure; diving raises pressure and dissolved gas; microgravity removes loading and redistributes fluid. In every setting, prevention begins by identifying the governing physical exposure, matching work and equipment to human reserve, allowing graded adaptation, and recognising early failure before compensation becomes irreversible injury.
+
+# Chapter 105: Quantitative Chemistry and Acid–Base Foundations
+
+## TTS module 1: Amount, concentration, stoichiometry, and experimental yield
+
+Chemistry questions become manageable when we separate three quantities: how much substance exists, how much space its solution occupies, and how much substance reacts. A concentration can fall while the amount stays unchanged. A large mass can contain fewer molecules than a small mass of a different compound. A balanced reaction constrains possible conversion, but does not guarantee rapid reaction or complete recovery. This module develops the bookkeeping needed before interpreting biochemical concentrations or laboratory results. Its numerical examples are idealised teaching problems, not instructions for preparing medicines.
+
+### From mass to amount
+
+The mole counts specified entities: atoms, molecules, ions, or formula units. One mole contains exactly 6.02214076 times ten to the twenty-third entities. Always name the entity. One mole of calcium chloride formula units contains one mole of calcium and two moles of chlorine atoms; complete dissolution gives one mole of calcium ions and two moles of chloride ions. It does not produce three moles of calcium chloride. The formula distinguishes the amount of compound from the amounts of its components.
+
+Molar mass converts grams into moles. Divide mass by molar mass, keeping units visible. For a hypothetical compound with molar mass 120 grams per mole, 3.60 grams represents 0.0300 mole, or 30.0 millimoles. Multiplication by Avogadro's constant then gives about 1.81 times ten to the twenty-second molecules, if the compound is molecular. A millimole is one thousandth of a mole, not a thousand molecules. Equal masses of compounds with different molar masses generally contain different numbers of entities.
+
+The empirical formula gives the simplest whole-number atom ratio; the molecular formula gives the actual composition of a molecule. A substance with empirical formula C H two O and approximate empirical formula mass 30 grams per mole could have molecular formula C six H twelve O six if its measured molar mass is approximately 180 grams per mole. The multiplier is six. The ratio alone cannot distinguish that molecule from another compound with the same empirical composition.
+
+### Concentration and dilution
+
+Molarity is moles of solute per litre of final solution, not per litre of added solvent. Dissolving our 3.60 grams and bringing the final volume to 150 millilitres gives 0.200 mole per litre. If 15.0 millilitres of that solution is transferred and diluted to a final volume of 100 millilitres, the transferred amount is 3.00 millimoles and the new concentration is 0.0300 mole per litre. The flask's final volume is 100 millilitres; adding 100 millilitres to the aliquot would be a different operation.
+
+The dilution equation, initial concentration times initial volume equals final concentration times final volume, expresses conservation of the chosen solute. It assumes that no solute is lost, generated, or consumed. Mixing reacting solutions requires a reaction calculation first. For two nonreacting solutions of the same solute, add their amounts and divide by the combined final volume. An unweighted average of concentrations works only for equal volumes under the relevant volume assumptions. Two successive tenfold dilutions give a hundredfold dilution, because the factors multiply.
+
+Concentration units answer different questions. Mass percent compares solute mass with total solution mass. Mass per volume percent means grams per 100 millilitres when that convention is explicitly stated. A two percent mass per volume solution contains 2 grams per 100 millilitres, equivalent to 20 grams per litre or 20 milligrams per millilitre. Molality instead counts moles per kilogram of solvent. Do not silently replace solvent mass with solution volume; density and composition are needed to connect those quantities.
+
+Density is mass divided by volume. Suppose a solution is 10.0 percent solute by mass and has density 1.20 grams per millilitre. A 100-millilitre sample weighs 120 grams and contains 12.0 grams of solute, not 10.0 grams. Its mass per volume concentration is therefore 12.0 grams per 100 millilitres. If that solute has molar mass 60.0 grams per mole, the sample contains 0.200 mole and its molarity is 2.00 moles per litre. This chain needs both density and molar mass. Omitting either replaces a justified conversion with an unstated assumption about the material.
+
+### Balancing before calculating
+
+A reaction equation conserves each element and, for an ionic equation, total charge. Change coefficients to balance it, never subscripts inside a chemical formula. Subscripts identify a substance; coefficients specify how much of it participates. For the ideal complete combustion of ethanol, one mole of ethanol reacts with three moles of oxygen to produce two moles of carbon dioxide and three moles of water. Count two carbon atoms, six hydrogen atoms, and seven oxygen atoms on each side. The coefficients are mole ratios, not gram ratios.
+
+Suppose an ideal system initially contains 0.080 mole of ethanol and 0.180 mole of oxygen. Ethanol could support 0.080 mole of reaction, but oxygen supports only 0.180 divided by three, or 0.060 mole. Oxygen is therefore limiting. The predicted carbon dioxide amount is twice 0.060, or 0.120 mole. The predicted water amount is 0.180 mole, and 0.020 mole of ethanol remains. Comparing the starting mole amounts directly would give the wrong limiting reactant because the required consumption ratio is not one to one.
+
+Using rounded teaching molar masses of 46, 32, 44, and 18 grams per mole for ethanol, oxygen, carbon dioxide, and water, respectively, the starting mass is 3.68 plus 5.76, or 9.44 grams. Predicted products weigh 5.28 plus 3.24 grams; the remaining ethanol weighs 0.92 gram. Together they also total 9.44 grams. This independent mass check catches an omitted excess reactant. In an open vessel, escaped gas could make the measured vessel contents lighter without violating conservation of matter.
+
+### Predicted conversion versus measured recovery
+
+Theoretical yield is the product amount permitted by the stated reaction and limiting input. Actual isolated yield additionally reflects conversion, competing reactions, collection losses, and measurement quality. If 4.22 grams of carbon dioxide were recovered in the ideal example, the apparent percentage yield would be 4.22 divided by 5.28 times 100, approximately 79.9 percent. It would not establish which process caused the shortfall. A collection method that misses gas and a reaction that incompletely converts substrate can produce the same reported yield.
+
+A measured product mass above the calculated maximum is a warning to investigate assumptions or measurement. Wet product, impurities, incorrect starting concentration, or the wrong product identity can inflate apparent yield. It is not evidence that atoms were created. Likewise, increasing a reactant already in excess does not increase the stoichiometric ceiling while the limiting reactant remains fixed. It can still alter reaction rate or equilibrium position in a real system; those are separate questions from this ideal bookkeeping calculation.
+
+Precision and accuracy are also distinct. Repeated measurements can agree closely while all being shifted by a miscalibrated balance. Replication characterises variability but does not remove a shared systematic error. In a calculated yield, uncertainty can enter both the measured numerator and the predicted denominator, so inspect the inputs as well as the final percentage.
+
+### Species, particles, and reporting discipline
+
+Analytical concentration records how much compound was introduced per solution volume; the concentrations of individual chemical species depend on dissociation and reaction. An ideal, fully dissociated 0.050 mole per litre calcium chloride solution contains 0.050 mole per litre calcium ions and 0.100 mole per litre chloride ions. The ideal sum is 0.150 osmole per litre of dissolved particles. Real solutions can depart from ideal particle behaviour, so this is an approximation, not a measured osmolarity. Charge equivalents are another count: calcium's double charge gives two equivalents per mole of calcium ions.
+
+Keep precision proportional to the data. An exact stoichiometric coefficient does not limit significant figures, but measured masses and volumes do. Retain extra digits during intermediate steps and round the final result. Before accepting an answer, ask whether the unit names the requested quantity, whether dilution changed amount or concentration, whether every reacting species was counted, and whether the result is a theoretical maximum or an observation. These distinctions prevent numerical fluency from becoming false chemical confidence.
+
+## TTS module 2: Acid–base equilibria, buffers, and titration reasoning
+
+Acid–base reasoning connects molecular proton transfer with solution measurements. Begin by identifying what can donate a proton, what can accept one, and which quantities are conserved. Then decide whether the problem is dominated by a nearly complete reaction or by a reversible equilibrium. Confusing those stages is a common cause of wrong buffer calculations. The examples here use ideal dilute aqueous solutions, generally at 25 degrees Celsius. They teach chemical reasoning rather than clinical treatment, and real biological fluids require additional temperature, activity, and physiological considerations.
+
+### Definitions and logarithmic measurements
+
+A Brønsted–Lowry acid donates a proton; a base accepts one. When an acid loses a proton it forms its conjugate base, and the two species differ by that proton and one unit of charge. Water can participate in either role. A Lewis acid instead accepts an electron pair, while a Lewis base donates one. Proton transfer fits within this wider description, but a Lewis acid–base interaction need not involve a transferred proton. State which definition a question is using.
+
+The pH is the negative base-ten logarithm of hydrogen-ion activity. Introductory dilute-solution problems approximate activity using concentration relative to the standard concentration. If the hydrogen-ion concentration is ten to the minus three moles per litre, the approximate pH is three. Raising pH by one unit reduces hydrogen-ion activity tenfold. A pH difference of two units represents a hundredfold activity ratio, not a twofold difference. pH is logarithmic, so arithmetic averaging of pH values generally does not describe the pH after mixing.
+
+Water's ion product relates hydrogen and hydroxide ions. At 25 degrees Celsius, its approximate concentration-based value is ten to the minus fourteen, giving pH plus pOH approximately fourteen. Neutrality means equal hydrogen-ion and hydroxide-ion activities, not an immutable pH of seven at every temperature. The neutral pH changes when the ion product changes. The familiar zero-to-fourteen interval is also not an absolute physical boundary: sufficiently concentrated solutions can lie outside it, where ideal concentration approximations need particular caution.
+
+### Strength is not concentration
+
+For a monoprotic weak acid, called H A, dissociation produces a hydrogen ion and its conjugate base, A minus. The acid dissociation constant, K a, compares the product of their activities with the acid activity. At the same temperature and solvent conditions, a larger K a means stronger dissociation tendency, and a smaller p K a means a stronger acid. Concentration says how much acid was supplied per volume. A dilute strong acid and a concentrated weak acid therefore cannot be ranked by the words strong and weak alone.
+
+Consider a hypothetical weak acid at analytical concentration 0.040 mole per litre, with K a equal to ten to the minus five. If water's contribution is negligible and no conjugate base was initially added, let x be the concentration dissociated. Then K a equals x squared divided by 0.040 minus x. Approximating the denominator by 0.040 gives x approximately 0.000632 mole per litre and pH approximately 3.20. Only about 1.58 percent dissociates, supporting this small-change approximation. The exact positive quadratic solution gives approximately 0.000627 and a very similar pH.
+
+Check assumptions after calculating rather than selecting an approximation solely because it is familiar. If the calculated dissociation is a substantial fraction of the initial acid, keep the depleted acid concentration in the equation. For an extremely dilute strong acid, water cannot automatically be ignored. Adding ten to the minus eight mole per litre of an ideal strong acid does not produce pH eight. Water supplies additional hydrogen ions while hydroxide adjusts; mass balance, charge balance, and the water equilibrium give a pH slightly below seven.
+
+### Buffers as finite chemical reserves
+
+A buffer contains appreciable amounts of a weak acid and its conjugate base, or the corresponding weak-base pair. Added acid consumes the basic component, while added base consumes the acidic component. The pH still changes, but less than it would in an otherwise comparable unbuffered solution. The Henderson–Hasselbalch expression rearranges the acid equilibrium: pH equals p K a plus the base-ten logarithm of conjugate base divided by acid. Concentrations approximate activities under suitable conditions. Neither component may be treated as zero in this ratio.
+
+Imagine 100 millilitres containing 10.0 millimoles of H A and 10.0 millimoles of A minus, with p K a five. Their equal ratio gives pH five. Adding 2.00 millimoles of strong acid converts that amount of A minus into H A. After this nearly complete reaction, the amounts are 8.00 and 12.0 millimoles. Their ratio is two thirds, so the new approximate pH is 4.82. Use post-reaction amounts. Applying the buffer equation to the initial ratio would incorrectly predict no change.
+
+Now compare a buffer at the same pH with only 1.00 millimole of each component. The same acid addition exhausts its 1.00 millimole of conjugate base and leaves excess strong acid. It is no longer the previous two-component buffer problem. Buffer capacity therefore depends on the available amount, not just pH. Ideal dilution preserves the component ratio and approximately preserves pH, but a fixed volume of the diluted buffer has less capacity. At extreme dilution, water and activity effects can invalidate that simple picture.
+
+### Titration as a sequence of different problems
+
+Titration deliberately adds measured reagent to infer an unknown amount. Distinguish the equivalence point, where stoichiometric amounts have reacted, from the endpoint, where an indicator or instrument signals a chosen change. They should be close for a well-chosen method, but they are not definitions of the same event. Before equivalence in a weak-acid, strong-base titration, both acid and conjugate base may be present. At half-equivalence their amounts are approximately equal and pH approximates p K a, provided the usual buffer assumptions hold.
+
+For 25.0 millilitres of a 0.0800 mole per litre monoprotic weak acid titrated with 0.100 mole per litre strong base, the original acid amount is 2.00 millimoles. Equivalence requires 20.0 millilitres of titrant; half-equivalence requires 10.0 millilitres. At equivalence, the conjugate base remains and reacts with water. Consequently the pH is above seven under these 25-degree ideal conditions, not automatically seven. A strong-acid, strong-base equivalence point is neutral under the corresponding ideal assumptions because neither remaining ion appreciably hydrolyses.
+
+Beyond equivalence, excess strong base usually dominates. In the same example, adding 25.0 millilitres supplies 2.50 millimoles of base, leaving 0.50 millimole in 50.0 millilitres total solution. The approximate hydroxide concentration is 0.0100 mole per litre, giving pOH two and pH twelve. This calculation assumes the weak-acid pair contributes negligibly compared with excess strong base. Before equivalence, at equivalence, and after equivalence require different models; one memorised equation cannot describe every region without checking its conditions.
+
+The conjugate-base equilibrium supplies a quantitative equivalence-point model. For a conjugate pair in water, K a times K b equals the water ion product under consistent conventions. If the acid in this titration has K a equal to ten to the minus five, its conjugate base has K b equal to ten to the minus nine at 25 degrees. At equivalence, 2.00 millimoles occupy 45.0 millilitres, giving approximately 0.0444 mole per litre of base. The small-change estimate for hydroxide is the square root of K b times that concentration, about 0.00000667 mole per litre. Thus pOH is about 5.18 and pH about 8.82; the fractional reaction is small.
+
+Even simple mixing deserves a conservation check. Mixing equal volumes of ideal unbuffered strong-acid solutions at pH two and pH four gives an approximate hydrogen-ion concentration of 0.00505 mole per litre, and pH about 2.30, not three. The more concentrated solution contributes most of the hydrogen ions. This example assumes additive volumes and negligible water contribution; it is not a rule for mixing buffers or biological fluids.
+
+### Connecting protonation with biological reasoning
+
+For a simple acid group, pH one unit above its p K a gives approximately ten deprotonated groups for every protonated group; one unit below gives the opposite ratio. Proteins have multiple interacting groups, so one isolated-group calculation does not determine an entire protein's charge or function. A polyprotic acid also loses protons in successive steps with distinct constants. Before solving any acid–base problem, identify the relevant species, complete dominant stoichiometric reactions, select the equilibrium model, and test the answer against charge balance and direction of change. These habits matter more than substituting numbers quickly.
