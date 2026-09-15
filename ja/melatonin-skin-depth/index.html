@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="ja" class=" ig-document ig-editorial"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="外用メラトニンは真皮内に濃度勾配を作り、経口メラトニンは一定の平坦な濃度を作る。両者が交差する深さと、任意の深さで外用と等価になる経口用量を対話的に計算するモデル。"><title>皮膚のどこまで届くか · 経口メラトニンと外用メラトニン</title><link rel="stylesheet" href="../../melatonin-skin-depth/style.css"><link rel="canonical" href="https://theisegoria.github.io/ja/melatonin-skin-depth/"><link rel="alternate" hreflang="en" href="https://theisegoria.github.io/melatonin-skin-depth/"><link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/melatonin-skin-depth/"><link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/melatonin-skin-depth/"><link rel="icon" href="/assets/favicon.svg">
+<script src="/assets/lang.js"></script>
+<!-- ISEGORIA:HEAD -->
+<link rel="stylesheet" href="/assets/site-shell.css?v=ce26ec4785">
+<script src="/assets/site-shell.js?v=ce26ec4785" ></script>
+<!-- /ISEGORIA:HEAD -->
+<script defer data-isegoria-analytics src="/assets/analytics.js?v=9e6ebd463bf2"></script>
+</head>
+<body class=" ig-site" data-site-kind="editorial" data-site-route="/ja/melatonin-skin-depth/">
+<!-- ISEGORIA:NAV -->
+<a class="ig-skip" href="#ig-content">本文へ移動</a>
+<header id="ig-header"><div class="ig-nav-inner">
+<a class="ig-brand" href="/ja/" aria-label="Isegoria, ホーム"><strong>ISEGORIA</strong><span>Benjamin Haire</span></a>
+<div class="ig-header-actions"><a class="ig-language" href="/melatonin-skin-depth/" hreflang="en" lang="en">English</a><button class="ig-menu" type="button" aria-expanded="false" aria-controls="ig-primary">メニュー</button></div>
+<nav id="ig-primary" aria-label="メインナビゲーション"><a href="/ja/">ホーム</a><a href="/ja/library.html">全コンテンツ</a><a href="/ja/#guides">学習ガイド</a><a href="/ja/#preoccupations" aria-current="location">研究と解説</a><a href="/ja/#books">書籍</a><a href="/ja/projects.html">プロジェクト</a><a href="/ja/about.html">このサイトについて</a><a class="ig-language" href="/melatonin-skin-depth/" hreflang="en" lang="en">English</a><button class="ig-theme" type="button" hidden>表示切替</button></nav>
+</div></header>
+<nav id="ig-breadcrumb" aria-label="パンくずリスト"><a href="/ja/">ホーム</a><span aria-hidden="true">/</span><a href="/ja/#preoccupations">研究と解説</a><span aria-hidden="true">/</span><span aria-current="page">皮膚のどこまで届くか · 経口メラトニンと外用メラトニン</span></nav>
+<span id="ig-content" tabindex="-1"></span>
+<!-- /ISEGORIA:NAV -->
+<div class="mel">
+<header class="mel-head">
+  <p class="mel-eyebrow">皮膚薬物動態 · 灌流律速モデル</p>
+  <h1>外用メラトニンに相当する経口用量はどれほどか</h1>
+  <p class="mel-dek">外用投与は真皮内に指数関数的な濃度勾配を作り、経口投与は深さによらない平坦な濃度を作る。両者はある一点の深さで交差し、その交差点がどこにあるかで答えが決まる。以下で目標を設定すればモデルが再計算する。</p>
+</header>
+
+<div class="mel-shell">
+<aside class="mel-rail">
+  <h2>モデル入力</h2>
+  <div class="mel-fg">
+    <div class="mel-fl"><label for="melDoseR">経口用量</label><span class="mel-fv" id="melDoseV">8 mg/日</span></div>
+    <input type="range" id="melDoseR" min="0" max="100" value="30" step="1">
+  </div>
+  <div class="mel-fg">
+    <div class="mel-fl"><span class="lbl" id="melFormL">製剤</span></div>
+    <div class="mel-seg" role="group" aria-labelledby="melFormL">
+      <button type="button" data-form="IR" aria-pressed="false">即放</button>
+      <button type="button" data-form="SR" aria-pressed="true">徐放</button>
+    </div>
+  </div>
+  <div class="mel-fg" id="melRelWrap">
+    <div class="mel-fl"><label for="melRelR">放出時間</label><span class="mel-fv" id="melRelV">8 時間</span></div>
+    <input type="range" id="melRelR" min="2" max="12" value="8" step="0.5">
+  </div>
+  <div class="mel-fg">
+    <div class="mel-fl"><span class="lbl" id="melCalL">曝露量の較正</span></div>
+    <div class="mel-seg" role="group" aria-labelledby="melCalL">
+      <button type="button" data-cal="cons" aria-pressed="false">保守的</button>
+      <button type="button" data-cal="label" aria-pressed="true">Circadin</button>
+    </div>
+    <p class="mel-hint" id="melCalHint"></p>
+  </div>
+  <div class="mel-rule"></div>
+  <div class="mel-fg">
+    <div class="mel-fl"><span class="lbl" id="melTopL">外用の基準製剤</span></div>
+    <div class="mel-chips" id="melTopChips" role="group" aria-labelledby="melTopL">
+      <button type="button" data-pct="0.0033" aria-pressed="false">0.0033 %</button>
+      <button type="button" data-pct="0.01" aria-pressed="false">0.01 %</button>
+      <button type="button" data-pct="0.03" aria-pressed="false">0.03 %</button>
+      <button type="button" data-pct="0.10" aria-pressed="true">0.10 %</button>
+      <button type="button" data-pct="2.5" aria-pressed="false">2.5 %</button>
+      <button type="button" data-pct="12.5" aria-pressed="false">12.5 %</button>
+    </div>
+  </div>
+  <div class="mel-fg">
+    <div class="mel-fl"><label for="melDepthR">目標の深さ</label><span class="mel-fv" id="melDepthV">3000 µm</span></div>
+    <input type="range" id="melDepthR" min="0" max="4000" value="3000" step="25">
+    <div class="mel-chips" id="melDepthChips" style="margin-top:8px">
+      <button type="button" data-um="40" aria-pressed="false">表皮</button>
+      <button type="button" data-um="300" aria-pressed="false">乳頭層</button>
+      <button type="button" data-um="1000" aria-pressed="false">網状層</button>
+      <button type="button" data-um="3000" aria-pressed="true">毛乳頭</button>
+    </div>
+  </div>
+  <div class="mel-rule"></div>
+  <details>
+    <summary>輸送に関する仮定</summary>
+    <div class="mel-fg">
+      <div class="mel-fl"><label for="melKpR">皮膚／血漿分配係数 K<sub>p</sub></label><span class="mel-fv" id="melKpV">1.00</span></div>
+      <input type="range" id="melKpR" min="-0.6" max="0.6" value="0" step="0.02">
+    </div>
+    <div class="mel-fg">
+      <div class="mel-fl"><label for="melQR">真皮灌流 Q</label><span class="mel-fv" id="melQV">3.0 /h</span></div>
+      <input type="range" id="melQR" min="1" max="8" value="3" step="0.25">
+    </div>
+    <div class="mel-fg">
+      <div class="mel-fl"><label for="melDR">組織内拡散係数 D</label><span class="mel-fv" id="melDV">×1.00</span></div>
+      <input type="range" id="melDR" min="-0.5" max="0.5" value="0" step="0.02">
+    </div>
+    <p class="mel-hint">この三つが減衰長 λ = √(D·K<sub>p</sub>/Q) を決め、それが問題の幾何構造のすべてを決める。</p>
+  </details>
+</aside>
+
+<main class="mel-main">
+  <section class="mel-verdict">
+    <div class="mel-vtop">
+      <div>
+        <p class="mel-vq" id="melVq"></p>
+        <div class="mel-vnum" id="melVnum"></div>
+      </div>
+      <div id="melVpill"></div>
+    </div>
+    <p class="mel-vsent" id="melVsent"></p>
+  </section>
+
+  <dl class="mel-stats" id="melStats"></dl>
+
+  <figure>
+    <h2 class="mel-figttl">皮膚内の濃度分布</h2>
+    <p class="mel-figsub">深さに対する定常状態の組織内メラトニン濃度。図の上をドラッグすると目標の深さが動く。</p>
+    <div class="mel-plot" id="melDepth"><div class="mel-tip" id="melTipDepth"></div></div>
+    <ul class="mel-legend" id="melLegDepth"></ul>
+    <figcaption>外用の曲線が指数関数的に低下するのは、拡散して下降する薬物を真皮の毛細血管網が抜き取っていくからである。経口の直線が平坦なのは、灌流がすべての深さへ同時に薬物を届けるからである。交差点より浅い領域は外用が有利であり、深い領域は経口が有利となる。</figcaption>
+  </figure>
+
+  <figure>
+    <h2 class="mel-figttl">24時間の血漿中濃度推移</h2>
+    <p class="mel-figsub">同一用量における即放製剤と徐放製剤の比較。目標が要求する濃度を基準線として示す。</p>
+    <div class="mel-plot" id="melPk"><div class="mel-tip" id="melTipPk"></div></div>
+    <ul class="mel-legend" id="melLegPk"></ul>
+    <figcaption>両製剤のAUCは等しいため、時間平均で評価する指標については両者は交換可能である。差が生じるのは目標に閾値がある場合に限られ、そこで初めて放出時間が意味を持つ。</figcaption>
+  </figure>
+
+  <figure>
+    <h2 class="mel-figttl">区画ごとの比較</h2>
+    <p class="mel-figsub">選択した外用製剤と各解剖学的深さで等価になる経口用量。</p>
+    <div class="mel-plot" id="melLadder"></div>
+    <figcaption>塗布膜と毛包漏斗はビヒクル濃度であって組織内濃度ではない。外用投与が皮膚表面に対して実際に保持している濃度の桁を示すために併記している。</figcaption>
+  </figure>
+
+  <figure>
+    <h2 class="mel-figttl">総抗酸化能</h2>
+    <p class="mel-figsub">左が化学量論的なラジカル捕捉、右が転写誘導による寄与。二つの縦軸は5桁異なる。</p>
+    <div class="mel-plot" id="melTac"></div>
+    <ul class="mel-legend" id="melLegTac"></ul>
+    <figcaption>実測される効果が捕捉ではなく酵素誘導でしかありえないこと、そしてMT<sub>1</sub>とMT<sub>2</sub>が1 mg未満で飽和することから、抗酸化能の用量反応はここで問題としている全範囲にわたって平坦である。</figcaption>
+  </figure>
+
+  <div class="mel-tblwrap"><table>
+    <thead><tr><th>深さ</th><th>0.0033 %</th><th>0.01 %</th><th>0.10 %</th><th>2.5 %</th></tr></thead>
+    <tbody id="melTbody"></tbody>
+  </table></div>
+  <p class="mel-figsub">24時間平均を基準とした等価経口用量（mg/日）。現在の仮定に基づく。強調行が選択中の深さである。</p>
+</main>
+</div>
+
+<div class="mel-prose">
+<h2>互いに逆向きの二つの送達幾何</h2>
+<p>メラトニンは分子量232.3 Daと小さく、適度に親油性であり、膜透過性が際立って高い。この一つの性質が問題全体の構造を決めている。細胞膜の透過が血流に比べて速いため、皮膚への分布は透過律速ではなく灌流律速となる。ここから二つの帰結が生じ、その向きは互いに逆である。</p>
+<p>血液側から見れば、灌流律速の分布とは組織濃度が一定の分配係数で血漿を追随し、深さに依存しないということである。定常状態の経口メラトニンは毛球を含む真皮のあらゆる深さへ同時に到達する。一方、表面から見れば同じ灌流が吸い出し口として働く。角質層を越えた薬物は下方へ拡散しながら真皮の毛細血管叢に抜き取られる。拡散と灌流を釣り合わせると減衰長およそ775 µmの指数分布が得られ、深さ3 mmの標的では外用由来の薬物はおよそ40分の1に減衰する。</p>
+<p>これが答えの機構的な核心であると私は考える。外用は表皮と乳頭層で二桁勝り、深部真皮で負ける。交差点はおよそ2から2.5 mmにあり、毛包の毛球はその向こう側にある唯一の皮膚科学的標的である。</p>
+
+<h2>外用側は表示濃度ではなく血清値から較正する</h2>
+<p>外用製剤に表示された百分率はビヒクル中の濃度であって、組織曝露量としてはほとんど意味を持たない。0.1 %溶液は4.3 mMであり、6 mg経口投与後の血漿ピーク濃度のおよそ50万倍にあたるが、その大部分は角質層を越えない。妥当な較正法は逆向きに、外用適用が生じさせる血清上昇から遡ることである。その上昇は通過した薬物量の直接測定だからである。Fischerの2004年の透過データを生理的下限5 pg/mLの上で回帰すると、送達率は負荷とともに低下し、0.0033 %でおよそ19 %、12.5 %で0.6 %となる。これは角質層への分配が飽和することの現れである。Scheuerの安全性試験に外挿するとモデルは高負荷条件での送達量をおよそ4倍過大評価しており、したがって要求される経口用量は上振れの側に偏っている。</p>
+
+<h2>毛髪と皮膚は別の問いである</h2>
+<p>男性型脱毛症における標的は毛乳頭であり、成熟した頭皮毛包では深さ2から4 mmに位置する。ここは経口投与が効率よく到達できる唯一の標的であり、数値は良好である。保守的較正では0.1 %溶液に相当するのが1日およそ20 mg、より大規模な試験で用いられた0.0033 %製剤に相当するのがおよそ2.6 mgとなる。Circadin添付文書に基づく較正ではこれらがさらに3.9分の1になる。これがこのモデルで最も興味深い結果であると考えているが、後述する一点の理由から、この結論は緩く保持しておくべきものである。</p>
+<p>抗老化は逆の場合であり、用量では救済できないと私は判断する。線維芽細胞のコラーゲン合成、ケラチノサイトの酸化還元状態、光防護のいずれも上部300 µmに存在し、そこは外用の勾配が最大で経口送達が最も不利な領域にあたる。乳頭層で0.1 %に匹敵させるには数百 mgを要する。より決定的なのは、光防護の機構が紫外線曝露のその瞬間における質量作用的なラジカル捕捉である点である。質量作用の遮蔽はナノモル濃度まで縮小できない。経口メラトニンには全身性の利点があるにせよ、外用の光防護剤の代替にはならず、到達可能な用量でそれが変わることはない。</p>
+
+<h2>抗酸化能の問いは自ら答えを出している</h2>
+<p>メラトニンのラジカル化学は分子レベルでは印象的であり、血漿中濃度では無関係である。血漿の基礎抗酸化能はTrolox当量でおよそ1.5 mmol/Lであり、尿酸が支配している。6 mgのピーク濃度は7.7 nMである。4ラジカルのカスケードを全面的に認めたとしても基礎値の0.002 %にすぎず、1 gでも0.34 %である。ヒトが服用しうるいかなる用量でも測定のノイズ床を越えない。</p>
+<p>それでも臨床試験で抗酸化能の上昇が測定される以上、その効果は捕捉ではなく誘導でなければならない。すなわち受容体共役およびNrf2連関によるスーパーオキシドジスムターゼ、グルタチオンペルオキシダーゼ、カタラーゼの発現亢進と、尿酸およびアスコルビン酸の温存である。この読み替えは明確な予測を伴う。MT<sub>1</sub>とMT<sub>2</sub>はサブナノモルの親和性を持ち、生理的な夜間ピークですでに飽和している。したがって6 mgは受容体飽和をおよそ40倍、20 mgは130倍超過しており、いずれも同じ曲線の同じ平坦部に位置する。6 mgから20 mgへの増量で得られるモデル上の利得は約1.3ポイントである。酸化還元を指標とする限り、用量の問いは実質的に問いになっていない。</p>
+
+<h2>この結論を崩しうるもの</h2>
+<p>最大の欠落は毛包漏斗である。漏斗部はおよそ1 mmの陥入であり希釈されていないビヒクルで満たされるため、上部毛包上皮は角質層を介さずにミリモル濃度と接触する。脱毛症における作用部位が毛乳頭ではなくバルジ領域であるならば、いかなる経口用量も競合しえず、上記の良好な結果は適用されない。Fischer自身の仮説は毛球における毛包作用であり、モデルが支持するのはその読みであるが、データはこれを決着させておらず、決着したふりをするつもりはない。それ以外では、減衰長を決める輸送パラメータがすべてを支配する。妥当な範囲を通すと毛包標的の推定値は1日およそ2から90 mgに広がる。定性的な結論は頑健であり、点推定値はそうではない。</p>
+
+<p><a class="mel-dl" href="../../melatonin-skin-depth/melatonin-skin-depth-model.pdf" target="_blank" rel="noopener" title="PDF、新しいタブで開く">全文（英語、図表を含む10ページ、PDF）</a> &nbsp; <a class="mel-dl" href="../../melatonin-skin-depth/melatonin-skin-model.py">モデルのソースコード（Python）</a></p>
+</div>
+
+<section class="mel-sources" id="sources">
+<h2>出典と方法</h2>
+<p><b>全身薬物動態</b>はAndersen et al., <i>BMC Pharmacol Toxicol</i> 2016;17:8 による。1コンパートメント消失、V<sub>d</sub> 1.2 L/kg、消失半減期53.7分、吸収半減期6.0分、絶対バイオアベイラビリティ2.5 %。Circadin較正は曝露量を3.90倍する。これはCircadin 2 mgの添付文書が示すAUCと、Andersenのパラメータから予測される値との比である。この不一致は公表文献上で未解決であり、保守的設定は両者のうち低い方にあたる。</p>
+<p><b>外用送達</b>はFischer et al., <i>Skin Pharmacol Physiol</i> 2004;17:190 で較正し、脱毛症試験は <i>Br J Dermatol</i> 2004;150:341 および <i>Int J Trichology</i> 2012;4:236、高負荷条件の検証はScheuer et al. 2016 による。<b>抗酸化能</b>はMistraletti et al., <i>Crit Care</i> 2014、多嚢胞性卵巣症候群のメタ解析 <i>J Ovarian Res</i> 2024;17:145、捕捉カスケードについてはTan et al., <i>J Pineal Res</i> 2003;34:249 による。Circadinの製剤情報は2 mg製剤の添付文書による。</p>
+<p><b>検証について。</b>本モデルはAIの支援を得て構築および検証した。薬物動態パラメータ、外用の血清アンカー、試験の効果量はいずれも引用元に照合し直した。単位換算とモル計算は独立に再計算した。皮膚内輸送の層は私自身の構成であり、ヒト真皮のメラトニン実測濃度に対する検証は行っていない。公表された測定値を見つけられなかったためである。決着をつけられなかった点が二つある。脱毛症における作用部位が毛乳頭か上部毛包かという問題と、二つのバイオアベイラビリティ値のどちらが正しいかという問題である。いずれも解決せず、影響が及ぶ箇所に明示してある。</p>
+<p>本稿はモデル化の補助であって医学的助言ではない。用量の推奨を意図したものは一切含まない。</p>
+</section>
+</div>
+<script src="../../melatonin-skin-depth/app.js"></script>
+<!-- ISEGORIA:FOOT -->
+<footer id="ig-footer"><div><a href="/ja/">Isegoria · Benjamin Haire</a><nav aria-label="サイト内リンク"><a href="/ja/">ホームに戻る</a><a href="/ja/library.html">全コンテンツ</a><a href="#ig-content">ページ上部へ</a></nav></div></footer>
+<!-- /ISEGORIA:FOOT -->
+</body></html>

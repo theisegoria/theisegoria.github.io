@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en" class=" ig-document ig-editorial"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Topical melatonin makes a gradient through the dermis and oral melatonin makes a plateau. An interactive model of where they cross, and what oral dose it would take to match a topical strength at any depth."><title>Skin Deep · Oral versus Topical Melatonin</title><link rel="stylesheet" href="style.css"><link rel="canonical" href="https://theisegoria.github.io/melatonin-skin-depth/"><link rel="alternate" hreflang="en" href="https://theisegoria.github.io/melatonin-skin-depth/"><link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/melatonin-skin-depth/"><link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/melatonin-skin-depth/"><link rel="icon" href="/assets/favicon.svg">
+<script src="/assets/lang.js"></script>
+<!-- ISEGORIA:HEAD -->
+<link rel="stylesheet" href="/assets/site-shell.css?v=ce26ec4785">
+<script src="/assets/site-shell.js?v=ce26ec4785" ></script>
+<!-- /ISEGORIA:HEAD -->
+<script defer data-isegoria-analytics src="/assets/analytics.js?v=9e6ebd463bf2"></script>
+</head>
+<body class=" ig-site" data-site-kind="editorial" data-site-route="/melatonin-skin-depth/">
+<!-- ISEGORIA:NAV -->
+<a class="ig-skip" href="#ig-content">Skip to content</a>
+<header id="ig-header"><div class="ig-nav-inner">
+<a class="ig-brand" href="/" aria-label="Isegoria, home"><strong>ISEGORIA</strong><span>Benjamin Haire</span></a>
+<div class="ig-header-actions"><a class="ig-language" href="/ja/melatonin-skin-depth/" hreflang="ja" lang="ja">日本語</a><button class="ig-menu" type="button" aria-expanded="false" aria-controls="ig-primary">Menu</button></div>
+<nav id="ig-primary" aria-label="Primary navigation"><a href="/">Home</a><a href="/library.html">Library</a><a href="/#guides">Guides</a><a href="/#preoccupations" aria-current="location">Research</a><a href="/#books">Books</a><a href="/projects.html">Projects</a><a href="/about.html">About</a><a class="ig-language" href="/ja/melatonin-skin-depth/" hreflang="ja" lang="ja">日本語</a><button class="ig-theme" type="button" hidden>Theme</button></nav>
+</div></header>
+<nav id="ig-breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><a href="/#preoccupations">Research</a><span aria-hidden="true">/</span><span aria-current="page">Skin Deep · Oral versus Topical Melatonin</span></nav>
+<span id="ig-content" tabindex="-1"></span>
+<!-- /ISEGORIA:NAV -->
+<div class="mel">
+<header class="mel-head">
+  <p class="mel-eyebrow">Dermal pharmacokinetics · perfusion-limited model</p>
+  <h1>What oral dose reproduces topical melatonin in skin?</h1>
+  <p class="mel-dek">Topical dosing produces an exponential gradient through the dermis. Oral dosing produces a flat plateau. They cross at one depth, and where they cross decides the answer. Set a target below and the model recalculates.</p>
+</header>
+
+<div class="mel-shell">
+<aside class="mel-rail">
+  <h2>Model inputs</h2>
+  <div class="mel-fg">
+    <div class="mel-fl"><label for="melDoseR">Oral dose</label><span class="mel-fv" id="melDoseV">8 mg/day</span></div>
+    <input type="range" id="melDoseR" min="0" max="100" value="30" step="1">
+  </div>
+  <div class="mel-fg">
+    <div class="mel-fl"><span class="lbl" id="melFormL">Formulation</span></div>
+    <div class="mel-seg" role="group" aria-labelledby="melFormL">
+      <button type="button" data-form="IR" aria-pressed="false">Immediate</button>
+      <button type="button" data-form="SR" aria-pressed="true">Sustained</button>
+    </div>
+  </div>
+  <div class="mel-fg" id="melRelWrap">
+    <div class="mel-fl"><label for="melRelR">Release window</label><span class="mel-fv" id="melRelV">8 h</span></div>
+    <input type="range" id="melRelR" min="2" max="12" value="8" step="0.5">
+  </div>
+  <div class="mel-fg">
+    <div class="mel-fl"><span class="lbl" id="melCalL">Exposure calibration</span></div>
+    <div class="mel-seg" role="group" aria-labelledby="melCalL">
+      <button type="button" data-cal="cons" aria-pressed="false">Conservative</button>
+      <button type="button" data-cal="label" aria-pressed="true">Circadin label</button>
+    </div>
+    <p class="mel-hint" id="melCalHint"></p>
+  </div>
+  <div class="mel-rule"></div>
+  <div class="mel-fg">
+    <div class="mel-fl"><span class="lbl" id="melTopL">Topical reference</span></div>
+    <div class="mel-chips" id="melTopChips" role="group" aria-labelledby="melTopL">
+      <button type="button" data-pct="0.0033" aria-pressed="false">0.0033 %</button>
+      <button type="button" data-pct="0.01" aria-pressed="false">0.01 %</button>
+      <button type="button" data-pct="0.03" aria-pressed="false">0.03 %</button>
+      <button type="button" data-pct="0.10" aria-pressed="true">0.10 %</button>
+      <button type="button" data-pct="2.5" aria-pressed="false">2.5 %</button>
+      <button type="button" data-pct="12.5" aria-pressed="false">12.5 %</button>
+    </div>
+  </div>
+  <div class="mel-fg">
+    <div class="mel-fl"><label for="melDepthR">Target depth</label><span class="mel-fv" id="melDepthV">3000 µm</span></div>
+    <input type="range" id="melDepthR" min="0" max="4000" value="3000" step="25">
+    <div class="mel-chips" id="melDepthChips" style="margin-top:8px">
+      <button type="button" data-um="40" aria-pressed="false">Epidermis</button>
+      <button type="button" data-um="300" aria-pressed="false">Papillary</button>
+      <button type="button" data-um="1000" aria-pressed="false">Reticular</button>
+      <button type="button" data-um="3000" aria-pressed="true">Papilla</button>
+    </div>
+  </div>
+  <div class="mel-rule"></div>
+  <details>
+    <summary>Transport assumptions</summary>
+    <div class="mel-fg">
+      <div class="mel-fl"><label for="melKpR">Skin : plasma partition K<sub>p</sub></label><span class="mel-fv" id="melKpV">1.00</span></div>
+      <input type="range" id="melKpR" min="-0.6" max="0.6" value="0" step="0.02">
+    </div>
+    <div class="mel-fg">
+      <div class="mel-fl"><label for="melQR">Dermal perfusion Q</label><span class="mel-fv" id="melQV">3.0 /h</span></div>
+      <input type="range" id="melQR" min="1" max="8" value="3" step="0.25">
+    </div>
+    <div class="mel-fg">
+      <div class="mel-fl"><label for="melDR">Tissue diffusivity D</label><span class="mel-fv" id="melDV">×1.00</span></div>
+      <input type="range" id="melDR" min="-0.5" max="0.5" value="0" step="0.02">
+    </div>
+    <p class="mel-hint">These three set the decay length λ = √(D·K<sub>p</sub>/Q), which is the whole geometry of the problem.</p>
+  </details>
+</aside>
+
+<main class="mel-main">
+  <section class="mel-verdict">
+    <div class="mel-vtop">
+      <div>
+        <p class="mel-vq" id="melVq"></p>
+        <div class="mel-vnum" id="melVnum"></div>
+      </div>
+      <div id="melVpill"></div>
+    </div>
+    <p class="mel-vsent" id="melVsent"></p>
+  </section>
+
+  <dl class="mel-stats" id="melStats"></dl>
+
+  <figure>
+    <h2 class="mel-figttl">Concentration through the skin</h2>
+    <p class="mel-figsub">Steady-state tissue melatonin against depth. Drag anywhere on the plot to move the target.</p>
+    <div class="mel-plot" id="melDepth"><div class="mel-tip" id="melTipDepth"></div></div>
+    <ul class="mel-legend" id="melLegDepth"></ul>
+    <figcaption>The topical curves fall exponentially because the dermal capillary bed strips drug out as it diffuses down. The oral line is flat because perfusion delivers to every depth at once. Everything above the crossing point favours topical; everything below it favours oral.</figcaption>
+  </figure>
+
+  <figure>
+    <h2 class="mel-figttl">Plasma profile over 24 hours</h2>
+    <p class="mel-figsub">Immediate versus sustained release at equal dose, against the level your target needs.</p>
+    <div class="mel-plot" id="melPk"><div class="mel-tip" id="melTipPk"></div></div>
+    <ul class="mel-legend" id="melLegPk"></ul>
+    <figcaption>Both formulations carry the same area under the curve, so they are interchangeable for a time-averaged endpoint. They differ only when the target has a threshold, which is where the release window starts to matter.</figcaption>
+  </figure>
+
+  <figure>
+    <h2 class="mel-figttl">Compartment by compartment</h2>
+    <p class="mel-figsub">Equivalent oral dose to match the selected topical formulation at each anatomical level.</p>
+    <div class="mel-plot" id="melLadder"></div>
+    <figcaption>The applied film and the follicular duct are vehicle concentrations, not tissue concentrations. They are here to show the scale of what topical delivery is actually holding against the skin surface.</figcaption>
+  </figure>
+
+  <figure>
+    <h2 class="mel-figttl">Total antioxidant capacity</h2>
+    <p class="mel-figsub">Stoichiometric scavenging on the left, transcriptional induction on the right. The two vertical scales differ by five decades.</p>
+    <div class="mel-plot" id="melTac"></div>
+    <ul class="mel-legend" id="melLegTac"></ul>
+    <figcaption>Because the measured effect has to be enzyme induction rather than scavenging, and because MT<sub>1</sub> and MT<sub>2</sub> saturate below 1 mg, the dose-response for antioxidant capacity is flat across the entire range in question.</figcaption>
+  </figure>
+
+  <div class="mel-tblwrap"><table>
+    <thead><tr><th>Depth</th><th>0.0033 %</th><th>0.01 %</th><th>0.10 %</th><th>2.5 %</th></tr></thead>
+    <tbody id="melTbody"></tbody>
+  </table></div>
+  <p class="mel-figsub">Equivalent oral dose in mg/day on a 24-hour mean basis, at the current assumptions. The highlighted row is your selected depth.</p>
+</main>
+</div>
+
+<div class="mel-prose">
+<h2>Two delivery geometries with opposite shapes</h2>
+<p>Melatonin is small at 232.3 Da, moderately lipophilic, and unusually membrane-permeable. That single property fixes the structure of the whole problem: permeation across cell membranes is fast relative to blood flow, so distribution into skin is perfusion-limited rather than permeability-limited. Two consequences follow, and they pull in opposite directions.</p>
+<p>From the blood side, perfusion-limited distribution means tissue concentration tracks plasma with a fixed partition coefficient and no depth dependence. Oral melatonin at steady state delivers to every depth in the dermis at once, including the follicular bulb. From the surface, that same perfusion is a sink: drug crossing the stratum corneum diffuses down and is stripped out by the dermal capillary plexus. Balancing diffusion against perfusion gives an exponential profile with a decay length of about 775 µm, so a target 3 mm down sees topically delivered drug attenuated roughly fortyfold.</p>
+<p>I take that to be the mechanistic core of the answer. Topical wins by two orders of magnitude in the epidermis and papillary dermis and loses in the deep dermis, and the crossover sits at roughly 2 to 2.5 mm. The hair follicle bulb is the one dermatological target on the far side of it.</p>
+
+<h2>Calibrating the topical arm from serum, not from the label</h2>
+<p>The percentage on a topical product is the concentration in the vehicle, which is close to meaningless as a tissue exposure. A 0.1 % solution is 4.3 mM, roughly half a million times peak plasma after a 6 mg oral dose, and almost none of it crosses the stratum corneum. The defensible way to calibrate is backwards, from the serum rise topical application produces, because that rise is a direct measurement of the mass that got through. Fitting Fischer's 2004 penetration data over a 5 pg/mL physiological floor gives a delivered fraction that falls with load, from about 19 % at 0.0033 % down to 0.6 % at 12.5 %, which is the signature of saturable stratum-corneum partitioning. Extrapolated against the Scheuer safety study the model overpredicts high-load delivery about fourfold, so the oral doses it demands are biased upward.</p>
+
+<h2>Hair and skin are different questions</h2>
+<p>For androgenetic alopecia the target is the dermal papilla, 2 to 4 mm down in a terminal scalp follicle. That is the one target oral dosing reaches efficiently, and the numbers are favourable: on the conservative calibration about 20 mg a day matches the 0.1 % solution there, and about 2.6 mg matches the 0.0033 % product behind the larger trial. On the Circadin label calibration those fall by a further factor of 3.9. I think this is the genuinely interesting result in the model, and I would hold it loosely for one reason, given below.</p>
+<p>Anti-aging is the opposite case and I do not think it is salvageable by dose. Fibroblast collagen synthesis, keratinocyte redox status and photoprotection all live in the top 300 µm, exactly where the topical gradient is at its maximum and oral delivery is at its worst. Matching 0.1 % in the papillary dermis takes hundreds of milligrams. More decisively, the photoprotective mechanism is mass-action radical interception at the moment of ultraviolet exposure, and a mass-action shield does not scale down to nanomolar. Oral melatonin has whatever systemic benefits it has; it is not a substitute for a topical photoprotectant, and no achievable dose makes it one.</p>
+
+<h2>The antioxidant question answers itself</h2>
+<p>Melatonin's radical chemistry is impressive at the molecular level and irrelevant at plasma concentrations. Baseline plasma antioxidant capacity is around 1.5 mmol/L Trolox equivalents and is dominated by urate. A 6 mg dose peaks at 7.7 nM. Even granting the full four-radical cascade, that is 0.002 % of baseline, and at a gram it is 0.34 %. It never crosses the noise floor of the assay at any dose a person can swallow.</p>
+<p>Since supplementation does raise measured capacity in trials, the effect has to be induction rather than scavenging: receptor-coupled and Nrf2-linked upregulation of superoxide dismutase, glutathione peroxidase and catalase, plus sparing of urate and ascorbate. That reassignment carries a hard prediction. MT<sub>1</sub> and MT<sub>2</sub> have sub-nanomolar affinity and are already saturated at the physiological nocturnal peak, so 6 mg overshoots receptor saturation roughly fortyfold and 20 mg by 130. Both sit on the same flat part of the same curve, and the modelled gain from 6 to 20 mg is about 1.3 percentage points. For a redox endpoint the dose question is not really a question.</p>
+
+<h2>What would break this</h2>
+<p>The largest omission is the follicular duct. The infundibulum is roughly a 1 mm invagination filled with undiluted vehicle, so upper follicular epithelium contacts millimolar concentrations with no stratum corneum in the path. If the site of action in alopecia is the bulge region rather than the papilla, no oral dose competes and the favourable result above does not apply. Fischer's own hypothesis was a follicular effect at the bulb, which is the reading the model supports, but the data do not settle it and I am not going to pretend otherwise. Beyond that, the transport parameters that set the decay length dominate everything: across their plausible range the follicular estimate spans roughly 2 to 90 mg a day. The qualitative conclusion is robust and the point estimate is not.</p>
+
+<p><a class="mel-dl" href="melatonin-skin-depth-model.pdf" target="_blank" rel="noopener" title="PDF, opens in a new tab">Full write-up, 10 pages with figures (PDF)</a> &nbsp; <a class="mel-dl" href="melatonin-skin-model.py">Model source (Python)</a></p>
+</div>
+
+<section class="mel-sources" id="sources">
+<h2>Sources and method</h2>
+<p><b>Systemic pharmacokinetics</b> from Andersen et al., <i>BMC Pharmacol Toxicol</i> 2016;17:8: one-compartment disposition, V<sub>d</sub> 1.2 L/kg, elimination half-life 53.7 min, absorption half-life 6.0 min, absolute bioavailability 2.5 %. The Circadin calibration multiplies exposure by 3.90, the ratio of the Circadin 2 mg SmPC's stated area under the curve to what the Andersen parameters predict. That discrepancy is unresolved in the published literature and the conservative setting is the lower of the two.</p>
+<p><b>Topical delivery</b> calibrated from Fischer et al., <i>Skin Pharmacol Physiol</i> 2004;17:190, with the alopecia trials in <i>Br J Dermatol</i> 2004;150:341 and <i>Int J Trichology</i> 2012;4:236, and the high-load check against Scheuer et al. 2016. <b>Antioxidant capacity</b> from Mistraletti et al., <i>Crit Care</i> 2014, the PCOS meta-analysis in <i>J Ovarian Res</i> 2024;17:145, and Tan et al., <i>J Pineal Res</i> 2003;34:249 for the scavenging cascade. Circadin formulation detail from the 2 mg Summary of Product Characteristics.</p>
+<p><b>Verification.</b> I built and checked this model with AI assistance. The pharmacokinetic parameters, the topical serum anchors and the trial effect sizes were each read back to their cited sources; the unit conversions and the molar arithmetic were recomputed independently. The skin transport layer is my own construction and has not been validated against measured human dermal melatonin concentrations, because I could not find any published. Two things I could not settle: whether the site of action in alopecia is the papilla or the upper follicle, and which of the two bioavailability figures is correct. Both are flagged where they matter rather than resolved.</p>
+<p>A modelling aid, not medical advice. Nothing here is a dosing recommendation.</p>
+</section>
+</div>
+<script src="app.js"></script>
+<!-- ISEGORIA:FOOT -->
+<footer id="ig-footer"><div><a href="/">Isegoria · Benjamin Haire</a><nav aria-label="Site links"><a href="/">Back to home</a><a href="/library.html">Browse the library</a><a href="#ig-content">Back to top</a></nav></div></footer>
+<!-- /ISEGORIA:FOOT -->
+</body></html>

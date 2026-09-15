@@ -1,0 +1,102 @@
+/* Melatonin skin-depth lab. Page chrome follows the Isegoria tokens;
+   the chart series palette is the application palette and stays fixed. */
+:root{
+  --mel-s1:light-dark(#2a78d6,#3987e5);
+  --mel-s2:light-dark(#eb6834,#d95926);
+  --mel-s3:light-dark(#1baf7a,#199e70);
+  --mel-s4:light-dark(#eda100,#c98500);
+  --mel-good:#0ca30c; --mel-serious:#ec835a; --mel-crit:#d03b3b;
+  --mel-grid:light-dark(#e6e0d6,#26231f);
+  --mel-axis:light-dark(#c9c1b4,#3c352e);
+  --mel-faint:light-dark(#8b8479,#8b8479);
+  --mel-mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+body.ig-site .mel{font-family:var(--ig-sans);font-size:15px;line-height:1.6;color:var(--ig-ink)}
+.mel{width:min(var(--ig-width),100% - var(--ig-gutter)*2);margin:0 auto;padding-block:34px 64px}
+.mel-head{border-bottom:1px solid var(--ig-rule);padding-bottom:22px;margin-bottom:26px}
+.mel-eyebrow{font-family:var(--mel-mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ig-muted);margin:0 0 12px}
+.mel h1{font-family:var(--ig-serif);font-size:clamp(27px,4.4vw,42px);line-height:1.12;margin:0 0 12px;text-wrap:balance;font-weight:400}
+.mel-dek{margin:0;color:var(--ig-ink);max-width:64ch;font-size:16px;font-family:var(--ig-serif);line-height:1.6}
+.mel-shell{display:grid;grid-template-columns:300px minmax(0,1fr);gap:30px;align-items:start}
+@media (max-width:960px){.mel-shell{grid-template-columns:minmax(0,1fr);gap:24px}}
+.mel-rail,.mel-main{min-width:0}
+.mel-rail{position:sticky;top:calc(var(--ig-nav-height) + 16px);background:var(--ig-panel);border:1px solid var(--ig-rule);border-radius:6px;padding:17px 16px 19px}
+@media (max-width:960px){.mel-rail{position:static}}
+.mel-rail h2{font-family:var(--ig-sans);font-size:10.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--ig-muted);margin:0 0 15px}
+.mel-fg{margin-bottom:18px}.mel-fg:last-child{margin-bottom:0}
+.mel-fl{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:7px}
+.mel-fl label,.mel-fl .lbl{font-size:12.5px;font-weight:500;color:var(--ig-ink)}
+.mel-fv{font-family:var(--mel-mono);font-size:12.5px;color:var(--ig-ink);font-variant-numeric:tabular-nums}
+.mel input[type=range]{width:100%;margin:0;accent-color:var(--ig-accent);height:20px;display:block}
+.mel-seg{display:flex;background:var(--ig-paper);border:1px solid var(--ig-rule);border-radius:5px;padding:2px;gap:2px}
+.mel-seg button{flex:1;border:0;background:transparent;color:var(--ig-muted);font-family:var(--ig-sans);font-size:12px;font-weight:500;padding:6px 4px;border-radius:3px;cursor:pointer;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mel-seg button[aria-pressed="true"]{background:var(--ig-accent);color:var(--ig-paper)}
+.mel-chips{display:flex;flex-wrap:wrap;gap:5px}
+.mel-chips button{border:1px solid var(--ig-rule);background:var(--ig-paper);color:var(--ig-muted);font-family:var(--mel-mono);font-size:11.5px;padding:4px 8px;border-radius:4px;cursor:pointer}
+.mel-chips button[aria-pressed="true"]{border-color:var(--ig-accent);color:var(--ig-accent);font-weight:500}
+.mel-rule{height:1px;background:var(--ig-rule);margin:19px -16px}
+.mel details summary{font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--ig-muted);cursor:pointer;list-style:none;display:flex;align-items:center;gap:6px}
+.mel details summary::-webkit-details-marker{display:none}
+.mel details summary::before{content:"+";font-family:var(--mel-mono);font-size:13px;color:var(--ig-accent)}
+.mel details[open] summary::before{content:"\2013"}
+.mel details .mel-fg{margin-top:15px}
+.mel-hint{font-size:11.5px;color:var(--mel-faint);margin:9px 0 0;line-height:1.45}
+.mel-verdict{background:var(--ig-panel);border:1px solid var(--ig-rule);border-radius:6px;padding:21px 23px;margin-bottom:22px}
+.mel-vtop{display:flex;flex-wrap:wrap;gap:18px 30px;align-items:flex-end;justify-content:space-between}
+.mel-vq{font-size:12.5px;color:var(--ig-muted);margin:0 0 7px;max-width:46ch}
+.mel-vnum{font-family:var(--mel-mono);font-weight:600;font-size:clamp(31px,5.6vw,46px);line-height:1;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.mel-vnum small{font-size:.42em;font-weight:400;color:var(--ig-muted);margin-left:6px}
+.mel-pill{display:inline-flex;align-items:center;gap:7px;border-radius:99px;padding:5px 13px 5px 10px;font-size:12px;font-weight:600;border:1px solid}
+.mel-pill .dot{width:8px;height:8px;border-radius:99px;flex:none}
+.mel-pill.ok{color:var(--mel-good);border-color:color-mix(in srgb,var(--mel-good) 42%,transparent)}
+.mel-pill.ok .dot{background:var(--mel-good)}
+.mel-pill.mid{color:var(--mel-serious);border-color:color-mix(in srgb,var(--mel-serious) 48%,transparent)}
+.mel-pill.mid .dot{background:var(--mel-serious)}
+.mel-pill.no{color:var(--mel-crit);border-color:color-mix(in srgb,var(--mel-crit) 42%,transparent)}
+.mel-pill.no .dot{background:var(--mel-crit)}
+.mel-vsent{margin:17px 0 0;padding-top:16px;border-top:1px solid var(--ig-rule);color:var(--ig-ink);font-size:13.5px;max-width:74ch}
+.mel-vsent b{font-family:var(--mel-mono);font-weight:600;font-variant-numeric:tabular-nums}
+.mel-stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background:var(--ig-rule);border:1px solid var(--ig-rule);border-radius:6px;overflow:hidden;margin:0 0 28px}
+@media (min-width:640px){.mel-stats{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.mel-stat{background:var(--ig-paper);padding:12px 14px}
+.mel-stat dt{font-size:10.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ig-muted);margin:0 0 5px;font-family:var(--ig-sans)}
+.mel-stat dd{margin:0;font-family:var(--mel-mono);font-size:17px;font-variant-numeric:tabular-nums}
+.mel-stat dd span{font-size:11.5px;color:var(--ig-muted);margin-left:3px}
+.mel figure{margin:0 0 32px}
+.mel-figttl{font-family:var(--ig-serif);font-size:19px;font-weight:400;margin:0;letter-spacing:-.015em}
+.mel-figsub{font-size:12.5px;color:var(--ig-muted);margin:3px 0 13px}
+.mel figcaption{margin-top:12px;font-size:13.5px;color:var(--ig-muted);line-height:1.6;max-width:74ch;font-family:var(--ig-serif)}
+.mel-plot{position:relative;background:var(--ig-paper);border:1px solid var(--ig-rule);border-radius:5px;overflow:hidden}
+.mel-plot svg{display:block;width:100%;max-width:100%;height:auto;touch-action:pan-y}
+.mel-legend{display:flex;flex-wrap:wrap;gap:6px 16px;margin:11px 0 0;padding:0;list-style:none}
+.mel-legend li{display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--ig-muted)}
+.mel-key{width:14px;height:2.5px;border-radius:2px;flex:none}
+.mel-key.dash{background:none;border-top:2px dashed var(--ig-muted);height:0}
+.mel-tip{position:absolute;pointer-events:none;background:var(--ig-panel);border:1px solid var(--ig-rule);border-radius:5px;padding:8px 10px;font-size:11.5px;opacity:0;transition:opacity .09s;min-width:120px;z-index:5}
+.mel-tip.on{opacity:1}
+.mel-tip .th{font-family:var(--mel-mono);font-size:11px;color:var(--ig-muted);margin-bottom:5px}
+.mel-tip .tr{display:flex;align-items:center;gap:8px;justify-content:space-between;font-variant-numeric:tabular-nums;line-height:1.7}
+.mel-tip .tr .nm{display:flex;align-items:center;gap:6px;color:var(--ig-muted)}
+.mel-tip .tr .vl{font-family:var(--mel-mono);color:var(--ig-ink);font-weight:500}
+.mel-prose{max-width:66ch;font-family:var(--ig-serif);font-size:17px;line-height:1.68}
+.mel-prose h2{font-size:23px;font-weight:400;margin:40px 0 6px;padding-top:28px;border-top:1px solid var(--ig-rule);letter-spacing:-.02em}
+.mel-prose h3{font-size:18px;font-weight:400;margin:26px 0 4px}
+.mel-prose p{margin:0 0 15px}
+.mel-prose b{font-weight:600}
+.mel-tblwrap{overflow-x:auto;border:1px solid var(--ig-rule);border-radius:5px;margin-bottom:8px}
+.mel table{border-collapse:collapse;width:100%;font-size:12.5px;min-width:440px;font-family:var(--ig-sans)}
+.mel th,.mel td{padding:8px 12px;text-align:right;border-bottom:1px solid var(--mel-grid);white-space:nowrap}
+.mel th:first-child,.mel td:first-child{text-align:left}
+.mel thead th{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ig-muted);font-weight:600;background:var(--ig-panel)}
+.mel tbody td{font-family:var(--mel-mono);font-variant-numeric:tabular-nums;color:var(--ig-muted)}
+.mel tbody td:first-child{font-family:var(--ig-sans);color:var(--ig-ink)}
+.mel tbody tr:last-child td{border-bottom:0}
+.mel tbody tr.hl td{background:color-mix(in srgb,var(--ig-accent) 10%,transparent);color:var(--ig-ink)}
+.mel-sources{margin-top:44px;padding-top:22px;border-top:1px solid var(--ig-rule);font-size:13px;color:var(--ig-muted);line-height:1.65;max-width:78ch}
+.mel-sources h2{font-family:var(--ig-sans);font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--ig-ink);margin:0 0 10px;border:0;padding:0}
+.mel-sources p{margin:0 0 11px}
+.mel-sources a{color:var(--ig-accent)}
+.mel-dl{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--ig-rule);border-radius:5px;padding:9px 14px;text-decoration:none;color:var(--ig-ink);font-family:var(--ig-sans);font-size:13px;margin-top:6px}
+.mel-dl:hover{border-color:var(--ig-accent);color:var(--ig-accent)}
+html:lang(ja) .mel-prose,html:lang(ja) .mel figcaption,html:lang(ja) .mel-dek{line-height:1.85}
+@media (prefers-reduced-motion:reduce){.mel *{transition:none!important}}
