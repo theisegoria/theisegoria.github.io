@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="ja" class=" ig-document ig-editorial">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="絵を見ることは、それを作った心についての推論である。生成画像が退けられるのは質のためではない。作り手についての事後分布が潰れ、制作の費用が技能に対して単調でなくなることで、芸術家を読み取り可能にしていたシグナリング均衡そのものが、そこにいる全員にとって劣化するからである。">
+  <meta name="theme-color" content="#f7f7f5">
+  <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+  <title>AI アートへの嫌悪は美的なものではない</title>
+<style>
+  :root {
+    --ground:#F7F7F5; --surface:#FFFFFF; --surface-2:#F0F1EC;
+    --ink:#17191B; --muted:#63686D; --rule:#DEE0DC;
+    --accent:#1F5FA8; --accent-soft:#1F5FA814;
+    --blue:#2a78d6; --orange:#c8501f; --aqua:#12805a; --violet:#4a3aa7; --red:#c33a39;
+    --f-display:"Hiragino Mincho ProN","Yu Mincho","Iowan Old Style",Georgia,serif;
+    --f-body:"Hiragino Sans","Yu Gothic","Inter",ui-sans-serif,system-ui,-apple-system,sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground:#101214; --surface:#181B1E; --surface-2:#1F2327;
+      --ink:#EDEFF1; --muted:#9BA3AA; --rule:#2C3237;
+      --accent:#69ABE3; --accent-soft:#69ABE31C;
+      --blue:#5c9ce8; --orange:#f08050; --aqua:#3cc493; --violet:#9085e9; --red:#e66767;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground:#101214; --surface:#181B1E; --surface-2:#1F2327;
+    --ink:#EDEFF1; --muted:#9BA3AA; --rule:#2C3237;
+    --accent:#69ABE3; --accent-soft:#69ABE31C;
+    --blue:#5c9ce8; --orange:#f08050; --aqua:#3cc493; --violet:#9085e9; --red:#e66767;
+  }
+  * { box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { margin:0; background:var(--ground); color:var(--ink); font-family:var(--f-body); font-size:16.5px; line-height:1.85; -webkit-font-smoothing:antialiased; }
+  a { color:var(--accent); text-underline-offset:.18em; }
+  .wrap { width:min(760px, calc(100% - 40px)); margin-inline:auto; }
+  .hero { padding:72px 0 44px; }
+  .label { color:var(--muted); font-size:.74rem; font-weight:700; letter-spacing:.1em; }
+  h1 { font-family:var(--f-display); font-weight:600; font-size:clamp(1.8rem, 4.4vw, 2.7rem); line-height:1.3; margin:.3em 0 .35em; }
+  h2 { font-family:var(--f-display); font-weight:600; font-size:1.5rem; line-height:1.45; margin:2.6em 0 .7em; }
+  h2 .num { display:block; font-family:var(--f-body); font-size:.72rem; font-weight:700; letter-spacing:.1em; color:var(--muted); margin-bottom:.5em; }
+  h3 { font-size:1.02rem; margin:2em 0 .5em; }
+  .standfirst { font-size:1.08rem; color:var(--muted); }
+  p { max-width:42em; }
+  .lede { font-size:1.02rem; }
+  blockquote { margin:1.6em 0; padding-left:1.1em; border-left:2px solid var(--rule); color:var(--muted); }
+  .toc { margin:34px 0 10px; padding:20px 22px; border:1px solid var(--rule); border-radius:12px; background:var(--surface); }
+  .toc ol { margin:.5em 0 0; padding-left:1.4em; columns:2; column-gap:28px; }
+  .toc li { margin:.28em 0; font-size:.9rem; break-inside:avoid; }
+  .herometa { display:flex; flex-wrap:wrap; gap:10px; margin-top:24px; }
+  .pill { display:inline-block; padding:8px 14px; border:1px solid var(--rule); border-radius:999px; background:var(--surface); color:var(--ink); text-decoration:none; font-size:.9rem; }
+  .pill:hover { border-color:var(--accent); color:var(--accent); }
+  figure { margin:34px 0; }
+  figure svg { display:block; width:100%; height:auto; background:var(--surface); border:1px solid var(--rule); border-radius:12px; }
+  figcaption { margin-top:10px; font-size:.86rem; color:var(--muted); max-width:46em; line-height:1.8; }
+  figcaption b { color:var(--ink); }
+  .eq { margin:1.5em 0; text-align:center; font-family:"Iowan Old Style",Georgia,serif; font-size:1.12rem; }
+  .tablewrap { overflow-x:auto; margin:26px 0; }
+  table { border-collapse:collapse; width:100%; font-size:.9rem; }
+  th, td { text-align:left; vertical-align:top; padding:12px 16px 12px 0; border-bottom:1px solid var(--rule); }
+  th { font-size:.72rem; letter-spacing:.09em; color:var(--muted); font-weight:700; }
+  td.k { font-weight:600; width:11em; }
+  td.n { width:2.2em; color:var(--muted); }
+  .layers { margin:28px 0; display:grid; gap:12px; }
+  .layer { border:1px solid var(--rule); border-left:3px solid var(--accent); border-radius:10px; background:var(--surface); padding:16px 20px; }
+  .layer h4 { margin:0 0 .35em; font-size:1rem; }
+  .layer p { margin:0; font-size:.92rem; color:var(--muted); max-width:none; }
+  .sources { margin-top:60px; padding-top:24px; border-top:1px solid var(--rule); font-size:.88rem; color:var(--muted); }
+  .sources p { max-width:48em; }
+  footer.site { margin:60px 0 40px; color:var(--muted); font-size:.85rem; }
+  .fig-t { font-family:var(--f-body); font-size:11px; fill:var(--muted); }
+  .fig-l { font-family:var(--f-body); font-size:12px; fill:var(--ink); }
+  .fig-ax { stroke:var(--rule); stroke-width:1.2; fill:none; }
+  @media (max-width:640px) { .toc ol { columns:1; } }
+</style>
+<link rel="canonical" href="https://theisegoria.github.io/ja/ai-art-signalling-equilibrium/">
+<link rel="alternate" hreflang="en" href="https://theisegoria.github.io/ai-art-signalling-equilibrium/">
+<link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/ai-art-signalling-equilibrium/">
+<link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/ai-art-signalling-equilibrium/"><script src="/assets/lang.js"></script>
+<!-- ISEGORIA:HEAD -->
+<link rel="stylesheet" href="/assets/site-shell.css?v=ce26ec4785">
+<script src="/assets/site-shell.js?v=ce26ec4785" ></script>
+<!-- /ISEGORIA:HEAD -->
+<script defer data-isegoria-analytics src="/assets/analytics.js?v=9e6ebd463bf2"></script>
+</head>
+<body class=" ig-site" data-site-kind="editorial" data-site-route="/ja/ai-art-signalling-equilibrium/">
+<!-- ISEGORIA:NAV -->
+<a class="ig-skip" href="#ig-content">本文へ移動</a>
+<header id="ig-header"><div class="ig-nav-inner">
+<a class="ig-brand" href="/ja/" aria-label="Isegoria, ホーム"><strong>ISEGORIA</strong><span>Benjamin Haire</span></a>
+<div class="ig-header-actions"><a class="ig-language" href="/ai-art-signalling-equilibrium/" hreflang="en" lang="en">English</a><button class="ig-menu" type="button" aria-expanded="false" aria-controls="ig-primary">メニュー</button></div>
+<nav id="ig-primary" aria-label="メインナビゲーション"><a href="/ja/">ホーム</a><a href="/ja/library.html">全コンテンツ</a><a href="/ja/#guides">学習ガイド</a><a href="/ja/#preoccupations" aria-current="location">研究と解説</a><a href="/ja/#books">書籍</a><a href="/ja/projects.html">プロジェクト</a><a href="/ja/about.html">このサイトについて</a><a class="ig-language" href="/ai-art-signalling-equilibrium/" hreflang="en" lang="en">English</a><button class="ig-theme" type="button" hidden>表示切替</button></nav>
+</div></header>
+<nav id="ig-breadcrumb" aria-label="パンくずリスト"><a href="/ja/">ホーム</a><span aria-hidden="true">/</span><a href="/ja/#preoccupations">研究と解説</a><span aria-hidden="true">/</span><span aria-current="page">AI アートへの嫌悪は美的なものではない</span></nav>
+<span id="ig-content" tabindex="-1"></span>
+<!-- /ISEGORIA:NAV -->
+<main>
+<div class="wrap">
+
+  <div class="hero">
+    <p class="label">エッセイ / 2026年9月15日</p>
+    <h1>AI アートへの嫌悪は美的なものではない。</h1>
+    <p class="standfirst">それはシグナリング均衡の崩壊である。三つの層からなる議論。公開された圧縮器に対する相対的なアルゴリズム的複雑性は、ある人工物が特定の心について語りうることの上限を定める。人間の注意が譲渡不可能であることが、その情報を信頼に足るものにしていた。そして信頼性の喪失は、個々の作品の価値を下げるにとどまらず、共有された資産そのものを破壊する。怒りが生じるのは第三の層であり、純粋に認知的な説明が取りこぼすのもこの層である。</p>
+    <div class="herometa">
+      <a class="pill" href="../../ai-art-signalling-equilibrium/ai-art-signalling-equilibrium.pdf" target="_blank" rel="noopener">英語版 PDF · 9ページ</a>
+      <a class="pill" href="/ai-art-signalling-equilibrium/" hreflang="en" lang="en">English</a>
+    </div>
+    <p class="label" style="margin-top:20px">コルモゴロフ複雑性 · 論理的深さ · スペンスのシグナリング · 単一交差条件 · 一括均衡 · 贋作 · 本質主義</p>
+  </div>
+  <nav class="toc" aria-label="目次">
+    <p class="label">目次</p>
+    <ol>
+      <li><a href="#inference">芸術を見ることは生成する心についての推論である</a></li>
+      <li><a href="#reproducibility">他人による再現可能性</a></li>
+      <li><a href="#currency">エネルギーは通貨として誤りである</a></li>
+      <li><a href="#honesty">誠実さ：単一交差条件とその破綻</a></li>
+      <li><a href="#anger">怒りはどこにあるのか</a></li>
+      <li><a href="#forgery">贋作という自然実験</a></li>
+      <li><a href="#channels">三つのチャネルとその解離</a></li>
+      <li><a href="#doors">二つの扉、そのいずれも今は開いていない</a></li>
+      <li><a href="#predictions">この理論が予測するもの</a></li>
+      <li><a href="#weak">この議論の弱い箇所</a></li>
+      <li><a href="#residue">残余</a></li>
+    </ol>
+  </nav>
+
+  <article>
+
+  <p class="lede">芸術を見ることは、ある心についての推論である。生成画像に対する反応は、その推論が不可能になると同時に安全でもなくなったときに起こることである。よくある二つの説明はいずれも失敗する。質を持ち出す議論が失敗するのは、価値の下落が表面に見えるものではなく帰属によって引き起こされるからである。純粋な労働代替の議論が失敗するのは、それが嫉妬を予測するのに対し、実際に観察されるのは憤怒だからである。以下に示すのは、分離可能な三つの層からなる理論であり、そのうち二つを私は正しいと考え、一つについてはより緩やかに保持している。</p>
+
+  <h2 id="inference"><span class="num">第一節</span>芸術を見ることは、生成する心についてのベイズ推論である</h2>
+
+  <p>鑑賞者を、人工物を生み出した過程について推論するエージェントとして扱う。そうすると美的な関与は、おおよそベイズ的驚き、すなわち作品 <i>x</i> を観察したあとの生成者 <i>θ</i> についての事後分布の移動として表される。</p>
+
+  <p class="eq">S(<i>x</i>) = D<sub>KL</sub>( P(<i>θ</i> | <i>x</i>) ‖ P(<i>θ</i>) )</p>
+
+  <p>絵画において <i>θ</i> は一人の人間であり、事後分布は大きく動く。生成画像においては、尤度は鑑賞者がすでに知っている公開モデル <i>M</i> に支配されるため、人間についての事後分布はほとんど動かない。その移動量は、プロンプトの長さによって上から抑えられている。</p>
+
+  <figure>
+    <svg viewBox="0 0 760 250" role="img" aria-labelledby="f1t">
+      <title id="f1t">生成しうる心についての三つの確率密度。広い事前分布、人間の作品を見たあとの鋭い事後分布、生成画像を見たあとのほとんど変化しない事後分布</title>
+      <path class="fig-ax" d="M60 200 L700 200 M60 200 L60 30"/>
+      <path d="M60.0,188.8 L102.7,182.2 L145.3,173.6 L188.0,163.3 L230.7,152.3 L273.3,141.9 L316.0,133.7 L358.7,129.2 L380.0,128.6 L401.3,129.2 L444.0,133.7 L486.7,141.9 L529.3,152.3 L572.0,163.3 L614.7,173.6 L657.3,182.2 L700.0,188.8" fill="none" stroke="var(--muted)" stroke-width="1.6" stroke-dasharray="5 4"/>
+      <path d="M60.0,200.0 L188.0,200.0 L195.1,199.9 L202.2,199.6 L209.3,198.8 L216.4,196.7 L223.6,192.2 L230.7,183.4 L237.8,168.1 L244.9,145.1 L252.0,114.9 L259.1,81.5 L266.2,51.7 L273.3,33.2 L280.4,31.4 L287.6,46.9 L294.7,75.0 L301.8,108.3 L308.9,139.5 L316.0,164.2 L323.1,180.9 L330.2,190.9 L337.3,196.1 L344.4,198.5 L351.6,199.5 L358.7,199.8 L365.8,200.0 L700.0,200.0" fill="none" stroke="var(--accent)" stroke-width="2.2"/>
+      <path d="M60.0,193.9 L102.7,188.5 L145.3,180.3 L188.0,169.1 L230.7,155.5 L273.3,141.3 L316.0,129.1 L358.7,121.6 L387.1,120.1 L415.6,121.7 L458.2,129.4 L500.9,141.8 L543.6,156.0 L586.2,169.5 L628.9,180.6 L671.6,188.8 L700.0,192.5" fill="none" stroke="var(--orange)" stroke-width="2.2"/>
+      <text class="fig-l" x="278" y="24" text-anchor="middle">事後分布：人間の作品</text>
+      <text class="fig-l" x="560" y="112" fill="var(--orange)">事後分布：生成画像</text>
+      <text class="fig-t" x="140" y="150">事前分布</text>
+      <text class="fig-t" x="380" y="222" text-anchor="middle">生成しうる心 θ</text>
+      <text class="fig-t" x="52" y="40" transform="rotate(-90 52 40)" style="text-anchor:middle">密度</text>
+    </svg>
+    <figcaption><b>図1　事後分布の崩壊。</b>人間の人工物は、ある一つの心についての鋭い推論を許す。生成された人工物は、鑑賞者をほぼ出発点に置き去りにする。人間の寄与が数百ビットのプロンプトだけだからである。したがって、ある画像が生成物だと知ることは、質についての失望ではなく、すでに行った推論が許されていなかったという事後的な発見である。</figcaption>
+  </figure>
+
+  <h2 id="reproducibility"><span class="num">第二節</span>複雑性の主張は「他人による再現可能性」として述べるのが正しい</h2>
+
+  <p>形式的な主張は、検証がきわめて容易な不等式である。公開モデル <i>M</i> によって、プロンプト <i>p</i>、シード <i>s</i>、サンプラー設定 <i>c</i> から生成された拡散モデルの出力 <i>x</i> について、</p>
+
+  <p class="eq">K(<i>x</i> | <i>M</i>) ≤ |<i>p</i>| + |<i>s</i>| + |<i>c</i>| + O(1)</p>
+
+  <p>が成り立ち、しかもこの上界は構成的である。これらのビットを誰かに渡せば、その人は <i>x</i> をそのまま再生成できる。絵画にはそのようなプログラムは存在しない。最小記述が事実上、画家の脳状態を要求するからであり、それは公開でも譲渡可能でもない。</p>
+
+  <p>とはいえ、生の K は汎関数として誤りである。一様なノイズが K を最大化するが、それには何の価値もないからである。標準的な修正が二つある。ベネットの論理的深さ（1988）は、ほぼ最小のプログラムの実行時間を測るので、生の非圧縮性ではなく蓄積された計算量を数える。人間の人工物が深いのは、何十年もの反復された修練が一つの表面へと放出されているからである。ゲルマンとロイドの有効複雑性（1996）、および同等のものとしてコッペルの洗練度（1987）は、最小記述を構造的な部分とランダムな部分に分け、構造的なビットだけを数える。重要なのは、特定可能な行為者に帰属できる構造的な深さであり、一回の生成についてはそれはほぼゼロである。深さは <i>M</i> の中にあり、<i>M</i> はあらゆる出力に共有されているからである。</p>
+
+  <p>実用上有効な形は再現可能性として述べたものであり、それは二値ではない。ファン・メーヘレンはフェルメールを再現できた。贋作の事例の要点はまさにそこにある。したがってこの量は二つのパラメータをもつ。すなわち、どれだけの割合の行為者がこれを再生成できるのか、そしてそれぞれにどれだけの費用がかかるのか、である。</p>
+
+  <figure>
+    <svg viewBox="0 0 760 420" role="img" aria-labelledby="f2t">
+      <title id="f2t">横軸を再現できる人口の割合、縦軸を各人に必要な直列的注意の時間とする平面に、作品が配置された図</title>
+      <path class="fig-ax" d="M70 360 L720 360 M70 360 L70 30"/>
+      <line x1="70" y1="195" x2="720" y2="195" stroke="var(--rule)" stroke-width="1" stroke-dasharray="3 5"/>
+      <circle cx="150" cy="70" r="5" fill="var(--accent)"/>
+      <text class="fig-l" x="164" y="66">フェルメール（真作）</text>
+      <circle cx="235" cy="108" r="5" fill="var(--violet)"/>
+      <text class="fig-l" x="249" y="104">ファン・メーヘレンの贋作</text>
+      <circle cx="395" cy="150" r="5" fill="var(--muted)"/>
+      <text class="fig-l" x="409" y="146">写真の写実的模写</text>
+      <circle cx="300" cy="196" r="5" fill="var(--muted)"/>
+      <text class="fig-l" x="314" y="192">自前の学習と多数回の反復</text>
+      <circle cx="520" cy="238" r="5" fill="var(--aqua)"/>
+      <text class="fig-l" x="534" y="234">美術写真</text>
+      <circle cx="648" cy="318" r="5" fill="var(--red)"/>
+      <text class="fig-l" x="638" y="314" text-anchor="end">一回の生成</text>
+      <circle cx="600" cy="276" r="5" fill="var(--orange)"/>
+      <text class="fig-l" x="590" y="272" text-anchor="end">《泉》（人工物として）</text>
+      <text class="fig-t" x="80" y="26">証拠としての価値が高い</text>
+      <text class="fig-t" x="712" y="350" text-anchor="end">証拠としての価値が低い</text>
+      <text class="fig-t" x="395" y="392" text-anchor="middle">log₁₀ 再現できる人口の割合</text>
+      <text class="fig-t" x="20" y="195" transform="rotate(-90 20 195)" style="text-anchor:middle">log₁₀ 一人あたりに要する直列的注意の時間</text>
+      <text class="fig-t" x="62" y="74" text-anchor="end">4</text>
+      <text class="fig-t" x="62" y="150" text-anchor="end">2</text>
+      <text class="fig-t" x="62" y="199" text-anchor="end">0</text>
+      <text class="fig-t" x="62" y="284" text-anchor="end">−2</text>
+      <text class="fig-t" x="70" y="376" text-anchor="middle">−8</text>
+      <text class="fig-t" x="395" y="376" text-anchor="middle">−4</text>
+      <text class="fig-t" x="720" y="376" text-anchor="middle">0</text>
+    </svg>
+    <figcaption><b>図2　再現可能性の平面。</b>特定の心についての証拠としての価値は、左上へ行くほど高くなる。すなわち、それを成しうる者が少なく、しかも各人にとって費用が大きい場合である。贋作が生成よりも価値を損なわないのは、贋作者による再現もまた稀少で高価であり、人工物は依然として稀少な心を指し示すからである。ただしそれは別人の心である。生成は右下へと崩れ落ちる。《泉》は人工物としては右下にありながら価値をもつ。この反例が、後の第三のチャネルを要求する。位置は桁の目安であって測定値ではない。</figcaption>
+  </figure>
+
+  <h2 id="currency"><span class="num">第三節</span>エネルギーは通貨として誤りであり、還元不能な直列的注意こそが正しい</h2>
+
+  <p>物理的な直観は正しいが、単位が誤っている。出力あたりのジュールとして述べると、この議論は自らの土俵で負ける。画家がおよそ 20 W で四百時間働けば消費は数十キロワット時であり、一回の生成は数ワット時、そして学習実行はその双方を圧倒する。さらに悪いことに、同一の媒体の中では、出力あたりのエネルギーは技能と<i>逆</i>相関する。名人は一時間で描き、初心者は三十時間かけてより多く消費する。もし出力あたりのジュールが効いている変数であるならば、我々は初心者をより高く評価すべきであり、サージェントの速さは彼の欠点として数えられることになる。</p>
+
+  <figure>
+    <svg viewBox="0 0 760 270" role="img" aria-labelledby="f3t">
+      <title id="f3t">制作者の技能に対する二つの費用曲線。出力あたりのジュールは技能とともに減少し、作品に注ぎ込まれた累積的な直列的注意は技能とともに増加する</title>
+      <path class="fig-ax" d="M70 220 L700 220 M70 220 L70 30"/>
+      <path d="M70,60 C200,120 320,168 460,190 C560,205 640,211 700,214" fill="none" stroke="var(--muted)" stroke-width="2.2" stroke-dasharray="6 4"/>
+      <path d="M70,206 C180,196 300,168 420,126 C520,92 620,58 700,42" fill="none" stroke="var(--accent)" stroke-width="2.4"/>
+      <text class="fig-l" x="300" y="205" fill="var(--muted)">出力あたりのジュール：技能とともに減少、符号が逆</text>
+      <text class="fig-l" x="690" y="30" text-anchor="end" fill="var(--accent)">注ぎ込まれた累積的な直列的注意</text>
+      <text class="fig-t" x="385" y="252" text-anchor="middle">制作者の技能</text>
+      <text class="fig-t" x="22" y="125" transform="rotate(-90 22 125)" style="text-anchor:middle">費用（任意単位）</text>
+    </svg>
+    <figcaption><b>図3　通貨を替えねばならない理由。</b>素朴な出力あたりのエネルギー指標は技能に対して逆向きに動くので、観衆が追跡しているものではありえない。償却された注意、すなわち代謝的な時間で表したベネットの論理的深さは、正しい向きに動く。一時間の中に十年が含まれているのである。</figcaption>
+  </figure>
+
+  <h3>実際に効いている三つの性質</h3>
+
+  <p>問題となる費用は、特定可能な個人によって負担され、代替不能な予算から引き出され、そして示されようとしている形質に対して単調でなければならない。人間の注意はこの三つをすべて満たす。脳は体重のおよそ 2% でありながら基礎代謝のおよそ 20% を消費し、注意は直列的で代謝的に上限があるため、四百時間は借りることも並列化することも購入することもできない。データセンターの費用は現実のものだが、代替可能であり（貨幣）、償却可能であり（学習費用は N → ∞ の利用回数で割られる）、負担者を問わない。ジュールを燃やしてはいても、三つすべてに失敗している。ランダウアー限界はここでは的外れである。神経計算はそれより何桁も上で動いており、効いているのは熱力学的効率ではなく稀少性だからである。</p>
+
+  <h2 id="honesty"><span class="num">第四節</span>誠実さ：単一交差条件は成り立っていた、そして今は成り立たない</h2>
+
+  <p>スペンスの単一交差条件は、シグナルが型を分離するのは、それを産出する限界費用が送り手の質に対して減少する場合に限る、と述べる。技芸についてはこれが成り立つ。一定の水準の作品を仕上げるのに要する時間は技能とともに減少するので、作品は誠実なシグナルであり、市場は分離均衡にある。生成については、限界費用は送り手を通じてほぼ一定である。誰もが同じ一セントの何分の一かを払うからである。質についての微分はゼロへ向かい、単一交差条件は破れ、分離均衡は一括均衡へと崩れ落ちる。</p>
+
+  <figure>
+    <svg viewBox="0 0 760 260" role="img" aria-labelledby="f4t">
+      <title id="f4t">出力水準に対する費用曲線の二つの図。技芸では低技能と高技能の曲線が離れ、生成ではほぼ同一の線に収束する</title>
+      <text class="fig-l" x="60" y="26" font-weight="600">分離：技芸</text>
+      <path class="fig-ax" d="M60 210 L350 210 M60 210 L60 40"/>
+      <path d="M60,196 C130,180 200,140 340,52" fill="none" stroke="var(--red)" stroke-width="2.2"/>
+      <path d="M60,200 C140,194 230,184 340,166" fill="none" stroke="var(--accent)" stroke-width="2.2"/>
+      <text class="fig-t" x="300" y="46" text-anchor="end" fill="var(--red)">低い技能</text>
+      <text class="fig-t" x="344" y="182" text-anchor="end" fill="var(--accent)">高い技能</text>
+      <text class="fig-t" x="205" y="120" text-anchor="middle">費用が離れる</text>
+      <text class="fig-t" x="205" y="238" text-anchor="middle">シグナルの水準（出力の水準）</text>
+      <text class="fig-l" x="420" y="26" font-weight="600">一括：生成</text>
+      <path class="fig-ax" d="M420 210 L710 210 M420 210 L420 40"/>
+      <path d="M420,198 C500,190 600,180 700,170" fill="none" stroke="var(--red)" stroke-width="2.2"/>
+      <path d="M420,202 C500,195 600,186 700,176" fill="none" stroke="var(--accent)" stroke-width="2.2"/>
+      <text class="fig-t" x="700" y="160" text-anchor="end">両者はほぼ同一</text>
+      <text class="fig-t" x="565" y="120" text-anchor="middle">費用が収束する</text>
+      <text class="fig-t" x="565" y="238" text-anchor="middle">シグナルの水準（出力の水準）</text>
+    </svg>
+    <figcaption><b>図4　単一交差条件とその破綻。</b>費用曲線が離れているとき、出力の水準は制作者の型を同定し、シグナルは情報を運ぶ。曲線が収束するとき、どの出力水準も誰をも分離せず、チャネルは伝達をやめる。これが芸術家たちの訴えの形式的な内容であり、素朴な代替の物語が取りこぼすものを予測する。</figcaption>
+  </figure>
+
+  <h3>一括均衡と代替を区別する予測</h3>
+
+  <p>一括均衡のもとでは、疑いようもなく人間が作った作品もまた価値を失う。観衆がもはや人工物を条件として推論できないからである。損害は、一部の買い手がより安い供給者へ移ることだけではない。どの芸術家をも読み取り可能にしていたチャネルが、そこにいる全員にとって劣化したということであり、これには一件の依頼も失っていない者も含まれる。</p>
+
+  <h2 id="anger"><span class="num">第五節</span>怒りはどこにあるのか</h2>
+
+  <p>芸術家は十年をかけて、譲渡不可能な予算を、自分を非芸術家から分離するシグナルへと変換する。資産であったのは個々の絵ではない。シグナリング均衡の中に占める地位である。プールが汚染されるとき、その資産は誰にも奪われることなく破壊される。相手方も、窃盗も、救済の手続きも存在しない。ただ機能しなくなるのである。</p>
+
+  <p>これは、最も強い怒りを確実に生む種類の被害の形である。別の場合と比べてみればよい。より優れた芸術家が現れて自分を打ち負かすなら、自分は負けるが、均衡は保たれ、序列は依然として何かを意味している。それが生むのは嫉妬である。一括均衡は序列そのものを、自分の十年が何かを意味していたというその部分も含めて、無効にする。</p>
+
+  <p>被害が構造的で目に見えないため、怒りは手に入る唯一の具体的な事例、すなわち個々の生成画像に向かう。公の議論が質についての主張、余分な指やスロップ、に支配されるのはこのためである。それらは訴えの内容を実際には捉えておらず、年ごとに弱くなっていく。それらは代理指標であり、誰もが半ばそれを知っている。この議論が当事者の誰をも満足させない理由の一つはそこにある。</p>
+
+  <figure>
+  <div class="layers">
+    <div class="layer">
+      <h4>1. 情報の層（公開された圧縮器に対するコルモゴロフ複雑性）</h4>
+      <p>この人工物から、特定の心について何を推論できるか。利用可能な証拠の上限を定める。再現可能性として測る。すなわち、何人が、それぞれどれだけの費用で。</p>
+    </div>
+    <div class="layer">
+      <h4>2. 誠実さの層（スペンスの単一交差条件、保証人としての生物物理）</h4>
+      <p>その推論は信頼できるのか、それとも誰でも安く偽装できるのか。直列的注意が個人に属し、代替不能で、技能に対して単調であることによって成り立っていた。</p>
+    </div>
+    <div class="layer">
+      <h4>3. 均衡の層（一括均衡）</h4>
+      <p>層2が破れたとき、全員の人工物に何が起こるか。チャネルは参加者全員にとって劣化する。怒りがあるのはここであり、それは偏りではない。</p>
+    </div>
+  </div>
+  <figcaption><b>図5　構造。</b>層1と層2は独立であり、両方向に解離する。《泉》は人工物としての複雑性も制作費用もほぼゼロでありながら機能する。選択が、観衆に見えている選択肢空間に対して複雑だったからである。写実的な模写は費用が最大で単一交差条件も完全に満たすが、心についての情報はほとんど運ばず、心を打つというより見事だと評される。二つの解離、二つの変数である。</figcaption>
+  </figure>
+
+  <h2 id="forgery"><span class="num">第六節</span>贋作は自然実験であり、芸術はすでにその実験を走らせている</h2>
+
+  <p>ファン・メーヘレンの《エマオの晩餐》は、1937年にフェルメール作としてボイマンス美術館に取得された。金額は五十万ギルダー前後と伝えられることが多く、アブラハム・ブレディウスが誌上で真作と認定した。1945年に絵具が変わったわけではない。評価は帰属だけで崩壊した。</p>
+
+  <p>これは変数をきれいに切り分ける。物理的な人工物は同一、表面の特徴は不変、そしてあらゆる鑑賞者のそれまでの美的経験も変わらないまま、しかし事後的に無効化された。ファン・メーヘレン自身の技量は並外れていたが、それが作品を救うことはなかった。価値は初めから技量にあったのではなく、その表面が誰の心についての推論を許すのか、にあったからである。</p>
+
+  <p>本質主義の研究は、素朴な心のモデルがこうした事態のはるか以前からこの形に作られていたことを告げる。ニューマンとブルーム（2012）は、人々が物理的に同一の複製よりも原作を高く評価すること、そしてそれが知覚された質ではなく、制作者との接触や創造的な遂行についての信念によって媒介されることを見出した。ブルームの伝染についての研究も並行している。有名人が所有していた衣服への支払意思額は、その品が洗濯されたと告げられると下がる。生成画像は新種の心理を起動するのではない。聖遺物と贋作のためにすでにそこにあった機構の上に着地しているのである。</p>
+
+  <p>ただ一つの構造的な違いが、予測を鋭くする。贋作では事後分布は別の人物へと移る。生成では、それはいかなる人物でもないところへ潰れる。したがって AI に対する減価は贋作に対する減価を上回るはずであり、これを直接測定した者はまだいない。</p>
+
+  <h2 id="channels"><span class="num">第七節</span>三つのチャネルとその解離</h2>
+
+  <p>人間の構造的な寄与は、生成に対して異なる関係をもつ三つの要素に分かれる。</p>
+
+  <div class="tablewrap">
+    <table>
+      <tr><th>チャネル</th><th>それが何であるか</th><th>生成がそれに何をするか</th></tr>
+      <tr>
+        <td class="k">技能の顕示</td>
+        <td>譲渡不可能で、代謝的にも時間的にも費用がかかり、能力に対して単調である。古典的なザハヴィ型のシグナル。</td>
+        <td>消滅する。費用はゼロへ向かい、技能に対して単調でなくなる。</td>
+      </tr>
+      <tr>
+        <td class="k">同一性としての様式</td>
+        <td>一つの神経系に固有の圧縮方式。十点のロスコは十一点目を予測する。様式が同一性として機能するのはまさにそのためである。</td>
+        <td>反転する。公開モデルはあらゆる公開された様式を取り込み、求めに応じてそのいずれをも出力するので、様式は人を指し示さなくなる。模倣が敬意ではなくなりすましとして読まれるのはこのためである。</td>
+      </tr>
+      <tr>
+        <td class="k">見える選択肢空間に対する選択</td>
+        <td>選択の複雑性を、観衆に見えている選択肢に対して測ったもの。デュシャン、ケージ、ミニマリズム、コンセプチュアル・アート。</td>
+        <td>生き残る。ただし現在は使われていない。三語では選択肢空間は見えず、選択に費用もかからない。</td>
+      </tr>
+    </table>
+  </div>
+
+  <p>第三行は、「プロンプトこそが芸術である」という主張が自動的に偽ではない理由である。それは原理として偽なのではなく、現在の入力の規模において経験的に偽なのである。選択肢空間が読み取れるようになり、選択に費用がかかるようになったとき、それは真になる。</p>
+
+  <h2 id="doors"><span class="num">第八節</span>二つの扉、そのいずれも今は開いていない</h2>
+
+  <p>写真はまさに同じ理由で退けられた。機械的で魂がないというボードレールの1859年の非難は、語彙を替えた現在の反論そのものである。写真の復権は二つのチャネルを通って進んだ。いま利用できるのも同じ二つである。</p>
+
+  <p><b>K(<i>x</i> | M<sub>公開</sub>) を上げること。</b>自前のコーパスによる学習、数百回の反復、合成、出力の上に加える手作業。これは個人に帰属できる構造的なビットを回復させる。同時に時間費用も回復させるが、それは偶然ではない。注意こそが稀少な予算であるために、両者は連動して動く。</p>
+
+  <p><b>譲渡不可能な制約を導入すること。</b>写真は強い指標的制約をもつ。撮影者はそのとき、そこにいなければならなかった。現在することは代替不能な予算から引き出されるので、単一交差条件を回復させる。戦場写真やストリート写真が誠実なシグナルであるのはこのためである。生成における対応物は、ライブでの上演、物理的な制作、そして反復不可能な条件へのリアルタイムの応答である。</p>
+
+  <p>その双方を欠くなら、生成芸術はおおよそ1860年の写真が置かれていた場所にいる。</p>
+
+  <h2 id="predictions"><span class="num">第九節</span>この理論が予測するもの</h2>
+
+  <div class="tablewrap">
+    <table>
+      <tr><th></th><th>検証</th><th>各結果が意味するもの</th></tr>
+      <tr>
+        <td class="n">1</td>
+        <td>段階的な来歴。同一の画像に、異なる説明文を付す。三語のプロンプト、四十回の反復、あるいは数百時間をかけた自前のコーパスでの学習。</td>
+        <td>主張された入力量に単調に追随するなら、複雑性による説明が支持される。AI か否かの二値的な反応であれば、本質主義が支配的であり複雑性は随伴現象にすぎない。これが最も診断力の高い研究であり、段階的な版はまだ適切に実施されていない。</td>
+      </tr>
+      <tr>
+        <td class="n">2</td>
+        <td>同一の減価パラダイムにおける贋作と生成の比較。</td>
+        <td>理論は生成に対するより大きな減価を予測する。事後分布が移動するのではなく崩壊するからである。</td>
+      </tr>
+      <tr>
+        <td class="n">3</td>
+        <td>様式の署名に対する感受性。存命の特定の芸術家の様式と、一般的な様式とを、質を統制して比較する。</td>
+        <td>名指された様式でより鋭い減価が生じるなら、同一性のチャネルが技能のチャネルに加算的であることが確認される。</td>
+      </tr>
+      <tr>
+        <td class="n">4</td>
+        <td>汚染された市場における、人間の作と検証された作品の価値。</td>
+        <td>一括均衡は、来歴が保たれ収入が保護されていてもなお損失を予測する。純粋な代替説は損失を予測しない。</td>
+      </tr>
+      <tr>
+        <td class="n">5</td>
+        <td>収入上のリスクを揃えたうえでの、実作者における勾配。</td>
+        <td>代替説は一様であることを予測し、同一性の脅威は急な勾配を予測する。略式の観察は勾配を支持しており、これは経済的な項にとって問題となる。</td>
+      </tr>
+    </table>
+  </div>
+
+  <p>最も明快な思考実験はこうである。来歴が完全かつ安価に検証でき、分離均衡が完全に回復し収入も保護されたとしよう。怒りは消えるか。経済学はおおむね消えると答える。同一性の脅威は消えないと答える。なりすましは依然として成立しているからである。私の予想は、怒りは大きく下がるがゼロには達せず、残余は様式模倣の項である、というものである。</p>
+
+  <h2 id="weak"><span class="num">第十節</span>この議論の弱い箇所</h2>
+
+  <p>三つの留保を、埋め込むのではなく明示しておく。</p>
+
+  <p><b>K は計算不可能であり、ここで測っているものは何もない。</b>実際に理論化されているのは、圧縮可能性と帰属についての観衆の素朴なモデルである。形式論は仮説の形を与え、段階的来歴の予測を生む。経験的な内容は、知覚された労力、知覚された選択肢空間、来歴についての信念にあり、いずれも測定可能であり、いずれも K ではない。K そのものを効いている変数だと主張するのは擁護できない。</p>
+
+  <p><b>この理論は無関心を説明しない。</b>個人差を別の項として必要とする。シグナリング均衡に最も深く組み込まれている者ほど一括均衡から失うものが大きく、最も強く反応するはずである。これは予測であり、検証可能である。</p>
+
+  <p><b>三つの効果はモデルの外に置くべきである。</b>取り込んでしまえば、この説明は正当な訴えの合理化として読まれる。すなわち、盗用と職の代替。これらは道徳的かつ経済的な問題であり、認知的な物語を必要としない。モード崩壊。これは出力分布が集中していることについての真正な質の主張であり、反論が本当に表面についてである唯一の場合である。そして混雑。これは純粋な外部性であり、たとえ個々の人工物に問題がなくとも、量が探索費用を押し上げる。</p>
+
+  <h2 id="residue"><span class="num">第十一節</span>残余</h2>
+
+  <p>労力のヒューリスティックは二十年前からデータに現れている。同一の作品でも、制作に長い時間がかかったと告げられた被験者はより高く評価する（Kruger et al. 2004）。ラベリング研究は生成作品についてこれを再現しており、効果は画像から検出できる何かではなく、知覚された労力と意図性に乗る（Chamberlain et al. 2018; Bellaiche et al. 2023）。そのいずれも、本当は労力についての話ではなかった。労力は、ある一種類の行為者だけが支払える費用の代理指標であり、人工物は初めから、その行為者の痕跡としてのみ興味深かったのである。</p>
+
+  <blockquote>生成画像が嫌われるのは、それが悪いからではない。その向こう側に誰もいないからであり、そして、かつて確かに誰かがいたということを見分けるのを、その存在が難しくするからである。</blockquote>
+
+  </article>
+
+  <div class="sources">
+    <h2 style="font-size:1.1rem;margin-top:0">出典</h2>
+    <p>Bennett, "Logical Depth and Physical Complexity," 1988; Gell-Mann and Lloyd, "Information Measures, Effective Complexity, and Total Information," 1996; Koppel, "Complexity, Depth, and Sophistication," 1987; Spence, "Job Market Signaling," 1973; Zahavi, "Mate Selection: A Selection for a Handicap," 1975; Kruger, Wirtz, Van Boven and Altermatt, "The Effort Heuristic," 2004; Chamberlain, Mullin, Scheerlinck and Wagemans, "Putting the Art in Artificial," 2018; Bellaiche et al., "Humans versus AI: whether and why we prefer human-created compared to AI-created artwork," 2023; Newman and Bloom, "Art and Authenticity: The Importance of Originals in Judgments of Value," 2012; Bloom, <i>How Pleasure Works</i>, 2010; Baudelaire, "The Modern Public and Photography," Salon of 1859; Bredius, authentication of <i>Supper at Emmaus</i>, <i>The Burlington Magazine</i>, 1937.</p>
+    <p>図はいずれも測定値ではなく説明のための構成である。第九節の五つの研究は提案であり、私の知るかぎり段階的来歴の版は実施されていない。日本語版は英語版と同一の論考の翻訳である。</p>
+  </div>
+
+</div>
+</main>
+<footer class="site">
+  <div class="wrap">Benjamin Haire · メルボルン · <a href="/ja/">ホーム</a> · <a href="/ai-art-signalling-equilibrium/" hreflang="en" lang="en">English</a></div>
+</footer>
+<!-- ISEGORIA:FOOT -->
+<footer id="ig-footer"><div><a href="/ja/">Isegoria · Benjamin Haire</a><nav aria-label="サイト内リンク"><a href="/ja/">ホームに戻る</a><a href="/ja/library.html">全コンテンツ</a><a href="#ig-content">ページ上部へ</a></nav></div></footer>
+<!-- /ISEGORIA:FOOT -->
+</body>
+</html>

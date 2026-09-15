@@ -1,0 +1,398 @@
+<!doctype html>
+<html lang="en" class=" ig-document ig-editorial">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Looking at art is inference about a mind. Generated images do not fail on quality; they collapse the posterior over the maker, and because the cost of production stops being skill-monotone, the signalling equilibrium that made any artist legible degrades for everyone in it.">
+  <meta name="theme-color" content="#f7f7f5">
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <title>The Dislike of AI Art Is Not Aesthetic</title>
+<style>
+  :root {
+    --ground:#F7F7F5; --surface:#FFFFFF; --surface-2:#F0F1EC;
+    --ink:#17191B; --muted:#63686D; --rule:#DEE0DC;
+    --accent:#1F5FA8; --accent-soft:#1F5FA814;
+    --blue:#2a78d6; --orange:#c8501f; --aqua:#12805a; --violet:#4a3aa7; --red:#c33a39;
+    --f-display:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    --f-body:"Inter",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+    --f-mono:ui-monospace,SFMono-Regular,Menlo,monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground:#101214; --surface:#181B1E; --surface-2:#1F2327;
+      --ink:#EDEFF1; --muted:#9BA3AA; --rule:#2C3237;
+      --accent:#69ABE3; --accent-soft:#69ABE31C;
+      --blue:#5c9ce8; --orange:#f08050; --aqua:#3cc493; --violet:#9085e9; --red:#e66767;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground:#101214; --surface:#181B1E; --surface-2:#1F2327;
+    --ink:#EDEFF1; --muted:#9BA3AA; --rule:#2C3237;
+    --accent:#69ABE3; --accent-soft:#69ABE31C;
+    --blue:#5c9ce8; --orange:#f08050; --aqua:#3cc493; --violet:#9085e9; --red:#e66767;
+  }
+  * { box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { margin:0; background:var(--ground); color:var(--ink); font-family:var(--f-body); font-size:17px; line-height:1.65; -webkit-font-smoothing:antialiased; }
+  a { color:var(--accent); text-underline-offset:.18em; }
+  .wrap { width:min(760px, calc(100% - 40px)); margin-inline:auto; }
+  .wide { width:min(1080px, calc(100% - 40px)); margin-inline:auto; }
+  .hero { padding:72px 0 44px; }
+  .label { color:var(--muted); font-size:.74rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; }
+  h1 { font-family:var(--f-display); font-weight:600; font-size:clamp(2rem, 5vw, 3.1rem); line-height:1.08; letter-spacing:-.02em; margin:.3em 0 .35em; }
+  h2 { font-family:var(--f-display); font-weight:600; font-size:1.6rem; line-height:1.25; margin:2.6em 0 .7em; letter-spacing:-.01em; }
+  h2 .num { display:block; font-family:var(--f-body); font-size:.72rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); margin-bottom:.5em; }
+  h3 { font-size:1.02rem; margin:2em 0 .5em; }
+  .standfirst { font-size:1.16rem; color:var(--muted); }
+  p { max-width:70ch; }
+  .lede { font-size:1.05rem; }
+  blockquote { margin:1.6em 0; padding-left:1.1em; border-left:2px solid var(--rule); color:var(--muted); font-style:italic; }
+  .toc { margin:34px 0 10px; padding:20px 22px; border:1px solid var(--rule); border-radius:12px; background:var(--surface); }
+  .toc ol { margin:.5em 0 0; padding-left:1.3em; columns:2; column-gap:28px; }
+  .toc li { margin:.28em 0; font-size:.92rem; break-inside:avoid; }
+  .herometa { display:flex; flex-wrap:wrap; gap:10px; margin-top:24px; }
+  .pill { display:inline-block; padding:8px 14px; border:1px solid var(--rule); border-radius:999px; background:var(--surface); color:var(--ink); text-decoration:none; font-size:.9rem; }
+  .pill:hover { border-color:var(--accent); color:var(--accent); }
+  figure { margin:34px 0; }
+  figure svg { display:block; width:100%; height:auto; background:var(--surface); border:1px solid var(--rule); border-radius:12px; }
+  figcaption { margin-top:10px; font-size:.88rem; color:var(--muted); max-width:78ch; }
+  figcaption b { color:var(--ink); }
+  .eq { margin:1.5em 0; text-align:center; font-family:var(--f-display); font-size:1.12rem; }
+  .eq .small { font-size:.86rem; color:var(--muted); display:block; margin-top:.5em; font-family:var(--f-body); }
+  .tablewrap { overflow-x:auto; margin:26px 0; }
+  table { border-collapse:collapse; width:100%; font-size:.93rem; }
+  th, td { text-align:left; vertical-align:top; padding:12px 16px 12px 0; border-bottom:1px solid var(--rule); }
+  th { font-size:.72rem; letter-spacing:.09em; text-transform:uppercase; color:var(--muted); font-weight:700; }
+  td.k { font-weight:600; width:11em; }
+  td.n { width:2.2em; color:var(--muted); }
+  .layers { margin:28px 0; display:grid; gap:12px; }
+  .layer { border:1px solid var(--rule); border-left:3px solid var(--accent); border-radius:10px; background:var(--surface); padding:16px 20px; }
+  .layer h4 { margin:0 0 .35em; font-size:1rem; }
+  .layer p { margin:0; font-size:.93rem; color:var(--muted); max-width:none; }
+  .sources { margin-top:60px; padding-top:24px; border-top:1px solid var(--rule); font-size:.9rem; color:var(--muted); }
+  .sources p { max-width:82ch; }
+  footer.site { margin:60px 0 40px; color:var(--muted); font-size:.85rem; }
+  .fig-t { font-family:var(--f-body); font-size:11px; fill:var(--muted); }
+  .fig-l { font-family:var(--f-body); font-size:12px; fill:var(--ink); }
+  .fig-ax { stroke:var(--rule); stroke-width:1.2; fill:none; }
+  @media (max-width:640px) { .toc ol { columns:1; } }
+</style>
+<link rel="canonical" href="https://theisegoria.github.io/ai-art-signalling-equilibrium/">
+<link rel="alternate" hreflang="en" href="https://theisegoria.github.io/ai-art-signalling-equilibrium/">
+<link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/ai-art-signalling-equilibrium/">
+<link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/ai-art-signalling-equilibrium/"><script src="/assets/lang.js"></script>
+<!-- ISEGORIA:HEAD -->
+<link rel="stylesheet" href="/assets/site-shell.css?v=ce26ec4785">
+<script src="/assets/site-shell.js?v=ce26ec4785" ></script>
+<!-- /ISEGORIA:HEAD -->
+<script defer data-isegoria-analytics src="/assets/analytics.js?v=9e6ebd463bf2"></script>
+</head>
+<body class=" ig-site" data-site-kind="editorial" data-site-route="/ai-art-signalling-equilibrium/">
+<!-- ISEGORIA:NAV -->
+<a class="ig-skip" href="#ig-content">Skip to content</a>
+<header id="ig-header"><div class="ig-nav-inner">
+<a class="ig-brand" href="/" aria-label="Isegoria, home"><strong>ISEGORIA</strong><span>Benjamin Haire</span></a>
+<div class="ig-header-actions"><a class="ig-language" href="/ja/ai-art-signalling-equilibrium/" hreflang="ja" lang="ja">日本語</a><button class="ig-menu" type="button" aria-expanded="false" aria-controls="ig-primary">Menu</button></div>
+<nav id="ig-primary" aria-label="Primary navigation"><a href="/">Home</a><a href="/library.html">Library</a><a href="/#guides">Guides</a><a href="/#preoccupations" aria-current="location">Research</a><a href="/#books">Books</a><a href="/projects.html">Projects</a><a href="/about.html">About</a><a class="ig-language" href="/ja/ai-art-signalling-equilibrium/" hreflang="ja" lang="ja">日本語</a><button class="ig-theme" type="button" hidden>Theme</button></nav>
+</div></header>
+<nav id="ig-breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><a href="/#preoccupations">Research</a><span aria-hidden="true">/</span><span aria-current="page">The Dislike of AI Art Is Not Aesthetic</span></nav>
+<span id="ig-content" tabindex="-1"></span>
+<!-- /ISEGORIA:NAV -->
+<main>
+<div class="wrap">
+
+  <div class="hero">
+    <p class="label">Essay / 15 September 2026</p>
+    <h1>The dislike of AI art is not aesthetic.</h1>
+    <p class="standfirst">It is the collapse of a signalling equilibrium. An argument in three layers. Algorithmic complexity relative to a public compressor bounds what an artifact can tell you about a particular mind; the non-transferability of human attention is what made that information trustworthy; and the loss of trustworthiness destroys a shared asset rather than merely devaluing individual works. The third layer is where the anger comes from, and it is the layer a purely cognitive account leaves out.</p>
+    <div class="herometa">
+      <a class="pill" href="ai-art-signalling-equilibrium.pdf" target="_blank" rel="noopener" title="PDF, opens in a new tab">PDF &middot; 9 pages</a>
+      <a class="pill" href="/ja/ai-art-signalling-equilibrium/" hreflang="ja" lang="ja">日本語版</a>
+    </div>
+    <p class="label" style="margin-top:20px">Kolmogorov complexity &middot; logical depth &middot; Spence signalling &middot; single-crossing &middot; pooling equilibrium &middot; forgery &middot; essentialism</p>
+  </div>
+  <nav class="toc" aria-label="Contents">
+    <p class="label">Contents</p>
+    <ol>
+      <li><a href="#inference">Viewing art is inference over generating minds</a></li>
+      <li><a href="#reproducibility">Reproducibility by someone else</a></li>
+      <li><a href="#currency">Energy is the wrong currency</a></li>
+      <li><a href="#honesty">Honesty: single-crossing, and its failure</a></li>
+      <li><a href="#anger">Where the anger lives</a></li>
+      <li><a href="#forgery">Forgery is the natural experiment</a></li>
+      <li><a href="#channels">Three channels, dissociating</a></li>
+      <li><a href="#doors">Two doors, and neither is currently open</a></li>
+      <li><a href="#predictions">What the theory predicts</a></li>
+      <li><a href="#weak">Where this is weak</a></li>
+      <li><a href="#residue">The residue</a></li>
+    </ol>
+  </nav>
+
+  <article>
+
+  <p class="lede">Looking at art is inference about a mind, and the reaction against generated images is what happens when that inference stops being possible and stops being safe at the same time. The common framings both fail. Quality arguments fail because the devaluation is triggered by attribution rather than by anything visible on the surface. Pure labour-displacement arguments fail because they predict envy, and what is actually observed is rage. What follows is a theory with three separable layers, two of which I take to be correct and one of which I hold more loosely.</p>
+
+  <h2 id="inference"><span class="num">Section one</span>Viewing art is Bayesian inference over generating minds</h2>
+
+  <p>Treat the viewer as an agent doing inference about the process that produced the artifact. Aesthetic engagement is then approximately Bayesian surprise: the movement of the posterior over the generator <i>θ</i> after observing the work <i>x</i>,</p>
+
+  <p class="eq">S(<i>x</i>) = D<sub>KL</sub>( P(<i>θ</i> | <i>x</i>) ‖ P(<i>θ</i>) )</p>
+
+  <p>For a painting, <i>θ</i> is a person, and the posterior moves a great deal. For a generated image, the likelihood is dominated by a public model <i>M</i> that the viewer already knows about, so the posterior over the human barely moves at all. It is bounded above by the length of the prompt.</p>
+
+  <figure>
+    <svg viewBox="0 0 760 250" role="img" aria-labelledby="f1t">
+      <title id="f1t">Three probability densities over candidate generating minds: a broad prior, a sharp posterior after viewing human work, and a barely changed posterior after viewing generated work</title>
+      <path class="fig-ax" d="M60 200 L700 200 M60 200 L60 30"/>
+      <path d="M60.0,188.8 L102.7,182.2 L145.3,173.6 L188.0,163.3 L230.7,152.3 L273.3,141.9 L316.0,133.7 L358.7,129.2 L380.0,128.6 L401.3,129.2 L444.0,133.7 L486.7,141.9 L529.3,152.3 L572.0,163.3 L614.7,173.6 L657.3,182.2 L700.0,188.8" fill="none" stroke="var(--muted)" stroke-width="1.6" stroke-dasharray="5 4"/>
+      <path d="M60.0,200.0 L188.0,200.0 L195.1,199.9 L202.2,199.6 L209.3,198.8 L216.4,196.7 L223.6,192.2 L230.7,183.4 L237.8,168.1 L244.9,145.1 L252.0,114.9 L259.1,81.5 L266.2,51.7 L273.3,33.2 L280.4,31.4 L287.6,46.9 L294.7,75.0 L301.8,108.3 L308.9,139.5 L316.0,164.2 L323.1,180.9 L330.2,190.9 L337.3,196.1 L344.4,198.5 L351.6,199.5 L358.7,199.8 L365.8,200.0 L700.0,200.0" fill="none" stroke="var(--accent)" stroke-width="2.2"/>
+      <path d="M60.0,193.9 L102.7,188.5 L145.3,180.3 L188.0,169.1 L230.7,155.5 L273.3,141.3 L316.0,129.1 L358.7,121.6 L387.1,120.1 L415.6,121.7 L458.2,129.4 L500.9,141.8 L543.6,156.0 L586.2,169.5 L628.9,180.6 L671.6,188.8 L700.0,192.5" fill="none" stroke="var(--orange)" stroke-width="2.2"/>
+      <text class="fig-l" x="278" y="24" text-anchor="middle">posterior, human work</text>
+      <text class="fig-l" x="560" y="112" fill="var(--orange)">posterior, generated work</text>
+      <text class="fig-t" x="150" y="150">prior</text>
+      <text class="fig-t" x="380" y="222" text-anchor="middle">candidate generating minds θ</text>
+      <text class="fig-t" x="52" y="40" text-anchor="end" transform="rotate(-90 52 40)" style="text-anchor:middle">density</text>
+    </svg>
+    <figcaption><b>Figure 1. Posterior collapse.</b> The human artifact licenses a sharp inference about one mind; the generated artifact leaves the viewer roughly where they started, because the only human contribution is a prompt of a few hundred bits. Discovering an image is generated is therefore not disappointment about quality but retroactive discovery that an inference you already made was unlicensed.</figcaption>
+  </figure>
+
+  <h2 id="reproducibility"><span class="num">Section two</span>Reproducibility by someone else is the right form of the complexity claim</h2>
+
+  <p>The formal statement is an inequality that is unusually easy to verify. For a diffusion output <i>x</i> produced by public model <i>M</i> with prompt <i>p</i>, seed <i>s</i> and sampler configuration <i>c</i>,</p>
+
+  <p class="eq">K(<i>x</i> | <i>M</i>) ≤ |<i>p</i>| + |<i>s</i>| + |<i>c</i>| + O(1)</p>
+
+  <p>and the bound is constructive: hand someone those bits and they regenerate <i>x</i> exactly. For a painting there is no such program, because the minimal description effectively requires the artist's brain state, which is neither public nor transferable.</p>
+
+  <p>Raw K is nevertheless the wrong functional, since uniform noise maximises it and is worthless. Two standard repairs apply. Bennett's logical depth (1988) measures the running time of the near-minimal program, so it counts accumulated computation rather than raw incompressibility; human artifacts are deep because decades of iterated practice are discharged into one surface. Gell-Mann and Lloyd's effective complexity (1996), and equivalently Koppel's sophistication (1987), split the minimal description into structural and random parts and count only the structural bits. What matters is the structural depth attributable to an identifiable agent, which for a single generation is close to zero because the depth lives in <i>M</i> and <i>M</i> is shared across every output.</p>
+
+  <p>The operationally useful version is the one stated as reproducibility, and it is not binary. Van Meegeren could reproduce a Vermeer; that is the entire point of the forgery case. So the quantity is two-parameter: what fraction of agents could regenerate this, and at what cost to each of them?</p>
+
+  <figure>
+    <svg viewBox="0 0 760 420" role="img" aria-labelledby="f2t">
+      <title id="f2t">A plane whose horizontal axis is the fraction of the population able to reproduce an artifact and whose vertical axis is the hours of serial attention each would need, with named works placed on it</title>
+      <path class="fig-ax" d="M70 360 L720 360 M70 360 L70 30"/>
+      <line x1="70" y1="195" x2="720" y2="195" stroke="var(--rule)" stroke-width="1" stroke-dasharray="3 5"/>
+      <circle cx="150" cy="70" r="5" fill="var(--accent)"/>
+      <text class="fig-l" x="164" y="66">Vermeer, original</text>
+      <circle cx="235" cy="108" r="5" fill="var(--violet)"/>
+      <text class="fig-l" x="249" y="104">van Meegeren forgery</text>
+      <circle cx="395" cy="150" r="5" fill="var(--muted)"/>
+      <text class="fig-l" x="409" y="146">photorealist copy of a photograph</text>
+      <circle cx="300" cy="196" r="5" fill="var(--muted)"/>
+      <text class="fig-l" x="314" y="192">custom-trained, heavily iterated</text>
+      <circle cx="520" cy="238" r="5" fill="var(--aqua)"/>
+      <text class="fig-l" x="534" y="234">fine-art photograph</text>
+      <circle cx="648" cy="318" r="5" fill="var(--red)"/>
+      <text class="fig-l" x="638" y="314" text-anchor="end">single generation</text>
+      <circle cx="600" cy="276" r="5" fill="var(--orange)"/>
+      <text class="fig-l" x="590" y="272" text-anchor="end">Fountain, as artifact</text>
+      <text class="fig-t" x="80" y="26">high evidential value</text>
+      <text class="fig-t" x="712" y="350" text-anchor="end">low evidential value</text>
+      <text class="fig-t" x="395" y="392" text-anchor="middle">log₁₀ fraction of the population able to reproduce it</text>
+      <text class="fig-t" x="20" y="195" transform="rotate(-90 20 195)" style="text-anchor:middle">log₁₀ hours of serial attention, per agent</text>
+      <text class="fig-t" x="62" y="74" text-anchor="end">4</text>
+      <text class="fig-t" x="62" y="150" text-anchor="end">2</text>
+      <text class="fig-t" x="62" y="199" text-anchor="end">0</text>
+      <text class="fig-t" x="62" y="284" text-anchor="end">−2</text>
+      <text class="fig-t" x="70" y="376" text-anchor="middle">−8</text>
+      <text class="fig-t" x="395" y="376" text-anchor="middle">−4</text>
+      <text class="fig-t" x="720" y="376" text-anchor="middle">0</text>
+    </svg>
+    <figcaption><b>Figure 2. The reproducibility plane.</b> Evidential value about a particular mind increases up and to the left: few agents could do it, and it would cost each of them a great deal. Forgery devalues less than generation because the forger's reproduction remains rare and costly, so the artifact still indexes a rare mind, merely the wrong one. Generation collapses to the bottom right. <i>Fountain</i> sits at the bottom right as an artifact and is nevertheless valuable, which is the counterexample that forces the third channel below. Positions are illustrative orders of magnitude, not measurements.</figcaption>
+  </figure>
+
+  <h2 id="currency"><span class="num">Section three</span>Energy is the wrong currency; irreducible serial attention is the right one</h2>
+
+  <p>The physical intuition is correct and the units are not. Stated as joules per output, the argument loses on its own terms: a painter at roughly 20 W over four hundred hours consumes a few tens of kilowatt-hours, a single generation consumes a few watt-hours, and the training run dwarfs both. Worse, within a medium, energy per output is <i>anti</i>-correlated with skill. The master paints it in an hour; the novice takes thirty and burns more. If joules per output were the operative variable we would value the novice more, and Sargent's speed would count against him.</p>
+
+  <figure>
+    <svg viewBox="0 0 760 270" role="img" aria-labelledby="f3t">
+      <title id="f3t">Two cost curves against producer skill: joules per output falls with skill, while cumulative serial attention discharged into the work rises with skill</title>
+      <path class="fig-ax" d="M70 220 L700 220 M70 220 L70 30"/>
+      <path d="M70,60 C200,120 320,168 460,190 C560,205 640,211 700,214" fill="none" stroke="var(--muted)" stroke-width="2.2" stroke-dasharray="6 4"/>
+      <path d="M70,206 C180,196 300,168 420,126 C520,92 620,58 700,42" fill="none" stroke="var(--accent)" stroke-width="2.4"/>
+      <text class="fig-l" x="330" y="205" fill="var(--muted)">joules per output: falls with skill, wrong sign</text>
+      <text class="fig-l" x="690" y="30" text-anchor="end" fill="var(--accent)">cumulative serial attention discharged into it</text>
+      <text class="fig-t" x="385" y="252" text-anchor="middle">skill of the producer</text>
+      <text class="fig-t" x="22" y="125" transform="rotate(-90 22 125)" style="text-anchor:middle">cost (arbitrary units)</text>
+    </svg>
+    <figcaption><b>Figure 3. Why the currency has to change.</b> The naive per-output energy measure moves in the wrong direction with skill, so it cannot be what the audience is tracking. Amortised attention, which is Bennett's logical depth denominated in metabolic time, moves in the right direction: the hour contains the decade.</figcaption>
+  </figure>
+
+  <h3>The three properties that actually matter</h3>
+
+  <p>The relevant cost must be borne by an identifiable individual, drawn from a non-fungible budget, and monotone in the trait being signalled. Human attention satisfies all three: the brain is about 2% of body mass and consumes about 20% of basal metabolic rate, and attention is serial and metabolically capped, so four hundred hours cannot be borrowed, parallelised or purchased. Data-centre cost is real but fungible (money), amortisable (training divided across N → ∞ uses) and bearer-agnostic. It fails all three while still burning joules. Landauer's bound is a red herring here: neural computation runs many orders of magnitude above it, so scarcity rather than thermodynamic efficiency is doing the work.</p>
+
+  <h2 id="honesty"><span class="num">Section four</span>Honesty: single-crossing held, and now it does not</h2>
+
+  <p>Spence's single-crossing condition states that a signal separates types only if the marginal cost of producing it falls in the sender's quality. For craft this holds: time to produce a given standard of work decreases with skill, so the work is an honest signal and the market sits in a separating equilibrium. For generation, marginal cost is approximately constant across senders, since everyone pays the same fraction of a cent. The derivative with respect to quality goes to zero, single-crossing fails, and the separating equilibrium collapses into a pooling equilibrium.</p>
+
+  <figure>
+    <svg viewBox="0 0 760 260" role="img" aria-labelledby="f4t">
+      <title id="f4t">Two panels of cost curves against output standard: under craft the curves for low and high skill diverge, under generation they converge to nearly the same line</title>
+      <text class="fig-l" x="60" y="26" font-weight="600">Separating: craft</text>
+      <path class="fig-ax" d="M60 210 L350 210 M60 210 L60 40"/>
+      <path d="M60,196 C130,180 200,140 340,52" fill="none" stroke="var(--red)" stroke-width="2.2"/>
+      <path d="M60,200 C140,194 230,184 340,166" fill="none" stroke="var(--accent)" stroke-width="2.2"/>
+      <text class="fig-t" x="300" y="46" text-anchor="end" fill="var(--red)">low skill</text>
+      <text class="fig-t" x="344" y="182" text-anchor="end" fill="var(--accent)">high skill</text>
+      <text class="fig-t" x="205" y="120" text-anchor="middle">costs diverge</text>
+      <text class="fig-t" x="205" y="238" text-anchor="middle">signal level (standard of output)</text>
+      <text class="fig-l" x="420" y="26" font-weight="600">Pooling: generation</text>
+      <path class="fig-ax" d="M420 210 L710 210 M420 210 L420 40"/>
+      <path d="M420,198 C500,190 600,180 700,170" fill="none" stroke="var(--red)" stroke-width="2.2"/>
+      <path d="M420,202 C500,195 600,186 700,176" fill="none" stroke="var(--accent)" stroke-width="2.2"/>
+      <text class="fig-t" x="700" y="160" text-anchor="end">both types, nearly identical</text>
+      <text class="fig-t" x="565" y="120" text-anchor="middle">costs converge</text>
+      <text class="fig-t" x="565" y="238" text-anchor="middle">signal level (standard of output)</text>
+    </svg>
+    <figcaption><b>Figure 4. Single-crossing and its failure.</b> When cost curves diverge, output standard identifies the producer's type and the signal carries information. When they converge, no standard of output separates anyone, and the channel stops transmitting. This is the formal content of the artists' complaint, and it predicts something the naive substitution story misses.</figcaption>
+  </figure>
+
+  <h3>The prediction that distinguishes pooling from substitution</h3>
+
+  <p>Under pooling, unambiguously human work loses value too, because the audience can no longer condition on the artifact. The injury is not only that some buyers switch to a cheaper supplier; it is that the channel through which any artist was legible has been degraded for everyone in it, including those who never lost a commission.</p>
+
+  <h2 id="anger"><span class="num">Section five</span>Where the anger lives</h2>
+
+  <p>An artist spends a decade converting a non-transferable budget into a signal that separates them from non-artists. The asset was never any individual painting; it was a standing position in a signalling equilibrium. When the pool contaminates, that asset is destroyed without being taken by anyone. There is no counterparty, no theft, no procedure for redress. It simply stops working.</p>
+
+  <p>This is the shape of grievance that reliably produces the most anger. Compare the alternative: if a better artist arrives and outcompetes you, you lose, but the equilibrium holds and the ranking still means something. That produces envy. Pooling invalidates the ranking itself, including the part in which your decade counted for anything.</p>
+
+  <p>Because the injury is structural and invisible, the anger attaches to the only concrete instance available, which is the individual generated image. This is why public argument is dominated by quality claims, the extra fingers and the slop, that do not actually track the grievance and that weaken every year. They are proxies, and everyone half knows it, which is part of why the discourse satisfies nobody in it.</p>
+
+  <figure>
+  <div class="layers">
+    <div class="layer">
+      <h4>1. Information layer (Kolmogorov, relative to a public compressor)</h4>
+      <p>What can be inferred about a particular mind from this artifact? Bounds the evidence available. Measured as reproducibility: how many agents, at what cost each.</p>
+    </div>
+    <div class="layer">
+      <h4>2. Honesty layer (Spence single-crossing; biophysics as guarantor)</h4>
+      <p>Is that inference trustworthy, or can anyone fake it cheaply? Held because serial attention is individual, non-fungible and skill-monotone.</p>
+    </div>
+    <div class="layer">
+      <h4>3. Equilibrium layer (pooling)</h4>
+      <p>What happens to everyone's artifact once layer 2 fails? The channel degrades for all participants. This is where the anger is, and it is not a bias.</p>
+    </div>
+  </div>
+  <figcaption><b>Figure 5. The architecture.</b> Layers 1 and 2 are independent: they come apart in both directions. <i>Fountain</i> has near-zero artifact complexity and near-zero production cost yet functions, because the choice was complex against a visible option space. A photorealist copy has maximal cost and perfect single-crossing yet carries little information about a mind, and is rated impressive rather than moving. Two dissociations, two variables.</figcaption>
+  </figure>
+
+  <h2 id="forgery"><span class="num">Section six</span>Forgery is the natural experiment, and art has already run it</h2>
+
+  <p>Van Meegeren's <i>Supper at Emmaus</i> was acquired by the Boijmans in 1937 as a Vermeer, for a sum commonly reported at around half a million guilders, and was authenticated in print by Abraham Bredius. The paint did not change in 1945. The valuation collapsed on attribution alone.</p>
+
+  <p>This isolates the variable cleanly: physical artifact identical, surface features constant, prior aesthetic experience of every viewer unchanged and yet retroactively invalidated. Van Meegeren's own skill was enormous, and it did not rescue the work, because the value was never in the skill; it was in whose mind the surface licensed inference about.</p>
+
+  <p>The essentialism literature says the folk model was already built this way long before any of this. Newman and Bloom (2012) find that people value an original over a physically identical duplicate, mediated by beliefs about contact with the creator and about creative performance rather than by perceived quality. Bloom's contagion work runs parallel: willingness to pay for celebrity-owned clothing falls when the item is said to have been laundered. Generated images do not trigger a novel psychology; they land on a mechanism that was already there for relics and forgeries.</p>
+
+  <p>The one structural difference sharpens the prediction. With a forgery the posterior shifts to a different person. With generation it collapses to no person at all. The AI penalty should therefore exceed the forgery penalty, and nobody has measured this directly.</p>
+
+  <h2 id="channels"><span class="num">Section seven</span>Three channels, dissociating</h2>
+
+  <p>The human structural contribution splits into three components with different relationships to generation.</p>
+
+  <div class="tablewrap">
+    <table>
+      <tr><th>Channel</th><th>What it is</th><th>What generation does to it</th></tr>
+      <tr>
+        <td class="k">Skill display</td>
+        <td>Non-transferable, metabolically and temporally costed, monotone in ability. The classic Zahavian signal.</td>
+        <td>Eliminated. Cost goes to zero and stops being skill-monotone.</td>
+      </tr>
+      <tr>
+        <td class="k">Style as identity</td>
+        <td>A compression scheme private to one nervous system. Ten Rothkos predict the eleventh, which is exactly why style functions as identity.</td>
+        <td>Inverted. A public model has ingested every public style and emits any of them on demand, so style stops indexing a person. This is why mimicry reads as impersonation rather than homage.</td>
+      </tr>
+      <tr>
+        <td class="k">Choice against a visible option space</td>
+        <td>Complexity of the selection, measured against options the audience can see. Duchamp, Cage, minimalism, conceptual art.</td>
+        <td>Survives, but is not currently being used. At three words the option space is invisible and the choice is costless.</td>
+      </tr>
+    </table>
+  </div>
+
+  <p>The third row is why <i>the prompt is the art</i> is not automatically false. It is false empirically, at present scale of input, rather than false in principle. It becomes true when the option space is legible and the choice is costly.</p>
+
+  <h2 id="doors"><span class="num">Section eight</span>Two doors, and neither is currently open</h2>
+
+  <p>Photography was dismissed on exactly these grounds. Baudelaire's 1859 complaint about the mechanical and the soulless is the present objection with different vocabulary. Its rehabilitation ran through two channels, and those are the same two channels available now.</p>
+
+  <p><b>Raise K(<i>x</i> | M<sub>public</sub>).</b> Custom training on one's own corpus, hundreds of iterations, compositing, handwork over output. This restores structural bits attributable to an individual. It also restores time cost, and that is not a coincidence: both move together because attention is the scarce budget.</p>
+
+  <p><b>Introduce a non-transferable constraint.</b> Photography carries a hard indexical constraint: the photographer had to be there, then. Presence is drawn from a non-fungible budget, so it restores single-crossing, which is why combat and street photography are honest signals. The generative analogues are live performance, physical fabrication, and real-time response to unrepeatable conditions.</p>
+
+  <p>Absent both, generated art sits roughly where photography sat in 1860.</p>
+
+  <h2 id="predictions"><span class="num">Section nine</span>What the theory predicts</h2>
+
+  <div class="tablewrap">
+    <table>
+      <tr><th></th><th>Test</th><th>What each outcome would mean</th></tr>
+      <tr>
+        <td class="n">1</td>
+        <td>Graded provenance. One image, varied blurb: three-word prompt, forty iterations, or custom-trained on own corpus over hundreds of hours.</td>
+        <td>Monotone tracking of claimed input supports the complexity account. A binary AI yes/no response means essentialism dominates and complexity is epiphenomenal. This is the single most diagnostic study and the graded version has not been run properly.</td>
+      </tr>
+      <tr>
+        <td class="n">2</td>
+        <td>Forgery versus generation in the same devaluation paradigm.</td>
+        <td>Theory predicts a larger penalty for generation, because the posterior collapses rather than relocating.</td>
+      </tr>
+      <tr>
+        <td class="n">3</td>
+        <td>Style-signature sensitivity: named living artist's style versus generic, quality controlled.</td>
+        <td>Sharper devaluation for named style would confirm the identity channel as additive to the skill channel.</td>
+      </tr>
+      <tr>
+        <td class="n">4</td>
+        <td>Value of verified-human work in a contaminated market.</td>
+        <td>Pooling predicts a loss even with provenance intact and income protected. Pure substitution predicts no loss.</td>
+      </tr>
+      <tr>
+        <td class="n">5</td>
+        <td>Practitioner gradient at matched income risk.</td>
+        <td>Substitution predicts uniformity; identity threat predicts a steep gradient. Informal observation favours the gradient, which is a problem for the economic term.</td>
+      </tr>
+    </table>
+  </div>
+
+  <p>The cleanest thought experiment: suppose provenance could be verified perfectly and cheaply, in a way that fully restored the separating equilibrium and protected income. Does the anger go away? Economics says mostly yes. Identity threat says no, because the impersonation stands regardless. My expectation is that it falls substantially and does not reach zero, and that the residue is the style-mimicry term.</p>
+
+  <h2 id="weak"><span class="num">Section ten</span>Where this is weak</h2>
+
+  <p>Three admissions, stated rather than buried.</p>
+
+  <p><b>K is uncomputable, and nothing here measures it.</b> What is actually being theorised is the audience's folk model of compressibility and attribution. The formalism supplies the shape of the hypothesis and generates the graded-provenance prediction; the empirical content lives in perceived effort, perceived option space and provenance belief, all of which are measurable, none of which are K. Claiming K itself as the operative variable would be indefensible.</p>
+
+  <p><b>The theory does not explain indifference.</b> It needs individual differences as a separate term: those most embedded in the signalling equilibrium have the most to lose from pooling, and should react most strongly. That is a prediction, and it is checkable.</p>
+
+  <p><b>Three effects should be kept outside the model</b> rather than absorbed into it, or the account will read as a rationalisation of a legitimate grievance: appropriation and displacement, which are moral and economic and need no cognitive story; mode collapse, which is a genuine quality claim about a concentrated output distribution and is the one case where the objection really is about the surface; and congestion, a pure externality in which volume raises search cost even if every individual artifact were fine.</p>
+
+  <h2 id="residue"><span class="num">Section eleven</span>The residue</h2>
+
+  <p>The effort heuristic has been visible in the data for twenty years: identical artworks are rated higher when subjects are told they took longer to make (Kruger et al. 2004). Labelling studies reproduce it for generated work, with the effect loading on perceived effort and intentionality rather than on anything detectable in the image (Chamberlain et al. 2018; Bellaiche et al. 2023). None of that was ever really about effort. Effort was a proxy for a cost that only one kind of agent could pay, and the artifact was only ever interesting as a trace of that agent.</p>
+
+  <blockquote>Generated images are not disliked because they are bad; they are disliked because there is nobody on the other end of them, and because their existence makes it harder to tell that there ever was.</blockquote>
+
+  </article>
+
+  <div class="sources">
+    <h2 style="font-size:1.1rem;margin-top:0">Sources</h2>
+    <p>Bennett, "Logical Depth and Physical Complexity," 1988; Gell-Mann and Lloyd, "Information Measures, Effective Complexity, and Total Information," 1996; Koppel, "Complexity, Depth, and Sophistication," 1987; Spence, "Job Market Signaling," 1973; Zahavi, "Mate Selection: A Selection for a Handicap," 1975; Kruger, Wirtz, Van Boven and Altermatt, "The Effort Heuristic," 2004; Chamberlain, Mullin, Scheerlinck and Wagemans, "Putting the Art in Artificial," 2018; Bellaiche et al., "Humans versus AI: whether and why we prefer human-created compared to AI-created artwork," 2023; Newman and Bloom, "Art and Authenticity: The Importance of Originals in Judgments of Value," 2012; Bloom, <i>How Pleasure Works</i>, 2010; Baudelaire, "The Modern Public and Photography," Salon of 1859; Bredius, authentication of <i>Supper at Emmaus</i>, <i>The Burlington Magazine</i>, 1937.</p>
+    <p>The figures are illustrative constructions rather than measurements, and the five studies in section nine are proposals: to my knowledge the graded-provenance version has not been run.</p>
+  </div>
+
+</div>
+</main>
+<footer class="site">
+  <div class="wrap">Benjamin Haire &middot; Melbourne &middot; <a href="/">Home</a> &middot; <a href="/ja/ai-art-signalling-equilibrium/" hreflang="ja" lang="ja">日本語</a></div>
+</footer>
+<!-- ISEGORIA:FOOT -->
+<footer id="ig-footer"><div><a href="/">Isegoria · Benjamin Haire</a><nav aria-label="Site links"><a href="/">Back to home</a><a href="/library.html">Browse the library</a><a href="#ig-content">Back to top</a></nav></div></footer>
+<!-- /ISEGORIA:FOOT -->
+</body>
+</html>
