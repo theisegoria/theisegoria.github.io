@@ -145,8 +145,11 @@ returns 403). Desktop Commander runs natively on macOS and can push.
 No em-dashes in prose. Use a comma, a colon, or a full stop.
 Figures are hand-authored SVG using the stylesheet's theme tokens, so they
 work in both light and dark. Every long-form piece carries a Sources block
-that discloses AI assistance and states what was and was not independently
-verified.
+that cites its sources and states what was and was not independently
+verified. Do **not** add AI-assistance disclosures, "how this was made"
+sections, pipeline write-ups or project plans to any page: Ben answers
+provenance questions himself, and the site should read as a person's work,
+not as process narration. Removed site-wide on 2026-09-15.
 
 ## Shared site navigation
 
