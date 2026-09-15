@@ -163,12 +163,21 @@ def build(key: str, modules: dict, built: str) -> Path | None:
     return target
 
 
+# The combined archive carries only the formats a reader opens or imports. PNG
+# and SVG are excluded from it: at one megabyte each they would take the file
+# past GitHub's 100 MB hard limit well before all 246 modules are drawn, and
+# every rebuild would add that much to the repository's history for good. Each
+# module's own study pack still carries every format, and the PNGs are served
+# individually.
+ARCHIVE_FORMATS = (("pdf", "pdf"), ("opml", "opml"), ("Outlines", "md"))
+
+
 def build_mindmap_archive(keys: list[str]) -> Path | None:
     files = []
     for key in keys:
         for language in manuscript.LANGUAGES:
             stem = f"IMF-{key}-{language}"
-            for folder, suffix in MINDMAP_FORMATS:
+            for folder, suffix in ARCHIVE_FORMATS:
                 path = MINDMAPS / folder / f"{stem}.{suffix}"
                 if path.is_file():
                     files.append((f"mindmaps/{suffix}/{stem}.{suffix}", path))
