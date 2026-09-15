@@ -285,10 +285,18 @@ def parse_outline(path: Path) -> tuple[dict, Node]:
 # ------------------------------------------------------------------- layout
 
 
-def text_width(text: str, size: float) -> float:
+# Advance widths as a fraction of the font size. The root and branch labels are
+# set semibold, which runs wider than the body weight, so they get their own
+# factor: underestimating here clips the last letter out of its box.
+NARROW_ADVANCE = 0.53
+BOLD_ADVANCE = 0.585
+
+
+def text_width(text: str, size: float, bold: bool = False) -> float:
+    advance = BOLD_ADVANCE if bold else NARROW_ADVANCE
     units = 0.0
     for character in text:
-        units += 1.0 if WIDE.match(character) else 0.53
+        units += 1.0 if WIDE.match(character) else advance
     return units * size
 
 
@@ -313,7 +321,8 @@ def measure(node: Node, language: str) -> None:
     size = FONT_SIZE[depth]
     limits = WRAP_JA if language == "ja" else WRAP_EN
     node.lines = wrap(node.text, limits[depth], language == "ja")
-    node.width = max(text_width(line, size) for line in node.lines) + 2 * PAD_X
+    bold = depth < 2
+    node.width = max(text_width(line, size, bold) for line in node.lines) + 2 * PAD_X
     node.height = size * LINE_GAP * len(node.lines) + 2 * PAD_Y
     for child in node.children:
         measure(child, language)

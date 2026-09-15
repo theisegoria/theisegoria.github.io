@@ -1,0 +1,552 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="mm" viewBox="0 0 2053 1583" width="2053" height="1583" role="img" aria-label="血行動態表現型と段階的蘇生">
+<style>
+  .mm-bg { fill: #faf8f4; }
+  .mm text { font-family: 'Hiragino Sans', 'Noto Sans JP', ui-sans-serif, sans-serif; fill: #1b1917; }
+  .mm .link { fill: none; stroke: #c9c1b4; }
+  .mm .box { fill: none; stroke: none; }
+  .mm .d0 .box { fill: #1b1917; stroke: #1b1917; }
+  .mm .d0 text { fill: #faf8f4; font-weight: 650; }
+  .mm .d1 text { font-weight: 600; }
+
+  .mm .link.b0 { stroke: #4b9ac6; }
+  .mm .b0.d1 .box { fill: #d7e5eb; stroke: #0072B2; stroke-width: 1.5; }
+  .mm .b0.d1 text { fill: #075c8b; }
+  .mm .b0.d2 .box { fill: #e8efef; stroke: #70aed0; }
+  .mm .b0.d3 text, .mm .b0.d4 text { fill: #075c8b; }
+
+  .mm .link.b1 { stroke: #e08c49; }
+  .mm .b1.d1 .box { fill: #f5e2d2; stroke: #D55E00; stroke-width: 1.5; }
+  .mm .b1.d1 text { fill: #a64d06; }
+  .mm .b1.d2 .box { fill: #f7ede3; stroke: #e6a36e; }
+  .mm .b1.d3 text, .mm .b1.d4 text { fill: #a64d06; }
+
+  .mm .link.b2 { stroke: #4bb99a; }
+  .mm .b2.d1 .box { fill: #d7ebe2; stroke: #009E73; stroke-width: 1.5; }
+  .mm .b2.d1 text { fill: #077d5c; }
+  .mm .b2.d2 .box { fill: #e8f2eb; stroke: #70c6ad; }
+  .mm .b2.d3 text, .mm .b2.d4 text { fill: #077d5c; }
+
+  .mm .link.b3 { stroke: #da9fbe; }
+  .mm .b3.d1 .box { fill: #f4e6e9; stroke: #CC79A7; stroke-width: 1.5; }
+  .mm .b3.d1 text { fill: #985c7c; }
+  .mm .b3.d2 .box { fill: #f7efef; stroke: #e1b2ca; }
+  .mm .b3.d3 text, .mm .b3.d4 text { fill: #985c7c; }
+
+  .mm .link.b4 { stroke: #bba149; }
+  .mm .b4.d1 .box { fill: #ede7d2; stroke: #A07C00; stroke-width: 1.5; }
+  .mm .b4.d1 text { fill: #7f6306; }
+  .mm .b4.d2 .box { fill: #f4efe3; stroke: #c8b46e; }
+  .mm .b4.d3 text, .mm .b4.d4 text { fill: #7f6306; }
+
+  .mm .link.b5 { stroke: #84c1e2; }
+  .mm .b5.d1 .box { fill: #e3eef2; stroke: #51a9db; stroke-width: 1.5; }
+  .mm .b5.d1 text { fill: #3d7899; }
+  .mm .b5.d2 .box { fill: #eff3f3; stroke: #9dcde6; }
+  .mm .b5.d3 text, .mm .b5.d4 text { fill: #3d7899; }
+
+  .mm .link.b6 { stroke: #9580b0; }
+  .mm .b6.d1 .box { fill: #e6e0e6; stroke: #6A4C93; stroke-width: 1.5; }
+  .mm .b6.d1 text { fill: #563f74; }
+  .mm .b6.d2 .box { fill: #f0eced; stroke: #ab99bf; }
+  .mm .b6.d3 text, .mm .b6.d4 text { fill: #563f74; }
+
+  .mm .link.b7 { stroke: #98ac74; }
+  .mm .b7.d1 .box { fill: #e6e9da; stroke: #6E8B3D; stroke-width: 1.5; }
+  .mm .b7.d1 text { fill: #596e34; }
+  .mm .b7.d2 .box { fill: #f0f0e7; stroke: #adbc8f; }
+  .mm .b7.d3 text, .mm .b7.d4 text { fill: #596e34; }
+@media (prefers-color-scheme: dark) {
+  .mm-bg { fill: #12100e; }
+  .mm text { font-family: 'Hiragino Sans', 'Noto Sans JP', ui-sans-serif, sans-serif; fill: #ece7df; }
+  .mm .link { fill: none; stroke: #3d3833; }
+  .mm .box { fill: none; stroke: none; }
+  .mm .d0 .box { fill: #ece7df; stroke: #ece7df; }
+  .mm .d0 text { fill: #12100e; font-weight: 650; }
+  .mm .d1 text { font-weight: 600; }
+
+  .mm .link.b0 { stroke: #2d6a8d; }
+  .mm .b0.d1 .box { fill: #172227; stroke: #3891c3; stroke-width: 1.5; }
+  .mm .b0.d1 text { fill: #65a6ca; }
+  .mm .b0.d2 .box { fill: #15191b; stroke: #275772; }
+  .mm .b0.d3 text, .mm .b0.d4 text { fill: #65a6ca; }
+
+  .mm .link.b1 { stroke: #a15f2b; }
+  .mm .b1.d1 .box { fill: #2f2014; stroke: #de8138; stroke-width: 1.5; }
+  .mm .b1.d1 text { fill: #e29a62; }
+  .mm .b1.d2 .box { fill: #201811; stroke: #824e25; }
+  .mm .b1.d3 text, .mm .b1.d4 text { fill: #e29a62; }
+
+  .mm .link.b2 { stroke: #2d826a; }
+  .mm .b2.d1 .box { fill: #172720; stroke: #38b392; stroke-width: 1.5; }
+  .mm .b2.d1 text { fill: #65c0a5; }
+  .mm .b2.d2 .box { fill: #151b17; stroke: #276a57; }
+  .mm .b2.d3 text, .mm .b2.d4 text { fill: #65c0a5; }
+
+  .mm .link.b3 { stroke: #9c6e86; }
+  .mm .b3.d1 .box { fill: #2e2326; stroke: #d796ba; stroke-width: 1.5; }
+  .mm .b3.d1 text { fill: #dcaac3; }
+  .mm .b3.d2 .box { fill: #20191a; stroke: #7e5a6d; }
+  .mm .b3.d3 text, .mm .b3.d4 text { fill: #dcaac3; }
+
+  .mm .link.b4 { stroke: #84702b; }
+  .mm .b4.d1 .box { fill: #292314; stroke: #b59938; stroke-width: 1.5; }
+  .mm .b4.d1 text { fill: #c3ac62; }
+  .mm .b4.d2 .box { fill: #1d1a11; stroke: #6c5b25; }
+  .mm .b4.d3 text, .mm .b4.d4 text { fill: #c3ac62; }
+
+  .mm .link.b5 { stroke: #5c8eab; }
+  .mm .b5.d1 .box { fill: #21292d; stroke: #7bc4ee; stroke-width: 1.5; }
+  .mm .b5.d1 text { fill: #97cdea; }
+  .mm .b5.d2 .box { fill: #191d1e; stroke: #4c7389; }
+  .mm .b5.d3 text, .mm .b5.d4 text { fill: #97cdea; }
+
+  .mm .link.b6 { stroke: #67557c; }
+  .mm .b6.d1 .box { fill: #231e24; stroke: #8b73ab; stroke-width: 1.5; }
+  .mm .b6.d1 text { fill: #a390b8; }
+  .mm .b6.d2 .box { fill: #1a1719; stroke: #554664; }
+  .mm .b6.d3 text, .mm .b6.d4 text { fill: #a390b8; }
+
+  .mm .link.b7 { stroke: #69784d; }
+  .mm .b7.d1 .box { fill: #23251b; stroke: #8ea568; stroke-width: 1.5; }
+  .mm .b7.d1 text { fill: #a6b686; }
+  .mm .b7.d2 .box { fill: #1b1a14; stroke: #566240; }
+  .mm .b7.d3 text, .mm .b7.d4 text { fill: #a6b686; }
+}
+</style>
+  <rect class="mm-bg" width="2053" height="1583"/>
+  <path class="link b0" data-depth="1" stroke-width="2.2" d="M1161.5,791.7 C916.8,791.7 916.8,201.1 672.0,201.1"/>
+  <path class="link b1" data-depth="1" stroke-width="2.2" d="M1161.5,791.7 C1181.5,791.7 1181.5,218.4 1201.5,218.4"/>
+  <path class="link b2" data-depth="1" stroke-width="2.2" d="M1161.5,791.7 C945.8,791.7 945.8,555.0 730.0,555.0"/>
+  <path class="link b3" data-depth="1" stroke-width="2.2" d="M1161.5,791.7 C902.2,791.7 902.2,944.8 643.0,944.8"/>
+  <path class="link b4" data-depth="1" stroke-width="2.2" d="M1161.5,791.7 C1181.5,791.7 1181.5,669.4 1201.5,669.4"/>
+  <path class="link b5" data-depth="1" stroke-width="2.2" d="M1161.5,791.7 C1181.5,791.7 1181.5,1077.4 1201.5,1077.4"/>
+  <path class="link b6" data-depth="1" stroke-width="2.2" d="M1161.5,791.7 C974.8,791.7 974.8,1277.9 788.0,1277.9"/>
+  <path class="link b7" data-depth="1" stroke-width="2.2" d="M1161.5,791.7 C1181.5,791.7 1181.5,1409.1 1201.5,1409.1"/>
+  <g class="node d0 b0" data-depth="0">
+    <rect class="box" x="920.5" y="775.0" width="241.0" height="33.4" rx="9"/>
+    <text x="930.5" y="797.5" font-size="17.0">血行動態表現型と段階的蘇生</text>
+  </g>
+  <path class="link b0" data-depth="2" stroke-width="1.8" d="M672.0,201.1 C637.5,201.1 637.5,40.1 603.0,40.1"/>
+  <path class="link b0" data-depth="2" stroke-width="1.8" d="M672.0,201.1 C637.5,201.1 637.5,76.2 603.0,76.2"/>
+  <path class="link b0" data-depth="2" stroke-width="1.8" d="M672.0,201.1 C637.5,201.1 637.5,112.4 603.0,112.4"/>
+  <path class="link b0" data-depth="2" stroke-width="1.8" d="M672.0,201.1 C637.5,201.1 637.5,219.2 603.0,219.2"/>
+  <path class="link b0" data-depth="2" stroke-width="1.8" d="M672.0,201.1 C637.5,201.1 637.5,326.1 603.0,326.1"/>
+  <path class="link b0" data-depth="2" stroke-width="1.8" d="M672.0,201.1 C637.5,201.1 637.5,362.2 603.0,362.2"/>
+  <g class="node d1 b0" data-depth="1">
+    <rect class="box" x="672.0" y="186.1" width="208.5" height="30.1" rx="9"/>
+    <text x="682.0" y="206.1" font-size="14.5">ショックは圧ではなく不均衡</text>
+  </g>
+  <g class="node d2 b0" data-depth="2">
+    <rect class="box" x="349.0" y="26.0" width="254.0" height="28.2" rx="6"/>
+    <text x="359.0" y="44.5" font-size="13.0">低血圧は必要条件でも十分条件でもない</text>
+  </g>
+  <g class="node d2 b0" data-depth="2">
+    <rect class="box" x="401.0" y="62.2" width="202.0" height="28.2" rx="6"/>
+    <text x="411.0" y="80.7" font-size="13.0">若年者は出血中も圧を保ちうる</text>
+  </g>
+  <g class="node d2 b0" data-depth="2">
+    <rect class="box" x="401.0" y="98.3" width="202.0" height="28.2" rx="6"/>
+    <text x="411.0" y="116.8" font-size="13.0">慢性的低血圧でも耐容されうる</text>
+  </g>
+  <path class="link b0" data-depth="3" stroke-width="1.3" d="M453.0,219.2 C374.5,219.2 374.5,148.2 296.0,148.2"/>
+  <path class="link b0" data-depth="3" stroke-width="1.3" d="M453.0,219.2 C374.5,219.2 374.5,183.7 296.0,183.7"/>
+  <path class="link b0" data-depth="3" stroke-width="1.3" d="M453.0,219.2 C374.5,219.2 374.5,219.2 296.0,219.2"/>
+  <path class="link b0" data-depth="3" stroke-width="1.3" d="M453.0,219.2 C374.5,219.2 374.5,254.7 296.0,254.7"/>
+  <path class="link b0" data-depth="3" stroke-width="1.3" d="M453.0,219.2 C374.5,219.2 374.5,290.2 296.0,290.2"/>
+  <g class="node d2 b0" data-depth="2">
+    <rect class="box" x="453.0" y="205.2" width="150.0" height="28.2" rx="6"/>
+    <text x="463.0" y="223.7" font-size="13.0">主要な血行動態表現型</text>
+  </g>
+  <g class="node d3 b0" data-depth="3">
+    <rect class="box" x="101.0" y="134.5" width="195.0" height="27.5" rx="6"/>
+    <text x="111.0" y="152.5" font-size="12.5">前負荷不全は静脈還流を減らす</text>
+  </g>
+  <g class="node d3 b0" data-depth="3">
+    <rect class="box" x="51.0" y="170.0" width="245.0" height="27.5" rx="6"/>
+    <text x="61.0" y="188.0" font-size="12.5">ポンプ不全は充満しても前方血流が減る</text>
+  </g>
+  <g class="node d3 b0" data-depth="3">
+    <rect class="box" x="26.0" y="205.5" width="270.0" height="27.5" rx="6"/>
+    <text x="36.0" y="223.5" font-size="12.5">血管麻痺は動脈緊張とストレス容量を減らす</text>
+  </g>
+  <g class="node d3 b0" data-depth="3">
+    <rect class="box" x="126.0" y="241.0" width="170.0" height="27.5" rx="6"/>
+    <text x="136.0" y="259.0" font-size="12.5">閉塞は機械的障壁をつくる</text>
+  </g>
+  <g class="node d3 b0" data-depth="3">
+    <rect class="box" x="63.5" y="276.5" width="232.5" height="27.5" rx="6"/>
+    <text x="73.5" y="294.5" font-size="12.5">微小循環不全では血液を利用できない</text>
+  </g>
+  <g class="node d2 b0" data-depth="2">
+    <rect class="box" x="466.0" y="312.0" width="137.0" height="28.2" rx="6"/>
+    <text x="476.0" y="330.5" font-size="13.0">代償は重症度を隠す</text>
+  </g>
+  <g class="node d2 b0" data-depth="2">
+    <rect class="box" x="427.0" y="348.1" width="176.0" height="28.2" rx="6"/>
+    <text x="437.0" y="366.6" font-size="13.0">抽出予備能には限りがある</text>
+  </g>
+  <path class="link b1" data-depth="2" stroke-width="1.8" d="M1323.0,218.4 C1386.5,218.4 1386.5,40.1 1450.0,40.1"/>
+  <path class="link b1" data-depth="2" stroke-width="1.8" d="M1323.0,218.4 C1386.5,218.4 1386.5,84.8 1450.0,84.8"/>
+  <path class="link b1" data-depth="2" stroke-width="1.8" d="M1323.0,218.4 C1386.5,218.4 1386.5,129.6 1450.0,129.6"/>
+  <path class="link b1" data-depth="2" stroke-width="1.8" d="M1323.0,218.4 C1386.5,218.4 1386.5,174.3 1450.0,174.3"/>
+  <path class="link b1" data-depth="2" stroke-width="1.8" d="M1323.0,218.4 C1386.5,218.4 1386.5,227.0 1450.0,227.0"/>
+  <path class="link b1" data-depth="2" stroke-width="1.8" d="M1323.0,218.4 C1386.5,218.4 1386.5,279.6 1450.0,279.6"/>
+  <path class="link b1" data-depth="2" stroke-width="1.8" d="M1323.0,218.4 C1386.5,218.4 1386.5,324.4 1450.0,324.4"/>
+  <path class="link b1" data-depth="2" stroke-width="1.8" d="M1323.0,218.4 C1386.5,218.4 1386.5,360.5 1450.0,360.5"/>
+  <path class="link b1" data-depth="2" stroke-width="1.8" d="M1323.0,218.4 C1386.5,218.4 1386.5,396.7 1450.0,396.7"/>
+  <g class="node d1 b1" data-depth="1">
+    <rect class="box" x="1201.5" y="203.3" width="121.5" height="30.1" rx="9"/>
+    <text x="1211.5" y="223.3" font-size="14.5">酸素含量と抽出</text>
+  </g>
+  <g class="node d2 b1" data-depth="2">
+    <rect class="box" x="1450.0" y="26.0" width="241.0" height="28.2" rx="6"/>
+    <text x="1460.0" y="44.5" font-size="13.0">含量の大部分はヘモグロビン結合酸素</text>
+  </g>
+  <g class="node d2 b1" data-depth="2">
+    <rect class="box" x="1450.0" y="62.2" width="267.0" height="45.3" rx="6"/>
+    <text x="1460.0" y="80.7" font-size="13.0">ヘモグロビンと血流なしに飽和度は読めな</text>
+    <text x="1460.0" y="97.8" font-size="13.0">い</text>
+  </g>
+  <g class="node d2 b1" data-depth="2">
+    <rect class="box" x="1450.0" y="115.5" width="254.0" height="28.2" rx="6"/>
+    <text x="1460.0" y="134.0" font-size="13.0">一酸化炭素はパルスオキシメトリを欺く</text>
+  </g>
+  <g class="node d2 b1" data-depth="2">
+    <rect class="box" x="1450.0" y="151.6" width="267.0" height="45.3" rx="6"/>
+    <text x="1460.0" y="170.1" font-size="13.0">低い静脈血飽和度：低流量、貧血、低酸素</text>
+    <text x="1460.0" y="187.3" font-size="13.0">、需要</text>
+  </g>
+  <path class="link b1" data-depth="3" stroke-width="1.3" d="M1717.0,227.0 C1737.0,227.0 1737.0,227.0 1757.0,227.0"/>
+  <g class="node d2 b1" data-depth="2">
+    <rect class="box" x="1450.0" y="212.9" width="267.0" height="28.2" rx="6"/>
+    <text x="1460.0" y="231.4" font-size="13.0">高い静脈血飽和度でも灌流は保証されない</text>
+  </g>
+  <g class="node d3 b1" data-depth="3">
+    <rect class="box" x="1757.0" y="205.0" width="270.0" height="44.0" rx="6"/>
+    <text x="1767.0" y="223.0" font-size="12.5">シャント、抽出障害、ミトコンドリア機能不</text>
+    <text x="1767.0" y="239.5" font-size="12.5">全</text>
+  </g>
+  <g class="node d2 b1" data-depth="2">
+    <rect class="box" x="1450.0" y="257.0" width="267.0" height="45.3" rx="6"/>
+    <text x="1460.0" y="275.5" font-size="13.0">供給が需要に届かないと酸素負債が蓄積す</text>
+    <text x="1460.0" y="292.6" font-size="13.0">る</text>
+  </g>
+  <g class="node d2 b1" data-depth="2">
+    <rect class="box" x="1450.0" y="310.3" width="215.0" height="28.2" rx="6"/>
+    <text x="1460.0" y="328.8" font-size="13.0">再灌流は蓄積代謝物を循環へ流す</text>
+  </g>
+  <g class="node d2 b1" data-depth="2">
+    <rect class="box" x="1450.0" y="346.4" width="254.0" height="28.2" rx="6"/>
+    <text x="1460.0" y="364.9" font-size="13.0">体温、血糖、カルシウム、酸性度、凝固</text>
+  </g>
+  <g class="node d2 b1" data-depth="2">
+    <rect class="box" x="1450.0" y="382.6" width="241.0" height="28.2" rx="6"/>
+    <text x="1460.0" y="401.1" font-size="13.0">一つの数値の回復は機能回復ではない</text>
+  </g>
+  <path class="link b2" data-depth="2" stroke-width="1.8" d="M730.0,555.0 C666.5,555.0 666.5,398.4 603.0,398.4"/>
+  <path class="link b2" data-depth="2" stroke-width="1.8" d="M730.0,555.0 C666.5,555.0 666.5,443.1 603.0,443.1"/>
+  <path class="link b2" data-depth="2" stroke-width="1.8" d="M730.0,555.0 C666.5,555.0 666.5,487.9 603.0,487.9"/>
+  <path class="link b2" data-depth="2" stroke-width="1.8" d="M730.0,555.0 C666.5,555.0 666.5,524.0 603.0,524.0"/>
+  <path class="link b2" data-depth="2" stroke-width="1.8" d="M730.0,555.0 C666.5,555.0 666.5,560.2 603.0,560.2"/>
+  <path class="link b2" data-depth="2" stroke-width="1.8" d="M730.0,555.0 C666.5,555.0 666.5,604.9 603.0,604.9"/>
+  <path class="link b2" data-depth="2" stroke-width="1.8" d="M730.0,555.0 C666.5,555.0 666.5,658.2 603.0,658.2"/>
+  <path class="link b2" data-depth="2" stroke-width="1.8" d="M730.0,555.0 C666.5,555.0 666.5,711.6 603.0,711.6"/>
+  <g class="node d1 b2" data-depth="1">
+    <rect class="box" x="730.0" y="539.9" width="150.5" height="30.1" rx="9"/>
+    <text x="740.0" y="559.9" font-size="14.5">乳酸と酸塩基の文脈</text>
+  </g>
+  <g class="node d2 b2" data-depth="2">
+    <rect class="box" x="349.0" y="384.3" width="254.0" height="28.2" rx="6"/>
+    <text x="359.0" y="402.8" font-size="13.0">産生がクリアランスを越えると上昇する</text>
+  </g>
+  <g class="node d2 b2" data-depth="2">
+    <rect class="box" x="336.0" y="420.5" width="267.0" height="45.3" rx="6"/>
+    <text x="346.0" y="439.0" font-size="13.0">カテコールアミンは酸素存在下でも乳酸を</text>
+    <text x="346.0" y="456.1" font-size="13.0">増やす</text>
+  </g>
+  <g class="node d2 b2" data-depth="2">
+    <rect class="box" x="349.0" y="473.8" width="254.0" height="28.2" rx="6"/>
+    <text x="359.0" y="492.3" font-size="13.0">肝不全、発作、筋活動、薬剤、局所虚血</text>
+  </g>
+  <g class="node d2 b2" data-depth="2">
+    <rect class="box" x="388.0" y="509.9" width="215.0" height="28.2" rx="6"/>
+    <text x="398.0" y="528.4" font-size="13.0">数値ではなく機序が治療を決める</text>
+  </g>
+  <g class="node d2 b2" data-depth="2">
+    <rect class="box" x="362.0" y="546.1" width="241.0" height="28.2" rx="6"/>
+    <text x="372.0" y="564.6" font-size="13.0">盲目的な輸液が誤りとなる場合がある</text>
+  </g>
+  <g class="node d2 b2" data-depth="2">
+    <rect class="box" x="336.0" y="582.3" width="267.0" height="45.3" rx="6"/>
+    <text x="346.0" y="600.8" font-size="13.0">アシドーシスは収縮性と血管反応性を損な</text>
+    <text x="346.0" y="617.9" font-size="13.0">う</text>
+  </g>
+  <g class="node d2 b2" data-depth="2">
+    <rect class="box" x="336.0" y="635.6" width="267.0" height="45.3" rx="6"/>
+    <text x="346.0" y="654.1" font-size="13.0">アニオンギャップはアルブミンと検査法に</text>
+    <text x="346.0" y="671.2" font-size="13.0">依存</text>
+  </g>
+  <g class="node d2 b2" data-depth="2">
+    <rect class="box" x="336.0" y="688.9" width="267.0" height="45.3" rx="6"/>
+    <text x="346.0" y="707.4" font-size="13.0">クロールに富む輸液は高クロール性アシド</text>
+    <text x="346.0" y="724.6" font-size="13.0">ーシス</text>
+  </g>
+  <path class="link b3" data-depth="2" stroke-width="1.8" d="M643.0,944.8 C623.0,944.8 623.0,756.3 603.0,756.3"/>
+  <path class="link b3" data-depth="2" stroke-width="1.8" d="M643.0,944.8 C623.0,944.8 623.0,792.5 603.0,792.5"/>
+  <path class="link b3" data-depth="2" stroke-width="1.8" d="M643.0,944.8 C623.0,944.8 623.0,828.6 603.0,828.6"/>
+  <path class="link b3" data-depth="2" stroke-width="1.8" d="M643.0,944.8 C623.0,944.8 623.0,864.8 603.0,864.8"/>
+  <path class="link b3" data-depth="2" stroke-width="1.8" d="M643.0,944.8 C623.0,944.8 623.0,900.9 603.0,900.9"/>
+  <path class="link b3" data-depth="2" stroke-width="1.8" d="M643.0,944.8 C623.0,944.8 623.0,945.7 603.0,945.7"/>
+  <path class="link b3" data-depth="2" stroke-width="1.8" d="M643.0,944.8 C623.0,944.8 623.0,990.4 603.0,990.4"/>
+  <path class="link b3" data-depth="2" stroke-width="1.8" d="M643.0,944.8 C623.0,944.8 623.0,1035.2 603.0,1035.2"/>
+  <path class="link b3" data-depth="2" stroke-width="1.8" d="M643.0,944.8 C623.0,944.8 623.0,1088.5 603.0,1088.5"/>
+  <path class="link b3" data-depth="2" stroke-width="1.8" d="M643.0,944.8 C623.0,944.8 623.0,1133.2 603.0,1133.2"/>
+  <g class="node d1 b3" data-depth="1">
+    <rect class="box" x="643.0" y="929.7" width="237.5" height="30.1" rx="9"/>
+    <text x="653.0" y="949.7" font-size="14.5">輸液反応性は輸液必要性ではない</text>
+  </g>
+  <g class="node d2 b3" data-depth="2">
+    <rect class="box" x="336.0" y="742.2" width="267.0" height="28.2" rx="6"/>
+    <text x="346.0" y="760.7" font-size="13.0">前負荷増加後に一回拍出量が増える見込み</text>
+  </g>
+  <g class="node d2 b3" data-depth="2">
+    <rect class="box" x="336.0" y="778.4" width="267.0" height="28.2" rx="6"/>
+    <text x="346.0" y="796.9" font-size="13.0">反応性があっても既に浮腫性のことがある</text>
+  </g>
+  <g class="node d2 b3" data-depth="2">
+    <rect class="box" x="388.0" y="814.5" width="215.0" height="28.2" rx="6"/>
+    <text x="398.0" y="833.0" font-size="13.0">反応性がなくても出血補充は必要</text>
+  </g>
+  <g class="node d2 b3" data-depth="2">
+    <rect class="box" x="375.0" y="850.7" width="228.0" height="28.2" rx="6"/>
+    <text x="385.0" y="869.2" font-size="13.0">静的充満圧は反応を十分予測しない</text>
+  </g>
+  <g class="node d2 b3" data-depth="2">
+    <rect class="box" x="362.0" y="886.9" width="241.0" height="28.2" rx="6"/>
+    <text x="372.0" y="905.4" font-size="13.0">受動的下肢挙上は可逆的な前負荷変化</text>
+  </g>
+  <g class="node d2 b3" data-depth="2">
+    <rect class="box" x="336.0" y="923.0" width="267.0" height="45.3" rx="6"/>
+    <text x="346.0" y="941.5" font-size="13.0">呼吸性変動は多くの一般的状況で成立しな</text>
+    <text x="346.0" y="958.7" font-size="13.0">い</text>
+  </g>
+  <g class="node d2 b3" data-depth="2">
+    <rect class="box" x="336.0" y="976.3" width="267.0" height="28.2" rx="6"/>
+    <text x="346.0" y="994.8" font-size="13.0">種類、量、速度、目標、中止条件を定める</text>
+  </g>
+  <g class="node d2 b3" data-depth="2">
+    <rect class="box" x="336.0" y="1012.5" width="267.0" height="45.3" rx="6"/>
+    <text x="346.0" y="1031.0" font-size="13.0">説得力のある反応は拍出量または灌流の改</text>
+    <text x="346.0" y="1048.2" font-size="13.0">善</text>
+  </g>
+  <g class="node d2 b3" data-depth="2">
+    <rect class="box" x="336.0" y="1065.8" width="267.0" height="45.3" rx="6"/>
+    <text x="346.0" y="1084.3" font-size="13.0">捻髪音、低酸素血症、静脈圧上昇は反復に</text>
+    <text x="346.0" y="1101.5" font-size="13.0">反対</text>
+  </g>
+  <g class="node d2 b3" data-depth="2">
+    <rect class="box" x="388.0" y="1119.1" width="215.0" height="28.2" rx="6"/>
+    <text x="398.0" y="1137.6" font-size="13.0">治療すべき不足に合う組成を選ぶ</text>
+  </g>
+  <path class="link b4" data-depth="2" stroke-width="1.8" d="M1410.0,669.4 C1430.0,669.4 1430.0,441.4 1450.0,441.4"/>
+  <path class="link b4" data-depth="2" stroke-width="1.8" d="M1410.0,669.4 C1430.0,669.4 1430.0,486.2 1450.0,486.2"/>
+  <path class="link b4" data-depth="2" stroke-width="1.8" d="M1410.0,669.4 C1430.0,669.4 1430.0,530.9 1450.0,530.9"/>
+  <path class="link b4" data-depth="2" stroke-width="1.8" d="M1410.0,669.4 C1430.0,669.4 1430.0,584.2 1450.0,584.2"/>
+  <path class="link b4" data-depth="2" stroke-width="1.8" d="M1410.0,669.4 C1430.0,669.4 1430.0,637.5 1450.0,637.5"/>
+  <path class="link b4" data-depth="2" stroke-width="1.8" d="M1410.0,669.4 C1430.0,669.4 1430.0,682.3 1450.0,682.3"/>
+  <path class="link b4" data-depth="2" stroke-width="1.8" d="M1410.0,669.4 C1430.0,669.4 1430.0,727.0 1450.0,727.0"/>
+  <path class="link b4" data-depth="2" stroke-width="1.8" d="M1410.0,669.4 C1430.0,669.4 1430.0,780.3 1450.0,780.3"/>
+  <path class="link b4" data-depth="2" stroke-width="1.8" d="M1410.0,669.4 C1430.0,669.4 1430.0,825.1 1450.0,825.1"/>
+  <path class="link b4" data-depth="2" stroke-width="1.8" d="M1410.0,669.4 C1430.0,669.4 1430.0,861.2 1450.0,861.2"/>
+  <path class="link b4" data-depth="2" stroke-width="1.8" d="M1410.0,669.4 C1430.0,669.4 1430.0,897.4 1450.0,897.4"/>
+  <g class="node d1 b4" data-depth="1">
+    <rect class="box" x="1201.5" y="654.3" width="208.5" height="30.1" rx="9"/>
+    <text x="1211.5" y="674.3" font-size="14.5">血管緊張と血管作動薬の選択</text>
+  </g>
+  <g class="node d2 b4" data-depth="2">
+    <rect class="box" x="1450.0" y="418.8" width="267.0" height="45.3" rx="6"/>
+    <text x="1460.0" y="437.3" font-size="13.0">平均動脈圧は心拍出量と全身抵抗の積に近</text>
+    <text x="1460.0" y="454.4" font-size="13.0">似</text>
+  </g>
+  <g class="node d2 b4" data-depth="2">
+    <rect class="box" x="1450.0" y="472.1" width="241.0" height="28.2" rx="6"/>
+    <text x="1460.0" y="490.6" font-size="13.0">抵抗を上げると流量が減ることがある</text>
+  </g>
+  <g class="node d2 b4" data-depth="2">
+    <rect class="box" x="1450.0" y="508.2" width="267.0" height="45.3" rx="6"/>
+    <text x="1460.0" y="526.7" font-size="13.0">昇圧薬は灌流圧を上げるが心仕事量も増や</text>
+    <text x="1460.0" y="543.9" font-size="13.0">す</text>
+  </g>
+  <g class="node d2 b4" data-depth="2">
+    <rect class="box" x="1450.0" y="561.6" width="267.0" height="45.3" rx="6"/>
+    <text x="1460.0" y="580.1" font-size="13.0">一律目標ではなく臓器灌流へ用量を合わせ</text>
+    <text x="1460.0" y="597.2" font-size="13.0">る</text>
+  </g>
+  <g class="node d2 b4" data-depth="2">
+    <rect class="box" x="1450.0" y="614.9" width="267.0" height="45.3" rx="6"/>
+    <text x="1460.0" y="633.4" font-size="13.0">ノルアドレナリンは動脈と静脈の緊張を高</text>
+    <text x="1460.0" y="650.5" font-size="13.0">める</text>
+  </g>
+  <g class="node d2 b4" data-depth="2">
+    <rect class="box" x="1450.0" y="668.2" width="241.0" height="28.2" rx="6"/>
+    <text x="1460.0" y="686.7" font-size="13.0">静脈収縮は非ストレス容量を動員する</text>
+  </g>
+  <g class="node d2 b4" data-depth="2">
+    <rect class="box" x="1450.0" y="704.4" width="267.0" height="45.3" rx="6"/>
+    <text x="1460.0" y="722.9" font-size="13.0">バソプレシンは非カテコールアミン経路で</text>
+    <text x="1460.0" y="740.0" font-size="13.0">働く</text>
+  </g>
+  <g class="node d2 b4" data-depth="2">
+    <rect class="box" x="1450.0" y="757.7" width="267.0" height="45.3" rx="6"/>
+    <text x="1460.0" y="776.2" font-size="13.0">アドレナリンは乳酸上昇と不整脈を生じう</text>
+    <text x="1460.0" y="793.3" font-size="13.0">る</text>
+  </g>
+  <g class="node d2 b4" data-depth="2">
+    <rect class="box" x="1450.0" y="811.0" width="241.0" height="28.2" rx="6"/>
+    <text x="1460.0" y="829.5" font-size="13.0">充満と圧を整えた後に強心薬を考える</text>
+  </g>
+  <g class="node d2 b4" data-depth="2">
+    <rect class="box" x="1450.0" y="847.2" width="267.0" height="28.2" rx="6"/>
+    <text x="1460.0" y="865.7" font-size="13.0">血管拡張性強心薬は低血圧を悪化させうる</text>
+  </g>
+  <g class="node d2 b4" data-depth="2">
+    <rect class="box" x="1450.0" y="883.3" width="215.0" height="28.2" rx="6"/>
+    <text x="1460.0" y="901.8" font-size="13.0">必要量の増加は原因再検索の契機</text>
+  </g>
+  <path class="link b5" data-depth="2" stroke-width="1.8" d="M1323.0,1077.4 C1386.5,1077.4 1386.5,933.6 1450.0,933.6"/>
+  <path class="link b5" data-depth="2" stroke-width="1.8" d="M1323.0,1077.4 C1386.5,1077.4 1386.5,969.7 1450.0,969.7"/>
+  <path class="link b5" data-depth="2" stroke-width="1.8" d="M1323.0,1077.4 C1386.5,1077.4 1386.5,1005.9 1450.0,1005.9"/>
+  <path class="link b5" data-depth="2" stroke-width="1.8" d="M1323.0,1077.4 C1386.5,1077.4 1386.5,1042.0 1450.0,1042.0"/>
+  <path class="link b5" data-depth="2" stroke-width="1.8" d="M1323.0,1077.4 C1386.5,1077.4 1386.5,1078.2 1450.0,1078.2"/>
+  <path class="link b5" data-depth="2" stroke-width="1.8" d="M1323.0,1077.4 C1386.5,1077.4 1386.5,1122.9 1450.0,1122.9"/>
+  <path class="link b5" data-depth="2" stroke-width="1.8" d="M1323.0,1077.4 C1386.5,1077.4 1386.5,1167.7 1450.0,1167.7"/>
+  <path class="link b5" data-depth="2" stroke-width="1.8" d="M1323.0,1077.4 C1386.5,1077.4 1386.5,1221.3 1450.0,1221.3"/>
+  <g class="node d1 b5" data-depth="1">
+    <rect class="box" x="1201.5" y="1062.3" width="121.5" height="30.1" rx="9"/>
+    <text x="1211.5" y="1082.3" font-size="14.5">うっ血と右心室</text>
+  </g>
+  <g class="node d2 b5" data-depth="2">
+    <rect class="box" x="1450.0" y="919.5" width="202.0" height="28.2" rx="6"/>
+    <text x="1460.0" y="938.0" font-size="13.0">右心室は急性後負荷上昇に弱い</text>
+  </g>
+  <g class="node d2 b5" data-depth="2">
+    <rect class="box" x="1450.0" y="955.6" width="241.0" height="28.2" rx="6"/>
+    <text x="1460.0" y="974.1" font-size="13.0">肺塞栓、低酸素、換気圧、重度肺疾患</text>
+  </g>
+  <g class="node d2 b5" data-depth="2">
+    <rect class="box" x="1450.0" y="991.8" width="215.0" height="28.2" rx="6"/>
+    <text x="1460.0" y="1010.3" font-size="13.0">拡張は壁応力と酸素需要を増やす</text>
+  </g>
+  <g class="node d2 b5" data-depth="2">
+    <rect class="box" x="1450.0" y="1028.0" width="228.0" height="28.2" rx="6"/>
+    <text x="1460.0" y="1046.5" font-size="13.0">三尖弁逆流の悪化と中隔の左方偏位</text>
+  </g>
+  <g class="node d2 b5" data-depth="2">
+    <rect class="box" x="1450.0" y="1064.1" width="202.0" height="28.2" rx="6"/>
+    <text x="1460.0" y="1082.6" font-size="13.0">大量輸液はこの悪循環を強める</text>
+  </g>
+  <g class="node d2 b5" data-depth="2">
+    <rect class="box" x="1450.0" y="1100.3" width="267.0" height="45.3" rx="6"/>
+    <text x="1460.0" y="1118.8" font-size="13.0">慎重な前負荷調整と低酸素・アシドーシス</text>
+    <text x="1460.0" y="1135.9" font-size="13.0">補正</text>
+  </g>
+  <g class="node d2 b5" data-depth="2">
+    <rect class="box" x="1450.0" y="1153.6" width="189.0" height="28.2" rx="6"/>
+    <text x="1460.0" y="1172.1" font-size="13.0">右冠灌流のための全身圧支持</text>
+  </g>
+  <path class="link b5" data-depth="3" stroke-width="1.3" d="M1691.0,1221.3 C1724.0,1221.3 1724.0,1203.5 1757.0,1203.5"/>
+  <path class="link b5" data-depth="3" stroke-width="1.3" d="M1691.0,1221.3 C1724.0,1221.3 1724.0,1239.0 1757.0,1239.0"/>
+  <g class="node d2 b5" data-depth="2">
+    <rect class="box" x="1450.0" y="1207.2" width="241.0" height="28.2" rx="6"/>
+    <text x="1460.0" y="1225.7" font-size="13.0">静脈うっ血そのものが臓器を傷害する</text>
+  </g>
+  <g class="node d3 b5" data-depth="3">
+    <rect class="box" x="1757.0" y="1189.8" width="195.0" height="27.5" rx="6"/>
+    <text x="1767.0" y="1207.8" font-size="12.5">高い腎静脈圧は圧勾配を狭める</text>
+  </g>
+  <g class="node d3 b5" data-depth="3">
+    <rect class="box" x="1757.0" y="1225.3" width="245.0" height="27.5" rx="6"/>
+    <text x="1767.0" y="1243.3" font-size="12.5">肝と腸管のうっ血は薬物処理を障害する</text>
+  </g>
+  <path class="link b6" data-depth="2" stroke-width="1.8" d="M788.0,1277.9 C695.5,1277.9 695.5,1169.4 603.0,1169.4"/>
+  <path class="link b6" data-depth="2" stroke-width="1.8" d="M788.0,1277.9 C695.5,1277.9 695.5,1205.5 603.0,1205.5"/>
+  <path class="link b6" data-depth="2" stroke-width="1.8" d="M788.0,1277.9 C695.5,1277.9 695.5,1241.7 603.0,1241.7"/>
+  <path class="link b6" data-depth="2" stroke-width="1.8" d="M788.0,1277.9 C695.5,1277.9 695.5,1277.9 603.0,1277.9"/>
+  <path class="link b6" data-depth="2" stroke-width="1.8" d="M788.0,1277.9 C695.5,1277.9 695.5,1314.0 603.0,1314.0"/>
+  <path class="link b6" data-depth="2" stroke-width="1.8" d="M788.0,1277.9 C695.5,1277.9 695.5,1350.2 603.0,1350.2"/>
+  <path class="link b6" data-depth="2" stroke-width="1.8" d="M788.0,1277.9 C695.5,1277.9 695.5,1386.3 603.0,1386.3"/>
+  <g class="node d1 b6" data-depth="1">
+    <rect class="box" x="788.0" y="1262.8" width="92.5" height="30.1" rx="9"/>
+    <text x="798.0" y="1282.8" font-size="14.5">蘇生の段階</text>
+  </g>
+  <g class="node d2 b6" data-depth="2">
+    <rect class="box" x="375.0" y="1155.3" width="228.0" height="28.2" rx="6"/>
+    <text x="385.0" y="1173.8" font-size="13.0">初期救命：機序に沿った迅速な対処</text>
+  </g>
+  <g class="node d2 b6" data-depth="2">
+    <rect class="box" x="349.0" y="1191.5" width="254.0" height="28.2" rx="6"/>
+    <text x="359.0" y="1210.0" font-size="13.0">最適化：前負荷、圧、拍出量、酸素運搬</text>
+  </g>
+  <g class="node d2 b6" data-depth="2">
+    <rect class="box" x="362.0" y="1227.6" width="241.0" height="28.2" rx="6"/>
+    <text x="372.0" y="1246.1" font-size="13.0">安定化：再発防止と不要な支持の削減</text>
+  </g>
+  <g class="node d2 b6" data-depth="2">
+    <rect class="box" x="414.0" y="1263.8" width="189.0" height="28.2" rx="6"/>
+    <text x="424.0" y="1282.3" font-size="13.0">脱蘇生：蓄積した液体の除去</text>
+  </g>
+  <g class="node d2 b6" data-depth="2">
+    <rect class="box" x="388.0" y="1299.9" width="215.0" height="28.2" rx="6"/>
+    <text x="398.0" y="1318.4" font-size="13.0">段階は重なり患者は逆戻りしうる</text>
+  </g>
+  <g class="node d2 b6" data-depth="2">
+    <rect class="box" x="362.0" y="1336.1" width="241.0" height="28.2" rx="6"/>
+    <text x="372.0" y="1354.6" font-size="13.0">毛細血管漏出が続けば排液は早すぎる</text>
+  </g>
+  <g class="node d2 b6" data-depth="2">
+    <rect class="box" x="336.0" y="1372.3" width="267.0" height="28.2" rx="6"/>
+    <text x="346.0" y="1390.8" font-size="13.0">収支、体重、超音波、腎機能で推移をみる</text>
+  </g>
+  <path class="link b7" data-depth="2" stroke-width="1.8" d="M1366.5,1409.1 C1408.2,1409.1 1408.2,1283.4 1450.0,1283.4"/>
+  <path class="link b7" data-depth="2" stroke-width="1.8" d="M1366.5,1409.1 C1408.2,1409.1 1408.2,1328.2 1450.0,1328.2"/>
+  <path class="link b7" data-depth="2" stroke-width="1.8" d="M1366.5,1409.1 C1408.2,1409.1 1408.2,1364.3 1450.0,1364.3"/>
+  <path class="link b7" data-depth="2" stroke-width="1.8" d="M1366.5,1409.1 C1408.2,1409.1 1408.2,1400.5 1450.0,1400.5"/>
+  <path class="link b7" data-depth="2" stroke-width="1.8" d="M1366.5,1409.1 C1408.2,1409.1 1408.2,1445.2 1450.0,1445.2"/>
+  <path class="link b7" data-depth="2" stroke-width="1.8" d="M1366.5,1409.1 C1408.2,1409.1 1408.2,1490.0 1450.0,1490.0"/>
+  <path class="link b7" data-depth="2" stroke-width="1.8" d="M1366.5,1409.1 C1408.2,1409.1 1408.2,1534.7 1450.0,1534.7"/>
+  <g class="node d1 b7" data-depth="1">
+    <rect class="box" x="1201.5" y="1394.0" width="165.0" height="30.1" rx="9"/>
+    <text x="1211.5" y="1414.0" font-size="14.5">機械的補助と因果検証</text>
+  </g>
+  <g class="node d2 b7" data-depth="2">
+    <rect class="box" x="1450.0" y="1260.8" width="267.0" height="45.3" rx="6"/>
+    <text x="1460.0" y="1279.3" font-size="13.0">装置ごとに前負荷、後負荷、血流への影響</text>
+    <text x="1460.0" y="1296.4" font-size="13.0">が異なる</text>
+  </g>
+  <g class="node d2 b7" data-depth="2">
+    <rect class="box" x="1450.0" y="1314.1" width="267.0" height="28.2" rx="6"/>
+    <text x="1460.0" y="1332.6" font-size="13.0">原因、可逆性、関与心室、時期で選択する</text>
+  </g>
+  <g class="node d2 b7" data-depth="2">
+    <rect class="box" x="1450.0" y="1350.2" width="241.0" height="28.2" rx="6"/>
+    <text x="1460.0" y="1368.7" font-size="13.0">回復、橋渡し、最終目的の戦略が要る</text>
+  </g>
+  <g class="node d2 b7" data-depth="2">
+    <rect class="box" x="1450.0" y="1386.4" width="215.0" height="28.2" rx="6"/>
+    <text x="1460.0" y="1404.9" font-size="13.0">機序を述べ測定可能な介入を選ぶ</text>
+  </g>
+  <g class="node d2 b7" data-depth="2">
+    <rect class="box" x="1450.0" y="1422.6" width="267.0" height="45.3" rx="6"/>
+    <text x="1460.0" y="1441.1" font-size="13.0">反応がモデルと矛盾すれば速やかに修正す</text>
+    <text x="1460.0" y="1458.2" font-size="13.0">る</text>
+  </g>
+  <g class="node d2 b7" data-depth="2">
+    <rect class="box" x="1450.0" y="1475.9" width="267.0" height="28.2" rx="6"/>
+    <text x="1460.0" y="1494.4" font-size="13.0">圧、流量、うっ血、抽出がともに改善する</text>
+  </g>
+  <g class="node d2 b7" data-depth="2">
+    <rect class="box" x="1450.0" y="1512.0" width="267.0" height="45.3" rx="6"/>
+    <text x="1460.0" y="1530.5" font-size="13.0">最終目標は有害曝露を抑えた持続的臓器回</text>
+    <text x="1460.0" y="1547.7" font-size="13.0">復</text>
+  </g>
+</svg>
