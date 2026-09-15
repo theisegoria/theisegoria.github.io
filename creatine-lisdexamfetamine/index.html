@@ -1,0 +1,421 @@
+<!doctype html>
+<html lang="en" class=" ig-document ig-editorial">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Amphetamine adds an ATP cost that no action potential switches off, and lowers dopamine-neuron firing rate. A kinetic model asks what the phosphocreatine buffer is worth against a load of that shape, and the answer is less than on a reuptake blocker.">
+  <meta name="theme-color" content="#f7f7f5">
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <title>Creatine, Amphetamine and the Shape of the Load</title>
+<style>
+  :root {
+    --ground:#F7F7F5; --surface:#FFFFFF; --surface-2:#F0F1EC;
+    --ink:#17191B; --muted:#63686D; --rule:#DEE0DC;
+    --accent:#1F5FA8; --accent-soft:#1F5FA814;
+    --blue:#2a78d6; --orange:#c8501f; --aqua:#12805a; --violet:#4a3aa7; --red:#c33a39;
+    --f-display:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    --f-body:"Inter",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+    --f-mono:ui-monospace,SFMono-Regular,Menlo,monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground:#101214; --surface:#181B1E; --surface-2:#1F2327;
+      --ink:#EDEFF1; --muted:#9BA3AA; --rule:#2C3237;
+      --accent:#69ABE3; --accent-soft:#69ABE31C;
+      --blue:#5c9ce8; --orange:#f08050; --aqua:#3cc493; --violet:#9085e9; --red:#e66767;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground:#101214; --surface:#181B1E; --surface-2:#1F2327;
+    --ink:#EDEFF1; --muted:#9BA3AA; --rule:#2C3237;
+    --accent:#69ABE3; --accent-soft:#69ABE31C;
+    --blue:#5c9ce8; --orange:#f08050; --aqua:#3cc493; --violet:#9085e9; --red:#e66767;
+  }
+
+  * { box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body {
+    margin:0; background:var(--ground); color:var(--ink);
+    font-family:var(--f-body); font-size:17px; line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  a { color:var(--accent); text-underline-offset:.18em; }
+
+  .wrap { width:min(760px, calc(100% - 40px)); margin-inline:auto; }
+  .wide { width:min(1080px, calc(100% - 40px)); margin-inline:auto; }
+
+  header.site { border-bottom:1px solid var(--rule); }
+  header.site .wide {
+    min-height:64px; display:flex; align-items:center;
+    justify-content:space-between; gap:20px;
+  }
+  header.site .name { font-weight:750; letter-spacing:-.02em; text-decoration:none; color:var(--ink); }
+  header.site nav { display:flex; gap:20px; flex-wrap:wrap; }
+  header.site nav a { color:var(--muted); font-size:.88rem; text-decoration:none; }
+  header.site nav a:hover { color:var(--ink); }
+
+  .hero { padding:76px 0 46px; }
+  .label { color:var(--muted); font-size:.74rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; }
+  h1 {
+    font-family:var(--f-display); font-weight:600;
+    margin:14px 0 16px; font-size:clamp(2.3rem,5.8vw,3.6rem);
+    line-height:1.04; letter-spacing:-.03em;
+  }
+  .standfirst { font-size:1.2rem; color:var(--muted); margin:0 0 26px; max-width:62ch; }
+  .herometa { display:flex; flex-wrap:wrap; gap:10px 18px; align-items:center;
+              font-size:.86rem; color:var(--muted); border-top:1px solid var(--rule); padding-top:18px; }
+  .pill {
+    display:inline-flex; align-items:center; gap:7px; padding:7px 14px;
+    border:1px solid var(--rule); border-radius:999px; background:var(--surface);
+    text-decoration:none; color:var(--ink); font-weight:600; font-size:.85rem;
+  }
+  .pill:hover { border-color:var(--accent); color:var(--accent); }
+
+  .toc { border-top:1px solid var(--rule); border-bottom:1px solid var(--rule); padding:22px 0 24px; margin-bottom:14px; }
+  .toc ol { margin:10px 0 0; padding-left:1.2em; columns:2; column-gap:34px; }
+  .toc li { margin:0 0 6px; color:var(--muted); font-size:.92rem; break-inside:avoid; }
+  .toc a { color:var(--ink); text-decoration:none; }
+  .toc a:hover { color:var(--accent); }
+
+  article { padding:8px 0 40px; }
+  h2 {
+    font-family:var(--f-display); font-weight:600; letter-spacing:-.02em;
+    font-size:1.72rem; line-height:1.18; margin:58px 0 4px;
+  }
+  h2 .num { color:var(--muted); font-family:var(--f-body); font-size:.8rem;
+            font-weight:700; letter-spacing:.1em; display:block; margin-bottom:10px; }
+  h3 { font-size:1.06rem; letter-spacing:-.01em; margin:34px 0 2px; }
+  p { margin:14px 0; }
+  strong { font-weight:650; }
+  .lede { font-size:1.09rem; }
+  ul, ol.body { padding-left:1.25em; }
+  ul li, ol.body li { margin:9px 0; }
+
+  .fig { margin:36px 0 30px; }
+  .fig .plate {
+    background:#fff; border:1px solid var(--rule); border-radius:12px;
+    padding:16px 14px; overflow-x:auto;
+  }
+  .fig img { display:block; width:100%; height:auto; min-width:520px; }
+  .fig figcaption { color:var(--muted); font-size:.86rem; line-height:1.55; margin-top:12px; }
+  .fig figcaption b { color:var(--ink); font-weight:650; }
+
+  .key {
+    background:var(--surface); border:1px solid var(--rule);
+    border-left:3px solid var(--accent);
+    border-radius:10px; padding:18px 20px; margin:32px 0;
+  }
+  .key .kt { font-size:.74rem; font-weight:700; letter-spacing:.1em;
+             text-transform:uppercase; color:var(--accent); }
+  .key p:first-of-type { margin-top:8px; }
+  .key p:last-child, .key ol:last-child, .key ul:last-child { margin-bottom:0; }
+
+  .tablewrap { overflow-x:auto; margin:30px 0; }
+  table { border-collapse:collapse; width:100%; min-width:620px; font-size:.9rem; }
+  th, td { text-align:left; vertical-align:top; padding:11px 12px; border-bottom:1px solid var(--rule); }
+  thead th { border-bottom:2px solid var(--rule); font-size:.76rem; letter-spacing:.07em;
+             text-transform:uppercase; color:var(--muted); }
+  td.h { font-weight:650; color:var(--ink); }
+  caption { caption-side:bottom; text-align:left; color:var(--muted);
+            font-size:.85rem; padding-top:12px; }
+
+  .kicker { font-family:var(--f-display); font-size:1.34rem; line-height:1.45;
+            letter-spacing:-.015em; border-top:1px solid var(--rule);
+            padding-top:34px; margin-top:52px; }
+
+  .sources { border-top:1px solid var(--rule); margin-top:46px; padding-top:26px;
+             font-size:.82rem; color:var(--muted); line-height:1.6; }
+  .sources h2 { font-size:1.1rem; margin:0 0 12px; }
+  .sources b { color:var(--ink); }
+
+  footer.site { border-top:1px solid var(--rule); margin-top:56px; }
+  footer.site .wide { display:flex; justify-content:space-between; gap:20px;
+                      padding:26px 0 46px; color:var(--muted); font-size:.85rem; flex-wrap:wrap; }
+  footer.site a { color:var(--muted); }
+
+  @media (max-width:700px) {
+    body { font-size:16px; }
+    .hero { padding:54px 0 36px; }
+    .toc ol { columns:1; }
+    .fig .plate { padding:10px 8px; }
+  }
+</style>
+<link rel="canonical" href="https://theisegoria.github.io/creatine-lisdexamfetamine/">
+<link rel="alternate" hreflang="en" href="https://theisegoria.github.io/creatine-lisdexamfetamine/">
+<link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/creatine-lisdexamfetamine/">
+<link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/creatine-lisdexamfetamine/"><script src="/assets/lang.js"></script>
+<!-- ISEGORIA:HEAD -->
+<link rel="stylesheet" href="/assets/site-shell.css?v=ce26ec4785">
+<script src="/assets/site-shell.js?v=ce26ec4785" ></script>
+<!-- /ISEGORIA:HEAD -->
+<script defer data-isegoria-analytics src="/assets/analytics.js?v=9e6ebd463bf2"></script>
+</head>
+<body class=" ig-site" data-site-kind="editorial" data-site-route="/creatine-lisdexamfetamine/">
+<!-- ISEGORIA:NAV -->
+<a class="ig-skip" href="#ig-content">Skip to content</a>
+<header id="ig-header"><div class="ig-nav-inner">
+<a class="ig-brand" href="/" aria-label="Isegoria, home"><strong>ISEGORIA</strong><span>Benjamin Haire</span></a>
+<div class="ig-header-actions"><a class="ig-language" href="/ja/creatine-lisdexamfetamine/" hreflang="ja" lang="ja">日本語</a><button class="ig-menu" type="button" aria-expanded="false" aria-controls="ig-primary">Menu</button></div>
+<nav id="ig-primary" aria-label="Primary navigation"><a href="/">Home</a><a href="/library.html">Library</a><a href="/#guides">Guides</a><a href="/#preoccupations" aria-current="location">Research</a><a href="/#books">Books</a><a href="/projects.html">Projects</a><a href="/about.html">About</a><a class="ig-language" href="/ja/creatine-lisdexamfetamine/" hreflang="ja" lang="ja">日本語</a><button class="ig-theme" type="button" hidden>Theme</button></nav>
+</div></header>
+<nav id="ig-breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><a href="/#preoccupations">Research</a><span aria-hidden="true">/</span><span aria-current="page">Creatine, Amphetamine and the Shape of the Load</span></nav>
+<span id="ig-content" tabindex="-1"></span>
+<!-- /ISEGORIA:NAV --><nav class="ig-page-nav" aria-label="On this page"><a href="#firing">Firing rate</a><a href="#cost">The cost</a><a href="#model">The model</a><a href="#interaction">Interaction</a></nav>
+<main>
+<div class="wrap">
+
+  <div class="hero">
+    <p class="label">Research note / 15 September 2026</p>
+    <h1>Creatine on amphetamine, and the wrong shape of load.</h1>
+    <p class="standfirst">Creatine is usually defended as a temporal buffer: a reservoir that covers the gap between when a neuron's demand arrives and when its mitochondria catch up. Amphetamine adds a cost that no action potential switches off, and simultaneously lowers the firing rate of the cells it loads hardest. I build a small kinetic model to ask what a buffer is worth against a load of that shape, and the answer runs against the reason people reach for creatine in the first place.</p>
+    <div class="herometa">
+      <a class="pill" href="creatine-lisdexamfetamine-en.pdf" target="_blank" rel="noopener" title="PDF, opens in a new tab">English PDF &middot; 13 pages</a>
+      <a class="pill" href="creatine-lisdexamfetamine-ja.pdf" hreflang="ja" lang="ja" target="_blank" rel="noopener" title="PDF, opens in a new tab">日本語版 PDF</a>
+      <a class="pill" href="creatine-lisdexamfetamine-bilingual.pdf" target="_blank" rel="noopener" title="PDF, opens in a new tab">Bilingual edition &middot; 28 pages</a>
+    </div>
+    <p class="label" style="margin-top:18px">Phosphocreatine &middot; creatine kinase &middot; dopamine terminals &middot; reverse transport &middot; permeability transition &middot; lisdexamfetamine</p>
+  </div>
+
+  <nav class="toc" aria-label="Contents">
+    <p class="label">Contents</p>
+    <ol>
+      <li><a href="#classes">Why the stimulant class changes the question</a></li>
+      <li><a href="#firing">Two questions hide inside "firing rate"</a></li>
+      <li><a href="#cost">What amphetamine costs a terminal</a></li>
+      <li><a href="#measured">What has been measured, and at what dose</a></li>
+      <li><a href="#model">A tonic load is the wrong shape for a buffer</a></li>
+      <li><a href="#routes">Where creatine could still act</a></li>
+      <li><a href="#flux">Flux, not reservoir</a></li>
+      <li><a href="#people">What creatine does in people, and when</a></li>
+      <li><a href="#corrections">Two corrections</a></li>
+      <li><a href="#interaction">The interaction that actually matters</a></li>
+      <li><a href="#settle">What would settle it</a></li>
+    </ol>
+  </nav>
+
+  <article>
+
+  <p class="lede"><strong>The case for creatine supporting neuronal firing capacity gets weaker on amphetamine than it is on methylphenidate, not stronger.</strong> That is the opposite of what the usual reasoning predicts. The usual reasoning runs: amphetamine drives dopamine terminals harder, harder work costs more ATP, creatine expands the phosphocreatine buffer, therefore creatine should help more. Every step is individually defensible and the conclusion does not follow, because the load amphetamine adds is the wrong kind of load for a buffer to absorb. Two other routes survive the argument intact, and one of them is strengthened by it.</p>
+
+  <h2 id="classes"><span class="num">Section one</span>Why the stimulant class changes the question</h2>
+
+  <p>Methylphenidate is a pure dopamine- and norepinephrine-transporter blocker. It is not itself translocated, it carries no cations across the membrane, it does not enter synaptic vesicles, and it has no weak-base action. Amphetamine is a substrate at both the dopamine transporter and the vesicular monoamine transporter, and it is a lipophilic weak base. Every energetic cost in this piece is amphetamine-only.</p>
+
+  <p>That matters because almost everything creatine is proposed to do in the brain runs through cellular energetics. If two stimulants load a dopamine terminal in structurally different ways, a claim about creatine that holds for one of them does not automatically transfer. I have not seen that distinction drawn anywhere in the creatine literature, which is part of why it is worth drawing.</p>
+
+  <h2 id="firing"><span class="num">Section two</span>Two questions hide inside "firing rate"</h2>
+
+  <p>Amphetamine dissociates the two things the phrase usually bundles together. Bunney and Aghajanian (1978) found that relatively low intravenous doses of d-amphetamine caused nigral dopamine cells to cease firing entirely. In animals with the striatonigral pathway lesioned, a five-fold higher dose was needed for 50% inhibition and even high doses failed to abolish firing, so the suppression is partly a GABAergic feedback loop and partly D<sub>2</sub> autoreceptor mediated. Shi and colleagues (2000) reproduced the inhibition at 1 to 2 mg/kg intravenously in rats, against a baseline of roughly 44 to 48 spikes per 10 seconds.</p>
+
+  <p>Terminal dopamine output, meanwhile, rises, and it rises without action potentials. Sulzer and colleagues (1995) showed that injecting amphetamine directly into the cytoplasm of a dopamine neuron produces nomifensine-sensitive release, so reverse transport through the transporter needs no spike at all; quantal dopamine per vesicle fell by more than half in PC12 cells.</p>
+
+  <p><strong>So somatodendritic spiking falls while terminal output rises.</strong> If the thing you want creatine to support is spike rate, the drug is actively suppressing it. If the thing you want supported is sustained transmitter output under load, that output is now being produced by a mechanism that bypasses the vesicle cycle, which is the ATP cost a buffer would classically protect.</p>
+
+  <h3>The exception, which is not small</h3>
+
+  <p>Shi and colleagues found a second effect hidden underneath the first. Under D<sub>2</sub> blockade with raclopride, an opposite excitatory action of amphetamine is unmasked: firing rose from 50.8 &plusmn; 4.0 to 62.3 &plusmn; 3.4 spikes per 10 s and burst firing from 9.7 &plusmn; 3.1 to 27.3 &plusmn; 4.2 spikes in bursts, across 22 cells. In non-anaesthetised animals the excitation was larger, 44.8 &plusmn; 6.1 to 76.2 &plusmn; 8.7. It survived combined D<sub>1</sub> and D<sub>2</sub> blockade, so it is not dopamine-receptor mediated, and prazosin abolished the burst increase, making it &alpha;<sub>1</sub>-adrenergic.</p>
+
+  <p>The clinically relevant reading is that anyone taking amphetamine together with an antipsychotic or a D<sub>2</sub> partial agonist should, on this data, show genuinely increased dopamine-neuron firing and burst firing rather than the suppression everyone else gets. That combination is common and, as far as I can find, has not been tested directly. It is an inference from a raclopride experiment to a partial agonist, and partial agonism is not blockade, so I would hold it loosely. But it is the one condition in which "amphetamine raises firing rate" is probably true, and it therefore restores exactly the phasic load a buffer is built for.</p>
+
+  <h2 id="cost"><span class="num">Section three</span>What amphetamine costs a terminal</h2>
+
+  <p>Three costs are structurally unique to the releaser.</p>
+
+  <p><strong>Transporter translocation is electrogenic and is not free.</strong> Sonders and colleagues (1997) voltage-clamped the human dopamine transporter and measured charge movement during substrate translocation greater than predicted for a fixed two-sodium, one-chloride, one-dopamine stoichiometry, implying an uncoupled cation conductance on top of the coupled flux. Erreger and colleagues (2008) found transporter turnover identical for amphetamine and dopamine within experimental error, with 10 &micro;M amphetamine producing a 6.5 &plusmn; 0.5 pA peak current decaying to about a quarter of peak at steady state. Every sodium that enters has to be pumped back out.</p>
+
+  <p><strong>Vesicular antiport is a direct proton debit.</strong> The vesicular monoamine transporter exports two protons for every cationic monoamine it imports, and the gradient that drives it is generated by the vesicular ATPase. Freyberg and colleagues (2016) measured a 0.4 pH unit alkalinisation from a lumenal baseline of 5.8 in <em>Drosophila</em> dopamine neurons, and amphetamine destained a fluorescent vesicular marker with a half-time of 66.6 &plusmn; 17.1 s.</p>
+
+  <p><strong>Weak-base partitioning is a genuine futile cycle.</strong> Neutral amphetamine diffuses across the vesicle membrane, is protonated in the acidic lumen, and the neutral species re-equilibrates. Protons are consumed and no transport work is done.</p>
+
+  <p>The context that makes these interesting is Pulido and Ryan's (2021) finding that a resting nerve terminal consumes roughly 3100 ATP per second, of which about half is vesicular ATPase proton leak. Half the resting bill of a synapse is already spent holding a proton gradient, and amphetamine attacks that gradient from two directions at once.</p>
+
+  <figure class="fig">
+    <div class="plate"><img src="figures/fig1.svg" alt="Bar chart comparing the resting nerve-terminal ATP budget with the components amphetamine adds, all of which are impulse-independent."></div>
+    <figcaption><b>Figure 1. Amphetamine adds demand that no action potential switches off.</b> The resting terminal figure is measured. The amphetamine additions are drawn to illustrate the categories only: no published study quantifies them. The point of the figure is the category, not the magnitude.</figcaption>
+  </figure>
+
+  <p>The arithmetic that would turn this into a number has not been published, and the one I can do myself is only a floor. If each influx event carries two sodium ions and each reverse-transport efflux event carries another two, and the sodium pump extrudes three sodium ions per ATP, the floor is about 0.67 ATP per translocated molecule and 1.3 per influx and efflux pair. The uncoupled conductance and the channel-mode bursts reported by Kahlig and colleagues (2005) could make the true figure several times higher. Robertson, Matthies and Galli's review of reverse transport (2009) contains no treatment of sodium-pump compensation or metabolic demand at all. <strong>The claim that amphetamine is bioenergetically expensive is a mechanistic inference, not a measured quantity, and it should be stated that way.</strong></p>
+
+  <h3>The counterweight, which is real</h3>
+
+  <p>Graves and colleagues (2020) showed that monoamine oxidase sits on the outer mitochondrial membrane and that its metabolism of dopamine does not raise cytosolic hydrogen peroxide but shuttles electrons into the intermembrane space, activating the electron transport chain. Methamphetamine at 10 &micro;M and L-DOPA at 100 &micro;M increased mitochondrial thiol oxidation and ATP synthesis, and blocking either monoamine oxidase or ATP synthase impaired repeated phasic release.</p>
+
+  <p>So raising cytosolic dopamine is not unambiguously a net energetic debit. Any model claiming that amphetamine creates an ATP deficit has to get past this result, and the honest position is that supply and demand both move.</p>
+
+  <h2 id="measured"><span class="num">Section four</span>What has been measured, and at what dose</h2>
+
+  <p>One group, at UNESC in Brazil, has measured brain energy enzymes in a d-amphetamine mania model, typically 2 mg/kg intraperitoneally in male Wistar rats for 14 days. Their results are the only direct evidence that bears on this question, and they dissociate the two stimulant classes on exactly one measure.</p>
+
+  <div class="tablewrap">
+  <table>
+    <caption>Table 1. The creatine kinase direction separates the classes. The respiratory chain does not, which is the part usually left out when this contrast is drawn.</caption>
+    <thead><tr><th>Measure</th><th>d-Amphetamine</th><th>Methylphenidate</th></tr></thead>
+    <tbody>
+      <tr><td class="h">Brain creatine kinase</td><td>Decreased in hippocampus, striatum and cortex (Streck 2008; Moretti 2011)</td><td>Increased in prefrontal cortex, hippocampus, striatum and cortex at 10 mg/kg (Scaini 2008)</td></tr>
+      <tr><td class="h">Respiratory complexes I to IV</td><td>Decreased, after chronic dosing and after a single injection (Valvassori 2010; Feier 2012)</td><td>Decreased in adult rats, increased in young rats (Fagundes 2010; Fagundes 2007)</td></tr>
+      <tr><td class="h">Krebs cycle enzymes</td><td>Decreased in every region examined (Valvassori 2013)</td><td>Not reported</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <p>Two details are worth pulling out. Feier and colleagues found complexes I to IV inhibited after a <em>single</em> 2 mg/kg injection and not in a dose-dependent way, so this is not a chronic-exposure phenomenon. And the methylphenidate contrast is narrower than it looks: both drugs inhibit the respiratory chain in adult rats, so only the creatine kinase direction actually separates them, and for methylphenidate even that is age-dependent.</p>
+
+  <h3>The dose objection does not work</h3>
+
+  <p>The usual dismissal of rodent mania models is that they use absurd doses. On body-surface-area scaling that is wrong. Rat 2 mg/kg divided by the standard conversion factor of 6.2 gives about 0.32 mg/kg in a human, roughly 23 mg of d-amphetamine base for a 70 kg adult. A 70 mg dose of lisdexamfetamine delivers approximately 21 mg of d-amphetamine base. <strong>These are the same dose.</strong></p>
+
+  <p>Where the extrapolation actually breaks is elsewhere, and being precise about it matters more than the mg/kg point. A 2 mg/kg intraperitoneal bolus produces a near-instantaneous peak, while lisdexamfetamine's entire design purpose is rate-limited enzymatic hydrolysis in red blood cells, giving a blunted peak and a long flat curve; the model's readouts, hyperlocomotion and stereotypy, are peak-concentration phenomena, and matching area under the curve does not match peak. The animals are in frank stereotypy when the enzymes are measured. The series reports direction and p-values rather than effect sizes, so the magnitude is genuinely unknown from the published record. It is one laboratory, six to fifteen animals per group, and I could find no independent replication of the creatine kinase finding. And no study of any kind has measured creatine kinase, phosphocreatine, ATP or respiratory complexes after lisdexamfetamine specifically.</p>
+
+  <p>Against reassurance, Ricaurte and colleagues (2005) gave adult baboons oral amphetamine twice daily for four weeks, reaching mean plasma concentrations of 168 &plusmn; 25 ng/ml, which the authors state is on the order of levels in patients treated for attention disorders. Two weeks after cessation, striatal dopamine, transporter binding sites and vesicular transporter sites were all significantly reduced. That study measured dopaminergic markers rather than ATP, and Advokat's review (2007) is explicitly inconclusive, with other work showing trophic dendritic growth at therapeutic-mimicking doses. It is enough to stop anyone writing off therapeutic-range amphetamine as bioenergetically inert. For balance, the only direct ATP measurement at human-relevant concentrations is null: Schmidt and colleagues (2010) found no significant effect on ATP content in a human neuronal line across and above the therapeutic range, with amphetamine enhancing cell survival at lower concentrations.</p>
+
+  <h2 id="model"><span class="num">Section five</span>A tonic load is the wrong shape for a buffer</h2>
+
+  <p>The model is small on purpose. A near-equilibrium creatine kinase reaction, Michaelis-Menten oxidative ATP synthesis, and a demand train whose event rate ramps upward. Three things distinguish it from the version I built for methylphenidate: oxidative flux now activates with a first-order lag of about two seconds rather than instantaneously, demand is split explicitly into a phasic term delivered as discrete quanta at the event rate and a tonic term that runs continuously, and a new parameter adds firing-independent drain on top of housekeeping.</p>
+
+  <p>Anchors: total adenine nucleotide 2.6 mM, which matches the 2.5 to 2.7 mM presynaptic ATP that Straub and colleagues (2025) measured directly with genetically encoded sensors at physiological temperature; total creatine 9.0 mM; a creatine kinase equilibrium constant of 166; and a free-ADP tolerance threshold of 80 &micro;M. The tonic drain is expressed in multiples of resting demand rather than in absolute units, because the absolute figure has never been measured and pretending otherwise would be the wrong kind of precision.</p>
+
+  <figure class="fig">
+    <div class="plate"><img src="figures/fig2.svg" alt="Two panels: tolerated event rate falling as a firing-independent drain is added, and the marginal value of a creatine increase staying flat while the marginal value of oxidative capacity rises."></div>
+    <figcaption><b>Figure 2. Only one of the two parameters scales with the load.</b> A firing-independent drain of 0.75 times resting demand costs 7.2 Hz of tolerated event rate. A 9% larger creatine pool, which is the largest increase brain creatine has ever shown under supplementation, buys a flat 0.26 to 0.46 Hz across that whole range; the scatter is event quantisation rather than signal. A 9% increase in oxidative capacity goes from 0.76 to 1.83 Hz. The ratio between them widens from 1.6 to 5.3.</figcaption>
+  </figure>
+
+  <p>The steady-train decomposition makes the mechanism explicit. At a fixed 8 Hz train, a 9% larger creatine pool changes the peak-to-mean ADP excursion by &minus;0.2%, and at high tonic load the sign flips to +1.9%. Over the same range the <em>mean</em> free ADP rises from 38.8 to 86.4 &micro;M, which by itself consumes the entire 41 &micro;M of headroom to threshold. The buffer acts on the excursion. It cannot act on the mean, which in steady state is fixed by the maximum oxidative rate, its half-saturation constant and total demand, and is algebraically independent of how much creatine is present.</p>
+
+  <figure class="fig">
+    <div class="plate"><img src="figures/fig3.svg" alt="Peak free ADP per event against event rate, with and without added tonic load, for two creatine pool sizes."></div>
+    <figcaption><b>Figure 3. What each intervention does to the trace.</b> The creatine pool bends the curve. The tonic load translates it bodily to the left. These are different operations on the same quantity, and only one of them is reversible by supplementation.</figcaption>
+  </figure>
+
+  <div class="key">
+    <p class="kt">The result, stated plainly</p>
+    <p>A temporal buffer covers the gap between when demand arrives and when supply catches up. Its value therefore scales with the fraction of demand that arrives faster than mitochondria can ramp. Amphetamine's added load is tonic, impulse-independent and sustained. That is precisely the load profile a buffer cannot address, and it simultaneously raises the marginal value of the thing that can.</p>
+  </div>
+
+  <p>Two caveats cut the other way and I want them on the record. The model is well mixed, so it cannot represent microcompartmentation, which is exactly where creatine kinase should matter most. And if the &alpha;<sub>1</sub> excitation of Section two is real under a D<sub>2</sub> partial agonist, that adds genuine phasic load, which is the load a buffer does help with. Those two considerations point in the opposite direction from the main result, and their sum is what anyone would actually experience.</p>
+
+  <h2 id="routes"><span class="num">Section six</span>Where creatine could still act</h2>
+
+  <h3>The mechanism that does not depend on pool size</h3>
+
+  <p>Dolder and colleagues (2003) ran the experiment that reframes this whole question. They used liver mitochondria from mice engineered to express active mitochondrial creatine kinase, which wild-type liver lacks, with no external adenine nucleotides added. Opening of the mitochondrial permeability transition pore was delayed by creatine and by cyclocreatine, but not by &beta;-guanidinopropionate. The two controls carry the paper: removing magnesium to lower the enzyme's activity abolished the protection, and adding creatine kinase externally to wild-type mitochondria produced no protection at all.</p>
+
+  <p>The mechanism is therefore local and microcompartmented. Creatine turned over by correctly localised mitochondrial creatine kinase, functionally coupled to the adenine nucleotide translocase, drives local ADP flux that holds the translocase in the conformation that disfavours pore opening. <strong>Creatine without a functioning enzyme in the right place does nothing.</strong> Loading the tissue is necessary and not sufficient, and any argument that goes from "creatine supplementation raises tissue creatine" to "therefore neuroprotection" has skipped the step the experiment shows is obligatory.</p>
+
+  <p>This route is indifferent to the argument in Section five, because it does not run through pool size or transient buffering. It is also the route that should matter most under an amphetamine load, since the damage mechanism in amphetamine models is calcium dysregulation and mitochondrial depolarisation rather than ATP exhaustion as such. Fortalezas and colleagues (2018) found that in rotenone-treated neurons the calcium dysregulation preceded both the reactive oxygen species rise and the depolarisation, and creatine attenuated it. Cunha and colleagues (2014) found protection against 6-hydroxydopamine in striatal slices that was dependent on PI3K signalling and explicitly not antioxidant: neither creatine nor phosphocreatine blocked the toxin's auto-oxidation.</p>
+
+  <h3>Why dopamine neurons in particular</h3>
+
+  <p>The energetic phenotype of these cells is unusual and well characterised. A single reconstructed rat nigrostriatal axon averages about 0.47 m in total length, with a range from 0.14 to 0.78 m (Matsuda 2009). The human equivalent exceeds 4 m and carries more than a million synapses, and the energy cost of propagating an action potential through such an arbor scales with its size by a power law rather than linearly (Pissadaki and Bolam 2013). Pacelli and colleagues (2015) showed that the vulnerable nigral neurons differ from their less vulnerable ventral tegmental neighbours by a higher basal rate of oxidative phosphorylation, a <em>smaller reserve capacity</em>, a higher density of axonal mitochondria and elevated basal oxidative stress, and that reducing the arbor with Semaphorin 7A lowered the basal rate and the vulnerability together. Guzman and colleagues (2010) showed that the L-type calcium entry of autonomous pacemaking itself generates mitochondrial oxidant stress specific to these cells.</p>
+
+  <p>Smaller reserve capacity is the load-bearing phrase. It is the parameter the model says dominates, and it is already low in the cell type amphetamine loads hardest.</p>
+
+  <p>Whether the creatine kinase system buffers any of this rests, essentially, on one paper. Andres and colleagues (2005) found both cytosolic and mitochondrial creatine kinase expressed at high levels and colocalising with tyrosine-hydroxylase-positive cells in rat embryonic mesencephalic cultures, with 5 mM creatine raising cell density by 35% and fully restoring it under MPP<sup>+</sup>. That is a single organotypic study. A competing account exists: Hobson and colleagues (2022) found 87% of dopamine-neuron protein mass in the striatal axons and seven of nine glycolytic enzymes enriched there, and did not report creatine kinase enrichment at all.</p>
+
+  <h3>The lesion models work and the human trials failed</h3>
+
+  <p>Matthews and colleagues (1999) pre-fed mice 1% dietary creatine for two weeks before MPTP. Nigral cell counts were 123 &plusmn; 4.1 in controls, 38 &plusmn; 10.6 after MPTP, and 118 &plusmn; 6.3 with creatine, and the protection was not explained by reduced toxin delivery. That is close to complete rescue.</p>
+
+  <p>Then the human trials. NET-PD LS-1 randomised 1741 people with early Parkinson's disease to 10 g/day or placebo for a minimum of five years and was terminated for futility at an interim analysis of 955 participants, with mean summed ranks of 2360 on placebo against 2414 on creatine, p = 0.45, numerically favouring placebo (Kieburtz 2015). CREST-E randomised 553 people with Huntington's disease to up to 40 g/day and was halted for futility, with functional capacity declining 0.82 points per year on creatine against 0.70 on placebo, again favouring placebo (Hersch 2017).</p>
+
+  <p>Two large, long, adequately dosed trials in two diseases, both stopped for futility, both with point estimates on the wrong side. That is not underpowering and it is not a systemic dosing failure. <strong>The cellular mechanism remains well supported while the clinical claim is falsified at the endpoint, and those are compatible.</strong> The most likely reconciliation is delivery: oral creatine crosses the blood-brain barrier through a saturable transporter, muscle loading is not nigral loading, and no LS-1 participant had brain creatine measured. After that, in descending order: acute complex-I poisoning is not idiopathic Parkinson's disease; Matthews pre-fed creatine before the lesion while LS-1 enrolled people already up to five years past diagnosis; and by Dolder's result, oxidative damage to the mitochondrial creatine kinase octamer would silence the mechanism precisely in the neurons that need it.</p>
+
+  <h3>A better target than the vesicle cycle</h3>
+
+  <p>The proposition that creatine kinase is required for sustained high-frequency transmission turns out to be untested at central synapses. I could find no study that inhibits the enzyme and measures synaptic current rundown or vesicle cycling during a train. The Ryan laboratory's own review of nerve-terminal energetics does not mention phosphocreatine or creatine kinase anywhere, and neither does the canonical synaptic energy budget of Harris, Jolivet and Attwell. There is a likely methodological reason, which is mine rather than anyone's published claim: presynaptic whole-cell internal solutions routinely contain 5 to 14 mM sodium phosphocreatine, so in any whole-cell recording the pool is clamped by the pipette and cannot run down.</p>
+
+  <p>Worse for the naive version of the story, the one experiment that did apply a creatine kinase inhibitor to a vesicle function came out negative. Xu and colleagues (1996) found that iodoacetamide completely inhibited synaptic-vesicle creatine kinase activity without inhibiting phosphocreatine-stimulated glutamate uptake, which establishes a creatine-kinase-independent pathway. The paper is routinely cited for the opposite conclusion.</p>
+
+  <p>What the calyx literature does establish points somewhere more useful. Lujan and colleagues (2021) found that at both developmental stages they examined, action potential propagation fails before vesicle recycling does. The bottleneck is the axonal sodium pump, not the vesicle cycle. In a cell with a metres-long unmyelinated arbor, under a drug that adds a sodium load through reverse transport, that is where I would look, and it is a different argument from the buffer argument this piece has just weakened.</p>
+
+  <h2 id="flux"><span class="num">Section seven</span>Flux, not reservoir</h2>
+
+  <p>The strongest loss-of-function evidence for the creatine kinase system is genetic, and it is a flux story rather than a pool story. Jost and colleagues (2002) found that mice lacking brain-type creatine kinase have <em>normal steady-state ATP and phosphocreatine</em> by phosphorus NMR, with an apparent reduction in the exchange capacity between them, alongside diminished habituation, slower spatial learning and delayed seizure development. Streijger and colleagues (2010) found that pentylenetetrazol induced seizures in all wild-type mice but only a few deficient ones, and that the continuous runs of rhythmic 4 to 6 Hz activity seen on wild-type EEG were absent in most deficient animals.</p>
+
+  <p>Losing the enzyme removes the capacity to sustain high-frequency rhythmic network activity while leaving the reservoir intact. <strong>If creatine has a firing-rate effect at all, this is the shape it should take: turnover, not reservoir.</strong> It also means the correct measurement is phosphorus magnetisation transfer for the exchange rate, and that a resting phosphocreatine concentration is the wrong experiment.</p>
+
+  <p>Creatine transporter deficiency rounds this out from the other direction. The phenotype is not a generic energy-failure phenotype: there are no stroke-like episodes, no lactate crises and no myopathy. It is expressive language, with first words at a mean of 3.1 years, epilepsy in 59%, behaviour disorder in 85%, and a progressive <em>relative</em> decline from 85% mild-to-moderate intellectual disability at age four to 75% severe by adulthood. Those are high-throughput, sustained and temporally precise operations, and they are the same domains where acute creatine helps sleep-deprived adults.</p>
+
+  <h2 id="people"><span class="num">Section eight</span>What creatine does in people, and when</h2>
+
+  <figure class="fig">
+    <div class="plate"><img src="figures/fig4.svg" alt="Left, meta-analytic effect sizes showing creatine moves time-based cognitive measures but not score-based ones. Right, percentage improvements in studies with and without an energetic stressor."></div>
+    <figcaption><b>Figure 4. The effect is real, conditional and narrow.</b> In the meta-analysis the time-based versions of attention and processing speed move while the score-based versions of the same domains do not. On the right, the effect requires an energetic stressor: six weeks at up to 20 g/day in unstressed young adults produced nothing in any domain.</figcaption>
+  </figure>
+
+  <p>Two studies carry the mechanistic weight. Gordji-Nejad and colleagues (2024) gave 15 participants a single 0.35 g/kg dose during 21 hours of sleep deprivation in a crossover design. Under placebo the ratio of phosphocreatine to inorganic phosphate fell by 4.7 &plusmn; 1.0% and intracellular pH fell by about 0.03 units; creatine prevented both. The cognitive gains were almost entirely in processing <em>time</em>: language 29.1 &plusmn; 5.3%, numeric 24.0 &plusmn; 4.9%, logic 16.0 &plusmn; 4.0%. Their 2026 replication in 29 participants at a lower dose found effects roughly halved but added the vigilance measure that was missing: reaction-time <em>dispersion</em> on a psychomotor vigilance task improved by 9.2 &plusmn; 3.4%. Dispersion, not mean, which is the signature of a lapse-and-reserve mechanism rather than a conduction-speed one.</p>
+
+  <p>Turner and colleagues (2015) gave 15 participants 20 g/day for seven days and then 90 minutes of hypoxia. Sensorimotor cortex creatine rose 9.2%. Under placebo, the fall in corticomotor excitability tracked the cognitive decline closely, r = 0.8; creatine abolished that relationship and restored complex attention. That is the best human evidence that the cognitive effect operates through cortical excitability rather than through a peripheral or motivational route.</p>
+
+  <p>The negative side is equally clear. Moriarty and colleagues (2023) gave 30 unstressed young adults 10 or 20 g/day for six weeks and found no cognitive improvement in any domain, with p-values between 0.59 and 0.95. McMorris and colleagues (2024) concluded in a systematic review that the supplementation literature fails to support the theoretical basis for a cognitive effect and that future work must measure brain creatine content.</p>
+
+  <h3>The measurement record on stimulants is thin and contradictory</h3>
+
+  <p>Carrey and colleagues (2007) found striatal creatine higher in 13 treatment-naive children with attention disorder than in controls, and reduced after eight weeks of stimulant treatment. Endres and colleagues (2020), the only double-blind placebo-controlled spectroscopy trial, with 73 participants and absolute quantification against an internal water reference rather than a creatine ratio, found no significant change in creatine or any other metabolite after twelve weeks.</p>
+
+  <p><strong>A methodological point deserves stating loudly here.</strong> Most proton spectroscopy in this field normalises metabolites to creatine, which makes the design structurally blind to a change in creatine itself. A 14% fall in a glutamate-to-creatine ratio is equally consistent with glutamate falling or creatine rising. Only the absolutely quantified studies can address the question at all, and there are very few of them.</p>
+
+  <p>For amphetamine or lisdexamfetamine specifically, in humans, on any phosphorus or proton endpoint, nothing exists. The only human phosphocreatine depletion on record is in methamphetamine users, where an open-label pilot of eleven completers at 5 g/day for eight weeks raised phosphocreatine measurably alongside symptom improvement (Hellem 2015). That is a signal that creatine does not worsen stimulant use, not evidence that it protects.</p>
+
+  <h2 id="corrections"><span class="num">Section nine</span>Two corrections</h2>
+
+  <p><strong>Creatine is not a GABA<sub>A</sub> partial agonist.</strong> This claim circulates widely. Meera and colleagues (2025) patched native cerebellar granule cells and found that guanidinoacetate, &beta;-guanidinopropionate and two related guanidino compounds are <em>full</em> &delta;-selective GABA<sub>A</sub> agonists with micromolar potency, while creatine itself produced no detectable response up to 1 mM. The claim appears to be contamination from the guanidinoacetate literature. There is a methodological corollary worth more than the correction itself: &beta;-guanidinopropionate, the standard tool for depleting creatine experimentally, is a 3 &micro;M full agonist at these receptors, so every study that uses it as a clean creatine-depletion manipulation is confounded by tonic inhibition.</p>
+
+  <p><strong>The direct excitability evidence is contradictory and neither side is closed.</strong> Royes and colleagues (2008) found bath creatine increased hippocampal population spike amplitude by 50 to 60% in an NMDA-dependent, AP-5-blockable way. Bian and colleagues (2023) found 100 &micro;M creatine <em>inhibited</em> 16 of 51 cortical pyramidal neurons, raising rheobase and reducing evoked spikes, with no receptor identified and no clearance mechanism established. Creatine is present in synaptic vesicles at roughly 19% of the concentration of vesicular GABA and is released in a calcium-dependent manner, which is genuinely interesting, but anyone confidently predicting a direction for creatine's effect on cortical excitability is over-reading the literature.</p>
+
+  <h2 id="interaction"><span class="num">Section ten</span>The interaction that actually matters</h2>
+
+  <p>It is not bioenergetic, and this is the part I would most want a reader on a stimulant to take away.</p>
+
+  <p>Cunha and colleagues (2012) found creatine's antidepressant-like effect in mice abolished by haloperidol, by the D<sub>1</sub> antagonist SCH23390 and by the D<sub>2</sub> antagonist sulpiride, and found sub-effective creatine additive or synergistic with sub-effective doses of a D<sub>1</sub> agonist, apomorphine and bupropion. Across a dose range spanning four orders of magnitude, creatine alone did not affect locomotor activity at all, and Allen and colleagues (2010) found no open-field or motor differences at 2 and 4% of diet over five weeks. In the one mania model where creatine has actually been administered, it was <em>anti</em>-manic.</p>
+
+  <p>There is also, and this surprised me, no study of creatine co-administered with amphetamine or methamphetamine, in any species, on any endpoint. The amphetamine mania papers that surface in a search measure endogenous creatine kinase as an <em>outcome</em> and never give creatine. The absence is complete rather than thin.</p>
+
+  <p>What the available profile describes is threshold-lowering at dopaminergic behavioural output without intrinsic activation. That is exactly the pharmacology that would generate clinical switches while producing nothing in rodents, and the clinical record is consistent with it: Roitman and colleagues (2007) reported that both of the two bipolar patients in a ten-person open trial switched to hypomania or mania, and Toniolo and colleagues (2018) reported two switches among seventeen patients on creatine in a randomised trial, both in week two, both already covered by lithium and quetiapine, with none on placebo. Four documented switches across roughly nineteen bipolar-spectrum patients ever exposed in trials, clustered in the loading window, and adequate mood-stabiliser cover did not prevent them. Against that, the well-powered positive trial in unipolar depression reported no activation beyond sleep difficulties.</p>
+
+  <div class="key">
+    <p class="kt">What I would tell someone on a releaser</p>
+    <p>The dose itself is not the concern. LS-1 found no adverse-event differences by body system at 10 g/day over five years in 1741 people, and the only reproducible dose-dependent effect is gastrointestinal, significant at 40 g/day and absent at 10. The concern is the specific combination of a bipolar-spectrum diagnosis, the loading window, and a drug class that already works by forcing release. That is a conversation with a prescriber, not a solo adjustment. One practical note that is easy to miss: creatine raises measured serum creatinine through metabolic turnover without raising renal risk, so creatinine-based estimates of kidney function are unreliable while supplementing, and cystatin C is the substitute.</p>
+  </div>
+
+  <h2 id="settle"><span class="num">Section eleven</span>What would settle it</h2>
+
+  <p>Six predictions, in descending order of how cleanly they would discriminate.</p>
+
+  <ol class="body">
+    <li><strong>The sharpest.</strong> Because amphetamine's added load is impulse-independent, a phosphorus challenge should find its bioenergetic signature in <em>resting</em> phosphocreatine and inorganic phosphate rather than in post-task recovery kinetics, and methylphenidate at matched clinical effect should do the opposite. If a stimulant's signature turns up in recovery rather than at rest, this model is wrong.</li>
+    <li><strong>The uncomfortable one.</strong> Creatine's benefit on an amphetamine should be smaller than the same benefit on methylphenidate, on any speeded endpoint, because the tonic fraction of the load is higher. This is the prediction I would most like to be wrong about.</li>
+    <li>Creatine should act on reaction-time dispersion and the slowest decile rather than on mean reaction time, since dispersion is what the replication actually moved.</li>
+    <li>A D<sub>2</sub> partial agonist taken alongside an amphetamine should add burst firing through the &alpha;<sub>1</sub> route, hence more phasic load, hence more for a buffer to do. This points opposite to prediction two, and the sum of the two is what is observed.</li>
+    <li>Any effect should be larger in a sleep-restricted block than a rested one, by a wider margin on an amphetamine than on a blocker, because the conditional-stressor pattern is the only robust finding in the human literature.</li>
+    <li>Because the mechanism is flux rather than pool, phosphorus magnetisation transfer should move with supplementation even where resting phosphocreatine does not.</li>
+  </ol>
+
+  <p>The cheapest thing anyone could do to advance this is not an experiment at all. Hobson and colleagues published a subcellular proteome of dopamine neurons in 2022. Whether creatine kinase appears in its axonal fraction would settle, for the cost of opening a supplementary table, whether the enzyme this entire argument depends on is even present where the argument needs it.</p>
+
+  <p class="kicker">The reason I think this matters beyond one drug class is that "add a buffer" is a general move in the cognitive-supplement literature, and it is almost never asked against a specified load profile. A buffer is worth something against a transient and close to nothing against a sustained draw. Whichever molecule is proposed, that question comes before the biochemistry, and it is usually the one nobody asks.</p>
+
+  <div class="sources">
+    <h2>Sources</h2>
+    <p><b>Dopamine-neuron firing and reverse transport.</b> Bunney BS, Aghajanian GK, <em>Naunyn-Schmiedebergs Arch Pharmacol</em> 304:255, 1978; Shi WX, Pun CL, Zhang XX, et al., <em>J Neurosci</em> 20:3504, 2000; Sulzer D, Chen TK, Lau YY, et al., <em>J Neurosci</em> 15:4102, 1995; Sonders MS, Zhu SJ, Zahniser NR, et al., <em>J Neurosci</em> 17:960, 1997; Erreger K, Grewer C, Javitch JA, Galli A, <em>J Neurosci</em> 28:976, 2008; Kahlig KM, et al., <em>PNAS</em> 102:3495, 2005; Freyberg Z, Sonders MS, Aguilar JI, et al., <em>Nat Commun</em> 7:10652, 2016; Robertson SD, Matthies HJG, Galli A, <em>Mol Neurobiol</em> 39:73, 2009; Graves SM, Xie Z, Stout KA, et al., <em>Nat Neurosci</em> 23:15, 2020.</p>
+    <p><b>Stimulant effects on brain energy enzymes.</b> Streck EL, Amboni G, Scaini G, et al., <em>Life Sci</em> 82:424, 2008; Moretti M, Valvassori SS, Steckert AV, et al., <em>Pharmacol Biochem Behav</em> 98:304, 2011; Valvassori SS, Rezin GT, Ferreira CL, et al., <em>J Psychiatr Res</em> 44:903, 2010; Feier G, Valvassori SS, Lopes-Borges J, et al., <em>Neurosci Lett</em> 530:75, 2012; Valvassori SS, Calixto KV, Budni J, et al., <em>J Neural Transm</em> 120:1737, 2013; Scaini G, Fagundes AO, Rezin GT, et al., <em>Life Sci</em> 83:795, 2008; Fagundes AO, Scaini G, Santos PM, et al., <em>Neurochem Res</em> 35:405, 2010; Ricaurte GA, Mechan AO, Yuan J, et al., <em>J Pharmacol Exp Ther</em> 315:91, 2005; Advokat C, <em>J Atten Disord</em> 11:8, 2007; Schmidt AJ, Krieg JC, Clement HW, et al., <em>J Psychopharmacol</em>, 2010.</p>
+    <p><b>Synaptic and dopaminergic energetics.</b> Pulido C, Ryan TA, <em>Sci Adv</em> 7:eabi9027, 2021; Straub I, Kunstmann L, Baeza-Lehnert F, et al., <em>J Neurochem</em> 169:e70212, 2025; Harris JJ, Jolivet R, Attwell D, <em>Neuron</em> 75:762, 2012; Ashrafi G, Ryan TA, <em>Curr Opin Neurobiol</em> 45:156, 2017; Sobieski C, Fitzpatrick MJ, Mennerick SJ, <em>J Neurosci</em> 37:1888, 2017; Lujan B, Singh M, Singh A, Renden RB, <em>J Neurophysiol</em> 126:976, 2021; Chavan V, Willis J, Walker SK, et al., <em>PLoS One</em> 10:e0125185, 2015; Matsuda W, Furuta T, Nakamura KC, et al., <em>J Neurosci</em> 29:444, 2009; Pissadaki EK, Bolam JP, <em>Front Comput Neurosci</em> 7:13, 2013; Pacelli C, Giguère N, Bourque MJ, et al., <em>Curr Biol</em> 25:2349, 2015; Guzman JN, Sanchez-Padilla J, Wokosin D, et al., <em>Nature</em> 468:696, 2010; Hobson BD, Choi SJ, Mosharov EV, et al., <em>eLife</em> 11:e70921, 2022.</p>
+    <p><b>Creatine kinase mechanism and neuroprotection.</b> Dolder M, Walzel B, Speer O, et al., <em>J Biol Chem</em> 278:17760, 2003; Matthews RT, Ferrante RJ, Klivenyi P, et al., <em>Exp Neurol</em> 157:142, 1999; Andres RH, Ducray AD, Pérez-Bouza A, et al., <em>Cell Transplant</em> 14:537, 2005; Cunha MP, Martín-de-Saavedra MD, Romero A, et al., <em>ASN Neuro</em> 6, 2014; Fortalezas S, Marques-da-Silva D, Gutierrez-Merino C, <em>Neurotox Res</em> 34:717, 2018; Xu C, Klunk WE, Kanfer JN, et al., <em>J Biol Chem</em> 271:13435, 1996; Jost CR, Van Der Zee CE, In 't Zandt HJ, et al., <em>Eur J Neurosci</em> 15:1692, 2002; Streijger F, Scheenen WJ, van Luijtelaar G, et al., <em>Epilepsia</em> 51:79, 2010; Kieburtz K, Tilley BC, Elm JJ, et al., <em>JAMA</em> 313:584, 2015; Hersch SM, Schifitto G, Oakes D, et al., <em>Neurology</em> 89:594, 2017; Mercimek-Andrews S, Salomons GS, <em>GeneReviews</em>, revised 2025.</p>
+    <p><b>Human cognition, excitability and mood.</b> Gordji-Nejad A, Matusch A, Kleedörfer S, et al., <em>Sci Rep</em> 14:4937, 2024; Gordji-Nejad A, Matusch A, Hengstler L, et al., <em>Nutrients</em> 18:1192, 2026; Turner CE, Byblow WD, Gant N, <em>J Neurosci</em> 35:1773, 2015; Watanabe A, Kato N, Kato T, <em>Neurosci Res</em> 42:279, 2002; McMorris T, Harris RC, Howard AN, et al., <em>Physiol Behav</em> 90:21, 2007; Moriarty T, Bourbeau K, Dorman K, et al., <em>Brain Sci</em> 13:1276, 2023; Xu C, Bi S, Zhang W, Luo L, <em>Front Nutr</em> 11:1424972, 2024; McMorris T, Hale B, Pine BS, Williams T, <em>Behav Brain Res</em> 460:114982, 2024; Carrey NJ, MacMaster FP, Gaudet L, Schmidt MH, <em>J Child Adolesc Psychopharmacol</em> 17:11, 2007; Endres D, Maier S, Tebartz van Elst L, et al., <em>J Clin Med</em> 9:2601, 2020; Hellem TL, Sung YH, Shi XF, et al., <em>J Dual Diagn</em> 11:189, 2015; Cunha MP, Machado DG, Capra JC, et al., <em>J Psychopharmacol</em> 26:1489, 2012; Allen PJ, D'Anci KE, Kanarek RB, Renshaw PF, <em>Neuropsychopharmacology</em> 35:534, 2010; Roitman S, Green T, Osher Y, et al., <em>Bipolar Disord</em> 9:754, 2007; Toniolo RA, Silva M, Fernandes FBF, et al., <em>J Neural Transm</em> 125:247, 2018; Lyoo IK, Yoon S, Kim TS, et al., <em>Am J Psychiatry</em> 169:937, 2012; Meera P, Uusi-Oukari M, Wallner M, Lipshutz GS, <em>BMC Neurosci</em> 27:3, 2025; Royes LFF, et al., <em>Neurochem Int</em> 53:33, 2008; Bian X, Zhu J, Jia X, et al., <em>eLife</em> 12:RP89317, 2023; Kabiri Naeini E, Eskandari M, Mortazavi M, et al., <em>BMC Nephrol</em> 26:622, 2025.</p>
+    <p style="margin-top:16px"><b>What I verified and what I did not.</b> Most of the papers above were read from the publisher page or from an authoritative abstract record. Several could not be opened from any route available to me and are cited second-hand, and I would treat their specific numbers with more caution than the rest: Streck 2008, where the dosing protocol is the group's standard rather than a figure I confirmed in that paper, and which carries the central creatine kinase claim; Kahlig 2005; the percentage reductions in Ricaurte 2005; the oxygen-consumption and mitochondrial-density numbers in Pacelli 2015; Chan 1994, which is the only direct measurement of striatal ATP after an amphetamine-class drug; and Brustovetsky 2001, which is the standard sceptical counterweight on creatine's mechanism. Four arguments here are mine rather than anyone's published finding and are marked as such in the text: the sodium and ATP floor arithmetic, the body-surface-area dose conversion, the pipette explanation for why the creatine kinase question is under-tested, and the inference from a raclopride experiment to a D<sub>2</sub> partial agonist.</p>
+    <p><b>Disclosure of AI assistance.</b> AI assistance was used for literature discovery, source summarisation, model implementation, drafting, revision and bilingual translation. The kinetic model, its figures and its parameter sweeps were written and run for this piece; the underlying physiological parameters are taken from the cited measurements. This is not independent human screening or peer review, no original human-participant data were collected, and this page is a research note rather than clinical advice.</p>
+  </div>
+
+  </article>
+</div>
+</main>
+
+<footer class="site">
+  <div class="wide">
+    <span>&copy; 2026 Benjamin Michael Haire</span>
+    <a href="/">Back to all projects</a>
+  </div>
+</footer><!-- ISEGORIA:FOOT -->
+<footer id="ig-footer"><div><a href="/">Isegoria · Benjamin Haire</a><nav aria-label="Site links"><a href="/">Back to home</a><a href="/library.html">Browse the library</a><a href="#ig-content">Back to top</a></nav></div></footer>
+<!-- /ISEGORIA:FOOT -->
+</body>
+</html>
