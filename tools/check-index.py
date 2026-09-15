@@ -2,13 +2,16 @@
 """
 Check both index pages before pushing.
 
-Three things go wrong on this site, all of them silently:
+Four things go wrong on this site, all of them silently:
 
 1. A piece is promoted into Latest and never filed in a catalogue section,
    so it disappears from the site once four newer pieces push it off.
 2. A section's count label drifts away from the number of entries under it,
    usually after merging another session's push.
 3. A link points at a path that does not exist.
+4. A card is left with broken markup, usually an orphaned </span> from an
+   entry that was demoted out of Latest. The page still renders, so nothing
+   errors, but the card's description falls into the wrong grid column.
 
   python3 tools/check-index.py
 
@@ -103,6 +106,26 @@ def check_page(rel):
             full = os.path.join(full, "index.html")
         if not os.path.exists(full) and os.path.relpath(full, ROOT) not in TRACKED:
             problems.append("dead link: %s" % href)
+
+    # 4. Card markup must be intact.
+    #    A card is an anchor holding only spans. A stray closing tag leaves the
+    #    grid a child short and the description lands in the number column, which
+    #    looks like a CSS bug and is not one.
+    for lm in re.finditer(r'<div class="index(?: dated)?">.*?\n    </div>', page, re.S):
+        for am in re.finditer(r'<a [^>]*>(.*?)</a>', lm.group(0), re.S):
+            inner = am.group(1)
+            opened = len(re.findall(r'<span\b', inner))
+            closed = len(re.findall(r'</span>', inner))
+            href = re.search(r'href="([^"]*)"', am.group(0))
+            where = href.group(1) if href else am.group(0)[:40]
+            if opened != closed:
+                problems.append("card markup: %s has %d <span> and %d </span>"
+                                % (where, opened, closed))
+            loose = re.sub(r'<span\b.*?</span>', '', inner, flags=re.S)
+            loose = re.sub(r'<[^>]+>', '', loose).strip()
+            if loose:
+                problems.append("card markup: %s has text outside a span: %r"
+                                % (where, loose[:40]))
 
     return problems
 
