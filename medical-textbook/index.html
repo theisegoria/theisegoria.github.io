@@ -39,15 +39,16 @@
 <span id="ig-content" tabindex="-1"></span>
 <!-- /ISEGORIA:NAV --><main>
     <h1>Integrated Medical Foundations</h1>
-    <p class="lead">I am building an English–Japanese study resource from MCAT foundations through pre-clinical medicine. The expanded draft now has 105 chapters and 246 corresponding TTS modules per language, alongside an earlier 95-chapter concise edition. Markdown is the canonical text. Complete expanded EPUBs preserve that text and pass EPUBCheck; Kobo rendering and Kindle conversion still need testing.</p>
+    <p class="lead">I am building an English–Japanese study resource from MCAT foundations through pre-clinical medicine. The expanded draft now has 105 chapters and 246 corresponding TTS modules per language, alongside an earlier 95-chapter concise edition. Markdown is the canonical text, and each module is meant to be met four ways: read, heard as narration, drilled as cards, and seen as a mindmap. Complete expanded EPUBs preserve that text and pass EPUBCheck; Kobo rendering and Kindle conversion still need testing.</p>
     <h2>Anki study cards: early draft</h2>
-    <p>254 matched learning objectives: 254 English cards and 254 Japanese cards across fourteen TTS modules: 01-1 through 05-2, plus 101-1, 102-1, 105-1 and 105-2. This batch adds 44 paired chemistry objectives and publishes eight further experimental-methods objectives. Coverage remains partial; 232 of the 246 inventoried modules have no cards yet. These are TSV imports, not native APKG packages. Structural checks pass; actual Anki import and independent editorial review remain pending. Card-source hashes match the expanded manuscripts published in this release.</p>
+    <p>326 matched learning objectives: 326 English cards and 326 Japanese cards across eighteen TTS modules. This batch adds chapters 6 and 7, clinical reasoning and cardiac electrophysiology, as 72 paired objectives. Coverage remains partial; 228 of the 246 inventoried modules have no cards yet. Native APKG packages are now built alongside the TSV imports, from the same source. Structural checks pass and the exporter carries its own test suite; actual Anki import and independent editorial review remain pending.</p>
+    <p>The exporter that produced the releases before 2026-09-15 was not preserved in this repository, and the module fingerprints it recorded match no contiguous slice of either manuscript under any normalisation I tried. I have rebuilt the exporter with a documented slicing recipe and restamped every fingerprint from the published masters. Treat the earlier fingerprints as unverifiable rather than as evidence.</p>
     <p><a href="anki/import-acceptance.md">Bilingual import and update test protocol</a></p>
-    <p><a href="anki/IMF-en.tsv" download>English cards (TSV)</a> · <a href="anki/IMF-ja.tsv" download>日本語カード (TSV)</a> · <a href="anki/README.md">Import instructions</a> · <a href="anki/module-coverage.tsv">Module coverage</a> · <a href="anki/cards.json">Editable bilingual source</a> · <a href="anki/card-provenance.json">Card source fingerprints</a></p>
+    <p><a href="anki/IMF-en.tsv" download>English cards (TSV)</a> · <a href="anki/IMF-ja.tsv" download>日本語カード (TSV)</a> · <a href="anki/Packages/IMF-en.apkg" download>English deck (APKG)</a> · <a href="anki/Packages/IMF-ja.apkg" download>日本語デッキ (APKG)</a> · <a href="anki/README.md">Import instructions</a> · <a href="anki/module-coverage.tsv">Module coverage</a> · <a href="anki/cards.json">Editable bilingual source</a> · <a href="anki/card-provenance.json">Card source fingerprints</a></p>
     <p>I have each card identify its manuscript module and the module fingerprint at export. That records where the card came from. It is not claim-level verification, and it does not mean I have finished editing.</p>
     <details>
       <summary>Anki downloads by chapter and TTS module</summary>
-      <p>These contain the same notes and IDs as the combined imports. Use the same note type and update-matching settings to avoid duplicates. I have not tested a real Anki import yet.</p>
+      <p>These contain the same notes and IDs as the combined imports, so importing a module and then the whole deck updates rather than duplicates. Each module also has its own APKG package, named <code>anki/Packages/Modules/IMF-CCC-MM-en.apkg</code> and the matching <code>-ja</code> file, and the module study packs below collect them. I have not tested a real Anki import yet.</p>
       <ul>
         <li>01-1 Homeostasis: <a href="anki/Modules/IMF-001-01-en.tsv">English</a> · <a href="anki/Modules/IMF-001-01-ja.tsv">日本語</a> (20 each)</li>
         <li>01-2 Control and reserve: <a href="anki/Modules/IMF-001-02-en.tsv">English</a> · <a href="anki/Modules/IMF-001-02-ja.tsv">日本語</a> (10 each)</li>
@@ -59,12 +60,41 @@
         <li>04-2 Resolution and immune tolerance: <a href="anki/Modules/IMF-004-02-en.tsv">English</a> · <a href="anki/Modules/IMF-004-02-ja.tsv">日本語</a> (12 each)</li>
         <li>05-1 Pharmacokinetics and pharmacodynamics: <a href="anki/Modules/IMF-005-01-en.tsv">English</a> · <a href="anki/Modules/IMF-005-01-ja.tsv">日本語</a> (22 each)</li>
         <li>05-2 Exposure and variability: <a href="anki/Modules/IMF-005-02-en.tsv">English</a> · <a href="anki/Modules/IMF-005-02-ja.tsv">日本語</a> (10 each)</li>
+        <li>06-1 Clinical reasoning and diagnostic probability: <a href="anki/Modules/IMF-006-01-en.tsv">English</a> · <a href="anki/Modules/IMF-006-01-ja.tsv">日本語</a> (24 each)</li>
+        <li>06-2 Bayesian updating and diagnostic safety: <a href="anki/Modules/IMF-006-02-en.tsv">English</a> · <a href="anki/Modules/IMF-006-02-ja.tsv">日本語</a> (12 each)</li>
+        <li>07-1 Cardiac electrophysiology and the cardiac cycle: <a href="anki/Modules/IMF-007-01-en.tsv">English</a> · <a href="anki/Modules/IMF-007-01-ja.tsv">日本語</a> (24 each)</li>
+        <li>07-2 Pressure-volume loops and arrhythmia mechanisms: <a href="anki/Modules/IMF-007-02-en.tsv">English</a> · <a href="anki/Modules/IMF-007-02-ja.tsv">日本語</a> (12 each)</li>
         <li>101-1 Quantitative reasoning: <a href="anki/Modules/IMF-101-01-en.tsv">English</a> · <a href="anki/Modules/IMF-101-01-ja.tsv">日本語</a> (16 each)</li>
         <li>102-1 Experimental methods: <a href="anki/Modules/IMF-102-01-en.tsv">English</a> · <a href="anki/Modules/IMF-102-01-ja.tsv">日本語</a> (28 each); <a href="anki/102-1-coverage.md">coverage notes</a></li>
         <li>105-1 Quantitative chemistry: <a href="anki/Modules/IMF-105-01-en.tsv">English</a> · <a href="anki/Modules/IMF-105-01-ja.tsv">日本語</a> (22 each)</li>
         <li>105-2 Acid–base foundations: <a href="anki/Modules/IMF-105-02-en.tsv">English</a> · <a href="anki/Modules/IMF-105-02-ja.tsv">日本語</a> (22 each); <a href="anki/105%20coverage%20and%20sources.md">chemistry teaching/source crosswalk</a></li>
       </ul>
     </details>
+    <h2>Module mindmaps</h2>
+    <p>Each mindmap is one TTS module compressed to its structure, so the same material can be revised as a
+    shape rather than as prose. The canonical form is a constrained Markdown outline in which heading depth
+    is node depth, and one build script derives the rest: a PDF to print, a PNG to look at, an OPML file
+    that opens in MindNode, XMind, iThoughts or Freeplane, and the SVG behind them. Four modules are drawn
+    so far, in both languages.</p>
+    <ul>
+      <li>06-1 Clinical reasoning, history and examination: <a href="mindmaps/pdf/IMF-006-01-en.pdf" download target="_blank" rel="noopener" title="PDF, opens in a new tab">English PDF</a> · <a href="mindmaps/pdf/IMF-006-01-ja.pdf" download target="_blank" rel="noopener" title="PDF, opens in a new tab">日本語 PDF</a> · <a href="mindmaps/opml/IMF-006-01-en.opml" download>OPML</a> · <a href="packs/IMF-006-01-study-pack.zip" download>study pack</a></li>
+      <li>06-2 Bayesian updating and diagnostic safety: <a href="mindmaps/pdf/IMF-006-02-en.pdf" download target="_blank" rel="noopener" title="PDF, opens in a new tab">English PDF</a> · <a href="mindmaps/pdf/IMF-006-02-ja.pdf" download target="_blank" rel="noopener" title="PDF, opens in a new tab">日本語 PDF</a> · <a href="mindmaps/opml/IMF-006-02-en.opml" download>OPML</a> · <a href="packs/IMF-006-02-study-pack.zip" download>study pack</a></li>
+      <li>07-1 Cardiac electrophysiology and the cardiac cycle: <a href="mindmaps/pdf/IMF-007-01-en.pdf" download target="_blank" rel="noopener" title="PDF, opens in a new tab">English PDF</a> · <a href="mindmaps/pdf/IMF-007-01-ja.pdf" download target="_blank" rel="noopener" title="PDF, opens in a new tab">日本語 PDF</a> · <a href="mindmaps/opml/IMF-007-01-en.opml" download>OPML</a> · <a href="packs/IMF-007-01-study-pack.zip" download>study pack</a></li>
+      <li>07-2 Pressure-volume loops and arrhythmia mechanisms: <a href="mindmaps/pdf/IMF-007-02-en.pdf" download target="_blank" rel="noopener" title="PDF, opens in a new tab">English PDF</a> · <a href="mindmaps/pdf/IMF-007-02-ja.pdf" download target="_blank" rel="noopener" title="PDF, opens in a new tab">日本語 PDF</a> · <a href="mindmaps/opml/IMF-007-02-en.opml" download>OPML</a> · <a href="packs/IMF-007-02-study-pack.zip" download>study pack</a></li>
+    </ul>
+    <p><a href="mindmaps/index.html">Every mindmap, in every format</a> · <a href="packs/IMF-mindmaps-all.zip" download>all mindmaps as one ZIP</a> · <a href="mindmaps/README.md">how the outlines and the build work</a></p>
+
+    <h2 id="study-packs">Study packs by module</h2>
+    <p>One ZIP per module holding everything that module has: its Markdown in both languages, its mindmap as
+    PDF, PNG, SVG, OPML and outline, and its Anki cards as both APKG packages and TSV imports. Narration is
+    linked in each pack's README rather than bundled, because the MP3s run to tens of megabytes. Eighteen
+    modules have material so far.</p>
+    <ul>
+      <li>Chapter 1 to 5: <a href="packs/IMF-001-01-study-pack.zip" download>01-1</a> · <a href="packs/IMF-001-02-study-pack.zip" download>01-2</a> · <a href="packs/IMF-002-01-study-pack.zip" download>02-1</a> · <a href="packs/IMF-002-02-study-pack.zip" download>02-2</a> · <a href="packs/IMF-003-01-study-pack.zip" download>03-1</a> · <a href="packs/IMF-003-02-study-pack.zip" download>03-2</a> · <a href="packs/IMF-004-01-study-pack.zip" download>04-1</a> · <a href="packs/IMF-004-02-study-pack.zip" download>04-2</a> · <a href="packs/IMF-005-01-study-pack.zip" download>05-1</a> · <a href="packs/IMF-005-02-study-pack.zip" download>05-2</a></li>
+      <li>Chapter 6 and 7: <a href="packs/IMF-006-01-study-pack.zip" download>06-1</a> · <a href="packs/IMF-006-02-study-pack.zip" download>06-2</a> · <a href="packs/IMF-007-01-study-pack.zip" download>07-1</a> · <a href="packs/IMF-007-02-study-pack.zip" download>07-2</a></li>
+      <li>Methods and chemistry: <a href="packs/IMF-101-01-study-pack.zip" download>101-1</a> · <a href="packs/IMF-102-01-study-pack.zip" download>102-1</a> · <a href="packs/IMF-105-01-study-pack.zip" download>105-1</a> · <a href="packs/IMF-105-02-study-pack.zip" download>105-2</a></li>
+    </ul>
+
     <h2>Expanded edition preview</h2>
     <p>The 2026-09-14 chemistry checkpoint adds Chapter 105 in both languages: amount and concentration, density, limiting reactants and yield, then acid–base equilibria, buffers and titration. Earlier physiology, pathology, anatomy and clinical material is retained. Original worked examples have numerical regression checks and 44 paired retrieval objectives. These remain study drafts, not clinical guidance or a finished curriculum.</p>
     <p>The current complete manuscripts contain 105 chapters and 246 paired explicit narration modules. The new English modules contain 1,293 and 1,344 words, approximately 9–10 minutes at the assumed planning pace. Japanese narration needs voice calibration; timing and independent translation review are not finished across the books. Full corresponding EPUBs include all current text, with 106 content documents each including front matter. Text preservation, navigation and EPUBCheck 5.3.0 pass with zero errors or warnings. Actual Kobo rendering and Kindle conversion remain untested.</p>

@@ -21,7 +21,8 @@ class Meta(HTMLParser):
 # not merely when it says the word somewhere in its prose.
 INTERACTIVE=re.compile(r'<canvas\b|data-course=|/assets/interactive|type="range"|app\.js|<model-viewer|three\.module|data-route-fragments=',re.I)
 # Chapter pages of a book belong to the book, which lists them itself.
-SUBPAGE=re.compile(r'^/(?:ja/)?game-design-dynamics-of-learning/part-\d+\.html$')
+SUBPAGE=re.compile(r'^/(?:ja/)?game-design-dynamics-of-learning/part-\d+\.html$'
+                   r'|^/(?:ja/)?medical-textbook/mindmaps/')
 
 def entries():
  result=[]
