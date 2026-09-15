@@ -1,0 +1,75 @@
+/* lab-kit.css: layout for interactive explainers. Colours come from the site
+ * shell tokens (--paper, --ink, --ink-soft, --rule, --accent, --sans, --serif)
+ * so a lab matches the page in both themes without declaring a palette. */
+
+.lab { margin-block: 2.5rem; }
+.lab-stage {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  max-height: 80vh;
+  border: 1px solid var(--rule, #ddd);
+  border-radius: 6px;
+  background: var(--paper-sunk, var(--paper, #f7f5f0));
+  overflow: hidden;
+  container-type: inline-size;
+}
+.lab-stage > canvas { display: block; width: 100%; height: 100%; touch-action: none; outline: none; }
+.lab-stage > canvas:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+.lab-stage [data-lab-fallback] { position: absolute; inset: 0; display: grid; place-items: center; padding: 1rem; }
+.lab-stage [data-lab-fallback][hidden] { display: none; }
+.lab-stage [data-lab-fallback] svg { max-width: 100%; max-height: 100%; }
+.lab-hud {
+  position: absolute; inset-inline: .75rem; bottom: .75rem;
+  display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; pointer-events: none;
+  font: .75rem/1.3 var(--sans, system-ui); color: var(--ink-soft, #666);
+}
+.lab-hud > * { pointer-events: auto; }
+.lab-badge { border: 1px solid var(--rule); border-radius: 999px; padding: .15rem .6rem; background: color-mix(in oklab, var(--paper, #fff) 85%, transparent); }
+.lab-stage > canvas[data-backend="webgpu"] ~ .lab-hud .lab-badge::after { content: "WebGPU"; }
+.lab-stage > canvas[data-backend="webgl2"] ~ .lab-hud .lab-badge::after { content: "WebGL 2"; }
+
+/* Controls: a compact grid of labelled inputs, readable at 360px */
+.lab-controls {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: .75rem 1.5rem; margin-top: 1rem; padding: 1rem;
+  border: 1px solid var(--rule); border-radius: 6px; font-family: var(--sans, system-ui);
+}
+.lab-controls label { display: grid; grid-template-columns: 1fr auto; gap: .2rem .6rem; font-size: .8125rem; color: var(--ink-soft); align-items: center; }
+.lab-controls label > span:first-child { grid-column: 1; }
+.lab-controls output { font-variant-numeric: tabular-nums; color: var(--ink); justify-self: end; }
+.lab-controls input[type="range"] { grid-column: 1 / -1; width: 100%; accent-color: var(--accent); }
+.lab-controls input[type="checkbox"] { accent-color: var(--accent); justify-self: end; }
+.lab-controls select, .lab-controls input[type="number"] { grid-column: 1 / -1; font: inherit; color: var(--ink); background: var(--paper); border: 1px solid var(--rule); border-radius: 4px; padding: .3rem .5rem; }
+.lab-controls fieldset { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: .5rem 1rem; border: 0; padding: 0; margin: 0; }
+.lab-controls button { font: inherit; padding: .4rem .9rem; border: 1px solid var(--rule-firm, var(--rule)); border-radius: 4px; background: var(--paper); color: var(--ink); cursor: pointer; }
+.lab-controls button:hover { border-color: var(--ink); }
+
+/* Readouts: numbers the simulation reports back */
+.lab-readout { display: flex; flex-wrap: wrap; gap: .5rem 1.5rem; margin-top: .75rem; font: .8125rem var(--sans, system-ui); color: var(--ink-soft); }
+.lab-readout b { color: var(--ink); font-variant-numeric: tabular-nums; font-weight: 600; }
+
+/* Scrollytelling: sticky stage, steps scroll past it. Stacks on narrow screens. */
+.lab-scrolly { display: grid; grid-template-columns: minmax(0, 3fr) minmax(16rem, 2fr); gap: 2rem; align-items: start; }
+.lab-scrolly .lab-stage { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 4.5rem); }
+.lab-steps { display: grid; gap: 40vh; padding-block: 20vh; }
+.lab-steps > * { opacity: .45; transition: opacity .3s; }
+.lab-steps > .is-active { opacity: 1; }
+@media (max-width: 52rem) {
+  .lab-scrolly { grid-template-columns: 1fr; }
+  .lab-scrolly .lab-stage { top: calc(env(safe-area-inset-top, 0px) + 3.5rem); aspect-ratio: 4 / 3; }
+  .lab-steps { gap: 30vh; }
+}
+
+/* Progressive enhancement: where scroll-driven animations exist, let the
+ * step fade track scroll position; where they do not, the JS class does it. */
+@supports (animation-timeline: view()) {
+  .lab-steps > * { animation: lab-step-focus linear both; animation-timeline: view(); animation-range: entry 30% cover 60%; }
+  @keyframes lab-step-focus { from { opacity: .45 } 50% { opacity: 1 } to { opacity: .45 } }
+}
+
+/* Prose figure captions and the static fallback figure share the site's figure style */
+.lab figcaption { font: .8125rem/1.5 var(--sans, system-ui); color: var(--ink-soft); margin-top: .5rem; }
+
+@media (prefers-reduced-motion: reduce) {
+  .lab-steps > * { transition: none; animation: none; }
+}

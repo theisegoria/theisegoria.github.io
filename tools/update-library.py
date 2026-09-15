@@ -19,7 +19,7 @@ class Meta(HTMLParser):
 
 # A page counts as interactive when it ships something the reader can operate,
 # not merely when it says the word somewhere in its prose.
-INTERACTIVE=re.compile(r'<canvas\b|data-course=|/assets/interactive|type="range"|app\.js|<model-viewer|three\.module|data-route-fragments=',re.I)
+INTERACTIVE=re.compile(r'<canvas\b|data-course=|/assets/interactive|type="range"|app\.js|<model-viewer|three\.(?:module|webgpu)|lab-kit|data-route-fragments=',re.I)
 # Chapter pages of a book belong to the book, which lists them itself.
 SUBPAGE=re.compile(r'^/(?:ja/)?game-design-dynamics-of-learning/part-\d+\.html$'
                    r'|^/(?:ja/)?medical-textbook/mindmaps/')

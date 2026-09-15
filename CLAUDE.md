@@ -204,6 +204,25 @@ check their HTML and Monster's `dist/client` build. Publish the main site's
 shared assets first, then the project pages. Verify the live pages after each
 Pages deployment completes.
 
+## Interactive explainers: the lab kit
+
+A 3D or simulation piece ("lab") is scaffolded, never hand-assembled:
+
+```
+python3 tools/new-lab.py --slug <slug> --title "..." --desc "..." --title-ja "..." --desc-ja "..."
+```
+
+It creates `<slug>/{index.html,lab.js,style.css}` and `ja/<slug>/index.html`
+wired to the vendored three.js at `vendor/three/rNNN/` (currently r186; a
+new release goes in a sibling directory, the old one stays for pages that
+use it) and to `assets/lab-kit/`. `lab-kit.js` owns the renderer
+(WebGPURenderer with automatic WebGL 2 fallback, and a static SVG fallback
+when there is neither), resize at a capped pixel ratio, pausing when
+off-screen or hidden, reduced-motion, theme tokens, context loss and
+disposal. A lab's own `lab.js` holds only the scene and the model. Do not
+copy a fresh three.js into a piece directory; older pieces that did so are
+the reason `vendor/` exists. The `lab-kit` skill has the full workflow.
+
 ## Analytics on every page
 
 After adding any HTML entry point or changing `assets/analytics.js`, run:
