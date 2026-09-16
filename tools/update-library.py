@@ -39,6 +39,16 @@ def entries():
  for extra in json.loads((ROOT/'tools/project-pages.json').read_text())['pages']:
   extra.setdefault('interactive',False);extra.setdefault('pdf',False);extra.setdefault('alternate',False)
   result.append(extra)
+ # Use the encyclopedia's curated entries for math, including parameter-based
+ # Japanese editions and external Pages projects, without duplicate subpages.
+ math_records=[p for p in result if shell.is_math(p['route'])]
+ result=[p for p in result if not shell.is_math(p['route'])]
+ for e in shell.MATH_PAGES:
+  for ja in (False,True):
+   result.append(dict(route=('https://theisegoria.github.io' if e['route'].startswith('/algebraic-varieties-introduction/') else '')+e['route_ja' if ja else 'route'],title=e['title_ja' if ja else 'title'],ja=ja,
+     description=e['description_ja' if ja else 'description']+('（英語版）' if ja and e['route_ja']==e['route'] else ''),
+     interactive=e['route']!='/sheets/',pdf=e['route']=='/sheets/' or any(p.get('pdf') for p in math_records if p['route'] in [e['route'],e['route_ja']]),
+     alternate=e['route_ja']!=e['route']))
  return result
 
 def controls(ja,groups,total):
@@ -70,8 +80,8 @@ def main():
  pages=entries()
  for ja,file in [(False,'library.html'),(True,'ja/library.html')]:
   parts=[];slugs=[];total=0
-  categories=['学習ガイド','研究と解説','書籍','参考シート','プロジェクト'] if ja else ['Guides','Research','Books','Sheets','Projects']
-  english=['guides','research','books','sheets','projects']
+  categories=['数学百科事典','学習ガイド','研究と解説','書籍','参考シート','プロジェクト'] if ja else ['Math encyclopedia','Guides','Research','Books','Sheets','Projects']
+  english=['math','guides','research','books','sheets','projects']
   for i,category in enumerate(categories):
    group=[p for p in pages if p['ja']==ja and shell.category(p['route'],ja)[0]==category]
    if not group:continue

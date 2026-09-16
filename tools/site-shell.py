@@ -7,7 +7,8 @@ The header works without JavaScript. CSS and enhancements live on the root site.
 """
 from pathlib import Path
 from html import escape, unescape
-import argparse, hashlib, re
+import argparse, hashlib, re, json
+from urllib.parse import urlsplit
 
 ROOT=Path(__file__).resolve().parents[1]
 ANALYTICS_ORIGIN='https://isegoria-analytics.isegoria-analytics.workers.dev'
@@ -24,9 +25,17 @@ def title_of(s):
     m=re.search(r'<title\b[^>]*>(.*?)</title>',s,re.S|re.I)
     return re.split(r'\s+[|·]\s+(?:Benjamin|Isegoria)',plain(m[1]))[0] if m else 'Isegoria'
 def japanese(s):return bool(re.search(r'<html\b[^>]*\blang=["\']ja',s,re.I))
+MATH_PAGES=json.loads((ROOT/'tools/math-encyclopedia.json').read_text())
+def is_math(route):
+    r=urlsplit(route).path
+    if r.startswith('/ja/'):r=r[3:]
+    if r.endswith('/ja/'):r=r[:-3]
+    return any(r==e['route'] or (e['route'].endswith('/') and r.startswith(e['route'])) for e in MATH_PAGES)
+
 def category(route,ja=False):
     r=route.removeprefix('/ja')
-    if r in ['/','/index.html','/about.html','/projects.html','/library.html','/404.html']:return None
+    if r in ['/math-encyclopedia/','/','/index.html','/about.html','/projects.html','/library.html','/404.html']:return None
+    if is_math(route):return ('数学百科事典' if ja else 'Math encyclopedia',('/ja' if ja else '')+'/math-encyclopedia/')
     if r.startswith('/sheets/'):return ('参考シート' if ja else 'Sheets',('/ja' if ja else '')+'/sheets/')
     if r.startswith(('/medical-textbook/','/game-design-dynamics-of-learning/')):return ('書籍' if ja else 'Books',('/ja' if ja else '')+'/#books')
     if r.startswith('/stem-genius/'):return ('プロジェクト' if ja else 'Projects',('/ja' if ja else '')+'/projects.html')
@@ -36,8 +45,8 @@ def category(route,ja=False):
 
 def shell(route,title,ja,alternate=None,parent=None):
     home='/ja/' if ja else '/'; cat=category(route,ja)
-    labels=['ホーム','全コンテンツ','学習ガイド','研究と解説','書籍','プロジェクト','このサイトについて'] if ja else ['Home','Library','Guides','Research','Books','Projects','About']
-    urls=[home,home+'library.html',home+'#guides',home+'#preoccupations',home+'#books',home+'projects.html',home+'about.html']
+    labels=['ホーム','全コンテンツ','数学百科事典','研究と解説','書籍','プロジェクト','このサイトについて'] if ja else ['Home','Library','Math encyclopedia','Research','Books','Projects','About']
+    urls=[home,home+'library.html',home+'math-encyclopedia/',home+'#preoccupations',home+'#books',home+'projects.html',home+'about.html']
     links=[]
     for label,url in zip(labels,urls):
         current='page' if route==url else 'location' if cat and cat[1]==url else None

@@ -22,6 +22,11 @@
       if(language)actions.append(language.cloneNode(true));
       actions.append(menu);nav.before(actions);
     }
+    const mathJa=document.documentElement.lang.startsWith('ja');
+    header.querySelectorAll('a[href="/#guides"],a[href="/ja/#guides"]').forEach(a=>{
+      a.href=mathJa?'/ja/math-encyclopedia/':'/math-encyclopedia/';
+      a.textContent=mathJa?'数学百科事典':'Math encyclopedia';
+    });
     header.dataset.enhanced='';
     const themeButton=header.querySelector('.ig-theme'),ja=document.documentElement.lang.startsWith('ja');
     if(themeable&&themeButton){
