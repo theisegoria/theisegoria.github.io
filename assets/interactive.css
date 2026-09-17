@@ -236,3 +236,6 @@
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
 }
+
+/* Mathematical plots retain their coordinate proportions on narrow screens. */
+:is([data-lesson="integrating-factors"], [data-lesson="derivative-arrays"], [data-lesson="mobius"], [data-lesson="counting-probability"]) .lesson-canvas { min-height: 0; }

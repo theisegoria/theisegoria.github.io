@@ -1,8 +1,10 @@
 'use strict';
 const $=id=>document.getElementById(id),T=window.LAB_TEXT,ja=document.documentElement.lang==='ja';
-$('language').href+=location.search+location.hash;
-document.querySelectorAll('nav a').forEach(a=>a.addEventListener('click',()=>{const u=new URL($('language').href);u.hash=a.hash;$('language').href=u.href;}));
-window.addEventListener('hashchange',()=>{const u=new URL($('language').href);u.hash=location.hash;$('language').href=u.href;});
+// The shared site header can replace the original lesson language link.
+function syncLanguage(hash=location.hash){document.querySelectorAll('#language,.ig-language').forEach(a=>{const u=new URL(a.href,location.href);u.search=location.search;u.hash=hash;a.href=u.href;});}
+syncLanguage();
+document.querySelectorAll('main nav a').forEach(a=>a.addEventListener('click',()=>syncLanguage(a.hash)));
+window.addEventListener('hashchange',()=>syncLanguage());
 let seed=Array(101).fill(0);seed[50]=1;let rule=90;
 function drawEca(){const count=+$('rows').value,c=$('eca'),ctx=c.getContext('2d');c.height=count*10;let row=seed.slice();ctx.fillStyle='#0b110d';ctx.fillRect(0,0,c.width,c.height);ctx.fillStyle='#d7fc70';for(let y=0;y<count;y++){row.forEach((v,x)=>{if(v)ctx.fillRect(x*10,y*10,10,10);});row=CA.elementary(row,rule,$('edge').value==='wrap');}$('rows-value').value=count;c.setAttribute('aria-label',ja?`規則${rule}、${count}世代の時空間図`:`Rule ${rule}, space-time diagram of ${count} generations`);}
 function ruleUI(){ $('rule').value=rule;$('rule-table').replaceChildren();for(let k=7;k>=0;k--){const b=document.createElement('button'),v=(rule>>k)&1,input=k.toString(2).padStart(3,'0');b.className='rule-tile';b.setAttribute('aria-pressed',String(!!v));b.setAttribute('aria-label',ja?`入力 ${input}、出力 ${v}。押して反転`:`Input ${input}, output ${v}. Press to flip`);b.innerHTML=`<span class="mini" aria-hidden="true">${input.split('').map(x=>`<i class="${x==='1'?'on':''}"></i>`).join('')}</span><span class="small">${input}</span><span class="out">${v}</span>`;b.onclick=()=>{rule^=1<<k;ruleUI();$('rule-table').children[7-k].focus();};$('rule-table').append(b);}$('binary').textContent=`${rule.toString(2).padStart(8,'0')}₂ = ${rule}₁₀`;document.querySelectorAll('[data-rule]').forEach(b=>b.setAttribute('aria-pressed',String(+b.dataset.rule===rule)));drawEca();}
