@@ -14,26 +14,16 @@ function ode(h){let t=0,a=1,b=1;const e=[[0,1]],r=[[0,1]];while(t<2-1e-12){const
 function interpolation(n,cheb){const xs=seq(n+1,j=>cheb?Math.cos(j*Math.PI/n):-1+2*j/n),ys=xs.map(x=>1/(1+25*x*x)),w=xs.map((x,i)=>1/xs.reduce((a,y,j)=>i===j?a:a*(x-y),1));const f=x=>{let num=0,den=0;for(let i=0;i<=n;i++){if(Math.abs(x-xs[i])<1e-12)return ys[i];const q=w[i]/(x-xs[i]);num+=q*ys[i];den+=q;}return num/den;};return {xs,ys,f};}
 window.MathLabs={rank2,homology,betaDensity,logistic,ode,interpolation,gcd};
 function chart(host,domain,xlabel,ylabel,height=310,equal=false){
- const w=Math.max(260,equal?Math.min(640,host.clientWidth):host.clientWidth),h=equal?Math.max(height,Math.min(480,w*.8)):height,m={l:64,r:22,t:18,b:45};let [xmin,xmax,ymin,ymax]=domain;
- if(equal){const unit=Math.max((xmax-xmin)/(w-m.l-m.r),(ymax-ymin)/(h-m.t-m.b)),cx=(xmin+xmax)/2,cy=(ymin+ymax)/2;xmin=cx-unit*(w-m.l-m.r)/2;xmax=cx+unit*(w-m.l-m.r)/2;ymin=cy-unit*(h-m.t-m.b)/2;ymax=cy+unit*(h-m.t-m.b)/2;}
- const X=x=>m.l+(x-xmin)/(xmax-xmin)*(w-m.l-m.r),Y=y=>h-m.b-(y-ymin)/(ymax-ymin)*(h-m.t-m.b),s=el('svg',{viewBox:`0 0 ${w} ${h}`,role:'img','aria-label':`${xlabel}; ${ylabel}`});host.append(s);if(equal){s.style.maxWidth='640px';s.style.margin='0 auto';}
- const uid='clip-'+(++chart.i);const defs=el('defs'),clip=el('clipPath',{id:uid});clip.append(el('rect',{x:m.l,y:m.t,width:w-m.l-m.r,height:h-m.t-m.b}));defs.append(clip);s.append(defs);
- const ticks=w<420?3:5;for(let i=0;i<ticks;i++){let xv=xmin+(xmax-xmin)*i/(ticks-1),yv=ymin+(ymax-ymin)*i/(ticks-1);s.append(el('line',{x1:X(xv),x2:X(xv),y1:m.t,y2:h-m.b,class:'grid'}),el('line',{x1:m.l,x2:w-m.r,y1:Y(yv),y2:Y(yv),class:'grid'}),el('text',{x:X(xv),y:h-m.b+20,'text-anchor':i===0?'start':i===ticks-1?'end':'middle'},Number(xv.toPrecision(3)).toString()),el('text',{x:m.l-8,y:Y(yv)+4,'text-anchor':'end'},Number(yv.toPrecision(3)).toString()));}
- s.append(el('rect',{x:m.l,y:m.t,width:w-m.l-m.r,height:h-m.t-m.b,class:'frame'}),el('text',{x:(w+m.l-m.r)/2,y:h-5,'text-anchor':'middle'},xlabel),el('text',{transform:`translate(13 ${(h-m.b+m.t)/2}) rotate(-90)`,'text-anchor':'middle'},ylabel));
- const g=el('g',{'clip-path':`url(#${uid})`});s.append(g);
- const path=(pts,cls='curve',close=false)=>{const p=el('path',{d:pts.map((v,i)=>(i?'L':'M')+X(v[0]).toFixed(3)+','+Y(v[1]).toFixed(3)).join(' ')+(close?' Z':''),class:cls});g.append(p);return p;};
- const dot=(x,y,cls='point',r=4)=>g.append(el('circle',{cx:X(x),cy:Y(y),r,class:cls}));
- const text=(x,y,label)=>g.append(el('text',{x:X(x)+6,y:Y(y)-7},label));
- return {path,dot,text,s,g,X,Y,line:(a,b,cls='curve')=>path([a,b],cls)};
-}chart.i=0;
+ const surface=window.MathExperience?.createSurface(host,{domain,xlabel,ylabel,height,equal,label:`${xlabel}; ${ylabel}`,description:`${xlabel}; ${ylabel}`}) || (()=>{throw new Error('MathExperience renderer unavailable');})();
+ return surface;
+}
 const sample=(lo,hi,n,f)=>seq(n+1,i=>{const x=lo+(hi-lo)*i/n;return [x,f(x)];});
 const circle=(rx=1,ry=1,angle=0)=>seq(181,i=>{const a=TAU*i/180,x=rx*Math.cos(a),y=ry*Math.sin(a);return [Math.cos(angle)*x-Math.sin(angle)*y,Math.sin(angle)*x+Math.cos(angle)*y];});
 function label(host,text){const p=document.createElement('p');p.className='caption';p.textContent=text;host.append(p);}
 
 function diagram(host,name,height=300){
- const w=Math.max(260,host.clientWidth),h=height,scale=Math.min((w-55)/3,(h-55)/3),X=x=>w/2+x*scale,Y=y=>h/2-y*scale,s=el('svg',{viewBox:`0 0 ${w} ${h}`,role:'img','aria-label':name});host.append(s);
- const g=el('g');s.append(g);const path=(pts,cls='curve',close=false)=>{const p=el('path',{d:pts.map((v,i)=>(i?'L':'M')+X(v[0])+','+Y(v[1])).join(' ')+(close?' Z':''),class:cls});g.append(p);return p;};
- return {s,g,X,Y,path,line:(a,b,c='curve')=>path([a,b],c),dot:(x,y,c='point',r=4)=>g.append(el('circle',{cx:X(x),cy:Y(y),r,class:c})),text:(x,y,t)=>g.append(el('text',{x:X(x)+7,y:Y(y)-8},t))};
+ const surface=window.MathExperience?.createDiagram(host,{name,height,description:name}) || (()=>{throw new Error('MathExperience renderer unavailable');})();
+ return surface;
 }
 
 function render(section){const host=section.querySelector('.plot'),out=section.querySelector('.readout'),id=section.dataset.lab,v={};section.querySelectorAll('input').forEach(e=>{v[e.dataset.key]=Number(e.value);e.previousElementSibling.textContent=e.value;});host.replaceChildren();let result='';const rad=d=>d*Math.PI/180;
@@ -43,8 +33,10 @@ function render(section){const host=section.querySelector('.plot'),out=section.q
  ch.path([[0,0],[1,0],[1,1],[0,1]].map(trans),'area',true);ch.line([0,0],[a,b]);ch.line([0,0],[c,d]);ch.text(a,b,'b₁');ch.text(c,d,'b₂');
  if(id==='basis'){
  for(const [x,y,kx,ky] of [[a,b,'a','b'],[c,d,'c','d']]){
-  const handle=el('circle',{cx:ch.X(x),cy:ch.Y(y),r:11,class:'basis-handle','aria-hidden':'true'});ch.g.append(handle);
-  handle.addEventListener('pointerdown',event=>{event.preventDefault();const bounds=ch.s.getBoundingClientRect(),view=ch.s.viewBox.baseVal;const move=e=>{const px=(e.clientX-bounds.left)*view.width/bounds.width,py=(e.clientY-bounds.top)*view.height/bounds.height;const coords=[(px-ch.X(0))/(ch.X(1)-ch.X(0)),(py-ch.Y(0))/(ch.Y(1)-ch.Y(0))];[kx,ky].forEach((key,i)=>{const input=section.querySelector('[data-key="'+key+'"]');input.value=String(Math.round(Math.max(-2,Math.min(2,coords[i]))*10)/10);input.dispatchEvent(new Event('input',{bubbles:true}));});};const end=()=>{document.removeEventListener('pointermove',move);document.removeEventListener('pointerup',end);document.removeEventListener('pointercancel',end);};document.addEventListener('pointermove',move);document.addEventListener('pointerup',end);document.addEventListener('pointercancel',end);});
+  const handle=el('circle',{cx:ch.X(x),cy:ch.Y(y),r:11,class:'basis-handle',tabindex:'0',role:'slider','aria-label':`Basis vector ${kx}${ky}`,'aria-valuemin':'-2','aria-valuemax':'2','aria-valuenow':String(x)});ch.g.append(handle);
+  const setVector=(nextX,nextY)=>{[[kx,nextX],[ky,nextY]].forEach(([key,value])=>{const input=section.querySelector('[data-key="'+key+'"]');input.value=String(Math.round(Math.max(-2,Math.min(2,value))*10)/10);input.dispatchEvent(new Event('input',{bubbles:true}));});};
+  handle.addEventListener('keydown',event=>{const step=event.shiftKey?.1:.1;if(!['ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(event.key))return;event.preventDefault();setVector(x+(event.key==='ArrowRight'?step:event.key==='ArrowLeft'?-step:0),y+(event.key==='ArrowUp'?step:event.key==='ArrowDown'?-step:0));});
+  handle.addEventListener('pointerdown',event=>{event.preventDefault();const bounds=ch.s.getBoundingClientRect(),view=ch.s.viewBox.baseVal;const move=e=>{const px=(e.clientX-bounds.left)*view.width/bounds.width,py=(e.clientY-bounds.top)*view.height/bounds.height;const coords=[(px-ch.X(0))/(ch.X(1)-ch.X(0)),(py-ch.Y(0))/(ch.Y(1)-ch.Y(0))];setVector(coords[0],coords[1]);};const end=()=>{document.removeEventListener('pointermove',move);document.removeEventListener('pointerup',end);document.removeEventListener('pointercancel',end);};document.addEventListener('pointermove',move);document.addEventListener('pointerup',end);document.addEventListener('pointercancel',end);});
  }
  ch.dot(1,1);ch.text(1,1,'v');result=Math.abs(det)<1e-9?T('Singular: no unique coordinate system.','特異：座標系は一意に定まりません。'):T('Coordinates in B: ','基底 B での座標：')+`(${fmt((d-c)/det)}, ${fmt((a-b)/det)})`;}else result=`det A = ${fmt(det)} · ${T('Area','面積')} = ${fmt(Math.abs(det))} · ${T('Rank','階数')} = ${Math.abs(det)>1e-9?2:Math.abs(a)+Math.abs(b)+Math.abs(c)+Math.abs(d)>1e-9?1:0}`;
  }else if(id==='eigen'){

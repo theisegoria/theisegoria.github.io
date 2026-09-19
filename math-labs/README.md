@@ -1,6 +1,6 @@
 # Eight mathematics entries
 
-Eight paired English/Japanese entries with 26 original interactive experiments. Static pages use the site's shared navigation and vendored KaTeX. No runtime network requests or external application dependencies are needed for the experiments.
+Eight paired English/Japanese entries with 26 original interactive experiments. Static pages use the site's shared navigation and vendored KaTeX. The experiments share the `math-labs/experience.js` 2D rendering layer: responsive semantic SVG surfaces, one mathematical coordinate system, keyboard-safe handles, and reduced-motion-aware transitions. No runtime network requests or external application dependencies are needed for the experiments.
 
 ## Rebuild
 
@@ -32,4 +32,4 @@ Every experiment cites its reference in both editions; `content.json` records th
 
 ## Validation
 
-`verify.cjs` checks 44 numerical/content properties, including homology ranks, beta normalization and means, logistic bounds and convergence, RK4 refinement, Euler instability, and interpolation-node agreement. Browser review exercises all 26 experiments in both languages at 375 and 1280 CSS pixels, checks KaTeX rendering and page overflow, and checks state-preserving language navigation. Release notes distinguish these local checks from live deployment verification.
+`verify.cjs` checks 44 numerical/content properties, including homology ranks, beta normalization and means, logistic bounds and convergence, RK4 refinement, Euler instability, and interpolation-node agreement. Browser review exercises all 26 experiments in both languages at 375 and 1280 CSS pixels, checks the shared 2D SVG surface, KaTeX rendering, page overflow, keyboard and pointer state changes, and state-preserving language navigation. Release notes distinguish these local checks from live deployment verification.

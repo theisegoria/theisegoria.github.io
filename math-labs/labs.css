@@ -5,3 +5,9 @@
 .reset-lab{font:13px system-ui,sans-serif;background:transparent;color:inherit;border:1px solid var(--rule,#aaa);border-radius:4px;padding:9px 13px;cursor:pointer}.reset-lab:hover{border-color:#b9532e}.reset-lab:focus-visible,input:focus-visible{outline:2px solid #b9532e;outline-offset:4px}
 
 .basis-handle{fill:#b9532e;fill-opacity:.12;stroke:#b9532e;stroke-width:2;cursor:grab;touch-action:none}.basis-handle:active{cursor:grabbing}
+
+/* Shared 2D Experience surface: semantic SVG geometry with calm state changes. */
+.math-experience-surface{display:block;width:100%;height:auto;overflow:visible;color:var(--ink,#292724);background:linear-gradient(180deg,color-mix(in srgb,var(--paper,#fff) 92%,#b9532e 8%),var(--paper,#fff));border:1px solid color-mix(in srgb,var(--rule,#aaa) 70%,transparent);border-radius:18px;box-shadow:0 12px 30px rgba(35,28,22,.07);padding:10px;box-sizing:border-box}
+.math-experience-surface:focus-visible{outline:3px solid #b9532e;outline-offset:4px}.math-experience-surface .grid{stroke:currentColor;opacity:.12}.math-experience-surface .frame{fill:none;stroke:currentColor;opacity:.28}.math-experience-surface .axis-label{font-size:11px;fill:currentColor;opacity:.72}.math-experience-surface .axis-title{font-size:12px;fill:currentColor;opacity:.88}.math-experience-surface [data-geometry]{vector-effect:non-scaling-stroke}.math-experience-surface [data-motion="draw"]{transform-box:fill-box;transform-origin:center}.math-experience-surface .basis-handle{min-width:22px;min-height:22px}.math-experience-surface .basis-handle:focus-visible{stroke-width:4;outline:none}
+@media(prefers-reduced-motion:reduce){.math-experience-surface *{animation:none!important;transition:none!important}.math-experience-surface{scroll-behavior:auto}}
+@media(max-width:600px){.math-experience-surface{padding:4px;border-radius:14px}.plot{min-height:260px}.plot-legend{font-size:12px;gap:8px 14px}}
