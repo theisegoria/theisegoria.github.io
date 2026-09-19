@@ -24,6 +24,34 @@
     );
   }
 
+  function ensureToolbar(host) {
+    const experiment = host.closest('.experiment');
+    if (!experiment) return { inspecting: false };
+    let toolbar = experiment.querySelector(':scope > .plot-tools');
+    if (!toolbar) {
+      const ja = document.documentElement.lang === 'ja';
+      toolbar = document.createElement('div'); toolbar.className = 'plot-tools';
+      const inspect = document.createElement('button'); inspect.type = 'button'; inspect.className = 'plot-tool'; inspect.setAttribute('aria-pressed', 'false');
+      inspect.textContent = ja ? 'グラフを調べる' : 'Inspect graph'; inspect.dataset.inspect = 'true';
+      const copy = document.createElement('button'); copy.type = 'button'; copy.className = 'plot-tool';
+      copy.textContent = ja ? '状態リンクをコピー' : 'Copy state link'; copy.dataset.copyState = 'true';
+      const status = document.createElement('span'); status.className = 'plot-tool-status'; status.setAttribute('role', 'status'); status.setAttribute('aria-live', 'polite');
+      toolbar.append(inspect, copy, status); host.before(toolbar);
+      inspect.addEventListener('click', () => {
+        const active = inspect.getAttribute('aria-pressed') !== 'true';
+        inspect.setAttribute('aria-pressed', String(active)); experiment.dataset.inspecting = String(active);
+        experiment.querySelectorAll('.math-experience-surface').forEach((svg) => { svg.classList.toggle('is-inspecting', active); const layer = svg.querySelector('.inspect-layer'); if (layer) layer.hidden = !active; });
+      });
+      copy.addEventListener('click', async () => {
+        const url = location.href;
+        try { await navigator.clipboard?.writeText(url); status.textContent = ja ? 'リンクをコピーしました' : 'State link copied'; }
+        catch { status.textContent = ja ? 'アドレスを選択してコピーしてください' : 'Copy the address from your browser'; }
+        window.setTimeout(() => { status.textContent = ''; }, 2400);
+      });
+    }
+    return { inspecting: experiment.dataset.inspecting === 'true' };
+  }
+
   function createSurface(host, options = {}) {
     const {
       domain = [-1, 1, -1, 1],
@@ -35,6 +63,7 @@
       description = 'Interactive mathematical graphic',
       ticks: requestedTicks,
     } = options;
+    const toolbarState = ensureToolbar(host);
     const width = Math.max(260, equal ? Math.min(640, host.clientWidth || 640) : host.clientWidth || 640);
     const h = equal ? Math.max(height, Math.min(480, width * .8)) : height;
     const margin = { l: 64, r: 22, t: 22, b: 46 };
@@ -61,6 +90,22 @@
     const plot = el('g', { class: 'math-experience-plot', 'clip-path': `url(#${clipId})` });
     const chrome = el('g', { class: 'math-experience-chrome' });
     svg.append(chrome, plot); host.append(svg);
+    const inspectLayer = el('g', { class: 'inspect-layer', 'aria-hidden': toolbarState.inspecting ? 'false' : 'true' });
+    if (!toolbarState.inspecting) inspectLayer.setAttribute('hidden', '');
+    const inspectV = el('line', { class: 'inspect-line inspect-line-v', y1: margin.t, y2: h - margin.b });
+    const inspectH = el('line', { class: 'inspect-line inspect-line-h', x1: margin.l, x2: width - margin.r });
+    const inspectDot = el('circle', { class: 'inspect-dot', r: 5 });
+    const inspectLabel = el('text', { class: 'inspect-label', 'text-anchor': 'end' });
+    inspectLayer.append(inspectV, inspectH, inspectDot, inspectLabel); svg.append(inspectLayer);
+    const updateInspector = (event) => {
+      if (!toolbarState.inspecting && host.closest('.experiment')?.dataset.inspecting !== 'true') return;
+      const rect = svg.getBoundingClientRect(); const px = (event.clientX - rect.left) * width / rect.width; const py = (event.clientY - rect.top) * h / rect.height;
+      if (px < margin.l || px > width - margin.r || py < margin.t || py > h - margin.b) return;
+      const x = xmin + (px - margin.l) / (width - margin.l - margin.r) * (xmax - xmin); const y = ymin + (h - margin.b - py) / (h - margin.t - margin.b) * (ymax - ymin);
+      inspectV.setAttribute('x1', px); inspectV.setAttribute('x2', px); inspectH.setAttribute('y1', py); inspectH.setAttribute('y2', py); inspectDot.setAttribute('cx', px); inspectDot.setAttribute('cy', py); inspectLabel.setAttribute('x', Math.min(width - margin.r - 6, px + 56)); inspectLabel.setAttribute('y', Math.max(margin.t + 16, py - 10)); inspectLabel.textContent = `(${Number(x.toPrecision(4))}, ${Number(y.toPrecision(4))})`;
+      inspectLayer.hidden = false; inspectLayer.setAttribute('aria-hidden', 'false');
+    };
+    svg.addEventListener('pointermove', updateInspector); svg.addEventListener('pointerleave', () => { if (host.closest('.experiment')?.dataset.inspecting !== 'true') inspectLayer.hidden = true; });
     const ticks = requestedTicks || (width < 420 ? 3 : 5);
     for (let i = 0; i < ticks; i += 1) {
       const xv = xmin + (xmax - xmin) * i / (ticks - 1), yv = ymin + (ymax - ymin) * i / (ticks - 1);
@@ -90,6 +135,7 @@
       plot.append(node); return node;
     };
     const line = (a, b, className = 'curve') => path([a, b], className);
+    svg.classList.toggle('is-inspecting', toolbarState.inspecting);
     return { svg, plot, chrome, g: plot, s: svg, X, Y, path, dot, text, line, width, height: h, bounds: { xmin, xmax, ymin, ymax }, reduced: reduced() };
   }
 
