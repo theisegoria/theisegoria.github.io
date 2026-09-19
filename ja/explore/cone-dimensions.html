@@ -20,6 +20,7 @@
 <script src="/assets/site-shell.js?v=ce26ec4785" ></script>
 <!-- /ISEGORIA:HEAD -->
 <script defer data-isegoria-analytics src="/assets/analytics.js?v=9e6ebd463bf2"></script>
+<link rel="stylesheet" href="/analysis-atlas/vendor/katex.min.css"><script src="/analysis-atlas/vendor/katex.min.js"></script><script src="/assets/math-notation.js?v=20260919"></script>
 </head>
 <body class=" ig-site" data-site-kind="embed" data-site-route="/ja/explore/cone-dimensions.html">
 <!-- ISEGORIA:NAV -->
@@ -32,15 +33,14 @@
 <nav id="ig-breadcrumb" aria-label="パンくずリスト"><a href="/ja/">ホーム</a><span aria-hidden="true">/</span><a href="/ja/math-encyclopedia/">数学百科事典</a><span aria-hidden="true">/</span><span aria-current="page">円錐の寸法 - インタラクティブな幾何学</span></nav>
 <span id="ig-content" tabindex="-1"></span>
 <!-- /ISEGORIA:NAV --><nav aria-label="このページで" class="ig-page-nav"><a href="/ja/explore/geometry-mensuration.html">すべての7つの幾何学実験を体験</a><a href="/ja/explore/geometry-mensuration.html#cone">円錐の半径と高さを調整</a></nav>
-<iframe referrerpolicy="no-referrer" sandbox="allow-scripts" srcdoc="&lt;!DOCTYPE html&gt;
-
-&lt;html data-visualize-standalone=&quot;&quot; lang=&quot;ja&quot;&gt;
+<iframe referrerpolicy="no-referrer" sandbox="allow-scripts" srcdoc="&lt;!doctype html&gt;
+&lt;html lang=&quot;en&quot; data-visualize-standalone&gt;
 &lt;head&gt;
-&lt;meta charset=&quot;utf-8&quot;/&gt;
-&lt;meta content=&quot;width=device-width, initial-scale=1&quot; name=&quot;viewport&quot;/&gt;
-&lt;meta content=&quot;no-referrer&quot; name=&quot;referrer&quot;/&gt;
-&lt;meta content=&quot;default-src 'none'; script-src 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; style-src 'unsafe-inline' blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; img-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; font-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; media-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; worker-src blob:; connect-src blob: data:; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'&quot; http-equiv=&quot;Content-Security-Policy&quot;/&gt;
-&lt;title&gt;幾何学と測定 - インタラクティブな円錐&lt;/title&gt;
+&lt;meta charset=&quot;utf-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+&lt;meta name=&quot;referrer&quot; content=&quot;no-referrer&quot;&gt;
+&lt;meta http-equiv=&quot;Content-Security-Policy&quot; content=&quot;default-src &#x27;none&#x27;; script-src &#x27;unsafe-inline&#x27; &#x27;unsafe-eval&#x27; &#x27;wasm-unsafe-eval&#x27; blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; style-src &#x27;unsafe-inline&#x27; blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; img-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; font-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; media-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; worker-src blob:; connect-src blob: data:; frame-src &#x27;none&#x27;; object-src &#x27;none&#x27;; base-uri &#x27;none&#x27;; form-action &#x27;none&#x27;&quot;&gt;
+&lt;title&gt;Geometry and mensuration - interactive cone&lt;/title&gt;
 &lt;style&gt;:root {
   color-scheme: light dark;
   background-color: var(
@@ -157,7 +157,7 @@
   --radius-2xl: calc(var(--radius) * 1.6);
   --radius-full: 9999px;
   --shadow-sm: 0 1px 2px -1px rgb(0 0 0 / 8%);
-  --checkmark-image: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 17 17'%3E%3Cpath d='M12.8961 3.64101C13.1297 3.41418 13.4984 3.37523 13.7779 3.56581C14.0571 3.75635 14.1554 4.11331 14.0299 4.41347L13.9615 4.53847L7.71151 13.7045C7.59411 13.8767 7.4063 13.9877 7.19881 14.0072C6.99136 14.0267 6.78564 13.9533 6.63826 13.806L2.88826 10.056L2.79842 9.9457C2.6192 9.67407 2.64927 9.30496 2.88826 9.06581C3.12738 8.82669 3.49647 8.79676 3.76815 8.97597L3.8785 9.06581L7.03084 12.2182L12.8053 3.74941L12.8961 3.64101Z'/%3E%3C/svg%3E&quot;);
+  --checkmark-image: url(&quot;data:image/svg+xml,%3Csvg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; viewBox=&#x27;0 0 17 17&#x27;%3E%3Cpath d=&#x27;M12.8961 3.64101C13.1297 3.41418 13.4984 3.37523 13.7779 3.56581C14.0571 3.75635 14.1554 4.11331 14.0299 4.41347L13.9615 4.53847L7.71151 13.7045C7.59411 13.8767 7.4063 13.9877 7.19881 14.0072C6.99136 14.0267 6.78564 13.9533 6.63826 13.806L2.88826 10.056L2.79842 9.9457C2.6192 9.67407 2.64927 9.30496 2.88826 9.06581C3.12738 8.82669 3.49647 8.79676 3.76815 8.97597L3.8785 9.06581L7.03084 12.2182L12.8053 3.74941L12.8961 3.64101Z&#x27;/%3E%3C/svg%3E&quot;);
 
   /* Legacy aliases; not part of the current agent contract. */
   --viz-bg: transparent;
@@ -1057,10 +1057,11 @@ svg.lucide {
 }
 
 html&gt;body{padding:0}&lt;/style&gt;
+&lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css&quot;&gt;&lt;script src=&quot;https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.js&quot;&gt;&lt;/script&gt;
 &lt;/head&gt;
 &lt;body&gt;
 &lt;div id=&quot;cone-dimensions&quot;&gt;
-&lt;style&gt;
+  &lt;style&gt;
     #cone-dimensions .cone-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(160px,.7fr);align-items:center;gap:24px}
     #cone-dimensions .cone-figure{width:100%;height:auto;display:block;max-height:265px}
     #cone-dimensions .cone-figure text{fill:var(--foreground);font-size:14px;font-family:var(--font-sans)}
@@ -1068,50 +1069,71 @@ html&gt;body{padding:0}&lt;/style&gt;
     #cone-dimensions .cone-number{font-size:20px;font-variant-numeric:tabular-nums}
     @media(max-width:460px){#cone-dimensions .cone-layout{grid-template-columns:1fr;gap:4px}#cone-dimensions .cone-result{grid-template-columns:1fr 1fr;gap:10px}}
   &lt;/style&gt;
-&lt;div class=&quot;viz-controls&quot;&gt;
-&lt;label class=&quot;form-label&quot; for=&quot;cone-height&quot;&gt;&lt;span&gt;高さ h&lt;/span&gt;&lt;span&gt;&lt;output id=&quot;cone-height-value&quot;&gt;4.0&lt;/output&gt; 営単位&lt;/span&gt;
-&lt;input class=&quot;form-range&quot; id=&quot;cone-height&quot; max=&quot;8&quot; min=&quot;1&quot; step=&quot;0.1&quot; type=&quot;range&quot; value=&quot;4&quot;/&gt;
-&lt;/label&gt;
-&lt;/div&gt;
-&lt;div class=&quot;cone-layout&quot;&gt;
-&lt;svg aria-labelledby=&quot;cone-title cone-description&quot; class=&quot;cone-figure&quot; role=&quot;img&quot; viewbox=&quot;0 0 320 280&quot;&gt;
-&lt;title id=&quot;cone-title&quot;&gt;直円錐の垂直高さと母線の長さ&lt;/title&gt;
-&lt;desc id=&quot;cone-description&quot;&gt;半径は3単位で一定です。高さを調整することで、母線の長さ、体積、および曲面積が変化します。&lt;/desc&gt;
-&lt;path d=&quot;M70 235L155 125L240 235A85 19 0 0 1 70 235Z&quot; fill=&quot;var(--viz-series-1)&quot; fill-opacity=&quot;.12&quot; id=&quot;cone-surface&quot; stroke=&quot;var(--foreground)&quot; stroke-width=&quot;1.5&quot;&gt;&lt;/path&gt;
-&lt;path d=&quot;M70 235A85 19 0 0 1 240 235&quot; fill=&quot;none&quot; stroke=&quot;var(--muted-foreground)&quot; stroke-dasharray=&quot;5 4&quot; stroke-width=&quot;1.2&quot;&gt;&lt;/path&gt;
-&lt;path d=&quot;M155 125V235&quot; fill=&quot;none&quot; id=&quot;cone-h-line&quot; stroke=&quot;var(--viz-series-1)&quot; stroke-dasharray=&quot;5 4&quot; stroke-width=&quot;2&quot;&gt;&lt;/path&gt;
-&lt;path d=&quot;M155 235H240M155 225H165V235&quot; fill=&quot;none&quot; stroke=&quot;var(--foreground)&quot; stroke-width=&quot;1.5&quot;&gt;&lt;/path&gt;
-&lt;text id=&quot;cone-h-label&quot; text-anchor=&quot;end&quot; x=&quot;140&quot; y=&quot;180&quot;&gt;h = 4.0&lt;/text&gt;
-&lt;text id=&quot;cone-slant-label&quot; x=&quot;210&quot; y=&quot;172&quot;&gt;ℓ = 5.0&lt;/text&gt;
-&lt;text text-anchor=&quot;middle&quot; x=&quot;199&quot; y=&quot;276&quot;&gt;r = 3&lt;/text&gt;
-&lt;/svg&gt;
-&lt;div aria-live=&quot;polite&quot; class=&quot;cone-result&quot;&gt;
-&lt;div&gt;&lt;div class=&quot;text-muted&quot;&gt;体積&lt;/div&gt;&lt;div class=&quot;cone-number&quot; id=&quot;cone-volume&quot;&gt;37.70 単位³&lt;/div&gt;&lt;/div&gt;
-&lt;div&gt;&lt;div class=&quot;text-muted&quot;&gt;曲面積&lt;/div&gt;&lt;div class=&quot;cone-number&quot; id=&quot;cone-area&quot;&gt;47.12 単位²&lt;/div&gt;&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;script&gt;
+  &lt;div class=&quot;viz-controls&quot;&gt;
+    &lt;label class=&quot;form-label&quot; for=&quot;cone-height&quot;&gt;&lt;span&gt;Cone height h&lt;/span&gt;&lt;span&gt;&lt;output id=&quot;cone-height-value&quot;&gt;4.0&lt;/output&gt; units&lt;/span&gt;
+      &lt;input class=&quot;form-range&quot; id=&quot;cone-height&quot; type=&quot;range&quot; min=&quot;1&quot; max=&quot;8&quot; value=&quot;4&quot; step=&quot;0.1&quot;&gt;
+    &lt;/label&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;cone-layout&quot;&gt;
+    &lt;svg class=&quot;cone-figure&quot; viewBox=&quot;0 0 320 280&quot; role=&quot;img&quot; aria-labelledby=&quot;cone-title cone-description&quot;&gt;
+      &lt;title id=&quot;cone-title&quot;&gt;Perpendicular and slant height of a right circular cone&lt;/title&gt;
+      &lt;desc id=&quot;cone-description&quot;&gt;The radius stays at 3 units. Adjust the height to change the slant height, volume and curved surface area.&lt;/desc&gt;
+      &lt;path id=&quot;cone-surface&quot; d=&quot;M70 235L155 125L240 235A85 19 0 0 1 70 235Z&quot; fill=&quot;var(--viz-series-1)&quot; fill-opacity=&quot;.12&quot; stroke=&quot;var(--foreground)&quot; stroke-width=&quot;1.5&quot;&gt;&lt;/path&gt;
+      &lt;path d=&quot;M70 235A85 19 0 0 1 240 235&quot; fill=&quot;none&quot; stroke=&quot;var(--muted-foreground)&quot; stroke-width=&quot;1.2&quot; stroke-dasharray=&quot;5 4&quot;&gt;&lt;/path&gt;
+      &lt;path id=&quot;cone-h-line&quot; d=&quot;M155 125V235&quot; fill=&quot;none&quot; stroke=&quot;var(--viz-series-1)&quot; stroke-width=&quot;2&quot; stroke-dasharray=&quot;5 4&quot;&gt;&lt;/path&gt;
+      &lt;path d=&quot;M155 235H240M155 225H165V235&quot; fill=&quot;none&quot; stroke=&quot;var(--foreground)&quot; stroke-width=&quot;1.5&quot;&gt;&lt;/path&gt;
+      &lt;text id=&quot;cone-h-label&quot; x=&quot;140&quot; y=&quot;180&quot; text-anchor=&quot;end&quot; aria-hidden=&quot;true&quot;&gt;h = 4.0&lt;/text&gt;
+      &lt;text id=&quot;cone-slant-label&quot; x=&quot;210&quot; y=&quot;172&quot; aria-hidden=&quot;true&quot;&gt;ℓ = 5.0&lt;/text&gt;
+      &lt;text id=&quot;cone-radius-label&quot; x=&quot;199&quot; y=&quot;276&quot; text-anchor=&quot;middle&quot; aria-hidden=&quot;true&quot;&gt;r = 3&lt;/text&gt;
+    &lt;/svg&gt;
+    &lt;div class=&quot;cone-result&quot; aria-live=&quot;polite&quot;&gt;
+      &lt;div&gt;&lt;div class=&quot;text-muted&quot;&gt;Volume&lt;/div&gt;&lt;div class=&quot;cone-number&quot; id=&quot;cone-volume&quot;&gt;37.70 units³&lt;/div&gt;&lt;/div&gt;
+      &lt;div&gt;&lt;div class=&quot;text-muted&quot;&gt;Curved surface area&lt;/div&gt;&lt;div class=&quot;cone-number&quot; id=&quot;cone-area&quot;&gt;47.12 units²&lt;/div&gt;&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;script&gt;
     (()=&gt;{
-      const root=document.getElementById('cone-dimensions');
-      const get=id=&gt;root.querySelector('#'+id);
-      const range=get('cone-height');
+      const root=document.getElementById(&#x27;cone-dimensions&#x27;);
+      const get=id=&gt;root.querySelector(&#x27;#&#x27;+id);
+      const range=get(&#x27;cone-height&#x27;);
+      function renderMath(target, latex){
+        if(!window.katex){ target.textContent=latex; return; }
+        window.katex.render(latex,target,{throwOnError:false,output:&#x27;htmlAndMathml&#x27;,displayMode:false});
+      }
+      function renderSvgMath(id, latex){
+        const text=get(id); const svg=text.ownerSVGElement;
+        let fo=svg.querySelector(`[data-math-for=&quot;${id}&quot;]`);
+        if(!fo){
+          fo=document.createElementNS(&#x27;http://www.w3.org/2000/svg&#x27;,&#x27;foreignObject&#x27;);
+          fo.dataset.mathFor=id; text.after(fo); text.style.display=&#x27;none&#x27;;
+        }
+        const x=Number(text.getAttribute(&#x27;x&#x27;)), y=Number(text.getAttribute(&#x27;y&#x27;));
+        const anchor=text.getAttribute(&#x27;text-anchor&#x27;)||&#x27;start&#x27;;
+        const width=anchor===&#x27;middle&#x27;?100:anchor===&#x27;end&#x27;?92:110;
+        fo.setAttribute(&#x27;x&#x27;,String(anchor===&#x27;end&#x27;?x-width:anchor===&#x27;middle&#x27;?x-width/2:x));
+        fo.setAttribute(&#x27;y&#x27;,String(y-18)); fo.setAttribute(&#x27;width&#x27;,String(width)); fo.setAttribute(&#x27;height&#x27;,&#x27;32&#x27;);
+        const div=document.createElement(&#x27;div&#x27;); div.className=&#x27;ig-latex&#x27;; div.style.cssText=&#x27;font-size:14px;color:var(--foreground);white-space:nowrap;text-align:&#x27;+(anchor===&#x27;end&#x27;?&#x27;right&#x27;:anchor===&#x27;middle&#x27;?&#x27;center&#x27;:&#x27;left&#x27;)+&#x27;;&#x27;;
+        renderMath(div,latex); fo.replaceChildren(div);
+      }
       function update(){
         const h=Number(range.value),r=3,l=Math.hypot(r,h),apex=235-h*26;
-        get('cone-height-value').value=h.toFixed(1);
-        get('cone-surface').setAttribute('d',`M70 235L155 ${apex}L240 235A85 19 0 0 1 70 235Z`);
-        get('cone-h-line').setAttribute('d',`M155 ${apex}V235`);
-        get('cone-h-label').setAttribute('y',String((apex+235)/2));
-        get('cone-h-label').textContent=`h = ${h.toFixed(1)}`;
-        get('cone-slant-label').setAttribute('y',String((apex+235)/2-8));
-        get('cone-slant-label').textContent=`ℓ = ${l.toFixed(2)}`;
-        get('cone-volume').textContent=`${(Math.PI*r*r*h/3).toFixed(2)} 単位³`;
-        get('cone-area').textContent=`${(Math.PI*r*l).toFixed(2)} 単位²`;
-        get('cone-description').textContent=`右円錐。半径3単位、垂直な高さ${h.toFixed(1)}単位、母線の長さ${l.toFixed(2)}単位。`;
+        renderMath(get(&#x27;cone-height-value&#x27;),h.toFixed(1));
+        renderSvgMath(&#x27;cone-h-label&#x27;,`h = ${h.toFixed(1)}`);
+        renderSvgMath(&#x27;cone-slant-label&#x27;,String.raw`\ell = ${l.toFixed(2)}`);
+        renderSvgMath(&#x27;cone-radius-label&#x27;,&#x27;r = 3&#x27;);
+        get(&#x27;cone-surface&#x27;).setAttribute(&#x27;d&#x27;,`M70 235L155 ${apex}L240 235A85 19 0 0 1 70 235Z`);
+        get(&#x27;cone-h-line&#x27;).setAttribute(&#x27;d&#x27;,`M155 ${apex}V235`);
+        get(&#x27;cone-h-label&#x27;).setAttribute(&#x27;y&#x27;,String((apex+235)/2));
+        get(&#x27;cone-slant-label&#x27;).setAttribute(&#x27;y&#x27;,String((apex+235)/2-8));
+        renderMath(get(&#x27;cone-volume&#x27;),String.raw`${(Math.PI*r*r*h/3).toFixed(2)}\,\mathrm{units}^{3}`);
+        renderMath(get(&#x27;cone-area&#x27;),String.raw`${(Math.PI*r*l).toFixed(2)}\,\mathrm{units}^{2}`);
+        get(&#x27;cone-description&#x27;).textContent=`Right circular cone. Radius 3 units, perpendicular height ${h.toFixed(1)} units, slant height ${l.toFixed(2)} units.`;
       }
-      range.addEventListener('input',update);update();
+      range.addEventListener(&#x27;input&#x27;,update);update();
     })();
   &lt;/script&gt;
 &lt;/div&gt;
+
 &lt;script src=&quot;https://unpkg.com/@floating-ui/core@1.7.3/dist/floating-ui.core.umd.min.js&quot;&gt;&lt;/script&gt;
 &lt;script src=&quot;https://unpkg.com/@floating-ui/dom@1.7.4/dist/floating-ui.dom.umd.min.js&quot;&gt;&lt;/script&gt;
 &lt;script&gt;
@@ -1381,11 +1403,11 @@ html&gt;body{padding:0}&lt;/style&gt;
 &lt;/script&gt;
 &lt;script id=&quot;codex-visualization-tabs&quot;&gt;
 (() =&gt; {
-  const selector = '.nav[role=&quot;tablist&quot;] [role=&quot;tab&quot;]';
-  const disabled = ':disabled,[aria-disabled=&quot;true&quot;]';
+  const selector = &#x27;.nav[role=&quot;tablist&quot;] [role=&quot;tab&quot;]&#x27;;
+  const disabled = &#x27;:disabled,[aria-disabled=&quot;true&quot;]&#x27;;
   const selectTab = (selected) =&gt; {
     const panelId = selected.getAttribute(&quot;aria-controls&quot;);
-    for (const tab of selected.closest('[role=&quot;tablist&quot;]').querySelectorAll('[role=&quot;tab&quot;]')) {
+    for (const tab of selected.closest(&#x27;[role=&quot;tablist&quot;]&#x27;).querySelectorAll(&#x27;[role=&quot;tab&quot;]&#x27;)) {
       const active = tab === selected;
       tab.classList.toggle(&quot;active&quot;, active);
       tab.setAttribute(&quot;aria-selected&quot;, String(active));
@@ -1409,7 +1431,7 @@ html&gt;body{padding:0}&lt;/style&gt;
       return;
     }
     const tabs = Array.from(
-      tab.closest('[role=&quot;tablist&quot;]').querySelectorAll('[role=&quot;tab&quot;]'),
+      tab.closest(&#x27;[role=&quot;tablist&quot;]&#x27;).querySelectorAll(&#x27;[role=&quot;tab&quot;]&#x27;),
     ).filter((candidate) =&gt; !candidate.matches(disabled));
     const current = tabs.indexOf(tab);
     let next;
@@ -1429,11 +1451,11 @@ html&gt;body{padding:0}&lt;/style&gt;
     selectTab(tabs[next]);
   };
 
-  for (const list of document.querySelectorAll('.nav[role=&quot;tablist&quot;]')) {
+  for (const list of document.querySelectorAll(&#x27;.nav[role=&quot;tablist&quot;]&#x27;)) {
     const selected =
-      list.querySelector('[role=&quot;tab&quot;][aria-selected=&quot;true&quot;]') ??
-      list.querySelector('[role=&quot;tab&quot;].active') ??
-      list.querySelector('[role=&quot;tab&quot;]');
+      list.querySelector(&#x27;[role=&quot;tab&quot;][aria-selected=&quot;true&quot;]&#x27;) ??
+      list.querySelector(&#x27;[role=&quot;tab&quot;].active&#x27;) ??
+      list.querySelector(&#x27;[role=&quot;tab&quot;]&#x27;);
     if (selected != null) {
       selectTab(selected);
     }
@@ -1446,7 +1468,7 @@ html&gt;body{padding:0}&lt;/style&gt;
   }, { once: true });
 })();
 &lt;/script&gt;
-&lt;script async=&quot;&quot; id=&quot;codex-visualization-lucide&quot; src=&quot;https://unpkg.com/lucide@1.17.0/dist/umd/lucide.js&quot;&gt;&lt;/script&gt;
+&lt;script id=&quot;codex-visualization-lucide&quot; async src=&quot;https://unpkg.com/lucide@1.17.0/dist/umd/lucide.js&quot;&gt;&lt;/script&gt;
 &lt;script&gt;
 (() =&gt; {
   const initialize = () =&gt; {
@@ -1461,9 +1483,10 @@ html&gt;body{padding:0}&lt;/style&gt;
     ?.addEventListener(&quot;load&quot;, initialize, { once: true });
 })();
 &lt;/script&gt;
+
 &lt;/body&gt;
 &lt;/html&gt;
-" title="幾何学と測定 - インタラクティブな円錐"></iframe>
+"></iframe>
 <p class="ig-translation-note">日本語版（AI翻訳） · <a href="/explore/cone-dimensions.html" hreflang="en" lang="en">英語原文</a></p><!-- ISEGORIA:FOOT -->
 <footer id="ig-footer"><div><a href="/ja/">Isegoria · Benjamin Haire</a><nav aria-label="サイト内リンク"><a href="/ja/">ホームに戻る</a><a href="/ja/library.html">全コンテンツ</a><a href="#ig-content">ページ上部へ</a></nav></div></footer>
 <!-- /ISEGORIA:FOOT -->
