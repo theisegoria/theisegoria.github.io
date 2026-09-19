@@ -1485,5 +1485,1669 @@
         "url": "https://www.chebfun.org/docs/guide/guide04.html"
       }
     ]
+  },
+  {
+    "slug": "number-theory",
+    "title": [
+      "Number theory: patterns in the integers",
+      "数論：整数のパターン"
+    ],
+    "description": [
+      "Congruences, primes, and public-key ideas.",
+      "合同式・素数・公開鍵の考え方を探ります。"
+    ],
+    "group": "foundations",
+    "prerequisite": [
+      "Algebra and proof",
+      "代数と証明"
+    ],
+    "source": "MIT OpenCourseWare · Number Theory",
+    "url": "https://ocw.mit.edu/courses/18-781-theory-of-numbers-spring-2012/",
+    "labs": [
+      {
+        "id": "modular",
+        "title": [
+          "1. Modular clocks",
+          "1. 合同式の時計"
+        ],
+        "body": [
+          "Move around a clock and compare repeated addition with multiplication modulo n.",
+          "時計の上を動き、nを法とする加法と乗法を比較します。"
+        ],
+        "formula": "a\\equiv b\\pmod n\\iff n\\mid(a-b)",
+        "example": [
+          "For n=12, 17 and 5 occupy the same residue class.",
+          "n=12では17と5は同じ剰余類です。"
+        ],
+        "caution": [
+          "A congruence is an equivalence relation, not ordinary equality.",
+          "合同は通常の等号ではなく同値関係です。"
+        ],
+        "question": [
+          "Why does multiplication preserve congruence?",
+          "乗法が合同を保つのはなぜですか？"
+        ],
+        "answer": [
+          "Because n dividing a-b also divides ca-cb.",
+          "nがa-bを割れば、ca-cbも割るためです。"
+        ],
+        "params": [
+          [
+            "n",
+            "Modulus n",
+            "法 n",
+            3,
+            20,
+            1,
+            12
+          ],
+          [
+            "a",
+            "First integer",
+            "整数1",
+            0,
+            40,
+            1,
+            17
+          ],
+          [
+            "b",
+            "Second integer",
+            "整数2",
+            0,
+            40,
+            1,
+            5
+          ]
+        ],
+        "source": "MIT OpenCourseWare · Number Theory",
+        "url": "https://ocw.mit.edu/courses/18-781-theory-of-numbers-spring-2012/"
+      },
+      {
+        "id": "sieve",
+        "title": [
+          "2. Sieve of Eratosthenes",
+          "2. エラトステネスの篩"
+        ],
+        "body": [
+          "Watch composite numbers fade as prime factors are crossed out.",
+          "素因数で合成数を消していく様子を見ます。"
+        ],
+        "formula": "\\pi(x)=\\#\\{p\\le x:p\\text{ prime}\\}",
+        "example": [
+          "At x=30 there are ten primes.",
+          "x=30以下には素数が10個あります。"
+        ],
+        "caution": [
+          "The prime-counting function is not exactly x/log x at small x.",
+          "素数計数関数は小さいxではx/log xと一致しません。"
+        ],
+        "question": [
+          "Why can we stop crossing out at sqrt(x)?",
+          "√xまでで消去を止められるのはなぜですか？"
+        ],
+        "answer": [
+          "A composite number has a factor no larger than its square root.",
+          "合成数には平方根以下の因子があるためです。"
+        ],
+        "params": [
+          [
+            "limit",
+            "Upper limit",
+            "上限",
+            20,
+            120,
+            1,
+            60
+          ]
+        ],
+        "source": "MIT OpenCourseWare · Number Theory",
+        "url": "https://ocw.mit.edu/courses/18-781-theory-of-numbers-spring-2012/"
+      },
+      {
+        "id": "rsa",
+        "title": [
+          "3. RSA key intuition",
+          "3. RSA鍵の直観"
+        ],
+        "body": [
+          "See modular exponentiation turn a message into a reversible residue when the keys are chosen from coprime factors.",
+          "互いに素な因子から鍵を選び、合同べき乗でメッセージを可逆な剰余に変換します。"
+        ],
+        "formula": "c\\equiv m^e\\pmod N,\\qquad m\\equiv c^d\\pmod N",
+        "example": [
+          "For p=5, q=11, N=55 and e=3, the inverse d satisfies ed≡1 mod 40.",
+          "p=5,q=11ならN=55、e=3に対しed≡1 (mod 40)を満たすdを選びます。"
+        ],
+        "caution": [
+          "Toy keys are not secure; real RSA uses much larger primes and padding.",
+          "小さな例は安全ではありません。実際のRSAは巨大な素数とパディングを使います。"
+        ],
+        "question": [
+          "What makes the decryption exponent special?",
+          "復号指数が特別なのはなぜですか？"
+        ],
+        "answer": [
+          "It is an inverse of e modulo φ(N), under the coprime conditions.",
+          "互いに素の条件のもとでφ(N)を法とするeの逆元だからです。"
+        ],
+        "params": [
+          [
+            "p",
+            "Prime p",
+            "素数 p",
+            3,
+            13,
+            1,
+            5
+          ],
+          [
+            "q",
+            "Prime q",
+            "素数 q",
+            5,
+            17,
+            1,
+            11
+          ],
+          [
+            "m",
+            "Message m",
+            "メッセージ m",
+            2,
+            40,
+            1,
+            7
+          ]
+        ],
+        "source": "MIT OpenCourseWare · Number Theory",
+        "url": "https://ocw.mit.edu/courses/18-781-theory-of-numbers-spring-2012/"
+      }
+    ]
+  },
+  {
+    "slug": "graph-theory",
+    "title": [
+      "Graph theory: routes, trees, and networks",
+      "グラフ理論：経路・木・ネットワーク"
+    ],
+    "description": [
+      "Shortest paths, spanning trees, and centrality.",
+      "最短経路・全域木・中心性を可視化します。"
+    ],
+    "group": "foundations",
+    "prerequisite": [
+      "Sets and elementary algorithms",
+      "集合と初歩的なアルゴリズム"
+    ],
+    "source": "Diestel · Graph Theory",
+    "url": "https://diestel-graph-theory.com/",
+    "labs": [
+      {
+        "id": "shortest",
+        "title": [
+          "1. Shortest paths",
+          "1. 最短経路"
+        ],
+        "body": [
+          "Adjust edge weights and watch Dijkstra’s frontier expand from the source.",
+          "辺の重みを変え、始点からダイクストラ法の前線が広がる様子を見ます。"
+        ],
+        "formula": "d(v)=\\min_{(u,v)\\in E}\\{d(u)+w(u,v)\\}",
+        "example": [
+          "With nonnegative weights, the settled label is final.",
+          "非負の重みなら確定したラベルは最終値です。"
+        ],
+        "caution": [
+          "Dijkstra fails with negative edge weights.",
+          "負の辺重みではダイクストラ法は使えません。"
+        ],
+        "question": [
+          "Why does the frontier stay optimal?",
+          "前線が最適であり続けるのはなぜですか？"
+        ],
+        "answer": [
+          "Every alternative path must pass through a node with a no-smaller settled distance.",
+          "別経路は必ず、確定距離以上のノードを通るためです。"
+        ],
+        "params": [
+          [
+            "shortcut",
+            "Diagonal shortcut",
+            "斜めの近道",
+            0,
+            1,
+            1,
+            1
+          ],
+          [
+            "traffic",
+            "Traffic weight",
+            "混雑重み",
+            1,
+            4,
+            1,
+            2
+          ]
+        ],
+        "source": "Diestel · Graph Theory",
+        "url": "https://diestel-graph-theory.com/"
+      },
+      {
+        "id": "spanning",
+        "title": [
+          "2. Minimum spanning trees",
+          "2. 最小全域木"
+        ],
+        "body": [
+          "Compare a greedy tree with every network edge and reveal the cut property.",
+          "貪欲に選んだ木と全辺を比較し、カット性質を見ます。"
+        ],
+        "formula": "|T|=|V|-1,\\qquad w(T)=\\min_{\\text{spanning }S}w(S)",
+        "example": [
+          "A tree on six vertices has five edges.",
+          "6頂点の木は5本の辺を持ちます。"
+        ],
+        "caution": [
+          "A spanning tree connects all vertices without cycles; it need not preserve shortest routes.",
+          "全域木は全頂点を閉路なく結びますが、最短経路を保つとは限りません。"
+        ],
+        "question": [
+          "Why does the lightest crossing edge belong to some MST?",
+          "最軽量の横断辺がある最小木に属するのはなぜですか？"
+        ],
+        "answer": [
+          "Exchange it with a heavier edge on the corresponding tree path.",
+          "木の経路上の重い辺と交換できるためです。"
+        ],
+        "params": [
+          [
+            "cut",
+            "Cut position",
+            "カット位置",
+            1,
+            4,
+            1,
+            2
+          ],
+          [
+            "w",
+            "Candidate weight",
+            "候補の重み",
+            1,
+            9,
+            1,
+            3
+          ]
+        ],
+        "source": "Diestel · Graph Theory",
+        "url": "https://diestel-graph-theory.com/"
+      },
+      {
+        "id": "centrality",
+        "title": [
+          "3. Centrality and influence",
+          "3. 中心性と影響力"
+        ],
+        "body": [
+          "Compare degree, closeness, and betweenness on a small network.",
+          "小さなネットワークで次数・近接・媒介中心性を比較します。"
+        ],
+        "formula": "C_B(v)=\\sum_{s\\ne v\\ne t}\\frac{\\sigma_{st}(v)}{\\sigma_{st}}",
+        "example": [
+          "A bridge node can have modest degree but high betweenness.",
+          "橋の頂点は次数が小さくても媒介中心性が高くなり得ます。"
+        ],
+        "caution": [
+          "Centrality is a model choice, not a universal ranking.",
+          "中心性はモデルの選択であり、普遍的な順位ではありません。"
+        ],
+        "question": [
+          "Which measure rewards many direct neighbours?",
+          "多くの直接の隣人を評価する指標は？"
+        ],
+        "answer": [
+          "Degree centrality counts immediate neighbours.",
+          "次数中心性は直接の隣人を数えます。"
+        ],
+        "params": [
+          [
+            "hub",
+            "Hub strength",
+            "ハブの強さ",
+            0,
+            4,
+            1,
+            2
+          ],
+          [
+            "bridge",
+            "Bridge strength",
+            "橋の強さ",
+            0,
+            4,
+            1,
+            3
+          ]
+        ],
+        "source": "Diestel · Graph Theory",
+        "url": "https://diestel-graph-theory.com/"
+      }
+    ]
+  },
+  {
+    "slug": "partial-differential-equations",
+    "title": [
+      "Partial differential equations: fields in motion",
+      "偏微分方程式：動く場"
+    ],
+    "description": [
+      "Heat, waves, and potential fields on a grid.",
+      "格子上の熱・波・ポテンシャル場を調べます。"
+    ],
+    "group": "analysis",
+    "prerequisite": [
+      "Calculus and vectors",
+      "微積分とベクトル"
+    ],
+    "source": "MIT OpenCourseWare · Partial Differential Equations",
+    "url": "https://ocw.mit.edu/courses/18-155-differential-analysis-fall-2013/",
+    "labs": [
+      {
+        "id": "heat",
+        "title": [
+          "1. Heat diffusion",
+          "1. 熱拡散"
+        ],
+        "body": [
+          "Scrub time as a hot spot spreads and smooths across a one-dimensional rod.",
+          "熱い点が棒の上で広がり滑らかになる様子を時間で追います。"
+        ],
+        "formula": "\\partial_tu=\\kappa\\partial_{xx}u",
+        "example": [
+          "Diffusion reduces sharp gradients while conserving total heat under insulated boundaries.",
+          "断熱境界では拡散が急な勾配を減らし、総熱量を保ちます。"
+        ],
+        "caution": [
+          "The finite difference step must obey a stability bound.",
+          "差分法の刻みは安定性の上限を守る必要があります。"
+        ],
+        "question": [
+          "Why does the peak fall?",
+          "ピークが下がるのはなぜですか？"
+        ],
+        "answer": [
+          "Heat flows down the gradient into neighbouring cells.",
+          "熱は勾配を下る方向へ隣接セルに流れるためです。"
+        ],
+        "params": [
+          [
+            "time",
+            "Time",
+            "時間",
+            0,
+            40,
+            1,
+            12
+          ],
+          [
+            "kappa",
+            "Diffusivity",
+            "拡散係数",
+            0.05,
+            0.5,
+            0.05,
+            0.2
+          ]
+        ],
+        "source": "MIT OpenCourseWare · Partial Differential Equations",
+        "url": "https://ocw.mit.edu/courses/18-155-differential-analysis-fall-2013/"
+      },
+      {
+        "id": "wave",
+        "title": [
+          "2. Wave equation",
+          "2. 波動方程式"
+        ],
+        "body": [
+          "Change tension and watch a pulse reflect from fixed ends.",
+          "張力を変え、固定端でパルスが反射する様子を見ます。"
+        ],
+        "formula": "\\partial_{tt}u=c^2\\partial_{xx}u",
+        "example": [
+          "A fixed end reverses the sign of the reflected displacement.",
+          "固定端では反射変位の符号が反転します。"
+        ],
+        "caution": [
+          "The string model ignores damping and transverse nonlinearities.",
+          "弦モデルは減衰と横方向の非線形性を無視します。"
+        ],
+        "question": [
+          "What controls wave speed?",
+          "波の速さを決めるものは？"
+        ],
+        "answer": [
+          "The parameter c, set by tension and linear density.",
+          "張力と線密度で決まるパラメータcです。"
+        ],
+        "params": [
+          [
+            "time",
+            "Time",
+            "時間",
+            0,
+            30,
+            1,
+            8
+          ],
+          [
+            "c",
+            "Wave speed",
+            "波速",
+            0.5,
+            2,
+            0.1,
+            1
+          ]
+        ],
+        "source": "MIT OpenCourseWare · Partial Differential Equations",
+        "url": "https://ocw.mit.edu/courses/18-155-differential-analysis-fall-2013/"
+      },
+      {
+        "id": "laplace",
+        "title": [
+          "3. Potential fields",
+          "3. ポテンシャル場"
+        ],
+        "body": [
+          "Move two charged boundaries and inspect equipotential contours and field lines.",
+          "2つの帯電境界を動かし、等電位線と電場線を調べます。"
+        ],
+        "formula": "\\nabla^2V=0,\\qquad \\mathbf E=-\\nabla V",
+        "example": [
+          "Field lines cross equipotentials at right angles.",
+          "電場線は等電位線と直交します。"
+        ],
+        "caution": [
+          "The plotted solution is a teaching model on a finite rectangular domain.",
+          "表示は有限の長方形領域上の教育用モデルです。"
+        ],
+        "question": [
+          "Where is the field strongest?",
+          "電場が最も強いのはどこですか？"
+        ],
+        "answer": [
+          "Where equipotentials are packed most closely.",
+          "等電位線が最も密な場所です。"
+        ],
+        "params": [
+          [
+            "left",
+            "Left potential",
+            "左の電位",
+            -1,
+            1,
+            0.1,
+            -1
+          ],
+          [
+            "right",
+            "Right potential",
+            "右の電位",
+            -1,
+            1,
+            0.1,
+            1
+          ]
+        ],
+        "source": "MIT OpenCourseWare · Partial Differential Equations",
+        "url": "https://ocw.mit.edu/courses/18-155-differential-analysis-fall-2013/"
+      }
+    ]
+  },
+  {
+    "slug": "information-theory",
+    "title": [
+      "Information theory: uncertainty and codes",
+      "情報理論：不確実性と符号"
+    ],
+    "description": [
+      "Entropy, noisy channels, and information distance.",
+      "エントロピー・雑音のある通信路・情報距離を探ります。"
+    ],
+    "group": "applications",
+    "prerequisite": [
+      "Probability and logarithms",
+      "確率と対数"
+    ],
+    "source": "Cover and Thomas · Elements of Information Theory",
+    "url": "https://web.stanford.edu/~montanar/TEACHING/Stat316/Cover_Thomas.pdf",
+    "labs": [
+      {
+        "id": "entropy",
+        "title": [
+          "1. Entropy",
+          "1. エントロピー"
+        ],
+        "body": [
+          "Tune a binary source and see uncertainty peak at a fair coin.",
+          "二値情報源を動かし、公平なコインで不確実性が最大になることを見ます。"
+        ],
+        "formula": "H(X)=-\\sum_xp(x)\\log_2p(x)",
+        "example": [
+          "A fair binary source carries one bit per symbol.",
+          "公平な二値情報源は1記号あたり1ビットです。"
+        ],
+        "caution": [
+          "Entropy measures uncertainty in a distribution, not the meaning of a message.",
+          "エントロピーはメッセージの意味ではなく分布の不確実性を測ります。"
+        ],
+        "question": [
+          "When is binary entropy maximal?",
+          "二値エントロピーが最大になるのは？"
+        ],
+        "answer": [
+          "At p=1/2.",
+          "p=1/2のときです。"
+        ],
+        "params": [
+          [
+            "p",
+            "Probability of one",
+            "1の確率",
+            0.01,
+            0.99,
+            0.01,
+            0.5
+          ]
+        ],
+        "source": "Cover and Thomas · Elements of Information Theory",
+        "url": "https://web.stanford.edu/~montanar/TEACHING/Stat316/Cover_Thomas.pdf"
+      },
+      {
+        "id": "channel",
+        "title": [
+          "2. A noisy channel",
+          "2. 雑音のある通信路"
+        ],
+        "body": [
+          "Increase bit-flip noise and compare input and output uncertainty.",
+          "ビット反転雑音を増やし、入力と出力の不確実性を比較します。"
+        ],
+        "formula": "I(X;Y)=H(Y)-H(Y\\mid X)",
+        "example": [
+          "A noiseless binary channel has one bit of capacity.",
+          "雑音のない二値通信路の容量は1ビットです。"
+        ],
+        "caution": [
+          "Capacity is an asymptotic coding limit, not the success rate of one short message.",
+          "容量は漸近的な符号化限界で、短い一通の成功率ではありません。"
+        ],
+        "question": [
+          "What happens at a flip probability of one half?",
+          "反転確率が1/2だとどうなりますか？"
+        ],
+        "answer": [
+          "The output is independent of the input and mutual information is zero.",
+          "出力は入力から独立し、相互情報量は0です。"
+        ],
+        "params": [
+          [
+            "noise",
+            "Flip probability",
+            "反転確率",
+            0,
+            0.5,
+            0.01,
+            0.1
+          ]
+        ],
+        "source": "Cover and Thomas · Elements of Information Theory",
+        "url": "https://web.stanford.edu/~montanar/TEACHING/Stat316/Cover_Thomas.pdf"
+      },
+      {
+        "id": "kl",
+        "title": [
+          "3. Divergence",
+          "3. ダイバージェンス"
+        ],
+        "body": [
+          "Compare a model distribution with observations using Kullback–Leibler divergence.",
+          "モデル分布と観測分布をカルバック・ライブラー・ダイバージェンスで比較します。"
+        ],
+        "formula": "D_{\\mathrm{KL}}(P\\|Q)=\\sum_xP(x)\\log\\frac{P(x)}{Q(x)}",
+        "example": [
+          "D_KL is zero only when the two distributions agree.",
+          "2つの分布が一致するときだけD_KLは0です。"
+        ],
+        "caution": [
+          "It is not symmetric and is not a metric.",
+          "対称ではなく、距離関数でもありません。"
+        ],
+        "question": [
+          "Why can a tiny Q(x) be costly?",
+          "Q(x)が小さいとコストが大きいのはなぜですか？"
+        ],
+        "answer": [
+          "Underestimating an event that occurs makes log(P/Q) large.",
+          "起こる事象を過小評価するとlog(P/Q)が大きくなるためです。"
+        ],
+        "params": [
+          [
+            "p",
+            "Observed probability",
+            "観測確率",
+            0.05,
+            0.95,
+            0.05,
+            0.7
+          ],
+          [
+            "q",
+            "Model probability",
+            "モデル確率",
+            0.05,
+            0.95,
+            0.05,
+            0.5
+          ]
+        ],
+        "source": "Cover and Thomas · Elements of Information Theory",
+        "url": "https://web.stanford.edu/~montanar/TEACHING/Stat316/Cover_Thomas.pdf"
+      }
+    ]
+  },
+  {
+    "slug": "calculus-of-variations",
+    "title": [
+      "Calculus of variations: paths and principles",
+      "変分法：経路と原理"
+    ],
+    "description": [
+      "Extremal paths, action, and geodesics.",
+      "極値経路・作用・測地線を可視化します。"
+    ],
+    "group": "geometry",
+    "prerequisite": [
+      "Calculus and mechanics",
+      "微積分と力学"
+    ],
+    "source": "University of Cambridge · Calculus of Variations",
+    "url": "https://www.damtp.cam.ac.uk/user/tong/variational.html",
+    "labs": [
+      {
+        "id": "euler-lagrange",
+        "title": [
+          "1. Euler–Lagrange",
+          "1. オイラー・ラグランジュ方程式"
+        ],
+        "body": [
+          "Vary a trial path and compare its action with the stationary path.",
+          "試行経路を変え、作用を停留させる経路と比較します。"
+        ],
+        "formula": "\\frac{d}{dt}\\frac{\\partial L}{\\partial\\dot q}-\\frac{\\partial L}{\\partial q}=0",
+        "example": [
+          "For L=½m q̇²−V(q), the equation is Newton’s law.",
+          "L=½m q̇²−V(q)なら方程式はニュートンの法則です。"
+        ],
+        "caution": [
+          "Stationary does not always mean a global minimum.",
+          "停留は必ずしも大域的最小を意味しません。"
+        ],
+        "question": [
+          "What is being varied?",
+          "何を変分するのですか？"
+        ],
+        "answer": [
+          "The whole path q(t), while endpoints are held fixed.",
+          "端点を固定したまま経路q(t)全体を変えます。"
+        ],
+        "params": [
+          [
+            "bend",
+            "Trial bend",
+            "試行経路の曲がり",
+            -1,
+            1,
+            0.05,
+            0.3
+          ]
+        ],
+        "source": "University of Cambridge · Calculus of Variations",
+        "url": "https://www.damtp.cam.ac.uk/user/tong/variational.html"
+      },
+      {
+        "id": "geodesic",
+        "title": [
+          "2. Geodesics on a surface",
+          "2. 曲面上の測地線"
+        ],
+        "body": [
+          "Flatten a curved metric and compare coordinate lines with shortest paths.",
+          "曲がった計量を展開し、座標線と最短経路を比較します。"
+        ],
+        "formula": "\\delta\\int ds=0,\\qquad ds^2=g_{ij}dx^idx^j",
+        "example": [
+          "Great circles are geodesics on a sphere.",
+          "球面上の大円は測地線です。"
+        ],
+        "caution": [
+          "A coordinate straight line need not be geometrically straight.",
+          "座標上の直線が幾何学的に直線とは限りません。"
+        ],
+        "question": [
+          "Why do geodesics look curved in a map?",
+          "地図上で測地線が曲がって見えるのはなぜですか？"
+        ],
+        "answer": [
+          "Projection distorts distances and angles.",
+          "投影が距離と角度を歪めるためです。"
+        ],
+        "params": [
+          [
+            "latitude",
+            "Latitude",
+            "緯度",
+            -80,
+            80,
+            5,
+            30
+          ],
+          [
+            "arc",
+            "Arc length",
+            "弧長",
+            0.2,
+            1.5,
+            0.05,
+            1
+          ]
+        ],
+        "source": "University of Cambridge · Calculus of Variations",
+        "url": "https://www.damtp.cam.ac.uk/user/tong/variational.html"
+      },
+      {
+        "id": "least-action",
+        "title": [
+          "3. Least action",
+          "3. 最小作用の原理"
+        ],
+        "body": [
+          "Compare paths with the same endpoints and watch the classical path emerge as the stationary one.",
+          "同じ端点を持つ経路を比較し、古典経路が停留経路になることを見ます。"
+        ],
+        "formula": "S[q]=\\int_{t_0}^{t_1}L(q,\\dot q,t)\\,dt,\\qquad\\delta S=0",
+        "example": [
+          "The classical path is a stationary-phase path in the semiclassical picture.",
+          "半古典的な描像では古典経路は位相が停留する経路です。"
+        ],
+        "caution": [
+          "The phrase least action is shorthand; the action is stationary, not always least.",
+          "「最小作用」は略称で、作用は必ずしも最小ではなく停留します。"
+        ],
+        "question": [
+          "What stays fixed in the variation?",
+          "変分で固定するものは？"
+        ],
+        "answer": [
+          "The endpoints and the time interval.",
+          "端点と時間区間です。"
+        ],
+        "params": [
+          [
+            "amplitude",
+            "Path amplitude",
+            "経路振幅",
+            0,
+            1,
+            0.05,
+            0.35
+          ]
+        ],
+        "source": "University of Cambridge · Calculus of Variations",
+        "url": "https://www.damtp.cam.ac.uk/user/tong/variational.html"
+      }
+    ]
+  },
+  {
+    "slug": "classical-mechanics",
+    "title": [
+      "Classical mechanics: motion and forces",
+      "古典力学：運動と力"
+    ],
+    "description": [
+      "Projectiles, oscillators, and orbital motion.",
+      "投射・振動子・軌道運動を調べます。"
+    ],
+    "group": "physics",
+    "prerequisite": [
+      "Vectors and calculus",
+      "ベクトルと微積分"
+    ],
+    "source": "OpenStax · University Physics, Volume 1",
+    "url": "https://openstax.org/details/books/university-physics-volume-1",
+    "labs": [
+      {
+        "id": "projectile",
+        "title": [
+          "1. Projectile motion",
+          "1. 放物運動"
+        ],
+        "body": [
+          "Change launch angle and inspect the trajectory, range, and conserved horizontal velocity.",
+          "発射角を変え、軌道・飛距離・水平速度を調べます。"
+        ],
+        "formula": "\\mathbf r(t)=\\mathbf r_0+\\mathbf v_0t+\\tfrac12\\mathbf gt^2",
+        "example": [
+          "At 45° without drag, range is maximal for fixed speed.",
+          "空気抵抗なしで速さ一定なら45°で飛距離が最大です。"
+        ],
+        "caution": [
+          "The model neglects air resistance and Earth curvature.",
+          "モデルは空気抵抗と地球の曲率を無視します。"
+        ],
+        "question": [
+          "What remains constant?",
+          "何が一定ですか？"
+        ],
+        "answer": [
+          "Horizontal velocity, while vertical velocity changes by gravity.",
+          "水平速度は一定で、鉛直速度は重力で変化します。"
+        ],
+        "params": [
+          [
+            "angle",
+            "Launch angle (degrees)",
+            "発射角（度）",
+            10,
+            80,
+            1,
+            45
+          ],
+          [
+            "speed",
+            "Launch speed",
+            "初速",
+            5,
+            30,
+            1,
+            18
+          ]
+        ],
+        "source": "OpenStax · University Physics, Volume 1",
+        "url": "https://openstax.org/details/books/university-physics-volume-1"
+      },
+      {
+        "id": "oscillator",
+        "title": [
+          "2. Harmonic oscillator",
+          "2. 調和振動子"
+        ],
+        "body": [
+          "Tune damping and stiffness to move between underdamped, critical, and overdamped motion.",
+          "減衰とばね定数を変え、減衰不足・臨界・過減衰を比べます。"
+        ],
+        "formula": "m\\ddot x+c\\dot x+kx=0",
+        "example": [
+          "Critical damping returns fastest without overshoot.",
+          "臨界減衰は行き過ぎなく最速で戻ります。"
+        ],
+        "caution": [
+          "The spring is linear and the mass is point-like.",
+          "ばねは線形で、質点モデルです。"
+        ],
+        "question": [
+          "What sets the regime?",
+          "状態を決めるものは？"
+        ],
+        "answer": [
+          "The discriminant c²−4mk.",
+          "判別式c²−4mkです。"
+        ],
+        "params": [
+          [
+            "damping",
+            "Damping c",
+            "減衰 c",
+            0,
+            8,
+            0.1,
+            1
+          ],
+          [
+            "stiffness",
+            "Stiffness k",
+            "剛性 k",
+            1,
+            9,
+            0.5,
+            4
+          ]
+        ],
+        "source": "OpenStax · University Physics, Volume 1",
+        "url": "https://openstax.org/details/books/university-physics-volume-1"
+      },
+      {
+        "id": "mechanics-orbit",
+        "title": [
+          "3. Orbital motion",
+          "3. 軌道運動"
+        ],
+        "body": [
+          "Change tangential speed and see circular, elliptical, or escaping paths in a teaching model.",
+          "接線速度を変え、円・楕円・脱出軌道を教育用モデルで見ます。"
+        ],
+        "formula": "\\ddot{\\mathbf r}=-\\mu\\frac{\\mathbf r}{\\|\\mathbf r\\|^3}",
+        "example": [
+          "At circular speed, radius and speed remain constant.",
+          "円軌道速度では半径と速さが一定です。"
+        ],
+        "caution": [
+          "The two-body model omits perturbations and relativistic corrections.",
+          "二体モデルは摂動と相対論的補正を無視します。"
+        ],
+        "question": [
+          "What is conserved?",
+          "何が保存されますか？"
+        ],
+        "answer": [
+          "In the ideal model, energy and angular momentum.",
+          "理想モデルではエネルギーと角運動量です。"
+        ],
+        "params": [
+          [
+            "speed",
+            "Tangential speed",
+            "接線速度",
+            0.5,
+            2,
+            0.05,
+            1
+          ],
+          [
+            "mu",
+            "Gravity scale",
+            "重力尺度",
+            0.5,
+            2,
+            0.05,
+            1
+          ]
+        ],
+        "source": "OpenStax · University Physics, Volume 1",
+        "url": "https://openstax.org/details/books/university-physics-volume-1"
+      }
+    ]
+  },
+  {
+    "slug": "electromagnetism",
+    "title": [
+      "Electromagnetism: fields and induction",
+      "電磁気学：場と誘導"
+    ],
+    "description": [
+      "Electric fields, magnetic forces, and changing flux.",
+      "電場・磁力・変化する磁束を可視化します。"
+    ],
+    "group": "physics",
+    "prerequisite": [
+      "Vectors and calculus",
+      "ベクトルと微積分"
+    ],
+    "source": "MIT OpenCourseWare · Electricity and Magnetism",
+    "url": "https://ocw.mit.edu/courses/8-02-physics-ii-electricity-and-magnetism-spring-2013/",
+    "labs": [
+      {
+        "id": "electric-field",
+        "title": [
+          "1. Electric field lines",
+          "1. 電場線"
+        ],
+        "body": [
+          "Move two charges and inspect the vector field and equipotential contours.",
+          "2つの電荷を動かし、ベクトル場と等電位線を調べます。"
+        ],
+        "formula": "\\mathbf E=\\frac1{4\\pi\\varepsilon_0}\\sum_iq_i\\frac{\\mathbf r-\\mathbf r_i}{\\|\\mathbf r-\\mathbf r_i\\|^3}",
+        "example": [
+          "Field lines leave positive charges and enter negative charges.",
+          "電場線は正電荷から出て負電荷に入ります。"
+        ],
+        "caution": [
+          "The point-charge field diverges at the charge location.",
+          "点電荷の場は電荷位置で発散します。"
+        ],
+        "question": [
+          "How is direction encoded?",
+          "方向はどのように表されますか？"
+        ],
+        "answer": [
+          "By arrows aligned with the local electric field vector.",
+          "局所電場ベクトルに沿う矢印です。"
+        ],
+        "params": [
+          [
+            "q1",
+            "Charge 1",
+            "電荷1",
+            -2,
+            2,
+            0.1,
+            1
+          ],
+          [
+            "q2",
+            "Charge 2",
+            "電荷2",
+            -2,
+            2,
+            0.1,
+            -1
+          ]
+        ],
+        "source": "MIT OpenCourseWare · Electricity and Magnetism",
+        "url": "https://ocw.mit.edu/courses/8-02-physics-ii-electricity-and-magnetism-spring-2013/"
+      },
+      {
+        "id": "lorentz",
+        "title": [
+          "2. Lorentz force",
+          "2. ローレンツ力"
+        ],
+        "body": [
+          "Change velocity and magnetic field to see circular or helical motion.",
+          "速度と磁場を変え、円運動やらせん運動を見ます。"
+        ],
+        "formula": "\\mathbf F=q(\\mathbf E+\\mathbf v\\times\\mathbf B)",
+        "example": [
+          "A velocity perpendicular to B bends continuously; parallel velocity is unchanged.",
+          "Bに垂直な速度は曲がり続け、平行成分は変わりません。"
+        ],
+        "caution": [
+          "The nonrelativistic model assumes speeds well below c.",
+          "非相対論モデルで、速さは光速より十分小さいとします。"
+        ],
+        "question": [
+          "Which component does magnetic force not change?",
+          "磁力が変えない成分は？"
+        ],
+        "answer": [
+          "The component of velocity parallel to the magnetic field.",
+          "磁場に平行な速度成分です。"
+        ],
+        "params": [
+          [
+            "b",
+            "Magnetic field",
+            "磁場",
+            0.2,
+            2,
+            0.1,
+            1
+          ],
+          [
+            "vz",
+            "Parallel velocity",
+            "平行速度",
+            -1,
+            1,
+            0.1,
+            0.3
+          ]
+        ],
+        "source": "MIT OpenCourseWare · Electricity and Magnetism",
+        "url": "https://ocw.mit.edu/courses/8-02-physics-ii-electricity-and-magnetism-spring-2013/"
+      },
+      {
+        "id": "induction",
+        "title": [
+          "3. Faraday induction",
+          "3. ファラデー誘導"
+        ],
+        "body": [
+          "Sweep a magnet through a loop and track flux, induced emf, and current direction.",
+          "磁石をコイルの中で動かし、磁束・起電力・電流方向を追います。"
+        ],
+        "formula": "\\mathcal E=-\\frac{d\\Phi_B}{dt}",
+        "example": [
+          "Faster flux change produces larger induced emf.",
+          "磁束の変化が速いほど起電力は大きくなります。"
+        ],
+        "caution": [
+          "The loop is idealized with constant resistance and no self-inductance.",
+          "コイルは抵抗一定で自己インダクタンスなしと理想化します。"
+        ],
+        "question": [
+          "Why is there a minus sign?",
+          "マイナス符号はなぜですか？"
+        ],
+        "answer": [
+          "Lenz’s law: the induced effect opposes the flux change.",
+          "レンツの法則で、誘導効果は磁束変化に逆らいます。"
+        ],
+        "params": [
+          [
+            "position",
+            "Magnet position",
+            "磁石の位置",
+            -2,
+            2,
+            0.1,
+            0
+          ],
+          [
+            "speed",
+            "Sweep speed",
+            "移動速度",
+            0.2,
+            2,
+            0.1,
+            1
+          ]
+        ],
+        "source": "MIT OpenCourseWare · Electricity and Magnetism",
+        "url": "https://ocw.mit.edu/courses/8-02-physics-ii-electricity-and-magnetism-spring-2013/"
+      }
+    ]
+  },
+  {
+    "slug": "optics",
+    "title": [
+      "Optics: rays, waves, and colour",
+      "光学：光線・波・色"
+    ],
+    "description": [
+      "Lenses, interference, and polarization.",
+      "レンズ・干渉・偏光を調べます。"
+    ],
+    "group": "physics",
+    "prerequisite": [
+      "Waves and geometry",
+      "波と幾何"
+    ],
+    "source": "OpenStax · University Physics, Volume 3",
+    "url": "https://openstax.org/details/books/university-physics-volume-3",
+    "labs": [
+      {
+        "id": "lens",
+        "title": [
+          "1. Thin lens",
+          "1. 薄レンズ"
+        ],
+        "body": [
+          "Move the object and watch the image switch from real to virtual.",
+          "物体を動かし、実像と虚像の切り替わりを見ます。"
+        ],
+        "formula": "\\frac1f=\\frac1{d_o}+\\frac1{d_i},\\qquad m=-\\frac{d_i}{d_o}",
+        "example": [
+          "An object beyond 2f produces an inverted reduced image.",
+          "物体が2fより遠いと倒立した縮小像になります。"
+        ],
+        "caution": [
+          "The thin-lens model ignores thickness and aberration.",
+          "薄レンズモデルは厚みと収差を無視します。"
+        ],
+        "question": [
+          "What happens at d_o=f?",
+          "d_o=fではどうなりますか？"
+        ],
+        "answer": [
+          "The image distance diverges: rays leave parallel.",
+          "像距離が発散し、光線は平行になります。"
+        ],
+        "params": [
+          [
+            "f",
+            "Focal length",
+            "焦点距離",
+            1,
+            5,
+            0.1,
+            2
+          ],
+          [
+            "object",
+            "Object distance",
+            "物体距離",
+            0.5,
+            10,
+            0.1,
+            5
+          ]
+        ],
+        "source": "OpenStax · University Physics, Volume 3",
+        "url": "https://openstax.org/details/books/university-physics-volume-3"
+      },
+      {
+        "id": "interference",
+        "title": [
+          "2. Double-slit interference",
+          "2. 二重スリット干渉"
+        ],
+        "body": [
+          "Change slit spacing and wavelength to move bright fringes across the screen.",
+          "スリット間隔と波長を変え、明線を動かします。"
+        ],
+        "formula": "d\\sin\\theta=m\\lambda",
+        "example": [
+          "Bright fringes satisfy a path difference of mλ.",
+          "明線では光路差がmλです。"
+        ],
+        "caution": [
+          "The small-angle screen approximation is used in the plot.",
+          "図では小角近似を使います。"
+        ],
+        "question": [
+          "What widens the fringe spacing?",
+          "縞の間隔を広げるものは？"
+        ],
+        "answer": [
+          "A longer wavelength or smaller slit separation.",
+          "長い波長または小さいスリット間隔です。"
+        ],
+        "params": [
+          [
+            "wavelength",
+            "Wavelength",
+            "波長",
+            0.4,
+            1,
+            0.05,
+            0.6
+          ],
+          [
+            "spacing",
+            "Slit spacing",
+            "スリット間隔",
+            0.5,
+            3,
+            0.1,
+            1
+          ]
+        ],
+        "source": "OpenStax · University Physics, Volume 3",
+        "url": "https://openstax.org/details/books/university-physics-volume-3"
+      },
+      {
+        "id": "polarization",
+        "title": [
+          "3. Polarization",
+          "3. 偏光"
+        ],
+        "body": [
+          "Rotate an analyser and compare transmitted intensity with Malus’s law.",
+          "検光子を回転し、透過強度をマリュスの法則と比べます。"
+        ],
+        "formula": "I=I_0\\cos^2\\theta",
+        "example": [
+          "Crossed polarisers transmit no ideal light.",
+          "直交した偏光子は理想的には光を通しません。"
+        ],
+        "caution": [
+          "Real filters have finite extinction and wavelength dependence.",
+          "実際のフィルターには有限の消光比と波長依存性があります。"
+        ],
+        "question": [
+          "Why does intensity depend on angle twice?",
+          "強度が角度の二乗に依存するのはなぜですか？"
+        ],
+        "answer": [
+          "The electric-field amplitude projects once, then intensity squares amplitude.",
+          "電場振幅を一度射影し、強度が振幅の二乗になるためです。"
+        ],
+        "params": [
+          [
+            "angle",
+            "Analyser angle (degrees)",
+            "検光子角（度）",
+            0,
+            180,
+            1,
+            30
+          ],
+          [
+            "i0",
+            "Input intensity",
+            "入射強度",
+            0.2,
+            1,
+            0.05,
+            1
+          ]
+        ],
+        "source": "OpenStax · University Physics, Volume 3",
+        "url": "https://openstax.org/details/books/university-physics-volume-3"
+      }
+    ]
+  },
+  {
+    "slug": "thermodynamics",
+    "title": [
+      "Thermodynamics: energy, work, and entropy",
+      "熱力学：エネルギー・仕事・エントロピー"
+    ],
+    "description": [
+      "PV paths, reversible limits, and entropy flow.",
+      "PV経路・可逆極限・エントロピーの流れを調べます。"
+    ],
+    "group": "physics",
+    "prerequisite": [
+      "Algebra and energy",
+      "代数とエネルギー"
+    ],
+    "source": "MIT OpenCourseWare · Thermodynamics",
+    "url": "https://ocw.mit.edu/courses/2-05-thermal-fluids-engineering-i-fall-2013/",
+    "labs": [
+      {
+        "id": "pv",
+        "title": [
+          "1. PV diagrams",
+          "1. PV図"
+        ],
+        "body": [
+          "Drag a piston path and see work as the signed area under the curve.",
+          "ピストン経路を動かし、曲線下の符号付き面積として仕事を見ます。"
+        ],
+        "formula": "W=\\int_{V_1}^{V_2}P\\,dV",
+        "example": [
+          "Expansion at positive pressure does work on the surroundings.",
+          "正圧での膨張は外界に仕事をします。"
+        ],
+        "caution": [
+          "The path matters; work is not a state function.",
+          "仕事は状態関数ではなく経路に依存します。"
+        ],
+        "question": [
+          "Which quantity is path-dependent here?",
+          "ここで経路に依存する量は？"
+        ],
+        "answer": [
+          "Work and heat, unlike internal energy.",
+          "内部エネルギーと違い、仕事と熱です。"
+        ],
+        "params": [
+          [
+            "pressure",
+            "Pressure scale",
+            "圧力尺度",
+            1,
+            5,
+            0.1,
+            2
+          ],
+          [
+            "volume",
+            "Final volume",
+            "終体積",
+            1,
+            5,
+            0.1,
+            3
+          ]
+        ],
+        "source": "MIT OpenCourseWare · Thermodynamics",
+        "url": "https://ocw.mit.edu/courses/2-05-thermal-fluids-engineering-i-fall-2013/"
+      },
+      {
+        "id": "thermo-entropy",
+        "title": [
+          "2. Entropy and reversibility",
+          "2. エントロピーと可逆性"
+        ],
+        "body": [
+          "Compare a reversible ramp with an irreversible jump between two temperatures.",
+          "2つの温度間で可逆的な変化と不可逆な跳躍を比較します。"
+        ],
+        "formula": "\\Delta S=\\int\\frac{\\delta Q_{\\mathrm{rev}}}{T},\\qquad\\Delta S_{\\mathrm{univ}}\\ge0",
+        "example": [
+          "Reversible exchange can approach zero entropy production.",
+          "可逆交換ではエントロピー生成を0に近づけられます。"
+        ],
+        "caution": [
+          "A reversible process is an ideal limit, not a fast practical operation.",
+          "可逆過程は理想極限で、速い実用操作ではありません。"
+        ],
+        "question": [
+          "What direction is irreversible entropy production?",
+          "不可逆なエントロピー生成の向きは？"
+        ],
+        "answer": [
+          "It is nonnegative for the universe.",
+          "宇宙全体では非負です。"
+        ],
+        "params": [
+          [
+            "hot",
+            "Hot temperature",
+            "高温",
+            300,
+            800,
+            10,
+            600
+          ],
+          [
+            "cold",
+            "Cold temperature",
+            "低温",
+            200,
+            700,
+            10,
+            300
+          ]
+        ],
+        "source": "MIT OpenCourseWare · Thermodynamics",
+        "url": "https://ocw.mit.edu/courses/2-05-thermal-fluids-engineering-i-fall-2013/"
+      },
+      {
+        "id": "equation-state",
+        "title": [
+          "3. Equation of state",
+          "3. 状態方程式"
+        ],
+        "body": [
+          "Change amount, temperature, and volume for an ideal gas and read pressure.",
+          "物質量・温度・体積を変え、理想気体の圧力を読みます。"
+        ],
+        "formula": "PV=nRT",
+        "example": [
+          "Doubling temperature at fixed n and V doubles pressure.",
+          "nとVを固定して温度を2倍にすると圧力も2倍です。"
+        ],
+        "caution": [
+          "Real gases deviate near phase transitions and high density.",
+          "実在気体は相転移や高密度でずれます。"
+        ],
+        "question": [
+          "Which variables are intensive?",
+          "示強変数はどれですか？"
+        ],
+        "answer": [
+          "Temperature and pressure; n and V scale with system size.",
+          "温度と圧力です。nとVは系の大きさに比例します。"
+        ],
+        "params": [
+          [
+            "n",
+            "Amount n",
+            "物質量 n",
+            0.5,
+            3,
+            0.1,
+            1
+          ],
+          [
+            "temperature",
+            "Temperature T",
+            "温度 T",
+            200,
+            800,
+            10,
+            300
+          ],
+          [
+            "volume",
+            "Volume V",
+            "体積 V",
+            0.5,
+            5,
+            0.1,
+            2
+          ]
+        ],
+        "source": "MIT OpenCourseWare · Thermodynamics",
+        "url": "https://ocw.mit.edu/courses/2-05-thermal-fluids-engineering-i-fall-2013/"
+      }
+    ]
+  },
+  {
+    "slug": "quantum-mechanics",
+    "title": [
+      "Quantum mechanics: amplitudes and spin",
+      "量子力学：振幅とスピン"
+    ],
+    "description": [
+      "Wavefunctions, uncertainty, and a rotatable Bloch sphere.",
+      "波動関数・不確定性・回転できるブロッホ球を探ります。"
+    ],
+    "group": "physics",
+    "prerequisite": [
+      "Complex numbers and waves",
+      "複素数と波"
+    ],
+    "source": "MIT OpenCourseWare · Quantum Physics II",
+    "url": "https://ocw.mit.edu/courses/8-05-quantum-physics-ii-fall-2013/",
+    "labs": [
+      {
+        "id": "wavefunction",
+        "title": [
+          "1. Wavefunction density",
+          "1. 波動関数の密度"
+        ],
+        "body": [
+          "Change the wave number and inspect nodes of a particle in a box.",
+          "波数を変え、箱の中の粒子の節を調べます。"
+        ],
+        "formula": "\\psi_n(x)=\\sqrt{\\frac2L}\\sin\\frac{n\\pi x}{L},\\qquad\\rho=|\\psi|^2",
+        "example": [
+          "The density integrates to one after normalization.",
+          "規格化後の密度の積分は1です。"
+        ],
+        "caution": [
+          "The plotted state is stationary; measurement collapse is not shown.",
+          "表示は定常状態で、測定収縮は扱いません。"
+        ],
+        "question": [
+          "Where is the particle least likely?",
+          "粒子が最も見つかりにくい場所は？"
+        ],
+        "answer": [
+          "At nodes where the probability density is zero.",
+          "確率密度が0の節です。"
+        ],
+        "params": [
+          [
+            "n",
+            "Quantum number n",
+            "量子数 n",
+            1,
+            6,
+            1,
+            2
+          ]
+        ],
+        "source": "MIT OpenCourseWare · Quantum Physics II",
+        "url": "https://ocw.mit.edu/courses/8-05-quantum-physics-ii-fall-2013/"
+      },
+      {
+        "id": "uncertainty",
+        "title": [
+          "2. Uncertainty principle",
+          "2. 不確定性原理"
+        ],
+        "body": [
+          "Compare narrow and broad Gaussian packets in position and momentum.",
+          "位置と運動量で狭い・広いガウス波束を比較します。"
+        ],
+        "formula": "\\Delta x\\,\\Delta p\\ge\\frac\\hbar2",
+        "example": [
+          "A narrower packet has a broader momentum distribution.",
+          "狭い波束は広い運動量分布を持ちます。"
+        ],
+        "caution": [
+          "The plotted widths are standard deviations of an ideal Gaussian.",
+          "表示する幅は理想ガウスの標準偏差です。"
+        ],
+        "question": [
+          "What trade-off is visible?",
+          "どんなトレードオフが見えますか？"
+        ],
+        "answer": [
+          "Localizing x increases spread in p.",
+          "xを局在させるとpの広がりが増えます。"
+        ],
+        "params": [
+          [
+            "width",
+            "Position width",
+            "位置の幅",
+            0.2,
+            2,
+            0.05,
+            0.7
+          ]
+        ],
+        "source": "MIT OpenCourseWare · Quantum Physics II",
+        "url": "https://ocw.mit.edu/courses/8-05-quantum-physics-ii-fall-2013/"
+      },
+      {
+        "id": "bloch",
+        "title": [
+          "3. Bloch sphere",
+          "3. ブロッホ球"
+        ],
+        "body": [
+          "Rotate a qubit state in a small 3D scene; the vector tip records the amplitudes and phase.",
+          "小さな3Dシーンで量子ビット状態を回転し、ベクトル先端で振幅と位相を示します。"
+        ],
+        "formula": "|\\psi\\rangle=\\cos\\frac\\theta2|0\\rangle+e^{i\\phi}\\sin\\frac\\theta2|1\\rangle",
+        "example": [
+          "The poles are |0⟩ and |1⟩; the equator contains equal superpositions.",
+          "極は|0⟩と|1⟩で、赤道は等重ね合わせです。"
+        ],
+        "caution": [
+          "The sphere is a state-space representation, not a particle orbit in real space.",
+          "球は状態空間の表現で、実空間の粒子軌道ではありません。"
+        ],
+        "question": [
+          "What does azimuth encode?",
+          "方位角は何を表しますか？"
+        ],
+        "answer": [
+          "The relative phase between the basis amplitudes.",
+          "基底振幅の相対位相です。"
+        ],
+        "params": [
+          [
+            "theta",
+            "Polar angle (degrees)",
+            "極角（度）",
+            0,
+            180,
+            1,
+            60
+          ],
+          [
+            "phi",
+            "Azimuth (degrees)",
+            "方位角（度）",
+            -180,
+            180,
+            1,
+            45
+          ]
+        ],
+        "source": "MIT OpenCourseWare · Quantum Physics II",
+        "url": "https://ocw.mit.edu/courses/8-05-quantum-physics-ii-fall-2013/"
+      }
+    ]
   }
 ]

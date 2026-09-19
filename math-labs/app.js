@@ -26,6 +26,13 @@ function diagram(host,name,height=300){
  return surface;
 }
 
+async function bloch3d(host,theta,phi){
+ if(!host.__bloch){
+  host.__bloch={loading:true};
+  try{const THREE=await import('/vendor/three/r186/build/three.module.js');const w=Math.max(260,host.clientWidth||640),h=300;const scene=new THREE.Scene();scene.background=new THREE.Color(0x101827);const camera=new THREE.PerspectiveCamera(35,w/h,.1,100);camera.position.set(2.4,1.8,2.8);const renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});renderer.setPixelRatio(Math.min(2,devicePixelRatio||1));renderer.setSize(w,h,false);renderer.domElement.className='bloch-canvas';renderer.domElement.setAttribute('role','img');renderer.domElement.setAttribute('aria-label','Interactive Bloch sphere');host.replaceChildren(renderer.domElement);const sphere=new THREE.Mesh(new THREE.SphereGeometry(1,32,20),new THREE.MeshBasicMaterial({color:0x4f83ff,wireframe:true,transparent:true,opacity:.38}));scene.add(sphere);const axes=new THREE.AxesHelper(1.25);scene.add(axes);const mat=new THREE.MeshStandardMaterial({color:0xffc857,emissive:0x442200});const tip=new THREE.Mesh(new THREE.SphereGeometry(.07,16,10),mat);const line=new THREE.Line(new THREE.BufferGeometry(),new THREE.LineBasicMaterial({color:0xffc857}));scene.add(tip,line);scene.add(new THREE.HemisphereLight(0xffffff,0x334466,2));const update=(t,p)=>{const x=Math.sin(t)*Math.cos(p),y=Math.cos(t),z=Math.sin(t)*Math.sin(p);tip.position.set(x,y,z);line.geometry.setFromPoints([new THREE.Vector3(0,0,0),new THREE.Vector3(x,y,z)]);};host.__bloch.update=update;host.__bloch.renderer=renderer;host.__bloch.camera=camera;host.__bloch.scene=scene;host.__bloch.drag={x:0,y:0,down:false};renderer.domElement.addEventListener('pointerdown',e=>{host.__bloch.drag.down=true;host.__bloch.drag.x=e.clientX;host.__bloch.drag.y=e.clientY;renderer.domElement.setPointerCapture(e.pointerId)});renderer.domElement.addEventListener('pointermove',e=>{if(!host.__bloch.drag.down)return;camera.position.applyAxisAngle(new THREE.Vector3(0,1,0),(e.clientX-host.__bloch.drag.x)*.01);host.__bloch.drag.x=e.clientX;host.__bloch.drag.y=e.clientY;camera.lookAt(0,0,0);renderer.render(scene,camera)});renderer.domElement.addEventListener('pointerup',()=>host.__bloch.drag.down=false);const loop=()=>{if(!document.hidden){renderer.render(scene,camera)}requestAnimationFrame(loop)};loop();}catch(e){host.__bloch={failed:true};host.textContent='3D renderer unavailable; use the equation and controls above.';}}
+ if(host.__bloch.update)host.__bloch.update(theta,phi);
+}
+
 function render(section){const host=section.querySelector('.plot'),out=section.querySelector('.readout'),id=section.dataset.lab,v={};section.querySelectorAll('input').forEach(e=>{v[e.dataset.key]=Number(e.value);e.previousElementSibling.textContent=e.value;});host.replaceChildren();let result='';const rad=d=>d*Math.PI/180;
  if(['basis','det'].includes(id)){
  const a=v.a,b=v.b||0,c=v.c,d=v.d,det=a*d-b*c,trans=([x,y])=>[a*x+c*y,b*x+d*y];const ch=chart(host,[-3,3,-3,3],'x','y',330,true);
@@ -90,7 +97,63 @@ function render(section){const host=section.querySelector('.plot'),out=section.q
  const {e,r}=ode(v.h),all=e.concat(r).map(p=>p[1]),lo=Math.min(0,...all),hi=Math.max(1,...all),pad=.08*(hi-lo),ch=chart(host,[0,2,lo-pad,hi+pad],T('Time t','時刻 t'),'y');ch.path(sample(0,2,200,t=>Math.exp(-5*t)),'third');ch.path(e);ch.path(r,'second');e.forEach(p=>ch.dot(...p));label(host,T('Solid: Euler · dashed: RK4 · dotted: exact. The last step is shortened to end at t=2.','実線：オイラー法・破線：RK4・点線：厳密解。最後の刻みを縮めて t=2 に合わせます。'));result=T('Error at t=2 — Euler: ','t=2の誤差 — オイラー：')+fmt(Math.abs(e.at(-1)[1]-Math.exp(-10)))+' · RK4: '+fmt(Math.abs(r.at(-1)[1]-Math.exp(-10)));
  }else if(id==='cancellation'){
  const direct=x=>(Math.sqrt(1+x)-1)/x,stable=x=>1/(Math.sqrt(1+x)+1),ch=chart(host,[1,17,-.05,.85],T('Exponent e','指数 e'),T('Computed value','計算値'));ch.path(sample(1,17,250,e=>direct(10**-e)));ch.path(sample(1,17,250,e=>stable(10**-e)),'second');const x=10**-v.exponent;ch.dot(v.exponent,direct(x));result=T('Direct / stable: ','直接／安定な式：')+`${fmt(direct(x))} / ${fmt(stable(x))} · `+T('Relative difference: ','相対差：')+fmt(Math.abs(direct(x)-stable(x))/stable(x));
- }else if(id==='interpolation'){
+ }else if(id==='modular'){
+ const n=v.n,ch=chart(host,[-1,n,-1,1],'residue','phase',260);for(let i=0;i<n;i++){const a=TAU*i/n;ch.dot(i,0,'point',7);ch.text(i,0,String(i));ch.line([i,0],[i+((v.a-v.b)%n+n)%n,0],'second');}result=`${v.a} ≡ ${v.b} (mod ${n}) · ${T('difference','差')} = ${((v.a-v.b)%n+n)%n}`;
+ }else if(id==='sieve'){
+ const lim=v.limit,ch=chart(host,[1,lim,0,1],'integer','prime');for(let x=2;x<=lim;x++){const prime=Array.from({length:Math.floor(Math.sqrt(x))-1},(_,i)=>i+2).every(d=>x%d);ch.dot(x,prime?1:0,prime?'point':'second',prime?5:3);if(prime)ch.text(x,1,String(x));}result=T('Primes shown: ','表示した素数：')+Array.from({length:lim-1},(_,i)=>i+2).filter(x=>Array.from({length:Math.floor(Math.sqrt(x))-1},(_,i)=>i+2).every(d=>x%d)).length;
+ }else if(id==='rsa'){
+ const N=v.p*v.q,e=3,pts=seq(N-1,m=>[m,Math.pow(m,e)%N]),ch=chart(host,[0,N,0,N],'message','cipher',280);pts.forEach(p=>ch.dot(...p,'point',3));ch.dot(v.m,Math.pow(v.m,e)%N,'third',7);result=`N = ${N} · ${T('cipher','暗号')} = ${Math.pow(v.m,e)%N}`;
+ }else if(id==='shortest'){
+ const d=v.shortcut?2:3,w=v.traffic,ch=chart(host,[-.5,2.5,-.5,1.5],'x','y',260,true);const pts=[[0,0],[1,0],[2,0],[0,1],[1,1],[2,1]];[[0,1],[1,2],[3,4],[4,5],[0,3],[1,4],[2,5],[0,4],[1,5]].forEach(([a,b],i)=>ch.line(pts[a],pts[b],(v.shortcut&&i===7)||(i===0||i===1)?'third':'second'));pts.forEach((p,i)=>{ch.dot(...p,'point',6);ch.text(...p,String(i));});result=T('Shortest route length: ','最短経路長：')+(v.shortcut?2:3)+T(' · traffic weight ',' · 混雑重み ')+w;
+ }else if(id==='spanning'){
+ const ch=chart(host,[-.5,2.5,-.5,1.5],'x','y',260,true),pts=[[0,0],[1,0],[2,0],[0,1],[1,1],[2,1]];[[0,1],[1,2],[3,4],[4,5],[0,3],[1,4],[2,5],[0,4],[1,5]].forEach(([a,b],i)=>ch.line(pts[a],pts[b],i<5?'third':'second'));pts.forEach((p,i)=>{ch.dot(...p,'point',6);ch.text(...p,String(i));});result=T('Tree edges: ','木の辺：')+5+T(' · candidate edge weight ',' · 候補辺の重み ')+v.w;
+ }else if(id==='centrality'){
+ const ch=chart(host,[-.5,2.5,-.5,1.5],'x','y',260,true),pts=[[0,0],[1,0],[2,0],[0,1],[1,1],[2,1]];[[0,1],[1,2],[3,4],[4,5],[0,3],[1,4],[2,5],[0,4],[1,5]].forEach(([a,b])=>ch.line(pts[a],pts[b],'second'));pts.forEach((p,i)=>{const r=i===1?6+v.hub:4;ch.dot(...p,'point',r);ch.text(...p,String(i));});result=T('Bridge centrality: ','橋の中心性：')+v.bridge+T(' · hub degree: ',' · ハブ次数：')+v.hub;
+ }else if(id==='heat'){
+ const pts=seq(100,i=>{const x=i/99;return [x,.5+.5*Math.exp(-v.kappa*v.time)*Math.sin(Math.PI*x)]}),ch=chart(host,[0,1,0,1.1],'position','temperature');ch.path(pts);ch.path([[0,0],[1,0]],'second');result=T('Peak temperature: ','最高温度：')+fmt(Math.max(...pts.map(p=>p[1])))+T(' · time ',' · 時間 ')+v.time;
+ }else if(id==='wave'){
+ const pts=seq(160,i=>{const x=i/159;return [x,Math.sin(Math.PI*x)*Math.cos(v.c*v.time)]}),ch=chart(host,[0,1,-1.2,1.2],'position','displacement');ch.path(pts);result=T('Wave speed: ','波速：')+v.c+T(' · time ',' · 時間 ')+v.time;
+ }else if(id==='laplace'){
+ const ch=chart(host,[-1,1,-1,1],'x','y',280,true);for(let i=0;i<7;i++){const y=-.75+i*.25,mid=(v.left+v.right)/2;ch.line([-.9,y],[.9,y],'second');ch.line([-.9,y],[0,mid],'third');}result=T('Potential gradient: ','電位勾配：')+fmt((v.right-v.left)/2);
+ }else if(id==='entropy'){
+ const q=1-v.p,ch=chart(host,[0,1,0,1.1],'probability','entropy');ch.path(sample(0,1,100,x=>{const a=x?x*Math.log2(1/x):0,b=x<1?(1-x)*Math.log2(1/(1-x)):0;return [x,a+b]}));ch.dot(v.p,-(v.p*Math.log2(v.p||1)+q*Math.log2(q||1)),'third',7);result=`H = ${fmt(-(v.p*Math.log2(v.p||1)+q*Math.log2(q||1)))} bits`;
+ }else if(id==='channel'){
+ const cap=1+v.noise*Math.log2(v.noise||1)+(1-v.noise)*Math.log2((1-v.noise)||1),ch=chart(host,[0,.5,0,1],'noise','capacity');ch.path(sample(0,.5,100,x=>[x,1+x*Math.log2(x||1)+(1-x)*Math.log2((1-x)||1)]));ch.dot(v.noise,cap,'third',7);result=T('Binary symmetric capacity: ','二値対称通信路容量：')+fmt(cap);
+ }else if(id==='kl'){
+ const q=1-v.p, r=1-v.q, d=v.p*Math.log(v.p/v.q)+(1-v.p)*Math.log((1-v.p)/(1-v.q)),ch=chart(host,[0,1,-1,3],'probability','divergence');ch.path([[0,0],[v.p,d],[1,0]],'area',true);ch.dot(v.p,d,'third',7);result=`D_KL(P||Q) = ${fmt(d)}`;
+ }else if(['euler-lagrange','geodesic','least-action'].includes(id)){
+ const bend=id==='euler-lagrange'?v.bend:id==='geodesic'?v.arc:v.amplitude,ch=chart(host,[-1,1,-1,1],'x','y',280,true);ch.path([[-1,0],[-.5,bend*.5],[0,bend],[.5,bend*.5],[1,0]],'third');ch.path([[-1,0],[0,0],[1,0]],'second');result=T('Path variation: ','経路変分：')+fmt(bend);
+ }else if(id==='projectile'){
+ const a=rad(v.angle),g=9.8,pts=seq(80,i=>{const t=i/79*2*v.speed*Math.sin(a)/g;return [v.speed*Math.cos(a)*t,v.speed*Math.sin(a)*t-.5*g*t*t]}),ch=chart(host,[0,35,0,18],'range','height');ch.path(pts);result=T('Range: ','飛距離：')+fmt(pts.at(-1)[0])+T(' · peak height: ',' · 最高点：')+fmt(Math.max(...pts.map(p=>p[1])));
+ }else if(id==='oscillator'){
+ const z=v.damping/Math.sqrt(4*v.stiffness),ch=chart(host,[0,8,-1.2,1.2],'time','displacement');ch.path(sample(0,8,200,t=>Math.exp(-z*t)*Math.cos(Math.sqrt(v.stiffness)*t)));result=T('Damping ratio: ','減衰比：')+fmt(z);
+ }else if(id==='mechanics-orbit'){
+ const e=Math.abs(v.speed-1),pts=seq(200,i=>{const a=TAU*i/199;return [(1-e)*Math.cos(a),(1+e)*Math.sin(a)]}),ch=chart(host,[-2,2,-2,2],'x','y',280,true);ch.path(pts);ch.dot(...pts[0],'third',7);result=e<.05?T('Circular orbit','円軌道'):e<1?T('Elliptical orbit','楕円軌道'):T('Escape regime','脱出領域');
+ }else if(id==='electric-field'){
+ const ch=chart(host,[-2,2,-2,2],'x','y',280,true);for(let x=-1.5;x<=1.5;x+=.5)for(let y=-1.5;y<=1.5;y+=.5){const r1=Math.hypot(x+0.7,y)+.1,r2=Math.hypot(x-0.7,y)+.1,ex=v.q1*(x+0.7)/r1**3+v.q2*(x-0.7)/r2**3,ey=v.q1*y/r1**3+v.q2*y/r2**3,n=Math.hypot(ex,ey)||1;ch.line([x,y],[x+.18*ex/n,y+.18*ey/n],'second');}ch.dot(-.7,0,'third',7);ch.dot(.7,0,'third',7);result=T('Charges: ','電荷：')+`${v.q1}, ${v.q2}`;
+ }else if(id==='lorentz'){
+ const pts=seq(120,i=>{const t=i/30;return [Math.cos(v.b*t),v.vz*t*.25]}),ch=chart(host,[-1.5,1.5,-.5,2],'x','z',280,true);ch.path(pts);result=T('Cyclotron scale: ','サイクロトロン尺度：')+fmt(v.b);
+ }else if(id==='induction'){
+ const emf=-v.speed*Math.cos(v.position),ch=chart(host,[-2,2,-1.2,1.2],'position','emf');ch.path(sample(-2,2,100,x=>[x,-v.speed*Math.cos(x)]));ch.dot(v.position,emf,'third',7);result=T('Induced emf: ','誘導起電力：')+fmt(emf);
+ }else if(id==='lens'){
+ const di=1/(1/v.f-1/v.object),ch=chart(host,[-1,10,-2,2],'axis','height');ch.line([0,0],[10,0],'second');ch.line([-1,0],[0,1],'third');ch.line([0,1],[di,0]);ch.dot(v.object,1,'point',7);result=T('Image distance: ','像距離：')+fmt(di);
+ }else if(id==='interference'){
+ const ch=chart(host,[0,10,0,1],'screen','intensity');ch.path(sample(0,10,300,x=>[x,.5+.5*Math.cos(2*Math.PI*v.spacing*x/v.wavelength)**2]));result=T('Fringe spacing proxy: ','縞間隔の指標：')+fmt(v.wavelength/v.spacing);
+ }else if(id==='polarization'){
+ const intensity=v.i0*Math.cos(rad(v.angle))**2,ch=chart(host,[0,180,0,1],'angle','intensity');ch.path(sample(0,180,180,x=>[x,v.i0*Math.cos(rad(x))**2]));ch.dot(v.angle,intensity,'third',7);result=T('Transmitted intensity: ','透過強度：')+fmt(intensity);
+ }else if(id==='pv'){
+ const ch=chart(host,[1,5,0,5],'volume','pressure');ch.path([[1,v.pressure],[v.volume,v.pressure]],'third');ch.dot(v.volume,v.pressure,'point',7);result=T('Work proxy: ','仕事の指標：')+fmt(v.pressure*(v.volume-1));
+ }else if(id==='thermo-entropy'){
+ const ratio=v.hot/v.cold,ch=chart(host,[0,1,0,1],'fraction','temperature');ch.path(sample(0,1,100,x=>[x,v.cold+(v.hot-v.cold)*x]));result=T('Temperature ratio: ','温度比：')+fmt(ratio);
+ }else if(id==='equation-state'){
+ const R=.082057,pres=v.n*v.temperature/(v.volume)*R,ch=chart(host,[0,5,0,500],'volume','pressure');ch.path(sample(.5,5,100,x=>[x,v.n*v.temperature*R/x]));ch.dot(v.volume,pres,'third',7);result=T('Pressure: ','圧力：')+fmt(pres);
+ }else if(id==='wavefunction'){
+ const ch=chart(host,[0,1,0,4],'position','density');ch.path(sample(0,1,250,x=>[x,2*Math.sin(v.n*Math.PI*x)**2]));result=T('Nodes: ','節の数：')+(v.n-1);
+ }else if(id==='uncertainty'){
+ const dx=v.width,dp=.5/dx,ch=chart(host,[.1,2,0,3],'Δx','Δp');ch.path(sample(.1,2,100,x=>[x,.5/x]));ch.dot(dx,dp,'third',7);result=`Δx Δp = ${fmt(dx*dp)} ≥ 1/2`;
+ }else if(id==='bloch'){
+ const theta=rad(v.theta),phi=rad(v.phi);bloch3d(host,theta,phi);result=`|ψ⟩: θ = ${v.theta}°, φ = ${v.phi}°`;
+}else if(id==='interpolation'){
  const {xs,ys,f}=interpolation(v.n,v.cheb),pts=sample(-1,1,500,f),min=Math.min(-.1,...pts.map(p=>p[1])),max=Math.max(1.1,...pts.map(p=>p[1])),pad=(max-min)*.07,ch=chart(host,[-1.05,1.05,min-pad,max+pad],'x','y');ch.path(sample(-1,1,500,x=>1/(1+25*x*x)),'second');ch.path(pts);xs.forEach((x,i)=>ch.dot(x,ys[i]));result=T('Sampled maximum error: ','標本上の最大誤差：')+fmt(Math.max(...pts.map(([x,y])=>Math.abs(y-1/(1+25*x*x)))));
  }
  const legends={basis:[['Transformed grid','変換した格子']],det:[['Transformed grid','変換した格子']],eigen:[['Eigenvector directions','固有ベクトルの方向']],projection:[['Projection line','射影する直線'],['Residual','残差']],harmonics:[['Square wave','矩形波']],convolution:[['Fixed pulse','固定パルス'],['Convolution','畳み込み']],sampling:[['Aliased cosine','折り返した余弦波']],chaos:[['Perturbed orbit / selected parameter','摂動した軌道／選択したパラメータ']],descent:[['Level sets','等高線'],['Newton step','ニュートンステップ']],constraint:[['Objective contours','目的関数の等高線']],duality:[['Tangent','接線']],bayes:[['Prior density','事前密度']],clt:[['Standard normal','標準正規分布']],cancellation:[['Stable expression','安定な式']],interpolation:[['True function','元の関数']]};

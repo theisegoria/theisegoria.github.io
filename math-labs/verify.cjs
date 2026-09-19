@@ -8,5 +8,5 @@ near(M.logistic(2,.2,100).at(-1),.5);assert.ok(M.logistic(4,.231,100).every(x=>x
 const coarse=M.ode(.1),fine=M.ode(.05),exact=Math.exp(-10);assert.ok(Math.abs(fine.r.at(-1)[1]-exact)<Math.abs(coarse.r.at(-1)[1]-exact));count++;near(M.ode(.5).e[1][1],-1.5);near(M.ode(.5).e.at(-1)[1],5.0625);
 for(const cheb of [0,1]){const p=M.interpolation(10,cheb);p.xs.forEach((x,i)=>near(p.f(x),p.ys[i]));}const eq=M.interpolation(10,0),ch=M.interpolation(10,1);assert.ok(Math.abs(ch.f(.95)-1/(1+25*.95**2))<Math.abs(eq.f(.95)-1/(1+25*.95**2)));count++;
 near(M.gcd(6,2),2);near(M.gcd(12,0),12);
-const data=JSON.parse(fs.readFileSync(__dirname+'/content.json'));assert.equal(data.length,8);assert.equal(data.reduce((s,t)=>s+t.labs.length,0),26);count+=2;
+const data=JSON.parse(fs.readFileSync(__dirname+'/content.json'));assert.equal(data.length,18);assert.equal(data.reduce((s,t)=>s+t.labs.length,0),56);count+=2;
 console.log(`${count} mathematical and content checks passed`);
