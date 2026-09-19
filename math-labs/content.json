@@ -1,0 +1,1489 @@
+[
+  {
+    "slug": "linear-algebra",
+    "title": [
+      "Linear algebra: the geometry of transformations",
+      "線形代数：変換の幾何"
+    ],
+    "description": [
+      "Coordinates, area, eigenvectors, projection, and singular values.",
+      "座標・面積・固有ベクトル・射影・特異値を実験します。"
+    ],
+    "group": "foundations",
+    "prerequisite": [
+      "Vectors and elementary algebra",
+      "ベクトルと初等代数"
+    ],
+    "source": "MIT OpenCourseWare · Linear Algebra",
+    "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/",
+    "labs": [
+      {
+        "id": "basis",
+        "title": [
+          "1. Basis and coordinates",
+          "1. 基底と座標"
+        ],
+        "body": [
+          "Drag the two circular basis handles or use the sliders. The highlighted physical vector stays at (1,1), while its coordinates in the new basis change. The columns of a matrix are the images of the standard basis.",
+          "円形のハンドルをドラッグするか、スライダーで基底を変えてください。強調したベクトル (1,1) は動きませんが、新しい基底での座標は変わります。行列の列は標準基底の像です。"
+        ],
+        "formula": "B[v]_B=v,\\qquad [v]_B=B^{-1}v",
+        "example": [
+          "For B=diag(2,1), the coordinates of (1,1) are (1/2,1).",
+          "B=diag(2,1) なら (1,1) の座標は (1/2,1) です。"
+        ],
+        "caution": [
+          "Dependent columns do not form a basis; an inverse does not exist.",
+          "列が一次従属なら基底ではなく、逆行列は存在しません。"
+        ],
+        "question": [
+          "What happens when the two columns coincide?",
+          "2つの列が一致するとどうなりますか？"
+        ],
+        "answer": [
+          "The plane collapses to a line. Coordinates are no longer unique when a solution exists.",
+          "平面が直線に潰れます。解が存在しても座標は一意に定まりません。"
+        ],
+        "params": [
+          [
+            "a",
+            "First basis x",
+            "第1基底 x",
+            -2,
+            2,
+            0.1,
+            1
+          ],
+          [
+            "b",
+            "First basis y",
+            "第1基底 y",
+            -2,
+            2,
+            0.1,
+            0
+          ],
+          [
+            "c",
+            "Second basis x",
+            "第2基底 x",
+            -2,
+            2,
+            0.1,
+            0.5
+          ],
+          [
+            "d",
+            "Second basis y",
+            "第2基底 y",
+            -2,
+            2,
+            0.1,
+            1
+          ]
+        ],
+        "source": "MIT OpenCourseWare · Linear Algebra",
+        "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/"
+      },
+      {
+        "id": "det",
+        "title": [
+          "2. Determinant and rank",
+          "2. 行列式と階数"
+        ],
+        "body": [
+          "The unit square becomes a parallelogram. Its area is the absolute determinant; the sign records orientation. Set one scale to zero to see rank fall.",
+          "単位正方形は平行四辺形になります。面積は行列式の絶対値で、符号は向きを表します。倍率を0にして階数の低下を観察します。"
+        ],
+        "formula": "\\det A=ad-bc,\\qquad \\operatorname{area}(A(S))=|\\det A|\\operatorname{area}(S)",
+        "example": [
+          "For diag(-2,1), area doubles and orientation reverses.",
+          "diag(-2,1) は面積を2倍にし、向きを反転します。"
+        ],
+        "caution": [
+          "A determinant of one preserves area, but need not preserve lengths or angles.",
+          "行列式が1でも、長さや角度を保つとは限りません。"
+        ],
+        "question": [
+          "Can a shear change shape without changing area?",
+          "せん断は面積を変えずに形を変えられますか？"
+        ],
+        "answer": [
+          "Yes. The matrix with rows (1,s) and (0,1) has determinant one for every s.",
+          "はい。行が (1,s)、(0,1) の行列は、どの s でも行列式が1です。"
+        ],
+        "params": [
+          [
+            "a",
+            "Horizontal scale",
+            "横方向の倍率",
+            -2,
+            2,
+            0.1,
+            1
+          ],
+          [
+            "d",
+            "Vertical scale",
+            "縦方向の倍率",
+            -2,
+            2,
+            0.1,
+            1
+          ],
+          [
+            "c",
+            "Shear",
+            "せん断",
+            -2,
+            2,
+            0.1,
+            0.7
+          ]
+        ],
+        "source": "MIT OpenCourseWare · Linear Algebra",
+        "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/"
+      },
+      {
+        "id": "eigen",
+        "title": [
+          "3. Eigenvectors and iteration",
+          "3. 固有ベクトルと反復"
+        ],
+        "body": [
+          "Rotate the eigenbasis and change its two eigenvalues. Repeated application scales each eigenvector component separately. Dashed lines mark the invariant directions.",
+          "固有基底を回転させ、2つの固有値を変えます。反復で各固有ベクトル成分が別々に伸縮します。破線は不変な方向です。"
+        ],
+        "formula": "A=Q\\operatorname{diag}(\\lambda_1,\\lambda_2)Q^T,\\quad A^nv=Q\\operatorname{diag}(\\lambda_1^n,\\lambda_2^n)Q^Tv",
+        "example": [
+          "With eigenvalues 1.2 and 0.5, one component grows while the other decays.",
+          "固有値が1.2と0.5なら、一方の成分は増大し、他方は減衰します。"
+        ],
+        "caution": [
+          "This laboratory uses real symmetric matrices. A real rotation need not have a real eigenvector.",
+          "この実験は実対称行列に限定しています。実数の回転行列に実固有ベクトルがあるとは限りません。"
+        ],
+        "question": [
+          "If both eigenvalues have magnitude below one, where does every orbit go?",
+          "両方の固有値の絶対値が1未満なら、軌道はどこへ向かいますか？"
+        ],
+        "answer": [
+          "To the origin, because both scalar powers tend to zero.",
+          "両方の固有値の累乗が0に近づくため、原点へ向かいます。"
+        ],
+        "params": [
+          [
+            "l1",
+            "Eigenvalue 1",
+            "固有値1",
+            -0.9,
+            1.4,
+            0.1,
+            1.2
+          ],
+          [
+            "l2",
+            "Eigenvalue 2",
+            "固有値2",
+            -0.9,
+            1.4,
+            0.1,
+            0.5
+          ],
+          [
+            "angle",
+            "Basis angle (degrees)",
+            "基底の角度（度）",
+            0,
+            180,
+            5,
+            30
+          ],
+          [
+            "n",
+            "Iterations",
+            "反復回数",
+            0,
+            8,
+            1,
+            3
+          ]
+        ],
+        "source": "MIT OpenCourseWare · Linear Algebra",
+        "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/"
+      },
+      {
+        "id": "projection",
+        "title": [
+          "4. Least squares as projection",
+          "4. 射影としての最小二乗法"
+        ],
+        "body": [
+          "Rotate a line through the origin. The closest point on it to v=(2,1) is the orthogonal projection. The residual is perpendicular to the line.",
+          "原点を通る直線を回転させます。v=(2,1) に最も近い直線上の点は直交射影です。残差は直線に垂直です。"
+        ],
+        "formula": "\\hat v=u(u^Tv),\\quad \\|u\\|=1,\\qquad u^T(v-\\hat v)=0",
+        "example": [
+          "Projecting (2,1) onto the x-axis gives (2,0), with residual (0,1).",
+          "(2,1) の x 軸への射影は (2,0)、残差は (0,1) です。"
+        ],
+        "caution": [
+          "A fitted projection minimizes squared error, not necessarily every other loss function.",
+          "射影が最小化するのは二乗誤差で、すべての損失関数ではありません。"
+        ],
+        "question": [
+          "When is the residual zero?",
+          "残差が0になるのはいつですか？"
+        ],
+        "answer": [
+          "When the vector lies on the chosen line.",
+          "ベクトルが選んだ直線上にあるときです。"
+        ],
+        "params": [
+          [
+            "angle",
+            "Line angle (degrees)",
+            "直線の角度（度）",
+            0,
+            180,
+            1,
+            20
+          ]
+        ],
+        "source": "MIT OpenCourseWare · Linear Algebra",
+        "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/"
+      },
+      {
+        "id": "svd",
+        "title": [
+          "5. Singular values and rank",
+          "5. 特異値と階数"
+        ],
+        "body": [
+          "Rotate the input, stretch along two perpendicular axes, then rotate the output. The image of the unit circle is an ellipse. Removing the smaller stretch gives a rank-one approximation.",
+          "入力を回転し、直交する2方向に伸縮させ、出力を回転します。単位円の像は楕円です。小さい方の伸縮を除くと階数1の近似になります。"
+        ],
+        "formula": "A=U\\Sigma V^T,\\quad A_1=\\sigma_1u_1v_1^T,\\quad \\|A-A_1\\|_2=\\sigma_2",
+        "example": [
+          "For diag(2,0.5), the best rank-one approximation is diag(2,0), with operator-norm error 0.5.",
+          "diag(2,0.5) の最良の階数1近似は diag(2,0) で、作用素ノルムの誤差は0.5です。"
+        ],
+        "caution": [
+          "Singular values are nonnegative; they are not generally the eigenvalues of A.",
+          "特異値は非負ですが、一般には A の固有値とは異なります。"
+        ],
+        "question": [
+          "What happens when the second singular value is zero?",
+          "第2特異値が0だとどうなりますか？"
+        ],
+        "answer": [
+          "The ellipse collapses to a segment and the rank is one.",
+          "楕円は線分に潰れ、階数は1になります。"
+        ],
+        "params": [
+          [
+            "s1",
+            "First singular value",
+            "第1特異値",
+            1,
+            3,
+            0.1,
+            2
+          ],
+          [
+            "s2",
+            "Second singular value",
+            "第2特異値",
+            0,
+            1,
+            0.05,
+            0.5
+          ],
+          [
+            "angle",
+            "Output rotation (degrees)",
+            "出力の回転（度）",
+            0,
+            180,
+            5,
+            30
+          ],
+          [
+            "input",
+            "Input rotation (degrees)",
+            "入力の回転（度）",
+            0,
+            180,
+            5,
+            20
+          ],
+          [
+            "rank",
+            "Retained rank",
+            "残す階数",
+            1,
+            2,
+            1,
+            2
+          ]
+        ],
+        "source": "MIT OpenCourseWare · Linear Algebra",
+        "url": "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/"
+      }
+    ]
+  },
+  {
+    "slug": "fourier-analysis",
+    "title": [
+      "Fourier analysis: functions made of waves",
+      "フーリエ解析：波で関数を作る"
+    ],
+    "description": [
+      "Harmonics, convolution, and the limits of sampling.",
+      "調和波・畳み込み・標本化の限界を探ります。"
+    ],
+    "group": "analysis",
+    "prerequisite": [
+      "Trigonometry and integration",
+      "三角関数と積分"
+    ],
+    "source": "Stanford · The Fourier Transform and its Applications",
+    "url": "https://see.stanford.edu/Course/EE261",
+    "labs": [
+      {
+        "id": "harmonics",
+        "title": [
+          "1. Reconstruct a square wave",
+          "1. 矩形波を再構成する"
+        ],
+        "body": [
+          "Add odd harmonics to a square wave. Smooth regions converge, but overshoot near each jump persists while becoming narrower. At a jump the series converges to the midpoint.",
+          "矩形波に奇数次の調和波を加えます。滑らかな部分は収束しますが、跳躍の近くの行き過ぎは幅を狭めながら残ります。跳躍点では左右の値の平均へ収束します。"
+        ],
+        "formula": "S_N(x)=\\frac4\\pi\\sum_{k=0}^{N-1}\\frac{\\sin((2k+1)x)}{2k+1}",
+        "example": [
+          "The first approximation is 4 sin(x)/π. Its amplitude exceeds one.",
+          "最初の近似は 4 sin(x)/π で、振幅は1を超えます。"
+        ],
+        "caution": [
+          "More terms do not remove the limiting Gibbs overshoot relative to the jump size.",
+          "項数を増やしても、跳躍幅に対するギブス現象の行き過ぎの比率は0になりません。"
+        ],
+        "question": [
+          "Does convergence have to be uniform?",
+          "必ず一様収束しますか？"
+        ],
+        "answer": [
+          "No. Continuous partial sums cannot converge uniformly to a discontinuous function.",
+          "いいえ。連続な部分和が不連続な関数へ一様収束することはありません。"
+        ],
+        "params": [
+          [
+            "n",
+            "Odd harmonics",
+            "奇数次の項数",
+            1,
+            30,
+            1,
+            5
+          ]
+        ],
+        "source": "Stanford · The Fourier Transform and its Applications",
+        "url": "https://see.stanford.edu/Course/EE261"
+      },
+      {
+        "id": "convolution",
+        "title": [
+          "2. Convolution as overlap",
+          "2. 重なりとしての畳み込み"
+        ],
+        "body": [
+          "Slide one unit-width rectangular pulse over another. Their convolution is the overlap length: a triangular function. The filled overlap and marked output are linked.",
+          "幅1の矩形パルスを別のパルスに重ねて動かします。畳み込みは重なりの長さとなり、三角形の関数になります。塗られた重なりと出力点が連動します。"
+        ],
+        "formula": "(f*g)(t)=\\int_{\\mathbb R}f(\\tau)g(t-\\tau)\\,d\\tau=\\max(0,1-|t|)",
+        "example": [
+          "At displacement t=0.25 the overlap is 0.75.",
+          "ずれ t=0.25 で重なりは0.75です。"
+        ],
+        "caution": [
+          "Convolution includes a reversal before shifting. The reversal is invisible for these symmetric pulses.",
+          "畳み込みでは移動の前に反転します。この対称なパルスでは反転が見えません。"
+        ],
+        "question": [
+          "Why is the output zero at displacement 1.2?",
+          "ずれが1.2なら出力が0になるのはなぜですか？"
+        ],
+        "answer": [
+          "The two supports no longer overlap.",
+          "2つの台が重ならないためです。"
+        ],
+        "params": [
+          [
+            "t",
+            "Displacement",
+            "ずれ",
+            -1.5,
+            1.5,
+            0.05,
+            0.25
+          ]
+        ],
+        "source": "Stanford · The Fourier Transform and its Applications",
+        "url": "https://see.stanford.edu/Course/EE261"
+      },
+      {
+        "id": "sampling",
+        "title": [
+          "3. Sampling and aliasing",
+          "3. 標本化とエイリアシング"
+        ],
+        "body": [
+          "Compare a continuous cosine with equally spaced samples. The dashed cosine is the folded frequency that gives the same samples. Raise the sampling rate to separate frequencies.",
+          "連続な余弦波と等間隔の標本を比較します。破線は同じ標本値を与える折り返し周波数の余弦波です。標本化周波数を上げて区別します。"
+        ],
+        "formula": "x_n=\\cos(2\\pi f n/f_s),\\qquad f_{\\rm alias}=\\left|((f+f_s/2)\\bmod f_s)-f_s/2\\right|",
+        "example": [
+          "A 7 Hz cosine sampled at 10 Hz shares its samples with a 3 Hz cosine.",
+          "7 Hz の余弦波を10 Hzで標本化すると、3 Hz の余弦波と標本値が一致します。"
+        ],
+        "caution": [
+          "The sampling theorem assumes a band-limited signal and ideal reconstruction. Finite samples do not uniquely identify arbitrary signals.",
+          "標本化定理は帯域制限と理想的な再構成を仮定します。有限個の標本だけで任意の信号は特定できません。"
+        ],
+        "question": [
+          "What sampling rate avoids aliasing for a signal band-limited to 7 Hz?",
+          "7 Hz以下に帯域制限された信号で折り返しを避ける標本化周波数は？"
+        ],
+        "answer": [
+          "Choose a rate strictly greater than 14 Hz.",
+          "14 Hzより大きい周波数を選びます。"
+        ],
+        "params": [
+          [
+            "f",
+            "Signal frequency (Hz)",
+            "信号周波数（Hz）",
+            1,
+            12,
+            0.5,
+            7
+          ],
+          [
+            "fs",
+            "Sampling rate (Hz)",
+            "標本化周波数（Hz）",
+            2,
+            30,
+            1,
+            10
+          ]
+        ],
+        "source": "Stanford · The Fourier Transform and its Applications",
+        "url": "https://see.stanford.edu/Course/EE261"
+      }
+    ]
+  },
+  {
+    "slug": "dynamical-systems",
+    "title": [
+      "Dynamical systems: stability and chaos",
+      "力学系：安定性とカオス"
+    ],
+    "description": [
+      "Phase portraits, changing equilibria, and sensitive dependence.",
+      "相図・平衡点の変化・初期値への鋭敏な依存を調べます。"
+    ],
+    "group": "analysis",
+    "prerequisite": [
+      "Derivatives and elementary differential equations",
+      "微分と初歩的な微分方程式"
+    ],
+    "source": "MIT · Nonlinear Dynamics: Chaos",
+    "url": "https://ocw.mit.edu/courses/12-006j-nonlinear-dynamics-chaos-fall-2022/",
+    "labs": [
+      {
+        "id": "phase",
+        "title": [
+          "1. A spiral in phase space",
+          "1. 相空間のらせん"
+        ],
+        "body": [
+          "The arrows give the instantaneous direction of motion. Change the growth rate to turn a decaying spiral into a growing one. The trajectory is an exact solution, sampled for display.",
+          "矢印は瞬間的な運動の向きです。増大率を変えると、減衰するらせんが増大するらせんになります。軌道は厳密解を描画用に標本化しています。"
+        ],
+        "formula": "\\dot x=ax-y,\\quad\\dot y=x+ay,\\quad z(t)=e^{(a+i)t}z(0)",
+        "example": [
+          "At a=-0.2 the radius is multiplied by exp(-0.2t).",
+          "a=-0.2 では半径が exp(-0.2t) 倍になります。"
+        ],
+        "caution": [
+          "A center at a=0 is stable but not asymptotically stable.",
+          "a=0 の中心は安定ですが、漸近安定ではありません。"
+        ],
+        "question": [
+          "What changes sign at the stability threshold?",
+          "安定性の境界で何の符号が変わりますか？"
+        ],
+        "answer": [
+          "The real parts of the eigenvalues a±i.",
+          "固有値 a±i の実部です。"
+        ],
+        "params": [
+          [
+            "a",
+            "Growth rate",
+            "増大率",
+            -0.5,
+            0.5,
+            0.05,
+            -0.2
+          ],
+          [
+            "x",
+            "Initial x",
+            "初期 x",
+            -2,
+            2,
+            0.1,
+            1
+          ],
+          [
+            "y",
+            "Initial y",
+            "初期 y",
+            -2,
+            2,
+            0.1,
+            0
+          ]
+        ],
+        "source": "MIT · Nonlinear Dynamics: Chaos",
+        "url": "https://ocw.mit.edu/courses/12-006j-nonlinear-dynamics-chaos-fall-2022/"
+      },
+      {
+        "id": "bifurcation",
+        "title": [
+          "2. A saddle-node bifurcation",
+          "2. サドルノード分岐"
+        ],
+        "body": [
+          "Move the parameter through zero. Two equilibria are born when the graph first touches and then crosses the horizontal axis. Arrows show the sign of the velocity.",
+          "パラメータを0の前後で動かします。グラフが横軸に接してから交差すると、2つの平衡点が生まれます。矢印は速度の符号を示します。"
+        ],
+        "formula": "\\dot x=\\mu-x^2,\\quad x_*=\\pm\\sqrt\\mu\\ (\\mu\\ge0),\\quad f\\prime(x_*)=-2x_*",
+        "example": [
+          "For μ=1, x=1 is attracting and x=-1 is repelling.",
+          "μ=1 では x=1 が吸引的、x=-1 が反発的です。"
+        ],
+        "caution": [
+          "At μ=0 the equilibrium attracts from only one side. A zero derivative alone does not classify stability.",
+          "μ=0 の平衡点は片側からのみ吸引します。微分が0というだけでは安定性は分類できません。"
+        ],
+        "question": [
+          "How many real equilibria exist when μ is negative?",
+          "μが負のとき実平衡点はいくつありますか？"
+        ],
+        "answer": [
+          "None, because x² cannot equal a negative number.",
+          "0個です。x²は負の数と等しくなりません。"
+        ],
+        "params": [
+          [
+            "mu",
+            "Parameter μ",
+            "パラメータ μ",
+            -1,
+            2,
+            0.05,
+            1
+          ]
+        ],
+        "source": "MIT · Nonlinear Dynamics: Chaos",
+        "url": "https://ocw.mit.edu/courses/12-006j-nonlinear-dynamics-chaos-fall-2022/"
+      },
+      {
+        "id": "chaos",
+        "title": [
+          "3. The logistic map",
+          "3. ロジスティック写像"
+        ],
+        "body": [
+          "Compare two orbits whose starting values differ by one millionth. Parameter changes can produce convergence, cycles, or sensitive dependence. The lower panel samples long-run values across parameters.",
+          "初期値が100万分の1だけ違う2つの軌道を比較します。パラメータにより収束・周期・鋭敏な依存が現れます。下の図は各パラメータで過渡状態を除いた値です。"
+        ],
+        "formula": "x_{n+1}=rx_n(1-x_n),\\quad 0\\le r\\le4",
+        "example": [
+          "For r=2, most interior initial values approach 1/2.",
+          "r=2 では区間内部の多くの初期値が1/2へ近づきます。"
+        ],
+        "caution": [
+          "A finite orbit is not a proof of chaos. Periodic windows occur inside the complicated parameter region.",
+          "有限の軌道はカオスの証明ではありません。複雑なパラメータ領域にも周期窓があります。"
+        ],
+        "question": [
+          "Does r greater than 3 always imply chaos?",
+          "rが3より大きければ必ずカオスですか？"
+        ],
+        "answer": [
+          "No. Stable periodic cycles also occur.",
+          "いいえ。安定な周期軌道も現れます。"
+        ],
+        "params": [
+          [
+            "r",
+            "Parameter r",
+            "パラメータ r",
+            2,
+            4,
+            0.01,
+            3.8
+          ],
+          [
+            "x",
+            "Initial value",
+            "初期値",
+            0.05,
+            0.9,
+            0.01,
+            0.2
+          ]
+        ],
+        "source": "MIT · Nonlinear Dynamics: Chaos",
+        "url": "https://ocw.mit.edu/courses/12-006j-nonlinear-dynamics-chaos-fall-2022/"
+      }
+    ]
+  },
+  {
+    "slug": "optimization",
+    "title": [
+      "Optimization: the geometry of the best choice",
+      "最適化：最良の選択の幾何"
+    ],
+    "description": [
+      "Descent, conditioning, constraints, and shadow prices.",
+      "降下法・条件数・制約・影の価格を調べます。"
+    ],
+    "group": "applications",
+    "prerequisite": [
+      "Derivatives, vectors, and matrices",
+      "微分・ベクトル・行列"
+    ],
+    "source": "Boyd and Vandenberghe · Convex Optimization",
+    "url": "https://stanford.edu/~boyd/cvxbook/",
+    "labs": [
+      {
+        "id": "descent",
+        "title": [
+          "1. Gradient descent and conditioning",
+          "1. 勾配降下法と条件数"
+        ],
+        "body": [
+          "Follow gradient steps across elliptical contours. Strongly unequal curvatures make steps zigzag. Newton’s exact step reaches this quadratic minimum in one iteration.",
+          "楕円の等高線を横切る勾配ステップを追います。曲率の差が大きいとジグザグになります。この二次関数ではニュートン法の厳密な1ステップで最小点に達します。"
+        ],
+        "formula": "f(x,y)=\\tfrac12(x^2+\\kappa y^2),\\quad x_{n+1}=(1-\\eta)x_n,\\quad y_{n+1}=(1-\\eta\\kappa)y_n",
+        "example": [
+          "For κ=4, constant-step gradient descent converges when 0<η<0.5.",
+          "κ=4 のとき、一定刻みの勾配降下法は 0<η<0.5 で収束します。"
+        ],
+        "caution": [
+          "Newton’s one-step result is special to an invertible quadratic Hessian. It is not a general guarantee.",
+          "1ステップで収束する性質は、可逆なヘッセ行列を持つ二次関数に特有です。一般には保証されません。"
+        ],
+        "question": [
+          "Why can increasing the step size make progress worse?",
+          "刻み幅を大きくすると悪化することがあるのはなぜですか？"
+        ],
+        "answer": [
+          "An update multiplier can have magnitude above one, amplifying errors.",
+          "更新の倍率の絶対値が1を超え、誤差を増幅するためです。"
+        ],
+        "params": [
+          [
+            "k",
+            "Condition number κ",
+            "条件数 κ",
+            1,
+            10,
+            1,
+            4
+          ],
+          [
+            "eta",
+            "Step size η",
+            "刻み幅 η",
+            0.02,
+            0.8,
+            0.02,
+            0.2
+          ]
+        ],
+        "source": "Boyd and Vandenberghe · Convex Optimization",
+        "url": "https://stanford.edu/~boyd/cvxbook/"
+      },
+      {
+        "id": "constraint",
+        "title": [
+          "2. A moving constraint",
+          "2. 動く制約"
+        ],
+        "body": [
+          "Move the line x+y=b across concentric objective contours. The optimum is where the smallest reachable circle touches the line.",
+          "直線 x+y=b を目的関数の同心円に沿って動かします。到達できる最小の円が直線に接する点が最適点です。"
+        ],
+        "formula": "\\min_{x+y=b}(x^2+y^2),\\qquad x_*=y_*=b/2,\\quad f_*=b^2/2",
+        "example": [
+          "For b=2, the best point is (1,1), with objective value 2.",
+          "b=2 の最適点は (1,1)、目的関数値は2です。"
+        ],
+        "caution": [
+          "This is an equality constraint. Replacing it with an inequality changes the feasible region and sometimes the optimum.",
+          "これは等式制約です。不等式に変えると実行可能領域や最適点が変わることがあります。"
+        ],
+        "question": [
+          "Why must x and y be equal at the optimum?",
+          "最適点で x と y が等しくなるのはなぜですか？"
+        ],
+        "answer": [
+          "Because x²+y²=b²/2+(x-y)²/2, minimized at x=y.",
+          "x²+y²=b²/2+(x-y)²/2 なので、x=y で最小になります。"
+        ],
+        "params": [
+          [
+            "b",
+            "Constraint value b",
+            "制約値 b",
+            -3,
+            3,
+            0.1,
+            2
+          ]
+        ],
+        "source": "Boyd and Vandenberghe · Convex Optimization",
+        "url": "https://stanford.edu/~boyd/cvxbook/"
+      },
+      {
+        "id": "duality",
+        "title": [
+          "3. Multipliers and sensitivity",
+          "3. 乗数と感度"
+        ],
+        "body": [
+          "The optimal value curve tells us how costly a change in the constraint is. The tangent slope equals the multiplier when the Lagrangian uses λ(b-x-y).",
+          "最適値の曲線は制約変更の費用を表します。ラグランジアンを λ(b-x-y) と定義すると、接線の傾きが乗数に一致します。"
+        ],
+        "formula": "L=x^2+y^2+\\lambda(b-x-y),\\quad g(\\lambda)=\\lambda b-\\lambda^2/2,\\quad \\lambda_*=b=\\frac{df_*}{db}",
+        "example": [
+          "At b=2, increasing b by 0.01 raises the optimum by about 0.02.",
+          "b=2 で b を0.01増やすと、最適値は約0.02増えます。"
+        ],
+        "caution": [
+          "Multiplier signs depend on the chosen constraint convention. Sensitivity is a local approximation.",
+          "乗数の符号は制約の書き方に依存します。感度は局所的な近似です。"
+        ],
+        "question": [
+          "What is the duality gap at λ=b?",
+          "λ=b の双対ギャップはいくつですか？"
+        ],
+        "answer": [
+          "Zero: the primal minimum and dual maximum both equal b²/2.",
+          "0です。主問題の最小値も双対問題の最大値も b²/2 です。"
+        ],
+        "params": [
+          [
+            "b",
+            "Constraint value b",
+            "制約値 b",
+            -3,
+            3,
+            0.1,
+            1.5
+          ],
+          [
+            "lambda",
+            "Trial multiplier λ",
+            "試す乗数 λ",
+            -4,
+            4,
+            0.1,
+            0
+          ]
+        ],
+        "source": "Boyd and Vandenberghe · Convex Optimization",
+        "url": "https://stanford.edu/~boyd/cvxbook/"
+      }
+    ]
+  },
+  {
+    "slug": "probability-inference",
+    "title": [
+      "Probability: learning from uncertainty",
+      "確率：不確実性から学ぶ"
+    ],
+    "description": [
+      "Bayesian updating, sums of random variables, and conditional probability.",
+      "ベイズ更新・確率変数の和・条件付き確率を学びます。"
+    ],
+    "group": "applications",
+    "prerequisite": [
+      "Fractions, counting, and basic probability",
+      "分数・場合の数・初歩的な確率"
+    ],
+    "source": "Brown University · Seeing Theory",
+    "url": "https://seeing-theory.brown.edu/bayesian-inference/index.html",
+    "labs": [
+      {
+        "id": "bayes",
+        "title": [
+          "1. Update a belief",
+          "1. 信念を更新する"
+        ],
+        "body": [
+          "Choose a beta prior and counts of heads and tails. The updated density combines the prior with the likelihood. The dashed curve shows the prior for comparison.",
+          "ベータ事前分布と表・裏の回数を選びます。更新した密度は事前分布と尤度を組み合わせます。破線は比較用の事前分布です。"
+        ],
+        "formula": "p\\sim\\operatorname{Beta}(\\alpha,\\beta),\\quad p\\mid h,t\\sim\\operatorname{Beta}(\\alpha+h,\\beta+t)",
+        "example": [
+          "A uniform prior with 3 heads and 1 tail gives Beta(4,2), whose mean is 2/3.",
+          "一様な事前分布に表3回・裏1回なら Beta(4,2) となり、平均は2/3です。"
+        ],
+        "caution": [
+          "The model assumes independent flips with a fixed unknown probability. A posterior is conditional on these assumptions.",
+          "各試行は独立で、未知の確率は一定と仮定しています。事後分布はこの仮定に依存します。"
+        ],
+        "question": [
+          "Why is the posterior mean not exactly the observed fraction?",
+          "事後平均が観測比率そのものにならないのはなぜですか？"
+        ],
+        "answer": [
+          "The prior also contributes information; its relative influence decreases as observations accumulate.",
+          "事前分布も情報を持つためです。観測が増えるとその相対的影響は小さくなります。"
+        ],
+        "params": [
+          [
+            "alpha",
+            "Prior α",
+            "事前 α",
+            1,
+            8,
+            1,
+            1
+          ],
+          [
+            "beta",
+            "Prior β",
+            "事前 β",
+            1,
+            8,
+            1,
+            1
+          ],
+          [
+            "h",
+            "Heads",
+            "表",
+            0,
+            30,
+            1,
+            3
+          ],
+          [
+            "t",
+            "Tails",
+            "裏",
+            0,
+            30,
+            1,
+            1
+          ]
+        ],
+        "source": "Brown University · Seeing Theory",
+        "url": "https://seeing-theory.brown.edu/bayesian-inference/index.html"
+      },
+      {
+        "id": "clt",
+        "title": [
+          "2. Standardized sums",
+          "2. 標準化した和"
+        ],
+        "body": [
+          "Increase the number of independent Bernoulli trials. Bars show exact binomial mass divided by the standardized bin width; the curve is the standard normal density.",
+          "独立なベルヌーイ試行の回数を増やします。棒は厳密な二項確率を標準化した区間幅で割ったもの、曲線は標準正規密度です。"
+        ],
+        "formula": "Z_n=\\frac{S_n-np}{\\sqrt{np(1-p)}}\\ \\xrightarrow{d}\\ N(0,1),\\quad 0<p<1",
+        "example": [
+          "For n=20 and p=0.5, the sum has mean 10 and variance 5.",
+          "n=20、p=0.5 の和の平均は10、分散は5です。"
+        ],
+        "caution": [
+          "The central limit theorem concerns distributional convergence. Small n or highly skewed trials can give poor approximations.",
+          "中心極限定理は分布の収束を述べます。nが小さい場合や偏りが大きい場合、近似は悪くなります。"
+        ],
+        "question": [
+          "Does the theorem say individual trials become normally distributed?",
+          "個々の試行が正規分布になるという意味ですか？"
+        ],
+        "answer": [
+          "No. The standardized sum approaches a normal law; each trial remains Bernoulli.",
+          "いいえ。標準化した和が正規分布に近づき、各試行はベルヌーイ分布のままです。"
+        ],
+        "params": [
+          [
+            "n",
+            "Trials",
+            "試行回数",
+            2,
+            60,
+            1,
+            20
+          ],
+          [
+            "p",
+            "Success probability",
+            "成功確率",
+            0.1,
+            0.9,
+            0.05,
+            0.5
+          ]
+        ],
+        "source": "Brown University · Probability Distributions",
+        "url": "https://seeing-theory.brown.edu/probability-distributions/"
+      },
+      {
+        "id": "conditional",
+        "title": [
+          "3. Conditional probability",
+          "3. 条件付き確率"
+        ],
+        "body": [
+          "A unit square is the sample space. Event B is a vertical strip; the part of A inside and outside B can have different heights. Conditioning on B changes the denominator.",
+          "単位正方形を標本空間とします。Bは縦の帯で、Aの高さはBの内外で変えられます。Bで条件付けると分母が変わります。"
+        ],
+        "formula": "P(A\\mid B)=\\frac{P(A\\cap B)}{P(B)},\\quad P(A)=P(A\\mid B)P(B)+P(A\\mid B^c)P(B^c)",
+        "example": [
+          "If P(B)=0.4 and P(A|B)=0.75, then P(A∩B)=0.3.",
+          "P(B)=0.4、P(A|B)=0.75 なら P(A∩B)=0.3 です。"
+        ],
+        "caution": [
+          "Conditional probability is not generally symmetric: P(A|B) and P(B|A) can differ.",
+          "条件付き確率は一般に対称ではなく、P(A|B) と P(B|A) は異なり得ます。"
+        ],
+        "question": [
+          "When are A and B independent here?",
+          "この図で A と B が独立になるのはいつですか？"
+        ],
+        "answer": [
+          "When the two conditional heights are equal, so knowing B does not change the probability of A.",
+          "2つの条件付きの高さが等しく、Bを知ってもAの確率が変わらないときです。"
+        ],
+        "params": [
+          [
+            "b",
+            "Probability of B",
+            "Bの確率",
+            0.1,
+            0.9,
+            0.05,
+            0.4
+          ],
+          [
+            "inside",
+            "A given B",
+            "Bの下でのA",
+            0,
+            1,
+            0.05,
+            0.75
+          ],
+          [
+            "outside",
+            "A given not B",
+            "B以外でのA",
+            0,
+            1,
+            0.05,
+            0.25
+          ]
+        ],
+        "source": "Brown University · Seeing Theory",
+        "url": "https://seeing-theory.brown.edu/"
+      }
+    ]
+  },
+  {
+    "slug": "group-theory",
+    "title": [
+      "Group theory: symmetry as algebra",
+      "群論：対称性を代数にする"
+    ],
+    "description": [
+      "Compose symmetries, inspect group tables, and count orbits.",
+      "対称変換の合成・群の表・軌道の数え上げを学びます。"
+    ],
+    "group": "foundations",
+    "prerequisite": [
+      "Functions and composition",
+      "関数と合成"
+    ],
+    "source": "Thomas Judson · Abstract Algebra: Theory and Applications",
+    "url": "https://judsonbooks.org/aata-files/aata-20110810.pdf",
+    "labs": [
+      {
+        "id": "compose",
+        "title": [
+          "1. Order matters",
+          "1. 順序が重要"
+        ],
+        "body": [
+          "Label a regular polygon, then compare a rotation after reflection with reflection after rotation. Labels let us distinguish transformations that leave the outline unchanged.",
+          "正多角形の頂点に番号を付け、反転後の回転と回転後の反転を比較します。輪郭が同じでも番号により変換を区別できます。"
+        ],
+        "formula": "D_n=\\langle r,s\\mid r^n=e,\\ s^2=e,\\ srs=r^{-1}\\rangle",
+        "example": [
+          "For a square, a quarter-turn and a reflection do not commute.",
+          "正方形の90度回転と反転は交換しません。"
+        ],
+        "caution": [
+          "An unchanged outline does not mean every vertex stayed fixed.",
+          "輪郭が同じでも各頂点が固定されているとは限りません。"
+        ],
+        "question": [
+          "When do the two displayed compositions agree?",
+          "表示した2つの合成が一致するのはいつですか？"
+        ],
+        "answer": [
+          "When 2k is divisible by n, including zero rotation and a half-turn for even n.",
+          "2kがnで割り切れるときです。回転なし、またはnが偶数なら半回転が該当します。"
+        ],
+        "params": [
+          [
+            "n",
+            "Polygon sides",
+            "辺の数",
+            3,
+            8,
+            1,
+            4
+          ],
+          [
+            "k",
+            "Rotation steps",
+            "回転ステップ",
+            0,
+            7,
+            1,
+            1
+          ]
+        ],
+        "source": "Thomas Judson · Abstract Algebra: Theory and Applications",
+        "url": "https://judsonbooks.org/aata-files/aata-20110810.pdf"
+      },
+      {
+        "id": "table",
+        "title": [
+          "2. A multiplication table",
+          "2. 積の表"
+        ],
+        "body": [
+          "Explore the cyclic subgroup of rotations. A cell in row a and column b records a rotation by a+b steps modulo n. Highlight a pair and check its inverse.",
+          "回転からなる巡回部分群を調べます。行a・列bは、a+bをnで割った余りの回転です。組を選び、逆元を確かめます。"
+        ],
+        "formula": "C_n=\\mathbb Z/n\\mathbb Z,\\qquad a*b=(a+b)\\bmod n",
+        "example": [
+          "In C₅, 3+4=2 modulo 5, and the inverse of 3 is 2.",
+          "C₅では 3+4≡2、3の逆元は2です。"
+        ],
+        "caution": [
+          "This rotation subgroup is commutative; the full dihedral group generally is not.",
+          "回転部分群は可換ですが、二面体群全体は一般に可換ではありません。"
+        ],
+        "question": [
+          "Why does each row contain every group element once?",
+          "各行にすべての元が1回ずつ現れるのはなぜですか？"
+        ],
+        "answer": [
+          "Adding a fixed element is a bijection, with subtraction as its inverse.",
+          "固定した元を加える操作は全単射で、引き算が逆操作だからです。"
+        ],
+        "params": [
+          [
+            "n",
+            "Group order",
+            "群の位数",
+            3,
+            8,
+            1,
+            5
+          ],
+          [
+            "a",
+            "Row a",
+            "行 a",
+            0,
+            7,
+            1,
+            3
+          ],
+          [
+            "b",
+            "Column b",
+            "列 b",
+            0,
+            7,
+            1,
+            4
+          ]
+        ],
+        "source": "Thomas Judson · Abstract Algebra: Theory and Applications",
+        "url": "https://judsonbooks.org/aata-files/aata-20110810.pdf"
+      },
+      {
+        "id": "orbit",
+        "title": [
+          "3. Orbits, stabilizers, and cosets",
+          "3. 軌道・固定部分群・剰余類"
+        ],
+        "body": [
+          "Generate rotations by k steps and mark the vertices reachable from vertex zero. Other colors of position are avoided: reachable vertices are filled, others open. The subgroup cosets partition the vertices into equal orbits.",
+          "kステップの回転で生成される群を作り、頂点0から到達できる頂点を塗ります。その他は白抜きです。部分群の剰余類が頂点を同じ大きさの軌道に分けます。"
+        ],
+        "formula": "|\\langle k\\rangle|=\\frac n{\\gcd(n,k)},\\qquad |Gx|=\\frac{|G|}{|G_x|}",
+        "example": [
+          "For n=6 and k=2, the orbits are {0,2,4} and {1,3,5}.",
+          "n=6、k=2 の軌道は {0,2,4} と {1,3,5} です。"
+        ],
+        "caution": [
+          "For the full dihedral action on vertices the stabilizer has two elements; for a rotation subgroup it is trivial.",
+          "頂点への二面体群全体の作用では固定部分群の位数は2ですが、回転部分群では1です。"
+        ],
+        "question": [
+          "How many cosets does the generated subgroup have?",
+          "生成された部分群の剰余類はいくつですか？"
+        ],
+        "answer": [
+          "gcd(n,k), since each coset has n/gcd(n,k) elements.",
+          "gcd(n,k) 個です。各剰余類には n/gcd(n,k) 個の元があります。"
+        ],
+        "params": [
+          [
+            "n",
+            "Vertices",
+            "頂点数",
+            3,
+            12,
+            1,
+            6
+          ],
+          [
+            "k",
+            "Generator steps",
+            "生成元のステップ",
+            0,
+            11,
+            1,
+            2
+          ]
+        ],
+        "source": "Thomas Judson · Abstract Algebra: Theory and Applications",
+        "url": "https://judsonbooks.org/aata-files/aata-20110810.pdf"
+      }
+    ]
+  },
+  {
+    "slug": "algebraic-topology",
+    "title": [
+      "Algebraic topology: detecting holes",
+      "代数的位相幾何：穴を見つける"
+    ],
+    "description": [
+      "Build complexes, distinguish cycles from holes, and vary scale.",
+      "複体を作り、閉路と穴を区別し、尺度を変えて調べます。"
+    ],
+    "group": "geometry",
+    "prerequisite": [
+      "Sets, graphs, and elementary linear algebra",
+      "集合・グラフ・初歩的な線形代数"
+    ],
+    "source": "Allen Hatcher · Algebraic Topology, Chapter 2",
+    "url": "https://pi.math.cornell.edu/~hatcher/AT/ATpage.html",
+    "labs": [
+      {
+        "id": "complex",
+        "title": [
+          "1. Build a complex",
+          "1. 複体を作る"
+        ],
+        "body": [
+          "Add the edges of a triangle, then its filled face. The third edge creates a cycle; the face makes that cycle a boundary and removes the one-dimensional hole.",
+          "三角形の辺を加え、最後に面を埋めます。3本目の辺で閉路ができ、面を加えると閉路が境界となって1次元の穴が消えます。"
+        ],
+        "formula": "\\beta_0=V-\\operatorname{rank}\\partial_1,\\quad\\beta_1=E-\\operatorname{rank}\\partial_1-\\operatorname{rank}\\partial_2",
+        "example": [
+          "Three vertices and three edges give β₀=1, β₁=1. Adding the face gives β₁=0.",
+          "頂点3・辺3なら β₀=1、β₁=1。面を加えると β₁=0 です。"
+        ],
+        "caution": [
+          "A drawn loop is not necessarily a homological hole: it may bound a filled surface.",
+          "描かれた閉路が必ず穴を表すとは限りません。面の境界かもしれません。"
+        ],
+        "question": [
+          "Why does filling the face not change the number of components?",
+          "面を埋めても連結成分数が変わらないのはなぜですか？"
+        ],
+        "answer": [
+          "Its boundary already belongs to one connected component.",
+          "その境界はすでに1つの連結成分に属しているためです。"
+        ],
+        "params": [
+          [
+            "stage",
+            "Construction stage",
+            "構成段階",
+            0,
+            4,
+            1,
+            3
+          ]
+        ],
+        "source": "Allen Hatcher · Algebraic Topology, Chapter 2",
+        "url": "https://pi.math.cornell.edu/~hatcher/AT/ATpage.html"
+      },
+      {
+        "id": "filtration",
+        "title": [
+          "2. Holes across scales",
+          "2. 尺度を変えて穴を見る"
+        ],
+        "body": [
+          "Eight points lie on a circle. Connect pairs within the threshold and fill every triangle whose three edges are present. Compute homology over the two-element field using boundary-matrix ranks.",
+          "円周上に8点を置きます。閾値以内の点を結び、3辺がある三角形をすべて埋めます。2元体上の境界行列の階数からホモロジーを計算します。"
+        ],
+        "formula": "H_1=\\ker\\partial_1/\\operatorname{im}\\partial_2,\\qquad \\partial_1\\partial_2=0",
+        "example": [
+          "At a threshold of 0.8, adjacent points form an octagonal loop with β₁=1.",
+          "閾値0.8では隣接点が八角形の閉路を作り、β₁=1です。"
+        ],
+        "caution": [
+          "Only the two-skeleton is displayed. It suffices for H₀ and H₁, but not for higher-dimensional homology.",
+          "表示は2次元骨格のみです。H₀とH₁には十分ですが、高次のホモロジーには不十分です。"
+        ],
+        "question": [
+          "Why can a larger threshold destroy a hole?",
+          "閾値を大きくすると穴が消えるのはなぜですか？"
+        ],
+        "answer": [
+          "New triangular faces can fill a previously unfilled cycle.",
+          "新しい三角形の面が、それまで埋まっていなかった閉路を埋めるためです。"
+        ],
+        "params": [
+          [
+            "eps",
+            "Distance threshold",
+            "距離の閾値",
+            0.1,
+            2.1,
+            0.05,
+            0.8
+          ]
+        ],
+        "source": "Allen Hatcher · Algebraic Topology, Chapter 2",
+        "url": "https://pi.math.cornell.edu/~hatcher/AT/ATpage.html"
+      },
+      {
+        "id": "euler",
+        "title": [
+          "3. Euler characteristic",
+          "3. オイラー標数"
+        ],
+        "body": [
+          "Choose a triangulated disk or the boundary of a tetrahedron. Count vertices, edges, and faces. The alternating sum agrees with the alternating sum of Betti numbers.",
+          "三角形の円板または四面体の境界を選びます。頂点・辺・面を数える交代和は、ベッチ数の交代和と一致します。"
+        ],
+        "formula": "\\chi=V-E+F=\\beta_0-\\beta_1+\\beta_2",
+        "example": [
+          "A tetrahedron boundary has 4−6+4=2, with β₀=1, β₁=0, β₂=1.",
+          "四面体の境界は 4−6+4=2 で、β₀=1、β₁=0、β₂=1 です。"
+        ],
+        "caution": [
+          "The tetrahedron here is its surface, not the solid including its interior.",
+          "ここでの四面体は表面だけであり、内部を含む立体ではありません。"
+        ],
+        "question": [
+          "Why does a disk have Euler characteristic one?",
+          "円板のオイラー標数が1なのはなぜですか？"
+        ],
+        "answer": [
+          "It has one component and no positive-dimensional homology.",
+          "連結成分が1つで、正の次元のホモロジーがないためです。"
+        ],
+        "params": [
+          [
+            "solid",
+            "Disk (0) / tetrahedron surface (1)",
+            "円板 (0) ／四面体表面 (1)",
+            0,
+            1,
+            1,
+            1
+          ]
+        ],
+        "source": "Allen Hatcher · Algebraic Topology, Chapter 2",
+        "url": "https://pi.math.cornell.edu/~hatcher/AT/ATpage.html"
+      }
+    ]
+  },
+  {
+    "slug": "numerical-analysis",
+    "title": [
+      "Numerical analysis: when computation misleads",
+      "数値解析：計算が誤解を招くとき"
+    ],
+    "description": [
+      "Time stepping, cancellation, and interpolation error.",
+      "時間刻み・桁落ち・補間誤差を調べます。"
+    ],
+    "group": "applications",
+    "prerequisite": [
+      "Calculus and basic differential equations",
+      "微積分と初歩的な微分方程式"
+    ],
+    "source": "Jiří Lebl · Notes on Diffy Qs, Numerical Methods",
+    "url": "https://www.jirka.org/diffyqs/html/numer_section.html",
+    "labs": [
+      {
+        "id": "ode",
+        "title": [
+          "1. Accuracy and stability",
+          "1. 精度と安定性"
+        ],
+        "body": [
+          "Compare explicit Euler and fourth-order Runge–Kutta with exact exponential decay. Increase the step size until a numerical solution behaves unlike the true solution.",
+          "陽的オイラー法と4次ルンゲ・クッタ法を指数減衰の厳密解と比較します。刻み幅を増やし、数値解が真の解と異なる振る舞いをする点を探します。"
+        ],
+        "formula": "y\\prime=-5y,\\ y(0)=1,\\quad y(t)=e^{-5t},\\quad y_{n+1}^{\\rm Euler}=(1-5h)y_n",
+        "example": [
+          "At h=0.5, Euler multiplies each step by −1.5 and diverges.",
+          "h=0.5 のオイラー法は毎回−1.5倍になり、発散します。"
+        ],
+        "caution": [
+          "Higher order does not guarantee stability for every step size. Both methods here are explicit.",
+          "高次の方法でも任意の刻み幅で安定とは限りません。ここでは両方とも陽解法です。"
+        ],
+        "question": [
+          "What is Euler’s strict stability interval for this equation?",
+          "この方程式でオイラー法が厳密に安定となる刻み幅の区間は？"
+        ],
+        "answer": [
+          "0<h<0.4, because |1−5h|<1.",
+          "|1−5h|<1 より 0<h<0.4 です。"
+        ],
+        "params": [
+          [
+            "h",
+            "Step size h",
+            "刻み幅 h",
+            0.025,
+            0.6,
+            0.025,
+            0.1
+          ]
+        ],
+        "source": "Jiří Lebl · Notes on Diffy Qs, Numerical Methods",
+        "url": "https://www.jirka.org/diffyqs/html/numer_section.html"
+      },
+      {
+        "id": "cancellation",
+        "title": [
+          "2. Subtracting almost equal numbers",
+          "2. 近い数を引くとき"
+        ],
+        "body": [
+          "Compare direct evaluation with an algebraically equivalent rationalized expression. As x shrinks, rounding can erase the small difference between the square root and one.",
+          "直接計算と有理化した等価な式を比較します。xが小さくなると丸め誤差で平方根と1の小さな差が失われます。"
+        ],
+        "formula": "\\frac{\\sqrt{1+x}-1}{x}=\\frac1{\\sqrt{1+x}+1}\\longrightarrow\\frac12",
+        "example": [
+          "At x=10⁻¹⁶, binary64 commonly rounds 1+x to 1, so the direct numerator becomes zero.",
+          "x=10⁻¹⁶ では通常の倍精度で 1+x が1に丸められ、直接計算の分子が0になります。"
+        ],
+        "caution": [
+          "The plotted error uses the stable equivalent as a reference; it is not an arbitrary-precision certificate.",
+          "誤差は安定な等価式を基準にしています。任意精度計算による保証ではありません。"
+        ],
+        "question": [
+          "Does making x smaller always improve a numerical limit estimate?",
+          "xを小さくすれば数値的な極限の推定は必ず改善しますか？"
+        ],
+        "answer": [
+          "No. Truncation error may shrink while roundoff error becomes dominant.",
+          "いいえ。打切り誤差が小さくなる一方、丸め誤差が支配的になることがあります。"
+        ],
+        "params": [
+          [
+            "exponent",
+            "Decimal exponent: x = 10⁻ᵉ",
+            "指数：x = 10⁻ᵉ",
+            1,
+            17,
+            1,
+            12
+          ]
+        ],
+        "source": "David Goldberg · Floating-Point Arithmetic",
+        "url": "https://docs.oracle.com/cd/E19957-01/806-3568/ncg_goldberg.html"
+      },
+      {
+        "id": "interpolation",
+        "title": [
+          "3. Where you sample matters",
+          "3. 標本点の置き方が重要"
+        ],
+        "body": [
+          "Interpolate the Runge function with a polynomial. Compare equally spaced nodes with Chebyshev–Lobatto nodes clustered near the ends. Dots mark the interpolation data.",
+          "ルンゲ関数を多項式で補間します。等間隔点と端点付近に集まるチェビシェフ・ロバット点を比較します。点は補間に使ったデータです。"
+        ],
+        "formula": "f(x)=\\frac1{1+25x^2},\\quad x_j^{\\rm Cheb}=\\cos(j\\pi/n),\\quad j=0,\\ldots,n",
+        "example": [
+          "For degree 10, equally spaced interpolation oscillates strongly near the endpoints.",
+          "10次の等間隔補間は端点付近で大きく振動します。"
+        ],
+        "caution": [
+          "The displayed maximum error is sampled, not a rigorous supremum bound. More nodes alone need not improve interpolation.",
+          "表示する最大誤差は標本上の値で、厳密な上限ではありません。点を増やすだけで改善するとは限りません。"
+        ],
+        "question": [
+          "Why can a perfect fit at all nodes still be misleading?",
+          "すべての点で完全に一致しても誤解を招くのはなぜですか？"
+        ],
+        "answer": [
+          "Values between nodes can oscillate dramatically; fitting data and approximating a function are different requirements.",
+          "点の間で大きく振動し得るためです。データへの一致と関数全体の近似は別の要件です。"
+        ],
+        "params": [
+          [
+            "n",
+            "Polynomial degree",
+            "多項式の次数",
+            2,
+            16,
+            1,
+            10
+          ],
+          [
+            "cheb",
+            "Equally spaced (0) / Chebyshev (1)",
+            "等間隔 (0) ／チェビシェフ (1)",
+            0,
+            1,
+            1,
+            0
+          ]
+        ],
+        "source": "Chebfun · Approximation Theory, §4.7",
+        "url": "https://www.chebfun.org/docs/guide/guide04.html"
+      }
+    ]
+  }
+]
