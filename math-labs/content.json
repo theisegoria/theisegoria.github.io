@@ -4133,5 +4133,345 @@
         "url": "https://openstax.org/details/books/university-physics-volume-2"
       }
     ]
+  },
+  {
+    "slug": "measure-theory",
+    "title": [
+      "Measure theory: size, approximation, and convergence",
+      "測度論：大きさ・近似・収束"
+    ],
+    "description": [
+      "Compare partitions, simple functions, and a sequence that defeats dominated convergence.",
+      "分割・単関数・優収束定理の仮定を破る列を比較します。"
+    ],
+    "group": "analysis",
+    "prerequisite": [
+      "Real analysis and sets",
+      "実解析と集合"
+    ],
+    "source": "MIT OpenCourseWare · Measure and Integration",
+    "url": "https://ocw.mit.edu/courses/18-125-measure-and-integration-fall-2003/",
+    "labs": [
+      {
+        "id": "partitions",
+        "title": [
+          "1. Two ways to measure area",
+          "1. 面積を測る二つの方法"
+        ],
+        "body": [
+          "Compare a domain partitioned along the x-axis with one partitioned by function values.",
+          "x軸方向に分けた領域と関数値で分けた領域を比較します。"
+        ],
+        "formula": "\\int f\\,d x=\\sup\\{\\int s\\,d x:s\\le f,\\ s\\text{ simple}\\}",
+        "example": [
+          "A finer partition can raise a lower simple approximation without changing the function.",
+          "細かい分割は関数を変えずに単関数近似の下からの値を上げます。"
+        ],
+        "caution": [
+          "A picture of rectangles does not prove measurability.",
+          "長方形の図だけでは可測性は証明できません。"
+        ],
+        "question": [
+          "What is being refined?",
+          "何を細かくしているのですか？"
+        ],
+        "answer": [
+          "The information used to assign values and measure the resulting pieces.",
+          "値を割り当て、できた部分を測る情報です。"
+        ],
+        "params": [
+          [
+            "resolution",
+            "Partition resolution",
+            "分割の細かさ",
+            2,
+            24,
+            1,
+            8
+          ]
+        ],
+        "source": "MIT OpenCourseWare · Measure and Integration",
+        "url": "https://ocw.mit.edu/courses/18-125-measure-and-integration-fall-2003/"
+      },
+      {
+        "id": "simple-functions",
+        "title": [
+          "2. Simple-function approximation",
+          "2. 単関数近似"
+        ],
+        "body": [
+          "Raise the resolution of a lower simple approximation to the square-root function and watch the filled area increase.",
+          "平方根関数の下単関数近似の解像度を上げ、塗られた面積が増える様子を見ます。"
+        ],
+        "formula": "s_n(x)=2^{-n}\\left\\lfloor 2^n\\sqrt{x}\\right\\rfloor\\nearrow\\sqrt{x}",
+        "example": [
+          "The approximations increase pointwise and their integrals approach the target integral.",
+          "近似は各点で増加し、その積分は目標積分に近づきます。"
+        ],
+        "caution": [
+          "Monotone increase is a property of this construction, not every approximation scheme.",
+          "単調増加はこの構成の性質であり、すべての近似法に成り立つわけではありません。"
+        ],
+        "question": [
+          "Why does the area never overshoot?",
+          "面積が決して超過しないのはなぜですか？"
+        ],
+        "answer": [
+          "Each step is obtained by rounding the function value downward.",
+          "各段階で関数値を下向きに丸めているためです。"
+        ],
+        "params": [
+          [
+            "resolution",
+            "Approximation level n",
+            "近似レベル n",
+            0,
+            8,
+            1,
+            3
+          ]
+        ],
+        "source": "MIT OpenCourseWare · Measure and Integration",
+        "url": "https://ocw.mit.edu/courses/18-125-measure-and-integration-fall-2003/"
+      },
+      {
+        "id": "convergence",
+        "title": [
+          "3. A convergence warning",
+          "3. 収束への注意"
+        ],
+        "body": [
+          "Inspect a spike sequence whose pointwise limit is zero while every integral stays equal to one.",
+          "各点での極限は0なのに積分が常に1の尖った列を調べます。"
+        ],
+        "formula": "f_n(x)=n\\,\\mathbf 1_{(0,1/n)}(x),\\qquad f_n\\to0\\text{ a.e.},\\quad\\int_0^1f_n\\,d x=1",
+        "example": [
+          "Pointwise convergence alone does not justify exchanging a limit and an integral.",
+          "各点収束だけでは極限と積分の交換は正当化されません。"
+        ],
+        "caution": [
+          "The sequence is not dominated by one integrable envelope independent of n.",
+          "この列は n に依存しない可積分な支配関数で支配されていません。"
+        ],
+        "question": [
+          "Which quantity refuses to converge to the integral of the limit?",
+          "極限関数の積分へ収束しない量は？"
+        ],
+        "answer": [
+          "The integrals remain one although the pointwise limit is zero.",
+          "各点極限は0でも積分は1のままです。"
+        ],
+        "params": [
+          [
+            "n",
+            "Sequence index n",
+            "列の添字 n",
+            1,
+            40,
+            1,
+            8
+          ]
+        ],
+        "source": "MIT OpenCourseWare · Measure and Integration",
+        "url": "https://ocw.mit.edu/courses/18-125-measure-and-integration-fall-2003/"
+      }
+    ]
+  },
+  {
+    "slug": "markov-chains",
+    "title": [
+      "Markov chains: transition, stationarity, and absorption",
+      "マルコフ連鎖：遷移・定常性・吸収"
+    ],
+    "description": [
+      "Iterate transition matrices, locate stationary distributions, and solve a gambler’s-ruin model.",
+      "遷移行列を反復し、定常分布を見つけ、ギャンブラーの破産モデルを解きます。"
+    ],
+    "group": "applications",
+    "prerequisite": [
+      "Probability and linear algebra",
+      "確率と線形代数"
+    ],
+    "source": "MIT OpenCourseWare · Stochastic Processes",
+    "url": "https://ocw.mit.edu/courses/18-445-introduction-to-stochastic-processes-spring-2015/",
+    "labs": [
+      {
+        "id": "transition",
+        "title": [
+          "1. Transition dynamics",
+          "1. 遷移ダイナミクス"
+        ],
+        "body": [
+          "Iterate a two-state transition matrix and watch probability mass move toward equilibrium.",
+          "二状態の遷移行列を反復し、確率質量が平衡へ移る様子を見ます。"
+        ],
+        "formula": "\\pi_{n+1}=\\pi_nP,\\qquad P=\\begin{bmatrix}1-p&p\\\\q&1-q\\end{bmatrix}",
+        "example": [
+          "The row sums of P stay one, so state probabilities remain normalized.",
+          "Pの各行の和は1なので、状態確率の総和は保たれます。"
+        ],
+        "caution": [
+          "A transition matrix describes a model assumption, not a causal law for every data set.",
+          "遷移行列はモデルの仮定であり、すべてのデータの因果法則ではありません。"
+        ],
+        "question": [
+          "What does one matrix multiplication represent?",
+          "行列の1回の積は何を表しますか？"
+        ],
+        "answer": [
+          "One time step of conditional probability updates.",
+          "条件付き確率を1段階更新することです。"
+        ],
+        "params": [
+          [
+            "p",
+            "Transition A to B",
+            "AからBへの遷移",
+            0,
+            0.9,
+            0.05,
+            0.2
+          ],
+          [
+            "q",
+            "Transition B to A",
+            "BからAへの遷移",
+            0,
+            0.9,
+            0.05,
+            0.4
+          ],
+          [
+            "steps",
+            "Steps n",
+            "ステップ数 n",
+            0,
+            30,
+            1,
+            8
+          ]
+        ],
+        "source": "MIT OpenCourseWare · Stochastic Processes",
+        "url": "https://ocw.mit.edu/courses/18-445-introduction-to-stochastic-processes-spring-2015/"
+      },
+      {
+        "id": "stationary",
+        "title": [
+          "2. Stationary distribution",
+          "2. 定常分布"
+        ],
+        "body": [
+          "Vary the transition probabilities and compare starting distributions with the stationary solution.",
+          "遷移確率を変え、初期分布と定常解を比較します。"
+        ],
+        "formula": "\\pi P=\\pi,\\qquad \\pi=\\left(\\frac{q}{p+q},\\frac{p}{p+q}\\right)",
+        "example": [
+          "When both transition probabilities are positive, the chain converges to its stationary distribution.",
+          "二つの遷移確率が正なら、連鎖は定常分布へ収束します。"
+        ],
+        "caution": [
+          "Reducibility or periodicity can prevent convergence from every initial distribution.",
+          "可約性や周期性があると、すべての初期分布からの収束が妨げられます。"
+        ],
+        "question": [
+          "What does stationarity mean here?",
+          "ここで定常とは何を意味しますか？"
+        ],
+        "answer": [
+          "Applying P leaves the distribution unchanged.",
+          "Pを適用しても分布が変わらないことです。"
+        ],
+        "params": [
+          [
+            "p",
+            "A to B",
+            "AからB",
+            0.05,
+            0.95,
+            0.05,
+            0.3
+          ],
+          [
+            "q",
+            "B to A",
+            "BからA",
+            0.05,
+            0.95,
+            0.05,
+            0.6
+          ],
+          [
+            "steps",
+            "Iterations",
+            "反復回数",
+            0,
+            30,
+            1,
+            10
+          ]
+        ],
+        "source": "MIT OpenCourseWare · Stochastic Processes",
+        "url": "https://ocw.mit.edu/courses/18-445-introduction-to-stochastic-processes-spring-2015/"
+      },
+      {
+        "id": "absorbing",
+        "title": [
+          "3. Gambler’s ruin",
+          "3. ギャンブラーの破産"
+        ],
+        "body": [
+          "Change the win probability and initial fortune, then compare the absorption probability with the boundaries.",
+          "勝つ確率と初期資産を変え、吸収確率と境界を比較します。"
+        ],
+        "formula": "h_i=\\alpha h_{i-1}+(1-\\alpha)h_{i+1},\\qquad h_0=0,\\ h_N=1",
+        "example": [
+          "For a fair walk, the probability of reaching N before zero is i/N.",
+          "公平な歩行では、0より先にNへ到達する確率は i/N です。"
+        ],
+        "caution": [
+          "The finite-state model assumes independent fixed-probability steps.",
+          "有限状態モデルは独立で一定確率の歩みを仮定します。"
+        ],
+        "question": [
+          "What happens when the walk is fair?",
+          "歩行が公平ならどうなりますか？"
+        ],
+        "answer": [
+          "The absorption probability changes linearly with the starting fortune.",
+          "吸収確率は初期資産に対して線形に変化します。"
+        ],
+        "params": [
+          [
+            "alpha",
+            "Win probability alpha",
+            "勝率 alpha",
+            0.1,
+            0.9,
+            0.05,
+            0.5
+          ],
+          [
+            "fortune",
+            "Initial fortune i",
+            "初期資産 i",
+            1,
+            9,
+            1,
+            4
+          ],
+          [
+            "goal",
+            "Goal N",
+            "目標 N",
+            4,
+            12,
+            1,
+            8
+          ]
+        ],
+        "source": "MIT OpenCourseWare · Stochastic Processes",
+        "url": "https://ocw.mit.edu/courses/18-445-introduction-to-stochastic-processes-spring-2015/"
+      }
+    ]
   }
 ]

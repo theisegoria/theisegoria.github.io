@@ -133,8 +133,23 @@ function render(section){const host=section.querySelector('.plot'),out=section.q
  const Tm=Math.max(.05,v.temperature),gap=v.gap,ch=chart(host,[0,1,0,1],'state','probability');const p1=Math.exp(-gap/Tm),p0=1,p=p1/(p0+p1);ch.dot(0,1-p,'third',8);ch.dot(1,p,'third',8);ch.line([0,1-p],[1,p],'second');result=T('High-energy probability: ','高エネルギー状態の確率：')+fmt(p);
  }else if(id==='partition'){
  const Tm=Math.max(.05,v.temperature),Z=Array.from({length:Math.round(v.states)},(_,i)=>Math.exp(-i/Tm)).reduce((a,b)=>a+b,0),F=-Tm*Math.log(Z),ch=chart(host,[0,v.states,0,1],'energy level','weight');for(let i=0;i<v.states;i++)ch.dot(i,Math.exp(-i/Tm)/Z,'third',5);result=T('Partition function: ','分配関数：')+fmt(Z)+T(' · free energy: ',' · 自由エネルギー：')+fmt(F);
- }else if(id==='random-walk'){
+}else if(id==='random-walk'){
  const n=Math.round(v.steps),bias=v.bias,ch=chart(host,[0,n,-Math.max(10,n*.3),Math.max(10,n*.3)],'step','position');let x=0,pts=[[0,0]];for(let i=1;i<=n;i++){x+=Math.sin(i*12.9898)*.5+.5+bias;pts.push([i,x]);}ch.path(pts);result=T('Final displacement: ','最終変位：')+fmt(x)+T(' · expected scaling: \(\sqrt{N}\)',' · 期待スケーリング：\(\sqrt{N}\)');
+}else if(id==='partitions'){
+ const n=Math.round(v.resolution),ch=chart(host,[0,1,0,1.1],'x','f(x)',280,true),step=1/n;
+ for(let i=0;i<n;i++){const x=i*step,y=Math.sqrt(x);ch.rect?.(x,y,step,0,'second');ch.line([x,0],[x,y],'second');}
+ ch.path(sample(0,1,160,x=>[x,Math.sqrt(x)]),'third');result=T('Partition level: ','分割レベル：')+n;
+}else if(id==='simple-functions'){
+ const n=Math.round(v.resolution),levels=2**n,ch=chart(host,[0,1,0,1.1],'x','f(x)',280,true),step=1/levels;
+ for(let i=0;i<levels;i++){const x=i*step,y=Math.floor(levels*Math.sqrt(x))/levels;ch.line([x,0],[x,y],'second');}ch.path(sample(0,1,160,x=>[x,Math.sqrt(x)]),'third');result=T('Approximation level: ','近似レベル：')+n;
+}else if(id==='convergence'){
+ const n=Math.round(v.n),width=1/n,ch=chart(host,[0,1,0,Math.max(2,n*1.05)],'x','f_n(x)',280,true);ch.line([0,0],[width,n],'third');ch.line([width,n],[width,0],'third');ch.line([width,0],[1,0],'second');result=T('Integral remains: ','積分は：')+'1';
+}else if(id==='transition'){
+ const p=v.p,q=v.q,steps=Math.round(v.steps),pi=.5*Math.pow(1-p-q,steps)+q/(p+q)*(1-Math.pow(1-p-q,steps)),ch=chart(host,[0,steps,0,1],'step','probability');ch.path([[0,.5],[steps,pi]],'third');ch.dot(steps,pi,'third',7);result=T('State A probability: ','状態Aの確率：')+fmt(pi);
+}else if(id==='stationary'){
+ const p=v.p,q=v.q,stationary=q/(p+q),steps=Math.round(v.steps),ch=chart(host,[0,steps,0,1],'step','probability');ch.path(sample(0,steps,80,k=>[k,stationary+(.8-stationary)*Math.pow(1-p-q,k)]),'third');ch.dot(steps,stationary+(.8-stationary)*Math.pow(1-p-q,steps),'third',7);result=T('Stationary A probability: ','定常状態Aの確率：')+fmt(stationary);
+}else if(id==='absorbing'){
+ const a=v.alpha,i=Math.round(v.fortune),N=Math.round(v.goal),h=Math.abs(a-.5)<1e-6?i/N:(1-Math.pow((1-a)/a,i))/(1-Math.pow((1-a)/a,N)),ch=chart(host,[0,N,0,1],'fortune','absorption probability');ch.path(sample(0,N,100,x=>[x,Math.abs(a-.5)<1e-6?x/N:(1-Math.pow((1-a)/a,x))/(1-Math.pow((1-a)/a,N))]));ch.dot(i,h,'third',7);result=T('Absorption probability: ','吸収確率：')+fmt(h);
 }else if(id==='modular'){
  const n=v.n,ch=chart(host,[-1,n,-1,1],'residue','phase',260);for(let i=0;i<n;i++){const a=TAU*i/n;ch.dot(i,0,'point',7);ch.text(i,0,String(i));ch.line([i,0],[i+((v.a-v.b)%n+n)%n,0],'second');}result=`${v.a} ≡ ${v.b} (mod ${n}) · ${T('difference','差')} = ${((v.a-v.b)%n+n)%n}`;
  }else if(id==='sieve'){
