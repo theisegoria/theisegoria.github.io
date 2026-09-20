@@ -13,7 +13,7 @@ window.BENCHMARK_DATA={
         46,
         50,
         51,
-        53,
+        52,
         53
       ],
       "terminal": [
@@ -40,7 +40,7 @@ window.BENCHMARK_DATA={
       "cost": [
         0.82,
         1.54,
-        1.72,
+        1.73,
         2.31,
         3.26
       ],
@@ -226,7 +226,7 @@ window.BENCHMARK_DATA={
     {
       "name": "Opus 5",
       "index": [
-        40,
+        39,
         45,
         48,
         50,
@@ -337,7 +337,7 @@ window.BENCHMARK_DATA={
     "additional": "2026-09-17",
     "game": "2026-09-17"
   },
-  "source": "Artificial Analysis comparison tables; rounded published values",
+  "source": "Artificial Analysis Intelligence Index v4.3.2, read 2026-09-21",
   "prices": [
     [
       10,

@@ -1,16 +1,15 @@
 <!doctype html>
-<html lang="en" class=" ig-document ig-editorial">
+<html lang="en" class="ig-document ig-editorial">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Claude Fable 5.1 across its five reasoning-effort settings against GPT-6 Astra: where the marginal return on deliberation reaches zero, a ten-benchmark head-to-head, and why the choice of model is worth as much as the whole effort dial.">
-  <meta name="theme-color" content="#f7f7f5">
-
-
-
-
-  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
-  <title>Effort buys less than the model you point it at</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Claude Opus 5, Claude Fable 5.1 and GPT-6 Astra swept across all five reasoning-effort settings: where the marginal return on deliberation reaches zero, which model is cheapest at a given score, and why the two vendors disagree about Opus 5 and only about Opus 5.">
+<meta name="theme-color" content="#f7f7f5">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="alternate" hreflang="en" href="/fable-5-1-reasoning-effort/">
+<link rel="alternate" hreflang="ja" href="/ja/fable-5-1-reasoning-effort/">
+<link rel="alternate" hreflang="x-default" href="/fable-5-1-reasoning-effort/">
+<title>The effort dial runs out before the money does</title>
 <style>
   :root {
     --ground:#F7F7F5; --surface:#FFFFFF; --surface-2:#F0F1EC;
@@ -145,17 +144,13 @@
   }
   .note { color:var(--muted); font-size:.86rem; line-height:1.55; margin-top:10px; }
 </style>
-<link rel="canonical" href="https://theisegoria.github.io/fable-5-1-reasoning-effort/">
-<link rel="alternate" hreflang="en" href="https://theisegoria.github.io/fable-5-1-reasoning-effort/">
-<link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/fable-5-1-reasoning-effort/">
-<link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/fable-5-1-reasoning-effort/"><script defer data-isegoria-analytics src="/assets/analytics.js?v=9e6ebd463bf2"></script>
-<script src="/assets/lang.js"></script>
 <!-- ISEGORIA:HEAD -->
 <link rel="stylesheet" href="/assets/site-shell.css?v=c21cd21e82">
 <script src="/assets/site-shell.js?v=c21cd21e82" ></script>
 <!-- /ISEGORIA:HEAD -->
+<script defer data-isegoria-analytics src="/assets/analytics.js?v=9e6ebd463bf2"></script>
 </head>
-<body class=" ig-site" data-site-kind="editorial" data-site-route="/fable-5-1-reasoning-effort/">
+<body class="ig-site" data-site-kind="editorial" data-site-route="/fable-5-1-reasoning-effort/">
 <!-- ISEGORIA:NAV -->
 <a class="ig-skip" href="#ig-content">Skip to content</a>
 <header id="ig-header"><div class="ig-nav-inner">
@@ -163,162 +158,264 @@
 <div class="ig-header-actions"><a class="ig-language" href="/ja/fable-5-1-reasoning-effort/" hreflang="ja" lang="ja">日本語</a><button class="ig-menu" type="button" aria-expanded="false" aria-controls="ig-primary">Menu</button></div>
 <nav id="ig-primary" aria-label="Primary navigation"><a href="/">Home</a><a href="/library.html">Library</a><a href="/math-encyclopedia/">Math encyclopedia</a><a href="/#interactive">Interactive</a><a href="/#preoccupations" aria-current="location">Research</a><a href="/#books">Books</a><a href="/projects.html">Projects</a><a href="/about.html">About</a><a class="ig-language" href="/ja/fable-5-1-reasoning-effort/" hreflang="ja" lang="ja">日本語</a><button class="ig-theme" type="button" hidden>Theme</button></nav>
 </div></header>
-<nav id="ig-breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><a href="/#preoccupations">Research</a><span aria-hidden="true">/</span><span aria-current="page">Effort buys less than the model you point it at</span></nav>
+<nav id="ig-breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><a href="/#preoccupations">Research</a><span aria-hidden="true">/</span><span aria-current="page">The effort dial runs out before the money does</span></nav>
 <span id="ig-content" tabindex="-1"></span>
-<!-- /ISEGORIA:NAV --><nav class="ig-page-nav" aria-label="On this page"><a href="#curve">The curve</a><a href="#models">Model choice</a><a href="#sweep">The sweep</a><a href="#matched">Matched effort</a><a href="probe/">Knowledge probe</a></nav>
-
+<!-- /ISEGORIA:NAV -->
 <main>
 <div class="wrap">
 
   <div class="hero">
-    <p class="label">Benchmark analysis / 8 September 2026</p>
-    <h1>Effort buys less than the model you point it at.</h1>
-    <p class="standfirst">Claude Fable 5.1 exposes five reasoning-effort settings spanning six times the output tokens and forty-two times the latency. On the current Artificial Analysis index the top two settings score identically, so the last 68 million tokens buy nothing at all. Meanwhile, swapping between Fable 5.1 and GPT-6 Astra at a fixed effort level moves the result by roughly as much as the entire effort dial does. I work through both axes here, and which one I now think deserves the attention.</p>
+    <p class="label">Benchmark analysis / 21 September 2026</p>
+    <h1>The effort dial runs out before the money does</h1>
+    <p class="standfirst">All three frontier models now expose the same five-step effort ladder, and Artificial Analysis has run every rung of it. Two things fall out. The top of the ladder is close to worthless: the last step buys between zero and one index points while costing up to a dollar sixty-five more per task. And at any score the three models can all reach, they do not cost remotely the same, with GPT-6 Astra arriving at Fable 5.1's top score for forty-three percent of the money. I work through both axes here, and the one finding I think is more solid than any of the rankings.</p>
     <div class="herometa">
-      <a class="pill" href="fable-5-1-reasoning-effort-en.pdf" target="_blank" rel="noopener" title="PDF, opens in a new tab">English PDF</a>
-      <a class="pill" href="fable-5-1-reasoning-effort-ja.pdf" hreflang="ja" lang="ja" target="_blank" rel="noopener" title="PDF, opens in a new tab">日本語版 PDF</a>
-      <a class="pill" href="fable-5-1-reasoning-effort-bilingual.pdf" target="_blank" rel="noopener" title="PDF, opens in a new tab">Bilingual edition</a>
+      <a class="pill" href="fable-5-1-reasoning-effort-en.pdf" target="_blank" rel="noopener">English PDF</a>
+      <a class="pill" href="fable-5-1-reasoning-effort-ja.pdf" hreflang="ja" lang="ja" target="_blank" rel="noopener">日本語版 PDF</a>
+      <a class="pill" href="fable-5-1-reasoning-effort-bilingual.pdf" target="_blank" rel="noopener">Bilingual edition</a>
       <a class="pill" href="probe/">Companion: the knowledge probe</a>
     </div>
-    <p class="label" style="margin-top:18px">Reasoning effort &middot; token economics &middot; latency &middot; agentic coding &middot; model selection</p>
   </div>
 
-  <nav class="toc" aria-label="Contents">
-    <p class="label">Contents</p>
+  <nav class="toc" aria-label="On this page">
+    <p class="kt">On this page</p>
     <ol>
-      <li><a href="#dial">What the dial actually controls</a></li>
-      <li><a href="#curve">The curve, and where it goes flat</a></li>
-      <li><a href="#marginal">The last setting buys nothing</a></li>
-      <li><a href="#latency">Latency is the cost that scales worst</a></li>
-      <li><a href="#models">The other axis: which model</a></li>
-      <li><a href="#sweep">Ten benchmarks, and a split decision</a></li>
-      <li><a href="#matched">The only matched-effort comparison</a></li>
-      <li><a href="#shape">What the split is actually tracking</a></li>
-      <li><a href="#limits">What this evidence cannot settle</a></li>
+<li><a href="#curve">The curve</a></li><li><a href="#frontier">The frontier</a></li><li><a href="#returns">Diminishing returns</a></li><li><a href="#split">The split</a></li><li><a href="#economics">Token economics</a></li><li><a href="#vendors">Vendor disagreement</a></li><li><a href="probe/">Knowledge probe</a></li>
     </ol>
   </nav>
 
-  <article>
-
-  <p class="lede"><strong>Reasoning effort is not a quality dial; it is a budget for deliberation over whatever is already in the context window.</strong> That distinction decides the whole analysis. Raising effort lets the model spend more tokens reasoning before it commits to an answer, which helps when the answer is genuinely hard to derive from material the model can already see. It does nothing when the material in front of the model is the wrong material. The five settings are therefore five points on a deliberation-budget curve, and the question is where that curve stops repaying its cost. The answer on the current index is earlier than I would have guessed, and the choice I now think matters more is a different one entirely.</p>
+  <div class="key">
+    <p class="kt">What this piece replaces</p>
+ <p>An earlier version of this page covered Fable 5.1 against GPT-6 Astra only. Claude Opus 5 has
+ since been swept across the same ladder by the same evaluator, so I have rewritten it as a
+ three-model comparison rather than publish a second, overlapping piece. The Fable 5.1 numbers are
+ unchanged; the conclusions are not, because Opus 5 turns out to have by far the steepest effort
+ curve of the three and that changes what the effort dial looks like.</p>
+  </div>
 
   <div class="key">
     <p class="kt">A note on the index version</p>
-    <p>Artificial Analysis has retired Intelligence Index v4.2 and rescored every model on v4.3, whose agentic-coding component is now Terminal-Bench v4.0 rather than v2.1. The two versions are not comparable, and the models did not change: only the measurement did. Every figure on this page is v4.3.</p>
+ <p>Artificial Analysis re-versions its Intelligence Index, and does so without labelling the scale
+ on published articles. Its own Fable 5.1 launch piece reports a max-effort score of 66 against Opus
+ 5's 63. The live leaderboard, under v4.3.2, reports 53 and 51. These are not a disagreement, they
+ are two different scales, and I have used v4.3.2 throughout because it is the one that currently
+ has all three models on it. Anyone still quoting 66 is quoting a retired scale.</p>
   </div>
 
   <h2 id="dial"><span class="num">Section one</span>What the dial actually controls</h2>
 
-  <p>Fable 5.1 ships with five effort settings: low, medium, high, xhigh and max. Anthropic sets high as the default in Claude Code and medium in the consumer surfaces. Artificial Analysis evaluates all five, running each through the identical Intelligence Index v4.3 suite, which is the only public dataset holding the workload constant while varying only the effort parameter.</p>
-
-  <p>Holding the workload constant matters more than it appears. Every published comparison of effort settings measures how much deliberation a model spends on a fixed set of tasks, not how well it performs on tasks of different shapes. The curve below measures one thing precisely: the return on additional deliberation, given a problem that is fixed and correctly specified. It is silent on the failure mode I take to dominate large real codebases: the problem being specified from the wrong files.</p>
+  <p>Effort is not a quality slider. It is a budget for deliberation, and the three vendors spend it
+  very differently. Across the five settings Opus 5 moves from seven thousand reasoning tokens per
+  task to forty-three thousand, Fable 5.1 from eight to forty-seven thousand, and Astra from under a
+  thousand to seventeen thousand. That last figure is the one to hold on to: at its most expansive
+  setting, Astra is still thinking with roughly a third of the tokens the Anthropic models spend at
+  theirs.</p>
+  <p>What a reader wants to know is whether that extra thinking is bought back in results. For most
+  of the ladder it is. At the top of it, it is not.</p>
 
   <h2 id="curve"><span class="num">Section two</span>The curve, and where it goes flat</h2>
 
-  <p>The horizontal axis is logarithmic, so a constant return per doubling of spend would appear as a straight line. Any downward bend is real diminishing return rather than an artefact of the scale.</p>
-
-  <figure class="fig">
-    <div class="plate"><img src="figures/fig1_frontier.svg" alt="Intelligence Index v4.3 against output tokens on a logarithmic axis for the five Fable 5.1 effort settings, rising from 47 at low to 53 at xhigh and then flat to max."></div>
-    <figcaption><b>Figure 1. The effort frontier on index v4.3.</b> Six index points separate low from xhigh, and 87 million output tokens separate them. Between xhigh and max the line is horizontal: both settings score 53, and the additional 68 million tokens purchase nothing measurable.</figcaption>
-  </figure>
-
-  <p>That terminal flat segment is new to v4.3. On the previous index there was still a single point of separation between xhigh and max. There is now none, so I read the most expensive setting Fable offers as indistinguishable, on this evaluation, from the setting below it.</p>
-
-  <h2 id="marginal"><span class="num">Section three</span>The last setting buys nothing</h2>
-
-  <figure class="fig">
-    <div class="plate"><img src="figures/fig2_marginal.svg" alt="Bar chart of index points gained per additional million output tokens for each step up in effort: 0.182, 0.111, 0.034 and 0.000."></div>
-    <figcaption><b>Figure 2. The value of the marginal token, by step.</b> 0.182 index points per additional million tokens from low to medium, 0.034 from high to xhigh, and exactly zero from xhigh to max. The model is not degrading across this range; the evaluation has run out of headroom.</figcaption>
-  </figure>
-
-  <p>High is the last setting where I can see the marginal token doing recognisable work. Expressed as absolute efficiency the same collapse appears: 1.42 index points per million tokens at low, 0.82 at high, 0.28 at max.</p>
-
-  <h2 id="latency"><span class="num">Section four</span>Latency is the cost that scales worst</h2>
-
-  <p>Tokens are the cost that appears on an invoice. Time to first token is the cost that is felt, and it scales far worse than price does. Effort budgets are consumed before the first output token is emitted, so the entire deliberation cost is front-loaded into the wait.</p>
-
-  <figure class="fig">
-    <div class="plate"><img src="figures/fig3_latency.svg" alt="Time to first answer token on a logarithmic axis across the five Fable 5.1 effort settings, from 6.6 seconds at low to 275.5 seconds at max."></div>
-    <figcaption><b>Figure 3. The latency tax.</b> 6.6 seconds at low against 275.5 at max, a factor of forty-two, while cost per task rises by roughly three. A four and a half minute pause does not merely cost four and a half minutes: it breaks the loop in which a developer holds a hypothesis in working memory while the agent tests it.</figcaption>
-  </figure>
-
-  <h2 id="models"><span class="num">Section five</span>The other axis: which model</h2>
-
-  <p>Everything above varies one parameter. The more interesting comparison varies the other. GPT-6 Astra is evaluated on the same v4.3 suite at the same list prices, ten dollars per million input tokens and fifty per million output, which makes the cost comparison unusually clean: any difference in spend is a difference in token efficiency rather than in pricing.</p>
-
-  <figure class="fig">
-    <div class="plate"><img src="figures/fig6_spend.svg" alt="Intelligence Index v4.3 plotted against total cost to run the index for both models, showing Astra's points sitting left of Fable's at equal scores."></div>
-    <figcaption><b>Figure 4. Intelligence against what it costs to buy.</b> Astra sits to the left of Fable throughout. Both reach 51 on the index, Astra for $2,917 and Fable for $5,242. Both reach 53, Astra for $5,324 and Fable for $9,063 at xhigh. On this measure Astra is straightforwardly the cheaper way to a given score.</figcaption>
-  </figure>
-
-  <p>If the index score were the whole story the conclusion would be simple and would not favour Fable. I want to be clear about that before going further, because the rest of this section complicates it, and I do not want the complication mistaken for the starting position.</p>
-
-  <h2 id="sweep"><span class="num">Section six</span>Ten benchmarks, and a split decision</h2>
-
-  <p>The index is a composite of ten evaluations. A tie on the composite is compatible with large differences underneath it, and here the differences are large and they point in both directions.</p>
-
-  <figure class="fig">
-    <div class="plate"><img src="figures/fig4_sweep.svg" alt="Diverging bar chart of the relative gap between the two models on ten benchmarks, five favouring Fable, four favouring Astra, one tie."></div>
-    <figcaption><b>Figure 5. Every component of index v4.3, at max effort for both models.</b> Fable takes five, Astra takes four, and AA-Omniscience ties. Two of Astra's four wins are the largest margins on the chart. This is a split decision, not a verdict.</figcaption>
-  </figure>
-
-  <p>I want to single out two results, because they cut against the obvious narratives. <b>CritPt goes to Astra</b>, 32 against 30. CritPt is research-level physics reasoning: 71 unpublished frontier problems contributed by more than fifty physics researchers across eleven subfields, in guess-resistant formats. If Fable's advantage were fundamentally about depth of physical-science knowledge, that is the benchmark it should win, and it does not. <b>AA-Omniscience ties at 43</b>, but underneath the tie Fable posts 67 per cent raw factual accuracy, the highest figure on the entire leaderboard. The index penalises confident wrong answers and rewards abstention, so I read Astra's parity as bought by declining more often rather than by knowing more.</p>
-
-  <h2 id="matched"><span class="num">Section seven</span>The only matched-effort comparison</h2>
-
-  <p>Every figure so far compares the two models at max effort, which is nobody's working configuration. AA-Briefcase is the one evaluation publishing both models at all five settings, and it is therefore the only genuinely matched comparison available. It scores long-horizon agentic knowledge work: four multi-week projects, 91 tasks, graded on rubric pass rate, analytical quality and presentation quality combined into an Elo.</p>
-
-  <figure class="fig">
-    <div class="plate"><img src="figures/fig5_briefcase.svg" alt="AA-Briefcase Elo for both models across all five effort settings, with Fable above Astra at every level."></div>
-    <figcaption><b>Figure 6. AA-Briefcase Elo at matched effort.</b> Fable leads at every setting, by 231 points at low and by 84 at high. Fable at high (1578) scores above Astra at max (1562), and Fable at medium (1531) above Astra at high (1494). Fable 5.1 holds the top two places on the whole leaderboard.</figcaption>
-  </figure>
-
-  <p>The magnitudes here are worth comparing directly against the effort dial, because they are in the same units. Moving Fable across its entire effort range, from low to max, gains 178 Elo. Swapping Astra for Fable at a fixed effort gains between 84 and 231, with a typical value near 100. On this benchmark the choice of model is worth somewhere between half and the whole of the choice of effort setting. That is the claim I put in the title, and AA-Briefcase is where I can point to it measured rather than asserted.</p>
-
-  <h2 id="shape"><span class="num">Section eight</span>What the split is actually tracking</h2>
-
-  <p>The wins are not scattered at random. Fable takes AA-Briefcase, GDPval-AA v2, AA-LCR, Humanity's Last Exam and SciCode: long-horizon work over dense inputs, long-context reasoning, and knowledge recall and synthesis. Astra takes Terminal-Bench v4.0, AutomationBench-AA, GDP.pdf and CritPt: shorter-horizon tool execution, automation, extraction, and constrained problem solving. AA-Omniscience fits the pattern as well once the tie is decomposed, since raw recall favours Fable and calibrated abstention favours Astra.</p>
-
-  <p>The mechanism I read out of this is not that one model is smarter. It is that the two have different profiles across context length and horizon. Sustained reasoning over a large amount of already-loaded material is where Fable separates; short, well-scoped, tool-driven tasks are where Astra does. Those are different jobs, and a codebase of serious size imposes the first one on almost every task, because the context is always large and the reasoning always has to hold many pieces at once.</p>
-
-  <div class="key">
-    <p class="kt">The distinction worth keeping</p>
-    <p>The index score answers "how capable is this model on a fixed public suite". It does not answer "which model suits the shape of my work". Those come apart here: the models tie at 53 while differing by 12 per cent on SciCode in one direction and 13 per cent on Terminal-Bench in the other. Pick the benchmark whose task shape resembles yours, and ignore the composite.</p>
+  <p>The three curves have genuinely different shapes, and the shape matters more than the finishing
+  position.</p>
   </div>
-
-  <h2 id="limits"><span class="num">Section nine</span>What this evidence cannot settle</h2>
-
-  <p>Nine of the ten sweep comparisons are at max effort for both models, which is neither of the settings most people run. AA-Briefcase is the only matched-effort series, so the central claim I make in section seven rests on a single benchmark. Terminal-Bench v4.0 publishes only xhigh and max for either model, so the coding-specific comparison has no entry at all at high or medium.</p>
-
-  <p>Several of the gaps are small enough to be within benchmark noise. I would not act on a two-point CritPt difference or a four-point AA-LCR difference on its own; they matter here only as part of a consistent pattern across ten evaluations, and the pattern is the claim rather than any single row.</p>
-
-  <p>The limitation I cannot get past is one of construct rather than measurement. These are eval-suite aggregates over tasks whose context is supplied correctly by the harness. On a codebase of any real size the dominant failure mode is not shallow reasoning over the right files; it is confident reasoning over the wrong ones. Raising effort makes that failure worse rather than better, because it produces more elaborate and more plausible inference from the same faulty premises. Neither the effort dial nor the model choice substitutes for getting the right material in front of the model, and nothing measured here lets me put a number on what that costs.</p>
-
-  <div class="key">
-    <p class="kt">A companion instrument</p>
-    <p>The one thing measured here that effort cannot improve is knowledge, and the public benchmark closest to it, AA-Omniscience, has the two leading models tied. I think that is a poor place to leave the question, because a leaderboard averages over subjects somebody else chose. <a href="probe/">A closed-book probe</a> publishes the prompt, thirty items, an answer key and a scoring scheme for measuring the same thing on your own material, in your own words.</p>
+  <div class="wide">
+    <figure class="fig"><img src="figures/f1-index-effort.svg" alt="Line chart of Intelligence Index against reasoning effort for three models" loading="lazy" decoding="async">
+      <figcaption>Figure 1. Artificial Analysis Intelligence Index v4.3.2 across the five effort settings. Fable 5.1 and Astra converge on 53 from opposite directions; Opus 5 runs a parallel track below both.</figcaption></figure>
   </div>
+  <div class="wrap">
 
-  <p class="kicker">The dial is nearly exhausted by the time it reaches high, and entirely exhausted above xhigh. The model choice is not exhausted at all, and on the one benchmark that measures both at matched settings it is worth as much as the whole dial. Most of the attention I see spent on effort settings would be better spent on which model is reading the code, and almost all of it would be better spent on which code the model is reading.</p>
+  <p>Opus 5 gains twelve index points from low to max, which is twice what either of the others gains.
+  Read one way that is a strength, since the dial is doing real work. Read the other way it is a
+  weakness, because what it mostly reflects is that Opus 5's low setting is comparatively poor:
+  thirty-nine against forty-six and forty-seven. Astra gains seven points and four of them arrive in
+  the first step. Fable 5.1 gains six across the whole ladder, which is the intended behaviour of a
+  model whose cheapest setting is already strong.</p>
+  <p>The practical consequence is that the gap between the models depends entirely on where you run
+  them. At low effort Opus 5 is seven to eight points behind. At max it is two. If you were choosing
+  a model by reading a single matched-max comparison, you would be choosing on the narrowest margin
+  the data offers.</p>
+
+  <h2 id="frontier"><span class="num">Section three</span>The frontier, once cost is on the axis</h2>
+
+  <p>The index-against-effort chart is the one everybody publishes. The one that decides anything is
+  index against cost, because effort levels are not comparable across vendors and dollars are.</p>
+  </div>
+  <div class="wide">
+    <figure class="fig"><img src="figures/f2-frontier.svg" alt="Index score plotted against cost per task on a logarithmic axis" loading="lazy" decoding="async">
+      <figcaption>Figure 2. The same five settings per model, plotted against what a task actually costs. Up and to the left is better.</figcaption></figure>
+  </div>
+  <div class="wrap">
+
+  <p>Astra's entire curve sits above and to the left of both Anthropic models. There is no score it
+  reaches that either of them reaches more cheaply. Astra at low effort, at eighty-two cents and a
+  score of forty-six, beats Opus 5 at medium effort, at two dollars nineteen and a score of forty-five.
+  Fable 5.1 and Astra both finish on fifty-three, at seven dollars sixty-three and three dollars
+  twenty-six respectively. That is two point three times the money for an identical score. Opus 5
+  does not reach fifty-three at any setting or any price.</p>
+  <p>I want to be careful about what this does and does not establish. It is one evaluator's index,
+  run once, at list prices. It is not a claim that Astra is the better model for a given job, and
+  section six is about a benchmark split that cuts the other way. But as a statement about what a
+  point of measured capability costs, it is the least ambiguous thing in this entire dataset.</p>
+
+  <h2 id="returns"><span class="num">Section four</span>The last step buys nothing</h2>
+
+  <p>Diminishing returns on deliberation are expected. The rate of the diminishing is what surprised
+  me.</p>
+  </div>
+  <div class="wide">
+    <figure class="fig"><img src="figures/f3-marginal.svg" alt="Bar chart of index points gained per extra dollar per task, for each effort step" loading="lazy" decoding="async">
+      <figcaption>Figure 3. Marginal efficiency of each step up the ladder, in index points per extra dollar per task.</figcaption></figure>
+  </div>
+  <div class="wrap">
+
+  <p>The first step returns between three point three and five point six index points per extra dollar.
+  The last returns between zero and one point one. For Fable 5.1 the last step returns exactly zero:
+  xhigh and max both score fifty-three, and max costs one dollar sixty-five more per task, emits
+  seventeen thousand more output tokens and takes sixty seconds longer. On the eight index components,
+  max beats xhigh on three of them and loses on two.</p>
+  <p>My reading is that for Fable 5.1, max effort is not a setting to be used by default. It is a
+  setting for the specific tasks where SciCode-like or long-context work is the bottleneck, and the two
+  points it buys there are worth paying for. Used as a global default it is a straightforward waste.</p>
+
+  <h2 id="split"><span class="num">Section five</span>Eight benchmarks, and a clean split</h2>
+
+  <p>The aggregate index hides a specialisation that is consistent across every effort level, which
+  makes it much harder to dismiss as noise.</p>
+  </div>
+  <div class="wide">
+    <figure class="fig"><img src="figures/f4-components.svg" alt="Eight small multiple charts, one per benchmark, each showing three models across five effort settings" loading="lazy" decoding="async">
+      <figcaption>Figure 4. The eight percentage and index-scaled components of the Intelligence Index. Vertical scales differ per panel, so read the shapes and the ordering rather than the heights.</figcaption></figure>
+  </div>
+  <div class="wrap">
+
+  <p>Astra leads both Anthropic models at every effort level on the three tool-use and
+  document-grounded evaluations: AutomationBench-AA by seven to thirteen points, Terminal-Bench 4.0 by
+  two to seven over Fable 5.1 and eight to sixteen over Opus 5, and GDP.pdf by two to six and nine to
+  thirteen respectively. Fable 5.1 leads on the scientific-code and knowledge evaluations, by seven
+  points on SciCode at max and four on Humanity's Last Exam, and it is the only model above
+  eighty-four percent on AA-LCR long-context retrieval.</p>
+  <p>Opus 5 leads nothing at matched max effort. Its best result is a tie with Astra on SciCode and on
+  Humanity's Last Exam. Its weakness is concentrated almost entirely in the agentic column, which is
+  worth knowing if agentic work is not what you are buying it for.</p>
+
+  <h2 id="nonmono"><span class="num">Section six</span>More effort is not reliably better</h2>
+
+  <p>Ten of the twenty-four model and benchmark pairs in the component set are non-monotone in effort.
+  Some of that is noise at small sample counts. Two of them are not.</p>
+  <p>Fable 5.1's GDP.pdf score falls monotonically across the whole ladder, twenty-eight percent at low
+  down to twenty-six at max. Opus 5's AA-LCR long-context score peaks at medium, eighty-two percent,
+  and is three points lower at max. A single dip is noise; a monotone decline over four steps is a
+  pattern, and the pattern is that on long-document retrieval, extended deliberation appears to hurt.
+  I would not want to over-read two series, but it is enough that I would not set max effort globally
+  without checking it against the specific task type.</p>
+
+  <h2 id="economics"><span class="num">Section seven</span>What effort costs in tokens and time</h2>
+
+  <p>Cost per task is a derived figure. The underlying quantities are more revealing.</p>
+  </div>
+  <div class="wide">
+    <figure class="fig"><img src="figures/f5-economics.svg" alt="Two line charts showing output tokens and seconds per task across the effort ladder" loading="lazy" decoding="async">
+      <figcaption>Figure 5. Per-task output tokens and wall-clock time, from the same index runs.</figcaption></figure>
+  </div>
+  <div class="wrap">
+
+  <p>At max effort Fable 5.1 emits seventy-eight thousand output tokens per task and Opus 5
+  seventy-three thousand, against Astra's twenty-seven thousand. For the same index score, that is
+  roughly a third of the tokens. Latency follows: a max-effort task takes Opus 5 seven hundred and
+  ninety-one seconds and Fable 5.1 seven hundred and thirty-seven, against Astra's four hundred and
+  ninety. At low effort the relative gap is wider still, seventy-nine seconds against one hundred and
+  seventy-three and two hundred and seventy-six.</p>
+  <p>For anything a person waits on, that is the difference between a pause and a coffee break, and it
+  is the argument for running below max that I find most persuasive. The index points you give up
+  going from max to xhigh are worth one or zero. The seconds you get back are worth sixty.</p>
+
+  <h2 id="vendors"><span class="num">Section eight</span>The two labs disagree about Opus 5, and only about Opus 5</h2>
+
+  <p>This is the finding I did not expect and the one I am most confident is real, because it does not
+  depend on trusting either vendor's number.</p>
+  </div>
+  <div class="wide">
+    <figure class="fig"><img src="figures/f6-vendor.svg" alt="Paired bar chart comparing Anthropic's and OpenAI's published figures for the same models" loading="lazy" decoding="async">
+      <figcaption>Figure 6. The seven model and benchmark pairs for which both labs publish a figure.</figcaption></figure>
+  </div>
+  <div class="wrap">
+
+  <p>On all four Fable 5.1 figures the two labs agree to the decimal: 55.8, 52.6, 31.4, 65.0. On all
+  three Opus 5 figures OpenAI's number is between 7.6 and 9.5 points lower than Anthropic's. OpenAI's
+  own page puts Opus 5 at 44.5 percent on Terminal-Bench 4.0 where Anthropic reports 52.3.</p>
+  <p>Exact agreement on one model and systematic disagreement on the other rules out most of the
+  innocent explanations. A harness difference, a scaffold difference or sampling variance would
+  perturb both models, not one. The explanation I find most likely is that OpenAI carried Fable 5.1's
+  figures across from Anthropic's published table while re-running Opus 5 itself, possibly at a lower
+  effort setting, though I cannot demonstrate that from the pages themselves. Either way the practical
+  rule is the one I would apply to any of these tables: do not build a comparison on a competitor's
+  reported figure for a third-party model.</p>
+
+  <h2 id="independent"><span class="num">Section nine</span>What independent evaluators say</h2>
+
+  <p>Two organisations run these models themselves rather than republishing vendor figures, and they
+  do not fully agree with each other.</p>
+  <p>Vals AI puts Fable 5.1 first on its aggregate index at 68.83 percent, Opus 5 second at 67.21 and
+  Astra third at 66.61. The whole spread is 2.2 points against stated confidence intervals of plus or
+  minus 1.08 and 1.09, so Fable's lead over Astra is at the edge of significance and Opus 5's position
+  is not distinguishable from either. On Terminal-Bench 4.0 Vals independently reproduces Artificial
+  Analysis's ordering, Astra ahead of Fable 5.1 ahead of Opus 5, at consistently lower absolute values.
+  Two evaluators agreeing on rank while disagreeing on level is the normal and healthy pattern.</p>
+  <p>ARC Prize is the only other source publishing effort-resolved numbers. On ARC-AGI-2 Astra leads
+  Fable 5.1 at every matched level, by 7.1 points at low narrowing to 3.3 at high and xhigh. Opus 5 was
+  run at high and max only. I would treat ARC-AGI-1 as saturated, since at 96 to 99 percent it is
+  measuring sampling noise, and I would treat ARC-AGI-3 with caution: its two harnesses disagree by
+  thirty-seven points on the same model, and its no-effort setting scores higher than its low setting,
+  which should not happen.</p>
+  <p>LMArena separates its four listed variants by eighteen Elo points on vote counts ranging from
+  2,693 to 42,617. That ordering is not statistically meaningful and I would not cite it. Its WebDev
+  board, where the spread is 113 points, is worth more: Astra 1800, Fable 5.1 1758, Opus 5 1687.</p>
+
+  <h2 id="limits"><span class="num">Section ten</span>What this evidence cannot settle</h2>
+
+  <p>Most of the comparison a reader actually wants does not exist. Neither Anthropic nor OpenAI
+  publishes a single effort-labelled number. Both ship effort-swept charts with unlabelled axes, which
+  is a decision I find hard to read charitably given how easily the figures could be tabulated.
+  Artificial Analysis is the only source with all three models on all five settings, and for Astra's
+  per-effort data it is the only source at all, with no independent replication anywhere.</p>
+  <p>There are no effort breakdowns anywhere for OSWorld, CursorBench, FrontierMath, GPQA,
+  Terminal-Bench-Science or SWE-bench. SWE-bench Verified has no published entry for any of the three
+  models; the figures in circulation are vendor-reported and unverifiable. Nobody publishes results
+  indexed by thinking-token budget, so the named ladder is all there is and the reasoning-tokens column
+  is the closest available proxy.</p>
+  <p>Two of Artificial Analysis's own metrics, AA-Briefcase and GDPval-AA, returned different values on
+  repeated reads of the same comparison pages, so I have left them out of every figure here rather than
+  pick one. And the margins at matched max effort, 53 against 53 against 51, sit inside the range where
+  a second independent evaluator produces a different ordering entirely. The cost and token findings are
+  far more robust than the capability ranking, and if you take one thing from this piece I would rather
+  it were those.</p>
 
   <div class="sources">
-    <h2>Sources</h2>
-    <p><b>Primary data.</b> Artificial Analysis: Claude Fable 5.1 model pages for low, medium, high, xhigh and max effort; GPT-6 Astra model pages for medium, high and max; the GPT-6 Astra versus Claude Fable 5.1 comparison page; and the leaderboards for AA-Briefcase, AA-Omniscience, CritPt, SciCode and Terminal-Bench v4.0. All figures are Intelligence Index v4.3. Retrieved 8 September 2026.</p>
-    <p><b>Vendor and benchmark material.</b> Anthropic, "Introducing Claude Fable 5.1 and Claude Mythos 5.1", September 2026. OpenAI, "GPT-6 Astra", September 2026. Tian M, Gao L, Peng H, et al., "SciCode: A Research Coding Benchmark Curated by Scientists", NeurIPS Datasets and Benchmarks, 2024.</p>
-    <p style="margin-top:16px">I computed every derived quantity on this page, including index points per million tokens, marginal return per step, relative benchmark gaps and the Elo comparisons in section seven, from the published figures rather than taking it from a source, and it can be reproduced from the tables above.</p>
-    <p><b>Scope.</b> I have run no benchmark myself for this piece; every score is a published third-party or vendor figure.</p>
-  </div>
-
-  </article>
+ <h3>Sources</h3>
+ <p><strong>Primary data.</strong> Artificial Analysis
+ <a href="https://artificialanalysis.ai/models/comparisons/claude-fable-5-1-vs-claude-opus-5-vs-gpt-6-astra">three-way comparison</a>,
+ <a href="https://artificialanalysis.ai/leaderboards/models">model leaderboard</a> and the per-effort
+ comparison pages for each model;
+ <a href="https://www.vals.ai/benchmarks/vals_index">Vals Index v2</a> and
+ <a href="https://www.vals.ai/benchmarks/terminal-bench-4">Vals Terminal-Bench 4.0</a>;
+ ARC Prize results for <a href="https://arcprize.org/results/openai-gpt-6-astra">GPT-6 Astra</a>,
+ <a href="https://arcprize.org/results/anthropic-claude-fable-5-1">Fable 5.1</a> and
+ <a href="https://arcprize.org/results/anthropic-claude-opus-5">Opus 5</a>;
+ <a href="https://arena.ai/leaderboard/text">LMArena</a>.
+ Vendor figures from <a href="https://www.anthropic.com/claude-fable-and-mythos-5-1">Anthropic</a> and
+ <a href="https://openai.com/index/gpt-6-astra/">OpenAI</a>.</p>
+ <p><strong>What I verified.</strong> Every figure in this piece was read off the cited page on 21
+ September 2026, and the matched-max row of the Artificial Analysis component table was re-read
+ directly rather than taken second hand. Nothing is estimated or interpolated. Where two sources
+ disagree I have shown both rather than averaging them.</p>
+ <p><strong>What I could not verify.</strong> Astra's per-effort figures have no independent
+ replication. The official SWE-bench, Terminal-Bench, OSWorld and LiveBench leaderboards render their
+ tables client-side and returned nothing, so every figure I have for those benchmarks is second hand.
+ AA-Briefcase and GDPval-AA were unstable across repeated reads and are excluded from the figures.
+ Aggregator sites were used only where they name a primary source, and every conflict I found traces
+ to an aggregator disagreeing with a primary site.</p></div>
 </div>
 </main>
-
-<footer class="site">
-  <div class="wide">
-    <span>&copy; 2026 Benjamin Michael Haire</span>
-    <a href="/">Back to all projects</a>
-  </div>
-</footer><!-- ISEGORIA:FOOT -->
+<!-- ISEGORIA:FOOT -->
 <footer id="ig-footer"><div><a href="/">Isegoria · Benjamin Haire</a><nav aria-label="Site links"><a href="/">Back to home</a><a href="/library.html">Browse the library</a><a href="#ig-content">Back to top</a></nav></div></footer>
 <!-- /ISEGORIA:FOOT -->
 </body>
