@@ -3149,5 +3149,336 @@
         "url": "https://ocw.mit.edu/courses/8-05-quantum-physics-ii-fall-2013/"
       }
     ]
+  },
+  {
+    "slug": "complex-analysis",
+    "title": [
+      "Complex analysis: maps, residues, and harmonic fields",
+      "複素解析：写像・留数・調和場"
+    ],
+    "description": [
+      "Conformal maps, residues, and harmonic functions.",
+      "等角写像・留数・調和関数を探ります。"
+    ],
+    "group": "analysis",
+    "prerequisite": [
+      "Calculus and complex numbers",
+      "微積分と複素数"
+    ],
+    "source": "MIT OpenCourseWare · Complex Variables",
+    "url": "https://ocw.mit.edu/courses/18-04-complex-variables-fall-2010/",
+    "labs": [
+      {
+        "id": "conformal",
+        "title": [
+          "1. Conformal maps",
+          "1. 等角写像"
+        ],
+        "body": [
+          "Transform a grid with z↦z² and see how angles are preserved locally away from critical points.",
+          "z↦z²で格子を変換し、臨界点以外で角度が局所的に保たれる様子を見ます。"
+        ],
+        "formula": "f\\text{ conformal where }f\\prime(z)\\ne0",
+        "example": [
+          "The derivative multiplies by a local scale and rotation.",
+          "導関数は局所的な拡大と回転として働きます。"
+        ],
+        "caution": [
+          "The map is not angle-preserving at z=0, where the derivative vanishes.",
+          "z=0では導関数が0になり、等角性が失われます。"
+        ],
+        "question": [
+          "What does the derivative control?",
+          "導関数は何を決めますか？"
+        ],
+        "answer": [
+          "Its magnitude scales lengths and its argument rotates directions.",
+          "絶対値が長さを、偏角が方向の回転を決めます。"
+        ],
+        "params": [
+          [
+            "power",
+            "Map power",
+            "写像のべき",
+            1,
+            4,
+            1,
+            2
+          ],
+          [
+            "angle",
+            "Input angle",
+            "入力角",
+            0,
+            360,
+            5,
+            45
+          ]
+        ],
+        "source": "MIT OpenCourseWare · Complex Variables",
+        "url": "https://ocw.mit.edu/courses/18-04-complex-variables-fall-2010/"
+      },
+      {
+        "id": "residue",
+        "title": [
+          "2. Residues around a pole",
+          "2. 極のまわりの留数"
+        ],
+        "body": [
+          "Drag a contour around a pole and watch the integral jump when the pole enters.",
+          "極のまわりの経路を動かし、極が内部に入ると積分が変わる様子を見ます。"
+        ],
+        "formula": "\\oint_\\gamma f(z)\\,dz=2\\pi i\\sum\\operatorname{Res}(f;z_k)",
+        "example": [
+          "A contour enclosing one simple pole contributes 2πi times its residue.",
+          "単純極を1つ囲む経路は留数の2πi倍を与えます。"
+        ],
+        "caution": [
+          "The contour must avoid poles and be positively oriented for this sign convention.",
+          "この符号規約では経路は極を避け、正の向きとします。"
+        ],
+        "question": [
+          "What changes when the pole crosses the contour?",
+          "極が経路を横切ると何が変わりますか？"
+        ],
+        "answer": [
+          "The enclosed residue sum changes discontinuously.",
+          "内部の留数の和が不連続に変わります。"
+        ],
+        "params": [
+          [
+            "radius",
+            "Contour radius",
+            "経路半径",
+            0.3,
+            2,
+            0.05,
+            1
+          ],
+          [
+            "pole",
+            "Pole offset",
+            "極のずれ",
+            -0.8,
+            0.8,
+            0.05,
+            0.4
+          ]
+        ],
+        "source": "MIT OpenCourseWare · Complex Variables",
+        "url": "https://ocw.mit.edu/courses/18-04-complex-variables-fall-2010/"
+      },
+      {
+        "id": "harmonic",
+        "title": [
+          "3. Harmonic conjugates",
+          "3. 共役調和関数"
+        ],
+        "body": [
+          "Compare level curves of a harmonic function and its conjugate; they meet orthogonally.",
+          "調和関数と共役関数の等高線を比較し、直交して交わる様子を見ます。"
+        ],
+        "formula": "f=u+iv\\text{ holomorphic}\\Longrightarrow\\nabla u\\perp\\nabla v",
+        "example": [
+          "The real and imaginary parts of z² are x²−y² and 2xy.",
+          "z²の実部と虚部はx²−y²と2xyです。"
+        ],
+        "caution": [
+          "Orthogonality refers to regular level curves, away from critical points.",
+          "直交性は臨界点を除く正則な等高線についての性質です。"
+        ],
+        "question": [
+          "Why are the families orthogonal?",
+          "曲線族が直交するのはなぜですか？"
+        ],
+        "answer": [
+          "The Cauchy–Riemann equations rotate one gradient into the other.",
+          "コーシー・リーマン方程式が一方の勾配を回転させるためです。"
+        ],
+        "params": [
+          [
+            "phase",
+            "Phase angle (degrees)",
+            "位相角（度）",
+            0,
+            180,
+            5,
+            30
+          ]
+        ],
+        "source": "MIT OpenCourseWare · Complex Variables",
+        "url": "https://ocw.mit.edu/courses/18-04-complex-variables-fall-2010/"
+      }
+    ]
+  },
+  {
+    "slug": "fluid-dynamics",
+    "title": [
+      "Fluid dynamics: flow, pressure, and vorticity",
+      "流体力学：流れ・圧力・渦度"
+    ],
+    "description": [
+      "Streamlines, Bernoulli pressure, and rotating flow.",
+      "流線・ベルヌーイ圧力・回転流を可視化します。"
+    ],
+    "group": "physics",
+    "prerequisite": [
+      "Vectors and calculus",
+      "ベクトルと微積分"
+    ],
+    "source": "MIT OpenCourseWare · Fluid Dynamics",
+    "url": "https://ocw.mit.edu/courses/2-25-advanced-fluid-mechanics-fall-2013/",
+    "labs": [
+      {
+        "id": "streamlines",
+        "title": [
+          "1. Streamlines",
+          "1. 流線"
+        ],
+        "body": [
+          "Change the source and sink strengths and inspect the instantaneous velocity field.",
+          "湧き出しと吸い込みの強さを変え、瞬間速度場を調べます。"
+        ],
+        "formula": "\\frac{d\\mathbf x}{dt}=\\mathbf u(\\mathbf x,t)",
+        "example": [
+          "A streamline is tangent to the velocity field at every point.",
+          "流線は各点で速度場に接します。"
+        ],
+        "caution": [
+          "A streamline is not necessarily the path of one marked fluid parcel in unsteady flow.",
+          "非定常流では流線は特定の流体粒子の軌跡とは限りません。"
+        ],
+        "question": [
+          "What does an arrow encode?",
+          "矢印は何を表しますか？"
+        ],
+        "answer": [
+          "The local velocity direction and relative speed.",
+          "局所速度の方向と相対的な速さです。"
+        ],
+        "params": [
+          [
+            "source",
+            "Source strength",
+            "湧き出し強度",
+            -2,
+            2,
+            0.1,
+            1
+          ],
+          [
+            "sink",
+            "Sink strength",
+            "吸い込み強度",
+            -2,
+            2,
+            0.1,
+            -1
+          ]
+        ],
+        "source": "MIT OpenCourseWare · Fluid Dynamics",
+        "url": "https://ocw.mit.edu/courses/2-25-advanced-fluid-mechanics-fall-2013/"
+      },
+      {
+        "id": "bernoulli",
+        "title": [
+          "2. Bernoulli along a streamline",
+          "2. 流線に沿うベルヌーイ"
+        ],
+        "body": [
+          "Narrow a channel and compare speed, pressure, and elevation along a streamline.",
+          "流路を狭め、流線に沿う速さ・圧力・高さを比較します。"
+        ],
+        "formula": "P+\\frac12\\rho v^2+\\rho gz=\\text{constant}",
+        "example": [
+          "At equal height, faster flow corresponds to lower static pressure.",
+          "同じ高さでは速い流れほど静圧が低くなります。"
+        ],
+        "caution": [
+          "The ideal relation assumes steady, incompressible, inviscid flow along a streamline.",
+          "理想式は定常・非圧縮・非粘性の流れを仮定します。"
+        ],
+        "question": [
+          "Which term rises in a constriction?",
+          "狭窄部で増える項は？"
+        ],
+        "answer": [
+          "The kinetic term ½ρv² as speed increases.",
+          "速さが増えるため運動エネルギー項½ρv²です。"
+        ],
+        "params": [
+          [
+            "area",
+            "Area ratio",
+            "面積比",
+            0.3,
+            2,
+            0.05,
+            0.6
+          ],
+          [
+            "speed",
+            "Inlet speed",
+            "入口速度",
+            0.5,
+            4,
+            0.1,
+            2
+          ]
+        ],
+        "source": "MIT OpenCourseWare · Fluid Dynamics",
+        "url": "https://ocw.mit.edu/courses/2-25-advanced-fluid-mechanics-fall-2013/"
+      },
+      {
+        "id": "vorticity",
+        "title": [
+          "3. Vorticity and circulation",
+          "3. 渦度と循環"
+        ],
+        "body": [
+          "Rotate a local velocity field and compare vorticity with circulation around a small loop.",
+          "局所速度場を回転させ、小さなループの循環と渦度を比較します。"
+        ],
+        "formula": "\\boldsymbol\\omega=\\nabla\\times\\mathbf u,\\qquad\\Gamma=\\oint_C\\mathbf u\\cdot d\\mathbf l",
+        "example": [
+          "Solid-body rotation has uniform vorticity twice the angular speed.",
+          "剛体回転の渦度は角速度の2倍で一様です。"
+        ],
+        "caution": [
+          "A streamline pattern alone does not determine vorticity without velocity magnitudes.",
+          "流線の形だけでは速度の大きさがなく、渦度は決まりません。"
+        ],
+        "question": [
+          "What does circulation measure?",
+          "循環は何を測りますか？"
+        ],
+        "answer": [
+          "The line integral of velocity around the closed loop.",
+          "閉曲線に沿った速度の線積分です。"
+        ],
+        "params": [
+          [
+            "rotation",
+            "Angular speed",
+            "角速度",
+            -2,
+            2,
+            0.1,
+            1
+          ],
+          [
+            "radius",
+            "Loop radius",
+            "ループ半径",
+            0.2,
+            1,
+            0.05,
+            0.5
+          ]
+        ],
+        "source": "MIT OpenCourseWare · Fluid Dynamics",
+        "url": "https://ocw.mit.edu/courses/2-25-advanced-fluid-mechanics-fall-2013/"
+      }
+    ]
   }
 ]

@@ -97,6 +97,19 @@ function render(section){const host=section.querySelector('.plot'),out=section.q
  const {e,r}=ode(v.h),all=e.concat(r).map(p=>p[1]),lo=Math.min(0,...all),hi=Math.max(1,...all),pad=.08*(hi-lo),ch=chart(host,[0,2,lo-pad,hi+pad],T('Time t','時刻 t'),'y');ch.path(sample(0,2,200,t=>Math.exp(-5*t)),'third');ch.path(e);ch.path(r,'second');e.forEach(p=>ch.dot(...p));label(host,T('Solid: Euler · dashed: RK4 · dotted: exact. The last step is shortened to end at t=2.','実線：オイラー法・破線：RK4・点線：厳密解。最後の刻みを縮めて t=2 に合わせます。'));result=T('Error at t=2 — Euler: ','t=2の誤差 — オイラー：')+fmt(Math.abs(e.at(-1)[1]-Math.exp(-10)))+' · RK4: '+fmt(Math.abs(r.at(-1)[1]-Math.exp(-10)));
  }else if(id==='cancellation'){
  const direct=x=>(Math.sqrt(1+x)-1)/x,stable=x=>1/(Math.sqrt(1+x)+1),ch=chart(host,[1,17,-.05,.85],T('Exponent e','指数 e'),T('Computed value','計算値'));ch.path(sample(1,17,250,e=>direct(10**-e)));ch.path(sample(1,17,250,e=>stable(10**-e)),'second');const x=10**-v.exponent;ch.dot(v.exponent,direct(x));result=T('Direct / stable: ','直接／安定な式：')+`${fmt(direct(x))} / ${fmt(stable(x))} · `+T('Relative difference: ','相対差：')+fmt(Math.abs(direct(x)-stable(x))/stable(x));
+
+ }else if(id==='conformal'){
+ const pow=v.power,ch=chart(host,[-2,2,-2,2],'Re z','Im z',280,true);for(let r=-1.5;r<=1.5;r+=.5){const pts=sample(-1.5,1.5,100,t=>{const z=[r,t],a=Math.atan2(z[1],z[0])*pow,m=Math.hypot(z[0],z[1])**pow;return [m*Math.cos(a),m*Math.sin(a)]});ch.path(pts,'second');}result=T('Local scale at input angle: ','入力角での局所尺度：')+fmt(pow);
+ }else if(id==='residue'){
+ const inside=Math.abs(v.pole)<v.radius,ch=chart(host,[-2,2,-2,2],'Re z','Im z',280,true);ch.path(circle(v.radius,v.radius),'second');ch.dot(v.pole,0,inside?'third':'point',8);result=inside?T('Enclosed residue contribution: 2πi','内部の留数寄与：2πi'):T('No pole enclosed','極は内部にありません');
+ }else if(id==='harmonic'){
+ const ch=chart(host,[-2,2,-2,2],'x','y',280,true);for(let c=-2;c<=2;c+=.5){ch.path(sample(-2,2,100,x=>[x,Math.sqrt(Math.max(0,x*x-c))]),'second');}result=T('Gradient families are orthogonal away from critical points','臨界点以外で勾配族は直交します');
+ }else if(id==='streamlines'){
+ const ch=chart(host,[-2,2,-2,2],'x','y',280,true);for(let y=-1.5;y<=1.5;y+=.5){ch.path(sample(-2,2,60,x=>[x,y+v.source*.15*Math.sin(x)-v.sink*.15*Math.sin(x)]));}result=T('Velocity sources: ','速度の湧き出し：')+`${v.source}, ${v.sink}`;
+ }else if(id==='bernoulli'){
+ const speed=v.speed/Math.max(.2,v.area),pressure=1-.5*speed*speed,ch=chart(host,[0,1,-3,2],'channel','value');ch.path([[0,v.speed],[.5,speed],[1,v.speed]],'third');ch.path([[0,1],[.5,pressure],[1,1]],'second');result=T('Throat speed / pressure: ','喉部の速さ／圧力：')+`${fmt(speed)} / ${fmt(pressure)}`;
+ }else if(id==='vorticity'){
+ const ch=chart(host,[-1.5,1.5,-1.5,1.5],'x','y',280,true);for(let r=.25;r<=1.4;r+=.25)ch.path(circle(r,r),'second');ch.dot(0,0,'third',7);result=T('Vorticity: ','渦度：')+fmt(2*v.rotation)+T(' · circulation: ',' · 循環：')+fmt(2*Math.PI*v.rotation*v.radius*v.radius);
  }else if(id==='modular'){
  const n=v.n,ch=chart(host,[-1,n,-1,1],'residue','phase',260);for(let i=0;i<n;i++){const a=TAU*i/n;ch.dot(i,0,'point',7);ch.text(i,0,String(i));ch.line([i,0],[i+((v.a-v.b)%n+n)%n,0],'second');}result=`${v.a} ≡ ${v.b} (mod ${n}) · ${T('difference','差')} = ${((v.a-v.b)%n+n)%n}`;
  }else if(id==='sieve'){
