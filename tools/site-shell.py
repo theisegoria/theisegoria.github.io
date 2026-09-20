@@ -26,6 +26,21 @@ def title_of(s):
     return re.split(r'\s+[|·]\s+(?:Benjamin|Isegoria)',plain(m[1]))[0] if m else 'Isegoria'
 def japanese(s):return bool(re.search(r'<html\b[^>]*\blang=["\']ja',s,re.I))
 MATH_PAGES=json.loads((ROOT/'tools/math-encyclopedia.json').read_text())
+def _interactive_routes():
+    """The Interactive explainers section of the English index is the authority
+    on which pieces are labs, so a lab's breadcrumb says Interactive explainers
+    rather than falling through to Research."""
+    try:s=(ROOT/'index.html').read_text()
+    except OSError:return set()
+    i=s.find('id="interactive"')
+    if i<0:return set()
+    seg=s[i:s.find('</section>',i)]
+    return {m[1] for m in re.finditer(r'href="(/[^"#]+/)"',seg)}
+INTERACTIVE=_interactive_routes()|{'/dualsense-lab/','/nicotine-dose-curve/','/kuru-toga/'}
+def is_interactive(route):
+    r=urlsplit(route).path
+    if r.startswith('/ja/'):r='/'+r[4:]
+    return any(r==e or r.startswith(e) for e in INTERACTIVE)
 def is_math(route):
     r=urlsplit(route).path
     if r.startswith('/ja/'):r=r[3:]
@@ -39,14 +54,15 @@ def category(route,ja=False):
     if r.startswith('/sheets/'):return ('参考シート' if ja else 'Sheets',('/ja' if ja else '')+'/sheets/')
     if r.startswith(('/medical-textbook/','/game-design-dynamics-of-learning/')):return ('書籍' if ja else 'Books',('/ja' if ja else '')+'/#books')
     if r.startswith('/stem-genius/'):return ('プロジェクト' if ja else 'Projects',('/ja' if ja else '')+'/projects.html')
+    if is_interactive(route):return ('インタラクティブ解説' if ja else 'Interactive explainers',('/ja' if ja else '')+'/#interactive')
     if r.startswith('/algebraic-varieties-introduction/') or r.startswith('/lebesgue-integration/') or r.startswith('/lebesgue-vs-riemann/') or r.startswith('/gamma-beta/') or (r.startswith('/explore/') and not any(x in r for x in ['automatic-watch','apple-silicon'])):
         return ('学習ガイド' if ja else 'Guides',('/ja' if ja else '')+'/#guides')
     return ('研究と解説' if ja else 'Research',('/ja' if ja else '')+'/#preoccupations')
 
 def shell(route,title,ja,alternate=None,parent=None):
     home='/ja/' if ja else '/'; cat=category(route,ja)
-    labels=['ホーム','全コンテンツ','数学百科事典','研究と解説','書籍','プロジェクト','このサイトについて'] if ja else ['Home','Library','Math encyclopedia','Research','Books','Projects','About']
-    urls=[home,home+'library.html',home+'math-encyclopedia/',home+'#preoccupations',home+'#books',home+'projects.html',home+'about.html']
+    labels=['ホーム','全コンテンツ','数学百科事典','インタラクティブ','研究と解説','書籍','プロジェクト','このサイトについて'] if ja else ['Home','Library','Math encyclopedia','Interactive','Research','Books','Projects','About']
+    urls=[home,home+'library.html',home+'math-encyclopedia/',home+'#interactive',home+'#preoccupations',home+'#books',home+'projects.html',home+'about.html']
     links=[]
     for label,url in zip(labels,urls):
         current='page' if route==url else 'location' if cat and cat[1]==url else None
@@ -110,7 +126,7 @@ def apply(path,route,known):
     if ja:s=s.replace('aria-label="On this page"','aria-label="このページの目次"')
     nav,foot=shell(route,title,ja,alt,parent)
     base_route=route.removeprefix('/ja') if route.startswith('/ja/') else route
-    kind='app' if base_route in ['/kef-coda-w/','/carrera-panda/','/neuron-action-potential/','/watch-mechanisms/','/watch-mechanisms/ja/','/monster-tech-correlation/','/bose-lifestyle-ultra-report/3d/'] else 'embed' if 'srcdoc=' in s or route.endswith(('/curves.html','/selected.html')) else 'editorial'
+    kind='app' if base_route in ['/kef-coda-w/','/carrera-panda/','/neuron-action-potential/','/watch-mechanisms/','/watch-mechanisms/ja/','/monster-tech-correlation/','/bose-lifestyle-ultra-report/3d/','/dualsense-lab/','/uni-writing-lab/','/nicotine-dose-curve/'] else 'embed' if 'srcdoc=' in s or route.endswith(('/curves.html','/selected.html')) else 'editorial'
     fixed=base_route.startswith(('/watch-lab/','/quartz-lab/','/real-time-natural-worlds/','/concerta-catecholamine-model/'))
     def html_attrs(m):
         t=m[0];t=re.sub(r'\sclass=["\']([^"\']*)["\']',lambda c:' class="'+re.sub(r'\big-(?:document|editorial)\b','',c[1]).strip()+'"',t)

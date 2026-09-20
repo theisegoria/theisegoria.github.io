@@ -24,18 +24,28 @@ export function readTokens(names, el = document.documentElement) {
   return out;
 }
 
-/** Same, but resolved to THREE.Color where the value parses as a colour. */
+/**
+ * Same, but resolved to THREE.Color.
+ *
+ * The browser does the resolving, so light-dark(), color-mix() and oklch() all
+ * work. setStyle is what converts: a CSS colour is sRGB, and handing its
+ * components straight to a Color would have three.js read them as linear and
+ * render everything several stops too bright.
+ */
 export function readColors(names, el) {
   const raw = readTokens(names, el);
   const probe = document.createElement('span');
-  document.body.appendChild(probe);
+  probe.style.cssText = 'position:absolute;visibility:hidden';
+  (el || document.body).appendChild(probe);
   const out = {};
   for (const [k, v] of Object.entries(raw)) {
     probe.style.color = '';
     probe.style.color = v;
-    const rgb = getComputedStyle(probe).color; // browser resolves light-dark(), color-mix(), oklch()
-    const m = rgb.match(/[\d.]+/g);
-    out[k] = m ? new THREE.Color(+m[0] / 255, +m[1] / 255, +m[2] / 255) : new THREE.Color(v);
+    const css = getComputedStyle(probe).color;
+    const c = new THREE.Color();
+    try { c.setStyle(css, THREE.SRGBColorSpace); } catch { c.set(0x808080); }
+    out[k] = c;
+    out[k].css = css;
   }
   probe.remove();
   return out;
@@ -196,6 +206,9 @@ export async function mountLab(canvas, opts = {}) {
   }
 
   hooks = (await setup?.({ renderer, scene, camera, THREE, lab })) || {};
+  // Whatever setup returned is handed back on the lab, so a page's controls can
+  // reach the scene's own functions without a module-level variable.
+  lab.hooks = hooks;
   schedule();
   return lab;
 }
