@@ -57,7 +57,30 @@ Remainder & $f(a+h)-T_m(a+h)=\mathcal O(\|h\|^{m+1})$\\
 \begin{graybox}
 \textbf{Multi-index key.} $\alpha=(\alpha_1,\ldots,\alpha_n)$, $|\alpha|=\sum_i\alpha_i$, $\alpha!=\prod_i\alpha_i!$, $D^\alpha f=\partial_1^{\alpha_1}\cdots\partial_n^{\alpha_n}f$, and $h^\alpha=\prod_i h_i^{\alpha_i}$. 
 \end{graybox}
-\tagline{03 / WORKED EXAMPLE: EXPONENTIAL}
+\tagline{03 / SINGLE-VARIABLE WORKED EXAMPLES}
+\textbf{Example 1: a polynomial.} For $p(t)=3t^2-2t+1$ about $t=1$, let $h=t-1$. Then $p(1)=2$, $p'(1)=4$, and $p''(1)=6$, so
+\[
+\boxed{T_2(t)=2+4h+3h^2.}
+\]
+Because $p$ has degree $2$, this is exact: $p(t)=T_2(t)$ everywhere.
+
+\textbf{Example 2: an exponential.} About $t=0$, $e^t$ has derivatives all equal to $1$:
+\[
+\boxed{T_3(t)=1+t+\frac{t^2}{2}+\frac{t^3}{6}},\qquad R_3=\mathcal O(t^4).
+\]
+At $t=0.2$, $T_3=1.221333\ldots$ while $e^{0.2}=1.221403\ldots$.
+
+\textbf{Example 3: a convergence condition.} From $\ln(1+t)=t-t^2/2+t^3/3+\cdots$,
+\[
+\boxed{T_3(t)=t-\frac{t^2}{2}+\frac{t^3}{3}},\qquad |t|<1.
+\]
+The radius condition belongs beside the polynomial; it is not optional bookkeeping.
+
+\textbf{Example 4: a geometric series.} Since $(1-t)^{-1}=1+t+t^2+t^3+\cdots$,
+\[
+\boxed{T_3(t)=1+t+t^2+t^3},\qquad |t|<1.
+\]
+\tagline{04 / FIRST MULTIVARIABLE EXAMPLE}
 For $f(x,y)=e^{x+y}$ about $a=(0,0)$, every first and second partial derivative equals $e^{x+y}$, so
 \[
 f(a)=1,\qquad \nabla f(a)=\begin{pmatrix}1\\1\end{pmatrix},\qquad H_f(a)=\begin{pmatrix}1&1\\1&1\end{pmatrix}.
@@ -77,7 +100,7 @@ At $(x,y)=(0.1,0.2)$: $T_2=1.345$, whereas $e^{0.3}=1.3498588\ldots$; the absolu
 \end{tikzpicture}\end{center}
 
 \newpage
-\tagline{04 / BASIC WORKED EXAMPLES}
+\tagline{05 / BASIC MULTIVARIABLE WORKED EXAMPLES}
 \textbf{Example 1: a quadratic is already its Taylor polynomial.} Let $f(x,y)=x^2+3xy+y^2$ about $(0,0)$. Since $f$ has degree $2$,
 \[
 \nabla f(0,0)=(0,0),\qquad H_f(0,0)=\begin{pmatrix}2&3\\3&2\end{pmatrix},
@@ -94,7 +117,7 @@ At $(1.02,0.97)$, $(u,v)=(0.02,-0.03)$ and $T_1=1.41068$; the exact value is $\s
 \[
 \boxed{T_2(x,y)=x+y,\qquad f(x,y)-T_2(x,y)=\mathcal O(\|(x,y)\|^3).}
 \]
-\tagline{05 / INTERMEDIATE WORKED EXAMPLES}
+\tagline{06 / INTERMEDIATE MULTIVARIABLE WORKED EXAMPLES}
 \textbf{Example 4: a shifted logarithm.} For $f(x,y)=\ln(x+y)$ about $(1,1)$, let $u=x-1$, $v=y-1$. Then
 \[
 \ln(x+y)=\ln(2+u+v)=\ln2+\frac{u+v}{2}-\frac{(u+v)^2}{8}+\mathcal O(\|(u,v)\|^3),
@@ -107,7 +130,7 @@ so $\boxed{T_2=\ln2+(u+v)/2-(u+v)^2/8}$. The condition is $|u+v|<2$.
 \]
 Expanded, the cubic part is $x^3+3x^2y+3xy^2+y^3$. The convergence condition is $|x+y|<1$.
 
-\tagline{06 / WORKED EXAMPLE: A NONZERO CENTRE}
+\tagline{07 / WORKED EXAMPLE: A NONZERO CENTRE}
 Let $f(x,y)=x^2e^y$ and expand about $a=(1,0)$. Use displacement variables $u=x-1$ and $v=y$.
 \begin{align*}
 f(1,0)&=1, & \nabla f(1,0)&=\begin{pmatrix}2\\1\end{pmatrix}, &
@@ -125,7 +148,7 @@ Therefore
 \]
 At $(x,y)=(1.1,0.05)$, $(u,v)=(0.1,0.05)$ and $T_2=1.25625$; the exact value $1.1^2e^{0.05}=1.256889\ldots$, so the error is about $6.39\times10^{-4}$.
 
-\tagline{07 / ADVANCED WORKED EXAMPLES}
+\tagline{08 / ADVANCED MULTIVARIABLE WORKED EXAMPLES}
 \textbf{Example 6: degree four from a composite monomial.} For $f(x,y)=e^{xy}$ about $(0,0)$, set $s=xy$. Since $s$ has total degree $2$,
 \[
 e^{xy}=1+xy+\frac{(xy)^2}{2}+\mathcal O(\|(x,y)\|^6),\qquad
@@ -139,27 +162,27 @@ The next term $(xy)^3/6$ has total degree $6$, so there are no degree-$5$ terms.
 \]
 with validity condition $x^2+y^2<1$.
 \newpage
-\tagline{08 / FAST PATTERNS}
+\tagline{09 / FAST PATTERNS}
 \begin{orangebox}
 \textbf{Scalar-composition shortcut.} If $f(x,y)=\phi(u)$ with $u=ax+by$ and $\phi$ has a one-variable series, expand in $u$ first, then substitute $u=ax+by$.
 \[
 \ln(1+u)=u-\frac{u^2}{2}+\mathcal O(u^3),\quad e^u=1+u+\frac{u^2}{2}+\mathcal O(u^3),\quad (1+u)^\alpha=1+\alpha u+\frac{\alpha(\alpha-1)}2u^2+\mathcal O(u^3).
 \]
 \end{orangebox}
-\tagline{09 / WORKED EXAMPLE: LOGARITHM}
+\tagline{10 / WORKED EXAMPLE: LOGARITHM}
 Let $f(x,y)=\ln(1+x+2y)$ near $(0,0)$. Set $u=x+2y$ and use $\ln(1+u)=u-u^2/2+\mathcal O(u^3)$:
 \[
 \boxed{T_2(x,y)=x+2y-\frac12(x+2y)^2
 =x+2y-\frac12x^2-2xy-2y^2.}
 \]
 The validity condition is $|x+2y|<1$. For $(0.1,-0.05)$, $u=0$, so both the exact function and $T_2$ equal $0$.
-\tagline{10 / WORKED EXAMPLE: SQUARE ROOT}
+\tagline{11 / WORKED EXAMPLE: SQUARE ROOT}
 For $g(x,y)=\sqrt{1+x-y}$, set $u=x-y$ and use $(1+u)^{1/2}=1+u/2-u^2/8+\mathcal O(u^3)$:
 \[
 \boxed{T_2(x,y)=1+\frac12(x-y)-\frac18(x-y)^2.}
 \]
 At $(0.2,0.1)$, $u=0.1$ and $T_2=1.04875$, while $\sqrt{1.1}=1.0488088\ldots$.
-\tagline{11 / ERROR AND VALIDITY}
+\tagline{12 / ERROR AND VALIDITY}
 \begin{center}
 \renewcommand{\arraystretch}{1.25}
 \begin{tabular}{>{\raggedright\arraybackslash}p{.32\linewidth} p{.58\linewidth}}
@@ -175,7 +198,7 @@ Composition $\phi(ax+by)$ & Inherit the scalar convergence condition on $u=ax+by
 \begin{graybox}
 \textbf{Cross term reminder.} If $f_{xy}(a)\ne0$, the quadratic term contains $f_{xy}(a)uv$ after the factor $\tfrac12$ is distributed. Omitting the cross term changes the surface tilt along diagonal directions.
 \end{graybox}
-\tagline{12 / COMMON PITFALLS}
+\tagline{13 / COMMON PITFALLS}
 \begin{itemize}[leftmargin=*,itemsep=2pt,topsep=2pt]
 \item Using $x$ and $y$ instead of displacements $u=x-a_1$ and $v=y-a_2$.
 \item Forgetting that the Hessian is evaluated at the centre.
@@ -183,7 +206,7 @@ Composition $\phi(ax+by)$ & Inherit the scalar convergence condition on $u=ax+by
 \item Giving a polynomial without its remainder order or convergence condition.
 \item Confusing a Taylor polynomial (finite) with the full Taylor series (an infinite limit).
 \end{itemize}
-\tagline{13 / FINAL CHECKLIST}
+\tagline{14 / FINAL CHECKLIST}
 \begin{bluebox}
 \begin{enumerate}[leftmargin=*,itemsep=1pt,topsep=1pt]
 \item Centre $a$ stated?\quad \checkmark
