@@ -2976,8 +2976,8 @@
           ],
           [
             "temperature",
-            "Temperature T",
-            "温度 T",
+            "Temperature \\(T\\)",
+            "温度 \\(T\\)",
             200,
             800,
             10,
@@ -3809,6 +3809,328 @@
         ],
         "source": "Einstein Online · Special Relativity",
         "url": "https://www.einstein-online.info/en/spotlight/special-relativity/"
+      }
+    ]
+  },
+  {
+    "slug": "differential-geometry",
+    "title": [
+      "Differential geometry: curvature and shape",
+      "微分幾何：曲率と形"
+    ],
+    "description": [
+      "Metrics, geodesics, and curvature on surfaces.",
+      "曲面上の計量・測地線・曲率を探ります。"
+    ],
+    "group": "geometry",
+    "prerequisite": [
+      "Calculus and vectors",
+      "微積分とベクトル"
+    ],
+    "source": "MIT OpenCourseWare · Differential Geometry",
+    "url": "https://ocw.mit.edu/courses/18-950-differential-geometry-fall-2008/",
+    "labs": [
+      {
+        "id": "curvature",
+        "title": [
+          "1. Curvature of a curve",
+          "1. 曲線の曲率"
+        ],
+        "body": [
+          "Change the bend of a planar curve and inspect its signed curvature.",
+          "平面曲線の曲がりを変え、符号付き曲率を調べます。"
+        ],
+        "formula": "\\kappa=\\frac{|x\\prime y\\doubleprime-y\\prime x\\doubleprime|}{(x\\prime^2+y\\prime^2)^{3/2}}",
+        "example": [
+          "A circle of radius \\(R\\) has constant curvature \\(1/R\\).",
+          "半径\\(R\\)の円は一定の曲率\\(1/R\\)を持ちます。"
+        ],
+        "caution": [
+          "The visual uses a smooth teaching curve, not a measured path.",
+          "図は滑らかな教育用曲線で、実測経路ではありません。"
+        ],
+        "question": [
+          "Where is \\(\\kappa\\) largest?",
+          "\\(\\kappa\\)が最大なのはどこですか？"
+        ],
+        "answer": [
+          "Where the tangent direction changes fastest with arc length.",
+          "弧長に対して接線方向が最も速く変わる場所です。"
+        ],
+        "params": [
+          [
+            "bend",
+            "Bend amplitude",
+            "曲がりの振幅",
+            0,
+            1,
+            0.05,
+            0.45
+          ]
+        ],
+        "source": "MIT OpenCourseWare · Differential Geometry",
+        "url": "https://ocw.mit.edu/courses/18-950-differential-geometry-fall-2008/"
+      },
+      {
+        "id": "geodesic-surface",
+        "title": [
+          "2. Geodesics on a surface",
+          "2. 曲面上の測地線"
+        ],
+        "body": [
+          "Compare a straight coordinate path with a shortest path drawn across a curved surface.",
+          "曲面上で座標線と最短経路を比較します。"
+        ],
+        "formula": "\\nabla_{\\dot\\gamma}\\dot\\gamma=0",
+        "example": [
+          "Geodesics locally minimize distance when no conjugate point intervenes.",
+          "共役点が現れない局所範囲では測地線は距離を極小にします。"
+        ],
+        "caution": [
+          "A map projection can make a geodesic look curved or straight.",
+          "地図投影は測地線を曲がって、または直線に見せます。"
+        ],
+        "question": [
+          "What does the connection correct?",
+          "接続は何を補正しますか？"
+        ],
+        "answer": [
+          "It subtracts coordinate artefacts from ordinary acceleration.",
+          "通常の加速度から座標の見かけの効果を差し引きます。"
+        ],
+        "params": [
+          [
+            "latitude",
+            "Starting latitude",
+            "出発緯度",
+            -70,
+            70,
+            5,
+            20
+          ],
+          [
+            "arc",
+            "Arc fraction",
+            "弧の割合",
+            0.2,
+            1,
+            0.05,
+            0.7
+          ]
+        ],
+        "source": "MIT OpenCourseWare · Differential Geometry",
+        "url": "https://ocw.mit.edu/courses/18-950-differential-geometry-fall-2008/"
+      },
+      {
+        "id": "gaussian",
+        "title": [
+          "3. Gaussian curvature",
+          "3. ガウス曲率"
+        ],
+        "body": [
+          "Morph between a bowl and a saddle and compare intrinsic curvature signs.",
+          "鉢型と鞍型を変形し、内在的な曲率の符号を比較します。"
+        ],
+        "formula": "K=\\frac{LN-M^2}{EG-F^2}",
+        "example": [
+          "A sphere has positive Gaussian curvature \\(K>0\\); a saddle has negative curvature \\(K<0\\).",
+          "球面のガウス曲率は正\\(K>0\\)、鞍面では負\\(K<0\\)です。"
+        ],
+        "caution": [
+          "The plotted surfaces are illustrative parameterized patches.",
+          "表示する曲面は教育用のパラメータ表示です。"
+        ],
+        "question": [
+          "Can bending without stretching change \\(K\\)?",
+          "伸縮なしの曲げで\\(K\\)は変わりますか？"
+        ],
+        "answer": [
+          "For an isometric bend, intrinsic Gaussian curvature is preserved.",
+          "等長変形なら内在的なガウス曲率は保たれます。"
+        ],
+        "params": [
+          [
+            "saddle",
+            "Saddle amount",
+            "鞍の量",
+            -1,
+            1,
+            0.05,
+            0.4
+          ]
+        ],
+        "source": "MIT OpenCourseWare · Differential Geometry",
+        "url": "https://ocw.mit.edu/courses/18-950-differential-geometry-fall-2008/"
+      }
+    ]
+  },
+  {
+    "slug": "statistical-mechanics",
+    "title": [
+      "Statistical mechanics: microstates and temperature",
+      "統計力学：ミクロ状態と温度"
+    ],
+    "description": [
+      "Boltzmann weights, partition functions, and random walks.",
+      "ボルツマン重み・分配関数・ランダムウォークを探ります。"
+    ],
+    "group": "physics",
+    "prerequisite": [
+      "Probability and energy",
+      "確率とエネルギー"
+    ],
+    "source": "OpenStax · University Physics, Volume 2",
+    "url": "https://openstax.org/details/books/university-physics-volume-2",
+    "labs": [
+      {
+        "id": "boltzmann",
+        "title": [
+          "1. Boltzmann weights",
+          "1. ボルツマン重み"
+        ],
+        "body": [
+          "Raise \\(T\\) and watch high-energy states become more probable.",
+          "温度\\(T\\)を上げ、高エネルギー状態の確率が増える様子を見ます。"
+        ],
+        "formula": "p_i=\\frac{e^{-E_i/(k_BT)}}{Z}",
+        "example": [
+          "The partition function \\(Z\\) normalizes all state weights.",
+          "分配関数\\(Z\\)はすべての状態の重みを規格化します。"
+        ],
+        "caution": [
+          "The two-level model omits interactions and degeneracy.",
+          "二準位モデルは相互作用と縮退を無視します。"
+        ],
+        "question": [
+          "What happens as \\(T\\) approaches zero?",
+          "\\(T\\)が0に近づくとどうなりますか？"
+        ],
+        "answer": [
+          "The lowest-energy state dominates.",
+          "最低エネルギー状態が支配的になります。"
+        ],
+        "params": [
+          [
+            "temperature",
+            "Temperature \\(T\\)",
+            "温度 \\(T\\)",
+            0.2,
+            5,
+            0.1,
+            1
+          ],
+          [
+            "gap",
+            "Energy gap \\(\\Delta E\\)",
+            "エネルギー差 \\(\\Delta E\\)",
+            0.2,
+            3,
+            0.1,
+            1
+          ]
+        ],
+        "source": "OpenStax · University Physics, Volume 2",
+        "url": "https://openstax.org/details/books/university-physics-volume-2"
+      },
+      {
+        "id": "partition",
+        "title": [
+          "2. Partition function",
+          "2. 分配関数"
+        ],
+        "body": [
+          "Compare free-energy changes as the number of accessible states grows.",
+          "利用可能な状態数を増やし、自由エネルギーの変化を比べます。"
+        ],
+        "formula": "Z=\\sum_i e^{-E_i/(k_BT)},\\qquad F=-k_BT\\ln Z",
+        "example": [
+          "Adding accessible states lowers the free energy at fixed temperature.",
+          "固定温度で状態を増やすと自由エネルギーは下がります。"
+        ],
+        "caution": [
+          "The state list is finite and chosen for visualization.",
+          "状態リストは有限で、可視化用に選ばれています。"
+        ],
+        "question": [
+          "Why does multiplicity matter?",
+          "多重度が重要なのはなぜですか？"
+        ],
+        "answer": [
+          "More microstates contribute more terms to Z.",
+          "より多くのミクロ状態がZに項を加えるためです。"
+        ],
+        "params": [
+          [
+            "states",
+            "Accessible states",
+            "利用可能な状態数",
+            2,
+            20,
+            1,
+            8
+          ],
+          [
+            "temperature",
+            "Temperature \\(T\\)",
+            "温度 \\(T\\)",
+            0.2,
+            5,
+            0.1,
+            1
+          ]
+        ],
+        "source": "OpenStax · University Physics, Volume 2",
+        "url": "https://openstax.org/details/books/university-physics-volume-2"
+      },
+      {
+        "id": "random-walk",
+        "title": [
+          "3. Random walk and diffusion",
+          "3. ランダムウォークと拡散"
+        ],
+        "body": [
+          "Increase the number of steps \\(N\\) and inspect the spreading distribution.",
+          "歩数\\(N\\)を増やし、分布の広がりを調べます。"
+        ],
+        "formula": "\\langle x^2\\rangle=Nt\\,\\ell^2\\quad\\text{(one-dimensional scaling)}",
+        "example": [
+          "The root-mean-square displacement grows like \\(\\sqrt{N}\\).",
+          "二乗平均平方根変位は\\(\\sqrt{N}\\)に比例します。"
+        ],
+        "caution": [
+          "One realization fluctuates around the ensemble scaling law.",
+          "1つの実現値は集団のスケーリング則のまわりで揺らぎます。"
+        ],
+        "question": [
+          "What grows linearly with \\(N\\)?",
+          "\\(N\\)に比例して増えるものは？"
+        ],
+        "answer": [
+          "The mean-square displacement, not the displacement itself.",
+          "変位そのものではなく平均二乗変位です。"
+        ],
+        "params": [
+          [
+            "steps",
+            "Step count \\(N\\)",
+            "歩数 \\(N\\)",
+            10,
+            200,
+            1,
+            80
+          ],
+          [
+            "bias",
+            "Step bias",
+            "歩行バイアス",
+            -1,
+            1,
+            0.05,
+            0
+          ]
+        ],
+        "source": "OpenStax · University Physics, Volume 2",
+        "url": "https://openstax.org/details/books/university-physics-volume-2"
       }
     ]
   }

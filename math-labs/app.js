@@ -123,7 +123,19 @@ function render(section){const host=section.querySelector('.plot'),out=section.q
  const factor=Math.sqrt(1-v.v*v.v),ch=chart(host,[0,10,0,10],'coordinate time','proper time');ch.path([[0,0],[v.time,v.time*factor]]);ch.dot(v.time,v.time*factor,'third',7);result=T('Proper time: ','固有時：')+fmt(v.time*factor);
  }else if(id==='twin'){
  const gamma=1/Math.sqrt(1-v.v*v.v),p=v.mass*gamma*v.v,ch=chart(host,[0,1,0,10],'speed / c','momentum');ch.path(sample(0,.99,180,x=>[x,v.mass*x/Math.sqrt(1-x*x)]));ch.dot(v.v,p,'third',7);result=T('Relativistic momentum: ','相対論的運動量：')+fmt(p);
- }else if(id==='modular'){
+  }else if(id==='curvature'){
+ const b=v.bend,ch=chart(host,[-3,3,-2,2],'x','y',280,true);const pts=sample(-Math.PI,Math.PI,240,t=>[t/Math.PI*2, b*Math.sin(t)]);ch.path(pts);ch.dot(0,0,'third',7);result=T('Peak bend: ','最大の曲がり：')+fmt(b);
+ }else if(id==='geodesic-surface'){
+ const ch=chart(host,[-2,2,-1.5,1.5],'u','v',280,true),a=v.latitude*Math.PI/180;ch.path([[-2,0],[0,v.arc*Math.sin(a)],[2,0]],'third');ch.path([[-2,.7],[0,.7],[2,.7]],'second');result=T('Geodesic arc fraction: ','測地線の弧の割合：')+fmt(v.arc);
+ }else if(id==='gaussian'){
+ const ch=chart(host,[-2,2,-2,2],'x','y',280,true);for(let y=-1.5;y<=1.5;y+=.3)ch.path(sample(-2,2,100,x=>[x,.22*v.saddle*(x*x-y*y)+y]),'second');result=T('Curvature sign: ','曲率の符号：')+(v.saddle>0?T('saddle-like negative K','鞍型でK<0'):v.saddle<0?T('bowl-like positive K','鉢型でK>0'):T('flat K=0','平坦でK=0'));
+ }else if(id==='boltzmann'){
+ const Tm=Math.max(.05,v.temperature),gap=v.gap,ch=chart(host,[0,1,0,1],'state','probability');const p1=Math.exp(-gap/Tm),p0=1,p=p1/(p0+p1);ch.dot(0,1-p,'third',8);ch.dot(1,p,'third',8);ch.line([0,1-p],[1,p],'second');result=T('High-energy probability: ','高エネルギー状態の確率：')+fmt(p);
+ }else if(id==='partition'){
+ const Tm=Math.max(.05,v.temperature),Z=Array.from({length:Math.round(v.states)},(_,i)=>Math.exp(-i/Tm)).reduce((a,b)=>a+b,0),F=-Tm*Math.log(Z),ch=chart(host,[0,v.states,0,1],'energy level','weight');for(let i=0;i<v.states;i++)ch.dot(i,Math.exp(-i/Tm)/Z,'third',5);result=T('Partition function: ','分配関数：')+fmt(Z)+T(' · free energy: ',' · 自由エネルギー：')+fmt(F);
+ }else if(id==='random-walk'){
+ const n=Math.round(v.steps),bias=v.bias,ch=chart(host,[0,n,-Math.max(10,n*.3),Math.max(10,n*.3)],'step','position');let x=0,pts=[[0,0]];for(let i=1;i<=n;i++){x+=Math.sin(i*12.9898)*.5+.5+bias;pts.push([i,x]);}ch.path(pts);result=T('Final displacement: ','最終変位：')+fmt(x)+T(' · expected scaling: \(\sqrt{N}\)',' · 期待スケーリング：\(\sqrt{N}\)');
+}else if(id==='modular'){
  const n=v.n,ch=chart(host,[-1,n,-1,1],'residue','phase',260);for(let i=0;i<n;i++){const a=TAU*i/n;ch.dot(i,0,'point',7);ch.text(i,0,String(i));ch.line([i,0],[i+((v.a-v.b)%n+n)%n,0],'second');}result=`${v.a} ≡ ${v.b} (mod ${n}) · ${T('difference','差')} = ${((v.a-v.b)%n+n)%n}`;
  }else if(id==='sieve'){
  const lim=v.limit,ch=chart(host,[1,lim,0,1],'integer','prime');for(let x=2;x<=lim;x++){const prime=Array.from({length:Math.floor(Math.sqrt(x))-1},(_,i)=>i+2).every(d=>x%d);ch.dot(x,prime?1:0,prime?'point':'second',prime?5:3);if(prime)ch.text(x,1,String(x));}result=T('Primes shown: ','表示した素数：')+Array.from({length:lim-1},(_,i)=>i+2).filter(x=>Array.from({length:Math.floor(Math.sqrt(x))-1},(_,i)=>i+2).every(d=>x%d)).length;
