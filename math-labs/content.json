@@ -3480,5 +3480,336 @@
         "url": "https://ocw.mit.edu/courses/2-25-advanced-fluid-mechanics-fall-2013/"
       }
     ]
+  },
+  {
+    "slug": "statistics-inference",
+    "title": [
+      "Statistics and inference: signals in data",
+      "統計と推測：データの中の信号"
+    ],
+    "description": [
+      "Sampling, confidence, and regression.",
+      "標本・信頼区間・回帰を探ります。"
+    ],
+    "group": "applications",
+    "prerequisite": [
+      "Probability and algebra",
+      "確率と代数"
+    ],
+    "source": "OpenStax · Introductory Statistics",
+    "url": "https://openstax.org/details/books/introductory-statistics-2e",
+    "labs": [
+      {
+        "id": "mean",
+        "title": [
+          "1. Sampling means",
+          "1. 標本平均"
+        ],
+        "body": [
+          "Draw repeated samples and watch their means cluster around the population mean.",
+          "標本を繰り返し取り、平均が母平均のまわりに集まる様子を見ます。"
+        ],
+        "formula": "\\operatorname{SE}(\\bar X)=\\frac{\\sigma}{\\sqrt n}",
+        "example": [
+          "Larger samples reduce the standard error by a square-root law.",
+          "標本が大きいほど標準誤差は平方根則で減ります。"
+        ],
+        "caution": [
+          "A small standard error does not remove bias from a bad sampling frame.",
+          "小さい標準誤差でも偏った標本枠のバイアスは消えません。"
+        ],
+        "question": [
+          "What changes when n quadruples?",
+          "nを4倍にすると何が変わりますか？"
+        ],
+        "answer": [
+          "The standard error halves.",
+          "標準誤差が半分になります。"
+        ],
+        "params": [
+          [
+            "n",
+            "Sample size n",
+            "標本サイズ n",
+            4,
+            100,
+            1,
+            25
+          ],
+          [
+            "sigma",
+            "Population spread",
+            "母標準偏差",
+            0.5,
+            3,
+            0.1,
+            1
+          ]
+        ],
+        "source": "OpenStax · Introductory Statistics",
+        "url": "https://openstax.org/details/books/introductory-statistics-2e"
+      },
+      {
+        "id": "interval",
+        "title": [
+          "2. Confidence intervals",
+          "2. 信頼区間"
+        ],
+        "body": [
+          "Move the confidence level and compare interval width with the standard error.",
+          "信頼水準を動かし、区間幅と標準誤差を比較します。"
+        ],
+        "formula": "\\bar x\\pm z_{\\alpha/2}\\frac{\\sigma}{\\sqrt n}",
+        "example": [
+          "Higher confidence requires a wider interval under the same data model.",
+          "同じデータモデルでは、信頼水準が高いほど区間は広くなります。"
+        ],
+        "caution": [
+          "A 95% interval is a procedure with long-run coverage, not a 95% probability statement about this fixed parameter.",
+          "95%区間は長期的被覆率を持つ手続きで、固定したパラメータの確率文ではありません。"
+        ],
+        "question": [
+          "What narrows the interval?",
+          "区間を狭めるものは？"
+        ],
+        "answer": [
+          "More observations or less variability.",
+          "観測数の増加または変動の減少です。"
+        ],
+        "params": [
+          [
+            "n",
+            "Sample size n",
+            "標本サイズ n",
+            4,
+            100,
+            1,
+            25
+          ],
+          [
+            "level",
+            "Confidence level",
+            "信頼水準",
+            0.8,
+            0.99,
+            0.01,
+            0.95
+          ]
+        ],
+        "source": "OpenStax · Introductory Statistics",
+        "url": "https://openstax.org/details/books/introductory-statistics-2e"
+      },
+      {
+        "id": "regression",
+        "title": [
+          "3. Least-squares regression",
+          "3. 最小二乗回帰"
+        ],
+        "body": [
+          "Adjust slope and noise and inspect residuals around a fitted line.",
+          "傾きとノイズを変え、回帰直線まわりの残差を調べます。"
+        ],
+        "formula": "\\hat\\beta=(X^TX)^{-1}X^Ty",
+        "example": [
+          "The fitted line minimizes the sum of squared residuals.",
+          "回帰直線は残差平方和を最小にします。"
+        ],
+        "caution": [
+          "Association in a fitted line does not establish causation.",
+          "回帰直線の関連だけでは因果は証明されません。"
+        ],
+        "question": [
+          "What does a residual measure?",
+          "残差は何を測りますか？"
+        ],
+        "answer": [
+          "Observed response minus fitted response.",
+          "観測応答から予測応答を引いたものです。"
+        ],
+        "params": [
+          [
+            "slope",
+            "Slope",
+            "傾き",
+            -0.5,
+            2,
+            0.05,
+            1
+          ],
+          [
+            "noise",
+            "Noise scale",
+            "ノイズ尺度",
+            0,
+            0.8,
+            0.05,
+            0.2
+          ]
+        ],
+        "source": "OpenStax · Introductory Statistics",
+        "url": "https://openstax.org/details/books/introductory-statistics-2e"
+      }
+    ]
+  },
+  {
+    "slug": "special-relativity",
+    "title": [
+      "Special relativity: space, time, and light",
+      "特殊相対性理論：空間・時間・光"
+    ],
+    "description": [
+      "Lorentz diagrams, time dilation, and invariant intervals.",
+      "ローレンツ図・時間の遅れ・不変間隔を調べます。"
+    ],
+    "group": "physics",
+    "prerequisite": [
+      "Algebra and geometry",
+      "代数と幾何"
+    ],
+    "source": "Einstein Online · Special Relativity",
+    "url": "https://www.einstein-online.info/en/spotlight/special-relativity/",
+    "labs": [
+      {
+        "id": "relativity-lorentz",
+        "title": [
+          "1. Lorentz diagrams",
+          "1. ローレンツ図"
+        ],
+        "body": [
+          "Change relative speed and see how the coordinate grid tilts while light rays remain at 45°.",
+          "相対速度を変え、光線が45°のまま座標格子が傾く様子を見ます。"
+        ],
+        "formula": "x\\prime=\\gamma(x-vt),\\qquad t\\prime=\\gamma(t-vx/c^2)",
+        "example": [
+          "The light cone is invariant under a Lorentz boost.",
+          "光円錐はローレンツ変換で不変です。"
+        ],
+        "caution": [
+          "The diagram uses units with c=1.",
+          "図ではc=1の単位を使います。"
+        ],
+        "question": [
+          "What stays fixed for all inertial observers?",
+          "すべての慣性系で固定されるものは？"
+        ],
+        "answer": [
+          "The speed of light and the spacetime interval.",
+          "光速と時空間隔です。"
+        ],
+        "params": [
+          [
+            "v",
+            "Relative speed / c",
+            "相対速度 / c",
+            -0.8,
+            0.8,
+            0.05,
+            0.5
+          ]
+        ],
+        "source": "Einstein Online · Special Relativity",
+        "url": "https://www.einstein-online.info/en/spotlight/special-relativity/"
+      },
+      {
+        "id": "spacetime",
+        "title": [
+          "2. Proper time",
+          "2. 固有時"
+        ],
+        "body": [
+          "Compare a moving clock with the coordinate clock and inspect time dilation.",
+          "運動する時計と座標時計を比較し、時間の遅れを見ます。"
+        ],
+        "formula": "\\Delta\\tau=\\Delta t\\sqrt{1-v^2/c^2}=\\frac{\\Delta t}{\\gamma}",
+        "example": [
+          "A moving clock accumulates less proper time between the same events.",
+          "同じ2事象の間で、運動する時計の固有時は短くなります。"
+        ],
+        "caution": [
+          "The effect is reciprocal between inertial frames; acceleration changes the comparison setup.",
+          "慣性系同士では相互的で、加速度が比較設定を変えます。"
+        ],
+        "question": [
+          "What happens as v approaches c?",
+          "vがcに近づくとどうなりますか？"
+        ],
+        "answer": [
+          "The proper-time factor approaches zero.",
+          "固有時の係数は0に近づきます。"
+        ],
+        "params": [
+          [
+            "v",
+            "Speed / c",
+            "速さ / c",
+            0,
+            0.99,
+            0.01,
+            0.6
+          ],
+          [
+            "time",
+            "Coordinate time",
+            "座標時間",
+            1,
+            10,
+            0.1,
+            4
+          ]
+        ],
+        "source": "Einstein Online · Special Relativity",
+        "url": "https://www.einstein-online.info/en/spotlight/special-relativity/"
+      },
+      {
+        "id": "twin",
+        "title": [
+          "3. Relativistic momentum",
+          "3. 相対論的運動量"
+        ],
+        "body": [
+          "Increase speed and compare Newtonian momentum with the relativistic correction.",
+          "速さを増やし、ニュートン運動量と相対論的補正を比較します。"
+        ],
+        "formula": "\\mathbf p=\\gamma m\\mathbf v,\\qquad E^2=(pc)^2+(mc^2)^2",
+        "example": [
+          "At low speed γ≈1; near c the correction dominates.",
+          "低速ではγ≈1ですが、c付近で補正が支配的になります。"
+        ],
+        "caution": [
+          "Mass-energy units and c=1 are used for the plot.",
+          "図では質量エネルギー単位とc=1を使います。"
+        ],
+        "question": [
+          "Why can a massive object not reach c?",
+          "質量を持つ物体がcに達しないのはなぜですか？"
+        ],
+        "answer": [
+          "γ diverges, requiring unbounded energy.",
+          "γが発散し、無限大のエネルギーが必要になるためです。"
+        ],
+        "params": [
+          [
+            "v",
+            "Speed / c",
+            "速さ / c",
+            0,
+            0.99,
+            0.01,
+            0.8
+          ],
+          [
+            "mass",
+            "Rest mass",
+            "静止質量",
+            0.5,
+            2,
+            0.1,
+            1
+          ]
+        ],
+        "source": "Einstein Online · Special Relativity",
+        "url": "https://www.einstein-online.info/en/spotlight/special-relativity/"
+      }
+    ]
   }
 ]

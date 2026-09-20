@@ -110,6 +110,19 @@ function render(section){const host=section.querySelector('.plot'),out=section.q
  const speed=v.speed/Math.max(.2,v.area),pressure=1-.5*speed*speed,ch=chart(host,[0,1,-3,2],'channel','value');ch.path([[0,v.speed],[.5,speed],[1,v.speed]],'third');ch.path([[0,1],[.5,pressure],[1,1]],'second');result=T('Throat speed / pressure: ','喉部の速さ／圧力：')+`${fmt(speed)} / ${fmt(pressure)}`;
  }else if(id==='vorticity'){
  const ch=chart(host,[-1.5,1.5,-1.5,1.5],'x','y',280,true);for(let r=.25;r<=1.4;r+=.25)ch.path(circle(r,r),'second');ch.dot(0,0,'third',7);result=T('Vorticity: ','渦度：')+fmt(2*v.rotation)+T(' · circulation: ',' · 循環：')+fmt(2*Math.PI*v.rotation*v.radius*v.radius);
+
+ }else if(id==='mean'){
+ const se=v.sigma/Math.sqrt(v.n),ch=chart(host,[0,100,-1,3],'sample size','standard error');ch.path(sample(4,100,120,n=>[n,v.sigma/Math.sqrt(n)]));ch.dot(v.n,se,'third',7);result=T('Standard error: ','標準誤差：')+fmt(se);
+ }else if(id==='interval'){
+ const z=v.level>.975?2.576:v.level>.94?1.96:1.645,half=z/Math.sqrt(v.n),ch=chart(host,[0,100,-3,3],'sample size','interval half-width');ch.path(sample(4,100,120,n=>[n,z/Math.sqrt(n)]));ch.dot(v.n,half,'third',7);result=T('Half-width: ','半幅：')+fmt(half);
+ }else if(id==='regression'){
+ const ch=chart(host,[-1,3,-1,3],'x','y',280,true);const pts=seq(12,i=>{const x=i/5,y=v.slope*x+v.noise*Math.sin(i*1.7);ch.dot(x,y,'point',4);return [x,y]});ch.path([[0,0],[2.6,2.6*v.slope]],'third');result=T('Noise scale: ','ノイズ尺度：')+fmt(v.noise);
+ }else if(id==='relativity-lorentz'){
+ const ch=chart(host,[-2,2,-2,2],'x','ct',280,true);for(let i=-2;i<=2;i+=.5){ch.line([i,-2],[i+v.v*2,2],'second');ch.line([-2,i],[2,i+v.v*2],'second');}ch.line([-2,-2],[2,2],'third');ch.line([-2,2],[2,-2],'third');result=T('Boost speed / c: ','ブースト速度 / c：')+fmt(v.v);
+ }else if(id==='spacetime'){
+ const factor=Math.sqrt(1-v.v*v.v),ch=chart(host,[0,10,0,10],'coordinate time','proper time');ch.path([[0,0],[v.time,v.time*factor]]);ch.dot(v.time,v.time*factor,'third',7);result=T('Proper time: ','固有時：')+fmt(v.time*factor);
+ }else if(id==='twin'){
+ const gamma=1/Math.sqrt(1-v.v*v.v),p=v.mass*gamma*v.v,ch=chart(host,[0,1,0,10],'speed / c','momentum');ch.path(sample(0,.99,180,x=>[x,v.mass*x/Math.sqrt(1-x*x)]));ch.dot(v.v,p,'third',7);result=T('Relativistic momentum: ','相対論的運動量：')+fmt(p);
  }else if(id==='modular'){
  const n=v.n,ch=chart(host,[-1,n,-1,1],'residue','phase',260);for(let i=0;i<n;i++){const a=TAU*i/n;ch.dot(i,0,'point',7);ch.text(i,0,String(i));ch.line([i,0],[i+((v.a-v.b)%n+n)%n,0],'second');}result=`${v.a} ≡ ${v.b} (mod ${n}) · ${T('difference','差')} = ${((v.a-v.b)%n+n)%n}`;
  }else if(id==='sieve'){
