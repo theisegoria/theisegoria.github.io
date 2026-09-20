@@ -4473,5 +4473,676 @@
         "url": "https://ocw.mit.edu/courses/18-445-introduction-to-stochastic-processes-spring-2015/"
       }
     ]
+  },
+  {
+    "slug": "differential-forms",
+    "title": [
+      "Differential forms: circulation, curl, and pullbacks",
+      "微分形式：循環・カール・引き戻し"
+    ],
+    "description": [
+      "Move between line integrals, area integrals, and coordinate changes.",
+      "線積分・面積分・座標変換の関係を調べます。"
+    ],
+    "group": "geometry",
+    "prerequisite": [
+      "Multivariable calculus and differential geometry",
+      "多変数微積分と微分幾何"
+    ],
+    "source": "MIT OpenCourseWare · Differential Forms",
+    "url": "https://ocw.mit.edu/courses/18-950-differential-geometry-fall-2008/",
+    "labs": [
+      {
+        "id": "line-integral",
+        "title": [
+          "1. A line integral",
+          "1. 線積分"
+        ],
+        "body": [
+          "Drag the path through a teaching vector field and compare work along different curves.",
+          "教育用ベクトル場の中で経路を動かし、異なる曲線に沿う仕事を比較します。"
+        ],
+        "formula": "\\int_C\\mathbf F\\cdot d\\mathbf r",
+        "example": [
+          "For a conservative field, the integral depends only on the endpoints.",
+          "保存場では積分は端点だけに依存します。"
+        ],
+        "caution": [
+          "The field shown is illustrative; path independence requires a potential on the relevant domain.",
+          "表示する場は教育用で、経路独立性には領域上のポテンシャルが必要です。"
+        ],
+        "question": [
+          "What changes when the path winds around a hole?",
+          "経路が穴のまわりを回ると何が変わりますか？"
+        ],
+        "answer": [
+          "A field can be locally curl-free yet have nonzero circulation around a missing point.",
+          "場は局所的にカールがなくても、除かれた点の周囲で非零の循環を持ち得ます。"
+        ],
+        "params": [
+          [
+            "radius",
+            "Path radius",
+            "経路半径",
+            0.2,
+            1.5,
+            0.05,
+            0.8
+          ],
+          [
+            "turns",
+            "Turns",
+            "回転数",
+            0.25,
+            2,
+            0.25,
+            1
+          ]
+        ],
+        "source": "MIT OpenCourseWare · Differential Forms",
+        "url": "https://ocw.mit.edu/courses/18-950-differential-geometry-fall-2008/"
+      },
+      {
+        "id": "stokes",
+        "title": [
+          "2. Stokes’ theorem",
+          "2. ストークスの定理"
+        ],
+        "body": [
+          "Compare boundary circulation with the curl accumulated across the filled region.",
+          "境界の循環と、内部領域に蓄積されたカールを比較します。"
+        ],
+        "formula": "\\oint_{\\partial S}\\omega=\\iint_S d\\omega",
+        "example": [
+          "Changing orientation reverses both integrals together.",
+          "向きを反転すると二つの積分が同時に符号反転します。"
+        ],
+        "caution": [
+          "Equality assumes a smooth form and an oriented surface with compatible boundary.",
+          "等式には滑らかな形式と、境界と整合する向き付き曲面が必要です。"
+        ],
+        "question": [
+          "Why do both sides change sign?",
+          "両辺の符号が変わるのはなぜですか？"
+        ],
+        "answer": [
+          "Reversing orientation reverses the induced boundary orientation.",
+          "向きを反転すると誘導された境界の向きも反転するためです。"
+        ],
+        "params": [
+          [
+            "radius",
+            "Disk radius",
+            "円板半径",
+            0.2,
+            1.5,
+            0.05,
+            0.8
+          ],
+          [
+            "orientation",
+            "Orientation",
+            "向き",
+            -1,
+            1,
+            2,
+            1
+          ]
+        ],
+        "source": "MIT OpenCourseWare · Differential Forms",
+        "url": "https://ocw.mit.edu/courses/18-950-differential-geometry-fall-2008/"
+      },
+      {
+        "id": "pullback",
+        "title": [
+          "3. Pullbacks and area",
+          "3. 引き戻しと面積"
+        ],
+        "body": [
+          "Deform a coordinate grid and inspect the Jacobian factor that transports an area form.",
+          "座標格子を変形し、面積形式を運ぶヤコビアン因子を調べます。"
+        ],
+        "formula": "\\phi^*(f\\,d x\\wedge d y)=f(\\phi(u,v))\\det D\\phi\\,d u\\wedge d v",
+        "example": [
+          "A positive determinant preserves orientation; a negative one reverses it.",
+          "行列式が正なら向きを保ち、負なら反転します。"
+        ],
+        "caution": [
+          "The grid map is a smooth illustrative deformation, not a measured coordinate system.",
+          "格子写像は滑らかな教育用変形で、実測座標系ではありません。"
+        ],
+        "question": [
+          "What does the determinant encode?",
+          "行列式は何を表しますか？"
+        ],
+        "answer": [
+          "The signed local area scale of the map.",
+          "写像の符号付き局所面積倍率です。"
+        ],
+        "params": [
+          [
+            "scale",
+            "Horizontal scale",
+            "横方向の倍率",
+            0.5,
+            2,
+            0.05,
+            1.2
+          ],
+          [
+            "shear",
+            "Shear",
+            "せん断",
+            -1,
+            1,
+            0.05,
+            0.3
+          ]
+        ],
+        "source": "MIT OpenCourseWare · Differential Forms",
+        "url": "https://ocw.mit.edu/courses/18-950-differential-geometry-fall-2008/"
+      }
+    ]
+  },
+  {
+    "slug": "general-relativity",
+    "title": [
+      "General relativity: curvature, clocks, and light",
+      "一般相対性理論：曲率・時計・光"
+    ],
+    "description": [
+      "Use a labeled embedding diagram, gravitational time dilation, and weak-field light deflection.",
+      "ラベル付き埋め込み図・重力時間遅れ・弱重力場の光偏向を調べます。"
+    ],
+    "group": "physics",
+    "prerequisite": [
+      "Special relativity and differential geometry",
+      "特殊相対性理論と微分幾何"
+    ],
+    "source": "Einstein Online · General Relativity",
+    "url": "https://www.einstein-online.info/en/spotlight/general-relativity/",
+    "labs": [
+      {
+        "id": "gravity-well",
+        "title": [
+          "1. An embedding diagram",
+          "1. 埋め込み図"
+        ],
+        "body": [
+          "Change the Schwarzschild radius and inspect a radial embedding profile. This is a spatial analogy, not a literal picture of spacetime.",
+          "シュワルツシルト半径を変え、動径方向の埋め込み断面を調べます。これは空間の類推であり、時空そのものの図ではありません。"
+        ],
+        "formula": "z(r)=2\\sqrt{r_s(r-r_s)},\\qquad r>r_s",
+        "example": [
+          "The surface becomes steep near the horizon in this two-dimensional embedding.",
+          "この二次元埋め込みでは地平面付近で曲面が急になります。"
+        ],
+        "caution": [
+          "An embedding diagram adds an auxiliary Euclidean dimension and does not show time curvature.",
+          "埋め込み図は補助的なユークリッド次元を加えたもので、時間の曲率は示しません。"
+        ],
+        "question": [
+          "What is the extra vertical axis?",
+          "追加された垂直軸は何ですか？"
+        ],
+        "answer": [
+          "It is a visualization coordinate used to display intrinsic spatial geometry.",
+          "内在的な空間幾何を表示するための可視化座標です。"
+        ],
+        "params": [
+          [
+            "radius",
+            "Schwarzschild radius r_s",
+            "シュワルツシルト半径 r_s",
+            0.2,
+            2,
+            0.05,
+            1
+          ],
+          [
+            "distance",
+            "Radial distance r/r_s",
+            "動径距離 r/r_s",
+            1.05,
+            5,
+            0.05,
+            2
+          ]
+        ],
+        "source": "Einstein Online · General Relativity",
+        "url": "https://www.einstein-online.info/en/spotlight/general-relativity/"
+      },
+      {
+        "id": "time-dilation",
+        "title": [
+          "2. Gravitational time dilation",
+          "2. 重力時間遅れ"
+        ],
+        "body": [
+          "Move a clock outward from the horizon and compare its proper time with a distant reference clock.",
+          "時計を地平面から外へ動かし、固有時と遠方基準時計を比較します。"
+        ],
+        "formula": "\\frac{\\Delta\\tau}{\\Delta t}=\\sqrt{1-\\frac{r_s}{r}}",
+        "example": [
+          "The lapse tends to zero as r approaches r_s and tends to one far away.",
+          "rがr_sに近づくと係数は0へ、遠方では1へ近づきます。"
+        ],
+        "caution": [
+          "The formula is for a static clock outside a nonrotating spherical mass.",
+          "この式は非回転球対称質量の外部で静止する時計に適用します。"
+        ],
+        "question": [
+          "Which clock accumulates less proper time?",
+          "どの時計の固有時が短くなりますか？"
+        ],
+        "answer": [
+          "The clock deeper in the gravitational field.",
+          "重力場の深い場所にある時計です。"
+        ],
+        "params": [
+          [
+            "distance",
+            "Radius r/r_s",
+            "半径 r/r_s",
+            1.05,
+            8,
+            0.05,
+            2
+          ]
+        ],
+        "source": "Einstein Online · General Relativity",
+        "url": "https://www.einstein-online.info/en/spotlight/general-relativity/"
+      },
+      {
+        "id": "light-deflection",
+        "title": [
+          "3. Weak-field light deflection",
+          "3. 弱重力場の光偏向"
+        ],
+        "body": [
+          "Change the impact parameter and compare a bent ray with the weak-field estimate.",
+          "衝突パラメータを変え、曲がった光線と弱重力場近似を比較します。"
+        ],
+        "formula": "\\alpha\\simeq\\frac{4GM}{bc^2}=\\frac{2r_s}{b}",
+        "example": [
+          "The estimate is valid when the impact parameter is large compared with r_s.",
+          "衝突パラメータがr_sより十分大きいとき、この近似が有効です。"
+        ],
+        "caution": [
+          "Near the photon sphere, the weak-field approximation fails dramatically.",
+          "光子球付近では弱重力場近似は大きく破綻します。"
+        ],
+        "question": [
+          "What reduces the deflection?",
+          "偏向を小さくするものは？"
+        ],
+        "answer": [
+          "Increasing the impact parameter b.",
+          "衝突パラメータ b を大きくすることです。"
+        ],
+        "params": [
+          [
+            "impact",
+            "Impact parameter b/r_s",
+            "衝突パラメータ b/r_s",
+            2,
+            20,
+            0.1,
+            6
+          ]
+        ],
+        "source": "Einstein Online · General Relativity",
+        "url": "https://www.einstein-online.info/en/spotlight/general-relativity/"
+      }
+    ]
+  },
+  {
+    "slug": "functional-analysis",
+    "title": [
+      "Functional analysis: norms, projections, and operators",
+      "関数解析：ノルム・射影・作用素"
+    ],
+    "description": [
+      "Compare norms, orthogonal projections, and the spectrum of a small operator.",
+      "ノルム・直交射影・小さな作用素のスペクトルを比較します。"
+    ],
+    "group": "analysis",
+    "prerequisite": [
+      "Linear algebra and real analysis",
+      "線形代数と実解析"
+    ],
+    "source": "MIT OpenCourseWare · Functional Analysis",
+    "url": "https://ocw.mit.edu/courses/18-155-differential-analysis-fall-2015/",
+    "labs": [
+      {
+        "id": "norms",
+        "title": [
+          "1. Norms and unit balls",
+          "1. ノルムと単位球"
+        ],
+        "body": [
+          "Change p and watch the unit ball interpolate between familiar geometries.",
+          "pを変え、単位球が身近な幾何の間を移る様子を見ます。"
+        ],
+        "formula": "\\|x\\|_p=\\left(|x_1|^p+|x_2|^p\\right)^{1/p}",
+        "example": [
+          "For \\(p=2\\), the unit ball is the Euclidean circle.",
+          "\\(p=2\\)では単位球はユークリッド円です。"
+        ],
+        "caution": [
+          "The limit \\(p=\\infty\\) is shown by a bounded approximation to the maximum norm.",
+          "\\(p=\\infty\\)の極限は最大ノルムの近似として表示します。"
+        ],
+        "question": [
+          "Which unit ball has the sharpest corners?",
+          "どの単位球の角が最も尖っていますか？"
+        ],
+        "answer": [
+          "The \\(p=1\\) diamond.",
+          "\\(p=1\\)のひし形です。"
+        ],
+        "params": [
+          [
+            "order",
+            "Norm order \\(p\\)",
+            "ノルムの次数 \\(p\\)",
+            1,
+            8,
+            0.1,
+            2
+          ]
+        ],
+        "source": "MIT OpenCourseWare · Functional Analysis",
+        "url": "https://ocw.mit.edu/courses/18-155-differential-analysis-fall-2015/"
+      },
+      {
+        "id": "projection-hilbert",
+        "title": [
+          "2. Orthogonal projection",
+          "2. 直交射影"
+        ],
+        "body": [
+          "Move a vector and inspect its projection onto a chosen direction in an inner-product space.",
+          "ベクトルを動かし、内積空間で選んだ方向への射影を調べます。"
+        ],
+        "formula": "\\operatorname{proj}_u v=\\frac{\\langle v,u\\rangle}{\\langle u,u\\rangle}u",
+        "example": [
+          "The residual is orthogonal to the subspace: \\(\\langle v-\\operatorname{proj}_u v,u\\rangle=0\\).",
+          "残差は部分空間に直交します：\\(\\langle v-\\operatorname{proj}_u v,u\\rangle=0\\)。"
+        ],
+        "caution": [
+          "Projection depends on the chosen inner product, not only on the drawn direction.",
+          "射影は図の方向だけでなく、選んだ内積にも依存します。"
+        ],
+        "question": [
+          "What vanishes at the projection?",
+          "射影で何が0になりますか？"
+        ],
+        "answer": [
+          "The inner product of the residual with the direction.",
+          "残差と方向の内積です。"
+        ],
+        "params": [
+          [
+            "x",
+            "Vector \\(x\\) component",
+            "ベクトルの\\(x\\)成分",
+            -2,
+            2,
+            0.1,
+            1.2
+          ],
+          [
+            "y",
+            "Vector \\(y\\) component",
+            "ベクトルの\\(y\\)成分",
+            -2,
+            2,
+            0.1,
+            0.8
+          ],
+          [
+            "angle",
+            "Subspace angle (degrees)",
+            "部分空間の角度（度）",
+            0,
+            180,
+            1,
+            35
+          ]
+        ],
+        "source": "MIT OpenCourseWare · Functional Analysis",
+        "url": "https://ocw.mit.edu/courses/18-155-differential-analysis-fall-2015/"
+      },
+      {
+        "id": "operator-spectrum",
+        "title": [
+          "3. Operator spectrum",
+          "3. 作用素のスペクトル"
+        ],
+        "body": [
+          "Vary a two-dimensional operator and compare its eigenvalue markers with repeated action on a vector.",
+          "二次元作用素を変え、固有値の印とベクトルへの反復作用を比較します。"
+        ],
+        "formula": "\\sigma(A)=\\{\\lambda:\\ A-\\lambda I\\ \\text{is not invertible}\\}",
+        "example": [
+          "For a diagonal operator, the coordinate axes reveal the eigenvectors directly.",
+          "対角作用素では座標軸が固有ベクトルを直接示します。"
+        ],
+        "caution": [
+          "A finite matrix spectrum is a teaching proxy for the richer spectra of infinite-dimensional operators.",
+          "有限行列のスペクトルは、無限次元作用素の豊かなスペクトルを表す教育用の近似です。"
+        ],
+        "question": [
+          "What happens when an eigenvalue crosses zero?",
+          "固有値が0を横切ると何が起こりますか？"
+        ],
+        "answer": [
+          "The operator loses invertibility along that eigendirection.",
+          "その固有方向で作用素の可逆性が失われます。"
+        ],
+        "params": [
+          [
+            "lambda1",
+            "Eigenvalue lambda_1",
+            "固有値 lambda_1",
+            -2,
+            2,
+            0.1,
+            1.2
+          ],
+          [
+            "lambda2",
+            "Eigenvalue lambda_2",
+            "固有値 lambda_2",
+            -2,
+            2,
+            0.1,
+            0.5
+          ],
+          [
+            "steps",
+            "Iteration count n",
+            "反復回数 n",
+            0,
+            8,
+            1,
+            4
+          ]
+        ],
+        "source": "MIT OpenCourseWare · Functional Analysis",
+        "url": "https://ocw.mit.edu/courses/18-155-differential-analysis-fall-2015/"
+      }
+    ]
+  },
+  {
+    "slug": "plasma-physics",
+    "title": [
+      "Plasma physics: screening, orbits, and waves",
+      "プラズマ物理：遮蔽・軌道・波"
+    ],
+    "description": [
+      "Explore Debye screening, charged-particle gyromotion, and a cold-plasma dispersion sketch.",
+      "デバイ遮蔽・荷電粒子の旋回運動・冷たいプラズマの分散図を調べます。"
+    ],
+    "group": "physics",
+    "prerequisite": [
+      "Electromagnetism and differential equations",
+      "電磁気学と微分方程式"
+    ],
+    "source": "MIT OpenCourseWare · Plasma Physics",
+    "url": "https://ocw.mit.edu/courses/22-611j-introduction-to-plasma-physics-i-fall-2002/",
+    "labs": [
+      {
+        "id": "debye",
+        "title": [
+          "1. Debye screening",
+          "1. デバイ遮蔽"
+        ],
+        "body": [
+          "Change the Debye length and inspect how a test charge potential decays through a plasma.",
+          "デバイ長を変え、試験電荷のポテンシャルがプラズマ中で減衰する様子を見ます。"
+        ],
+        "formula": "\\phi(r)=\\phi_0\\frac{e^{-r/\\lambda_D}}{r}",
+        "example": [
+          "Larger \\(\\lambda_D\\) makes the screened field persist farther from the charge.",
+          "\\(\\lambda_D\\) が大きいほど遮蔽された場は電荷から遠くまで残ります。"
+        ],
+        "caution": [
+          "The spherical Coulomb prefactor and the linearized screening model are idealizations.",
+          "球対称のクーロン因子と線形化した遮蔽モデルは理想化です。"
+        ],
+        "question": [
+          "What sets the screening distance?",
+          "遮蔽距離を決めるものは？"
+        ],
+        "answer": [
+          "The Debye length \\(\\lambda_D\\).",
+          "デバイ長 \\(\\lambda_D\\) です。"
+        ],
+        "params": [
+          [
+            "length",
+            "Debye length \\(\\lambda_D\\)",
+            "デバイ長 \\(\\lambda_D\\)",
+            0.2,
+            2,
+            0.05,
+            0.8
+          ],
+          [
+            "charge",
+            "Source amplitude \\(\\phi_0\\)",
+            "源の振幅 \\(\\phi_0\\)",
+            0.5,
+            2,
+            0.1,
+            1
+          ]
+        ],
+        "source": "MIT OpenCourseWare · Plasma Physics",
+        "url": "https://ocw.mit.edu/courses/22-611j-introduction-to-plasma-physics-i-fall-2002/"
+      },
+      {
+        "id": "cyclotron",
+        "title": [
+          "2. Cyclotron motion",
+          "2. サイクロトロン運動"
+        ],
+        "body": [
+          "Change the signed charge-to-mass ratio and watch the planar orbit reverse its sense of rotation.",
+          "電荷質量比の符号と大きさを変え、平面軌道の回転方向が反転する様子を見ます。"
+        ],
+        "formula": "\\omega_c=\\frac{qB}{m},\\qquad r_L=\\frac{v_\\perp}{|\\omega_c|}",
+        "example": [
+          "The orbit radius shrinks as the magnetic field or charge-to-mass magnitude grows.",
+          "磁場または電荷質量比の絶対値が増えると軌道半径は小さくなります。"
+        ],
+        "caution": [
+          "The animation is a uniform-field, nonrelativistic slice with no collisions.",
+          "アニメーションは衝突のない一様磁場中の非相対論的な断面です。"
+        ],
+        "question": [
+          "What reverses when q changes sign?",
+          "qの符号を変えると何が反転しますか？"
+        ],
+        "answer": [
+          "The direction of gyromotion, while the radius uses |q|.",
+          "旋回方向が反転し、半径は|q|を使います。"
+        ],
+        "params": [
+          [
+            "ratio",
+            "Charge-to-mass ratio \\(q/m\\)",
+            "電荷質量比 \\(q/m\\)",
+            -2,
+            2,
+            0.05,
+            1
+          ],
+          [
+            "speed",
+            "Perpendicular speed \\(v_\\perp\\)",
+            "垂直速度 \\(v_\\perp\\)",
+            0.2,
+            2,
+            0.05,
+            1
+          ]
+        ],
+        "source": "MIT OpenCourseWare · Plasma Physics",
+        "url": "https://ocw.mit.edu/courses/22-611j-introduction-to-plasma-physics-i-fall-2002/"
+      },
+      {
+        "id": "dispersion",
+        "title": [
+          "3. Plasma-wave dispersion",
+          "3. プラズマ波の分散"
+        ],
+        "body": [
+          "Compare the electromagnetic branch with the plasma-frequency cutoff in a compact dispersion diagram.",
+          "電磁波分枝とプラズマ周波数カットオフを簡潔な分散図で比較します。"
+        ],
+        "formula": "\\omega^2=\\omega_p^2+c^2k^2",
+        "example": [
+          "Below \\(\\omega_p\\), an electromagnetic wave cannot propagate in this cold, unmagnetized model.",
+          "\\(\\omega_p\\) 未満では、この冷たい非磁化モデルの電磁波は伝播できません。"
+        ],
+        "caution": [
+          "Temperature, collisions, and a magnetic field add branches omitted from this teaching sketch.",
+          "温度・衝突・磁場が加わると、この教育用スケッチにはない分枝が現れます。"
+        ],
+        "question": [
+          "What happens at \\(k=0\\)?",
+          "\\(k=0\\)では何が起こりますか？"
+        ],
+        "answer": [
+          "The branch begins at the plasma frequency \\(\\omega_p\\).",
+          "分枝はプラズマ周波数 \\(\\omega_p\\) から始まります。"
+        ],
+        "params": [
+          [
+            "frequency",
+            "Plasma frequency \\(\\omega_p\\)",
+            "プラズマ周波数 \\(\\omega_p\\)",
+            0.2,
+            2,
+            0.05,
+            1
+          ],
+          [
+            "speed",
+            "Wave speed \\(c\\)",
+            "波の速さ \\(c\\)",
+            0.5,
+            2,
+            0.05,
+            1
+          ]
+        ],
+        "source": "MIT OpenCourseWare · Plasma Physics",
+        "url": "https://ocw.mit.edu/courses/22-611j-introduction-to-plasma-physics-i-fall-2002/"
+      }
+    ]
   }
 ]

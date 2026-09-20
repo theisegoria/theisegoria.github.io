@@ -150,6 +150,30 @@ function render(section){const host=section.querySelector('.plot'),out=section.q
  const p=v.p,q=v.q,stationary=q/(p+q),steps=Math.round(v.steps),ch=chart(host,[0,steps,0,1],'step','probability');ch.path(sample(0,steps,80,k=>[k,stationary+(.8-stationary)*Math.pow(1-p-q,k)]),'third');ch.dot(steps,stationary+(.8-stationary)*Math.pow(1-p-q,steps),'third',7);result=T('Stationary A probability: ','定常状態Aの確率：')+fmt(stationary);
 }else if(id==='absorbing'){
  const a=v.alpha,i=Math.round(v.fortune),N=Math.round(v.goal),h=Math.abs(a-.5)<1e-6?i/N:(1-Math.pow((1-a)/a,i))/(1-Math.pow((1-a)/a,N)),ch=chart(host,[0,N,0,1],'fortune','absorption probability');ch.path(sample(0,N,100,x=>[x,Math.abs(a-.5)<1e-6?x/N:(1-Math.pow((1-a)/a,x))/(1-Math.pow((1-a)/a,N))]));ch.dot(i,h,'third',7);result=T('Absorption probability: ','吸収確率：')+fmt(h);
+ }else if(id==='line-integral'){
+ const r=v.radius,turns=v.turns,ch=chart(host,[-1.8,1.8,-1.8,1.8],'x','y',280,true);ch.path(sample(0,TAU*turns,220,t=>[r*Math.cos(t),r*Math.sin(t)]),'third');ch.dot(r,0,'point',7);result=T('Path radius: ','経路半径：')+fmt(r)+T(' · turns: ',' · 回転数：')+fmt(turns);
+}else if(id==='stokes'){
+ const r=v.radius,orientation=v.orientation,ch=chart(host,[-1.8,1.8,-1.8,1.8],'x','y',280,true);ch.path(sample(0,TAU,180,t=>[r*Math.cos(orientation*t),r*Math.sin(orientation*t)]),'third');ch.line([-r,0],[r,0],'second');ch.dot(0,0,'point',6);result=T('Boundary orientation: ','境界の向き：')+(orientation<0?T('reversed','反転'):T('positive','正向き'));
+}else if(id==='pullback'){
+ const s=v.scale,k=v.shear,ch=chart(host,[-2.2,2.2,-2.2,2.2],'u','v',280,true);for(let i=-2;i<=2;i+=.5){ch.line([-2*s+k*i,i],[2*s+k*i,i],'second');ch.line([i*s+k*(-2),-2],[i*s+k*2,2],'second');}result=T('Signed area scale: ','符号付き面積倍率：')+fmt(s*s);
+}else if(id==='gravity-well'){
+ const rs=v.radius,outer=v.distance,ch=chart(host,[1.01,outer,0,2*Math.sqrt(rs*(outer-rs))],'r','z',280);ch.path(sample(1.01,outer,180,x=>[x,2*Math.sqrt(Math.max(0,rs*(x-rs)))]),'third');ch.dot(Math.max(1.01,rs+0.05),2*Math.sqrt(Math.max(0,rs*.05)),'point',7);result=T('Embedding radius: ','埋め込み半径：')+fmt(rs);
+}else if(id==='time-dilation'){
+ const r=v.distance,lapse=Math.sqrt(Math.max(0,1-1/r)),ch=chart(host,[1.01,8,0,1.05],'r/r_s','proper-time factor');ch.path(sample(1.01,8,180,x=>[x,Math.sqrt(Math.max(0,1-1/x))]));ch.dot(r,lapse,'third',7);result=T('Proper-time factor: ','固有時係数：')+fmt(lapse);
+}else if(id==='light-deflection'){
+ const b=v.impact,alpha=2/b,ch=chart(host,[0,10,-2,2],'distance','ray height',280,true);ch.path([[0,-.7],[4,-.7+alpha*2],[10,-.7+alpha*5]],'third');ch.line([0,.7],[10,.7],'second');result=T('Weak-field deflection estimate: ','弱重力場の偏向近似：')+fmt(alpha);
+ }else if(id==='norms'){
+ const p=v.order,ch=chart(host,[-1.5,1.5,-1.5,1.5],'x_1','x_2',280,true);ch.path(sample(0,TAU,240,t=>{const c=Math.cos(t),d=Math.sin(t),n=(Math.abs(c)**p+Math.abs(d)**p)**(-1/p);return [c*n,d*n]}),'third');ch.dot(1,0,'point',7);result=T('Unit-ball order: ','単位球の次数：')+fmt(p);
+}else if(id==='projection-hilbert'){
+ const a=rad(v.angle),u=[Math.cos(a),Math.sin(a)],d=v.x*u[0]+v.y*u[1],q=[d*u[0],d*u[1]],ch=chart(host,[-2.5,2.5,-2.5,2.5],'x_1','x_2',280,true);ch.line(u.map(x=>-3*x),u.map(x=>3*x),'second');ch.line([0,0],[v.x,v.y]);ch.line([v.x,v.y],q,'third');ch.dot(...q,'point',7);result=T('Residual inner product: ','残差との内積：')+fmt((v.x-q[0])*u[0]+(v.y-q[1])*u[1]);
+}else if(id==='operator-spectrum'){
+ const l1=v.lambda1,l2=v.lambda2,n=Math.round(v.steps),ch=chart(host,[-3,3,-3,3],'x','y',280,true),x=1.2*l1**n,y=.7*l2**n;ch.line([-2,0],[2,0],'second');ch.line([0,-2],[0,2],'second');ch.path([[0,0],[x,y]],'third');ch.dot(x,y,'point',7);ch.text(l1,0,'λ₁');ch.text(0,l2,'λ₂');result=T('Iterated vector: ','反復後のベクトル：')+fmt(x)+', '+fmt(y);
+}else if(id==='debye'){
+ const L=v.length,A=v.charge,ch=chart(host,[.1,8,0,Math.max(1,A*10)],'r','potential');ch.path(sample(.1,8,180,x=>[x,A*Math.exp(-x/L)/x]),'third');ch.dot(L,A*Math.exp(-1)/L,'point',7);result=T('Screening length: ','遮蔽長：')+fmt(L);
+}else if(id==='cyclotron'){
+ const w=v.ratio,r=v.speed/Math.max(.05,Math.abs(w)),ch=chart(host,[-2.2,2.2,-2.2,2.2],'x','y',280,true);ch.path(sample(0,TAU*2,240,t=>[r*Math.cos(w*t),r*Math.sin(w*t)]),'third');ch.dot(r,0,'point',7);result=T('Cyclotron frequency: ','サイクロトロン周波数：')+fmt(w)+T(' · Larmor radius: ',' · ラーマー半径：')+fmt(r);
+}else if(id==='dispersion'){
+ const wp=v.frequency,c=v.speed,ch=chart(host,[0,4,0,Math.max(4,wp*2.2)],'k','ω');ch.path(sample(0,4,180,k=>[k,Math.sqrt(wp*wp+c*c*k*k)]),'third');ch.line([0,wp],[4,wp],'second');ch.dot(0,wp,'point',7);result=T('Cutoff frequency: ','カットオフ周波数：')+fmt(wp);
 }else if(id==='modular'){
  const n=v.n,ch=chart(host,[-1,n,-1,1],'residue','phase',260);for(let i=0;i<n;i++){const a=TAU*i/n;ch.dot(i,0,'point',7);ch.text(i,0,String(i));ch.line([i,0],[i+((v.a-v.b)%n+n)%n,0],'second');}result=`${v.a} ≡ ${v.b} (mod ${n}) · ${T('difference','差')} = ${((v.a-v.b)%n+n)%n}`;
  }else if(id==='sieve'){
