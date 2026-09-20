@@ -6,7 +6,7 @@ is progressive enhancement, so the page still works with JavaScript switched off
 from pathlib import Path
 from html import escape, unescape
 from html.parser import HTMLParser
-import importlib.util, json, re
+import importlib.util, json, re, sys
 
 ROOT=Path(__file__).resolve().parents[1]
 spec=importlib.util.spec_from_file_location('shell',ROOT/'tools/site-shell.py')
@@ -64,6 +64,7 @@ def controls(ja,groups,total):
  for slug,name in groups:
   chips.append(f'<button type="button" data-filter="{slug}" aria-pressed="false">{escape(name)}</button>')
  for slug in ['interactive','pdf','bilingual']:
+  if any(g==slug for g,_ in groups):continue
   chips.append(f'<button type="button" data-filter="{slug}" aria-pressed="false">{labels[slug]}</button>')
  return (f'<section class="controls library-controls" aria-label="{labels["heading"]}">'
          f'<div class="search-field"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="9" cy="9" r="6"/>'
@@ -80,8 +81,12 @@ def main():
  pages=entries()
  for ja,file in [(False,'library.html'),(True,'ja/library.html')]:
   parts=[];slugs=[];total=0
-  categories=['数学百科事典','学習ガイド','研究と解説','書籍','参考シート','プロジェクト'] if ja else ['Math encyclopedia','Guides','Research','Books','Sheets','Projects']
-  english=['math','guides','research','books','sheets','projects']
+  categories=['数学百科事典','学習ガイド','操作できる解説','研究と解説','書籍','参考シート','プロジェクト'] if ja else ['Math encyclopedia','Guides','Interactive explainers','Research','Books','Sheets','Projects']
+  english=['math','guides','interactive','research','books','sheets','projects']
+  # A page whose category is not listed here would silently vanish from the
+  # library. That happened once when site-shell.py gained a category; fail loudly.
+  orphans=sorted({shell.category(p['route'],ja)[0] for p in pages if p['ja']==ja}-set(categories))
+  if orphans:sys.exit(f'{file}: categories missing from update-library.py: {orphans}')
   for i,category in enumerate(categories):
    group=[p for p in pages if p['ja']==ja and shell.category(p['route'],ja)[0]==category]
    if not group:continue

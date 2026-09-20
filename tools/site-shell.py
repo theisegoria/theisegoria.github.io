@@ -54,14 +54,14 @@ def category(route,ja=False):
     if r.startswith('/sheets/'):return ('参考シート' if ja else 'Sheets',('/ja' if ja else '')+'/sheets/')
     if r.startswith(('/medical-textbook/','/game-design-dynamics-of-learning/')):return ('書籍' if ja else 'Books',('/ja' if ja else '')+'/#books')
     if r.startswith('/stem-genius/'):return ('プロジェクト' if ja else 'Projects',('/ja' if ja else '')+'/projects.html')
-    if is_interactive(route):return ('インタラクティブ解説' if ja else 'Interactive explainers',('/ja' if ja else '')+'/#interactive')
+    if is_interactive(route):return ('操作できる解説' if ja else 'Interactive explainers',('/ja' if ja else '')+'/#interactive')
     if r.startswith('/algebraic-varieties-introduction/') or r.startswith('/lebesgue-integration/') or r.startswith('/lebesgue-vs-riemann/') or r.startswith('/gamma-beta/') or (r.startswith('/explore/') and not any(x in r for x in ['automatic-watch','apple-silicon'])):
         return ('学習ガイド' if ja else 'Guides',('/ja' if ja else '')+'/#guides')
     return ('研究と解説' if ja else 'Research',('/ja' if ja else '')+'/#preoccupations')
 
 def shell(route,title,ja,alternate=None,parent=None):
     home='/ja/' if ja else '/'; cat=category(route,ja)
-    labels=['ホーム','全コンテンツ','数学百科事典','インタラクティブ','研究と解説','書籍','プロジェクト','このサイトについて'] if ja else ['Home','Library','Math encyclopedia','Interactive','Research','Books','Projects','About']
+    labels=['ホーム','全コンテンツ','数学百科事典','操作できる解説','研究と解説','書籍','プロジェクト','このサイトについて'] if ja else ['Home','Library','Math encyclopedia','Interactive','Research','Books','Projects','About']
     urls=[home,home+'library.html',home+'math-encyclopedia/',home+'#interactive',home+'#preoccupations',home+'#books',home+'projects.html',home+'about.html']
     links=[]
     for label,url in zip(labels,urls):

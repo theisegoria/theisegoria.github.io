@@ -240,3 +240,31 @@ language changes. It waits for application initialization before recording
 the initial language. Shared-shell loading is a compatibility fallback for
 separate project repositories; repeated script execution is guarded.
 Tests intercept collection locally. Never send synthetic events to production.
+
+## Vite-built labs (dualsense-lab, uni-writing-lab)
+
+These are React apps whose sources live outside this repo, at
+`~/DailyWork/Research/<slug>/`. Their published `index.html` is an empty
+`#root`, so the shared header has to be in the **source** `index.html`
+(the ISEGORIA marker blocks plus the hreflang alternates), or a rebuild
+drops it. Deploy with `rsync -a --delete dist/ <slug>/`, then run the
+usual tool chain.
+
+Both carry their two languages in one bundle and pick one from
+`<html lang>`, so the Japanese page is the same build with `lang="ja"`
+and localised metadata. dualsense-lab's Japanese `index.html` points its
+script and stylesheet at `/dualsense-lab/assets/`, and the app resolves
+its 6.8 MB model against the bundle URL, so the model is stored once.
+Rebuild the Japanese page from `dist/index.html` after every build: its
+asset hashes change.
+
+## Library categories must match site-shell categories
+
+`tools/update-library.py` groups pages by `shell.category()`. A category
+that `site-shell.py` returns but the library does not list used to drop
+every page in it from the library without a word; it now exits with an
+error instead. Add a new category to both files together.
+
+`update-library.py`, `site-shell.py` and `track-pages.py` must be run
+together and in that order: the last two reorder the same pair of
+`<script>` tags, so running one alone rewrites every page.
