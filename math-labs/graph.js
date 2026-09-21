@@ -27,7 +27,7 @@
     buildsOn: '前提とするトピック', leadsTo: 'このトピックを前提とする', related: '関連するトピック',
     open: 'トピックを開く', none: 'なし',
     topics: n => `${n}件のトピック`, matches: n => n ? `${n}件が一致` : '一致するトピックはない',
-    idleTitle: '30のトピックのつながり',
+    idleTitle: (n) => `${n}のトピックのつながり`,
     idle: 'トピックにカーソルを合わせるかフォーカスすると、前提とするトピックと、そのトピックを前提とするトピックが浮かび上がる。クリックでトピックを開く。',
     keys: '矢印キーで近くのトピックへ移動、Enterで開く、Escで解除。',
     before: '前提知識', links: n => `${n}本のつながり`,
@@ -36,7 +36,7 @@
     groups: { foundations: 'Foundations', analysis: 'Analysis', geometry: 'Geometry', applications: 'Applications', physics: 'Physics' },
     buildsOn: 'Builds on', leadsTo: 'Leads to', related: 'Related', open: 'Open topic', none: 'None',
     topics: n => `${n} topics`, matches: n => n ? `${n} ${n === 1 ? 'match' : 'matches'}` : 'No matching topic',
-    idleTitle: 'How the 30 topics connect',
+    idleTitle: (n) => `How the ${n} topics connect`,
     idle: 'Hover over or focus a topic to trace what it builds on and what builds on it. Click a topic to open it.',
     keys: 'Arrow keys move to the nearest topic in that direction, Enter opens it, Escape clears.',
     before: 'Before you begin', links: n => `${n} connection${n === 1 ? '' : 's'}`,
@@ -61,7 +61,13 @@
     'differential-forms': ['differential-geometry', 'algebraic-topology', 'electromagnetism'],
     'general-relativity': ['special-relativity', 'differential-geometry', 'classical-mechanics'],
     'functional-analysis': ['measure-theory', 'linear-algebra', 'numerical-analysis'],
-    'plasma-physics': ['electromagnetism', 'fluid-dynamics', 'statistical-mechanics']
+    'plasma-physics': ['electromagnetism', 'fluid-dynamics', 'statistical-mechanics'],
+    'lie-groups': ['quantum-mechanics', 'differential-geometry', 'group-theory'],
+    'hamiltonian-mechanics': ['dynamical-systems', 'numerical-analysis', 'statistical-mechanics'],
+    'stochastic-processes': ['partial-differential-equations', 'statistical-mechanics', 'measure-theory'],
+    'solid-state-physics': ['fourier-analysis', 'linear-algebra', 'statistical-mechanics'],
+    'control-theory': ['dynamical-systems', 'complex-analysis', 'fourier-analysis'],
+    'logic-computability': ['number-theory', 'graph-theory', 'information-theory']
   };
   // Topics named in each topic's own prerequisite line (content.json "prerequisite").
   const PREREQ = {
@@ -75,7 +81,12 @@
     'differential-forms': ['differential-geometry'],                     // Multivariable calculus and differential geometry
     'general-relativity': ['special-relativity', 'differential-geometry'],// Special relativity and differential geometry
     'functional-analysis': ['linear-algebra'],                           // Linear algebra and real analysis
-    'plasma-physics': ['electromagnetism']                               // Electromagnetism and differential equations
+    'plasma-physics': ['electromagnetism'],                              // Electromagnetism and differential equations
+    'lie-groups': ['linear-algebra', 'group-theory'],                    // Linear algebra and group theory
+    'hamiltonian-mechanics': ['classical-mechanics', 'calculus-of-variations'], // Classical mechanics and calculus of variations
+    'stochastic-processes': ['probability-inference', 'measure-theory', 'markov-chains'], // Probability, measure theory, and Markov chains
+    'solid-state-physics': ['quantum-mechanics', 'fourier-analysis'],    // Quantum mechanics and Fourier analysis
+    'control-theory': ['dynamical-systems', 'complex-analysis']          // Dynamical systems and complex analysis
   };
   // Where each group settles, as fractions of the stage.
   const ANCHOR = {
@@ -300,7 +311,7 @@
     detail.replaceChildren();
     if (!f) {
       detail.append(h('p', 'kg-kicker', T.topics(topics.length) + ' · ' + T.links(edges.length)));
-      detail.append(h('h2', 'kg-d-title', T.idleTitle));
+      detail.append(h('h2', 'kg-d-title', T.idleTitle(topics.length)));
       detail.append(h('p', 'kg-d-copy', T.idle));
       detail.append(h('p', 'kg-d-keys', T.keys));
       const key = h('div', 'kg-key');

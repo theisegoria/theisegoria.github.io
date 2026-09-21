@@ -270,3 +270,14 @@ error instead. Add a new category to both files together.
 `update-library.py`, `site-shell.py` and `track-pages.py` must be run
 together and in that order: the last two reorder the same pair of
 `<script>` tags, so running one alone rewrites every page.
+
+## Math encyclopedia
+
+`tools/math-encyclopedia.json` is the one list of encyclopedia entries, in
+reading order, each with a group (foundations, analysis, geometry,
+applications, physics). `python3 tools/build-math-hub.py` writes the `<main>`
+of both hubs from it, so an entry appears once and every group has a jump
+link; `--check` reports a stale hub. The kit-built topic pages come from
+`math-labs/` (see its README and KIT.md); `math-labs/integrate.py` runs the
+hub builder for you. The same JSON drives the Math encyclopedia breadcrumb
+and library category.

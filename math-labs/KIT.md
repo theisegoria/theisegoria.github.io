@@ -1,6 +1,6 @@
 # Math encyclopedia lab kit
 
-The 30 topic pages (`/<slug>/` and `/ja/<slug>/`) share one runtime. Each page
+The 36 topic pages (`/<slug>/` and `/ja/<slug>/`) share one runtime. Each page
 loads `math-labs/experience.js` (the kit, `window.Lab`) and `math-labs/app.js`
 (the runtime), and the runtime loads `math-labs/topics/<slug>.js`, which
 registers one definition per experiment in `window.LabDefs`.

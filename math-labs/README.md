@@ -1,6 +1,6 @@
-# Eight mathematics entries
+# Math encyclopedia topics
 
-Eight paired English/Japanese entries with 26 original interactive experiments. Static pages use the site's shared navigation and vendored KaTeX. The experiments share the `math-labs/experience.js` 2D rendering layer: responsive semantic SVG surfaces, one mathematical coordinate system, keyboard-safe handles, and reduced-motion-aware transitions. No runtime network requests or external application dependencies are needed for the experiments.
+Thirty-six paired English/Japanese topics with 110 original interactive experiments. Static pages use the site's shared navigation and vendored KaTeX. The experiments share the `math-labs/experience.js` 2D rendering layer: responsive semantic SVG surfaces, one mathematical coordinate system, keyboard-safe handles, and reduced-motion-aware transitions. No runtime network requests or external application dependencies are needed for the experiments.
 
 ## Rebuild
 
@@ -10,10 +10,12 @@ From the repository root:
 python3 math-labs/build.py
 python3 math-labs/integrate.py
 python3 tools/update-library.py
+python3 tools/site-shell.py
+python3 tools/track-pages.py
 node math-labs/verify.cjs
 ```
 
-The generator owns only these sixteen pages and its structured content. Integration appends eight curated records, updates the encyclopedia/homepage lists and sitemap, and applies the existing shared shell only to the new lessons. Latest-work promotion uses the site's existing `tools/latest.py` separately.
+`build.py` owns the topic pages and `content.json`; the six topics added in September 2026 are defined in `batch-six.py`, which `build.py` loads. `integrate.py` applies the shared shell, adds any missing topic to `tools/math-encyclopedia.json`, rebuilds both hubs with `tools/build-math-hub.py` (one section per group, each entry once) and adds sitemap URLs. It does not touch the home page. Latest-work promotion uses `tools/latest.py` separately.
 
 ## Mathematical scope
 
@@ -28,8 +30,8 @@ The generator owns only these sixteen pages and its structured content. Integrat
 
 ## Sources and provenance
 
-Every experiment cites its reference in both editions; `content.json` records the links. References include MIT OCW linear algebra and nonlinear dynamics, Stanford EE261, Boyd and Vandenberghe, Brown Seeing Theory, Judson, Hatcher, Lebl, Goldberg, and Chebfun. Explanations, diagrams, and implementation are original; no textbook prose or images are copied. Japanese text is labeled as AI translation. Existing vendored KaTeX retains its license and fonts in `/analysis-atlas/vendor/`.
+Every experiment cites its reference in both editions; `content.json` records the links. References include MIT OCW linear algebra and nonlinear dynamics, Stanford EE261, Boyd and Vandenberghe, Brown Seeing Theory, Judson, Hatcher, Lebl, Goldberg, and Chebfun. Explanations, diagrams, and implementation are original; no textbook prose or images are copied. Existing vendored KaTeX retains its license and fonts in `/analysis-atlas/vendor/`.
 
 ## Validation
 
-`verify.cjs` checks 44 numerical/content properties, including homology ranks, beta normalization and means, logistic bounds and convergence, RK4 refinement, Euler instability, and interpolation-node agreement. Browser review exercises all 26 experiments in both languages at 375 and 1280 CSS pixels, checks the shared 2D SVG surface, KaTeX rendering, page overflow, keyboard and pointer state changes, and state-preserving language navigation. Release notes distinguish these local checks from live deployment verification.
+`verify.cjs` checks 112 numerical/content properties, including the models behind the six newest topics (Rodrigues and the commutator, Liouville area and integrator energy, quadratic variation, Kronig–Penney and Brillouin-zone areas, Nyquist counts, busy beavers and Gödel decoding), including homology ranks, beta normalization and means, logistic bounds and convergence, RK4 refinement, Euler instability, and interpolation-node agreement. Browser review exercises all 26 experiments in both languages at 375 and 1280 CSS pixels, checks the shared 2D SVG surface, KaTeX rendering, page overflow, keyboard and pointer state changes, and state-preserving language navigation. Release notes distinguish these local checks from live deployment verification.

@@ -105,3 +105,13 @@
 .connections{border-top:1px solid var(--ig-rule,#ddd);padding-top:30px}
 @media(max-width:600px){.math-wrap{padding:16px}.lesson-intro{padding-top:15px}.experiment{padding:28px 0}.controls{grid-template-columns:1fr;gap:10px}}
 @media(prefers-reduced-motion:reduce){.lab-stream.is-flowing path{animation:none}.lab-handle-dot{transition:none}}
+.lab-table.is-rules th,.lab-table.is-rules td{width:auto;min-width:3.4em;padding:0 .6em;white-space:nowrap;transition:background .15s}
+.lab-table td.is-active{background:color-mix(in srgb,var(--lab-hl) 32%,transparent);color:var(--lab-ink);font-weight:600;outline:2px solid var(--lab-hl);outline-offset:-2px}
+.lab-palette{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 10px}
+.lab-sym{min-width:2.4em;height:2.3em;border:1px solid var(--lab-grid);border-radius:8px;background:var(--lab-plate);color:var(--lab-ink);font:500 16px/1 var(--lab-mono);cursor:pointer}
+.lab-sym:hover,.lab-sym:focus-visible{border-color:var(--lab-c1);outline:none;background:color-mix(in srgb,var(--lab-c1) 12%,var(--lab-plate))}
+.lab-sym.is-wide{padding:0 .8em;font-size:13px}
+.lab-bignum{border:1px solid var(--lab-grid);border-radius:10px;background:var(--lab-plate);padding:10px 14px;margin:10px 0}
+.lab-bignum-k{font-size:.8rem;color:var(--lab-muted);overflow-wrap:anywhere}
+.lab-bignum-v{font:600 15px/1.5 var(--lab-mono);color:var(--lab-c1);overflow-wrap:anywhere;margin:4px 0}
+.controls>label{min-width:0}.lab-control.is-choice .lab-seg{width:auto}
