@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="ja" class=" ig-document ig-editorial">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>クルトガの中身</title>
+<meta name="description" content="紙から離すたびに芯を九度ずつ回すシャープペンシル。半歯ずつ送る三つのカムの機構と、その回転が実際にどれだけ効くのかを確かめる摩耗シミュレーション。">
+<meta property="og:title" content="クルトガの中身">
+<meta property="og:description" content="三つのカム、半歯ずつの送り、そして回転の効き目を測る摩耗シミュレーション。">
+<meta property="og:image" content="https://theisegoria.github.io/og.png">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="canonical" href="https://theisegoria.github.io/ja/kuru-toga/">
+<link rel="alternate" hreflang="en" href="https://theisegoria.github.io/kuru-toga/">
+<link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/kuru-toga/">
+<link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/kuru-toga/">
+<link rel="stylesheet" href="/assets/isegoria.css?v=20260915">
+<link rel="stylesheet" href="/assets/lab-kit/lab-kit.css?v=20260915">
+<link rel="stylesheet" href="/kuru-toga/style.css?v=20260922">
+<script type="importmap">
+{"imports":{
+  "three":"/vendor/three/r186/build/three.webgpu.js",
+  "three/webgpu":"/vendor/three/r186/build/three.webgpu.js",
+  "three/tsl":"/vendor/three/r186/build/three.tsl.js",
+  "three/addons/":"/vendor/three/r186/examples-jsm/"
+}}
+</script>
+<link rel="modulepreload" href="/vendor/three/r186/build/three.webgpu.js">
+<link rel="modulepreload" href="/vendor/three/r186/build/three.core.js">
+<script type="module" src="/kuru-toga/lab.js"></script>
+<script src="/assets/lang.js"></script>
+<!-- ISEGORIA:HEAD -->
+<link rel="stylesheet" href="/assets/site-shell.css?v=c21cd21e82">
+<script src="/assets/site-shell.js?v=c21cd21e82" ></script>
+<!-- /ISEGORIA:HEAD -->
+<script defer data-isegoria-analytics src="/assets/analytics.js?v=9e6ebd463bf2"></script>
+</head>
+<body class=" ig-site" data-site-kind="editorial" data-site-route="/ja/kuru-toga/">
+<!-- ISEGORIA:NAV -->
+<a class="ig-skip" href="#ig-content">本文へ移動</a>
+<header id="ig-header"><div class="ig-nav-inner">
+<a class="ig-brand" href="/ja/" aria-label="Isegoria, ホーム"><strong>ISEGORIA</strong><span>Benjamin Haire</span></a>
+<div class="ig-header-actions"><a class="ig-language" href="/kuru-toga/" hreflang="en" lang="en">English</a><button class="ig-menu" type="button" aria-expanded="false" aria-controls="ig-primary">メニュー</button></div>
+<nav id="ig-primary" aria-label="メインナビゲーション"><a href="/ja/">ホーム</a><a href="/ja/library.html">全コンテンツ</a><a href="/ja/math-encyclopedia/">数学百科事典</a><a href="/ja/#interactive" aria-current="location">操作できる解説</a><a href="/ja/#preoccupations">研究と解説</a><a href="/ja/#books">書籍</a><a href="/ja/projects.html">プロジェクト</a><a href="/ja/about.html">このサイトについて</a><a class="ig-language" href="/kuru-toga/" hreflang="en" lang="en">English</a><button class="ig-theme" type="button" hidden>表示切替</button></nav>
+</div></header>
+<nav id="ig-breadcrumb" aria-label="パンくずリスト"><a href="/ja/">ホーム</a><span aria-hidden="true">/</span><a href="/ja/#interactive">操作できる解説</a><span aria-hidden="true">/</span><span aria-current="page">クルトガの中身</span></nav>
+<span id="ig-content" tabindex="-1"></span>
+<!-- /ISEGORIA:NAV --><main class="wrap">
+
+<header class="hero">
+<p class="kicker">インタラクティブ解説</p>
+<h1>クルトガの中身</h1>
+<p class="lede">芯を一画ごとに九度ずつ回すシャープペンシルは、どう動いているのか。そしてその回転には、どれだけの値打ちがあるのか。</p>
+<nav class="ig-page-nav" aria-label="このページの目次"><a href="#engine">機構</a><a href="#halftooth">半歯の仕掛け</a><a href="#flat">偏減り</a><a href="#worth">回転の値打ち</a><a href="#unsettled">確かめられなかったこと</a><a href="#sources">出典</a></nav>
+</header>
+
+<p class="thesis">クルトガは芯を尖らせてはいない。芯を左右対称に保っているだけであり、その対称性が細い線につながるかどうかは、ほとんど筆圧で決まる。</p>
+
+<p>三菱鉛筆がこの機構を発売したのは2008年3月で、以来シリーズ累計で一億本を超えている。売り文句は一文で済む。紙から離すたびに芯が少し回るので、片減りせずに均等に減る、というものである。その一文が答えていないことが二つあって、それが知りたかった。直径四ミリの軸の中に回転機構をまるごと収め、落としても壊れないようにするのに、中で何が起きているのか。そしてその効果は持つに値するのか。メーカー自身が公表している数字は、評判よりもずいぶん控えめだからである。</p>
+
+<section class="lab" id="engine" aria-labelledby="engine-h">
+<h2 id="engine-h">機構</h2>
+<p>押して、離す。それを繰り返す。ローターの白い印と芯の筋を見れば、回転がわかる。摩耗ビューに切り替えれば、回る芯と回らない芯を紙の上で競わせられる。</p>
+
+<div class="lab-stage">
+  <canvas id="stage" tabindex="0" aria-label="クルトガ機構のインタラクティブな3D表示。ドラッグで回転、スクロールで拡大縮小。数値はすべて下の表示にも出る。"></canvas>
+  <div class="lab-labels" id="labels" aria-hidden="true"></div>
+  <figure data-lab-fallback hidden>
+    <svg viewBox="0 0 660 330" role="img" aria-labelledby="fb-t fb-d">
+      <title id="fb-t">クルトガのカム動作を平らに展開した図</title>
+      <desc id="fb-d">二つの図。一つ目では筆圧でローターが持ち上がり、上の固定カムに上の歯が乗り上げて半歯だけ回る。二つ目ではバネがローターを押し戻し、下の固定カムに下の歯が乗り上げて、同じ向きにもう半歯回る。</desc>
+      <defs>
+        <style>
+          .fb-ring { fill: var(--ink-soft, #5d574f); opacity: .85 }
+          .fb-rotor { fill: var(--accent, #8a4b26) }
+          .fb-arrow { fill: none; stroke: var(--ink, #1b1917); stroke-width: 2 }
+          .fb-t { font: 11px var(--sans, system-ui); fill: var(--ink-soft, #5d574f) }
+          .fb-h { font: 600 12px var(--sans, system-ui); fill: var(--ink, #1b1917) }
+        </style>
+        <marker id="fb-a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0l10 5-10 5z" fill="var(--ink, #1b1917)"/></marker>
+      </defs>
+
+      <g transform="translate(20 46)">
+        <text class="fb-h" x="0" y="-16">1. 押す</text>
+        <path class="fb-ring" d="M0 40 L36 23 L36 40 L72 23 L72 40 L108 23 L108 40 L144 23 L144 40 L180 23 L180 40 L216 23 L216 40 L252 23 L252 40 L288 23 L288 40 L288 0 L0 0 Z"/>
+        <g transform="translate(18 -17)">
+          <path class="fb-rotor" d="M0 57 L36 40 L36 57 L72 40 L72 57 L108 40 L108 57 L144 40 L144 57 L180 40 L180 57 L216 40 L216 57 L252 40 L252 57 L252 85 L0 85 Z"/>
+          <path class="fb-rotor" d="M0 93 L36 110 L36 93 L72 110 L72 93 L108 110 L108 93 L144 110 L144 93 L180 110 L180 93 L216 110 L216 93 L252 110 L252 93 L252 85 L0 85 Z"/>
+        </g>
+        <path class="fb-ring" d="M0 110 L36 93 L36 110 L72 93 L72 110 L108 93 L108 110 L144 93 L144 110 L180 93 L180 110 L216 93 L216 110 L252 93 L252 110 L288 93 L288 110 L288 150 L0 150 Z"/>
+        <path class="fb-arrow" marker-end="url(#fb-a)" d="M300 96 L300 60"/>
+        <text class="fb-t" x="306" y="82">ローターが上がる</text>
+        <text class="fb-t" x="0" y="172">上の歯が上のリングと噛み合い、半歯ぶん滑る。</text>
+      </g>
+
+      <g transform="translate(360 46)">
+        <text class="fb-h" x="0" y="-16">2. 離す</text>
+        <path class="fb-ring" d="M0 40 L36 23 L36 40 L72 23 L72 40 L108 23 L108 40 L144 23 L144 40 L180 23 L180 40 L216 23 L216 40 L252 23 L252 40 L288 23 L288 40 L288 0 L0 0 Z"/>
+        <g transform="translate(36 0)">
+          <path class="fb-rotor" d="M0 57 L36 40 L36 57 L72 40 L72 57 L108 40 L108 57 L144 40 L144 57 L180 40 L180 57 L216 40 L216 57 L252 40 L252 57 L252 85 L0 85 Z"/>
+          <path class="fb-rotor" d="M0 93 L36 110 L36 93 L72 110 L72 93 L108 110 L108 93 L144 110 L144 93 L180 110 L180 93 L216 110 L216 93 L252 110 L252 93 L252 85 L0 85 Z"/>
+        </g>
+        <path class="fb-ring" d="M0 110 L36 93 L36 110 L72 93 L72 110 L108 93 L108 110 L144 93 L144 110 L180 93 L180 110 L216 93 L216 110 L252 93 L252 110 L288 93 L288 110 L288 150 L0 150 Z"/>
+        <path class="fb-arrow" marker-end="url(#fb-a)" d="M300 60 L300 96"/>
+        <text class="fb-t" x="306" y="82">バネが押し戻す</text>
+        <text class="fb-t" x="0" y="172">下の歯が下のリングと噛み合い、同じ向きに残り半歯だけ滑る。</text>
+      </g>
+
+      <text class="fb-t" x="20" y="316">上下のカムリングはどちらも軸に固定されている。動くのは中央のローターだけで、チャックと芯を連れて動く。</text>
+    </svg>
+    <figcaption>このブラウザにはWebGPUもWebGL 2もないため、カム動作の静止版を表示している。</figcaption>
+  </figure>
+  <div class="lab-hud"><span class="lab-badge"></span></div>
+</div>
+
+<div class="lab-aside">
+  <svg id="unrolled" viewBox="0 0 324 150" role="img" aria-label="二つのカム面を平らに展開した図。上の3D表示と連動して動く。">
+    <defs><clipPath id="u-clip"><rect x="0" y="0" width="324" height="150"/></clipPath></defs>
+    <g clip-path="url(#u-clip)">
+      <path id="u-upper" class="u-ring"/>
+      <path id="u-lower" class="u-ring"/>
+      <g id="u-rotor"><path id="u-rotor-top" class="u-rotor"/><path id="u-rotor-bot" class="u-rotor"/></g>
+    </g>
+    <g class="u-key">
+      <text x="7" y="15">上カムリング（固定）</text>
+      <text x="7" y="78">ローター</text>
+      <text x="7" y="144">下カムリング（固定）</text>
+    </g>
+  </svg>
+  <p id="u-caption" aria-live="polite"></p>
+</div>
+
+<form class="lab-controls" id="controls" onsubmit="return false">
+  <fieldset class="lab-views">
+    <legend class="visually-hidden">表示</legend>
+    <label><input type="radio" name="view" value="engine" checked> 機構</label>
+    <label><input type="radio" name="view" value="wear"> 紙の上の摩耗</label>
+  </fieldset>
+
+  <label><span>エンジン</span>
+    <select name="teeth" id="teeth">
+      <option value="40" selected>40歯、一画9度（標準）</option>
+      <option value="20">20歯、一画18度（アドバンス）</option>
+    </select>
+  </label>
+
+  <label><span>毎秒の画数</span><output for="rate"></output>
+    <input id="rate" name="rate" type="range" min="0.2" max="5" step="0.1" value="1.1" data-format="fixed:1"></label>
+
+  <label><span>書いている</span><input name="running" type="checkbox" checked></label>
+  <label><span>一画ごとにペンを離す</span><input name="lift" type="checkbox" checked></label>
+
+  <label><span>紙に対する角度</span><output for="hold"></output>
+    <input id="hold" name="hold" type="range" min="30" max="88" step="1" value="60" data-format="int"></label>
+
+  <label><span>一画あたりの芯の消費、µm</span><output for="wearRate"></output>
+    <input id="wearRate" name="wearRate" type="range" min="0.25" max="8" step="0.25" value="1" data-format="fixed:2"></label>
+
+  <label><span>芯の太さ</span>
+    <select name="diameter" id="diameter">
+      <option value="0.3">0.3 mm</option>
+      <option value="0.5" selected>0.5 mm</option>
+      <option value="0.7">0.7 mm</option>
+    </select>
+  </label>
+
+  <fieldset>
+    <button type="button" id="step">一画だけ</button>
+    <button type="button" id="reset">新しい芯</button>
+  </fieldset>
+</form>
+<div class="lab-readout" id="readout" aria-live="off"></div>
+<p class="lab-note">角度、消費量、芯の太さは摩耗ビューに効く。機構ビューは実物の0.5 mm機構の寸法比でできているので、歯が軸に対してどれほど小さいかもそのままである。</p>
+</section>
+
+<section id="halftooth">
+<h2>三つのカム、仕掛けは半歯</h2>
+
+<p>特許を読む前の理解は間違っていた。しかも、おそらくよくある間違い方だった。ラチェットだと思い込んでいたのである。爪があり、バネがあり、一方向にしか回れない歯車がある、と。そうではない。爪はどこにもなく、ローターが逆向きに回るのを止めている部品も存在しない。</p>
+
+<p>入っているのは三つのリングである。うち二つは軸に固定されたカム形成部材で、上下に一つずつ、それぞれの面に鋸歯が円周に沿って連続して切ってある。その間に挟まっているのがローターで、回ることも上下に滑ることもでき、両端に鋸歯を持つ。動くのはこのローターだけであり、芯をつかむチャックがこれと連結しているので、ローターの動きはそのまま芯の動きになる（Izawa et al., US8328446B2, 優先日2006年；Izawa, Kobayashi and Nakayama, US20100232863A1, 特願2007-278904）。</p>
+
+<p>四つの歯面はすべて同じピッチで切られている。肝心なのは、一方の対が完全に噛み合っているとき、もう一方の対はちょうど半歯ぶんずれている、という点である。筆圧が芯とチャックとローターをバネに逆らって押し戻すと、ローターの上の歯が半歯ずれた状態で上のリングに当たる。噛み合うにはその半歯ぶん回るしかない。ペンを離すとバネがローターを押し戻し、今度は下の歯が半歯ずれた状態で下のリングに当たり、残りの半歯を回って収まる。二つのリングの歯形は互いに鏡像なので、ローターは上下逆向きに押されているにもかかわらず、どちらの半行程でも同じ向きに回る。</p>
+
+<p>つまり一回の押し込みと一回の離しで、ちょうど一歯である。40歯なら9度で、これが「40画で一周」の出どころであり、クルトガアドバンスは歯数を20に半減させて18度を得ている。歯を数えた分解記事の結果も、この計算と合っている（特許庁, 2019；シャー坊, 2023）。三菱鉛筆は書き味が納得できるまでに約五千個の試作を重ね、量産機構の部品点数は22点、普通のシャープペンシルのおよそ倍になった。</p>
+
+<p>送りが距離ではなく筆圧の一周期で決まることから、二つの帰結が出る。どちらも手で確かめられる。短い画も長い画も芯の回る量は同じであり、だから回数はミリメートルではなく画数で数えられている。そして一度もペンを離さずに長い一本の線を引けば、ローターは一度も往復せず、芯はまったく回らない。上の「一画ごとにペンを離す」を切れば、鉛筆は書き続けているのに機構が送りを止めるのが見える。</p>
+</section>
+
+<section id="flat">
+<h2>回らない芯がだめになる理由</h2>
+
+<p>鉛筆を一定の角度で持てば、毎回同じ側が紙に当たる。摩耗はその側からだけ芯を削り、紙は円柱を斜めに切る。幾何は書き下せるほど単純で、直径<i>d</i>の芯を紙に対して角度θで持つと、長軸が<i>d</i>をsin θで割った長さの楕円形の平面ができる。0.5 mmの芯を60度で持てば、0.58 mmの平らな面になる。</p>
+
+<p>そこで三つのことが同時に悪くなる。特許はその三つをすべて挙げている。線が太くなる。接触部が点に近いものから芯の全幅まで広がるからである。線が薄くなる。同じ量の黒鉛がより広い面積に延ばされるからである。そしてその平面の先端側は断面のほとんどない羽のように薄い楔になり、次の画で最初に紙に触れ、最初に折れる。</p>
+
+<p>画と画のあいだに芯を少し回せば、紙は毎回新しい方位に新しい面を切る。残るのはそれらすべての切断の共通部分であり、それは芯の軸まわりの円錐になる。円錐の半頂角は自由な変数ではない。鉛筆を持つ角度そのものである。40度で持てば40度の円錐に収束し、これはそれなりに尖っている。80度で持てば80度、つまりほとんど平らな円板になる。まっすぐ立てて持てば円錐は存在せず、回転はまったく何も生まない。角度を88度まで上げれば、シミュレーションがそれを見せてくれる。</p>
+</section>
+
+<section id="worth">
+<h2>回転の値打ち</h2>
+
+<p>ここは、機構が立派に見えるだろうと予想して、そうならなかったところである。摩耗ビューはアーチャードの法則で動いている。荷重と滑り距離が決まっていれば、削り取られる体積は接触面積の大小によらず一定だ、という法則である。仮定はこれだけでよく、しかも見落としやすい帰結が一つある。先端は数学的な点には決して収束しない。点では体積が削れないからである。定常状態は先端に小さな平面を持つ円錐であり、その平面の大きさが線の太さを決める。</p>
+
+<p>つまり効き目は競走である。回転は芯を新しい地面に移し、摩耗はいまいる地面に平面を掘る。速いほうが勝つ。そして結果は一定にはほど遠い。</p>
+
+<figure class="table-figure">
+<table>
+<caption>定常状態の線幅。0.5 mmの芯、紙に対して60度。上のシミュレーションによる。</caption>
+<thead><tr><th>一画あたりの消費</th><th>回らない芯</th><th>一画9度</th><th>一画18度</th></tr></thead>
+<tbody>
+<tr><td>0.25 µm</td><td>500 µm</td><td>164 µm <span class="gain">67%細い</span></td><td>125 µm <span class="gain">75%細い</span></td></tr>
+<tr><td>1 µm</td><td>500 µm</td><td>318 µm <span class="gain">36%細い</span></td><td>241 µm <span class="gain">52%細い</span></td></tr>
+<tr><td>2 µm</td><td>500 µm</td><td>416 µm <span class="gain">17%細い</span></td><td>330 µm <span class="gain">34%細い</span></td></tr>
+<tr><td>4 µm</td><td>500 µm</td><td>490 µm <span class="gain">2%細い</span></td><td>416 µm <span class="gain">17%細い</span></td></tr>
+<tr><td>8 µm</td><td>500 µm</td><td>500 µm <span class="gain">変わらず</span></td><td>490 µm <span class="gain">2%細い</span></td></tr>
+</tbody>
+</table>
+</figure>
+
+<p>硬い芯で軽く書けば、この機構は劇的に効く。柔らかい芯で強く書けば、一画9度で逃げるより速く平面が掘れてしまい、機構は何も与えてくれない。アドバンスの18度は収束する形を変えるのではなく、そこに達する速さを変えるだけで、値打ちにすればこの表のおよそ一行ぶんである。</p>
+
+<p>シミュレーションからは、どこにも書かれているのを見たことがない結果が二つ出てくる。一つ目は、標準のエンジンは最初の一周のあいだ何の効果も生まないということである。はじめの40画のあいだ、どの切断も前の切断がすでに平らにした地面に落ちるので、線幅は回らない芯とほとんど同じに推移し、そのあとで離れていく。二つ目は復帰にかかる画数である。わざと平面を作ってから回転を始めると、回転時の定常値の一割以内に戻るまで9度で約22画、18度で約12画かかる。三菱鉛筆の開発者はアドバンスの片減りからの復帰を「数画で」と述べていて、やや大まかではあるが桁は合っている。</p>
+
+<p>三菱鉛筆自身が公表している数字は、同じ0.5 mmの芯で、標準のエンジンに比べてHBなら約12%、2Bなら約17%細く書き続けられる、というものである。控えめな数字であり、もっともらしい消費量に対して私のシミュレーションが出す範囲にきちんと収まる。見つけた中でいちばん役に立つ第三者の証言とも矛盾しない。実物の鉛筆と芯で違いを見ようとした評者が、HBでは並べて見比べても判りにくく、2Bでは見えるが控えめだった、と書いている。</p>
+
+<p>正直なまとめはこうなると思う。クルトガは謳っているとおりのことをしており、その謳い文句は評判より小さく、効果の大きさは鉛筆の側では決められないもの、つまり書く人によって大半が決まる。</p>
+</section>
+
+<section id="unsettled">
+<h2>確かめられなかったこと</h2>
+
+<p>三菱鉛筆自身のページには頼っていないので、メーカーに帰した数字はすべて又聞きである。特許庁の広報誌、そのまま転載された報道発表、あるいは開発陣に取材した日本の文具記事を経由している。9度と18度は確かだと見てよい。特許の運動学、独立した二つの分解記事の歯数、メーカーの主張がすべて一致するからである。それ以外でuniに帰した事柄は、一段遠いものとして扱ってほしい。</p>
+
+<p>まったく詰められなかったことが三つある。芯の回る向きは一つの分解記事だけが根拠で、先端側から見て反時計回りとされている。そのように描いてはいるが、確かだとは言えない。クッションの移動量と歯の高さはどちらの特許にも数値がなく、機構ビューのミリメートル値は私の再構成であり、カムがきれいに乗り上げられる最小の値を選んだ。そして人が実際に鉛筆を持つ角度の信頼できる実測値は見つからなかったので、既定の60度は慣習であって実測ではない。</p>
+
+<p>いちばん自信がないのは、結論がいちばん強く依存している値、すなわち一画で実際にどれだけ黒鉛が削れるのかである。だから定数ではなくスライダーにしてある。本物の測定値をご存じなら、ぜひ教えてほしい。</p>
+</section>
+
+<section id="sources" class="sources">
+<h2>出典</h2>
+<p><em>機構は特許から、一画あたりの数値は特許庁の取材記事と独立した二つの分解記事から取っている。摩耗の結果は私のシミュレーションであり、その仮定は本文に書いたとおりである。確認できなかった数字は、丸めて本文に混ぜるのではなく、確認できなかったと書いた。</em></p>
+<ul>
+<li>Izawa, H., Fukumoto, T., Ohsawa, N., Nakayama, K. and Osano, Y. <a href="https://patents.google.com/patent/US8328446B2/en">Mechanical pencil</a>. US8328446B2, 三菱鉛筆, 優先日2006年6月5日。ローター、二つの固定カム面、半ピッチのずれ。</li>
+<li>Izawa, H., Kobayashi, T. and Nakayama, K. <a href="https://patents.google.com/patent/US20100232863A1/en">Mechanical pencil</a>. US20100232863A1（特願2007-278904）。最も詳しい記述。ローター、カム部材、バネ、トルクキャンセラー、パイプ端。</li>
+<li>特許庁『<a href="https://www.jpo.go.jp/news/koho/kohoshi/vol44/03_page1.html">とっきょ</a>』vol. 44, 2019年12月。開発責任者への取材。一画9度、40画で一周、試作約五千個、部品22点。</li>
+<li>シャー坊「<a href="https://note.com/sharbow_ch/n/n2228b08cd155">シャープペンシル概論 第1回</a>」。分解記事。標準40歯、アドバンス20歯、および回転方向。</li>
+<li><a href="https://digital-camera.jp/?p=3623">クルトガアドバンスのレビュー</a>, digital-camera.jp。独立した歯数の確認と、線幅の比較に懐疑的な実験。</li>
+<li><a href="https://www.buntobi.com/articles/entry/stationery/006542/">クルトガ「アドバンス」</a>, buntobi.com。開発陣によるとされる、20歯のエンジンを40歯と比べた12%と17%の数字。</li>
+<li>三菱鉛筆<a href="https://prtimes.jp/main/html/rd/p/000000231.000028890.html">報道発表</a>（PR TIMES, 2023年11月）。シリーズ累計一億本突破。</li>
+<li>Archard, J. F. (1953). Contact and rubbing of flat surfaces. <i>Journal of Applied Physics</i> 24, 981. シミュレーションが仮定している摩耗則。</li>
+</ul>
+</section>
+
+</main><!-- ISEGORIA:FOOT -->
+<footer id="ig-footer"><div><a href="/ja/">Isegoria · Benjamin Haire</a><nav aria-label="サイト内リンク"><a href="/ja/">ホームに戻る</a><a href="/ja/library.html">全コンテンツ</a><a href="#ig-content">ページ上部へ</a></nav></div></footer>
+<!-- /ISEGORIA:FOOT -->
+</body>
+</html>

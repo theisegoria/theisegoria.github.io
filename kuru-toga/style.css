@@ -1,0 +1,109 @@
+/* Inside the Kuru Toga: only what is particular to this piece. Layout for the
+ * stage, controls and readout comes from /assets/lab-kit/lab-kit.css, colour
+ * and type from /assets/isegoria.css. */
+
+.hero .kicker { font-family: var(--sans); font-size: .6875rem; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: .4rem; }
+.hero h1 { margin: 0 0 .5rem; }
+.hero .lede { font-size: 1.1875rem; line-height: 1.55; color: var(--ink-soft); max-width: 42rem; font-style: italic; }
+
+.thesis {
+  font-size: 1.25rem; line-height: 1.5; font-weight: 600;
+  max-width: 44rem; margin: 2.5rem 0 2rem;
+  padding-left: 1.1rem; border-left: 3px solid var(--accent);
+}
+
+main > section > p, main > p { max-width: 42rem; }
+main > section { margin-block: 3.5rem; }
+main > section > h2 { margin-bottom: .9rem; }
+main > section + section { border-top: 1px solid var(--rule); padding-top: 3rem; }
+
+/* The stage sits wider than the prose column, because the mechanism needs it. */
+.lab { margin-block: 3rem; }
+.lab .lab-stage { aspect-ratio: 16 / 9; }
+.lab > p { max-width: 42rem; }
+
+/* Floating labels over the canvas */
+.lab-labels { position: absolute; inset: 0; pointer-events: none; transition: opacity .3s; }
+.lab-labels.is-hidden { opacity: 0; }
+.lab-label {
+  position: absolute; top: 0; left: 0; white-space: nowrap;
+  font: .6875rem/1 var(--sans); letter-spacing: .02em;
+  color: var(--ink-soft);
+  padding: .18rem 0;
+  transition: opacity .25s;
+}
+/* A hairline leader from the label back to the part it names. */
+.lab-label::after {
+  content: ''; position: absolute; top: 50%; width: var(--leader, 18px);
+  border-top: 1px solid var(--rule-firm); opacity: .9;
+}
+.lab-label[data-side="left"]::after { left: 100%; }
+.lab-label[data-side="right"]::after { right: 100%; }
+.lab-label.is-lane {
+  font-size: .8125rem; color: var(--ink); font-weight: 600;
+  background: color-mix(in oklab, var(--paper) 82%, transparent);
+  border: 1px solid var(--rule); border-radius: 999px; padding: .25rem .7rem;
+  backdrop-filter: blur(3px);
+}
+.lab-label.is-lane::after { display: none; }
+.lab-label.is-chip {
+  color: var(--ink);
+  background: color-mix(in oklab, var(--paper) 84%, transparent);
+  border: 1px solid var(--rule); border-radius: 999px; padding: .18rem .5rem;
+  backdrop-filter: blur(3px);
+}
+.lab-label.is-chip::after { display: none; }
+
+/* The unrolled cam strip beside the stage */
+.lab-aside {
+  display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(12rem, 1fr);
+  gap: 1rem 1.5rem; align-items: center;
+  margin-top: .85rem; padding: .9rem 1.1rem;
+  border: 1px solid var(--rule); border-radius: 6px;
+  background: var(--paper-sunk);
+}
+.lab-aside[hidden] { display: none; }
+#unrolled { width: 100%; height: auto; max-height: 168px; display: block; border-radius: 3px; overflow: hidden; }
+#unrolled .u-ring { fill: var(--ink-soft); }
+#unrolled .u-rotor { fill: var(--accent); }
+#unrolled .u-key text { font: 7px var(--sans); fill: var(--paper); letter-spacing: .04em; opacity: .9; }
+#u-caption { margin: 0; font: .8125rem/1.5 var(--sans); color: var(--ink-soft); }
+
+.lab-views { display: flex; gap: .4rem; }
+.lab-views label {
+  display: inline-flex; align-items: center; gap: .4rem;
+  border: 1px solid var(--rule); border-radius: 999px;
+  padding: .35rem .85rem; cursor: pointer; font-size: .8125rem;
+}
+.lab-views label:has(:checked) { border-color: var(--accent); color: var(--ink); background: color-mix(in oklab, var(--accent) 12%, transparent); }
+.lab-views input { accent-color: var(--accent); }
+
+.lab-note { max-width: 42rem; margin-top: .75rem; font: .8125rem/1.5 var(--sans); color: var(--ink-faint); }
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+
+/* The results table */
+.table-figure { margin: 1.75rem 0; overflow-x: auto; }
+.table-figure table { border-collapse: collapse; font-family: var(--sans); font-size: .875rem; min-width: 34rem; }
+.table-figure caption { text-align: left; font-size: .8125rem; color: var(--ink-faint); margin-bottom: .6rem; }
+.table-figure th, .table-figure td { text-align: right; padding: .45rem .9rem; border-bottom: 1px solid var(--rule); font-variant-numeric: tabular-nums; }
+.table-figure th:first-child, .table-figure td:first-child { text-align: left; }
+.table-figure thead th { border-bottom-color: var(--rule-firm); font-weight: 600; color: var(--ink); }
+.gain { display: block; font-size: .75rem; color: var(--ink-faint); font-variant-numeric: normal; }
+
+.sources { border-top: 1px solid var(--rule); padding-top: 1.75rem; }
+.sources ul { max-width: 44rem; padding-left: 1.1rem; }
+.sources li { margin-bottom: .6rem; font-size: .9375rem; line-height: 1.55; }
+.sources em { color: var(--ink-soft); }
+
+@media (max-width: 52rem) {
+  .lab .lab-stage { aspect-ratio: 4 / 3; }
+  .lab-aside { grid-template-columns: 1fr; }
+  .thesis { font-size: 1.125rem; }
+}
+
+/* The site hero is capped at 46ch, which squeezed the title, the lede and the
+ * page contents into a narrow column; this piece's hero spans the text column. */
+.hero { max-width: 44rem; }
+.hero .ig-page-nav { margin-inline: 0; max-width: none; }
+/* Paragraphs in the essay need space between them. */
+main > section > p + p, .lab > p + p { margin-top: 1em; }

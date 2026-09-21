@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="en" class=" ig-document ig-editorial">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Inside the Kuru Toga</title>
+<meta name="description" content="A mechanical pencil that turns its own lead nine degrees every time you lift it off the paper. The engine that does it, half a tooth at a time, and a simulation of what the turning is actually worth.">
+<meta property="og:title" content="Inside the Kuru Toga">
+<meta property="og:description" content="Three cams, half a tooth at a time, and a wear simulation of what the turning is actually worth.">
+<meta property="og:image" content="https://theisegoria.github.io/og.png">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="canonical" href="https://theisegoria.github.io/kuru-toga/">
+<link rel="alternate" hreflang="en" href="https://theisegoria.github.io/kuru-toga/">
+<link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/kuru-toga/">
+<link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/kuru-toga/">
+<link rel="stylesheet" href="/assets/isegoria.css?v=20260915">
+<link rel="stylesheet" href="/assets/lab-kit/lab-kit.css?v=20260915">
+<link rel="stylesheet" href="style.css?v=20260922">
+<script type="importmap">
+{"imports":{
+  "three":"/vendor/three/r186/build/three.webgpu.js",
+  "three/webgpu":"/vendor/three/r186/build/three.webgpu.js",
+  "three/tsl":"/vendor/three/r186/build/three.tsl.js",
+  "three/addons/":"/vendor/three/r186/examples-jsm/"
+}}
+</script>
+<link rel="modulepreload" href="/vendor/three/r186/build/three.webgpu.js">
+<link rel="modulepreload" href="/vendor/three/r186/build/three.core.js">
+<script type="module" src="lab.js"></script>
+<script src="/assets/lang.js"></script>
+<!-- ISEGORIA:HEAD -->
+<link rel="stylesheet" href="/assets/site-shell.css?v=c21cd21e82">
+<script src="/assets/site-shell.js?v=c21cd21e82" ></script>
+<!-- /ISEGORIA:HEAD -->
+<script defer data-isegoria-analytics src="/assets/analytics.js?v=9e6ebd463bf2"></script>
+</head>
+<body class=" ig-site" data-site-kind="editorial" data-site-route="/kuru-toga/">
+<!-- ISEGORIA:NAV -->
+<a class="ig-skip" href="#ig-content">Skip to content</a>
+<header id="ig-header"><div class="ig-nav-inner">
+<a class="ig-brand" href="/" aria-label="Isegoria, home"><strong>ISEGORIA</strong><span>Benjamin Haire</span></a>
+<div class="ig-header-actions"><a class="ig-language" href="/ja/kuru-toga/" hreflang="ja" lang="ja">日本語</a><button class="ig-menu" type="button" aria-expanded="false" aria-controls="ig-primary">Menu</button></div>
+<nav id="ig-primary" aria-label="Primary navigation"><a href="/">Home</a><a href="/library.html">Library</a><a href="/math-encyclopedia/">Math encyclopedia</a><a href="/#interactive" aria-current="location">Interactive</a><a href="/#preoccupations">Research</a><a href="/#books">Books</a><a href="/projects.html">Projects</a><a href="/about.html">About</a><a class="ig-language" href="/ja/kuru-toga/" hreflang="ja" lang="ja">日本語</a><button class="ig-theme" type="button" hidden>Theme</button></nav>
+</div></header>
+<nav id="ig-breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><a href="/#interactive">Interactive explainers</a><span aria-hidden="true">/</span><span aria-current="page">Inside the Kuru Toga</span></nav>
+<span id="ig-content" tabindex="-1"></span>
+<!-- /ISEGORIA:NAV --><main class="wrap">
+
+<header class="hero">
+<p class="kicker">Interactive explainer</p>
+<h1>Inside the Kuru Toga</h1>
+<p class="lede">How a pencil that turns its own lead nine degrees at a time actually works, and what the turning is worth.</p>
+<nav class="ig-page-nav" aria-label="On this page"><a href="#engine">The engine</a><a href="#halftooth">The half tooth</a><a href="#flat">The flat</a><a href="#worth">What it is worth</a><a href="#unsettled">What I could not settle</a><a href="#sources">Sources</a></nav>
+</header>
+
+<p class="thesis">The Kuru Toga does not keep your pencil sharp. It keeps it symmetrical, and whether symmetry buys you a finer line depends almost entirely on how hard you press.</p>
+
+<p>Mitsubishi Pencil put this mechanism on sale in March 2008 and has since sold more than a hundred million of them. The pitch is one sentence long: the lead turns a little every time you lift the pen, so it wears evenly instead of developing a chisel. I wanted to know two things that the sentence does not answer. What is actually inside, given that a whole rotating mechanism has to fit inside a barrel four millimetres across and survive being dropped. And whether the effect is worth having, because the manufacturer's own published claim is a good deal more modest than the reputation.</p>
+
+<section class="lab" id="engine" aria-labelledby="engine-h">
+<h2 id="engine-h">The engine</h2>
+<p>Press and lift, over and over. The stripe on the rotor and the stripe down the lead show you the turning. Switch to the wear view to race a turning lead against a fixed one on paper.</p>
+
+<div class="lab-stage">
+  <canvas id="stage" tabindex="0" aria-label="Interactive three dimensional view of the Kuru Toga mechanism. Drag to orbit, scroll to zoom. All values are also given in the readout below."></canvas>
+  <div class="lab-labels" id="labels" aria-hidden="true"></div>
+  <figure data-lab-fallback hidden>
+    <svg viewBox="0 0 660 330" role="img" aria-labelledby="fb-t fb-d">
+      <title id="fb-t">The Kuru Toga cam cycle, unrolled</title>
+      <desc id="fb-d">Two panels. In the first, writing pressure lifts the rotor so its upper teeth ride the fixed upper cam ring, turning it half a tooth. In the second, the spring drives the rotor back down so its lower teeth ride the fixed lower ring, turning it a further half tooth the same way.</desc>
+      <defs>
+        <style>
+          .fb-ring { fill: var(--ink-soft, #5d574f); opacity: .85 }
+          .fb-rotor { fill: var(--accent, #8a4b26) }
+          .fb-line { fill: none; stroke: var(--rule-firm, #c9c1b4); stroke-width: 1 }
+          .fb-arrow { fill: none; stroke: var(--ink, #1b1917); stroke-width: 2 }
+          .fb-t { font: 11px var(--sans, system-ui); fill: var(--ink-soft, #5d574f) }
+          .fb-h { font: 600 12px var(--sans, system-ui); fill: var(--ink, #1b1917) }
+        </style>
+        <marker id="fb-a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0l10 5-10 5z" fill="var(--ink, #1b1917)"/></marker>
+      </defs>
+
+      <g transform="translate(20 46)">
+        <text class="fb-h" x="0" y="-16">1. Pressing</text>
+        <path class="fb-ring" d="M0 40 L36 23 L36 40 L72 23 L72 40 L108 23 L108 40 L144 23 L144 40 L180 23 L180 40 L216 23 L216 40 L252 23 L252 40 L288 23 L288 40 L288 0 L0 0 Z"/>
+        <g transform="translate(18 -17)">
+          <path class="fb-rotor" d="M0 57 L36 40 L36 57 L72 40 L72 57 L108 40 L108 57 L144 40 L144 57 L180 40 L180 57 L216 40 L216 57 L252 40 L252 57 L252 85 L0 85 Z"/>
+          <path class="fb-rotor" d="M0 93 L36 110 L36 93 L72 110 L72 93 L108 110 L108 93 L144 110 L144 93 L180 110 L180 93 L216 110 L216 93 L252 110 L252 93 L252 85 L0 85 Z"/>
+        </g>
+        <path class="fb-ring" d="M0 110 L36 93 L36 110 L72 93 L72 110 L108 93 L108 110 L144 93 L144 110 L180 93 L180 110 L216 93 L216 110 L252 93 L252 110 L288 93 L288 110 L288 150 L0 150 Z"/>
+        <path class="fb-arrow" marker-end="url(#fb-a)" d="M300 96 L300 60"/>
+        <text class="fb-t" x="306" y="82">rotor rises</text>
+        <text class="fb-t" x="0" y="172">Its upper teeth mesh the upper ring and slide half a tooth.</text>
+      </g>
+
+      <g transform="translate(360 46)">
+        <text class="fb-h" x="0" y="-16">2. Lifting</text>
+        <path class="fb-ring" d="M0 40 L36 23 L36 40 L72 23 L72 40 L108 23 L108 40 L144 23 L144 40 L180 23 L180 40 L216 23 L216 40 L252 23 L252 40 L288 23 L288 40 L288 0 L0 0 Z"/>
+        <g transform="translate(36 0)">
+          <path class="fb-rotor" d="M0 57 L36 40 L36 57 L72 40 L72 57 L108 40 L108 57 L144 40 L144 57 L180 40 L180 57 L216 40 L216 57 L252 40 L252 57 L252 85 L0 85 Z"/>
+          <path class="fb-rotor" d="M0 93 L36 110 L36 93 L72 110 L72 93 L108 110 L108 93 L144 110 L144 93 L180 110 L180 93 L216 110 L216 93 L252 110 L252 93 L252 85 L0 85 Z"/>
+        </g>
+        <path class="fb-ring" d="M0 110 L36 93 L36 110 L72 93 L72 110 L108 93 L108 110 L144 93 L144 110 L180 93 L180 110 L216 93 L216 110 L252 93 L252 110 L288 93 L288 110 L288 150 L0 150 Z"/>
+        <path class="fb-arrow" marker-end="url(#fb-a)" d="M300 60 L300 96"/>
+        <text class="fb-t" x="306" y="82">spring pushes</text>
+        <text class="fb-t" x="0" y="172">Its lower teeth mesh the lower ring and slide the other half, the same way round.</text>
+      </g>
+
+      <text class="fb-t" x="20" y="316">Both cam rings are fixed to the barrel. Only the middle rotor moves, and it carries the chuck and the lead with it.</text>
+    </svg>
+    <figcaption>Your browser has neither WebGPU nor WebGL 2, so this is the still version of the cam cycle.</figcaption>
+  </figure>
+  <div class="lab-hud"><span class="lab-badge"></span></div>
+</div>
+
+<div class="lab-aside">
+  <svg id="unrolled" viewBox="0 0 324 150" role="img" aria-label="The two cam interfaces unrolled flat, animated in step with the view above.">
+    <defs><clipPath id="u-clip"><rect x="0" y="0" width="324" height="150"/></clipPath></defs>
+    <g clip-path="url(#u-clip)">
+      <path id="u-upper" class="u-ring"/>
+      <path id="u-lower" class="u-ring"/>
+      <g id="u-rotor"><path id="u-rotor-top" class="u-rotor"/><path id="u-rotor-bot" class="u-rotor"/></g>
+    </g>
+    <g class="u-key">
+      <text x="7" y="15">upper cam ring, fixed</text>
+      <text x="7" y="78">rotor</text>
+      <text x="7" y="144">lower cam ring, fixed</text>
+    </g>
+  </svg>
+  <p id="u-caption" aria-live="polite"></p>
+</div>
+
+<form class="lab-controls" id="controls" onsubmit="return false">
+  <fieldset class="lab-views">
+    <legend class="visually-hidden">View</legend>
+    <label><input type="radio" name="view" value="engine" checked> The engine</label>
+    <label><input type="radio" name="view" value="wear"> Wear on paper</label>
+  </fieldset>
+
+  <label><span>Engine</span>
+    <select name="teeth" id="teeth">
+      <option value="40" selected>40 teeth, 9° a stroke (standard)</option>
+      <option value="20">20 teeth, 18° a stroke (Advance)</option>
+    </select>
+  </label>
+
+  <label><span>Strokes a second</span><output for="rate"></output>
+    <input id="rate" name="rate" type="range" min="0.2" max="5" step="0.1" value="1.1" data-format="fixed:1"></label>
+
+  <label><span>Writing</span><input name="running" type="checkbox" checked></label>
+  <label><span>Lift the pen between strokes</span><input name="lift" type="checkbox" checked></label>
+
+  <label><span>Hold angle</span><output for="hold"></output>
+    <input id="hold" name="hold" type="range" min="30" max="88" step="1" value="60" data-format="int"></label>
+
+  <label><span>Lead used per stroke, µm</span><output for="wearRate"></output>
+    <input id="wearRate" name="wearRate" type="range" min="0.25" max="8" step="0.25" value="1" data-format="fixed:2"></label>
+
+  <label><span>Lead diameter</span>
+    <select name="diameter" id="diameter">
+      <option value="0.3">0.3 mm</option>
+      <option value="0.5" selected>0.5 mm</option>
+      <option value="0.7">0.7 mm</option>
+    </select>
+  </label>
+
+  <fieldset>
+    <button type="button" id="step">One stroke</button>
+    <button type="button" id="reset">Fresh lead</button>
+  </fieldset>
+</form>
+<div class="lab-readout" id="readout" aria-live="off"></div>
+<p class="lab-note">The hold angle, the wear rate and the lead diameter change the wear view. The engine view is built at the proportions of a real 0.5 mm mechanism, so the teeth really are that small next to the barrel.</p>
+</section>
+
+<section id="halftooth">
+<h2>Three cams, and the trick is the half tooth</h2>
+
+<p>My mental model before reading the patents was wrong in a way that I suspect is common. I assumed the mechanism was a ratchet: a pawl, a spring, a wheel that can only go one way. It is not. There is no pawl anywhere in it, and nothing blocks the rotor from turning backwards.</p>
+
+<p>What is in there is three rings. Two of them are cam formation members fixed to the barrel, one above the other, and each carries a continuous sawtooth cut around its face. Between them sits a rotor, free to turn and free to slide up and down, with sawteeth on both of its ends. The rotor is the only part that moves, and the chuck holding the lead is coupled to it, so whatever the rotor does the lead does too (Izawa et al., US8328446B2, priority 2006; Izawa, Kobayashi and Nakayama, US20100232863A1, from JP2007-278904).</p>
+
+<p>All four toothed faces are cut to the same pitch. The crucial detail is that when one pair of faces is fully meshed, the other pair is sitting exactly half a tooth out of phase. Writing pressure pushes the lead, the chuck and the rotor back against a spring; the rotor's upper teeth meet the upper ring half a tooth off, and the only way they can seat is for the rotor to turn through that half tooth. Lifting the pen lets the spring drive the rotor forward again; now its lower teeth meet the lower ring half a tooth off, and they seat by turning it through the other half. The two ring profiles are mirror images, so although the rotor is being pushed in opposite directions on the two half strokes, both halves turn it the same way round.</p>
+
+<p>One press and one lift is therefore exactly one tooth. A forty tooth engine gives nine degrees, which is where the "forty strokes to a full turn" figure comes from, and the Kuru Toga Advance simply halves the tooth count to twenty and gets eighteen. Teardowns that have counted the teeth agree with the arithmetic (Japan Patent Office, 2019; シャー坊, 2023). Mitsubishi built around five thousand prototypes before the writing feel was judged acceptable, and the production mechanism has twenty two parts, roughly twice an ordinary pencil.</p>
+
+<p>Two consequences follow from the fact that the cycle is driven by pressure and not by distance, and both are easy to feel. A short stroke turns the lead exactly as far as a long one, which is why the count is quoted in strokes of a character rather than in millimetres. And if you never lift the pen, drawing one long unbroken line, the rotor never cycles and the lead never turns at all. Turn off "lift the pen" above and watch the mechanism stop indexing while the pencil keeps writing.</p>
+</section>
+
+<section id="flat">
+<h2>Why a lead that never turns goes wrong</h2>
+
+<p>Hold a pencil at a fixed angle and the same side of the lead meets the paper on every stroke. Abrasion takes graphite from that side only, and the paper cuts an oblique face across the cylinder. The geometry is simple enough to write down: a lead of diameter <i>d</i> held at an angle θ to the paper develops an elliptical flat whose long axis is <i>d</i> divided by sin θ. A 0.5 mm lead held at sixty degrees ends up with a flat 0.58 mm long.</p>
+
+<p>Three things go wrong at once, and the patent names all three. The line gets wider, because the contact patch grows from something near a point to the full width of the lead. It gets paler, because the same graphite is spread over more paper. And the leading edge of that flat is a feather thin wedge with almost no cross section, which is the first thing to touch the paper on the next stroke and the first thing to snap.</p>
+
+<p>Turn the lead a little between strokes and the paper cuts a fresh face at a fresh azimuth each time. The material left behind is the intersection of all those cuts, and that intersection is a cone about the lead's own axis. The cone's half angle is not a free parameter: it is exactly the angle you hold the pencil at. Hold it at forty degrees and the lead converges on a forty degree cone, which is a decent point. Hold it at eighty and it converges on an eighty degree cone, which is nearly a flat disc. Hold it truly upright and there is no cone at all, and the rotation buys you precisely nothing, which the simulation will confirm if you push the hold angle to eighty eight.</p>
+</section>
+
+<section id="worth">
+<h2>What the turning is actually worth</h2>
+
+<p>This is where I expected the mechanism to look impressive and it did not. The wear view runs Archard's law, which says that at a given load and sliding distance the volume of material removed is fixed, regardless of how large or small the contact patch is. That single assumption is enough, and it has a consequence that is easy to miss: the tip can never converge on a mathematical point, because a point would remove no volume. The steady state is a cone with a small flat at its apex, and the size of that flat is what sets your line width.</p>
+
+<p>So the benefit is a race. Rotation moves the lead to fresh ground; wear digs a flat into whatever ground it is on. Whichever is faster wins, and the outcome is not close to constant:</p>
+
+<figure class="table-figure">
+<table>
+<caption>Steady state line width, 0.5 mm lead held at 60 degrees, from the simulation above.</caption>
+<thead><tr><th>Lead used per stroke</th><th>Fixed lead</th><th>9° a stroke</th><th>18° a stroke</th></tr></thead>
+<tbody>
+<tr><td>0.25 µm</td><td>500 µm</td><td>164 µm <span class="gain">67% narrower</span></td><td>125 µm <span class="gain">75% narrower</span></td></tr>
+<tr><td>1 µm</td><td>500 µm</td><td>318 µm <span class="gain">36% narrower</span></td><td>241 µm <span class="gain">52% narrower</span></td></tr>
+<tr><td>2 µm</td><td>500 µm</td><td>416 µm <span class="gain">17% narrower</span></td><td>330 µm <span class="gain">34% narrower</span></td></tr>
+<tr><td>4 µm</td><td>500 µm</td><td>490 µm <span class="gain">2% narrower</span></td><td>416 µm <span class="gain">17% narrower</span></td></tr>
+<tr><td>8 µm</td><td>500 µm</td><td>500 µm <span class="gain">no gain</span></td><td>490 µm <span class="gain">2% narrower</span></td></tr>
+</tbody>
+</table>
+</figure>
+
+<p>Press lightly with a hard lead and the engine is transformative. Press hard with a soft one and you wear a flat faster than nine degrees a stroke can turn you off it, and the mechanism gives you nothing at all. The Advance's eighteen degrees does not change the shape the tip converges on, only how fast it gets there, which is worth roughly one row of that table.</p>
+
+<p>Two further results fall out of the simulation that I have not seen stated anywhere. The first is that a standard engine gives you nothing for the first full revolution: for the first forty strokes every cut lands on ground the previous cuts have already flattened, and the line width tracks the fixed lead almost exactly before pulling away. The second is the recovery time. Wear a flat deliberately, then start turning, and it takes about twenty two strokes at nine degrees to get back within ten percent of the turning steady state, and about twelve at eighteen. Mitsubishi's developer describes the Advance as recovering from uneven wear "within a few strokes", which is generous but the right order of magnitude.</p>
+
+<p>Mitsubishi's own published claim is that the faster engine writes about twelve percent finer than the standard one with HB and about seventeen percent finer with 2B, using the same 0.5 mm lead. Those are modest numbers, and they sit comfortably inside the range my simulation produces for plausible wear rates. They are also consistent with the most useful piece of third party evidence I found, which is a reviewer who tried to see the difference with real pencils and real leads and reported that with HB it was hard to tell apart even side by side, with 2B visible but modest.</p>
+
+<p>I think that is the honest summary. The Kuru Toga is doing exactly what it claims, the claim is smaller than the reputation, and the size of the effect is mostly determined by something the pencil has no control over, which is you.</p>
+</section>
+
+<section id="unsettled">
+<h2>What I could not settle</h2>
+
+<p>I have not relied on Mitsubishi's own pages, so every figure I have attributed to the manufacturer arrives second hand, through the Japan Patent Office's magazine, through press releases republished verbatim, or through Japanese stationery journalism quoting the development team. I would treat the nine and eighteen degree figures as solid, since the patent kinematics, the tooth counts from two independent teardowns and the manufacturer's claim all agree, and everything else attributed to uni as one step removed.</p>
+
+<p>Three things I could not pin down at all. The direction the lead turns rests on a single teardown, which reports counter clockwise seen from the tip; I have drawn it that way, but would not stake anything on it. The cushion travel and the tooth height are not numerically specified in either patent, so the millimetre figures in the engine view are my own reconstruction, chosen as the smallest that let the cam ride cleanly. And I found no credible measurement of the angle people actually hold a pencil at, so the sixty degree default is a convention rather than a datum.</p>
+
+<p>The parameter I am least sure of is the one the conclusion turns on most: how much graphite a stroke actually removes. That is why it is a slider rather than a constant. If you know of a real measurement, I would like to see it.</p>
+</section>
+
+<section id="sources" class="sources">
+<h2>Sources</h2>
+<p><em>The mechanism is taken from the patents; the per stroke figures from the Japan Patent Office interview and two independent teardowns; the wear results are my own simulation, whose assumptions are stated above. Where I could not verify a figure I have said so rather than rounding it into the text.</em></p>
+<ul>
+<li>Izawa, H., Fukumoto, T., Ohsawa, N., Nakayama, K. and Osano, Y. <a href="https://patents.google.com/patent/US8328446B2/en">Mechanical pencil</a>. US8328446B2, Mitsubishi Pencil, priority 5 June 2006. The rotor, the two fixed cam faces, and the half pitch offset.</li>
+<li>Izawa, H., Kobayashi, T. and Nakayama, K. <a href="https://patents.google.com/patent/US20100232863A1/en">Mechanical pencil</a>. US20100232863A1, from JP2007-278904. The fullest description: rotor, cam members, spring, torque canceller and pipe end.</li>
+<li>Japan Patent Office. <a href="https://www.jpo.go.jp/news/koho/kohoshi/vol44/03_page1.html">『とっきょ』vol. 44</a>, December 2019. Interview with the development lead: nine degrees a stroke, forty strokes to a turn, about five thousand prototypes, twenty two parts.</li>
+<li>シャー坊. <a href="https://note.com/sharbow_ch/n/n2228b08cd155">シャープペンシル概論, 第1回</a>. Teardown: forty teeth on the standard engine, twenty on the Advance, and the rotation direction.</li>
+<li><a href="https://digital-camera.jp/?p=3623">クルトガアドバンス review</a>, digital-camera.jp. An independent tooth count, and a sceptical side by side line width test.</li>
+<li><a href="https://www.buntobi.com/articles/entry/stationery/006542/">クルトガ「アドバンス」</a>, buntobi.com. The twelve percent and seventeen percent figures for the 20-tooth engine against the 40-tooth one, attributed to the development team.</li>
+<li>Mitsubishi Pencil, <a href="https://prtimes.jp/main/html/rd/p/000000231.000028890.html">press release</a> via PR Times, November 2023. Cumulative sales past one hundred million.</li>
+<li>Archard, J. F. (1953). Contact and rubbing of flat surfaces. <i>Journal of Applied Physics</i> 24, 981. The wear law the simulation assumes.</li>
+</ul>
+</section>
+
+</main><!-- ISEGORIA:FOOT -->
+<footer id="ig-footer"><div><a href="/">Isegoria · Benjamin Haire</a><nav aria-label="Site links"><a href="/">Back to home</a><a href="/library.html">Browse the library</a><a href="#ig-content">Back to top</a></nav></div></footer>
+<!-- /ISEGORIA:FOOT -->
+</body>
+</html>
