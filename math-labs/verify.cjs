@@ -1,5 +1,5 @@
 const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
-const source=fs.readFileSync(__dirname+'/app.js','utf8');const end=source.indexOf('function chart(');const sandbox={document:{documentElement:{lang:'en'}},window:{},console};vm.runInNewContext(source.slice(0,end)+'})();',sandbox);const M=sandbox.window.MathLabs;let count=0;
+const source=fs.readFileSync(__dirname+'/app.js','utf8');const end=source.indexOf('/*HELPERS-END*/');const sandbox={document:{documentElement:{lang:'en'}},window:{},console};vm.runInNewContext(source.slice(0,end)+'})();',sandbox);const M=sandbox.window.MathLabs;let count=0;
 function near(a,b,t=1e-10){assert.ok(Math.abs(a-b)<t,`${a} != ${b}`);count++;}
 function values(a,b){assert.deepEqual(Array.from(a),b);count++;}
 values(M.homology(3,[],[]),[3,0,0]);values(M.homology(3,[[0,1],[1,2],[0,2]],[]),[1,1,0]);values(M.homology(3,[[0,1],[1,2],[0,2]],[[0,1,2]]),[1,0,0]);values(M.homology(4,[[0,1],[0,2],[0,3],[1,2],[1,3],[2,3]],[[0,1,2],[0,1,3],[0,2,3],[1,2,3]]),[1,0,1]);

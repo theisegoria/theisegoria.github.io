@@ -5,10 +5,132 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1" name="viewport"/>
 <meta content="light dark" name="color-scheme"/>
-<title>Concerta 54-108 mg - エクストラサイト的NEおよびDAモデル</title>
+<title>Concerta 54-108 mg - 細胞外NE・DAモデル</title>
 <meta content="54〜108mgのConcertaにおける血漿メチルフェニデート、輸送体の占有、および相対的な細胞外NEおよびDAの変化を、証拠に基づいたインタラクティブモデル。" name="description"/>
-<style>
-    :root{--paper:#f7f5ef;--ink:#1b2935;--muted:#65727b;--navy:#14283d;--line:#ccd6da;--panel:#edf2f3;--blue:#2f6f9f;--cyan:#3a9bab;--gold:#bd8128;--red:#a74b45;--white:#fff}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}a{color:var(--blue)}header{background:var(--navy);color:white;padding:20px max(24px,calc((100vw - 1120px)/2));display:flex;justify-content:space-between;align-items:center;gap:18px}header a{color:white;text-decoration:none}.brand{font-weight:750;letter-spacing:.02em}nav{display:flex;gap:18px;font-size:.9rem}main{max-width:1120px;margin:auto;padding:58px 24px 76px}.eyebrow{text-transform:uppercase;letter-spacing:.12em;color:var(--blue);font-weight:750;font-size:.76rem}h1{font-size:clamp(2.3rem,6vw,5rem);line-height:.95;letter-spacing:-.055em;max-width:960px;margin:.28em 0}.lede{font-size:1.15rem;max-width:760px;color:var(--muted)}.warning{border-left:4px solid var(--gold);background:#f1e7d2;padding:15px 18px;margin:28px 0 42px;max-width:890px}.controls{display:grid;grid-template-columns:1fr auto;align-items:end;gap:24px;padding:22px 0 14px;border-top:1px solid var(--line)}label{font-size:.82rem;font-weight:750}input[type=range]{width:100%;accent-color:var(--blue)}output{font-size:2rem;font-weight:800;color:var(--navy);min-width:120px;text-align:right}.marks{display:flex;justify-content:space-between;color:var(--muted);font-size:.74rem}.plots{display:grid;gap:30px}.plot h2{margin:0 0 2px;font-size:1.05rem}.plot p{margin:0 0 8px;color:var(--muted);font-size:.82rem}.plot svg{width:100%;height:auto;display:block;background:var(--white);border:1px solid var(--line)}.axis{stroke:#71808a;stroke-width:1}.grid{stroke:#e3e8ea}.tick{fill:var(--muted);font-size:11px}.title{fill:var(--ink);font-size:12px}.guide{stroke:#87939a;stroke-dasharray:4 4}.dot{stroke:white;stroke-width:2}.legend{display:flex;gap:20px;flex-wrap:wrap;font-size:.78rem;margin:6px 0}.legend span::before{content:"";display:inline-block;width:10px;height:3px;margin:0 6px 3px 0;background:var(--swatch)}.readout{background:var(--panel);padding:18px 20px;margin-top:26px;display:grid;grid-template-columns:repeat(5,1fr);gap:14px}.readout small{display:block;color:var(--muted);font-size:.72rem}.readout strong{font-size:1.15rem}.content{display:grid;grid-template-columns:1.25fr .75fr;gap:52px;margin-top:64px}.content h2{font-size:1.55rem;margin:0 0 12px}.content h3{font-size:1rem;margin:26px 0 6px}.content p,.content li{font-size:.94rem}.download{display:inline-block;background:var(--navy);color:white;text-decoration:none;padding:11px 16px;font-weight:700;margin-top:10px}.sources{padding-left:1.25rem}.sources li{margin:.55em 0}footer{max-width:1120px;margin:auto;padding:28px 24px 48px;border-top:1px solid var(--line);color:var(--muted);font-size:.82rem}@media(max-width:720px){nav{display:none}main{padding-top:38px}.content{grid-template-columns:1fr;gap:26px}.readout{grid-template-columns:repeat(2,1fr)}.controls{grid-template-columns:1fr}output{text-align:left}.tick{font-size:9px}}
+  <style>
+    .cc{--paper:var(--ig-paper);--panel:var(--ig-panel);--ink:var(--ig-ink);--muted:var(--ig-muted);--rule:var(--ig-rule);--accent:var(--ig-accent);
+      --c-plasma:light-dark(#3d3b7d,#b3b4f0);--c-dat:light-dark(#1f6698,#7dbbe8);--c-net:light-dark(#a3660f,#e3b25e);--c-da:light-dark(#18796f,#6fd0c3);--c-ne:light-dark(#a53d3b,#ef9088);
+      --c-band:light-dark(rgb(31 102 152 / .055),rgb(125 187 232 / .07));--c-band-edge:light-dark(rgb(31 102 152 / .35),rgb(125 187 232 / .35));
+      --c-warn:light-dark(#f4ead5,#2a2215);--c-warn-edge:light-dark(#b9832c,#c8964a);
+      width:min(var(--ig-width,1180px),100% - var(--ig-gutter,36px)*2);margin:0 auto;padding:clamp(18px,4vw,44px) 0 64px;color:var(--ink);font-family:var(--ig-sans)}
+    .cc *{box-sizing:border-box}
+    .cc a{color:var(--accent)}
+    .cc-eyebrow{margin:0 0 12px;font:600 11px/1.4 var(--ig-sans);letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+    .cc h1{font:400 clamp(2.2rem,5.4vw,4.1rem)/1.02 var(--ig-serif);letter-spacing:-.03em;margin:0 0 16px;max-width:17ch}
+    .cc-lede{font:400 clamp(1.05rem,1.8vw,1.22rem)/1.6 var(--ig-serif);color:var(--muted);max-width:60ch;margin:0}
+    .cc-warning{margin:26px 0 34px;max-width:78ch;padding:14px 18px;border-left:3px solid var(--c-warn-edge);background:var(--c-warn);font:14.5px/1.6 var(--ig-sans);color:var(--ink)}
+    .cc-warning strong{font-weight:650}
+    /* controls */
+    .cc-controls{display:flex;flex-wrap:wrap;align-items:flex-end;gap:14px 36px;padding:20px 0 16px;border-top:1px solid var(--rule)}
+    .cc-dose{border:0;margin:0;padding:0;min-width:0}
+    .cc-dose legend{padding:0;margin:0 0 8px;font:600 11px/1.4 var(--ig-sans);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+    .cc-seg{display:inline-grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid var(--rule);border-radius:6px;background:var(--panel);padding:3px;gap:3px}
+    .cc-seg label{position:relative;display:grid;place-items:center;min-width:78px;padding:8px 12px 7px;border-radius:4px;cursor:pointer;text-align:center;line-height:1.15}
+    .cc-seg input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
+    .cc-seg b{font:600 17px/1.1 var(--ig-sans);font-variant-numeric:tabular-nums;color:var(--muted)}
+    .cc-seg b small{font-size:11px;font-weight:500;margin-left:2px}
+    .cc-seg i{font:normal 10.5px/1.2 var(--ig-sans);color:var(--muted);margin-top:3px;white-space:nowrap}
+    .cc-seg label:hover b{color:var(--ink)}
+    .cc-seg label:has(input:checked){background:var(--paper);box-shadow:0 0 0 1px var(--rule),0 1px 2px rgb(0 0 0 / .08)}
+    .cc-seg label:has(input:checked) b{color:var(--ink)}
+    .cc-seg label:has(input:focus-visible){outline:2px solid var(--accent);outline-offset:2px}
+    .cc-toggle{display:inline-flex;align-items:center;gap:9px;font:13.5px/1.3 var(--ig-sans);color:var(--muted);cursor:pointer;padding-bottom:10px}
+    .cc-toggle input{width:16px;height:16px;accent-color:var(--accent);margin:0}
+    /* readout */
+    .cc-readout{position:sticky;top:var(--ig-nav-height,72px);z-index:5;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:0;margin:0;background:color-mix(in srgb,var(--paper) 94%,transparent);backdrop-filter:blur(6px);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+    .cc-readout>div{padding:10px 14px 9px;border-left:1px solid var(--rule);min-width:0}
+    .cc-readout>div:first-child{border-left:0;padding-left:0}
+    .cc-readout small{display:flex;align-items:center;gap:7px;font:600 10.5px/1.3 var(--ig-sans);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+    .cc-readout strong{display:block;font:500 1.2rem/1.3 var(--ig-sans);font-variant-numeric:tabular-nums;margin-top:2px;white-space:nowrap}
+    .cc-key{display:inline-block;width:14px;height:0;border-top:2.5px solid var(--k)}
+    .cc-key+.cc-key{margin-left:-3px}
+    /* figure */
+    .cc-fig{margin:0;padding:6px 0 0;outline:none;touch-action:pan-y}
+    .cc-fig:focus-visible{outline:2px solid var(--accent);outline-offset:6px;border-radius:2px}
+    .cc-panel{margin-top:18px}
+    .cc-phead{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:baseline;gap:2px 18px}
+    .cc .cc-phead h2{font:400 1.3rem/1.2 var(--ig-serif);letter-spacing:-.015em;margin:0}
+    .cc-phead p{grid-column:1/-1;margin:2px 0 0;font:13px/1.5 var(--ig-sans);color:var(--muted);max-width:80ch}
+    .cc-legend{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:6px 16px;font:12.5px/1.2 var(--ig-sans);color:var(--ink);margin:0}
+    .cc-legend span{display:inline-flex;align-items:center;gap:7px}
+    .cc-plot{display:block;width:100%;height:auto;overflow:visible;font-family:var(--ig-sans);user-select:none;-webkit-user-select:none;cursor:crosshair}
+    .cc-plot .grid{stroke:var(--rule);stroke-width:1}
+    .cc-plot .grid.minor{stroke-dasharray:1 3}
+    .cc-plot .base{stroke:var(--muted);stroke-width:1}
+    .cc-plot .tick{fill:var(--muted);font-size:11px;font-variant-numeric:tabular-nums}
+    .cc-plot .axt{fill:var(--muted);font-size:11px}
+    .cc-plot .band{fill:var(--c-band)}
+    .cc-plot .band-edge{stroke:var(--c-band-edge);stroke-width:1;stroke-dasharray:3 3}
+    .cc-plot .band-label{fill:var(--c-dat);font-size:11px;font-weight:600}
+    .cc-plot .line{fill:none;stroke-width:2.5;stroke-linejoin:round;stroke-linecap:round}
+    .cc-plot .area{opacity:.1}
+    .cc-plot .ghost{fill:none;stroke-width:1;opacity:.28}
+    .cc-peak{font:12.5px/1.3 var(--ig-sans);color:var(--muted);font-variant-numeric:tabular-nums}
+    .cc-peak b{color:var(--ink);font-weight:600}
+    .cc-plot .s-c{stroke:var(--c-plasma);fill:var(--c-plasma)}.cc-plot .s-dat{stroke:var(--c-dat);fill:var(--c-dat)}.cc-plot .s-net{stroke:var(--c-net);fill:var(--c-net)}.cc-plot .s-da{stroke:var(--c-da);fill:var(--c-da)}.cc-plot .s-ne{stroke:var(--c-ne);fill:var(--c-ne)}
+    .cc-plot .line.s-c,.cc-plot .line.s-dat,.cc-plot .line.s-net,.cc-plot .line.s-da,.cc-plot .line.s-ne,.cc-plot .ghost{fill:none}
+    .cc-plot .ann{fill:var(--ink);font-size:11.5px}
+    .cc-plot .ann b,.cc-plot .ann .b{font-weight:650}
+    .cc-plot .ann-muted{fill:var(--muted);font-size:11px}
+    .cc-plot .leader{stroke:var(--muted);stroke-width:1;fill:none}
+    .cc-plot .peak{fill:var(--paper);stroke-width:2}
+    .cc-plot .dose{fill:var(--ink)}
+    .cc-plot .halo{paint-order:stroke;stroke:var(--paper);stroke-width:4px;stroke-linejoin:round}
+    .cc-plot .xh{stroke:var(--ink);stroke-width:1;opacity:.55}
+    .cc-plot .xdot{stroke:var(--paper);stroke-width:2}
+    .cc-plot .xval{font-size:12px;font-weight:650;font-variant-numeric:tabular-nums}
+    .cc-plot .xval.s-c{fill:var(--c-plasma)}.cc-plot .xval.s-dat{fill:var(--c-dat)}.cc-plot .xval.s-net{fill:var(--c-net)}.cc-plot .xval.s-da{fill:var(--c-da)}.cc-plot .xval.s-ne{fill:var(--c-ne)}
+    .cc-plot .xval{stroke:var(--paper)}
+    .cc-plot .pill{fill:var(--ink)}
+    .cc-plot .pill-t{fill:var(--paper);font-size:11px;font-weight:650;font-variant-numeric:tabular-nums}
+    .cc-hint{margin:14px 0 0;font:13px/1.55 var(--ig-sans);color:var(--muted);max-width:92ch}
+    .cc-hint .sw{display:inline-block;width:18px;height:10px;vertical-align:-1px;margin-right:4px;background:var(--c-band);border:1px dashed var(--c-band-edge)}
+    /* equations */
+    .cc-eq{margin:26px 0 0;border:1px solid var(--rule);border-radius:6px;background:var(--panel)}
+    .cc-eq summary{cursor:pointer;padding:12px 16px;font:600 13.5px/1.4 var(--ig-sans);color:var(--ink);list-style:none;display:flex;align-items:center;gap:10px}
+    .cc-eq summary::-webkit-details-marker{display:none}
+    .cc-eq summary::before{content:"";width:7px;height:7px;border-right:1.5px solid var(--muted);border-bottom:1.5px solid var(--muted);transform:rotate(-45deg);transition:transform .15s}
+    .cc-eq[open] summary::before{transform:rotate(45deg)}
+    .cc-eq summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+    .cc-eq dl{margin:0;padding:4px 16px 14px;display:grid;grid-template-columns:max-content minmax(0,1fr);gap:8px 20px;font:13.5px/1.55 var(--ig-sans)}
+    .cc-eq dt{color:var(--muted);font-weight:600}
+    .cc-eq dd{margin:0;overflow-wrap:anywhere}
+    .cc-eq code{font:13px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--ink)}
+    /* prose */
+    .cc-content{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,.7fr);gap:56px;margin-top:56px;padding-top:30px;border-top:1px solid var(--rule)}
+    .cc .cc-content h2{font:400 1.6rem/1.2 var(--ig-serif);margin:0 0 12px}
+    .cc .cc-content h3{font:600 13px/1.4 var(--ig-sans);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:26px 0 6px}
+    .cc-content p{font:17px/1.7 var(--ig-serif);margin:0 0 12px;max-width:66ch}
+    .cc-download{display:inline-block;margin-top:14px;padding:10px 16px;border:1px solid var(--ink);border-radius:4px;color:var(--ink)!important;text-decoration:none;font:600 14px/1.3 var(--ig-sans)}
+    .cc-download:hover{background:var(--ink);color:var(--paper)!important}
+    .cc-sources{padding-left:1.3rem;margin:0;font:14px/1.5 var(--ig-sans)}
+    .cc-sources li{margin:.6em 0;padding-left:.2rem}
+    .cc-sources li::marker{color:var(--muted);font-variant-numeric:tabular-nums}
+    .cc-colophon{margin:44px 0 0;padding-top:18px;border-top:1px solid var(--rule);font:13px/1.6 var(--ig-sans);color:var(--muted)}
+    html:lang(ja) .cc-content p{line-height:1.85;font-size:16px}
+    html:lang(ja) .cc h1{letter-spacing:-.01em;line-height:1.2}
+    html:lang(ja) .cc-readout small,html:lang(ja) .cc .cc-content h3,html:lang(ja) .cc-dose legend{letter-spacing:.04em}
+    @media(max-width:860px){
+      .cc-content{grid-template-columns:1fr;gap:30px}
+      .cc-readout{grid-template-columns:repeat(3,minmax(0,1fr))}
+      .cc-readout>div:nth-child(4){border-left:0;padding-left:0}
+      .cc-readout>div:nth-child(n+4){border-top:1px solid var(--rule)}
+    }
+    @media(max-width:560px){
+      .cc-dose{width:100%}
+      .cc-seg{display:grid;width:100%}
+      .cc-seg label{min-width:0;padding:8px 4px 7px}
+      .cc-seg i{white-space:normal;font-size:10px}
+      .cc-toggle{padding-bottom:0}
+      .cc-readout>div{padding:8px 8px 7px}
+      .cc-readout strong{font-size:1.02rem}
+      .cc-readout small{font-size:9.5px;letter-spacing:.04em}
+      .cc-eq dl{grid-template-columns:1fr;gap:2px}
+      .cc-phead{grid-template-columns:1fr}
+      .cc-legend{justify-content:flex-start;margin-top:4px}
+      .cc-eq dd{margin-bottom:8px}
+    }
+    @media(prefers-reduced-motion:reduce){.cc *{transition:none!important}}
   </style>
 
 
@@ -31,43 +153,154 @@
 <div class="ig-header-actions"><a class="ig-language" href="/concerta-catecholamine-model/" hreflang="en" lang="en">English</a><button class="ig-menu" type="button" aria-expanded="false" aria-controls="ig-primary">メニュー</button></div>
 <nav id="ig-primary" aria-label="メインナビゲーション"><a href="/ja/">ホーム</a><a href="/ja/library.html">全コンテンツ</a><a href="/ja/math-encyclopedia/">数学百科事典</a><a href="/ja/#interactive">操作できる解説</a><a href="/ja/#preoccupations" aria-current="location">研究と解説</a><a href="/ja/#books">書籍</a><a href="/ja/projects.html">プロジェクト</a><a href="/ja/about.html">このサイトについて</a><a class="ig-language" href="/concerta-catecholamine-model/" hreflang="en" lang="en">English</a><button class="ig-theme" type="button" hidden>表示切替</button></nav>
 </div></header>
-<nav id="ig-breadcrumb" aria-label="パンくずリスト"><a href="/ja/">ホーム</a><span aria-hidden="true">/</span><a href="/ja/#preoccupations">研究と解説</a><span aria-hidden="true">/</span><span aria-current="page">Concerta 54-108 mg - エクストラサイト的NEおよびDAモデル</span></nav>
+<nav id="ig-breadcrumb" aria-label="パンくずリスト"><a href="/ja/">ホーム</a><span aria-hidden="true">/</span><a href="/ja/#preoccupations">研究と解説</a><span aria-hidden="true">/</span><span aria-current="page">Concerta 54-108 mg - 細胞外NE・DAモデル</span></nav>
 <span id="ig-content" tabindex="-1"></span>
 <!-- /ISEGORIA:NAV --><nav aria-label="このページで" class="ig-page-nav"><a href="#model">モデル</a><a href="#methods">手法</a><a data-document-language="en" href="/concerta-catecholamine-model/concerta-ne-da-model.pdf" rel="noopener" target="_blank" title="PDF、新しいタブで開きます">PDF（英語PDF）</a></nav>
-<main>
-<p class="eyebrow">神経薬理学研究モデル</p>
+  <main class="cc">
+<p class="cc-eyebrow">神経薬理学研究モデル</p>
 <h1>Concertaの活動期間中の濃度変化</h1>
-<p class="lede">投与時間モデル：OROSメチルフェニデートの曝露がDAT/NETの占有と相対的な細胞外ドパミンおよびノルエピネフリン信号に結びつけるモデル</p>
-<div class="warning"><strong>投与ガイドではありません。</strong>人間の研究は、Concerta後の分分単位のシンパチックNEおよびDAを直接測定していません。伝達物質の曲線は、私の根拠に基づく推論であり、その信頼性には大きな不確実性が伴います。2026年の米国およびオーストラリアの製品情報では、成人の推奨投与量を72mg/日までとされています。</div>
+<p class="cc-lede">投与時間モデル：OROSメチルフェニデートの曝露を、DAT/NETの占有と、相対的な細胞外ドパミンおよびノルエピネフリン信号に結びつけるモデルである。</p>
+<div class="cc-warning"><strong>投与ガイドではない。</strong>ヒトの研究は、Concerta服用後のシナプスにおけるNEとDAを分単位で直接測定していない。伝達物質の曲線は、私が根拠に基づいて行った推論であり、大きな不確実性を伴うものとして扱っている。2026年の米国およびオーストラリアの製品情報では、成人の推奨投与量の上限を72 mg/日としている。</div>
 <section aria-labelledby="model-title" id="model">
-<div class="controls"><div><label for="dose">投与量をモデル化</label><input id="dose" max="108" min="54" step="18" type="range" value="72"/><div class="marks"><span>54 mg</span><span>72 mg</span><span>90 mg</span><span>108 mg</span></div></div><output for="dose" id="doseOut">72 mg</output></div>
-<div class="plots">
-<div class="plot"><h2 id="model-title">血中曝露</h2><p>中枢成人推定値；54mgの参照プロファイルからの投与量比例スケーリング</p><svg aria-label="16時間間のモデル化された血漿メチルフェニデート濃度" id="pk" role="img" viewbox="0 0 900 260"></svg></div>
-<div class="plot"><h2>輸送タンパク質の占有</h2><p>飽和性PETに基づくエンゲージメント；DATでのEC50は5.7 ng/mL、NETでの4.7 ng/mL。</p><div class="legend"><span style="--swatch:var(--blue)">DAT</span><span style="--swatch:var(--gold)">NET</span></div><svg aria-label="16時間間のモデル化されたDATおよびNETの占有" id="occ" role="img" viewbox="0 0 900 260"></svg></div>
-<div class="plot"><h2>相対的な細胞外伝達物質信号</h2><p>ストリアタルDAは人間用PETで固定された；NET豊富領域のNEの大きさは仮説的水準。</p><div class="legend"><span style="--swatch:var(--cyan)">DA</span><span style="--swatch:var(--red)">NEの代替指標</span></div><svg aria-label="16時間間のモデル化された細胞外ドパミンおよびノルエピネフリンの増加" id="tx" role="img" viewbox="0 0 900 260"></svg></div>
+<div class="cc-controls">
+<fieldset class="cc-dose"><legend>モデル化する投与量：<output id="doseOut">72 mg</output></legend><div class="cc-seg"><label><input type="radio" name="dose" value="54"><b>54<small>mg</small></b><i>&nbsp;</i></label><label><input type="radio" name="dose" value="72" checked><b>72<small>mg</small></b><i>&nbsp;</i></label><label><input type="radio" name="dose" value="90"><b>90<small>mg</small></b><i>72 mg/日の上限超</i></label><label><input type="radio" name="dose" value="108"><b>108<small>mg</small></b><i>72 mg/日の上限超</i></label></div></fieldset>
+<label class="cc-toggle"><input type="checkbox" id="ghosts" checked> 他の3つの投与量を薄い線で表示する</label>
 </div>
-<div aria-live="polite" class="readout"><div><small>選択された時間</small><strong id="rt">8.0 h</strong></div><div><small>血漿</small><strong id="rc">-</strong></div><div><small>DAT / NET</small><strong id="ro">-</strong></div><div><small>DAの増加</small><strong id="rd">-</strong></div><div><small>NEの代替指標</small><strong id="rn">-</strong></div></div>
+<div class="cc-readout" aria-hidden="true"><div><small>選択した時間</small><strong id="rt">4.0 h</strong></div><div><small><span class="cc-key" style="--k:var(--c-plasma)"></span>血漿</small><strong id="rc">-</strong></div><div><small><span class="cc-key" style="--k:var(--c-dat)"></span><span class="cc-key" style="--k:var(--c-net)"></span>DAT / NET</small><strong id="ro">-</strong></div><div><small><span class="cc-key" style="--k:var(--c-da)"></span>DAの増加</small><strong id="rd">-</strong></div><div><small><span class="cc-key" style="--k:var(--c-ne)"></span>NE代替指標</small><strong id="rn">-</strong></div></div>
+<div class="cc-fig" id="figure" tabindex="0" role="slider" aria-label="投与後の時間。矢印キーで、同じ時刻における全曲線の値を読める。Shiftキーを押しながらで1時間ずつ移動する。" aria-valuemin="0" aria-valuemax="16" aria-valuenow="4">
+<div class="cc-panel"><div class="cc-phead"><h2 id="model-title">血中曝露</h2><div class="cc-legend"><span><span class="cc-key" style="--k:var(--c-plasma)"></span>血漿中MPH</span><span class="cc-peak" id="peak-pk"></span></div><p>成人の中央推定値。54 mgの参照プロファイルから投与量に比例させて換算した。</p></div><svg class="cc-plot" id="pk" role="img" aria-label="16時間にわたるモデル上の血漿メチルフェニデート濃度"></svg></div>
+<div class="cc-panel"><div class="cc-phead"><h2>輸送体の占有</h2><div class="cc-legend"><span><span class="cc-key" style="--k:var(--c-dat)"></span>DAT</span><span><span class="cc-key" style="--k:var(--c-net)"></span>NET</span><span class="cc-peak" id="peak-occ"></span></div><p>PETに基づく飽和性の標的結合。EC50はDATで5.7 ng/mL、NETで4.7 ng/mL。</p></div><svg class="cc-plot" id="occ" role="img" aria-label="16時間にわたるモデル上のDATおよびNETの占有率"></svg></div>
+<div class="cc-panel"><div class="cc-phead"><h2>相対的な細胞外伝達物質信号</h2><div class="cc-legend"><span><span class="cc-key" style="--k:var(--c-da)"></span>DA</span><span><span class="cc-key" style="--k:var(--c-ne)"></span>NE代替指標</span><span class="cc-peak" id="peak-tx"></span></div><p>線条体DAはヒトPETに基づく。NETの多い領域でのNEの大きさは仮説の水準にとどまる。</p></div><svg class="cc-plot" id="tx" role="img" aria-label="16時間にわたるモデル上の細胞外ドパミンおよびノルエピネフリンの相対的増加"></svg></div>
+</div>
+<p class="cc-hint">図の上でポインタを動かすか、図にフォーカスして矢印キーを使うと、同じ時刻における全曲線の値を読める。<span class="sw" aria-hidden="true"></span>網掛けは、モデル上の血漿濃度がDATのEC50（5.7 ng/mL）を超える時間帯、すなわちモデル上のDAT占有率が50%を超える時間帯である。薄い線は比較のための他の投与量である。</p>
+<details class="cc-eq"><summary>曲線の計算方法</summary><dl>
+<dt>血漿</dt><dd><code>C(t) = r(t) × 12.2 ng/mL × 投与量 / 54 mg</code>。<code>r(t)</code>は54 mgの参照プロファイルで、0, 0.5, 1, 1.5, 2, 3, 4, 6, 8, 10, 12, 14, 16 hにおける<code>r</code> = 0, 0.055, 0.14, 0.22, 0.24, 0.28, 0.39, 0.72, 1, 0.87, 0.58, 0.34, 0.19の間を線形補間する。</dd>
+<dt>占有率</dt><dd><code>DAT = 100 × C / (C + 5.7)</code>、<code>NET = 100 × C / (C + 4.7)</code>（%）。</dd>
+<dt>伝達物質</dt><dd><code>DAの増加 = DAT × 16 / 60</code>、<code>NE代替指標 = NET × 0.25</code>（ベースラインからの増加、%）。</dd>
+</dl></details>
 </section>
-<section class="content" id="methods">
-<article><h2>何が導かれるか</h2><p>Concertaは早期1〜2時間の肩部、広い6〜8時間のピーク、そして徐々に減少する特徴を持つ。血中濃度は54〜108mgで与えられた量に比例して上昇するが、輸送タンパク質の占有は飽和性である。したがって、90mgと108mgの間のモデル差は、血中濃度の差よりも細胞外効果の差が小さい。</p><h3>領域的意味</h3><p>DA曲線はストリアタル信号を表しており、DATが顕著である。前頭葉皮質ではNETがドパミンを除去することもあるため、単一の脳全体のドパミン曲線を描いているのは誤解を招くと考え、そのような曲線を描いていない。</p><h3>不確実性</h3><p>体の大きさ、代謝、年齢、食事のタイミング、神経の放電、睡眠、過去の治療、合併症、相互作用する薬品、および製剤そのものの性質が、個人を中央のトレースから大きく離す可能性がある。このプロットが主観的な経験や臨床的効果を予測するものとは主張しない。</p><a class="download" data-document-language="en" href="/concerta-catecholamine-model/concerta-ne-da-model.pdf" rel="noopener" target="_blank" title="PDF、新しいタブで開きます">7ページのレポート（PDF）をダウンロード（英語PDF）</a></article>
-<aside><h2>証拠の基盤</h2><ol class="sources"><li><a data-document-language="en" href="https://www.accessdata.fda.gov/drugsatfda_docs/label/2026/021121s054lbl.pdf" rel="noopener" target="_blank" title="PDF、新しいタブで開きます">FDAのConcertaラベル（2026）（英語PDF）</a></li><li><a href="https://innovativemedicine.jnj.com/australia/download/concerta-pi-pdf">オーストラリア製品情報（2026）</a></li><li><a href="https://pubmed.ncbi.nlm.nih.gov/9766762/">DAT占有、Volkowら（1998）</a></li><li><a href="https://pubmed.ncbi.nlm.nih.gov/11793423/">細胞外DA、Volkowら（2002）</a></li><li><a href="https://pubmed.ncbi.nlm.nih.gov/20691429/">NET占有、Hannestadら（2010）</a></li><li><a href="https://pubmed.ncbi.nlm.nih.gov/20043136/">OROSでのDAT占有（10時間、2010）</a></li><li><a href="https://pubmed.ncbi.nlm.nih.gov/19440077/">成人36〜108mgのチューテーション試験（2009）</a></li></ol></aside>
+<section class="cc-content" id="methods">
+<article><h2>何が導かれるか</h2><p>Concertaは、早期1〜2時間の肩、6〜8時間の幅広いピーク、そして緩やかな低下を示す。血漿曝露は54〜108 mgの範囲でおおむね投与量に比例して上昇するが、輸送体の占有は飽和性である。したがって、モデル上の90 mgと108 mgの差は、血漿濃度よりも細胞外効果のほうが小さい。</p><h3>領域的な意味</h3><p>DA曲線は、DATが優勢な線条体の信号を表す。前頭前皮質ではNETもドパミンを除去するため、脳全体に単一のドパミン曲線を描くことはしていない。それは誤解を招くと考えるからである。</p><h3>不確実性</h3><p>体格、代謝、年齢、食事のタイミング、神経発火、睡眠、過去の治療、併存疾患、相互作用する薬、そして製剤そのものが、個人を中央の曲線から大きく遠ざけうる。このプロットが主観的な体験や臨床的な効果を予測するとは主張しない。</p><a class="cc-download" data-document-language="en" href="/concerta-catecholamine-model/concerta-ne-da-model.pdf" rel="noopener" target="_blank" title="PDF、新しいタブで開きます">7ページのレポート（PDF）をダウンロード（英語PDF）</a></article>
+<aside><h2>根拠</h2><ol class="cc-sources"><li><a data-document-language="en" href="https://www.accessdata.fda.gov/drugsatfda_docs/label/2026/021121s054lbl.pdf" rel="noopener" target="_blank" title="PDF、新しいタブで開きます">FDAのConcertaラベル（2026）（英語PDF）</a></li><li><a href="https://innovativemedicine.jnj.com/australia/download/concerta-pi-pdf">オーストラリア製品情報（2026）</a></li><li><a href="https://pubmed.ncbi.nlm.nih.gov/9766762/">DAT占有、Volkowら（1998）</a></li><li><a href="https://pubmed.ncbi.nlm.nih.gov/11793423/">細胞外DA、Volkowら（2002）</a></li><li><a href="https://pubmed.ncbi.nlm.nih.gov/20691429/">NET占有、Hannestadら（2010）</a></li><li><a href="https://pubmed.ncbi.nlm.nih.gov/20043136/">OROSでのDAT占有（10時間、2010）</a></li><li><a href="https://pubmed.ncbi.nlm.nih.gov/19440077/">成人36〜108 mgの漸増試験（2009）</a></li></ol></aside>
 </section>
+<p class="cc-colophon">ベンジャミン・ヘアによる研究可視化 - 2026年9月3日。処方薬に関する判断は処方医が行うものである。</p>
 </main>
-<footer>ベンジャミン・ヘアによる研究可視化 - 2026年9月3日。処方薬の決定は処方医に属します。</footer>
 <script>
-    const $=s=>document.querySelector(s), dose=$('#dose'), out=$('#doseOut');
-    const knots=[[0,0],[.5,.055],[1,.14],[1.5,.22],[2,.24],[3,.28],[4,.39],[6,.72],[8,1],[10,.87],[12,.58],[14,.34],[16,.19]];
-    const lerp=(a,b,t)=>a+(b-a)*t;
-    function rel(t){for(let i=1;i<knots.length;i++)if(t<=knots[i][0])return lerp(knots[i-1][1],knots[i][1],(t-knots[i-1][0])/(knots[i][0]-knots[i-1][0]));return knots.at(-1)[1]}
-    function values(d){return Array.from({length:161},(_,i)=>{let t=i/10,c=rel(t)*12.2*d/54,dat=100*c/(c+5.7),net=100*c/(c+4.7);return{t,c,dat,net,da:dat*16/60,ne:net*.25}})}
-    function plot(id,series,ymax,ylabel,onMove){const svg=$(id),W=900,H=260,m={l:64,r:18,t:14,b:40},pw=W-m.l-m.r,ph=H-m.t-m.b;let s=`<rect x="${m.l}" y="${m.t}" width="${pw}" height="${ph}" fill="white"/>`;
-      for(let i=0;i<=4;i++){let y=m.t+ph-i*ph/4,v=ymax*i/4;s+=`<line class="grid" x1="${m.l}" x2="${W-m.r}" y1="${y}" y2="${y}"/><text class="tick" text-anchor="end" x="${m.l-9}" y="${y+4}">${v.toFixed(0)}</text>`}for(let h=0;h<=16;h+=4){let x=m.l+pw*h/16;s+=`<text class="tick" text-anchor="middle" x="${x}" y="${H-15}">${h}</text>`}s+=`<text class="title" text-anchor="middle" x="${m.l+pw/2}" y="${H-3}"> 剂量後何時間</text><text class="title" transform="translate(14 ${m.t+ph/2}) rotate(-90)" text-anchor="middle">${ylabel}</text>`;
-      series.forEach(q=>{let p=q.data.map((v,i)=>`${i?'L':'M'}${m.l+pw*v.t/16},${m.t+ph*(1-v[q.key]/ymax)}`).join('');s+=`<path d="${p}" fill="none" stroke="${q.color}" stroke-width="3"/>`});s+=`<line id="${id.slice(1)}Guide" class="guide" y1="${m.t}" y2="${m.t+ph}"/><rect x="${m.l}" y="${m.t}" width="${pw}" height="${ph}" fill="transparent" style="cursor:crosshair"/>`;svg.innerHTML=s;let rect=svg.querySelector('rect:last-child');rect.onpointermove=e=>{let r=svg.getBoundingClientRect(),x=(e.clientX-r.left)*W/r.width,t=Math.max(0,Math.min(16,(x-m.l)/pw*16));onMove(t)};}
-    let selected=8;
-    function read(data,t){let v=data[Math.round(t*10)];$('#rt').textContent=t.toFixed(1)+' h';$('#rc').textContent=v.c.toFixed(1)+' ng/mL';$('#ro').textContent=v.dat.toFixed(0)+'% / '+v.net.toFixed(0)+'%';$('#rd').textContent='+'+v.da.toFixed(1)+'%';$('#rn').textContent='+'+v.ne.toFixed(1)+'%';document.querySelectorAll('.guide').forEach(g=>g.setAttribute('x1',64+(900-64-18)*t/16)||g.setAttribute('x2',64+(900-64-18)*t/16));}
-    function draw(){let d=+dose.value,data=values(d);out.textContent=d+' mg';let move=t=>{selected=t;read(data,t)};plot('#pk',[{data,key:'c',color:'var(--blue)'}],28,"血漿中MPH濃度（ng/mL）",move);plot('#occ',[{data,key:'dat',color:'var(--blue)'},{data,key:'net',color:'var(--gold)'}],100,'Occupancy (%)',move);plot('#tx',[{data,key:'da',color:'var(--cyan)'},{data,key:'ne',color:'var(--red)'}],30,"ベースラインからの増加（%）",move);read(data,selected)}
-    dose.addEventListener('input',draw);draw();
-  </script>
+(() => {
+  const S = {"sep": "、", "peak": "ピーク", "shoulder": "早期の肩（1〜2時間）", "doseMark": "服用（0時間）", "band": "DAT占有率50%超", "xaxis": "投与後の時間（h）", "yunit": ["血漿中MPH濃度（ng/mL）", "占有率（%）", "ベースラインからの増加（%）"], "names": {"c": "血漿", "dat": "DAT", "net": "NET", "da": "DA", "ne": "NE代替指標"}, "valuetext": (t,d,c,dat,net,da,ne)=>`${d} mg投与後${t}時間：血漿 ${c}、DAT ${dat}、NET ${net}、DA ${da}、NE代替指標 ${ne}`};
+  const $ = s => document.querySelector(s);
+  /* Model: unchanged from the published version. */
+  const knots=[[0,0],[.5,.055],[1,.14],[1.5,.22],[2,.24],[3,.28],[4,.39],[6,.72],[8,1],[10,.87],[12,.58],[14,.34],[16,.19]];
+  const lerp=(a,b,t)=>a+(b-a)*t;
+  function rel(t){for(let i=1;i<knots.length;i++)if(t<=knots[i][0])return lerp(knots[i-1][1],knots[i][1],(t-knots[i-1][0])/(knots[i][0]-knots[i-1][0]));return knots.at(-1)[1]}
+  function values(d){return Array.from({length:161},(_,i)=>{let t=i/10,c=rel(t)*12.2*d/54,dat=100*c/(c+5.7),net=100*c/(c+4.7);return{t,c,dat,net,da:dat*16/60,ne:net*.25}})}
+  /* Presentation */
+  const DOSES=[54,72,90,108];
+  const PANELS=[
+    {id:'pk', keys:['c'], ymax:28, ticks:[0,7,14,21,28], unit:'ng/mL'},
+    {id:'occ', keys:['dat','net'], ymax:100, ticks:[0,25,50,75,100], unit:'%'},
+    {id:'tx', keys:['da','ne'], ymax:30, ticks:[0,10,20,30], unit:'%'}
+  ];
+  const fmt={c:v=>v.toFixed(1)+' ng/mL',dat:v=>v.toFixed(0)+'%',net:v=>v.toFixed(0)+'%',da:v=>'+'+v.toFixed(1)+'%',ne:v=>'+'+v.toFixed(1)+'%'};
+  const NS='http://www.w3.org/2000/svg';
+  const fig=$('#figure'), ghostBox=$('#ghosts');
+  let dose=72, t=4, data=values(dose), all={}, geo=null;
+  DOSES.forEach(d=>all[d]=values(d));
+  const el=(tag,attrs,parent,text)=>{const n=document.createElementNS(NS,tag);for(const k in attrs)n.setAttribute(k,attrs[k]);if(text!=null)n.textContent=text;if(parent)parent.append(n);return n};
+  function activeWindow(arr){let a=null,b=null;arr.forEach(v=>{if(v.c>=5.7){if(a===null)a=v.t;b=v.t}});return a===null?null:[a,b]}
+  function draw(){
+    const W=Math.max(300,Math.round(fig.getBoundingClientRect().width));
+    const narrow=W<560;
+    const m={l:narrow?34:46,r:narrow?10:18};
+    const pw=W-m.l-m.r;
+    const X=h=>m.l+pw*h/16;
+    geo={W,m,pw,X,panels:[]};
+    const win=activeWindow(data);
+    PANELS.forEach((P,pi)=>{
+      const svg=document.getElementById(P.id);
+      const last=pi===PANELS.length-1;
+      const top=pi===0?(narrow?30:30):14, ph=narrow?(pi===0?150:128):(pi===0?210:170), bottom=last?40:10;
+      const H=top+ph+bottom;
+      svg.setAttribute('viewBox',`0 0 ${W} ${H}`);svg.setAttribute('width',W);svg.setAttribute('height',H);
+      svg.replaceChildren();
+      const Y=v=>top+ph*(1-v/P.ymax);
+      const g=el('g',{},svg);
+      if(win){el('rect',{class:'band',x:X(win[0]),y:top,width:X(win[1])-X(win[0]),height:ph},g);
+        [win[0],win[1]].forEach(x=>el('line',{class:'band-edge',x1:X(x),x2:X(x),y1:top,y2:top+ph},g));}
+      for(let hh=0;hh<=16;hh+=2){el('line',{class:'grid'+(hh%4?' minor':''),x1:X(hh),x2:X(hh),y1:top,y2:top+ph},g)}
+      P.ticks.forEach((v,i)=>{const y=Y(v);if(i)el('line',{class:'grid',x1:m.l,x2:W-m.r,y1:y,y2:y},g);
+        el('text',{class:'tick','text-anchor':'end',x:m.l-7,y:y+4},g,v);});
+      el('line',{class:'base',x1:m.l,x2:W-m.r,y1:top+ph,y2:top+ph},g);
+      el('text',{class:'axt','text-anchor':'end',x:W-m.r,y:top-6},g,S.yunit[pi]);
+      if(last){for(let hh=0;hh<=16;hh+=narrow?4:2){el('text',{class:'tick','text-anchor':'middle',x:X(hh),y:top+ph+17},g,hh)}
+        el('text',{class:'axt','text-anchor':'end',x:W-m.r,y:top+ph+35},g,S.xaxis)}
+      // ghosts
+      if(ghostBox.checked)DOSES.filter(d=>d!==dose).forEach(d=>P.keys.forEach(k=>{
+        el('path',{class:'ghost s-'+k,d:all[d].map((v,i)=>(i?'L':'M')+X(v.t).toFixed(1)+','+Y(v[k]).toFixed(1)).join('')},g)}));
+      // series
+      P.keys.forEach((k,ki)=>{
+        const line=data.map((v,i)=>(i?'L':'M')+X(v.t).toFixed(1)+','+Y(v[k]).toFixed(1)).join('');
+        if(P.keys.length===1)el('path',{class:'area s-'+k,d:line+`L${X(16)},${top+ph}L${X(0)},${top+ph}Z`},g);
+        el('path',{class:'line s-'+k,d:line},g);
+      });
+      // peak annotation
+      const pk=data.reduce((a,v)=>v[P.keys[0]]>a[P.keys[0]]?v:a,data[0]);
+      P.keys.forEach(k=>el('circle',{class:'peak s-'+k,cx:X(pk.t),cy:Y(pk[k]),r:3.5},g));
+      const ay=Math.min(...P.keys.map(k=>Y(pk[k])));
+      document.getElementById('peak-'+P.id).innerHTML='<b>'+S.peak+' '+pk.t.toFixed(0)+' h</b> '+P.keys.map(k=>(P.keys.length>1?S.names[k]+' ':'')+fmt[k](pk[k])).join(S.sep);
+      if(pi===0){
+        // early shoulder, 1 to 2 h
+        const sx0=X(1),sx1=X(2),sy=Y(Math.max(data[20].c,data[10].c))-(narrow?26:30);
+        el('path',{class:'leader',d:`M${sx0},${sy+6}V${sy}H${sx1}V${sy+6}`},g);
+        el('text',{class:'ann-muted halo','text-anchor':'start',x:sx0,y:sy-5},g,S.shoulder);
+        // dose marker
+        el('path',{class:'dose',d:`M${X(0)-5},${top-13}h10l-5,7z`},g);
+        el('text',{class:'ann halo','text-anchor':'start',x:X(0)+9,y:top-7},g,S.doseMark);
+        if(win){el('text',{class:'band-label halo','text-anchor':'start',x:X(win[0])+6,y:top+13},g,S.band+' '+win[0].toFixed(1)+'–'+win[1].toFixed(1)+' h')}
+      }
+      // crosshair layer
+      const xh=el('g',{class:'xhair'},svg);
+      geo.panels.push({svg,Y,top,ph,P,xh,last});
+    });
+    updateCross();
+  }
+  function updateCross(){
+    if(!geo)return;
+    const i=Math.round(t*10), v=data[i], x=geo.X(v.t);
+    geo.panels.forEach(({Y,top,ph,P,xh,last})=>{
+      xh.replaceChildren();
+      el('line',{class:'xh',x1:x,x2:x,y1:top,y2:top+ph},xh);
+      const flip=x>geo.m.l+geo.pw*0.72;
+      const items=P.keys.map(k=>({k,y:Y(v[k])})).sort((a,b)=>a.y-b.y);
+      for(let j=1;j<items.length;j++)if(items[j].y-items[j-1].y<15)items[j].ly=items[j-1].ly!=null?items[j-1].ly+15:items[j-1].y+15;
+      items.forEach(it=>{it.ly=it.ly??it.y;if(it.ly<top+10)it.ly=top+10});
+      items.forEach(({k,y,ly})=>{
+        el('circle',{class:'xdot s-'+k,cx:x,cy:y,r:4.5},xh).style.fill=`var(--c-${k==='c'?'plasma':k})`;
+        el('text',{class:'xval halo s-'+k,x:flip?x-9:x+9,y:ly+4,'text-anchor':flip?'end':'start'},xh,fmt[k](v[k]));
+      });
+      if(last){const w=46;el('rect',{class:'pill',x:x-w/2,y:top+ph+4,width:w,height:18,rx:9},xh);
+        el('text',{class:'pill-t','text-anchor':'middle',x,y:top+ph+17},xh,v.t.toFixed(1)+' h');}
+    });
+    $('#rt').textContent=v.t.toFixed(1)+' h';$('#rc').textContent=fmt.c(v.c);
+    $('#ro').textContent=v.dat.toFixed(0)+'% / '+v.net.toFixed(0)+'%';$('#rd').textContent=fmt.da(v.da);$('#rn').textContent=fmt.ne(v.ne);
+    fig.setAttribute('aria-valuenow',v.t.toFixed(1));
+    fig.setAttribute('aria-valuetext',S.valuetext(v.t.toFixed(1),dose,fmt.c(v.c),fmt.dat(v.dat),fmt.net(v.net),fmt.da(v.da),fmt.ne(v.ne)));
+  }
+  function setT(nt){t=Math.max(0,Math.min(16,Math.round(nt*10)/10));updateCross()}
+  function fromEvent(e){const r=fig.getBoundingClientRect();return((e.clientX-r.left)*geo.W/r.width-geo.m.l)/geo.pw*16}
+  let dragging=false;
+  fig.addEventListener('pointerdown',e=>{if(e.pointerType==='mouse'&&e.button)return;dragging=true;setT(fromEvent(e))});
+  fig.addEventListener('pointermove',e=>{if(e.pointerType==='mouse'||dragging)setT(fromEvent(e))});
+  addEventListener('pointerup',()=>dragging=false);addEventListener('pointercancel',()=>dragging=false);
+  fig.addEventListener('keydown',e=>{const step=e.shiftKey?1:.1;const k=e.key;
+    if(k==='ArrowRight'||k==='ArrowUp'){setT(t+step)}else if(k==='ArrowLeft'||k==='ArrowDown'){setT(t-step)}
+    else if(k==='PageUp'){setT(t+1)}else if(k==='PageDown'){setT(t-1)}else if(k==='Home'){setT(0)}else if(k==='End'){setT(16)}else return;e.preventDefault()});
+  document.querySelectorAll('input[name=dose]').forEach(r=>r.addEventListener('change',()=>{dose=+r.value;data=all[dose];$('#doseOut').textContent=dose+' mg';draw()}));
+  ghostBox.addEventListener('change',draw);
+  let lastW=0;new ResizeObserver(()=>{const w=Math.round(fig.getBoundingClientRect().width);if(w&&w!==lastW){lastW=w;draw()}}).observe(fig);
+  draw();
+})();
+</script>
 <p class="ig-translation-note">日本語版（AI翻訳） · <a href="/concerta-catecholamine-model/" hreflang="en" lang="en">英語原文</a></p><!-- ISEGORIA:FOOT -->
 <footer id="ig-footer"><div><a href="/ja/">Isegoria · Benjamin Haire</a><nav aria-label="サイト内リンク"><a href="/ja/">ホームに戻る</a><a href="/ja/library.html">全コンテンツ</a><a href="#ig-content">ページ上部へ</a></nav></div></footer>
 <!-- /ISEGORIA:FOOT -->
