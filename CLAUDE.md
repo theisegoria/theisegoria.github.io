@@ -104,7 +104,9 @@ A piece published in both languages needs, on both editions:
 - `<link rel="alternate" hreflang="en|ja|x-default">` pointing at each other
 - a language switch in the page nav
 - an entry in `sitemap.xml` for each URL
-- the Japanese edition written in である調, not です・ます調
+- the Japanese edition written in である調 for new pieces; when editing an
+  existing Japanese page, match the register it already uses (the math
+  encyclopedia topics and several labs are in です・ます調)
 
 Japanese pages use `--f-display: "Hiragino Mincho ProN"` and set
 `line-height` around 1.85. Long-form Japanese in LaTeX needs
@@ -146,7 +148,7 @@ No em-dashes in prose. Use a comma, a colon, or a full stop.
 Figures are hand-authored SVG using the stylesheet's theme tokens, so they
 work in both light and dark. Every long-form piece carries a Sources block
 that cites its sources and states what was and was not independently
-verified. Do **not** add AI-assistance disclosures, "how this was made"
+verified. Do **not** add AI-assistance or AI-translation disclosures, "how this was made"
 sections, pipeline write-ups or project plans to any page: Ben answers
 provenance questions himself, and the site should read as a person's work,
 not as process narration. Removed site-wide on 2026-09-15.

@@ -9,8 +9,7 @@ New prose was drafted with a local Qwen3 translation model and then checked for
 coverage, links, retained anchors, protected mathematical notation, numeric
 changes, and scientific terminology. Selected technical passages and the geometry
 lab explanations were revised manually. This is not a claim of expert or native
-speaker review of every passage. New pages disclose AI translation and link to
-their English originals. Original-language PDF downloads are labelled accordingly;
+speaker review of every passage. New pages link to their English originals. Original-language PDF downloads are labelled accordingly;
 source screenshots and cover images remain original-language artifacts.
 
 ## Updating an edition

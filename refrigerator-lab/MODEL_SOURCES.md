@@ -1,6 +1,6 @@
 # Refrigerator lab — source and model record
 
-Published 14 September 2026. English original; Japanese AI translation.
+Published 14 September 2026. English original with a Japanese edition.
 
 ## Scope and geometry
 

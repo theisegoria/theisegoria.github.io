@@ -67,19 +67,19 @@
         f.arrow([p[1], p[2]], [p[1] + p[3] * vs, p[2]], { c: 'c3', w: 2.4, layer: 'dyn' });
         if (Math.abs(p[4]) * vs > X * 0.004) f.arrow([p[1], p[2]], [p[1], p[2] + p[4] * vs], { c: 'c4', w: 2.4, layer: 'dyn' });
         f.dot(p[1], p[2], { c: 'hl', r: 7 });
-        lab.textContent = `t = ${tt.toFixed(2)} s   vₓ = ${p[3].toFixed(2)}   v_y = ${p[4].toFixed(2)} m/s`;
+        lab.textContent = `t = ${tt.toFixed(2)} s   vₓ = ${p[3].toFixed(2)}   vᵧ = ${p[4].toFixed(2)} m/s`;
         return t * 1.4 < tf;
       }, { autoplay: false, once: true, initialT: 1e6, playLabel: T('Launch', '発射') });
       L.legend(ctx.host, [{ c: 'c1', label: T('trajectory, dots every tenth of the flight', '軌道（点は飛行時間の1/10ごと）') },
         drag ? { c: 'c1', dash: true, label: T('same launch in a vacuum', '真空中の同じ発射') } : { c: 'c1', dash: true, label: T(`complementary angle ${90 - v.angle}°, same range`, `余角 ${90 - v.angle}°（同じ飛距離）`) },
         { c: 'muted', dash: true, label: T('reach of every angle at this speed', 'この速さで届く範囲の境界') },
-        { c: 'c3', label: 'vₓ' }, { c: 'c4', label: 'v_y' }]);
+        { c: 'c3', label: 'vₓ' }, { c: 'c4', label: 'vᵧ' }]);
       const items = [{ k: T('range R', '飛距離 R'), v: `${fmt(R, 3)} m`, tone: 'key' }, { k: T('peak height H', '最高点 H'), v: `${fmt(apex[2], 3)} m` }, { k: T('flight time', '飛行時間'), v: `${fmt(tf, 3)} s` }];
       if (drag) items.push({ k: T('vacuum range', '真空中の飛距離'), v: `${fmt(s * s * Math.sin(2 * th) / G, 3)} m`, tone: 'warn' });
       else items.push({ k: T('vₓ = v₀cos θ, constant', 'vₓ = v₀cos θ（一定）'), v: `${fmt(s * Math.cos(th), 3)} m/s` });
       ctx.readout(items, drag
         ? T('With drag the horizontal velocity decays, the path is no longer a parabola, and the descent is steeper than the climb.', '抵抗があると水平速度が減衰し、軌道は放物線でなくなり、下りが上りより急になります。')
-        : T('Drag the orange arrow tip. The dots are evenly spaced sideways because vₓ never changes; only v_y is changed by gravity.', '橙の矢印の先端をドラッグできます。vₓ は変わらないので点は横方向に等間隔に並び、重力が変えるのは v_y だけです。'));
+        : T('Drag the orange arrow tip. The dots are evenly spaced sideways because vₓ never changes; only vᵧ is changed by gravity.', '橙の矢印の先端をドラッグできます。vₓ は変わらないので点は横方向に等間隔に並び、重力が変えるのは vᵧ だけです。'));
     },
   };
 

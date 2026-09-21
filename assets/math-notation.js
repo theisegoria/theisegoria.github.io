@@ -22,9 +22,13 @@ const exact=new Map([
  ['S(log z) = 1/(2z²)',String.raw`S(\log z)=\frac{1}{2z^2}`],
  ['CO₂(aq) + H₂O ⇌ H₂CO₃',String.raw`\mathrm{CO_2(aq)+H_2O\rightleftharpoons H_2CO_3}`],
 ]);
+const UNITS='m|s|g|kg|mg|µg|μg|ng|Hz|kHz|MHz|GHz|THz|K|J|kJ|MJ|W|kW|MW|N|kN|Pa|kPa|MPa|V|mV|kV|mA|C|L|mL|dL|mol|mmol|nm|µm|μm|mm|cm|km|h|min|ms|µs|μs|ns|ps|eV|keV|MeV|GeV|T|rad|sr|dB|bit|bits|ly|au|pc|atm|bar|cal|kcal|lm|lx|Wb|F|H|S|Ω';
+const UNIT_RE=new RegExp('^([0-9]+(?:[.,][0-9]+)*)\\s*((?:'+UNITS+')(?:[⁰¹²³⁴⁵⁶⁷⁸⁹⁻]+)?(?:\\s*[/·]\\s*(?:'+UNITS+')(?:[⁰¹²³⁴⁵⁶⁷⁸⁹⁻]+)?)*)$');
+const MATH_VERBS=new Set(['is','are','has','have','and','or','maps','acts','equals','contains','denotes','commutes','becomes','was','can','must','will','then','lies','gives','sends','satisfies','holds','means','of','with','in','on','at','to','from','by','as','if','but']);
 const cache=new Map(),errors=[];
 function convert(raw){
  raw=raw.replace(/\u00a0/g,' ').trim();if(exact.has(raw))return exact.get(raw);
+ const unit=raw.match(UNIT_RE);if(unit)return unit[1].replace(/,/g,'{,}')+'\\,\\mathrm{'+unit[2].replace(/µ|μ/g,'\\mu ').replace(/[⁰¹²³⁴⁵⁶⁷⁸⁹⁻]+/g,x=>'^{'+[...x].map(c=>superMap[c]).join('')+'}').replace(/·/g,'\\cdot ')+'}';
  if(/\\(?:frac|sqrt|sum|int|begin|math|operatorname|alpha|beta|mu|sigma|left|right|cdot|times|le|ge)/.test(raw))return raw;
  let result='';for(let i=0;i<raw.length;){const c=raw[i];if(raw.slice(i,i+3)==='⁴⁄₃'){result+='\\frac{4}{3}';i+=3;continue;}
   if(superMap[c]||subMap[c]){const map=superMap[c]?superMap:subMap;let p='';while(i<raw.length&&map[raw[i]])p+=map[raw[i++]];result+=(map===superMap?'^':'_')+'{'+p+'}';continue;}
@@ -51,7 +55,12 @@ function runs(s){
   }current=null;};
  for(const m of s.matchAll(re)){if(m[1]!==undefined||m[2]!==undefined||m[3]!==undefined){finish();list.push({start:m.index,end:m.index+m[0].length,raw:m[1]??m[2]??m[3],authored:true,display:m[1]!==undefined||m[3]!==undefined});continue;}
   const token=m[0],isWord=/^[A-Za-z]+$/.test(token),valid=!isWord||token.length===1||words.has(token)||/^[A-Z]{1,3}$/.test(token)||['dx','dy','dt','df','px','az','bc','cz','ad','dxdy','bh','aq','Pq','na','xy','xz','yz','xyy','Py','Pμ','Qx','Qy'].includes(token);
-  if(!valid){finish();continue;}const gap=current?s.slice(current.end,m.index):'';if(current&&(!/^\s*$/.test(gap)||gap.includes('\n\n')))finish();
+  if(!valid){finish();continue;}
+  if(isWord&&token.length===1){const prev=s[m.index-1]||'';if(prev==='’'||prev==="'"||/[µμ]/.test(prev)){finish();continue;}
+   const after=s.slice(m.index+1).match(/^\s+([a-z][a-z]+|[0-9])/),article=after&&!MATH_VERBS.has(after[1]);
+   if(token==='a'&&article){finish();continue;}
+   if(token==='A'&&article){const before=s.slice(0,m.index);if(/^\s*$/.test(before)||/[.!?:;]["”’)]?\s+$/.test(before)||/[(“"]\s*$/.test(before)){finish();continue;}}}
+  const gap=current?s.slice(current.end,m.index):'';if(current&&(!/^\s*$/.test(gap)||gap.includes('\n\n')))finish();
   if(!current)current={start:m.index,end:m.index+token.length};else current.end=m.index+token.length;
  }finish();return list;
 }

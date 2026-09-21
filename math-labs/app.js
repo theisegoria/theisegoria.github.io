@@ -12,7 +12,7 @@ function interpolation(n,cheb){const xs=seq(n+1,j=>cheb?Math.cos(j*Math.PI/n):-1
 window.MathLabs={rank2,homology,betaDensity,logistic,ode,interpolation,gcd};
 
 /*HELPERS-END*/
-const VERSION='20260921';
+const VERSION='20260922';
 const Lab=window.Lab;
 const defs=window.LabDefs=window.LabDefs||{};
 const sections=[...document.querySelectorAll('[data-lab]')];
