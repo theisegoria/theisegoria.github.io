@@ -51,6 +51,7 @@ def category(route,ja=False):
     r=route.removeprefix('/ja')
     if r in ['/math-encyclopedia/','/','/index.html','/about.html','/projects.html','/library.html','/404.html']:return None
     if is_math(route):return ('数学百科事典' if ja else 'Math encyclopedia',('/ja' if ja else '')+'/math-encyclopedia/')
+    if r.startswith('/math-encyclopedia/'):return ('数学百科事典' if ja else 'Math encyclopedia',('/ja' if ja else '')+'/math-encyclopedia/')
     if r.startswith('/sheets/'):return ('参考シート' if ja else 'Sheets',('/ja' if ja else '')+'/sheets/')
     if r.startswith(('/medical-textbook/','/game-design-dynamics-of-learning/')):return ('書籍' if ja else 'Books',('/ja' if ja else '')+'/#books')
     if r.startswith('/stem-genius/'):return ('プロジェクト' if ja else 'Projects',('/ja' if ja else '')+'/projects.html')
@@ -81,7 +82,7 @@ def shell(route,title,ja,alternate=None,parent=None):
     if route not in ['/', '/ja/']:
         crumbs=[f'<a href="{home}">{labels[0]}</a>']
         if cat and cat[1]!=route:crumbs.append(f'<a href="{cat[1]}">{cat[0]}</a>')
-        if parent and parent[1]!=route:crumbs.append(f'<a href="{parent[1]}">{escape(parent[0])}</a>')
+        if parent and parent[1]!=route and not (cat and cat[1]==parent[1]):crumbs.append(f'<a href="{parent[1]}">{escape(parent[0])}</a>')
         crumbs.append(f'<span aria-current="page">{escape(title)}</span>')
         nav+='\n<nav id="ig-breadcrumb" aria-label="'+('パンくずリスト' if ja else 'Breadcrumb')+'">'+('<span aria-hidden="true">/</span>'.join(crumbs))+'</nav>'
     nav+='\n<span id="ig-content" tabindex="-1"></span>\n'+NAV_END

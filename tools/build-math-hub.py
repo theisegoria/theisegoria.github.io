@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""Rebuild the <main> of both math encyclopedia hubs from tools/math-encyclopedia.json.
+"""Rebuild the <main> of both math encyclopedia hubs, and the Math encyclopedia
+section of both home pages, from tools/math-encyclopedia.json.
 
 The JSON is the single list of encyclopedia entries: one record per page, in
 reading order, each with a group. This script writes the page-contents nav and
@@ -68,6 +69,35 @@ def main_html(ja):
     return ''.join(out)
 
 
+def home_section(page, ja):
+    """The home page's Math encyclopedia section: one card per subject, linking
+    into the hub, so it stays current without listing every entry twice."""
+    esc = html.escape
+    prefix = '/ja' if ja else ''
+    cards = []
+    groups = [g for g in GROUPS if any(e['group'] == g[0] for e in DATA)]
+    for g, en, j in groups:
+        items = [e for e in DATA if e['group'] == g]
+        names = [re.split('[:：]', e['title_ja' if ja else 'title'])[0].strip() for e in items]
+        shown = names[:5]
+        if ja:
+            d = '・'.join(shown) + (f'ほか{len(names) - len(shown)}件' if len(names) > len(shown) else '')
+            d = f'{len(items)}件：' + d
+        else:
+            rest = len(names) - len(shown)
+            d = f'{len(items)} entries: ' + ', '.join(shown) + (f', and {rest} more' if rest else '')
+        cards.append(f'<a href="{prefix}/math-encyclopedia/#{g}"><span class="t">{esc(j if ja else en)}</span><span class="d">{esc(d)}</span></a>')
+    words = ['Zero', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine']
+    label = f'{len(groups)}分野・{len(DATA)}件' if ja else f'{words[len(groups)]} subjects · {len(DATA)} entries'
+    m = re.search(r'(<section class="section" id="math-encyclopedia">.*?<p class="label">)[^<]*(</p>.*?<div class="index">).*?(\n    </div></section>)', page, re.S)
+    if not m:
+        sys.exit('home page Math encyclopedia section not found')
+    note = ('数学の解説・実験・参考資料を、一か所にまとめました。 <a href="/ja/math-encyclopedia/">分野別に見る</a>・<a href="/ja/sheets/">参考シート</a>' if ja else
+            'Mathematical explainers, experiments, and reference material in one place. <a href="/math-encyclopedia/">Browse by subject</a> or open the <a href="/sheets/">reference sheets</a>.')
+    head = re.sub(r'<p class="section-note">.*?</p>', '<p class="section-note">' + note + '</p>', m.group(2), count=1, flags=re.S)
+    return page[:m.start()] + m.group(1) + label + head + ''.join(cards) + m.group(3) + page[m.end():]
+
+
 def rebuild(path, ja):
     s = path.read_text()
     new = re.sub(r'<main id="main">.*?</main>', lambda m: main_html(ja), s, count=1, flags=re.S)
@@ -81,9 +111,12 @@ if __name__ == '__main__':
     dup = {r for r in routes if routes.count(r) > 1}
     if dup:
         sys.exit(f'duplicate routes in math-encyclopedia.json: {sorted(dup)}')
-    for rel, ja in [('math-encyclopedia/index.html', False), ('ja/math-encyclopedia/index.html', True)]:
+    jobs = [('math-encyclopedia/index.html', False, rebuild), ('ja/math-encyclopedia/index.html', True, rebuild),
+            ('index.html', False, lambda p, ja: (p.read_text(), home_section(p.read_text(), ja))),
+            ('ja/index.html', True, lambda p, ja: (p.read_text(), home_section(p.read_text(), ja)))]
+    for rel, ja, fn in jobs:
         p = ROOT / rel
-        old, new = rebuild(p, ja)
+        old, new = fn(p, ja)
         if old != new:
             stale = True
             if not check:
