@@ -1,0 +1,86 @@
+<!doctype html><html lang="en" class="ig-document ig-editorial"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Apple M5 · Die floorplan · Isegoria</title><meta name="description" content="An interactive top-down floorplan of Apple’s M5: CPU clusters, a ten-core GPU with a Neural Accelerator in every core, the Neural Engine, SLC and LPDDR5X memory system, with the confidence behind each fact."><meta property="og:title" content="Apple M5 · Die floorplan · Isegoria"><meta property="og:description" content="An interactive top-down floorplan of Apple’s M5: CPU clusters, a ten-core GPU with a Neural Accelerator in every core, the Neural Engine, SLC and LPDDR5X memory system, with the confidence behind each fact.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,500..800&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"><link rel="stylesheet" href="/m5-floorplan/floorplan.css">
+<link rel="alternate" hreflang="en" href="/m5-floorplan/"><link rel="alternate" hreflang="ja" href="/ja/m5-floorplan/"><link rel="alternate" hreflang="x-default" href="/m5-floorplan/">
+<script src="/assets/lang.js"></script>
+<!-- ISEGORIA:HEAD -->
+<link rel="stylesheet" href="/assets/site-shell.css?v=c21cd21e82">
+<script src="/assets/site-shell.js?v=c21cd21e82" ></script>
+<!-- /ISEGORIA:HEAD -->
+<script defer data-isegoria-analytics src="/assets/analytics.js?v=9e6ebd463bf2"></script>
+</head><body class="ig-site" data-site-kind="editorial" data-site-route="/m5-floorplan/">
+<!-- ISEGORIA:NAV -->
+<a class="ig-skip" href="#ig-content">Skip to content</a>
+<header id="ig-header"><div class="ig-nav-inner">
+<a class="ig-brand" href="/" aria-label="Isegoria, home"><strong>ISEGORIA</strong><span>Benjamin Haire</span></a>
+<div class="ig-header-actions"><a class="ig-language" href="/ja/m5-floorplan/" hreflang="ja" lang="ja">日本語</a><button class="ig-menu" type="button" aria-expanded="false" aria-controls="ig-primary">Menu</button></div>
+<nav id="ig-primary" aria-label="Primary navigation"><a href="/">Home</a><a href="/library.html">Library</a><a href="/math-encyclopedia/">Math encyclopedia</a><a href="/#interactive" aria-current="location">Interactive</a><a href="/#preoccupations">Research</a><a href="/#books">Books</a><a href="/projects.html">Projects</a><a href="/about.html">About</a><a class="ig-language" href="/ja/m5-floorplan/" hreflang="ja" lang="ja">日本語</a><button class="ig-theme" type="button" hidden>Theme</button></nav>
+</div></header>
+<nav id="ig-breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><a href="/#interactive">Interactive explainers</a><span aria-hidden="true">/</span><span aria-current="page">Apple M5 · Die floorplan</span></nav>
+<span id="ig-content" tabindex="-1"></span>
+<!-- /ISEGORIA:NAV -->
+<main class="fp">
+<header>
+<p class="eyebrow">Apple silicon · T8142 · TSMC N3P · schematic floorplan</p>
+<h1>Apple <span>M5</span>, top-down</h1>
+<p class="lede">A block-level map of the base M5: four performance cores and six efficiency cores, a ten-core GPU with a Neural Accelerator in every core, a sixteen-core Neural Engine, and a 128-bit LPDDR5X-9600 memory system. Select any block to see what it does and how firmly each fact is established.</p>
+</header>
+<div class="stage">
+<figure class="board">
+<div class="toolbar" id="legend" role="group" aria-label="Highlight by function"></div>
+<div class="svgbox"><svg class="die" id="die" viewBox="0 0 1040 800" role="img" aria-label="Schematic top-down floorplan of the Apple M5 die: memory PHYs on the top and bottom edges, system level cache slices inside them, CPU clusters left of centre, the GPU on the right, and the Neural Engine, media and I/O on the left edge.">
+<defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="currentColor"/></marker>
+<pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="6" stroke="currentColor" stroke-opacity=".12" stroke-width="2"/></pattern></defs>
+<rect x="14" y="14" width="1012" height="772" rx="3" fill="var(--die)" stroke="var(--ring)" stroke-width="2"/>
+<rect x="14" y="14" width="1012" height="772" rx="3" fill="url(#hatch)"/>
+<rect x="24" y="24" width="992" height="752" fill="none" stroke="var(--ring)" stroke-dasharray="3 3"/>
+<g id="blocks"></g><g class="paths" id="paths"></g></svg></div>
+<figcaption>A schematic, not a die photograph. I placed blocks following the layout Apple has used from M1 to M4: DRAM PHYs on the long edges, SLC slices behind them, the GPU as the largest contiguous block. Areas are proportioned for legibility rather than measured. <span class="mono">Show data paths</span> overlays the main routes traffic takes through the fabric.</figcaption>
+</figure>
+<aside class="info" id="info" aria-live="polite"></aside>
+</div>
+<section class="grid2">
+<div>
+<h2>Spec sheet</h2>
+<div class="tablebox"><table>
+<thead><tr><th>Block</th><th>Figure</th><th>Basis</th></tr></thead>
+<tbody>
+<tr><td>Process</td><td class="num">TSMC N3P (third-generation 3 nm)</td><td><span class="tag a">Apple</span></td></tr>
+<tr><td>P-cores</td><td class="num">4, up to 4.61 GHz</td><td><span class="tag t">Measured</span></td></tr>
+<tr><td>P-core L1 / L2</td><td class="num">192 KB I + 128 KB D / 16 MB shared</td><td><span class="tag t">3rd-party</span></td></tr>
+<tr><td>E-cores</td><td class="num">6, up to 3.05 GHz</td><td><span class="tag t">Measured</span></td></tr>
+<tr><td>E-core L1 / L2</td><td class="num">128 KB I + 64 KB D / 6 MB shared</td><td><span class="tag t">3rd-party</span></td></tr>
+<tr><td>GPU</td><td class="num">10 cores, one Neural Accelerator each</td><td><span class="tag a">Apple</span></td></tr>
+<tr><td>Ray tracing</td><td class="num">Third-generation engine</td><td><span class="tag a">Apple</span></td></tr>
+<tr><td>Dynamic Caching</td><td class="num">Second generation</td><td><span class="tag a">Apple</span></td></tr>
+<tr><td>Neural Engine</td><td class="num">16 cores</td><td><span class="tag a">Apple</span></td></tr>
+<tr><td>Memory</td><td class="num">LPDDR5X-9600, 128-bit, up to 32 GB</td><td><span class="tag a">Apple</span></td></tr>
+<tr><td>Bandwidth</td><td class="num">153.6 GB/s</td><td><span class="tag a">Apple</span></td></tr>
+<tr><td>SLC size</td><td class="num">Not disclosed</td><td><span class="tag i">Unknown</span></td></tr>
+<tr><td>Die area, transistors</td><td class="num">Not disclosed</td><td><span class="tag i">Unknown</span></td></tr>
+</tbody></table></div>
+</div>
+<div class="note">
+<h2>Reading the topology</h2>
+<p><strong>Why the memory PHYs hug the edges.</strong> The DRAM interface is the chip's widest off-die bus, and the LPDDR5X packages sit right beside the die. Putting the PHYs on the long edges keeps those traces short. The memory controllers and SLC slices sit just inside, so a request from any agent crosses the fabric, meets its SLC slice, and only then goes out through the PHY behind it.</p>
+<div class="calc">128 bit ÷ 8 × 9,600 MT/s = 153.6 GB/s<br>drawn as 8 × 16-bit channels, 4 per edge</div>
+<p><strong>What changed from M4.</strong> The structural move is inside each GPU core: a dedicated matrix unit, Apple's Neural Accelerator, beside the shader ALUs. That is where the claimed fourfold rise in peak GPU AI compute comes from. Transformer-style matrix work now lives on the GPU, and the Neural Engine is kept for low-power, fixed-function inference.</p>
+<p><strong>M5 Pro and M5 Max are a different topology.</strong> They use Apple's Fusion Architecture, bonding two 3 nm dies into one SoC over a high-bandwidth interconnect, so this single-die map does not scale to them directly. For the whole M-series side by side, see the <a href="/apple-silicon/">Apple silicon atlas</a>.</p>
+</div>
+</section>
+<section class="note">
+<h2>Sources</h2>
+<p>Apple publishes block counts and bandwidth, not floorplans, and I could not find an annotated M5 die photograph in public. Core counts, caches, clocks, memory and GPU features below are sourced; the placement of blocks is my reconstruction from Apple's layout lineage, and the small system blocks (ISP, Secure Enclave, always-on processor, power management) are drawn where they usually sit. Relative areas are illustrative and were not measured.</p>
+<ul class="sources">
+<li><a href="https://www.apple.com/newsroom/2025/10/apple-unleashes-m5-the-next-big-leap-in-ai-performance-for-apple-silicon/">Apple Newsroom, M5 announcement</a>: cores, Neural Accelerators, Neural Engine, bandwidth, process.</li>
+<li><a href="https://www.apple.com/newsroom/2026/03/apple-debuts-m5-pro-and-m5-max-to-supercharge-the-most-demanding-pro-workflows/">Apple Newsroom, M5 Pro and M5 Max</a>: Fusion Architecture.</li>
+<li><a href="https://en.wikipedia.org/wiki/Apple_M5">Wikipedia, Apple M5</a>: memory type, speed and capacity; Neural Engine throughput.</li>
+<li><a href="https://theapplewiki.com/wiki/M5">The Apple Wiki, M5</a>: T8142 identifier, L1 and L2 cache sizes.</li>
+<li><a href="https://eclecticlight.co/2025/10/30/updated-cpu-core-frequencies-for-all-current-apple-silicon-macs/">The Eclectic Light Company</a>: measured P-core and E-core frequencies.</li>
+</ul>
+</section>
+</main>
+<script src="/m5-floorplan/floorplan.js"></script>
+<!-- ISEGORIA:FOOT -->
+<footer id="ig-footer"><div><a href="/">Isegoria · Benjamin Haire</a><nav aria-label="Site links"><a href="/">Back to home</a><a href="/library.html">Browse the library</a><a href="#ig-content">Back to top</a></nav></div></footer>
+<!-- /ISEGORIA:FOOT -->
+</body></html>
