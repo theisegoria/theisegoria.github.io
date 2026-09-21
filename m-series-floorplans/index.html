@@ -1,0 +1,69 @@
+<!doctype html><html lang="en" class=" ig-document ig-editorial"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Apple M-series · Die floorplans · Isegoria</title><meta name="description" content="Every Apple M-series chip from M1 to M6 as an interactive top-down floorplan: CPU clusters, GPU, Neural Engine, SLC and memory, multi-die Ultras and the M5 Fusion dies, with how each layout is known."><meta property="og:title" content="Apple M-series · Die floorplans · Isegoria"><meta property="og:description" content="Every Apple M-series chip from M1 to M6 as an interactive top-down floorplan: CPU clusters, GPU, Neural Engine, SLC and memory, multi-die Ultras and the M5 Fusion dies, with how each layout is known.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,500..800&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap"><link rel="stylesheet" href="/m-series-floorplans/floorplans.css">
+<link rel="alternate" hreflang="en" href="https://theisegoria.github.io/m-series-floorplans/"><link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/m-series-floorplans/"><link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/m-series-floorplans/">
+<script src="/assets/lang.js"></script>
+<!-- ISEGORIA:HEAD -->
+<link rel="stylesheet" href="/assets/site-shell.css?v=c21cd21e82">
+<script src="/assets/site-shell.js?v=c21cd21e82" ></script>
+<!-- /ISEGORIA:HEAD -->
+<script defer data-isegoria-analytics src="/assets/analytics.js?v=9e6ebd463bf2"></script>
+</head><body class=" ig-site" data-site-kind="editorial" data-site-route="/m-series-floorplans/">
+<!-- ISEGORIA:NAV -->
+<a class="ig-skip" href="#ig-content">Skip to content</a>
+<header id="ig-header"><div class="ig-nav-inner">
+<a class="ig-brand" href="/" aria-label="Isegoria, home"><strong>ISEGORIA</strong><span>Benjamin Haire</span></a>
+<div class="ig-header-actions"><a class="ig-language" href="/ja/m-series-floorplans/" hreflang="ja" lang="ja">日本語</a><button class="ig-menu" type="button" aria-expanded="false" aria-controls="ig-primary">Menu</button></div>
+<nav id="ig-primary" aria-label="Primary navigation"><a href="/">Home</a><a href="/library.html">Library</a><a href="/math-encyclopedia/">Math encyclopedia</a><a href="/#interactive" aria-current="location">Interactive</a><a href="/#preoccupations">Research</a><a href="/#books">Books</a><a href="/projects.html">Projects</a><a href="/about.html">About</a><a class="ig-language" href="/ja/m-series-floorplans/" hreflang="ja" lang="ja">日本語</a><button class="ig-theme" type="button" hidden>Theme</button></nav>
+</div></header>
+<nav id="ig-breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><a href="/#interactive">Interactive explainers</a><span aria-hidden="true">/</span><span aria-current="page">Apple M-series · Die floorplans</span></nav>
+<span id="ig-content" tabindex="-1"></span>
+<!-- /ISEGORIA:NAV --><main class="fp">
+<header>
+<p class="eyebrow">Apple silicon · M1 to M6 · 20 chips, top-down</p>
+<h1>Inside every <em>M-series</em> die</h1>
+<p class="lede">Every M-series chip Apple has announced, drawn as a floorplan you can take apart. Pick a chip from the table, select a block to see what it does, turn on the data paths, or compare two dies side by side. Each chip is marked with how its layout is known, from die photograph to informed estimate.</p>
+</header>
+<div class="picker" id="fp-picker" role="group" aria-label="Choose a chip"></div>
+<div class="keyrow"><span><i class="dot photo"></i>Die photo</span><span><i class="dot annot"></i>Labelled floorplan</span><span><i class="dot derived"></i>Derived die</span><span><i class="dot lineage"></i>Lineage</span></div>
+<div class="bench">
+<div class="board">
+<div class="toolbar"><div id="fp-legend" style="display:contents"></div><label class="vs" for="fp-vs">Compare with<select id="fp-vs"></select></label></div>
+<div class="stages" id="fp-stages">
+<figure class="fp-stage" id="fp-pane-a"><figcaption id="fp-cap-a"></figcaption><svg id="fp-svg-a" role="img" aria-label="Top-down floorplan of the selected Apple M-series chip"></svg></figure>
+<figure class="fp-stage" id="fp-pane-b" hidden><figcaption id="fp-cap-b"></figcaption><svg id="fp-svg-b" role="img" aria-label="Top-down floorplan of the selected Apple M-series chip"></svg></figure>
+</div>
+<p class="scale-note" id="fp-scale"></p>
+</div>
+<aside class="side"><div class="card" id="fp-card" aria-live="polite"></div><div class="card" id="fp-block" hidden aria-live="polite"></div><p class="hint">Select any block on the die to see what it is and whether its placement comes from a source or is inferred. Links carry the chosen chips, so a comparison can be shared.</p></aside>
+</div>
+<section>
+<h2>What the family shows</h2>
+<div class="lessons">
+<div><h3>Memory decides the shape</h3><p>A memory interface can only sit on the die's edge, and its length grows with bus width. A 128-bit base chip is nearly square. A 512-bit Max needs two long edges lined with PHYs, and the SLC slices follow them, because each slice sits in front of the memory it serves.</p></div>
+<div><h3>The Max was a Pro with more below</h3><p>For M1 and M2, Apple drew one die and cut it at two heights: the Pro is the top part, and the Max adds a second GPU half, more memory and more SLC underneath. M3 broke the pattern and gave the Max its own die.</p></div>
+<div><h3>The GPU keeps winning floor space</h3><p>From M1's eight cores to M5 Max's forty with a Neural Accelerator in each, the GPU grows faster than anything else. On a Max die it is by far the largest single structure.</p></div>
+<div><h3>Two ways to exceed one die</h3><p>UltraFusion joins two identical Max dies at an edge, and the system sees one chip. M5 Pro and M5 Max go further and split one chip into a CPU die and a GPU die. M5 Ultra combines both approaches: four dies.</p></div>
+</div>
+</section>
+<section>
+<h2>How each layout is known</h2>
+<div class="tablebox"><table><thead><tr><th>Chip</th><th>Basis</th><th>GPU cores</th><th>CPU</th><th>Memory bus</th></tr></thead><tbody id="fp-evidence"></tbody></table></div>
+</section>
+<section class="note">
+<h2>Sources</h2>
+<p>Core counts, memory and process come from Apple. Placement comes from the images listed here. For M1, M1 Pro, M2, M2 Pro, M3, M3 Pro and M4 I used die photographs with measured die sizes, and the M4 photograph is fully labelled. For the M3 family I also used High Yield's labelled floorplans. M1 Max and M2 Max are built from their Pro photographs, because that is how Apple built them. M4 Pro, M4 Max, M5, the M5 Pro and Max dies, and M6 have no public die image that I could find, so I arranged them from their nearest relative and marked them that way. Relative block areas are approximate, and no block here was measured by me.</p>
+<ul class="sources">
+<li><a href="https://kurnal-insights.com/en/dieshot/">Kurnal Insights die shot gallery</a>: photographs and die dimensions of M1, M1 Pro, M2, M2 Pro, M3, M3 Pro and M4, and the labelled M4 layout.</li>
+<li><a href="https://www.tomshardware.com/news/annotated-apple-m3-processor-die-shots-bring-chip-designs-to-life">Tom's Hardware on High Yield's annotated M3 family</a>: labelled M3, M3 Pro and M3 Max floorplans.</li>
+<li><a href="https://www.techinsights.com/blog/apple-m5-pro-package-analysis-TSMC-hybrid-bonding">TechInsights, M5 Pro package analysis</a>: separate CPU and GPU chiplets joined with hybrid bonding.</li>
+<li><a href="https://appleinsider.com/articles/26/03/23/what-m5-pro-m5-max-get-using-vertically-stacked-dies-for-performance">AppleInsider on the M5 Pro and M5 Max dies</a>: the dies are adjacent, not stacked, and are not mirror images.</li>
+<li>Apple Newsroom: <a href="https://www.apple.com/newsroom/2021/10/introducing-m1-pro-and-m1-max-the-most-powerful-chips-apple-has-ever-built/">M1 Pro and M1 Max</a>, <a href="https://www.apple.com/newsroom/2023/01/apple-unveils-m2-pro-and-m2-max-next-generation-chips-for-next-level-workflows/">M2 Pro and M2 Max</a>, <a href="https://www.apple.com/newsroom/2024/10/apple-introduces-m4-pro-and-m4-max/">M4 Pro and M4 Max</a>, <a href="https://www.apple.com/newsroom/2025/10/apple-unleashes-m5-the-next-big-leap-in-ai-performance-for-apple-silicon/">M5</a>, <a href="https://www.apple.com/newsroom/2026/03/apple-debuts-m5-pro-and-m5-max-to-supercharge-the-most-demanding-pro-workflows/">M5 Pro and M5 Max</a>, <a href="https://www.apple.com/newsroom/2026/08/apple-introduces-m6-and-m5-ultra-for-a-big-leap-in-performance-and-ai-compute/">M6 and M5 Ultra</a>.</li>
+<li>Specifications agree with my <a href="/apple-silicon/">Apple silicon atlas</a>, which compares the same 20 chips by the numbers.</li>
+</ul>
+</section>
+</main>
+<script src="/m-series-floorplans/data.js"></script>
+<script src="/m-series-floorplans/floorplans.js"></script><!-- ISEGORIA:FOOT -->
+<footer id="ig-footer"><div><a href="/">Isegoria · Benjamin Haire</a><nav aria-label="Site links"><a href="/">Back to home</a><a href="/library.html">Browse the library</a><a href="#ig-content">Back to top</a></nav></div></footer>
+<!-- /ISEGORIA:FOOT -->
+</body></html>

@@ -1,0 +1,69 @@
+<!doctype html><html lang="ja" class=" ig-document ig-editorial"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Apple Mシリーズ · ダイのフロアプラン · Isegoria</title><meta name="description" content="M1からM6までのApple Mシリーズ全チップを、操作できる上面フロアプランとして描いた。CPUクラスタ、GPU、Neural Engine、SLC、メモリ、複数ダイのUltraやM5のFusionダイまで、各レイアウトの根拠とともに示す。"><meta property="og:title" content="Apple Mシリーズ · ダイのフロアプラン · Isegoria"><meta property="og:description" content="M1からM6までのApple Mシリーズ全チップを、操作できる上面フロアプランとして描いた。CPUクラスタ、GPU、Neural Engine、SLC、メモリ、複数ダイのUltraやM5のFusionダイまで、各レイアウトの根拠とともに示す。">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,500..800&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap"><link rel="stylesheet" href="/m-series-floorplans/floorplans.css">
+<link rel="alternate" hreflang="en" href="https://theisegoria.github.io/m-series-floorplans/"><link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/m-series-floorplans/"><link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/m-series-floorplans/">
+<script src="/assets/lang.js"></script>
+<!-- ISEGORIA:HEAD -->
+<link rel="stylesheet" href="/assets/site-shell.css?v=c21cd21e82">
+<script src="/assets/site-shell.js?v=c21cd21e82" ></script>
+<!-- /ISEGORIA:HEAD -->
+<script defer data-isegoria-analytics src="/assets/analytics.js?v=9e6ebd463bf2"></script>
+</head><body class=" ig-site" data-site-kind="editorial" data-site-route="/ja/m-series-floorplans/">
+<!-- ISEGORIA:NAV -->
+<a class="ig-skip" href="#ig-content">本文へ移動</a>
+<header id="ig-header"><div class="ig-nav-inner">
+<a class="ig-brand" href="/ja/" aria-label="Isegoria, ホーム"><strong>ISEGORIA</strong><span>Benjamin Haire</span></a>
+<div class="ig-header-actions"><a class="ig-language" href="/m-series-floorplans/" hreflang="en" lang="en">English</a><button class="ig-menu" type="button" aria-expanded="false" aria-controls="ig-primary">メニュー</button></div>
+<nav id="ig-primary" aria-label="メインナビゲーション"><a href="/ja/">ホーム</a><a href="/ja/library.html">全コンテンツ</a><a href="/ja/math-encyclopedia/">数学百科事典</a><a href="/ja/#interactive" aria-current="location">操作できる解説</a><a href="/ja/#preoccupations">研究と解説</a><a href="/ja/#books">書籍</a><a href="/ja/projects.html">プロジェクト</a><a href="/ja/about.html">このサイトについて</a><a class="ig-language" href="/m-series-floorplans/" hreflang="en" lang="en">English</a><button class="ig-theme" type="button" hidden>表示切替</button></nav>
+</div></header>
+<nav id="ig-breadcrumb" aria-label="パンくずリスト"><a href="/ja/">ホーム</a><span aria-hidden="true">/</span><a href="/ja/#interactive">操作できる解説</a><span aria-hidden="true">/</span><span aria-current="page">Apple Mシリーズ · ダイのフロアプラン</span></nav>
+<span id="ig-content" tabindex="-1"></span>
+<!-- /ISEGORIA:NAV --><main class="fp">
+<header>
+<p class="eyebrow">Apple silicon · M1〜M6 · 全20チップを真上から</p>
+<h1><em>M</em>シリーズ全ダイの内側</h1>
+<p class="lede">Appleが発表したMシリーズの全チップを、分解できるフロアプランとして描いた。表からチップを選び、ブロックを選んで役割を見る。データ経路を重ねたり、2つのダイを並べて比べたりもできる。各チップには、そのレイアウトがダイ写真に基づくのか、根拠のある推定なのかを示してある。</p>
+</header>
+<div class="picker" id="fp-picker" role="group" aria-label="チップを選ぶ"></div>
+<div class="keyrow"><span><i class="dot photo"></i>ダイ写真</span><span><i class="dot annot"></i>注釈付きフロアプラン</span><span><i class="dot derived"></i>派生ダイ</span><span><i class="dot lineage"></i>系譜からの推定</span></div>
+<div class="bench">
+<div class="board">
+<div class="toolbar"><div id="fp-legend" style="display:contents"></div><label class="vs" for="fp-vs">比較対象<select id="fp-vs"></select></label></div>
+<div class="stages" id="fp-stages">
+<figure class="fp-stage" id="fp-pane-a"><figcaption id="fp-cap-a"></figcaption><svg id="fp-svg-a" role="img" aria-label="選択したApple Mシリーズチップの上面フロアプラン"></svg></figure>
+<figure class="fp-stage" id="fp-pane-b" hidden><figcaption id="fp-cap-b"></figcaption><svg id="fp-svg-b" role="img" aria-label="選択したApple Mシリーズチップの上面フロアプラン"></svg></figure>
+</div>
+<p class="scale-note" id="fp-scale"></p>
+</div>
+<aside class="side"><div class="card" id="fp-card" aria-live="polite"></div><div class="card" id="fp-block" hidden aria-live="polite"></div><p class="hint">ダイ上のブロックを選ぶと、その正体と、配置が出典に基づくのか推定なのかが表示される。選んだチップはURLに残るので、比較をそのまま共有できる。</p></aside>
+</div>
+<section>
+<h2>ファミリーから見えること</h2>
+<div class="lessons">
+<div><h3>ダイの形を決めるのはメモリである</h3><p>メモリ接続はダイの縁にしか置けず、その長さはバス幅に比例する。128ビットの無印チップはほぼ正方形だが、512ビットのMaxでは2つの長辺をPHYで埋める必要がある。SLCのスライスもそれに沿って並ぶ。各スライスは担当するメモリの手前に置かれるからである。</p></div>
+<div><h3>MaxはProの下に足したものだった</h3><p>M1とM2では、Appleは1枚のダイを描き、2つの高さで切り分けた。Proは上の部分であり、Maxはその下にGPUの後半、メモリ、SLCを加えたものである。M3でこの方式は終わり、Maxは独自のダイになった。</p></div>
+<div><h3>GPUが面積を取り続ける</h3><p>M1の8コアから、各コアにNeural Acceleratorを持つM5 Maxの40コアまで、GPUは他のどの部分よりも速く大きくなった。Maxのダイでは、GPUが群を抜いて最大の構造である。</p></div>
+<div><h3>1枚のダイを超える2つの方法</h3><p>UltraFusionは同一のMaxダイ2枚を縁で結合し、システムからは1つのチップに見える。M5 ProとM5 Maxはさらに進み、1つのチップをCPUダイとGPUダイに分けた。M5 Ultraはその両方を組み合わせた4ダイ構成である。</p></div>
+</div>
+</section>
+<section>
+<h2>各レイアウトの根拠</h2>
+<div class="tablebox"><table><thead><tr><th>チップ</th><th>根拠</th><th>GPUコア</th><th>CPU</th><th>メモリバス</th></tr></thead><tbody id="fp-evidence"></tbody></table></div>
+</section>
+<section class="note">
+<h2>出典</h2>
+<p>コア数、メモリ、製造プロセスはAppleの公表値である。配置は以下の画像に基づく。M1、M1 Pro、M2、M2 Pro、M3、M3 Pro、M4には実測寸法付きのダイ写真を使い、M4の写真は全ブロックに注釈が付いている。M3ファミリーではHigh Yieldの注釈付きフロアプランも用いた。M1 MaxとM2 Maxは、Appleの作り方に倣い、それぞれProの写真から組み立てた。M4 Pro、M4 Max、M5、M5 Pro・MaxのダイとM6については公開されたダイ画像を見つけられなかったため、最も近い世代から配置し、その旨を明示した。ブロックの相対面積は概算であり、私自身が計測したブロックはない。</p>
+<ul class="sources">
+<li><a href="https://kurnal-insights.com/en/dieshot/">Kurnal Insights ダイ写真ギャラリー</a>：M1、M1 Pro、M2、M2 Pro、M3、M3 Pro、M4の写真とダイ寸法、M4の注釈付きレイアウト。</li>
+<li><a href="https://www.tomshardware.com/news/annotated-apple-m3-processor-die-shots-bring-chip-designs-to-life">Tom's HardwareによるHigh YieldのM3ファミリー注釈の紹介</a>：M3、M3 Pro、M3 Maxの注釈付きフロアプラン。</li>
+<li><a href="https://www.techinsights.com/blog/apple-m5-pro-package-analysis-TSMC-hybrid-bonding">TechInsights、M5 Proパッケージ解析</a>：ハイブリッドボンディングで結合された、独立したCPUとGPUのチップレット。</li>
+<li><a href="https://appleinsider.com/articles/26/03/23/what-m5-pro-m5-max-get-using-vertically-stacked-dies-for-performance">AppleInsiderによるM5 Pro・M5 Maxのダイの解説</a>：ダイは積層ではなく隣接しており、互いの鏡像でもない。</li>
+<li>Apple Newsroom：<a href="https://www.apple.com/newsroom/2021/10/introducing-m1-pro-and-m1-max-the-most-powerful-chips-apple-has-ever-built/">M1 ProとM1 Max</a>、<a href="https://www.apple.com/newsroom/2023/01/apple-unveils-m2-pro-and-m2-max-next-generation-chips-for-next-level-workflows/">M2 ProとM2 Max</a>、<a href="https://www.apple.com/newsroom/2024/10/apple-introduces-m4-pro-and-m4-max/">M4 ProとM4 Max</a>、<a href="https://www.apple.com/newsroom/2025/10/apple-unleashes-m5-the-next-big-leap-in-ai-performance-for-apple-silicon/">M5</a>、<a href="https://www.apple.com/newsroom/2026/03/apple-debuts-m5-pro-and-m5-max-to-supercharge-the-most-demanding-pro-workflows/">M5 ProとM5 Max</a>、<a href="https://www.apple.com/newsroom/2026/08/apple-introduces-m6-and-m5-ultra-for-a-big-leap-in-performance-and-ai-compute/">M6とM5 Ultra</a>。</li>
+<li>仕様は、同じ20チップを数値で比べた<a href="/ja/apple-silicon/">Apple silicon アトラス</a>と一致させてある。</li>
+</ul>
+</section>
+</main>
+<script src="/m-series-floorplans/data.js"></script>
+<script src="/m-series-floorplans/floorplans.js"></script><!-- ISEGORIA:FOOT -->
+<footer id="ig-footer"><div><a href="/ja/">Isegoria · Benjamin Haire</a><nav aria-label="サイト内リンク"><a href="/ja/">ホームに戻る</a><a href="/ja/library.html">全コンテンツ</a><a href="#ig-content">ページ上部へ</a></nav></div></footer>
+<!-- /ISEGORIA:FOOT -->
+</body></html>

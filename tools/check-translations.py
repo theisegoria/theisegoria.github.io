@@ -30,7 +30,7 @@ def route(p):
     return s[:-10] if s.endswith('index.html') else s
 
 def main():
-    pages={route(p):(p,Page(p.read_text())) for p in ROOT.rglob('*.html') if not any(x in p.parts for x in ['node_modules','.git','dist'])}
+    pages={route(p):(p,Page(p.read_text())) for p in ROOT.rglob('*.html') if not any(x in p.parts for x in ['node_modules','.git','dist']) and not re.search(r'http-equiv=["\']refresh',p.read_text(),re.I)}
     errors=[];pairs=0
     for url,(path,p) in pages.items():
         if p.lang!='en':continue

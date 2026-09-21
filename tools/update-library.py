@@ -29,6 +29,7 @@ def entries():
  for p in sorted(ROOT.rglob('*.html')):
   if any(x in p.parts for x in ['node_modules','.git','dist','.next']):continue
   source=p.read_text();route=shell.route_for(p.relative_to(ROOT));ja=shell.japanese(source)
+  if re.search(r'http-equiv=["\']refresh',source,re.I):continue
   if shell.category(route,ja) is None:continue
   if SUBPAGE.match(route):continue
   meta=Meta();meta.feed(source)
