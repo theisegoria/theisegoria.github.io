@@ -6281,5 +6281,509 @@
         "url": "https://plato.stanford.edu/entries/goedel-incompleteness/"
       }
     ]
+  },
+  {
+    "slug": "hyperbolic-geometry",
+    "title": [
+      "Hyperbolic geometry: where parallels multiply",
+      "双曲幾何：平行線が増える世界"
+    ],
+    "description": [
+      "Distance in the Poincaré disc, triangles whose angles fall short of π, and tilings no flat plane can hold.",
+      "ポアンカレ円板の距離、角の和が π に届かない三角形、平面には収まらないタイリングを扱います。"
+    ],
+    "group": "geometry",
+    "prerequisite": [
+      "Complex numbers and differential geometry",
+      "複素数と微分幾何"
+    ],
+    "source": "Cannon, Floyd, Kenyon, Parry · Hyperbolic Geometry (Flavors of Geometry, MSRI)",
+    "url": "https://library.slmath.org/books/Book31/files/cannon.pdf",
+    "labs": [
+      {
+        "id": "poincare-distance",
+        "title": [
+          "1. Distance, lines, and many parallels",
+          "1. 距離と直線、そしてたくさんの平行線"
+        ],
+        "body": [
+          "In the Poincaré disc, lines are arcs of circles that meet the rim at right angles, and the rim itself is infinitely far away. Drag P and Q: the dots are equally spaced in hyperbolic length and crowd towards the edge. Then drag R off the line. Through R pass two limiting parallels and infinitely many other lines that never meet PQ, so Euclid’s parallel postulate fails.",
+          "ポアンカレ円板では、直線は縁と直角に交わる円弧で、縁そのものは無限に遠くにあります。P と Q をドラッグしてください。点は双曲的な長さで等間隔に並び、縁に向かって詰まっていきます。次に R を直線の外へドラッグしてください。R を通る極限平行線が二本あり、さらに PQ と決して交わらない直線が無数にあります。ユークリッドの平行線公準は成り立ちません。"
+        ],
+        "formula": "d(z,w)=\\operatorname{arcosh}\\Bigl(1+\\frac{2|z-w|^2}{(1-|z|^2)(1-|w|^2)}\\Bigr),\\qquad \\Pi(d)=2\\arctan e^{-d}",
+        "example": [
+          "From the centre, a point at Euclidean radius \\(r\\) lies at hyperbolic distance \\(2\\operatorname{artanh}r=\\ln\\frac{1+r}{1-r}\\). At \\(r=0.9\\) that is \\(\\ln 19\\approx2.94\\), and the rim is infinitely far.",
+          "中心から見て、ユークリッド半径 \\(r\\) の点までの双曲距離は \\(2\\operatorname{artanh}r=\\ln\\frac{1+r}{1-r}\\) です。\\(r=0.9\\) では \\(\\ln 19\\approx2.94\\) で、縁までは無限の距離です。"
+        ],
+        "caution": [
+          "The disc shows angles faithfully but not lengths: arcs near the rim look short but are long. Because the model is conformal, the angle \\(\\Pi\\) can be read straight off the picture.",
+          "この円板は角度を正しく表しますが、長さは表しません。縁の近くの弧は短く見えても実際は長いのです。モデルが等角的なので、角 \\(\\Pi\\) は図からそのまま読み取れます。"
+        ],
+        "question": [
+          "What happens to Π(d) when R is very close to the line?",
+          "R が直線にごく近いとき、Π(d) はどうなりますか？"
+        ],
+        "answer": [
+          "It tends to 90°, and the two limiting parallels merge into the single Euclidean parallel. Small regions of the hyperbolic plane look Euclidean.",
+          "90° に近づき、二本の極限平行線はユークリッドのただ一本の平行線に重なります。双曲平面の小さな領域はユークリッド的に見えます。"
+        ],
+        "params": [
+          [
+            "px",
+            "P: x",
+            "P：x",
+            -0.9,
+            0.9,
+            0.01,
+            -0.55
+          ],
+          [
+            "py",
+            "P: y",
+            "P：y",
+            -0.9,
+            0.9,
+            0.01,
+            -0.3
+          ],
+          [
+            "qx",
+            "Q: x",
+            "Q：x",
+            -0.9,
+            0.9,
+            0.01,
+            0.6
+          ],
+          [
+            "qy",
+            "Q: y",
+            "Q：y",
+            -0.9,
+            0.9,
+            0.01,
+            -0.25
+          ],
+          [
+            "rx",
+            "R: x",
+            "R：x",
+            -0.9,
+            0.9,
+            0.01,
+            0.05
+          ],
+          [
+            "ry",
+            "R: y",
+            "R：y",
+            -0.9,
+            0.9,
+            0.01,
+            0.45
+          ]
+        ],
+        "source": "Cannon, Floyd, Kenyon, Parry · Hyperbolic Geometry (Flavors of Geometry, MSRI)",
+        "url": "https://library.slmath.org/books/Book31/files/cannon.pdf"
+      },
+      {
+        "id": "hyperbolic-triangle",
+        "title": [
+          "2. Triangles: the angle sum falls short",
+          "2. 三角形：角の和が足りない"
+        ],
+        "body": [
+          "Drag the vertices of a geodesic triangle. Its angles always add to less than π, and the shortfall is exactly its area: the Gauss–Bonnet theorem for a surface of constant curvature −1. Press Play to grow the triangle from a point. Tiny triangles are almost Euclidean; the defect appears as the triangle gets large.",
+          "測地三角形の頂点をドラッグしてください。角の和はいつも π より小さく、その不足分はちょうど面積に等しくなります。曲率が一定値 −1 の曲面に対するガウス・ボネの定理です。再生を押すと、三角形が点から成長します。ごく小さな三角形はほぼユークリッド的で、大きくなるにつれて欠損が現れます。"
+        ],
+        "formula": "\\alpha+\\beta+\\gamma=\\pi-\\operatorname{Area}(\\triangle),\\qquad dA=\\frac{4\\,dx\\,dy}{(1-x^2-y^2)^2}",
+        "example": [
+          "A triangle whose three vertices sit on the rim (an ideal triangle) has three zero angles, so its area is exactly \\(\\pi\\), the largest any hyperbolic triangle can have.",
+          "三つの頂点がすべて縁にある三角形（理想三角形）は三つの角がすべて 0 なので、面積はちょうど \\(\\pi\\) です。これはどの双曲三角形の面積よりも大きな値です。"
+        ],
+        "caution": [
+          "Area means hyperbolic area, not the Euclidean area of the shaded region on the screen. With curvature \\(-K\\) the rule becomes \\(\\alpha+\\beta+\\gamma=\\pi-K\\cdot\\operatorname{Area}\\).",
+          "ここでの面積は双曲的な面積で、画面上の塗られた部分のユークリッド面積ではありません。曲率が \\(-K\\) なら、規則は \\(\\alpha+\\beta+\\gamma=\\pi-K\\cdot\\operatorname{Area}\\) になります。"
+        ],
+        "question": [
+          "Can two hyperbolic triangles have the same angles but different sizes?",
+          "角が同じで大きさの違う双曲三角形はありますか？"
+        ],
+        "answer": [
+          "No. The angles fix the area, and in fact fix the triangle up to an isometry: there are no similar triangles of different sizes.",
+          "ありません。角が面積を決め、さらに三角形を等長変換を除いて決めてしまいます。大きさだけが違う相似な三角形は存在しません。"
+        ],
+        "params": [
+          [
+            "ax",
+            "A: x",
+            "A：x",
+            -0.9,
+            0.9,
+            0.01,
+            -0.62
+          ],
+          [
+            "ay",
+            "A: y",
+            "A：y",
+            -0.9,
+            0.9,
+            0.01,
+            -0.4
+          ],
+          [
+            "bx",
+            "B: x",
+            "B：x",
+            -0.9,
+            0.9,
+            0.01,
+            0.7
+          ],
+          [
+            "by",
+            "B: y",
+            "B：y",
+            -0.9,
+            0.9,
+            0.01,
+            -0.3
+          ],
+          [
+            "cx",
+            "C: x",
+            "C：x",
+            -0.9,
+            0.9,
+            0.01,
+            0.0
+          ],
+          [
+            "cy",
+            "C: y",
+            "C：y",
+            -0.9,
+            0.9,
+            0.01,
+            0.72
+          ]
+        ],
+        "source": "Cannon, Floyd, Kenyon, Parry · Hyperbolic Geometry (Flavors of Geometry, MSRI)",
+        "url": "https://library.slmath.org/books/Book31/files/cannon.pdf"
+      },
+      {
+        "id": "hyperbolic-tiling",
+        "title": [
+          "3. Regular tilings {p, q}",
+          "3. 正則タイリング {p, q}"
+        ],
+        "body": [
+          "Choose p and q. The tiling {p, q} uses regular p-gons, q of them at every corner. On a flat plane only {3, 6}, {4, 4} and {6, 3} work; in the hyperbolic plane every pair with 1/p + 1/q < 1/2 does. The picture is built by reflecting every point into one triangle with angles π/p, π/2 and π/q. Drag the gold centre to move the whole tiling by an isometry of the disc.",
+          "p と q を選んでください。タイリング {p, q} は正 p 角形を使い、各頂点に q 枚が集まります。平面では {3, 6}、{4, 4}、{6, 3} しかありませんが、双曲平面では 1/p + 1/q < 1/2 を満たすどの組でも可能です。図は、すべての点を角が π/p、π/2、π/q の一つの三角形へ鏡映で折り返して描いています。金色の中心をドラッグすると、円板の等長変換でタイリング全体が動きます。"
+        ],
+        "formula": "\\frac1p+\\frac1q<\\frac12,\\qquad \\operatorname{Area}(p\\text{-gon})=(p-2)\\pi-\\frac{2\\pi p}{q},\\qquad z\\mapsto\\frac{z+a}{1+\\bar a z}",
+        "example": [
+          "For \\(\\{7,3\\}\\): heptagons with 120° corners, three at each vertex. Each has area \\(5\\pi-\\tfrac{14\\pi}{3}=\\tfrac{\\pi}{3}\\).",
+          "\\(\\{7,3\\}\\) では、角が 120° の七角形が各頂点に三枚集まります。一枚の面積は \\(5\\pi-\\tfrac{14\\pi}{3}=\\tfrac{\\pi}{3}\\) です。"
+        ],
+        "caution": [
+          "The two tones mark mirror-image triangles, not separate tiles: each tile is made of \\(2p\\) of them. Near the rim the tiles blur together because they are smaller than a pixel in this picture, not because they change.",
+          "二つの濃淡は鏡像の三角形を示すもので、別々のタイルではありません。一枚のタイルは \\(2p\\) 個の三角形からできています。縁の近くでタイルがぼやけるのは、この図で一画素より小さくなるからで、タイル自体が変わるからではありません。"
+        ],
+        "question": [
+          "Why can’t {7, 3} tile the flat plane?",
+          "{7, 3} が平面を敷き詰められないのはなぜですか？"
+        ],
+        "answer": [
+          "A flat regular heptagon has corners of \\(900^\\circ/7\\approx128.6^\\circ\\), and three of them add up to more than 360°. Only negative curvature lets a polygon’s corners shrink to 120°.",
+          "平面の正七角形の角は \\(900^\\circ/7\\approx128.6^\\circ\\) で、三つ合わせると 360° を超えます。多角形の角を 120° まで小さくできるのは負の曲率だけです。"
+        ],
+        "params": [
+          [
+            "p",
+            "Polygon sides p",
+            "多角形の辺の数 p",
+            3,
+            10,
+            1,
+            7
+          ],
+          [
+            "q",
+            "Tiles at each corner q",
+            "各頂点のタイル数 q",
+            3,
+            10,
+            1,
+            3
+          ],
+          [
+            "ax",
+            "Centre: x",
+            "中心：x",
+            -0.9,
+            0.9,
+            0.01,
+            0
+          ],
+          [
+            "ay",
+            "Centre: y",
+            "中心：y",
+            -0.9,
+            0.9,
+            0.01,
+            0
+          ]
+        ],
+        "source": "Cannon, Floyd, Kenyon, Parry · Hyperbolic Geometry (Flavors of Geometry, MSRI)",
+        "url": "https://library.slmath.org/books/Book31/files/cannon.pdf"
+      }
+    ]
+  },
+  {
+    "slug": "rigid-body-dynamics",
+    "title": [
+      "Rigid-body dynamics: spinning, tumbling, precessing",
+      "剛体力学：回転・転倒・歳差"
+    ],
+    "description": [
+      "The tennis-racket flip, the gyroscope that refuses to fall, and the inertia tensor behind both.",
+      "テニスラケットの反転、倒れないジャイロ、そしてその両方を支える慣性テンソルを扱います。"
+    ],
+    "group": "physics",
+    "prerequisite": [
+      "Classical mechanics and linear algebra",
+      "古典力学と線形代数"
+    ],
+    "source": "David Tong · Classical Dynamics, Chapter 3: The Motion of Rigid Bodies",
+    "url": "https://www.damtp.cam.ac.uk/user/tong/dynamics/three.pdf",
+    "labs": [
+      {
+        "id": "tennis-racket",
+        "title": [
+          "1. The tennis-racket theorem",
+          "1. テニスラケットの定理"
+        ],
+        "body": [
+          "A box with three different moments of inertia spins with no torque acting on it. About the long axis or the short axis the spin is stable. About the middle axis the smallest disturbance grows, and the body flips over again and again, as the cosmonaut Vladimir Dzhanibekov saw with a wing nut in orbit in 1985. Conservation of energy and of angular momentum forces the angular-momentum point to move along the curves where an ellipsoid meets a sphere.",
+          "三つの慣性モーメントがすべて異なる箱が、トルクを受けずに回転します。長軸か短軸のまわりの回転は安定です。中間の軸のまわりでは、ほんのわずかな乱れが成長し、物体は何度も裏返ります。1985 年に宇宙飛行士ウラジーミル・ジャニベコフが軌道上で蝶ナットに見た現象です。エネルギーと角運動量の保存により、角運動量の点は楕円体と球面が交わる曲線に沿って動くしかありません。"
+        ],
+        "formula": "I_1\\dot\\omega_1=(I_2-I_3)\\,\\omega_2\\omega_3,\\quad I_2\\dot\\omega_2=(I_3-I_1)\\,\\omega_3\\omega_1,\\quad I_3\\dot\\omega_3=(I_1-I_2)\\,\\omega_1\\omega_2",
+        "example": [
+          "Linearising about the middle axis at spin rate \\(\\omega\\) gives growth like \\(e^{\\lambda t}\\) with \\(\\lambda=\\omega\\sqrt{(I_2-I_1)(I_3-I_2)/(I_1I_3)}\\). For this box \\(I_1:I_2:I_3\\approx0.363:0.780:1.083\\), so \\(\\lambda\\approx0.567\\,\\omega\\).",
+          "回転の速さ \\(\\omega\\) で中間の軸のまわりに線形化すると、\\(\\lambda=\\omega\\sqrt{(I_2-I_1)(I_3-I_2)/(I_1I_3)}\\) として \\(e^{\\lambda t}\\) のように成長します。この箱では \\(I_1:I_2:I_3\\approx0.363:0.780:1.083\\) なので、\\(\\lambda\\approx0.567\\,\\omega\\) です。"
+        ],
+        "caution": [
+          "No torque causes the flip: energy and angular momentum are conserved throughout, and the readout shows the numerical drift. With internal friction a real body ends up spinning about its largest axis, which is not modelled here.",
+          "反転を起こすトルクはありません。エネルギーと角運動量は常に保存され、読み取り欄に数値誤差によるずれを示しています。内部に摩擦があると実際の物体は最大の軸のまわりの回転に落ち着きますが、ここではそれを扱っていません。"
+        ],
+        "question": [
+          "Why can a small disturbance about the long axis never grow large?",
+          "長軸のまわりの小さな乱れが決して大きくならないのはなぜですか？"
+        ],
+        "answer": [
+          "Near that axis the polhodes are small closed loops. Conservation of energy and of \\(|\\mathbf L|\\) confines the motion to one of them, so the angular momentum can only circle nearby.",
+          "その軸の近くのポールホードは小さな閉曲線です。エネルギーと \\(|\\mathbf L|\\) の保存により運動はそのうちの一つに閉じ込められるので、角運動量は近くを回ることしかできません。"
+        ],
+        "params": [
+          [
+            "axis",
+            "Spin axis",
+            "回転軸",
+            0,
+            2,
+            1,
+            1,
+            [
+              [
+                "Long (I₁)",
+                "長軸（I₁）"
+              ],
+              [
+                "Middle (I₂)",
+                "中間（I₂）"
+              ],
+              [
+                "Short (I₃)",
+                "短軸（I₃）"
+              ]
+            ]
+          ],
+          [
+            "eps",
+            "Initial nudge ε",
+            "最初のずれ ε",
+            0.001,
+            0.2,
+            0.001,
+            0.01
+          ],
+          [
+            "time",
+            "Duration",
+            "継続時間",
+            20,
+            120,
+            1,
+            60
+          ]
+        ],
+        "source": "David Tong · Classical Dynamics, Chapter 3: The Motion of Rigid Bodies",
+        "url": "https://www.damtp.cam.ac.uk/user/tong/dynamics/three.pdf"
+      },
+      {
+        "id": "gyroscope",
+        "title": [
+          "2. The gyroscope: precession and nutation",
+          "2. ジャイロ：歳差と章動"
+        ],
+        "body": [
+          "A heavy wheel spins on an axle whose end rests on a pivot. Gravity pulls the wheel down, yet the axle swings sideways instead: the torque changes the direction of the angular momentum, not its size. Released from rest, the tip bobs as it goes round (nutation) and draws cusps. Launched at the right sideways speed, it precesses perfectly steadily.",
+          "重い車輪が軸のまわりに回り、軸の端は支点に載っています。重力は車輪を下へ引きますが、軸は代わりに横へ回ります。トルクが変えるのは角運動量の向きで、大きさではないからです。静止状態から放すと、先端は回りながら上下に揺れ（章動）、カスプを描きます。ちょうどよい横向きの速さで送り出すと、完全に一定の歳差運動をします。"
+        ],
+        "formula": "I_1\\ddot\\theta=I_1\\dot\\phi^2\\sin\\theta\\cos\\theta-I_3\\omega_3\\dot\\phi\\sin\\theta+mgl\\sin\\theta,\\qquad \\dot\\phi=\\frac{p_\\phi-I_3\\omega_3\\cos\\theta}{I_1\\sin^2\\theta}",
+        "example": [
+          "For a fast top the mean precession rate is \\(\\Omega\\approx mgl/(I_3\\omega_3)\\), so doubling the spin halves the precession. With \\(I_3=0.8\\), \\(mgl=4\\) and \\(\\omega_3=10\\) this is 0.5 radians per unit time.",
+          "速いこまの平均の歳差角速度は \\(\\Omega\\approx mgl/(I_3\\omega_3)\\) なので、自転を二倍にすると歳差は半分になります。\\(I_3=0.8\\)、\\(mgl=4\\)、\\(\\omega_3=10\\) では単位時間あたり 0.5 ラジアンです。"
+        ],
+        "caution": [
+          "Here \\(\\theta\\) is measured from the upward vertical and the pivot is frictionless, with \\(I_1=1\\). Friction at a real pivot slowly drains the spin, so the precession speeds up as the wheel slows.",
+          "ここで \\(\\theta\\) は上向きの鉛直から測り、支点に摩擦はなく、\\(I_1=1\\) としています。実際の支点では摩擦が自転をゆっくり奪うので、車輪が遅くなるにつれて歳差は速くなります。"
+        ],
+        "question": [
+          "Where does the tip stop moving completely?",
+          "先端が完全に止まるのはどこですか？"
+        ],
+        "answer": [
+          "At the top of each cusp when the wheel is released from rest. There \\(\\dot\\theta=0\\), and \\(\\dot\\phi=0\\) because \\(p_\\phi-I_3\\omega_3\\cos\\theta\\) vanishes exactly when \\(\\theta\\) is back at its starting value.",
+          "静止状態から放したときの各カスプの頂点です。そこでは \\(\\dot\\theta=0\\) であり、\\(\\theta\\) が最初の値に戻ったときにちょうど \\(p_\\phi-I_3\\omega_3\\cos\\theta\\) が 0 になるので \\(\\dot\\phi=0\\) でもあります。"
+        ],
+        "params": [
+          [
+            "spin",
+            "Spin ω₃",
+            "自転 ω₃",
+            4,
+            30,
+            0.5,
+            10
+          ],
+          [
+            "tilt",
+            "Starting tilt from vertical (degrees)",
+            "鉛直からの最初の傾き（度）",
+            20,
+            110,
+            1,
+            60
+          ],
+          [
+            "start",
+            "Start",
+            "始め方",
+            0,
+            2,
+            1,
+            0,
+            [
+              [
+                "From rest",
+                "静止から"
+              ],
+              [
+                "Steady push",
+                "定常の押し"
+              ],
+              [
+                "Push backwards",
+                "逆向きの押し"
+              ]
+            ]
+          ],
+          [
+            "time",
+            "Duration",
+            "継続時間",
+            2,
+            30,
+            0.5,
+            13
+          ]
+        ],
+        "source": "David Tong · Classical Dynamics, Chapter 3: The Motion of Rigid Bodies",
+        "url": "https://www.damtp.cam.ac.uk/user/tong/dynamics/three.pdf"
+      },
+      {
+        "id": "inertia-tensor",
+        "title": [
+          "3. The inertia tensor and principal axes",
+          "3. 慣性テンソルと主軸"
+        ],
+        "body": [
+          "Drag four point masses in a plane. The moment of inertia about an axis through the reference point depends on the axis direction only through a symmetric matrix, so I(θ) is a sinusoid in 2θ. Its extremes, always 90° apart, are the principal axes, and the momental ellipse shows them at a glance. Switch the reference point to the origin to see the parallel-axis theorem at work.",
+          "平面上の四つの質点をドラッグしてください。基準点を通る軸のまわりの慣性モーメントは、軸の向きに対称行列を通してしか依存しないので、I(θ) は 2θ の正弦波になります。いつも 90° 離れたその最大と最小が主軸で、慣性楕円を見れば一目でわかります。基準点を原点に切り替えると、平行軸の定理がはたらく様子が見られます。"
+        ],
+        "formula": "I(\\theta)=\\sum_i m_i r_{\\perp,i}^2=\\mathbf u^{\\mathsf T}\\mathbf I\\,\\mathbf u,\\qquad \\mathbf I=\\sum_i m_i\\begin{pmatrix}y_i^2&-x_iy_i\\\\-x_iy_i&x_i^2\\end{pmatrix},\\qquad I_z=I_{xx}+I_{yy}",
+        "example": [
+          "Unit masses at \\((\\pm1,0)\\) and \\((0,\\pm2)\\) give \\(I_{xx}=8\\), \\(I_{yy}=2\\) and \\(I_{xy}=0\\): the coordinate axes are already principal, and \\(I_z=10\\).",
+          "\\((\\pm1,0)\\) と \\((0,\\pm2)\\) に単位質量を置くと、\\(I_{xx}=8\\)、\\(I_{yy}=2\\)、\\(I_{xy}=0\\) です。座標軸がすでに主軸で、\\(I_z=10\\) です。"
+        ],
+        "caution": [
+          "The rule \\(I_z=I_{xx}+I_{yy}\\) holds only for a flat body. A solid body needs the full \\(3\\times3\\) tensor, which, being symmetric, also has three perpendicular principal axes.",
+          "\\(I_z=I_{xx}+I_{yy}\\) が成り立つのは平らな物体だけです。立体には \\(3\\times3\\) のテンソル全体が必要ですが、それも対称なので、互いに垂直な三本の主軸をもちます。"
+        ],
+        "question": [
+          "Why are the principal axes always perpendicular?",
+          "主軸がいつも互いに垂直なのはなぜですか？"
+        ],
+        "answer": [
+          "The inertia tensor is a real symmetric matrix, and eigenvectors of a real symmetric matrix belonging to different eigenvalues are orthogonal.",
+          "慣性テンソルは実対称行列であり、実対称行列の異なる固有値に属する固有ベクトルは直交するからです。"
+        ],
+        "params": [
+          [
+            "mass",
+            "Mass of the orange point",
+            "橙の質点の質量",
+            0.2,
+            5,
+            0.1,
+            2.5
+          ],
+          [
+            "angle",
+            "Axis angle θ (degrees)",
+            "軸の角度 θ（度）",
+            0,
+            180,
+            1,
+            75
+          ],
+          [
+            "about",
+            "Reference point",
+            "基準点",
+            0,
+            1,
+            1,
+            0,
+            [
+              [
+                "Centre of mass",
+                "重心"
+              ],
+              [
+                "Origin",
+                "原点"
+              ]
+            ]
+          ]
+        ],
+        "source": "David Tong · Classical Dynamics, Chapter 3: The Motion of Rigid Bodies",
+        "url": "https://www.damtp.cam.ac.uk/user/tong/dynamics/three.pdf"
+      }
+    ]
   }
 ]
