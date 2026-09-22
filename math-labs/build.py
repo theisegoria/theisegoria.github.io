@@ -174,6 +174,8 @@ extra_sources={
  'clt':('Brown University · Probability Distributions','https://seeing-theory.brown.edu/probability-distributions/'),
  'conditional':('Brown University · Seeing Theory','https://seeing-theory.brown.edu/')}
 exec((ROOT/'math-labs/batch-six.py').read_text())
+# Scheduled additions: one file per topic, applied in filename order (see WEEKLY.md).
+for _f in sorted((ROOT/'math-labs/additions').glob('*.py')): exec(_f.read_text())
 for t in D:
  for l in t['labs']:
   l['source'],l['url']=extra_sources.get(l['id'],(t['source'],t['url']))

@@ -8,7 +8,7 @@ near(M.logistic(2,.2,100).at(-1),.5);assert.ok(M.logistic(4,.231,100).every(x=>x
 const coarse=M.ode(.1),fine=M.ode(.05),exact=Math.exp(-10);assert.ok(Math.abs(fine.r.at(-1)[1]-exact)<Math.abs(coarse.r.at(-1)[1]-exact));count++;near(M.ode(.5).e[1][1],-1.5);near(M.ode(.5).e.at(-1)[1],5.0625);
 for(const cheb of [0,1]){const p=M.interpolation(10,cheb);p.xs.forEach((x,i)=>near(p.f(x),p.ys[i]));}const eq=M.interpolation(10,0),ch=M.interpolation(10,1);assert.ok(Math.abs(ch.f(.95)-1/(1+25*.95**2))<Math.abs(eq.f(.95)-1/(1+25*.95**2)));count++;
 near(M.gcd(6,2),2);near(M.gcd(12,0),12);
-const data=JSON.parse(fs.readFileSync(__dirname+'/content.json'));assert.equal(data.length,36);assert.equal(data.reduce((s,t)=>s+t.labs.length,0),110);count+=2;
+const data=JSON.parse(fs.readFileSync(__dirname+'/content.json'));const nAdd=fs.existsSync(__dirname+'/additions')?fs.readdirSync(__dirname+'/additions').filter(f=>f.endsWith('.py')).length:0;assert.equal(data.length,36+nAdd);assert.equal(data.reduce((s,t)=>s+t.labs.length,0),110+3*nAdd);assert.equal(new Set(data.map(t=>t.slug)).size,data.length);count+=3;
 // Models behind the six topics added in 2026-09: load each topic module with a stub kit and check the mathematics.
 const stub={clamp:(x,a,b)=>Math.min(b,Math.max(a,x)),T:(a)=>a,seq:(n,f)=>Array.from({length:n},(_,i)=>f(i)),fmt:String,ja:false};
 const W={Lab:stub};for(const slug of ['lie-groups','hamiltonian-mechanics','stochastic-processes','solid-state-physics','control-theory','logic-computability'])vm.runInNewContext(fs.readFileSync(`${__dirname}/topics/${slug}.js`,'utf8'),{window:W,Math,Array,Object,Number,String,Map,Float64Array,BigInt,console});
@@ -44,4 +44,9 @@ const ok=(c,msg)=>{assert.ok(c,msg);count++;};
  const tab=C.haltTable(9,4),d=C.diagonal(tab);ok(tab.every((row,i)=>row[i]!==d[i]),'D differs from every row');
  ok(C.godel(['0','=','0'])===243000000n,'Goedel number of 0 = 0');const f=['∀','x','(','x','=','x',')'];ok(C.decode(C.godel(f)).join('')===f.join(''),'decoding inverts coding');}
 
+// Scheduled additions: checks/<slug>.cjs exports (Model, {ok, near, values}) => void; every addition must have one.
+if(fs.existsSync(__dirname+'/additions'))for(const f of fs.readdirSync(__dirname+'/additions').filter(f=>f.endsWith('.py')).sort()){const slug=f.replace(/^\d+-/,'').replace(/\.py$/,'');
+ const chk=`${__dirname}/checks/${slug}.cjs`;assert.ok(fs.existsSync(chk),`missing checks/${slug}.cjs`);
+ vm.runInNewContext(fs.readFileSync(`${__dirname}/topics/${slug}.js`,'utf8'),{window:W,Math,Array,Object,Number,String,Map,Set,Float64Array,Float32Array,Int32Array,Uint8Array,BigInt,console});
+ const Mdl=W.LabModels&&W.LabModels[slug];assert.ok(Mdl,`topics/${slug}.js must export window.LabModels['${slug}']`);const before=count;require(chk)(Mdl,{ok,near,values});assert.ok(count-before>=4,`checks/${slug}.cjs ran fewer than 4 checks`);}
 console.log(`${count} mathematical and content checks passed`);
