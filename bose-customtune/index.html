@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="en" class=" ig-document ig-editorial">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>How my headphones measure my ears</title>
+<meta name="description" content="What Bose CustomTune actually does in the half second after you put the headphones on: a multitone chime, a microphone inside the cup, and a retuned noise-cancelling loop and EQ, made operable.">
+<meta property="og:title" content="How my headphones measure my ears">
+<meta property="og:description" content="What Bose CustomTune actually does in the half second after you put the headphones on: a multitone chime, a microphone inside the cup, and a retuned noise-cancelling loop and EQ, made operable.">
+<meta property="og:image" content="https://theisegoria.github.io/og.png">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="canonical" href="https://theisegoria.github.io/bose-customtune/">
+<link rel="alternate" hreflang="en" href="https://theisegoria.github.io/bose-customtune/">
+<link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/bose-customtune/">
+<link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/bose-customtune/">
+<link rel="stylesheet" href="/assets/isegoria.css?v=20260923">
+<link rel="stylesheet" href="/assets/lab-kit/lab-kit.css?v=20260923">
+<link rel="stylesheet" href="style.css?v=20260923">
+<script type="importmap">
+{"imports":{
+  "three":"/vendor/three/r186/build/three.webgpu.js",
+  "three/webgpu":"/vendor/three/r186/build/three.webgpu.js",
+  "three/tsl":"/vendor/three/r186/build/three.tsl.js",
+  "three/addons/":"/vendor/three/r186/examples-jsm/"
+}}
+</script>
+<link rel="modulepreload" href="/vendor/three/r186/build/three.webgpu.js">
+<link rel="modulepreload" href="/vendor/three/r186/build/three.core.js">
+<script type="module" src="lab.js"></script>
+<script src="/assets/lang.js"></script>
+<!-- ISEGORIA:HEAD -->
+<link rel="stylesheet" href="/assets/site-shell.css?v=c21cd21e82">
+<script src="/assets/site-shell.js?v=c21cd21e82" ></script>
+<!-- /ISEGORIA:HEAD -->
+<script defer data-isegoria-analytics src="/assets/analytics.js?v=9e6ebd463bf2"></script>
+</head>
+<body class=" ig-site" data-site-kind="editorial" data-site-route="/bose-customtune/">
+<!-- ISEGORIA:NAV -->
+<a class="ig-skip" href="#ig-content">Skip to content</a>
+<header id="ig-header"><div class="ig-nav-inner">
+<a class="ig-brand" href="/" aria-label="Isegoria, home"><strong>ISEGORIA</strong><span>Benjamin Haire</span></a>
+<div class="ig-header-actions"><a class="ig-language" href="/ja/bose-customtune/" hreflang="ja" lang="ja">日本語</a><button class="ig-menu" type="button" aria-expanded="false" aria-controls="ig-primary">Menu</button></div>
+<nav id="ig-primary" aria-label="Primary navigation"><a href="/">Home</a><a href="/library.html">Library</a><a href="/math-encyclopedia/">Math encyclopedia</a><a href="/#interactive" aria-current="location">Interactive</a><a href="/#preoccupations">Research</a><a href="/#books">Books</a><a href="/projects.html">Projects</a><a href="/about.html">About</a><a class="ig-language" href="/ja/bose-customtune/" hreflang="ja" lang="ja">日本語</a><button class="ig-theme" type="button" hidden>Theme</button></nav>
+</div></header>
+<nav id="ig-breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><a href="/#interactive">Interactive explainers</a><span aria-hidden="true">/</span><span aria-current="page">How my headphones measure my ears</span></nav>
+<span id="ig-content" tabindex="-1"></span>
+<!-- /ISEGORIA:NAV --><main class="wrap">
+
+<header class="hero">
+<p class="kicker">Interactive explainer</p>
+<h1>How my headphones measure my ears</h1>
+<p class="lede">What Bose's CustomTune does in the half second after I put my QC Ultra headphones on, read out of the patents and made operable.</p>
+<nav class="ig-page-nav" aria-label="On this page"><a href="#lab">The lab</a><a href="#chime">The chime</a><a href="#ear">My ear</a><a href="#loop">The noise cancelling</a><a href="#eq">The music</a><a href="#mine">Mine</a><a href="#unsettled">What I could not settle</a><a href="#sources">Sources</a></nav>
+</header>
+
+<p class="thesis">CustomTune is not a hearing test, and it does not listen to my ear the way the word "echo" suggests. It is system identification: the headphone plays a known signal, measures its own speaker through my head with the microphone that already runs the noise cancelling, and retunes two filters, one to keep the cancelling loop on its design target and one to predict what is reaching my eardrum.</p>
+
+<p>Every time I put on my QuietComfort Ultra headphones there is a short chime, and Bose says the sound then adapts to the shape of my ears. Bose's own account is brief: a chime goes into the ear, bounces back to microphones in the earpiece, "serious math and complex algorithms" work out the size, shape and depth of the canal, and both the EQ and the noise cancelling are adjusted. The feature arrived in the QuietComfort Earbuds II in 2022, and its inventor, John Rule, describes bringing "a math technique from my aerospace background" to it (Bose, n.d.; Fast Company, 2022). I wanted the serious math. It is in two Bose patent families, and they turn out to solve two different problems with the same measurement.</p>
+
+<section class="lab" id="lab" aria-labelledby="lab-h">
+<h2 id="lab-h">The lab</h2>
+<p>The head is a 3D scan of a real person. Around the ear the skin turns to glass from whichever side you look, and behind it the ear canal is drawn to scale and cut in half along its length: cartilage for the outer third, the temporal bone for the inner two thirds, and the eardrum across the far end. The right earcup is cut in half through the same plane. The air in the canal is coloured by pressure: warm is compression, cool is rarefaction. Press "Play the chime" (it plays a stand-in built from the patent's tones), then try the presets, or untick "Cutaway" to see the whole thing. The three plots report what the microphone measured, what the noise-cancelling loop became, and what reaches the eardrum.</p>
+
+<div class="lab-stage">
+  <canvas id="stage" tabindex="0" aria-label="Interactive three dimensional cut-away of a headphone on an ear, with the air coloured by sound pressure. Drag to orbit, scroll to zoom. Every value is also given in the readout and plots below."></canvas>
+  <div class="lab-labels" id="labels" aria-hidden="true"></div>
+  <div class="ct-key" aria-hidden="true">rarefaction <i></i> compression</div>
+  <figure data-lab-fallback hidden>
+    <svg viewBox="-70 0 730 360" role="img" aria-labelledby="fb-t fb-d">
+      <title id="fb-t">A headphone on an ear, cut in half</title>
+      <desc id="fb-d">A cut-away of an over-ear cup on the side of a head. The driver faces the ear, the feedback microphone sits in the cup between the driver and the ear, two feedforward microphones sit on the outside of the cup, and the ear canal runs from the cup into the head, closed by the eardrum. Curved lines show the chime spreading from the driver.</desc>
+      <defs>
+        <style>
+          .fb-tissue { fill: #e9c9bd } .fb-shell { fill: #8f877c } .fb-cush { fill: #3a3531 }
+          .fb-air { fill: #f1e2d6 } .fb-drv { fill: #b7aea3 } .fb-mic { fill: #8a4b26 }
+          .fb-drum { fill: none; stroke: #5d574f; stroke-width: 2.5 }
+          .fb-wave { fill: none; stroke: #8a4b26; stroke-width: 1.4; opacity: .7 }
+          .fb-t { font: 12px system-ui, sans-serif; fill: #5d574f } .fb-lead { stroke: #c9c1b4; stroke-width: 1 }
+          @media (prefers-color-scheme: dark) {
+            .fb-tissue { fill: #6b4b43 } .fb-shell { fill: #6f675d } .fb-cush { fill: #1d1a18 } .fb-air { fill: #2a2420 }
+            .fb-drv { fill: #7d756b } .fb-mic { fill: #d99a68 } .fb-drum { stroke: #a49c91 } .fb-wave { stroke: #d99a68 }
+            .fb-t { fill: #a49c91 } .fb-lead { stroke: #3d3833 }
+          }
+        </style>
+      </defs>
+      <!-- head, cut through the canal -->
+      <path class="fb-tissue" d="M330 30 H640 V330 H330 V195 H470 V165 H330 Z"/>
+      <rect class="fb-air" x="330" y="165" width="140" height="30"/>
+      <line class="fb-drum" x1="472" y1="162" x2="468" y2="198"/>
+      <!-- cup, cut in half -->
+      <path class="fb-shell" d="M300 40 C240 40 170 60 150 120 C140 150 140 210 150 240 C170 300 240 320 300 320 L300 306 C245 306 184 290 166 236 C158 210 158 150 166 124 C184 70 245 54 300 54 Z"/>
+      <rect class="fb-air" x="215" y="70" width="112" height="220"/>
+      <ellipse class="fb-cush" cx="315" cy="62" rx="15" ry="26"/>
+      <ellipse class="fb-cush" cx="315" cy="298" rx="15" ry="26"/>
+      <path class="fb-drv" d="M212 88 Q226 180 212 272 L204 272 Q216 180 204 88 Z"/>
+      <rect class="fb-drv" x="186" y="150" width="18" height="60" rx="3"/>
+      <path class="fb-wave" d="M240 120 Q262 180 240 240"/><path class="fb-wave" d="M266 105 Q294 180 266 255"/><path class="fb-wave" d="M292 92 Q326 180 292 268"/>
+      <rect class="fb-mic" x="244" y="96" width="14" height="10" rx="3"/>
+      <rect class="fb-mic" x="140" y="120" width="10" height="14" rx="3"/>
+      <rect class="fb-mic" x="140" y="226" width="10" height="14" rx="3"/>
+      <!-- labels -->
+      <line class="fb-lead" x1="251" y1="96" x2="251" y2="22"/><text class="fb-t" x="256" y="22">feedback microphone</text>
+      <line class="fb-lead" x1="140" y1="127" x2="96" y2="127"/><text class="fb-t" x="92" y="131" text-anchor="end">feedforward microphones</text>
+      <line class="fb-lead" x1="208" y1="272" x2="208" y2="344"/><text class="fb-t" x="213" y="348">driver</text>
+      <line class="fb-lead" x1="400" y1="195" x2="400" y2="250"/><text class="fb-t" x="405" y="254">ear canal</text>
+      <line class="fb-lead" x1="470" y1="162" x2="520" y2="120"/><text class="fb-t" x="524" y="118">eardrum</text>
+    </svg>
+
+    <figcaption>Your browser has neither WebGPU nor WebGL 2, so this is the still version. The plots below still work.</figcaption>
+  </figure>
+  <div class="lab-hud"><span class="lab-badge"></span></div>
+</div>
+
+<div class="ct-presets"><span>Try</span>
+  <button type="button" data-preset="overear,25,0.1">Reference ear</button>
+  <button type="button" data-preset="overear,25,1">Broken seal</button>
+  <button type="button" data-preset="earbud,18,0.1">Short canal, earbuds</button>
+  <button type="button" data-preset="earbud,32,0.1">Long canal, earbuds</button>
+  <button type="button" data-preset="earbud,25,0.6">Loose tip</button>
+</div>
+
+<form class="lab-controls" id="controls" onsubmit="return false">
+  <fieldset class="lab-views">
+    <legend class="visually-hidden">Form factor</legend>
+    <label><input type="radio" name="form" value="overear" checked> Over-ear</label>
+    <label><input type="radio" name="form" value="earbud"> Earbud</label>
+    <button type="button" id="play-chime">Play the chime</button>
+  </fieldset>
+  <label><span>Ear canal length, mm</span><output for="canal"></output>
+    <input id="canal" name="canal" type="range" min="18" max="34" step="0.5" value="25" data-format="fixed:1"></label>
+  <label><span>Leak: hair, a broken seal, a loose tip</span><output for="leak"></output>
+    <input id="leak" name="leak" type="range" min="0" max="1" step="0.01" value="0.1"></label>
+  <label><span>Colour the air at</span><output for="probe"></output>
+    <input id="probe" name="probe" type="range" min="2" max="4.1" step="0.01" value="3.4"></label>
+  <label><span>Re-measure on every refit</span><input name="auto" type="checkbox" checked></label>
+  <label><span>Chime sound</span><input name="sound" type="checkbox" checked></label>
+  <label><span>Cutaway</span><input name="cutaway" type="checkbox" checked></label>
+  <label><span>Labels</span><input name="labels" type="checkbox" checked></label>
+</form>
+<div class="lab-readout" id="readout" aria-live="off"></div>
+<div class="ct-plots" id="plots"></div>
+<p class="lab-note">The headphone and the earbud are generic models I built to the proportions of current flagship noise-cancelling products; they are not replicas of Bose's designs. The acoustics underneath are a lumped model sized like a real 40 mm over-ear driver and a 10 mm earbud driver: a diaphragm with its own mass and spring, the air in front of it, a leak with mass and loss, and the canal as a lossy tube closed by the eardrum. The noise-cancelling correction follows US 10,937,410 and the EQ follows US 12,028,675. None of the numbers are Bose's; the shapes and the reasons are what carry over.</p>
+</section>
+
+<section id="chime">
+<h2>What the chime is</h2>
+
+<p>The first patent, US 10,937,410 (Rule, filed April 2020), is where the chime is specified. It is a "relatively short confirmation sound", under a second and typically a tenth to half a second long, played automatically when the headphone detects that it has been put on. Its spectrum is ten or more tones between about 45 Hz and 16 kHz, built as harmonics of a fundamental at 46.875 Hz, with the tones above 1 kHz spaced a quarter octave or closer. Its worked example lists 24 of them: seven below 1 kHz, from 93.75 to 843.75 Hz, and seventeen from 1031 Hz up to 16969 Hz.</p>
+
+<p>46.875 is not an arbitrary number. It is 48,000 divided by 1,024: at a 48 kHz sample rate, a 1,024 point FFT has bins exactly 46.875 Hz apart, and every tone in the patent sits on the centre of one of them. A periodic signal whose tones land exactly on bin centres can be read with one FFT per 21.3 ms period, with no spectral leakage between tones, and a quarter second chime gives about a dozen periods to average. So the chime is built to be read as a transfer function, tone by tone, not timed as an echo. That reading is my inference from the numbers; the patent does not put it that way.</p>
+
+<figure class="fig">
+<svg viewBox="0 0 640 210" role="img" aria-labelledby="chf-t chf-d"><title id="chf-t">The chime as a spectrum</title><desc id="chf-d">Twenty-four tones between 94 Hz and 17 kHz, the patent’s worked example, every one an exact multiple of 46.875 Hz.</desc>
+<line class="ax" x1="40" x2="620" y1="164" y2="164"/>
+<line class="bin" x1="61.2" x2="61.2" y1="26" y2="164"/><text class="t" x="61.2" y="179" text-anchor="middle">50</text>
+<line class="bin" x1="127.0" x2="127.0" y1="26" y2="164"/><text class="t" x="127.0" y="179" text-anchor="middle">100</text>
+<line class="bin" x1="192.8" x2="192.8" y1="26" y2="164"/><text class="t" x="192.8" y="179" text-anchor="middle">200</text>
+<line class="bin" x1="279.8" x2="279.8" y1="26" y2="164"/><text class="t" x="279.8" y="179" text-anchor="middle">500</text>
+<line class="bin" x1="345.6" x2="345.6" y1="26" y2="164"/><text class="t" x="345.6" y="179" text-anchor="middle">1k</text>
+<line class="bin" x1="411.4" x2="411.4" y1="26" y2="164"/><text class="t" x="411.4" y="179" text-anchor="middle">2k</text>
+<line class="bin" x1="498.4" x2="498.4" y1="26" y2="164"/><text class="t" x="498.4" y="179" text-anchor="middle">5k</text>
+<line class="bin" x1="564.2" x2="564.2" y1="26" y2="164"/><text class="t" x="564.2" y="179" text-anchor="middle">10k</text>
+<text class="t" x="620" y="194" text-anchor="end">Hz</text>
+<line class="stem" x1="120.9" x2="120.9" y1="164" y2="36.0"/>
+<line class="stem" x1="186.7" x2="186.7" y1="164" y2="36.2"/>
+<line class="stem" x1="225.2" x2="225.2" y1="164" y2="36.5"/>
+<line class="stem" x1="252.5" x2="252.5" y1="164" y2="36.8"/>
+<line class="stem" x1="291.0" x2="291.0" y1="164" y2="37.9"/>
+<line class="stem" x1="318.3" x2="318.3" y1="164" y2="39.3"/>
+<line class="stem" x1="329.5" x2="329.5" y1="164" y2="40.1"/>
+<line class="stem" x1="348.5" x2="348.5" y1="164" y2="42.0"/>
+<line class="stem" x1="364.4" x2="364.4" y1="164" y2="44.2"/>
+<line class="stem" x1="384.1" x2="384.1" y1="164" y2="47.7"/>
+<line class="stem" x1="400.4" x2="400.4" y1="164" y2="51.6"/>
+<line class="stem" x1="418.5" x2="418.5" y1="164" y2="56.9"/>
+<line class="stem" x1="433.8" x2="433.8" y1="164" y2="62.2"/>
+<line class="stem" x1="449.9" x2="449.9" y1="164" y2="68.6"/>
+<line class="stem" x1="466.2" x2="466.2" y1="164" y2="75.6"/>
+<line class="stem" x1="482.3" x2="482.3" y1="164" y2="82.8"/>
+<line class="stem" x1="499.6" x2="499.6" y1="164" y2="90.6"/>
+<line class="stem" x1="515.7" x2="515.7" y1="164" y2="97.5"/>
+<line class="stem" x1="532.0" x2="532.0" y1="164" y2="104.1"/>
+<line class="stem" x1="549.1" x2="549.1" y1="164" y2="110.4"/>
+<line class="stem" x1="565.4" x2="565.4" y1="164" y2="115.7"/>
+<line class="stem" x1="581.5" x2="581.5" y1="164" y2="120.3"/>
+<line class="stem" x1="597.8" x2="597.8" y1="164" y2="124.4"/>
+<line class="stem" x1="614.4" x2="614.4" y1="164" y2="127.9"/>
+<text class="h" x="120.9" y="18">46.875 Hz × 2</text>
+<text class="t" x="344.5" y="56" text-anchor="end">× 22, 26, 32 …</text>
+<text class="t" x="614.4" y="124" text-anchor="end">… × 256, 304, 362</text>
+</svg>
+<figcaption>The chime as the patent's worked example lists it: 24 tones on a logarithmic axis, each a whole multiple of 46.875 Hz. The stand-in chime on this page plays exactly these tones; their relative loudness is my choice.</figcaption>
+</figure>
+
+<p>What gets measured is <span class="eq">G<sub>sd</sub></span>, the response from the driver (d) to the feedback microphone (s) inside the cup or the nozzle. That microphone is already there: it is the error sensor of the feedback noise cancelling. The measurement costs no hardware at all.</p>
+</section>
+
+<section id="ear">
+<h2>What my ear does to a headphone</h2>
+
+<p>A headphone is designed on reference heads, but on a real head the driver is loading a different acoustic system every time it is put on. Two effects dominate, and the lab has a slider for each.</p>
+
+<p>The first is the leak. A sealed cup or tip makes a pressure chamber: below a few hundred hertz the driver simply compresses the trapped air, and the pressure is large and flat. Any way out of that chamber, an arm of my glasses under the cushion, hair, a tip one size too small, is an acoustic mass in parallel with the trapped air, and it bleeds the bass away. Press "Broken seal" and the over-ear microphone reads 10 dB down at 100 Hz and 16 dB down at 30 Hz. In an earbud, where the trapped volume is a fraction of a cubic centimetre, a gap of 1.5 mm² costs 15 dB at 100 Hz.</p>
+
+<p>The second is the canal. The ear canal is a tube roughly 25 mm long and 7.5 mm across, closed at the eardrum, and a tube closed at one end resonates at a quarter wavelength, <span class="eq">c / 4L</span>, which is about 3.4 kHz at 25 mm. At the eardrum that resonance is a peak; at the open end it is a pressure minimum. Set "Colour the air at" to about 3.4 kHz and look down the canal: pale at the entrance, strong at the eardrum. An earbud sits inside the canal and its microphone looks straight down it, so it sees the whole signature, shifted by wherever the tip lands. An over-ear microphone sits in a cup of about 120 cm³ of air and hears the canal only faintly.</p>
+
+<p>That asymmetry turns out to decide what CustomTune can do for each kind of product.</p>
+</section>
+
+<section id="loop">
+<h2>Retuning the noise cancelling</h2>
+
+<p>Feedback noise cancelling is a control loop. The microphone hears the residual noise, a filter <span class="eq">K<sub>fb</sub></span> shapes it, and the driver plays it back inverted. The number that matters is the loop gain, <span class="eq">L = G<sub>sd</sub> K<sub>fb</sub></span>. Where it is large, noise at the microphone is divided by about <span class="eq">|1 + L|</span>. Where it falls through 0 dB, the crossover, the loop stops helping, and if the phase has turned too far round by then it starts adding noise instead, or rings, or howls.</p>
+
+<p>A fixed <span class="eq">K<sub>fb</sub></span> is designed against the average <span class="eq">G<sub>sd</sub></span>. The patent's observation is that on in-ear products the ear-to-ear variation in <span class="eq">G<sub>sd</sub></span> is largest "at and near the feedback loop gain crossover frequency", exactly where the loop is most fragile, so no single filter can be both aggressive and safe for everyone. Its answer is to take this ear's deviation from nominal at each chime tone and change the filter so the loop gain returns to its target, adjusting at least three second-order sections across at least 200 Hz to 5 kHz. The adjustment is linearised: a precomputed "influence matrix" records how each filter parameter moves the response at each tone, and its pseudo-inverse turns the measured deviation into parameter changes "with a single matrix multiplication", in under a second. In log terms, the correction subtracts the deviation.</p>
+
+<p class="formula">Δθ = −(∂K<sub>fb</sub> / ∂θ)<sup>+</sup> ΔG<sub>sd</sub>, so that G<sub>sd</sub> K<sub>fb</sub> ≈ L<sub>target</sub></p>
+
+<p>The targets it states are an average feedback insertion gain that keeps reducing noise up to about 1.5 kHz or more, "a nearly 2 kHz loop magnitude crossover" with about 45 degrees of phase at crossover, and a total insertion gain, with the noise cancelling on, below −30 dB between about 1 and 2 kHz.</p>
+
+<p>The lab does the same with five peaking filters. Choose "Short canal, earbuds": a short canal lifts <span class="eq">G<sub>sd</sub></span> above about 1 kHz, by more than 10 dB near 5 kHz, and with the fixed filter the loop gain does not fall through 0 dB until about 5 kHz, by which point the phase has long gone round. In hardware that is a whistle. After the chime the correction pulls that region down, and the loop is back to a 1.8 kHz crossover with about 43 degrees of margin. Choose "Loose tip": the leak takes bass out of <span class="eq">G<sub>sd</sub></span>, so it takes gain out of the loop exactly where the cancelling does most of its work. The correction lifts the lowest filters by about 8 dB and the feedback quieting between 50 and 500 Hz goes from about −10 to −13 dB. The limit shows too: a correction clamped to a sensible range cannot put back everything a big leak removes, which is why a fit test is still worth doing.</p>
+
+<p>The patent notes that for on-ear and around-ear fits there is "relatively more focus" on low frequencies "due to leakage", and for in-ear fits on the high frequencies. The lab reproduces that split without being told to: on the over-ear, the canal slider barely moves the loop, and the glasses arm is the only thing that does.</p>
+
+<p>One aside I did not expect: the patent proposes the fitted filter parameters, left and right combined, as a biometric "earprint" that could identify the wearer, optionally combined with the formant structure of their voice.</p>
+</section>
+
+<section id="eq">
+<h2>Retuning the music</h2>
+
+<p>The EQ is a different problem, because the thing to be corrected is not at the microphone. I hear the pressure at my eardrum, and the microphone is a couple of centimetres away from it, on the other side of the canal's resonance. Equalising what the microphone hears would be exactly wrong around 3 kHz.</p>
+
+<p>The second patent, US 12,028,675 (Nielsen, priority December 2021), handles this with population data. In the lab, Bose measured headphones on many people and many fittings with a microphone deep in the canal standing in for the eardrum, and reduced that data to two complex constants per frequency, α and β, fitted by least squares through the model</p>
+
+<p class="formula">G<sub>ear</sub> ≈ G<sub>sd</sub> / (α G<sub>sd</sub> + β)</p>
+
+<p>On the wearer, the headphone measures <span class="eq">G<sub>sd</sub></span>, the formula predicts what the eardrum is getting, and the EQ is the difference from what the product was tuned for. Rearranged, <span class="eq">G<sub>sd</sub> / G<sub>ear</sub> = α G<sub>sd</sub> + β</span>, which is linear, so the lab fit is the same kind of pseudo-inverse as the noise-cancelling fit. The patent also measures the path a second time with the feedback controller running, because with feedback cancelling on, the loop suppresses the music at low frequencies along with the noise, and the EQ has to put that back. The same machinery produces the filter for aware mode.</p>
+
+<p>I did the same with a synthetic population of 160 ears drawn from the model. It works where the microphone can see a difference. On the earbud, a loose tip that leaves the eardrum about 8 dB RMS wrong comes out under 2 dB, and a short or long canal comes out about half as wrong. On the over-ear, the broken seal is corrected almost completely, 3.4 dB down to about 0.2. But a 19 mm or a 32 mm canal behind an over-ear cup stays 4 to 5 dB off, because the cup microphone cannot see the canal and so the regression, correctly, returns the average ear.</p>
+</section>
+
+<section id="mine">
+<h2>What mine is actually doing</h2>
+
+<p>Bose's patent marking list gives US 10,937,410 and 11,600,256, the noise-cancelling customisation, against the QC Earbuds II and both generations of QC Ultra Earbuds, and not against either generation of the QC Ultra Headphones. US 12,028,675, the EQ, is listed against the headphones. Bose markets CustomTune on the second generation headphones as adapting the sound to the shape of my ears, and a reviewer describes a calibration stimulus that plays every time they power on (Headphones.com, n.d.).</p>
+
+<p>Putting that together with the physics, my reading of what happens when I put mine on: the chime measures <span class="eq">G<sub>sd</sub></span> in each cup; that measurement mostly reports the seal and the air space my head and ears leave in the cup; and the EQ moves the music towards where the population data says my eardrum should be. Whether the noise-cancelling filter is also refitted on the headphones, I cannot tell from anything public. What the chime cannot do through a cup of air is measure my canal, so above a couple of kilohertz my headphones are tuned for an average ear. That is a limit of the physics rather than of Bose, and it is why earbuds, where the microphone looks down the canal, were where the technique started.</p>
+</section>
+
+<section id="unsettled">
+<h2>What I could not settle</h2>
+
+<p>Whether the over-ear headphones refit the noise-cancelling filter at all. The patents that describe it are not on their marking list, and Bose's descriptions of the headphone feature talk about sound, not cancelling.</p>
+
+<p>What the product chime actually contains. The stand-in here is built from the patent's tone grid, not from a recording. Recording the chime from inside the cup at 48 kHz and taking a 1,024 point FFT would show at once whether its energy sits on the 46.875 Hz grid.</p>
+
+<p>The implementation details: how many filter sections, how far they are allowed to move, whether results are averaged over several fittings (the patent allows it), and what the population behind α and β looks like. Reviews also disagree on how many microphones the headphones have, and Bose's own page does not say.</p>
+</section>
+
+<section id="sources" class="sources">
+<h2>Sources</h2>
+<p><em>The mechanism is taken from the patents below; every number in the lab comes from my model, not from Bose. I read the full text of US 10,937,410 and a detailed summary of US 12,028,675; the continuation patents I read only in summary.</em></p>
+<ul>
+<li>Rule, J. (2021). <a href="https://patents.google.com/patent/US10937410B1/en">US 10,937,410 B1</a>, Managing characteristics of active noise reduction. Bose Corporation. Filed 24 April 2020. Continuations <a href="https://patents.justia.com/patent/11600256">US 11,600,256 B2</a> (2023) and <a href="https://patents.justia.com/patent/12136409">US 12,136,409 B2</a> (2024).</li>
+<li>Nielsen, O. M. (2024). <a href="https://patents.google.com/patent/US12028675">US 12,028,675 B2</a>, Headphone audio controller. Bose Corporation. Priority 27 December 2021.</li>
+<li>Rule, J. (2020). <a href="https://patents.google.com/patent/US10764699B1/en">US 10,764,699 B1</a>, Managing characteristics of earpieces using controlled calibration. Bose Corporation. Calibrates microphone and driver sensitivity in a small cavity in the charging case, so that differences in <span class="eq">G<sub>sd</sub></span> mean the ear and not the unit. Read in summary only.</li>
+<li>Bose Corporation (n.d.). <a href="https://assets.bosecreative.com/m/2e8e26abd3c8cac3/original/Bose_Patent_Marking.pdf" target="_blank" rel="noopener" title="PDF, opens in a new tab">Patent marking list</a>.</li>
+<li>Bose Corporation (n.d.). <a href="https://www.bose.com/stories/sound-shaped-to-you-bose-customtune-technology">A guide on CustomTune technology and how it works</a>.</li>
+<li>Fast Company (2022). <a href="https://www.fastcompany.com/90782756/how-boses-new-earbuds-customize-sound-to-your-ear-shape">How Bose's new earbuds customize sound to your ear shape</a>.</li>
+<li>Headphones.com (n.d.). <a href="https://headphones.com/blogs/reviews/bose-qc-ultra-gen-2-is-way-better-than-you-probably-think">Bose QC Ultra Gen 2 is way better than you (probably) think</a>.</li>
+<li>Vogl, S. and Blau, M. (2019). <a href="https://pubs.aip.org/asa/jasa/article/145/2/917/994460/Individualized-prediction-of-the-sound-pressure-at">Individualized prediction of the sound pressure at the eardrum for an earpiece with integrated receivers and microphones</a>. Journal of the Acoustical Society of America 145(2), 917. The academic version of predicting the eardrum from an in-ear microphone.</li>
+<li>Head scan: Lee Perry-Smith, Infinite-Realities, released under <a href="https://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>, as distributed with the three.js examples. I scaled it and fitted the headphones to it; the canal, the bone and the eardrum inside it are drawn to scale, not scanned.</li>
+<li><a href="https://arxiv.org/abs/2110.04385">Individualized hear-through for acoustic transparency using PCA-based sound pressure estimation at the eardrum</a> (2021). arXiv:2110.04385. The same idea applied to hear-through, using the measured secondary path.</li>
+</ul>
+</section>
+
+</main><!-- ISEGORIA:FOOT -->
+<footer id="ig-footer"><div><a href="/">Isegoria · Benjamin Haire</a><nav aria-label="Site links"><a href="/">Back to home</a><a href="/library.html">Browse the library</a><a href="#ig-content">Back to top</a></nav></div></footer>
+<!-- /ISEGORIA:FOOT -->
+</body>
+</html>

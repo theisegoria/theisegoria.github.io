@@ -1,0 +1,133 @@
+/* How my headphones measure my ears: only what is particular to this piece.
+ * Stage, controls and readout layout come from /assets/lab-kit/lab-kit.css,
+ * colour and type from /assets/isegoria.css. */
+
+/* A second hue for rarefaction, so pressure reads as warm and cool about zero. */
+:root { --cool: light-dark(#2f6283, #7fb4d8); }
+
+.hero { max-width: 44rem; }
+.hero .ig-page-nav { margin-inline: 0; max-width: none; }
+.hero .kicker { font-family: var(--sans); font-size: .6875rem; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: .4rem; }
+.hero h1 { margin: 0 0 .5rem; }
+.hero .lede { font-size: 1.1875rem; line-height: 1.55; color: var(--ink-soft); max-width: 42rem; font-style: italic; }
+
+.thesis {
+  font-size: 1.25rem; line-height: 1.5; font-weight: 600;
+  max-width: 44rem; margin: 2.5rem 0 2rem;
+  padding-left: 1.1rem; border-left: 3px solid var(--accent);
+}
+
+main > section > p, main > p, main > section > ul, main > section > ol { max-width: 42rem; }
+main > section { margin-block: 3.5rem; }
+main > section > h2 { margin-bottom: .9rem; }
+main > section + section { border-top: 1px solid var(--rule); padding-top: 3rem; }
+main > section > p + p, .lab > p + p, main > p + p { margin-top: 1em; }
+
+.lab { margin-block: 3rem; }
+.lab .lab-stage { aspect-ratio: 16 / 9; }
+.lab > p { max-width: 42rem; }
+
+/* Floating labels over the canvas, as in the other labs */
+.lab-labels { position: absolute; inset: 0; pointer-events: none; transition: opacity .3s; overflow: hidden; }
+.lab-labels.is-hidden { opacity: 0; }
+.lab-label {
+  position: absolute; top: 0; left: 0; white-space: nowrap;
+  font: 500 .72rem/1 var(--sans); letter-spacing: .01em; color: var(--ink);
+  padding: .26rem .55rem; border-radius: 999px;
+  background: color-mix(in oklab, var(--paper) 86%, transparent);
+  border: 1px solid color-mix(in oklab, var(--ink) 14%, transparent);
+  box-shadow: 0 1px 6px rgb(0 0 0 / .12);
+  backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+  transition: opacity .25s;
+}
+.lab-label::after { content: ''; position: absolute; top: 50%; width: var(--leader, 18px); border-top: 1px solid color-mix(in oklab, var(--ink) 55%, transparent); }
+.lab-label[data-side="left"]::after { left: 100%; }
+.lab-label[data-side="right"]::after { right: 100%; }
+
+/* The pressure key in the corner of the stage */
+.ct-key {
+  position: absolute; top: .75rem; right: .75rem; pointer-events: none;
+  display: flex; align-items: center; gap: .45rem;
+  font: .6875rem/1 var(--sans); color: var(--ink-soft);
+  background: color-mix(in oklab, var(--paper) 84%, transparent);
+  border: 1px solid var(--rule); border-radius: 999px; padding: .3rem .65rem;
+  backdrop-filter: blur(3px);
+}
+.ct-key i { display: inline-block; width: 4.5rem; height: .5rem; border-radius: 999px; background: linear-gradient(90deg, var(--cool), var(--paper-sunk), var(--accent)); }
+
+/* Presets */
+.ct-presets { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .85rem; font-family: var(--sans); }
+.ct-presets span { font-size: .75rem; color: var(--ink-faint); align-self: center; margin-right: .25rem; }
+.ct-presets button {
+  font: .8125rem var(--sans); color: var(--ink); background: var(--paper);
+  border: 1px solid var(--rule); border-radius: 999px; padding: .35rem .85rem; cursor: pointer;
+}
+.ct-presets button:hover { border-color: var(--accent); }
+.lab-controls button#play-chime { border-color: var(--accent); background: color-mix(in oklab, var(--accent) 14%, var(--paper)); font-weight: 600; }
+.lab-views { display: flex; gap: .4rem; }
+.lab-views label { display: inline-flex !important; align-items: center; gap: .4rem; border: 1px solid var(--rule); border-radius: 999px; padding: .35rem .85rem; cursor: pointer; font-size: .8125rem; }
+.lab-views label:has(:checked) { border-color: var(--accent); color: var(--ink); background: color-mix(in oklab, var(--accent) 12%, transparent); }
+.lab-views input { accent-color: var(--accent); }
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+.lab-readout .bad { color: var(--accent); }
+
+/* The three plots */
+.ct-plots { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; margin-top: 1.1rem; }
+.ct-plot { margin: 0; padding: .75rem .8rem .6rem; border: 1px solid var(--rule); border-radius: 6px; background: var(--paper-sunk); min-width: 0; }
+.ct-plot figcaption { display: grid; gap: .1rem; font: .8125rem/1.35 var(--sans); color: var(--ink); margin: 0 0 .35rem; }
+.ct-plot figcaption span { font-size: .6875rem; color: var(--ink-faint); }
+.ct-plot svg { width: 100%; height: auto; display: block; overflow: visible; }
+.ct-plot text { font: 9px var(--sans); fill: var(--ink-faint); }
+.ct-plot .g0 { stroke: var(--rule); stroke-width: .6; }
+.ct-plot .g1 { stroke: var(--rule-firm); stroke-width: .7; }
+.ct-plot .g2 { stroke: var(--ink-faint); stroke-width: .8; }
+.ct-plot path { fill: none; stroke-linejoin: round; stroke-linecap: round; }
+.ct-plot .s-now, .ct-plot .s-after { stroke: var(--accent); stroke-width: 2; }
+.ct-plot .s-before { stroke: var(--ink-soft); stroke-width: 1.4; stroke-dasharray: 4 3; }
+.ct-plot .s-target { stroke: var(--cool); stroke-width: 5; opacity: .22; }
+.ct-plot .tone { stroke: var(--ink-faint); stroke-width: .8; }
+.ct-plot .dot { fill: var(--paper); stroke: var(--ink-soft); stroke-width: 1; }
+.ct-plot .dot.in { fill: var(--accent); stroke: var(--paper); }
+.ct-plot .probe { stroke: var(--cool); stroke-width: 1; stroke-dasharray: 2 2; }
+.ct-plot .xo { fill: var(--accent); stroke: var(--paper); stroke-width: 1; }
+.ct-plot .xo.b { fill: var(--paper); stroke: var(--ink-soft); }
+.ct-plot .warn { fill: var(--accent); font-weight: 600; }
+.ct-legend { display: flex; flex-wrap: wrap; align-items: center; gap: .3rem .5rem; font: .6875rem/1.3 var(--sans); color: var(--ink-soft); margin-top: .3rem; }
+.ct-legend .k { display: inline-block; width: 1.1rem; height: 0; border-top: 2px solid var(--accent); vertical-align: middle; }
+.ct-legend .k.before { border-top: 1.5px dashed var(--ink-soft); }
+.ct-legend .k.target { border-top: 5px solid color-mix(in oklab, var(--cool) 30%, transparent); }
+.ct-legend .k.dot { width: .45rem; height: .45rem; border: 0; border-radius: 50%; background: var(--accent); }
+
+.lab-note { max-width: 42rem; margin-top: .75rem; font: .8125rem/1.5 var(--sans); color: var(--ink-faint); }
+
+/* Prose figures */
+.fig { margin: 2rem 0; max-width: 44rem; }
+.fig svg { width: 100%; height: auto; display: block; }
+.fig figcaption { font: .8125rem/1.5 var(--sans); color: var(--ink-soft); margin-top: .6rem; }
+.fig .t { font: 11px var(--sans); fill: var(--ink-soft); }
+.fig .h { font: 600 11px var(--sans); fill: var(--ink); }
+.fig .stem { stroke: var(--accent); stroke-width: 2; }
+.fig .stem.pat { stroke: var(--ink); stroke-width: 2.4; }
+.fig .ax { stroke: var(--rule-firm); stroke-width: 1; }
+.fig .bin { stroke: var(--rule); stroke-width: .6; }
+.eq { font-family: var(--serif); font-style: italic; white-space: nowrap; }
+.formula { max-width: 42rem; margin: 1.25rem 0; padding: .8rem 1.1rem; border-left: 2px solid var(--rule-firm); font-family: var(--serif); font-size: 1.0625rem; }
+
+.table-figure { margin: 1.75rem 0; overflow-x: auto; }
+.table-figure table { border-collapse: collapse; font-family: var(--sans); font-size: .875rem; min-width: 30rem; }
+.table-figure caption { text-align: left; font-size: .8125rem; color: var(--ink-faint); margin-bottom: .6rem; }
+.table-figure th, .table-figure td { text-align: left; padding: .45rem .9rem; border-bottom: 1px solid var(--rule); vertical-align: top; }
+.table-figure thead th { border-bottom-color: var(--rule-firm); font-weight: 600; color: var(--ink); }
+
+.sources { border-top: 1px solid var(--rule); padding-top: 1.75rem; }
+.sources ul { max-width: 44rem; padding-left: 1.1rem; }
+.sources li { margin-bottom: .6rem; font-size: .9375rem; line-height: 1.55; }
+.sources em { color: var(--ink-soft); }
+
+@media (max-width: 60rem) { .ct-plots { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 52rem) {
+  .lab .lab-stage { aspect-ratio: 4 / 3; }
+  .thesis { font-size: 1.125rem; }
+  .ct-plots { grid-template-columns: 1fr; }
+  .ct-key { top: .5rem; right: .5rem; }
+}

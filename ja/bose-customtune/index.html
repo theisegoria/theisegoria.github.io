@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="ja" class=" ig-document ig-editorial">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>ヘッドホンは耳をどう測るのか</title>
+<meta name="description" content="Bose CustomTuneが装着直後の一瞬に行っていること、すなわち多音チャイム、カップ内マイク、そして耳に合わせて調整し直されるノイズキャンセリングとイコライザーを、操作できる形で示す。">
+<meta property="og:title" content="ヘッドホンは耳をどう測るのか">
+<meta property="og:description" content="Bose CustomTuneが装着直後の一瞬に行っていること、すなわち多音チャイム、カップ内マイク、そして耳に合わせて調整し直されるノイズキャンセリングとイコライザーを、操作できる形で示す。">
+<meta property="og:image" content="https://theisegoria.github.io/og.png">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="canonical" href="https://theisegoria.github.io/ja/bose-customtune/">
+<link rel="alternate" hreflang="en" href="https://theisegoria.github.io/bose-customtune/">
+<link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/bose-customtune/">
+<link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/bose-customtune/">
+<link rel="stylesheet" href="/assets/isegoria.css?v=20260923">
+<link rel="stylesheet" href="/assets/lab-kit/lab-kit.css?v=20260923">
+<link rel="stylesheet" href="/bose-customtune/style.css?v=20260923">
+<script type="importmap">
+{"imports":{
+  "three":"/vendor/three/r186/build/three.webgpu.js",
+  "three/webgpu":"/vendor/three/r186/build/three.webgpu.js",
+  "three/tsl":"/vendor/three/r186/build/three.tsl.js",
+  "three/addons/":"/vendor/three/r186/examples-jsm/"
+}}
+</script>
+<link rel="modulepreload" href="/vendor/three/r186/build/three.webgpu.js">
+<link rel="modulepreload" href="/vendor/three/r186/build/three.core.js">
+<script type="module" src="/bose-customtune/lab.js"></script>
+<script src="/assets/lang.js"></script>
+<!-- ISEGORIA:HEAD -->
+<link rel="stylesheet" href="/assets/site-shell.css?v=c21cd21e82">
+<script src="/assets/site-shell.js?v=c21cd21e82" ></script>
+<!-- /ISEGORIA:HEAD -->
+<script defer data-isegoria-analytics src="/assets/analytics.js?v=9e6ebd463bf2"></script>
+</head>
+<body class=" ig-site" data-site-kind="editorial" data-site-route="/ja/bose-customtune/">
+<!-- ISEGORIA:NAV -->
+<a class="ig-skip" href="#ig-content">本文へ移動</a>
+<header id="ig-header"><div class="ig-nav-inner">
+<a class="ig-brand" href="/ja/" aria-label="Isegoria, ホーム"><strong>ISEGORIA</strong><span>Benjamin Haire</span></a>
+<div class="ig-header-actions"><a class="ig-language" href="/bose-customtune/" hreflang="en" lang="en">English</a><button class="ig-menu" type="button" aria-expanded="false" aria-controls="ig-primary">メニュー</button></div>
+<nav id="ig-primary" aria-label="メインナビゲーション"><a href="/ja/">ホーム</a><a href="/ja/library.html">全コンテンツ</a><a href="/ja/math-encyclopedia/">数学百科事典</a><a href="/ja/#interactive" aria-current="location">操作できる解説</a><a href="/ja/#preoccupations">研究と解説</a><a href="/ja/#books">書籍</a><a href="/ja/projects.html">プロジェクト</a><a href="/ja/about.html">このサイトについて</a><a class="ig-language" href="/bose-customtune/" hreflang="en" lang="en">English</a><button class="ig-theme" type="button" hidden>表示切替</button></nav>
+</div></header>
+<nav id="ig-breadcrumb" aria-label="パンくずリスト"><a href="/ja/">ホーム</a><span aria-hidden="true">/</span><a href="/ja/#interactive">操作できる解説</a><span aria-hidden="true">/</span><span aria-current="page">ヘッドホンは耳をどう測るのか</span></nav>
+<span id="ig-content" tabindex="-1"></span>
+<!-- /ISEGORIA:NAV --><main class="wrap">
+
+<header class="hero">
+<p class="kicker">インタラクティブ解説</p>
+<h1>ヘッドホンは耳をどう測るのか</h1>
+<p class="lede">QC Ultraヘッドホンを装着した直後の一瞬に、BoseのCustomTuneが何をしているのか。特許から読み解き、操作できる形にした。</p>
+<nav class="ig-page-nav" aria-label="このページの目次"><a href="#lab">ラボ</a><a href="#chime">チャイム</a><a href="#ear">耳</a><a href="#loop">ノイズキャンセリング</a><a href="#eq">音楽</a><a href="#mine">自分のヘッドホン</a><a href="#unsettled">決着がつかなかったこと</a><a href="#sources">出典</a></nav>
+</header>
+
+<p class="thesis">CustomTuneは聴力検査ではないし、「反響」という言葉が思わせるような仕方で耳を聴いているわけでもない。これはシステム同定である。ヘッドホンは既知の信号を鳴らし、ノイズキャンセリングをすでに動かしているマイクで、頭部を介した自分のスピーカーの応答を測り、二つのフィルターを調整し直す。一つはキャンセリングのループを設計目標に保つため、もう一つは鼓膜に何が届いているかを予測するためである。</p>
+
+<p>QuietComfort Ultraヘッドホンを着けるたびに短いチャイムが鳴り、Boseによれば、その後の音は耳の形に合わせて調整される。Bose自身の説明は短い。チャイムが耳に入り、イヤーピースのマイクに跳ね返り、「本格的な数学と複雑なアルゴリズム」が外耳道の大きさ、形、深さを割り出し、EQとノイズキャンセリングの両方を調整するという。この機能は2022年にQuietComfort Earbuds IIで登場し、発明者のジョン・ルールは「航空宇宙分野で培った数学の手法」を持ち込んだと語っている（Bose, n.d.; Fast Company, 2022）。その本格的な数学の中身を知りたかった。それはBoseの二つの特許ファミリーにあり、読んでみると、同じ一つの測定で二つの別々の問題を解いていることが分かった。</p>
+
+<section class="lab" id="lab" aria-labelledby="lab-h">
+<h2 id="lab-h">ラボ</h2>
+<p>頭部は実在の人物の3Dスキャンである。耳のまわりの皮膚はどの方向から見てもガラスのように透け、その奥に外耳道を実寸で描いて、長さに沿って半分に切ってある。外側3分の1は軟骨、内側3分の2は側頭骨で、奥の端を鼓膜がふさいでいる。右のイヤーカップも同じ面で半分に切ってある。外耳道の空気は音圧で色分けしてあり、暖色が圧縮、寒色が膨張である。「チャイムを鳴らす」を押すと、特許の音の並びから作った代用のチャイムが鳴る。その後プリセットを試すか、「断面を見せる」を外して全体を見てほしい。三つのグラフは、マイクが測ったもの、ノイズキャンセリングのループがどう変わったか、鼓膜に何が届くかを示す。</p>
+
+<div class="lab-stage">
+  <canvas id="stage" tabindex="0" aria-label="耳に装着したヘッドホンの三次元断面図。空気を音圧で色分けしている。ドラッグで回転、スクロールで拡大縮小。数値はすべて下の読み取り欄とグラフにもある。"></canvas>
+  <div class="lab-labels" id="labels" aria-hidden="true"></div>
+  <div class="ct-key" aria-hidden="true">膨張 <i></i> 圧縮</div>
+  <figure data-lab-fallback hidden>
+    <svg viewBox="-70 0 730 360" role="img" aria-labelledby="fb-t fb-d">
+      <title id="fb-t">耳に装着したヘッドホンの断面</title>
+      <desc id="fb-d">頭部の側面に載ったオーバーイヤーのカップの断面図。ドライバーは耳の方を向き、フィードバックマイクはドライバーと耳の間のカップ内にあり、二つのフィードフォワードマイクはカップの外側にある。外耳道はカップから頭の中へ伸び、鼓膜で閉じている。曲線はドライバーから広がるチャイムを示す。</desc>
+      <defs>
+        <style>
+          .fb-tissue { fill: #e9c9bd } .fb-shell { fill: #8f877c } .fb-cush { fill: #3a3531 }
+          .fb-air { fill: #f1e2d6 } .fb-drv { fill: #b7aea3 } .fb-mic { fill: #8a4b26 }
+          .fb-drum { fill: none; stroke: #5d574f; stroke-width: 2.5 }
+          .fb-wave { fill: none; stroke: #8a4b26; stroke-width: 1.4; opacity: .7 }
+          .fb-t { font: 12px system-ui, sans-serif; fill: #5d574f } .fb-lead { stroke: #c9c1b4; stroke-width: 1 }
+          @media (prefers-color-scheme: dark) {
+            .fb-tissue { fill: #6b4b43 } .fb-shell { fill: #6f675d } .fb-cush { fill: #1d1a18 } .fb-air { fill: #2a2420 }
+            .fb-drv { fill: #7d756b } .fb-mic { fill: #d99a68 } .fb-drum { stroke: #a49c91 } .fb-wave { stroke: #d99a68 }
+            .fb-t { fill: #a49c91 } .fb-lead { stroke: #3d3833 }
+          }
+        </style>
+      </defs>
+      <!-- head, cut through the canal -->
+      <path class="fb-tissue" d="M330 30 H640 V330 H330 V195 H470 V165 H330 Z"/>
+      <rect class="fb-air" x="330" y="165" width="140" height="30"/>
+      <line class="fb-drum" x1="472" y1="162" x2="468" y2="198"/>
+      <!-- cup, cut in half -->
+      <path class="fb-shell" d="M300 40 C240 40 170 60 150 120 C140 150 140 210 150 240 C170 300 240 320 300 320 L300 306 C245 306 184 290 166 236 C158 210 158 150 166 124 C184 70 245 54 300 54 Z"/>
+      <rect class="fb-air" x="215" y="70" width="112" height="220"/>
+      <ellipse class="fb-cush" cx="315" cy="62" rx="15" ry="26"/>
+      <ellipse class="fb-cush" cx="315" cy="298" rx="15" ry="26"/>
+      <path class="fb-drv" d="M212 88 Q226 180 212 272 L204 272 Q216 180 204 88 Z"/>
+      <rect class="fb-drv" x="186" y="150" width="18" height="60" rx="3"/>
+      <path class="fb-wave" d="M240 120 Q262 180 240 240"/><path class="fb-wave" d="M266 105 Q294 180 266 255"/><path class="fb-wave" d="M292 92 Q326 180 292 268"/>
+      <rect class="fb-mic" x="244" y="96" width="14" height="10" rx="3"/>
+      <rect class="fb-mic" x="140" y="120" width="10" height="14" rx="3"/>
+      <rect class="fb-mic" x="140" y="226" width="10" height="14" rx="3"/>
+      <!-- labels -->
+      <line class="fb-lead" x1="251" y1="96" x2="251" y2="22"/><text class="fb-t" x="256" y="22">フィードバックマイク</text>
+      <line class="fb-lead" x1="140" y1="127" x2="96" y2="127"/><text class="fb-t" x="92" y="131" text-anchor="end">フィードフォワードマイク</text>
+      <line class="fb-lead" x1="208" y1="272" x2="208" y2="344"/><text class="fb-t" x="213" y="348">ドライバー</text>
+      <line class="fb-lead" x1="400" y1="195" x2="400" y2="250"/><text class="fb-t" x="405" y="254">外耳道</text>
+      <line class="fb-lead" x1="470" y1="162" x2="520" y2="120"/><text class="fb-t" x="524" y="118">鼓膜</text>
+    </svg>
+
+    <figcaption>このブラウザにはWebGPUもWebGL 2もないため、静止版を表示している。下のグラフは動作する。</figcaption>
+  </figure>
+  <div class="lab-hud"><span class="lab-badge"></span></div>
+</div>
+
+<div class="ct-presets"><span>試す</span>
+  <button type="button" data-preset="overear,25,0.1">基準の耳</button>
+  <button type="button" data-preset="overear,25,1">密閉が崩れる</button>
+  <button type="button" data-preset="earbud,18,0.1">短い外耳道、イヤホン</button>
+  <button type="button" data-preset="earbud,32,0.1">長い外耳道、イヤホン</button>
+  <button type="button" data-preset="earbud,25,0.6">緩いイヤーチップ</button>
+</div>
+
+<form class="lab-controls" id="controls" onsubmit="return false">
+  <fieldset class="lab-views">
+    <legend class="visually-hidden">形式</legend>
+    <label><input type="radio" name="form" value="overear" checked> オーバーイヤー</label>
+    <label><input type="radio" name="form" value="earbud"> イヤホン</label>
+    <button type="button" id="play-chime">チャイムを鳴らす</button>
+  </fieldset>
+  <label><span>外耳道の長さ、mm</span><output for="canal"></output>
+    <input id="canal" name="canal" type="range" min="18" max="34" step="0.5" value="25" data-format="fixed:1"></label>
+  <label><span>漏れ：髪、崩れた密閉、緩いチップ</span><output for="leak"></output>
+    <input id="leak" name="leak" type="range" min="0" max="1" step="0.01" value="0.1"></label>
+  <label><span>空気を色分けする周波数</span><output for="probe"></output>
+    <input id="probe" name="probe" type="range" min="2" max="4.1" step="0.01" value="3.4"></label>
+  <label><span>装着し直すたびに測り直す</span><input name="auto" type="checkbox" checked></label>
+  <label><span>チャイムの音</span><input name="sound" type="checkbox" checked></label>
+  <label><span>断面を見せる</span><input name="cutaway" type="checkbox" checked></label>
+  <label><span>ラベル</span><input name="labels" type="checkbox" checked></label>
+</form>
+<div class="lab-readout" id="readout" aria-live="off"></div>
+<div class="ct-plots" id="plots"></div>
+<p class="lab-note">ヘッドホンとイヤホンは、現行の主力ノイズキャンセリング製品の寸法に合わせて自作した汎用モデルであり、Boseの設計の複製ではない。その下の音響は集中定数の模型で、実際の40 mmオーバーイヤー用ドライバーと10 mmイヤホン用ドライバーの寸法に合わせてある。固有の質量とばねをもつ振動板、その前の空気、質量と損失をもつ漏れ、そして鼓膜で閉じた損失のある管としての外耳道からなる。ノイズキャンセリングの補正はUS 10,937,410に、EQはUS 12,028,675に従った。数値はどれもBoseのものではない。持ち越せるのは曲線の形とその理由である。</p>
+</section>
+
+<section id="chime">
+<h2>チャイムの正体</h2>
+
+<p>チャイムが規定されているのは一つ目の特許、US 10,937,410（ルール、2020年4月出願）である。それは「比較的短い確認音」で、長さは1秒未満、典型的には0.1〜0.5秒、ヘッドホンが装着されたことを検知すると自動的に鳴る。スペクトルは約45 Hzから16 kHzまでの10個以上の音からなり、46.875 Hzを基本周波数とする倍音として組まれ、1 kHzより上の音は4分の1オクターブ以下の間隔で並ぶ。実施例には24の音が並ぶ。1 kHz未満は93.75 Hzから843.75 Hzまでの7つ、それより上は1031 Hzから16969 Hzまでの17である。</p>
+
+<p>46.875は任意の数ではない。48,000を1,024で割った値である。サンプリング周波数48 kHzでは1,024点FFTのビンがちょうど46.875 Hz間隔で並び、特許の音はどれもいずれかのビンの中心にある。音がビンの中心にぴたりと乗る周期信号は、21.3 msの1周期ごとにFFTを1回かけるだけで、音と音の間のスペクトル漏れなしに読み取れる。0.25秒のチャイムなら平均に使える周期がおよそ12ある。つまりこのチャイムは、反響として時間を計るためではなく、音ごとの伝達関数として読むために作られている。これは数値から導いた推論であり、特許自体はそう書いていない。</p>
+
+<figure class="fig">
+<svg viewBox="0 0 640 210" role="img" aria-labelledby="chf-t chf-d"><title id="chf-t">スペクトルとして見たチャイム</title><desc id="chf-d">特許の実施例にある、94 Hzから17 kHzまでの24の音。どれも46.875 Hzのちょうど整数倍である。</desc>
+<line class="ax" x1="40" x2="620" y1="164" y2="164"/>
+<line class="bin" x1="61.2" x2="61.2" y1="26" y2="164"/><text class="t" x="61.2" y="179" text-anchor="middle">50</text>
+<line class="bin" x1="127.0" x2="127.0" y1="26" y2="164"/><text class="t" x="127.0" y="179" text-anchor="middle">100</text>
+<line class="bin" x1="192.8" x2="192.8" y1="26" y2="164"/><text class="t" x="192.8" y="179" text-anchor="middle">200</text>
+<line class="bin" x1="279.8" x2="279.8" y1="26" y2="164"/><text class="t" x="279.8" y="179" text-anchor="middle">500</text>
+<line class="bin" x1="345.6" x2="345.6" y1="26" y2="164"/><text class="t" x="345.6" y="179" text-anchor="middle">1k</text>
+<line class="bin" x1="411.4" x2="411.4" y1="26" y2="164"/><text class="t" x="411.4" y="179" text-anchor="middle">2k</text>
+<line class="bin" x1="498.4" x2="498.4" y1="26" y2="164"/><text class="t" x="498.4" y="179" text-anchor="middle">5k</text>
+<line class="bin" x1="564.2" x2="564.2" y1="26" y2="164"/><text class="t" x="564.2" y="179" text-anchor="middle">10k</text>
+<text class="t" x="620" y="194" text-anchor="end">Hz</text>
+<line class="stem" x1="120.9" x2="120.9" y1="164" y2="36.0"/>
+<line class="stem" x1="186.7" x2="186.7" y1="164" y2="36.2"/>
+<line class="stem" x1="225.2" x2="225.2" y1="164" y2="36.5"/>
+<line class="stem" x1="252.5" x2="252.5" y1="164" y2="36.8"/>
+<line class="stem" x1="291.0" x2="291.0" y1="164" y2="37.9"/>
+<line class="stem" x1="318.3" x2="318.3" y1="164" y2="39.3"/>
+<line class="stem" x1="329.5" x2="329.5" y1="164" y2="40.1"/>
+<line class="stem" x1="348.5" x2="348.5" y1="164" y2="42.0"/>
+<line class="stem" x1="364.4" x2="364.4" y1="164" y2="44.2"/>
+<line class="stem" x1="384.1" x2="384.1" y1="164" y2="47.7"/>
+<line class="stem" x1="400.4" x2="400.4" y1="164" y2="51.6"/>
+<line class="stem" x1="418.5" x2="418.5" y1="164" y2="56.9"/>
+<line class="stem" x1="433.8" x2="433.8" y1="164" y2="62.2"/>
+<line class="stem" x1="449.9" x2="449.9" y1="164" y2="68.6"/>
+<line class="stem" x1="466.2" x2="466.2" y1="164" y2="75.6"/>
+<line class="stem" x1="482.3" x2="482.3" y1="164" y2="82.8"/>
+<line class="stem" x1="499.6" x2="499.6" y1="164" y2="90.6"/>
+<line class="stem" x1="515.7" x2="515.7" y1="164" y2="97.5"/>
+<line class="stem" x1="532.0" x2="532.0" y1="164" y2="104.1"/>
+<line class="stem" x1="549.1" x2="549.1" y1="164" y2="110.4"/>
+<line class="stem" x1="565.4" x2="565.4" y1="164" y2="115.7"/>
+<line class="stem" x1="581.5" x2="581.5" y1="164" y2="120.3"/>
+<line class="stem" x1="597.8" x2="597.8" y1="164" y2="124.4"/>
+<line class="stem" x1="614.4" x2="614.4" y1="164" y2="127.9"/>
+<text class="h" x="120.9" y="18">46.875 Hz × 2</text>
+<text class="t" x="344.5" y="56" text-anchor="end">× 22, 26, 32 …</text>
+<text class="t" x="614.4" y="124" text-anchor="end">… × 256, 304, 362</text>
+</svg>
+<figcaption>特許の実施例が挙げるチャイムの24の音を、対数軸上に描いたもの。どれも46.875 Hzの整数倍である。このページの代用チャイムはちょうどこの音を鳴らす。音の相対的な大きさは私が選んだものである。</figcaption>
+</figure>
+
+<p>測られるのは<span class="eq">G<sub>sd</sub></span>、すなわちドライバー（d）からカップ内またはノズル内のフィードバックマイク（s）までの応答である。このマイクはもともとある。フィードバック式ノイズキャンセリングの誤差センサーだからだ。測定のためのハードウェアは一切増えない。</p>
+</section>
+
+<section id="ear">
+<h2>耳がヘッドホンに何をするか</h2>
+
+<p>ヘッドホンは基準となる頭部で設計されるが、実際の頭では、装着するたびにドライバーが異なる音響系を相手にすることになる。支配的な効果は二つあり、ラボにはそれぞれにスライダーがある。</p>
+
+<p>一つ目は漏れである。密閉されたカップやチップは圧力室をつくる。数百ヘルツ以下では、ドライバーは閉じ込めた空気を圧縮するだけで、音圧は大きく平坦になる。その部屋からの抜け道、つまりイヤーパッドの下の眼鏡のつる、髪、一回り小さいチップは、閉じ込めた空気と並列な音響質量として働き、低音を逃がす。「密閉が崩れる」を押すと、オーバーイヤーのマイクの値は100 Hzで10 dB、30 Hzで16 dB下がる。閉じ込める体積が1立方センチメートルにも満たないイヤホンでは、1.5 mm²の隙間で100 Hzが15 dB失われる。</p>
+
+<p>二つ目は外耳道である。外耳道は長さ約25 mm、直径約7.5 mmで鼓膜側が閉じた管であり、一端の閉じた管は4分の1波長、すなわち<span class="eq">c / 4L</span>で共鳴する。25 mmなら約3.4 kHzである。この共鳴は鼓膜では山になり、開いた入口では音圧の谷になる。「空気を色分けする周波数」を約3.4 kHzにして外耳道を見てほしい。入口では淡く、鼓膜では強い。イヤホンは外耳道の中に座り、そのマイクは外耳道をまっすぐ覗き込むので、チップがどこに収まるかでずれた外耳道の特徴をそのまま見る。オーバーイヤーのマイクは約120 cm³の空気の入ったカップの中にあり、外耳道はかすかにしか聞こえない。</p>
+
+<p>この非対称が、製品の種類ごとにCustomTuneに何ができるかを決めることになる。</p>
+</section>
+
+<section id="loop">
+<h2>ノイズキャンセリングを調整し直す</h2>
+
+<p>フィードバック式ノイズキャンセリングは制御ループである。マイクが残ったノイズを聞き、フィルター<span class="eq">K<sub>fb</sub></span>がそれを整形し、ドライバーが反転して鳴らす。重要なのはループゲイン<span class="eq">L = G<sub>sd</sub> K<sub>fb</sub></span>である。これが大きいところでは、マイク位置のノイズはおよそ<span class="eq">|1 + L|</span>で割られる。0 dBを下回る点、つまりクロスオーバーでループは効かなくなり、そこまでに位相が回りすぎていれば、ノイズを逆に増やし、鳴き、あるいはハウリングを起こす。</p>
+
+<p>固定の<span class="eq">K<sub>fb</sub></span>は平均的な<span class="eq">G<sub>sd</sub></span>に対して設計される。特許の指摘は、耳の中に入る製品では<span class="eq">G<sub>sd</sub></span>の個人差が「フィードバックループゲインのクロスオーバー周波数とその近く」で最も大きい、というものである。そこはまさにループが最も脆い場所であり、だから一つのフィルターで全員に対して攻めた設定と安全を両立させることはできない。特許の答えは、チャイムの各音で基準からのこの耳のずれを求め、ループゲインが目標に戻るようにフィルターを変えることである。少なくとも200 Hzから5 kHzの範囲で、少なくとも3つの2次セクションを調整する。調整は線形化されている。あらかじめ計算した「影響行列」が、各フィルターパラメータが各音での応答をどれだけ動かすかを記録しており、その擬似逆行列が、測ったずれを「1回の行列積で」、1秒以内にパラメータの変更に変える。対数で見れば、補正はずれを差し引くことにほかならない。</p>
+
+<p class="formula">Δθ = −(∂K<sub>fb</sub> / ∂θ)<sup>+</sup> ΔG<sub>sd</sub>、これによりG<sub>sd</sub> K<sub>fb</sub> ≈ L<sub>target</sub></p>
+
+<p>特許が示す目標は、複数の利用者で平均したフィードバックの挿入利得が約1.5 kHz以上まで騒音を下げ続けること、「2 kHz近いループの振幅クロスオーバー」とそこでの約45度の位相、そしてノイズキャンセリングを入れたときの全体の挿入利得が約1〜2 kHzで−30 dBを下回ることである。</p>
+
+<p>ラボでは同じことを5つのピーキングフィルターで行う。「短い外耳道、イヤホン」を選ぶと、短い外耳道は1 kHzより上で<span class="eq">G<sub>sd</sub></span>を持ち上げ、5 kHz付近では10 dBを超える。固定フィルターのループゲインは約5 kHzまで0 dBを下回らず、そこではもう位相が大きく回っている。実機なら笛のような鳴きになる。チャイムの後、補正はその帯域を押し下げ、ループはクロスオーバー1.8 kHz、位相余裕約43度に戻る。「緩いイヤーチップ」を選ぶと、漏れが<span class="eq">G<sub>sd</sub></span>から低音を奪い、それによってキャンセリングが最も働く帯域でループのゲインが奪われる。補正は最も低いフィルターを約8 dB持ち上げ、50〜500 Hzのフィードバックによる静かさは約−10 dBから−13 dBになる。限界も見える。妥当な範囲に制限された補正では、大きな漏れが奪ったものをすべては取り戻せない。だから装着状態のテストにはまだ意味がある。</p>
+
+<p>特許は、オンイヤーやアラウンドイヤーでは「漏れのために」低い周波数に「比較的重点を置き」、耳の中に入る装着では高い周波数に重点を置くと述べている。ラボは教えられなくてもこの分担を再現する。オーバーイヤーでは外耳道のスライダーはループをほとんど動かさず、動かすのは眼鏡のつるだけである。</p>
+
+<p>予想していなかった余談が一つある。特許は、左右を合わせたフィルターパラメータを、装着者を識別できる生体情報「イヤープリント」として使うことを提案しており、声のフォルマント構造と組み合わせることにも触れている。</p>
+</section>
+
+<section id="eq">
+<h2>音楽を調整し直す</h2>
+
+<p>EQは別の問題である。補正すべきものがマイクの位置にないからだ。聞こえているのは鼓膜での音圧であり、マイクはそこから数センチ離れた、外耳道の共鳴の反対側にある。マイクが聞くものをイコライズすれば、3 kHz付近ではちょうど逆の補正になってしまう。</p>
+
+<p>二つ目の特許、US 12,028,675（ニールセン、2021年12月優先）は、これを母集団のデータで扱う。Boseは実験室で、多くの人と多くの装着について、鼓膜の代わりとして外耳道の奥にマイクを置いてヘッドホンを測り、そのデータを周波数ごとに二つの複素定数αとβにまとめた。モデル</p>
+
+<p class="formula">G<sub>ear</sub> ≈ G<sub>sd</sub> / (α G<sub>sd</sub> + β)</p>
+
+<p>を最小二乗で当てはめたものである。装着者の上では、ヘッドホンが<span class="eq">G<sub>sd</sub></span>を測り、この式が鼓膜に届いているものを予測し、製品が調整された状態との差がEQになる。変形すれば<span class="eq">G<sub>sd</sub> / G<sub>ear</sub> = α G<sub>sd</sub> + β</span>という線形の式になるので、実験室での当てはめもノイズキャンセリングの当てはめと同じ種類の擬似逆行列である。特許はさらに、フィードバック制御を動かした状態でもう一度この経路を測る。フィードバックキャンセリングが働いていると、ループはノイズと一緒に低域の音楽も抑えてしまい、EQはそれを戻さなければならないからである。同じ仕組みがアウェアモードのフィルターも作る。</p>
+
+<p>モデルから引いた160の耳からなる合成母集団で、同じことをしてみた。マイクが違いを見分けられるところでは、これはうまく働く。イヤホンでは、緩いチップで鼓膜の誤差がRMSで約8 dBあったものが2 dB未満になり、短い外耳道や長い外耳道でも誤差はほぼ半分になる。オーバーイヤーでは、崩れた密閉の影響は3.4 dBから約0.2 dBへとほぼ完全に補正される。しかしオーバーイヤーのカップの向こうにある19 mmや32 mmの外耳道は4〜5 dBずれたままである。カップのマイクには外耳道が見えないので、回帰は正しく平均的な耳を返すからだ。</p>
+</section>
+
+<section id="mine">
+<h2>自分のヘッドホンは実際に何をしているのか</h2>
+
+<p>Boseの特許表示リストでは、ノイズキャンセリングの個人化であるUS 10,937,410と11,600,256は、QC Earbuds IIと二世代のQC Ultra Earbudsに記載されており、どちらの世代のQC Ultraヘッドホンにも記載されていない。EQのUS 12,028,675はヘッドホンに記載されている。Boseは第2世代のヘッドホンのCustomTuneを、耳の形に合わせて音を調整するものとして売り出しており、あるレビュアーは電源を入れるたびにキャリブレーション用の信号が鳴ると述べている（Headphones.com, n.d.）。</p>
+
+<p>これを物理と合わせると、装着したときに起きていることを次のように読む。チャイムが左右それぞれのカップで<span class="eq">G<sub>sd</sub></span>を測る。その測定が主に伝えるのは、密閉の具合と、頭と耳がカップの中に残す空気の量である。そしてEQが、母集団のデータから見て鼓膜にあるべき状態へと音楽を寄せる。ヘッドホンでもノイズキャンセリングのフィルターが当てはめ直されているのかどうかは、公開情報からは判断できない。カップ一杯の空気越しにチャイムが測れないのは外耳道である。だから数キロヘルツより上では、このヘッドホンは平均的な耳に合わせて調整されている。これはBoseの限界ではなく物理の限界であり、マイクが外耳道を覗き込めるイヤホンからこの技術が始まった理由でもある。</p>
+</section>
+
+<section id="unsettled">
+<h2>決着がつかなかったこと</h2>
+
+<p>オーバーイヤーのヘッドホンがノイズキャンセリングのフィルターをそもそも当てはめ直しているのかどうか。それを記述する特許はヘッドホンの表示リストになく、ヘッドホンの機能についてのBoseの説明も、キャンセリングではなく音について語っている。</p>
+
+<p>製品のチャイムが実際に何を含んでいるのか。ここでの代用品は特許の音の格子から作ったもので、録音から作ったものではない。カップの内側から48 kHzでチャイムを録音し、1,024点FFTをかければ、エネルギーが46.875 Hzの格子に乗っているかどうかはすぐに分かるはずである。</p>
+
+<p>実装の細部。フィルターのセクション数、どこまで動かしてよいか、複数回の装着の結果を平均するのか（特許はそれを許している）、そしてαとβの背後にある母集団がどういうものか。ヘッドホンのマイクの数についてもレビューの間で食い違いがあり、Bose自身のページは明記していない。</p>
+</section>
+
+<section id="sources" class="sources">
+<h2>出典</h2>
+<p><em>仕組みは以下の特許から取った。ラボの数値はすべて自分のモデルによるもので、Boseのものではない。US 10,937,410は全文を、US 12,028,675は詳しい要約を読んだ。継続特許は要約しか読んでいない。</em></p>
+<ul>
+<li>Rule, J. (2021). <a href="https://patents.google.com/patent/US10937410B1/en">US 10,937,410 B1</a>, Managing characteristics of active noise reduction. Bose Corporation. 2020年4月24日出願。継続特許<a href="https://patents.justia.com/patent/11600256">US 11,600,256 B2</a>（2023年）、<a href="https://patents.justia.com/patent/12136409">US 12,136,409 B2</a>（2024年）。</li>
+<li>Nielsen, O. M. (2024). <a href="https://patents.google.com/patent/US12028675">US 12,028,675 B2</a>, Headphone audio controller. Bose Corporation. 優先日2021年12月27日。</li>
+<li>Rule, J. (2020). <a href="https://patents.google.com/patent/US10764699B1/en">US 10,764,699 B1</a>, Managing characteristics of earpieces using controlled calibration. Bose Corporation. 充電ケース内の小さな空洞でマイクとドライバーの感度を校正し、<span class="eq">G<sub>sd</sub></span>の違いが個体差ではなく耳の違いを表すようにする。要約のみ読んだ。</li>
+<li>Bose Corporation (n.d.). <a href="https://assets.bosecreative.com/m/2e8e26abd3c8cac3/original/Bose_Patent_Marking.pdf" target="_blank" rel="noopener" title="PDF、新しいタブで開く">特許表示リスト</a>.</li>
+<li>Bose Corporation (n.d.). <a href="https://www.bose.com/stories/sound-shaped-to-you-bose-customtune-technology">A guide on CustomTune technology and how it works</a>.</li>
+<li>Fast Company (2022). <a href="https://www.fastcompany.com/90782756/how-boses-new-earbuds-customize-sound-to-your-ear-shape">How Bose's new earbuds customize sound to your ear shape</a>.</li>
+<li>Headphones.com (n.d.). <a href="https://headphones.com/blogs/reviews/bose-qc-ultra-gen-2-is-way-better-than-you-probably-think">Bose QC Ultra Gen 2 is way better than you (probably) think</a>.</li>
+<li>Vogl, S. and Blau, M. (2019). <a href="https://pubs.aip.org/asa/jasa/article/145/2/917/994460/Individualized-prediction-of-the-sound-pressure-at">Individualized prediction of the sound pressure at the eardrum for an earpiece with integrated receivers and microphones</a>. Journal of the Acoustical Society of America 145(2), 917. 耳の中のマイクから鼓膜を予測する学術的な研究。</li>
+<li>頭部スキャン：Lee Perry-Smith（Infinite-Realities）、<a href="https://creativecommons.org/licenses/by/3.0/deed.ja">CC BY 3.0</a>、three.jsのサンプルとして配布されているもの。縮尺を合わせ、ヘッドホンをはめた。内部の外耳道、骨、鼓膜は実寸で描いたものであり、スキャンではない。</li>
+<li><a href="https://arxiv.org/abs/2110.04385">Individualized hear-through for acoustic transparency using PCA-based sound pressure estimation at the eardrum</a> (2021). arXiv:2110.04385. 同じ考え方を、測定した二次経路を使ってヒアスルーに応用したもの。</li>
+</ul>
+</section>
+
+</main><!-- ISEGORIA:FOOT -->
+<footer id="ig-footer"><div><a href="/ja/">Isegoria · Benjamin Haire</a><nav aria-label="サイト内リンク"><a href="/ja/">ホームに戻る</a><a href="/ja/library.html">全コンテンツ</a><a href="#ig-content">ページ上部へ</a></nav></div></footer>
+<!-- /ISEGORIA:FOOT -->
+</body>
+</html>
