@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="en" class=" ig-document ig-editorial">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Material Lab is a free, local macOS app with an iOS companion and a CLI that turns one photograph into editable PBR texture maps: albedo, 16-bit height, normal, roughness, GTAO occlusion and more. Learned geometry from MoGe-2, a seam-cut tiler and delighting, all on the machine.">
+<meta name="theme-color" content="#f7f7f5">
+<meta property="og:title" content="Material Lab">
+<meta property="og:description" content="A photograph in, editable PBR texture maps out, and nothing leaves the Mac.">
+<meta property="og:image" content="https://theisegoria.github.io/material-lab/assets/brick-map-sheet.jpg">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="canonical" href="https://theisegoria.github.io/material-lab/">
+<title>Material Lab</title>
+<style>
+  :root {
+    --ground:#F7F7F5; --surface:#FFFFFF; --surface-2:#F0F1EC;
+    --ink:#17191B; --muted:#63686D; --rule:#DEE0DC;
+    --accent:#1F5FA8; --accent-soft:#1F5FA814;
+    --plate-dark:#1c1c1e;
+    --f-display:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    --f-body:"Inter",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+    --f-mono:ui-monospace,SFMono-Regular,Menlo,monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground:#101214; --surface:#181B1E; --surface-2:#1F2327;
+      --ink:#EDEFF1; --muted:#9BA3AA; --rule:#2C3237;
+      --accent:#69ABE3; --accent-soft:#69ABE31C;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground:#101214; --surface:#181B1E; --surface-2:#1F2327;
+    --ink:#EDEFF1; --muted:#9BA3AA; --rule:#2C3237;
+    --accent:#69ABE3; --accent-soft:#69ABE31C;
+  }
+
+  * { box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body {
+    margin:0; background:var(--ground); color:var(--ink);
+    font-family:var(--f-body); font-size:17px; line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  a { color:var(--accent); text-underline-offset:.18em; }
+
+  .wrap { width:min(760px, calc(100% - 40px)); margin-inline:auto; }
+  .wide { width:min(1080px, calc(100% - 40px)); margin-inline:auto; }
+
+  .hero { padding:76px 0 46px; }
+  .label { color:var(--muted); font-size:.74rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; }
+  h1 {
+    font-family:var(--f-display); font-weight:600;
+    margin:14px 0 16px; font-size:clamp(2.3rem,5.8vw,3.6rem);
+    line-height:1.04; letter-spacing:-.03em;
+  }
+  .standfirst { font-size:1.2rem; color:var(--muted); margin:0 0 26px; max-width:62ch; }
+  .herometa { display:flex; flex-wrap:wrap; gap:10px 18px; align-items:center;
+              font-size:.86rem; color:var(--muted); border-top:1px solid var(--rule); padding-top:18px; }
+  .pill {
+    display:inline-flex; align-items:center; gap:7px; padding:7px 14px;
+    border:1px solid var(--rule); border-radius:999px; background:var(--surface);
+    text-decoration:none; color:var(--ink); font-weight:600; font-size:.85rem;
+  }
+  .pill:hover { border-color:var(--accent); color:var(--accent); }
+  .pill.primary { background:var(--accent); border-color:var(--accent); color:#fff; }
+  .pill.primary:hover { color:#fff; opacity:.92; }
+
+  .toc { border-top:1px solid var(--rule); border-bottom:1px solid var(--rule); padding:22px 0 24px; margin-bottom:14px; }
+  .toc ol { margin:10px 0 0; padding-left:1.2em; columns:2; column-gap:34px; }
+  .toc li { margin:0 0 6px; color:var(--muted); font-size:.92rem; break-inside:avoid; }
+  .toc a { color:var(--ink); text-decoration:none; }
+  .toc a:hover { color:var(--accent); }
+  .kt { font-size:.74rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--accent); margin:0; }
+
+  h2 {
+    font-family:var(--f-display); font-weight:600; letter-spacing:-.02em;
+    font-size:1.72rem; line-height:1.18; margin:58px 0 4px;
+  }
+  h2 .num { color:var(--muted); font-family:var(--f-body); font-size:.8rem;
+            font-weight:700; letter-spacing:.1em; display:block; margin-bottom:10px; }
+  h3 { font-size:1.06rem; letter-spacing:-.01em; margin:34px 0 2px; }
+  p { margin:14px 0; }
+  strong { font-weight:650; }
+  ul, ol.body { padding-left:1.25em; }
+  ul li, ol.body li { margin:9px 0; }
+  code { font-family:var(--f-mono); font-size:.88em; background:var(--surface-2); padding:.1em .35em; border-radius:4px; }
+  pre { background:var(--surface-2); border:1px solid var(--rule); border-radius:10px; padding:14px 16px;
+        overflow-x:auto; font-family:var(--f-mono); font-size:.82rem; line-height:1.55; margin:18px 0; }
+  pre code { background:none; padding:0; font-size:inherit; }
+
+  .fig { margin:36px 0 30px; }
+  .fig .plate {
+    background:#fff; border:1px solid var(--rule); border-radius:12px;
+    padding:12px; overflow-x:auto;
+  }
+  .fig .plate.dark { background:var(--plate-dark); }
+  .fig img { display:block; width:100%; height:auto; }
+  .fig.phone .plate { display:flex; justify-content:center; background:var(--surface-2); }
+  .fig.phone img { width:min(100%, 360px); border-radius:14px; }
+  .fig figcaption { color:var(--muted); font-size:.86rem; line-height:1.55; margin-top:12px; }
+  .fig figcaption b { color:var(--ink); font-weight:650; }
+
+  .key {
+    background:var(--surface); border:1px solid var(--rule);
+    border-left:3px solid var(--accent);
+    border-radius:10px; padding:18px 20px; margin:32px 0;
+  }
+  .key p:first-of-type { margin-top:8px; }
+  .key p:last-child, .key ul:last-child { margin-bottom:0; }
+
+  .maps { display:grid; grid-template-columns:repeat(auto-fill, minmax(210px, 1fr)); gap:12px; margin:22px 0 6px; padding:0; list-style:none; }
+  .maps li { margin:0; background:var(--surface); border:1px solid var(--rule); border-radius:10px; padding:12px 14px; font-size:.9rem; line-height:1.5; }
+  .maps b { display:block; font-weight:650; margin-bottom:2px; }
+
+  .sources { border-top:1px solid var(--rule); margin-top:46px; padding-top:26px;
+             font-size:.82rem; color:var(--muted); line-height:1.6; }
+  .sources h3 { font-size:1.1rem; margin:0 0 12px; }
+  .sources strong { color:var(--ink); }
+
+  @media (max-width:700px) {
+    body { font-size:16px; }
+    .hero { padding:54px 0 36px; }
+    .toc ol { columns:1; }
+    .fig .plate { padding:8px; }
+  }
+</style><!-- ISEGORIA:HEAD -->
+<link rel="stylesheet" href="/assets/site-shell.css?v=c21cd21e82">
+<script src="/assets/site-shell.js?v=c21cd21e82" ></script>
+<!-- /ISEGORIA:HEAD -->
+<script defer data-isegoria-analytics src="/assets/analytics.js?v=9e6ebd463bf2"></script>
+</head>
+<body class=" ig-site" data-site-kind="editorial" data-site-route="/material-lab/">
+<!-- ISEGORIA:NAV -->
+<a class="ig-skip" href="#ig-content">Skip to content</a>
+<header id="ig-header"><div class="ig-nav-inner">
+<a class="ig-brand" href="/" aria-label="Isegoria, home"><strong>ISEGORIA</strong><span>Benjamin Haire</span></a>
+<div class="ig-header-actions"><a class="ig-language" href="/ja/" hreflang="ja" lang="ja">日本語</a><button class="ig-menu" type="button" aria-expanded="false" aria-controls="ig-primary">Menu</button></div>
+<nav id="ig-primary" aria-label="Primary navigation"><a href="/">Home</a><a href="/library.html">Library</a><a href="/math-encyclopedia/">Math encyclopedia</a><a href="/#interactive">Interactive</a><a href="/#preoccupations">Research</a><a href="/#books">Books</a><a href="/projects.html" aria-current="location">Projects</a><a href="/about.html">About</a><a class="ig-language" href="/ja/" hreflang="ja" lang="ja">日本語</a><button class="ig-theme" type="button" hidden>Theme</button></nav>
+</div></header>
+<nav id="ig-breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><a href="/projects.html">Projects</a><span aria-hidden="true">/</span><span aria-current="page">Material Lab</span></nav>
+<span id="ig-content" tabindex="-1"></span>
+<!-- /ISEGORIA:NAV --><main>
+<div class="wrap">
+
+  <div class="hero">
+    <p class="label">Software / 23 September 2026</p>
+    <h1>Material Lab</h1>
+    <p class="standfirst">A photograph in, a set of editable PBR texture maps out, and nothing leaves the machine. Material Lab is a free macOS 27 app, with an iOS 27 companion for capture and a command line tool for batches. It has no account, no upload and no engine dependency: you review the maps, then hand the bundle to whatever cooker or DCC pipeline you already use.</p>
+    <div class="herometa">
+      <a class="pill primary" href="https://github.com/theisegoria/material-lab/releases/tag/v1.2.0">Download for macOS (1.2.0)</a>
+      <a class="pill" href="https://github.com/theisegoria/material-lab">Source on GitHub</a>
+      <span>MIT licence · Apple Silicon · macOS 27</span>
+    </div>
+  </div>
+
+  <nav class="toc" aria-label="On this page">
+    <p class="kt">On this page</p>
+    <ol>
+<li><a href="#maps">What it derives</a></li><li><a href="#learned">Learned geometry</a></li><li><a href="#tiling">Making it tile</a></li><li><a href="#light">Delighting and occlusion</a></li><li><a href="#apps">The apps and the CLI</a></li><li><a href="#limits">What it does not claim</a></li><li><a href="#sources">Sources</a></li>
+    </ol>
+  </nav>
+
+  <div class="key">
+    <p class="kt">Installing the release</p>
+    <p>The download is <code>MaterialLab-1.2.0-macOS.dmg</code>, with the learned-geometry model built in. It is signed with a Developer ID but not yet notarized, so the first launch is blocked by Gatekeeper and needs a confirmation in System Settings › Privacy &amp; Security before it will open. It requires an Apple Silicon Mac running macOS 27. The source builds with Xcode 27, CMake and Ninja.</p>
+  </div>
+
+  <p>An RGB photograph does not uniquely determine the shape of a surface. Lighting, pigment, specular reflection, shadow and relief can all produce the same pattern of pixels, so any tool that promises height and normals from a single image is estimating, and the honest version says so. Material Lab records every estimate's recipe and provenance in the bundle beside the maps. Roughness starts from a material prior you choose; metalness is never inferred, only assigned. The derivation core is a versioned C++23 library that runs on every core and is bit-for-bit repeatable: a 1K image takes about 0.1 s on an M5, and the learned stage adds about 0.3 s.</p>
+
+  <h2 id="maps"><span class="num">Section one</span>What it derives</h2>
+
+  <p>From one square sRGB photograph the core produces the following, each as a PNG with its encoding written into the manifest.</p>
+
+  <ul class="maps">
+    <li><b>Albedo</b> A byte-exact copy of the source unless delighting or tiling is on.</li>
+    <li><b>Height</b> 16-bit, normalised, from multi-scale relief bands or the learned stage.</li>
+    <li><b>Normal</b> Tangent space, +Y green-up by default (glTF, OpenGL, Blender, Unity), with a −Y option for DirectX and Unreal.</li>
+    <li><b>Roughness</b> A chosen prior, with optional variation that follows local micro-contrast.</li>
+    <li><b>Ambient occlusion</b> GTAO's cosine-weighted horizon integral evaluated on the heightfield.</li>
+    <li><b>Cavity, convexity, slope, edge</b> Diagnostic scalar maps from the local height average and gradient.</li>
+    <li><b>Bent normal</b> Optional, from the analytic XeGTAO cosine-weighted form.</li>
+    <li><b>ORM</b> Occlusion, roughness and metalness packed, available once metalness is assigned.</li>
+  </ul>
+
+  <p>The relief comes from Rec. 709 luminance in linear light, filtered at three scales and weighted by a material preset; a Scharr derivative of the height gives the normal. Both are art-directable: amplitude, polarity, normal strength and occlusion strength are separate controls, and the app re-derives live as you move them.</p>
+  </div>
+  <div class="wide">
+    <figure class="fig"><div class="plate dark"><img src="assets/brick-map-sheet.jpg" alt="Nine panels from one brick photograph: the source, height, +Y normal, GTAO occlusion, roughness, bent normal, a relit view, a delit and tiled version, and a two by two seamless tiling." loading="lazy" decoding="async" width="960" height="1026"></div>
+      <figcaption><b>Figure 1. Everything from one photograph.</b> The core's own brick verification sheet: source, height, +Y normal, GTAO, roughness and bent normal in the first two rows; then the same material relit from the upper left, delit and tiled with equalize 0.8 and a 0.2 seam band, and the tiled result laid out two by two.</figcaption></figure>
+  </div>
+  <div class="wrap">
+
+  <h2 id="learned"><span class="num">Section two</span>Learned geometry, and where brightness gets it backwards</h2>
+
+  <p>The analytic path has one well-known failure: it assumes that brighter means higher. On most weathered surfaces that is a fair guess, but on brick it is exactly wrong. The mortar is paler than the brick, so a luminance heuristic raises the joints and sinks the bricks, and the relit result looks like a wall pushed out from behind. Every single-image tool built on brightness has this problem, and no amount of preset tuning fixes it, because the information is not in the brightness.</p>
+
+  <p>Material Lab's answer is an optional learned stage built on Microsoft's MoGe-2 monocular geometry model (ViT-S, normal head, MIT licensed). The pinned weights are converted once to a Core ML fp16 model and run on the Neural Engine. The converted model returns +Y tangent normals for 518² tiles; larger images are covered with tiles at 50 percent overlap, blended with a sine window, and resampled to the source size. The core then strips the low-frequency tilt that scene-trained models add, integrates the slopes to height with a deterministic multigrid Poisson solver, and blends that height with the analytic height under a single weight, from 0 (analytic only) to 1 (learned only). Occlusion, cavity, roughness variation and everything downstream then use the blended geometry, so the learned stage improves every map, not just the normal.</p>
+  </div>
+  <div class="wide">
+    <figure class="fig"><div class="plate dark"><img src="assets/learned-normals-brick.jpg" alt="Three rows of four panels on a brick photograph: height, normal, GTAO and a relit view for the analytic stone preset, for MoGe-2 at full weight, and for a 0.6 blend. The analytic row shows mortar as raised; the learned rows show it recessed." loading="lazy" decoding="async" width="1360" height="942"></div>
+      <figcaption><b>Figure 2. The mortar problem.</b> Top row, the analytic stone preset: the pale mortar reads as raised and the occlusion darkens the faces of the bricks. Middle row, MoGe-2 at weight 1: the joints are recessed, the brick tops face up, and occlusion gathers in the joints where it belongs. Bottom row, a 0.6 blend, which keeps the learned shape and lets the analytic path add fine surface grain above the model's working resolution.</figcaption></figure>
+  </div>
+  <div class="wrap">
+
+  <p>A numeric check confirms the convention rather than just the look of it: on the brick photograph, the tops of the bricks just below each joint face up (green +0.034) and the bottoms face down (green −0.045). The Core ML conversion was verified against the stock PyTorch forward pass on a 518² brick tile, with a mean angular difference of 0.045° and a 99th percentile of 0.23°. A warm tile prediction takes about 60 ms on an M5.</p>
+
+  <p>The model is a guide, not a replacement. Fine detail above the model's working size still comes from the analytic path whenever the weight is below 1, and the estimate is cached per source so that editing the recipe never re-runs the network. Because the Neural Engine runs in half precision, results can differ slightly between chips and OS versions; a CPU-only mode is slower and more reproducible. Every export records the model file, the weights hash, the source commit, the compute units, the tiling and a hash of the guide normals that were actually fed to the core, so a bundle can always say exactly how much of its geometry was learned.</p>
+
+  <figure class="fig"><div class="plate"><img src="assets/macos-learned-settings.png" alt="The Learned Geometry settings pane in the macOS app, showing the MoGe-2 model as ready, its weights hash, source commit and contract, a compute units menu set to Neural Engine, and the licence text." loading="lazy" decoding="async" width="1040" height="1240"></div>
+    <figcaption><b>Figure 3. Settings › Learned Geometry on the Mac.</b> The pane shows which model is installed and pins it by hash and commit, lets you switch between the Neural Engine and CPU, and carries the licences: MoGe-2 code and weights under MIT from Microsoft, the DINOv2 modules under Apache 2.0 from Meta. Nothing is downloaded at runtime.</figcaption></figure>
+
+  <p>I chose MoGe-2 for its licence as much as its quality. The single-image material estimators that lead the field on quality, among them ControlMat, MaterialPicker, DualMat and HiMat, publish no permissively licensed weights and generate plausible maps rather than deterministic estimates. Models with use restrictions or unclear terms, including Stable Diffusion derived normal and delight models, DSINE, the non-commercial Depth Anything variants and Marigold, were left out rather than argued over.</p>
+
+  <h2 id="tiling"><span class="num">Section three</span>Making it tile</h2>
+
+  <p>A photograph of a wall does not wrap. The usual fix is to blend the opposite edges into each other, and the usual result on anything with structure is a ghost: two half-transparent brick courses sliding across each other in a band down the middle. Material Lab has two methods and picks the right one for the texture.</p>
+
+  <p>The default is a <strong>seam cut</strong>, a minimum-error boundary cut in the style of image quilting. For each axis, the output uses an offset copy of the image near both opposite edges, so the copy is continuous across the wrap, and the original in the interior. The offset is searched coarse to fine to align the texture with itself in the bands, which for brick means a whole number of courses. Each transition between original and copy then follows the lowest-difference path through its band, found by dynamic programming and feathered by only two pixels either side, and paths start and end at the same offset so the other axis stays continuous. Structured textures keep crisp features; pixels outside the bands are untouched.</p>
+
+  <p>The alternative is a <strong>histogram-preserving blend</strong> for fine stochastic textures such as sand, noise and grain, where soft lighting drift would make any cut visible. Each linear channel is Gaussianised through its empirical CDF, the two copies are blended with the variance-preserving weight, and the result is mapped back through the inverse, so the blended zone keeps the contrast of the original instead of going flat and grey.</p>
+  </div>
+  <div class="wide">
+    <figure class="fig"><div class="plate dark"><img src="assets/tiling-seam-cut-vs-blend.jpg" alt="Two rows of three brick panels. Each row shows the original, the histogram blend with visible ghosted double courses in the middle, and the seam cut with aligned offset, which keeps every brick crisp." loading="lazy" decoding="async" width="990" height="708"></div>
+      <figcaption><b>Figure 4. Seam cut against blend, on a texture that tiles and one that does not.</b> Left, the original. Centre, the histogram-preserving blend: right for noise, but on brick it draws a second, translucent set of courses through the band. Right, the aligned seam cut: the offset copy is registered to a whole course and the cut follows the mortar, so nothing doubles. The lower row is a crop whose period does not divide the tile, which is the harder case.</figcaption></figure>
+  </div>
+  <div class="wrap">
+
+  <p>When a pattern's period does not divide the tile size, a defect somewhere is unavoidable. The cut hides it in one place, in the joint where it is least visible; the blend spreads it as ghosting across the whole band. On a smooth pattern, the cut reduced the wrap mismatch from 0.039 to 0.008, and on stripes it touched 192 intermediate pixels where the blend touched 1,224. The app's tile view reports colour, height and slope mismatch across the edges separately, so you can see whether a source is genuinely seamless or merely looks it.</p>
+
+  <h2 id="light"><span class="num">Section four</span>Delighting and occlusion</h2>
+
+  <p>The second thing a photograph carries that a texture should not is the light it was taken in. A wall lit from one side has a brightness gradient across it, and a brightness-driven relief step will faithfully turn that gradient into a tilt. <strong>Equalize</strong> is the delighting control: it divides linear RGB by a smooth luminance field with a Gaussian scale of about an eighth of the tile, pulls the result toward the image's mean luminance, and raises the gain to the chosen strength. Hue is preserved and the gain is clamped between a quarter and four times, so it flattens lighting without inventing colour. It runs before tiling, so a lighting gradient never becomes a seam, and the relief is derived from the conditioned image. The bottom row of Figure 1 shows the effect on a source with a visible falloff.</p>
+
+  <p><strong>Ambient occlusion</strong> is where the heightfield earns its keep. Material Lab evaluates GTAO's cosine-weighted slice integral on the height, viewed from straight above: eight two-sided slices, so sixteen horizon directions, with eight bilinear taps per side placed exactly on each slice line. Horizons are clamped to the normal's hemisphere. Each pixel is normalised by its own unoccluded integral, which means an open plane at any slope comes out at exactly 1 rather than being darkened for tilting. The occlusion geometry sees the height scaled by its own strength control, independent of the normal response, and a radius bounds the horizon search. The bent normal uses XeGTAO's analytic cosine-weighted form, and every sine and cosine in the loop comes from exact angle-addition identities, with a short polynomial supplying only the arccosine. Compare the GTAO columns in Figure 2: on the analytic geometry the occlusion falls on the brick faces, and on the learned geometry it settles into the joints.</p>
+
+  <h2 id="apps"><span class="num">Section five</span>The apps and the CLI</h2>
+
+  <p>The Mac app is native, built for macOS 27's design language: a source sidebar, a canvas with floating controls, an inspector with the recipe grouped into sections, and a map strip on ⌘1 to ⌘9. Every recipe change re-derives live, debounced, with the core compiled at -O3. There is a before-and-after split, a 3×3 tile view with a tiling-quality card, a relighting view, and a RealityKit PBR preview on a sphere, cube or plane. Recipes are stored per source, photos can be dropped in, and a paired iPhone appears over Bonjour with TLS and per-capture approval.</p>
+  </div>
+  <div class="wide">
+    <figure class="fig"><div class="plate dark"><img src="assets/macos-map-view.jpg" alt="The macOS app in dark mode showing a weathered flagstone albedo on the canvas, with a map strip beneath it listing albedo, height, normal, roughness, AO and cavity, and a tiling quality card reporting colour, height and slope as seamless across the edges." loading="lazy" decoding="async" width="1600" height="1870"></div>
+      <figcaption><b>Figure 5. The map view on the Mac, dark appearance.</b> A flagstone source with its nine maps derived in 216 ms. The strip along the bottom switches maps; the tiling-quality card on the right reports colour, height and slope mismatch across the wrap. The sidebar and inspector are collapsed in this render, which is the app's own off-screen capture rather than a window screenshot.</figcaption></figure>
+  </div>
+  <div class="wrap">
+
+  <p>The iPhone app is for capture. It has a full-bleed camera with level and glare hints, Vision-based auto-crop to a square, on-device derivation with a live 512² preview, output from 512 to 4K, and tiled, lit-sphere and compare modes for review. Captures persist locally, originals are scrubbed of metadata, and a finished capture can be exported to Files or sent over the local link to a pinned Mac. The same C++ core is compiled into both apps, and a decoded-map parity check between them was pixel-exact for algorithm 1.0.0.</p>
+
+  <figure class="fig phone"><div class="plate"><img src="assets/ios-review.jpg" alt="The iOS app reviewing a fireclay brick capture: a live 512 squared albedo preview, a segmented control for map, tiled, lit and compare modes, chips for each map, and an identity card below." loading="lazy" decoding="async" width="720" height="1565"></div>
+    <figcaption><b>Figure 6. Review on iPhone.</b> A captured brick with its live preview, the map chips, and the identity card. This is a simulator screenshot; the real camera path has not been exercised on hardware.</figcaption></figure>
+
+  <p>The command line tool exposes the same core for batches and for scripting, and doubles as a validator that checks manifest fields and map hashes and rejects forged manifests.</p>
+
+<pre><code>material-lab --input photo.png --output brick.pbrmaterial --label "red brick" \
+    --preset stone --polarity -1 --equalize 0.6 --seamless 0.15 \
+    --learned-normals MoGe2Normals.mlmodelc
+material-lab --validate brick.pbrmaterial</code></pre>
+
+  <p>A bundle is a directory of PNGs and a JSON manifest carrying the map and source hashes, the algorithm version, every recipe parameter, the semantic label, the map encodings and the provenance. Nothing is imported into a game engine automatically; the manifest exists so that whatever does import it can check what it is getting.</p>
+
+  <h2 id="limits"><span class="num">Section six</span>What it does not claim</h2>
+
+  <ul>
+    <li>The maps are estimates. Height is pseudo-height and the occlusion is heightfield occlusion; presets are editable priors, not material recognition.</li>
+    <li>The source alone does not determine intrinsic roughness, metalness, specular F0, emission, opacity, thickness or physical depth. Roughness comes from a prior, and metalness only from you.</li>
+    <li>Bundles from algorithm 1.0.0 encoded the normal's green channel down while claiming +Y. The validator warns, and they should be re-derived.</li>
+    <li>The learned stage is fp16 on the Neural Engine, so its output can drift slightly between chips and OS versions. The manifest records enough to tell.</li>
+    <li>The iOS app has been validated on the simulator only. No physical camera, no hardware colour pipeline and no real-device local-network permission flow has been tested.</li>
+    <li>The release is Developer ID signed but not notarized.</li>
+  </ul>
+
+  <div class="sources" id="sources">
+ <h3>Sources</h3>
+ <p><strong>Methods.</strong> Martin, Roullier, Rouffet, Kaiser and Boubekeur, <em>MaterIA: Single Image High-Resolution Material Capture in the Wild</em> (Adobe, Eurographics 2022), for the overall shape of the problem and its remarks on roughness from a single observation. Jimenez, Wu, Pesce and Jarabo, <em>Practical Real-Time Strategies for Accurate Indirect Occlusion</em>, SIGGRAPH 2016 courses, for GTAO, with Intel's MIT-licensed <a href="https://github.com/GameTechDev/XeGTAO">XeGTAO</a> for the bent-normal form. Heitz and Neyret, <em>High-Performance By-Example Noise using a Histogram-Preserving Blending Operator</em>, HPG 2018, for the blend. Efros and Freeman, <em>Image Quilting for Texture Synthesis and Transfer</em>, SIGGRAPH 2001, for the minimum-error boundary cut. <a href="https://github.com/microsoft/MoGe">MoGe-2</a> (Microsoft, MIT; DINOv2 modules Apache 2.0) for the learned normals. The <a href="https://github.com/KhronosGroup/glTF/blob/main/specification/2.0/Specification.adoc">glTF 2.0 specification</a> for the export conventions.</p>
+ <p><strong>What was verified.</strong> The core's tests run with assertions in release builds and cover the +Y ramp convention and the DirectX flip, exactly unoccluded tilted planes, pit occlusion, seam removal, contrast preservation in the blend zone, equalisation of a lighting ramp, ORM gating, and threaded determinism at 1K. The Core ML conversion of MoGe-2 was checked against the stock PyTorch model on a 518² brick tile. Every figure on this page is the project's own verification output, unaltered apart from downscaling and, for Figure 5, cropping to the window content.</p>
+ <p><strong>What was not.</strong> All timings are from one M5 Mac and will differ elsewhere. The iOS app was validated on the simulator only. Mac and iPhone map parity was measured pixel-exact for algorithm 1.0.0 and has not been re-measured for 1.2.0. The macOS figures are the app's off-screen renders, which draw the glass surfaces as flat regions; layout and map rendering were checked, the material of the glass was not.</p></div>
+</div>
+</main><!-- ISEGORIA:FOOT -->
+<footer id="ig-footer"><div><a href="/">Isegoria · Benjamin Haire</a><nav aria-label="Site links"><a href="/">Back to home</a><a href="/library.html">Browse the library</a><a href="#ig-content">Back to top</a></nav></div></footer>
+<!-- /ISEGORIA:FOOT -->
+</body>
+</html>

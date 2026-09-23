@@ -54,7 +54,7 @@ def category(route,ja=False):
     if r.startswith('/math-encyclopedia/'):return ('数学百科事典' if ja else 'Math encyclopedia',('/ja' if ja else '')+'/math-encyclopedia/')
     if r.startswith('/sheets/'):return ('参考シート' if ja else 'Sheets',('/ja' if ja else '')+'/sheets/')
     if r.startswith(('/medical-textbook/','/game-design-dynamics-of-learning/')):return ('書籍' if ja else 'Books',('/ja' if ja else '')+'/#books')
-    if r.startswith('/stem-genius/'):return ('プロジェクト' if ja else 'Projects',('/ja' if ja else '')+'/projects.html')
+    if r.startswith(('/stem-genius/','/material-lab/')):return ('プロジェクト' if ja else 'Projects',('/ja' if ja else '')+'/projects.html')
     if is_interactive(route):return ('操作できる解説' if ja else 'Interactive explainers',('/ja' if ja else '')+'/#interactive')
     if r.startswith('/algebraic-varieties-introduction/') or r.startswith('/lebesgue-integration/') or r.startswith('/lebesgue-vs-riemann/') or r.startswith('/gamma-beta/') or (r.startswith('/explore/') and not any(x in r for x in ['automatic-watch','apple-silicon'])):
         return ('学習ガイド' if ja else 'Guides',('/ja' if ja else '')+'/#guides')
