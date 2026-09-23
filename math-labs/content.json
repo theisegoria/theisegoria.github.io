@@ -6785,5 +6785,587 @@
         "url": "https://www.damtp.cam.ac.uk/user/tong/dynamics/three.pdf"
       }
     ]
+  },
+  {
+    "slug": "elliptic-curves",
+    "title": [
+      "Elliptic curves: geometry that adds",
+      "楕円曲線：足し算ができる幾何"
+    ],
+    "description": [
+      "A cubic curve whose points form a group: the chord-and-tangent law, curves over finite fields, and the torus hidden behind every curve.",
+      "点が群をなす三次曲線：弦と接線による加法、有限体上の曲線、そしてどの曲線の背後にも隠れているトーラスを扱います。"
+    ],
+    "group": "foundations",
+    "prerequisite": [
+      "Group theory, modular arithmetic and complex numbers",
+      "群論・合同算術・複素数"
+    ],
+    "source": "Andrew Sutherland · Elliptic Curves (MIT OpenCourseWare 18.783)",
+    "url": "https://ocw.mit.edu/courses/18-783-elliptic-curves-spring-2021/",
+    "labs": [
+      {
+        "id": "chord-tangent",
+        "title": [
+          "1. Adding points with a ruler",
+          "1. 定規で点を足す"
+        ],
+        "body": [
+          "A line through two points of a cubic curve meets it in exactly one more point, counted with multiplicity. Reflect that third point in the x axis and call the result P + Q. Drag P and Q along the curve, and switch to 2P to use the tangent instead. In the (a, b) plane, cross the cusp-shaped discriminant curve and watch the curve split into two pieces or merge into one.",
+          "三次曲線上の二点を通る直線は、重複度を込めてちょうどもう一点で曲線と交わります。その三つ目の点を x 軸で折り返したものを P + Q と呼びます。P と Q を曲線に沿ってドラッグし、2P に切り替えると代わりに接線を使います。(a, b) 平面で尖点状の判別式曲線を横切ると、曲線が二つに分かれたり一つにまとまったりします。"
+        ],
+        "formula": "\\lambda=\\frac{y_Q-y_P}{x_Q-x_P}\\ \\Bigl(\\text{or }\\tfrac{3x_P^2+a}{2y_P}\\text{ if }P=Q\\Bigr),\\qquad x_{P+Q}=\\lambda^2-x_P-x_Q,\\qquad y_{P+Q}=\\lambda(x_P-x_{P+Q})-y_P",
+        "example": [
+          "On \\(y^2=x^3-2x+1\\), take \\(P=(0,1)\\) and \\(Q=(1,0)\\). Then \\(\\lambda=-1\\), \\(x_{P+Q}=1-0-1=0\\) and \\(y_{P+Q}=-1\\cdot(0-0)-1=-1\\), so \\(P+Q=(0,-1)=-P\\). This is consistent: \\(Q\\) has order 2, and the line through \\(P\\) and \\(Q\\) passes through \\(-(P+Q)=(0,1)=P\\) as a tangent point.",
+          "\\(y^2=x^3-2x+1\\) で \\(P=(0,1)\\)、\\(Q=(1,0)\\) とします。\\(\\lambda=-1\\)、\\(x_{P+Q}=1-0-1=0\\)、\\(y_{P+Q}=-1\\cdot(0-0)-1=-1\\) なので \\(P+Q=(0,-1)=-P\\) です。これは整合的です。\\(Q\\) の位数は 2 で、\\(P\\) と \\(Q\\) を通る直線は \\(P\\) で曲線に接しています。"
+        ],
+        "caution": [
+          "The identity is the point at infinity O, where every vertical line meets the curve. Associativity is not obvious from the picture: it is a theorem (it follows from the Cayley–Bacharach theorem on cubics), which the checks behind this page verify numerically.",
+          "単位元は無限遠点 O で、すべての垂直な直線がそこで曲線と交わります。結合法則は図からは明らかではなく、三次曲線に関するケイリー・バカラックの定理から従う定理です。"
+        ],
+        "question": [
+          "When is 2P = O?",
+          "2P = O になるのはいつですか？"
+        ],
+        "answer": [
+          "Exactly when the tangent at P is vertical, that is when \\(y_P=0\\). Those points are the real roots of \\(x^3+ax+b\\), so there are one or three of them besides O.",
+          "P での接線が垂直になるとき、つまり \\(y_P=0\\) のときです。そのような点は \\(x^3+ax+b\\) の実根なので、O 以外に一つか三つあります。"
+        ],
+        "params": [
+          [
+            "a",
+            "Coefficient a",
+            "係数 a",
+            -3,
+            2,
+            0.05,
+            -2
+          ],
+          [
+            "b",
+            "Coefficient b",
+            "係数 b",
+            -2,
+            3,
+            0.05,
+            1
+          ],
+          [
+            "px",
+            "P: x coordinate",
+            "P の x 座標",
+            -3,
+            3.4,
+            0.01,
+            -1.2
+          ],
+          [
+            "ps",
+            "P: branch",
+            "P の枝",
+            0,
+            1,
+            1,
+            0,
+            [
+              [
+                "upper",
+                "上"
+              ],
+              [
+                "lower",
+                "下"
+              ]
+            ]
+          ],
+          [
+            "qx",
+            "Q: x coordinate",
+            "Q の x 座標",
+            -3,
+            3.4,
+            0.01,
+            2.3
+          ],
+          [
+            "qs",
+            "Q: branch",
+            "Q の枝",
+            0,
+            1,
+            1,
+            1,
+            [
+              [
+                "upper",
+                "上"
+              ],
+              [
+                "lower",
+                "下"
+              ]
+            ]
+          ],
+          [
+            "op",
+            "Operation",
+            "演算",
+            0,
+            1,
+            1,
+            0,
+            [
+              [
+                "P + Q",
+                "P + Q"
+              ],
+              [
+                "2P",
+                "2P"
+              ]
+            ]
+          ]
+        ],
+        "source": "Andrew Sutherland · Elliptic Curves (MIT OpenCourseWare 18.783)",
+        "url": "https://ocw.mit.edu/courses/18-783-elliptic-curves-spring-2021/"
+      },
+      {
+        "id": "curves-mod-p",
+        "title": [
+          "2. The same curve over a finite field",
+          "2. 有限体上の同じ曲線"
+        ],
+        "body": [
+          "Replace the real numbers by the integers mod p. The curve becomes a finite scatter of points with the same symmetry y ↔ −y, and the same formulas still add them. Hasse proved that the number of points never strays from p + 1 by more than 2√p. The histogram counts every curve for this p; the walk of G, 2G, 3G, … shows why undoing multiplication is hard.",
+          "実数を p を法とする整数に置き換えます。曲線は y ↔ −y の対称性を保った有限個の点の散らばりになり、同じ公式で点を足せます。ハッセは、点の個数が p + 1 から 2√p より大きくずれないことを証明しました。ヒストグラムはこの p のすべての曲線を数えたものです。G, 2G, 3G, … の歩みは、掛け算を逆にたどるのがなぜ難しいかを示します。"
+        ],
+        "formula": "\\#E(\\mathbb F_p)=p+1+\\sum_{x=0}^{p-1}\\Bigl(\\frac{x^3+ax+b}{p}\\Bigr),\\qquad \\bigl|\\,p+1-\\#E(\\mathbb F_p)\\,\\bigr|\\le 2\\sqrt p",
+        "example": [
+          "For \\(y^2=x^3+x\\) with \\(p\\equiv3\\pmod 4\\), the substitution \\(x\\mapsto-x\\) flips the sign of every Legendre symbol, so the sum is 0 and \\(\\#E=p+1\\) exactly. Try \\(a=1,\\ b=0\\) with \\(p=23\\): there are 24 points.",
+          "\\(p\\equiv3\\pmod 4\\) のときの \\(y^2=x^3+x\\) では、置き換え \\(x\\mapsto-x\\) がすべてのルジャンドル記号の符号を反転させるので和は 0 になり、ちょうど \\(\\#E=p+1\\) です。\\(p=23\\) で \\(a=1,\\ b=0\\) を試すと、点は 24 個です。"
+        ],
+        "caution": [
+          "The semicircle drawn over the histogram is a limit: Birch showed in 1968 that, over all curves mod p, the moments of the normalised trace approach those of the semicircle as p grows. For small p the match is rough.",
+          "ヒストグラムに重ねた半円は極限の形です。バーチは 1968 年に、p を法とするすべての曲線にわたって、正規化したトレースのモーメントが p の増大とともに半円のモーメントに近づくことを示しました。p が小さいうちは一致は粗いものです。"
+        ],
+        "question": [
+          "Why must the order of G divide #E?",
+          "G の位数が #E を割り切らなければならないのはなぜですか？"
+        ],
+        "answer": [
+          "The multiples of G form a subgroup of the group of points, and by Lagrange’s theorem the size of a subgroup divides the size of the group.",
+          "G の倍数全体は点の群の部分群をなし、ラグランジュの定理により部分群の大きさは群の大きさを割り切るからです。"
+        ],
+        "params": [
+          [
+            "pk",
+            "Prime p",
+            "素数 p",
+            0,
+            7,
+            1,
+            4,
+            [
+              [
+                "7",
+                "7"
+              ],
+              [
+                "13",
+                "13"
+              ],
+              [
+                "23",
+                "23"
+              ],
+              [
+                "31",
+                "31"
+              ],
+              [
+                "47",
+                "47"
+              ],
+              [
+                "61",
+                "61"
+              ],
+              [
+                "83",
+                "83"
+              ],
+              [
+                "97",
+                "97"
+              ]
+            ]
+          ],
+          [
+            "a",
+            "Coefficient a (mod p)",
+            "係数 a（p を法とする）",
+            0,
+            96,
+            1,
+            2
+          ],
+          [
+            "b",
+            "Coefficient b (mod p)",
+            "係数 b（p を法とする）",
+            0,
+            96,
+            1,
+            3
+          ]
+        ],
+        "source": "Andrew Sutherland · Elliptic Curves (MIT OpenCourseWare 18.783)",
+        "url": "https://ocw.mit.edu/courses/18-783-elliptic-curves-spring-2021/"
+      },
+      {
+        "id": "lattice-torus",
+        "title": [
+          "3. Every complex curve is a torus",
+          "3. 複素曲線はどれもトーラス"
+        ],
+        "body": [
+          "Over the complex numbers an elliptic curve is a doughnut: the plane rolled up along a lattice of periods. The Weierstrass function ℘ repeats over the lattice and sends a point z of the torus to (℘(z), ℘′(z)) on the curve. Drag u and v along the two lines where ℘ is real. Adding u and v on the torus, which is just adding complex numbers, lands exactly where the chord through P and Q predicts.",
+          "複素数の上では楕円曲線はドーナツ、つまり周期の格子に沿って平面を丸めたものです。ワイエルシュトラスの関数 ℘ は格子ごとに繰り返し、トーラスの点 z を曲線上の点 (℘(z), ℘′(z)) に写します。℘ が実数になる二本の線に沿って u と v をドラッグしてください。トーラス上で u と v を足すこと、つまり複素数を足すだけのことが、P と Q を通る弦の予言する点にちょうど一致します。"
+        ],
+        "formula": "\\wp(z)=\\frac1{z^2}+\\sum_{\\omega\\in\\Lambda\\setminus0}\\Bigl(\\frac1{(z-\\omega)^2}-\\frac1{\\omega^2}\\Bigr),\\qquad \\wp^{\\prime}(z)^2=4\\wp(z)^3-g_2\\wp(z)-g_3",
+        "example": [
+          "For the square lattice \\(\\tau=i\\), symmetry under \\(z\\mapsto iz\\) forces \\(g_3=0\\), and \\(g_2=\\tfrac{4\\pi^4}{3}E_4(i)\\approx189.07\\). The curve is \\(y^2=4x^3-189.07\\,x\\), symmetric about \\(x=0\\).",
+          "正方格子 \\(\\tau=i\\) では \\(z\\mapsto iz\\) に関する対称性から \\(g_3=0\\) となり、\\(g_2=\\tfrac{4\\pi^4}{3}E_4(i)\\approx189.07\\) です。曲線は \\(x=0\\) について対称な \\(y^2=4x^3-189.07\\,x\\) です。"
+        ],
+        "caution": [
+          "Only rectangular lattices are shown, so that \\(g_2\\) and \\(g_3\\) are real and the curve can be drawn in the real plane. The colouring is a picture of the complex function ℘; the curve on the right shows only its real points.",
+          "\\(g_2\\) と \\(g_3\\) が実数になって曲線を実平面に描けるように、長方形の格子だけを扱っています。色づけは複素関数 ℘ の図で、右の曲線はその実数点だけを表します。"
+        ],
+        "question": [
+          "Why does ℘ have a double pole at each lattice point but no other poles?",
+          "℘ が各格子点に二位の極を持ち、それ以外に極を持たないのはなぜですか？"
+        ],
+        "answer": [
+          "Each term \\(1/(z-\\omega)^2\\) has its only pole at \\(\\omega\\), and the subtracted constants make the sum converge. A doubly periodic function with a single simple pole per period is impossible, since the residues in a period must sum to zero, so a double pole is the simplest possibility.",
+          "各項 \\(1/(z-\\omega)^2\\) の極は \\(\\omega\\) だけで、引いた定数が和を収束させます。一周期に単純極を一つだけ持つ二重周期関数は、一周期の留数の和が 0 でなければならないので存在せず、二位の極が最も簡単な可能性です。"
+        ],
+        "params": [
+          [
+            "t",
+            "Lattice shape: τ = t i",
+            "格子の形：τ = t i",
+            0.7,
+            2,
+            0.01,
+            1.25
+          ],
+          [
+            "ux",
+            "u: real part",
+            "u の実部",
+            -0.5,
+            0.5,
+            0.005,
+            0.35
+          ],
+          [
+            "ul",
+            "u: line",
+            "u の線",
+            0,
+            1,
+            1,
+            0,
+            [
+              [
+                "Im z = 0",
+                "Im z = 0"
+              ],
+              [
+                "Im z = t/2",
+                "Im z = t/2"
+              ]
+            ]
+          ],
+          [
+            "vx",
+            "v: real part",
+            "v の実部",
+            -0.5,
+            0.5,
+            0.005,
+            0.12
+          ],
+          [
+            "vl",
+            "v: line",
+            "v の線",
+            0,
+            1,
+            1,
+            1,
+            [
+              [
+                "Im z = 0",
+                "Im z = 0"
+              ],
+              [
+                "Im z = t/2",
+                "Im z = t/2"
+              ]
+            ]
+          ]
+        ],
+        "source": "NIST DLMF §23.6 · Relations to theta functions",
+        "url": "https://dlmf.nist.gov/23.6"
+      }
+    ]
+  },
+  {
+    "slug": "atomic-physics",
+    "title": [
+      "Atomic physics: orbitals and spectra",
+      "原子物理：軌道とスペクトル"
+    ],
+    "description": [
+      "The shapes of the hydrogen orbitals, the spectral series they produce, and how a magnetic field splits the sodium D lines.",
+      "水素原子の軌道の形、そこから生じるスペクトル系列、そして磁場がナトリウムの D 線を分裂させる仕組みを扱います。"
+    ],
+    "group": "physics",
+    "prerequisite": [
+      "Quantum mechanics",
+      "量子力学"
+    ],
+    "source": "David Tong · Topics in Quantum Mechanics (Cambridge lecture notes)",
+    "url": "https://www.damtp.cam.ac.uk/user/tong/topicsinqm.html",
+    "labs": [
+      {
+        "id": "hydrogen-orbitals",
+        "title": [
+          "1. The shapes of the orbitals",
+          "1. 軌道の形"
+        ],
+        "body": [
+          "Each stationary state of hydrogen is a radial function times an angular one. Choose n, l and m and look at a slice through the atom. The nodes, where ψ changes sign, come in two kinds: spheres from the radial factor and cones or planes from the angular factor. On the right, r²R² gives the probability of finding the electron at distance r; the dashed curves are the other l values with the same n.",
+          "水素原子の定常状態はどれも、動径関数と角度関数の積です。n、l、m を選び、原子を切った断面を見てください。ψ の符号が変わる節には二種類あります。動径因子からくる球面と、角度因子からくる円錐面や平面です。右の r²R² は電子を距離 r に見いだす確率を表し、点線は同じ n で l が異なるものです。"
+        ],
+        "formula": "\\psi_{nlm}=R_{nl}(r)\\,Y_{lm}(\\theta,\\phi),\\qquad R_{nl}\\propto e^{-r/n}\\Bigl(\\frac{2r}{n}\\Bigr)^{l}L^{(2l+1)}_{n-l-1}\\Bigl(\\frac{2r}{n}\\Bigr),\\qquad \\langle r\\rangle=\\frac{3n^2-l(l+1)}{2}\\,a_0",
+        "example": [
+          "For \\(3d_{z^2}\\), \\(Y\\propto3\\cos^2\\theta-1\\) vanishes where \\(\\cos^2\\theta=1/3\\), that is at \\(\\theta\\approx54.7^\\circ\\): the two nodal cones. With \\(n=3,\\ l=2\\) there is no radial node, and \\(\\langle r\\rangle=(27-6)/2=10.5\\,a_0\\).",
+          "\\(3d_{z^2}\\) では \\(Y\\propto3\\cos^2\\theta-1\\) が \\(\\cos^2\\theta=1/3\\)、つまり \\(\\theta\\approx54.7^\\circ\\) で 0 になり、これが二つの節の円錐です。\\(n=3,\\ l=2\\) では動径方向の節はなく、\\(\\langle r\\rangle=(27-6)/2=10.5\\,a_0\\) です。"
+        ],
+        "caution": [
+          "The pictures use real orbitals (\\(p_x\\), \\(d_{xy}\\) and so on), which are combinations of \\(+m\\) and \\(-m\\); they are not eigenstates of \\(L_z\\) when \\(m\\neq0\\). Colour intensity grows like \\(|\\psi|^{0.55}\\) so that faint outer lobes stay visible.",
+          "図は実数の軌道（\\(p_x\\)、\\(d_{xy}\\) など）で、\\(+m\\) と \\(-m\\) の組み合わせです。\\(m\\neq0\\) のとき \\(L_z\\) の固有状態ではありません。外側の淡い部分も見えるように、色の濃さは \\(|\\psi|^{0.55}\\) に比例させています。"
+        ],
+        "question": [
+          "Why does the 2s orbital have a node but 2p does not have a radial one?",
+          "2s 軌道には節があるのに 2p には動径方向の節がないのはなぜですか？"
+        ],
+        "answer": [
+          "Both have \\(n-1=1\\) node in total. For 2s (\\(l=0\\)) it must be radial, a sphere; for 2p (\\(l=1\\)) it is the angular nodal plane, which leaves none for the radial factor.",
+          "どちらも節は合計 \\(n-1=1\\) 個です。2s（\\(l=0\\)）ではそれは動径方向の球面でなければならず、2p（\\(l=1\\)）では角度方向の節面なので、動径因子には節が残りません。"
+        ],
+        "params": [
+          [
+            "n",
+            "Principal number n",
+            "主量子数 n",
+            1,
+            5,
+            1,
+            4
+          ],
+          [
+            "l",
+            "Angular momentum l",
+            "方位量子数 l",
+            0,
+            4,
+            1,
+            2
+          ],
+          [
+            "m",
+            "Magnetic number m",
+            "磁気量子数 m",
+            -4,
+            4,
+            1,
+            0
+          ],
+          [
+            "phi",
+            "Slice azimuth φ₀ (degrees)",
+            "断面の方位角 φ₀（度）",
+            0,
+            180,
+            1,
+            0
+          ]
+        ],
+        "source": "David Tong · Topics in Quantum Mechanics (Cambridge lecture notes)",
+        "url": "https://www.damtp.cam.ac.uk/user/tong/topicsinqm.html"
+      },
+      {
+        "id": "spectral-lines",
+        "title": [
+          "2. Spectral series",
+          "2. スペクトル系列"
+        ],
+        "body": [
+          "When the electron drops from level n to a lower level, it emits one photon carrying the energy difference. Transitions that end on the same level form a series: Lyman in the ultraviolet, Balmer partly in the visible, Paschen and beyond in the infrared. Choose a series and an upper level, and press play to watch the electron fall.",
+          "電子が準位 n からより低い準位に落ちると、エネルギー差を運ぶ光子を一つ放出します。同じ準位で終わる遷移が一つの系列をなします。ライマン系列は紫外、バルマー系列は一部が可視、パッシェン系列より先は赤外です。系列と上の準位を選び、再生を押して電子が落ちる様子を見てください。"
+        ],
+        "formula": "E_n=-\\frac{13.598\\ \\text{eV}}{n^2},\\qquad \\frac1\\lambda=R_{\\mathrm H}\\Bigl(\\frac1{n_\\ell^2}-\\frac1{n_u^2}\\Bigr),\\qquad R_{\\mathrm H}=1.09678\\times10^{7}\\ \\text{m}^{-1}",
+        "example": [
+          "Hα is the Balmer transition \\(3\\to2\\): \\(E=13.598\\,(1/4-1/9)=1.889\\ \\text{eV}\\), so \\(\\lambda=1239.84/1.889\\approx656.5\\ \\text{nm}\\) in vacuum, the red line that colours emission nebulae.",
+          "Hα はバルマー系列の遷移 \\(3\\to2\\) です。\\(E=13.598\\,(1/4-1/9)=1.889\\ \\text{eV}\\) なので、真空中で \\(\\lambda=1239.84/1.889\\approx656.5\\ \\text{nm}\\) となります。散光星雲を赤く染める線です。"
+        ],
+        "caution": [
+          "These are Bohr levels with the reduced-mass Rydberg constant. Fine structure and the Lamb shift move the lines by about one part in \\(10^5\\), far too little to see here. Wavelengths are vacuum values; in air they are about 0.03% shorter.",
+          "これは換算質量を用いたリュードベリ定数によるボーアの準位です。微細構造とラムシフトは線を \\(10^5\\) 分の 1 程度しか動かさず、ここでは見えません。波長は真空中の値で、空気中では約 0.03% 短くなります。"
+        ],
+        "question": [
+          "Why do the lines of a series crowd together at one end?",
+          "系列の線が片方の端に詰まるのはなぜですか？"
+        ],
+        "answer": [
+          "Because \\(1/n_u^2\\to0\\) as \\(n_u\\) grows, the photon energies approach the ionisation energy of the lower level from below. The limit wavelength is \\(n_\\ell^2/R_{\\mathrm H}\\).",
+          "\\(n_u\\) が大きくなると \\(1/n_u^2\\to0\\) なので、光子のエネルギーは下の準位の電離エネルギーに下から近づきます。極限の波長は \\(n_\\ell^2/R_{\\mathrm H}\\) です。"
+        ],
+        "params": [
+          [
+            "nl",
+            "Lower level (series)",
+            "下の準位（系列）",
+            1,
+            5,
+            1,
+            2,
+            [
+              [
+                "Lyman 1",
+                "ライマン 1"
+              ],
+              [
+                "Balmer 2",
+                "バルマー 2"
+              ],
+              [
+                "Paschen 3",
+                "パッシェン 3"
+              ],
+              [
+                "Brackett 4",
+                "ブラケット 4"
+              ],
+              [
+                "Pfund 5",
+                "プント 5"
+              ]
+            ]
+          ],
+          [
+            "nu",
+            "Upper level n",
+            "上の準位 n",
+            2,
+            12,
+            1,
+            3
+          ]
+        ],
+        "source": "NIST · Handbook of Basic Atomic Spectroscopic Data: hydrogen",
+        "url": "https://physics.nist.gov/PhysRefData/Handbook/Tables/hydrogentable2.htm"
+      },
+      {
+        "id": "zeeman",
+        "title": [
+          "3. A magnetic field splits the lines",
+          "3. 磁場が線を分裂させる"
+        ],
+        "body": [
+          "The yellow sodium doublet comes from 3p → 3s. In a magnetic field each level splits into sublevels m_J, shifted by g_J m_J μ_B B, and photons can only change m_J by 0 or ±1. Because the Landé factor g_J is different in the upper and lower levels, the D1 line splits into four components and D2 into six. Drag the field and see each component move in proportion to B.",
+          "ナトリウムの黄色い二重線は 3p → 3s の遷移から生じます。磁場の中では各準位が副準位 m_J に分裂して g_J m_J μ_B B だけずれ、光子は m_J を 0 か ±1 だけしか変えられません。ランデ因子 g_J が上と下の準位で異なるので、D1 線は 4 成分に、D2 線は 6 成分に分裂します。磁場をドラッグし、各成分が B に比例して動く様子を見てください。"
+        ],
+        "formula": "\\Delta E=\\bigl(g_u m_u-g_\\ell m_\\ell\\bigr)\\mu_B B,\\qquad g_J=1+\\frac{J(J+1)+S(S+1)-L(L+1)}{2J(J+1)},\\qquad \\Delta m=0,\\pm1",
+        "example": [
+          "For \\(^2P_{3/2}\\): \\(g_J=1+\\frac{15/4+3/4-2}{15/2}=\\tfrac43\\); for \\(^2S_{1/2}\\): \\(g_J=2\\). The D2 component \\(m_u=\\tfrac32\\to m_\\ell=\\tfrac12\\) shifts by \\(\\tfrac43\\cdot\\tfrac32-2\\cdot\\tfrac12=1\\) unit of \\(\\mu_B B\\), about 16 pm at 1 T.",
+          "\\(^2P_{3/2}\\) では \\(g_J=1+\\frac{15/4+3/4-2}{15/2}=\\tfrac43\\)、\\(^2S_{1/2}\\) では \\(g_J=2\\) です。D2 線の成分 \\(m_u=\\tfrac32\\to m_\\ell=\\tfrac12\\) は \\(\\tfrac43\\cdot\\tfrac32-2\\cdot\\tfrac12=1\\) 単位の \\(\\mu_B B\\) だけずれ、1 T でおよそ 16 pm です。"
+        ],
+        "caution": [
+          "The electron g factor is taken as exactly 2 and hyperfine structure is ignored. Line thickness shows the squared 3j symbol, the relative strength of each transition; the brightness actually seen also depends on the viewing direction and polarisation.",
+          "電子の g 因子はちょうど 2 とし、超微細構造は無視しています。線の太さは各遷移の相対的な強さである 3j 記号の二乗を表します。実際に見える明るさは観測方向と偏光にも依存します。"
+        ],
+        "question": [
+          "What would happen in a field of 100 T?",
+          "100 T の磁場では何が起こりますか？"
+        ],
+        "answer": [
+          "The Zeeman shift would exceed the 2.1 meV fine-structure splitting, so L and S decouple and the pattern goes over to the Paschen–Back effect, where the shifts are \\((m_L+2m_S)\\mu_B B\\).",
+          "ゼーマンのずれが 2.1 meV の微細構造分裂を上回るので、L と S の結合がほどけ、ずれが \\((m_L+2m_S)\\mu_B B\\) となるパッシェン・バック効果に移ります。"
+        ],
+        "params": [
+          [
+            "B",
+            "Magnetic field B (tesla)",
+            "磁場 B（テスラ）",
+            0,
+            2,
+            0.01,
+            1
+          ],
+          [
+            "line",
+            "Line",
+            "スペクトル線",
+            0,
+            2,
+            1,
+            1,
+            [
+              [
+                "D1",
+                "D1"
+              ],
+              [
+                "D2",
+                "D2"
+              ],
+              [
+                "both",
+                "両方"
+              ]
+            ]
+          ],
+          [
+            "pol",
+            "Components",
+            "成分",
+            0,
+            2,
+            1,
+            0,
+            [
+              [
+                "all",
+                "すべて"
+              ],
+              [
+                "π only",
+                "π のみ"
+              ],
+              [
+                "σ only",
+                "σ のみ"
+              ]
+            ]
+          ]
+        ],
+        "source": "Daniel A. Steck · Sodium D Line Data",
+        "url": "https://steck.us/alkalidata/sodiumnumbers.pdf"
+      }
+    ]
   }
 ]

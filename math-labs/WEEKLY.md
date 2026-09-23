@@ -65,7 +65,9 @@ show the mechanism. Beyond KIT.md's design bar:
 ```
 python3 math-labs/build.py
 python3 math-labs/integrate.py
-python3 tools/update-library.py
+# keep other sessions' unpublished folders out of the library
+EXCL=$(git ls-files --others --exclude-standard --directory | grep '/$' | sed 's|/$||' | grep -v -E '^(ja/)?(<S1>|<S2>)$' | paste -sd, -)
+LIBRARY_EXCLUDE=$EXCL python3 tools/update-library.py
 python3 tools/site-shell.py
 python3 tools/track-pages.py
 node math-labs/verify.cjs
@@ -75,8 +77,8 @@ python3 tools/check-index.py
 site-shell.py sometimes rewrites unrelated pages with whitespace-only drift
 (e.g. `class=" ig-site"`). After the build, `git status --short`: any modified
 file outside the paths listed in step 6 is reverted with `git checkout -- <file>`.
-If a library page picks up `kuru-toga` or any other unpublished directory,
-revert that hunk too.
+The LIBRARY_EXCLUDE line above keeps unpublished folders (kuru-toga, another
+session's new page) out of library.html; check the library diff adds only your two topics.
 
 ## 5. Visual QA (mandatory)
 

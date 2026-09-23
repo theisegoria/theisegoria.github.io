@@ -69,7 +69,9 @@
     'control-theory': ['dynamical-systems', 'complex-analysis', 'fourier-analysis'],
     'logic-computability': ['number-theory', 'graph-theory', 'information-theory'],
     'hyperbolic-geometry': ['group-theory', 'general-relativity', 'complex-analysis'],
-    'rigid-body-dynamics': ['lie-groups', 'hamiltonian-mechanics']
+    'rigid-body-dynamics': ['lie-groups', 'hamiltonian-mechanics'],
+    'elliptic-curves': ['complex-analysis', 'hyperbolic-geometry'],
+    'atomic-physics': ['optics', 'lie-groups']
   };
   // Topics named in each topic's own prerequisite line (content.json "prerequisite").
   const PREREQ = {
@@ -90,7 +92,9 @@
     'solid-state-physics': ['quantum-mechanics', 'fourier-analysis'],    // Quantum mechanics and Fourier analysis
     'control-theory': ['dynamical-systems', 'complex-analysis'],         // Dynamical systems and complex analysis
     'hyperbolic-geometry': ['differential-geometry'],                    // Complex numbers and differential geometry
-    'rigid-body-dynamics': ['classical-mechanics', 'linear-algebra']     // Classical mechanics and linear algebra
+    'rigid-body-dynamics': ['classical-mechanics', 'linear-algebra'],    // Classical mechanics and linear algebra
+    'elliptic-curves': ['group-theory', 'number-theory'],               // Group theory, modular arithmetic and complex numbers
+    'atomic-physics': ['quantum-mechanics']                              // Quantum mechanics
   };
   // Where each group settles, as fractions of the stage.
   const ANCHOR = {

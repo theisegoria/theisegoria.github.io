@@ -6,7 +6,7 @@ is progressive enhancement, so the page still works with JavaScript switched off
 from pathlib import Path
 from html import escape, unescape
 from html.parser import HTMLParser
-import importlib.util, json, re, sys
+import importlib.util, json, os, re, sys
 
 ROOT=Path(__file__).resolve().parents[1]
 spec=importlib.util.spec_from_file_location('shell',ROOT/'tools/site-shell.py')
@@ -24,10 +24,15 @@ INTERACTIVE=re.compile(r'<canvas\b|data-course=|/assets/interactive|type="range"
 SUBPAGE=re.compile(r'^/(?:ja/)?game-design-dynamics-of-learning/part-\d+\.html$'
                    r'|^/(?:ja/)?medical-textbook/mindmaps/')
 
+# LIBRARY_EXCLUDE=dir1,ja/dir1 skips folders that are in the working tree but not yet published
+# (another session's work in progress), so a rebuild here does not list them early.
+EXCLUDE=[x.strip().strip('/') for x in os.environ.get('LIBRARY_EXCLUDE','').split(',') if x.strip()]
+
 def entries():
  result=[]
  for p in sorted(ROOT.rglob('*.html')):
   if any(x in p.parts for x in ['node_modules','.git','dist','.next']):continue
+  if any(p.relative_to(ROOT).as_posix().startswith(x+'/') for x in EXCLUDE):continue
   source=p.read_text();route=shell.route_for(p.relative_to(ROOT));ja=shell.japanese(source)
   if re.search(r'http-equiv=["\']refresh',source,re.I):continue
   if shell.category(route,ja) is None:continue
