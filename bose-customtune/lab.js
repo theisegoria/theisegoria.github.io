@@ -469,8 +469,12 @@ const lab = await mountLab(canvas, {
         const bx = (pb.x * 0.5 + 0.5) * w, by = (-pb.y * 0.5 + 0.5) * h;
         el.style.setProperty('--leader', `${Math.min(160, Math.max(10, Math.abs(bx - ax) - 4)).toFixed(0)}px`);
         el.style.setProperty('--rise', `${(ay - by).toFixed(0)}px`);
-        const tx = d.side === 'left' ? `calc(${bx}px - 100% - 4px)` : `${bx + 4}px`;
-        el.style.transform = `translate(${tx}, ${by - 8}px)`;
+        // keep the pill inside the stage; the leader shortens to match when it has to move in
+        const ew = el.offsetWidth || 0;
+        let x0 = d.side === 'left' ? bx - ew - 4 : bx + 4;
+        const x1 = Math.max(6, Math.min(w - ew - 6, x0));
+        if (x1 !== x0) el.style.setProperty('--leader', `${Math.max(6, Math.min(160, Math.abs((d.side === 'left' ? x1 + ew : x1) - ax) - 4)).toFixed(0)}px`);
+        el.style.transform = `translate(${x1.toFixed(1)}px, ${(by - 8).toFixed(1)}px)`;
       });
     }
 
