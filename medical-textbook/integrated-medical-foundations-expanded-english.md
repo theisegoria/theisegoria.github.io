@@ -11958,7 +11958,7 @@ Longitudinal care is a repeated cycle of prioritise, act, measure, simplify, and
 
 # Chapter 72: Rehabilitation Medicine, Disability, Function, and Participation
 
-## TTS module 1: Mechanistic foundations, classification, normal variation, and clinical presentation
+## TTS module 1: Models of function, adaptation, recovery, impairment, and rehabilitation trajectories
 
 Rehabilitation medicine studies how disease, injury, environment, and personal factors interact to produce function or disability. Its scientific target is not merely impairment but activity, participation, adaptation, and quality of life. Recovery may involve biological repair, neural plasticity, compensation, assistive technology, environmental change, and redefinition of meaningful goals.
 
@@ -12182,7 +12182,7 @@ Rehabilitation is complete neither when therapy sessions end nor when impairment
 
 # Chapter 73: Patient Safety, Quality Improvement, Human Factors, and Clinical Systems
 
-## TTS module 1: Mechanistic foundations, classification, normal variation, and clinical presentation
+## TTS module 1: Error and harm, human performance, communication, deterioration, and safety culture
 
 Patient safety studies how care causes preventable harm and how systems can make correct action easier, error visible, and recovery possible. Most adverse events arise from interactions among people, tasks, technology, environment, organisation, and patient factors rather than a single careless individual. Accountability remains necessary, but blame without system learning leaves hazards intact.
 
@@ -12256,7 +12256,7 @@ Burnout is associated with safety risk but is not an individual defect. Workload
 
 Safety science therefore asks why an action made sense at the time, what conditions shaped it, which barriers failed, and how the system can detect or absorb recurrence. The goal is not an impossible absence of error but reliable care that anticipates human limits and learns before harm repeats.
 
-## TTS module 2: History, examination, diagnostic strategy, differential diagnosis, and common disease
+## TTS module 2: Incident investigation, diagnostic and medication error, quality measurement, and hazard analysis
 
 Safety investigation reconstructs how care was delivered, why decisions appeared reasonable, what barriers existed, and where opportunities for detection or recovery were lost. The aim is neither exoneration nor blame by default. It is an evidence-based explanation sufficient to support fair accountability and effective redesign.
 
@@ -12336,7 +12336,7 @@ Safety-II approaches study how work usually succeeds despite variability. Positi
 
 A safety diagnosis is complete when it explains the event and the normal process that produced it, identifies evidence and uncertainty, and points toward controls stronger than reminders or retraining alone. Investigation earns trust only when findings lead to visible, monitored action.
 
-## TTS module 3: Management, monitoring, prevention, safety, ethics, systems issues, and longitudinal care
+## TTS module 3: Improvement methods, teams and escalation, governance, patient partnership, and sustaining change
 
 Quality improvement converts safety knowledge into iterative system change. It differs from research in primary intent but still requires sound measurement, ethical governance, and attention to unintended effects. Sustainable improvement aligns the clinical aim, human workflow, technology, leadership, resources, and patient experience rather than relying on motivation alone.
 
