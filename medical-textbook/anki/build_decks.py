@@ -231,6 +231,25 @@ def export(root: Path | None = None, write_packages: bool = True) -> dict:
             manuscript.module_id(card["chapter"], card["module"]), []
         ).append(card)
 
+    # genanki stamps every note and the ZIP entry with the current time, so an
+    # unchanged deck still comes out as different bytes. Record a digest of
+    # what each package contains and skip rewriting one whose content has not
+    # changed, so a batch only touches the packages it actually alters.
+    ledger_path = PACKAGES_DIR / "package-digests.json"
+    try:
+        ledger = json.loads(ledger_path.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        ledger = {}
+
+    def write_package(deck, rows: list[list[str]], out: Path, name: str) -> None:
+        digest = hashlib.sha256(json.dumps(
+            [deck.deck_id, deck.name, MODEL_ID, MODEL_CSS, rows],
+            ensure_ascii=False).encode("utf-8")).hexdigest()
+        if out.is_file() and ledger.get(name) == digest:
+            return
+        genanki.Package(deck).write_to_file(str(out))
+        ledger[name] = digest
+
     for language in manuscript.LANGUAGES:
         rows = rows_for_language(cards, language, modules[language])
         combined = HERE / f"IMF-{language}.tsv"
@@ -342,13 +361,32 @@ def build_packages(cards: list[dict], modules: dict) -> list[str]:
             manuscript.module_id(card["chapter"], card["module"]), []
         ).append(card)
 
+    # genanki stamps every note and the ZIP entry with the current time, so an
+    # unchanged deck still comes out as different bytes. Record a digest of
+    # what each package contains and skip rewriting one whose content has not
+    # changed, so a batch only touches the packages it actually alters.
+    ledger_path = PACKAGES_DIR / "package-digests.json"
+    try:
+        ledger = json.loads(ledger_path.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        ledger = {}
+
+    def write_package(deck, rows: list[list[str]], out: Path, name: str) -> None:
+        digest = hashlib.sha256(json.dumps(
+            [deck.deck_id, deck.name, MODEL_ID, MODEL_CSS, rows],
+            ensure_ascii=False).encode("utf-8")).hexdigest()
+        if out.is_file() and ledger.get(name) == digest:
+            return
+        genanki.Package(deck).write_to_file(str(out))
+        ledger[name] = digest
+
     for language in manuscript.LANGUAGES:
         rows = rows_for_language(cards, language, modules[language])
         deck = genanki.Deck(DECK_IDS[language], DECK_NAMES[language])
         for row in rows:
             deck.add_note(note_for(row))
         out = PACKAGES_DIR / f"IMF-{language}.apkg"
-        genanki.Package(deck).write_to_file(str(out))
+        write_package(deck, rows, out, out.name)
         produced.append(out.name)
 
         # One package per module, so a module can be studied on its own. The
@@ -367,9 +405,11 @@ def build_packages(cards: list[dict], modules: dict) -> list[str]:
             for row in module_rows:
                 module_deck.add_note(note_for(row))
             out = module_dir / f"IMF-{key}-{language}.apkg"
-            genanki.Package(module_deck).write_to_file(str(out))
+            write_package(module_deck, module_rows, out, f"Modules/{out.name}")
             produced.append(f"Modules/{out.name}")
 
+    ledger_path.write_text(
+        json.dumps(dict(sorted(ledger.items())), indent=1) + "\n", encoding="utf-8")
     return produced
 
 

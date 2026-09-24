@@ -1,0 +1,643 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="mm" viewBox="0 0 2111 1670" width="2111" height="1670" role="img" aria-label="Pharmacokinetics, pharmacodynamics, and safe prescribing">
+<style>
+  .mm-bg { fill: #faf8f4; }
+  .mm text { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; fill: #1b1917; }
+  .mm .link { fill: none; stroke: #c9c1b4; }
+  .mm .box { fill: none; stroke: none; }
+  .mm .d0 .box { fill: #1b1917; stroke: #1b1917; }
+  .mm .d0 text { fill: #faf8f4; font-weight: 650; }
+  .mm .d1 text { font-weight: 600; }
+
+  .mm .link.b0 { stroke: #4b9ac6; }
+  .mm .b0.d1 .box { fill: #d7e5eb; stroke: #0072B2; stroke-width: 1.5; }
+  .mm .b0.d1 text { fill: #075c8b; }
+  .mm .b0.d2 .box { fill: #e8efef; stroke: #70aed0; }
+  .mm .b0.d3 text, .mm .b0.d4 text { fill: #075c8b; }
+
+  .mm .link.b1 { stroke: #e08c49; }
+  .mm .b1.d1 .box { fill: #f5e2d2; stroke: #D55E00; stroke-width: 1.5; }
+  .mm .b1.d1 text { fill: #a64d06; }
+  .mm .b1.d2 .box { fill: #f7ede3; stroke: #e6a36e; }
+  .mm .b1.d3 text, .mm .b1.d4 text { fill: #a64d06; }
+
+  .mm .link.b2 { stroke: #4bb99a; }
+  .mm .b2.d1 .box { fill: #d7ebe2; stroke: #009E73; stroke-width: 1.5; }
+  .mm .b2.d1 text { fill: #077d5c; }
+  .mm .b2.d2 .box { fill: #e8f2eb; stroke: #70c6ad; }
+  .mm .b2.d3 text, .mm .b2.d4 text { fill: #077d5c; }
+
+  .mm .link.b3 { stroke: #da9fbe; }
+  .mm .b3.d1 .box { fill: #f4e6e9; stroke: #CC79A7; stroke-width: 1.5; }
+  .mm .b3.d1 text { fill: #985c7c; }
+  .mm .b3.d2 .box { fill: #f7efef; stroke: #e1b2ca; }
+  .mm .b3.d3 text, .mm .b3.d4 text { fill: #985c7c; }
+
+  .mm .link.b4 { stroke: #bba149; }
+  .mm .b4.d1 .box { fill: #ede7d2; stroke: #A07C00; stroke-width: 1.5; }
+  .mm .b4.d1 text { fill: #7f6306; }
+  .mm .b4.d2 .box { fill: #f4efe3; stroke: #c8b46e; }
+  .mm .b4.d3 text, .mm .b4.d4 text { fill: #7f6306; }
+
+  .mm .link.b5 { stroke: #84c1e2; }
+  .mm .b5.d1 .box { fill: #e3eef2; stroke: #51a9db; stroke-width: 1.5; }
+  .mm .b5.d1 text { fill: #3d7899; }
+  .mm .b5.d2 .box { fill: #eff3f3; stroke: #9dcde6; }
+  .mm .b5.d3 text, .mm .b5.d4 text { fill: #3d7899; }
+
+  .mm .link.b6 { stroke: #9580b0; }
+  .mm .b6.d1 .box { fill: #e6e0e6; stroke: #6A4C93; stroke-width: 1.5; }
+  .mm .b6.d1 text { fill: #563f74; }
+  .mm .b6.d2 .box { fill: #f0eced; stroke: #ab99bf; }
+  .mm .b6.d3 text, .mm .b6.d4 text { fill: #563f74; }
+
+  .mm .link.b7 { stroke: #98ac74; }
+  .mm .b7.d1 .box { fill: #e6e9da; stroke: #6E8B3D; stroke-width: 1.5; }
+  .mm .b7.d1 text { fill: #596e34; }
+  .mm .b7.d2 .box { fill: #f0f0e7; stroke: #adbc8f; }
+  .mm .b7.d3 text, .mm .b7.d4 text { fill: #596e34; }
+@media (prefers-color-scheme: dark) {
+  .mm-bg { fill: #12100e; }
+  .mm text { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; fill: #ece7df; }
+  .mm .link { fill: none; stroke: #3d3833; }
+  .mm .box { fill: none; stroke: none; }
+  .mm .d0 .box { fill: #ece7df; stroke: #ece7df; }
+  .mm .d0 text { fill: #12100e; font-weight: 650; }
+  .mm .d1 text { font-weight: 600; }
+
+  .mm .link.b0 { stroke: #2d6a8d; }
+  .mm .b0.d1 .box { fill: #172227; stroke: #3891c3; stroke-width: 1.5; }
+  .mm .b0.d1 text { fill: #65a6ca; }
+  .mm .b0.d2 .box { fill: #15191b; stroke: #275772; }
+  .mm .b0.d3 text, .mm .b0.d4 text { fill: #65a6ca; }
+
+  .mm .link.b1 { stroke: #a15f2b; }
+  .mm .b1.d1 .box { fill: #2f2014; stroke: #de8138; stroke-width: 1.5; }
+  .mm .b1.d1 text { fill: #e29a62; }
+  .mm .b1.d2 .box { fill: #201811; stroke: #824e25; }
+  .mm .b1.d3 text, .mm .b1.d4 text { fill: #e29a62; }
+
+  .mm .link.b2 { stroke: #2d826a; }
+  .mm .b2.d1 .box { fill: #172720; stroke: #38b392; stroke-width: 1.5; }
+  .mm .b2.d1 text { fill: #65c0a5; }
+  .mm .b2.d2 .box { fill: #151b17; stroke: #276a57; }
+  .mm .b2.d3 text, .mm .b2.d4 text { fill: #65c0a5; }
+
+  .mm .link.b3 { stroke: #9c6e86; }
+  .mm .b3.d1 .box { fill: #2e2326; stroke: #d796ba; stroke-width: 1.5; }
+  .mm .b3.d1 text { fill: #dcaac3; }
+  .mm .b3.d2 .box { fill: #20191a; stroke: #7e5a6d; }
+  .mm .b3.d3 text, .mm .b3.d4 text { fill: #dcaac3; }
+
+  .mm .link.b4 { stroke: #84702b; }
+  .mm .b4.d1 .box { fill: #292314; stroke: #b59938; stroke-width: 1.5; }
+  .mm .b4.d1 text { fill: #c3ac62; }
+  .mm .b4.d2 .box { fill: #1d1a11; stroke: #6c5b25; }
+  .mm .b4.d3 text, .mm .b4.d4 text { fill: #c3ac62; }
+
+  .mm .link.b5 { stroke: #5c8eab; }
+  .mm .b5.d1 .box { fill: #21292d; stroke: #7bc4ee; stroke-width: 1.5; }
+  .mm .b5.d1 text { fill: #97cdea; }
+  .mm .b5.d2 .box { fill: #191d1e; stroke: #4c7389; }
+  .mm .b5.d3 text, .mm .b5.d4 text { fill: #97cdea; }
+
+  .mm .link.b6 { stroke: #67557c; }
+  .mm .b6.d1 .box { fill: #231e24; stroke: #8b73ab; stroke-width: 1.5; }
+  .mm .b6.d1 text { fill: #a390b8; }
+  .mm .b6.d2 .box { fill: #1a1719; stroke: #554664; }
+  .mm .b6.d3 text, .mm .b6.d4 text { fill: #a390b8; }
+
+  .mm .link.b7 { stroke: #69784d; }
+  .mm .b7.d1 .box { fill: #23251b; stroke: #8ea568; stroke-width: 1.5; }
+  .mm .b7.d1 text { fill: #a6b686; }
+  .mm .b7.d2 .box { fill: #1b1a14; stroke: #566240; }
+  .mm .b7.d3 text, .mm .b7.d4 text { fill: #a6b686; }
+}
+</style>
+  <rect class="mm-bg" width="2111" height="1670"/>
+  <path class="link b0" data-depth="1" stroke-width="2.2" d="M1194.8,835.2 C978.9,835.2 978.9,127.3 763.0,127.3"/>
+  <path class="link b1" data-depth="1" stroke-width="2.2" d="M1194.8,835.2 C936.5,835.2 936.5,469.9 678.1,469.9"/>
+  <path class="link b2" data-depth="1" stroke-width="2.2" d="M1194.8,835.2 C1214.8,835.2 1214.8,228.8 1234.8,228.8"/>
+  <path class="link b3" data-depth="1" stroke-width="2.2" d="M1194.8,835.2 C1214.8,835.2 1214.8,692.7 1234.8,692.7"/>
+  <path class="link b4" data-depth="1" stroke-width="2.2" d="M1194.8,835.2 C957.7,835.2 957.7,936.3 720.5,936.3"/>
+  <path class="link b5" data-depth="1" stroke-width="2.2" d="M1194.8,835.2 C1214.8,835.2 1214.8,1144.5 1234.8,1144.5"/>
+  <path class="link b6" data-depth="1" stroke-width="2.2" d="M1194.8,835.2 C1214.8,835.2 1214.8,1489.1 1234.8,1489.1"/>
+  <path class="link b7" data-depth="1" stroke-width="2.2" d="M1194.8,835.2 C906.8,835.2 906.8,1393.7 618.8,1393.7"/>
+  <g class="node d0 b0" data-depth="0">
+    <rect class="box" x="916.3" y="796.0" width="278.6" height="78.3" rx="9"/>
+    <text x="926.3" y="818.5" font-size="17.0">Pharmacokinetics,</text>
+    <text x="926.3" y="841.0" font-size="17.0">pharmacodynamics, and safe</text>
+    <text x="926.3" y="863.4" font-size="17.0">prescribing</text>
+  </g>
+  <path class="link b0" data-depth="2" stroke-width="1.8" d="M763.0,127.3 C670.9,127.3 670.9,48.7 578.8,48.7"/>
+  <path class="link b0" data-depth="2" stroke-width="1.8" d="M763.0,127.3 C670.9,127.3 670.9,101.3 578.8,101.3"/>
+  <path class="link b0" data-depth="2" stroke-width="1.8" d="M763.0,127.3 C670.9,127.3 670.9,153.3 578.8,153.3"/>
+  <path class="link b0" data-depth="2" stroke-width="1.8" d="M763.0,127.3 C670.9,127.3 670.9,206.0 578.8,206.0"/>
+  <g class="node d1 b0" data-depth="1">
+    <rect class="box" x="763.0" y="112.2" width="113.3" height="30.1" rx="9"/>
+    <text x="773.0" y="132.2" font-size="14.5">Orientation</text>
+  </g>
+  <g class="node d2 b0" data-depth="2">
+    <rect class="box" x="345.2" y="26.0" width="233.6" height="45.3" rx="6"/>
+    <text x="355.2" y="44.5" font-size="13.0">Dose to target concentration to</text>
+    <text x="355.2" y="61.7" font-size="13.0">response</text>
+  </g>
+  <path class="link b0" data-depth="3" stroke-width="1.3" d="M345.2,101.3 C314.8,101.3 314.8,101.3 284.5,101.3"/>
+  <g class="node d2 b0" data-depth="2">
+    <rect class="box" x="345.2" y="78.7" width="233.6" height="45.3" rx="6"/>
+    <text x="355.2" y="97.2" font-size="13.0">Pharmacokinetics: what the body</text>
+    <text x="355.2" y="114.3" font-size="13.0">does to the drug</text>
+  </g>
+  <g class="node d3 b0" data-depth="3">
+    <rect class="box" x="98.9" y="79.3" width="185.6" height="44.0" rx="6"/>
+    <text x="108.9" y="97.3" font-size="12.5">Absorption, distribution,</text>
+    <text x="108.9" y="113.8" font-size="12.5">metabolism, excretion</text>
+  </g>
+  <path class="link b0" data-depth="3" stroke-width="1.3" d="M345.2,153.3 C314.8,153.3 314.8,153.3 284.5,153.3"/>
+  <g class="node d2 b0" data-depth="2">
+    <rect class="box" x="345.2" y="130.7" width="233.6" height="45.3" rx="6"/>
+    <text x="355.2" y="149.2" font-size="13.0">Pharmacodynamics: what the drug</text>
+    <text x="355.2" y="166.3" font-size="13.0">does to the body</text>
+  </g>
+  <g class="node d3 b0" data-depth="3">
+    <rect class="box" x="72.4" y="131.3" width="212.1" height="44.0" rx="6"/>
+    <text x="82.4" y="149.3" font-size="12.5">Receptors, enzymes, channels,</text>
+    <text x="82.4" y="165.8" font-size="12.5">transporters</text>
+  </g>
+  <g class="node d2 b0" data-depth="2">
+    <rect class="box" x="331.4" y="183.3" width="247.4" height="45.3" rx="6"/>
+    <text x="341.4" y="201.8" font-size="13.0">Safe prescribing adds indication,</text>
+    <text x="341.4" y="219.0" font-size="13.0">monitoring, stop plan</text>
+  </g>
+  <path class="link b1" data-depth="2" stroke-width="1.8" d="M678.1,469.9 C628.4,469.9 628.4,259.3 578.8,259.3"/>
+  <path class="link b1" data-depth="2" stroke-width="1.8" d="M678.1,469.9 C628.4,469.9 628.4,338.0 578.8,338.0"/>
+  <path class="link b1" data-depth="2" stroke-width="1.8" d="M678.1,469.9 C628.4,469.9 628.4,416.6 578.8,416.6"/>
+  <path class="link b1" data-depth="2" stroke-width="1.8" d="M678.1,469.9 C628.4,469.9 628.4,469.9 578.8,469.9"/>
+  <path class="link b1" data-depth="2" stroke-width="1.8" d="M678.1,469.9 C628.4,469.9 628.4,522.6 578.8,522.6"/>
+  <path class="link b1" data-depth="2" stroke-width="1.8" d="M678.1,469.9 C628.4,469.9 628.4,574.6 578.8,574.6"/>
+  <path class="link b1" data-depth="2" stroke-width="1.8" d="M678.1,469.9 C628.4,469.9 628.4,627.3 578.8,627.3"/>
+  <path class="link b1" data-depth="2" stroke-width="1.8" d="M678.1,469.9 C628.4,469.9 628.4,680.6 578.8,680.6"/>
+  <g class="node d1 b1" data-depth="1">
+    <rect class="box" x="678.1" y="454.9" width="198.1" height="30.1" rx="9"/>
+    <text x="688.1" y="474.9" font-size="14.5">Routes and absorption</text>
+  </g>
+  <g class="node d2 b1" data-depth="2">
+    <rect class="box" x="414.1" y="236.6" width="164.7" height="45.3" rx="6"/>
+    <text x="424.1" y="255.1" font-size="13.0">Intravenous: complete</text>
+    <text x="424.1" y="272.3" font-size="13.0">bioavailability</text>
+  </g>
+  <path class="link b1" data-depth="3" stroke-width="1.3" d="M324.5,338.0 C304.5,338.0 304.5,312.0 284.5,312.0"/>
+  <path class="link b1" data-depth="3" stroke-width="1.3" d="M324.5,338.0 C304.5,338.0 304.5,364.0 284.5,364.0"/>
+  <g class="node d2 b1" data-depth="2">
+    <rect class="box" x="324.5" y="323.9" width="254.3" height="28.2" rx="6"/>
+    <text x="334.5" y="342.4" font-size="13.0">Oral: convenient but many barriers</text>
+  </g>
+  <g class="node d3 b1" data-depth="3">
+    <rect class="box" x="52.5" y="290.0" width="232.0" height="44.0" rx="6"/>
+    <text x="62.5" y="308.0" font-size="12.5">Dissolution, stability, membrane</text>
+    <text x="62.5" y="324.5" font-size="12.5">passage</text>
+  </g>
+  <g class="node d3 b1" data-depth="3">
+    <rect class="box" x="45.9" y="342.0" width="238.6" height="44.0" rx="6"/>
+    <text x="55.9" y="360.0" font-size="12.5">Intestinal and hepatic first-pass</text>
+    <text x="55.9" y="376.5" font-size="12.5">metabolism</text>
+  </g>
+  <g class="node d2 b1" data-depth="2">
+    <rect class="box" x="324.5" y="394.0" width="254.3" height="45.3" rx="6"/>
+    <text x="334.5" y="412.5" font-size="13.0">Bioavailability: fraction reaching</text>
+    <text x="334.5" y="429.6" font-size="13.0">circulation unchanged</text>
+  </g>
+  <g class="node d2 b1" data-depth="2">
+    <rect class="box" x="324.5" y="447.3" width="254.3" height="45.3" rx="6"/>
+    <text x="334.5" y="465.8" font-size="13.0">Absorption depends on formulation,</text>
+    <text x="334.5" y="482.9" font-size="13.0">flow, food, pH</text>
+  </g>
+  <path class="link b1" data-depth="3" stroke-width="1.3" d="M331.4,522.6 C307.9,522.6 307.9,522.6 284.5,522.6"/>
+  <g class="node d2 b1" data-depth="2">
+    <rect class="box" x="331.4" y="499.9" width="247.4" height="45.3" rx="6"/>
+    <text x="341.4" y="518.4" font-size="13.0">Lipid-soluble uncharged molecules</text>
+    <text x="341.4" y="535.6" font-size="13.0">cross readily</text>
+  </g>
+  <g class="node d3 b1" data-depth="3">
+    <rect class="box" x="105.5" y="500.6" width="179.0" height="44.0" rx="6"/>
+    <text x="115.5" y="518.6" font-size="12.5">Many drugs still rely on</text>
+    <text x="115.5" y="535.1" font-size="12.5">transporters</text>
+  </g>
+  <path class="link b1" data-depth="3" stroke-width="1.3" d="M386.5,574.6 C335.5,574.6 335.5,574.6 284.5,574.6"/>
+  <g class="node d2 b1" data-depth="2">
+    <rect class="box" x="386.5" y="551.9" width="192.2" height="45.3" rx="6"/>
+    <text x="396.5" y="570.4" font-size="13.0">Ionisation follows pH and</text>
+    <text x="396.5" y="587.6" font-size="13.0">dissociation constant</text>
+  </g>
+  <g class="node d3 b1" data-depth="3">
+    <rect class="box" x="52.5" y="552.6" width="232.0" height="44.0" rx="6"/>
+    <text x="62.5" y="570.6" font-size="12.5">pH alone cannot predict clinical</text>
+    <text x="62.5" y="587.1" font-size="12.5">behaviour</text>
+  </g>
+  <g class="node d2 b1" data-depth="2">
+    <rect class="box" x="345.2" y="604.6" width="233.6" height="45.3" rx="6"/>
+    <text x="355.2" y="623.1" font-size="13.0">Inhaled rapid, transdermal slow</text>
+    <text x="355.2" y="640.3" font-size="13.0">and sustained</text>
+  </g>
+  <g class="node d2 b1" data-depth="2">
+    <rect class="box" x="352.1" y="657.9" width="226.7" height="45.3" rx="6"/>
+    <text x="362.1" y="676.4" font-size="13.0">Intramuscular and subcutaneous</text>
+    <text x="362.1" y="693.6" font-size="13.0">unreliable in shock</text>
+  </g>
+  <path class="link b2" data-depth="2" stroke-width="1.8" d="M1356.6,228.8 C1444.5,228.8 1444.5,48.7 1532.4,48.7"/>
+  <path class="link b2" data-depth="2" stroke-width="1.8" d="M1356.6,228.8 C1444.5,228.8 1444.5,102.0 1532.4,102.0"/>
+  <path class="link b2" data-depth="2" stroke-width="1.8" d="M1356.6,228.8 C1444.5,228.8 1444.5,154.6 1532.4,154.6"/>
+  <path class="link b2" data-depth="2" stroke-width="1.8" d="M1356.6,228.8 C1444.5,228.8 1444.5,232.6 1532.4,232.6"/>
+  <path class="link b2" data-depth="2" stroke-width="1.8" d="M1356.6,228.8 C1444.5,228.8 1444.5,311.3 1532.4,311.3"/>
+  <path class="link b2" data-depth="2" stroke-width="1.8" d="M1356.6,228.8 C1444.5,228.8 1444.5,364.6 1532.4,364.6"/>
+  <path class="link b2" data-depth="2" stroke-width="1.8" d="M1356.6,228.8 C1444.5,228.8 1444.5,409.0 1532.4,409.0"/>
+  <g class="node d1 b2" data-depth="1">
+    <rect class="box" x="1234.8" y="213.8" width="121.8" height="30.1" rx="9"/>
+    <text x="1244.8" y="233.8" font-size="14.5">Distribution</text>
+  </g>
+  <g class="node d2 b2" data-depth="2">
+    <rect class="box" x="1532.4" y="26.0" width="233.6" height="45.3" rx="6"/>
+    <text x="1542.4" y="44.5" font-size="13.0">Perfusion, permeability, tissue</text>
+    <text x="1542.4" y="61.7" font-size="13.0">and plasma binding</text>
+  </g>
+  <g class="node d2 b2" data-depth="2">
+    <rect class="box" x="1532.4" y="79.3" width="226.7" height="45.3" rx="6"/>
+    <text x="1542.4" y="97.8" font-size="13.0">Albumin binds acids, alpha one</text>
+    <text x="1542.4" y="115.0" font-size="13.0">acid glycoprotein bases</text>
+  </g>
+  <path class="link b2" data-depth="3" stroke-width="1.3" d="M1772.8,154.6 C1799.7,154.6 1799.7,154.6 1826.6,154.6"/>
+  <g class="node d2 b2" data-depth="2">
+    <rect class="box" x="1532.4" y="132.0" width="240.5" height="45.3" rx="6"/>
+    <text x="1542.4" y="150.5" font-size="13.0">Only unbound drug crosses, acts,</text>
+    <text x="1542.4" y="167.6" font-size="13.0">is filtered</text>
+  </g>
+  <g class="node d3 b2" data-depth="3">
+    <rect class="box" x="1826.6" y="132.6" width="198.9" height="44.0" rx="6"/>
+    <text x="1836.6" y="150.6" font-size="12.5">Bound drug dissociates as a</text>
+    <text x="1836.6" y="167.1" font-size="12.5">reservoir</text>
+  </g>
+  <path class="link b2" data-depth="3" stroke-width="1.3" d="M1759.1,232.6 C1792.8,232.6 1792.8,206.6 1826.6,206.6"/>
+  <path class="link b2" data-depth="3" stroke-width="1.3" d="M1759.1,232.6 C1792.8,232.6 1792.8,258.6 1826.6,258.6"/>
+  <g class="node d2 b2" data-depth="2">
+    <rect class="box" x="1532.4" y="210.0" width="226.7" height="45.3" rx="6"/>
+    <text x="1542.4" y="228.5" font-size="13.0">Volume of distribution relates</text>
+    <text x="1542.4" y="245.6" font-size="13.0">amount to concentration</text>
+  </g>
+  <g class="node d3 b2" data-depth="3">
+    <rect class="box" x="1826.6" y="184.6" width="251.9" height="44.0" rx="6"/>
+    <text x="1836.6" y="202.6" font-size="12.5">Small: mainly plasma; large: tissue</text>
+    <text x="1836.6" y="219.1" font-size="12.5">binding</text>
+  </g>
+  <g class="node d3 b2" data-depth="3">
+    <rect class="box" x="1826.6" y="236.6" width="205.5" height="44.0" rx="6"/>
+    <text x="1836.6" y="254.6" font-size="12.5">Proportional concept, not an</text>
+    <text x="1836.6" y="271.1" font-size="12.5">anatomical space</text>
+  </g>
+  <g class="node d2 b2" data-depth="2">
+    <rect class="box" x="1532.4" y="288.6" width="247.4" height="45.3" rx="6"/>
+    <text x="1542.4" y="307.1" font-size="13.0">Older adults: less water and lean</text>
+    <text x="1542.4" y="324.3" font-size="13.0">mass, more fat</text>
+  </g>
+  <g class="node d2 b2" data-depth="2">
+    <rect class="box" x="1532.4" y="342.0" width="247.4" height="45.3" rx="6"/>
+    <text x="1542.4" y="360.5" font-size="13.0">Oedema, pregnancy, burns, obesity</text>
+    <text x="1542.4" y="377.6" font-size="13.0">alter distribution</text>
+  </g>
+  <path class="link b2" data-depth="3" stroke-width="1.3" d="M1752.2,409.0 C1789.4,409.0 1789.4,409.0 1826.6,409.0"/>
+  <g class="node d2 b2" data-depth="2">
+    <rect class="box" x="1532.4" y="386.4" width="219.8" height="45.3" rx="6"/>
+    <text x="1542.4" y="404.9" font-size="13.0">Blood-brain barrier restricts</text>
+    <text x="1542.4" y="422.0" font-size="13.0">polar compounds</text>
+  </g>
+  <g class="node d3 b2" data-depth="3">
+    <rect class="box" x="1826.6" y="395.3" width="238.6" height="27.5" rx="6"/>
+    <text x="1836.6" y="413.3" font-size="12.5">Tight junctions and active efflux</text>
+  </g>
+  <path class="link b3" data-depth="2" stroke-width="1.8" d="M1475.4,692.7 C1503.9,692.7 1503.9,452.8 1532.4,452.8"/>
+  <path class="link b3" data-depth="2" stroke-width="1.8" d="M1475.4,692.7 C1503.9,692.7 1503.9,505.4 1532.4,505.4"/>
+  <path class="link b3" data-depth="2" stroke-width="1.8" d="M1475.4,692.7 C1503.9,692.7 1503.9,558.8 1532.4,558.8"/>
+  <path class="link b3" data-depth="2" stroke-width="1.8" d="M1475.4,692.7 C1503.9,692.7 1503.9,612.1 1532.4,612.1"/>
+  <path class="link b3" data-depth="2" stroke-width="1.8" d="M1475.4,692.7 C1503.9,692.7 1503.9,665.4 1532.4,665.4"/>
+  <path class="link b3" data-depth="2" stroke-width="1.8" d="M1475.4,692.7 C1503.9,692.7 1503.9,718.7 1532.4,718.7"/>
+  <path class="link b3" data-depth="2" stroke-width="1.8" d="M1475.4,692.7 C1503.9,692.7 1503.9,763.1 1532.4,763.1"/>
+  <path class="link b3" data-depth="2" stroke-width="1.8" d="M1475.4,692.7 C1503.9,692.7 1503.9,799.0 1532.4,799.0"/>
+  <path class="link b3" data-depth="2" stroke-width="1.8" d="M1475.4,692.7 C1503.9,692.7 1503.9,834.8 1532.4,834.8"/>
+  <path class="link b3" data-depth="2" stroke-width="1.8" d="M1475.4,692.7 C1503.9,692.7 1503.9,879.2 1532.4,879.2"/>
+  <path class="link b3" data-depth="2" stroke-width="1.8" d="M1475.4,692.7 C1503.9,692.7 1503.9,932.5 1532.4,932.5"/>
+  <g class="node d1 b3" data-depth="1">
+    <rect class="box" x="1234.8" y="668.0" width="240.5" height="49.3" rx="9"/>
+    <text x="1244.8" y="688.0" font-size="14.5">Clearance, metabolism, and</text>
+    <text x="1244.8" y="707.2" font-size="14.5">half-life</text>
+  </g>
+  <path class="link b3" data-depth="3" stroke-width="1.3" d="M1772.8,452.8 C1799.7,452.8 1799.7,452.8 1826.6,452.8"/>
+  <g class="node d2 b3" data-depth="2">
+    <rect class="box" x="1532.4" y="430.1" width="240.5" height="45.3" rx="6"/>
+    <text x="1542.4" y="448.6" font-size="13.0">Clearance: plasma volume cleared</text>
+    <text x="1542.4" y="465.8" font-size="13.0">per unit time</text>
+  </g>
+  <g class="node d3 b3" data-depth="3">
+    <rect class="box" x="1826.6" y="430.8" width="238.6" height="44.0" rx="6"/>
+    <text x="1836.6" y="448.8" font-size="12.5">Elimination rate equals clearance</text>
+    <text x="1836.6" y="465.3" font-size="12.5">times concentration</text>
+  </g>
+  <g class="node d2 b3" data-depth="2">
+    <rect class="box" x="1532.4" y="482.8" width="206.0" height="45.3" rx="6"/>
+    <text x="1542.4" y="501.3" font-size="13.0">Half-life depends on volume</text>
+    <text x="1542.4" y="518.4" font-size="13.0">divided by clearance</text>
+  </g>
+  <g class="node d2 b3" data-depth="2">
+    <rect class="box" x="1532.4" y="536.1" width="219.8" height="45.3" rx="6"/>
+    <text x="1542.4" y="554.6" font-size="13.0">Hepatic: blood flow, enzymes,</text>
+    <text x="1542.4" y="571.8" font-size="13.0">biliary transport, binding</text>
+  </g>
+  <g class="node d2 b3" data-depth="2">
+    <rect class="box" x="1532.4" y="589.4" width="233.6" height="45.3" rx="6"/>
+    <text x="1542.4" y="607.9" font-size="13.0">Phase one oxidation, reduction,</text>
+    <text x="1542.4" y="625.1" font-size="13.0">hydrolysis</text>
+  </g>
+  <g class="node d2 b3" data-depth="2">
+    <rect class="box" x="1532.4" y="642.7" width="240.5" height="45.3" rx="6"/>
+    <text x="1542.4" y="661.2" font-size="13.0">Phase two conjugation with polar</text>
+    <text x="1542.4" y="678.4" font-size="13.0">groups</text>
+  </g>
+  <g class="node d2 b3" data-depth="2">
+    <rect class="box" x="1532.4" y="696.1" width="247.4" height="45.3" rx="6"/>
+    <text x="1542.4" y="714.6" font-size="13.0">Metabolism inactivates, activates</text>
+    <text x="1542.4" y="731.7" font-size="13.0">prodrugs, or intoxicates</text>
+  </g>
+  <path class="link b3" data-depth="3" stroke-width="1.3" d="M1786.6,763.1 C1806.6,763.1 1806.6,763.1 1826.6,763.1"/>
+  <g class="node d2 b3" data-depth="2">
+    <rect class="box" x="1532.4" y="740.5" width="254.3" height="45.3" rx="6"/>
+    <text x="1542.4" y="759.0" font-size="13.0">Inhibition acts quickly, induction</text>
+    <text x="1542.4" y="776.1" font-size="13.0">takes days</text>
+  </g>
+  <g class="node d3 b3" data-depth="3">
+    <rect class="box" x="1826.6" y="749.4" width="251.9" height="27.5" rx="6"/>
+    <text x="1836.6" y="767.4" font-size="12.5">New enzyme protein must be produced</text>
+  </g>
+  <g class="node d2 b3" data-depth="2">
+    <rect class="box" x="1532.4" y="784.9" width="254.3" height="28.2" rx="6"/>
+    <text x="1542.4" y="803.4" font-size="13.0">Grapefruit effect is drug-specific</text>
+  </g>
+  <path class="link b3" data-depth="3" stroke-width="1.3" d="M1745.3,834.8 C1785.9,834.8 1785.9,834.8 1826.6,834.8"/>
+  <g class="node d2 b3" data-depth="2">
+    <rect class="box" x="1532.4" y="812.1" width="212.9" height="45.3" rx="6"/>
+    <text x="1542.4" y="830.6" font-size="13.0">Renal filtration, secretion,</text>
+    <text x="1542.4" y="847.8" font-size="13.0">reabsorption</text>
+  </g>
+  <g class="node d3 b3" data-depth="3">
+    <rect class="box" x="1826.6" y="821.0" width="212.1" height="27.5" rx="6"/>
+    <text x="1836.6" y="839.0" font-size="12.5">Only unbound drug is filtered</text>
+  </g>
+  <g class="node d2 b3" data-depth="2">
+    <rect class="box" x="1532.4" y="856.5" width="247.4" height="45.3" rx="6"/>
+    <text x="1542.4" y="875.0" font-size="13.0">Estimated filtration imperfect at</text>
+    <text x="1542.4" y="892.2" font-size="13.0">extremes</text>
+  </g>
+  <g class="node d2 b3" data-depth="2">
+    <rect class="box" x="1532.4" y="909.9" width="240.5" height="45.3" rx="6"/>
+    <text x="1542.4" y="928.4" font-size="13.0">Dialysis removal: size, binding,</text>
+    <text x="1542.4" y="945.5" font-size="13.0">volume, membrane</text>
+  </g>
+  <path class="link b4" data-depth="2" stroke-width="1.8" d="M720.5,936.3 C649.7,936.3 649.7,733.9 578.8,733.9"/>
+  <path class="link b4" data-depth="2" stroke-width="1.8" d="M720.5,936.3 C649.7,936.3 649.7,778.6 578.8,778.6"/>
+  <path class="link b4" data-depth="2" stroke-width="1.8" d="M720.5,936.3 C649.7,936.3 649.7,823.4 578.8,823.4"/>
+  <path class="link b4" data-depth="2" stroke-width="1.8" d="M720.5,936.3 C649.7,936.3 649.7,876.7 578.8,876.7"/>
+  <path class="link b4" data-depth="2" stroke-width="1.8" d="M720.5,936.3 C649.7,936.3 649.7,930.0 578.8,930.0"/>
+  <path class="link b4" data-depth="2" stroke-width="1.8" d="M720.5,936.3 C649.7,936.3 649.7,982.7 578.8,982.7"/>
+  <path class="link b4" data-depth="2" stroke-width="1.8" d="M720.5,936.3 C649.7,936.3 649.7,1034.7 578.8,1034.7"/>
+  <path class="link b4" data-depth="2" stroke-width="1.8" d="M720.5,936.3 C649.7,936.3 649.7,1138.7 578.8,1138.7"/>
+  <g class="node d1 b4" data-depth="1">
+    <rect class="box" x="720.5" y="921.2" width="155.7" height="30.1" rx="9"/>
+    <text x="730.5" y="941.2" font-size="14.5">Dosing over time</text>
+  </g>
+  <g class="node d2 b4" data-depth="2">
+    <rect class="box" x="352.1" y="711.2" width="226.7" height="45.3" rx="6"/>
+    <text x="362.1" y="729.7" font-size="13.0">Loading dose follows volume of</text>
+    <text x="362.1" y="746.9" font-size="13.0">distribution</text>
+  </g>
+  <g class="node d2 b4" data-depth="2">
+    <rect class="box" x="324.5" y="764.6" width="254.3" height="28.2" rx="6"/>
+    <text x="334.5" y="783.1" font-size="13.0">Maintenance dose follows clearance</text>
+  </g>
+  <g class="node d2 b4" data-depth="2">
+    <rect class="box" x="345.2" y="800.7" width="233.6" height="45.3" rx="6"/>
+    <text x="355.2" y="819.2" font-size="13.0">Steady state after four to five</text>
+    <text x="355.2" y="836.4" font-size="13.0">half-lives, any dose</text>
+  </g>
+  <g class="node d2 b4" data-depth="2">
+    <rect class="box" x="379.6" y="854.0" width="199.1" height="45.3" rx="6"/>
+    <text x="389.6" y="872.5" font-size="13.0">Short intervals reduce</text>
+    <text x="389.6" y="889.7" font-size="13.0">peak-to-trough fluctuation</text>
+  </g>
+  <g class="node d2 b4" data-depth="2">
+    <rect class="box" x="338.3" y="907.4" width="240.5" height="45.3" rx="6"/>
+    <text x="348.3" y="925.9" font-size="13.0">Modified release must not always</text>
+    <text x="348.3" y="943.0" font-size="13.0">be crushed</text>
+  </g>
+  <path class="link b4" data-depth="3" stroke-width="1.3" d="M338.3,982.7 C311.4,982.7 311.4,982.7 284.5,982.7"/>
+  <g class="node d2 b4" data-depth="2">
+    <rect class="box" x="338.3" y="960.0" width="240.5" height="45.3" rx="6"/>
+    <text x="348.3" y="978.5" font-size="13.0">Zero-order elimination saturates</text>
+    <text x="348.3" y="995.7" font-size="13.0">capacity</text>
+  </g>
+  <g class="node d3 b4" data-depth="3">
+    <rect class="box" x="45.9" y="960.7" width="238.6" height="44.0" rx="6"/>
+    <text x="55.9" y="978.7" font-size="12.5">Small dose rise, disproportionate</text>
+    <text x="55.9" y="995.2" font-size="12.5">concentration rise</text>
+  </g>
+  <path class="link b4" data-depth="3" stroke-width="1.3" d="M345.2,1034.7 C314.8,1034.7 314.8,1034.7 284.5,1034.7"/>
+  <g class="node d2 b4" data-depth="2">
+    <rect class="box" x="345.2" y="1012.0" width="233.6" height="45.3" rx="6"/>
+    <text x="355.2" y="1030.5" font-size="13.0">Therapeutic drug monitoring for</text>
+    <text x="355.2" y="1047.7" font-size="13.0">narrow ranges</text>
+  </g>
+  <g class="node d3 b4" data-depth="3">
+    <rect class="box" x="45.9" y="1012.7" width="238.6" height="44.0" rx="6"/>
+    <text x="55.9" y="1030.7" font-size="12.5">Level needs timing, dose history,</text>
+    <text x="55.9" y="1047.2" font-size="12.5">clinical context</text>
+  </g>
+  <path class="link b4" data-depth="3" stroke-width="1.3" d="M331.4,1138.7 C307.9,1138.7 307.9,1086.7 284.5,1086.7"/>
+  <path class="link b4" data-depth="3" stroke-width="1.3" d="M331.4,1138.7 C307.9,1138.7 307.9,1138.7 284.5,1138.7"/>
+  <path class="link b4" data-depth="3" stroke-width="1.3" d="M331.4,1138.7 C307.9,1138.7 307.9,1190.7 284.5,1190.7"/>
+  <g class="node d2 b4" data-depth="2">
+    <rect class="box" x="331.4" y="1116.0" width="247.4" height="45.3" rx="6"/>
+    <text x="341.4" y="1134.5" font-size="13.0">Worked model: concentration times</text>
+    <text x="341.4" y="1151.7" font-size="13.0">volume gives amount</text>
+  </g>
+  <g class="node d3 b4" data-depth="3">
+    <rect class="box" x="32.6" y="1064.7" width="251.9" height="44.0" rx="6"/>
+    <text x="42.6" y="1082.7" font-size="12.5">Concentration times clearance gives</text>
+    <text x="42.6" y="1099.2" font-size="12.5">amount per time</text>
+  </g>
+  <g class="node d3 b4" data-depth="3">
+    <rect class="box" x="26.0" y="1116.7" width="258.5" height="44.0" rx="6"/>
+    <text x="36.0" y="1134.7" font-size="12.5">Halved clearance halves maintenance,</text>
+    <text x="36.0" y="1151.2" font-size="12.5">not loading</text>
+  </g>
+  <g class="node d3 b4" data-depth="3">
+    <rect class="box" x="52.5" y="1168.7" width="232.0" height="44.0" rx="6"/>
+    <text x="62.5" y="1186.7" font-size="12.5">Half bioavailability doubles the</text>
+    <text x="62.5" y="1203.2" font-size="12.5">oral input</text>
+  </g>
+  <path class="link b5" data-depth="2" stroke-width="1.8" d="M1441.5,1144.5 C1486.9,1144.5 1486.9,985.8 1532.4,985.8"/>
+  <path class="link b5" data-depth="2" stroke-width="1.8" d="M1441.5,1144.5 C1486.9,1144.5 1486.9,1039.2 1532.4,1039.2"/>
+  <path class="link b5" data-depth="2" stroke-width="1.8" d="M1441.5,1144.5 C1486.9,1144.5 1486.9,1091.8 1532.4,1091.8"/>
+  <path class="link b5" data-depth="2" stroke-width="1.8" d="M1441.5,1144.5 C1486.9,1144.5 1486.9,1143.8 1532.4,1143.8"/>
+  <path class="link b5" data-depth="2" stroke-width="1.8" d="M1441.5,1144.5 C1486.9,1144.5 1486.9,1196.5 1532.4,1196.5"/>
+  <path class="link b5" data-depth="2" stroke-width="1.8" d="M1441.5,1144.5 C1486.9,1144.5 1486.9,1249.8 1532.4,1249.8"/>
+  <path class="link b5" data-depth="2" stroke-width="1.8" d="M1441.5,1144.5 C1486.9,1144.5 1486.9,1303.1 1532.4,1303.1"/>
+  <g class="node d1 b5" data-depth="1">
+    <rect class="box" x="1234.8" y="1129.4" width="206.6" height="30.1" rx="9"/>
+    <text x="1244.8" y="1149.4" font-size="14.5">Receptors and response</text>
+  </g>
+  <g class="node d2 b5" data-depth="2">
+    <rect class="box" x="1532.4" y="963.2" width="233.6" height="45.3" rx="6"/>
+    <text x="1542.4" y="981.7" font-size="13.0">Full agonist reaches the system</text>
+    <text x="1542.4" y="998.8" font-size="13.0">maximum</text>
+  </g>
+  <g class="node d2 b5" data-depth="2">
+    <rect class="box" x="1532.4" y="1016.5" width="247.4" height="45.3" rx="6"/>
+    <text x="1542.4" y="1035.0" font-size="13.0">Partial agonist can oppose a full</text>
+    <text x="1542.4" y="1052.2" font-size="13.0">agonist</text>
+  </g>
+  <path class="link b5" data-depth="3" stroke-width="1.3" d="M1786.6,1091.8 C1806.6,1091.8 1806.6,1091.8 1826.6,1091.8"/>
+  <g class="node d2 b5" data-depth="2">
+    <rect class="box" x="1532.4" y="1069.2" width="254.3" height="45.3" rx="6"/>
+    <text x="1542.4" y="1087.7" font-size="13.0">Competitive antagonism overcome by</text>
+    <text x="1542.4" y="1104.8" font-size="13.0">more agonist</text>
+  </g>
+  <g class="node d3 b5" data-depth="3">
+    <rect class="box" x="1826.6" y="1069.8" width="192.2" height="44.0" rx="6"/>
+    <text x="1836.6" y="1087.8" font-size="12.5">Irreversible effects lower</text>
+    <text x="1836.6" y="1104.3" font-size="12.5">achievable response</text>
+  </g>
+  <path class="link b5" data-depth="3" stroke-width="1.3" d="M1772.8,1143.8 C1799.7,1143.8 1799.7,1143.8 1826.6,1143.8"/>
+  <g class="node d2 b5" data-depth="2">
+    <rect class="box" x="1532.4" y="1121.2" width="240.5" height="45.3" rx="6"/>
+    <text x="1542.4" y="1139.7" font-size="13.0">Potency is dose needed, efficacy</text>
+    <text x="1542.4" y="1156.8" font-size="13.0">is maximum effect</text>
+  </g>
+  <g class="node d3 b5" data-depth="3">
+    <rect class="box" x="1826.6" y="1121.8" width="258.5" height="44.0" rx="6"/>
+    <text x="1836.6" y="1139.8" font-size="12.5">More potent is not more effective or</text>
+    <text x="1836.6" y="1156.3" font-size="12.5">safer</text>
+  </g>
+  <g class="node d2 b5" data-depth="2">
+    <rect class="box" x="1532.4" y="1173.8" width="247.4" height="45.3" rx="6"/>
+    <text x="1542.4" y="1192.3" font-size="13.0">Spare receptors and amplification</text>
+    <text x="1542.4" y="1209.5" font-size="13.0">break linearity</text>
+  </g>
+  <g class="node d2 b5" data-depth="2">
+    <rect class="box" x="1532.4" y="1227.1" width="233.6" height="45.3" rx="6"/>
+    <text x="1542.4" y="1245.6" font-size="13.0">Tolerance from desensitisation,</text>
+    <text x="1542.4" y="1262.8" font-size="13.0">metabolism, compensation</text>
+  </g>
+  <g class="node d2 b5" data-depth="2">
+    <rect class="box" x="1532.4" y="1280.5" width="240.5" height="45.3" rx="6"/>
+    <text x="1542.4" y="1299.0" font-size="13.0">Physical dependence differs from</text>
+    <text x="1542.4" y="1316.1" font-size="13.0">substance-use disorder</text>
+  </g>
+  <path class="link b6" data-depth="2" stroke-width="1.8" d="M1492.4,1489.1 C1512.4,1489.1 1512.4,1356.4 1532.4,1356.4"/>
+  <path class="link b6" data-depth="2" stroke-width="1.8" d="M1492.4,1489.1 C1512.4,1489.1 1512.4,1409.8 1532.4,1409.8"/>
+  <path class="link b6" data-depth="2" stroke-width="1.8" d="M1492.4,1489.1 C1512.4,1489.1 1512.4,1463.1 1532.4,1463.1"/>
+  <path class="link b6" data-depth="2" stroke-width="1.8" d="M1492.4,1489.1 C1512.4,1489.1 1512.4,1516.4 1532.4,1516.4"/>
+  <path class="link b6" data-depth="2" stroke-width="1.8" d="M1492.4,1489.1 C1512.4,1489.1 1512.4,1569.1 1532.4,1569.1"/>
+  <path class="link b6" data-depth="2" stroke-width="1.8" d="M1492.4,1489.1 C1512.4,1489.1 1512.4,1621.7 1532.4,1621.7"/>
+  <g class="node d1 b6" data-depth="1">
+    <rect class="box" x="1234.8" y="1474.0" width="257.5" height="30.1" rx="9"/>
+    <text x="1244.8" y="1494.0" font-size="14.5">Variability and interactions</text>
+  </g>
+  <g class="node d2 b6" data-depth="2">
+    <rect class="box" x="1532.4" y="1333.8" width="226.7" height="45.3" rx="6"/>
+    <text x="1542.4" y="1352.3" font-size="13.0">Genetics, age, organ function,</text>
+    <text x="1542.4" y="1369.4" font-size="13.0">adherence vary response</text>
+  </g>
+  <g class="node d2 b6" data-depth="2">
+    <rect class="box" x="1532.4" y="1387.1" width="233.6" height="45.3" rx="6"/>
+    <text x="1542.4" y="1405.6" font-size="13.0">Children not scaled simply from</text>
+    <text x="1542.4" y="1422.8" font-size="13.0">adult weight</text>
+  </g>
+  <g class="node d2 b6" data-depth="2">
+    <rect class="box" x="1532.4" y="1440.4" width="199.1" height="45.3" rx="6"/>
+    <text x="1542.4" y="1458.9" font-size="13.0">Frail older adults: falls,</text>
+    <text x="1542.4" y="1476.1" font-size="13.0">delirium, bleeding</text>
+  </g>
+  <g class="node d2 b6" data-depth="2">
+    <rect class="box" x="1532.4" y="1493.7" width="212.9" height="45.3" rx="6"/>
+    <text x="1542.4" y="1512.2" font-size="13.0">Pharmacokinetic interactions</text>
+    <text x="1542.4" y="1529.4" font-size="13.0">change concentration</text>
+  </g>
+  <path class="link b6" data-depth="3" stroke-width="1.3" d="M1745.3,1569.1 C1785.9,1569.1 1785.9,1569.1 1826.6,1569.1"/>
+  <g class="node d2 b6" data-depth="2">
+    <rect class="box" x="1532.4" y="1546.4" width="212.9" height="45.3" rx="6"/>
+    <text x="1542.4" y="1564.9" font-size="13.0">Pharmacodynamic interactions</text>
+    <text x="1542.4" y="1582.1" font-size="13.0">change combined effect</text>
+  </g>
+  <g class="node d3 b6" data-depth="3">
+    <rect class="box" x="1826.6" y="1547.1" width="251.9" height="44.0" rx="6"/>
+    <text x="1836.6" y="1565.1" font-size="12.5">Sedatives, QT prolongers, bleeding,</text>
+    <text x="1836.6" y="1581.6" font-size="12.5">potassium</text>
+  </g>
+  <g class="node d2 b6" data-depth="2">
+    <rect class="box" x="1532.4" y="1599.1" width="254.3" height="45.3" rx="6"/>
+    <text x="1542.4" y="1617.6" font-size="13.0">Medication reconciliation: what is</text>
+    <text x="1542.4" y="1634.7" font-size="13.0">actually taken</text>
+  </g>
+  <path class="link b7" data-depth="2" stroke-width="1.8" d="M618.8,1393.7 C598.8,1393.7 598.8,1243.3 578.8,1243.3"/>
+  <path class="link b7" data-depth="2" stroke-width="1.8" d="M618.8,1393.7 C598.8,1393.7 598.8,1296.0 578.8,1296.0"/>
+  <path class="link b7" data-depth="2" stroke-width="1.8" d="M618.8,1393.7 C598.8,1393.7 598.8,1348.7 578.8,1348.7"/>
+  <path class="link b7" data-depth="2" stroke-width="1.8" d="M618.8,1393.7 C598.8,1393.7 598.8,1402.0 578.8,1402.0"/>
+  <path class="link b7" data-depth="2" stroke-width="1.8" d="M618.8,1393.7 C598.8,1393.7 598.8,1455.3 578.8,1455.3"/>
+  <path class="link b7" data-depth="2" stroke-width="1.8" d="M618.8,1393.7 C598.8,1393.7 598.8,1499.7 578.8,1499.7"/>
+  <path class="link b7" data-depth="2" stroke-width="1.8" d="M618.8,1393.7 C598.8,1393.7 598.8,1544.1 578.8,1544.1"/>
+  <g class="node d1 b7" data-depth="1">
+    <rect class="box" x="618.8" y="1378.7" width="257.5" height="30.1" rx="9"/>
+    <text x="628.8" y="1398.7" font-size="14.5">Adverse reactions and safety</text>
+  </g>
+  <g class="node d2 b7" data-depth="2">
+    <rect class="box" x="345.2" y="1220.7" width="233.6" height="45.3" rx="6"/>
+    <text x="355.2" y="1239.2" font-size="13.0">Predictable dose-related versus</text>
+    <text x="355.2" y="1256.3" font-size="13.0">unpredictable reactions</text>
+  </g>
+  <path class="link b7" data-depth="3" stroke-width="1.3" d="M338.3,1296.0 C311.4,1296.0 311.4,1296.0 284.5,1296.0"/>
+  <g class="node d2 b7" data-depth="2">
+    <rect class="box" x="338.3" y="1273.3" width="240.5" height="45.3" rx="6"/>
+    <text x="348.3" y="1291.8" font-size="13.0">Side effect is not automatically</text>
+    <text x="348.3" y="1309.0" font-size="13.0">allergy</text>
+  </g>
+  <g class="node d3 b7" data-depth="3">
+    <rect class="box" x="45.9" y="1274.0" width="238.6" height="44.0" rx="6"/>
+    <text x="55.9" y="1292.0" font-size="12.5">Mislabelled allergy denies useful</text>
+    <text x="55.9" y="1308.5" font-size="12.5">treatment</text>
+  </g>
+  <g class="node d2 b7" data-depth="2">
+    <rect class="box" x="345.2" y="1326.0" width="233.6" height="45.3" rx="6"/>
+    <text x="355.2" y="1344.5" font-size="13.0">Before prescribing: goal,</text>
+    <text x="355.2" y="1361.7" font-size="13.0">contraindications, interactions</text>
+  </g>
+  <g class="node d2 b7" data-depth="2">
+    <rect class="box" x="345.2" y="1379.3" width="233.6" height="45.3" rx="6"/>
+    <text x="355.2" y="1397.8" font-size="13.0">Explain benefit, risks, timing,</text>
+    <text x="355.2" y="1415.0" font-size="13.0">warning symptoms</text>
+  </g>
+  <g class="node d2 b7" data-depth="2">
+    <rect class="box" x="379.6" y="1432.6" width="199.1" height="45.3" rx="6"/>
+    <text x="389.6" y="1451.1" font-size="13.0">Plan monitoring, duration,</text>
+    <text x="389.6" y="1468.3" font-size="13.0">deprescribing</text>
+  </g>
+  <path class="link b7" data-depth="3" stroke-width="1.3" d="M365.8,1499.7 C325.2,1499.7 325.2,1499.7 284.5,1499.7"/>
+  <g class="node d2 b7" data-depth="2">
+    <rect class="box" x="365.8" y="1477.0" width="212.9" height="45.3" rx="6"/>
+    <text x="375.8" y="1495.5" font-size="13.0">Errors from names, decimals,</text>
+    <text x="375.8" y="1512.7" font-size="13.0">units, transitions</text>
+  </g>
+  <g class="node d3 b7" data-depth="3">
+    <rect class="box" x="52.5" y="1486.0" width="232.0" height="27.5" rx="6"/>
+    <text x="62.5" y="1504.0" font-size="12.5">Leading zeros, no trailing zeros</text>
+  </g>
+  <g class="node d2 b7" data-depth="2">
+    <rect class="box" x="345.2" y="1521.5" width="233.6" height="45.3" rx="6"/>
+    <text x="355.2" y="1540.0" font-size="13.0">Deterioration: review new drugs</text>
+    <text x="355.2" y="1557.1" font-size="13.0">and dose changes</text>
+  </g>
+</svg>

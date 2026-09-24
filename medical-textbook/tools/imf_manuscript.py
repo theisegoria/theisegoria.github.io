@@ -52,6 +52,15 @@ PUBLISHED_URL = {
     ),
 }
 
+# Study packs are too heavy for the Pages site (GitHub Pages caps a site at
+# 1 GB), so they are published as assets of one GitHub Release and linked
+# from there. tools/publish_packs.py uploads them.
+PACK_RELEASE = "imf-study-packs"
+PACK_BASE = (
+    "https://github.com/theisegoria/theisegoria.github.io/releases/download/"
+    + PACK_RELEASE + "/"
+)
+
 CHAPTER_RE = {
     "en": re.compile(r"^# Chapter (\d+)\s*[:：]\s*(.+)$"),
     "ja": re.compile(r"^# 第(\d+)章\s*[:：]\s*(.+)$"),

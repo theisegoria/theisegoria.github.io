@@ -587,6 +587,7 @@ def build_one(path: Path, modules: dict, make_png: bool = True) -> dict:
                  "-o", str(PNG_DIR / f"{stem}.png"), source],
                 check=True,
             )
+            shrink_png(PNG_DIR / f"{stem}.png")
             changed.append(f"png/{stem}.png")
             PDF_DIR.mkdir(parents=True, exist_ok=True)
             subprocess.run(
@@ -603,6 +604,25 @@ def build_one(path: Path, modules: dict, make_png: bool = True) -> dict:
     return {"stem": stem, "nodes": nodes, "depth": depth, "changed": changed,
             "module": key, "language": language,
             "module_title": meta["module_title"]}
+
+
+def shrink_png(path: Path) -> None:
+    """Re-encode a rendered map as a 256-colour palette PNG.
+
+    A map is flat fills, thin lines and anti-aliased text in about a dozen
+    hues, so a 256-entry palette with no dithering holds every colour the
+    scheme uses while cutting the file to roughly a quarter. Pillow is
+    optional: without it the full RGB render is kept.
+    """
+    try:
+        from PIL import Image
+    except ImportError:
+        print("Pillow not found: PNG left unquantised", file=sys.stderr)
+        return
+    with Image.open(path) as image:
+        palette = image.convert("RGB").quantize(
+            256, method=Image.Quantize.MEDIANCUT, dither=Image.Dither.NONE)
+    palette.save(path, optimize=True)
 
 
 INDEX_TEMPLATE = """<!doctype html>
@@ -633,7 +653,7 @@ Japanese. These are files to download and keep, not pages to read here. The Mark
 the PDF, PNG, SVG and the OPML that imports into MindNode, XMind or iThoughts are all built from it, so they
 cannot drift apart. The study pack collects one module's mindmaps and Anki files in both languages as a
 single ZIP.</p>
-<p><a href="../packs/IMF-mindmaps-all.zip" download>Every mindmap in every format, as one ZIP</a> &middot;
+<p><a href="{pack_base}IMF-mindmaps-all.zip">Every mindmap in every format, as one ZIP</a> &middot;
 <a href="README.md" download>How the outlines and the build work</a></p>
 <div class="wrap">
 <table>
@@ -664,10 +684,10 @@ def write_index(results: list[dict]) -> bool:
             f'<a href="opml/{stem}.opml" download>OPML</a>'
             f'<a href="svg/{stem}.svg" download>SVG</a>'
             f'<a href="Outlines/{stem}.md" download>Markdown</a>'
-            f'<a href="../packs/IMF-{item["module"]}-study-pack.zip" download>Study pack</a>'
+            f'<a href="{manuscript.PACK_BASE}IMF-{item["module"]}-study-pack.zip">Study pack</a>'
             f'</td></tr>'
         )
-    return write(HERE / "index.html", INDEX_TEMPLATE.format(rows="\n".join(rows)))
+    return write(HERE / "index.html", INDEX_TEMPLATE.format(rows="\n".join(rows), pack_base=manuscript.PACK_BASE))
 
 
 def main(argv: list[str] | None = None) -> int:

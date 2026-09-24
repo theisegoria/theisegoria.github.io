@@ -1,0 +1,588 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="mm" viewBox="0 0 1804 1249" width="1804" height="1249" role="img" aria-label="運動制御の基礎">
+<style>
+  .mm-bg { fill: #faf8f4; }
+  .mm text { font-family: 'Hiragino Sans', 'Noto Sans JP', ui-sans-serif, sans-serif; fill: #1b1917; }
+  .mm .link { fill: none; stroke: #c9c1b4; }
+  .mm .box { fill: none; stroke: none; }
+  .mm .d0 .box { fill: #1b1917; stroke: #1b1917; }
+  .mm .d0 text { fill: #faf8f4; font-weight: 650; }
+  .mm .d1 text { font-weight: 600; }
+
+  .mm .link.b0 { stroke: #4b9ac6; }
+  .mm .b0.d1 .box { fill: #d7e5eb; stroke: #0072B2; stroke-width: 1.5; }
+  .mm .b0.d1 text { fill: #075c8b; }
+  .mm .b0.d2 .box { fill: #e8efef; stroke: #70aed0; }
+  .mm .b0.d3 text, .mm .b0.d4 text { fill: #075c8b; }
+
+  .mm .link.b1 { stroke: #e08c49; }
+  .mm .b1.d1 .box { fill: #f5e2d2; stroke: #D55E00; stroke-width: 1.5; }
+  .mm .b1.d1 text { fill: #a64d06; }
+  .mm .b1.d2 .box { fill: #f7ede3; stroke: #e6a36e; }
+  .mm .b1.d3 text, .mm .b1.d4 text { fill: #a64d06; }
+
+  .mm .link.b2 { stroke: #4bb99a; }
+  .mm .b2.d1 .box { fill: #d7ebe2; stroke: #009E73; stroke-width: 1.5; }
+  .mm .b2.d1 text { fill: #077d5c; }
+  .mm .b2.d2 .box { fill: #e8f2eb; stroke: #70c6ad; }
+  .mm .b2.d3 text, .mm .b2.d4 text { fill: #077d5c; }
+
+  .mm .link.b3 { stroke: #da9fbe; }
+  .mm .b3.d1 .box { fill: #f4e6e9; stroke: #CC79A7; stroke-width: 1.5; }
+  .mm .b3.d1 text { fill: #985c7c; }
+  .mm .b3.d2 .box { fill: #f7efef; stroke: #e1b2ca; }
+  .mm .b3.d3 text, .mm .b3.d4 text { fill: #985c7c; }
+
+  .mm .link.b4 { stroke: #bba149; }
+  .mm .b4.d1 .box { fill: #ede7d2; stroke: #A07C00; stroke-width: 1.5; }
+  .mm .b4.d1 text { fill: #7f6306; }
+  .mm .b4.d2 .box { fill: #f4efe3; stroke: #c8b46e; }
+  .mm .b4.d3 text, .mm .b4.d4 text { fill: #7f6306; }
+
+  .mm .link.b5 { stroke: #84c1e2; }
+  .mm .b5.d1 .box { fill: #e3eef2; stroke: #51a9db; stroke-width: 1.5; }
+  .mm .b5.d1 text { fill: #3d7899; }
+  .mm .b5.d2 .box { fill: #eff3f3; stroke: #9dcde6; }
+  .mm .b5.d3 text, .mm .b5.d4 text { fill: #3d7899; }
+
+  .mm .link.b6 { stroke: #9580b0; }
+  .mm .b6.d1 .box { fill: #e6e0e6; stroke: #6A4C93; stroke-width: 1.5; }
+  .mm .b6.d1 text { fill: #563f74; }
+  .mm .b6.d2 .box { fill: #f0eced; stroke: #ab99bf; }
+  .mm .b6.d3 text, .mm .b6.d4 text { fill: #563f74; }
+
+  .mm .link.b7 { stroke: #98ac74; }
+  .mm .b7.d1 .box { fill: #e6e9da; stroke: #6E8B3D; stroke-width: 1.5; }
+  .mm .b7.d1 text { fill: #596e34; }
+  .mm .b7.d2 .box { fill: #f0f0e7; stroke: #adbc8f; }
+  .mm .b7.d3 text, .mm .b7.d4 text { fill: #596e34; }
+
+  .mm .link.b8 { stroke: #e2b349; }
+  .mm .b8.d1 .box { fill: #f7ecd2; stroke: #d89500; stroke-width: 1.5; }
+  .mm .b8.d1 text { fill: #986a05; }
+  .mm .b8.d2 .box { fill: #f9f2e3; stroke: #e7c26e; }
+  .mm .b8.d3 text, .mm .b8.d4 text { fill: #986a05; }
+
+  .mm .link.b9 { stroke: #bf6669; }
+  .mm .b9.d1 .box { fill: #eedbd8; stroke: #A6272E; stroke-width: 1.5; }
+  .mm .b9.d1 text { fill: #832428; }
+  .mm .b9.d2 .box { fill: #f4e9e6; stroke: #cc8587; }
+  .mm .b9.d3 text, .mm .b9.d4 text { fill: #832428; }
+@media (prefers-color-scheme: dark) {
+  .mm-bg { fill: #12100e; }
+  .mm text { font-family: 'Hiragino Sans', 'Noto Sans JP', ui-sans-serif, sans-serif; fill: #ece7df; }
+  .mm .link { fill: none; stroke: #3d3833; }
+  .mm .box { fill: none; stroke: none; }
+  .mm .d0 .box { fill: #ece7df; stroke: #ece7df; }
+  .mm .d0 text { fill: #12100e; font-weight: 650; }
+  .mm .d1 text { font-weight: 600; }
+
+  .mm .link.b0 { stroke: #2d6a8d; }
+  .mm .b0.d1 .box { fill: #172227; stroke: #3891c3; stroke-width: 1.5; }
+  .mm .b0.d1 text { fill: #65a6ca; }
+  .mm .b0.d2 .box { fill: #15191b; stroke: #275772; }
+  .mm .b0.d3 text, .mm .b0.d4 text { fill: #65a6ca; }
+
+  .mm .link.b1 { stroke: #a15f2b; }
+  .mm .b1.d1 .box { fill: #2f2014; stroke: #de8138; stroke-width: 1.5; }
+  .mm .b1.d1 text { fill: #e29a62; }
+  .mm .b1.d2 .box { fill: #201811; stroke: #824e25; }
+  .mm .b1.d3 text, .mm .b1.d4 text { fill: #e29a62; }
+
+  .mm .link.b2 { stroke: #2d826a; }
+  .mm .b2.d1 .box { fill: #172720; stroke: #38b392; stroke-width: 1.5; }
+  .mm .b2.d1 text { fill: #65c0a5; }
+  .mm .b2.d2 .box { fill: #151b17; stroke: #276a57; }
+  .mm .b2.d3 text, .mm .b2.d4 text { fill: #65c0a5; }
+
+  .mm .link.b3 { stroke: #9c6e86; }
+  .mm .b3.d1 .box { fill: #2e2326; stroke: #d796ba; stroke-width: 1.5; }
+  .mm .b3.d1 text { fill: #dcaac3; }
+  .mm .b3.d2 .box { fill: #20191a; stroke: #7e5a6d; }
+  .mm .b3.d3 text, .mm .b3.d4 text { fill: #dcaac3; }
+
+  .mm .link.b4 { stroke: #84702b; }
+  .mm .b4.d1 .box { fill: #292314; stroke: #b59938; stroke-width: 1.5; }
+  .mm .b4.d1 text { fill: #c3ac62; }
+  .mm .b4.d2 .box { fill: #1d1a11; stroke: #6c5b25; }
+  .mm .b4.d3 text, .mm .b4.d4 text { fill: #c3ac62; }
+
+  .mm .link.b5 { stroke: #5c8eab; }
+  .mm .b5.d1 .box { fill: #21292d; stroke: #7bc4ee; stroke-width: 1.5; }
+  .mm .b5.d1 text { fill: #97cdea; }
+  .mm .b5.d2 .box { fill: #191d1e; stroke: #4c7389; }
+  .mm .b5.d3 text, .mm .b5.d4 text { fill: #97cdea; }
+
+  .mm .link.b6 { stroke: #67557c; }
+  .mm .b6.d1 .box { fill: #231e24; stroke: #8b73ab; stroke-width: 1.5; }
+  .mm .b6.d1 text { fill: #a390b8; }
+  .mm .b6.d2 .box { fill: #1a1719; stroke: #554664; }
+  .mm .b6.d3 text, .mm .b6.d4 text { fill: #a390b8; }
+
+  .mm .link.b7 { stroke: #69784d; }
+  .mm .b7.d1 .box { fill: #23251b; stroke: #8ea568; stroke-width: 1.5; }
+  .mm .b7.d1 text { fill: #a6b686; }
+  .mm .b7.d2 .box { fill: #1b1a14; stroke: #566240; }
+  .mm .b7.d3 text, .mm .b7.d4 text { fill: #a6b686; }
+
+  .mm .link.b8 { stroke: #ab832b; }
+  .mm .b8.d1 .box { fill: #312714; stroke: #ecb438; stroke-width: 1.5; }
+  .mm .b8.d1 text { fill: #ecc162; }
+  .mm .b8.d2 .box { fill: #211b11; stroke: #8a6a25; }
+  .mm .b8.d3 text, .mm .b8.d4 text { fill: #ecc162; }
+
+  .mm .link.b9 { stroke: #884245; }
+  .mm .b9.d1 .box { fill: #2a1a19; stroke: #ba575c; stroke-width: 1.5; }
+  .mm .b9.d1 text { fill: #c67b7d; }
+  .mm .b9.d2 .box { fill: #1e1513; stroke: #6e3739; }
+  .mm .b9.d3 text, .mm .b9.d4 text { fill: #c67b7d; }
+}
+</style>
+  <rect class="mm-bg" width="1804" height="1249"/>
+  <path class="link b0" data-depth="1" stroke-width="2.2" d="M947.5,624.6 C967.5,624.6 967.5,130.5 987.5,130.5"/>
+  <path class="link b1" data-depth="1" stroke-width="2.2" d="M947.5,624.6 C967.5,624.6 967.5,391.0 987.5,391.0"/>
+  <path class="link b2" data-depth="1" stroke-width="2.2" d="M947.5,624.6 C797.2,624.6 797.2,102.0 647.0,102.0"/>
+  <path class="link b3" data-depth="1" stroke-width="2.2" d="M947.5,624.6 C967.5,624.6 967.5,669.3 987.5,669.3"/>
+  <path class="link b4" data-depth="1" stroke-width="2.2" d="M947.5,624.6 C811.8,624.6 811.8,298.8 676.0,298.8"/>
+  <path class="link b5" data-depth="1" stroke-width="2.2" d="M947.5,624.6 C782.8,624.6 782.8,577.2 618.0,577.2"/>
+  <path class="link b6" data-depth="1" stroke-width="2.2" d="M947.5,624.6 C967.5,624.6 967.5,939.2 987.5,939.2"/>
+  <path class="link b7" data-depth="1" stroke-width="2.2" d="M947.5,624.6 C797.2,624.6 797.2,856.6 647.0,856.6"/>
+  <path class="link b8" data-depth="1" stroke-width="2.2" d="M947.5,624.6 C790.0,624.6 790.0,1098.7 632.5,1098.7"/>
+  <path class="link b9" data-depth="1" stroke-width="2.2" d="M947.5,624.6 C967.5,624.6 967.5,1155.3 987.5,1155.3"/>
+  <g class="node d0 b0" data-depth="0">
+    <rect class="box" x="808.5" y="607.9" width="139.0" height="33.4" rx="9"/>
+    <text x="818.5" y="630.4" font-size="17.0">運動制御の基礎</text>
+  </g>
+  <path class="link b0" data-depth="2" stroke-width="1.8" d="M1123.5,130.5 C1187.0,130.5 1187.0,40.1 1250.5,40.1"/>
+  <path class="link b0" data-depth="2" stroke-width="1.8" d="M1123.5,130.5 C1187.0,130.5 1187.0,76.2 1250.5,76.2"/>
+  <path class="link b0" data-depth="2" stroke-width="1.8" d="M1123.5,130.5 C1187.0,130.5 1187.0,112.4 1250.5,112.4"/>
+  <path class="link b0" data-depth="2" stroke-width="1.8" d="M1123.5,130.5 C1187.0,130.5 1187.0,148.6 1250.5,148.6"/>
+  <path class="link b0" data-depth="2" stroke-width="1.8" d="M1123.5,130.5 C1187.0,130.5 1187.0,184.7 1250.5,184.7"/>
+  <path class="link b0" data-depth="2" stroke-width="1.8" d="M1123.5,130.5 C1187.0,130.5 1187.0,220.9 1250.5,220.9"/>
+  <g class="node d1 b0" data-depth="1">
+    <rect class="box" x="987.5" y="115.4" width="136.0" height="30.1" rx="9"/>
+    <text x="997.5" y="135.4" font-size="14.5">分散した運動制御</text>
+  </g>
+  <g class="node d2 b0" data-depth="2">
+    <rect class="box" x="1250.5" y="26.0" width="202.0" height="28.2" rx="6"/>
+    <text x="1260.5" y="44.5" font-size="13.0">脊髄回路は反射とパターン出力</text>
+  </g>
+  <g class="node d2 b0" data-depth="2">
+    <rect class="box" x="1250.5" y="62.2" width="202.0" height="28.2" rx="6"/>
+    <text x="1260.5" y="80.7" font-size="13.0">脳幹は姿勢、平衡、注視、定位</text>
+  </g>
+  <g class="node d2 b0" data-depth="2">
+    <rect class="box" x="1250.5" y="98.3" width="176.0" height="28.2" rx="6"/>
+    <text x="1260.5" y="116.8" font-size="13.0">運動皮質は熟練動作を規定</text>
+  </g>
+  <g class="node d2 b0" data-depth="2">
+    <rect class="box" x="1250.5" y="134.5" width="202.0" height="28.2" rx="6"/>
+    <text x="1260.5" y="153.0" font-size="13.0">大脳基底核は動作を選択し調節</text>
+  </g>
+  <g class="node d2 b0" data-depth="2">
+    <rect class="box" x="1250.5" y="170.6" width="163.0" height="28.2" rx="6"/>
+    <text x="1260.5" y="189.1" font-size="13.0">小脳は予測、比較、適応</text>
+  </g>
+  <g class="node d2 b0" data-depth="2">
+    <rect class="box" x="1250.5" y="206.8" width="241.0" height="28.2" rx="6"/>
+    <text x="1260.5" y="225.3" font-size="13.0">筋力低下、筋緊張、反射、歩行で局在</text>
+  </g>
+  <path class="link b1" data-depth="2" stroke-width="1.8" d="M1109.0,391.0 C1179.8,391.0 1179.8,256.7 1250.5,256.7"/>
+  <path class="link b1" data-depth="2" stroke-width="1.8" d="M1109.0,391.0 C1179.8,391.0 1179.8,292.5 1250.5,292.5"/>
+  <path class="link b1" data-depth="2" stroke-width="1.8" d="M1109.0,391.0 C1179.8,391.0 1179.8,328.7 1250.5,328.7"/>
+  <path class="link b1" data-depth="2" stroke-width="1.8" d="M1109.0,391.0 C1179.8,391.0 1179.8,382.3 1250.5,382.3"/>
+  <path class="link b1" data-depth="2" stroke-width="1.8" d="M1109.0,391.0 C1179.8,391.0 1179.8,444.4 1250.5,444.4"/>
+  <path class="link b1" data-depth="2" stroke-width="1.8" d="M1109.0,391.0 C1179.8,391.0 1179.8,489.2 1250.5,489.2"/>
+  <path class="link b1" data-depth="2" stroke-width="1.8" d="M1109.0,391.0 C1179.8,391.0 1179.8,525.3 1250.5,525.3"/>
+  <g class="node d1 b1" data-depth="1">
+    <rect class="box" x="987.5" y="376.0" width="121.5" height="30.1" rx="9"/>
+    <text x="997.5" y="396.0" font-size="14.5">運動単位と筋力</text>
+  </g>
+  <path class="link b1" data-depth="3" stroke-width="1.3" d="M1491.5,256.7 C1524.5,256.7 1524.5,256.7 1557.5,256.7"/>
+  <g class="node d2 b1" data-depth="2">
+    <rect class="box" x="1250.5" y="242.6" width="241.0" height="28.2" rx="6"/>
+    <text x="1260.5" y="261.1" font-size="13.0">アルファ運動ニューロンと支配筋線維</text>
+  </g>
+  <g class="node d3 b1" data-depth="3">
+    <rect class="box" x="1557.5" y="243.0" width="220.0" height="27.5" rx="6"/>
+    <text x="1567.5" y="261.0" font-size="12.5">小さい単位は精密、大きい単位は力</text>
+  </g>
+  <g class="node d2 b1" data-depth="2">
+    <rect class="box" x="1250.5" y="278.5" width="215.0" height="28.2" rx="6"/>
+    <text x="1260.5" y="297.0" font-size="13.0">発火頻度増加と大きな単位の動員</text>
+  </g>
+  <g class="node d2 b1" data-depth="2">
+    <rect class="box" x="1250.5" y="314.6" width="202.0" height="28.2" rx="6"/>
+    <text x="1260.5" y="333.1" font-size="13.0">非同期的活性化で収縮が滑らか</text>
+  </g>
+  <path class="link b1" data-depth="3" stroke-width="1.3" d="M1465.5,382.3 C1511.5,382.3 1511.5,364.5 1557.5,364.5"/>
+  <path class="link b1" data-depth="3" stroke-width="1.3" d="M1465.5,382.3 C1511.5,382.3 1511.5,400.0 1557.5,400.0"/>
+  <g class="node d2 b1" data-depth="2">
+    <rect class="box" x="1250.5" y="368.2" width="215.0" height="28.2" rx="6"/>
+    <text x="1260.5" y="386.7" font-size="13.0">アセチルコリンによる神経筋伝達</text>
+  </g>
+  <g class="node d3 b1" data-depth="3">
+    <rect class="box" x="1557.5" y="350.8" width="220.7" height="27.5" rx="6"/>
+    <text x="1567.5" y="368.8" font-size="12.5">ニコチン性終板電位からNaチャネル</text>
+  </g>
+  <g class="node d3 b1" data-depth="3">
+    <rect class="box" x="1557.5" y="386.3" width="220.0" height="27.5" rx="6"/>
+    <text x="1567.5" y="404.3" font-size="12.5">受容体減少や放出障害で安全率破綻</text>
+  </g>
+  <g class="node d2 b1" data-depth="2">
+    <rect class="box" x="1250.5" y="421.8" width="267.0" height="45.3" rx="6"/>
+    <text x="1260.5" y="440.3" font-size="13.0">下位運動ニューロン喪失は萎縮と線維束性</text>
+    <text x="1260.5" y="457.4" font-size="13.0">収縮</text>
+  </g>
+  <g class="node d2 b1" data-depth="2">
+    <rect class="box" x="1250.5" y="475.1" width="267.0" height="28.2" rx="6"/>
+    <text x="1260.5" y="493.6" font-size="13.0">神経筋接合部疾患は感覚障害なき易疲労性</text>
+  </g>
+  <g class="node d2 b1" data-depth="2">
+    <rect class="box" x="1250.5" y="511.3" width="215.0" height="28.2" rx="6"/>
+    <text x="1260.5" y="529.8" font-size="13.0">筋疾患は左右対称の近位筋力低下</text>
+  </g>
+  <path class="link b2" data-depth="2" stroke-width="1.8" d="M647.0,102.0 C612.5,102.0 612.5,57.5 578.0,57.5"/>
+  <path class="link b2" data-depth="2" stroke-width="1.8" d="M647.0,102.0 C612.5,102.0 612.5,110.8 578.0,110.8"/>
+  <path class="link b2" data-depth="2" stroke-width="1.8" d="M647.0,102.0 C612.5,102.0 612.5,146.6 578.0,146.6"/>
+  <g class="node d1 b2" data-depth="1">
+    <rect class="box" x="647.0" y="87.0" width="121.5" height="30.1" rx="9"/>
+    <text x="657.0" y="107.0" font-size="14.5">筋紡錘と腱器官</text>
+  </g>
+  <path class="link b2" data-depth="3" stroke-width="1.3" d="M337.0,57.5 C304.0,57.5 304.0,39.8 271.0,39.8"/>
+  <path class="link b2" data-depth="3" stroke-width="1.3" d="M337.0,57.5 C304.0,57.5 304.0,75.2 271.0,75.2"/>
+  <g class="node d2 b2" data-depth="2">
+    <rect class="box" x="337.0" y="43.4" width="241.0" height="28.2" rx="6"/>
+    <text x="347.0" y="61.9" font-size="13.0">筋紡錘は並列で筋長と伸展速度を検出</text>
+  </g>
+  <g class="node d3 b2" data-depth="3">
+    <rect class="box" x="62.8" y="26.0" width="208.2" height="27.5" rx="6"/>
+    <text x="72.8" y="44.0" font-size="12.5">Iaは同じ筋を興奮、拮抗筋を抑制</text>
+  </g>
+  <g class="node d3 b2" data-depth="3">
+    <rect class="box" x="51.0" y="61.5" width="220.0" height="27.5" rx="6"/>
+    <text x="61.0" y="79.5" font-size="12.5">ガンマ運動ニューロンが感度を保持</text>
+  </g>
+  <path class="link b2" data-depth="3" stroke-width="1.3" d="M349.2,110.8 C310.1,110.8 310.1,110.8 271.0,110.8"/>
+  <g class="node d2 b2" data-depth="2">
+    <rect class="box" x="349.2" y="96.7" width="228.8" height="28.2" rx="6"/>
+    <text x="359.2" y="115.2" font-size="13.0">腱器官は直列でIbにより張力を感知</text>
+  </g>
+  <g class="node d3 b2" data-depth="3">
+    <rect class="box" x="63.5" y="97.0" width="207.5" height="27.5" rx="6"/>
+    <text x="73.5" y="115.0" font-size="12.5">負荷を分配し歩行にも柔軟に関与</text>
+  </g>
+  <g class="node d2 b2" data-depth="2">
+    <rect class="box" x="376.0" y="132.5" width="202.0" height="28.2" rx="6"/>
+    <text x="386.0" y="151.0" font-size="13.0">どの受容器も単独では働かない</text>
+  </g>
+  <path class="link b3" data-depth="2" stroke-width="1.8" d="M1065.5,669.3 C1158.0,669.3 1158.0,561.5 1250.5,561.5"/>
+  <path class="link b3" data-depth="2" stroke-width="1.8" d="M1065.5,669.3 C1158.0,669.3 1158.0,615.1 1250.5,615.1"/>
+  <path class="link b3" data-depth="2" stroke-width="1.8" d="M1065.5,669.3 C1158.0,669.3 1158.0,668.7 1250.5,668.7"/>
+  <path class="link b3" data-depth="2" stroke-width="1.8" d="M1065.5,669.3 C1158.0,669.3 1158.0,704.8 1250.5,704.8"/>
+  <path class="link b3" data-depth="2" stroke-width="1.8" d="M1065.5,669.3 C1158.0,669.3 1158.0,741.0 1250.5,741.0"/>
+  <path class="link b3" data-depth="2" stroke-width="1.8" d="M1065.5,669.3 C1158.0,669.3 1158.0,777.1 1250.5,777.1"/>
+  <g class="node d1 b3" data-depth="1">
+    <rect class="box" x="987.5" y="654.2" width="78.0" height="30.1" rx="9"/>
+    <text x="997.5" y="674.2" font-size="14.5">脊髄反射</text>
+  </g>
+  <g class="node d2 b3" data-depth="2">
+    <rect class="box" x="1250.5" y="547.4" width="189.0" height="28.2" rx="6"/>
+    <text x="1260.5" y="565.9" font-size="13.0">伸張反射は突然の伸長に抵抗</text>
+  </g>
+  <path class="link b3" data-depth="3" stroke-width="1.3" d="M1426.5,615.1 C1492.0,615.1 1492.0,597.3 1557.5,597.3"/>
+  <path class="link b3" data-depth="3" stroke-width="1.3" d="M1426.5,615.1 C1492.0,615.1 1492.0,632.8 1557.5,632.8"/>
+  <g class="node d2 b3" data-depth="2">
+    <rect class="box" x="1250.5" y="601.0" width="176.0" height="28.2" rx="6"/>
+    <text x="1260.5" y="619.5" font-size="13.0">腱叩打は反射弓全体を評価</text>
+  </g>
+  <g class="node d3 b3" data-depth="3">
+    <rect class="box" x="1557.5" y="583.6" width="207.5" height="27.5" rx="6"/>
+    <text x="1567.5" y="601.6" font-size="12.5">注意、年齢、手技で大きさが変化</text>
+  </g>
+  <g class="node d3 b3" data-depth="3">
+    <rect class="box" x="1557.5" y="619.1" width="195.0" height="27.5" rx="6"/>
+    <text x="1567.5" y="637.1" font-size="12.5">単独の尺度より対称性と他徴候</text>
+  </g>
+  <g class="node d2 b3" data-depth="2">
+    <rect class="box" x="1250.5" y="654.6" width="202.0" height="28.2" rx="6"/>
+    <text x="1260.5" y="673.1" font-size="13.0">屈曲逃避反射と交叉性伸展反射</text>
+  </g>
+  <g class="node d2 b3" data-depth="2">
+    <rect class="box" x="1250.5" y="690.7" width="241.0" height="28.2" rx="6"/>
+    <text x="1260.5" y="709.2" font-size="13.0">レンショウ細胞の反回抑制と相反抑制</text>
+  </g>
+  <g class="node d2 b3" data-depth="2">
+    <rect class="box" x="1250.5" y="726.9" width="176.0" height="28.2" rx="6"/>
+    <text x="1260.5" y="745.4" font-size="13.0">脊髄ショック後に反射亢進</text>
+  </g>
+  <g class="node d2 b3" data-depth="2">
+    <rect class="box" x="1250.5" y="763.1" width="254.0" height="28.2" rx="6"/>
+    <text x="1260.5" y="781.6" font-size="13.0">中枢パターン発生器は下行性開始が必要</text>
+  </g>
+  <path class="link b4" data-depth="2" stroke-width="1.8" d="M676.0,298.8 C627.0,298.8 627.0,182.4 578.0,182.4"/>
+  <path class="link b4" data-depth="2" stroke-width="1.8" d="M676.0,298.8 C627.0,298.8 627.0,235.7 578.0,235.7"/>
+  <path class="link b4" data-depth="2" stroke-width="1.8" d="M676.0,298.8 C627.0,298.8 627.0,289.2 578.0,289.2"/>
+  <path class="link b4" data-depth="2" stroke-width="1.8" d="M676.0,298.8 C627.0,298.8 627.0,325.4 578.0,325.4"/>
+  <path class="link b4" data-depth="2" stroke-width="1.8" d="M676.0,298.8 C627.0,298.8 627.0,361.6 578.0,361.6"/>
+  <path class="link b4" data-depth="2" stroke-width="1.8" d="M676.0,298.8 C627.0,298.8 627.0,415.1 578.0,415.1"/>
+  <g class="node d1 b4" data-depth="1">
+    <rect class="box" x="676.0" y="283.7" width="92.5" height="30.1" rx="9"/>
+    <text x="686.0" y="303.7" font-size="14.5">下行性経路</text>
+  </g>
+  <path class="link b4" data-depth="3" stroke-width="1.3" d="M389.0,182.4 C330.0,182.4 330.0,182.4 271.0,182.4"/>
+  <g class="node d2 b4" data-depth="2">
+    <rect class="box" x="389.0" y="168.3" width="189.0" height="28.2" rx="6"/>
+    <text x="399.0" y="186.8" font-size="13.0">皮質脊髄路は下部延髄で交叉</text>
+  </g>
+  <g class="node d3 b4" data-depth="3">
+    <rect class="box" x="38.5" y="168.7" width="232.5" height="27.5" rx="6"/>
+    <text x="48.5" y="186.7" font-size="12.5">外側皮質脊髄路は対側遠位の熟練運動</text>
+  </g>
+  <path class="link b4" data-depth="3" stroke-width="1.3" d="M376.0,235.7 C323.5,235.7 323.5,217.9 271.0,217.9"/>
+  <path class="link b4" data-depth="3" stroke-width="1.3" d="M376.0,235.7 C323.5,235.7 323.5,253.4 271.0,253.4"/>
+  <g class="node d2 b4" data-depth="2">
+    <rect class="box" x="376.0" y="221.6" width="202.0" height="28.2" rx="6"/>
+    <text x="386.0" y="240.1" font-size="13.0">皮質延髄路入力は多くが両側性</text>
+  </g>
+  <g class="node d3 b4" data-depth="3">
+    <rect class="box" x="101.0" y="204.2" width="170.0" height="27.5" rx="6"/>
+    <text x="111.0" y="222.2" font-size="12.5">顔面下部と舌は対側性優位</text>
+  </g>
+  <g class="node d3 b4" data-depth="3">
+    <rect class="box" x="76.0" y="239.7" width="195.0" height="27.5" rx="6"/>
+    <text x="86.0" y="257.7" font-size="12.5">大脳半球病変では額が保たれる</text>
+  </g>
+  <g class="node d2 b4" data-depth="2">
+    <rect class="box" x="350.0" y="275.2" width="228.0" height="28.2" rx="6"/>
+    <text x="360.0" y="293.7" font-size="13.0">網様体脊髄路は筋緊張、姿勢、歩行</text>
+  </g>
+  <g class="node d2 b4" data-depth="2">
+    <rect class="box" x="389.0" y="311.3" width="189.0" height="28.2" rx="6"/>
+    <text x="399.0" y="329.8" font-size="13.0">前庭脊髄路は重力に対し安定</text>
+  </g>
+  <g class="node d2 b4" data-depth="2">
+    <rect class="box" x="350.0" y="347.5" width="228.0" height="28.2" rx="6"/>
+    <text x="360.0" y="366.0" font-size="13.0">視蓋脊髄路は刺激へ頭頸部を向ける</text>
+  </g>
+  <path class="link b4" data-depth="3" stroke-width="1.3" d="M311.0,415.1 C291.0,415.1 291.0,397.4 271.0,397.4"/>
+  <path class="link b4" data-depth="3" stroke-width="1.3" d="M311.0,415.1 C291.0,415.1 291.0,432.9 271.0,432.9"/>
+  <g class="node d2 b4" data-depth="2">
+    <rect class="box" x="311.0" y="401.1" width="267.0" height="28.2" rx="6"/>
+    <text x="321.0" y="419.6" font-size="13.0">ショック消失後の上位運動ニューロン病変</text>
+  </g>
+  <g class="node d3 b4" data-depth="3">
+    <rect class="box" x="26.0" y="383.6" width="245.0" height="27.5" rx="6"/>
+    <text x="36.0" y="401.6" font-size="12.5">反射亢進、クローヌス、伸展性足底反射</text>
+  </g>
+  <g class="node d3 b4" data-depth="3">
+    <rect class="box" x="63.5" y="419.1" width="207.5" height="27.5" rx="6"/>
+    <text x="73.5" y="437.1" font-size="12.5">痙縮は速度依存性、固縮は非依存</text>
+  </g>
+  <path class="link b5" data-depth="2" stroke-width="1.8" d="M618.0,577.2 C598.0,577.2 598.0,468.7 578.0,468.7"/>
+  <path class="link b5" data-depth="2" stroke-width="1.8" d="M618.0,577.2 C598.0,577.2 598.0,504.9 578.0,504.9"/>
+  <path class="link b5" data-depth="2" stroke-width="1.8" d="M618.0,577.2 C598.0,577.2 598.0,541.0 578.0,541.0"/>
+  <path class="link b5" data-depth="2" stroke-width="1.8" d="M618.0,577.2 C598.0,577.2 598.0,577.2 578.0,577.2"/>
+  <path class="link b5" data-depth="2" stroke-width="1.8" d="M618.0,577.2 C598.0,577.2 598.0,613.4 578.0,613.4"/>
+  <path class="link b5" data-depth="2" stroke-width="1.8" d="M618.0,577.2 C598.0,577.2 598.0,649.5 578.0,649.5"/>
+  <path class="link b5" data-depth="2" stroke-width="1.8" d="M618.0,577.2 C598.0,577.2 598.0,685.7 578.0,685.7"/>
+  <g class="node d1 b5" data-depth="1">
+    <rect class="box" x="618.0" y="562.1" width="150.5" height="30.1" rx="9"/>
+    <text x="628.0" y="582.1" font-size="14.5">運動皮質と運動計画</text>
+  </g>
+  <g class="node d2 b5" data-depth="2">
+    <rect class="box" x="389.0" y="454.6" width="189.0" height="28.2" rx="6"/>
+    <text x="399.0" y="473.1" font-size="13.0">一次運動野は力の方向と遂行</text>
+  </g>
+  <g class="node d2 b5" data-depth="2">
+    <rect class="box" x="376.0" y="490.8" width="202.0" height="28.2" rx="6"/>
+    <text x="386.0" y="509.3" font-size="13.0">運動前野は外的手掛かりを利用</text>
+  </g>
+  <g class="node d2 b5" data-depth="2">
+    <rect class="box" x="363.0" y="527.0" width="215.0" height="28.2" rx="6"/>
+    <text x="373.0" y="545.5" font-size="13.0">補足運動野は系列動作と両手協調</text>
+  </g>
+  <g class="node d2 b5" data-depth="2">
+    <rect class="box" x="350.0" y="563.1" width="228.0" height="28.2" rx="6"/>
+    <text x="360.0" y="581.6" font-size="13.0">後頭頂皮質は空間情報を計画へ変換</text>
+  </g>
+  <g class="node d2 b5" data-depth="2">
+    <rect class="box" x="389.0" y="599.3" width="189.0" height="28.2" rx="6"/>
+    <text x="399.0" y="617.8" font-size="13.0">運動地図は重なり学習で変化</text>
+  </g>
+  <g class="node d2 b5" data-depth="2">
+    <rect class="box" x="376.0" y="635.4" width="202.0" height="28.2" rx="6"/>
+    <text x="386.0" y="653.9" font-size="13.0">遠心性コピーで感覚結果を予測</text>
+  </g>
+  <g class="node d2 b5" data-depth="2">
+    <rect class="box" x="402.0" y="671.6" width="176.0" height="28.2" rx="6"/>
+    <text x="412.0" y="690.1" font-size="13.0">練習で必要な注意量が減る</text>
+  </g>
+  <path class="link b6" data-depth="2" stroke-width="1.8" d="M1123.5,939.2 C1187.0,939.2 1187.0,813.3 1250.5,813.3"/>
+  <path class="link b6" data-depth="2" stroke-width="1.8" d="M1123.5,939.2 C1187.0,939.2 1187.0,866.9 1250.5,866.9"/>
+  <path class="link b6" data-depth="2" stroke-width="1.8" d="M1123.5,939.2 C1187.0,939.2 1187.0,920.5 1250.5,920.5"/>
+  <path class="link b6" data-depth="2" stroke-width="1.8" d="M1123.5,939.2 C1187.0,939.2 1187.0,956.6 1250.5,956.6"/>
+  <path class="link b6" data-depth="2" stroke-width="1.8" d="M1123.5,939.2 C1187.0,939.2 1187.0,992.8 1250.5,992.8"/>
+  <path class="link b6" data-depth="2" stroke-width="1.8" d="M1123.5,939.2 C1187.0,939.2 1187.0,1028.9 1250.5,1028.9"/>
+  <path class="link b6" data-depth="2" stroke-width="1.8" d="M1123.5,939.2 C1187.0,939.2 1187.0,1065.1 1250.5,1065.1"/>
+  <g class="node d1 b6" data-depth="1">
+    <rect class="box" x="987.5" y="924.1" width="136.0" height="30.1" rx="9"/>
+    <text x="997.5" y="944.1" font-size="14.5">小脳の構造と機能</text>
+  </g>
+  <g class="node d2 b6" data-depth="2">
+    <rect class="box" x="1250.5" y="799.2" width="215.0" height="28.2" rx="6"/>
+    <text x="1260.5" y="817.7" font-size="13.0">意図した計画と実際の遂行を比較</text>
+  </g>
+  <path class="link b6" data-depth="3" stroke-width="1.3" d="M1400.5,866.9 C1479.0,866.9 1479.0,849.1 1557.5,849.1"/>
+  <path class="link b6" data-depth="3" stroke-width="1.3" d="M1400.5,866.9 C1479.0,866.9 1479.0,884.6 1557.5,884.6"/>
+  <g class="node d2 b6" data-depth="2">
+    <rect class="box" x="1250.5" y="852.8" width="150.0" height="28.2" rx="6"/>
+    <text x="1260.5" y="871.3" font-size="13.0">反復する小脳皮質回路</text>
+  </g>
+  <g class="node d3 b6" data-depth="3">
+    <rect class="box" x="1557.5" y="835.4" width="132.5" height="27.5" rx="6"/>
+    <text x="1567.5" y="853.4" font-size="12.5">登上線維は教師信号</text>
+  </g>
+  <g class="node d3 b6" data-depth="3">
+    <rect class="box" x="1557.5" y="870.9" width="195.0" height="27.5" rx="6"/>
+    <text x="1567.5" y="888.9" font-size="12.5">プルキンエ細胞は深部核を抑制</text>
+  </g>
+  <g class="node d2 b6" data-depth="2">
+    <rect class="box" x="1250.5" y="906.4" width="254.0" height="28.2" rx="6"/>
+    <text x="1260.5" y="924.9" font-size="13.0">正中部は体軸、外側は計画とタイミング</text>
+  </g>
+  <g class="node d2 b6" data-depth="2">
+    <rect class="box" x="1250.5" y="942.5" width="254.0" height="28.2" rx="6"/>
+    <text x="1260.5" y="961.0" font-size="13.0">内部モデルが誤差に基づく学習を支える</text>
+  </g>
+  <g class="node d2 b6" data-depth="2">
+    <rect class="box" x="1250.5" y="978.7" width="202.0" height="28.2" rx="6"/>
+    <text x="1260.5" y="997.2" font-size="13.0">小脳半球病変は同側四肢に徴候</text>
+  </g>
+  <g class="node d2 b6" data-depth="2">
+    <rect class="box" x="1250.5" y="1014.9" width="215.0" height="28.2" rx="6"/>
+    <text x="1260.5" y="1033.4" font-size="13.0">測定障害、企図振戦、開脚性歩行</text>
+  </g>
+  <g class="node d2 b6" data-depth="2">
+    <rect class="box" x="1250.5" y="1051.0" width="189.0" height="28.2" rx="6"/>
+    <text x="1260.5" y="1069.5" font-size="13.0">感覚性運動失調は閉眼で悪化</text>
+  </g>
+  <path class="link b7" data-depth="2" stroke-width="1.8" d="M647.0,856.6 C612.5,856.6 612.5,721.8 578.0,721.8"/>
+  <path class="link b7" data-depth="2" stroke-width="1.8" d="M647.0,856.6 C612.5,856.6 612.5,758.0 578.0,758.0"/>
+  <path class="link b7" data-depth="2" stroke-width="1.8" d="M647.0,856.6 C612.5,856.6 612.5,794.2 578.0,794.2"/>
+  <path class="link b7" data-depth="2" stroke-width="1.8" d="M647.0,856.6 C612.5,856.6 612.5,830.3 578.0,830.3"/>
+  <path class="link b7" data-depth="2" stroke-width="1.8" d="M647.0,856.6 C612.5,856.6 612.5,875.1 578.0,875.1"/>
+  <path class="link b7" data-depth="2" stroke-width="1.8" d="M647.0,856.6 C612.5,856.6 612.5,919.5 578.0,919.5"/>
+  <path class="link b7" data-depth="2" stroke-width="1.8" d="M647.0,856.6 C612.5,856.6 612.5,955.3 578.0,955.3"/>
+  <path class="link b7" data-depth="2" stroke-width="1.8" d="M647.0,856.6 C612.5,856.6 612.5,991.5 578.0,991.5"/>
+  <g class="node d1 b7" data-depth="1">
+    <rect class="box" x="647.0" y="841.6" width="121.5" height="30.1" rx="9"/>
+    <text x="657.0" y="861.6" font-size="14.5">大脳基底核回路</text>
+  </g>
+  <g class="node d2 b7" data-depth="2">
+    <rect class="box" x="363.0" y="707.8" width="215.0" height="28.2" rx="6"/>
+    <text x="373.0" y="726.3" font-size="13.0">運動、認知、辺縁系の並列ループ</text>
+  </g>
+  <g class="node d2 b7" data-depth="2">
+    <rect class="box" x="376.0" y="743.9" width="202.0" height="28.2" rx="6"/>
+    <text x="386.0" y="762.4" font-size="13.0">抑制性出力が皮質の動作を選ぶ</text>
+  </g>
+  <g class="node d2 b7" data-depth="2">
+    <rect class="box" x="376.0" y="780.1" width="202.0" height="28.2" rx="6"/>
+    <text x="386.0" y="798.6" font-size="13.0">直接路は選択された動作を促進</text>
+  </g>
+  <g class="node d2 b7" data-depth="2">
+    <rect class="box" x="389.0" y="816.2" width="189.0" height="28.2" rx="6"/>
+    <text x="399.0" y="834.7" font-size="13.0">間接路は競合する動作を抑制</text>
+  </g>
+  <g class="node d2 b7" data-depth="2">
+    <rect class="box" x="335.4" y="852.4" width="242.6" height="45.3" rx="6"/>
+    <text x="345.4" y="870.9" font-size="13.0">ドパミンはD1で直接路、D2で間接路低</text>
+    <text x="345.4" y="888.1" font-size="13.0">下</text>
+  </g>
+  <path class="link b7" data-depth="3" stroke-width="1.3" d="M337.0,919.5 C304.0,919.5 304.0,919.5 271.0,919.5"/>
+  <g class="node d2 b7" data-depth="2">
+    <rect class="box" x="337.0" y="905.4" width="241.0" height="28.2" rx="6"/>
+    <text x="347.0" y="923.9" font-size="13.0">ドパミン減少によるパーキンソニズム</text>
+  </g>
+  <g class="node d3 b7" data-depth="3">
+    <rect class="box" x="63.5" y="905.7" width="207.5" height="27.5" rx="6"/>
+    <text x="73.5" y="923.7" font-size="12.5">補充療法は有効だがジスキネジア</text>
+  </g>
+  <g class="node d2 b7" data-depth="2">
+    <rect class="box" x="311.0" y="941.2" width="267.0" height="28.2" rx="6"/>
+    <text x="321.0" y="959.7" font-size="13.0">舞踏運動、ジストニア、チック、バリズム</text>
+  </g>
+  <g class="node d2 b7" data-depth="2">
+    <rect class="box" x="350.0" y="977.4" width="228.0" height="28.2" rx="6"/>
+    <text x="360.0" y="995.9" font-size="13.0">ドパミン遮断薬で急性ジストニア等</text>
+  </g>
+  <path class="link b8" data-depth="2" stroke-width="1.8" d="M632.5,1098.7 C605.2,1098.7 605.2,1027.3 578.0,1027.3"/>
+  <path class="link b8" data-depth="2" stroke-width="1.8" d="M632.5,1098.7 C605.2,1098.7 605.2,1063.1 578.0,1063.1"/>
+  <path class="link b8" data-depth="2" stroke-width="1.8" d="M632.5,1098.7 C605.2,1098.7 605.2,1107.9 578.0,1107.9"/>
+  <path class="link b8" data-depth="2" stroke-width="1.8" d="M632.5,1098.7 C605.2,1098.7 605.2,1170.0 578.0,1170.0"/>
+  <g class="node d1 b8" data-depth="1">
+    <rect class="box" x="632.5" y="1083.6" width="136.0" height="30.1" rx="9"/>
+    <text x="642.5" y="1103.6" font-size="14.5">姿勢、歩行、平衡</text>
+  </g>
+  <path class="link b8" data-depth="3" stroke-width="1.3" d="M441.0,1027.3 C356.0,1027.3 356.0,1027.3 271.0,1027.3"/>
+  <g class="node d2 b8" data-depth="2">
+    <rect class="box" x="441.0" y="1013.2" width="137.0" height="28.2" rx="6"/>
+    <text x="451.0" y="1031.7" font-size="13.0">静かな立位も能動的</text>
+  </g>
+  <g class="node d3 b8" data-depth="3">
+    <rect class="box" x="76.0" y="1013.5" width="195.0" height="27.5" rx="6"/>
+    <text x="86.0" y="1031.5" font-size="12.5">足関節、股関節、踏み出し戦略</text>
+  </g>
+  <g class="node d2 b8" data-depth="2">
+    <rect class="box" x="363.0" y="1049.0" width="215.0" height="28.2" rx="6"/>
+    <text x="373.0" y="1067.5" font-size="13.0">随意運動に先立つ予測的姿勢調整</text>
+  </g>
+  <g class="node d2 b8" data-depth="2">
+    <rect class="box" x="311.0" y="1085.2" width="267.0" height="45.3" rx="6"/>
+    <text x="321.0" y="1103.7" font-size="13.0">加齢、ニューロパチー、鎮静薬で予備能低</text>
+    <text x="321.0" y="1120.9" font-size="13.0">下</text>
+  </g>
+  <path class="link b8" data-depth="3" stroke-width="1.3" d="M376.0,1170.0 C323.5,1170.0 323.5,1152.3 271.0,1152.3"/>
+  <path class="link b8" data-depth="3" stroke-width="1.3" d="M376.0,1170.0 C323.5,1170.0 323.5,1187.8 271.0,1187.8"/>
+  <g class="node d2 b8" data-depth="2">
+    <rect class="box" x="376.0" y="1155.9" width="202.0" height="28.2" rx="6"/>
+    <text x="386.0" y="1174.4" font-size="13.0">歩行パターンが障害部位を示す</text>
+  </g>
+  <g class="node d3 b8" data-depth="3">
+    <rect class="box" x="38.5" y="1138.5" width="232.5" height="27.5" rx="6"/>
+    <text x="48.5" y="1156.5" font-size="12.5">パーキンソン歩行は小刻みとすくみ足</text>
+  </g>
+  <g class="node d3 b8" data-depth="3">
+    <rect class="box" x="76.0" y="1174.0" width="195.0" height="27.5" rx="6"/>
+    <text x="86.0" y="1192.0" font-size="12.5">前頭葉性歩行障害は開始が障害</text>
+  </g>
+  <path class="link b9" data-depth="2" stroke-width="1.8" d="M1210.5,1155.3 C1230.5,1155.3 1230.5,1101.3 1250.5,1101.3"/>
+  <path class="link b9" data-depth="2" stroke-width="1.8" d="M1210.5,1155.3 C1230.5,1155.3 1230.5,1137.4 1250.5,1137.4"/>
+  <path class="link b9" data-depth="2" stroke-width="1.8" d="M1210.5,1155.3 C1230.5,1155.3 1230.5,1173.6 1250.5,1173.6"/>
+  <path class="link b9" data-depth="2" stroke-width="1.8" d="M1210.5,1155.3 C1230.5,1155.3 1230.5,1209.4 1250.5,1209.4"/>
+  <g class="node d1 b9" data-depth="1">
+    <rect class="box" x="987.5" y="1140.3" width="223.0" height="30.1" rx="9"/>
+    <text x="997.5" y="1160.3" font-size="14.5">運動学習とリハビリテーション</text>
+  </g>
+  <g class="node d2 b9" data-depth="2">
+    <rect class="box" x="1250.5" y="1087.2" width="228.0" height="28.2" rx="6"/>
+    <text x="1260.5" y="1105.7" font-size="13.0">機能の回復、代償、練習、環境調整</text>
+  </g>
+  <g class="node d2 b9" data-depth="2">
+    <rect class="box" x="1250.5" y="1123.3" width="228.0" height="28.2" rx="6"/>
+    <text x="1260.5" y="1141.8" font-size="13.0">課題特異的で難度があり安全な反復</text>
+  </g>
+  <g class="node d2 b9" data-depth="2">
+    <rect class="box" x="1250.5" y="1159.5" width="254.0" height="28.2" rx="6"/>
+    <text x="1260.5" y="1178.0" font-size="13.0">過剰な外部修正は自立した制御を妨げる</text>
+  </g>
+  <path class="link b9" data-depth="3" stroke-width="1.3" d="M1478.5,1209.4 C1518.0,1209.4 1518.0,1209.4 1557.5,1209.4"/>
+  <g class="node d2 b9" data-depth="2">
+    <rect class="box" x="1250.5" y="1195.3" width="228.0" height="28.2" rx="6"/>
+    <text x="1260.5" y="1213.8" font-size="13.0">疼痛、拘縮、機能のため痙縮を治療</text>
+  </g>
+  <g class="node d3 b9" data-depth="3">
+    <rect class="box" x="1557.5" y="1195.7" width="182.5" height="27.5" rx="6"/>
+    <text x="1567.5" y="1213.7" font-size="12.5">硬さが移乗の支えになり得る</text>
+  </g>
+</svg>

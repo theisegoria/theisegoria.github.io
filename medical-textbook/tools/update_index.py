@@ -133,7 +133,7 @@ def main() -> int:
 
     pack_rows = "\n".join(
         f'      <li>{display(k)} {html.escape(label(k, modules))}: '
-        f'<a href="packs/IMF-{k}-study-pack.zip" download>study pack</a></li>'
+        f'<a href="{manuscript.PACK_BASE}IMF-{k}-study-pack.zip">study pack</a></li>'
         for k in packed
     )
 

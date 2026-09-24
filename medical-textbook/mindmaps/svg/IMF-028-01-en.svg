@@ -1,0 +1,654 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="mm" viewBox="0 0 2076 1760" width="2076" height="1760" role="img" aria-label="Motor control foundations">
+<style>
+  .mm-bg { fill: #faf8f4; }
+  .mm text { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; fill: #1b1917; }
+  .mm .link { fill: none; stroke: #c9c1b4; }
+  .mm .box { fill: none; stroke: none; }
+  .mm .d0 .box { fill: #1b1917; stroke: #1b1917; }
+  .mm .d0 text { fill: #faf8f4; font-weight: 650; }
+  .mm .d1 text { font-weight: 600; }
+
+  .mm .link.b0 { stroke: #4b9ac6; }
+  .mm .b0.d1 .box { fill: #d7e5eb; stroke: #0072B2; stroke-width: 1.5; }
+  .mm .b0.d1 text { fill: #075c8b; }
+  .mm .b0.d2 .box { fill: #e8efef; stroke: #70aed0; }
+  .mm .b0.d3 text, .mm .b0.d4 text { fill: #075c8b; }
+
+  .mm .link.b1 { stroke: #e08c49; }
+  .mm .b1.d1 .box { fill: #f5e2d2; stroke: #D55E00; stroke-width: 1.5; }
+  .mm .b1.d1 text { fill: #a64d06; }
+  .mm .b1.d2 .box { fill: #f7ede3; stroke: #e6a36e; }
+  .mm .b1.d3 text, .mm .b1.d4 text { fill: #a64d06; }
+
+  .mm .link.b2 { stroke: #4bb99a; }
+  .mm .b2.d1 .box { fill: #d7ebe2; stroke: #009E73; stroke-width: 1.5; }
+  .mm .b2.d1 text { fill: #077d5c; }
+  .mm .b2.d2 .box { fill: #e8f2eb; stroke: #70c6ad; }
+  .mm .b2.d3 text, .mm .b2.d4 text { fill: #077d5c; }
+
+  .mm .link.b3 { stroke: #da9fbe; }
+  .mm .b3.d1 .box { fill: #f4e6e9; stroke: #CC79A7; stroke-width: 1.5; }
+  .mm .b3.d1 text { fill: #985c7c; }
+  .mm .b3.d2 .box { fill: #f7efef; stroke: #e1b2ca; }
+  .mm .b3.d3 text, .mm .b3.d4 text { fill: #985c7c; }
+
+  .mm .link.b4 { stroke: #bba149; }
+  .mm .b4.d1 .box { fill: #ede7d2; stroke: #A07C00; stroke-width: 1.5; }
+  .mm .b4.d1 text { fill: #7f6306; }
+  .mm .b4.d2 .box { fill: #f4efe3; stroke: #c8b46e; }
+  .mm .b4.d3 text, .mm .b4.d4 text { fill: #7f6306; }
+
+  .mm .link.b5 { stroke: #84c1e2; }
+  .mm .b5.d1 .box { fill: #e3eef2; stroke: #51a9db; stroke-width: 1.5; }
+  .mm .b5.d1 text { fill: #3d7899; }
+  .mm .b5.d2 .box { fill: #eff3f3; stroke: #9dcde6; }
+  .mm .b5.d3 text, .mm .b5.d4 text { fill: #3d7899; }
+
+  .mm .link.b6 { stroke: #9580b0; }
+  .mm .b6.d1 .box { fill: #e6e0e6; stroke: #6A4C93; stroke-width: 1.5; }
+  .mm .b6.d1 text { fill: #563f74; }
+  .mm .b6.d2 .box { fill: #f0eced; stroke: #ab99bf; }
+  .mm .b6.d3 text, .mm .b6.d4 text { fill: #563f74; }
+
+  .mm .link.b7 { stroke: #98ac74; }
+  .mm .b7.d1 .box { fill: #e6e9da; stroke: #6E8B3D; stroke-width: 1.5; }
+  .mm .b7.d1 text { fill: #596e34; }
+  .mm .b7.d2 .box { fill: #f0f0e7; stroke: #adbc8f; }
+  .mm .b7.d3 text, .mm .b7.d4 text { fill: #596e34; }
+
+  .mm .link.b8 { stroke: #e2b349; }
+  .mm .b8.d1 .box { fill: #f7ecd2; stroke: #d89500; stroke-width: 1.5; }
+  .mm .b8.d1 text { fill: #986a05; }
+  .mm .b8.d2 .box { fill: #f9f2e3; stroke: #e7c26e; }
+  .mm .b8.d3 text, .mm .b8.d4 text { fill: #986a05; }
+
+  .mm .link.b9 { stroke: #bf6669; }
+  .mm .b9.d1 .box { fill: #eedbd8; stroke: #A6272E; stroke-width: 1.5; }
+  .mm .b9.d1 text { fill: #832428; }
+  .mm .b9.d2 .box { fill: #f4e9e6; stroke: #cc8587; }
+  .mm .b9.d3 text, .mm .b9.d4 text { fill: #832428; }
+@media (prefers-color-scheme: dark) {
+  .mm-bg { fill: #12100e; }
+  .mm text { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; fill: #ece7df; }
+  .mm .link { fill: none; stroke: #3d3833; }
+  .mm .box { fill: none; stroke: none; }
+  .mm .d0 .box { fill: #ece7df; stroke: #ece7df; }
+  .mm .d0 text { fill: #12100e; font-weight: 650; }
+  .mm .d1 text { font-weight: 600; }
+
+  .mm .link.b0 { stroke: #2d6a8d; }
+  .mm .b0.d1 .box { fill: #172227; stroke: #3891c3; stroke-width: 1.5; }
+  .mm .b0.d1 text { fill: #65a6ca; }
+  .mm .b0.d2 .box { fill: #15191b; stroke: #275772; }
+  .mm .b0.d3 text, .mm .b0.d4 text { fill: #65a6ca; }
+
+  .mm .link.b1 { stroke: #a15f2b; }
+  .mm .b1.d1 .box { fill: #2f2014; stroke: #de8138; stroke-width: 1.5; }
+  .mm .b1.d1 text { fill: #e29a62; }
+  .mm .b1.d2 .box { fill: #201811; stroke: #824e25; }
+  .mm .b1.d3 text, .mm .b1.d4 text { fill: #e29a62; }
+
+  .mm .link.b2 { stroke: #2d826a; }
+  .mm .b2.d1 .box { fill: #172720; stroke: #38b392; stroke-width: 1.5; }
+  .mm .b2.d1 text { fill: #65c0a5; }
+  .mm .b2.d2 .box { fill: #151b17; stroke: #276a57; }
+  .mm .b2.d3 text, .mm .b2.d4 text { fill: #65c0a5; }
+
+  .mm .link.b3 { stroke: #9c6e86; }
+  .mm .b3.d1 .box { fill: #2e2326; stroke: #d796ba; stroke-width: 1.5; }
+  .mm .b3.d1 text { fill: #dcaac3; }
+  .mm .b3.d2 .box { fill: #20191a; stroke: #7e5a6d; }
+  .mm .b3.d3 text, .mm .b3.d4 text { fill: #dcaac3; }
+
+  .mm .link.b4 { stroke: #84702b; }
+  .mm .b4.d1 .box { fill: #292314; stroke: #b59938; stroke-width: 1.5; }
+  .mm .b4.d1 text { fill: #c3ac62; }
+  .mm .b4.d2 .box { fill: #1d1a11; stroke: #6c5b25; }
+  .mm .b4.d3 text, .mm .b4.d4 text { fill: #c3ac62; }
+
+  .mm .link.b5 { stroke: #5c8eab; }
+  .mm .b5.d1 .box { fill: #21292d; stroke: #7bc4ee; stroke-width: 1.5; }
+  .mm .b5.d1 text { fill: #97cdea; }
+  .mm .b5.d2 .box { fill: #191d1e; stroke: #4c7389; }
+  .mm .b5.d3 text, .mm .b5.d4 text { fill: #97cdea; }
+
+  .mm .link.b6 { stroke: #67557c; }
+  .mm .b6.d1 .box { fill: #231e24; stroke: #8b73ab; stroke-width: 1.5; }
+  .mm .b6.d1 text { fill: #a390b8; }
+  .mm .b6.d2 .box { fill: #1a1719; stroke: #554664; }
+  .mm .b6.d3 text, .mm .b6.d4 text { fill: #a390b8; }
+
+  .mm .link.b7 { stroke: #69784d; }
+  .mm .b7.d1 .box { fill: #23251b; stroke: #8ea568; stroke-width: 1.5; }
+  .mm .b7.d1 text { fill: #a6b686; }
+  .mm .b7.d2 .box { fill: #1b1a14; stroke: #566240; }
+  .mm .b7.d3 text, .mm .b7.d4 text { fill: #a6b686; }
+
+  .mm .link.b8 { stroke: #ab832b; }
+  .mm .b8.d1 .box { fill: #312714; stroke: #ecb438; stroke-width: 1.5; }
+  .mm .b8.d1 text { fill: #ecc162; }
+  .mm .b8.d2 .box { fill: #211b11; stroke: #8a6a25; }
+  .mm .b8.d3 text, .mm .b8.d4 text { fill: #ecc162; }
+
+  .mm .link.b9 { stroke: #884245; }
+  .mm .b9.d1 .box { fill: #2a1a19; stroke: #ba575c; stroke-width: 1.5; }
+  .mm .b9.d1 text { fill: #c67b7d; }
+  .mm .b9.d2 .box { fill: #1e1513; stroke: #6e3739; }
+  .mm .b9.d3 text, .mm .b9.d4 text { fill: #c67b7d; }
+}
+</style>
+  <rect class="mm-bg" width="2076" height="1760"/>
+  <path class="link b0" data-depth="1" stroke-width="2.2" d="M1167.9,880.0 C1187.9,880.0 1187.9,182.0 1207.9,182.0"/>
+  <path class="link b1" data-depth="1" stroke-width="2.2" d="M1167.9,880.0 C1187.9,880.0 1187.9,552.9 1207.9,552.9"/>
+  <path class="link b2" data-depth="1" stroke-width="2.2" d="M1167.9,880.0 C893.3,880.0 893.3,135.0 618.8,135.0"/>
+  <path class="link b3" data-depth="1" stroke-width="2.2" d="M1167.9,880.0 C1187.9,880.0 1187.9,949.8 1207.9,949.8"/>
+  <path class="link b4" data-depth="1" stroke-width="2.2" d="M1167.9,880.0 C923.0,880.0 923.0,394.6 678.1,394.6"/>
+  <path class="link b5" data-depth="1" stroke-width="2.2" d="M1167.9,880.0 C897.6,880.0 897.6,779.2 627.2,779.2"/>
+  <path class="link b6" data-depth="1" stroke-width="2.2" d="M1167.9,880.0 C1187.9,880.0 1187.9,1338.8 1207.9,1338.8"/>
+  <path class="link b7" data-depth="1" stroke-width="2.2" d="M1167.9,880.0 C914.6,880.0 914.6,1169.8 661.2,1169.8"/>
+  <path class="link b8" data-depth="1" stroke-width="2.2" d="M1167.9,880.0 C893.3,880.0 893.3,1486.3 618.8,1486.3"/>
+  <path class="link b9" data-depth="1" stroke-width="2.2" d="M1167.9,880.0 C1187.9,880.0 1187.9,1644.7 1207.9,1644.7"/>
+  <g class="node d0 b0" data-depth="0">
+    <rect class="box" x="899.3" y="863.3" width="268.6" height="33.4" rx="9"/>
+    <text x="909.3" y="885.8" font-size="17.0">Motor control foundations</text>
+  </g>
+  <path class="link b0" data-depth="2" stroke-width="1.8" d="M1440.0,182.0 C1468.5,182.0 1468.5,48.7 1497.0,48.7"/>
+  <path class="link b0" data-depth="2" stroke-width="1.8" d="M1440.0,182.0 C1468.5,182.0 1468.5,102.0 1497.0,102.0"/>
+  <path class="link b0" data-depth="2" stroke-width="1.8" d="M1440.0,182.0 C1468.5,182.0 1468.5,155.3 1497.0,155.3"/>
+  <path class="link b0" data-depth="2" stroke-width="1.8" d="M1440.0,182.0 C1468.5,182.0 1468.5,208.6 1497.0,208.6"/>
+  <path class="link b0" data-depth="2" stroke-width="1.8" d="M1440.0,182.0 C1468.5,182.0 1468.5,261.9 1497.0,261.9"/>
+  <path class="link b0" data-depth="2" stroke-width="1.8" d="M1440.0,182.0 C1468.5,182.0 1468.5,315.3 1497.0,315.3"/>
+  <g class="node d1 b0" data-depth="1">
+    <rect class="box" x="1207.9" y="166.9" width="232.1" height="30.1" rx="9"/>
+    <text x="1217.9" y="186.9" font-size="14.5">Distributed motor control</text>
+  </g>
+  <g class="node d2 b0" data-depth="2">
+    <rect class="box" x="1497.0" y="26.0" width="219.8" height="45.3" rx="6"/>
+    <text x="1507.0" y="44.5" font-size="13.0">Spinal circuits: reflexes and</text>
+    <text x="1507.0" y="61.7" font-size="13.0">patterned output</text>
+  </g>
+  <g class="node d2 b0" data-depth="2">
+    <rect class="box" x="1497.0" y="79.3" width="254.3" height="45.3" rx="6"/>
+    <text x="1507.0" y="97.8" font-size="13.0">Brainstem: posture, balance, gaze,</text>
+    <text x="1507.0" y="115.0" font-size="13.0">orientation</text>
+  </g>
+  <g class="node d2 b0" data-depth="2">
+    <rect class="box" x="1497.0" y="132.6" width="226.7" height="45.3" rx="6"/>
+    <text x="1507.0" y="151.1" font-size="13.0">Motor cortex specifies skilled</text>
+    <text x="1507.0" y="168.3" font-size="13.0">action</text>
+  </g>
+  <g class="node d2 b0" data-depth="2">
+    <rect class="box" x="1497.0" y="186.0" width="219.8" height="45.3" rx="6"/>
+    <text x="1507.0" y="204.5" font-size="13.0">Basal nuclei select and scale</text>
+    <text x="1507.0" y="221.6" font-size="13.0">actions</text>
+  </g>
+  <g class="node d2 b0" data-depth="2">
+    <rect class="box" x="1497.0" y="239.3" width="226.7" height="45.3" rx="6"/>
+    <text x="1507.0" y="257.8" font-size="13.0">Cerebellum predicts, compares,</text>
+    <text x="1507.0" y="274.9" font-size="13.0">adapts</text>
+  </g>
+  <g class="node d2 b0" data-depth="2">
+    <rect class="box" x="1497.0" y="292.6" width="206.0" height="45.3" rx="6"/>
+    <text x="1507.0" y="311.1" font-size="13.0">Localise by weakness, tone,</text>
+    <text x="1507.0" y="328.3" font-size="13.0">reflexes, gait</text>
+  </g>
+  <path class="link b1" data-depth="2" stroke-width="1.8" d="M1406.1,552.9 C1451.5,552.9 1451.5,367.9 1497.0,367.9"/>
+  <path class="link b1" data-depth="2" stroke-width="1.8" d="M1406.1,552.9 C1451.5,552.9 1451.5,420.6 1497.0,420.6"/>
+  <path class="link b1" data-depth="2" stroke-width="1.8" d="M1406.1,552.9 C1451.5,552.9 1451.5,473.9 1497.0,473.9"/>
+  <path class="link b1" data-depth="2" stroke-width="1.8" d="M1406.1,552.9 C1451.5,552.9 1451.5,552.6 1497.0,552.6"/>
+  <path class="link b1" data-depth="2" stroke-width="1.8" d="M1406.1,552.9 C1451.5,552.9 1451.5,631.2 1497.0,631.2"/>
+  <path class="link b1" data-depth="2" stroke-width="1.8" d="M1406.1,552.9 C1451.5,552.9 1451.5,684.5 1497.0,684.5"/>
+  <path class="link b1" data-depth="2" stroke-width="1.8" d="M1406.1,552.9 C1451.5,552.9 1451.5,737.9 1497.0,737.9"/>
+  <g class="node d1 b1" data-depth="1">
+    <rect class="box" x="1207.9" y="537.8" width="198.1" height="30.1" rx="9"/>
+    <text x="1217.9" y="557.8" font-size="14.5">Motor units and force</text>
+  </g>
+  <path class="link b1" data-depth="3" stroke-width="1.3" d="M1751.2,367.9 C1771.2,367.9 1771.2,367.9 1791.2,367.9"/>
+  <g class="node d2 b1" data-depth="2">
+    <rect class="box" x="1497.0" y="345.3" width="254.3" height="45.3" rx="6"/>
+    <text x="1507.0" y="363.8" font-size="13.0">Alpha motor neuron plus its muscle</text>
+    <text x="1507.0" y="380.9" font-size="13.0">fibres</text>
+  </g>
+  <g class="node d3 b1" data-depth="3">
+    <rect class="box" x="1791.2" y="345.9" width="251.9" height="44.0" rx="6"/>
+    <text x="1801.2" y="363.9" font-size="12.5">Small units for fine control, large</text>
+    <text x="1801.2" y="380.4" font-size="12.5">for power</text>
+  </g>
+  <g class="node d2 b1" data-depth="2">
+    <rect class="box" x="1497.0" y="397.9" width="254.3" height="45.3" rx="6"/>
+    <text x="1507.0" y="416.4" font-size="13.0">Force: faster firing, larger units</text>
+    <text x="1507.0" y="433.6" font-size="13.0">recruited</text>
+  </g>
+  <g class="node d2 b1" data-depth="2">
+    <rect class="box" x="1497.0" y="451.2" width="233.6" height="45.3" rx="6"/>
+    <text x="1507.0" y="469.7" font-size="13.0">Asynchronous activation smooths</text>
+    <text x="1507.0" y="486.9" font-size="13.0">contraction</text>
+  </g>
+  <path class="link b1" data-depth="3" stroke-width="1.3" d="M1723.7,552.6 C1757.4,552.6 1757.4,526.6 1791.2,526.6"/>
+  <path class="link b1" data-depth="3" stroke-width="1.3" d="M1723.7,552.6 C1757.4,552.6 1757.4,578.6 1791.2,578.6"/>
+  <g class="node d2 b1" data-depth="2">
+    <rect class="box" x="1497.0" y="529.9" width="226.7" height="45.3" rx="6"/>
+    <text x="1507.0" y="548.4" font-size="13.0">Neuromuscular transmission via</text>
+    <text x="1507.0" y="565.6" font-size="13.0">acetylcholine</text>
+  </g>
+  <g class="node d3 b1" data-depth="3">
+    <rect class="box" x="1791.2" y="504.6" width="251.9" height="44.0" rx="6"/>
+    <text x="1801.2" y="522.6" font-size="12.5">Nicotinic end-plate potential, then</text>
+    <text x="1801.2" y="539.1" font-size="12.5">sodium channels</text>
+  </g>
+  <g class="node d3 b1" data-depth="3">
+    <rect class="box" x="1791.2" y="556.6" width="258.5" height="44.0" rx="6"/>
+    <text x="1801.2" y="574.6" font-size="12.5">Safety factor can fail with receptor</text>
+    <text x="1801.2" y="591.1" font-size="12.5">or release loss</text>
+  </g>
+  <g class="node d2 b1" data-depth="2">
+    <rect class="box" x="1497.0" y="608.6" width="247.4" height="45.3" rx="6"/>
+    <text x="1507.0" y="627.1" font-size="13.0">Lower motor-neuron loss: atrophy,</text>
+    <text x="1507.0" y="644.2" font-size="13.0">fasciculations</text>
+  </g>
+  <g class="node d2 b1" data-depth="2">
+    <rect class="box" x="1497.0" y="661.9" width="206.0" height="45.3" rx="6"/>
+    <text x="1507.0" y="680.4" font-size="13.0">Junction disease: fatigable</text>
+    <text x="1507.0" y="697.5" font-size="13.0">weakness, no sensory loss</text>
+  </g>
+  <g class="node d2 b1" data-depth="2">
+    <rect class="box" x="1497.0" y="715.2" width="254.3" height="45.3" rx="6"/>
+    <text x="1507.0" y="733.7" font-size="13.0">Muscle disease: symmetric proximal</text>
+    <text x="1507.0" y="750.9" font-size="13.0">weakness</text>
+  </g>
+  <path class="link b2" data-depth="2" stroke-width="1.8" d="M618.8,135.0 C598.8,135.0 598.8,74.0 578.8,74.0"/>
+  <path class="link b2" data-depth="2" stroke-width="1.8" d="M618.8,135.0 C598.8,135.0 598.8,152.0 578.8,152.0"/>
+  <path class="link b2" data-depth="2" stroke-width="1.8" d="M618.8,135.0 C598.8,135.0 598.8,196.1 578.8,196.1"/>
+  <g class="node d1 b2" data-depth="1">
+    <rect class="box" x="618.8" y="110.4" width="240.5" height="49.3" rx="9"/>
+    <text x="628.8" y="130.4" font-size="14.5">Muscle spindles and tendon</text>
+    <text x="628.8" y="149.5" font-size="14.5">organs</text>
+  </g>
+  <path class="link b2" data-depth="3" stroke-width="1.3" d="M331.4,74.0 C307.9,74.0 307.9,48.0 284.5,48.0"/>
+  <path class="link b2" data-depth="3" stroke-width="1.3" d="M331.4,74.0 C307.9,74.0 307.9,100.0 284.5,100.0"/>
+  <g class="node d2 b2" data-depth="2">
+    <rect class="box" x="331.4" y="51.3" width="247.4" height="45.3" rx="6"/>
+    <text x="341.4" y="69.8" font-size="13.0">Spindles in parallel sense length</text>
+    <text x="341.4" y="87.0" font-size="13.0">and stretch rate</text>
+  </g>
+  <g class="node d3 b2" data-depth="3">
+    <rect class="box" x="52.5" y="26.0" width="232.0" height="44.0" rx="6"/>
+    <text x="62.5" y="44.0" font-size="12.5">Ia excites same muscle, inhibits</text>
+    <text x="62.5" y="60.5" font-size="12.5">antagonist</text>
+  </g>
+  <g class="node d3 b2" data-depth="3">
+    <rect class="box" x="26.0" y="78.0" width="258.5" height="44.0" rx="6"/>
+    <text x="36.0" y="96.0" font-size="12.5">Gamma drive preserves sensitivity in</text>
+    <text x="36.0" y="112.5" font-size="12.5">contraction</text>
+  </g>
+  <path class="link b2" data-depth="3" stroke-width="1.3" d="M359.0,152.0 C321.7,152.0 321.7,152.0 284.5,152.0"/>
+  <g class="node d2 b2" data-depth="2">
+    <rect class="box" x="359.0" y="129.3" width="219.8" height="45.3" rx="6"/>
+    <text x="369.0" y="147.8" font-size="13.0">Tendon organs in series sense</text>
+    <text x="369.0" y="165.0" font-size="13.0">tension via Ib</text>
+  </g>
+  <g class="node d3 b2" data-depth="3">
+    <rect class="box" x="45.9" y="130.0" width="238.6" height="44.0" rx="6"/>
+    <text x="55.9" y="148.0" font-size="12.5">Distribute load, flexible role in</text>
+    <text x="55.9" y="164.5" font-size="12.5">locomotion</text>
+  </g>
+  <g class="node d2 b2" data-depth="2">
+    <rect class="box" x="359.0" y="182.0" width="219.8" height="28.2" rx="6"/>
+    <text x="369.0" y="200.5" font-size="13.0">No receptor acts in isolation</text>
+  </g>
+  <path class="link b3" data-depth="2" stroke-width="1.8" d="M1355.2,949.8 C1426.1,949.8 1426.1,791.2 1497.0,791.2"/>
+  <path class="link b3" data-depth="2" stroke-width="1.8" d="M1355.2,949.8 C1426.1,949.8 1426.1,869.8 1497.0,869.8"/>
+  <path class="link b3" data-depth="2" stroke-width="1.8" d="M1355.2,949.8 C1426.1,949.8 1426.1,948.5 1497.0,948.5"/>
+  <path class="link b3" data-depth="2" stroke-width="1.8" d="M1355.2,949.8 C1426.1,949.8 1426.1,1001.8 1497.0,1001.8"/>
+  <path class="link b3" data-depth="2" stroke-width="1.8" d="M1355.2,949.8 C1426.1,949.8 1426.1,1055.1 1497.0,1055.1"/>
+  <path class="link b3" data-depth="2" stroke-width="1.8" d="M1355.2,949.8 C1426.1,949.8 1426.1,1108.5 1497.0,1108.5"/>
+  <g class="node d1 b3" data-depth="1">
+    <rect class="box" x="1207.9" y="934.8" width="147.2" height="30.1" rx="9"/>
+    <text x="1217.9" y="954.8" font-size="14.5">Spinal reflexes</text>
+  </g>
+  <g class="node d2 b3" data-depth="2">
+    <rect class="box" x="1497.0" y="768.5" width="219.8" height="45.3" rx="6"/>
+    <text x="1507.0" y="787.0" font-size="13.0">Stretch reflex resists sudden</text>
+    <text x="1507.0" y="804.2" font-size="13.0">lengthening</text>
+  </g>
+  <path class="link b3" data-depth="3" stroke-width="1.3" d="M1751.2,869.8 C1771.2,869.8 1771.2,843.8 1791.2,843.8"/>
+  <path class="link b3" data-depth="3" stroke-width="1.3" d="M1751.2,869.8 C1771.2,869.8 1771.2,895.8 1791.2,895.8"/>
+  <g class="node d2 b3" data-depth="2">
+    <rect class="box" x="1497.0" y="847.2" width="254.3" height="45.3" rx="6"/>
+    <text x="1507.0" y="865.7" font-size="13.0">Tendon tap probes the whole reflex</text>
+    <text x="1507.0" y="882.8" font-size="13.0">arc</text>
+  </g>
+  <g class="node d3 b3" data-depth="3">
+    <rect class="box" x="1791.2" y="821.8" width="232.0" height="44.0" rx="6"/>
+    <text x="1801.2" y="839.8" font-size="12.5">Amplitude varies with attention,</text>
+    <text x="1801.2" y="856.3" font-size="12.5">age, technique</text>
+  </g>
+  <g class="node d3 b3" data-depth="3">
+    <rect class="box" x="1791.2" y="873.8" width="238.6" height="44.0" rx="6"/>
+    <text x="1801.2" y="891.8" font-size="12.5">Symmetry and other signs outweigh</text>
+    <text x="1801.2" y="908.3" font-size="12.5">one grade</text>
+  </g>
+  <g class="node d2 b3" data-depth="2">
+    <rect class="box" x="1497.0" y="925.8" width="226.7" height="45.3" rx="6"/>
+    <text x="1507.0" y="944.3" font-size="13.0">Flexor withdrawal with crossed</text>
+    <text x="1507.0" y="961.5" font-size="13.0">extension</text>
+  </g>
+  <g class="node d2 b3" data-depth="2">
+    <rect class="box" x="1497.0" y="979.2" width="240.5" height="45.3" rx="6"/>
+    <text x="1507.0" y="997.7" font-size="13.0">Renshaw recurrent and reciprocal</text>
+    <text x="1507.0" y="1014.8" font-size="13.0">inhibition</text>
+  </g>
+  <g class="node d2 b3" data-depth="2">
+    <rect class="box" x="1497.0" y="1032.5" width="226.7" height="45.3" rx="6"/>
+    <text x="1507.0" y="1051.0" font-size="13.0">Spinal shock, then exaggerated</text>
+    <text x="1507.0" y="1068.1" font-size="13.0">reflexes</text>
+  </g>
+  <g class="node d2 b3" data-depth="2">
+    <rect class="box" x="1497.0" y="1085.8" width="254.3" height="45.3" rx="6"/>
+    <text x="1507.0" y="1104.3" font-size="13.0">Pattern generators need descending</text>
+    <text x="1507.0" y="1121.5" font-size="13.0">initiation</text>
+  </g>
+  <path class="link b4" data-depth="2" stroke-width="1.8" d="M678.1,394.6 C628.4,394.6 628.4,240.2 578.8,240.2"/>
+  <path class="link b4" data-depth="2" stroke-width="1.8" d="M678.1,394.6 C628.4,394.6 628.4,301.7 578.8,301.7"/>
+  <path class="link b4" data-depth="2" stroke-width="1.8" d="M678.1,394.6 C628.4,394.6 628.4,363.8 578.8,363.8"/>
+  <path class="link b4" data-depth="2" stroke-width="1.8" d="M678.1,394.6 C628.4,394.6 628.4,417.1 578.8,417.1"/>
+  <path class="link b4" data-depth="2" stroke-width="1.8" d="M678.1,394.6 C628.4,394.6 628.4,470.5 578.8,470.5"/>
+  <path class="link b4" data-depth="2" stroke-width="1.8" d="M678.1,394.6 C628.4,394.6 628.4,549.1 578.8,549.1"/>
+  <g class="node d1 b4" data-depth="1">
+    <rect class="box" x="678.1" y="379.6" width="181.2" height="30.1" rx="9"/>
+    <text x="688.1" y="399.6" font-size="14.5">Descending pathways</text>
+  </g>
+  <path class="link b4" data-depth="3" stroke-width="1.3" d="M359.0,240.2 C321.7,240.2 321.7,240.2 284.5,240.2"/>
+  <g class="node d2 b4" data-depth="2">
+    <rect class="box" x="359.0" y="217.5" width="219.8" height="45.3" rx="6"/>
+    <text x="369.0" y="236.0" font-size="13.0">Corticospinal fibres cross in</text>
+    <text x="369.0" y="253.2" font-size="13.0">lower medulla</text>
+  </g>
+  <g class="node d3 b4" data-depth="3">
+    <rect class="box" x="32.6" y="218.2" width="251.9" height="44.0" rx="6"/>
+    <text x="42.6" y="236.2" font-size="12.5">Lateral tract: contralateral distal</text>
+    <text x="42.6" y="252.7" font-size="12.5">skill</text>
+  </g>
+  <path class="link b4" data-depth="3" stroke-width="1.3" d="M372.7,301.7 C328.6,301.7 328.6,283.9 284.5,283.9"/>
+  <path class="link b4" data-depth="3" stroke-width="1.3" d="M372.7,301.7 C328.6,301.7 328.6,319.4 284.5,319.4"/>
+  <g class="node d2 b4" data-depth="2">
+    <rect class="box" x="372.7" y="279.0" width="206.0" height="45.3" rx="6"/>
+    <text x="382.7" y="297.5" font-size="13.0">Corticobulbar input largely</text>
+    <text x="382.7" y="314.7" font-size="13.0">bilateral</text>
+  </g>
+  <g class="node d3 b4" data-depth="3">
+    <rect class="box" x="32.6" y="270.2" width="251.9" height="27.5" rx="6"/>
+    <text x="42.6" y="288.2" font-size="12.5">Lower face and tongue contralateral</text>
+  </g>
+  <g class="node d3 b4" data-depth="3">
+    <rect class="box" x="65.8" y="305.7" width="218.7" height="27.5" rx="6"/>
+    <text x="75.8" y="323.7" font-size="12.5">Central lesion spares forehead</text>
+  </g>
+  <g class="node d2 b4" data-depth="2">
+    <rect class="box" x="352.1" y="341.2" width="226.7" height="45.3" rx="6"/>
+    <text x="362.1" y="359.7" font-size="13.0">Reticulospinal: tone, posture,</text>
+    <text x="362.1" y="376.8" font-size="13.0">locomotion</text>
+  </g>
+  <g class="node d2 b4" data-depth="2">
+    <rect class="box" x="324.5" y="394.5" width="254.3" height="45.3" rx="6"/>
+    <text x="334.5" y="413.0" font-size="13.0">Vestibulospinal stabilises against</text>
+    <text x="334.5" y="430.1" font-size="13.0">gravity</text>
+  </g>
+  <g class="node d2 b4" data-depth="2">
+    <rect class="box" x="372.7" y="447.8" width="206.0" height="45.3" rx="6"/>
+    <text x="382.7" y="466.3" font-size="13.0">Tectospinal orients head to</text>
+    <text x="382.7" y="483.5" font-size="13.0">stimuli</text>
+  </g>
+  <path class="link b4" data-depth="3" stroke-width="1.3" d="M345.2,549.1 C314.8,549.1 314.8,523.1 284.5,523.1"/>
+  <path class="link b4" data-depth="3" stroke-width="1.3" d="M345.2,549.1 C314.8,549.1 314.8,575.1 284.5,575.1"/>
+  <g class="node d2 b4" data-depth="2">
+    <rect class="box" x="345.2" y="526.5" width="233.6" height="45.3" rx="6"/>
+    <text x="355.2" y="545.0" font-size="13.0">Upper motor-neuron lesion after</text>
+    <text x="355.2" y="562.1" font-size="13.0">shock resolves</text>
+  </g>
+  <g class="node d3 b4" data-depth="3">
+    <rect class="box" x="59.1" y="501.1" width="225.4" height="44.0" rx="6"/>
+    <text x="69.1" y="519.1" font-size="12.5">Hyperreflexia, clonus, extensor</text>
+    <text x="69.1" y="535.6" font-size="12.5">plantar</text>
+  </g>
+  <g class="node d3 b4" data-depth="3">
+    <rect class="box" x="65.8" y="553.1" width="218.7" height="44.0" rx="6"/>
+    <text x="75.8" y="571.1" font-size="12.5">Spasticity velocity-dependent,</text>
+    <text x="75.8" y="587.6" font-size="12.5">rigidity not</text>
+  </g>
+  <path class="link b5" data-depth="2" stroke-width="1.8" d="M627.2,779.2 C603.0,779.2 603.0,627.8 578.8,627.8"/>
+  <path class="link b5" data-depth="2" stroke-width="1.8" d="M627.2,779.2 C603.0,779.2 603.0,672.5 578.8,672.5"/>
+  <path class="link b5" data-depth="2" stroke-width="1.8" d="M627.2,779.2 C603.0,779.2 603.0,717.3 578.8,717.3"/>
+  <path class="link b5" data-depth="2" stroke-width="1.8" d="M627.2,779.2 C603.0,779.2 603.0,770.6 578.8,770.6"/>
+  <path class="link b5" data-depth="2" stroke-width="1.8" d="M627.2,779.2 C603.0,779.2 603.0,823.9 578.8,823.9"/>
+  <path class="link b5" data-depth="2" stroke-width="1.8" d="M627.2,779.2 C603.0,779.2 603.0,877.2 578.8,877.2"/>
+  <path class="link b5" data-depth="2" stroke-width="1.8" d="M627.2,779.2 C603.0,779.2 603.0,930.5 578.8,930.5"/>
+  <g class="node d1 b5" data-depth="1">
+    <rect class="box" x="627.2" y="764.1" width="232.1" height="30.1" rx="9"/>
+    <text x="637.2" y="784.1" font-size="14.5">Motor cortex and planning</text>
+  </g>
+  <g class="node d2 b5" data-depth="2">
+    <rect class="box" x="345.2" y="605.1" width="233.6" height="45.3" rx="6"/>
+    <text x="355.2" y="623.6" font-size="13.0">Primary motor: force direction,</text>
+    <text x="355.2" y="640.8" font-size="13.0">execution</text>
+  </g>
+  <g class="node d2 b5" data-depth="2">
+    <rect class="box" x="372.7" y="658.4" width="206.0" height="28.2" rx="6"/>
+    <text x="382.7" y="676.9" font-size="13.0">Premotor uses external cues</text>
+  </g>
+  <g class="node d2 b5" data-depth="2">
+    <rect class="box" x="345.2" y="694.6" width="233.6" height="45.3" rx="6"/>
+    <text x="355.2" y="713.1" font-size="13.0">Supplementary areas: sequences,</text>
+    <text x="355.2" y="730.3" font-size="13.0">bimanual</text>
+  </g>
+  <g class="node d2 b5" data-depth="2">
+    <rect class="box" x="338.3" y="747.9" width="240.5" height="45.3" rx="6"/>
+    <text x="348.3" y="766.4" font-size="13.0">Parietal cortex turns space into</text>
+    <text x="348.3" y="783.6" font-size="13.0">plans</text>
+  </g>
+  <g class="node d2 b5" data-depth="2">
+    <rect class="box" x="365.8" y="801.2" width="212.9" height="45.3" rx="6"/>
+    <text x="375.8" y="819.7" font-size="13.0">Maps overlap and change with</text>
+    <text x="375.8" y="836.9" font-size="13.0">learning</text>
+  </g>
+  <g class="node d2 b5" data-depth="2">
+    <rect class="box" x="345.2" y="854.6" width="233.6" height="45.3" rx="6"/>
+    <text x="355.2" y="873.1" font-size="13.0">Efference copy predicts sensory</text>
+    <text x="355.2" y="890.2" font-size="13.0">consequences</text>
+  </g>
+  <g class="node d2 b5" data-depth="2">
+    <rect class="box" x="365.8" y="907.9" width="212.9" height="45.3" rx="6"/>
+    <text x="375.8" y="926.4" font-size="13.0">Practice reduces attentional</text>
+    <text x="375.8" y="943.5" font-size="13.0">demand</text>
+  </g>
+  <path class="link b6" data-depth="2" stroke-width="1.8" d="M1457.0,1338.8 C1477.0,1338.8 1477.0,1161.8 1497.0,1161.8"/>
+  <path class="link b6" data-depth="2" stroke-width="1.8" d="M1457.0,1338.8 C1477.0,1338.8 1477.0,1236.3 1497.0,1236.3"/>
+  <path class="link b6" data-depth="2" stroke-width="1.8" d="M1457.0,1338.8 C1477.0,1338.8 1477.0,1302.6 1497.0,1302.6"/>
+  <path class="link b6" data-depth="2" stroke-width="1.8" d="M1457.0,1338.8 C1477.0,1338.8 1477.0,1355.9 1497.0,1355.9"/>
+  <path class="link b6" data-depth="2" stroke-width="1.8" d="M1457.0,1338.8 C1477.0,1338.8 1477.0,1409.2 1497.0,1409.2"/>
+  <path class="link b6" data-depth="2" stroke-width="1.8" d="M1457.0,1338.8 C1477.0,1338.8 1477.0,1462.6 1497.0,1462.6"/>
+  <path class="link b6" data-depth="2" stroke-width="1.8" d="M1457.0,1338.8 C1477.0,1338.8 1477.0,1515.9 1497.0,1515.9"/>
+  <g class="node d1 b6" data-depth="1">
+    <rect class="box" x="1207.9" y="1314.2" width="249.0" height="49.3" rx="9"/>
+    <text x="1217.9" y="1334.2" font-size="14.5">Cerebellar architecture and</text>
+    <text x="1217.9" y="1353.3" font-size="14.5">function</text>
+  </g>
+  <g class="node d2 b6" data-depth="2">
+    <rect class="box" x="1497.0" y="1139.1" width="212.9" height="45.3" rx="6"/>
+    <text x="1507.0" y="1157.6" font-size="13.0">Compares intended plans with</text>
+    <text x="1507.0" y="1174.8" font-size="13.0">performance</text>
+  </g>
+  <path class="link b6" data-depth="3" stroke-width="1.3" d="M1689.2,1236.3 C1740.2,1236.3 1740.2,1214.4 1791.2,1214.4"/>
+  <path class="link b6" data-depth="3" stroke-width="1.3" d="M1689.2,1236.3 C1740.2,1236.3 1740.2,1258.2 1791.2,1258.2"/>
+  <g class="node d2 b6" data-depth="2">
+    <rect class="box" x="1497.0" y="1222.2" width="192.2" height="28.2" rx="6"/>
+    <text x="1507.0" y="1240.7" font-size="13.0">Repeated cortical circuit</text>
+  </g>
+  <g class="node d3 b6" data-depth="3">
+    <rect class="box" x="1791.2" y="1192.4" width="212.1" height="44.0" rx="6"/>
+    <text x="1801.2" y="1210.4" font-size="12.5">Climbing fibres give teaching</text>
+    <text x="1801.2" y="1226.9" font-size="12.5">signals</text>
+  </g>
+  <g class="node d3 b6" data-depth="3">
+    <rect class="box" x="1791.2" y="1244.4" width="245.2" height="27.5" rx="6"/>
+    <text x="1801.2" y="1262.4" font-size="12.5">Purkinje cells inhibit deep nuclei</text>
+  </g>
+  <g class="node d2 b6" data-depth="2">
+    <rect class="box" x="1497.0" y="1279.9" width="233.6" height="45.3" rx="6"/>
+    <text x="1507.0" y="1298.4" font-size="13.0">Midline axial, lateral planning</text>
+    <text x="1507.0" y="1315.6" font-size="13.0">and timing</text>
+  </g>
+  <g class="node d2 b6" data-depth="2">
+    <rect class="box" x="1497.0" y="1333.3" width="178.5" height="45.3" rx="6"/>
+    <text x="1507.0" y="1351.8" font-size="13.0">Internal models support</text>
+    <text x="1507.0" y="1368.9" font-size="13.0">error-based learning</text>
+  </g>
+  <g class="node d2 b6" data-depth="2">
+    <rect class="box" x="1497.0" y="1386.6" width="185.4" height="45.3" rx="6"/>
+    <text x="1507.0" y="1405.1" font-size="13.0">Hemispheric lesions give</text>
+    <text x="1507.0" y="1422.2" font-size="13.0">ipsilateral signs</text>
+  </g>
+  <g class="node d2 b6" data-depth="2">
+    <rect class="box" x="1497.0" y="1439.9" width="254.3" height="45.3" rx="6"/>
+    <text x="1507.0" y="1458.4" font-size="13.0">Dysmetria, intention tremor, broad</text>
+    <text x="1507.0" y="1475.6" font-size="13.0">gait</text>
+  </g>
+  <g class="node d2 b6" data-depth="2">
+    <rect class="box" x="1497.0" y="1493.2" width="240.5" height="45.3" rx="6"/>
+    <text x="1507.0" y="1511.7" font-size="13.0">Sensory ataxia worsens with eyes</text>
+    <text x="1507.0" y="1528.9" font-size="13.0">closed</text>
+  </g>
+  <path class="link b7" data-depth="2" stroke-width="1.8" d="M661.2,1169.8 C620.0,1169.8 620.0,983.9 578.8,983.9"/>
+  <path class="link b7" data-depth="2" stroke-width="1.8" d="M661.2,1169.8 C620.0,1169.8 620.0,1037.2 578.8,1037.2"/>
+  <path class="link b7" data-depth="2" stroke-width="1.8" d="M661.2,1169.8 C620.0,1169.8 620.0,1090.5 578.8,1090.5"/>
+  <path class="link b7" data-depth="2" stroke-width="1.8" d="M661.2,1169.8 C620.0,1169.8 620.0,1143.8 578.8,1143.8"/>
+  <path class="link b7" data-depth="2" stroke-width="1.8" d="M661.2,1169.8 C620.0,1169.8 620.0,1197.1 578.8,1197.1"/>
+  <path class="link b7" data-depth="2" stroke-width="1.8" d="M661.2,1169.8 C620.0,1169.8 620.0,1249.8 578.8,1249.8"/>
+  <path class="link b7" data-depth="2" stroke-width="1.8" d="M661.2,1169.8 C620.0,1169.8 620.0,1302.5 578.8,1302.5"/>
+  <path class="link b7" data-depth="2" stroke-width="1.8" d="M661.2,1169.8 C620.0,1169.8 620.0,1355.8 578.8,1355.8"/>
+  <g class="node d1 b7" data-depth="1">
+    <rect class="box" x="661.2" y="1154.8" width="198.1" height="30.1" rx="9"/>
+    <text x="671.2" y="1174.8" font-size="14.5">Basal nuclei circuits</text>
+  </g>
+  <g class="node d2 b7" data-depth="2">
+    <rect class="box" x="331.4" y="961.2" width="247.4" height="45.3" rx="6"/>
+    <text x="341.4" y="979.7" font-size="13.0">Parallel motor, cognitive, limbic</text>
+    <text x="341.4" y="996.9" font-size="13.0">loops</text>
+  </g>
+  <g class="node d2 b7" data-depth="2">
+    <rect class="box" x="324.5" y="1014.5" width="254.3" height="45.3" rx="6"/>
+    <text x="334.5" y="1033.0" font-size="13.0">Inhibitory output selects cortical</text>
+    <text x="334.5" y="1050.2" font-size="13.0">actions</text>
+  </g>
+  <g class="node d2 b7" data-depth="2">
+    <rect class="box" x="379.6" y="1067.8" width="199.1" height="45.3" rx="6"/>
+    <text x="389.6" y="1086.3" font-size="13.0">Direct pathway facilitates</text>
+    <text x="389.6" y="1103.5" font-size="13.0">selected action</text>
+  </g>
+  <g class="node d2 b7" data-depth="2">
+    <rect class="box" x="372.7" y="1121.2" width="206.0" height="45.3" rx="6"/>
+    <text x="382.7" y="1139.7" font-size="13.0">Indirect pathway suppresses</text>
+    <text x="382.7" y="1156.8" font-size="13.0">competitors</text>
+  </g>
+  <g class="node d2 b7" data-depth="2">
+    <rect class="box" x="345.2" y="1174.5" width="233.6" height="45.3" rx="6"/>
+    <text x="355.2" y="1193.0" font-size="13.0">Dopamine: D1 direct, D2 reduces</text>
+    <text x="355.2" y="1210.1" font-size="13.0">indirect</text>
+  </g>
+  <path class="link b7" data-depth="3" stroke-width="1.3" d="M324.5,1249.8 C304.5,1249.8 304.5,1249.8 284.5,1249.8"/>
+  <g class="node d2 b7" data-depth="2">
+    <rect class="box" x="324.5" y="1235.7" width="254.3" height="28.2" rx="6"/>
+    <text x="334.5" y="1254.2" font-size="13.0">Parkinsonism from reduced dopamine</text>
+  </g>
+  <g class="node d3 b7" data-depth="3">
+    <rect class="box" x="79.0" y="1227.8" width="205.5" height="44.0" rx="6"/>
+    <text x="89.0" y="1245.8" font-size="12.5">Replacement helps but causes</text>
+    <text x="89.0" y="1262.3" font-size="12.5">dyskinesia</text>
+  </g>
+  <g class="node d2 b7" data-depth="2">
+    <rect class="box" x="338.3" y="1279.8" width="240.5" height="45.3" rx="6"/>
+    <text x="348.3" y="1298.3" font-size="13.0">Chorea, dystonia, tics, ballism,</text>
+    <text x="348.3" y="1315.5" font-size="13.0">myoclonus</text>
+  </g>
+  <g class="node d2 b7" data-depth="2">
+    <rect class="box" x="365.8" y="1333.1" width="212.9" height="45.3" rx="6"/>
+    <text x="375.8" y="1351.6" font-size="13.0">Dopamine blockers: dystonia,</text>
+    <text x="375.8" y="1368.8" font-size="13.0">akathisia</text>
+  </g>
+  <path class="link b8" data-depth="2" stroke-width="1.8" d="M618.8,1486.3 C598.8,1486.3 598.8,1400.2 578.8,1400.2"/>
+  <path class="link b8" data-depth="2" stroke-width="1.8" d="M618.8,1486.3 C598.8,1486.3 598.8,1444.6 578.8,1444.6"/>
+  <path class="link b8" data-depth="2" stroke-width="1.8" d="M618.8,1486.3 C598.8,1486.3 598.8,1497.9 578.8,1497.9"/>
+  <path class="link b8" data-depth="2" stroke-width="1.8" d="M618.8,1486.3 C598.8,1486.3 598.8,1572.5 578.8,1572.5"/>
+  <g class="node d1 b8" data-depth="1">
+    <rect class="box" x="618.8" y="1471.3" width="240.5" height="30.1" rx="9"/>
+    <text x="628.8" y="1491.3" font-size="14.5">Posture, gait, and balance</text>
+  </g>
+  <path class="link b8" data-depth="3" stroke-width="1.3" d="M407.2,1400.2 C345.8,1400.2 345.8,1400.2 284.5,1400.2"/>
+  <g class="node d2 b8" data-depth="2">
+    <rect class="box" x="407.2" y="1386.1" width="171.6" height="28.2" rx="6"/>
+    <text x="417.2" y="1404.6" font-size="13.0">Quiet stance is active</text>
+  </g>
+  <g class="node d3 b8" data-depth="3">
+    <rect class="box" x="59.1" y="1386.4" width="225.4" height="27.5" rx="6"/>
+    <text x="69.1" y="1404.4" font-size="12.5">Ankle, hip, stepping strategies</text>
+  </g>
+  <g class="node d2 b8" data-depth="2">
+    <rect class="box" x="338.3" y="1421.9" width="240.5" height="45.3" rx="6"/>
+    <text x="348.3" y="1440.4" font-size="13.0">Anticipatory adjustments precede</text>
+    <text x="348.3" y="1457.6" font-size="13.0">movement</text>
+  </g>
+  <g class="node d2 b8" data-depth="2">
+    <rect class="box" x="359.0" y="1475.3" width="219.8" height="45.3" rx="6"/>
+    <text x="369.0" y="1493.8" font-size="13.0">Ageing, neuropathy, sedatives</text>
+    <text x="369.0" y="1510.9" font-size="13.0">reduce reserve</text>
+  </g>
+  <path class="link b8" data-depth="3" stroke-width="1.3" d="M324.5,1572.5 C304.5,1572.5 304.5,1550.6 284.5,1550.6"/>
+  <path class="link b8" data-depth="3" stroke-width="1.3" d="M324.5,1572.5 C304.5,1572.5 304.5,1594.3 284.5,1594.3"/>
+  <g class="node d2 b8" data-depth="2">
+    <rect class="box" x="324.5" y="1558.4" width="254.3" height="28.2" rx="6"/>
+    <text x="334.5" y="1576.9" font-size="13.0">Gait patterns localise the failure</text>
+  </g>
+  <g class="node d3 b8" data-depth="3">
+    <rect class="box" x="79.0" y="1528.6" width="205.5" height="44.0" rx="6"/>
+    <text x="89.0" y="1546.6" font-size="12.5">Parkinsonian short steps and</text>
+    <text x="89.0" y="1563.1" font-size="12.5">freezing</text>
+  </g>
+  <g class="node d3 b8" data-depth="3">
+    <rect class="box" x="59.1" y="1580.6" width="225.4" height="27.5" rx="6"/>
+    <text x="69.1" y="1598.6" font-size="12.5">Frontal gait impairs initiation</text>
+  </g>
+  <path class="link b9" data-depth="2" stroke-width="1.8" d="M1380.6,1644.7 C1438.8,1644.7 1438.8,1569.2 1497.0,1569.2"/>
+  <path class="link b9" data-depth="2" stroke-width="1.8" d="M1380.6,1644.7 C1438.8,1644.7 1438.8,1622.5 1497.0,1622.5"/>
+  <path class="link b9" data-depth="2" stroke-width="1.8" d="M1380.6,1644.7 C1438.8,1644.7 1438.8,1675.8 1497.0,1675.8"/>
+  <path class="link b9" data-depth="2" stroke-width="1.8" d="M1380.6,1644.7 C1438.8,1644.7 1438.8,1720.2 1497.0,1720.2"/>
+  <g class="node d1 b9" data-depth="1">
+    <rect class="box" x="1207.9" y="1620.1" width="172.7" height="49.3" rx="9"/>
+    <text x="1217.9" y="1640.1" font-size="14.5">Motor learning and</text>
+    <text x="1217.9" y="1659.2" font-size="14.5">rehabilitation</text>
+  </g>
+  <g class="node d2 b9" data-depth="2">
+    <rect class="box" x="1497.0" y="1546.5" width="199.1" height="45.3" rx="6"/>
+    <text x="1507.0" y="1565.0" font-size="13.0">Restitution, compensation,</text>
+    <text x="1507.0" y="1582.2" font-size="13.0">practice, adaptation</text>
+  </g>
+  <g class="node d2 b9" data-depth="2">
+    <rect class="box" x="1497.0" y="1599.9" width="240.5" height="45.3" rx="6"/>
+    <text x="1507.0" y="1618.4" font-size="13.0">Task-specific, challenging, safe</text>
+    <text x="1507.0" y="1635.5" font-size="13.0">repetition</text>
+  </g>
+  <g class="node d2 b9" data-depth="2">
+    <rect class="box" x="1497.0" y="1653.2" width="254.3" height="45.3" rx="6"/>
+    <text x="1507.0" y="1671.7" font-size="13.0">Excess external correction impairs</text>
+    <text x="1507.0" y="1688.8" font-size="13.0">independence</text>
+  </g>
+  <path class="link b9" data-depth="3" stroke-width="1.3" d="M1696.1,1720.2 C1743.7,1720.2 1743.7,1720.2 1791.2,1720.2"/>
+  <g class="node d2 b9" data-depth="2">
+    <rect class="box" x="1497.0" y="1697.6" width="199.1" height="45.3" rx="6"/>
+    <text x="1507.0" y="1716.1" font-size="13.0">Treat spasticity for pain,</text>
+    <text x="1507.0" y="1733.2" font-size="13.0">contracture, function</text>
+  </g>
+  <g class="node d3 b9" data-depth="3">
+    <rect class="box" x="1791.2" y="1706.5" width="225.4" height="27.5" rx="6"/>
+    <text x="1801.2" y="1724.5" font-size="12.5">Stiffness may support transfers</text>
+  </g>
+</svg>

@@ -216,7 +216,10 @@ def main(argv: list[str] | None = None) -> int:
             made.append(key)
             print(f"{target.name}: {target.stat().st_size / 1024:.0f} KB")
 
-    archive = build_mindmap_archive([k for k in made])
+    # The combined archive always covers every mapped module, not just the
+    # modules named on the command line, so a partial rebuild cannot shrink it.
+    mapped = sorted({p.stem[4:10] for p in (MINDMAPS / "Outlines").glob("IMF-*-en.md")})
+    archive = build_mindmap_archive(mapped)
     if archive:
         print(f"{archive.name}: {archive.stat().st_size / 1024:.0f} KB")
     print(f"{len(made)} study pack(s) with material")
