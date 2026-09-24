@@ -1,0 +1,571 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="mm" viewBox="0 0 1924 1206" width="1924" height="1206" role="img" aria-label="回帰、生存、予測、因果、欠測データ">
+<style>
+  .mm-bg { fill: #faf8f4; }
+  .mm text { font-family: 'Hiragino Sans', 'Noto Sans JP', ui-sans-serif, sans-serif; fill: #1b1917; }
+  .mm .link { fill: none; stroke: #c9c1b4; }
+  .mm .box { fill: none; stroke: none; }
+  .mm .d0 .box { fill: #1b1917; stroke: #1b1917; }
+  .mm .d0 text { fill: #faf8f4; font-weight: 650; }
+  .mm .d1 text { font-weight: 600; }
+
+  .mm .link.b0 { stroke: #4b9ac6; }
+  .mm .b0.d1 .box { fill: #d7e5eb; stroke: #0072B2; stroke-width: 1.5; }
+  .mm .b0.d1 text { fill: #075c8b; }
+  .mm .b0.d2 .box { fill: #e8efef; stroke: #70aed0; }
+  .mm .b0.d3 text, .mm .b0.d4 text { fill: #075c8b; }
+
+  .mm .link.b1 { stroke: #e08c49; }
+  .mm .b1.d1 .box { fill: #f5e2d2; stroke: #D55E00; stroke-width: 1.5; }
+  .mm .b1.d1 text { fill: #a64d06; }
+  .mm .b1.d2 .box { fill: #f7ede3; stroke: #e6a36e; }
+  .mm .b1.d3 text, .mm .b1.d4 text { fill: #a64d06; }
+
+  .mm .link.b2 { stroke: #4bb99a; }
+  .mm .b2.d1 .box { fill: #d7ebe2; stroke: #009E73; stroke-width: 1.5; }
+  .mm .b2.d1 text { fill: #077d5c; }
+  .mm .b2.d2 .box { fill: #e8f2eb; stroke: #70c6ad; }
+  .mm .b2.d3 text, .mm .b2.d4 text { fill: #077d5c; }
+
+  .mm .link.b3 { stroke: #da9fbe; }
+  .mm .b3.d1 .box { fill: #f4e6e9; stroke: #CC79A7; stroke-width: 1.5; }
+  .mm .b3.d1 text { fill: #985c7c; }
+  .mm .b3.d2 .box { fill: #f7efef; stroke: #e1b2ca; }
+  .mm .b3.d3 text, .mm .b3.d4 text { fill: #985c7c; }
+
+  .mm .link.b4 { stroke: #bba149; }
+  .mm .b4.d1 .box { fill: #ede7d2; stroke: #A07C00; stroke-width: 1.5; }
+  .mm .b4.d1 text { fill: #7f6306; }
+  .mm .b4.d2 .box { fill: #f4efe3; stroke: #c8b46e; }
+  .mm .b4.d3 text, .mm .b4.d4 text { fill: #7f6306; }
+
+  .mm .link.b5 { stroke: #84c1e2; }
+  .mm .b5.d1 .box { fill: #e3eef2; stroke: #51a9db; stroke-width: 1.5; }
+  .mm .b5.d1 text { fill: #3d7899; }
+  .mm .b5.d2 .box { fill: #eff3f3; stroke: #9dcde6; }
+  .mm .b5.d3 text, .mm .b5.d4 text { fill: #3d7899; }
+
+  .mm .link.b6 { stroke: #9580b0; }
+  .mm .b6.d1 .box { fill: #e6e0e6; stroke: #6A4C93; stroke-width: 1.5; }
+  .mm .b6.d1 text { fill: #563f74; }
+  .mm .b6.d2 .box { fill: #f0eced; stroke: #ab99bf; }
+  .mm .b6.d3 text, .mm .b6.d4 text { fill: #563f74; }
+
+  .mm .link.b7 { stroke: #98ac74; }
+  .mm .b7.d1 .box { fill: #e6e9da; stroke: #6E8B3D; stroke-width: 1.5; }
+  .mm .b7.d1 text { fill: #596e34; }
+  .mm .b7.d2 .box { fill: #f0f0e7; stroke: #adbc8f; }
+  .mm .b7.d3 text, .mm .b7.d4 text { fill: #596e34; }
+
+  .mm .link.b8 { stroke: #e2b349; }
+  .mm .b8.d1 .box { fill: #f7ecd2; stroke: #d89500; stroke-width: 1.5; }
+  .mm .b8.d1 text { fill: #986a05; }
+  .mm .b8.d2 .box { fill: #f9f2e3; stroke: #e7c26e; }
+  .mm .b8.d3 text, .mm .b8.d4 text { fill: #986a05; }
+@media (prefers-color-scheme: dark) {
+  .mm-bg { fill: #12100e; }
+  .mm text { font-family: 'Hiragino Sans', 'Noto Sans JP', ui-sans-serif, sans-serif; fill: #ece7df; }
+  .mm .link { fill: none; stroke: #3d3833; }
+  .mm .box { fill: none; stroke: none; }
+  .mm .d0 .box { fill: #ece7df; stroke: #ece7df; }
+  .mm .d0 text { fill: #12100e; font-weight: 650; }
+  .mm .d1 text { font-weight: 600; }
+
+  .mm .link.b0 { stroke: #2d6a8d; }
+  .mm .b0.d1 .box { fill: #172227; stroke: #3891c3; stroke-width: 1.5; }
+  .mm .b0.d1 text { fill: #65a6ca; }
+  .mm .b0.d2 .box { fill: #15191b; stroke: #275772; }
+  .mm .b0.d3 text, .mm .b0.d4 text { fill: #65a6ca; }
+
+  .mm .link.b1 { stroke: #a15f2b; }
+  .mm .b1.d1 .box { fill: #2f2014; stroke: #de8138; stroke-width: 1.5; }
+  .mm .b1.d1 text { fill: #e29a62; }
+  .mm .b1.d2 .box { fill: #201811; stroke: #824e25; }
+  .mm .b1.d3 text, .mm .b1.d4 text { fill: #e29a62; }
+
+  .mm .link.b2 { stroke: #2d826a; }
+  .mm .b2.d1 .box { fill: #172720; stroke: #38b392; stroke-width: 1.5; }
+  .mm .b2.d1 text { fill: #65c0a5; }
+  .mm .b2.d2 .box { fill: #151b17; stroke: #276a57; }
+  .mm .b2.d3 text, .mm .b2.d4 text { fill: #65c0a5; }
+
+  .mm .link.b3 { stroke: #9c6e86; }
+  .mm .b3.d1 .box { fill: #2e2326; stroke: #d796ba; stroke-width: 1.5; }
+  .mm .b3.d1 text { fill: #dcaac3; }
+  .mm .b3.d2 .box { fill: #20191a; stroke: #7e5a6d; }
+  .mm .b3.d3 text, .mm .b3.d4 text { fill: #dcaac3; }
+
+  .mm .link.b4 { stroke: #84702b; }
+  .mm .b4.d1 .box { fill: #292314; stroke: #b59938; stroke-width: 1.5; }
+  .mm .b4.d1 text { fill: #c3ac62; }
+  .mm .b4.d2 .box { fill: #1d1a11; stroke: #6c5b25; }
+  .mm .b4.d3 text, .mm .b4.d4 text { fill: #c3ac62; }
+
+  .mm .link.b5 { stroke: #5c8eab; }
+  .mm .b5.d1 .box { fill: #21292d; stroke: #7bc4ee; stroke-width: 1.5; }
+  .mm .b5.d1 text { fill: #97cdea; }
+  .mm .b5.d2 .box { fill: #191d1e; stroke: #4c7389; }
+  .mm .b5.d3 text, .mm .b5.d4 text { fill: #97cdea; }
+
+  .mm .link.b6 { stroke: #67557c; }
+  .mm .b6.d1 .box { fill: #231e24; stroke: #8b73ab; stroke-width: 1.5; }
+  .mm .b6.d1 text { fill: #a390b8; }
+  .mm .b6.d2 .box { fill: #1a1719; stroke: #554664; }
+  .mm .b6.d3 text, .mm .b6.d4 text { fill: #a390b8; }
+
+  .mm .link.b7 { stroke: #69784d; }
+  .mm .b7.d1 .box { fill: #23251b; stroke: #8ea568; stroke-width: 1.5; }
+  .mm .b7.d1 text { fill: #a6b686; }
+  .mm .b7.d2 .box { fill: #1b1a14; stroke: #566240; }
+  .mm .b7.d3 text, .mm .b7.d4 text { fill: #a6b686; }
+
+  .mm .link.b8 { stroke: #ab832b; }
+  .mm .b8.d1 .box { fill: #312714; stroke: #ecb438; stroke-width: 1.5; }
+  .mm .b8.d1 text { fill: #ecc162; }
+  .mm .b8.d2 .box { fill: #211b11; stroke: #8a6a25; }
+  .mm .b8.d3 text, .mm .b8.d4 text { fill: #ecc162; }
+}
+</style>
+  <rect class="mm-bg" width="1924" height="1206"/>
+  <path class="link b0" data-depth="1" stroke-width="2.2" d="M1099.0,602.9 C1119.0,602.9 1119.0,120.5 1139.0,120.5"/>
+  <path class="link b1" data-depth="1" stroke-width="2.2" d="M1099.0,602.9 C1119.0,602.9 1119.0,317.4 1139.0,317.4"/>
+  <path class="link b2" data-depth="1" stroke-width="2.2" d="M1099.0,602.9 C845.8,602.9 845.8,147.2 592.5,147.2"/>
+  <path class="link b3" data-depth="1" stroke-width="2.2" d="M1099.0,602.9 C889.2,602.9 889.2,397.9 679.5,397.9"/>
+  <path class="link b4" data-depth="1" stroke-width="2.2" d="M1099.0,602.9 C1119.0,602.9 1119.0,593.7 1139.0,593.7"/>
+  <path class="link b5" data-depth="1" stroke-width="2.2" d="M1099.0,602.9 C1119.0,602.9 1119.0,843.5 1139.0,843.5"/>
+  <path class="link b6" data-depth="1" stroke-width="2.2" d="M1099.0,602.9 C896.5,602.9 896.5,631.1 694.0,631.1"/>
+  <path class="link b7" data-depth="1" stroke-width="2.2" d="M1099.0,602.9 C1119.0,602.9 1119.0,1076.1 1139.0,1076.1"/>
+  <path class="link b8" data-depth="1" stroke-width="2.2" d="M1099.0,602.9 C874.8,602.9 874.8,865.3 650.5,865.3"/>
+  <g class="node d0 b0" data-depth="0">
+    <rect class="box" x="841.0" y="574.9" width="258.0" height="55.9" rx="9"/>
+    <text x="851.0" y="597.4" font-size="17.0">回帰、生存、予測、因果、欠測</text>
+    <text x="851.0" y="619.9" font-size="17.0">データ</text>
+  </g>
+  <path class="link b0" data-depth="2" stroke-width="1.8" d="M1304.0,120.5 C1331.2,120.5 1331.2,40.1 1358.5,40.1"/>
+  <path class="link b0" data-depth="2" stroke-width="1.8" d="M1304.0,120.5 C1331.2,120.5 1331.2,76.2 1358.5,76.2"/>
+  <path class="link b0" data-depth="2" stroke-width="1.8" d="M1304.0,120.5 C1331.2,120.5 1331.2,121.0 1358.5,121.0"/>
+  <path class="link b0" data-depth="2" stroke-width="1.8" d="M1304.0,120.5 C1331.2,120.5 1331.2,165.4 1358.5,165.4"/>
+  <path class="link b0" data-depth="2" stroke-width="1.8" d="M1304.0,120.5 C1331.2,120.5 1331.2,200.9 1358.5,200.9"/>
+  <g class="node d1 b0" data-depth="1">
+    <rect class="box" x="1139.0" y="105.4" width="165.0" height="30.1" rx="9"/>
+    <text x="1149.0" y="125.4" font-size="14.5">回帰モデルと線形回帰</text>
+  </g>
+  <g class="node d2 b0" data-depth="2">
+    <rect class="box" x="1358.5" y="26.0" width="241.0" height="28.2" rx="6"/>
+    <text x="1368.5" y="44.5" font-size="13.0">関連記述、調整比較、交互作用、予測</text>
+  </g>
+  <g class="node d2 b0" data-depth="2">
+    <rect class="box" x="1358.5" y="62.2" width="202.0" height="28.2" rx="6"/>
+    <text x="1368.5" y="80.7" font-size="13.0">調整係数だから因果的ではない</text>
+  </g>
+  <g class="node d2 b0" data-depth="2">
+    <rect class="box" x="1358.5" y="98.3" width="267.0" height="45.3" rx="6"/>
+    <text x="1368.5" y="116.8" font-size="13.0">尺度、関数形、標本過程、時点が意味を決</text>
+    <text x="1368.5" y="134.0" font-size="13.0">める</text>
+  </g>
+  <path class="link b0" data-depth="3" stroke-width="1.3" d="M1560.5,165.4 C1613.0,165.4 1613.0,165.4 1665.5,165.4"/>
+  <g class="node d2 b0" data-depth="2">
+    <rect class="box" x="1358.5" y="151.3" width="202.0" height="28.2" rx="6"/>
+    <text x="1368.5" y="169.8" font-size="13.0">線形：連続転帰の条件付き平均</text>
+  </g>
+  <g class="node d3 b0" data-depth="3">
+    <rect class="box" x="1665.5" y="151.6" width="195.0" height="27.5" rx="6"/>
+    <text x="1675.5" y="169.6" font-size="12.5">係数：他変数固定での一単位差</text>
+  </g>
+  <path class="link b0" data-depth="3" stroke-width="1.3" d="M1625.5,200.9 C1645.5,200.9 1645.5,200.9 1665.5,200.9"/>
+  <g class="node d2 b0" data-depth="2">
+    <rect class="box" x="1358.5" y="186.8" width="267.0" height="28.2" rx="6"/>
+    <text x="1368.5" y="205.3" font-size="13.0">残差で非線形、不均一分散、依存を調べる</text>
+  </g>
+  <g class="node d3 b0" data-depth="3">
+    <rect class="box" x="1665.5" y="187.1" width="220.0" height="27.5" rx="6"/>
+    <text x="1675.5" y="205.1" font-size="12.5">残差正規性は主に小標本推論へ関係</text>
+  </g>
+  <path class="link b1" data-depth="2" stroke-width="1.8" d="M1318.5,317.4 C1338.5,317.4 1338.5,236.7 1358.5,236.7"/>
+  <path class="link b1" data-depth="2" stroke-width="1.8" d="M1318.5,317.4 C1338.5,317.4 1338.5,272.9 1358.5,272.9"/>
+  <path class="link b1" data-depth="2" stroke-width="1.8" d="M1318.5,317.4 C1338.5,317.4 1338.5,309.0 1358.5,309.0"/>
+  <path class="link b1" data-depth="2" stroke-width="1.8" d="M1318.5,317.4 C1338.5,317.4 1338.5,344.9 1358.5,344.9"/>
+  <path class="link b1" data-depth="2" stroke-width="1.8" d="M1318.5,317.4 C1338.5,317.4 1338.5,398.1 1358.5,398.1"/>
+  <g class="node d1 b1" data-depth="1">
+    <rect class="box" x="1139.0" y="302.3" width="179.5" height="30.1" rx="9"/>
+    <text x="1149.0" y="322.3" font-size="14.5">予測因子の形と交互作用</text>
+  </g>
+  <g class="node d2 b1" data-depth="2">
+    <rect class="box" x="1358.5" y="222.6" width="202.0" height="28.2" rx="6"/>
+    <text x="1368.5" y="241.1" font-size="13.0">カテゴリ予測因子は参照と比較</text>
+  </g>
+  <g class="node d2 b1" data-depth="2">
+    <rect class="box" x="1358.5" y="258.8" width="176.0" height="28.2" rx="6"/>
+    <text x="1368.5" y="277.3" font-size="13.0">直線は単位効果一定を仮定</text>
+  </g>
+  <g class="node d2 b1" data-depth="2">
+    <rect class="box" x="1358.5" y="295.0" width="254.0" height="28.2" rx="6"/>
+    <text x="1368.5" y="313.5" font-size="13.0">スプライン、多項式、変換で曲線を表す</text>
+  </g>
+  <path class="link b1" data-depth="3" stroke-width="1.3" d="M1573.5,344.9 C1619.5,344.9 1619.5,344.9 1665.5,344.9"/>
+  <g class="node d2 b1" data-depth="2">
+    <rect class="box" x="1358.5" y="330.8" width="215.0" height="28.2" rx="6"/>
+    <text x="1368.5" y="349.3" font-size="13.0">カテゴリ化は情報と検出力を失う</text>
+  </g>
+  <g class="node d3 b1" data-depth="3">
+    <rect class="box" x="1665.5" y="331.1" width="170.0" height="27.5" rx="6"/>
+    <text x="1675.5" y="349.1" font-size="12.5">閾値解釈が選択切点に依存</text>
+  </g>
+  <path class="link b1" data-depth="3" stroke-width="1.3" d="M1573.5,398.1 C1619.5,398.1 1619.5,380.4 1665.5,380.4"/>
+  <path class="link b1" data-depth="3" stroke-width="1.3" d="M1573.5,398.1 C1619.5,398.1 1619.5,415.9 1665.5,415.9"/>
+  <g class="node d2 b1" data-depth="2">
+    <rect class="box" x="1358.5" y="384.0" width="215.0" height="28.2" rx="6"/>
+    <text x="1368.5" y="402.5" font-size="13.0">交互作用：関連が別因子で異なる</text>
+  </g>
+  <g class="node d3 b1" data-depth="3">
+    <rect class="box" x="1665.5" y="366.6" width="195.0" height="27.5" rx="6"/>
+    <text x="1675.5" y="384.6" font-size="12.5">各モデル尺度上の効果を変える</text>
+  </g>
+  <g class="node d3 b1" data-depth="3">
+    <rect class="box" x="1665.5" y="402.1" width="232.5" height="27.5" rx="6"/>
+    <text x="1675.5" y="420.1" font-size="12.5">一尺度でなしでも別尺度で存在し得る</text>
+  </g>
+  <path class="link b2" data-depth="2" stroke-width="1.8" d="M592.5,147.2 C572.5,147.2 572.5,57.5 552.5,57.5"/>
+  <path class="link b2" data-depth="2" stroke-width="1.8" d="M592.5,147.2 C572.5,147.2 572.5,111.1 552.5,111.1"/>
+  <path class="link b2" data-depth="2" stroke-width="1.8" d="M592.5,147.2 C572.5,147.2 572.5,147.2 552.5,147.2"/>
+  <path class="link b2" data-depth="2" stroke-width="1.8" d="M592.5,147.2 C572.5,147.2 572.5,183.4 552.5,183.4"/>
+  <path class="link b2" data-depth="2" stroke-width="1.8" d="M592.5,147.2 C572.5,147.2 572.5,237.0 552.5,237.0"/>
+  <g class="node d1 b2" data-depth="1">
+    <rect class="box" x="592.5" y="132.2" width="208.5" height="30.1" rx="9"/>
+    <text x="602.5" y="152.2" font-size="14.5">ロジスティックと計数モデル</text>
+  </g>
+  <path class="link b2" data-depth="3" stroke-width="1.3" d="M298.5,57.5 C278.5,57.5 278.5,39.8 258.5,39.8"/>
+  <path class="link b2" data-depth="3" stroke-width="1.3" d="M298.5,57.5 C278.5,57.5 278.5,75.2 258.5,75.2"/>
+  <g class="node d2 b2" data-depth="2">
+    <rect class="box" x="298.5" y="43.4" width="254.0" height="28.2" rx="6"/>
+    <text x="308.5" y="61.9" font-size="13.0">ロジスティック：二値転帰の対数オッズ</text>
+  </g>
+  <g class="node d3 b2" data-depth="3">
+    <rect class="box" x="113.5" y="26.0" width="145.0" height="27.5" rx="6"/>
+    <text x="123.5" y="44.0" font-size="12.5">指数化係数はオッズ比</text>
+  </g>
+  <g class="node d3 b2" data-depth="3">
+    <rect class="box" x="63.5" y="61.5" width="195.0" height="27.5" rx="6"/>
+    <text x="73.5" y="79.5" font-size="12.5">一般的転帰では相対変化を誇張</text>
+  </g>
+  <g class="node d2 b2" data-depth="2">
+    <rect class="box" x="350.5" y="97.0" width="202.0" height="28.2" rx="6"/>
+    <text x="360.5" y="115.5" font-size="13.0">直線性は対数オッズ尺度で仮定</text>
+  </g>
+  <g class="node d2 b2" data-depth="2">
+    <rect class="box" x="324.5" y="133.2" width="228.0" height="28.2" rx="6"/>
+    <text x="334.5" y="151.7" font-size="13.0">計数はポアソンまたは負の二項回帰</text>
+  </g>
+  <g class="node d2 b2" data-depth="2">
+    <rect class="box" x="324.5" y="169.3" width="228.0" height="28.2" rx="6"/>
+    <text x="334.5" y="187.8" font-size="13.0">率には分子、人時間分母、再発規則</text>
+  </g>
+  <path class="link b2" data-depth="3" stroke-width="1.3" d="M389.5,237.0 C324.0,237.0 324.0,219.2 258.5,219.2"/>
+  <path class="link b2" data-depth="3" stroke-width="1.3" d="M389.5,237.0 C324.0,237.0 324.0,254.7 258.5,254.7"/>
+  <g class="node d2 b2" data-depth="2">
+    <rect class="box" x="389.5" y="222.9" width="163.0" height="28.2" rx="6"/>
+    <text x="399.5" y="241.4" font-size="13.0">同一人の反復事象は依存</text>
+  </g>
+  <g class="node d3 b2" data-depth="3">
+    <rect class="box" x="51.0" y="205.5" width="207.5" height="27.5" rx="6"/>
+    <text x="61.0" y="223.5" font-size="12.5">初回事象解析は後の負担を捨てる</text>
+  </g>
+  <g class="node d3 b2" data-depth="3">
+    <rect class="box" x="26.0" y="241.0" width="232.5" height="27.5" rx="6"/>
+    <text x="36.0" y="259.0" font-size="12.5">集積モデル：集団平均か個人特異的か</text>
+  </g>
+  <path class="link b3" data-depth="2" stroke-width="1.8" d="M679.5,397.9 C616.0,397.9 616.0,290.6 552.5,290.6"/>
+  <path class="link b3" data-depth="2" stroke-width="1.8" d="M679.5,397.9 C616.0,397.9 616.0,344.1 552.5,344.1"/>
+  <path class="link b3" data-depth="2" stroke-width="1.8" d="M679.5,397.9 C616.0,397.9 616.0,397.4 552.5,397.4"/>
+  <path class="link b3" data-depth="2" stroke-width="1.8" d="M679.5,397.9 C616.0,397.9 616.0,433.2 552.5,433.2"/>
+  <path class="link b3" data-depth="2" stroke-width="1.8" d="M679.5,397.9 C616.0,397.9 616.0,469.4 552.5,469.4"/>
+  <path class="link b3" data-depth="2" stroke-width="1.8" d="M679.5,397.9 C616.0,397.9 616.0,505.2 552.5,505.2"/>
+  <g class="node d1 b3" data-depth="1">
+    <rect class="box" x="679.5" y="382.8" width="121.5" height="30.1" rx="9"/>
+    <text x="689.5" y="402.8" font-size="14.5">交絡と変数選択</text>
+  </g>
+  <g class="node d2 b3" data-depth="2">
+    <rect class="box" x="402.5" y="276.5" width="150.0" height="28.2" rx="6"/>
+    <text x="412.5" y="295.0" font-size="13.0">曝露と転帰の共通原因</text>
+  </g>
+  <path class="link b3" data-depth="3" stroke-width="1.3" d="M376.5,344.1 C317.5,344.1 317.5,326.4 258.5,326.4"/>
+  <path class="link b3" data-depth="3" stroke-width="1.3" d="M376.5,344.1 C317.5,344.1 317.5,361.9 258.5,361.9"/>
+  <g class="node d2 b3" data-depth="2">
+    <rect class="box" x="376.5" y="330.1" width="176.0" height="28.2" rx="6"/>
+    <text x="386.5" y="348.6" font-size="13.0">調整は測定交絡経路を遮断</text>
+  </g>
+  <g class="node d3 b3" data-depth="3">
+    <rect class="box" x="26.0" y="312.6" width="232.5" height="27.5" rx="6"/>
+    <text x="36.0" y="330.6" font-size="12.5">曝露の結果の調整は効果の一部を除く</text>
+  </g>
+  <g class="node d3 b3" data-depth="3">
+    <rect class="box" x="26.0" y="348.1" width="232.5" height="27.5" rx="6"/>
+    <text x="36.0" y="366.1" font-size="12.5">共通結果の調整はコライダーバイアス</text>
+  </g>
+  <path class="link b3" data-depth="3" stroke-width="1.3" d="M415.5,397.4 C337.0,397.4 337.0,397.4 258.5,397.4"/>
+  <g class="node d2 b3" data-depth="2">
+    <rect class="box" x="415.5" y="383.3" width="137.0" height="28.2" rx="6"/>
+    <text x="425.5" y="401.8" font-size="13.0">因果図は仮定を明示</text>
+  </g>
+  <g class="node d3 b3" data-depth="3">
+    <rect class="box" x="38.5" y="383.6" width="220.0" height="27.5" rx="6"/>
+    <text x="48.5" y="401.6" font-size="12.5">調整集合を選ぶが真実は証明しない</text>
+  </g>
+  <g class="node d2 b3" data-depth="2">
+    <rect class="box" x="350.5" y="419.1" width="202.0" height="28.2" rx="6"/>
+    <text x="360.5" y="437.6" font-size="13.0">有意性だけの変数選択は不安定</text>
+  </g>
+  <g class="node d2 b3" data-depth="2">
+    <rect class="box" x="376.5" y="455.3" width="176.0" height="28.2" rx="6"/>
+    <text x="386.5" y="473.8" font-size="13.0">交絡因子は因果知識で選ぶ</text>
+  </g>
+  <path class="link b3" data-depth="3" stroke-width="1.3" d="M350.5,505.2 C304.5,505.2 304.5,505.2 258.5,505.2"/>
+  <g class="node d2 b3" data-depth="2">
+    <rect class="box" x="350.5" y="491.1" width="202.0" height="28.2" rx="6"/>
+    <text x="360.5" y="509.6" font-size="13.0">多重共線性：個別係数が不精密</text>
+  </g>
+  <g class="node d3 b3" data-depth="3">
+    <rect class="box" x="88.5" y="491.5" width="170.0" height="27.5" rx="6"/>
+    <text x="98.5" y="509.5" font-size="12.5">疾患でなく同定不能の信号</text>
+  </g>
+  <path class="link b4" data-depth="2" stroke-width="1.8" d="M1246.0,593.7 C1302.2,593.7 1302.2,469.1 1358.5,469.1"/>
+  <path class="link b4" data-depth="2" stroke-width="1.8" d="M1246.0,593.7 C1302.2,593.7 1302.2,540.1 1358.5,540.1"/>
+  <path class="link b4" data-depth="2" stroke-width="1.8" d="M1246.0,593.7 C1302.2,593.7 1302.2,593.7 1358.5,593.7"/>
+  <path class="link b4" data-depth="2" stroke-width="1.8" d="M1246.0,593.7 C1302.2,593.7 1302.2,647.3 1358.5,647.3"/>
+  <path class="link b4" data-depth="2" stroke-width="1.8" d="M1246.0,593.7 C1302.2,593.7 1302.2,718.3 1358.5,718.3"/>
+  <g class="node d1 b4" data-depth="1">
+    <rect class="box" x="1139.0" y="578.6" width="107.0" height="30.1" rx="9"/>
+    <text x="1149.0" y="598.6" font-size="14.5">生存時間解析</text>
+  </g>
+  <path class="link b4" data-depth="3" stroke-width="1.3" d="M1547.5,469.1 C1606.5,469.1 1606.5,451.4 1665.5,451.4"/>
+  <path class="link b4" data-depth="3" stroke-width="1.3" d="M1547.5,469.1 C1606.5,469.1 1606.5,486.9 1665.5,486.9"/>
+  <g class="node d2 b4" data-depth="2">
+    <rect class="box" x="1358.5" y="455.0" width="189.0" height="28.2" rx="6"/>
+    <text x="1368.5" y="473.5" font-size="13.0">打切り：正確な事象時が不明</text>
+  </g>
+  <g class="node d3 b4" data-depth="3">
+    <rect class="box" x="1665.5" y="437.6" width="220.0" height="27.5" rx="6"/>
+    <text x="1675.5" y="455.6" font-size="12.5">条件付きで事象過程から独立と仮定</text>
+  </g>
+  <g class="node d3 b4" data-depth="3">
+    <rect class="box" x="1665.5" y="473.1" width="195.0" height="27.5" rx="6"/>
+    <text x="1675.5" y="491.1" font-size="12.5">重症者の離脱は推定を偏らせる</text>
+  </g>
+  <path class="link b4" data-depth="3" stroke-width="1.3" d="M1552.2,540.1 C1608.8,540.1 1608.8,522.4 1665.5,522.4"/>
+  <path class="link b4" data-depth="3" stroke-width="1.3" d="M1552.2,540.1 C1608.8,540.1 1608.8,557.9 1665.5,557.9"/>
+  <g class="node d2 b4" data-depth="2">
+    <rect class="box" x="1358.5" y="517.5" width="193.7" height="45.3" rx="6"/>
+    <text x="1368.5" y="536.0" font-size="13.0">Kaplan-Meier：無事象確率の</text>
+    <text x="1368.5" y="553.1" font-size="13.0">時間推移</text>
+  </g>
+  <g class="node d3 b4" data-depth="3">
+    <rect class="box" x="1665.5" y="508.6" width="195.0" height="27.5" rx="6"/>
+    <text x="1675.5" y="526.6" font-size="12.5">打切り時でなく事象時に下がる</text>
+  </g>
+  <g class="node d3 b4" data-depth="3">
+    <rect class="box" x="1665.5" y="544.1" width="220.0" height="27.5" rx="6"/>
+    <text x="1675.5" y="562.1" font-size="12.5">二分の一まで下がらねば中央値不能</text>
+  </g>
+  <g class="node d2 b4" data-depth="2">
+    <rect class="box" x="1358.5" y="579.6" width="215.0" height="28.2" rx="6"/>
+    <text x="1368.5" y="598.1" font-size="13.0">ハザード：無事象者の瞬間事象率</text>
+  </g>
+  <path class="link b4" data-depth="3" stroke-width="1.3" d="M1581.2,647.3 C1623.3,647.3 1623.3,629.5 1665.5,629.5"/>
+  <path class="link b4" data-depth="3" stroke-width="1.3" d="M1581.2,647.3 C1623.3,647.3 1623.3,665.0 1665.5,665.0"/>
+  <g class="node d2 b4" data-depth="2">
+    <rect class="box" x="1358.5" y="633.2" width="222.7" height="28.2" rx="6"/>
+    <text x="1368.5" y="651.7" font-size="13.0">Coxモデルはハザード比一定を仮定</text>
+  </g>
+  <g class="node d3 b4" data-depth="3">
+    <rect class="box" x="1665.5" y="615.8" width="182.5" height="27.5" rx="6"/>
+    <text x="1675.5" y="633.8" font-size="12.5">ハザード比はリスク比でない</text>
+  </g>
+  <g class="node d3 b4" data-depth="3">
+    <rect class="box" x="1665.5" y="651.3" width="170.0" height="27.5" rx="6"/>
+    <text x="1675.5" y="669.3" font-size="12.5">交差時は制限平均生存時間</text>
+  </g>
+  <path class="link b4" data-depth="3" stroke-width="1.3" d="M1586.5,718.3 C1626.0,718.3 1626.0,700.5 1665.5,700.5"/>
+  <path class="link b4" data-depth="3" stroke-width="1.3" d="M1586.5,718.3 C1626.0,718.3 1626.0,736.0 1665.5,736.0"/>
+  <g class="node d2 b4" data-depth="2">
+    <rect class="box" x="1358.5" y="704.2" width="228.0" height="28.2" rx="6"/>
+    <text x="1368.5" y="722.7" font-size="13.0">競合事象は常に通常打切りではない</text>
+  </g>
+  <g class="node d3 b4" data-depth="3">
+    <rect class="box" x="1665.5" y="686.8" width="182.5" height="27.5" rx="6"/>
+    <text x="1675.5" y="704.8" font-size="12.5">打切り扱いは仮想世界を推定</text>
+  </g>
+  <g class="node d3 b4" data-depth="3">
+    <rect class="box" x="1665.5" y="722.3" width="170.0" height="27.5" rx="6"/>
+    <text x="1675.5" y="740.3" font-size="12.5">累積発生は観察世界の確率</text>
+  </g>
+  <path class="link b5" data-depth="2" stroke-width="1.8" d="M1289.5,843.5 C1324.0,843.5 1324.0,771.9 1358.5,771.9"/>
+  <path class="link b5" data-depth="2" stroke-width="1.8" d="M1289.5,843.5 C1324.0,843.5 1324.0,807.7 1358.5,807.7"/>
+  <path class="link b5" data-depth="2" stroke-width="1.8" d="M1289.5,843.5 C1324.0,843.5 1324.0,843.5 1358.5,843.5"/>
+  <path class="link b5" data-depth="2" stroke-width="1.8" d="M1289.5,843.5 C1324.0,843.5 1324.0,879.3 1358.5,879.3"/>
+  <path class="link b5" data-depth="2" stroke-width="1.8" d="M1289.5,843.5 C1324.0,843.5 1324.0,915.2 1358.5,915.2"/>
+  <g class="node d1 b5" data-depth="1">
+    <rect class="box" x="1139.0" y="828.4" width="150.5" height="30.1" rx="9"/>
+    <text x="1149.0" y="848.4" font-size="14.5">識別能、較正、閾値</text>
+  </g>
+  <g class="node d2 b5" data-depth="2">
+    <rect class="box" x="1358.5" y="757.8" width="189.0" height="28.2" rx="6"/>
+    <text x="1368.5" y="776.3" font-size="13.0">識別能：高リスク者ほど事象</text>
+  </g>
+  <path class="link b5" data-depth="3" stroke-width="1.3" d="M1560.5,807.7 C1613.0,807.7 1613.0,807.7 1665.5,807.7"/>
+  <g class="node d2 b5" data-depth="2">
+    <rect class="box" x="1358.5" y="793.6" width="202.0" height="28.2" rx="6"/>
+    <text x="1368.5" y="812.1" font-size="13.0">較正：予測と観察リスクの一致</text>
+  </g>
+  <g class="node d3 b5" data-depth="3">
+    <rect class="box" x="1665.5" y="793.9" width="182.5" height="27.5" rx="6"/>
+    <text x="1675.5" y="811.9" font-size="12.5">識別良好でも系統的過大予測</text>
+  </g>
+  <g class="node d2 b5" data-depth="2">
+    <rect class="box" x="1358.5" y="829.4" width="241.0" height="28.2" rx="6"/>
+    <text x="1368.5" y="847.9" font-size="13.0">有用性：閾値判断が転帰を改善するか</text>
+  </g>
+  <path class="link b5" data-depth="3" stroke-width="1.3" d="M1625.5,879.3 C1645.5,879.3 1645.5,879.3 1665.5,879.3"/>
+  <g class="node d2 b5" data-depth="2">
+    <rect class="box" x="1358.5" y="865.3" width="267.0" height="28.2" rx="6"/>
+    <text x="1368.5" y="883.8" font-size="13.0">受信者動作特性曲線は有病率・誤りを無視</text>
+  </g>
+  <g class="node d3 b5" data-depth="3">
+    <rect class="box" x="1665.5" y="865.6" width="182.5" height="27.5" rx="6"/>
+    <text x="1675.5" y="883.6" font-size="12.5">稀な転帰に適合率再現率表示</text>
+  </g>
+  <g class="node d2 b5" data-depth="2">
+    <rect class="box" x="1358.5" y="901.1" width="215.0" height="28.2" rx="6"/>
+    <text x="1368.5" y="919.6" font-size="13.0">一般指標は等価な誤り費用を仮定</text>
+  </g>
+  <path class="link b6" data-depth="2" stroke-width="1.8" d="M694.0,631.1 C623.2,631.1 623.2,541.0 552.5,541.0"/>
+  <path class="link b6" data-depth="2" stroke-width="1.8" d="M694.0,631.1 C623.2,631.1 623.2,577.2 552.5,577.2"/>
+  <path class="link b6" data-depth="2" stroke-width="1.8" d="M694.0,631.1 C623.2,631.1 623.2,613.4 552.5,613.4"/>
+  <path class="link b6" data-depth="2" stroke-width="1.8" d="M694.0,631.1 C623.2,631.1 623.2,649.2 552.5,649.2"/>
+  <path class="link b6" data-depth="2" stroke-width="1.8" d="M694.0,631.1 C623.2,631.1 623.2,685.0 552.5,685.0"/>
+  <path class="link b6" data-depth="2" stroke-width="1.8" d="M694.0,631.1 C623.2,631.1 623.2,721.2 552.5,721.2"/>
+  <g class="node d1 b6" data-depth="1">
+    <rect class="box" x="694.0" y="616.0" width="107.0" height="30.1" rx="9"/>
+    <text x="704.0" y="636.0" font-size="14.5">過学習と検証</text>
+  </g>
+  <g class="node d2 b6" data-depth="2">
+    <rect class="box" x="415.5" y="527.0" width="137.0" height="28.2" rx="6"/>
+    <text x="425.5" y="545.5" font-size="13.0">標本固有雑音を学ぶ</text>
+  </g>
+  <g class="node d2 b6" data-depth="2">
+    <rect class="box" x="389.5" y="563.1" width="163.0" height="28.2" rx="6"/>
+    <text x="399.5" y="581.6" font-size="13.0">訓練データ性能は楽観的</text>
+  </g>
+  <g class="node d2 b6" data-depth="2">
+    <rect class="box" x="311.5" y="599.3" width="241.0" height="28.2" rx="6"/>
+    <text x="321.5" y="617.8" font-size="13.0">全過程を繰り返す再標本で楽観を推定</text>
+  </g>
+  <path class="link b6" data-depth="3" stroke-width="1.3" d="M363.5,649.2 C311.0,649.2 311.0,649.2 258.5,649.2"/>
+  <g class="node d2 b6" data-depth="2">
+    <rect class="box" x="363.5" y="635.1" width="189.0" height="28.2" rx="6"/>
+    <text x="373.5" y="653.6" font-size="13.0">外部検証は移送可能性を検査</text>
+  </g>
+  <g class="node d3 b6" data-depth="3">
+    <rect class="box" x="26.0" y="635.4" width="232.5" height="27.5" rx="6"/>
+    <text x="36.0" y="653.4" font-size="12.5">症例構成、測定、治療、有病率の違い</text>
+  </g>
+  <g class="node d2 b6" data-depth="2">
+    <rect class="box" x="415.5" y="670.9" width="137.0" height="28.2" rx="6"/>
+    <text x="425.5" y="689.4" font-size="13.0">切片や傾きの再較正</text>
+  </g>
+  <g class="node d2 b6" data-depth="2">
+    <rect class="box" x="350.5" y="707.1" width="202.0" height="28.2" rx="6"/>
+    <text x="360.5" y="725.6" font-size="13.0">害が不平等なら亜群性能が重要</text>
+  </g>
+  <path class="link b7" data-depth="2" stroke-width="1.8" d="M1231.5,1076.1 C1295.0,1076.1 1295.0,986.5 1358.5,986.5"/>
+  <path class="link b7" data-depth="2" stroke-width="1.8" d="M1231.5,1076.1 C1295.0,1076.1 1295.0,1057.8 1358.5,1057.8"/>
+  <path class="link b7" data-depth="2" stroke-width="1.8" d="M1231.5,1076.1 C1295.0,1076.1 1295.0,1093.7 1358.5,1093.7"/>
+  <path class="link b7" data-depth="2" stroke-width="1.8" d="M1231.5,1076.1 C1295.0,1076.1 1295.0,1129.5 1358.5,1129.5"/>
+  <path class="link b7" data-depth="2" stroke-width="1.8" d="M1231.5,1076.1 C1295.0,1076.1 1295.0,1165.7 1358.5,1165.7"/>
+  <g class="node d1 b7" data-depth="1">
+    <rect class="box" x="1139.0" y="1061.0" width="92.5" height="30.1" rx="9"/>
+    <text x="1149.0" y="1081.0" font-size="14.5">欠測データ</text>
+  </g>
+  <path class="link b7" data-depth="3" stroke-width="1.3" d="M1573.5,986.5 C1619.5,986.5 1619.5,951.0 1665.5,951.0"/>
+  <path class="link b7" data-depth="3" stroke-width="1.3" d="M1573.5,986.5 C1619.5,986.5 1619.5,986.5 1665.5,986.5"/>
+  <path class="link b7" data-depth="3" stroke-width="1.3" d="M1573.5,986.5 C1619.5,986.5 1619.5,1022.0 1665.5,1022.0"/>
+  <g class="node d2 b7" data-depth="2">
+    <rect class="box" x="1358.5" y="972.4" width="215.0" height="28.2" rx="6"/>
+    <text x="1368.5" y="990.9" font-size="13.0">欠測機序は観察情報に対して記述</text>
+  </g>
+  <g class="node d3 b7" data-depth="3">
+    <rect class="box" x="1665.5" y="937.3" width="232.5" height="27.5" rx="6"/>
+    <text x="1675.5" y="955.3" font-size="12.5">完全無作為：観察・非観察値と無関係</text>
+  </g>
+  <g class="node d3 b7" data-depth="3">
+    <rect class="box" x="1665.5" y="972.8" width="182.5" height="27.5" rx="6"/>
+    <text x="1675.5" y="990.8" font-size="12.5">無作為：観察変数だけに依存</text>
+  </g>
+  <g class="node d3 b7" data-depth="3">
+    <rect class="box" x="1665.5" y="1008.3" width="182.5" height="27.5" rx="6"/>
+    <text x="1675.5" y="1026.3" font-size="12.5">非無作為：見えない値へ依存</text>
+  </g>
+  <g class="node d2 b7" data-depth="2">
+    <rect class="box" x="1358.5" y="1043.8" width="176.0" height="28.2" rx="6"/>
+    <text x="1368.5" y="1062.3" font-size="13.0">検定で確立せず過程の仮定</text>
+  </g>
+  <path class="link b7" data-depth="3" stroke-width="1.3" d="M1586.5,1093.7 C1626.0,1093.7 1626.0,1093.7 1665.5,1093.7"/>
+  <g class="node d2 b7" data-depth="2">
+    <rect class="box" x="1358.5" y="1079.6" width="228.0" height="28.2" rx="6"/>
+    <text x="1368.5" y="1098.1" font-size="13.0">完全症例解析は限られた条件で不偏</text>
+  </g>
+  <g class="node d3 b7" data-depth="3">
+    <rect class="box" x="1665.5" y="1079.9" width="182.5" height="27.5" rx="6"/>
+    <text x="1675.5" y="1097.9" font-size="12.5">精度低下、対象集団も変わる</text>
+  </g>
+  <g class="node d2 b7" data-depth="2">
+    <rect class="box" x="1358.5" y="1115.4" width="202.0" height="28.2" rx="6"/>
+    <text x="1368.5" y="1133.9" font-size="13.0">単一補完は不確実性を過小評価</text>
+  </g>
+  <g class="node d2 b7" data-depth="2">
+    <rect class="box" x="1358.5" y="1151.6" width="189.0" height="28.2" rx="6"/>
+    <text x="1368.5" y="1170.1" font-size="13.0">多重補完は補完内・間を統合</text>
+  </g>
+  <path class="link b8" data-depth="2" stroke-width="1.8" d="M650.5,865.3 C601.5,865.3 601.5,757.0 552.5,757.0"/>
+  <path class="link b8" data-depth="2" stroke-width="1.8" d="M650.5,865.3 C601.5,865.3 601.5,792.8 552.5,792.8"/>
+  <path class="link b8" data-depth="2" stroke-width="1.8" d="M650.5,865.3 C601.5,865.3 601.5,829.0 552.5,829.0"/>
+  <path class="link b8" data-depth="2" stroke-width="1.8" d="M650.5,865.3 C601.5,865.3 601.5,865.2 552.5,865.2"/>
+  <path class="link b8" data-depth="2" stroke-width="1.8" d="M650.5,865.3 C601.5,865.3 601.5,901.3 552.5,901.3"/>
+  <path class="link b8" data-depth="2" stroke-width="1.8" d="M650.5,865.3 C601.5,865.3 601.5,937.5 552.5,937.5"/>
+  <path class="link b8" data-depth="2" stroke-width="1.8" d="M650.5,865.3 C601.5,865.3 601.5,973.6 552.5,973.6"/>
+  <g class="node d1 b8" data-depth="1">
+    <rect class="box" x="650.5" y="850.3" width="150.5" height="30.1" rx="9"/>
+    <text x="660.5" y="870.3" font-size="14.5">感度解析と臨床実装</text>
+  </g>
+  <path class="link b8" data-depth="3" stroke-width="1.3" d="M363.5,757.0 C311.0,757.0 311.0,757.0 258.5,757.0"/>
+  <g class="node d2 b8" data-depth="2">
+    <rect class="box" x="363.5" y="742.9" width="189.0" height="28.2" rx="6"/>
+    <text x="373.5" y="761.4" font-size="13.0">検証不能仮定を妥当に変える</text>
+  </g>
+  <g class="node d3 b8" data-depth="3">
+    <rect class="box" x="26.0" y="743.3" width="232.5" height="27.5" rx="6"/>
+    <text x="36.0" y="761.3" font-size="12.5">非無作為欠測、未測定交絡、モデル形</text>
+  </g>
+  <g class="node d2 b8" data-depth="2">
+    <rect class="box" x="324.5" y="778.8" width="228.0" height="28.2" rx="6"/>
+    <text x="334.5" y="797.3" font-size="13.0">一致解析だけの報告は頑健性でない</text>
+  </g>
+  <g class="node d2 b8" data-depth="2">
+    <rect class="box" x="376.5" y="814.9" width="176.0" height="28.2" rx="6"/>
+    <text x="386.5" y="833.4" font-size="13.0">穏当な仮定で変われば脆弱</text>
+  </g>
+  <g class="node d2 b8" data-depth="2">
+    <rect class="box" x="350.5" y="851.1" width="202.0" height="28.2" rx="6"/>
+    <text x="360.5" y="869.6" font-size="13.0">データ漏洩は無効な性能を作る</text>
+  </g>
+  <g class="node d2 b8" data-depth="2">
+    <rect class="box" x="337.5" y="887.2" width="215.0" height="28.2" rx="6"/>
+    <text x="347.5" y="905.7" font-size="13.0">解釈法は因果も公正も証明しない</text>
+  </g>
+  <g class="node d2 b8" data-depth="2">
+    <rect class="box" x="363.5" y="923.4" width="189.0" height="28.2" rx="6"/>
+    <text x="373.5" y="941.9" font-size="13.0">臨床利用：検証、較正、監視</text>
+  </g>
+  <g class="node d2 b8" data-depth="2">
+    <rect class="box" x="324.5" y="959.6" width="228.0" height="28.2" rx="6"/>
+    <text x="334.5" y="978.1" font-size="13.0">問い、目的量、過程、モデルの整合</text>
+  </g>
+</svg>

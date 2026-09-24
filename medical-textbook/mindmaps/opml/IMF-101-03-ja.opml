@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<opml version="2.0">
+  <head>
+    <title>101-03 回帰、生存、予測、因果、欠測データ</title>
+    <ownerName>Integrated Medical Foundations</ownerName>
+  </head>
+  <body>
+    <outline text="回帰、生存、予測、因果、欠測データ">
+      <outline text="回帰モデルと線形回帰">
+        <outline text="関連記述、調整比較、交互作用、予測"/>
+        <outline text="調整係数だから因果的ではない"/>
+        <outline text="尺度、関数形、標本過程、時点が意味を決める"/>
+        <outline text="線形：連続転帰の条件付き平均">
+          <outline text="係数：他変数固定での一単位差"/>
+        </outline>
+        <outline text="残差で非線形、不均一分散、依存を調べる">
+          <outline text="残差正規性は主に小標本推論へ関係"/>
+        </outline>
+      </outline>
+      <outline text="予測因子の形と交互作用">
+        <outline text="カテゴリ予測因子は参照と比較"/>
+        <outline text="直線は単位効果一定を仮定"/>
+        <outline text="スプライン、多項式、変換で曲線を表す"/>
+        <outline text="カテゴリ化は情報と検出力を失う">
+          <outline text="閾値解釈が選択切点に依存"/>
+        </outline>
+        <outline text="交互作用：関連が別因子で異なる">
+          <outline text="各モデル尺度上の効果を変える"/>
+          <outline text="一尺度でなしでも別尺度で存在し得る"/>
+        </outline>
+      </outline>
+      <outline text="ロジスティックと計数モデル">
+        <outline text="ロジスティック：二値転帰の対数オッズ">
+          <outline text="指数化係数はオッズ比"/>
+          <outline text="一般的転帰では相対変化を誇張"/>
+        </outline>
+        <outline text="直線性は対数オッズ尺度で仮定"/>
+        <outline text="計数はポアソンまたは負の二項回帰"/>
+        <outline text="率には分子、人時間分母、再発規則"/>
+        <outline text="同一人の反復事象は依存">
+          <outline text="初回事象解析は後の負担を捨てる"/>
+          <outline text="集積モデル：集団平均か個人特異的か"/>
+        </outline>
+      </outline>
+      <outline text="交絡と変数選択">
+        <outline text="曝露と転帰の共通原因"/>
+        <outline text="調整は測定交絡経路を遮断">
+          <outline text="曝露の結果の調整は効果の一部を除く"/>
+          <outline text="共通結果の調整はコライダーバイアス"/>
+        </outline>
+        <outline text="因果図は仮定を明示">
+          <outline text="調整集合を選ぶが真実は証明しない"/>
+        </outline>
+        <outline text="有意性だけの変数選択は不安定"/>
+        <outline text="交絡因子は因果知識で選ぶ"/>
+        <outline text="多重共線性：個別係数が不精密">
+          <outline text="疾患でなく同定不能の信号"/>
+        </outline>
+      </outline>
+      <outline text="生存時間解析">
+        <outline text="打切り：正確な事象時が不明">
+          <outline text="条件付きで事象過程から独立と仮定"/>
+          <outline text="重症者の離脱は推定を偏らせる"/>
+        </outline>
+        <outline text="Kaplan-Meier：無事象確率の時間推移">
+          <outline text="打切り時でなく事象時に下がる"/>
+          <outline text="二分の一まで下がらねば中央値不能"/>
+        </outline>
+        <outline text="ハザード：無事象者の瞬間事象率"/>
+        <outline text="Coxモデルはハザード比一定を仮定">
+          <outline text="ハザード比はリスク比でない"/>
+          <outline text="交差時は制限平均生存時間"/>
+        </outline>
+        <outline text="競合事象は常に通常打切りではない">
+          <outline text="打切り扱いは仮想世界を推定"/>
+          <outline text="累積発生は観察世界の確率"/>
+        </outline>
+      </outline>
+      <outline text="識別能、較正、閾値">
+        <outline text="識別能：高リスク者ほど事象"/>
+        <outline text="較正：予測と観察リスクの一致">
+          <outline text="識別良好でも系統的過大予測"/>
+        </outline>
+        <outline text="有用性：閾値判断が転帰を改善するか"/>
+        <outline text="受信者動作特性曲線は有病率・誤りを無視">
+          <outline text="稀な転帰に適合率再現率表示"/>
+        </outline>
+        <outline text="一般指標は等価な誤り費用を仮定"/>
+      </outline>
+      <outline text="過学習と検証">
+        <outline text="標本固有雑音を学ぶ"/>
+        <outline text="訓練データ性能は楽観的"/>
+        <outline text="全過程を繰り返す再標本で楽観を推定"/>
+        <outline text="外部検証は移送可能性を検査">
+          <outline text="症例構成、測定、治療、有病率の違い"/>
+        </outline>
+        <outline text="切片や傾きの再較正"/>
+        <outline text="害が不平等なら亜群性能が重要"/>
+      </outline>
+      <outline text="欠測データ">
+        <outline text="欠測機序は観察情報に対して記述">
+          <outline text="完全無作為：観察・非観察値と無関係"/>
+          <outline text="無作為：観察変数だけに依存"/>
+          <outline text="非無作為：見えない値へ依存"/>
+        </outline>
+        <outline text="検定で確立せず過程の仮定"/>
+        <outline text="完全症例解析は限られた条件で不偏">
+          <outline text="精度低下、対象集団も変わる"/>
+        </outline>
+        <outline text="単一補完は不確実性を過小評価"/>
+        <outline text="多重補完は補完内・間を統合"/>
+      </outline>
+      <outline text="感度解析と臨床実装">
+        <outline text="検証不能仮定を妥当に変える">
+          <outline text="非無作為欠測、未測定交絡、モデル形"/>
+        </outline>
+        <outline text="一致解析だけの報告は頑健性でない"/>
+        <outline text="穏当な仮定で変われば脆弱"/>
+        <outline text="データ漏洩は無効な性能を作る"/>
+        <outline text="解釈法は因果も公正も証明しない"/>
+        <outline text="臨床利用：検証、較正、監視"/>
+        <outline text="問い、目的量、過程、モデルの整合"/>
+      </outline>
+    </outline>
+  </body>
+</opml>

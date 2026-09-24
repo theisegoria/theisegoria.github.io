@@ -1,0 +1,662 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="mm" viewBox="0 0 2101 1393" width="2101" height="1393" role="img" aria-label="Variables, distributions, sampling, and estimation">
+<style>
+  .mm-bg { fill: #faf8f4; }
+  .mm text { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; fill: #1b1917; }
+  .mm .link { fill: none; stroke: #c9c1b4; }
+  .mm .box { fill: none; stroke: none; }
+  .mm .d0 .box { fill: #1b1917; stroke: #1b1917; }
+  .mm .d0 text { fill: #faf8f4; font-weight: 650; }
+  .mm .d1 text { font-weight: 600; }
+
+  .mm .link.b0 { stroke: #4b9ac6; }
+  .mm .b0.d1 .box { fill: #d7e5eb; stroke: #0072B2; stroke-width: 1.5; }
+  .mm .b0.d1 text { fill: #075c8b; }
+  .mm .b0.d2 .box { fill: #e8efef; stroke: #70aed0; }
+  .mm .b0.d3 text, .mm .b0.d4 text { fill: #075c8b; }
+
+  .mm .link.b1 { stroke: #e08c49; }
+  .mm .b1.d1 .box { fill: #f5e2d2; stroke: #D55E00; stroke-width: 1.5; }
+  .mm .b1.d1 text { fill: #a64d06; }
+  .mm .b1.d2 .box { fill: #f7ede3; stroke: #e6a36e; }
+  .mm .b1.d3 text, .mm .b1.d4 text { fill: #a64d06; }
+
+  .mm .link.b2 { stroke: #4bb99a; }
+  .mm .b2.d1 .box { fill: #d7ebe2; stroke: #009E73; stroke-width: 1.5; }
+  .mm .b2.d1 text { fill: #077d5c; }
+  .mm .b2.d2 .box { fill: #e8f2eb; stroke: #70c6ad; }
+  .mm .b2.d3 text, .mm .b2.d4 text { fill: #077d5c; }
+
+  .mm .link.b3 { stroke: #da9fbe; }
+  .mm .b3.d1 .box { fill: #f4e6e9; stroke: #CC79A7; stroke-width: 1.5; }
+  .mm .b3.d1 text { fill: #985c7c; }
+  .mm .b3.d2 .box { fill: #f7efef; stroke: #e1b2ca; }
+  .mm .b3.d3 text, .mm .b3.d4 text { fill: #985c7c; }
+
+  .mm .link.b4 { stroke: #bba149; }
+  .mm .b4.d1 .box { fill: #ede7d2; stroke: #A07C00; stroke-width: 1.5; }
+  .mm .b4.d1 text { fill: #7f6306; }
+  .mm .b4.d2 .box { fill: #f4efe3; stroke: #c8b46e; }
+  .mm .b4.d3 text, .mm .b4.d4 text { fill: #7f6306; }
+
+  .mm .link.b5 { stroke: #84c1e2; }
+  .mm .b5.d1 .box { fill: #e3eef2; stroke: #51a9db; stroke-width: 1.5; }
+  .mm .b5.d1 text { fill: #3d7899; }
+  .mm .b5.d2 .box { fill: #eff3f3; stroke: #9dcde6; }
+  .mm .b5.d3 text, .mm .b5.d4 text { fill: #3d7899; }
+
+  .mm .link.b6 { stroke: #9580b0; }
+  .mm .b6.d1 .box { fill: #e6e0e6; stroke: #6A4C93; stroke-width: 1.5; }
+  .mm .b6.d1 text { fill: #563f74; }
+  .mm .b6.d2 .box { fill: #f0eced; stroke: #ab99bf; }
+  .mm .b6.d3 text, .mm .b6.d4 text { fill: #563f74; }
+
+  .mm .link.b7 { stroke: #98ac74; }
+  .mm .b7.d1 .box { fill: #e6e9da; stroke: #6E8B3D; stroke-width: 1.5; }
+  .mm .b7.d1 text { fill: #596e34; }
+  .mm .b7.d2 .box { fill: #f0f0e7; stroke: #adbc8f; }
+  .mm .b7.d3 text, .mm .b7.d4 text { fill: #596e34; }
+
+  .mm .link.b8 { stroke: #e2b349; }
+  .mm .b8.d1 .box { fill: #f7ecd2; stroke: #d89500; stroke-width: 1.5; }
+  .mm .b8.d1 text { fill: #986a05; }
+  .mm .b8.d2 .box { fill: #f9f2e3; stroke: #e7c26e; }
+  .mm .b8.d3 text, .mm .b8.d4 text { fill: #986a05; }
+
+  .mm .link.b9 { stroke: #bf6669; }
+  .mm .b9.d1 .box { fill: #eedbd8; stroke: #A6272E; stroke-width: 1.5; }
+  .mm .b9.d1 text { fill: #832428; }
+  .mm .b9.d2 .box { fill: #f4e9e6; stroke: #cc8587; }
+  .mm .b9.d3 text, .mm .b9.d4 text { fill: #832428; }
+@media (prefers-color-scheme: dark) {
+  .mm-bg { fill: #12100e; }
+  .mm text { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; fill: #ece7df; }
+  .mm .link { fill: none; stroke: #3d3833; }
+  .mm .box { fill: none; stroke: none; }
+  .mm .d0 .box { fill: #ece7df; stroke: #ece7df; }
+  .mm .d0 text { fill: #12100e; font-weight: 650; }
+  .mm .d1 text { font-weight: 600; }
+
+  .mm .link.b0 { stroke: #2d6a8d; }
+  .mm .b0.d1 .box { fill: #172227; stroke: #3891c3; stroke-width: 1.5; }
+  .mm .b0.d1 text { fill: #65a6ca; }
+  .mm .b0.d2 .box { fill: #15191b; stroke: #275772; }
+  .mm .b0.d3 text, .mm .b0.d4 text { fill: #65a6ca; }
+
+  .mm .link.b1 { stroke: #a15f2b; }
+  .mm .b1.d1 .box { fill: #2f2014; stroke: #de8138; stroke-width: 1.5; }
+  .mm .b1.d1 text { fill: #e29a62; }
+  .mm .b1.d2 .box { fill: #201811; stroke: #824e25; }
+  .mm .b1.d3 text, .mm .b1.d4 text { fill: #e29a62; }
+
+  .mm .link.b2 { stroke: #2d826a; }
+  .mm .b2.d1 .box { fill: #172720; stroke: #38b392; stroke-width: 1.5; }
+  .mm .b2.d1 text { fill: #65c0a5; }
+  .mm .b2.d2 .box { fill: #151b17; stroke: #276a57; }
+  .mm .b2.d3 text, .mm .b2.d4 text { fill: #65c0a5; }
+
+  .mm .link.b3 { stroke: #9c6e86; }
+  .mm .b3.d1 .box { fill: #2e2326; stroke: #d796ba; stroke-width: 1.5; }
+  .mm .b3.d1 text { fill: #dcaac3; }
+  .mm .b3.d2 .box { fill: #20191a; stroke: #7e5a6d; }
+  .mm .b3.d3 text, .mm .b3.d4 text { fill: #dcaac3; }
+
+  .mm .link.b4 { stroke: #84702b; }
+  .mm .b4.d1 .box { fill: #292314; stroke: #b59938; stroke-width: 1.5; }
+  .mm .b4.d1 text { fill: #c3ac62; }
+  .mm .b4.d2 .box { fill: #1d1a11; stroke: #6c5b25; }
+  .mm .b4.d3 text, .mm .b4.d4 text { fill: #c3ac62; }
+
+  .mm .link.b5 { stroke: #5c8eab; }
+  .mm .b5.d1 .box { fill: #21292d; stroke: #7bc4ee; stroke-width: 1.5; }
+  .mm .b5.d1 text { fill: #97cdea; }
+  .mm .b5.d2 .box { fill: #191d1e; stroke: #4c7389; }
+  .mm .b5.d3 text, .mm .b5.d4 text { fill: #97cdea; }
+
+  .mm .link.b6 { stroke: #67557c; }
+  .mm .b6.d1 .box { fill: #231e24; stroke: #8b73ab; stroke-width: 1.5; }
+  .mm .b6.d1 text { fill: #a390b8; }
+  .mm .b6.d2 .box { fill: #1a1719; stroke: #554664; }
+  .mm .b6.d3 text, .mm .b6.d4 text { fill: #a390b8; }
+
+  .mm .link.b7 { stroke: #69784d; }
+  .mm .b7.d1 .box { fill: #23251b; stroke: #8ea568; stroke-width: 1.5; }
+  .mm .b7.d1 text { fill: #a6b686; }
+  .mm .b7.d2 .box { fill: #1b1a14; stroke: #566240; }
+  .mm .b7.d3 text, .mm .b7.d4 text { fill: #a6b686; }
+
+  .mm .link.b8 { stroke: #ab832b; }
+  .mm .b8.d1 .box { fill: #312714; stroke: #ecb438; stroke-width: 1.5; }
+  .mm .b8.d1 text { fill: #ecc162; }
+  .mm .b8.d2 .box { fill: #211b11; stroke: #8a6a25; }
+  .mm .b8.d3 text, .mm .b8.d4 text { fill: #ecc162; }
+
+  .mm .link.b9 { stroke: #884245; }
+  .mm .b9.d1 .box { fill: #2a1a19; stroke: #ba575c; stroke-width: 1.5; }
+  .mm .b9.d1 text { fill: #c67b7d; }
+  .mm .b9.d2 .box { fill: #1e1513; stroke: #6e3739; }
+  .mm .b9.d3 text, .mm .b9.d4 text { fill: #c67b7d; }
+}
+</style>
+  <rect class="mm-bg" width="2101" height="1393"/>
+  <path class="link b0" data-depth="1" stroke-width="2.2" d="M1184.9,696.4 C1204.9,696.4 1204.9,150.9 1224.9,150.9"/>
+  <path class="link b1" data-depth="1" stroke-width="2.2" d="M1184.9,696.4 C1204.9,696.4 1204.9,345.5 1224.9,345.5"/>
+  <path class="link b2" data-depth="1" stroke-width="2.2" d="M1184.9,696.4 C1204.9,696.4 1204.9,609.1 1224.9,609.1"/>
+  <path class="link b3" data-depth="1" stroke-width="2.2" d="M1184.9,696.4 C1204.9,696.4 1204.9,952.1 1224.9,952.1"/>
+  <path class="link b4" data-depth="1" stroke-width="2.2" d="M1184.9,696.4 C927.3,696.4 927.3,101.0 669.7,101.0"/>
+  <path class="link b5" data-depth="1" stroke-width="2.2" d="M1184.9,696.4 C923.0,696.4 923.0,310.0 661.2,310.0"/>
+  <path class="link b6" data-depth="1" stroke-width="2.2" d="M1184.9,696.4 C914.6,696.4 914.6,609.6 644.2,609.6"/>
+  <path class="link b7" data-depth="1" stroke-width="2.2" d="M1184.9,696.4 C1204.9,696.4 1204.9,1227.0 1224.9,1227.0"/>
+  <path class="link b8" data-depth="1" stroke-width="2.2" d="M1184.9,696.4 C906.1,696.4 906.1,942.4 627.2,942.4"/>
+  <path class="link b9" data-depth="1" stroke-width="2.2" d="M1184.9,696.4 C901.8,696.4 901.8,1189.4 618.8,1189.4"/>
+  <g class="node d0 b0" data-depth="0">
+    <rect class="box" x="916.3" y="668.4" width="268.6" height="55.9" rx="9"/>
+    <text x="926.3" y="690.9" font-size="17.0">Variables, distributions,</text>
+    <text x="926.3" y="713.4" font-size="17.0">sampling, and estimation</text>
+  </g>
+  <path class="link b0" data-depth="2" stroke-width="1.8" d="M1482.4,150.9 C1502.4,150.9 1502.4,61.6 1522.4,61.6"/>
+  <path class="link b0" data-depth="2" stroke-width="1.8" d="M1482.4,150.9 C1502.4,150.9 1502.4,161.5 1522.4,161.5"/>
+  <path class="link b0" data-depth="2" stroke-width="1.8" d="M1482.4,150.9 C1502.4,150.9 1502.4,240.2 1522.4,240.2"/>
+  <g class="node d1 b0" data-depth="1">
+    <rect class="box" x="1224.9" y="135.8" width="257.5" height="30.1" rx="9"/>
+    <text x="1234.9" y="155.8" font-size="14.5">Quantities before arithmetic</text>
+  </g>
+  <path class="link b0" data-depth="3" stroke-width="1.3" d="M1742.2,61.6 C1779.4,61.6 1779.4,39.8 1816.7,39.8"/>
+  <path class="link b0" data-depth="3" stroke-width="1.3" d="M1742.2,61.6 C1779.4,61.6 1779.4,83.5 1816.7,83.5"/>
+  <g class="node d2 b0" data-depth="2">
+    <rect class="box" x="1522.4" y="39.0" width="219.8" height="45.3" rx="6"/>
+    <text x="1532.4" y="57.5" font-size="13.0">Dilution conserves the solute</text>
+    <text x="1532.4" y="74.6" font-size="13.0">amount</text>
+  </g>
+  <g class="node d3 b0" data-depth="3">
+    <rect class="box" x="1816.7" y="26.0" width="258.5" height="27.5" rx="6"/>
+    <text x="1826.7" y="44.0" font-size="12.5">2 mmol/L x 5 mL / 20 mL = 0.5 mmol/L</text>
+  </g>
+  <g class="node d3 b0" data-depth="3">
+    <rect class="box" x="1816.7" y="61.5" width="245.2" height="44.0" rx="6"/>
+    <text x="1826.7" y="79.5" font-size="12.5">20 mL is final volume, not solvent</text>
+    <text x="1826.7" y="96.0" font-size="12.5">added</text>
+  </g>
+  <path class="link b0" data-depth="3" stroke-width="1.3" d="M1756.0,161.5 C1786.3,161.5 1786.3,135.5 1816.7,135.5"/>
+  <path class="link b0" data-depth="3" stroke-width="1.3" d="M1756.0,161.5 C1786.3,161.5 1786.3,187.5 1816.7,187.5"/>
+  <g class="node d2 b0" data-depth="2">
+    <rect class="box" x="1522.4" y="147.4" width="233.6" height="28.2" rx="6"/>
+    <text x="1532.4" y="165.9" font-size="13.0">Absolute versus relative change</text>
+  </g>
+  <g class="node d3 b0" data-depth="3">
+    <rect class="box" x="1816.7" y="113.5" width="258.5" height="44.0" rx="6"/>
+    <text x="1826.7" y="131.5" font-size="12.5">20 to 30: ten units, a fifty percent</text>
+    <text x="1826.7" y="148.0" font-size="12.5">rise</text>
+  </g>
+  <g class="node d3 b0" data-depth="3">
+    <rect class="box" x="1816.7" y="165.5" width="198.9" height="44.0" rx="6"/>
+    <text x="1826.7" y="183.5" font-size="12.5">30 to 20: a one third fall,</text>
+    <text x="1826.7" y="200.0" font-size="12.5">reference changes</text>
+  </g>
+  <g class="node d2 b0" data-depth="2">
+    <rect class="box" x="1522.4" y="217.5" width="226.7" height="45.3" rx="6"/>
+    <text x="1532.4" y="236.0" font-size="13.0">Percentages alone show neither</text>
+    <text x="1532.4" y="253.2" font-size="13.0">reproducibility nor cause</text>
+  </g>
+  <path class="link b1" data-depth="2" stroke-width="1.8" d="M1473.9,345.5 C1498.2,345.5 1498.2,292.8 1522.4,292.8"/>
+  <path class="link b1" data-depth="2" stroke-width="1.8" d="M1473.9,345.5 C1498.2,345.5 1498.2,345.5 1522.4,345.5"/>
+  <path class="link b1" data-depth="2" stroke-width="1.8" d="M1473.9,345.5 C1498.2,345.5 1498.2,398.1 1522.4,398.1"/>
+  <g class="node d1 b1" data-depth="1">
+    <rect class="box" x="1224.9" y="320.8" width="249.0" height="49.3" rx="9"/>
+    <text x="1234.9" y="340.8" font-size="14.5">Probability-based reasoning</text>
+    <text x="1234.9" y="360.0" font-size="14.5">and design</text>
+  </g>
+  <path class="link b1" data-depth="3" stroke-width="1.3" d="M1756.0,292.8 C1786.3,292.8 1786.3,292.8 1816.7,292.8"/>
+  <g class="node d2 b1" data-depth="2">
+    <rect class="box" x="1522.4" y="270.2" width="233.6" height="45.3" rx="6"/>
+    <text x="1532.4" y="288.7" font-size="13.0">From variable data to uncertain</text>
+    <text x="1532.4" y="305.8" font-size="13.0">conclusions</text>
+  </g>
+  <g class="node d3 b1" data-depth="3">
+    <rect class="box" x="1816.7" y="270.8" width="238.6" height="44.0" rx="6"/>
+    <text x="1826.7" y="288.8" font-size="12.5">Does not turn imperfect data into</text>
+    <text x="1826.7" y="305.3" font-size="12.5">certainty</text>
+  </g>
+  <g class="node d2 b1" data-depth="2">
+    <rect class="box" x="1522.4" y="322.8" width="212.9" height="45.3" rx="6"/>
+    <text x="1532.4" y="341.3" font-size="13.0">Define population, sampling,</text>
+    <text x="1532.4" y="358.5" font-size="13.0">variables, timing, target</text>
+  </g>
+  <path class="link b1" data-depth="3" stroke-width="1.3" d="M1776.7,398.1 C1796.7,398.1 1796.7,398.1 1816.7,398.1"/>
+  <g class="node d2 b1" data-depth="2">
+    <rect class="box" x="1522.4" y="375.5" width="254.3" height="45.3" rx="6"/>
+    <text x="1532.4" y="394.0" font-size="13.0">Correct maths can answer the wrong</text>
+    <text x="1532.4" y="411.1" font-size="13.0">question</text>
+  </g>
+  <g class="node d3 b1" data-depth="3">
+    <rect class="box" x="1816.7" y="376.1" width="251.9" height="44.0" rx="6"/>
+    <text x="1826.7" y="394.1" font-size="12.5">Eligibility, measurement, follow-up</text>
+    <text x="1826.7" y="410.6" font-size="12.5">differ from target</text>
+  </g>
+  <path class="link b2" data-depth="2" stroke-width="1.8" d="M1457.0,609.1 C1489.7,609.1 1489.7,450.1 1522.4,450.1"/>
+  <path class="link b2" data-depth="2" stroke-width="1.8" d="M1457.0,609.1 C1489.7,609.1 1489.7,502.8 1522.4,502.8"/>
+  <path class="link b2" data-depth="2" stroke-width="1.8" d="M1457.0,609.1 C1489.7,609.1 1489.7,555.5 1522.4,555.5"/>
+  <path class="link b2" data-depth="2" stroke-width="1.8" d="M1457.0,609.1 C1489.7,609.1 1489.7,608.1 1522.4,608.1"/>
+  <path class="link b2" data-depth="2" stroke-width="1.8" d="M1457.0,609.1 C1489.7,609.1 1489.7,661.4 1522.4,661.4"/>
+  <path class="link b2" data-depth="2" stroke-width="1.8" d="M1457.0,609.1 C1489.7,609.1 1489.7,714.8 1522.4,714.8"/>
+  <path class="link b2" data-depth="2" stroke-width="1.8" d="M1457.0,609.1 C1489.7,609.1 1489.7,768.1 1522.4,768.1"/>
+  <g class="node d1 b2" data-depth="1">
+    <rect class="box" x="1224.9" y="594.0" width="232.1" height="30.1" rx="9"/>
+    <text x="1234.9" y="614.0" font-size="14.5">Variables and measurement</text>
+  </g>
+  <path class="link b2" data-depth="3" stroke-width="1.3" d="M1756.0,450.1 C1786.3,450.1 1786.3,450.1 1816.7,450.1"/>
+  <g class="node d2 b2" data-depth="2">
+    <rect class="box" x="1522.4" y="436.1" width="233.6" height="28.2" rx="6"/>
+    <text x="1532.4" y="454.6" font-size="13.0">Categorical: nominal or ordinal</text>
+  </g>
+  <g class="node d3 b2" data-depth="3">
+    <rect class="box" x="1816.7" y="428.1" width="225.4" height="44.0" rx="6"/>
+    <text x="1826.7" y="446.1" font-size="12.5">Ordinal spacing not necessarily</text>
+    <text x="1826.7" y="462.6" font-size="12.5">equal</text>
+  </g>
+  <g class="node d2 b2" data-depth="2">
+    <rect class="box" x="1522.4" y="480.1" width="240.5" height="45.3" rx="6"/>
+    <text x="1532.4" y="498.6" font-size="13.0">Quantitative: discrete counts or</text>
+    <text x="1532.4" y="515.8" font-size="13.0">continuous</text>
+  </g>
+  <path class="link b2" data-depth="3" stroke-width="1.3" d="M1776.7,555.5 C1796.7,555.5 1796.7,555.5 1816.7,555.5"/>
+  <g class="node d2 b2" data-depth="2">
+    <rect class="box" x="1522.4" y="532.8" width="254.3" height="45.3" rx="6"/>
+    <text x="1532.4" y="551.3" font-size="13.0">Pain scale is ordered and analysed</text>
+    <text x="1532.4" y="568.5" font-size="13.0">numerically</text>
+  </g>
+  <g class="node d3 b2" data-depth="3">
+    <rect class="box" x="1816.7" y="533.5" width="258.5" height="44.0" rx="6"/>
+    <text x="1826.7" y="551.5" font-size="12.5">One unit may differ across range and</text>
+    <text x="1826.7" y="568.0" font-size="12.5">people</text>
+  </g>
+  <g class="node d2 b2" data-depth="2">
+    <rect class="box" x="1522.4" y="585.5" width="247.4" height="45.3" rx="6"/>
+    <text x="1532.4" y="604.0" font-size="13.0">Accuracy, precision, reliability,</text>
+    <text x="1532.4" y="621.1" font-size="13.0">validity</text>
+  </g>
+  <g class="node d2 b2" data-depth="2">
+    <rect class="box" x="1522.4" y="638.8" width="212.9" height="45.3" rx="6"/>
+    <text x="1532.4" y="657.3" font-size="13.0">Random error usually weakens</text>
+    <text x="1532.4" y="674.4" font-size="13.0">associations</text>
+  </g>
+  <g class="node d2 b2" data-depth="2">
+    <rect class="box" x="1522.4" y="692.1" width="226.7" height="45.3" rx="6"/>
+    <text x="1532.4" y="710.6" font-size="13.0">Systematic error can create or</text>
+    <text x="1532.4" y="727.8" font-size="13.0">conceal associations</text>
+  </g>
+  <g class="node d2 b2" data-depth="2">
+    <rect class="box" x="1522.4" y="745.4" width="219.8" height="45.3" rx="6"/>
+    <text x="1532.4" y="763.9" font-size="13.0">Calibration plus evidence for</text>
+    <text x="1532.4" y="781.1" font-size="13.0">subjective constructs</text>
+  </g>
+  <path class="link b3" data-depth="2" stroke-width="1.8" d="M1473.9,952.1 C1498.2,952.1 1498.2,820.7 1522.4,820.7"/>
+  <path class="link b3" data-depth="2" stroke-width="1.8" d="M1473.9,952.1 C1498.2,952.1 1498.2,873.4 1522.4,873.4"/>
+  <path class="link b3" data-depth="2" stroke-width="1.8" d="M1473.9,952.1 C1498.2,952.1 1498.2,926.7 1522.4,926.7"/>
+  <path class="link b3" data-depth="2" stroke-width="1.8" d="M1473.9,952.1 C1498.2,952.1 1498.2,1005.4 1522.4,1005.4"/>
+  <path class="link b3" data-depth="2" stroke-width="1.8" d="M1473.9,952.1 C1498.2,952.1 1498.2,1083.4 1522.4,1083.4"/>
+  <g class="node d1 b3" data-depth="1">
+    <rect class="box" x="1224.9" y="937.0" width="249.0" height="30.1" rx="9"/>
+    <text x="1234.9" y="957.0" font-size="14.5">Distributions and summaries</text>
+  </g>
+  <path class="link b3" data-depth="3" stroke-width="1.3" d="M1721.5,820.7 C1769.1,820.7 1769.1,820.7 1816.7,820.7"/>
+  <g class="node d2 b3" data-depth="2">
+    <rect class="box" x="1522.4" y="806.7" width="199.1" height="28.2" rx="6"/>
+    <text x="1532.4" y="825.2" font-size="13.0">Centre: mean, median, mode</text>
+  </g>
+  <g class="node d3 b3" data-depth="3">
+    <rect class="box" x="1816.7" y="798.7" width="251.9" height="44.0" rx="6"/>
+    <text x="1826.7" y="816.7" font-size="12.5">Mean uses every value, sensitive to</text>
+    <text x="1826.7" y="833.2" font-size="12.5">extremes</text>
+  </g>
+  <g class="node d2 b3" data-depth="2">
+    <rect class="box" x="1522.4" y="850.7" width="212.9" height="45.3" rx="6"/>
+    <text x="1532.4" y="869.2" font-size="13.0">Spread: range, interquartile</text>
+    <text x="1532.4" y="886.4" font-size="13.0">range, variance, SD</text>
+  </g>
+  <g class="node d2 b3" data-depth="2">
+    <rect class="box" x="1522.4" y="904.1" width="206.0" height="45.3" rx="6"/>
+    <text x="1532.4" y="922.6" font-size="13.0">Centre without spread hides</text>
+    <text x="1532.4" y="939.7" font-size="13.0">heterogeneity</text>
+  </g>
+  <path class="link b3" data-depth="3" stroke-width="1.3" d="M1776.7,1005.4 C1796.7,1005.4 1796.7,979.4 1816.7,979.4"/>
+  <path class="link b3" data-depth="3" stroke-width="1.3" d="M1776.7,1005.4 C1796.7,1005.4 1796.7,1031.4 1816.7,1031.4"/>
+  <g class="node d2 b3" data-depth="2">
+    <rect class="box" x="1522.4" y="982.7" width="254.3" height="45.3" rx="6"/>
+    <text x="1532.4" y="1001.2" font-size="13.0">Normal: symmetric, set by mean and</text>
+    <text x="1532.4" y="1018.4" font-size="13.0">SD</text>
+  </g>
+  <g class="node d3 b3" data-depth="3">
+    <rect class="box" x="1816.7" y="957.4" width="198.9" height="44.0" rx="6"/>
+    <text x="1826.7" y="975.4" font-size="12.5">Mixtures, detection limits,</text>
+    <text x="1826.7" y="991.9" font-size="12.5">subgroups distort shape</text>
+  </g>
+  <g class="node d3 b3" data-depth="3">
+    <rect class="box" x="1816.7" y="1009.4" width="212.1" height="44.0" rx="6"/>
+    <text x="1826.7" y="1027.4" font-size="12.5">An approximation justified by</text>
+    <text x="1826.7" y="1043.9" font-size="12.5">purpose</text>
+  </g>
+  <path class="link b3" data-depth="3" stroke-width="1.3" d="M1749.1,1083.4 C1782.9,1083.4 1782.9,1083.4 1816.7,1083.4"/>
+  <g class="node d2 b3" data-depth="2">
+    <rect class="box" x="1522.4" y="1060.7" width="226.7" height="45.3" rx="6"/>
+    <text x="1532.4" y="1079.2" font-size="13.0">Log transformation symmetrises</text>
+    <text x="1532.4" y="1096.4" font-size="13.0">multiplicative variation</text>
+  </g>
+  <g class="node d3 b3" data-depth="3">
+    <rect class="box" x="1816.7" y="1061.4" width="245.2" height="44.0" rx="6"/>
+    <text x="1826.7" y="1079.4" font-size="12.5">Back-transformed summaries read as</text>
+    <text x="1826.7" y="1095.9" font-size="12.5">ratios</text>
+  </g>
+  <path class="link b4" data-depth="2" stroke-width="1.8" d="M669.7,101.0 C624.2,101.0 624.2,48.7 578.8,48.7"/>
+  <path class="link b4" data-depth="2" stroke-width="1.8" d="M669.7,101.0 C624.2,101.0 624.2,101.3 578.8,101.3"/>
+  <path class="link b4" data-depth="2" stroke-width="1.8" d="M669.7,101.0 C624.2,101.0 624.2,153.3 578.8,153.3"/>
+  <g class="node d1 b4" data-depth="1">
+    <rect class="box" x="669.7" y="76.3" width="206.6" height="49.3" rx="9"/>
+    <text x="679.7" y="96.3" font-size="14.5">Z scores and reference</text>
+    <text x="679.7" y="115.5" font-size="14.5">intervals</text>
+  </g>
+  <g class="node d2 b4" data-depth="2">
+    <rect class="box" x="365.8" y="26.0" width="212.9" height="45.3" rx="6"/>
+    <text x="375.8" y="44.5" font-size="13.0">Standard deviations from the</text>
+    <text x="375.8" y="61.7" font-size="13.0">reference mean</text>
+  </g>
+  <path class="link b4" data-depth="3" stroke-width="1.3" d="M338.3,101.3 C311.4,101.3 311.4,101.3 284.5,101.3"/>
+  <g class="node d2 b4" data-depth="2">
+    <rect class="box" x="338.3" y="87.2" width="240.5" height="28.2" rx="6"/>
+    <text x="348.3" y="105.7" font-size="13.0">Not the probability of pathology</text>
+  </g>
+  <g class="node d3 b4" data-depth="3">
+    <rect class="box" x="59.1" y="79.3" width="225.4" height="44.0" rx="6"/>
+    <text x="69.1" y="97.3" font-size="12.5">Unusual yet healthy, common yet</text>
+    <text x="69.1" y="113.8" font-size="12.5">dangerous</text>
+  </g>
+  <path class="link b4" data-depth="3" stroke-width="1.3" d="M324.5,153.3 C304.5,153.3 304.5,153.3 284.5,153.3"/>
+  <g class="node d2 b4" data-depth="2">
+    <rect class="box" x="324.5" y="130.7" width="254.3" height="45.3" rx="6"/>
+    <text x="334.5" y="149.2" font-size="13.0">Reference intervals hold a central</text>
+    <text x="334.5" y="166.3" font-size="13.0">proportion</text>
+  </g>
+  <g class="node d3 b4" data-depth="3">
+    <rect class="box" x="32.6" y="131.3" width="251.9" height="44.0" rx="6"/>
+    <text x="42.6" y="149.3" font-size="12.5">Some healthy outside, some diseased</text>
+    <text x="42.6" y="165.8" font-size="12.5">inside</text>
+  </g>
+  <path class="link b5" data-depth="2" stroke-width="1.8" d="M661.2,310.0 C620.0,310.0 620.0,205.3 578.8,205.3"/>
+  <path class="link b5" data-depth="2" stroke-width="1.8" d="M661.2,310.0 C620.0,310.0 620.0,283.3 578.8,283.3"/>
+  <path class="link b5" data-depth="2" stroke-width="1.8" d="M661.2,310.0 C620.0,310.0 620.0,362.0 578.8,362.0"/>
+  <path class="link b5" data-depth="2" stroke-width="1.8" d="M661.2,310.0 C620.0,310.0 620.0,414.6 578.8,414.6"/>
+  <g class="node d1 b5" data-depth="1">
+    <rect class="box" x="661.2" y="285.3" width="215.1" height="49.3" rx="9"/>
+    <text x="671.2" y="305.3" font-size="14.5">Count distributions and</text>
+    <text x="671.2" y="324.5" font-size="14.5">probability</text>
+  </g>
+  <path class="link b5" data-depth="3" stroke-width="1.3" d="M365.8,205.3 C325.2,205.3 325.2,205.3 284.5,205.3"/>
+  <g class="node d2 b5" data-depth="2">
+    <rect class="box" x="365.8" y="182.7" width="212.9" height="45.3" rx="6"/>
+    <text x="375.8" y="201.2" font-size="13.0">Binomial: successes in fixed</text>
+    <text x="375.8" y="218.3" font-size="13.0">independent trials</text>
+  </g>
+  <g class="node d3 b5" data-depth="3">
+    <rect class="box" x="92.2" y="183.3" width="192.2" height="44.0" rx="6"/>
+    <text x="102.2" y="201.3" font-size="12.5">Mean is trials times event</text>
+    <text x="102.2" y="217.8" font-size="12.5">probability</text>
+  </g>
+  <path class="link b5" data-depth="3" stroke-width="1.3" d="M324.5,283.3 C304.5,283.3 304.5,257.3 284.5,257.3"/>
+  <path class="link b5" data-depth="3" stroke-width="1.3" d="M324.5,283.3 C304.5,283.3 304.5,309.3 284.5,309.3"/>
+  <g class="node d2 b5" data-depth="2">
+    <rect class="box" x="324.5" y="260.7" width="254.3" height="45.3" rx="6"/>
+    <text x="334.5" y="279.2" font-size="13.0">Poisson: counts per time, area, or</text>
+    <text x="334.5" y="296.3" font-size="13.0">exposure</text>
+  </g>
+  <g class="node d3 b5" data-depth="3">
+    <rect class="box" x="26.0" y="235.3" width="258.5" height="44.0" rx="6"/>
+    <text x="36.0" y="253.3" font-size="12.5">Mean equals variance in the simplest</text>
+    <text x="36.0" y="269.8" font-size="12.5">model</text>
+  </g>
+  <g class="node d3 b5" data-depth="3">
+    <rect class="box" x="39.2" y="287.3" width="245.2" height="44.0" rx="6"/>
+    <text x="49.2" y="305.3" font-size="12.5">Overdispersion and clustering need</text>
+    <text x="49.2" y="321.8" font-size="12.5">extensions</text>
+  </g>
+  <g class="node d2 b5" data-depth="2">
+    <rect class="box" x="338.3" y="339.3" width="240.5" height="45.3" rx="6"/>
+    <text x="348.3" y="357.8" font-size="13.0">Independence differs from mutual</text>
+    <text x="348.3" y="375.0" font-size="13.0">exclusivity</text>
+  </g>
+  <path class="link b5" data-depth="3" stroke-width="1.3" d="M352.1,414.6 C318.3,414.6 318.3,414.6 284.5,414.6"/>
+  <g class="node d2 b5" data-depth="2">
+    <rect class="box" x="352.1" y="392.0" width="226.7" height="45.3" rx="6"/>
+    <text x="362.1" y="410.5" font-size="13.0">Bayes&#x27; rule updates a prior by</text>
+    <text x="362.1" y="427.6" font-size="13.0">likelihood</text>
+  </g>
+  <g class="node d3 b5" data-depth="3">
+    <rect class="box" x="52.5" y="392.6" width="232.0" height="44.0" rx="6"/>
+    <text x="62.5" y="410.6" font-size="12.5">Post-test probability depends on</text>
+    <text x="62.5" y="427.1" font-size="12.5">pre-test probability</text>
+  </g>
+  <path class="link b6" data-depth="2" stroke-width="1.8" d="M644.2,609.6 C611.5,609.6 611.5,466.6 578.8,466.6"/>
+  <path class="link b6" data-depth="2" stroke-width="1.8" d="M644.2,609.6 C611.5,609.6 611.5,544.6 578.8,544.6"/>
+  <path class="link b6" data-depth="2" stroke-width="1.8" d="M644.2,609.6 C611.5,609.6 611.5,648.6 578.8,648.6"/>
+  <path class="link b6" data-depth="2" stroke-width="1.8" d="M644.2,609.6 C611.5,609.6 611.5,752.6 578.8,752.6"/>
+  <g class="node d1 b6" data-depth="1">
+    <rect class="box" x="644.2" y="585.0" width="232.1" height="49.3" rx="9"/>
+    <text x="654.2" y="605.0" font-size="14.5">Sampling and the standard</text>
+    <text x="654.2" y="624.1" font-size="14.5">error</text>
+  </g>
+  <path class="link b6" data-depth="3" stroke-width="1.3" d="M393.4,466.6 C338.9,466.6 338.9,466.6 284.5,466.6"/>
+  <g class="node d2 b6" data-depth="2">
+    <rect class="box" x="393.4" y="444.0" width="185.4" height="45.3" rx="6"/>
+    <text x="403.4" y="462.5" font-size="13.0">Random sampling supports</text>
+    <text x="403.4" y="479.6" font-size="13.0">generalisation</text>
+  </g>
+  <g class="node d3 b6" data-depth="3">
+    <rect class="box" x="65.8" y="444.6" width="218.7" height="44.0" rx="6"/>
+    <text x="75.8" y="462.6" font-size="12.5">Convenience samples may differ</text>
+    <text x="75.8" y="479.1" font-size="12.5">systematically</text>
+  </g>
+  <path class="link b6" data-depth="3" stroke-width="1.3" d="M331.4,544.6 C307.9,544.6 307.9,518.6 284.5,518.6"/>
+  <path class="link b6" data-depth="3" stroke-width="1.3" d="M331.4,544.6 C307.9,544.6 307.9,570.6 284.5,570.6"/>
+  <g class="node d2 b6" data-depth="2">
+    <rect class="box" x="331.4" y="522.0" width="247.4" height="45.3" rx="6"/>
+    <text x="341.4" y="540.5" font-size="13.0">Random allocation supports causal</text>
+    <text x="341.4" y="557.6" font-size="13.0">comparison</text>
+  </g>
+  <g class="node d3 b6" data-depth="3">
+    <rect class="box" x="85.6" y="496.6" width="198.9" height="44.0" rx="6"/>
+    <text x="95.6" y="514.6" font-size="12.5">Allocation does not make</text>
+    <text x="95.6" y="531.1" font-size="12.5">participants representative</text>
+  </g>
+  <g class="node d3 b6" data-depth="3">
+    <rect class="box" x="65.8" y="548.6" width="218.7" height="44.0" rx="6"/>
+    <text x="75.8" y="566.6" font-size="12.5">Sampling alone does not remove</text>
+    <text x="75.8" y="583.1" font-size="12.5">confounding</text>
+  </g>
+  <path class="link b6" data-depth="3" stroke-width="1.3" d="M372.7,648.6 C328.6,648.6 328.6,622.6 284.5,622.6"/>
+  <path class="link b6" data-depth="3" stroke-width="1.3" d="M372.7,648.6 C328.6,648.6 328.6,674.6 284.5,674.6"/>
+  <g class="node d2 b6" data-depth="2">
+    <rect class="box" x="372.7" y="626.0" width="206.0" height="45.3" rx="6"/>
+    <text x="382.7" y="644.5" font-size="13.0">Standard error is SD of the</text>
+    <text x="382.7" y="661.6" font-size="13.0">sampling distribution</text>
+  </g>
+  <g class="node d3 b6" data-depth="3">
+    <rect class="box" x="32.6" y="600.6" width="251.9" height="44.0" rx="6"/>
+    <text x="42.6" y="618.6" font-size="12.5">SD for individuals, SE for estimate</text>
+    <text x="42.6" y="635.1" font-size="12.5">uncertainty</text>
+  </g>
+  <g class="node d3 b6" data-depth="3">
+    <rect class="box" x="45.9" y="652.6" width="238.6" height="44.0" rx="6"/>
+    <text x="55.9" y="670.6" font-size="12.5">Halving SE needs about four times</text>
+    <text x="55.9" y="687.1" font-size="12.5">the sample</text>
+  </g>
+  <path class="link b6" data-depth="3" stroke-width="1.3" d="M324.5,752.6 C304.5,752.6 304.5,726.6 284.5,726.6"/>
+  <path class="link b6" data-depth="3" stroke-width="1.3" d="M324.5,752.6 C304.5,752.6 304.5,778.6 284.5,778.6"/>
+  <g class="node d2 b6" data-depth="2">
+    <rect class="box" x="324.5" y="730.0" width="254.3" height="45.3" rx="6"/>
+    <text x="334.5" y="748.5" font-size="13.0">Central limit theorem:</text>
+    <text x="334.5" y="765.6" font-size="13.0">standardised means approach normal</text>
+  </g>
+  <g class="node d3 b6" data-depth="3">
+    <rect class="box" x="45.9" y="704.6" width="238.6" height="44.0" rx="6"/>
+    <text x="55.9" y="722.6" font-size="12.5">Does not normalise data or remove</text>
+    <text x="55.9" y="739.1" font-size="12.5">bias</text>
+  </g>
+  <g class="node d3 b6" data-depth="3">
+    <rect class="box" x="98.9" y="756.6" width="185.6" height="44.0" rx="6"/>
+    <text x="108.9" y="774.6" font-size="12.5">Clustered data carry less</text>
+    <text x="108.9" y="791.1" font-size="12.5">independent information</text>
+  </g>
+  <path class="link b7" data-depth="2" stroke-width="1.8" d="M1440.0,1227.0 C1481.2,1227.0 1481.2,1135.4 1522.4,1135.4"/>
+  <path class="link b7" data-depth="2" stroke-width="1.8" d="M1440.0,1227.0 C1481.2,1227.0 1481.2,1187.4 1522.4,1187.4"/>
+  <path class="link b7" data-depth="2" stroke-width="1.8" d="M1440.0,1227.0 C1481.2,1227.0 1481.2,1240.0 1522.4,1240.0"/>
+  <path class="link b7" data-depth="2" stroke-width="1.8" d="M1440.0,1227.0 C1481.2,1227.0 1481.2,1318.7 1522.4,1318.7"/>
+  <g class="node d1 b7" data-depth="1">
+    <rect class="box" x="1224.9" y="1202.4" width="215.1" height="49.3" rx="9"/>
+    <text x="1234.9" y="1222.4" font-size="14.5">Interval estimation and</text>
+    <text x="1234.9" y="1241.5" font-size="14.5">Bayesian inference</text>
+  </g>
+  <path class="link b7" data-depth="3" stroke-width="1.3" d="M1769.8,1135.4 C1793.2,1135.4 1793.2,1135.4 1816.7,1135.4"/>
+  <g class="node d2 b7" data-depth="2">
+    <rect class="box" x="1522.4" y="1112.7" width="247.4" height="45.3" rx="6"/>
+    <text x="1532.4" y="1131.2" font-size="13.0">95% CI: procedure covers truth in</text>
+    <text x="1532.4" y="1148.4" font-size="13.0">95% of repeats</text>
+  </g>
+  <g class="node d3 b7" data-depth="3">
+    <rect class="box" x="1816.7" y="1113.4" width="251.9" height="44.0" rx="6"/>
+    <text x="1826.7" y="1131.4" font-size="12.5">Realised interval: parameter fixed,</text>
+    <text x="1826.7" y="1147.9" font-size="12.5">not moving</text>
+  </g>
+  <path class="link b7" data-depth="3" stroke-width="1.3" d="M1769.8,1187.4 C1793.2,1187.4 1793.2,1187.4 1816.7,1187.4"/>
+  <g class="node d2 b7" data-depth="2">
+    <rect class="box" x="1522.4" y="1164.7" width="247.4" height="45.3" rx="6"/>
+    <text x="1532.4" y="1183.2" font-size="13.0">Narrow interval around bias still</text>
+    <text x="1532.4" y="1200.4" font-size="13.0">misleads</text>
+  </g>
+  <g class="node d3 b7" data-depth="3">
+    <rect class="box" x="1816.7" y="1165.4" width="258.5" height="44.0" rx="6"/>
+    <text x="1826.7" y="1183.4" font-size="12.5">Nonresponse, loss, misspecification,</text>
+    <text x="1826.7" y="1199.9" font-size="12.5">clustering unseen</text>
+  </g>
+  <g class="node d2 b7" data-depth="2">
+    <rect class="box" x="1522.4" y="1217.4" width="240.5" height="45.3" rx="6"/>
+    <text x="1532.4" y="1235.9" font-size="13.0">Crossing the null does not prove</text>
+    <text x="1532.4" y="1253.0" font-size="13.0">no effect</text>
+  </g>
+  <path class="link b7" data-depth="3" stroke-width="1.3" d="M1756.0,1318.7 C1786.3,1318.7 1786.3,1292.7 1816.7,1292.7"/>
+  <path class="link b7" data-depth="3" stroke-width="1.3" d="M1756.0,1318.7 C1786.3,1318.7 1786.3,1344.7 1816.7,1344.7"/>
+  <g class="node d2 b7" data-depth="2">
+    <rect class="box" x="1522.4" y="1296.0" width="233.6" height="45.3" rx="6"/>
+    <text x="1532.4" y="1314.5" font-size="13.0">Bayesian: prior plus likelihood</text>
+    <text x="1532.4" y="1331.7" font-size="13.0">gives posterior</text>
+  </g>
+  <g class="node d3 b7" data-depth="3">
+    <rect class="box" x="1816.7" y="1270.7" width="251.9" height="44.0" rx="6"/>
+    <text x="1826.7" y="1288.7" font-size="12.5">Direct probability statements about</text>
+    <text x="1826.7" y="1305.2" font-size="12.5">parameters</text>
+  </g>
+  <g class="node d3 b7" data-depth="3">
+    <rect class="box" x="1816.7" y="1322.7" width="245.2" height="44.0" rx="6"/>
+    <text x="1826.7" y="1340.7" font-size="12.5">Sensitivity analysis for contested</text>
+    <text x="1826.7" y="1357.2" font-size="12.5">priors</text>
+  </g>
+  <path class="link b8" data-depth="2" stroke-width="1.8" d="M627.2,942.4 C603.0,942.4 603.0,852.5 578.8,852.5"/>
+  <path class="link b8" data-depth="2" stroke-width="1.8" d="M627.2,942.4 C603.0,942.4 603.0,918.1 578.8,918.1"/>
+  <path class="link b8" data-depth="2" stroke-width="1.8" d="M627.2,942.4 C603.0,942.4 603.0,962.2 578.8,962.2"/>
+  <path class="link b8" data-depth="2" stroke-width="1.8" d="M627.2,942.4 C603.0,942.4 603.0,1032.3 578.8,1032.3"/>
+  <g class="node d1 b8" data-depth="1">
+    <rect class="box" x="627.2" y="917.8" width="249.0" height="49.3" rx="9"/>
+    <text x="637.2" y="937.8" font-size="14.5">Estimators, resampling, and</text>
+    <text x="637.2" y="956.9" font-size="14.5">sample size</text>
+  </g>
+  <path class="link b8" data-depth="3" stroke-width="1.3" d="M393.4,852.5 C338.9,852.5 338.9,830.6 284.5,830.6"/>
+  <path class="link b8" data-depth="3" stroke-width="1.3" d="M393.4,852.5 C338.9,852.5 338.9,874.4 284.5,874.4"/>
+  <g class="node d2 b8" data-depth="2">
+    <rect class="box" x="393.4" y="829.9" width="185.4" height="45.3" rx="6"/>
+    <text x="403.4" y="848.4" font-size="13.0">Judge by bias, variance,</text>
+    <text x="403.4" y="865.5" font-size="13.0">consistency, robustness</text>
+  </g>
+  <g class="node d3 b8" data-depth="3">
+    <rect class="box" x="45.9" y="808.6" width="238.6" height="44.0" rx="6"/>
+    <text x="55.9" y="826.6" font-size="12.5">Modest bias can reduce prediction</text>
+    <text x="55.9" y="843.1" font-size="12.5">error</text>
+  </g>
+  <g class="node d3 b8" data-depth="3">
+    <rect class="box" x="72.4" y="860.6" width="212.1" height="27.5" rx="6"/>
+    <text x="82.4" y="878.6" font-size="12.5">No universally best estimator</text>
+  </g>
+  <path class="link b8" data-depth="3" stroke-width="1.3" d="M393.4,918.1 C338.9,918.1 338.9,918.1 284.5,918.1"/>
+  <g class="node d2 b8" data-depth="2">
+    <rect class="box" x="393.4" y="895.5" width="185.4" height="45.3" rx="6"/>
+    <text x="403.4" y="914.0" font-size="13.0">Bootstrap resamples with</text>
+    <text x="403.4" y="931.1" font-size="13.0">replacement</text>
+  </g>
+  <g class="node d3 b8" data-depth="3">
+    <rect class="box" x="79.0" y="896.1" width="205.5" height="44.0" rx="6"/>
+    <text x="89.0" y="914.1" font-size="12.5">Must preserve clustering and</text>
+    <text x="89.0" y="930.6" font-size="12.5">dependence</text>
+  </g>
+  <g class="node d2 b8" data-depth="2">
+    <rect class="box" x="352.1" y="948.1" width="226.7" height="28.2" rx="6"/>
+    <text x="362.1" y="966.6" font-size="13.0">Neither repairs selection bias</text>
+  </g>
+  <path class="link b8" data-depth="3" stroke-width="1.3" d="M338.3,1032.3 C311.4,1032.3 311.4,1006.3 284.5,1006.3"/>
+  <path class="link b8" data-depth="3" stroke-width="1.3" d="M338.3,1032.3 C311.4,1032.3 311.4,1058.3 284.5,1058.3"/>
+  <g class="node d2 b8" data-depth="2">
+    <rect class="box" x="338.3" y="1009.6" width="240.5" height="45.3" rx="6"/>
+    <text x="348.3" y="1028.1" font-size="13.0">Sample size links effect,</text>
+    <text x="348.3" y="1045.3" font-size="13.0">variability, events, missingness</text>
+  </g>
+  <g class="node d3 b8" data-depth="3">
+    <rect class="box" x="65.8" y="984.3" width="218.7" height="44.0" rx="6"/>
+    <text x="75.8" y="1002.3" font-size="12.5">Define the minimally important</text>
+    <text x="75.8" y="1018.8" font-size="12.5">effect beforehand</text>
+  </g>
+  <g class="node d3 b8" data-depth="3">
+    <rect class="box" x="45.9" y="1036.3" width="238.6" height="44.0" rx="6"/>
+    <text x="55.9" y="1054.3" font-size="12.5">Inflating the assumed effect does</text>
+    <text x="55.9" y="1070.8" font-size="12.5">not create power</text>
+  </g>
+  <path class="link b9" data-depth="2" stroke-width="1.8" d="M618.8,1189.4 C598.8,1189.4 598.8,1102.4 578.8,1102.4"/>
+  <path class="link b9" data-depth="2" stroke-width="1.8" d="M618.8,1189.4 C598.8,1189.4 598.8,1172.5 578.8,1172.5"/>
+  <path class="link b9" data-depth="2" stroke-width="1.8" d="M618.8,1189.4 C598.8,1189.4 598.8,1276.5 578.8,1276.5"/>
+  <g class="node d1 b9" data-depth="1">
+    <rect class="box" x="618.8" y="1164.8" width="257.5" height="49.3" rx="9"/>
+    <text x="628.8" y="1184.8" font-size="14.5">Descriptive analysis and the</text>
+    <text x="628.8" y="1203.9" font-size="14.5">estimand</text>
+  </g>
+  <g class="node d2 b9" data-depth="2">
+    <rect class="box" x="331.4" y="1088.3" width="247.4" height="28.2" rx="6"/>
+    <text x="341.4" y="1106.8" font-size="13.0">Describe before complex modelling</text>
+  </g>
+  <path class="link b9" data-depth="3" stroke-width="1.3" d="M365.8,1172.5 C325.2,1172.5 325.2,1146.5 284.5,1146.5"/>
+  <path class="link b9" data-depth="3" stroke-width="1.3" d="M365.8,1172.5 C325.2,1172.5 325.2,1198.5 284.5,1198.5"/>
+  <g class="node d2 b9" data-depth="2">
+    <rect class="box" x="365.8" y="1149.8" width="212.9" height="45.3" rx="6"/>
+    <text x="375.8" y="1168.3" font-size="13.0">Investigate outliers, do not</text>
+    <text x="375.8" y="1185.5" font-size="13.0">auto-delete</text>
+  </g>
+  <g class="node d3 b9" data-depth="3">
+    <rect class="box" x="39.2" y="1124.5" width="245.2" height="44.0" rx="6"/>
+    <text x="49.2" y="1142.5" font-size="12.5">Data error, unusual valid patient,</text>
+    <text x="49.2" y="1159.0" font-size="12.5">or incomplete model</text>
+  </g>
+  <g class="node d3 b9" data-depth="3">
+    <rect class="box" x="32.6" y="1176.5" width="251.9" height="44.0" rx="6"/>
+    <text x="42.6" y="1194.5" font-size="12.5">Exclusion rules chosen after seeing</text>
+    <text x="42.6" y="1211.0" font-size="12.5">impact invite bias</text>
+  </g>
+  <path class="link b9" data-depth="3" stroke-width="1.3" d="M441.6,1276.5 C363.1,1276.5 363.1,1250.5 284.5,1250.5"/>
+  <path class="link b9" data-depth="3" stroke-width="1.3" d="M441.6,1276.5 C363.1,1276.5 363.1,1302.5 284.5,1302.5"/>
+  <g class="node d2 b9" data-depth="2">
+    <rect class="box" x="441.6" y="1262.4" width="137.1" height="28.2" rx="6"/>
+    <text x="451.6" y="1280.9" font-size="13.0">Name the estimand</text>
+  </g>
+  <g class="node d3 b9" data-depth="3">
+    <rect class="box" x="45.9" y="1228.5" width="238.6" height="44.0" rx="6"/>
+    <text x="55.9" y="1246.5" font-size="12.5">Population mean, risk difference,</text>
+    <text x="55.9" y="1263.0" font-size="12.5">effect of intervention</text>
+  </g>
+  <g class="node d3 b9" data-depth="3">
+    <rect class="box" x="59.1" y="1280.5" width="225.4" height="44.0" rx="6"/>
+    <text x="69.1" y="1298.5" font-size="12.5">Then ask if design and analysis</text>
+    <text x="69.1" y="1315.0" font-size="12.5">identify it</text>
+  </g>
+</svg>

@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<opml version="2.0">
+  <head>
+    <title>101-03 Regression, survival, prediction, causality, and missing data</title>
+    <ownerName>Integrated Medical Foundations</ownerName>
+  </head>
+  <body>
+    <outline text="Regression, survival, prediction, causality, and missing data">
+      <outline text="Regression models and linear regression">
+        <outline text="Describe, adjust, test interaction, predict"/>
+        <outline text="Adjustment does not make a coefficient causal"/>
+        <outline text="Scale, form, sampling, timing define parameters"/>
+        <outline text="Linear: conditional mean of a continuous outcome">
+          <outline text="Coefficient: difference per unit, others fixed"/>
+        </outline>
+        <outline text="Check residuals: nonlinearity, variance, dependence">
+          <outline text="Residual normality matters mainly for small samples"/>
+        </outline>
+      </outline>
+      <outline text="Predictor form and interaction">
+        <outline text="Categorical predictors compare with a reference"/>
+        <outline text="A straight line assumes constant per-unit effect"/>
+        <outline text="Splines, polynomials, transforms model curvature"/>
+        <outline text="Categorising loses information and power">
+          <outline text="Thresholds depend on chosen cut points"/>
+        </outline>
+        <outline text="Interaction: association varies by another predictor">
+          <outline text="Changes the effect on the model&#x27;s own scale"/>
+          <outline text="Absent on one scale, possibly present on another"/>
+        </outline>
+      </outline>
+      <outline text="Logistic and count models">
+        <outline text="Logistic models the log odds of a binary outcome">
+          <outline text="Exponentiated coefficients are odds ratios"/>
+          <outline text="Common outcomes: relative change looks exaggerated"/>
+        </outline>
+        <outline text="Linearity assumed on the log-odds scale"/>
+        <outline text="Poisson or negative binomial for counts"/>
+        <outline text="Rates need numerator, person-time, recurrence rule"/>
+        <outline text="Repeated events within a person are dependent">
+          <outline text="First-event analysis discards later burden"/>
+          <outline text="Cluster models: population-average or subject-specific"/>
+        </outline>
+      </outline>
+      <outline text="Confounding and variable selection">
+        <outline text="Common cause of exposure and outcome"/>
+        <outline text="Adjustment blocks measured confounding paths">
+          <outline text="Adjusting a consequence removes part of the effect"/>
+          <outline text="Adjusting a common effect creates collider bias"/>
+        </outline>
+        <outline text="Causal diagrams make assumptions explicit">
+          <outline text="Identify an adjustment set but prove nothing"/>
+        </outline>
+        <outline text="Significance-based selection is unstable"/>
+        <outline text="Choose confounders from causal knowledge"/>
+        <outline text="Multicollinearity: imprecise separate coefficients">
+          <outline text="A signal of non-identifiability, not a disease"/>
+        </outline>
+      </outline>
+      <outline text="Survival analysis">
+        <outline text="Censoring: exact event time unknown">
+          <outline text="Assumed conditionally independent of events"/>
+          <outline text="Sicker participants leaving biases estimates"/>
+        </outline>
+        <outline text="Kaplan-Meier: event-free probability over time">
+          <outline text="Falls at events, not at censoring times"/>
+          <outline text="Median unestimable if curve stays above half"/>
+        </outline>
+        <outline text="Hazard: instantaneous rate among the event-free"/>
+        <outline text="Cox model assumes a constant hazard ratio">
+          <outline text="Hazard ratio is not a risk ratio"/>
+          <outline text="Crossing hazards: restricted mean survival time"/>
+        </outline>
+        <outline text="Competing events are not always ordinary censoring">
+          <outline text="Censoring competitors estimates a hypothetical world"/>
+          <outline text="Cumulative incidence: observed-world probability"/>
+        </outline>
+      </outline>
+      <outline text="Discrimination, calibration, and thresholds">
+        <outline text="Discrimination: higher risk, more events"/>
+        <outline text="Calibration: predicted versus observed risk">
+          <outline text="Good discrimination yet systematic overprediction"/>
+        </outline>
+        <outline text="Utility: do threshold decisions improve outcomes"/>
+        <outline text="ROC curve ignores prevalence and error costs">
+          <outline text="Precision-recall helps with rare outcomes"/>
+        </outline>
+        <outline text="A generic index assumes equal error costs"/>
+      </outline>
+      <outline text="Overfitting and validation">
+        <outline text="Model learns sample-specific noise"/>
+        <outline text="Training performance is optimistic"/>
+        <outline text="Resampling estimates optimism if whole process repeated"/>
+        <outline text="External validation tests transportability">
+          <outline text="Case mix, measurement, treatment, prevalence differ"/>
+        </outline>
+        <outline text="Recalibrate intercept or slope"/>
+        <outline text="Subgroup performance when harms are unequal"/>
+      </outline>
+      <outline text="Missing data">
+        <outline text="Mechanisms defined relative to observed information">
+          <outline text="Completely at random: unrelated to any values"/>
+          <outline text="At random: depends only on observed variables"/>
+          <outline text="Not at random: depends on unseen values"/>
+        </outline>
+        <outline text="Assumptions about a process, not test results"/>
+        <outline text="Complete-case analysis unbiased only narrowly">
+          <outline text="Loses precision, may shift target population"/>
+        </outline>
+        <outline text="Single imputation understates uncertainty"/>
+        <outline text="Multiple imputation combines within and between"/>
+      </outline>
+      <outline text="Sensitivity analysis and clinical deployment">
+        <outline text="Vary untestable assumptions plausibly">
+          <outline text="Missingness, unmeasured confounding, model form"/>
+        </outline>
+        <outline text="Robustness is not reporting only agreeing analyses"/>
+        <outline text="Fragile if modest assumptions change the result"/>
+        <outline text="Data leakage creates invalid performance"/>
+        <outline text="Interpretability proves neither cause nor fairness"/>
+        <outline text="Clinical use: validation, calibration, monitoring"/>
+        <outline text="Align question, estimand, process, and model"/>
+      </outline>
+    </outline>
+  </body>
+</opml>
