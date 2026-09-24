@@ -1,0 +1,658 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="mm" viewBox="0 0 2074 1742" width="2074" height="1742" role="img" aria-label="Causal inference, effects, diagnosis, and application">
+<style>
+  .mm-bg { fill: #faf8f4; }
+  .mm text { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; fill: #1b1917; }
+  .mm .link { fill: none; stroke: #c9c1b4; }
+  .mm .box { fill: none; stroke: none; }
+  .mm .d0 .box { fill: #1b1917; stroke: #1b1917; }
+  .mm .d0 text { fill: #faf8f4; font-weight: 650; }
+  .mm .d1 text { font-weight: 600; }
+
+  .mm .link.b0 { stroke: #4b9ac6; }
+  .mm .b0.d1 .box { fill: #d7e5eb; stroke: #0072B2; stroke-width: 1.5; }
+  .mm .b0.d1 text { fill: #075c8b; }
+  .mm .b0.d2 .box { fill: #e8efef; stroke: #70aed0; }
+  .mm .b0.d3 text, .mm .b0.d4 text { fill: #075c8b; }
+
+  .mm .link.b1 { stroke: #e08c49; }
+  .mm .b1.d1 .box { fill: #f5e2d2; stroke: #D55E00; stroke-width: 1.5; }
+  .mm .b1.d1 text { fill: #a64d06; }
+  .mm .b1.d2 .box { fill: #f7ede3; stroke: #e6a36e; }
+  .mm .b1.d3 text, .mm .b1.d4 text { fill: #a64d06; }
+
+  .mm .link.b2 { stroke: #4bb99a; }
+  .mm .b2.d1 .box { fill: #d7ebe2; stroke: #009E73; stroke-width: 1.5; }
+  .mm .b2.d1 text { fill: #077d5c; }
+  .mm .b2.d2 .box { fill: #e8f2eb; stroke: #70c6ad; }
+  .mm .b2.d3 text, .mm .b2.d4 text { fill: #077d5c; }
+
+  .mm .link.b3 { stroke: #da9fbe; }
+  .mm .b3.d1 .box { fill: #f4e6e9; stroke: #CC79A7; stroke-width: 1.5; }
+  .mm .b3.d1 text { fill: #985c7c; }
+  .mm .b3.d2 .box { fill: #f7efef; stroke: #e1b2ca; }
+  .mm .b3.d3 text, .mm .b3.d4 text { fill: #985c7c; }
+
+  .mm .link.b4 { stroke: #bba149; }
+  .mm .b4.d1 .box { fill: #ede7d2; stroke: #A07C00; stroke-width: 1.5; }
+  .mm .b4.d1 text { fill: #7f6306; }
+  .mm .b4.d2 .box { fill: #f4efe3; stroke: #c8b46e; }
+  .mm .b4.d3 text, .mm .b4.d4 text { fill: #7f6306; }
+
+  .mm .link.b5 { stroke: #84c1e2; }
+  .mm .b5.d1 .box { fill: #e3eef2; stroke: #51a9db; stroke-width: 1.5; }
+  .mm .b5.d1 text { fill: #3d7899; }
+  .mm .b5.d2 .box { fill: #eff3f3; stroke: #9dcde6; }
+  .mm .b5.d3 text, .mm .b5.d4 text { fill: #3d7899; }
+
+  .mm .link.b6 { stroke: #9580b0; }
+  .mm .b6.d1 .box { fill: #e6e0e6; stroke: #6A4C93; stroke-width: 1.5; }
+  .mm .b6.d1 text { fill: #563f74; }
+  .mm .b6.d2 .box { fill: #f0eced; stroke: #ab99bf; }
+  .mm .b6.d3 text, .mm .b6.d4 text { fill: #563f74; }
+
+  .mm .link.b7 { stroke: #98ac74; }
+  .mm .b7.d1 .box { fill: #e6e9da; stroke: #6E8B3D; stroke-width: 1.5; }
+  .mm .b7.d1 text { fill: #596e34; }
+  .mm .b7.d2 .box { fill: #f0f0e7; stroke: #adbc8f; }
+  .mm .b7.d3 text, .mm .b7.d4 text { fill: #596e34; }
+
+  .mm .link.b8 { stroke: #e2b349; }
+  .mm .b8.d1 .box { fill: #f7ecd2; stroke: #d89500; stroke-width: 1.5; }
+  .mm .b8.d1 text { fill: #986a05; }
+  .mm .b8.d2 .box { fill: #f9f2e3; stroke: #e7c26e; }
+  .mm .b8.d3 text, .mm .b8.d4 text { fill: #986a05; }
+
+  .mm .link.b9 { stroke: #bf6669; }
+  .mm .b9.d1 .box { fill: #eedbd8; stroke: #A6272E; stroke-width: 1.5; }
+  .mm .b9.d1 text { fill: #832428; }
+  .mm .b9.d2 .box { fill: #f4e9e6; stroke: #cc8587; }
+  .mm .b9.d3 text, .mm .b9.d4 text { fill: #832428; }
+@media (prefers-color-scheme: dark) {
+  .mm-bg { fill: #12100e; }
+  .mm text { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; fill: #ece7df; }
+  .mm .link { fill: none; stroke: #3d3833; }
+  .mm .box { fill: none; stroke: none; }
+  .mm .d0 .box { fill: #ece7df; stroke: #ece7df; }
+  .mm .d0 text { fill: #12100e; font-weight: 650; }
+  .mm .d1 text { font-weight: 600; }
+
+  .mm .link.b0 { stroke: #2d6a8d; }
+  .mm .b0.d1 .box { fill: #172227; stroke: #3891c3; stroke-width: 1.5; }
+  .mm .b0.d1 text { fill: #65a6ca; }
+  .mm .b0.d2 .box { fill: #15191b; stroke: #275772; }
+  .mm .b0.d3 text, .mm .b0.d4 text { fill: #65a6ca; }
+
+  .mm .link.b1 { stroke: #a15f2b; }
+  .mm .b1.d1 .box { fill: #2f2014; stroke: #de8138; stroke-width: 1.5; }
+  .mm .b1.d1 text { fill: #e29a62; }
+  .mm .b1.d2 .box { fill: #201811; stroke: #824e25; }
+  .mm .b1.d3 text, .mm .b1.d4 text { fill: #e29a62; }
+
+  .mm .link.b2 { stroke: #2d826a; }
+  .mm .b2.d1 .box { fill: #172720; stroke: #38b392; stroke-width: 1.5; }
+  .mm .b2.d1 text { fill: #65c0a5; }
+  .mm .b2.d2 .box { fill: #151b17; stroke: #276a57; }
+  .mm .b2.d3 text, .mm .b2.d4 text { fill: #65c0a5; }
+
+  .mm .link.b3 { stroke: #9c6e86; }
+  .mm .b3.d1 .box { fill: #2e2326; stroke: #d796ba; stroke-width: 1.5; }
+  .mm .b3.d1 text { fill: #dcaac3; }
+  .mm .b3.d2 .box { fill: #20191a; stroke: #7e5a6d; }
+  .mm .b3.d3 text, .mm .b3.d4 text { fill: #dcaac3; }
+
+  .mm .link.b4 { stroke: #84702b; }
+  .mm .b4.d1 .box { fill: #292314; stroke: #b59938; stroke-width: 1.5; }
+  .mm .b4.d1 text { fill: #c3ac62; }
+  .mm .b4.d2 .box { fill: #1d1a11; stroke: #6c5b25; }
+  .mm .b4.d3 text, .mm .b4.d4 text { fill: #c3ac62; }
+
+  .mm .link.b5 { stroke: #5c8eab; }
+  .mm .b5.d1 .box { fill: #21292d; stroke: #7bc4ee; stroke-width: 1.5; }
+  .mm .b5.d1 text { fill: #97cdea; }
+  .mm .b5.d2 .box { fill: #191d1e; stroke: #4c7389; }
+  .mm .b5.d3 text, .mm .b5.d4 text { fill: #97cdea; }
+
+  .mm .link.b6 { stroke: #67557c; }
+  .mm .b6.d1 .box { fill: #231e24; stroke: #8b73ab; stroke-width: 1.5; }
+  .mm .b6.d1 text { fill: #a390b8; }
+  .mm .b6.d2 .box { fill: #1a1719; stroke: #554664; }
+  .mm .b6.d3 text, .mm .b6.d4 text { fill: #a390b8; }
+
+  .mm .link.b7 { stroke: #69784d; }
+  .mm .b7.d1 .box { fill: #23251b; stroke: #8ea568; stroke-width: 1.5; }
+  .mm .b7.d1 text { fill: #a6b686; }
+  .mm .b7.d2 .box { fill: #1b1a14; stroke: #566240; }
+  .mm .b7.d3 text, .mm .b7.d4 text { fill: #a6b686; }
+
+  .mm .link.b8 { stroke: #ab832b; }
+  .mm .b8.d1 .box { fill: #312714; stroke: #ecb438; stroke-width: 1.5; }
+  .mm .b8.d1 text { fill: #ecc162; }
+  .mm .b8.d2 .box { fill: #211b11; stroke: #8a6a25; }
+  .mm .b8.d3 text, .mm .b8.d4 text { fill: #ecc162; }
+
+  .mm .link.b9 { stroke: #884245; }
+  .mm .b9.d1 .box { fill: #2a1a19; stroke: #ba575c; stroke-width: 1.5; }
+  .mm .b9.d1 text { fill: #c67b7d; }
+  .mm .b9.d2 .box { fill: #1e1513; stroke: #6e3739; }
+  .mm .b9.d3 text, .mm .b9.d4 text { fill: #c67b7d; }
+}
+</style>
+  <rect class="mm-bg" width="2074" height="1742"/>
+  <path class="link b0" data-depth="1" stroke-width="2.2" d="M1158.0,871.2 C878.4,871.2 878.4,155.3 598.9,155.3"/>
+  <path class="link b1" data-depth="1" stroke-width="2.2" d="M1158.0,871.2 C1178.0,871.2 1178.0,234.0 1198.0,234.0"/>
+  <path class="link b2" data-depth="1" stroke-width="2.2" d="M1158.0,871.2 C1178.0,871.2 1178.0,631.2 1198.0,631.2"/>
+  <path class="link b3" data-depth="1" stroke-width="2.2" d="M1158.0,871.2 C899.6,871.2 899.6,394.9 641.3,394.9"/>
+  <path class="link b4" data-depth="1" stroke-width="2.2" d="M1158.0,871.2 C908.1,871.2 908.1,711.9 658.3,711.9"/>
+  <path class="link b5" data-depth="1" stroke-width="2.2" d="M1158.0,871.2 C1178.0,871.2 1178.0,921.8 1198.0,921.8"/>
+  <path class="link b6" data-depth="1" stroke-width="2.2" d="M1158.0,871.2 C882.7,871.2 882.7,1109.8 607.4,1109.8"/>
+  <path class="link b7" data-depth="1" stroke-width="2.2" d="M1158.0,871.2 C1178.0,871.2 1178.0,1213.8 1198.0,1213.8"/>
+  <path class="link b8" data-depth="1" stroke-width="2.2" d="M1158.0,871.2 C1178.0,871.2 1178.0,1560.4 1198.0,1560.4"/>
+  <path class="link b9" data-depth="1" stroke-width="2.2" d="M1158.0,871.2 C886.9,871.2 886.9,1481.0 615.8,1481.0"/>
+  <g class="node d0 b0" data-depth="0">
+    <rect class="box" x="879.4" y="843.2" width="278.6" height="55.9" rx="9"/>
+    <text x="889.4" y="865.7" font-size="17.0">Causal inference, effects,</text>
+    <text x="889.4" y="888.2" font-size="17.0">diagnosis, and application</text>
+  </g>
+  <path class="link b0" data-depth="2" stroke-width="1.8" d="M598.9,155.3 C578.9,155.3 578.9,48.7 558.9,48.7"/>
+  <path class="link b0" data-depth="2" stroke-width="1.8" d="M598.9,155.3 C578.9,155.3 578.9,102.0 558.9,102.0"/>
+  <path class="link b0" data-depth="2" stroke-width="1.8" d="M598.9,155.3 C578.9,155.3 578.9,155.3 558.9,155.3"/>
+  <path class="link b0" data-depth="2" stroke-width="1.8" d="M598.9,155.3 C578.9,155.3 578.9,208.6 558.9,208.6"/>
+  <path class="link b0" data-depth="2" stroke-width="1.8" d="M598.9,155.3 C578.9,155.3 578.9,261.9 558.9,261.9"/>
+  <g class="node d1 b0" data-depth="1">
+    <rect class="box" x="598.9" y="130.7" width="240.5" height="49.3" rx="9"/>
+    <text x="608.9" y="150.7" font-size="14.5">Four questions and focused</text>
+    <text x="608.9" y="169.8" font-size="14.5">framing</text>
+  </g>
+  <g class="node d2 b0" data-depth="2">
+    <rect class="box" x="339.1" y="26.0" width="219.8" height="45.3" rx="6"/>
+    <text x="349.1" y="44.5" font-size="13.0">Valid, how large, applicable,</text>
+    <text x="349.1" y="61.7" font-size="13.0">worth the burden</text>
+  </g>
+  <g class="node d2 b0" data-depth="2">
+    <rect class="box" x="325.3" y="79.3" width="233.6" height="45.3" rx="6"/>
+    <text x="335.3" y="97.8" font-size="13.0">Prestige, p value, or guideline</text>
+    <text x="335.3" y="115.0" font-size="13.0">answers none alone</text>
+  </g>
+  <g class="node d2 b0" data-depth="2">
+    <rect class="box" x="304.6" y="132.6" width="254.3" height="45.3" rx="6"/>
+    <text x="314.6" y="151.1" font-size="13.0">Treatment question includes a time</text>
+    <text x="314.6" y="168.3" font-size="13.0">horizon</text>
+  </g>
+  <g class="node d2 b0" data-depth="2">
+    <rect class="box" x="346.0" y="186.0" width="212.9" height="45.3" rx="6"/>
+    <text x="356.0" y="204.5" font-size="13.0">Harm: timing, dose, latency,</text>
+    <text x="356.0" y="221.6" font-size="13.0">competing causes</text>
+  </g>
+  <g class="node d2 b0" data-depth="2">
+    <rect class="box" x="318.4" y="239.3" width="240.5" height="45.3" rx="6"/>
+    <text x="328.4" y="257.8" font-size="13.0">Vague questions invite surrogate</text>
+    <text x="328.4" y="274.9" font-size="13.0">answers</text>
+  </g>
+  <path class="link b1" data-depth="2" stroke-width="1.8" d="M1447.0,234.0 C1471.3,234.0 1471.3,48.7 1495.5,48.7"/>
+  <path class="link b1" data-depth="2" stroke-width="1.8" d="M1447.0,234.0 C1471.3,234.0 1471.3,102.0 1495.5,102.0"/>
+  <path class="link b1" data-depth="2" stroke-width="1.8" d="M1447.0,234.0 C1471.3,234.0 1471.3,155.3 1495.5,155.3"/>
+  <path class="link b1" data-depth="2" stroke-width="1.8" d="M1447.0,234.0 C1471.3,234.0 1471.3,208.6 1495.5,208.6"/>
+  <path class="link b1" data-depth="2" stroke-width="1.8" d="M1447.0,234.0 C1471.3,234.0 1471.3,261.3 1495.5,261.3"/>
+  <path class="link b1" data-depth="2" stroke-width="1.8" d="M1447.0,234.0 C1471.3,234.0 1471.3,313.9 1495.5,313.9"/>
+  <path class="link b1" data-depth="2" stroke-width="1.8" d="M1447.0,234.0 C1471.3,234.0 1471.3,366.6 1495.5,366.6"/>
+  <path class="link b1" data-depth="2" stroke-width="1.8" d="M1447.0,234.0 C1471.3,234.0 1471.3,419.3 1495.5,419.3"/>
+  <g class="node d1 b1" data-depth="1">
+    <rect class="box" x="1198.0" y="218.9" width="249.0" height="30.1" rx="9"/>
+    <text x="1208.0" y="238.9" font-size="14.5">Trial conduct and reporting</text>
+  </g>
+  <g class="node d2 b1" data-depth="2">
+    <rect class="box" x="1495.5" y="26.0" width="226.7" height="45.3" rx="6"/>
+    <text x="1505.5" y="44.5" font-size="13.0">Conceal sequence so recruiters</text>
+    <text x="1505.5" y="61.7" font-size="13.0">cannot manipulate</text>
+  </g>
+  <g class="node d2 b1" data-depth="2">
+    <rect class="box" x="1495.5" y="79.3" width="212.9" height="45.3" rx="6"/>
+    <text x="1505.5" y="97.8" font-size="13.0">Objective outcomes not</text>
+    <text x="1505.5" y="115.0" font-size="13.0">automatically immune to bias</text>
+  </g>
+  <g class="node d2 b1" data-depth="2">
+    <rect class="box" x="1495.5" y="132.6" width="219.8" height="45.3" rx="6"/>
+    <text x="1505.5" y="151.1" font-size="13.0">Loss to follow-up can destroy</text>
+    <text x="1505.5" y="168.3" font-size="13.0">balance</text>
+  </g>
+  <g class="node d2 b1" data-depth="2">
+    <rect class="box" x="1495.5" y="186.0" width="226.7" height="45.3" rx="6"/>
+    <text x="1505.5" y="204.5" font-size="13.0">Per-protocol answers an</text>
+    <text x="1505.5" y="221.6" font-size="13.0">adherence-conditioned question</text>
+  </g>
+  <path class="link b1" data-depth="3" stroke-width="1.3" d="M1729.1,261.3 C1759.4,261.3 1759.4,261.3 1789.8,261.3"/>
+  <g class="node d2 b1" data-depth="2">
+    <rect class="box" x="1495.5" y="238.6" width="233.6" height="45.3" rx="6"/>
+    <text x="1505.5" y="257.1" font-size="13.0">Check registry and protocol for</text>
+    <text x="1505.5" y="274.3" font-size="13.0">post-hoc changes</text>
+  </g>
+  <g class="node d3 b1" data-depth="3">
+    <rect class="box" x="1789.8" y="239.3" width="218.7" height="44.0" rx="6"/>
+    <text x="1799.8" y="257.3" font-size="12.5">Early stopping locks in chance</text>
+    <text x="1799.8" y="273.8" font-size="12.5">effects</text>
+  </g>
+  <g class="node d2 b1" data-depth="2">
+    <rect class="box" x="1495.5" y="291.3" width="240.5" height="45.3" rx="6"/>
+    <text x="1505.5" y="309.8" font-size="13.0">Funding alone is not grounds for</text>
+    <text x="1505.5" y="326.9" font-size="13.0">rejection</text>
+  </g>
+  <path class="link b1" data-depth="3" stroke-width="1.3" d="M1722.2,366.6 C1756.0,366.6 1756.0,366.6 1789.8,366.6"/>
+  <g class="node d2 b1" data-depth="2">
+    <rect class="box" x="1495.5" y="352.5" width="226.7" height="28.2" rx="6"/>
+    <text x="1505.5" y="371.0" font-size="13.0">Small trials may be imbalanced</text>
+  </g>
+  <g class="node d3 b1" data-depth="3">
+    <rect class="box" x="1789.8" y="344.6" width="238.6" height="44.0" rx="6"/>
+    <text x="1799.8" y="362.6" font-size="12.5">Baseline significance test is not</text>
+    <text x="1799.8" y="379.1" font-size="12.5">the solution</text>
+  </g>
+  <g class="node d2 b1" data-depth="2">
+    <rect class="box" x="1495.5" y="396.6" width="206.0" height="45.3" rx="6"/>
+    <text x="1505.5" y="415.1" font-size="13.0">Cluster correlation ignored</text>
+    <text x="1505.5" y="432.3" font-size="13.0">narrows intervals</text>
+  </g>
+  <path class="link b2" data-depth="2" stroke-width="1.8" d="M1430.1,631.2 C1462.8,631.2 1462.8,472.6 1495.5,472.6"/>
+  <path class="link b2" data-depth="2" stroke-width="1.8" d="M1430.1,631.2 C1462.8,631.2 1462.8,525.9 1495.5,525.9"/>
+  <path class="link b2" data-depth="2" stroke-width="1.8" d="M1430.1,631.2 C1462.8,631.2 1462.8,579.2 1495.5,579.2"/>
+  <path class="link b2" data-depth="2" stroke-width="1.8" d="M1430.1,631.2 C1462.8,631.2 1462.8,631.9 1495.5,631.9"/>
+  <path class="link b2" data-depth="2" stroke-width="1.8" d="M1430.1,631.2 C1462.8,631.2 1462.8,684.5 1495.5,684.5"/>
+  <path class="link b2" data-depth="2" stroke-width="1.8" d="M1430.1,631.2 C1462.8,631.2 1462.8,737.2 1495.5,737.2"/>
+  <path class="link b2" data-depth="2" stroke-width="1.8" d="M1430.1,631.2 C1462.8,631.2 1462.8,789.9 1495.5,789.9"/>
+  <g class="node d1 b2" data-depth="1">
+    <rect class="box" x="1198.0" y="606.6" width="232.1" height="49.3" rx="9"/>
+    <text x="1208.0" y="626.6" font-size="14.5">Observational studies and</text>
+    <text x="1208.0" y="645.7" font-size="14.5">causal diagrams</text>
+  </g>
+  <g class="node d2 b2" data-depth="2">
+    <rect class="box" x="1495.5" y="449.9" width="219.8" height="45.3" rx="6"/>
+    <text x="1505.5" y="468.4" font-size="13.0">Essential for prognosis, rare</text>
+    <text x="1505.5" y="485.6" font-size="13.0">harm, long latency</text>
+  </g>
+  <g class="node d2 b2" data-depth="2">
+    <rect class="box" x="1495.5" y="503.2" width="254.3" height="45.3" rx="6"/>
+    <text x="1505.5" y="521.7" font-size="13.0">Confounder influences exposure and</text>
+    <text x="1505.5" y="538.9" font-size="13.0">outcome</text>
+  </g>
+  <g class="node d2 b2" data-depth="2">
+    <rect class="box" x="1495.5" y="556.6" width="254.3" height="45.3" rx="6"/>
+    <text x="1505.5" y="575.1" font-size="13.0">Adjustment cannot erase unmeasured</text>
+    <text x="1505.5" y="592.2" font-size="13.0">confounders</text>
+  </g>
+  <path class="link b2" data-depth="3" stroke-width="1.3" d="M1729.1,631.9 C1759.4,631.9 1759.4,631.9 1789.8,631.9"/>
+  <g class="node d2 b2" data-depth="2">
+    <rect class="box" x="1495.5" y="609.2" width="233.6" height="45.3" rx="6"/>
+    <text x="1505.5" y="627.7" font-size="13.0">Channeling: sicker patients get</text>
+    <text x="1505.5" y="644.9" font-size="13.0">one drug</text>
+  </g>
+  <g class="node d3 b2" data-depth="3">
+    <rect class="box" x="1789.8" y="609.9" width="238.6" height="44.0" rx="6"/>
+    <text x="1799.8" y="627.9" font-size="12.5">New-user active-comparator design</text>
+    <text x="1799.8" y="644.4" font-size="12.5">aligns start</text>
+  </g>
+  <g class="node d2 b2" data-depth="2">
+    <rect class="box" x="1495.5" y="661.9" width="240.5" height="45.3" rx="6"/>
+    <text x="1505.5" y="680.4" font-size="13.0">Mediator adjustment removes part</text>
+    <text x="1505.5" y="697.5" font-size="13.0">of the effect</text>
+  </g>
+  <path class="link b2" data-depth="3" stroke-width="1.3" d="M1715.3,737.2 C1752.5,737.2 1752.5,737.2 1789.8,737.2"/>
+  <g class="node d2 b2" data-depth="2">
+    <rect class="box" x="1495.5" y="714.5" width="219.8" height="45.3" rx="6"/>
+    <text x="1505.5" y="733.0" font-size="13.0">Collider conditioning creates</text>
+    <text x="1505.5" y="750.2" font-size="13.0">false association</text>
+  </g>
+  <g class="node d3 b2" data-depth="3">
+    <rect class="box" x="1789.8" y="715.2" width="251.9" height="44.0" rx="6"/>
+    <text x="1799.8" y="733.2" font-size="12.5">Selection into hospital or study as</text>
+    <text x="1799.8" y="749.7" font-size="12.5">collider</text>
+  </g>
+  <g class="node d2 b2" data-depth="2">
+    <rect class="box" x="1495.5" y="767.2" width="226.7" height="45.3" rx="6"/>
+    <text x="1505.5" y="785.7" font-size="13.0">Adjust by causal question, not</text>
+    <text x="1505.5" y="802.9" font-size="13.0">availability</text>
+  </g>
+  <path class="link b3" data-depth="2" stroke-width="1.8" d="M641.3,394.9 C600.1,394.9 600.1,315.3 558.9,315.3"/>
+  <path class="link b3" data-depth="2" stroke-width="1.8" d="M641.3,394.9 C600.1,394.9 600.1,368.6 558.9,368.6"/>
+  <path class="link b3" data-depth="2" stroke-width="1.8" d="M641.3,394.9 C600.1,394.9 600.1,421.9 558.9,421.9"/>
+  <path class="link b3" data-depth="2" stroke-width="1.8" d="M641.3,394.9 C600.1,394.9 600.1,474.6 558.9,474.6"/>
+  <g class="node d1 b3" data-depth="1">
+    <rect class="box" x="641.3" y="379.8" width="198.1" height="30.1" rx="9"/>
+    <text x="651.3" y="399.8" font-size="14.5">Bias and missing data</text>
+  </g>
+  <g class="node d2 b3" data-depth="2">
+    <rect class="box" x="311.5" y="292.6" width="247.4" height="45.3" rx="6"/>
+    <text x="321.5" y="311.1" font-size="13.0">Selection depends on exposure and</text>
+    <text x="321.5" y="328.3" font-size="13.0">prognosis</text>
+  </g>
+  <g class="node d2 b3" data-depth="2">
+    <rect class="box" x="304.6" y="345.9" width="254.3" height="45.3" rx="6"/>
+    <text x="314.6" y="364.4" font-size="13.0">Recall: cases reconstruct exposure</text>
+    <text x="314.6" y="381.6" font-size="13.0">differently</text>
+  </g>
+  <g class="node d2 b3" data-depth="2">
+    <rect class="box" x="346.0" y="399.2" width="212.9" height="45.3" rx="6"/>
+    <text x="356.0" y="417.7" font-size="13.0">Misclassification dilutes or</text>
+    <text x="356.0" y="434.9" font-size="13.0">exaggerates</text>
+  </g>
+  <path class="link b3" data-depth="3" stroke-width="1.3" d="M332.2,474.6 C298.4,474.6 298.4,474.6 264.6,474.6"/>
+  <g class="node d2 b3" data-depth="2">
+    <rect class="box" x="332.2" y="451.9" width="226.7" height="45.3" rx="6"/>
+    <text x="342.2" y="470.4" font-size="13.0">Complete-case analysis assumes</text>
+    <text x="342.2" y="487.6" font-size="13.0">ignorable missingness</text>
+  </g>
+  <g class="node d3 b3" data-depth="3">
+    <rect class="box" x="32.6" y="452.6" width="232.0" height="44.0" rx="6"/>
+    <text x="42.6" y="470.6" font-size="12.5">Reasons and sensitivity analysis</text>
+    <text x="42.6" y="487.1" font-size="12.5">needed</text>
+  </g>
+  <path class="link b4" data-depth="2" stroke-width="1.8" d="M658.3,711.9 C608.6,711.9 608.6,527.2 558.9,527.2"/>
+  <path class="link b4" data-depth="2" stroke-width="1.8" d="M658.3,711.9 C608.6,711.9 608.6,580.5 558.9,580.5"/>
+  <path class="link b4" data-depth="2" stroke-width="1.8" d="M658.3,711.9 C608.6,711.9 608.6,633.9 558.9,633.9"/>
+  <path class="link b4" data-depth="2" stroke-width="1.8" d="M658.3,711.9 C608.6,711.9 608.6,686.5 558.9,686.5"/>
+  <path class="link b4" data-depth="2" stroke-width="1.8" d="M658.3,711.9 C608.6,711.9 608.6,738.5 558.9,738.5"/>
+  <path class="link b4" data-depth="2" stroke-width="1.8" d="M658.3,711.9 C608.6,711.9 608.6,791.2 558.9,791.2"/>
+  <path class="link b4" data-depth="2" stroke-width="1.8" d="M658.3,711.9 C608.6,711.9 608.6,843.8 558.9,843.8"/>
+  <path class="link b4" data-depth="2" stroke-width="1.8" d="M658.3,711.9 C608.6,711.9 608.6,896.5 558.9,896.5"/>
+  <g class="node d1 b4" data-depth="1">
+    <rect class="box" x="658.3" y="687.2" width="181.2" height="49.3" rx="9"/>
+    <text x="668.3" y="707.2" font-size="14.5">Effect measures and</text>
+    <text x="668.3" y="726.4" font-size="14.5">uncertainty</text>
+  </g>
+  <g class="node d2 b4" data-depth="2">
+    <rect class="box" x="311.5" y="504.6" width="247.4" height="45.3" rx="6"/>
+    <text x="321.5" y="523.1" font-size="13.0">Odds ratio approximates risk only</text>
+    <text x="321.5" y="540.2" font-size="13.0">when rare</text>
+  </g>
+  <g class="node d2 b4" data-depth="2">
+    <rect class="box" x="318.4" y="557.9" width="240.5" height="45.3" rx="6"/>
+    <text x="328.4" y="576.4" font-size="13.0">Hazard ratio is an instantaneous</text>
+    <text x="328.4" y="593.5" font-size="13.0">rate ratio</text>
+  </g>
+  <g class="node d2 b4" data-depth="2">
+    <rect class="box" x="346.0" y="611.2" width="212.9" height="45.3" rx="6"/>
+    <text x="356.0" y="629.7" font-size="13.0">Number needed to treat keeps</text>
+    <text x="356.0" y="646.9" font-size="13.0">population and time</text>
+  </g>
+  <path class="link b4" data-depth="3" stroke-width="1.3" d="M380.4,686.5 C322.5,686.5 322.5,686.5 264.6,686.5"/>
+  <g class="node d2 b4" data-depth="2">
+    <rect class="box" x="380.4" y="663.9" width="178.5" height="45.3" rx="6"/>
+    <text x="390.4" y="682.4" font-size="13.0">Interval width reflects</text>
+    <text x="390.4" y="699.5" font-size="13.0">information</text>
+  </g>
+  <g class="node d3 b4" data-depth="3">
+    <rect class="box" x="39.3" y="664.5" width="225.4" height="44.0" rx="6"/>
+    <text x="49.3" y="682.5" font-size="12.5">Narrow around trivial effect is</text>
+    <text x="49.3" y="699.0" font-size="12.5">unimportant</text>
+  </g>
+  <path class="link b4" data-depth="3" stroke-width="1.3" d="M311.5,738.5 C288.1,738.5 288.1,738.5 264.6,738.5"/>
+  <g class="node d2 b4" data-depth="2">
+    <rect class="box" x="311.5" y="715.9" width="247.4" height="45.3" rx="6"/>
+    <text x="321.5" y="734.4" font-size="13.0">Non-inferiority needs a justified</text>
+    <text x="321.5" y="751.5" font-size="13.0">margin</text>
+  </g>
+  <g class="node d3 b4" data-depth="3">
+    <rect class="box" x="65.8" y="716.5" width="198.9" height="44.0" rx="6"/>
+    <text x="75.8" y="734.5" font-size="12.5">Non-adherence biases toward</text>
+    <text x="75.8" y="751.0" font-size="12.5">similarity</text>
+  </g>
+  <g class="node d2 b4" data-depth="2">
+    <rect class="box" x="311.5" y="768.5" width="247.4" height="45.3" rx="6"/>
+    <text x="321.5" y="787.0" font-size="13.0">P value measures surprise under a</text>
+    <text x="321.5" y="804.2" font-size="13.0">null model</text>
+  </g>
+  <path class="link b4" data-depth="3" stroke-width="1.3" d="M352.9,843.8 C308.7,843.8 308.7,843.8 264.6,843.8"/>
+  <g class="node d2 b4" data-depth="2">
+    <rect class="box" x="352.9" y="821.2" width="206.0" height="45.3" rx="6"/>
+    <text x="362.9" y="839.7" font-size="13.0">Multiplicity inflates false</text>
+    <text x="362.9" y="856.8" font-size="13.0">positives</text>
+  </g>
+  <g class="node d3 b4" data-depth="3">
+    <rect class="box" x="26.0" y="821.8" width="238.6" height="44.0" rx="6"/>
+    <text x="36.0" y="839.8" font-size="12.5">Strict correction can hide a true</text>
+    <text x="36.0" y="856.3" font-size="12.5">signal</text>
+  </g>
+  <g class="node d2 b4" data-depth="2">
+    <rect class="box" x="318.4" y="873.8" width="240.5" height="45.3" rx="6"/>
+    <text x="328.4" y="892.3" font-size="13.0">Bayesian prior and model must be</text>
+    <text x="328.4" y="909.5" font-size="13.0">transparent</text>
+  </g>
+  <path class="link b5" data-depth="2" stroke-width="1.8" d="M1430.1,921.8 C1462.8,921.8 1462.8,843.2 1495.5,843.2"/>
+  <path class="link b5" data-depth="2" stroke-width="1.8" d="M1430.1,921.8 C1462.8,921.8 1462.8,895.8 1495.5,895.8"/>
+  <path class="link b5" data-depth="2" stroke-width="1.8" d="M1430.1,921.8 C1462.8,921.8 1462.8,947.8 1495.5,947.8"/>
+  <path class="link b5" data-depth="2" stroke-width="1.8" d="M1430.1,921.8 C1462.8,921.8 1462.8,1000.5 1495.5,1000.5"/>
+  <g class="node d1 b5" data-depth="1">
+    <rect class="box" x="1198.0" y="897.2" width="232.1" height="49.3" rx="9"/>
+    <text x="1208.0" y="917.2" font-size="14.5">Composite, competing, and</text>
+    <text x="1208.0" y="936.3" font-size="14.5">surrogate outcomes</text>
+  </g>
+  <g class="node d2 b5" data-depth="2">
+    <rect class="box" x="1495.5" y="820.5" width="240.5" height="45.3" rx="6"/>
+    <text x="1505.5" y="839.0" font-size="13.0">Composite may be driven by least</text>
+    <text x="1505.5" y="856.2" font-size="13.0">important part</text>
+  </g>
+  <path class="link b5" data-depth="3" stroke-width="1.3" d="M1722.2,895.8 C1756.0,895.8 1756.0,895.8 1789.8,895.8"/>
+  <g class="node d2 b5" data-depth="2">
+    <rect class="box" x="1495.5" y="873.2" width="226.7" height="45.3" rx="6"/>
+    <text x="1505.5" y="891.7" font-size="13.0">Competing death prevents later</text>
+    <text x="1505.5" y="908.8" font-size="13.0">events</text>
+  </g>
+  <g class="node d3 b5" data-depth="3">
+    <rect class="box" x="1789.8" y="873.8" width="258.5" height="44.0" rx="6"/>
+    <text x="1799.8" y="891.8" font-size="12.5">Kaplan-Meier censoring overestimates</text>
+    <text x="1799.8" y="908.3" font-size="12.5">incidence</text>
+  </g>
+  <path class="link b5" data-depth="3" stroke-width="1.3" d="M1687.8,947.8 C1738.8,947.8 1738.8,947.8 1789.8,947.8"/>
+  <g class="node d2 b5" data-depth="2">
+    <rect class="box" x="1495.5" y="925.2" width="192.2" height="45.3" rx="6"/>
+    <text x="1505.5" y="943.7" font-size="13.0">Surrogate must predict</text>
+    <text x="1505.5" y="960.8" font-size="13.0">patient-important effects</text>
+  </g>
+  <g class="node d3 b5" data-depth="3">
+    <rect class="box" x="1789.8" y="925.8" width="251.9" height="44.0" rx="6"/>
+    <text x="1799.8" y="943.8" font-size="12.5">Non-causal marker, off-target harm,</text>
+    <text x="1799.8" y="960.3" font-size="12.5">timing</text>
+  </g>
+  <g class="node d2 b5" data-depth="2">
+    <rect class="box" x="1495.5" y="977.8" width="226.7" height="45.3" rx="6"/>
+    <text x="1505.5" y="996.3" font-size="13.0">Disease improvement with worse</text>
+    <text x="1505.5" y="1013.5" font-size="13.0">mortality</text>
+  </g>
+  <path class="link b6" data-depth="2" stroke-width="1.8" d="M607.4,1109.8 C583.1,1109.8 583.1,949.8 558.9,949.8"/>
+  <path class="link b6" data-depth="2" stroke-width="1.8" d="M607.4,1109.8 C583.1,1109.8 583.1,1003.1 558.9,1003.1"/>
+  <path class="link b6" data-depth="2" stroke-width="1.8" d="M607.4,1109.8 C583.1,1109.8 583.1,1056.5 558.9,1056.5"/>
+  <path class="link b6" data-depth="2" stroke-width="1.8" d="M607.4,1109.8 C583.1,1109.8 583.1,1109.8 558.9,1109.8"/>
+  <path class="link b6" data-depth="2" stroke-width="1.8" d="M607.4,1109.8 C583.1,1109.8 583.1,1163.1 558.9,1163.1"/>
+  <path class="link b6" data-depth="2" stroke-width="1.8" d="M607.4,1109.8 C583.1,1109.8 583.1,1216.4 558.9,1216.4"/>
+  <path class="link b6" data-depth="2" stroke-width="1.8" d="M607.4,1109.8 C583.1,1109.8 583.1,1269.7 558.9,1269.7"/>
+  <g class="node d1 b6" data-depth="1">
+    <rect class="box" x="607.4" y="1085.1" width="232.1" height="49.3" rx="9"/>
+    <text x="617.4" y="1105.1" font-size="14.5">Diagnostic and prediction</text>
+    <text x="617.4" y="1124.3" font-size="14.5">evidence</text>
+  </g>
+  <g class="node d2 b6" data-depth="2">
+    <rect class="box" x="346.0" y="927.2" width="212.9" height="45.3" rx="6"/>
+    <text x="356.0" y="945.7" font-size="13.0">Blinded reading, independent</text>
+    <text x="356.0" y="962.8" font-size="13.0">verification</text>
+  </g>
+  <g class="node d2 b6" data-depth="2">
+    <rect class="box" x="339.1" y="980.5" width="219.8" height="45.3" rx="6"/>
+    <text x="349.1" y="999.0" font-size="13.0">Partial verification inflates</text>
+    <text x="349.1" y="1016.1" font-size="13.0">accuracy</text>
+  </g>
+  <g class="node d2 b6" data-depth="2">
+    <rect class="box" x="318.4" y="1033.8" width="240.5" height="45.3" rx="6"/>
+    <text x="328.4" y="1052.3" font-size="13.0">Incorporation: index test within</text>
+    <text x="328.4" y="1069.5" font-size="13.0">reference</text>
+  </g>
+  <g class="node d2 b6" data-depth="2">
+    <rect class="box" x="325.3" y="1087.1" width="233.6" height="45.3" rx="6"/>
+    <text x="335.3" y="1105.6" font-size="13.0">Referral-centre results may not</text>
+    <text x="335.3" y="1122.8" font-size="13.0">transfer</text>
+  </g>
+  <g class="node d2 b6" data-depth="2">
+    <rect class="box" x="339.1" y="1140.4" width="219.8" height="45.3" rx="6"/>
+    <text x="349.1" y="1158.9" font-size="13.0">Good ranking can coexist with</text>
+    <text x="349.1" y="1176.1" font-size="13.0">overprediction</text>
+  </g>
+  <g class="node d2 b6" data-depth="2">
+    <rect class="box" x="339.1" y="1193.8" width="219.8" height="45.3" rx="6"/>
+    <text x="349.1" y="1212.3" font-size="13.0">Internal validation estimates</text>
+    <text x="349.1" y="1229.4" font-size="13.0">optimism</text>
+  </g>
+  <g class="node d2 b6" data-depth="2">
+    <rect class="box" x="366.6" y="1247.1" width="192.2" height="45.3" rx="6"/>
+    <text x="376.6" y="1265.6" font-size="13.0">External validation tests</text>
+    <text x="376.6" y="1282.7" font-size="13.0">transport</text>
+  </g>
+  <path class="link b7" data-depth="2" stroke-width="1.8" d="M1455.5,1213.8 C1475.5,1213.8 1475.5,1053.8 1495.5,1053.8"/>
+  <path class="link b7" data-depth="2" stroke-width="1.8" d="M1455.5,1213.8 C1475.5,1213.8 1475.5,1107.1 1495.5,1107.1"/>
+  <path class="link b7" data-depth="2" stroke-width="1.8" d="M1455.5,1213.8 C1475.5,1213.8 1475.5,1160.5 1495.5,1160.5"/>
+  <path class="link b7" data-depth="2" stroke-width="1.8" d="M1455.5,1213.8 C1475.5,1213.8 1475.5,1213.8 1495.5,1213.8"/>
+  <path class="link b7" data-depth="2" stroke-width="1.8" d="M1455.5,1213.8 C1475.5,1213.8 1475.5,1267.1 1495.5,1267.1"/>
+  <path class="link b7" data-depth="2" stroke-width="1.8" d="M1455.5,1213.8 C1475.5,1213.8 1475.5,1320.4 1495.5,1320.4"/>
+  <path class="link b7" data-depth="2" stroke-width="1.8" d="M1455.5,1213.8 C1475.5,1213.8 1475.5,1373.7 1495.5,1373.7"/>
+  <g class="node d1 b7" data-depth="1">
+    <rect class="box" x="1198.0" y="1189.1" width="257.5" height="49.3" rx="9"/>
+    <text x="1208.0" y="1209.1" font-size="14.5">Heterogeneity and systematic</text>
+    <text x="1208.0" y="1228.3" font-size="14.5">reviews</text>
+  </g>
+  <g class="node d2 b7" data-depth="2">
+    <rect class="box" x="1495.5" y="1031.2" width="212.9" height="45.3" rx="6"/>
+    <text x="1505.5" y="1049.7" font-size="13.0">Credible effect modification</text>
+    <text x="1505.5" y="1066.8" font-size="13.0">criteria</text>
+  </g>
+  <g class="node d2 b7" data-depth="2">
+    <rect class="box" x="1495.5" y="1084.5" width="233.6" height="45.3" rx="6"/>
+    <text x="1505.5" y="1103.0" font-size="13.0">Do not cut continuous modifiers</text>
+    <text x="1505.5" y="1120.1" font-size="13.0">arbitrarily</text>
+  </g>
+  <g class="node d2 b7" data-depth="2">
+    <rect class="box" x="1495.5" y="1137.8" width="254.3" height="45.3" rx="6"/>
+    <text x="1505.5" y="1156.3" font-size="13.0">Meta-analysis cannot repair biased</text>
+    <text x="1505.5" y="1173.5" font-size="13.0">studies</text>
+  </g>
+  <g class="node d2 b7" data-depth="2">
+    <rect class="box" x="1495.5" y="1191.1" width="206.0" height="45.3" rx="6"/>
+    <text x="1505.5" y="1209.6" font-size="13.0">Random effects do not unify</text>
+    <text x="1505.5" y="1226.8" font-size="13.0">questions</text>
+  </g>
+  <g class="node d2 b7" data-depth="2">
+    <rect class="box" x="1495.5" y="1244.4" width="219.8" height="45.3" rx="6"/>
+    <text x="1505.5" y="1262.9" font-size="13.0">Prediction interval for a new</text>
+    <text x="1505.5" y="1280.1" font-size="13.0">setting</text>
+  </g>
+  <g class="node d2 b7" data-depth="2">
+    <rect class="box" x="1495.5" y="1297.8" width="206.0" height="45.3" rx="6"/>
+    <text x="1505.5" y="1316.3" font-size="13.0">Funnel asymmetry has causes</text>
+    <text x="1505.5" y="1333.4" font-size="13.0">besides publication</text>
+  </g>
+  <g class="node d2 b7" data-depth="2">
+    <rect class="box" x="1495.5" y="1351.1" width="219.8" height="45.3" rx="6"/>
+    <text x="1505.5" y="1369.6" font-size="13.0">Test robustness with low-bias</text>
+    <text x="1505.5" y="1386.7" font-size="13.0">studies only</text>
+  </g>
+  <path class="link b8" data-depth="2" stroke-width="1.8" d="M1447.0,1560.4 C1471.3,1560.4 1471.3,1427.1 1495.5,1427.1"/>
+  <path class="link b8" data-depth="2" stroke-width="1.8" d="M1447.0,1560.4 C1471.3,1560.4 1471.3,1480.4 1495.5,1480.4"/>
+  <path class="link b8" data-depth="2" stroke-width="1.8" d="M1447.0,1560.4 C1471.3,1560.4 1471.3,1533.7 1495.5,1533.7"/>
+  <path class="link b8" data-depth="2" stroke-width="1.8" d="M1447.0,1560.4 C1471.3,1560.4 1471.3,1587.0 1495.5,1587.0"/>
+  <path class="link b8" data-depth="2" stroke-width="1.8" d="M1447.0,1560.4 C1471.3,1560.4 1471.3,1640.3 1495.5,1640.3"/>
+  <path class="link b8" data-depth="2" stroke-width="1.8" d="M1447.0,1560.4 C1471.3,1560.4 1471.3,1693.7 1495.5,1693.7"/>
+  <g class="node d1 b8" data-depth="1">
+    <rect class="box" x="1198.0" y="1545.3" width="249.0" height="30.1" rx="9"/>
+    <text x="1208.0" y="1565.3" font-size="14.5">Harms and external validity</text>
+  </g>
+  <g class="node d2 b8" data-depth="2">
+    <rect class="box" x="1495.5" y="1404.4" width="240.5" height="45.3" rx="6"/>
+    <text x="1505.5" y="1422.9" font-size="13.0">Registries give denominators but</text>
+    <text x="1505.5" y="1440.1" font-size="13.0">confounding</text>
+  </g>
+  <g class="node d2 b8" data-depth="2">
+    <rect class="box" x="1495.5" y="1457.7" width="247.4" height="45.3" rx="6"/>
+    <text x="1505.5" y="1476.2" font-size="13.0">Spontaneous reports find signals,</text>
+    <text x="1505.5" y="1493.4" font-size="13.0">not incidence</text>
+  </g>
+  <g class="node d2 b8" data-depth="2">
+    <rect class="box" x="1495.5" y="1511.0" width="219.8" height="45.3" rx="6"/>
+    <text x="1505.5" y="1529.5" font-size="13.0">Deliberate rechallenge may be</text>
+    <text x="1505.5" y="1546.7" font-size="13.0">unethical</text>
+  </g>
+  <g class="node d2 b8" data-depth="2">
+    <rect class="box" x="1495.5" y="1564.4" width="254.3" height="45.3" rx="6"/>
+    <text x="1505.5" y="1582.9" font-size="13.0">Exclusion creates uncertainty, not</text>
+    <text x="1505.5" y="1600.0" font-size="13.0">contraindication</text>
+  </g>
+  <g class="node d2 b8" data-depth="2">
+    <rect class="box" x="1495.5" y="1617.7" width="226.7" height="45.3" rx="6"/>
+    <text x="1505.5" y="1636.2" font-size="13.0">Relative effects may transport</text>
+    <text x="1505.5" y="1653.3" font-size="13.0">better</text>
+  </g>
+  <g class="node d2 b8" data-depth="2">
+    <rect class="box" x="1495.5" y="1671.0" width="226.7" height="45.3" rx="6"/>
+    <text x="1505.5" y="1689.5" font-size="13.0">Cost, travel, caregiver burden</text>
+    <text x="1505.5" y="1706.7" font-size="13.0">shape effectiveness</text>
+  </g>
+  <path class="link b9" data-depth="2" stroke-width="1.8" d="M615.8,1481.0 C587.4,1481.0 587.4,1323.1 558.9,1323.1"/>
+  <path class="link b9" data-depth="2" stroke-width="1.8" d="M615.8,1481.0 C587.4,1481.0 587.4,1375.7 558.9,1375.7"/>
+  <path class="link b9" data-depth="2" stroke-width="1.8" d="M615.8,1481.0 C587.4,1481.0 587.4,1428.4 558.9,1428.4"/>
+  <path class="link b9" data-depth="2" stroke-width="1.8" d="M615.8,1481.0 C587.4,1481.0 587.4,1481.0 558.9,1481.0"/>
+  <path class="link b9" data-depth="2" stroke-width="1.8" d="M615.8,1481.0 C587.4,1481.0 587.4,1533.0 558.9,1533.0"/>
+  <path class="link b9" data-depth="2" stroke-width="1.8" d="M615.8,1481.0 C587.4,1481.0 587.4,1585.7 558.9,1585.7"/>
+  <path class="link b9" data-depth="2" stroke-width="1.8" d="M615.8,1481.0 C587.4,1481.0 587.4,1639.0 558.9,1639.0"/>
+  <g class="node d1 b9" data-depth="1">
+    <rect class="box" x="615.8" y="1456.4" width="223.6" height="49.3" rx="9"/>
+    <text x="625.8" y="1476.4" font-size="14.5">Certainty, decision, and</text>
+    <text x="625.8" y="1495.5" font-size="14.5">time-limited trials</text>
+  </g>
+  <g class="node d2 b9" data-depth="2">
+    <rect class="box" x="359.7" y="1300.4" width="199.1" height="45.3" rx="6"/>
+    <text x="369.7" y="1318.9" font-size="13.0">Certainty is separate from</text>
+    <text x="369.7" y="1336.1" font-size="13.0">magnitude</text>
+  </g>
+  <path class="link b9" data-depth="3" stroke-width="1.3" d="M346.0,1375.7 C305.3,1375.7 305.3,1375.7 264.6,1375.7"/>
+  <g class="node d2 b9" data-depth="2">
+    <rect class="box" x="346.0" y="1353.1" width="212.9" height="45.3" rx="6"/>
+    <text x="356.0" y="1371.6" font-size="13.0">Natural frequencies with and</text>
+    <text x="356.0" y="1388.7" font-size="13.0">without treatment</text>
+  </g>
+  <g class="node d3 b9" data-depth="3">
+    <rect class="box" x="72.4" y="1353.7" width="192.2" height="44.0" rx="6"/>
+    <text x="82.4" y="1371.7" font-size="12.5">Relative framing alone can</text>
+    <text x="82.4" y="1388.2" font-size="12.5">manipulate</text>
+  </g>
+  <g class="node d2 b9" data-depth="2">
+    <rect class="box" x="325.3" y="1405.7" width="233.6" height="45.3" rx="6"/>
+    <text x="335.3" y="1424.2" font-size="13.0">Decision table at the patient&#x27;s</text>
+    <text x="335.3" y="1441.4" font-size="13.0">baseline risk</text>
+  </g>
+  <path class="link b9" data-depth="3" stroke-width="1.3" d="M346.0,1481.0 C305.3,1481.0 305.3,1481.0 264.6,1481.0"/>
+  <g class="node d2 b9" data-depth="2">
+    <rect class="box" x="346.0" y="1458.4" width="212.9" height="45.3" rx="6"/>
+    <text x="356.0" y="1476.9" font-size="13.0">Weak evidence, high urgency:</text>
+    <text x="356.0" y="1494.0" font-size="13.0">clinicians still act</text>
+  </g>
+  <g class="node d3 b9" data-depth="3">
+    <rect class="box" x="45.9" y="1459.0" width="218.7" height="44.0" rx="6"/>
+    <text x="55.9" y="1477.0" font-size="12.5">Target, timeframe, monitoring,</text>
+    <text x="55.9" y="1493.5" font-size="12.5">stopping rule</text>
+  </g>
+  <path class="link b9" data-depth="3" stroke-width="1.3" d="M339.1,1533.0 C301.9,1533.0 301.9,1533.0 264.6,1533.0"/>
+  <g class="node d2 b9" data-depth="2">
+    <rect class="box" x="339.1" y="1510.4" width="219.8" height="45.3" rx="6"/>
+    <text x="349.1" y="1528.9" font-size="13.0">Regression to the mean mimics</text>
+    <text x="349.1" y="1546.0" font-size="13.0">improvement</text>
+  </g>
+  <g class="node d3 b9" data-depth="3">
+    <rect class="box" x="52.5" y="1511.0" width="212.1" height="44.0" rx="6"/>
+    <text x="62.5" y="1529.0" font-size="12.5">One patient&#x27;s response is not</text>
+    <text x="62.5" y="1545.5" font-size="12.5">population proof</text>
+  </g>
+  <g class="node d2 b9" data-depth="2">
+    <rect class="box" x="373.5" y="1563.0" width="185.4" height="45.3" rx="6"/>
+    <text x="383.5" y="1581.5" font-size="13.0">Record evidence, limits,</text>
+    <text x="383.5" y="1598.7" font-size="13.0">assumptions, triggers</text>
+  </g>
+  <g class="node d2 b9" data-depth="2">
+    <rect class="box" x="318.4" y="1616.4" width="240.5" height="45.3" rx="6"/>
+    <text x="328.4" y="1634.9" font-size="13.0">Transparency of judgement raises</text>
+    <text x="328.4" y="1652.0" font-size="13.0">safety</text>
+  </g>
+</svg>

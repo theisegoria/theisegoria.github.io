@@ -1,0 +1,501 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="mm" viewBox="0 0 1746 978" width="1746" height="978" role="img" aria-label="実践におけるゲノム診断">
+<style>
+  .mm-bg { fill: #faf8f4; }
+  .mm text { font-family: 'Hiragino Sans', 'Noto Sans JP', ui-sans-serif, sans-serif; fill: #1b1917; }
+  .mm .link { fill: none; stroke: #c9c1b4; }
+  .mm .box { fill: none; stroke: none; }
+  .mm .d0 .box { fill: #1b1917; stroke: #1b1917; }
+  .mm .d0 text { fill: #faf8f4; font-weight: 650; }
+  .mm .d1 text { font-weight: 600; }
+
+  .mm .link.b0 { stroke: #4b9ac6; }
+  .mm .b0.d1 .box { fill: #d7e5eb; stroke: #0072B2; stroke-width: 1.5; }
+  .mm .b0.d1 text { fill: #075c8b; }
+  .mm .b0.d2 .box { fill: #e8efef; stroke: #70aed0; }
+  .mm .b0.d3 text, .mm .b0.d4 text { fill: #075c8b; }
+
+  .mm .link.b1 { stroke: #e08c49; }
+  .mm .b1.d1 .box { fill: #f5e2d2; stroke: #D55E00; stroke-width: 1.5; }
+  .mm .b1.d1 text { fill: #a64d06; }
+  .mm .b1.d2 .box { fill: #f7ede3; stroke: #e6a36e; }
+  .mm .b1.d3 text, .mm .b1.d4 text { fill: #a64d06; }
+
+  .mm .link.b2 { stroke: #4bb99a; }
+  .mm .b2.d1 .box { fill: #d7ebe2; stroke: #009E73; stroke-width: 1.5; }
+  .mm .b2.d1 text { fill: #077d5c; }
+  .mm .b2.d2 .box { fill: #e8f2eb; stroke: #70c6ad; }
+  .mm .b2.d3 text, .mm .b2.d4 text { fill: #077d5c; }
+
+  .mm .link.b3 { stroke: #da9fbe; }
+  .mm .b3.d1 .box { fill: #f4e6e9; stroke: #CC79A7; stroke-width: 1.5; }
+  .mm .b3.d1 text { fill: #985c7c; }
+  .mm .b3.d2 .box { fill: #f7efef; stroke: #e1b2ca; }
+  .mm .b3.d3 text, .mm .b3.d4 text { fill: #985c7c; }
+
+  .mm .link.b4 { stroke: #bba149; }
+  .mm .b4.d1 .box { fill: #ede7d2; stroke: #A07C00; stroke-width: 1.5; }
+  .mm .b4.d1 text { fill: #7f6306; }
+  .mm .b4.d2 .box { fill: #f4efe3; stroke: #c8b46e; }
+  .mm .b4.d3 text, .mm .b4.d4 text { fill: #7f6306; }
+
+  .mm .link.b5 { stroke: #84c1e2; }
+  .mm .b5.d1 .box { fill: #e3eef2; stroke: #51a9db; stroke-width: 1.5; }
+  .mm .b5.d1 text { fill: #3d7899; }
+  .mm .b5.d2 .box { fill: #eff3f3; stroke: #9dcde6; }
+  .mm .b5.d3 text, .mm .b5.d4 text { fill: #3d7899; }
+
+  .mm .link.b6 { stroke: #9580b0; }
+  .mm .b6.d1 .box { fill: #e6e0e6; stroke: #6A4C93; stroke-width: 1.5; }
+  .mm .b6.d1 text { fill: #563f74; }
+  .mm .b6.d2 .box { fill: #f0eced; stroke: #ab99bf; }
+  .mm .b6.d3 text, .mm .b6.d4 text { fill: #563f74; }
+
+  .mm .link.b7 { stroke: #98ac74; }
+  .mm .b7.d1 .box { fill: #e6e9da; stroke: #6E8B3D; stroke-width: 1.5; }
+  .mm .b7.d1 text { fill: #596e34; }
+  .mm .b7.d2 .box { fill: #f0f0e7; stroke: #adbc8f; }
+  .mm .b7.d3 text, .mm .b7.d4 text { fill: #596e34; }
+@media (prefers-color-scheme: dark) {
+  .mm-bg { fill: #12100e; }
+  .mm text { font-family: 'Hiragino Sans', 'Noto Sans JP', ui-sans-serif, sans-serif; fill: #ece7df; }
+  .mm .link { fill: none; stroke: #3d3833; }
+  .mm .box { fill: none; stroke: none; }
+  .mm .d0 .box { fill: #ece7df; stroke: #ece7df; }
+  .mm .d0 text { fill: #12100e; font-weight: 650; }
+  .mm .d1 text { font-weight: 600; }
+
+  .mm .link.b0 { stroke: #2d6a8d; }
+  .mm .b0.d1 .box { fill: #172227; stroke: #3891c3; stroke-width: 1.5; }
+  .mm .b0.d1 text { fill: #65a6ca; }
+  .mm .b0.d2 .box { fill: #15191b; stroke: #275772; }
+  .mm .b0.d3 text, .mm .b0.d4 text { fill: #65a6ca; }
+
+  .mm .link.b1 { stroke: #a15f2b; }
+  .mm .b1.d1 .box { fill: #2f2014; stroke: #de8138; stroke-width: 1.5; }
+  .mm .b1.d1 text { fill: #e29a62; }
+  .mm .b1.d2 .box { fill: #201811; stroke: #824e25; }
+  .mm .b1.d3 text, .mm .b1.d4 text { fill: #e29a62; }
+
+  .mm .link.b2 { stroke: #2d826a; }
+  .mm .b2.d1 .box { fill: #172720; stroke: #38b392; stroke-width: 1.5; }
+  .mm .b2.d1 text { fill: #65c0a5; }
+  .mm .b2.d2 .box { fill: #151b17; stroke: #276a57; }
+  .mm .b2.d3 text, .mm .b2.d4 text { fill: #65c0a5; }
+
+  .mm .link.b3 { stroke: #9c6e86; }
+  .mm .b3.d1 .box { fill: #2e2326; stroke: #d796ba; stroke-width: 1.5; }
+  .mm .b3.d1 text { fill: #dcaac3; }
+  .mm .b3.d2 .box { fill: #20191a; stroke: #7e5a6d; }
+  .mm .b3.d3 text, .mm .b3.d4 text { fill: #dcaac3; }
+
+  .mm .link.b4 { stroke: #84702b; }
+  .mm .b4.d1 .box { fill: #292314; stroke: #b59938; stroke-width: 1.5; }
+  .mm .b4.d1 text { fill: #c3ac62; }
+  .mm .b4.d2 .box { fill: #1d1a11; stroke: #6c5b25; }
+  .mm .b4.d3 text, .mm .b4.d4 text { fill: #c3ac62; }
+
+  .mm .link.b5 { stroke: #5c8eab; }
+  .mm .b5.d1 .box { fill: #21292d; stroke: #7bc4ee; stroke-width: 1.5; }
+  .mm .b5.d1 text { fill: #97cdea; }
+  .mm .b5.d2 .box { fill: #191d1e; stroke: #4c7389; }
+  .mm .b5.d3 text, .mm .b5.d4 text { fill: #97cdea; }
+
+  .mm .link.b6 { stroke: #67557c; }
+  .mm .b6.d1 .box { fill: #231e24; stroke: #8b73ab; stroke-width: 1.5; }
+  .mm .b6.d1 text { fill: #a390b8; }
+  .mm .b6.d2 .box { fill: #1a1719; stroke: #554664; }
+  .mm .b6.d3 text, .mm .b6.d4 text { fill: #a390b8; }
+
+  .mm .link.b7 { stroke: #69784d; }
+  .mm .b7.d1 .box { fill: #23251b; stroke: #8ea568; stroke-width: 1.5; }
+  .mm .b7.d1 text { fill: #a6b686; }
+  .mm .b7.d2 .box { fill: #1b1a14; stroke: #566240; }
+  .mm .b7.d3 text, .mm .b7.d4 text { fill: #a6b686; }
+}
+</style>
+  <rect class="mm-bg" width="1746" height="978"/>
+  <path class="link b0" data-depth="1" stroke-width="2.2" d="M1031.0,488.8 C1051.0,488.8 1051.0,112.4 1071.0,112.4"/>
+  <path class="link b1" data-depth="1" stroke-width="2.2" d="M1031.0,488.8 C1051.0,488.8 1051.0,346.0 1071.0,346.0"/>
+  <path class="link b2" data-depth="1" stroke-width="2.2" d="M1031.0,488.8 C839.5,488.8 839.5,147.4 648.0,147.4"/>
+  <path class="link b3" data-depth="1" stroke-width="2.2" d="M1031.0,488.8 C861.2,488.8 861.2,398.4 691.5,398.4"/>
+  <path class="link b4" data-depth="1" stroke-width="2.2" d="M1031.0,488.8 C1051.0,488.8 1051.0,596.9 1071.0,596.9"/>
+  <path class="link b5" data-depth="1" stroke-width="2.2" d="M1031.0,488.8 C1051.0,488.8 1051.0,830.3 1071.0,830.3"/>
+  <path class="link b6" data-depth="1" stroke-width="2.2" d="M1031.0,488.8 C839.5,488.8 839.5,639.7 648.0,639.7"/>
+  <path class="link b7" data-depth="1" stroke-width="2.2" d="M1031.0,488.8 C817.8,488.8 817.8,863.0 604.5,863.0"/>
+  <g class="node d0 b0" data-depth="0">
+    <rect class="box" x="824.0" y="472.1" width="207.0" height="33.4" rx="9"/>
+    <text x="834.0" y="494.6" font-size="17.0">実践におけるゲノム診断</text>
+  </g>
+  <path class="link b0" data-depth="2" stroke-width="1.8" d="M1178.0,112.4 C1198.0,112.4 1198.0,40.1 1218.0,40.1"/>
+  <path class="link b0" data-depth="2" stroke-width="1.8" d="M1178.0,112.4 C1198.0,112.4 1198.0,76.2 1218.0,76.2"/>
+  <path class="link b0" data-depth="2" stroke-width="1.8" d="M1178.0,112.4 C1198.0,112.4 1198.0,112.4 1218.0,112.4"/>
+  <path class="link b0" data-depth="2" stroke-width="1.8" d="M1178.0,112.4 C1198.0,112.4 1198.0,148.6 1218.0,148.6"/>
+  <path class="link b0" data-depth="2" stroke-width="1.8" d="M1178.0,112.4 C1198.0,112.4 1198.0,184.7 1218.0,184.7"/>
+  <g class="node d1 b0" data-depth="1">
+    <rect class="box" x="1071.0" y="97.3" width="107.0" height="30.1" rx="9"/>
+    <text x="1081.0" y="117.3" font-size="14.5">診断の進め方</text>
+  </g>
+  <g class="node d2 b0" data-depth="2">
+    <rect class="box" x="1218.0" y="26.0" width="241.0" height="28.2" rx="6"/>
+    <text x="1228.0" y="44.5" font-size="13.0">無差別な解析でなく表現型と家族構造</text>
+  </g>
+  <g class="node d2 b0" data-depth="2">
+    <rect class="box" x="1218.0" y="62.2" width="176.0" height="28.2" rx="6"/>
+    <text x="1228.0" y="80.7" font-size="13.0">問いを明確にし所見を記録</text>
+  </g>
+  <g class="node d2 b0" data-depth="2">
+    <rect class="box" x="1218.0" y="98.3" width="215.0" height="28.2" rx="6"/>
+    <text x="1228.0" y="116.8" font-size="13.0">疑う変異クラスに合う検査を選ぶ</text>
+  </g>
+  <g class="node d2 b0" data-depth="2">
+    <rect class="box" x="1218.0" y="134.5" width="176.0" height="28.2" rx="6"/>
+    <text x="1228.0" y="153.0" font-size="13.0">血縁者に及ぶ結果に備える</text>
+  </g>
+  <g class="node d2 b0" data-depth="2">
+    <rect class="box" x="1218.0" y="170.6" width="215.0" height="28.2" rx="6"/>
+    <text x="1228.0" y="189.1" font-size="13.0">陰性は除外せず確率を下げるのみ</text>
+  </g>
+  <path class="link b1" data-depth="2" stroke-width="1.8" d="M1178.0,346.0 C1198.0,346.0 1198.0,220.9 1218.0,220.9"/>
+  <path class="link b1" data-depth="2" stroke-width="1.8" d="M1178.0,346.0 C1198.0,346.0 1198.0,257.0 1218.0,257.0"/>
+  <path class="link b1" data-depth="2" stroke-width="1.8" d="M1178.0,346.0 C1198.0,346.0 1198.0,293.2 1218.0,293.2"/>
+  <path class="link b1" data-depth="2" stroke-width="1.8" d="M1178.0,346.0 C1198.0,346.0 1198.0,346.8 1218.0,346.8"/>
+  <path class="link b1" data-depth="2" stroke-width="1.8" d="M1178.0,346.0 C1198.0,346.0 1198.0,417.8 1218.0,417.8"/>
+  <path class="link b1" data-depth="2" stroke-width="1.8" d="M1178.0,346.0 C1198.0,346.0 1198.0,471.0 1218.0,471.0"/>
+  <g class="node d1 b1" data-depth="1">
+    <rect class="box" x="1071.0" y="330.9" width="107.0" height="30.1" rx="9"/>
+    <text x="1081.0" y="350.9" font-size="14.5">三世代家系図</text>
+  </g>
+  <g class="node d2 b1" data-depth="2">
+    <rect class="box" x="1218.0" y="206.8" width="215.0" height="28.2" rx="6"/>
+    <text x="1228.0" y="225.3" font-size="13.0">血縁者、妊娠、年齢、死因を記録</text>
+  </g>
+  <g class="node d2 b1" data-depth="2">
+    <rect class="box" x="1218.0" y="243.0" width="254.0" height="28.2" rx="6"/>
+    <text x="1228.0" y="261.5" font-size="13.0">血族婚、配偶子提供、養子縁組を尋ねる</text>
+  </g>
+  <g class="node d2 b1" data-depth="2">
+    <rect class="box" x="1218.0" y="279.1" width="228.0" height="28.2" rx="6"/>
+    <text x="1228.0" y="297.6" font-size="13.0">役割から親子関係や性を推測しない</text>
+  </g>
+  <path class="link b1" data-depth="3" stroke-width="1.3" d="M1355.0,346.8 C1433.5,346.8 1433.5,329.0 1512.0,329.0"/>
+  <path class="link b1" data-depth="3" stroke-width="1.3" d="M1355.0,346.8 C1433.5,346.8 1433.5,364.5 1512.0,364.5"/>
+  <g class="node d2 b1" data-depth="2">
+    <rect class="box" x="1218.0" y="332.7" width="137.0" height="28.2" rx="6"/>
+    <text x="1228.0" y="351.2" font-size="13.0">伝達パターンを探す</text>
+  </g>
+  <g class="node d3 b1" data-depth="3">
+    <rect class="box" x="1512.0" y="315.3" width="207.5" height="27.5" rx="6"/>
+    <text x="1522.0" y="333.3" font-size="12.5">縦の伝達、同胞罹患、性差、母系</text>
+  </g>
+  <g class="node d3 b1" data-depth="3">
+    <rect class="box" x="1512.0" y="350.8" width="157.5" height="27.5" rx="6"/>
+    <text x="1522.0" y="368.8" font-size="12.5">多発原発がん、早期発症</text>
+  </g>
+  <path class="link b1" data-depth="3" stroke-width="1.3" d="M1316.0,417.8 C1414.0,417.8 1414.0,400.0 1512.0,400.0"/>
+  <path class="link b1" data-depth="3" stroke-width="1.3" d="M1316.0,417.8 C1414.0,417.8 1414.0,435.5 1512.0,435.5"/>
+  <g class="node d2 b1" data-depth="2">
+    <rect class="box" x="1218.0" y="403.7" width="98.0" height="28.2" rx="6"/>
+    <text x="1228.0" y="422.2" font-size="13.0">家族歴は動的</text>
+  </g>
+  <g class="node d3 b1" data-depth="3">
+    <rect class="box" x="1512.0" y="386.3" width="195.0" height="27.5" rx="6"/>
+    <text x="1522.0" y="404.3" font-size="12.5">小家族、予防手術、早世が隠す</text>
+  </g>
+  <g class="node d3 b1" data-depth="3">
+    <rect class="box" x="1512.0" y="421.8" width="157.5" height="27.5" rx="6"/>
+    <text x="1522.0" y="439.8" font-size="12.5">診療録で同じ疾患か確認</text>
+  </g>
+  <path class="link b1" data-depth="3" stroke-width="1.3" d="M1342.0,471.0 C1427.0,471.0 1427.0,471.0 1512.0,471.0"/>
+  <g class="node d2 b1" data-depth="2">
+    <rect class="box" x="1218.0" y="456.9" width="124.0" height="28.2" rx="6"/>
+    <text x="1228.0" y="475.4" font-size="13.0">罹患者を先に検査</text>
+  </g>
+  <g class="node d3 b1" data-depth="3">
+    <rect class="box" x="1512.0" y="457.3" width="207.5" height="27.5" rx="6"/>
+    <text x="1522.0" y="475.3" font-size="12.5">無症候者が先だと情報価値乏しい</text>
+  </g>
+  <path class="link b2" data-depth="2" stroke-width="1.8" d="M648.0,147.4 C606.2,147.4 606.2,40.1 564.5,40.1"/>
+  <path class="link b2" data-depth="2" stroke-width="1.8" d="M648.0,147.4 C606.2,147.4 606.2,76.2 564.5,76.2"/>
+  <path class="link b2" data-depth="2" stroke-width="1.8" d="M648.0,147.4 C606.2,147.4 606.2,112.4 564.5,112.4"/>
+  <path class="link b2" data-depth="2" stroke-width="1.8" d="M648.0,147.4 C606.2,147.4 606.2,183.7 564.5,183.7"/>
+  <path class="link b2" data-depth="2" stroke-width="1.8" d="M648.0,147.4 C606.2,147.4 606.2,254.7 564.5,254.7"/>
+  <g class="node d1 b2" data-depth="1">
+    <rect class="box" x="648.0" y="132.3" width="136.0" height="30.1" rx="9"/>
+    <text x="658.0" y="152.3" font-size="14.5">表現型評価と診察</text>
+  </g>
+  <g class="node d2 b2" data-depth="2">
+    <rect class="box" x="336.5" y="26.0" width="228.0" height="28.2" rx="6"/>
+    <text x="346.5" y="44.5" font-size="13.0">陽性所見と関連する陰性所見を記録</text>
+  </g>
+  <g class="node d2 b2" data-depth="2">
+    <rect class="box" x="336.5" y="62.2" width="228.0" height="28.2" rx="6"/>
+    <text x="346.5" y="80.7" font-size="13.0">成長、身体比率、皮膚、神経を評価</text>
+  </g>
+  <g class="node d2 b2" data-depth="2">
+    <rect class="box" x="388.5" y="98.3" width="176.0" height="28.2" rx="6"/>
+    <text x="398.5" y="116.8" font-size="13.0">写真には個別の同意が必要</text>
+  </g>
+  <path class="link b2" data-depth="3" stroke-width="1.3" d="M349.5,183.7 C316.5,183.7 316.5,148.2 283.5,148.2"/>
+  <path class="link b2" data-depth="3" stroke-width="1.3" d="M349.5,183.7 C316.5,183.7 316.5,183.7 283.5,183.7"/>
+  <path class="link b2" data-depth="3" stroke-width="1.3" d="M349.5,183.7 C316.5,183.7 316.5,219.2 283.5,219.2"/>
+  <g class="node d2 b2" data-depth="2">
+    <rect class="box" x="349.5" y="169.6" width="215.0" height="28.2" rx="6"/>
+    <text x="359.5" y="188.1" font-size="13.0">形態診断学は発生パターンを同定</text>
+  </g>
+  <g class="node d3 b2" data-depth="3">
+    <rect class="box" x="126.0" y="134.5" width="157.5" height="27.5" rx="6"/>
+    <text x="136.0" y="152.5" font-size="12.5">多くは家族性の正常変異</text>
+  </g>
+  <g class="node d3 b2" data-depth="3">
+    <rect class="box" x="76.0" y="170.0" width="207.5" height="27.5" rx="6"/>
+    <text x="86.0" y="188.0" font-size="12.5">一貫した小奇形で症候群らしさ増</text>
+  </g>
+  <g class="node d3 b2" data-depth="3">
+    <rect class="box" x="138.5" y="205.5" width="145.0" height="27.5" rx="6"/>
+    <text x="148.5" y="223.5" font-size="12.5">適切な基準や親と比較</text>
+  </g>
+  <path class="link b2" data-depth="3" stroke-width="1.3" d="M401.5,254.7 C342.5,254.7 342.5,254.7 283.5,254.7"/>
+  <g class="node d2 b2" data-depth="2">
+    <rect class="box" x="401.5" y="240.6" width="163.0" height="28.2" rx="6"/>
+    <text x="411.5" y="259.1" font-size="13.0">治療可能な合併症を探す</text>
+  </g>
+  <g class="node d3 b2" data-depth="3">
+    <rect class="box" x="101.0" y="241.0" width="182.5" height="27.5" rx="6"/>
+    <text x="111.0" y="259.0" font-size="12.5">監視と治療を変える時に価値</text>
+  </g>
+  <path class="link b3" data-depth="2" stroke-width="1.8" d="M691.5,398.4 C628.0,398.4 628.0,290.6 564.5,290.6"/>
+  <path class="link b3" data-depth="2" stroke-width="1.8" d="M691.5,398.4 C628.0,398.4 628.0,326.4 564.5,326.4"/>
+  <path class="link b3" data-depth="2" stroke-width="1.8" d="M691.5,398.4 C628.0,398.4 628.0,362.2 564.5,362.2"/>
+  <path class="link b3" data-depth="2" stroke-width="1.8" d="M691.5,398.4 C628.0,398.4 628.0,398.4 564.5,398.4"/>
+  <path class="link b3" data-depth="2" stroke-width="1.8" d="M691.5,398.4 C628.0,398.4 628.0,434.2 564.5,434.2"/>
+  <path class="link b3" data-depth="2" stroke-width="1.8" d="M691.5,398.4 C628.0,398.4 628.0,470.0 564.5,470.0"/>
+  <path class="link b3" data-depth="2" stroke-width="1.8" d="M691.5,398.4 C628.0,398.4 628.0,506.2 564.5,506.2"/>
+  <g class="node d1 b3" data-depth="1">
+    <rect class="box" x="691.5" y="383.3" width="92.5" height="30.1" rx="9"/>
+    <text x="701.5" y="403.3" font-size="14.5">検査の選択</text>
+  </g>
+  <g class="node d2 b3" data-depth="2">
+    <rect class="box" x="375.5" y="276.5" width="189.0" height="28.2" rx="6"/>
+    <text x="385.5" y="295.0" font-size="13.0">核型は異数性と大きな再構成</text>
+  </g>
+  <path class="link b3" data-depth="3" stroke-width="1.3" d="M323.5,326.4 C303.5,326.4 303.5,326.4 283.5,326.4"/>
+  <g class="node d2 b3" data-depth="2">
+    <rect class="box" x="323.5" y="312.3" width="241.0" height="28.2" rx="6"/>
+    <text x="333.5" y="330.8" font-size="13.0">マイクロアレイは微細なコピー数変化</text>
+  </g>
+  <g class="node d3 b3" data-depth="3">
+    <rect class="box" x="88.5" y="312.6" width="195.0" height="27.5" rx="6"/>
+    <text x="98.5" y="330.6" font-size="12.5">均衡転座、小変異は検出しない</text>
+  </g>
+  <g class="node d2 b3" data-depth="2">
+    <rect class="box" x="336.5" y="348.1" width="228.0" height="28.2" rx="6"/>
+    <text x="346.5" y="366.6" font-size="13.0">一遺伝子を示す時は単一遺伝子検査</text>
+  </g>
+  <g class="node d2 b3" data-depth="2">
+    <rect class="box" x="349.5" y="384.3" width="215.0" height="28.2" rx="6"/>
+    <text x="359.5" y="402.8" font-size="13.0">パネルは異質性向け、内容は様々</text>
+  </g>
+  <path class="link b3" data-depth="3" stroke-width="1.3" d="M375.5,434.2 C329.5,434.2 329.5,434.2 283.5,434.2"/>
+  <g class="node d2 b3" data-depth="2">
+    <rect class="box" x="375.5" y="420.1" width="189.0" height="28.2" rx="6"/>
+    <text x="385.5" y="438.6" font-size="13.0">エクソーム解析とゲノム解析</text>
+  </g>
+  <g class="node d3 b3" data-depth="3">
+    <rect class="box" x="76.0" y="420.5" width="207.5" height="27.5" rx="6"/>
+    <text x="86.0" y="438.5" font-size="12.5">反復、メチル化、モザイクを逃す</text>
+  </g>
+  <g class="node d2 b3" data-depth="2">
+    <rect class="box" x="375.5" y="456.0" width="189.0" height="28.2" rx="6"/>
+    <text x="385.5" y="474.5" font-size="13.0">変異クラスに応じた特殊検査</text>
+  </g>
+  <g class="node d2 b3" data-depth="2">
+    <rect class="box" x="349.5" y="492.1" width="215.0" height="28.2" rx="6"/>
+    <text x="359.5" y="510.6" font-size="13.0">報告範囲と親検体の有用性を確認</text>
+  </g>
+  <path class="link b4" data-depth="2" stroke-width="1.8" d="M1178.0,596.9 C1198.0,596.9 1198.0,506.9 1218.0,506.9"/>
+  <path class="link b4" data-depth="2" stroke-width="1.8" d="M1178.0,596.9 C1198.0,596.9 1198.0,543.0 1218.0,543.0"/>
+  <path class="link b4" data-depth="2" stroke-width="1.8" d="M1178.0,596.9 C1198.0,596.9 1198.0,578.8 1218.0,578.8"/>
+  <path class="link b4" data-depth="2" stroke-width="1.8" d="M1178.0,596.9 C1198.0,596.9 1198.0,614.7 1218.0,614.7"/>
+  <path class="link b4" data-depth="2" stroke-width="1.8" d="M1178.0,596.9 C1198.0,596.9 1198.0,650.8 1218.0,650.8"/>
+  <path class="link b4" data-depth="2" stroke-width="1.8" d="M1178.0,596.9 C1198.0,596.9 1198.0,687.0 1218.0,687.0"/>
+  <g class="node d1 b4" data-depth="1">
+    <rect class="box" x="1071.0" y="581.9" width="107.0" height="30.1" rx="9"/>
+    <text x="1081.0" y="601.9" font-size="14.5">生化学遺伝学</text>
+  </g>
+  <g class="node d2 b4" data-depth="2">
+    <rect class="box" x="1218.0" y="492.8" width="254.0" height="28.2" rx="6"/>
+    <text x="1228.0" y="511.3" font-size="13.0">脳症、アシドーシス、高アンモニア血症</text>
+  </g>
+  <g class="node d2 b4" data-depth="2">
+    <rect class="box" x="1218.0" y="528.9" width="163.0" height="28.2" rx="6"/>
+    <text x="1228.0" y="547.4" font-size="13.0">分子診断を待たず安定化</text>
+  </g>
+  <path class="link b4" data-depth="3" stroke-width="1.3" d="M1342.0,578.8 C1427.0,578.8 1427.0,578.8 1512.0,578.8"/>
+  <g class="node d2 b4" data-depth="2">
+    <rect class="box" x="1218.0" y="564.8" width="124.0" height="28.2" rx="6"/>
+    <text x="1228.0" y="583.3" font-size="13.0">発症時の重要検体</text>
+  </g>
+  <g class="node d3 b4" data-depth="3">
+    <rect class="box" x="1512.0" y="565.1" width="145.0" height="27.5" rx="6"/>
+    <text x="1522.0" y="583.1" font-size="12.5">診断能より治療が優先</text>
+  </g>
+  <g class="node d2 b4" data-depth="2">
+    <rect class="box" x="1218.0" y="600.6" width="254.0" height="28.2" rx="6"/>
+    <text x="1228.0" y="619.1" font-size="13.0">新生児スクリーニング正常でも除外不可</text>
+  </g>
+  <g class="node d2 b4" data-depth="2">
+    <rect class="box" x="1218.0" y="636.8" width="228.0" height="28.2" rx="6"/>
+    <text x="1228.0" y="655.3" font-size="13.0">基質回避、補因子、異化防止を導く</text>
+  </g>
+  <g class="node d2 b4" data-depth="2">
+    <rect class="box" x="1218.0" y="672.9" width="176.0" height="28.2" rx="6"/>
+    <text x="1228.0" y="691.4" font-size="13.0">機能的証拠が病原性を確立</text>
+  </g>
+  <path class="link b5" data-depth="2" stroke-width="1.8" d="M1163.5,830.3 C1190.8,830.3 1190.8,722.8 1218.0,722.8"/>
+  <path class="link b5" data-depth="2" stroke-width="1.8" d="M1163.5,830.3 C1190.8,830.3 1190.8,758.7 1218.0,758.7"/>
+  <path class="link b5" data-depth="2" stroke-width="1.8" d="M1163.5,830.3 C1190.8,830.3 1190.8,812.2 1218.0,812.2"/>
+  <path class="link b5" data-depth="2" stroke-width="1.8" d="M1163.5,830.3 C1190.8,830.3 1190.8,865.8 1218.0,865.8"/>
+  <path class="link b5" data-depth="2" stroke-width="1.8" d="M1163.5,830.3 C1190.8,830.3 1190.8,902.0 1218.0,902.0"/>
+  <path class="link b5" data-depth="2" stroke-width="1.8" d="M1163.5,830.3 C1190.8,830.3 1190.8,937.8 1218.0,937.8"/>
+  <g class="node d1 b5" data-depth="1">
+    <rect class="box" x="1071.0" y="815.2" width="92.5" height="30.1" rx="9"/>
+    <text x="1081.0" y="835.2" font-size="14.5">結果の解釈</text>
+  </g>
+  <path class="link b5" data-depth="3" stroke-width="1.3" d="M1394.0,722.8 C1453.0,722.8 1453.0,722.8 1512.0,722.8"/>
+  <g class="node d2 b5" data-depth="2">
+    <rect class="box" x="1218.0" y="708.7" width="176.0" height="28.2" rx="6"/>
+    <text x="1228.0" y="727.2" font-size="13.0">病原性結果には一致が必要</text>
+  </g>
+  <g class="node d3 b5" data-depth="3">
+    <rect class="box" x="1512.0" y="709.1" width="195.0" height="27.5" rx="6"/>
+    <text x="1522.0" y="727.1" font-size="12.5">遺伝子、機序、接合性、表現型</text>
+  </g>
+  <g class="node d2 b5" data-depth="2">
+    <rect class="box" x="1218.0" y="744.6" width="176.0" height="28.2" rx="6"/>
+    <text x="1228.0" y="763.1" font-size="13.0">病原性と原因性は別の問い</text>
+  </g>
+  <path class="link b5" data-depth="3" stroke-width="1.3" d="M1420.0,812.2 C1466.0,812.2 1466.0,794.5 1512.0,794.5"/>
+  <path class="link b5" data-depth="3" stroke-width="1.3" d="M1420.0,812.2 C1466.0,812.2 1466.0,830.0 1512.0,830.0"/>
+  <g class="node d2 b5" data-depth="2">
+    <rect class="box" x="1218.0" y="798.2" width="202.0" height="28.2" rx="6"/>
+    <text x="1228.0" y="816.7" font-size="13.0">家系内分離は支持または弱める</text>
+  </g>
+  <g class="node d3 b5" data-depth="3">
+    <rect class="box" x="1512.0" y="780.7" width="207.5" height="27.5" rx="6"/>
+    <text x="1522.0" y="798.7" font-size="12.5">新生変異は強い証拠、モザイクも</text>
+  </g>
+  <g class="node d3 b5" data-depth="3">
+    <rect class="box" x="1512.0" y="816.2" width="170.0" height="27.5" rx="6"/>
+    <text x="1522.0" y="834.2" font-size="12.5">分離しなくても否定しない</text>
+  </g>
+  <g class="node d2 b5" data-depth="2">
+    <rect class="box" x="1218.0" y="851.7" width="202.0" height="28.2" rx="6"/>
+    <text x="1228.0" y="870.2" font-size="13.0">意義不明変異で予測検査しない</text>
+  </g>
+  <g class="node d2 b5" data-depth="2">
+    <rect class="box" x="1218.0" y="887.9" width="150.0" height="28.2" rx="6"/>
+    <text x="1228.0" y="906.4" font-size="13.0">再解析と再連絡の方針</text>
+  </g>
+  <path class="link b5" data-depth="3" stroke-width="1.3" d="M1420.0,937.8 C1466.0,937.8 1466.0,937.8 1512.0,937.8"/>
+  <g class="node d2 b5" data-depth="2">
+    <rect class="box" x="1218.0" y="923.7" width="202.0" height="28.2" rx="6"/>
+    <text x="1228.0" y="942.2" font-size="13.0">真の陰性には既知の家系内変異</text>
+  </g>
+  <g class="node d3 b5" data-depth="3">
+    <rect class="box" x="1512.0" y="924.1" width="182.5" height="27.5" rx="6"/>
+    <text x="1522.0" y="942.1" font-size="12.5">それ以外は情報価値に乏しい</text>
+  </g>
+  <path class="link b6" data-depth="2" stroke-width="1.8" d="M648.0,639.7 C606.2,639.7 606.2,542.0 564.5,542.0"/>
+  <path class="link b6" data-depth="2" stroke-width="1.8" d="M648.0,639.7 C606.2,639.7 606.2,595.3 564.5,595.3"/>
+  <path class="link b6" data-depth="2" stroke-width="1.8" d="M648.0,639.7 C606.2,639.7 606.2,666.3 564.5,666.3"/>
+  <path class="link b6" data-depth="2" stroke-width="1.8" d="M648.0,639.7 C606.2,639.7 606.2,737.3 564.5,737.3"/>
+  <g class="node d1 b6" data-depth="1">
+    <rect class="box" x="648.0" y="624.6" width="136.0" height="30.1" rx="9"/>
+    <text x="658.0" y="644.6" font-size="14.5">頻度の高い臨床像</text>
+  </g>
+  <path class="link b6" data-depth="3" stroke-width="1.3" d="M336.5,542.0 C310.0,542.0 310.0,542.0 283.5,542.0"/>
+  <g class="node d2 b6" data-depth="2">
+    <rect class="box" x="336.5" y="527.9" width="228.0" height="28.2" rx="6"/>
+    <text x="346.5" y="546.4" font-size="13.0">発達遅滞と先天異常はアレイと解析</text>
+  </g>
+  <g class="node d3 b6" data-depth="3">
+    <rect class="box" x="76.0" y="528.3" width="207.5" height="27.5" rx="6"/>
+    <text x="86.0" y="546.3" font-size="12.5">反復配列検査は別法のことがある</text>
+  </g>
+  <path class="link b6" data-depth="3" stroke-width="1.3" d="M453.5,595.3 C368.5,595.3 368.5,577.5 283.5,577.5"/>
+  <path class="link b6" data-depth="3" stroke-width="1.3" d="M453.5,595.3 C368.5,595.3 368.5,613.0 283.5,613.0"/>
+  <g class="node d2 b6" data-depth="2">
+    <rect class="box" x="453.5" y="581.2" width="111.0" height="28.2" rx="6"/>
+    <text x="463.5" y="599.7" font-size="13.0">遺伝性がん評価</text>
+  </g>
+  <g class="node d3 b6" data-depth="3">
+    <rect class="box" x="26.0" y="563.8" width="257.5" height="27.5" rx="6"/>
+    <text x="36.0" y="581.8" font-size="12.5">腫瘍スクリーニング後に生殖細胞系列確認</text>
+  </g>
+  <g class="node d3 b6" data-depth="3">
+    <rect class="box" x="63.5" y="599.3" width="220.0" height="27.5" rx="6"/>
+    <text x="73.5" y="617.3" font-size="12.5">中等度リスク遺伝子、管理根拠弱い</text>
+  </g>
+  <path class="link b6" data-depth="3" stroke-width="1.3" d="M466.5,666.3 C375.0,666.3 375.0,648.5 283.5,648.5"/>
+  <path class="link b6" data-depth="3" stroke-width="1.3" d="M466.5,666.3 C375.0,666.3 375.0,684.0 283.5,684.0"/>
+  <g class="node d2 b6" data-depth="2">
+    <rect class="box" x="466.5" y="652.2" width="98.0" height="28.2" rx="6"/>
+    <text x="476.5" y="670.7" font-size="13.0">遺伝性心疾患</text>
+  </g>
+  <g class="node d3 b6" data-depth="3">
+    <rect class="box" x="151.0" y="634.8" width="132.5" height="27.5" rx="6"/>
+    <text x="161.0" y="652.8" font-size="12.5">無症候で年齢依存性</text>
+  </g>
+  <g class="node d3 b6" data-depth="3">
+    <rect class="box" x="126.0" y="670.3" width="157.5" height="27.5" rx="6"/>
+    <text x="136.0" y="688.3" font-size="12.5">パネル陰性でも監視継続</text>
+  </g>
+  <path class="link b6" data-depth="3" stroke-width="1.3" d="M362.5,737.3 C323.0,737.3 323.0,719.5 283.5,719.5"/>
+  <path class="link b6" data-depth="3" stroke-width="1.3" d="M362.5,737.3 C323.0,737.3 323.0,755.0 283.5,755.0"/>
+  <g class="node d2 b6" data-depth="2">
+    <rect class="box" x="362.5" y="723.2" width="202.0" height="28.2" rx="6"/>
+    <text x="372.5" y="741.7" font-size="13.0">出生前はスクリーニングと診断</text>
+  </g>
+  <g class="node d3 b6" data-depth="3">
+    <rect class="box" x="118.6" y="705.8" width="164.9" height="27.5" rx="6"/>
+    <text x="128.6" y="723.8" font-size="12.5">セルフリーDNAの交絡要因</text>
+  </g>
+  <g class="node d3 b6" data-depth="3">
+    <rect class="box" x="76.0" y="741.3" width="207.5" height="27.5" rx="6"/>
+    <text x="86.0" y="759.3" font-size="12.5">超音波表現型が検査選択を変える</text>
+  </g>
+  <path class="link b7" data-depth="2" stroke-width="1.8" d="M604.5,863.0 C584.5,863.0 584.5,790.9 564.5,790.9"/>
+  <path class="link b7" data-depth="2" stroke-width="1.8" d="M604.5,863.0 C584.5,863.0 584.5,827.0 564.5,827.0"/>
+  <path class="link b7" data-depth="2" stroke-width="1.8" d="M604.5,863.0 C584.5,863.0 584.5,863.2 564.5,863.2"/>
+  <path class="link b7" data-depth="2" stroke-width="1.8" d="M604.5,863.0 C584.5,863.0 584.5,899.3 564.5,899.3"/>
+  <path class="link b7" data-depth="2" stroke-width="1.8" d="M604.5,863.0 C584.5,863.0 584.5,935.2 564.5,935.2"/>
+  <g class="node d1 b7" data-depth="1">
+    <rect class="box" x="604.5" y="847.9" width="179.5" height="30.1" rx="9"/>
+    <text x="614.5" y="867.9" font-size="14.5">偶発所見と意義不明所見</text>
+  </g>
+  <g class="node d2 b7" data-depth="2">
+    <rect class="box" x="336.5" y="776.8" width="228.0" height="28.2" rx="6"/>
+    <text x="346.5" y="795.3" font-size="13.0">無関係な変異、保因、関係の不一致</text>
+  </g>
+  <g class="node d2 b7" data-depth="2">
+    <rect class="box" x="349.5" y="812.9" width="215.0" height="28.2" rx="6"/>
+    <text x="359.5" y="831.4" font-size="13.0">検査前に所見の範囲と記載を話す</text>
+  </g>
+  <g class="node d2 b7" data-depth="2">
+    <rect class="box" x="349.5" y="849.1" width="215.0" height="28.2" rx="6"/>
+    <text x="359.5" y="867.6" font-size="13.0">予防利益と不安、保険、家族葛藤</text>
+  </g>
+  <g class="node d2 b7" data-depth="2">
+    <rect class="box" x="323.5" y="885.3" width="241.0" height="28.2" rx="6"/>
+    <text x="333.5" y="903.8" font-size="13.0">利益なき小児の成人発症検査は避ける</text>
+  </g>
+  <path class="link b7" data-depth="3" stroke-width="1.3" d="M401.5,935.2 C342.5,935.2 342.5,935.2 283.5,935.2"/>
+  <g class="node d2 b7" data-depth="2">
+    <rect class="box" x="401.5" y="921.1" width="163.0" height="28.2" rx="6"/>
+    <text x="411.5" y="939.6" font-size="13.0">ゲノム診断は反復的過程</text>
+  </g>
+  <g class="node d3 b7" data-depth="3">
+    <rect class="box" x="88.5" y="921.4" width="195.0" height="27.5" rx="6"/>
+    <text x="98.5" y="939.4" font-size="12.5">不明確な問いは検査で補えない</text>
+  </g>
+</svg>
