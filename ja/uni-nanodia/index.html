@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="ja" class="ig-document ig-editorial">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="三菱鉛筆ユニ ナノダイヤの芯の中でナノダイヤモンドが物理的に何をしているか。空隙の充填、亀裂のピン止め、ボールベアリング型の摩擦低減を解説し、ぺんてる Ain との唯一の公開比較と照らし合わせる。">
+  <meta name="theme-color" content="#f7f7f5">
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <title>ユニ ナノダイヤの芯でダイヤモンドは何をしているか</title>
+<style>
+  :root {
+    --ground:#F7F7F5; --surface:#FFFFFF; --surface-2:#F0F1EC;
+    --ink:#17191B; --muted:#63686D; --rule:#DEE0DC;
+    --accent:#1F4F86; --accent-soft:#1F4F8614;
+    --f-display:"Hiragino Mincho ProN","Noto Serif CJK JP",serif;
+    --f-body:-apple-system,"Helvetica Neue","Segoe UI",system-ui,"Hiragino Sans",sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground:#101214; --surface:#181B1E; --surface-2:#1F2327;
+      --ink:#EDEFF1; --muted:#9BA3AA; --rule:#2C3237;
+      --accent:#7FB0E6; --accent-soft:#7FB0E61C;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground:#101214; --surface:#181B1E; --surface-2:#1F2327;
+    --ink:#EDEFF1; --muted:#9BA3AA; --rule:#2C3237;
+    --accent:#7FB0E6; --accent-soft:#7FB0E61C;
+  }
+  * { box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { margin:0; background:var(--ground); color:var(--ink); font-family:var(--f-body);
+         font-size:17px; line-height:1.85; -webkit-font-smoothing:antialiased; }
+  a { color:var(--accent); text-underline-offset:.18em; }
+  .wrap { width:min(760px, calc(100% - 40px)); margin-inline:auto; }
+  .wide { width:min(1080px, calc(100% - 40px)); margin-inline:auto; }
+  .hero { padding:76px 0 46px; }
+  .label { color:var(--muted); font-size:.74rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; }
+  h1 { font-family:var(--f-display); font-weight:600; margin:14px 0 16px;
+       font-size:clamp(2.1rem,5.4vw,3.3rem); line-height:1.08; letter-spacing:-.02em; }
+  .standfirst { font-size:1.2rem; color:var(--muted); margin:0 0 26px; max-width:62ch; }
+  .herometa { display:flex; flex-wrap:wrap; gap:10px 12px; align-items:center;
+              border-top:1px solid var(--rule); padding-top:18px; }
+  .pill { display:inline-flex; align-items:center; gap:7px; padding:7px 14px;
+          border:1px solid var(--rule); border-radius:999px; background:var(--surface);
+          text-decoration:none; color:var(--ink); font-weight:600; font-size:.85rem; }
+  .pill:hover { border-color:var(--accent); color:var(--accent); }
+  .toc { border-top:1px solid var(--rule); border-bottom:1px solid var(--rule); padding:22px 0 24px; margin-bottom:14px; }
+  .toc ol { margin:10px 0 0; padding-left:1.2em; columns:2; column-gap:34px; }
+  .toc li { margin:0 0 6px; color:var(--muted); font-size:.92rem; break-inside:avoid; }
+  .toc a { color:var(--ink); text-decoration:none; }
+  .toc a:hover { color:var(--accent); }
+  article { padding:8px 0 40px; }
+  h2 { font-family:var(--f-display); font-weight:600; letter-spacing:-.01em;
+       font-size:1.72rem; line-height:1.25; margin:58px 0 4px; }
+  h2 .num { color:var(--muted); font-family:var(--f-body); font-size:.8rem; font-weight:700;
+            letter-spacing:.1em; text-transform:uppercase; display:block; margin-bottom:10px; }
+  p { margin:14px 0; }
+  strong { font-weight:650; }
+  .lede { font-size:1.09rem; }
+  .stats { display:grid; grid-template-columns:repeat(4,1fr); gap:18px; margin:34px 0 10px; }
+  .stats div { border-top:2px solid var(--ink); padding-top:10px; }
+  .stats b { display:block; font-family:var(--f-display); font-size:2rem; font-weight:600; line-height:1.1; }
+  .stats span { display:block; color:var(--muted); font-size:.82rem; line-height:1.45; margin-top:4px; }
+  .fig { margin:36px 0 30px; }
+  .fig .plate { background:#fff; border:1px solid var(--rule); border-radius:12px; padding:16px 14px; overflow-x:auto; }
+  .fig img { display:block; width:100%; height:auto; min-width:520px; }
+  .fig figcaption { color:var(--muted); font-size:.86rem; line-height:1.6; margin-top:12px; }
+  .fig figcaption b { color:var(--ink); font-weight:650; }
+  .key { background:var(--surface); border:1px solid var(--rule); border-left:3px solid var(--accent);
+         border-radius:10px; padding:18px 20px; margin:26px 0; }
+  .key .kt { font-size:.74rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--accent); margin:0; }
+  .key p:last-child { margin-bottom:0; } .key p:nth-child(2) { margin-top:8px; }
+  .tablewrap { overflow-x:auto; margin:30px 0; }
+  table { border-collapse:collapse; width:100%; min-width:620px; font-size:.9rem; }
+  th, td { text-align:left; vertical-align:top; padding:11px 12px; border-bottom:1px solid var(--rule); }
+  thead th { border-bottom:2px solid var(--rule); font-size:.76rem; letter-spacing:.07em; text-transform:uppercase; color:var(--muted); }
+  td.h { font-weight:650; }
+  td:last-child { font-weight:650; white-space:nowrap; }
+  caption { caption-side:bottom; text-align:left; color:var(--muted); font-size:.85rem; padding-top:12px; }
+  .kicker { font-family:var(--f-display); font-size:1.3rem; line-height:1.55; border-top:1px solid var(--rule);
+            padding-top:34px; margin-top:44px; }
+  .sources { border-top:1px solid var(--rule); margin-top:46px; padding-top:26px; font-size:.82rem; color:var(--muted); line-height:1.65; }
+  .sources h2 { font-size:1.1rem; margin:0 0 12px; }
+  .sources b { color:var(--ink); }
+  footer.site { border-top:1px solid var(--rule); margin-top:56px; }
+  footer.site .wide { display:flex; justify-content:space-between; gap:20px; padding:26px 0 46px; color:var(--muted); font-size:.85rem; flex-wrap:wrap; }
+  footer.site a { color:var(--muted); }
+  @media (max-width:700px) {
+    body { font-size:16px; }
+    .hero { padding:54px 0 36px; }
+    .toc ol { columns:1; }
+    .stats { grid-template-columns:repeat(2,1fr); }
+    .fig .plate { padding:10px 8px; }
+  }
+
+</style>
+<link rel="canonical" href="https://theisegoria.github.io/ja/uni-nanodia/">
+<link rel="alternate" hreflang="en" href="https://theisegoria.github.io/uni-nanodia/">
+<link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/uni-nanodia/">
+<link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/uni-nanodia/"><script src="/assets/lang.js"></script>
+<!-- ISEGORIA:HEAD -->
+<link rel="stylesheet" href="/assets/site-shell.css?v=c21cd21e82">
+<script src="/assets/site-shell.js?v=c21cd21e82" ></script>
+<!-- /ISEGORIA:HEAD -->
+<script defer data-isegoria-analytics src="/assets/analytics.js?v=9e6ebd463bf2"></script>
+</head>
+<body class="ig-site" data-site-kind="editorial" data-site-route="/ja/uni-nanodia/">
+<!-- ISEGORIA:NAV -->
+<a class="ig-skip" href="#ig-content">本文へ移動</a>
+<header id="ig-header"><div class="ig-nav-inner">
+<a class="ig-brand" href="/ja/" aria-label="Isegoria, ホーム"><strong>ISEGORIA</strong><span>Benjamin Haire</span></a>
+<div class="ig-header-actions"><a class="ig-language" href="/uni-nanodia/" hreflang="en" lang="en">English</a><button class="ig-menu" type="button" aria-expanded="false" aria-controls="ig-primary">メニュー</button></div>
+<nav id="ig-primary" aria-label="メインナビゲーション"><a href="/ja/">ホーム</a><a href="/ja/library.html">全コンテンツ</a><a href="/ja/math-encyclopedia/">数学百科事典</a><a href="/ja/#interactive">操作できる解説</a><a href="/ja/#preoccupations" aria-current="location">研究と解説</a><a href="/ja/#books">書籍</a><a href="/ja/projects.html">プロジェクト</a><a href="/ja/about.html">このサイトについて</a><a class="ig-language" href="/uni-nanodia/" hreflang="en" lang="en">English</a><button class="ig-theme" type="button" hidden>表示切替</button></nav>
+</div></header>
+<nav id="ig-breadcrumb" aria-label="パンくずリスト"><a href="/ja/">ホーム</a><span aria-hidden="true">/</span><a href="/ja/#preoccupations">研究と解説</a><span aria-hidden="true">/</span><span aria-current="page">ユニ ナノダイヤの芯でダイヤモンドは何をしているか</span></nav>
+<span id="ig-content" tabindex="-1"></span>
+<!-- /ISEGORIA:NAV -->
+<nav class="ig-page-nav" aria-label="このページの目次"><a href="#diamond">機構</a><a href="#glide">なめらかさ</a><a href="#test">比較</a><a href="#verdict">評価</a></nav>
+<main>
+<div class="wrap">
+  <div class="hero">
+    <p class="label">材料の解説 / 2026年9月25日</p>
+    <h1>ユニ ナノダイヤの芯で、ダイヤモンドは実際に何をしているか。</h1>
+    <p class="standfirst">三菱鉛筆は、ナノダイヤモンドによって芯が折れにくく、なめらかで、くっきり書けるようになると言う。それぞれの主張の背後にある物理は妥当である。ほかの高級芯を上回るかどうかは別の問題であり、公開されている唯一の比較の答えは否である。</p>
+    <div class="herometa"><a class="pill" href="/uni-nanodia/uni-nanodia-en.pdf" target="_blank" rel="noopener">English PDF &middot; 5ページ</a><a class="pill" href="/uni-nanodia/uni-nanodia-ja.pdf" hreflang="ja" lang="ja" target="_blank" rel="noopener">日本語版 PDF &middot; 6ページ</a><a class="pill" href="/uni-nanodia/uni-nanodia-bilingual.pdf" target="_blank" rel="noopener">二言語版 &middot; 11ページ</a></div>
+    <p class="label" style="margin-top:18px">ポリマー芯 · ナノダイヤモンド · 破壊力学 · トライボロジー · 三菱鉛筆</p>
+  </div>
+  <nav class="toc" aria-label="目次"><p class="label">目次</p><ol><li><a href="#lead">ポリマー芯は何でできているか</a></li><li><a href="#diamond">ダイヤモンドはどこに入るのか</a></li><li><a href="#cracks">なぜ折れにくくなるのか</a></li><li><a href="#scale">スケールの隔たり</a></li><li><a href="#glide">なめらかさ：ボールベアリングとしてのダイヤモンド</a></li><li><a href="#range">線、品ぞろえ、価格</a></li><li><a href="#test">主張と独立した比較</a></li><li><a href="#verdict">私の評価</a></li></ol></nav>
+  <article>
+  <p class="lede"><strong>三菱鉛筆は2009年、芯にナノダイヤモンドを配合したシャープペンシル替芯「ユニ ナノダイヤ」を発売した。製品ページの説明は一文に尽きる。「芯にナノダイヤを配合することで、筆圧を高めても折れにくく、なめらかにくっきり書ける」。</strong>黒鉛の棒の中でダイヤモンドの粒子が物理的に何をしうるのか、そしてその結果がほかの高級芯を実際に上回るのかを知りたかった。</p>
+
+  <div class="stats">
+    <div><b>5</b><span>芯径：0.3・0.4・0.5・0.7・0.9 mm</span></div>
+    <div><b>10</b><span>0.5 mmの硬度数（4Hから4Bまで）</span></div>
+    <div><b>27</b><span>現行の国内カタログに載る黒芯の品番数</span></div>
+    <div><b>¥220</b><span>税込、全芯径・全硬度共通</span></div>
+  </div>
+
+  <figure class="fig">
+    <div class="plate"><img src="/uni-nanodia/figures/hero-ja.svg" alt="0.5 mmの芯と、その内部を拡大した円。バインダー中の黒鉛の板状粒子とナノダイヤモンドの粒子が見える。"></div>
+    <figcaption><b>図1　名前が指しているもの。</b>現代の芯は複合材料であり、ナノダイヤはそこに第三の成分、すなわち黒鉛とバインダーの中に分散したナノスケールのダイヤモンド充填材を加えている。</figcaption>
+  </figure>
+
+  <h2 id="lead"><span class="num">第1節</span>ポリマー芯は何でできているか</h2>
+  <p>現代の細い芯は、木軸鉛筆のような粘土と黒鉛の芯ではない。黒鉛の板状粒子を樹脂で結合して押し出し、不活性雰囲気で焼成して樹脂を炭化させ、硬いガラス状炭素の骨格にする。最後に油を含浸させて滑りを与える。0.3 mmの棒が折れずにいられるのは、この骨格があるからである。</p>
+  <p>焼成には代償がある。樹脂から揮発分が抜けると、骨格の中に<strong>微小空隙</strong>が散らばって残る。芯は脆性材料であり、脆性材料は最も大きな欠陥から壊れる。グリフィスの条件によれば、亀裂を進展させるのに必要な応力は欠陥寸法の平方根に反比例して下がる。したがって折れにくさを決めるのは、材料の平均的な性質よりも焼成で残った空隙のほうである。</p>
+
+  <h2 id="diamond"><span class="num">第2節</span>ダイヤモンドはどこに入るのか</h2>
+  <p>爆轟法ナノダイヤモンドは密閉容器内で爆薬を爆発させて作られ、粒径はおおむね5 nm前後、いずれにせよ10 nm未満である。これだけ小さければ、板状粒子の間のバインダーに入り込み、焼成で開いたままになるはずの空隙を埋めることができる。</p>
+  <figure class="fig">
+    <div class="plate"><img src="/uni-nanodia/figures/microstructure-ja.svg" alt="二つの模式断面。左は空の微小空隙がある従来の芯、右は空隙とバインダーがナノダイヤモンド粒子で満たされたナノダイヤ芯。"></div>
+    <figcaption><b>図2　充填材の有無による同じ微細構造。</b>Bでは芯が緻密になり、最悪の欠陥が小さくなる。三菱鉛筆は粒子の種類も配合量も公表していないので、これは設計の論理を示す図であって、顕微鏡観察の結果ではない。</figcaption>
+  </figure>
+
+  <h2 id="cracks"><span class="num">第3節</span>なぜ折れにくくなるのか</h2>
+  <p>筆記中、突き出た芯はたわみ、引張側では見つかった欠陥が開く。充填材のない芯では、亀裂は空隙から空隙へ最短経路をたどって走りうる。ダイヤモンドは既知の材料の中でも屈指の剛性をもち、ヤング率はおよそ1,000 GPaである。亀裂の経路に硬い粒子があると、亀裂は偏向するか先端で止められる。回り道のたびに破壊エネルギーが消費され、発生した亀裂の多くが芯を横切る前に止まる。</p>
+  <figure class="fig">
+    <div class="plate"><img src="/uni-nanodia/figures/crack-ja.svg" alt="下向きの荷重を受ける二つのパネル。左では亀裂が空の空隙の列をまっすぐつなぎ、右では満たされた空隙を避けて偏向し止まる。"></div>
+    <figcaption><b>図3　亀裂の偏向とピン止め。</b>硬い充填材が脆い複合材料を強靭にする標準的な機構である。一つの欠陥が断面の大きな割合を占める細い芯と、筆圧の強い書き手にとって特に効く。模式図。</figcaption>
+  </figure>
+
+  <h2 id="scale"><span class="num">第4節</span>スケールの隔たり</h2>
+  <p>添加物がどれほど小さいかを見ておくとよい。対数目盛で見ると、ナノダイヤモンドの粒子は黒鉛の板状粒子のおよそ1000分の1、芯そのものの約10万分の1である。この隔たりがあるからこそ、線をざらつかせずに空隙を埋められる。粒子は紙や指先が感じ取れる大きさをはるかに下回っている。</p>
+  <figure class="fig">
+    <div class="plate"><img src="/uni-nanodia/figures/scale-ja.svg" alt="1ナノメートルから1ミリメートルまでの対数目盛。ナノダイヤモンド、黒鉛の板状粒子、髪の毛、0.3 mmと0.5 mmの芯の位置を示す。"></div>
+    <figcaption><b>図4　6桁の隔たり。</b>板状粒子の寸法は細芯用黒鉛の典型値であり、三菱鉛筆の公表値ではない。</figcaption>
+  </figure>
+
+  <h2 id="glide"><span class="num">第5節</span>なめらかさ：ボールベアリングとしてのダイヤモンド</h2>
+  <p>なめらかさの主張には、トライボロジーからの独立した裏づけがある。ナノダイヤモンドは潤滑油の添加剤として市販されており、表面の凹凸が接触するほど近い境界潤滑の領域で摩擦と摩耗を下げる。ほぼ球形で極めて硬い粒子が、すべり接触の一部を転がり接触に変え、凹凸を研磨して均すのである。</p>
+  <p>筆記線はまさにこの種の境界潤滑接触である。黒鉛の板状粒子どうし、そして紙の繊維との間でせん断が起こり、含浸された油が潤滑剤になる。機構がきれいに移し替えられるという点で、たいていの宣伝用の化学よりも筋がよいと私は考える。</p>
+  <figure class="fig">
+    <div class="plate"><img src="/uni-nanodia/figures/friction-ja.svg" alt="二つのすべり接触。左はぎざぎざの面がかみ合い、右は面の間に並んだ小球がころとして働く。"></div>
+    <figcaption><b>図5　提案されている摩擦低減の機構。</b>転がる粒子が、紙の上でざらつきとして感じられるスティックスリップを均す。見やすさのため粒子を誇張して描いている。</figcaption>
+  </figure>
+
+  <h2 id="range"><span class="num">第6節</span>線、品ぞろえ、価格</h2>
+  <p>緻密で均一な芯は黒鉛を均等に削り出すはずで、芯が減っても濃さがむらにならず安定するはずである。ただし実際には、濃さを決めるのは添加物よりもはるかに硬度記号のほうであり、この主張だけを理由に芯を選ぶことはしない。</p>
+  <p>実用上の利点はもっと明快である。芯径は5種類、0.5 mmには4Hから4Bまでの全硬度がそろい、どの品番も1本220円である。エコマーク認定品でグリーン購入法にも適合している。消せるカラー芯のナノダイヤもあり、書き込みや注釈に便利である。</p>
+  <figure class="fig">
+    <div class="plate"><img src="/uni-nanodia/figures/range-ja.svg" alt="4Hから4Bの硬度と0.3から0.9 mmの芯径の点行列。0.5 mmは10硬度すべて、ほかの芯径は4から5硬度。"></div>
+    <figcaption><b>図6　芯径ごとの硬度のそろい方</b>（三菱鉛筆の製品ページによる）。塗りつぶした点が販売中の硬度である。全硬度がそろうのは0.5 mmだけで、0.3 mmは2Hから2Bまで。</figcaption>
+  </figure>
+
+  <h2 id="test"><span class="num">第7節</span>主張と独立した比較</h2>
+  <p>三菱鉛筆はナノダイヤについて<strong>定量的なデータを一切公表していない</strong>。曲げ強度も、摩擦係数も、摩耗率もない。最もよく引用される独立の比較は、2009年にDave's Mechanical Pencilsが行った、もう一つの国産高級ポリマー芯であるぺんてる「Ain」との直接比較である。</p>
+  <div class="tablewrap">
+  <table>
+    <caption>表1　メーカーの主張と、公開されている唯一の直接比較。評者一人、一ロット、簡易な方法、2009年当時の配合なので、結論ではなく一つのデータ点として読む。</caption>
+    <thead><tr><th>項目</th><th>三菱鉛筆の主張</th><th>独立の比較（対ぺんてる Ain）</th><th>優位</th></tr></thead>
+    <tbody>
+      <tr><td class="h">折れにくさ</td><td>筆圧を高めても折れにくい</td><td>「明確な勝者がいたが、それはナノダイヤではなかった」</td><td>Ain</td></tr>
+      <tr><td class="h">摩耗・芯の減り</td><td>減りにくい</td><td>「ナノダイヤは一度も勝たなかった。すべての組で Ain が勝った」</td><td>Ain</td></tr>
+      <tr><td class="h">濃さ</td><td>くっきり書ける</td><td>「濃さはどちらもよく似ている」</td><td>互角</td></tr>
+      <tr><td class="h">なめらかさ</td><td>なめらかに書ける</td><td>Ain と実質的な差はなし。B は HB よりなめらかに感じた</td><td>互角</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>入手性にも問題がある。海外の販売店の一つは、ナノダイヤがユニの「Smudge-Proof」芯に置き換えられつつあると記載している。一方、三菱鉛筆の国内カタログには現在も黒芯27品番がすべて載っている。</p>
+
+  <h2 id="verdict"><span class="num">第8節</span>私の評価</h2>
+  <div class="key">
+    <p class="kt">成り立つこと</p>
+    <p>機構は妥当である。空隙の充填と亀裂のピン止め、そして潤滑添加剤としてのナノダイヤモンドの実績が、三つの主張それぞれに現実の物理的根拠を与えている。品質の高い芯であることも明らかで、なめらかで濃く、一般的な芯より折れにくい。利用者の評価もこれと一致する。</p>
+  </div>
+  <div class="key">
+    <p class="kt">成り立たないこと</p>
+    <p>数値が公表されていない以上、「ナノダイヤ」は部分的には宣伝の物語である。公開されている唯一の直接比較では Ain に対する優位は見られず、強度と摩耗ではむしろ Ain が勝った。</p>
+  </div>
+  <p class="kicker">一般的な芯と比べれば、ナノダイヤの利点は本物であり、それぞれの背後にある物理も筋が通っている。ほかの高級ポリマー芯と比べると、ダイヤモンドは良い発想ではあるが、測定できる差をもたらすことはまだ示されていない。私なら、0.3 mmという細さ、0.5 mmの全硬度、あるいは消せるカラー芯を目当てに選ぶ。折れと減りだけが気になるのなら、公開されている唯一の証拠に照らして、ぺんてる Ain は少なくとも同等である。</p>
+  <section class="sources" id="sources">
+    <h2>出典と検証の範囲</h2>
+    <p><b>三菱鉛筆</b>「ユニ ナノダイヤ」製品ページ（mpuni.co.jp）：製品の主張、5種の芯径、芯径ごとの硬度一覧、220円の価格、エコマークとグリーン購入法への適合。2026年9月25日に直接確認した。</p>
+    <p><b>Dave's Mechanical Pencils</b>「Uni Nano Dia Mechanical Pencil Leads」（2009年10月）：発売年と、ぺんてる Ain との直接比較の結果。本文の引用は英語原文からの訳である。</p>
+    <p><b>Tokyo Pen Shop</b> のナノダイヤ商品ページ：Smudge-Proof 芯への置き換えが進んでいるという記載。販売店の記述であり、三菱鉛筆による確認はない。</p>
+    <p><b>潤通ネット21／ダイセル</b>：境界潤滑下で低摩擦と耐摩耗性を示す潤滑油添加剤としてのナノダイヤモンド。<b>ウィキペディア日本語版「ナノダイヤモンド」</b>：爆轟法による合成と10 nm未満の粒径。</p>
+    <p><b>未検証の事項。</b>三菱鉛筆はナノダイヤに用いるナノダイヤモンドの種類、粒径、配合量を開示しておらず、強度・摩擦・摩耗の数値も公表していない。図2、図3、図5は機構を説明する模式図であって測定結果ではなく、図4の板状粒子の寸法はナノダイヤの仕様ではなく典型値である。強度試験や摩耗試験を自分で行ってはいない。</p>
+  </section>
+
+  </article>
+</div>
+</main>
+<footer class="site"><div class="wide"><span>&copy; 2026 Benjamin Michael Haire</span><a href="/ja/">すべてのプロジェクトへ戻る</a></div></footer>
+<!-- ISEGORIA:FOOT -->
+<footer id="ig-footer"><div><a href="/ja/">Isegoria · Benjamin Haire</a><nav aria-label="サイト内リンク"><a href="/ja/">ホームに戻る</a><a href="/ja/library.html">全コンテンツ</a><a href="#ig-content">ページ上部へ</a></nav></div></footer>
+<!-- /ISEGORIA:FOOT -->
+</body>
+</html>

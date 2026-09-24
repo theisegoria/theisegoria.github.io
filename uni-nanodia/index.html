@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="en" class="ig-document ig-editorial">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="What nanodiamond physically does inside uni NanoDia mechanical pencil lead: void filling, crack pinning and ball-bearing friction, set against the one public head-to-head with Pentel Ain.">
+  <meta name="theme-color" content="#f7f7f5">
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <title>What the Diamond in uni NanoDia Does</title>
+<style>
+  :root {
+    --ground:#F7F7F5; --surface:#FFFFFF; --surface-2:#F0F1EC;
+    --ink:#17191B; --muted:#63686D; --rule:#DEE0DC;
+    --accent:#1F4F86; --accent-soft:#1F4F8614;
+    --f-display:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    --f-body:-apple-system,"Helvetica Neue","Segoe UI",system-ui,"Hiragino Sans",sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground:#101214; --surface:#181B1E; --surface-2:#1F2327;
+      --ink:#EDEFF1; --muted:#9BA3AA; --rule:#2C3237;
+      --accent:#7FB0E6; --accent-soft:#7FB0E61C;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground:#101214; --surface:#181B1E; --surface-2:#1F2327;
+    --ink:#EDEFF1; --muted:#9BA3AA; --rule:#2C3237;
+    --accent:#7FB0E6; --accent-soft:#7FB0E61C;
+  }
+  * { box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { margin:0; background:var(--ground); color:var(--ink); font-family:var(--f-body);
+         font-size:17px; line-height:1.65; -webkit-font-smoothing:antialiased; }
+  a { color:var(--accent); text-underline-offset:.18em; }
+  .wrap { width:min(760px, calc(100% - 40px)); margin-inline:auto; }
+  .wide { width:min(1080px, calc(100% - 40px)); margin-inline:auto; }
+  .hero { padding:76px 0 46px; }
+  .label { color:var(--muted); font-size:.74rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; }
+  h1 { font-family:var(--f-display); font-weight:600; margin:14px 0 16px;
+       font-size:clamp(2.1rem,5.4vw,3.3rem); line-height:1.08; letter-spacing:-.02em; }
+  .standfirst { font-size:1.2rem; color:var(--muted); margin:0 0 26px; max-width:62ch; }
+  .herometa { display:flex; flex-wrap:wrap; gap:10px 12px; align-items:center;
+              border-top:1px solid var(--rule); padding-top:18px; }
+  .pill { display:inline-flex; align-items:center; gap:7px; padding:7px 14px;
+          border:1px solid var(--rule); border-radius:999px; background:var(--surface);
+          text-decoration:none; color:var(--ink); font-weight:600; font-size:.85rem; }
+  .pill:hover { border-color:var(--accent); color:var(--accent); }
+  .toc { border-top:1px solid var(--rule); border-bottom:1px solid var(--rule); padding:22px 0 24px; margin-bottom:14px; }
+  .toc ol { margin:10px 0 0; padding-left:1.2em; columns:2; column-gap:34px; }
+  .toc li { margin:0 0 6px; color:var(--muted); font-size:.92rem; break-inside:avoid; }
+  .toc a { color:var(--ink); text-decoration:none; }
+  .toc a:hover { color:var(--accent); }
+  article { padding:8px 0 40px; }
+  h2 { font-family:var(--f-display); font-weight:600; letter-spacing:-.01em;
+       font-size:1.72rem; line-height:1.25; margin:58px 0 4px; }
+  h2 .num { color:var(--muted); font-family:var(--f-body); font-size:.8rem; font-weight:700;
+            letter-spacing:.1em; text-transform:uppercase; display:block; margin-bottom:10px; }
+  p { margin:14px 0; }
+  strong { font-weight:650; }
+  .lede { font-size:1.09rem; }
+  .stats { display:grid; grid-template-columns:repeat(4,1fr); gap:18px; margin:34px 0 10px; }
+  .stats div { border-top:2px solid var(--ink); padding-top:10px; }
+  .stats b { display:block; font-family:var(--f-display); font-size:2rem; font-weight:600; line-height:1.1; }
+  .stats span { display:block; color:var(--muted); font-size:.82rem; line-height:1.45; margin-top:4px; }
+  .fig { margin:36px 0 30px; }
+  .fig .plate { background:#fff; border:1px solid var(--rule); border-radius:12px; padding:16px 14px; overflow-x:auto; }
+  .fig img { display:block; width:100%; height:auto; min-width:520px; }
+  .fig figcaption { color:var(--muted); font-size:.86rem; line-height:1.6; margin-top:12px; }
+  .fig figcaption b { color:var(--ink); font-weight:650; }
+  .key { background:var(--surface); border:1px solid var(--rule); border-left:3px solid var(--accent);
+         border-radius:10px; padding:18px 20px; margin:26px 0; }
+  .key .kt { font-size:.74rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--accent); margin:0; }
+  .key p:last-child { margin-bottom:0; } .key p:nth-child(2) { margin-top:8px; }
+  .tablewrap { overflow-x:auto; margin:30px 0; }
+  table { border-collapse:collapse; width:100%; min-width:620px; font-size:.9rem; }
+  th, td { text-align:left; vertical-align:top; padding:11px 12px; border-bottom:1px solid var(--rule); }
+  thead th { border-bottom:2px solid var(--rule); font-size:.76rem; letter-spacing:.07em; text-transform:uppercase; color:var(--muted); }
+  td.h { font-weight:650; }
+  td:last-child { font-weight:650; white-space:nowrap; }
+  caption { caption-side:bottom; text-align:left; color:var(--muted); font-size:.85rem; padding-top:12px; }
+  .kicker { font-family:var(--f-display); font-size:1.3rem; line-height:1.55; border-top:1px solid var(--rule);
+            padding-top:34px; margin-top:44px; }
+  .sources { border-top:1px solid var(--rule); margin-top:46px; padding-top:26px; font-size:.82rem; color:var(--muted); line-height:1.65; }
+  .sources h2 { font-size:1.1rem; margin:0 0 12px; }
+  .sources b { color:var(--ink); }
+  footer.site { border-top:1px solid var(--rule); margin-top:56px; }
+  footer.site .wide { display:flex; justify-content:space-between; gap:20px; padding:26px 0 46px; color:var(--muted); font-size:.85rem; flex-wrap:wrap; }
+  footer.site a { color:var(--muted); }
+  @media (max-width:700px) {
+    body { font-size:16px; }
+    .hero { padding:54px 0 36px; }
+    .toc ol { columns:1; }
+    .stats { grid-template-columns:repeat(2,1fr); }
+    .fig .plate { padding:10px 8px; }
+  }
+
+</style>
+<link rel="canonical" href="https://theisegoria.github.io/uni-nanodia/">
+<link rel="alternate" hreflang="en" href="https://theisegoria.github.io/uni-nanodia/">
+<link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/uni-nanodia/">
+<link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/uni-nanodia/"><script src="/assets/lang.js"></script>
+<!-- ISEGORIA:HEAD -->
+<link rel="stylesheet" href="/assets/site-shell.css?v=c21cd21e82">
+<script src="/assets/site-shell.js?v=c21cd21e82" ></script>
+<!-- /ISEGORIA:HEAD -->
+<script defer data-isegoria-analytics src="/assets/analytics.js?v=9e6ebd463bf2"></script>
+</head>
+<body class="ig-site" data-site-kind="editorial" data-site-route="/uni-nanodia/">
+<!-- ISEGORIA:NAV -->
+<a class="ig-skip" href="#ig-content">Skip to content</a>
+<header id="ig-header"><div class="ig-nav-inner">
+<a class="ig-brand" href="/" aria-label="Isegoria, home"><strong>ISEGORIA</strong><span>Benjamin Haire</span></a>
+<div class="ig-header-actions"><a class="ig-language" href="/ja/uni-nanodia/" hreflang="ja" lang="ja">日本語</a><button class="ig-menu" type="button" aria-expanded="false" aria-controls="ig-primary">Menu</button></div>
+<nav id="ig-primary" aria-label="Primary navigation"><a href="/">Home</a><a href="/library.html">Library</a><a href="/math-encyclopedia/">Math encyclopedia</a><a href="/#interactive">Interactive</a><a href="/#preoccupations" aria-current="location">Research</a><a href="/#books">Books</a><a href="/projects.html">Projects</a><a href="/about.html">About</a><a class="ig-language" href="/ja/uni-nanodia/" hreflang="ja" lang="ja">日本語</a><button class="ig-theme" type="button" hidden>Theme</button></nav>
+</div></header>
+<nav id="ig-breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><a href="/#preoccupations">Research</a><span aria-hidden="true">/</span><span aria-current="page">What the Diamond in uni NanoDia Does</span></nav>
+<span id="ig-content" tabindex="-1"></span>
+<!-- /ISEGORIA:NAV -->
+<nav class="ig-page-nav" aria-label="On this page"><a href="#diamond">Mechanism</a><a href="#glide">Smoothness</a><a href="#test">Test</a><a href="#verdict">Verdict</a></nav>
+<main>
+<div class="wrap">
+  <div class="hero">
+    <p class="label">Materials explainer / 25 September 2026</p>
+    <h1>What the diamond in uni NanoDia lead actually does.</h1>
+    <p class="standfirst">Mitsubishi says nanodiamond makes its lead harder to break, smoother and crisper. The physics behind each claim is sound. Whether it beats the other premium leads is a different question, and the only public test says no.</p>
+    <div class="herometa"><a class="pill" href="/uni-nanodia/uni-nanodia-en.pdf" target="_blank" rel="noopener">English PDF &middot; 5 pages</a><a class="pill" href="/uni-nanodia/uni-nanodia-ja.pdf" hreflang="ja" lang="ja" target="_blank" rel="noopener">日本語版 PDF &middot; 6 ページ</a><a class="pill" href="/uni-nanodia/uni-nanodia-bilingual.pdf" target="_blank" rel="noopener">Bilingual edition &middot; 11 pages</a></div>
+    <p class="label" style="margin-top:18px">Polymer lead · nanodiamond · fracture · tribology · Mitsubishi Pencil</p>
+  </div>
+  <nav class="toc" aria-label="Contents"><p class="label">Contents</p><ol><li><a href="#lead">What a polymer lead is made of</a></li><li><a href="#diamond">Where the diamond goes</a></li><li><a href="#cracks">Why that stops a lead snapping</a></li><li><a href="#scale">The scale gap</a></li><li><a href="#glide">Smoothness: diamonds as ball bearings</a></li><li><a href="#range">The line, the range and the price</a></li><li><a href="#test">Claims against an independent test</a></li><li><a href="#verdict">My verdict</a></li></ol></nav>
+  <article>
+  <p class="lede"><strong>Mitsubishi Pencil launched uni NanoDia in 2009 as a mechanical pencil lead with nanodiamond mixed into the core. The whole pitch fits in one sentence on the Japanese product page: 芯にナノダイヤを配合することで、筆圧を高めても折れにくく、なめらかにくっきり書ける.</strong> Mixing nanodiamond into the core, it says, makes the lead hard to break even under heavy pressure, and lets it write smoothly and crisply. I wanted to know what a diamond particle can physically do inside a stick of graphite, and whether the result actually beats the other premium leads.</p>
+
+  <div class="stats">
+    <div><b>5</b><span>diameters: 0.3, 0.4, 0.5, 0.7 and 0.9 mm</span></div>
+    <div><b>10</b><span>grades in 0.5 mm, from 4H to 4B</span></div>
+    <div><b>27</b><span>black-lead SKUs in the current Japanese catalogue</span></div>
+    <div><b>¥220</b><span>per tube including tax, for every size and grade</span></div>
+  </div>
+
+  <figure class="fig">
+    <div class="plate"><img src="/uni-nanodia/figures/hero.svg" alt="A 0.5 mm lead with a magnified circle showing graphite platelets in a binder, dotted with nanodiamond particles."></div>
+    <figcaption><b>Figure 1. What the name refers to.</b> A modern lead is a composite, and NanoDia adds a third ingredient to it: a nanoscale diamond filler dispersed through the graphite and binder.</figcaption>
+  </figure>
+
+  <h2 id="lead"><span class="num">Section one</span>What a polymer lead is made of</h2>
+  <p>A modern fine lead is not the clay and graphite of a wooden pencil. It is graphite platelets bound in a resin, extruded, then fired in an inert atmosphere so that the resin carbonises into a rigid glassy-carbon skeleton, and finally impregnated with oil so it glides. The skeleton is what lets a 0.3 mm stick survive at all.</p>
+  <p>Firing has a cost. Driving the volatiles out of the resin leaves <strong>micro-voids</strong> scattered through the skeleton. A lead is a brittle solid, and brittle solids fail at their largest flaw: Griffith's criterion says the stress needed to propagate a crack falls with the square root of the flaw size. So the pores left by firing set the snapping strength far more than the average properties of the material do.</p>
+
+  <h2 id="diamond"><span class="num">Section two</span>Where the diamond goes</h2>
+  <p>Detonation nanodiamond is made by setting off explosives in a closed chamber, and comes out as particles typically around 5 nm across, under 10 nm in any case. That is small enough to sit in the binder between platelets and pack into the pores that firing would otherwise leave open.</p>
+  <figure class="fig">
+    <div class="plate"><img src="/uni-nanodia/figures/microstructure.svg" alt="Two schematic cross-sections side by side: a conventional lead with empty micro-voids, and a NanoDia lead with the voids and binder filled by nanodiamond particles."></div>
+    <figcaption><b>Figure 2. The same microstructure with and without the filler.</b> In B the lead is denser and its worst flaws are smaller. Mitsubishi does not publish the particle grade or the loading, so this shows the logic of the design rather than measured microscopy.</figcaption>
+  </figure>
+
+  <h2 id="cracks"><span class="num">Section three</span>Why that stops a lead snapping</h2>
+  <p>Under writing load the protruding lead bends, and the tensile side opens any flaw it finds. In an unfilled lead a crack can run from pore to pore along the shortest path. Diamond is among the stiffest materials known, with a Young's modulus of roughly 1,000 GPa, so a rigid particle in the crack's path forces it to deflect or pin at the tip. Each detour costs fracture energy, and more of the cracks that start die out before they cross the lead.</p>
+  <figure class="fig">
+    <div class="plate"><img src="/uni-nanodia/figures/crack.svg" alt="Two panels under downward load: on the left a crack links a row of empty voids straight across; on the right the crack deflects around filled voids and stops."></div>
+    <figcaption><b>Figure 3. Crack deflection and pinning.</b> This is the standard way rigid fillers toughen brittle composites. It matters most in thin leads, where one flaw is a large fraction of the cross-section, and for heavy-handed writers. Schematic.</figcaption>
+  </figure>
+
+  <h2 id="scale"><span class="num">Section four</span>The scale gap</h2>
+  <p>It helps to see how small the additive is. On a log scale, a nanodiamond particle is about a thousand times smaller than a graphite platelet and around a hundred thousand times smaller than the lead itself. That gap is why it can fill voids without making the line gritty: the particles are far below anything paper or fingertip could resolve.</p>
+  <figure class="fig">
+    <div class="plate"><img src="/uni-nanodia/figures/scale.svg" alt="A logarithmic scale from 1 nanometre to 1 millimetre marking nanodiamond, graphite platelets, a human hair and 0.3 and 0.5 mm leads."></div>
+    <figcaption><b>Figure 4. Six orders of magnitude.</b> Platelet sizes are typical values for fine lead graphite, not a figure Mitsubishi publishes.</figcaption>
+  </figure>
+
+  <h2 id="glide"><span class="num">Section five</span>Smoothness: diamonds as ball bearings</h2>
+  <p>The smoothness claim has independent support from tribology. Nanodiamond is sold commercially as an additive for lubricating oils, where it lowers friction and wear under boundary lubrication, the regime in which the surfaces are close enough for their asperities to touch. Near-spherical, extremely hard particles turn part of the sliding contact into rolling contact and polish the asperities down.</p>
+  <p>A pencil line is a boundary-lubricated contact of exactly this kind: graphite platelets shearing against each other and against paper fibres, with the impregnated oil as the lubricant. The mechanism transfers cleanly, which is more than I can say for most marketing chemistry.</p>
+  <figure class="fig">
+    <div class="plate"><img src="/uni-nanodia/figures/friction.svg" alt="Two sliding contacts: on the left interlocking jagged surfaces, on the right a row of small spheres between the surfaces acting as rollers."></div>
+    <figcaption><b>Figure 5. The proposed friction mechanism.</b> Rolling particles smooth out the stick-slip that feels scratchy on paper. Particle size is exaggerated for legibility.</figcaption>
+  </figure>
+
+  <h2 id="range"><span class="num">Section six</span>The line, the range and the price</h2>
+  <p>A denser, more uniform core should shed graphite more evenly, so tone ought to stay steady as the lead wears rather than blotching. In practice darkness is set far more by grade than by any additive, so I would not buy a lead for this claim alone.</p>
+  <p>The practical advantages are plainer. There are five diameters, a full 4H to 4B spread in 0.5 mm, and every tube costs the same ¥220. It is Eco Mark certified and compliant with Japan's Green Purchasing Law. There is also an erasable colour NanoDia line, which is useful for annotation.</p>
+  <figure class="fig">
+    <div class="plate"><img src="/uni-nanodia/figures/range.svg" alt="A dot matrix of grades 4H to 4B against diameters 0.3 to 0.9 mm, showing 0.5 mm with all ten grades and the other sizes with four or five."></div>
+    <figcaption><b>Figure 6. Grade availability by diameter,</b> from Mitsubishi's Japanese product page. Filled dots are grades on sale. Only 0.5 mm has the full spread; 0.3 mm runs from 2H to 2B.</figcaption>
+  </figure>
+
+  <h2 id="test"><span class="num">Section seven</span>Claims against an independent test</h2>
+  <p>Mitsubishi publishes <strong>no quantitative data</strong> for NanoDia: no bending strength, no friction coefficient, no wear rate. The most-cited independent comparison is a 2009 head-to-head on Dave's Mechanical Pencils against Pentel Ain, the other premium Japanese polymer lead.</p>
+  <div class="tablewrap">
+  <table>
+    <caption>Table 1. The maker's claims set against the one public head-to-head. One reviewer, one batch, informal methods and the 2009 formulation, so I read it as a data point rather than a verdict.</caption>
+    <thead><tr><th>Property</th><th>Mitsubishi says</th><th>Independent test, against Pentel Ain</th><th>Edge</th></tr></thead>
+    <tbody>
+      <tr><td class="h">Break strength</td><td>Resists breaking even under high pressure</td><td>"There was a clear winner, and it was not Uni Nano Dia"</td><td>Ain</td></tr>
+      <tr><td class="h">Wear and lead life</td><td>Reduced wear</td><td>"Uni Nano Dia never won a single match. Every pair of sets of lines was won by Pentel Ain"</td><td>Ain</td></tr>
+      <tr><td class="h">Darkness</td><td>Crisp, clear lines</td><td>"Both are quite similar in their darkness"</td><td>Even</td></tr>
+      <tr><td class="h">Smoothness</td><td>Smooth writing</td><td>No real difference from Ain; B felt smoother than HB</td><td>Even</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>Availability is also a question. One Western retailer lists NanoDia as being phased out in favour of uni's Smudge-Proof lead, while Mitsubishi's Japanese catalogue still lists all 27 black-lead SKUs.</p>
+
+  <h2 id="verdict"><span class="num">Section eight</span>My verdict</h2>
+  <div class="key">
+    <p class="kt">What holds up</p>
+    <p>The mechanism is sound. Void filling and crack pinning, together with nanodiamond's record as a lubricant additive, give each of the three claims a real physical basis. It is clearly a high-quality lead: smooth, dark and less breakable than generic leads, and user reports agree.</p>
+  </div>
+  <div class="key">
+    <p class="kt">What does not</p>
+    <p>With no published numbers, "nano-diamond" is partly a marketing story. The only public head-to-head found no edge over Pentel Ain, and Ain won on both strength and wear.</p>
+  </div>
+  <p class="kicker">Against ordinary lead, NanoDia's advantages are real and the physics behind each one is sound. Against the other premium polymer leads, the diamond is a good idea that has not been shown to buy a measurable lead. I would choose it for the 0.3 mm size, the full 0.5 mm grade range or the erasable colours. If snapping and wear are the only concern, Pentel Ain is at least as good on the only public evidence.</p>
+  <section class="sources" id="sources">
+    <h2>Sources and what was verified</h2>
+    <p><b>Mitsubishi Pencil</b>, ユニ ナノダイヤ product page (mpuni.co.jp): the product claim, the five diameters, the grade list per diameter, the ¥220 price and the Eco Mark and Green Purchasing Law certifications. Read directly on 25 September 2026.</p>
+    <p><b>Dave's Mechanical Pencils</b>, "Uni Nano Dia Mechanical Pencil Leads" (October 2009): the launch year and the head-to-head results against Pentel Ain, quoted verbatim.</p>
+    <p><b>Tokyo Pen Shop</b>, Nano Dia listing: the note that the lead is being phased out in favour of Smudge-Proof. A retailer's statement, not confirmed by Mitsubishi.</p>
+    <p><b>Junkatsu Net 21 / Daicel</b>, on nanodiamond as a lubricating-oil additive giving low friction and wear resistance under boundary lubrication. <b>ナノダイヤモンド</b>, Japanese Wikipedia: detonation synthesis and particle size under 10 nm.</p>
+    <p><b>Not verified.</b> Mitsubishi does not disclose the nanodiamond grade, particle size or loading used in NanoDia, and publishes no strength, friction or wear figures. Figures 2, 3 and 5 are explanatory schematics of the mechanism, not measurements, and the graphite platelet size in Figure 4 is a typical value rather than a NanoDia specification. I did not run strength or wear tests myself.</p>
+  </section>
+
+  </article>
+</div>
+</main>
+<footer class="site"><div class="wide"><span>&copy; 2026 Benjamin Michael Haire</span><a href="/">Back to all projects</a></div></footer>
+<!-- ISEGORIA:FOOT -->
+<footer id="ig-footer"><div><a href="/">Isegoria · Benjamin Haire</a><nav aria-label="Site links"><a href="/">Back to home</a><a href="/library.html">Browse the library</a><a href="#ig-content">Back to top</a></nav></div></footer>
+<!-- /ISEGORIA:FOOT -->
+</body>
+</html>
