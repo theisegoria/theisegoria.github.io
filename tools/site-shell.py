@@ -166,9 +166,12 @@ def apply(path,route,known):
     return False
 
 def main():
-    ap=argparse.ArgumentParser();ap.add_argument('--project',type=Path,default=ROOT);ap.add_argument('--prefix',default='/');args=ap.parse_args()
+    ap=argparse.ArgumentParser();ap.add_argument('--project',type=Path,default=ROOT);ap.add_argument('--prefix',default='/')
+    # --only: shell just these pages (for generators that rewrite one page), leaving every other page untouched.
+    ap.add_argument('--only',type=Path,nargs='+');args=ap.parse_args()
     files=[p for p in args.project.rglob('*.html') if not any(x in p.parts for x in ['node_modules','.git','dist','.next','.wrangler'])]
     known={route_for(p.relative_to(args.project),args.prefix):(title_of(p.read_text()),japanese(p.read_text())) for p in files}
-    count=sum(apply(p,route_for(p.relative_to(args.project),args.prefix),known) for p in files)
+    targets=[q.resolve() for q in args.only] if args.only else None
+    count=sum(apply(p,route_for(p.relative_to(args.project),args.prefix),known) for p in files if targets is None or p.resolve() in targets)
     print(f'{len(files)} HTML pages reviewed; {count} updated; shell {VERSION}')
 if __name__=='__main__':main()

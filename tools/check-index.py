@@ -85,9 +85,10 @@ def check_page(rel):
         if jp:
             claimed = int(jp.group(1))
         else:
-            en = re.match(r'^([A-Za-z-]+) (?:&middot;|·) ', text)
+            en = re.match(r'^([A-Za-z-]+|\d+) (?:&middot;|·) ', text)
             if en:
-                claimed = word_to_number(en.group(1))
+                w = en.group(1)
+                claimed = int(w) if w.isdigit() else word_to_number(w)
         if claimed is not None and claimed != actual:
             problems.append("%s: label says %s, section holds %d"
                             % (name, claimed, actual))

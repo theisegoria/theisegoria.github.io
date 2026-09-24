@@ -13,9 +13,10 @@ class Page(HTMLParser):
   if tag=='script':self.scripts.append(a)
   if tag=='meta' and a.get('http-equiv','').lower()=='content-security-policy':self.policies.append(a.get('content',''))
 def main():
- ap=argparse.ArgumentParser();ap.add_argument('--check',action='store_true');args=ap.parse_args();version=hashlib.sha256((ROOT/'assets/analytics.js').read_bytes()).hexdigest()[:12];tag=f'<script defer data-isegoria-analytics src="/assets/analytics.js?v={version}"></script>';issues=[];count=0
+ ap=argparse.ArgumentParser();ap.add_argument('--check',action='store_true');ap.add_argument('--only',type=Path,nargs='+');args=ap.parse_args();only={q.resolve() for q in args.only} if args.only else None;version=hashlib.sha256((ROOT/'assets/analytics.js').read_bytes()).hexdigest()[:12];tag=f'<script defer data-isegoria-analytics src="/assets/analytics.js?v={version}"></script>';issues=[];count=0
  for p in sorted(ROOT.rglob('*.html')):
   if any(x in p.parts for x in ['node_modules','.git','dist','tests']):continue
+  if only is not None and p.resolve() not in only:continue
   count+=1;s=p.read_text()
   if not args.check:
    s=re.sub(r'<script\b[^>]*\bsrc=["\']/assets/analytics\.js(?:\?[^"\']*)?["\'][^>]*>\s*</script>\s*','',s,flags=re.I)

@@ -141,7 +141,7 @@ def retag_count(block, count, lang):
         if lang == "ja":
             fixed = re.sub(r'^\d+\u7de8', "%d\u7de8" % count, label)
         else:
-            fixed = re.sub(r'^[A-Za-z-]+(?= (?:&middot;|\u00b7) )',
+            fixed = re.sub(r'^(?:[A-Za-z-]+|\d+)(?= (?:&middot;|\u00b7) )',
                            number_word(count), label)
         return '<p class="label">%s</p>' % fixed
 

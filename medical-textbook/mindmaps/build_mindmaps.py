@@ -687,7 +687,13 @@ def write_index(results: list[dict]) -> bool:
             f'<a href="{manuscript.PACK_BASE}IMF-{item["module"]}-study-pack.zip">Study pack</a>'
             f'</td></tr>'
         )
-    return write(HERE / "index.html", INDEX_TEMPLATE.format(rows="\n".join(rows), pack_base=manuscript.PACK_BASE))
+    changed = write(HERE / "index.html", INDEX_TEMPLATE.format(rows="\n".join(rows), pack_base=manuscript.PACK_BASE))
+    # The template has no site header or analytics tag; add both to this one page, as the
+    # repo's CI requires, without touching any other page.
+    tools = HERE.parents[1] / "tools"
+    for tool in ("site-shell.py", "track-pages.py"):
+        subprocess.run([sys.executable, str(tools / tool), "--only", str(HERE / "index.html")], check=True)
+    return changed
 
 
 def main(argv: list[str] | None = None) -> int:

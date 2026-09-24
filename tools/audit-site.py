@@ -6,7 +6,7 @@ from urllib.parse import urljoin,urlsplit,unquote
 import argparse,json,subprocess
 
 class Document(HTMLParser):
- def __init__(self):super().__init__();self.ids=set();self.links=[];self.assets=[];self.shells=0;self.refresh=False;self.dynamic=False
+ def __init__(self):super().__init__();self.ids=set();self.links=[];self.assets=[];self.frames=[];self.shells=0;self.refresh=False;self.dynamic=False
  def handle_starttag(self,tag,pairs):
   a=dict(pairs)
   if a.get('id'):self.ids.add(a['id'])
@@ -16,6 +16,7 @@ class Document(HTMLParser):
   if tag=='meta' and a.get('http-equiv','').lower()=='refresh':self.refresh=True
   if tag=='a' and a.get('href'):self.links.append(a['href'])
   if tag in ['script','img','iframe','source'] and a.get('src'):self.assets.append(a['src'])
+  if tag=='iframe' and a.get('src'):self.frames.append(a['src'])
   if tag=='link' and a.get('rel') in ['stylesheet','icon','manifest'] and a.get('href'):self.assets.append(a['href'])
 
 def inventory(root,prefix):
@@ -24,6 +25,7 @@ def inventory(root,prefix):
  docs={}
  for p in root.rglob('*.html'):
   if any(t in p.parts for t in ['node_modules','dist','.git','.next','.wrangler']):continue
+  if p.relative_to(root).parts[0]=='tools':continue  # scaffolding templates, never served as pages
   url=prefix+p.relative_to(root).as_posix();d=Document();d.feed(p.read_text());docs[url]=d;paths.add(url)
  for p in (root/'assets').glob('site-shell.*'):paths.add(prefix+p.relative_to(root).as_posix())
  return paths,docs
@@ -63,6 +65,7 @@ def main():
     p,frag=target
     if p not in paths:problems.append({'page':url,'problem':'missing '+kind,'target':ref});continue
     if kind=='link' and p in docs:edges[url].add(p)
+    if kind=='asset' and ref in d.frames and p in docs:edges[url].add(p)
     if frag and p in docs and frag not in docs[p].ids and not docs[p].dynamic:problems.append({'page':url,'problem':'missing fragment','target':ref})
  reachable=set();queue=['/index.html']
  while queue:

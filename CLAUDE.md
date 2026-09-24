@@ -271,6 +271,18 @@ error instead. Add a new category to both files together.
 together and in that order: the last two reorder the same pair of
 `<script>` tags, so running one alone rewrites every page.
 
+A generator that rewrites a single page should not run either tool across
+the whole site. Both take `--only PATH...` and touch just those pages:
+`medical-textbook/mindmaps/build_mindmaps.py` calls them on its own
+`index.html` after rebuilding it, because its template carries neither the
+shared header nor the analytics tag and CI fails without them.
+
+`audit-site.py` treats an `<iframe src>` as making the embedded page
+reachable, and skips `tools/`, whose lab templates are not served pages.
+English section count labels are spelled out (`Nineteen · ...`);
+`check-index.py` and `latest.py` also read a numeric label, so a digit that
+slips in is still checked and gets rewritten to a word on the next run.
+
 ## Math encyclopedia
 
 `tools/math-encyclopedia.json` is the one list of encyclopedia entries, in
