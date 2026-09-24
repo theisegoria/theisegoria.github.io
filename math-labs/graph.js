@@ -71,7 +71,8 @@
     'hyperbolic-geometry': ['group-theory', 'general-relativity', 'complex-analysis'],
     'rigid-body-dynamics': ['lie-groups', 'hamiltonian-mechanics'],
     'elliptic-curves': ['complex-analysis', 'hyperbolic-geometry'],
-    'atomic-physics': ['optics', 'lie-groups']
+    'atomic-physics': ['optics', 'lie-groups'],
+    'quaternions': ['lie-groups', 'rigid-body-dynamics', 'complex-analysis']
   };
   // Topics named in each topic's own prerequisite line (content.json "prerequisite").
   const PREREQ = {
@@ -94,7 +95,8 @@
     'hyperbolic-geometry': ['differential-geometry'],                    // Complex numbers and differential geometry
     'rigid-body-dynamics': ['classical-mechanics', 'linear-algebra'],    // Classical mechanics and linear algebra
     'elliptic-curves': ['group-theory', 'number-theory'],               // Group theory, modular arithmetic and complex numbers
-    'atomic-physics': ['quantum-mechanics']                              // Quantum mechanics
+    'atomic-physics': ['quantum-mechanics'],                             // Quantum mechanics
+    'quaternions': ['linear-algebra']                                    // Vectors, dot and cross products, rotation matrices and complex numbers
   };
   // Where each group settles, as fractions of the stage.
   const ANCHOR = {
