@@ -3774,7 +3774,7 @@ Monitoring should connect measurements to decisions. Continuous sensors reveal d
 
 Persistent hyperglycaemia alters proteins, signalling, oxidation, and inflammation, damaging microvessels. Retinopathy progresses from leakage to ischaemia and neovascularisation. Kidney disease causes albuminuria, filtration loss, or both. Peripheral neuropathy causes sensory loss, pain, weakness, and foot injury; autonomic neuropathy disrupts cardiovascular, gastrointestinal, bladder, sweating, and sexual function.
 
-Diabetes also accelerates atherosclerotic cardiovascular disease through clustering of hypertension, dyslipidaemia, inflammation, endothelial dysfunction, kidney disease, and smoking exposure. Foot ulceration arises from neuropathy, pressure, deformity, trauma, infection, and ischaemia. Prevention therefore requires retinal surveillance, kidney assessment, foot examination, pressure and lipid management, vaccination, dental care, smoking cessation, and attention to mental health—not glucose treatment alone.
+Diabetes also accelerates atherosclerotic cardiovascular disease through clustering of hypertension, dyslipidaemia, inflammation, endothelial dysfunction, kidney disease, and smoking exposure. Foot ulceration arises from neuropathy, pressure, deformity, trauma, infection, and ischaemia. Prevention therefore requires retinal surveillance, kidney assessment, foot examination, pressure and lipid management, vaccination, dental care, smoking cessation, and attention to mental health, not glucose treatment alone.
 
 ## Principles of glucose-lowering therapy
 
@@ -3894,7 +3894,7 @@ Weight loss lowers energy expenditure and raises hunger signals, creating biolog
 
 Loss of muscle during weight reduction reduces function and metabolic capacity. Adequate protein, resistance exercise, and gradual monitoring are particularly important in older or frail patients. Improvement in liver fat, glucose, pressure, mobility, fertility, or sleep may be clinically meaningful before a large weight change.
 
-The final metabolic plan should separate glycaemic exposure, variability, hypoglycaemia, insulin reserve, cardiovascular and kidney risk, adipose complications, nutrition, and treatment burden. Success is durable reduction in organ risk and improved function, not pursuit of one glucose or weight number in isolation during lifelong metabolic care in clinical practice.
+The final metabolic plan should separate glycaemic exposure, variability, hypoglycaemia, insulin reserve, cardiovascular and kidney risk, adipose complications, nutrition, and treatment burden. Eye, foot, nerve, kidney, blood pressure, lipid, smoking, vaccination, and dental status should also be reviewed on a planned schedule. Success in lifelong metabolic care is durable reduction in organ risk and improved function, not pursuit of one glucose or weight number in isolation. Self-management the patient can realistically carry out, with a safety plan for hypoglycaemia and sick days, connects that benefit to daily life.
 
 ## Retrieval prompts
 
@@ -4816,7 +4816,7 @@ Field defects localise pathways because retinal geometry remains ordered. Optic-
 
 ### Auditory and vestibular inference
 
-The travelling wave along the basilar membrane converts frequency into place. Inner hair cells transmit sound information, while outer hair cells actively sharpen and amplify mechanical tuning. Damage to outer cells raises thresholds and broadens frequency discrimination.
+The travelling wave along the basilar membrane converts frequency into place. Inner hair cells transmit sound information, while outer hair cells actively sharpen and amplify mechanical tuning. Damage to outer cells raises thresholds and broadens tuning, worsening frequency discrimination.
 
 Conductive hearing loss reduces sound delivery but preserves cochlear neural machinery. Sensorineural loss reduces transduction or neural processing and may distort speech disproportionately to loudness. Bedside tuning-fork patterns are screening tools; audiometry quantifies air, bone, frequency, speech, and masking relationships.
 
@@ -5240,7 +5240,7 @@ Neurological disease is interpreted through anatomy, mechanism, and time course.
 
 Brain tissue requires continuous oxygen and glucose but stores little substrate. Arterial occlusion creates an irreversibly injured core surrounded by hypoperfused penumbra that may recover if flow returns. Excitotoxic glutamate, calcium entry, free radicals, mitochondrial failure, inflammation, oedema, and microvascular dysfunction expand injury. Collateral circulation, occlusion site, pressure, temperature, glucose, and time determine survival.
 
-Thrombosis can arise from large-artery atherosclerosis, small penetrating-vessel disease, cardiac embolism, arterial dissection, hypercoagulability, or less common vasculopathies. A transient ischaemic attack is transient focal dysfunction without established infarction, but early stroke risk can be high. Rapidly resolved symptoms still require urgent evaluation.
+Ischaemic stroke can arise from large-artery atherosclerosis, small penetrating-vessel disease, cardiac embolism, arterial dissection, hypercoagulability, or less common vasculopathies. A transient ischaemic attack is transient focal dysfunction without established infarction, but early stroke risk can be high. Rapidly resolved symptoms still require urgent evaluation.
 
 Anterior-circulation stroke may cause contralateral face-arm or leg weakness and sensory loss, aphasia in the dominant hemisphere, neglect in the non-dominant hemisphere, visual-field loss, or gaze deviation. Posterior-circulation disease causes combinations of diplopia, dysarthria, dysphagia, vertigo, ataxia, crossed cranial and body signs, visual loss, and impaired consciousness. Isolated dizziness is usually not stroke, but abrupt severe persistent vestibular syndrome with central signs demands caution.
 
@@ -5410,7 +5410,7 @@ Inspect bulk, fasciculations, involuntary movement, posture, and asymmetry. Asse
 
 Look for drift and loss of fine fractionated movement. Pyramidal weakness often affects upper-limb extensors and lower-limb flexors more than their opposites. Root and peripheral-nerve lesions follow myotomal or named-nerve patterns. Neuropathy is often distal; myopathy is often proximal; neuromuscular-junction weakness fluctuates and fatigues.
 
-Reflexes include biceps, supinator, triceps, knee, ankle, plantar responses, and selected superficial reflexes. Compare sides and relate results to power and tone. Hyperreflexia, clonus, and extensor plantar responses support upper motor-neuron dysfunction. Reduced reflexes suggest lower motor neuron, nerve, root, junction, or acute spinal shock but can be normal variants.
+Reflexes include biceps, supinator, triceps, knee, ankle, plantar responses, and selected superficial reflexes. Compare sides and relate results to power and tone. Hyperreflexia, clonus, and extensor plantar responses support upper motor-neuron dysfunction. Reduced reflexes suggest lower motor neuron, nerve, root, or acute spinal shock but can be normal variants.
 
 ## Sensory examination
 
@@ -5732,7 +5732,7 @@ Osteomyelitis can spread through blood, contiguous tissue, surgery, trauma, or d
 
 Rheumatoid arthritis is immune-mediated synovitis that can destroy cartilage, bone, tendon, and ligament. It commonly causes symmetric small-joint pain, swelling, prolonged morning stiffness, and reduced function. Cervical spine, lungs, heart, eyes, nerves, skin, blood, and vessels may be involved. Smoking and genetic susceptibility contribute.
 
-Rheumatoid factor is sensitive but not specific; anti-citrullinated-peptide antibodies are more specific and may predict erosive disease. Normal markers or negative antibodies do not exclude clinical synovitis. Ultrasound or magnetic resonance can detect inflammation, while radiographs document structural damage.
+Rheumatoid factor is only moderately sensitive and is not specific; anti-citrullinated-peptide antibodies are more specific and may predict erosive disease. Normal markers or negative antibodies do not exclude clinical synovitis. Ultrasound or magnetic resonance can detect inflammation, while radiographs document structural damage.
 
 Early disease-modifying treatment improves long-term outcome. Methotrexate is a common anchor drug with folate supplementation and monitoring. Other conventional, biological, and targeted synthetic agents inhibit specific immune pathways. Screen for infection and vaccination needs, monitor toxicity, and minimise prolonged glucocorticoid exposure. Treatment aims for remission or low activity, not analgesia alone.
 
@@ -6204,7 +6204,7 @@ CD-four T cells coordinate macrophage, eosinophil, mast-cell, neutrophil, and re
 
 ## Immune evasion
 
-Capsules resist phagocytosis; antigenic variation alters recognised targets; latency hides gene expression; intracellular residence reduces antibody access. Microbes inhibit complement, degrade antibodies, suppress interferon, block antigen presentation, mimic host molecules, or induce immunoregulatory pathways. Biofilms reduce penetration and expose slow-growing cells.
+Capsules resist phagocytosis; antigenic variation alters recognised targets; latency hides gene expression; intracellular residence reduces antibody access. Microbes inhibit complement, degrade antibodies, suppress interferon, block antigen presentation, mimic host molecules, or induce immunoregulatory pathways. Biofilms reduce penetration and shelter slow-growing cells.
 
 ## Immunodeficiency patterns
 
@@ -6486,7 +6486,7 @@ Original synthesis informed principally by Katzung and OpenStax Pharmacology, an
 
 ## Orientation
 
-Sepsis is life-threatening organ dysfunction from a dysregulated response to infection. It is a syndrome, not a culture result, and may occur without fever or hypotension. Care combines recognition, resuscitation, cultures, antimicrobials, source control, and reassessment. Stewardship is disciplined selection, optimisation, narrowing, and stopping—not weak treatment. Prevention reduces infection and antimicrobial use.
+Sepsis is life-threatening organ dysfunction from a dysregulated response to infection. It is a syndrome, not a culture result, and may occur without fever or hypotension. Care combines recognition, resuscitation, cultures, antimicrobials, source control, and reassessment. Stewardship is disciplined selection, optimisation, narrowing, and stopping; it is not weak treatment. Prevention reduces infection and antimicrobial use.
 
 ## Pathophysiology of sepsis
 
@@ -6848,7 +6848,7 @@ Carcinogens directly damage DNA or require metabolic activation. Tobacco causes 
 
 Oncogenic infections act through microbial proteins, inflammation, immune suppression, or regeneration. Examples include human papillomavirus, hepatitis viruses, Epstein-Barr virus, Helicobacter pylori, human T-cell leukaemia virus, and parasites. Vaccination, antimicrobial treatment, tobacco cessation, alcohol reduction, healthy weight, activity, and occupational control prevent cancer.
 
-Risk is probabilistic. Exposure does not guarantee cancer, and absence of known exposure does not imply fault. Prevention messages should avoid blame and account for social, commercial, and environmental determinants.
+Risk is probabilistic. Exposure does not guarantee cancer, and developing cancer does not imply personal fault. Prevention messages should avoid blame and account for social, commercial, and environmental determinants.
 
 ## Tumour microenvironment and angiogenesis
 
@@ -7174,7 +7174,7 @@ Neonates lose heat rapidly through high surface-area-to-mass ratio, thin skin, l
 
 Glucose shifts from placental transfer to feeding and endogenous production. Prematurity, growth restriction, maternal diabetes, infection, endocrine disease, and feeding difficulty increase hypoglycaemia risk. It may be silent or cause jitteriness, poor feeding, apnoea, lethargy, hypothermia, or seizure. Treatment depends on age, symptoms, and risk.
 
-Renal filtration, concentration, water, sodium, drug, and acid handling are immature, especially in prematurity. Hepatic conjugation and metabolism are also immature. Fetal haemoglobin is initially high, followed by a physiological haemoglobin fall as erythropoietin decreases.
+Renal filtration, concentration, water, sodium, drug, and acid handling are immature, especially in prematurity. Hepatic conjugation and metabolism are also immature. Haemoglobin concentration is high at birth and mostly fetal haemoglobin; total haemoglobin then falls physiologically as erythropoietin decreases, while fetal haemoglobin is gradually replaced by adult haemoglobin.
 
 ## Neonatal jaundice and feeding
 
@@ -7438,7 +7438,7 @@ Deprescribing is a therapeutic trial with a withdrawal and monitoring plan. Imme
 
 Changing many medicines at once obscures the cause of benefit or harm, so changes are prioritised and made in stages. Before starting, baseline values for target symptoms, blood pressure, glucose, sleep, pain, and falls are recorded, and a plan for reinstatement and a contact point are agreed in case of relapse or withdrawal. The list is synchronised between the person, family, pharmacy, primary care, and residential facility, and outdated automatic repeat prescriptions are stopped. Successful deprescribing is measured by improvement in alertness, mobility, continence, symptoms, and treatment burden, not only by a smaller number of medicines.
 
-Falls are events with mechanisms. Ask what happened before, during, and after: posture, turning, trip, dizziness, palpitation, loss of consciousness, focal weakness, urgency, footwear, lighting, injury, and time on the floor. A backward fall differs from slipping over an obstacle. Syncope, seizure, vestibular disease, neuropathy, parkinsonism, visual loss, painful joints, cognitive misjudgement, sedatives, and environmental hazards can coexist. Multifactorial intervention is effective when it treats identified contributors, particularly progressive balance and strength exercise, medication reduction, vision and foot care, home modification, and cardiovascular causes.
+Falls are events with mechanisms. Ask what happened before, during, and after: posture, turning, trip, dizziness, palpitation, loss of consciousness, focal weakness, urgency, footwear, lighting, injury, and time on the floor. A backward fall differs from tripping over an obstacle. Syncope, seizure, vestibular disease, neuropathy, parkinsonism, visual loss, painful joints, cognitive misjudgement, sedatives, and environmental hazards can coexist. Multifactorial intervention is effective when it treats identified contributors, particularly progressive balance and strength exercise, medication reduction, vision and foot care, home modification, and cardiovascular causes.
 
 An inability to rise after a fall predicts further harm. Prolonged time on the floor causes pressure injury, hypothermia, dehydration, rhabdomyolysis, kidney injury, and fear. Assess head injury and occult hip, pelvic, wrist, rib, or vertebral fracture; pain may be muted and walking does not exclude fracture. Anticoagulation changes concern for intracranial bleeding. A personal alarm is useful only if worn, reachable, understood, and connected to a response system.
 
@@ -7528,7 +7528,7 @@ Trauma shock is haemorrhagic until proved otherwise, but obstructive, cardiogeni
 
 Control bleeding while restoring perfusion with warmed blood components in major haemorrhage. Excess crystalloid dilutes clotting factors, worsens oedema, and causes hypothermia and acidosis. Balanced component therapy or whole blood follows local protocols. Give tranexamic acid early to eligible bleeding trauma patients within the evidence-based window.
 
-Damage-control resuscitation limits permissive hypotension until haemostasis in selected patients, minimises crystalloid, corrects calcium and temperature, and moves rapidly to surgery or embolisation. This strategy is inappropriate when cerebral perfusion requires higher pressure, including severe traumatic brain injury. Monitor coagulation dynamically where available.
+Damage-control resuscitation uses permissive hypotension until haemostasis in selected patients, minimises crystalloid, corrects calcium and temperature, and moves rapidly to surgery or embolisation. This strategy is inappropriate when cerebral perfusion requires higher pressure, including severe traumatic brain injury. Monitor coagulation dynamically where available.
 
 The lethal triad of hypothermia, acidosis, and coagulopathy is self-reinforcing. Exposure, cold fluid, shock, and long procedures worsen it. Warm the patient, room, fluids, and blood; control haemorrhage; restore perfusion; and shorten definitive procedures when physiology is exhausted.
 
@@ -7582,7 +7582,7 @@ Prevent complications through multimodal analgesia, lung expansion, early mobili
 
 ## TTS module 2: Resuscitation physiology, occult injury, and perioperative risk control
 
-Resuscitation is repeated hypothesis testing under time pressure. Identify the physiological threat, intervene, and immediately ask whether airway patency, ventilation, oxygen delivery, perfusion, consciousness, or temperature improved. A normal initial pressure or scan cannot end assessment because compensation hides injury and bleeding evolves. Mechanism predicts what may be concealed, while response to treatment reveals which physiological model is plausible. Definitive haemorrhage control, decompression, antidote, or surgery must proceed alongside—not after—diagnostic refinement.
+Resuscitation is repeated hypothesis testing under time pressure. Identify the physiological threat, intervene, and immediately ask whether airway patency, ventilation, oxygen delivery, perfusion, consciousness, or temperature improved. A normal initial pressure or scan cannot end assessment because compensation hides injury and bleeding evolves. Mechanism predicts what may be concealed, while response to treatment reveals which physiological model is plausible. Definitive haemorrhage control, decompression, antidote, or surgery must proceed alongside, not after, diagnostic refinement.
 
 Catastrophic external haemorrhage is controlled before a conventional airway sequence because exsanguination can kill within minutes. Direct pressure, wound packing, tourniquet, pelvic stabilisation, and rapid operative or interventional control are anatomical treatments. A pelvic binder belongs at the greater trochanters, reducing pelvic volume and motion; placement over the iliac crests is ineffective. Long-bone splinting limits bleeding and pain. Every intervention is followed by repeat distal perfusion and neurological documentation.
 
@@ -8312,7 +8312,7 @@ Gastrointestinal assessment converts symptoms into an anatomical and physiologic
 
 For pain, establish onset, first and current site, radiation, character, intensity, constancy or colic, progression, movement, meals, defecation, urination, menstruation, pregnancy possibility, posture, medicines, and prior episodes. Visceral pain is diffuse and midline because organs share autonomic afferents; parietal inflammation produces sharper local pain and guarding. Migration can be informative, but textbook patterns are imperfect. Sudden maximal pain suggests perforation, vascular catastrophe, torsion, rupture, or obstruction and deserves urgent evaluation.
 
-Clarify vomiting frequency, volume, colour, blood, bile, faeculent quality, relation to meals, and ability to retain fluid. Early bilious vomiting suggests obstruction beyond the pylorus; repeated vomiting causes chloride and hydrogen loss, contraction alkalosis, potassium depletion, and kidney injury. Faeculent vomiting suggests distal obstruction or fistula. Distinguish vomiting from effortless regurgitation and from rumination.
+Clarify vomiting frequency, volume, colour, blood, bile, faeculent quality, relation to meals, and ability to retain fluid. Early bilious vomiting suggests obstruction beyond the ampulla of Vater; repeated vomiting causes chloride and hydrogen loss, contraction alkalosis, potassium depletion, and kidney injury. Faeculent vomiting suggests distal obstruction or fistula. Distinguish vomiting from effortless regurgitation and from rumination.
 
 Characterise dysphagia by initiation, solids, liquids, progression, pain, regurgitation, aspiration, neurological symptoms, and weight loss. Ask about heartburn, early satiety, postprandial fullness, appetite, and previous ulcer or reflux treatment. Dyspepsia is a symptom cluster, not a final diagnosis.
 
@@ -9084,7 +9084,7 @@ A positive human chorionic gonadotropin test proves trophoblastic activity, not 
 
 Hyperemesis gravidarum is more than ordinary nausea. Weight loss, dehydration, ketosis, electrolyte disturbance, kidney injury, and inability to function require treatment and exclusion of multiple pregnancy, molar disease, thyroid, liver, gastrointestinal, neurological, and medication causes. Prolonged vomiting depletes thiamine; giving substantial carbohydrate first can precipitate Wernicke encephalopathy. Replace thiamine, fluid, potassium and other deficits, provide pregnancy-compatible antiemetics, prevent thrombosis when admitted, and escalate nutrition support when oral intake remains impossible.
 
-Pre-eclampsia is a multisystem placental endothelial disease, not simply hypertension plus protein. New hypertension after mid-pregnancy with kidney, liver, neurological, haematological, pulmonary, or placental dysfunction meets the syndrome even without proteinuria. Severe headache, visual change, right-upper-quadrant or epigastric pain, dyspnoea, reduced urine, confusion, brisk reflexes, bleeding, or reduced fetal movement are warning signs. Confirm pressure with correct cuff and positioning, then assess platelets, haemolysis, liver, creatinine, urine protein, symptoms, fetal growth, fluid, and Doppler physiology.
+Pre-eclampsia is a multisystem placental endothelial disease, not simply hypertension plus protein. New hypertension after mid-pregnancy with kidney, liver, neurological, haematological, pulmonary, or placental dysfunction meets the syndrome even without proteinuria. Severe headache, visual change, right-upper-quadrant or epigastric pain, dyspnoea, reduced urine, confusion, brisk reflexes, bleeding, or reduced fetal movement are warning signs. Confirm pressure with correct cuff and positioning, then assess platelets, haemolysis, liver, creatinine, urine protein, symptoms, fetal growth, amniotic fluid, and Doppler physiology.
 
 Severe hypertension is treated urgently to prevent maternal intracranial haemorrhage and other injury. Magnesium sulphate prevents or treats eclamptic seizure and requires monitoring of reflexes, breathing, urine, and toxicity, with calcium available as antidote. Fluid is cautious because endothelial leak and low oncotic pressure predispose pulmonary oedema. Delivery removes the placenta and is definitive, but timing balances maternal deterioration, fetal compromise, and prematurity. Corticosteroids support fetal lung maturation when early birth is expected but must not delay delivery during uncontrolled threat.
 
@@ -9456,7 +9456,7 @@ Teeth have mineralised enamel over dentine surrounding vascular pulp and root ca
 
 Parasympathetic stimulation drives abundant watery saliva; sympathetic activity changes protein composition. Saliva lubricates speech and swallowing, buffers acid, supports remineralisation, clears food, and restrains microbes. Reduced flow causes thirst, difficulty eating dry food, altered taste, fissures, candidiasis, caries, periodontal disease, and poor denture tolerance. Causes include dehydration, anticholinergic and psychotropic drugs, opioids, radiation, autoimmune disease, diabetes, obstruction, and ageing-associated polypharmacy.
 
-Dental plaque is an organised biofilm rather than loose contamination. Frequent fermentable carbohydrate permits bacterial acid to demineralise enamel. Salivary buffering and mineral exchange can reverse early injury, but repeated low pH produces cavitation. Fluoride strengthens resistance and promotes remineralisation. Caries risk therefore reflects exposure frequency, biofilm, saliva, fluoride, tooth structure, diet, and access—not sugar quantity alone.
+Dental plaque is an organised biofilm rather than loose contamination. Frequent fermentable carbohydrate permits bacterial acid to demineralise enamel. Salivary buffering and mineral exchange can reverse early injury, but repeated low pH produces cavitation. Fluoride strengthens resistance and promotes remineralisation. Caries risk therefore reflects exposure frequency, biofilm, saliva, fluoride, tooth structure, diet, and access, not sugar quantity alone.
 
 ## History and examination
 
@@ -10280,7 +10280,7 @@ Survivors may develop weakness, neuropathy, cognitive impairment, distress, pain
 
 Critical care temporarily substitutes for failing physiology while definitive treatment and recovery occur. Every support has a cost: oxygen can injure lung, positive pressure can reduce cardiac output, vasopressors can impair peripheral flow, dialysis can destabilise circulation, sedation can prolong ventilation, and invasive devices cause infection and thrombosis. The central discipline is to define the physiological target, choose the least harmful effective support, measure response, and remove support as soon as reserve returns.
 
-Systemic oxygen delivery equals cardiac output multiplied by arterial oxygen content. Arterial content is dominated by haemoglobin concentration times saturation; dissolved oxygen contributes little at ordinary pressures. A saturation of one hundred percent cannot compensate for profound anaemia or very low cardiac output. Tissue oxygen consumption depends on delivery and extraction until a critical threshold is crossed. Venous saturation and lactate provide indirect clues but are altered by shunting, adrenergic metabolism, liver clearance, seizures, and mitochondrial dysfunction.
+Systemic oxygen delivery equals cardiac output multiplied by arterial oxygen content. Arterial content is dominated by haemoglobin concentration times saturation; dissolved oxygen contributes little at ordinary pressures. A saturation of one hundred percent cannot compensate for profound anaemia or very low cardiac output. Tissue oxygen consumption is maintained by increasing extraction as delivery falls, but becomes delivery-dependent once delivery drops below a critical threshold. Venous saturation and lactate provide indirect clues but are altered by shunting, adrenergic metabolism, liver clearance, seizures, and mitochondrial dysfunction.
 
 Oxygen is prescribed to a target appropriate to the patient. Pulse oximetry estimates saturation but is affected by poor perfusion, motion, dyshaemoglobins, pigmentation-related device bias, and probe placement. Supplemental oxygen can conceal hypoventilation because saturation remains high while carbon dioxide rises. Arterial blood gas measures tensions and acid-base state, while co-oximetry detects carboxyhaemoglobin and methaemoglobin. Persistent hypoxaemia prompts analysis of low inspired oxygen, hypoventilation, diffusion limitation, ventilation–perfusion mismatch, or shunt.
 
@@ -10440,7 +10440,7 @@ Fever is a cytokine-driven increase in hypothalamic set point. Vasoconstriction 
 
 Serious infection may present without fever in older, frail, neutropenic, pregnant, immunosuppressed, or antipyretic-treated patients. Conversely, fever does not prove infection. Examine devices, skin folds, mouth, lungs, heart, abdomen, flanks, joints, spine, wounds, and neurological state according to risk. Blood cultures are useful in sepsis, endocarditis, and selected focal syndromes but contaminated or low-volume cultures create harm. Empirical antibiotics are proportional to infection probability and consequence of delay, with daily diagnostic reassessment.
 
-Syncope is abrupt transient loss of consciousness and postural tone from global cerebral hypoperfusion with rapid spontaneous recovery. Establish whether consciousness was truly lost and obtain witness detail: posture, trigger, prodrome, pallor or cyanosis, breathing, eye position, movements, duration, injury, and recovery. Nausea, warmth, sweating, and visual dimming before prolonged standing support reflex syncope. Sudden unheralded collapse during exertion or while supine, palpitations, chest pain, abnormal electrocardiogram, structural heart disease, or family sudden death raises cardiac risk.
+Syncope is abrupt transient loss of consciousness and postural tone from global cerebral hypoperfusion with rapid spontaneous recovery. Establish whether consciousness was truly lost and obtain witness detail: posture, trigger, prodrome, pallor or cyanosis, breathing, eye position, movements, duration, injury, and recovery. Nausea, warmth, sweating, and visual dimming during prolonged standing support reflex syncope. Sudden unheralded collapse during exertion or while supine, palpitations, chest pain, abnormal electrocardiogram, structural heart disease, or family sudden death raises cardiac risk.
 
 When syncope occurs in a person who may be pregnant, ectopic pregnancy and haemorrhage are assessed; after delivery, haemorrhage, pulmonary embolism, cardiomyopathy, and hypertensive disease are assessed. In older people there may be no memory of the moment before the faint, so the event is reported as a simple fall; facial or occipital injury and the absence of a protective reaction are useful clues. Exertional syncope raises valvular disease, hypertrophic cardiomyopathy, pulmonary hypertension, ischaemia, and arrhythmia, and return to sport or driving is not permitted before a diagnosis.
 
@@ -11026,7 +11026,7 @@ Use plain language, interpreters, diagrams or communication aids when helpful, a
 
 Emergency necessity permits immediately required treatment when a person lacks capacity, no valid refusal applies, delay risks serious harm, and intervention is proportionate to presumed wishes and interests. This does not authorise convenient non-urgent care. As soon as possible, restore normal consent, involve authorised decision-makers, and document why action was necessary.
 
-Therapeutic privilege—avoiding disclosure because it may distress—is extremely narrow. Unexpected findings, trainee participation, photography, intimate examination, blood products, sterilisation, research, and special consequences may require explicit discussion. Disclose conflicts that could influence choice.
+Therapeutic privilege (avoiding disclosure because it may distress) is extremely narrow. Unexpected findings, trainee participation, photography, intimate examination, blood products, sterilisation, research, and special consequences may require explicit discussion. Disclose conflicts that could influence choice.
 
 ## Decision-making capacity
 
@@ -11664,7 +11664,7 @@ A first seizure is described carefully and differentiated from syncope, shudderi
 
 Headache red flags include abrupt onset, focal deficit, altered consciousness, papilloedema, progressive morning vomiting, positional change, systemic disease, or very young age. Limp or refusal to bear weight can reflect trauma, transient synovitis, septic arthritis, osteomyelitis, malignancy, inflammatory disease, or non-accidental injury. Fever, severe pain, restricted passive movement, and systemic illness raise concern for infection.
 
-Paediatric diagnosis depends on repeated observation and explicit contingency planning. A child safe for home needs adequate hydration and breathing, reliable caregivers, access to return, and concrete warning signs. Clinical uncertainty should lower—not conceal—the threshold for planned reassessment.
+Paediatric diagnosis depends on repeated observation and explicit contingency planning. A child safe for home needs adequate hydration and breathing, reliable caregivers, access to return, and concrete warning signs. Clinical uncertainty should lower, not conceal, the threshold for planned reassessment.
 
 ## TTS module 3: Management, monitoring, prevention, safety, ethics, systems issues, and longitudinal care
 
@@ -12204,7 +12204,7 @@ Resilience is the capacity to anticipate, monitor, respond, and learn. Redundanc
 
 ### Model human cognitive performance realistically
 
-Attention is limited and vulnerable to interruption, fatigue, stress, noise, and competing tasks. Working memory holds only a small amount of information. Prospective memory—remembering to act later—is particularly fragile during interruptions. Checklists and external reminders support cognition when integrated into workflow.
+Attention is limited and vulnerable to interruption, fatigue, stress, noise, and competing tasks. Working memory holds only a small amount of information. Prospective memory (remembering to act later) is particularly fragile during interruptions. Checklists and external reminders support cognition when integrated into workflow.
 
 Automatic processing is fast and efficient but susceptible to pattern error. Deliberative processing is slower and effortful and may be impaired by workload. Expertise improves pattern recognition yet can increase anchoring if familiar scripts dominate contradictory evidence. Diagnostic timeouts and second opinions create opportunities to reframe.
 
@@ -12930,7 +12930,7 @@ Lumbar puncture is performed below the usual cord termination, often through an 
 
 Extrinsic superficial muscles connect upper limb to trunk, including trapezius and latissimus dorsi. Intermediate serratus posterior muscles relate to ribs and respiration. Intrinsic deep muscles are innervated by dorsal rami and extend, rotate, laterally flex, and stabilise the vertebral column.
 
-The erector spinae columns are iliocostalis, longissimus, and spinalis. Transversospinalis muscles include semispinalis, multifidus, and rotatores, generally running from transverse to more medial spinous processes. Short interspinales and intertransversarii support segmental control. Suboccipital muscles fine-tune head movement around upper cervical joints.
+The erector spinae columns are iliocostalis, longissimus, and spinalis. Transversospinalis muscles include semispinalis, multifidus, and rotatores, generally running from transverse to more superior spinous processes. Short interspinales and intertransversarii support segmental control. Suboccipital muscles fine-tune head movement around upper cervical joints.
 
 Thoracolumbar fascia encloses deep muscles and provides attachment for trunk and limb muscles. Multifidus and abdominal-wall activation contribute to segmental stiffness, while the diaphragm and pelvic floor participate in pressure regulation. Stability is dynamic coordination, not rigid bracing by one isolated muscle.
 
@@ -13118,7 +13118,7 @@ The sternum includes manubrium, body, and xiphoid process. The sternal angle mar
 
 ### Classify ribs and their articulations
 
-Typical ribs have head, neck, tubercle, angle, shaft, and costal groove. The head usually articulates with bodies of its own numbered vertebra and the one above, while the tubercle articulates with the same-numbered transverse process. Ribs one, ten, eleven, and twelve have atypical features.
+Typical ribs have head, neck, tubercle, angle, shaft, and costal groove. The head usually articulates with bodies of its own numbered vertebra and the one above, while the tubercle articulates with the same-numbered transverse process. Ribs one, two, ten, eleven, and twelve have atypical features.
 
 True ribs one through seven attach directly to sternum through their cartilages. False ribs eight through ten join the cartilage above, forming the costal margin. Floating ribs eleven and twelve have no anterior attachment. Rib one is broad and flat, with grooves for subclavian vessels separated by a scalene tubercle.
 
@@ -13324,7 +13324,7 @@ Aspirated material follows dependent segments determined by body position. In up
 
 Lobar collapse follows obstruction or compression and causes volume loss with fissural, hilar, mediastinal, diaphragmatic, and rib displacement toward the affected region. Consolidation fills alveoli without necessarily reducing volume and can preserve air-filled bronchi as air bronchograms.
 
-Pleural disease follows surfaces and fissures, while extrapleural disease may displace pleura inward. Loculated fluid is constrained by adhesions. Empyema tends to form lenticular collections with smooth pleural separation, while lung abscess lies within parenchyma and often forms an angle with surrounding lung.
+Pleural disease follows surfaces and fissures, while extrapleural disease may displace pleura inward. Loculated fluid is constrained by adhesions. Empyema tends to form lenticular collections with smooth pleural separation, while lung abscess lies within parenchyma and often forms an acute angle with the chest wall.
 
 Apical lung tumour can invade lower brachial plexus, sympathetic chain, ribs, and subclavian vessels, producing hand weakness, pain, or Horner syndrome. Central tumours can obstruct bronchi, invade mediastinum, or compress vessels and nerves. Peripheral lesions may reach pleura before causing airway symptoms.
 
@@ -13414,7 +13414,7 @@ In males, rectovesical pouch is lowest peritoneal recess. In females, vesicouter
 
 ### Relate pain to embryological territories
 
-Foregut visceral afferents enter roughly upper thoracic levels, producing epigastric pain. Midgut pain is often periumbilical, and hindgut pain lower abdominal or suprapubic. These are approximate because overlap and organ-specific pathways exist.
+Foregut visceral afferents enter roughly T5 to T9 levels, producing epigastric pain. Midgut pain is often periumbilical, and hindgut pain lower abdominal or suprapubic. These are approximate because overlap and organ-specific pathways exist.
 
 Early appendicitis produces diffuse periumbilical visceral pain; extension to adjacent parietal peritoneum produces local right lower-quadrant pain. Diaphragmatic peritoneum can refer pain to shoulder through phrenic nerve. Posterior structures may produce back pain without peritonism.
 
@@ -13812,7 +13812,7 @@ Uterus includes fundus above tubal entry, body, isthmus, and cervix. It is commo
 
 Broad ligament is peritoneal fold containing uterine tube in superior margin and associated mesometrium and mesosalpinx. It is not the main mechanical support. Cardinal and uterosacral complexes, pelvic floor, and fascial attachments support cervix and upper vagina.
 
-Uterine artery from internal iliac approaches cervix, crosses above ureter, ascends tortuously along uterus, and anastomoses with ovarian artery. Venous plexus drains internal iliac system. Lymph from fundus can follow ovarian vessels or round ligament toward superficial inguinal nodes; body and cervix drain pelvic nodal groups.
+Uterine artery from internal iliac approaches cervix, crosses above ureter, ascends tortuously along uterus, and anastomoses with ovarian artery. Venous plexus drains internal iliac system. Lymph from fundus can follow ovarian vessels to para-aortic nodes or round ligament toward superficial inguinal nodes; body and cervix drain pelvic nodal groups.
 
 Vagina is fibromuscular canal from cervix to vestibule, with anterior and posterior walls normally apposed. Cervix projects to create fornices, posterior deepest and related to rectouterine pouch. Lower vagina has somatic pudendal sensitivity, while upper regions have visceral autonomic innervation.
 
@@ -14184,7 +14184,7 @@ Conus medullaris lesions often cause early symmetric saddle, bowel, bladder, sex
 
 Spinal localisation proceeds from the highest abnormal level, then compares motor, reflex, sensory modalities, autonomic function, and tract crossing. A coherent pattern should explain every major finding; unexplained signs require a second lesion, peripheral contribution, or revision of the model.
 
-The sensory level is usually several segments below the anatomical lesion because ascending fibres enter, travel briefly, and cross at different levels. Sacral sparing may indicate an incomplete central lesion, whereas early sacral dysfunction suggests conus or cauda involvement. Imaging must therefore be interpreted against anatomy rather than treated as localisation by itself.
+The sensory level may lie one or more segments below the anatomical lesion because ascending fibres enter, travel briefly, and cross at different levels. Sacral sparing may indicate an incomplete central lesion, whereas early sacral dysfunction suggests conus or cauda involvement. Imaging must therefore be interpreted against anatomy rather than treated as localisation by itself.
 
 ## TTS module 2: Brainstem nuclei, cranial pathways, reticular formation, and cerebellar circuits
 
@@ -14814,7 +14814,7 @@ The primitive streak appears caudally on epiblast and elongates toward primitive
 
 Primitive node surrounds primitive pit at cranial end of streak and acts as a major organiser. Cells migrating cranially from node form notochordal process along midline toward prechordal plate. The process transiently integrates with endoderm, then reorganises into solid notochord. Notochord defines primitive axis, patterns surrounding tissues, induces neural development, and later persists mainly as nucleus pulposus of intervertebral discs.
 
-At cranial and caudal ends, ectoderm and endoderm remain directly apposed without intervening mesoderm at oropharyngeal and cloacal membranes. These mark future openings of oral cavity and terminal gut or urogenital pathways. Cardiogenic mesoderm initially lies cranial to these structures because later folding will reposition it ventral to foregut.
+At cranial and caudal ends, ectoderm and endoderm remain directly apposed without intervening mesoderm at oropharyngeal and cloacal membranes. These mark future openings of oral cavity and terminal gut or urogenital pathways. Cardiogenic mesoderm initially lies cranial to the oropharyngeal membrane because later folding will reposition it ventral to foregut.
 
 Gastrulation must be tightly limited. Persistence of primitive-streak pluripotent cells can produce sacrococcygeal teratomas containing derivatives of multiple germ layers. Inadequate caudal mesoderm formation contributes to caudal regression. Abnormal midline patterning can produce severe craniofacial and forebrain anomalies. Timing, position, cell movement, and signal concentration all matter.
 
@@ -15098,7 +15098,7 @@ Lipids are structurally diverse molecules united partly by hydrophobicity. Fatty
 
 Triacylglycerols esterify three fatty acids to glycerol and store concentrated energy without associated water. Phospholipids and sphingolipids are amphipathic, containing hydrophilic head and hydrophobic tails, and self-assemble into bilayers. Cholesterol modulates membrane fluidity and is precursor for steroid hormones, bile acids, and vitamin D. Lipoproteins transport hydrophobic lipids through plasma.
 
-Amino acids contain amino and carboxyl groups around alpha carbon plus a side chain, except achiral glycine. Side chains may be hydrophobic, polar, acidic, basic, aromatic, sulfur-containing, or conformationally restrictive. Humans use predominantly L amino acids in proteins. Essential amino acids cannot be synthesised adequately and must come from diet; conditional requirements change with growth or illness.
+Amino acids contain amino and carboxyl groups around alpha carbon plus a side chain; all except glycine are chiral. Side chains may be hydrophobic, polar, acidic, basic, aromatic, sulfur-containing, or conformationally restrictive. Humans use predominantly L amino acids in proteins. Essential amino acids cannot be synthesised adequately and must come from diet; conditional requirements change with growth or illness.
 
 Peptide bonds form by condensation between amino and carboxyl groups and have partial double-bond character, restricting rotation. A polypeptide has amino terminus, carboxyl terminus, and side-chain sequence. Sequence determines folding landscape, chemical modifications, interactions, and degradation. Proteins function as enzymes, receptors, channels, motors, antibodies, scaffolds, transporters, hormones, and structural materials.
 
@@ -15144,7 +15144,7 @@ Competitive inhibitors bind free enzyme in a way that prevents substrate binding
 
 Mixed inhibitors bind free enzyme and enzyme–substrate complex with different affinities, lowering maximum velocity and shifting apparent Michaelis constant either direction. Irreversible inhibitors covalently modify or bind extremely tightly, reducing active enzyme concentration. Their effect depends on time as well as concentration. Mechanism-based inhibitors are processed by enzyme into reactive species that inactivate it.
 
-Product inhibition and reversibility influence pathway flux. Accumulated product can compete, drive reverse reaction, or bind regulatory sites. Enzymes operating near equilibrium respond mainly to substrate and product ratios; enzymes catalysing strongly favourable steps are frequent regulatory points. Yet no reaction is intrinsically irreversible in absolute terms—direction depends on actual cellular concentrations and coupling.
+Product inhibition and reversibility influence pathway flux. Accumulated product can compete, drive reverse reaction, or bind regulatory sites. Enzymes operating near equilibrium respond mainly to substrate and product ratios; enzymes catalysing strongly favourable steps are frequent regulatory points. Yet no reaction is intrinsically irreversible in absolute terms: direction depends on actual cellular concentrations and coupling.
 
 Multisubstrate reactions may proceed through sequential mechanisms, where substrates bind before any product leaves, or ping-pong mechanisms, where one product leaves before second substrate binds and enzyme cycles through a modified form. Ordered and random binding can be distinguished experimentally. Such mechanisms matter when interpreting inhibitors and isotope exchange.
 
@@ -15304,7 +15304,7 @@ Uncoupling permits proton return without adenosine-triphosphate synthesis, incre
 
 Respiratory inhibitors produce characteristic blocks. Rotenone-like agents inhibit complex one, antimycin complex three, cyanide and carbon monoxide complex four, and oligomycin synthase proton channel. Inhibition reduces oxygen consumption downstream and collapses adenosine-triphosphate production, though effects depend on alternate electron entry and tissue. Carbon monoxide additionally impairs haemoglobin oxygen transport.
 
-Electron leakage, particularly from complexes one and three, partially reduces oxygen to superoxide. Manganese superoxide dismutase converts mitochondrial superoxide toward hydrogen peroxide, which peroxidases remove or use in signalling. Excess reactive species damage lipids, proteins, iron–sulfur clusters, and DNA. Antioxidant defence requires enzymes, reducing equivalents, compartmental control, and removal of damaged components—not simply dietary radical scavengers.
+Electron leakage, particularly from complexes one and three, partially reduces oxygen to superoxide. Manganese superoxide dismutase converts mitochondrial superoxide toward hydrogen peroxide, which peroxidases remove or use in signalling. Excess reactive species damage lipids, proteins, iron–sulfur clusters, and DNA. Antioxidant defence requires enzymes, reducing equivalents, compartmental control, and removal of damaged components, not simply dietary radical scavengers.
 
 Mitochondria buffer calcium through potential-driven uptake and release pathways. Calcium stimulates selected dehydrogenases, matching energy production to contraction and secretion. Excess calcium promotes permeability transition, swelling, loss of potential, and death. Mitochondrial outer-membrane permeabilisation controlled by B-cell-lymphoma-two family proteins releases cytochrome c to initiate intrinsic apoptosis.
 
@@ -15468,9 +15468,9 @@ Lipoprotein(a) resembles a low-density particle covalently linked to apolipoprot
 
 Lipid droplets are dynamic organelles bounded by a phospholipid monolayer and proteins controlling synthesis, access, and lipolysis. They buffer potentially toxic fatty acids and cholesterol esters. When storage capacity is exceeded or export and oxidation are mismatched, diacylglycerols, ceramides, acylcarnitines, and endoplasmic-reticulum stress can impair insulin signalling and organ function.
 
-Non-alcoholic metabolic liver steatosis arises when fatty-acid uptake and synthesis exceed oxidation and export. Simple neutral storage may be adaptive, while lipotoxicity, oxidative stress, inflammation, and fibrosis drive progression. Choline deficiency can impair phosphatidylcholine and lipoprotein export. Alcohol changes redox state, lipid oxidation, synthesis, and injury through overlapping but distinct mechanisms.
+Metabolic dysfunction-associated hepatic steatosis arises when fatty-acid uptake and synthesis exceed oxidation and export. Simple neutral storage may be adaptive, while lipotoxicity, oxidative stress, inflammation, and fibrosis drive progression. Choline deficiency can impair phosphatidylcholine and lipoprotein export. Alcohol changes redox state, lipid oxidation, synthesis, and injury through overlapping but distinct mechanisms.
 
-Lipid biology is a trafficking problem as much as a synthesis problem. Carbon enters through citrate, fatty acids are built and remodelled, membrane species generate signals, cholesterol is distributed but not destroyed, and lipoprotein particles move cargo between organs. Clinical risk depends on which lipid, in which particle or membrane, in which tissue, and over what time—not on total fat alone.
+Lipid biology is a trafficking problem as much as a synthesis problem. Carbon enters through citrate, fatty acids are built and remodelled, membrane species generate signals, cholesterol is distributed but not destroyed, and lipoprotein particles move cargo between organs. Clinical risk depends on which lipid, in which particle or membrane, in which tissue, and over what time, not on total fat alone.
 
 ## TTS module 3: Fasting adaptation, ketone-body metabolism, ketoacidosis, and lipid disorders
 
@@ -16068,7 +16068,7 @@ Class-two proteins assemble in endoplasmic reticulum with invariant chain blocki
 
 Autophagy and endosomal routing can deliver intracellular antigens to class two. B-cell receptors capture specific native antigen, internalise it, and present derived peptides, allowing cognate helper T cells to assist B cells recognising same molecular complex. This linked recognition increases specificity and explains carrier-protein effects in conjugate vaccines.
 
-T-cell receptor is alpha-beta heterodimer associated with CD three signalling chains. It recognises combined surface of peptide and major histocompatibility molecule. CD four binds class two; CD eight binds class one and brings kinase near receptor complex. Receptor affinity is modest, but repeated engagement, adhesion, and microcluster formation create sensitive signalling.
+T-cell receptor is alpha-beta heterodimer associated with CD three signalling chains. It recognises combined surface of peptide and major histocompatibility molecule. CD four binds class two and CD eight binds class one; both bring kinase near receptor complex. Receptor affinity is modest, but repeated engagement, adhesion, and microcluster formation create sensitive signalling.
 
 Activation of naive T cells requires peptide–major-histocompatibility recognition, costimulation, and cytokine context. CD twenty-eight on T cell binds B seven molecules on activated antigen-presenting cells. Without appropriate costimulation, recognition can produce anergy, deletion, or tolerance. Inhibitory receptors including CTLA four and PD one restrain activation at different stages and tissues.
 
@@ -16140,7 +16140,7 @@ C three a and C five a are anaphylatoxins promoting vascular and leukocyte respo
 
 C one inhibitor restrains early classical and lectin proteases plus contact-system enzymes. Deficiency causes hereditary angioedema through bradykinin rather than histamine, producing swelling without typical urticaria and responding to pathway-specific therapy. Antihistamines and adrenaline may be insufficient for this mechanism, though airway emergency still requires immediate assessment.
 
-Factor H and factor I inactivate alternative-pathway C three b on protected surfaces. Decay-accelerating factor and membrane-cofactor protein disrupt or cofactor convertase regulation. CD fifty-nine blocks terminal pore formation. Loss of glycosylphosphatidylinositol-anchored regulators in paroxysmal nocturnal haemoglobinuria permits complement-mediated blood-cell injury and thrombosis.
+Factor H and factor I inactivate alternative-pathway C three b on protected surfaces. Decay-accelerating factor accelerates dissociation of convertases, while membrane-cofactor protein serves as cofactor for factor I cleavage of C three b and C four b. CD fifty-nine blocks terminal pore formation. Loss of glycosylphosphatidylinositol-anchored regulators in paroxysmal nocturnal haemoglobinuria permits complement-mediated blood-cell injury and thrombosis.
 
 Early classical-component deficiencies impair immune-complex clearance and increase lupus-like autoimmunity. C three deficiency causes severe recurrent pyogenic infection because opsonisation is central. Terminal-component deficiency predisposes to Neisseria. Properdin and factor-D defects impair alternative amplification. Functional assays distinguish classical and alternative pathway failures before individual component measurement.
 
@@ -16256,7 +16256,7 @@ Chronic rejection evolves through persistent immune and nonimmune injury, causin
 
 Graft-versus-host disease occurs when immunocompetent donor T cells attack recipient tissues, especially after allogeneic haematopoietic transplantation. Skin, gastrointestinal tract, liver, and marrow are major targets. Donor immune cells can also provide beneficial graft-versus-leukaemia effect. Immunosuppression balances rejection or graft-versus-host disease against infection, malignancy, and toxicity.
 
-Immune-mediated disease is treated by avoiding triggers, blocking mediators, depleting or restraining cells, replacing tolerance, or suppressing broad activation. Glucocorticoids alter transcription across many pathways; biologics target cytokines, receptors, B cells, costimulation, complement, or trafficking; small molecules inhibit kinases. Mechanistic precision reduces but never eliminates off-target immune risk.
+Immune-mediated disease is treated by avoiding triggers, blocking mediators, depleting or restraining cells, restoring tolerance, or suppressing broad activation. Glucocorticoids alter transcription across many pathways; biologics target cytokines, receptors, B cells, costimulation, complement, or trafficking; small molecules inhibit kinases. Mechanistic precision reduces but never eliminates off-target immune risk.
 
 Hypersensitivity classification is a useful starting map. The clinically useful questions are what antigen is recognised, which antibody or T-cell pathway acts, where effector reaches tissue, which amplifiers participate, and whether target is foreign, self, donor, drug-modified, or environmental. Many diseases occupy several boxes because immunity operates as a network rather than four isolated reactions.
 
@@ -16298,7 +16298,7 @@ Autoantibody assays include cell-based, tissue-based, immunoassay, immunoblot, a
 
 Monoclonal antibodies can neutralise cytokines, block receptors, deplete cells, deliver toxins or radioisotopes, engage immune effectors, or mimic ligands. Their Fc region controls half-life, complement, placental transfer, and Fc-receptor activity and can be engineered. Fully human sequence reduces but does not eliminate anti-drug antibodies.
 
-Anti-tumour-necrosis-factor therapy suppresses inflammatory pathways but increases susceptibility to tuberculosis and selected infections, making screening important. B-cell depletion reduces antibody presentation and precursor populations but spares many long-lived plasma cells, so existing antibodies may persist. Complement inhibitors prevent destructive activation but increase risk from encapsulated bacteria, requiring vaccination and contingency planning.
+Anti-tumour-necrosis-factor therapy suppresses inflammatory pathways but increases susceptibility to tuberculosis and selected infections, making screening important. B-cell depletion reduces antigen presentation and precursor populations but spares many long-lived plasma cells, so existing antibodies may persist. Complement inhibitors prevent destructive activation but increase risk from encapsulated bacteria, requiring vaccination and contingency planning.
 
 Checkpoint inhibitors block CTLA four, PD one, or PD-L one, enhancing antitumour T-cell activity. Immune-related adverse events can affect nearly any organ through loss of peripheral restraint. Treatment may require glucocorticoids or pathway-specific suppression without necessarily abolishing tumour response. Timing can be delayed even after therapy stops.
 
@@ -16414,7 +16414,7 @@ Transmission imposes another selection layer. Traits that maximise within-host g
 
 Antimicrobial stewardship aims to provide effective treatment while reducing unnecessary selection and harm. It improves diagnosis, obtains cultures when useful, chooses narrowest effective agent, optimises dose and route, ensures source control, reviews at defined time, and shortens duration when evidence supports it. Withholding necessary early therapy in severe infection is not stewardship.
 
-One Health recognises that humans, animals, food systems, wastewater, soil, and ecosystems exchange organisms, drugs, and resistance genes. Agricultural use, manufacturing discharge, sanitation, travel, and healthcare all contribute. Control requires surveillance, infection prevention, vaccination, water and sanitation, diagnostics, responsible prescribing, and development of therapeutics—not one sector alone.
+One Health recognises that humans, animals, food systems, wastewater, soil, and ecosystems exchange organisms, drugs, and resistance genes. Agricultural use, manufacturing discharge, sanitation, travel, and healthcare all contribute. Control requires surveillance, infection prevention, vaccination, water and sanitation, diagnostics, responsible prescribing, and development of therapeutics, not one sector alone.
 
 Microbial evolution is predictable in principle but contingent in detail. Variation appears, mobile elements redistribute it, drugs and immunity select it, compensatory changes stabilise it, and transmission spreads successful lineages. The practical response is to reduce avoidable selection, block transmission, preserve ecological competition, and measure phenotype rather than assuming a gene or drug name tells the whole story.
 
@@ -16558,7 +16558,7 @@ Defence and repair can cause disease: leakage causes oedema, neutrophils injure 
 
 ## TTS module 3: Specimens, diagnostic methods, and clinicopathological reasoning
 
-Diagnostic pathology converts a specimen into an interpretation that can guide care. The process begins before tissue reaches a laboratory. The clinical question determines what should be sampled, how quickly it must be handled, which medium or fixative is appropriate, and whether material must remain sterile, unfixed, frozen, or protected from light. A technically excellent test on the wrong specimen cannot answer the right question. Pathologists therefore integrate morphology with clinical history, anatomical site, imaging, previous treatment, time course, and the consequences of error. This qualification matters in clinical practice.
+Diagnostic pathology converts a specimen into an interpretation that can guide care. The process begins before tissue reaches a laboratory. The clinical question determines what should be sampled, how quickly it must be handled, which medium or fixative is appropriate, and whether material must remain sterile, unfixed, frozen, or protected from light. A technically excellent test on the wrong specimen cannot answer the right question. Pathologists therefore integrate morphology with clinical history, anatomical site, imaging, previous treatment, time course, and the consequences of error.
 
 Pre-analytical variation is a major source of diagnostic failure. Ischaemic time changes proteins, nucleic acids, metabolites, and cellular detail. Crushing, cautery, drying, fragmentation, and contamination create artefacts. A small biopsy may miss a focal lesion or capture only necrosis, ulceration, or reactive tissue. Specimen identity, orientation, laterality, anatomical landmarks, and collection time must be preserved through an auditable chain. When tissue is limited, its allocation among histology, microbiology, flow cytometry, cytogenetics, and molecular testing requires advance judgment.
 
@@ -16872,7 +16872,7 @@ Temperament refers to early individual differences in reactivity, attention, act
 
 Motor development depends on nervous-system maturation, body proportions, muscle strength, sensory feedback, motivation, and opportunity to practise. Infants do not merely execute a prewritten sequence; they discover stable solutions to changing body and environmental constraints. New locomotion changes what can be seen, reached, and socially shared, thereby altering cognitive experience. Assessment should consider vision, hearing, tone, asymmetry, pain, cardiopulmonary endurance, and cultural handling practices rather than viewing motor delay in isolation.
 
-Language develops through biological preparedness and social learning. Infants discriminate speech patterns, share attention, take conversational turns, map words to referents, and infer grammatical regularities. Receptive language generally precedes expressive language. Joint attention and gesture connect another person's focus with objects and words. Quantity of speech exposure matters less than responsive, meaningful interaction alone would suggest; overheard or passive media language does not provide the same contingent feedback. Multilingual exposure does not inherently cause language disorder.
+Language develops through biological preparedness and social learning. Infants discriminate speech patterns, share attention, take conversational turns, map words to referents, and infer grammatical regularities. Receptive language generally precedes expressive language. Joint attention and gesture connect another person's focus with objects and words. Responsive, meaningful interaction matters more than quantity of speech exposure alone would suggest; overheard or passive media language does not provide the same contingent feedback. Multilingual exposure does not inherently cause language disorder.
 
 Conceptual development changes how children represent objects, causes, minds, quantity, and rules. Young children can reason impressively within familiar contexts while failing tasks that demand language, inhibition, or unusual instructions. Stage theories capture broad qualitative shifts but often underestimate early competence and variation. Knowledge is domain-specific: expertise in a familiar area can support reasoning beyond what age alone predicts. Development therefore combines gradual accumulation, strategy change, and occasional reorganisation rather than one uniform ascent.
 
@@ -17118,7 +17118,7 @@ The significance level is a prespecified long-run threshold for rejecting the nu
 
 Power depends on sample size, effect magnitude, variability, event rate, design, allocation, measurement reliability, and significance threshold. Planning requires an effect worth detecting, not merely the largest effect hoped for. Post hoc power calculated from the observed effect adds little because it restates the p value. Once data exist, the estimated effect and its uncertainty are more informative. Low power also reduces the proportion of statistically significant findings that reflect true effects when prior plausibility is low.
 
-One-sided tests allocate the rejection region to one direction and may have greater power there, but they are appropriate only when effects in the opposite direction would be treated as equivalent to no effect for the decision. Harm in the unexpected direction is rarely irrelevant. Choosing a one-sided test after observing direction doubles opportunism rather than expressing a prior hypothesis. The direction and rationale should be specified before outcome data are examined.
+One-sided tests allocate the rejection region to one direction and may have greater power there, but they are appropriate only when effects in the opposite direction would be treated as equivalent to no effect for the decision. Harm in the unexpected direction is rarely irrelevant. Choosing a one-sided test after observing direction is opportunism rather than a prior hypothesis, and effectively doubles the type I error rate. The direction and rationale should be specified before outcome data are examined.
 
 Statistical significance is not clinical significance. Effect measures should match the outcome and decision. For binary outcomes, risk difference communicates absolute change, risk ratio communicates proportional change, and odds ratio compares odds. Odds ratios approximate risk ratios when events are rare but can look more extreme when events are common. For continuous outcomes, a mean difference retains natural units, while a standardised mean difference permits comparison across scales at the cost of intuitive meaning.
 
@@ -17298,7 +17298,7 @@ Quality assurance prevents error through validated procedures, training, mainten
 
 Reproducibility includes methods detailed enough to repeat, materials that can be identified, data and code that can be inspected when ethically and legally possible, and results tested independently. Exact reproduction is not expected when living systems vary, but unexplained direction reversal requires investigation. Direct replication repeats conditions; conceptual replication tests the same claim through another method. Both matter. Novelty without verification accumulates fragile literature.
 
-Research integrity requires honesty in proposing, conducting, reviewing, and reporting work. Fabrication invents data, falsification manipulates materials or records, and plagiarism misappropriates words or ideas. Less visible practices—selective omission, inappropriate image alteration, duplicate publication, gift authorship, or suppressing inconvenient results—also distort evidence. Authorship should reflect substantial accountable contribution. Conflicts of interest should be disclosed and managed, not assumed harmless or automatically disqualifying.
+Research integrity requires honesty in proposing, conducting, reviewing, and reporting work. Fabrication invents data, falsification manipulates materials or records, and plagiarism misappropriates words or ideas. Less visible practices (selective omission, inappropriate image alteration, duplicate publication, gift authorship, or suppressing inconvenient results) also distort evidence. Authorship should reflect substantial accountable contribution. Conflicts of interest should be disclosed and managed, not assumed harmless or automatically disqualifying.
 
 Image processing must be scientifically traceable. Uniform adjustment of brightness or contrast may be appropriate when it does not hide or create features and the original is retained. Selective alteration, moving bands, or combining fields without clear boundaries misrepresents evidence. Quantification should use raw or validated linear data rather than a compressed presentation image. Representative images should be selected by predefined criteria and accompanied by summary data across independent units.
 
