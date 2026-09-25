@@ -72,7 +72,8 @@
     'rigid-body-dynamics': ['lie-groups', 'hamiltonian-mechanics'],
     'elliptic-curves': ['complex-analysis', 'hyperbolic-geometry'],
     'atomic-physics': ['optics', 'lie-groups'],
-    'quaternions': ['lie-groups', 'rigid-body-dynamics', 'complex-analysis']
+    'quaternions': ['lie-groups', 'rigid-body-dynamics', 'complex-analysis'],
+    'pushforward-pullback': ['probability-inference', 'stochastic-processes', 'statistical-mechanics']
   };
   // Topics named in each topic's own prerequisite line (content.json "prerequisite").
   const PREREQ = {
@@ -96,7 +97,8 @@
     'rigid-body-dynamics': ['classical-mechanics', 'linear-algebra'],    // Classical mechanics and linear algebra
     'elliptic-curves': ['group-theory', 'number-theory'],               // Group theory, modular arithmetic and complex numbers
     'atomic-physics': ['quantum-mechanics'],                             // Quantum mechanics
-    'quaternions': ['linear-algebra']                                    // Vectors, dot and cross products, rotation matrices and complex numbers
+    'quaternions': ['linear-algebra'],                                   // Vectors, dot and cross products, rotation matrices and complex numbers
+    'pushforward-pullback': ['differential-forms', 'measure-theory']    // Multivariable calculus, Jacobians, measures and differential forms
   };
   // Where each group settles, as fractions of the stage.
   const ANCHOR = {

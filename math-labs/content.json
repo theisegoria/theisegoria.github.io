@@ -7592,5 +7592,254 @@
         "url": "https://arxiv.org/abs/1711.02508"
       }
     ]
+  },
+  {
+    "slug": "pushforward-pullback",
+    "title": [
+      "Push-forward and pullback: integrating through a map",
+      "押し出しと引き戻し：写像を通した積分"
+    ],
+    "description": [
+      "How integrals travel along a map: pull a function or a form back and integrate upstairs, or push a measure forward and integrate downstairs. The area formula and its multiplicity, push-forward measures and their densities, and integration along the fibres of a map.",
+      "積分が写像に沿ってどう移るかを扱います。関数や微分形式を引き戻して上の空間で積分するか、測度を押し出して下の空間で積分するかです。重複度つきの面積公式、押し出し測度とその密度、写像のファイバーに沿った積分を調べます。"
+    ],
+    "group": "geometry",
+    "prerequisite": [
+      "Multivariable calculus, Jacobians, and a first look at measures and differential forms",
+      "多変数微積分・ヤコビアン・測度と微分形式の初歩"
+    ],
+    "source": "Terence Tao · An Introduction to Measure Theory (AMS, 2011)",
+    "url": "https://terrytao.wordpress.com/books/an-introduction-to-measure-theory/",
+    "labs": [
+      {
+        "id": "area-formula",
+        "title": [
+          "1. Pull back, then integrate",
+          "1. 引き戻してから積分する"
+        ],
+        "body": [
+          "A map φ from the unit square onto a region lets you compute an integral downstairs by pulling it back upstairs: replace f by f∘φ and dx dy by |det Dφ| du dv. Here φ is the bilinear map through four corners you can drag. While φ is one-to-one every version of the integral agrees. Drag the gold corner φ(1,1) inside the triangle formed by the other three and φ folds over: part of the plane is hit twice, and the pulled-back integral counts it twice. That is the area formula, with the multiplicity #φ⁻¹(y) made visible.",
+          "単位正方形からある領域への写像 φ があれば、下の空間の積分を上の空間へ引き戻して計算できます。f を f∘φ に、dx dy を |det Dφ| du dv に置き換えるのです。ここでの φ は、ドラッグできる四つの角を通る双一次写像です。φ が一対一である限り、どの形の積分も一致します。金色の角 φ(1,1) を他の三つの角がつくる三角形の内側へドラッグすると、φ は折れ重なります。平面の一部が二度当たり、引き戻した積分はそこを二度数えます。これが面積公式で、重複度 #φ⁻¹(y) が目に見えるようになります。"
+        ],
+        "formula": "\\int_{[0,1]^2}(f\\circ\\varphi)\\,|\\det D\\varphi|\\,du\\,dv=\\int_{\\mathbb R^2}f(y)\\,\\#\\varphi^{-1}(y)\\,dy,\\qquad \\varphi^{*}(f\\,dx\\wedge dy)=(f\\circ\\varphi)\\,\\det D\\varphi\\;du\\wedge dv",
+        "example": [
+          "Send the square to the parallelogram with corners \\(0,(2,0),(3,1),(1,1)\\): \\(\\varphi(u,v)=(2u+v,\\,v)\\) and \\(\\det D\\varphi=2\\) everywhere, so \\(\\int_{[0,1]^2}2\\,du\\,dv=2\\), the area of the parallelogram. With \\(f=x\\) the pulled-back integrand is \\((2u+v)\\cdot2\\), which integrates to \\(3\\), and \\(3/2\\) is indeed the \\(x\\) coordinate of the centre \\((3/2,\\,1/2)\\).",
+          "正方形を角 \\(0,(2,0),(3,1),(1,1)\\) の平行四辺形へ写します。\\(\\varphi(u,v)=(2u+v,\\,v)\\) で、\\(\\det D\\varphi=2\\) はいたるところ一定なので、\\(\\int_{[0,1]^2}2\\,du\\,dv=2\\) は平行四辺形の面積です。\\(f=x\\) なら引き戻した被積分関数は \\((2u+v)\\cdot2\\) で、積分すると \\(3\\) になります。\\(3/2\\) はたしかに重心 \\((3/2,\\,1/2)\\) の \\(x\\) 座標です。"
+        ],
+        "caution": [
+          "Two different objects are being pulled back. The measure-theoretic change of variables uses \\(|\\det D\\varphi|\\) and counts preimages. The pullback of the area form \\(f\\,dx\\wedge dy\\) keeps the sign, so its integral counts preimages with orientation, and a folded layer cancels. They agree exactly when \\(\\varphi\\) is one-to-one and keeps orientation. For a bilinear map \\(\\det D\\varphi\\) is affine in \\((u,v)\\), so the fold is a straight segment.",
+          "引き戻されているものは二種類あります。測度論の変数変換は \\(|\\det D\\varphi|\\) を使い、逆像の個数を数えます。面積形式 \\(f\\,dx\\wedge dy\\) の引き戻しは符号を保つので、その積分は逆像を向きつきで数え、折り返した層は打ち消されます。両者がちょうど一致するのは、\\(\\varphi\\) が一対一で向きを保つときです。双一次写像では \\(\\det D\\varphi\\) が \\((u,v)\\) の一次式なので、折り目は線分になります。"
+        ],
+        "question": [
+          "Why does the signed integral of det Dφ equal the shoelace area of the four corners, even when the map folds?",
+          "写像が折れ重なっていても、det Dφ の符号付き積分が四つの角の靴ひも公式による面積に等しいのはなぜですか？"
+        ],
+        "answer": [
+          "Because \\(\\int_D\\varphi^*(dx\\wedge dy)=\\int_D d\\,\\varphi^*(x\\,dy)=\\oint_{\\partial D}\\varphi^*(x\\,dy)\\) by Stokes, and the last integral depends only on the boundary curve \\(\\varphi(\\partial D)\\). A bilinear map sends each edge of the square to a straight segment, and \\(\\oint x\\,dy\\) around a polygon is the shoelace sum.",
+          "ストークスの定理により \\(\\int_D\\varphi^*(dx\\wedge dy)=\\int_D d\\,\\varphi^*(x\\,dy)=\\oint_{\\partial D}\\varphi^*(x\\,dy)\\) となり、最後の積分は境界の曲線 \\(\\varphi(\\partial D)\\) だけで決まるからです。双一次写像は正方形の各辺を線分に写し、多角形を一周する \\(\\oint x\\,dy\\) は靴ひも公式の和そのものです。"
+        ],
+        "params": [
+          [
+            "fn",
+            "Integrand f",
+            "被積分関数 f",
+            0,
+            2,
+            1,
+            1,
+            [
+              [
+                "area, f = 1",
+                "面積、f = 1"
+              ],
+              [
+                "a bump",
+                "山型の関数"
+              ],
+              [
+                "f = x² + y²",
+                "f = x² + y²"
+              ]
+            ]
+          ],
+          [
+            "x11",
+            "Corner φ(1,1): x",
+            "角 φ(1,1)：x",
+            -0.8,
+            2.6,
+            0.01,
+            1.9
+          ],
+          [
+            "y11",
+            "Corner φ(1,1): y",
+            "角 φ(1,1)：y",
+            -0.8,
+            2.2,
+            0.01,
+            1.5
+          ]
+        ],
+        "source": "John M. Lee · Introduction to Smooth Manifolds, 2nd ed. (Springer, 2012), ch. 14 to 16",
+        "url": "https://doi.org/10.1007/978-1-4419-9982-5"
+      },
+      {
+        "id": "pushforward-measure",
+        "title": [
+          "2. Pushing a measure forward",
+          "2. 測度を押し出す"
+        ],
+        "body": [
+          "A measurable map T carries a measure μ on its domain to a measure T#μ on its target, defined by pulling sets back: T#μ(B) = μ(T⁻¹(B)). Integrals then move the other way, ∫ g d(T#μ) = ∫ (g∘T) dμ, so pushing measures forward and pulling functions back are adjoint operations. Here T(x) = x + a sin(2πx)/(2π) on [0, 1]. Drag the window B and watch its preimage split into pieces once the graph folds; drop particles sampled from μ and watch them pile up where T is flat.",
+          "可測写像 T は、定義域上の測度 μ を行き先の測度 T#μ に運びます。定義は集合を引き戻すことで、T#μ(B) = μ(T⁻¹(B)) です。すると積分は逆向きに移り、∫ g d(T#μ) = ∫ (g∘T) dμ となります。測度の押し出しと関数の引き戻しは互いに随伴な操作なのです。ここでは [0, 1] 上の T(x) = x + a sin(2πx)/(2π) を使います。窓 B をドラッグし、グラフが折り返すとその逆像がいくつもの区間に分かれる様子を見てください。μ から取った粒子を落とすと、T が平らなところに粒子が積み上がります。"
+        ],
+        "formula": "(T_{\\#}\\mu)(B)=\\mu\\bigl(T^{-1}(B)\\bigr),\\qquad \\int g\\,d(T_{\\#}\\mu)=\\int (g\\circ T)\\,d\\mu,\\qquad \\rho_{T_{\\#}\\mu}(y)=\\sum_{T(x)=y}\\frac{\\rho(x)}{|T^{\\prime}(x)|}",
+        "example": [
+          "With \\(\\mu\\) uniform and \\(a<1\\), \\(T^{\\prime}(x)=1+a\\cos2\\pi x>0\\), so the density of \\(T_{\\#}\\mu\\) at \\(y=T(x)\\) is \\(1/(1+a\\cos2\\pi x)\\). It is thinnest, \\(1/(1+a)\\), at \\(y=0\\) and \\(y=1\\) where \\(T\\) is steepest, and thickest, \\(1/(1-a)\\), at \\(y=\\tfrac12\\) where \\(T\\) is flattest.",
+          "\\(\\mu\\) が一様で \\(a<1\\) のとき \\(T^{\\prime}(x)=1+a\\cos2\\pi x>0\\) なので、\\(y=T(x)\\) における \\(T_{\\#}\\mu\\) の密度は \\(1/(1+a\\cos2\\pi x)\\) です。\\(T\\) が最も急な \\(y=0\\) と \\(y=1\\) で最も薄く \\(1/(1+a)\\) となり、\\(T\\) が最も平らな \\(y=\\tfrac12\\) で最も濃く \\(1/(1-a)\\) となります。"
+        ],
+        "caution": [
+          "The push-forward needs only \\(T\\) and \\(\\mu\\) and always exists. A density for it exists when \\(T^{\\prime}\\ne0\\) almost everywhere, and even then it is a sum over every preimage, not just one. There is no general way to pull a measure back along a map: measures push forward, functions and forms pull back.",
+          "押し出しに必要なのは \\(T\\) と \\(\\mu\\) だけで、いつでも存在します。その密度が存在するのは \\(T^{\\prime}\\ne0\\) がほとんどいたるところで成り立つときで、その場合でも密度は一つの逆像ではなく、すべての逆像にわたる和です。測度を写像に沿って引き戻す一般的な方法はありません。測度は押し出され、関数と微分形式は引き戻されます。"
+        ],
+        "question": [
+          "For a > 1, why does the density blow up like 1/√|y − y*| at a fold height y*, while the mass near y* stays finite?",
+          "a > 1 のとき、折り目の高さ y* で密度が 1/√|y − y*| のように発散するのに、y* の近くの質量が有限のままなのはなぜですか？"
+        ],
+        "answer": [
+          "Near a turning point \\(x^*\\), \\(T(x)\\approx y^*+\\tfrac12T^{\\prime\\prime}(x^*)(x-x^*)^2\\). The two preimages of \\(y\\) lie at distance \\(\\sqrt{2|y-y^*|/|T^{\\prime\\prime}|}\\) from \\(x^*\\), where \\(|T^{\\prime}|\\approx\\sqrt{2|T^{\\prime\\prime}|\\,|y-y^*|}\\). Dividing \\(\\rho\\) by that gives the inverse square root, and \\(\\int|y-y^*|^{-1/2}dy\\) converges.",
+          "折り返し点 \\(x^*\\) の近くでは \\(T(x)\\approx y^*+\\tfrac12T^{\\prime\\prime}(x^*)(x-x^*)^2\\) です。\\(y\\) の二つの逆像は \\(x^*\\) から \\(\\sqrt{2|y-y^*|/|T^{\\prime\\prime}|}\\) の距離にあり、そこでは \\(|T^{\\prime}|\\approx\\sqrt{2|T^{\\prime\\prime}|\\,|y-y^*|}\\) です。\\(\\rho\\) をこれで割ると逆平方根になり、\\(\\int|y-y^*|^{-1/2}dy\\) は収束します。"
+        ],
+        "params": [
+          [
+            "a",
+            "Fold strength a",
+            "折り返しの強さ a",
+            0,
+            2.5,
+            0.05,
+            1.6
+          ],
+          [
+            "src",
+            "Source measure μ",
+            "元の測度 μ",
+            0,
+            1,
+            1,
+            0,
+            [
+              [
+                "uniform",
+                "一様"
+              ],
+              [
+                "a bump",
+                "山型"
+              ]
+            ]
+          ],
+          [
+            "w",
+            "Width of the window B",
+            "窓 B の幅",
+            0.01,
+            0.3,
+            0.01,
+            0.08
+          ]
+        ],
+        "source": "Terence Tao · An Introduction to Measure Theory (AMS, 2011)",
+        "url": "https://terrytao.wordpress.com/books/an-introduction-to-measure-theory/"
+      },
+      {
+        "id": "coarea-fibres",
+        "title": [
+          "3. Integrating along the fibres",
+          "3. ファイバーに沿って積分する"
+        ],
+        "body": [
+          "Push a density p on the plane forward by a function F: ℝ² → ℝ and you get the distribution of F(X) when X has density p. Its density at c comes from integrating p over the fibre F = c, weighted by 1/|∇F|, because the shell between the fibres at c and c + δ has width δ/|∇F|. This is the coarea formula. Marginals, convolutions, the Rayleigh law and the density of a product are all instances of it. Choose the map, then drag the level c and watch the shell.",
+          "平面上の密度 p を関数 F: ℝ² → ℝ で押し出すと、X が密度 p をもつときの F(X) の分布が得られます。c におけるその密度は、ファイバー F = c 上で p を 1/|∇F| の重みで積分したものです。c と c + δ のファイバーにはさまれた殻の幅が δ/|∇F| だからです。これが余面積公式です。周辺分布、畳み込み、レイリー分布、積の密度はどれもその例です。写像を選び、水準 c をドラッグして殻の様子を見てください。"
+        ],
+        "formula": "q(c)=\\int_{\\{F=c\\}}\\frac{p}{|\\nabla F|}\\,d\\ell,\\qquad \\int_{\\mathbb R^2}g\\bigl(F(x)\\bigr)\\,p(x)\\,dx=\\int_{\\mathbb R}g(c)\\,q(c)\\,dc,\\qquad q\\,dc=F_{\\#}(p\\,dx)",
+        "example": [
+          "For the standard Gaussian and \\(F=\\sqrt{x^2+y^2}\\): the fibre is a circle of length \\(2\\pi c\\), \\(|\\nabla F|=1\\), and \\(p=e^{-c^2/2}/2\\pi\\) on it, so \\(q(c)=c\\,e^{-c^2/2}\\), the Rayleigh density. It vanishes at \\(c=0\\) although \\(p\\) is largest there.",
+          "標準ガウス分布と \\(F=\\sqrt{x^2+y^2}\\) では、ファイバーは長さ \\(2\\pi c\\) の円で、\\(|\\nabla F|=1\\)、その上で \\(p=e^{-c^2/2}/2\\pi\\) なので、\\(q(c)=c\\,e^{-c^2/2}\\) となり、レイリー分布の密度が得られます。\\(p\\) が最大となる \\(c=0\\) で、この密度は 0 になります。"
+        ],
+        "caution": [
+          "The formula needs \\(\\nabla F\\ne0\\) on almost all of each fibre. At a critical value, such as \\(c=0\\) for \\(F=xy\\), the fibre runs through a critical point and \\(q\\) can be unbounded while its integral stays finite. The bars on the right use no calculus at all: they count mass cell by cell on the plane, so they are an independent check on the curve.",
+          "この公式には、各ファイバーのほとんどいたるところで \\(\\nabla F\\ne0\\) であることが必要です。\\(F=xy\\) の \\(c=0\\) のような臨界値では、ファイバーが臨界点を通り、\\(q\\) は有界でなくなることがありますが、その積分は有限のままです。右の棒は微積分をまったく使わず、平面の小区画ごとに質量を数えたものなので、曲線とは独立な検算になっています。"
+        ],
+        "question": [
+          "Why is the density of X + Y the convolution ∫ p(t, c − t) dt, and not that integral divided by √2?",
+          "X + Y の密度が畳み込み ∫ p(t, c − t) dt になり、それを √2 で割ったものにならないのはなぜですか？"
+        ],
+        "answer": [
+          "Parametrising the line \\(x+y=c\\) by \\(x=t\\) gives arc length \\(d\\ell=\\sqrt2\\,dt\\), and \\(|\\nabla(x+y)|=\\sqrt2\\). The two factors of \\(\\sqrt2\\) cancel.",
+          "直線 \\(x+y=c\\) を \\(x=t\\) で媒介変数表示すると、弧長は \\(d\\ell=\\sqrt2\\,dt\\) で、\\(|\\nabla(x+y)|=\\sqrt2\\) です。二つの \\(\\sqrt2\\) が打ち消し合います。"
+        ],
+        "params": [
+          [
+            "map",
+            "Map F",
+            "写像 F",
+            0,
+            3,
+            1,
+            2,
+            [
+              [
+                "projection, x",
+                "射影、x"
+              ],
+              [
+                "sum, x + y",
+                "和、x + y"
+              ],
+              [
+                "radius, √(x² + y²)",
+                "半径、√(x² + y²)"
+              ],
+              [
+                "product, xy",
+                "積、xy"
+              ]
+            ]
+          ],
+          [
+            "dist",
+            "Density p",
+            "密度 p",
+            0,
+            1,
+            1,
+            0,
+            [
+              [
+                "Gaussian",
+                "ガウス分布"
+              ],
+              [
+                "uniform on a square",
+                "正方形上の一様分布"
+              ]
+            ]
+          ],
+          [
+            "r",
+            "Correlation r (Gaussian)",
+            "相関 r（ガウス分布）",
+            -0.9,
+            0.9,
+            0.05,
+            0
+          ]
+        ],
+        "source": "Lawrence C. Evans and Ronald F. Gariepy · Measure Theory and Fine Properties of Functions, rev. ed. (CRC Press, 2015), ch. 3",
+        "url": "https://doi.org/10.1201/b18333"
+      }
+    ]
   }
 ]
