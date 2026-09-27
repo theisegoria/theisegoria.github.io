@@ -1,0 +1,130 @@
+/* The bladeless fan: only what is particular to this piece. Layout for the
+ * stage, controls and readout comes from /assets/lab-kit/lab-kit.css, colour
+ * and type from the site shell. */
+
+:root {
+  /* the three sources of air, shared by the scene, the charts and the figures */
+  --flow-primary: var(--accent);
+  --flow-induced: light-dark(#2f6aa8, #86b6f0);
+  --flow-entrained: light-dark(#2e8467, #74d0ab);
+}
+
+.hero { max-width: 44rem; }
+.hero .kicker { font-family: var(--sans); font-size: .6875rem; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: .4rem; }
+.hero h1 { margin: 0 0 .5rem; }
+.hero .lede { font-size: 1.1875rem; line-height: 1.55; color: var(--ink-soft); max-width: 42rem; font-style: italic; }
+.hero .ig-page-nav { margin-inline: 0; max-width: none; }
+
+.thesis {
+  font-size: 1.25rem; line-height: 1.5; font-weight: 600;
+  max-width: 44rem; margin: 2.5rem 0 2rem;
+  padding-left: 1.1rem; border-left: 3px solid var(--accent);
+}
+
+main > section > p, main > p { max-width: 42rem; }
+main > section { margin-block: 3.5rem; }
+main > section > h2 { margin-bottom: .9rem; }
+main > section + section { border-top: 1px solid var(--rule); padding-top: 3rem; }
+main > section > p + p, .lab > p + p { margin-top: 1em; }
+
+.lab { margin-block: 3rem; }
+.lab .lab-stage { aspect-ratio: 16 / 9; }
+.lab > p { max-width: 42rem; }
+.lab-note { max-width: 42rem; margin-top: .75rem; font: .8125rem/1.5 var(--sans); color: var(--ink-faint); }
+
+.lab-toggles { gap: .4rem !important; }
+.lab-toggles label {
+  display: inline-flex !important; align-items: center; gap: .4rem;
+  border: 1px solid var(--rule); border-radius: 999px;
+  padding: .3rem .8rem; cursor: pointer;
+}
+.lab-toggles label:has(:checked) { border-color: var(--accent); color: var(--ink); background: color-mix(in oklab, var(--accent) 12%, transparent); }
+
+/* Floating labels over the canvas */
+.lab-labels { position: absolute; inset: 0; pointer-events: none; transition: opacity .3s; overflow: hidden; }
+.lab-labels.is-hidden { opacity: 0; }
+.lab-label {
+  position: absolute; top: 0; left: 0; white-space: nowrap;
+  font: .6875rem/1 var(--sans); letter-spacing: .02em;
+  color: var(--ink-soft); padding: .18rem 0;
+  text-shadow: 0 0 3px var(--paper), 0 0 2px var(--paper), 0 0 1px var(--paper);
+  transition: opacity .25s;
+}
+.lab-label::after {
+  content: ''; position: absolute; top: 50%; width: var(--leader, 18px);
+  border-top: 1px solid var(--rule-firm); opacity: .9;
+}
+.lab-label[data-side="left"]::after { left: 100%; }
+.lab-label[data-side="right"]::after { right: 100%; }
+.lab-label.is-chip, .lab-label.is-probe {
+  color: var(--ink);
+  background: color-mix(in oklab, var(--paper) 84%, transparent);
+  border: 1px solid var(--rule); border-radius: 999px; padding: .2rem .55rem;
+  backdrop-filter: blur(3px);
+}
+.lab-label.is-chip::after, .lab-label.is-probe::after { display: none; }
+.lab-label.is-probe { border-color: var(--accent); font-variant-numeric: tabular-nums; font-weight: 600; }
+
+/* Charts under the stage */
+.lab-charts { display: grid; grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr)); gap: 1rem 1.5rem; margin-top: 1.25rem; }
+.lab-charts figure { margin: 0; padding: .8rem .9rem .6rem; border: 1px solid var(--rule); border-radius: 6px; background: var(--paper-sunk); }
+.lab-charts svg { width: 100%; height: auto; display: block; overflow: visible; }
+.c-grid { stroke: var(--rule); stroke-width: 1; }
+.c-tick { font: 10px var(--sans); fill: var(--ink-soft); }
+.c-axis { font: 11px var(--sans); fill: var(--ink-soft); }
+.c-note { font: 10px var(--sans); fill: var(--ink-faint); font-style: italic; }
+.c-label { font: 600 11px var(--sans); fill: var(--ink); paint-order: stroke; stroke: var(--paper-sunk); stroke-width: 4px; stroke-linejoin: round; }
+.c-band { fill: color-mix(in oklab, var(--ink) 5%, transparent); }
+.c-pri { fill: color-mix(in oklab, var(--flow-primary) 85%, transparent); }
+.c-ind { fill: color-mix(in oklab, var(--flow-induced) 55%, transparent); }
+.c-ent { fill: color-mix(in oklab, var(--flow-entrained) 45%, transparent); }
+.c-swatch { stroke: none; }
+.c-patent { fill: none; stroke: var(--ink); stroke-width: 1.2; stroke-dasharray: 3 2; }
+.c-probe { stroke: var(--accent); stroke-width: 1.2; stroke-dasharray: 4 3; }
+.c-best { stroke: var(--ink-faint); stroke-width: 1; stroke-dasharray: 2 3; }
+.c-dot { fill: var(--accent); stroke: var(--paper); stroke-width: 1.5; }
+.c-dot-r { fill: var(--paper); stroke: var(--ink-soft); stroke-width: 1.5; }
+.c-q { fill: none; stroke: var(--ink); stroke-width: 2; }
+.c-ratio { fill: none; stroke: var(--ink-soft); stroke-width: 1.6; stroke-dasharray: 5 4; }
+
+/* Static figures: the fallback and the cross-section */
+.fb-axis { stroke: var(--rule-firm); stroke-width: 1; stroke-dasharray: 6 5; }
+.fb-loop { fill: color-mix(in oklab, var(--ink) 16%, var(--paper)); stroke: var(--ink-soft); stroke-width: 1; }
+.fb-base { fill: color-mix(in oklab, var(--ink) 16%, var(--paper)); stroke: var(--ink-soft); stroke-width: 1; }
+.fb-p path, .fb-path { fill: none; stroke: var(--flow-primary); stroke-width: 2.4; }
+.fb-i path { fill: none; stroke: var(--flow-induced); stroke-width: 1.6; }
+.fb-e path { fill: none; stroke: var(--flow-entrained); stroke-width: 1.6; }
+.fb-mk-p { fill: var(--flow-primary); }
+.fb-mk-i { fill: var(--flow-induced); }
+.fb-mk-e { fill: var(--flow-entrained); }
+.fb-lead { stroke: var(--ink-faint); stroke-width: .8; }
+.fb-t { font: 12px var(--sans); fill: var(--ink-soft); paint-order: stroke; stroke: var(--paper-sunk); stroke-width: 5px; stroke-linejoin: round; }
+.fb-t-p { fill: var(--ink); font-weight: 600; }
+.fb-t-i { fill: var(--flow-induced); }
+.fb-t-e { fill: var(--flow-entrained); }
+.fb-t-in { fill: var(--ink-soft); font-style: italic; }
+.figure { margin: 1.5rem 0 2rem; }
+.figure svg.xs { width: 100%; max-width: 44rem; height: auto; display: block; }
+.figure figcaption { max-width: 42rem; font: .8125rem/1.5 var(--sans); color: var(--ink-soft); margin-top: .5rem; }
+
+/* The comparison table */
+.table-figure { margin: 1.75rem 0; overflow-x: auto; }
+.table-figure table { border-collapse: collapse; font-family: var(--sans); font-size: .875rem; min-width: 36rem; }
+.table-figure th, .table-figure td { text-align: left; padding: .45rem .8rem; border-bottom: 1px solid var(--rule); vertical-align: top; }
+.table-figure td:last-child { font-variant-numeric: tabular-nums; font-weight: 600; color: var(--ink); }
+.table-figure thead th { border-bottom-color: var(--rule-firm); font-weight: 600; color: var(--ink); }
+.table-figure figcaption { font: .8125rem/1.5 var(--sans); color: var(--ink-faint); margin-top: .6rem; max-width: 42rem; }
+
+.sources { border-top: 1px solid var(--rule); padding-top: 1.75rem; }
+.sources ul { max-width: 44rem; padding-left: 1.1rem; }
+.sources li { margin-bottom: .6rem; font-size: .9375rem; line-height: 1.55; }
+.sources em { color: var(--ink-soft); }
+
+html[lang="ja"] main > section > p, html[lang="ja"] .lab > p { line-height: 1.85; }
+html[lang="ja"] .hero .lede { font-style: normal; }
+
+@media (max-width: 52rem) {
+  .lab .lab-stage { aspect-ratio: 4 / 3; }
+  .thesis { font-size: 1.125rem; }
+}
+.figure .fb-t { stroke: var(--paper); }

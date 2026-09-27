@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en" class=" ig-document ig-editorial">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>The Bladeless Fan</title>
+<meta name="description" content="How a ring with a one-millimetre slot and no visible blades moves fifteen times more air than its motor pushes, and where that multiplication actually comes from.">
+<meta property="og:title" content="The Bladeless Fan">
+<meta property="og:description" content="How a ring with a one-millimetre slot and no visible blades moves fifteen times more air than its motor pushes, and where that multiplication actually comes from.">
+<meta property="og:image" content="https://theisegoria.github.io/air-multiplier/og.png">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="canonical" href="https://theisegoria.github.io/air-multiplier/">
+<link rel="alternate" hreflang="en" href="https://theisegoria.github.io/air-multiplier/">
+<link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/air-multiplier/">
+<link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/air-multiplier/">
+<link rel="stylesheet" href="/assets/isegoria.css?v=20260927">
+<link rel="stylesheet" href="/assets/lab-kit/lab-kit.css?v=20260927">
+<link rel="stylesheet" href="style.css?v=20260927">
+<script type="importmap">
+{"imports":{
+  "three":"/vendor/three/r186/build/three.webgpu.js",
+  "three/webgpu":"/vendor/three/r186/build/three.webgpu.js",
+  "three/tsl":"/vendor/three/r186/build/three.tsl.js",
+  "three/addons/":"/vendor/three/r186/examples-jsm/"
+}}
+</script>
+<link rel="modulepreload" href="/vendor/three/r186/build/three.webgpu.js">
+<link rel="modulepreload" href="/vendor/three/r186/build/three.core.js">
+<script type="module" src="lab.js"></script>
+<script src="/assets/lang.js"></script>
+<!-- ISEGORIA:HEAD -->
+<link rel="stylesheet" href="/assets/site-shell.css?v=c21cd21e82">
+<script src="/assets/site-shell.js?v=c21cd21e82" ></script>
+<!-- /ISEGORIA:HEAD -->
+<script defer data-isegoria-analytics src="/assets/analytics.js?v=9e6ebd463bf2"></script>
+</head>
+<body class=" ig-site" data-site-kind="editorial" data-site-route="/air-multiplier/">
+<!-- ISEGORIA:NAV -->
+<a class="ig-skip" href="#ig-content">Skip to content</a>
+<header id="ig-header"><div class="ig-nav-inner">
+<a class="ig-brand" href="/" aria-label="Isegoria, home"><strong>ISEGORIA</strong><span>Benjamin Haire</span></a>
+<div class="ig-header-actions"><a class="ig-language" href="/ja/air-multiplier/" hreflang="ja" lang="ja">日本語</a><button class="ig-menu" type="button" aria-expanded="false" aria-controls="ig-primary">Menu</button></div>
+<nav id="ig-primary" aria-label="Primary navigation"><a href="/">Home</a><a href="/library.html">Library</a><a href="/math-encyclopedia/">Math encyclopedia</a><a href="/#interactive" aria-current="location">Interactive</a><a href="/#preoccupations">Research</a><a href="/#books">Books</a><a href="/projects.html">Projects</a><a href="/about.html">About</a><a class="ig-language" href="/ja/air-multiplier/" hreflang="ja" lang="ja">日本語</a><button class="ig-theme" type="button" hidden>Theme</button></nav>
+</div></header>
+<nav id="ig-breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><a href="/#interactive">Interactive explainers</a><span aria-hidden="true">/</span><span aria-current="page">The Bladeless Fan</span></nav>
+<span id="ig-content" tabindex="-1"></span>
+<!-- /ISEGORIA:NAV --><main class="wrap">
+
+<header class="hero">
+<p class="kicker">Interactive explainer</p>
+<h1>The Bladeless Fan</h1>
+<p class="lede">How a ring with a one-millimetre slot and no visible blades moves fifteen times more air than its motor pushes, and where that multiplication actually comes from.</p>
+<nav class="ig-page-nav" aria-label="On this page"><a href="#model">The model</a><a href="#blades">The blades are in the base</a><a href="#coanda">Slot and surface</a><a href="#multiply">Where the air comes from</a><a href="#fifteen">Fifteen times what?</a><a href="#checks">Against the data</a><a href="#unsettled">What I could not settle</a><a href="#sources">Sources</a></nav>
+</header>
+
+<p class="thesis">The fan has blades; they are hidden in the base. What the ring adds is a way for a thin, fast jet to drag a large, slow mass of air along with it, and the famous multiplication is a ratio whose denominator the design keeps deliberately small.</p>
+
+<section class="lab" id="model" aria-labelledby="model-h">
+<h2 id="model-h">The model</h2>
+<p>Amber is the air the motor moves, blue is air pulled through the open loop from behind, green is air drawn in from around it. Drag to orbit, scroll to zoom, then narrow the slot and watch the multiplication rise while the air actually delivered barely moves.</p>
+
+<div class="lab-stage">
+  <canvas id="stage" tabindex="0" aria-label="The bladeless fan: interactive 3D view with the loop and base cut away. Drag to orbit, scroll or pinch to zoom."></canvas>
+  <div class="lab-labels" id="labels" aria-hidden="true"></div>
+  <figure data-lab-fallback hidden>
+    <svg viewBox="0 0 640 400" role="img" aria-labelledby="fb-t fb-d">
+      <title id="fb-t">The bladeless fan in side view, static figure</title>
+      <desc id="fb-d">The loop seen edge on, with its base. A thin amber sheet of air leaves the slot in each section and converges downstream. Blue air is pulled through the open centre of the loop from behind; green air is drawn in from above and below and joins the sheet.</desc>
+      <defs>
+        <marker id="fa-p" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" class="fb-mk-p"/></marker>
+        <marker id="fa-i" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" class="fb-mk-i"/></marker>
+        <marker id="fa-e" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" class="fb-mk-e"/></marker>
+      </defs>
+      <line x1="10" y1="190" x2="630" y2="190" class="fb-axis"/>
+      <g class="fb-i">
+        <path d="M14 120 C 90 124, 150 140, 250 148 S 420 160, 560 172" marker-end="url(#fa-i)"/>
+        <path d="M14 160 C 100 162, 170 168, 300 172 S 460 180, 575 184" marker-end="url(#fa-i)"/>
+        <path d="M14 220 C 100 218, 170 212, 300 208 S 460 200, 575 196" marker-end="url(#fa-i)"/>
+        <path d="M14 260 C 90 256, 150 240, 250 232 S 420 220, 560 208" marker-end="url(#fa-i)"/>
+      </g>
+      <g class="fb-e">
+        <path d="M250 6 C 262 40, 270 60, 300 82" marker-end="url(#fa-e)"/>
+        <path d="M370 6 C 380 50, 395 90, 430 120" marker-end="url(#fa-e)"/>
+        <path d="M490 6 C 500 60, 515 120, 540 150" marker-end="url(#fa-e)"/>
+        <path d="M250 374 C 262 340, 270 320, 300 298" marker-end="url(#fa-e)"/>
+        <path d="M370 374 C 380 330, 395 290, 430 260" marker-end="url(#fa-e)"/>
+        <path d="M490 374 C 500 320, 515 260, 540 230" marker-end="url(#fa-e)"/>
+      </g>
+      <g class="fb-p">
+        <path d="M193 44 C 300 60, 450 120, 620 178" marker-end="url(#fa-p)"/>
+        <path d="M193 336 C 300 320, 450 260, 620 202" marker-end="url(#fa-p)"/>
+      </g>
+      <rect x="112" y="352" width="54" height="46" rx="4" class="fb-base"/>
+      <path d="M192.0 43.3L190.4 42.3L188.1 40.9L185.4 39.2L182.6 37.6L180.0 36.1L177.6 34.9L175.2 33.7L172.8 32.5L170.4 31.5L168.0 30.5L165.6 29.6L163.1 28.8L160.7 28.0L158.3 27.4L156.0 26.8L153.8 26.3L151.7 25.9L149.6 25.6L147.6 25.3L145.6 25.2L143.6 25.2L141.6 25.2L139.6 25.4L137.8 25.6L136.0 26.0L134.4 26.5L132.8 27.0L131.4 27.7L130.0 28.4L128.8 29.2L127.7 30.0L126.6 31.0L125.7 31.9L124.8 33.0L124.0 34.0L123.3 35.1L122.7 36.2L122.1 37.3L121.6 38.5L121.2 39.6L120.8 40.7L120.5 41.9L120.2 43.0L120.1 44.1L120.0 45.2L120.0 46.3L120.1 47.3L120.4 48.4L120.6 49.4L121.0 50.4L121.4 51.4L121.9 52.4L122.4 53.4L123.0 54.3L123.6 55.2L124.2 56.0L124.8 56.8L125.5 57.5L126.1 58.1L126.8 58.4L127.5 58.5L128.3 58.3L129.0 57.9L129.6 57.6L130.1 57.4L131.0 53.8L128.8 43.1L128.4 42.2L128.1 41.3L128.0 40.3L128.0 39.4L128.2 38.4L128.5 37.5L129.0 36.6L129.6 35.8L130.3 35.0L131.1 34.4L132.1 33.8L133.1 33.3L134.2 33.0L135.3 32.8L136.4 32.6L137.6 32.7L138.7 32.8L139.8 33.1L140.9 33.5L141.8 34.0L142.7 34.6L143.5 35.3L144.2 36.0L144.8 36.9L145.2 37.8L145.5 38.7L145.6 39.7L145.6 40.6L145.4 41.6L145.1 42.5L144.6 43.4L144.0 44.2L143.3 45.0L142.5 45.6L141.5 46.2L140.5 46.7L139.4 47.0L138.3 47.2L137.2 47.4L136.0 47.3L134.9 47.2L133.8 46.9L131.9 53.3L132.4 54.0L132.9 54.7L133.6 55.3L134.3 55.8L135.0 56.3L135.8 56.7L136.6 57.0L137.5 57.2L138.3 57.3L139.2 57.3L140.1 57.2L140.9 57.0L149.4 54.7L157.9 52.4L166.5 50.2L175.0 47.9L183.5 45.6Z" class="fb-loop"/>
+      <path d="M192.0 336.7L190.4 337.7L188.1 339.1L185.4 340.8L182.6 342.4L180.0 343.9L177.6 345.1L175.2 346.3L172.8 347.5L170.4 348.5L168.0 349.5L165.6 350.4L163.1 351.2L160.7 352.0L158.3 352.6L156.0 353.2L153.8 353.7L151.7 354.1L149.6 354.4L147.6 354.7L145.6 354.8L143.6 354.8L141.6 354.8L139.6 354.6L137.8 354.4L136.0 354.0L134.4 353.5L132.8 353.0L131.4 352.3L130.0 351.6L128.8 350.8L127.7 350.0L126.6 349.0L125.7 348.1L124.8 347.0L124.0 346.0L123.3 344.9L122.7 343.8L122.1 342.7L121.6 341.5L121.2 340.4L120.8 339.3L120.5 338.1L120.2 337.0L120.1 335.9L120.0 334.8L120.0 333.7L120.1 332.7L120.4 331.6L120.6 330.6L121.0 329.6L121.4 328.6L121.9 327.6L122.4 326.6L123.0 325.7L123.6 324.8L124.2 324.0L124.8 323.2L125.5 322.5L126.1 321.9L126.8 321.6L127.5 321.5L128.3 321.7L129.0 322.1L129.6 322.4L130.1 322.6L131.0 326.2L128.8 336.9L128.4 337.8L128.1 338.7L128.0 339.7L128.0 340.6L128.2 341.6L128.5 342.5L129.0 343.4L129.6 344.2L130.3 345.0L131.1 345.6L132.1 346.2L133.1 346.7L134.2 347.0L135.3 347.2L136.4 347.4L137.6 347.3L138.7 347.2L139.8 346.9L140.9 346.5L141.8 346.0L142.7 345.4L143.5 344.7L144.2 344.0L144.8 343.1L145.2 342.2L145.5 341.3L145.6 340.3L145.6 339.4L145.4 338.4L145.1 337.5L144.6 336.6L144.0 335.8L143.3 335.0L142.5 334.4L141.5 333.8L140.5 333.3L139.4 333.0L138.3 332.8L137.2 332.6L136.0 332.7L134.9 332.8L133.8 333.1L131.9 326.7L132.4 326.0L132.9 325.3L133.6 324.7L134.3 324.2L135.0 323.7L135.8 323.3L136.6 323.0L137.5 322.8L138.3 322.7L139.2 322.7L140.1 322.8L140.9 323.0L149.4 325.3L157.9 327.6L166.5 329.8L175.0 332.1L183.5 334.4Z" class="fb-loop"/>
+      <text x="200" y="22" class="fb-t">entrained from around the loop</text>
+      <text x="16" y="110" class="fb-t">induced through the loop</text>
+      <text x="330" y="100" class="fb-t fb-t-p">the slot jet, about 27 l/s</text>
+      <text x="176" y="392" class="fb-t">the fan is in here</text>
+    </svg>
+    <figcaption>Your browser has no WebGL 2 or WebGPU, so this is the still version.</figcaption>
+  </figure>
+  <div class="lab-hud"><span class="lab-badge"></span></div>
+</div>
+
+<form class="lab-controls" id="controls" onsubmit="return false">
+  <label><span>Motor speed</span><output for="speed"></output><input id="speed" name="speed" type="range" min="0" max="1" step="0.01" value="1" data-format="pct"></label>
+  <label><span>Slot width (mm)</span><output for="slotMm"></output><input id="slotMm" name="slotMm" type="range" min="0.5" max="4" step="0.1" value="1.3" data-format="fixed:1"></label>
+  <label><span>Loop diameter (mm)</span><output for="diameterMm"></output><input id="diameterMm" name="diameterMm" type="range" min="200" max="600" step="10" value="350" data-format="int"></label>
+  <label><span>Measure at distance x (m)</span><output for="x"></output><input id="x" name="x" type="range" min="0.1" max="3" step="0.05" value="1" data-format="fixed:2"></label>
+  <fieldset class="lab-toggles">
+    <label><input name="cutaway" type="checkbox" checked> <span>Cut away</span></label>
+    <label><input name="labels" type="checkbox" checked> <span>Labels</span></label>
+    <label><input name="flow" type="checkbox" checked> <span>Airflow</span></label>
+  </fieldset>
+</form>
+<div class="lab-readout" id="readout" aria-live="off"></div>
+
+<div class="lab-charts">
+  <figure>
+    <svg id="chart-x" role="img" aria-label="Air moving through the plane at distance x, stacked by where it came from"></svg>
+    <figcaption>Air crossing a plane at distance x, split by origin. The shaded band is the stretch where the jet is still an annular sheet; beyond it the sheet has swallowed its own core and grows as a round jet.</figcaption>
+  </figure>
+  <figure>
+    <svg id="chart-b" role="img" aria-label="Delivered air and multiplication ratio against slot width"></svg>
+    <figcaption>Change only the slot. The ratio (dashed) climbs steadily as the slot narrows; the air actually delivered at x (solid) has a broad peak where the slot's resistance matches the fan.</figcaption>
+  </figure>
+</div>
+<p class="lab-note">Particle speeds are compressed by a square root so the 19 m/s sheet and a 2 m/s drift can share the screen; every number in the readout and the charts is uncompressed.</p>
+</section>
+
+<section id="blades">
+<h2>The blades are in the base</h2>
+<p>A bladeless fan is a centrifugal fan wearing a disguise. In the pedestal a brushless DC motor turns a mixed-flow impeller, a hub that flares as it rises with blades that wrap around it, so the air leaves both upward and outward (Gammack, Nicolas and Simmonds 2012). It pulls air in through rows of small holes round the base, pressurises it, and pushes it up into the hollow loop. Dyson's patent puts the flow at 20 to 30 litres a second, preferably about 27. That is the only air the motor ever touches.</p>
+<p>Inside the loop the air sits in a plenum, a channel running all the way round, at a pressure of a couple of hundred pascals. It has one way out.</p>
+</section>
+
+<section id="coanda">
+<h2>Slot and surface</h2>
+<figure class="figure">
+<svg viewBox="0 0 600 300" role="img" aria-labelledby="xs-t xs-d" class="xs">
+  <title id="xs-t">Cross-section of the loop, about five times full size</title>
+  <desc id="xs-d">An airfoil-like section with a round plenum in its thick rear. A converging passage leads from the plenum to a 1.3 mm slot on the inner face. The jet leaves the slot, wraps a convex Coanda surface, then runs along a straight diffuser flared at 15 degrees to the trailing edge. Induced air passes underneath, on the axis side, and entrained air arrives from above.</desc>
+  <defs>
+    <marker id="xa-p" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" class="fb-mk-p"/></marker>
+    <marker id="xa-i" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" class="fb-mk-i"/></marker>
+    <marker id="xa-e" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" class="fb-mk-e"/></marker>
+  </defs>
+  <line x1="10" y1="292" x2="590" y2="292" class="fb-axis"/>
+  <text x="590" y="286" class="fb-t" text-anchor="end">toward the axis</text>
+  <path d="M520.0 168.3L509.8 162.0L495.4 153.0L478.6 142.7L461.2 132.3L445.0 123.3L430.0 115.4L415.0 108.0L400.0 100.9L385.0 94.3L370.0 88.3L354.8 82.6L339.5 77.5L324.3 72.8L309.4 68.6L295.0 65.0L281.3 61.9L268.0 59.3L255.2 57.3L242.5 55.8L230.0 55.0L217.4 54.8L204.9 55.2L192.7 56.2L181.0 57.8L170.0 60.0L159.8 62.9L150.2 66.4L141.2 70.6L132.8 75.1L125.0 80.0L117.8 85.3L111.3 91.0L105.4 97.2L100.0 103.5L95.0 110.0L90.5 116.7L86.6 123.6L83.2 130.8L80.2 137.9L77.5 145.0L75.1 152.0L73.1 159.1L71.5 166.2L70.5 173.2L70.0 180.0L70.2 186.7L70.9 193.3L72.2 199.8L73.9 206.2L76.0 212.5L78.6 218.8L81.7 225.2L85.1 231.3L88.8 237.2L92.5 242.5L96.3 247.6L100.2 252.5L104.3 256.9L108.4 260.3L112.5 262.5L116.9 262.8L121.6 261.6L126.2 259.6L130.1 257.5L132.9 256.3L138.9 233.8L125.2 166.9L122.5 161.3L120.8 155.5L120.1 149.5L120.2 143.5L121.3 137.5L123.3 131.8L126.2 126.3L129.9 121.1L134.4 116.4L139.6 112.3L145.4 108.7L151.8 105.8L158.5 103.6L165.4 102.2L172.6 101.5L179.8 101.7L186.9 102.6L193.8 104.3L200.4 106.7L206.5 109.8L212.2 113.6L217.1 117.9L221.4 122.8L224.8 128.1L227.5 133.7L229.2 139.5L229.9 145.5L229.8 151.5L228.7 157.5L226.7 163.2L223.8 168.7L220.1 173.9L215.6 178.6L210.4 182.7L204.6 186.3L198.2 189.2L191.5 191.4L184.6 192.8L177.4 193.5L170.2 193.3L163.1 192.4L156.2 190.7L144.5 230.5L147.5 235.1L150.9 239.3L154.8 243.1L159.1 246.5L163.8 249.3L168.7 251.7L173.8 253.5L179.1 254.7L184.5 255.4L190.0 255.5L195.4 254.9L200.7 253.8L254.0 239.5L307.2 225.3L360.4 211.0L413.6 196.8L466.8 182.5Z" class="fb-loop"/>
+  <g class="fb-i"><path d="M20 272 C 120 272, 250 270, 440 238 S 560 212, 590 204" marker-end="url(#xa-i)"/></g>
+  <g class="fb-e"><path d="M300 12 C 330 40, 420 80, 470 120 S 540 160, 580 172" marker-end="url(#xa-e)"/></g>
+  <path d="M175.0 147.5L140.7 178.8L141.7 232.1L144.7 237.1L148.2 241.8L152.2 246.1L156.7 249.9L161.6 253.3L166.8 256.1L172.4 258.3L178.2 259.9L184.2 260.9L190.2 261.2L196.3 260.8L202.4 259.8L522.8 178.6" class="fb-path" marker-end="url(#xa-p)"/>
+  <line x1="144.5" y1="230.5" x2="100" y2="286" class="fb-lead"/>
+  <text x="96" y="283" class="fb-t" text-anchor="end">1.3 mm slot</text>
+  <line x1="182" y1="258" x2="230" y2="286" class="fb-lead"/>
+  <text x="234" y="284" class="fb-t">Coanda surface</text>
+  <line x1="380" y1="207" x2="400" y2="258" class="fb-lead"/>
+  <text x="404" y="262" class="fb-t">diffuser, 15°</text>
+  <text x="175" y="151" class="fb-t fb-t-in" text-anchor="middle">plenum</text>
+  <text x="20" y="262" class="fb-t fb-t-i">induced (axis side)</text>
+  <text x="300" y="30" class="fb-t fb-t-e" text-anchor="end">entrained (outside)</text>
+</svg>
+<figcaption>The loop's cross-section as the lab draws it, about five times full size. Amber traces a parcel of the motor's air from the plenum, out of the slot and along the surface. The exact curves of Dyson's section are not published; the slot width, the flare angle and the overall proportions follow the patent.</figcaption>
+</figure>
+<p>The way out is a slot about 1.3 mm wide running the whole circumference of the loop, on its inner face near the back. Squeezing 27 litres a second through a slot that thin and about 1.1 metres long makes a sheet of air moving at roughly 19 m/s. With the controls at their defaults the readout gives 216 Pa across the slot, which is also about what the impeller has to supply.</p>
+<p>The sheet leaves the slot heading inward and meets a convex, rounded surface, and it follows that surface round the corner instead of carrying straight on. This is the Coanda effect, and there is nothing mysterious about it: a jet next to a wall entrains air from the gap between itself and the wall faster than that gap can be refilled, so the pressure there drops and the jet is pushed onto the surface. Once attached, the curved flow stays attached for the same reason a car stays on a banked curve: bending a stream of radius R needs a pressure difference across it of about ρU²h/R. For a 1.3 mm sheet at 19 m/s round a 10 mm radius that is some 56 Pa, the suction that holds the sheet to the metal.</p>
+<p>After the curve comes a straight flared section, the diffuser, angled outward at about 15 degrees; the patent gives 7 to 20 as the working range. The sheet runs along it and leaves the trailing edge as a thin annular jet, a tube of fast air with a hole in the middle.</p>
+</section>
+
+<section id="multiply">
+<h2>Where the air comes from</h2>
+<p>A turbulent jet cannot move through still air without dragging it along. Eddies at its edges fold slow air into the fast stream, the stream widens and slows, and its momentum is conserved while its volume flow grows. That growth is the whole trick. What the loop does is make the jet a thin sheet with a very long edge, because entrainment happens at edges.</p>
+<p>A sheet has two faces. On the outside, air is drawn in from all around the rim: this is what Dyson calls entrainment. On the inside the sheet also entrains, but the only supply of air to the inner face is through the open middle of the loop, from behind. So the fan pulls a column of air through its own centre: inducement, in Dyson's word. At the default settings the model has that air crossing the loop at about 2 m/s.</p>
+<p>For a plane turbulent jet from a slot of width B, the volume flow grows as the square root of distance, Q/Q₀ ≈ 0.58 √(x/B), a result that follows from momentum conservation plus the jet's measured spreading rate of about 0.11 (Gutmark and Wygnanski 1976). The thinner the slot, the faster the growth relative to what came out of it. Close to the loop each piece of the sheet behaves like that. Further out, the inner edges of the sheet meet on the axis, the core is used up, and the flow forgets it was ever annular: it grows like an ordinary round jet, linearly with distance, at the rate Ricou and Spalding measured in 1961. I put the hand-over where the two growth rates are equal, which turns out to be about 3.25 loop diameters for any slot. Nothing in the model is fitted to Dyson's numbers except the fan curve, and that only fixes how much air the motor sends.</p>
+</section>
+
+<section id="fifteen">
+<h2>Fifteen times what?</h2>
+<p>Dyson's headline figure is that the loop multiplies the motor's air about fifteen times. The model agrees, at the right distance: 16 times at one metre in front of a 350 mm loop. But the ratio is not a property of the fan. A jet keeps entraining for as long as it exists, so the figure depends on where you measure: 8 times at 25 cm, 16 at a metre, 31 at three metres, and it would keep climbing if the room let it.</p>
+<p>It also depends on the slot, and that is where the second chart earns its place. Narrow the slot with the motor unchanged and three things happen together. Less air gets through, because the slot is a tighter restriction. What does get through goes faster. And the ratio climbs, from 16 at 1.3 mm to 23 at 0.6 mm, because the denominator shrank. The air actually moving past you at a metre goes the other way, from 433 to 368 litres a second. Widen the slot to 4 mm and the motor moves more air, but the jet is slow and the ratio falls to 9; delivered air falls too, to 343.</p>
+<p>What you feel from a fan is set by the momentum it throws, and for a given impeller the jet's momentum peaks where the slot's resistance is matched to the fan, with half the fan's shut-off pressure across the slot. With the fan curve I assumed, that match falls at about 1.4 mm on a 350 mm loop, next to the 1.3 mm the patent prefers. I take that as the real reason the slot is about a millimetre wide. The multiplication ratio is a consequence of that choice, not the goal of it, and a design chasing the ratio alone would narrow the slot until the fan was starved.</p>
+<p>The loop's diameter behaves differently. At a metre the ratio barely moves with it, since in the sheet regime it depends only on x/B. A bigger loop has a longer slot, so the same impeller pushes more air through it, and the sheet stays a sheet for longer before it becomes a round jet.</p>
+</section>
+
+<section id="checks">
+<h2>Against the data</h2>
+<p>A model this simple should be held to numbers it was not built from. There are three I could find.</p>
+<figure class="table-figure">
+<table>
+<thead><tr><th>Source</th><th>Geometry</th><th>Published</th><th>This model</th></tr></thead>
+<tbody>
+<tr><td>Dyson patent (Gammack et al. 2012)</td><td>350 mm loop, 1.3 mm slot, 27 l/s, at 3 diameters</td><td>400 to 500 l/s</td><td>444 l/s</td></tr>
+<tr><td>Jafari et al. 2016, measured</td><td>600 mm loop, 6 mm slot, at 3 diameters</td><td>11.7 times (CFD 13.5)</td><td>10.0 times</td></tr>
+<tr><td>Jafari et al. 2016, where the air came from</td><td>same</td><td>8.5% motor, 53% through the loop, 38.5% around it</td><td>10%, 45%, 45%</td></tr>
+<tr><td>Joshi et al. 2023, CFD</td><td>300 mm loop, 1.2 mm against 2.0 mm slot</td><td>1.2 mm gives 24% more</td><td>29% more</td></tr>
+</tbody>
+</table>
+<figcaption>The patent's own operating point also calibrates the fan curve, so the first row checks only the jet laws, not the fan.</figcaption>
+</figure>
+<p>The totals land within about fifteen per cent. The split is the model's weakest part: it lets the sheet entrain equally from both faces, where Jafari and colleagues found the inside face doing more of the work. That is what the Coanda surface is for. Their fan, like Dyson's, puts the curved surface on the inner side, and a jet bent round a convex wall entrains faster on that side than a straight free jet would.</p>
+</section>
+
+<section id="unsettled">
+<h2>What I could not settle</h2>
+<p><strong>The fan curve.</strong> Dyson publishes the flow through the slot but not the impeller's shut-off pressure or free delivery. I chose a parabola through the patent's point with 400 Pa at shut-off and 40 l/s free. The matched slot width moves with that choice; the argument that a matched slot exists does not.</p>
+<p><strong>Laminar or turbulent.</strong> Based on the slot width, the sheet leaves at a Reynolds number of about 1,600, which is why some explanations call the flow laminar. The entrainment laws I use are for turbulent jets. A sheet that thin becomes unstable within a few centimetres and its edges roll up into the eddies that do the entraining, so I expect the turbulent laws to hold over most of the distance that matters, but I have not seen near-field measurements that show where the transition happens on a real loop.</p>
+<p><strong>Dyson's fifteen.</strong> The marketing figure never says at what distance it was measured. The patent's numbers make it about 15 to 18 at three loop diameters, which is where I have assumed it comes from.</p>
+<p><strong>The section.</strong> The cross-section in the lab is mine, drawn to the patent's slot width and flare angle. It is not a copy of any product's profile, and the lab does not depend on its exact curves: the numbers come from the slot, the loop and the fan.</p>
+</section>
+
+<section id="sources" class="sources">
+<h2>Sources</h2>
+<ul>
+<li>Gammack, P. D., Nicolas, F. and Simmonds, K. J. (2012). Fan. US Patent 8,308,445 B2, Dyson Technology Ltd, priority 4 September 2007. Slot 1 to 5 mm, preferably about 1.3 mm; Coanda flare 7 to 20 degrees, preferably about 15; 20 to 30 l/s through the slot; 400 to 500 l/s at three nozzle diameters.</li>
+<li>Jafari, Afshin, Farhanieh and Bozorgasareh (2016). Experimental and numerical investigation of a 60 cm diameter bladeless fan. <i>Journal of Applied Fluid Mechanics</i> 9(2). Flow increase 11.7 measured, 13.5 computed; flow split 8.5, 53 and 38.5 per cent.</li>
+<li>Joshi, V., Noronha, W., Vinayagamurthy, G., Sivakumar, R. and Rajasekarababu, K. B. (2023). Determination of optimum outlet slit thickness and outlet angle for the bladeless fan using the CFD approach. <i>Energies</i> 16(4), 1633. Discharge ratio 18.8 at 1.2 mm, 24 per cent above 2.0 mm.</li>
+<li>Gutmark, E. and Wygnanski, I. (1976). The planar turbulent jet. <i>Journal of Fluid Mechanics</i> 73(3), 465 to 495. Spreading rate of a plane jet.</li>
+<li>Ricou, F. P. and Spalding, D. B. (1961). Measurements of entrainment by axisymmetrical turbulent jets. <i>Journal of Fluid Mechanics</i> 11(1), 21 to 32. Mass flow 0.32 x/d times the nozzle flow.</li>
+<li>Hussein, H. J., Capp, S. P. and George, W. K. (1994). Velocity measurements in a high-Reynolds-number, momentum-conserving, axisymmetric, turbulent jet. <i>Journal of Fluid Mechanics</i> 258, 31 to 75. Spreading rate of a round jet.</li>
+</ul>
+<p><em>I checked the patent figures against the patent text and the two bladeless-fan studies against their published papers. The spreading rates are standard values I did not re-derive from the original data. The fan curve is my assumption, as described above, and the loop's cross-section is my own drawing.</em></p>
+</section>
+
+</main><!-- ISEGORIA:FOOT -->
+<footer id="ig-footer"><div><a href="/">Isegoria · Benjamin Haire</a><nav aria-label="Site links"><a href="/">Back to home</a><a href="/library.html">Browse the library</a><a href="#ig-content">Back to top</a></nav></div></footer>
+<!-- /ISEGORIA:FOOT -->
+</body>
+</html>

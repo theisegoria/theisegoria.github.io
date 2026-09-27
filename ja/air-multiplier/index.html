@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="ja" class=" ig-document ig-editorial">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>羽根のない扇風機</title>
+<meta name="description" content="幅一ミリほどのスリットを持つ輪が、モーターの送る空気の十五倍もの風を生む仕組みと、その増幅がどこから来るのか。">
+<meta property="og:title" content="羽根のない扇風機">
+<meta property="og:description" content="幅一ミリほどのスリットを持つ輪が、モーターの送る空気の十五倍もの風を生む仕組みと、その増幅がどこから来るのか。">
+<meta property="og:image" content="https://theisegoria.github.io/air-multiplier/og.png">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="canonical" href="https://theisegoria.github.io/ja/air-multiplier/">
+<link rel="alternate" hreflang="en" href="https://theisegoria.github.io/air-multiplier/">
+<link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/air-multiplier/">
+<link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/air-multiplier/">
+<link rel="stylesheet" href="/assets/isegoria.css?v=20260927">
+<link rel="stylesheet" href="/assets/lab-kit/lab-kit.css?v=20260927">
+<link rel="stylesheet" href="/air-multiplier/style.css?v=20260927">
+<script type="importmap">
+{"imports":{
+  "three":"/vendor/three/r186/build/three.webgpu.js",
+  "three/webgpu":"/vendor/three/r186/build/three.webgpu.js",
+  "three/tsl":"/vendor/three/r186/build/three.tsl.js",
+  "three/addons/":"/vendor/three/r186/examples-jsm/"
+}}
+</script>
+<link rel="modulepreload" href="/vendor/three/r186/build/three.webgpu.js">
+<link rel="modulepreload" href="/vendor/three/r186/build/three.core.js">
+<script type="module" src="/air-multiplier/lab.js"></script>
+<script src="/assets/lang.js"></script>
+<!-- ISEGORIA:HEAD -->
+<link rel="stylesheet" href="/assets/site-shell.css?v=c21cd21e82">
+<script src="/assets/site-shell.js?v=c21cd21e82" ></script>
+<!-- /ISEGORIA:HEAD -->
+<script defer data-isegoria-analytics src="/assets/analytics.js?v=9e6ebd463bf2"></script>
+</head>
+<body class=" ig-site" data-site-kind="editorial" data-site-route="/ja/air-multiplier/">
+<!-- ISEGORIA:NAV -->
+<a class="ig-skip" href="#ig-content">本文へ移動</a>
+<header id="ig-header"><div class="ig-nav-inner">
+<a class="ig-brand" href="/ja/" aria-label="Isegoria, ホーム"><strong>ISEGORIA</strong><span>Benjamin Haire</span></a>
+<div class="ig-header-actions"><a class="ig-language" href="/air-multiplier/" hreflang="en" lang="en">English</a><button class="ig-menu" type="button" aria-expanded="false" aria-controls="ig-primary">メニュー</button></div>
+<nav id="ig-primary" aria-label="メインナビゲーション"><a href="/ja/">ホーム</a><a href="/ja/library.html">全コンテンツ</a><a href="/ja/math-encyclopedia/">数学百科事典</a><a href="/ja/#interactive" aria-current="location">操作できる解説</a><a href="/ja/#preoccupations">研究と解説</a><a href="/ja/#books">書籍</a><a href="/ja/projects.html">プロジェクト</a><a href="/ja/about.html">このサイトについて</a><a class="ig-language" href="/air-multiplier/" hreflang="en" lang="en">English</a><button class="ig-theme" type="button" hidden>表示切替</button></nav>
+</div></header>
+<nav id="ig-breadcrumb" aria-label="パンくずリスト"><a href="/ja/">ホーム</a><span aria-hidden="true">/</span><a href="/ja/#interactive">操作できる解説</a><span aria-hidden="true">/</span><span aria-current="page">羽根のない扇風機</span></nav>
+<span id="ig-content" tabindex="-1"></span>
+<!-- /ISEGORIA:NAV --><main class="wrap">
+
+<header class="hero">
+<p class="kicker">操作できる解説</p>
+<h1>羽根のない扇風機</h1>
+<p class="lede">幅一ミリほどのスリットを持つ輪が、モーターの送る空気の十五倍もの風を生む仕組みと、その増幅がどこから来るのか。</p>
+<nav class="ig-page-nav" aria-label="このページの目次"><a href="#model">モデル</a><a href="#blades">羽根は台座の中にある</a><a href="#coanda">スリットと曲面</a><a href="#multiply">空気はどこから来るか</a><a href="#fifteen">何の十五倍か</a><a href="#checks">データとの照合</a><a href="#unsettled">決着がつかなかったこと</a><a href="#sources">出典</a></nav>
+</header>
+
+<p class="thesis">この扇風機にも羽根はある。台座の中に隠れているだけである。輪が加えているのは、細く速い噴流に大量の遅い空気を引きずらせる仕掛けであり、有名な増幅率は、設計があえて小さく保った分母に対する比にすぎない。</p>
+
+<section class="lab" id="model" aria-labelledby="model-h">
+<h2 id="model-h">モデル</h2>
+<p>琥珀色はモーターが動かす空気、青は後ろから輪の中を通って引き込まれる空気、緑は周囲から巻き込まれる空気である。ドラッグで回転、スクロールで拡大できる。スリットを狭めると、増幅率は上がるのに実際に届く風量はほとんど変わらないことが分かる。</p>
+
+<div class="lab-stage">
+  <canvas id="stage" tabindex="0" aria-label="羽根のない扇風機：輪と台座を切り欠いた操作できる3D表示。ドラッグで回転、スクロールかピンチで拡大。"></canvas>
+  <div class="lab-labels" id="labels" aria-hidden="true"></div>
+  <figure data-lab-fallback hidden>
+    <svg viewBox="0 0 640 400" role="img" aria-labelledby="fb-t fb-d">
+      <title id="fb-t">羽根のない扇風機を横から見た静止図</title>
+      <desc id="fb-d">輪を真横から見た図と台座。輪の断面それぞれのスリットから琥珀色の薄い空気の膜が出て、下流で一つにまとまる。青い空気は後ろから輪の中央を通って引き込まれ、緑の空気は上下から巻き込まれて膜に加わる。</desc>
+      <defs>
+        <marker id="fa-p" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" class="fb-mk-p"/></marker>
+        <marker id="fa-i" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" class="fb-mk-i"/></marker>
+        <marker id="fa-e" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" class="fb-mk-e"/></marker>
+      </defs>
+      <line x1="10" y1="190" x2="630" y2="190" class="fb-axis"/>
+      <g class="fb-i">
+        <path d="M14 120 C 90 124, 150 140, 250 148 S 420 160, 560 172" marker-end="url(#fa-i)"/>
+        <path d="M14 160 C 100 162, 170 168, 300 172 S 460 180, 575 184" marker-end="url(#fa-i)"/>
+        <path d="M14 220 C 100 218, 170 212, 300 208 S 460 200, 575 196" marker-end="url(#fa-i)"/>
+        <path d="M14 260 C 90 256, 150 240, 250 232 S 420 220, 560 208" marker-end="url(#fa-i)"/>
+      </g>
+      <g class="fb-e">
+        <path d="M250 6 C 262 40, 270 60, 300 82" marker-end="url(#fa-e)"/>
+        <path d="M370 6 C 380 50, 395 90, 430 120" marker-end="url(#fa-e)"/>
+        <path d="M490 6 C 500 60, 515 120, 540 150" marker-end="url(#fa-e)"/>
+        <path d="M250 374 C 262 340, 270 320, 300 298" marker-end="url(#fa-e)"/>
+        <path d="M370 374 C 380 330, 395 290, 430 260" marker-end="url(#fa-e)"/>
+        <path d="M490 374 C 500 320, 515 260, 540 230" marker-end="url(#fa-e)"/>
+      </g>
+      <g class="fb-p">
+        <path d="M193 44 C 300 60, 450 120, 620 178" marker-end="url(#fa-p)"/>
+        <path d="M193 336 C 300 320, 450 260, 620 202" marker-end="url(#fa-p)"/>
+      </g>
+      <rect x="112" y="352" width="54" height="46" rx="4" class="fb-base"/>
+      <path d="M192.0 43.3L190.4 42.3L188.1 40.9L185.4 39.2L182.6 37.6L180.0 36.1L177.6 34.9L175.2 33.7L172.8 32.5L170.4 31.5L168.0 30.5L165.6 29.6L163.1 28.8L160.7 28.0L158.3 27.4L156.0 26.8L153.8 26.3L151.7 25.9L149.6 25.6L147.6 25.3L145.6 25.2L143.6 25.2L141.6 25.2L139.6 25.4L137.8 25.6L136.0 26.0L134.4 26.5L132.8 27.0L131.4 27.7L130.0 28.4L128.8 29.2L127.7 30.0L126.6 31.0L125.7 31.9L124.8 33.0L124.0 34.0L123.3 35.1L122.7 36.2L122.1 37.3L121.6 38.5L121.2 39.6L120.8 40.7L120.5 41.9L120.2 43.0L120.1 44.1L120.0 45.2L120.0 46.3L120.1 47.3L120.4 48.4L120.6 49.4L121.0 50.4L121.4 51.4L121.9 52.4L122.4 53.4L123.0 54.3L123.6 55.2L124.2 56.0L124.8 56.8L125.5 57.5L126.1 58.1L126.8 58.4L127.5 58.5L128.3 58.3L129.0 57.9L129.6 57.6L130.1 57.4L131.0 53.8L128.8 43.1L128.4 42.2L128.1 41.3L128.0 40.3L128.0 39.4L128.2 38.4L128.5 37.5L129.0 36.6L129.6 35.8L130.3 35.0L131.1 34.4L132.1 33.8L133.1 33.3L134.2 33.0L135.3 32.8L136.4 32.6L137.6 32.7L138.7 32.8L139.8 33.1L140.9 33.5L141.8 34.0L142.7 34.6L143.5 35.3L144.2 36.0L144.8 36.9L145.2 37.8L145.5 38.7L145.6 39.7L145.6 40.6L145.4 41.6L145.1 42.5L144.6 43.4L144.0 44.2L143.3 45.0L142.5 45.6L141.5 46.2L140.5 46.7L139.4 47.0L138.3 47.2L137.2 47.4L136.0 47.3L134.9 47.2L133.8 46.9L131.9 53.3L132.4 54.0L132.9 54.7L133.6 55.3L134.3 55.8L135.0 56.3L135.8 56.7L136.6 57.0L137.5 57.2L138.3 57.3L139.2 57.3L140.1 57.2L140.9 57.0L149.4 54.7L157.9 52.4L166.5 50.2L175.0 47.9L183.5 45.6Z" class="fb-loop"/>
+      <path d="M192.0 336.7L190.4 337.7L188.1 339.1L185.4 340.8L182.6 342.4L180.0 343.9L177.6 345.1L175.2 346.3L172.8 347.5L170.4 348.5L168.0 349.5L165.6 350.4L163.1 351.2L160.7 352.0L158.3 352.6L156.0 353.2L153.8 353.7L151.7 354.1L149.6 354.4L147.6 354.7L145.6 354.8L143.6 354.8L141.6 354.8L139.6 354.6L137.8 354.4L136.0 354.0L134.4 353.5L132.8 353.0L131.4 352.3L130.0 351.6L128.8 350.8L127.7 350.0L126.6 349.0L125.7 348.1L124.8 347.0L124.0 346.0L123.3 344.9L122.7 343.8L122.1 342.7L121.6 341.5L121.2 340.4L120.8 339.3L120.5 338.1L120.2 337.0L120.1 335.9L120.0 334.8L120.0 333.7L120.1 332.7L120.4 331.6L120.6 330.6L121.0 329.6L121.4 328.6L121.9 327.6L122.4 326.6L123.0 325.7L123.6 324.8L124.2 324.0L124.8 323.2L125.5 322.5L126.1 321.9L126.8 321.6L127.5 321.5L128.3 321.7L129.0 322.1L129.6 322.4L130.1 322.6L131.0 326.2L128.8 336.9L128.4 337.8L128.1 338.7L128.0 339.7L128.0 340.6L128.2 341.6L128.5 342.5L129.0 343.4L129.6 344.2L130.3 345.0L131.1 345.6L132.1 346.2L133.1 346.7L134.2 347.0L135.3 347.2L136.4 347.4L137.6 347.3L138.7 347.2L139.8 346.9L140.9 346.5L141.8 346.0L142.7 345.4L143.5 344.7L144.2 344.0L144.8 343.1L145.2 342.2L145.5 341.3L145.6 340.3L145.6 339.4L145.4 338.4L145.1 337.5L144.6 336.6L144.0 335.8L143.3 335.0L142.5 334.4L141.5 333.8L140.5 333.3L139.4 333.0L138.3 332.8L137.2 332.6L136.0 332.7L134.9 332.8L133.8 333.1L131.9 326.7L132.4 326.0L132.9 325.3L133.6 324.7L134.3 324.2L135.0 323.7L135.8 323.3L136.6 323.0L137.5 322.8L138.3 322.7L139.2 322.7L140.1 322.8L140.9 323.0L149.4 325.3L157.9 327.6L166.5 329.8L175.0 332.1L183.5 334.4Z" class="fb-loop"/>
+      <text x="200" y="22" class="fb-t">輪の周囲から巻き込まれる空気</text>
+      <text x="16" y="110" class="fb-t">輪の中を通って引き込まれる空気</text>
+      <text x="330" y="100" class="fb-t fb-t-p">スリットからの噴流、約27 L/s</text>
+      <text x="176" y="392" class="fb-t">送風機はこの中</text>
+    </svg>
+    <figcaption>このブラウザはWebGL 2にもWebGPUにも対応していないため、静止図を表示している。</figcaption>
+  </figure>
+  <div class="lab-hud"><span class="lab-badge"></span></div>
+</div>
+
+<form class="lab-controls" id="controls" onsubmit="return false">
+  <label><span>モーター回転数</span><output for="speed"></output><input id="speed" name="speed" type="range" min="0" max="1" step="0.01" value="1" data-format="pct"></label>
+  <label><span>スリット幅 (mm)</span><output for="slotMm"></output><input id="slotMm" name="slotMm" type="range" min="0.5" max="4" step="0.1" value="1.3" data-format="fixed:1"></label>
+  <label><span>輪の直径 (mm)</span><output for="diameterMm"></output><input id="diameterMm" name="diameterMm" type="range" min="200" max="600" step="10" value="350" data-format="int"></label>
+  <label><span>測定する距離 x (m)</span><output for="x"></output><input id="x" name="x" type="range" min="0.1" max="3" step="0.05" value="1" data-format="fixed:2"></label>
+  <fieldset class="lab-toggles">
+    <label><input name="cutaway" type="checkbox" checked> <span>切り欠き</span></label>
+    <label><input name="labels" type="checkbox" checked> <span>ラベル</span></label>
+    <label><input name="flow" type="checkbox" checked> <span>気流</span></label>
+  </fieldset>
+</form>
+<div class="lab-readout" id="readout" aria-live="off"></div>
+
+<div class="lab-charts">
+  <figure>
+    <svg id="chart-x" role="img" aria-label="距離xの面を通る風量を、空気の出どころ別に積み上げたグラフ"></svg>
+    <figcaption>距離xの面を横切る風量を、出どころ別に示す。網掛けの区間では噴流はまだ環状の膜であり、その先では膜が自らの中心部を飲み込み、円形噴流として広がる。</figcaption>
+  </figure>
+  <figure>
+    <svg id="chart-b" role="img" aria-label="スリット幅に対する届く風量と増幅率"></svg>
+    <figcaption>スリットだけを変える。増幅率（破線）はスリットが狭まるほど上がり続けるが、xで実際に届く風量（実線）は、スリットの抵抗が送風機と整合する幅で緩やかな山をつくる。</figcaption>
+  </figure>
+</div>
+<p class="lab-note">粒子の速さは平方根で圧縮してあり、秒速19 mの膜と秒速2 mの流れを同じ画面に収めている。表示される数値とグラフは圧縮していない。</p>
+</section>
+
+<section id="blades">
+<h2>羽根は台座の中にある</h2>
+<p>羽根のない扇風機は、姿を変えた遠心送風機である。台座の中ではブラシレスDCモーターが斜流インペラを回している。上に行くほど広がるハブに羽根が巻き付いた形で、空気は上向きと外向きの両方に押し出される（Gammack, Nicolas and Simmonds 2012）。台座を囲む小さな穴の列から空気を吸い込み、圧力をかけ、中空の輪へ押し上げる。ダイソンの特許はこの流量を毎秒20から30リットル、望ましくは約27リットルとしている。モーターが直接触れる空気はこれだけである。</p>
+<p>輪の中で空気は、輪を一周する通路である空気室にたまり、二百パスカルほどの圧力になる。出口は一つしかない。</p>
+</section>
+
+<section id="coanda">
+<h2>スリットと曲面</h2>
+<figure class="figure">
+<svg viewBox="0 0 600 300" role="img" aria-labelledby="xs-t xs-d" class="xs">
+  <title id="xs-t">輪の断面、実寸の約5倍</title>
+  <desc id="xs-d">翼形に近い断面で、厚い後部に丸い空気室がある。空気室から絞り込まれた通路が内側の面にある幅1.3 mmのスリットへ続く。噴流はスリットを出ると凸面のコアンダ面に沿って曲がり、15度開いた直線のディフューザーを通って後縁から出る。引き込まれる空気は軸側の下を、巻き込まれる空気は上から来る。</desc>
+  <defs>
+    <marker id="xa-p" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" class="fb-mk-p"/></marker>
+    <marker id="xa-i" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" class="fb-mk-i"/></marker>
+    <marker id="xa-e" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" class="fb-mk-e"/></marker>
+  </defs>
+  <line x1="10" y1="292" x2="590" y2="292" class="fb-axis"/>
+  <text x="590" y="286" class="fb-t" text-anchor="end">軸の方向</text>
+  <path d="M520.0 168.3L509.8 162.0L495.4 153.0L478.6 142.7L461.2 132.3L445.0 123.3L430.0 115.4L415.0 108.0L400.0 100.9L385.0 94.3L370.0 88.3L354.8 82.6L339.5 77.5L324.3 72.8L309.4 68.6L295.0 65.0L281.3 61.9L268.0 59.3L255.2 57.3L242.5 55.8L230.0 55.0L217.4 54.8L204.9 55.2L192.7 56.2L181.0 57.8L170.0 60.0L159.8 62.9L150.2 66.4L141.2 70.6L132.8 75.1L125.0 80.0L117.8 85.3L111.3 91.0L105.4 97.2L100.0 103.5L95.0 110.0L90.5 116.7L86.6 123.6L83.2 130.8L80.2 137.9L77.5 145.0L75.1 152.0L73.1 159.1L71.5 166.2L70.5 173.2L70.0 180.0L70.2 186.7L70.9 193.3L72.2 199.8L73.9 206.2L76.0 212.5L78.6 218.8L81.7 225.2L85.1 231.3L88.8 237.2L92.5 242.5L96.3 247.6L100.2 252.5L104.3 256.9L108.4 260.3L112.5 262.5L116.9 262.8L121.6 261.6L126.2 259.6L130.1 257.5L132.9 256.3L138.9 233.8L125.2 166.9L122.5 161.3L120.8 155.5L120.1 149.5L120.2 143.5L121.3 137.5L123.3 131.8L126.2 126.3L129.9 121.1L134.4 116.4L139.6 112.3L145.4 108.7L151.8 105.8L158.5 103.6L165.4 102.2L172.6 101.5L179.8 101.7L186.9 102.6L193.8 104.3L200.4 106.7L206.5 109.8L212.2 113.6L217.1 117.9L221.4 122.8L224.8 128.1L227.5 133.7L229.2 139.5L229.9 145.5L229.8 151.5L228.7 157.5L226.7 163.2L223.8 168.7L220.1 173.9L215.6 178.6L210.4 182.7L204.6 186.3L198.2 189.2L191.5 191.4L184.6 192.8L177.4 193.5L170.2 193.3L163.1 192.4L156.2 190.7L144.5 230.5L147.5 235.1L150.9 239.3L154.8 243.1L159.1 246.5L163.8 249.3L168.7 251.7L173.8 253.5L179.1 254.7L184.5 255.4L190.0 255.5L195.4 254.9L200.7 253.8L254.0 239.5L307.2 225.3L360.4 211.0L413.6 196.8L466.8 182.5Z" class="fb-loop"/>
+  <g class="fb-i"><path d="M20 272 C 120 272, 250 270, 440 238 S 560 212, 590 204" marker-end="url(#xa-i)"/></g>
+  <g class="fb-e"><path d="M300 12 C 330 40, 420 80, 470 120 S 540 160, 580 172" marker-end="url(#xa-e)"/></g>
+  <path d="M175.0 147.5L140.7 178.8L141.7 232.1L144.7 237.1L148.2 241.8L152.2 246.1L156.7 249.9L161.6 253.3L166.8 256.1L172.4 258.3L178.2 259.9L184.2 260.9L190.2 261.2L196.3 260.8L202.4 259.8L522.8 178.6" class="fb-path" marker-end="url(#xa-p)"/>
+  <line x1="144.5" y1="230.5" x2="100" y2="286" class="fb-lead"/>
+  <text x="96" y="283" class="fb-t" text-anchor="end">1.3 mm スリット</text>
+  <line x1="182" y1="258" x2="230" y2="286" class="fb-lead"/>
+  <text x="234" y="284" class="fb-t">コアンダ面</text>
+  <line x1="380" y1="207" x2="400" y2="258" class="fb-lead"/>
+  <text x="404" y="262" class="fb-t">ディフューザー 15°</text>
+  <text x="175" y="151" class="fb-t fb-t-in" text-anchor="middle">空気室</text>
+  <text x="20" y="262" class="fb-t fb-t-i">引き込み（軸側）</text>
+  <text x="300" y="30" class="fb-t fb-t-e" text-anchor="end">巻き込み（外側）</text>
+</svg>
+<figcaption>モデルが描く輪の断面、実寸の約5倍。琥珀色の線は、モーターの送った空気の一塊が空気室からスリットを出て曲面に沿う道筋である。ダイソンの断面の正確な曲線は公開されていない。スリット幅、開き角、全体の比率は特許に従った。</figcaption>
+</figure>
+<p>出口は幅約1.3 mmのスリットで、輪の内側の面の後ろ寄りを全周にわたって走っている。毎秒27リットルを、これほど薄く長さ約1.1 mのスリットに通すと、秒速約19 mの空気の膜ができる。初期設定ではスリット前後の差圧は216 Paと表示され、これがインペラの供給すべき圧力でもある。</p>
+<p>膜はスリットを内向きに出て、丸みを帯びた凸面に出会い、まっすぐ進まずに曲面に沿って角を回り込む。これがコアンダ効果であり、不思議なことは何もない。壁の近くの噴流は、壁との隙間の空気を補充より速く巻き込むため、そこで圧力が下がり、噴流は面に押し付けられる。いったん付着すると、曲がった流れが付着し続けるのは、車がバンクしたカーブから外れないのと同じ理由である。半径Rで流れを曲げるには、その流れを挟んでおよそρU²h/Rの圧力差が要る。1.3 mmの膜が秒速19 mで半径10 mmを回るなら約56 Pa、これが膜を金属面に保持する吸引力である。</p>
+<p>曲面の先には、外向きに約15度開いた直線の区間、ディフューザーがある。特許は7から20度を有効範囲としている。膜はそこを通って後縁から薄い環状の噴流として出ていく。中心に穴の空いた、速い空気の筒である。</p>
+</section>
+
+<section id="multiply">
+<h2>空気はどこから来るか</h2>
+<p>乱流噴流は、静止した空気の中を、それを引きずらずに進むことができない。縁にできる渦が遅い空気を速い流れに折り込み、流れは広がって遅くなり、運動量は保存されたまま体積流量が増える。仕掛けの全てはこの増加にある。輪がしているのは、噴流を縁の非常に長い薄い膜にすることであり、巻き込みは縁で起こるからである。</p>
+<p>膜には二つの面がある。外側では、輪の周り全体から空気が取り込まれる。ダイソンの言う巻き込み（エントレインメント）である。内側でも膜は空気を巻き込むが、内側の面に空気を供給できるのは、後ろから輪の開いた中央を通る経路だけである。そのため扇風機は自分の中央を通して空気の柱を引き込む。ダイソンの言う誘引（インデュースメント）である。初期設定では、モデル上この空気は秒速約2 mで輪を通過する。</p>
+<p>幅Bのスリットから出る平面乱流噴流では、体積流量は距離の平方根に比例して増え、Q/Q₀ ≈ 0.58 √(x/B) となる。これは運動量保存と、実測された噴流の広がり率約0.11（Gutmark and Wygnanski 1976）から導かれる。スリットが薄いほど、出てきた量に対する増え方が速い。輪の近くでは膜の各部分がこのように振る舞う。さらに先では膜の内側の縁が軸上で出会い、中心部の空気は使い尽くされ、流れはもとが環状だったことを忘れる。以後は普通の円形噴流として、Ricou and Spalding（1961）が測った割合で距離に比例して増える。私は二つの増加率が等しくなる点で受け渡しをさせた。その位置はスリット幅によらず輪の直径の約3.25倍になる。モデルの中でダイソンの数値に合わせたのは送風機の特性曲線だけであり、それもモーターが送る空気の量を決めているにすぎない。</p>
+</section>
+
+<section id="fifteen">
+<h2>何の十五倍か</h2>
+<p>ダイソンの看板となる数字は、輪がモーターの空気をおよそ十五倍にするというものである。モデルも、適切な距離では一致する。直径350 mmの輪の1 m前方で16倍である。しかしこの比は扇風機の性質ではない。噴流は存在する限り巻き込みを続けるので、数字は測る場所で決まる。25 cmで8倍、1 mで16倍、3 mで31倍であり、部屋が許せばさらに上がり続ける。</p>
+<p>比はスリットにも左右される。二つめのグラフが意味を持つのはここである。モーターはそのままでスリットを狭めると、三つのことが同時に起こる。スリットの抵抗が増すので通る空気が減る。通った空気はより速くなる。そして分母が縮むので比は上がり、1.3 mmの16倍から0.6 mmの23倍になる。一方、1 m先で実際に流れている空気は逆に、毎秒433リットルから368リットルへ減る。スリットを4 mmまで広げるとモーターの送る空気は増えるが、噴流は遅く、比は9倍に下がり、届く風量も343リットルに減る。</p>
+<p>扇風機から感じる風は、それが投げ出す運動量で決まる。ある一つのインペラに対し、噴流の運動量は、スリットの抵抗が送風機と整合し、締切圧力の半分がスリットにかかるときに最大になる。私が仮定した特性曲線では、直径350 mmの輪でこの整合点は約1.4 mmとなり、特許が好む1.3 mmのすぐ隣である。スリットが一ミリほどである本当の理由はここにあると私は考える。増幅率はその選択の結果であって目的ではない。比だけを追う設計は、送風機が息切れするまでスリットを狭めてしまうだろう。</p>
+<p>輪の直径は別の振る舞いをする。1 mの地点では比はほとんど変わらない。膜の段階では比がx/Bだけで決まるからである。輪が大きいとスリットが長くなるので、同じインペラでもより多くの空気を送り出せ、膜が円形噴流になるまでの距離も伸びる。</p>
+</section>
+
+<section id="checks">
+<h2>データとの照合</h2>
+<p>これほど単純なモデルは、作るときに使わなかった数値で試すべきである。見つけられたのは三つである。</p>
+<figure class="table-figure">
+<table>
+<thead><tr><th>出典</th><th>形状</th><th>公表値</th><th>このモデル</th></tr></thead>
+<tbody>
+<tr><td>ダイソンの特許（Gammack ほか 2012）</td><td>直径350 mm、スリット1.3 mm、27 L/s、直径の3倍の距離</td><td>400〜500 L/s</td><td>444 L/s</td></tr>
+<tr><td>Jafari ほか 2016、実測</td><td>直径600 mm、スリット6 mm、直径の3倍の距離</td><td>11.7倍（CFDは13.5倍）</td><td>10.0倍</td></tr>
+<tr><td>Jafari ほか 2016、空気の出どころ</td><td>同上</td><td>モーター8.5%、輪の中から53%、周囲から38.5%</td><td>10%、45%、45%</td></tr>
+<tr><td>Joshi ほか 2023、CFD</td><td>直径300 mm、スリット1.2 mmと2.0 mmの比較</td><td>1.2 mmが24%多い</td><td>29%多い</td></tr>
+</tbody>
+</table>
+<figcaption>特許の動作点は送風機の特性曲線の校正にも使っているため、一行目が検証しているのは噴流の法則だけで、送風機ではない。</figcaption>
+</figure>
+<p>総量はおよそ15%以内に収まる。弱いのは内訳である。モデルは膜が両面から等しく巻き込むとしているが、Jafari らは内側の面のほうが多く働いていることを見いだした。コアンダ面はそのためにある。彼らの扇風機もダイソンと同様に曲面を内側に置いており、凸面に沿って曲げられた噴流は、その側でまっすぐな自由噴流より速く巻き込む。</p>
+</section>
+
+<section id="unsettled">
+<h2>決着がつかなかったこと</h2>
+<p><strong>送風機の特性曲線。</strong>ダイソンはスリットを通る流量は公表しているが、インペラの締切圧力も開放流量も公表していない。私は特許の動作点を通り、締切400 Pa、開放40 L/sの放物線を選んだ。整合するスリット幅はこの選択とともに動くが、整合点が存在するという議論は動かない。</p>
+<p><strong>層流か乱流か。</strong>スリット幅を基準にすると、膜が出るときのレイノルズ数は約1,600であり、この流れを層流と呼ぶ解説があるのはそのためである。私が使う巻き込みの法則は乱流噴流のものである。これほど薄い膜は数センチ以内に不安定になり、その縁は巻き込みを担う渦へと巻き上がるので、意味のある距離の大部分では乱流の法則が成り立つと考えている。ただし、実際の輪のどこで遷移が起こるかを示す近傍の測定は見ていない。</p>
+<p><strong>ダイソンの十五倍。</strong>宣伝上の数字は、どの距離で測ったのかを示していない。特許の数値からは直径の3倍の距離で15から18倍となり、私はそこが出どころだと仮定した。</p>
+<p><strong>断面。</strong>このモデルの断面は、特許のスリット幅と開き角に合わせて私が描いたものであり、どの製品の形状の写しでもない。数値はスリット、輪、送風機から出てくるので、モデルはその細かな曲線に依存しない。</p>
+</section>
+
+<section id="sources" class="sources">
+<h2>出典</h2>
+<ul>
+<li>Gammack, P. D., Nicolas, F. and Simmonds, K. J. (2012). Fan. US Patent 8,308,445 B2, Dyson Technology Ltd, 優先日 2007年9月4日。スリット1〜5 mm、望ましくは約1.3 mm。コアンダ面の開き7〜20度、望ましくは約15度。スリットを通る流量20〜30 L/s。ノズル直径の3倍の距離で400〜500 L/s。</li>
+<li>Jafari, Afshin, Farhanieh and Bozorgasareh (2016). Experimental and numerical investigation of a 60 cm diameter bladeless fan. <i>Journal of Applied Fluid Mechanics</i> 9(2). 流量増加は実測11.7、計算13.5。内訳8.5%、53%、38.5%。</li>
+<li>Joshi, V., Noronha, W., Vinayagamurthy, G., Sivakumar, R. and Rajasekarababu, K. B. (2023). Determination of optimum outlet slit thickness and outlet angle for the bladeless fan using the CFD approach. <i>Energies</i> 16(4), 1633. 1.2 mmで吐出比18.8、2.0 mmより24%高い。</li>
+<li>Gutmark, E. and Wygnanski, I. (1976). The planar turbulent jet. <i>Journal of Fluid Mechanics</i> 73(3), 465–495. 平面噴流の広がり率。</li>
+<li>Ricou, F. P. and Spalding, D. B. (1961). Measurements of entrainment by axisymmetrical turbulent jets. <i>Journal of Fluid Mechanics</i> 11(1), 21–32. 質量流量はノズル流量の0.32 x/d倍。</li>
+<li>Hussein, H. J., Capp, S. P. and George, W. K. (1994). Velocity measurements in a high-Reynolds-number, momentum-conserving, axisymmetric, turbulent jet. <i>Journal of Fluid Mechanics</i> 258, 31–75. 円形噴流の広がり率。</li>
+</ul>
+<p><em>特許の数値は特許本文と、二つの羽根なし扇風機の研究は公表論文と照合した。広がり率は標準的な値であり、原データから導き直してはいない。送風機の特性曲線は上に書いた通り私の仮定であり、輪の断面は私自身の作図である。</em></p>
+</section>
+
+</main><!-- ISEGORIA:FOOT -->
+<footer id="ig-footer"><div><a href="/ja/">Isegoria · Benjamin Haire</a><nav aria-label="サイト内リンク"><a href="/ja/">ホームに戻る</a><a href="/ja/library.html">全コンテンツ</a><a href="#ig-content">ページ上部へ</a></nav></div></footer>
+<!-- /ISEGORIA:FOOT -->
+</body>
+</html>
