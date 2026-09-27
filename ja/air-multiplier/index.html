@@ -57,7 +57,7 @@
 
 <section class="lab" id="model" aria-labelledby="model-h">
 <h2 id="model-h">モデル</h2>
-<p>琥珀色はモーターが動かす空気、青は後ろから輪の中を通って引き込まれる空気、緑は周囲から巻き込まれる空気である。ドラッグで回転、スクロールで拡大できる。スリットを狭めると、増幅率は上がるのに実際に届く風量はほとんど変わらないことが分かる。</p>
+<p>琥珀色はモーターが動かす空気、青は後ろから輪の中を通って引き込まれる空気、緑は周囲から巻き込まれる空気である。画面の下のツアーは、台座の穴から噴流まで、空気の通り道を部品ごとにたどる。どの停留点でもドラッグで回転、スクロールで拡大できる。そのあとスリットを狭めると、増幅率は上がるのに実際に届く風量はほとんど変わらないことが分かる。</p>
 
 <div class="lab-stage">
   <canvas id="stage" tabindex="0" aria-label="羽根のない扇風機：輪と台座を切り欠いた操作できる3D表示。ドラッグで回転、スクロールかピンチで拡大。"></canvas>
@@ -104,6 +104,10 @@
 </div>
 
 <form class="lab-controls" id="controls" onsubmit="return false">
+  <div class="lab-tour">
+    <fieldset class="lab-views" aria-label="空気の通り道をたどる"><label><input name="tour" type="radio" value="0" checked> <span>全体</span></label><label><input name="tour" type="radio" value="1"> <span>吸気</span></label><label><input name="tour" type="radio" value="2"> <span>インペラ</span></label><label><input name="tour" type="radio" value="3"> <span>整流</span></label><label><input name="tour" type="radio" value="4"> <span>空気室</span></label><label><input name="tour" type="radio" value="5"> <span>スリット</span></label><label><input name="tour" type="radio" value="6"> <span>噴流</span></label></fieldset>
+    <div class="lab-tour-row"><button type="button" data-tour-step="-1" aria-label="前へ">‹</button><p id="tour-caption" class="lab-tour-caption" aria-live="polite"></p><button type="button" data-tour-step="1" aria-label="次へ">›</button></div>
+  </div>
   <label><span>モーター回転数</span><output for="speed"></output><input id="speed" name="speed" type="range" min="0" max="1" step="0.01" value="1" data-format="pct"></label>
   <label><span>スリット幅 (mm)</span><output for="slotMm"></output><input id="slotMm" name="slotMm" type="range" min="0.5" max="4" step="0.1" value="1.3" data-format="fixed:1"></label>
   <label><span>輪の直径 (mm)</span><output for="diameterMm"></output><input id="diameterMm" name="diameterMm" type="range" min="200" max="600" step="10" value="350" data-format="int"></label>
@@ -131,7 +135,7 @@
 
 <section id="blades">
 <h2>羽根は台座の中にある</h2>
-<p>羽根のない扇風機は、姿を変えた遠心送風機である。台座の中ではブラシレスDCモーターが斜流インペラを回している。上に行くほど広がるハブに羽根が巻き付いた形で、空気は上向きと外向きの両方に押し出される（Gammack, Nicolas and Simmonds 2012）。台座を囲む小さな穴の列から空気を吸い込み、圧力をかけ、中空の輪へ押し上げる。ダイソンの特許はこの流量を毎秒20から30リットル、望ましくは約27リットルとしている。モーターが直接触れる空気はこれだけである。</p>
+<p>羽根のない扇風機は、姿を変えた遠心送風機である。空気は台座の下部を囲む数百の小さな穴からインペラの下の部屋に入り、ベルマウスが上向きに羽根へ送り込む。インペラは斜流型で、上に行くほど広がるハブに九枚の羽根が巻き付いており、空気は上向きと外向きの両方に押し出される。軸流ファンと遠心送風機の中間であり、その上に置かれたブラシレスDCモーターが駆動する（Gammack, Nicolas and Simmonds 2012）。インペラを出た空気は回転しているので、その上に並ぶ固定された翼が渦を取り除き、回転の運動を圧力として回収する。台座はそこで絞られてネックとなり、空気を中空の輪へ送り上げる。ダイソンの特許はこの流量を毎秒20から30リットル、望ましくは約27リットルとしている。モーターが直接触れる空気はこれだけであり、この扇風機で動く部品はインペラだけである。</p>
 <p>輪の中で空気は、輪を一周する通路である空気室にたまり、二百パスカルほどの圧力になる。出口は一つしかない。</p>
 </section>
 

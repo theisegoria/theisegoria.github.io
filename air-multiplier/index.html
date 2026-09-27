@@ -57,7 +57,7 @@
 
 <section class="lab" id="model" aria-labelledby="model-h">
 <h2 id="model-h">The model</h2>
-<p>Amber is the air the motor moves, blue is air pulled through the open loop from behind, green is air drawn in from around it. Drag to orbit, scroll to zoom, then narrow the slot and watch the multiplication rise while the air actually delivered barely moves.</p>
+<p>Amber is the air the motor moves, blue is air pulled through the open loop from behind, green is air drawn in from around it. The tour under the picture walks the air's path from the holes in the base to the jet, one part at a time; drag to orbit and scroll to zoom at any stop. Then narrow the slot and watch the multiplication rise while the air actually delivered barely moves.</p>
 
 <div class="lab-stage">
   <canvas id="stage" tabindex="0" aria-label="The bladeless fan: interactive 3D view with the loop and base cut away. Drag to orbit, scroll or pinch to zoom."></canvas>
@@ -104,6 +104,10 @@
 </div>
 
 <form class="lab-controls" id="controls" onsubmit="return false">
+  <div class="lab-tour">
+    <fieldset class="lab-views" aria-label="Tour of the air path"><label><input name="tour" type="radio" value="0" checked> <span>Overview</span></label><label><input name="tour" type="radio" value="1"> <span>Intake</span></label><label><input name="tour" type="radio" value="2"> <span>Impeller</span></label><label><input name="tour" type="radio" value="3"> <span>Straightening</span></label><label><input name="tour" type="radio" value="4"> <span>Plenum</span></label><label><input name="tour" type="radio" value="5"> <span>Slot</span></label><label><input name="tour" type="radio" value="6"> <span>Jet</span></label></fieldset>
+    <div class="lab-tour-row"><button type="button" data-tour-step="-1" aria-label="Previous stop">‹</button><p id="tour-caption" class="lab-tour-caption" aria-live="polite"></p><button type="button" data-tour-step="1" aria-label="Next stop">›</button></div>
+  </div>
   <label><span>Motor speed</span><output for="speed"></output><input id="speed" name="speed" type="range" min="0" max="1" step="0.01" value="1" data-format="pct"></label>
   <label><span>Slot width (mm)</span><output for="slotMm"></output><input id="slotMm" name="slotMm" type="range" min="0.5" max="4" step="0.1" value="1.3" data-format="fixed:1"></label>
   <label><span>Loop diameter (mm)</span><output for="diameterMm"></output><input id="diameterMm" name="diameterMm" type="range" min="200" max="600" step="10" value="350" data-format="int"></label>
@@ -131,7 +135,7 @@
 
 <section id="blades">
 <h2>The blades are in the base</h2>
-<p>A bladeless fan is a centrifugal fan wearing a disguise. In the pedestal a brushless DC motor turns a mixed-flow impeller, a hub that flares as it rises with blades that wrap around it, so the air leaves both upward and outward (Gammack, Nicolas and Simmonds 2012). It pulls air in through rows of small holes round the base, pressurises it, and pushes it up into the hollow loop. Dyson's patent puts the flow at 20 to 30 litres a second, preferably about 27. That is the only air the motor ever touches.</p>
+<p>A bladeless fan is a centrifugal fan wearing a disguise. Air comes in through a few hundred small holes round the bottom of the pedestal into a chamber under the impeller, and a bell mouth feeds it upward into the blades. The impeller is a mixed-flow type: a hub that flares as it rises, with nine blades wrapped round it, so the air leaves both upward and outward, part axial fan and part centrifugal blower, driven by a brushless DC motor above it (Gammack, Nicolas and Simmonds 2012). The air comes off the impeller spinning, so a ring of fixed vanes above it takes the swirl off and turns that motion back into pressure; the base then narrows into a neck that carries the air up into the hollow loop. Dyson's patent puts the flow at 20 to 30 litres a second, preferably about 27. That is the only air the motor ever touches, and the impeller is the only part of the fan that moves.</p>
 <p>Inside the loop the air sits in a plenum, a channel running all the way round, at a pressure of a couple of hundred pascals. It has one way out.</p>
 </section>
 

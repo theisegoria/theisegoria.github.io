@@ -128,3 +128,18 @@ html[lang="ja"] .hero .lede { font-style: normal; }
   .thesis { font-size: 1.125rem; }
 }
 .figure .fb-t { stroke: var(--paper); }
+
+/* The tour: stop pills, then a caption between previous/next buttons */
+.lab-tour { grid-column: 1 / -1; display: grid; gap: .6rem; padding-bottom: .9rem; border-bottom: 1px solid var(--rule); margin-bottom: .25rem; }
+.lab-views { display: flex; flex-wrap: wrap; gap: .4rem; }
+.lab-views label {
+  display: inline-flex !important; align-items: center; gap: .4rem;
+  border: 1px solid var(--rule); border-radius: 999px;
+  padding: .3rem .8rem; cursor: pointer; font-size: .8125rem;
+}
+.lab-views label:has(:checked) { border-color: var(--accent); color: var(--ink); background: color-mix(in oklab, var(--accent) 12%, transparent); }
+.lab-views input { accent-color: var(--accent); }
+.lab-tour-row { display: grid; grid-template-columns: auto 1fr auto; gap: .75rem; align-items: center; }
+.lab-tour-row button { width: 2.2rem; height: 2.2rem; padding: 0; border-radius: 999px; font-size: 1.25rem; line-height: 1; }
+.lab-tour-caption { margin: 0; font: .9375rem/1.55 var(--serif); color: var(--ink); min-height: 2.4em; }
+html[lang="ja"] .lab-tour-caption { line-height: 1.8; }

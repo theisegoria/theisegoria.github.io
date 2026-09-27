@@ -28,6 +28,16 @@ const T = JA ? {
   primary: 'モーター', indShort: '輪の中から', entShort: '周囲から', patent: '特許の値',
   delivered: 'x での風量', ratioLine: '増幅率', best: '整合点', now: '現在',
   annular: '環状の膜', round: '円形噴流',
+  bell: 'ベルマウス', motor: 'モーター', vanes: '整流翼', neck: 'ネック', diffuser: 'ディフューザー',
+  tour: [
+    '空気の通り道の全体。琥珀色はモーターが触れる唯一の空気で、青と緑はそれが引きずる空気である。停留点を順にたどるか、ドラッグして自由に眺められる。',
+    '空気は台座の下部を囲む数百の小さな穴から入り、インペラの下の部屋に集まる。穴が小さいのは静かにするためとモーターを見せないためで、それでも開口の合計はスリットの何倍もある。',
+    'ベルマウスがインペラに下から空気を送る。これは斜流インペラで、上に行くほど広がるハブに九枚の羽根が付き、空気を上向きと外向きに同時に押し出す。軸流ファンと遠心送風機の中間であり、この扇風機で動く部品はこれだけである。',
+    'インペラを出た空気は回転している。その上に並ぶ固定された翼が渦を取り除き、回転の運動を圧力として回収する。台座はそこで絞られてネックとなり、空気を輪の中へ送り上げる。',
+    '輪の内部で空気は一周する通路、空気室を満たし、二百パスカルほどの圧力になる。出口が一つしかない貯め池である。',
+    '出口は輪の内側の面にある幅1.3 mmのスリットである。膜は秒速約19 mで出て、丸みのあるコアンダ面に沿って曲がり、開いたディフューザーを通って後縁へ向かう。',
+    '後縁を離れた膜は両面で空気を引き込む。後ろから輪の中を通る空気（青）と、縁の周りから来る空気（緑）である。1 m先では、モーターが送った1リットルにつき16リットルが動いている。',
+  ],
 } : {
   intake: 'intake', impeller: 'mixed-flow impeller', slot: 'slot', coanda: 'Coanda surface', plenum: 'plenum',
   induced: 'induced through the loop', entrained: 'entrained from around it',
@@ -37,14 +47,38 @@ const T = JA ? {
   primary: 'motor', indShort: 'through the loop', entShort: 'from around it', patent: 'patent',
   delivered: 'air at x', ratioLine: 'ratio', best: 'matched', now: 'now',
   annular: 'annular sheet', round: 'round jet',
+  bell: 'bell mouth', motor: 'motor', vanes: 'stator vanes', neck: 'neck', diffuser: 'diffuser',
+  tour: [
+    'The whole path. Amber is the only air the motor touches; blue and green are what it drags along. Step through the stops, or drag to look around.',
+    'Air comes in through a few hundred small holes round the bottom of the base, into a chamber under the impeller. The holes are small to keep the base quiet and the motor out of sight; their total open area is still many times the slot\'s.',
+    'A bell mouth feeds the impeller from below. This is a mixed-flow impeller: nine blades on a hub that widens as it rises, so air leaves upward and outward at once, part axial fan and part centrifugal blower. It is the only moving part in the fan.',
+    'The impeller leaves the air spinning. A ring of fixed vanes above it takes the swirl off and turns that motion back into pressure; the base then narrows into a neck that carries the air up into the loop.',
+    'Inside the loop the air fills a channel that runs the whole way round, the plenum, at a couple of hundred pascals. It is a reservoir with one exit.',
+    'The exit is the slot, 1.3 mm wide on the loop\'s inner face. The sheet leaves at about 19 m/s, wraps the rounded Coanda surface, and runs along the flared diffuser to the trailing edge.',
+    'Off the trailing edge the sheet drags in air on both faces: through the loop from behind (blue) and from around the rim (green). By a metre out there are sixteen litres moving for every one the motor sent.',
+  ],
 };
 
-const params = { ...M.DEFAULTS, speed: 1, cutaway: true, labels: true, flow: true };
+/* Tour stops. Camera and target are in metres in the scene; the loop's own
+ * points are functions because they move with the loop diameter. */
+const LOOP_FACE = 100 * Math.PI / 180;    // the cut face that faces the camera
+const TOUR = [
+  { cam: [-1.42, 0.84, -0.5], tgt: [0, 0.37, 0.52], focus: null, jet: true },
+  { cam: [0.2, 0.17, -0.47], tgt: [0, 0.06, -0.009], focus: ['shell', 'grille'], phases: [1], streak: 1.7 },
+  { cam: [-0.25, 0.14, -0.105], tgt: [-0.005, 0.095, -0.009], focus: ['bell', 'impeller', 'casing', 'motor'], phases: [1] },
+  { cam: [-0.28, 0.27, -0.12], tgt: [0, 0.195, -0.009], focus: ['vanes', 'motor', 'neck', 'casing'], phases: [1] },
+  { cam: () => ringPoint(new THREE.Vector3(), LOOP_FACE, G.rPlenum, G.zPlenum, G.y0).add(new THREE.Vector3(-0.2, 0.11, -0.17)), tgt: () => ringPoint(new THREE.Vector3(), LOOP_FACE, G.rPlenum, G.zPlenum, G.y0), focus: ['loop'], phases: [1, 2, 3], xray: true, streak: 1.4 },
+  { cam: () => ringPoint(new THREE.Vector3(), LOOP_FACE, G.R + G.P.C[1], Z_NOSE + G.P.C[0], G.y0).add(new THREE.Vector3(-0.075, -0.055, -0.055)), tgt: () => ringPoint(new THREE.Vector3(), LOOP_FACE, G.R + G.P.C[1] - 0.006, Z_NOSE + G.P.C[0] + 0.012, G.y0), focus: ['loop'], phases: [3, 4], near: 0.35, streak: 0.3, streakBase: 0.9, sheet: true },
+  { cam: [-1.7, 0.95, 1.7], tgt: [0, 0.45, 1.0], focus: null, jet: true, labels: ['jet'] },
+].map((st, i) => ({ ...st, text: T.tour[i] }));
+
+const kindsOn = [1, 1, 1];      // which particle kinds the current tour stop draws
+const params = { ...M.DEFAULTS, speed: 1, cutaway: true, labels: true, flow: true, tour: '0' };
 let sol = M.solve(params);
 
 /* ----------------------------------------------------------- geometry ---- */
 const Z_NOSE = -0.03;                 // axial position of the loop's nose
-const BASE = { r: 0.064, h: 0.27, z: 0.015 };
+const BASE = { r: 0.064, h: 0.27, z: -0.009 };   // z: the neck sits under the plenum
 const CUT = { a0: 100, a1: 172 };     // cutaway wedge, degrees round the loop (0 = +x, 90 = up)
 const d2r = Math.PI / 180;
 
@@ -80,90 +114,152 @@ function buildLoop(slotMm, D, cut, mats) {
       inner.add(new THREE.Mesh(geo, mats.cap));
     }
   }
+  // the sheet itself: the primary air's path from the slot to the trailing
+  // edge, swept round the loop as a thin translucent band (shown on the slot stop)
+  const sheetPts = P.path.slice(2).map(([u, v]) => new THREE.Vector2(R + v, u + Z_NOSE));
+  const sheet = new THREE.Mesh(new THREE.LatheGeometry(sheetPts, 220, cut ? phiA : 0, span), mats.sheet);
+  sheet.userData.part = 'sheet';
+  inner.add(sheet);
   g.position.y = loopCentreY(D);
   return { group: g, profile: P };
+}
+
+/* The base, following the layout in the patent's figures: air enters through
+ * a perforated skirt into a chamber at the bottom, a bell mouth feeds the
+ * impeller from below, the impeller throws it up and out into a ring of fixed
+ * vanes that take the swirl off, and the base then narrows into a neck that
+ * opens into the loop. The motor sits above the impeller in a bucket that the
+ * air flows round. Dimensions are my own, to the proportions of a 350 mm loop
+ * on a base a little over a quarter of a metre tall. */
+const BS = {
+  gap: [205, 295],            // cut-away wedge, degrees (0 = +z, 90 = +x)
+  grilleY: [0.03, 0.105], chamberTop: 0.06,
+  throat: 0.036, bellR: 0.054,
+  impY: [0.06, 0.125], hubR: [0.011, 0.033], caseR: [0.036, 0.056],
+  motorR: 0.03, motorY: [0.125, 0.2],
+  vaneY: [0.132, 0.182], vaneR: [0.031, 0.056], vanes: 11,
+  neckY: [0.2, 0.266], neckR: [0.058, 0.021],
+};
+
+/** A surface of revolution about y from a list of [r, y] points. */
+function lathe(pts, seg = 96, start = 0, len = Math.PI * 2) {
+  return new THREE.LatheGeometry(pts.map(([r, y]) => new THREE.Vector2(r, y)), seg, start, len);
 }
 
 function buildBase(cut, mats) {
   const g = new THREE.Group();
   g.position.z = BASE.z;
-  const t0 = cut ? (315) * d2r : 0, tl = cut ? (360 - 90) * d2r : Math.PI * 2;
-  const shell = new THREE.Mesh(new THREE.CylinderGeometry(BASE.r, BASE.r * 1.06, BASE.h, 128, 1, true, t0, tl), mats.shell);
-  shell.position.y = BASE.h / 2;
-  g.add(shell);
-  const lining = new THREE.Mesh(new THREE.CylinderGeometry(BASE.r - 0.003, BASE.r * 1.06 - 0.003, BASE.h, 96, 1, true, t0, tl), mats.dark);
-  lining.position.y = BASE.h / 2;
-  g.add(lining);
-  const top = new THREE.Mesh(new THREE.CircleGeometry(BASE.r, 96, t0 + Math.PI / 2, tl), mats.shell);
-  top.rotation.x = -Math.PI / 2; top.position.y = BASE.h;
-  g.add(top);
-  const foot = new THREE.Mesh(new THREE.CircleGeometry(BASE.r * 1.06, 96), mats.dark);
-  foot.rotation.x = -Math.PI / 2; foot.position.y = 0.001;
-  g.add(foot);
-  if (cut) {
-    // the two cut faces of the wall
-    for (const th of [t0, t0 + tl]) {
-      const f = new THREE.Mesh(new THREE.PlaneGeometry(0.004, BASE.h), mats.cap);
-      f.position.set((BASE.r - 0.0015) * Math.sin(th), BASE.h / 2, (BASE.r - 0.0015) * Math.cos(th));
-      f.rotation.y = th + Math.PI / 2;
-      g.add(f);
-    }
+  const tag = (mesh, part) => { mesh.userData.part = part; g.add(mesh); return mesh; };
+  const t0 = cut ? BS.gap[1] * d2r : 0, tl = cut ? (360 - (BS.gap[1] - BS.gap[0])) * d2r : Math.PI * 2;
+  const rAt = (y) => BASE.r * (1.06 - 0.06 * (y / BASE.h));
+
+  // skirt, its lining, the top plate with the neck opening, the foot
+  tag(new THREE.Mesh(lathe([[rAt(0), 0], [rAt(BASE.h), BASE.h]], 128, t0, tl), mats.shell), 'shell');
+  tag(new THREE.Mesh(lathe([[rAt(0) - 0.003, 0.002], [rAt(BASE.h) - 0.003, BASE.h - 0.002]], 96, t0, tl), mats.dark), 'shell');
+  tag(new THREE.Mesh(lathe([[BS.neckR[1] + 0.002, BASE.h], [rAt(BASE.h), BASE.h]], 96, t0, tl), mats.shell), 'shell');
+  tag(new THREE.Mesh(lathe([[0, 0.001], [rAt(0), 0.001]], 96), mats.dark), 'shell');
+  if (cut) for (const th of [t0, t0 + tl]) {
+    const f = new THREE.Mesh(new THREE.PlaneGeometry(0.004, BASE.h), mats.cap);
+    f.position.set((BASE.r - 0.0015) * Math.sin(th), BASE.h / 2, (BASE.r - 0.0015) * Math.cos(th));
+    f.rotation.y = th + Math.PI / 2;
+    tag(f, 'shell');
   }
-  // the grille: rows of small holes round the lower barrel
+
+  // the grille: rows of holes round the skirt, only where the skirt exists
   const rows = 7, cols = 44;
-  const hole = new THREE.CylinderGeometry(0.0026, 0.0026, 0.0012, 12);
+  const hole = new THREE.CylinderGeometry(0.0026, 0.0026, 0.0014, 12);
   hole.rotateZ(Math.PI / 2);
   const holes = new THREE.InstancedMesh(hole, mats.hole, rows * cols);
-  const m = new THREE.Matrix4(), q = new THREE.Quaternion(), s = new THREE.Vector3(1, 1, 1), p = new THREE.Vector3();
+  const m = new THREE.Matrix4(), q = new THREE.Quaternion(), one = new THREE.Vector3(1, 1, 1), p = new THREE.Vector3();
   let n = 0;
   for (let i = 0; i < rows; i++) for (let j = 0; j < cols; j++) {
     const th = ((j + (i % 2) * 0.5) / cols) * Math.PI * 2;
     const deg = ((th / d2r) % 360 + 360) % 360;
-    if (cut && deg > 225 && deg < 315) continue;
-    const y = 0.045 + i * 0.0125;
-    const rr = BASE.r * (1.06 - 0.06 * (y / BASE.h)) + 0.0002;
-    p.set(rr * Math.sin(th), y, rr * Math.cos(th));
+    if (cut && deg > BS.gap[0] - 2 && deg < BS.gap[1] + 2) continue;
+    const y = BS.grilleY[0] + (i / (rows - 1)) * (BS.grilleY[1] - BS.grilleY[0]);
+    p.set((rAt(y) + 0.0002) * Math.sin(th), y, (rAt(y) + 0.0002) * Math.cos(th));
     q.setFromAxisAngle(new THREE.Vector3(0, 1, 0), th - Math.PI / 2);
-    holes.setMatrixAt(n++, m.compose(p, q, s));
+    holes.setMatrixAt(n++, m.compose(p, q, one));
   }
   holes.count = n;
-  g.add(holes);
-  // motor and impeller
-  const motor = new THREE.Mesh(new THREE.CylinderGeometry(0.026, 0.026, 0.05, 48), mats.dark);
-  motor.position.y = 0.05;
-  g.add(motor);
+  tag(holes, 'grille');
+
+  // chamber floor under the impeller and the bell mouth that feeds it
+  const bellPts = [];
+  for (let k = 0; k <= 10; k++) {
+    const a = (Math.PI / 2) * (k / 10);
+    bellPts.push([BS.throat + (BS.bellR - BS.throat) * (1 - Math.cos(a)), BS.chamberTop - 0.016 * Math.sin(a)]);
+  }
+  tag(new THREE.Mesh(lathe(bellPts, 96, t0, tl), mats.metal), 'bell');
+  // impeller casing: the fixed cone the blades run inside
+  tag(new THREE.Mesh(lathe([[BS.caseR[0], BS.impY[0]], [BS.caseR[1], BS.impY[1]], [BS.caseR[1], BS.impY[1] + 0.004]], 96, t0, tl), mats.casing), 'casing');
+
+  // the impeller: hub plus nine blades, the only moving part
   const imp = new THREE.Group();
-  imp.position.y = 0.09;
-  const hub = new THREE.Mesh(new THREE.CylinderGeometry(0.026, 0.012, 0.075, 48), mats.metal);
-  hub.position.y = 0.0375;
-  imp.add(hub);
+  imp.userData.part = 'impeller';
+  const hubPts = [];
+  for (let k = 0; k <= 8; k++) {
+    const t = k / 8;
+    hubPts.push([BS.hubR[0] + (BS.hubR[1] - BS.hubR[0]) * Math.pow(t, 0.8), BS.impY[0] + (BS.impY[1] - BS.impY[0]) * t]);
+  }
+  hubPts.push([BS.hubR[1], BS.impY[1] + 0.004], [0, BS.impY[1] + 0.004]);
+  hubPts.unshift([0, BS.impY[0]]);
+  const hub = new THREE.Mesh(lathe(hubPts, 64), mats.metal); hub.userData.part = 'impeller'; imp.add(hub);
   const blade = impellerBlade();
   for (let k = 0; k < 9; k++) {
     const b = new THREE.Mesh(blade, mats.blade);
     b.rotation.y = (k / 9) * Math.PI * 2;
+    b.userData.part = 'impeller';
     imp.add(b);
   }
   g.add(imp);
-  // stator vanes and the duct up into the loop
-  const duct = new THREE.Mesh(new THREE.CylinderGeometry(0.042, 0.05, 0.1, 48, 1, true), mats.dark);
-  duct.position.y = 0.215;
-  g.add(duct);
+
+  // the motor bucket above the impeller, with a band of windings
+  tag(new THREE.Mesh(lathe([[0, BS.motorY[0]], [BS.motorR, BS.motorY[0]], [BS.motorR, BS.motorY[1]], [BS.motorR - 0.006, BS.motorY[1] + 0.006], [0, BS.motorY[1] + 0.006]], 64), mats.dark), 'motor');
+  tag(new THREE.Mesh(lathe([[BS.motorR + 0.0008, BS.motorY[0] + 0.012], [BS.motorR + 0.0008, BS.motorY[0] + 0.04]], 64), mats.copper), 'motor');
+  const shaft = new THREE.Mesh(lathe([[0, BS.impY[1]], [0.004, BS.impY[1]], [0.004, BS.motorY[0]], [0, BS.motorY[0]]], 24), mats.metal);
+  tag(shaft, 'motor');
+
+  // stator vanes: fixed, leaning against the impeller's swirl
+  const vaneGeo = new THREE.BoxGeometry(BS.vaneR[1] - BS.vaneR[0], BS.vaneY[1] - BS.vaneY[0], 0.0012);
+  for (let k = 0; k < BS.vanes; k++) {
+    const th = (k / BS.vanes) * Math.PI * 2;
+    const deg = ((th / d2r) % 360 + 360) % 360;
+    if (cut && deg > BS.gap[0] + 8 && deg < BS.gap[1] - 8) continue;
+    const v = new THREE.Mesh(vaneGeo, mats.vane);
+    const rm = (BS.vaneR[0] + BS.vaneR[1]) / 2;
+    v.position.set(rm * Math.sin(th), (BS.vaneY[0] + BS.vaneY[1]) / 2, rm * Math.cos(th));
+    v.rotation.set(0, th - Math.PI / 2, 0);
+    v.rotateX(-0.42);      // the lean that turns swirl back into axial flow
+    tag(v, 'vanes');
+  }
+  // the annular duct wall round the vanes, and the neck up into the loop
+  tag(new THREE.Mesh(lathe([[BS.caseR[1], BS.impY[1] + 0.004], [BS.neckR[0], BS.neckY[0]]], 96, t0, tl), mats.casing), 'casing');
+  const neck = [];
+  for (let k = 0; k <= 10; k++) {
+    const t = k / 10, e = t * t * (3 - 2 * t);
+    neck.push([BS.neckR[0] + (BS.neckR[1] - BS.neckR[0]) * e, BS.neckY[0] + (BS.neckY[1] - BS.neckY[0]) * t]);
+  }
+  neck.push([BS.neckR[1], BASE.h + 0.006]);
+  tag(new THREE.Mesh(lathe(neck, 96, t0, tl), mats.casing), 'neck');
   return { group: g, impeller: imp };
 }
 
-/** One mixed-flow blade: a twisted strip between hub and shroud, rising and
+/** One mixed-flow blade: a twisted strip between hub and casing, rising and
  *  flaring as it wraps, so air leaves up and outward rather than purely out. */
 function impellerBlade() {
-  const ns = 18, nt = 5;
+  const ns = 20, nt = 6;
   const pos = [], idx = [];
+  const [y0, y1] = BS.impY;
   for (let i = 0; i <= ns; i++) {
     const s = i / ns;
-    const y = 0.075 * s;
-    const rh = 0.012 + 0.014 * s, rs = 0.03 + 0.016 * s;
-    const th0 = 1.1 * Math.pow(s, 1.25);
+    const y = y0 + (y1 - y0) * s;
+    const rh = BS.hubR[0] + (BS.hubR[1] - BS.hubR[0]) * Math.pow(s, 0.8) + 0.0005;
+    const rs = BS.caseR[0] + (BS.caseR[1] - BS.caseR[0]) * s - 0.0015;
+    const th0 = 1.25 * Math.pow(s, 1.3);
     for (let j = 0; j <= nt; j++) {
       const t = j / nt;
-      const r = rh + (rs - rh) * t, th = th0 + 0.25 * t;
+      const r = rh + (rs - rh) * t, th = th0 + 0.3 * t;
       pos.push(r * Math.cos(th), y, r * Math.sin(th));
     }
   }
@@ -180,9 +276,9 @@ function impellerBlade() {
 
 /* ---------------------------------------------------------- particles ---- */
 const KIND = { PRIMARY: 0, INDUCED: 1, ENTRAINED: 2 };
-const COUNTS = [1500, 1400, 1700];
+const COUNTS = [2600, 1400, 1700];
 const N = COUNTS[0] + COUNTS[1] + COUNTS[2];
-const PH = { INTAKE: 0, BASE: 1, LOOP: 2, SLOT: 3, JET: 4, BEHIND: 5, SIDE: 6 };
+const PH = { BASE: 1, LOOP: 2, SLOT: 3, JET: 4, BEHIND: 5, SIDE: 6 };
 const XI_MAX = 3.1;
 
 const kind = new Uint8Array(N), phase = new Uint8Array(N);
@@ -218,22 +314,77 @@ const rc = (xi) => G.rTE * (1 - smooth(0, 1.15 * sol.xs, xi));
 const wj = (xi) => 0.002 + 0.25 * Math.max(0, xi);
 const um = (xi) => sol.U0 * M.peakSpeed(Math.max(xi, 1e-4), G.B, G.D);
 
+
+/* The primary air's route through the base, as a polyline in (r, y) of the
+ * base frame, from outside the grille to the mouth of the neck. yh is the
+ * height of the hole the parcel came in through. Each segment carries a
+ * nominal speed (m/s) and a swirl (radians per metre of travel). */
+function basePath(yh) {
+  return [
+    { r: 0.16, y: yh, v: 1.2, w: 0 },
+    { r: BASE.r * 1.03, y: yh, v: 2.5, w: 0 },
+    { r: 0.046, y: yh, v: 3, w: 0 },
+    { r: 0.03, y: BS.chamberTop - 0.014, v: 6, w: 0 },
+    { r: 0.024, y: BS.impY[0] + 0.004, v: 11, w: 12 },
+    { r: BS.caseR[1] - 0.008, y: BS.impY[1], v: 11, w: 55 },
+    { r: (BS.vaneR[0] + BS.vaneR[1]) / 2, y: BS.vaneY[1], v: 7, w: 12 },
+    { r: BS.neckR[0] - 0.014, y: BS.neckY[0], v: 6, w: 0 },
+    { r: BS.neckR[1] - 0.004, y: BS.neckY[1], v: 9, w: 0 },
+    { r: BS.neckR[1] - 0.004, y: BASE.h + 0.012, v: 9, w: 0 },
+  ];
+}
+/** Position, speed and swirl at arc length s along the base path. Paths are
+ *  cached per grille row, since every parcel enters through one of them. */
+const BP = new Map();
+function basePathFor(yh) {
+  const key = Math.round(yh * 1e4);
+  let c = BP.get(key);
+  if (!c) {
+    const P = basePath(yh), cum = [0];
+    for (let k = 1; k < P.length; k++) cum.push(cum[k - 1] + Math.hypot(P[k].r - P[k - 1].r, P[k].y - P[k - 1].y));
+    c = { P, cum, len: cum[cum.length - 1] };
+    BP.set(key, c);
+  }
+  return c;
+}
+function basePathLen(yh) { return basePathFor(yh).len; }
+const _b = { r: 0, y: 0, v: 0, w: 0, done: false };
+function baseAt(yh, s) {
+  const { P, cum } = basePathFor(yh);
+  let k = 1;
+  while (k < P.length - 1 && cum[k] < s) k++;
+  const L = cum[k] - cum[k - 1];
+  const f = Math.min(1, Math.max(0, (s - cum[k - 1]) / L));
+  _b.r = P[k - 1].r + (P[k].r - P[k - 1].r) * f;
+  _b.y = P[k - 1].y + (P[k].y - P[k - 1].y) * f;
+  _b.v = P[k - 1].v; _b.w = P[k - 1].w;
+  _b.done = k === P.length - 1 && s >= cum[k];
+  return _b;
+}
+
 function spawn(i, anywhere) {
   const k = kind[i];
   age[i] = 0;
   psi[i] = Math.random() * Math.PI * 2;
-  if (k === KIND.PRIMARY && Math.random() < 0.72) {
+  if (k === KIND.PRIMARY && Math.random() < 0.42) {
     // most parcels are picked up in the plenum, so the sheet at the slot is
     // dense; the rest make the whole trip from the grille, through the impeller
-    phase[i] = PH.SLOT; aux[i] = Math.random() * 0.4 * (G.pathLen || 0.1);
+    phase[i] = PH.LOOP;
+    aux[i] = Math.random() * Math.PI * 2;                 // where it is in the plenum now
+    aux2[i] = Math.random() < 0.5 ? -1 : 1;               // which way round it drifts
+    psi[i] = aux[i] + aux2[i] * (0.2 + Math.random() * 1.2);   // where it will leave through the slot
     lim[i] = 0.3 + Math.random() * 1.1;
-    if (anywhere) { phase[i] = PH.JET; zz[i] = Math.random() * lim[i]; lane[i] = Math.max(-0.9, Math.min(0.9, gauss() * 0.22)); aux2[i] = lane[i]; }
+    if (anywhere && Math.random() < 0.6) { phase[i] = PH.JET; zz[i] = Math.random() * lim[i]; lane[i] = Math.max(-0.9, Math.min(0.9, gauss() * 0.22)); aux2[i] = lane[i]; }
   } else if (k === KIND.PRIMARY) {
-    lim[i] = XI_MAX;
-    phase[i] = PH.INTAKE;
-    aux[i] = Math.random() * Math.PI * 2;        // angle round the base
-    aux2[i] = 0.045 + Math.random() * 0.08;      // height of the hole it enters
-    rr[i] = 0.11 + Math.random() * 0.05;
+    phase[i] = PH.BASE;
+    // angle round the base, avoiding the cut-away wedge where there are no holes
+    let deg = Math.random() * 360;
+    if (params.cutaway) deg = BS.gap[1] + Math.random() * (360 - (BS.gap[1] - BS.gap[0]));
+    aux[i] = deg * d2r;
+    aux2[i] = BS.grilleY[0] + (Math.floor(Math.random() * 7) / 6) * (BS.grilleY[1] - BS.grilleY[0]);   // the row of holes it enters
+    zz[i] = Math.random() * 0.06;                // progress along the base path
+    lim[i] = 0.25 + Math.random() * 0.5;           // fades soon after the slot: the plenum-born parcels carry the jet
+    if (anywhere) zz[i] = Math.random() * basePathLen(aux2[i]);
     if (anywhere) { phase[i] = PH.JET; zz[i] = Math.random() * XI_MAX * Math.random(); lane[i] = Math.max(-0.9, Math.min(0.9, gauss() * 0.22)); aux2[i] = lane[i]; }
   } else if (k === KIND.INDUCED) {
     phase[i] = PH.BEHIND;
@@ -253,19 +404,15 @@ function stepParticle(i, dt) {
   const k = kind[i];
   age[i] += dt;
   switch (phase[i]) {
-    case PH.INTAKE: {        // drawn in through the grille
-      rr[i] -= vis(2.5 * params.speed) * dt;
-      if (rr[i] <= BASE.r * 0.7) { phase[i] = PH.BASE; rr[i] = 0.036; }
-      break;
-    }
-    case PH.BASE: {          // up through the impeller, swirling
-      aux2[i] += vis(6 * params.speed) * dt;
-      aux[i] += 3 * params.speed * dt;
-      if (aux2[i] >= BASE.h + 0.01) {
+    case PH.BASE: {          // in through the grille, up through the impeller, out of the neck
+      const b = baseAt(aux2[i], zz[i]);
+      const ds = vis(b.v * params.speed) * dt;
+      zz[i] += ds;
+      aux[i] += b.w * ds * (params.speed > 0 ? 1 : 0) * 1.6;
+      if (b.done) {
         phase[i] = PH.LOOP;
         aux[i] = -Math.PI / 2;                     // enters the loop at the bottom
         aux2[i] = (Math.random() < 0.5 ? -1 : 1);  // goes round one way or the other
-        // pick a destination on that side
         const d = Math.random() * Math.PI * 0.999;
         psi[i] = -Math.PI / 2 + aux2[i] * d;
       }
@@ -316,14 +463,13 @@ function stepParticle(i, dt) {
       break;
     }
   }
-  if (k === KIND.PRIMARY && phase[i] !== PH.JET && age[i] > 20) spawn(i, false);
+  if (k === KIND.PRIMARY && phase[i] !== PH.JET && age[i] > 30) spawn(i, false);
 }
 
 const _v = new THREE.Vector3();
 function worldPos(i, out) {
   switch (phase[i]) {
-    case PH.INTAKE: return out.set(rr[i] * Math.sin(aux[i]), aux2[i], BASE.z + rr[i] * Math.cos(aux[i]));
-    case PH.BASE: return out.set(rr[i] * Math.sin(aux[i]), Math.min(aux2[i], BASE.h + 0.01), BASE.z + rr[i] * Math.cos(aux[i]));
+    case PH.BASE: { const b = baseAt(aux2[i], zz[i]); return out.set(b.r * Math.sin(aux[i]), b.y, BASE.z + b.r * Math.cos(aux[i])); }
     case PH.LOOP: return ringPoint(out, aux[i], G.rPlenum, G.zPlenum, G.y0);
     case PH.SLOT: {
       const s = aux[i], cum = G.pathCum, pts = G.P.path;
@@ -477,14 +623,15 @@ refreshFlow();
 const lab = await mountLab(canvas, {
   async setup({ renderer, scene, camera, lab }) {
     renderer.toneMapping = THREE.NeutralToneMapping;
-    camera.fov = 34; camera.near = 0.02; camera.far = 40;
+    camera.fov = 34; camera.near = 0.004; camera.far = 40;
     camera.position.set(-1.42, 0.84, -0.5);
     const controls = new OrbitControls(camera, canvas);
     controls.target.set(0, 0.37, 0.52);
     controls.enableDamping = true;
-    controls.minDistance = 0.35; controls.maxDistance = 5;
+    controls.minDistance = 0.06; controls.maxDistance = 5;
     controls.maxPolarAngle = Math.PI * 0.53;
     controls.addEventListener('change', () => lab.invalidate());
+    controls.addEventListener('start', () => { camAnim = null; });
     controls.update();
 
     try {
@@ -502,7 +649,11 @@ const lab = await mountLab(canvas, {
       cap: new THREE.MeshStandardNodeMaterial({ color: 0xb07a52, metalness: 0.05, roughness: 0.75, side: THREE.DoubleSide }),
       dark: new THREE.MeshStandardNodeMaterial({ color: 0x2a2b2e, metalness: 0.2, roughness: 0.7, side: THREE.DoubleSide }),
       hole: new THREE.MeshBasicNodeMaterial({ color: 0x151515 }),
-      metal: new THREE.MeshStandardNodeMaterial({ color: 0x8d9097, metalness: 0.8, roughness: 0.35 }),
+      metal: new THREE.MeshStandardNodeMaterial({ color: 0x8d9097, metalness: 0.8, roughness: 0.35, side: THREE.DoubleSide }),
+      casing: new THREE.MeshStandardNodeMaterial({ color: 0x3a3c40, metalness: 0.3, roughness: 0.6, side: THREE.DoubleSide }),
+      copper: new THREE.MeshStandardNodeMaterial({ color: 0xb87333, metalness: 0.9, roughness: 0.4 }),
+      vane: new THREE.MeshStandardNodeMaterial({ color: 0x777b82, metalness: 0.6, roughness: 0.45, side: THREE.DoubleSide }),
+      sheet: new THREE.MeshBasicNodeMaterial({ transparent: true, opacity: 0.45, depthWrite: false, side: THREE.DoubleSide }),
       blade: new THREE.MeshStandardNodeMaterial({ color: 0xb0b4bb, metalness: 0.4, roughness: 0.4, side: THREE.DoubleSide }),
     };
 
@@ -556,7 +707,8 @@ const lab = await mountLab(canvas, {
       streaks.instanceColor.needsUpdate = true;
       grid.material.color.copy(c.rule);
       probeMat.color.copy(c.accent); probeEdgeMat.color.copy(c.accent);
-      mats.cap.color.copy(c.accent).lerp(new THREE.Color(0xd8c8b8), 0.35);
+      mats.cap.color.copy(c.accent).lerp(new THREE.Color(0x9a8f86), 0.6);
+      mats.sheet.color.copy(c['flow-primary']);
       lab.invalidate();
     };
     applyTheme();
@@ -571,6 +723,7 @@ const lab = await mountLab(canvas, {
     const mtx = new THREE.Matrix4(), q = new THREE.Quaternion(), sc = new THREE.Vector3(), dir = new THREE.Vector3(), mid = new THREE.Vector3();
     const Zup = new THREE.Vector3(0, 0, 1);
     function writeStreaks(dt) {
+      const stop = TOUR[+params.tour];
       for (let i = 0; i < N; i++) {
         worldPos(i, _v);
         const o = i * 3;
@@ -585,11 +738,15 @@ const lab = await mountLab(canvas, {
         // fade in at birth and out at the far end by shrinking
         let f = Math.min(1, age[i] / 0.5);
         if (phase[i] === PH.JET) f *= 1 - smooth(lim[i] - Math.min(0.5, lim[i] * 0.4), lim[i], zz[i]);
-        if (!params.flow) f = 0;
-        const len = Math.min(0.06, Math.max(0.006, speed * 0.09));
+        if (!params.flow || !kindsOn[kind[i]]) f = 0;
+        const inBase = phase[i] <= PH.SLOT, nearJet = phase[i] === PH.JET && zz[i] < 0.3;
+        if (stop.phases && !stop.phases.includes(phase[i])) f = 0;
+        if (stop.near && phase[i] === PH.JET && zz[i] > stop.near) f = 0;
+        const closeUp = (inBase ? (stop.streakBase ?? stop.streak ?? 1) : (stop.streak ?? 1)) * (stop.xray && !inBase ? 0.5 : 1);
+        const len = closeUp * Math.min(inBase ? 0.009 : nearJet ? 0.025 : 0.06, Math.max(inBase ? 0.003 : 0.006, speed * (inBase ? 0.03 : 0.09)));
         if (dir.lengthSq() > 0.5) q.setFromUnitVectors(Zup, dir); else q.identity();
         mid.copy(_v);
-        const th = kind[i] === KIND.PRIMARY ? 0.0034 : 0.0024;
+        const th = closeUp * (inBase ? 0.0019 : kind[i] === KIND.PRIMARY ? 0.003 : 0.0024);
         sc.set(th * f, th * f, len * f);
         streaks.setMatrixAt(i, mtx.compose(mid, q, sc));
         px[o] = _v.x; px[o + 1] = _v.y; px[o + 2] = _v.z;
@@ -601,14 +758,19 @@ const lab = await mountLab(canvas, {
 
     /* labels: HTML over the canvas, projected each frame */
     const labels = [
-      { t: T.intake, at: () => new THREE.Vector3(BASE.r * 1.07 * Math.sin(212 * d2r), 0.09, BASE.z + BASE.r * 1.07 * Math.cos(212 * d2r)), side: -1 },
-      { t: T.impeller, at: () => new THREE.Vector3(-0.03, 0.14, BASE.z), side: -1, cut: true },
-      { t: T.slot, at: () => ringPoint(new THREE.Vector3(), 172 * d2r, G.R + G.P.S2[1], Z_NOSE + G.P.S2[0], G.y0), side: -1, cut: true },
-      { t: T.coanda, at: () => ringPoint(new THREE.Vector3(), 100 * d2r, G.R + G.P.vMin, Z_NOSE + G.P.C[0], G.y0), side: 1, cut: true },
-      { t: T.plenum, at: () => ringPoint(new THREE.Vector3(), 136 * d2r, G.rPlenum, G.zPlenum, G.y0), side: -1, cut: true },
-      { t: T.induced, at: () => new THREE.Vector3(0, G.y0 - 0.02, Z_NOSE - 0.42), side: 1, chip: true },
-      { t: T.entrained, at: () => new THREE.Vector3(-(G.R + 0.32), G.y0 + 0.12, G.zTE + 0.5), side: -1, chip: true },
-      { t: '', at: () => new THREE.Vector3(0, G.y0 + rc(params.x) + wj(params.x), G.zTE + params.x), side: 1, probe: true },
+      { t: T.intake, part: 'grille', at: () => new THREE.Vector3(BASE.r * 1.07 * Math.sin(200 * d2r), 0.07, BASE.z + BASE.r * 1.07 * Math.cos(200 * d2r)), side: -1 },
+      { t: T.bell, part: 'bell', ov: false, at: () => new THREE.Vector3(0.01, BS.chamberTop - 0.014, BASE.z - BS.bellR + 0.006), side: 1, cut: true },
+      { t: T.impeller, part: 'impeller', at: () => new THREE.Vector3(-0.01, 0.1, BASE.z + 0.036), side: -1, cut: true },
+      { t: T.motor, part: 'motor', ov: false, at: () => new THREE.Vector3(0.008, 0.168, BASE.z - BS.motorR + 0.004), side: 1, cut: true },
+      { t: T.vanes, part: 'vanes', ov: false, at: () => new THREE.Vector3(-0.012, 0.157, BASE.z + 0.046), side: -1, cut: true },
+      { t: T.neck, part: 'neck', ov: false, at: () => new THREE.Vector3(0.006, 0.238, BASE.z - 0.034), side: 1, cut: true },
+      { t: T.slot, part: 'loop', ov: false, at: () => ringPoint(new THREE.Vector3(), LOOP_FACE, G.R + G.P.S1[1] - 0.002, Z_NOSE + G.P.S1[0] - 0.003, G.y0), side: -1, cut: true },
+      { t: T.diffuser, part: 'loop', ov: false, at: () => ringPoint(new THREE.Vector3(), LOOP_FACE, G.R + (G.P.E[1] + G.P.TE[1]) / 2 - 0.002, Z_NOSE + (G.P.E[0] + G.P.TE[0]) / 2, G.y0), side: 1, cut: true },
+      { t: T.coanda, part: 'loop', at: () => ringPoint(new THREE.Vector3(), 100 * d2r, G.R + G.P.vMin, Z_NOSE + G.P.C[0], G.y0), side: 1, cut: true },
+      { t: T.plenum, part: 'loop', ov: false, at: () => ringPoint(new THREE.Vector3(), LOOP_FACE, G.rPlenum, G.zPlenum, G.y0), side: -1, cut: true },
+      { t: T.induced, part: 'jet', at: () => new THREE.Vector3(0, G.y0 - 0.02, Z_NOSE - 0.42), side: 1, chip: true },
+      { t: T.entrained, part: 'jet', at: () => new THREE.Vector3(-(G.R + 0.32), G.y0 + 0.12, G.zTE + 0.5), side: -1, chip: true },
+      { t: '', part: 'jet', at: () => new THREE.Vector3(0, G.y0 + rc(params.x) + wj(params.x), G.zTE + params.x), side: 1, probe: true },
     ].map((L) => {
       const e = document.createElement('div');
       e.className = 'lab-label' + (L.chip ? ' is-chip' : '') + (L.probe ? ' is-probe' : '');
@@ -625,7 +787,9 @@ const lab = await mountLab(canvas, {
       const narrow = w < 560;
       for (const L of labels) {
         if (L.probe) L.e.textContent = `x = ${fmt(params.x, 2)} m · ${fmt(sol.ratio, 1)}×`;
-        const hide = (L.cut && !params.cutaway) || (narrow && !L.chip && !L.probe && L.t !== T.slot && L.t !== T.coanda);
+        const stop = TOUR[+params.tour];
+        const shown = stop.labels ? stop.labels.includes(L.part) : stop.focus ? (L.part && stop.focus.includes(L.part)) : L.ov !== false;
+        const hide = !shown || (L.cut && !params.cutaway) || (narrow && !stop.focus && !L.chip && !L.probe && L.t !== T.slot && L.t !== T.coanda);
         pv.copy(L.at()).project(camera);
         if (hide || pv.z > 1) { L.e.style.opacity = 0; continue; }
         let x = (pv.x * 0.5 + 0.5) * w;
@@ -639,11 +803,55 @@ const lab = await mountLab(canvas, {
       }
     }
 
+
+    /* The tour: a camera position, a set of parts left solid, and which
+     * particles are drawn. Everything else goes to a ghost material. */
+    const ghost = new THREE.MeshBasicNodeMaterial({ transparent: true, opacity: 0.07, depthWrite: false, side: THREE.DoubleSide });
+    const xray = new THREE.MeshStandardNodeMaterial({ color: 0xc9ccd1, metalness: 0.4, roughness: 0.4, transparent: true, opacity: 0.3, depthWrite: false, side: THREE.DoubleSide });
+    function setFocus(stop) {
+      const focus = stop.focus;
+      for (const root of [loop.group, base.group]) root.traverse((o) => {
+        if (!o.isMesh) return;
+        if (!o.userData.mat) o.userData.mat = o.material;
+        const part = o.userData.part || 'loop';
+        if (part === 'sheet') { o.visible = !!stop.sheet; return; }
+        o.material = (!focus || focus.includes(part)) ? (stop.xray && part === 'loop' ? xray : o.userData.mat) : ghost;
+      });
+      const showJet = !focus || !!stop.jet;
+      kindsOn[0] = 1; kindsOn[1] = showJet ? 1 : 0; kindsOn[2] = showJet ? 1 : 0;
+      probe.visible = probeEdge.visible = showJet;
+      grid.visible = !focus;
+    }
+    let camAnim = null;
+    function goTo(stop, instant) {
+      const vec = (v) => typeof v === 'function' ? v() : new THREE.Vector3(...v);
+      const to = { p: vec(stop.cam), t: vec(stop.tgt) };
+      if (instant || lab.reducedMotion) {
+        camera.position.copy(to.p); controls.target.copy(to.t); controls.update(); camAnim = null;
+      } else {
+        camAnim = { p0: camera.position.clone(), t0: controls.target.clone(), p1: to.p, t1: to.t, start: performance.now(), dur: 1400 };
+      }
+      setFocus(stop);
+      const cap = document.getElementById('tour-caption');
+      if (cap) cap.textContent = stop.text;
+      lab.invalidate();
+    }
+    goTo(TOUR[+params.tour], true);
+    ghost.color.set(0x808080);
+
     let dirty = true;
     return {
       update(dt) {
+        if (camAnim) {
+          camAnim.t = Math.min(1, (performance.now() - camAnim.start) / camAnim.dur);   // wall clock, so a slow machine still arrives
+          const e = camAnim.t < 0.5 ? 4 * camAnim.t ** 3 : 1 - Math.pow(-2 * camAnim.t + 2, 3) / 2;
+          camera.position.lerpVectors(camAnim.p0, camAnim.p1, e);
+          controls.target.lerpVectors(camAnim.t0, camAnim.t1, e);
+          if (camAnim.t >= 1) camAnim = null;
+          lab.invalidate();
+        }
         controls.update();
-        if (dirty) { rebuild(); placeProbe(); dirty = false; }
+        if (dirty) { rebuild(); placeProbe(); setFocus(TOUR[+params.tour]); dirty = false; }
         const running = !lab.reducedMotion && params.speed > 0;
         if (running) for (let i = 0; i < N; i++) stepParticle(i, dt);
         if (running) base.impeller.rotation.y -= 2.6 * params.speed * dt;
@@ -651,6 +859,8 @@ const lab = await mountLab(canvas, {
         placeLabels();
       },
       rebuildGeometry() { dirty = true; lab.invalidate(); },
+      goTo(i) { goTo(TOUR[i]); },
+      kindsOn,
       reprobe() { placeProbe(); lab.invalidate(); },
       dispose() { controls.dispose(); stopTheme(); },
     };
@@ -661,11 +871,18 @@ function onParams(p, name) {
   refreshFlow();
   drawChartX(); drawChartB(); writeReadout();
   if (!lab) return;
+  if (name === 'tour') { lab.hooks.goTo(+p.tour); return; }
   if (name === 'slotMm' || name === 'diameterMm' || name === 'cutaway') lab.hooks.rebuildGeometry();
   else lab.hooks.reprobe?.();
   lab.setOnDemand(lab.reducedMotion || p.speed === 0);
   lab.invalidate();
 }
 
-bindControls(panel, params, onParams);
+const ctl = bindControls(panel, params, onParams);
+for (const b of panel.querySelectorAll('[data-tour-step]')) {
+  b.addEventListener('click', () => {
+    const n = (+params.tour + (+b.dataset.tourStep) + TOUR.length) % TOUR.length;
+    ctl.set('tour', String(n));
+  });
+}
 drawChartX(); drawChartB(); writeReadout();
