@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="ja" class=" ig-document ig-editorial">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>自動巻きクロノグラフの内部：動く機械全体</title>
+<meta name="description" content="自動巻きクロノグラフのムーブメントを部品ごとに組み上げ、ブラウザの中で動かす。ローターと自動巻き、香箱と輪列、レバー脱進機とテンプ、巻き真まわり、日の裏車と日付、コラムホイールと垂直クラッチのクロノグラフ。すべての歯車が本当の比率で回る。">
+<meta property="og:title" content="自動巻きクロノグラフの内部：動く機械全体">
+<meta property="og:description" content="自動巻きクロノグラフのムーブメントを部品ごとに組み上げ、ブラウザの中で動かす。ローターと自動巻き、香箱と輪列、レバー脱進機とテンプ、巻き真まわり、日の裏車と日付、コラムホイールと垂直クラッチのクロノグラフ。すべての歯車が本当の比率で回る。">
+<meta property="og:image" content="https://theisegoria.github.io/og.png">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="canonical" href="https://theisegoria.github.io/ja/automatic-movement/">
+<link rel="alternate" hreflang="en" href="https://theisegoria.github.io/automatic-movement/">
+<link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/automatic-movement/">
+<link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/automatic-movement/">
+<link rel="stylesheet" href="/assets/isegoria.css?v=20260928">
+<link rel="stylesheet" href="/assets/lab-kit/lab-kit.css?v=20260928">
+<link rel="stylesheet" href="/automatic-movement/style.css?v=20260928">
+<script type="importmap">
+{"imports":{
+  "three":"/vendor/three/r186/build/three.webgpu.js",
+  "three/webgpu":"/vendor/three/r186/build/three.webgpu.js",
+  "three/tsl":"/vendor/three/r186/build/three.tsl.js",
+  "three/addons/":"/vendor/three/r186/examples-jsm/"
+}}
+</script>
+<link rel="modulepreload" href="/vendor/three/r186/build/three.webgpu.js">
+<link rel="modulepreload" href="/vendor/three/r186/build/three.core.js">
+<script type="module" src="/automatic-movement/lab.js"></script>
+<script src="/assets/lang.js"></script>
+<!-- ISEGORIA:HEAD -->
+<link rel="stylesheet" href="/assets/site-shell.css?v=c21cd21e82">
+<script src="/assets/site-shell.js?v=c21cd21e82" ></script>
+<!-- /ISEGORIA:HEAD -->
+<script defer data-isegoria-analytics src="/assets/analytics.js?v=9e6ebd463bf2"></script>
+</head>
+<body class=" ig-site" data-site-kind="editorial" data-site-route="/ja/automatic-movement/">
+<!-- ISEGORIA:NAV -->
+<a class="ig-skip" href="#ig-content">本文へ移動</a>
+<header id="ig-header"><div class="ig-nav-inner">
+<a class="ig-brand" href="/ja/" aria-label="Isegoria, ホーム"><strong>ISEGORIA</strong><span>Benjamin Haire</span></a>
+<div class="ig-header-actions"><a class="ig-language" href="/automatic-movement/" hreflang="en" lang="en">English</a><button class="ig-menu" type="button" aria-expanded="false" aria-controls="ig-primary">メニュー</button></div>
+<nav id="ig-primary" aria-label="メインナビゲーション"><a href="/ja/">ホーム</a><a href="/ja/library.html">全コンテンツ</a><a href="/ja/math-encyclopedia/">数学百科事典</a><a href="/ja/#interactive" aria-current="location">操作できる解説</a><a href="/ja/#preoccupations">研究と解説</a><a href="/ja/#books">書籍</a><a href="/ja/projects.html">プロジェクト</a><a href="/ja/about.html">このサイトについて</a><a class="ig-language" href="/automatic-movement/" hreflang="en" lang="en">English</a><button class="ig-theme" type="button" hidden>表示切替</button></nav>
+</div></header>
+<nav id="ig-breadcrumb" aria-label="パンくずリスト"><a href="/ja/">ホーム</a><span aria-hidden="true">/</span><a href="/ja/#interactive">操作できる解説</a><span aria-hidden="true">/</span><span aria-current="page">自動巻きクロノグラフの内部：動く機械全体</span></nav>
+<span id="ig-content" tabindex="-1"></span>
+<!-- /ISEGORIA:NAV --><main class="wrap">
+
+<header class="hero">
+<p class="kicker">操作できる解説</p>
+<h1>自動巻きクロノグラフの内部：動く機械全体</h1>
+<p class="lede">自動巻きクロノグラフのムーブメントを部品ごとに組み上げ、ブラウザの中で動かす。ローターと自動巻き、香箱と輪列、レバー脱進機とテンプ、巻き真まわり、日の裏車と日付、コラムホイールと垂直クラッチのクロノグラフ。すべての歯車が本当の比率で回る。</p>
+<nav class="ig-page-nav" aria-label="このページの目次"><a href="#model">模型</a><a href="#energy">動力</a><a href="#train">輪列</a><a href="#escapement">脱進機</a><a href="#hands">針と日付</a><a href="#crown">リューズ</a><a href="#chronograph">クロノグラフ</a><a href="#honesty">この模型が何であり、何でないか</a><a href="#sources">出典</a></nav>
+</header>
+
+<section class="lab" id="model" aria-labelledby="model-h">
+<h2 id="model-h">模型</h2>
+<p>これは <a href="/ja/carrera-panda/">カレラ・パンダ</a> の中にあるような自動巻きクロノグラフのムーブメントである。4 Hz のベースムーブメントにコラムホイールと垂直クラッチのクロノグラフを組み込み、両方向巻き上げのボールベアリング式ローターと 80 時間の香箱をもつ。下のすべての部品は実寸比で描かれ、本物が従うのと同じ算術で動いている。まず段階を順に進めてほしい。各段階は邪魔になるものを隠し、重要な部品を照らし、カメラを動かす。それから操作に移る。巻き上げ、リューズを引き、クロノグラフを走らせ、分解する。</p>
+
+<div class="stage-bar" id="stages" role="tablist" aria-label="段階"></div>
+<p class="stage-text" id="stage-text"></p>
+
+<div class="lab-stage">
+  <canvas id="stage" tabindex="0" aria-label="ムーブメントの 3D 表示。ドラッグで回転、スクロールで拡大縮小、右ドラッグで移動。"></canvas>
+  <div class="lab-labels" id="labels" aria-hidden="true"></div>
+  <figure data-lab-fallback hidden>
+    <svg viewBox="0 0 640 480" role="img" aria-labelledby="fb-t"><title id="fb-t">文字盤側から見たムーブメントの平面図：輪列は墨色、クロノグラフは強調色、自動巻きは灰色</title>
+<circle cx="300" cy="240" r="217.0" fill="none" stroke="var(--rule)" stroke-width="1.5"/>
+<circle cx="300" cy="240" r="217.0" fill="var(--paper-2, transparent)" opacity="0.4"/>
+<circle cx="223.9" cy="143.1" r="84.0" fill="none" stroke="var(--ink)" stroke-width="1.8"/>
+<circle cx="223.9" cy="143.1" r="2" fill="var(--ink)"/>
+<text x="223.9" y="55.1" text-anchor="middle" font-family="var(--sans)" font-size="10.5" fill="var(--ink)">Barrel 96</text>
+<circle cx="230.3" cy="233.9" r="70.0" fill="none" stroke="var(--ink)" stroke-width="1.8"/>
+<circle cx="230.3" cy="233.9" r="2" fill="var(--ink)"/>
+<text x="230.3" y="159.9" text-anchor="middle" font-family="var(--sans)" font-size="10.5" fill="var(--ink)">Centre 80</text>
+<circle cx="235.3" cy="312.5" r="65.6" fill="none" stroke="var(--ink)" stroke-width="1.8"/>
+<circle cx="235.3" cy="312.5" r="2" fill="var(--ink)"/>
+<text x="235.3" y="242.9" text-anchor="middle" font-family="var(--sans)" font-size="10.5" fill="var(--ink)">Third 75</text>
+<circle cx="300.0" cy="349.2" r="73.5" fill="none" stroke="var(--ink)" stroke-width="1.8"/>
+<circle cx="300.0" cy="349.2" r="2" fill="var(--ink)"/>
+<text x="300.0" y="271.7" text-anchor="middle" font-family="var(--sans)" font-size="10.5" fill="var(--ink)">Fourth 84</text>
+<circle cx="334.9" cy="277.6" r="28.0" fill="none" stroke="var(--ink)" stroke-width="1.8"/>
+<circle cx="334.9" cy="277.6" r="2" fill="var(--ink)"/>
+<text x="334.9" y="245.6" text-anchor="middle" font-family="var(--sans)" font-size="10.5" fill="var(--ink)">Escape 20</text>
+<circle cx="252.7" cy="331.0" r="60.2" fill="none" stroke="var(--ink)" stroke-width="1.8"/>
+<circle cx="252.7" cy="331.0" r="2" fill="var(--ink)"/>
+<text x="252.7" y="266.8" text-anchor="middle" font-family="var(--sans)" font-size="10.5" fill="var(--ink)">Balance</text>
+<circle cx="414.8" cy="240.0" r="31.5" fill="none" stroke="var(--accent)" stroke-width="1.3"/>
+<circle cx="414.8" cy="240.0" r="2" fill="var(--accent)"/>
+<text x="414.8" y="204.5" text-anchor="middle" font-family="var(--sans)" font-size="10.5" fill="var(--accent)">30-min</text>
+<circle cx="190.8" cy="240.0" r="28.0" fill="none" stroke="var(--accent)" stroke-width="1.3"/>
+<circle cx="190.8" cy="240.0" r="2" fill="var(--accent)"/>
+<text x="190.8" y="208.0" text-anchor="middle" font-family="var(--sans)" font-size="10.5" fill="var(--accent)">12-h</text>
+<circle cx="448.4" cy="290.4" r="21.7" fill="none" stroke="var(--accent)" stroke-width="1.3"/>
+<circle cx="448.4" cy="290.4" r="2" fill="var(--accent)"/>
+<text x="448.4" y="264.7" text-anchor="middle" font-family="var(--sans)" font-size="10.5" fill="var(--accent)">Column wheel</text>
+<circle cx="368.4" cy="294.6" r="52.5" fill="none" stroke="var(--accent)" stroke-width="1.3"/>
+<circle cx="368.4" cy="294.6" r="2" fill="var(--accent)"/>
+<circle cx="300.0" cy="240.0" r="52.5" fill="none" stroke="var(--accent)" stroke-width="1.3"/>
+<circle cx="300.0" cy="240.0" r="2" fill="var(--accent)"/>
+<text x="300.0" y="183.5" text-anchor="middle" font-family="var(--sans)" font-size="10.5" fill="var(--accent)">Chrono seconds</text>
+<circle cx="341.6" cy="180.3" r="42.0" fill="none" stroke="var(--ink-soft)" stroke-width="1.3" stroke-dasharray="4 3"/>
+<circle cx="341.6" cy="180.3" r="2" fill="var(--ink-soft)"/>
+<circle cx="326.9" cy="122.6" r="52.5" fill="none" stroke="var(--ink-soft)" stroke-width="1.3" stroke-dasharray="4 3"/>
+<circle cx="326.9" cy="122.6" r="2" fill="var(--ink-soft)"/>
+<circle cx="291.4" cy="281.1" r="35.0" fill="none" stroke="var(--ink-soft)" stroke-width="1.3" stroke-dasharray="4 3"/>
+<circle cx="291.4" cy="281.1" r="2" fill="var(--ink-soft)"/>
+<text x="291.4" y="242.1" text-anchor="middle" font-family="var(--sans)" font-size="10.5" fill="var(--ink-soft)">Reversers</text>
+<circle cx="356.6" cy="255.8" r="35.0" fill="none" stroke="var(--ink-soft)" stroke-width="1.3" stroke-dasharray="4 3"/>
+<circle cx="356.6" cy="255.8" r="2" fill="var(--ink-soft)"/>
+<circle cx="437.2" cy="206.4" r="21.0" fill="none" stroke="var(--ink-faint)" stroke-width="1.3" stroke-dasharray="4 3"/>
+<circle cx="437.2" cy="206.4" r="2" fill="var(--ink-faint)"/>
+<text x="437.2" y="181.4" text-anchor="middle" font-family="var(--sans)" font-size="10.5" fill="var(--ink-faint)">Crown wheel</text>
+<circle cx="326.8" cy="217.5" r="26.2" fill="none" stroke="var(--ink-faint)" stroke-width="1.3" stroke-dasharray="4 3"/>
+<circle cx="326.8" cy="217.5" r="2" fill="var(--ink-faint)"/>
+<text x="326.8" y="187.3" text-anchor="middle" font-family="var(--sans)" font-size="10.5" fill="var(--ink-faint)">Minute wheel</text>
+<circle cx="271.3" cy="318.9" r="56.0" fill="none" stroke="var(--ink-faint)" stroke-width="1.3" stroke-dasharray="4 3"/>
+<circle cx="271.3" cy="318.9" r="2" fill="var(--ink-faint)"/>
+<text x="271.3" y="258.9" text-anchor="middle" font-family="var(--sans)" font-size="10.5" fill="var(--ink-faint)">Date wheel</text>
+<line x1="334.9" y1="277.6" x2="295.0" y2="303.6" stroke="var(--ink)" stroke-width="1.2"/><line x1="295.0" y1="303.6" x2="252.7" y2="331.0" stroke="var(--ink)" stroke-width="1.2"/><circle cx="295.0" cy="303.6" r="2.5" fill="var(--paper)" stroke="var(--ink)"/>
+<rect x="423" y="237" width="126" height="6" fill="var(--ink-faint)"/><circle cx="556" cy="240" r="39" fill="none" stroke="var(--ink-faint)" stroke-width="2"/>
+<circle cx="489" cy="131" r="8" fill="none" stroke="var(--accent)" stroke-width="1.5"/>
+<circle cx="489" cy="349" r="8" fill="none" stroke="var(--accent)" stroke-width="1.5"/>
+<text x="300" y="472" text-anchor="middle" font-family="var(--sans)" font-size="11" fill="var(--ink-soft)">文字盤側からの平面図、実寸比。実線：輪列。強調色：クロノグラフ。破線：巻き上げと日の裏。</text>
+</svg>
+    <figcaption>このブラウザには WebGL 2 も WebGPU もないので、静止版を表示している。歯車をピッチ円で描いたムーブメントの平面図である。</figcaption>
+  </figure>
+  <div class="lab-hud"><span class="lab-badge"></span></div>
+</div>
+
+<form class="lab-controls" id="controls" onsubmit="return false">
+  <label><span>速度</span>
+    <select name="speed"><option value="0">停止</option><option value="0.125">スローモーション 1/8</option><option value="1" selected>実時間</option><option value="60">60 倍</option><option value="720">720 倍</option><option value="3600">1 秒で 1 時間</option></select></label>
+  <label><span>手首の活動量（ローターを巻く）</span><output for="activity"></output><input id="activity" name="activity" type="range" min="0" max="1" step="0.05" value="0.5" data-format="pct"></label>
+  <label><span>リューズの位置</span>
+    <select name="crown"><option value="0" selected>押し込み：巻き上げ</option><option value="1">一段目：日付</option><option value="2">二段目：時刻合わせ（ハック）</option></select></label>
+  <fieldset><legend class="visually-hidden">リューズを回す</legend>
+    <button type="button" data-action="wind">リューズを一回転</button><button type="button" data-action="unwind">逆に一回転</button></fieldset>
+  <fieldset><legend class="visually-hidden">クロノグラフ</legend>
+    <button type="button" data-action="start">スタート / ストップ</button><button type="button" data-action="reset">リセット</button></fieldset>
+  <label><span>層を分解する</span><output for="explode"></output><input id="explode" name="explode" type="range" min="0" max="1" step="0.02" value="0" data-format="pct"></label>
+  <fieldset>
+    <label><span>文字盤</span><input name="dial" type="checkbox"></label>
+    <label><span>針</span><input name="hands" type="checkbox" checked></label>
+    <label><span>自動巻きモジュール</span><input name="autoLayer" type="checkbox" checked></label>
+    <label><span>クロノグラフ</span><input name="chronoLayer" type="checkbox" checked></label>
+    <label><span>受け</span><input name="bridges" type="checkbox" checked></label>
+    <label><span>ラベル</span><input name="labels" type="checkbox" checked></label>
+  </fieldset>
+</form>
+<div class="lab-readout" id="readout" aria-live="off"></div>
+<details class="part-list"><summary>部品を探す</summary><div id="parts"></div></details>
+</section>
+
+<section id="energy">
+<h2>動力：どこから来て、どこで待つのか</h2>
+<p>自動巻き時計をそれが本当は何であるかとして見るまでに、恥ずかしいほど長い時間がかかった。それは時計を取り付けた小さなエネルギー管理機械である。そう見えた途端、全体がほどけた。エネルギーはローターで入り、香箱に蓄えられ、脱進機で小出しにされ、針で表示される。残りはすべて、この四つの駅をつなぐ配管にすぎない。</p>
+<p>ローターは縁を重くした半円で、ムーブメント中心のボールベアリングの上で自由に振れる。そのカナが一対の切替車を回す。切替車は面に二つのバネ付きの爪をもつ歯車で、一方向に回されると爪が噛んで下の歯車を連れて回り、反対に回されると爪が滑る。二つの切替車は互いに噛み合っているので、ローターがどちらに振れても、必ずどちらか一方が噛んでおり、その下の減速車はいつも同じ向きに回る。これが両方向巻き上げの仕掛けのすべてで、ただ振り回されるだけの手首から時計がエネルギーを得られる理由である。減速比は大きい。この模型ではローター 45 回転で香箱真 1 回転だ。ローターのトルクは小さく、ゼンマイのトルクは小さくないからである。角穴車にかかるバネ付きの爪、コハゼが、香箱真の逆戻りを止める。</p>
+<p>香箱は外周に歯を切った浅い胴で、中にゼンマイが入っている。長さ 30 センチほどの平たい鋼の帯で、内端は香箱真に、外端は胴に引っかけてある。巻くと香箱真が回って渦を内側へ引き寄せ、走ると渦は外へ移って壁に寄る。胴は 12 時間に 1 回転し、80 時間の駆動時間はしたがって胴の 6 と 3 分の 2 回転にあたる。段階 2 では胴を半透明で描いており、巻くにつれて渦が移るのを見ることができる。</p>
+</section>
+
+<section id="train">
+<h2>輪列：遅い胴を速い歯車へ</h2>
+<p>五つの歯車が、香箱の遅くて強い回転をガンギ車の速くて弱い回転に変える。原則は、大きな歯車が次の小さなカナを回すことである。香箱の 96 枚の歯が二番車の 8 枚のカナを回すので、二番車は 12 倍速く、1 時間に 1 回転する。その 80 枚の歯が三番車の 10 枚のカナを回し、三番車は 1 時間に 8 回転。三番車の 75 枚が四番車の 10 枚のカナを回して 7.5 倍、1 時間に 60 回転、つまり 1 分に 1 回転する。四番車が秒針を運ぶのはそのためだ。四番車の 84 枚がガンギ車の 7 枚のカナを回してさらに 12 倍、1 時間に 720 回転、5 秒に 1 回転。掛け合わせると、香箱 1 回転につきガンギ車は 8,640 回転する。トルクは逆向きに、同じ数で割られる。</p>
+<p>これを初めて計算したとき、二つのことに驚いた。一つは、輪列の中の何ものも歩度を決めないことだ。比が決めるのは、ガンギ車がある速さで回ったときに針が何を読むかだけで、その速さで回らせることはできない。もう一つは、輪列がまったく滑らかに回っていないことだ。それは 1 秒に 8 回の小さな跳びで進み、8 分の 1 秒のほとんどの間、香箱も含めた輪列全体は、米粒ほどの宝石に押さえられて止まっている。</p>
+</section>
+
+<section id="escapement">
+<h2>脱進機：エネルギーを一歯ずつ逃がす</h2>
+<p>スイスレバー脱進機は、図から思い描くのがいちばん難しかった部品であり、ゆっくり回せることがいちばん報われる部品でもある。段階 4 で速度をスローモーションにしてほしい。部品は三つある。ガンギ車は 20 枚のクラブ形の歯をもち、常に回ろうとしている。アンクルはガンギ車とテンプの間に支えられたレバーで、一端にはガンギ車の歯に出入りする二つのルビーの爪石、他端には切欠きがある。テンプはヒゲゼンマイに載ったリムのある輪で、振り座から小さなピン、振り石が立っている。</p>
+<p>静止しているとき、一方の爪石が歯の進路にあり、歯の止め面がそれを押している。歯車は止まり、その後ろの輪列も止まっている。ここでテンプが静止点を通り過ぎ、振り石がアンクルの切欠きに入ってアンクルをはじく。爪石が歯から外れる。これが解放である。自由になった歯は斜めの衝撃面を爪石自身の斜面に沿って滑らせ、そうしながらアンクルをさらに押し、切欠きを通じてテンプにひと蹴りを与える。これが衝撃である。歯車は半歯ピッチ、9 度進んだ。それからもう一方の爪石が次の歯の進路に落ち、歯車を再び止める。これが落ちである。テンプは振れ続け、振り石は切欠きを離れ、アンクルはテンプが反対側から戻ってきて同じ順序がもう一方の爪石で繰り返されるまで、バンキングピンに寄りかかって休む。</p>
+<p>ここから四つのことが導かれる。ガンギ車はテンプが静止点を通る間しか動かないので、輪列は時間のおよそ七割は止まっている。テンプは最も速い瞬間に押されるが、そこは押しが周期を最も乱さない場所である。歯車の進みは量子化されている。各振動はちょうど半歯で、したがって歯車の速さはテンプの振動数、1 時間に 28,800、1 秒に 8 で厳密に決まり、輪列の算術がそれを針として読み出す。そしてレバー脱進機は分離型の脱進機で、振れの大部分でテンプは何にも触れない。それが良い時を刻ませる。</p>
+</section>
+
+<section id="balance">
+<h2>テンプ：振れる輪がなぜ時を刻むのか</h2>
+<p>テンプとヒゲゼンマイはねじれ振り子である。ゼンマイの内端はヒゲ玉でテン真に、外端はテンプ受けに固定されたヒゲ持ちに留めてある。テンプを回すとゼンマイが巻かれて押し返し、テンプは行き過ぎ、ゼンマイが逆に引き、振動が起こる。周期はテンプの慣性モーメントとゼンマイの硬さで決まり、一次近似では振れ幅には依らない。この等時性が、ゼンマイがほどけて振り角が 300 度ほどから 200 度へ落ちても時計が狂わない理由である。模型では香箱が空になるにつれて振り角が落ちる。読み出しを見てほしい。</p>
+<p>ヒゲゼンマイは目に見えて呼吸する。一端はテンプとともに回り、他端は回らないので、半振動ごとに渦が開き、閉じる。緩急針はテンプ受けの上のレバーで、ヒゲ持ちの近くで外側の一巻きをはさむ二本のピンをもつ。これをずらすと自由にたわめるゼンマイの長さが変わり、歩度が髪の毛一本分につき一日数秒変わる。この種の現代のキャリバーは 4 Hz で、耐震装置を備えたテンプを受け石に載せている。ここに描いたのはそれである。</p>
+</section>
+
+<section id="hands">
+<h2>日の裏と日付</h2>
+<p>時針と分針はどちらも中心の軸に載っているが、二番車は中心にない。この設計ではムーブメントの中心はクロノグラフのために取ってある。そこで二番車の軸は中間車を介してツツカナを回す。ツツカナは中心のパイプで、根元に歯車をもち、自分の軸に軽い摩擦で嵌まっている。1 時間に 1 回転して分針を運ぶ。その 10 枚の葉が 30 歯の日の裏車を回し、日の裏車の 8 枚のカナが 32 歯の筒車、ツツカナを囲むパイプを回す。3 かける 4 で 1 時間に 12 分の 1 回転、時針はそこに乗る。文字盤側のこの小さな輪列を日の裏と呼び、針を合わせられる摩擦はここにある。針を回すとツツカナが軸の上で滑り、後ろの輪列は乱されない。</p>
+<p>筒車はさらに 64 歯の日送り車を半分の速さ、1 日 1 回転で回す。その車の爪が文字盤の下の 31 歯の日車まで届き、1 日に一度、一歯だけ押す。丸い先端をもつバネ付きのジャンパーが残りの時間は二つの歯の間に座り、日車を数字の上にきちんと押さえている。真夜中に見える跳びは、爪とジャンパーが日車を受け渡しているところだ。模型を 1 秒で 1 時間の速さで走らせると見ることができる。</p>
+</section>
+
+<section id="crown">
+<h2>リューズ：一本の巻き真、三つの仕事</h2>
+<p>巻き真まわりとは、一つのリューズで巻き上げ、日付合わせ、時刻合わせができるようにする部品群である。巻き真は、巻き上げカナとツヅミ車が乗るところは角断面で、二つは巻き真と一緒に回らざるを得ない。オシドリのピンが座るところには溝が切ってあり、リューズを引くとオシドリが振れる。オシドリはカンヌキを傾け、カンヌキの股がツヅミ車を巻き真に沿って滑らせる。押し込んだ状態では、ツヅミ車の冠歯が巻き上げカナと噛み、リューズを回すと丸穴車、中間車、角穴車駆動車、そして香箱真の角穴車が回る。この模型ではリューズ 2.5 回転で香箱真 1 回転だ。完全に引き出すと、ツヅミ車は巻き上げカナから離れて小鉄車へ入り、リューズを回すと日の裏車が引きずられ、ツツカナが滑る。同時に、ここには描いていないハックレバーがテンプのリムに当たって止め、時報に秒まで合わせられる。中間の位置は日付修正車へつながるが、その車は省き、日付を直接送るようにした。</p>
+</section>
+
+<section id="chronograph">
+<h2>クロノグラフ：一番目の輪列に乗る二番目の輪列</h2>
+<p>クロノグラフは、時計の時間基準を借りるストップウォッチである。ベースムーブメントから必要なのは三つ。1 分に 1 回転する、連結できる歯車。テンプを乱さずに連結と切り離しをする方法。そして針を零に戻す方法。この設計は垂直クラッチとコラムホイールでそれに答えており、この二つの部品を理解した途端、クロノグラフの残りは自明になった。</p>
+<h3>垂直クラッチ</h3>
+<p>四番車の軸を輪列受けの上まで延ばし、駆動車を載せてある。中間車を通じてそれはムーブメント中心のクラッチ駆動車を、クロノグラフが走っていようがいまいが、常に 1 分に 1 回転させる。その車の真上、同じ軸に積まれているのがクロノグラフ秒車で、長い中央針を運ぶ。二つの間には、バネ付きの板で押し下げられた薄い円板がある。円板が下りていると摩擦が二つの車を結び、クロノグラフが走る。フォークが円板をコンマ何ミリか持ち上げると、二つの車は独立に回り、クロノグラフは止まる。何も噛み合わず、何も外れない。垂直クラッチ式クロノグラフのスタートで針が跳ばないのはそのためであり、何日も走らせたままにしても輪列が摩耗しないのも、スタートしてもテンプの振り角がほとんど変わらないのもそのためだ。負荷は小さな摩擦であって、無理に噛み合わされる歯ではない。</p>
+<h3>コラムホイール</h3>
+<p>コラムホイールは小さな城である。下に 16 歯のラチェット、上に 8 本の直立した柱があり、ジャンパーで位置ごとに保持される。スタート・ストップのプッシャーは作動レバーを動かし、その爪がラチェットを一歯回すので、柱は柱ピッチの半分だけ回る。三つのレバーが尾をコラムホイールに載せており、それぞれの働きは、尾が柱の上に乗っているか、二本の柱の間の溝に落ちているかで決まる。スタートを押す。クラッチフォークの尾が溝に落ち、その二本の腕がクラッチ板を下ろす。ブレーキレバーの尾が柱に乗り上げ、秒車からパッドを離す。ハンマーの尾が柱に乗り上げ、ハンマーは落ちられなくなる。もう一度押す。すべてが逆になり、クラッチが上がり、針が這わないようブレーキが秒車に下り、ハンマーが解放される。コラムホイール式クロノグラフの快さ、プッシャーの歯切れのよい均一なクリックは、一つの部品が一歯ずつ回されてすべてを順序づけているところから来る。</p>
+<h3>積算計と帰零</h3>
+<p>分積算計は秒車の爪で駆動される。一回転に一度、爪が中間の星車をはじき、30 歯の積算車が自身のジャンパーに逆らって一段動くので、分針は這わずに跳ぶ。時積算計は違う方法で駆動されており、ここが私には意外だった。二番車の軸から 12 時間に 1 回転で、滑り摩擦を介して常時歯車で駆動され、クロノグラフが止まっている間はハンマーに押さえられているだけなのだ。スタートを押すとブレーキが上がり、摩擦がそれを連れて回る。</p>
+<p>三つの積算車はそれぞれハート形のカムをもつ。クロノグラフを止めてリセットを押すと、ハンマーがハートの上に落ちる。ハートには半径が最小になる一点、切欠きがあり、ハンマーの面が曲線のどこに当たっても、切欠きがそこに収まるまでハートを短い方の向きに押し回す。三本の針は一斉に零へ飛び、ハンマーは次にスタートが押されて持ち上げられるまで、ハートの上に載ったまま零を保つ。</p>
+</section>
+
+<section id="honesty">
+<h2>この模型が何であり、何でないか</h2>
+<p>構成はカレラのクロノグラフに入っているキャリバー系のものである。4 Hz の自動巻きベースに一体化されたコラムホイール・垂直クラッチ式クロノグラフ、両方向巻き上げのボールベアリング式ローター、80 時間の駆動時間、33 石、6 時に秒針、3 時に 30 分積算計、9 時に 12 時間積算計。タグ・ホイヤーと専門誌がそう記述している（TAG Heuer 2023; Monochrome 2023）。機構は標準的なもので、時計学の文献にあるとおりに描いた（Daniels 2011; Reymondin ほか 1999）。タグ・ホイヤーのものでないのは、外から知り得ないすべてである。正確な歯数、軸の位置、受けやレバーの形。それらは、整合性があり分かりやすいように、私自身が選んだ。歯数はこの種のものとして代表的であり、重要な比をすべて満たす。四番車は 1 分に 1 回転、二番車は 1 時間に 1 回転、筒車は 12 時間に 1 回転、日送り車は 1 日に 1 回転、香箱は 12 時間に 1 回転、ガンギ車は 1 時間 28,800 振動で振動ごとにちょうど半歯進む。この分解図はどのメーカーの図面の写しでもない。それは機構である。</p>
+<p>いくつかの単純化は意図的である。テンプの振り角と脱進機のタイミングは運動学的に模しており、爪石の接触の動力学を解いてはいない。切替車は爪をもつ歯車として描いたが、爪はたわまない。ハックレバー、日付修正車、耐震装置は本文で述べたが描いておらず、目で層を分けられるように、層の高さは実際の 6 から 7 ミリのムーブメントより少し高くしてある。回るものはすべて本当の比で回っており、リポジトリのテストがそれを検査している。</p>
+</section>
+
+<section id="sources" class="sources">
+<h2>出典</h2>
+<p><em>機構は教科書的なものであり、キャリバーの公開仕様はメーカーと専門誌による。模型の歯数、軸の位置、部品の形は私のもので、メーカーのものだとは主張しない。</em></p>
+<ul>
+<li>TAG Heuer (2023). <a href="https://magazine.tagheuer.com/en/2023/03/27/a-new-era-for-an-iconic-calibre-the-heuer-02-movement-evolves/">A new era for an iconic calibre: the Heuer 02 movement evolves.</a> TAG Heuer Official Magazine. 両方向巻き上げ、80 時間の駆動時間、2023 年の改良。</li>
+<li>Monochrome Watches (2023). <a href="https://monochrome-watches.com/new-2023-tag-heuer-carrera-chronograph-glassbox-cbs2210-fc6534-panda-cbs2212-fc6535-blue-new-calibre-th20-00-hands-on/">Introducing the 39mm TAG Heuer Carrera Chronograph Glassbox.</a> コラムホイール、垂直クラッチ、28,800 振動、33 石、積算計の配置。</li>
+<li>Caliber Corner. <a href="https://calibercorner.com/tag-heuer-caliber-th20-00/">TAG Heuer Caliber TH20-00.</a> 仕様の集約。石数と機能の一覧。</li>
+<li>Daniels, G. (2011). <em>Watchmaking</em>, revised edition. Philip Wilson. レバー脱進機、輪列、巻き真まわりと、それらの標準的な比率。</li>
+<li>Reymondin, C.-A., Monnier, G., Jeanneret, D. and Pelaratti, U. (1999). <em>The Theory of Horology</em>. Swiss Federation of Technical Colleges. 輪列比、日の裏、コラムホイールとハートカムを含むクロノグラフ機構。</li>
+<li>独立に検証できていないもの：TH20-00 の内部の歯数、軸配置、部品形状。いずれも公開されておらず、この模型はそれらを主張しない。</li>
+</ul>
+</section>
+
+</main><!-- ISEGORIA:FOOT -->
+<footer id="ig-footer"><div><a href="/ja/">Isegoria · Benjamin Haire</a><nav aria-label="サイト内リンク"><a href="/ja/">ホームに戻る</a><a href="/ja/library.html">全コンテンツ</a><a href="#ig-content">ページ上部へ</a></nav></div></footer>
+<!-- /ISEGORIA:FOOT -->
+</body>
+</html>

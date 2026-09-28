@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="en" class=" ig-document ig-editorial">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Inside an Automatic Chronograph: the Whole Movement, Turning</title>
+<meta name="description" content="A complete automatic chronograph calibre built part by part and set running in the browser: rotor and winding, barrel and going train, lever escapement and balance, keyless works, motion works and date, and a column-wheel, vertical-clutch chronograph, with every wheel turning at its true ratio.">
+<meta property="og:title" content="Inside an Automatic Chronograph: the Whole Movement, Turning">
+<meta property="og:description" content="A complete automatic chronograph calibre built part by part and set running in the browser: rotor and winding, barrel and going train, lever escapement and balance, keyless works, motion works and date, and a column-wheel, vertical-clutch chronograph, with every wheel turning at its true ratio.">
+<meta property="og:image" content="https://theisegoria.github.io/og.png">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="canonical" href="https://theisegoria.github.io/automatic-movement/">
+<link rel="alternate" hreflang="en" href="https://theisegoria.github.io/automatic-movement/">
+<link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/automatic-movement/">
+<link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/automatic-movement/">
+<link rel="stylesheet" href="/assets/isegoria.css?v=20260928">
+<link rel="stylesheet" href="/assets/lab-kit/lab-kit.css?v=20260928">
+<link rel="stylesheet" href="style.css?v=20260928">
+<script type="importmap">
+{"imports":{
+  "three":"/vendor/three/r186/build/three.webgpu.js",
+  "three/webgpu":"/vendor/three/r186/build/three.webgpu.js",
+  "three/tsl":"/vendor/three/r186/build/three.tsl.js",
+  "three/addons/":"/vendor/three/r186/examples-jsm/"
+}}
+</script>
+<link rel="modulepreload" href="/vendor/three/r186/build/three.webgpu.js">
+<link rel="modulepreload" href="/vendor/three/r186/build/three.core.js">
+<script type="module" src="lab.js"></script>
+<script src="/assets/lang.js"></script>
+<!-- ISEGORIA:HEAD -->
+<link rel="stylesheet" href="/assets/site-shell.css?v=c21cd21e82">
+<script src="/assets/site-shell.js?v=c21cd21e82" ></script>
+<!-- /ISEGORIA:HEAD -->
+<script defer data-isegoria-analytics src="/assets/analytics.js?v=9e6ebd463bf2"></script>
+</head>
+<body class=" ig-site" data-site-kind="editorial" data-site-route="/automatic-movement/">
+<!-- ISEGORIA:NAV -->
+<a class="ig-skip" href="#ig-content">Skip to content</a>
+<header id="ig-header"><div class="ig-nav-inner">
+<a class="ig-brand" href="/" aria-label="Isegoria, home"><strong>ISEGORIA</strong><span>Benjamin Haire</span></a>
+<div class="ig-header-actions"><a class="ig-language" href="/ja/automatic-movement/" hreflang="ja" lang="ja">日本語</a><button class="ig-menu" type="button" aria-expanded="false" aria-controls="ig-primary">Menu</button></div>
+<nav id="ig-primary" aria-label="Primary navigation"><a href="/">Home</a><a href="/library.html">Library</a><a href="/math-encyclopedia/">Math encyclopedia</a><a href="/#interactive" aria-current="location">Interactive</a><a href="/#preoccupations">Research</a><a href="/#books">Books</a><a href="/projects.html">Projects</a><a href="/about.html">About</a><a class="ig-language" href="/ja/automatic-movement/" hreflang="ja" lang="ja">日本語</a><button class="ig-theme" type="button" hidden>Theme</button></nav>
+</div></header>
+<nav id="ig-breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><a href="/#interactive">Interactive explainers</a><span aria-hidden="true">/</span><span aria-current="page">Inside an Automatic Chronograph: the Whole Movement, Turning</span></nav>
+<span id="ig-content" tabindex="-1"></span>
+<!-- /ISEGORIA:NAV --><main class="wrap">
+
+<header class="hero">
+<p class="kicker">Interactive explainer</p>
+<h1>Inside an Automatic Chronograph: the Whole Movement, Turning</h1>
+<p class="lede">A complete automatic chronograph calibre built part by part and set running in the browser: rotor and winding, barrel and going train, lever escapement and balance, keyless works, motion works and date, and a column-wheel, vertical-clutch chronograph, with every wheel turning at its true ratio.</p>
+<nav class="ig-page-nav" aria-label="On this page"><a href="#model">The model</a><a href="#energy">Energy</a><a href="#train">Train</a><a href="#escapement">Escapement</a><a href="#hands">Hands and date</a><a href="#crown">Crown</a><a href="#chronograph">Chronograph</a><a href="#honesty">What this is and is not</a><a href="#sources">Sources</a></nav>
+</header>
+
+<section class="lab" id="model" aria-labelledby="model-h">
+<h2 id="model-h">The model</h2>
+<p>This is the movement of an automatic chronograph of the kind inside the <a href="/carrera-panda/">Carrera Panda</a>: a column-wheel, vertical-clutch chronograph on a 4 Hz base with a bidirectional ball-bearing rotor and an 80 hour barrel. Every part below is drawn to scale and driven by the same arithmetic the real one obeys. Start with the stages in order; each one hides what is in the way, lights up the parts that matter, and moves the camera. Then take the controls: wind it, pull the crown, start the chronograph, pull it apart.</p>
+
+<div class="stage-bar" id="stages" role="tablist" aria-label="Stages"></div>
+<p class="stage-text" id="stage-text"></p>
+
+<div class="lab-stage">
+  <canvas id="stage" tabindex="0" aria-label="The movement in 3D. Drag to orbit, scroll to zoom, right-drag to pan."></canvas>
+  <div class="lab-labels" id="labels" aria-hidden="true"></div>
+  <figure data-lab-fallback hidden>
+    <svg viewBox="0 0 640 480" role="img" aria-labelledby="fb-t"><title id="fb-t">Plan of the movement from the dial side: the going train in ink, the chronograph in the accent colour, the automatic winding train in grey</title>
+<circle cx="300" cy="240" r="217.0" fill="none" stroke="var(--rule)" stroke-width="1.5"/>
+<circle cx="300" cy="240" r="217.0" fill="var(--paper-2, transparent)" opacity="0.4"/>
+<circle cx="223.9" cy="143.1" r="84.0" fill="none" stroke="var(--ink)" stroke-width="1.8"/>
+<circle cx="223.9" cy="143.1" r="2" fill="var(--ink)"/>
+<text x="223.9" y="55.1" text-anchor="middle" font-family="var(--sans)" font-size="10.5" fill="var(--ink)">Barrel 96</text>
+<circle cx="230.3" cy="233.9" r="70.0" fill="none" stroke="var(--ink)" stroke-width="1.8"/>
+<circle cx="230.3" cy="233.9" r="2" fill="var(--ink)"/>
+<text x="230.3" y="159.9" text-anchor="middle" font-family="var(--sans)" font-size="10.5" fill="var(--ink)">Centre 80</text>
+<circle cx="235.3" cy="312.5" r="65.6" fill="none" stroke="var(--ink)" stroke-width="1.8"/>
+<circle cx="235.3" cy="312.5" r="2" fill="var(--ink)"/>
+<text x="235.3" y="242.9" text-anchor="middle" font-family="var(--sans)" font-size="10.5" fill="var(--ink)">Third 75</text>
+<circle cx="300.0" cy="349.2" r="73.5" fill="none" stroke="var(--ink)" stroke-width="1.8"/>
+<circle cx="300.0" cy="349.2" r="2" fill="var(--ink)"/>
+<text x="300.0" y="271.7" text-anchor="middle" font-family="var(--sans)" font-size="10.5" fill="var(--ink)">Fourth 84</text>
+<circle cx="334.9" cy="277.6" r="28.0" fill="none" stroke="var(--ink)" stroke-width="1.8"/>
+<circle cx="334.9" cy="277.6" r="2" fill="var(--ink)"/>
+<text x="334.9" y="245.6" text-anchor="middle" font-family="var(--sans)" font-size="10.5" fill="var(--ink)">Escape 20</text>
+<circle cx="252.7" cy="331.0" r="60.2" fill="none" stroke="var(--ink)" stroke-width="1.8"/>
+<circle cx="252.7" cy="331.0" r="2" fill="var(--ink)"/>
+<text x="252.7" y="266.8" text-anchor="middle" font-family="var(--sans)" font-size="10.5" fill="var(--ink)">Balance</text>
+<circle cx="414.8" cy="240.0" r="31.5" fill="none" stroke="var(--accent)" stroke-width="1.3"/>
+<circle cx="414.8" cy="240.0" r="2" fill="var(--accent)"/>
+<text x="414.8" y="204.5" text-anchor="middle" font-family="var(--sans)" font-size="10.5" fill="var(--accent)">30-min</text>
+<circle cx="190.8" cy="240.0" r="28.0" fill="none" stroke="var(--accent)" stroke-width="1.3"/>
+<circle cx="190.8" cy="240.0" r="2" fill="var(--accent)"/>
+<text x="190.8" y="208.0" text-anchor="middle" font-family="var(--sans)" font-size="10.5" fill="var(--accent)">12-h</text>
+<circle cx="448.4" cy="290.4" r="21.7" fill="none" stroke="var(--accent)" stroke-width="1.3"/>
+<circle cx="448.4" cy="290.4" r="2" fill="var(--accent)"/>
+<text x="448.4" y="264.7" text-anchor="middle" font-family="var(--sans)" font-size="10.5" fill="var(--accent)">Column wheel</text>
+<circle cx="368.4" cy="294.6" r="52.5" fill="none" stroke="var(--accent)" stroke-width="1.3"/>
+<circle cx="368.4" cy="294.6" r="2" fill="var(--accent)"/>
+<circle cx="300.0" cy="240.0" r="52.5" fill="none" stroke="var(--accent)" stroke-width="1.3"/>
+<circle cx="300.0" cy="240.0" r="2" fill="var(--accent)"/>
+<text x="300.0" y="183.5" text-anchor="middle" font-family="var(--sans)" font-size="10.5" fill="var(--accent)">Chrono seconds</text>
+<circle cx="341.6" cy="180.3" r="42.0" fill="none" stroke="var(--ink-soft)" stroke-width="1.3" stroke-dasharray="4 3"/>
+<circle cx="341.6" cy="180.3" r="2" fill="var(--ink-soft)"/>
+<circle cx="326.9" cy="122.6" r="52.5" fill="none" stroke="var(--ink-soft)" stroke-width="1.3" stroke-dasharray="4 3"/>
+<circle cx="326.9" cy="122.6" r="2" fill="var(--ink-soft)"/>
+<circle cx="291.4" cy="281.1" r="35.0" fill="none" stroke="var(--ink-soft)" stroke-width="1.3" stroke-dasharray="4 3"/>
+<circle cx="291.4" cy="281.1" r="2" fill="var(--ink-soft)"/>
+<text x="291.4" y="242.1" text-anchor="middle" font-family="var(--sans)" font-size="10.5" fill="var(--ink-soft)">Reversers</text>
+<circle cx="356.6" cy="255.8" r="35.0" fill="none" stroke="var(--ink-soft)" stroke-width="1.3" stroke-dasharray="4 3"/>
+<circle cx="356.6" cy="255.8" r="2" fill="var(--ink-soft)"/>
+<circle cx="437.2" cy="206.4" r="21.0" fill="none" stroke="var(--ink-faint)" stroke-width="1.3" stroke-dasharray="4 3"/>
+<circle cx="437.2" cy="206.4" r="2" fill="var(--ink-faint)"/>
+<text x="437.2" y="181.4" text-anchor="middle" font-family="var(--sans)" font-size="10.5" fill="var(--ink-faint)">Crown wheel</text>
+<circle cx="326.8" cy="217.5" r="26.2" fill="none" stroke="var(--ink-faint)" stroke-width="1.3" stroke-dasharray="4 3"/>
+<circle cx="326.8" cy="217.5" r="2" fill="var(--ink-faint)"/>
+<text x="326.8" y="187.3" text-anchor="middle" font-family="var(--sans)" font-size="10.5" fill="var(--ink-faint)">Minute wheel</text>
+<circle cx="271.3" cy="318.9" r="56.0" fill="none" stroke="var(--ink-faint)" stroke-width="1.3" stroke-dasharray="4 3"/>
+<circle cx="271.3" cy="318.9" r="2" fill="var(--ink-faint)"/>
+<text x="271.3" y="258.9" text-anchor="middle" font-family="var(--sans)" font-size="10.5" fill="var(--ink-faint)">Date wheel</text>
+<line x1="334.9" y1="277.6" x2="295.0" y2="303.6" stroke="var(--ink)" stroke-width="1.2"/><line x1="295.0" y1="303.6" x2="252.7" y2="331.0" stroke="var(--ink)" stroke-width="1.2"/><circle cx="295.0" cy="303.6" r="2.5" fill="var(--paper)" stroke="var(--ink)"/>
+<rect x="423" y="237" width="126" height="6" fill="var(--ink-faint)"/><circle cx="556" cy="240" r="39" fill="none" stroke="var(--ink-faint)" stroke-width="2"/>
+<circle cx="489" cy="131" r="8" fill="none" stroke="var(--accent)" stroke-width="1.5"/>
+<circle cx="489" cy="349" r="8" fill="none" stroke="var(--accent)" stroke-width="1.5"/>
+<text x="300" y="472" text-anchor="middle" font-family="var(--sans)" font-size="11" fill="var(--ink-soft)">Plan from the dial side, to scale. Solid: going train. Accent: chronograph. Dashed: winding and motion works.</text>
+</svg>
+    <figcaption>Your browser has no WebGL 2 or WebGPU, so this is the still version: the plan of the movement with the wheels at their pitch circles.</figcaption>
+  </figure>
+  <div class="lab-hud"><span class="lab-badge"></span></div>
+</div>
+
+<form class="lab-controls" id="controls" onsubmit="return false">
+  <label><span>Speed</span>
+    <select name="speed"><option value="0">paused</option><option value="0.125">slow motion, 1/8</option><option value="1" selected>real time</option><option value="60">60 times</option><option value="720">720 times</option><option value="3600">an hour a second</option></select></label>
+  <label><span>Wrist activity (winds the rotor)</span><output for="activity"></output><input id="activity" name="activity" type="range" min="0" max="1" step="0.05" value="0.5" data-format="pct"></label>
+  <label><span>Crown position</span>
+    <select name="crown"><option value="0" selected>in: winding</option><option value="1">first click: date</option><option value="2">second click: set the time (hacked)</option></select></label>
+  <fieldset><legend class="visually-hidden">Turn the crown</legend>
+    <button type="button" data-action="wind">Turn the crown one turn forward</button><button type="button" data-action="unwind">One turn back</button></fieldset>
+  <fieldset><legend class="visually-hidden">Chronograph</legend>
+    <button type="button" data-action="start">Start / stop</button><button type="button" data-action="reset">Reset</button></fieldset>
+  <label><span>Explode the layers</span><output for="explode"></output><input id="explode" name="explode" type="range" min="0" max="1" step="0.02" value="0" data-format="pct"></label>
+  <fieldset>
+    <label><span>Dial</span><input name="dial" type="checkbox"></label>
+    <label><span>Hands</span><input name="hands" type="checkbox" checked></label>
+    <label><span>Winding module</span><input name="autoLayer" type="checkbox" checked></label>
+    <label><span>Chronograph</span><input name="chronoLayer" type="checkbox" checked></label>
+    <label><span>Bridges</span><input name="bridges" type="checkbox" checked></label>
+    <label><span>Labels</span><input name="labels" type="checkbox" checked></label>
+  </fieldset>
+</form>
+<div class="lab-readout" id="readout" aria-live="off"></div>
+<details class="part-list"><summary>Find a part</summary><div id="parts"></div></details>
+</section>
+
+<section id="energy">
+<h2>Energy: where the power comes from and where it waits</h2>
+<p>It took me an embarrassingly long time to see an automatic watch as what it is, which is a small energy-management machine with a clock bolted on. Once I saw it that way the whole thing unfolded. Energy comes in at the rotor, is stored in the barrel, is metered out by the escapement, and is displayed by the hands. Everything else is plumbing between those four stations.</p>
+<p>The rotor is a half-disc, heavy at its rim, that swings freely on a ball bearing at the centre of the movement. Its pinion drives a pair of reverser wheels. Each reverser is a wheel with two spring pawls on its face; when it is turned one way the pawls catch and it carries the wheel beneath it, when it is turned the other way they slip. The two reversers are geared together, so whichever way the rotor swings, exactly one of them is catching, and the reduction wheel below them always turns the same way. That is the whole trick of bidirectional winding, and it is why a watch can gain energy from a wrist that only ever waves about. The reduction is steep, forty-five rotor turns to one turn of the barrel arbor in this model, because the rotor’s torque is small and the mainspring’s is not. The click, a sprung pawl on the ratchet wheel, keeps the arbor from unwinding.</p>
+<p>The barrel is a shallow drum with teeth on its outside and the mainspring inside: a flat strip of steel, about a third of a metre long, hooked to the arbor at its inner end and to the drum at its outer end. Winding turns the arbor and pulls coils in around it; running lets the coils migrate outward until they lie against the wall. The drum rotates once in twelve hours, and an 80 hour reserve is therefore six and two thirds turns of it. In stage 2 the drum is drawn translucent, and you can watch the coils shift as you wind.</p>
+</section>
+
+<section id="train">
+<h2>The going train: gearing a slow drum up to a fast wheel</h2>
+<p>Five wheels take the barrel’s slow, strong rotation and turn it into the escape wheel’s fast, feeble one. The rule is that each big wheel drives the next small pinion. The barrel’s 96 teeth drive the centre wheel’s 8-leaf pinion, so the centre wheel turns twelve times faster: once an hour. Its 80 teeth drive the third wheel’s 10-leaf pinion, so the third wheel turns eight times an hour. The third wheel’s 75 teeth drive the fourth wheel’s 10-leaf pinion, seven and a half times faster: sixty turns an hour, once a minute, which is why the fourth wheel carries the small seconds hand. The fourth wheel’s 84 teeth drive the escape wheel’s 7-leaf pinion, twelve times faster again: 720 turns an hour, once every five seconds. Multiply through and the escape wheel turns 8,640 times for one turn of the barrel. Torque goes the other way, divided by the same number.</p>
+<p>Two things surprised me when I first worked this through. The first is that nothing in the train sets the rate. The ratios only decide what the hands will read if the escape wheel turns at a certain speed; they cannot make it turn at that speed. The second is that the train does not turn smoothly at all. It advances in eight little jerks a second, and for most of every eighth of a second the whole train, barrel included, is standing still, held by a jewel the size of a grain of rice.</p>
+</section>
+
+<section id="escapement">
+<h2>The escapement: letting the energy out one tooth at a time</h2>
+<p>The Swiss lever escapement is the part I found hardest to picture from drawings, and the part that most rewards being able to turn it slowly. Set the speed control to slow motion in stage 4. There are three parts. The escape wheel has twenty club-shaped teeth and is trying, always, to turn. The pallet fork is a lever pivoted between the escape wheel and the balance, with two ruby pallet stones at one end that dip in and out of the wheel’s teeth and a notch at the other. The balance is a rimmed wheel on a hairspring, with a small pin, the impulse jewel, standing up from its roller table.</p>
+<p>At rest, one pallet stone is in the path of a tooth, and the tooth’s locking face presses on it. The wheel is locked and the train behind it is stopped. Now the balance swings past its rest position and the impulse jewel enters the fork’s notch and knocks the fork across. The stone lifts out of the tooth: that is the unlocking. The tooth, freed, slides its sloping impulse face along the stone’s own sloping face, and in doing so it pushes the fork further across and, through the notch, gives the balance a little kick: that is the impulse. The wheel has advanced half a tooth pitch, nine degrees. Then the other stone drops into the path of the next tooth and locks the wheel again: that is the drop. The balance swings on, the impulse jewel leaves the notch, and the fork rests against its banking pin until the balance comes back the other way and the whole sequence repeats on the other stone.</p>
+<p>Four things follow. The escape wheel only ever moves while the balance is passing through its rest position, so the train is locked for roughly seventy per cent of the time. The balance receives its push at the moment of maximum speed, where a push disturbs the period least. The wheel’s advance is quantised: each vibration is exactly half a tooth, so the wheel’s speed is exactly set by the balance’s frequency, 28,800 vibrations an hour, eight a second, and the arithmetic of the train then reads that out as hands. And the lever is a detached escapement: for most of its swing the balance touches nothing, which is what lets it keep good time.</p>
+</section>
+
+<section id="balance">
+<h2>The balance: why a swinging wheel keeps time</h2>
+<p>The balance and its hairspring are a torsion pendulum. The spring’s inner end is pinned to the balance staff at the collet; its outer end is pinned to the stud, which is fixed to the balance cock. Turn the balance and the spring winds up and pushes back; the balance overshoots, the spring pulls the other way, and it oscillates. The period is set by the balance’s moment of inertia and the spring’s stiffness, and, to first order, not by how far it swings. That isochronism is the reason a watch keeps time as the mainspring runs down and the amplitude drops from around 300 degrees to 200. In the model the amplitude falls as the barrel empties; watch the readout.</p>
+<p>The hairspring visibly breathes. Because one end turns with the balance and the other does not, the coils open on one half-swing and close on the other. The regulator is a lever on the cock with two pins that straddle the outer coil near the stud; sliding it changes the length of spring that is free to flex, and so the rate, by a few seconds a day per hair’s breadth. Modern calibres of this kind are 4 Hz with a shock-protected balance in a jewelled setting; that is what is drawn here.</p>
+</section>
+
+<section id="hands">
+<h2>Motion works and the date</h2>
+<p>The hour and minute hands both sit on the central axis, but the centre wheel is not at the centre; in this architecture the centre of the movement is reserved for the chronograph. So the centre wheel’s arbor drives, through an idler, the cannon pinion: a pipe at the centre with a wheel on its base, fitted with a light friction on its own arbor. It turns once an hour and carries the minute hand. Its ten leaves drive the 30-tooth minute wheel, whose 8-leaf pinion drives the 32-tooth hour wheel, a pipe around the cannon pinion: three times four is a twelfth of a turn per hour, and the hour hand rides on that. This little train on the dial side is called the motion works, and it is where the friction lives that lets you set the hands: turning them slips the cannon pinion on its arbor without disturbing the train behind.</p>
+<p>The hour wheel also drives a 64-tooth date wheel at half its speed, one turn a day. A finger on that wheel reaches out to the 31-tooth ring under the dial and, once a day, pushes it one tooth. A sprung jumper with a rounded nose sits between two teeth the rest of the time and holds the ring exactly on the number; the jump you see at midnight is the finger and the jumper handing the ring between them. Run the model at an hour a second to watch it.</p>
+</section>
+
+<section id="crown">
+<h2>The crown: one stem, three jobs</h2>
+<p>The keyless works are the parts that let a single crown wind, set the date and set the time. The stem is square where the winding pinion and the sliding pinion ride on it, so they must turn with it, and grooved where the setting lever’s pin sits, so pulling the crown swings the lever. The lever tips the yoke, and the yoke’s fork slides the castle-shaped sliding pinion along the stem. Pushed in, the sliding pinion’s crown teeth mesh the winding pinion; turning the crown then turns the crown wheel, an intermediate, the ratchet driving wheel and the ratchet wheel on the barrel arbor, two and a half crown turns per turn of the arbor in this model. Pulled fully out, the sliding pinion has slid clear of the winding pinion and into the setting wheels, and turning the crown now drags the minute wheel round, cannon pinion slipping, while a hacking lever, not drawn, rests on the balance rim and stops it so the seconds can be set to a signal. The middle position feeds a corrector for the date; I have left that wheel out and simply step the date.</p>
+</section>
+
+<section id="chronograph">
+<h2>The chronograph: a second train riding on the first</h2>
+<p>A chronograph is a stopwatch that borrows the watch’s time base. It needs three things from the base movement: a wheel it can couple to that turns once a minute, a way of coupling and uncoupling without disturbing the balance, and a way of putting its hands back to zero. This architecture answers them with a vertical clutch and a column wheel, and once I understood those two parts the rest of the chronograph became obvious.</p>
+<h3>The vertical clutch</h3>
+<p>The fourth wheel’s arbor is extended up through the train bridge and carries a driving wheel; through an intermediate, it turns the clutch driving wheel at the centre of the movement, once a minute, all the time, whether the chronograph is running or not. Stacked directly on top of that wheel, on the same axis, is the chronograph seconds wheel, which carries the long central hand. Between them is a thin disc pressed down by a sprung plate. When the disc is down, friction couples the two wheels and the chronograph runs; when a fork lifts the disc a fraction of a millimetre, the two wheels turn independently and the chronograph stops. Nothing meshes or unmeshes. That is why a vertical-clutch chronograph starts without the hand jumping, why it can be left running for days without wearing the train, and why starting it barely changes the balance amplitude: the load is a small friction, not a set of teeth being forced into engagement.</p>
+<h3>The column wheel</h3>
+<p>The column wheel is a small castle: a ratchet with sixteen teeth below and eight upright columns above, held between positions by a jumper spring. The start/stop pusher works an operating lever whose pawl turns the ratchet one tooth, so the columns rotate by half a column pitch. Three levers rest their tails on the column wheel, and what each does depends on whether its tail is sitting on a column or has dropped into the gap between two. Press start: the clutch fork’s tail drops into a gap and its two prongs lower the clutch disc; the brake lever’s tail rises onto a column and lifts its pad off the seconds wheel; the hammer’s tail rises onto a column so the hammer cannot fall. Press again: everything reverses, the clutch lifts, the brake comes down on the seconds wheel so the hand cannot creep, and the hammer is freed. The pleasure of a column-wheel chronograph, the crisp equal clicks of the pushers, comes from there being one part that sequences everything, turned by one tooth each time.</p>
+<h3>Counters and zeroing</h3>
+<p>The minute counter is driven by a finger on the seconds wheel: once a turn it flicks an idler star, which moves the 30-tooth counting wheel one step against its own jumper spring, so the minute hand jumps rather than creeps. The hour counter is driven differently, and this is the part that surprised me: it is geared continuously from the centre arbor at one turn in twelve hours through a slipping friction, and simply held still by its hammer whenever the chronograph is off. When you press start, the brake lifts and the friction carries it round.</p>
+<p>Each of the three counting wheels carries a heart-shaped cam. Press reset with the chronograph stopped and the hammers fall on the hearts. A heart has one point of minimum radius, its notch, and wherever the hammer face lands on the curve it pushes the heart round, by the shorter way, until the notch settles against it. All three hands fly to zero together, and the hammers stay resting on the hearts, holding zero, until the next press of start lifts them.</p>
+</section>
+
+<section id="honesty">
+<h2>What this model is, and what it is not</h2>
+<p>The architecture is that of the calibre family in the Carrera chronographs: an integrated column-wheel, vertical-clutch chronograph on a 4 Hz automatic base with a bidirectional ball-bearing rotor, an 80 hour reserve, 33 jewels, small seconds at six, a 30-minute counter at three and a 12-hour counter at nine, as TAG Heuer and the trade press describe it (TAG Heuer 2023; Monochrome 2023). The mechanisms are the standard ones, drawn as they are in the horological literature (Daniels 2011; Reymondin et al. 1999). What is not TAG Heuer’s is everything you cannot learn from the outside: the exact tooth counts, the positions of the pivots, the shapes of the bridges and levers. Those I chose myself, to be consistent and to be plain. The tooth counts are representative of the genre and satisfy every ratio that matters: the fourth wheel turns once a minute, the centre wheel once an hour, the hour wheel once in twelve, the date wheel once a day, the barrel once in twelve hours, and the escape wheel advances exactly half a tooth per vibration at 28,800 an hour. The cutaway is not a copy of any manufacturer’s drawings; it is the mechanism.</p>
+<p>Some simplifications are deliberate. The balance amplitude and the escapement’s timing are modelled kinematically, not by solving the contact dynamics of the pallets. The reversers are shown as wheels with pawls but their pawls do not flex. The hacking lever, the date corrector and the shock settings are described but not drawn, and the layers are a little taller than in a real 6 to 7 mm movement so that the eye can separate them. Everything that turns, turns at its true ratio; the tests in the repository check that.</p>
+</section>
+
+<section id="sources" class="sources">
+<h2>Sources</h2>
+<p><em>The mechanisms are textbook; the calibre’s public specification is from the maker and the trade press. Tooth counts, pivot positions and part shapes in the model are mine and are not claimed to be the manufacturer’s.</em></p>
+<ul>
+<li>TAG Heuer (2023). <a href="https://magazine.tagheuer.com/en/2023/03/27/a-new-era-for-an-iconic-calibre-the-heuer-02-movement-evolves/">A new era for an iconic calibre: the Heuer 02 movement evolves.</a> TAG Heuer Official Magazine. Bidirectional winding, 80 hour reserve, the 2023 revision.</li>
+<li>Monochrome Watches (2023). <a href="https://monochrome-watches.com/new-2023-tag-heuer-carrera-chronograph-glassbox-cbs2210-fc6534-panda-cbs2212-fc6535-blue-new-calibre-th20-00-hands-on/">Introducing the 39mm TAG Heuer Carrera Chronograph Glassbox.</a> Column wheel, vertical clutch, 28,800 vph, 33 jewels, counter layout.</li>
+<li>Caliber Corner. <a href="https://calibercorner.com/tag-heuer-caliber-th20-00/">TAG Heuer Caliber TH20-00.</a> Collected specifications; jewel and function list.</li>
+<li>Daniels, G. (2011). <em>Watchmaking</em>, revised edition. Philip Wilson. The lever escapement, the going train and the keyless works, with the standard proportions.</li>
+<li>Reymondin, C.-A., Monnier, G., Jeanneret, D. and Pelaratti, U. (1999). <em>The Theory of Horology</em>. Swiss Federation of Technical Colleges. Train ratios, the motion works, chronograph mechanisms including the column wheel and heart-piece.</li>
+<li>Not independently verified: the internal tooth counts, pivot layout and part geometry of the TH20-00; none of these are published, and the model does not claim them.</li>
+</ul>
+</section>
+
+</main><!-- ISEGORIA:FOOT -->
+<footer id="ig-footer"><div><a href="/">Isegoria · Benjamin Haire</a><nav aria-label="Site links"><a href="/">Back to home</a><a href="/library.html">Browse the library</a><a href="#ig-content">Back to top</a></nav></div></footer>
+<!-- /ISEGORIA:FOOT -->
+</body>
+</html>
