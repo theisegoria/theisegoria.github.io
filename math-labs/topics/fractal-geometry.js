@@ -143,7 +143,58 @@
   }
   const PRESETS = [null, [0, 0], [-1, 0], [-0.123, 0.745], [0, 1], [0.4, 0.4]];
 
-  (window.LabModels = window.LabModels || {})['fractal-geometry'] = { rng, similarity, apply, threeMaps, TRI, FERN, KOCH, system, iterate, moran, moranRoot, equalRatioDim, boxCount, occupied, fitSlope, densify, koch, sierpinskiPoints, brownianGraph, circlePoints, normalise, boxSeries, escape, smoothEscape, juliaInside, period, PRESETS };
+  // 4. L-systems. expand() rewrites every symbol at once; turtle() reads F-like symbols as unit steps, + and - as turns, [ ] as push/pop.
+  const LSYS = [
+    { axiom: 'F', rules: { F: 'F+F--F+F' }, angle: 60, draw: 'F', heading: 0, copies: 4, scale: 3, iter: (l) => Math.min(l, 7) },
+    { axiom: 'FX', rules: { X: 'X+YF+', Y: '-FX-Y' }, angle: 90, draw: 'F', heading: 0, copies: 2, scale: Math.SQRT2, iter: (l) => Math.min(Math.round(1.5 * l), 12) },
+    { axiom: 'A', rules: { A: 'B-A-B', B: 'A+B+A' }, angle: 60, draw: 'AB', heading: 0, copies: 3, scale: 2, iter: (l) => Math.min(l, 8) },
+    { axiom: 'X', rules: { X: 'F+[[X]-X]-F[-FX]+X', F: 'FF' }, angle: 25, draw: 'F', heading: 90, copies: null, scale: null, iter: (l) => Math.min(l, 6) },
+  ];
+  function expand(axiom, rules, n) { let s = axiom; for (let k = 0; k < n; k++) { let out = ''; for (const ch of s) out += rules[ch] ?? ch; s = out; } return s; }
+  // the turtle path as one point list; null separates branches (pen up). Returns the points, the segment count and the bounding box.
+  function turtle(str, angleDeg, drawChars, heading = 0) {
+    const a = angleDeg * Math.PI / 180; let x = 0, y = 0, th = heading * Math.PI / 180; const stack = [], pts = [[0, 0]]; let segs = 0, penDown = true;
+    let x0 = 0, x1 = 0, y0 = 0, y1 = 0;
+    for (const ch of str) {
+      if (drawChars.includes(ch)) { x += Math.cos(th); y += Math.sin(th); if (!penDown) { pts.push(null, [x - Math.cos(th), y - Math.sin(th)]); penDown = true; } pts.push([x, y]); segs++; if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y; }
+      else if (ch === '+') th += a; else if (ch === '-') th -= a;
+      else if (ch === '[') stack.push([x, y, th]); else if (ch === ']') { [x, y, th] = stack.pop(); penDown = false; }
+    }
+    return { pts, segs, box: [x0, x1, y0, y1], end: [x, y] };
+  }
+  const lsystemDim = (copies, scale) => (copies && scale ? Math.log(copies) / Math.log(scale) : null);
+
+  // 5. Newton's method for p(z) = prod (z - r_k), roots as [re, im] pairs
+  function newtonStep(zr, zi, roots) {
+    // p and p' by the product rule: p = prod d_k, p' = sum_k prod_{j != k} d_j
+    let pr = 1, pi = 0; const dr = [], di = [];
+    for (const [rr, ri] of roots) { const ar = zr - rr, ai = zi - ri; dr.push(ar); di.push(ai); const t = pr * ar - pi * ai; pi = pr * ai + pi * ar; pr = t; }
+    let qr = 0, qi = 0;
+    for (let k = 0; k < roots.length; k++) { let tr = 1, ti = 0; for (let j = 0; j < roots.length; j++) { if (j === k) continue; const t = tr * dr[j] - ti * di[j]; ti = tr * di[j] + ti * dr[j]; tr = t; } qr += tr; qi += ti; }
+    const d = qr * qr + qi * qi; if (d < 1e-300) return [NaN, NaN];
+    return [zr - (pr * qr + pi * qi) / d, zi - (pi * qr - pr * qi) / d];
+  }
+  // iterate until within tol of a root: {root: index or -1, n, orbit}
+  function newtonRun(zr, zi, roots, maxIter = 40, tol = 1e-6, keepOrbit = false) {
+    const orbit = keepOrbit ? [[zr, zi]] : null;
+    for (let n = 0; n <= maxIter; n++) {
+      for (let k = 0; k < roots.length; k++) if (Math.hypot(zr - roots[k][0], zi - roots[k][1]) < tol) return { root: k, n, orbit };
+      if (n === maxIter) break;
+      [zr, zi] = newtonStep(zr, zi, roots); if (!Number.isFinite(zr) || !Number.isFinite(zi)) return { root: -1, n, orbit };
+      if (orbit) orbit.push([zr, zi]);
+    }
+    return { root: -1, n: maxIter, orbit };
+  }
+  // the fraction of a res x res grid over the box that converges to each root (index roots.length = no root)
+  function basinFractions(roots, box, res, maxIter) {
+    const cnt = new Array(roots.length + 1).fill(0), [X0, X1, Y0, Y1] = box;
+    for (let j = 0; j < res; j++) for (let i = 0; i < res; i++) { const r = newtonRun(X0 + (i + 0.5) / res * (X1 - X0), Y0 + (j + 0.5) / res * (Y1 - Y0), roots, maxIter, 1e-4); cnt[r.root < 0 ? roots.length : r.root]++; }
+    return cnt.map((c) => c / (res * res));
+  }
+  const ROOTS_UNITY = [[1, 0], [-0.5, Math.sqrt(3) / 2], [-0.5, -Math.sqrt(3) / 2]];
+  const ROOTS_CYCLE = [[-1.7692923542386314, 0], [0.8846461771193157, 0.5897428050222056], [0.8846461771193157, -0.5897428050222056]];
+
+  (window.LabModels = window.LabModels || {})['fractal-geometry'] = { rng, similarity, apply, threeMaps, TRI, FERN, KOCH, system, iterate, moran, moranRoot, equalRatioDim, boxCount, occupied, fitSlope, densify, koch, sierpinskiPoints, brownianGraph, circlePoints, normalise, boxSeries, escape, smoothEscape, juliaInside, period, PRESETS, LSYS, expand, turtle, lsystemDim, newtonStep, newtonRun, basinFractions, ROOTS_UNITY, ROOTS_CYCLE };
 
   if (!L.fig) return; // model-only load (checks)
   const T = L.T, fmt = L.fmt;
@@ -355,6 +406,80 @@
             ? T(`The orbit of 0 lands exactly on a cycle of period ${per.p}, but |λ| = ${fmt(per.lambda, 3)} > 1: the cycle is repelling, c is a Misiurewicz point on the boundary of M, and K(c) has empty interior.`, `0 の軌道は周期 ${per.p} の周期軌道にちょうど落ちますが、|λ| = ${fmt(per.lambda, 3)} > 1 なので反発的です。c は M の境界上のミシュレヴィッチ点で、K(c) は内部をもちません。`)
             : T('The orbit stays bounded but settles on no short cycle: c is near the boundary of M or in a bulb of high period, and the classification by this readout is inconclusive.', '軌道は有界ですが短い周期軌道には落ち着きません。c は M の境界の近くか高い周期の球根の中にあり、この表示だけでは判定できません。');
       ctx.readout(items, note);
+    },
+  };
+
+  /* ---------- 4. L-systems ---------- */
+  const LS_NAME = [['Koch curve', 'コッホ曲線'], ['dragon curve', 'ドラゴン曲線'], ['Sierpinski arrowhead', 'シェルピンスキーのアローヘッド'], ['plant', '植物']];
+  D['l-systems'] = {
+    render(ctx, v) {
+      ctx.state.anim?.stop();
+      const st = ctx.state, S = LSYS[v.sys];
+      if (st.sys !== v.sys) { if (st.sys !== undefined) ctx.set('angle', S.angle, true); st.sys = v.sys; }
+      const angle = st.sys === v.sys && v.angle !== undefined ? v.angle : S.angle, n = S.iter(v.level);
+      const key = `${v.sys}|${n}|${angle}`;
+      if (st.key !== key) { st.str = expand(S.axiom, S.rules, n); st.tt = turtle(st.str, angle, S.draw, S.heading); st.key = key; }
+      const tt = st.tt, [bx0, bx1, by0, by1] = tt.box, w = Math.max(bx1 - bx0, 1e-9), h = Math.max(by1 - by0, 1e-9), m = 0.05 * Math.max(w, h);
+      const wide = w > 1.3 * h;
+      L.h('p', 'lab-cap', ctx.host, T(`${T(...LS_NAME[v.sys])}, ${n} ${n === 1 ? 'rewriting step' : 'rewriting steps'}, drawn with δ = ${angle}°. The string has ${st.str.length.toLocaleString()} symbols.`, `${T(...LS_NAME[v.sys])}、書き換え ${n} 回、δ = ${angle}° で描画。文字列は ${st.str.length.toLocaleString()} 記号です。`));
+      const f = L.fig(ctx.host, { x: [bx0 - m, bx1 + m], y: [by0 - m, by1 + m], equal: true, axes: false, maxH: wide ? 320 : 460 });
+      const width = tt.segs > 6000 ? 0.7 : tt.segs > 1500 ? 1 : 1.6;
+      const drawUpto = (k) => { f.clear('main'); const pts = k >= tt.pts.length ? tt.pts : tt.pts.slice(0, k); f.line(pts, { c: v.sys === 3 ? 'c3' : 'c1', w: width, layer: 'main' }); if (k < tt.pts.length) { const last = pts[pts.length - 1] || pts[pts.length - 2]; if (last) f.dot(last[0], last[1], { c: 'hl', r: 4, layer: 'over' }); } else f.clear('over'); };
+      drawUpto(Infinity);
+      const total = tt.pts.length, DUR = 6;
+      st.anim = L.animator(ctx.host, (dt, t, lab) => { const k = Math.min(total, Math.floor(total * Math.min(1, t / DUR))); drawUpto(k); lab.textContent = T(`${Math.min(k, tt.segs).toLocaleString()} segments`, `${Math.min(k, tt.segs).toLocaleString()} 線分`); if (k >= total) return false; }, { autoplay: false, once: true, initialT: DUR + 1, duration: DUR + 1, playLabel: T('Draw with the turtle', 'タートルで描く') });
+      const dim = lsystemDim(S.copies, S.scale), span = Math.hypot(tt.end[0], tt.end[1]);
+      const rulesTxt = Object.entries(S.rules).map(([k, r]) => `${k} → ${r}`).join(',  ');
+      ctx.readout([
+        { k: T('rules', '規則'), v: rulesTxt, tone: 'key' },
+        { k: T('segments', '線分の数'), v: tt.segs.toLocaleString() },
+        { k: T('end-to-end span (unit steps)', '両端の距離（単位長）'), v: fmt(span, 2) },
+        { k: T('copies, scale factor', '写しの数、縮尺'), v: S.copies ? `${S.copies}, ${fmt(S.scale, 3)}` : T('not self-similar', '自己相似ではない') },
+        { k: T('similarity dimension', '相似次元'), v: dim === null ? '·' : fmt(dim, 4), tone: dim === null ? 'warn' : 'good' },
+        { k: T('log(segments) / log(span)', 'log(線分の数) / log(距離)'), v: span > 1 && tt.segs > 1 ? fmt(Math.log(tt.segs) / Math.log(span), 4) : '·' },
+      ], angle === S.angle
+        ? [T('Each rewriting replaces every step by the four-step generator scaled by 1/3: the drawing is the level-n approximation of the Koch curve, and log(segments)/log(span) is already log 4 / log 3 at every level.', '書き換えのたびに各ステップは 1/3 に縮めた四ステップの生成子で置き換えられます。描画はコッホ曲線のレベル n の近似で、log(線分の数)/log(距離) はどのレベルでも log 4 / log 3 です。'),
+          T('The dragon: fold a strip of paper in half n times and open every fold to a right angle. Each level is two copies of the previous one, rotated 45° and scaled by 1/√2, which is why the ratio of log(segments) to log(span) is exactly 2.', 'ドラゴン曲線は、紙の帯を n 回半分に折り、すべての折り目を直角に開いたものです。各レベルは前のレベルを 45° 回転して 1/√2 に縮めた写し二つなので、log(線分の数) と log(距離) の比はちょうど 2 です。'),
+          T('Two symbols, A and B, both draw, and the rules for them are mirror images: the curve alternates its handedness at every level and converges to the Sierpinski triangle, with the same dimension log 3 / log 2 as the chaos game gave.', '二つの記号 A と B はどちらも描画し、その規則は互いに鏡像です。曲線はレベルごとに向きを反転させながらシェルピンスキーの三角形へ収束し、次元はカオスゲームで得た log 3 / log 2 と同じです。'),
+          T('X carries the branching structure and draws nothing; F → FF stretches every existing segment while X sprouts new branches, so old growth lengthens as new growth appears, as in a real plant. The brackets return the turtle to the branch point.', 'X は枝分かれの構造を担い、何も描きません。F → FF は既存のすべての線分を引き伸ばし、X は新しい枝を芽吹かせるので、実際の植物のように新しい成長が現れる間に古い部分が長くなります。括弧はタートルを分岐点へ戻します。')][v.sys]
+        : T(`With δ = ${angle}° instead of ${S.angle}° the rewriting is unchanged but the geometry is not: the pieces no longer fit end to end as scaled copies, so the similarity dimension no longer applies to the drawing.`, `δ を ${S.angle}° ではなく ${angle}° にしても書き換えは同じですが幾何は変わります。部分はもはや縮小した写しとして端と端で接がらないので、相似次元はこの描画には当てはまりません。`));
+    },
+  };
+
+  /* ---------- 5. Newton's method and its basins ---------- */
+  const NX = 2.1, NY = 1.6, NRES = 320;
+  D['newton-fractal'] = {
+    render(ctx, v) {
+      const st = ctx.state, col = L.colours(), maxIter = v.iter;
+      if (v.preset !== 2) st.roots = (v.preset === 0 ? ROOTS_UNITY : ROOTS_CYCLE).map((r) => r.slice());
+      else st.roots ||= ROOTS_UNITY.map((r) => r.slice());
+      const roots = st.roots, tones = [col.c1, col.c2, col.c3], ink = col.ink, plate = col.plate;
+      const shade = (k, n) => { if (k < 0) return ink; const t = Math.pow(clamp(n / Math.max(8, maxIter * 0.7), 0, 1), 0.6); return mixc(tones[k], plate, 0.15 + 0.6 * t); };
+      L.h('p', 'lab-cap', ctx.host, T('Each point coloured by the root Newton’s method reaches from it, lighter the more steps it takes; black where no root is reached. Drag the roots and the start point z₀.', '各点を、そこから始めたニュートン法が到達する根で色分けし、歩数が多いほど薄くしています。どの根にも到達しなければ黒です。根と出発点 z₀ をドラッグできます。'));
+      const f = L.fig(ctx.host, { x: [-NX, NX], y: [-NY, NY], equal: true, xlabel: 'Re z', ylabel: 'Im z', maxH: 470 });
+      f.raster((x, y) => { const r = newtonRun(x, y, roots, maxIter, 1e-4); return shade(r.root, r.n); }, { res: 2 });
+      const run = newtonRun(v.x0, v.y0, roots, maxIter, 1e-6, true);
+      f.line(run.orbit, { c: 'hl', w: 1.6, op: 0.9, layer: 'over' });
+      run.orbit.slice(1).forEach(([x, y], i) => f.dot(x, y, { c: 'hl', r: i === run.orbit.length - 2 ? 4 : 2.5, layer: 'over' }));
+      roots.forEach((r, k) => f.handle(r[0], r[1], { c: ['c1', 'c2', 'c3'][k], r: 8, label: T(`Root ${k + 1}`, `根 ${k + 1}`), bounds: [-NX + 0.05, NX - 0.05, -NY + 0.05, NY - 0.05], onDrag: (x, y) => { if (v.preset !== 2) ctx.set('preset', 2, true); st.roots[k] = [Math.round(x * 100) / 100, Math.round(y * 100) / 100]; ctx.redraw(); } }));
+      roots.forEach((r, k) => f.text(r[0], r[1], `r${'₁₂₃'[k]}`, { c: ['c1', 'c2', 'c3'][k], dx: 13, dy: -10, anchor: 'start', layer: 'over' }));
+      f.handle(v.x0, v.y0, { c: 'hl', r: 7, label: T('Start point z₀', '出発点 z₀'), bounds: [-2, 2, -1.55, 1.55], onDrag: (x, y) => { ctx.set('x0', x, true); ctx.set('y0', y, true); ctx.redraw(); } });
+      f.text(v.x0, v.y0, 'z₀', { c: 'hl', dx: 11, dy: 16, anchor: 'start', layer: 'over' });
+      if (v.preset === 1) { [[0, 0], [1, 0]].forEach(([x, y], i) => { f.dot(x, y, { c: 'ink', r: 4, hollow: true, layer: 'over' }); f.text(x, y, i ? '1' : '0', { small: true, c: 'ink', dx: 0, dy: -9, layer: 'over' }); }); f.line([[0, 0], [1, 0]], { c: 'ink', w: 1, dash: '3 3', op: 0.7, layer: 'over' }); }
+      if (!st.frac || st.fracKey !== `${roots.flat().join(',')}|${maxIter}`) { st.frac = basinFractions(roots, [-NX, NX, -NY, NY], 90, maxIter); st.fracKey = `${roots.flat().join(',')}|${maxIter}`; }
+      const fr = st.frac, rootTxt = (r) => `${fmt(r[0], 2)} ${r[1] < 0 ? '−' : '+'} ${fmt(Math.abs(r[1]), 2)}i`;
+      L.legend(ctx.host, roots.map((r, k) => ({ c: ['c1', 'c2', 'c3'][k], kind: 'fill', label: T(`basin of r${'₁₂₃'[k]} = ${rootTxt(r)}`, `r${'₁₂₃'[k]} = ${rootTxt(r)} の吸引域`) })).concat([{ c: 'ink', kind: 'fill', label: T('no root reached', 'どの根にも到達せず') }, { c: 'hl', kind: 'dot', label: T('the orbit of z₀', 'z₀ の軌道') }]));
+      ctx.readout([
+        { k: 'z₀', v: rootTxt([v.x0, v.y0]), tone: 'key' },
+        { k: T('orbit of z₀', 'z₀ の軌道'), v: run.root >= 0 ? T(`reaches r${'₁₂₃'[run.root]} in ${run.n} steps (|z − r| < 10⁻⁶)`, `${run.n} 歩で r${'₁₂₃'[run.root]} に到達（|z − r| < 10⁻⁶）`) : T(`no root within ${maxIter} steps`, `${maxIter} 歩以内にどの根にも到達せず`), tone: run.root >= 0 ? 'good' : 'warn' },
+        { k: T('basin areas r₁, r₂, r₃ (this view)', '吸引域の面積 r₁、r₂、r₃（この表示範囲）'), v: fr.slice(0, 3).map((x) => fmt(100 * x, 1) + '%').join(', ') },
+        { k: T('no root', '根なし'), v: fmt(100 * fr[3], 1) + '%', tone: fr[3] > 0.01 ? 'warn' : undefined },
+        { k: T('N(z) − r near a root', '根の近くでの N(z) − r'), v: T('∝ (z − r)²: quadratic convergence', '∝ (z − r)²：二次収束') },
+      ], v.preset === 1
+        ? T('For z³ − 2z + 2, N(0) = 1 and N(1) = 0: the cycle {0, 1} is superattracting for Newton’s map and its basin, in black, is a small open set around each of the two points (about 0.8% of this view, with infinitely many smaller preimages) with its own fractal boundary. Starting there, Newton’s method oscillates for ever.', 'z³ − 2z + 2 では N(0) = 1 かつ N(1) = 0 です。周期軌道 {0, 1} はニュートン写像にとって超吸引的で、その吸引域（黒）は二つの点それぞれのまわりの小さな開集合（この表示範囲のおよそ 0.8% で、さらに無限個の小さな逆像があります）で、独自のフラクタルな境界をもちます。そこから始めるとニュートン法は永遠に振動します。')
+        : run.root >= 0 && run.n <= 6
+          ? T(`z₀ is well inside a basin: ${run.n} steps to six decimals, with the error roughly squared at every step once the orbit is close.`, `z₀ は吸引域の内部にあります。小数六桁まで ${run.n} 歩で、軌道が近づいてからは誤差が一歩ごとにほぼ二乗されます。`)
+          : T('Near the boundary the orbit is thrown around before it settles: every neighbourhood of a boundary point contains starts that end at each of the three roots, so the colour at z₀ is decided by digits far down its expansion.', '境界の近くでは軌道は落ち着く前に振り回されます。境界点のどんな近傍にも三つの根それぞれに終わる出発点が含まれるので、z₀ の色はその展開のはるか下の桁で決まります。'));
     },
   };
 })();

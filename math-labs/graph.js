@@ -77,7 +77,9 @@
     'knot-theory': ['graph-theory', 'lie-groups', 'hyperbolic-geometry'],
     'quantum-information': ['linear-algebra', 'probability-inference', 'quaternions'],
     'cosmology': ['statistical-mechanics', 'differential-geometry', 'special-relativity'],
-    'fractal-geometry': ['complex-analysis', 'stochastic-processes', 'hyperbolic-geometry']
+    'fractal-geometry': ['complex-analysis', 'stochastic-processes', 'hyperbolic-geometry'],
+    'cellular-automata': ['logic-computability', 'fractal-geometry', 'statistical-mechanics'],
+    'complex-systems': ['statistical-mechanics', 'graph-theory', 'cellular-automata']
   };
   // Topics named in each topic's own prerequisite line (content.json "prerequisite").
   const PREREQ = {
@@ -106,7 +108,9 @@
     'knot-theory': ['algebraic-topology', 'group-theory'],              // Algebraic topology and group theory
     'quantum-information': ['quantum-mechanics', 'information-theory'], // Quantum mechanics and information theory
     'cosmology': ['general-relativity', 'thermodynamics'],             // General relativity and thermodynamics
-    'fractal-geometry': ['measure-theory', 'dynamical-systems']         // Measure theory and dynamical systems
+    'fractal-geometry': ['measure-theory', 'dynamical-systems'],        // Measure theory and dynamical systems
+    'cellular-automata': ['logic-computability', 'probability-inference'], // Logic and computability, and elementary probability
+    'complex-systems': ['probability-inference', 'dynamical-systems', 'statistical-mechanics'] // Probability, dynamical systems, and statistical mechanics
   };
   // Where each group settles, as fractions of the stage.
   const ANCHOR = {

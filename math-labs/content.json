@@ -8736,8 +8736,8 @@
       "フラクタル幾何：整数の間の次元"
     ],
     "description": [
-      "Sets that look the same at every scale, and the number that measures how much of the plane they fill. Iterated function systems and the Moran equation for the similarity dimension, box counting as the practical estimate, and the Mandelbrot set as the map of which Julia sets hold together.",
-      "どのスケールで見ても同じに見える集合と、それが平面をどれだけ埋めるかを測る数を扱います。反復関数系と相似次元を与えるモランの方程式、実用的な推定法としての箱数え法、そしてどのジュリア集合がつながっているかの地図としてのマンデルブロ集合を調べます。"
+      "Sets that look the same at every scale, and the number that measures how much of the plane they fill. Iterated function systems and the Moran equation for the similarity dimension, box counting as the practical estimate, the Mandelbrot set as the map of which Julia sets hold together, rewriting rules that grow curves and plants, and the basins of Newton’s method, whose common boundary is a fractal.",
+      "どのスケールで見ても同じに見える集合と、それが平面をどれだけ埋めるかを測る数を扱います。反復関数系と相似次元を与えるモランの方程式、実用的な推定法としての箱数え法、どのジュリア集合がつながっているかの地図としてのマンデルブロ集合、曲線や植物を育てる書き換え規則、そして共通の境界がフラクタルになるニュートン法の吸引域を調べます。"
     ],
     "group": "analysis",
     "prerequisite": [
@@ -8995,6 +8995,165 @@
         ],
         "source": "John Milnor · Dynamics in One Complex Variable: Introductory Lectures (Stony Brook IMS preprint 1990/5)",
         "url": "https://arxiv.org/abs/math/9201272"
+      },
+      {
+        "id": "l-systems",
+        "title": [
+          "4. L-systems: curves grown by rewriting",
+          "4. L システム：書き換えで育つ曲線"
+        ],
+        "body": [
+          "Lindenmayer’s idea was to grow a shape by rewriting a string. Start from an axiom, replace every symbol at once by the rule for that symbol, and repeat; then read the result as turtle commands: F draws a unit step forward, + and − turn by a fixed angle, and brackets save and restore the turtle’s position, which is how a plant branches. The Koch curve is the single rule F → F+F−−F+F with 60° turns: each step is replaced by the generator, exactly as in the iterated function system of the first experiment, so the dimension is again log 4 / log 3. The dragon curve doubles its length at every level and fills a region of the plane, dimension 2. Press Play to watch the turtle draw, and change the angle to see the same string give a different shape.",
+          "リンデンマイヤーの考えは、文字列を書き換えることで形を育てることでした。公理から始め、すべての記号を同時にその記号の規則で置き換え、これを繰り返します。そして結果をタートルの命令として読みます。F は単位長だけ前へ描き、+ と − は一定の角度だけ向きを変え、括弧はタートルの位置を保存して復元します。植物が枝分かれするのはこの仕組みです。コッホ曲線は 60° の回転をもつただ一つの規則 F → F+F−−F+F です。各線分が生成子で置き換えられるのは最初の実験の反復関数系とまったく同じで、次元はやはり log 4 / log 3 です。ドラゴン曲線はレベルごとに長さを二倍にし、平面の領域を埋め尽くして次元 2 になります。再生を押してタートルが描く様子を見て、角度を変えると同じ文字列が違う形を与えることを確かめてください。"
+        ],
+        "formula": "\\text{Koch: } F\\to F{+}F{-}{-}F{+}F,\\ \\delta=60^\\circ;\\qquad \\text{dragon: } X\\to X{+}YF{+},\\ Y\\to {-}FX{-}Y,\\ \\delta=90^\\circ;\\qquad N_n=4^n,\\ 2^n;\\quad d=\\frac{\\log N}{\\log(\\text{scale})}",
+        "example": [
+          "After \\(n\\) levels the Koch string has \\(4^n\\) drawing steps and spans \\(3^n\\) unit lengths end to end, so the curve fits a fixed segment only after scaling by \\(3^{-n}\\), and \\(d=\\log4^n/\\log3^n=1.2619\\). The dragon of level \\(n\\) has \\(2^n\\) steps and its endpoints are \\(\\sqrt2^{\\,n}\\) apart: \\(d=\\log2^n/\\log\\sqrt2^{\\,n}=2\\). The arrowhead curve has \\(3^n\\) steps across a span of \\(2^n\\), giving the Sierpinski dimension \\(\\log3/\\log2\\).",
+          "\\(n\\) レベルのあとのコッホの文字列は \\(4^n\\) 個の描画ステップをもち、端から端まで \\(3^n\\) 単位長に及ぶので、曲線を一定の線分に収めるには \\(3^{-n}\\) 倍に縮める必要があり、\\(d=\\log4^n/\\log3^n=1.2619\\) です。レベル \\(n\\) のドラゴンは \\(2^n\\) ステップで、両端の距離は \\(\\sqrt2^{\\,n}\\) なので \\(d=\\log2^n/\\log\\sqrt2^{\\,n}=2\\) です。アローヘッド曲線は \\(2^n\\) の幅に \\(3^n\\) ステップをもち、シェルピンスキーの次元 \\(\\log3/\\log2\\) を与えます。"
+        ],
+        "caution": [
+          "The dimension quoted is the similarity dimension, which is the box dimension only when the pieces do not overlap. The dragon’s pieces touch along whole curves, which is why it can fill area, and the plant is not self-similar at all: its rule F → FF stretches old branches while new ones sprout, so no single scaling factor exists and the readout gives only the segment count. Changing the angle away from the value the rule was designed for breaks self-similarity, and the curve may cross itself; the string is the same, only its reading changed. Levels are capped so that the drawing stays under about twenty thousand segments.",
+          "示した次元は相似次元で、部分が重ならないときに限って箱次元と一致します。ドラゴンの部分は曲線全体に沿って触れ合い、だからこそ面積を埋められます。植物はまったく自己相似ではありません。規則 F → FF は新しい枝が芽吹く間に古い枝を引き伸ばすので、単一の縮尺は存在せず、表示は線分の数だけを示します。規則が想定した値から角度を変えると自己相似性は壊れ、曲線は自分自身と交差することがあります。文字列は同じで、読み方だけが変わったのです。描画がおよそ二万線分に収まるようにレベルには上限があります。"
+        ],
+        "question": [
+          "Why does the dragon curve, made of straight unit steps, have dimension 2 while the Koch curve has dimension less than 2?",
+          "単位長の直線ステップからできているドラゴン曲線の次元が 2 で、コッホ曲線の次元が 2 未満なのはなぜですか？"
+        ],
+        "answer": [
+          "Both are unions of two or four scaled copies of themselves, and the dimension is fixed by how many copies and by how much they are scaled: the dragon is two copies scaled by \\(1/\\sqrt2\\), so \\(2\\cdot(1/\\sqrt2)^d=1\\) gives \\(d=2\\); the Koch curve is four copies scaled by \\(1/3\\), \\(4\\cdot3^{-d}=1\\), \\(d=\\log4/\\log3\\). A curve of dimension 2 must fill area, and the dragon does: its limit is a compact set with non-empty interior, tiled by copies of itself, while the Koch curve has zero area and finite dimension strictly between 1 and 2.",
+          "どちらも自分自身の縮小した写し二つまたは四つの和集合で、次元は写しの個数と縮小率で決まります。ドラゴンは \\(1/\\sqrt2\\) 倍の写し二つなので \\(2\\cdot(1/\\sqrt2)^d=1\\) から \\(d=2\\)、コッホ曲線は \\(1/3\\) 倍の写し四つなので \\(4\\cdot3^{-d}=1\\) から \\(d=\\log4/\\log3\\) です。次元 2 の曲線は面積を埋めなければならず、ドラゴンは実際に埋めます。その極限は内部が空でないコンパクト集合で、自分自身の写しで敷き詰められています。一方コッホ曲線の面積は 0 で、次元は 1 と 2 の間の有限の値です。"
+        ],
+        "params": [
+          [
+            "sys",
+            "System",
+            "系",
+            0,
+            3,
+            1,
+            0,
+            [
+              [
+                "Koch curve",
+                "コッホ曲線"
+              ],
+              [
+                "dragon curve",
+                "ドラゴン曲線"
+              ],
+              [
+                "Sierpinski arrowhead",
+                "シェルピンスキーのアローヘッド"
+              ],
+              [
+                "plant (bracketed)",
+                "植物（括弧つき）"
+              ]
+            ]
+          ],
+          [
+            "level",
+            "Level",
+            "レベル",
+            0,
+            8,
+            1,
+            4
+          ],
+          [
+            "angle",
+            "Turning angle δ (degrees)",
+            "回転角 δ（度）",
+            10,
+            120,
+            1,
+            60
+          ]
+        ],
+        "source": "Przemysław Prusinkiewicz and Aristid Lindenmayer · The Algorithmic Beauty of Plants (Springer, 1990), ch. 1",
+        "url": "http://algorithmicbotany.org/papers/abop/abop.pdf"
+      },
+      {
+        "id": "newton-fractal",
+        "title": [
+          "5. Newton’s method and its basins",
+          "5. ニュートン法とその吸引域"
+        ],
+        "body": [
+          "Newton’s method for a polynomial p is the iteration z ↦ z − p(z)/p′(z). Started near a root it converges to that root quadratically, and one might expect the plane to be divided into three tidy regions, one per root of a cubic. It is not: the boundary between any two basins is also the boundary of the third, and it is a Julia set, a fractal along which all three colours meet at every point. Drag the roots to reshape the basins; drag the white start point and follow its orbit, which is drawn as a polyline. For p(z) = z³ − 2z + 2 something worse happens: the orbit 0 → 1 → 0 is a superattracting cycle of Newton’s map, so an open set of starting points never reaches any root: small black islands around 0 and 1 and around all their preimages.",
+          "多項式 p に対するニュートン法は反復 z ↦ z − p(z)/p′(z) です。根の近くから始めればその根へ二次収束し、平面は三次式の根ごとに一つずつ、三つの整った領域に分かれると思うかもしれません。そうはなりません。どの二つの吸引域の境界も第三の吸引域の境界でもあり、それはジュリア集合、すなわちすべての点で三色が出会うフラクタルです。根をドラッグして吸引域を作り変えてください。白い出発点をドラッグすると、その軌道が折れ線で描かれます。p(z) = z³ − 2z + 2 ではもっと悪いことが起こります。軌道 0 → 1 → 0 がニュートン写像の超吸引的周期軌道になるので、どの根にも決して到達しない出発点の開集合があります。0 と 1 のまわり、そしてそのすべての逆像のまわりの小さな黒い島です。"
+        ],
+        "formula": "N(z)=z-\\frac{p(z)}{p^{\\prime}(z)},\\qquad p(z)=(z-r_1)(z-r_2)(z-r_3),\\qquad N^{\\prime}(r_k)=0,\\qquad \\partial B(r_1)=\\partial B(r_2)=\\partial B(r_3)=J(N)",
+        "example": [
+          "For \\(z^3-1\\) from \\(z_0=1.5\\): \\(z_1=1.5-2.375/6.75=1.148\\), \\(z_2=1.018\\), \\(z_3=1.0003\\), \\(z_4=1.0000001\\): the number of correct digits doubles each step. From \\(z_0=-0.2\\), just left of the origin, the orbit is thrown out to \\(8.2\\) and then walks back to 1: the real axis, apart from the preimages of 0, belongs entirely to the basin of 1, a spike between the other two basins along which their fractal fingers alternate. For \\(z^3-2z+2\\), \\(N(0)=1\\) and \\(N(1)=0\\) exactly.",
+          "\\(z^3-1\\) で \\(z_0=1.5\\) から始めると \\(z_1=1.5-2.375/6.75=1.148\\)、\\(z_2=1.018\\)、\\(z_3=1.0003\\)、\\(z_4=1.0000001\\) と、正しい桁数が一歩ごとに倍になります。原点のすぐ左 \\(z_0=-0.2\\) から始めると、軌道は \\(8.2\\) まで投げ出されてから 1 へ歩いて戻ります。実軸は 0 の逆像を除いてすべて 1 の吸引域に属し、他の二つの吸引域に挟まれたとげのようなもので、その両側に二つの吸引域のフラクタルな指が交互に並びます。\\(z^3-2z+2\\) では \\(N(0)=1\\) と \\(N(1)=0\\) がちょうど成り立ちます。"
+        ],
+        "caution": [
+          "A point is coloured by the root its orbit approaches within the iteration budget; near the Julia set orbits wander for many steps before settling, so the boundary is drawn slightly thick and a larger budget sharpens it. The black region of \\(z^3-2z+2\\) is not a rendering artefact but the basin of an attracting cycle; Newton’s method fails there for every starting point, however many iterations are allowed. Hubbard, Schleicher and Sutherland showed how to choose a fixed set of about \\(1.11\\,d\\log^2d\\) starting points, on a circle around all the roots, from which every root of every degree-\\(d\\) polynomial is found.",
+          "点は、反復回数の予算内で軌道が近づく根によって色分けされます。ジュリア集合の近くでは軌道は落ち着くまでに何歩もさまようので、境界はやや太く描かれ、予算を増やすと鮮明になります。\\(z^3-2z+2\\) の黒い領域は描画の誤りではなく吸引的周期軌道の吸引域です。そこではどの出発点からでも、何回反復を許してもニュートン法は失敗します。ハバード、シュライヒャー、サザーランドは、すべての根を囲む円周上におよそ \\(1.11\\,d\\log^2d\\) 個の出発点を固定して選べば、次数 \\(d\\) のどんな多項式のどの根も見つかることを示しました。"
+        ],
+        "question": [
+          "Why must the boundary of one basin be the boundary of all three?",
+          "一つの吸引域の境界が三つすべての吸引域の境界でなければならないのはなぜですか？"
+        ],
+        "answer": [
+          "The Julia set of \\(N\\) is the closure of the repelling periodic points, and on any neighbourhood of a Julia point the iterates of \\(N\\) take every value in the plane except at most two (Montel’s theorem), so that neighbourhood contains points that go to each of the three roots. Every basin boundary point is a Julia point, because on one side orbits go to one root and on the other to a different root, so no neighbourhood behaves uniformly. Put together: near any boundary point of any basin, all three basins are present. This is the Wada property, impossible for three regions with smooth boundaries.",
+          "\\(N\\) のジュリア集合は反発的周期点の閉包で、ジュリア集合の点のどんな近傍でも \\(N\\) の反復は平面の高々二つを除くすべての値をとります（モンテルの定理）。よってその近傍には三つの根それぞれへ向かう点が含まれます。吸引域の境界点はどれもジュリア集合の点です。片側では軌道がある根へ向かい、反対側では別の根へ向かうので、どの近傍も一様には振る舞わないからです。合わせると、どの吸引域のどの境界点の近くにも三つの吸引域がすべて存在します。これがワダの性質で、滑らかな境界をもつ三つの領域には不可能なことです。"
+        ],
+        "params": [
+          [
+            "preset",
+            "Polynomial",
+            "多項式",
+            0,
+            2,
+            1,
+            0,
+            [
+              [
+                "z³ − 1",
+                "z³ − 1"
+              ],
+              [
+                "z³ − 2z + 2 (has an attracting cycle)",
+                "z³ − 2z + 2（吸引的周期軌道あり）"
+              ],
+              [
+                "custom (drag the roots)",
+                "カスタム（根をドラッグ）"
+              ]
+            ]
+          ],
+          [
+            "iter",
+            "Iteration budget",
+            "反復回数の予算",
+            10,
+            80,
+            5,
+            40
+          ],
+          [
+            "x0",
+            "Start point, Re z₀",
+            "出発点、Re z₀",
+            -2,
+            2,
+            0.01,
+            -0.55
+          ],
+          [
+            "y0",
+            "Start point, Im z₀",
+            "出発点、Im z₀",
+            -2,
+            2,
+            0.01,
+            0.3
+          ]
+        ],
+        "source": "John Hubbard, Dierk Schleicher and Scott Sutherland · How to find all roots of complex polynomials by Newton’s method, Invent. Math. 146 (2001)",
+        "url": "https://doi.org/10.1007/s002220100149"
       }
     ]
   },
@@ -9486,6 +9645,576 @@
         ],
         "source": "Tamara M. Davis and Charles H. Lineweaver · Expanding Confusion: common misconceptions of cosmological horizons and the superluminal expansion of the Universe, PASA 21, 97 (2004), arXiv:astro-ph/0310808",
         "url": "https://arxiv.org/abs/astro-ph/0310808"
+      }
+    ]
+  },
+  {
+    "slug": "cellular-automata",
+    "title": [
+      "Cellular automata: computation from local rules",
+      "セル・オートマトン：局所規則から生まれる計算"
+    ],
+    "description": [
+      "Grids of cells that read only their neighbours and still compute, grow, and jam. The 256 elementary rules and their symmetries, Conway’s Life with its gliders and guns, Langton’s ant and the highway it builds after ten thousand chaotic steps, and rule 184 as a model of traffic with an exact fundamental diagram.",
+      "隣のセルしか見ないのに、計算し、成長し、渋滞するセルの格子を扱います。256 個の初等ルールとその対称性、グライダーと銃をもつコンウェイのライフゲーム、一万歩の混沌ののちに高速道路を作るラングトンのアリ、そして厳密な基本図をもつ交通モデルとしてのルール 184 を調べます。"
+    ],
+    "group": "foundations",
+    "prerequisite": [
+      "Logic and computability, and elementary probability",
+      "論理と計算可能性、初等的な確率"
+    ],
+    "source": "Stephen Wolfram · Statistical mechanics of cellular automata, Rev. Mod. Phys. 55 (1983)",
+    "url": "https://doi.org/10.1103/RevModPhys.55.601",
+    "labs": [
+      {
+        "id": "elementary-ca",
+        "title": [
+          "1. The 256 elementary rules",
+          "1. 256 個の初等ルール"
+        ],
+        "body": [
+          "A row of cells, each 0 or 1, is updated all at once: the new value of a cell depends only on the old values of itself and its two neighbours. There are 2³ = 8 neighbourhoods, and a rule assigns each one an output, so there are 2⁸ = 256 rules; Wolfram numbers them by reading the eight outputs as a binary number, 111 first. The icons above the diagram are the rule itself: click any output to flip it. Time runs downwards. Rule 90 from a single cell draws the Sierpinski triangle, rule 30 looks random along its centre column, and rule 110 supports interacting particles and is Turing complete. Press Play to watch the rows appear.",
+          "0 か 1 の値をもつセルの一列を、一斉に更新します。各セルの新しい値は、自分と両隣の古い値だけで決まります。近傍は 2³ = 8 通りあり、ルールはそれぞれに出力を割り当てるので、ルールは 2⁸ = 256 個です。ウルフラムは 111 を先頭にして八つの出力を二進数として読み、ルールに番号を付けました。図の上のアイコンがルールそのものです。どの出力でもクリックして反転できます。時間は下向きに進みます。ルール 90 は一つのセルからシェルピンスキーの三角形を描き、ルール 30 は中央の列がランダムに見え、ルール 110 は相互作用する粒子を支えてチューリング完全です。再生を押すと行が現れていきます。"
+        ],
+        "formula": "x_i^{t+1}=f\\!\\left(x_{i-1}^{t},x_i^{t},x_{i+1}^{t}\\right),\\qquad f:\\{0,1\\}^3\\to\\{0,1\\},\\qquad \\text{rule number}=\\sum_{(a,b,c)} f(a,b,c)\\,2^{4a+2b+c}",
+        "example": [
+          "Rule 90 has outputs 01011010, so \\(f(a,b,c)=a\\oplus c\\): each cell is the sum of its neighbours mod 2. From a single 1 the row at time \\(t\\) is the \\(t\\)-th row of Pascal’s triangle mod 2, and it holds \\(2^{s(t)}\\) ones, where \\(s(t)\\) is the number of ones in the binary expansion of \\(t\\). Rule 30 is \\(f=a\\oplus(b\\lor c)\\); its centre column begins 1, 1, 0, 1, 1, 1, 0, 0, 1, 1.",
+          "ルール 90 の出力は 01011010 なので \\(f(a,b,c)=a\\oplus c\\)、つまり各セルは両隣の和 mod 2 です。一つの 1 から始めると時刻 \\(t\\) の行はパスカルの三角形の第 \\(t\\) 行 mod 2 で、\\(2^{s(t)}\\) 個の 1 を含みます。\\(s(t)\\) は \\(t\\) の二進展開に含まれる 1 の個数です。ルール 30 は \\(f=a\\oplus(b\\lor c)\\) で、中央の列は 1, 1, 0, 1, 1, 1, 0, 0, 1, 1 と始まります。"
+        ],
+        "caution": [
+          "The row wraps around, so a pattern that reaches the edge re-enters on the other side; from a single cell the width is chosen so that nothing wraps within the rows shown. Mirroring left and right, or swapping 0 and 1, changes the rule number but not the behaviour: the 256 rules fall into 88 equivalence classes, and the readout names the smallest number in the class. Wolfram’s four classes (uniform, periodic, chaotic, complex) are a description of typical behaviour, not a theorem: the same rule can behave differently from different initial rows, and deciding the class in general is undecidable.",
+          "行は端でつながっているので、端に達した模様は反対側から入ってきます。一つのセルから始める場合は、表示する行の範囲では何も回り込まないように幅を選んでいます。左右を鏡映しにしたり 0 と 1 を入れ替えたりするとルール番号は変わりますが振る舞いは変わりません。256 個のルールは 88 個の同値類に分かれ、表示はその類の最小の番号を示します。ウルフラムの四つのクラス（一様、周期的、混沌的、複雑）は典型的な振る舞いの記述であって定理ではありません。同じルールでも初期行が違えば振る舞いが変わることがあり、クラスを一般に判定することは決定不能です。"
+        ],
+        "question": [
+          "Why are there exactly 88 essentially different elementary rules rather than 256?",
+          "本質的に異なる初等ルールが 256 個ではなく 88 個なのはなぜですか？"
+        ],
+        "answer": [
+          "Two symmetries act on rules without changing the dynamics up to relabelling: reflection, which swaps the roles of \\(a\\) and \\(c\\), and complementation, which swaps 0 and 1 in both inputs and outputs. Together they generate a group of order 4 acting on the 256 rules, and Burnside’s lemma counts the orbits: \\((256+64+16+16)/4=88\\), the four terms being the rules fixed by the identity, by reflection (\\(2^6\\), since the pairs 100/001 and 110/011 must agree), by complementation (\\(2^4\\)) and by their product (\\(2^4\\)).",
+          "相対的な付け替えを除いて力学を変えない対称性が二つあります。\\(a\\) と \\(c\\) の役割を入れ替える鏡映と、入力と出力の両方で 0 と 1 を入れ替える補集合です。二つは合わせて 256 個のルールに作用する位数 4 の群を生成し、バーンサイドの補題が軌道を数えます。\\((256+64+16+16)/4=88\\) で、四つの項は恒等変換、鏡映（100/001 と 110/011 の対が一致する必要があるので \\(2^6\\)）、補集合（\\(2^4\\)）、その積（\\(2^4\\)）で固定されるルールの個数です。"
+        ],
+        "params": [
+          [
+            "rule",
+            "Rule number",
+            "ルール番号",
+            0,
+            255,
+            1,
+            30
+          ],
+          [
+            "init",
+            "Initial row",
+            "初期行",
+            0,
+            1,
+            1,
+            0,
+            [
+              [
+                "a single cell",
+                "一つのセル"
+              ],
+              [
+                "random, density 1/2",
+                "ランダム、密度 1/2"
+              ]
+            ]
+          ],
+          [
+            "rows",
+            "Rows shown",
+            "表示する行数",
+            30,
+            140,
+            10,
+            80
+          ]
+        ],
+        "source": "Stephen Wolfram · Statistical mechanics of cellular automata, Rev. Mod. Phys. 55 (1983)",
+        "url": "https://doi.org/10.1103/RevModPhys.55.601"
+      },
+      {
+        "id": "game-of-life",
+        "title": [
+          "2. Conway’s Game of Life",
+          "2. コンウェイのライフゲーム"
+        ],
+        "body": [
+          "On a square grid each cell counts its eight neighbours. A live cell survives with 2 or 3 live neighbours and otherwise dies; a dead cell is born with exactly 3. Nothing else is specified, yet the rule supports a glider that walks diagonally one cell every four generations, an R-pentomino of five cells that grows for 1103 generations before settling, and Gosper’s gun, which fires a glider every 30 generations for ever. Click any cell to toggle it, then press Play; the graph on the right records the population. Change the rule to see how special B3/S23 is: Seeds explodes and Day & Night is symmetric under swapping life and death.",
+          "正方格子の各セルは八つの隣人を数えます。生きたセルは生きた隣人が 2 個か 3 個なら生き残り、それ以外なら死にます。死んだセルは生きた隣人がちょうど 3 個なら誕生します。それ以外は何も決めていないのに、このルールは四世代ごとに斜めに一マス進むグライダー、落ち着くまでに 1103 世代かけて成長する五つのセルの R ペントミノ、そして 30 世代ごとにグライダーを永遠に撃ち出すゴスパーの銃を支えます。どのセルでもクリックして反転させ、再生を押してください。右のグラフは個体数を記録します。ルールを変えると B3/S23 がどれほど特別かが分かります。Seeds は爆発し、Day & Night は生死の入れ替えについて対称です。"
+        ],
+        "formula": "x^{t+1}_{ij}=\\begin{cases}1 & \\text{if } x^{t}_{ij}=1 \\text{ and } n_{ij}\\in S\\\\ 1 & \\text{if } x^{t}_{ij}=0 \\text{ and } n_{ij}\\in B\\\\ 0&\\text{otherwise}\\end{cases}\\qquad n_{ij}=\\!\\!\\sum_{|\\delta|_\\infty=1}\\!\\! x^{t}_{ij+\\delta},\\qquad \\text{Life}=B3/S23",
+        "example": [
+          "A glider has 5 cells. After four generations the same five cells reappear shifted by one row and one column, so its speed is \\(c/4\\), a quarter of the light speed of one cell per generation. A block of 4 cells never changes: each live cell has exactly 3 live neighbours and each adjacent dead cell has at most 2. A blinker of three cells in a row turns into three in a column and back, period 2.",
+          "グライダーは 5 個のセルです。四世代後に同じ五つのセルが一行一列ずれて再び現れるので、速さは \\(c/4\\)、つまり一世代に一マスという光速の四分の一です。4 個のセルのブロックは決して変わりません。生きた各セルはちょうど 3 個の生きた隣人をもち、隣接する死んだセルの隣人は高々 2 個だからです。横に並んだ三つのセルのブリンカーは縦の三つになり、また戻ります。周期 2 です。"
+        ],
+        "caution": [
+          "The grid here is 64 by 40 and wraps at the edges, so a glider that leaves on the right re-enters on the left and can collide with what it left behind; Life is defined on the infinite plane, where the gun’s gliders escape for ever. The R-pentomino needs more room than this torus to reach its final population of 116, so here it settles differently. Life is Turing complete, which means that its long-term behaviour from an arbitrary pattern is undecidable: no formula gives the population at generation \\(t\\), only the computation does.",
+          "ここでの格子は 64 × 40 で端がつながっているので、右から出たグライダーは左から入り、置いてきたものと衝突することがあります。ライフゲームは無限の平面で定義され、そこでは銃のグライダーは永遠に飛び去ります。R ペントミノが最終的な個体数 116 に達するにはこのトーラスより広い場所が必要なので、ここでは違う形に落ち着きます。ライフゲームはチューリング完全であり、任意のパターンからの長期的な振る舞いは決定不能です。第 \\(t\\) 世代の個体数を与える公式はなく、計算するしかありません。"
+        ],
+        "question": [
+          "Why can nothing in Life travel faster than one cell per generation, and why is the glider slower?",
+          "ライフゲームでは一世代に一マスより速く進めるものがなく、グライダーがそれより遅いのはなぜですか？"
+        ],
+        "answer": [
+          "A cell can only be born if a live cell already lies within its 3×3 neighbourhood, so the set of live cells grows by at most one cell in each direction per generation: that is the light speed \\(c\\). A pattern moving at \\(c\\) would have to be born on a fresh front every generation with exactly three parents there and leave nothing alive behind, and a closer look at what three parents on a front can do shows that no Life pattern can move faster than \\(c/2\\) orthogonally or \\(c/4\\) diagonally. The glider needs four generations to rebuild its shape one cell over, so it attains the diagonal limit exactly.",
+          "セルが誕生できるのは、その 3 × 3 近傍にすでに生きたセルがあるときだけなので、生きたセルの集合は一世代に各方向へ高々一マスしか広がりません。これが光速 \\(c\\) です。速さ \\(c\\) で動くパターンは毎世代新しい前線でちょうど三つの親から誕生し、後ろに生きたものを何も残さない必要があります。前線の三つの親に何ができるかを詳しく調べると、ライフゲームのどんなパターンも縦横方向に \\(c/2\\)、対角線方向に \\(c/4\\) より速くは動けないことが分かります。グライダーは形を一マス隣に作り直すのに四世代を要するので、対角線方向の上限をちょうど達成しています。"
+        ],
+        "params": [
+          [
+            "pattern",
+            "Pattern",
+            "パターン",
+            0,
+            4,
+            1,
+            0,
+            [
+              [
+                "glider",
+                "グライダー"
+              ],
+              [
+                "R-pentomino",
+                "R ペントミノ"
+              ],
+              [
+                "Gosper glider gun",
+                "ゴスパーのグライダー銃"
+              ],
+              [
+                "random soup",
+                "ランダムなスープ"
+              ],
+              [
+                "blank (click to draw)",
+                "空白（クリックで描く）"
+              ]
+            ]
+          ],
+          [
+            "rule",
+            "Rule",
+            "ルール",
+            0,
+            3,
+            1,
+            0,
+            [
+              [
+                "Life, B3/S23",
+                "ライフ、B3/S23"
+              ],
+              [
+                "HighLife, B36/S23",
+                "ハイライフ、B36/S23"
+              ],
+              [
+                "Seeds, B2/S",
+                "Seeds、B2/S"
+              ],
+              [
+                "Day & Night, B3678/S34678",
+                "Day & Night、B3678/S34678"
+              ]
+            ]
+          ],
+          [
+            "gen",
+            "Generation",
+            "世代",
+            0,
+            400,
+            1,
+            0
+          ]
+        ],
+        "source": "Berlekamp, Conway and Guy · Winning Ways for Your Mathematical Plays, vol. 4, ch. 25 (A K Peters, 2004); LifeWiki",
+        "url": "https://conwaylife.com/wiki/Conway%27s_Game_of_Life"
+      },
+      {
+        "id": "langtons-ant",
+        "title": [
+          "3. Langton’s ant",
+          "3. ラングトンのアリ"
+        ],
+        "body": [
+          "An ant stands on a grid of white cells. At each step it turns right on a white cell and left on a black cell, flips the colour of the cell it is on, and moves forward one cell. That is the whole rule, and it is reversible: run it backwards and the ant retraces its path. For about ten thousand steps the ant scribbles a symmetric-looking blob and then a chaotic mess; then, after about ten thousand steps, it starts building a highway, a diagonal band of period 104 that it extends for ever. Drag the step slider or press Play; the graph on the right counts black cells, and the readout says whether the highway has begun.",
+          "白いセルの格子の上にアリがいます。各ステップでアリは、白いセルなら右に、黒いセルなら左に向きを変え、いるセルの色を反転させ、一マス前に進みます。これがルールのすべてで、しかも可逆です。逆向きに動かすとアリは来た道を戻ります。およそ一万歩の間、アリは対称に見える塊、次いで混沌とした乱れを描きます。そしておよそ一万歩ののちに高速道路、すなわち周期 104 の斜めの帯を作り始め、それを永遠に延ばし続けます。ステップのスライダーをドラッグするか再生を押してください。右のグラフは黒いセルを数え、表示は高速道路が始まったかどうかを示します。"
+        ],
+        "formula": "\\theta_{t+1}=\\theta_t+\\tfrac{\\pi}{2}\\,(1-2\\,c_t(\\mathbf r_t)),\\qquad c_{t+1}(\\mathbf r_t)=1-c_t(\\mathbf r_t),\\qquad \\mathbf r_{t+1}=\\mathbf r_t+(\\cos\\theta_{t+1},\\sin\\theta_{t+1})",
+        "example": [
+          "Every step flips exactly one cell, so the number of black cells changes by \\(\\pm1\\) and has the same parity as the step count: after 11,000 steps it is even. The highway repeats every 104 steps with a displacement of two cells diagonally, so once it is on the highway the ant’s distance from the origin grows by \\(2\\sqrt2\\) every 104 steps, and the number of black cells grows by 12 per period.",
+          "各ステップはちょうど一つのセルを反転させるので、黒いセルの数は \\(\\pm1\\) ずつ変わり、ステップ数と同じ偶奇をもちます。11,000 歩のあとでは偶数です。高速道路は 104 歩ごとに斜めに二マスずれて繰り返すので、高速道路に乗ってからはアリの原点からの距離は 104 歩ごとに \\(2\\sqrt2\\) ずつ増え、黒いセルの数は一周期ごとに 12 増えます。"
+        ],
+        "caution": [
+          "The grid is finite here, and the highway would eventually reach its edge; the slider stops well before that. What is proved about the ant is less than what is seen: the Cohen–Kong theorem says its trajectory is unbounded on any initial configuration with finitely many black cells, but that the highway always appears, on every finite start, is only a conjecture supported by every case tried. Change the starting pattern: from the black square the highway arrives after fewer than two thousand steps, while from the random patch a highway may set off, run into old debris, and dissolve back into chaos before the run ends.",
+          "ここでの格子は有限で、高速道路はいずれ端に達しますが、スライダーはその手前で止まります。このアリについて証明されていることは、見えていることより少ないのです。コーエンとコンの定理は、黒いセルが有限個のどんな初期配置からでも軌道は非有界であると述べますが、どんな有限の初期配置からでも必ず高速道路が現れることは、試したすべての場合に支持された予想にすぎません。初期パターンを変えてみてください。黒い正方形からは二千歩足らずで高速道路が現れますが、ランダムな区画からは高速道路が走り出しても古い残骸にぶつかり、実行が終わる前に混沌へ溶け戻ることがあります。"
+        ],
+        "question": [
+          "Why must the ant’s path be unbounded, and why does that not prove the highway?",
+          "アリの経路が非有界でなければならないのはなぜで、なぜそれは高速道路の証明にならないのですか？"
+        ],
+        "answer": [
+          "Suppose the ant stayed in a bounded region. Then the state (position, heading, colours of the finitely many cells) is finite, and a reversible map on a finite set is a permutation, so the motion is periodic. Colour the grid as a chessboard: the ant alternates between horizontal and vertical moves, so along its periodic path the cells fall into a consistent pattern in which the extreme corner cell would be visited from and left to the same side each time, forcing it to be entered only from one direction, which the turning rule forbids. So no bounded periodic motion exists. Unboundedness says the ant goes far, not how: a highway is one way to go far, and nothing rules out a slower, messier escape.",
+          "アリが有界な領域にとどまると仮定します。すると状態（位置、向き、有限個のセルの色）は有限個で、有限集合上の可逆写像は置換なので、運動は周期的です。格子を市松模様に塗ると、アリは横の移動と縦の移動を交互に行うので、周期的な経路に沿ってセルは一貫した模様をなし、最も端の角のセルは毎回同じ側から入って同じ側へ出なければならず、一方向からしか入れないことになります。これは向きを変えるルールに反します。よって有界な周期運動は存在しません。非有界性はアリが遠くへ行くことを言うだけで、どのように行くかは言いません。高速道路は遠くへ行く一つの方法にすぎず、もっと遅く乱雑な脱出を排除するものはありません。"
+        ],
+        "params": [
+          [
+            "steps",
+            "Steps",
+            "ステップ数",
+            0,
+            12000,
+            50,
+            11000
+          ],
+          [
+            "start",
+            "Starting grid",
+            "初期格子",
+            0,
+            2,
+            1,
+            0,
+            [
+              [
+                "all white",
+                "すべて白"
+              ],
+              [
+                "a 3 × 3 black square",
+                "3 × 3 の黒い正方形"
+              ],
+              [
+                "random 11 × 11 patch",
+                "ランダムな 11 × 11 の区画"
+              ]
+            ]
+          ]
+        ],
+        "source": "Christopher Langton · Studying artificial life with cellular automata, Physica D 22 (1986)",
+        "url": "https://doi.org/10.1016/0167-2789(86)90237-X"
+      },
+      {
+        "id": "rule-184-traffic",
+        "title": [
+          "4. Rule 184 as traffic",
+          "4. 交通としてのルール 184"
+        ],
+        "body": [
+          "Put cars on a ring road, one per cell at most, and let every car advance one cell per step if the cell ahead is empty. That is elementary rule 184, and it conserves cars. In the space–time diagram, time downwards, free-flowing cars are lines sloping right and a jam is a dark band whose front moves backwards, one cell per step, even though every car in it moves forward or not at all. The flow, cars passing a point per step, is plotted against density on the right: below density 1/2 every car eventually moves and the flow equals ρ; above it every gap moves backwards and the flow equals 1 − ρ. Drag the gold point to change ρ, or switch on random braking to see the exact triangle turn into the rounded curve of real roads.",
+          "環状道路に車を置きます。一つのセルに車は一台までで、前のセルが空いていれば各車は一ステップに一マス進みます。これが初等ルール 184 で、車の数を保存します。時間が下向きの時空図では、自由に流れる車は右下がりの線で、渋滞は濃い帯です。渋滞の中のどの車も前に進むか止まるかしかしないのに、渋滞の先頭は一ステップに一マスずつ後ろへ動きます。右には流量、すなわち一ステップにある地点を通過する車の数を密度に対して描いています。密度 1/2 未満ではやがてすべての車が動き、流量は ρ に等しくなります。1/2 を超えるとすべての隙間が後ろへ動き、流量は 1 − ρ です。金色の点をドラッグして ρ を変えてください。ランダムな減速を入れると、厳密な三角形が実際の道路の丸みを帯びた曲線に変わります。"
+        ],
+        "formula": "x_i^{t+1}=x_{i-1}^{t}\\,(1-x_i^{t})+x_i^{t}\\,x_{i+1}^{t},\\qquad q(\\rho)=\\min(\\rho,\\,1-\\rho)\\ \\text{(rule 184, after the transient)}",
+        "example": [
+          "On a ring of 200 cells with 70 cars, \\(\\rho=0.35\\). Within at most 100 steps the jams dissolve, every car moves every step, and the measured flow is exactly 0.35. With 130 cars, \\(\\rho=0.65\\), the 70 gaps move backwards every step and the flow is exactly \\(1-0.65=0.35\\): the same flow, from a road full of stopped cars.",
+          "200 セルの環に 70 台なら \\(\\rho=0.35\\) です。高々 100 ステップのうちに渋滞は解消し、すべての車が毎ステップ動き、測定される流量はちょうど 0.35 です。130 台なら \\(\\rho=0.65\\) で、70 個の隙間が毎ステップ後ろへ動き、流量はちょうど \\(1-0.65=0.35\\) です。止まった車で満ちた道路から、同じ流量が得られます。"
+        ],
+        "caution": [
+          "Rule 184 has a maximum speed of one cell per step and no reaction time, so its fundamental diagram is a perfect tent and its jams never grow spontaneously: the peak flow 1/2 at \\(\\rho=1/2\\) is a property of the rule, not of drivers. The Nagel–Schreckenberg model adds a random slowdown with probability \\(p\\): a moving car may brake for no reason. That single addition produces jams that appear out of free flow, a flow that depends on \\(p\\) and never reaches 1/2, and the scatter of real measurements. The flow shown is the mean over the last 100 steps, after a transient that is discarded.",
+          "ルール 184 の最高速度は一ステップに一マスで、反応時間もないので、基本図は完全な三角形で、渋滞が自然に成長することはありません。\\(\\rho=1/2\\) での最大流量 1/2 はルールの性質であって運転者の性質ではありません。ナーゲルとシュレッケンベルクの模型は確率 \\(p\\) のランダムな減速を加えます。走っている車が理由もなく減速することがあるのです。このただ一つの追加が、自由な流れの中から現れる渋滞、\\(p\\) に依存して決して 1/2 に達しない流量、そして実測値の散らばりを生み出します。表示する流量は、過渡状態を捨てたあとの最後の 100 ステップの平均です。"
+        ],
+        "question": [
+          "Why does a jam move backwards when every car in it moves forwards?",
+          "渋滞の中のどの車も前へ進むのに、渋滞が後ろへ動くのはなぜですか？"
+        ],
+        "answer": [
+          "Read rule 184 for the gaps instead of the cars: a gap moves one cell to the left exactly when the cell to its left holds a car, which is the mirror image of the rule for cars. So the empty cells are a second traffic stream flowing the other way at the same speed, and the front of a jam is where the gaps arrive. Above density 1/2 there are fewer gaps than cars, every gap always has a car to its left, so every gap moves every step and the flow is the gap density \\(1-\\rho\\).",
+          "ルール 184 を車ではなく隙間について読み直してください。隙間は、その左のセルに車があるときにちょうど一マス左へ動きます。これは車のルールの鏡像です。つまり空のセルは同じ速さで逆向きに流れる第二の流れであり、渋滞の先頭は隙間が到着する場所です。密度 1/2 を超えると隙間は車より少なく、どの隙間の左にも常に車があるので、すべての隙間が毎ステップ動き、流量は隙間の密度 \\(1-\\rho\\) です。"
+        ],
+        "params": [
+          [
+            "rho",
+            "Density ρ",
+            "密度 ρ",
+            0.05,
+            0.95,
+            0.05,
+            0.35
+          ],
+          [
+            "model",
+            "Model",
+            "模型",
+            0,
+            1,
+            1,
+            0,
+            [
+              [
+                "rule 184, deterministic",
+                "ルール 184、決定論的"
+              ],
+              [
+                "random braking, p = 0.3",
+                "ランダムな減速、p = 0.3"
+              ]
+            ]
+          ],
+          [
+            "steps",
+            "Steps shown",
+            "表示するステップ数",
+            40,
+            120,
+            10,
+            80
+          ]
+        ],
+        "source": "Kai Nagel and Michael Schreckenberg · A cellular automaton model for freeway traffic, J. Phys. I France 2 (1992)",
+        "url": "https://doi.org/10.1051/jp1:1992277"
+      }
+    ]
+  },
+  {
+    "slug": "complex-systems",
+    "title": [
+      "Complex systems: order from many simple parts",
+      "複雑系：単純な多数の部品から生まれる秩序"
+    ],
+    "description": [
+      "Many identical units, each following a rule that mentions only its neighbours, and a whole that does something none of them does. Oscillators that synchronise past a critical coupling, a sandpile that tunes itself to the edge of an avalanche, a random lattice that suddenly connects, and self-propelled particles that flock. In each case an order parameter, a threshold, and a mechanism.",
+      "近くの相手しか参照しない規則に従う同一の多数の単位と、そのどれもしないことをする全体を扱います。臨界結合を超えると同期する振動子、雪崩の縁へと自らを調整する砂山、突然つながるランダムな格子、群れをなす自走粒子。それぞれに秩序変数と閾値と機構があります。"
+    ],
+    "group": "applications",
+    "prerequisite": [
+      "Probability, dynamical systems, and statistical mechanics",
+      "確率、力学系、統計力学"
+    ],
+    "source": "Steven Strogatz · From Kuramoto to Crawford: exploring the onset of synchronization, Physica D 143 (2000)",
+    "url": "https://doi.org/10.1016/S0167-2789(00)00094-4",
+    "labs": [
+      {
+        "id": "kuramoto",
+        "title": [
+          "1. Synchronisation: the Kuramoto model",
+          "1. 同期：蔵本モデル"
+        ],
+        "body": [
+          "N oscillators run round a circle, each at its own natural frequency ωᵢ, and each is pulled towards every other by a coupling K. The dots are the oscillators, coloured by natural frequency; the arrow is the mean field r e^{iψ}, whose length r is the order parameter: 0 for phases spread uniformly, 1 for all in step. Kuramoto’s discovery is that for frequencies drawn from a Lorentzian of half-width γ the transition is exact: below K꜀ = 2γ the mean field dies away and r = 0; above it, r = √(1 − K꜀/K), and the oscillators with |ωᵢ| ≤ K r lock to the mean field while the rest drift. Raise K slowly and watch the arrow grow from nothing.",
+          "N 個の振動子が円周上を回ります。それぞれ固有の自然振動数 ωᵢ をもち、結合 K によって他のすべての振動子に引き寄せられます。点が振動子で、色は自然振動数を表します。矢印は平均場 r e^{iψ} で、その長さ r が秩序変数です。位相が一様に散らばれば 0、すべてが揃えば 1 です。蔵本の発見は、半値幅 γ のローレンツ分布から振動数を取ると転移が厳密になることでした。K꜀ = 2γ より下では平均場は消えて r = 0 です。上では r = √(1 − K꜀/K) で、|ωᵢ| ≤ K r の振動子は平均場にロックし、残りは漂います。K をゆっくり上げて、矢印が無から育つのを見てください。"
+        ],
+        "formula": "\\dot\\theta_i=\\omega_i+\\frac{K}{N}\\sum_{j}\\sin(\\theta_j-\\theta_i)=\\omega_i+K r\\sin(\\psi-\\theta_i),\\qquad r e^{i\\psi}=\\frac1N\\sum_j e^{i\\theta_j},\\qquad K_c=2\\gamma,\\quad r=\\sqrt{1-K_c/K}",
+        "example": [
+          "With \\(\\gamma=1\\) and \\(K=3\\), \\(K_c=2\\) and the locked-state order parameter is \\(r=\\sqrt{1-2/3}=0.577\\). An oscillator locks when it has a fixed point, \\(\\omega_i=K r\\sin(\\theta_i-\\psi)\\) with a solution, that is \\(|\\omega_i|\\le Kr=1.73\\); for the Lorentzian that is the fraction \\(\\tfrac2\\pi\\arctan(1.73)=0.67\\) of the population. At \\(K=6\\), \\(r=0.816\\) and 87% lock.",
+          "\\(\\gamma=1\\)、\\(K=3\\) なら \\(K_c=2\\) で、ロック状態の秩序変数は \\(r=\\sqrt{1-2/3}=0.577\\) です。振動子がロックするのは不動点をもつとき、すなわち \\(\\omega_i=K r\\sin(\\theta_i-\\psi)\\) に解があるときで、\\(|\\omega_i|\\le Kr=1.73\\) です。ローレンツ分布ではこれは全体の \\(\\tfrac2\\pi\\arctan(1.73)=0.67\\) にあたります。\\(K=6\\) では \\(r=0.816\\) で、87% がロックします。"
+        ],
+        "caution": [
+          "The formula is for \\(N\\to\\infty\\). With the \\(N=120\\) oscillators here, \\(r\\) fluctuates by about \\(1/\\sqrt N\\approx0.09\\) even below \\(K_c\\), so the measured curve on the right rounds off the sharp corner at \\(K_c\\) and never quite reaches zero. The frequencies are the quantiles of the Lorentzian rather than a random sample, which removes sampling noise but puts two very fast oscillators at the tails; they never lock and are the dots that keep spinning. The Lorentzian is special in giving a closed form; for a Gaussian the threshold is \\(K_c=2/(\\pi g(0))\\) as well, but \\(r(K)\\) has no elementary expression.",
+          "この公式は \\(N\\to\\infty\\) の場合のものです。ここでの \\(N=120\\) 個の振動子では、\\(K_c\\) より下でも \\(r\\) はおよそ \\(1/\\sqrt N\\approx0.09\\) だけゆらぐので、右の測定曲線は \\(K_c\\) での鋭い角を丸め、決して完全には 0 になりません。振動数はランダムな標本ではなくローレンツ分布の分位点にしてあり、標本のノイズは消えますが、裾に非常に速い振動子が二つ置かれます。それらは決してロックせず、回り続ける点です。閉じた式が得られるのはローレンツ分布の特別さです。ガウス分布でも閾値は同じく \\(K_c=2/(\\pi g(0))\\) ですが、\\(r(K)\\) に初等的な表現はありません。"
+        ],
+        "question": [
+          "Why is the threshold K꜀ = 2/(π g(0)) set by the density of oscillators at the centre frequency alone?",
+          "閾値 K꜀ = 2/(π g(0)) が中心振動数における振動子の密度だけで決まるのはなぜですか？"
+        ],
+        "answer": [
+          "Just above threshold \\(r\\) is tiny, so only oscillators with \\(|\\omega|\\le Kr\\), a sliver around the centre, can lock; the drifting ones contribute nothing to \\(r\\) on average by symmetry. The locked ones sit at \\(\\sin(\\theta-\\psi)=\\omega/Kr\\), and their contribution to \\(r\\) is \\(\\int_{-Kr}^{Kr}\\cos\\theta\\,g(\\omega)\\,d\\omega=Kr\\int_{-\\pi/2}^{\\pi/2}\\cos^2\\theta\\,g(Kr\\sin\\theta)\\,d\\theta\\). Self-consistency \\(r=\\) this, with \\(g(Kr\\sin\\theta)\\to g(0)\\) as \\(r\\to0\\), gives \\(1=K g(0)\\pi/2\\). Only \\(g(0)\\) survives the limit.",
+          "閾値のすぐ上では \\(r\\) は極めて小さいので、ロックできるのは \\(|\\omega|\\le Kr\\) という中心付近のごく薄い層の振動子だけです。漂う振動子は対称性により平均して \\(r\\) に何も寄与しません。ロックした振動子は \\(\\sin(\\theta-\\psi)=\\omega/Kr\\) に位置し、\\(r\\) への寄与は \\(\\int_{-Kr}^{Kr}\\cos\\theta\\,g(\\omega)\\,d\\omega=Kr\\int_{-\\pi/2}^{\\pi/2}\\cos^2\\theta\\,g(Kr\\sin\\theta)\\,d\\theta\\) です。自己無撞着条件 \\(r=\\) この量で、\\(r\\to0\\) のとき \\(g(Kr\\sin\\theta)\\to g(0)\\) となるので、\\(1=K g(0)\\pi/2\\) が得られます。極限で生き残るのは \\(g(0)\\) だけです。"
+        ],
+        "params": [
+          [
+            "K",
+            "Coupling K",
+            "結合 K",
+            0,
+            6,
+            0.1,
+            3
+          ],
+          [
+            "gamma",
+            "Half-width γ of the frequency distribution",
+            "振動数分布の半値幅 γ",
+            0.25,
+            2,
+            0.25,
+            1
+          ]
+        ],
+        "source": "Steven Strogatz · From Kuramoto to Crawford: exploring the onset of synchronization, Physica D 143 (2000)",
+        "url": "https://doi.org/10.1016/S0167-2789(00)00094-4"
+      },
+      {
+        "id": "sandpile",
+        "title": [
+          "2. Self-organised criticality: the sandpile",
+          "2. 自己組織化臨界：砂山"
+        ],
+        "body": [
+          "Drop grains one at a time onto a grid. A cell holding four grains topples, sending one grain to each neighbour; grains that fall off the edge are lost. Neighbours that reach four topple in turn, and the chain reaction is an avalanche whose size is the number of topplings. Nobody tunes a parameter, yet the pile drives itself to a state in which avalanches of every size occur with a power-law distribution: that is self-organised criticality. Drop at the centre and the pile grows into the famous deterministic pattern; drop at random sites and read the avalanche histogram on the right. The order of additions never matters: the final pile is the same, which is why the model is called abelian.",
+          "格子に砂粒を一つずつ落とします。四粒をもつセルは崩れ、各隣接セルに一粒ずつ送ります。端から落ちた砂粒は失われます。四粒に達した隣接セルも順に崩れ、この連鎖反応が雪崩で、その大きさは崩れの回数です。誰もパラメータを調整していないのに、砂山はあらゆる大きさの雪崩がべき乗則の分布で起こる状態へと自らを駆り立てます。これが自己組織化臨界です。中央に落とせば砂山は有名な決定論的な模様に育ち、ランダムな場所に落とせば右の雪崩のヒストグラムが読めます。足す順序は決して問題になりません。最終的な砂山は同じで、だからこのモデルはアーベル的と呼ばれます。"
+        ],
+        "formula": "z_{ij}\\ge4:\\quad z_{ij}\\to z_{ij}-4,\\quad z_{i\\pm1,j}\\to z_{i\\pm1,j}+1,\\quad z_{i,j\\pm1}\\to z_{i,j\\pm1}+1;\\qquad P(s)\\sim s^{-\\tau},\\ \\tau\\approx1.3\\ \\text{in two dimensions}",
+        "example": [
+          "Four grains on one cell of an empty grid: one toppling, the four neighbours hold one grain each, the centre is empty, and no grain is lost. Add four more at the centre: the centre topples again, the neighbours reach two. After the third four, the neighbours hold three; the fourth four topples the centre, then all four neighbours, and then the centre once more as each neighbour hands a grain back: an avalanche of size 6, after which the diamond’s corners hold their first grains.",
+          "空の格子の一つのセルに四粒を置くと、崩れは一回で、四つの隣接セルが一粒ずつもち、中央は空になり、砂粒は失われません。中央にさらに四粒足すと中央は再び崩れ、隣接セルは二粒になります。三度目の四粒で隣接セルは三粒になり、四度目の四粒は中央を崩し、続いて四つの隣接セルすべてを崩し、各隣接セルが一粒ずつ返すので中央をもう一度崩します。大きさ 6 の雪崩で、そのあとひし形の角に初めて砂粒が置かれます。"
+        ],
+        "caution": [
+          "A power law needs many decades to be seen, and a grid of 101 by 101 gives about three: the histogram bends down at the largest sizes, where avalanches reach the boundary and lose grains. The exponent \\(\\tau\\) of the two-dimensional sandpile is not known exactly; numerical estimates cluster near 1.3 with logarithmic corrections, and the fitted slope here depends on the range of sizes used. The centre-drop pile is not critical in the statistical sense at all: it is a single deterministic object whose pattern has a scaling limit described by a system of partial differential equations (Pegden and Smart, 2013), which is why it looks like a fractal rather than like noise.",
+          "べき乗則を見るには多くの桁が必要で、101 × 101 の格子ではおよそ三桁です。最大の大きさではヒストグラムは下に曲がります。雪崩が境界に達して砂粒を失うからです。二次元砂山の指数 \\(\\tau\\) は厳密には知られておらず、数値的な推定値は対数補正つきで 1.3 の近くに集まり、ここでフィットした傾きは使う大きさの範囲に依存します。中央に落とす砂山は統計的な意味では臨界ではまったくありません。それは単一の決定論的な対象で、その模様は偏微分方程式系で記述されるスケーリング極限をもちます（ペグデンとスマート、2013 年）。だからノイズではなくフラクタルのように見えるのです。"
+        ],
+        "question": [
+          "Why does the pile organise itself to the critical state instead of overshooting into a permanent avalanche or settling flat?",
+          "砂山はなぜ永続的な雪崩へ行き過ぎたり平らに落ち着いたりせずに、自ら臨界状態へ組織化するのですか？"
+        ],
+        "answer": [
+          "Two opposite drives balance. Adding grains raises the average height, and a higher pile topples more readily, so avalanches grow larger. Larger avalanches reach the boundary more often and lose more grains, which lowers the pile. The only stationary state is the one where the mean loss per grain added is exactly one, and that forces avalanches to span every scale up to the system size: if they were all small, grains could not reach the edge and the pile would keep rising; if they were all system-wide, the pile would be draining faster than it fills. Criticality is the fixed point of this feedback, and it is reached from any start.",
+          "二つの逆向きの駆動がつり合います。砂粒を足すと平均の高さが上がり、高い砂山ほど崩れやすいので雪崩は大きくなります。大きな雪崩は境界に達することが多く、より多くの砂粒を失うので、砂山は低くなります。唯一の定常状態は、足した一粒あたりの平均損失がちょうど一粒になる状態で、そのためには雪崩が系の大きさまであらゆるスケールに及ぶ必要があります。すべてが小さければ砂粒は端に届かず砂山は上がり続け、すべてが系全体に及べば砂山は満たされるより速く排出されます。臨界性はこのフィードバックの不動点で、どんな初期状態からでも到達されます。"
+        ],
+        "params": [
+          [
+            "mode",
+            "Where the grains fall",
+            "砂粒の落ちる場所",
+            0,
+            1,
+            1,
+            0,
+            [
+              [
+                "all at the centre",
+                "すべて中央に"
+              ],
+              [
+                "random sites",
+                "ランダムな場所に"
+              ]
+            ]
+          ],
+          [
+            "n",
+            "Grains dropped",
+            "落とした砂粒",
+            0,
+            20000,
+            250,
+            10000
+          ]
+        ],
+        "source": "Per Bak, Chao Tang and Kurt Wiesenfeld · Self-organized criticality: an explanation of 1/f noise, Phys. Rev. Lett. 59 (1987)",
+        "url": "https://doi.org/10.1103/PhysRevLett.59.381"
+      },
+      {
+        "id": "percolation",
+        "title": [
+          "3. Percolation: the lattice that suddenly connects",
+          "3. パーコレーション：突然つながる格子"
+        ],
+        "body": [
+          "Each site of a square lattice is open with probability p, independently, and open neighbours join into clusters. For small p the clusters are tiny; for large p one giant cluster covers the lattice. The change is not gradual: in the infinite lattice there is a sharp threshold p꜀ ≈ 0.5927 below which no infinite cluster exists and above which exactly one does. Drag the gold point to change p; the same random numbers are reused, so raising p only ever adds sites and you can watch clusters merge. The spanning cluster, the one that touches both top and bottom, is drawn in gold. The graph on the right is the probability that a spanning cluster exists, for two lattice sizes: the larger the lattice, the sharper the step.",
+          "正方格子の各サイトは独立に確率 p で開いていて、隣り合う開いたサイトはクラスターにまとまります。p が小さければクラスターは小さく、p が大きければ一つの巨大なクラスターが格子を覆います。この変化は緩やかではありません。無限格子には鋭い閾値 p꜀ ≈ 0.5927 があり、その下では無限クラスターは存在せず、上ではちょうど一つ存在します。金色の点をドラッグして p を変えてください。同じ乱数を使い回すので、p を上げるとサイトが増えるだけで、クラスターが合体していく様子が見えます。上下の両方に触れる張り渡しクラスターは金色で描きます。右のグラフは二つの格子の大きさについて張り渡しクラスターが存在する確率で、格子が大きいほど段差は鋭くなります。"
+        ],
+        "formula": "\\theta(p)=P(0\\leftrightarrow\\infty),\\qquad p_c=\\inf\\{p:\\theta(p)>0\\}\\approx0.592746\\ \\text{(site, square lattice)},\\qquad \\theta(p)\\sim(p-p_c)^{5/36}",
+        "example": [
+          "At \\(p=0.5\\) on the 48 by 48 lattice the largest cluster holds about a tenth of the open sites and nothing spans; at \\(p=0.65\\) the largest cluster holds over 80% of them and spans in almost every sample. Between them the spanning probability rises from near 0 to near 1 over a width that shrinks like \\(L^{-3/4}\\) as the lattice grows, since the correlation-length exponent is \\(\\nu=4/3\\).",
+          "48 × 48 の格子で \\(p=0.5\\) のとき、最大クラスターは開いたサイトのおよそ一割を含み、何も張り渡しません。\\(p=0.65\\) では最大クラスターは開いたサイトの 80% 以上を含み、ほとんどすべての標本で張り渡します。その間で張り渡し確率は 0 近くから 1 近くへ上がり、その幅は格子が大きくなるにつれて \\(L^{-3/4}\\) のように縮みます。相関長の指数が \\(\\nu=4/3\\) だからです。"
+        ],
+        "caution": [
+          "Site percolation on the square lattice has no exact threshold: 0.592746 is numerical, while bond percolation on the same lattice has \\(p_c=1/2\\) exactly (Kesten, 1980) and site percolation on the triangular lattice also has \\(p_c=1/2\\). The exponents such as \\(5/36\\) and \\(4/3\\) are universal, shared by every two-dimensional lattice, and proved for the triangular lattice through Smirnov’s conformal invariance. On a finite lattice “spanning” is a substitute for “infinite”: the spanning probability at \\(p_c\\) is neither 0 nor 1 but a definite number that depends on the shape of the box and not on the lattice.",
+          "正方格子のサイト・パーコレーションには厳密な閾値がありません。0.592746 は数値的な値です。一方、同じ格子のボンド・パーコレーションは \\(p_c=1/2\\) がちょうど成り立ち（ケステン、1980 年）、三角格子のサイト・パーコレーションも \\(p_c=1/2\\) です。\\(5/36\\) や \\(4/3\\) といった指数は普遍的で、すべての二次元格子に共通し、三角格子についてはスミルノフの共形不変性を通して証明されています。有限の格子では「張り渡し」が「無限」の代わりです。\\(p_c\\) での張り渡し確率は 0 でも 1 でもなく、箱の形に依存して格子には依存しない一定の数です。"
+        ],
+        "question": [
+          "Why must there be a sharp threshold at all, rather than a spanning probability that rises smoothly with p?",
+          "張り渡し確率が p とともに滑らかに上がるのではなく、鋭い閾値が必ず存在するのはなぜですか？"
+        ],
+        "answer": [
+          "Whether an infinite cluster exists does not depend on any finite set of sites: changing finitely many sites can shrink or extend a cluster but cannot create or destroy an infinite one. Kolmogorov’s zero–one law then says the event has probability 0 or 1 for each \\(p\\). Monotonicity, more open sites can only help, makes the set of \\(p\\) with probability 1 an interval \\((p_c,1]\\), and that is the threshold. The smooth curves on the right are finite-size effects: for a lattice of side \\(L\\) the step has width about \\(L^{-1/\\nu}\\).",
+          "無限クラスターが存在するかどうかは、どの有限個のサイトの集合にも依存しません。有限個のサイトを変えればクラスターは縮んだり伸びたりしますが、無限クラスターを作ったり壊したりはできません。するとコルモゴロフの 0-1 法則により、この事象の確率は各 \\(p\\) について 0 か 1 です。開いたサイトが増えて損はしないという単調性から、確率 1 となる \\(p\\) の集合は区間 \\((p_c,1]\\) になり、それが閾値です。右の滑らかな曲線は有限サイズの効果で、一辺 \\(L\\) の格子では段差の幅はおよそ \\(L^{-1/\\nu}\\) です。"
+        ],
+        "params": [
+          [
+            "p",
+            "Occupation probability p",
+            "占有確率 p",
+            0,
+            1,
+            0.01,
+            0.55
+          ],
+          [
+            "L",
+            "Lattice",
+            "格子",
+            0,
+            1,
+            1,
+            1,
+            [
+              [
+                "24 × 24",
+                "24 × 24"
+              ],
+              [
+                "48 × 48",
+                "48 × 48"
+              ]
+            ]
+          ],
+          [
+            "seed",
+            "Random sample",
+            "乱数の標本",
+            1,
+            8,
+            1,
+            1
+          ]
+        ],
+        "source": "Geoffrey Grimmett · Percolation, 2nd ed. (Springer, 1999)",
+        "url": "https://doi.org/10.1007/978-3-662-03981-6"
+      },
+      {
+        "id": "vicsek",
+        "title": [
+          "4. Flocking: the Vicsek model",
+          "4. 群れ：ヴィチェック模型"
+        ],
+        "body": [
+          "Particles move at a fixed speed and, at every step, each one turns to the average heading of its neighbours within a radius, plus a random error of size η. There is no leader, no goal and no force, only imitation with noise. At low noise the whole population ends up moving together: the polarisation φ, the length of the mean velocity, is near 1. At high noise the headings decorrelate and φ falls to the 1/√N of a random crowd. Between them lies a phase transition, an ordered phase of self-propelled particles that no equilibrium system of the same dimension could have, since the Mermin–Wagner theorem forbids it. Change η and watch the flock form or dissolve; drag ρ to see that density helps.",
+          "粒子は一定の速さで動き、各ステップで半径内の隣人の平均の向きに、大きさ η のランダムな誤差を加えて向きを変えます。リーダーも目的も力もなく、ノイズを伴う模倣だけがあります。ノイズが小さいと全体が一緒に動くようになります。平均速度の長さである分極 φ は 1 に近づきます。ノイズが大きいと向きの相関は消え、φ はランダムな群衆の 1/√N まで落ちます。その間には相転移があり、自走粒子の秩序相が現れます。これは同じ次元の平衡系にはあり得ない相です。マーミン・ワグナーの定理が禁じているからです。η を変えて群れができたり崩れたりする様子を見てください。ρ を動かすと密度が助けになることが分かります。"
+        ],
+        "formula": "\\theta_i(t+1)=\\operatorname{arg}\\!\\!\\sum_{|\\mathbf r_j-\\mathbf r_i|<R}\\!\\!e^{i\\theta_j(t)}+\\eta\\,\\xi_i,\\quad \\xi_i\\sim U(-\\tfrac12,\\tfrac12);\\qquad \\mathbf r_i(t+1)=\\mathbf r_i(t)+v_0(\\cos\\theta_i,\\sin\\theta_i),\\qquad \\varphi=\\frac1{N}\\Big|\\sum_i e^{i\\theta_i}\\Big|",
+        "example": [
+          "With \\(N=300\\), \\(\\rho=2\\) and \\(\\eta=0.5\\), the polarisation climbs from about 0.06 at the random start to above 0.9 within a few hundred steps and stays there. At \\(\\eta=2\\pi\\) the new heading is uniformly random whatever the neighbours do, so \\(\\varphi\\) fluctuates around \\(1/\\sqrt{300}=0.058\\). The measured curve on the right crosses \\(\\varphi=0.5\\) between \\(\\eta=2.5\\) and \\(3\\) at this density.",
+          "\\(N=300\\)、\\(\\rho=2\\)、\\(\\eta=0.5\\) では、分極はランダムな初期状態でのおよそ 0.06 から数百ステップのうちに 0.9 以上へ上がり、そこにとどまります。\\(\\eta=2\\pi\\) では隣人が何をしていても新しい向きは一様にランダムなので、\\(\\varphi\\) は \\(1/\\sqrt{300}=0.058\\) のまわりでゆらぎます。右の測定曲線はこの密度では \\(\\eta=2.5\\) と \\(3\\) の間で \\(\\varphi=0.5\\) を横切ります。"
+        ],
+        "caution": [
+          "The box is periodic, which is what lets a flock persist: on a wall-bounded field it would scatter at the boundary. With \\(N=300\\) the transition is smeared over a broad range of \\(\\eta\\), and whether it is continuous, as Vicsek reported, or discontinuous with travelling density bands, as later large simulations found (Grégoire and Chaté, 2004), only shows up at sizes far beyond what runs in a browser. The averages on the right are over 150 steps after a transient of 150 at each \\(\\eta\\), so the curve is a snapshot of a slow relaxation, not an equilibrium.",
+          "箱は周期的で、それが群れを持続させます。壁で囲まれた場では群れは境界で散ってしまいます。\\(N=300\\) では転移は広い \\(\\eta\\) の範囲にぼやけ、ヴィチェックが報告したように連続なのか、後の大規模なシミュレーションが見つけたように進行する密度の帯を伴って不連続なのか（グレゴワールとシャテ、2004 年）は、ブラウザで動く規模をはるかに超えた大きさでしか現れません。右の平均は各 \\(\\eta\\) について 150 ステップの過渡状態のあとの 150 ステップにわたるもので、曲線は遅い緩和のスナップショットであって平衡ではありません。"
+        ],
+        "question": [
+          "Why can two-dimensional flocks be ordered when two-dimensional magnets with continuous spins cannot?",
+          "連続スピンをもつ二次元の磁石は秩序をもてないのに、二次元の群れは秩序をもてるのはなぜですか？"
+        ],
+        "answer": [
+          "In an equilibrium XY magnet a long-wavelength twist of the spins costs energy proportional to the square of its wavenumber, and summing the thermal fluctuations of all such twists in two dimensions gives a logarithmically divergent integral: the spins cannot agree over infinite distances. Flocking particles are not in equilibrium: they move, so a particle carries its heading into new neighbourhoods and the information about the mean direction is convected across the system rather than diffusing. Toner and Tu showed that this convective term makes the fluctuations converge, so true long-range order survives in two dimensions.",
+          "平衡状態の XY 磁石では、スピンの長波長のねじれは波数の二乗に比例するエネルギーを要し、二次元でそのようなねじれすべての熱ゆらぎを足し合わせると対数的に発散する積分になります。スピンは無限に遠くまで一致できないのです。群れをなす粒子は平衡状態にありません。動くので、粒子は自分の向きを新しい近傍へ運び、平均の向きの情報は拡散するのではなく系を横切って移流します。トナーとトゥーは、この移流項がゆらぎを収束させ、二次元でも真の長距離秩序が生き残ることを示しました。"
+        ],
+        "params": [
+          [
+            "eta",
+            "Noise η",
+            "ノイズ η",
+            0,
+            6.3,
+            0.1,
+            1
+          ],
+          [
+            "rho",
+            "Density ρ = N/L²",
+            "密度 ρ = N/L²",
+            0.5,
+            4,
+            0.5,
+            2
+          ]
+        ],
+        "source": "Tamás Vicsek et al. · Novel type of phase transition in a system of self-driven particles, Phys. Rev. Lett. 75 (1995)",
+        "url": "https://doi.org/10.1103/PhysRevLett.75.1226"
       }
     ]
   }

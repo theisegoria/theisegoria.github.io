@@ -50,3 +50,19 @@ module.exports = (M, { ok, near }) => {
   // the smooth escape time is continuous across the iteration count: it changes by about 1 when z is squared (z -> z^2 for c = 0)
   { const a = M.smoothEscape(1.3, 0, 0, 0, 100), b = M.smoothEscape(1.69, 0, 0, 0, 100); near(a - b, 1, 1e-9); }
 };
+// 7. L-systems: Koch has 4^n steps spanning 3^n, the dragon 2^n steps spanning sqrt(2)^n, the arrowhead 3^n steps spanning 2^n; brackets balance in the plant
+module.exports = ((prev) => (M, api) => { prev(M, api); const { ok, near } = api;
+  for (const n of [1, 2, 4]) { const S = M.LSYS[0], t = M.turtle(M.expand(S.axiom, S.rules, n), S.angle, S.draw, S.heading); ok(t.segs === 4 ** n, `Koch level ${n} has 4^n steps`); near(t.end[0], 3 ** n, 1e-9); near(t.end[1], 0, 1e-9); }
+  for (const n of [2, 5, 8]) { const S = M.LSYS[1], t = M.turtle(M.expand(S.axiom, S.rules, n), S.angle, S.draw, S.heading); ok(t.segs === 2 ** n, `dragon level ${n} has 2^n steps`); near(Math.hypot(t.end[0], t.end[1]), Math.SQRT2 ** n, 1e-9); }
+  for (const n of [1, 3, 4]) { const S = M.LSYS[2], t = M.turtle(M.expand(S.axiom, S.rules, n), S.angle, S.draw, S.heading); ok(t.segs === 3 ** n, `arrowhead level ${n} has 3^n steps`); near(Math.hypot(t.end[0], t.end[1]), 2 ** n, 1e-9); }
+  near(M.lsystemDim(4, 3), Math.log(4) / Math.log(3), 1e-12); near(M.lsystemDim(2, Math.SQRT2), 2, 1e-12); near(M.lsystemDim(3, 2), Math.log(3) / Math.log(2), 1e-12);
+  { const S = M.LSYS[3], s = M.expand(S.axiom, S.rules, 4); ok((s.match(/\[/g) || []).length === (s.match(/\]/g) || []).length && (s.match(/F/g) || []).length === 360, 'plant level 4: balanced brackets, 360 segments'); const t = M.turtle(s, S.angle, S.draw, S.heading); ok(t.segs === 360 && t.box[2] >= -1e-9, 'the plant grows upward from its root'); }
+  // 8. Newton: quadratic convergence to 1 from 1.5, the exact cycle 0 <-> 1 for z^3 - 2z + 2, symmetric basins for z^3 - 1
+  { const z1 = M.newtonStep(1.5, 0, M.ROOTS_UNITY); near(z1[0], 1.5 - 2.375 / 6.75, 1e-12); near(z1[1], 0, 1e-12);
+    const r = M.newtonRun(1.5, 0, M.ROOTS_UNITY, 40, 1e-6, true); ok(r.root === 0 && r.n <= 6, 'converges to 1 in a few steps'); const e = r.orbit.map(([x]) => Math.abs(x - 1)); ok(e[3] < e[2] * e[2] * 2 && e[2] < e[1] * e[1] * 2, 'error roughly squares each step');
+    const c0 = M.newtonStep(0, 0, M.ROOTS_CYCLE), c1 = M.newtonStep(c0[0], c0[1], M.ROOTS_CYCLE); near(c0[0], 1, 1e-9); near(c0[1], 0, 1e-9); near(c1[0], 0, 1e-9); near(c1[1], 0, 1e-9);
+    ok(M.newtonRun(0.1, 0.05, M.ROOTS_CYCLE, 200, 1e-6).root === -1, 'points near the cycle never reach a root');
+    const w = M.newtonRun(-0.2, 0, M.ROOTS_UNITY, 40, 1e-6, true); near(w.orbit[1][0], 8.2, 1e-9); ok(w.root === 0, 'the real axis belongs to the basin of 1');
+    const fr = M.basinFractions(M.ROOTS_UNITY, [-2, 2, -2, 2], 60, 40); near(fr[1], fr[2], 1e-9); near(fr[3], 0, 1e-9); ok(Math.abs(fr[0] - 1 / 3) < 0.06, 'basins of z^3 - 1 have nearly equal area');
+    const cyc = M.basinFractions(M.ROOTS_CYCLE, [-2.1, 2.1, -1.6, 1.6], 60, 60); ok(cyc[3] > 0.004 && cyc[3] < 0.03, 'a small black basin for z^3 - 2z + 2 (about 0.75% of this view)'); }
+})(module.exports);
