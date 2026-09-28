@@ -26,7 +26,9 @@
       f.dot(-xp, -peak, { c: 'hl', r: 4, op: 0.8 });
       f.dot(0, 0, { c: 'ink', r: 4.5 });
       f.text(xp, peak, T(`peak ${fmt(peak, 4)}`, `山 ${fmt(peak, 4)}`), { anchor: 'start', dx: 9, dy: -8, small: true });
-      f.text(0, 0, T(`S${sub(N)}(0) = 0, the midpoint`, `S${sub(N)}(0) = 0（中点）`), { anchor: 'start', dx: 8, dy: 16, small: true });
+      // Label sits below the last-term ripple (amplitude 4/(πk) ≤ 0.42), to the right of the jump where S_N is positive.
+      f.seg([0.03, -0.09], [0.14, -0.48], { c: 'ink', w: 0.9, op: 0.5 });
+      f.text(0.14, -0.5, T(`S${sub(N)}(0) = 0, the midpoint`, `S${sub(N)}(0) = 0（中点）`), { anchor: 'start', dx: 4, dy: 12, small: true });
       f.text(-PI / 2, GIBBS, T('limit peak 1.179', '極限の山 1.179'), { dy: -6, small: true, c: 'hl' });
       f.hover((x) => ({ x, y: SN(x, N), text: `S${sub(N)}(${fmt(x, 3)}) = ${fmt(SN(x, N), 4)}` }));
       L.legend(ctx.host, [{ c: 'ink', label: T('square wave', '矩形波') }, { c: 'c1', label: T(`partial sum S${sub(N)}`, `部分和 S${sub(N)}`) }, { c: 'c2', label: T(`last term added, k = ${kLast}`, `最後に加えた項 k = ${kLast}`) }, { c: 'hl', dash: true, label: T('Gibbs limit (2/π)Si(π)', 'ギブスの極限 (2/π)Si(π)') }]);
@@ -142,6 +144,7 @@
         b.text(al, 0.8, T('seen', '見える'), { dy: -8, c: 'c2', small: true });
         b.arrow([fq, 0.22], [al + (fq > al ? 0.25 : -0.25), 0.22], { c: 'c2', w: 1.5, dash: '4 3' });
       }
+      L.legend(ctx.host, [{ c: 'c1', label: T('signal line at f', '信号の線 f') }, { c: 'muted', label: T('copies at k·fₛ ± f', 'k·fₛ ± f にある複製') }, { kind: 'fill', c: 'c3', label: T('visible band [0, fₛ/2]', '見える帯域 [0, fₛ/2]') }].concat(aliased ? [{ c: 'c2', label: T('the copy that is seen', '見える複製') }] : []));
       ctx.readout([
         { k: T('Nyquist frequency fₛ/2', 'ナイキスト周波数 fₛ/2'), v: fmt(nyq) + ' Hz' },
         { k: T('apparent frequency', '見かけの周波数'), v: fmt(al) + ' Hz', tone: aliased ? 'warn' : 'good' },

@@ -1,0 +1,84 @@
+{
+ "debye": {
+  "body": [
+   "Put a positive test charge into a plasma. Electrons crowd towards it and ions are pushed away, so a cloud of negative charge forms around it and hides it from far away. Change the Debye length and drag the gold probe sphere: the potential falls like the Coulomb potential times \\(e^{-r/\\lambda_D}\\), and the net charge inside the sphere shows how much of the test charge is still visible.",
+   "プラズマに正の試験電荷を置きます。電子は引き寄せられ、イオンは押しのけられるので、そのまわりに負電荷の雲ができ、遠くからは電荷が隠されます。デバイ長を変え、金色の球面をドラッグしてください。ポテンシャルはクーロンポテンシャルに \\(e^{-r/\\lambda_D}\\) を掛けた形で減衰し、球面の内側の正味の電荷から、試験電荷がどれだけ見えているかがわかります。"
+  ],
+  "formula": "\\begin{gathered}\\phi(r)=\\phi_0\\frac{e^{-r/\\lambda_D}}{r}\\\\\\lambda_D=\\sqrt{\\frac{\\varepsilon_0k_BT_e}{n_ee^2}}\\\\\\frac{Q(r)}{q}=\\Big(1+\\frac{r}{\\lambda_D}\\Big)e^{-r/\\lambda_D}\\end{gathered}",
+  "example": [
+   "At r = λD the potential is e⁻¹ ≈ 0.37 of the bare Coulomb value and 74 % of the charge is still unscreened; at r = 3λD only 5 % of the potential and 20 % of the charge remain.",
+   "r = λD ではポテンシャルは裸のクーロンの値の e⁻¹ ≈ 0.37 倍で、電荷の74 %がまだ遮蔽されていません。r = 3λD ではポテンシャルは5 %、電荷は20 %しか残りません。"
+  ],
+  "caution": [
+   "The formula comes from linearising the Boltzmann response of the electrons, which needs many particles inside a Debye sphere and fails very close to the charge. The colours show the density of the cloud on a compressed scale.",
+   "この式は電子のボルツマン分布の応答を線形化して得たもので、デバイ球の中に多数の粒子があることが必要で、電荷のごく近くでは成り立ちません。色は雲の密度を圧縮した目盛りで示しています。"
+  ]
+ },
+ "cyclotron": {
+  "body": [
+   "In a uniform magnetic field the Lorentz force is always perpendicular to the velocity, so it bends the path into a circle without changing the speed. Change the signed charge-to-mass ratio and the perpendicular speed: the radius depends on |q|/m, while the sign of q decides the sense of rotation, shown against the dashed orbit of the opposite charge.",
+   "一様な磁場の中では、ローレンツ力は常に速度に垂直なので、速さを変えずに軌道を円に曲げます。符号付きの電荷質量比と垂直速度を変えてください。半径は |q|/m で決まり、回転の向きは q の符号で決まります。破線は逆符号の電荷の軌道です。"
+  ],
+  "formula": "\\begin{gathered}m\\frac{d\\mathbf v}{dt}=q\\,\\mathbf v\\times\\mathbf B\\\\\\omega_c=\\frac{qB}{m},\\quad r_L=\\frac{v_\\perp}{|\\omega_c|}\\end{gathered}",
+  "example": [
+   "With B = 1, q/m = 1 and v⊥ = 1, the orbit has radius 1 and period 2π. Doubling q/m halves both; flipping its sign reverses the rotation.",
+   "B = 1、q/m = 1、v⊥ = 1 では、軌道の半径は1、周期は 2π です。q/m を2倍にすると両方とも半分になり、符号を反転すると回転が逆になります。"
+  ],
+  "caution": [
+   "Uniform field, no electric field, no collisions and speeds far below c. A velocity component along B would add a steady drift out of the page, turning the circle into a helix.",
+   "一様磁場で電場も衝突もなく、速さは c よりずっと小さいとしています。B に沿った速度成分があれば紙面に垂直な一定の移動が加わり、円はらせんになります。"
+  ],
+  "question": [
+   "What reverses when q changes sign, and what does not?",
+   "q の符号を変えると何が反転し、何が変わりませんか？"
+  ],
+  "answer": [
+   "The sense of gyration reverses; the radius, the period and the speed depend only on |q|, so they stay the same.",
+   "旋回の向きが反転します。半径、周期、速さは |q| だけで決まるので変わりません。"
+  ]
+ },
+ "dispersion": {
+  "body": [
+   "Electromagnetic waves in a cold plasma obey \\(\\omega^2 = \\omega_p^2 + c^2k^2\\): below the plasma frequency they cannot propagate at all. Drag the point along the branch. The chord from the origin gives the phase velocity, always faster than c, and the tangent gives the group velocity, always slower; the animation shows crests sliding through a wave packet whose envelope lags behind them.",
+   "冷たいプラズマ中の電磁波は \\(\\omega^2 = \\omega_p^2 + c^2k^2\\) に従い、プラズマ周波数より低い周波数ではまったく伝播できません。点を分枝に沿ってドラッグしてください。原点からの弦の傾きが位相速度で常に c より速く、接線の傾きが群速度で常に c より遅くなります。アニメーションでは、波の山が遅れて進む包絡線の中を通り抜けていきます。"
+  ],
+  "formula": "\\begin{gathered}\\omega^2=\\omega_p^2+c^2k^2\\\\v_\\varphi=\\frac{\\omega}{k},\\quad v_g=\\frac{d\\omega}{dk}=\\frac{c^2k}{\\omega}\\\\v_\\varphi v_g=c^2\\end{gathered}",
+  "example": [
+   "With \\(\\omega_p = 1\\), c = 1 and k = 1.2, ω ≈ 1.562, so \\(v_\\varphi\\) ≈ 1.302 and \\(v_g\\) ≈ 0.768, and their product is exactly c² = 1.",
+   "\\(\\omega_p = 1\\)、c = 1、k = 1.2 では ω ≈ 1.562 なので、\\(v_\\varphi\\) ≈ 1.302、\\(v_g\\) ≈ 0.768 となり、その積はちょうど c² = 1 です。"
+  ],
+  "caution": [
+   "Cold, collisionless and unmagnetised: temperature adds the Langmuir branch and a magnetic field adds more. The wave packet is drawn to first order, moving at the group velocity without spreading.",
+   "冷たく、衝突がなく、磁化していないモデルです。温度を入れるとラングミュア波の分枝が、磁場を入れるとさらに別の分枝が加わります。波束は1次近似で描いており、広がらずに群速度で進みます。"
+  ],
+  "params": [
+   [
+    "frequency",
+    "Plasma frequency \\(\\omega_p\\)",
+    "プラズマ周波数 \\(\\omega_p\\)",
+    0.2,
+    2,
+    0.05,
+    1
+   ],
+   [
+    "speed",
+    "Wave speed \\(c\\)",
+    "波の速さ \\(c\\)",
+    0.5,
+    2,
+    0.05,
+    1
+   ],
+   [
+    "k",
+    "Wave number \\(k\\)",
+    "波数 \\(k\\)",
+    0.5,
+    4,
+    0.05,
+    1.2
+   ]
+  ]
+ }
+}

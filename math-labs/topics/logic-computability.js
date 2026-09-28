@@ -49,6 +49,7 @@
       ctx.state.anim?.stop();
       const m = MACHINES[v.machine], hist = runMachine(m), last = hist.length - 1;
       const k = Math.min(v.step, last), cur = hist[k];
+      if (v.step > last) ctx.set('step', last, true); // the slider cannot exceed this machine's run length
       let lo = Infinity, hi = -Infinity; hist.forEach((h) => { lo = Math.min(lo, h.head); hi = Math.max(hi, h.head); h.tape.forEach((_, i) => { lo = Math.min(lo, i); hi = Math.max(hi, i); }); });
       lo -= 1; hi += 1; const W = hi - lo + 1;
       const row = L.h('div', 'lab-row', ctx.host);
@@ -95,8 +96,9 @@
       const st = ctx.state, n = v.size, key = `${n}|${v.seed}`;
       if (st.key !== key) { st.tab = haltTable(n, v.seed); st.key = key; st.sel = null; }
       const tab = st.tab, d = diagonal(tab);
-      L.h('p', 'lab-cap', ctx.host, T('Rows are programs, columns are inputs. Click any cell to change it; click a row name to suppose D is that program.', '行はプログラム、列は入力です。マスをクリックすると変えられます。行名をクリックすると、D がそのプログラムだと仮定します。'));
-      const f = L.fig(ctx.host, { x: [-1.9, n + 0.3], y: [-n - 2.2, 1.1], equal: true, maxH: 520, axes: false });
+      const row = L.h('div', 'lab-row', ctx.host), col = L.h('div', 'lab-col', row), side = L.h('div', 'lab-col', row);
+      L.h('p', 'lab-cap', col, T('Rows are programs, columns are inputs. Click any cell to change it; click a row name to suppose D is that program.', '行はプログラム、列は入力です。マスをクリックすると変えられます。行名をクリックすると、D がそのプログラムだと仮定します。'));
+      const f = L.fig(col, { x: [-1.9, n + 0.3], y: [-n - 2.2, 1.1], equal: true, maxH: 520, axes: false });
       const cellEl = (el, fn, label) => { el.style.cursor = 'pointer'; el.setAttribute('tabindex', '0'); el.setAttribute('role', 'button'); el.setAttribute('aria-label', label); el.addEventListener('click', fn); el.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fn(); } }); el.style.pointerEvents = 'all'; f.layers.ui.appendChild(el); };
       for (let j = 0; j < n; j++) f.text(j + 0.5, 0.45, String(j), { small: true, c: 'muted' });
       for (let i = 0; i < n; i++) {
@@ -108,8 +110,10 @@
           const h = tab[i][j], diag = i === j;
           const r = f.rect(j + 0.05, -i - 0.95, 0.9, 0.9, { c: h ? 'c3' : 'c2', fo: diag ? 0.5 : 0.22, w: diag ? 2.4 : 0.6, rx: 3 });
           if (diag) r.style.stroke = 'var(--lab-hl)';
-          f.text(j + 0.5, -i - 0.5, h ? '✓' : '∞', { c: 'ink', dy: 5, small: !diag }).style.stroke = 'none';
-          cellEl(r, () => { tab[i][j] = !tab[i][j]; ctx.redraw(); }, T(`Program ${i} on input ${j}: ${h ? 'halts' : 'loops'}`, `プログラム ${i}、入力 ${j}：${h ? '停止' : '無限ループ'}`));
+          f.text(j + 0.5, -i - 0.5, h ? '✓' : '∞', { c: 'ink', dy: 5 }).style.stroke = 'none';
+          // the hit target is a separate invisible rect, so the coloured fill never sits on top of the glyph
+          const hitCell = f.rect(j + 0.05, -i - 0.95, 0.9, 0.9, { c: 'hl', fo: 0.001, nostroke: true });
+          cellEl(hitCell, () => { tab[i][j] = !tab[i][j]; ctx.redraw(); }, T(`Program ${i} on input ${j}: ${h ? 'halts' : 'loops'}`, `プログラム ${i}、入力 ${j}：${h ? '停止' : '無限ループ'}`));
         }
       }
       // D's row
@@ -118,13 +122,22 @@
       for (let j = 0; j < n; j++) {
         f.rect(j + 0.05, yD + 0.05, 0.9, 0.9, { c: d[j] ? 'c3' : 'c2', fo: 0.5, w: 2.2, rx: 3 });
         f.text(j + 0.5, yD + 0.5, d[j] ? '✓' : '∞', { c: 'ink', dy: 5 }).style.stroke = 'none';
-        f.line([[j + 0.5, -j - 0.95], [j + 0.5, yD + 0.95]], { c: 'hl', w: 1, dash: '2 3', op: 0.6, layer: 'under' });
+        f.line([[j + 0.5, -j - 0.95], [j + 0.5, yD + 0.95]], { c: 'hl', w: 1, dash: '2 3', op: 0.35, layer: 'under' });
       }
       if (st.sel !== null) { const i = st.sel; f.rect(-0.05, -i - 1.02, n + 0.1, 1.04, { c: 'hl', fo: 0, w: 2.4, layer: 'over' }); f.rect(i - 0.02, yD - 0.02, 1.04, 1.04, { c: 'hl', fo: 0, w: 3, layer: 'over' }); }
       L.legend(ctx.host, [{ kind: 'fill', c: 'c3', label: T('✓ halts', '✓ 停止する') }, { kind: 'fill', c: 'c2', label: T('∞ runs forever', '∞ 永遠に動く') }, { kind: 'fill', c: 'hl', label: T('the diagonal, which D flips', 'D が反転させる対角線') }]);
       const diffs = tab.filter((row, i) => row[i] !== d[i]).length;
       const note = st.sel === null ? T('Every row disagrees with D somewhere: at its own diagonal cell. So D is none of the listed programs.', 'どの行も、どこかで D と食い違います。自分自身の対角線のマスでです。だから D は並んだどのプログラムでもありません。') : (() => { const i = st.sel, h = tab[i][i]; return T(`Suppose D is P${i}. The table says P${i} on input ${i} ${h ? 'halts' : 'runs forever'}; D on ${i} does the opposite and ${h ? 'runs forever' : 'halts'}. The same program cannot do both.`, `D が P${i} だと仮定します。表によると P${i} は入力 ${i} で${h ? '停止します' : '永遠に動きます'}。D は ${i} でその逆をして${h ? '永遠に動きます' : '停止します'}。同じプログラムが両方をすることはできません。`); })();
-      ctx.readout([{ k: T('programs listed', '並べたプログラム'), v: String(n) }, { k: T('rows that differ from D', 'D と異なる行'), v: `${diffs} / ${n}`, tone: 'good' }, { k: T('where they differ', '異なる場所'), v: T('on the diagonal', '対角線上'), tone: 'key' }], note);
+      // explanation panel beside the grid
+      L.h('p', 'lab-cap', side, T('How to read the table', '表の読み方'));
+      const ul = L.h('ul', '', side); ul.style.cssText = 'font-size:.86rem;color:var(--lab-muted);line-height:1.6;margin:0 4px 10px;padding-left:1.2em';
+      [
+        T('Cell (i, j) says whether program Pᵢ halts on input j: ✓ halts, ∞ runs forever. Any table is allowed, since the argument works for every table.', 'マス (i, j) はプログラム Pᵢ が入力 j で停止するかを示します。✓ は停止、∞ は永遠に動くです。どんな表でも構いません。議論はすべての表に対して成り立ちます。'),
+        T('D is defined from the gold diagonal alone: on input j it does the opposite of what Pⱼ does on j. Its row is the flipped diagonal.', 'D は金色の対角線だけから定義されます。入力 j に対して、Pⱼ が j でするのと逆のことをします。D の行は対角線を反転したものです。'),
+        T('If D were some listed program Pᵢ, cell (i, i) would have to equal its own opposite. So D is missing from the list, however long the list is.', 'もし D が並んだプログラム Pᵢ のどれかなら、マス (i, i) は自分自身の逆に等しくなければなりません。だから、表がどれだけ長くても D は表にありません。'),
+      ].forEach((t) => L.h('li', '', ul, t));
+      const noteEl = L.h('p', 'lab-cap', side, note); noteEl.style.color = 'var(--lab-ink)';
+      ctx.readout([{ k: T('programs listed', '並べたプログラム'), v: String(n) }, { k: T('rows that differ from D', 'D と異なる行'), v: `${diffs} / ${n}`, tone: 'good' }, { k: T('where they differ', '異なる場所'), v: T('on the diagonal', '対角線上'), tone: 'key' }]);
     },
   };
 
@@ -141,7 +154,7 @@
       const del = L.h('button', 'lab-sym is-wide', pal, T('⌫ delete', '⌫ 削除')); del.type = 'button'; del.addEventListener('click', () => { st.seq.pop(); ctx.redraw(); });
       const clr = L.h('button', 'lab-sym is-wide', pal, T('clear', '消去')); clr.type = 'button'; clr.addEventListener('click', () => { st.seq = []; ctx.redraw(); });
       const n = Math.max(seq.length, 3);
-      const f = L.fig(ctx.host, { x: [-0.2, n + 0.2], y: [-0.75, 2.4], equal: true, maxH: 230, axes: false });
+      const f = L.fig(ctx.host, { x: [-0.2, n + 0.2], y: [-0.15, 2.15], equal: true, maxH: 200, axes: false });
       const toks = ['c1', 'c3', 'c2', 'c4'];
       seq.forEach((s, i) => {
         const c = toks[i % 4];
@@ -154,8 +167,13 @@
       // where the digits come from: log10 contributions as one stacked bar
       L.h('p', 'lab-cap', ctx.host, T('Where the digits come from: each symbol’s share of log₁₀ of the number', '桁数の内訳：数の log₁₀ に対する各記号の寄与'));
       const logs = seq.map((s, i) => CODES[s] * Math.log10(ps[i])), tot = logs.reduce((a, b) => a + b, 0);
-      const b = L.fig(ctx.host, { x: [0, Math.max(10, tot * 1.04)], y: [0, 1], aspect: 0.1, minH: 90, maxH: 110, ylabel: '', ticksY: [], xlabel: T('decimal digits', '10 進の桁数') });
-      let acc = 0; logs.forEach((w, i) => { b.rect(acc, 0.15, w, 0.7, { c: toks[i % 4], fo: 0.3, w: 1.2 }); if (w > tot * 0.05) b.text(acc + w / 2, 0.5, seq[i], { c: 'ink', dy: 5 }).style.stroke = 'none'; acc += w; });
+      const b = L.fig(ctx.host, { x: [0, Math.max(10, tot * 1.04)], y: [0, 1.45], aspect: 0.13, minH: 100, maxH: 125, ylabel: '', ticksY: [], xlabel: T('decimal digits', '10 進の桁数') });
+      let acc = 0; logs.forEach((w, i) => {
+        b.rect(acc, 0.12, w, 0.72, { c: toks[i % 4], fo: 0.3, w: 1.2 });
+        if (w > tot * 0.05) b.text(acc + w / 2, 0.48, seq[i], { c: 'ink', dy: 5 }).style.stroke = 'none';
+        else b.text(acc + w / 2, 1.12, seq[i], { c: toks[i % 4], small: true, dy: 4 }); // narrow segment: label above the bar
+        acc += w;
+      });
       const shown = digits.length <= 64 ? digits : `${digits.slice(0, 30)}…${digits.slice(-30)}`;
       const box = L.h('div', 'lab-bignum', ctx.host);
       L.h('div', 'lab-bignum-k', box, T('Gödel number', 'ゲーデル数'));

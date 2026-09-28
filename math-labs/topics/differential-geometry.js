@@ -6,7 +6,7 @@
 
   // ---------- 1. curvature of a plane curve ----------
   const CURVES = [
-    (b) => (t) => { const x = -PI + TAU * t; return [x, 1.2 * b * Math.sin(x)]; },
+    (b) => (t) => { const x = -PI + TAU * t; return [x, 2 * b * Math.sin(x)]; },
     (b) => (t) => [1.6 * Math.cos(TAU * t), 1.6 * (1 - 0.65 * b) * Math.sin(TAU * t)],
     (b) => (t) => { const th = TAU * t, r = (1 + 2 * b * Math.cos(th)) * 1.9 / (1 + b); return [r * Math.cos(th) - 0.75 * b, r * Math.sin(th)]; },
   ];
@@ -43,8 +43,8 @@
       }
       f.arrow(p, [p[0] + tg[0] * 0.8, p[1] + tg[1] * 0.8], { c: 'c1', w: 2.4 });
       f.arrow(p, [p[0] + nn[0] * 0.6, p[1] + nn[1] * 0.6], { c: 'c3', w: 2.4 });
-      f.text(p[0] + tg[0] * 0.8, p[1] + tg[1] * 0.8, 'T', { math: true, c: 'c1', dx: 8, dy: -6 });
-      f.text(p[0] + nn[0] * 0.6, p[1] + nn[1] * 0.6, 'N', { math: true, c: 'c3', dx: 8, dy: -6 });
+      f.text(p[0] + tg[0] * 1.02, p[1] + tg[1] * 1.02, 'T', { math: true, c: 'c1', anchor: 'middle', dy: 5 });
+      f.text(p[0] + nn[0] * 0.8, p[1] + nn[1] * 0.8, 'N', { math: true, c: 'c3', anchor: 'middle', dy: 5 });
       f.handle(p[0], p[1], { c: 'c2', label: T('Point on the curve', '曲線上の点'), onDrag: (x, y) => { let best = 0, bd = Infinity; P.forEach((q, i) => { const dd = (q[0] - x) ** 2 + (q[1] - y) ** 2; if (dd < bd) { bd = dd; best = i; } }); ctx.set('at', ts[best] >= 1 && closed ? 0 : ts[best]); } });
       // right: kappa against arc length
       L.h('p', 'lab-cap', c2, T('Signed curvature κ against arc length s. The area under the graph is the total turning of the tangent.', '弧長 s に対する符号付き曲率 κ。グラフの下の面積が接線の総回転角です。'));
@@ -54,14 +54,15 @@
       g.area(KS.map(([s, kk]) => [s, Math.max(0, kk)]), { c: 'pos', fo: 0.25 });
       g.area(KS.map(([s, kk]) => [s, Math.min(0, kk)]), { c: 'neg', fo: 0.25 });
       g.line(KS, { c: 'ink', w: 2 });
-      const si = sArr[Math.round(at * N)];
+      const iAt = Math.round(at * N), si = sArr[iAt];
+      let running = 0; for (let i = 1; i <= iAt; i++) running += 0.5 * (K[i] + K[i - 1]) * (sArr[i] - sArr[i - 1]);
       g.vline(si, { c: 'hl', w: 1.2 }); g.dot(si, k, { c: 'hl', r: 6.5 });
       g.hover((x) => { let i = sArr.findIndex((s) => s >= x); if (i < 0) return null; return { x: sArr[i], y: K[i], text: `s = ${fmt(sArr[i], 2)}: κ = ${fmt(K[i], 3)}` }; });
       L.legend(ctx.host, [{ c: 'c1', label: T('unit tangent T', '単位接ベクトル T') }, { c: 'c3', label: T('unit normal N (T turned 90° anticlockwise)', '単位法線 N（T を反時計回りに90°回転）') }, { c: 'hl', dash: true, label: T('osculating circle, radius 1/|κ|', '接触円（半径 1/|κ|）') }, { kind: 'fill', c: 'pos', label: T('κ > 0: turning left', 'κ > 0：左に曲がる') }, { kind: 'fill', c: 'neg', label: T('κ < 0: turning right', 'κ < 0：右に曲がる') }]);
       ctx.readout([
         { k: 'κ', v: fmt(k, 3), tone: 'key' },
         { k: T('radius 1/|κ|', '半径 1/|κ|'), v: Math.abs(k) < 1e-3 ? '∞' : fmt(1 / Math.abs(k), 3) },
-        { k: '∫κ ds', v: `${fmt(turning, 3)}${closed ? ` = ${fmt(turning / TAU, 2)} × 2π` : ''}` },
+        closed ? { k: '∮κ ds', v: `${fmt(turning, 3)} = ${fmt(turning / TAU, 2)} × 2π` } : { k: T('∫₀ˢ κ ds up to the point', '点までの ∫₀ˢ κ ds'), v: `${fmt(running, 3)} rad` },
       ], closed ? T('For a closed curve the total turning is 2π times the number of times the tangent goes round, however the curve is bent.', '閉曲線では、曲げ方によらず総回転角は接線が回る回数の 2π 倍になります。') : T('Where the curve is straightest the osculating circle grows without bound; at an inflection κ changes sign.', '曲線がまっすぐに近いほど接触円は大きくなり、変曲点で κ の符号が変わります。'));
     },
   };
@@ -115,13 +116,14 @@
       f.dot(s0[0], s0[1], { c: 'ink', r: 5.5 });
       // right: the coordinate chart
       L.h('p', 'lab-cap', c2, T('The same curves in the (u, v) chart. The coordinate line is straight here; the geodesic is not.', '同じ曲線を (u, v) 座標で表示。座標直線はここでは直線ですが、測地線は曲がります。'));
-      const g = fig(c2, { x: [0, TAU], y: [-PI, PI], aspect: 0.8, maxH: 380, xlabel: T('u (around the axis)', 'u（軸のまわり）'), ylabel: T('v (around the tube)', 'v（管のまわり）'), ticksX: [[0, '0'], [PI / 2, 'π/2'], [PI, 'π'], [3 * PI / 2, '3π/2'], [TAU, '2π']], ticksY: [[-PI, '−π'], [-PI / 2, '−π/2'], [0, '0'], [PI / 2, 'π/2'], [PI, 'π']] });
+      const g = fig(c2, { x: [0, TAU], y: [-PI, PI], aspect: 0.8, maxH: 380, xlabel: T('u (around the axis)', 'u（軸のまわり）'), ticksX: [[0, '0'], [PI / 2, 'π/2'], [PI, 'π'], [3 * PI / 2, '3π/2'], [TAU, '2π']], ticksY: [[-PI, '−π'], [-PI / 2, '−π/2'], [0, '0'], [PI / 2, 'π/2'], [PI, 'π']] });
       g.raster((x, y) => Kt(y) / 1.05 * 0.8, { cmap: 'div', res: 4 });
       const chart = (pts, o) => { let seg = [], last = null; pts.forEach(([u, vv]) => { const q = [wrapU(u), wrap(vv)]; if (last && (Math.abs(q[0] - last[0]) > PI || Math.abs(q[1] - last[1]) > PI)) { if (seg.length > 1) g.line(seg, o); seg = []; } seg.push(q); last = q; }); if (seg.length > 1) g.line(seg, o); };
       if (Math.abs(c0) > TR - Tr) { const vb = Math.acos(L.clamp((Math.abs(c0) - TR) / Tr, -1, 1)); [vb, -vb].forEach((y) => g.hline(y, { c: 'ink', w: 1, dash: '3 4', op: 0.6 })); }
       chart(Cl, { c: 'c2', w: 2 });
       chart(C, { c: 'hl', w: 2.6 });
       g.dot(0, v0, { c: 'ink', r: 5.5 });
+      g.text(TAU, PI, T('v (around the tube)', 'v（管のまわり）'), { anchor: 'end', small: true, c: 'ink', dx: -4, dy: 14 });
       g.text(TAU, 0, T('outer equator', '外側の赤道'), { anchor: 'end', small: true, c: 'ink', dx: -4, dy: -5 });
       g.text(TAU, -PI, T('inner equator', '内側の赤道'), { anchor: 'end', small: true, c: 'ink', dx: -4, dy: -5 });
       const aU = 2 * (-Tr * Math.sin(v0) / rho(v0)) * up0 * vp0, aV = rho(v0) * Math.sin(v0) / Tr * up0 * up0;

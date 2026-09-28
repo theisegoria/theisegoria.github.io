@@ -80,7 +80,7 @@
       const mx = Math.max(...bins.slice(1, -1), 1);
       bins.forEach((c, b) => { if (c) f.rect(1.06, -Em + b * 2 * Em / nb, 0.45 * Math.min(1, c / mx), 2 * Em / nb, { c: 'c4', fo: 0.55, nostroke: true }); });
       f.text(1.28, Em * 0.88, T('DOS', '状態密度'), { small: true, c: 'c4' });
-      if (gap > 0.05) f.text(0, 0, T(`gap 2|t₁ − t₂| = ${fmt(2 * gap, 2)}`, `ギャップ 2|t₁ − t₂| = ${fmt(2 * gap, 2)}`), { small: true, c: 'c2', dy: 4 });
+      if (gap > 0.05) f.text(0, 0, T(`gap 2|t₁ − t₂| = ${fmt(2 * gap, 2)}`, `ギャップ 2|t₁ − t₂| = ${fmt(2 * gap, 2)}`), { small: true, c: 'c2', dy: 4, dx: 8, anchor: 'start' });
       f.dot(v.k, E, { c: 'hl', r: 4 });
       f.handle(v.k, E, { c: 'hl', r: 8, label: T('Bloch state', 'ブロッホ状態'), bounds: [-1, 1, -Em, Em], onDrag: (x, y) => { st.band = y >= 0 ? 1 : -1; ctx.set('k', x, true); ctx.redraw(); } });
       L.legend(ctx.host, [{ c: 'c1', label: T('lower band, site A bars', '下のバンド、サイト A の棒') }, { c: 'c3', label: T('site B bars', 'サイト B の棒') }, { c: 'c2', label: T('upper band', '上のバンド') }, { kind: 'fill', c: 'c4', label: T('density of states', '状態密度') }]);
@@ -117,7 +117,8 @@
       g.hline(Ep, { c: 'hl', w: 1.6, dash: allowed ? '' : '5 4' });
       if (allowed) { const kk = Math.acos(fp) / PI; g.dot(kk, Ep, { c: 'hl', r: 6 }); g.dot(-kk, Ep, { c: 'hl', r: 6 }); }
       L.h('p', 'lab-cap', ctx.host, T('The right-hand side f(E): energies are allowed exactly where the curve stays inside the band |f| ≤ 1', '右辺 f(E)：曲線が帯 |f| ≤ 1 の内側にあるエネルギーだけが許されます'));
-      const h = L.fig(ctx.host, { x: [0, Emax], y: [-3.2, 3.2], aspect: 0.28, minH: 190, maxH: 240, xlabel: 'E', ylabel: 'f(E)' });
+      const h = L.fig(ctx.host, { x: [0, Emax], y: [-3.2, 3.2], aspect: 0.28, minH: 190, maxH: 240, xlabel: 'E' });
+      h.text(Emax * 0.99, 3.2, 'f(E)', { anchor: 'end', dy: 14, small: true, c: 'c1' });
       h.rect(0, -1, Emax, 2, { c: 'c3', fo: 0.12, nostroke: true, layer: 'under' });
       bands.forEach(([lo, hi]) => h.rect(lo, -3.2, hi - lo, 6.4, { c: 'c1', fo: 0.14, nostroke: true, layer: 'under' }));
       h.line(L.sample(0.02, Emax, 1200, (E) => L.clamp(kpF(E, V0, c), -3.5, 3.5)), { c: 'c1', w: 2.2 });
@@ -154,19 +155,20 @@
       // reciprocal space window sized to hold the requested zones
       const bmax = Math.max(Math.hypot(...b1), Math.hypot(...b2));
       const R = 1.25 * Math.sqrt(v.zones * bz / PI) + 0.3 * bmax;
-      L.h('p', 'lab-cap', c2, T('Reciprocal space: zones 1 to n, coloured in turn', '逆格子空間：第 1 から第 n ゾーンを順に色分け'));
+      L.h('p', 'lab-cap', c2, T('Reciprocal space: zones 1 to n, one shade each', '逆格子空間：第 1 から第 n ゾーンをゾーンごとに色分け'));
       const g = L.fig(c2, { x: [-R, R], y: [-0.8 * R, 0.8 * R], equal: true, maxH: 380, grid: false, axes: false });
       const Gs = []; const lim = Math.ceil(2.2 * R / Math.min(Math.hypot(...b1), Math.hypot(...b2))) + 2;
       for (let i = -lim; i <= lim; i++) for (let j = -lim; j <= lim; j++) { if (!i && !j) continue; const gx = i * b1[0] + j * b2[0], gy = i * b1[1] + j * b2[1], g2 = gx * gx + gy * gy; if (g2 < 4 * 2 * R * R) Gs.push([gx, gy, g2]); }
       Gs.sort((p, q) => p[2] - q[2]);
-      const col = L.colours(), toks = ['c1', 'c3', 'c2', 'c4'];
-      const counts = new Array(v.zones + 2).fill(0); let edge = false; const cw = Math.round(g.pw / 2), ch = Math.round(g.ph / 2);
+      const col = L.colours();
+      // one distinct shade per zone: five hues at full strength, then the first three again, paler
+      const ramp = [['c1', 0.66], ['c3', 0.6], ['c2', 0.6], ['c4', 0.6], ['hl', 0.62], ['c1', 0.3], ['c3', 0.28], ['c2', 0.28]];
+      const shade = (z) => { const [tok, s] = ramp[(z - 1) % ramp.length], base = col[tok]; return [0, 1, 2].map((i) => Math.round(col.plate[i] + (base[i] - col.plate[i]) * s)); };
+      const counts = new Array(v.zones + 2).fill(0); let edge = false;
       g.raster((x, y) => {
         const z = zoneIndex(x, y, Gs);
-        if (z > v.zones) return col.plate;
-        const base = col[toks[(z - 1) % 4]], s = 0.62 - 0.06 * Math.floor((z - 1) / 4);
-        return [0, 1, 2].map((i) => col.plate[i] + (base[i] - col.plate[i]) * s);
-      }, { res: 2 });
+        return z > v.zones ? col.plate : shade(z);
+      }, { res: 1.5 });
       // area estimate on a separate uniform grid
       const NX = 260, NY = Math.round(NX * 0.8), dA = (2 * R / NX) * (1.6 * R / NY);
       for (let i = 0; i < NX; i++) for (let j = 0; j < NY; j++) { const x = -R + (i + 0.5) * 2 * R / NX, y = -0.8 * R + (j + 0.5) * 1.6 * R / NY; const z = zoneIndex(x, y, Gs); if (z <= v.zones) { counts[z] += dA; if (i === 0 || j === 0 || i === NX - 1 || j === NY - 1) edge = true; } }
@@ -174,8 +176,8 @@
       g.dot(0, 0, { c: 'ink', r: 4 });
       g.arrow([0, 0], b1, { c: 'c2', w: 2.2 }); g.arrow([0, 0], b2, { c: 'c3', w: 2.2 });
       g.text(b1[0], b1[1], 'b₁', { c: 'c2', dx: 8, dy: 14 }); g.text(b2[0], b2[1], 'b₂', { c: 'c3', dx: 12, dy: -6 });
-      void cw; void ch;
-      L.legend(ctx.host, [{ c: 'c2', label: 'a₁, b₁' }, { c: 'c3', label: 'a₂, b₂' }, { kind: 'fill', c: 'c1', label: T('zone 1, then the colours cycle', '第 1 ゾーン、以降は色が巡回') }]);
+      const legRow = L.legend(ctx.host, [{ c: 'c2', label: 'a₁, b₁' }, { c: 'c3', label: 'a₂, b₂' }].concat(L.seq(v.zones, (i) => ({ kind: 'fill', c: 'c1', label: T(`zone ${i + 1}`, `第 ${i + 1} ゾーン`) }))));
+      L.seq(v.zones, (i) => { const sw = legRow.children[2 + i].querySelector('i'); const rgb = shade(i + 1); sw.style.setProperty('--sw', `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`); });
       const ratios = counts.slice(1, v.zones + 1).map((a) => fmt(a / bz, 2)).join(', ');
       ctx.readout([{ k: '|b₁|, |b₂|', v: `${fmt(Math.hypot(...b1), 3)}, ${fmt(Math.hypot(...b2), 3)}` }, { k: T('zone area (2π)²/|a₁ × a₂|', 'ゾーン面積 (2π)²/|a₁ × a₂|'), v: fmt(bz, 3), tone: 'key' }, { k: T('measured areas ÷ that', '測定面積 ÷ それ'), v: ratios, tone: edge ? 'warn' : 'good' }],
         edge ? T('The highest zone reaches the edge of the window, so its measured area is cut short.', '最も高次のゾーンが描画範囲の端に届いているので、その測定面積は小さく出ます。') : Math.abs(v.ang - 60) < 0.6 && Math.abs(v.len - 1) < 0.006 ? T('Hexagonal lattice: the first zone is a regular hexagon, and the higher zones are stars of triangles.', '六方格子：第一ゾーンは正六角形で、高次のゾーンは三角形からなる星形です。') : T('However the zones splinter, every one has the same area as the first.', 'ゾーンがどれほど細かく割れても、どれも第一ゾーンと同じ面積です。'));

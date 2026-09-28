@@ -1,0 +1,15 @@
+{
+  "quat-sandwich": {
+    "body": [
+      "A quaternion is a number \\(q = w + x\\mathbf i + y\\mathbf j + z\\mathbf k\\) with \\(\\mathbf i^2 = \\mathbf j^2 = \\mathbf k^2 = \\mathbf{ijk} = -1\\). Write a 3D vector \\(v\\) as the pure quaternion \\(x\\mathbf i + y\\mathbf j + z\\mathbf k\\); for two pure quaternions, \\(uv = -u\\cdot v + u\\times v\\). For a unit axis \\(\\mathbf n\\) and an angle \\(\\theta\\), the unit quaternion \\(q = \\cos\\tfrac{\\theta}{2} + \\sin\\tfrac{\\theta}{2}\\,\\mathbf n\\) rotates \\(v\\) by \\(\\theta\\) about \\(\\mathbf n\\) through the product \\(q\\,v\\,q^{*}\\). Drag the tips of \\(v\\) and \\(\\mathbf n\\). The two small panels split \\(v\\) into its part along \\(\\mathbf n\\) and its part across \\(\\mathbf n\\), and show what each factor of the sandwich does to each part.",
+      "四元数は \\(\\mathbf i^2 = \\mathbf j^2 = \\mathbf k^2 = \\mathbf{ijk} = -1\\) を満たす数 \\(q = w + x\\mathbf i + y\\mathbf j + z\\mathbf k\\) です。三次元ベクトル \\(v\\) を純四元数 \\(x\\mathbf i + y\\mathbf j + z\\mathbf k\\) とみなします。二つの純四元数では \\(uv = -u\\cdot v + u\\times v\\) です。単位軸 \\(\\mathbf n\\) と角度 \\(\\theta\\) に対して、単位四元数 \\(q = \\cos\\tfrac{\\theta}{2} + \\sin\\tfrac{\\theta}{2}\\,\\mathbf n\\) は積 \\(q\\,v\\,q^{*}\\) によって \\(v\\) を \\(\\mathbf n\\) のまわりに \\(\\theta\\) だけ回します。\\(v\\) と \\(\\mathbf n\\) の先端をドラッグしてください。二つの小さな図は \\(v\\) を \\(\\mathbf n\\) に沿った成分と \\(\\mathbf n\\) に直交する成分に分け、サンドイッチの各因子がそれぞれに何をするかを示します。"
+    ]
+  },
+  "slerp": {
+    "params": [
+      ["om", "Angle between the orientations Ω (degrees)", "姿勢間の角度 Ω（度）", 10, 180, 1, 120],
+      ["tilt", "Tilt of the turning axis from z (degrees)", "回転軸の z からの傾き（度）", 0, 90, 1, 65],
+      ["path", "Sign of \\(q_B\\)", "\\(q_B\\) の符号", 0, 1, 1, 0, [["shortest (\\(q_A \\cdot q_B \\ge 0\\))", "最短（\\(q_A \\cdot q_B \\ge 0\\)）"], ["long way (flipped)", "遠回り（反転）"]]]
+    ]
+  }
+}

@@ -115,7 +115,9 @@
       f.vline(15, { c: 'c2', dash: '3 3' }); f.text(15.3, 1.85, T('disturbance', '外乱'), { anchor: 'start', small: true, c: 'c2' });
       f.line([[0, 1], [40, 1]], { c: 'ink', w: 1.4, dash: '5 4' });
       f.line(run.map((p) => [p[0], p[1]]), { c: 'c1', w: 2.6 });
-      const g = L.fig(c1, { x: [0, 40], y: [-2, 4], aspect: 0.18, minH: 120, maxH: 150, xlabel: 't', ylabel: 'u', ticksY: [[-2, '−2'], [0, '0'], [2, '2'], [4, '4']] });
+      const us = run.map((p) => p[2]).filter(Number.isFinite);
+      const uLo = L.clamp(Math.min(-0.3, Math.min(...us) - 0.2), -6, 0), uHi = L.clamp(Math.max(1.6, Math.max(...us) + 0.2), 1.6, 8);
+      const g = L.fig(c1, { x: [0, 40], y: [uLo, uHi], aspect: 0.22, minH: 130, maxH: 170, xlabel: 't', ylabel: 'u' });
       g.line(run.map((p) => [p[0], p[2]]), { c: 'c2', w: 1.8 });
       L.h('p', 'lab-cap', c2, T('Closed-loop poles', '閉ループの極'));
       const hq = L.fig(c2, { x: [-3.5, 1], y: [-2.6, 2.6], aspect: 1.05, maxH: 440, xlabel: 'Re s', ylabel: 'Im s' });
@@ -156,7 +158,12 @@
       const pts = ws.map((w) => loopAt(K, tau, w).slice(0, 2));
       nq.line(pts.map(([x, y]) => [x, -y]), { c: 'c1', w: 1.4, dash: '4 3', op: 0.6 });
       nq.line(pts, { c: 'c1', w: 2.6 });
-      [0.3, 1, 3].forEach((w) => { const [x, y] = loopAt(K, tau, w); const [x2, y2] = loopAt(K, tau, w * 1.05); nq.arrow([x, y], [x2, y2], { c: 'c1', w: 2.6 }); nq.text(x, y, `ω=${w}`, { small: true, c: 'muted', dx: 10, dy: -6, anchor: 'start' }); });
+      [0.3, 1, 3].forEach((w) => {
+        const [x, y] = loopAt(K, tau, w); const [x2, y2] = loopAt(K, tau, w * 1.05); nq.arrow([x, y], [x2, y2], { c: 'c1', w: 2.6 });
+        // label on the outer side of the spiral: push it away from the origin, in pixels
+        const px = nq.X(x) - nq.X(0), py = nq.Y(y) - nq.Y(0), m = Math.hypot(px, py) || 1;
+        nq.text(x, y, `ω = ${w}`, { small: true, c: 'muted', dx: 16 * px / m, dy: 16 * py / m + 4, anchor: px < -0.3 * m ? 'end' : px > 0.3 * m ? 'start' : 'middle' });
+      });
       nq.dot(-1, 0, { c: 'c2', r: 6 }); nq.text(-1, 0, '−1', { small: true, c: 'c2', dy: 18 });
       L.legend(ctx.host, [{ c: 'c1', label: T('L(iω), ω > 0', 'L(iω)、ω > 0') }, { c: 'c1', dash: true, label: T('its mirror, ω < 0', 'その鏡像、ω < 0') }, { c: 'c3', label: T('phase', '位相') }, { c: 'hl', label: T('gain crossover and phase margin', 'ゲイン交差と位相余裕') }, { c: 'c2', label: T('phase crossover and gain margin', '位相交差とゲイン余裕') }]);
       ctx.readout([{ k: T('closed loop', '閉ループ'), v: stable ? T('stable', '安定') : T('unstable', '不安定'), tone: stable ? 'good' : 'warn' }, { k: T('encirclements of −1', '−1 を囲む回数'), v: String(N), tone: 'key' }, { k: T('gain margin', 'ゲイン余裕'), v: Number.isFinite(M.gm) ? `×${fmt(M.gm, 3)}` : '∞' }, { k: T('phase margin', '位相余裕'), v: Number.isFinite(M.pm) ? `${fmt(M.pm, 1)}°` : '∞' }],

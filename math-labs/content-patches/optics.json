@@ -1,0 +1,192 @@
+{
+ "lens": {
+  "body": [
+   "Drag the object arrow along the axis, or drag the focal point F′. Three principal rays are traced from the tip of the object, each bent by the thin-lens rule, and a faint fan of other rays shows that every ray from that point meets again at the image. Move the object inside the focal length and the outgoing rays diverge: the image becomes virtual, found by extending them backwards. The graph below follows the image distance as the object moves.",
+   "物体の矢印を軸に沿ってドラッグするか、焦点 F′ をドラッグしてください。物体の先端から3本の主要な光線を薄レンズの規則で曲げて描き、薄い光線の束で、その点から出たすべての光線が像で再び集まることを示します。物体を焦点距離より内側に入れると出ていく光線は広がり、逆向きに延長して得られる虚像になります。下のグラフは物体を動かしたときの像距離を追います。"
+  ],
+  "example": [
+   "With f = 2 and d_o = 5, d_i = 10/3 ≈ 3.33 and m ≈ −0.67: beyond 2f the image is real, inverted and reduced.",
+   "f = 2、d_o = 5 なら d_i = 10/3 ≈ 3.33、m ≈ −0.67 です。2f より遠い物体の像は実像で倒立・縮小になります。"
+  ],
+  "caution": [
+   "The thin-lens model ignores thickness and aberration. Distances are measured from the lens; d_i < 0 means a virtual image on the object side, and a diverging lens has f < 0.",
+   "薄レンズモデルは厚みと収差を無視します。距離はレンズから測り、d_i < 0 は物体側の虚像を表します。発散レンズでは f < 0 です。"
+  ],
+  "params": [
+   [
+    "f",
+    "Focal length |f|",
+    "焦点距離 |f|",
+    1,
+    5,
+    0.1,
+    2
+   ],
+   [
+    "object",
+    "Object distance d_o",
+    "物体距離 d_o",
+    0.5,
+    10,
+    0.1,
+    5
+   ],
+   [
+    "kind",
+    "Lens",
+    "レンズ",
+    0,
+    1,
+    1,
+    0,
+    [
+     [
+      "Converging",
+      "収束"
+     ],
+     [
+      "Diverging",
+      "発散"
+     ]
+    ]
+   ]
+  ]
+ },
+ "interference": {
+  "title": [
+   "2. Slit interference",
+   "2. スリットの干渉"
+  ],
+  "body": [
+   "Light of one wavelength passes through N narrow slits. The upper picture adds the waves from every slit and shows the time-averaged intensity: bright bands leave the slits along the directions where the path difference is a whole number of wavelengths. The graph shows the exact far-field intensity, the product of the multi-slit factor and the single-slit envelope, and the strip above it is what a distant screen would show. Change the wavelength, the slit spacing, the slit width and the number of slits.",
+   "単一波長の光が N 本の細いスリットを通ります。上の図は各スリットからの波を足し合わせた時間平均強度で、光路差が波長の整数倍になる方向に明るい帯が伸びます。グラフは多スリット因子と単スリットの包絡線の積である厳密な遠方強度で、その上の帯は遠くのスクリーンに映る模様です。波長、スリット間隔、スリット幅、スリットの数を変えてください。"
+  ],
+  "formula": "d\\sin\\theta=m\\lambda,\\qquad \\frac{I}{I_0}=\\Big(\\frac{\\sin\\beta}{\\beta}\\Big)^2\\Big(\\frac{\\sin(N\\varphi/2)}{N\\sin(\\varphi/2)}\\Big)^2,\\quad \\varphi=\\frac{2\\pi d\\sin\\theta}{\\lambda},\\ \\beta=\\frac{\\pi a\\sin\\theta}{\\lambda}",
+  "example": [
+   "With λ = 550 nm and d = 2.5 µm, sin θ₁ = 0.22, so the first bright order is at about 12.7°.",
+   "λ = 550 nm、d = 2.5 µm なら sin θ₁ = 0.22 で、1次の明線は約 12.7° です。"
+  ],
+  "caution": [
+   "The graph is the far-field (Fraunhofer) pattern and uses no small-angle approximation. Close to the slits, in the upper picture, the bright bands are hyperbolae that only become straight far away.",
+   "グラフは遠方（フラウンホーファー）の模様で、小角近似は使っていません。上の図のスリット近くでは明るい帯は双曲線で、遠くで初めて直線になります。"
+  ],
+  "question": [
+   "What widens the fringe spacing, and what do extra slits change?",
+   "縞の間隔を広げるものは何で、スリットを増やすと何が変わりますか？"
+  ],
+  "answer": [
+   "A longer wavelength or a smaller slit spacing spreads the orders apart. More slits leave the bright directions where they are but make each one narrower and brighter relative to the background.",
+   "長い波長や小さいスリット間隔は次数どうしを離します。スリットを増やしても明線の方向は変わりませんが、各明線が細く鋭くなります。"
+  ],
+  "params": [
+   [
+    "wavelength",
+    "Wavelength λ (nm)",
+    "波長 λ (nm)",
+    400,
+    700,
+    10,
+    550
+   ],
+   [
+    "spacing",
+    "Slit spacing d (µm)",
+    "スリット間隔 d (µm)",
+    1,
+    5,
+    0.1,
+    2.5
+   ],
+   [
+    "width",
+    "Slit width a (µm)",
+    "スリット幅 a (µm)",
+    0.1,
+    0.8,
+    0.05,
+    0.3
+   ],
+   [
+    "slits",
+    "Number of slits N",
+    "スリット数 N",
+    2,
+    5,
+    1,
+    2,
+    [
+     [
+      "2",
+      "2"
+     ],
+     [
+      "3",
+      "3"
+     ],
+     [
+      "4",
+      "4"
+     ],
+     [
+      "5",
+      "5"
+     ]
+    ]
+   ]
+  ]
+ },
+ "polarization": {
+  "body": [
+   "Unpolarised light passes a vertical polariser and then an analyser at angle θ. Drag the analyser's handle. The field that survives the first filter is projected onto the analyser axis, so its amplitude is multiplied by cos θ and the intensity by cos²θ, which is Malus’s law. Then insert a third filter halfway between them: crossed filters that block everything start passing light again.",
+   "非偏光の光が鉛直な偏光子を通り、次に角度 θ の検光子を通ります。検光子のハンドルをドラッグしてください。最初のフィルターを通った電場は検光子の軸に射影されるので、振幅は cos θ 倍、強度は cos²θ 倍になります。これがマリュスの法則です。次に2枚の間に3枚目のフィルターを入れると、すべてを遮っていた直交フィルターが再び光を通します。"
+  ],
+  "formula": "I=I_0\\cos^2\\theta,\\qquad I_{\\text{3 filters}}=I_0\\cos^4(\\theta/2)",
+  "example": [
+   "Crossed polarisers transmit no light in the ideal model; with a third filter at 45° between them, I = I₀/4.",
+   "理想的には直交した偏光子は光を通しません。間に 45° の3枚目を入れると I = I₀/4 になります。"
+  ],
+  "caution": [
+   "I₀ is the intensity after the first polariser, half of the unpolarised input. Real filters have finite extinction and wavelength dependence.",
+   "I₀ は最初の偏光子を通った後の強度で、非偏光の入射の半分です。実際のフィルターには有限の消光比と波長依存性があります。"
+  ],
+  "params": [
+   [
+    "angle",
+    "Analyser angle θ (degrees)",
+    "検光子角 θ（度）",
+    0,
+    180,
+    1,
+    30
+   ],
+   [
+    "i0",
+    "Intensity after the first polariser I₀",
+    "最初の偏光子の後の強度 I₀",
+    0.2,
+    1,
+    0.05,
+    1
+   ],
+   [
+    "middle",
+    "Filters",
+    "フィルター",
+    0,
+    1,
+    1,
+    0,
+    [
+     [
+      "Two",
+      "2枚"
+     ],
+     [
+      "Three, middle at θ/2",
+      "3枚（中間は θ/2）"
+     ]
+    ]
+   ]
+  ]
+ }
+}

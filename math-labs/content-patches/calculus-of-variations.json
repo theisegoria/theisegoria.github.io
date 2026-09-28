@@ -1,0 +1,171 @@
+{
+ "euler-lagrange": {
+  "body": [
+   "A ball is thrown up at t = 0 and caught at the same height at t = 1, with Lagrangian L = ½q̇² − gq. Bend the trial path q* + εη away from the stationary path, keeping both ends fixed, and choose the shape of the variation η. The action S(ε) has zero slope at ε = 0 for every shape, and the lower strip shows why: the Euler–Lagrange residual q̈ + g vanishes only on the stationary path.",
+   "t = 0 で投げ上げ、t = 1 で同じ高さで受け止めるボールを考えます。ラグランジアンは L = ½q̇² − gq です。両端を固定したまま試行経路 q* + εη を停留経路から曲げ、変分 η の形を選びます。作用 S(ε) はどの形でも ε = 0 で傾きが 0 になります。下の帯はその理由を示します。オイラー・ラグランジュ方程式の残差 q̈ + g が 0 になるのは停留経路だけです。"
+  ],
+  "formula": "\\frac{d}{dt}\\frac{\\partial L}{\\partial\\dot q}-\\frac{\\partial L}{\\partial q}=0,\\qquad \\frac{dS}{d\\varepsilon}\\Big|_{0}=-\\int_0^1\\Big(\\frac{d}{dt}\\frac{\\partial L}{\\partial\\dot q}-\\frac{\\partial L}{\\partial q}\\Big)\\eta\\,dt",
+  "example": [
+   "For L = ½q̇² − gq the equation is q̈ = −g, so with q(0) = q(1) = 0 the stationary path is q* = ½g t(1 − t), here 4t(1 − t) with g = 8.",
+   "L = ½q̇² − gq なら方程式は q̈ = −g で、q(0) = q(1) = 0 のもとで停留経路は q* = ½g t(1 − t)、g = 8 では 4t(1 − t) です。"
+  ],
+  "params": [
+   [
+    "bend",
+    "Bend ε",
+    "曲がり ε",
+    -1,
+    1,
+    0.05,
+    0.3
+   ],
+   [
+    "shape",
+    "Variation η",
+    "変分 η",
+    0,
+    2,
+    1,
+    0,
+    [
+     [
+      "sin πt",
+      "sin πt"
+     ],
+     [
+      "sin 2πt",
+      "sin 2πt"
+     ],
+     [
+      "lopsided",
+      "非対称"
+     ]
+    ]
+   ]
+  ]
+ },
+ "geodesic": {
+  "title": [
+   "2. Geodesics on a sphere",
+   "2. 球面上の測地線"
+  ],
+  "body": [
+   "Two cities share a latitude. On a longitude–latitude map the parallel joining them is a straight line, but it is not the shortest route. Drag the handle to deform the path through a family that runs from the parallel through the great circle and beyond: the length is stationary, and least, at the great circle, which bulges toward the nearer pole on the map.",
+   "2つの都市が同じ緯度にあります。経度・緯度の地図では両者を結ぶ緯線は直線ですが、最短経路ではありません。ハンドルをドラッグして、緯線から大円を経てさらに先まで続く経路の族の中で経路を変形します。長さは大円で停留し最小になります。大円は地図上では近い方の極へ膨らみます。"
+  ],
+  "formula": "\\delta\\int ds=0,\\qquad ds^2=d\\varphi^2+\\cos^2\\!\\varphi\\,d\\lambda^2",
+  "example": [
+   "At latitude 40° with a longitude gap of 100°, the parallel has length 1.337 on the unit sphere, about 8,520 km on Earth, while the great circle has length 1.254, about 7,990 km.",
+   "緯度 40°、経度差 100° では、緯線の長さは単位球面上で 1.337（地球上で約 8,520 km）、大円は 1.254（約 7,990 km）です。"
+  ],
+  "question": [
+   "Why does the shortest route look curved on the map?",
+   "地図上で最短経路が曲がって見えるのはなぜですか？"
+  ],
+  "answer": [
+   "The map stretches east–west distances by 1/cos φ, so a path saves length by moving toward the pole, where degrees of longitude are shorter.",
+   "地図は東西方向の距離を 1/cos φ 倍に引き伸ばしているので、経度1度が短くなる極の方へ寄ると経路が短くなるからです。"
+  ],
+  "params": [
+   [
+    "latitude",
+    "Latitude of both cities (°)",
+    "両都市の緯度（°）",
+    -80,
+    80,
+    5,
+    40
+   ],
+   [
+    "arc",
+    "Longitude gap Δλ (°)",
+    "経度差 Δλ（°）",
+    20,
+    170,
+    5,
+    100
+   ],
+   [
+    "pull",
+    "Pull toward the great circle",
+    "大円への引き寄せ",
+    0,
+    2,
+    0.05,
+    0.5
+   ]
+  ]
+ },
+ "least-action": {
+  "body": [
+   "A harmonic oscillator, L = ½q̇² − ½q², travels from q(0) = 0 to q(T) = 1. Add a variation ε·sin(kπt/T) to the classical path and compare the change of action for three different k. For T < π every variation raises the action. Once T passes π, the first conjugate point, the slowest variation lowers it: the classical path is still stationary, but it is a saddle, not a minimum.",
+   "調和振動子 L = ½q̇² − ½q² が q(0) = 0 から q(T) = 1 まで運動します。古典経路に変分 ε·sin(kπt/T) を加え、3つの k について作用の変化を比べます。T < π ではどの変分も作用を上げます。T が最初の共役点 π を越えると最も遅い変分が作用を下げます。古典経路は停留したままですが、最小ではなく鞍点になります。"
+  ],
+  "formula": "S[q]=\\int_0^T\\tfrac12(\\dot q^2-q^2)\\,dt,\\qquad S[q^*+\\varepsilon\\eta_k]-S[q^*]=\\varepsilon^2\\,\\frac T4\\Big(\\frac{k^2\\pi^2}{T^2}-1\\Big)",
+  "example": [
+   "For T = 3π/2 and k = 1 the coefficient is (3π/8)(4/9 − 1) ≈ −0.65, so the action decreases along that variation even though δS = 0.",
+   "T = 3π/2、k = 1 では係数が (3π/8)(4/9 − 1) ≈ −0.65 なので、δS = 0 であってもこの変分に沿って作用は減少します。"
+  ],
+  "params": [
+   [
+    "amplitude",
+    "Variation amplitude ε",
+    "変分の振幅 ε",
+    -1,
+    1,
+    0.05,
+    0.35
+   ],
+   [
+    "span",
+    "Time span T",
+    "時間幅 T",
+    0,
+    3,
+    1,
+    1,
+    [
+     [
+      "π/2",
+      "π/2"
+     ],
+     [
+      "3π/4",
+      "3π/4"
+     ],
+     [
+      "5π/4",
+      "5π/4"
+     ],
+     [
+      "3π/2",
+      "3π/2"
+     ]
+    ]
+   ],
+   [
+    "mode",
+    "Variation k",
+    "変分 k",
+    1,
+    3,
+    1,
+    1,
+    [
+     [
+      "1",
+      "1"
+     ],
+     [
+      "2",
+      "2"
+     ],
+     [
+      "3",
+      "3"
+     ]
+    ]
+   ]
+  ]
+ }
+}

@@ -94,17 +94,18 @@
       f.text(b * Dt, Dt, `τ = ${fmt(tau, 2)}`, { anchor: b > 0.5 ? 'end' : 'start', dx: b > 0.5 ? -12 : 12, dy: 4, small: true, c: 'c1' });
       f.handle(b * Dt, Dt, { c: 'c1', r: 7, label: T('End of the moving clock’s trip', '運動する時計の到達点'), bounds: [0, 0.99 * Rt, 1, Rt], onDrag: (x, y) => { const t = L.clamp(y, 1, 10); ctx.set('time', t, true); ctx.set('v', Math.min(0.99, x / t)); } });
       // clocks
-      const s = L.stage(c2, { w: 100, h: 64, maxH: 300 });
+      const s = L.stage(c2, { w: 100, h: 90, maxH: 400 });
+      const cy = 45, Rd = 22;
       const dial = (cx, lab, frac, val, c) => {
-        s.circle(cx, 34, 20, { c: 'ink', w: 1.6, fill: 'plate', fo: 1 });
-        for (let k = 0; k < 12; k++) { const q = k / 12 * L.TAU; s.seg([cx + 17.5 * Math.sin(q), 34 + 17.5 * Math.cos(q)], [cx + 20 * Math.sin(q), 34 + 20 * Math.cos(q)], { c: 'muted', w: 1 }); }
-        s.text(cx, 58, lab, { small: true, layer: 'main', dy: 4 });
+        s.circle(cx, cy, Rd, { c: 'ink', w: 1.6, fill: 'plate', fo: 1 });
+        for (let k = 0; k < 12; k++) { const q = k / 12 * L.TAU; s.seg([cx + (Rd - 3) * Math.sin(q), cy + (Rd - 3) * Math.cos(q)], [cx + Rd * Math.sin(q), cy + Rd * Math.cos(q)], { c: 'muted', w: 1 }); }
+        s.text(cx, cy + Rd + 7, lab, { small: true, layer: 'main', dy: 4 });
         return (u) => {
           const a = Math.min(frac * u, 0.99999) * L.TAU;
-          const pts = [[cx, 34]].concat(L.seq(61, (i) => { const q = a * i / 60; return [cx + 19 * Math.sin(q), 34 + 19 * Math.cos(q)]; }));
+          const pts = [[cx, cy]].concat(L.seq(61, (i) => { const q = a * i / 60; return [cx + (Rd - 1.5) * Math.sin(q), cy + (Rd - 1.5) * Math.cos(q)]; }));
           if (a > 0.01) s.poly(pts, { c, fo: 0.3, w: 0, layer: 'over' });
-          s.line([[cx, 34], [cx + 16 * Math.sin(a), 34 + 16 * Math.cos(a)]], { c, w: 3, layer: 'over' });
-          s.text(cx, 8, `${val} = ${fmt(frac * u * Dt, 2)}`, { small: true, c, layer: 'over', dy: 4 });
+          s.line([[cx, cy], [cx + (Rd - 5) * Math.sin(a), cy + (Rd - 5) * Math.cos(a)]], { c, w: 3, layer: 'over' });
+          s.text(cx, cy - Rd - 9, `${val} = ${fmt(frac * u * Dt, 2)}`, { small: true, c, layer: 'over', dy: 4 });
         };
       };
       const dA = dial(26, T('clock at rest', '静止した時計'), 1, 't', 'ink');
@@ -135,7 +136,7 @@
       const row = L.h('div', 'lab-row', ctx.host);
       const c1 = L.h('div', 'lab-col', row), c2 = L.h('div', 'lab-col', row);
       L.h('p', 'lab-cap', c1, T('Worldlines in the home frame (years and light years)', '地球の系での世界線（年と光年）'));
-      const xr = Math.max(Dd * 1.3, TT * 0.3);
+      const xr = Math.max(Dd * 1.3, Dd + TT * 0.24, TT * 0.3);
       const f = L.fig(c1, { x: [-0.45 * xr, xr], y: [0, TT * 1.04], equal: true, maxH: 470, xlabel: T('x (light years)', 'x（光年）'), ylabel: T('t (years)', 't（年）') });
       f.line([[0, 0], [TT, TT]], { c: 'hl', w: 1.2, dash: '6 4', op: 0.8 });
       // lines of simultaneity of the traveller at the turnaround
@@ -148,7 +149,7 @@
       f.line([[0, 0], [Dd, half], [0, TT]], { c: 'c1', w: 3 });
       for (let k = 1; k < TT - 1e-9; k++) f.dot(0, k, { c: 'ink', r: 3 });
       for (let k = 1; k < tauT - 1e-9; k++) { const tt = k * g; const x = tt <= half ? b * tt : b * (TT - tt); f.dot(x, tt, { c: 'c1', r: 3 }); }
-      f.text(Dd, half, T(`turn at ${fmt(Dd, 2)} ly`, `折り返し ${fmt(Dd, 2)} 光年`), { anchor: Dd > 0.6 * xr ? 'end' : 'start', dx: Dd > 0.6 * xr ? -12 : 12, dy: Dd > 0.6 * xr ? -12 : 4, small: true, c: 'c1' });
+      f.text(Dd, half, T(`turn at ${fmt(Dd, 2)} ly`, `折り返し ${fmt(Dd, 2)} 光年`), { anchor: 'start', dx: 12, dy: -10, small: true, c: 'c1' });
       f.handle(Dd, half, { c: 'c1', r: 8, label: T('Turnaround event', '折り返しの事象'), bounds: [0.05, xr * 1.5, 1, 10], onDrag: (x, y) => { const h = L.clamp(y, 1, 10); ctx.set('time', 2 * h, true); ctx.set('v', L.clamp(x / h, 0.1, 0.95)); } });
       // right: bookkeeping bars
       L.h('p', 'lab-cap', c2, T('Two ways to add up the home twin’s age at the reunion', '再会時の地球側の年齢を数える2つの方法'));

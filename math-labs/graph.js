@@ -73,7 +73,11 @@
     'elliptic-curves': ['complex-analysis', 'hyperbolic-geometry'],
     'atomic-physics': ['optics', 'lie-groups'],
     'quaternions': ['lie-groups', 'rigid-body-dynamics', 'complex-analysis'],
-    'pushforward-pullback': ['probability-inference', 'stochastic-processes', 'statistical-mechanics']
+    'pushforward-pullback': ['probability-inference', 'stochastic-processes', 'statistical-mechanics'],
+    'knot-theory': ['graph-theory', 'lie-groups', 'hyperbolic-geometry'],
+    'quantum-information': ['linear-algebra', 'probability-inference', 'quaternions'],
+    'cosmology': ['statistical-mechanics', 'differential-geometry', 'special-relativity'],
+    'fractal-geometry': ['complex-analysis', 'stochastic-processes', 'hyperbolic-geometry']
   };
   // Topics named in each topic's own prerequisite line (content.json "prerequisite").
   const PREREQ = {
@@ -98,7 +102,11 @@
     'elliptic-curves': ['group-theory', 'number-theory'],               // Group theory, modular arithmetic and complex numbers
     'atomic-physics': ['quantum-mechanics'],                             // Quantum mechanics
     'quaternions': ['linear-algebra'],                                   // Vectors, dot and cross products, rotation matrices and complex numbers
-    'pushforward-pullback': ['differential-forms', 'measure-theory']    // Multivariable calculus, Jacobians, measures and differential forms
+    'pushforward-pullback': ['differential-forms', 'measure-theory'],   // Multivariable calculus, Jacobians, measures and differential forms
+    'knot-theory': ['algebraic-topology', 'group-theory'],              // Algebraic topology and group theory
+    'quantum-information': ['quantum-mechanics', 'information-theory'], // Quantum mechanics and information theory
+    'cosmology': ['general-relativity', 'thermodynamics'],             // General relativity and thermodynamics
+    'fractal-geometry': ['measure-theory', 'dynamical-systems']         // Measure theory and dynamical systems
   };
   // Where each group settles, as fractions of the stage.
   const ANCHOR = {

@@ -113,14 +113,14 @@
       L.h('p', 'lab-cap', c2, T(`Radial probability r²R² for n = ${n}; the solid curve is l = ${l}`, `n = ${n} の動径確率 r²R²。実線が l = ${l} です`));
       const curves = L.seq(n, (ll) => L.sample(0, R, 400, (r) => r * r * radial(n, ll, r) ** 2));
       const ymax = Math.max(...curves.flat().map((q) => q[1]));
-      const g = L.fig(c2, { x: [0, R], y: [0, ymax * 1.18], aspect: 0.78, maxH: 360, xlabel: T('r (Bohr radii)', 'r（ボーア半径）'), ticksY: [] });
+      const g = L.fig(c2, { x: [0, R], y: [0, ymax * 1.3], aspect: 0.78, maxH: 360, xlabel: T('r (Bohr radii)', 'r（ボーア半径）'), ylabel: T('r²R² (arbitrary units)', 'r²R²（任意単位）'), ticksY: [] });
       curves.forEach((cv, ll) => { if (ll !== l) g.line(cv, { c: 'muted', w: 1.2, dash: '4 3', op: 0.8 }); });
       g.area(curves[l], { c: 'c1', fo: 0.25 }); g.line(curves[l], { c: 'c1', w: 2.6 });
       rn.forEach((r) => g.dot(r, 0, { c: 'ink', r: 4, hollow: true }));
-      const mr = meanR(n, l); g.vline(mr, { c: 'c2', w: 1.6, dash: false }); g.text(mr, ymax * 1.1, '⟨r⟩', { math: true, small: true, dx: 5, anchor: 'start', c: 'c2' });
+      const mr = meanR(n, l); g.vline(mr, { c: 'c2', w: 1.6, dash: false }); g.text(mr, ymax * 1.14, '⟨r⟩', { math: true, small: true, dx: 6, dy: 4, anchor: 'start', c: 'c2' });
       if (prr <= R) g.vline(prr, { c: 'hl', w: 1.4, dash: '3 3' });
       g.hover((x) => (x < 0 || x > R ? null : { x, y: x * x * radial(n, l, x) ** 2, text: `r = ${fmt(x, 2)}  r²R² = ${fmt(x * x * radial(n, l, x) ** 2, 3)}` }));
-      L.legend(ctx.host, [{ kind: 'fill', c: 'pos', label: T('ψ > 0', 'ψ > 0') }, { kind: 'fill', c: 'neg', label: T('ψ < 0', 'ψ < 0') }, { c: 'ink', dash: true, label: T('nodes', '節') }, { c: 'c2', label: '⟨r⟩' }]);
+      L.legend(ctx.host, [{ kind: 'fill', c: 'pos', label: T('ψ > 0', 'ψ > 0') }, { kind: 'fill', c: 'neg', label: T('ψ < 0', 'ψ < 0') }, { c: 'ink', dash: true, label: T('nodes', '節') }, { c: 'c1', label: T(`r²R² for l = ${l}`, `l = ${l} の r²R²`) }, { c: 'muted', dash: true, label: T(`the other l with n = ${n}`, `n = ${n} の他の l`) }, { c: 'c2', label: '⟨r⟩' }]);
       const num = integrateR(n, l, (r, Rv) => r * r * r * Rv * Rv);
       ctx.readout([{ k: T('orbital', '軌道'), v: orbitalName(n, l, m) }, { k: 'Eₙ', v: `${fmt(level(n), 3)} eV`, tone: 'key' }, { k: T('radial nodes n − l − 1', '動径方向の節 n − l − 1'), v: String(n - l - 1) }, { k: T('angular nodes l', '角度方向の節 l'), v: String(l) }, { k: '⟨r⟩ = (3n² − l(l+1))/2', v: fmt(mr, 3) }, { k: T('⟨r⟩ by integration', '積分で求めた ⟨r⟩'), v: fmt(num, 3), tone: Math.abs(num - mr) < 1e-3 ? 'good' : 'warn' }, { k: T('probe |ψ|²', '探針での |ψ|²'), v: `${fmt(pv * pv, 3)} a₀⁻³` }],
         dead ? T('This slice lies in a nodal plane of the azimuthal factor, so ψ vanishes on all of it. Turn the slice.', 'この断面は方位角因子の節面に一致しているので、ψ は断面全体で 0 です。断面を回してください。')
@@ -140,12 +140,12 @@
       L.h('p', 'lab-cap', c1, T('Energy levels Eₙ = −13.6 eV / n², to scale from the series’ lower level up. Every arrow ending on the same level belongs to one series.', 'エネルギー準位 Eₙ = −13.6 eV / n²。系列の下の準位から上を縮尺どおりに描いています。同じ準位で終わる矢印はすべて一つの系列に属します。'));
       const EL = level(nl), YB = EL * 1.1, YT = -EL * 0.1;
       const f = L.fig(c1, { x: [0, 10], y: [YB, YT], aspect: 1.02, maxH: 470, grid: false, ylabel: T('energy (eV)', 'エネルギー (eV)'), ticksX: [], ticksY: [nl, nl + 1, nl + 2].map((k) => [level(k), fmt(level(k), 2)]).concat([[0, '0']]) });
-      for (let k = nl; k <= NMAX; k++) f.line([[0.4, level(k)], [8.6, level(k)]], { c: 'ink', w: k <= nl + 3 ? 1.4 : 0.8, op: k <= nl + 3 ? 0.85 : 0.45, layer: 'under' });
-      f.line([[0.4, 0], [8.6, 0]], { c: 'muted', w: 1.2, dash: '4 3', layer: 'under' });
-      for (let k = nl; k <= nl + 2; k++) f.text(8.75, level(k), `n = ${k}`, { small: true, anchor: 'start', dy: 4 });
-      if (nl > 1) f.text(4.5, YB, T(`n = 1 lies further down, at −13.6 eV`, `n = 1 はさらに下、−13.6 eV にあります`), { small: true, c: 'muted', dy: -6 });
-      f.text(8.75, 0.25, T('n = ∞ (ionised)', 'n = ∞（電離）'), { small: true, anchor: 'start', dy: 4 });
-      const xs = (k) => 1.1 + (k - nl - 1) * (6.8 / Math.max(1, NMAX - nl - 1));
+      for (let k = nl; k <= NMAX; k++) f.line([[0.4, level(k)], [6.9, level(k)]], { c: 'ink', w: k <= nl + 3 ? 1.4 : 0.8, op: k <= nl + 3 ? 0.85 : 0.45, layer: 'under' });
+      f.line([[0.4, 0], [6.9, 0]], { c: 'muted', w: 1.2, dash: '4 3', layer: 'under' });
+      for (let k = nl; k <= nl + 2; k++) f.text(7.05, level(k), `n = ${k}`, { small: true, anchor: 'start', dy: 4, layer: 'under' });
+      if (nl > 1) f.text(3.65, YB, T(`n = 1 lies further down, at −13.6 eV`, `n = 1 はさらに下、−13.6 eV にあります`), { small: true, c: 'muted', dy: -6, layer: 'under' });
+      f.text(7.05, 0, T('n = ∞ (ionised)', 'n = ∞（電離）'), { small: true, anchor: 'start', dy: -5, layer: 'under' });
+      const xs = (k) => 0.9 + (k - nl - 1) * (5.6 / Math.max(1, NMAX - nl - 1));
       for (let k = nl + 1; k <= NMAX; k++) if (k !== nu) f.arrow([xs(k), level(k)], [xs(k), level(nl)], { c: 'c1', w: 1.2, op: 0.5, layer: 'under' });
       const x0 = xs(nu), yU = level(nu), yL = level(nl), ym = (yU + yL) / 2;
       const per = 0.22 + 0.32 * (Math.log10(lam) - 2);
@@ -154,7 +154,8 @@
         const a = Math.min(1, tt), y = yU + (yL - yU) * a;
         f.arrow([x0, yU], [x0, yU + (yL - yU) * Math.max(a, 0.02)], { c: 'hl', w: 3.2 });
         f.dot(x0, y, { c: 'ink', r: 6, layer: 'over' });
-        if (tt > 1) { const len = Math.min(1, (tt - 1) / 1.2) * (8.3 - x0 - 0.25); f.line(L.sample(0, len, 220, (s) => [x0 + 0.25 + s, ym + 0.32 * Math.sin(2 * PI * s / per)]), { c: 'hl', w: 2 }); }
+        // the emitted photon travels through the free space to the right of the level diagram
+        if (tt > 1) { const len = Math.min(1, (tt - 1) / 1.2) * 1.8, amp = 0.07 * Math.abs(YB - YT); f.line(L.sample(0, len, 220, (s) => [8.0 + s, ym + amp * Math.sin(2 * PI * s / per)]), { c: 'hl', w: 2 }); f.text(8.9, ym + amp, 'hν', { math: true, small: true, c: 'hl', dy: -6 }); }
       };
       ctx.state.anim = L.animator(c1, (dt, tt) => { draw(tt); if (tt > 2.2) return false; }, { autoplay: false, once: true, initialT: 99, playLabel: T('Drop the electron', '電子を落とす') });
       // the spectrum on a logarithmic wavelength axis
@@ -172,7 +173,7 @@
       L.legend(ctx.host, [{ c: 'hl', label: T('chosen transition', '選んだ遷移') }, { c: 'c1', label: T(`${SERIES[nl - 1][0]} series`, `${SERIES[nl - 1][1]}系列`) }, { c: 'c1', dash: true, label: T('series limit', '系列の極限') }, { c: 'muted', label: T('other series', '他の系列') }]);
       const name = nu - nl <= GREEK.length ? `${SERIES[nl - 1][0]} ${GREEK[nu - nl - 1]}` : `${SERIES[nl - 1][0]} ${nu} → ${nl}`;
       ctx.readout([{ k: T('transition', '遷移'), v: `n = ${nu} → ${nl}` }, { k: T('line', '線'), v: nl === 2 && nu - nl <= 5 ? `H${GREEK[nu - nl - 1]}` : name }, { k: T('photon energy', '光子のエネルギー'), v: `${fmt(E, 4)} eV` }, { k: T('wavelength (vacuum)', '波長（真空）'), v: `${fmt(lam, 2)} nm`, tone: 'key' }, { k: T('region', '領域'), v: region(lam) }, { k: T('series limit', '系列の極限'), v: `${fmt(seriesLimit(nl), 1)} nm` }],
-        T(`1/λ = R_H (1/${nl}² − 1/${nu}²). As n grows the levels crowd towards 0 and the lines crowd towards the series limit, beyond which the spectrum is continuous because the electron is freed.`, `1/λ = R_H (1/${nl}² − 1/${nu}²) です。n が大きくなると準位は 0 に向かって詰まり、線は系列の極限に向かって詰まります。その先では電子が自由になるので、スペクトルは連続になります。`));
+        T(`1/λ = Rʜ (1/${nl}² − 1/${nu}²). As n grows the levels crowd towards 0 and the lines crowd towards the series limit, beyond which the spectrum is continuous because the electron is freed.`, `1/λ = Rʜ (1/${nl}² − 1/${nu}²) です。n が大きくなると準位は 0 に向かって詰まり、線は系列の極限に向かって詰まります。その先では電子が自由になるので、スペクトルは連続になります。`));
     },
   };
 
@@ -185,18 +186,19 @@
       const keep = (c) => pol === 0 || (pol === 1 ? c.dm === 0 : c.dm !== 0);
       const comps = lines.map((ln) => { const cs = components(ln), mx = Math.max(...cs.map((c) => c.strength)); return { ln, cs: cs.map((c) => ({ ...c, rel: c.strength / mx })) }; });
       const row = L.h('div', 'lab-row', ctx.host), c1 = L.h('div', 'lab-col', row), c2 = L.h('div', 'lab-col', row);
-      L.h('p', 'lab-cap', c1, T('Sublevels split by g_J m_J μ_B B. Splittings are exaggerated and the energy gaps are not to scale.', '副準位は g_J m_J μ_B B だけ分裂します。分裂は誇張してあり、準位間隔は縮尺どおりではありません。'));
+      L.h('p', 'lab-cap', c1, T('Sublevels split by gⱼ mⱼ μʙ B. Splittings are exaggerated and the energy gaps are not to scale. Levels of a deselected line are greyed.', '副準位は gⱼ mⱼ μʙ B だけ分裂します。分裂は誇張してあり、準位間隔は縮尺どおりではありません。選んでいない線の準位は灰色です。'));
       const f = L.fig(c1, { x: [0, 10], y: [0, 10], aspect: 0.95, maxH: 440, axes: false, grid: false });
       const Y0 = { P32: 8.5, P12: 6.5, S12: 1.6 }, K = 0.3, DX = { P32: 0.35, P12: -0.35, S12: 0 }, xm = (m, lv = 'S12') => 5.6 + 1.6 * m + DX[lv];
       const pos = (lv, m) => [xm(m, lv), Y0[lv] + K * lande(LEVELS[lv]) * m * B];
+      const active = new Set(['S12', ...lines.map((ln) => DLINES[ln].up)]);
       for (const lv of Object.keys(LEVELS)) {
-        const J = LEVELS[lv].J, g = lande(LEVELS[lv]);
-        f.line([[1.9, Y0[lv]], [9.4, Y0[lv]]], { c: 'muted', w: 1, dash: '3 4', layer: 'under' });
-        for (let m = -J; m <= J; m++) { const [x, y] = pos(lv, m); f.seg([x - 0.55, y], [x + 0.55, y], { c: 'ink', w: 2.6 }); }
-        f.text(0.1, Y0[lv], LEVELS[lv].name, { small: true, anchor: 'start', dy: 4 });
-        f.text(0.1, Y0[lv] - 0.55, `g_J = ${g === 2 ? '2' : g > 1 ? '4/3' : '2/3'}`, { small: true, anchor: 'start', dy: 4, c: 'muted' });
+        const J = LEVELS[lv].J, g = lande(LEVELS[lv]), on = active.has(lv);
+        f.line([[1.9, Y0[lv]], [9.4, Y0[lv]]], { c: 'muted', w: 1, dash: '3 4', layer: 'under', op: on ? 1 : 0.4 });
+        for (let m = -J; m <= J; m++) { const [x, y] = pos(lv, m); f.seg([x - 0.55, y], [x + 0.55, y], { c: on ? 'ink' : 'muted', w: on ? 2.6 : 1.6, op: on ? 1 : 0.45 }); }
+        f.text(0.1, Y0[lv], LEVELS[lv].name, { small: true, anchor: 'start', dy: 4, c: on ? 'ink' : 'muted' });
+        f.text(0.1, Y0[lv] - 0.55, `gⱼ = ${g === 2 ? '2' : g > 1 ? '4/3' : '2/3'}`, { small: true, anchor: 'start', dy: 4, c: 'muted' });
       }
-      for (let m = -0.5; m <= 0.5; m++) f.text(xm(m), Y0.S12 - 0.75, m > 0 ? 'm = +½' : 'm = −½', { small: true, c: 'muted' });
+      for (let m = -0.5; m <= 0.5; m++) f.text(xm(m), Y0.S12 - 0.75, m > 0 ? 'mⱼ = +½' : 'mⱼ = −½', { small: true, c: 'muted' });
       for (const { ln, cs } of comps) for (const c of cs) if (keep(c)) {
         const a = pos(DLINES[ln].up, c.mu), b = pos('S12', c.ml);
         f.arrow([a[0], a[1] - 0.12], [b[0], b[1] + 0.14], { c: DMC[c.dm], w: 1 + 1.8 * c.rel, op: 0.35 + 0.6 * c.rel });
@@ -216,9 +218,9 @@
       g.handle(B, y0 + 0.05 * (y1 - y0), { c: 'hl', axis: 'x', bounds: [0, 2, y0, y1], label: T('Magnetic field', '磁場'), onDrag: (x) => ctx.set('B', x) });
       L.legend(ctx.host, [{ c: 'c1', label: T('π: Δm = 0', 'π：Δm = 0') }, { c: 'c2', label: 'σ: Δm = +1' }, { c: 'c4', label: 'σ: Δm = −1' }, { c: 'ink', label: T('thicker = stronger (3j symbol squared)', '太いほど強い（3j 記号の二乗）') }]);
       const unit = DLINES.D2.lam ** 2 / HC * MUB * B * 1000, spread = comps.map(({ ln, cs }) => { const s = cs.map((c) => c.shift); return `${ln}: ${fmt((Math.max(...s) - Math.min(...s)) * DLINES[ln].lam ** 2 / HC * MUB * B * 1000, 1)} pm`; }).join(', ');
-      ctx.readout([{ k: 'B', v: `${fmt(B, 2)} T` }, { k: 'μ_B B', v: `${fmt(MUB * B * 1e6, 2)} μeV`, tone: 'key' }, { k: T('Δλ per unit of μ_B B', 'μ_B B あたりの Δλ'), v: `${fmt(unit, 2)} pm` }, { k: T('components', '成分の数'), v: comps.map(({ ln, cs }) => `${ln}: ${cs.filter(keep).length}`).join(', ') }, { k: T('total spread', '全体の広がり'), v: spread, tone: 'good' }],
+      ctx.readout([{ k: 'B', v: `${fmt(B, 2)} T` }, { k: 'μʙ B', v: `${fmt(MUB * B * 1e6, 2)} μeV`, tone: 'key' }, { k: T('Δλ per unit of μʙ B', 'μʙ B あたりの Δλ'), v: `${fmt(unit, 2)} pm` }, { k: T('components', '成分の数'), v: comps.map(({ ln, cs }) => `${ln}: ${cs.filter(keep).length}`).join(', ') }, { k: T('total spread', '全体の広がり'), v: spread, tone: 'good' }],
         B < 0.005 ? T('With no field every sublevel of a level has the same energy, so each D line is a single wavelength.', '磁場がなければ一つの準位の副準位はすべて同じエネルギーなので、D 線はそれぞれ一つの波長です。')
-          : T('Because g_J differs between the upper and lower levels, the shifts do not collapse onto three values as in the normal Zeeman effect: D1 splits into 4 lines at ±2/3 and ±4/3 units, D2 into 6 at ±1/3, ±1 and ±5/3. This weak-field picture holds while μ_B B is far below the 2.1 meV fine-structure splitting, that is for B well under about 37 T.', '上の準位と下の準位で g_J が異なるので、正常ゼーマン効果のように三つの値にまとまりません。D1 は ±2/3 と ±4/3 単位の 4 本に、D2 は ±1/3、±1、±5/3 の 6 本に分かれます。この弱磁場の描像は、μ_B B が微細構造分裂 2.1 meV よりはるかに小さい間、つまり B がおよそ 37 T より十分小さい間成り立ちます。'));
+          : T('Because gⱼ differs between the upper and lower levels, the shifts do not collapse onto three values as in the normal Zeeman effect: D1 splits into 4 lines at ±2/3 and ±4/3 units, D2 into 6 at ±1/3, ±1 and ±5/3. This weak-field picture holds while μʙ B is far below the 2.1 meV fine-structure splitting, that is for B well under about 37 T.', '上の準位と下の準位で gⱼ が異なるので、正常ゼーマン効果のように三つの値にまとまりません。D1 は ±2/3 と ±4/3 単位の 4 本に、D2 は ±1/3、±1、±5/3 の 6 本に分かれます。この弱磁場の描像は、μʙ B が微細構造分裂 2.1 meV よりはるかに小さい間、つまり B がおよそ 37 T より十分小さい間成り立ちます。'));
     },
   };
 })();

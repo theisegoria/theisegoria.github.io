@@ -5,6 +5,7 @@
   const lg = Math.log2;
   const xlog = (x) => (x > 0 ? -x * lg(x) : 0);
   const H2 = (p) => xlog(p) + xlog(1 - p);
+  const bits = (x, d) => `${fmt(x, d)} ${Math.abs(x - 1) < 5e-5 ? T('bit', 'ビット') : T('bits', 'ビット')}`;
 
   D.entropy = {
     render(ctx, v) {
@@ -27,15 +28,15 @@
       lab(0, p, s1, `“1”: ${fmt(s1, 2)} ${T('bits', 'ビット')}`, 'c1');
       lab(p, q, s0, `“0”: ${fmt(s0, 2)} ${T('bits', 'ビット')}`, 'c2');
       L.h('p', 'lab-cap', c2, T('Binary entropy H(p); drag the point', '二値エントロピー H(p)。点をドラッグできます'));
-      const g = L.fig(c2, { x: [0, 1], y: [0, 1.1], aspect: 0.8, maxH: 360, xlabel: T('probability of one p', '1の確率 p'), ylabel: 'H(p)' });
+      const g = L.fig(c2, { x: [0, 1], y: [0, 1.2], aspect: 0.8, maxH: 360, xlabel: T('probability of one p', '1の確率 p'), ylabel: 'H(p)' });
       g.area(L.sample(0, 1, 300, H2), { c: 'c4', fo: 0.08 });
       g.line(L.sample(0, 1, 300, H2), { c: 'c4', w: 2.6 });
       g.seg([p, 0], [p, H], { c: 'hl', w: 1.6, dash: '3 3' });
-      g.handle(p, H, { c: 'hl', axis: 'x', bounds: [0.01, 0.99, 0, 1.1], label: T('Probability of one', '1の確率'), onDrag: (x) => ctx.set('p', x) });
+      g.handle(p, H, { c: 'hl', axis: 'x', bounds: [0.01, 0.99, 0, 1.2], label: T('Probability of one', '1の確率'), onDrag: (x) => ctx.set('p', x) });
       g.text(p, H, fmt(H, 3), { dy: -16, anchor: p > 0.8 ? 'end' : p < 0.2 ? 'start' : 'middle' });
-      g.text(0.5, 1, T('fair coin: 1 bit', '公平なコイン：1ビット'), { dy: -10, small: true, c: 'muted' });
+      g.text(0.5, 1, T('fair coin: 1 bit', '公平なコイン：1ビット'), { dx: p <= 0.5 ? 10 : -10, anchor: p <= 0.5 ? 'start' : 'end', dy: -5, small: true, c: 'muted' });
       L.legend(ctx.host, [{ kind: 'fill', c: 'c1', label: T('outcome 1', '結果 1') }, { kind: 'fill', c: 'c2', label: T('outcome 0', '結果 0') }, { c: 'hl', dash: true, label: T('average surprise = entropy', '平均の驚き = エントロピー') }, { c: 'c4', label: 'H(p)' }]);
-      ctx.readout([{ k: 'H(X)', v: `${fmt(H, 4)} ${T('bits', 'ビット')}`, tone: 'key' }, { k: T('surprise of 1', '1の驚き'), v: fmt(s1, 3) }, { k: T('surprise of 0', '0の驚き'), v: fmt(s0, 3) }],
+      ctx.readout([{ k: 'H(X)', v: bits(H, 4), tone: 'key' }, { k: T('surprise of 1', '1の驚き'), v: fmt(s1, 3) }, { k: T('surprise of 0', '0の驚き'), v: fmt(s0, 3) }],
         T('A rare outcome is very surprising but seldom happens, so its area stays small.', 'まれな結果は驚きが大きいものの、めったに起こらないため面積は小さいままです。'));
     },
   };
@@ -79,7 +80,7 @@
       g.text(pi, (HY + HYX) / 2, `I = ${fmt(I, 3)}`, { dx: pi > 0.6 ? -8 : 8, anchor: pi > 0.6 ? 'end' : 'start', dy: 4, small: true });
       if (C > 0.02) { g.dot(0.5, 1, { c: 'ink', r: 3.5 }); g.text(0.5, 1, `C = ${fmt(C, 3)}`, { dy: -14, small: true }); }
       L.legend(ctx.host, [{ c: 'c1', label: 'H(Y)' }, { c: 'c2', label: 'H(Y | X) = H(f)' }, { kind: 'fill', c: 'hl', label: 'I(X; Y) = H(Y) − H(Y | X)' }, { kind: 'fill', c: 'c2', label: T('bit flipped by the channel', '通信路で反転したビット') }]);
-      ctx.readout([{ k: 'H(Y)', v: fmt(HY, 3) }, { k: 'H(Y | X)', v: fmt(HYX, 3) }, { k: 'I(X; Y)', v: fmt(I, 3), tone: 'key' }, { k: T('capacity 1 − H(f)', '容量 1 − H(f)'), v: fmt(C, 3) }, { k: T('flips in the sample', '標本での反転'), v: `${flips.filter(Boolean).length} / ${N}` }],
+      ctx.readout([{ k: 'H(Y)', v: fmt(HY, 3) }, { k: 'H(Y | X) = H(f)', v: fmt(HYX, 3) }, { k: T(`I(X; Y) at P(X = 1) = ${fmt(pi, 2)}`, `P(X = 1) = ${fmt(pi, 2)} での I(X; Y)`), v: fmt(I, 3), tone: 'key' }, { k: T('capacity 1 − H(f), at P(X = 1) = 0.5', '容量 1 − H(f)（P(X = 1) = 0.5 で）'), v: fmt(C, 3), tone: Math.abs(pi - 0.5) < 1e-9 ? 'good' : undefined }, { k: T('flips in the sample', '標本での反転'), v: `${flips.filter(Boolean).length} / ${N}` }],
         T('The noise sets the floor H(f); the input distribution sets how far H(Y) rises above it. A uniform input reaches capacity.', '雑音が下限 H(f) を決め、入力分布が H(Y) をどこまで押し上げるかを決めます。一様な入力で容量に達します。'));
     },
   };
@@ -116,7 +117,7 @@
       g.dot(q, Dqp, { c: 'c4', r: 5 });
       g.handle(q, Dpq, { c: 'hl', axis: 'x', bounds: [0.05, 0.95, 0, ymax], label: T('Model probability', 'モデル確率'), onDrag: (x) => ctx.set('q', x) });
       L.legend(ctx.host, [{ kind: 'fill', c: 'c1', label: T('observed P', '観測 P') }, { kind: 'fill', c: 'c4', label: T('model Q', 'モデル Q') }, { c: 'c1', label: 'D(P ‖ Q)' }, { c: 'c4', dash: true, label: 'D(Q ‖ P)' }]);
-      ctx.readout([{ k: 'D(P ‖ Q)', v: `${fmt(Dpq, 4)} ${T('bits', 'ビット')}`, tone: 'key' }, { k: 'D(Q ‖ P)', v: fmt(Dqp, 4) }, { k: 'H(P)', v: fmt(HP, 3) }, { k: T('cross-entropy H(P, Q)', '交差エントロピー H(P, Q)'), v: fmt(HP + Dpq, 3) }],
+      ctx.readout([{ k: 'D(P ‖ Q)', v: bits(Dpq, 4), tone: 'key' }, { k: 'D(Q ‖ P)', v: fmt(Dqp, 4) }, { k: 'H(P)', v: fmt(HP, 3) }, { k: T('cross-entropy H(P, Q)', '交差エントロピー H(P, Q)'), v: fmt(HP + Dpq, 3) }],
         T('One term can be negative, but the sum never is. The two directions differ unless p = q or q = 1 − p.', '1つの項は負になり得ますが、和は負になりません。p = q または q = 1 − p でない限り、2つの向きの値は異なります。'));
     },
   };

@@ -1,0 +1,92 @@
+{
+ "gravity-well": {
+  "body": [
+   "Outside a non-rotating mass, the geometry of the equatorial plane at one moment can be drawn as a curved surface in an imagined extra dimension. Change the Schwarzschild radius and drag the gold ring: the length along the profile from the horizon to r is the proper distance a chain of rulers would measure, and it is always longer than r − rₛ, because the radius r is defined by the circumference 2πr.",
+   "回転しない質量の外側で、ある瞬間の赤道面の幾何は、想像上の余分な次元の中の曲面として描けます。シュワルツシルト半径を変え、金色の輪をドラッグしてください。地平面から r までの断面に沿った長さは、物差しを並べて測る固有距離で、常に r − rₛ より長くなります。半径 r は円周 2πr によって定義されているからです。"
+  ],
+  "formula": "\\begin{gathered}z(r)=2\\sqrt{r_s(r-r_s)}\\\\\\ell=\\int_{r_s}^{r}\\frac{dr'}{\\sqrt{1-r_s/r'}}\\end{gathered}",
+  "example": [
+   "At r = 2rₛ the proper distance from the horizon is (√2 + ln(1 + √2)) rₛ ≈ 2.30 rₛ, more than twice the coordinate difference rₛ.",
+   "r = 2rₛ では地平面からの固有距離は (√2 + ln(1 + √2)) rₛ ≈ 2.30 rₛ で、座標の差 rₛ の2倍以上です。"
+  ],
+  "caution": [
+   "The extra vertical axis is only a device for drawing the curved space of one time slice. The surface does not show the curvature of time, which is what makes things fall, and the region inside the horizon is not drawn.",
+   "追加した垂直軸は、ある時刻での曲がった空間を描くための道具にすぎません。この曲面には物が落ちる原因である時間の曲がりは現れず、地平面の内側も描いていません。"
+  ],
+  "params": [
+   [
+    "radius",
+    "Schwarzschild radius rₛ",
+    "シュワルツシルト半径 rₛ",
+    0.2,
+    2,
+    0.05,
+    1
+   ],
+   [
+    "distance",
+    "Radius r / rₛ",
+    "半径 r / rₛ",
+    1.05,
+    5,
+    0.05,
+    2
+   ]
+  ]
+ },
+ "time-dilation": {
+  "body": [
+   "Hold a clock at rest at radius r outside a black hole and compare it with a clock far away. Drag the blue clock: for every tick of the far clock it advances only √(1 − rₛ/r), and light it sends outward arrives redshifted by the inverse factor. The dashed curve is the weak-field estimate 1 + Φ/c², which is good far out and fails near the horizon.",
+   "ブラックホールの外側の半径 r に時計を静止させ、遠方の時計と比べます。青の時計をドラッグしてください。遠方の時計が1進む間に、この時計は √(1 − rₛ/r) しか進みません。この時計が外へ送る光は、その逆数の比で赤方偏移して届きます。破線は弱重力場の近似 1 + Φ/c² で、遠方ではよく合いますが、地平面の近くでは外れます。"
+  ],
+  "example": [
+   "At r = 2rₛ the factor is √(1/2) ≈ 0.707: the near clock loses about 17.6 minutes for every hour of the far clock.",
+   "r = 2rₛ では係数は √(1/2) ≈ 0.707 で、遠方の時計の1時間ごとに近くの時計は約17.6分遅れます。"
+  ],
+  "caution": [
+   "The formula is for a clock held static outside a non-rotating spherical mass, which needs a rocket or a support; a clock falling or orbiting also has a speed-dependent factor.",
+   "この式は回転しない球対称質量の外側で静止させた時計のもので、そのためにはロケットや支えが必要です。落下や周回をする時計には速さによる因子も加わります。"
+  ],
+  "params": [
+   [
+    "distance",
+    "Radius r / rₛ",
+    "半径 r / rₛ",
+    1.05,
+    8,
+    0.05,
+    2
+   ]
+  ]
+ },
+ "light-deflection": {
+  "title": [
+   "3. Light bending near a black hole",
+   "3. ブラックホール近くでの光の曲がり"
+  ],
+  "body": [
+   "Light passing a mass is bent. Here each ray is traced by integrating the exact orbit equation for light in the Schwarzschild geometry, and its deflection is compared with the weak-field formula 2rₛ/b. Drag the impact parameter b: far out the two agree, near the photon sphere the true angle grows without bound, and below b = (3√3/2) rₛ the light is captured.",
+   "質量のそばを通る光は曲がります。ここでは各光線をシュワルツシルト時空での光の厳密な軌道方程式を積分して描き、その偏向角を弱重力場の式 2rₛ/b と比べます。衝突パラメータ b をドラッグしてください。遠方では両者は一致し、光子球の近くでは本当の角度が限りなく大きくなり、b = (3√3/2) rₛ より小さいと光は捕獲されます。"
+  ],
+  "formula": "\\begin{gathered}\\frac{d^2u}{d\\varphi^2}+u=\\frac32 r_s u^2,\\quad u=\\frac1r\\\\\\alpha\\simeq\\frac{4GM}{bc^2}=\\frac{2r_s}{b}\\end{gathered}",
+  "example": [
+   "For the Sun, rₛ ≈ 2.95 km and b ≈ 6.96 × 10⁵ km for a grazing ray, so α ≈ 8.5 × 10⁻⁶ rad ≈ 1.75″, the value confirmed at the 1919 eclipse.",
+   "太陽では rₛ ≈ 2.95 km、かすめる光線では b ≈ 6.96 × 10⁵ km なので、α ≈ 8.5 × 10⁻⁶ rad ≈ 1.75″ となり、1919年の日食で確かめられた値です。"
+  ],
+  "caution": [
+   "The weak-field formula is the first term of an expansion in rₛ/b. At b = 5rₛ it already underestimates the angle by about a third, and near the photon sphere it fails completely.",
+   "弱重力場の式は rₛ/b による展開の第1項です。b = 5rₛ ではすでに角度をおよそ3分の1過小に見積もり、光子球の近くでは完全に破綻します。"
+  ],
+  "params": [
+   [
+    "impact",
+    "Impact parameter b / rₛ",
+    "衝突パラメータ b / rₛ",
+    2,
+    20,
+    0.1,
+    6
+   ]
+  ]
+ }
+}

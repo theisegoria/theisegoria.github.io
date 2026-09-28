@@ -1,0 +1,142 @@
+{
+ "shortest": {
+  "body": [
+   "Dijkstra’s algorithm repeatedly settles the unsettled node with the smallest tentative distance, then tries to improve its neighbours’ labels. Raise the traffic weight on the downtown roads, add the diagonal shortcut from A to F, and click any node to see its route from S. Play to watch the frontier grow one settled node at a time.",
+   "ダイクストラ法は、未確定のノードのうち暫定距離が最小のものを確定し、その隣のラベルを改善することを繰り返します。中心街の道路の混雑重みを上げたり、A から F への斜めの近道を加えたりして、任意のノードをクリックすると S からの経路が表示されます。再生すると前線が1ノードずつ広がる様子が見られます。"
+  ],
+  "example": [
+   "With traffic weight 1 and no shortcut, the distance from S to T is 12, reached by two different routes.",
+   "混雑重み1で近道がなければ、S から T への距離は12で、2通りの経路で達成されます。"
+  ],
+  "caution": [
+   "With a negative edge weight, a settled label can later turn out too large, so Dijkstra’s algorithm can return wrong distances.",
+   "負の辺重みがあると、確定したラベルが後で大きすぎたと分かることがあり、ダイクストラ法は誤った距離を返し得ます。"
+  ],
+  "answer": [
+   "Any other path to the settled node must leave the settled set through some frontier node, whose label is already at least as large, and nonnegative weights can only add to it.",
+   "確定したノードへの別経路は、必ずどこかの前線ノードを通って確定集合から出ます。そのラベルはすでに同じかそれ以上で、非負の重みは値を増やすだけだからです。"
+  ],
+  "params": [
+   [
+    "shortcut",
+    "Diagonal shortcut A–F",
+    "斜めの近道 A–F",
+    0,
+    1,
+    1,
+    0,
+    [
+     [
+      "Off",
+      "なし"
+     ],
+     [
+      "On",
+      "あり"
+     ]
+    ]
+   ],
+   [
+    "traffic",
+    "Downtown traffic weight",
+    "中心街の混雑重み",
+    1,
+    4,
+    1,
+    2
+   ]
+  ]
+ },
+ "spanning": {
+  "body": [
+   "Kruskal’s algorithm takes edges from lightest to heaviest and keeps each one that does not close a cycle. Move the cut: the lightest edge crossing it always belongs to the minimum spanning tree. Change the weight of the candidate edge 5–8 to see when it enters the tree.",
+   "クラスカル法は軽い辺から順に取り、閉路を作らないものだけを残します。カットを動かすと、それを横切る最軽量の辺は常に最小全域木に含まれることが分かります。候補の辺 5–8 の重みを変え、いつ木に入るかを見ます。"
+  ],
+  "example": [
+   "Every spanning tree on these ten vertices has nine edges.",
+   "この10頂点の全域木は、どれも9本の辺を持ちます。"
+  ],
+  "caution": [
+   "Every spanning tree connects all vertices without cycles, but the tree path between two vertices need not be a shortest route.",
+   "全域木は全頂点を閉路なく結びますが、木の中の2頂点間の経路が最短経路とは限りません。"
+  ],
+  "answer": [
+   "If a minimum tree avoided it, adding it would close a cycle that crosses the cut again through a heavier or equal edge; swapping the two gives a tree that is no heavier.",
+   "それを含まない最小木に加えると、カットをもう一度横切る閉路ができ、その辺は同じか重いものです。2本を交換しても木は重くならないためです。"
+  ],
+  "params": [
+   [
+    "cut",
+    "Cut position",
+    "カット位置",
+    1,
+    4,
+    1,
+    3
+   ],
+   [
+    "w",
+    "Candidate edge 5–8 weight",
+    "候補の辺 5–8 の重み",
+    1,
+    9,
+    1,
+    4
+   ]
+  ]
+ },
+ "centrality": {
+  "body": [
+   "Two groups are joined through the bridge node X. Add leaves to node C to raise its degree, and add direct links between the groups to give paths that avoid X. Choose which measure sets the node size; the bars compare all three measures on the drawn graph.",
+   "2つの群は橋のノード X を通してつながっています。ノード C に葉を加えて次数を上げ、群の間に直接のリンクを加えて X を通らない経路を作ります。どの指標でノードの大きさを決めるかを選べます。棒グラフは、描かれたグラフ上の3つの指標を比較します。"
+  ],
+  "formula": "C_D(v)=\\frac{\\deg v}{n-1},\\quad C_C(v)=\\frac{n-1}{\\sum_u d(u,v)},\\quad C_B(v)=\\sum_{s\\ne v\\ne t}\\frac{\\sigma_{st}(v)}{\\sigma_{st}}",
+  "example": [
+   "At the default settings, the bridge X has degree 4, fewer than the hub C with its leaves, yet the highest betweenness, since every path between the groups passes through it.",
+   "初期設定では、橋 X の次数は4で葉を持つハブ C より小さいものの、群の間のすべての経路が通るため媒介中心性は最大です。"
+  ],
+  "params": [
+   [
+    "hub",
+    "Leaves on node C",
+    "ノード C の葉の数",
+    0,
+    4,
+    1,
+    2
+   ],
+   [
+    "bridge",
+    "Extra links between the groups",
+    "群の間の追加リンク",
+    0,
+    3,
+    1,
+    0
+   ],
+   [
+    "measure",
+    "Node size shows",
+    "ノードの大きさ",
+    0,
+    2,
+    1,
+    2,
+    [
+     [
+      "Degree",
+      "次数"
+     ],
+     [
+      "Closeness",
+      "近接"
+     ],
+     [
+      "Betweenness",
+      "媒介"
+     ]
+    ]
+   ]
+  ]
+ }
+}

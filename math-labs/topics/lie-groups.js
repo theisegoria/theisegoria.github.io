@@ -88,7 +88,7 @@
       const row = L.h('div', 'lab-row', ctx.host);
       const c1 = L.h('div', 'lab-col', row), c2 = L.h('div', 'lab-col', row);
       L.h('p', 'lab-cap', c1, T('True rotation (gold) against the truncated series (orange). Drag to turn the view.', '本当の回転（金）と打ち切った級数（橙）。ドラッグで視点を回せます。'));
-      const f = L.fig(c1, { x: [-1.6, 1.6], y: [-1.5, 1.5], equal: true, axes: false, maxH: 430 });
+      const f = L.fig(c1, { x: [-1.75, 1.75], y: [-1.3, 1.65], equal: true, axes: false, maxH: 430 });
       orbit(f, ctx);
       sphere(f, cam, 1);
       axes3(f, cam);
@@ -106,7 +106,7 @@
       const truePath = L.seq(91, (i) => mv(rot(n, th * i / 90), p0));
       curve3(f, cam, truePath, { c: 'hl', w: 3.2 }, { c: 'hl', w: 2.2, op: 0.55 });
       const seriesPath = L.seq(91, (i) => mv(expSeries(n, th * i / 90, N), p0));
-      const CAP = 1.5, inView = seriesPath.map((p) => { const s = norm(p); return s > CAP ? p.map((x) => x * CAP / s) : p; });
+      const CAP = 1.55, inView = seriesPath.map((p) => { const s = norm(p); return s > CAP ? p.map((x) => x * CAP / s) : p; });
       const offFrame = norm(seriesPath[90]) > CAP;
       curve3(f, cam, inView, { c: 'c2', w: 2.6 }, { c: 'c2', w: 1.8, op: 0.55 });
       const pT = truePath[90], pS = seriesPath[90];
@@ -222,31 +222,35 @@
       axes3(f, cam);
       let p = p0;
       const cols = ['c1', 'c3', 'c1', 'c3'];
-      legs.forEach(([ax, ang], k) => {
-        const pts = L.seq(41, (i) => mv(rot(ax, ang * i / 40), p));
+      const legPts = legs.map(([ax, ang]) => { const pts = L.seq(41, (i) => mv(rot(ax, ang * i / 40), p)); p = pts[40]; return pts; });
+      // screen centroid of the loop, so each leg's label is pushed outward, off the path
+      const cen2 = legPts.flat().map(cam.P).reduce((a, q) => [a[0] + q[0], a[1] + q[1]], [0, 0]).map((x) => x / (4 * 41));
+      legPts.forEach((pts, k) => {
         curve3(f, cam, pts, { c: cols[k], w: 3, dash: k >= 2 ? '6 3' : '' }, { c: cols[k], w: 2, op: 0.5, dash: '2 3' });
-        const mid = cam.P(pts[20]); f.text(mid[0], mid[1], String(k + 1), { small: true, c: cols[k], dx: 8, dy: -6 });
-        p = pts[40];
+        const mid = cam.P(pts[20]); const dxo = mid[0] - cen2[0], dyo = mid[1] - cen2[1], mo = Math.hypot(dxo, dyo) || 1;
+        f.text(mid[0], mid[1], String(k + 1), { small: true, c: cols[k], dx: 14 * dxo / mo, dy: -14 * dyo / mo + 4, layer: 'over' });
       });
       const Cm = commutator(e), end = mv(Cm, p0);
-      f.dot(...cam.P(p0), { c: 'ink', r: 5 });
-      f.dot(...cam.P(end), { c: 'hl', r: 6 });
-      f.line([cam.P(p0), cam.P(end)], { c: 'hl', w: 2.4, arrow: true, layer: 'over' });
-      const sp = cam.P(p0); f.text(sp[0], sp[1], T('start', '出発'), { small: true, dx: -18, dy: 16 });
+      f.dot(...cam.P(p0), { c: 'ink', r: 5, hollow: true });
+      f.dot(...cam.P(end), { c: 'hl', r: 5 });
+      f.line([cam.P(p0), cam.P(end)], { c: 'hl', w: 2.6, arrow: true, layer: 'over' });
+      const sp = cam.P(p0); { const dxo = sp[0] - cen2[0], dyo = sp[1] - cen2[1], mo = Math.hypot(dxo, dyo) || 1; f.text(sp[0], sp[1], T('start', '出発'), { small: true, dx: 22 * dxo / mo, dy: -22 * dyo / mo + 4, layer: 'over' }); }
       const gap = norm(end.map((x, i) => x - p0[i]));
       const ang = angleOf(Cm), ax = axisOf(Cm), tiltZ = Math.acos(L.clamp(Math.abs(ax[2]), 0, 1)) / DEG;
       const zp = norm(cross([0, 0, 1], p0));
-      // right: log-log gap against epsilon
-      L.h('p', 'lab-cap', c2, T('Gap against ε, both on log scales', '隙間と ε（両対数）'));
-      const g = L.fig(c2, { x: [Math.log10(0.02), Math.log10(1.5)], y: [-4, 0.5], aspect: 0.8, maxH: 360, xlabel: 'ε', ticksX: [[Math.log10(0.02), '0.02'], [Math.log10(0.05), '0.05'], [-1, '0.1'], [Math.log10(0.2), '0.2'], [Math.log10(0.5), '0.5'], [0, '1']], ticksY: [[-4, '10⁻⁴'], [-3, '10⁻³'], [-2, '10⁻²'], [-1, '0.1'], [0, '1']] });
+      // right: the ratio gap / ε² against ε (log scale), which tends to |ẑ × v| as ε → 0
+      L.h('p', 'lab-cap', c2, T('The ratio gap ÷ ε² against ε (log scale, y axis zoomed): it tends to |ẑ × v| as ε → 0', 'ε（対数目盛、縦軸は拡大）に対する比 隙間 ÷ ε²：ε → 0 で |ẑ × v| に近づきます'));
       const gapOf = (x) => { const q = mv(commutator(x), p0); return norm(q.map((y, i) => y - p0[i])); };
-      g.line(L.sample(Math.log10(0.02), Math.log10(1.5), 160, (lx) => Math.log10(gapOf(Math.pow(10, lx)))), { c: 'hl', w: 4, op: 0.8 });
-      g.line(L.sample(Math.log10(0.02), Math.log10(1.5), 160, (lx) => Math.log10(zp * Math.pow(10, 2 * lx))), { c: 'c4', w: 1.8, dash: '5 4' });
-      g.dot(Math.log10(e), Math.log10(gap), { c: 'hl', r: 6 });
-      g.text(Math.log10(0.1), Math.log10(zp * 0.01) - 0.55, T('slope 2: ε² |ẑ × v|', '傾き 2：ε² |ẑ × v|'), { anchor: 'start', small: true, c: 'c4' });
-      g.hover((lx) => { const x = Math.pow(10, lx); if (x < 0.02 || x > 1.5) return null; const gg = gapOf(x); return { x: lx, y: Math.log10(gg), text: `ε = ${fmt(x, 3)}  gap = ${fmt(gg, 3)}` }; });
-      L.legend(ctx.host, [{ c: 'c1', label: T('rotations about x (1, then 3 undoes it)', 'x 軸まわりの回転（1、3 で戻す）') }, { c: 'c3', label: T('rotations about y (2, then 4)', 'y 軸まわりの回転（2、4 で戻す）') }, { c: 'hl', label: T('the gap left over', '残った隙間') }, { c: 'c4', dash: true, label: T('ε² prediction from [Y, X] = −Z', '[Y, X] = −Z による ε² の予測') }]);
-      ctx.readout([{ k: T('gap', '隙間'), v: fmt(gap, 4), tone: 'key' }, { k: 'ε²', v: fmt(e * e, 4) }, { k: T('leftover rotation angle', '残った回転の角度'), v: fmt(ang, 4) }, { k: T('its axis, tilt from the z axis', 'その軸の z 軸からの傾き'), v: `${fmt(tiltZ, 1)}°` }, { k: T('angle ÷ ε²', '角度 ÷ ε²'), v: fmt(ang / (e * e), 3) }],
+      const yLo = zp * 0.7, yM = zp * 1.12;
+      const g = L.fig(c2, { x: [Math.log10(0.02), Math.log10(1.5)], y: [yLo, yM], aspect: 0.8, maxH: 360, xlabel: 'ε', ylabel: T('gap ÷ ε²', '隙間 ÷ ε²'), ticksX: [[Math.log10(0.02), '0.02'], [Math.log10(0.05), '0.05'], [-1, '0.1'], [Math.log10(0.2), '0.2'], [Math.log10(0.5), '0.5'], [0, '1']] });
+      g.hline(zp, { c: 'c4', w: 1.8, dash: '5 4' });
+      g.text(Math.log10(0.021), zp, T(`prediction |ẑ × v| = ${fmt(zp, 3)}`, `予測 |ẑ × v| = ${fmt(zp, 3)}`), { anchor: 'start', dx: 4, dy: 15, small: true, c: 'c4' });
+      g.line(L.sample(Math.log10(0.02), Math.log10(1.5), 160, (lx) => { const x = Math.pow(10, lx); return Math.max(yLo, gapOf(x) / (x * x)); }), { c: 'hl', w: 3.2 });
+      g.vline(Math.log10(e), { c: 'hl', w: 1.2, dash: '2 3' });
+      g.dot(Math.log10(e), Math.max(yLo, gap / (e * e)), { c: 'hl', r: 6.5 });
+      g.hover((lx) => { const x = Math.pow(10, lx); if (x < 0.02 || x > 1.5) return null; const gg = gapOf(x); return { x: lx, y: gg / (x * x), text: `ε = ${fmt(x, 3)}  ${T('gap', '隙間')} = ${fmt(gg, 4)}  ÷ ε² = ${fmt(gg / (x * x), 3)}` }; });
+      L.legend(ctx.host, [{ c: 'c1', label: T('rotations about x (1, then 3 undoes it)', 'x 軸まわりの回転（1、3 で戻す）') }, { c: 'c3', label: T('rotations about y (2, then 4)', 'y 軸まわりの回転（2、4 で戻す）') }, { c: 'hl', label: T('the gap left over, and gap ÷ ε²', '残った隙間と 隙間 ÷ ε²') }, { c: 'c4', dash: true, label: T('ε² prediction from [Y, X] = −Z: |ẑ × v|', '[Y, X] = −Z による ε² の予測：|ẑ × v|') }]);
+      ctx.readout([{ k: T('gap', '隙間'), v: fmt(gap, 4), tone: 'key' }, { k: 'ε²', v: fmt(e * e, 4) }, { k: T('leftover rotation angle', '残った回転の角度'), v: fmt(ang, 4) }, { k: T('its axis, tilt from the z axis', 'その軸の z 軸からの傾き'), v: `${fmt(tiltZ, 1)}°` }, { k: T('gap ÷ ε²', '隙間 ÷ ε²'), v: fmt(gap / (e * e), 3) }, { k: '|ẑ × v|', v: fmt(zp, 3) }],
         e < 0.2 ? T('At small ε the leftover rotation is almost exactly ε² about the z axis: the bracket [Y, X] = −Z, read off a picture.', 'ε が小さいと、残った回転はほぼ正確に z 軸まわりの ε² です。括弧積 [Y, X] = −Z を図から読み取れます。') : T('At larger ε, third-order terms tilt the leftover axis away from z and the ratio drifts from 1.', 'ε が大きいと三次の項が残りの軸を z から傾け、比は 1 からずれます。'));
     },
   };

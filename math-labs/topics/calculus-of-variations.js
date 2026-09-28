@@ -134,7 +134,7 @@
       L.h('p', 'lab-cap', c2, T('Change of action ΔS = S − S* along three different variations ηₖ = sin(kπt/T).', '3種類の変分 ηₖ = sin(kπt/T) に沿った作用の変化 ΔS = S − S*。'));
       const cmax = Math.max(...[1, 2, 3].map((kk) => Math.abs(coef(kk))));
       const cmin = Math.min(0, ...[1, 2, 3].map(coef));
-      const a = fig(c2, { x: [-1, 1], y: [cmin * 1.1 - 0.05 * cmax, cmax * 1.05], aspect: 0.8, maxH: 360, xlabel: T('amplitude ε', '振幅 ε'), ylabel: 'ΔS' });
+      const a = fig(c2, { x: [-1, 1], y: [cmin * 1.1 - 0.14 * cmax, cmax * 1.18], aspect: 0.8, maxH: 360, xlabel: T('amplitude ε', '振幅 ε'), ylabel: 'ΔS' });
       const MC = { 1: 'c2', 2: 'c3', 3: 'c4' };
       [1, 2, 3].forEach((kk) => a.line(L.sample(-1, 1, 100, (e) => e * e * coef(kk)), { c: MC[kk], w: kk === k ? 3 : 1.4, op: kk === k ? 1 : 0.55 }));
       [1, 2, 3].forEach((kk) => a.text(1, coef(kk), `k = ${kk}`, { anchor: 'end', dx: -4, dy: coef(kk) >= 0 ? -6 : 16, small: true, c: MC[kk] }));

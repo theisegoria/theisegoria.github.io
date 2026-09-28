@@ -7,10 +7,13 @@
   const apply = (M, [x, y]) => [M[0] * x + M[1] * y, M[2] * x + M[3] * y];
 
   // Draw the image of the integer grid under a 2x2 matrix, behind everything.
+  // Dark plates need a brighter grid: thin blue lines at 0.28 vanish on near-black.
+  const isDark = () => { const p = L.colours().plate; return 0.299 * p[0] + 0.587 * p[1] + 0.114 * p[2] < 128; };
   function grid(f, M, range = 4, o = {}) {
+    const dk = isDark(), opMinor = dk ? 0.5 : 0.28, opAxis = dk ? 0.8 : 0.55, wMinor = dk ? 1.1 : 0.9;
     for (let i = -range; i <= range; i++) {
-      f.line([apply(M, [-range, i]), apply(M, [range, i])], { c: o.c || 'c1', w: i === 0 ? 1.4 : 0.9, op: i === 0 ? 0.55 : 0.28, layer: 'under' });
-      f.line([apply(M, [i, -range]), apply(M, [i, range])], { c: o.c || 'c1', w: i === 0 ? 1.4 : 0.9, op: i === 0 ? 0.55 : 0.28, layer: 'under' });
+      f.line([apply(M, [-range, i]), apply(M, [range, i])], { c: o.c || 'c1', w: i === 0 ? 1.4 : wMinor, op: i === 0 ? opAxis : opMinor, layer: 'under' });
+      f.line([apply(M, [i, -range]), apply(M, [i, range])], { c: o.c || 'c1', w: i === 0 ? 1.4 : wMinor, op: i === 0 ? opAxis : opMinor, layer: 'under' });
     }
   }
 
@@ -96,7 +99,19 @@
       f.line(ring, { c: 'muted', w: 1, dash: '3 4', op: 0.6 });
       f.poly(ring.map(A), { c: 'c1', fo: 0.08, w: 1.6 });
       for (let i = 0; i < pts.length - 1; i++) f.arrow(pts[i], pts[i + 1], { c: 'hl', w: 1.8, op: 0.45 + 0.55 * (i + 1) / pts.length });
-      pts.forEach((pp, i) => { f.dot(pp[0], pp[1], { c: 'hl', r: i === 0 ? 5 : 4 }); f.text(pp[0], pp[1], i === 0 ? 'v' : i === 1 ? 'Av' : `A${supN(i)}v`, { dx: 12, dy: -8, small: true }); });
+      // Label v and the last point always; intermediate points only when they sit clear of the previous label.
+      const name = (i) => (i === 0 ? 'v' : i === 1 ? 'Av' : `A${supN(i)}v`);
+      let lastLab = null;
+      pts.forEach((pp, i) => {
+        f.dot(pp[0], pp[1], { c: 'hl', r: i === 0 ? 5 : 4 });
+        const px = [f.X(pp[0]), f.Y(pp[1])];
+        const far = !lastLab || Math.hypot(px[0] - lastLab[0], px[1] - lastLab[1]) > 34;
+        if (i === 0 || i === pts.length - 1 || far) {
+          const flip = i === pts.length - 1 && i > 0 && !far;
+          f.text(pp[0], pp[1], name(i), { dx: flip ? -12 : 12, dy: flip ? 14 : -8, anchor: flip ? 'end' : undefined, small: true });
+          lastLab = px;
+        }
+      });
       f.text(ext * 0.72 * co, ext * 0.72 * si, `λ₁ = ${fmt(v.l1, 2)}`, { c: 'c2', dy: -8 });
       f.text(-ext * 0.72 * si, ext * 0.72 * co, `λ₂ = ${fmt(v.l2, 2)}`, { c: 'c3', dy: -8 });
       L.legend(ctx.host, [{ c: 'c2', dash: true, label: T('Eigendirection 1', '固有方向 1') }, { c: 'c3', dash: true, label: T('Eigendirection 2', '固有方向 2') }, { kind: 'fill', c: 'c1', label: T('Image of the unit circle', '単位円の像') }, { kind: 'dot', c: 'hl', label: T('Orbit v, Av, A²v, …', '軌道 v, Av, A²v, …') }]);
@@ -147,11 +162,17 @@
       };
       const ring = circle(), samples = L.seq(8, (i) => [Math.cos(L.TAU * i / 8), Math.sin(L.TAU * i / 8)]);
       f.line(ring, { c: 'muted', w: 1.1, dash: '3 4', op: 0.7, layer: 'under' });
+      // Right singular vectors: the columns of V. Vᵀ sends v₁ to e₁ and v₂ to e₂, so their images are σ₁u₁ and σ₂u₂.
+      const v1 = [Math.cos(b), Math.sin(b)], v2 = [-Math.sin(b), Math.cos(b)];
+      // The rank-one truncation A₁ = σ₁u₁v₁ᵀ sends the unit circle onto the segment from −σ₁u₁ to σ₁u₁.
+      const u1 = [Math.cos(a), Math.sin(a)];
+      const full = v.rank === 2 && v.s2 > 1e-9;
+      if (full) f.line([[-v.s1 * u1[0], -v.s1 * u1[1]], [v.s1 * u1[0], v.s1 * u1[1]]], { c: 'c2', w: 2, dash: '7 5', op: 0.55, layer: 'under' });
       const names = [T('input', '入力'), T('after Vᵀ: rotate', 'Vᵀ の後：回転'), T('after Σ: stretch', 'Σ の後：伸縮'), T('after U: rotate', 'U の後：回転')];
       const draw = (st) => {
         f.clear('main'); f.clear('over');
         f.poly(ring.map((p) => map(p, st)), { c: 'c1', fo: 0.12, w: 2.2 });
-        const e1 = map([Math.cos(b), -Math.sin(b)].map((x) => x), st), e2 = map([Math.sin(b), Math.cos(b)], st);
+        const e1 = map(v1, st), e2 = map(v2, st);
         f.arrow([0, 0], e1, { c: 'c2', w: 2.8 });
         if (Math.hypot(...e2) > 1e-3) f.arrow([0, 0], e2, { c: 'c3', w: 2.8 });
         samples.forEach((p, i) => { const q = map(p, st); f.dot(q[0], q[1], { c: 'hl', r: 4 }); f.text(q[0], q[1], String(i), { small: true, dx: 9, dy: -7 }); });
@@ -163,8 +184,13 @@
         label.textContent = names[Math.min(3, Math.ceil(st - 1e-6))] || names[0];
         return t < DUR;
       }, { autoplay: false, once: true, duration: DUR, initialT: DUR, playLabel: T('Play Vᵀ, Σ, U', 'Vᵀ、Σ、U を再生') });
-      L.legend(ctx.host, [{ c: 'muted', dash: true, label: T('Unit circle', '単位円') }, { kind: 'fill', c: 'c1', label: T('Its image', 'その像') }, { c: 'c2', label: 'v₁ ↦ σ₁u₁' }, { c: 'c3', label: 'v₂ ↦ σ₂u₂' }, { kind: 'dot', c: 'hl', label: T('Numbered sample points', '番号付きの標本点') }]);
-      ctx.readout([{ k: 'σ₁', v: fmt(v.s1) }, { k: 'σ₂', v: fmt(s2) }, { k: T('Rank', '階数'), v: String(s2 > 1e-9 ? 2 : 1) }, { k: '‖A − A₁‖₂', v: fmt(v.rank === 1 ? v.s2 : 0), tone: 'key' }], T('Play to watch A = UΣVᵀ act in three steps: rotate, stretch, rotate.', '再生すると A = UΣVᵀ が回転、伸縮、回転の3段階で作用する様子が見えます。'));
+      const legend = [{ c: 'muted', dash: true, label: T('Unit circle', '単位円') }, { kind: 'fill', c: 'c1', label: v.rank === 1 ? T('Image under A₁ (rank one)', 'A₁（階数1）による像') : T('Its image under A', 'A による像') }, { c: 'c2', label: 'v₁ ↦ σ₁u₁' }, { kind: 'dot', c: 'hl', label: T('Numbered sample points', '番号付きの標本点') }];
+      if (s2 > 1e-9) legend.splice(3, 0, { c: 'c3', label: 'v₂ ↦ σ₂u₂' });
+      if (full) legend.splice(2, 0, { c: 'c2', dash: true, label: T('Rank-one image A₁: the segment ±σ₁u₁', '階数1の像 A₁：線分 ±σ₁u₁') });
+      L.legend(ctx.host, legend);
+      ctx.readout([{ k: 'σ₁', v: fmt(v.s1) }, { k: 'σ₂', v: fmt(v.s2) }, { k: T('Rank shown', '表示中の階数'), v: String(s2 > 1e-9 ? 2 : 1) }, { k: '‖A − A₁‖₂', v: fmt(v.s2), tone: 'key' }], v.rank === 1
+        ? T('The figure shows A₁ = σ₁u₁v₁ᵀ, whose image is the segment. The dropped stretch σ₂ is the error ‖A − A₁‖₂.', '図は A₁ = σ₁u₁v₁ᵀ を示し、その像は線分です。除いた伸縮 σ₂ が誤差 ‖A − A₁‖₂ です。')
+        : T('Play to watch A = UΣVᵀ act in three steps: rotate, stretch, rotate. The dashed segment is the rank-one image.', '再生すると A = UΣVᵀ が回転、伸縮、回転の3段階で作用する様子が見えます。破線の線分は階数1の像です。'));
     },
   };
 })();

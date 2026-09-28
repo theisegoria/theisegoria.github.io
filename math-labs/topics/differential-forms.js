@@ -48,7 +48,7 @@
       if (!sing) for (let i = 1; i <= m; i++) { acc += simpson(integrand, th1 * (i - 1) / m, th1 * i / m, 4); run.push([turns * i / m, acc]); }
       const ys = run.map((p) => p[1]), ylo = Math.min(0, ...ys), yhi = Math.max(0, ...ys), pad = Math.max(0.3, (yhi - ylo) * 0.12);
       const G = fig(c2, { x: [0, turns], y: [ylo - pad, yhi + pad], aspect: 0.85, maxH: 400, xlabel: T('turns traced', 'たどった回転数'), ylabel: '∫ω' });
-      if (fi === 2) for (let k = -4; k <= 4; k++) if (k * TAU > ylo - pad && k * TAU < yhi + pad) { G.hline(k * TAU, { c: 'muted', w: 1, dash: '3 4' }); if (k) G.text(0, k * TAU, `${k === 1 ? '' : k === -1 ? '−' : k}2π`.replace('-', '−'), { anchor: 'start', dx: 4, dy: 14, small: true, c: 'muted' }); }
+      if (fi === 2) for (let k = -4; k <= 4; k++) if (k * TAU > ylo - pad && k * TAU < yhi + pad) { G.hline(k * TAU, { c: 'muted', w: 1, dash: '3 4' }); if (k) G.text(turns * 0.3, k * TAU, `${String(2 * k).replace('-', '−')}π`, { anchor: 'middle', dy: k > 0 ? -5 : 14, small: true, c: 'muted' }); }
       if (!sing) { G.line(run, { c: 'c4', w: 2.6 }); G.dot(turns, W, { c: 'hl', r: 6.5 }); }
       L.legend(ctx.host, [{ c: 'pos', label: T('ω(γ̇) > 0: path goes with the field', 'ω(γ̇) > 0：場に沿って進む') }, { c: 'neg', label: T('ω(γ̇) < 0: against the field', 'ω(γ̇) < 0：場に逆らう') }, { c: 'c4', label: T('running integral', '積み上がる積分') }, { kind: 'dot', c: 'c1', label: T('drag: centre', 'ドラッグ：中心') }, { kind: 'dot', c: 'hl', label: T('drag: radius', 'ドラッグ：半径') }]);
       const encl = Math.hypot(c[0], c[1]) < r;
@@ -79,7 +79,7 @@
       L.h('p', 'lab-cap', c1, T('Colour shows dω = (1 − x² − y² + 0.8x) dx∧dy; arrows show ω. Drag the disk.', '色は dω = (1 − x² − y² + 0.8x) dx∧dy、矢印は ω を表します。円板はドラッグできます。'));
       const f = fig(c1, { x: [-2, 2], y: [-2, 2], equal: true, maxH: 400, grid: false });
       f.raster((x, y) => curl(x, y) / 2.2, { cmap: 'div', res: 3 });
-      f.field((x, y) => [P(x, y), Q(x, y)], { n: f.small ? 11 : 15, c: 'muted' });
+      f.field((x, y) => [P(x, y), Q(x, y)], { n: f.small ? 11 : 15, c: 'ink' });
       // level set dω = 0
       f.line(L.sample(0, TAU, 160, (t) => [0.4 + Math.sqrt(1.16) * Math.cos(t), Math.sqrt(1.16) * Math.sin(t)]), { c: 'ink', w: 1, dash: '2 4', op: 0.6 });
       f.circle(c[0], c[1], r, { c: 'c4', fill: true, fo: 0.12, w: 2.8 });

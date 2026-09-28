@@ -253,7 +253,7 @@
       const row = L.h('div', 'lab-row', ctx.host);
       const c1 = L.h('div', 'lab-col', row), c2 = L.h('div', 'lab-col', row);
       L.h('p', 'lab-cap', c1, T('Where one marked point of the body travels, with ticks at t = 0, 0.1, …, 1. Evenly spaced ticks mean constant speed. Drag to turn the view.', '物体の一点がたどる経路で、t = 0, 0.1, …, 1 に目盛りを打っています。目盛りが等間隔なら速さは一定です。ドラッグで視点を回せます。'));
-      const f = L.fig(c1, { x: [-1.45, 1.45], y: [-1.4, 1.4], equal: true, axes: false, maxH: 430 });
+      const f = L.fig(c1, { x: [-1.3, 1.3], y: [-1.3, 1.3], equal: true, axes: false, maxH: 430 });
       orbit(f, ctx);
       sphere(f, cam, 1); axes3(f, cam);
       L.h('p', 'lab-cap', c2, T('Angular speed |ω| along each path (degrees per unit t)', '各経路での角速度 |ω|（t 一単位あたりの度）'));
@@ -281,8 +281,8 @@
       ctx.state.anim = L.animator(ctx.host, (dt, t, lab) => { const u = Math.min(1, t / DUR); draw(u); lab.textContent = `t = ${fmt(u, 2)}`; if (u >= 1) return false; }, { autoplay: false, once: true, duration: DUR, initialT: DUR * 0.5, playLabel: T('Play from A to B', 'A から B へ再生') });
       L.legend(ctx.host, paths.map((p) => ({ c: p.c, label: p.label })));
       const d = qdot(qA, qB);
-      ctx.readout([{ k: 'q_A · q_B', v: fmt(d, 3), tone: d < 0 ? 'warn' : undefined }, { k: T('slerp: total angle', 'slerp：総回転角'), v: `${fmt(stats[0].tot / DEG, 1)}°`, tone: 'key' }, { k: T('nlerp: peak ÷ average speed', 'nlerp：最大速度 ÷ 平均'), v: fmt(stats[1].max / stats[1].tot, 3) }, { k: T('Euler lerp: total angle', 'オイラー角補間：総回転角'), v: `${fmt(stats[2].tot / DEG, 1)}°`, tone: stats[2].tot > 1.2 * stats[0].tot ? 'warn' : undefined }],
-        long ? T('q_B and −q_B are the same orientation. Interpolating to the one with a negative dot product goes the long way round, 360° − Ω, and nlerp nearly passes through zero, where its speed spikes. Always flip the sign so that q_A · q_B ≥ 0.', 'q_B と −q_B は同じ姿勢です。内積が負になる方へ補間すると 360° − Ω の遠回りになり、nlerp はほとんど 0 を通過して速さが跳ね上がります。q_A · q_B ≥ 0 となるよう必ず符号を反転させてください。')
+      ctx.readout([{ k: 'qᴀ · qʙ', v: fmt(d, 3), tone: d < 0 ? 'warn' : undefined }, { k: T('slerp: total angle', 'slerp：総回転角'), v: `${fmt(stats[0].tot / DEG, 1)}°`, tone: 'key' }, { k: T('nlerp: peak ÷ average speed', 'nlerp：最大速度 ÷ 平均'), v: fmt(stats[1].max / stats[1].tot, 3) }, { k: T('Euler lerp: total angle', 'オイラー角補間：総回転角'), v: `${fmt(stats[2].tot / DEG, 1)}°`, tone: stats[2].tot > 1.2 * stats[0].tot ? 'warn' : undefined }],
+        long ? T('qʙ and −qʙ are the same orientation. Interpolating to the one with a negative dot product goes the long way round, 360° − Ω, and nlerp nearly passes through zero, where its speed spikes. Always flip the sign so that qᴀ · qʙ ≥ 0.', 'qʙ と −qʙ は同じ姿勢です。内積が負になる方へ補間すると 360° − Ω の遠回りになり、nlerp はほとんど 0 を通過して速さが跳ね上がります。qᴀ · qʙ ≥ 0 となるよう必ず符号を反転させてください。')
           : T('slerp follows a great circle on the 3-sphere at constant speed, so the body turns about one fixed axis. nlerp follows the same arc but fastest in the middle. Interpolating the Euler angles of A and B turns through a longer, wandering path, and an angle that crosses ±180° runs the long way round.', 'slerp は 3 次元球面上の大円を一定の速さで進むので、物体は固定した一本の軸のまわりに回ります。nlerp は同じ弧をたどりますが、中央で最も速くなります。A と B のオイラー角を補間すると、より長く曲がりくねった経路を回り、±180° をまたぐ角度は遠回りします。'));
     },
   };
@@ -317,7 +317,11 @@
         return { pts: [A, B, C], z: cam.depth(scale3(add3(add3(A, B), C), 1 / 3)), sh: Math.abs(dot(nn, cam.N)), c };
       }).sort((a, b) => a.z - b.z);
       tris.forEach((t) => f.poly(t.pts.map(cam.P), { c: t.c, fo: t.c === 'hl' ? 0.85 : 0.2 + 0.35 * t.sh, w: 1.2, layer: 'over' }));
-      const nose = cam.P(W.n); f.dot(nose[0], nose[1], { c: 'hl', r: 4, layer: 'over' });
+      // fuselage line and wing bar, so the aircraft's heading reads at a glance
+      f.line([cam.P(W.t), cam.P(W.n)], { c: 'ink', w: 2.6, layer: 'over' });
+      f.line([cam.P(W.l), cam.P(W.r)], { c: 'ink', w: 2.2, layer: 'over' });
+      const nose = cam.P(W.n); f.dot(nose[0], nose[1], { c: 'hl', r: 4.5, layer: 'over' });
+      f.text(nose[0], nose[1], T('nose', '機首'), { small: true, c: 'hl', dx: 8, dy: 4, anchor: 'start', layer: 'over' });
 
       // right: how close the three axes are to losing a dimension
       L.h('p', 'lab-cap', c2, T('Smallest singular value of the map from Euler rates to angular velocity. Drag the point along the curve.', 'オイラー角の変化率から角速度への写像の最小特異値です。曲線上の点をドラッグしてください。'));
@@ -328,8 +332,8 @@
       g.vline(v.pitch, { c: 'ink', w: 1, op: 0.45, dash: '3 3', layer: 'under' });
       g.handle(v.pitch, sm, { c: 'hl', label: T('Pitch angle', 'ピッチ角'), axis: 'x', bounds: [-90, 90, 0, 1.1], onDrag: (x) => { ctx.set('pitch', Math.round(x), true); ctx.redraw(); } });
       g.text(-86, 1.02, T('|det J| = cos θ', '|det J| = cos θ'), { small: true, c: 'c4', anchor: 'start' });
-      g.text(-45, 0.22, 'σ_min = √(1 − |sin θ|)', { small: true, c: 'hl', anchor: 'middle' });
-      L.legend(ctx.host, [{ c: 'c1', label: T('yaw gimbal and axis', 'ヨーのジンバルと軸') }, { c: 'c3', label: T('pitch gimbal and axis', 'ピッチのジンバルと軸') }, { c: 'c2', label: T('roll gimbal and axis', 'ロールのジンバルと軸') }, { c: 'hl', label: 'σ_min' }, { c: 'c4', dash: true, label: '|det J|' }]);
+      g.text(-18, 0.1, 'σₘᵢₙ = √(1 − |sin θ|)', { small: true, c: 'hl', anchor: 'middle', dy: 4 });
+      L.legend(ctx.host, [{ c: 'c1', label: T('yaw gimbal and axis', 'ヨーのジンバルと軸') }, { c: 'c3', label: T('pitch gimbal and axis', 'ピッチのジンバルと軸') }, { c: 'c2', label: T('roll gimbal and axis', 'ロールのジンバルと軸') }, { c: 'hl', label: 'σₘᵢₙ' }, { c: 'c4', dash: true, label: '|det J|' }]);
       const sep = Math.acos(clamp(Math.abs(dot(az, ax)), 0, 1)) / DEG;
       const locked = Math.abs(Math.abs(v.pitch) - 90) < 0.5;
       ctx.readout([{ k: T('angle between yaw and roll axes', 'ヨー軸とロール軸のなす角'), v: `${fmt(sep, 1)}°`, tone: locked ? 'warn' : 'key' }, { k: '|det J| = cos θ', v: fmt(Math.cos(pitch), 3) }, { k: T('Euler rate needed, worst direction', '最悪の方向に必要なオイラー角速度'), v: sm < 1e-6 ? '∞' : `${fmt(1 / sm, 2)} × |ω|`, tone: sm < 0.2 ? 'warn' : undefined }, { k: 'q', v: qstr(q), tone: 'good' }],

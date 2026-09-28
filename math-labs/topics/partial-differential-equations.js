@@ -46,9 +46,10 @@
       f.line(xs(H.snaps[0]), { c: 'muted', w: 1.4, dash: '4 4' });
       if (!fixed) f.hline(Q0 / LEN, { c: 'c3', w: 1.4, dash: '6 4' });
       f.layers.dyn = f.group('main');
-      L.h('p', 'lab-cap', ctx.host, T('Space–time picture: each row is the rod at one moment, time running downward', '時空図：各行がある時刻の棒で、時間は下向きに進みます'));
+      L.h('p', 'lab-cap', ctx.host, T('Space–time picture: each row is the rod at one moment, time running downward. Each row is scaled to its own peak, so the spreading shape stays visible after the rod has cooled.', '時空図：各行がある時刻の棒で、時間は下向きに進みます。各行はその時刻の最高温度で正規化しているので、冷えた後も広がりの形が見えます。'));
       const g = L.fig(ctx.host, { x: [0, LEN], y: [-TMAX, 0], aspect: 0.4, maxH: 300, grid: false, xlabel: T('position x', '位置 x'), ylabel: T('time (down)', '時間（下向き）'), ticksY: [0, 10, 20, 30, 40].map((t) => [-t, String(t)]) });
-      g.raster((x, y) => { const u = snap(-y), i = Math.min(NX - 2, Math.floor(x / DX)), a = x / DX - i; return Math.pow(L.clamp(u[i] * (1 - a) + u[i + 1] * a, 0, 1), 0.7); }, { cmap: 'warm', res: 3 });
+      const rowMax = H.snaps.map((u) => { let m = 0; for (let i = 0; i < NX; i++) if (u[i] > m) m = u[i]; return m || 1; });
+      g.raster((x, y) => { const si = Math.round(L.clamp(-y, 0, TMAX) / TMAX * NS), u = H.snaps[si], i = Math.min(NX - 2, Math.floor(x / DX)), a = x / DX - i; return Math.pow(L.clamp((u[i] * (1 - a) + u[i + 1] * a) / rowMax[si], 0, 1), 0.8); }, { cmap: 'warm', res: 3 });
       const draw = (t) => {
         const u = snap(t);
         f.clear('dyn'); g.clear('over');
@@ -85,9 +86,9 @@
       const draw = (t) => {
         f.clear('dyn'); f.clear('over'); g.clear('over');
         endMark(0); endMark(LEN);
-        f.line(L.sample(0, LEN, 300, (x) => right(x, t)), { c: 'c1', w: 1.5, dash: '5 4', layer: 'dyn' });
-        f.line(L.sample(0, LEN, 300, (x) => left(x, t)), { c: 'c4', w: 1.5, dash: '5 4', layer: 'dyn' });
-        f.line(L.sample(0, LEN, 400, (x) => right(x, t) + left(x, t)), { c: 'c2', w: 3, layer: 'dyn' });
+        f.line(L.sample(0, LEN, 400, (x) => right(x, t) + left(x, t)), { c: 'c2', w: 3.2, op: 0.8, layer: 'dyn' });
+        f.line(L.sample(0, LEN, 300, (x) => right(x, t)), { c: 'c1', w: 1.3, dash: '5 4', layer: 'over' });
+        f.line(L.sample(0, LEN, 300, (x) => left(x, t)), { c: 'c4', w: 1.3, dash: '5 4', layer: 'over' });
         g.hline(-t, { c: 'hl', w: 2, dash: false, layer: 'over' });
       };
       sweep(ctx, ctx.host, v, TM, 3, draw);
@@ -126,7 +127,11 @@
       const Vg = S.V;
       const at = (x, y) => { const fx = L.clamp((x - XR[0]) / HG, 0, GX - 1.001), fy = L.clamp((y - YR[0]) / HG, 0, GY - 1.001), i = Math.floor(fx), j = Math.floor(fy), a = fx - i, b = fy - j, k = j * GX + i; return Vg[k] * (1 - a) * (1 - b) + Vg[k + 1] * a * (1 - b) + Vg[k + GX] * (1 - a) * b + Vg[k + GX + 1] * a * b; };
       const E = (x, y) => { const e = HG * 0.5; return [-(at(x + e, y) - at(x - e, y)) / (2 * e), -(at(x, y + e) - at(x, y - e)) / (2 * e)]; };
-      const f = L.fig(ctx.host, { x: XR, y: YR, equal: true, maxH: 460, grid: false });
+      st.sweeps = (st.sweeps || 0) + S.it;
+      const row = L.h('div', 'lab-row', ctx.host);
+      const col1 = L.h('div', 'lab-col', row), col2 = L.h('div', 'lab-col', row);
+      L.h('p', 'lab-cap', col1, T('Potential V in the box, with the probe line through both electrodes', '箱の中の電位 V と、両電極を通る測定線'));
+      const f = L.fig(col1, { x: XR, y: YR, equal: true, maxH: 460, grid: false });
       f.raster((x, y) => at(x, y) * 0.85, { cmap: 'div' });
       // equipotentials by marching squares, one path per level
       const levels = L.seq(19, (i) => -0.9 + 0.1 * i).filter((l) => Math.abs(l) > 1e-9);
@@ -152,19 +157,44 @@
       el.forEach((e, i) => {
         f.circle(e.p[0], e.p[1], RE, { c: 'ink', fill: e.V > 0 ? 'pos' : e.V < 0 ? 'neg' : 'muted', fo: 1, w: 1.5 });
         f.handle(e.p[0], e.p[1], { c: e.V > 0 ? 'pos' : e.V < 0 ? 'neg' : 'muted', r: 7, label: T(`Electrode ${'AB'[i]}`, `電極 ${'AB'[i]}`), bounds: [-1.7, 1.7, -1.2, 1.2], onDrag: (x, y) => { st.pos[i] = [x, y]; ctx.redraw(); } });
-        f.text(e.p[0], e.p[1] + RE, `${'AB'[i]}: ${fmt(e.V, 1)}`, { dy: -8, small: true });
+        f.rect(e.p[0] - 0.27, e.p[1] - RE - 0.27, 0.54, 0.22, { c: 'plate', fill: 'plate', fo: 0.9, w: 0, rx: 4, layer: 'over' });
+        f.text(e.p[0], e.p[1] - RE - 0.16, `${'AB'[i]}: ${fmt(e.V, 1)}`, { dy: 4, small: true, layer: 'over' }).style.stroke = 'none';
       });
+      // probe line through A and B, clipped to the box
+      const A = st.pos[0], B = st.pos[1], dAB = Math.hypot(B[0] - A[0], B[1] - A[1]);
+      const dir = dAB > 1e-6 ? [(B[0] - A[0]) / dAB, (B[1] - A[1]) / dAB] : [1, 0];
+      let s0 = -Infinity, s1 = Infinity;
+      [[XR, 0], [YR, 1]].forEach(([R, k]) => { if (Math.abs(dir[k]) > 1e-9) { const a = (R[0] - A[k]) / dir[k], b = (R[1] - A[k]) / dir[k]; s0 = Math.max(s0, Math.min(a, b)); s1 = Math.min(s1, Math.max(a, b)); } });
+      const P = (sv) => [A[0] + sv * dir[0], A[1] + sv * dir[1]];
+      f.line([P(s0), P(s1)], { c: 'hl', w: 1.4, dash: '6 4', op: 0.9, layer: 'over' });
       f.text(XR[1], YR[0], T('walls at V = 0', '壁は V = 0'), { anchor: 'end', dx: -8, dy: -8, small: true, c: 'muted' });
       f.hover((x, y) => { const q = E(x, y); return { text: `V = ${fmt(at(x, y), 3)}   |E| = ${fmt(Math.hypot(...q), 3)}` }; });
       // strongest field in the free region
       let best = 0, bp = [0, 0];
       for (let j = 2; j < GY - 2; j++) for (let i = 2; i < GX - 2; i++) { const k = j * GX + i; if (S.fixed[k] || S.fixed[k + 1] || S.fixed[k - 1] || S.fixed[k + GX] || S.fixed[k - GX]) continue; const ex = (Vg[k + 1] - Vg[k - 1]) / (2 * HG), ey = (Vg[k + GX] - Vg[k - GX]) / (2 * HG), m = Math.hypot(ex, ey); if (m > best) { best = m; bp = [XR[0] + i * HG, YR[0] + j * HG]; } }
       if (best > 0) f.dot(bp[0], bp[1], { c: 'hl', r: 5.5 });
-      L.legend(ctx.host, [{ kind: 'fill', c: 'pos', label: T('V > 0', 'V > 0') }, { kind: 'fill', c: 'neg', label: T('V < 0', 'V < 0') }, { c: 'ink', label: T('equipotentials, every 0.1', '等電位線（0.1 ごと）') }, { c: 'c3', label: T('field lines of E = −∇V', '電気力線 E = −∇V') }, { kind: 'dot', c: 'hl', label: T('strongest field', '最も強い電場') }]);
-      const k0 = Math.round((0 - YR[0]) / HG) * GX + Math.round((0 - XR[0]) / HG);
+      L.legend(ctx.host, [{ kind: 'fill', c: 'pos', label: T('V > 0', 'V > 0') }, { kind: 'fill', c: 'neg', label: T('V < 0', 'V < 0') }, { c: 'ink', label: T('equipotentials, every 0.1', '等電位線（0.1 ごと）') }, { c: 'c3', label: T('field lines of E = −∇V', '電気力線 E = −∇V') }, { kind: 'dot', c: 'hl', label: T('strongest field', '最も強い電場') }, { c: 'hl', dash: true, label: T('probe line', '測定線') }, { kind: 'dot', c: 'ink', label: T('P: neighbour-mean check', 'P：隣接平均の確認点') }]);
+      // right: V along the probe line
+      L.h('p', 'lab-cap', col2, T('V along the probe line, distance s measured from electrode A', '測定線に沿った V（距離 s は電極 A から測ります）'));
+      const g = L.fig(col2, { x: [s0, s1], y: [-1.25, 1.25], aspect: 0.75, maxH: 460, xlabel: T('distance s along the line', '線に沿った距離 s'), ylabel: 'V' });
+      g.hline(0, { c: 'muted', w: 1, layer: 'under' });
+      [[0, el[0]], [dAB, el[1]]].forEach(([sv, e], i) => {
+        g.rect(sv - RE, -1.25, 2 * RE, 2.5, { c: e.V > 0 ? 'pos' : e.V < 0 ? 'neg' : 'muted', fo: 0.18, nostroke: true, layer: 'under' });
+        g.text(sv, 1.25, 'AB'[i], { dy: 13, small: true });
+      });
+      g.line(L.sample(s0, s1, 300, (sv) => { const q = P(sv); return at(q[0], q[1]); }), { c: 'c1', w: 2.4 });
+      g.hover((sv) => { const q = P(sv); return { x: sv, y: at(q[0], q[1]), text: `s = ${fmt(sv, 2)}: V = ${fmt(at(q[0], q[1]), 3)}` }; });
+      // neighbour-mean check at an off-axis free grid point (the nearest free point to (0.6, 0.6))
+      const gi = Math.round((0.6 - XR[0]) / HG), gj = Math.round((0.6 - YR[0]) / HG);
+      let k0 = -1;
+      for (let rad = 0; rad < 20 && k0 < 0; rad++) for (let dj = -rad; dj <= rad && k0 < 0; dj++) for (let di = -rad; di <= rad && k0 < 0; di++) { const i = gi + di, j = gj + dj; if (i < 2 || j < 2 || i > GX - 3 || j > GY - 3) continue; const k = j * GX + i; if (!S.fixed[k] && !S.fixed[k - 1] && !S.fixed[k + 1] && !S.fixed[k - GX] && !S.fixed[k + GX]) k0 = k; }
+      if (k0 < 0) k0 = Math.round((0 - YR[0]) / HG) * GX + Math.round((0 - XR[0]) / HG);
+      const px = XR[0] + (k0 % GX) * HG, py = YR[0] + Math.floor(k0 / GX) * HG;
+      f.dot(px, py, { c: 'ink', r: 4, hollow: true });
+      f.text(px, py, 'P', { dx: 7, dy: -5, anchor: 'start', small: true });
       const r4 = (x) => Math.round(x * 1e4) / 1e4;
       const mean = (Vg[k0 - 1] + Vg[k0 + 1] + Vg[k0 - GX] + Vg[k0 + GX]) / 4;
-      ctx.readout([{ k: T('V at the centre', '中心の V'), v: fmt(r4(Vg[k0]), 4), tone: 'key' }, { k: T('mean of its 4 neighbours', '隣接4点の平均'), v: fmt(r4(mean), 4) }, { k: T('largest |E|', '最大の |E|'), v: fmt(best, 3) }, { k: T('relaxation sweeps', '緩和の反復回数'), v: String(S.it) }],
+      ctx.readout([{ k: T(`V at P = (${fmt(px, 2)}, ${fmt(py, 2)})`, `P = (${fmt(px, 2)}, ${fmt(py, 2)}) での V`), v: fmt(r4(Vg[k0]), 4), tone: 'key' }, { k: T('mean of its 4 neighbours', '隣接4点の平均'), v: fmt(r4(mean), 4) }, { k: T('largest |E|', '最大の |E|'), v: fmt(best, 3) }, { k: T('relaxation sweeps so far', 'これまでの緩和の反復回数'), v: String(st.sweeps) }],
         T('Drag the electrodes. Each value is the average of its neighbours, so V has no peaks or pits away from the electrodes and walls, and the field is strongest where the equipotentials crowd together.', '電極をドラッグできます。各点の値は隣接点の平均なので、電極と壁から離れた所に V の山や谷はなく、電場は等電位線が密集する所で最も強くなります。'));
     },
   };

@@ -144,7 +144,8 @@
       f.circle(cx, cy, rho, { c: 'c2', w: 2.8 });
       const ta = Math.PI / 4, pa = [cx + rho * Math.cos(ta), cy + rho * Math.sin(ta)];
       f.arrow(pa, [pa[0] - 0.02 * Math.sin(ta), pa[1] + 0.02 * Math.cos(ta)], { c: 'c2', w: 2.8 });
-      f.text(cx + rho * 0.72, cy - rho * 0.72, 'C', { math: true, dx: 10, dy: 10, c: 'c2' });
+      const cLab = f.text(cx + (rho + 0.06) * 0.72, cy - (rho + 0.06) * 0.72, 'C', { math: true, dx: 9, dy: 13, c: 'c2' }); // just outside the loop, below right
+      if (prof !== 1) cLab.style.stroke = 'none'; // no plate halo on the coloured vorticity fill
       f.handle(cx, cy, { c: 'c2', r: 7, label: T('Loop centre', 'ループの中心'), bounds: [-1.6, 1.6, -1.6, 1.6], onDrag: (x, y) => { st.c = [x, y]; ctx.redraw(); } });
       // paddle wheels: carried round at angular speed u/r, turning at ω/2
       const wheels = [];
@@ -159,7 +160,7 @@
           f.seg([x, y], [x + s * Math.cos(spin), y + s * Math.sin(spin)], { c: 'c4', w: 3, layer: 'dyn' });
         });
       }, { autoplay: true });
-      const ym = Math.max(1, 2.3 * Math.abs(Om));
+      const ym = Math.max(1, 2.7 * Math.abs(Om)); // ω = 2Ω then sits at three quarters of the height, clear of the border
       const g = L.fig(cB, { x: [0, 2.2], y: [-ym, ym], aspect: 0.9, maxH: 440, xlabel: 'r', ylabel: '' });
       g.line(L.sample(0.005, 2.2, 400, (r) => { const q = uth(r); return Math.abs(q) > 1.5 * ym ? NaN : q; }), { c: 'c1', w: 2.4 });
       if (prof === 1) { g.line(L.sample(0, 2.2, 2, () => 0), { c: 'c3', w: 2.4 }); g.text(0.05, 0, T('ω = 0 for r > 0', 'r > 0 で ω = 0'), { anchor: 'start', dy: -8, small: true, c: 'c3' }); }

@@ -45,7 +45,10 @@
         const inView = dI > X0 && dI < X1 && Math.abs(hi) < Y1;
         if (inView) {
           fig.arrow([dI, 0], [dI, hi], { c: 'ink', w: 3.2, dash: real ? false : '5 3' });
-          fig.text(dI, hi, real ? T('real image', '実像') : T('virtual image', '虚像'), { dy: hi > 0 ? -10 : 18, small: true, layer: 'main' });
+          // real image: label at the foot of the arrow on the empty side of the axis (every ray passes through the tip, none through the foot)
+          // virtual image: label beside the tip on the side away from the object, so it never sits on the object arrow
+          if (real) fig.text(dI, 0, T('real image', '実像'), { dy: hi < 0 ? -8 : 18, small: true, layer: 'main' });
+          else { const rightSide = dI > -dO; fig.text(dI, hi, T('virtual image', '虚像'), { dx: rightSide ? 9 : -9, dy: 4, anchor: rightSide ? 'start' : 'end', small: true, layer: 'main' }); }
         } else offNote = T(' The image lies outside the figure.', '像は図の外にあります。');
       }
       fig.arrow([-dO, 0], O, { c: 'ink', w: 3.2 });
@@ -92,7 +95,8 @@
       const row = L.h('div', 'lab-row', ctx.host);
       const c1 = L.h('div', 'lab-col', row);
       L.h('p', 'lab-cap', c1, T('Time-averaged intensity behind the slits, computed by adding the waves from every slit (distances in µm)', 'スリットの後ろの時間平均強度。各スリットからの波を足し合わせて計算しています（距離の単位は µm）'));
-      const fg = L.fig(c1, { x: [-1, 23], y: [-7.5, 7.5], equal: true, maxH: 420, xlabel: 'x (µm)', ylabel: 'y (µm)' });
+      const fg = L.fig(c1, { x: [-1, 23], y: [-7.5, 7.5], equal: true, maxH: 420, xlabel: 'x (µm)' });
+      fg.text(0.7, 7.5, 'y (µm)', { anchor: 'start', dy: 14, small: true, c: 'ink' }); // the axis label sits right of the barrier, not on it
       const M = N >= 4 ? 2 : 3, k = 2 * Math.PI / lam, src = [];
       for (let j = 0; j < N; j++) for (let q = 0; q < M; q++) src.push((j - (N - 1) / 2) * d + (M > 1 ? (q / (M - 1) - 0.5) * a : 0));
       const S = src.length;
@@ -153,12 +157,14 @@
       const tones = three ? ['c1', 'c3', 'c2'] : ['c1', 'c2'];
       xs.forEach((x, i) => {
         s.poly(L.seq(61, (j) => { const a = j / 60 * L.TAU; return proj(x, a, R); }), { c: tones[i], fo: 0.1, w: 1.4, layer: 'under' });
-        s.seg(proj(x, plates[i], R), proj(x, plates[i] + Math.PI, R), { c: tones[i], w: 2.4, layer: 'under' });
+        s.seg(proj(x, plates[i], 0.86 * R), proj(x, plates[i] + Math.PI, 0.86 * R), { c: tones[i], w: 1.6, dash: '5 4', op: 0.85, layer: 'under' }); // transmission axis, kept inside the disc
         s.text(...proj(x, 0, R), [T('polariser', '偏光子'), three ? T('middle', '中間') : T('analyser', '検光子'), T('analyser', '検光子')][i], { dy: -8, small: true, c: tones[i] });
       });
       s.text(0.9, -1.55, T('unpolarised in', '非偏光'), { small: true, c: 'muted' });
       s.layers.wave = s.group('main');
-      const segs = [[0.2, xs[0]]].concat(xs.map((x, i) => [x, i + 1 < xs.length ? xs[i + 1] : 12]));
+      // each wave stops just short of a filter and the next one starts just after it, so the change of plane happens inside the disc
+      const gap = 0.14;
+      const segs = [[0.2, xs[0] - gap]].concat(xs.map((x, i) => [x + gap, i + 1 < xs.length ? xs[i + 1] - gap : 12]));
       const wave = (ph) => {
         s.clear('wave');
         // unpolarised light: a few random planes, drawn faintly
@@ -192,7 +198,7 @@
       const hp = [1.1 * tipA[0], 1.1 * tipA[1]];
       b.handle(hp[0], hp[1], { c: 'c2', label: T('Analyser angle', '検光子の角度'), onDrag: (x, y) => { let d = Math.atan2(x, y) * 180 / Math.PI; if (d < 0) d += 180; ctx.set('angle', d); } });
       b.text(hp[0], hp[1], `θ = ${Math.round(v.angle)}°`, { dx: hp[0] > 0 ? 14 : -14, dy: hp[1] > 0 ? -8 : 16, anchor: hp[0] > 0 ? 'start' : 'end', small: true });
-      const g = L.fig(cB, { x: [0, 180], y: [0, 1.05], aspect: 0.8, maxH: 300, xlabel: T('analyser angle θ (degrees)', '検光子の角度 θ（度）'), ylabel: 'I/I₀', ticksX: [0, 45, 90, 135, 180].map((t) => [t, String(t)]) });
+      const g = L.fig(cB, { x: [0, 180], y: [0, 1.22], aspect: 0.8, maxH: 300, xlabel: T('analyser angle θ (degrees)', '検光子の角度 θ（度）'), ylabel: 'I/I₀', ticksX: [0, 45, 90, 135, 180].map((t) => [t, String(t)]), ticksY: [0, 0.25, 0.5, 0.75, 1].map((t) => [t, String(t)]) });
       g.line(L.sample(0, 180, 180, (x) => Math.abs(Math.cos(rad(x)))), { c: 'muted', w: 1.2, dash: '3 4' });
       g.line(L.sample(0, 180, 180, (x) => Math.cos(rad(x)) ** 2), { c: 'c2', w: three ? 1.6 : 2.6, op: three ? 0.5 : 1 });
       g.line(L.sample(0, 180, 180, (x) => Math.cos(rad(x / 2)) ** 4), { c: 'c3', w: three ? 2.6 : 1.6, op: three ? 1 : 0.5 });

@@ -32,8 +32,8 @@
       g.line(L.sample(0, 0.6, 200, (x) => RK(lam * x)), { c: 'c1', w: 2.2 });
       g.line(L.sample(0, 0.6, 200, (x) => RB(lam * x)), { c: 'c3', w: 2.2, dash: '5 3' });
       g.vline(0.4, { c: 'c2', w: 1, dash: '2 3' }); g.vline(RK4_LIMIT, { c: 'c1', w: 1, dash: '2 3' });
-      g.text(0.4, -2.2, 'h = 0.4', { dx: -4, dy: -6, anchor: 'end', small: true, c: 'c2' });
-      g.text(RK4_LIMIT, 1.3, `h ≈ ${fmt(RK4_LIMIT, 3)}`, { dx: -4, dy: 14, anchor: 'end', small: true, c: 'c1' });
+      g.text(0.4, 1.3, 'h = 0.4', { dx: -4, dy: 12, anchor: 'end', small: true, c: 'c2' });
+      g.text(RK4_LIMIT, -2.2, `h ≈ ${fmt(RK4_LIMIT, 3)}`, { dx: -4, dy: -6, anchor: 'end', small: true, c: 'c1' });
       g.vline(h, { c: 'hl', w: 1.6, dash: false, op: 0.8 });
       [[RE, 'c2'], [RK, 'c1'], [RB, 'c3']].forEach(([R, c]) => { const y = R(z); if (y > -2.2 && y < 1.3) g.dot(h, y, { c, r: 5 }); });
       g.handle(h, -1.85, { c: 'hl', axis: 'x', bounds: [0.025, 0.6, -2, 1], label: T('Step size h', '刻み幅 h'), onDrag: (x) => ctx.set('h', x) });
@@ -63,7 +63,7 @@
       const f = L.fig(ctx.host, { x: [1, 17], y: [-17.5, 1], aspect: 0.42, maxH: 330, xlabel: T('e, where x = 10⁻ᵉ', 'e（x = 10⁻ᵉ）'), ylabel: T('relative error', '相対誤差'), ticksY: [-16, -12, -8, -4, 0].map((k) => [k, k === 0 ? '1' : '10' + sup(k)]), ticksX: L.seq(9, (i) => [1 + 2 * i, String(1 + 2 * i)]) });
       f.rect(15.65, -17.5, 1.35, 18.5, { c: 'c2', fo: 0.08, nostroke: true, layer: 'under' });
       f.line(L.sample(1, 17, 200, (s) => Math.log10(EPS * 10 ** s)), { c: 'muted', w: 1.4, dash: '6 4' });
-      f.text(9, Math.log10(EPS * 1e9), T('rounding model ε/x', '丸めのモデル ε/x'), { anchor: 'start', dx: 6, dy: 34, small: true, c: 'muted' });
+      f.text(2.6, -6.2, T('rounding model ε/x', '丸めのモデル ε/x'), { anchor: 'start', small: true, c: 'muted' });
       f.line(L.sample(1, 17, 900, (s) => lg(relErr(10 ** -s))), { c: 'c2', w: 1.4, op: 0.75 });
       for (let k = 1; k <= 17; k++) f.dot(k, lg(relErr(10 ** -k)), { c: 'c2', r: 3.2 });
       f.text(16.33, -8, '1 + x = 1', { small: true, c: 'c2' });

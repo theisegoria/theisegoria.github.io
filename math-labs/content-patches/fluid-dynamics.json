@@ -1,0 +1,146 @@
+{
+ "streamlines": {
+  "body": [
+   "A uniform stream U is combined with a source and a sink, the building blocks of potential flow. Drag the two singularities and change their strengths. The streamlines are integrated from the exact velocity field, the shading shows the speed, and the gold points are where the velocity vanishes. With equal and opposite strengths in a stream, the orange dividing streamline closes into a Rankine oval: a body shape the flow goes around.",
+   "一様流 U に、ポテンシャル流の基本要素である湧き出しと吸い込みを重ねます。2つの特異点をドラッグし、強さを変えてください。流線は厳密な速度場から積分したもので、濃淡は速さ、金色の点は速度が0になるよどみ点です。一様流の中で強さが等しく符号が逆なら、橙の分離流線は閉じてランキン楕円になり、流れはその物体の周りを回ります。"
+  ],
+  "formula": "\\mathbf u=\\nabla\\phi,\\qquad \\phi=Ux+\\sum_i\\frac{m_i}{2\\pi}\\ln|\\mathbf x-\\mathbf x_i|,\\qquad \\frac{d\\mathbf x}{ds}\\parallel\\mathbf u",
+  "example": [
+   "A streamline is tangent to the velocity field at every point, so no fluid crosses it; the dividing streamline can be replaced by a solid wall.",
+   "流線は各点で速度場に接するので、流体は流線を横切りません。分離流線は固体の壁に置き換えられます。"
+  ],
+  "question": [
+   "What does the shading encode?",
+   "濃淡は何を表しますか？"
+  ],
+  "answer": [
+   "The local speed |u|. By Bernoulli, pressure is lowest where the flow is fastest, at the sides of the oval.",
+   "局所的な速さ |u| です。ベルヌーイの定理により、流れが最も速い楕円の側面で圧力は最も低くなります。"
+  ],
+  "params": [
+   [
+    "source",
+    "Strength m₁ (source if positive)",
+    "強さ m₁（正なら湧き出し）",
+    -2,
+    2,
+    0.1,
+    1.5
+   ],
+   [
+    "sink",
+    "Strength m₂ (sink if negative)",
+    "強さ m₂（負なら吸い込み）",
+    -2,
+    2,
+    0.1,
+    -1.5
+   ],
+   [
+    "uniform",
+    "Uniform stream U",
+    "一様流 U",
+    0,
+    2,
+    0.1,
+    1
+   ]
+  ]
+ },
+ "bernoulli": {
+  "title": [
+   "2. Bernoulli in a venturi",
+   "2. ベンチュリ管とベルヌーイ"
+  ],
+  "body": [
+   "Water flows through a horizontal pipe that narrows to a throat and widens again. Continuity fixes the speed, v = v₁A₁/A, so tracers released at equal time intervals spread apart where the flow is fast. Bernoulli then fixes the pressure: the columns in the tubes drop at the throat by exactly the rise in ½ρv². Change the throat area and the inlet speed.",
+   "水が、のど部で細くなり再び広がる水平な管を流れます。連続の式が速さ v = v₁A₁/A を決めるので、等しい時間間隔で放出したトレーサーは流れが速い所で間隔が広がります。次にベルヌーイの定理が圧力を決め、細管の液面はのど部で ½ρv² の増加分だけ下がります。のど部の面積と入口の速さを変えてください。"
+  ],
+  "example": [
+   "With v₁ = 3 m/s and A₂/A₁ = 0.5, continuity gives v₂ = 6 m/s, and the pressure at the throat is lower by ½ρ(v₂² − v₁²) = 13.5 kPa.",
+   "v₁ = 3 m/s、A₂/A₁ = 0.5 なら連続の式から v₂ = 6 m/s となり、のど部の圧力は ½ρ(v₂² − v₁²) = 13.5 kPa だけ低くなります。"
+  ],
+  "caution": [
+   "The ideal relation assumes steady, incompressible, inviscid flow along a streamline, and the flow is treated as one-dimensional across each section.",
+   "理想式は定常・非圧縮・非粘性の流線に沿った流れを仮定し、各断面で流れを一次元として扱います。"
+  ],
+  "params": [
+   [
+    "area",
+    "Throat area ratio A₂/A₁",
+    "のど部の面積比 A₂/A₁",
+    0.3,
+    2,
+    0.05,
+    0.5
+   ],
+   [
+    "speed",
+    "Inlet speed v₁ (m/s)",
+    "入口の速さ v₁ (m/s)",
+    0.5,
+    4,
+    0.1,
+    3
+   ]
+  ]
+ },
+ "vorticity": {
+  "body": [
+   "Choose a flow and drag the loop C. The circulation Γ is computed as the line integral of velocity around the loop, and it always equals the flux of vorticity through it (Stokes’ theorem). In solid-body rotation the vorticity is 2Ω everywhere and the paddle wheels turn with the flow. In the free vortex the fluid circles faster near the centre, yet the vorticity is zero away from the axis: the wheels orbit without turning, and a loop that misses the axis has Γ = 0. The Rankine vortex joins the two, a rotating core inside a free vortex.",
+   "流れを選び、ループ C をドラッグしてください。循環 Γ はループに沿った速度の線積分として計算しており、常にループを貫く渦度の流束に等しくなります（ストークスの定理）。剛体回転では渦度はどこでも 2Ω で、水車は流れと一緒に回転します。自由渦では中心に近いほど速く回りますが、軸の外の渦度は0です。水車は回転せずに周回し、軸を囲まないループでは Γ = 0 です。ランキン渦は両者をつないだもので、自由渦の中に回転する核があります。"
+  ],
+  "formula": "\\boldsymbol\\omega=\\nabla\\times\\mathbf u,\\qquad \\Gamma=\\oint_C\\mathbf u\\cdot d\\mathbf l=\\iint_S\\omega\\,dA",
+  "example": [
+   "Solid-body rotation has uniform vorticity twice the angular speed, so a centred loop of radius R has Γ = 2Ω·πR².",
+   "剛体回転の渦度は角速度の2倍で一様なので、半径 R の中心のループでは Γ = 2Ω·πR² です。"
+  ],
+  "caution": [
+   "Circular streamlines alone do not determine vorticity: the solid-body and free vortices have the same circular streamlines, yet one has uniform vorticity and the other none away from the axis. The free vortex is singular on its axis, where all its vorticity is concentrated.",
+   "円形の流線だけでは渦度は決まりません。剛体回転と自由渦は同じ円形の流線をもちますが、前者の渦度は一様で、後者は軸の外で0です。自由渦は軸上で特異で、渦度はすべてそこに集中しています。"
+  ],
+  "params": [
+   [
+    "profile",
+    "Flow",
+    "流れ",
+    0,
+    2,
+    1,
+    2,
+    [
+     [
+      "Solid body",
+      "剛体回転"
+     ],
+     [
+      "Free vortex",
+      "自由渦"
+     ],
+     [
+      "Rankine",
+      "ランキン渦"
+     ]
+    ]
+   ],
+   [
+    "rotation",
+    "Angular speed Ω",
+    "角速度 Ω",
+    -2,
+    2,
+    0.1,
+    1
+   ],
+   [
+    "radius",
+    "Loop radius",
+    "ループ半径",
+    0.2,
+    1.5,
+    0.05,
+    0.5
+   ]
+  ]
+ }
+}

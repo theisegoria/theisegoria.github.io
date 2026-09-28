@@ -185,7 +185,22 @@
       if (S) {
         if (inBox(R3, box) && inBox(S, box)) f.line([R3, S], { c: 'muted', w: 1.3, dash: '4 3' });
         if (inBox(R3, box)) f.dot(R3[0], R3[1], { c: 'c2', r: 5.5, hollow: true });
-        if (inBox(R3, box)) f.text(R3[0], R3[1], '−(P+Q)', { math: true, small: true, dx: R3[0] > 2.2 ? -10 : 10, anchor: R3[0] > 2.2 ? 'end' : 'start', dy: R3[1] >= 0 ? -10 : 16, c: 'c2' });
+        if (inBox(R3, box)) {
+          // place the label in whichever of eight directions is farthest (in pixels) from the curve, the chord and the sum
+          const px = f.X(R3[0]), py = f.Y(R3[1]), sx = f.X(S[0]), sy = f.Y(S[1]);
+          const cpts = pieces.flat().map(([x, y]) => [f.X(x), f.Y(y)]);
+          const chordPts = seg ? seg.map(([x, y]) => [f.X(x), f.Y(y)]) : [];
+          const dSeg = (qx, qy) => { if (chordPts.length < 2) return 1e9; const [a1, b1] = chordPts[0], [a2, b2] = chordPts[chordPts.length - 1]; const L2 = (a2 - a1) ** 2 + (b2 - b1) ** 2 || 1; const t = L.clamp(((qx - a1) * (a2 - a1) + (qy - b1) * (b2 - b1)) / L2, 0, 1); return Math.hypot(qx - a1 - t * (a2 - a1), qy - b1 - t * (b2 - b1)); };
+          let best = null;
+          for (let k = 0; k < 8; k++) {
+            const ang = k * Math.PI / 4, qx = px + 22 * Math.cos(ang), qy = py + 22 * Math.sin(ang);
+            if (qx < f.pad.l + 24 || qx > f.W - f.pad.r - 24 || qy < f.pad.t + 8 || qy > f.H - f.pad.b - 8) continue;
+            let d = Math.min(Math.hypot(qx - sx, qy - sy), dSeg(qx, qy) + 4);
+            for (const [cx, cy] of cpts) { const dd = Math.hypot(qx - cx, qy - cy); if (dd < d) d = dd; }
+            if (!best || d > best.d) best = { d, qx, qy };
+          }
+          if (best) f.text(f.IX(best.qx), f.IY(best.qy), '−(P+Q)', { math: true, small: true, dy: 4, c: 'c2' });
+        }
         if (inBox(S, box)) { f.dot(S[0], S[1], { c: 'hl', r: 7.5, layer: 'over' }); f.text(S[0], S[1], dbl ? '2P' : 'P+Q', { math: true, dx: S[0] > 2.2 ? -12 : 12, anchor: S[0] > 2.2 ? 'end' : 'start', dy: S[1] >= 0 ? -12 : 18 }); }
       }
       const drag = (kx, ks) => (x, y) => { const q = nearest(pieces, x, y, X1 - X0, 2 * Y); if (!q) return; ctx.set(kx, q[0], true); ctx.set(ks, q[1] < 0 ? 1 : 0, true); ctx.redraw(); };
@@ -226,15 +241,16 @@
       const row = L.h('div', 'lab-row', ctx.host), c1 = L.h('div', 'lab-col', row), c2 = L.h('div', 'lab-col', row);
       L.h('p', 'lab-cap', c1, T(`All solutions of y² = x³ + ${a}x + ${b} with x and y taken mod ${p}. Press Play to walk G, 2G, 3G, … through the group.`, `x と y を ${p} を法として考えた y² = x³ + ${a}x + ${b} のすべての解です。再生を押すと G, 2G, 3G, … が群の中を歩きます。`));
       const tk = [0, Math.round((p - 1) / 2), p - 1].map((k) => [k, String(k)]);
-      const f = L.fig(c1, { x: [-0.8, p - 0.2], y: [-0.8, p - 0.2], equal: true, maxH: 470, grid: false, xlabel: 'x', ylabel: 'y', ticksX: tk, ticksY: tk });
+      const f = L.fig(c1, { x: [-1.5, p + 0.5], y: [-1.5, p + 0.5], equal: true, maxH: 470, grid: false, xlabel: 'x', ylabel: 'y', ticksX: tk, ticksY: tk });
       f.hline(p / 2, { c: 'muted', dash: '3 4', w: 1 });
       const r = L.clamp(230 / p, 2.2, 7.5);
-      pts.forEach(([x, y]) => f.dot(x, y, { c: 'c1', r, op: 0.9, layer: 'under' }));
       const draw = (k) => {
         f.clear('main'); f.clear('over');
+        // the solutions sit above the axis lines, so points with y = 0 or x = 0 are not cut by them
+        pts.forEach(([x, y]) => f.dot(x, y, { c: 'c1', r, op: 0.9, layer: 'over' }));
         if (!G) return;
         for (let i = 1; i <= k && i < mult.length; i++) f.seg(mult[i - 1], mult[i], { c: 'c2', w: 1, op: 0.3 });
-        for (let i = 0; i <= k && i < mult.length; i++) f.dot(mult[i][0], mult[i][1], { c: 'c2', r: r * 0.75 });
+        for (let i = 0; i <= k && i < mult.length; i++) f.dot(mult[i][0], mult[i][1], { c: 'c2', r: r * 0.75, layer: 'over' });
         const cur = mult[Math.min(k, mult.length - 1)];
         f.dot(G[0], G[1], { c: 'ink', r: r + 2.5, hollow: true, layer: 'over' });
         f.text(G[0], G[1], 'G', { math: true, dx: 10, dy: -10, layer: 'over' });

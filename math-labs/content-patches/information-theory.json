@@ -1,0 +1,54 @@
+{
+ "entropy": {
+  "body": [
+   "Tune a binary source. On the left each outcome is a block whose width is its probability and whose height is its surprise −log₂ p(x), so the total shaded area is the entropy, the average surprise. On the right, the entropy peaks at one bit for a fair coin.",
+   "二値情報源を調整します。左図では各結果をブロックで表し、幅が確率、高さが驚き −log₂ p(x) です。したがって網掛けの総面積がエントロピー、すなわち平均の驚きになります。右図のエントロピーは公平なコインで最大の1ビットになります。"
+  ],
+  "example": [
+   "For p = 0.9, H = 0.9·log₂(1/0.9) + 0.1·log₂(10) ≈ 0.469 bits.",
+   "p = 0.9 なら H = 0.9·log₂(1/0.9) + 0.1·log₂(10) ≈ 0.469 ビットです。"
+  ]
+ },
+ "channel": {
+  "body": [
+   "Each bit is flipped with probability f. The mutual information is the output uncertainty H(Y) minus the part caused by noise, H(Y | X) = H(f). Drag the input probability: the gap is widest for a uniform input, and that maximum is the capacity 1 − H(f).",
+   "各ビットは確率 f で反転します。相互情報量は出力の不確実性 H(Y) から雑音による部分 H(Y | X) = H(f) を引いたものです。入力確率をドラッグすると、差は一様な入力で最大になり、その最大値が容量 1 − H(f) です。"
+  ],
+  "formula": "I(X;Y)=H(Y)-H(Y\\mid X),\\qquad C=\\max_{P_X}I(X;Y)=1-H(f)",
+  "example": [
+   "The noiseless binary channel (f = 0) has one bit of capacity; at f = 0.1 the capacity is about 0.531 bits.",
+   "雑音のない二値通信路（f = 0）の容量は1ビット、f = 0.1 では約0.531ビットです。"
+  ],
+  "params": [
+   [
+    "noise",
+    "Flip probability f",
+    "反転確率 f",
+    0,
+    0.5,
+    0.01,
+    0.1
+   ],
+   [
+    "input",
+    "Input probability P(X = 1)",
+    "入力確率 P(X = 1)",
+    0.01,
+    0.99,
+    0.01,
+    0.5
+   ]
+  ]
+ },
+ "kl": {
+  "body": [
+   "Compare an observed two-outcome distribution P with a model Q. The left panel shows the two terms of the sum; one can be negative, yet the total is never negative. The right panel shows D(P ‖ Q) and the reverse D(Q ‖ P) as the model moves, both zero only at q = p.",
+   "観測された2値の分布 P とモデル Q を比べます。左図は和の2つの項を示し、一方は負になり得ますが合計は負になりません。右図はモデルを動かしたときの D(P ‖ Q) と逆向きの D(Q ‖ P) で、どちらも q = p のときだけ0になります。"
+  ],
+  "formula": "D_{\\mathrm{KL}}(P\\|Q)=\\sum_xP(x)\\log_2\\frac{P(x)}{Q(x)}\\ \\ge 0",
+  "example": [
+   "\\(D_{\\mathrm{KL}}(P\\|Q)\\) is zero only when the two distributions agree: for p = 0.7 and q = 0.5 it equals 0.7·log₂(1.4) + 0.3·log₂(0.6) ≈ 0.119 bits.",
+   "\\(D_{\\mathrm{KL}}(P\\|Q)\\) が0になるのは2つの分布が一致するときだけです。p = 0.7、q = 0.5 では 0.7·log₂(1.4) + 0.3·log₂(0.6) ≈ 0.119 ビットです。"
+  ]
+ }
+}

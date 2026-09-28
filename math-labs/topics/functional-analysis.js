@@ -36,8 +36,12 @@
       g.dot(1, pn(x, 1), { c: 'c1', r: 4.5 }); g.dot(2, pn(x, 2), { c: 'c3', r: 4.5 });
       g.vline(p, { c: 'hl', w: 1.2, dash: '2 3' });
       g.dot(p, np, { c: 'hl', r: 6 });
-      g.handle(p, ymax * 0.06, { c: 'hl', axis: 'x', bounds: [0.5, 8, 0, ymax], label: T('Exponent p', '指数 p'), onDrag: (q) => ctx.set('order', q) });
-      L.legend(ctx.host, [{ c: 'c2', label: T(`unit ball for p = ${fmt(p, 1)}`, `p = ${fmt(p, 1)} の単位球`) }, { c: 'c1', dash: true, label: 'p = 1' }, { c: 'c3', dash: true, label: 'p = 2' }, { c: 'c4', dash: true, label: 'p = ∞' }]);
+      g.handle(p, 0, { c: 'hl', axis: 'x', r: 7, bounds: [0.5, 8, 0, ymax], label: T('Exponent p', '指数 p'), onDrag: (q) => ctx.set('order', q) });
+      const leg = [{ c: 'c2', label: T(`unit ball for p = ${fmt(p, 1)}`, `p = ${fmt(p, 1)} の単位球`) }];
+      if (Math.abs(p - 1) > 0.05) leg.push({ c: 'c1', dash: true, label: 'p = 1' });
+      if (Math.abs(p - 2) > 0.05) leg.push({ c: 'c3', dash: true, label: 'p = 2' });
+      leg.push({ c: 'c4', dash: true, label: 'p = ∞' });
+      L.legend(ctx.host, leg);
       ctx.readout([
         { k: '‖x‖₁', v: fmt(pn(x, 1), 3) }, { k: '‖x‖₂', v: fmt(pn(x, 2), 3) }, { k: '‖x‖∞', v: fmt(inf(x), 3) },
         { k: `‖x‖ₚ, p = ${fmt(p, 1)}`, v: fmt(np, 3), tone: p < 1 ? 'warn' : 'key' },
@@ -109,7 +113,8 @@
       const last = pts[n], m = Math.hypot(...last);
       if (m > 1e-12) f.arrow([0, 0], [last[0] / m, last[1] / m], { c: 'c2', w: 2.6 });
       f.handle(st.x[0], st.x[1], { c: 'hl', snap: 0.05, bounds: [-2, 2, -2, 2], label: T('Starting vector x', '初期ベクトル x'), onDrag: (a, b) => { st.x = [a, b]; ctx.redraw(); } });
-      const g = L.fig(c2, { x: [-2.6, 2.6], y: [0, 3.2], aspect: 0.8, maxH: 380, xlabel: 'λ', ylabel: 'σmin(A − λI)' });
+      const g = L.fig(c2, { x: [-2.6, 2.6], y: [0, 3.2], aspect: 0.8, maxH: 380, xlabel: 'λ' });
+      g.text(2.5, 3.2, 'σmin(A − λI)', { anchor: 'end', dy: 14, small: true, c: 'c2' });
       const smin = (lam) => { const a = A[0][0] - lam, c = A[0][1], b = A[1][0], d = A[1][1] - lam; const F = a * a + b * b + c * c + d * d, dt = a * d - b * c; return Math.sqrt(Math.max(0, (F - Math.sqrt(Math.max(0, F * F - 4 * dt * dt))) / 2)); };
       g.line(L.sample(-2.6, 2.6, 500, smin), { c: 'c2', w: 2.4 });
       g.vline(0, { c: 'ink', w: 1, dash: '3 3', op: 0.6 });

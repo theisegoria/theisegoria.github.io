@@ -1,0 +1,88 @@
+{
+ "complex": {
+  "body": [
+   "Build a square one simplex at a time: four vertices, the four sides, a diagonal, then the two triangles. Beside the picture are the boundary matrices over the two-element field. Watch each new edge either join two components, raising rank ∂₁ and lowering β₀, or close a cycle, raising β₁; each face turns one cycle into a boundary.",
+   "正方形を単体1つずつ組み立てます。4つの頂点、4本の辺、対角線、最後に2枚の三角形です。図の横には2元体上の境界行列を示します。新しい辺は2つの連結成分をつないで rank ∂₁ を増やし β₀ を減らすか、閉路を閉じて β₁ を増やします。面を1枚加えるごとに閉路が1つ境界になります。"
+  ],
+  "example": [
+   "After the four sides, V = 4, E = 4 and rank ∂₁ = 3, so β₀ = 1 and β₁ = 1. The diagonal makes β₁ = 2, and the two triangles bring it back to 0.",
+   "4辺を加えた後は V = 4、E = 4、rank ∂₁ = 3 なので β₀ = 1、β₁ = 1 です。対角線で β₁ = 2 になり、2枚の三角形で 0 に戻ります。"
+  ],
+  "question": [
+   "Why does filling a face never change the number of components?",
+   "面を埋めても連結成分の数が変わらないのはなぜですか？"
+  ],
+  "answer": [
+   "β₀ = V − rank ∂₁ does not involve faces at all: a face's boundary already lies in one component.",
+   "β₀ = V − rank ∂₁ には面が現れないからです。面の境界はすでに1つの連結成分に含まれています。"
+  ],
+  "params": [
+   [
+    "stage",
+    "Construction stage",
+    "構成段階",
+    0,
+    7,
+    1,
+    4
+   ]
+  ]
+ },
+ "filtration": {
+  "body": [
+   "Put a disk of diameter ε around each point, join two points when their disks touch, and fill every triangle whose three edges are present. As ε grows, components merge and loops are born and then filled. The barcode records each feature from the ε where it appears to the ε where it dies, computed by reducing the boundary matrix over the two-element field. Drag the points to reshape the cloud.",
+   "各点のまわりに直径 ε の円板を置き、円板が触れ合う2点を結び、3辺がそろった三角形をすべて埋めます。ε を大きくすると連結成分が合流し、ループが生まれてやがて埋まります。バーコードは各特徴が現れる ε から消える ε までを記録したもので、2元体上で境界行列を簡約して計算します。点をドラッグすると点群の形を変えられます。"
+  ],
+  "example": [
+   "For eight evenly spaced points on the unit circle, adjacent points join at ε ≈ 0.765, giving an octagon with β₁ = 1. The loop survives until ε ≈ 1.848, when triangles through every third point fill it.",
+   "単位円上に等間隔に並んだ8点では、ε ≈ 0.765 で隣どうしが結ばれて八角形ができ、β₁ = 1 です。このループは ε ≈ 1.848 で3つ隣の点を結ぶ三角形に埋められるまで生き残ります。"
+  ],
+  "answer": [
+   "New triangles can fill a cycle that was not a boundary before, so the class dies in H₁.",
+   "新しい三角形が、それまで境界でなかった閉路を埋めるため、その類は H₁ で消えます。"
+  ]
+ },
+ "euler": {
+  "body": [
+   "Choose a triangulated surface and count vertices, edges and faces. The alternating sum V − E + F equals the alternating sum of Betti numbers, computed here from the boundary matrices. Press Play to place the triangles one at a time: the two sums agree at every stage, not only for the finished surface.",
+   "三角形分割された曲面を選び、頂点・辺・面を数えます。交代和 V − E + F は、境界行列から計算したベッチ数の交代和と一致します。再生を押すと三角形を1枚ずつ置いていきます。2つの和は完成した曲面だけでなく、どの段階でも一致します。"
+  ],
+  "example": [
+   "A tetrahedron surface has 4 − 6 + 4 = 2 with β = (1, 0, 1). The 3 by 3 torus has 9 − 27 + 18 = 0 with β = (1, 2, 1).",
+   "四面体の表面は 4 − 6 + 4 = 2 で β = (1, 0, 1) です。3×3 のトーラスは 9 − 27 + 18 = 0 で β = (1, 2, 1) です。"
+  ],
+  "caution": [
+   "The sphere here is the surface of the tetrahedron, not the solid. Betti numbers are computed over the two-element field; χ is the same over any field.",
+   "ここでの球面は四面体の表面であり、中身の詰まった立体ではありません。ベッチ数は2元体上で計算しています。χ はどの体で計算しても同じです。"
+  ],
+  "params": [
+   [
+    "solid",
+    "Surface",
+    "曲面",
+    0,
+    3,
+    1,
+    1,
+    [
+     [
+      "Disk",
+      "円板"
+     ],
+     [
+      "Sphere",
+      "球面"
+     ],
+     [
+      "Annulus",
+      "円環"
+     ],
+     [
+      "Torus",
+      "トーラス"
+     ]
+    ]
+   ]
+  ]
+ }
+}

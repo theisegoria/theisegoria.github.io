@@ -1,0 +1,69 @@
+{
+ "absorbing": {
+  "body": [
+   "Each round wins one unit with probability α and loses one otherwise. Change α, the starting fortune and the goal, watch sample games end in ruin or success, and compare the share of wins with the exact probability hᵢ of reaching N before 0.",
+   "各回で確率 α で1単位勝ち、それ以外は1単位負けます。α、初期資産、目標を変え、試行が破産か成功で終わる様子を見て、勝った割合を 0 より先に N に達する正確な確率 hᵢ と比べます。"
+  ],
+  "formula": "h_i=\\alpha\\,h_{i+1}+(1-\\alpha)\\,h_{i-1},\\qquad h_0=0,\\ h_N=1",
+  "params": [
+   [
+    "alpha",
+    "Win probability α",
+    "勝率 α",
+    0.1,
+    0.9,
+    0.05,
+    0.5
+   ],
+   [
+    "fortune",
+    "Initial fortune i",
+    "初期資産 i",
+    1,
+    9,
+    1,
+    4
+   ],
+   [
+    "goal",
+    "Goal N",
+    "目標 N",
+    4,
+    12,
+    1,
+    8
+   ]
+  ]
+ },
+ "stationary": {
+  "params": [
+   [
+    "p",
+    "A to B",
+    "AからB",
+    0.05,
+    0.95,
+    0.05,
+    0.1
+   ],
+   [
+    "q",
+    "B to A",
+    "BからA",
+    0.05,
+    0.95,
+    0.05,
+    0.2
+   ],
+   [
+    "steps",
+    "Iterations",
+    "反復回数",
+    0,
+    30,
+    1,
+    10
+   ]
+  ]
+ }
+}

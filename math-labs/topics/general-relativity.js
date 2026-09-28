@@ -16,7 +16,7 @@
       const c1 = L.h('div', 'lab-col', row), c2 = L.h('div', 'lab-col', row);
       L.h('p', 'lab-cap', c1, T('The equatorial plane embedded as a surface (drawn in perspective)', '赤道面を曲面として埋め込んだ図（斜めから見た図）'));
       L.h('p', 'lab-cap', c2, T('Its profile z(r): distance along the curve is proper distance', '断面 z(r)：曲線に沿った長さが固有距離です'));
-      const f = L.fig(c1, { x: [-RM - 0.3, RM + 0.3], y: [-k * RM - 0.6, hM + k * RM + 0.8], equal: true, axes: false, maxH: 380 });
+      const f = L.fig(c1, { x: [-RM - 0.3, RM + 0.3], y: [-k * rs - 1.1, hM + k * RM + 0.4], aspect: 0.8, axes: false, maxH: 380 });
       const S = (r, p) => [r * Math.cos(p), zE(r, rs) + k * r * Math.sin(p)];
       const ring = (r, o, oBack) => {
         f.line(L.seq(61, (i) => S(r, Math.PI * i / 60)), oBack || Object.assign({}, o, { op: (o.op ?? 1) * 0.45, dash: '3 3' }));
@@ -27,11 +27,11 @@
       ring(rs, { c: 'c2', w: 2.6 });
       ring(r0, { c: 'hl', w: 3 });
       f.text(0, zE(rs, rs) - k * rs, T('horizon r = rₛ', '地平面 r = rₛ'), { c: 'c2', small: true, dy: 16 });
-      f.text(r0, zE(r0, rs), `r = ${fmt(r0, 2)}`, { anchor: 'start', dx: 8, dy: 4, small: true });
+      { const far = r0 > 0.55 * RM; f.text(r0, zE(r0, rs), `r = ${fmt(r0, 2)}`, { anchor: far ? 'end' : 'start', dx: far ? -10 : 8, dy: far ? -8 : 4, small: true }); }
       // right: profile
       const g = L.fig(c2, { x: [0, RM], y: [0, Math.max(hM, 3) * 1.08], aspect: 0.9, maxH: 380, xlabel: 'r', ylabel: 'z' });
       g.rect(0, 0, rs, Math.max(hM, 3) * 1.08, { c: 'muted', fo: 0.12, nostroke: true, layer: 'under' });
-      g.text(rs / 2, Math.max(hM, 3) * 0.55, T('r < rₛ', 'r < rₛ'), { small: true, c: 'muted' });
+      { const tl = g.text(rs / 2, Math.max(hM, 3) * 0.6, T('r < rₛ', 'r < rₛ'), { small: true, c: 'muted' }); tl.setAttribute('transform', `rotate(-90 ${g.X(rs / 2)} ${g.Y(Math.max(hM, 3) * 0.6)})`); }
       g.line(L.sample(rs, RM, 200, (r) => zE(r, rs)), { c: 'c1', w: 2 });
       g.line(L.sample(rs, r0, 120, (r) => zE(r, rs)), { c: 'hl', w: 5, op: 0.9 });
       g.line([[rs, 0.04], [r0, 0.04]], { c: 'c2', w: 4 });
@@ -120,7 +120,7 @@
       const row = L.h('div', 'lab-row', ctx.host);
       const c1 = L.h('div', 'lab-col', row), c2 = L.h('div', 'lab-col', row);
       L.h('p', 'lab-cap', c1, T('Light rays past a black hole, computed from the exact orbit equation (lengths in rₛ)', 'ブラックホールをかすめる光線（厳密な軌道方程式による。長さは rₛ 単位）'));
-      L.h('p', 'lab-cap', c2, T('Deflection angle α against impact parameter b', '偏向角 α と衝突パラメータ b'));
+      L.h('p', 'lab-cap', c2, T('Deflection angle α (rad) against impact parameter b', '偏向角 α（rad）と衝突パラメータ b'));
       const f = L.fig(c1, { x: [-1.35 * E, 1.35 * E], y: [-0.75 * E, 1.15 * E], equal: true, axes: false, maxH: 400 });
       for (const fr of [0.2, 0.35, 0.55, 0.8, 1.05]) {
         const bb = fr * E; if (Math.abs(bb - b) < 0.06 * E) continue;
@@ -136,13 +136,13 @@
       if (!R0.captured) {
         const inside = R0.pts.filter(([x, y], i) => i > R0.pts.length / 2 && Math.abs(x) < 1.25 * E && y > -0.68 * E && y < 1.1 * E);
         const p = inside[inside.length - 1];
-        if (p) f.text(p[0], p[1], `α = ${fmt(R0.alpha * 180 / Math.PI, 3)}°`, { anchor: p[0] > 0 ? 'end' : 'start', small: true, dy: -10, c: 'hl' });
+        if (p) f.text(p[0], p[1], `α = ${fmt(R0.alpha * 180 / Math.PI, 3)}°`, { anchor: p[0] > 0 ? 'end' : 'start', small: true, dy: 16, c: 'hl' });
       }
       // right: α(b)
       const cv = alphaCurve(), yM = 2.2;
-      const g = L.fig(c2, { x: [2, 20], y: [0, yM], aspect: 0.9, maxH: 400, xlabel: 'b / rₛ', ylabel: T('α (rad)', 'α（rad）') });
+      const g = L.fig(c2, { x: [2, 20], y: [0, yM], aspect: 0.9, maxH: 400, xlabel: 'b / rₛ' });
       g.rect(2, 0, BC - 2, yM, { c: 'c2', fo: 0.15, nostroke: true, layer: 'under' });
-      g.text((2 + BC) / 2, yM * 0.5, T('captured', '捕獲'), { small: true, c: 'c2' });
+      { const cx = (2 + BC) / 2, cy = yM * 0.28, tl = g.text(cx, cy, T('captured', '捕獲'), { small: true, c: 'c2', dy: 4 }); tl.setAttribute('transform', `rotate(-90 ${g.X(cx)} ${g.Y(cy)})`); }
       g.vline(BC, { c: 'c2', dash: '3 3' });
       g.line(L.sample(2, 20, 200, (x) => 2 / x), { c: 'c2', w: 1.8, dash: '6 4' });
       g.line(cv.filter(([, a]) => Number.isFinite(a)).map(([x, a]) => [x, Math.min(a, yM * 1.5)]), { c: 'c1', w: 2.4 });

@@ -51,18 +51,18 @@
           if (i === 15) {
             const A = SP[a], B = SP[b], C = [5, 3.9], bz = (t) => { const u = 1 - t; return [u * u * A[0] + 2 * u * t * C[0] + t * t * B[0], u * u * A[1] + 2 * u * t * C[1] + t * t * B[1]]; };
             f.line(L.seq(41, (j) => bz(0.08 + 0.84 * j / 40)), Object.assign(sty, { dash: '7 4' }));
-            weightTag(f, bz(0.3), w);
+            weightTag(f, bz(0.62), w);
           } else {
             const [p, q] = trim(SP[a], SP[b], R);
             f.line([p, q], sty);
-            const t = a === 3 && b === 4 ? 0.3 : 0.5;
-            weightTag(f, [SP[a][0] + (SP[b][0] - SP[a][0]) * t, SP[a][1] + (SP[b][1] - SP[a][1]) * t], w, { c: city && traffic > 1 ? 'c2' : undefined });
+            const t = a === 3 && b === 4 ? 0.75 : 0.5, dx = SP[b][0] - SP[a][0], dy = SP[b][1] - SP[a][1], l = Math.hypot(dx, dy), nx = -dy / l * 0.3, ny = dx / l * 0.3;
+            weightTag(f, [SP[a][0] + dx * t + nx, SP[a][1] + dy * t + ny], w, { c: city && traffic > 1 ? 'c2' : undefined });
           }
         });
         SP.forEach((P, i) => {
           const done = fr.done[i], front = !done && fr.dist[i] < Infinity, cur = fr.cur === i;
           const el = f.circle(P[0], P[1], R, { c: cur ? 'hl' : done ? 'c1' : front ? 'c2' : 'muted', fill: cur ? 'hl' : done ? 'c1' : 'plate', fo: done || cur ? 0.9 : 1, w: i === tgt ? 3.4 : 2 });
-          f.text(P[0], P[1], SN[i], { dy: 5, c: done || cur ? 'plate' : 'ink' });
+          const nt = f.text(P[0], P[1], SN[i], { dy: 5, c: done || cur ? 'plate' : 'ink' }); nt.style.stroke = 'none'; nt.style.fontSize = '14px';
           const dlab = fr.dist[i] < Infinity ? String(fr.dist[i]) : '∞';
           const dir = LABDIR[i], off = R + 0.12;
           f.text(P[0] + dir[0] * off, P[1] + dir[1] * off, dlab, { anchor: dir[0] > 0 ? 'start' : dir[0] < 0 ? 'end' : 'middle', dy: dir[1] > 0 ? -2 : dir[1] < 0 ? 14 : 5, dx: dir[0] * 2, c: front ? 'c2' : done ? 'c1' : 'muted' });
@@ -107,6 +107,8 @@
       f.line([[2 * cut, -0.4], [2 * cut, 5.6]], { c: 'c4', w: 2, dash: '7 5', layer: 'under' });
       f.text(2 * cut, 5.6, T('cut', 'カット'), { dy: 14, dx: 6, anchor: 'start', small: true, c: 'c4' });
       const R = 0.4;
+      // crossing edges carry their tag 35% of the way from the left endpoint, so the tag clears the cut line
+      const tagAt = (i) => { const [a, b] = edges[i]; if (!crossing.includes(i)) return mid(KP[a], KP[b]); const [P, Q] = left(a) ? [KP[a], KP[b]] : [KP[b], KP[a]]; return [P[0] + (Q[0] - P[0]) * 0.35, P[1] + (Q[1] - P[1]) * 0.35]; };
       const draw = (k) => {
         f.clear('main'); f.clear('over');
         const status = new Map(steps.slice(0, k).map(([i, ok]) => [i, ok])), cur = k < steps.length ? steps[k][0] : -1, fin = k >= steps.length;
@@ -114,10 +116,10 @@
           const [p, q] = trim(KP[a], KP[b], R), s = status.get(i), cross = crossing.includes(i);
           const style = i === cur ? { c: 'hl', w: 4.5 } : s === true ? { c: 'c1', w: 4.2 } : s === false ? { c: cross ? 'c2' : 'muted', w: 1.2, dash: '3 4', op: 0.7 } : { c: cross ? 'c2' : 'muted', w: cross ? 2 : 1.4, op: 0.75 };
           f.line([p, q], style);
-          weightTag(f, mid(KP[a], KP[b]), w, { c: i === CAND ? 'c3' : cross ? 'c2' : undefined, strong: i === CAND || (fin && lightest.includes(i)) });
+          weightTag(f, tagAt(i), w, { c: i === CAND ? 'c3' : cross ? 'c2' : undefined, strong: i === CAND || (fin && lightest.includes(i)) });
         });
-        KP.forEach((P, i) => { f.circle(P[0], P[1], R, { c: 'ink', fill: left(i) ? 'c4' : 'plate', fo: left(i) ? 0.45 : 1, w: 2 }); f.text(P[0], P[1], String(i + 1), { dy: 5 }); });
-        if (fin) lightest.forEach((i) => { const m = mid(KP[edges[i][0]], KP[edges[i][1]]); f.circle(m[0], m[1] - 0.09, 0.36, { c: 'hl', w: 2.6 }); });
+        KP.forEach((P, i) => { f.circle(P[0], P[1], R, { c: 'ink', fill: left(i) ? 'c4' : 'plate', fo: left(i) ? 0.45 : 1, w: 2 }); f.text(P[0], P[1], String(i + 1), { dy: 5 }).style.stroke = 'none'; });
+        if (fin) lightest.forEach((i) => { const m = tagAt(i); f.circle(m[0], m[1] - 0.09, 0.31, { c: 'hl', w: 2.6 }); });
       };
       ctx.state.anim = L.animator(ctx.host, (dt, t, label) => {
         const k = Math.min(steps.length, Math.floor(t / 0.55));
@@ -181,12 +183,14 @@
         f.text(P[0], P[1], names[i], { dy: 5 });
       });
       L.h('p', 'lab-cap', ctx.host, T('All three measures for every node, each scaled so its largest value is 1', '全ノードの3つの指標（各指標の最大値を1に揃えています）'));
-      const g = L.fig(ctx.host, { x: [-0.6, n - 0.4], y: [0, 1.08], aspect: 0.26, minH: 170, maxH: 230, ticksX: names.map((s, i) => [i, s]), ticksY: [[0, '0'], [0.5, '0.5'], [1, '1']] });
-      keys.forEach((k, j) => { const m = Math.max(...M[k]) || 1; M[k].forEach((x, i) => g.rect(i - 0.36 + j * 0.24, 0, 0.22, x / m, { c: cols[j], fo: j === mode ? 0.8 : 0.3, w: j === mode ? 1.4 : 0.6 })); });
+      const g = L.fig(ctx.host, { x: [-0.6, n - 0.4], y: [0, 1.24], aspect: 0.26, minH: 170, maxH: 230, ticksX: names.map((s, i) => [i, s]), ticksY: [[0, '0'], [0.5, '0.5'], [1, '1']] });
+      g.rect(top - 0.46, 0, 0.92, 1.24, { c: 'hl', fill: true, fo: 0.16, w: 1.4, layer: 'under' });
+      g.text(top, 1.24, T(`top: ${names[top]}`, `最上位：${names[top]}`), { dy: 12, small: true, c: 'hl' });
+      keys.forEach((k, j) => { const m = Math.max(...M[k]) || 1; M[k].forEach((x, i) => g.rect(i - 0.36 + j * 0.24, 0, 0.22, x / m, { c: i === top && j === mode ? 'hl' : cols[j], fo: j === mode ? 0.8 : 0.3, w: i === top && j === mode ? 2 : j === mode ? 1.4 : 0.6 })); });
       g.hover((x) => { const i = Math.round(x); if (i < 0 || i >= n) return null; return { x: i, text: `${names[i]}: ${lab[0]} ${fmt(M.deg[i], 3)}, ${lab[1]} ${fmt(M.clo[i], 3)}, ${lab[2]} ${fmt(M.bet[i], 3)}` }; });
       L.legend(ctx.host, keys.map((k, j) => ({ kind: 'fill', c: cols[j], label: lab[j] + (j === mode ? T(' (node size above)', '（上図のノードの大きさ）') : '') })).concat(extra ? [{ c: 'c4', label: T('extra links between the groups', '群の間の追加リンク') }] : []));
       const iX = names.indexOf('X'), iC = names.indexOf('C');
-      ctx.readout([{ k: T(`top by ${lab[mode]}`, `${lab[mode]}の最上位`), v: names[top], tone: 'key' }, { k: T('bridge X: degree, betweenness', '橋 X：次数、媒介'), v: `${fmt(M.deg[iX], 3)}, ${fmt(M.bet[iX], 3)}` }, { k: T('hub C: degree, betweenness', 'ハブ C：次数、媒介'), v: `${fmt(M.deg[iC], 3)}, ${fmt(M.bet[iC], 3)}` }],
+      ctx.readout([{ k: T(`top by ${lab[mode]}`, `${lab[mode]}の最上位`), v: `${names[top]} (${fmt(mx, 3)})`, tone: 'key' }, { k: T('leaves on C, extra links', 'C の葉、追加リンク'), v: `${hub}, ${extra}` }, { k: T('bridge X: degree, betweenness', '橋 X：次数、媒介'), v: `${fmt(M.deg[iX], 3)}, ${fmt(M.bet[iX], 3)}` }, { k: T('hub C: degree, betweenness', 'ハブ C：次数、媒介'), v: `${fmt(M.deg[iC], 3)}, ${fmt(M.bet[iC], 3)}` }],
         T('Values are normalized: degree by n − 1, closeness as (n − 1)/Σd, betweenness by the number of pairs not involving the node.', '値は規格化しています。次数は n − 1 で割り、近接は (n − 1)/Σd、媒介はそのノードを含まない組の数で割っています。'));
     },
   };

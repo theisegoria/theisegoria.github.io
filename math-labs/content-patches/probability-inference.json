@@ -1,0 +1,30 @@
+{
+ "bayes": {
+  "body": [
+   "Choose a beta prior and counts of heads and tails. The solid posterior is the prior multiplied by the likelihood and renormalized; the shaded band is its central 95% credible interval, and the gold line marks the posterior mean. Play the flips to watch the belief update one observation at a time.",
+   "ベータ事前分布と表・裏の回数を選びます。実線の事後分布は、事前分布に尤度を掛けて規格化し直したものです。濃い帯は中央95%信用区間、金色の線は事後平均です。再生すると、観測を1回ずつ加えて信念が更新される様子が見られます。"
+  ],
+  "example": [
+   "The uniform prior Beta(1, 1) with 3 heads and 1 tail gives Beta(4, 2), whose mean is 2/3.",
+   "一様な事前分布 Beta(1, 1) に表3回・裏1回なら Beta(4, 2) となり、平均は2/3です。"
+  ],
+  "caution": [
+   "The model assumes independent flips with a fixed unknown probability. The posterior is conditional on these assumptions.",
+   "各試行は独立で、未知の確率は一定と仮定しています。事後分布はこの仮定に依存します。"
+  ]
+ },
+ "clt": {
+  "body": [
+   "Increase the number of independent Bernoulli trials. On the left, bars show the exact binomial mass of the standardized sum, multiplied by σ so that bar areas are probabilities; the curve is the standard normal density. On the right, the largest gap between the two distribution functions is computed for every n and compared with the Berry–Esseen bound.",
+   "独立なベルヌーイ試行の回数を増やします。左の棒は標準化した和の厳密な二項確率に σ を掛けたもので、棒の面積が確率になります。曲線は標準正規密度です。右では、2つの分布関数の最大のずれをすべての n について計算し、ベリー・エッセンの上界と比べます。"
+  ],
+  "formula": "Z_n=\\frac{S_n-np}{\\sqrt{np(1-p)}}\\ \\xrightarrow{d}\\ N(0,1),\\qquad \\sup_z|F_n(z)-\\Phi(z)|\\le\\frac{0.4748\\,(p^2+q^2)}{\\sqrt{npq}}"
+ },
+ "conditional": {
+  "body": [
+   "The unit square is the sample space and area is probability. Event B is a vertical strip; drag its edge, and drag the heights of A inside and outside B. On the right, the same intersection A∩B is divided by P(B) to give P(A | B) and by P(A) to give P(B | A).",
+   "単位正方形を標本空間とし、面積を確率とします。Bは縦の帯で、その端をドラッグできます。B内とB外のAの高さもドラッグできます。右では、同じ共通部分 A∩B を P(B) で割ると P(A | B)、P(A) で割ると P(B | A) になります。"
+  ],
+  "formula": "P(A\\mid B)=\\frac{P(A\\cap B)}{P(B)},\\quad P(B\\mid A)=\\frac{P(A\\cap B)}{P(A)},\\quad P(A)=P(A\\mid B)P(B)+P(A\\mid B^c)P(B^c)"
+ }
+}

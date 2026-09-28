@@ -1,0 +1,60 @@
+{
+ "descent": {
+  "body": [
+   "Follow constant-step gradient descent across the elliptical contours of f, starting from a point you can drag. Each coordinate is multiplied by its own factor every step, so strongly unequal curvatures force a small step and make the fast direction zigzag. The right panel shows f on a log scale: the iterates fall along a straight line whose slope is set by ρ. Newton’s exact step, dashed, reaches this quadratic minimum at once.",
+   "楕円の等高線を横切る一定刻みの勾配降下法を、ドラッグできる始点から追います。各座標は毎回それぞれの倍率で掛けられるので、曲率の差が大きいと刻みを小さくせざるを得ず、速い方向ではジグザグになります。右図は f を対数目盛で示し、反復は ρ で決まる傾きの直線に沿って減ります。破線のニュートン法の厳密な1ステップは、この二次関数の最小点に一度で達します。"
+  ],
+  "formula": "f(x,y)=\\tfrac12(x^2+\\kappa y^2),\\quad x_{n+1}=(1-\\eta)x_n,\\quad y_{n+1}=(1-\\eta\\kappa)y_n,\\quad \\rho=\\max(|1-\\eta|,|1-\\eta\\kappa|)",
+  "example": [
+   "For κ = 4, constant-step gradient descent converges when 0 < η < 0.5, and η = 2/(1 + κ) = 0.4 gives the fastest rate ρ = 0.6.",
+   "κ = 4 のとき、一定刻みの勾配降下法は 0 < η < 0.5 で収束し、η = 2/(1 + κ) = 0.4 で最速の ρ = 0.6 になります。"
+  ]
+ },
+ "constraint": {
+  "title": [
+   "2. Moving the constraint",
+   "2. 動く制約"
+  ],
+  "body": [
+   "Drag the constraint line x + y = b across the circular contours of x² + y², and slide a trial point along it. The optimum is where the smallest reachable circle just touches the line; any other point lies on a larger circle, as the right panel shows. Switch to the inequality x + y ≥ b to see the constraint become inactive when the origin is feasible.",
+   "制約の直線 x + y = b を x² + y² の同心円の上でドラッグし、直線上の試験点を動かします。最適点は、到達できる最小の円が直線にちょうど接する点です。他の点はより大きな円の上にあることが右図から分かります。不等式 x + y ≥ b に切り替えると、原点が実行可能なとき制約が効かなくなる様子が見られます。"
+  ],
+  "formula": "\\min_{x+y=b}(x^2+y^2),\\qquad x_*=y_*=b/2,\\quad f_*=b^2/2,\\qquad \\nabla f(x_*)=\\lambda_*\\nabla(x+y)",
+  "params": [
+   [
+    "b",
+    "Constraint value b",
+    "制約値 b",
+    -3,
+    3,
+    0.1,
+    2
+   ],
+   [
+    "kind",
+    "Constraint",
+    "制約",
+    0,
+    1,
+    1,
+    0,
+    [
+     [
+      "x + y = b",
+      "x + y = b"
+     ],
+     [
+      "x + y ≥ b",
+      "x + y ≥ b"
+     ]
+    ]
+   ]
+  ]
+ },
+ "duality": {
+  "body": [
+   "On the left, the optimal value \\(f_*(b)=b^2/2\\) with its tangent: the slope is the multiplier \\(\\lambda_*\\). On the right, the dual function \\(g(\\lambda)\\), obtained by minimizing the Lagrangian for each fixed \\(\\lambda\\). It never rises above \\(f_*\\) (weak duality), and its maximum at \\(\\lambda=b\\) touches \\(f_*\\) exactly. Drag b on the left and λ on the right.",
+   "左図は最適値 \\(f_*(b)=b^2/2\\) とその接線で、傾きが乗数 \\(\\lambda_*\\) です。右図は、各 \\(\\lambda\\) についてラグランジアンを最小化して得る双対関数 \\(g(\\lambda)\\) です。g は \\(f_*\\) を超えず（弱双対性）、\\(\\lambda=b\\) での最大値はちょうど \\(f_*\\) に一致します。左で b、右で λ をドラッグできます。"
+  ]
+ }
+}

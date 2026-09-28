@@ -11,6 +11,8 @@
   const held = (st, key, fresh) => { if (st.dragging && st[key] !== undefined) return st[key]; st[key] = fresh; return fresh; };
   const niceUp = (x) => { const p = Math.pow(10, Math.floor(Math.log10(x))); const m = x / p; return (m <= 1 ? 1 : m <= 1.5 ? 1.5 : m <= 2 ? 2 : m <= 2.5 ? 2.5 : m <= 3 ? 3 : m <= 4 ? 4 : m <= 5 ? 5 : m <= 6 ? 6 : m <= 8 ? 8 : 10) * p; };
   const GAM = 5 / 3; // monatomic ideal gas
+  // y-axis label drawn in the top-right corner of the plot, where these curves never go (the kit puts it top-left)
+  const yLabelRight = (f, s) => { const t = f.text(f.x[1], f.y[1], s, { anchor: 'end', dx: -6, dy: 15, layer: 'over' }); t.setAttribute('class', 'lab-axlabel'); return t; };
 
   /* ---------------- 1. PV diagram ---------------- */
   D.pv = {
@@ -40,11 +42,13 @@
       const cA = L.h('div', 'lab-col', row), cB = L.h('div', 'lab-col', row);
       L.h('p', 'lab-cap', cA, cyc ? T('Carnot cycle: the enclosed area is the net work per cycle', 'カルノーサイクル：囲まれた面積が1サイクルの正味の仕事です') : T('The shaded area under the path is the work done by the gas', '経路の下の塗った面積が気体のする仕事です'));
       L.h('p', 'lab-cap', cB, T('The gas in its cylinder', 'シリンダー内の気体'));
-      const f = L.fig(cA, { x: [0, XV], y: [0, YP], aspect: 0.78, maxH: 380, xlabel: T('volume V (L)', '体積 V (L)'), ylabel: T('pressure P (bar)', '圧力 P (bar)') });
-      // reference isotherm and adiabat through state 1
+      const f = L.fig(cA, { x: [0, XV], y: [0, YP], aspect: 0.78, maxH: 380, xlabel: T('volume V (L)', '体積 V (L)') });
+      yLabelRight(f, T('pressure P (bar)', '圧力 P (bar)'));
+      // reference isotherm and adiabat through state 1, sampled only from where they enter the plot
       if (!cyc) {
-        f.line(L.sample(0.3, XV, 200, (V) => P1 * V1 / V), { c: 'muted', w: 1, dash: '3 4', op: 0.7 });
-        f.line(L.sample(0.3, XV, 200, (V) => P1 * V1 ** GAM / V ** GAM), { c: 'muted', w: 1, dash: '1 3', op: 0.8 });
+        const vIso = P1 * V1 / YP, vAdi = Math.pow(P1 * V1 ** GAM / YP, 1 / GAM);
+        f.line(L.sample(vIso, XV, 200, (V) => P1 * V1 / V), { c: 'muted', w: 1, dash: '3 4', op: 0.7 });
+        f.line(L.sample(vAdi, XV, 200, (V) => P1 * V1 ** GAM / V ** GAM), { c: 'muted', w: 1, dash: '1 3', op: 0.8 });
       }
       if (cyc) f.poly([].concat(...legPts), { c: 'c1', fo: 0.2, w: 0 , layer: 'under' });
       else f.area(legPts[0], { c: Wtot >= 0 ? 'c1' : 'c2', fo: 0.22 });
@@ -122,7 +126,8 @@
       L.h('p', 'lab-cap', cA, T('Heating a body from Tc to Th through N reservoirs. Area under 1/T is entropy.', '物体を N 個の熱源で Tc から Th まで加熱します。1/T の下の面積がエントロピーです。'));
       L.h('p', 'lab-cap', cB, T('Entropy generated against the number of reservoirs', '熱源の数に対する生成エントロピー'));
       const ymax = 1000 / lo * 1.08, ymin = 0;
-      const f = L.fig(cA, { x: [0, Math.max(Qtot, 1)], y: [ymin, ymax], aspect: 0.75, maxH: 360, xlabel: T('heat added Q (kJ)', '加えた熱 Q (kJ)'), ylabel: T('1/T (10⁻³ K⁻¹)', '1/T (10⁻³ K⁻¹)') });
+      const f = L.fig(cA, { x: [0, Math.max(Qtot, 1)], y: [ymin, ymax], aspect: 0.75, maxH: 360, xlabel: T('heat added Q (kJ)', '加えた熱 Q (kJ)') });
+      yLabelRight(f, T('1/T (10⁻³ K⁻¹)', '1/T (10⁻³ K⁻¹)'));
       if (!same) {
         const body = L.sample(0, Qtot, 240, (q) => 1000 / (lo + q / C));
         const stair = [];
@@ -138,7 +143,8 @@
       g.line(L.seq(40, (i) => [i + 1, Sgen(i + 1)]), { c: 'c2', w: 2.2 });
       L.seq(40, (i) => g.dot(i + 1, Sgen(i + 1), { c: 'c2', r: 2.2, layer: 'main' }));
       g.dot(N, Sgen(N), { c: 'hl', r: 6.5 });
-      g.text(N, Sgen(N), fmt(Sgen(N), 1), { dx: 10, dy: -8, anchor: 'start', small: true });
+      const high = Sgen(N) > 0.8 * g.y[1]; // near the top the axis label lives; drop the value below the point instead
+      g.text(N, Sgen(N), fmt(Sgen(N), 1), { dx: 10, dy: high ? 16 : -8, anchor: 'start', small: true });
       L.legend(ctx.host, [{ c: 'c1', label: T('body: 1/T as it warms', '物体の 1/T（温まりながら）') }, { c: 'c4', label: T('reservoir that supplies each step', '各段階で熱を供給する熱源') }, { kind: 'fill', c: 'c2', label: T('gap = entropy generated', '差 = 生成エントロピー') }]);
       ctx.readout([{ k: 'ΔS_body = C ln(T_h/T_c)', v: `${fmt(Sbody, 1)} J/K` }, { k: 'ΔS_reservoirs', v: `${fmt(-Sres, 1)} J/K` }, { k: 'ΔS_univ', v: `${fmt(Sgen(N), 2)} J/K`, tone: 'key' }],
         (swapped ? T('The two temperatures were swapped so that the body is heated. ', '物体を加熱するように2つの温度を入れ替えました。') : '') + T(`C = 1 kJ/K. The body’s entropy change is fixed by its end states; only the reservoirs’ share depends on the path. With more, closer reservoirs the gap shrinks roughly like 1/N, and the process approaches reversibility.`, `C = 1 kJ/K。物体のエントロピー変化は始めと終わりの状態だけで決まり、経路に依存するのは熱源側だけです。温度の近い熱源を増やすと差はおよそ 1/N で小さくなり、過程は可逆に近づきます。`));
@@ -158,7 +164,7 @@
       L.h('p', 'lab-cap', cA, T('Molecules in a box: count ∝ n, width ∝ V, speed ∝ √T (schematic)', '箱の中の分子：数は n、幅は V、速さは √T に比例（模式図）'));
       L.h('p', 'lab-cap', cB, T('Isotherms P = nRT/V for this n; the rectangle has area PV = nRT', 'この n での等温線 P = nRT/V。長方形の面積は PV = nRT です'));
       const box = L.fig(cA, { axes: false, x: [0, 10], y: [0, 6.4], equal: true, maxH: 330 });
-      const Wb = 0.4 + 9.2 * V / 50, H = 5.4, y0 = 0.5, x0 = 0.3;
+      const Wb = 9.6 * Math.sqrt(V / 50), H = 5.4, y0 = 0.5, x0 = 0.3; // width ∝ √V so the smallest box is still a box
       box.rect(x0, y0, Wb, H, { c: 'ink', fo: 0.03, w: 2 });
       box.rect(x0 + Wb, y0 - 0.2, 0.18, H + 0.4, { c: 'ink', fo: 0.8, nostroke: true });
       const rand = rng(12345), cnt = Math.round(n * 30), sp = 0.9 * Math.sqrt(Tt / 300);
@@ -170,18 +176,26 @@
         const w = Wb - 0.2, h = H - 0.2;
         mols.forEach(([a, b, vx, vy], i) => { const x = x0 + 0.1 + fold(a * w + vx * t, w), y = y0 + 0.1 + fold(b * h + vy * t, h); box.dot(x, y, { c: i === 0 ? 'hl' : 'c1', r: i === 0 ? 4.5 : 3, layer: 'dyn' }); });
       }, { autoplay: true });
-      const Pmax = n * R * 800 / 5, YP = niceUp(n * R * Tt / 5 * 1.05);
-      const g = L.fig(cB, { x: [0, 52], y: [0, YP], aspect: 0.75, maxH: 330, xlabel: T('volume V (L)', '体積 V (L)'), ylabel: T('pressure P (kPa)', '圧力 P (kPa)') });
-      void Pmax;
+      const YP = niceUp(P * 2.4); // the state point always sits at about 40% of the axis, whatever V is
+      const g = L.fig(cB, { x: [0, 52], y: [0, YP], aspect: 0.75, maxH: 330, xlabel: T('volume V (L)', '体積 V (L)') });
+      yLabelRight(g, T('pressure P (kPa)', '圧力 P (kPa)'));
       const temps = [200, 400, 600, 800].filter((t) => Math.abs(t - Tt) >= 5).concat([Tt]).sort((p, q) => p - q);
-      temps.forEach((t, i) => {
+      let kTop = 0, lastRight = Infinity;
+      temps.slice().reverse().forEach((t) => { // hottest first, so the right-edge labels thin out from the top
         const cur = Math.abs(t - Tt) < 5;
-        if (!cur) g.line(L.sample(2, 52, 200, (x) => n * R * t / x), { c: 'muted', w: 1, op: 0.7 });
-        const xl = 8 + 9 * i, yl = n * R * t / xl;
-        if (yl < YP * 0.97) g.text(xl, yl, `${t} K`, { small: true, dy: -6, dx: 2, anchor: 'start', c: cur ? 'c1' : 'muted' });
+        const vIn = n * R * t / YP; // where this isotherm enters the plot from the top
+        if (vIn >= 50) return; // entirely above the plot
+        if (!cur) g.line(L.sample(Math.max(2, vIn), 52, 200, (x) => n * R * t / x), { c: 'muted', w: 1, op: 0.7 });
+        // label where the curve leaves the plot: on the right edge if it gets there, else staggered down the curves that leave through the top
+        const atRight = n * R * t / 50 < 0.86 * YP;
+        const frac = atRight ? 1 : Math.max(0.3, 0.9 - 0.16 * kTop++);
+        const xl = atRight ? 50 : n * R * t / (frac * YP), yl = n * R * t / xl;
+        if (Math.abs(xl - V) < 6 && Math.abs(yl - P) < 0.12 * YP) return; // would sit on the state point
+        if (atRight) { if (lastRight - yl < 0.07 * YP) return; lastRight = yl; } // too close to the label above
+        g.text(xl, yl, `${t} K`, atRight ? { small: true, dy: -5, anchor: 'end', c: cur ? 'c1' : 'muted' } : { small: true, dy: 13, dx: 4, anchor: 'start', c: cur ? 'c1' : 'muted' });
       });
       g.rect(0, 0, V, P, { c: 'hl', fo: 0.14, w: 1, dash: '3 3' });
-      g.line(L.sample(2, 52, 240, (x) => n * R * Tt / x), { c: 'c1', w: 2.6 });
+      g.line(L.sample(Math.max(2, n * R * Tt / YP), 52, 240, (x) => n * R * Tt / x), { c: 'c1', w: 2.6 });
       g.dot(V, P, { c: 'hl', r: 6.5 });
       g.handle(V, P, { c: 'hl', label: T('Volume', '体積'), axis: 'x', bounds: [5, 50, 0, YP], onDrag: (x) => ctx.set('volume', x) });
       g.text(V, P, `${fmt(P, 1)} kPa`, { dx: 10, dy: 20, anchor: 'start', small: true });

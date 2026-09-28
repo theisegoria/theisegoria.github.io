@@ -38,17 +38,19 @@
       const means = samples.map((xs) => xs.reduce((a, b) => a + b, 0) / n);
       L.h('p', 'lab-cap', ctx.host, T(`Population (${sh.name}, mean 0, σ = ${fmt(s, 2)}) and one sample of n = ${n}`, `母集団（${sh.name}、平均0、σ = ${fmt(s, 2)}）と大きさ n = ${n} の標本1つ`));
       const pdf = (x) => sh.pdf(x / s) / s;
-      const pmax = Math.max(...L.sample(-10, 10, 400, pdf).map((p) => p[1]));
-      const f = L.fig(ctx.host, { x: [-10, 10], y: [-0.28 * pmax, pmax * 1.12], aspect: 0.32, minH: 170, maxH: 260, ticksY: [[0, '0']], xlabel: T('value', '値') });
-      f.rect(-3, -0.28 * pmax, 6, 1.4 * pmax, { c: 'muted', fo: 0.06, nostroke: true, layer: 'under' });
-      f.area(L.sample(-10, 10, 400, pdf), { c: 'c3', fo: 0.22 });
-      f.line(L.sample(-10, 10, 400, pdf), { c: 'c3', w: 2.2 });
+      // the population axis spans ±4σ, the means axis ±4.5 SE, so both fill their frames whatever σ and n are
+      const XR = 4 * s, W = 4.5 * se;
+      const pmax = Math.max(...L.sample(-XR, XR, 400, pdf).map((p) => p[1]));
+      const f = L.fig(ctx.host, { x: [-XR, XR], y: [-0.28 * pmax, pmax * 1.12], aspect: 0.32, minH: 170, maxH: 260, ticksY: [[0, '0']], xlabel: T('value', '値') });
+      f.rect(-W, -0.28 * pmax, 2 * W, 1.4 * pmax, { c: 'muted', fo: 0.08, nostroke: true, layer: 'under' });
+      f.area(L.sample(-XR, XR, 400, pdf), { c: 'c3', fo: 0.22 });
+      f.line(L.sample(-XR, XR, 400, pdf), { c: 'c3', w: 2.2 });
       f.vline(0, { c: 'ink', dash: '5 4', w: 1.2 });
-      L.h('p', 'lab-cap', ctx.host, T(`Means of ${M} samples (axis zoomed to the shaded window −3 to 3)`, `${M} 個の標本平均（網掛けの −3 から 3 に拡大）`));
-      const g = L.fig(ctx.host, { x: [-3, 3], y: [0, 1], aspect: 0.3, minH: 190, maxH: 280, xlabel: T('sample mean x̄', '標本平均 x̄'), ticksY: [[0, '0']] });
-      const bw = Math.max(0.02, se / 2.5), peak = phi(0) / se;
+      L.h('p', 'lab-cap', ctx.host, T(`Means of ${M} samples (axis zoomed to the shaded window, ±${fmt(W, 2)})`, `${M} 個の標本平均（網掛けの窓 ±${fmt(W, 2)} に拡大）`));
+      const g = L.fig(ctx.host, { x: [-W, W], y: [0, 1], aspect: 0.3, minH: 190, maxH: 280, xlabel: T('sample mean x̄', '標本平均 x̄'), ticksY: [[0, '0']] });
+      const bw = se / 2.5, peak = phi(0) / se;
       const G = { ymax: 1 };
-      const nb = Math.ceil(6 / bw);
+      const nb = Math.ceil(2 * W / bw);
       const counts = new Array(nb).fill(0);
       // rescale the lower figure's y to fit the theoretical density
       const ymax = peak * 1.3;
@@ -57,16 +59,16 @@
       let shown = -1;
       const draw = (k) => {
         counts.fill(0);
-        for (let j = 0; j < k; j++) { const b = Math.floor((means[j] + 3) / bw); if (b >= 0 && b < nb) counts[b]++; }
+        for (let j = 0; j < k; j++) { const b = Math.floor((means[j] + W) / bw); if (b >= 0 && b < nb) counts[b]++; }
         g.clear('main');
-        counts.forEach((c, b) => { if (c) g.rect(-3 + b * bw, 0, bw, Y(c / (M * bw)), { c: 'c1', fo: 0.45, w: 0.8 }); });
+        counts.forEach((c, b) => { if (c) g.rect(-W + b * bw, 0, bw, Y(c / (M * bw)), { c: 'c1', fo: 0.45, w: 0.8 }); });
         const cur = Math.max(0, k - 1), xs = samples[cur], mu = means[cur];
         f.clear('over');
         xs.forEach((x, i) => f.dot(x, -0.1 * pmax - (i % 3) * 0.05 * pmax, { c: 'c1', r: 2.6, op: 0.75 }));
         f.seg([mu, -0.26 * pmax], [mu, pmax * 1.05], { c: 'hl', w: 2.4, layer: 'over' });
         f.text(mu, pmax * 1.05, `x̄ = ${fmt(mu, 3)}`, { dy: 2, dx: 6, anchor: 'start', small: true });
         g.clear('over');
-        g.line(L.sample(-3, 3, 300, (x) => Y(phi(x / se) / se)), { c: 'c2', w: 2.4, layer: 'over' });
+        g.line(L.sample(-W, W, 300, (x) => Y(phi(x / se) / se)), { c: 'c2', w: 2.4, layer: 'over' });
         g.seg([-se, Y(peak) * 1.12], [se, Y(peak) * 1.12], { c: 'ink', w: 1.6, layer: 'over' });
         g.text(se, Y(peak) * 1.12, `±SE = ±${fmt(se, 3)}`, { anchor: 'start', dx: 6, dy: 4, small: true });
         if (k > 0) g.dot(mu, 0, { c: 'hl', r: 5.5 });
@@ -149,9 +151,12 @@
       const row = L.h('div', 'lab-row', ctx.host);
       const c1 = L.h('div', 'lab-col', row), c2 = L.h('div', 'lab-col', row);
       L.h('p', 'lab-cap', c1, T('Data, least-squares line and 95% confidence band for the mean response', 'データ、最小二乗直線、平均応答の95%信頼帯'));
-      const lo = Math.min(1, 1 + 2 * v.slope), hi = Math.max(1, 1 + 2 * v.slope), Y0 = Math.floor(lo - 1 - 2.5 * v.noise), Y1 = Math.ceil(hi + 1 + 2.5 * v.noise);
-      const f = L.fig(c1, { x: [0, 2], y: [Y0, Y1], aspect: 0.85, maxH: 400, xlabel: 'x', ylabel: 'y' });
       const band = (x, sg) => fit(x) + sg * tq * s * Math.sqrt(1 / n + (x - xb) ** 2 / Sxx);
+      // y-axis follows the data and the band, with padding, rounded to halves so it does not jitter while a point is dragged
+      const ys = P.map((p) => p[1]).concat([band(0, -1), band(0, 1), band(2, -1), band(2, 1), 1, 1 + 2 * v.slope]);
+      const yLo = Math.min(...ys), yHi = Math.max(...ys), padY = Math.max(0.3, 0.12 * (yHi - yLo));
+      const Y0 = Math.floor((yLo - padY) * 2) / 2, Y1 = Math.ceil((yHi + padY) * 2) / 2;
+      const f = L.fig(c1, { x: [0, 2], y: [Y0, Y1], aspect: 0.85, maxH: 400, xlabel: 'x', ylabel: 'y' });
       f.poly(L.sample(0, 2, 80, (x) => [x, band(x, 1)]).concat(L.sample(0, 2, 80, (x) => [2 - x, band(2 - x, -1)])), { c: 'c1', fo: 0.14, w: 0, layer: 'under' });
       f.line([[0, 1], [2, 1 + 2 * v.slope]], { c: 'muted', w: 1.6, dash: '6 5' });
       P.forEach(([x, y], i) => f.seg([x, y], [x, fit(x)], { c: 'c2', w: 1.8, op: 0.85 }));

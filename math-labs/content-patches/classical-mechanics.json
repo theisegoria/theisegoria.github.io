@@ -1,0 +1,98 @@
+{
+ "projectile": {
+  "body": [
+   "Drag the tip of the orange launch arrow, or use the sliders. The trajectory is integrated from Newton’s second law, and the hollow dots mark ten equal time steps: they are evenly spaced sideways because the horizontal velocity never changes, while gravity steadily changes the vertical velocity. The dashed curve is the complementary angle 90° − θ, which lands at the same range, and the dotted curve bounds every path at this speed. Press Launch to follow the velocity components, and switch on air drag to see what the vacuum model leaves out.",
+   "橙の発射矢印の先端をドラッグするか、スライダーを使ってください。軌道はニュートンの第2法則から数値積分しており、白抜きの点は等しい10個の時間刻みを示します。水平速度は変わらないので点は横方向に等間隔に並び、重力は鉛直速度を一定の割合で変えます。破線は余角 90° − θ の軌道で、同じ飛距離に着地します。点線はこの速さで描ける全軌道の境界です。「発射」で速度成分の変化を追い、空気抵抗を入れると真空モデルが無視しているものが見えます。"
+  ],
+  "formula": "\\mathbf r(t)=\\mathbf r_0+\\mathbf v_0t+\\tfrac12\\mathbf gt^2,\\qquad R=\\frac{v_0^2\\sin2\\theta}{g}",
+  "example": [
+   "At 45° without drag the range is maximal for a fixed speed, R = v₀²/g; at 18 m/s that is about 33 m.",
+   "空気抵抗なしで速さ一定なら、45°で飛距離が最大の R = v₀²/g になります。18 m/s なら約 33 m です。"
+  ],
+  "caution": [
+   "The vacuum model neglects air resistance and Earth’s curvature. The drag option uses a quadratic law a = −k|v|v with k = 0.006 m⁻¹, a rough value for a light ball.",
+   "真空モデルは空気抵抗と地球の曲率を無視します。抵抗ありの設定は二次の法則 a = −k|v|v（k = 0.006 m⁻¹、軽いボール程度の概算値）を使います。"
+  ],
+  "params": [
+   [
+    "angle",
+    "Launch angle θ (degrees)",
+    "発射角 θ（度）",
+    10,
+    80,
+    1,
+    45
+   ],
+   [
+    "speed",
+    "Launch speed v₀ (m/s)",
+    "初速 v₀ (m/s)",
+    5,
+    30,
+    1,
+    18
+   ],
+   [
+    "drag",
+    "Air",
+    "空気",
+    0,
+    1,
+    1,
+    0,
+    [
+     [
+      "Vacuum",
+      "真空"
+     ],
+     [
+      "With drag",
+      "抵抗あり"
+     ]
+    ]
+   ]
+  ]
+ },
+ "oscillator": {
+  "body": [
+   "Tune the damping c and stiffness k of a mass on a spring (m = 1). The motion is integrated from the equation of motion and drawn beside the roots of the characteristic equation ms² + cs + k = 0. Complex roots mean oscillation, a double root is critical damping, and two real roots mean a slow, overdamped return.",
+   "質量 m = 1 のばね振動子の減衰 c と剛性 k を変えてください。運動方程式を数値積分した変位を、特性方程式 ms² + cs + k = 0 の根と並べて表示します。根が複素数なら振動、重根なら臨界減衰、2つの実根なら過減衰のゆっくりした戻りになります。"
+  ],
+  "formula": "m\\ddot x+c\\dot x+kx=0,\\qquad s=\\frac{-c\\pm\\sqrt{c^2-4mk}}{2m}",
+  "example": [
+   "With k = 4 and m = 1, critical damping is c = 2√(mk) = 4. It returns fastest without overshoot.",
+   "k = 4、m = 1 なら臨界減衰は c = 2√(mk) = 4 です。行き過ぎずに最も速く戻ります。"
+  ]
+ },
+ "mechanics-orbit": {
+  "body": [
+   "A body is launched tangentially at distance 1 from an attracting centre. Its path is the exact conic that follows from the inverse-square law: a circle at v₀ = √μ, an ellipse below the escape speed √(2μ), a parabola at it and a hyperbola above it. The shaded sectors are swept in equal times, which is Kepler’s second law: they all have the same area.",
+   "引力中心から距離 1 の点で、物体を接線方向に打ち出します。軌道は逆二乗則から厳密に決まる円錐曲線で、v₀ = √μ なら円、脱出速度 √(2μ) 未満なら楕円、ちょうどなら放物線、超えれば双曲線です。塗った扇形は等しい時間に掃く領域で、ケプラーの第2法則によりすべて同じ面積になります。"
+  ],
+  "formula": "\\ddot{\\mathbf r}=-\\mu\\frac{\\mathbf r}{\\|\\mathbf r\\|^3},\\qquad r(\\theta)=\\frac{h^2/\\mu}{1+e\\cos\\theta},\\quad e=\\Big|\\frac{v_0^2r_0}{\\mu}-1\\Big|",
+  "example": [
+   "At circular speed v₀ = √(μ/r₀), e = 0 and the radius and speed stay constant.",
+   "円軌道速度 v₀ = √(μ/r₀) では e = 0 となり、半径と速さが一定です。"
+  ],
+  "params": [
+   [
+    "speed",
+    "Launch speed v₀",
+    "初速 v₀",
+    0.5,
+    2,
+    0.05,
+    1.2
+   ],
+   [
+    "mu",
+    "Gravitational parameter μ",
+    "重力定数 μ",
+    0.5,
+    2,
+    0.05,
+    1
+   ]
+  ]
+ }
+}

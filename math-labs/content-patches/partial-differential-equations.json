@@ -1,0 +1,144 @@
+{
+ "heat": {
+  "body": [
+   "A rod of length 10 starts with two warm spots. The heat equation is solved by finite differences, and the time slider (or Play) shows the temperature at any moment; the space–time picture below shows the whole history at once. Sharp peaks decay fastest because the flux is proportional to the gradient. Compare insulated ends, which keep the total heat fixed, with ends held at zero, which let it drain away.",
+   "長さ 10 の棒に、はじめ2つの暖かい部分があります。熱方程式を差分法で解き、時間スライダー（または再生）で任意の時刻の温度を表示します。下の時空図は全経過を一度に示します。流束は勾配に比例するので、鋭いピークほど速く減衰します。総熱量を保つ断熱端と、熱が逃げていく 0 に保った端を比べてください。"
+  ],
+  "formula": "\\partial_tu=\\kappa\\,\\partial_{xx}u,\\qquad u_i^{n+1}=u_i^n+r\\,(u_{i-1}^n-2u_i^n+u_{i+1}^n),\\quad r=\\frac{\\kappa\\Delta t}{\\Delta x^2}",
+  "example": [
+   "With insulated ends the total ∫u dx stays constant and the rod tends to its mean temperature; a Gaussian spot of width σ spreads to width √(σ² + 2κt).",
+   "断熱端では総量 ∫u dx が一定に保たれ、棒は平均温度に近づきます。幅 σ のガウス型の熱い点は幅 √(σ² + 2κt) に広がります。"
+  ],
+  "caution": [
+   "This explicit scheme is stable only when r = κΔt/Δx² ≤ 1/2; the time step here is chosen so that r = 0.4.",
+   "この陽的差分法は r = κΔt/Δx² ≤ 1/2 のときだけ安定です。ここでは r = 0.4 となるように時間刻みを選んでいます。"
+  ],
+  "params": [
+   [
+    "time",
+    "Time t",
+    "時間 t",
+    0,
+    40,
+    1,
+    12
+   ],
+   [
+    "kappa",
+    "Diffusivity κ",
+    "拡散係数 κ",
+    0.01,
+    0.1,
+    0.01,
+    0.04
+   ],
+   [
+    "bc",
+    "Ends",
+    "端の条件",
+    0,
+    1,
+    1,
+    0,
+    [
+     [
+      "Insulated",
+      "断熱"
+     ],
+     [
+      "Held at 0",
+      "0 に固定"
+     ]
+    ]
+   ]
+  ]
+ },
+ "wave": {
+  "body": [
+   "A string of length 10 is plucked near one end and released from rest. The solution is d’Alembert’s: the pulse splits into two halves moving left and right at speed c, and each end reflects them. Scrub the time or press Play, change the wave speed, and switch between fixed ends, which invert the reflected pulse, and free ends, which do not. The space–time picture shows the pulses zigzagging along the lines x ± ct.",
+   "長さ 10 の弦を一端の近くではじき、静かに放します。解はダランベールの公式で、パルスは速さ c で左右に進む2つの半分に分かれ、両端で反射します。時間を動かすか再生を押し、波速を変え、反射パルスを反転させる固定端と反転させない自由端を切り替えてください。時空図では、パルスが直線 x ± ct に沿ってジグザグに進む様子が見えます。"
+  ],
+  "formula": "\\partial_{tt}u=c^2\\partial_{xx}u,\\qquad u(x,t)=\\tfrac12\\big[F(x-ct)+F(x+ct)\\big]",
+  "example": [
+   "A fixed end reverses the sign of the reflected displacement; after a time 2L/c the string returns to its starting shape.",
+   "固定端では反射した変位の符号が反転します。時間 2L/c が経つと弦は最初の形に戻ります。"
+  ],
+  "caution": [
+   "F is the initial shape extended beyond the string, oddly about a fixed end and evenly about a free end. The model ignores damping and nonlinear stretching.",
+   "F は初期形状を弦の外へ延長したもので、固定端では奇関数的に、自由端では偶関数的に延長します。モデルは減衰と非線形な伸びを無視します。"
+  ],
+  "params": [
+   [
+    "time",
+    "Time t",
+    "時間 t",
+    0,
+    30,
+    1,
+    4
+   ],
+   [
+    "c",
+    "Wave speed c",
+    "波速 c",
+    0.5,
+    2,
+    0.1,
+    1
+   ],
+   [
+    "ends",
+    "Ends",
+    "端の条件",
+    0,
+    1,
+    1,
+    0,
+    [
+     [
+      "Fixed",
+      "固定端"
+     ],
+     [
+      "Free",
+      "自由端"
+     ]
+    ]
+   ]
+  ]
+ },
+ "laplace": {
+  "body": [
+   "Two small electrodes sit inside a grounded box. Drag them and set their potentials. The potential everywhere else solves Laplace’s equation, computed on a grid by relaxation until every value equals the average of its four neighbours. Equipotentials are drawn every 0.1, and field lines follow E = −∇V from the electrodes, crossing the equipotentials at right angles.",
+   "接地された箱の中に小さな電極が2つあります。電極をドラッグし、電位を設定してください。それ以外の場所の電位はラプラス方程式の解で、格子上で各値が隣接4点の平均に等しくなるまで緩和法で計算しています。等電位線は 0.1 ごとに描き、電気力線は電極から E = −∇V に沿って伸び、等電位線と直交します。"
+  ],
+  "example": [
+   "Field lines cross equipotentials at right angles, and with both electrodes positive the potential between them has a saddle, not a dip.",
+   "電気力線は等電位線と直交します。両方の電極が正なら、その間の電位は谷ではなく鞍点になります。"
+  ],
+  "caution": [
+   "The solution is computed on an 81 × 61 grid with fixed walls at V = 0; the electrodes are small discs held at fixed potential.",
+   "解は壁を V = 0 に固定した 81 × 61 の格子で計算しています。電極は一定の電位に保たれた小さな円板です。"
+  ],
+  "params": [
+   [
+    "left",
+    "Potential of electrode A",
+    "電極 A の電位",
+    -1,
+    1,
+    0.1,
+    1
+   ],
+   [
+    "right",
+    "Potential of electrode B",
+    "電極 B の電位",
+    -1,
+    1,
+    0.1,
+    -1
+   ]
+  ]
+ }
+}

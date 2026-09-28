@@ -1,0 +1,55 @@
+{
+ "harmonics": {
+  "body": [
+   "Add odd harmonics to a square wave. Smooth regions converge, but the overshoot next to each jump settles near 8.95% of the jump while becoming narrower, as the zoomed panel shows. At the jump itself the series converges to the midpoint 0, and the coefficient panel shows the 1/k decay behind all of this.",
+   "矩形波に奇数次の調和波を加えます。滑らかな部分は収束しますが、跳躍の隣の行き過ぎは幅を狭めながら跳躍幅の約 8.95% に落ち着きます。拡大図でその様子を確かめられます。跳躍点そのものでは級数は中点の0に収束し、係数の図はその背後にある 1/k の減衰を示します。"
+  ]
+ },
+ "convolution": {
+  "body": [
+   "Slide a reflected copy of g across the unit pulse f by dragging either handle. The product f(τ)g(t − τ) is shaded, and its area is the convolution at t, traced below. Two unit pulses give a triangle; the ramp makes the reflection visible, and the one-sided decay shows convolution as smoothing with memory.",
+   "どちらかのハンドルをドラッグして、反転した g を単位パルス f の上で動かします。積 f(τ)g(t − τ) が塗られ、その面積が t における畳み込みで、下の図に描かれます。2つの単位パルスでは三角形になります。傾斜では反転が見え、片側の減衰では畳み込みが記憶をもつ平滑化であることがわかります。"
+  ],
+  "formula": "(f*g)(t)=\\int_{\\mathbb R}f(\\tau)\\,g(t-\\tau)\\,d\\tau,\\qquad \\mathbf 1_{[-\\frac12,\\frac12]}*\\mathbf 1_{[-\\frac12,\\frac12]}=\\max(0,1-|t|)",
+  "params": [
+   [
+    "t",
+    "Shift t",
+    "ずれ t",
+    -1.5,
+    2.5,
+    0.05,
+    0.25
+   ],
+   [
+    "shape",
+    "Second function g",
+    "2つ目の関数 g",
+    0,
+    2,
+    1,
+    0,
+    [
+     [
+      "Pulse",
+      "パルス"
+     ],
+     [
+      "Ramp",
+      "傾斜"
+     ],
+     [
+      "Decay",
+      "減衰"
+     ]
+    ]
+   ]
+  ]
+ },
+ "sampling": {
+  "body": [
+   "Compare a continuous cosine with equally spaced samples. When f exceeds half the sampling rate, the samples also fit the dashed cosine at the folded frequency. The frequency axis below shows why: sampling copies the spectrum to every k·fₛ ± f, and only the copy inside [0, fₛ/2] is seen.",
+   "連続な余弦波と等間隔の標本を比較します。f が標本化周波数の半分を超えると、標本は折り返し周波数の破線の余弦波にも一致します。下の周波数軸がその理由を示します。標本化はスペクトルをすべての k·fₛ ± f に複製し、見えるのは [0, fₛ/2] 内の複製だけです。"
+  ]
+ }
+}

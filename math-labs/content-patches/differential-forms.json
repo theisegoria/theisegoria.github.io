@@ -1,0 +1,137 @@
+{
+ "line-integral": {
+  "body": [
+   "Integrate a one-form ω along a circular path traced a chosen number of turns. Pick an exact form d(xy), a form with nonzero dω, or the angle form dθ, which is closed but has a hole at the origin. Drag the centre of the path and its starting point: the path is coloured by the sign of ω(γ̇), and the graph shows the integral accumulating as the path is traced.",
+   "円形の経路を指定した回数だけたどり、1形式 ω を積分します。完全形式 d(xy)、dω が 0 でない形式、原点に穴をもつ閉形式である角度形式 dθ から選べます。経路の中心と出発点をドラッグできます。経路は ω(γ̇) の符号で色分けされ、右のグラフは経路をたどるにつれて積分が積み上がる様子を示します。"
+  ],
+  "formula": "\\int_\\gamma\\omega=\\int_0^1\\omega_{\\gamma(t)}(\\dot\\gamma(t))\\,dt,\\qquad \\int_\\gamma df=f(\\gamma(1))-f(\\gamma(0))",
+  "example": [
+   "For ω = dθ, a circle once around the origin gives 2π; a circle that does not enclose the origin gives 0.",
+   "ω = dθ では、原点のまわりを1周する円で 2π、原点を囲まない円で 0 になります。"
+  ],
+  "caution": [
+   "dθ satisfies dω = 0 away from the origin, but it is not the differential of any function on the punctured plane; path independence needs an exact form, or a closed form on a simply connected domain.",
+   "dθ は原点以外で dω = 0 を満たしますが、穴のあいた平面上のどの関数の微分でもありません。経路によらないためには、完全形式か、単連結な領域上の閉形式である必要があります。"
+  ],
+  "params": [
+   [
+    "field",
+    "1-form ω",
+    "1形式 ω",
+    0,
+    2,
+    1,
+    2,
+    [
+     [
+      "d(xy)",
+      "d(xy)"
+     ],
+     [
+      "−y dx + x dy",
+      "−y dx + x dy"
+     ],
+     [
+      "dθ",
+      "dθ"
+     ]
+    ]
+   ],
+   [
+    "radius",
+    "Path radius",
+    "経路半径",
+    0.2,
+    1.5,
+    0.05,
+    0.8
+   ],
+   [
+    "turns",
+    "Turns",
+    "回転数",
+    0.25,
+    2,
+    0.25,
+    1
+   ]
+  ]
+ },
+ "stokes": {
+  "body": [
+   "For the one-form ω = (−y/2 + y³/3) dx + (x/2 − x³/3 + 0.4x²) dy, the colour shows dω, positive in the middle and negative outside the dashed circle. Drag the disk and its edge: the circulation of ω around the boundary always equals the integral of dω over the disk. The graph checks this for every radius at once, and reversing the orientation flips both sides together.",
+   "1形式 ω = (−y/2 + y³/3) dx + (x/2 − x³/3 + 0.4x²) dy について、色は dω を表します。中央で正、破線の円の外で負です。円板とその縁をドラッグしてください。境界に沿った ω の循環は、いつも円板上の dω の積分に等しくなります。グラフはすべての半径について同時にこれを確かめます。向きを反転すると両辺がそろって符号を変えます。"
+  ],
+  "formula": "\\oint_{\\partial S}\\omega=\\iint_S d\\omega,\\qquad d(P\\,dx+Q\\,dy)=\\Big(\\frac{\\partial Q}{\\partial x}-\\frac{\\partial P}{\\partial y}\\Big)dx\\wedge dy",
+  "params": [
+   [
+    "radius",
+    "Disk radius",
+    "円板半径",
+    0.2,
+    1.5,
+    0.05,
+    0.8
+   ],
+   [
+    "orientation",
+    "Orientation",
+    "向き",
+    -1,
+    1,
+    2,
+    1,
+    [
+     [
+      "Clockwise",
+      "時計回り"
+     ],
+     [
+      "Anticlockwise",
+      "反時計回り"
+     ]
+    ]
+   ]
+  ]
+ },
+ "pullback": {
+  "body": [
+   "The map φ(u, v) = (su + kv, v + cu²) bends the (u, v) square into the plane. Drag the small cell: its image has signed area close to det Dφ times the cell's area, and the dashed parallelogram, Dφ applied to the cell, is the linear approximation. With enough bend and shear, det Dφ changes sign along a fold line, where the image folds over and orientation reverses.",
+   "写像 φ(u, v) = (su + kv, v + cu²) は (u, v) 正方形を平面へ曲げて写します。小さなセルをドラッグしてください。像の符号付き面積はセルの面積の det Dφ 倍に近く、破線の平行四辺形（セルに Dφ を施したもの）がその線形近似です。曲げとせん断が十分大きいと det Dφ は折り目の線で符号を変え、そこで像が折り返されて向きが反転します。"
+  ],
+  "formula": "\\phi^*(f\\,dx\\wedge dy)=f(\\phi(u,v))\\,\\det D\\phi\\;du\\wedge dv,\\qquad \\det D\\phi=s-2cku",
+  "caution": [
+   "The map is chosen for its simple Jacobian. Where it folds, the integral of the pullback counts overlapping parts of the image with opposite signs.",
+   "この写像はヤコビアンが簡単になるように選んだものです。折り返しがあると、引き戻しの積分は像の重なった部分を逆の符号で数えます。"
+  ],
+  "params": [
+   [
+    "scale",
+    "Horizontal scale s",
+    "横方向の倍率 s",
+    0.5,
+    2,
+    0.05,
+    1.2
+   ],
+   [
+    "shear",
+    "Shear k",
+    "せん断 k",
+    -1,
+    1,
+    0.05,
+    0.3
+   ],
+   [
+    "bend",
+    "Bend c",
+    "曲げ c",
+    0,
+    1,
+    0.05,
+    0.4
+   ]
+  ]
+ }
+}

@@ -38,13 +38,15 @@
       const st = ctx.state, th = rad(v.angle), s = v.speed, drag = v.drag > 0.5;
       const X = held(st, 'X', nice(1.06 * s * s / G, [6, 10, 15, 20, 30, 40, 50, 60, 70, 80, 100])), Y = X * 0.56;
       const sc = 0.3 * X / Math.sqrt(G * X); // metres of arrow per m/s
-      const f = L.fig(ctx.host, { x: [0, X], y: [0, Y], equal: true, maxH: 460, xlabel: T('horizontal distance x (m)', '水平距離 x (m)'), ylabel: T('height y (m)', '高さ y (m)') });
+      const f = L.fig(ctx.host, { x: [0, X], y: [-0.16 * Y, Y], equal: true, maxH: 480, xlabel: T('horizontal distance x (m)', '水平距離 x (m)'), ylabel: T('height y (m)', '高さ y (m)') });
+      f.rect(0, -0.16 * Y, X, 0.16 * Y, { c: 'muted', fo: 0.14, nostroke: true, layer: 'under' });
+      f.hline(0, { c: 'ink', w: 1.2, op: 0.7, layer: 'under' });
       const path = flight(th, s, drag ? KD : 0);
       const vac = drag ? flight(th, s, 0) : null;
       const tf = path[path.length - 1][0], R = path[path.length - 1][1];
       let apex = path[0]; path.forEach((p) => { if (p[2] > apex[2]) apex = p; });
       // envelope of every trajectory at this speed (vacuum): y = s²/2g − g x²/2s²
-      f.line(L.sample(0, X, 160, (x) => s * s / (2 * G) - G * x * x / (2 * s * s)), { c: 'muted', w: 1.3, dash: '2 4', layer: 'under' });
+      f.line(L.sample(0, Math.min(X, s * s / G), 160, (x) => s * s / (2 * G) - G * x * x / (2 * s * s)), { c: 'muted', w: 1.3, dash: '2 4', layer: 'under' });
       if (drag) f.line(vac.map((p) => [p[1], p[2]]), { c: 'c1', w: 1.6, dash: '6 5', op: 0.6 });
       else if (Math.abs(v.angle - 45) > 0.5) f.line(flight(Math.PI / 2 - th, s, 0).map((p) => [p[1], p[2]]), { c: 'c1', w: 1.6, dash: '6 5', op: 0.55 });
       f.line(path.map((p) => [p[1], p[2]]), { c: 'c1', w: 3 });
@@ -59,7 +61,7 @@
       f.arrow([0, 0], tip, { c: 'c2', w: 3 });
       f.text(tip[0], tip[1], 'v₀', { math: true, dx: 14, dy: -4, anchor: 'start', c: 'c2', layer: 'main' });
       f.handle(tip[0], tip[1], { c: 'c2', label: T('Launch velocity', '初速度ベクトル'), bounds: [0.02 * X, 0.9 * X, 0.02 * X, 0.95 * Y], onDrag: (x, y) => { lock(ctx); ctx.set('angle', Math.atan2(y, x) * 180 / Math.PI, true); ctx.set('speed', Math.hypot(x, y) / sc); } });
-      const vs = 0.55 * sc;
+      const vs = 0.4 * sc;
       f.layers.dyn = f.group('main');
       st.anim = L.animator(ctx.host, (dt, t, lab) => {
         f.clear('over'); f.clear('dyn');
@@ -139,14 +141,15 @@
       if (regime !== 'crit') g.line(crit.filter((_, i) => i % 5 === 0).map((p) => [p[0], p[1]]), { c: 'c3', w: 1.8, dash: '6 5' });
       g.line(run.filter((_, i) => i % 3 === 0).map((p) => [p[0], p[1]]), { c: 'c1', w: 2.6 });
       const r = L.fig(c2, { x: [-8.4, 1.2], y: [-3.6, 3.6], equal: true, maxH: 340, xlabel: 'Re s', ylabel: 'Im s' });
-      r.circle(0, 0, w0, { c: 'muted', w: 1, dash: '3 4' });
+      // |s| = ω₀ only on the left half-plane: no root ever has Re s > 0
+      r.line(L.sample(Math.PI / 2, 3 * Math.PI / 2, 80, (a) => [w0 * Math.cos(a), w0 * Math.sin(a)]), { c: 'muted', w: 1, dash: '3 4' });
       const locus = (cc) => { const d = cc * cc - 4 * k; return d < 0 ? [[-cc / 2, Math.sqrt(-d) / 2], [-cc / 2, -Math.sqrt(-d) / 2]] : [[(-cc + Math.sqrt(d)) / 2, 0], [(-cc - Math.sqrt(d)) / 2, 0]]; };
       const cs = L.seq(161, (i) => i / 20);
       r.line(cs.map((cc) => locus(cc)[0]), { c: 'c4', w: 1.4, op: 0.35 });
       r.line(cs.map((cc) => locus(cc)[1]), { c: 'c4', w: 1.4, op: 0.35 });
       const roots = locus(c);
       roots.forEach((p) => r.dot(p[0], p[1], { c: 'c4', r: 6.5 }));
-      r.text(0, w0, 'ω₀', { math: true, dx: 8, dy: -6, anchor: 'start', c: 'muted' });
+      r.text(0, w0, '|s| = ω₀', { dx: 7, dy: -7, anchor: 'start', small: true, c: 'muted' });
       r.text(roots[0][0], roots[0][1], regime === 'under' ? T('complex pair: oscillation', '複素共役: 振動') : regime === 'crit' ? T('double root', '重根') : T('two real roots', '2つの実根'), { dy: roots[0][1] > 0 ? -12 : -14, anchor: roots[0][0] < -5 ? 'start' : 'end', small: true, c: 'c4' });
       ctx.state.anim = L.animator(ctx.host, (dt, t, lab) => {
         const tt = t % TM, i = Math.min(run.length - 1, Math.round(tt / 0.004)), p = run[i];
@@ -156,7 +159,7 @@
         g.dot(tt, p[1], { c: 'hl', r: 6 });
         lab.textContent = `t = ${tt.toFixed(2)}   x = ${p[1].toFixed(3)}`;
       }, { autoplay: true, playLabel: T('Play', '再生') });
-      L.legend(ctx.host, [{ c: 'c1', label: T('this oscillator', 'この振動子') }, { c: 'c3', dash: true, label: T('critical damping c = 2√(mk), same k', '臨界減衰 c = 2√(mk)（同じ k）') }, { c: 'muted', dash: true, label: T('envelope ±e^(−ct/2m)', '包絡線 ±e^(−ct/2m)') }, { kind: 'dot', c: 'c4', label: T('characteristic roots', '特性根') }]);
+      L.legend(ctx.host, [{ c: 'c1', label: T('this oscillator', 'この振動子') }, { c: 'c3', dash: true, label: T('critical damping c = 2√(mk), same k', '臨界減衰 c = 2√(mk)（同じ k）') }, { c: 'muted', dash: true, label: T('envelope ±e^(−ct/2m)', '包絡線 ±e^(−ct/2m)') }, { kind: 'dot', c: 'c4', label: T('characteristic roots', '特性根') }, { c: 'c4', label: T('root locus, c from 0 to 8: semicircle |s| = ω₀ while c < 2√(mk), then the real axis', '根軌跡（c を 0 から 8 まで）：c < 2√(mk) では半円 |s| = ω₀、その後は実軸') }]);
       const name = regime === 'under' ? (c === 0 ? T('undamped', '減衰なし') : T('underdamped', '減衰不足')) : regime === 'crit' ? T('critical', '臨界減衰') : T('overdamped', '過減衰');
       const items = [{ k: T('regime', '状態'), v: name, tone: 'key' }, { k: 'c² − 4mk', v: fmt(disc, 3) }, { k: 'ζ = c/2√(mk)', v: fmt(zeta, 3) }];
       items.push(regime === 'under' ? { k: T('ω_d = √(ω₀² − c²/4m²)', 'ω_d = √(ω₀² − c²/4m²)'), v: fmt(Math.sqrt(w0 * w0 - c * c / 4), 3) } : { k: T('slowest decay rate', '最も遅い減衰率'), v: fmt(-roots[0][0], 3) });
@@ -213,9 +216,9 @@
       f.circle(0, 0, 1, { c: 'muted', w: 1, dash: '3 4' });
       f.line(pts, { c: 'c1', w: 2.6, closed: bound });
       f.dot(0, 0, { c: 'hl', r: 9, layer: 'main' });
-      f.text(0, 0, T('centre, μ', '中心 μ'), { dy: -14, small: true, layer: 'main' });
+      f.text(0, 0, T('centre, μ', '中心 μ'), { dy: 20, small: true, layer: 'main' });
       f.dot(1, 0, { c: 'c2', r: 4, layer: 'main' });
-      f.text(1, 0, K.kind === 'circle' ? T('launch', '発射点') : K.om === 0 ? T('launch = periapsis', '発射点 = 近点') : T('launch = apoapsis', '発射点 = 遠点'), { dx: -10, dy: 18, anchor: 'end', small: true, c: 'c2', layer: 'main' });
+      f.text(1, 0, K.kind === 'circle' ? T('launch', '発射点') : K.om === 0 ? T('launch = periapsis', '発射点 = 近点') : T('launch = apoapsis', '発射点 = 遠点'), { dx: 10, dy: 17, anchor: 'start', small: true, c: 'c2', layer: 'main' });
       if (K.kind === 'ellipse') {
         const peri = K.pos(0), apo = K.pos(K.period / 2);
         f.seg(peri, apo, { c: 'muted', w: 1, dash: '5 4' });

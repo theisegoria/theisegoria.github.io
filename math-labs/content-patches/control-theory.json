@@ -1,0 +1,40 @@
+{
+ "pid": {
+  "params": [
+   [
+    "kp",
+    "Proportional gain \\(K_p\\)",
+    "比例ゲイン \\(K_p\\)",
+    0,
+    6,
+    0.05,
+    1.5
+   ],
+   [
+    "ki",
+    "Integral gain \\(K_i\\)",
+    "積分ゲイン \\(K_i\\)",
+    0,
+    3,
+    0.05,
+    0.6
+   ],
+   [
+    "kd",
+    "Derivative gain \\(K_d\\)",
+    "微分ゲイン \\(K_d\\)",
+    0,
+    4,
+    0.05,
+    1
+   ]
+  ]
+ },
+ "bode-nyquist": {
+  "formula": "L(i\\omega)=\\frac{K\\,e^{-i\\omega\\tau}}{(1+i\\omega)^3},\\qquad Z=N+P,\\qquad P=0",
+  "body": [
+   "The loop transfer function is traced two ways: as gain and phase against frequency, and as a single curve in the complex plane. Raise the gain or add delay; when the Nyquist curve wraps around −1 the closed loop is unstable, exactly when the Bode plot shows gain above 1 at a phase of −180°. In the formula, N counts clockwise encirclements of −1, P the open-loop poles in the right half-plane and Z the closed-loop ones: with P = 0, the closed loop is stable exactly when N = 0.",
+   "ループ伝達関数を二通りに描きます。周波数に対するゲインと位相として、そして複素平面上の一本の曲線としてです。ゲインを上げたり遅れを加えたりしてください。ナイキスト曲線が −1 を囲むと閉ループは不安定になります。これはボード線図で位相 −180° のときにゲインが 1 を超えるのとちょうど同じ時です。式の N は −1 を時計回りに囲む回数、P は開ループの右半平面の極の数、Z は閉ループのそれです。P = 0 なので、閉ループが安定なのは N = 0 のときにほかなりません。"
+  ]
+ }
+}

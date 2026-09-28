@@ -1,0 +1,93 @@
+{
+ "mean": {
+  "body": [
+   "Draw 200 samples of size n from a population and plot the histogram of their means. The means cluster around the population mean with spread σ/√n, whatever the shape of the population, and their histogram approaches the normal curve. Play to draw the samples one at a time.",
+   "母集団から大きさ n の標本を200個引き、その平均のヒストグラムを描きます。母集団の形によらず、平均は母平均のまわりに σ/√n の広がりで集まり、ヒストグラムは正規曲線に近づきます。再生すると標本を1つずつ引く様子が見られます。"
+  ],
+  "caution": [
+   "Even a small standard error does not remove bias from a bad sampling frame.",
+   "小さい標準誤差でも、偏った標本枠によるバイアスは消えません。"
+  ],
+  "params": [
+   [
+    "n",
+    "Sample size n",
+    "標本サイズ n",
+    4,
+    100,
+    1,
+    25
+   ],
+   [
+    "sigma",
+    "Population spread σ",
+    "母標準偏差 σ",
+    0.5,
+    3,
+    0.1,
+    1
+   ],
+   [
+    "shape",
+    "Population shape",
+    "母集団の形",
+    0,
+    2,
+    1,
+    0,
+    [
+     [
+      "Normal",
+      "正規"
+     ],
+     [
+      "Skewed",
+      "歪み"
+     ],
+     [
+      "Uniform",
+      "一様"
+     ]
+    ]
+   ]
+  ]
+ },
+ "interval": {
+  "body": [
+   "Fifty samples are drawn from a population with known σ, and each gives the interval x̄ ± zσ/√n. Move the confidence level: the samples stay the same, the critical value z changes, and every interval widens or narrows together. Count how many intervals miss the true mean.",
+   "既知の σ を持つ母集団から50個の標本を引き、それぞれから区間 x̄ ± zσ/√n を作ります。信頼水準を動かしても標本は同じで、臨界値 z が変わり、すべての区間が一斉に広がったり狭まったりします。真の平均を外した区間の数を数えてみましょう。"
+  ],
+  "formula": "\\bar x\\pm z_{\\alpha/2}\\frac{\\sigma}{\\sqrt n},\\qquad P\\bigl(|Z|\\le z_{\\alpha/2}\\bigr)=1-\\alpha",
+  "caution": [
+   "The 95% describes the long-run coverage of the procedure over repeated samples; it is not a probability statement about this one fixed parameter.",
+   "95%は、標本を繰り返したときの手続きの長期的な被覆率を表します。固定された1つのパラメータについての確率ではありません。"
+  ]
+ },
+ "regression": {
+  "body": [
+   "Twelve points are drawn around the line y = 1 + slope·x with normal noise of the chosen scale. The least-squares line is refitted as you drag any point. Orange segments are residuals; the shaded band is the 95% confidence band for the mean response, and the right panel plots the residuals against x.",
+   "12個の点を直線 y = 1 + 傾き·x のまわりに、選んだ大きさの正規ノイズで生成します。どの点をドラッグしても最小二乗直線が当てはめ直されます。橙の線分が残差、網掛けが平均応答の95%信頼帯で、右図は x に対する残差です。"
+  ],
+  "formula": "\\hat\\beta=(X^TX)^{-1}X^Ty,\\qquad \\hat\\beta_1=\\frac{\\sum(x_i-\\bar x)(y_i-\\bar y)}{\\sum(x_i-\\bar x)^2},\\quad \\hat\\beta_0=\\bar y-\\hat\\beta_1\\bar x",
+  "params": [
+   [
+    "slope",
+    "Slope",
+    "傾き",
+    -0.5,
+    2,
+    0.05,
+    1
+   ],
+   [
+    "noise",
+    "Noise scale σ",
+    "ノイズの大きさ σ",
+    0,
+    0.8,
+    0.05,
+    0.4
+   ]
+  ]
+ }
+}

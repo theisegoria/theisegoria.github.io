@@ -1,0 +1,138 @@
+{
+ "curvature": {
+  "body": [
+   "Choose a plane curve and how strongly it bends, then drag a point along it. The osculating circle is the circle that fits the curve best at that point: its radius is 1/|κ|. The curvature comb draws κ as spikes along the curve, and the graph on the right plots signed curvature against arc length, positive where the curve turns left and negative where it turns right.",
+   "平面曲線とその曲がり具合を選び、曲線に沿って点をドラッグします。接触円はその点で曲線に最もよく合う円で、半径は 1/|κ| です。曲率の櫛は κ を曲線に沿った棘として描き、右のグラフは符号付き曲率を弧長に対してプロットします。曲線が左に曲がる所で正、右に曲がる所で負です。"
+  ],
+  "formula": "\\kappa=\\frac{x'y''-y'x''}{(x'^2+y'^2)^{3/2}},\\qquad \\oint\\kappa\\,ds=2\\pi\\times(\\text{turning number})",
+  "caution": [
+   "The formula gives signed curvature; its absolute value is the curvature of the curve as an unoriented set, and the sign flips if the curve is traversed the other way.",
+   "この式は符号付き曲率を与えます。その絶対値が向きを考えない曲線の曲率で、曲線を逆向きにたどると符号が反転します。"
+  ],
+  "params": [
+   [
+    "curve",
+    "Curve",
+    "曲線",
+    0,
+    2,
+    1,
+    0,
+    [
+     [
+      "Wave",
+      "波"
+     ],
+     [
+      "Ellipse",
+      "楕円"
+     ],
+     [
+      "Limaçon",
+      "リマソン"
+     ]
+    ]
+   ],
+   [
+    "bend",
+    "Bend amount",
+    "曲がりの量",
+    0,
+    1,
+    0.05,
+    0.45
+   ],
+   [
+    "at",
+    "Point along the curve",
+    "曲線上の位置",
+    0,
+    1,
+    0.005,
+    0.3
+   ]
+  ]
+ },
+ "geodesic-surface": {
+  "title": [
+   "2. Geodesics on a torus",
+   "2. トーラス上の測地線"
+  ],
+  "body": [
+   "Launch a geodesic on a torus from a point on the tube at angle v₀, heading at angle ψ to the parallel, and compare it with the coordinate line that starts the same way. The geodesic is computed from the geodesic equation with the torus's Christoffel symbols. In the flat (u, v) chart the coordinate line is straight but the geodesic bends; on the surface it is the other way round. Clairaut's relation ρ cos ψ = const decides whether the geodesic winds through the hole or stays on the outside.",
+   "トーラスの管の角度 v₀ の点から、緯線と角 ψ をなす向きに測地線を出し、同じように出発する座標直線と比べます。測地線はトーラスのクリストッフェル記号を用いた測地線方程式から計算しています。平らな (u, v) 座標では座標直線はまっすぐで測地線は曲がりますが、曲面上では逆になります。クレローの関係式 ρ cos ψ = 一定 により、測地線が穴をくぐるか外側にとどまるかが決まります。"
+  ],
+  "formula": "\\nabla_{\\dot\\gamma}\\dot\\gamma=0:\\quad \\ddot u=\\frac{2r\\sin v}{R+r\\cos v}\\,\\dot u\\dot v,\\quad \\ddot v=-\\frac{(R+r\\cos v)\\sin v}{r}\\,\\dot u^2",
+  "example": [
+   "With R = 2 and r = 0.8, a geodesic starting on the outer equator with ψ = 30° has c = 2.8 cos 30° ≈ 2.42 > R − r = 1.2, so it oscillates about the outer equator and never reaches the inner one.",
+   "R = 2、r = 0.8 で外側の赤道から ψ = 30° で出発する測地線は c = 2.8 cos 30° ≈ 2.42 > R − r = 1.2 なので、外側の赤道のまわりを振動し、内側の赤道には届きません。"
+  ],
+  "caution": [
+   "The torus picture uses flat shading and marks the part of each curve on the far side, as seen from the viewer, with dashes; it is a projection, not a rendering of true occlusion.",
+   "トーラスの図は平坦な陰影で描き、見る人から見て裏側を通る部分を破線にしています。投影図であり、正確な隠面処理ではありません。"
+  ],
+  "params": [
+   [
+    "latitude",
+    "Starting tube angle v₀ (°)",
+    "出発点の管の角度 v₀（°）",
+    -170,
+    170,
+    5,
+    20
+   ],
+   [
+    "heading",
+    "Heading ψ from the parallel (°)",
+    "緯線からの向き ψ（°）",
+    -85,
+    85,
+    5,
+    35
+   ],
+   [
+    "arc",
+    "Length traced",
+    "たどる長さ",
+    0.2,
+    1,
+    0.05,
+    0.7
+   ]
+  ]
+ },
+ "gaussian": {
+  "body": [
+   "The graph z = ½(x² + b y²) morphs from a bowl (b > 0) through a parabolic cylinder (b = 0) to a saddle (b < 0). Drag the gold point over the curvature map on the right: the readout computes the first and second fundamental forms there and K = (LN − M²)/(EG − F²). Drag the surface on the left to turn it.",
+   "グラフ z = ½(x² + b y²) は鉢型 (b > 0) から放物柱面 (b = 0) を経て鞍型 (b < 0) へ変形します。右の曲率図の上で金色の点をドラッグすると、その点での第一・第二基本形式と K = (LN − M²)/(EG − F²) を計算します。左の曲面はドラッグで回転できます。"
+  ],
+  "example": [
+   "At the origin E = G = 1, F = M = 0, L = 1 and N = b, so K = b: a sphere-like bowl for b > 0 and a saddle with K < 0 for b < 0. Away from the origin K = b/(1 + x² + b²y²)² shrinks toward 0.",
+   "原点では E = G = 1、F = M = 0、L = 1、N = b なので K = b です。b > 0 なら球面のような鉢型、b < 0 なら K < 0 の鞍型です。原点から離れると K = b/(1 + x² + b²y²)² は 0 に近づきます。"
+  ],
+  "caution": [
+   "K is intrinsic, but L, M and N are not: they depend on how the surface sits in space. Only the combination LN − M² divided by EG − F² is unchanged by bending without stretching.",
+   "K は内在的ですが、L、M、N はそうではなく、曲面が空間にどう置かれているかに依存します。伸縮のない曲げで変わらないのは、LN − M² を EG − F² で割った組み合わせだけです。"
+  ],
+  "params": [
+   [
+    "saddle",
+    "Saddle amount (b = −saddle)",
+    "鞍の量（b = −鞍の量）",
+    -1,
+    1,
+    0.05,
+    0.4
+   ],
+   [
+    "turn",
+    "View angle (°)",
+    "視点の角度（°）",
+    -180,
+    180,
+    5,
+    35
+   ]
+  ]
+ }
+}

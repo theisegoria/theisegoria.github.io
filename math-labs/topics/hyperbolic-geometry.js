@@ -127,7 +127,7 @@
       const a1 = Math.atan2(par.f1[1], par.f1[0]), a2 = Math.atan2(par.f2[1], par.f2[0]);
       let gap = a2 - a1; while (gap > PI) gap -= 2 * PI; while (gap < -PI) gap += 2 * PI;
       const start = a1 + gap, span = (PI - Math.abs(gap)) * Math.sign(gap || 1);
-      for (let k = 1; k <= 5; k++) { const a = start + span * k / 6; f.line(fullLine(R, [Math.cos(a), Math.sin(a)]), { c: 'c4', w: 1.3, op: 0.7 }); }
+      for (let k = 1; k <= 5; k++) { const a = start + span * k / 6; f.line(fullLine(R, [Math.cos(a), Math.sin(a)]), { c: 'c4', w: 1.7, op: 1 }); }
       f.line(fullLine(R, par.f1), { c: 'c2', w: 2.4 });
       f.line(fullLine(R, par.f2), { c: 'c2', w: 2.4 });
       if (par.d > 1e-6) f.line(segment(R, par.foot), { c: 'ink', w: 1.3, dash: '4 3' });
@@ -135,13 +135,15 @@
       f.line(segment(P, Qs), { c: 'c1', w: 4 });
       for (let k = -24; k <= 24; k++) { if (!k) continue; const X = along(P, Qs, 0.5 * k); if (abs(X) < 0.995) f.dot(X[0], X[1], { c: 'c1', r: Math.max(1.2, 3.2 * (1 - abs(X) * abs(X)) + 0.8), op: 0.85 }); }
       par.e1 && [par.e1, par.e2].forEach((e) => f.dot(e[0], e[1], { c: 'c1', r: 4, hollow: true }));
-      if (par.d > 0.02) { const lab = angleArc(f, R, par.m, par.f1, 0.13, { c: 'c2', w: 1.6, layer: 'over' }); f.text(lab[0], lab[1], 'Π', { math: true, small: true, c: 'c2', dy: 4 }); }
+      if (par.d > 0.02) { const lab = angleArc(f, R, par.m, par.f1, 0.13, { c: 'c2', w: 1.6, layer: 'over' }); const lm = sub(lab, R), ll = abs(lm) || 1; f.text(R[0] + lm[0] / ll * 0.24, R[1] + lm[1] / ll * 0.24, 'Π', { math: true, small: true, c: 'c2', dy: 4 }); }
       dragPoint(ctx, f, P, 'px', 'py', 'c1', T('Point P', '点 P'));
       dragPoint(ctx, f, Q, 'qx', 'qy', 'c1', T('Point Q', '点 Q'));
       dragPoint(ctx, f, R, 'rx', 'ry', 'hl', T('Point R off the line', '直線外の点 R'));
       f.text(P[0], P[1], 'P', { math: true, dx: -14, dy: -12 });
       f.text(Q[0], Q[1], 'Q', { math: true, dx: 14, dy: -12 });
-      f.text(R[0], R[1], 'R', { math: true, dx: 14, dy: -12 });
+      // put the R label on the side away from the line, clear of the dot, the arc and the Π label
+      const away = par.d > 1e-6 ? sub(R, par.foot) : [0, 1], al = abs(away) || 1;
+      f.text(R[0] + away[0] / al * 0.09, R[1] + away[1] / al * 0.09, 'R', { math: true, dy: 5 });
       // right: angle of parallelism against distance
       L.h('p', 'lab-cap', c2, T('Angle of parallelism Π against the distance d from R to the line', '平行角 Π と、R から直線までの距離 d'));
       const g = L.fig(c2, { x: [0, 4], y: [0, 100], aspect: 0.8, maxH: 360, xlabel: T('distance d', '距離 d'), ticksY: [[0, '0°'], [30, '30°'], [60, '60°'], [90, '90°']], ticksX: [0, 1, 2, 3, 4].map((k) => [k, String(k)]) });

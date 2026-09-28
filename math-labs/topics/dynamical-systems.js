@@ -7,13 +7,15 @@
   D.phase = {
     render(ctx, v) {
       ctx.state.anim?.stop();
-      const a = v.a, x0 = v.x, y0 = v.y, R = 3;
+      const a = v.a, x0 = v.x, y0 = v.y;
       const r0 = Math.hypot(x0, y0);
       const z = (t) => { const s = Math.exp(a * t), c = Math.cos(t), n = Math.sin(t); return [s * (x0 * c - y0 * n), s * (x0 * n + y0 * c)]; };
-      // run for two turns, or until the orbit leaves the window
+      // run for two turns, or until the radius reaches 2.6, so the end point stays inside the window
       let Tm = 4 * PI;
-      if (a > 0 && r0 > 0) Tm = Math.min(Tm, Math.log(4.4 / r0) / a);
+      if (a > 0 && r0 > 0) Tm = Math.min(Tm, Math.log(2.6 / r0) / a);
       Tm = Math.max(Tm, 0.5);
+      // Fit the window to the trajectory: its largest radius is |z(0)| e^{max(0, aTm)}, never below 1.5.
+      const R = Math.min(3, Math.max(1.5, 1.15 * r0 * Math.exp(Math.max(0, a * Tm))));
       const row = L.h('div', 'lab-row', ctx.host);
       const c1 = L.h('div', 'lab-col', row), c2 = L.h('div', 'lab-col', row);
       L.h('p', 'lab-cap', c1, T('Phase plane. Drag the gold point to choose z(0).', '相平面。金色の点をドラッグして z(0) を選びます。'));
@@ -36,14 +38,22 @@
         f.clear('over'); g.clear('over');
         const k = Math.max(2, Math.round(700 * tt / Tm));
         f.line(path.slice(0, k), { c: 'c1', w: 2.6, layer: 'over' });
-        const p = z(tt), vel = [a * p[0] - p[1], p[0] + a * p[1]];
-        const sc = 0.45 / Math.max(0.3, Math.hypot(...vel)) * Math.min(1.6, Math.hypot(...vel));
-        f.arrow(p, [p[0] + vel[0] * sc, p[1] + vel[1] * sc], { c: 'c2', w: 2.2, layer: 'over' });
+        const p = z(tt), vel = [a * p[0] - p[1], p[0] + a * p[1]], sp = Math.hypot(...vel);
+        // Direction is exact; the drawn length is compressed so the arrow stays visible near the origin and inside the frame.
+        if (sp > 1e-9) {
+          let len = R * L.clamp(0.12 + 0.1 * sp, 0.15, 0.3);
+          // keep the tip inside the frame
+          const ux = vel[0] / sp, uy = vel[1] / sp, lim = 0.96 * R;
+          if (ux > 0) len = Math.min(len, (lim - p[0]) / ux); if (ux < 0) len = Math.min(len, (-lim - p[0]) / ux);
+          if (uy > 0) len = Math.min(len, (lim - p[1]) / uy); if (uy < 0) len = Math.min(len, (-lim - p[1]) / uy);
+          len = Math.max(len, 0.08 * R);
+          f.arrow(p, [p[0] + vel[0] / sp * len, p[1] + vel[1] / sp * len], { c: 'c2', w: 2.4, layer: 'over' });
+        }
         f.dot(p[0], p[1], { c: 'c1', r: 5.5 });
         g.vline(tt, { c: 'hl', w: 1.2, dash: '2 3', layer: 'over' });
         g.dot(tt, p[0], { c: 'c1', r: 4.5 }); g.dot(tt, p[1], { c: 'c3', r: 4.5 });
       }, { autoplay: false, initialT: Tm, playLabel: T('Play the motion', '運動を再生') });
-      L.legend(ctx.host, [{ c: 'c1', label: T('trajectory, and x(t)', '軌道と x(t)') }, { c: 'c3', label: 'y(t)' }, { c: 'c2', label: T('velocity (ẋ, ẏ)', '速度 (ẋ, ẏ)') }, { c: 'muted', dash: true, label: T('envelope ±|z(0)|eᵃᵗ', '包絡線 ±|z(0)|eᵃᵗ') }]);
+      L.legend(ctx.host, [{ c: 'c1', label: T('trajectory, and x(t)', '軌道と x(t)') }, { c: 'c3', label: 'y(t)' }, { c: 'c2', label: T('velocity direction (ẋ, ẏ) at the current point, length not to scale', '現在の点での速度 (ẋ, ẏ) の向き、長さは縮尺なし') }, { c: 'muted', dash: true, label: T('envelope ±|z(0)|eᵃᵗ', '包絡線 ±|z(0)|eᵃᵗ') }]);
       const kind = Math.abs(a) < 1e-9 ? T('centre: closed circles', '中心：閉じた円') : a < 0 ? T('stable spiral', '安定渦状点') : T('unstable spiral', '不安定渦状点');
       ctx.readout([
         { k: T('eigenvalues', '固有値'), v: `${fmt(a, 2)} ± i`, tone: 'key' },
@@ -66,12 +76,26 @@
       const f = L.fig(c1, { x: [-2.2, 2.2], y: [-3, 2.4], aspect: 0.85, maxH: 360, xlabel: 'x', ylabel: 'ẋ' });
       f.area(L.sample(-2.2, 2.2, 300, (x) => mu - x * x), { c: 'c3', fo: 0.1 });
       f.line(L.sample(-2.2, 2.2, 300, (x) => mu - x * x), { c: 'c1', w: 2.4 });
-      // phase line: arrows between equilibria, pointing the way x moves
+      // phase line: bold arrows between equilibria, pointing the way x moves.
+      // Drawn in the 'over' layer with their own heads, because the axis line is painted above 'main'.
+      const pxu = f.X(1) - f.X(0), pyu = f.Y(0) - f.Y(1);
+      const hw = 11 / pxu, hh = 6.5 / pyu; // head length and half-height in data units
+      const bold = (xa, xb) => {
+        const dir = Math.sign(xb - xa), tip = xb, base = xb - dir * hw;
+        f.seg([xa, 0], [base, 0], { c: 'c2', w: 3.2, layer: 'over' });
+        f.poly([[tip, 0], [base, hh], [base, -hh]], { c: 'c2', fill: true, fo: 1, w: 1, layer: 'over' });
+      };
       const cuts = [-2.2, ...eq, 2.2];
       for (let i = 0; i + 1 < cuts.length; i++) {
         const lo = cuts[i], hi = cuts[i + 1], m = (lo + hi) / 2, dir = Math.sign(mu - m * m);
-        const len = Math.min(0.5, (hi - lo) * 0.3);
-        if (hi - lo > 0.2) f.arrow([m - dir * len, 0], [m + dir * len, 0], { c: 'c2', w: 3 });
+        if (hi - lo < 0.25) continue;
+        const gap = Math.min(0.12, (hi - lo) * 0.08), span = hi - lo - 2 * gap;
+        const k = Math.max(1, Math.min(4, Math.floor(span / 0.5)));
+        const cell = span / k, len = Math.min(0.42, cell * 0.72);
+        for (let j = 0; j < k; j++) {
+          const c = lo + gap + cell * (j + 0.5);
+          bold(c - dir * len / 2, c + dir * len / 2);
+        }
       }
       eq.forEach((x) => {
         const stable = x > 1e-9, semi = Math.abs(x) <= 1e-9;
@@ -150,12 +174,21 @@
         for (let i = 0; i < cwid; i++) {
           const rr = 2 + 2 * (i + 0.5) / cwid; let x = 0.2;
           for (let k = 0; k < 400; k++) x = logi(rr, x);
-          for (let k = 0; k < 500; k++) { x = logi(rr, x); const j = Math.min(chh - 1, Math.max(0, Math.floor((1 - x) * chh))); H[j * cwid + i] += 1; }
+          for (let k = 0; k < 1500; k++) { x = logi(rr, x); const j = Math.min(chh - 1, Math.max(0, Math.floor((1 - x) * chh))); H[j * cwid + i] += 1; }
         }
-        st.bd = H; st.bdKey = key;
+        // per-column maximum, so a chaotic column is shaded by relative density and keeps its bands
+        const M = new Float32Array(cwid);
+        for (let i = 0; i < cwid; i++) { let m = 0; for (let j = 0; j < chh; j++) m = Math.max(m, H[j * cwid + i]); M[i] = m; }
+        st.bd = H; st.bdMax = M; st.bdKey = key;
       }
-      const H = st.bd;
-      bd.raster((x, y) => { const i = Math.min(cwid - 1, Math.floor((x - 2) / 2 * cwid)), j = Math.min(chh - 1, Math.floor((1 - y) * chh)); const c = H[j * cwid + i]; return c ? 0.35 + 0.65 * Math.min(1, Math.log(1 + c) / Math.log(60)) : 0; }, { cmap: 'seq', res });
+      const H = st.bd, M = st.bdMax;
+      const pl = L.colours().plate, dark = 0.299 * pl[0] + 0.587 * pl[1] + 0.114 * pl[2] < 128;
+      bd.raster((x, y) => {
+        const i = Math.min(cwid - 1, Math.floor((x - 2) / 2 * cwid)), j = Math.min(chh - 1, Math.floor((1 - y) * chh)); const c = H[j * cwid + i];
+        if (!c) return 0;
+        const rel = Math.log(1 + c) / Math.log(1 + Math.max(2, M[i]));
+        return dark ? 0.12 + 0.88 * rel * rel : 0.3 + 0.7 * rel;
+      }, { cmap: 'seq', res });
       bd.vline(r, { c: 'hl', w: 1.8, dash: false, op: 0.9 });
       bd.handle(r, 0.06, { c: 'hl', axis: 'x', bounds: [2, 4, 0, 1], label: T('Parameter r', 'パラメータ r'), onDrag: (x) => ctx.set('r', x) });
       if (!st.ly) st.ly = L.seq(401, (i) => [2 + 2 * i / 400, lyap(2 + 2 * i / 400)]);

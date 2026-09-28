@@ -120,7 +120,7 @@
       // barcode
       const bars = persistence(pts), XM = 2.2;
       L.h('p', 'lab-cap', c2, T('Barcode: each bar is a feature, from the ε where it is born to the ε where it dies.', 'バーコード：各バーは1つの特徴で、生まれる ε から消える ε まで伸びます。'));
-      const nb = bars.length, g = fig(c2, { x: [0, XM], y: [-0.5, nb + 0.5], aspect: 0.95, maxH: 380, xlabel: 'ε', ticksY: [], grid: false });
+      const nb = bars.length, g = fig(c2, { x: [0, XM], y: [-0.5, nb + 1.2], aspect: 0.95, maxH: 380, xlabel: 'ε', ticksY: [], grid: false });
       bars.forEach((b, k) => {
         const y = nb - 1 - k + 0.5;
         const end = Math.min(b.d, XM);
@@ -129,11 +129,15 @@
         if (b.d === Infinity) g.text(XM, y, '→ ∞', { anchor: 'end', small: true, dy: -6, c: 'c1' });
       });
       const h0 = bars.filter((b) => b.dim === 0).length;
-      noStroke(g.text(0.02, nb - 0.5, 'H₀', { anchor: 'start', small: true, c: 'c1', dy: -6, dx: 2 }));
-      if (h0 < nb) noStroke(g.text(0.02, nb - h0 - 0.5, 'H₁', { anchor: 'start', small: true, c: 'c2', dy: -6, dx: 2 }));
-      if (h0 < nb) g.hline(nb - h0, { c: 'muted', w: 0.8, dash: '2 3' });
+      // H₀ sits in the free band above the top bar; H₁ sits on its first row, left of the bar when there is room.
+      noStroke(g.text(0.02, nb + 0.25, 'H₀', { anchor: 'start', small: true, c: 'c1', dy: 4, dx: 2 }));
+      if (h0 < nb) {
+        const first1 = bars[h0].b;
+        noStroke(g.text(0.02, nb - h0 - 0.5, 'H₁', { anchor: 'start', small: true, c: 'c2', dy: first1 > 0.25 ? 4 : -8, dx: 2 }));
+        g.hline(nb - h0, { c: 'muted', w: 0.8, dash: '2 3' });
+      }
       g.vline(eps, { c: 'hl', w: 2, dash: false, layer: 'over' });
-      g.text(eps, nb + 0.2, `ε`, { math: true, c: 'hl', dx: 8, anchor: 'start' });
+      g.text(eps, nb + 0.85, `ε`, { math: true, c: 'hl', dx: 8, anchor: 'start', dy: 4 });
       g.hover((x) => { if (x < 0) return null; const a0 = bars.filter((b) => !b.dim && b.b <= x && x < b.d).length, a1 = bars.filter((b) => b.dim && b.b <= x && x < b.d).length; return { x, text: `ε = ${fmt(x, 2)}: β₀ = ${a0}, β₁ = ${a1}` }; });
       L.legend(ctx.host, [{ c: 'c1', label: T('H₀ bars: components', 'H₀ のバー：連結成分') }, { c: 'c2', label: T('H₁ bars: loops', 'H₁ のバー：ループ') }, { c: 'hl', label: T('Current threshold, crossing β₀ + β₁ bars', '現在の閾値（β₀ + β₁ 本のバーと交わる）') }, { kind: 'fill', c: 'c3', label: T('Filled triangles', '埋めた三角形') }]);
       const alive1 = bars.filter((b) => b.dim === 1 && b.b <= eps + 1e-9 && eps < b.d).length;
@@ -199,9 +203,35 @@
         const b = vs.length ? H()(vs.length, es, fs) : [0, 0, 0];
         return { V: vs.length, E: es.length, F: fs.length, b, vs: new Set(vs) };
       };
-      const f = fig(ctx.host, { axes: false, x: [-1.75, 1.75], y: [-1.6, 1.6], equal: true, maxH: 380 });
-      const capText = which === 3 ? T('The torus is drawn as a square whose opposite sides are glued in the direction of the arrows; the 16 drawn corners are only 9 vertices.', 'トーラスは、向かい合う辺を矢印の向きに貼り合わせた正方形として描いています。描いた16個の角は9個の頂点にすぎません。') : which === 1 ? T('Edges to the vertex at the back are dashed.', '奥の頂点へ向かう辺は破線です。') : '';
-      if (capText) L.h('p', 'lab-cap', ctx.host, capText);
+      const row = L.h('div', 'lab-row', ctx.host);
+      const col1 = L.h('div', 'lab-col', row), col2 = L.h('div', 'lab-col', row);
+      const capText = which === 3 ? T('The torus is drawn as a square whose opposite sides are glued in the direction of the arrows; the 16 drawn corners are only 9 vertices.', 'トーラスは、向かい合う辺を矢印の向きに貼り合わせた正方形として描いています。描いた16個の角は9個の頂点にすぎません。') : which === 1 ? T('Edges to the vertex at the back are dashed.', '奥の頂点へ向かう辺は破線です。') : T('The surface, built one triangle at a time.', '三角形を1枚ずつ置いて作る曲面。');
+      L.h('p', 'lab-cap', col1, capText);
+      const f = fig(col1, { axes: false, x: [-1.75, 1.75], y: [-1.6, 1.6], equal: true, maxH: 380 });
+      // Running count: V, E, F and χ after each triangle, so the sum can be watched changing.
+      const N = S.tri.length, hist = L.seq(N, (i) => stats(i + 1));
+      const yMax = Math.max(...hist.map((h) => h.E)) + 1;
+      L.h('p', 'lab-cap', col2, T('Counts after each triangle: V, E, F and χ = V − E + F.', '三角形を置くたびの個数：V、E、F と χ = V − E + F。'));
+      const g = fig(col2, { x: [0.5, N + Math.max(1, 0.28 * N)], y: [-0.8, yMax + 0.5], aspect: 0.85, maxH: 380, xlabel: T('triangles placed', '置いた三角形の数'), ticksX: L.seq(N, (i) => [i + 1, String(i + 1)]).filter((t, i) => N <= 8 || i % 2 === 1) });
+      const series = [['V', (h) => h.V, 'c2'], ['E', (h) => h.E, 'ink'], ['F', (h) => h.F, 'c1'], ['χ', (h) => h.V - h.E + h.F, 'hl']];
+      g.hline(0, { c: 'muted', w: 0.8, layer: 'under' });
+      series.forEach(([nm, fn, c]) => g.line(hist.map((h, i) => [i + 1, fn(h)]), { c, w: 1.2, op: 0.3, dash: '3 3', layer: 'under' }));
+      const drawCounts = (m) => {
+        g.clear('main'); g.clear('over');
+        g.vline(m, { c: 'hl', w: 1, dash: '3 3', op: 0.7 });
+        const ends = series.map(([nm, fn, c]) => {
+          const pts = hist.slice(0, m).map((h, i) => [i + 1, fn(h)]);
+          g.line(pts, { c, w: 2.4 });
+          const [x, y] = pts[pts.length - 1];
+          g.dot(x, y, { c, r: 4.5 });
+          return { nm, c, x, y, py: g.Y(y) };
+        });
+        // labels to the right of the last points, pushed apart so equal values do not overlap
+        const ord = ends.slice().sort((a, b) => a.py - b.py);
+        for (let i = 1; i < ord.length; i++) if (ord[i].py - ord[i - 1].py < 14) ord[i].py = ord[i - 1].py + 14;
+        for (let i = ord.length - 2; i >= 0; i--) if (ord[i + 1].py - ord[i].py < 14) ord[i].py = ord[i + 1].py - 14;
+        ends.forEach((e) => g.text(e.x, e.y, `${e.nm} = ${e.y}`, { anchor: 'start', dx: 9, dy: e.py - g.Y(e.y) + 4, small: true, c: e.c }));
+      };
       if (S.square) { const q = S.square; f.poly([[-q, -q], [q, -q], [q, q], [-q, q]], { c: 'muted', fo: 0.03, w: 0, layer: 'under' }); }
       const drawTo = (m) => {
         f.clear('main'); f.clear('over');
@@ -211,6 +241,7 @@
         const drawn = new Set();
         shown.forEach((k) => { const t = S.tri[k]; [[0, 1], [1, 2], [0, 2]].forEach(([a, b]) => { const key = t.pts[a].concat(t.pts[b]).map((x) => x.toFixed(3)).join(); const key2 = t.pts[b].concat(t.pts[a]).map((x) => x.toFixed(3)).join(); if (drawn.has(key) || drawn.has(key2)) return; drawn.add(key); const back = S.back !== undefined && (t.ids[a] === S.back || t.ids[b] === S.back); f.line([t.pts[a], t.pts[b]], { c: 'ink', w: 1.5, dash: back ? '5 4' : false, op: back ? 0.6 : 0.85 }); }); });
         const st = stats(m);
+        drawCounts(m);
         S.vpts.forEach(({ id, p }) => { if (st.vs.has(id)) { f.dot(p[0], p[1], { c: 'c2', r: 5.5 }); if (S.square) f.text(p[0], p[1], String(id + 1), { small: true, dx: -9, dy: -6, c: 'muted' }); } });
         return st;
       };
@@ -222,7 +253,7 @@
           { k: T('triangles placed', '置いた三角形'), v: `${m} / ${S.tri.length}` },
         ], m < S.tri.length ? T('The two alternating sums agree at every stage of the construction, not only at the end.', '2つの交代和は、完成時だけでなく構成のどの段階でも一致します。') : [T('One component and no holes: χ = 1.', '連結成分が1つで穴がないので χ = 1 です。'), T('The last face closes the surface and creates a 2-cycle: β₂ = 1, χ = 2.', '最後の面が曲面を閉じて2次元のサイクルを作り、β₂ = 1、χ = 2 になります。'), T('The loop around the hole gives β₁ = 1, so χ = 0.', '穴を回るループで β₁ = 1 となり、χ = 0 です。'), T('Two independent loops and one enclosed surface: 1 − 2 + 1 = 0. The annulus also has χ = 0, so χ alone does not tell surfaces apart.', '独立な2つのループと閉じた面が1つで 1 − 2 + 1 = 0 です。円環も χ = 0 なので、χ だけでは曲面を区別できません。')][which]);
       };
-      const N = S.tri.length, STEP = 0.35, DUR = N * STEP + 0.2;
+      const STEP = 0.35, DUR = N * STEP + 0.2;
       let lastM = -1;
       ctx.state.anim = L.animator(ctx.host, (dt, t, label) => {
         const m = Math.min(N, Math.floor(t / STEP) + 1);

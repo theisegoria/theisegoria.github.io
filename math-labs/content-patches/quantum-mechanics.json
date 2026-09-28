@@ -1,0 +1,123 @@
+{
+ "wavefunction": {
+  "body": [
+   "Here a particle is trapped between two infinitely high walls. Choose n to see the eigenstate ψₙ on the energy ladder and its probability density, with n − 1 nodes where the particle is never found. Switch to a superposition of two neighbouring levels and play time: each component turns at its own frequency Eₖ/ħ, so the density sloshes from wall to wall. Drag the two orange handles to find the probability of the particle lying between them.",
+   "無限に高い2枚の壁の間に閉じ込められた粒子です。n を選ぶと、エネルギー準位上の固有状態 ψₙ とその確率密度が表示され、粒子が決して見つからない n − 1 個の節が見えます。隣り合う2準位の重ね合わせに切り替えて時間を進めると、各成分がそれぞれの角振動数 Eₖ/ħ で回るため、密度が壁から壁へと揺れ動きます。橙の2つのハンドルをドラッグすると、その間に粒子が見つかる確率がわかります。"
+  ],
+  "formula": "\\begin{gathered}\\Psi(x,t)=\\sum_n c_n\\sqrt{\\tfrac2L}\\sin\\frac{n\\pi x}{L}\\,e^{-iE_nt/\\hbar}\\\\E_n=\\frac{n^2\\pi^2\\hbar^2}{2mL^2}\\end{gathered}",
+  "example": [
+   "For n = 2 the density vanishes at the centre, and the probability of finding the particle in the middle fifth, 0.4L < x < 0.6L, is only about 0.049, although a classical particle would be there a fifth of the time.",
+   "n = 2 では中央で密度が0になり、中央の5分の1（0.4L < x < 0.6L）に粒子が見つかる確率はおよそ 0.049 しかありません。古典的な粒子なら5回に1回はそこにいるはずです。"
+  ],
+  "caution": [
+   "Measurement and its collapse of the state are not shown. The walls are infinitely high, so ψ vanishes exactly at x = 0 and x = L.",
+   "測定とそれに伴う状態の収縮は扱いません。壁は無限に高いので、ψ は x = 0 と x = L でちょうど0になります。"
+  ],
+  "question": [
+   "Where is the particle least likely, and does that change in time for an eigenstate?",
+   "粒子が最も見つかりにくい場所はどこで、固有状態ではそれが時間とともに変わりますか？"
+  ],
+  "answer": [
+   "At the nodes, where |ψₙ|² = 0. For an eigenstate only the overall phase turns, so the density and its nodes never move; only a superposition makes the density change.",
+   "|ψₙ|² = 0 となる節です。固有状態では全体の位相が回るだけなので、密度も節も動きません。密度が変化するのは重ね合わせの場合だけです。"
+  ],
+  "params": [
+   [
+    "n",
+    "Quantum number n",
+    "量子数 n",
+    1,
+    6,
+    1,
+    2
+   ],
+   [
+    "mode",
+    "State",
+    "状態",
+    0,
+    1,
+    1,
+    0,
+    [
+     [
+      "Eigenstate ψₙ",
+      "固有状態 ψₙ"
+     ],
+     [
+      "Superposition (ψₙ + ψₙ₊₁)/√2",
+      "重ね合わせ (ψₙ + ψₙ₊₁)/√2"
+     ]
+    ]
+   ]
+  ]
+ },
+ "uncertainty": {
+  "body": [
+   "Every Gaussian wave packet has a position density and a momentum density, and narrowing one widens the other. Drag the width Δx and watch Δp = ħ/(2Δx) respond; the point in the lower plane stays on the curve Δx·Δp = ħ/2, the smallest product quantum mechanics allows. Press Play to let the packet move freely: it spreads in x while its momentum density is unchanged, so the product climbs above the bound.",
+   "ガウス波束には位置の確率密度と運動量の確率密度があり、一方を狭めるともう一方が広がります。幅 Δx をドラッグすると Δp = ħ/(2Δx) が応じ、下の平面の点は量子力学が許す最小の積を表す曲線 Δx·Δp = ħ/2 の上にとどまります。再生すると波束は自由に運動し、運動量の密度は変わらないまま位置の幅だけが広がるため、積は下限より大きくなります。"
+  ],
+  "formula": "\\begin{gathered}\\Delta x\\,\\Delta p\\ge\\frac\\hbar2\\\\\\Delta x(t)=\\Delta x_0\\sqrt{1+\\left(\\frac{\\hbar t}{2m\\,\\Delta x_0^2}\\right)^2}\\end{gathered}",
+  "example": [
+   "With ħ = 1 and Δx = 0.7, the momentum spread is Δp = 1/(2 × 0.7) ≈ 0.714, and the product is exactly 0.5.",
+   "ħ = 1、Δx = 0.7 のとき、運動量の広がりは Δp = 1/(2 × 0.7) ≈ 0.714 で、積はちょうど 0.5 です。"
+  ],
+  "caution": [
+   "The widths are standard deviations. Only a Gaussian without a position-dependent phase reaches the bound; every other state, including this packet after it has spread, gives a larger product.",
+   "幅は標準偏差です。下限に達するのは位置に依存する位相を持たないガウス波束だけで、広がった後のこの波束を含め、他のすべての状態では積がより大きくなります。"
+  ],
+  "question": [
+   "Why does a narrow packet spread faster?",
+   "狭い波束ほど速く広がるのはなぜですか？"
+  ],
+  "answer": [
+   "Its momentum spread Δp = ħ/(2Δx₀) is large, so its components run apart at speeds differing by about Δp/m; the spreading time is 2mΔx₀²/ħ.",
+   "運動量の広がり Δp = ħ/(2Δx₀) が大きいので、成分がおよそ Δp/m だけ異なる速さで離れていくからです。広がりの時間スケールは 2mΔx₀²/ħ です。"
+  ],
+  "params": [
+   [
+    "width",
+    "Position width Δx",
+    "位置の幅 Δx",
+    0.2,
+    2,
+    0.05,
+    0.7
+   ]
+  ]
+ },
+ "bloch": {
+  "body": [
+   "Every pure state of a qubit is a point on a sphere. Drag the gold tip, or set the polar angle θ and the azimuth φ; drag anywhere else to turn the sphere. On the right, the amplitudes α and β are drawn as arrows in the complex plane, and the bars give the probability of each outcome when the qubit is measured along z, x or y.",
+   "量子ビットの純粋状態はすべて球面上の1点で表されます。金色の先端をドラッグするか、極角 θ と方位角 φ を設定してください。それ以外の場所をドラッグすると球を回せます。右側には振幅 α と β を複素平面上の矢印で示し、棒グラフで z、x、y 方向に測定したときの各結果の確率を示します。"
+  ],
+  "example": [
+   "At θ = 90°, φ = 0 the state is |+⟩ = (|0⟩ + |1⟩)/√2: a z measurement gives 0 or 1 with probability ½ each, while an x measurement gives + with certainty.",
+   "θ = 90°、φ = 0 の状態は |+⟩ = (|0⟩ + |1⟩)/√2 です。z 方向の測定では 0 と 1 がそれぞれ確率 ½ で出ますが、x 方向の測定では必ず + が出ます。"
+  ],
+  "caution": [
+   "The sphere is a picture of state space, not of a particle moving in real space. Opposite points on it are orthogonal states, so the angle between states on the sphere is twice the angle between their vectors.",
+   "球は状態空間の図であり、実空間を動く粒子の図ではありません。球の対蹠点は直交する状態なので、球面上の角度は状態ベクトル間の角度の2倍になります。"
+  ],
+  "params": [
+   [
+    "theta",
+    "Polar angle θ (degrees)",
+    "極角 θ（度）",
+    0,
+    180,
+    1,
+    60
+   ],
+   [
+    "phi",
+    "Azimuth φ (degrees)",
+    "方位角 φ（度）",
+    -180,
+    180,
+    1,
+    45
+   ]
+  ]
+ }
+}

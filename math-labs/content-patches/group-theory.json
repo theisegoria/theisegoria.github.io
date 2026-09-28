@@ -1,0 +1,138 @@
+{
+ "compose": {
+  "body": [
+   "Number the vertices of a regular polygon and attach a small flag, then apply the same two symmetries in both orders: reflect in the vertical mirror and rotate anticlockwise by k steps. The outline never changes, but the labels and the flag show which symmetry you ended with. Press Play to watch both compositions move.",
+   "正多角形の頂点に番号を付けて小さな旗を取り付け、同じ2つの対称、すなわち縦の鏡での反転と反時計回りの k ステップ回転を2通りの順序で施します。輪郭は変わりませんが、ラベルと旗を見ればどの対称になったかが分かります。再生を押すと2つの合成が動く様子を見られます。"
+  ],
+  "formula": "D_n=\\langle r,s\\mid r^n=e,\\ s^2=e,\\ srs=r^{-1}\\rangle,\\qquad s\\,r^k=r^{-k}s",
+  "example": [
+   "For a square with k = 1, reflect then rotate gives rs, while rotate then reflect gives r³s: the labels end up in different places.",
+   "正方形で k = 1 のとき、反転してから回転すると rs、回転してから反転すると r³s になり、ラベルの位置が異なります。"
+  ]
+ },
+ "table": {
+  "body": [
+   "A cell in row a and column b records the product a·b. For the rotation group Cₙ this is addition of steps modulo n. Switch to the full dihedral group Dₙ to add the reflections: the table stops being symmetric about its diagonal, because rotations and reflections do not commute. Click any cell to choose a and b, and find the inverse of a where the identity appears in its row.",
+   "行 a・列 b のセルは積 a·b を表します。回転群 Cₙ では n を法とするステップの足し算です。二面体群 Dₙ 全体に切り替えると反転が加わり、回転と反転が交換しないため表は対角線について対称でなくなります。セルをクリックして a と b を選び、行 a で単位元が現れる列から a の逆元を見つけてください。"
+  ],
+  "formula": "C_n:\\ a\\cdot b=(a+b)\\bmod n,\\qquad D_n:\\ (r^a s^x)(r^b s^y)=r^{\\,a+(-1)^x b}\\,s^{\\,x+y}",
+  "example": [
+   "In C₅, 3+4 ≡ 2 modulo 5, and the inverse of 3 is 2. In D₄, r·s = rs but s·r = r³s.",
+   "C₅ では 3+4 ≡ 2 (mod 5) で、3 の逆元は 2 です。D₄ では r·s = rs ですが s·r = r³s です。"
+  ],
+  "params": [
+   [
+    "group",
+    "Group",
+    "群",
+    0,
+    1,
+    1,
+    0,
+    [
+     [
+      "Rotations Cₙ",
+      "回転群 Cₙ"
+     ],
+     [
+      "Dihedral Dₙ",
+      "二面体群 Dₙ"
+     ]
+    ]
+   ],
+   [
+    "n",
+    "Polygon sides n",
+    "辺の数 n",
+    3,
+    8,
+    1,
+    5
+   ],
+   [
+    "a",
+    "Row a",
+    "行 a",
+    0,
+    15,
+    1,
+    3
+   ],
+   [
+    "b",
+    "Column b",
+    "列 b",
+    0,
+    15,
+    1,
+    4
+   ]
+  ]
+ },
+ "orbit": {
+  "body": [
+   "A subgroup of symmetries acts on the vertices. Generate it from the rotation by k steps, optionally together with the reflection s, and click a vertex x. Its orbit is highlighted, and on the right the group elements are sorted by where they send x: each column is a coset of the stabilizer Gₓ, so every orbit point is hit by exactly |Gₓ| elements.",
+   "対称の部分群が頂点に作用します。k ステップの回転から、必要なら反転 s も加えて群を生成し、頂点 x をクリックします。x の軌道が強調され、右側では群の元が x の行き先ごとに分類されます。各列は固定部分群 Gₓ の剰余類なので、軌道上のどの点にもちょうど |Gₓ| 個の元が対応します。"
+  ],
+  "caution": [
+   "For the rotation subgroup every stabilizer is trivial; once the reflection is included, a vertex on the mirror line is fixed by s, and orbits can have different sizes.",
+   "回転部分群では固定部分群はいつも自明ですが、反転を含めると鏡の線上の頂点は s で固定され、軌道の大きさが異なり得ます。"
+  ],
+  "question": [
+   "How many orbits does the rotation subgroup ⟨rᵏ⟩ have?",
+   "回転部分群 ⟨rᵏ⟩ の軌道はいくつありますか？"
+  ],
+  "answer": [
+   "gcd(n, k): each orbit has n/gcd(n, k) vertices, the order of the subgroup.",
+   "gcd(n, k) 個です。各軌道は部分群の位数と同じ n/gcd(n, k) 個の頂点からなります。"
+  ],
+  "params": [
+   [
+    "n",
+    "Vertices n",
+    "頂点数 n",
+    3,
+    12,
+    1,
+    6
+   ],
+   [
+    "k",
+    "Generator steps k",
+    "生成元のステップ k",
+    0,
+    11,
+    1,
+    2
+   ],
+   [
+    "refl",
+    "Generators",
+    "生成元",
+    0,
+    1,
+    1,
+    0,
+    [
+     [
+      "rᵏ only",
+      "rᵏ のみ"
+     ],
+     [
+      "rᵏ and s",
+      "rᵏ と s"
+     ]
+    ]
+   ],
+   [
+    "x",
+    "Vertex x",
+    "頂点 x",
+    0,
+    11,
+    1,
+    0
+   ]
+  ]
+ }
+}

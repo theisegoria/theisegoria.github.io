@@ -1,0 +1,109 @@
+{
+ "norms": {
+  "body": [
+   "Change p and watch the unit ball move from the p = 1 diamond through the p = 2 circle towards the p = ∞ square. Drag the vector x: its p-norm is how far the ball must be scaled to reach it, and the right panel shows that this number decreases as p grows. Below p = 1 the ball stops being convex.",
+   "p を変え、単位球が p = 1 のひし形から p = 2 の円を経て p = ∞ の正方形へ移る様子を見ます。ベクトル x をドラッグすると、その p ノルムは x に届くまで球を拡大する倍率であり、右の図はこの値が p とともに減少することを示します。p = 1 未満では球は凸でなくなります。"
+  ],
+  "formula": "\\|x\\|_p=\\left(|x_1|^p+|x_2|^p\\right)^{1/p},\\qquad \\|x\\|_\\infty=\\max(|x_1|,|x_2|)=\\lim_{p\\to\\infty}\\|x\\|_p",
+  "caution": [
+   "For p < 1 the formula still defines a unit ball, but the triangle inequality fails, so it is not a norm. The p = ∞ square is drawn exactly as the maximum norm.",
+   "p < 1 でも式は単位球を定めますが、三角不等式が成り立たないのでノルムではありません。p = ∞ の正方形は最大ノルムとして正確に描いています。"
+  ],
+  "params": [
+   [
+    "order",
+    "Exponent p",
+    "指数 p",
+    0.5,
+    8,
+    0.1,
+    2
+   ]
+  ]
+ },
+ "projection-hilbert": {
+  "body": [
+   "Drag the vector v and the direction of the line. The projection is the point of the line closest to v, which is where the smallest ball around v touches the line. With the weight w = 1 the inner product is the dot product and the residual looks perpendicular; raise w and the balls become ellipses, so the projection moves although the picture of v and the line has not changed.",
+   "ベクトル v と直線の向きをドラッグします。射影は直線上で v に最も近い点で、v を中心とする最小の球が直線に接する点です。重み w = 1 では内積は通常の内積で、残差は垂直に見えます。w を上げると球は楕円になり、v と直線の図は同じでも射影が動きます。"
+  ],
+  "formula": "\\langle a,b\\rangle=a_1b_1+w\\,a_2b_2,\\qquad \\operatorname{proj}_u v=\\frac{\\langle v,u\\rangle}{\\langle u,u\\rangle}u,\\qquad \\langle v-\\operatorname{proj}_u v,\\,u\\rangle=0",
+  "params": [
+   [
+    "x",
+    "Vector v, first component",
+    "ベクトル v の第1成分",
+    -2,
+    2,
+    0.1,
+    1.2
+   ],
+   [
+    "y",
+    "Vector v, second component",
+    "ベクトル v の第2成分",
+    -2,
+    2,
+    0.1,
+    0.8
+   ],
+   [
+    "angle",
+    "Subspace angle (degrees)",
+    "部分空間の角度（度）",
+    0,
+    180,
+    1,
+    5
+   ],
+   [
+    "w",
+    "Weight w in the inner product",
+    "内積の重み w",
+    1,
+    4,
+    0.1,
+    1
+   ]
+  ]
+ },
+ "operator-spectrum": {
+  "body": [
+   "The operator A has eigenvalues λ₁ and λ₂ along two eigenvectors 60° apart. Repeated action on a vector you drag stretches it by |λ| along each eigendirection, so Aⁿx and the image of the unit circle turn towards the eigenline whose eigenvalue is largest in size. The right panel shows the smallest singular value of A − λI, which vanishes exactly at the eigenvalues: that is where A − λI stops being invertible.",
+   "作用素 A は、60°離れた2本の固有ベクトルに沿って固有値 λ₁ と λ₂ をもちます。ドラッグしたベクトルに繰り返し作用させると、各固有方向に |λ| 倍ずつ伸びるので、Aⁿx と単位円の像は絶対値の最も大きい固有値の固有直線へ向かっていきます。右の図は A − λI の最小特異値で、固有値でちょうど0になります。そこで A − λI は可逆でなくなります。"
+  ],
+  "params": [
+   [
+    "lambda1",
+    "Eigenvalue λ₁",
+    "固有値 λ₁",
+    -2,
+    2,
+    0.1,
+    1.2
+   ],
+   [
+    "lambda2",
+    "Eigenvalue λ₂",
+    "固有値 λ₂",
+    -2,
+    2,
+    0.1,
+    0.5
+   ],
+   [
+    "steps",
+    "Iteration count n",
+    "反復回数 n",
+    0,
+    8,
+    1,
+    4
+   ]
+  ],
+  "formula": "\\sigma(A)=\\{\\lambda:\\ \\det(A-\\lambda I)=0\\}=\\{\\lambda_1,\\lambda_2\\},\\qquad \\sigma_{\\min}(A-\\lambda I)=0\\iff\\lambda\\in\\sigma(A)",
+  "example": [
+   "With \\(\\lambda_1=1.2\\), \\(\\lambda_2=0.5\\) and eigenvectors \\(e_1=(1,0)\\), \\(e_2=(\\cos 60^\\circ,\\sin 60^\\circ)\\), write \\(x=a e_1+b e_2\\). Then \\(A^n x=1.2^n a\\,e_1+0.5^n b\\,e_2\\): after four steps the \\(e_2\\) part is down to \\(1/16\\) of its size while the \\(e_1\\) part has grown by \\(1.2^4\\approx 2.07\\), so \\(A^4x\\) lies close to the \\(e_1\\) line.",
+   "\\(\\lambda_1=1.2\\)、\\(\\lambda_2=0.5\\)、固有ベクトル \\(e_1=(1,0)\\)、\\(e_2=(\\cos 60^\\circ,\\sin 60^\\circ)\\) とし、\\(x=a e_1+b e_2\\) と書きます。すると \\(A^n x=1.2^n a\\,e_1+0.5^n b\\,e_2\\) です。4回の作用で \\(e_2\\) 成分は \\(1/16\\) に縮み、\\(e_1\\) 成分は \\(1.2^4\\approx 2.07\\) 倍に伸びるので、\\(A^4x\\) は \\(e_1\\) の直線のすぐ近くにあります。"
+  ]
+ }
+}

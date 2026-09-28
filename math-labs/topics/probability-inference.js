@@ -6,6 +6,8 @@
   // standard normal CDF (Abramowitz and Stegun 7.1.26, error below 1.5e-7)
   const Phi = (z) => { const x = Math.abs(z) / Math.SQRT2, t = 1 / (1 + 0.3275911 * x); const e = 1 - (((((1.061405429 * t - 1.453152027) * t) + 1.421413741) * t - 0.284496736) * t + 0.254829592) * t * Math.exp(-x * x); return z >= 0 ? 0.5 * (1 + e) : 0.5 * (1 - e); };
   const phi = (z) => Math.exp(-z * z / 2) / Math.sqrt(L.TAU);
+  // Faint fills vanish on a dark plate; use a stronger opacity there.
+  const isDark = () => { const p = L.colours().plate; return 0.299 * p[0] + 0.587 * p[1] + 0.114 * p[2] < 128; };
 
   // Quantiles of Beta(a, b) from a fine cumulative sum.
   function betaQuantiles(a, b, qs) {
@@ -40,7 +42,7 @@
           const row = Math.floor(i / perRow), col = i % perRow;
           const x = 50 + (col - (Math.min(N - row * perRow, perRow) - 1) / 2) * (100 / perRow) * 0.92, y = rows === 2 ? (row ? 2 : 6) : 2.2;
           const seen = i < k, c = order[i] ? 'c1' : 'c2';
-          strip.circle(x, y, coinR, { c, fill: seen ? true : false, fo: order[i] ? 0.85 : 0.25, w: 1.4, op: seen ? 1 : 0.3 });
+          strip.circle(x, y, coinR, { c, fill: seen ? true : false, fo: 0.85, w: 1.4, op: seen ? 1 : 0.3 });
         }
       };
 
@@ -97,7 +99,7 @@
       const ns = L.seq(59, (i) => i + 2), ds = ns.map(kolmogorov);
       const be = (nn) => 0.4748 * (p * p + q * q) / Math.sqrt(p * q * nn);
       const lg = Math.log10;
-      const g = L.fig(c2, { x: [0, 62], y: [-1.9, 0.05], aspect: 0.72, maxH: 380, xlabel: T('number of trials n', '試行回数 n'), ylabel: 'sup |Fₙ − Φ|', ticksY: [[-2, '0.01'], [lg(0.03), '0.03'], [-1, '0.1'], [lg(0.3), '0.3'], [0, '1']] });
+      const g = L.fig(c2, { x: [0, 62], y: [-1.95, 0.05], aspect: 0.72, maxH: 380, xlabel: T('number of trials n', '試行回数 n'), ylabel: 'sup |Fₙ − Φ|', ticksY: [[lg(0.03), '0.03'], [-1, '0.1'], [lg(0.3), '0.3'], [0, '1']] });
       g.line(ns.map((k) => [k, lg(Math.min(1.2, be(k)))]), { c: 'muted', w: 1.8, dash: '6 4' });
       g.line(ns.map((k, i) => [k, lg(ds[i])]), { c: 'c1', w: 1.4, op: 0.5 });
       ns.forEach((k, i) => g.dot(k, lg(ds[i]), { c: 'c1', r: 2.4 }));
@@ -112,14 +114,14 @@
 
   D.conditional = {
     render(ctx, v) {
-      const b = v.b, a1 = v.inside, a0 = v.outside;
+      const b = v.b, a1 = v.inside, a0 = v.outside, foB = isDark() ? 0.32 : 0.14;
       const pAB = b * a1, pA = pAB + (1 - b) * a0, pAgB = a1, pBgA = pA > 0 ? pAB / pA : NaN;
       const row = L.h('div', 'lab-row', ctx.host);
       const c1 = L.h('div', 'lab-col', row), c2 = L.h('div', 'lab-col', row);
       L.h('p', 'lab-cap', c1, T('The sample space: area is probability', '標本空間：面積が確率です'));
       const f = L.fig(c1, { x: [-0.02, 1.02], y: [-0.02, 1.16], equal: true, maxH: 380, axes: false });
       f.rect(0, 0, 1, 1, { c: 'muted', fo: 0.03, w: 1.4 });
-      f.rect(0, 0, b, 1, { c: 'c1', fo: 0.12, w: 1.8 });
+      f.rect(0, 0, b, 1, { c: 'c1', fo: foB, w: 1.8 });
       f.rect(0, 0, b, a1, { c: 'hl', fo: 0.55, w: 1.6 });
       f.rect(b, 0, 1 - b, a0, { c: 'c2', fo: 0.35, w: 1.6 });
       f.text(b / 2, 1.07, 'B', { math: true, c: 'c1', dy: 5 });
@@ -141,7 +143,7 @@
         g.text(1, y + 0.42, value, { anchor: 'end', dy: -9 });
       };
       bar(2.55, [[pA, 'c2', 0.35], [1 - pA, 'muted', 0.06]], T('P(A): A as a share of everything', 'P(A)：全体に占めるA'), fmt(pA, 3));
-      bar(1.45, [[pAgB, 'hl', 0.55], [1 - pAgB, 'c1', 0.12]], T('P(A | B): A∩B as a share of B', 'P(A | B)：Bに占めるA∩B'), fmt(pAgB, 3));
+      bar(1.45, [[pAgB, 'hl', 0.55], [1 - pAgB, 'c1', foB]], T('P(A | B): A∩B as a share of B', 'P(A | B)：Bに占めるA∩B'), fmt(pAgB, 3));
       if (pA > 0) bar(0.35, [[pBgA, 'hl', 0.55], [1 - pBgA, 'c2', 0.35]], T('P(B | A): A∩B as a share of A', 'P(B | A)：Aに占めるA∩B'), fmt(pBgA, 3));
       else g.text(0.5, 0.55, T('P(B | A) is undefined when P(A) = 0', 'P(A) = 0 のとき P(B | A) は定義されません'), { small: true });
       L.legend(ctx.host, [{ kind: 'fill', c: 'c1', label: 'B' }, { kind: 'fill', c: 'hl', label: 'A∩B' }, { kind: 'fill', c: 'c2', label: 'A∩Bᶜ' }]);

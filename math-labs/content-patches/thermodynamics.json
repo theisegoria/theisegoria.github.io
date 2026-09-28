@@ -1,0 +1,156 @@
+{
+ "pv": {
+  "title": [
+   "1. PV diagrams and the Carnot cycle",
+   "1. PV図とカルノーサイクル"
+  ],
+  "body": [
+   "One mole of a monatomic ideal gas starts at V₁ = 1 L and pressure P₁. Choose a process and drag the gold end point: the curve is the exact path, and the shaded area under it is the work W = ∫P dV, positive for expansion and negative for compression. Compare how much work the same change of volume gives at constant pressure, at constant temperature and with no heat flow. The Carnot cycle joins two isotherms and two adiabats; the area it encloses is the net work, and its efficiency is 1 − Tc/Th.",
+   "1 mol の単原子理想気体が V₁ = 1 L、圧力 P₁ から出発します。過程を選び、金色の終点をドラッグしてください。曲線は厳密な経路で、その下の塗った面積が仕事 W = ∫P dV です。膨張なら正、圧縮なら負になります。同じ体積変化でも、定圧・等温・熱の出入りなし（断熱）で仕事がどれだけ違うかを比べてください。カルノーサイクルは2本の等温線と2本の断熱線をつないだもので、囲まれた面積が正味の仕事、効率は 1 − Tc/Th です。"
+  ],
+  "formula": "W=\\int_{V_1}^{V_2}P\\,dV,\\qquad \\Delta U=Q-W,\\qquad \\eta_{\\text{Carnot}}=1-\\frac{T_c}{T_h}",
+  "example": [
+   "Isothermal expansion from 1 L to 3 L at P₁ = 2 bar does W = P₁V₁ ln 3 ≈ 220 J, and the same amount of heat flows in because ΔU = 0.",
+   "P₁ = 2 bar で 1 L から 3 L へ等温膨張すると W = P₁V₁ ln 3 ≈ 220 J の仕事をし、ΔU = 0 なので同じ量の熱が流れ込みます。"
+  ],
+  "caution": [
+   "The path matters: work and heat are not state functions, but internal energy is. The curves assume slow, reversible processes and γ = 5/3.",
+   "経路が重要です。仕事と熱は状態関数ではありませんが、内部エネルギーは状態関数です。曲線はゆっくりした可逆過程と γ = 5/3 を仮定しています。"
+  ],
+  "params": [
+   [
+    "process",
+    "Process",
+    "過程",
+    0,
+    3,
+    1,
+    1,
+    [
+     [
+      "Isobaric",
+      "定圧"
+     ],
+     [
+      "Isothermal",
+      "等温"
+     ],
+     [
+      "Adiabatic",
+      "断熱"
+     ],
+     [
+      "Carnot",
+      "カルノー"
+     ]
+    ]
+   ],
+   [
+    "pressure",
+    "Initial pressure P₁ (bar)",
+    "初期圧力 P₁ (bar)",
+    1,
+    5,
+    0.1,
+    2
+   ],
+   [
+    "volume",
+    "Final volume V₂ (L)",
+    "終体積 V₂ (L)",
+    0.4,
+    5,
+    0.1,
+    3
+   ],
+   [
+    "tc",
+    "Cycle only: Tc/Th",
+    "サイクルのみ：Tc/Th",
+    0.5,
+    0.9,
+    0.05,
+    0.6
+   ]
+  ]
+ },
+ "thermo-entropy": {
+  "body": [
+   "A body with heat capacity C is heated from Tc to Th, either by touching one reservoir at Th (N = 1, a sudden jump) or through N reservoirs at evenly spaced temperatures. In the left graph the area under the body’s 1/T curve is its entropy gain, and the area under the staircase is the entropy the reservoirs lose. The orange slivers between them are the entropy generated. Add reservoirs and watch the slivers, and the total ΔS_univ, shrink toward zero: the reversible limit.",
+   "熱容量 C の物体を Tc から Th まで加熱します。温度 Th の熱源1つに触れさせる（N = 1、急な跳躍）か、等間隔の温度をもつ N 個の熱源を順に使います。左のグラフでは、物体の 1/T 曲線の下の面積が物体のエントロピー増加、階段の下の面積が熱源の失うエントロピーです。その間の橙の細片が生成エントロピーです。熱源を増やすと、細片も合計 ΔS_univ も0に近づきます。これが可逆極限です。"
+  ],
+  "formula": "\\Delta S_{\\text{body}}=C\\ln\\frac{T_h}{T_c},\\qquad \\Delta S_{\\text{univ}}=C\\ln\\frac{T_h}{T_c}-\\sum_{k=1}^{N}\\frac{C\\,\\Delta T}{T_k}\\ge0",
+  "example": [
+   "Heating 1 kJ/K from 300 K to 600 K with one reservoir at 600 K gives ΔS_univ = 1000(ln 2 − 1/2) ≈ 193 J/K.",
+   "1 kJ/K の物体を 600 K の熱源1つで 300 K から 600 K まで加熱すると、ΔS_univ = 1000(ln 2 − 1/2) ≈ 193 J/K です。"
+  ],
+  "params": [
+   [
+    "hot",
+    "Hot temperature Th (K)",
+    "高温 Th (K)",
+    300,
+    800,
+    10,
+    600
+   ],
+   [
+    "cold",
+    "Cold temperature Tc (K)",
+    "低温 Tc (K)",
+    200,
+    700,
+    10,
+    300
+   ],
+   [
+    "steps",
+    "Number of reservoirs N",
+    "熱源の数 N",
+    1,
+    40,
+    1,
+    3
+   ]
+  ]
+ },
+ "equation-state": {
+  "body": [
+   "Change the amount, temperature and volume of an ideal gas and read the pressure. On the left, the number of molecules follows n, the box width follows V and their speed follows √T. On the right, the gold point sits on the isotherm for this temperature; drag it to change the volume. The shaded rectangle from the origin to the point has area PV, which stays equal to nRT anywhere on the isotherm.",
+   "理想気体の物質量・温度・体積を変えて圧力を読みます。左では分子の数が n、箱の幅が V、速さが √T に従います。右では金色の点がこの温度の等温線上にあり、ドラッグすると体積が変わります。原点から点までの長方形の面積は PV で、等温線上のどこでも nRT に等しくなります。"
+  ],
+  "example": [
+   "One mole at 300 K in 25 L has P = nRT/V ≈ 99.8 kPa, close to one atmosphere. Doubling T at fixed n and V doubles P.",
+   "1 mol、300 K、25 L なら P = nRT/V ≈ 99.8 kPa で、ほぼ1気圧です。n と V を固定して T を2倍にすると P も2倍です。"
+  ],
+  "params": [
+   [
+    "n",
+    "Amount n (mol)",
+    "物質量 n (mol)",
+    0.5,
+    3,
+    0.1,
+    1
+   ],
+   [
+    "temperature",
+    "Temperature T (K)",
+    "温度 T (K)",
+    200,
+    800,
+    10,
+    300
+   ],
+   [
+    "volume",
+    "Volume V (L)",
+    "体積 V (L)",
+    5,
+    50,
+    1,
+    25
+   ]
+  ]
+ }
+}

@@ -89,7 +89,9 @@
       for (let q = 0; q < 4; q++) { const t = q * PI / 2 + PI / 4, p = [c[0] + r * Math.cos(t), c[1] + r * Math.sin(t)], d = [-Math.sin(t), Math.cos(t)]; a.arrow([p[0] - d[0] * 0.02, p[1] - d[1] * 0.02], [p[0] + d[0] * 0.2, p[1] + d[1] * 0.2], { c: 'ink', w: 2.2 }); }
       poles.forEach((P, i) => {
         a.dot(P.p[0], P.p[1], { c: dist[i] < 0 ? 'hl' : 'ink', r: 6.5 });
-        a.text(P.p[0], P.p[1], T(`Res ${P.res}`, `留数 ${P.res}`), { dy: -12, small: true });
+        // pole a sits on the real axis with the centre handle: label it beside the dot, not above it
+        if (i === 0) { const right = P.p[0] >= c[0] ? P.p[0] < 1.4 : P.p[0] < -1.4; a.text(P.p[0], P.p[1], T(`Res ${P.res}`, `留数 ${P.res}`), right ? { dx: 10, dy: 4, anchor: 'start', small: true } : { dx: -10, dy: 4, anchor: 'end', small: true }); }
+        else a.text(P.p[0], P.p[1], T(`Res ${P.res}`, `留数 ${P.res}`), { dy: -12, small: true });
       });
       a.handle(c[0], c[1], { c: 'c2', r: 7, bounds: [-1.8, 1.8, -1.8, 1.8], snap: 0.05, label: T('Centre of the contour', '経路の中心'), onDrag: (x, y) => { st.c = [x, y]; ctx.redraw(); } });
       const b = L.fig(c2, { x: [-11, 11], y: [-4, 22], equal: true, maxH: 380, xlabel: 'Re', ylabel: 'Im' });
@@ -139,7 +141,12 @@
       const st = ctx.state; st.p ||= [0.9, 0.6];
       const Fn = FUNCS[Math.round(v.fn ?? 0)] || FUNCS[0], ph = v.phase * PI / 180, rot = [Math.cos(ph), Math.sin(ph)];
       const F = (z) => mul(rot, Fn.g(z)), dF = (z) => mul(rot, Fn.d(z));
-      const R = 2, f = L.fig(ctx.host, { x: [-R, R], y: [-R, R], equal: true, maxH: 460, xlabel: 'x', ylabel: 'y' });
+      const row = L.h('div', 'lab-row', ctx.host);
+      const cL = L.h('div', 'lab-col', row), cR = L.h('div', 'lab-col', row);
+      L.h('p', 'lab-cap', cL, T('Level curves of u and v, with both gradients at the probe', 'u と v の等高線と、調べる点での2つの勾配'));
+      L.h('p', 'lab-cap', cR, T('u and v along the line through the probe in the direction of ∇u', '調べる点を通り ∇u の方向に進む直線上の u と v'));
+      const R = 2, f = L.fig(cL, { x: [-R, R], y: [-R, R], equal: true, maxH: 400, xlabel: 'x' });
+      { const t = f.text(R, R, 'y', { anchor: 'end', dx: -6, dy: 15, layer: 'over' }); t.setAttribute('class', 'lab-axlabel'); } // the kit's top-left slot collides with the top tick
       f.raster((x, y) => 0.45 * Math.tanh(F([x, y])[0] / (2 * Fn.step)), { cmap: 'div', res: 3 });
       const levels = L.seq(Math.round(2 * Fn.cap / Fn.step) + 1, (i) => -Fn.cap + i * Fn.step + Fn.step / 2);
       const n = f.small ? 90 : 130;
@@ -157,7 +164,30 @@
         f.text(p[0] + gv[0] * s, p[1] + gv[1] * s, '∇v', { dx: 8 * Math.sign(gv[0] || 1), dy: -6, c: 'c2', anchor: gv[0] >= 0 ? 'start' : 'end' });
       }
       f.handle(p[0], p[1], { c: 'hl', bounds: [-1.9, 1.9, -1.9, 1.9], label: T('Probe point', '調べる点'), onDrag: (x, y) => { st.p = [x, y]; ctx.redraw(); } });
-      L.legend(ctx.host, [{ c: 'c1', label: T(`level curves of u = Re(e^{iφ}${Fn.name})`, `u = Re(e^{iφ}${Fn.name}) の等高線`).replace('e^{iφ}', 'eⁱᵠ') }, { c: 'c2', label: T(`level curves of v = Im(e^{iφ}${Fn.name})`, `v = Im(e^{iφ}${Fn.name}) の等高線`).replace('e^{iφ}', 'eⁱᵠ') }, { kind: 'fill', c: 'pos', label: T('u > 0', 'u > 0') }, { kind: 'fill', c: 'neg', label: T('u < 0', 'u < 0') }]);
+      // linked view: walk from the probe along the unit vector e = ∇u/|∇u|. Then du/ds = |∇u| = |f′| and dv/ds = ∇v·e = 0 at s = 0.
+      const e = m > 1e-6 ? [gu[0] / m, gu[1] / m] : [1, 0], S = 0.6;
+      const along = (s) => F([p[0] + s * e[0], p[1] + s * e[1]]);
+      const uS = L.sample(-S, S, 121, (s) => [s, along(s)[0]]), vS = L.sample(-S, S, 121, (s) => [s, along(s)[1]]);
+      const vals = uS.concat(vS).map((q) => q[1]).filter(Number.isFinite);
+      let lo = Math.min(...vals), hi = Math.max(...vals);
+      const cap = Fn.cap * 1.5; lo = Math.max(lo, -cap); hi = Math.min(hi, cap);
+      const padY = Math.max(0.15 * (hi - lo), 0.2); lo -= padY; hi += padY;
+      const g = L.fig(cR, { x: [-S, S], y: [lo, hi], aspect: 0.9, maxH: 400, xlabel: T('distance s along ∇u', '∇u 方向の距離 s') });
+      const clipY = (pts) => pts.map((q) => Number.isFinite(q[1]) && Math.abs(q[1]) < cap ? q : [q[0], NaN]);
+      g.line(clipY(uS), { c: 'c1', w: 2.6 });
+      g.line(clipY(vS), { c: 'c2', w: 2.6 });
+      // tangents at the probe: slope |f′| for u, slope 0 for v
+      const w0 = F(p), tl = 0.32;
+      if (m > 1e-6) {
+        g.line([[-tl, w0[0] - tl * m], [tl, w0[0] + tl * m]], { c: 'c1', w: 1.2, dash: '4 3', op: 0.8 });
+        g.line([[-tl, w0[1]], [tl, w0[1]]], { c: 'c2', w: 1.2, dash: '4 3', op: 0.8 });
+      }
+      g.vline(0, { c: 'hl', dash: '2 3', w: 1.2 });
+      g.dot(0, w0[0], { c: 'c1', r: 5 }); g.dot(0, w0[1], { c: 'c2', r: 5 });
+      const upU = w0[0] >= w0[1];
+      g.text(0, w0[0], T('u: slope |f′|', 'u：傾き |f′|'), { dx: 8, dy: upU ? -8 : 16, anchor: 'start', small: true, c: 'c1' });
+      g.text(0, w0[1], T('v: slope 0', 'v：傾き 0'), { dx: 8, dy: upU ? 16 : -8, anchor: 'start', small: true, c: 'c2' });
+      L.legend(ctx.host, [{ c: 'c1', label: T(`level curves of u = Re(e^{iφ}${Fn.name})`, `u = Re(e^{iφ}${Fn.name}) の等高線`).replace('e^{iφ}', 'eⁱᵠ') }, { c: 'c2', label: T(`level curves of v = Im(e^{iφ}${Fn.name})`, `v = Im(e^{iφ}${Fn.name}) の等高線`).replace('e^{iφ}', 'eⁱᵠ') }, { kind: 'fill', c: 'pos', label: T('u > 0', 'u > 0') }, { kind: 'fill', c: 'neg', label: T('u < 0', 'u < 0') }, { c: 'muted', dash: true, label: T('right: tangents at the probe, slopes |f′| and 0', '右：調べる点での接線（傾き |f′| と 0）') }]);
       const w = F(p);
       ctx.readout([
         { k: 'u, v', v: `${fmt(w[0], 3)}, ${fmt(w[1], 3)}` },

@@ -219,13 +219,14 @@
       const c1 = L.h('div', 'lab-col', row), c2 = L.h('div', 'lab-col', row);
       L.h('p', 'lab-cap', c1, T('A spinning wheel on a pivot. The violet trail is the path of the tip of its axle. Drag to turn the view.', '支点の上で回る車輪。紫の軌跡は軸の先端がたどる道です。ドラッグで視点を回せます。'));
       const f = L.fig(c1, { x: [-1.35, 1.35], y: [-0.85, 1.3], equal: true, axes: false, grid: false, maxH: 400 });
-      L.h('p', 'lab-cap', c2, T('The tip’s path unrolled: elevation of the axle against how far it has precessed', '先端の道を展開したもの：軸の仰角と歳差の進み'));
-      const el = S.map((x) => 90 - x.th * DEG), phs = S.map((x) => x.ph * DEG);
+      L.h('p', 'lab-cap', c2, T('The tip’s path unrolled: the axle’s tilt θ from vertical against how far it has precessed. Down on the graph is down on the gyroscope.', '先端の道を展開したもの：軸の鉛直からの傾き θ と歳差の進み。グラフの下向きはジャイロの下向きです。'));
+      const el = S.map((x) => x.th * DEG), phs = S.map((x) => x.ph * DEG);
       const eLo = Math.min(...el), eHi = Math.max(...el), pad = Math.max(4, (eHi - eLo) * 0.25), mid = (eLo + eHi) / 2, half = Math.max(12, (eHi - eLo) / 2 + pad);
       const pLo = Math.min(0, ...phs), pHi = Math.max(10, ...phs);
-      const g = L.fig(c2, { x: [pLo, pHi], y: [mid - half, mid + half], aspect: 0.8, maxH: 380, xlabel: T('precession angle φ (degrees)', '歳差の角 φ（度）'), ylabel: T('elevation (degrees)', '仰角（度）') });
-      g.line(S.map((x, i) => [phs[i], el[i]]), { c: 'c4', w: 2, layer: 'under' });
-      g.hline(90 - v.tilt, { c: 'muted', dash: '4 4' });
+      // θ grows downwards on this axis, so the tip dips on the graph exactly as it does on the gyroscope
+      const g = L.fig(c2, { x: [pLo, pHi], y: [-(mid + half), -(mid - half)], aspect: 0.8, maxH: 380, xlabel: T('precession angle φ (degrees)', '歳差の角 φ（度）'), ylabel: T('tilt from vertical θ (degrees, larger is lower)', '鉛直からの傾き θ（度、大きいほど低い）'), ticksY: L.ticks(mid - half, mid + half, 5).map((t) => [-t, `${t}°`]) });
+      g.line(S.map((x, i) => [phs[i], -el[i]]), { c: 'c4', w: 2, layer: 'under' });
+      g.hline(-v.tilt, { c: 'muted', dash: '4 4' });
       const draw = (t) => {
         const cam = camera(st, 'v', -1.15, 0.5);
         const k = Math.min(S.length - 1, Math.round(t / dtS)), x = S[k], n = axisOf(x);
@@ -247,14 +248,14 @@
         f.line([cam.P([0, 0, 0]), cam.P(n.map((c) => c * 1.05))], { c: 'ink', w: 3.2, layer: 'over' });
         f.dot(...cam.P([0, 0, 0]), { c: 'ink', r: 4.5 });
         f.dot(...cam.P(n.map((c) => c * 1.05)), { c: 'hl', r: 6 });
-        g.clear('over'); g.dot(phs[k], el[k], { c: 'hl', r: 6.5 });
+        g.clear('over'); g.dot(phs[k], -el[k], { c: 'hl', r: 6.5 });
         const avg = x.t > 0 ? x.ph / x.t : NaN;
-        ctx.readout([{ k: 't', v: fmt(x.t, 1) }, { k: T('mean precession rate', '平均の歳差角速度'), v: fmt(avg, 4), tone: 'key' }, { k: T('fast-top estimate mgl / (I₃ω₃)', '速いこまの近似 mgl / (I₃ω₃)'), v: fmt(P.mgl / (P.I3 * P.w3), 4) }, { k: T('nutation frequency ≈ I₃ω₃ / I₁', '章動の角振動数 ≈ I₃ω₃ / I₁'), v: fmt(P.I3 * P.w3 / P.I1, 2) }, { k: T('elevation range', '仰角の範囲'), v: `${fmt(eLo, 1)}° … ${fmt(eHi, 1)}°` }],
+        ctx.readout([{ k: 't', v: fmt(x.t, 1) }, { k: T('mean precession rate', '平均の歳差角速度'), v: fmt(avg, 4), tone: 'key' }, { k: T('fast-top estimate mgl / (I₃ω₃)', '速いこまの近似 mgl / (I₃ω₃)'), v: fmt(P.mgl / (P.I3 * P.w3), 4) }, { k: T('nutation frequency ≈ I₃ω₃ / I₁', '章動の角振動数 ≈ I₃ω₃ / I₁'), v: fmt(P.I3 * P.w3 / P.I1, 2) }, { k: T('tilt θ range', '傾き θ の範囲'), v: `${fmt(eLo, 1)}° … ${fmt(eHi, 1)}°` }],
           steady === null && P.mode !== 0 ? T('At this spin and tilt no steady precession exists: the spin is too slow to hold the wheel up, so it is released from rest instead.', 'この回転の速さと傾きでは定常歳差は存在しません。車輪を支えるには回転が遅すぎるので、代わりに静止状態から放しています。') : P.mode === 0 ? T('Released from rest, the axle first drops, the gyroscopic torque turns the drop sideways, and the tip traces cusps: it stops dead at the top of every arch.', '静止状態から放すと、軸はまず下がり、ジャイロ効果のトルクがその落下を横向きに変え、先端はカスプを描きます。各アーチの頂点で一瞬完全に止まります。') : P.mode === 1 ? T('Launched at exactly the steady precession rate, the tilt never changes: gravity’s torque is balanced by turning the angular momentum.', 'ちょうど定常歳差の角速度で送り出すと、傾きはまったく変わりません。重力のトルクは角運動量の向きを変えることで釣り合います。') : T('Pushed against the natural precession, the tip overshoots backwards on every cycle and draws loops.', '自然な歳差と逆向きに押すと、先端は毎周期うしろへ行き過ぎ、ループを描きます。'));
       };
       orbit(f, ctx, 'v', () => draw(st.tNow ?? v.time));
       st.anim = L.animator(ctx.host, (dt, t) => { const tt = Math.min(v.time, t); st.tNow = tt; draw(tt); if (tt >= v.time) return false; }, { autoplay: false, once: true, initialT: v.time, playLabel: T('Release the gyroscope', 'ジャイロを放す') });
-      L.legend(ctx.host, [{ c: 'c4', label: T('path of the axle tip', '軸の先端の道') }, { c: 'c2', label: T('one spoke, to show the spin', '回転を示す一本のスポーク') }, { c: 'muted', dash: true, label: T('starting elevation', '最初の仰角') }]);
+      L.legend(ctx.host, [{ c: 'c4', label: T('path of the axle tip', '軸の先端の道') }, { c: 'c2', label: T('one spoke, to show the spin', '回転を示す一本のスポーク') }, { c: 'muted', dash: true, label: T('starting tilt θ', '最初の傾き θ') }]);
     },
   };
 
@@ -277,9 +278,22 @@
       const kE = 0.9 * Math.sqrt(Math.max(pr.Imin, 1e-9));
       f.poly(L.seq(181, (i) => { const b = TAU * i / 180, r = kE / Math.sqrt(Math.max(momentFromTensor(I, b), 1e-9)); return [ref[0] + r * Math.cos(b), ref[1] + r * Math.sin(b)]; }), { c: 'c4', fo: 0.12, w: 1.8, layer: 'under' });
       f.line([far(u, -1), far(u, 1)], { c: 'hl', w: 2.6 });
-      ms.forEach(([x, y]) => { const t = (x - ref[0]) * u[0] + (y - ref[1]) * u[1], foot = [ref[0] + t * u[0], ref[1] + t * u[1]]; f.seg([x, y], foot, { c: 'ink', w: 1.1, op: 0.7 }); });
+      ms.forEach(([x, y]) => { const t = (x - ref[0]) * u[0] + (y - ref[1]) * u[1], foot = [ref[0] + t * u[0], ref[1] + t * u[1]]; f.seg([x, y], foot, { c: 'ink', w: 1.6, op: 1 }); });
       f.dot(cm[0], cm[1], { c: 'ink', r: 4, hollow: true });
-      f.text(cm[0], cm[1], T('centre of mass', '重心'), { small: true, c: 'muted', anchor: 'start', dx: 9, dy: 16 });
+      // label the centre of mass outside the ellipse, in the direction farthest from the three axes through it
+      {
+        const angDist = (b, c) => { let d = Math.abs(((b - c) % PI + PI) % PI); return Math.min(d, PI - d); };
+        const cands = [0, 1, 2, 3].map((k) => pr.aMin + PI / 4 + k * PI / 2);
+        const score = (b) => Math.min(angDist(b, a), angDist(b, pr.aMin), angDist(b, pr.aMax)) - (Math.abs(cm[0] + 0.7 * Math.cos(b)) > 1.8 || Math.abs(cm[1] + 0.7 * Math.sin(b)) > 1.8 ? 1 : 0);
+        const b = cands.reduce((best, c) => (score(c) > score(best) ? c : best), cands[0]);
+        // walk out from the centre of mass until the point is outside the momental ellipse (which is centred on ref)
+        const outside = (q) => { const rel = [q[0] - ref[0], q[1] - ref[1]], rr = Math.hypot(rel[0], rel[1]); return rr > kE / Math.sqrt(Math.max(momentFromTensor(I, Math.atan2(rel[1], rel[0])), 1e-9)); };
+        let rE = 0.02; while (rE < 2 && !outside([cm[0] + rE * Math.cos(b), cm[1] + rE * Math.sin(b)])) rE += 0.02;
+        const lp = [cm[0] + (rE + 0.2) * Math.cos(b), cm[1] + (rE + 0.2) * Math.sin(b)];
+        f.seg([cm[0] + 0.05 * Math.cos(b), cm[1] + 0.05 * Math.sin(b)], [cm[0] + (rE + 0.12) * Math.cos(b), cm[1] + (rE + 0.12) * Math.sin(b)], { c: 'muted', w: 1, layer: 'over' });
+        const cmLab = f.text(lp[0], lp[1], T('centre of mass', '重心'), { small: true, c: 'ink', dy: 4 });
+        cmLab.style.strokeWidth = '5px';
+      }
       ms.forEach(([x, y, m], i) => f.handle(x, y, { c: i === 3 ? 'c2' : 'ink', r: 5 + 3 * Math.sqrt(m), label: T(`Mass ${i + 1}`, `質点 ${i + 1}`), bounds: [-1.9, 1.9, -1.9, 1.9], onDrag: (nx, ny) => { st.pos[i] = [nx, ny]; ctx.redraw(); } }));
       // right: I as a function of the axis angle
       L.h('p', 'lab-cap', c2, T('Moment of inertia about an axis at angle θ. Drag the gold point.', '角度 θ の軸まわりの慣性モーメント。金の点をドラッグしてください。'));
@@ -290,7 +304,7 @@
       const wrap = (b) => ((b * DEG) % 180 + 180) % 180;
       [[pr.aMin, 'c1'], [pr.aMax, 'c3']].forEach(([b, c]) => { const d = wrap(b); g.vline(d, { c, dash: '6 4', w: 1.3 }); g.dot(d, momentAbout(ms, ref, d / DEG), { c, r: 5 }); });
       g.handle(v.angle, Ia, { c: 'hl', axis: 'x', bounds: [0, 180, 0, hi], label: T('Axis angle', '軸の角度'), onDrag: (x) => ctx.set('angle', x) });
-      L.legend(ctx.host, [{ c: 'hl', label: T('chosen axis', '選んだ軸') }, { c: 'c1', dash: true, label: T('principal axis of least moment', '慣性モーメントが最小の主軸') }, { c: 'c3', dash: true, label: T('principal axis of greatest moment', '慣性モーメントが最大の主軸') }, { kind: 'fill', c: 'c4', label: T('momental ellipse, radius ∝ 1/√I', '慣性楕円（半径 ∝ 1/√I）') }]);
+      L.legend(ctx.host, [{ c: 'hl', label: T('chosen axis', '選んだ軸') }, { c: 'ink', label: T('r⊥, each mass to the chosen axis', 'r⊥、各質点から選んだ軸まで') }, { c: 'c1', dash: true, label: T('principal axis of least moment', '慣性モーメントが最小の主軸') }, { c: 'c3', dash: true, label: T('principal axis of greatest moment', '慣性モーメントが最大の主軸') }, { kind: 'fill', c: 'c4', label: T('momental ellipse, radius ∝ 1/√I', '慣性楕円（半径 ∝ 1/√I）') }]);
       const items = [{ k: 'I(θ) = Σ m r⊥²', v: fmt(Ia, 3), tone: 'key' }, { k: 'I_min', v: fmt(pr.Imin, 3) }, { k: 'I_max', v: fmt(pr.Imax, 3) }, { k: T('perpendicular axis I_z', '垂直軸 I_z'), v: fmt(I.zz, 3) }];
       if (Math.round(v.about) === 1) { const d = (cm[0]) * Math.sin(a) - (cm[1]) * Math.cos(a); items.push({ k: T('I_cm(θ) + M d²', 'I_cm(θ) + M d²'), v: fmt(momentAbout(ms, [cm[0], cm[1]], a) + cm[2] * d * d, 3), tone: 'good' }); }
       ctx.readout(items, Math.round(v.about) === 1 ? T('About the origin every moment is the centre-of-mass value plus M d², where d is the distance from the centre of mass to the axis: the parallel-axis theorem, checked live.', '原点まわりのどの慣性モーメントも、重心まわりの値に M d² を加えたものです。d は重心から軸までの距離です。平行軸の定理をその場で確かめられます。') : T('However the masses are placed, I(θ) is a pure sinusoid in 2θ. Its maximum and minimum are always exactly 90° apart: those two directions are the principal axes.', '質点をどう置いても I(θ) は 2θ の正弦波そのものです。最大と最小はいつもちょうど 90° 離れていて、その二方向が主軸です。'));

@@ -1,0 +1,105 @@
+{
+ "relativity-lorentz": {
+  "body": [
+   "Each observer draws spacetime with their own axes. Tilt the orange axes of a frame S′ moving at speed v, or drag the event E: dashed lines parallel to the S′ axes read off its coordinates x′ and ct′. The light rays stay at 45° for both frames, and the unit ticks of S′ lie on the hyperbolae (ct)² − x² = constant, which is why the interval s² comes out the same in both frames.",
+   "観測者はそれぞれ自分の軸で時空を描きます。速さ v で動く系 S′ の橙の軸を傾けるか、事象 E をドラッグしてください。S′ の軸に平行な破線で座標 x′ と ct′ を読み取ります。光線はどちらの系でも45°のままで、S′ の単位目盛りは双曲線 (ct)² − x² = 一定 の上にあります。そのため時空間隔 s² はどちらの系でも同じ値になります。"
+  ],
+  "formula": "\\begin{gathered}x'=\\gamma(x-vt)\\\\t'=\\gamma\\Big(t-\\frac{vx}{c^2}\\Big)\\\\s^2=c^2t^2-x^2\\end{gathered}",
+  "example": [
+   "At v = 0.5c, γ ≈ 1.155. The event (x, ct) = (1.2, 2) has x′ ≈ 0.231 and ct′ ≈ 1.617 in S′, and s² = 4 − 1.44 = 2.56 in both frames.",
+   "v = 0.5c では γ ≈ 1.155 です。事象 (x, ct) = (1.2, 2) は S′ で x′ ≈ 0.231、ct′ ≈ 1.617 となり、どちらの系でも s² = 4 − 1.44 = 2.56 です。"
+  ],
+  "caution": [
+   "The diagram uses units with c = 1. The S′ grid is not square on the page, yet it is just as valid: distances in a Minkowski diagram are measured with the interval, not with a ruler.",
+   "図では c = 1 の単位を使います。S′ の格子は紙面上では正方形ではありませんが、同じく正当な座標です。ミンコフスキー図での長さは定規ではなく時空間隔で測ります。"
+  ],
+  "params": [
+   [
+    "v",
+    "Relative speed v / c",
+    "相対速度 v / c",
+    -0.8,
+    0.8,
+    0.05,
+    0.5
+   ]
+  ]
+ },
+ "spacetime": {
+  "body": [
+   "Two clocks start together. One stays at rest, the other moves at speed v; when the resting clock reads Δt, the moving clock reads only Δτ = Δt/γ. Each tick of the moving clock lies on the same hyperbola of constant interval as the matching tick of the resting clock, so the picture shows why: a clock measures the length of its worldline in spacetime. Drag the end of the blue worldline, and press Play to run both clocks.",
+   "2つの時計が同時に出発します。一方は静止し、もう一方は速さ v で動きます。静止した時計が Δt を示すとき、運動する時計は Δτ = Δt/γ しか示しません。運動する時計の各目盛りは、静止した時計の対応する目盛りと同じ、時空間隔が一定の双曲線上にあります。時計が測るのは時空における世界線の長さだということが図からわかります。青い世界線の終点をドラッグし、再生で2つの時計を動かしてください。"
+  ],
+  "example": [
+   "At v = 0.6c, γ = 1.25, so after Δt = 4 the moving clock reads Δτ = 3.2, having travelled 2.4 light-units.",
+   "v = 0.6c では γ = 1.25 なので、Δt = 4 の後に運動する時計は Δτ = 3.2 を示し、2.4 光単位だけ進んでいます。"
+  ],
+  "params": [
+   [
+    "v",
+    "Speed v / c",
+    "速さ v / c",
+    0,
+    0.99,
+    0.01,
+    0.6
+   ],
+   [
+    "time",
+    "Coordinate time Δt",
+    "座標時間 Δt",
+    1,
+    10,
+    0.1,
+    4
+   ]
+  ]
+ },
+ "twin": {
+  "title": [
+   "3. The twin paradox",
+   "3. 双子のパラドックス"
+  ],
+  "body": [
+   "One twin stays home while the other flies out at speed v, turns round and flies back. Their worldlines share both end points, but the bent one is shorter in spacetime, so the traveller comes home younger. Drag the turnaround event, and press Play to follow the line of “now” of the traveller: on each leg the home clock seems slow, and the missing years appear in the jump when the traveller turns round.",
+   "双子の一方は地球に残り、もう一方は速さ v で出発し、折り返して戻ってきます。2本の世界線は両端を共有しますが、折れ曲がった方が時空では短いので、旅行者の方が若くなって帰ってきます。折り返しの事象をドラッグし、再生で旅行者の「今」の線を追ってください。どちらの行程でも地球の時計は遅れて見え、足りない年数は旅行者が向きを変えたときの飛びとして現れます。"
+  ],
+  "formula": "\\begin{gathered}\\tau=\\int\\sqrt{1-\\frac{v^2}{c^2}}\\,dt\\\\\\tau_{\\text{trav}}=\\frac{T}{\\gamma}\\end{gathered}",
+  "example": [
+   "At v = 0.6c for a trip of T = 10 years, γ = 1.25: the traveller ages 8 years and reaches 3 light years. The “now” of the traveller skips v²T = 3.6 years of the home clock at the turnaround, and 3.2 + 3.6 + 3.2 = 10.",
+   "v = 0.6c、全行程 T = 10 年では γ = 1.25 です。旅行者は8年だけ年を取り、3光年先で折り返します。折り返しで旅行者の「今」は地球の時計の v²T = 3.6 年分を飛び越え、3.2 + 3.6 + 3.2 = 10 となります。"
+  ],
+  "caution": [
+   "The turnaround is drawn as instantaneous. Any real turnaround takes time, but the asymmetry is the same: only the traveller changes inertial frame, and that is what breaks the symmetry between the twins.",
+   "折り返しは瞬間的なものとして描いています。実際の折り返しには時間がかかりますが、非対称性は同じです。慣性系を乗り換えるのは旅行者だけであり、それが双子の対称性を破ります。"
+  ],
+  "question": [
+   "Each twin sees the clock of the other run slow, so why is the result not symmetric?",
+   "互いに相手の時計が遅れて見えるのに、結果が対称にならないのはなぜですか？"
+  ],
+  "answer": [
+   "The home twin stays in one inertial frame; the traveller changes frames at the turnaround, and the straight worldline between two events is the one with the longest proper time.",
+   "地球側はずっと1つの慣性系にいますが、旅行者は折り返しで慣性系を乗り換えます。そして2つの事象を結ぶ世界線のうち、まっすぐなものが最も長い固有時を持つからです。"
+  ],
+  "params": [
+   [
+    "v",
+    "Speed v / c",
+    "速さ v / c",
+    0.1,
+    0.95,
+    0.01,
+    0.6
+   ],
+   [
+    "time",
+    "Home time for the trip T (years)",
+    "地球側で測った全行程 T（年）",
+    2,
+    20,
+    0.5,
+    10
+   ]
+  ]
+ }
+}

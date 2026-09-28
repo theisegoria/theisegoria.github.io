@@ -41,10 +41,10 @@
     const E0 = energy(s), n = Math.ceil(tMax / h), out = [], errs = [];
     const every = Math.max(1, Math.floor(n / 3000));
     for (let i = 0; i <= n; i++) {
-      if (i % every === 0 || i === n) { out.push([s[0], s[1]]); errs.push([i * h, (energy(s) - E0) / Math.abs(E0)]); }
+      if (i % every === 0 || i === n) { if (Math.hypot(s[0], s[1]) <= 40) out.push([s[0], s[1]]); errs.push([i * h, (energy(s) - E0) / Math.abs(E0)]); }
       if (i === n) break;
       s = kepler[method](s, h);
-      if (!s.every(Number.isFinite) || Math.hypot(s[0], s[1]) > 40) { errs.push([(i + 1) * h, NaN]); break; }
+      if (!s.every(Number.isFinite)) { errs.push([(i + 1) * h, NaN]); break; }
     }
     return { pts: out, errs, final: errs.filter((x) => Number.isFinite(x[1])).at(-1)[1] };
   }
@@ -104,7 +104,7 @@
       };
       drawAt(v.t);
       st.anim = L.animator(ctx.host, (dt, t) => { if (t === 0 && dt === 0) { drawAt(v.t); return; } const tt = Math.min(16, t); ctx.set('t', tt, true); drawAt(tt); if (tt >= 16) return false; }, { autoplay: false, initialT: 0, once: true, playLabel: T('Run the flow from t = 0', 't = 0 から流す') });
-      L.legend(ctx.host, [{ kind: 'fill', c: 'hl', label: T('the evolved set of states', '時間発展した状態の集合') }, { c: 'ink', label: T('separatrix H = 1', 'セパラトリクス H = 1') }, { c: 'muted', label: T('other energy levels', '他のエネルギー準位') }]);
+      L.legend(ctx.host, [{ kind: 'fill', c: 'hl', label: T('the evolved set of states', '時間発展した状態の集合') }, { c: 'ink', dash: true, label: T('initial disc at t = 0', 't = 0 の初期円板') }, { c: 'ink', label: T('separatrix H = 1', 'セパラトリクス H = 1') }, { c: 'muted', label: T('other energy levels', '他のエネルギー準位') }]);
     },
   };
 
@@ -118,19 +118,19 @@
       L.h('p', 'lab-cap', c1, T('The orbit in the plane: faint trails, with the final orbit drawn bold. The dashed ellipse is the exact orbit.', '平面上の軌道：薄い軌跡と、太く描いた最後の一周。点線の楕円が厳密な軌道です。'));
       const a = 1, b = Math.sqrt(1 - e * e);
       const f = L.fig(c1, { x: [-3.4, 1.9], y: [-2.3, 2.3], equal: true, maxH: 420, grid: false });
-      f.line(L.seq(241, (i) => { const t = TAU * i / 240; return [a * Math.cos(t) - a * e, b * Math.sin(t)]; }), { c: 'ink', w: 1.3, dash: '5 4', op: 0.8 });
+      f.line(L.seq(241, (i) => { const t = TAU * i / 240; return [a * Math.cos(t) - a * e, b * Math.sin(t)]; }), { c: 'ink', w: 1.5, dash: '5 4', op: 0.9, layer: 'over' });
       f.dot(0, 0, { c: 'hl', r: 7 });
       const perOrbit = (r) => Math.max(2, Math.round(r.pts.length * TAU / Math.max(TAU, r.errs.at(-1)[0])));
       runs.forEach((r) => f.line(r.pts, { c: r.c, w: 0.8, op: 0.28 }));
       runs.forEach((r) => f.line(r.pts.slice(-perOrbit(r) - 1), { c: r.c, w: 2.4 }));
-      runs.forEach((r) => { const p = r.pts.at(-1); if (Number.isFinite(p[0])) f.dot(p[0], p[1], { c: r.c, r: 4.5 }); });
+      runs.forEach((r) => { const p = r.pts.at(-1); if (Number.isFinite(p[0]) && Math.hypot(p[0], p[1]) <= 40) f.dot(p[0], p[1], { c: r.c, r: 4.5 }); });
       L.h('p', 'lab-cap', c2, T('Relative energy error against time (signed log scale)', '相対エネルギー誤差と時間（符号付き対数目盛）'));
       const TH = 1e-7, sl = (x) => (Math.abs(x) < TH ? x / TH : Math.sign(x) * (1 + Math.log10(Math.abs(x) / TH)));
       const ticksY = [[0, '0'], [sl(1e-5), '10⁻⁵'], [sl(1e-3), '10⁻³'], [sl(0.1), '0.1'], [sl(10), '10'], [sl(-1e-5), '−10⁻⁵'], [sl(-1e-3), '−10⁻³'], [sl(-0.1), '−0.1']];
       const g = L.fig(c2, { x: [0, v.orbits], y: [sl(-1), sl(30)], aspect: 0.85, maxH: 420, xlabel: T('time (orbits)', '時間（周回数）'), ticksY });
       runs.forEach((r) => g.line(r.errs.map(([t, x]) => [t / TAU, Number.isFinite(x) ? sl(x) : NaN]), { c: r.c, w: r.m === 'leapfrog' ? 1.2 : 2, op: 0.9 }));
       g.hover((x) => { const t = x * TAU; const vals = runs.map((r) => { const k = r.errs.findIndex((q) => q[0] >= t); return k < 0 ? null : r.errs[k][1]; }); return { x, text: `${fmt(x, 1)}: E ${fmt(vals[0] ?? NaN, 2)}, R ${fmt(vals[1] ?? NaN, 2)}, L ${fmt(vals[2] ?? NaN, 2)}` }; });
-      L.legend(ctx.host, runs.map((r) => ({ c: r.c, label: r.name })));
+      L.legend(ctx.host, runs.map((r) => ({ c: r.c, label: r.name })).concat([{ c: 'ink', dash: true, label: T('exact orbit', '厳密な軌道') }, { kind: 'dot', c: 'hl', label: T('the attracting centre', '引力の中心') }]));
       const sci = (x) => (Math.abs(x) < 1e-12 ? '0' : Math.abs(x) >= 0.01 ? fmt(x, 3) : fmt(Number(x.toPrecision(2)), 6));
       const out = runs.map((r) => ({ k: r.name, v: sci(r.final), tone: r.m === 'leapfrog' ? 'good' : r.m === 'euler' ? 'warn' : undefined }));
       const lfMax = Math.max(...runs[2].errs.map((x) => Math.abs(x[1])));
@@ -145,7 +145,7 @@
       const run = integrateRipple(v.eps, v.n, v.time);
       const row = L.h('div', 'lab-row', ctx.host);
       const c1 = L.h('div', 'lab-col', row), c2 = L.h('div', 'lab-col', row);
-      L.h('p', 'lab-cap', c1, T('The orbit over the potential (darker is higher)', 'ポテンシャル上の軌道（濃いほど高い）'));
+      L.h('p', 'lab-cap', c1, T('The orbit over the potential V, shaded by height: the ripple shows as n lobes in the shading', 'ポテンシャル V の高さで陰影を付けた上の軌道：うねりは陰影の n 個の突起として見えます'));
       const f = L.fig(c1, { x: [-1.6, 1.6], y: [-1.6, 1.6], equal: true, maxH: 400, grid: false, axes: false });
       f.raster((x, y) => Math.min(1, Math.sqrt(rippleV(x, y, v.eps, v.n) / 1.6)) * 0.42, { cmap: 'seq', res: 2 });
       f.line(run.map((s) => [s.x, s.y]), { c: 'c1', w: 1.1, op: 0.55 });

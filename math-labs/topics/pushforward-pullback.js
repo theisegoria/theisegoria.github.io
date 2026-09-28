@@ -146,7 +146,7 @@
       for (let i = 0; i <= 400; i++) { const t = i / 400; if (Math.abs(jv) >= Math.abs(ju)) { const w = -(j0 + ju * t) / jv; if (w >= 0 && w <= 1) fold.push([t, w]); } else { const u = -(j0 + jv * t) / ju; if (u >= 0 && u <= 1) fold.push([u, t]); } }
       if (Math.abs(jv) < Math.abs(ju)) fold.sort((a, b) => a[1] - b[1]);
       if (fold.length > 1) { g.line(fold, { c: 'c2', w: 2.6 }); const m = fold[fold.length >> 1]; g.text(m[0], m[1], 'det Dφ = 0', { small: true, c: 'c2', dx: 8, dy: -8, anchor: 'start' }); }
-      [[0, 0, '(0,0)'], [1, 0, '(1,0)'], [1, 1, '(1,1)'], [0, 1, '(0,1)']].forEach(([u, w, s]) => g.text(u, w, s, { small: true, c: 'muted', dx: u ? 6 : -6, dy: w ? -6 : 14, anchor: u ? 'start' : 'end' }));
+      [[0, 0, '(0,0)'], [1, 0, '(1,0)'], [1, 1, '(1,1)'], [0, 1, '(0,1)']].forEach(([u, w, s]) => g.text(u, w, s, { small: true, c: 'muted', dx: u ? 2 : -2, dy: w ? -7 : 15, anchor: u ? 'end' : 'start' })); // above or below the square, clear of the y ticks
 
       L.h('p', 'lab-cap', c2, Tr('Downstairs: the image φ(square). Drag the four corners. The shading is f times the number of points of the square that land there.', '下の空間：像 φ(正方形) です。四つの角をドラッグできます。濃さは f に、そこへ写ってくる正方形の点の個数を掛けたものです。'));
       const X0 = -0.9, X1 = 2.7, Y0 = -0.9, Y1 = 2.3;
@@ -214,19 +214,20 @@
       lf.line([[0, 0], [1, 1]], { c: 'muted', w: 0.8, dash: '3 4', op: 0.6, layer: 'under' });
       caustics(a).forEach((x) => { const y = Tf(x); lf.seg([0, y], [x, y], { c: 'c4', w: 1.1, dash: '3 3' }); lf.dot(x, y, { c: 'c4', r: 4 }); });
       ivs.forEach(([p, q]) => { lf.seg([p, 0], [p, Tf(p)], { c: 'c2', w: 1, op: 0.8 }); lf.seg([q, 0], [q, Tf(q)], { c: 'c2', w: 1, op: 0.8 }); });
-      lf.text(0.03, c, 'B', { math: true, c: 'hl', anchor: 'start', dy: 4, layer: 'over' });
+      lf.text(0.03, c, 'B', { math: true, c: 'hl', anchor: 'start', dy: 4, layer: 'main' });
 
-      L.h('p', 'lab-cap', c2, Tr('The push-forward T#μ on the same y axis: exact bin masses (bars), the density Σ ρ/|T′| (curve) and the particles that have arrived (outline). Drag the window.', '同じ y 軸にとった押し出し T#μ です。各区間の正確な質量（棒）、密度 Σ ρ/|T′|（曲線）、到着した粒子（輪郭）を示します。窓をドラッグできます。'));
-      const bmax = Math.max(...st.bars), dmax = Math.min(4.2, Math.max(2.2, bmax * 1.25));
+      const bmax = Math.max(...st.bars), dmax = Math.min(6, Math.max(2.2, bmax * 1.15)), clipped = bmax > dmax;
+      L.h('p', 'lab-cap', c2, Tr('The push-forward T#μ on the same y axis: exact bin masses (bars), the density Σ ρ/|T′| (curve) and the particles that have arrived (outline). Drag the window.', '同じ y 軸にとった押し出し T#μ です。各区間の正確な質量（棒）、密度 Σ ρ/|T′|（曲線）、到着した粒子（輪郭）を示します。窓をドラッグできます。')
+        + (clipped ? ' ' + Tr(`The density blows up like 1/√ at each fold height, so the axis is cut at ${fmt(dmax, 1)}; the bar there reaches ${fmt(bmax, 1)}.`, `密度は各折り目の高さで 1/√ のように発散するので、軸を ${fmt(dmax, 1)} で切っています。そこでの棒の長さは ${fmt(bmax, 1)} です。`) : ''));
       const rf = L.fig(c2, { x: [0, dmax], y: [YB, 1], aspect: 1.3, xlabel: Tr('density', '密度'), maxH: 430, ticksY: [[0, '0'], [0.5, '0.5'], [1, '1']] });
       rf.rect(0, y0, dmax, y1 - y0, { c: 'hl', fill: 'hl', fo: 0.16, nostroke: true, layer: 'under' });
-      st.bars.forEach((b, i) => { rf.rect(0, i / BINS, Math.min(b, dmax), 1 / BINS, { c: 'muted', fill: 'muted', fo: 0.28, w: 0.5, op: 0.6, layer: 'under' }); if (b > dmax) rf.text(dmax, (i + 0.5) / BINS, `${fmt(b, 1)} ›`, { small: true, c: 'muted', anchor: 'end', dy: 4 }); });
+      st.bars.forEach((b, i) => { rf.rect(0, i / BINS, Math.min(b, dmax), 1 / BINS, { c: 'muted', fill: 'muted', fo: 0.28, w: 0.5, op: 0.6, layer: 'under' }); });
       // the density curve has 1/sqrt singularities at the fold heights; cut it at the frame
       let run = []; const flush = () => { if (run.length > 1) rf.line(run, { c: 'c1', w: 2.4 }); run = []; };
       st.curve.forEach(([d, y]) => { if (d > dmax) { if (run.length) run.push([dmax, y]); flush(); } else run.push([d, y]); }); flush();
-      caustics(a).forEach((x) => { const y = Tf(x); rf.hline(y, { c: 'c4', w: 1.1, dash: '3 3' }); rf.text(dmax, y, Tr('fold: T′ = 0', '折り目：T′ = 0'), { small: true, c: 'c4', anchor: 'end', dy: -5 }); });
+      caustics(a).forEach((x) => { const y = Tf(x); rf.hline(y, { c: 'c4', w: 1.1, dash: '3 3' }); rf.text(dmax, y, Tr('fold: T′ = 0', '折り目：T′ = 0'), { small: true, c: 'c4', anchor: 'end', dy: -5, layer: 'main' }); });
       rf.handle(dmax * 0.82, c, { c: 'hl', axis: 'y', label: Tr('Centre of the window B', '窓 B の中心'), bounds: [0, dmax, w / 2, 1 - w / 2], onDrag: (x, y) => { st.c = Math.round(y * 200) / 200; ctx.redraw(); } });
-      rf.text(dmax * 0.82, c, 'B', { math: true, c: 'hl', dx: 14, dy: 4, anchor: 'start', layer: 'over' });
+      rf.text(dmax * 0.82, c, 'B', { math: true, c: 'hl', dx: 14, dy: 4, anchor: 'start', layer: 'main' });
       // particles: each rises from x to the graph, then runs across to its height y = T(x)
       const DUR = 5, parts = st.parts, NP = parts.length;
       const frame = (t) => {

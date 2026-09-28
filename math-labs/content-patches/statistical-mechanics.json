@@ -1,0 +1,63 @@
+{
+ "boltzmann": {
+  "body": [
+   "A two-level system with energies 0 and \\(\\Delta E\\), in units with \\(k_B=1\\). Raise \\(T\\) and watch the excited share \\(p_1\\) climb toward ½, never beyond it. Sixty particles follow Metropolis dynamics: run it and the number in the upper level fluctuates around the Boltzmann share. The heat capacity peaks near \\(T\\approx0.42\\,\\Delta E\\), where the excited share changes fastest.",
+   "エネルギー 0 と \\(\\Delta E\\) の二準位系を \\(k_B=1\\) の単位で考えます。\\(T\\) を上げると励起の割合 \\(p_1\\) が ½ に向かって増えますが、½ を超えることはありません。60個の粒子がメトロポリス法で動きます。実行すると、上の準位にある粒子の数がボルツマン分布の割合のまわりで揺らぎます。熱容量は励起の割合が最も速く変わる \\(T\\approx0.42\\,\\Delta E\\) 付近で最大になります。"
+  ],
+  "formula": "p_i=\\frac{e^{-E_i/(k_BT)}}{Z},\\qquad Z=1+e^{-\\Delta E/(k_BT)},\\qquad p_1=\\frac{1}{e^{\\Delta E/(k_BT)}+1}",
+  "example": [
+   "At \\(k_BT=\\Delta E\\), \\(p_1=1/(e+1)\\approx0.269\\).",
+   "\\(k_BT=\\Delta E\\) のとき \\(p_1=1/(e+1)\\approx0.269\\) です。"
+  ]
+ },
+ "partition": {
+  "body": [
+   "The levels form an evenly spaced ladder \\(E_i=i\\varepsilon\\), and only the lowest \\(n\\) are accessible. The bars show the Boltzmann probabilities; the right panel shows the free energy \\(F=-k_BT\\ln Z\\) for every \\(n\\) at the chosen temperature, approaching the value for the infinite ladder.",
+   "準位は等間隔の梯子 \\(E_i=i\\varepsilon\\) で、下から \\(n\\) 個だけが利用可能です。棒はボルツマン確率を示します。右図は、選んだ温度でのすべての \\(n\\) に対する自由エネルギー \\(F=-k_BT\\ln Z\\) で、無限の梯子の値に近づきます。"
+  ],
+  "formula": "Z=\\sum_{i=0}^{n-1}e^{-i\\varepsilon/(k_BT)}=\\frac{1-e^{-n\\varepsilon/(k_BT)}}{1-e^{-\\varepsilon/(k_BT)}},\\qquad F=-k_BT\\ln Z",
+  "caution": [
+   "The ladder is truncated at \\(n\\) levels for visualization; a real oscillator has infinitely many.",
+   "梯子は可視化のため \\(n\\) 準位で打ち切っています。実際の振動子には無限個の準位があります。"
+  ],
+  "answer": [
+   "Every accessible microstate adds a positive term to Z, so F falls; states far above \\(k_BT\\) add almost nothing.",
+   "利用可能なミクロ状態はそれぞれ Z に正の項を加えるので F は下がります。ただし \\(k_BT\\) よりずっと高い状態の寄与はほとんどありません。"
+  ]
+ },
+ "random-walk": {
+  "body": [
+   "Each step moves one unit right with probability \\((1+b)/2\\) and left otherwise. Increase the number of steps \\(N\\): the walks drift by \\(Nb\\) and spread like \\(\\sqrt{N}\\). The right panel is the exact binomial distribution of the final position, drawn on the same vertical axis as the walks.",
+   "各歩で確率 \\((1+b)/2\\) で右へ1単位、それ以外は左へ1単位動きます。歩数 \\(N\\) を増やすと、ウォークは \\(Nb\\) だけ移動し、\\(\\sqrt{N}\\) に比例して広がります。右図は最終位置の厳密な二項分布で、ウォークと同じ縦軸で描いています。"
+  ],
+  "formula": "\\langle x_N\\rangle=Nb\\,\\ell,\\qquad \\langle x_N^2\\rangle-\\langle x_N\\rangle^2=N(1-b^2)\\,\\ell^2",
+  "example": [
+   "For an unbiased walk (\\(b=0\\)), \\(\\langle x_N^2\\rangle=N\\ell^2\\), so the root-mean-square displacement grows like \\(\\sqrt{N}\\).",
+   "偏りのないウォーク（\\(b=0\\)）では \\(\\langle x_N^2\\rangle=N\\ell^2\\) なので、二乗平均平方根変位は \\(\\sqrt{N}\\) に比例して増えます。"
+  ],
+  "answer": [
+   "The variance \\(N(1-b^2)\\ell^2\\), and for an unbiased walk the mean-square displacement itself; the typical displacement grows only like \\(\\sqrt{N}\\).",
+   "分散 \\(N(1-b^2)\\ell^2\\) で、偏りがなければ平均二乗変位そのものです。典型的な変位は \\(\\sqrt{N}\\) に比例してしか増えません。"
+  ],
+  "params": [
+   [
+    "steps",
+    "Step count \\(N\\)",
+    "歩数 \\(N\\)",
+    10,
+    200,
+    1,
+    80
+   ],
+   [
+    "bias",
+    "Step bias \\(b\\)",
+    "歩行バイアス \\(b\\)",
+    -1,
+    1,
+    0.05,
+    0
+   ]
+  ]
+ }
+}

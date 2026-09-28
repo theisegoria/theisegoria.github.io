@@ -51,7 +51,7 @@
       const iv = superlevel(fB, yL);
       b.hline(yL, { c: 'hl', w: 1.6, dash: '5 4' });
       iv.forEach(([s, e]) => { b.seg([s, 0.012], [e, 0.012], { c: 'hl', w: 6 }); b.seg([s, 0], [s, yL], { c: 'hl', w: 1, dash: '2 3' }); b.seg([e, 0], [e, yL], { c: 'hl', w: 1, dash: '2 3' }); });
-      b.text(0.02, yL, `{f ≥ ${fmt(yL, 2)}}`, { anchor: 'start', dy: -7, small: true });
+      b.text(0.99, yL, `{f ≥ ${fmt(yL, 2)}}`, { anchor: 'end', dy: -11, small: true });
       b.handle(0.97, yL, { c: 'hl', axis: 'y', bounds: [0, 1, 0.08, 0.98], label: T('Level y', '水準 y'), onDrag: (x, y) => { st.y = y; ctx.redraw(); } });
       L.legend(ctx.host, [{ c: 'ink', label: 'f' }, { kind: 'fill', c: 'c1', label: T('Riemann lower sum', 'リーマン下和') }, { kind: 'fill', c: 'c3', label: T('Lebesgue lower sum Σ Δy · λ{f ≥ yₖ}', 'ルベーグ下和 Σ Δy · λ{f ≥ yₖ}') }, { c: 'hl', label: T('the set {f ≥ y} on the axis', '軸上の集合 {f ≥ y}') }]);
       ctx.readout([
@@ -80,15 +80,16 @@
       a.line(L.sample(0, 1, 300, Math.sqrt), { c: 'ink', w: 2.6 });
       if (n <= 5) for (let k = 1; k < N; k++) a.seg([(k / N) ** 2, 0], [(k / N) ** 2, 0.035], { c: 'hl', w: 2, layer: 'over' });
       a.hover((x) => { if (x < 0 || x > 1) return null; const s = Math.floor(N * Math.sqrt(x)) / N; return { x, y: s, text: `√x = ${fmt(Math.sqrt(x), 4)}, s${n} = ${fmt(s, 4)}` }; });
-      const b = L.fig(c2, { x: [-0.6, 8.6], y: [0, 0.72], aspect: 0.8, maxH: 360, xlabel: T('level m', 'レベル m'), ticksX: L.seq(9, (m) => [m, String(m)]) });
+      const b = L.fig(c2, { x: [-0.6, 8.6], y: [-0.09, 0.72], aspect: 0.8, maxH: 360, xlabel: T('level m', 'レベル m'), ticksX: L.seq(9, (m) => [m, String(m)]) });
       b.hline(2 / 3, { c: 'ink', w: 1.6, dash: '6 4' });
+      b.hline(0, { c: 'ink', w: 1, op: 0.6, layer: 'under' });
       b.text(-0.5, 2 / 3, '2/3', { anchor: 'start', dy: -6, small: true });
       for (let m = 0; m <= 8; m++) {
         const I = sIntegral(m);
         b.rect(m - 0.34, 0, 0.68, I, { c: m === n ? 'hl' : 'c1', fo: m === n ? 0.85 : m < n ? 0.45 : 0.15, w: 0.8 });
       }
       b.text(n, sIntegral(n), fmt(sIntegral(n), 4), { dy: -8, small: true });
-      b.handle(n, 0.05, { c: 'hl', axis: 'x', snap: 1, bounds: [0, 8, 0, 1], label: T('Level n', 'レベル n'), onDrag: (m) => ctx.set('resolution', m) });
+      b.handle(n, -0.045, { c: 'hl', axis: 'x', snap: 1, bounds: [0, 8, -0.045, -0.045], label: T('Level n', 'レベル n'), onDrag: (m) => ctx.set('resolution', m) });
       L.legend(ctx.host, [{ c: 'ink', label: '√x' }, { kind: 'fill', c: 'c1', label: T(`s${n}, the area ∫s${n}`, `s${n} と面積 ∫s${n}`) }, { c: 'c2', dash: true, label: T(`previous level s${Math.max(0, n - 1)}`, `前のレベル s${Math.max(0, n - 1)}`) }, { c: 'hl', label: T('preimage endpoints k²/4ⁿ', '逆像の端点 k²/4ⁿ') }]);
       const I = sIntegral(n);
       ctx.readout([

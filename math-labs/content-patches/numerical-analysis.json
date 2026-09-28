@@ -1,0 +1,55 @@
+{
+ "ode": {
+  "body": [
+   "Compare explicit Euler, fourth-order Runge–Kutta and implicit Euler with exact exponential decay. Each method multiplies the solution by a fixed factor R(−5h) per step, drawn on the right. Drag h until a factor leaves the band |R| < 1 and the numerical solution grows although the true one decays.",
+   "陽的オイラー法、4次ルンゲ・クッタ法、陰的オイラー法を指数減衰の厳密解と比較します。どの方法も1ステップごとに解を一定の倍率 R(−5h) 倍し、右の図にその倍率を描きます。h を動かし、倍率が |R| < 1 の帯から出て、真の解は減衰するのに数値解が増大する点を探します。"
+  ],
+  "formula": "y\\prime=-5y,\\ y(0)=1,\\quad y_{n+1}=R(-5h)\\,y_n,\\quad R_{\\rm Euler}(z)=1+z,\\ R_{\\rm RK4}(z)=\\sum_{k=0}^{4}\\frac{z^k}{k!},\\ R_{\\rm implicit}(z)=\\frac1{1-z}",
+  "caution": [
+   "Higher order does not guarantee stability for every step size: RK4 is explicit and fails beyond h ≈ 0.557. Implicit Euler decays for every h, but stability is not accuracy.",
+   "高次の方法でも任意の刻み幅で安定とは限りません。RK4 は陽解法で、h ≈ 0.557 を超えると破綻します。陰的オイラー法はどの h でも減衰しますが、安定であることは正確であることとは違います。"
+  ]
+ },
+ "cancellation": {
+  "body": [
+   "Compare direct evaluation with an algebraically equivalent rationalized expression. As x shrinks, √(1 + x) and 1 agree in more and more leading digits, and the subtraction throws them away. The digit table shows which digits of the direct numerator survive.",
+   "直接計算と有理化した等価な式を比較します。x が小さくなるほど √(1 + x) と 1 は先頭の多くの桁で一致し、引き算がそれらの桁を捨ててしまいます。桁の表で、直接計算の分子のどの桁が残るかを確かめます。"
+  ]
+ },
+ "interpolation": {
+  "body": [
+   "Interpolate the Runge function with a polynomial. Compare equally spaced nodes with Chebyshev–Lobatto nodes clustered near the ends; the other family's interpolant is drawn dashed. The right panel tracks the maximum error as the degree grows: one family diverges, the other converges.",
+   "ルンゲ関数を多項式で補間します。等間隔点と端点付近に集まるチェビシェフ・ロバット点を比較し、もう一方の点による補間は破線で描きます。右の図は次数を上げたときの最大誤差を追います。一方は発散し、もう一方は収束します。"
+  ],
+  "params": [
+   [
+    "n",
+    "Polynomial degree",
+    "多項式の次数",
+    2,
+    20,
+    1,
+    10
+   ],
+   [
+    "cheb",
+    "Nodes",
+    "節点",
+    0,
+    1,
+    1,
+    0,
+    [
+     [
+      "Equally spaced",
+      "等間隔"
+     ],
+     [
+      "Chebyshev",
+      "チェビシェフ"
+     ]
+    ]
+   ]
+  ]
+ }
+}

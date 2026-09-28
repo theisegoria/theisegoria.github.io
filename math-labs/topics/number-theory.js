@@ -30,7 +30,7 @@
       [[a, 'c1'], [b, same ? 'c1' : 'c2']].forEach(([m, c], i) => { if (a === b && i) return; const q = P(m); f.text(q[0], q[1], String(m), { c, dx: i ? -10 : 10, anchor: i ? 'end' : 'start', dy: 4 }); });
       // right: repeated addition vs multiplication
       L.h('p', 'lab-cap', c2, T(`a·b mod n as repeated addition: ${b} steps of size ${a} from 0 land on the same hour as ${b} steps of size ${ra}.`, `繰り返しの足し算としての a·b mod n：0 から大きさ ${a} の歩幅で ${b} 歩進むと、大きさ ${ra} の歩幅で ${b} 歩進むのと同じ時刻に着きます。`));
-      const g = fig(c2, { axes: false, x: [-1.4, 1.4], y: [-1.4, 1.4], equal: true, maxH: 380 });
+      const g = fig(c2, { axes: false, x: [-1.4, 1.4], y: [-1.6, 1.4], equal: true, maxH: 400 });
       const Q = (r, s = 1) => [s * Math.cos(ang(r)), s * Math.sin(ang(r))];
       g.circle(0, 0, 1, { c: 'muted', w: 1, op: 0.5, layer: 'under' });
       for (let r = 0; r < n; r++) { g.dot(...Q(r), { c: 'muted', r: 3, layer: 'under' }); noStroke(g.text(...Q(r, 1.2), String(r), { small: true, dy: 4, c: 'muted', layer: 'under' })); }
@@ -47,7 +47,7 @@
         g.dot(0, 1, { c: 'ink', r: 4 });
         const end = Q(hops[k]);
         g.dot(end[0], end[1], { c: k === b ? 'hl' : 'c3', r: 8 });
-        if (k === b) g.text(0, 0, `a·b ≡ ${ab} (mod ${n})`, { dy: 5, c: 'ink' });
+        if (k === b) g.text(0, -1.47, `a·b ≡ ${ab} (mod ${n})`, { dy: 4, c: 'ink' });
         return k;
       };
       const DUR = b + 0.6;
@@ -94,13 +94,13 @@
       L.h('p', 'lab-cap', c2, T('The count π(x) of primes up to x, with two classical approximations.', 'x 以下の素数の個数 π(x) と、2つの古典的な近似。'));
       const li = (x) => { let s = 0; const h = (x - 2) / 400; for (let i = 0; i < 400; i++) { const t = 2 + (i + 0.5) * h; s += h / Math.log(t); } return s + 1.045; };
       const ymax = Math.max(primes.length, li(N)) * 1.1;
-      const g = fig(c2, { x: [0, N], y: [0, ymax], aspect: 0.8, maxH: 460, xlabel: 'x', ylabel: 'π(x)' });
+      const g = fig(c2, { x: [0, N * 1.32], y: [0, ymax], aspect: 0.8, maxH: 460, xlabel: 'x', ylabel: 'π(x)' });
       const step = []; let c = 0; for (let x = 0; x <= N; x++) { if (isPrime(x)) { step.push([x, c]); c++; } step.push([x, c]); }
       g.line(step, { c: 'c1', w: 2.4 });
       g.line(L.sample(3, N, 200, (x) => x / Math.log(x)), { c: 'c2', w: 1.8, dash: '6 4' });
       g.line(L.sample(2, N, 200, li), { c: 'c3', w: 1.8, dash: '2 3' });
       g.dot(N, primes.length, { c: 'hl', r: 6 });
-      g.text(N, primes.length, `π(${N}) = ${primes.length}`, { anchor: 'end', dx: -10, dy: 20 });
+      g.text(N, primes.length, `π(${N}) = ${primes.length}`, { anchor: 'start', dx: 10, dy: 4 });
       g.hover((x) => { const xi = Math.round(x); if (xi < 1 || xi > N) return null; const pc = primes.filter((p) => p <= xi).length; return { x: xi, y: pc, text: `π(${xi}) = ${pc}, x/ln x = ${fmt(xi / Math.log(Math.max(2, xi)), 1)}` }; });
       ctx.state.anim = L.animator(c1, (dt, t, label) => {
         const st = Math.min(NP, Math.floor(t / SEG)), fr = Math.min(1, (t - st * SEG) / (SEG * 0.8));
@@ -140,24 +140,46 @@
       f.seg([m, -1], [m, c], { c: 'hl', w: 1.4, dash: '3 3' }); f.seg([-1, c], [m, c], { c: 'hl', w: 1.4, dash: '3 3' });
       f.dot(m, c, { c: 'hl', r: 7 });
       f.text(m, c, `(${m}, ${c})`, { dx: m > N * 0.7 ? -10 : 10, anchor: m > N * 0.7 ? 'end' : 'start', dy: -8 });
-      // right: powers of m cycle, so m^(ed) returns to m
-      const K = e * d, ord = (() => { if (gcd(m, N) !== 1) return null; let k = 1, x = m % N; while (x !== 1) { x = (x * m) % N; k++; } return k; })();
-      L.h('p', 'lab-cap', c2, T(`The powers mᵏ mod ${N} repeat. Step e gives the cipher; step ed = ${K} = 1 + ${(K - 1) / phi}·φ(N) lands on m again.`, `べき mᵏ mod ${N} は繰り返します。e 番目が暗号、ed = ${K} = 1 + ${(K - 1) / phi}·φ(N) 番目で再び m に戻ります。`));
-      const g = fig(c2, { x: [0, K + 1], y: [-1, N], aspect: 0.8, maxH: 380, xlabel: 'k', ylabel: 'mᵏ mod N' });
-      const pts = L.seq(K + 1, (k) => [k, powmod(m, k, N)]);
-      if (K <= 400) g.line(pts, { c: 'c1', w: 0.8, op: 0.35 });
-      pts.forEach(([k, y]) => g.dot(k, y, { c: 'c1', r: K > 200 ? 1.5 : 2.4, op: 0.8 }));
-      if (ord) for (let k = ord; k < K; k += ord) g.vline(k, { c: 'muted', w: 0.8, dash: '2 4', op: 0.6 });
+      // right: powers of m cycle, so m^(ed) returns to m. Show one period: from k = 1 the sequence repeats with period per.
+      const K = e * d;
+      const per = (() => { let x = m % N, k = 1; for (;;) { x = (x * m) % N; if (x === m % N) return k; k++; } })();
+      const P = per + 1, ke = e <= P ? e : 1 + ((e - 1) % per);
+      L.h('p', 'lab-cap', c2, T(`One period of the powers mᵏ mod ${N}: from k = 1 they repeat every ${per} steps. Step e gives the cipher, and ed = ${K} = 1 + ${(K - 1) / phi}·φ(N) ≡ 1 (mod ${per}), so step ed lands on m again.`, `べき mᵏ mod ${N} の1周期。k = 1 から ${per} ステップごとに繰り返します。e 番目が暗号で、ed = ${K} = 1 + ${(K - 1) / phi}·φ(N) ≡ 1 (mod ${per}) なので ed 番目で再び m に戻ります。`));
+      const g = fig(c2, { x: [-0.5, P + 0.5], y: [-1, N], aspect: 0.8, maxH: 380, xlabel: 'k', ylabel: 'mᵏ mod N' });
+      const pts = L.seq(P + 1, (k) => [k, powmod(m, k, N)]);
+      g.line(pts, { c: 'c1', w: 1, op: 0.4 });
+      pts.forEach(([k, y]) => g.dot(k, y, { c: 'c1', r: P > 30 ? 2.4 : 3.2, op: 0.85 }));
+      g.vline(1, { c: 'muted', w: 0.8, dash: '2 4', op: 0.6 }); g.vline(P, { c: 'muted', w: 0.8, dash: '2 4', op: 0.6 });
       g.hline(m, { c: 'hl', w: 1, dash: '4 4' });
-      g.dot(e, c, { c: 'c2', r: 6.5 }); g.text(e, c, `k = e = ${e}`, { dx: 8, dy: -10, anchor: 'start', small: true, c: 'c2' });
-      g.dot(K, back, { c: 'hl', r: 7 }); g.text(K, back, `k = ed`, { dx: -10, dy: -10, anchor: 'end', small: true });
-      g.dot(1, m, { c: 'hl', r: 5 });
-      L.legend(ctx.host, [{ kind: 'dot', c: 'c1', label: T('m coprime to N', 'N と互いに素な m') }, { kind: 'dot', c: 'c2', label: T('m sharing a factor with N (still decrypts)', 'N と共通因数をもつ m（それでも復号できる）') }, { kind: 'dot', c: 'hl', label: T('your message', '選んだメッセージ') }].concat(ord ? [{ c: 'muted', dash: true, label: T(`period ${ord}: the order of m`, `周期 ${ord}：m の位数`) }] : []));
+      // label placement: try four corners around the dot and keep the first one clear of the neighbouring segments and the frame
+      const ux = 1 / (g.X(1) - g.X(0)), uy = 1 / (g.Y(0) - g.Y(1));
+      const hit = (r, a, b) => { // does segment a-b cross rectangle r = [x0,x1,y0,y1]
+        const [x0, x1, y0, y1] = r; let t0 = 0, t1 = 1; const dx = b[0] - a[0], dy = b[1] - a[1];
+        for (const [pp, qq] of [[-dx, a[0] - x0], [dx, x1 - a[0]], [-dy, a[1] - y0], [dy, y1 - a[1]]]) { if (pp === 0) { if (qq < 0) return false; } else { const t = qq / pp; if (pp < 0) t0 = Math.max(t0, t); else t1 = Math.min(t1, t); } }
+        return t0 <= t1;
+      };
+      const label = (k, txt, o) => {
+        const y = pts[k][1], w = (txt.length * 7 + 6) * ux, h = 14 * uy;
+        const cands = [[10, -10, 'start'], [10, 16, 'start'], [-10, -10, 'end'], [-10, 16, 'end']];
+        let best = cands[0], bs = 1e9;
+        for (const [dx, dy, anchor] of cands) {
+          const x0 = anchor === 'start' ? k + dx * ux : k + dx * ux - w, yc = y - dy * uy, r = [x0, x0 + w, yc - h / 2, yc + h / 2];
+          if (r[0] < -0.5 || r[1] > P + 0.5 || r[2] < -1 || r[3] > N) continue;
+          let sc = 0; for (let j = Math.max(0, k - 3); j < Math.min(P, k + 3); j++) if (hit(r, pts[j], pts[j + 1])) sc++;
+          if (sc < bs) { bs = sc; best = [dx, dy, anchor]; if (!sc) break; }
+        }
+        g.text(k, y, txt, Object.assign({ dx: best[0], dy: best[1] + 4, anchor: best[2], small: true }, o));
+      };
+      g.dot(ke, c, { c: 'c2', r: 6.5 }); label(ke, e <= P ? `k = e = ${e}` : `k = e ≡ ${ke}`, { c: 'c2' });
+      g.dot(P, back, { c: 'hl', r: 7 }); label(P, `k = ed ≡ ${P}`, {});
+      g.dot(1, m, { c: 'hl', r: 5 }); label(1, 'k = 1', { c: 'muted' });
+      L.legend(ctx.host, [{ kind: 'dot', c: 'c1', label: T('m coprime to N', 'N と互いに素な m') }, { kind: 'dot', c: 'c2', label: T('m sharing a factor with N (still decrypts)', 'N と共通因数をもつ m（それでも復号できる）') }, { kind: 'dot', c: 'hl', label: T('your message', '選んだメッセージ') }, { c: 'muted', dash: true, label: T(`period ${per}: one full cycle of mᵏ`, `周期 ${per}：mᵏ の1周期`) }]);
       ctx.readout([
         { k: 'N = pq', v: `${p}·${q} = ${N}` }, { k: 'φ(N)', v: `${p - 1}·${q - 1} = ${phi}` },
         { k: T('public e', '公開指数 e'), v: String(e) }, { k: T('private d', '秘密指数 d'), v: `${d}  (ed = ${K} ≡ 1 mod ${phi})` },
         { k: 'c = mᵉ mod N', v: `${m}${sup(e)} ≡ ${c}`, tone: 'key' },
         { k: 'cᵈ mod N', v: String(back), tone: back === m ? 'good' : 'warn' },
+        { k: T('period of mᵏ', 'mᵏ の周期'), v: `${per}` + (gcd(m, N) === 1 ? T(' (the order of m)', '（m の位数）') : '') },
       ], (m0 >= N ? T(`The message must be smaller than N, so m = ${m0} is read as ${m0} mod ${N} = ${m}. `, `メッセージは N より小さくなければならないので、m = ${m0} を ${m0} mod ${N} = ${m} として扱います。`) : '') + T('e is the smallest odd exponent coprime to φ(N), and d is its inverse modulo φ(N).', 'e は φ(N) と互いに素な最小の奇数、d は φ(N) を法とする e の逆元です。'));
     },
   };

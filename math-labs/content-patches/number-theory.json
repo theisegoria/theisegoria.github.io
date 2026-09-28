@@ -1,0 +1,121 @@
+{
+ "modular": {
+  "body": [
+   "Wind the integers onto a clock with n hours, one turn of the spiral for every n integers. Two integers are congruent modulo n exactly when they land on the same ray. On the right, multiplication becomes repeated addition: b steps of size a from 0 end on the hour a·b mod n, and replacing a by its residue does not change where you land.",
+   "整数を n 時間の時計に巻き付け、n 個ごとに螺旋を1周させます。2つの整数が n を法として合同なのは、同じ半直線上に来るときに限ります。右側では乗法を繰り返しの足し算として見ます。0 から大きさ a の歩幅で b 歩進むと a·b mod n の時刻に着き、a をその剰余に置き換えても着く場所は変わりません。"
+  ],
+  "answer": [
+   "If n divides a − a′, it divides ab − a′b = (a − a′)b, so ab ≡ a′b. On the clock, steps of size a and of size a mod n reach the same hours.",
+   "n が a − a′ を割り切るなら、ab − a′b = (a − a′)b も割り切るので ab ≡ a′b です。時計の上では、歩幅 a と歩幅 a mod n は同じ時刻に到達します。"
+  ]
+ },
+ "sieve": {
+  "body": [
+   "Write the numbers from 1 to the limit in rows of ten. Each prime p up to the square root of the limit crosses out its multiples, starting at p², in its own colour; whatever survives, apart from 1, is prime. Press Play to run the sieve prime by prime, and compare the prime count π(x) with x/ln x and the logarithmic integral li(x).",
+   "1 から上限までの数を10個ずつ並べます。上限の平方根以下の各素数 p が、p² から始めて自分の倍数を自分の色で消していきます。1 を除いて残った数が素数です。再生を押すと素数ごとに篩が進みます。素数の個数 π(x) を x/ln x や対数積分 li(x) と比べてください。"
+  ],
+  "example": [
+   "Up to 30 there are ten primes; up to 100 there are twenty-five, while 100/ln 100 ≈ 21.7 and li(100) ≈ 30.1.",
+   "30 以下の素数は10個、100 以下は25個です。これに対し 100/ln 100 ≈ 21.7、li(100) ≈ 30.1 です。"
+  ],
+  "caution": [
+   "π(x) is neither x/ln x nor li(x) for finite x; the prime number theorem only says the ratios tend to 1.",
+   "有限の x では π(x) は x/ln x とも li(x) とも一致しません。素数定理が述べるのは比が 1 に近づくことだけです。"
+  ],
+  "question": [
+   "Why can crossing out stop at √x, and why start each prime at p²?",
+   "消去を √x で止めてよいのはなぜですか？また各素数を p² から始めるのはなぜですか？"
+  ],
+  "answer": [
+   "A composite number has a prime factor no larger than its square root, and any multiple kp with k < p has a smaller prime factor, so it was already crossed out.",
+   "合成数には平方根以下の素因数があるからです。また k < p の倍数 kp はより小さな素因数をもつので、すでに消されています。"
+  ]
+ },
+ "rsa": {
+  "body": [
+   "Pick two different primes p and q. The public key is N = pq with an exponent e coprime to φ(N) = (p − 1)(q − 1), and the private exponent d is the inverse of e modulo φ(N). The left plot shows encryption for every message at once: it is a permutation of the residues. The right plot shows why decryption works: the powers of m repeat, and ed = 1 + t·φ(N) brings m back.",
+   "異なる2つの素数 p、q を選びます。公開鍵は N = pq と、φ(N) = (p − 1)(q − 1) と互いに素な指数 e です。秘密指数 d は φ(N) を法とする e の逆元です。左の図はすべてのメッセージの暗号化を同時に示し、剰余の置換になっています。右の図は復号がうまくいく理由を示します。m のべきは繰り返し、ed = 1 + t·φ(N) で m に戻ります。"
+  ],
+  "example": [
+   "For p = 5 and q = 11, N = 55 and φ(N) = 40. With e = 3, d = 27 because 3·27 = 81 ≡ 1 (mod 40); the message 7 encrypts to 7³ mod 55 = 13, and 13²⁷ mod 55 = 7.",
+   "p = 5、q = 11 なら N = 55、φ(N) = 40 です。e = 3 なら 3·27 = 81 ≡ 1 (mod 40) より d = 27 です。メッセージ 7 は 7³ mod 55 = 13 に暗号化され、13²⁷ mod 55 = 7 に戻ります。"
+  ],
+  "answer": [
+   "It is an inverse of e modulo φ(N), so m^(ed) = m·(m^φ(N))^t ≡ m by Euler's theorem; for squarefree N this holds even when m shares a factor with N.",
+   "φ(N) を法とする e の逆元なので、オイラーの定理により m^(ed) = m·(m^φ(N))^t ≡ m となります。N が平方因子をもたなければ、m が N と共通因数をもつ場合にも成り立ちます。"
+  ],
+  "params": [
+   [
+    "p",
+    "Prime p",
+    "素数 p",
+    0,
+    4,
+    1,
+    1,
+    [
+     [
+      "3",
+      "3"
+     ],
+     [
+      "5",
+      "5"
+     ],
+     [
+      "7",
+      "7"
+     ],
+     [
+      "11",
+      "11"
+     ],
+     [
+      "13",
+      "13"
+     ]
+    ]
+   ],
+   [
+    "q",
+    "Prime q",
+    "素数 q",
+    0,
+    4,
+    1,
+    2,
+    [
+     [
+      "5",
+      "5"
+     ],
+     [
+      "7",
+      "7"
+     ],
+     [
+      "11",
+      "11"
+     ],
+     [
+      "13",
+      "13"
+     ],
+     [
+      "17",
+      "17"
+     ]
+    ]
+   ],
+   [
+    "m",
+    "Message m",
+    "メッセージ m",
+    2,
+    40,
+    1,
+    7
+   ]
+  ]
+ }
+}

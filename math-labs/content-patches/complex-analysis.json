@@ -1,0 +1,118 @@
+{
+ "conformal": {
+  "body": [
+   "Transform a grid with w = zᵏ and follow two short curves through a point z₀ that you drag. Away from z₀ = 0 both curves are rotated by arg f′(z₀) and stretched by |f′(z₀)|, so the angle between them is unchanged. At the critical point z₀ = 0 the angle is multiplied by k.",
+   "w = zᵏ で格子を変換し、ドラッグできる点 z₀ を通る2本の短い曲線を追います。z₀ = 0 以外では、両方の曲線が arg f′(z₀) だけ回転し |f′(z₀)| 倍に伸びるので、間の角度は変わりません。臨界点 z₀ = 0 では角度が k 倍になります。"
+  ],
+  "formula": "f(z)=z^k,\\quad f\\prime(z_0)=kz_0^{k-1}\\ne0\\ \\Longrightarrow\\ \\text{angles at }z_0\\text{ are preserved}",
+  "params": [
+   [
+    "power",
+    "Map power k",
+    "写像のべき k",
+    1,
+    4,
+    1,
+    2,
+    [
+     [
+      "z",
+      "z"
+     ],
+     [
+      "z²",
+      "z²"
+     ],
+     [
+      "z³",
+      "z³"
+     ],
+     [
+      "z⁴",
+      "z⁴"
+     ]
+    ]
+   ],
+   [
+    "angle",
+    "Angle between the curves (degrees)",
+    "曲線の間の角度（度）",
+    10,
+    170,
+    5,
+    60
+   ]
+  ]
+ },
+ "residue": {
+  "body": [
+   "The function f(z) = 1/(z − a) + 2/(z − b) has residue 1 at a and 2 at b. Drag the centre of the circular contour, change its radius and move the pole a. The right panel traces the integral accumulated along the way: it returns to 0 when no pole is enclosed and ends at 2πi times the enclosed residues otherwise, jumping when a pole crosses the contour.",
+   "関数 f(z) = 1/(z − a) + 2/(z − b) は a で留数1、b で留数2をもちます。円形の経路の中心をドラッグし、半径と極 a の位置を変えます。右の図は経路に沿って積み上がる積分を描きます。極を囲まなければ0に戻り、囲めば囲んだ留数の和の 2πi 倍で終わり、極が経路を横切ると値が跳びます。"
+  ],
+  "params": [
+   [
+    "radius",
+    "Contour radius",
+    "経路半径",
+    0.3,
+    2,
+    0.05,
+    1
+   ],
+   [
+    "pole",
+    "Position of pole a on the real axis",
+    "実軸上の極 a の位置",
+    -1.8,
+    1.8,
+    0.05,
+    0.4
+   ]
+  ]
+ },
+ "harmonic": {
+  "body": [
+   "Level curves of u = Re f (blue) and v = Im f (orange) for a holomorphic f, rotated by the phase φ. Drag the probe: the two gradients are always perpendicular and equally long, as the Cauchy–Riemann equations demand, except at critical points where f′ = 0.",
+   "正則関数 f の u = Re f（青）と v = Im f（橙）の等高線を、位相 φ だけ回転させて描きます。調べる点をドラッグすると、コーシー・リーマン方程式の通り、2つの勾配は常に直交し長さも等しいことがわかります。例外は f′ = 0 となる臨界点です。"
+  ],
+  "formula": "u_x=v_y,\\quad u_y=-v_x\\quad\\Longrightarrow\\quad \\nabla u\\cdot\\nabla v=0,\\ \\ |\\nabla u|=|\\nabla v|=|f\\prime|",
+  "params": [
+   [
+    "fn",
+    "Function",
+    "関数",
+    0,
+    3,
+    1,
+    0,
+    [
+     [
+      "z²",
+      "z²"
+     ],
+     [
+      "z³",
+      "z³"
+     ],
+     [
+      "eᶻ",
+      "eᶻ"
+     ],
+     [
+      "1/z",
+      "1/z"
+     ]
+    ]
+   ],
+   [
+    "phase",
+    "Phase angle φ (degrees)",
+    "位相角 φ（度）",
+    0,
+    180,
+    5,
+    30
+   ]
+  ]
+ }
+}

@@ -116,8 +116,19 @@
       g.hline(fs, { c: 'c1', dash: '6 4', w: 1.8 });
       g.text(4.1, fs, `f* = ${fmt(fs, 3)}`, { anchor: 'end', dy: -7, small: true, c: 'c1' });
       g.dot(b, fs, { c: 'c1', r: 4 });
-      if (gap > 0.05) { g.seg([lam, gl], [lam, fs], { c: 'c2', w: 2.4 }); g.text(lam, (gl + fs) / 2, `${T('gap', 'ギャップ')} ${fmt(gap, 3)}`, { dx: lam > 0 ? -14 : 14, anchor: lam > 0 ? 'end' : 'start', small: true, c: 'c2' }); }
       const sl = b - lam;
+      if (gap > 0.05) {
+        g.seg([lam, gl], [lam, fs], { c: 'c2', w: 2.4 });
+        // The tangent of g at λ rises on the side where b − λ points, so the label goes to the other side,
+        // and it stays a line-height below the dashed f* line.
+        const left = lam > 2.6 ? true : lam < -2.6 ? false : sl > 0;
+        const rises = left ? sl < 0 : sl > 0; // near the frame edge the tangent may rise on the chosen side
+        const ppu = (g.Y(0) - g.Y(1)); // pixels per unit of g
+        const yl = Math.max(Math.min((gl + fs) / 2, fs - 16 / ppu), gl + 4 / ppu);
+        const lbl = `${T('gap', 'ギャップ')} ${fmt(gap, 3)}`;
+        if (rises) g.text(lam, gl, lbl, { dx: left ? -12 : 12, dy: 22, anchor: left ? 'end' : 'start', small: true, c: 'c2' });
+        else g.text(lam, yl, lbl, { dx: left ? -10 : 10, dy: 4, anchor: left ? 'end' : 'start', small: true, c: 'c2' });
+      }
       g.line([[lam - 1.2, gl - 1.2 * sl], [lam + 1.2, gl + 1.2 * sl]], { c: 'ink', w: 1.4, op: 0.7 });
       g.handle(lam, gl, { c: 'hl', axis: 'x', bounds: [-4, 4, -6, 5.5], label: T('Trial multiplier λ', '試す乗数 λ'), onDrag: (x) => ctx.set('lambda', x) });
       L.legend(ctx.host, [{ c: 'c1', label: 'f*(b) = b²/2' }, { c: 'c2', dash: true, label: T('tangent, slope λ* = b', '接線、傾き λ* = b') }, { c: 'c4', label: 'g(λ) = λb − λ²/2' }, { c: 'ink', label: T('slope of g = b − λ, the constraint violation', 'g の傾き = b − λ（制約の違反量）') }]);
