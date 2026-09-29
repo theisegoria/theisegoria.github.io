@@ -22,6 +22,7 @@ GROUPS = [
     ('geometry', 'Geometry and transformations', '幾何と変換'),
     ('applications', 'Probability, computation, and reference', '確率・計算・参考資料'),
     ('physics', 'Physics', '物理'),
+    ('engineering', 'Engineering: watches and sound', '工学：時計と音'),
 ]
 ATLAS = [('topology', 'Topology', '位相空間'), ('metric', 'Metric spaces', '距離空間'), ('real', 'Real analysis', '実解析'),
          ('complex', 'Complex analysis', '複素解析'), ('functional', 'Functional analysis', '関数解析')]
@@ -43,8 +44,8 @@ def main_html(ja):
     graph = '/ja/math-encyclopedia/graph.html' if ja else '/math-encyclopedia/graph.html'
     out = ['<main id="main"><section class="hero encyclopedia-intro"><p class="label">ISEGORIA / MATHEMATICS</p>',
            f'<h1>{"数学百科事典" if ja else "Math encyclopedia"}</h1>',
-           '<p class="deck">' + (f'集合から関数空間、そして物理まで。{count}件の解説と実験を分野別に探せます。' if ja else
-                                 f'From sets to spaces of functions, and on into physics. {count} explainers and experiments, by subject.') + '</p>',
+           '<p class="deck">' + (f'集合から関数空間、そして物理と工学まで。{count}件の解説と実験を分野別に探せます。' if ja else
+                                 f'From sets to spaces of functions, and on into physics and engineering. {count} explainers and experiments, by subject.') + '</p>',
            f'<p class="graph-link"><a href="{graph}">{"つながった知識グラフを開く" if ja else "Open the connected knowledge graph"}</a></p></section>',
            f'<nav class="ig-page-nav" aria-label="{"このページの目次" if ja else "On this page"}">']
     groups = [g for g in GROUPS if any(e['group'] == g[0] for e in DATA)]

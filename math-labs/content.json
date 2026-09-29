@@ -10635,5 +10635,1629 @@
         "url": "https://ocw.mit.edu/courses/8-334-statistical-mechanics-ii-statistical-physics-of-fields-spring-2014/"
       }
     ]
+  },
+  {
+    "slug": "watch-oscillators",
+    "title": [
+      "Oscillators and escapements: how a watch keeps time",
+      "振動子と脱進機：時計はどうやって時を刻むか"
+    ],
+    "description": [
+      "A mechanical watch is a torsional oscillator that has to be pushed without being disturbed. The balance and its hairspring set the frequency, the regulator trims it by a few seconds a day, and the escapement feeds it energy twice per swing. Where and how that push is delivered decides whether the rate changes with amplitude, and an out-of-balance speck of metal makes the watch run differently in every position except at one special amplitude.",
+      "機械式時計は、乱さずに押し続けなければならないねじり振動子です。てんぷとひげぜんまいが振動数を決め、緩急針がそれを一日に数秒の単位で調整し、脱進機が一往復ごとに二回エネルギーを補います。その押し方と押す位置によって歩度が振り角で変わるかどうかが決まり、わずかな重心のずれがあると、ある特別な振り角を除いて姿勢ごとに歩度が変わります。"
+    ],
+    "group": "engineering",
+    "prerequisite": [
+      "Classical mechanics, damped oscillators and Bessel functions",
+      "古典力学、減衰振動子、ベッセル関数"
+    ],
+    "source": "Charles-André Reymondin et al. · The Theory of Horology (Swiss Federation of Technical Colleges, 1999)",
+    "url": "https://books.google.com/books/about/The_Theory_of_Horology.html?id=2UIxAAAACAAJ",
+    "labs": [
+      {
+        "id": "balance-hairspring",
+        "title": [
+          "1. The balance, the hairspring and the timegrapher",
+          "1. てんぷ、ひげぜんまい、タイムグラファー"
+        ],
+        "body": [
+          "The balance is a wheel of moment of inertia I on a spiral spring of torsional stiffness κ, so it swings with period T = 2π√(I/κ) whatever its amplitude, as long as the spring obeys Hooke’s law. A watch beating 28,800 times an hour has a balance at 4 Hz: each of the 8 beats a second is one tick of the escapement. The regulator index clamps the outer turn of the hairspring and changes its active length L; since κ ∝ 1/L, shortening the spring by one part in ten thousand makes the watch gain 4.3 s a day. Drag the gold regulator along its scale and watch the timegrapher on the right: it plots the time of each tick against a perfect clock, so a gaining watch draws a rising line, and a beat error, when the balance’s rest point is not centred on the escapement, splits the tick and tock into two parallel lines.",
+          "てんぷは慣性モーメント I の輪で、ねじり剛性 κ のうず巻きばねにつながっているので、ばねがフックの法則に従う限り、振り角によらず周期 T = 2π√(I/κ) で振動します。毎時 28,800 振動の時計のてんぷは 4 Hz で、毎秒 8 回の振動それぞれが脱進機の一刻みです。緩急針はひげぜんまいの外側の一巻きを挟み、その有効長さ L を変えます。κ ∝ 1/L なので、ばねを一万分の一だけ短くすると時計は一日に 4.3 秒進みます。金色の緩急針を目盛りに沿ってドラッグし、右のタイムグラファーを見てください。各刻みの時刻を完全な時計と比べて記録するので、進む時計は右上がりの線を描きます。てんぷの静止点が脱進機の中心からずれる片振り（ビートエラー）があると、チクとタクが二本の平行な線に分かれます。"
+        ],
+        "formula": "I\\ddot\\theta+\\frac{I\\omega_0}{Q}\\dot\\theta+\\kappa\\theta=\\tau_{\\rm esc}(t),\\qquad \\omega_0=\\sqrt{\\kappa/I},\\qquad \\kappa\\propto\\frac1{L},\\qquad \\text{rate}\\ [\\mathrm{s/day}]=86400\\left(\\sqrt{\\frac{L_0}{L}}-1\\right)\\approx 43200\\,\\frac{\\Delta L}{L_0}",
+        "example": [
+          "A balance of \\(I=12\\ \\mathrm{mg\\,cm^2}=1.2\\times10^{-9}\\ \\mathrm{kg\\,m^2}\\) at 4 Hz needs \\(\\kappa=I\\omega_0^2=7.6\\times10^{-7}\\ \\mathrm{N\\,m/rad}\\). Swinging through 270°, it stores \\(E=\\tfrac12\\kappa A^2=8.4\\ \\mu\\mathrm J\\); with a quality factor \\(Q=250\\) it loses \\(2\\pi E/Q\\) per cycle, so the mainspring must supply \\(\\omega_0E/Q\\approx0.85\\ \\mu\\mathrm W\\). Moving the regulator so that \\(L\\) shrinks by 0.2‰ gives \\(86400(\\sqrt{1/0.9998}-1)=8.6\\ \\mathrm{s/day}\\).",
+          "\\(I=12\\ \\mathrm{mg\\,cm^2}=1.2\\times10^{-9}\\ \\mathrm{kg\\,m^2}\\) のてんぷを 4 Hz で振らせるには \\(\\kappa=I\\omega_0^2=7.6\\times10^{-7}\\ \\mathrm{N\\,m/rad}\\) が必要です。270° の振り角では \\(E=\\tfrac12\\kappa A^2=8.4\\ \\mu\\mathrm J\\) を蓄え、品質係数 \\(Q=250\\) なら一周期あたり \\(2\\pi E/Q\\) を失うので、主ぜんまいは \\(\\omega_0E/Q\\approx0.85\\ \\mu\\mathrm W\\) を供給しなければなりません。緩急針を動かして \\(L\\) を 0.2‰ 縮めると \\(86400(\\sqrt{1/0.9998}-1)=8.6\\ \\mathrm{s/day}\\) です。"
+        ],
+        "caution": [
+          "Isochronism, a period independent of amplitude, holds only for an ideal linear spring and a free balance. A real hairspring breathes eccentrically as it winds and unwinds unless its outer end is shaped (a Breguet overcoil) or it is made from a spring whose centre of gravity stays on the axis, and the escapement disturbs the balance as the next experiment shows. The index changes \\(L\\) but also where the spring is held, so real regulators also shift the beat error slightly. The timegrapher here is simulated from the model, with no measurement noise.",
+          "振り角によらない周期、すなわち等時性は、理想的な線形ばねと自由なてんぷに対してだけ成り立ちます。現実のひげぜんまいは、外端を成形する（ブレゲひげ）か重心が軸上にとどまるばねにしない限り、巻き上げと巻き戻しで偏心して呼吸します。また次の実験で見るように、脱進機がてんぷを乱します。緩急針は \\(L\\) を変えるだけでなく、ばねを押さえる位置も変えるので、現実の緩急装置は片振りもわずかに動かします。ここでのタイムグラファーはモデルから計算したもので、測定のノイズは含みません。"
+        ],
+        "question": [
+          "Why does shortening the hairspring make the watch gain, and why is the effect proportional to half the fractional change?",
+          "ひげぜんまいを短くすると時計が進むのはなぜで、その効果が相対変化の半分に比例するのはなぜですか？"
+        ],
+        "answer": [
+          "The torque needed to twist a strip through a given angle is inversely proportional to its length, because the twist is shared along it: \\(\\kappa=EI_{\\rm s}/L\\) for a flat spiral of Young’s modulus \\(E\\) and section moment \\(I_{\\rm s}\\). Shorter spring, stiffer spring, higher frequency. Since \\(\\omega_0\\propto\\sqrt\\kappa\\propto L^{-1/2}\\), a small change gives \\(\\Delta\\omega/\\omega=-\\tfrac12\\Delta L/L\\), and one day is 86,400 s, so the rate is \\(43200\\,|\\Delta L|/L\\) seconds a day.",
+          "帯を一定の角度だけねじるのに必要なトルクは、ねじれが帯の長さ全体に分担されるので長さに反比例します。ヤング率 \\(E\\)、断面二次モーメント \\(I_{\\rm s}\\) の平らなうず巻きばねでは \\(\\kappa=EI_{\\rm s}/L\\) です。短いばねは硬く、振動数は高くなります。\\(\\omega_0\\propto\\sqrt\\kappa\\propto L^{-1/2}\\) なので小さな変化に対して \\(\\Delta\\omega/\\omega=-\\tfrac12\\Delta L/L\\) で、一日は 86,400 秒なので歩度は一日に \\(43200\\,|\\Delta L|/L\\) 秒です。"
+        ],
+        "params": [
+          [
+            "vph",
+            "Beat rate",
+            "振動数",
+            0,
+            4,
+            1,
+            3,
+            [
+              [
+                "18,000 vph",
+                "18,000 振動/時"
+              ],
+              [
+                "21,600 vph",
+                "21,600 振動/時"
+              ],
+              [
+                "25,200 vph",
+                "25,200 振動/時"
+              ],
+              [
+                "28,800 vph",
+                "28,800 振動/時"
+              ],
+              [
+                "36,000 vph",
+                "36,000 振動/時"
+              ]
+            ]
+          ],
+          [
+            "reg",
+            "Regulator: change in active length ΔL/L (‰)",
+            "緩急針：有効長さの変化 ΔL/L（‰）",
+            -0.5,
+            0.5,
+            0.01,
+            -0.1
+          ],
+          [
+            "beat",
+            "Beat error (ms)",
+            "片振り（ms）",
+            0,
+            2,
+            0.1,
+            0.4
+          ],
+          [
+            "amp",
+            "Amplitude (degrees)",
+            "振り角（度）",
+            150,
+            330,
+            5,
+            280
+          ]
+        ],
+        "source": "Charles-André Reymondin et al. · The Theory of Horology (Swiss Federation of Technical Colleges, 1999)",
+        "url": "https://books.google.com/books/about/The_Theory_of_Horology.html?id=2UIxAAAACAAJ"
+      },
+      {
+        "id": "escapement-airy",
+        "title": [
+          "2. Airy’s theorem: where the push goes",
+          "2. エアリーの定理：どこで押すか"
+        ],
+        "body": [
+          "The escapement has to give the balance a push twice per cycle to replace what friction takes, and every push shifts the phase of the oscillation a little. Airy showed in 1830 which pushes do no harm: a kick delivered exactly as the balance passes its centre, where the displacement is zero, changes the amplitude but not the timing. A kick before the centre advances the phase and the watch gains; a kick after it retards the phase and the watch loses. On the left the state of the balance is a point going round the phase plane; each kick is a vertical jump in velocity, drawn exaggerated. On the right, the rate error for a kick at a fixed angle from the centre: it grows as the amplitude falls, because the same angle is a larger part of a smaller swing. That is the escapement error watchmakers fight at low mainspring power.",
+          "脱進機は、摩擦が奪うものを補うために一周期に二回てんぷを押さなければならず、そのたびに振動の位相がわずかにずれます。エアリーは 1830 年に、害にならない押し方を示しました。てんぷが中心、つまり変位が 0 の点を通過するちょうどその瞬間に与える一撃は、振り角を変えますが時刻は変えません。中心より前の一撃は位相を進めて時計を進ませ、中心より後の一撃は位相を遅らせて時計を遅らせます。左ではてんぷの状態が位相平面を回る点として描かれ、各一撃は速度の垂直な跳びとして誇張して描いています。右は中心から一定の角度で与える一撃による歩度の誤差です。振り角が小さくなるほど同じ角度が振動の大きな割合を占めるので、誤差は大きくなります。これが、主ぜんまいの力が弱いときに時計師が戦う脱進機の誤差です。"
+        ],
+        "formula": "\\theta=A\\sin\\Phi,\\ \\dot\\theta=A\\omega\\cos\\Phi:\\quad \\delta\\Phi=-\\varepsilon\\sin\\Phi_i,\\quad \\frac{\\delta A}{A}=\\varepsilon\\cos\\Phi_i,\\qquad \\varepsilon\\cos\\Phi_i=\\frac{\\pi}{2Q}\\ \\Rightarrow\\ \\text{rate}=-\\frac{43200}{Q}\\tan\\Phi_i\\ \\ \\mathrm{s/day},\\quad \\sin\\Phi_i=\\frac{\\theta_i}{A}",
+        "example": [
+          "With \\(Q=250\\), amplitude 270° and the impulse centred \\(2^\\circ\\) before the line of centres, \\(\\sin\\Phi_i=-2/270\\) and the rate is \\(+43200\\times0.0074/250=+1.28\\ \\mathrm{s/day}\\). If the mainspring runs down and the amplitude falls to 180°, the same impulse gives \\(+1.92\\ \\mathrm{s/day}\\): the watch gains more as it runs down. With the impulse exactly at the centre the error is zero at every amplitude.",
+          "\\(Q=250\\)、振り角 270° で、衝撃の中心が中心線の \\(2^\\circ\\) 手前にあるとき、\\(\\sin\\Phi_i=-2/270\\) で歩度は \\(+43200\\times0.0074/250=+1.28\\ \\mathrm{s/day}\\) です。主ぜんまいがほどけて振り角が 180° に落ちると、同じ衝撃は \\(+1.92\\ \\mathrm{s/day}\\) を与えます。時計はほどけるにつれてより進みます。衝撃がちょうど中心にあれば、どの振り角でも誤差は 0 です。"
+        ],
+        "caution": [
+          "The formula treats each impulse as instantaneous and small, and the losses as viscous. A real lever escapement spreads its impulse over about 10° to 15° of balance rotation, roughly symmetric about the centre, so most of its effect cancels; what remains comes mainly from the unlocking, a braking resistance just before the centre, which by the same rule makes the watch lose as amplitude falls. The picture draws the loss and the kick schematically large so they can be seen; the readout uses the true sizes.",
+          "この公式は各衝撃を瞬間的で小さいものとして、損失を粘性的なものとして扱います。現実のアンクル脱進機は衝撃をてんぷの回転のおよそ 10° から 15° にわたって、中心のほぼ両側に広げるので、効果の大部分は打ち消し合います。残るのは主に解除、つまり中心の直前にかかる制動の抵抗によるもので、同じ規則により振り角が落ちると時計は遅れます。図では損失と一撃を見えるように模式的に大きく描いていますが、表示は本当の大きさを使っています。"
+        ],
+        "question": [
+          "Why does a kick at the centre change the amplitude but not the phase?",
+          "中心での一撃が振り角を変えるのに位相を変えないのはなぜですか？"
+        ],
+        "answer": [
+          "In the phase plane the state is \\((\\theta,\\dot\\theta/\\omega)=A(\\sin\\Phi,\\cos\\Phi)\\). A kick changes only the velocity coordinate, moving the point vertically. At the centre the point is on the vertical axis, \\(\\Phi=0\\), so a vertical move keeps it on the same ray from the origin: the radius \\(A\\) changes, the angle \\(\\Phi\\) does not. Anywhere else the vertical move also rotates the ray, by \\(-\\varepsilon\\sin\\Phi\\) to first order, and that rotation is a time shift that accumulates every cycle.",
+          "位相平面で状態は \\((\\theta,\\dot\\theta/\\omega)=A(\\sin\\Phi,\\cos\\Phi)\\) です。一撃は速度の座標だけを変え、点を垂直に動かします。中心では点は縦軸上、すなわち \\(\\Phi=0\\) にあるので、垂直な移動は点を原点からの同じ半直線上に保ちます。半径 \\(A\\) は変わりますが角度 \\(\\Phi\\) は変わりません。それ以外の場所では垂直な移動が半直線を一次の近似で \\(-\\varepsilon\\sin\\Phi\\) だけ回転させ、その回転が毎周期積み重なる時刻のずれになります。"
+        ],
+        "params": [
+          [
+            "thi",
+            "Impulse position θᵢ from the centre (degrees; negative = before)",
+            "衝撃の位置 θᵢ（中心からの度数、負は手前）",
+            -15,
+            15,
+            0.5,
+            -2
+          ],
+          [
+            "amp",
+            "Amplitude (degrees)",
+            "振り角（度）",
+            100,
+            330,
+            5,
+            270
+          ],
+          [
+            "Q",
+            "Quality factor Q",
+            "品質係数 Q",
+            100,
+            400,
+            10,
+            250
+          ]
+        ],
+        "source": "George Biddell Airy · On the disturbances of pendulums and balances, and on the theory of escapements, Trans. Cambridge Phil. Soc. 3 (1830)",
+        "url": "https://theindex.nawcc.org/Articles/AiryOnPendulumsAndBalanceWheels.htm"
+      },
+      {
+        "id": "positional-error",
+        "title": [
+          "3. Positional error and the 220° amplitude",
+          "3. 姿勢差と 220° の振り角"
+        ],
+        "body": [
+          "If the balance’s centre of mass is off its axis by a speck, gravity pulls on it whenever the watch is vertical and adds a pendulum-like torque to the hairspring’s. How much this changes the period depends on where the heavy spot sits relative to gravity and on the amplitude, through a Bessel function: the rate error is proportional to J₁(A)/A, with A in radians. That function changes sign at A = 3.832 rad, 219.5°, so at that amplitude the unbalance has no effect on the rate in any position, and above it the error reverses. Drag the heavy spot around the rim, pick a position of the watch, and read the four vertical-position curves on the right: the spread between them is what a timegrapher reports as positional variation.",
+          "てんぷの重心が軸からわずかにずれていると、時計が縦になるたびに重力がそこを引き、ひげぜんまいのトルクに振り子のようなトルクが加わります。これが周期をどれだけ変えるかは、重い点が重力に対してどこにあるかと振り角によって、ベッセル関数を通して決まります。歩度の誤差は、A をラジアンとして J₁(A)/A に比例します。この関数は A = 3.832 rad、すなわち 219.5° で符号を変えるので、その振り角では重心のずれはどの姿勢でも歩度に影響せず、それを超えると誤差が逆転します。重い点を縁に沿ってドラッグし、時計の姿勢を選び、右の四つの縦姿勢の曲線を読んでください。それらの間の開きが、タイムグラファーが姿勢差として示すものです。"
+        ],
+        "formula": "I\\ddot\\theta+\\kappa\\theta=-m g r\\sin(\\theta+\\alpha),\\qquad \\frac{\\delta\\omega}{\\omega_0}=\\frac{m g r\\cos\\alpha}{I\\omega_0^{2}}\\,\\frac{J_1(A)}{A},\\qquad J_1(3.8317)=0\\ \\Rightarrow\\ A^\\ast=219.5^\\circ",
+        "example": [
+          "For \\(I=12\\ \\mathrm{mg\\,cm^2}\\) at 4 Hz, an unbalance \\(mr=20\\ \\mu\\mathrm g\\,\\mathrm{mm}\\) gives \\(mgr/(I\\omega_0^2)=2.6\\times10^{-4}\\). With the heavy spot straight down (\\(\\alpha=0\\)) and amplitude 150°, \\(J_1(2.618)/2.618=0.177\\), so the watch gains \\(86400\\times2.6\\times10^{-4}\\times0.177=4.0\\ \\mathrm{s/day}\\). Turned so the spot is straight up it loses the same amount; at 270° amplitude the two errors are \\(\\mp1.3\\ \\mathrm{s/day}\\), reversed in sign.",
+          "\\(I=12\\ \\mathrm{mg\\,cm^2}\\)、4 Hz で、重心のずれ \\(mr=20\\ \\mu\\mathrm g\\,\\mathrm{mm}\\) は \\(mgr/(I\\omega_0^2)=2.6\\times10^{-4}\\) を与えます。重い点が真下（\\(\\alpha=0\\)）で振り角 150° なら \\(J_1(2.618)/2.618=0.177\\) なので、時計は一日に \\(86400\\times2.6\\times10^{-4}\\times0.177=4.0\\ \\mathrm{s}\\) 進みます。重い点が真上になるように向きを変えると同じだけ遅れます。振り角 270° では二つの誤差は \\(\\mp1.3\\ \\mathrm{s/day}\\) で、符号が逆になります。"
+        ],
+        "caution": [
+          "The formula is first order in the unbalance, from averaging the gravity torque over one swing; it is excellent for real unbalances, which are tiny. With the watch flat (dial up or down) gravity acts along the axis and this error vanishes; the dial-up and dial-down rates differ for another reason, friction at the pivot ends, which is not modelled here. Watchmakers exploit the 219.5° zero by adjusting the mainspring and escapement so the amplitude in the vertical positions sits near it, and poise the balance by removing metal where the heavy spot is.",
+          "この公式は、重力のトルクを一振動にわたって平均することで得た、重心のずれについての一次の式です。現実のずれは非常に小さいので、非常によく当てはまります。時計を平ら（文字盤上または下）に置くと重力は軸に沿って働き、この誤差は消えます。文字盤上と文字盤下の歩度は別の理由、つまりほぞ先の摩擦で異なりますが、ここではモデル化していません。時計師は、縦姿勢での振り角がこの 219.5° の零点の近くに来るよう主ぜんまいと脱進機を調整し、重い点の金属を削っててんぷの釣り合いを取ることで、この零点を利用します。"
+        ],
+        "question": [
+          "Where does the Bessel function come from?",
+          "ベッセル関数はどこから来るのですか？"
+        ],
+        "answer": [
+          "Averaging the gravity torque against the motion \\(\\theta=A\\cos\\phi\\) over one cycle needs \\(\\int_0^{2\\pi}\\sin(A\\cos\\phi)\\cos\\phi\\,d\\phi\\), the component of the torque in phase with the displacement, which is what changes the effective stiffness. That integral is the definition of \\(2\\pi J_1(A)\\). Dividing by \\(A\\) turns a torque into a stiffness. Small amplitudes give \\(J_1(A)/A\\to\\tfrac12\\), an ordinary pendulum stiffness; large ones sample the torque \\(\\sin(\\theta+\\alpha)\\) all the way round, and the average can change sign.",
+          "重力のトルクを運動 \\(\\theta=A\\cos\\phi\\) に対して一周期にわたって平均するには、変位と同位相のトルク成分、つまり実効的な剛性を変える成分である \\(\\int_0^{2\\pi}\\sin(A\\cos\\phi)\\cos\\phi\\,d\\phi\\) が必要です。この積分は \\(2\\pi J_1(A)\\) の定義そのものです。\\(A\\) で割るとトルクが剛性に変わります。振り角が小さいと \\(J_1(A)/A\\to\\tfrac12\\) で普通の振り子の剛性になり、大きいとトルク \\(\\sin(\\theta+\\alpha)\\) を一周にわたって拾うので、平均の符号が変わりうるのです。"
+        ],
+        "params": [
+          [
+            "mr",
+            "Unbalance m·r (µg·mm)",
+            "重心のずれ m·r（µg·mm）",
+            0,
+            50,
+            1,
+            20
+          ],
+          [
+            "alpha",
+            "Heavy spot angle on the rim (degrees)",
+            "縁の重い点の角度（度）",
+            0,
+            355,
+            5,
+            0
+          ],
+          [
+            "amp",
+            "Amplitude (degrees)",
+            "振り角（度）",
+            120,
+            330,
+            5,
+            270
+          ],
+          [
+            "pos",
+            "Watch position",
+            "時計の姿勢",
+            0,
+            4,
+            1,
+            1,
+            [
+              [
+                "dial up",
+                "文字盤上"
+              ],
+              [
+                "crown down",
+                "りゅうず下"
+              ],
+              [
+                "crown left",
+                "りゅうず左"
+              ],
+              [
+                "crown up",
+                "りゅうず上"
+              ],
+              [
+                "crown right",
+                "りゅうず右"
+              ]
+            ]
+          ]
+        ],
+        "source": "Charles-André Reymondin, Georges Monnier, Didier Jeanneret, Umberto Pelaratti · The Theory of Horology, ch. 7 (Swiss Federation of Technical Colleges, 1999)",
+        "url": "https://books.google.com/books/about/The_Theory_of_Horology.html?id=2UIxAAAACAAJ"
+      }
+    ]
+  },
+  {
+    "slug": "gears-mechanisms",
+    "title": [
+      "Gears and mechanisms: transmitting motion exactly",
+      "歯車と機構：運動を正確に伝える"
+    ],
+    "description": [
+      "How toothed wheels pass on motion without a slip. The involute tooth profile keeps the speed ratio exactly constant while the contact slides along a straight line, even when the centres are pulled apart; a watch’s going train multiplies one turn of the barrel into thousands of turns of the escape wheel so that the fourth wheel turns exactly once a minute; and epicyclic gears, where axes themselves go round, give reductions, differentials and the tourbillon.",
+      "歯のついた車が滑らずに運動を伝える仕組みを扱います。インボリュート歯形は、接触点が直線に沿って滑る間も速度比をちょうど一定に保ち、中心距離を広げてもそれは変わりません。時計の輪列は香箱の一回転をがんぎ車の数千回転に増速し、四番車がちょうど毎分一回転するようにします。そして軸そのものが回る遊星歯車は、減速、差動装置、トゥールビヨンを生み出します。"
+    ],
+    "group": "engineering",
+    "prerequisite": [
+      "Plane geometry, angular velocity and rigid bodies",
+      "平面幾何、角速度、剛体"
+    ],
+    "source": "Faydor Litvin and Alfonso Fuentes · Gear Geometry and Applied Theory, 2nd ed. (Cambridge University Press, 2004)",
+    "url": "https://doi.org/10.1017/CBO9780511547126",
+    "labs": [
+      {
+        "id": "involute-gearing",
+        "title": [
+          "1. The involute: a constant ratio from a rolling string",
+          "1. インボリュート：ほどける糸がつくる一定の比"
+        ],
+        "body": [
+          "Unwind a taut string from a circle, the base circle, and its end traces an involute. Two gears whose teeth are involutes of their base circles touch along a single straight line, the line of action, tangent to both base circles; the push is always along that line and it always crosses the line of centres at the same pitch point, so the speed ratio is exactly the ratio of the base radii at every instant. That is the fundamental law of gearing. Press Play and follow the gold contact points sliding along the line of action on the right. Then pull the centres apart: the teeth get backlash and the pressure angle grows, but the ratio does not change at all, because the base circles did not. The contact ratio counts how many tooth pairs share the load on average; below 1 the mesh would lose contact.",
+          "張った糸を円、すなわち基礎円からほどくと、その端はインボリュートを描きます。歯がそれぞれの基礎円のインボリュートである二つの歯車は、両方の基礎円に接するただ一本の直線、作用線に沿って接します。押す力は常にその直線に沿い、その直線は常に中心線を同じピッチ点で横切るので、速度比はどの瞬間にも基礎円の半径の比にちょうど等しくなります。これが歯車の基本法則です。再生を押し、右の図で金色の接触点が作用線に沿って滑るのを追ってください。次に中心を引き離してください。歯にバックラッシュが生じ圧力角は大きくなりますが、基礎円は変わらないので比はまったく変わりません。かみ合い率は平均して何組の歯が荷重を分担しているかを数えます。1 未満ではかみ合いが途切れます。"
+        ],
+        "formula": "\\text{involute: } (x,y)=r_b(\\cos t+t\\sin t,\\ \\sin t-t\\cos t),\\qquad i=\\frac{\\omega_1}{\\omega_2}=\\frac{r_{b2}}{r_{b1}}=\\frac{z_2}{z_1},\\qquad a^{\\prime}\\cos\\alpha^{\\prime}=a_0\\cos\\alpha_0,\\qquad \\varepsilon=\\frac{\\sqrt{r_{a1}^2-r_{b1}^2}+\\sqrt{r_{a2}^2-r_{b2}^2}-a^{\\prime}\\sin\\alpha^{\\prime}}{\\pi m\\cos\\alpha_0}",
+        "example": [
+          "Two gears of module \\(m=1\\) with \\(z_1=18\\), \\(z_2=30\\) and \\(\\alpha_0=20^\\circ\\) have pitch radii 9 and 15, base radii \\(8.457\\) and \\(14.095\\), tip radii 10 and 16, and centre distance 24. The contact ratio is \\((\\sqrt{100-71.52}+\\sqrt{256-198.67}-24\\sin20^\\circ)/(\\pi\\cos20^\\circ)=(5.337+7.572-8.208)/2.952=1.59\\): between one and two pairs of teeth are always in contact. Pull the centres apart by 0.3 and \\(\\cos\\alpha^{\\prime}=24\\cos20^\\circ/24.3\\), so \\(\\alpha^{\\prime}=21.9^\\circ\\), and \\(\\varepsilon\\) drops to 1.31.",
+          "モジュール \\(m=1\\)、\\(z_1=18\\)、\\(z_2=30\\)、\\(\\alpha_0=20^\\circ\\) の二つの歯車は、ピッチ円半径 9 と 15、基礎円半径 \\(8.457\\) と \\(14.095\\)、歯先円半径 10 と 16、中心距離 24 をもちます。かみ合い率は \\((\\sqrt{100-71.52}+\\sqrt{256-198.67}-24\\sin20^\\circ)/(\\pi\\cos20^\\circ)=(5.337+7.572-8.208)/2.952=1.59\\) で、常に一組から二組の歯が接しています。中心を 0.3 引き離すと \\(\\cos\\alpha^{\\prime}=24\\cos20^\\circ/24.3\\) なので \\(\\alpha^{\\prime}=21.9^\\circ\\) となり、\\(\\varepsilon\\) は 1.31 に下がります。"
+        ],
+        "caution": [
+          "Below about 17 teeth at \\(20^\\circ\\) a standard involute pinion is undercut by the cutter that makes it; the drawing ignores this and draws the full profile. Watches mostly do not use involutes at all: their wheels drive tiny pinions of 6 to 12 leaves, where involutes would undercut badly, so watch trains use cycloid-derived ogival profiles that tolerate the small pinions and run with almost no friction on approach, at the price of a speed ratio that varies slightly within each tooth. The contact points are computed exactly from the involute geometry; the teeth are drawn without backlash at the standard centre distance.",
+          "\\(20^\\circ\\) では歯数がおよそ 17 未満の標準インボリュートの小歯車は、それを削る工具によって切り下げられます。図はこれを無視して完全な歯形を描いています。時計はほとんどインボリュートを使いません。時計の車は 6 から 12 枚の葉をもつ小さなかな（小歯車）を駆動し、そこではインボリュートはひどく切り下げられてしまうので、時計の輪列は小さなかなに耐え、かみ合い始めの摩擦がほとんどないサイクロイド由来の尖頭歯形を使います。代償は、一歯の中で速度比がわずかに変わることです。接触点はインボリュートの幾何から厳密に計算しています。歯は標準の中心距離でバックラッシュなしに描いています。"
+        ],
+        "question": [
+          "Why does pulling the centres apart leave the speed ratio unchanged for involute gears?",
+          "インボリュート歯車では、中心を引き離しても速度比が変わらないのはなぜですか？"
+        ],
+        "answer": [
+          "The common normal at the contact is always the internal tangent to the two base circles. It crosses the line of centres at a point dividing the centre distance in the ratio of the base radii, \\(r_{b1}:r_{b2}\\), by similar triangles, whatever the centre distance is. The speed ratio equals the inverse ratio of the distances from that point to the centres, so it is \\(r_{b2}/r_{b1}\\), fixed by the base circles alone. Moving the centres only tilts the tangent line, which is the change in pressure angle, and shifts which part of each tooth touches.",
+          "接触点での共通法線は常に二つの基礎円の内部共通接線です。相似な三角形により、それは中心距離がいくらであっても、中心線を基礎円の半径の比 \\(r_{b1}:r_{b2}\\) に分ける点で横切ります。速度比はその点から各中心までの距離の逆比に等しいので \\(r_{b2}/r_{b1}\\) で、基礎円だけで決まります。中心を動かしても、接線が傾く、つまり圧力角が変わることと、各歯のどの部分が接するかがずれることだけが起こります。"
+        ],
+        "params": [
+          [
+            "z1",
+            "Teeth on the driving gear z₁",
+            "駆動歯車の歯数 z₁",
+            12,
+            40,
+            1,
+            18
+          ],
+          [
+            "z2",
+            "Teeth on the driven gear z₂",
+            "被動歯車の歯数 z₂",
+            12,
+            60,
+            1,
+            30
+          ],
+          [
+            "alpha",
+            "Pressure angle α₀",
+            "圧力角 α₀",
+            0,
+            2,
+            1,
+            1,
+            [
+              [
+                "14.5°",
+                "14.5°"
+              ],
+              [
+                "20°",
+                "20°"
+              ],
+              [
+                "25°",
+                "25°"
+              ]
+            ]
+          ],
+          [
+            "da",
+            "Centres pulled apart by Δa (modules)",
+            "中心距離の増加 Δa（モジュール）",
+            0,
+            0.6,
+            0.02,
+            0
+          ]
+        ],
+        "source": "Faydor Litvin and Alfonso Fuentes · Gear Geometry and Applied Theory, 2nd ed. (Cambridge University Press, 2004)",
+        "url": "https://doi.org/10.1017/CBO9780511547126"
+      },
+      {
+        "id": "gear-train",
+        "title": [
+          "2. The going train of a watch",
+          "2. 時計の輪列"
+        ],
+        "body": [
+          "The mainspring barrel turns about once every seven hours; the escape wheel, at the other end of the train, several times a minute. In between, each wheel drives the pinion of the next, and each mesh multiplies the speed by the number of teeth on the wheel divided by the leaves on the pinion. The centre wheel must turn once an hour to carry the minute hand and the fourth wheel once a minute to carry the seconds hand, so the escape end of the train is fixed by the balance: the escape wheel advances one tooth per oscillation. Change the beat rate or the escapement’s tooth counts and read whether the seconds hand still keeps time. The animation runs at real speed or faster; the escape wheel moves in steps, half a tooth per beat.",
+          "主ぜんまいの香箱はおよそ七時間に一回転し、輪列の反対の端にあるがんぎ車は毎分数回転します。その間で、各車は次の車のかなを駆動し、各かみ合いは速度を車の歯数をかなの葉数で割った倍率だけ増します。分針を運ぶために二番車はちょうど毎時一回転、秒針を運ぶために四番車は毎分一回転しなければならないので、輪列のがんぎ側の端はてんぷによって決まります。がんぎ車は一振動ごとに一歯進むのです。振動数や脱進機の歯数を変えて、秒針がまだ正しく時を刻むかどうかを読んでください。アニメーションは実際の速さかそれより速く動きます。がんぎ車は一振動の半分ごとに半歯ずつ、段階的に動きます。"
+        ],
+        "formula": "\\omega_{\\rm esc}=\\frac{f}{z_{\\rm esc}}\\ \\mathrm{rev/s},\\qquad \\omega_4=\\omega_{\\rm esc}\\frac{p_{\\rm esc}}{z_4},\\quad \\omega_3=\\omega_4\\frac{p_4}{z_3},\\quad \\omega_2=\\omega_3\\frac{p_3}{z_2},\\quad \\omega_{\\rm barrel}=\\omega_2\\frac{p_2}{z_{\\rm barrel}},\\qquad T_4=\\frac{z_{\\rm esc}z_4}{f\\,p_{\\rm esc}}=60\\ \\mathrm s",
+        "example": [
+          "At 28,800 vph the balance makes \\(f=4\\) oscillations a second, so a 20-tooth escape wheel turns at \\(4/20=0.2\\) rev/s. An 8-leaf escape pinion driven by a 96-tooth fourth wheel gives \\(T_4=20\\times96/(4\\times8)=60\\ \\mathrm s\\). The third and centre meshes, \\(75/10\\) and \\(80/10\\), multiply by 60, so the centre wheel turns once an hour, and a barrel of 84 teeth on a 12-leaf centre pinion turns once in 7 h: six and a half barrel turns give 45.5 h of power reserve.",
+          "28,800 振動/時ではてんぷは毎秒 \\(f=4\\) 回振動するので、20 歯のがんぎ車は毎秒 \\(4/20=0.2\\) 回転します。96 歯の四番車に駆動される 8 葉のがんぎかなは \\(T_4=20\\times96/(4\\times8)=60\\ \\mathrm s\\) を与えます。三番と二番のかみ合い \\(75/10\\) と \\(80/10\\) で 60 倍になるので二番車は毎時一回転し、12 葉の二番かなにかみ合う 84 歯の香箱は 7 時間に一回転します。香箱が六回転半すれば 45.5 時間のパワーリザーブです。"
+        ],
+        "caution": [
+          "The tooth counts here are illustrative, chosen to satisfy the constraints, not those of a particular calibre; real trains vary. The seconds hand keeps time only if \\(z_{\\rm esc}z_4/(f\\,p_{\\rm esc})\\) is exactly 60, and the minute hand only if the whole train multiplies to 3600; an integer mismatch cannot be regulated away, because the regulator changes the balance frequency, which would put the seconds hand right only by making the watch run fast or slow. The barrel’s torque also falls as the spring unwinds, which lowers the amplitude and, through the escapement error of the Airy experiment, the rate.",
+          "ここでの歯数は制約を満たすように選んだ例示であって、特定のキャリバーのものではありません。現実の輪列はさまざまです。秒針が正しく時を刻むのは \\(z_{\\rm esc}z_4/(f\\,p_{\\rm esc})\\) がちょうど 60 のときだけで、分針は輪列全体の倍率が 3600 のときだけです。整数のずれは緩急で取り除けません。緩急針はてんぷの振動数を変えるので、秒針を合わせると時計全体が進むか遅れるかになるからです。また香箱のトルクはぜんまいがほどけるにつれて下がり、振り角を下げ、エアリーの実験の脱進機誤差を通して歩度を変えます。"
+        ],
+        "question": [
+          "Why does the escape wheel advance one tooth per oscillation, not per beat?",
+          "がんぎ車が一振動の半分ごとではなく一振動ごとに一歯進むのはなぜですか？"
+        ],
+        "answer": [
+          "The pallet fork has two pallet stones, entry and exit. On one beat the entry stone releases a tooth and the wheel moves until the exit stone catches the next tooth; on the following beat, in the other direction of swing, the exit stone releases and the entry stone catches. The two locks are half a tooth pitch apart around the wheel, so each beat is half a tooth and a full oscillation, two beats, is one tooth.",
+          "アンクルには入りつめと出つめの二つのつめ石があります。一つの振動の半分で入りつめが歯を解放し、車は出つめが次の歯を捕らえるまで動きます。反対向きに振れる次の半分では、出つめが解放して入りつめが捕らえます。二つの錠止は車の周りで半歯ピッチ離れているので、各半振動は半歯、二回の半振動からなる一振動で一歯です。"
+        ],
+        "params": [
+          [
+            "vph",
+            "Beat rate",
+            "振動数",
+            0,
+            4,
+            1,
+            3,
+            [
+              [
+                "18,000 vph",
+                "18,000 振動/時"
+              ],
+              [
+                "21,600 vph",
+                "21,600 振動/時"
+              ],
+              [
+                "25,200 vph",
+                "25,200 振動/時"
+              ],
+              [
+                "28,800 vph",
+                "28,800 振動/時"
+              ],
+              [
+                "36,000 vph",
+                "36,000 振動/時"
+              ]
+            ]
+          ],
+          [
+            "ze",
+            "Escape wheel teeth",
+            "がんぎ車の歯数",
+            12,
+            24,
+            1,
+            20
+          ],
+          [
+            "pe",
+            "Escape pinion leaves",
+            "がんぎかなの葉数",
+            6,
+            12,
+            1,
+            8
+          ],
+          [
+            "z4",
+            "Fourth wheel teeth",
+            "四番車の歯数",
+            60,
+            120,
+            1,
+            96
+          ],
+          [
+            "turns",
+            "Barrel turns when fully wound",
+            "全巻き時の香箱の回転数",
+            4,
+            10,
+            0.5,
+            6.5
+          ],
+          [
+            "speed",
+            "Animation speed",
+            "アニメーションの速さ",
+            0,
+            2,
+            1,
+            0,
+            [
+              [
+                "real time",
+                "実時間"
+              ],
+              [
+                "×60",
+                "×60"
+              ],
+              [
+                "×3600",
+                "×3600"
+              ]
+            ]
+          ]
+        ],
+        "source": "Donald de Carle · Practical Watch Repairing, ch. 5, The train (NAG Press, 3rd ed. 1969)",
+        "url": "https://archive.org/details/practicalwatchre0000deca"
+      },
+      {
+        "id": "epicyclic",
+        "title": [
+          "3. Epicyclic gears and the tourbillon",
+          "3. 遊星歯車とトゥールビヨン"
+        ],
+        "body": [
+          "In an epicyclic train the planets’ axles are carried round by an arm, the carrier, while they mesh with a central sun and an outer ring. Relative to the carrier it is an ordinary gear train, which is Willis’s trick: subtract the carrier’s rotation from everything, apply the tooth ratio, add it back. Fix the ring and drive the sun and the carrier creeps round, a large reduction in a small space; fix the carrier and the ring turns backwards; fix the sun and drive the carrier, and each planet spins faster than the carrier turns. The last case is the tourbillon: the whole escapement is mounted in a cage that turns once a minute, its escape pinion rolling round a fixed wheel, so the balance takes every vertical position in turn. On the right, the velocity diagram: across each planet the speed varies linearly, from the sun’s pitch speed to the ring’s.",
+          "遊星歯車列では、遊星の軸が腕、すなわちキャリアによって運ばれながら、中央の太陽歯車と外側の内歯車とかみ合います。キャリアに対しては普通の歯車列で、それがウィリスの工夫です。すべてからキャリアの回転を引き、歯数比を当てはめ、また足すのです。内歯車を固定して太陽を駆動すると、キャリアはゆっくり回り、小さな空間で大きな減速が得られます。キャリアを固定すると内歯車は逆向きに回ります。太陽を固定してキャリアを駆動すると、各遊星はキャリアが回るより速く自転します。最後の場合がトゥールビヨンです。脱進機全体が毎分一回転するかごに載り、そのがんぎかなが固定された車の周りを転がるので、てんぷはすべての縦姿勢を順にとります。右は速度線図で、各遊星を横切る速さは太陽のピッチ点の速さから内歯車の速さまで直線的に変わります。"
+        ],
+        "formula": "\\frac{\\omega_s-\\omega_c}{\\omega_r-\\omega_c}=-\\frac{z_r}{z_s},\\qquad \\frac{\\omega_p-\\omega_c}{\\omega_s-\\omega_c}=-\\frac{z_s}{z_p},\\qquad z_r=z_s+2z_p,\\qquad \\frac{z_s+z_r}{n}\\in\\mathbb Z\\ \\text{(equal spacing)}",
+        "example": [
+          "Sun 24, planets 18, ring 60. With the ring fixed, \\(\\omega_c/\\omega_s=z_s/(z_s+z_r)=24/84=2/7\\): seven turns of the sun give two of the carrier. With the carrier fixed, \\(\\omega_r/\\omega_s=-24/60=-0.4\\). With the sun fixed, \\(\\omega_c/\\omega_r=60/84\\). In a tourbillon with an 80-tooth fixed wheel and an 8-leaf escape pinion, a cage turning once a minute makes the pinion turn \\(1+80/8=11\\) times a minute absolutely, 10 times relative to the cage.",
+          "太陽 24、遊星 18、内歯車 60。内歯車を固定すると \\(\\omega_c/\\omega_s=z_s/(z_s+z_r)=24/84=2/7\\) で、太陽の七回転でキャリアが二回転します。キャリアを固定すると \\(\\omega_r/\\omega_s=-24/60=-0.4\\) です。太陽を固定すると \\(\\omega_c/\\omega_r=60/84\\) です。80 歯の固定車と 8 葉のがんぎかなをもつトゥールビヨンでは、毎分一回転するかごはかなを絶対的に毎分 \\(1+80/8=11\\) 回、かごに対して 10 回回します。"
+        ],
+        "caution": [
+          "Equal spacing of \\(n\\) identical planets is possible only when \\((z_s+z_r)/n\\) is an integer; otherwise the teeth of the second planet would not line up with the sun and ring, and the readout flags it. A tourbillon averages out the vertical positional errors of the previous topic only while the watch stays in one vertical position; in the dial-up position, where a wristwatch spends much of the night, it does nothing, and the cage adds mass and inertia the mainspring must drive.",
+          "\\(n\\) 個の同じ遊星を等間隔に置けるのは \\((z_s+z_r)/n\\) が整数のときだけです。そうでないと二つ目の遊星の歯が太陽や内歯車とそろわず、表示はそれを知らせます。トゥールビヨンが前の話題の縦姿勢の誤差を平均化するのは、時計が一つの縦姿勢にとどまっている間だけです。腕時計が夜の多くを過ごす文字盤上の姿勢では何もせず、かごは主ぜんまいが駆動しなければならない質量と慣性を加えます。"
+        ],
+        "question": [
+          "Why is the velocity across a planet a straight line?",
+          "遊星を横切る速度が直線になるのはなぜですか？"
+        ],
+        "answer": [
+          "A planet is a rigid body moving in the plane, so at each instant it rotates about one point, its instantaneous centre, and the speed of each point is proportional to its distance from that centre. Along the diameter that joins the sun’s pitch point to the ring’s, the speeds therefore lie on a straight line through zero at the instantaneous centre. With the ring fixed the instantaneous centre is the ring’s pitch point and the planet rolls; the carrier’s speed, at the planet’s centre, is the average of the two ends.",
+          "遊星は平面内を動く剛体なので、各瞬間にただ一点、瞬間中心の周りを回転し、各点の速さはその中心からの距離に比例します。したがって太陽のピッチ点と内歯車のピッチ点を結ぶ直径に沿って、速さは瞬間中心で 0 となる直線上に並びます。内歯車を固定すると瞬間中心は内歯車のピッチ点で、遊星は転がります。遊星の中心でのキャリアの速さは両端の平均です。"
+        ],
+        "params": [
+          [
+            "zs",
+            "Sun teeth zₛ",
+            "太陽歯車の歯数 zₛ",
+            12,
+            40,
+            1,
+            24
+          ],
+          [
+            "zp",
+            "Planet teeth zₚ",
+            "遊星歯車の歯数 zₚ",
+            8,
+            30,
+            1,
+            18
+          ],
+          [
+            "n",
+            "Planets",
+            "遊星の数",
+            3,
+            4,
+            1,
+            3,
+            [
+              [
+                "3",
+                "3"
+              ],
+              [
+                "4",
+                "4"
+              ]
+            ]
+          ],
+          [
+            "fixed",
+            "Fixed member",
+            "固定する部材",
+            0,
+            3,
+            1,
+            0,
+            [
+              [
+                "ring fixed, sun drives",
+                "内歯車固定、太陽が駆動"
+              ],
+              [
+                "carrier fixed, sun drives",
+                "キャリア固定、太陽が駆動"
+              ],
+              [
+                "sun fixed, ring drives",
+                "太陽固定、内歯車が駆動"
+              ],
+              [
+                "tourbillon: sun fixed, cage drives",
+                "トゥールビヨン：太陽固定、かごが駆動"
+              ]
+            ]
+          ]
+        ],
+        "source": "Robert Willis · Principles of Mechanism, ch. 15 (Longmans, 2nd ed. 1870)",
+        "url": "https://archive.org/details/principlesofmech00williala"
+      }
+    ]
+  },
+  {
+    "slug": "quartz-resonators",
+    "title": [
+      "Quartz resonators: a crystal that keeps time",
+      "水晶振動子：時を刻む結晶"
+    ],
+    "description": [
+      "Why a sliver of quartz makes a better timekeeper than any balance wheel. Its tuning-fork shape sets 32,768 Hz through the beam equation; the piezoelectric effect turns it into an electrical circuit with a quality factor near 100,000, whose frequency is trimmed by a few picofarads; and its one real weakness, a parabolic dependence on temperature, is what separates a watch that gains a few seconds a month from one accurate to seconds a year.",
+      "ひとかけらの水晶が、どんなてんぷよりも優れた計時器になる理由を扱います。音叉の形がはりの方程式を通して 32,768 Hz を決め、圧電効果がそれを品質係数およそ 100,000 の電気回路に変え、その周波数は数ピコファラッドで調整されます。そして唯一の本当の弱点である温度への放物線的な依存性が、月に数秒ずれる時計と年に数秒しかずれない時計を分けます。"
+    ],
+    "group": "engineering",
+    "prerequisite": [
+      "Waves, elasticity and AC circuits",
+      "波動、弾性、交流回路"
+    ],
+    "source": "John Vig · Quartz Crystal Resonators and Oscillators: A Tutorial (US Army Research Laboratory)",
+    "url": "https://www.iol.unh.edu/knowledge/quartz-crystal-resonators-and-oscillators-frequency-control-and-timing-applications",
+    "labs": [
+      {
+        "id": "tuning-fork",
+        "title": [
+          "1. Why 32,768 Hz: the tuning fork as a beam",
+          "1. なぜ 32,768 Hz か：はりとしての音叉"
+        ],
+        "body": [
+          "A watch crystal is a tiny tuning fork cut from a quartz wafer, about 2 mm long. Each tine bends like a cantilever clamped at the base, and Euler–Bernoulli beam theory gives its lowest frequency: proportional to the tine’s width in the direction of bending and inversely to the square of its length. The two tines swing in antiphase, so the base, where the fork is mounted, barely moves and little energy leaks away. The target is 32,768 Hz = 2¹⁵ Hz: above hearing, low enough to draw almost no power, and exactly fifteen halvings from one pulse a second. Drag the gold handle at the tip of a tine to change its length, set the width, and read the frequency and what fifteen flip-flops make of it.",
+          "時計用の水晶は、水晶の薄板から切り出した長さおよそ 2 mm の小さな音叉です。各歯は根元で固定された片持ちばりのように曲がり、オイラー・ベルヌーイのはり理論がその最も低い周波数を与えます。それは曲がる方向の歯の幅に比例し、長さの二乗に反比例します。二本の歯は逆位相で振れるので、音叉を取り付ける根元はほとんど動かず、エネルギーはほとんど漏れません。目標は 32,768 Hz = 2¹⁵ Hz です。耳に聞こえる範囲より高く、電力をほとんど使わないほど低く、そしてちょうど十五回の半分割りで毎秒一パルスになります。歯の先端の金色のハンドルをドラッグして長さを変え、幅を設定し、周波数と、十五個のフリップフロップがそれを何にするかを読んでください。"
+        ],
+        "formula": "EI\\frac{\\partial^4w}{\\partial x^4}+\\rho A\\frac{\\partial^2w}{\\partial t^2}=0,\\qquad f_1=\\frac{(\\beta_1L)^2}{2\\pi L^2}\\sqrt{\\frac{EI}{\\rho A}}=\\frac{1.8751^2}{2\\pi}\\,\\frac{t}{L^2}\\sqrt{\\frac{E}{12\\rho}},\\qquad \\frac{f_1}{2^{15}}=1\\ \\mathrm{Hz}",
+        "example": [
+          "For quartz with \\(E\\approx78.7\\ \\mathrm{GPa}\\) and \\(\\rho=2649\\ \\mathrm{kg/m^3}\\), \\(\\sqrt{E/12\\rho}=1573\\ \\mathrm{m/s}\\) and \\(f_1=880\\,t/L^2\\) in SI units. A tine 0.20 mm wide needs \\(L=\\sqrt{880\\times0.2\\times10^{-3}/32768}=2.32\\ \\mathrm{mm}\\). Making it 1 µm shorter raises the frequency by \\(2\\times10^{-3}/2.32=0.086\\%\\), 860 ppm, which would make the watch gain 74 s a day: so each fork carries small gold weights at its tips, and a laser trims them away while the frequency is measured.",
+          "\\(E\\approx78.7\\ \\mathrm{GPa}\\)、\\(\\rho=2649\\ \\mathrm{kg/m^3}\\) の水晶では \\(\\sqrt{E/12\\rho}=1573\\ \\mathrm{m/s}\\) で、SI 単位で \\(f_1=880\\,t/L^2\\) です。幅 0.20 mm の歯には \\(L=\\sqrt{880\\times0.2\\times10^{-3}/32768}=2.32\\ \\mathrm{mm}\\) が必要です。1 µm 短くすると周波数は \\(2\\times10^{-3}/2.32=0.086\\%\\)、つまり 860 ppm 上がり、時計は一日に 74 秒進みます。そのため各音叉は先端に小さな金のおもりをもち、周波数を測りながらレーザーでそれを削って調整されます。"
+        ],
+        "caution": [
+          "Quartz is anisotropic, so \\(E\\) depends on the crystal cut; 78.7 GPa is a representative value for the direction in which watch forks bend, and the model ignores the base, the electrodes and the gold tip weights, which is why real forks with this frequency differ somewhat from the formula. The cantilever mode shape drawn is the exact first mode of a clamped–free beam, exaggerated in amplitude by a factor of thousands; the real tip moves well under a micrometre.",
+          "水晶は異方性なので \\(E\\) は結晶の切断方位によって変わります。78.7 GPa は時計の音叉が曲がる方向の代表的な値で、モデルは根元、電極、先端の金のおもりを無視しています。この周波数の現実の音叉が公式と多少異なるのはそのためです。描いている片持ちばりの振動形は固定端・自由端のはりの厳密な一次モードで、振幅は数千倍に誇張しています。現実の先端の動きは 1 マイクロメートルよりずっと小さいのです。"
+        ],
+        "question": [
+          "Why does the frequency go as t/L², not as 1/L like a string?",
+          "周波数が弦のように 1/L ではなく t/L² に比例するのはなぜですか？"
+        ],
+        "answer": [
+          "A string’s restoring force comes from tension and involves the second derivative of the displacement; a beam’s comes from its bending stiffness and involves the fourth. For a mode of wavelength proportional to \\(L\\) the fourth derivative brings \\(L^{-4}\\) against the inertia’s \\(\\omega^2\\), so \\(\\omega\\propto L^{-2}\\). The bending stiffness per unit mass, \\(EI/\\rho A\\), grows as \\(t^2\\) because \\(I=bt^3/12\\) and \\(A=bt\\), which gives the factor \\(t\\) after the square root.",
+          "弦の復元力は張力から来て変位の二階微分を含みます。はりの復元力は曲げ剛性から来て四階微分を含みます。波長が \\(L\\) に比例するモードでは、四階微分が慣性の \\(\\omega^2\\) に対して \\(L^{-4}\\) をもたらすので \\(\\omega\\propto L^{-2}\\) です。単位質量あたりの曲げ剛性 \\(EI/\\rho A\\) は \\(I=bt^3/12\\)、\\(A=bt\\) なので \\(t^2\\) に比例して増え、平方根をとると因子 \\(t\\) になります。"
+        ],
+        "params": [
+          [
+            "L",
+            "Tine length L (mm)",
+            "歯の長さ L（mm）",
+            1.8,
+            3.0,
+            0.0001,
+            2.3182
+          ],
+          [
+            "t",
+            "Tine width t in the bending direction (mm)",
+            "曲げ方向の歯の幅 t（mm）",
+            0.1,
+            0.3,
+            0.005,
+            0.2
+          ]
+        ],
+        "source": "John Vig · Quartz Crystal Resonators and Oscillators: A Tutorial (US Army Research Laboratory)",
+        "url": "https://www.iol.unh.edu/knowledge/quartz-crystal-resonators-and-oscillators-frequency-control-and-timing-applications"
+      },
+      {
+        "id": "bvd-circuit",
+        "title": [
+          "2. The crystal as a circuit, and trimming it",
+          "2. 回路としての水晶とその調整"
+        ],
+        "body": [
+          "Squeeze quartz and charge appears on its faces; apply a voltage and it deforms. Through this piezoelectric coupling the vibrating fork looks, to the electronics, exactly like a series R–L–C circuit (the motional arm: mass as inductance, compliance as capacitance, loss as resistance) in parallel with the ordinary capacitance C₀ of its electrodes. That is the Butterworth–Van Dyke model. Its impedance falls to a sharp minimum at the series resonance fₛ and peaks at the parallel resonance fₚ, less than a thousandth higher; in an oscillator the crystal runs between them, at a frequency set by the load capacitance C_L of the circuit. Move C_L and watch the operating point slide: a few picofarads trim the rate by seconds a day, which is how watches used to be adjusted with a trimmer capacitor.",
+          "水晶を押すと表面に電荷が現れ、電圧をかけると変形します。この圧電結合を通して、振動する音叉は電子回路からは、直列の R–L–C 回路（動的アーム：質量がインダクタンス、コンプライアンスが静電容量、損失が抵抗）と電極の普通の静電容量 C₀ の並列とまったく同じに見えます。これがバターワース・ヴァン・ダイクのモデルです。そのインピーダンスは直列共振 fₛ で鋭く最小になり、千分の一足らず高い並列共振 fₚ で最大になります。発振器の中で水晶はその間、回路の負荷容量 C_L が決める周波数で動きます。C_L を動かして動作点が滑るのを見てください。数ピコファラッドで歩度が一日に数秒変わります。かつて時計がトリマーコンデンサーで調整されていたのはこの仕組みです。"
+        ],
+        "formula": "Z(\\omega)=\\left[j\\omega C_0+\\frac{1}{R_1+j\\omega L_1+1/(j\\omega C_1)}\\right]^{-1},\\quad f_s=\\frac{1}{2\\pi\\sqrt{L_1C_1}},\\quad f_p=f_s\\sqrt{1+\\frac{C_1}{C_0}},\\quad f_L\\approx f_s\\left(1+\\frac{C_1}{2(C_0+C_L)}\\right),\\quad Q=\\frac{2\\pi f_sL_1}{R_1}",
+        "example": [
+          "A typical watch crystal has \\(C_1=2.0\\ \\mathrm{fF}\\), \\(C_0=1.3\\ \\mathrm{pF}\\), \\(R_1=35\\ \\mathrm{k\\Omega}\\). At \\(f_s=32{,}768\\ \\mathrm{Hz}\\) the motional inductance is \\(L_1=1/((2\\pi f_s)^2C_1)=11.8\\ \\mathrm{kH}\\), eleven thousand henries from a sliver of stone, and \\(Q=69{,}000\\). The parallel resonance is \\(C_1/2C_0=769\\ \\mathrm{ppm}\\) above \\(f_s\\). With \\(C_L=12.5\\ \\mathrm{pF}\\) the crystal runs 72.5 ppm above \\(f_s\\), and each extra picofarad of load lowers it by 5.3 ppm, about 0.45 s a day.",
+          "典型的な時計用水晶は \\(C_1=2.0\\ \\mathrm{fF}\\)、\\(C_0=1.3\\ \\mathrm{pF}\\)、\\(R_1=35\\ \\mathrm{k\\Omega}\\) です。\\(f_s=32{,}768\\ \\mathrm{Hz}\\) で動的インダクタンスは \\(L_1=1/((2\\pi f_s)^2C_1)=11.8\\ \\mathrm{kH}\\)、石のかけらから一万一千ヘンリーで、\\(Q=69{,}000\\) です。並列共振は \\(f_s\\) より \\(C_1/2C_0=769\\ \\mathrm{ppm}\\) 高くなります。\\(C_L=12.5\\ \\mathrm{pF}\\) では水晶は \\(f_s\\) より 72.5 ppm 高く動き、負荷を 1 ピコファラッド増やすごとに 5.3 ppm、一日におよそ 0.45 秒下がります。"
+        ],
+        "caution": [
+          "The component values are representative of 32 kHz tuning-fork crystals, not a particular part. The load-pulling formula is first order in \\(C_1/(C_0+C_L)\\), which is below \\(10^{-3}\\), so it is excellent here. Modern quartz watches are no longer trimmed by capacitance: the crystal is cut slightly fast and the divider periodically skips pulses (inhibition), a digital correction shown in the next experiment. The frequency axis is in parts per million from \\(f_s\\); the resonance is so sharp that a linear axis in hertz would hide it.",
+          "部品の値は 32 kHz の音叉型水晶の代表値で、特定の部品のものではありません。負荷による周波数の変化の公式は \\(C_1/(C_0+C_L)\\) について一次ですが、この量は \\(10^{-3}\\) 未満なのでここでは非常によく当てはまります。現代のクォーツ時計はもはや静電容量では調整されません。水晶をわずかに速く切り、分周器が周期的にパルスを飛ばす（インヒビション）という、次の実験で示すデジタルな補正を使います。周波数の軸は \\(f_s\\) からの百万分率です。共振が非常に鋭いので、ヘルツ単位の線形軸では見えなくなってしまいます。"
+        ],
+        "question": [
+          "How can a mechanical vibration have an inductance of eleven thousand henries?",
+          "機械的な振動が一万一千ヘンリーのインダクタンスをもちうるのはなぜですか？"
+        ],
+        "answer": [
+          "Through the piezoelectric coupling, velocity of the tines becomes current and force becomes voltage. Inertia resists changes of velocity, so it appears as something that resists changes of current: an inductance, whose value is the effective mass divided by the square of the coupling factor. The coupling in quartz is weak, so a small mass becomes a huge inductance, and for the same reason the spring appears as a tiny capacitance \\(C_1\\). Weak coupling is also what makes the resonance so clean: the electrode capacitance \\(C_0\\) is a thousand times larger than \\(C_1\\), so the circuit barely loads the mechanics.",
+          "圧電結合を通して、歯の速度は電流に、力は電圧になります。慣性は速度の変化に逆らうので、電流の変化に逆らうもの、つまりインダクタンスとして現れ、その値は実効質量を結合係数の二乗で割ったものです。水晶の結合は弱いので、小さな質量が巨大なインダクタンスになり、同じ理由でばねは小さな静電容量 \\(C_1\\) として現れます。弱い結合は共振がこれほどきれいである理由でもあります。電極の容量 \\(C_0\\) は \\(C_1\\) の千倍大きいので、回路は機械的な振動にほとんど負荷をかけないのです。"
+        ],
+        "params": [
+          [
+            "CL",
+            "Load capacitance C_L (pF)",
+            "負荷容量 C_L（pF）",
+            6,
+            20,
+            0.1,
+            12.5
+          ],
+          [
+            "R1",
+            "Motional resistance R₁ (kΩ)",
+            "動的抵抗 R₁（kΩ）",
+            10,
+            80,
+            1,
+            35
+          ],
+          [
+            "C0",
+            "Shunt capacitance C₀ (pF)",
+            "並列容量 C₀（pF）",
+            0.8,
+            2.5,
+            0.05,
+            1.3
+          ]
+        ],
+        "source": "IEEE Standard on Piezoelectricity, ANSI/IEEE Std 176-1987",
+        "url": "https://doi.org/10.1109/IEEESTD.1988.79638"
+      },
+      {
+        "id": "quartz-temperature",
+        "title": [
+          "3. Temperature: the parabola that sets the monthly error",
+          "3. 温度：月ごとの誤差を決める放物線"
+        ],
+        "body": [
+          "The tuning-fork cut is chosen so that its frequency is stationary at about 25 °C, the turnover point; away from it the frequency always falls, as a parabola, by 0.034 ppm per degree squared. Ten degrees either side costs 3.4 ppm, a third of a second a day, and it is always a loss, whether the watch is warmer or colder. A watch on the wrist sits near 31 °C by day and perhaps 20 °C on a bedside table at night, and the rate averaged over that cycle is what the owner sees. Set the temperatures and hours, and the digital trim, which removes a number of pulses from the divider each minute to cancel the crystal’s deliberate fast cut, then compare an ordinary movement with a thermocompensated one that measures its own temperature.",
+          "音叉型の切断方位は、周波数がおよそ 25 °C、すなわち頂点温度で停留するように選ばれます。そこから離れると周波数は常に、度の二乗あたり 0.034 ppm の放物線で下がります。どちら側に 10 度離れても 3.4 ppm、一日に三分の一秒の損失で、時計が暖かくても冷たくても常に遅れです。腕の上の時計は日中はおよそ 31 °C、夜はベッドサイドで 20 °C 程度になり、その周期にわたって平均した歩度が持ち主の目にするものです。温度と時間、そしてデジタルの調整、すなわち水晶の意図的に速い切断を打ち消すために毎分いくつかのパルスを分周器から取り除く量を設定し、普通のムーブメントと、自分の温度を測る温度補償型とを比べてください。"
+        ],
+        "formula": "\\frac{\\Delta f}{f}(T)=\\delta_0-\\beta\\,(T-T_0)^2,\\quad \\beta\\approx0.034\\ \\mathrm{ppm/^\\circ C^2},\\ T_0\\approx25^\\circ\\mathrm C;\\qquad \\text{inhibition: }\\frac{n}{32768\\times60}=0.509\\,n\\ \\mathrm{ppm};\\qquad 1\\ \\mathrm{ppm}=0.0864\\ \\mathrm{s/day}",
+        "example": [
+          "Worn 16 hours a day at 31 °C and left 8 hours at 20 °C, the temperature term averages \\(-(16\\times0.034\\times36+8\\times0.034\\times25)/24=-1.10\\ \\mathrm{ppm}\\), a loss of 2.8 s a month. A crystal cut \\(+10\\ \\mathrm{ppm}\\) fast with 20 pulses removed per minute sits at \\(10-20\\times0.509=-0.17\\ \\mathrm{ppm}\\) at 25 °C; one pulse fewer, 19, gives \\(+0.33\\ \\mathrm{ppm}\\) at the turnover and a net monthly error of \\(-0.77\\ \\mathrm{ppm}\\), about \\(-2\\ \\mathrm{s}\\). Trimming steps of 0.509 ppm are 0.044 s a day.",
+          "一日 16 時間 31 °C で着け、8 時間 20 °C に置くと、温度の項は平均 \\(-(16\\times0.034\\times36+8\\times0.034\\times25)/24=-1.10\\ \\mathrm{ppm}\\) で、月に 2.8 秒の遅れです。\\(+10\\ \\mathrm{ppm}\\) 速く切った水晶から毎分 20 パルスを取り除くと、25 °C で \\(10-20\\times0.509=-0.17\\ \\mathrm{ppm}\\) になります。一パルス少なく 19 にすると頂点温度で \\(+0.33\\ \\mathrm{ppm}\\)、月の正味の誤差は \\(-0.77\\ \\mathrm{ppm}\\)、およそ \\(-2\\) 秒です。調整の刻み 0.509 ppm は一日 0.044 秒です。"
+        ],
+        "caution": [
+          "The parabola coefficient and turnover temperature vary from crystal to crystal by roughly \\(\\pm10\\%\\) and \\(\\pm5^\\circ\\mathrm C\\). The thermocompensated curve is modelled as removing 95% of the parabola, a stand-in for the digital correction such movements apply from a built-in thermometer; real ones are specified at a few seconds a year, where crystal ageing, typically a few ppm in the first year and slowing after, becomes the larger term. Shock, magnetism and battery voltage are not modelled.",
+          "放物線の係数と頂点温度は水晶ごとにおよそ \\(\\pm10\\%\\)、\\(\\pm5^\\circ\\mathrm C\\) ばらつきます。温度補償型の曲線は放物線の 95% を取り除くものとしてモデル化しました。これは、そうしたムーブメントが内蔵の温度計から施すデジタル補正の代わりです。現実のものは年に数秒と規定され、そこでは水晶の経年変化、典型的には最初の一年で数 ppm でその後は遅くなるものが、より大きな項になります。衝撃、磁気、電池電圧はモデル化していません。"
+        ],
+        "question": [
+          "Why does the error depend on how many hours the watch is worn, not just on the average temperature?",
+          "誤差が平均温度だけでなく、時計を着けている時間にも依存するのはなぜですか？"
+        ],
+        "answer": [
+          "Because the frequency is a quadratic function of temperature, the average of the frequency is not the frequency at the average temperature: \\(\\overline{(T-T_0)^2}=(\\bar T-T_0)^2+\\operatorname{Var}(T)\\). A watch that alternates between 31 °C and 19 °C has an average of exactly 25 °C, the turnover, yet it still loses, by \\(\\beta\\) times the variance of its temperature. Swinging temperatures always cost; only their spread and their offset from the turnover matter.",
+          "周波数は温度の二次関数なので、周波数の平均は平均温度での周波数ではありません。\\(\\overline{(T-T_0)^2}=(\\bar T-T_0)^2+\\operatorname{Var}(T)\\) です。31 °C と 19 °C を行き来する時計の平均はちょうど頂点の 25 °C ですが、それでも温度の分散の \\(\\beta\\) 倍だけ遅れます。温度の揺れは常に損失になり、効くのはその広がりと頂点からのずれだけです。"
+        ],
+        "params": [
+          [
+            "Twrist",
+            "Temperature on the wrist (°C)",
+            "腕の上の温度（°C）",
+            20,
+            37,
+            0.5,
+            31
+          ],
+          [
+            "Toff",
+            "Temperature off the wrist (°C)",
+            "外している間の温度（°C）",
+            0,
+            35,
+            0.5,
+            20
+          ],
+          [
+            "hours",
+            "Hours worn per day",
+            "一日に着ける時間",
+            0,
+            24,
+            1,
+            16
+          ],
+          [
+            "n",
+            "Pulses removed per minute (inhibition)",
+            "毎分取り除くパルス数（インヒビション）",
+            0,
+            40,
+            1,
+            20
+          ],
+          [
+            "tc",
+            "Movement",
+            "ムーブメント",
+            0,
+            1,
+            1,
+            0,
+            [
+              [
+                "ordinary quartz",
+                "普通のクォーツ"
+              ],
+              [
+                "thermocompensated",
+                "温度補償型"
+              ]
+            ]
+          ]
+        ],
+        "source": "John Vig · Quartz Crystal Resonators and Oscillators for Frequency Control and Timing Applications: A Tutorial (US Army Research Laboratory)",
+        "url": "https://www.iol.unh.edu/knowledge/quartz-crystal-resonators-and-oscillators-frequency-control-and-timing-applications"
+      }
+    ]
+  },
+  {
+    "slug": "loudspeakers",
+    "title": [
+      "Loudspeakers: the moving-coil driver",
+      "スピーカー：ムービングコイル型ドライバー"
+    ],
+    "description": [
+      "A coil in a magnetic gap, glued to a cone on a spring: the moving-coil driver is a mechanical oscillator welded to an electrical circuit by the force law F = BlI. Its impedance curve reads out the mechanics; its box turns a second-order system into a fourth-order one and trades size for bass; and at high frequencies the cone stops radiating in all directions and starts to beam, which is why speakers use more than one driver.",
+      "磁気ギャップの中のコイルが、ばねの上のコーンに接着されています。ムービングコイル型ドライバーは、力の法則 F = BlI によって電気回路に溶接された機械的な振動子です。そのインピーダンス曲線は機械的な性質を読み出し、箱は二次の系を四次の系に変えて大きさと低音を交換し、高い周波数ではコーンは全方向に放射するのをやめて指向性をもち始めます。スピーカーが複数のドライバーを使うのはそのためです。"
+    ],
+    "group": "engineering",
+    "prerequisite": [
+      "Damped oscillators, AC circuits and Bessel functions",
+      "減衰振動子、交流回路、ベッセル関数"
+    ],
+    "source": "Richard Small · Direct-radiator loudspeaker system analysis, IEEE Trans. Audio Electroacoust. 19 (1971); J. Audio Eng. Soc. 20 (1972)",
+    "url": "https://ieeexplore.ieee.org/document/1162200/",
+    "labs": [
+      {
+        "id": "driver-impedance",
+        "title": [
+          "1. Impedance: the mechanics seen through the coil",
+          "1. インピーダンス：コイル越しに見る機械系"
+        ],
+        "body": [
+          "The voice coil sits in a radial magnetic field B with a length l of wire in it, so a current I pushes it with force BlI and its velocity u generates a back voltage Blu. The cone, coil and air load form a mass on a spring with friction, and through that coupling the mechanics appears in the electrical impedance as a parallel resonant circuit: the mass as a capacitance, the suspension compliance as an inductance, the mechanical damping as a resistance. At the resonance fₛ the cone moves most and its back voltage nearly cancels the drive, so the impedance peaks at many times the coil resistance. Drag along the impedance curve to choose a frequency and watch the cone; change Bl, the moving mass and the compliance and see how the Thiele–Small parameters, the language every driver datasheet is written in, follow.",
+          "ボイスコイルは半径方向の磁場 B の中に長さ l の導線をもつので、電流 I はそれを力 BlI で押し、その速度 u は逆起電力 Blu を生みます。コーン、コイル、空気の負荷は摩擦のあるばねの上の質量をなし、この結合を通して機械系は電気的なインピーダンスの中に並列共振回路として現れます。質量は静電容量として、サスペンションのコンプライアンスはインダクタンスとして、機械的な減衰は抵抗として現れます。共振 fₛ ではコーンが最も大きく動き、その逆起電力が駆動をほぼ打ち消すので、インピーダンスはコイルの抵抗の何倍にもなって最大になります。インピーダンス曲線に沿ってドラッグして周波数を選び、コーンを見てください。Bl、可動質量、コンプライアンスを変えると、あらゆるドライバーのデータシートが使う言葉であるティール・スモールのパラメータがどうついてくるかが分かります。"
+        ],
+        "formula": "Z(\\omega)=R_e+j\\omega L_e+\\frac{(Bl)^2}{R_{ms}+j\\omega M_{ms}+\\dfrac{1}{j\\omega C_{ms}}},\\qquad f_s=\\frac{1}{2\\pi\\sqrt{M_{ms}C_{ms}}},\\quad Q_{ms}=\\frac{2\\pi f_sM_{ms}}{R_{ms}},\\quad Q_{es}=\\frac{2\\pi f_sM_{ms}R_e}{(Bl)^2},\\quad V_{as}=\\rho c^2S_d^2C_{ms}",
+        "example": [
+          "A 6.5-inch woofer with \\(R_e=6\\ \\Omega\\), \\(Bl=7.5\\ \\mathrm{T\\,m}\\), \\(M_{ms}=15\\ \\mathrm g\\), \\(C_{ms}=1.0\\ \\mathrm{mm/N}\\), \\(R_{ms}=1.0\\ \\mathrm{kg/s}\\) and cone area \\(S_d=133\\ \\mathrm{cm^2}\\) resonates at \\(f_s=41.1\\ \\mathrm{Hz}\\) with \\(Q_{ms}=3.87\\), \\(Q_{es}=0.41\\), \\(Q_{ts}=0.37\\). The impedance peak is \\(R_e+(Bl)^2/R_{ms}=62\\ \\Omega\\). The suspension is as stiff as \\(V_{as}=24.6\\ \\mathrm L\\) of air, and the reference efficiency \\(\\eta_0=\\rho(Bl)^2S_d^2/(2\\pi cR_eM_{ms}^2)=0.40\\%\\), 88 dB at 1 W and 1 m.",
+          "\\(R_e=6\\ \\Omega\\)、\\(Bl=7.5\\ \\mathrm{T\\,m}\\)、\\(M_{ms}=15\\ \\mathrm g\\)、\\(C_{ms}=1.0\\ \\mathrm{mm/N}\\)、\\(R_{ms}=1.0\\ \\mathrm{kg/s}\\)、コーン面積 \\(S_d=133\\ \\mathrm{cm^2}\\) の 6.5 インチウーファーは \\(f_s=41.1\\ \\mathrm{Hz}\\) で共振し、\\(Q_{ms}=3.87\\)、\\(Q_{es}=0.41\\)、\\(Q_{ts}=0.37\\) です。インピーダンスのピークは \\(R_e+(Bl)^2/R_{ms}=62\\ \\Omega\\) です。サスペンションは \\(V_{as}=24.6\\ \\mathrm L\\) の空気と同じ硬さで、基準効率は \\(\\eta_0=\\rho(Bl)^2S_d^2/(2\\pi cR_eM_{ms}^2)=0.40\\%\\)、1 W、1 m で 88 dB です。"
+        ],
+        "caution": [
+          "The model is the lumped-parameter one: it holds while the cone moves as a rigid piston, below its first break-up mode, typically a few kilohertz for a woofer. The voice-coil inductance is treated as a pure inductor; real coils behave more like a lossy semi-inductance because of eddy currents in the pole piece, so the rising impedance at high frequency is gentler than drawn. \\(M_{ms}\\) includes the air mass the cone carries with it, which is why it depends on the mounting. The cone excursion is drawn for 2.83 V, the voltage that puts 1 W into 8 Ω.",
+          "このモデルは集中定数のものです。コーンが剛体のピストンとして動く間、つまり最初の分割振動モードより下、ウーファーでは典型的に数キロヘルツまでは成り立ちます。ボイスコイルのインダクタンスは純粋なインダクタとして扱っています。現実のコイルはポールピースの渦電流のために損失のある半インダクタンスのように振る舞うので、高い周波数でのインピーダンスの上昇は図よりなだらかです。\\(M_{ms}\\) はコーンが一緒に運ぶ空気の質量を含むので、取り付け方に依存します。コーンの振幅は、8 Ω に 1 W を入れる電圧である 2.83 V で描いています。"
+        ],
+        "question": [
+          "Why does the mass of the cone appear as a capacitance in the electrical impedance?",
+          "コーンの質量が電気的なインピーダンスの中で静電容量として現れるのはなぜですか？"
+        ],
+        "answer": [
+          "The coupling is a gyrator: force is \\(Bl\\) times current, and voltage is \\(Bl\\) times velocity. Seen from the terminals, a mechanical impedance \\(Z_m\\) (force over velocity) becomes an electrical impedance \\((Bl)^2/Z_m\\), the inverse. A mass has \\(Z_m=j\\omega M\\), growing with frequency; its inverse \\((Bl)^2/(j\\omega M)\\) falls with frequency like a capacitor of value \\(M/(Bl)^2\\). By the same inversion the spring, \\(Z_m=1/(j\\omega C_{ms})\\), appears as an inductance \\((Bl)^2C_{ms}\\), and series mechanical elements become parallel electrical ones.",
+          "この結合はジャイレーターです。力は電流の \\(Bl\\) 倍、電圧は速度の \\(Bl\\) 倍です。端子から見ると、機械インピーダンス \\(Z_m\\)（力を速度で割ったもの）はその逆数である電気インピーダンス \\((Bl)^2/Z_m\\) になります。質量は \\(Z_m=j\\omega M\\) で周波数とともに増え、その逆数 \\((Bl)^2/(j\\omega M)\\) は値 \\(M/(Bl)^2\\) のコンデンサーのように周波数とともに下がります。同じ反転によって、ばね \\(Z_m=1/(j\\omega C_{ms})\\) はインダクタンス \\((Bl)^2C_{ms}\\) として現れ、直列の機械要素は並列の電気要素になります。"
+        ],
+        "params": [
+          [
+            "Bl",
+            "Force factor Bl (T·m)",
+            "力係数 Bl（T·m）",
+            3,
+            12,
+            0.1,
+            7.5
+          ],
+          [
+            "Mms",
+            "Moving mass M_ms (g)",
+            "可動質量 M_ms（g）",
+            5,
+            40,
+            0.5,
+            15
+          ],
+          [
+            "Cms",
+            "Suspension compliance C_ms (mm/N)",
+            "サスペンションのコンプライアンス C_ms（mm/N）",
+            0.3,
+            2.5,
+            0.05,
+            1.0
+          ],
+          [
+            "Rms",
+            "Mechanical resistance R_ms (kg/s)",
+            "機械抵抗 R_ms（kg/s）",
+            0.3,
+            4,
+            0.05,
+            1.0
+          ],
+          [
+            "Le",
+            "Coil inductance L_e (mH)",
+            "コイルのインダクタンス L_e（mH）",
+            0,
+            2,
+            0.05,
+            0.5
+          ],
+          [
+            "fsel",
+            "Frequency (Hz, log scale position)",
+            "周波数（Hz、対数目盛の位置）",
+            1,
+            4.3,
+            0.01,
+            1.61
+          ]
+        ],
+        "source": "Richard Small · Direct-radiator loudspeaker system analysis, IEEE Trans. Audio Electroacoust. 19 (1971); J. Audio Eng. Soc. 20 (1972)",
+        "url": "https://ieeexplore.ieee.org/document/1162200/"
+      },
+      {
+        "id": "box-alignment",
+        "title": [
+          "2. The box: sealed or vented",
+          "2. 箱：密閉型かバスレフ型か"
+        ],
+        "body": [
+          "A bare driver cancels its own bass: the back of the cone pushes air round to the front in antiphase. A box stops that, but the trapped air is a second spring. In a sealed box that spring stiffens the suspension by the compliance ratio α = V_as/V_b, raising the resonance and its Q together: the result is a second-order high-pass filter, falling 12 dB per octave. A vented box adds a port, a slug of air in a tube that resonates with the box volume as a Helmholtz resonator at f_b. Near f_b the port does the radiating and the cone barely moves: the response goes lower, then falls at 24 dB per octave, a fourth-order filter. Choose the box, drag the gold point to change the tuning or the volume, and compare the bass and the cone’s excursion.",
+          "箱のないドライバーは自分の低音を打ち消します。コーンの裏側が空気を逆位相で前へ回り込ませるからです。箱はそれを止めますが、閉じ込めた空気は二つ目のばねになります。密閉箱ではそのばねがコンプライアンス比 α = V_as/V_b だけサスペンションを硬くし、共振とその Q を一緒に上げます。結果は、オクターブあたり 12 dB で下がる二次のハイパスフィルターです。バスレフ箱はポート、すなわち管の中の空気の塊を加え、それが箱の容積とヘルムホルツ共鳴器として f_b で共振します。f_b の近くではポートが放射を担い、コーンはほとんど動きません。応答はより低くまで伸び、それからオクターブあたり 24 dB で下がる四次のフィルターになります。箱を選び、金色の点をドラッグして同調や容積を変え、低音とコーンの振幅を比べてください。"
+        ],
+        "formula": "\\text{sealed: }G(s)=\\frac{s^2T_c^2}{s^2T_c^2+sT_c/Q_{tc}+1},\\ f_c=f_s\\sqrt{1+\\alpha},\\ Q_{tc}=Q_{ts}\\sqrt{1+\\alpha};\\qquad \\text{vented: }G(s)=\\frac{s^4T_0^4}{s^4T_0^4+a_1s^3T_0^3+a_2s^2T_0^2+a_3sT_0+1},\\ T_0=\\frac{1}{2\\pi\\sqrt{f_sf_b}}",
+        "example": [
+          "For the woofer of the previous experiment (\\(f_s=41.1\\ \\mathrm{Hz}\\), \\(Q_{ts}=0.37\\), \\(V_{as}=24.6\\ \\mathrm L\\)), a sealed box of 9.5 L gives \\(\\alpha=2.59\\), \\(f_c=77.8\\ \\mathrm{Hz}\\) and \\(Q_{tc}=0.707\\), the maximally flat Butterworth alignment, \\(-3\\ \\mathrm{dB}\\) at 78 Hz. A vented box of 24.6 L tuned to 41 Hz reaches \\(-3\\ \\mathrm{dB}\\) at 41 Hz: nearly an octave deeper, from a box 2.6 times larger. At \\(f_b\\) the vented cone’s excursion falls to a small fraction of its value a few hertz either side.",
+          "前の実験のウーファー（\\(f_s=41.1\\ \\mathrm{Hz}\\)、\\(Q_{ts}=0.37\\)、\\(V_{as}=24.6\\ \\mathrm L\\)）では、9.5 L の密閉箱で \\(\\alpha=2.59\\)、\\(f_c=77.8\\ \\mathrm{Hz}\\)、\\(Q_{tc}=0.707\\) となり、最大平坦なバターワース特性で 78 Hz で \\(-3\\ \\mathrm{dB}\\) です。41 Hz に同調した 24.6 L のバスレフ箱は 41 Hz で \\(-3\\ \\mathrm{dB}\\) に達します。2.6 倍大きな箱で、ほぼ一オクターブ深くなるのです。\\(f_b\\) ではバスレフのコーンの振幅は、その前後数ヘルツでの値のごく一部に下がります。"
+        ],
+        "caution": [
+          "The curves are Small’s lumped models with a box-leakage \\(Q_L=7\\) for the vented box and a lossless sealed box; real boxes add absorption losses and port turbulence at high levels. Both responses are normalised to their passband level, so the comparison is of shape, not loudness; the efficiency is set by the driver. Below \\(f_b\\) the vented cone is unloaded and its excursion rises steeply, which is why vented systems need a high-pass filter against subsonic signals. Excursion is shown relative to the driver’s static displacement in free air.",
+          "曲線はスモールの集中定数モデルで、バスレフ箱には箱の漏れの \\(Q_L=7\\) を、密閉箱には損失なしを仮定しています。現実の箱は吸音材の損失と、大音量でのポートの乱流を加えます。どちらの応答も通過域のレベルで規格化しているので、比べているのは形であって音の大きさではありません。効率はドライバーで決まります。\\(f_b\\) より下ではバスレフのコーンは負荷を失い、その振幅は急に大きくなります。バスレフ系が可聴域以下の信号に対してハイパスフィルターを必要とするのはそのためです。振幅は自由空間でのドライバーの静的変位に対する比で示しています。"
+        ],
+        "question": [
+          "Why does the cone almost stop moving at the port’s tuning frequency?",
+          "ポートの同調周波数でコーンがほとんど止まるのはなぜですか？"
+        ],
+        "answer": [
+          "At \\(f_b\\) the port air and the box air form a resonator whose impedance, seen from the back of the cone, becomes very large: the box pressure swings strongly and pushes back on the cone exactly in opposition to the drive. The cone is held nearly still while the port’s air slug moves with large amplitude and does almost all the radiating. Energy is fed through the small cone motion into the high-Q Helmholtz resonance, which is also why port output lags the cone and why the total acoustic output drops so fast below \\(f_b\\), where port and cone move in antiphase.",
+          "\\(f_b\\) では、ポートの空気と箱の空気が共鳴器をなし、コーンの裏側から見たそのインピーダンスが非常に大きくなります。箱の圧力が大きく揺れ、駆動にちょうど逆らってコーンを押し返します。コーンはほとんど静止し、ポートの空気の塊が大きな振幅で動いて放射のほとんどを担います。エネルギーは小さなコーンの運動を通して Q の高いヘルムホルツ共鳴に送られます。ポートの出力がコーンより遅れるのも、\\(f_b\\) より下でポートとコーンが逆位相で動き全体の音響出力が急に下がるのもそのためです。"
+        ],
+        "params": [
+          [
+            "type",
+            "Box",
+            "箱",
+            0,
+            1,
+            1,
+            0,
+            [
+              [
+                "sealed",
+                "密閉型"
+              ],
+              [
+                "vented (bass reflex)",
+                "バスレフ型"
+              ]
+            ]
+          ],
+          [
+            "Vb",
+            "Box volume V_b (litres)",
+            "箱の容積 V_b（リットル）",
+            4,
+            80,
+            0.5,
+            9.5
+          ],
+          [
+            "fb",
+            "Port tuning f_b (Hz, vented only)",
+            "ポートの同調 f_b（Hz、バスレフのみ）",
+            20,
+            80,
+            0.5,
+            41
+          ]
+        ],
+        "source": "Richard Small · Vented-box loudspeaker systems, Part I, J. Audio Eng. Soc. 21 (1973); Closed-box loudspeaker systems, Part I, J. Audio Eng. Soc. 20 (1972)",
+        "url": "https://www.aes.org/e-lib/browse.cfm?elib=1967"
+      },
+      {
+        "id": "piston-directivity",
+        "title": [
+          "3. Beaming: when a cone stops radiating sideways",
+          "3. 指向性：コーンが横へ放射しなくなるとき"
+        ],
+        "body": [
+          "A cone much smaller than the wavelength it radiates sends sound equally in all directions in front of it. As the frequency rises the wavelength shrinks, and waves from opposite edges of the cone start to arrive at an off-axis listener out of step: the sound narrows into a beam around the axis. For a rigid circular piston in a wall the pattern is exactly 2J₁(x)/x with x = ka sin θ, the same Bessel function that shaped the positional error of a watch balance. The transition happens around ka = 1 to 2, where the circumference is one or two wavelengths. Drag along the frequency axis on the right and watch the polar pattern on the left close in, then sprout side lobes; that is why a woofer hands over to a small tweeter at a few kilohertz.",
+          "放射する波長よりずっと小さいコーンは、前方のすべての方向に等しく音を送ります。周波数が上がると波長は縮み、コーンの反対側の縁からの波が軸から外れた聴き手に位相がずれて届き始めます。音は軸の周りのビームに細まります。壁の中の剛体の円形ピストンでは、パターンは x = ka sin θ としてちょうど 2J₁(x)/x で、時計のてんぷの姿勢差を形づくったのと同じベッセル関数です。移り変わりは ka = 1 から 2、つまり円周が一波長から二波長の辺りで起こります。右の周波数の軸に沿ってドラッグし、左の極座標パターンが閉じていき、やがて副ローブが生えるのを見てください。ウーファーが数キロヘルツで小さなツイーターに引き継ぐのはそのためです。"
+        ],
+        "formula": "D(\\theta)=\\frac{2J_1(ka\\sin\\theta)}{ka\\sin\\theta},\\qquad k=\\frac{2\\pi f}{c},\\qquad \\text{DI}=10\\log_{10}\\frac{(ka)^2}{1-J_1(2ka)/(ka)}\\ \\mathrm{dB}",
+        "example": [
+          "A 6.5-inch woofer has an effective radius of about 6.5 cm. At 1 kHz, \\(ka=2\\pi\\times1000\\times0.065/343=1.19\\) and 60° off axis the level is down only \\(20\\log_{10}(2J_1(1.03)/1.03)=-1.2\\ \\mathrm{dB}\\). At 4 kHz, \\(ka=4.76\\), and 60° off axis lies just past the first null, where \\(ka\\sin\\theta=3.83\\), 25 dB down: the woofer has become a spotlight. A 25 mm dome tweeter, \\(a\\approx1.3\\ \\mathrm{cm}\\), reaches the same \\(ka\\) only at 20 kHz.",
+          "6.5 インチのウーファーの実効半径はおよそ 6.5 cm です。1 kHz では \\(ka=2\\pi\\times1000\\times0.065/343=1.19\\) で、軸から 60° 外れてもレベルは \\(20\\log_{10}(2J_1(1.03)/1.03)=-1.2\\ \\mathrm{dB}\\) しか下がりません。4 kHz では \\(ka=4.76\\) で、軸から 60° の方向は \\(ka\\sin\\theta=3.83\\) となる最初の零点のすぐ先にあり、25 dB 下がります。ウーファーはスポットライトになったのです。25 mm のドームツイーター（\\(a\\approx1.3\\ \\mathrm{cm}\\)）が同じ \\(ka\\) に達するのは 20 kHz になってからです。"
+        ],
+        "caution": [
+          "The formula is for a flat rigid piston set in an infinite baffle, radiating into a half-space. A real cone is not flat, flexes at high frequencies, and sits in a finite box whose edges diffract; at low frequencies a box speaker radiates into the full sphere, not a half-space, so its directivity index tends to 0 dB rather than 3 dB. The shape of the beaming transition and its dependence on \\(ka\\) carry over well, and are what crossover design uses. Coaxial drivers such as a tweeter mounted at the centre of a woofer cone use the woofer’s cone as a waveguide to match the two patterns near the crossover.",
+          "この公式は無限大の壁に取り付けた平らな剛体ピストンが半空間に放射する場合のものです。現実のコーンは平らでなく、高い周波数ではたわみ、縁で回折する有限の箱に収まっています。低い周波数では箱型スピーカーは半空間ではなく全球に放射するので、指向性指数は 3 dB ではなく 0 dB に近づきます。指向性の移り変わりの形と、その \\(ka\\) への依存性はよく当てはまり、クロスオーバーの設計が使うのはそれです。ウーファーのコーンの中心にツイーターを置く同軸型ドライバーは、クロスオーバー付近で二つのパターンをそろえるために、ウーファーのコーンを導波管として使います。"
+        ],
+        "question": [
+          "Why does the pattern have nulls and side lobes at high frequency?",
+          "高い周波数でパターンに零点と副ローブが現れるのはなぜですか？"
+        ],
+        "answer": [
+          "Off axis, each strip of the piston contributes a wave delayed in proportion to its distance across the face, \\(x\\sin\\theta\\). Summing them is a Fourier transform of the piston’s shape. When the path difference across the face is large enough, the contributions from some strips cancel those from others exactly: the first null is at \\(ka\\sin\\theta=3.832\\), the first zero of \\(J_1\\). Between nulls the cancellation is incomplete and a smaller lobe survives. A uniform piston is the circular analogue of a uniformly lit slit, whose diffraction pattern has the same nulls and lobes.",
+          "軸から外れると、ピストンの各帯は面を横切る距離 \\(x\\sin\\theta\\) に比例して遅れた波を寄与します。それらを足し合わせることは、ピストンの形のフーリエ変換です。面を横切る経路差が十分大きくなると、ある帯からの寄与が別の帯からの寄与をちょうど打ち消します。最初の零点は \\(J_1\\) の最初の零点 \\(ka\\sin\\theta=3.832\\) にあります。零点の間では打ち消しは不完全で、小さなローブが残ります。一様なピストンは一様に照らされたスリットの円形版で、その回折パターンも同じ零点とローブをもちます。"
+        ],
+        "params": [
+          [
+            "a",
+            "Piston radius a (cm)",
+            "ピストンの半径 a（cm）",
+            1,
+            15,
+            0.1,
+            6.5
+          ],
+          [
+            "lf",
+            "Frequency (log₁₀ Hz)",
+            "周波数（log₁₀ Hz）",
+            2,
+            4.3,
+            0.01,
+            3.3
+          ]
+        ],
+        "source": "Lawrence Kinsler, Austin Frey, Alan Coppens, James Sanders · Fundamentals of Acoustics, 4th ed., §7.4 (Wiley, 2000)",
+        "url": "https://www.wiley.com/en-us/Fundamentals+of+Acoustics%2C+4th+Edition-p-9780471847892"
+      }
+    ]
+  },
+  {
+    "slug": "crossovers-filters",
+    "title": [
+      "Filters and crossovers: splitting sound between drivers",
+      "フィルターとクロスオーバー：音をドライバーに振り分ける"
+    ],
+    "description": [
+      "A speaker with two drivers has to send the bass to one and the treble to the other, and the two halves have to add back up to the original in the air in front of it. Resistors, capacitors and inductors make filters whose behaviour is read off a Bode plot; crossover filters are designed so that their outputs sum, as complex numbers, to something flat; and the physical distance between the drivers turns that sum into a function of where the listener sits, which is the problem a coaxial driver solves.",
+      "二つのドライバーをもつスピーカーは、低音を一方に、高音をもう一方に送らなければならず、その二つの半分は前方の空気の中で元の音に足し戻されなければなりません。抵抗、コンデンサー、インダクタはボード線図で振る舞いを読み取れるフィルターを作ります。クロスオーバーのフィルターは、その出力が複素数として足し合わされて平らになるように設計されます。そしてドライバー間の物理的な距離が、その和を聴き手がどこに座るかの関数に変えます。それを解決するのが同軸型ドライバーです。"
+    ],
+    "group": "engineering",
+    "prerequisite": [
+      "AC circuits, complex numbers and Fourier analysis",
+      "交流回路、複素数、フーリエ解析"
+    ],
+    "source": "Paul Horowitz and Winfield Hill · The Art of Electronics, 3rd ed., ch. 1 and 6 (Cambridge University Press, 2015)",
+    "url": "https://artofelectronics.net/",
+    "labs": [
+      {
+        "id": "rlc-filters",
+        "title": [
+          "1. RC and RLC filters and the Bode plot",
+          "1. RC と RLC のフィルター、そしてボード線図"
+        ],
+        "body": [
+          "A capacitor’s impedance 1/jωC falls with frequency and an inductor’s jωL rises, so a voltage divider built from them lets some frequencies through and blocks others. On the right, the Bode plot: gain in decibels and phase against frequency on a log scale, where each pole bends the gain down by 20 dB per decade and turns the phase by 90°. On the left, what that means for an actual sine wave: drag the test frequency and watch the output shrink and lag behind the input. The series RLC low-pass has a resonance at f₀ = 1/2π√(LC) with quality factor Q = √(L/C)/R: at high Q the gain peaks at f₀ before it falls, and the phase swings through −90° exactly there.",
+          "コンデンサーのインピーダンス 1/jωC は周波数とともに下がり、インダクタの jωL は上がるので、それらで作った分圧器はある周波数を通し、ほかを遮ります。右はボード線図で、対数目盛の周波数に対する利得（デシベル）と位相です。各極は利得を 10 倍の周波数ごとに 20 dB 曲げ下げ、位相を 90° 回します。左は、それが実際の正弦波にとって何を意味するかです。試験周波数をドラッグし、出力が小さくなり入力より遅れるのを見てください。直列 RLC ローパスは f₀ = 1/2π√(LC) に共振をもち、品質係数は Q = √(L/C)/R です。Q が高いと利得は下がる前に f₀ でピークをもち、位相はちょうどそこで −90° を通過します。"
+        ],
+        "formula": "H_{\\rm RC,lp}=\\frac{1}{1+j\\omega RC},\\qquad H_{\\rm RLC,lp}=\\frac{1}{1-\\omega^2LC+j\\omega RC},\\qquad f_c=\\frac{1}{2\\pi RC},\\ f_0=\\frac{1}{2\\pi\\sqrt{LC}},\\ Q=\\frac1R\\sqrt{\\frac LC},\\qquad G_{\\rm dB}=20\\log_{10}|H|",
+        "example": [
+          "With \\(R=10\\ \\Omega\\) and \\(C=10\\ \\mu\\mathrm F\\), the RC low-pass has \\(f_c=1/(2\\pi\\times10^{-4})=1592\\ \\mathrm{Hz}\\), where the gain is \\(1/\\sqrt2\\), \\(-3\\ \\mathrm{dB}\\), and the phase \\(-45^\\circ\\). Ten times higher, at 15.9 kHz, the gain is \\(-20\\ \\mathrm{dB}\\). Adding \\(L=1\\ \\mathrm{mH}\\) in series gives \\(f_0=1592\\ \\mathrm{Hz}\\) and \\(Q=\\sqrt{10^{-3}/10^{-5}}/10=1\\): at \\(f_0\\) the gain is exactly \\(Q\\), 0 dB, and a decade above it has fallen by 40 dB.",
+          "\\(R=10\\ \\Omega\\)、\\(C=10\\ \\mu\\mathrm F\\) の RC ローパスは \\(f_c=1/(2\\pi\\times10^{-4})=1592\\ \\mathrm{Hz}\\) をもち、そこで利得は \\(1/\\sqrt2\\)、すなわち \\(-3\\ \\mathrm{dB}\\)、位相は \\(-45^\\circ\\) です。十倍高い 15.9 kHz では利得は \\(-20\\ \\mathrm{dB}\\) です。直列に \\(L=1\\ \\mathrm{mH}\\) を加えると \\(f_0=1592\\ \\mathrm{Hz}\\)、\\(Q=\\sqrt{10^{-3}/10^{-5}}/10=1\\) で、\\(f_0\\) での利得はちょうど \\(Q\\)、つまり 0 dB で、十倍上では 40 dB 下がっています。"
+        ],
+        "caution": [
+          "These are ideal components driving no load. A passive crossover in a speaker drives a driver, whose impedance is anything but a resistor, as the loudspeaker topic shows, so real passive networks include impedance-compensation branches or are replaced by active filters before the amplifier. The time trace shows the steady state; switching a filter on also produces a transient, not drawn.",
+          "これらは負荷を駆動しない理想的な部品です。スピーカーの受動型クロスオーバーはドライバーを駆動し、そのインピーダンスはスピーカーの話題で見たとおり抵抗とはほど遠いものです。そのため現実の受動回路はインピーダンス補正の枝を含むか、アンプの前に置く能動フィルターに置き換えられます。時間波形は定常状態を示します。フィルターを入れた瞬間の過渡応答は描いていません。"
+        ],
+        "question": [
+          "Why does each pole cost 20 dB per decade?",
+          "各極が 10 倍の周波数ごとに 20 dB を失うのはなぜですか？"
+        ],
+        "answer": [
+          "Far above a pole at \\(\\omega_p\\), its factor \\(1/(1+j\\omega/\\omega_p)\\) behaves like \\(\\omega_p/(j\\omega)\\): the magnitude is inversely proportional to frequency. A factor of 10 in frequency is a factor of 10 in amplitude, and \\(20\\log_{10}10=20\\ \\mathrm{dB}\\). An \\(n\\)-th order filter has \\(n\\) poles, so its skirt falls at \\(20n\\) dB per decade, 6n dB per octave, and its phase ultimately turns by \\(90n\\) degrees.",
+          "極 \\(\\omega_p\\) よりずっと上では、その因子 \\(1/(1+j\\omega/\\omega_p)\\) は \\(\\omega_p/(j\\omega)\\) のように振る舞い、大きさは周波数に反比例します。周波数が 10 倍になると振幅は 10 分の 1 になり、\\(20\\log_{10}10=20\\ \\mathrm{dB}\\) です。\\(n\\) 次のフィルターは \\(n\\) 個の極をもつので、その裾は 10 倍ごとに \\(20n\\) dB、オクターブごとに 6n dB で下がり、位相は最終的に \\(90n\\) 度回ります。"
+        ],
+        "params": [
+          [
+            "type",
+            "Circuit",
+            "回路",
+            0,
+            3,
+            1,
+            2,
+            [
+              [
+                "RC low-pass",
+                "RC ローパス"
+              ],
+              [
+                "RC high-pass",
+                "RC ハイパス"
+              ],
+              [
+                "RLC low-pass",
+                "RLC ローパス"
+              ],
+              [
+                "RLC band-pass",
+                "RLC バンドパス"
+              ]
+            ]
+          ],
+          [
+            "R",
+            "Resistance R (Ω)",
+            "抵抗 R（Ω）",
+            1,
+            100,
+            0.5,
+            10
+          ],
+          [
+            "L",
+            "Inductance L (mH)",
+            "インダクタンス L（mH）",
+            0.1,
+            10,
+            0.1,
+            1
+          ],
+          [
+            "C",
+            "Capacitance C (µF)",
+            "静電容量 C（µF）",
+            0.5,
+            50,
+            0.5,
+            10
+          ],
+          [
+            "lf",
+            "Test frequency (log₁₀ Hz)",
+            "試験周波数（log₁₀ Hz）",
+            1.5,
+            4.3,
+            0.01,
+            3.2
+          ]
+        ],
+        "source": "Paul Horowitz and Winfield Hill · The Art of Electronics, 3rd ed., ch. 1 and 6 (Cambridge University Press, 2015)",
+        "url": "https://artofelectronics.net/"
+      },
+      {
+        "id": "crossover-sum",
+        "title": [
+          "2. Adding the halves back together",
+          "2. 二つの半分を足し戻す"
+        ],
+        "body": [
+          "A crossover splits the signal into a low-pass for the woofer and a high-pass for the tweeter, and the listener hears their sum. What matters is not only how loud each half is at the crossover frequency but its phase, because the two add as complex numbers. On the left, at the frequency chosen on the right, the two outputs are drawn as arrows in the complex plane, head to tail, with their sum. A first-order pair sums perfectly flat. A second-order Butterworth pair is 180° apart at the crossover and cancels into a deep notch, or, with the tweeter wired in reverse, bumps up 3 dB. Linkwitz–Riley filters are Butterworth filters squared: each half is 6 dB down at the crossover and in phase with the other, so they sum to exactly unity gain, with a smooth phase rotation that is the price of steep slopes.",
+          "クロスオーバーは信号をウーファー用のローパスとツイーター用のハイパスに分け、聴き手はその和を聞きます。大事なのは、クロスオーバー周波数での各半分の大きさだけでなく、その位相です。二つは複素数として足し合わされるからです。左は、右で選んだ周波数での二つの出力を複素平面上の矢印として先端と根元をつないで描き、その和を示します。一次の組は完全に平らに足し合わされます。二次のバターワースの組はクロスオーバーで 180° 離れていて深いノッチに打ち消し合い、ツイーターを逆に配線すると 3 dB 盛り上がります。リンクウィッツ・ライリーのフィルターはバターワースのフィルターの二乗です。各半分はクロスオーバーで 6 dB 下がり、互いに同位相なので、ちょうど利得 1 に足し合わされます。滑らかな位相の回転が、急な傾斜の代償です。"
+        ],
+        "formula": "\\text{LR}_4:\\ H_{\\rm lp}=\\frac{1}{(s^2+\\sqrt2 s+1)^2},\\ H_{\\rm hp}=\\frac{s^4}{(s^2+\\sqrt2 s+1)^2},\\ H_{\\rm lp}+H_{\\rm hp}=\\frac{s^4+1}{(s^2+\\sqrt2s+1)^2}=\\frac{s^2-\\sqrt2s+1}{s^2+\\sqrt2s+1},\\qquad s=j\\frac{f}{f_c}",
+        "example": [
+          "At the crossover frequency \\(s=j\\). For the second-order Butterworth pair, \\(H_{\\rm lp}=1/(\\sqrt2 j)\\) and \\(H_{\\rm hp}=-1/(\\sqrt2j)\\): equal and opposite, sum zero. Invert the tweeter and they add to \\(\\sqrt2/j\\), magnitude \\(\\sqrt2\\), +3 dB. For LR4, each is \\(1/(\\sqrt2j)^2=-\\tfrac12\\): both \\(-6\\ \\mathrm{dB}\\), in phase, summing to \\(-1\\), magnitude exactly 1 but 180° of phase shift; far below the crossover the phase is 0 and far above it is \\(-360^\\circ\\).",
+          "クロスオーバー周波数では \\(s=j\\) です。二次のバターワースの組では \\(H_{\\rm lp}=1/(\\sqrt2 j)\\)、\\(H_{\\rm hp}=-1/(\\sqrt2j)\\) で、大きさが等しく向きが逆なので和は 0 です。ツイーターを反転すると \\(\\sqrt2/j\\) に足し合わされ、大きさは \\(\\sqrt2\\)、+3 dB です。LR4 では各々が \\(1/(\\sqrt2j)^2=-\\tfrac12\\) で、どちらも \\(-6\\ \\mathrm{dB}\\)、同位相で、和は \\(-1\\)、大きさはちょうど 1 ですが位相は 180° ずれています。クロスオーバーよりずっと下で位相は 0、ずっと上で \\(-360^\\circ\\) です。"
+        ],
+        "caution": [
+          "The sum is computed for ideal filters and for two drivers that are themselves flat and occupy the same point in space. Real drivers have their own roll-offs, which become part of the acoustic filter, so a real design targets acoustic Linkwitz–Riley slopes and compensates the drivers’ contribution. A flat magnitude with a rotating phase is an all-pass response: the waveform of a square wave is changed, though its spectrum is not, and whether that is audible at typical crossover frequencies is debated.",
+          "和は理想的なフィルターと、それ自体が平らで空間の同じ点を占める二つのドライバーについて計算しています。現実のドライバーはそれぞれの減衰特性をもち、それが音響的なフィルターの一部になるので、現実の設計は音響的なリンクウィッツ・ライリーの傾斜を目標にし、ドライバーの寄与を補正します。大きさが平らで位相が回る応答はオールパス応答です。矩形波の波形は変わりますがスペクトルは変わらず、それが典型的なクロスオーバー周波数で聞き取れるかどうかには議論があります。"
+        ],
+        "question": [
+          "Why do Linkwitz–Riley filters sum flat while Butterworth filters of the same order do not?",
+          "同じ次数のバターワースのフィルターは平らに足し合わされないのに、リンクウィッツ・ライリーのフィルターが平らに足し合わされるのはなぜですか？"
+        ],
+        "answer": [
+          "A Butterworth low-pass and high-pass are power complementary: \\(|H_{\\rm lp}|^2+|H_{\\rm hp}|^2=1\\), so their powers add to one, but their voltages, which is what the air adds, are not in phase at the crossover. Squaring a Butterworth filter makes the pair amplitude complementary instead: with \\(B(s)\\) the Butterworth denominator, \\(1/B(s)^2+s^{2n}/B(s)^2\\) has numerator \\(1+s^{2n}\\), which for even order factors as \\(B(s)B(-s)\\) up to sign, leaving the all-pass \\(B(-s)/B(s)\\), whose magnitude is 1 at every frequency.",
+          "バターワースのローパスとハイパスはパワー相補的です。\\(|H_{\\rm lp}|^2+|H_{\\rm hp}|^2=1\\) なのでパワーの和は 1 ですが、空気が足し合わせる電圧は、クロスオーバーで同位相ではありません。バターワースのフィルターを二乗すると、組は代わりに振幅相補的になります。\\(B(s)\\) をバターワースの分母とすると、\\(1/B(s)^2+s^{2n}/B(s)^2\\) の分子は \\(1+s^{2n}\\) で、偶数次ではこれは符号を除いて \\(B(s)B(-s)\\) と因数分解され、オールパス \\(B(-s)/B(s)\\) が残ります。その大きさはあらゆる周波数で 1 です。"
+        ],
+        "params": [
+          [
+            "type",
+            "Crossover",
+            "クロスオーバー",
+            0,
+            4,
+            1,
+            4,
+            [
+              [
+                "1st-order Butterworth",
+                "一次バターワース"
+              ],
+              [
+                "2nd-order Butterworth",
+                "二次バターワース"
+              ],
+              [
+                "2nd-order Butterworth, tweeter inverted",
+                "二次バターワース、ツイーター反転"
+              ],
+              [
+                "LR2, tweeter inverted",
+                "LR2、ツイーター反転"
+              ],
+              [
+                "LR4",
+                "LR4"
+              ]
+            ]
+          ],
+          [
+            "fc",
+            "Crossover frequency (Hz)",
+            "クロスオーバー周波数（Hz）",
+            500,
+            5000,
+            50,
+            2500
+          ],
+          [
+            "lf",
+            "Frequency for the phasors (log₁₀ Hz)",
+            "フェーザーを見る周波数（log₁₀ Hz）",
+            2,
+            4.3,
+            0.01,
+            3.4
+          ]
+        ],
+        "source": "Siegfried Linkwitz · Active crossover networks for noncoincident drivers, J. Audio Eng. Soc. 24 (1976)",
+        "url": "https://www.aes.org/e-lib/browse.cfm?elib=2649"
+      },
+      {
+        "id": "driver-offset",
+        "title": [
+          "3. When the drivers are not in the same place",
+          "3. ドライバーが同じ場所にないとき"
+        ],
+        "body": [
+          "The crossover sums perfectly only for a listener equidistant from both drivers. A tweeter mounted 15 cm above the woofer is closer to a listener above the axis and farther from one below, and near the crossover frequency, where both drivers play equally, that path difference turns the in-phase sum into partial cancellation: the vertical radiation pattern grows lobes and nulls, and if the tweeter’s acoustic centre also sits behind the woofer’s, the main lobe tilts. Change the spacing and the depth offset, then drag the listener round the polar plot and see the response at that seat on the right. Set the spacing to zero, a coaxial driver with the tweeter at the woofer’s centre, and the lobes disappear.",
+          "クロスオーバーが完全に足し合わされるのは、両方のドライバーから等距離にいる聴き手に対してだけです。ウーファーの 15 cm 上に取り付けたツイーターは、軸より上の聴き手には近く、下の聴き手には遠くなります。両方のドライバーが等しく鳴るクロスオーバー周波数の近くでは、その経路差が同位相の和を部分的な打ち消しに変えます。縦方向の放射パターンにローブと零点が生じ、ツイーターの音響中心がウーファーより奥にもあると、主ローブが傾きます。間隔と奥行きのずれを変え、聴き手を極座標図の周りにドラッグして、その席での応答を右で見てください。間隔を 0、つまりツイーターをウーファーの中心に置いた同軸型ドライバーにすると、ローブは消えます。"
+        ],
+        "formula": "H(f,\\theta)=H_{\\rm lp}(f)+H_{\\rm hp}(f)\\,e^{-j2\\pi f\\,\\Delta t(\\theta)},\\qquad \\Delta t(\\theta)=\\frac{d_z\\cos\\theta-h\\sin\\theta}{c},\\qquad \\text{first null where } f\\,|\\Delta t|=\\tfrac12 \\text{ at } f=f_c \\text{ (LR4)}",
+        "example": [
+          "With an LR4 crossover at 2.5 kHz and the drivers 15 cm apart vertically, a listener \\(20^\\circ\\) above the axis hears the tweeter \\(0.15\\sin20^\\circ=5.1\\ \\mathrm{cm}\\) earlier, \\(0.15\\ \\mathrm{ms}\\), which at 2.5 kHz is \\(0.37\\) of a cycle, \\(134^\\circ\\): the two halves, each \\(-6\\ \\mathrm{dB}\\), add to \\(|\\cos67^\\circ|=0.39\\), \\(-8\\ \\mathrm{dB}\\). The first null is where the delay is half a cycle, \\(\\sin\\theta=343/(2\\times2500\\times0.15)\\), \\(\\theta=27^\\circ\\). A 2 cm depth offset shifts the whole pattern, tilting the main lobe \\(\\arctan(0.02/0.15)=7.6^\\circ\\) upwards, towards the tweeter, where its extra depth is paid back by its height.",
+          "2.5 kHz の LR4 クロスオーバーで、ドライバーが縦に 15 cm 離れているとき、軸から \\(20^\\circ\\) 上の聴き手にはツイーターが \\(0.15\\sin20^\\circ=5.1\\ \\mathrm{cm}\\)、つまり \\(0.15\\ \\mathrm{ms}\\) 早く聞こえます。これは 2.5 kHz では \\(0.37\\) 周期、\\(134^\\circ\\) です。それぞれ \\(-6\\ \\mathrm{dB}\\) の二つの半分は \\(|\\cos67^\\circ|=0.39\\)、つまり \\(-8\\ \\mathrm{dB}\\) に足し合わされます。最初の零点は遅れが半周期になる所で、\\(\\sin\\theta=343/(2\\times2500\\times0.15)\\)、\\(\\theta=27^\\circ\\) です。2 cm の奥行きのずれはパターン全体をずらし、主ローブを \\(\\arctan(0.02/0.15)=7.6^\\circ\\) 上、つまりツイーターの側に傾けます。そこでは奥行きの分の遅れが高さの分で取り戻されるからです。"
+        ],
+        "caution": [
+          "The drivers are modelled as point sources in the far field, with ideal flat responses and no directivity of their own; the previous topic’s beaming would further narrow the woofer’s contribution near the crossover. A digital delay can remove a depth offset exactly on axis, but no delay can remove the vertical path difference for every listening angle at once; only putting the acoustic centres in the same place does that. In a coaxial driver the tweeter still sits slightly behind the woofer’s cone plane, which is corrected by delay, and the woofer cone shapes the tweeter’s dispersion.",
+          "ドライバーは遠方場の点音源としてモデル化し、理想的に平らな応答をもち、それ自体の指向性はないとしています。前の話題の指向性は、クロスオーバー付近でウーファーの寄与をさらに狭めるでしょう。デジタルの遅延は軸上では奥行きのずれを正確に取り除けますが、縦方向の経路差をすべての聴取角度で同時に取り除ける遅延はありません。それができるのは、音響中心を同じ場所に置くことだけです。同軸型ドライバーでもツイーターはウーファーのコーンの面よりわずかに奥にあり、それは遅延で補正され、ウーファーのコーンがツイーターの拡散を形づくります。"
+        ],
+        "question": [
+          "Why can a delay fix the depth offset but not the vertical spacing?",
+          "遅延で奥行きのずれは直せるのに、縦の間隔は直せないのはなぜですか？"
+        ],
+        "answer": [
+          "The depth offset adds nearly the same delay \\(d_z\\cos\\theta/c\\) at every angle close to the axis, so delaying the woofer by \\(d_z/c\\) cancels it for all listeners in front. The vertical spacing adds a delay \\(-h\\sin\\theta/c\\) that changes sign from above to below the axis: any fixed electronic delay makes it right at exactly one angle and wrong everywhere else. Only \\(h=0\\) makes the delay zero for every angle, which is the geometric argument for coincident drivers.",
+          "奥行きのずれは軸に近いどの角度でもほぼ同じ遅延 \\(d_z\\cos\\theta/c\\) を加えるので、ウーファーを \\(d_z/c\\) だけ遅らせれば前方のすべての聴き手に対して打ち消せます。縦の間隔は、軸の上と下で符号が変わる遅延 \\(-h\\sin\\theta/c\\) を加えます。どんな固定した電子的遅延も、ちょうど一つの角度でだけ正しく、それ以外のすべての場所で誤ります。すべての角度で遅延を 0 にできるのは \\(h=0\\) だけで、これが同軸ドライバーを支持する幾何学的な論拠です。"
+        ],
+        "params": [
+          [
+            "h",
+            "Vertical spacing h (cm)",
+            "縦の間隔 h（cm）",
+            0,
+            30,
+            0.5,
+            15
+          ],
+          [
+            "dz",
+            "Tweeter behind woofer d_z (cm)",
+            "ツイーターの奥行きのずれ d_z（cm）",
+            -3,
+            5,
+            0.1,
+            0
+          ],
+          [
+            "fc",
+            "Crossover frequency (Hz, LR4)",
+            "クロスオーバー周波数（Hz、LR4）",
+            800,
+            5000,
+            50,
+            2500
+          ],
+          [
+            "ang",
+            "Listening angle (degrees above axis)",
+            "聴取角度（軸から上へ、度）",
+            -60,
+            60,
+            1,
+            20
+          ]
+        ],
+        "source": "Siegfried Linkwitz · Active crossover networks for noncoincident drivers, J. Audio Eng. Soc. 24 (1976)",
+        "url": "https://www.aes.org/e-lib/browse.cfm?elib=2649"
+      }
+    ]
+  },
+  {
+    "slug": "room-acoustics",
+    "title": [
+      "Room acoustics: the room is part of the speaker",
+      "室内音響：部屋はスピーカーの一部"
+    ],
+    "description": [
+      "What reaches your ears from a loudspeaker is only partly the loudspeaker. In the bass the room is a resonator whose standing waves decide which notes boom and which vanish, depending on where you sit; in the midrange and treble it is a cloud of reflections that decays at a rate set by the room’s volume and absorption; and a single nearby surface can cut notches into the response that no equaliser can fill. Three models, each exact within its assumptions, cover the three regimes.",
+      "スピーカーから耳に届くものは、その一部しかスピーカーのものではありません。低音域では部屋は共鳴器で、その定在波がどの音を響かせ、どの音を消すかを、座る場所に応じて決めます。中音域と高音域では部屋は反射の雲で、それは部屋の容積と吸音で決まる速さで減衰します。そしてすぐ近くの一枚の面は、どんなイコライザーでも埋められない落ち込みを応答に刻むことがあります。三つのモデルが、それぞれの仮定の中で厳密に、この三つの領域を扱います。"
+    ],
+    "group": "engineering",
+    "prerequisite": [
+      "the wave equation, standing waves and Fourier analysis",
+      "波動方程式、定在波、フーリエ解析"
+    ],
+    "source": "Heinrich Kuttruff · Room Acoustics, 6th ed. (CRC Press, 2016)",
+    "url": "https://doi.org/10.1201/9781315372150",
+    "labs": [
+      {
+        "id": "room-modes",
+        "title": [
+          "1. Room modes: standing waves in a box",
+          "1. 部屋のモード：箱の中の定在波"
+        ],
+        "body": [
+          "Below a few hundred hertz the wavelength is comparable to the room, and the room stops behaving like open space: sound bounces between parallel walls and builds up standing waves at particular frequencies, the room’s modes. In a rectangular room with rigid walls each mode is labelled by three whole numbers, the number of half-wavelengths that fit along the length, the width and the height. The floor plan on the left is coloured by the pressure of the selected mode, oscillating: the two colours are opposite phases, and the pale bands between them are nodes, where that mode is silent. The loudspeaker sits in a corner, where every mode has a pressure maximum. Drag the listener: the response on the right is the sum of all the modes heard at that seat, and it swings by 10 to 20 dB from one frequency to the next. Above the Schroeder frequency the modes overlap so densely that the peaks and dips blur into a statistical average.",
+          "数百ヘルツより下では波長が部屋と同じくらいになり、部屋は開けた空間のようには振る舞わなくなります。音は平行な壁の間で跳ね返り、特定の周波数で定在波を作ります。これが部屋のモードです。剛な壁をもつ直方体の部屋では、各モードは三つの整数、つまり長さ、幅、高さに沿って収まる半波長の数で表されます。左の平面図は、選んだモードの圧力で振動する様子を色で示しています。二つの色は逆位相で、その間の淡い帯は節、つまりそのモードが鳴らない場所です。スピーカーは部屋の隅にあり、そこではすべてのモードの圧力が最大になります。聴き手をドラッグしてください。右の応答はその席で聞こえるすべてのモードの和で、周波数が少し変わるだけで 10 から 20 dB も上下します。シュレーダー周波数より上ではモードが密に重なり、山と谷は統計的な平均にならされます。"
+        ],
+        "formula": "f_{n_xn_yn_z}=\\frac c2\\sqrt{\\Big(\\frac{n_x}{L}\\Big)^2+\\Big(\\frac{n_y}{W}\\Big)^2+\\Big(\\frac{n_z}{H}\\Big)^2},\\qquad p\\propto\\cos\\frac{n_x\\pi x}{L}\\cos\\frac{n_y\\pi y}{W}\\cos\\frac{n_z\\pi z}{H},\\qquad f_S\\approx2000\\sqrt{\\frac{T_{60}}{V}}",
+        "example": [
+          "In a room 5 m long, 4 m wide and 2.5 m high, the first axial modes are \\(343/10=34.3\\ \\mathrm{Hz}\\) along the length, \\(42.9\\ \\mathrm{Hz}\\) across the width and \\(68.6\\ \\mathrm{Hz}\\) from floor to ceiling. The second length mode is also \\(68.6\\ \\mathrm{Hz}\\), because the length is exactly twice the height, and the two modes pile up at one frequency. The first tangential mode, \\((1,1,0)\\), is \\(\\sqrt{34.3^2+42.9^2}=54.9\\ \\mathrm{Hz}\\). A listener at the exact centre of the floor sits on a node of every mode with an odd \\(n_x\\) or \\(n_y\\), so the 34.3 Hz and 42.9 Hz modes are missing there. With \\(V=50\\ \\mathrm{m^3}\\) and \\(T_{60}=0.4\\ \\mathrm s\\), \\(f_S\\approx2000\\sqrt{0.4/50}=179\\ \\mathrm{Hz}\\).",
+          "長さ 5 m、幅 4 m、高さ 2.5 m の部屋では、最初の軸モードは長さ方向に \\(343/10=34.3\\ \\mathrm{Hz}\\)、幅方向に \\(42.9\\ \\mathrm{Hz}\\)、床から天井へ \\(68.6\\ \\mathrm{Hz}\\) です。長さ方向の二番目のモードも \\(68.6\\ \\mathrm{Hz}\\) です。長さがちょうど高さの二倍なので、二つのモードが一つの周波数に重なります。最初の接線モード \\((1,1,0)\\) は \\(\\sqrt{34.3^2+42.9^2}=54.9\\ \\mathrm{Hz}\\) です。床のちょうど中央にいる聴き手は、\\(n_x\\) か \\(n_y\\) が奇数のすべてのモードの節にいるので、34.3 Hz と 42.9 Hz のモードはそこでは聞こえません。\\(V=50\\ \\mathrm{m^3}\\)、\\(T_{60}=0.4\\ \\mathrm s\\) なら \\(f_S\\approx2000\\sqrt{0.4/50}=179\\ \\mathrm{Hz}\\) です。"
+        ],
+        "caution": [
+          "The walls are rigid and every mode decays at the same rate, set by a reverberation time of 0.4 s. Real walls flex and absorb more in the bass, which shifts and damps the modes differently. The source is a point in a floor corner and the listener’s ear is 1.2 m above the floor; the floor plan shows the selected mode at that height. Levels are relative, with 0 dB the average over the plotted range.",
+          "壁は剛で、すべてのモードは残響時間 0.4 s で決まる同じ速さで減衰するとしています。現実の壁はたわみ、低音域でより多く吸音するので、モードはそれぞれ違うようにずれ、減衰します。音源は床の隅の点で、聴き手の耳は床から 1.2 m の高さです。平面図は選んだモードをその高さで示しています。レベルは相対値で、0 dB は描いた範囲全体の平均です。"
+        ],
+        "question": [
+          "Why is a corner the loudest place for bass?",
+          "なぜ隅は低音が最も大きく聞こえる場所なのですか？"
+        ],
+        "answer": [
+          "Every mode shape is a product of cosines, and each cosine is \\(\\pm1\\) at a wall. At a corner, where three walls meet, every mode has its full amplitude: a source there drives all the modes and a listener there hears all of them. That is why a subwoofer in a corner plays loudest, and why pressure-driven bass absorbers, such as membrane traps, are placed in corners. The quietest bass seats are the opposite: points where many low modes have nodes, such as the middle of the room.",
+          "すべてのモードの形は余弦の積で、各余弦は壁で \\(\\pm1\\) になります。三つの壁が交わる隅では、すべてのモードがその全振幅をもちます。そこに置いた音源はすべてのモードを駆動し、そこにいる聴き手はすべてのモードを聞きます。隅に置いたサブウーファーが最も大きく鳴るのも、膜振動型のベーストラップのような圧力で働く低音吸音材を隅に置くのも、そのためです。低音が最も弱い席はその反対で、部屋の中央のように多くの低いモードの節が集まる点です。"
+        ],
+        "params": [
+          [
+            "L",
+            "Length L (m)",
+            "長さ L（m）",
+            3,
+            8,
+            0.05,
+            5
+          ],
+          [
+            "W",
+            "Width W (m)",
+            "幅 W（m）",
+            2.5,
+            6,
+            0.05,
+            4
+          ],
+          [
+            "H",
+            "Height H (m)",
+            "高さ H（m）",
+            2.2,
+            3.5,
+            0.05,
+            2.5
+          ],
+          [
+            "nx",
+            "Mode index n_x",
+            "モード番号 n_x",
+            0,
+            4,
+            1,
+            1
+          ],
+          [
+            "ny",
+            "Mode index n_y",
+            "モード番号 n_y",
+            0,
+            4,
+            1,
+            1
+          ],
+          [
+            "nz",
+            "Mode index n_z",
+            "モード番号 n_z",
+            0,
+            2,
+            1,
+            0
+          ],
+          [
+            "lx",
+            "Listener along the length (fraction)",
+            "聴き手の長さ方向の位置（割合）",
+            0.02,
+            0.98,
+            0.01,
+            0.62
+          ],
+          [
+            "ly",
+            "Listener across the width (fraction)",
+            "聴き手の幅方向の位置（割合）",
+            0.02,
+            0.98,
+            0.01,
+            0.4
+          ]
+        ],
+        "source": "Heinrich Kuttruff · Room Acoustics, 6th ed. (CRC Press, 2016)",
+        "url": "https://doi.org/10.1201/9781315372150"
+      },
+      {
+        "id": "reverberation",
+        "title": [
+          "2. Reverberation: how long a room remembers",
+          "2. 残響：部屋はどれだけ長く覚えているか"
+        ],
+        "body": [
+          "After a sound stops, its energy goes on bouncing from surface to surface, losing a fraction α at every reflection. Wallace Sabine, timing the decay of organ pipes in Harvard lecture rooms with a stopwatch and his ears, and changing the absorption by carrying in seat cushions, found that the time for the level to fall by 60 dB is proportional to the volume and inversely proportional to the total absorption \\(A=\\sum S\\alpha\\), measured in square metres of perfectly absorbing surface. Choose a room and its surfaces. On the left, the echogram of a handclap: the direct sound, a few distinct early reflections, then a dense tail whose level falls in a straight line on the decibel scale. On the right, the level of the direct sound and of the reverberant field against distance: closer than the critical distance you mostly hear the loudspeaker, further away mostly the room.",
+          "音が止まった後も、そのエネルギーは面から面へと跳ね返り続け、反射のたびに割合 α を失います。ウォーレス・セイビンは、ハーバード大学の講義室でオルガンのパイプの音の減衰をストップウォッチと自分の耳で計り、座席のクッションを運び込んで吸音を変えました。そして、レベルが 60 dB 下がるまでの時間は容積に比例し、全吸音量 \\(A=\\sum S\\alpha\\)（完全に吸音する面の平方メートルで測ります）に反比例することを見いだしました。部屋とその面を選んでください。左は手拍子のエコーグラムで、直接音、いくつかの分かれた初期反射、そしてデシベル目盛の上で直線的にレベルが下がる密な尾が見えます。右は、直接音と残響音場のレベルを距離に対して描いたものです。臨界距離より近くでは主にスピーカーが、遠くでは主に部屋が聞こえます。"
+        ],
+        "formula": "T_{60}=\\frac{0.161\\,V}{A},\\quad A=\\sum_i S_i\\alpha_i,\\qquad T_{\\rm Eyring}=\\frac{0.161\\,V}{-S\\ln(1-\\bar\\alpha)},\\qquad L_{\\rm dir}-L_{\\rm rev}=10\\log_{10}\\frac{Q/4\\pi r^2}{4/A},\\quad r_c=\\sqrt{\\frac{QA}{16\\pi}}\\approx0.057\\sqrt{\\frac{QV}{T_{60}}}",
+        "example": [
+          "A living room 5 × 4 × 2.5 m has \\(V=50\\ \\mathrm{m^3}\\) and \\(S=2(20+12.5+10)=85\\ \\mathrm{m^2}\\). A bare wooden floor (\\(\\alpha=0.10\\)), plaster walls and ceiling (\\(0.05\\)) give \\(A=2.0+2.25+1.0=5.25\\ \\mathrm{m^2}\\); a sofa, curtains and two people add about \\(6\\ \\mathrm{m^2}\\), so \\(A=11.25\\ \\mathrm{m^2}\\) and \\(T_{60}=0.161\\times50/11.25=0.72\\ \\mathrm s\\). A carpet (\\(\\alpha=0.30\\)) adds \\(4\\ \\mathrm{m^2}\\) and brings it to \\(0.53\\ \\mathrm s\\). With a loudspeaker radiating into half-space, \\(Q=2\\), the critical distance before the carpet is \\(\\sqrt{2\\times11.25/16\\pi}=0.67\\ \\mathrm m\\): at a normal listening distance, most of what you hear is the room.",
+          "5 × 4 × 2.5 m の居間は \\(V=50\\ \\mathrm{m^3}\\)、\\(S=2(20+12.5+10)=85\\ \\mathrm{m^2}\\) です。むき出しの木の床（\\(\\alpha=0.10\\)）と漆喰の壁と天井（\\(0.05\\)）で \\(A=2.0+2.25+1.0=5.25\\ \\mathrm{m^2}\\) になります。ソファ、カーテン、二人の人がおよそ \\(6\\ \\mathrm{m^2}\\) を加えるので \\(A=11.25\\ \\mathrm{m^2}\\)、\\(T_{60}=0.161\\times50/11.25=0.72\\ \\mathrm s\\) です。カーペット（\\(\\alpha=0.30\\)）は \\(4\\ \\mathrm{m^2}\\) を加え、\\(0.53\\ \\mathrm s\\) にします。半空間に放射するスピーカー（\\(Q=2\\)）では、カーペットを敷く前の臨界距離は \\(\\sqrt{2\\times11.25/16\\pi}=0.67\\ \\mathrm m\\) です。ふつうの聴取距離では、聞こえるものの大半は部屋なのです。"
+        ],
+        "caution": [
+          "Sabine’s formula assumes a diffuse field, with the energy spread evenly and travelling in all directions. It fails in very absorbent rooms (it predicts a finite reverberation time even when α = 1, which Eyring’s formula corrects), in long or flat rooms, and in the bass, where the modes of the first experiment take over. Absorption coefficients depend strongly on frequency; the values here are rough mid-frequency figures. Air absorption, which shortens the treble decay in large halls, is left out. The early reflections in the echogram are drawn at random times with the right statistical density, not computed for this room.",
+          "セイビンの式は拡散音場、つまりエネルギーが一様に広がりあらゆる方向に進む場を仮定しています。吸音の非常に多い部屋（α = 1 でも有限の残響時間を予測してしまい、アイリングの式がそれを正します）、細長い部屋や平たい部屋、そして最初の実験のモードが支配する低音域では成り立ちません。吸音率は周波数に強く依存し、ここでの値は中音域のおおよその数値です。大きなホールで高音の減衰を短くする空気吸収は省いています。エコーグラムの初期反射は、統計的に正しい密度でランダムな時刻に描いたもので、この部屋について計算したものではありません。"
+        ],
+        "question": [
+          "Where does the 0.161 come from?",
+          "0.161 はどこから来るのですか？"
+        ],
+        "answer": [
+          "In a diffuse field the average distance sound travels between reflections is the mean free path \\(4V/S\\), so there are \\(cS/4V\\) reflections per second, each keeping a fraction \\(1-\\alpha\\) of the energy. The energy decays as \\(E(t)=E_0(1-\\alpha)^{cSt/4V}\\approx E_0e^{-cAt/4V}\\), an exponential, which is a straight line in decibels. It has fallen by \\(10^6\\), 60 dB, when \\(cAt/4V=\\ln10^6\\), so \\(T_{60}=4\\ln(10^6)\\,V/(cA)=(55.26/343)\\,V/A=0.161\\,V/A\\). Keeping \\(\\ln(1-\\alpha)\\) instead of approximating it by \\(-\\alpha\\) gives Eyring’s formula.",
+          "拡散音場では、音が反射と反射の間に進む平均距離は平均自由行程 \\(4V/S\\) なので、反射は毎秒 \\(cS/4V\\) 回起こり、そのたびにエネルギーの割合 \\(1-\\alpha\\) が残ります。エネルギーは \\(E(t)=E_0(1-\\alpha)^{cSt/4V}\\approx E_0e^{-cAt/4V}\\) と指数関数的に減衰し、これはデシベルでは直線です。\\(cAt/4V=\\ln10^6\\) のとき \\(10^6\\) 分の 1、つまり 60 dB 下がるので、\\(T_{60}=4\\ln(10^6)\\,V/(cA)=(55.26/343)\\,V/A=0.161\\,V/A\\) です。\\(\\ln(1-\\alpha)\\) を \\(-\\alpha\\) で近似せずに残すと、アイリングの式になります。"
+        ],
+        "params": [
+          [
+            "room",
+            "Room",
+            "部屋",
+            0,
+            2,
+            1,
+            0,
+            [
+              [
+                "Living room, 5 × 4 × 2.5 m",
+                "居間、5 × 4 × 2.5 m"
+              ],
+              [
+                "Classroom, 9 × 7 × 3 m",
+                "教室、9 × 7 × 3 m"
+              ],
+              [
+                "Concert hall, 40 × 24 × 16 m",
+                "コンサートホール、40 × 24 × 16 m"
+              ]
+            ]
+          ],
+          [
+            "floor",
+            "Floor",
+            "床",
+            0,
+            1,
+            1,
+            0,
+            [
+              [
+                "Bare wood",
+                "むき出しの木"
+              ],
+              [
+                "Carpet",
+                "カーペット"
+              ]
+            ]
+          ],
+          [
+            "ceil",
+            "Ceiling",
+            "天井",
+            0,
+            1,
+            1,
+            0,
+            [
+              [
+                "Plaster",
+                "漆喰"
+              ],
+              [
+                "Acoustic tiles",
+                "吸音タイル"
+              ]
+            ]
+          ],
+          [
+            "aw",
+            "Wall absorption coefficient α",
+            "壁の吸音率 α",
+            0.02,
+            0.6,
+            0.01,
+            0.05
+          ],
+          [
+            "furn",
+            "Furnishings and people (% of full)",
+            "家具と人（満席に対する %）",
+            0,
+            100,
+            1,
+            50
+          ],
+          [
+            "r",
+            "Listening distance r (m)",
+            "聴取距離 r（m）",
+            0.3,
+            20,
+            0.1,
+            2.5
+          ]
+        ],
+        "source": "Wallace Clement Sabine · Collected Papers on Acoustics (Harvard University Press, 1922)",
+        "url": "https://archive.org/details/collectedpaperso00sabi"
+      },
+      {
+        "id": "boundary-reflection",
+        "title": [
+          "3. The nearest surface: comb filtering and boundary gain",
+          "3. いちばん近い面：くし形フィルターと境界による増強"
+        ],
+        "body": [
+          "A hard surface near a loudspeaker acts as a mirror: the reflection reaches the listener as if from an image source behind it, a little later and a little quieter than the direct sound. Where the extra path Δ is a whole number of wavelengths the two add; where it is an odd number of half-wavelengths they cancel, so the response grows a row of evenly spaced notches, which on a linear frequency axis look like the teeth of a comb. On the left, the sound field at the chosen frequency, with the loudspeaker, its image and the two paths; drag the loudspeaker and the listener. Switch the surface to the wall behind the speaker and move the speaker close to it: the first notch climbs out of the bass, and below it the reflection arrives nearly in phase, adding up to 6 dB of bass. That lift is what the “near wall” setting on many active speakers is there to remove.",
+          "スピーカーの近くにある硬い面は鏡として働きます。反射は、その向こう側にある鏡像音源から来たかのように、直接音より少し遅く、少し小さく聴き手に届きます。余分な経路 Δ が波長の整数倍になる所では二つは足し合わされ、半波長の奇数倍になる所では打ち消し合います。そのため応答には等間隔の落ち込みが並び、線形の周波数軸ではくしの歯のように見えます。左は選んだ周波数での音場で、スピーカー、その鏡像、そして二つの経路を示しています。スピーカーと聴き手をドラッグしてください。面をスピーカーの後ろの壁に切り替え、スピーカーを壁に近づけると、最初の落ち込みは低音域から上へ抜け出し、その下では反射がほぼ同位相で届いて最大 6 dB の低音を加えます。多くのアクティブスピーカーにある「壁の近く」という設定は、この持ち上がりを取り除くためにあります。"
+        ],
+        "formula": "H(f)=1+g\\,\\frac{r_1}{r_2}\\,e^{-j2\\pi f\\Delta/c},\\qquad r_{1,2}=\\sqrt{d^2+(b\\mp a)^2},\\quad \\Delta=r_2-r_1,\\qquad f_{\\rm notch}=\\frac{(2n+1)\\,c}{2\\Delta},\\ n=0,1,2,\\dots",
+        "example": [
+          "A tweeter 1.0 m above a hard floor and an ear 1.2 m above it, 3 m apart: \\(r_1=\\sqrt{9+0.04}=3.007\\ \\mathrm m\\), \\(r_2=\\sqrt{9+4.84}=3.720\\ \\mathrm m\\), \\(\\Delta=0.714\\ \\mathrm m\\). The first notch is at \\(343/(2\\times0.714)=240\\ \\mathrm{Hz}\\) and the next at 721 Hz. With \\(g=0.9\\) the reflection arrives with \\(0.9\\times3.007/3.720=0.73\\) of the direct amplitude and the notch is \\(20\\log_{10}(1-0.73)=-11\\ \\mathrm{dB}\\) deep. For a speaker 0.5 m in front of the wall behind it, heard 2.5 m in front of it, \\(\\Delta=2\\times0.5=1\\ \\mathrm m\\) and the first notch is at 172 Hz; at 0.1 m from the wall it moves up to 858 Hz, and in the deep bass the response is lifted by \\(20\\log_{10}(1+0.9\\times2.5/2.7)=5.3\\ \\mathrm{dB}\\).",
+          "硬い床から 1.0 m の高さのツイーターと 1.2 m の高さの耳が 3 m 離れているとき、\\(r_1=\\sqrt{9+0.04}=3.007\\ \\mathrm m\\)、\\(r_2=\\sqrt{9+4.84}=3.720\\ \\mathrm m\\)、\\(\\Delta=0.714\\ \\mathrm m\\) です。最初の落ち込みは \\(343/(2\\times0.714)=240\\ \\mathrm{Hz}\\)、次は 721 Hz です。\\(g=0.9\\) なら反射は直接音の \\(0.9\\times3.007/3.720=0.73\\) の振幅で届き、落ち込みの深さは \\(20\\log_{10}(1-0.73)=-11\\ \\mathrm{dB}\\) です。後ろの壁から 0.5 m 前に置いたスピーカーを 2.5 m 前で聞くと \\(\\Delta=2\\times0.5=1\\ \\mathrm m\\) で、最初の落ち込みは 172 Hz です。壁から 0.1 m にすると 858 Hz まで上がり、ごく低い音域では応答が \\(20\\log_{10}(1+0.9\\times2.5/2.7)=5.3\\ \\mathrm{dB}\\) 持ち上がります。"
+        ],
+        "caution": [
+          "One flat reflector and an omnidirectional point source. A real room has six surfaces, each adding its own comb, and a real speaker beams its treble forwards, so the reflection from the wall behind it is weaker at high frequencies than the model assumes; in the bass, where the model matters most, the source really is omnidirectional. The reflection coefficient is the same at every frequency here, whereas a carpet absorbs treble far more than bass.",
+          "平らな反射面が一枚と、無指向性の点音源です。現実の部屋には六つの面があって、それぞれが自分のくしを加えます。また現実のスピーカーは高音を前方に絞って放射するので、後ろの壁からの反射は高音域ではモデルが仮定するより弱くなります。モデルが最も重要になる低音域では、音源は実際に無指向性です。ここでは反射係数はどの周波数でも同じですが、カーペットは低音よりも高音をずっと多く吸音します。"
+        ],
+        "question": [
+          "Why can’t an equaliser fill in a notch?",
+          "なぜイコライザーは落ち込みを埋められないのですか？"
+        ],
+        "answer": [
+          "The notch is a cancellation at the listener’s position between two copies of the same signal. Boosting that frequency boosts both copies equally, and they still cancel: the amplifier works harder, the rest of the room gets louder, and the notch stays. Only changing Δ, by moving the speaker, the listener or the surface, or weakening the reflection with an absorber, moves or fills it. Peaks are different: where the copies add, cutting the level works, and the broad bass lift near a wall is exactly the kind of peak a shelving filter can correct.",
+          "落ち込みは、聴き手の位置での同じ信号の二つの複製の打ち消し合いです。その周波数を持ち上げると両方の複製が同じだけ持ち上がり、やはり打ち消し合います。アンプはより大きな仕事をし、部屋のほかの場所は大きくなりますが、落ち込みは残ります。落ち込みを動かしたり埋めたりできるのは、スピーカー、聴き手、面のいずれかを動かして Δ を変えるか、吸音材で反射を弱めることだけです。山は違います。複製が足し合わされる所ではレベルを下げればよく、壁の近くでの幅広い低音の持ち上がりは、まさにシェルビングフィルターで補正できる種類の山です。"
+        ],
+        "params": [
+          [
+            "surf",
+            "Surface",
+            "面",
+            0,
+            1,
+            1,
+            0,
+            [
+              [
+                "Floor",
+                "床"
+              ],
+              [
+                "Wall behind the speaker",
+                "スピーカーの後ろの壁"
+              ]
+            ]
+          ],
+          [
+            "a",
+            "Speaker distance from the surface a (m)",
+            "面からスピーカーまでの距離 a（m）",
+            0.05,
+            2.5,
+            0.01,
+            1.0
+          ],
+          [
+            "b",
+            "Listener distance from the surface b (m)",
+            "面から聴き手までの距離 b（m）",
+            0.3,
+            4,
+            0.01,
+            1.2
+          ],
+          [
+            "d",
+            "Distance along the surface d (m)",
+            "面に沿った距離 d（m）",
+            0,
+            6,
+            0.01,
+            3
+          ],
+          [
+            "g",
+            "Reflection coefficient g",
+            "反射係数 g",
+            0,
+            1,
+            0.01,
+            0.9
+          ],
+          [
+            "lf",
+            "Frequency for the field (log₁₀ Hz)",
+            "音場を見る周波数（log₁₀ Hz）",
+            1.5,
+            3,
+            0.01,
+            2.38
+          ]
+        ],
+        "source": "Jont Allen and David Berkley · Image method for efficiently simulating small-room acoustics, J. Acoust. Soc. Am. 65 (1979)",
+        "url": "https://doi.org/10.1121/1.382599"
+      }
+    ]
   }
 ]

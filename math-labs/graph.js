@@ -21,25 +21,25 @@
   const listRoot = $('.kg-list');
   const legend = $('.kg-legend');
 
-  const GROUPS = ['foundations', 'analysis', 'geometry', 'applications', 'physics'];
+  const GROUPS = ['foundations', 'analysis', 'geometry', 'applications', 'physics', 'engineering'];
   const T = ja ? {
-    groups: { foundations: '基礎', analysis: '解析', geometry: '幾何', applications: '応用', physics: '物理' },
+    groups: { foundations: '基礎', analysis: '解析', geometry: '幾何', applications: '応用', physics: '物理', engineering: '工学' },
     buildsOn: '前提とするトピック', leadsTo: 'このトピックを前提とする', related: '関連するトピック',
     open: 'トピックを開く', none: 'なし',
     topics: n => `${n}件のトピック`, matches: n => n ? `${n}件が一致` : '一致するトピックはない',
     idleTitle: (n) => `${n}のトピックのつながり`,
-    idle: 'トピックにカーソルを合わせるかフォーカスすると、前提とするトピックと、そのトピックを前提とするトピックが浮かび上がる。クリックでトピックを開く。色の付いた領域が五つの分野である。',
+    idle: 'トピックにカーソルを合わせるかフォーカスすると、前提とするトピックと、そのトピックを前提とするトピックが浮かび上がる。クリックでトピックを開く。色の付いた領域がそれぞれの分野である。',
     keys: '矢印キーで近くのトピックへ移動、Enterで開く、Escで解除。',
     before: '前提知識', links: n => `${n}本のつながり`,
     failed: 'グラフを読み込めなかった。',
     path: '学ぶ順序', pathNote: '前提をすべてたどった順序。', labs: n => `${n}件の実験`, reset: '配置を元に戻す',
     dragHint: 'ノードはドラッグで動かせる。'
   } : {
-    groups: { foundations: 'Foundations', analysis: 'Analysis', geometry: 'Geometry', applications: 'Applications', physics: 'Physics' },
+    groups: { foundations: 'Foundations', analysis: 'Analysis', geometry: 'Geometry', applications: 'Applications', physics: 'Physics', engineering: 'Engineering' },
     buildsOn: 'Builds on', leadsTo: 'Leads to', related: 'Related', open: 'Open topic', none: 'None',
     topics: n => `${n} topics`, matches: n => n ? `${n} ${n === 1 ? 'match' : 'matches'}` : 'No matching topic',
     idleTitle: (n) => `How the ${n} topics connect`,
-    idle: 'Hover over or focus a topic to trace what it builds on and what builds on it. Click a topic to open it. The tinted regions are the five subjects.',
+    idle: 'Hover over or focus a topic to trace what it builds on and what builds on it. Click a topic to open it. The tinted regions are the subjects.',
     keys: 'Arrow keys move to the nearest topic in that direction, Enter opens it, Escape clears.',
     before: 'Before you begin', links: n => `${n} connection${n === 1 ? '' : 's'}`,
     failed: 'Could not load the graph.',
@@ -85,7 +85,13 @@
     'cellular-automata': ['logic-computability', 'fractal-geometry', 'statistical-mechanics'],
     'complex-systems': ['statistical-mechanics', 'graph-theory', 'cellular-automata'],
     'galois-theory': ['elliptic-curves', 'lie-groups', 'number-theory'],
-    'magnetism-ising': ['complex-systems', 'markov-chains', 'solid-state-physics']
+    'magnetism-ising': ['complex-systems', 'markov-chains', 'solid-state-physics'],
+    'watch-oscillators': ['dynamical-systems', 'hamiltonian-mechanics', 'gears-mechanisms'],
+    'gears-mechanisms': ['differential-geometry', 'rigid-body-dynamics', 'watch-oscillators'],
+    'quartz-resonators': ['solid-state-physics', 'crossovers-filters', 'watch-oscillators'],
+    'loudspeakers': ['control-theory', 'fluid-dynamics', 'crossovers-filters'],
+    'crossovers-filters': ['control-theory', 'complex-analysis', 'room-acoustics'],
+    'room-acoustics': ['partial-differential-equations', 'statistical-mechanics', 'optics']
   };
   // Topics named in each topic's own prerequisite line (content.json "prerequisite").
   const PREREQ = {
@@ -118,12 +124,18 @@
     'cellular-automata': ['logic-computability', 'probability-inference'], // Logic and computability, and elementary probability
     'complex-systems': ['probability-inference', 'dynamical-systems', 'statistical-mechanics'], // Probability, dynamical systems, and statistical mechanics
     'galois-theory': ['group-theory', 'complex-analysis'],               // Group theory, polynomials and complex numbers
-    'magnetism-ising': ['statistical-mechanics', 'probability-inference'] // Statistical mechanics and probability
+    'magnetism-ising': ['statistical-mechanics', 'probability-inference'], // Statistical mechanics and probability
+    'watch-oscillators': ['classical-mechanics', 'dynamical-systems'],   // Classical mechanics, damped oscillators and Bessel functions
+    'gears-mechanisms': ['classical-mechanics', 'rigid-body-dynamics'], // Plane geometry, angular velocity and rigid bodies
+    'quartz-resonators': ['classical-mechanics', 'electromagnetism'],    // Waves, elasticity and AC circuits
+    'loudspeakers': ['electromagnetism', 'classical-mechanics', 'fourier-analysis'], // Damped oscillators, AC circuits and Bessel functions
+    'crossovers-filters': ['electromagnetism', 'complex-analysis', 'fourier-analysis'], // AC circuits, complex numbers and Fourier analysis
+    'room-acoustics': ['partial-differential-equations', 'fourier-analysis'] // The wave equation, standing waves and Fourier analysis
   };
   // Where each group settles, as fractions of the stage.
   const ANCHOR = {
-    foundations: [0.11, 0.50], analysis: [0.40, 0.14], geometry: [0.36, 0.84],
-    applications: [0.72, 0.12], physics: [0.82, 0.66]
+    foundations: [0.10, 0.46], analysis: [0.38, 0.13], geometry: [0.30, 0.84],
+    applications: [0.70, 0.11], physics: [0.70, 0.54], engineering: [0.84, 0.90]
   };
 
   let topics = [], bySlug = new Map(), edges = [], focusSlug = null, pinned = null, groupHi = null, query = '';
