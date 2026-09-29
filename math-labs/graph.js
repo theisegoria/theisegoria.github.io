@@ -28,19 +28,23 @@
     open: 'トピックを開く', none: 'なし',
     topics: n => `${n}件のトピック`, matches: n => n ? `${n}件が一致` : '一致するトピックはない',
     idleTitle: (n) => `${n}のトピックのつながり`,
-    idle: 'トピックにカーソルを合わせるかフォーカスすると、前提とするトピックと、そのトピックを前提とするトピックが浮かび上がる。クリックでトピックを開く。',
+    idle: 'トピックにカーソルを合わせるかフォーカスすると、前提とするトピックと、そのトピックを前提とするトピックが浮かび上がる。クリックでトピックを開く。色の付いた領域が五つの分野である。',
     keys: '矢印キーで近くのトピックへ移動、Enterで開く、Escで解除。',
     before: '前提知識', links: n => `${n}本のつながり`,
-    failed: 'グラフを読み込めなかった。'
+    failed: 'グラフを読み込めなかった。',
+    path: '学ぶ順序', pathNote: '前提をすべてたどった順序。', labs: n => `${n}件の実験`, reset: '配置を元に戻す',
+    dragHint: 'ノードはドラッグで動かせる。'
   } : {
     groups: { foundations: 'Foundations', analysis: 'Analysis', geometry: 'Geometry', applications: 'Applications', physics: 'Physics' },
     buildsOn: 'Builds on', leadsTo: 'Leads to', related: 'Related', open: 'Open topic', none: 'None',
     topics: n => `${n} topics`, matches: n => n ? `${n} ${n === 1 ? 'match' : 'matches'}` : 'No matching topic',
     idleTitle: (n) => `How the ${n} topics connect`,
-    idle: 'Hover over or focus a topic to trace what it builds on and what builds on it. Click a topic to open it.',
+    idle: 'Hover over or focus a topic to trace what it builds on and what builds on it. Click a topic to open it. The tinted regions are the five subjects.',
     keys: 'Arrow keys move to the nearest topic in that direction, Enter opens it, Escape clears.',
     before: 'Before you begin', links: n => `${n} connection${n === 1 ? '' : 's'}`,
-    failed: 'Could not load the graph.'
+    failed: 'Could not load the graph.',
+    path: 'Learning path', pathNote: 'Every prerequisite, in an order you could study them.', labs: n => `${n} experiment${n === 1 ? '' : 's'}`, reset: 'Reset layout',
+    dragHint: 'Drag a topic to move it.'
   };
   const SHORT = {
     'partial-differential-equations': ['PDEs', '偏微分方程式'],
@@ -79,7 +83,9 @@
     'cosmology': ['statistical-mechanics', 'differential-geometry', 'special-relativity'],
     'fractal-geometry': ['complex-analysis', 'stochastic-processes', 'hyperbolic-geometry'],
     'cellular-automata': ['logic-computability', 'fractal-geometry', 'statistical-mechanics'],
-    'complex-systems': ['statistical-mechanics', 'graph-theory', 'cellular-automata']
+    'complex-systems': ['statistical-mechanics', 'graph-theory', 'cellular-automata'],
+    'galois-theory': ['elliptic-curves', 'lie-groups', 'number-theory'],
+    'magnetism-ising': ['complex-systems', 'markov-chains', 'solid-state-physics']
   };
   // Topics named in each topic's own prerequisite line (content.json "prerequisite").
   const PREREQ = {
@@ -110,12 +116,14 @@
     'cosmology': ['general-relativity', 'thermodynamics'],             // General relativity and thermodynamics
     'fractal-geometry': ['measure-theory', 'dynamical-systems'],        // Measure theory and dynamical systems
     'cellular-automata': ['logic-computability', 'probability-inference'], // Logic and computability, and elementary probability
-    'complex-systems': ['probability-inference', 'dynamical-systems', 'statistical-mechanics'] // Probability, dynamical systems, and statistical mechanics
+    'complex-systems': ['probability-inference', 'dynamical-systems', 'statistical-mechanics'], // Probability, dynamical systems, and statistical mechanics
+    'galois-theory': ['group-theory', 'complex-analysis'],               // Group theory, polynomials and complex numbers
+    'magnetism-ising': ['statistical-mechanics', 'probability-inference'] // Statistical mechanics and probability
   };
   // Where each group settles, as fractions of the stage.
   const ANCHOR = {
-    foundations: [0.13, 0.42], analysis: [0.40, 0.24], geometry: [0.40, 0.78],
-    applications: [0.70, 0.20], physics: [0.76, 0.70]
+    foundations: [0.11, 0.50], analysis: [0.40, 0.14], geometry: [0.36, 0.84],
+    applications: [0.72, 0.12], physics: [0.82, 0.66]
   };
 
   let topics = [], bySlug = new Map(), edges = [], focusSlug = null, pinned = null, groupHi = null, query = '';
@@ -136,16 +144,29 @@
     bySlug = new Map(topics.map(d => [d.slug, d]));
     const key = (a, b) => a < b ? a + '|' + b : b + '|' + a;
     const map = new Map();
-    const addRel = (a, b) => { if (a === b || !bySlug.has(a) || !bySlug.has(b)) return; const k = key(a, b); if (!map.has(k)) map.set(k, { a, b, dir: false }); };
-    topics.forEach(d => topics.filter(x => x.group === d.group && x.slug !== d.slug).slice(0, 2).forEach(x => addRel(d.slug, x.slug)));
-    Object.entries(CROSS).forEach(([a, bs]) => bs.forEach(b => addRel(a, b)));
-    Object.entries(PREREQ).forEach(([b, as]) => as.forEach(a => { if (!bySlug.has(a) || !bySlug.has(b)) return; map.set(key(a, b), { a, b, dir: true }); }));
+    const addRel = (a, b, auto) => { if (a === b || !bySlug.has(a) || !bySlug.has(b)) return; const k = key(a, b); if (!map.has(k)) map.set(k, { a, b, dir: false, auto }); else if (!auto) map.get(k).auto = false; };
+    // filler edges: each topic to its two list neighbours in the same group. They hold the groups together in the layout and are drawn only faintly.
+    topics.forEach(d => topics.filter(x => x.group === d.group && x.slug !== d.slug).slice(0, 2).forEach(x => addRel(d.slug, x.slug, true)));
+    Object.entries(CROSS).forEach(([a, bs]) => bs.forEach(b => addRel(a, b, false)));
+    Object.entries(PREREQ).forEach(([b, as]) => as.forEach(a => { if (!bySlug.has(a) || !bySlug.has(b)) return; map.set(key(a, b), { a, b, dir: true, auto: false }); }));
     edges = [...map.values()];
     edges.forEach(e => {
       const A = bySlug.get(e.a), B = bySlug.get(e.b);
       if (e.dir) { A.out.add(e.b); B.inn.add(e.a); } else { A.rel.add(e.b); B.rel.add(e.a); }
     });
     topics.forEach(d => { d.degree = d.out.size + d.inn.size + d.rel.size; d.short = shortName(d); });
+  }
+  // every prerequisite of a topic, transitively, in an order that respects the arrows (Kahn on the ancestor set)
+  function learningPath(d) {
+    const anc = new Set(); const stack = [...d.inn];
+    while (stack.length) { const s = stack.pop(); if (anc.has(s)) continue; anc.add(s); bySlug.get(s).inn.forEach(x => stack.push(x)); }
+    const left = new Set(anc), out = [];
+    while (left.size) {
+      const ready = [...left].filter(s => ![...bySlug.get(s).inn].some(x => left.has(x))).sort((a, b) => bySlug.get(a).short.localeCompare(bySlug.get(b).short, ja ? 'ja' : 'en'));
+      if (!ready.length) { out.push(...left); break; }
+      ready.forEach(s => { out.push(s); left.delete(s); });
+    }
+    return { set: anc, order: out };
   }
 
   // ---------- layout ----------
@@ -165,7 +186,7 @@
       for (let i = 0; i < nodes.length; i++) for (let j = i + 1; j < nodes.length; j++) {
         const a = nodes[i], b = nodes[j];
         let dx = b.x - a.x, dy = b.y - a.y, d2 = dx * dx + dy * dy + 1;
-        const f = scale * scale * 0.55 / d2 * alpha;
+        const f = scale * scale * (a.d.group === b.d.group ? 0.5 : 1.35) / d2 * alpha;
         const d = Math.sqrt(d2); dx /= d; dy /= d;
         a.vx -= dx * f; a.vy -= dy * f; b.vx += dx * f; b.vy += dy * f;
       }
@@ -173,12 +194,12 @@
         const a = nodes[i], b = nodes[j];
         const same = a.d.group === b.d.group;
         let dx = b.x - a.x, dy = b.y - a.y; const d = Math.hypot(dx, dy) || 1;
-        const k = (same ? 0.05 : 0.018) * alpha;
+        const k = (same ? (e.auto ? 0.06 : 0.05) : 0.006) * alpha;
         const f = (d - len * (same ? 0.8 : 1.2)) * k; dx /= d; dy /= d;
         a.vx += dx * f; a.vy += dy * f; b.vx -= dx * f; b.vy -= dy * f;
       });
       nodes.forEach(n => {
-        n.vx += (n.ax - n.x) * 0.03 * alpha; n.vy += (n.ay - n.y) * 0.03 * alpha;
+        n.vx += (n.ax - n.x) * 0.045 * alpha; n.vy += (n.ay - n.y) * 0.045 * alpha;
         n.x += n.vx; n.y += n.vy; n.vx *= 0.55; n.vy *= 0.55;
       });
     }
@@ -233,18 +254,83 @@
     const ey = B.y - (B.y - my) / Math.hypot(B.x - mx, B.y - my) * (B.r + 3);
     return { d: `M${A.x.toFixed(1)},${A.y.toFixed(1)} Q${mx.toFixed(1)},${my.toFixed(1)} ${ex.toFixed(1)},${ey.toFixed(1)}`, ex, ey, ang: Math.atan2(ey - my, ex - mx) };
   }
+  // a soft region behind each group: the convex hull of its nodes, padded by a thick rounded stroke
+  const gHulls = (() => { const g = el('g', { class: 'kg-hulls', 'aria-hidden': 'true' }); svg.insertBefore(g, gEdges); return g; })();
+  let hullEls = new Map();
+  function hullOf(pts) {
+    const P = pts.slice().sort((a, b) => a[0] - b[0] || a[1] - b[1]);
+    if (P.length < 3) return P;
+    const cross = (o, a, b) => (a[0] - o[0]) * (b[1] - o[1]) - (a[1] - o[1]) * (b[0] - o[0]);
+    const lower = []; for (const p of P) { while (lower.length >= 2 && cross(lower[lower.length - 2], lower[lower.length - 1], p) <= 0) lower.pop(); lower.push(p); }
+    const upper = []; for (const p of P.slice().reverse()) { while (upper.length >= 2 && cross(upper[upper.length - 2], upper[upper.length - 1], p) <= 0) upper.pop(); upper.push(p); }
+    return lower.slice(0, -1).concat(upper.slice(0, -1));
+  }
+  function drawHulls() {
+    gHulls.replaceChildren(); hullEls.clear(); placedLabels.length = 0;
+    GROUPS.forEach(g => {
+      const pts = topics.filter(d => d.group === g).map(d => [d.x, d.y]);
+      if (!pts.length) return;
+      const hull = hullOf(pts), d = hull.map((p, i) => (i ? 'L' : 'M') + p[0].toFixed(1) + ',' + p[1].toFixed(1)).join(' ') + 'Z';
+      const wrap = el('g', { class: `kg-hull g-${g}` }, gHulls);
+      el('path', { d, class: 'kg-hull-fill' }, wrap);
+      const [lx, ly] = hullLabelPos(hull);
+      const label = el('text', { class: 'kg-hull-label', x: lx, y: ly }, wrap);
+      label.textContent = T.groups[g];
+      hullEls.set(g, wrap);
+    });
+  }
+  // the label goes on the hull vertex that, pushed 44px outward from the centroid, is farthest from every node label
+  const placedLabels = [];
+  function hullLabelPos(hull) {
+    const cx = hull.reduce((s, p) => s + p[0], 0) / hull.length, cy = hull.reduce((s, p) => s + p[1], 0) / hull.length;
+    const obstacles = topics.map(t => ({ x: t.x, y: t.y + 8, w: t.labelW })).concat(placedLabels.map(q => ({ x: q[0], y: q[1] - 6, w: 110 })));
+    let best = null, bestS = -Infinity;
+    hull.forEach(p => {
+      const dx = p[0] - cx, dy = p[1] - cy, d = Math.hypot(dx, dy) || 1;
+      const x = Math.max(40, Math.min(W - 40, p[0] + dx / d * 44)), y = Math.max(16, Math.min(H - 8, p[1] + dy / d * 44));
+      let clear = Infinity;
+      obstacles.forEach(t => { const ddx = Math.abs(t.x - x) - t.w / 2, ddy = Math.abs(t.y - y) - 14; clear = Math.min(clear, Math.max(ddx, ddy, 0)); });
+      if (clear > bestS) { bestS = clear; best = [x, y]; }
+    });
+    best = best || [cx, cy]; placedLabels.push(best);
+    return best;
+  }
+  function updateHull(g) { const w = hullEls.get(g); if (!w) return; const pts = topics.filter(d => d.group === g).map(d => [d.x, d.y]); const hull = hullOf(pts); w.querySelector('path').setAttribute('d', hull.map((p, i) => (i ? 'L' : 'M') + p[0].toFixed(1) + ',' + p[1].toFixed(1)).join(' ') + 'Z'); placedLabels.length = 0; const [lx, ly] = hullLabelPos(hull); const t = w.querySelector('text'); t.setAttribute('x', lx); t.setAttribute('y', ly); }
+  function updateEdge(rec) { const p = edgePath(rec.e); rec.g.querySelector('path').setAttribute('d', p.d); const arr = rec.g.querySelector('.kg-arrow'); if (arr) { const s = 6.5, a = p.ang; const pts = [[p.ex, p.ey], [p.ex - s * Math.cos(a - .42), p.ey - s * Math.sin(a - .42)], [p.ex - s * Math.cos(a + .42), p.ey - s * Math.sin(a + .42)]]; arr.setAttribute('d', `M${pts.map(q => q.map(v => v.toFixed(1)).join(',')).join(' L')} Z`); } }
+  let moved = false, resetBtn = null;
+  function makeDraggable(a, d) {
+    let sx = 0, sy = 0, ox = 0, oy = 0, dragging = false, pid = null;
+    a.addEventListener('pointerdown', ev => {
+      if (ev.button !== 0) return;
+      const r = svg.getBoundingClientRect(); sx = ev.clientX; sy = ev.clientY; ox = d.x; oy = d.y; dragging = false; pid = ev.pointerId;
+      const scale = W / r.width;
+      const move = e => {
+        const dx = (e.clientX - sx) * scale, dy = (e.clientY - sy) * scale;
+        if (!dragging && Math.hypot(dx, dy) < 4) return;
+        if (!dragging) { dragging = true; a.classList.add('is-dragging'); a.setPointerCapture?.(pid); }
+        d.x = Math.max(16, Math.min(W - 16, ox + dx)); d.y = Math.max(16, Math.min(H - 24, oy + dy));
+        a.setAttribute('transform', `translate(${d.x.toFixed(1)} ${d.y.toFixed(1)})`);
+        edgeEls.forEach(rec => { if (rec.e.a === d.slug || rec.e.b === d.slug) updateEdge(rec); });
+        updateHull(d.group);
+      };
+      const up = () => { document.removeEventListener('pointermove', move); document.removeEventListener('pointerup', up); document.removeEventListener('pointercancel', up); a.classList.remove('is-dragging'); if (dragging) { moved = true; resetBtn && (resetBtn.hidden = false); setTimeout(() => { moved = false; }, 0); } };
+      document.addEventListener('pointermove', move); document.addEventListener('pointerup', up); document.addEventListener('pointercancel', up);
+    });
+    a.addEventListener('click', ev => { if (moved) { ev.preventDefault(); ev.stopImmediatePropagation(); } }, true);
+  }
   function draw() {
     const box = figure.getBoundingClientRect();
     W = Math.max(640, Math.round(box.width));
-    H = Math.round(Math.max(500, Math.min(720, W * 0.6)));
+    H = Math.round(Math.max(520, Math.min(820, W * 0.68)));
     svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
     svg.setAttribute('width', W); svg.setAttribute('height', H);
     gEdges.replaceChildren(); gNodes.replaceChildren(); nodeEls.clear(); edgeEls = [];
     measure();
     layout();
+    drawHulls();
     edges.forEach(e => {
       const p = edgePath(e);
-      const g = el('g', { class: 'kg-edge' + (e.dir ? ' is-dir' : '') }, gEdges);
+      const g = el('g', { class: 'kg-edge' + (e.dir ? ' is-dir' : '') + (e.auto ? ' is-auto' : '') }, gEdges);
       el('path', { d: p.d }, g);
       if (e.dir) {
         const s = 6.5, a = p.ang;
@@ -263,6 +349,7 @@
       const t = el('text', { class: 'kg-label', y: d.r + 16 }, a);
       t.textContent = d.short;
       nodeEls.set(d.slug, a);
+      makeDraggable(a, d);
       a.addEventListener('pointerenter', () => { if (lastPointer === 'mouse') setFocus(d.slug); });
       a.addEventListener('pointerleave', () => { if (lastPointer === 'mouse') setFocus(pinned); });
       a.addEventListener('focus', () => { setRoving(d.slug); setFocus(d.slug); });
@@ -290,6 +377,7 @@
   }
   function render() {
     const f = focusSlug && bySlug.get(focusSlug);
+    const path = f ? learningPath(f) : null;
     const matches = new Set(topics.filter(matchesQuery).map(d => d.slug));
     status.textContent = query ? T.matches(matches.size) : T.topics(topics.length);
     listRoot.querySelectorAll('[data-slug]').forEach(li => { li.hidden = !!query && !matches.has(li.dataset.slug); });
@@ -304,6 +392,7 @@
       a.classList.toggle('is-pre', !!f && f.inn.has(s));
       a.classList.toggle('is-dep', !!f && f.out.has(s));
       a.classList.toggle('is-rel', !!f && f.rel.has(s));
+      a.classList.toggle('is-anc', !!f && path.set.has(s) && !f.inn.has(s));
       a.classList.toggle('is-match', matches.has(s));
       a.classList.toggle('is-group', groupHi === d.group);
     });
@@ -313,10 +402,12 @@
       g.classList.toggle('is-pre', on && e.dir && e.b === f.slug);
       g.classList.toggle('is-dep', on && e.dir && e.a === f.slug);
       g.classList.toggle('is-group', !f && groupHi && bySlug.get(e.a).group === groupHi && bySlug.get(e.b).group === groupHi);
+      g.classList.toggle('is-path', !!f && !on && e.dir && path.set.has(e.a) && path.set.has(e.b));
     });
+    hullEls.forEach((w, g) => w.classList.toggle('is-group', groupHi === g));
     // bring the focused node's edges to the front
     if (f) edgeEls.forEach(({ g }) => { if (g.classList.contains('is-on')) gEdges.append(g); });
-    renderDetail(f);
+    renderDetail(f, path);
   }
   function chips(set, cls) {
     const wrap = h('p', 'kg-chips');
@@ -331,13 +422,13 @@
     });
     return wrap;
   }
-  function renderDetail(f) {
+  function renderDetail(f, path) {
     detail.replaceChildren();
     if (!f) {
-      detail.append(h('p', 'kg-kicker', T.topics(topics.length) + ' · ' + T.links(edges.length)));
+      detail.append(h('p', 'kg-kicker', T.topics(topics.length) + ' · ' + T.links(edges.filter(e => !e.auto).length)));
       detail.append(h('h2', 'kg-d-title', T.idleTitle(topics.length)));
       detail.append(h('p', 'kg-d-copy', T.idle));
-      detail.append(h('p', 'kg-d-keys', T.keys));
+      detail.append(h('p', 'kg-d-keys', T.keys + ' ' + T.dragHint));
       const key = h('div', 'kg-key');
       [['pre', T.buildsOn], ['dep', T.leadsTo], ['rel', T.related]].forEach(([c, t]) => {
         const row = h('p', 'kg-key-row'); row.append(h('span', `kg-swatch s-${c}`), document.createTextNode(t)); key.append(row);
@@ -357,6 +448,18 @@
       if (!set.size && c !== 'rel') return;
       const hd = h('h3', 'kg-d-h'); hd.append(h('span', `kg-swatch s-${c}`), document.createTextNode(t)); detail.append(hd, chips(set, 'c-' + c));
     });
+    if (path && path.order.length > f.inn.size) {
+      const hd = h('h3', 'kg-d-h'); hd.append(h('span', 'kg-swatch s-path'), document.createTextNode(T.path)); detail.append(hd);
+      const ol = h('ol', 'kg-path');
+      path.order.forEach(s => { const d = bySlug.get(s); const li = h('li'); const a = h('a', `kg-chip c-path g-${d.group}`, d.short); a.href = href(d); a.addEventListener('mouseenter', () => nodeEls.get(s)?.classList.add('is-hint')); a.addEventListener('mouseleave', () => nodeEls.get(s)?.classList.remove('is-hint')); li.append(a); ol.append(li); });
+      detail.append(ol, h('p', 'kg-d-note', T.pathNote));
+    }
+    if (f.labs && f.labs.length) {
+      const hd = h('h3', 'kg-d-h'); hd.append(document.createTextNode(T.labs(f.labs.length))); detail.append(hd);
+      const ul = h('ul', 'kg-labs');
+      f.labs.forEach(lab => { const li = h('li'); const a = h('a', 'kg-lab', lab.title[L].replace(/^\d+\.\s*/, '')); a.href = href(f) + '#' + lab.id; li.append(a); ul.append(li); });
+      detail.append(ul);
+    }
     const open = h('a', 'kg-open', T.open); open.href = href(f); open.append(h('span', null, ' →'));
     detail.append(open);
   }
@@ -394,7 +497,7 @@
     GROUPS.forEach(g => {
       const b = h('button', `kg-leg g-${g}`); b.type = 'button';
       b.setAttribute('aria-pressed', 'false');
-      b.append(h('span', 'kg-kdot'), document.createTextNode(T.groups[g]));
+      b.append(h('span', 'kg-kdot'), document.createTextNode(T.groups[g]), h('span', 'kg-leg-n', String(topics.filter(d => d.group === g).length)));
       b.addEventListener('click', () => {
         groupHi = groupHi === g ? null : g;
         legend.querySelectorAll('.kg-leg').forEach(x => x.setAttribute('aria-pressed', String(x === b && groupHi === g)));
@@ -404,6 +507,9 @@
       b.addEventListener('mouseleave', () => render());
       legend.append(b);
     });
+    resetBtn = h('button', 'kg-leg kg-reset', T.reset); resetBtn.type = 'button'; resetBtn.hidden = true;
+    resetBtn.addEventListener('click', () => { resetBtn.hidden = true; draw(); });
+    legend.append(resetBtn);
   }
 
   // ---------- keyboard ----------
