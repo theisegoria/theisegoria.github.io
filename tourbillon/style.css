@@ -1,0 +1,37 @@
+/* Piece-specific overrides only. Layout for the stage, controls and
+ * scrollytelling comes from /assets/lab-kit/lab-kit.css; colours and type
+ * from /assets/isegoria.css. Add rules here for this piece's own figures. */
+.hero .kicker { font-family: var(--sans); font-size: .6875rem; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-faint); }
+.hero { max-width: 46rem; }
+.hero .ig-page-nav { margin-inline: 0; max-width: none; }
+.hero h1 { margin: 0 0 .5rem; }
+.hero .lede { font-size: 1.1875rem; line-height: 1.55; color: var(--ink-soft); max-width: 44rem; font-style: italic; }
+main > section > p, main > p, main > section > ul, main > section > ol { max-width: 42rem; }
+main > section { margin-block: 3.5rem; }
+main > section > h2 { margin-bottom: .9rem; }
+main > section > h3 { margin: 1.6rem 0 .5rem; }
+main > section + section { border-top: 1px solid var(--rule); padding-top: 3rem; }
+main > section > p + p, main > section > h3 + p, .lab > p + p { margin-top: 1em; }
+.lab { margin-block: 3rem; }
+.lab > p { max-width: 44rem; margin-bottom: 1rem; }
+.sources { border-top: 1px solid var(--rule); margin-top: 3rem; padding-top: 1.5rem; }
+
+/* stages, labels, part list */
+.stage-bar { display: flex; flex-wrap: wrap; gap: .35rem; margin: .5rem 0 .6rem; }
+.stage-bar button, .part-list button { font: inherit; font-size: .78rem; padding: .3rem .65rem; border: 1px solid var(--rule); border-radius: 999px; background: var(--paper); color: var(--ink-soft); cursor: pointer; }
+.stage-bar button.is-active { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.stage-bar button:hover, .part-list button:hover { border-color: var(--ink-soft); color: var(--ink); }
+.stage-text { font-size: .95rem; color: var(--ink-soft); min-height: 3.2em; margin: 0 0 .8rem; max-width: 62rem; }
+.lab-stage { aspect-ratio: 3 / 2; }
+.lab-labels { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.lab-labels[hidden] { display: none; }
+.lab-label { position: absolute; left: 0; top: 0; transform: translate(-100vw, -100vh); font-family: var(--sans); font-size: .7rem; line-height: 1.1; color: var(--ink); background: color-mix(in oklab, var(--paper) 82%, transparent); border: 1px solid var(--rule); border-radius: 3px; padding: .12rem .38rem; white-space: nowrap; margin: -1.2em 0 0 .5em; transition: opacity .2s; }
+.lab-label::before { content: ""; position: absolute; left: -.5em; top: 1.2em; width: .5em; height: 1px; background: var(--ink-soft); }
+.part-list { margin: .8rem 0 0; font-size: .85rem; }
+.part-list summary { cursor: pointer; color: var(--ink-soft); }
+.part-list div { display: flex; flex-wrap: wrap; gap: .3rem; margin-top: .5rem; }
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+.lab-controls fieldset button + button { margin-left: .4rem; }
+.lab-readout span { margin-right: 1rem; }
+h3 { font-size: 1.05rem; margin: 1.4rem 0 .4rem; }
+@media (max-width: 640px) { .lab-stage { aspect-ratio: 1; } .stage-text { min-height: 0; } }

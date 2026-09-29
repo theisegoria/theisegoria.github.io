@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="ja" class=" ig-document ig-editorial">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>フライング・トゥールビヨンの内側</title>
+<meta name="description" content="1 分で 1 回転するフライング・トゥールビヨンを分解し、ブラウザで動かす。ケージ、固定車、テンプと一緒に回る脱進機、そして回転が重力の影響を平均する理由。">
+<meta property="og:title" content="フライング・トゥールビヨンの内側">
+<meta property="og:description" content="1 分で 1 回転するフライング・トゥールビヨンを分解し、ブラウザで動かす。ケージ、固定車、テンプと一緒に回る脱進機、そして回転が重力の影響を平均する理由。">
+<meta property="og:image" content="https://theisegoria.github.io/og.png">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="canonical" href="https://theisegoria.github.io/ja/tourbillon/">
+<link rel="alternate" hreflang="en" href="https://theisegoria.github.io/tourbillon/">
+<link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/tourbillon/">
+<link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/tourbillon/">
+<link rel="stylesheet" href="/assets/isegoria.css?v=20260929">
+<link rel="stylesheet" href="/assets/lab-kit/lab-kit.css?v=20260929">
+<link rel="stylesheet" href="/tourbillon/style.css?v=20260929">
+<script type="importmap">
+{"imports":{
+  "three":"/vendor/three/r186/build/three.webgpu.js",
+  "three/webgpu":"/vendor/three/r186/build/three.webgpu.js",
+  "three/tsl":"/vendor/three/r186/build/three.tsl.js",
+  "three/addons/":"/vendor/three/r186/examples-jsm/"
+}}
+</script>
+<link rel="modulepreload" href="/vendor/three/r186/build/three.webgpu.js">
+<link rel="modulepreload" href="/vendor/three/r186/build/three.core.js">
+<script type="module" src="/tourbillon/lab.js"></script>
+<script src="/assets/lang.js"></script>
+<!-- ISEGORIA:HEAD -->
+<link rel="stylesheet" href="/assets/site-shell.css?v=c21cd21e82">
+<script src="/assets/site-shell.js?v=c21cd21e82" ></script>
+<!-- /ISEGORIA:HEAD -->
+<script defer data-isegoria-analytics src="/assets/analytics.js?v=9e6ebd463bf2"></script>
+</head>
+<body class=" ig-site" data-site-kind="editorial" data-site-route="/ja/tourbillon/">
+<!-- ISEGORIA:NAV -->
+<a class="ig-skip" href="#ig-content">本文へ移動</a>
+<header id="ig-header"><div class="ig-nav-inner">
+<a class="ig-brand" href="/ja/" aria-label="Isegoria, ホーム"><strong>ISEGORIA</strong><span>Benjamin Haire</span></a>
+<div class="ig-header-actions"><a class="ig-language" href="/tourbillon/" hreflang="en" lang="en">English</a><button class="ig-menu" type="button" aria-expanded="false" aria-controls="ig-primary">メニュー</button></div>
+<nav id="ig-primary" aria-label="メインナビゲーション"><a href="/ja/">ホーム</a><a href="/ja/library.html">全コンテンツ</a><a href="/ja/math-encyclopedia/">数学百科事典</a><a href="/ja/#interactive">操作できる解説</a><a href="/ja/#preoccupations" aria-current="location">研究と解説</a><a href="/ja/#books">書籍</a><a href="/ja/projects.html">プロジェクト</a><a href="/ja/about.html">このサイトについて</a><a class="ig-language" href="/tourbillon/" hreflang="en" lang="en">English</a><button class="ig-theme" type="button" hidden>表示切替</button></nav>
+</div></header>
+<nav id="ig-breadcrumb" aria-label="パンくずリスト"><a href="/ja/">ホーム</a><span aria-hidden="true">/</span><a href="/ja/#preoccupations">研究と解説</a><span aria-hidden="true">/</span><span aria-current="page">フライング・トゥールビヨンの内側</span></nav>
+<span id="ig-content" tabindex="-1"></span>
+<!-- /ISEGORIA:NAV --><main class="wrap">
+
+<header class="hero">
+<p class="kicker">操作できる解説</p>
+<h1>フライング・トゥールビヨンの内側</h1>
+<p class="lede">1 分で 1 回転するフライング・トゥールビヨンを部品ごとに組み上げ、ブラウザで動かす。脱進機全体を 1 分に 1 回転させるケージ、その中でガンギ車を回す固定車、ケージと一緒に回るテンプとヒゲゼンマイ、そしてそのすべての理由である重力の平均化。</p>
+<nav class="ig-page-nav" aria-label="このページの目次"><a href="#model">モデル</a><a href="#problem">解くべき問題</a><a href="#cage">ケージ</a><a href="#fixed">固定車</a><a href="#flying">フライング</a><a href="#does-it-help">本当に効くのか</a><a href="#watch">時計</a><a href="#honesty">このモデルが示すもの・示さないもの</a><a href="#sources">出典</a></nav>
+</header>
+
+<section class="lab" id="model" aria-labelledby="model-h">
+<h2 id="model-h">モデル</h2>
+<p>TAG Heuer のキャリバー Heuer 02T にあるような 1 分回転のフライング・トゥールビヨンを、スケルトン文字盤の 45 mm カレラケースに収めたものだ。4 Hz、ケージは 6 時位置、三本腕の上部をもつチタン製ケージ、上に受けはない。先に作った<a href="/ja/automatic-movement/">自動巻きクロノグラフ</a>の続きで、ここではクロノグラフを止めたまま、すべてをケージに注ぐ。どの車も実際の比で回り、脱進機は実物と同じ算術で一振動ずつ計られる。段階は順に進めてほしい。それぞれ邪魔なものを隠し、重要な部品を光らせ、カメラを動かす。その後は操作部を使って、遅くし、ケースを外し、分解してほしい。</p>
+
+<div class="stage-bar" id="stages" role="tablist" aria-label="段階"></div>
+<p class="stage-text" id="stage-text"></p>
+
+<div class="lab-stage">
+  <canvas id="stage" tabindex="0" aria-label="トゥールビヨンの 3D 表示。ドラッグで回転、スクロールで拡大、右ドラッグで移動。"></canvas>
+  <div class="lab-labels" id="labels" aria-hidden="true"></div>
+  <figure data-lab-fallback hidden>
+    <svg viewBox="0 0 640 380" role="img" aria-labelledby="fb-t"><title id="fb-t">フライング・トゥールビヨンの平面図：輪列と、固定車を囲むケージ</title><circle cx="320.0" cy="190.0" r="139.5" fill="none" stroke="var(--rule)" stroke-width="1.5"/><circle cx="309.8" cy="132.4" r="54.0" fill="none" stroke="var(--ink)" stroke-width="1.6"/><circle cx="309.8" cy="132.4" r="2.0" fill="var(--ink)" stroke="var(--ink)" stroke-width="1"/><text x="309.8" y="73.4" text-anchor="middle" font-family="var(--sans)" font-size="10.5" fill="var(--ink)">香箱 96</text><circle cx="320.0" cy="190.0" r="45.0" fill="none" stroke="var(--ink)" stroke-width="1.6"/><circle cx="320.0" cy="190.0" r="2.0" fill="var(--ink)" stroke="var(--ink)" stroke-width="1"/><text x="320.0" y="140.0" text-anchor="middle" font-family="var(--sans)" font-size="10.5" fill="var(--ink)">二番車 80</text><circle cx="292.0" cy="232.2" r="42.2" fill="none" stroke="var(--ink)" stroke-width="1.6"/><circle cx="292.0" cy="232.2" r="2.0" fill="var(--ink)" stroke="var(--ink)" stroke-width="1"/><text x="292.0" y="185.0" text-anchor="middle" font-family="var(--sans)" font-size="10.5" fill="var(--ink)">三番車 75</text><circle cx="320.0" cy="271.0" r="44.6" fill="none" stroke="var(--accent)" stroke-width="2.2"/><text x="320.0" y="329.6" text-anchor="middle" font-family="var(--sans)" font-size="10.5" fill="var(--accent)">ケージ、1 分に 1 回転</text><circle cx="320.0" cy="271.0" r="22.7" fill="none" stroke="var(--ink)" stroke-width="1.6" stroke-dasharray="4 3"/><text x="346.7" y="267.0" text-anchor="start" font-family="var(--sans)" font-size="10.5" fill="var(--ink)">固定車 84</text><circle cx="298.7" cy="258.7" r="18.0" fill="none" stroke="var(--accent)" stroke-width="1.4"/><circle cx="298.7" cy="258.7" r="1.9" fill="none" stroke="var(--accent)" stroke-width="1.2"/><text x="298.7" y="236.7" text-anchor="middle" font-family="var(--sans)" font-size="10.5" fill="var(--accent)">ガンギ車 20</text><line x1="298.7" y1="258.7" x2="297.0" y2="284.3" stroke="var(--ink)" stroke-width="1.2"/><line x1="297.0" y1="284.3" x2="320.0" y2="271.0" stroke="var(--ink)" stroke-width="1.2"/><circle cx="297.0" cy="284.3" r="2.5" fill="var(--paper)" stroke="var(--ink)" stroke-width="1"/><text x="291.0" y="296.3" text-anchor="end" font-family="var(--sans)" font-size="10.5" fill="var(--ink)">アンクル</text><circle cx="320.0" cy="271.0" r="36.0" fill="none" stroke="var(--ink-soft)" stroke-width="1.3" stroke-dasharray="2 3"/><text x="320.0" y="231.0" text-anchor="middle" font-family="var(--sans)" font-size="10.5" fill="var(--ink-soft)">テンプ</text><circle cx="320.0" cy="230.1" r="3.0" fill="var(--accent)" stroke="var(--accent)" stroke-width="1"/><circle cx="284.5" cy="291.5" r="3.0" fill="var(--accent)" stroke="var(--accent)" stroke-width="1"/><circle cx="355.5" cy="291.5" r="3.0" fill="var(--accent)" stroke="var(--accent)" stroke-width="1"/><text x="320.0" y="372.0" text-anchor="middle" font-family="var(--sans)" font-size="11" fill="var(--ink-soft)">文字盤側から見た平面図、縮尺どおり。太線はケージ、破線は動かない固定車。</text></svg>
+    <figcaption>このブラウザには WebGL 2 も WebGPU もないので、静止版を表示している。ムーブメントの平面図で、ケージとその中身をピッチ円で描いたもの。</figcaption>
+  </figure>
+  <div class="lab-hud"><span class="lab-badge"></span></div>
+</div>
+
+<form class="lab-controls" id="controls" onsubmit="return false">
+  <label><span>速度</span>
+    <select name="speed"><option value="0">停止</option><option value="0.125">スローモーション、1/8</option><option value="1" selected>実時間</option><option value="10">10 倍</option><option value="60">60 倍</option></select></label>
+  <label><span>時計の姿勢</span>
+    <select name="orientation"><option value="0">文字盤上向き（ケージ軸が鉛直）</option><option value="1" selected>リューズ上、竜頭下、または立てた状態（ケージ軸が水平）</option></select></label>
+  <label><span>層を分解</span><output for="explode"></output><input id="explode" name="explode" type="range" min="0" max="1" step="0.02" value="0" data-format="pct"></label>
+  <fieldset>
+    <label><span>ケース</span><input name="caseOn" type="checkbox" checked></label>
+    <label><span>文字盤</span><input name="dial" type="checkbox" checked></label>
+    <label><span>針</span><input name="hands" type="checkbox" checked></label>
+    <label><span>受け</span><input name="bridges" type="checkbox" checked></label>
+    <label><span>ラベル</span><input name="labels" type="checkbox" checked></label>
+  </fieldset>
+</form>
+<div class="lab-readout" id="readout" aria-live="off"></div>
+<details class="part-list"><summary>部品を探す</summary><div id="parts"></div></details>
+</section>
+
+<section id="problem">
+<h2>トゥールビヨンが解くために作られた問題</h2>
+<p>ヒゲゼンマイに載ったテンプはねじれ振り子であり、原理的にはその周期はどちらが上かに依存しない。実際には、少し依存する。完全に釣り合ったテンプはなく、重心は軸から数ミクロンずれているので、重力は振れの一方の側でテンプを引き、他方で押し返す。ヒゲゼンマイも完全に同心には呼吸せず、巻き締まりと巻き戻しのたびに自重の位置が動く。結果として時計の歩度は姿勢によって一日に数秒変わる。文字盤上、文字盤下、リューズ上、リューズ下。そして懐中時計がチョッキの中でそうであるように、一つの姿勢で何時間も吊るされる時計は、その誤差を毎晩積み重ねる。</p>
+<p>1801 年に特許を得たブレゲの答えは、誤差を取り除くことではなく平均することだった。脱進機全体、すなわちテンプ、ヒゲゼンマイ、アンクル、ガンギ車をケージに載せ、ケージをゆっくり連続的に、1 分に 1 回転させる。するとテンプは毎分、ケージの面内のあらゆる向きを通過する。重い側が下のときに進んだ分を、重い側が上のときに失う。名はフランス語で旋風を意味する。</p>
+</section>
+
+<section id="cage">
+<h2>ケージ：脱進機のための回る部屋</h2>
+<p>モデルのケージは、三本のスポークと外周リングをもつ下部プレート、三本の柱、ガンギ車とアンクルの上部軸を受ける小さな内側の受け、そして中央の穴でテンプの上部軸を受ける三本腕の上部からなる。テンプはケージ自身の軸に載り、アンクルとガンギ車はその中でずらして置かれ、ヒゲゼンマイの外端は上部の腕のヒゲ持ちに留められているので、振動系全体が一体となって回る。脱進機そのものは普通のスイス・レバー脱進機で、仕事も普通だ。テンプが振れ、振り座の振り石がアンクルの錠を外し、アンクルがガンギ車を半歯ぶん逃がし、歯の衝撃面が通り過ぎるテンプを押す。4 Hz で毎秒 8 振動、2 振動に一歯。段階 3 でスローモーションにすれば、それが足元でゆっくり旋回しながら、すべて見える。</p>
+<p>下部プレートの下でケージは軸に細くなり、その軸にケージのカナ、10 枚の葉があって、輪列の三番車がこれを回す。普通のムーブメントではこの噛み合いが、1 分に 1 回転して秒針を運ぶ四番車を回す。ケージは四番車の席に座る。1 分に 1 回転し、秒針を運ぶ。ここでは上部の腕の一本の赤い先端がそれで、開口部を囲む目盛りで読む。1 分トゥールビヨンが他の速さでなく 1 分で回る理由はそれだけだ。秒車があるはずの場所にいるだけなのである。</p>
+</section>
+
+<section id="fixed">
+<h2>固定車：回る枠の中でガンギ車が回る仕組み</h2>
+<p>理解にいちばん時間がかかったのがこの部分だ。ガンギ車がケージの中にあり、輪列が回すのはケージだとすると、ガンギ車を回すのは何か。答えは、ムーブメントの中で決して動かない唯一の車である。ケージ軸と同心で、下部プレートの下に、84 歯の車がトゥールビヨン受けにねじ止めされている。固定車、古い本では固定四番車と呼ばれるものだ。ガンギ車のカナ、7 枚の葉がこれに噛む。ケージがガンギ車を運ぶと、カナは太陽をめぐる惑星歯車のように固定車の周りを転がらされ、7 枚の葉で 84 歯の周りを転がれば、ケージ 1 回転につき 84/7 = 12 回転する。毎分 12 回転は 5 秒に 20 歯、つまり 4 分の 1 秒に一歯、一歯 2 振動ならちょうど 4 Hz。数字が閉じる。</p>
+<p>つまり脱進機は、普通の意味で後ろから押されて駆動されているのではない。駆動されるのはケージであり、ガンギ車は止まった車の周りを転がらねばならないことによって回され、テンプは相変わらず、その転がりがどれだけ速く起きてよいかを決めて、ケージを一歯ずつ解放する。段階 2 はこれを裏側から見せる。固定車を金色に、ケージを透かして、カナがその周りを回るのが見える。読み出しでは、ケージ内でのガンギ車の回転数がケージの回転数の 12 倍で進む。</p>
+</section>
+
+<section id="flying">
+<h2>フライング：下からだけ支えられたケージ</h2>
+<p>古典的なトゥールビヨンはケージの上に受けを渡し、ケージの上部軸をそこで受けるので、文字盤側から見ると受けが視界を横切る。フライング・トゥールビヨンには上の受けがまったくない。ケージは下のベアリング、このムーブメントではトゥールビヨン受けのボールベアリングから片持ちで支えられ、ケージの上は自由なので、文字盤の開口部は回転体全体を何にも遮られずに見せる。ケージがチタンで軽いことは重要だ。その重さはすべて、脱進機が解放するたびに輪列が加速しなければならない慣性であり、外周のグラムはすべて、下のベアリングが単独で支えるモーメントである。参照した時計ではケージの中央部はチタン、上部はカーボンだ。ここでは三本腕の上部を Nanograph 版のライム色陽極酸化チタンにした。作業の元にした写真がその時計だからで、その時計では金属合金ではなくプラズマ反応炉で成長させたカーボン複合材であるヒゲゼンマイは、単純な渦巻きとして描いている。</p>
+</section>
+
+<section id="does-it-help">
+<h2>本当に効くのか</h2>
+<p>段階 6 はこの議論に数字を与える。読み出しは、重力場の中での向きによって歩度が一定量、最悪の角度で一日 4 秒変わるテンプを仮定し、二つのことを示す。見ていた時間にわたるその誤差の移動平均と、脱進機を出発角度に固定した場合の値だ。ケージ軸が水平なら、平均は最初の 1 回転のうちにゼロへ落ち、そこに留まる。姿勢を文字盤上向きにすると、まったく役に立たない。ケージ軸が鉛直なら、ケージが何をしようとテンプは水平のままで、トゥールビヨンは何も変えない。だからこの装置は縦に吊るされる懐中時計のために発明され、一日の多くを机の上に平らに、あるいは動く手首の上で斜めに過ごす腕時計での価値には議論がある。今日では精密な調整が同じ仕事の大半をこなす。このページを作ったのは、機構が美しいからであり、ガンギ車がそもそもどうやって回れるのかを理解するのに私が不当に長い時間を要したからであって、腕時計にそれが必要だからではない。</p>
+</section>
+
+<section id="watch">
+<h2>それを囲む時計</h2>
+<p>ケースと文字盤は、写真からカレラ・キャリバー Heuer 02T トゥールビヨン Nanograph に比率を合わせた。45 mm、タキメーターベゼル、面取りされたラグ、リューズと二つのクロノグラフプッシャー、ハニカムに切り抜かれたスケルトン文字盤、3 時と 9 時の 30 分積算計と 12 時間積算計、夜光入りの植字インデックス、そして秒目盛りに囲まれた 6 時の開口部。クロノグラフ機構はこのページではモデル化していない（<a href="/ja/automatic-movement/">自動巻きムーブメントのページ</a>にはコラムホイールと垂直クラッチのクロノグラフが動いている）ので、その針はゼロで休んでいる。モデルが従う 02T の公表仕様は、毎時 28,800 振動、65 時間の持続、33 石、31 mm のムーブメント（TAG Heuer, 2019; Monochrome, 2019）。ワードマーク、バッジ、ロゴはいずれも再現していない。</p>
+</section>
+
+<section id="honesty">
+<h2>このモデルが示すもの、示さないもの</h2>
+<p>構成は Heuer 02T のものだ。4 Hz、65 時間、コラムホイール式クロノグラフをベースに、6 時位置の 1 分回転フライング・トゥールビヨン、チタンのケージ、上部の受けなし。歯数、軸の配置、ケージの構造、あらゆる部品形状は私のもので、代表的であるように、そして比がぴったり合うように選んだ。遊星比 12 のための 7 枚カナに対する 84 の固定歯、ケージが 1 分に 1 回転するための古典的な 96、80、75、10 の輪列。TAG Heuer は内部の形状を公開しておらず、このページもそれを主張しない。輪列は描いたが受けは簡略化し、自動巻きとクロノグラフは省き、テンプの振り角は一定に保った。読み出しの姿勢差の数字は平均化の例示であり、大きさは架空だが典型的なもので、どの時計の測定値でもない。モデルは実際の比で動き、リポジトリのテストがそのすべてを検証している。</p>
+</section>
+
+<section id="sources" class="sources">
+<h2>出典</h2>
+<p><em>機構は教科書的なものであり、キャリバーの公開仕様はメーカーと専門誌による。モデルの歯数、軸位置、部品形状は私のもので、メーカーのものだとは主張しない。</em></p>
+<ul>
+<li>Monochrome Watches (2019). <a href="https://monochrome-watches.com/tag-heuer-carrera-calibre-heuer-02t-tourbillon-nanograph-specs-price/">TAG Heuer Carrera Calibre Heuer 02T Tourbillon Nanograph (specs and price).</a> 28,800 vph、65 時間、33 石、31 mm、1 分回転フライング・トゥールビヨン、カーボン複合材ヒゲゼンマイ、45 mm ケース。外観の比率を合わせた写真の出所。</li>
+<li>Time and Watches (2016). <a href="https://www.timeandwatches.com/2016/01/tag-heuer-carrera-heuer-02t-tourbillon.html">TAG Heuer Carrera Heuer-02T Tourbillon.</a> フライング・トゥールビヨン、チタンとカーボンのケージ、COSC、2016 年の初出。</li>
+<li>Breguet, A.-L. (1801). Brevet d’invention pour une montre dite régulateur à tourbillon. 原特許。平均化の議論は彼のもの。</li>
+<li>Daniels, G. (2011). <em>Watchmaking</em>, revised edition. Philip Wilson. トゥールビヨンのキャリッジ、固定四番車、レバー脱進機とその比率。</li>
+<li>Reymondin, C.-A., Monnier, G., Jeanneret, D. and Pelaratti, U. (1999). <em>The Theory of Horology</em>. Swiss Federation of Technical Colleges. 輪列比、姿勢差とその原因。</li>
+<li>独立に検証していないもの：Heuer 02T の内部歯数、ケージ構造、軸配置。いずれも公開されておらず、モデルはそれを主張しない。ケースと文字盤は公開写真から比率を合わせたもので、実測ではない。</li>
+</ul>
+</section>
+
+</main><!-- ISEGORIA:FOOT -->
+<footer id="ig-footer"><div><a href="/ja/">Isegoria · Benjamin Haire</a><nav aria-label="サイト内リンク"><a href="/ja/">ホームに戻る</a><a href="/ja/library.html">全コンテンツ</a><a href="#ig-content">ページ上部へ</a></nav></div></footer>
+<!-- /ISEGORIA:FOOT -->
+</body>
+</html>

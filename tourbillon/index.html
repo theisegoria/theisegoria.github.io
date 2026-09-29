@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en" class=" ig-document ig-editorial">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Inside a Flying Tourbillon</title>
+<meta name="description" content="A one-minute flying tourbillon taken apart and made to run in the browser: the cage, the fixed wheel, the escapement turning with the balance, and why the rotation averages out gravity.">
+<meta property="og:title" content="Inside a Flying Tourbillon">
+<meta property="og:description" content="A one-minute flying tourbillon taken apart and made to run in the browser: the cage, the fixed wheel, the escapement turning with the balance, and why the rotation averages out gravity.">
+<meta property="og:image" content="https://theisegoria.github.io/og.png">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="canonical" href="https://theisegoria.github.io/tourbillon/">
+<link rel="alternate" hreflang="en" href="https://theisegoria.github.io/tourbillon/">
+<link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/tourbillon/">
+<link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/tourbillon/">
+<link rel="stylesheet" href="/assets/isegoria.css?v=20260929">
+<link rel="stylesheet" href="/assets/lab-kit/lab-kit.css?v=20260929">
+<link rel="stylesheet" href="style.css?v=20260929">
+<script type="importmap">
+{"imports":{
+  "three":"/vendor/three/r186/build/three.webgpu.js",
+  "three/webgpu":"/vendor/three/r186/build/three.webgpu.js",
+  "three/tsl":"/vendor/three/r186/build/three.tsl.js",
+  "three/addons/":"/vendor/three/r186/examples-jsm/"
+}}
+</script>
+<link rel="modulepreload" href="/vendor/three/r186/build/three.webgpu.js">
+<link rel="modulepreload" href="/vendor/three/r186/build/three.core.js">
+<script type="module" src="lab.js"></script>
+<script src="/assets/lang.js"></script>
+<!-- ISEGORIA:HEAD -->
+<link rel="stylesheet" href="/assets/site-shell.css?v=c21cd21e82">
+<script src="/assets/site-shell.js?v=c21cd21e82" ></script>
+<!-- /ISEGORIA:HEAD -->
+<script defer data-isegoria-analytics src="/assets/analytics.js?v=9e6ebd463bf2"></script>
+</head>
+<body class=" ig-site" data-site-kind="editorial" data-site-route="/tourbillon/">
+<!-- ISEGORIA:NAV -->
+<a class="ig-skip" href="#ig-content">Skip to content</a>
+<header id="ig-header"><div class="ig-nav-inner">
+<a class="ig-brand" href="/" aria-label="Isegoria, home"><strong>ISEGORIA</strong><span>Benjamin Haire</span></a>
+<div class="ig-header-actions"><a class="ig-language" href="/ja/tourbillon/" hreflang="ja" lang="ja">日本語</a><button class="ig-menu" type="button" aria-expanded="false" aria-controls="ig-primary">Menu</button></div>
+<nav id="ig-primary" aria-label="Primary navigation"><a href="/">Home</a><a href="/library.html">Library</a><a href="/math-encyclopedia/">Math encyclopedia</a><a href="/#interactive">Interactive</a><a href="/#preoccupations" aria-current="location">Research</a><a href="/#books">Books</a><a href="/projects.html">Projects</a><a href="/about.html">About</a><a class="ig-language" href="/ja/tourbillon/" hreflang="ja" lang="ja">日本語</a><button class="ig-theme" type="button" hidden>Theme</button></nav>
+</div></header>
+<nav id="ig-breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><a href="/#preoccupations">Research</a><span aria-hidden="true">/</span><span aria-current="page">Inside a Flying Tourbillon</span></nav>
+<span id="ig-content" tabindex="-1"></span>
+<!-- /ISEGORIA:NAV --><main class="wrap">
+
+<header class="hero">
+<p class="kicker">Interactive explainer</p>
+<h1>Inside a Flying Tourbillon</h1>
+<p class="lede">A one-minute flying tourbillon built part by part and set running in the browser: the cage that carries the whole escapement round once a minute, the fixed wheel that makes the escape wheel turn inside it, the balance and its hairspring turning with the cage, and the reason for all of it, averaging out gravity.</p>
+<nav class="ig-page-nav" aria-label="On this page"><a href="#model">The model</a><a href="#problem">The problem</a><a href="#cage">The cage</a><a href="#fixed">The fixed wheel</a><a href="#flying">Flying</a><a href="#does-it-help">Does it help?</a><a href="#watch">The watch</a><a href="#honesty">What this is and is not</a><a href="#sources">Sources</a></nav>
+</header>
+
+<section class="lab" id="model" aria-labelledby="model-h">
+<h2 id="model-h">The model</h2>
+<p>This is a one-minute flying tourbillon of the kind in TAG Heuer’s Calibre Heuer 02T, set in a 45 mm Carrera case with a skeleton dial: 4 Hz, the cage at six o’clock, titanium cage with a three-armed top, no bridge above it. It follows the <a href="/automatic-movement/">automatic chronograph</a> I built earlier; here the chronograph is left at rest and everything is about the cage. Every wheel turns at its true ratio and the escapement is metered beat by beat by the same arithmetic as the real one. Take the stages in order; each hides what is in the way, lights the parts that matter and moves the camera. Then take the controls: slow it down, take the case off, pull it apart.</p>
+
+<div class="stage-bar" id="stages" role="tablist" aria-label="Stages"></div>
+<p class="stage-text" id="stage-text"></p>
+
+<div class="lab-stage">
+  <canvas id="stage" tabindex="0" aria-label="The tourbillon in 3D. Drag to orbit, scroll to zoom, right-drag to pan."></canvas>
+  <div class="lab-labels" id="labels" aria-hidden="true"></div>
+  <figure data-lab-fallback hidden>
+    <svg viewBox="0 0 640 380" role="img" aria-labelledby="fb-t"><title id="fb-t">Plan of the flying tourbillon: the going train and the cage around the fixed wheel</title><circle cx="320.0" cy="190.0" r="139.5" fill="none" stroke="var(--rule)" stroke-width="1.5"/><circle cx="309.8" cy="132.4" r="54.0" fill="none" stroke="var(--ink)" stroke-width="1.6"/><circle cx="309.8" cy="132.4" r="2.0" fill="var(--ink)" stroke="var(--ink)" stroke-width="1"/><text x="309.8" y="73.4" text-anchor="middle" font-family="var(--sans)" font-size="10.5" fill="var(--ink)">Barrel 96</text><circle cx="320.0" cy="190.0" r="45.0" fill="none" stroke="var(--ink)" stroke-width="1.6"/><circle cx="320.0" cy="190.0" r="2.0" fill="var(--ink)" stroke="var(--ink)" stroke-width="1"/><text x="320.0" y="140.0" text-anchor="middle" font-family="var(--sans)" font-size="10.5" fill="var(--ink)">Centre 80</text><circle cx="292.0" cy="232.2" r="42.2" fill="none" stroke="var(--ink)" stroke-width="1.6"/><circle cx="292.0" cy="232.2" r="2.0" fill="var(--ink)" stroke="var(--ink)" stroke-width="1"/><text x="292.0" y="185.0" text-anchor="middle" font-family="var(--sans)" font-size="10.5" fill="var(--ink)">Third 75</text><circle cx="320.0" cy="271.0" r="44.6" fill="none" stroke="var(--accent)" stroke-width="2.2"/><text x="320.0" y="329.6" text-anchor="middle" font-family="var(--sans)" font-size="10.5" fill="var(--accent)">Cage, 1 turn per minute</text><circle cx="320.0" cy="271.0" r="22.7" fill="none" stroke="var(--ink)" stroke-width="1.6" stroke-dasharray="4 3"/><text x="346.7" y="267.0" text-anchor="start" font-family="var(--sans)" font-size="10.5" fill="var(--ink)">Fixed 84</text><circle cx="298.7" cy="258.7" r="18.0" fill="none" stroke="var(--accent)" stroke-width="1.4"/><circle cx="298.7" cy="258.7" r="1.9" fill="none" stroke="var(--accent)" stroke-width="1.2"/><text x="298.7" y="236.7" text-anchor="middle" font-family="var(--sans)" font-size="10.5" fill="var(--accent)">Escape 20</text><line x1="298.7" y1="258.7" x2="297.0" y2="284.3" stroke="var(--ink)" stroke-width="1.2"/><line x1="297.0" y1="284.3" x2="320.0" y2="271.0" stroke="var(--ink)" stroke-width="1.2"/><circle cx="297.0" cy="284.3" r="2.5" fill="var(--paper)" stroke="var(--ink)" stroke-width="1"/><text x="291.0" y="296.3" text-anchor="end" font-family="var(--sans)" font-size="10.5" fill="var(--ink)">Pallet</text><circle cx="320.0" cy="271.0" r="36.0" fill="none" stroke="var(--ink-soft)" stroke-width="1.3" stroke-dasharray="2 3"/><text x="320.0" y="231.0" text-anchor="middle" font-family="var(--sans)" font-size="10.5" fill="var(--ink-soft)">Balance</text><circle cx="320.0" cy="230.1" r="3.0" fill="var(--accent)" stroke="var(--accent)" stroke-width="1"/><circle cx="284.5" cy="291.5" r="3.0" fill="var(--accent)" stroke="var(--accent)" stroke-width="1"/><circle cx="355.5" cy="291.5" r="3.0" fill="var(--accent)" stroke="var(--accent)" stroke-width="1"/><text x="320.0" y="372.0" text-anchor="middle" font-family="var(--sans)" font-size="11" fill="var(--ink-soft)">Plan from the dial side, to scale. Thick: the cage. Dashed: the fixed wheel, which does not turn.</text></svg>
+    <figcaption>Your browser has no WebGL 2 or WebGPU, so this is the still version: the plan of the movement with the cage and its contents at their pitch circles.</figcaption>
+  </figure>
+  <div class="lab-hud"><span class="lab-badge"></span></div>
+</div>
+
+<form class="lab-controls" id="controls" onsubmit="return false">
+  <label><span>Speed</span>
+    <select name="speed"><option value="0">paused</option><option value="0.125">slow motion, 1/8</option><option value="1" selected>real time</option><option value="10">10 times</option><option value="60">60 times</option></select></label>
+  <label><span>Orientation of the watch</span>
+    <select name="orientation"><option value="0">dial up (cage axis vertical)</option><option value="1" selected>crown up, pendant down, or on edge (cage axis horizontal)</option></select></label>
+  <label><span>Explode the layers</span><output for="explode"></output><input id="explode" name="explode" type="range" min="0" max="1" step="0.02" value="0" data-format="pct"></label>
+  <fieldset>
+    <label><span>Case</span><input name="caseOn" type="checkbox" checked></label>
+    <label><span>Dial</span><input name="dial" type="checkbox" checked></label>
+    <label><span>Hands</span><input name="hands" type="checkbox" checked></label>
+    <label><span>Bridges</span><input name="bridges" type="checkbox" checked></label>
+    <label><span>Labels</span><input name="labels" type="checkbox" checked></label>
+  </fieldset>
+</form>
+<div class="lab-readout" id="readout" aria-live="off"></div>
+<details class="part-list"><summary>Find a part</summary><div id="parts"></div></details>
+</section>
+
+<section id="problem">
+<h2>The problem the tourbillon was built to solve</h2>
+<p>A balance wheel on a hairspring is a torsion pendulum, and in principle its period does not depend on which way is up. In practice it does, a little. No balance is perfectly poised: its centre of mass sits a few microns off its axis, so gravity pulls it toward one side of the swing and away from the other. The hairspring does not breathe perfectly concentrically either, and its own weight shifts as the spring coils and uncoils. The upshot is that the rate of a watch changes by a few seconds a day between positions, dial up, dial down, crown up, crown down, and a watch that hangs in one position for hours, as a pocket watch does in a waistcoat, accumulates that error every night.</p>
+<p>Breguet’s answer, patented in 1801, was not to remove the error but to average it. Mount the whole escapement, balance, hairspring, pallet fork and escape wheel, in a cage, and turn the cage slowly and continuously, once a minute, so that the balance passes through every orientation in the plane of the cage in every minute. Whatever it gains when its heavy side is down it loses when the heavy side is up. The name is French for whirlwind.</p>
+</section>
+
+<section id="cage">
+<h2>The cage: a rotating room for the escapement</h2>
+<p>The cage in the model has a lower plate with three spokes and an outer ring, three pillars, a small bridge inside it that carries the upper pivots of the escape wheel and the pallet fork, and a three-armed top that carries the upper pivot of the balance at its hub. The balance sits on the cage’s own axis, the pallet fork and the escape wheel are offset inside it, and the hairspring’s outer end is pinned to a stud on the top arm, so the entire oscillator turns as one body. The escapement itself is an ordinary Swiss lever escapement doing an ordinary job: the balance swings, the impulse pin in its roller unlocks the fork, the fork lets the escape wheel go half a tooth pitch, and the tooth’s impulse face gives the balance a push on the way through. Eight vibrations a second, one tooth every two, at 4 Hz. Set the speed to slow motion at stage 3 and it is all there, wheeling slowly beneath you.</p>
+<p>Below the lower plate the cage narrows to a stem, and on the stem is the cage pinion, ten leaves, driven by the third wheel of the going train. In an ordinary movement that mesh drives the fourth wheel, which turns once a minute and carries the seconds hand. The cage takes the fourth wheel’s place: it turns once a minute, and it carries the seconds hand, here the red tip of one arm of the top, read against the track around the aperture. That is the whole reason a one-minute tourbillon turns once a minute rather than at some other rate; it is simply where the seconds wheel would have been.</p>
+</section>
+
+<section id="fixed">
+<h2>The fixed wheel: how the escape wheel turns inside a turning frame</h2>
+<p>This is the part that took me longest to see. If the escape wheel is inside the cage and the cage is what the train drives, what turns the escape wheel? The answer is the one wheel in the movement that never moves. Concentric with the cage axis, below the lower plate, is a wheel of 84 teeth screwed to the tourbillon bridge: the fixed wheel, still called the fixed fourth wheel in the older books. The escape wheel’s pinion, seven leaves, meshes with it. As the cage carries the escape wheel round, the pinion is forced to roll around the fixed wheel like a planet gear around a sun, and rolling around 84 teeth with 7 leaves turns it 84/7 = 12 times for every turn of the cage. Twelve turns a minute is 20 teeth every five seconds, which is one tooth every quarter second, which at two vibrations per tooth is exactly 4 Hz. The numbers close.</p>
+<p>So the escapement is not driven by anything pushing on it from behind in the usual sense. The cage is driven; the escape wheel is turned by the fact that it must roll around a wheel that stands still; and the balance, as ever, decides how fast that rolling is allowed to happen, releasing the cage one tooth at a time. Stage 2 shows it from the back, with the fixed wheel in gilt and the cage ghosted so you can see the pinion ride round it. In the readout, the escape wheel’s turns inside the cage run at twelve times the cage’s turns.</p>
+</section>
+
+<section id="flying">
+<h2>Flying: a cage held from below only</h2>
+<p>A classic tourbillon has a bridge across the top of the cage, with the cage’s upper pivot in it, and from the dial the bridge cuts across the view. A flying tourbillon has no upper bridge at all. The cage is cantilevered from a bearing underneath, in this movement a ball bearing in the tourbillon bridge, and the top of the cage is free, so the aperture in the dial shows the whole rotating assembly with nothing over it. The cage, being titanium, is light, which matters: everything it weighs is inertia the train has to accelerate each time the escapement releases it, and every gram at its rim is a moment the lower bearing has to carry alone. In the reference the central parts of the cage are titanium and the top is carbon; here I have made the three-armed top the lime-anodised titanium of the Nanograph version, because that is the watch in the photographs I worked from, and the hairspring, which in that watch is a carbon composite grown in a plasma reactor rather than a metal alloy, is drawn as a plain spiral.</p>
+</section>
+
+<section id="does-it-help">
+<h2>Does it actually help?</h2>
+<p>Stage 6 puts a number on the argument. The readout assumes a balance whose rate depends on its orientation in the field of gravity by a fixed amount, four seconds a day at the worst angle, and shows two things: the running mean of that error over the time you have watched, and what it would be if the escapement were fixed at the starting angle. With the cage axis horizontal, the mean falls toward zero within the first turn and stays there. Set the orientation to dial up and it cannot help at all: with the cage axis vertical the balance stays horizontal whatever the cage does, and the tourbillon changes nothing, which is why the device was invented for pocket watches, which hang vertically, and why its value in a wristwatch, which spends much of its day flat on a desk or at an angle on a moving wrist, is debated. Fine adjustment does most of the same work today. I built the page because the mechanism is beautiful and because it took me an unreasonable time to understand how the escape wheel could turn at all, not because a wristwatch needs one.</p>
+</section>
+
+<section id="watch">
+<h2>The watch around it</h2>
+<p>The case and dial are proportioned to the Carrera Calibre Heuer 02T Tourbillon Nanograph from photographs: 45 mm, a tachymeter bezel, faceted lugs, crown and two chronograph pushers, a skeleton dial cut into a honeycomb, thirty-minute and twelve-hour counters at three and nine, applied indices with lume, and the aperture at six ringed with the seconds track. The chronograph mechanism is not modelled on this page (the <a href="/automatic-movement/">automatic movement page</a> has a column-wheel, vertical-clutch chronograph turning), so its hands rest at zero. The 02T’s published specification, which the model follows, is 28,800 vibrations an hour, 65 hours of reserve, 33 jewels and a 31 mm movement (TAG Heuer, 2019; Monochrome, 2019). No wordmark, badge or logo is reproduced.</p>
+</section>
+
+<section id="honesty">
+<h2>What this model is, and what it is not</h2>
+<p>The architecture is the Heuer 02T’s: a one-minute flying tourbillon at six o’clock on a 4 Hz, 65 hour, column-wheel chronograph base, with a titanium cage and no upper bridge. The tooth counts, the pivot layout, the cage’s construction and every part shape are mine, chosen to be representative and to make the ratios come out exactly: 84 fixed teeth on a 7-leaf pinion for the planetary ratio of 12, the classic 96, 80, 75, 10 train for the cage’s one turn a minute. TAG Heuer does not publish its internal geometry and this page does not claim it. The going train is drawn but its bridges are simplified, the automatic winding and the chronograph are omitted, and the balance amplitude is held constant. The positional-error figure in the readout is an illustration of the averaging, with a made-up but typical size, not a measurement of any watch. The model runs at its true ratios; the tests in the repository check every one of them.</p>
+</section>
+
+<section id="sources" class="sources">
+<h2>Sources</h2>
+<p><em>The mechanism is textbook; the calibre’s public specification is from the maker and the trade press. Tooth counts, pivot positions and part shapes in the model are mine and are not claimed to be the manufacturer’s.</em></p>
+<ul>
+<li>Monochrome Watches (2019). <a href="https://monochrome-watches.com/tag-heuer-carrera-calibre-heuer-02t-tourbillon-nanograph-specs-price/">TAG Heuer Carrera Calibre Heuer 02T Tourbillon Nanograph (specs and price).</a> 28,800 vph, 65 h, 33 jewels, 31 mm, one-minute flying tourbillon, carbon-composite hairspring, 45 mm case; the photographs the exterior is proportioned to.</li>
+<li>Time and Watches (2016). <a href="https://www.timeandwatches.com/2016/01/tag-heuer-carrera-heuer-02t-tourbillon.html">TAG Heuer Carrera Heuer-02T Tourbillon.</a> Flying tourbillon, titanium and carbon cage, COSC, the original 2016 introduction.</li>
+<li>Breguet, A.-L. (1801). Brevet d’invention pour une montre dite régulateur à tourbillon. The original patent; the averaging argument is his.</li>
+<li>Daniels, G. (2011). <em>Watchmaking</em>, revised edition. Philip Wilson. The tourbillon carriage, the fixed fourth wheel and the lever escapement, with proportions.</li>
+<li>Reymondin, C.-A., Monnier, G., Jeanneret, D. and Pelaratti, U. (1999). <em>The Theory of Horology</em>. Swiss Federation of Technical Colleges. Train ratios, positional error and its causes.</li>
+<li>Not independently verified: the internal tooth counts, cage construction and pivot layout of the Heuer 02T; none of these are published, and the model does not claim them. The case and dial are proportioned from published photographs, not measured.</li>
+</ul>
+</section>
+
+</main><!-- ISEGORIA:FOOT -->
+<footer id="ig-footer"><div><a href="/">Isegoria · Benjamin Haire</a><nav aria-label="Site links"><a href="/">Back to home</a><a href="/library.html">Browse the library</a><a href="#ig-content">Back to top</a></nav></div></footer>
+<!-- /ISEGORIA:FOOT -->
+</body>
+</html>

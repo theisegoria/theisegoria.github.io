@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en" class=" ig-document ig-editorial">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Inside a Perpetual Calendar</title>
+<meta name="description" content="A classic 48-month-cam perpetual calendar made to run in the browser: the grand lever, the cam that knows the length of every month for four years, the stars, the moon disc, and what happens at midnight.">
+<meta property="og:title" content="Inside a Perpetual Calendar">
+<meta property="og:description" content="A classic 48-month-cam perpetual calendar made to run in the browser: the grand lever, the cam that knows the length of every month for four years, the stars, the moon disc, and what happens at midnight.">
+<meta property="og:image" content="https://theisegoria.github.io/og.png">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="canonical" href="https://theisegoria.github.io/perpetual-calendar/">
+<link rel="alternate" hreflang="en" href="https://theisegoria.github.io/perpetual-calendar/">
+<link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/perpetual-calendar/">
+<link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/perpetual-calendar/">
+<link rel="stylesheet" href="/assets/isegoria.css?v=20260929">
+<link rel="stylesheet" href="/assets/lab-kit/lab-kit.css?v=20260929">
+<link rel="stylesheet" href="style.css?v=20260929">
+<script type="importmap">
+{"imports":{
+  "three":"/vendor/three/r186/build/three.webgpu.js",
+  "three/webgpu":"/vendor/three/r186/build/three.webgpu.js",
+  "three/tsl":"/vendor/three/r186/build/three.tsl.js",
+  "three/addons/":"/vendor/three/r186/examples-jsm/"
+}}
+</script>
+<link rel="modulepreload" href="/vendor/three/r186/build/three.webgpu.js">
+<link rel="modulepreload" href="/vendor/three/r186/build/three.core.js">
+<script type="module" src="lab.js"></script>
+<script src="/assets/lang.js"></script>
+<!-- ISEGORIA:HEAD -->
+<link rel="stylesheet" href="/assets/site-shell.css?v=c21cd21e82">
+<script src="/assets/site-shell.js?v=c21cd21e82" ></script>
+<!-- /ISEGORIA:HEAD -->
+<script defer data-isegoria-analytics src="/assets/analytics.js?v=9e6ebd463bf2"></script>
+</head>
+<body class=" ig-site" data-site-kind="editorial" data-site-route="/perpetual-calendar/">
+<!-- ISEGORIA:NAV -->
+<a class="ig-skip" href="#ig-content">Skip to content</a>
+<header id="ig-header"><div class="ig-nav-inner">
+<a class="ig-brand" href="/" aria-label="Isegoria, home"><strong>ISEGORIA</strong><span>Benjamin Haire</span></a>
+<div class="ig-header-actions"><a class="ig-language" href="/ja/perpetual-calendar/" hreflang="ja" lang="ja">日本語</a><button class="ig-menu" type="button" aria-expanded="false" aria-controls="ig-primary">Menu</button></div>
+<nav id="ig-primary" aria-label="Primary navigation"><a href="/">Home</a><a href="/library.html">Library</a><a href="/math-encyclopedia/">Math encyclopedia</a><a href="/#interactive">Interactive</a><a href="/#preoccupations" aria-current="location">Research</a><a href="/#books">Books</a><a href="/projects.html">Projects</a><a href="/about.html">About</a><a class="ig-language" href="/ja/perpetual-calendar/" hreflang="ja" lang="ja">日本語</a><button class="ig-theme" type="button" hidden>Theme</button></nav>
+</div></header>
+<nav id="ig-breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><a href="/#preoccupations">Research</a><span aria-hidden="true">/</span><span aria-current="page">Inside a Perpetual Calendar</span></nav>
+<span id="ig-content" tabindex="-1"></span>
+<!-- /ISEGORIA:NAV --><main class="wrap">
+
+<header class="hero">
+<p class="kicker">Interactive explainer</p>
+<h1>Inside a Perpetual Calendar</h1>
+<p class="lede">A classic 48-month-cam perpetual calendar built part by part and set running in the browser: the 24-hour wheel and the lever it lifts once a night, the stars for date, day and month, the cam that knows the length of every month for four years, the moon disc, and what happens at midnight at the end of February.</p>
+<nav class="ig-page-nav" aria-label="On this page"><a href="#model">The model</a><a href="#problem">The problem</a><a href="#night">Every night</a><a href="#cam">The cam</a><a href="#month-end">The end of a month</a><a href="#moon">The moon</a><a href="#watch">The watch</a><a href="#honesty">What this is and is not</a><a href="#sources">Sources</a></nav>
+</header>
+
+<section class="lab" id="model" aria-labelledby="model-h">
+<h2 id="model-h">The model</h2>
+<p>This is a perpetual calendar of the classic kind, the family of mechanism inside the Royal Oak Perpetual Calendar, set in a 41 mm case with that watch’s dial layout: day at nine, date at three, month at twelve with the leap-year hand on the same axis, the moon in a window at six and the week of the year on a central hand. Everything under the dial is a calendar module of levers and stars sitting on top of an ordinary movement, which is left out here (the <a href="/automatic-movement/">automatic movement page</a> has one turning, and the <a href="/tourbillon/">tourbillon page</a> its escapement). The module runs on a simulated clock: set the speed to a day a second and watch a month go by, jump to tonight or to the end of the month with the buttons, or type in a date. Take the stages in order first.</p>
+
+<div class="stage-bar" id="stages" role="tablist" aria-label="Stages"></div>
+<p class="stage-text" id="stage-text"></p>
+
+<div class="lab-stage">
+  <canvas id="stage" tabindex="0" aria-label="The perpetual calendar in 3D. Drag to orbit, scroll to zoom, right-drag to pan."></canvas>
+  <div class="lab-labels" id="labels" aria-hidden="true"></div>
+  <figure data-lab-fallback hidden>
+    <svg viewBox="0 0 640 400" role="img" aria-labelledby="fb-t"><title id="fb-t">Plan of the perpetual calendar: 24-hour wheel, grand lever, stars, cam and moon disc</title><circle cx="320.0" cy="200.0" r="150.0" fill="none" stroke="var(--rule)" stroke-width="1.5"/><circle cx="320.0" cy="200.0" r="22.5" fill="none" stroke="var(--ink-faint)" stroke-width="1.3" stroke-dasharray="4 3"/><text x="320.0" y="234.5" text-anchor="middle" font-family="var(--sans)" font-size="10.5" fill="var(--ink-faint)">Hour wheel 36</text><circle cx="281.3" cy="255.3" r="45.0" fill="none" stroke="var(--ink-soft)" stroke-width="1.4"/><text x="281.3" y="312.3" text-anchor="middle" font-family="var(--sans)" font-size="10.5" fill="var(--ink-soft)">24-hour wheel 72</text><line x1="281.3" y1="255.3" x2="329.0" y2="232.0" stroke="var(--ink-soft)" stroke-width="2"/><polygon points="415.0,200.0 408.9,198.6 414.6,196.0 408.4,195.8 413.4,192.1 407.2,193.2 411.4,188.6 405.6,190.9 408.8,185.5 403.6,188.9 405.6,183.0 401.2,187.4 401.9,181.2 398.5,186.4 398.0,180.2 395.7,186.0 394.0,180.0 392.9,186.2 390.0,180.6 390.1,186.9 386.2,182.0 387.6,188.1 382.8,184.2 385.4,189.9 379.8,187.0 383.5,192.0 377.5,190.3 382.1,194.5 375.9,194.0 381.3,197.2 375.1,198.0 381.0,200.0 375.1,202.0 381.3,202.8 375.9,206.0 382.1,205.5 377.5,209.7 383.5,208.0 379.8,213.0 385.4,210.1 382.8,215.8 387.6,211.9 386.2,218.0 390.1,213.1 390.0,219.4 392.9,213.8 394.0,220.0 395.7,214.0 398.0,219.8 398.5,213.6 401.9,218.8 401.2,212.6 405.6,217.0 403.6,211.1 408.8,214.5 405.6,209.1 411.4,211.4 407.2,206.8 413.4,207.9 408.4,204.2 414.6,204.0 408.9,201.4" fill="none" stroke="var(--ink)" stroke-width="1.5"/><text x="395.0" y="174.0" text-anchor="middle" font-family="var(--sans)" font-size="10.5" fill="var(--ink)">Date star 31</text><polygon points="255.5,200.0 251.6,196.8 251.5,191.8 246.6,192.8 242.7,189.8 240.4,194.3 235.5,195.4 237.7,200.0 235.5,204.6 240.4,205.7 242.7,210.2 246.6,207.2 251.5,208.2 251.6,203.2" fill="none" stroke="var(--ink)" stroke-width="1.5"/><text x="245.0" y="183.5" text-anchor="middle" font-family="var(--sans)" font-size="10.5" fill="var(--ink)">Day star 7</text><polygon points="333.2,125.0 328.9,122.6 331.4,118.4 326.5,118.5 326.6,113.6 322.4,116.1 320.0,111.8 317.6,116.1 313.4,113.6 313.5,118.5 308.6,118.4 311.1,122.6 306.8,125.0 311.1,127.4 308.6,131.6 313.5,131.5 313.4,136.4 317.6,133.9 320.0,138.2 322.4,133.9 326.6,136.4 326.5,131.5 331.4,131.6 328.9,127.4" fill="none" stroke="var(--ink)" stroke-width="1.5"/><text x="320.0" y="105.8" text-anchor="middle" font-family="var(--sans)" font-size="10.5" fill="var(--ink)">Month star 12, cam 48</text><polygon points="373.0,156.0 369.8,153.6 370.4,149.6 366.4,150.2 364.0,147.0 361.6,150.2 357.6,149.6 358.2,153.6 355.0,156.0 358.2,158.4 357.6,162.4 361.6,161.8 364.0,165.0 366.4,161.8 370.4,162.4 369.8,158.4" fill="none" stroke="var(--ink)" stroke-width="1.5"/><text x="364.0" y="141.0" text-anchor="middle" font-family="var(--sans)" font-size="10.5" fill="var(--ink)">Transfer 8</text><circle cx="320.0" cy="125.0" r="23.0" fill="none" stroke="var(--accent)" stroke-width="1.6" stroke-dasharray="3 2"/><circle cx="320.0" cy="293.5" r="29.5" fill="none" stroke="var(--ink-soft)" stroke-width="1.4"/><text x="353.5" y="293.5" text-anchor="start" font-family="var(--sans)" font-size="10.5" fill="var(--ink-soft)">Moon disc 59</text><polyline points="329.0,232.0 320.0,180.0 376.0,198.0" fill="none" stroke="var(--accent)" stroke-width="3"/><line x1="320.0" y1="180.0" x2="256.0" y2="198.5" stroke="var(--accent)" stroke-width="3"/><line x1="320.0" y1="180.0" x2="320.0" y2="148.2" stroke="var(--accent)" stroke-width="3"/><circle cx="320.0" cy="180.0" r="4.0" fill="var(--paper)" stroke="var(--accent)" stroke-width="1.2"/><text x="328.0" y="172.0" text-anchor="start" font-family="var(--sans)" font-size="10.5" fill="var(--accent)">Grand lever</text><text x="320.0" y="392.0" text-anchor="middle" font-family="var(--sans)" font-size="11" fill="var(--ink-soft)">Plan from the dial side, to scale. Accent: the grand lever and the cam.</text></svg>
+    <figcaption>Your browser has no WebGL 2 or WebGPU, so this is the still version: the plan of the calendar module with the stars at their tip circles and the lever in the accent colour.</figcaption>
+  </figure>
+  <div class="lab-hud"><span class="lab-badge"></span></div>
+</div>
+
+<form class="lab-controls" id="controls" onsubmit="return false">
+  <label><span>Speed</span>
+    <select name="speed"><option value="0">paused</option><option value="1" selected>real time</option><option value="60">a minute a second</option><option value="3600">an hour a second</option><option value="86400">a day a second</option><option value="2592000">a month a second</option></select></label>
+  <fieldset><legend class="visually-hidden">Jump in time</legend>
+    <button type="button" data-action="tonight">Go to tonight, 23:57</button><button type="button" data-action="monthend">Last night of this month</button><button type="button" data-action="february">Next end of February</button></fieldset>
+  <label><span>Set the date</span><input id="date" name="dateField" type="date"></label>
+  <label><span>Explode the layers</span><output for="explode"></output><input id="explode" name="explode" type="range" min="0" max="1" step="0.02" value="0" data-format="pct"></label>
+  <fieldset>
+    <label><span>Case</span><input name="caseOn" type="checkbox" checked></label>
+    <label><span>Dial</span><input name="dial" type="checkbox" checked></label>
+    <label><span>Hands</span><input name="hands" type="checkbox" checked></label>
+    <label><span>Calendar plate</span><input name="plate" type="checkbox" checked></label>
+    <label><span>Labels</span><input name="labels" type="checkbox" checked></label>
+  </fieldset>
+</form>
+<div class="lab-readout" id="readout" aria-live="off"></div>
+<details class="part-list"><summary>Find a part</summary><div id="parts"></div></details>
+</section>
+
+<section id="problem">
+<h2>The problem: months are not the same length</h2>
+<p>A simple date is easy. A wheel that turns once a day carries a finger, and once a night the finger pushes a 31-tooth star round by one tooth. The trouble is the end of the month. After the 30th of April the star should go to the 1st, not the 31st, and after the 28th of February it should skip three teeth, or two in a leap year. A simple calendar leaves that to the owner, five times a year. An annual calendar knows the 30-day months but not February. A perpetual calendar knows February too, and knows which February is the long one, and the way it knows is a cam with 48 notches, one for each month of a four-year cycle, that turns once in four years. That cam is the whole secret; the rest is the levers that read it.</p>
+</section>
+
+<section id="night">
+<h2>Every night: one lift of the lever</h2>
+<p>The motion works of the movement drive an hour wheel, one turn in twelve hours. It drives a 24-hour wheel at half its speed, one turn a day, and that wheel carries a finger. Over the last hour before midnight the finger rides against the lift arm of the grand lever, the long steel piece that spans the module, and pushes the lever round its pivot against a return spring. At midnight the finger slips off the arm and the lever drops back. On the way up, the lever’s beak catches a tooth of the 31-tooth date star and its day arm catches a tooth of the 7-tooth day star; each star turns one tooth and clicks into the next hollow of its jumper, a leaf spring whose nose sits between two teeth and holds the star still the rest of the day. The date hand sits on the date star and the day hand on the day star, which is why they jump rather than creep. In the model the lift takes the last hour of the day and the stars snap over in its last few minutes; stage 2 puts the clock at 23:57 and lets you watch.</p>
+</section>
+
+<section id="cam">
+<h2>The cam that knows the months</h2>
+<p>On the axis of the month hand, under the month star, sits the 48-notch cam. Its wheel is driven from the month star through an intermediate at 4:1, so it advances one notch a month and turns once in four years, and the small leap-year hand is on its pipe. Round its edge each notch is cut to a depth that encodes the length of that month: shallowest for 31 days, a step deeper for 30, deeper again for 28, and the leap year’s February one step shallower than the other three. The grand lever has a fourth arm, the feeler, whose pin rests in the current notch; the depth of that notch sets where the lever rests, and therefore how far it swings each night, because the lift finger always pushes it up to the same place. In a 31-day month the lever rests high and swings its eight degrees. In February it rests almost six degrees lower and swings fourteen. Stage 4 shows the cam with the feeler in it; run a month a second at stage 7 and you can see the lever’s reach change as the year turns.</p>
+</section>
+
+<section id="month-end">
+<h2>The end of a short month</h2>
+<p>The extra travel is what makes the jump. Under the date star’s teeth is a snail, a stepped spiral that rises toward the 31st. On ordinary nights the lever’s snail arm swings short of it. On the last night of a short month the lever, resting lower, swings far enough for the arm to catch the snail’s step and drag the date star the rest of the way to the 1st: two teeth at the end of a 30-day month, three at the end of a leap-year February, four at the end of an ordinary one. It is one mechanism doing two jobs, the beak advancing the date every night and the snail arm finishing the month, and the only thing that decides which nights the snail arm reaches is the depth of a notch on a cam that was cut fifty years ago.</p>
+<p>The month has to change too. As the date star passes from the 31st to the 1st, a finger on it steps an 8-tooth transfer star, whose own finger steps the 12-tooth month star, which turns the cam one notch. Everything is now set for the new month, including the lever’s new rest position, before the first night of it. Stage 5 jumps to the last night of the current month; the third button jumps to the next end of February, which is the night worth watching. The readout says in advance what tonight’s jump will be.</p>
+</section>
+
+<section id="moon">
+<h2>The moon</h2>
+<p>A second finger on the 24-hour wheel steps the moon disc one tooth each night. The disc has 59 teeth and carries two moons, so each moon comes round in 59 nights, 29.5 nights per lunation. The true synodic month is 29.53 days, so the display gains a day roughly every two years and eight months, which is why a moon phase with a 59-tooth disc needs correcting every few years and why the more expensive versions use a 135-tooth wheel. The window at six shows whichever moon is passing and the dial’s edge hides the rest.</p>
+</section>
+
+<section id="watch">
+<h2>The watch around it</h2>
+<p>The case and dial are proportioned to the Royal Oak Perpetual Calendar 26574 from photographs: 41 mm, the octagonal bezel with its eight hexagonal screws on the flats, the integrated bracelet meeting the case, the tapisserie pattern on the dial, three sub-dials at twelve, three and nine, the moon window at six, applied batons with lume, and the week numbers on the outer ring under a long central hand. That week hand is driven in the real watch by its own train from the calendar; here it reads the model’s week directly and is not mechanised. No wordmark or logo is reproduced. The layout matters to the mechanism: putting the month and leap-year hands on one axis is why the cam sits coaxially under the month star and is driven through an intermediate wheel rather than directly.</p>
+</section>
+
+<section id="honesty">
+<h2>What this model is, and what it is not</h2>
+<p>The mechanism is the classic one, as described in the horological textbooks and as used, with variations, in the Audemars Piguet 2120/2800 family and its successors and in Patek Philippe’s 240 Q: a 24-hour wheel lifting a grand lever, stars for date, day and month with jumpers, a 48-month cam read by a feeler, a snail on the date star for the end-of-month jump, a 59-tooth moon disc. The tooth counts, the exact linkage, the pivot layout and every part shape are mine, chosen to be representative and to make the arithmetic exact; the date star’s finger, transfer star and intermediate wheel are my way of routing the month step to the layout of this dial, and real calibres route it differently. Audemars Piguet does not publish the geometry of calibre 5134 and this page does not claim it. The module knows nothing of the year 2100, which is not a leap year; neither does any 48-month cam, and the watch will need setting by hand that night. The model steps exactly one tooth a night and exactly the right number at every month end; the tests in the repository walk it through four years of nights and check every one.</p>
+</section>
+
+<section id="sources" class="sources">
+<h2>Sources</h2>
+<p><em>The mechanism is textbook; the reference watch’s public specification is from the maker and the trade press. Tooth counts, linkage and part shapes in the model are mine and are not claimed to be the manufacturer’s.</em></p>
+<ul>
+<li>Revolution Watch. <a href="https://revolutionwatch.com/perpetual-calendar/">The basics and beyond: perpetual calendar.</a> The 24-hour wheel, the grand lever, the 48-month cam with its four notch depths, the snail and the 59-tooth moon disc, described component by component.</li>
+<li>Monochrome Watches (2021). <a href="https://monochrome-watches.com/new-shades-of-blue-audemars-piguet-royal-oak-perpetual-calendar-2021-specs-price/">New shades of blue: Audemars Piguet Royal Oak Perpetual Calendar.</a> Reference 26574, 41 mm, calibre 5134, the dial layout; the photographs the exterior is proportioned to.</li>
+<li>Daniels, G. (2011). <em>Watchmaking</em>, revised edition. Philip Wilson. Calendar work, jumpers and stars.</li>
+<li>Reymondin, C.-A., Monnier, G., Jeanneret, D. and Pelaratti, U. (1999). <em>The Theory of Horology</em>. Swiss Federation of Technical Colleges. Simple, annual and perpetual calendars; the moon-phase error of a 59-tooth disc.</li>
+<li>Not independently verified: the internal geometry, tooth counts and linkage of calibre 5134; none of these are published, and the model does not claim them. The case and dial are proportioned from published photographs, not measured.</li>
+</ul>
+</section>
+
+</main><!-- ISEGORIA:FOOT -->
+<footer id="ig-footer"><div><a href="/">Isegoria · Benjamin Haire</a><nav aria-label="Site links"><a href="/">Back to home</a><a href="/library.html">Browse the library</a><a href="#ig-content">Back to top</a></nav></div></footer>
+<!-- /ISEGORIA:FOOT -->
+</body>
+</html>
