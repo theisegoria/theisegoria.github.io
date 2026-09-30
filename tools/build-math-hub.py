@@ -94,7 +94,7 @@ def home_section(page, ja):
     if not m:
         sys.exit('home page Math encyclopedia section not found')
     note = ('数学の解説・実験・参考資料を、一か所にまとめました。 <a href="/ja/math-encyclopedia/">分野別に見る</a>・<a href="/ja/sheets/">参考シート</a>' if ja else
-            'Mathematical explainers, experiments, and reference material in one place. <a href="/math-encyclopedia/">Browse by subject</a> or open the <a href="/sheets/">reference sheets</a>.')
+            'Mathematical explainers, experiments, and reference material in one place. <a href="/math-encyclopedia/">Browse by subject</a>, open the <a href="/sheets/">reference sheets</a>, or try <a href="/weekly-putnam/">this week&rsquo;s Putnam problem</a>, with its full worked solution.')
     head = re.sub(r'<p class="section-note">.*?</p>', '<p class="section-note">' + note + '</p>', m.group(2), count=1, flags=re.S)
     return page[:m.start()] + m.group(1) + label + head + ''.join(cards) + m.group(3) + page[m.end():]
 
