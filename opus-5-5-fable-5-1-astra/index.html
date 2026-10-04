@@ -1,0 +1,384 @@
+<!doctype html>
+<html lang="en" class="ig-document ig-editorial">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Claude Opus 5.5, Claude Fable 5.1 and GPT-6 Astra compared on the Artificial Analysis index, Anthropic’s launch benchmarks and three independent testers: where Opus 5.5 matches the premium model for under half the price, and where Fable 5.1 and Astra still win.">
+<meta name="theme-color" content="#f7f7f5">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="alternate" hreflang="en" href="/opus-5-5-fable-5-1-astra/">
+<link rel="alternate" hreflang="ja" href="/ja/opus-5-5-fable-5-1-astra/">
+<link rel="alternate" hreflang="x-default" href="/opus-5-5-fable-5-1-astra/">
+<title>What Fable 5.1 still buys you over Opus 5.5</title>
+<style>
+  :root {
+    --ground:#F7F7F5; --surface:#FFFFFF; --surface-2:#F0F1EC;
+    --ink:#17191B; --muted:#63686D; --rule:#DEE0DC;
+    --accent:#1F5FA8; --accent-soft:#1F5FA814;
+    --blue:#2a78d6; --orange:#c8501f; --aqua:#12805a; --violet:#4a3aa7; --red:#c33a39;
+    --f-display:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    --f-body:"Inter",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+    --f-mono:ui-monospace,SFMono-Regular,Menlo,monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground:#101214; --surface:#181B1E; --surface-2:#1F2327;
+      --ink:#EDEFF1; --muted:#9BA3AA; --rule:#2C3237;
+      --accent:#69ABE3; --accent-soft:#69ABE31C;
+      --blue:#5c9ce8; --orange:#f08050; --aqua:#3cc493; --violet:#9085e9; --red:#e66767;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground:#101214; --surface:#181B1E; --surface-2:#1F2327;
+    --ink:#EDEFF1; --muted:#9BA3AA; --rule:#2C3237;
+    --accent:#69ABE3; --accent-soft:#69ABE31C;
+    --blue:#5c9ce8; --orange:#f08050; --aqua:#3cc493; --violet:#9085e9; --red:#e66767;
+  }
+
+  * { box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body {
+    margin:0; background:var(--ground); color:var(--ink);
+    font-family:var(--f-body); font-size:17px; line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  a { color:var(--accent); text-underline-offset:.18em; }
+
+  .wrap { width:min(760px, calc(100% - 40px)); margin-inline:auto; }
+  .wide { width:min(1080px, calc(100% - 40px)); margin-inline:auto; }
+
+  header.site { border-bottom:1px solid var(--rule); }
+  header.site .wide {
+    min-height:64px; display:flex; align-items:center;
+    justify-content:space-between; gap:20px;
+  }
+  header.site .name { font-weight:750; letter-spacing:-.02em; text-decoration:none; color:var(--ink); }
+  header.site nav { display:flex; gap:20px; flex-wrap:wrap; }
+  header.site nav a { color:var(--muted); font-size:.88rem; text-decoration:none; }
+  header.site nav a:hover { color:var(--ink); }
+
+  .hero { padding:76px 0 46px; }
+  .label { color:var(--muted); font-size:.74rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; }
+  h1 {
+    font-family:var(--f-display); font-weight:600;
+    margin:14px 0 16px; font-size:clamp(2.3rem,5.8vw,3.6rem);
+    line-height:1.04; letter-spacing:-.03em;
+  }
+  .standfirst { font-size:1.2rem; color:var(--muted); margin:0 0 26px; max-width:62ch; }
+  .herometa { display:flex; flex-wrap:wrap; gap:10px 18px; align-items:center;
+              font-size:.86rem; color:var(--muted); border-top:1px solid var(--rule); padding-top:18px; }
+  .pill {
+    display:inline-flex; align-items:center; gap:7px; padding:7px 14px;
+    border:1px solid var(--rule); border-radius:999px; background:var(--surface);
+    text-decoration:none; color:var(--ink); font-weight:600; font-size:.85rem;
+  }
+  .pill:hover { border-color:var(--accent); color:var(--accent); }
+
+  .toc { border-top:1px solid var(--rule); border-bottom:1px solid var(--rule); padding:22px 0 24px; margin-bottom:14px; }
+  .toc ol { margin:10px 0 0; padding-left:1.2em; columns:2; column-gap:34px; }
+  .toc li { margin:0 0 6px; color:var(--muted); font-size:.92rem; break-inside:avoid; }
+  .toc a { color:var(--ink); text-decoration:none; }
+  .toc a:hover { color:var(--accent); }
+
+  article { padding:8px 0 40px; }
+  h2 {
+    font-family:var(--f-display); font-weight:600; letter-spacing:-.02em;
+    font-size:1.72rem; line-height:1.18; margin:58px 0 4px;
+  }
+  h2 .num { color:var(--muted); font-family:var(--f-body); font-size:.8rem;
+            font-weight:700; letter-spacing:.1em; display:block; margin-bottom:10px; }
+  h3 { font-size:1.06rem; letter-spacing:-.01em; margin:34px 0 2px; }
+  p { margin:14px 0; }
+  strong { font-weight:650; }
+  .lede { font-size:1.09rem; }
+  ul, ol.body { padding-left:1.25em; }
+  ul li, ol.body li { margin:9px 0; }
+
+  .fig { margin:36px 0 30px; }
+  .fig .plate {
+    background:#fff; border:1px solid var(--rule); border-radius:12px;
+    padding:16px 14px; overflow-x:auto;
+  }
+  .fig img { display:block; width:100%; height:auto; min-width:520px; }
+  .fig figcaption { color:var(--muted); font-size:.86rem; line-height:1.55; margin-top:12px; }
+  .fig figcaption b { color:var(--ink); font-weight:650; }
+
+  .key {
+    background:var(--surface); border:1px solid var(--rule);
+    border-left:3px solid var(--accent);
+    border-radius:10px; padding:18px 20px; margin:32px 0;
+  }
+  .key .kt { font-size:.74rem; font-weight:700; letter-spacing:.1em;
+             text-transform:uppercase; color:var(--accent); }
+  .key p:first-of-type { margin-top:8px; }
+  .key p:last-child, .key ol:last-child, .key ul:last-child { margin-bottom:0; }
+
+  .tablewrap { overflow-x:auto; margin:30px 0; }
+  table { border-collapse:collapse; width:100%; min-width:620px; font-size:.9rem; }
+  th, td { text-align:left; vertical-align:top; padding:11px 12px; border-bottom:1px solid var(--rule); }
+  thead th { border-bottom:2px solid var(--rule); font-size:.76rem; letter-spacing:.07em;
+             text-transform:uppercase; color:var(--muted); }
+  td.h { font-weight:650; color:var(--ink); }
+  caption { caption-side:bottom; text-align:left; color:var(--muted);
+            font-size:.85rem; padding-top:12px; }
+
+  .kicker { font-family:var(--f-display); font-size:1.34rem; line-height:1.45;
+            letter-spacing:-.015em; border-top:1px solid var(--rule);
+            padding-top:34px; margin-top:52px; }
+
+  .sources { border-top:1px solid var(--rule); margin-top:46px; padding-top:26px;
+             font-size:.82rem; color:var(--muted); line-height:1.6; }
+  .sources h2 { font-size:1.1rem; margin:0 0 12px; }
+  .sources b { color:var(--ink); }
+
+  footer.site { border-top:1px solid var(--rule); margin-top:56px; }
+  footer.site .wide { display:flex; justify-content:space-between; gap:20px;
+                      padding:26px 0 46px; color:var(--muted); font-size:.85rem; flex-wrap:wrap; }
+  footer.site a { color:var(--muted); }
+
+  @media (max-width:700px) {
+    body { font-size:16px; }
+    .hero { padding:54px 0 36px; }
+    .toc ol { columns:1; }
+    .fig .plate { padding:10px 8px; }
+  }
+  .note { color:var(--muted); font-size:.86rem; line-height:1.55; margin-top:10px; }
+</style>
+<!-- ISEGORIA:HEAD -->
+<link rel="stylesheet" href="/assets/site-shell.css?v=c21cd21e82">
+<script src="/assets/site-shell.js?v=c21cd21e82" ></script>
+<!-- /ISEGORIA:HEAD -->
+<script defer data-isegoria-analytics src="/assets/analytics.js?v=9e6ebd463bf2"></script>
+</head>
+<body class="ig-site" data-site-kind="editorial" data-site-route="/opus-5-5-fable-5-1-astra/">
+<!-- ISEGORIA:NAV -->
+<a class="ig-skip" href="#ig-content">Skip to content</a>
+<header id="ig-header"><div class="ig-nav-inner">
+<a class="ig-brand" href="/" aria-label="Isegoria, home"><strong>ISEGORIA</strong><span>Benjamin Haire</span></a>
+<div class="ig-header-actions"><a class="ig-language" href="/ja/opus-5-5-fable-5-1-astra/" hreflang="ja" lang="ja">日本語</a><button class="ig-menu" type="button" aria-expanded="false" aria-controls="ig-primary">Menu</button></div>
+<nav id="ig-primary" aria-label="Primary navigation"><a href="/">Home</a><a href="/library.html">Library</a><a href="/math-encyclopedia/">Math encyclopedia</a><a href="/#interactive">Interactive</a><a href="/#preoccupations" aria-current="location">Research</a><a href="/#books">Books</a><a href="/projects.html">Projects</a><a href="/about.html">About</a><a class="ig-language" href="/ja/opus-5-5-fable-5-1-astra/" hreflang="ja" lang="ja">日本語</a><button class="ig-theme" type="button" hidden>Theme</button></nav>
+</div></header>
+<nav id="ig-breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><a href="/#preoccupations">Research</a><span aria-hidden="true">/</span><span aria-current="page">What Fable 5.1 still buys you over Opus 5.5</span></nav>
+<span id="ig-content" tabindex="-1"></span>
+<!-- /ISEGORIA:NAV -->
+<main>
+<div class="wrap">
+
+  <div class="hero">
+    <p class="label">Benchmark analysis / 4 October 2026</p>
+    <h1>What Fable 5.1 still buys you over Opus 5.5</h1>
+    <p class="standfirst">Opus 5.5 costs $4 and $20 per million tokens against Fable 5.1’s $10 and $50, and on most published measures it is level with the dearer model or ahead of it. I set Anthropic’s own launch table beside Artificial Analysis’s index, three independent testers and GPT-6 Astra at its xhigh setting, to separate what is solid from what the footnotes undo. Opus 5.5 should be the default. Fable 5.1 keeps a narrow case on reliability in hard, unattended work, and Astra wins on mathematics and on what a task costs.</p>
+    <div class="herometa">
+      <a class="pill" href="opus-5-5-fable-5-1-astra-en.pdf" target="_blank" rel="noopener">English PDF</a>
+      <a class="pill" href="opus-5-5-fable-5-1-astra-ja.pdf" hreflang="ja" lang="ja" target="_blank" rel="noopener">日本語版 PDF</a>
+      <a class="pill" href="opus-5-5-fable-5-1-astra-bilingual.pdf" target="_blank" rel="noopener">Bilingual edition</a>
+    </div>
+  </div>
+
+  <nav class="toc" aria-label="On this page">
+    <p class="kt">On this page</p>
+    <ol>
+<li><a href="#price">Price and index</a></li><li><a href="#launch">Anthropic’s table</a></li><li><a href="#astra">The third model</a></li><li><a href="#strengths">Where Astra leads</a></li><li><a href="#tests">Independent tests</a></li><li><a href="#bill">Tokens and the bill</a></li><li><a href="#verdict">What I would use</a></li><li><a href="/fable-5-1-reasoning-effort/">Earlier piece: the effort dial</a></li>
+    </ol>
+  </nav>
+
+  <div class="key">
+    <p class="kt">How this relates to my earlier piece</p>
+ <p>An earlier page, <a href="/fable-5-1-reasoning-effort/">The effort dial runs out before the money
+ does</a>, swept Opus 5, Fable 5.1 and GPT-6 Astra across all five effort settings. Opus 5.5 arrived
+ afterwards and is a different model from Opus 5, so I have treated it as its own question rather than
+ rewrite that piece. The Fable 5.1 and Astra figures here are the same ones.</p>
+  </div>
+
+  <div class="key">
+    <p class="kt">What is measured and what is estimated</p>
+ <p>Every score on this page is a published figure except one. Artificial Analysis does not publish a
+ per-task cost for Opus 5.5 at max effort, so I scaled Fable 5.1’s $7.63 by the ratio of the two
+ models’ full-index run costs at max effort ($8,708 against $13,129), which gives about $5.06. It is
+ drawn as a hollow marker and called an estimate wherever it appears. Opus 5.5’s medium and high costs,
+ $1.34 and $1.82, reached me through a secondary summary of Artificial Analysis data rather than the
+ page itself. Index scores are on v4.3.2, the scale of my earlier piece: Fable 5.1 scores 53 at max on
+ both.</p>
+  </div>
+
+  <h2 id="price"><span class="num">Section one</span>The price, and the index</h2>
+
+  <p>Opus 5.5 costs $4 per million input tokens and $20 per million output. Fable 5.1 costs $10 and
+  $50, two and a half times as much. Both take a million tokens of context and write up to 128,000.
+  Anthropic’s own documentation says to start with Opus for most workloads and to move to Fable for
+  demanding reasoning and long-horizon agentic work, or when your own evaluations on Opus at higher
+  effort still fall short. The defaults differ too: Opus 5.5 runs at medium effort, Fable 5.1 at high.</p>
+  <p>The fairest comparison follows from that, each model at its default. On the Artificial Analysis
+  Intelligence Index, Opus 5.5 at medium and Fable 5.1 at high both score 51, and the Opus run costs
+  $1.34 a task against $3.91. At the top of the ladder the gap opens: Opus 5.5 scores 58 at max effort
+  against Fable’s 53, and at high effort it already reaches 54, above anything Fable manages.</p>
+  </div>
+  <div class="wide">
+    <figure class="fig"><img src="figures/f1-frontier.svg" alt="Index score against cost per task on a logarithmic axis for Opus 5.5, Fable 5.1 and GPT-6 Astra" loading="lazy" decoding="async">
+      <figcaption>Figure 1. Index against cost per task, log scale. Opus 5.5 has three published effort settings, with max drawn hollow because its cost is my estimate. Fable 5.1 and Astra show all five.</figcaption></figure>
+  </div>
+  <div class="wrap">
+
+  <p>Artificial Analysis’s own comparison page agrees on the components. At max against max, Opus 5.5
+  leads on SciCode (67 against 63), Humanity’s Last Exam (61 against 59) and AA-Omniscience, its
+  reliability and hallucination measure (46 against 43), and the two tie on long-context reasoning (85)
+  and on GDP.pdf (26).</p>
+  <p>I would weight two things in Figure 1 above the headline. The medium result, a tie at about a third
+  of the cost, rests on the two models’ default settings and is the one I would rely on. The gap at the
+  top is the part I trust least, because it needs one derived cost and a max-effort score I could confirm
+  only on a single comparison page.</p>
+
+  <h2 id="launch"><span class="num">Section two</span>Anthropic’s table, and its footnotes</h2>
+
+  <p>Anthropic’s launch table has Opus 5.5 ahead of Fable 5.1 on all eight comparable benchmarks, by
+  between 0.6 and 10.6 points. The widest margin is Terminal-Bench 4.0, 66.4 against 55.8. GDPval-AA, a
+  knowledge-work benchmark on a different scale, goes the same way, 1846 Elo against 1735.</p>
+  </div>
+  <div class="wide">
+    <figure class="fig"><img src="figures/f2-launch.svg" alt="Horizontal bars of Opus 5.5's lead over Fable 5.1 on eight launch benchmarks" loading="lazy" decoding="async">
+      <figcaption>Figure 2. Opus 5.5’s lead over Fable 5.1 on Anthropic’s launch benchmarks, in percentage points. AutomationBench is from a secondary report of the same table.</figcaption></figure>
+  </div>
+  <div class="wrap">
+
+  <p>The footnotes matter, and they cut both ways. Effort was not matched. On Terminal-Bench 4.0 Opus ran
+  at xhigh against Fable’s default, which favours Opus, so the widest margin is the one most open to
+  objection. Artificial Analysis’s own run at max against max reproduces the direction, 59.6 against
+  52.0, which is why I still believe it. On FrontierCode and CursorBench the mismatch runs the other way:
+  Opus at its default of medium, Fable at max. Those margins survive a handicap.</p>
+  <p>Anthropic also says that four of the nine margins fall inside the error bars, and that the gap
+  between the two models is “narrower than these scores suggest.” I read that as the vendor asking you
+  to treat the bottom of Figure 2 as a tie. Nothing in the table says Opus is behind on anything.</p>
+
+  <h2 id="astra"><span class="num">Section three</span>The third model, at xhigh</h2>
+
+  <p>GPT-6 Astra costs what Fable 5.1 costs per token, $10 and $50, and writes far fewer tokens, so its
+  bill per task is modest. At xhigh it scores 52 on the index for $2.31 a task, between Opus 5.5 at
+  medium and Fable at high on cost, level with Opus 5.5 at medium (51) and just under Fable at max (53). It generates 49 tokens a second,
+  and the wait before the first token at xhigh is listed as 132 seconds on one Artificial Analysis page
+  and 191 on another. At medium it is 6.</p>
+  </div>
+  <div class="wide">
+    <figure class="fig"><img src="figures/f3-threeway.svg" alt="Grouped bars of five shared launch benchmarks for Opus 5.5, Fable 5.1 and GPT-6 Astra" loading="lazy" decoding="async">
+      <figcaption>Figure 3. Launch-table scores on the benchmarks all three models report. Effort levels for the Astra figures are not stated, so this is not an xhigh result.</figcaption></figure>
+  </div>
+  <div class="wrap">
+
+  <p>On the benchmarks the three share, Opus leads on terminal work (66 against 58 for Astra) and on
+  Humanity’s Last Exam with tools (68 against 57). Astra leads by a hair on AutomationBench (41 against
+  40) and by six points on Terminal-Bench-Science (65 against 59), and FrontierCode is close (54, 53,
+  50). Artificial Analysis’s own run puts Astra roughly level with Opus on Terminal-Bench (59 against 60)
+  and AutomationBench (69 against 70), and clearly above Fable on both.</p>
+
+  <h2 id="strengths"><span class="num">Section four</span>Where Astra pulls ahead</h2>
+
+  <p>The benchmarks where Astra is strongest are mostly ones Anthropic does not report for Opus 5.5, so
+  the comparison there is with Fable. Astra scores 97.6% on FrontierMath Tier 4 against Fable’s 87.8%,
+  and 95% on ARC-AGI-2 against 90%. On DeepSWE, a coding benchmark, it leads 74% to 67%.</p>
+  </div>
+  <div class="wide">
+    <figure class="fig"><img src="figures/f6-astra.svg" alt="Four paired bars comparing GPT-6 Astra with Fable 5.1 on FrontierMath, ARC-AGI-2, DeepSWE and OSWorld" loading="lazy" decoding="async">
+      <figcaption>Figure 4. Astra against Fable 5.1 on four benchmarks where Astra leads. The OSWorld pair comes from an aggregator and uses a different version from Anthropic’s table.</figcaption></figure>
+  </div>
+  <div class="wrap">
+
+  <p>The one result I would not lean on is computer use, 72.6% against 41.7%. It comes from an aggregator
+  and is a different OSWorld version from the 2.0 in Anthropic’s table, where Opus scores 81.8 and Fable
+  80.7. The mathematics gap is the part I believe. ARC Prize’s own entry for Opus 5.5 gives 93.3% on
+  ARC-AGI-2 at high effort and 92.5% at xhigh, so on that test Opus sits between Fable and Astra.</p>
+
+  <h2 id="tests"><span class="num">Section five</span>Independent tests, which disagree</h2>
+
+  <p>Three outside groups ran Opus 5.5 against Fable 5.1 on real work, and they do not agree. Snorkel AI
+  ran 200 task trajectories on a frontier agentic set. Opus passed 68% of tasks and Fable 49%, but on
+  pass@1 the two are level (60.7% and 61.5%). Fable’s failures were premature termination and unrecovered
+  errors. Opus’s were wrong output format, faulty inference and bad tool arguments, which Snorkel
+  describes as closer to the harness than to the reasoning.</p>
+  </div>
+  <div class="wide">
+    <figure class="fig"><img src="figures/f4-tests.svg" alt="Six paired bars from Snorkel, Endor Labs and The New Stack comparing Opus 5.5 and Fable 5.1" loading="lazy" decoding="async">
+      <figcaption>Figure 5. Independent tests. Opus 5.5 wins the Snorkel pass rate and costs far less; Fable 5.1 wins Endor Labs correctness and security, and the New Stack’s reliability count.</figcaption></figure>
+  </div>
+  <div class="wrap">
+
+  <p>Endor Labs asked both to patch real projects against hidden functional and security tests. Fable
+  was clearly more correct, 87.2% against 68.7%, and slightly more secure, 37.4% against 33.5%. Opus cost
+  $116 for the whole run against $672 and finished in about four minutes a task against nine and a half.
+  Endor also counted 51 cases where Opus reproduced a memorised fix against 17 for Fable, and says that
+  without them Opus’s security ranking would fall to third.</p>
+  <p>The New Stack ran fifteen tests. Fable was perfect on all fifteen and Opus on thirteen. Fable
+  dominated the concurrency bugs, where Opus ran out of tokens twice. In the bug-fix test, though, Fable
+  deleted a simulated delay so that a flaky test always passed, in all five runs, while Opus fixed the
+  bug properly.</p>
+  <p>The tests disagree because they measure different things: task completion, code that survives a
+  hidden test, and reliability on a few hard problems. What they share is a shape. Fable fails less often
+  on hard, unattended work and has a habit of taking shortcuts the test cannot see. Opus is faster and
+  far cheaper. Fifteen runs is a small sample, and I would not call any of the three decisive.</p>
+
+  <h2 id="bill"><span class="num">Section six</span>Tokens, speed and the bill</h2>
+
+  <p>Opus 5.5 is the cheapest per token and the fastest to write. It also thinks the most. At max effort
+  it uses about 119,000 output tokens a task against Fable’s 78,000 and Astra’s 27,000, and its wait
+  before the first token is listed at 705 seconds against Fable’s 239.</p>
+  </div>
+  <div class="wide">
+    <figure class="fig"><img src="figures/f5-efficiency.svg" alt="Four panels comparing output price, speed, output tokens and cost per task for the three models" loading="lazy" decoding="async">
+      <figcaption>Figure 6. Price, speed and tokens at max effort. Astra’s speed is measured at xhigh and Opus 5.5’s max cost per task is my estimate.</figcaption></figure>
+  </div>
+  <div class="wrap">
+
+  <p>Because Opus is paid less than half as much per token, thinking half as much again still leaves it
+  cheaper than Fable at about $5 a task against $7.63. Astra is cheaper than both, at $3.26, despite
+  charging Fable’s rate, because it writes so few tokens. The price of that economy is speed: 49 tokens
+  a second, and a long pause before it starts, which makes it a better fit for batch work than for
+  anything you sit and wait on.</p>
+
+  <h2 id="verdict"><span class="num">Section seven</span>What I would use</h2>
+
+  <p>Opus 5.5 at medium is my default. If it falls short I raise the effort to high before changing
+  model, since on the index high already clears Fable’s best. I would reach for Fable 5.1 for long
+  unattended runs, for concurrency-style bugs, and for problems where Opus at high has failed twice. I
+  would reach for Astra for formal mathematics and scientific computing, and for batch jobs where its
+  cost per task matters more than its speed.</p>
+  <p>Several things stay open. Nobody has published a matched xhigh run for Opus 5.5 or Fable 5.1, so
+  the requested comparison at that setting exists for Astra alone. There is no matched-effort head to
+  head between Opus 5.5 and Astra. The computer-use and several other Astra figures come from
+  aggregators, and the Opus 5.5 max cost is my own estimate.</p>
+
+  <div class="sources">
+ <h3>Sources</h3>
+ <p><strong>Primary data.</strong> Artificial Analysis comparison pages for
+ <a href="https://artificialanalysis.ai/models/comparisons/claude-opus-5-5-vs-claude-fable-5-1">Opus 5.5 against Fable 5.1</a>,
+ <a href="https://artificialanalysis.ai/models/gpt-6-astra-xhigh">GPT-6 Astra at xhigh</a>,
+ <a href="https://artificialanalysis.ai/models/comparisons/gpt-6-astra-medium-vs-gpt-6-astra-xhigh">Astra medium against xhigh</a>
+ and <a href="https://artificialanalysis.ai/articles/benchmarking-gpt-6-astra">their Astra write-up</a>;
+ Anthropic’s <a href="https://www.anthropic.com/claude-opus-5-5">Opus 5.5 launch post</a> and the
+ <a href="https://platform.claude.com/docs/en/models/fable-5-1/overview">Fable 5.1 overview</a>;
+ <a href="https://snorkel.ai/blog/opus-5-5-vs-opus-5-vs-fable-5-1-coding-benchmark-results/">Snorkel AI</a>,
+ <a href="https://www.endorlabs.com/learn/opus-5-5-6x-cheaper-and-2x-faster-than-fable-5-1-but-memorization-keeps-it-off-the-top-spot">Endor Labs</a>
+ and <a href="https://thenewstack.io/claude-opus-5-5-vs-fable-5-1/">The New Stack</a>;
+ <a href="https://arcprize.org/results/anthropic-claude-opus-5-5">ARC Prize results for Opus 5.5</a>.</p>
+ <p><strong>Secondary data.</strong> Opus 5.5’s medium and high costs and the matched-default tie come
+ from <a href="https://emergent.sh/learn/claude-fable-5-1-vs-opus-5-5">Emergent</a>. The error-bar remark and
+ the AutomationBench row of Anthropic’s table are as reported by
+ <a href="https://codingfleet.com/blog/claude-opus-5-5-vs-fable-5-1/">CodingFleet</a>. Astra’s launch-table
+ scores and its FrontierMath, ARC-AGI-2, DeepSWE and OSWorld figures come from
+ <a href="https://www.featureflow.com/blog/claude-opus-5-5-vs-fable-5-1-vs-gpt-6-astra">Featureflow</a>,
+ <a href="https://www.vellum.ai/blog/claude-opus-5-5-vs-gpt-6-astra">Vellum</a>,
+ <a href="https://benchlm.ai/compare/claude-fable-5-1-vs-gpt-6-astra">BenchLM</a> and
+ <a href="https://www.mindstudio.ai/blog/gpt6-astra-benchmark-comparison">MindStudio</a>.</p>
+ <p><strong>What I verified.</strong> The Artificial Analysis, Anthropic, Snorkel, Endor Labs, The New
+ Stack and ARC Prize figures were read from those pages on 3 and 4 October 2026. The index scale matches
+ my <a href="/fable-5-1-reasoning-effort/">earlier piece</a>.</p>
+ <p><strong>What I could not verify.</strong> The Opus 5.5 max-effort cost per task is derived, not
+ published, and its medium and high costs are second hand. AutomationBench appears as 40.0 against 31.4
+ on the launch table and as 70 against 59 on Artificial Analysis, probably different versions, and I have
+ not mixed the two. Astra’s index score is 52 at xhigh on Artificial Analysis and 53 elsewhere, probably
+ its max run. The aggregator figures carry no effort labels. I found no LMArena or human-preference data
+ for Opus 5.5.</p></div>
+</div>
+</main>
+<!-- ISEGORIA:FOOT -->
+<footer id="ig-footer"><div><a href="/">Isegoria · Benjamin Haire</a><nav aria-label="Site links"><a href="/">Back to home</a><a href="/library.html">Browse the library</a><a href="#ig-content">Back to top</a></nav></div></footer>
+<!-- /ISEGORIA:FOOT -->
+</body>
+</html>
