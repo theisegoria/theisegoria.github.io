@@ -1,0 +1,393 @@
+<!doctype html>
+<html lang="en" class=" ig-document ig-editorial">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="The neurobiology of romantic loss and the case that methylphenidate (Concerta) and guanfacine ER (Intuniv) could help people function through it: the circuit, the pharmacology, an hour-by-hour occupancy model of Concerta 54 mg and 108 mg, and the strongest objections.">
+  <meta name="theme-color" content="#f7f7f5">
+  <meta property="og:title" content="Can Concerta and Intuniv ease heartbreak?">
+  <meta property="og:description" content="The neurobiology of romantic loss and the case that methylphenidate (Concerta) and guanfacine ER (Intuniv) could help people function through it: the circuit, the pharmacology, an hour-by-hour occupancy model of Concerta 54 mg and 108 mg, and the strongest objections.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://theisegoria.github.io/heartbreak-concerta-intuniv/">
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <title>Can Concerta and Intuniv ease heartbreak?</title>
+<style>
+  :root {
+    --ground:#F7F7F5; --surface:#FFFFFF; --surface-2:#F0F1EC;
+    --ink:#17191B; --muted:#63686D; --rule:#DEE0DC;
+    --accent:#1F63B8; --accent-soft:#2A78D614; --warm:#C8501F; --warm-soft:#EB683412;
+    --f-display:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    --f-body:"Inter",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground:#101214; --surface:#181B1E; --surface-2:#1F2327;
+      --ink:#EDEFF1; --muted:#9BA3AA; --rule:#2C3237;
+      --accent:#69ABE3; --accent-soft:#69ABE31C; --warm:#F08050; --warm-soft:#F080501A;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground:#101214; --surface:#181B1E; --surface-2:#1F2327;
+    --ink:#EDEFF1; --muted:#9BA3AA; --rule:#2C3237;
+    --accent:#69ABE3; --accent-soft:#69ABE31C; --warm:#F08050; --warm-soft:#F080501A;
+  }
+  * { box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { margin:0; background:var(--ground); color:var(--ink);
+    font-family:var(--f-body); font-size:17px; line-height:1.65; -webkit-font-smoothing:antialiased; }
+  a { color:var(--accent); text-underline-offset:.18em; }
+  .wrap { width:min(760px, calc(100% - 40px)); margin-inline:auto; }
+  .wide { width:min(1080px, calc(100% - 40px)); margin-inline:auto; }
+
+  .hero { padding:76px 0 46px; }
+  .label { color:var(--muted); font-size:.74rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; }
+  .hero > .label:first-child { color:var(--accent); }
+  h1 { font-family:var(--f-display); font-weight:600; margin:14px 0 16px;
+    font-size:clamp(2.3rem,5.8vw,3.6rem); line-height:1.04; letter-spacing:-.03em; }
+  .standfirst { font-size:1.2rem; color:var(--muted); margin:0 0 26px; max-width:62ch; }
+  .herometa { display:flex; flex-wrap:wrap; gap:10px 12px; align-items:center;
+    font-size:.86rem; color:var(--muted); border-top:1px solid var(--rule); padding-top:18px; }
+  .pill { display:inline-flex; align-items:center; gap:7px; padding:7px 14px;
+    border:1px solid var(--rule); border-radius:999px; background:var(--surface);
+    text-decoration:none; color:var(--ink); font-weight:600; font-size:.85rem; }
+  .pill:hover { border-color:var(--accent); color:var(--accent); }
+
+  .toc { border-top:1px solid var(--rule); border-bottom:1px solid var(--rule); padding:22px 0 24px; margin-bottom:14px; }
+  .toc ol { margin:10px 0 0; padding-left:1.2em; columns:2; column-gap:34px; }
+  .toc li { margin:0 0 6px; color:var(--muted); font-size:.92rem; break-inside:avoid; }
+  .toc a { color:var(--ink); text-decoration:none; }
+  .toc a:hover { color:var(--accent); }
+
+  .stats { display:grid; grid-template-columns:repeat(4,1fr); gap:0; margin:34px 0 8px;
+    border-top:2px solid var(--accent); border-bottom:1px solid var(--rule); }
+  .stats > div { padding:18px 14px 16px; border-left:1px solid var(--rule); }
+  .stats > div:first-child { border-left:0; padding-left:0; }
+  .stats b { display:block; font-family:var(--f-display); font-weight:600; font-size:2rem;
+    line-height:1.05; color:var(--accent); letter-spacing:-.02em; font-variant-numeric:lining-nums; }
+  .stats span { display:block; margin-top:8px; color:var(--muted); font-size:.8rem; line-height:1.45; }
+
+  article { padding:8px 0 40px; }
+  h2 { font-family:var(--f-display); font-weight:600; letter-spacing:-.02em;
+    font-size:1.72rem; line-height:1.18; margin:58px 0 4px; }
+  h2 .num { color:var(--accent); font-family:var(--f-body); font-size:.76rem;
+    font-weight:700; letter-spacing:.1em; text-transform:uppercase; display:block; margin-bottom:10px; }
+  h3 { font-size:1.06rem; letter-spacing:-.01em; margin:34px 0 2px; }
+  p { margin:14px 0; }
+  strong { font-weight:650; }
+  .lede { font-size:1.09rem; }
+  ul { padding-left:1.25em; }
+  ul li { margin:9px 0; }
+  sup { font-size:.66em; line-height:0; color:var(--accent); font-weight:600; margin-left:1px; }
+
+  .fig { margin:36px 0 30px; }
+  .fig .plate { background:#fff; border:1px solid var(--rule); border-radius:12px; padding:18px 16px; overflow-x:auto; }
+  .fig img { display:block; width:100%; height:auto; min-width:540px; }
+  .fig figcaption { color:var(--muted); font-size:.86rem; line-height:1.55; margin-top:12px; }
+  .fig figcaption b { color:var(--ink); font-weight:650; }
+
+  .key, .aside, .warn { border-radius:10px; padding:18px 20px; margin:32px 0; }
+  .key { background:var(--accent-soft); border-left:3px solid var(--accent); }
+  .aside { background:var(--surface); border:1px solid var(--rule); }
+  .warn { background:var(--warm-soft); border-left:3px solid var(--warm); }
+  .kt { font-size:.74rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--accent); margin:0 0 4px !important; }
+  .warn .kt { color:var(--warm); }
+  .key p:last-child, .aside p:last-child, .warn p:last-child, .key ul:last-child, .warn ul:last-child { margin-bottom:0; }
+  .key ul, .warn ul { margin:8px 0 0; }
+
+  .tablewrap { overflow-x:auto; margin:30px 0; }
+  table { border-collapse:collapse; width:100%; min-width:620px; font-size:.88rem; }
+  th, td { text-align:left; vertical-align:top; padding:11px 12px; border-bottom:1px solid var(--rule); }
+  thead th { border-bottom:2px solid var(--accent); font-size:.74rem; letter-spacing:.07em; text-transform:uppercase; color:var(--muted); }
+  td.h { font-weight:650; color:var(--ink); }
+  caption { caption-side:bottom; text-align:left; color:var(--muted); font-size:.84rem; padding-top:12px; }
+
+  .kicker { font-family:var(--f-display); font-size:1.3rem; line-height:1.5; letter-spacing:-.01em;
+    border-top:1px solid var(--rule); padding-top:34px; margin-top:52px; }
+
+  .sources { border-top:1px solid var(--rule); margin-top:46px; padding-top:26px;
+    font-size:.82rem; color:var(--muted); line-height:1.6; }
+  .sources h2 { font-size:1.1rem; margin:0 0 12px; }
+  .sources b { color:var(--ink); }
+  .refs { padding-left:1.6em; margin:0 0 18px; }
+  .refs li { margin:4px 0; }
+
+  footer.site { border-top:1px solid var(--rule); margin-top:56px; }
+  footer.site .wide { display:flex; justify-content:space-between; gap:20px;
+    padding:26px 0 46px; color:var(--muted); font-size:.85rem; flex-wrap:wrap; }
+  footer.site a { color:var(--muted); }
+
+  @media (max-width:700px) {
+    body { font-size:16px; }
+    .hero { padding:54px 0 36px; }
+    .toc ol { columns:1; }
+    .stats { grid-template-columns:1fr 1fr; }
+    .stats > div:nth-child(3) { border-left:0; padding-left:0; }
+    .stats > div:nth-child(n+3) { border-top:1px solid var(--rule); }
+    .fig .plate { padding:10px 8px; }
+  }
+
+
+  .refs .tag { display:inline-block; min-width:1.5em; text-align:center; font-weight:700; font-size:.72rem; border-radius:4px; padding:0 4px; margin-right:4px; color:#fff; background:#0F8F85; }
+  .refs .tag.t { background:#C8501F; }
+  .obj p { margin:8px 0; }
+  .obj h3 { margin-top:30px; }
+  .abstract p { margin:0; }
+</style>
+<link rel="canonical" href="https://theisegoria.github.io/heartbreak-concerta-intuniv/">
+<link rel="alternate" hreflang="en" href="https://theisegoria.github.io/heartbreak-concerta-intuniv/">
+<link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/heartbreak-concerta-intuniv/">
+<link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/heartbreak-concerta-intuniv/"><script src="/assets/lang.js"></script>
+<!-- ISEGORIA:HEAD -->
+<link rel="stylesheet" href="/assets/site-shell.css?v=c21cd21e82">
+<script src="/assets/site-shell.js?v=c21cd21e82" ></script>
+<!-- /ISEGORIA:HEAD -->
+<script defer data-isegoria-analytics src="/assets/analytics.js?v=9e6ebd463bf2"></script>
+</head>
+<body class=" ig-site" data-site-kind="editorial" data-site-route="/heartbreak-concerta-intuniv/">
+<!-- ISEGORIA:NAV -->
+<a class="ig-skip" href="#ig-content">Skip to content</a>
+<header id="ig-header"><div class="ig-nav-inner">
+<a class="ig-brand" href="/" aria-label="Isegoria, home"><strong>ISEGORIA</strong><span>Benjamin Haire</span></a>
+<div class="ig-header-actions"><a class="ig-language" href="/ja/heartbreak-concerta-intuniv/" hreflang="ja" lang="ja">日本語</a><button class="ig-menu" type="button" aria-expanded="false" aria-controls="ig-primary">Menu</button></div>
+<nav id="ig-primary" aria-label="Primary navigation"><a href="/">Home</a><a href="/library.html">Library</a><a href="/math-encyclopedia/">Math encyclopedia</a><a href="/#interactive">Interactive</a><a href="/#preoccupations" aria-current="location">Research</a><a href="/#books">Books</a><a href="/projects.html">Projects</a><a href="/about.html">About</a><a class="ig-language" href="/ja/heartbreak-concerta-intuniv/" hreflang="ja" lang="ja">日本語</a><button class="ig-theme" type="button" hidden>Theme</button></nav>
+</div></header>
+<nav id="ig-breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><a href="/#preoccupations">Research</a><span aria-hidden="true">/</span><span aria-current="page">Can Concerta and Intuniv ease heartbreak?</span></nav>
+<span id="ig-content" tabindex="-1"></span>
+<!-- /ISEGORIA:NAV --><main>
+<div class="wrap">
+
+  <div class="hero">
+    <p class="label">Research review / 4 October 2026</p>
+    <h1>Can Concerta and Intuniv ease heartbreak?</h1>
+    <p class="standfirst">Heartbreak recruits the same reward, stress and prediction-error circuitry as other motivational states. I trace that circuit, set out what a stimulant and an α2 agonist actually do at their targets, model how Concerta 54 mg and 108 mg occupy the transporters hour by hour, and grade how strong the case really is.</p>
+    <div class="herometa">
+      <a class="pill" href="/heartbreak-concerta-intuniv/heartbreak-concerta-intuniv-en.pdf" hreflang="en" lang="en" target="_blank" rel="noopener" title="PDF">English PDF &middot; 12 pages</a>
+      <a class="pill" href="/heartbreak-concerta-intuniv/heartbreak-concerta-intuniv-ja.pdf" hreflang="ja" lang="ja" target="_blank" rel="noopener" title="PDF">日本語版 PDF &middot; 12ページ</a>
+      <a class="pill" href="/heartbreak-concerta-intuniv/heartbreak-concerta-intuniv-bilingual.pdf" target="_blank" rel="noopener" title="PDF">Bilingual edition &middot; 24 pages</a>
+    </div>
+    <p class="label" style="margin-top:18px">Dopamine · prediction error · lateral habenula · methylphenidate · guanfacine · transporter occupancy</p>
+  </div>
+
+  <nav class="toc" aria-label="Contents">
+    <p class="label">Contents</p>
+    <ol>
+      <li><a href="#hypothesis">The hypothesis, stated so it can fail</a></li>
+      <li><a href="#circuit">Why heartbreak looks dopaminergic</a></li>
+      <li><a href="#drugs">What the drugs do at their targets</a></li>
+      <li><a href="#concerta">Concerta, hour by hour: 54 mg versus 108 mg</a></li>
+      <li><a href="#case">The case for</a></li>
+      <li><a href="#objections">The strongest objections, answered</a></li>
+      <li><a href="#strength">How strong is the case?</a></li>
+      <li><a href="#test">A fair test, and the bottom line</a></li>
+      <li><a href="#sources">Sources</a></li>
+    </ol>
+  </nav>
+
+  <article>
+<div class="key abstract">
+<p class="kt">Abstract</p>
+<p><b>Question.</b> Could methylphenidate (Concerta) and guanfacine ER (Intuniv) help people function through romantic loss? <b>Approach.</b> Review of the primary literature on the neurobiology of rejection and grief and on the human PET pharmacology of both drugs, plus a label-calibrated model of Concerta 54 mg and 108 mg transporter occupancy over 24 hours. <b>Findings.</b> Heartbreak recruits reward, stress and prediction-error circuitry, and effort-related drive is dopamine-dependent. Methylphenidate raises extracellular dopamine in humans; modelled DAT occupancy peaks near 63% (54 mg) and 77% (108 mg), and the higher dose mainly extends duration into the evening. Guanfacine strengthens prefrontal control under stress in animals, and one RCT (n = 90) found an α2-agonist add-on lowered breakup-grief scores. No trial has tested either drug in heartbreak. <b>Conclusion.</b> A reasonable but unproven mechanistic expectation; the main risks are stimulant-amplified cue salience and mania in bipolar illness without a mood stabiliser. Testable predictions are given.</p>
+</div>
+<h2 id="hypothesis"><span class="num">Section one</span>The hypothesis, stated so it can fail</h2>
+<p class="lede">Heartbreak is usually described as an emotion. The neurobiology says it is closer to a motivational state, and a stressful one. Three separable processes are at work, and each maps onto a pharmacological target.</p>
+<div class="key">
+<p><b>H.</b> In the weeks after a major romantic loss, much of the functional disability is not the attachment itself but three separable dysregulations: <b>(i)</b> cue-triggered craving and rumination, <b>(ii)</b> a fall in effort-related drive that makes ordinary life feel not worth its cost, and <b>(iii)</b> stress-induced loss of prefrontal control that removes the brakes on (i). A DAT/NET blocker (methylphenidate) should help (ii) and, through prefrontal catecholamines, (iii). An α2A agonist (guanfacine ER) should help (iii) and dampen stress arousal. Neither is expected to erase attachment or grief. The claim is about <b>restoring function and control while attachment extinguishes on its own timetable</b>.</p>
+</div>
+<h3>Predictions that would count for or against it</h3>
+<div class="tablewrap">
+<table>
+
+<thead><tr><th>#</th><th>Prediction</th><th>Would count against H if…</th></tr></thead>
+<tbody>
+<tr><td class="h">P1</td><td>More effort-based action: planned activities actually done, exercise, study, social contact.</td><td>Output rises but subjective cost of effort does not fall.</td></tr>
+<tr><td class="h">P2</td><td>Shorter, less frequent ruminative episodes; easier disengagement (a control effect, not an erasure effect).</td><td>Intrusions are as frequent and as sticky as before.</td></tr>
+<tr><td class="h">P3</td><td>Steadier evenings and sleep onset (guanfacine, plus a smoother stimulant offset).</td><td>Evening dysphoria worsens as the stimulant wears off.</td></tr>
+<tr><td class="h">P4</td><td>Craving for the person is unchanged or modestly lower. It should not climb.</td><td>Cue-triggered craving intensifies. This is the most dangerous failure mode (Section 6, objection 1).</td></tr>
+<tr><td class="h">P5</td><td>No hypomanic signs: sleep need, speed of thought, spending, irritability.</td><td>Any of these appear.</td></tr>
+</tbody>
+</table>
+</div>
+<h3>Two halves of one dopamine story</h3>
+<p>A reader will notice that heartbreak looks both hyperdopaminergic (craving, cue-reactivity in the ventral tegmental area and nucleus accumbens) and hypodopaminergic (flat motivation, anhedonia). Those are not contradictory. Phasic, cue-locked dopamine signalling stays high for one learned target, while tonic, effort-supporting drive falls for everything else. A drug that raises the second without inflating the first is what the hypothesis needs, and the first of those two clauses is exactly where it is most vulnerable.</p>
+<div class="stats">
+<div><b>54–74%</b><span>striatal DAT occupancy by oral methylphenidate at 20–60 mg (n = 12)<sup><a href=#r9>9</a></sup></span></div>
+<div><b>14%</b><span>DAT occupancy by bupropion at clinical dosing (95% CI 6–22%)<sup><a href=#r11>11</a></sup></span></div>
+<div><b>63→77%</b><span>modelled peak DAT occupancy, Concerta 54 → 108 mg (a model, not a measurement)</span></div>
+<div><b>HR 6.7</b><span>mania risk on methylphenidate without a mood stabiliser, bipolar registry n = 2,307<sup><a href=#r24>24</a></sup></span></div>
+</div>
+<h2 id="circuit"><span class="num">Section two</span>Why heartbreak looks dopaminergic</h2>
+<p>In the best-known fMRI study of romantic rejection, 15 recently rejected people (mean 63 days since the breakup, mean age 19.8) viewed a photograph of the person who had rejected them, against a familiar neutral face. Activity appeared in the bilateral ventral tegmental area, the nucleus accumbens core, ventral putamen, ventral pallidum, medial and lateral orbitofrontal cortex, ventrolateral and dorsolateral prefrontal cortex, cingulate and insula; scores on the Passionate Love Scale tracked caudate activity (r = 0.61) <sup><a href="#r1">1</a></sup>. That is the same mesolimbic reward-and-craving machinery that fires to drug cues. In people with complicated grief, the nucleus accumbens responded more to grief cues than in non-complicated grief (t = 3.51), and its activity correlated with self-reported yearning (r = 0.42; 11 versus 12 participants) <sup><a href="#r2">2</a></sup>. A PET study of the μ-opioid system (n = 18) found rejection engaged μ-opioid signalling in ventral striatum, amygdala, midline thalamus and periaqueductal grey <sup><a href="#r3">3</a></sup>, a reminder that social pain has its own opioid layer that neither stimulants nor α2 agonists target directly.</p>
+<figure class="fig"><div class="plate"><img alt="The heartbreak circuit: partner cues, ventral tegmental area, nucleus accumbens, lateral habenula, prefrontal cortex, amygdala and locus coeruleus, with the proposed sites of action of methylphenidate and guanfacine." loading="lazy" src="/heartbreak-concerta-intuniv/figures/fig1_circuit-en.svg"></div><figcaption><b>Figure 1. The heartbreak circuit and where each agent is hypothesised to act.</b> Sources: refs 1–3, 5–7, 16. Drug placements are the hypothesis under test, not measured effects in heartbreak.</figcaption></figure>
+<h3>Wanting, prediction error and a pause that will not end</h3>
+<p>Berridge and Robinson's distinction between <i>wanting</i> (incentive salience, dopamine-dependent) and <i>liking</i> (hedonic impact) explains why one person can become irresistibly salient even when contact hurts <sup><a href="#r8">8</a></sup>. After years of reinforcement the partner is a powerful conditioned cue. Loss does not delete that value. Each cue still predicts reward, and the reward fails to arrive. In monkeys, lateral habenula neurons are excited by no-reward-predicting cues, and weak habenular stimulation strongly inhibits dopamine neurons, with habenular excitation preceding the dopamine pause <sup><a href="#r6">6</a></sup>. That is a plausible substrate for repeated negative prediction errors to the same cues. Over weeks, extinction should shrink the cue response (Figure 2), but the trough in everything else can last longer.</p>
+<figure class="fig"><div class="plate"><img alt="Three panels of dopamine firing around a cue and an expected reward, and a 16-week schematic of craving spikes on a depressed tonic level." loading="lazy" src="/heartbreak-concerta-intuniv/figures/fig2_timecourse-en.svg"></div><figcaption><b>Figure 2. Conceptual time course.</b> Top: phasic dopamine response to a partner cue before loss, just after loss, and weeks later. Bottom: cue-triggered craving spikes riding on a depressed tonic level, and the hypothesised effect of raising the floor while blunting the peaks (dashed). Illustrative shapes, not plotted data.</figcaption></figure>
+<h3>The stress and effort halves</h3>
+<p>In prairie voles, four days of separation from a female partner produced increased passive stress-coping, raised corticosteroids and adrenal weight, and a CRF-receptor antagonist abolished the behavioural change without dissolving the bond <sup><a href="#r5">5</a></sup>. Salamone and Correa argue that nucleus accumbens dopamine is less about pleasure than about <i>behavioural activation and willingness to exert effort</i>: dopamine antagonism or depletion leaves taste reactivity intact but shifts animals toward low-effort, low-reward options <sup><a href="#r7">7</a></sup>. That is a close description of the motivational symptoms of acute grief, and it is the part of the story that a dopamine-raising drug could plausibly reach. In a cross-sectional study, 26.8% of 71 recently heartbroken 18-to-26-year-olds reported mild-to-severe depressive symptoms versus 2.2% of 46 partnered controls <sup><a href="#r20">20</a></sup>.</p>
+<div class="tablewrap">
+<table>
+<caption>Table 1. Key findings behind Section 2</caption>
+<thead><tr><th>Study</th><th>Design</th><th>Finding</th><th>Limits</th></tr></thead>
+<tbody>
+<tr><td class="h">Fisher 2010 <sup><a href="#r1">1</a></sup></td><td>fMRI, 15 rejected adults</td><td>VTA, NAc core, ventral putamen, OFC, dlPFC, insula, cingulate respond to the rejector's photo; caudate tracks passionate love (r = 0.61)</td><td>Small, young; amygdala outside field of view; control face not specific</td></tr>
+<tr><td class="h">O'Connor 2008 <sup><a href="#r2">2</a></sup></td><td>fMRI, 11 vs 12 grievers</td><td>NAc greater in complicated grief (t = 3.51); NAc tracks yearning (r = 0.42)</td><td>Small; one photo may habituate</td></tr>
+<tr><td class="h">Hsu 2013 <sup><a href="#r3">3</a></sup></td><td>PET, n = 18 healthy</td><td>Rejection recruits μ-opioid system in ventral striatum, amygdala, thalamus, PAG</td><td>Laboratory rejection, not a breakup</td></tr>
+<tr><td class="h">Bosch 2009 <sup><a href="#r5">5</a></sup></td><td>Prairie voles</td><td>Partner loss raises passive coping via CRF; antagonist blocks it, bond intact</td><td>Rodent; passive coping ≠ grief</td></tr>
+<tr><td class="h">Matsumoto 2007 <sup><a href="#r6">6</a></sup></td><td>Rhesus monkeys</td><td>Habenula excited by no-reward cues; stimulation inhibits DA neurons</td><td>Not romantic; analogue only</td></tr>
+<tr><td class="h">Verhallen 2019 <sup><a href="#r20">20</a></sup></td><td>71 breakup vs 46 partnered</td><td>26.8% vs 2.2% depressive symptoms; 'sudden loss' and 'lack of positive affect' track severity</td><td>Self-report, cross-sectional, young Western sample</td></tr>
+</tbody>
+</table>
+</div>
+<h2 id="drugs"><span class="num">Section three</span>What the drugs do at their targets</h2>
+<h3>Methylphenidate: occupancy, not mystique</h3>
+<p>In 12 adults, single oral doses of 5, 10, 20, 40 and 60 mg occupied the dopamine transporter by 12%, 40%, 54%, 72% and 74% respectively, with an ED<sub>50</sub> of 0.25 mg/kg <sup><a href="#r9">9</a></sup>. At 60 mg, striatal [<sup>11</sup>C]raclopride binding fell by 20 ± 12%, direct evidence that oral methylphenidate raises extracellular dopamine in the human brain; the authors argue it amplifies spontaneously released dopamine and so raises the <i>salience</i> of what is already engaging <sup><a href="#r10">10</a></sup>. Because methylphenidate blocks reuptake and does not itself release dopamine, it scales existing signals instead of manufacturing new ones. That is the pharmacological basis for expecting a cleaner profile than amphetamines in an unstable-mood brain, and it is also the source of the main objection in Section 6.</p>
+<figure class="fig"><div class="plate"><img alt="Dopamine-transporter occupancy rising with methylphenidate dose and plateauing near 74%, with bupropion&#x27;s 14% shown for comparison." loading="lazy" src="/heartbreak-concerta-intuniv/figures/fig3_dat-en.svg"></div><figcaption><b>Figure 3. Striatal DAT occupancy by oral methylphenidate dose.</b> Volkow 1998, n = 12; mean ± SD, with a smoothed guide line, not a fitted model, against bupropion's occupancy at clinical dosing (Meyer 2002). Occupancy plateaus near 74% by 40–60 mg.</figcaption></figure>
+<p>A note on bupropion. A PET study of eight depressed patients found only 14% (95% CI 6–22%) DAT occupancy at clinical dosing <sup><a href="#r11">11</a></sup>, so the commonly told dopaminergic story for bupropion is shakier than it sounds; norepinephrine reuptake blockade and nicotinic antagonism may carry more of the effect. Methylphenidate sits at the other end of the occupancy range and is the cleaner test of a pure dopaminergic mechanism.</p>
+<h3>Guanfacine: rebuilding the prefrontal brakes under stress</h3>
+<p>In Arnsten's account, high catecholamine release under stress engages α1 and D1 receptors, drives cAMP signalling up, opens HCN and potassium channels in prefrontal dendritic spines, and weakens the network connectivity that holds goals in mind. Guanfacine is a selective α2A agonist acting at those spines. It inhibits cAMP-PKA-K<sup>+</sup> signalling, strengthening layer III microcircuits, enhanced dorsolateral prefrontal activation in monkeys and humans, and protected dendritic spines from chronic-stress loss in rodents <sup><a href="#r16">16</a>, <a href="#r17">17</a></sup>. The same review describes a 'chemical flip-flop': moderate noradrenaline release engages α2A and keeps prefrontal control, while very high release weakens it and strengthens the amygdala <sup><a href="#r16">16</a></sup>. Heartbreak is a chronic-stress state, so this is directly on point.</p>
+<figure class="fig"><div class="plate"><img alt="An inverted-U curve of prefrontal network function against catecholamine tone, with under-driven, optimal and stress-overload zones." loading="lazy" src="/heartbreak-concerta-intuniv/figures/fig4_inverted_u-en.svg"></div><figcaption><b>Figure 4. The prefrontal inverted-U.</b> Methylphenidate acts from the under-driven side, guanfacine from the overloaded side. Conceptual schematic, not data.</figcaption></figure>
+<h2 id="concerta"><span class="num">Section four</span>Concerta, hour by hour: 54 mg versus 108 mg</h2>
+<p>Concerta is an osmotic-release (OROS) tablet: an immediate-release overcoat (about 22% of the dose) gives a first peak around an hour after dosing, and the core then releases drug at an ascending rate, so plasma methylphenidate keeps climbing to a Tmax of roughly 6.8 hours, with a half-life near 3.5 hours; exposure is dose-proportional across 54–144 mg <sup><a href="#r15">15</a></sup>. Figure 5 turns that into transporter occupancy over 24 hours for 54 mg and 108 mg.</p>
+<figure class="fig"><div class="plate"><img alt="Modelled DAT and NET occupancy over 24 hours after Concerta 54 mg and 108 mg, with plasma level and an evening window shaded." loading="lazy" src="/heartbreak-concerta-intuniv/figures/fig5_concerta_occupancy-en.svg"></div><figcaption><b>Figure 5. Modelled DAT and NET occupancy after a 07:00 dose of Concerta 54 mg (left) and 108 mg (right).</b> Dark line: DAT at the central potency estimate; lilac band: DAT across 5.6–7.5 ng/mL EC<sub>50</sub>. Teal band and dashed line: NET across an <b>assumed</b> EC<sub>50</sub> range of 6–30 ng/mL (dashed at 15). Grey line: modelled plasma level. Amber: 10–14 h after the dose. The diamond is a measured peak (OROS 90 mg, a different dose) <sup><a href="#r12">12</a></sup>.</figcaption></figure>
+<h3>How the model was built, and how far to trust it</h3>
+<p><b>Plasma curve.</b> A two-parameter ascending-release model, with the immediate-release overcoat, was fitted to the label's Tmax of 6.8 h and the 18 mg Cmax of 3.7 ng/mL <sup><a href="#r15">15</a></sup> and scaled linearly, which gives peaks of 11.1 ng/mL at 54 mg and 22.2 ng/mL at 108 mg. <b>DAT potency.</b> Occupancy was computed as 100 × C / (EC<sub>50</sub> + C). The EC<sub>50</sub> was anchored to three human PET results: Volkow's oral data, about 6 ng/mL <sup><a href="#r9">9</a></sup>; a value of 5.6 ng/mL back-calculated from Spencer's immediate-release arm, and 7.5 ng/mL from Spencer's OROS arm, whose peak DAT occupancy was 67.6% at about 5 h <sup><a href="#r12">12</a></sup>. Those three give the lilac band. <b>NET potency.</b> I could not confirm a methylphenidate NET potency from a source I could open <sup><a href="#r14">14</a></sup>, and a 2026 dual-tracer PET study of extended-release methylphenidate in ADHD describes NET occupancy only as moderate when DAT occupancy is high <sup><a href="#r13">13</a></sup>. The NET band is therefore an <b>assumption</b>, spanning a plausible range, and it is shown as one.</p>
+<div class="tablewrap">
+<table>
+<caption>Table 2. Model readout for a 07:00 dose (central value, range in brackets)</caption>
+<thead><tr><th>Quantity</th><th>Concerta 54 mg</th><th>Concerta 108 mg (above US label maximum)</th></tr></thead>
+<tbody>
+<tr><td class="h">Plasma peak, ng/mL (6.8 h)</td><td><b>11.1</b></td><td><b>22.2</b></td></tr>
+<tr><td class="h">DAT occupancy, peak</td><td><b>63%</b> (60–66)</td><td><b>77%</b> (75–80)</td></tr>
+<tr><td class="h">Hours with DAT above 50%</td><td><b>9 h</b> (7–11)</td><td><b>14 h</b> (13–15)</td></tr>
+<tr><td class="h">DAT occupancy at 12 h (19:00)</td><td><b>46%</b> (42–50)</td><td><b>63%</b> (60–66)</td></tr>
+<tr><td class="h">DAT occupancy at 14 h (21:00)</td><td><b>36%</b> (33–40)</td><td><b>53%</b> (50–57)</td></tr>
+<tr><td class="h">DAT occupancy at 24 h (next 07:00)</td><td><b>7%</b> (6–8)</td><td><b>14%</b> (12–15)</td></tr>
+<tr><td class="h">NET occupancy, peak (assumed potency)</td><td><b>43%</b> (27–65)</td><td><b>60%</b> (43–79)</td></tr>
+<tr><td class="h">NET occupancy at 12 h (assumed potency)</td><td><b>27%</b> (16–48)</td><td><b>42%</b> (27–65)</td></tr>
+</tbody>
+</table>
+</div>
+<h3>What the curves say, and what they do not</h3>
+<p><b>The shape matters more than the peak.</b> At 54 mg the modelled DAT occupancy rises past 50% within a couple of hours, peaks near 63% in mid-afternoon (about 14:00) and spends roughly 9 hours above half-occupancy. At 108 mg the peak is about 77%, and the time above half-occupancy stretches to roughly 14 hours. Because binding saturates, doubling the dose does not double occupancy: it adds about 14 percentage points at the peak and mostly buys <i>duration</i>, lifting the 12-hour value from 46% to 63%. That is the most useful single reading of the figure: the second 54 mg is mainly an evening extension, not a stronger daytime effect, and it brings twice the plasma exposure, with side-effect consequences (blood pressure, heart rate, mood switching) that this occupancy model does not capture.</p>
+<p><b>The descending limb is where the hypothesis is most exposed.</b> In the model, DAT occupancy at 54 mg falls from about 46% at 19:00 to 36% at 21:00 and is nearly gone by the next morning; any rebound as the drug clears is a pharmacodynamic effect this occupancy model does not capture. This is the reason P3 (steadier evenings) is on the list of predictions, and the reason a longer-acting α2 agonist is a coherent partner for a stimulant whose occupancy is falling at that hour.</p>
+<p><b>Limits.</b> Every curve here is a model output. The plasma profile is calibrated to a label; the DAT potency is anchored to three PET results from different formulations and subjects; the NET band is assumed; and 108 mg is beyond the label maximum of 72 mg and beyond the plasma levels at which those PET measurements were made, so that panel is an extrapolation shown for comparison only. Occupancy is also not effect: a transporter being blocked tells you the drug is present, not whether motivation, craving or mood move.</p>
+<h2 id="case"><span class="num">Section five</span>The case for</h2>
+<p class="lede">Put the pieces together and the argument is a mapping from symptom domain to mechanism to agent. Table 3 gives it row by row, with what is established and what is missing.</p>
+<div class="tablewrap">
+<table>
+<caption>Table 3. From symptom to mechanism to agent</caption>
+<thead><tr><th>Symptom domain</th><th>Mechanism</th><th>Agent</th><th>What is established</th><th>What is missing</th></tr></thead>
+<tbody>
+<tr><td class="h">'Nothing is worth the effort'</td><td>Low tonic accumbens DA lowers willingness to exert effort <sup><a href="#r7">7</a></sup></td><td>Methylphenidate (Concerta)</td><td>DAT occupancy 54–74% at 20–60 mg; extracellular DA rises <sup><a href="#r9">9</a>, <a href="#r10">10</a></sup></td><td>Any trial of this effect in grief or breakup</td></tr>
+<tr><td class="h">Ruminative capture, loss of control</td><td>Stress overdrive takes PFC networks offline; α2A restores them <sup><a href="#r16">16</a>, <a href="#r17">17</a></sup></td><td>Guanfacine; methylphenidate via PFC catecholamines</td><td>Monkey and rodent causal data; adds to stimulants in ADHD (RCT n = 461) <sup><a href="#r18">18</a></sup></td><td>Human test in a stress-loss state</td></tr>
+<tr><td class="h">Cue-triggered craving</td><td>Phasic DA, incentive salience, habenular pauses <sup><a href="#r6">6</a>, <a href="#r8">8</a></sup></td><td>Guanfacine, top-down only</td><td>Mechanism only; methylphenidate may push the wrong way</td><td>Everything</td></tr>
+<tr><td class="h">Stress arousal, evenings, sleep</td><td>CRF and noradrenaline <sup><a href="#r5">5</a></sup></td><td>Guanfacine (α2 agonism)</td><td>Clonidine add-on lowered grief VAS in an 8-week RCT, n = 90 <sup><a href="#r19">19</a></sup></td><td>Replication; guanfacine itself; blinded active control</td></tr>
+<tr><td class="h">Social pain</td><td>μ-opioid and insula/dACC systems <sup><a href="#r3">3</a>, <a href="#r4">4</a></sup></td><td>Neither drug</td><td>Mechanism known <sup><a href="#r3">3</a></sup></td><td>The hypothesis does not address this row</td></tr>
+</tbody>
+</table>
+</div>
+<h3>The strongest adjacent evidence</h3>
+<p><b>A directly relevant human trial.</b> In 90 women (mean age 29.6) after a romantic breakup, sertraline 50 mg plus clonidine 0.05 mg daily reduced grief scores more than sertraline alone over 8 weeks (P &lt; 0.001), while the change in love intensity was no different between groups (P = 0.5) <sup><a href="#r19">19</a></sup>. Clonidine is an α2 agonist, less selective than guanfacine and with a stronger presynaptic effect, so this is supportive of the α2 arm of the hypothesis and not a test of guanfacine. The pattern also matches the claim that such agents change distress and function without removing the attachment. Caveats: one small single-sex trial, visual-analogue-scale outcomes, a sertraline background, and a low dose chosen without prior data.</p>
+<p><b>Guanfacine plus a stimulant.</b> In a 9-week double-blind trial of 461 children and adolescents with suboptimal response to a stimulant alone, adding guanfacine ER (≤ 4 mg/day) beat placebo on ADHD-RS-IV, CGI-S and CGI-I, with no new safety signals and small mean decreases in pulse and blood pressure <sup><a href="#r18">18</a></sup>. That supports the practical combination, though not in adults and not for heartbreak.</p>
+<p><b>Stimulants for apathy and depressive symptoms.</b> The Cochrane review found oral psychostimulant monotherapy reduced short-term depressive symptoms and fatigue versus placebo, but the trial quality was low, follow-up was up to four weeks, and clinical significance was unclear <sup><a href="#r21">21</a></sup>. In Alzheimer's apathy, a meta-analysis of four RCTs found early benefit on one scale (AES mean difference −5.12, p = 0.04), no benefit on the NPI at 1–2 months (MD −0.74, p = 0.37), and benefit at six months (MD −1.4, p = 0.02) without excess adverse events <sup><a href="#r22">22</a></sup>.</p>
+<p><b>Bupropion in bereavement.</b> A small open-label trial of sustained-release bupropion in bereavement-related depression exists <sup><a href="#r23">23</a></sup>. I confirmed the citation but did not read its results, so I do not rely on it here. It is the nearest thing to the bupropion anecdote that prompted this piece, and it is open-label.</p>
+<h2 id="objections"><span class="num">Section six</span>The strongest objections, answered</h2>
+<div class="obj"><h3>1. A salience amplifier cuts both ways.</h3>
+<p><strong>Objection.</strong> Volkow's own interpretation is that methylphenidate amplifies the salience of whatever is already engaging <sup><a href="#r10">10</a></sup>. If the most salient object in a heartbroken mind is the lost person, more dopamine could intensify cue-triggered wanting. This is the central threat to the hypothesis, and nothing in the literature I found rules it out.</p>
+<p><strong>Response.</strong> Partial answers: guanfacine strengthens top-down control <sup><a href="#r16">16</a></sup>; Concerta's slow ascending profile (Figure 5) avoids the abrupt rise of an immediate-release dose, although I found no data on whether that matters for craving; and the practical lever is where the drug-boosted salience is pointed (structured activities, reduced cue exposure). P4 exists to detect this failure early.</p></div>
+<div class="obj"><h3>2. There is no direct evidence.</h3>
+<p><strong>Objection.</strong> No study of methylphenidate or guanfacine in heartbreak, grief or breakup turned up. Every link is borrowed from adjacent populations (ADHD, apathy, depression, rodents, healthy volunteers).</p>
+<p><strong>Response.</strong> Accepted. The case is a mechanistic prior, not a finding, and Figure 6 says so. The single human RCT of an α2 agonist <sup><a href="#r19">19</a></sup> is the only direct signal.</p></div>
+<div class="obj"><h3>3. Heartbreak is not a disease, and time heals.</h3>
+<p><strong>Objection.</strong> Cue value extinguishes on its own, and behavioural activation or social support might deliver the same function gain without drugs.</p>
+<p><strong>Response.</strong> True, and the hypothesis is framed accordingly: it is about restoring function during extinction, not accelerating it. Any benefit still has to be shown against that natural recovery, not against nothing.</p></div>
+<div class="obj"><h3>4. The imaging base is tiny and reverse inference is easy.</h3>
+<p><strong>Objection.</strong> The key fMRI studies enrolled 15 and 23 participants (Figure 7). Activation of the accumbens does not prove a dopamine signal; it shows blood-oxygen changes in a region that has many inputs.</p>
+<p><strong>Response.</strong> Accepted. That is why the argument leans on convergence (fMRI, PET opioid, vole CRF, monkey habenula) and not on any single study.</p></div>
+<div class="obj"><h3>5. The bupropion anecdote is weaker than it sounds.</h3>
+<p><strong>Objection.</strong> DAT occupancy at clinical doses was 14% <sup><a href="#r11">11</a></sup>, and the supporting trial is small and open-label <sup><a href="#r23">23</a></sup>.</p>
+<p><strong>Response.</strong> Fair. The anecdote is consistent with the mechanism but does not discriminate dopaminergic from noradrenergic effects.</p></div>
+<div class="obj"><h3>6. Bipolar-spectrum risk is real.</h3>
+<p><strong>Objection.</strong> In 2,307 Swedish adults with bipolar disorder who started methylphenidate, mania risk was raised without a mood stabiliser (HR 6.7 at 0–3 months, 9.7 at 3–6 months) but not with one (HR 0.6 and 0.9) <sup><a href="#r24">24</a></sup>.</p>
+<p><strong>Response.</strong> This makes concurrent mood stabilisation a precondition, not an afterthought, and it is why P5 is on the list. It argues for care with the stimulant arm, not against guanfacine.</p></div>
+<div class="obj"><h3>7. The closest trial is confounded.</h3>
+<p><strong>Objection.</strong> The clonidine RCT used visual-analogue outcomes on top of sertraline, in women only, with a low dose <sup><a href="#r19">19</a></sup>.</p>
+<p><strong>Response.</strong> Agreed. It earns a 2.5 out of 4 in Figure 6, not a 4.</p></div>
+<div class="obj"><h3>8. The occupancy curves are modelled, and 108 mg is extrapolated.</h3>
+<p><strong>Objection.</strong> Figure 5 rests on a label-calibrated plasma curve, DAT potencies from three PET studies of different formulations, an assumed NET band, and, at 108 mg, plasma levels above those studied. Occupancy is not clinical effect.</p>
+<p><strong>Response.</strong> Accepted, and the figure says so on its face. The robust conclusions are the qualitative ones: occupancy saturates, so the extra dose mostly extends duration, and the evening limb is where occupancy falls. The specific percentages, and every NET figure, should be read as ranges.</p></div>
+<h3>An open question the literature raises</h3>
+<p>Pair-bond work in voles suggests accumbens dopamine and D1 receptors help form and maintain the bond <sup><a href="#r25">25</a></sup>, and that amphetamine, acting on accumbens dopamine, can impair the formation of new bonds <sup><a href="#r26">26</a></sup>. I saw only the titles of those two papers and did not read their methods, so treat this as a flagged question rather than a claim: what does raising accumbens dopamine pharmacologically do to a bond that is in the process of extinguishing?</p>
+<h2 id="strength"><span class="num">Section seven</span>How strong is the case?</h2>
+<p>Figure 6 grades each link in the chain on a 0–4 scale (0 none, 4 established in the target human use). The grading is mine, made from the sources I read, and the reader should adjust it. The pattern is clear: the foundation links and the stimulant and α2 mechanisms are individually decent (rows E, F, H), NET occupancy at clinical doses is the weakest of the pharmacology links (row G), the adjacent clinical evidence is thin, and the two direct tests are empty (rows L, M).</p>
+<figure class="fig"><div class="plate"><img alt="Horizontal bars grading fourteen links in the argument from zero to four." loading="lazy" src="/heartbreak-concerta-intuniv/figures/fig6_evidence-en.svg"></div><figcaption><b>Figure 6. Evidence ladder.</b> Bar length is strength of evidence for each link, not effect size; the hatched bar is evidence <i>against</i> unqualified use.</figcaption></figure>
+<figure class="fig"><div class="plate"><img alt="Sample sizes of the twelve main studies on a log scale, from n = 8 to n = 2,307." loading="lazy" src="/heartbreak-concerta-intuniv/figures/fig7_samples-en.svg"></div><figcaption><b>Figure 7. How much human data stands behind each source (log scale).</b> Imaging and PET studies are small; the largest datasets (RCT n = 461, registry n = 2,307) are about ADHD and bipolar disorder, not heartbreak.</figcaption></figure>
+<h2 id="test"><span class="num">Section eight</span>A fair test, and the bottom line</h2>
+<p>The hypothesis is testable on an individual level with modest effort, and the design has to deal with the biggest confound, natural recovery. Time alone improves heartbreak, so any before-and-after comparison will flatter any intervention.</p>
+<div class="tablewrap">
+<table>
+
+<thead><tr><th>Element</th><th>Suggestion</th></tr></thead>
+<tbody>
+<tr><td class="h">Measures (daily, under two minutes)</td><td>Craving for the person 0–10; count and duration of intrusive episodes; planned activities completed of those intended; evening mood rating (about 5 to 9 pm); sleep-onset time. Weekly: a validated depression scale.</td></tr>
+<tr><td class="h">Objective anchor</td><td>A short psychomotor vigilance task at a fixed time on stimulant days gives a non-self-report attention marker.</td></tr>
+<tr><td class="h">Confound control</td><td>Compare within-person across different arrangements (timing, formulation, presence or absence of a component) under prescriber guidance. Alternate in blocks of 1–2 weeks and avoid changing anything else in the same block.</td></tr>
+<tr><td class="h">Decision rules set in advance</td><td>P4 and P5 are stop-and-review triggers: rising craving or any hypomanic sign ends the block and goes to the prescriber.</td></tr>
+</tbody>
+</table>
+</div>
+<div class="warn">
+<p class="kt">One plain note</p>
+<p>Changing the dose or sequencing of a multi-agent regimen, especially in the context of bipolar-spectrum illness, is a decision for the prescriber. In particular, 108 mg is above the labelled maximum, so Figure 5 is a way to reason about duration versus peak, not a dosing suggestion. Use this document as the briefing for that conversation, not a substitute for it.</p>
+</div>
+<h3>Bottom line</h3>
+<p>The honest claim is narrow, and it survives the objections. Heartbreak engages reward, stress and opioid systems that are all measurable <sup><a href="#r1">1</a>–<a href="#r3">3</a>, <a href="#r5">5</a>, <a href="#r6">6</a></sup>. Methylphenidate demonstrably raises extracellular dopamine in humans <sup><a href="#r9">9</a>, <a href="#r10">10</a></sup>, Concerta holds modelled DAT occupancy above half for about 9 hours at 54 mg and about 14 at 108 mg, and effort-related motivation is a dopamine-dependent function in animals <sup><a href="#r7">7</a></sup>. Guanfacine demonstrably strengthens prefrontal networks under stress in animals, with human translation still partial <sup><a href="#r16">16</a></sup>, and an α2-agonist add-on reduced breakup-grief scores in the one relevant human RCT <sup><a href="#r19">19</a></sup>. Taken together, that makes it <b>reasonable to expect</b> methylphenidate to help the motivational deficit and guanfacine to help control and arousal in heartbreak, <b>but unproven</b>, with stimulant-amplified cue salience as the principal risk to watch for.</p>
+<p class="kicker">The hopeful part of the biology is real and not a consolation prize. Cue-driven wanting is learned, so it is extinguishable (Figure 2). The question this hypothesis asks is whether the drive and control that make recovery easier can be kept online while that happens.</p>
+
+  <div class="sources" id="sources">
+    <h2>Sources</h2>
+    <p><b>[R]</b> = abstract or full text read in this review. <b>[T]</b> = bibliographic record only; no results from that paper are used except where the text says so.</p>
+    <ol class="refs">
+      <li id="r1"><span class="tag">R</span> Fisher HE, Brown LL, Aron A, Strong G, Mashek D. Reward, addiction, and emotion regulation systems associated with rejection in love. <i>J Neurophysiol</i> 2010; 104:51–60.</li>
+      <li id="r2"><span class="tag">R</span> O'Connor MF, Wellisch DK, Stanton AL, Eisenberger NI, Irwin MR, Lieberman MD. Craving love? Enduring grief activates brain's reward center. <i>NeuroImage</i> 2008.</li>
+      <li id="r3"><span class="tag">R</span> Hsu DT, et al. Response of the μ-opioid system to social rejection and acceptance. <i>Mol Psychiatry</i> 2013.</li>
+      <li id="r4"><span class="tag t">T</span> Kross E, Berman MG, Mischel W, Smith EE, Wager TD. Social rejection shares somatosensory representations with physical pain. <i>PNAS</i> 2011.</li>
+      <li id="r5"><span class="tag">R</span> Bosch OJ, Nair HP, Ahern TH, Neumann ID, Young LJ. The CRF system mediates increased passive stress-coping behavior following the loss of a bonded partner in a monogamous rodent. <i>Neuropsychopharmacology</i> 2009; 34:1406–1415.</li>
+      <li id="r6"><span class="tag">R</span> Matsumoto M, Hikosaka O. Lateral habenula as a source of negative reward signals in dopamine neurons. <i>Nature</i> 2007.</li>
+      <li id="r7"><span class="tag">R</span> Salamone JD, Correa M. The mysterious motivational functions of mesolimbic dopamine. <i>Neuron</i> 2012; 76:470–485.</li>
+      <li id="r8"><span class="tag t">T</span> Berridge KC, Robinson TE. What is the role of dopamine in reward: hedonic impact, reward learning, or incentive salience? <i>Brain Res Rev</i> 1998; 28:309–369.</li>
+      <li id="r9"><span class="tag">R</span> Volkow ND, et al. Dopamine transporter occupancies in the human brain induced by therapeutic doses of oral methylphenidate. <i>Am J Psychiatry</i> 1998; 155:1325.</li>
+      <li id="r10"><span class="tag">R</span> Volkow ND, et al. Therapeutic doses of oral methylphenidate significantly increase extracellular dopamine in the human brain. <i>J Neurosci</i> 2001; 21:RC121.</li>
+      <li id="r11"><span class="tag">R</span> Meyer JH, Goulding VS, Wilson AA, Hussey D, Christensen BK, Houle S. Bupropion occupancy of the dopamine transporter is low during clinical treatment. <i>Psychopharmacology</i> 2002.</li>
+      <li id="r12"><span class="tag">R</span> Spencer TJ, Biederman J, Ciccone PE, et al. PET study examining pharmacokinetics, detection and likeability, and dopamine transporter receptor occupancy of short- and long-acting oral methylphenidate. <i>Am J Psychiatry</i> 2006; 163:387–395.</li>
+      <li id="r13"><span class="tag">R</span> Oya et al. Dual-tracer PET of extended-release methylphenidate (DAT and NET occupancy) in adults with ADHD, 2026 (n = 21). Abstract only; full citation details not retained.</li>
+      <li id="r14"><span class="tag t">T</span> Hannestad J, et al. Clinically relevant doses of methylphenidate significantly occupy norepinephrine transporters in humans in vivo. <i>Biol Psychiatry</i> 2010. (Abstract could not be opened; no numbers used.)</li>
+      <li id="r15"><span class="tag">R</span> Concerta (methylphenidate HCl) extended-release tablets, US prescribing information: pharmacokinetics (Tmax, half-life, 18 mg Cmax, dose-proportionality across 54–144 mg) and dosing limits.</li>
+      <li id="r16"><span class="tag">R</span> Arnsten AFT. Guanfacine's mechanism of action in treating prefrontal cortical disorders: successful translation across species. <i>Neurobiol Learn Mem</i> 2020; 176.</li>
+      <li id="r17"><span class="tag t">T</span> Wang M, Ramos BP, Paspalas CD, et al. α2A-adrenoceptors strengthen working memory networks by inhibiting cAMP-HCN channel signaling in prefrontal cortex. <i>Cell</i> 2007. (Mechanism cited via ref 16.)</li>
+      <li id="r18"><span class="tag">R</span> Wilens TE, Bukstein O, Brams M, et al. A controlled trial of extended-release guanfacine and psychostimulants for attention-deficit/hyperactivity disorder. <i>J Am Acad Child Adolesc Psychiatry</i> 2012; 51(1).</li>
+      <li id="r19"><span class="tag">R</span> Farnam A, Heidarzadeh A, Gojazadeh M, Shafiee-Kandjani AR, Zamanlu M. Pharmacotherapy for reducing the grieving process of romantic relationship breakup: a clinical trial. <i>Iran J Psychiatry Behav Sci</i> 2020.</li>
+      <li id="r20"><span class="tag">R</span> Verhallen AM, Renken RJ, Marsman JBC, ter Horst GJ. Romantic relationship breakup: an experimental model to study effects of stress on depression(-like) symptoms. <i>PLoS One</i> 2019.</li>
+      <li id="r21"><span class="tag">R</span> Candy B, Jones L, Williams R, Tookman A, King M. Psychostimulants for depression. <i>Cochrane Database Syst Rev</i> 2008.</li>
+      <li id="r22"><span class="tag">R</span> Lee CW, Chen JY, Ko CC, Chuang MH, Tsai WW, Sun CK, Hung KC. Efficacy of methylphenidate for the treatment of apathy in patients with Alzheimer's disease: a systematic review and meta-analysis of randomized controlled studies. <i>Psychopharmacology</i> 2022; 239:3743–3753.</li>
+      <li id="r23"><span class="tag t">T</span> Zisook S, Shuchter SR, Pedrelli P, Sable J, Deaciuc SC. Bupropion sustained release for bereavement: results of an open trial. <i>J Clin Psychiatry</i> 2001; 62:227–230.</li>
+      <li id="r24"><span class="tag">R</span> Viktorin A, et al. The risk of treatment-emergent mania with methylphenidate in bipolar disorder. <i>Am J Psychiatry</i> 2017. (Figures from the abstract and a news summary of the same study.)</li>
+      <li id="r25"><span class="tag t">T</span> Aragona BJ, et al. Nucleus accumbens dopamine differentially mediates the formation and maintenance of monogamous pair bonds. <i>Nat Neurosci</i> 2006.</li>
+      <li id="r26"><span class="tag t">T</span> Liu Y, et al. Nucleus accumbens dopamine mediates amphetamine-induced impairment of social bonding in a monogamous rodent species. <i>PNAS</i> 2010.</li>
+    </ol>
+    <p><b>Not found or not read.</b> Several papers surfaced in searches but could not be opened (access blocked) or were not read in full, including Najib et al. 2004 on regional brain activity in women grieving a breakup, Hannestad et al.'s NET occupancy numbers, a 2023 pharmacokinetic-pharmacodynamic model of methylphenidate, a 2024 meta-analysis of manic recurrence on psychostimulants in bipolar disorder (Chiorean et al.), and Hsu et al.'s opioid study in major depression. They are omitted from the argument rather than cited from memory. Figures 2 and 4 are conceptual schematics; Figure 5 is a model; Figures 3, 6 and 7 plot published numbers or my stated grading.</p>
+  </div>
+
+  </article>
+</div>
+</main>
+
+<footer class="site">
+  <div class="wide">
+    <span>&copy; 2026 Benjamin Michael Haire</span>
+    <a href="/">Back to all projects</a>
+  </div>
+</footer><!-- ISEGORIA:FOOT -->
+<footer id="ig-footer"><div><a href="/">Isegoria · Benjamin Haire</a><nav aria-label="Site links"><a href="/">Back to home</a><a href="/library.html">Browse the library</a><a href="#ig-content">Back to top</a></nav></div></footer>
+<!-- /ISEGORIA:FOOT -->
+</body>
+</html>
