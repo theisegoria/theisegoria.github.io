@@ -1,0 +1,68 @@
+<!doctype html><html lang="ja" class="ig-document ig-editorial"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Daily Mathematics 解答：2026年10月4日 · Isegoria</title><meta name="description" content="2026年10月4日のThreadsカード2枚（難しい定積分とパトナム型の問題）の完全な解答。"><link rel="canonical" href="https://theisegoria.github.io/ja/daily-mathematics/2026-10-04/"><link rel="alternate" hreflang="en" href="https://theisegoria.github.io/daily-mathematics/2026-10-04/"><link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/daily-mathematics/2026-10-04/"><link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/daily-mathematics/2026-10-04/"><link rel="icon" href="/assets/favicon.svg"><link rel="stylesheet" href="/assets/isegoria.css?v=20260915"><link rel="stylesheet" href="/analysis-atlas/vendor/katex.min.css"><script defer src="/analysis-atlas/vendor/katex.min.js"></script><script defer src="/analysis-atlas/vendor/contrib/auto-render.min.js"></script><script>document.addEventListener("DOMContentLoaded",function(){if(window.renderMathInElement)renderMathInElement(document.querySelector("main"),{delimiters:[{left:"\\[",right:"\\]",display:true},{left:"\\(",right:"\\)",display:false}],throwOnError:false});});</script><style>
+.dm{max-width:46rem;margin:0 auto;padding:2.5rem 1.25rem 4rem}
+.dm .eyebrow{letter-spacing:.14em;text-transform:uppercase;font-size:.78rem;opacity:.7;margin:0 0 .4rem}
+.dm h1{margin:.1rem 0 .6rem;line-height:1.2}
+.dm .deck{opacity:.85;margin:0 0 2rem}
+.dm .card{margin:2.6rem 0 0;padding-top:1.4rem;border-top:2px solid var(--dm-accent,currentColor)}
+.dm .card h2{margin:.2rem 0 .9rem;line-height:1.3}
+.dm .kind{font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dm-accent);margin:0}
+.dm figure{margin:1rem 0 1.4rem}
+.dm figure img{width:100%;max-width:30rem;height:auto;display:block;border:1px solid rgba(127,127,127,.25)}
+.dm .statement{padding:.9rem 1.1rem;border-left:3px solid var(--dm-accent);background:rgba(127,127,127,.07)}
+.dm details{margin:1.2rem 0}
+.dm summary{cursor:pointer;font-weight:600}
+.dm .answer{margin-top:1.2rem;padding:.8rem 1.1rem;border:1px solid var(--dm-accent)}
+.dm .katex-display{overflow-x:auto;overflow-y:hidden;padding:.2rem 0}
+.dm .days{list-style:none;padding:0;margin:1.5rem 0 0}
+.dm .days li{padding:.9rem 0;border-top:1px solid rgba(127,127,127,.25)}
+.dm .days a.date{font-weight:600}
+.dm .days span{display:block;opacity:.85}
+html[lang=ja] .dm{line-height:1.85}
+</style><script src="/assets/lang.js"></script>
+<!-- ISEGORIA:HEAD -->
+<link rel="stylesheet" href="/assets/site-shell.css?v=c21cd21e82">
+<script src="/assets/site-shell.js?v=c21cd21e82" ></script>
+<!-- /ISEGORIA:HEAD -->
+<script defer data-isegoria-analytics src="/assets/analytics.js?v=9e6ebd463bf2"></script>
+</head><body class="ig-site" data-site-kind="editorial" data-site-route="/ja/daily-mathematics/2026-10-04/">
+<!-- ISEGORIA:NAV -->
+<a class="ig-skip" href="#ig-content">本文へ移動</a>
+<header id="ig-header"><div class="ig-nav-inner">
+<a class="ig-brand" href="/ja/" aria-label="Isegoria, ホーム"><strong>ISEGORIA</strong><span>Benjamin Haire</span></a>
+<div class="ig-header-actions"><a class="ig-language" href="/daily-mathematics/2026-10-04/" hreflang="en" lang="en">English</a><button class="ig-menu" type="button" aria-expanded="false" aria-controls="ig-primary">メニュー</button></div>
+<nav id="ig-primary" aria-label="メインナビゲーション"><a href="/ja/">ホーム</a><a href="/ja/library.html">全コンテンツ</a><a href="/ja/math-encyclopedia/" aria-current="location">数学百科事典</a><a href="/ja/#interactive">操作できる解説</a><a href="/ja/#preoccupations">研究と解説</a><a href="/ja/#books">書籍</a><a href="/ja/projects.html">プロジェクト</a><a href="/ja/about.html">このサイトについて</a><a class="ig-language" href="/daily-mathematics/2026-10-04/" hreflang="en" lang="en">English</a><button class="ig-theme" type="button" hidden>表示切替</button></nav>
+</div></header>
+<nav id="ig-breadcrumb" aria-label="パンくずリスト"><a href="/ja/">ホーム</a><span aria-hidden="true">/</span><a href="/ja/math-encyclopedia/">数学百科事典</a><span aria-hidden="true">/</span><a href="/ja/daily-mathematics/">Daily Mathematics 解答集</a><span aria-hidden="true">/</span><span aria-current="page">Daily Mathematics 解答：2026年10月4日</span></nav>
+<span id="ig-content" tabindex="-1"></span>
+<!-- /ISEGORIA:NAV -->
+<main id="main" class="dm"><p class="eyebrow">Daily Mathematics / 解答</p><h1>2026年10月4日の解答</h1><p class="deck">この日のカードは難しい定積分とオリジナルのパトナム型の問題の2枚である。まず自分で考え、詰まったら解答を開くこと。</p><section class="card" id="integral" style="--dm-accent:#24457F"><p class="kind">積分</p><h2>正弦の重みをつけた対数ガンマ関数の積分</h2><figure><img src="/daily-mathematics/2026-10-04/integral.png" width="1200" height="1200" loading="lazy" alt="カード: 正弦の重みをつけた対数ガンマ関数の積分"></figure><div class="statement"><p>次の積分を閉じた形で求めよ。</p>\[\int_0^1 \sin(\pi x)\,\ln\Gamma(x)\,dx\]</div><details><summary>解答を開く</summary><p>この積分を \(I\) とおく。\(x=0\) の近くでは \(\ln\Gamma(x)\sim-\ln x\)，\(\sin(\pi x)\sim\pi x\) であるから，被積分関数は \(-\pi x\ln x\to0\) のように振る舞い，積分は収束する。</p>
+<p><strong>第1段：折り返し。</strong>重みは \(\sin(\pi(1-x))=\sin(\pi x)\) をみたすので，置換 \(x\mapsto1-x\) により \(I=\int_0^1\sin(\pi x)\ln\Gamma(1-x)\,dx\) である。元の式と足し合わせ，オイラーの相反公式 \(\Gamma(x)\Gamma(1-x)=\pi/\sin(\pi x)\) を用いると</p>
+\[2I=\int_0^1\sin(\pi x)\,\ln\frac{\pi}{\sin(\pi x)}\,dx=\ln\pi\int_0^1\sin(\pi x)\,dx-\int_0^1\sin(\pi x)\ln\sin(\pi x)\,dx\]
+<p>となる。第1項の積分は \(2/\pi\) である。第2項で \(t=\pi x\) とおけば</p>
+\[2I=\frac{2\ln\pi}{\pi}-\frac{1}{\pi}J,\qquad J=\int_0^{\pi}\sin t\,\ln\sin t\,dt\]
+<p>を得る。</p>
+<p><strong>第2段：対数正弦の部分。</strong>\(J\) の被積分関数は \(t=\pi/2\) に関して対称なので \(J=2\int_0^{\pi/2}\sin t\ln\sin t\,dt\) である。\(u=\ln\sin t\)，\(dv=\sin t\,dt\) として部分積分するが，原始関数には \(-\cos t\) ではなく \(v=1-\cos t\) を選ぶ。すると境界項 \((1-\cos t)\ln\sin t\) は両端で消える。\(t=\pi/2\) では \(\ln1=0\) だからであり，\(t\to0\) では \(1-\cos t\sim t^2/2\) が \(\ln t\) に勝つからである。したがって</p>
+\[\int_0^{\pi/2}\sin t\ln\sin t\,dt=-\int_0^{\pi/2}\frac{(1-\cos t)\cos t}{\sin t}\,dt=-\int_0^{\pi/2}\frac{\sin t\cos t}{1+\cos t}\,dt\]
+<p>である。ここで \((1-\cos t)/\sin t=\sin t/(1+\cos t)\) を用いた。\(w=\cos t\) とおけば最後の積分は \(\int_0^1\frac{w}{1+w}\,dw=1-\ln2\) となる。ゆえに \(\int_0^{\pi/2}\sin t\ln\sin t\,dt=\ln2-1\)，\(J=2\ln2-2\) である。</p>
+<p><strong>第3段：まとめ。</strong></p>
+\[2I=\frac{2\ln\pi}{\pi}-\frac{2\ln2-2}{\pi}\quad\Longrightarrow\quad I=\frac{1+\ln\pi-\ln2}{\pi}.\]
+<p>数値は \(I\approx0.4620531257\) であり，元の積分をガウス・ルジャンドル求積で直接計算した値と約 \(10^{-16}\) の精度で一致する。</p><div class="answer"><strong>答え.</strong> \(\displaystyle\int_0^1\sin(\pi x)\ln\Gamma(x)\,dx=\frac{1+\ln(\pi/2)}{\pi}\approx0.46205\)</div></details></section><section class="card" id="competition" style="--dm-accent:#96311F"><p class="kind">競技数学の問題</p><h2>ランダム有向グラフの行列式の2次モーメント</h2><figure><img src="/daily-mathematics/2026-10-04/competition.png" width="1200" height="1200" loading="lazy" alt="カード: ランダム有向グラフの行列式の2次モーメント"></figure><div class="statement"><p>\(2026\times2026\) 行列 \(A\) の対角成分はすべて \(0\) とし，非対角成分は互いに独立に，それぞれ確率 \(\tfrac12\) で \(0\) または \(1\) をとるとする。次の期待値を求めよ。</p>\[\mathbb{E}\bigl[(\det A)^2\bigr]\]</div><details><summary>解答を開く</summary><p>一般に \(n\ge2\) について，この種の \(n\times n\) 行列では \(\mathbb{E}[(\det A)^2]=n\cdot n!/4^n\) であることを示す。</p>
+<p><strong>素直な方針が行き詰まる理由。</strong>\(\det A\) を2回展開すると，完全順列の組 \((\sigma,\tau)\) にわたる \(\operatorname{sgn}\sigma\operatorname{sgn}\tau\,4^{-n}2^{\#\{i:\sigma(i)=\tau(i)\}}\) の和になるが，成分の平均が0でないため，ほとんどすべての組が生き残ってしまう。1行ずつ平均をとるほうがよい。</p>
+<p><strong>第1段：偏極の恒等式。</strong>\(A\) の行を列ベクトルとして \(r_1,\dots,r_n\) と書く。これらは独立である。変数 \(t_1,\dots,t_n\) に対し \(D=\operatorname{diag}(t_1,\dots,t_n)\) とおくと \(\sum_i t_i\,r_ir_i^{\mathsf T}=A^{\mathsf T}DA\) であるから</p>
+\[\det\Bigl(\sum_i t_i\,r_ir_i^{\mathsf T}\Bigr)=(\det A)^2\,t_1t_2\cdots t_n\]
+<p>が成り立つ。行列 \(X_1,\dots,X_n\) に対し，\(\det(\sum_i t_iX_i)\) における \(t_1\cdots t_n\) の係数を \(F(X_1,\dots,X_n)\) とする。行列式を展開すると，この係数の各項は各 \(X_i\) からちょうど1つずつ成分を取るので，\(F\) は各引数について線形である。\((\det A)^2=F(r_1r_1^{\mathsf T},\dots,r_nr_n^{\mathsf T})\) であり行は独立だから</p>
+\[\mathbb{E}\bigl[(\det A)^2\bigr]=F(M_1,\dots,M_n),\qquad M_i=\mathbb{E}\bigl[r_ir_i^{\mathsf T}\bigr]\]
+<p>となる。</p>
+<p><strong>第2段：2次モーメント行列。</strong>\(M_i\) の \((j,k)\) 成分は \(\mathbb{E}[a_{ij}a_{ik}]\) であり，\(j=i\) または \(k=i\) なら \(0\)，\(j=k\ne i\) なら \(\tfrac12\)，\(j\ne k\) でともに \(i\) と異なるなら \(\tfrac14\) である。\(T=\sum_i t_i\)，\(q=\sum_i t_i^2\) とし，全成分が1のベクトルを \(\mathbf 1\)，\(t=(t_i)\) と書く。すると \(N=\sum_i t_iM_i\) の対角成分は \(\tfrac12(T-t_j)\)，非対角成分は \(\tfrac14(T-t_j-t_k)\) であり，すなわち</p>
+\[4N=T\,I+u\mathbf 1^{\mathsf T}-\mathbf 1t^{\mathsf T},\qquad u=T\mathbf 1-t\]
+<p>である。</p>
+<p><strong>第3段：階数2の行列式。</strong>\(n\times2\) 行列 \(X=[u\ \ \mathbf 1]\)，\(Y=[\mathbf 1\ \ {-t}]\) をとれば \(4N=TI+XY^{\mathsf T}\) であり，行列式の補題から \(\det(4N)=T^n\det(I_2+Y^{\mathsf T}X/T)\) を得る。必要な内積は \(\mathbf 1^{\mathsf T}u=(n-1)T\)，\(\mathbf 1^{\mathsf T}\mathbf 1=n\)，\(t^{\mathsf T}u=T^2-q\)，\(t^{\mathsf T}\mathbf 1=T\) であるから</p>
+\[I_2+\frac{Y^{\mathsf T}X}{T}=\begin{pmatrix}n&amp;n/T\\-(T^2-q)/T&amp;0\end{pmatrix},\qquad \det(4N)=nT^{\,n-2}(T^2-q)=2n\,e_1^{\,n-2}e_2\]
+<p>となる。ここで \(e_1=T\)，\(e_2=\sum_{i&lt;j}t_it_j=\tfrac12(T^2-q)\) である。両辺は多項式なので，これは多項式としての恒等式である。</p>
+<p><strong>第4段：係数を読む。</strong>\(e_1^{\,n-2}e_2\) において単項式 \(t_1\cdots t_n\) は，\(e_2\) から対を \(\binom n2\) 通りに選び，残りの \(n-2\) 個の変数を \(e_1^{\,n-2}\) から順に \((n-2)!\) 通りに選ぶことで現れるので，その係数は \(n!/2\) である。よって \(\det(4N)\) における \(t_1\cdots t_n\) の係数は \(n\cdot n!\)，\(\det N\) における係数は \(n\cdot n!/4^n\) である。</p>
+<p><strong>別の見方。</strong>\(\sigma\) を固定して \(\tau\) について和をとると，完全順列の和は \(4^{-n}\sum_\sigma\operatorname{sgn}\sigma\det(J-I+P_\sigma)\) になる。\(P_\sigma\) は置換行列である。行列式の補題と巡回置換のスペクトルから，\(\det(J-I+P_\sigma)\) は \(\sigma\) が1つの \(n\) 巡回置換でない限り0であり，そのときは \(\operatorname{sgn}\sigma\cdot n^2\) に等しい。そのような巡回置換は \((n-1)!\) 個あるので，やはり \(n^2(n-1)!/4^n=n\cdot n!/4^n\) を得る。</p>
+<p>この公式は \(n=2,\dots,8\) での厳密な数え上げ（\(4^n\) 倍した値は \(4,18,96,600,4320,35280,322560\)）および \(n=6\) のモンテカルロ推定と一致する。\(n=1\) では唯一の置換が恒等置換で完全順列ではないので，期待値は \(0\) である。</p><div class="answer"><strong>答え.</strong> \(\displaystyle\mathbb{E}\bigl[(\det A)^2\bigr]=\frac{2026\cdot2026!}{4^{2026}}\)。一般に \(n\ge2\) では \(n\cdot n!/4^n\) である。</div></details></section><p><a href="/ja/daily-mathematics/">解答の一覧へ戻る</a> · <a href="/daily-mathematics/2026-10-04/" hreflang="en" lang="en">English</a></p></main>
+<!-- ISEGORIA:FOOT -->
+<footer id="ig-footer"><div><a href="/ja/">Isegoria · Benjamin Haire</a><nav aria-label="サイト内リンク"><a href="/ja/">ホームに戻る</a><a href="/ja/library.html">全コンテンツ</a><a href="#ig-content">ページ上部へ</a></nav></div></footer>
+<!-- /ISEGORIA:FOOT -->
+</body></html>

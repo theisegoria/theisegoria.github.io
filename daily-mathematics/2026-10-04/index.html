@@ -1,0 +1,65 @@
+<!doctype html><html lang="en" class="ig-document ig-editorial"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Daily Mathematics solutions: 4 October 2026 · Isegoria</title><meta name="description" content="Full solutions to the two Daily Mathematics cards of 4 October 2026: a hard definite integral and an original Putnam-style problem."><link rel="canonical" href="https://theisegoria.github.io/daily-mathematics/2026-10-04/"><link rel="alternate" hreflang="en" href="https://theisegoria.github.io/daily-mathematics/2026-10-04/"><link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/daily-mathematics/2026-10-04/"><link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/daily-mathematics/2026-10-04/"><link rel="icon" href="/assets/favicon.svg"><link rel="stylesheet" href="/assets/isegoria.css?v=20260915"><link rel="stylesheet" href="/analysis-atlas/vendor/katex.min.css"><script defer src="/analysis-atlas/vendor/katex.min.js"></script><script defer src="/analysis-atlas/vendor/contrib/auto-render.min.js"></script><script>document.addEventListener("DOMContentLoaded",function(){if(window.renderMathInElement)renderMathInElement(document.querySelector("main"),{delimiters:[{left:"\\[",right:"\\]",display:true},{left:"\\(",right:"\\)",display:false}],throwOnError:false});});</script><style>
+.dm{max-width:46rem;margin:0 auto;padding:2.5rem 1.25rem 4rem}
+.dm .eyebrow{letter-spacing:.14em;text-transform:uppercase;font-size:.78rem;opacity:.7;margin:0 0 .4rem}
+.dm h1{margin:.1rem 0 .6rem;line-height:1.2}
+.dm .deck{opacity:.85;margin:0 0 2rem}
+.dm .card{margin:2.6rem 0 0;padding-top:1.4rem;border-top:2px solid var(--dm-accent,currentColor)}
+.dm .card h2{margin:.2rem 0 .9rem;line-height:1.3}
+.dm .kind{font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dm-accent);margin:0}
+.dm figure{margin:1rem 0 1.4rem}
+.dm figure img{width:100%;max-width:30rem;height:auto;display:block;border:1px solid rgba(127,127,127,.25)}
+.dm .statement{padding:.9rem 1.1rem;border-left:3px solid var(--dm-accent);background:rgba(127,127,127,.07)}
+.dm details{margin:1.2rem 0}
+.dm summary{cursor:pointer;font-weight:600}
+.dm .answer{margin-top:1.2rem;padding:.8rem 1.1rem;border:1px solid var(--dm-accent)}
+.dm .katex-display{overflow-x:auto;overflow-y:hidden;padding:.2rem 0}
+.dm .days{list-style:none;padding:0;margin:1.5rem 0 0}
+.dm .days li{padding:.9rem 0;border-top:1px solid rgba(127,127,127,.25)}
+.dm .days a.date{font-weight:600}
+.dm .days span{display:block;opacity:.85}
+html[lang=ja] .dm{line-height:1.85}
+</style><script src="/assets/lang.js"></script>
+<!-- ISEGORIA:HEAD -->
+<link rel="stylesheet" href="/assets/site-shell.css?v=c21cd21e82">
+<script src="/assets/site-shell.js?v=c21cd21e82" ></script>
+<!-- /ISEGORIA:HEAD -->
+<script defer data-isegoria-analytics src="/assets/analytics.js?v=9e6ebd463bf2"></script>
+</head><body class="ig-site" data-site-kind="editorial" data-site-route="/daily-mathematics/2026-10-04/">
+<!-- ISEGORIA:NAV -->
+<a class="ig-skip" href="#ig-content">Skip to content</a>
+<header id="ig-header"><div class="ig-nav-inner">
+<a class="ig-brand" href="/" aria-label="Isegoria, home"><strong>ISEGORIA</strong><span>Benjamin Haire</span></a>
+<div class="ig-header-actions"><a class="ig-language" href="/ja/daily-mathematics/2026-10-04/" hreflang="ja" lang="ja">日本語</a><button class="ig-menu" type="button" aria-expanded="false" aria-controls="ig-primary">Menu</button></div>
+<nav id="ig-primary" aria-label="Primary navigation"><a href="/">Home</a><a href="/library.html">Library</a><a href="/math-encyclopedia/" aria-current="location">Math encyclopedia</a><a href="/#interactive">Interactive</a><a href="/#preoccupations">Research</a><a href="/#books">Books</a><a href="/projects.html">Projects</a><a href="/about.html">About</a><a class="ig-language" href="/ja/daily-mathematics/2026-10-04/" hreflang="ja" lang="ja">日本語</a><button class="ig-theme" type="button" hidden>Theme</button></nav>
+</div></header>
+<nav id="ig-breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><a href="/math-encyclopedia/">Math encyclopedia</a><span aria-hidden="true">/</span><a href="/daily-mathematics/">Daily Mathematics: solutions</a><span aria-hidden="true">/</span><span aria-current="page">Daily Mathematics solutions: 4 October 2026</span></nav>
+<span id="ig-content" tabindex="-1"></span>
+<!-- /ISEGORIA:NAV -->
+<main id="main" class="dm"><p class="eyebrow">Daily Mathematics / Solutions</p><h1>Solutions for 4 October 2026</h1><p class="deck">Two cards went out that day: a hard definite integral and an original Putnam-style problem. Try each one first; the solutions are folded away below.</p><section class="card" id="integral" style="--dm-accent:#24457F"><p class="kind">Integral</p><h2>A log-Gamma integral against a sine weight</h2><figure><img src="/daily-mathematics/2026-10-04/integral.png" width="1200" height="1200" loading="lazy" alt="Card: A log-Gamma integral against a sine weight"></figure><div class="statement"><p>Evaluate in closed form.</p>\[\int_0^1 \sin(\pi x)\,\ln\Gamma(x)\,dx\]</div><details><summary>Show the solution</summary><p>Call the integral \(I\). It converges: near \(x=0\) we have \(\ln\Gamma(x)\sim-\ln x\) while \(\sin(\pi x)\sim\pi x\), so the integrand behaves like \(-\pi x\ln x\to0\).</p>
+<p><strong>Step 1: reflect.</strong> The weight satisfies \(\sin(\pi(1-x))=\sin(\pi x)\), so the substitution \(x\mapsto1-x\) gives \(I=\int_0^1\sin(\pi x)\ln\Gamma(1-x)\,dx\). Adding the two expressions and using Euler's reflection formula \(\Gamma(x)\Gamma(1-x)=\pi/\sin(\pi x)\),</p>
+\[2I=\int_0^1\sin(\pi x)\,\ln\frac{\pi}{\sin(\pi x)}\,dx=\ln\pi\int_0^1\sin(\pi x)\,dx-\int_0^1\sin(\pi x)\ln\sin(\pi x)\,dx .\]
+<p>The first integral is \(2/\pi\). In the second put \(t=\pi x\):</p>
+\[2I=\frac{2\ln\pi}{\pi}-\frac{1}{\pi}J,\qquad J=\int_0^{\pi}\sin t\,\ln\sin t\,dt .\]
+<p><strong>Step 2: the log-sine piece.</strong> The integrand of \(J\) is symmetric about \(t=\pi/2\), so \(J=2\int_0^{\pi/2}\sin t\ln\sin t\,dt\). Integrate by parts with \(u=\ln\sin t\) and \(dv=\sin t\,dt\), choosing the antiderivative \(v=1-\cos t\) rather than \(-\cos t\). Then the boundary term \((1-\cos t)\ln\sin t\) vanishes at both ends: at \(t=\pi/2\) because \(\ln1=0\), and as \(t\to0\) because \(1-\cos t\sim t^2/2\) beats \(\ln t\). Hence</p>
+\[\int_0^{\pi/2}\sin t\ln\sin t\,dt=-\int_0^{\pi/2}\frac{(1-\cos t)\cos t}{\sin t}\,dt=-\int_0^{\pi/2}\frac{\sin t\cos t}{1+\cos t}\,dt,\]
+<p>using \((1-\cos t)/\sin t=\sin t/(1+\cos t)\). With \(w=\cos t\) the last integral is \(\int_0^1\frac{w}{1+w}\,dw=1-\ln2\). So \(\int_0^{\pi/2}\sin t\ln\sin t\,dt=\ln2-1\) and \(J=2\ln2-2\).</p>
+<p><strong>Step 3: assemble.</strong></p>
+\[2I=\frac{2\ln\pi}{\pi}-\frac{2\ln2-2}{\pi}\quad\Longrightarrow\quad I=\frac{1+\ln\pi-\ln2}{\pi}.\]
+<p>Numerically \(I\approx0.4620531257\), which agrees with direct Gauss-Legendre quadrature of the original integral to about \(10^{-16}\).</p><div class="answer"><strong>Answer.</strong> \(\displaystyle\int_0^1\sin(\pi x)\ln\Gamma(x)\,dx=\frac{1+\ln(\pi/2)}{\pi}\approx0.46205\)</div></details></section><section class="card" id="competition" style="--dm-accent:#96311F"><p class="kind">Competition problem</p><h2>The second moment of a random digraph determinant</h2><figure><img src="/daily-mathematics/2026-10-04/competition.png" width="1200" height="1200" loading="lazy" alt="Card: The second moment of a random digraph determinant"></figure><div class="statement"><p>Let \(A\) be a \(2026\times2026\) matrix with zero diagonal whose off-diagonal entries are independent, each equal to \(0\) or \(1\) with probability \(\tfrac12\). Find</p>\[\mathbb{E}\bigl[(\det A)^2\bigr].\]</div><details><summary>Show the solution</summary><p>We prove the general statement: for an \(n\times n\) matrix of this kind with \(n\ge2\), \(\mathbb{E}[(\det A)^2]=n\cdot n!/4^n\).</p>
+<p><strong>Why the obvious route stalls.</strong> Expanding \(\det A\) twice gives a sum over pairs of derangements \((\sigma,\tau)\) of \(\operatorname{sgn}\sigma\operatorname{sgn}\tau\,4^{-n}2^{\#\{i:\sigma(i)=\tau(i)\}}\), and the nonzero mean of the entries keeps almost every pair alive. It is better to average one row at a time.</p>
+<p><strong>Step 1: a polarisation identity.</strong> Let \(r_1,\dots,r_n\) be the rows of \(A\), written as column vectors; they are independent. For variables \(t_1,\dots,t_n\) put \(D=\operatorname{diag}(t_1,\dots,t_n)\). Then \(\sum_i t_i\,r_ir_i^{\mathsf T}=A^{\mathsf T}DA\), so</p>
+\[\det\Bigl(\sum_i t_i\,r_ir_i^{\mathsf T}\Bigr)=(\det A)^2\,t_1t_2\cdots t_n .\]
+<p>For matrices \(X_1,\dots,X_n\) let \(F(X_1,\dots,X_n)\) be the coefficient of \(t_1\cdots t_n\) in \(\det(\sum_i t_iX_i)\). Expanding the determinant, each term of that coefficient takes exactly one entry from each \(X_i\), so \(F\) is linear in each argument separately. Since \((\det A)^2=F(r_1r_1^{\mathsf T},\dots,r_nr_n^{\mathsf T})\) and the rows are independent,</p>
+\[\mathbb{E}\bigl[(\det A)^2\bigr]=F(M_1,\dots,M_n),\qquad M_i=\mathbb{E}\bigl[r_ir_i^{\mathsf T}\bigr].\]
+<p><strong>Step 2: the second-moment matrices.</strong> The \((j,k)\) entry of \(M_i\) is \(\mathbb{E}[a_{ij}a_{ik}]\): it is \(0\) if \(j=i\) or \(k=i\), it is \(\tfrac12\) if \(j=k\ne i\), and \(\tfrac14\) if \(j\ne k\) and both differ from \(i\). Write \(T=\sum_i t_i\), \(q=\sum_i t_i^2\), \(\mathbf 1\) for the all-ones vector and \(t=(t_i)\). Then \(N=\sum_i t_iM_i\) has diagonal entries \(\tfrac12(T-t_j)\) and off-diagonal entries \(\tfrac14(T-t_j-t_k)\), that is,</p>
+\[4N=T\,I+u\mathbf 1^{\mathsf T}-\mathbf 1t^{\mathsf T},\qquad u=T\mathbf 1-t .\]
+<p><strong>Step 3: a rank-two determinant.</strong> With the \(n\times2\) matrices \(X=[u\ \ \mathbf 1]\) and \(Y=[\mathbf 1\ \ {-t}]\) we have \(4N=TI+XY^{\mathsf T}\), and the matrix determinant lemma gives \(\det(4N)=T^n\det(I_2+Y^{\mathsf T}X/T)\). The needed inner products are \(\mathbf 1^{\mathsf T}u=(n-1)T\), \(\mathbf 1^{\mathsf T}\mathbf 1=n\), \(t^{\mathsf T}u=T^2-q\) and \(t^{\mathsf T}\mathbf 1=T\), so</p>
+\[I_2+\frac{Y^{\mathsf T}X}{T}=\begin{pmatrix}n&amp;n/T\\-(T^2-q)/T&amp;0\end{pmatrix},\qquad \det(4N)=nT^{\,n-2}(T^2-q)=2n\,e_1^{\,n-2}e_2,\]
+<p>where \(e_1=T\) and \(e_2=\sum_{i&lt;j}t_it_j=\tfrac12(T^2-q)\). Both sides are polynomials, so this is a polynomial identity.</p>
+<p><strong>Step 4: read off the coefficient.</strong> In \(e_1^{\,n-2}e_2\) the monomial \(t_1\cdots t_n\) arises by choosing a pair from \(e_2\) in \(\binom n2\) ways and the remaining \(n-2\) variables in order from \(e_1^{\,n-2}\) in \((n-2)!\) ways, so its coefficient is \(n!/2\). Therefore the coefficient of \(t_1\cdots t_n\) in \(\det(4N)\) is \(n\cdot n!\), and in \(\det N\) it is \(n\cdot n!/4^n\).</p>
+<p><strong>A second view.</strong> Averaging over \(\tau\) for fixed \(\sigma\) turns the derangement sum into \(4^{-n}\sum_\sigma\operatorname{sgn}\sigma\det(J-I+P_\sigma)\), where \(P_\sigma\) is the permutation matrix. By the matrix determinant lemma and the spectrum of a cyclic permutation, \(\det(J-I+P_\sigma)\) vanishes unless \(\sigma\) is a single \(n\)-cycle, when it equals \(\operatorname{sgn}\sigma\cdot n^2\). There are \((n-1)!\) such cycles, which again gives \(n^2(n-1)!/4^n=n\cdot n!/4^n\).</p>
+<p>The formula agrees with exact enumeration for \(n=2,\dots,8\) (values \(4,18,96,600,4320,35280,322560\) after multiplying by \(4^n\)) and with a Monte Carlo estimate for \(n=6\). For \(n=1\) the expectation is \(0\), because the only permutation is the identity, which is not a derangement.</p><div class="answer"><strong>Answer.</strong> \(\displaystyle\mathbb{E}\bigl[(\det A)^2\bigr]=\frac{2026\cdot2026!}{4^{2026}}\), and in general \(n\cdot n!/4^n\) for \(n\ge2\).</div></details></section><p><a href="/daily-mathematics/">All solutions</a> · <a href="/ja/daily-mathematics/2026-10-04/" hreflang="ja" lang="ja">日本語</a></p></main>
+<!-- ISEGORIA:FOOT -->
+<footer id="ig-footer"><div><a href="/">Isegoria · Benjamin Haire</a><nav aria-label="Site links"><a href="/">Back to home</a><a href="/library.html">Browse the library</a><a href="#ig-content">Back to top</a></nav></div></footer>
+<!-- /ISEGORIA:FOOT -->
+</body></html>
