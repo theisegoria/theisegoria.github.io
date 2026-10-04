@@ -22,7 +22,8 @@ class Meta(HTMLParser):
 INTERACTIVE=re.compile(r'<canvas\b|data-course=|/assets/interactive|type="range"|app\.js|<model-viewer|three\.(?:module|webgpu)|lab-kit|data-route-fragments=',re.I)
 # Chapter pages of a book belong to the book, which lists them itself.
 SUBPAGE=re.compile(r'^/(?:ja/)?game-design-dynamics-of-learning/part-\d+\.html$'
-                   r'|^/(?:ja/)?medical-textbook/mindmaps/')
+                   r'|^/(?:ja/)?medical-textbook/mindmaps/'
+                   r'|^/(?:ja/)?daily-mathematics/\d{4}-\d{2}-\d{2}/')
 
 # LIBRARY_EXCLUDE=dir1,ja/dir1 skips folders that are in the working tree but not yet published
 # (another session's work in progress), so a rebuild here does not list them early.
