@@ -24,3 +24,6 @@ React 19, R3F 9, Three.js 0.179, Drei 10. PBR and local generated light cards, n
 
 ## Final exterior fidelity pass
 See FIDELITY.md for exact variants, additional manufacturer profiles, measured image ratios and remaining reconstruction limits. DIVE cap length, rounded hexagonal geometry, forward shoulder, clip, grip segmentation, adjustment assembly and engine-window placement were corrected. JETSTREAM forebody, clip and button proportions were refined. No manufacturer photographs or purchased geometry are redistributed.
+
+## Runtime update, October 2026
+Lighting now uses the site's CC0 studio HDRI (/assets/hdri/studio_small_09_1k.hdr, Poly Haven) mixed with three generated strip lights, Neutral tone mapping and drei contact shadows; materials are MeshPhysicalMaterial with procedural grain, metallic-flake and paper normal maps generated at runtime. No manufacturer imagery, logos or wordmarks are rendered. See FIDELITY.md for the visual revision notes.

@@ -1,20 +1,24 @@
-# Refrigerator lab — source and model record
+# Refrigerator lab: source and model record
 
-Published 14 September 2026. English original with a Japanese edition.
+Published 14 September 2026; 3D model revised 6 October 2026. English original with a Japanese edition.
 
 ## Scope and geometry
 
 Original procedural top-freezer refrigerator teaching model. It is not a replica, manufacturer CAD, measured reconstruction, or service diagram. A product-specific asset is not appropriate to the generic request. Cabinet proportions (approximately 0.78 × 1.88 × 0.72 m), rear exposed condenser, one freezer evaporator and hinged compartment doors are chosen to make a representative layout inspectable. No third-party geometry, photographs or product artwork are redistributed. Three.js is MIT-licensed; bundled license comments are preserved.
 
-Geometry represents shelves, drawers, gaskets, door bins, feet, compressor mounts, condenser tubing, filter-drier, capillary tubing, evaporator fins and fan. Colour identifies cycle stages, not actual tube finishes. Piping paths and fin counts are illustrative. Fans and markers are visual animation; no claim of computational fluid dynamics, flow speed, refrigerant charge, or measured performance. The cabinet can be hidden for an explicitly nonphysical inspection view. The door slider is an inspection control, separate from the energy model's daily opening count.
+Geometry represents the enamelled wrapper and toe-kick grille, levelling feet, glass shelves with trims, two crisper drawers, door liners with magnetic gaskets, door bins and bar handles, hinges, the freezer evaporator cover with return slots, the fresh-food air duct and LED light, a blank rating plate, the hermetic compressor on rubber grommets with its drip tray, the rear wire-on-tube condenser, filter-drier, capillary coil, the capillary and suction line running together up the back, the finned freezer evaporator and its fan. Finishes are chosen to resemble common appliance materials (white enamel with clear coat, ABS liner, glass, clear polystyrene bins, black painted condenser, copper tube, aluminium fins); they are not taken from any one product. Piping paths, coil rows and fin counts are illustrative. The glow marks the selected stage; in a stage close-up the other circuit parts fade back.
+
+Refrigerant markers: colour follows an illustrative temperature scale (blue cold, amber warm liquid, red hot vapour); small solid beads stand for liquid and larger translucent bubbles for vapour, so the share of bubbles shows vapour quality. The quality and temperature profiles along each component are qualitative (desuperheating then condensing in the condenser, flashing near the capillary outlet, boiling across the evaporator, superheat in the suction line). Marker spacing is denser where the model moves slowly (liquid) and sparser where it moves fast (vapour); the speed itself is arbitrary. No claim of computational fluid dynamics, flow speed, refrigerant charge, or measured performance. The see-through cabinet in the circuit view is an explicitly nonphysical inspection view. The door slider is an inspection control, separate from the energy model's daily opening count.
+
+Rendering: image-based light from a CC0 studio HDRI (Poly Haven, studio_small_09), a soft shadow and contact shadow, ground-truth ambient occlusion and multisampled anti-aliasing.
 
 ## Primary references
 
-1. Danfoss, How a refrigerator works: https://www.danfoss.com/en/about-danfoss/our-businesses/cooling/the-fridge-how-it-works/ — four component functions and refrigerant state changes.
-2. Whirlpool, Parts of a refrigerator: https://www.whirlpool.com/blog/kitchen/parts-of-a-refrigerator.html — cabinet and support-system layout; component descriptions. Generic geometry, not a Whirlpool replica.
-3. OpenStax, University Physics Volume 2, §4.3: https://openstax.org/books/university-physics-volume-2/pages/4-3-refrigerators-and-heat-pumps — heat/work balance, definition of refrigerator COP.
-4. OpenStax, §4.5: https://openstax.org/books/university-physics-volume-2/pages/4-5-the-carnot-cycle — reversible refrigerator COP TC/(TH−TC), absolute temperatures.
-5. US DOE, Refrigerator on-demand deicing: https://www.energy.gov/cmei/buildings/articles/higher-efficiency-demand-flexible-refrigerator-demand-micro-vibrational — conventional resistance-heater defrost and its energy penalty.
+1. Danfoss, How a refrigerator works: https://www.danfoss.com/en/about-danfoss/our-businesses/cooling/the-fridge-how-it-works/: four component functions and refrigerant state changes.
+2. Whirlpool, Parts of a refrigerator: https://www.whirlpool.com/blog/kitchen/parts-of-a-refrigerator.html: cabinet and support-system layout; component descriptions. Generic geometry, not a Whirlpool replica.
+3. OpenStax, University Physics Volume 2, §4.3: https://openstax.org/books/university-physics-volume-2/pages/4-3-refrigerators-and-heat-pumps: heat/work balance, definition of refrigerator COP.
+4. OpenStax, §4.5: https://openstax.org/books/university-physics-volume-2/pages/4-5-the-carnot-cycle: reversible refrigerator COP TC/(TH−TC), absolute temperatures.
+5. US DOE, Refrigerator on-demand deicing: https://www.energy.gov/cmei/buildings/articles/higher-efficiency-demand-flexible-refrigerator-demand-micro-vibrational: conventional resistance-heater defrost and its energy penalty.
 
 No refrigerant-specific property table is used. Qualitative pressure and phase labels do not imply measured pressure or exact temperature. Pressure losses in heat exchangers, superheat, subcooling, suction-line heat exchange, humidity, latent infiltration load and variable-speed control are not numerically resolved.
 

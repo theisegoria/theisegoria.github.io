@@ -32,7 +32,7 @@ function update(){
     q('#reaction-equation').textContent='H₂CO₃ + H₂O ⇌ HCO₃⁻ + H₃O⁺';
     q('#reaction-detail').textContent='Carbonic acid donates a proton to a water molecule. Bicarbonate and hydronium form. More hydronium means a lower pH; no CO₂ gas bubble is created by this step.';
   }
-  q('#chem-legend').innerHTML=state.chapter==='acid'?'<span>Atom labels: C · carbon &nbsp; O · oxygen &nbsp; H · hydrogen</span>':'<span><b class="dissolved-dot"></b>Dissolved CO₂ molecules</span><span><b class="bubble-dot"></b>Gas bubbles contain many molecules</span>';
+  q('#chem-legend').innerHTML=state.chapter==='acid'?'<span><b class="atom-key atom-c"></b>C · carbon</span><span><b class="atom-key atom-o"></b>O · oxygen</span><span><b class="atom-key atom-h"></b>H · hydrogen</span><span><b class="atom-key atom-p"></b>'+(state.reaction==='hydrate'?'Atoms that form the new bond':'The proton (H⁺) that moves')+'</span>':'<span><b class="dissolved-dot"></b>Dissolved CO₂ molecules</span><span><b class="bubble-dot"></b>Gas bubbles contain many molecules</span><span><b class="arrow-key"></b>Direction CO₂ moves</span>';
   canvas.setAttribute('aria-label',state.chapter==='acid'?q('#reaction-equation').textContent: `${label}. ${format(closed?data.initial:data.remaining)} grams of dissolved CO₂ per kilogram water at ${state.temperature} degrees Celsius. ${closed?'CO₂ partial pressure '+state.pressure+' bar.':state.progress+' percent toward equilibrium with air.'}`);
   draw();
 }
@@ -41,26 +41,32 @@ function text(value,x,y,size=14,align='left',color=colour('ink')){ctx.font=`${si
 function line(x1,y1,x2,y2,color=colour('line'),width=1){ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.strokeStyle=color;ctx.lineWidth=width;ctx.stroke()}
 function dot(x,y,r,color,stroke=false){ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);if(stroke){ctx.strokeStyle=color;ctx.lineWidth=1.4;ctx.stroke()}else{ctx.fillStyle=color;ctx.fill()}}
 function arrow(x,y,down){const end=y+(down?23:-23);line(x,y,x,end,colour('co2'),1.5);line(x,end,x-4,end+(down?-5:5),colour('co2'),1.5);line(x,end,x+4,end+(down?-5:5),colour('co2'),1.5)}
-function atom(symbol,x,y,r=14){dot(x,y,r,colour(symbol==='O'?'oxygen':symbol==='C'?'carbon':'hydrogen'));text(symbol,x,y+4,r<12?11:13,'center',symbol==='H'?colour('ink'):'#ffffff')}
-function molecule(type,x,y,scale=1){ctx.save();ctx.translate(x,y);ctx.scale(scale,scale);let atoms=[],bonds=[];
+function atom(symbol,x,y,r=14,hl=false){if(hl){ctx.save();ctx.globalAlpha=.28;dot(x,y,r+6,colour('proton'));ctx.restore()}dot(x,y,r,hl&&symbol==='H'?colour('proton'):colour(symbol==='O'?'oxygen':symbol==='C'?'carbon':'hydrogen'));if(hl&&symbol!=='H'){ctx.beginPath();ctx.arc(x,y,r+2.5,0,Math.PI*2);ctx.strokeStyle=colour('proton');ctx.lineWidth=2.5;ctx.stroke()}text(symbol,x,y+4,r<12?11:13,'center',symbol==='H'?(hl?'#1b1206':'#1b2a30'):'#ffffff')}
+function curve(x1,y1,x2,y2,bend,color,label,lx,ly){const mx=(x1+x2)/2,my=(y1+y2)/2,nx=-(y2-y1),ny=x2-x1,l=Math.hypot(nx,ny)||1,cx=mx+nx/l*bend,cy=my+ny/l*bend;ctx.beginPath();ctx.moveTo(x1,y1);ctx.quadraticCurveTo(cx,cy,x2,y2);ctx.strokeStyle=color;ctx.lineWidth=2;ctx.setLineDash([5,4]);ctx.stroke();ctx.setLineDash([]);const a=Math.atan2(y2-cy,x2-cx);ctx.beginPath();ctx.moveTo(x2,y2);ctx.lineTo(x2-9*Math.cos(a-.45),y2-9*Math.sin(a-.45));ctx.lineTo(x2-9*Math.cos(a+.45),y2-9*Math.sin(a+.45));ctx.closePath();ctx.fillStyle=color;ctx.fill();if(label)text(label,lx??cx,ly??cy,12,'center',color)}
+function molecule(type,x,y,scale=1,hl=[]){ctx.save();ctx.translate(x,y);ctx.scale(scale,scale);let atoms=[],bonds=[];
   if(type==='co2'){atoms=[['O',-34,0],['C',0,0],['O',34,0]];bonds=[[0,1,2],[1,2,2]]}
   if(type==='water'){atoms=[['O',0,0],['H',-25,22],['H',25,22]];bonds=[[0,1,1],[0,2,1]]}
   if(type==='acid'||type==='bicarbonate'){atoms=[['C',0,0],['O',0,-37],['O',-35,24],['O',35,24],['H',-61,9]];bonds=[[0,1,2],[0,2,1],[0,3,1],[2,4,1]];if(type==='acid'){atoms.push(['H',61,9]);bonds.push([3,5,1])}}
   if(type==='hydronium'){atoms=[['O',0,0],['H',0,-30],['H',-27,20],['H',27,20]];bonds=[[0,1,1],[0,2,1],[0,3,1]]}
   for(const [a,b,order] of bonds){const [,ax,ay]=atoms[a],[,bx,by]=atoms[b];if(order===2){const length=Math.hypot(bx-ax,by-ay),dx=-(by-ay)/length*2,dy=(bx-ax)/length*2;line(ax+dx,ay+dy,bx+dx,by+dy,colour('ink'),1.5);line(ax-dx,ay-dy,bx-dx,by-dy,colour('ink'),1.5)}else line(ax,ay,bx,by,colour('ink'),2)}
-  for(const [symbol,ax,ay]of atoms)atom(symbol,ax,ay,symbol==='H'?10:14);
+  atoms.forEach(([symbol,ax,ay],i)=>atom(symbol,ax,ay,symbol==='H'?10:14,hl.includes(i)));
   if(type==='bicarbonate')text('−',48,8,20);if(type==='hydronium')text('+',27,-22,18);ctx.restore();
 }
 function draw(){
   const width=canvas.clientWidth,height=canvas.clientHeight;if(!width)return;
   const dpr=Math.min(devicePixelRatio,2);canvas.width=Math.round(width*dpr);canvas.height=Math.round(height*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,width,height);
   if(state.chapter==='acid'){
-    const narrow=width<430,scale=narrow?.77:1;const y1=height*.24,y2=height*.72;const acid=state.reaction==='hydrate';
-    molecule(acid?'co2':'acid',width*.28,y1,scale);molecule('water',width*.73,y1,scale);text('+',width*.51,y1+5,21,'center');
-    text(acid?'CO₂(aq)':'H₂CO₃',width*.28,y1+58,14,'center');text('H₂O',width*.73,y1+58,14,'center');
-    text('⇌',width*.5,height*.49,28,'center');
-    if(acid){molecule('acid',width*.5,y2,scale);text('H₂CO₃',width*.5,y2+57,14,'center')}
-    else{molecule('bicarbonate',width*.28,y2,scale);molecule('hydronium',width*.73,y2,scale);text('+',width*.51,y2+5,21,'center');text('HCO₃⁻',width*.28,y2+57,14,'center');text('H₃O⁺',width*.73,y2+57,14,'center')}
+    const narrow=width<430,scale=narrow?.74:1;const y1=height*.24,y2=height*.74;const acid=state.reaction==='hydrate';
+    const lx=width*.27,rx=width*.73;
+    // Reactants: highlight the atoms that change partners.
+    molecule(acid?'co2':'acid',lx,y1,scale,acid?[1]:[5]);molecule('water',rx,y1,scale,acid?[0]:[0]);text('+',width*.5,y1+5,21,'center');
+    text(acid?'CO₂(aq)':'H₂CO₃',lx,y1+58,14,'center');text('H₂O',rx,y1+58,14,'center');
+    if(acid)curve(rx-4*scale,y1-16*scale,lx+6*scale,y1-18*scale,-46*scale,colour('proton'),'new bond to carbon',width*.5,y1-56*scale);
+    else curve(lx+61*scale,y1+9*scale,rx-14*scale,y1-6*scale,-40*scale,colour('proton'),'proton moves',width*.5,y1-44*scale);
+    text('⇌',width*.5,height*.5,28,'center');
+    text(acid?'a small fraction reacts':'an acid-base equilibrium',width*.5,height*.5+24,11.5,'center',colour('muted'));
+    if(acid){molecule('acid',width*.5,y2,scale,[0,3]);text('H₂CO₃',width*.5,y2+57,14,'center');text('carbonic acid',width*.5,y2+75,12,'center',colour('muted'))}
+    else{molecule('bicarbonate',lx,y2,scale);molecule('hydronium',rx,y2,scale,[1]);text('+',width*.51,y2+5,21,'center');text('HCO₃⁻',lx,y2+57,14,'center');text('H₃O⁺',rx,y2+57,14,'center');text('bicarbonate',lx,y2+75,12,'center',colour('muted'));text('hydronium: lowers pH',rx,y2+75,12,'center',colour('muted'))}
     return;
   }
   const left=12,right=width-12,top=16,bottom=height-16,level=height*.34,isOpen=state.chapter==='open';
@@ -75,13 +81,14 @@ function draw(){
   const d=degas(state.temperature,state.pressure,state.progress),value=isOpen?d.remaining:d.initial;
   const count=Math.round(value/maxCO2*155);
   for(let i=0;i<count;i++){const x=left+22+((i*.754877666)%1)*(right-left-44),y=level+49+((i*.569840291)%1)*(bottom-level-70);dot(x,y,2.5,colour('co2'))}
-  if(!isOpen){arrow(width*.47,level-17,true);arrow(width*.54,level+17,false)}
+  if(!isOpen){arrow(width*.44,level-17,true);arrow(width*.56,level+17,false);text('dissolves',width*.44-8,level-24,12,'right',colour('co2'));text('escapes',width*.56+8,level+30,12,'left',colour('co2'));text('Equal rates at equilibrium',width*.5,level+62,11.5,'center',colour('muted'))}
+  if(isOpen&&state.progress<100){for(const f of [.3,.5,.7])arrow(width*f,level+14,false);text(state.progress===0?'net escape begins':'net escape',width*.7+10,level+2,12,'left',colour('co2'))}
   if(isOpen&&state.progress>0&&state.progress<100){
     for(let i=0;i<5;i++){const x=left+35+(i/5)*(right-left-60),phase=(state.progress/100+i*.173)%1,y=bottom-28-phase*(bottom-top-38),r=4+(bottom-y)/(bottom-top)*7;dot(x,y,r,colour('co2'),true);dot(x-1.4,y,1,colour('co2'));dot(x+2,y-2,1,colour('co2'))}
   }
 }
 root.querySelectorAll('[data-chem]').forEach(b=>b.onclick=()=>{state.chapter=b.dataset.chem;update()});
 q('#chem-pressure').oninput=e=>{state.pressure=+e.target.value;state.progress=0;update()};q('#chem-temperature').oninput=e=>{state.temperature=+e.target.value;state.progress=0;update()};q('#chem-release').oninput=e=>{state.progress=+e.target.value;update()};q('#chem-reaction').onchange=e=>{state.reaction=e.target.value;update()};
-new ResizeObserver(draw).observe(canvas);addEventListener('languagechange',draw);update();
+new ResizeObserver(draw).observe(canvas);addEventListener('languagechange',update);new MutationObserver(draw).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme','style']});update();
 
 if(document.modelContext?.registerTool){const lifecycle=new AbortController();addEventListener('pagehide',()=>lifecycle.abort(),{once:true});try{Promise.resolve(document.modelContext.registerTool({name:'explore_carbonation_chemistry',description:'Update the visible carbonation teaching model: dissolve gas, open to air, or inspect carbonic-acid reactions. No control of a real appliance.',inputSchema:{type:'object',properties:{chapter:{type:'string',enum:['dissolve','open','acid']},temperature:{type:'number',minimum:4,maximum:25},pressure:{type:'number',minimum:1,maximum:6},progress:{type:'number',minimum:0,maximum:100},reaction:{type:'string',enum:['hydrate','dissociate']}},required:['chapter'],additionalProperties:false},annotations:{readOnlyHint:false,untrustedContentHint:false},execute(input){if(!input||!Object.hasOwn(copy,input.chapter)||Object.keys(input).some(k=>!Object.hasOwn(state,k)))throw new Error('Invalid chemistry chapter or parameter');for(const [k,min,max] of [['temperature',4,25],['pressure',1,6],['progress',0,100]])if(input[k]!==undefined&&(!Number.isFinite(input[k])||input[k]<min||input[k]>max))throw new Error(`Invalid ${k}`);if(input.reaction!==undefined&&!['hydrate','dissociate'].includes(input.reaction))throw new Error('Invalid reaction');Object.assign(state,input);update();return {...state,...degas(state.temperature,state.pressure,state.progress)}}},{signal:lifecycle.signal})).catch(console.warn)}catch(e){console.warn(e)}}
