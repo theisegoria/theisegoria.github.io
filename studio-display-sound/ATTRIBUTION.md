@@ -8,27 +8,33 @@ The interior photograph is by **iFixit**, from Sam Goldheart's article,
 - Licensing statement: https://www.ifixit.com/Info/Licensing
 - iFixit is not affiliated with, and does not endorse, this educational reconstruction.
 
-The JPEG is distributed unchanged. The image is mapped to separately modelled
-surfaces traced from its visible component outlines: speaker chambers, lower
-driver assemblies, fan housings, split power supply, logic board, flexible
-cables and fasteners. The view can switch between reference imagery and plain
-technical materials. The geometry adds approximate depths, creates relief for
-clearly visible raised components and permits a nonphysical exploded view.
-Those are adaptations, not depth measurements or photogrammetric recovery.
+The JPEG is distributed unchanged. The interior is modelled from outlines traced
+on it: the two side acoustic chambers (with pockets for the lower speaker
+modules), the woofer modules and tweeters, the blower housings and impellers,
+the split power supply, the logic boards, flexible cables and fasteners. Those
+parts carry their own materials (moulded black plastic, felt pads, stainless
+mesh, steel, copper windings); only the circuit-board tops sample the
+photograph for their component detail. The page can also lay the photograph
+itself over the model, registered to the chassis, so every outline can be
+checked against the source. Depths, the inside of the woofer modules, the
+outlet route and the exploded view are adaptations, not measurements or
+photogrammetric recovery.
 
-**The photograph-derived reconstruction and its contributions, including
-reference-internals.js and related texture mapping, are distributed under
+**The photograph-derived reconstruction and its contributions, including the
+traced coordinates and texture mapping in models.js, are distributed under
 CC BY-NC-SA 3.0.** The educational publication is noncommercial. This license
 statement applies to this reconstruction, not to unrelated work on Isegoria.
 
-The hidden rear woofer members and isolated force-cancellation scene are
-explicit teaching models. The photo does not establish their precise internal
-construction, magnet layout, channel geometry or dimensions. Nothing here is
-Apple CAD, a validated acoustic solver, or a reconstruction of the 2026 model.
+The opposed drivers drawn inside each woofer module and the enlarged
+force-cancellation pair are explicit teaching models. The photograph does not
+establish their internal construction, magnet layout, channel geometry or
+dimensions. Nothing here is Apple CAD, a validated acoustic solver, or a
+reconstruction of the 2026 model.
 
-The outer case, panel and stand also use Apple's published product dimensions
-and [2022 exploded-view documentation](https://support.apple.com/en-ie/100669)
-as references. Apple imagery is not redistributed.
+The outer case, glass, perforated edges and stand use Apple's published product
+dimensions, product photographs and the
+[2022 exploded-view documentation](https://support.apple.com/en-ie/100669) as
+references. Apple imagery is not redistributed, and no logo is drawn.
 
-Three.js 0.180.0, OrbitControls and RoomEnvironment are MIT licensed.
-See vendor/THREE-LICENSE.txt.
+Lighting uses the CC0 Poly Haven HDRI photo_studio_01 served by the site.
+Three.js r186 and its add-ons (from /vendor/three/r186/) are MIT licensed.

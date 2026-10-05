@@ -1,40 +1,39 @@
 # Studio Display sound: reconstruction notes
 
-This is an educational reconstruction of the **2022** Studio Display, with a separate evidence comparison for the **2026** model. It is not Apple CAD, a dimensional scan, a circuit model, or a measured acoustic simulation.
+This is an educational reconstruction of the **2022** Studio Display, with a separate evidence comparison for the **2026** model. It is not Apple CAD, a dimensional scan, a circuit model, or a measured acoustic simulation. Every label in the 3D view names where its shape comes from: Apple specification, fitted to the teardown photo, or inferred / teaching model.
 
 ## What determines the model
 
 | Element | Basis | Limits |
 | --- | --- | --- |
-| Case width | Apple's 62.3 cm specification | One scene unit represents 10 cm; thickness and stand details are approximate. |
-| Side acoustic chambers, fan housings, boards, cables | Traced outlines in iFixit's 1922 × 1081 front-open photograph | The photo establishes visible layout, not depth. |
-| Surface detail | Licensed iFixit photograph mapped separately onto outward-facing component surfaces | The picture contains its own lighting; plain material mode removes the photograph. Reverse faces use plain materials. |
-| Raised components | Visible outline and a conservative estimated height | No hidden circuit routing or exact component dimensions are asserted. |
-| Woofer and tweeter regions | Visible lower assemblies and the documented 4 + 2 architecture | Hidden opposed members are blue conceptual markers, shown only during separation. |
+| Case width and height | Apple: 62.3 cm wide; 36.2 cm high with the VESA adapter | One scene unit represents 10 cm. |
+| Case depth | Apple: 3.1 cm deep with the VESA adapter | Modelled at 2.5 cm for the bare enclosure; estimate. Corner radius 9 mm and edge rounding are estimates from product photographs. |
+| Glass and panel | 27-inch 5K panel; the 597.7 × 336.2 mm active area follows from the 16:9 diagonal | The border width is derived, not published. The screen shows a neutral gradient; no wallpaper or logo. |
+| Perforated top and bottom edges | Product photographs and reviews | Hole pitch about 1.7 mm is an estimate; rendered as a surface map, not individual holes. |
+| Tilt stand | Apple: 47.8 cm high and 16.8 cm deep overall | One bent plate; width (18.5 cm), gauge (6.5 mm) and bend radius are estimates from photographs. |
+| Side acoustic chambers, fan housings, boards, cables | Outlines traced on iFixit's 1922 × 1081 front-open photograph | The photo establishes visible layout, not depth. Chamber depth 15 mm, estimated. |
+| Lower speaker modules | Outlines traced on the photograph: black woofer module (31 × 63 mm) and silver mesh-covered tweeter (23 × 58 mm) at each lower corner | Apple confirms 4 woofers + 2 tweeters. The two drivers drawn back to back inside each woofer module are inferred from Apple's force-cancelling description and patent US10631096B1, not observed. |
+| Outlet route | Speakers sit at the lower corners above the perforated bottom edge | The downward arrows are an inference; the photograph does not show the passages. |
+| Circuit detail | The board tops sample the licensed photograph | Component heights are estimates. |
 | Exploded view | Deliberate separation for inspection | Not an actual disassembly sequence, connection layout, or operating state. |
-| Opposed woofer motion | Ideal matched sinusoidal mechanical reactions | Exaggerated motion; the mismatch control varies the second force contribution, not an actual measured fault. |
+| Opposed woofer motion (chapter 2) | Ideal matched sinusoidal mechanical reactions; section-cut drivers | Exaggerated motion; the mismatch control varies the second force contribution, not an actual measured fault. |
 | Wavefront spacing | λ = 343/f metres | Slowed time and schematic arcs; no pressure-field solution, room response, bass extension or SPL claim. |
 | Ear paths | Ideal sources 0.48 m apart, ears 0.18 m apart, forward distance 0.75 m | No head shadow, room reflection, HRTF or proprietary Apple filtering. |
 | Optional audio | Three low-level 440 Hz tones panned left, center, right | Ordinary Web Audio stereo through the current output, not an Atmos demonstration or display recording. |
 
-The large circles in the upper interior are **cooling fans**. The sound system uses the tall side chambers and slim lower assemblies.
+The large circles in the upper interior are **cooling fans** (blowers). The sound system uses the tall side chambers and slim lower modules.
+
+## Rendering
+
+Image-based light from the CC0 Poly Haven HDRI photo_studio_01 (served from /assets/hdri/), physically based materials (anodised aluminium with micro-grain, clearcoated glass, moulded plastic with sheen, stainless mesh, copper windings), soft shadow on a transparent floor, ground-truth ambient occlusion (GTAOPass, switched off while parts are ghosted or the photo overlay is shown, and on narrow screens), 4× MSAA and neutral tone mapping. The backdrop follows the site's light and dark paper tokens. Rendering happens on demand; camera presets animate unless reduced motion is requested.
 
 For image author, licensing, changes and exclusions, see [ATTRIBUTION.md](ATTRIBUTION.md). The page and bilingual PDFs contain eight linked research sources. The photo-derived reconstruction is CC BY-NC-SA 3.0.
 
-## Interaction and verification
-
-Checked on 13 September 2026 in a real browser with a rendered WebGL canvas. Inspected the full internal view, speaker close-up, separated assemblies, plain/reference surfaces, component focus, force pair and spatial paths. English desktop and Japanese narrow-screen controls were exercised. A 390-pixel viewport had no horizontal document overflow. Motion starts only on request and can be paused or scrubbed; hidden pages stop motion and audio. Rendering otherwise occurs on demand with capped pixel density.
-
-Verified readouts: 20% mismatch → 0.20 F₀; 100 Hz → 3.43 m and 5.51 times display width; centered listener → 159 μs left-source interaural arrival difference. Out-of-range WebMCP stage requests were rejected. Tested optional audio start/stop state without evaluating acoustic playback quality. Browser error and warning log was empty during final checks.
-
-All 14 PDF pages were rendered and visually inspected; standalone guides contain 7 pages each, the combined guide 14. Each language has six matching chapters and eight research sources. Source links and companion-page links are embedded. Reading content is also present in the initial HTML. A WebGL fallback is implemented but was not forced during browser validation.
-
 ## Editing
 
-- `reference-internals.js`: traced coordinates, estimated depth, source UV mapping, component selection and separation.
-- `models.js`: product housing and independent physics teaching scenes.
-- `app.js`: bilingual controls, numerical readouts, camera presets, sound and motion lifecycle.
+- `models.js`: enclosure, stand, traced interior, speaker modules, outlet arrows, photo overlay, chapter 2 to 4 scenes, and the callout anchors.
+- `app.js`: renderer, lighting and post-processing; bilingual controls and callout text; numerical readouts; camera presets; sound and motion lifecycle. The page serves both languages from one URL (`?lang=ja`), and updates the site header's language link to match.
 - `content.json`: paired prose, diagram captions and source notes.
-- `style.css`: responsive presentation.
+- `style.css`: responsive presentation and theme tokens.
 
-Three.js 0.180.0 and its controls/environment helper are vendored locally with the MIT license. No build service or API key is required to serve this route.
+Three.js r186 and its add-ons are loaded from the site's `/vendor/three/r186/` through the import map. No build service or API key is required to serve this route.
