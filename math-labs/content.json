@@ -12809,5 +12809,451 @@
         "url": "https://ocw.mit.edu/courses/6-977-ultrafast-optics-spring-2005/"
       }
     ]
+  },
+  {
+    "slug": "representation-theory",
+    "title": [
+      "Representation theory: groups acting as matrices",
+      "表現論：行列として作用する群"
+    ],
+    "description": [
+      "A group is an abstract list of symmetries; a representation makes each symmetry a matrix, so that composing symmetries becomes multiplying matrices. Every representation of a finite group splits into irreducible pieces, and a single row of numbers per piece, its character, decides how. The dihedral groups as rotation and permutation matrices, character tables and the inner product that decomposes anything, and the vibrations of a symmetric ring, whose frequencies and degeneracies are dictated by its symmetry.",
+      "群は対称性の抽象的な一覧です。表現は各対称性を行列にし、対称性の合成を行列の積に変えます。有限群のどんな表現も既約な部分に分かれ、その分かれ方は部分ごとの一行の数、指標が決めます。回転行列と置換行列としての二面体群、指標表と、あらゆるものを分解する内積、そして振動数と縮退が対称性によって定まる対称な環の振動を調べます。"
+    ],
+    "group": "foundations",
+    "prerequisite": [
+      "Group theory and linear algebra",
+      "群論と線形代数"
+    ],
+    "source": "Pavel Etingof et al. · Introduction to Representation Theory, MIT OpenCourseWare 18.712",
+    "url": "https://ocw.mit.edu/courses/18-712-introduction-to-representation-theory-fall-2010/",
+    "labs": [
+      {
+        "id": "rep-matrices",
+        "title": [
+          "1. Symmetries as matrices",
+          "1. 行列としての対称性"
+        ],
+        "body": [
+          "The symmetries of a regular n-gon form the dihedral group Dₙ: n rotations rᵏ and n reflections srᵏ. Each one moves the plane linearly, so it is a 2 × 2 matrix, and the matrix of a composite is the product of the matrices: that is a representation, ρ(gh) = ρ(g)ρ(h). The same group also shuffles the n vertices, which gives a second representation by n × n permutation matrices. Representations of one group can look nothing alike, but each has a character, the trace of its matrices, and the trace of a permutation matrix simply counts the vertices that stay put. Choose an element, press Play to watch it act, and drag the vector to see the matrix at work.",
+          "正 n 角形の対称性は二面体群 Dₙ をなします。n 個の回転 rᵏ と n 個の鏡映 srᵏ です。どれも平面を線形に動かすので 2 × 2 行列であり、合成の行列は行列の積です。これが表現 ρ(gh) = ρ(g)ρ(h) です。同じ群は n 個の頂点の入れ替えでもあり、それが n × n の置換行列による二つ目の表現を与えます。一つの群の表現どうしはまったく違って見えることがありますが、どれも指標、つまり行列のトレースをもちます。置換行列のトレースは、動かない頂点の数を数えるだけです。元を選び、再生を押して作用する様子を見て、ベクトルをドラッグして行列の働きを確かめてください。"
+        ],
+        "formula": "\\rho(r^k)=\\begin{pmatrix}\\cos\\frac{2\\pi k}{n}&-\\sin\\frac{2\\pi k}{n}\\\\ \\sin\\frac{2\\pi k}{n}&\\cos\\frac{2\\pi k}{n}\\end{pmatrix},\\quad \\rho(s)=\\begin{pmatrix}1&0\\\\0&-1\\end{pmatrix},\\quad \\chi(g)=\\operatorname{tr}\\rho(g),\\quad \\chi(hgh^{-1})=\\chi(g)",
+        "example": [
+          "In \\(D_4\\), the quarter turn \\(r\\) has matrix \\(\\begin{pmatrix}0&-1\\\\1&0\\end{pmatrix}\\) and trace 0, the half turn \\(r^2=-I\\) has trace \\(-2\\), and every reflection has trace 0. On the four vertices, \\(r\\) and \\(r^2\\) fix nothing, the reflections \\(s\\) and \\(sr^2\\) through opposite corners fix two vertices each, and \\(sr\\), \\(sr^3\\) through edge midpoints fix none. So the permutation character is \\((4,0,0,2,0)\\) on the classes \\(e,\\ r^2,\\ \\{r,r^3\\},\\ \\{s,sr^2\\},\\ \\{sr,sr^3\\}\\), and the 2 × 2 character is \\((2,-2,0,0,0)\\).",
+          "\\(D_4\\) では四分の一回転 \\(r\\) の行列は \\(\\begin{pmatrix}0&-1\\\\1&0\\end{pmatrix}\\) でトレースは 0、半回転 \\(r^2=-I\\) のトレースは \\(-2\\)、鏡映のトレースはすべて 0 です。四つの頂点の上では、\\(r\\) と \\(r^2\\) は何も固定せず、向かい合う角を通る鏡映 \\(s\\) と \\(sr^2\\) はそれぞれ二つの頂点を固定し、辺の中点を通る \\(sr\\)、\\(sr^3\\) は一つも固定しません。したがって類 \\(e,\\ r^2,\\ \\{r,r^3\\},\\ \\{s,sr^2\\},\\ \\{sr,sr^3\\}\\) の上で置換の指標は \\((4,0,0,2,0)\\)、2 × 2 の指標は \\((2,-2,0,0,0)\\) です。"
+        ],
+        "caution": [
+          "The reflection animation folds the plane through a third dimension to show which way it turns over; a reflection itself is instantaneous and has no continuous path to the identity inside the plane, since its determinant is \\(-1\\). The labels \\(r^k\\) and \\(sr^k\\) depend on a convention for \\(s\\): here \\(s\\) is the reflection in the \\(x\\)-axis, which passes through vertex 1, and \\(sr^k\\) means \"rotate by \\(r^k\\), then reflect\".",
+          "鏡映のアニメーションは、平面がどちら向きに裏返るかを示すために三次元を通って折り返しています。鏡映そのものは瞬間的で、行列式が \\(-1\\) なので平面の中で恒等変換へ連続的につながる道はありません。\\(r^k\\) と \\(sr^k\\) という名前は \\(s\\) の取り方に依存します。ここでは \\(s\\) は頂点 1 を通る \\(x\\) 軸についての鏡映で、\\(sr^k\\) は「\\(r^k\\) で回してから鏡映する」という意味です。"
+        ],
+        "question": [
+          "Why must two representations with different characters be genuinely different, and not just the same one written in other coordinates?",
+          "なぜ指標の異なる二つの表現は、別の座標で書いた同じ表現ではなく、本当に異なる表現でなければならないのですか？"
+        ],
+        "answer": [
+          "Changing coordinates replaces every matrix \\(\\rho(g)\\) by \\(P\\rho(g)P^{-1}\\) for one fixed invertible \\(P\\), and the trace is unchanged: \\(\\operatorname{tr}(PAP^{-1})=\\operatorname{tr}A\\). So equivalent representations have equal characters. The surprise, proved by the orthogonality relations of the next experiment, is the converse for finite groups over \\(\\mathbb C\\): equal characters force equivalent representations. The characters, one number per conjugacy class, carry everything.",
+          "座標を変えると、ある一つの可逆行列 \\(P\\) によってすべての行列 \\(\\rho(g)\\) が \\(P\\rho(g)P^{-1}\\) に置き換わり、トレースは変わりません。\\(\\operatorname{tr}(PAP^{-1})=\\operatorname{tr}A\\) です。したがって同値な表現は等しい指標をもちます。驚くべきは、次の実験の直交関係が示す逆の主張です。\\(\\mathbb C\\) 上の有限群では、指標が等しければ表現は同値です。共役類ごとに一つの数である指標が、すべてを担っているのです。"
+        ],
+        "params": [
+          [
+            "n",
+            "Polygon sides n",
+            "多角形の辺の数 n",
+            3,
+            8,
+            1,
+            4
+          ],
+          [
+            "g",
+            "Element: 0 … n−1 rotations, n … 2n−1 reflections",
+            "元：0 … n−1 は回転、n … 2n−1 は鏡映",
+            0,
+            15,
+            1,
+            1
+          ]
+        ],
+        "source": "Pavel Etingof et al. · Introduction to Representation Theory (AMS, 2011), arXiv:0901.0827",
+        "url": "https://arxiv.org/abs/0901.0827"
+      },
+      {
+        "id": "characters",
+        "title": [
+          "2. Character tables and how to decompose",
+          "2. 指標表と分解の仕方"
+        ],
+        "body": [
+          "A finite group has exactly as many irreducible representations as conjugacy classes, and their characters form a square table whose rows are orthonormal under the inner product ⟨χ, ψ⟩ = (1/|G|) Σ χ(g) ψ(g)*. That orthonormality is the whole algorithm: to find how often an irreducible χᵢ occurs in any representation, take the inner product of its character with row i. No invariant subspace has to be found. Pick a group and a representation; the bars show the multiplicities, and for the regular representation, the group acting on functions on itself, every irreducible appears as often as its dimension.",
+          "有限群には共役類とちょうど同じ数の既約表現があり、それらの指標は正方形の表をなします。その行は内積 ⟨χ, ψ⟩ = (1/|G|) Σ χ(g) ψ(g)* について正規直交です。この正規直交性がアルゴリズムのすべてです。既約表現 χᵢ が任意の表現に何回現れるかを知るには、その指標と第 i 行との内積を取ればよく、不変部分空間を見つける必要はありません。群と表現を選んでください。棒が重複度を示します。群が自分自身の上の関数に作用する正則表現では、どの既約表現もその次元と同じ回数だけ現れます。"
+        ],
+        "formula": "\\langle\\chi,\\psi\\rangle=\\frac{1}{|G|}\\sum_{C}|C|\\,\\chi(C)\\,\\overline{\\psi(C)},\\qquad \\langle\\chi_i,\\chi_j\\rangle=\\delta_{ij},\\qquad m_i=\\langle\\chi,\\chi_i\\rangle,\\qquad \\sum_i d_i^2=|G|",
+        "example": [
+          "For \\(S_3\\) permuting three points, \\(\\chi=(3,1,0)\\) on the classes \\(e\\), transpositions (3 of them), 3-cycles (2). Then \\(m_{\\rm triv}=(3+3\\cdot1+0)/6=1\\), \\(m_{\\rm sign}=(3-3+0)/6=0\\), \\(m_{\\rm std}=(3\\cdot2+0+0)/6=1\\): the permutation representation is the trivial line (the all-ones vector) plus the two-dimensional standard representation (vectors summing to zero). As a check, \\(\\langle\\chi,\\chi\\rangle=(9+3+0)/6=2=1^2+1^2\\). For \\(A_4\\), whose characters involve \\(\\omega=e^{2\\pi i/3}\\), the 3-dimensional irreducible tensored with itself gives \\((9,1,0,0)\\), which is the trivial representation plus \\(\\chi_\\omega\\) plus \\(\\chi_{\\omega^2}\\) plus two copies of the three-dimensional one.",
+          "三点を置換する \\(S_3\\) では、類 \\(e\\)、互換（3 個）、3 巡回置換（2 個）の上で \\(\\chi=(3,1,0)\\) です。すると \\(m_{\\rm triv}=(3+3\\cdot1+0)/6=1\\)、\\(m_{\\rm sign}=(3-3+0)/6=0\\)、\\(m_{\\rm std}=(3\\cdot2+0+0)/6=1\\) となり、置換表現は自明な直線（すべて 1 のベクトル）と二次元の標準表現（和が 0 のベクトル）の和です。確認として \\(\\langle\\chi,\\chi\\rangle=(9+3+0)/6=2=1^2+1^2\\) です。指標に \\(\\omega=e^{2\\pi i/3}\\) が現れる \\(A_4\\) では、三次元の既約表現の自分自身とのテンソル積は \\((9,1,0,0)\\) を与え、これは自明な表現、\\(\\chi_\\omega\\)、\\(\\chi_{\\omega^2}\\)、そして三次元の既約表現二つの和です。"
+        ],
+        "caution": [
+          "Everything here is over the complex numbers. Over the reals, an irreducible can fail to split further even though its complexification does: the quaternion group acting on \\(\\mathbb H=\\mathbb R^4\\) is irreducible over \\(\\mathbb R\\), yet its character \\((4,-4,0,0,0)\\) is twice the two-dimensional complex irreducible. For infinite groups the sum becomes an integral over the group, and that works only for compact groups; the tables shown are complete for these four small groups.",
+          "ここではすべて複素数の上で考えています。実数の上では、複素化すれば分かれる既約表現が、それ以上分かれないことがあります。\\(\\mathbb H=\\mathbb R^4\\) に作用する四元数群は \\(\\mathbb R\\) 上で既約ですが、その指標 \\((4,-4,0,0,0)\\) は二次元の複素既約表現の二倍です。無限群では和が群上の積分になり、それがうまくいくのはコンパクト群だけです。ここに示した表は、この四つの小さな群については完全です。"
+        ],
+        "question": [
+          "Why does every irreducible representation appear in the regular representation exactly as many times as its dimension?",
+          "なぜどの既約表現も、正則表現の中にちょうどその次元と同じ回数だけ現れるのですか？"
+        ],
+        "answer": [
+          "The regular representation permutes the basis vectors \\(e_h\\) by \\(g:e_h\\mapsto e_{gh}\\), and a nontrivial \\(g\\) moves every one of them, so its character is \\(|G|\\) at the identity and \\(0\\) everywhere else. The inner product with \\(\\chi_i\\) then keeps only the identity term: \\(m_i=\\frac{1}{|G|}\\,|G|\\,\\overline{\\chi_i(e)}=d_i\\). Counting dimensions on both sides gives \\(|G|=\\sum_i m_id_i=\\sum_i d_i^2\\), the identity in the readout.",
+          "正則表現は基底ベクトル \\(e_h\\) を \\(g:e_h\\mapsto e_{gh}\\) で置換し、自明でない \\(g\\) はそのすべてを動かすので、その指標は単位元で \\(|G|\\)、それ以外ではどこでも \\(0\\) です。すると \\(\\chi_i\\) との内積には単位元の項だけが残り、\\(m_i=\\frac{1}{|G|}\\,|G|\\,\\overline{\\chi_i(e)}=d_i\\) となります。両辺の次元を数えると \\(|G|=\\sum_i m_id_i=\\sum_i d_i^2\\) で、読み取り欄の等式が得られます。"
+        ],
+        "params": [
+          [
+            "grp",
+            "Group",
+            "群",
+            0,
+            3,
+            1,
+            1,
+            [
+              [
+                "S₃ (order 6)",
+                "S₃（位数 6）"
+              ],
+              [
+                "D₄ (order 8)",
+                "D₄（位数 8）"
+              ],
+              [
+                "Q₈ (order 8)",
+                "Q₈（位数 8）"
+              ],
+              [
+                "A₄ (order 12)",
+                "A₄（位数 12）"
+              ]
+            ]
+          ],
+          [
+            "rep",
+            "Representation",
+            "表現",
+            0,
+            2,
+            1,
+            1,
+            [
+              [
+                "Regular",
+                "正則"
+              ],
+              [
+                "Natural",
+                "自然"
+              ],
+              [
+                "Tensor square",
+                "テンソル二乗"
+              ]
+            ]
+          ]
+        ],
+        "source": "Jean-Pierre Serre · Linear Representations of Finite Groups (Springer, 1977)",
+        "url": "https://doi.org/10.1007/978-1-4684-9458-7"
+      },
+      {
+        "id": "ring-vibrations",
+        "title": [
+          "3. Symmetry sets the frequencies",
+          "3. 対称性が振動数を決める"
+        ],
+        "body": [
+          "Put n equal beads on a closed string and let each move along its spoke. The equations of motion commute with every symmetry of the ring, so by Schur’s lemma the normal modes can be chosen inside the irreducible representations of Dₙ. Those are Fourier waves around the ring, and a wave and its mirror image, q and n − q, belong to one two-dimensional irreducible, so they must share a frequency: the degeneracy is forced, not accidental. Make one bead heavier and only the mirror through it survives. Each pair then splits into a mode that is even under that mirror and one that is odd; the odd one has a node at the heavy bead, so it never feels the extra mass.",
+          "閉じた弦に n 個の等しいビーズを付け、それぞれを自分の放射方向に動けるようにします。運動方程式は環のすべての対称性と可換なので、シューアの補題により、基準振動は Dₙ の既約表現の中に選べます。それは環を一周するフーリエ波で、波とその鏡像 q と n − q は一つの二次元既約表現に属するので、同じ振動数をもたねばなりません。縮退は偶然ではなく強いられたものです。ビーズを一つ重くすると、それを通る鏡映だけが生き残ります。すると各対は、その鏡映について偶のモードと奇のモードに分かれます。奇のモードは重いビーズの位置に節をもつので、余分な質量をまったく感じません。"
+        ],
+        "formula": "m_j\\ddot u_j=\\frac{F}{a}\\,(u_{j+1}-2u_j+u_{j-1}),\\qquad \\omega_q=2\\omega_0\\left|\\sin\\frac{\\pi q}{n}\\right|,\\quad \\omega_0^2=\\frac{F}{ma},\\qquad \\omega_q=\\omega_{n-q}\\ \\ (E_q\\ \\text{is two-dimensional})",
+        "example": [
+          "For \\(n=6\\) the frequencies are \\(2\\omega_0|\\sin(\\pi q/6)|\\): \\(0\\) for \\(q=0\\) (all beads shifted together, the trivial irreducible \\(A_1\\)), \\(\\omega_0\\) twice (\\(q=1,5\\), the irreducible \\(E_1\\)), \\(\\sqrt3\\,\\omega_0\\) twice (\\(q=2,4\\), \\(E_2\\)), and \\(2\\omega_0\\) once (\\(q=3\\), neighbours in antiphase, a one-dimensional \\(B\\)). That is \\(1+2+2+1=6\\) modes. Make bead 1 two and a half times heavier: the sum of the squared frequencies drops from \\(12\\omega_0^2\\) to \\((10+0.8)\\,\\omega_0^2\\), as the trace of \\(M^{-1}K\\) requires, while the two odd modes stay at exactly \\(\\omega_0\\) and \\(\\sqrt3\\,\\omega_0\\).",
+          "\\(n=6\\) では振動数は \\(2\\omega_0|\\sin(\\pi q/6)|\\) です。\\(q=0\\) では \\(0\\)（すべてのビーズが一緒にずれる、自明な既約表現 \\(A_1\\)）、\\(\\omega_0\\) が二回（\\(q=1,5\\)、既約表現 \\(E_1\\)）、\\(\\sqrt3\\,\\omega_0\\) が二回（\\(q=2,4\\)、\\(E_2\\)）、\\(2\\omega_0\\) が一回（\\(q=3\\)、隣どうしが逆位相、一次元の \\(B\\)）です。合わせて \\(1+2+2+1=6\\) 個のモードです。ビーズ 1 を 2.5 倍重くすると、振動数の二乗の和は \\(M^{-1}K\\) のトレースが求めるとおり \\(12\\omega_0^2\\) から \\((10+0.8)\\,\\omega_0^2\\) に下がりますが、二つの奇のモードはちょうど \\(\\omega_0\\) と \\(\\sqrt3\\,\\omega_0\\) にとどまります。"
+        ],
+        "caution": [
+          "The model is the simplest one with the right symmetry: small displacements, a string of tension \\(F\\) and spacing \\(a\\), each bead coupled only to its two neighbours. The \\(q=0\\) mode has zero frequency because nothing resists a uniform shift; in a real molecule that role is played by a rigid translation or rotation. In molecules the same reasoning, with the point group in place of \\(D_n\\), predicts how many vibrational frequencies appear and which are degenerate, before any force constant is known.",
+          "このモデルは正しい対称性をもつ最も単純なものです。変位は小さく、弦の張力は \\(F\\)、間隔は \\(a\\) で、各ビーズは隣の二つとだけ結合しています。\\(q=0\\) のモードの振動数が 0 なのは、一様なずれに抵抗するものが何もないからです。実際の分子では剛体の並進や回転がこの役を担います。分子では \\(D_n\\) の代わりに点群を使う同じ推論で、力の定数を一つも知る前に、いくつの振動数が現れ、どれが縮退するかを予言できます。"
+        ],
+        "question": [
+          "Why does the odd mode keep its frequency exactly, not just approximately, when bead 1 is made heavier?",
+          "なぜビーズ 1 を重くしても、奇のモードは近似的ではなく正確に振動数を保つのですか？"
+        ],
+        "answer": [
+          "Odd under the mirror through bead 1 means \\(u_{-j}=-u_j\\), and in particular \\(u_0=-u_0=0\\): bead 1 does not move. The equation of motion of bead 1 then reads \\(m_0\\cdot0=(F/a)(u_1+u_{-1})=0\\), which holds whatever \\(m_0\\) is, and every other bead obeys the same equation as before. So the old odd eigenvector, with its old frequency, is still an exact solution. In the language of representations, the perturbation commutes with the mirror, so it cannot mix the odd subspace with the even one, and on the odd subspace it is zero.",
+          "ビーズ 1 を通る鏡映について奇であるとは \\(u_{-j}=-u_j\\) のことで、特に \\(u_0=-u_0=0\\)、つまりビーズ 1 は動きません。するとビーズ 1 の運動方程式は \\(m_0\\cdot0=(F/a)(u_1+u_{-1})=0\\) となり、\\(m_0\\) が何であっても成り立ちます。他のビーズは前と同じ方程式に従います。したがって元の奇の固有ベクトルは、元の振動数のまま、依然として厳密な解です。表現の言葉で言えば、摂動は鏡映と可換なので奇の部分空間と偶の部分空間を混ぜることはできず、奇の部分空間の上では 0 なのです。"
+        ],
+        "params": [
+          [
+            "n",
+            "Beads n",
+            "ビーズの数 n",
+            3,
+            12,
+            1,
+            6
+          ],
+          [
+            "m",
+            "Mode",
+            "モード",
+            0,
+            11,
+            1,
+            1
+          ],
+          [
+            "mu",
+            "Mass of bead 1 (μ)",
+            "ビーズ 1 の質量（μ）",
+            1,
+            4,
+            0.05,
+            1
+          ]
+        ],
+        "source": "Mildred Dresselhaus, Gene Dresselhaus and Ado Jorio · Group Theory: Application to the Physics of Condensed Matter (Springer, 2008)",
+        "url": "https://doi.org/10.1007/978-3-540-32899-5"
+      }
+    ]
+  },
+  {
+    "slug": "semiconductor-physics",
+    "title": [
+      "Semiconductor physics: bands, doping, junctions",
+      "半導体物理：バンド・ドーピング・接合"
+    ],
+    "description": [
+      "Silicon conducts badly on its own and superbly with one impurity atom in a million, and putting two kinds of doping side by side makes a one-way valve for current. How temperature and doping set the electron and hole densities through the Fermi level, how a p–n junction bends the bands and builds a field with no battery attached, and the Shockley diode equation that follows, including the same device run backwards as a solar cell.",
+      "シリコンはそれだけでは電気をほとんど通しませんが、百万個に一個の不純物原子で見事に通すようになり、二種類のドーピングを隣り合わせると電流の一方通行の弁ができます。温度とドーピングがフェルミ準位を通して電子と正孔の密度をどう決めるか、p–n 接合が電池なしにどうバンドを曲げ電場を作るか、そしてそこから導かれるショックレーのダイオード方程式と、同じ素子を逆向きに使う太陽電池を調べます。"
+    ],
+    "group": "physics",
+    "prerequisite": [
+      "Solid-state physics and statistical mechanics",
+      "固体物理と統計力学"
+    ],
+    "source": "Simon Sze and Kwok Ng · Physics of Semiconductor Devices, 3rd ed. (Wiley, 2007)",
+    "url": "https://doi.org/10.1002/0470068329",
+    "labs": [
+      {
+        "id": "carrier-statistics",
+        "title": [
+          "1. Carriers, doping and the Fermi level",
+          "1. キャリア、ドーピング、フェルミ準位"
+        ],
+        "body": [
+          "In a semiconductor the electrons that conduct live in the conduction band, above a gap of 1.12 eV in silicon, and the missing electrons in the valence band below behave as positive holes. Both densities are set by one number, the Fermi level E_F, through the Fermi–Dirac function: n = N꜀ exp(−(E꜀ − E_F)/kT) and p = Nᵥ exp(−(E_F − Eᵥ)/kT), so their product np = nᵢ² does not depend on doping at all. Phosphorus adds donors that give up an electron 45 meV below the band; the Fermi level then moves wherever charge neutrality demands. On the log scale at the left, the occupation curves become straight lines, and where they cross the band edges they read off n and p. Press Play to warm the crystal from 20 K and watch it pass from freeze-out to the extrinsic plateau to intrinsic behaviour.",
+          "半導体で電気を運ぶ電子は伝導帯にいます。シリコンでは 1.12 eV のギャップの上です。その下の価電子帯で欠けた電子は、正の正孔としてふるまいます。どちらの密度も、フェルミ・ディラック関数を通してただ一つの数、フェルミ準位 E_F で決まります。n = N꜀ exp(−(E꜀ − E_F)/kT)、p = Nᵥ exp(−(E_F − Eᵥ)/kT) なので、積 np = nᵢ² はドーピングにまったく依存しません。リンはバンドの 45 meV 下で電子を手放すドナーを加え、フェルミ準位は電荷中性が求める場所へ動きます。左の対数目盛では占有率の曲線が直線になり、それがバンド端と交わる値が n と p を与えます。再生を押して結晶を 20 K から温め、凍結領域から外因性の平坦部、そして真性のふるまいへ移る様子を見てください。"
+        ],
+        "formula": "n=N_c\\,e^{-(E_c-E_F)/kT},\\quad p=N_v\\,e^{-(E_F-E_v)/kT},\\quad np=n_i^2=N_cN_v\\,e^{-E_g/kT},\\quad p+N_D^+=n+N_A^-",
+        "example": [
+          "For silicon at 300 K, \\(E_g=1.1245\\) eV, \\(N_c=2.86\\times10^{19}\\) and \\(N_v=3.10\\times10^{19}\\,\\mathrm{cm^{-3}}\\), so \\(n_i=1.07\\times10^{10}\\,\\mathrm{cm^{-3}}\\). Dope with \\(10^{16}\\) phosphorus atoms per cm³: 99.6% are ionised, \\(n=1.0\\times10^{16}\\), the Fermi level sits \\(kT\\ln(N_c/n)=0.206\\) eV below the conduction band, and the holes are reduced to \\(p=n_i^2/n=1.1\\times10^4\\,\\mathrm{cm^{-3}}\\), a trillion times fewer. At 50 K only 5% of the donors are ionised. By 700 K, \\(n_i=2.7\\times10^{16}\\) has overtaken the doping and the crystal behaves as if undoped.",
+          "300 K のシリコンでは \\(E_g=1.1245\\) eV、\\(N_c=2.86\\times10^{19}\\)、\\(N_v=3.10\\times10^{19}\\,\\mathrm{cm^{-3}}\\) なので \\(n_i=1.07\\times10^{10}\\,\\mathrm{cm^{-3}}\\) です。1 cm³ あたり \\(10^{16}\\) 個のリン原子をドープすると、99.6% がイオン化して \\(n=1.0\\times10^{16}\\) となり、フェルミ準位は伝導帯の \\(kT\\ln(N_c/n)=0.206\\) eV 下にあり、正孔は \\(p=n_i^2/n=1.1\\times10^4\\,\\mathrm{cm^{-3}}\\)、一兆分の一にまで減ります。50 K ではイオン化しているドナーは 5% だけです。700 K では \\(n_i=2.7\\times10^{16}\\) がドーピングを追い越し、結晶はドープしていないかのようにふるまいます。"
+        ],
+        "caution": [
+          "The densities use the Boltzmann approximation, valid while the Fermi level stays a few \\(kT\\) inside the gap; above about \\(10^{18}\\,\\mathrm{cm^{-3}}\\) silicon becomes degenerate, the donor levels merge into an impurity band and the gap itself narrows, none of which is modelled. The band gap follows Varshni’s fit \\(E_g(T)=1.17-4.73\\times10^{-4}T^2/(T+636)\\) eV, and \\(N_c\\), \\(N_v\\) scale as \\(T^{3/2}\\); the donor and acceptor levels are taken as 45 meV for phosphorus and boron. The Fermi level is a property of the whole crystal, not an energy that any particular electron has.",
+          "密度にはボルツマン近似を使っており、フェルミ準位がギャップの内側に数 \\(kT\\) とどまる間は正しい近似です。約 \\(10^{18}\\,\\mathrm{cm^{-3}}\\) を超えるとシリコンは縮退し、ドナー準位は不純物帯へ融合し、ギャップ自体も狭まりますが、どれもモデルに入れていません。バンドギャップはバルシュニの式 \\(E_g(T)=1.17-4.73\\times10^{-4}T^2/(T+636)\\) eV に従い、\\(N_c\\)、\\(N_v\\) は \\(T^{3/2}\\) に比例させています。ドナーとアクセプタの準位はリンとホウ素について 45 meV としています。フェルミ準位は結晶全体の性質であり、特定の電子がもつエネルギーではありません。"
+        ],
+        "question": [
+          "Why is the product np independent of the doping, when doping changes n by a factor of a million?",
+          "ドーピングは n を百万倍も変えるのに、なぜ積 np はドーピングによらないのですか？"
+        ],
+        "answer": [
+          "Because multiplying the two Boltzmann factors cancels the Fermi level: \\(np=N_cN_v\\,e^{-(E_c-E_F)/kT}e^{-(E_F-E_v)/kT}=N_cN_v\\,e^{-E_g/kT}\\). Physically it is a law of mass action for the reaction electron + hole \\(\\rightleftharpoons\\) nothing: generation across the gap happens at a rate set only by temperature, recombination at a rate proportional to \\(np\\), and in equilibrium the two balance. Adding donors raises \\(n\\), which speeds up recombination until \\(p\\) has fallen in exact proportion.",
+          "二つのボルツマン因子を掛けるとフェルミ準位が打ち消されるからです。\\(np=N_cN_v\\,e^{-(E_c-E_F)/kT}e^{-(E_F-E_v)/kT}=N_cN_v\\,e^{-E_g/kT}\\) です。物理的には、電子 + 正孔 \\(\\rightleftharpoons\\) 無 という反応の質量作用の法則です。ギャップを越える生成は温度だけで決まる率で起こり、再結合は \\(np\\) に比例する率で起こり、平衡では両者がつり合います。ドナーを加えると \\(n\\) が増え、\\(p\\) がちょうど比例して減るまで再結合が速まります。"
+        ],
+        "params": [
+          [
+            "type",
+            "Doping",
+            "ドーピング",
+            0,
+            1,
+            1,
+            0,
+            [
+              [
+                "n-type (phosphorus)",
+                "n 型（リン）"
+              ],
+              [
+                "p-type (boron)",
+                "p 型（ホウ素）"
+              ]
+            ]
+          ],
+          [
+            "ldop",
+            "log₁₀ doping, cm⁻³",
+            "log₁₀ ドーピング、cm⁻³",
+            13,
+            18,
+            0.1,
+            16
+          ],
+          [
+            "T",
+            "Temperature, K",
+            "温度、K",
+            20,
+            800,
+            5,
+            300
+          ]
+        ],
+        "source": "Martin Green · Intrinsic concentration, effective densities of states, and effective mass in silicon, J. Appl. Phys. 67 (1990)",
+        "url": "https://doi.org/10.1063/1.345414"
+      },
+      {
+        "id": "pn-junction",
+        "title": [
+          "2. The p–n junction",
+          "2. p–n 接合"
+        ],
+        "body": [
+          "Put p-type and n-type silicon in contact and electrons diffuse from the n side, where they are plentiful, into the p side, and holes the other way. They leave behind the fixed charges of their ionised dopants, a depletion region that is positive on the n side and negative on the p side, and its field pushes back until diffusion and drift balance. In equilibrium the Fermi level is flat, so the bands must bend by the built-in potential V_bi. A bias V lowers (forward) or raises (reverse) the barrier by qV, splits the quasi-Fermi levels by the same amount, and narrows or widens the depletion region. Drag the p side up and down to apply a bias.",
+          "p 型と n 型のシリコンを接触させると、電子は多くいる n 側から p 側へ、正孔は逆向きに拡散します。後にはイオン化したドーパントの固定電荷が残り、n 側で正、p 側で負の空乏層ができます。その電場は、拡散とドリフトがつり合うまで押し返します。平衡ではフェルミ準位が平らなので、バンドは内蔵電位 V_bi だけ曲がらねばなりません。バイアス V は障壁を qV だけ下げ（順方向）または上げ（逆方向）、擬フェルミ準位を同じだけ分け、空乏層を狭めたり広げたりします。p 側を上下にドラッグしてバイアスをかけてください。"
+        ],
+        "formula": "V_{bi}=\\frac{kT}{q}\\ln\\frac{N_AN_D}{n_i^2},\\qquad W=\\sqrt{\\frac{2\\varepsilon(V_{bi}-V)}{q}\\Big(\\frac1{N_A}+\\frac1{N_D}\\Big)},\\qquad N_Ax_p=N_Dx_n,\\qquad \\mathcal E_{\\max}=\\frac{qN_Dx_n}{\\varepsilon}",
+        "example": [
+          "With \\(N_A=10^{17}\\) and \\(N_D=10^{16}\\,\\mathrm{cm^{-3}}\\) at 300 K, \\(V_{bi}=0.02585\\ln(10^{33}/1.14\\times10^{20})=0.770\\) V. With \\(\\varepsilon=11.7\\varepsilon_0\\) the depletion width is \\(W=0.331\\) µm, of which \\(x_n=0.301\\) µm lies in the lightly doped n side and only \\(0.030\\) µm in the p side, and the peak field is \\(47\\) kV/cm. A reverse bias of 5 V widens it to \\(0.91\\) µm and raises the field to \\(127\\) kV/cm; the capacitance \\(\\varepsilon/W\\) falls from \\(31\\) to \\(11\\) nF/cm².",
+          "300 K で \\(N_A=10^{17}\\)、\\(N_D=10^{16}\\,\\mathrm{cm^{-3}}\\) なら \\(V_{bi}=0.02585\\ln(10^{33}/1.14\\times10^{20})=0.770\\) V です。\\(\\varepsilon=11.7\\varepsilon_0\\) で空乏層の幅は \\(W=0.331\\) µm、そのうち \\(x_n=0.301\\) µm が低ドープの n 側に、わずか \\(0.030\\) µm が p 側にあり、ピーク電場は \\(47\\) kV/cm です。5 V の逆バイアスは幅を \\(0.91\\) µm に広げ、電場を \\(127\\) kV/cm に上げます。容量 \\(\\varepsilon/W\\) は \\(31\\) から \\(11\\) nF/cm² に下がります。"
+        ],
+        "caution": [
+          "This is the depletion approximation: the region is taken as completely empty of mobile carriers and the neutral regions as perfectly neutral, with sharp edges between. It is excellent in reverse bias and fails in strong forward bias, where injected carriers fill the junction. The quasi-Fermi levels are drawn flat across the depletion region, the usual low-injection picture. The breakdown field of roughly 300 kV/cm used for the warning in the readout is indicative: the true avalanche threshold depends on the doping and on the width of the high-field region.",
+          "これは空乏近似です。空乏層には動けるキャリアがまったくなく、中性領域は完全に中性で、その境界は鋭いとみなします。逆バイアスでは非常によく合い、注入されたキャリアが接合を満たす強い順バイアスでは成り立ちません。擬フェルミ準位は空乏層をまたいで平らに描いており、これは通常の低注入の描像です。読み取り欄の警告に使っている約 300 kV/cm の降伏電場は目安です。本当のなだれの閾値はドーピングと高電場領域の幅に依存します。"
+        ],
+        "question": [
+          "Why does the depletion region reach mainly into the lightly doped side?",
+          "なぜ空乏層は主に低ドープ側へ広がるのですか？"
+        ],
+        "answer": [
+          "Because the whole junction must stay neutral: the negative charge \\(qN_Ax_p\\) uncovered on the p side has to equal the positive charge \\(qN_Dx_n\\) on the n side, so \\(x_n/x_p=N_A/N_D\\). The lightly doped side has fewer dopant ions per unit length, so it has to be emptied over a longer stretch to supply the same charge. In a one-sided junction such as \\(p^+n\\) almost all of the width, the voltage drop and the capacitance are set by the light side, which is why device designers specify that doping most carefully.",
+          "接合全体が中性を保たねばならないからです。p 側にむき出しになった負電荷 \\(qN_Ax_p\\) は n 側の正電荷 \\(qN_Dx_n\\) と等しくなければならず、\\(x_n/x_p=N_A/N_D\\) です。低ドープ側は単位長さあたりのドーパントイオンが少ないので、同じ電荷を供給するにはより長い範囲を空にしなければなりません。\\(p^+n\\) のような片側接合では、幅も電圧降下も容量もほとんどすべてが低ドープ側で決まります。だからデバイス設計者はそのドーピングを最も注意深く指定するのです。"
+        ],
+        "params": [
+          [
+            "lna",
+            "log₁₀ N_A (p side), cm⁻³",
+            "log₁₀ N_A（p 側）、cm⁻³",
+            14,
+            18,
+            0.1,
+            17
+          ],
+          [
+            "lnd",
+            "log₁₀ N_D (n side), cm⁻³",
+            "log₁₀ N_D（n 側）、cm⁻³",
+            14,
+            18,
+            0.1,
+            16
+          ],
+          [
+            "V",
+            "Bias V, volts",
+            "バイアス V、ボルト",
+            -3,
+            0.6,
+            0.01,
+            0
+          ]
+        ],
+        "source": "William Shockley · The theory of p-n junctions in semiconductors and p-n junction transistors, Bell Syst. Tech. J. 28 (1949)",
+        "url": "https://doi.org/10.1002/j.1538-7305.1949.tb03645.x"
+      },
+      {
+        "id": "diode-iv",
+        "title": [
+          "3. The diode, and the solar cell",
+          "3. ダイオード、そして太陽電池"
+        ],
+        "body": [
+          "Forward bias lowers the barrier by qV, and the number of carriers with enough energy to cross it rises by the Boltzmann factor exp(qV/kT); reverse bias leaves only the small, voltage-independent flow of minority carriers that wander to the junction and are swept across. That is the Shockley equation. The saturation current Iₛ is proportional to nᵢ², so it grows steeply with temperature, and the forward voltage at a fixed current falls by about 2 mV per kelvin. Shine light on the junction and every absorbed photon adds a carrier pair that the field separates: the whole curve shifts down by the photocurrent, and in the fourth quadrant the diode is a power source. Drag the operating point and the illumination.",
+          "順バイアスは障壁を qV だけ下げ、それを越えるのに十分なエネルギーをもつキャリアの数はボルツマン因子 exp(qV/kT) 倍に増えます。逆バイアスでは、接合までさまよってきて掃き出される少数キャリアの、電圧によらない小さな流れだけが残ります。これがショックレーの方程式です。飽和電流 Iₛ は nᵢ² に比例するので温度とともに急激に増え、一定電流での順方向電圧は 1 ケルビンあたり約 2 mV 下がります。接合に光を当てると、吸収された光子はそれぞれキャリアの対を加え、それを電場が分けます。曲線全体が光電流だけ下へずれ、第四象限ではダイオードは電源になります。動作点と照度をドラッグしてください。"
+        ],
+        "formula": "I=I_s\\big(e^{qV/nkT}-1\\big)-I_{ph},\\qquad I_s\\propto n_i^2\\propto T^3e^{-E_g/kT},\\qquad V_{oc}=\\frac{nkT}{q}\\ln\\!\\Big(1+\\frac{I_{ph}}{I_s}\\Big),\\qquad FF=\\frac{P_{\\max}}{V_{oc}I_{sc}}",
+        "example": [
+          "With \\(I_s=10^{-12}\\) A at 300 K, an ideal diode (\\(n=1\\)) needs \\(V=0.0259\\ln(10^9)=0.536\\) V to carry 1 mA, and each further decade of current costs \\(59.5\\) mV. Heating it by 10 K multiplies \\(I_s\\) by about 5, and at 1 mA the voltage falls by \\(2.5\\) mV/K. Under light giving \\(I_{ph}=40\\) mA the open-circuit voltage is \\(0.0259\\ln(1+4\\times10^{10})=0.631\\) V, the best load draws \\(38.2\\) mA at \\(0.551\\) V, and \\(P_{\\max}=21.0\\) mW gives a fill factor of \\(0.834\\), as Green’s formula \\(FF\\approx(v_{oc}-\\ln(v_{oc}+0.72))/(v_{oc}+1)\\) with \\(v_{oc}=qV_{oc}/kT\\) predicts.",
+          "300 K で \\(I_s=10^{-12}\\) A なら、理想ダイオード（\\(n=1\\)）が 1 mA を流すには \\(V=0.0259\\ln(10^9)=0.536\\) V が必要で、電流をさらに一桁増やすごとに \\(59.5\\) mV かかります。10 K 温めると \\(I_s\\) は約 5 倍になり、1 mA での電圧は \\(2.5\\) mV/K 下がります。\\(I_{ph}=40\\) mA を与える光の下では開放電圧は \\(0.0259\\ln(1+4\\times10^{10})=0.631\\) V、最適な負荷は \\(0.551\\) V で \\(38.2\\) mA を引き出し、\\(P_{\\max}=21.0\\) mW から曲線因子は \\(0.834\\) です。これは \\(v_{oc}=qV_{oc}/kT\\) としたグリーンの式 \\(FF\\approx(v_{oc}-\\ln(v_{oc}+0.72))/(v_{oc}+1)\\) の予言どおりです。"
+        ],
+        "caution": [
+          "Real diodes add a series resistance that bends the forward curve over at high current, recombination in the depletion region that makes the ideality factor \\(n\\) approach 2 at low current, and reverse breakdown, none of which is drawn. The temperature dependence assumes only \\(I_s\\propto T^3e^{-E_g(T)/kT}\\); real devices often show \\(I_s\\) roughly doubling every 10 K because of other contributions. A silicon solar cell also loses much of the sunlight to thermalisation and to photons with less energy than the gap, which is why the photocurrent here is a free parameter rather than computed.",
+          "実際のダイオードには、大電流で順方向の曲線を寝かせる直列抵抗、低電流で理想係数 \\(n\\) を 2 に近づける空乏層内の再結合、逆方向の降伏が加わりますが、どれも描いていません。温度依存性は \\(I_s\\propto T^3e^{-E_g(T)/kT}\\) だけを仮定しています。実際の素子では他の寄与のために、\\(I_s\\) が 10 K ごとにおよそ二倍になることがよくあります。シリコン太陽電池は太陽光の多くを、熱化と、ギャップより小さなエネルギーの光子によって失います。だからここでは光電流を計算せず、自由なパラメータにしています。"
+        ],
+        "question": [
+          "Why does a solar cell’s open-circuit voltage fall when it gets hot, even though the light is unchanged?",
+          "光が変わらないのに、なぜ太陽電池の開放電圧は熱くなると下がるのですか？"
+        ],
+        "answer": [
+          "At open circuit the forward diode current exactly cancels the photocurrent, \\(I_s(e^{qV_{oc}/kT}-1)=I_{ph}\\). The photocurrent barely depends on temperature, but \\(I_s\\propto n_i^2\\) grows by orders of magnitude, so a smaller forward bias is enough to push the same cancelling current: \\(V_{oc}=(kT/q)\\ln(I_{ph}/I_s)\\) falls by roughly 2 mV per kelvin per cell. Panels on a hot roof lose several per cent of their output this way, which is why their datasheets quote a temperature coefficient of power.",
+          "開放状態では順方向のダイオード電流が光電流をちょうど打ち消し、\\(I_s(e^{qV_{oc}/kT}-1)=I_{ph}\\) です。光電流は温度にほとんど依存しませんが、\\(I_s\\propto n_i^2\\) は何桁も増えるので、同じ打ち消し電流を押し出すのにより小さな順バイアスで足ります。\\(V_{oc}=(kT/q)\\ln(I_{ph}/I_s)\\) はセル一つあたり 1 ケルビンにつき約 2 mV 下がります。暑い屋根の上のパネルはこうして出力の数パーセントを失います。だからデータシートには電力の温度係数が載っているのです。"
+        ],
+        "params": [
+          [
+            "T",
+            "Temperature, K",
+            "温度、K",
+            250,
+            400,
+            5,
+            300
+          ],
+          [
+            "nid",
+            "Ideality factor n",
+            "理想係数 n",
+            1,
+            2,
+            0.05,
+            1
+          ],
+          [
+            "Iph",
+            "Photocurrent, mA",
+            "光電流、mA",
+            0,
+            50,
+            0.5,
+            30
+          ],
+          [
+            "V",
+            "Voltage V",
+            "電圧 V",
+            -0.4,
+            0.8,
+            0.005,
+            0.6
+          ],
+          [
+            "scale",
+            "Current axis",
+            "電流の軸",
+            0,
+            1,
+            1,
+            0,
+            [
+              [
+                "Linear",
+                "線形"
+              ],
+              [
+                "Logarithmic",
+                "対数"
+              ]
+            ]
+          ]
+        ],
+        "source": "Christiana Honsberg and Stuart Bowden · PVEducation: solar cell operation and fill factor",
+        "url": "https://www.pveducation.org/pvcdrom/solar-cell-operation/fill-factor"
+      }
+    ]
   }
 ]

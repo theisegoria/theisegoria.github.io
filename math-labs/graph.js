@@ -110,7 +110,9 @@
     'crossovers-filters': ['control-theory', 'complex-analysis', 'room-acoustics'],
     'room-acoustics': ['partial-differential-equations', 'statistical-mechanics', 'optics'],
     'wavelets': ['information-theory', 'numerical-analysis', 'quantum-mechanics'],
-    'laser-physics': ['statistical-mechanics', 'dynamical-systems', 'atomic-physics']
+    'laser-physics': ['statistical-mechanics', 'dynamical-systems', 'atomic-physics'],
+    'representation-theory': ['quantum-mechanics', 'lie-groups', 'fourier-analysis'],
+    'semiconductor-physics': ['electromagnetism', 'quantum-mechanics', 'laser-physics']
   };
   // Topics named in each topic's own prerequisite line (content.json "prerequisite").
   const PREREQ = {
@@ -151,7 +153,9 @@
     'crossovers-filters': ['electromagnetism', 'complex-analysis', 'fourier-analysis'], // AC circuits, complex numbers and Fourier analysis
     'room-acoustics': ['partial-differential-equations', 'fourier-analysis'], // The wave equation, standing waves and Fourier analysis
     'wavelets': ['fourier-analysis', 'functional-analysis'],              // Fourier analysis and inner product spaces
-    'laser-physics': ['optics', 'quantum-mechanics']                     // Optics and quantum mechanics
+    'laser-physics': ['optics', 'quantum-mechanics'],                    // Optics and quantum mechanics
+    'representation-theory': ['group-theory', 'linear-algebra'],         // Group theory and linear algebra
+    'semiconductor-physics': ['solid-state-physics', 'statistical-mechanics'] // Solid-state physics and statistical mechanics
   };
 
   let topics = [], bySlug = new Map(), edges = [], drawn = [];
