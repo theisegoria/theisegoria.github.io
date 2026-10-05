@@ -12,4 +12,6 @@ Verified 2026-09-19. The 20-row catalogue covers the announced M1–M6 SoCs, inc
 - English/Japanese pages share interaction logic and source data; selections, experiment settings and the fragment survive language switches..
 - PDF editions contain 26 pages each, including all 20 architecture plates. Fonts are embedded; pages were rendered and visually inspected.
 
+The die floorplan view reuses the block placements of `/m-series-floorplans/` (die photographs and labelled floorplans where public, nearest-relative lineage otherwise, marked per chip and per block). Its silicon textures are procedural; no third-party die photograph is embedded or traced.
+
 Detailed topology adds six functional views with per-block sources, zoom, expanded viewing and data-path steps. Firestorm-specific pipeline/port counts are independently measured M1 P-core results, not official Apple disclosures or values for later CPUs. Three original Apple Newsroom package illustrations are included with source links and Apple attribution. Source images were not modified.

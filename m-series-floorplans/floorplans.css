@@ -47,15 +47,18 @@
 .fp .stages{display:grid;grid-template-columns:1fr;gap:12px}
 .fp .stages.two{grid-template-columns:1fr 1fr}
 @media (max-width:760px){.fp .stages.two{grid-template-columns:1fr}}
-.fp .fp-stage{margin:0;background:#0d0f13;border-radius:6px;padding:10px;overflow-x:auto;color:#cfd4da}
-.fp .fp-stage figcaption{font:600 13px "JetBrains Mono",monospace;color:#cfd4da;margin:2px 4px 6px;letter-spacing:.04em}
+.fp .fp-stage{margin:0;background:radial-gradient(120% 90% at 40% 30%,#181b21 0,#0b0c0f 70%);border-radius:6px;padding:10px;overflow-x:auto;color:#cfd4da;box-shadow:inset 0 0 0 1px #20242b}
+.fp .fp-stage figcaption{font:600 13px "JetBrains Mono",monospace;color:#e6e9ee;margin:2px 4px 8px;letter-spacing:.04em;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.fp .fp-stage figcaption .basis{font-weight:500;background:#0b0c0f}
+.fp .fp-stage figcaption .basis.photo{--b:#52c48f}.fp .fp-stage figcaption .basis.annot{--b:#62a8ea}.fp .fp-stage figcaption .basis.derived{--b:#e0aa3e}.fp .fp-stage figcaption .basis.lineage{--b:#aab0b9}
 .fp .fp-stage svg{display:block;width:100%;height:auto;max-height:78vh;min-width:300px;font-family:"JetBrains Mono",monospace}
 .fp .stages.two .fp-stage svg{max-height:62vh}
-.fp .fp-stage .lbl{fill:#eef1f4;font-weight:500;pointer-events:none}
-.fp .fp-stage .cap{fill:#aab2bc;font-family:"JetBrains Mono",monospace}
+.fp .fp-stage .lbl{fill:#f4f6f8;font-weight:600;pointer-events:none;paint-order:stroke;stroke:#05060a;stroke-opacity:.85;stroke-width:2.8px;stroke-linejoin:round}
+.fp .fp-stage .cap{fill:#c4cad2;font-family:"JetBrains Mono",monospace;paint-order:stroke;stroke:#0b0c0f;stroke-width:3px}
 .fp .fp-stage .scale{fill:#cfd4da}
 .fp .blk{cursor:pointer;transition:opacity .15s}
-.fp .blk:hover .bb,.fp .blk.sel .bb{stroke-width:2.6;stroke:#fff}
+.fp .blk:hover .bb,.fp .blk.sel .bb{stroke-width:2.6;stroke:#fff;stroke-opacity:1}
+.fp .blk:hover .wash,.fp .blk.sel .wash{fill-opacity:.38}
 .fp svg.dim .blk:not(.hl){opacity:.16}
 .fp .paths{display:none}
 .fp svg.flow .paths{display:inline}
@@ -91,4 +94,5 @@
 html[lang="ja"] .fp{line-height:1.85}
 html[lang="ja"] .fp h1,html[lang="ja"] .fp h2,html[lang="ja"] .fp h3,html[lang="ja"] .fp .bi-cat{font-family:"Hiragino Mincho ProN","Yu Mincho",serif;font-stretch:normal}
 @media (prefers-reduced-motion:reduce){.fp .blk{transition:none}}
-@media (max-width:640px){.fp .fp-stage svg{min-width:560px}.fp .stages.two .fp-stage svg{min-width:520px}}
+@media (max-width:640px){.fp .fp-stage{padding:8px 6px}.fp .fp-stage svg{min-width:0;max-height:none}.fp .vs{margin-left:0}}
+.fp .keyrow .dash{width:16px;height:9px;border:1.4px dashed var(--muted);border-radius:2px;display:inline-block}

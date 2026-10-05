@@ -105,6 +105,24 @@
 
   <dl class="mel-stats" id="melStats"></dl>
 
+  <figure class="mel-secfig">
+    <div class="mel-sechead">
+      <div><h2 class="mel-figttl">頭皮の断面</h2>
+      <p class="mel-figsub">定常状態のメラトニン濃度を組織に重ねて描いた。左半分が選択した外用濃度、右半分が経口用量。上下にドラッグすると目標の深さが動く。</p></div>
+      <div class="mel-secctl">
+        <div class="mel-seg" role="group" aria-label="表示する濃度場">
+          <button type="button" data-view="split" aria-pressed="true">両方</button>
+          <button type="button" data-view="top" aria-pressed="false">外用</button>
+          <button type="button" data-view="oral" aria-pressed="false">経口</button>
+        </div>
+        <button type="button" class="mel-tog" id="melSecLabels" aria-pressed="true">ラベル</button>
+      </div>
+    </div>
+    <div class="mel-section" id="melSection"><canvas id="melSecCv" tabindex="0" role="img" aria-label="頭皮の断面図"></canvas><div class="mel-tip" id="melTipSec"></div></div>
+    <div class="mel-cbar" id="melCbar" aria-hidden="true"></div>
+    <figcaption>明るさと淡い点の密度は、どちらも同じ対数スケールで組織中濃度を表す。外用側の白い破線は1桁ごとの等濃度線である。外用の濃度場は塗布膜と表皮で最も明るく、毛細血管ループと真皮の血管叢に除去されながら約775 µmの減衰長で薄れていく。経口の濃度場は血流がすべての深さへ同時に運ぶため、どの深さでも同じである。金色の線は両者が等しくなる深さを示す。厚さ20 µmの角質層と80 µmの表皮を3 mmの毛包と並べて見えるようにするため、深さ軸は平方根で圧縮しているが、目盛りは実際の深さである。組織は頭皮の解剖を描いた図であり、標本から起こしたものではない。</figcaption>
+  </figure>
+
   <figure>
     <h2 class="mel-figttl">皮膚内の濃度分布</h2>
     <p class="mel-figsub">深さに対する定常状態の組織内メラトニン濃度。図の上をドラッグすると目標の深さが動く。</p>

@@ -1,6 +1,7 @@
 <!doctype html><html lang="ja" class=" ig-document ig-editorial"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Apple Mシリーズ · ダイのフロアプラン · Isegoria</title><meta name="description" content="M1からM6までのApple Mシリーズ全チップを、操作できる上面フロアプランとして描いた。CPUクラスタ、GPU、Neural Engine、SLC、メモリ、複数ダイのUltraやM5のFusionダイまで、各レイアウトの根拠とともに示す。"><meta property="og:title" content="Apple Mシリーズ · ダイのフロアプラン · Isegoria"><meta property="og:description" content="M1からM6までのApple Mシリーズ全チップを、操作できる上面フロアプランとして描いた。CPUクラスタ、GPU、Neural Engine、SLC、メモリ、複数ダイのUltraやM5のFusionダイまで、各レイアウトの根拠とともに示す。">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,500..800&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap"><link rel="stylesheet" href="/m-series-floorplans/floorplans.css">
 <link rel="alternate" hreflang="en" href="https://theisegoria.github.io/m-series-floorplans/"><link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/m-series-floorplans/"><link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/m-series-floorplans/">
+<link rel="icon" href="/assets/favicon.svg">
 <script src="/assets/lang.js"></script>
 <!-- ISEGORIA:HEAD -->
 <link rel="stylesheet" href="/assets/site-shell.css?v=c21cd21e82">
@@ -24,7 +25,7 @@
 <p class="lede">Appleが発表したMシリーズの全チップを、分解できるフロアプランとして描いた。表からチップを選び、ブロックを選んで役割を見る。データ経路を重ねたり、2つのダイを並べて比べたりもできる。各チップには、そのレイアウトがダイ写真に基づくのか、根拠のある推定なのかを示してある。</p>
 </header>
 <div class="picker" id="fp-picker" role="group" aria-label="チップを選ぶ"></div>
-<div class="keyrow"><span><i class="dot photo"></i>ダイ写真</span><span><i class="dot annot"></i>注釈付きフロアプラン</span><span><i class="dot derived"></i>派生ダイ</span><span><i class="dot lineage"></i>系譜からの推定</span></div>
+<div class="keyrow"><span><i class="dot photo"></i>ダイ写真</span><span><i class="dot annot"></i>注釈付きフロアプラン</span><span><i class="dot derived"></i>派生ダイ</span><span><i class="dot lineage"></i>系譜からの推定</span><span><i class="dash"></i>配置は推定</span></div>
 <div class="bench">
 <div class="board">
 <div class="toolbar"><div id="fp-legend" style="display:contents"></div><label class="vs" for="fp-vs">比較対象<select id="fp-vs"></select></label></div>
@@ -34,7 +35,7 @@
 </div>
 <p class="scale-note" id="fp-scale"></p>
 </div>
-<aside class="side"><div class="card" id="fp-card" aria-live="polite"></div><div class="card" id="fp-block" hidden aria-live="polite"></div><p class="hint">ダイ上のブロックを選ぶと、その正体と、配置が出典に基づくのか推定なのかが表示される。選んだチップはURLに残るので、比較をそのまま共有できる。</p></aside>
+<aside class="side"><div class="card" id="fp-card" aria-live="polite"></div><div class="card" id="fp-block" hidden aria-live="polite"></div><p class="hint">ダイ上のブロックを選ぶと、その正体と、配置が出典に基づくのか推定なのかが表示される。選んだチップはURLに残るので、比較をそのまま共有できる。</p><p class="hint">シリコンは写真ではなく描画である。細かく規則的な格子はSRAM、密な斑点は論理回路、繰り返すタイルはコア、縁に並ぶ金色の列はメモリのI/Oセルを表す。色は機能を示し、破線の輪郭は配置が推定であるブロックを示す。</p></aside>
 </div>
 <section>
 <h2>ファミリーから見えること</h2>

@@ -4,3 +4,29 @@
 #topology-lab{margin:30px 0}.topo-toolbar{display:flex;gap:20px;flex-wrap:wrap;align-items:end;margin-bottom:14px}.topo-toolbar label{min-width:150px;flex:1}.topo-toolbar label:last-of-type{max-width:220px}.topo-toolbar input{display:block;width:100%;min-height:36px;accent-color:var(--blue)}.topo-help{font-size:14px;color:var(--muted)}.topo-stage{overflow:auto;max-height:720px;border-radius:10px;background:#091322;border:1px solid #334a65;overscroll-behavior:contain}.topo-stage svg{display:block;margin:auto;font-family:-apple-system,BlinkMacSystemFont,'Hiragino Sans',sans-serif;max-width:none}.topo-node{cursor:pointer}.topo-node:hover>rect{stroke:#d4e5f5;stroke-width:3}.topo-node:focus{outline:none}.topo-node:focus>rect{stroke:#ffce7e;stroke-width:4}.topo-inspector{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:40px;margin:28px 0 35px}.topo-evidence{border-left:1px solid var(--line);padding-left:25px;font-size:13px;color:var(--muted)}#topo-choices{display:flex;gap:7px;flex-wrap:wrap}#topo-choices button{font-size:12px;padding:6px 9px;min-height:35px}.topo-stepper{display:flex;align-items:center;gap:15px;flex-wrap:wrap;margin-top:16px}.topo-stepper span{font-size:14px;color:var(--muted)}.topo-expanded{position:fixed;inset:10px;z-index:9999;background:var(--paper);overflow:auto;padding:24px;box-shadow:0 0 0 50px #0c172aca;border-radius:10px}.topo-expanded .topo-stage{max-height:70vh}.source-gallery{background:#eef2f7;padding:25px;display:grid;grid-template-columns:repeat(3,1fr);gap:20px}.source-gallery figure{margin:0;min-width:0}.source-gallery img{width:100%;height:260px;object-fit:contain;background:white}.source-gallery figcaption{font-size:13px;margin-top:10px;color:var(--ink)}@media(max-width:700px){.topo-inspector{grid-template-columns:1fr;gap:20px}.topo-evidence{border-left:0;border-top:1px solid var(--line);padding:20px 0 0}.topo-stage{max-height:600px}.source-gallery{grid-template-columns:1fr;padding:15px}.topo-expanded{inset:3px;padding:13px}.topo-toolbar{gap:12px}.topo-toolbar label{min-width:130px}.topo-help{font-size:13px}}
 
 .formula{font-size:16px;margin:18px 0;overflow-x:auto}.formula .katex{font-size:1.05em}
+/* Die floorplan view (renderer shared with /m-series-floorplans/) */
+.topo-die{--sil-edge:#2a2f37;--p:#F0A04B;--s:#FFD166;--e:#4FC2B8;--amx:#E7B98A;--gpu:#9D8BF0;--na:#F27BC0;--ane:#F07A7A;--slc:#6FA8E8;--mem:#C99A68;--fab:#7D8794;--media:#8DC266;--io:#9AA6B4;--sys:#BBAE8C;--link:#F4E27A;
+  margin:0;padding:12px;background:radial-gradient(120% 90% at 40% 30%,#181b21 0,#0b0c0f 70%);color:#cfd4da;min-height:100%}
+.topo-die figcaption{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font:600 13px ui-monospace,SFMono-Regular,Menlo,monospace;color:#e6e9ee;margin:0 2px 10px;letter-spacing:.03em}
+.topo-die figcaption a{margin-left:auto;font:500 12.5px -apple-system,BlinkMacSystemFont,'Hiragino Sans',sans-serif;color:#9cc7ff;letter-spacing:0}
+.topo-die .basis{font:500 11px ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--b);border:1px solid color-mix(in srgb,var(--b) 55%,transparent);border-radius:999px;padding:2px 8px;white-space:nowrap}
+.topo-die .basis.photo{--b:#52c48f}.topo-die .basis.annot{--b:#62a8ea}.topo-die .basis.derived{--b:#e0aa3e}.topo-die .basis.lineage{--b:#aab0b9}
+.topo-die svg{display:block;max-width:none;margin:0 auto;height:auto;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+.topo-die .lbl{fill:#f4f6f8;font-weight:600;pointer-events:none;paint-order:stroke;stroke:#05060a;stroke-opacity:.85;stroke-width:2.8px;stroke-linejoin:round}
+.topo-die .cap{fill:#c4cad2;paint-order:stroke;stroke:#0b0c0f;stroke-width:3px}
+.topo-die .scale{fill:#cfd4da}
+.topo-die .blk{cursor:pointer;outline:none}
+.topo-die .blk:hover .bb,.topo-die .blk.sel .bb,.topo-die .blk:focus-visible .bb{stroke-width:2.6;stroke:#fff;stroke-opacity:1}
+.topo-die .blk:hover .wash,.topo-die .blk.sel .wash{fill-opacity:.38}
+.topo-die .paths{display:none}
+.topo-die-note{font-size:12.5px;color:#aeb6c0;margin:10px 2px 0;max-width:80ch;line-height:1.5}
+.topo-die-miss{color:#cfd4da;padding:30px}
+html[data-theme="dark"] select,html[data-theme="dark"] .topo-toolbar button,html[data-theme="dark"] .topo-stepper button,html[data-theme="dark"] #topo-choices button:not([aria-pressed=true]){background:var(--ig-panel);color:var(--ig-ink);border-color:var(--ig-rule)}
+html[data-theme="dark"] select option{background:var(--ig-panel);color:var(--ig-ink)}
+/* dark theme: surfaces that were hard-coded white */
+html[data-theme="dark"] .lab{background:var(--ig-panel)}
+html[data-theme="dark"] button:not(.chip-diagram button):not([aria-pressed=true]){background:var(--ig-panel);color:var(--ig-ink);border-color:var(--ig-rule)}
+html[data-theme="dark"] .bar-track,html[data-theme="dark"] .capacity{background:#2a2f37}
+html[data-theme="dark"] .die{background:#232a33;border-color:#4b5868;color:var(--ig-ink)}
+html[data-theme="dark"] .try{background:#18222f}
+html[data-theme="dark"] .source-gallery{background:#151a21}

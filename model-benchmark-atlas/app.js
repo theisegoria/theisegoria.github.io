@@ -83,7 +83,7 @@ const svg=$('#main-chart'),box=svg.parentElement,tip=$('#main-tip');
 let mainGeom=null,hoverI=null;
 function drawMain(){
  const w=Math.max(280,box.clientWidth),narrow=w<560,h=narrow?300:360;
- const m={l:narrow?44:56,r:narrow?84:128,t:20,b:46};
+ const m={l:narrow?44:56,r:narrow?94:136,t:20,b:46};
  const vals=M.flatMap(x=>x[key]),sc=scaleFor(key,vals,narrow?4:5);
  const X=i=>m.l+14+i*(w-m.l-m.r-28)/4,Y=v=>h-m.b-sc.f(v)*(h-m.t-m.b);
  mainGeom={w,h,m,X,Y};
@@ -98,7 +98,9 @@ function drawMain(){
  el(svg,'text',{class:'ax-title',x:m.l,y:h-4},t('Reasoning effort →','推論レベル →')+(sc.log?t('   ·   log scale','　·　対数目盛'):''));
  const gl=el(svg,'g');
  M.forEach((mm,j)=>{el(gl,'path',{class:'series',stroke:COLORS[j],d:mm[key].map((v,i)=>(i?'L':'M')+X(i).toFixed(1)+','+Y(v).toFixed(1)).join('')});});
- M.forEach((mm,j)=>mm[key].forEach((v,i)=>mark(gl,j,X(i),Y(v),i===effort?6:4.3)));
+ /* dodge marks that share a value in the same column so none hides another */
+ const dx=(j,i)=>{const v=M[j][key][i],same=M.map((mm,q)=>q).filter(q=>Math.abs(Y(M[q][key][i])-Y(v))<5);if(same.length<2)return 0;return (same.indexOf(j)-(same.length-1)/2)*8;};
+ M.forEach((mm,j)=>mm[key].forEach((v,i)=>mark(gl,j,X(i)+dx(j,i),Y(v),i===effort?6:4.3)));
  // direct labels at line ends, spread apart to avoid collisions
  const ends=M.map((mm,j)=>({j,y:Y(mm[key][4]),y0:Y(mm[key][4])})).sort((a,b)=>a.y-b.y);
  const gap=narrow?17:19;
@@ -108,8 +110,9 @@ function drawMain(){
  const lx=X(4)+12;
  ends.forEach(e=>{
   if(Math.abs(e.y-e.y0)>2)el(svg,'path',{class:'leader',d:`M${X(4)+7},${e.y0}L${lx-3},${e.y}`});
-  const tx=el(svg,'text',{x:lx,y:e.y+4.5});
-  el(tx,'tspan',{class:'end-name'},M[e.j].name);
+  mark(svg,e.j,lx+4,e.y,3.6,'end-mk');
+  const tx=el(svg,'text',{x:lx+12,y:e.y+4.5});
+  el(tx,'tspan',{class:'end-name',fill:COLORS[e.j]},M[e.j].name);
   if(!narrow)el(tx,'tspan',{class:'end-val',dx:7},fmt(key,M[e.j][key][4]));
  });
  // crosshair + interaction layer
@@ -216,7 +219,7 @@ function drawFrontier(){
   const hi=pts.find(p=>p.j===j&&p.i===4),lo=pts.find(p=>p.j===j&&p.i===0);
   const nameW=mm.name.length*7.2,anchorEnd=hi.px+nameW+14>w-m.r;
   const nx=anchorEnd?hi.px-10:hi.px+10,ny=place(anchorEnd?hi.px-10-nameW/2:hi.px+10+nameW/2,hi.py-9,nameW);
-  el(fsvg,'text',{class:'pt-name',x:nx,y:ny,'text-anchor':anchorEnd?'end':'start'},mm.name);
+  el(fsvg,'text',{class:'pt-name',fill:COLORS[j],x:nx,y:ny,'text-anchor':anchorEnd?'end':'start'},mm.name);
   if(!narrow){const ly=place(lo.px+8+14,lo.py+17,28);el(fsvg,'text',{class:'pt-label',x:lo.px+8,y:ly},short[0]);}
  });
  el(fsvg,'g',{id:'f-hover'});

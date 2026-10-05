@@ -1,6 +1,7 @@
 <!doctype html><html lang="en" class=" ig-document ig-editorial"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Apple M-series · Die floorplans · Isegoria</title><meta name="description" content="Every Apple M-series chip from M1 to M6 as an interactive top-down floorplan: CPU clusters, GPU, Neural Engine, SLC and memory, multi-die Ultras and the M5 Fusion dies, with how each layout is known."><meta property="og:title" content="Apple M-series · Die floorplans · Isegoria"><meta property="og:description" content="Every Apple M-series chip from M1 to M6 as an interactive top-down floorplan: CPU clusters, GPU, Neural Engine, SLC and memory, multi-die Ultras and the M5 Fusion dies, with how each layout is known.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,500..800&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap"><link rel="stylesheet" href="/m-series-floorplans/floorplans.css">
 <link rel="alternate" hreflang="en" href="https://theisegoria.github.io/m-series-floorplans/"><link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/m-series-floorplans/"><link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/m-series-floorplans/">
+<link rel="icon" href="/assets/favicon.svg">
 <script src="/assets/lang.js"></script>
 <!-- ISEGORIA:HEAD -->
 <link rel="stylesheet" href="/assets/site-shell.css?v=c21cd21e82">
@@ -24,7 +25,7 @@
 <p class="lede">Every M-series chip Apple has announced, drawn as a floorplan you can take apart. Pick a chip from the table, select a block to see what it does, turn on the data paths, or compare two dies side by side. Each chip is marked with how its layout is known, from die photograph to informed estimate.</p>
 </header>
 <div class="picker" id="fp-picker" role="group" aria-label="Choose a chip"></div>
-<div class="keyrow"><span><i class="dot photo"></i>Die photo</span><span><i class="dot annot"></i>Labelled floorplan</span><span><i class="dot derived"></i>Derived die</span><span><i class="dot lineage"></i>Lineage</span></div>
+<div class="keyrow"><span><i class="dot photo"></i>Die photo</span><span><i class="dot annot"></i>Labelled floorplan</span><span><i class="dot derived"></i>Derived die</span><span><i class="dot lineage"></i>Lineage</span><span><i class="dash"></i>Placement inferred</span></div>
 <div class="bench">
 <div class="board">
 <div class="toolbar"><div id="fp-legend" style="display:contents"></div><label class="vs" for="fp-vs">Compare with<select id="fp-vs"></select></label></div>
@@ -34,7 +35,7 @@
 </div>
 <p class="scale-note" id="fp-scale"></p>
 </div>
-<aside class="side"><div class="card" id="fp-card" aria-live="polite"></div><div class="card" id="fp-block" hidden aria-live="polite"></div><p class="hint">Select any block on the die to see what it is and whether its placement comes from a source or is inferred. Links carry the chosen chips, so a comparison can be shared.</p></aside>
+<aside class="side"><div class="card" id="fp-card" aria-live="polite"></div><div class="card" id="fp-block" hidden aria-live="polite"></div><p class="hint">Select any block on the die to see what it is and whether its placement comes from a source or is inferred. Links carry the chosen chips, so a comparison can be shared.</p><p class="hint">The silicon is drawn, not photographed. Fine regular grids are SRAM, dense speckle is logic, repeated tiles are cores, and the gold rows along the edges are memory I/O cells. Colour marks the function; a dashed outline marks a block whose placement is inferred.</p></aside>
 </div>
 <section>
 <h2>What the family shows</h2>

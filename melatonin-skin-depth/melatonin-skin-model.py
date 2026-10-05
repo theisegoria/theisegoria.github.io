@@ -103,7 +103,7 @@ def c_topical_depth(x_cm, pct, area_cm2, lam=None, D=D_tis):
 
 def c_vehicle_ngml(pct):
     """Concentration in the applied vehicle / follicular duct reservoir, ng/mL."""
-    return pct / 100.0 * 1e9 / 1000.0    # pct% w/v -> g/100mL -> ng/mL
+    return pct / 100.0 * 1e9             # pct% w/v = pct/100 g/mL; 1 g/mL = 1e9 ng/mL
 
 def required_oral_mg(x_cm, pct, area_cm2, Kp=Kp_skin, F=F_oral, lam=None, D=D_tis):
     """Oral daily dose whose 24-h average tissue conc equals the topical steady conc at depth x."""

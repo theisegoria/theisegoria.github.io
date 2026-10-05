@@ -100,3 +100,21 @@ body.ig-site .mel{font-family:var(--ig-sans);font-size:15px;line-height:1.6;colo
 .mel-dl:hover{border-color:var(--ig-accent);color:var(--ig-accent)}
 html:lang(ja) .mel-prose,html:lang(ja) .mel figcaption,html:lang(ja) .mel-dek{line-height:1.85}
 @media (prefers-reduced-motion:reduce){.mel *{transition:none!important}}
+/* Scalp section */
+.mel-sechead{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:flex-end;justify-content:space-between;margin-bottom:12px}
+.mel-sechead .mel-figsub{margin-bottom:0;max-width:60ch}
+.mel-secctl{display:flex;gap:8px;align-items:center}
+.mel-secctl .mel-seg{min-width:210px}
+.mel-tog{border:1px solid var(--ig-rule);background:var(--ig-paper);color:var(--ig-muted);font-family:var(--ig-sans);font-size:12px;font-weight:500;padding:6px 11px;border-radius:5px;cursor:pointer}
+.mel-tog[aria-pressed="true"]{border-color:var(--ig-accent);color:var(--ig-accent)}
+.mel-section{position:relative;border:1px solid var(--ig-rule);border-radius:6px;overflow:hidden;background:var(--ig-panel);box-shadow:0 1px 0 color-mix(in srgb,var(--ig-ink) 6%,transparent),0 10px 30px -18px color-mix(in srgb,var(--ig-ink) 40%,transparent)}
+.mel-section canvas{display:block;width:100%;cursor:ns-resize;touch-action:pan-x}
+.mel-section canvas:focus-visible{outline:2px solid var(--ig-accent);outline-offset:-2px}
+.mel-section .mel-tip{min-width:170px}
+.mel-cbar{position:relative;margin:12px 0 0 48px;max-width:460px;padding-bottom:30px}
+.mel-cbar-bar{height:10px;border-radius:5px;border:1px solid var(--ig-rule)}
+.mel-cbar-ticks{position:relative;height:16px}
+.mel-cbar-ticks span{position:absolute;top:3px;transform:translateX(-50%);font-family:var(--mel-mono);font-size:10px;color:var(--ig-muted)}
+.mel-cbar-lab{position:absolute;left:0;bottom:4px;font-size:11px;color:var(--ig-muted)}
+@media (max-width:520px){.mel-cbar{margin-left:40px;margin-right:12px}.mel-secctl .mel-seg{min-width:0}}
+@media (max-width:520px){.mel-secctl{width:100%}.mel-secctl .mel-seg{flex:1}.mel-secctl .mel-seg button{padding:6px 2px}}

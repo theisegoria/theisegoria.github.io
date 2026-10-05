@@ -64,58 +64,146 @@ function el(t,a,p){const e=document.createElementNS(NS,t);if(a)for(const k in a)
 function dieOf(c){return c.pk.map(p=>D[p.d]);}
 function basisOf(c){const ds=dieOf(c);const order=['lineage','derived','annot','photo'];let w='photo';ds.forEach(d=>{if(order.indexOf(d.basis)<order.indexOf(w))w=d.basis;});return w;}
 function bbox(c){let W=0,H=0;c.pk.forEach(p=>{const d=D[p.d];W=Math.max(W,p.x+d.w);H=Math.max(H,p.y+d.h);});return {W,H};}
-/* ---------- renderer ---------- */
+/* ---------- renderer ----------
+   The die view is drawn to look like a die photograph without using one: every
+   texture is procedural. SRAM is a fine regular bit-cell grid broken into banks,
+   logic is dense random speckle (standard cells), GPU cores repeat as identical
+   tiles, PHYs are rows of I/O cells, and a thin metal sheen, seal ring and pad
+   ring finish the die. Colour washes keep the functional groups readable. */
+let UID=0;
+const LOGIC=['media','disp','sys','io','tb','ssd','isp','sep','fab','amx'];
+function inferredBlock(b,d){return !!(b.i||d.basis==='lineage'||(d.basis==='derived'&&b.r[1]>=.59));}
+function defsFor(defs,u){
+ const pat=(id,w,h,draw,tf)=>{const p=el('pattern',{id:id+u,width:w,height:h,patternUnits:'userSpaceOnUse'},defs);if(tf)p.setAttribute('patternTransform',tf);draw(p);return p;};
+ /* bit cells: 2 x 2 cells per 5-unit tile */
+ pat('sram',4,4,p=>{[[0.35,0.45],[2.35,0.45],[0.35,2.45],[2.35,2.45]].forEach(q=>el('rect',{x:q[0],y:q[1],width:1.4,height:1.1,fill:'#e4ecff','fill-opacity':.42},p));
+  el('path',{d:'M0 1.95H4M0 3.95H4',stroke:'#000','stroke-opacity':.45,'stroke-width':.45},p);});
+ /* banks: decoder and sense-amp gutters every 40 units */
+ pat('bank',40,40,p=>{el('path',{d:'M0 0.9H40M0.9 0V40',stroke:'#07080a','stroke-opacity':.75,'stroke-width':1.8},p);
+  el('path',{d:'M0 2.2H40M2.2 0V40',stroke:'#ffe9b8','stroke-opacity':.18,'stroke-width':.6},p);});
+ /* I/O cells for PHYs, vertical and horizontal runs */
+ pat('phyv',12,7,p=>{el('rect',{x:.8,y:.8,width:10.4,height:5.4,fill:'#d8b98a','fill-opacity':.18,stroke:'#f2d6a2','stroke-opacity':.35,'stroke-width':.4},p);
+  el('rect',{x:4.4,y:2,width:3.2,height:3,fill:'#f4cf7c','fill-opacity':.55},p);});
+ pat('phyh',7,12,p=>{el('rect',{x:.8,y:.8,width:5.4,height:10.4,fill:'#d8b98a','fill-opacity':.18,stroke:'#f2d6a2','stroke-opacity':.35,'stroke-width':.4},p);
+  el('rect',{x:2,y:4.4,width:3,height:3.2,fill:'#f4cf7c','fill-opacity':.55},p);});
+ /* logic: routing tracks over the speckle */
+ pat('trk',3,2.4,p=>{el('path',{d:'M0 .3H3',stroke:'#000','stroke-opacity':.32,'stroke-width':.45},p);el('path',{d:'M0 1.5H3',stroke:'#d7e0ff','stroke-opacity':.05,'stroke-width':.4},p);});
+ /* standard-cell speckle */
+ const f=el('filter',{id:'noise'+u,x:0,y:0,width:'100%',height:'100%',filterUnits:'objectBoundingBox','color-interpolation-filters':'sRGB'},defs);
+ el('feTurbulence',{type:'fractalNoise',baseFrequency:'0.55 1.6',numOctaves:2,seed:7,result:'n'},f);
+ el('feColorMatrix',{in:'n',type:'matrix',values:'0 0 0 0 .80  0 0 0 0 .78  0 0 0 0 .74  2.6 0 0 0 -1.22'},f);
+ const f2=el('filter',{id:'blot'+u,x:0,y:0,width:'100%',height:'100%',filterUnits:'objectBoundingBox','color-interpolation-filters':'sRGB'},defs);
+ el('feTurbulence',{type:'fractalNoise',baseFrequency:'0.018',numOctaves:3,seed:3,result:'n'},f2);
+ el('feColorMatrix',{in:'n',type:'matrix',values:'0 0 0 0 .62  0 0 0 0 .50  0 0 0 0 .40  1.5 0 0 0 -.60'},f2);
+ const f3=el('filter',{id:'blot2'+u,x:0,y:0,width:'100%',height:'100%',filterUnits:'objectBoundingBox','color-interpolation-filters':'sRGB'},defs);
+ el('feTurbulence',{type:'fractalNoise',baseFrequency:'0.03',numOctaves:2,seed:11,result:'n'},f3);
+ el('feColorMatrix',{in:'n',type:'matrix',values:'0 0 0 0 .30  0 0 0 0 .45  0 0 0 0 .70  1.5 0 0 0 -.62'},f3);
+ /* metal-layer sheen and silicon body */
+ const lg=el('linearGradient',{id:'sheen'+u,x1:0,y1:0,x2:1,y2:1},defs);
+ [[0,'#7aa2ff',.10],[.28,'#ffffff',0],[.46,'#fff3d6',.12],[.54,'#ffffff',.02],[.72,'#ffffff',0],[1,'#c49bff',.12]].forEach(s=>el('stop',{offset:s[0],'stop-color':s[1],'stop-opacity':s[2]},lg));
+ const rg=el('radialGradient',{id:'body'+u,cx:.42,cy:.38,r:.85},defs);
+ [[0,'#232831'],[.65,'#171a20'],[1,'#0f1115']].forEach(s=>el('stop',{offset:s[0],'stop-color':s[1]},rg));
+}
 function render(svg,c,o){o=o||{};while(svg.firstChild)svg.removeChild(svg.firstChild);
- const {W,H}=bbox(c),K=o.K||(o.thumb?100:1000)/Math.max(W,H),pad=o.thumb?2:28,bar=(!o.thumb&&dieOf(c).every(d=>d.measured))?34:0;
+ const {W,H}=bbox(c),K=o.K||(o.thumb?100:1000)/Math.max(W,H),pad=o.thumb?3:30,bar=(!o.thumb&&dieOf(c).every(d=>d.measured))?34:0;
  const VW=W*K+pad*2,VH=H*K+pad*2+bar;svg.setAttribute('viewBox',`0 0 ${VW.toFixed(1)} ${VH.toFixed(1)}`);
- const defs=el('defs',null,svg);
- if(!o.thumb){const pat=(id,w,h,d)=>{const p=el('pattern',{id,width:w,height:h,patternUnits:'userSpaceOnUse'},defs);el('path',{d,stroke:'#fff','stroke-opacity':.16,'stroke-width':.8,fill:'none'},p);};
-  pat('fp-sram',5,5,'M0 0H5M0 0V5');pat('fp-phy',4,40,'M0 0V40');pat('fp-logic',7,7,'M0 7L7 0');
-  }
- const cnt={},blocks=[],dieRects=[];
+ const u='-'+(++UID);
+ const defs=el('defs',null,svg); defsFor(defs,u);
+ /* on-screen pixels per viewBox unit, so labels appear only where they can be read */
+ let scr=1;if(!o.thumb){const host=svg.parentNode,aw=o.aw||Math.max(240,(host&&host.clientWidth||700)-20);scr=aw/VW;const mh=(o.two?.62:.78)*(window.innerHeight||900);if(!o.aw&&VH*scr>mh)scr=mh/VH;}
+ const MINPX=o.thumb?99:7.2;
+ const cnt={},blocks=[],dieRects=[],dieCaps=[];
  c.pk.forEach((pl,di)=>{const d=D[pl.d],X=pad+pl.x*K,Y=pad+pl.y*K,w=d.w*K,h=d.h*K;
   const g=el('g',{class:'die-g'},svg);
-  el('rect',{x:X-2,y:Y-2,width:w+4,height:h+4,rx:3,fill:'var(--sil-edge)'},g);
-  el('rect',{x:X,y:Y,width:w,height:h,rx:2,fill:'var(--sil)'},g);
-  if(!o.thumb)el('rect',{x:X+3,y:Y+3,width:w-6,height:h-6,fill:'none',stroke:'#fff','stroke-opacity':.08,'stroke-dasharray':'2 3'},g);
+  if(o.thumb){el('rect',{x:X-1,y:Y-1,width:w+2,height:h+2,rx:2,fill:'var(--sil-edge)'},g);el('rect',{x:X,y:Y,width:w,height:h,rx:1.5,fill:'url(#body'+u+')'},g);}
+  else{
+   /* scribe, seal ring and pad ring outside the measured die */
+   const rg=c.pk.length>1?5:9;
+   el('rect',{x:X-rg,y:Y-rg,width:w+rg*2,height:h+rg*2,rx:3,fill:'#0a0b0e',stroke:'#3c434e','stroke-width':1},g);
+   el('rect',{x:X-rg+2.5,y:Y-rg+2.5,width:w+rg*2-5,height:h+rg*2-5,rx:2,fill:'none',stroke:'#8d96a3','stroke-opacity':.55,'stroke-width':.8},g);
+   el('rect',{x:X-4.6,y:Y-4.6,width:w+9.2,height:h+9.2,rx:1.5,fill:'none',stroke:'#c9a86a','stroke-opacity':.35,'stroke-width':.6},g);
+   const pads=el('g',{fill:'#d9b46a','fill-opacity':.55},g);
+   for(let x=X+6;x<X+w-4;x+=9){el('rect',{x,y:Y-3.4,width:4.2,height:2.6},pads);el('rect',{x,y:Y+h+.8,width:4.2,height:2.6},pads);}
+   for(let y=Y+6;y<Y+h-4;y+=9){el('rect',{x:X-3.4,y,width:2.6,height:4.2},pads);el('rect',{x:X+w+.8,y,width:2.6,height:4.2},pads);}
+   el('rect',{x:X,y:Y,width:w,height:h,fill:'url(#body'+u+')'},g);
+   el('rect',{x:X,y:Y,width:w,height:h,filter:`url(#blot${u})`,opacity:.30,'pointer-events':'none'},g);
+   el('rect',{x:X,y:Y,width:w,height:h,filter:`url(#blot2${u})`,opacity:.30,'pointer-events':'none'},g);
+   el('rect',{x:X,y:Y,width:w,height:h,filter:`url(#noise${u})`,opacity:.42,'pointer-events':'none'},g);
+   el('rect',{x:X,y:Y,width:w,height:h,fill:`url(#trk${u})`,'pointer-events':'none'},g);
+  }
   dieRects.push({X,Y,w,h,d,pl});
-  const off={};d.blocks.forEach(b=>{if(b.n)off[b.t]=(off[b.t]||0);});
   const base={};Object.keys(cnt).forEach(k=>base[k]=cnt[k]);
   d.blocks.forEach(b=>{let [x,y,bw,bh]=b.r;if(pl.flip)y=1-y-bh;if(pl.mirror)x=1-x-bw;
-   const bx=X+x*w,by=Y+y*h,BW=bw*w,BH=bh*h,ty=TY[b.t],col=`var(${ty.c})`;
-   const grp=el('g',{class:'blk','data-g':ty.g},g);
-   const rec={b,ty,die:d,chip:c,g:grp,cx:bx+BW/2,cy:by+BH/2,x:bx,y:by,w:BW,h:BH,di};blocks.push(rec);
-   el('rect',{class:'bb',x:bx+.6,y:by+.6,width:Math.max(BW-1.2,.5),height:Math.max(BH-1.2,.5),rx:1.2,fill:col,'fill-opacity':b.n?.10:.34,stroke:col,'stroke-opacity':.9,'stroke-width':o.thumb?.5:1},grp);
-   if(!o.thumb&&!b.n){const pid=ty.sram?'fp-sram':ty.phy?'fp-phy':(['media','disp','sys','io','tb','ssd','isp','sep','fab'].includes(b.t)?'fp-logic':null);if(pid)el('rect',{x:bx+.6,y:by+.6,width:Math.max(BW-1.2,.5),height:Math.max(BH-1.2,.5),fill:`url(#${pid})`,'pointer-events':'none'},grp);}
+   const bx=X+x*w,by=Y+y*h,BW=bw*w,BH=bh*h,ty=TY[b.t],col=`var(${ty.c})`,inf=inferredBlock(b,d);
+   const grp=el('g',{class:'blk'+(inf?' inf':''),'data-g':ty.g},g);
+   const rec={b,ty,die:d,chip:c,g:grp,cx:bx+BW/2,cy:by+BH/2,x:bx,y:by,w:BW,h:BH,di,inf};blocks.push(rec);
+   const R={x:bx+.6,y:by+.6,width:Math.max(BW-1.2,.5),height:Math.max(BH-1.2,.5)};
+   if(o.thumb){el('rect',Object.assign({rx:.8,fill:col,'fill-opacity':b.n?.12:.42,stroke:col,'stroke-opacity':.9,'stroke-width':.5},R),grp);}
+   else{
+    /* colour wash first, then the silicon texture for the block's kind */
+    el('rect',Object.assign({class:'wash',fill:col,'fill-opacity':b.n?.07:(ty.sram?.20:ty.phy?.16:.15)},R),grp);
+    if(ty.sram&&!b.n){el('rect',Object.assign({fill:'#0c0e12','fill-opacity':.55},R),grp);
+     el('rect',Object.assign({fill:col,'fill-opacity':.16},R),grp);
+     el('rect',Object.assign({fill:`url(#sram${u})`,'pointer-events':'none'},R),grp);
+     el('rect',Object.assign({fill:`url(#bank${u})`,'pointer-events':'none'},R),grp);}
+    else if(ty.phy){el('rect',Object.assign({fill:`url(#${BW<BH?'phyv':'phyh'}${u})`,'pointer-events':'none'},R),grp);}
+    else if(!b.n&&LOGIC.includes(b.t)){el('rect',Object.assign({fill:`url(#trk${u})`,'pointer-events':'none'},R),grp);}
+    el('rect',Object.assign({class:'bb',rx:1.2,fill:'none',stroke:col,'stroke-opacity':.95,'stroke-width':1.1},R,inf?{'stroke-dasharray':'4 2.5'}:{}),grp);
+    const tt=el('title',null,grp);tt.textContent=ty.n+(b.l&&!b.n?' · '+LBL(b.l):'')+(b.n?' · '+b.n:'')+(inf?T(' (placement inferred)','（配置は推定）'):'');
+   }
    if(b.n){const cols=b.c||b.n,rows=Math.ceil(b.n/cols),gx=Math.min(BW/cols*.08,4),gy=Math.min(BH/rows*.08,4),cw=(BW-gx*(cols+1))/cols,chh=(BH-gy*(rows+1))/rows;
     for(let i=0;i<b.n;i++){const ci=i%cols,ri=Math.floor(i/cols);let cx=bx+gx+ci*(cw+gx),cy=by+gy+ri*(chh+gy);
-     el('rect',{x:cx,y:cy,width:cw,height:chh,rx:1,fill:col,'fill-opacity':.42,stroke:col,'stroke-width':o.thumb?.3:.8},grp);
-     if(b.t==='gpu'&&c.na){const nh=chh*.2;el('rect',{x:cx+cw*.12,y:cy+chh*.56,width:cw*.76,height:nh,rx:.8,fill:'var(--na)','fill-opacity':.8},grp);}
-     if(!o.thumb&&PFX[b.t]){const idx=(base[b.t]||0)+(b.lab?b.lab[i]:(b.s||0)+i);const fs=Math.min(16,cw/3,chh/2.2);
-      if(fs>=5.5){const t=el('text',{x:cx+cw/2,y:cy+chh*(c.na&&b.t==='gpu'?.36:.5)+fs*.35,'text-anchor':'middle','font-size':fs.toFixed(1),class:'lbl'},grp);t.textContent=PFX[b.t]+idx;}}}
+     if(o.thumb){el('rect',{x:cx,y:cy,width:cw,height:chh,rx:.6,fill:col,'fill-opacity':.5,stroke:col,'stroke-width':.3},grp);continue;}
+     el('rect',{x:cx,y:cy,width:cw,height:chh,rx:1,fill:'#0d1014','fill-opacity':.22,stroke:col,'stroke-width':.9,'stroke-opacity':.95},grp);
+     el('rect',{x:cx,y:cy,width:cw,height:chh,rx:1,fill:col,'fill-opacity':.16},grp);
+     coreDetail(grp,b.t,cx,cy,cw,chh,col,u,c.na);
+     if(PFX[b.t]){const idx=(base[b.t]||0)+(b.lab?b.lab[i]:(b.s||0)+i);const fs=Math.min(12.5/scr,cw/2.5,chh/2.1);
+      if(fs*scr>=MINPX){const t=el('text',{x:cx+cw/2,y:cy+chh*(c.na&&b.t==='gpu'?.34:.5)+fs*.35,'text-anchor':'middle','font-size':fs.toFixed(1),class:'lbl'},grp);t.textContent=PFX[b.t]+idx;}}}
     cnt[b.t]=Math.max(cnt[b.t]||0,(base[b.t]||0)+(b.lab?Math.max(...b.lab)+1:(b.s||0)+b.n));}
-   else if(!o.thumb&&b.l){const vert=BH>BW*1.6&&BW<70,len=LBL(b.l).length*(JA&&LJ[b.l]?1.7:1),fs=Math.min(17,(vert?BH:BW)/(len*.62+1),(vert?BW:BH)*.5);
-    if(fs>=6){const t=el('text',{x:bx+BW/2,y:by+BH/2+fs*.35,'text-anchor':'middle','font-size':fs.toFixed(1),class:'lbl'},grp);if(vert)t.setAttribute('transform',`rotate(-90 ${bx+BW/2} ${by+BH/2})`);t.textContent=LBL(b.l);}}
-   if(!o.thumb){grp.setAttribute('tabindex','0');grp.setAttribute('role','button');grp.setAttribute('aria-label',ty.n+(b.l?' · '+b.l:''));}
+   else if(!o.thumb&&b.l){const vert=BH>BW*1.6&&BW<70,len=LBL(b.l).length*(JA&&LJ[b.l]?1.7:1),fs=Math.min(14/scr,(vert?BH:BW)/(len*.62+1),(vert?BW:BH)*.55);
+    if(fs*scr>=MINPX){const t=el('text',{x:bx+BW/2,y:by+BH/2+fs*.35,'text-anchor':'middle','font-size':fs.toFixed(1),class:'lbl'},grp);if(vert)t.setAttribute('transform',`rotate(-90 ${bx+BW/2} ${by+BH/2})`);t.textContent=LBL(b.l);}}
+   if(!o.thumb){grp.setAttribute('tabindex','0');grp.setAttribute('role','button');grp.setAttribute('aria-label',ty.n+(b.l?' · '+b.l:'')+(inf?T(', placement inferred','、配置は推定'):''));}
   });
+  if(!o.thumb)el('rect',{x:X,y:Y,width:w,height:h,fill:'url(#sheen'+u+')','pointer-events':'none'},g);
   // die caption
   if(!o.thumb&&c.pk.length>1){const lab=pl.d.startsWith('m5cpu')?T('CPU die','CPUダイ'):pl.d.startsWith('m5gpu')?T('GPU die','GPUダイ'):T('Die ','ダイ')+(di+1);
-   const t=el('text',{x:X+6,y:Y-7,'font-size':11,class:'cap'},svg);t.textContent=lab;}
+   const fs=Math.max(11,9.5/scr),tw=lab.length*fs*.62+10,cg=el('g',{class:'diecap','pointer-events':'none'},svg);
+   dieCaps.push(()=>{svg.appendChild(cg);});
+   el('rect',{x:X+4,y:Y+4,width:tw,height:fs+7,rx:3,fill:'#0b0c0f','fill-opacity':.82,stroke:'#59616d','stroke-width':.8},cg);
+   const t=el('text',{x:X+9,y:Y+4+fs*.98,'font-size':fs,class:'cap'},cg);t.textContent=lab;}
  });
  // links between dies
  if(!o.thumb&&c.pk.length>1){const lg=el('g',{class:'links'},svg);
   for(let i=0;i<dieRects.length;i++)for(let j=i+1;j<dieRects.length;j++){const a=dieRects[i],b=dieRects[j];
    const vert=Math.abs(a.X-b.X)<1&&b.Y>a.Y+a.h-1&&b.Y-a.Y-a.h<40,hor=Math.abs(a.Y-b.Y)<1&&b.X>a.X+a.w-1&&b.X-a.X-a.w<40;
-   if(vert){const y1=a.Y+a.h,y2=b.Y,x=a.X+a.w*.12,w=a.w*.76;el('rect',{x,y:y1+1,width:w,height:Math.max(y2-y1-2,2),fill:'var(--link)','fill-opacity':.55,rx:1},lg);
+   if(vert){const y1=a.Y+a.h,y2=b.Y,x=a.X+a.w*.12,w=a.w*.76;el('rect',{x,y:y1+1,width:w,height:Math.max(y2-y1-2,2),fill:'var(--link)','fill-opacity':.7,rx:1},lg);
     const t=el('text',{x:x+w/2,y:(y1+y2)/2+3.5,'font-size':Math.min(10,Math.max(y2-y1-1,6)),'text-anchor':'middle',fill:'#15181d','font-weight':600},lg);t.textContent=c.fusion?T('Fusion link','Fusion接続'):'UltraFusion '+(c.link||'');}
-   if(hor&&a.d.id!==undefined){}
-   if(hor&&a.pl.d===b.pl.d&&a.pl.d.startsWith('m5gpu')){const x1=a.X+a.w,x2=b.X,y=a.Y+a.h*.2,h=a.h*.6;el('rect',{x:x1+1,y,width:Math.max(x2-x1-2,2),height:h,fill:'var(--link)','fill-opacity':.55,rx:1},lg);
-    const t=el('text',{x:(x1+x2)/2,y:a.Y+a.h+16,'font-size':11,'text-anchor':'middle',class:'cap'},lg);t.textContent='UltraFusion '+c.link;}}}
+   if(hor&&a.pl.d===b.pl.d&&a.pl.d.startsWith('m5gpu')){const x1=a.X+a.w,x2=b.X,y=a.Y+a.h*.2,h=a.h*.6;el('rect',{x:x1+1,y,width:Math.max(x2-x1-2,2),height:h,fill:'var(--link)','fill-opacity':.7,rx:1},lg);
+    const t=el('text',{x:(x1+x2)/2,y:a.Y+a.h+18,'font-size':11,'text-anchor':'middle',class:'cap'},lg);t.textContent='UltraFusion '+c.link;}}}
  // scale bar
- if(bar){const x=pad,y=pad+H*K+20,L=5*K;el('line',{x1:x,y1:y,x2:x+L,y2:y,stroke:'currentColor','stroke-width':2},svg);[x,x+L].forEach(xx=>el('line',{x1:xx,y1:y-5,x2:xx,y2:y+5,stroke:'currentColor','stroke-width':1.5},svg));
-  const t=el('text',{x:x+L+8,y:y+4,'font-size':12,fill:'currentColor',class:'scale'},svg);t.textContent='5 mm';}
+ if(bar){const x=pad,y=pad+H*K+22,L=5*K;el('line',{x1:x,y1:y,x2:x+L,y2:y,stroke:'currentColor','stroke-width':2},svg);[x,x+L].forEach(xx=>el('line',{x1:xx,y1:y-5,x2:xx,y2:y+5,stroke:'currentColor','stroke-width':1.5},svg));
+  const t=el('text',{x:x+L+8,y:y+4,'font-size':Math.max(12,10/scr),fill:'currentColor',class:'scale'},svg);t.textContent='5 mm';}
  if(!o.thumb)drawPaths(svg,c,blocks,dieRects);
+ dieCaps.forEach(f=>f());
  return {blocks,K};
+}
+/* inside a core: what a die photo shows at that scale */
+function coreDetail(grp,t,x,y,w,h,col,u,na){
+ const r=(a)=>el('rect',Object.assign({'pointer-events':'none'},a),grp);
+ if(w<5||h<5)return;
+ if(t==='gpu'){ /* four ALU quadrants around a register-file strip */
+  const m=Math.max(.6,w*.06),sh=h*.16,qh=(h-sh-m*3)/2,qw=(w-m*3)/2;
+  [[0,0],[1,0],[0,1],[1,1]].forEach(q=>{const qy=y+m+q[1]*(qh+sh+m);r({x:x+m+q[0]*(qw+m),y:qy,width:qw,height:qh,fill:'#cdd6ff','fill-opacity':.07,stroke:col,'stroke-opacity':.45,'stroke-width':.5});});
+  r({x:x+m,y:y+m+qh+m*.5,width:w-2*m,height:sh,fill:`url(#sram${u})`});
+  if(na)r({x:x+w*.12,y:y+h*.56,width:w*.76,height:h*.2,rx:.8,fill:'var(--na)','fill-opacity':.75});
+ }else if(t==='p'||t==='s'||t==='e'){ /* L1 arrays across the top, logic below */
+  const m=Math.max(.5,w*.05);
+  r({x:x+m,y:y+m,width:w-2*m,height:h*.28,fill:`url(#sram${u})`});
+  r({x:x+m,y:y+m,width:w-2*m,height:h*.28,fill:'none',stroke:'#000','stroke-opacity':.4,'stroke-width':.5});
+  r({x:x+m,y:y+h*.72,width:(w-2*m)*.45,height:h*.2,fill:`url(#sram${u})`});
+  r({x:x+w*.55,y:y+h*.4,width:w*.38,height:h*.24,fill:'#d8e0ff','fill-opacity':.06,stroke:col,'stroke-opacity':.35,'stroke-width':.45});
+  r({x:x+w*.55,y:y+h*.72,width:w*.38,height:h*.2,fill:`url(#sram${u})`,opacity:.8});
+ }else if(t==='ane'){r({x:x+w*.15,y:y+h*.15,width:w*.7,height:h*.32,fill:`url(#sram${u})`});}
 }
 function center(r){return [r.cx,r.cy];}
 function nearest(list,p){let best=null,bd=1e9;list.forEach(r=>{const d=Math.hypot(r.cx-p[0],r.cy-p[1]);if(d<bd){bd=d;best=r;}});return best;}
@@ -132,6 +220,10 @@ function drawPaths(svg,c,blocks,dies){const g=el('g',{class:'paths'},svg);
   slcs.forEach(sl=>{if(!phys.length)return;const ph=nearest(phys,center(sl));const tgt=[ph.cx,ph.cy];
    const hor=ph.w<ph.h;route(hor?[center(sl),[ph.cx,sl.cy]]:[center(sl),[sl.cx,ph.cy]],'var(--slc)');});});
 }
+/* The renderer is shared with the Apple silicon atlas, which loads this file
+   without the floorplan page's controls. */
+window.FPR={render,basisOf,BASIS,TY,GROUPS,LBL,chips:CH,inferredBlock};
+if(!$('fp-picker'))return;
 /* ---------- UI ---------- */
 const state={chip:'M5',vs:''};
 try{const q=new URLSearchParams(location.search);const a=q.get('chip'),v=q.get('vs');if(a&&CH.find(c=>c.id===a.replace(/-/g,' ')))state.chip=a.replace(/-/g,' ');if(v&&CH.find(c=>c.id===v.replace(/-/g,' ')))state.vs=v.replace(/-/g,' ');}catch(e){}
@@ -170,20 +262,22 @@ function blockInfo(rec){const b=rec.b,inf=b.i||rec.die.basis==='lineage'||(rec.d
  let extra='';if(b.n)extra=`<p class="bi-n">${b.n} ${T('in this block','基（このブロック）')}</p>`;
  return `<div class="bi-cat"><i style="background:var(${rec.ty.c})"></i>${rec.ty.n}${b.l&&!b.n?' · '+LBL(b.l):''}</div><p>${rec.ty.d}</p>${extra}<span class="tag ${inf?'i':'a'}">${tag}</span>`;}
 let panes=[];
+function capOf(c){const bs=basisOf(c);return `<span class="cap-id">${c.id}</span><span class="basis ${bs}">${BASIS[bs][0]}</span>`;}
 function bind(stage,res,c){res.blocks.forEach(rec=>{const sel=()=>{document.querySelectorAll('.blk.sel').forEach(n=>n.classList.remove('sel'));rec.g.classList.add('sel');$('fp-block').innerHTML=blockInfo(rec);$('fp-block').hidden=false;};
  rec.g.addEventListener('click',sel);rec.g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();sel();}});});}
 function update(){const a=chipBy(state.chip),b=state.vs?chipBy(state.vs):null;syncURL();
  document.querySelectorAll('.pk-cell[data-id]').forEach(n=>n.setAttribute('aria-pressed',n.dataset.id===state.chip));
  const both=b&&dieOf(a).every(d=>d.measured)&&dieOf(b).every(d=>d.measured);
  let K;if(both){const A=bbox(a),B=bbox(b);K=1000/Math.max(A.W,A.H,B.W,B.H);}
- const sa=$('fp-svg-a');const ra=render(sa,a,{K});bind(sa,ra,a);$('fp-cap-a').textContent=a.id;
  const pb=$('fp-pane-b');pb.hidden=!b;$('fp-stages').classList.toggle('two',!!b);
- if(b){const sb=$('fp-svg-b');const rb=render(sb,b,{K});bind(sb,rb,b);$('fp-cap-b').textContent=b.id;$('fp-scale').textContent=both?T('Both dies drawn to the same millimetre scale.','2つのダイは同じミリメートル尺度で描いている。'):T('Not to a common scale: at least one of these dies has no public measurement.','共通の尺度ではない。少なくとも一方のダイに公開された実測値がない。');}
+ const sa=$('fp-svg-a');const ra=render(sa,a,{K,two:!!b});bind(sa,ra,a);$('fp-cap-a').innerHTML=capOf(a);
+ if(b){const sb=$('fp-svg-b');const rb=render(sb,b,{K,two:true});bind(sb,rb,b);$('fp-cap-b').innerHTML=capOf(b);$('fp-scale').textContent=both?T('Both dies drawn to the same millimetre scale.','2つのダイは同じミリメートル尺度で描いている。'):T('Not to a common scale: at least one of these dies has no public measurement.','共通の尺度ではない。少なくとも一方のダイに公開された実測値がない。');}
  else $('fp-scale').textContent='';
  $('fp-card').innerHTML=card(a);$('fp-block').hidden=true;
  const fl=$('fp-flow');if(fl&&fl.getAttribute('aria-pressed')==='true')document.querySelectorAll('.fp-stage svg').forEach(s=>s.classList.add('flow'));
  applyHL();}
 buildPicker();buildLegend();buildCompare();update();
+let rz=0,lw=0;addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(()=>{const w=$('fp-stages').clientWidth;if(w!==lw){lw=w;update();}},150);});lw=$('fp-stages').clientWidth;
 // family table of evidence
 const ev=$('fp-evidence');if(ev){ev.innerHTML=CH.map(c=>{const bs=basisOf(c);return `<tr><td>${c.id}</td><td><span class="basis ${bs}">${BASIS[bs][0]}</span></td><td>${c.gpu}</td><td>${fmtCPU(c)}</td><td class="num">${c.bus}-bit</td></tr>`;}).join('');}
 })();
