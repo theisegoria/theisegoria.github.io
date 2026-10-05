@@ -1,0 +1,71 @@
+<!doctype html><html lang="en" class="ig-document ig-editorial"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Daily Mathematics solutions: 6 October 2026 · Isegoria</title><meta name="description" content="Full solutions to the two Daily Mathematics cards of 6 October 2026: a hard definite integral and an original Putnam-style problem."><link rel="canonical" href="https://theisegoria.github.io/daily-mathematics/2026-10-06/"><link rel="alternate" hreflang="en" href="https://theisegoria.github.io/daily-mathematics/2026-10-06/"><link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/daily-mathematics/2026-10-06/"><link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/daily-mathematics/2026-10-06/"><link rel="icon" href="/assets/favicon.svg"><link rel="stylesheet" href="/assets/isegoria.css?v=20260915"><link rel="stylesheet" href="/analysis-atlas/vendor/katex.min.css"><script defer src="/analysis-atlas/vendor/katex.min.js"></script><script defer src="/analysis-atlas/vendor/contrib/auto-render.min.js"></script><script>document.addEventListener("DOMContentLoaded",function(){if(window.renderMathInElement)renderMathInElement(document.querySelector("main"),{delimiters:[{left:"\\[",right:"\\]",display:true},{left:"\\(",right:"\\)",display:false}],throwOnError:false});});</script><style>
+.dm{max-width:46rem;margin:0 auto;padding:2.5rem 1.25rem 4rem}
+.dm .eyebrow{letter-spacing:.14em;text-transform:uppercase;font-size:.78rem;opacity:.7;margin:0 0 .4rem}
+.dm h1{margin:.1rem 0 .6rem;line-height:1.2}
+.dm .deck{opacity:.85;margin:0 0 2rem}
+.dm .card{margin:2.6rem 0 0;padding-top:1.4rem;border-top:2px solid var(--dm-accent,currentColor)}
+.dm .card h2{margin:.2rem 0 .9rem;line-height:1.3}
+.dm .kind{font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dm-accent);margin:0}
+.dm figure{margin:1rem 0 1.4rem}
+.dm figure img{width:100%;max-width:30rem;height:auto;display:block;border:1px solid rgba(127,127,127,.25)}
+.dm .statement{padding:.9rem 1.1rem;border-left:3px solid var(--dm-accent);background:rgba(127,127,127,.07)}
+.dm details{margin:1.2rem 0}
+.dm summary{cursor:pointer;font-weight:600}
+.dm .answer{margin-top:1.2rem;padding:.8rem 1.1rem;border:1px solid var(--dm-accent)}
+.dm .katex-display{overflow-x:auto;overflow-y:hidden;padding:.2rem 0}
+.dm .days{list-style:none;padding:0;margin:1.5rem 0 0}
+.dm .days li{padding:.9rem 0;border-top:1px solid rgba(127,127,127,.25)}
+.dm .days a.date{font-weight:600}
+.dm .days span{display:block;opacity:.85}
+html[lang=ja] .dm{line-height:1.85}
+</style><script src="/assets/lang.js"></script>
+<!-- ISEGORIA:HEAD -->
+<link rel="stylesheet" href="/assets/site-shell.css?v=c21cd21e82">
+<script src="/assets/site-shell.js?v=c21cd21e82" ></script>
+<!-- /ISEGORIA:HEAD -->
+<script defer data-isegoria-analytics src="/assets/analytics.js?v=9e6ebd463bf2"></script>
+</head><body class="ig-site" data-site-kind="editorial" data-site-route="/daily-mathematics/2026-10-06/">
+<!-- ISEGORIA:NAV -->
+<a class="ig-skip" href="#ig-content">Skip to content</a>
+<header id="ig-header"><div class="ig-nav-inner">
+<a class="ig-brand" href="/" aria-label="Isegoria, home"><strong>ISEGORIA</strong><span>Benjamin Haire</span></a>
+<div class="ig-header-actions"><a class="ig-language" href="/ja/daily-mathematics/2026-10-06/" hreflang="ja" lang="ja">日本語</a><button class="ig-menu" type="button" aria-expanded="false" aria-controls="ig-primary">Menu</button></div>
+<nav id="ig-primary" aria-label="Primary navigation"><a href="/">Home</a><a href="/library.html">Library</a><a href="/math-encyclopedia/" aria-current="location">Math encyclopedia</a><a href="/#interactive">Interactive</a><a href="/#preoccupations">Research</a><a href="/#books">Books</a><a href="/projects.html">Projects</a><a href="/about.html">About</a><a class="ig-language" href="/ja/daily-mathematics/2026-10-06/" hreflang="ja" lang="ja">日本語</a><button class="ig-theme" type="button" hidden>Theme</button></nav>
+</div></header>
+<nav id="ig-breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><a href="/math-encyclopedia/">Math encyclopedia</a><span aria-hidden="true">/</span><a href="/daily-mathematics/">Daily Mathematics: solutions</a><span aria-hidden="true">/</span><span aria-current="page">Daily Mathematics solutions: 6 October 2026</span></nav>
+<span id="ig-content" tabindex="-1"></span>
+<!-- /ISEGORIA:NAV -->
+<main id="main" class="dm"><p class="eyebrow">Daily Mathematics / Solutions</p><h1>Solutions for 6 October 2026</h1><p class="deck">Two cards went out that day: a hard definite integral and an original Putnam-style problem. Try each one first; the solutions are folded away below.</p><section class="card" id="integral" style="--dm-accent:#24457F"><p class="kind">Integral</p><h2>A Gaussian integral against two error functions</h2><figure><img src="/daily-mathematics/2026-10-06/integral.png" width="1200" height="1200" loading="lazy" alt="Card: A Gaussian integral against two error functions"></figure><div class="statement"><p>Evaluate in closed form.</p>\[\int_0^\infty e^{-x^2}\,\operatorname{erf}\bigl(\sqrt2\,x\bigr)\,\operatorname{erf}\bigl(\sqrt3\,x\bigr)\,dx\]<p>where \(\operatorname{erf}(t)=\frac{2}{\sqrt\pi}\int_0^t e^{-u^2}\,du\).</p></div><details><summary>Show the solution</summary><p>Call the integral \(I\). It converges absolutely, since \(|\operatorname{erf}|\le1\) and \(e^{-x^2}\) is integrable. There is no elementary antiderivative, and integrating by parts against either error function only trades one erf for another, so a one-variable attack stalls. The way in is to stop treating the error functions as functions and write them as the Gaussian integrals they are. We work with general slopes: for \(a,b>0\) put</p>
+\[J(a,b)=\int_0^\infty e^{-x^2}\operatorname{erf}(ax)\operatorname{erf}(bx)\,dx,\qquad I=J(\sqrt2,\sqrt3).\]
+<p><strong>Step 1: lift to three dimensions.</strong> Writing \(\operatorname{erf}(ax)=\frac{2}{\sqrt\pi}\int_0^{ax}e^{-t^2}dt\) and \(\operatorname{erf}(bx)=\frac{2}{\sqrt\pi}\int_0^{bx}e^{-s^2}ds\), and using Tonelli's theorem (everything is nonnegative),</p>
+\[J(a,b)=\frac4\pi\iiint_{C}e^{-(x^2+t^2+s^2)}\,dx\,dt\,ds,\qquad C=\{x>0,\ 0&lt;t&lt;ax,\ 0&lt;s&lt;bx\}.\]
+<p><strong>Step 2: only the solid angle matters.</strong> The region \(C\) is a cone with apex at the origin (it is invariant under \(v\mapsto\lambda v\), \(\lambda>0\)), and the Gaussian depends only on \(r=|v|\). In spherical coordinates the integral therefore factors as \(\Omega\int_0^\infty r^2e^{-r^2}dr=\Omega\cdot\frac{\sqrt\pi}{4}\), where \(\Omega\) is the solid angle of \(C\). (Check: \(\Omega=4\pi\) gives \(\pi^{3/2}\), the full Gaussian integral.) Hence</p>
+\[J(a,b)=\frac4\pi\cdot\frac{\sqrt\pi}{4}\,\Omega=\frac{\Omega}{\sqrt\pi}.\]
+<p><strong>Step 3: the solid angle of a rectangular cone.</strong> The cone meets the plane \(x=1\) in the rectangle \(R=[0,a]\times[0,b]\), and the foot of the perpendicular from the apex to that plane is the corner \((t,s)=(0,0)\). The solid angle subtended by a planar region at unit distance is</p>
+\[\Omega=\iint_R\frac{dt\,ds}{(1+t^2+s^2)^{3/2}}.\]
+<p>The inner integral is elementary: with \(p^2=1+t^2\), \(\int_0^b\frac{ds}{(p^2+s^2)^{3/2}}=\frac{b}{p^2\sqrt{p^2+b^2}}\). So</p>
+\[\Omega=\int_0^a\frac{b\,dt}{(1+t^2)\sqrt{1+b^2+t^2}}=\arctan\frac{ab}{\sqrt{1+a^2+b^2}}.\]
+<p>To justify the last equality, differentiate the right side in \(a\): with \(u=ab/\sqrt{1+a^2+b^2}\) one finds \(\frac{du}{da}=\frac{b(1+b^2)}{(1+a^2+b^2)^{3/2}}\) and \(1+u^2=\frac{(1+a^2)(1+b^2)}{1+a^2+b^2}\), so \(\frac{d}{da}\arctan u=\frac{b}{(1+a^2)\sqrt{1+a^2+b^2}}\), which is the integrand; both sides vanish at \(a=0\). We have proved the general formula</p>
+\[\int_0^\infty e^{-x^2}\operatorname{erf}(ax)\operatorname{erf}(bx)\,dx=\frac{1}{\sqrt\pi}\arctan\frac{ab}{\sqrt{1+a^2+b^2}}.\]
+<p><strong>Step 4: the special slopes.</strong> For \(a=\sqrt2\), \(b=\sqrt3\) we get \(ab=\sqrt6\) and \(\sqrt{1+2+3}=\sqrt6\), so the arctangent is \(\arctan1=\pi/4\): the cone cuts out exactly one sixteenth of the sphere. (The slopes were chosen so that \((a^2-1)(b^2-1)=2\), which is the condition for the quotient to equal 1.) Therefore \(I=\frac{\pi/4}{\sqrt\pi}=\frac{\sqrt\pi}{4}\).</p>
+<p>An alternative route to Step 3 is to differentiate \(J\) in \(b\): one integration by parts turns \(\partial_bJ\) into a plain Gaussian integral, and integrating back in \(b\) gives the same arctangent.</p>
+<p><strong>Numerical check.</strong> Composite 100-node Gauss–Legendre on \([0,12]\) with 40 and with 200 panels gives \(0.44311346272637\ldots\), agreeing with \(\sqrt\pi/4\) to within \(4\times10^{-16}\); the general formula was also checked at \((a,b)=(1,1),(0.5,2),(3,0.7)\) to the same accuracy.</p><div class="answer"><strong>Answer.</strong> \(\displaystyle\int_0^\infty e^{-x^2}\operatorname{erf}(\sqrt2\,x)\operatorname{erf}(\sqrt3\,x)\,dx=\frac{\sqrt\pi}{4}\approx0.44311\)</div></details></section><section class="card" id="competition" style="--dm-accent:#96311F"><p class="kind">Competition problem</p><h2>A sharp constant for the distance-kernel quadratic form</h2><figure><img src="/daily-mathematics/2026-10-06/competition.png" width="1200" height="1200" loading="lazy" alt="Card: A sharp constant for the distance-kernel quadratic form"></figure><div class="statement"><p>Find the largest constant \(c\) such that</p>\[\int_0^1\!\!\int_0^1|x-y|\,f(x)\,f(y)\,dx\,dy\;\ge\;-c\int_0^1 f(x)^2\,dx\]<p>for every continuous function \(f:[0,1]\to\mathbb{R}\).</p></div><details><summary>Show the solution</summary><p>Write \(Q(f)=\int_0^1\!\int_0^1|x-y|f(x)f(y)\,dx\,dy\). We show that the largest constant is \(c=2/\pi^2\), with equality for \(f(x)=\cos(\pi x)\).</p>
+<p><strong>Why this is not obvious.</strong> The kernel \(|x-y|\) is nonnegative, so it is tempting to guess that \(Q(f)\ge0\) and \(c=0\). That is false: a function that changes sign puts its positive and negative mass far apart, and the cross terms win. Expanding \(f\) in powers of \(x\) or diagonalising the kernel by brute force leads nowhere clean. What works is to rewrite the kernel so that \(Q\) becomes an integral of a square.</p>
+<p><strong>Step 1: a layer-cake identity.</strong> Let \(F(t)=\int_0^tf\), so \(F\in C^1\), \(F(0)=0\), \(F'=f\), and put \(S=F(1)=\int_0^1f\). For \(x,y\in[0,1]\) the distance \(|x-y|\) is the length of the set of \(t\) lying between them:</p>
+\[|x-y|=\int_0^1\bigl(\mathbf 1[y\le t&lt;x]+\mathbf 1[x\le t&lt;y]\bigr)\,dt.\]
+<p>Substitute this into \(Q\) and swap the order of integration (all functions are bounded). For fixed \(t\), \(\iint\mathbf 1[y\le t&lt;x]f(x)f(y)\,dx\,dy=\bigl(S-F(t)\bigr)F(t)\), and the second indicator gives the same. Hence</p>
+\[Q(f)=2\int_0^1F(t)\bigl(S-F(t)\bigr)\,dt.\]
+<p><strong>Step 2: centre the antiderivative.</strong> Put \(G=F-S/2\). Then \(G'=f\), \(G(0)=-S/2\), \(G(1)=S/2\), so \(G(1)=-G(0)\), and \(F(S-F)=S^2/4-G^2\). Therefore</p>
+\[Q(f)=\frac{S^2}{2}-2\int_0^1G^2\;\ge\;-2\int_0^1G^2,\qquad \int_0^1f^2=\int_0^1G'^2.\]
+<p>It remains to prove the Wirtinger-type inequality: if \(G\in C^1[0,1]\) and \(G(1)=-G(0)\), then \(\int_0^1G^2\le\pi^{-2}\int_0^1G'^2\).</p>
+<p><strong>Step 3: antiperiodic extension.</strong> Define \(H\) on \(\mathbb R\) by \(H=G\) on \([0,1]\) and \(H(x+1)=-H(x)\). The condition \(G(1)=-G(0)\) makes \(H\) continuous, and \(H\) is piecewise \(C^1\) with period 2. Its Fourier coefficients \(c_n=\frac12\int_0^2H(x)e^{-i\pi nx}dx\) satisfy \(c_n=-(-1)^nc_n\) (shift \(x\mapsto x+1\)), so \(c_n=0\) for every even \(n\). Since \(H\) is continuous and piecewise \(C^1\), \(H'\) has coefficients \(i\pi n\,c_n\), and Parseval gives</p>
+\[\frac12\int_0^2H^2=\sum_{n\ \mathrm{odd}}|c_n|^2\le\sum_{n\ \mathrm{odd}}\frac{\pi^2n^2}{\pi^2}|c_n|^2=\frac{1}{\pi^2}\cdot\frac12\int_0^2H'^2,\]
+<p>because every odd \(n\) has \(n^2\ge1\). As \(\int_0^2H^2=2\int_0^1G^2\) and \(\int_0^2H'^2=2\int_0^1G'^2\), the inequality follows. Combining with Step 2,</p>
+\[Q(f)\ge-2\int_0^1G^2\ge-\frac{2}{\pi^2}\int_0^1G'^2=-\frac{2}{\pi^2}\int_0^1f^2,\]
+<p>so \(c=2/\pi^2\) works.</p>
+<p><strong>Step 4: sharpness.</strong> Take \(f(x)=\cos(\pi x)\). Then \(F(t)=\sin(\pi t)/\pi\) and \(S=0\), so by Step 1 \(Q(f)=-2\int_0^1\sin^2(\pi t)/\pi^2\,dt=-1/\pi^2\), while \(\int_0^1f^2=1/2\). Thus \(Q(f)=-\frac{2}{\pi^2}\int_0^1f^2\) exactly, and no constant smaller than \(2/\pi^2\) can work. (Equivalently, \(\cos(\pi x)\) is an eigenfunction of the integral operator with kernel \(|x-y|\), with eigenvalue \(-2/\pi^2\), the most negative one.)</p>
+<p><strong>Numerical check.</strong> The quotient \(Q(f)/\int f^2\) for \(f=\cos(\pi x)\), computed with Gauss–Legendre quadrature split at the kink \(y=x\), equals \(-2/\pi^2\) to \(10^{-16}\); the smallest eigenvalue of the kernel discretised with 400 and 1600 Gauss nodes is \(-0.202642\ldots=-2/\pi^2\); and 300 random test functions (cosine and polynomial mixtures) all satisfied the bound.</p><div class="answer"><strong>Answer.</strong> \(c=\dfrac{2}{\pi^2}\approx0.20264\), with equality for \(f(x)=\cos(\pi x)\)</div></details></section><p><a href="/daily-mathematics/">All solutions</a> · <a href="/ja/daily-mathematics/2026-10-06/" hreflang="ja" lang="ja">日本語</a></p></main>
+<!-- ISEGORIA:FOOT -->
+<footer id="ig-footer"><div><a href="/">Isegoria · Benjamin Haire</a><nav aria-label="Site links"><a href="/">Back to home</a><a href="/library.html">Browse the library</a><a href="#ig-content">Back to top</a></nav></div></footer>
+<!-- /ISEGORIA:FOOT -->
+</body></html>

@@ -1,0 +1,74 @@
+<!doctype html><html lang="ja" class="ig-document ig-editorial"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Daily Mathematics 解答：2026年10月6日 · Isegoria</title><meta name="description" content="2026年10月6日のThreadsカード2枚（難しい定積分とパトナム型の問題）の完全な解答。"><link rel="canonical" href="https://theisegoria.github.io/ja/daily-mathematics/2026-10-06/"><link rel="alternate" hreflang="en" href="https://theisegoria.github.io/daily-mathematics/2026-10-06/"><link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/daily-mathematics/2026-10-06/"><link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/daily-mathematics/2026-10-06/"><link rel="icon" href="/assets/favicon.svg"><link rel="stylesheet" href="/assets/isegoria.css?v=20260915"><link rel="stylesheet" href="/analysis-atlas/vendor/katex.min.css"><script defer src="/analysis-atlas/vendor/katex.min.js"></script><script defer src="/analysis-atlas/vendor/contrib/auto-render.min.js"></script><script>document.addEventListener("DOMContentLoaded",function(){if(window.renderMathInElement)renderMathInElement(document.querySelector("main"),{delimiters:[{left:"\\[",right:"\\]",display:true},{left:"\\(",right:"\\)",display:false}],throwOnError:false});});</script><style>
+.dm{max-width:46rem;margin:0 auto;padding:2.5rem 1.25rem 4rem}
+.dm .eyebrow{letter-spacing:.14em;text-transform:uppercase;font-size:.78rem;opacity:.7;margin:0 0 .4rem}
+.dm h1{margin:.1rem 0 .6rem;line-height:1.2}
+.dm .deck{opacity:.85;margin:0 0 2rem}
+.dm .card{margin:2.6rem 0 0;padding-top:1.4rem;border-top:2px solid var(--dm-accent,currentColor)}
+.dm .card h2{margin:.2rem 0 .9rem;line-height:1.3}
+.dm .kind{font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dm-accent);margin:0}
+.dm figure{margin:1rem 0 1.4rem}
+.dm figure img{width:100%;max-width:30rem;height:auto;display:block;border:1px solid rgba(127,127,127,.25)}
+.dm .statement{padding:.9rem 1.1rem;border-left:3px solid var(--dm-accent);background:rgba(127,127,127,.07)}
+.dm details{margin:1.2rem 0}
+.dm summary{cursor:pointer;font-weight:600}
+.dm .answer{margin-top:1.2rem;padding:.8rem 1.1rem;border:1px solid var(--dm-accent)}
+.dm .katex-display{overflow-x:auto;overflow-y:hidden;padding:.2rem 0}
+.dm .days{list-style:none;padding:0;margin:1.5rem 0 0}
+.dm .days li{padding:.9rem 0;border-top:1px solid rgba(127,127,127,.25)}
+.dm .days a.date{font-weight:600}
+.dm .days span{display:block;opacity:.85}
+html[lang=ja] .dm{line-height:1.85}
+</style><script src="/assets/lang.js"></script>
+<!-- ISEGORIA:HEAD -->
+<link rel="stylesheet" href="/assets/site-shell.css?v=c21cd21e82">
+<script src="/assets/site-shell.js?v=c21cd21e82" ></script>
+<!-- /ISEGORIA:HEAD -->
+<script defer data-isegoria-analytics src="/assets/analytics.js?v=9e6ebd463bf2"></script>
+</head><body class="ig-site" data-site-kind="editorial" data-site-route="/ja/daily-mathematics/2026-10-06/">
+<!-- ISEGORIA:NAV -->
+<a class="ig-skip" href="#ig-content">本文へ移動</a>
+<header id="ig-header"><div class="ig-nav-inner">
+<a class="ig-brand" href="/ja/" aria-label="Isegoria, ホーム"><strong>ISEGORIA</strong><span>Benjamin Haire</span></a>
+<div class="ig-header-actions"><a class="ig-language" href="/daily-mathematics/2026-10-06/" hreflang="en" lang="en">English</a><button class="ig-menu" type="button" aria-expanded="false" aria-controls="ig-primary">メニュー</button></div>
+<nav id="ig-primary" aria-label="メインナビゲーション"><a href="/ja/">ホーム</a><a href="/ja/library.html">全コンテンツ</a><a href="/ja/math-encyclopedia/" aria-current="location">数学百科事典</a><a href="/ja/#interactive">操作できる解説</a><a href="/ja/#preoccupations">研究と解説</a><a href="/ja/#books">書籍</a><a href="/ja/projects.html">プロジェクト</a><a href="/ja/about.html">このサイトについて</a><a class="ig-language" href="/daily-mathematics/2026-10-06/" hreflang="en" lang="en">English</a><button class="ig-theme" type="button" hidden>表示切替</button></nav>
+</div></header>
+<nav id="ig-breadcrumb" aria-label="パンくずリスト"><a href="/ja/">ホーム</a><span aria-hidden="true">/</span><a href="/ja/math-encyclopedia/">数学百科事典</a><span aria-hidden="true">/</span><a href="/ja/daily-mathematics/">Daily Mathematics 解答集</a><span aria-hidden="true">/</span><span aria-current="page">Daily Mathematics 解答：2026年10月6日</span></nav>
+<span id="ig-content" tabindex="-1"></span>
+<!-- /ISEGORIA:NAV -->
+<main id="main" class="dm"><p class="eyebrow">Daily Mathematics / 解答</p><h1>2026年10月6日の解答</h1><p class="deck">この日のカードは難しい定積分とオリジナルのパトナム型の問題の2枚である。まず自分で考え、詰まったら解答を開くこと。</p><section class="card" id="integral" style="--dm-accent:#24457F"><p class="kind">積分</p><h2>二つの誤差関数をかけたガウス型積分</h2><figure><img src="/daily-mathematics/2026-10-06/integral.png" width="1200" height="1200" loading="lazy" alt="カード: 二つの誤差関数をかけたガウス型積分"></figure><div class="statement"><p>次の積分を閉じた形で求めよ。</p>\[\int_0^\infty e^{-x^2}\,\operatorname{erf}\bigl(\sqrt2\,x\bigr)\,\operatorname{erf}\bigl(\sqrt3\,x\bigr)\,dx\]<p>ただし \(\operatorname{erf}(t)=\frac{2}{\sqrt\pi}\int_0^t e^{-u^2}\,du\) とする。</p></div><details><summary>解答を開く</summary><p>この積分を \(I\) とおく。\(|\operatorname{erf}|\le1\) であり \(e^{-x^2}\) は可積分なので，積分は絶対収束する。初等的な原始関数はなく，どちらかの誤差関数について部分積分しても erf が別の erf に置き換わるだけなので，一変数のままでは行き詰まる。鍵は，誤差関数を関数として扱うのをやめ，それ自身がガウス積分であることを使うことである。一般の傾き \(a,b>0\) に対して</p>
+\[J(a,b)=\int_0^\infty e^{-x^2}\operatorname{erf}(ax)\operatorname{erf}(bx)\,dx,\qquad I=J(\sqrt2,\sqrt3)\]
+<p>とおく。</p>
+<p><strong>第1段：三次元への持ち上げ。</strong>\(\operatorname{erf}(ax)=\frac{2}{\sqrt\pi}\int_0^{ax}e^{-t^2}dt\)，\(\operatorname{erf}(bx)=\frac{2}{\sqrt\pi}\int_0^{bx}e^{-s^2}ds\) と書き，トネリの定理（被積分関数はすべて非負）を用いると</p>
+\[J(a,b)=\frac4\pi\iiint_{C}e^{-(x^2+t^2+s^2)}\,dx\,dt\,ds,\qquad C=\{x>0,\ 0&lt;t&lt;ax,\ 0&lt;s&lt;bx\}\]
+<p>を得る。</p>
+<p><strong>第2段：効くのは立体角だけである。</strong>領域 \(C\) は原点を頂点とする錐である（\(\lambda>0\) に対し \(v\mapsto\lambda v\) で不変）。一方ガウス関数は \(r=|v|\) にしかよらない。したがって球座標で積分は \(\Omega\int_0^\infty r^2e^{-r^2}dr=\Omega\cdot\frac{\sqrt\pi}{4}\) と分解する。ここで \(\Omega\) は \(C\) の立体角である（確認：\(\Omega=4\pi\) とすれば全空間のガウス積分 \(\pi^{3/2}\) になる）。よって</p>
+\[J(a,b)=\frac4\pi\cdot\frac{\sqrt\pi}{4}\,\Omega=\frac{\Omega}{\sqrt\pi}.\]
+<p><strong>第3段：長方形錐の立体角。</strong>この錐は平面 \(x=1\) と長方形 \(R=[0,a]\times[0,b]\) で交わり，頂点からこの平面に下ろした垂線の足は隅 \((t,s)=(0,0)\) である。距離1にある平面図形の張る立体角は</p>
+\[\Omega=\iint_R\frac{dt\,ds}{(1+t^2+s^2)^{3/2}}\]
+<p>である。内側の積分は初等的で，\(p^2=1+t^2\) とおけば \(\int_0^b\frac{ds}{(p^2+s^2)^{3/2}}=\frac{b}{p^2\sqrt{p^2+b^2}}\) となる。ゆえに</p>
+\[\Omega=\int_0^a\frac{b\,dt}{(1+t^2)\sqrt{1+b^2+t^2}}=\arctan\frac{ab}{\sqrt{1+a^2+b^2}}.\]
+<p>最後の等号を示すには右辺を \(a\) で微分すればよい。\(u=ab/\sqrt{1+a^2+b^2}\) とおくと \(\frac{du}{da}=\frac{b(1+b^2)}{(1+a^2+b^2)^{3/2}}\)，\(1+u^2=\frac{(1+a^2)(1+b^2)}{1+a^2+b^2}\) であるから \(\frac{d}{da}\arctan u=\frac{b}{(1+a^2)\sqrt{1+a^2+b^2}}\) となり，これは被積分関数に一致する。また \(a=0\) で両辺とも0である。以上で一般公式</p>
+\[\int_0^\infty e^{-x^2}\operatorname{erf}(ax)\operatorname{erf}(bx)\,dx=\frac{1}{\sqrt\pi}\arctan\frac{ab}{\sqrt{1+a^2+b^2}}\]
+<p>が示された。</p>
+<p><strong>第4段：特別な傾き。</strong>\(a=\sqrt2\)，\(b=\sqrt3\) のとき \(ab=\sqrt6\)，\(\sqrt{1+2+3}=\sqrt6\) であるから，逆正接は \(\arctan1=\pi/4\) となる。すなわちこの錐はちょうど球面の16分の1を切り取る（傾きは \((a^2-1)(b^2-1)=2\) となるように選んであり，これが商が1になる条件である）。したがって \(I=\frac{\pi/4}{\sqrt\pi}=\frac{\sqrt\pi}{4}\) である。</p>
+<p>第3段の別法として，\(J\) を \(b\) で微分してもよい。一度部分積分すると \(\partial_bJ\) は素直なガウス積分になり，\(b\) について積分し直すと同じ逆正接が得られる。</p>
+<p><strong>数値による確認。</strong>区間 \([0,12]\) で100点ガウス・ルジャンドル則を40区画および200区画で用いると \(0.44311346272637\ldots\) を得て，\(\sqrt\pi/4\) と \(4\times10^{-16}\) 以内で一致した。一般公式も \((a,b)=(1,1),(0.5,2),(3,0.7)\) で同じ精度で確かめた。</p><div class="answer"><strong>答え.</strong> \(\displaystyle\int_0^\infty e^{-x^2}\operatorname{erf}(\sqrt2\,x)\operatorname{erf}(\sqrt3\,x)\,dx=\frac{\sqrt\pi}{4}\approx0.44311\)</div></details></section><section class="card" id="competition" style="--dm-accent:#96311F"><p class="kind">競技数学の問題</p><h2>距離核の二次形式に対する最良定数</h2><figure><img src="/daily-mathematics/2026-10-06/competition.png" width="1200" height="1200" loading="lazy" alt="カード: 距離核の二次形式に対する最良定数"></figure><div class="statement"><p>すべての連続関数 \(f:[0,1]\to\mathbb{R}\) に対して次が成り立つような定数 \(c\) の最大値を求めよ。</p>\[\int_0^1\!\!\int_0^1|x-y|\,f(x)\,f(y)\,dx\,dy\;\ge\;-c\int_0^1 f(x)^2\,dx\]</div><details><summary>解答を開く</summary><p>\(Q(f)=\int_0^1\!\int_0^1|x-y|f(x)f(y)\,dx\,dy\) とおく。最大の定数は \(c=2/\pi^2\) であり，\(f(x)=\cos(\pi x)\) で等号が成り立つことを示す。</p>
+<p><strong>自明でない理由。</strong>核 \(|x-y|\) は非負なので，\(Q(f)\ge0\)，すなわち \(c=0\) と予想したくなる。しかしこれは誤りである。符号を変える関数は正の部分と負の部分を離れた位置に置き，交差項が勝つからである。\(f\) を \(x\) の冪で展開したり核を力ずくで対角化したりしても見通しは得られない。有効なのは，核を書き直して \(Q\) を平方の積分にすることである。</p>
+<p><strong>第1段：層状の恒等式。</strong>\(F(t)=\int_0^tf\) とおくと \(F\in C^1\)，\(F(0)=0\)，\(F'=f\) である。また \(S=F(1)=\int_0^1f\) とおく。\(x,y\in[0,1]\) に対し，距離 \(|x-y|\) は両者の間にある \(t\) の集合の長さであるから</p>
+\[|x-y|=\int_0^1\bigl(\mathbf 1[y\le t&lt;x]+\mathbf 1[x\le t&lt;y]\bigr)\,dt.\]
+<p>これを \(Q\) に代入して積分の順序を交換する（関数はすべて有界）。\(t\) を固定すると \(\iint\mathbf 1[y\le t&lt;x]f(x)f(y)\,dx\,dy=\bigl(S-F(t)\bigr)F(t)\) であり，第2の指示関数も同じ値を与える。よって</p>
+\[Q(f)=2\int_0^1F(t)\bigl(S-F(t)\bigr)\,dt.\]
+<p><strong>第2段：原始関数の中心化。</strong>\(G=F-S/2\) とおく。\(G'=f\)，\(G(0)=-S/2\)，\(G(1)=S/2\) であるから \(G(1)=-G(0)\) であり，\(F(S-F)=S^2/4-G^2\) である。したがって</p>
+\[Q(f)=\frac{S^2}{2}-2\int_0^1G^2\;\ge\;-2\int_0^1G^2,\qquad \int_0^1f^2=\int_0^1G'^2.\]
+<p>あとはウィルティンガー型の不等式「\(G\in C^1[0,1]\)，\(G(1)=-G(0)\) ならば \(\int_0^1G^2\le\pi^{-2}\int_0^1G'^2\)」を示せばよい。</p>
+<p><strong>第3段：反周期的な延長。</strong>\([0,1]\) 上で \(H=G\) とし，\(H(x+1)=-H(x)\) によって \(H\) を \(\mathbb R\) 全体に延長する。条件 \(G(1)=-G(0)\) により \(H\) は連続であり，周期2の区分的 \(C^1\) 関数である。フーリエ係数 \(c_n=\frac12\int_0^2H(x)e^{-i\pi nx}dx\) は（\(x\mapsto x+1\) とずらすことで）\(c_n=-(-1)^nc_n\) をみたすので，偶数の \(n\) に対して \(c_n=0\) である。\(H\) は連続かつ区分的 \(C^1\) だから \(H'\) の係数は \(i\pi n\,c_n\) であり，パーセバルの等式より</p>
+\[\frac12\int_0^2H^2=\sum_{n\ \mathrm{odd}}|c_n|^2\le\sum_{n\ \mathrm{odd}}\frac{\pi^2n^2}{\pi^2}|c_n|^2=\frac{1}{\pi^2}\cdot\frac12\int_0^2H'^2\]
+<p>を得る（奇数 \(n\) はすべて \(n^2\ge1\) をみたす）。\(\int_0^2H^2=2\int_0^1G^2\)，\(\int_0^2H'^2=2\int_0^1G'^2\) であるから不等式が従う。第2段と合わせて</p>
+\[Q(f)\ge-2\int_0^1G^2\ge-\frac{2}{\pi^2}\int_0^1G'^2=-\frac{2}{\pi^2}\int_0^1f^2\]
+<p>となり，\(c=2/\pi^2\) で不等式が成り立つ。</p>
+<p><strong>第4段：最良性。</strong>\(f(x)=\cos(\pi x)\) とする。\(F(t)=\sin(\pi t)/\pi\)，\(S=0\) であるから，第1段より \(Q(f)=-2\int_0^1\sin^2(\pi t)/\pi^2\,dt=-1/\pi^2\) であり，一方 \(\int_0^1f^2=1/2\) である。よって \(Q(f)=-\frac{2}{\pi^2}\int_0^1f^2\) がちょうど成り立ち，\(2/\pi^2\) より小さい定数では不等式は成り立たない（言い換えれば，\(\cos(\pi x)\) は核 \(|x-y|\) の積分作用素の固有関数で，固有値は最も負の値 \(-2/\pi^2\) である）。</p>
+<p><strong>数値による確認。</strong>\(f=\cos(\pi x)\) に対する商 \(Q(f)/\int f^2\) を，折れ目 \(y=x\) で分割したガウス・ルジャンドル求積で計算すると \(10^{-16}\) の精度で \(-2/\pi^2\) に一致した。400点および1600点のガウス節点で離散化した核の最小固有値は \(-0.202642\ldots=-2/\pi^2\) であり，ランダムな試験関数300個（余弦と多項式の混合）はすべて不等式をみたした。</p><div class="answer"><strong>答え.</strong> \(c=\dfrac{2}{\pi^2}\approx0.20264\)（等号は \(f(x)=\cos(\pi x)\) のとき）</div></details></section><p><a href="/ja/daily-mathematics/">解答の一覧へ戻る</a> · <a href="/daily-mathematics/2026-10-06/" hreflang="en" lang="en">English</a></p></main>
+<!-- ISEGORIA:FOOT -->
+<footer id="ig-footer"><div><a href="/ja/">Isegoria · Benjamin Haire</a><nav aria-label="サイト内リンク"><a href="/ja/">ホームに戻る</a><a href="/ja/library.html">全コンテンツ</a><a href="#ig-content">ページ上部へ</a></nav></div></footer>
+<!-- /ISEGORIA:FOOT -->
+</body></html>
