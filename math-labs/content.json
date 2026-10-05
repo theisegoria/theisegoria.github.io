@@ -12259,5 +12259,555 @@
         "url": "https://doi.org/10.1121/1.382599"
       }
     ]
+  },
+  {
+    "slug": "wavelets",
+    "title": [
+      "Wavelets: zooming in on a signal",
+      "ウェーブレット：信号を拡大して見る"
+    ],
+    "description": [
+      "Fourier analysis tells you which frequencies a signal contains and nothing about when. Wavelets trade a little of that frequency precision for position, with short probes for high frequencies and long ones for low. A scalogram that follows a chirp and pins down a click, the Haar and Daubechies ladders of ever finer approximations, and the thresholding that makes wavelets the natural basis for compressing and cleaning signals with jumps.",
+      "フーリエ解析は信号がどの周波数を含むかを教えてくれますが、それがいつなのかについては何も語りません。ウェーブレットは周波数の精度を少しだけ手放して位置を得ます。高い周波数には短い探針、低い周波数には長い探針を使うのです。チャープを追いかけクリックの位置を突き止めるスカログラム、しだいに細かくなる近似を並べたハールとドブシーのはしご、そして跳びのある信号の圧縮と除去でウェーブレットを自然な基底にするしきい値処理を調べます。"
+    ],
+    "group": "analysis",
+    "prerequisite": [
+      "Fourier analysis and inner product spaces",
+      "フーリエ解析と内積空間"
+    ],
+    "source": "Gilbert Strang · Wavelets, Filter Banks and Applications, MIT OpenCourseWare 18.327",
+    "url": "https://ocw.mit.edu/courses/18-327-wavelets-filter-banks-and-applications-spring-2003/",
+    "labs": [
+      {
+        "id": "wavelet-transform",
+        "title": [
+          "1. Time and frequency at once",
+          "1. 時間と周波数を同時に"
+        ],
+        "body": [
+          "The continuous wavelet transform compares a signal with shifted and stretched copies of one oscillating bump, the Morlet wavelet: a complex sinusoid under a Gaussian envelope. Shifting by b asks “when?”, stretching by s asks “at what frequency?”, and the squared modulus |W(s, b)|² paints the scalogram. Because the wavelet is stretched rather than refilled, it always holds the same number of cycles: at high frequency it is short, so a click is located sharply in time, and at low frequency it is long, so slow tones are resolved finely in frequency. Switch to the short-time Fourier transform to see the alternative, one window for every frequency, and drag the probe to see the atom it measures with.",
+          "連続ウェーブレット変換は、信号を一つの振動するこぶ、モルレ・ウェーブレットをずらし伸ばした複製と比べます。モルレ・ウェーブレットはガウス型の包絡線の下にある複素正弦波です。b だけずらすことは「いつか」を問い、s だけ伸ばすことは「どの周波数か」を問い、絶対値の二乗 |W(s, b)|² がスカログラムを描きます。ウェーブレットは中身を詰め替えるのではなく伸び縮みするので、含むサイクル数は常に同じです。高い周波数では短いのでクリックを時間の中で鋭く位置づけ、低い周波数では長いのでゆっくりした音を周波数の上で細かく分解します。短時間フーリエ変換に切り替えると、すべての周波数に一つの窓を使うもう一つのやり方が見られます。プローブをドラッグすると、測定に使う原子が見えます。"
+        ],
+        "formula": "W(s,b)=\\int x(t)\\,\\frac{1}{\\sqrt s}\\,\\overline{\\psi\\!\\left(\\frac{t-b}{s}\\right)}\\,dt,\\qquad \\psi(\\eta)=\\pi^{-1/4}e^{i\\omega_0\\eta}e^{-\\eta^2/2},\\qquad \\lambda_{\\rm Fourier}=\\frac{4\\pi s}{\\omega_0+\\sqrt{2+\\omega_0^2}},\\qquad \\sigma_t\\,\\sigma_\\omega=\\tfrac12",
+        "example": [
+          "With \\(\\omega_0=6\\) the Fourier period of the wavelet is \\(\\lambda=1.033\\,s\\), so a tone of 52 cycles per unit is picked up at scale \\(s=1/(52\\times1.033)=0.0186\\). The envelope \\(e^{-t^2/2s^2}\\) has \\(\\sigma_t=s/\\sqrt2=0.0132\\) of the record and the frequency spread is \\(\\sigma_\\omega=1/(\\sqrt2 s)=38\\) radians, \\(6.0\\) cycles. At 8 cycles per unit the box is \\(6.5\\) times longer and \\(6.5\\) times narrower: \\(\\sigma_t=0.086\\), \\(\\sigma_f=0.93\\). The product \\(\\sigma_t\\sigma_\\omega=1/2\\) is the smallest that any signal allows, and only Gaussians attain it.",
+          "\\(\\omega_0=6\\) ではウェーブレットのフーリエ周期は \\(\\lambda=1.033\\,s\\) なので、単位あたり 52 サイクルの音はスケール \\(s=1/(52\\times1.033)=0.0186\\) で捉えられます。包絡線 \\(e^{-t^2/2s^2}\\) の \\(\\sigma_t\\) は記録の \\(s/\\sqrt2=0.0132\\) で、周波数の広がりは \\(\\sigma_\\omega=1/(\\sqrt2 s)=38\\) ラジアン、つまり \\(6.0\\) サイクルです。単位あたり 8 サイクルでは枠は \\(6.5\\) 倍長く、\\(6.5\\) 倍細くなり、\\(\\sigma_t=0.086\\)、\\(\\sigma_f=0.93\\) です。積 \\(\\sigma_t\\sigma_\\omega=1/2\\) はどんな信号にも許される最小値で、それに達するのはガウス関数だけです。"
+        ],
+        "caution": [
+          "The Morlet wavelet with the Fourier transform used here is analytic (no negative frequencies) and, for \\(\\omega_0\\ge5\\), admissible to within a part in \\(10^5\\); for smaller \\(\\omega_0\\) it has a small nonzero mean and is not strictly a wavelet. The transform is computed with the FFT, which treats the record as periodic, so near the ends the scalogram mixes the beginning with the end: trust only the region inside the cone of influence. The scalogram is divided by \\(s\\) so that equal-amplitude tones appear equally bright; without that rectification \\(|W|^2\\) is biased toward large scales.",
+          "ここで使うフーリエ変換をもつモルレ・ウェーブレットは解析的（負の周波数がない）で、\\(\\omega_0\\ge5\\) なら \\(10^5\\) 分の 1 の精度で許容条件を満たします。より小さな \\(\\omega_0\\) では平均が少しだけ 0 でなくなり、厳密にはウェーブレットではありません。変換は FFT で計算しており、FFT は記録を周期的に扱うので、端の近くではスカログラムが始まりと終わりを混ぜます。信頼できるのは影響円錐の内側だけです。スカログラムは \\(s\\) で割ってあり、同じ振幅の音が同じ明るさに見えます。この補正がないと \\(|W|^2\\) は大きなスケールに偏ります。"
+        ],
+        "question": [
+          "Why can no transform give perfect time and perfect frequency resolution together?",
+          "なぜどんな変換も、完全な時間分解能と完全な周波数分解能を同時には与えられないのですか？"
+        ],
+        "answer": [
+          "Because each coefficient is an inner product with an atom, and an atom cannot be concentrated in both time and frequency: if \\(g\\) has spread \\(\\sigma_t\\) in time and its Fourier transform has spread \\(\\sigma_\\omega\\), then \\(\\sigma_t\\sigma_\\omega\\ge1/2\\). This is the same inequality as Heisenberg’s, since position and momentum wavefunctions are Fourier transforms of each other. A transform can only choose how to tile the time-frequency plane with boxes of area at least \\(1/2\\): the short-time Fourier transform uses one shape everywhere, the wavelet transform uses boxes whose aspect ratio follows the frequency.",
+          "各係数は一つの原子との内積であり、原子は時間と周波数の両方に集中することができないからです。\\(g\\) の時間の広がりが \\(\\sigma_t\\)、そのフーリエ変換の広がりが \\(\\sigma_\\omega\\) なら、\\(\\sigma_t\\sigma_\\omega\\ge1/2\\) です。位置と運動量の波動関数は互いのフーリエ変換なので、これはハイゼンベルクの不等式そのものです。変換にできるのは、面積が少なくとも \\(1/2\\) の枠で時間周波数平面をどう敷き詰めるかを選ぶことだけです。短時間フーリエ変換はどこでも同じ形を使い、ウェーブレット変換は縦横比が周波数に従う枠を使います。"
+        ],
+        "params": [
+          [
+            "sig",
+            "Signal",
+            "信号",
+            0,
+            2,
+            1,
+            0,
+            [
+              [
+                "Chirp and a click",
+                "チャープとクリック"
+              ],
+              [
+                "Two tones, a burst and a click",
+                "二つの音、短い音、クリック"
+              ],
+              [
+                "Doppler",
+                "ドップラー"
+              ]
+            ]
+          ],
+          [
+            "mode",
+            "Transform",
+            "変換",
+            0,
+            1,
+            1,
+            0,
+            [
+              [
+                "Wavelet",
+                "ウェーブレット"
+              ],
+              [
+                "Short-time Fourier",
+                "短時間フーリエ"
+              ]
+            ]
+          ],
+          [
+            "w0",
+            "Wavelet ω₀",
+            "ウェーブレットの ω₀",
+            4,
+            14,
+            1,
+            6
+          ],
+          [
+            "pt",
+            "Probe time b",
+            "プローブの時刻 b",
+            0,
+            1,
+            0.005,
+            0.15
+          ],
+          [
+            "pf",
+            "Probe frequency, cycles per unit",
+            "プローブの周波数、単位あたりサイクル",
+            2,
+            200,
+            1,
+            22
+          ]
+        ],
+        "source": "Christopher Torrence and Gilbert Compo · A Practical Guide to Wavelet Analysis, Bull. Amer. Meteor. Soc. 79 (1998)",
+        "url": "https://paos.colorado.edu/research/wavelets/"
+      },
+      {
+        "id": "haar-multiresolution",
+        "title": [
+          "2. The multiresolution ladder",
+          "2. 多重解像度のはしご"
+        ],
+        "body": [
+          "An orthonormal wavelet basis is built as a ladder of approximation spaces V₀ ⊂ V₁ ⊂ V₂ ⊂ …, each one twice as fine as the last. The scaling function φ spans the coarsest rung; the wavelet ψ, shifted and halved again and again, carries exactly the detail that is lost when you step down a rung. One pair of filters, a lowpass h and a highpass g, does the whole job: convolve and keep every second sample, and the signal splits into a half-length average and a half-length detail. Repeat on the average and you have the fast wavelet transform, N numbers in, N numbers out, in O(N) operations. Drag the handle to keep more levels, or press Play to watch the approximation sharpen one rung at a time.",
+          "正規直交ウェーブレット基底は、近似空間のはしご V₀ ⊂ V₁ ⊂ V₂ ⊂ … として組み立てられます。各段は前の段の二倍細かくなります。スケーリング関数 φ が最も粗い段を張り、何度もずらされ半分にされるウェーブレット ψ が、一段下りるときに失われる詳細をちょうど運びます。低域フィルタ h と高域フィルタ g の一組がすべての仕事をします。畳み込んで一つおきに標本を残すと、信号は半分の長さの平均と半分の長さの詳細に分かれます。平均について繰り返せば高速ウェーブレット変換です。N 個の数を入れて N 個の数を出し、演算は O(N) 回です。ハンドルをドラッグしてより多くの段を残すか、再生を押して近似が一段ずつ鋭くなる様子を見てください。"
+        ],
+        "formula": "a_k=\\sum_n h_n\\,x_{2k+n},\\qquad d_k=\\sum_n g_n\\,x_{2k+n},\\qquad g_n=(-1)^n h_{L-1-n},\\qquad \\sum_n n^p g_n=0\\ \\ (p<P),\\quad P_{\\rm Haar}=1,\\ P_{\\rm D4}=2",
+        "example": [
+          "Haar takes \\(h=(1,1)/\\sqrt2\\) and \\(g=(1,-1)/\\sqrt2\\): the averages and differences of neighbouring pairs. On the samples \\((4,6,10,12)\\) one step gives \\(a=(10,22)/\\sqrt2\\) and \\(d=(-2,-2)/\\sqrt2\\), and the energies agree: \\(16+36+100+144=296=(100+484+4+4)/2\\). Daubechies-4 has four taps, \\(h=(0.483,0.837,0.224,-0.129)\\), chosen so that \\(g\\) is orthogonal to both constants and straight lines. A linear ramp therefore produces zero detail at every level, apart from the wrap-around coefficient where the periodic signal jumps from its last sample back to its first.",
+          "ハールは \\(h=(1,1)/\\sqrt2\\)、\\(g=(1,-1)/\\sqrt2\\) を使います。隣り合う組の平均と差です。標本 \\((4,6,10,12)\\) に一段適用すると \\(a=(10,22)/\\sqrt2\\)、\\(d=(-2,-2)/\\sqrt2\\) となり、エネルギーは一致します。\\(16+36+100+144=296=(100+484+4+4)/2\\) です。ドブシー 4 は四つのタップ \\(h=(0.483,0.837,0.224,-0.129)\\) をもち、\\(g\\) が定数とも直線とも直交するように選ばれています。したがって直線のランプは、周期的な信号が最後の標本から最初の標本へ跳ぶ折り返しの係数を除き、どの段でも詳細が 0 になります。"
+        ],
+        "caution": [
+          "The transform here is periodic: the signal is treated as wrapping around, so a signal whose ends do not match acquires a spurious jump at the boundary, visible as large coefficients at the right edge of every row. Boundary-adapted wavelets avoid this at the cost of special filters near the ends. The Daubechies scaling function is not smooth: \\(\\varphi^{\\rm D4}\\) is continuous but only Hölder of exponent about 0.55, and the jagged shape drawn by the cascade is the real function, not a sampling artefact.",
+          "ここでの変換は周期的です。信号は一周してつながるものとして扱われるので、両端が一致しない信号は境界で見かけの跳びをもち、それが各行の右端の大きな係数として見えます。境界に適応したウェーブレットは、端の近くで特別なフィルタを使うことでこれを避けます。ドブシーのスケーリング関数は滑らかではありません。\\(\\varphi^{\\rm D4}\\) は連続ですが指数約 0.55 のヘルダー連続にとどまり、カスケードが描くぎざぎざの形は標本化の誤差ではなく本物の関数です。"
+        ],
+        "question": [
+          "Why do the detail coefficients of a smooth signal shrink at fine levels, while those of a jump do not?",
+          "なぜ滑らかな信号の詳細係数は細かい段で小さくなり、跳びの係数は小さくならないのですか？"
+        ],
+        "answer": [
+          "A wavelet with \\(p\\) vanishing moments is orthogonal to every polynomial of degree below \\(p\\). Expand a smooth \\(x\\) in a Taylor series over the short support of \\(\\psi_{l,k}\\), of width about \\(2^{-l}\\): the polynomial part is invisible, and the remainder is of order \\(2^{-lp}\\), so after normalisation \\(|d_{l,k}|\\sim2^{-l(p+1/2)}\\) and the coefficients die off geometrically. A jump is not a polynomial on any interval that contains it, so the one wavelet straddling it at each level sees a fixed step, and its coefficient decays only like \\(2^{-l/2}\\). That is why the large coefficients line up in a column above the jump.",
+          "\\(p\\) 個の消失モーメントをもつウェーブレットは、次数が \\(p\\) 未満のすべての多項式と直交します。滑らかな \\(x\\) を、幅がおよそ \\(2^{-l}\\) の \\(\\psi_{l,k}\\) の短い台の上でテイラー展開すると、多項式の部分は見えず、残りは \\(2^{-lp}\\) の大きさなので、規格化のあとで \\(|d_{l,k}|\\sim2^{-l(p+1/2)}\\) となり、係数は等比的に消えていきます。跳びはそれを含むどの区間でも多項式ではないので、各段でそれをまたぐ一つのウェーブレットは一定の段差を見て、その係数は \\(2^{-l/2}\\) のようにしか減衰しません。だから大きな係数は跳びの上に縦一列に並ぶのです。"
+        ],
+        "params": [
+          [
+            "sig",
+            "Signal",
+            "信号",
+            0,
+            2,
+            1,
+            0,
+            [
+              [
+                "Smooth with a jump and a kink",
+                "跳びと折れのある滑らかな信号"
+              ],
+              [
+                "Doppler",
+                "ドップラー"
+              ],
+              [
+                "Ramp with a step",
+                "段差のあるランプ"
+              ]
+            ]
+          ],
+          [
+            "basis",
+            "Wavelet",
+            "ウェーブレット",
+            0,
+            1,
+            1,
+            0,
+            [
+              [
+                "Haar",
+                "ハール"
+              ],
+              [
+                "Daubechies-4",
+                "ドブシー 4"
+              ]
+            ]
+          ],
+          [
+            "j",
+            "Levels kept j",
+            "残す段数 j",
+            0,
+            8,
+            1,
+            4
+          ]
+        ],
+        "source": "Ingrid Daubechies · Orthonormal bases of compactly supported wavelets, Comm. Pure Appl. Math. 41 (1988)",
+        "url": "https://doi.org/10.1002/cpa.3160410705"
+      },
+      {
+        "id": "wavelet-compression",
+        "title": [
+          "3. Keep the big coefficients",
+          "3. 大きな係数を残す"
+        ],
+        "body": [
+          "In a good basis most coefficients of a signal are tiny, and throwing them away costs almost nothing. Piecewise-smooth signals are sparse in a wavelet basis, because only the few wavelets that straddle a jump see it, while in the Fourier basis a single jump spreads over every frequency. Sort the coefficients by size and keep those above a threshold λ: that is compression. Add noise and the same operation removes it, because white noise stays white in any orthonormal basis, spread thinly over all N coefficients, while the signal is concentrated in a few. Donoho and Johnstone’s universal threshold σ√(2 ln N) sits just above the largest noise coefficient you should expect. Drag the threshold and compare with Fourier truncation using exactly as many terms.",
+          "良い基底では信号の係数のほとんどがごく小さく、それを捨ててもほとんど何も失いません。区分的に滑らかな信号はウェーブレット基底で疎です。跳びをまたぐ少数のウェーブレットだけがそれを見るからです。一方フーリエ基底では、一つの跳びがすべての周波数に広がります。係数を大きさの順に並べ、しきい値 λ を超えるものだけを残す、それが圧縮です。ノイズを加えても同じ操作がそれを取り除きます。白色ノイズはどんな正規直交基底でも白色のままで N 個の係数すべてに薄く広がり、信号は少数に集中しているからです。ドノホとジョンストンの普遍しきい値 σ√(2 ln N) は、予想されるノイズ係数の最大値のすぐ上にあります。しきい値をドラッグし、ちょうど同じ項数を使うフーリエの打ち切りと比べてください。"
+        ],
+        "formula": "\\eta_{\\rm hard}(c)=c\\,\\mathbf 1_{|c|>\\lambda},\\qquad \\eta_{\\rm soft}(c)=\\operatorname{sgn}(c)\\,(|c|-\\lambda)_+,\\qquad \\lambda_U=\\sigma\\sqrt{2\\ln N},\\qquad \\Pr\\!\\Big(\\max_{i\\le N}|\\sigma z_i|>\\lambda_U\\Big)\\to0",
+        "example": [
+          "For \\(N=512\\) samples and noise \\(\\sigma=0.1\\), \\(\\lambda_U=0.1\\sqrt{2\\ln512}=0.353\\). Each of the 512 noise coefficients is a Gaussian with standard deviation \\(0.1\\), and the chance that a given one exceeds \\(3.53\\sigma\\) is \\(4\\times10^{-4}\\), so on average a fifth of one noise coefficient survives. Blocks (eleven jumps, scaled to unit variance) is exactly sparse for Haar: 56 coefficients reproduce it perfectly, while the 56 largest Fourier coefficients leave an RMS error of \\(0.25\\). With the noise added, hard thresholding at \\(\\lambda_U\\) brings the error in the default figure from \\(0.104\\) down to \\(0.042\\), with 57 coefficients kept.",
+          "\\(N=512\\) 標本、ノイズ \\(\\sigma=0.1\\) では \\(\\lambda_U=0.1\\sqrt{2\\ln512}=0.353\\) です。512 個のノイズ係数はそれぞれ標準偏差 \\(0.1\\) のガウス変数で、ある一つが \\(3.53\\sigma\\) を超える確率は \\(4\\times10^{-4}\\) なので、平均して生き残るのはノイズ係数の五分の一個です。ブロック信号（十一の跳び、分散 1 に規格化）はハール基底でちょうど疎で、56 個の係数で完全に再現されます。一方、最大の 56 個のフーリエ係数では RMS 誤差 \\(0.25\\) が残ります。ノイズを加えると、\\(\\lambda_U\\) でのハードしきい値は、最初の図で誤差を \\(0.104\\) から \\(0.042\\) まで下げます。残る係数は 57 個です。"
+        ],
+        "caution": [
+          "The universal threshold is designed to remove essentially all the noise, so it also removes small genuine features: it errs toward smoothness, and other rules (SURE, cross-validation) choose smaller thresholds that keep more detail. As is usual, the coarsest 16 coefficients (the average and the first four detail levels) are never thresholded. The noise level \\(\\sigma\\) is known here; in practice it is estimated from the finest detail level, for instance as the median absolute coefficient divided by \\(0.6745\\). Soft thresholding shrinks every surviving coefficient by \\(\\lambda\\), which is why it gives smoother but slightly flattened reconstructions; hard thresholding keeps them intact and is the right choice for pure compression.",
+          "普遍しきい値はノイズをほぼすべて取り除くように設計されているので、小さな本物の特徴も取り除きます。滑らかさの側に誤るのです。SURE や交差検証のような他の規則は、より多くの詳細を残す小さなしきい値を選びます。通常どおり、最も粗い 16 個の係数（平均と最初の四段の詳細）にはしきい値を適用しません。ここではノイズの大きさ \\(\\sigma\\) は既知です。実際には最も細かい詳細の段から、たとえば係数の絶対値の中央値を \\(0.6745\\) で割って推定します。ソフトしきい値は生き残るすべての係数を \\(\\lambda\\) だけ縮めるので、滑らかですがわずかに平たくなった再構成を与えます。ハードしきい値は係数をそのまま残し、純粋な圧縮にはこちらが適しています。"
+        ],
+        "question": [
+          "Why does an orthonormal transform leave white noise white, and why does that make thresholding work?",
+          "なぜ正規直交変換は白色ノイズを白色のまま保ち、それがなぜしきい値処理を機能させるのですか？"
+        ],
+        "answer": [
+          "If the noise vector \\(z\\) has independent \\(N(0,\\sigma^2)\\) entries, its covariance is \\(\\sigma^2I\\), and an orthonormal matrix \\(W\\) gives \\(\\operatorname{cov}(Wz)=W\\sigma^2IW^{\\mathsf T}=\\sigma^2I\\): the transformed noise has the same independent \\(N(0,\\sigma^2)\\) entries. So in the wavelet domain the noise is spread evenly at level \\(\\sigma\\) across all \\(N\\) coefficients, while a piecewise-smooth signal puts its energy into a few large ones. A threshold slightly above the noise maximum, \\(\\sigma\\sqrt{2\\ln N}\\), then separates the two populations almost perfectly.",
+          "ノイズのベクトル \\(z\\) が独立な \\(N(0,\\sigma^2)\\) の成分をもてば共分散は \\(\\sigma^2I\\) で、正規直交行列 \\(W\\) について \\(\\operatorname{cov}(Wz)=W\\sigma^2IW^{\\mathsf T}=\\sigma^2I\\) です。変換されたノイズも独立な \\(N(0,\\sigma^2)\\) の成分をもちます。したがってウェーブレット領域でノイズは \\(N\\) 個の係数すべてに大きさ \\(\\sigma\\) で一様に広がり、区分的に滑らかな信号はエネルギーを少数の大きな係数に集めます。ノイズの最大値のわずかに上にあるしきい値 \\(\\sigma\\sqrt{2\\ln N}\\) が、二つの集団をほぼ完全に分けるのです。"
+        ],
+        "params": [
+          [
+            "sig",
+            "Signal",
+            "信号",
+            0,
+            2,
+            1,
+            0,
+            [
+              [
+                "Blocks",
+                "ブロック"
+              ],
+              [
+                "HeaviSine",
+                "ヘビサイン"
+              ],
+              [
+                "Doppler",
+                "ドップラー"
+              ]
+            ]
+          ],
+          [
+            "basis",
+            "Wavelet",
+            "ウェーブレット",
+            0,
+            1,
+            1,
+            0,
+            [
+              [
+                "Haar",
+                "ハール"
+              ],
+              [
+                "Daubechies-4",
+                "ドブシー 4"
+              ]
+            ]
+          ],
+          [
+            "rule",
+            "Threshold rule",
+            "しきい値の規則",
+            0,
+            1,
+            1,
+            0,
+            [
+              [
+                "Hard",
+                "ハード"
+              ],
+              [
+                "Soft",
+                "ソフト"
+              ]
+            ]
+          ],
+          [
+            "sigma",
+            "Noise σ",
+            "ノイズ σ",
+            0,
+            0.5,
+            0.01,
+            0.1
+          ],
+          [
+            "lam",
+            "Threshold λ",
+            "しきい値 λ",
+            0.01,
+            3,
+            0.001,
+            0.353
+          ]
+        ],
+        "source": "David Donoho and Iain Johnstone · Ideal spatial adaptation by wavelet shrinkage, Biometrika 81 (1994)",
+        "url": "https://doi.org/10.1093/biomet/81.3.425"
+      }
+    ]
+  },
+  {
+    "slug": "laser-physics",
+    "title": [
+      "Laser physics: light that copies itself",
+      "レーザー物理：自らを複製する光"
+    ],
+    "description": [
+      "A laser is an amplifier wrapped in a feedback loop. Stimulated emission copies a photon into the same mode, a pair of mirrors sends the copies back through the amplifier, and the result, above a sharp threshold, is light of extraordinary purity. The rate equations behind the threshold and the spikes on switch-on, the cavity that picks out which frequencies may lase, and mode locking, where a comb of frequencies held in phase turns into a train of femtosecond pulses.",
+      "レーザーはフィードバックの輪に包まれた増幅器です。誘導放出は光子を同じモードへ複製し、一組の鏡が複製を増幅器へ送り返します。その結果、鋭いしきい値を超えたところで、並外れて純粋な光が生まれます。しきい値と点灯時のスパイクの背後にある速度方程式、どの周波数が発振してよいかを選び出す共振器、そして位相のそろった周波数の櫛がフェムト秒パルスの列に変わるモード同期を調べます。"
+    ],
+    "group": "physics",
+    "prerequisite": [
+      "Optics and quantum mechanics",
+      "光学と量子力学"
+    ],
+    "source": "Orazio Svelto · Principles of Lasers, 5th ed. (Springer, 2010)",
+    "url": "https://doi.org/10.1007/978-1-4419-1302-9",
+    "labs": [
+      {
+        "id": "rate-equations",
+        "title": [
+          "1. Threshold and the switch-on spikes",
+          "1. しきい値と点灯時のスパイク"
+        ],
+        "body": [
+          "Two numbers describe a laser: the inversion N, how many more atoms sit in the upper level than the lower, and the number of photons φ in the cavity mode. The pump raises N, spontaneous decay lowers it with lifetime τ, and every photon in the mode stimulates more photons at a rate proportional to N. The cavity leaks photons with lifetime τ꜀. Gain balances loss at one inversion only, the threshold inversion, so above threshold the inversion is clamped there and all further pump power goes into light: the output rises in a straight line from a sharp kink. A small fraction β of spontaneous emission lands in the mode and seeds it; on a logarithmic scale the kink is a jump of about 1/β. Press Play to switch the laser on and watch it overshoot.",
+          "レーザーは二つの数で記述できます。上準位にいる原子が下準位よりどれだけ多いかを表す反転分布 N と、共振器のモードにいる光子の数 φ です。ポンプは N を増やし、自然放出は寿命 τ で N を減らし、モードの中の各光子は N に比例する率でさらに光子を誘導します。共振器は寿命 τ꜀ で光子を漏らします。利得が損失とつり合うのはただ一つの反転分布、しきい値の反転分布だけなので、しきい値より上では反転分布はそこに固定され、それ以上のポンプのパワーはすべて光になります。出力は鋭い折れ目から直線で立ち上がります。自然放出のわずかな割合 β がモードに入って種となり、対数目盛ではこの折れ目はおよそ 1/β の跳びになります。再生を押してレーザーを点灯し、行き過ぎる様子を見てください。"
+        ],
+        "formula": "\\frac{dn}{dt}=\\frac{r-n-np}{\\tau},\\qquad \\frac{dp}{dt}=\\frac{(n-1)\\,p+\\beta n}{\\tau_c},\\qquad \\omega_R=\\sqrt{\\frac{r-1}{\\tau\\tau_c}},\\quad \\gamma_R=\\frac{r}{2\\tau}",
+        "example": [
+          "A semiconductor laser has \\(\\tau\\approx2\\) ns and \\(\\tau_c\\approx2\\) ps, so \\(\\rho=\\tau/\\tau_c=1000\\). Pumped at twice threshold, the inversion climbs as \\(n=2(1-e^{-t/\\tau})\\) and crosses threshold after \\(\\tau\\ln2=1.4\\) ns; the photons then grow from the spontaneous seed and arrive as a spike several times the steady output. The ringing has \\(\\omega_R=\\sqrt{1000}/\\tau=1.6\\times10^{10}\\,\\mathrm{s^{-1}}\\), a frequency of 2.5 GHz, and dies away with time constant \\(2\\tau/r=2\\) ns. This relaxation frequency sets how fast the laser can be modulated, which is why it matters for optical communication.",
+          "半導体レーザーでは \\(\\tau\\approx2\\) ns、\\(\\tau_c\\approx2\\) ps なので \\(\\rho=\\tau/\\tau_c=1000\\) です。しきい値の二倍でポンプすると、反転分布は \\(n=2(1-e^{-t/\\tau})\\) のように上昇し、\\(\\tau\\ln2=1.4\\) ns 後にしきい値を越えます。そこから光子は自然放出の種から成長し、定常出力の数倍のスパイクとなって現れます。振動は \\(\\omega_R=\\sqrt{1000}/\\tau=1.6\\times10^{10}\\,\\mathrm{s^{-1}}\\)、周波数にして 2.5 GHz で、時定数 \\(2\\tau/r=2\\) ns で消えていきます。この緩和振動数がレーザーをどれだけ速く変調できるかを決めるので、光通信で重要になります。"
+        ],
+        "caution": [
+          "These are the simplest four-level rate equations: one mode, a lower laser level that empties instantly, and no spatial structure. The photon number is in units of its saturation value, so \\(p=1\\) is the intensity at which stimulated emission depletes the inversion as fast as spontaneous decay does. Real semiconductor lasers add gain compression and carrier-dependent refractive index, which damp the oscillations faster; solid-state lasers have \\(\\rho\\) of \\(10^4\\) to \\(10^6\\) and spike for much longer. The formula for \\(\\omega_R\\) is a small-signal result, so the first, large spikes oscillate a little more slowly.",
+          "これは最も単純な四準位の速度方程式です。モードは一つ、下のレーザー準位は瞬時に空になり、空間構造はありません。光子数は飽和値を単位としており、\\(p=1\\) は誘導放出が自然放出と同じ速さで反転分布を減らす強度です。実際の半導体レーザーには利得圧縮とキャリア密度に依存する屈折率が加わり、振動はより速く減衰します。固体レーザーの \\(\\rho\\) は \\(10^4\\) から \\(10^6\\) で、ずっと長くスパイクを続けます。\\(\\omega_R\\) の式は小振幅の結果なので、最初の大きなスパイクは少しだけゆっくり振動します。"
+        ],
+        "question": [
+          "Why is the inversion clamped at its threshold value, however hard the laser is pumped?",
+          "なぜ、どれだけ強くポンプしても反転分布はしきい値に固定されるのですか？"
+        ],
+        "answer": [
+          "In the steady state the photon number cannot change, so gain must equal loss exactly: \\((n-1)p=0\\) when \\(\\beta\\) is negligible. With light in the cavity, \\(p>0\\), this forces \\(n=1\\), the inversion at which one round trip of gain exactly replaces one round trip of loss. If the inversion rose higher the photon number would grow without limit and drain it back; if it fell lower the light would die and the pump would refill it. The extra pump therefore has nowhere to go but into photons, which is why above threshold \\(p=r-1\\) is linear in the pump.",
+          "定常状態では光子数は変化できないので、利得は損失とちょうど等しくなければなりません。\\(\\beta\\) を無視すれば \\((n-1)p=0\\) です。共振器に光があり \\(p>0\\) なら、これは \\(n=1\\) を強制します。一往復の利得が一往復の損失をちょうど補う反転分布です。反転分布がそれより高くなれば光子数が際限なく増えて反転分布を引き戻し、低くなれば光が消えてポンプが反転分布を満たし直します。だから余分なポンプは光子になるほか行き場がなく、しきい値より上で \\(p=r-1\\) はポンプに比例するのです。"
+        ],
+        "params": [
+          [
+            "r",
+            "Pump r = R / Rₜₕ",
+            "ポンプ r = R / Rₜₕ",
+            0,
+            6,
+            0.05,
+            2
+          ],
+          [
+            "lb",
+            "log₁₀ β (spontaneous fraction)",
+            "log₁₀ β（自然放出の割合）",
+            -6,
+            -1,
+            0.5,
+            -4
+          ],
+          [
+            "lrho",
+            "log₁₀ ρ = log₁₀(τ / τ꜀)",
+            "log₁₀ ρ = log₁₀(τ / τ꜀)",
+            1.5,
+            3.3,
+            0.1,
+            3
+          ],
+          [
+            "scale",
+            "Output axis",
+            "出力の軸",
+            0,
+            1,
+            1,
+            0,
+            [
+              [
+                "Linear",
+                "線形"
+              ],
+              [
+                "Logarithmic",
+                "対数"
+              ]
+            ]
+          ]
+        ],
+        "source": "RP Photonics Encyclopedia · Relaxation oscillations",
+        "url": "https://www.rp-photonics.com/relaxation_oscillations.html"
+      },
+      {
+        "id": "laser-cavity-modes",
+        "title": [
+          "2. The cavity chooses the colours",
+          "2. 共振器が色を選ぶ"
+        ],
+        "body": [
+          "Two mirrors a distance L apart support only standing waves that fit a whole number of half-wavelengths, so the cavity transmits a comb of narrow resonances spaced by the free spectral range c/2L. How narrow they are depends on the mirrors: the finesse, the ratio of spacing to width, grows like π/(1 − R) as the reflectivity R approaches 1. The gain medium supplies a much broader band; in a helium–neon tube the atoms move, and their Doppler shifts spread the gain over about 1.5 GHz. A mode lases where the comb meets gain above the loss line. Drag the mirror to change L and watch modes enter and leave, nudge it by a fraction of a wavelength to slide the comb, and lower R to see the threshold rise and the resonances broaden together.",
+          "距離 L だけ離れた二枚の鏡は、半波長の整数個がちょうど収まる定在波しか支えられません。そのため共振器は、自由スペクトル領域 c/2L の間隔で並ぶ鋭い共鳴の櫛を透過させます。共鳴の鋭さは鏡で決まります。間隔と幅の比であるフィネスは、反射率 R が 1 に近づくと π/(1 − R) のように大きくなります。利得媒質はずっと広い帯域を与えます。ヘリウムネオン管では原子が動いており、そのドップラーずれが利得をおよそ 1.5 GHz に広げます。櫛が損失の線より上の利得と出会うところでモードが発振します。鏡をドラッグして L を変え、モードが出入りする様子を見てください。鏡を波長の何分の一か動かすと櫛が滑り、R を下げるとしきい値の上昇と共鳴の広がりが同時に起こります。"
+        ],
+        "formula": "\\nu_q=q\\,\\frac{c}{2L},\\qquad T(\\nu)=\\frac{1}{1+\\frac{4R}{(1-R)^2}\\sin^2\\!\\frac{\\pi\\nu}{\\nu_F}},\\qquad \\mathcal F=\\frac{\\pi\\sqrt R}{1-R},\\qquad \\delta\\nu=\\frac{\\nu_F}{\\mathcal F},\\qquad R^2e^{2G_{\\rm th}}=1",
+        "example": [
+          "A 30 cm He–Ne cavity has \\(\\nu_F=c/2L=499.7\\) MHz. With mirrors of \\(R=0.98\\) the finesse is \\(\\pi\\sqrt{0.98}/0.02=156\\), so each resonance is \\(3.2\\) MHz wide and a photon survives \\(\\tau_c=1/(2\\pi\\,\\delta\\nu)=50\\) ns, about 25 round trips; the quality factor is \\(\\nu/\\delta\\nu=1.5\\times10^8\\). Threshold needs a single-pass gain of \\(-\\ln0.98=2.0\\%\\). With 4% at line centre the gain stays above threshold over \\(\\pm0.75\\) GHz, a window 1.5 GHz wide that holds two or three modes, depending on where the comb sits (three in the starting figure). Shorten the cavity below about 10 cm and \\(\\nu_F\\) exceeds that window: the laser runs on a single frequency.",
+          "長さ 30 cm のヘリウムネオン共振器では \\(\\nu_F=c/2L=499.7\\) MHz です。\\(R=0.98\\) の鏡ではフィネスは \\(\\pi\\sqrt{0.98}/0.02=156\\) で、各共鳴の幅は \\(3.2\\) MHz、光子は \\(\\tau_c=1/(2\\pi\\,\\delta\\nu)=50\\) ns、およそ 25 往復のあいだ生き延びます。Q 値は \\(\\nu/\\delta\\nu=1.5\\times10^8\\) です。しきい値には一往路あたり \\(-\\ln0.98=2.0\\%\\) の利得が必要です。線中心で 4% なら、利得は \\(\\pm0.75\\) GHz にわたってしきい値を超え、幅 1.5 GHz のこの窓には、櫛の位置に応じて二つか三つのモードが入ります（最初の図では三つ）。共振器を約 10 cm より短くすると \\(\\nu_F\\) がこの窓を超え、レーザーは単一の周波数で発振します。"
+        ],
+        "caution": [
+          "The lasing modes are marked wherever the unsaturated gain exceeds the loss, which is right for a Doppler-broadened gas, where each mode draws on its own velocity class of atoms. In a homogeneously broadened medium the modes share the same atoms, and the strongest one saturates the gain for all the others, so such lasers tend to run on fewer modes than this picture suggests. Mirror transmission is taken as the only loss and both mirrors are equal; the standing wave is drawn with 12 half-wavelengths, not the million or so of a real cavity, and the mode heights are not powers.",
+          "発振モードは、飽和していない利得が損失を上回るところに印を付けています。これはドップラー広がりの気体では正しい扱いで、各モードは自分専用の速度群の原子を使います。均一広がりの媒質ではモードが同じ原子を共有し、最も強いモードが他のすべてのモードの利得を飽和させるので、そうしたレーザーはこの図が示すより少ないモードで発振しがちです。損失は鏡の透過だけとし、二枚の鏡は等しいとしています。定在波は実際の共振器の百万ほどではなく 12 個の半波長で描いており、モードの高さはパワーではありません。"
+        ],
+        "question": [
+          "Why does moving a mirror by only 316 nm shift every resonance by a whole free spectral range?",
+          "なぜ鏡をわずか 316 nm 動かすだけで、すべての共鳴が自由スペクトル領域一つ分ずれるのですか？"
+        ],
+        "answer": [
+          "A resonance needs \\(2L=q\\lambda\\) for an integer \\(q\\). Near 632.8 nm a 30 cm cavity has \\(q\\approx948{,}000\\). Lengthening the cavity by \\(\\lambda/2=316.4\\) nm makes room for exactly one more half-wavelength, so the mode that sat at a given frequency now has index \\(q+1\\), and each resonance has slid down by one spacing \\(c/2L\\) to take the place of its neighbour. That is why single-frequency lasers need their cavity length held to a few nanometres, and why a laser left to drift hops from mode to mode as it warms up.",
+          "共鳴には整数 \\(q\\) について \\(2L=q\\lambda\\) が必要です。632.8 nm 付近では 30 cm の共振器は \\(q\\approx948{,}000\\) です。共振器を \\(\\lambda/2=316.4\\) nm 長くするとちょうど半波長一つ分の余地ができるので、ある周波数にあったモードは番号 \\(q+1\\) をもつようになり、各共鳴は間隔 \\(c/2L\\) 一つ分だけ下へ滑って隣の位置に収まります。だから単一周波数のレーザーは共振器長を数ナノメートルの精度で保つ必要があり、放っておかれたレーザーは温まるにつれてモードからモードへ跳び移るのです。"
+        ],
+        "params": [
+          [
+            "L",
+            "Cavity length L, cm",
+            "共振器長 L、cm",
+            10,
+            100,
+            0.5,
+            30
+          ],
+          [
+            "dz",
+            "Mirror nudge, nm",
+            "鏡の微調整、nm",
+            0,
+            316,
+            1,
+            0
+          ],
+          [
+            "R",
+            "Mirror reflectivity R",
+            "鏡の反射率 R",
+            0.8,
+            0.999,
+            0.001,
+            0.98
+          ],
+          [
+            "G",
+            "Peak gain per pass, %",
+            "一往路あたりのピーク利得、%",
+            0.5,
+            15,
+            0.1,
+            4
+          ]
+        ],
+        "source": "Arthur Schawlow and Charles Townes · Infrared and optical masers, Phys. Rev. 112 (1958)",
+        "url": "https://doi.org/10.1103/PhysRev.112.1940"
+      },
+      {
+        "id": "mode-locking",
+        "title": [
+          "3. Mode locking: a comb becomes a pulse",
+          "3. モード同期：櫛がパルスになる"
+        ],
+        "body": [
+          "A laser running on many modes emits a sum of sinusoids at frequencies spaced by exactly 1/T, where T is the round-trip time. If their phases are random the sum is a noisy pattern that repeats every round trip. If the phases are locked together, the fields add constructively at one instant per round trip and cancel almost everywhere else: N modes produce a pulse N times the mean intensity and about T/N long, circulating in the cavity and leaking out once per trip. The mean power is the same in both cases; locking only rearranges it in time. Slide the locking, change the number of modes, and watch the speckle condense into a pulse.",
+          "多くのモードで発振するレーザーは、周回時間を T とすると、ちょうど 1/T 間隔の周波数をもつ正弦波の和を放ちます。位相がランダムなら、和は一周ごとに繰り返す雑音のような模様です。位相がそろっていれば、場は一周に一瞬だけ強め合い、それ以外のほとんどの時刻で打ち消し合います。N 個のモードは平均強度の N 倍で長さ約 T/N のパルスを作り、それが共振器を周回して一周に一度漏れ出します。平均パワーはどちらの場合も同じで、ロックは時間の中でそれを並べ替えるだけです。ロックを動かし、モードの数を変えて、スペックルがパルスへ凝縮する様子を見てください。"
+        ],
+        "formula": "E(t)=\\sum_{q}a_q\\,e^{i(2\\pi q t/T+\\varphi_q)},\\qquad \\langle I\\rangle=\\sum_q a_q^2,\\qquad I(t)\\big|_{\\varphi_q=0,\\ a_q=1}=\\frac{\\sin^2(\\pi Nt/T)}{\\sin^2(\\pi t/T)},\\qquad \\Delta t_{\\rm FWHM}\\approx0.886\\,\\frac{T}{N}",
+        "example": [
+          "With 15 equal modes locked, the peak is \\(15\\) times the mean and the pulse is \\(0.886/15=0.059\\) of a round trip long. A titanium-sapphire oscillator with an 80 MHz repetition rate has \\(T=12.5\\) ns; a 40 nm bandwidth at 800 nm is \\(\\Delta\\nu=c\\,\\Delta\\lambda/\\lambda^2=19\\) THz, about 230,000 modes. For a Gaussian spectrum the shortest pulse has \\(\\Delta t\\,\\Delta\\nu=2\\ln2/\\pi=0.441\\), here 24 fs: the same average power as the free-running laser, squeezed into bursts half a million times brighter.",
+          "等しい 15 個のモードをロックすると、ピークは平均の \\(15\\) 倍、パルスの長さは一周の \\(0.886/15=0.059\\) です。繰り返し 80 MHz のチタンサファイア発振器では \\(T=12.5\\) ns で、800 nm での帯域 40 nm は \\(\\Delta\\nu=c\\,\\Delta\\lambda/\\lambda^2=19\\) THz、およそ 230,000 個のモードにあたります。ガウス型のスペクトルでは最短のパルスは \\(\\Delta t\\,\\Delta\\nu=2\\ln2/\\pi=0.441\\) を満たし、ここでは 24 fs です。自由発振のレーザーと同じ平均パワーが、五十万倍明るい閃光に押し込められます。"
+        ],
+        "caution": [
+          "The figure imposes the phases by hand. In a real laser locking comes from a mechanism that favours pulses: a modulator driven at the round-trip frequency (active locking), or a saturable absorber or Kerr lens whose loss is lower at high intensity (passive locking), and the phases settle into step because a pulse then loses less than a continuous wave. Dispersion in the cavity makes the mode spacing slightly uneven, which chirps and lengthens the pulse unless it is compensated. The Gaussian comb here is cut off at about 2.4 standard deviations, so its pulse is a few per cent longer than the ideal 0.441 product.",
+          "この図では位相を手で与えています。実際のレーザーでは、パルスを有利にする仕組みがロックをもたらします。周回周波数で駆動される変調器（能動モード同期）や、強度が高いほど損失が小さくなる可飽和吸収体やカーレンズ（受動モード同期）です。そのときパルスは連続波より損失が少なくなるので、位相は足並みをそろえます。共振器内の分散はモード間隔をわずかに不均一にし、補償しないとパルスにチャープを与えて長くします。ここでのガウス型の櫛は標準偏差の約 2.4 倍で打ち切られているので、そのパルスは理想的な積 0.441 より数パーセント長くなります。"
+        ],
+        "question": [
+          "Why does locking the phases raise the peak intensity without changing the average power?",
+          "なぜ位相をロックすると、平均パワーを変えずにピーク強度が上がるのですか？"
+        ],
+        "answer": [
+          "Averaged over a round trip, the cross terms \\(a_qa_{q^{\\prime}}e^{i(\\cdots)}\\) between different modes oscillate at multiples of \\(1/T\\) and average to zero, so \\(\\langle I\\rangle=\\sum a_q^2\\) whatever the phases. The phases decide only where in the round trip the energy sits. Locked, the \\(N\\) amplitudes add to \\(N\\) times one at \\(t=0\\), giving \\(N^2\\) in intensity, and energy conservation then demands that the pulse occupy only about \\(1/N\\) of the period. Random phases add like a random walk, with typical intensity \\(N\\) spread over the whole period.",
+          "一周にわたって平均すると、異なるモードの間の交差項 \\(a_qa_{q^{\\prime}}e^{i(\\cdots)}\\) は \\(1/T\\) の整数倍の周波数で振動して平均 0 になるので、位相が何であれ \\(\\langle I\\rangle=\\sum a_q^2\\) です。位相が決めるのは、一周の中のどこにエネルギーがあるかだけです。ロックすると \\(N\\) 個の振幅は \\(t=0\\) で一つの \\(N\\) 倍に足し合わさり、強度は \\(N^2\\) になります。エネルギー保存則により、パルスは周期のおよそ \\(1/N\\) しか占められません。ランダムな位相はランダムウォークのように足し合わさり、典型的な強度 \\(N\\) が周期全体に広がります。"
+        ],
+        "params": [
+          [
+            "N",
+            "Number of modes N",
+            "モードの数 N",
+            1,
+            41,
+            2,
+            15
+          ],
+          [
+            "lock",
+            "Phase locking",
+            "位相のロック",
+            0,
+            1,
+            0.01,
+            1
+          ],
+          [
+            "shape",
+            "Spectrum",
+            "スペクトル",
+            0,
+            1,
+            1,
+            0,
+            [
+              [
+                "Flat",
+                "平坦"
+              ],
+              [
+                "Gaussian",
+                "ガウス型"
+              ]
+            ]
+          ]
+        ],
+        "source": "Franz Kärtner · Ultrafast Optics, MIT OpenCourseWare 6.977",
+        "url": "https://ocw.mit.edu/courses/6-977-ultrafast-optics-spring-2005/"
+      }
+    ]
   }
 ]
