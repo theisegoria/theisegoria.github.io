@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Material Lab is a free, local macOS app with an iOS companion and a CLI that turns one photograph into editable PBR texture maps: albedo, 16-bit height, normal, roughness, GTAO occlusion and more. Learned geometry from MoGe-2, a seam-cut tiler and delighting, all on the machine.">
+<meta name="description" content="Material Lab is a local macOS app with an iOS companion and a CLI that turns one photograph into editable PBR texture maps: albedo, 16-bit height, normal, roughness, GTAO occlusion and more. Learned geometry from MoGe-2, a seam-cut tiler and delighting, all on the machine.">
 <meta name="theme-color" content="#f7f7f5">
 <meta property="og:title" content="Material Lab">
 <meta property="og:description" content="A photograph in, editable PBR texture maps out, and nothing leaves the Mac.">
@@ -123,11 +123,11 @@
     .toc ol { columns:1; }
     .fig .plate { padding:8px; }
   }
-</style><!-- ISEGORIA:HEAD -->
+</style><script defer data-isegoria-analytics src="/assets/analytics.js?v=9e6ebd463bf2"></script>
+<!-- ISEGORIA:HEAD -->
 <link rel="stylesheet" href="/assets/site-shell.css?v=c21cd21e82">
 <script src="/assets/site-shell.js?v=c21cd21e82" ></script>
 <!-- /ISEGORIA:HEAD -->
-<script defer data-isegoria-analytics src="/assets/analytics.js?v=9e6ebd463bf2"></script>
 </head>
 <body class=" ig-site" data-site-kind="editorial" data-site-route="/material-lab/">
 <!-- ISEGORIA:NAV -->
@@ -145,11 +145,10 @@
   <div class="hero">
     <p class="label">Software / 23 September 2026</p>
     <h1>Material Lab</h1>
-    <p class="standfirst">A photograph in, a set of editable PBR texture maps out, and nothing leaves the machine. Material Lab is a free macOS 27 app, with an iOS 27 companion for capture and a command line tool for batches. It has no account, no upload and no engine dependency: you review the maps, then hand the bundle to whatever cooker or DCC pipeline you already use.</p>
+    <p class="standfirst">A photograph in, a set of editable PBR texture maps out, and nothing leaves the machine. Material Lab is a macOS 27 app with an iOS 27 companion for capture. It has no account, no upload and no engine dependency: you review the maps, then hand the bundle to whatever cooker or DCC pipeline you already use.</p>
     <div class="herometa">
-      <a class="pill primary" href="https://github.com/theisegoria/material-lab/releases/tag/v1.2.0">Download for macOS (1.2.0)</a>
-      <a class="pill" href="https://github.com/theisegoria/material-lab">Source on GitHub</a>
-      <span>MIT licence · Apple Silicon · macOS 27</span>
+      <span class="pill primary">Coming to the Mac App Store and App Store</span>
+      <span>Apple Silicon · macOS 27 · iOS 27</span>
     </div>
   </div>
 
@@ -161,8 +160,8 @@
   </nav>
 
   <div class="key">
-    <p class="kt">Installing the release</p>
-    <p>The download is <code>MaterialLab-1.2.0-macOS.dmg</code>, with the learned-geometry model built in. It is signed with a Developer ID but not yet notarized, so the first launch is blocked by Gatekeeper and needs a confirmation in System Settings › Privacy &amp; Security before it will open. It requires an Apple Silicon Mac running macOS 27. The source builds with Xcode 27, CMake and Ninja.</p>
+    <p class="kt">Availability</p>
+    <p>Material Lab is being prepared for the Mac App Store and the App Store, with the learned-geometry model built in. It requires an Apple Silicon Mac running macOS 27, or an iPhone running iOS 27.</p>
   </div>
 
   <p>An RGB photograph does not uniquely determine the shape of a surface. Lighting, pigment, specular reflection, shadow and relief can all produce the same pattern of pixels, so any tool that promises height and normals from a single image is estimating, and the honest version says so. Material Lab records every estimate's recipe and provenance in the bundle beside the maps. Roughness starts from a material prior you choose; metalness is never inferred, only assigned. The derivation core is a versioned C++23 library that runs on every core and is bit-for-bit repeatable: a 1K image takes about 0.1 s on an M5, and the learned stage adds about 0.3 s.</p>
@@ -248,7 +247,7 @@
   <figure class="fig phone"><div class="plate"><img src="assets/ios-review.jpg" alt="The iOS app reviewing a fireclay brick capture: a live 512 squared albedo preview, a segmented control for map, tiled, lit and compare modes, chips for each map, and an identity card below." loading="lazy" decoding="async" width="720" height="1565"></div>
     <figcaption><b>Figure 6. Review on iPhone.</b> A captured brick with its live preview, the map chips, and the identity card. This is a simulator screenshot; the real camera path has not been exercised on hardware.</figcaption></figure>
 
-  <p>The command line tool exposes the same core for batches and for scripting, and doubles as a validator that checks manifest fields and map hashes and rejects forged manifests.</p>
+  <p>A command line tool built on the same core handles batches and scripting during development, and doubles as a validator that checks manifest fields and map hashes and rejects forged manifests.</p>
 
 <pre><code>material-lab --input photo.png --output brick.pbrmaterial --label "red brick" \
     --preset stone --polarity -1 --equalize 0.6 --seamless 0.15 \
