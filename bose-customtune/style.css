@@ -131,3 +131,19 @@ main > section > p + p, .lab > p + p, main > p + p { margin-top: 1em; }
   .ct-plots { grid-template-columns: 1fr; }
   .ct-key { top: .5rem; right: .5rem; }
 }
+
+/* 2026-10: callouts in two columns with leader lines (./callouts.js) */
+.callouts { position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: 1; }
+.callout-lines { position: absolute; inset: 0; overflow: visible; }
+.callout-lines polyline { fill: none; stroke: var(--ink); stroke-opacity: .55; stroke-width: 1; }
+.callout-lines circle { fill: var(--accent); stroke: var(--paper); stroke-width: 1.5; }
+.callout {
+  position: absolute; left: 0; top: 0; white-space: nowrap;
+  font: 500 .72rem/1.2 var(--sans); letter-spacing: .01em; color: var(--ink);
+  padding: .26rem .6rem; border-radius: 999px;
+  background: color-mix(in oklab, var(--paper) 90%, transparent);
+  border: 1px solid color-mix(in oklab, var(--ink) 16%, transparent);
+  box-shadow: 0 1px 6px rgb(0 0 0 / .12);
+  backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+}
+@media (max-width: 560px) { .callout { font-size: .66rem; padding: .2rem .45rem; } }

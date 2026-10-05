@@ -7,9 +7,10 @@ import * as THREE from 'three/webgpu';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
-import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import { texture, uniform, select, frontFacing, vec2, vec3, float, mix, smoothstep, cross, positionWorld, normalWorld, cameraPosition, normalView, positionViewDirection, mx_noise_float } from 'three/tsl';
 import { mountLab, bindControls, readColors, onThemeChange } from '/assets/lab-kit/lab-kit.js';
+import { createStudio, surface } from '/assets/lab-kit/studio-look.js';
+import { createCallouts } from './callouts.js';
 import * as M from './model.js';
 
 const JA = document.documentElement.lang === 'ja';
@@ -226,24 +227,70 @@ const DRACO = new URL('/vendor/three/r186/examples-jsm/libs/draco/', location.hr
 // Section colours: what a cut through each material looks like. These are
 // physical colours, not theme colours, because they belong to the objects.
 const CAP = {
-  skin: 0x5a2a26,   // the inside of the head, seen through the window shell: 0x2a2826, leather: 0xcdbf9f, pad: 0xcdbf9f, fabric: 0x2b2b2d, baffle: 0x3a3a3c,
-  cone: 0x4a4a4a, surround: 0x333333, magnet: 0x77777b, mic: 0xb87333, metal: 0x9a968f,
-  tip: 0x2f2f33, lens: 0xdfe8ea, plate: 0x222222,
+  skin: 0x5a2a26,   // the inside of the head, seen through the window
+  shell: 0x2a2826, band: 0x2a2826, leather: 0xcdbf9f, pad: 0xcdbf9f, fabric: 0x2b2b2d, baffle: 0x3a3a3c,
+  cone: 0x4a4a4a, surround: 0x333333, magnet: 0x77777b, mic: 0xb87333, metal: 0x9a968f, hinge: 0x9a968f,
+  tip: 0x2f2f33, lens: 0xdfe8ea, plate: 0x222222, piping: 0x2a2826, ring: 0x3a3a3c, grille: 0x222222,
 };
+// What each part is made of. A generic over-ear and earbud, finished the way good ones are:
+// soft-touch shells, protein leather with welt seams, a brushed aluminium slider, a knit
+// headband underside, polished hinge pins. Colours are physical, not theme colours.
+const LOOKS = {
+  skin:     { roughness: 0.5, specularIntensity: 0.38, sheen: 0.32, sheenRoughness: 0.55, sheenColor: 0xffd6c8, mottle: true },
+  shell:    { color: 0x2c2c2f, roughness: 0.62, metalness: 0, clearcoat: 0.06, clearcoatRoughness: 0.5, sheen: 0.25, sheenRoughness: 0.7, sheenColor: 0x8f9096, specularIntensity: 0.55, surf: 'grain', uvRep: [0.7, 0.7], ns: 0.12 },
+  band:     { color: 0x2c2c2f, roughness: 0.6, metalness: 0, clearcoat: 0.06, clearcoatRoughness: 0.5, sheen: 0.25, sheenRoughness: 0.7, sheenColor: 0x8f9096, specularIntensity: 0.55, surf: 'grain', uvRep: [0.7, 0.7], ns: 0.12 },
+  leather:  { color: 0x232120, roughness: 0.46, metalness: 0, clearcoat: 0.22, clearcoatRoughness: 0.42, sheen: 0.55, sheenRoughness: 0.38, sheenColor: 0x8e8882, specularIntensity: 0.6, surf: 'leather', uvRep: [0.9, 0.9], ns: 0.55 },
+  piping:   { color: 0x1b1a19, roughness: 0.42, clearcoat: 0.3, clearcoatRoughness: 0.35, sheen: 0.4, sheenRoughness: 0.4, sheenColor: 0x7e7873 },
+  ring:     { color: 0x26262a, roughness: 0.38, clearcoat: 0.35, clearcoatRoughness: 0.25, specularIntensity: 0.7 },
+  metal:    { color: 0xc4c6c9, metalness: 1, roughness: 0.36, anisotropy: 0.85, envMapIntensity: 1.0, surf: 'brushed', uvRep: [0.25, 1.4], ns: 0.35 },
+  hinge:    { color: 0xd9dadc, metalness: 1, roughness: 0.14, envMapIntensity: 1.2 },
+  pad:      { color: 0x2e2e31, roughness: 0.92, sheen: 1, sheenRoughness: 0.5, sheenColor: 0x9a9aa2, specularIntensity: 0.25, surf: 'weave', uvRep: [0.45, 0.45], ns: 0.6 },
+  fabric:   { color: 0x1d1d20, roughness: 0.9, sheen: 0.9, sheenRoughness: 0.5, sheenColor: 0x7a7a82, specularIntensity: 0.2, surf: 'weave', uvRep: [0.6, 0.6], ns: 0.5 },
+  baffle:   { color: 0x242427, roughness: 0.52, clearcoat: 0.1 },
+  cone:     { color: 0x3b3b3e, roughness: 0.58, surf: 'grain', uvRep: [0.8, 0.8], ns: 0.2 },
+  surround: { color: 0x1c1c1e, roughness: 0.66, specularIntensity: 0.4 },
+  magnet:   { color: 0xa2a4a8, metalness: 1, roughness: 0.32 },
+  mic:      { color: 0xc49a5a, metalness: 1, roughness: 0.3 },
+  grille:   { color: 0x141416, roughness: 0.6, metalness: 0.3, surf: 'grille', uvRep: [1.4, 1.4], ns: 0.9 },
+  tip:      { color: 0x2f2f33, roughness: 0.36, clearcoat: 0.35, clearcoatRoughness: 0.3, sheen: 0.3, sheenRoughness: 0.5, sheenColor: 0x88888f },
+  plate:    { color: 0x1f1f22, roughness: 0.14, clearcoat: 1, clearcoatRoughness: 0.04 },
+  lens:     { transparent: true, opacity: 0.18, roughness: 0.03, clearcoat: 1, depthWrite: false },
+};
+// micro-surface maps the shared studio lacks: pebbled protein leather
+function leatherNormal() {
+  const N = 256, h = new Float32Array(N * N), pts = [];
+  let seed = 7; const r = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+  for (let i = 0; i < 260; i++) pts.push([r() * N, r() * N]);
+  for (let y = 0; y < N; y++) for (let x = 0; x < N; x++) {
+    let d1 = 1e9, d2 = 1e9;
+    for (const [px, py] of pts) { let dx = Math.abs(x - px), dy = Math.abs(y - py); dx = Math.min(dx, N - dx); dy = Math.min(dy, N - dy); const d = dx * dx + dy * dy; if (d < d1) { d2 = d1; d1 = d; } else if (d < d2) d2 = d; }
+    h[y * N + x] = Math.min(1, (Math.sqrt(d2) - Math.sqrt(d1)) / 5);
+  }
+  const c = document.createElement('canvas'); c.width = c.height = N; const ctx = c.getContext('2d'); const img = ctx.createImageData(N, N);
+  const H = (x, y) => h[((y + N) % N) * N + ((x + N) % N)];
+  for (let y = 0; y < N; y++) for (let x = 0; x < N; x++) {
+    const dx = (H(x + 1, y) - H(x - 1, y)) * 1.6, dy = (H(x, y + 1) - H(x, y - 1)) * 1.6, l = Math.hypot(dx, dy, 1), i = 4 * (y * N + x);
+    img.data[i] = (-dx / l * 0.5 + 0.5) * 255; img.data[i + 1] = (dy / l * 0.5 + 0.5) * 255; img.data[i + 2] = (1 / l * 0.5 + 0.5) * 255; img.data[i + 3] = 255;
+  }
+  ctx.putImageData(img, 0, 0);
+  const t = new THREE.CanvasTexture(c); t.wrapS = t.wrapT = THREE.RepeatWrapping; t.colorSpace = THREE.NoColorSpace; t.anisotropy = 8; return t;
+}
+let leatherTex = null;
+function surfaceMap(name, rep) {
+  const base = name === 'leather' ? (leatherTex ??= leatherNormal()) : surface(name);
+  if (!base) return null;
+  const t = base.clone(); t.repeat.set(...rep); t.needsUpdate = true; return t;
+}
 
 const lab = await mountLab(canvas, {
   forceWebGL: new URLSearchParams(location.search).has('webgl'),
   async setup({ renderer, scene, camera, lab }) {
-    renderer.toneMapping = THREE.NeutralToneMapping;
-    renderer.toneMappingExposure = 1.05;
     const LITE = new URLSearchParams(location.search).has('lite');
-    renderer.shadowMap.enabled = !LITE;
-    renderer.shadowMap.type = THREE.VSMShadowMap;
 
     camera.fov = 28; camera.near = 0.5; camera.far = 400; camera.updateProjectionMatrix();
     const VIEWS = {
-      overear: { pos: new THREE.Vector3(17.0, 9.8, 24.5), tgt: new THREE.Vector3(4.6, 5.0, 0.9) },
-      earbud: { pos: new THREE.Vector3(12.8, 7.9, 16.4), tgt: new THREE.Vector3(3.9, 4.9, 1.0) },
+      overear: { pos: new THREE.Vector3(19.2, 11.2, 27.0), tgt: new THREE.Vector3(5.0, 5.6, 0.9) },
+      earbud: { pos: new THREE.Vector3(13.4, 8.2, 17.4), tgt: new THREE.Vector3(3.9, 4.9, 1.0) },
     };
     camera.position.copy(VIEWS[params.form].pos);
     const controls = new OrbitControls(camera, canvas);
@@ -252,22 +299,16 @@ const lab = await mountLab(canvas, {
     controls.minDistance = 6; controls.maxDistance = 90;
     controls.addEventListener('change', () => lab.invalidate());
 
-    // light: an image-based room for reflections, a warm key that casts soft shadows, a cool rim
-    const pmrem = new THREE.PMREMGenerator(renderer);
-    scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
-    scene.environmentIntensity = 0.55;
-    const key = new THREE.DirectionalLight(0xfff1e2, 2.4);
-    key.position.set(22, 30, 26);
-    key.target.position.set(2, 6, 0);
-    key.castShadow = true;
-    key.shadow.mapSize.set(2048, 2048);
-    Object.assign(key.shadow.camera, { left: -16, right: 16, top: 16, bottom: -16, near: 5, far: 90 });
-    key.shadow.radius = 5; key.shadow.blurSamples = 12; key.shadow.bias = -0.0004;
-    scene.add(key, key.target);
-    const rim = new THREE.DirectionalLight(0xdce8ff, 1.1);
+    // light: a real studio (soft boxes, CC0 HDRI) for image-based light, one soft warm key for
+    // shadows, a cool rim to separate the head from the page; ambient occlusion in the post pass
+    const look = await createStudio(lab, {
+      scale: 18, center: [3.5, 5.5, 0.5], floorY: null, hdri: 'softbox', strips: 'product', exposure: 1.0, envIntensity: 0.95,
+      keyIntensity: 1.35, keyColor: 0xfff0e2, keyDir: [0.75, 0.95, 0.85], shadows: !LITE, ao: !LITE && lab.backend === 'webgpu', aoRadius: 0.55, aoThickness: 0.25, aoStrength: 0.9, toneMapping: 'neutral',
+    });
+    if (look.key.shadow) { look.key.shadow.radius = 12; look.key.shadow.blurSamples = 16; look.key.shadow.bias = -0.0006; }
+    const rim = new THREE.DirectionalLight(0xdce8ff, 0.7);
     rim.position.set(-18, 12, -24);
     scene.add(rim);
-    scene.add(new THREE.HemisphereLight(0xfff7ee, 0x40362f, 0.35));
 
     // One cut and one window. The headphone loses the front half of its right side. The head
     // is not cut: the skin round the ear fades to glass, and the canal, drawn to scale inside
@@ -296,7 +337,10 @@ const lab = await mountLab(canvas, {
       m.normalMap = src.normalMap ?? null;
       if (src.normalMap) m.normalScale.set(0.9, 0.9);
       m.transparent = !!src.transparent; m.opacity = src.opacity ?? 1;
-      const { mottle, ...rest } = extra; Object.assign(m, rest); extra = { mottle };
+      const { mottle, surf, uvRep, ns, ...rest } = extra;
+      for (const [k, v] of Object.entries(rest)) m[k] = (k === 'color' || k === 'sheenColor') ? new THREE.Color(v) : v;
+      if (surf && !m.normalMap) { const t = surfaceMap(surf, uvRep || [1, 1]); if (t) { m.normalMap = t; m.normalScale.set(ns ?? 0.3, ns ?? 0.3); } }
+      extra = { mottle };
       const base = src.map ? texture(src.map).rgb.mul(uniform(m.color)) : uniform(m.color);
       const cap = uniform(new THREE.Color(capHex));
       capUniforms.push(cap);
@@ -316,10 +360,7 @@ const lab = await mountLab(canvas, {
       for (const o of list) {
         const src = o.material;
         const key_ = (src.name || '').replace(/\.\d+$/, '');
-        const extra = key_ === 'skin' ? { mottle: true, roughness: 0.52, specularIntensity: 0.45, sheen: 0.25, sheenRoughness: 0.6, sheenColor: new THREE.Color(0xffd9cc) }
-          : key_ === 'lens' ? { transparent: true, opacity: 0.18, roughness: 0.03, clearcoat: 1, depthWrite: false }
-          : key_ === 'leather' ? { sheen: 0.4, sheenRoughness: 0.5, sheenColor: new THREE.Color(0x777066) } : {};
-        o.material = sectioned(src, CAP[key_] ?? 0x333333, extra);
+        o.material = sectioned(src, CAP[key_] ?? 0x333333, LOOKS[key_] || {});
         if (o.name === 'fbmicR' || o.name === 'budFb') o.material.emissiveNode = select(frontFacing, vec3(1.0, 0.45, 0.12).mul(glowU).mul(4), o.material.userData.cap);
         o.castShadow = key_ !== 'lens'; o.receiveShadow = true;
         parts[o.name] = o;
@@ -447,35 +488,18 @@ const lab = await mountLab(canvas, {
       { text: T.cushion, pos: () => V(A.cushionBottom), side: 'right', off: [2.4, 0], only: 'overear' },
       { text: T.tip, pos: () => new THREE.Vector3(E.x - 0.3, E.y - R_CANAL, ZC), side: 'right', off: [2.0, 0], only: 'earbud' },
     ];
-    const labelEls = labelDefs.map((d) => { const el = document.createElement('span'); el.className = 'lab-label'; el.textContent = d.text; el.dataset.side = d.side; labelsEl?.appendChild(el); return el; });
-    const pa = new THREE.Vector3(), pb = new THREE.Vector3(), right = new THREE.Vector3(), upv = new THREE.Vector3();
+    // two clean columns of labels with leader lines; on a phone only the ones that carry the story
+    const callouts = createCallouts(canvas.parentElement, { top: () => (canvas.clientWidth < 560 ? 34 : 44), bottom: 30, compactBelow: 560, compactMax: 3 });
+    let labelKey = '';
+    const ORDER = [T.fb, T.canal, T.drum, T.driver, T.ff, T.cushion, T.tip, T.bone];
     function placeLabels() {
-      if (!labelsEl) return;
-      labelsEl.classList.toggle('is-hidden', !params.labels);
-      const w = canvas.clientWidth, h = canvas.clientHeight;
-      right.setFromMatrixColumn(camera.matrixWorld, 0); upv.setFromMatrixColumn(camera.matrixWorld, 1);
-      const scale = camera.position.distanceTo(controls.target) / 38;
-      labelDefs.forEach((d, i) => {
-        const el = labelEls[i];
-        const narrow = w < 560 && !d.key;
-        const show = !narrow && (!d.only || d.only === params.form) && (!d.need || d.need()) && params.cutaway;
-        el.style.opacity = show ? '1' : '0';
-        if (!show) return;
-        pa.copy(d.pos());
-        const off = typeof d.off === 'function' ? d.off() : d.off;
-        pb.copy(pa).addScaledVector(right, off[0] * scale).addScaledVector(upv, off[1] * scale);
-        pa.project(camera); pb.project(camera);
-        const ax = (pa.x * 0.5 + 0.5) * w, ay = (-pa.y * 0.5 + 0.5) * h;
-        const bx = (pb.x * 0.5 + 0.5) * w, by = (-pb.y * 0.5 + 0.5) * h;
-        el.style.setProperty('--leader', `${Math.min(160, Math.max(10, Math.abs(bx - ax) - 4)).toFixed(0)}px`);
-        el.style.setProperty('--rise', `${(ay - by).toFixed(0)}px`);
-        // keep the pill inside the stage; the leader shortens to match when it has to move in
-        const ew = el.offsetWidth || 0;
-        let x0 = d.side === 'left' ? bx - ew - 4 : bx + 4;
-        const x1 = Math.max(6, Math.min(w - ew - 6, x0));
-        if (x1 !== x0) el.style.setProperty('--leader', `${Math.max(6, Math.min(160, Math.abs((d.side === 'left' ? x1 + ew : x1) - ax) - 4)).toFixed(0)}px`);
-        el.style.transform = `translate(${x1.toFixed(1)}px, ${(by - 8).toFixed(1)}px)`;
-      });
+      const key = params.form + (params.cutaway && params.labels ? '1' : '0');
+      if (key !== labelKey) {
+        labelKey = key;
+        const defs = labelDefs.filter((d) => !d.only || d.only === params.form).sort((a, b) => ORDER.indexOf(a.text) - ORDER.indexOf(b.text));
+        callouts.set(params.cutaway && params.labels ? defs.map((d) => ({ id: d.text, text: d.text, world: d.pos, side: d.side })) : []);
+      }
+      callouts.update(camera);
     }
 
     // ---- colours for the air field, from the page theme
@@ -623,7 +647,8 @@ const lab = await mountLab(canvas, {
         puffs.instanceMatrix.needsUpdate = true;
         placeLabels();
       },
-      dispose() { controls.dispose(); stopTheme(); pmrem.dispose(); },
+      render: look.render,
+      dispose() { controls.dispose(); stopTheme(); look.dispose(); },
     };
   },
 });
@@ -679,3 +704,4 @@ for (const b of document.querySelectorAll('[data-preset]')) {
 }
 refreshProbeOutput();
 drawPlots(); drawReadout();
+window.customTune = { lab, params };
