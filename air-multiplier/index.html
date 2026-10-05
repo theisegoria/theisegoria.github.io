@@ -15,7 +15,7 @@
 <link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/air-multiplier/">
 <link rel="stylesheet" href="/assets/isegoria.css?v=20260927">
 <link rel="stylesheet" href="/assets/lab-kit/lab-kit.css?v=20260927">
-<link rel="stylesheet" href="style.css?v=20260927">
+<link rel="stylesheet" href="style.css?v=20261006">
 <script type="importmap">
 {"imports":{
   "three":"/vendor/three/r186/build/three.webgpu.js",
@@ -57,7 +57,7 @@
 
 <section class="lab" id="model" aria-labelledby="model-h">
 <h2 id="model-h">The model</h2>
-<p>Amber is the air the motor moves, blue is air pulled through the open loop from behind, green is air drawn in from around it. The tour under the picture walks the air's path from the holes in the base to the jet, one part at a time; drag to orbit and scroll to zoom at any stop. Then narrow the slot and watch the multiplication rise while the air actually delivered barely moves.</p>
+<p>Amber is the air the motor moves, blue is air pulled through the open loop from behind, green is air drawn in from around it. Each streak is a small parcel of air drawn with its recent track, so a long streak is fast air, and the key on the stage says how many litres a second of each colour cross the ring at distance x. The tour under the picture walks the air's path from the holes in the base to the jet, one part at a time; drag to orbit and scroll to zoom at any stop. Then narrow the slot and watch the multiplication rise while the air actually delivered barely moves.</p>
 
 <div class="lab-stage">
   <canvas id="stage" tabindex="0" aria-label="The bladeless fan: interactive 3D view with the loop and base cut away. Drag to orbit, scroll or pinch to zoom."></canvas>
@@ -211,7 +211,7 @@
 <p><strong>The fan curve.</strong> Dyson publishes the flow through the slot but not the impeller's shut-off pressure or free delivery. I chose a parabola through the patent's point with 400 Pa at shut-off and 40 l/s free. The matched slot width moves with that choice; the argument that a matched slot exists does not.</p>
 <p><strong>Laminar or turbulent.</strong> Based on the slot width, the sheet leaves at a Reynolds number of about 1,600, which is why some explanations call the flow laminar. The entrainment laws I use are for turbulent jets. A sheet that thin becomes unstable within a few centimetres and its edges roll up into the eddies that do the entraining, so I expect the turbulent laws to hold over most of the distance that matters, but I have not seen near-field measurements that show where the transition happens on a real loop.</p>
 <p><strong>Dyson's fifteen.</strong> The marketing figure never says at what distance it was measured. The patent's numbers make it about 15 to 18 at three loop diameters, which is where I have assumed it comes from.</p>
-<p><strong>The section.</strong> The cross-section in the lab is mine, drawn to the patent's slot width and flare angle. It is not a copy of any product's profile, and the lab does not depend on its exact curves: the numbers come from the slot, the loop and the fan.</p>
+<p><strong>The section.</strong> The cross-section in the lab is mine, drawn to the patent's slot width and flare angle. It is not a copy of any product's profile, and the lab does not depend on its exact curves: the numbers come from the slot, the loop and the fan. The base is the same kind of drawing: the order of its parts (perforated intake, bell mouth, mixed-flow impeller, motor, stator vanes, neck) follows the patent's figures, but the dimensions, the hole pattern and the finishes are my own, and none of them is a measurement of a real fan.</p>
 </section>
 
 <section id="sources" class="sources">

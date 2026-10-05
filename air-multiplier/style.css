@@ -40,30 +40,57 @@ main > section > p + p, .lab > p + p { margin-top: 1em; }
 }
 .lab-toggles label:has(:checked) { border-color: var(--accent); color: var(--ink); background: color-mix(in oklab, var(--accent) 12%, transparent); }
 
-/* Floating labels over the canvas */
+/* Callouts over the canvas: a label box, a hairline leader and a dot on the
+ * part. The scene script stacks them so they never overlap. */
 .lab-labels { position: absolute; inset: 0; pointer-events: none; transition: opacity .3s; overflow: hidden; }
 .lab-labels.is-hidden { opacity: 0; }
+.lab-leaders { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.lab-leaders line { stroke: color-mix(in oklab, var(--ink) 62%, transparent); stroke-width: 1; transition: opacity .25s; }
+.lab-leaders circle { fill: var(--ink); stroke: var(--paper); stroke-width: 1.5; transition: opacity .25s; }
 .lab-label {
   position: absolute; top: 0; left: 0; white-space: nowrap;
-  font: .6875rem/1 var(--sans); letter-spacing: .02em;
-  color: var(--ink-soft); padding: .18rem 0;
-  text-shadow: 0 0 3px var(--paper), 0 0 2px var(--paper), 0 0 1px var(--paper);
+  font: 500 .78125rem/1.2 var(--sans); letter-spacing: .01em; color: var(--ink);
+  padding: .22rem .5rem; border-radius: 4px;
+  background: color-mix(in oklab, var(--paper) 86%, transparent);
+  border: 1px solid color-mix(in oklab, var(--rule-firm) 70%, transparent);
+  backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px);
   transition: opacity .25s;
 }
-.lab-label::after {
-  content: ''; position: absolute; top: 50%; width: var(--leader, 18px);
-  border-top: 1px solid var(--rule-firm); opacity: .9;
-}
-.lab-label[data-side="left"]::after { left: 100%; }
-.lab-label[data-side="right"]::after { right: 100%; }
-.lab-label.is-chip, .lab-label.is-probe {
-  color: var(--ink);
-  background: color-mix(in oklab, var(--paper) 84%, transparent);
-  border: 1px solid var(--rule); border-radius: 999px; padding: .2rem .55rem;
-  backdrop-filter: blur(3px);
-}
-.lab-label.is-chip::after, .lab-label.is-probe::after { display: none; }
+.lab-label.is-chip, .lab-label.is-probe { border-radius: 999px; padding: .22rem .6rem; }
+.lab-label.is-chip { border-color: var(--c); }
+.lab-label.is-chip::before { content: ''; display: inline-block; width: .55rem; height: .55rem; border-radius: 50%; background: var(--c); margin-right: .4rem; vertical-align: -.02rem; }
+.lab-label[data-kind="1"] { --c: var(--flow-induced); }
+.lab-label[data-kind="2"] { --c: var(--flow-entrained); }
 .lab-label.is-probe { border-color: var(--accent); font-variant-numeric: tabular-nums; font-weight: 600; }
+.lab-label.is-tick { background: none; border: none; backdrop-filter: none; -webkit-backdrop-filter: none; padding: 0; font: .6875rem/1 var(--sans); color: var(--ink-faint); }
+@media (max-width: 40rem) { .lab-label { font-size: .6875rem; padding: .16rem .38rem; } }
+
+/* The colour key on the stage */
+.flow-key {
+  position: absolute; top: .65rem; left: .65rem; z-index: 2; pointer-events: none;
+  padding: .5rem .7rem .45rem; border-radius: 6px; min-width: 13.5rem;
+  background: color-mix(in oklab, var(--paper) 88%, transparent);
+  border: 1px solid var(--rule); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+  font: .75rem/1.4 var(--sans); color: var(--ink-soft);
+}
+.flow-key[hidden] { display: none; }
+.flow-key p { margin: 0; }
+.flow-key-h { font-weight: 600; color: var(--ink); margin-bottom: .3rem !important; }
+.flow-key-row { display: grid; grid-template-columns: 1.6rem 1fr auto; align-items: center; gap: .5rem; transition: opacity .3s; }
+.flow-key-row.is-off { opacity: .32; }
+.flow-key-row i { height: 4px; border-radius: 2px; background: linear-gradient(90deg, color-mix(in oklab, var(--c) 0%, transparent), var(--c)); }
+.flow-key-row[data-k="p"] { --c: var(--flow-primary); }
+.flow-key-row[data-k="i"] { --c: var(--flow-induced); }
+.flow-key-row[data-k="e"] { --c: var(--flow-entrained); }
+.flow-key-row b { font-variant-numeric: tabular-nums; color: var(--ink); font-weight: 600; }
+.flow-key .s { display: none; }
+/* on a narrow stage the key folds into one line along the top */
+.flow-key.is-compact { display: flex; flex-wrap: wrap; gap: .15rem .7rem; right: .4rem; top: .4rem; left: .4rem; min-width: 0; padding: .25rem .5rem; font-size: .625rem; line-height: 1.3; }
+.flow-key.is-compact .s { display: inline; }
+.flow-key.is-compact .l, .flow-key.is-compact .flow-key-h, .flow-key.is-compact .flow-key-sum { display: none; }
+.flow-key.is-compact .flow-key-row { display: flex; gap: .3rem; }
+.flow-key.is-compact .flow-key-row i { width: .8rem; }
+.flow-key-sum { border-top: 1px solid var(--rule); margin-top: .3rem !important; padding-top: .25rem; text-align: right; color: var(--ink); font-variant-numeric: tabular-nums; font-weight: 600; }
 
 /* Charts under the stage */
 .lab-charts { display: grid; grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr)); gap: 1rem 1.5rem; margin-top: 1.25rem; }
