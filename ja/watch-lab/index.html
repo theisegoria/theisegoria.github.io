@@ -4,7 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>自動巻き時計ディープラボ</title>
-<meta name="description" content="ムーブメント、輪列、脱進機、ひげぜんまいを動かして確かめる大型シミュレーション。">
+<meta property="og:title" content="自動巻き時計ディープラボ">
+<meta name="description" content="ローター、主ゼンマイ、輪列、スイスレバー脱進機、テンプとひげゼンマイを、本物に近い描画で動かして確かめる自動巻き時計の解説。">
 
 
 
@@ -14,8 +15,10 @@
 <meta name="theme-color" content="#12100e" media="(prefers-color-scheme:dark)">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..600&family=Noto+Serif+JP:wght@300;400;500&family=Inter:wght@400;500&display=swap">
-<link rel="stylesheet" href="/assets/isegoria.css?v=20260915">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..600&family=Noto+Serif+JP:wght@300;400;500&family=Inter:wght@400;500;700&family=Noto+Sans+JP:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="../../watch-lab/styles.css">
+<style>:root{--serif:"Noto Serif JP",Georgia,serif;--sans:Inter,"Noto Sans JP",ui-sans-serif,system-ui,sans-serif}.hero h1,.section-head h2,.closing h2{letter-spacing:-.02em;line-height:1.08}.hero h1{font-size:clamp(3rem,7.5vw,6.6rem)}.section-head h2{font-size:clamp(2.4rem,4.6vw,4.8rem)}.closing h2{font-size:clamp(2.4rem,6vw,6rem)}.kicker,.section-head>p,.closing>p:first-child{letter-spacing:.12em}</style>
+<script src="../../watch-lab/watch-art.js" defer></script><script src="../../watch-lab/watch.js" defer></script>
 <link rel="canonical" href="https://theisegoria.github.io/ja/watch-lab/">
 <link rel="alternate" hreflang="en" href="https://theisegoria.github.io/watch-lab/">
 <link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/watch-lab/">
@@ -36,55 +39,18 @@
 </div></header>
 <nav id="ig-breadcrumb" aria-label="パンくずリスト"><a href="/ja/">ホーム</a><span aria-hidden="true">/</span><a href="/ja/#interactive">操作できる解説</a><span aria-hidden="true">/</span><span aria-current="page">自動巻き時計ディープラボ</span></nav>
 <span id="ig-content" tabindex="-1"></span>
-<!-- /ISEGORIA:NAV --><div class="wrap">
-
-
-
-<main id="main">
-
-  <section class="hero">
-    <p class="label">動かせる解説</p>
-    <h1>動きが、<em>時間になるまで。</em></h1>
-    <p class="deck">自動巻き時計は小さなエネルギー管理装置だと考えています。手首がぜんまいを巻き、歯車がその力を運び、振動子と脱進機がそれを等間隔で数えられる拍動へ分割します。</p>
-  </section>
-
-  <section class="section">
-    <div class="section-head">
-      <h2>ラボを開く</h2>
-      <p class="label">大型シミュレーション</p>
-      <p class="section-note">ローターと主ゼンマイから、輪列、脱進機、テンプ、そして針まで。エネルギーの経路をひととおりたどれるように作りました。</p>
-    </div>
-    <div class="index">
-      <a href="/ja/watch-lab/">
-        <span class="t">自動巻き時計ディープラボ</span>
-        <span class="d">ムーブメント全体の断面図、輪列、脱進機、そしてテンプとひげぜんまいの実験室。慣性とばね定数を変えると歩度が応答します。</span><span class="tail"><span>英語 · インタラクティブ</span></span>
-      </a>
-      <a href="/ja/explore/automatic-watch.html">
-        <span class="t">自動巻き時計の内部</span>
-        <span class="d">より短い日本語版の解説。動きが蓄えられたエネルギー、刻まれる拍動、表示される時刻へ変わるまで。</span><span class="tail"><span>日本語</span></span>
-      </a>
-      <a href="/ja/quartz-lab/">
-        <span class="t">クオーツ時計ラボ</span>
-        <span class="d">水晶音叉、ピアース発振回路、15段の分周器、そして針を動かすラベットステッピングモーター。</span><span class="tail"><span>日本語</span></span>
-      </a>
-    </div>
-  </section>
-
-
-</main>
-
-<footer class="site-footer">
-  <span>© 2026 Benjamin Michael Haire</span>
-  <nav aria-label="フッター">
-    <a href="/ja/">ライブラリ</a>
-    <a href="/ja/about.html">理念</a>
-    <a href="/watch-lab/" hreflang="en" lang="en">EN</a>
-    <a href="https://www.threads.com/@bennnmichael" rel="me">Threads</a>
-    <a href="https://github.com/theisegoria/theisegoria.github.io">ソース</a>
-  </nav>
-</footer>
-
-</div><!-- BEHIND:START -->
+<!-- /ISEGORIA:NAV --><header class="hero" id="top"><nav><a class="brand" href="#top">自動巻き時計ラボ</a><div><a href="/ja/">ホーム</a><a href="#movement">ムーブメント</a><a href="#train">輪列</a><a href="#oscillator">脱進機</a><a href="#lab">ひげゼンマイ実験</a><a href="/ja/automatic-movement/">3Dムーブメント →</a><a href="/ja/quartz-lab/">クオーツラボ →</a></div></nav><div class="hero-copy"><p class="kicker">機械式時計を、ゆっくり動かす</p><h1>動きが、<br>時間になるまで。</h1><p>自動巻き時計は小さなエネルギー管理装置だと考えています。手首がぜんまいを巻き、歯車がその力を運び、振動子と脱進機がそれを等間隔で数えられる拍動へ分割します。</p><a class="cta" href="#movement">ムーブメントを開く ↓</a></div><div class="hero-orbit" aria-hidden="true"><svg id="hero-art" viewBox="0 0 600 600" focusable="false"></svg></div></header>
+<main><section class="chapter" id="movement"><div class="section-head"><p>01 / エネルギーの経路</p><h2>ムーブメント全体</h2><span>裏蓋側から見て、香箱のふたを切り取ってあります。部品かラベルを選ぶと、その役割が読めます。</span></div>
+<div class="controls movement-controls"><button id="wrist-toggle" class="tgl" type="button" aria-pressed="true">手首を動かす</button><label>時間 <strong id="time-scale-v">スロー ×1/8</strong><input id="time-scale" type="range" min="0" max="3" step="1" value="0"></label><button id="path-toggle" class="tgl" type="button" aria-pressed="true">エネルギー経路を表示</button><button id="ghost-toggle" class="tgl" type="button" aria-pressed="false">ローターを外す</button><button id="motion-toggle" class="secondary" type="button" aria-pressed="true">動きを止める</button></div>
+<div class="movement-grid"><div class="movement-stage"><svg id="movement-svg" viewBox="-90 0 950 600" role="img" aria-labelledby="movement-title movement-desc"><title id="movement-title">自動巻きムーブメントの操作できる図</title><desc id="movement-desc">ローターが切替車と角穴車を回し、香箱の中の主ゼンマイを巻き上げます。香箱は二番車、三番車、四番車、ガンギ車を回し、アンクルがテンプ受けの下のテンプとひげゼンマイの1振動ごとに、ガンギ車を1段ずつ解放します。</desc><g id="movement-art"></g></svg><ol id="movement-legend" class="movement-legend" aria-label="部品"></ol></div>
+<aside class="info-card" aria-live="polite"><p>選んだ部品</p><h3 id="part-name">テンプとひげゼンマイ</h3><div class="rule"></div><p id="part-copy">時を決める部品です。</p><dl id="part-spec" class="spec"></dl>
+<div class="gauge"><div class="gauge-row"><span>パワーリザーブ</span><strong id="mv-reserve">約25時間</strong></div><div class="bar"><i id="mv-bar"></i></div><div class="gauge-row"><span>テンプの振り角</span><strong id="mv-amp">270°</strong></div><div class="gauge-row"><span>主ゼンマイ</span><strong id="mv-state">ほどけている</strong></div><p id="mv-note" class="gauge-note"></p></div>
+<div class="energy-chain"><span>手首</span><b>→</b><span>ばね</span><b>→</b><span>歯車</span><b>→</b><span>拍動</span></div></aside></div>
+<p class="figure-note">試してみてください。手首を止めて時間を ×3600 にすると、残量が減り、ゼンマイのトルクが落ちるにつれてテンプの振り角が小さくなり、ゼンマイが空になるとすべてが止まります。もう一度手首を動かすと、ローターが切替車を通じてゼンマイを巻き戻します。香箱の中のコイルが状態を示します。満タンなら真にきつく巻き付き、空なら壁に沿って寝ています。同じ配置を立体で組んだものが <a href="/ja/automatic-movement/">3Dムーブメントラボ</a> にあります。</p></section>
+<section class="chapter dark" id="train"><div class="section-head"><p>02 / 輪列</p><h2>歯車の列を、<br>ゆっくり</h2><span>各軸には大きな歯車と小さなかなが付いています。歯車が次のかなを回すので、段ごとにトルクが速さに置き換わり、噛み合うたびに回転の向きが逆になります。</span></div><div class="controls"><button id="train-toggle" type="button" aria-pressed="true">動きを止める</button><label>時間の圧縮 <strong id="speed-value">×1</strong><input id="speed" type="range" min="0" max="4" step="1" value="2"></label></div><div class="train-wrap"><svg id="train-svg" viewBox="0 0 1000 500" role="img" aria-labelledby="train-title train-desc"><title id="train-title">一列に並べた輪列</title><desc id="train-desc">主ゼンマイの香箱が、かなを通じて二番車、三番車、四番車を回し、さらにガンギ車を回します。ガンギ車の解放はアンクルとテンプが決めます。矢印は、噛み合うたびに回転の向きが入れ替わることを示しています。</desc><g id="train-art"></g></svg></div><p class="footnote-p">歯数は 28 800 vph のキャリバーで典型的な値で、特定の機種のものではありません。比は正しく取ってあります。×60 で動かすと、四番車は1秒に1回転します。秒針なら1分で1周する速さです。</p><div class="concept-grid"><article><b>大きな歯車 → 小さなかな</b><p>80歯で10枚のかなを回すと速さは8倍になります。この段を4つ重ねると、約6.7時間に1回転の香箱が、1分に12回転のガンギ車になります。</p></article><article><b>噛み合うたびに逆転</b><p>接触するごとに時計回りと反時計回りが入れ替わります。輪列に沿って金と青の矢印が交互に並びます。</p></article><article><b>脱進機が関所</b><p>輪列はほどけ続けようとします。アンクルは1振動ごとに半歯ずつしか進ませないので、ガンギ車は回るのではなく刻みます。</p></article></div></section>
+<section class="chapter" id="oscillator"><div class="section-head"><p>03 / 時を決める部分</p><h2>時計の「時間」は<br>どこから来るのか</h2><span>腕時計は重力の振り子ではなく、テンプとひげゼンマイを使います。それを輪列につなぐのがスイスレバー脱進機です。ここではスローで動かし、振動の中心での接触の瞬間はさらに遅くしています。</span></div><div class="osc-grid"><div><svg id="osc-svg" class="oscillator" viewBox="0 0 760 500" role="img" aria-labelledby="osc-title osc-desc"><title id="osc-title">スイスレバー脱進機のスロー再生</title><desc id="osc-desc">テンプが自由に振れている間、ガンギ車はツメ石で止められています。振り座の振り石がハコに入るとロックが外れ、解放された歯がアンクルを押し、アンクルがテンプを押します。もう一方のツメ石が次の歯を受け止めます。</desc><g id="osc-art"></g></svg><div class="osc-actions"><button id="osc-toggle" type="button" aria-pressed="true">動きを止める</button><p id="osc-detail" class="osc-detail" aria-live="polite"></p></div></div><ol class="beat-steps"><li><b>1</b><div><strong>ロック</strong><p>テンプは自由に振れています。ツメ石がガンギ車を止め、アンクルはドテピンに寄っています。</p></div></li><li><b>2</b><div><strong>解除</strong><p>振り石がハコに入りアンクルを少し回して、ツメ石を歯から外します。</p></div></li><li><b>3</b><div><strong>衝撃</strong><p>歯がツメ石の斜面を滑ってアンクルを押し、アンクルがテンプを押します。ほんの少しのエネルギーの補給です。</p></div></li><li><b>4</b><div><strong>落下と計数</strong><p>ガンギ車が半歯跳び、もう一方のツメ石が次の歯を受け止めます。この一歩一歩が、輪列が数える拍動です。</p></div></li></ol></div></section>
+<section class="chapter lab" id="lab"><div class="section-head"><p>04 / テンプとひげゼンマイの実験</p><h2>振動子を変えると、<br>歩度が応える。</h2><span>振動数を主に決めるのは、ひげゼンマイの硬さとテンプの慣性です。下の動きは8倍に遅くしてあります。</span></div><div class="lab-controls"><label>テンプの慣性 <strong id="inertia-value">1.00×</strong><input id="inertia" type="range" min=".6" max="1.6" step=".05" value="1"></label><label>ひげゼンマイの硬さ <strong id="stiffness-value">1.00×</strong><input id="stiffness" type="range" min=".6" max="1.6" step=".05" value="1"></label><label>初期の振り角 <strong id="amplitude-value">240°</strong><input id="amplitude" type="range" min="100" max="300" step="10" value="240"></label></div><div class="stats"><div><small>振動数</small><strong id="rate">28,800 vph</strong><span>慣性と硬さで決まる</span></div><div><small>1往復</small><strong id="period">0.250 秒</strong><span>行って戻るまで</span></div><div><small>いまの状態</small><strong id="state">中心通過</strong><span id="energy">運動エネルギー最大</span></div></div><div class="lab-stage"><svg id="lab-svg" viewBox="0 0 800 520" role="img" aria-labelledby="lab-title lab-desc"><title id="lab-title">テンプとひげゼンマイの操作できる振動子</title><desc id="lab-desc">慣性、硬さ、振り角を変えると、チラネジ付きテンプとひげゼンマイの振動が変わります。</desc><rect width="800" height="520" class="lab-bg"/><line class="neutral" x1="400" y1="45" x2="400" y2="455"/><circle id="impulse-flash" class="flash" cx="400" cy="255" r="65"/><g id="lab-art"></g><path id="lab-spring" class="lab-spring"/><path id="lab-spring-hi" class="lab-spring-hi"/><g id="lab-top"></g><path id="torque" class="torque" d="M300 370a155 155 0 0 1-55-115"/><path id="motion" class="motion" d="M500 140a155 155 0 0 1 55 115"/><text class="lab-sub" x="400" y="500">慣性がテンプを中心の向こうへ運び、ひげゼンマイが常に引き戻す</text><g class="lab-key" transform="translate(45 60)"><path class="torque" d="M0 0h30"/><text x="40" y="4">復元トルク、常に中心向き</text><path class="motion" d="M0 22h30"/><text x="40" y="26">運動の向き</text></g></svg></div><div class="lab-actions"><button id="lab-toggle" type="button" aria-pressed="true">一時停止</button><button id="impulse-toggle" class="secondary" type="button" aria-pressed="true">脱進機の衝撃：オン</button></div><p id="lab-detail" class="lab-detail" aria-live="polite"><strong>中心通過：</strong>ばねは自由で、テンプはいちばん速く動いています。</p><div class="formula"><span>いつも立ち返るモデル</span><strong>振動数 ∝ √(ばねの硬さ ÷ テンプの慣性)</strong><p>ばねを硬くすると振動数が上がり、テンプを重く大きくすると下がります。振り角は動く範囲を変えますが、理想的な振動子では基本の周期を決めません。実際の時計には形状の工夫、調整、注油、温度補償が必要ですが、ここではどれもモデルに入れていません。</p></div></section>
+<section class="closing"><p>全体を貫く考え</p><h2>力は連続している。<br>時間は段階で放たれる。</h2><p>いちばん時間がかかって腑に落ちたのは、主ゼンマイは常に押し続けているのに、脱進機がほとんどの時間輪列をロックしているという点です。半振動ごとに歯が1枚解放され、わずかな衝撃を受け、輪列は再びロックされます。時計はこの等間隔の解放を数え、その積み重ねを時刻として表示しています。</p></section></main><footer><span>自動巻き時計ラボ</span><p>教育用の図解・寸法、歯数、配置は典型的な値で、特定のキャリバーのものではありません。</p><a href="/ja/quartz-lab/">クオーツ版へ →</a><a href="#top">ページ上部へ ↑</a></footer><!-- BEHIND:START -->
 <aside class="ig-behind" lang="ja" aria-labelledby="ig-behind-h"><style>.ig-behind{display:block;width:100%;margin:0;padding:2.4rem var(--ig-gutter,1rem) 2.6rem;box-sizing:border-box;background:var(--ig-paper,#faf8f4);font:15px/1.55 var(--ig-sans,system-ui,sans-serif);color:var(--ig-ink,#222);text-align:left}.ig-behind *{box-sizing:border-box}.ig-behind-in{max-width:var(--ig-width,72rem);margin:0 auto;border-top:1px solid var(--ig-rule,#ccc);padding-top:1.4rem}.ig-behind .ig-behind-k{margin:0 0 .35rem;font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ig-muted,#666)}.ig-behind h2{margin:0 0 .4rem;font:500 1.45rem/1.25 var(--ig-serif,Georgia,serif);letter-spacing:0;text-transform:none;color:var(--ig-ink,#222)}.ig-behind .ig-behind-lede{margin:0 0 1.1rem;max-width:44rem;color:var(--ig-muted,#666)}.ig-behind ul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,19rem),1fr));gap:.75rem}.ig-behind li{margin:0;padding:0}.ig-behind li a{display:flex;flex-direction:column;gap:.3rem;height:100%;padding:.85rem 1rem;border:1px solid var(--ig-rule,#ccc);border-radius:8px;background:var(--ig-panel,#f4f2ec);color:inherit;text-decoration:none;transition:border-color .15s,transform .15s}.ig-behind li a:hover,.ig-behind li a:focus-visible{border-color:var(--ig-accent,#8a4b2a);transform:translateY(-1px)}.ig-behind .t{font-weight:600;color:var(--ig-ink,#222)}.ig-behind .s{font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--ig-accent,#8a4b2a)}.ig-behind .d{font-size:.9rem;color:var(--ig-muted,#666)}.ig-behind .ig-behind-all{margin:1rem 0 0;font-size:.9rem}.ig-behind .ig-behind-all a{color:var(--ig-accent,#8a4b2a)}@media (prefers-reduced-motion:reduce){.ig-behind li a{transition:none}.ig-behind li a:hover{transform:none}}</style><div class="ig-behind-in"><p class="ig-behind-k">数学事典 · 工学</p><h2 id="ig-behind-h">数学と物理で見る仕組み</h2><p class="ig-behind-lede">この仕組みを支える数学と物理を、動かして確かめられる実験で説明しています。</p><ul><li><a href="/ja/watch-oscillators/#balance-hairspring"><span class="s">時計の振動子</span><span class="t">てんぷとひげぜんまい</span><span class="d">時を刻む振動子と、緩急針が一日あたり何秒と歩度を変える仕組み。</span></a></li><li><a href="/ja/watch-oscillators/#escapement-airy"><span class="s">時計の振動子</span><span class="t">エアリーの定理：脱進機はどこで押すか</span><span class="d">脱進機が振動の中心で押す理由と、それ以外の所で押すと何が起こるか。</span></a></li><li><a href="/ja/watch-oscillators/#positional-error"><span class="s">時計の振動子</span><span class="t">姿勢差と 220° の振り角</span><span class="d">時計がどちら向きに置かれるかで進み遅れが変わる理由。</span></a></li><li><a href="/ja/gears-mechanisms/#gear-train"><span class="s">歯車と機構</span><span class="t">輪列</span><span class="d">香箱のゆっくりした回転が秒、分、時になる仕組み。</span></a></li><li><a href="/ja/gears-mechanisms/#involute-gearing"><span class="s">歯車と機構</span><span class="t">インボリュート歯形</span><span class="d">歯がその形をしている理由。</span></a></li><li><a href="/ja/gears-mechanisms/#epicyclic"><span class="s">歯車と機構</span><span class="t">遊星歯車とトゥールビヨン</span><span class="d">ほかの歯車の周りを回る歯車、差動装置からトゥールビヨンまで。</span></a></li></ul><p class="ig-behind-all"><a href="/ja/math-encyclopedia/#engineering">工学の六つの話題をすべて見る →</a></p></div></aside>
 <!-- BEHIND:END --><!-- ISEGORIA:FOOT -->
 <footer id="ig-footer"><div><a href="/ja/">Isegoria · Benjamin Haire</a><nav aria-label="サイト内リンク"><a href="/ja/">ホームに戻る</a><a href="/ja/library.html">全コンテンツ</a><a href="#ig-content">ページ上部へ</a></nav></div></footer>

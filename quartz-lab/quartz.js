@@ -44,6 +44,11 @@ const T = Object.assign({
   chain:null
 }, window.QLAB_I18N || {});
 
+if (window.WatchArt) document.body.insertAdjacentHTML('afterbegin', window.WatchArt.defsSvg());
+
+(function heroCan(){ const h = $('#hero-can'); if (!h || !window.WatchArt) return;
+  h.innerHTML = window.WatchArt.crystalCan({ x: 150, y: 30, w: 96, h: 300 }); })();
+
 /* ============================================================ 01 SIGNAL PATH */
 const CHAIN = {
   battery: ['Silver-oxide cell',
@@ -73,6 +78,7 @@ const CHAIN = {
   const nameEl = $('#chain-name'), copyEl = $('#chain-copy'), specEl = $('#chain-spec');
   if (!nameEl) return;
   const pick = id => {
+    window.__qsel = id; if (window.__qmapSelect) window.__qmapSelect(id);
     $$('#chain-svg .node').forEach(n => n.classList.toggle('selected', n.dataset.part === id));
     const d = C[id]; nameEl.textContent = d[0]; copyEl.textContent = d[1];
     specEl.innerHTML = d[2].map(([k,v]) => `<dt>${k}</dt><dd>${v}</dd>`).join('');
@@ -81,59 +87,168 @@ const CHAIN = {
     n.addEventListener('click', () => pick(n.dataset.part));
     n.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pick(n.dataset.part); } });
   });
+  window.__qpick = pick;
   pick('crystal');
+})();
+
+/* ============================================================ 01b THE PARTS IN PLACE */
+(function partsMap(){
+  const svg = $('#qmap'); const A = window.WatchArt; if (!svg || !A) return;
+  const MT = T.map || {};
+  const at = (p, d, deg) => [p[0] + d * Math.cos(deg * D2R), p[1] + d * Math.sin(deg * D2R)];
+  // train geometry first: the rest of the movement is placed around it
+  const OFF = [30, 30], rot = [402, 266], rp = 7;
+  const fifth = { R: 36, pr: 8, z: 30 }, fourth = { R: 48, pr: 7, z: 48 }, third = { R: 52, pr: 7, z: 60 }, centre = { R: 66, z: 64 };
+  fifth.p = at(rot, rp + fifth.R, 62); fourth.p = at(fifth.p, fifth.pr + fourth.R, -8);
+  third.p = at(fourth.p, fourth.pr + third.R, 62); centre.p = at(third.p, third.pr + centre.R, 172);
+  const C = [480, 336], PR = 290;
+  let s = `<rect class="qmap-bg" width="1000" height="660" rx="8"/>`;
+  s += `<circle cx="${C[0] + 6}" cy="${C[1] + 10}" r="${PR + 4}" fill="#000" opacity=".25" filter="url(#wa-soft)"/>`;
+  s += `<circle cx="${C[0]}" cy="${C[1]}" r="${PR}" class="frame"/><circle cx="${C[0]}" cy="${C[1]}" r="${PR - 10}" class="frame-in"/>`;
+  s += `<circle cx="${C[0]}" cy="${C[1]}" r="${PR}" fill="url(#wa-sheen)" opacity=".18"/>`;
+  // battery pocket and cell
+  const B = [612, 478], BR = 84;
+  s += `<g class="mp" data-node="battery"><circle cx="${B[0]}" cy="${B[1]}" r="${BR + 6}" class="pocket"/>` +
+    `<circle cx="${B[0] + 3}" cy="${B[1] + 5}" r="${BR}" fill="#000" opacity=".35" filter="url(#wa-soft)"/><circle cx="${B[0]}" cy="${B[1]}" r="${BR}" fill="url(#wa-cell)" stroke="#6b7279"/>` +
+    `<circle cx="${B[0]}" cy="${B[1]}" r="${BR * .86}" fill="none" stroke="#fff" stroke-opacity=".5"/><text x="${B[0] - 30}" y="${B[1] + 10}" class="cell-plus">+</text>` +
+    `<path d="M${B[0] - 30} ${B[1] - BR - 10}h60l-8 ${BR * .55}h-44z" fill="url(#wa-steel-lin)" stroke="#5c646b" stroke-width=".8"/>${A.screw(B[0], B[1] - BR - 2, 6, 20, 'steel')}</g>`;
+  // circuit block: PCB, IC under epoxy, crystal can, traces
+  const pcb = 'M584 170H704Q726 170 726 192V318Q726 338 706 338H580Q562 338 562 320V250L556 240V194Q556 170 584 170Z';
+  s += `<g class="mp" data-node="driver"><path d="${pcb}" fill="#000" opacity=".3" transform="translate(4 7)" filter="url(#wa-soft)"/><path d="${pcb}" fill="url(#wa-pcb)" stroke="#0f2219"/>` +
+    `<path class="trace" d="M600 196H556M612 250H578V214H556"/><path class="trace" d="M690 270V300M616 270V300"/><circle cx="566" cy="196" r="5" class="pad"/><circle cx="566" cy="214" r="5" class="pad"/><path class="wire-lead" d="M520 184C540 184 548 196 566 196M520 192C540 196 548 214 566 214"/>` +
+    `<path id="mp-pulse" class="pulse-trace" d="M612 250H578V214H566C548 214 540 192 490 186"/></g>`;
+  s += `<g class="mp" data-node="divider"><ellipse cx="660" cy="228" rx="46" ry="38" fill="url(#wa-chip)"/><ellipse cx="650" cy="216" rx="26" ry="13" fill="#fff" opacity=".08"/>` +
+    `</g>`;
+  s += `<g class="mp" data-node="crystal"><g transform="translate(588 318) rotate(-90)">${A.crystalCan({ x: 0, y: 0, w: 26, h: 112 })}</g><circle id="mp-shimmer" cx="646" cy="305" r="15" class="shimmer"/></g>`;
+  // coil, stator and rotor
+  const cy = 150;
+  s += `<g class="mp" data-node="motor"><g transform="translate(${OFF[0]} ${OFF[1]})">`;
+  const r0 = [rot[0] - OFF[0], rot[1] - OFF[1]];
+  const st = `M236 ${cy - 16}h34V200H${r0[0] - 6}l6 6l6 -6H474V${cy - 16}h34V266H${r0[0] + 6}l-6 -5l-6 5H236Z` + A.circ(r0[0], r0[1], 27);
+  s += `<path d="${st}" fill="#000" opacity=".3" transform="translate(4 7)" fill-rule="evenodd" filter="url(#wa-soft)"/><path d="${st}" fill="url(#wa-iron)" stroke="#4d555c" fill-rule="evenodd"/><path d="${st}" fill="url(#wa-brushed)" fill-rule="evenodd"/>`;
+  s += `<rect x="228" y="${cy - 7}" width="288" height="14" rx="3" fill="url(#wa-iron)" stroke="#4d555c" stroke-width=".7"/>`;
+  s += A.coil({ x0: 284, x1: 460, y: cy, rr: 22, flange: 8 });
+  s += `<rect id="mp-coil-live" x="284" y="${cy - 22}" width="176" height="44" rx="5" class="coil-live"/>`;
+  s += A.screw(253, cy, 6, 30, 'steel') + A.screw(491, cy, 6, 100, 'steel') + `</g>`;
+  s += `<g id="mp-rotor"><circle cx="${rot[0]}" cy="${rot[1]}" r="22" fill="url(#wa-magnet)" stroke="#16181b"/><path d="M${rot[0] - 22} ${rot[1]}a22 22 0 0 1 44 0z" class="rot-n"/><path d="M${rot[0] + 22} ${rot[1]}a22 22 0 0 1-44 0z" class="rot-s"/>${A.pinion(rot[0], rot[1], 6, rp, { mat: 'white' })}</g></g>`;
+  // train in white polymer and brass
+  s += `<g class="mp" data-node="train">`;
+  s += A.wheel({ x: centre.p[0], y: centre.p[1], z: centre.z, r: centre.R, id: 'mp-centre', mat: 'brass', armsN: 4, curved: true });
+  s += A.wheel({ x: third.p[0], y: third.p[1], z: third.z, r: third.R, id: 'mp-third', mat: 'white', armsN: 0, jewel: false });
+  s += A.wheel({ x: fourth.p[0], y: fourth.p[1], z: fourth.z, r: fourth.R, id: 'mp-fourth', mat: 'white', armsN: 0, jewel: false });
+  s += A.wheel({ x: fifth.p[0], y: fifth.p[1], z: fifth.z, r: fifth.R, id: 'mp-fifth', mat: 'white', armsN: 0, jewel: false });
+  for (const q of [fifth, fourth, third]) s += A.pinion(q.p[0], q.p[1], 8, q.pr, { mat: 'white' });
+  s += `</g><g class="mp" data-node="hands"><circle cx="${centre.p[0]}" cy="${centre.p[1]}" r="11" fill="url(#wa-steel)" stroke="#4a5058"/><circle cx="${centre.p[0]}" cy="${centre.p[1]}" r="4" fill="#2b2f33"/></g>`;
+  // labels
+  const lb = (k, ax, ay, lx, ly, a, b, side) => `<g class="mp-lbl" data-node="${k}">${A.leader(ax, ay, lx, ly, [a, b], { side })}</g>`;
+  s += lb('battery', B[0] + 50, B[1] + 50, 800, 560, MT.battery || 'SILVER-OXIDE CELL', MT.batteryS || '1.55 V · ≈ 25 mAh', 'start');
+  s += lb('crystal', 690, 318, 800, 420, MT.crystal || 'QUARTZ CRYSTAL', MT.crystalS || 'fork in its vacuum can', 'start');
+  s += lb('divider', 690, 214, 800, 200, MT.ic || 'INTEGRATED CIRCUIT', MT.icS || 'oscillator, divider, driver', 'start');
+  s += lb('driver', 600, 180, 800, 110, MT.pcb || 'CIRCUIT BOARD', MT.pcbS || 'pulses go out to the coil', 'start');
+  s += lb('motor', 360, cy + 10, 170, 80, MT.coil || 'COIL', MT.coilS || 'Lavet stepper motor', 'end');
+  s += lb('motor', rot[0] - 24, rot[1] + 4, 170, 260, MT.rotor || 'ROTOR AND STATOR', MT.rotorS || 'a half turn per pulse', 'end');
+  s += lb('train', third.p[0] + 30, third.p[1] + 30, 800, 320, MT.train || 'REDUCTION TRAIN', MT.trainS || 'polymer and brass wheels', 'start');
+  s += lb('hands', centre.p[0] - 6, centre.p[1] + 8, 170, 420, MT.hands || 'CENTRE ARBOR', MT.handsS || 'carries the hands on the dial side', 'end');
+  s += `<text class="tick" x="500" y="648">${MT.note || 'Top view of a generic three-hand quartz movement, battery side. Proportions are typical rather than those of one calibre.'}</text>`;
+  svg.insertAdjacentHTML('beforeend', s);
+  const E = id => svg.querySelector('#' + id);
+  const rotEl = E('mp-rotor'), wheels = [['mp-fifth', fifth.p, -1 / 5], ['mp-fourth', fourth.p, 1 / 30], ['mp-third', third.p, -1 / 225], ['mp-centre', centre.p, 1 / 1800]].map(([i, p, r]) => [E(i), p, r]);
+  // selection shared with the signal-path figure
+  const nodes = [...svg.querySelectorAll('.mp, .mp-lbl')];
+  nodes.forEach(n => { n.setAttribute('tabindex', '0'); n.setAttribute('role', 'button');
+    const go = () => window.__qpick && window.__qpick(n.dataset.node);
+    n.addEventListener('click', go); n.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); } }); });
+  window.__qmapSelect = id => { svg.classList.add('has-sel'); nodes.forEach(n => n.classList.toggle('selected', n.dataset.node === id)); };
+  if (window.__qsel) window.__qmapSelect(window.__qsel);
+  let t = 0, last = performance.now(), run = !reduced;
+  (function frame(now) {
+    const dt = Math.min((now - last) / 1000, .05); last = now; if (run) t += dt;
+    const whole = Math.floor(t), fr = t - whole, aR = 180 * (whole + Math.min(1, fr / .07));
+    rotEl.setAttribute('transform', `rotate(${(aR % 360).toFixed(2)} ${rot[0]} ${rot[1]})`);
+    wheels.forEach(([el, p, r]) => el && el.setAttribute('transform', `rotate(${(aR * r % 360).toFixed(3)} ${p[0].toFixed(2)} ${p[1].toFixed(2)})`));
+    svg.classList.toggle('pulsing', fr < .09);
+    requestAnimationFrame(frame);
+  })(last);
 })();
 
 /* ============================================================ 02 TUNING FORK */
 (function fork(){
   const svg = $('#fork-svg'); if (!svg) return;
-  const tL = $('#tine-l'), tR = $('#tine-r'), eL = $('#el-l'), eR = $('#el-r'),
-        mL = $('#mom-l'), mR = $('#mom-r'), netEl = $('#fork-net'),
-        phL = $('#fork-phase-l'), phR = $('#fork-phase-r');
+  const A = window.WatchArt; if (!A) return;
+  svg.setAttribute('viewBox', '0 0 760 600');
   const BETA = 1.875104, SIG = 0.734096, NORM = 2.0;
   const phi = s => ((Math.cosh(BETA*s) - Math.cos(BETA*s)) - SIG*(Math.sinh(BETA*s) - Math.sin(BETA*s))) / NORM;
-  const Y0 = 390, Y1 = 80, L = Y0 - Y1, W = 15, N = 26;
-  const shape = (cx, amp) => {
-    const l = [], r = [];
-    for (let i = 0; i <= N; i++) { const s = i/N, y = Y0 - s*L, u = amp*phi(s);
-      l.push([cx+u-W, y]); r.push([cx+u+W, y]); }
-    return { d: poly(l) + `A${W} ${W} 0 0 1 ${r[N][0].toFixed(2)} ${r[N][1].toFixed(2)}` +
-                poly(r.slice().reverse()).replace('M','L') + 'Z',
-             edge: poly(r), tip: l[N][0] + W, amp: amp };
-  };
+  const Y0 = 420, Y1 = 110, LEN = Y0 - Y1, W = 21, CXA = 432, CXB = 562, MID = (CXA + CXB) / 2;
+  // a band along a bent tine, between lateral offsets o1..o2 and fractions s0..s1 of the length
+  const band = (cx, amp, o1, o2, s0 = 0, s1 = 1, N = 24) => { const l = [], r = [];
+    for (let i = 0; i <= N; i++) { const s = s0 + (s1 - s0) * i / N, y = Y0 - s * LEN, d = amp * phi(s); l.push([cx + d + o1, y]); r.push([cx + d + o2, y]); }
+    return poly(l) + poly(r.reverse()).replace('M', 'L') + 'Z'; };
+  const at = (cx, amp, s, o) => [cx + amp * phi(s) + o, Y0 - s * LEN];
+  // static parts
+  const can = A.crystalCan({ x: 128, y: 150, w: 66, h: 226 });
+  const zoom = `<path class="zoom" d="M161 214L360 96M161 330L360 528"/><rect class="zoom-box" x="360" y="80" width="384" height="460" rx="8"/>`;
+  const base = `<g class="fork-base-g"><path class="fork-shadow" d="M${MID - 118} 428h236v64h-66v40h-104v-40h-66z" transform="translate(6 9)"/>` +
+    `<path class="fork-body" d="M${MID - 118} 418h236v66h-66v42h-104v-42h-66z"/>` +
+    `<rect x="${MID - 44}" y="494" width="30" height="22" rx="2" fill="url(#wa-goldfilm)"/><rect x="${MID + 14}" y="494" width="30" height="22" rx="2" fill="url(#wa-goldfilm)"/>` +
+    `<path d="M${MID - 29} 516v26M${MID + 29} 516v26" stroke="url(#wa-lead)" stroke-width="7" stroke-linecap="round"/>` +
+    `<rect x="${MID - 104}" y="430" width="74" height="10" rx="2" class="trace-a"/><rect x="${MID + 30}" y="430" width="74" height="10" rx="2" class="trace-b"/>` +
+    `<path d="M${MID - 30} 440v54M${MID + 30} 440v54" stroke-width="5" class="trace-ab"/></g>`;
+  const T2 = T.fork || {};
+  const lab = (x, y, a, b, side) => `<text class="lbl" x="${x}" y="${y}" style="text-anchor:${side||'start'}">${a}</text>` + (b ? `<text class="sub" x="${x}" y="${y + 15}" style="text-anchor:${side||'start'}">${b}</text>` : '');
+  svg.insertAdjacentHTML('beforeend',
+    `<rect class="fork-bg" x="0" y="0" width="760" height="600" rx="8"/>` + zoom + can +
+    lab(128, 60, T2.canT || 'AS BUILT', T2.canS || 'vacuum can, cut open', 'middle') +
+    `<text class="tick" x="128" y="470">${T2.canDim || '≈ Ø 2 mm × 6 mm'}</text>` +
+    `<path class="ghost-path" d="M${CXA - W} ${Y0}V${Y1}h${2 * W}V${Y0}M${CXB - W} ${Y0}V${Y1}h${2 * W}V${Y0}"/>` +
+    base + `<g id="tines"></g><g id="momentum"><path class="arrow-m" id="mom-l" d="M0 0h0"/><path class="arrow-m" id="mom-r" d="M0 0h0"/></g>` +
+    `<g class="fork-notes">` +
+    `<path class="lead" d="M${CXB + 24} 128H${CXB + 60}"/>` +
+    `<text class="lbl" x="${CXB + 64}" y="125" style="text-anchor:start">${T2.trim || 'TRIM MASS'}</text><text class="sub" x="${CXB + 64}" y="140" style="text-anchor:start">${T2.trimS || 'gold, laser-trimmed'}</text>` +
+    `<text class="lbl" x="560" y="560" style="text-anchor:middle">${T2.mount || 'MOUNT AND LEADS'}</text><text class="sub" x="560" y="575" style="text-anchor:middle">${T2.mountS || 'bonded to the posts through the seal'}</text>` +
+    `</g>` +
+    `<g class="dimline"><path d="M733 ${Y1}v${LEN}M727 ${Y1}h12M727 ${Y0}h12"/></g><text class="tick" x="748" y="${(Y0 + Y1) / 2}" transform="rotate(90 748 ${(Y0 + Y1) / 2})">L ≈ 2.4 mm</text>` +
+    `<text class="lbl" x="${MID}" y="72" style="text-anchor:middle">${T2.title || 'FLEXURAL MODE · TINES IN ANTIPHASE'}</text>` +
+    `<g class="pol-key" transform="translate(378 470)"><rect width="12" height="12" rx="2" class="k-pos"/><text x="18" y="10">+</text><rect y="18" width="12" height="12" rx="2" class="k-neg"/><text x="18" y="28">−</text></g>` +
+    `<text class="tick" x="374" y="458" style="text-anchor:start">${T2.key || 'electrode charge'}</text>` +
+    `<text class="tick" x="374" y="104" style="text-anchor:start">${T2.exag || 'tip travel ×2000 exaggerated'}</text>` +
+    `<text class="tick" x="640" y="300" style="text-anchor:start" id="fork-phase-l">tine A: +</text><text class="tick" x="640" y="316" style="text-anchor:start" id="fork-phase-r">tine B: −</text>` +
+    `<text class="sub" x="${MID}" y="594" id="fork-net" style="text-anchor:middle"></text>`);
+  const tines = $('#tines'), mL = $('#mom-l'), mR = $('#mom-r'), netEl = $('#fork-net'), phL = $('#fork-phase-l'), phR = $('#fork-phase-r');
+  const baseG = svg.querySelector('.fork-base-g');
+  const POS = '#d9654f', NEG = '#3f97c4';
+  const tine = (cx, amp, sgn, k) => {
+    const pos = sgn >= 0, faceC = pos ? POS : NEG, sideC = pos ? NEG : POS, op = (.35 + .6 * k).toFixed(2);
+    let g = `<path d="${band(cx, amp, -W, W, 0, 1)}" class="tine-q"/>`;
+    g += `<path d="${band(cx, amp, -W, -W + 4, 0, .985)}" fill="url(#wa-goldfilm)"/><path d="${band(cx, amp, W - 4, W, 0, .985)}" fill="url(#wa-goldfilm)"/>`;
+    g += `<path d="${band(cx, amp, -W * .42, W * .42, .03, .8)}" fill="url(#wa-goldfilm)"/>`;
+    g += `<path d="${band(cx, amp, -W * .42, W * .42, .03, .8)}" fill="${faceC}" opacity="${(.25 + .6 * k).toFixed(2)}"/>`;
+    g += `<path d="${band(cx, amp, -W, -W + 4, 0, .985)}" fill="${sideC}" opacity="${op}"/><path d="${band(cx, amp, W - 4, W, 0, .985)}" fill="${sideC}" opacity="${op}"/>`;
+    g += `<path d="${band(cx, amp, -W + 5, W - 5, .86, .985)}" fill="url(#wa-goldfilm)" stroke="#8a6416" stroke-width=".6"/>`;
+    for (const [s, o] of [[.9, -8], [.94, 3], [.915, 9], [.955, -3]]) { const p = at(cx, amp, s, o); g += `<circle cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="2.3" fill="#5b4413" opacity=".75"/>`; }
+    g += `<path d="${band(cx, amp, -W + 6, -W + 8, .02, .84)}" fill="#fff" opacity=".55"/>`;
+    return g; };
   let run = !reduced, inPhase = false, t = 0, last = performance.now();
   const ampS = $('#fork-amp'), slowS = $('#fork-slow');
   const SLOW = [1, 4, 16, 64], SLOWL = ['×1/32 768','×1/131 072','×1/524 288','×1/2 097 152'];
   ampS.addEventListener('input', () => $('#fork-amp-v').textContent = '×' + (+ampS.value).toFixed(1));
   slowS.addEventListener('input', () => $('#fork-slow-v').textContent = SLOWL[+slowS.value]);
   $('#fork-toggle').addEventListener('click', e => { run = !run;
-    e.currentTarget.textContent = run ? T.forkPause : T.forkRun;
-    e.currentTarget.setAttribute('aria-pressed', run); });
+    e.currentTarget.textContent = run ? T.forkPause : T.forkRun; e.currentTarget.setAttribute('aria-pressed', run); });
   $('#fork-mode').addEventListener('click', e => { inPhase = !inPhase;
-    e.currentTarget.textContent = inPhase ? T.forkModeAnti : T.forkModeIn;
-    e.currentTarget.setAttribute('aria-pressed', !inPhase); });
+    e.currentTarget.textContent = inPhase ? T.forkModeAnti : T.forkModeIn; e.currentTarget.setAttribute('aria-pressed', !inPhase); });
   function frame(now){
     const dt = Math.min((now - last)/1000, 0.05); last = now;
     if (run) t += dt / SLOW[+slowS.value];
     const ph = t * 2*Math.PI * 1.1, s = Math.sin(ph), c = Math.cos(ph);
-    const A = 26 * (+ampS.value) * s, sign = inPhase ? 1 : -1;
-    const a = shape(250, A), b = shape(390, sign*A);
-    tL.setAttribute('d', a.d); tR.setAttribute('d', b.d);
-    eL.setAttribute('d', a.edge); eR.setAttribute('d', b.edge);
-    eL.setAttribute('stroke', s >= 0 ? '#c2685a' : '#5aa9c8');
-    eR.setAttribute('stroke', (sign*s) >= 0 ? '#c2685a' : '#5aa9c8');
-    eL.setAttribute('stroke-width', 5); eR.setAttribute('stroke-width', 5);
-    eL.setAttribute('fill','none'); eR.setAttribute('fill','none');
-    const v = 30 * c * (+ampS.value);
-    mL.setAttribute('d', `M${250 + A} 108h${v.toFixed(1)}`);
-    mR.setAttribute('d', `M${390 + sign*A} 108h${(sign*v).toFixed(1)}`);
-    phL.textContent = T.tineA + (s >= 0 ? '+' : '−');
-    phR.textContent = T.tineB + ((sign*s) >= 0 ? '+' : '−');
-    netEl.textContent = inPhase ? T.netBad : T.netOk;
-    netEl.setAttribute('style', inPhase ? 'fill:#c2685a' : '');
-    if (inPhase) svg.querySelectorAll('.fork-base').forEach(el =>
-      el.setAttribute('transform', `translate(${(A*0.22).toFixed(2)} 0)`));
-    else svg.querySelectorAll('.fork-base').forEach(el => el.removeAttribute('transform'));
+    const Am = 30 * (+ampS.value) * s, sign = inPhase ? 1 : -1, k = Math.abs(s);
+    const shift = inPhase ? Am * 0.22 : 0;
+    tines.innerHTML = tine(CXA + shift, Am, s, k) + tine(CXB + shift, sign * Am, sign * s, k);
+    if (inPhase) baseG.setAttribute('transform', `translate(${shift.toFixed(2)} 0)`); else baseG.removeAttribute('transform');
+    const v = 34 * c * (+ampS.value);
+    mL.setAttribute('d', `M${(CXA + Am + shift).toFixed(1)} 92h${v.toFixed(1)}`);
+    mR.setAttribute('d', `M${(CXB + sign * Am + shift).toFixed(1)} 92h${(sign * v).toFixed(1)}`);
+    phL.textContent = T.tineA + (s >= 0 ? '+' : '−'); phR.textContent = T.tineB + ((sign * s) >= 0 ? '+' : '−');
+    netEl.textContent = inPhase ? T.netBad : T.netOk; netEl.setAttribute('style', 'text-anchor:middle;' + (inPhase ? 'fill:#c2685a' : ''));
     requestAnimationFrame(frame);
   }
   requestAnimationFrame(frame);
@@ -225,7 +340,7 @@ const CHAIN = {
     $('#s-margin').textContent = margin.toFixed(1) + '×';
     $('#s-start').textContent = margin > 1 ? T.oscSustain : T.oscFail;
     $('#s-start').style.color = margin > 1 ? '' : '#c2685a';
-    $('#s-tau').textContent = margin > 1 ? tau.toFixed(2) + ' s' : '—';
+    $('#s-tau').textContent = margin > 1 ? tau.toFixed(2) + ' s' : '–';
     $('#s-power').textContent = (0.25 + gm*1e6*0.05 + (C*1e12)*0.012).toFixed(2) + ' µA';
     $('#wv-startup').textContent = margin > 1 ? T.envOk(tau.toFixed(2), (tau*5).toFixed(1)) : T.envFail;
     return { tau, margin };
@@ -317,9 +432,72 @@ const CHAIN = {
   requestAnimationFrame(frame);
 })();
 
+/* Lavet stepper drawn as built: coil on a soft-iron core, a one-piece stator whose two halves
+   meet only at two thin saturable bridges round the rotor bore, a magnet rotor and its pinion
+   driving the fifth wheel. Returns markup; ids used by the simulation: rotor, flux, coil. */
+function lavetMarkup(o){
+  const A = window.WatchArt, M = T.motorArt || {};
+  const RC = o.rc, R = 56, RM = 44;
+  const [cx, cy] = RC;
+  const top = cy - 62, bot = cy + 62, xl = 90, xr = 510, legW = 46, coilY = 96;
+  const notch = a => { const p = A.polar(cx, cy, R, a * D2R); return [p[0], p[1]]; };
+  // stator outline: bar with legs, bore cut out, outer V-slots that leave thin bridges above and below the bore
+  const st = `M${xl} ${coilY - 26}h${legW}V${top}H${cx - 10}l10 ${R - 62 + 6 + 2}l10 ${-(R - 62 + 6 + 2)}H${xr - legW}V${coilY - 26}h${legW}V${bot}H${cx + 10}l-10 ${-(8)}l-10 8H${xl}Z` + A.circ(cx, cy, R);
+  const notches = [notch(-45), notch(135)].map(([x, y]) => `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="11" class="st-notch"/>`).join('');
+  let s = '';
+  s += `<rect class="motor-bg" x="-120" width="760" height="560" rx="8"/>`;
+  s += `<path d="${st}" fill="#000" opacity=".22" transform="translate(5 8)" fill-rule="evenodd" filter="url(#wa-soft)"/>`;
+  s += `<path class="stator-art" d="${st}" fill-rule="evenodd"/><path d="${st}" fill="url(#wa-brushed)" fill-rule="evenodd"/>`;
+  s += `<path d="${st}" fill="none" stroke="#fff" stroke-opacity=".5" stroke-width="1.6" transform="translate(-.6 -.8)"/>`;
+  s += notches;
+  // fifth wheel driven by the rotor pinion (above the stator, drawn translucent where it overlaps)
+  const pr = 11, fw = { x: cx + 6, y: cy + pr + 64, R: 64 };
+  s += `<g class="fifth" opacity=".88">${A.wheel({ x: fw.x, y: fw.y, z: 32, r: fw.R, id: 'motor-fifth', armsN: 4, curved: true, pinion: { z: 8, r: 10 } })}</g>`;
+  // core and coil
+  s += `<rect x="${xl - 6}" y="${coilY - 9}" width="${xr - xl + 12}" height="18" rx="3" fill="url(#wa-iron)" stroke="#4d555c" stroke-width=".8"/>`;
+  s += A.coil({ x0: 162, x1: 438, y: coilY, rr: 34, flange: 11, id: 'coil' });
+  s += `<rect id="coil-live" x="162" y="${coilY - 34}" width="276" height="68" rx="6" class="coil-live"/>`;
+  s += A.screw(xl + legW / 2, coilY, 8, 30, 'steel') + A.screw(xr - legW / 2, coilY, 8, 120, 'steel');
+  // flux path
+  s += `<path id="flux" class="flux" d="M170 ${coilY}H${xr - legW / 2}V${cy}H${cx + R + 2}M${cx - R - 2} ${cy}H${xl + legW / 2}V${coilY}H170"/>`;
+  s += `<path id="flux-gap" class="flux gap" d="M${cx + R} ${cy}H${cx - R}"/>`;
+  // rotor: magnet with N/S halves, on top its pinion
+  s += `<g id="rotor"><circle cx="${cx}" cy="${cy}" r="${RM}" fill="url(#wa-magnet)" stroke="#16181b" stroke-width="1.2"/>` +
+    `<path d="M${cx - RM} ${cy}a${RM} ${RM} 0 0 1 ${2 * RM} 0z" class="rot-n"/><path d="M${cx + RM} ${cy}a${RM} ${RM} 0 0 1 ${-2 * RM} 0z" class="rot-s"/>` +
+    `<path d="M${cx - RM} ${cy}h${2 * RM}" stroke="#0e0f11" stroke-width="1.4"/>` +
+    `<text x="${cx}" y="${cy - 18}" class="rot-lbl">N</text><text x="${cx}" y="${cy + 28}" class="rot-lbl">S</text>` +
+    A.pinion(cx, cy, 6, pr, { mat: 'white' }) + `</g>`;
+  s += A.jewel(cx, cy, 4.2, { sink: false });
+  // axes
+  s += `<line class="axis-field" x1="${cx - R - 34}" y1="${cy}" x2="${cx + R + 140}" y2="${cy}"/>`;
+  const d1 = A.polar(cx, cy, R + 92, 45 * D2R), d0 = A.polar(cx, cy, R + 20, -135 * D2R);
+  s += `<line class="axis-detent" x1="${d0[0].toFixed(1)}" y1="${d0[1].toFixed(1)}" x2="${d1[0].toFixed(1)}" y2="${d1[1].toFixed(1)}"/>`;
+  // labels
+  const L1 = (ax, ay, lx, ly, a, b, side) => A.leader(ax, ay, lx, ly, [a, b], { side });
+  s += `<g class="labels">` +
+    L1(300, coilY - 30, 300, 30, M.coil || 'COIL', M.coilS || '≈ 12 000 turns of 20 µm copper', 'start') +
+    L1(xl + legW / 2 - 10, coilY + 6, 40, 160, M.core || 'SOFT-IRON CORE', M.coreS || 'screwed to the stator legs', 'end') +
+    L1(xr - 10, cy + 40, 520, 352, M.stator || 'STATOR', M.statorS || 'one piece of soft iron', 'start') +
+    L1(cx, top + 4, 470, 180, M.bridge || 'SATURABLE BRIDGE', M.bridgeS || 'the halves meet only here', 'start') +
+    L1(notch(-45)[0] + 4, notch(-45)[1] - 4, 470, 232, M.notch || 'DETENT NOTCH', M.notchS || 'sets the rest angle', 'start') +
+    L1(cx - 30, cy + 24, 40, 300, M.rotor || 'ROTOR MAGNET', M.rotorS || 'SmCo, ≈ 1.4 mm across', 'end') +
+    L1(cx - 8, cy + 8, 40, 352, M.pinion || 'ROTOR PINION', M.pinionS || '6 leaves', 'end') +
+    L1(fw.x - 40, fw.y + 30, 40, 430, M.fifth || 'FIFTH WHEEL', M.fifthS || 'first stage of the train', 'end') +
+    `</g>`;
+  s += `<text class="tick" x="${cx + R + 142}" y="${cy + 4}" style="text-anchor:start;fill:#3f97c4">${M.field || 'field axis'}</text>`;
+  s += `<text class="tick" x="${(d1[0] + 4).toFixed(1)}" y="${(d1[1] + 12).toFixed(1)}" style="text-anchor:start;fill:#c2685a">${M.detent || 'detent axis, 45° off'}</text>`;
+  s += `<text class="lbl" x="${xl}" y="${coilY + 66}" id="coil-cur" style="text-anchor:start">i = 0</text>`;
+  s += `<text class="lbl" x="260" y="498" id="motor-state">RESTING</text><text class="sub" x="260" y="516" id="motor-count"></text>`;
+  s += `<text class="sub" x="260" y="546">${M.foot || 'Polarity alternates every second, so the rotor sees a reversing field but always turns the same way.'}</text>`;
+  return s;
+}
+
 /* ============================================================ 06 LAVET MOTOR */
 (function motor(){
   const svg = $('#motor-svg'); if (!svg) return;
+  const RC = [300, 265];
+  if (window.WatchArt) { svg.setAttribute('viewBox', '-120 0 760 560'); svg.insertAdjacentHTML('beforeend', lavetMarkup({ rc: RC })); }
+  const fifth = $('#motor-fifth');
   const J = 2e-12;                 // rotor inertia, kg m^2
   const OFFSET = 3*Math.PI/4;      // stator field axis, measured from the rest position
   const TFULL = 23e-6;             // coil torque at 100 % chopper duty, N m
@@ -409,11 +587,13 @@ const CHAIN = {
     const idx = Math.min(traj.length-1, Math.floor(u*(traj.length-1)));
     const th = traj.length ? traj[idx][1]/D2R : 0, tNow = traj.length ? traj[idx][0] : 0;
     const pol = stepNo % 2 === 0 ? 1 : -1;
-    rotor.setAttribute('transform', `rotate(${(135 + base + th).toFixed(2)} 300 250)`);
+    rotor.setAttribute('transform', `rotate(${(135 + base + th).toFixed(2)} ${RC[0]} ${RC[1]})`);
+    if (fifth) fifth.setAttribute('transform', `rotate(${(-(135 + base + th) * 6 / 32).toFixed(2)} ${RC[0] + 6} ${RC[1] + 75})`);
     const pulsing = inPlay && tNow < params.tp;
     flux.classList.toggle('on', pulsing);
-    flux.classList.toggle('rev', pol < 0);
+    flux.classList.toggle('rev', pol < 0); svg.classList.toggle('rev', pol < 0);
     svg.querySelectorAll('.coil-turn').forEach(c => c.classList.toggle('live', pulsing));
+    svg.classList.toggle('pulsing', pulsing);
     cur.textContent = pulsing ? `i = ${pol > 0 ? '+' : '−'}${(VCELL/RCOIL*params.duty*1e6).toFixed(0)} µA` : 'i = 0';
     cur.setAttribute('style', pulsing ? 'fill:#c2685a' : '');
     state.textContent = pulsing ? T.statePulse : inPlay ? T.stateCoast : T.stateRest;
@@ -431,39 +611,103 @@ const CHAIN = {
 /* ============================================================ 07 TRAIN + DIALS */
 (function train(){
   const svg = $('#train-svg'); if (!svg) return;
-  const gears = [];
-  $$('#train-svg .gr').forEach(g => {
-    const x = +g.dataset.x, y = +g.dataset.y, r = +g.dataset.r;
-    mk('circle', {class:'gr-disc', cx:x, cy:y, r:r*0.72}, g);
-    mk('circle', {class:'gr-teeth', cx:x, cy:y, r:r*0.9}, g);
-    mk('path', {class:'gr-teeth', d:`M${x-r*0.5} ${y}h${r}M${x} ${y-r*0.5}v${r}`,
-      'stroke-width':3, 'stroke-dasharray':'none', opacity:.5}, g);
-    mk('circle', {class:'gr-hub', cx:x, cy:y, r:Math.max(5, r*0.16)}, g);
-    gears.push({ g, x, y, rate:+g.dataset.rate });
-  });
-  const COMP = [1, 60, 600, 3600], COMPL = ['×1','×60','×600','×3600'];
-  $('#train-speed').addEventListener('input', () =>
-    $('#train-speed-v').textContent = COMPL[+$('#train-speed').value - 1]);
+  const A = window.WatchArt; if (!A) return;
+  const TT = T.train || {};
+  svg.setAttribute('viewBox', '0 0 1010 500');
+  const at = (p, d, deg) => [p[0] + d * Math.cos(deg * D2R), p[1] + d * Math.sin(deg * D2R)];
+  // pitch radii follow the tooth counts; the ratios multiply to 21 600 : 1 from rotor to hour wheel
+  const W = {
+    rotor:  { pz: 6,  pr: 15.6, ratio: 1 },
+    fifth:  { z: 30, R: 79,  pz: 8,  pr: 16.8, ratio: -1 / 5 },
+    fourth: { z: 48, R: 101, pz: 8,  pr: 14.4, ratio: 1 / 30 },
+    third:  { z: 60, R: 108, pz: 8,  pr: 14.4, ratio: -1 / 225 },
+    centre: { z: 64, R: 115, ratio: 1 / 1800 } };
+  W.rotor.p = [76, 236];
+  W.fifth.p = at(W.rotor.p, W.rotor.pr + W.fifth.R, 26);
+  W.fourth.p = at(W.fifth.p, W.fifth.pr + W.fourth.R, -26);
+  W.third.p = at(W.fourth.p, W.fourth.pr + W.third.R, 20);
+  W.centre.p = at(W.third.p, W.third.pr + W.centre.R, -18);
+  // motion works on the dial side, drawn as an inset at a larger scale
+  const MW = { c: [826, 236], cr: 18, mR: 54, mr: 14.4, hR: 57.6 };
+  MW.m = at(MW.c, MW.cr + MW.mR, -90);
+  let s = `<rect class="train-bg" width="1010" height="500" rx="8"/>`;
+  s += `<rect class="inset" x="690" y="40" width="300" height="370" rx="8"/>`;
+  // order: deepest first so each wheel sits under the pinion that drives it
+  s += A.wheel({ x: W.centre.p[0], y: W.centre.p[1], z: W.centre.z, r: W.centre.R, id: 'qt-centre', armsN: 5, curved: true });
+  s += A.wheel({ x: W.third.p[0], y: W.third.p[1], z: W.third.z, r: W.third.R, id: 'qt-third', armsN: 5, curved: true });
+  s += A.wheel({ x: W.fourth.p[0], y: W.fourth.p[1], z: W.fourth.z, r: W.fourth.R, id: 'qt-fourth', armsN: 4, curved: true });
+  s += A.wheel({ x: W.fifth.p[0], y: W.fifth.p[1], z: W.fifth.z, r: W.fifth.R, id: 'qt-fifth', armsN: 4 });
+  for (const k of ['fifth', 'fourth', 'third']) { const q = W[k];
+    s += `<g>${A.pinion(q.p[0], q.p[1], q.pz, q.pr, { id: 'qt-' + k + '-pin' })}${A.jewel(q.p[0], q.p[1], 4, { sink: false })}</g>`; }
+  const [rx, ry] = W.rotor.p;
+  s += `<g id="qt-rotor"><circle cx="${rx}" cy="${ry}" r="30" fill="url(#wa-magnet)" stroke="#16181b"/><path d="M${rx - 30} ${ry}a30 30 0 0 1 60 0z" class="rot-n"/><path d="M${rx + 30} ${ry}a30 30 0 0 1-60 0z" class="rot-s"/>` +
+    A.pinion(rx, ry, 6, W.rotor.pr, { mat: 'white' }) + `</g>` + A.jewel(rx, ry, 3.6, { sink: false });
+  // motion works inset
+  const [mx, my] = MW.c;
+  s += A.wheel({ x: MW.m[0], y: MW.m[1], z: 36, r: MW.mR, id: 'qt-minute', armsN: 0, mat: 'brass', pinion: { z: 10, r: MW.mr } });
+  s += A.wheel({ x: mx, y: my, z: 40, r: MW.hR, id: 'qt-hour', armsN: 4, mat: 'brass', hub: 20 });
+  s += `<g>${A.pinion(mx, my, 12, MW.cr, { id: 'qt-cannon' })}${A.jewel(mx, my, 5, { sink: false })}</g>`;
+  s += `<path class="arbor-link" d="M${W.centre.p[0]} ${W.centre.p[1]}C${W.centre.p[0] + 120} ${W.centre.p[1] + 150} ${mx - 120} ${my + 170} ${mx} ${my}"/>`;
+  // labels
+  const lab = (x, y, a, b, c, anchor = 'middle') => `<text class="lbl" x="${x.toFixed(1)}" y="${y}" style="text-anchor:${anchor}">${a}</text><text class="sub" x="${x.toFixed(1)}" y="${y + 15}" style="text-anchor:${anchor}">${b}</text>` + (c ? `<text class="tick" x="${x.toFixed(1)}" y="${y + 29}" style="text-anchor:${anchor}">${c}</text>` : '');
+  s += lab(rx, 136, TT.rotor || 'ROTOR', TT.rotorS || '180° steps · 30 rpm mean', TT.rotorT || 'pinion 6');
+  s += lab(W.fifth.p[0], 392, TT.fifth || 'FIFTH WHEEL', TT.fifthS || '6 rpm', '30 · pinion 8');
+  s += lab(W.fourth.p[0], 84, TT.fourth || 'FOURTH WHEEL', TT.fourthS || '1 rpm · seconds hand', '');
+  s += lab(W.third.p[0], 410, TT.third || 'THIRD WHEEL', TT.thirdS || '8 turns / hour', '60 · pinion 8');
+  s += lab(W.centre.p[0], 62, TT.centre || 'CENTRE WHEEL', TT.centreS || '1 rph · minute hand', '');
+  s += `<text class="lbl" x="840" y="66" style="text-anchor:middle">${TT.inset || 'DIAL SIDE · MOTION WORKS'}</text>`;
+  s += lab(mx, 330, TT.cannon || 'CANNON PINION + HOUR WHEEL', TT.cannonS || 'on the centre arbor', TT.cannonT || '12 → 36, 10 → 40 · ÷12');
+  s += lab(MW.m[0] + 76, MW.m[1] - 2, TT.minute || 'MINUTE WHEEL', '÷3', '', 'start');
+  s += `<text class="sub" x="505" y="470">${TT.foot || '5 × 6 × 7.5 × 8 × 12 = 21 600 : 1 from rotor to hour hand · no escapement anywhere in this chain'}</text>`;
+  s += `<text class="tick" x="505" y="488">${TT.note || 'Tooth counts are typical; real calibres split the reduction differently and often add a second motor for the date.'}</text>`;
+  svg.insertAdjacentHTML('beforeend', s);
+  const E = id => svg.querySelector('#' + id);
+  const parts = [['qt-rotor', W.rotor.p, 1], ['qt-fifth', W.fifth.p, -1 / 5], ['qt-fifth-pin', W.fifth.p, -1 / 5], ['qt-fourth', W.fourth.p, 1 / 30], ['qt-fourth-pin', W.fourth.p, 1 / 30],
+    ['qt-third', W.third.p, -1 / 225], ['qt-third-pin', W.third.p, -1 / 225], ['qt-centre', W.centre.p, 1 / 1800], ['qt-cannon', MW.c, 1 / 1800],
+    ['qt-minute', MW.m, -1 / 5400], ['qt-hour', MW.c, 1 / 21600]].map(([id, p, r]) => ({ el: E(id), p, r }));
+  const COMP = [1, 60, 600, 3600], COMPL = ['×1', '×60', '×600', '×3600'];
+  $('#train-speed').addEventListener('input', () => $('#train-speed-v').textContent = COMPL[+$('#train-speed').value - 1]);
   let run = !reduced, t = 0, last = performance.now();
   $('#train-toggle').addEventListener('click', e => { run = !run;
-    e.currentTarget.textContent = run ? T.trainPause : T.trainRun;
-    e.currentTarget.setAttribute('aria-pressed', run); });
-
-  for (const [id, cx, cy] of [['#dial-q-ticks',150,160], ['#dial-m-ticks',410,160]]) {
-    const host = $(id); if (!host) continue;
-    for (let i = 0; i < 60; i++) { const a = i*6*D2R, r1 = i%5 ? 96 : 88;
-      mk('line', {class:'dial-tick', 'stroke-width': i%5?1:2.5,
-        x1:cx+Math.sin(a)*r1, y1:cy-Math.cos(a)*r1,
-        x2:cx+Math.sin(a)*103, y2:cy-Math.cos(a)*103}, host); }
+    e.currentTarget.textContent = run ? T.trainPause : T.trainRun; e.currentTarget.setAttribute('aria-pressed', run); });
+  // dials
+  const dial = $('#dial-svg');
+  const hands = {};
+  if (dial) {
+    dial.setAttribute('viewBox', '0 0 560 330');
+    const face = (cx, cy, id) => {
+      let f = `<circle cx="${cx + 4}" cy="${cy + 7}" r="124" fill="#000" opacity=".22" filter="url(#wa-soft)"/>` +
+        `<circle cx="${cx}" cy="${cy}" r="122" fill="url(#wa-case)" stroke="#5c646b"/><circle cx="${cx}" cy="${cy}" r="110" fill="url(#wa-dial)" stroke="#8d8a80" stroke-width="1"/>`;
+      for (let i = 0; i < 60; i++) { const a = i * 6 * D2R, big = i % 5 === 0, r0 = big ? 84 : 98, r1 = 104;
+        f += big ? `<rect x="${cx - 3}" y="${cy - r1}" width="6" height="${r1 - r0}" rx="1.4" fill="url(#wa-steel-lin)" stroke="#59616a" stroke-width=".6" transform="rotate(${i * 6} ${cx} ${cy})"/>`
+          : `<line x1="${(cx + Math.sin(a) * r0).toFixed(1)}" y1="${(cy - Math.cos(a) * r0).toFixed(1)}" x2="${(cx + Math.sin(a) * r1).toFixed(1)}" y2="${(cy - Math.cos(a) * r1).toFixed(1)}" stroke="#4b4f55" stroke-width="1"/>`; }
+      const hand = (len, w, cls) => `<path class="${cls}" d="M${cx - w} ${cy + 14}L${cx - w * .7} ${cy - len * .9}L${cx} ${cy - len}L${cx + w * .7} ${cy - len * .9}L${cx + w} ${cy + 14}Z"/>`;
+      f += `<g id="${id}-h">${hand(56, 5.5, 'hand-hr')}<path d="M${cx - 1.6} ${cy - 18}V${cy - 50}h3.2V${cy - 18}z" fill="#f4f1e2"/></g>`;
+      f += `<g id="${id}-m">${hand(86, 4.2, 'hand-min')}<path d="M${cx - 1.2} ${cy - 22}V${cy - 80}h2.4V${cy - 22}z" fill="#f4f1e2"/></g>`;
+      f += `<g id="${id}-s"><path d="M${cx - .9} ${cy + 28}V${cy - 100}h1.8V${cy + 28}z" fill="#c2342a"/><circle cx="${cx}" cy="${cy + 22}" r="5" fill="#c2342a"/></g>`;
+      f += `<circle cx="${cx}" cy="${cy}" r="5.5" fill="url(#wa-steel)" stroke="#59616a"/>`;
+      f += `<circle cx="${cx}" cy="${cy}" r="110" fill="url(#wa-sheen)" opacity=".25" pointer-events="none"/>`;
+      return f; };
+    dial.insertAdjacentHTML('beforeend', face(140, 150, 'dq') + face(420, 150, 'dm') +
+      `<text class="lbl" x="140" y="306" style="text-anchor:middle">${TT.dialQ || 'QUARTZ · 1 step / s'}</text><text class="lbl" x="420" y="306" style="text-anchor:middle">${TT.dialM || 'MECHANICAL · 8 beats / s'}</text>`);
+    for (const k of ['dq', 'dm']) for (const h of ['h', 'm', 's']) hands[k + h] = dial.querySelector(`#${k}-${h}`);
   }
-  const hq = $('#hand-sq'), hm = $('#hand-sm');
+  const t0 = (10 * 3600 + 9 * 60 + 30);
   function frame(now){
     const dt = Math.min((now-last)/1000, 0.05); last = now;
     const comp = COMP[+$('#train-speed').value - 1];
     if (run) t += dt*comp;
-    gears.forEach(g => g.g.setAttribute('transform', `rotate(${(g.rate*t)%360} ${g.x} ${g.y})`));
-    if (hq) hq.setAttribute('transform', `rotate(${Math.floor(t)*6} 150 160)`);
-    if (hm) hm.setAttribute('transform', `rotate(${Math.floor(t*8)/8*6} 410 160)`);
+    // the rotor steps 180 deg once a second; at x1 the step takes about 60 ms
+    const whole = Math.floor(t), fr = t - whole, stepped = comp > 1 ? t : whole + Math.min(1, fr / .06);
+    const aR = 180 * stepped;
+    parts.forEach(p => { if (p.el) p.el.setAttribute('transform', `rotate(${(aR * p.r % 360).toFixed(3)} ${p.p[0].toFixed(2)} ${p.p[1].toFixed(2)})`); });
+    if (dial) {
+      const T0 = t0 + t, sq = comp > 1 ? T0 : Math.floor(T0), smv = Math.floor(T0 * 8) / 8;
+      const set = (k, sec) => { hands[k + 's'].setAttribute('transform', `rotate(${(sec % 60) * 6} ${k === 'dq' ? 140 : 420} 150)`);
+        hands[k + 'm'].setAttribute('transform', `rotate(${(sec / 10) % 360} ${k === 'dq' ? 140 : 420} 150)`);
+        hands[k + 'h'].setAttribute('transform', `rotate(${(sec / 120) % 360} ${k === 'dq' ? 140 : 420} 150)`); };
+      set('dq', sq); set('dm', smv);
+    }
     requestAnimationFrame(frame);
   }
   requestAnimationFrame(frame);

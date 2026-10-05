@@ -5,7 +5,28 @@
   <link rel="stylesheet" href="/assets/article-theme.css"><link rel="canonical" href="https://theisegoria.github.io/ja/explore/automatic-watch.html">
 <link rel="alternate" hreflang="en" href="https://theisegoria.github.io/explore/automatic-watch.html">
 <link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/explore/automatic-watch.html">
-<link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/explore/automatic-watch.html"><script src="/assets/lang.js"></script>
+<link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/explore/automatic-watch.html"><style>
+.aw-tray{fill:color-mix(in srgb,var(--paper-deep,#ece6da) 70%,var(--card,#fff));stroke:var(--line);stroke-width:1}
+.aw-diagram .wa-leader-line{stroke:var(--gold,#a87b2f);stroke-width:1;fill:none}
+.aw-diagram .wa-leader-dot{fill:var(--gold,#a87b2f)}
+.aw-diagram .wa-leader-text{fill:var(--ink);font:750 13px var(--sans);letter-spacing:.08em}
+.aw-diagram .wa-leader-sub{fill:var(--ink-soft);font:600 11.5px var(--sans)}
+.aw-key{fill:var(--ink-soft);font:700 11px var(--sans);letter-spacing:.08em}
+.aw-note{fill:var(--ink-soft);font:500 10px var(--sans)}
+.aw-flow-line{fill:none;stroke:var(--gold,#c49a54);stroke-width:5;stroke-linecap:round;stroke-dasharray:2 12;opacity:.55}
+.is-running .aw-flow-line{animation:aw-flow 1.2s linear infinite}
+@keyframes aw-flow{to{stroke-dashoffset:-28}}
+.aw-diagram .watch-node,.aw-diagram .aw-lbl{cursor:pointer;outline:none;transition:opacity .25s}
+.aw-diagram.has-sel .watch-node:not(.is-active){opacity:.6}
+.aw-diagram .watch-node.is-active{filter:drop-shadow(0 0 8px color-mix(in srgb,var(--coral,#c96b4f) 70%,transparent))}
+.aw-diagram .aw-lbl.is-active .wa-leader-text{fill:var(--coral,#b5563b)}
+.aw-diagram .aw-lbl:not(.is-active){opacity:.78}
+.aw-diagram .watch-node:focus-visible,.aw-diagram .aw-lbl:focus-visible{outline:2px solid var(--teal)}
+.aw-diagram .watch-node circle,.aw-diagram .watch-node path,.aw-diagram .watch-node rect{transition:none}
+.aw-diagram .watch-node.is-active circle,.aw-diagram .watch-node.is-active path,.aw-diagram .watch-node.is-active rect{stroke-width:revert-layer}
+@media(max-width:600px){.watch-stage{overflow-x:auto;-webkit-overflow-scrolling:touch}.aw-diagram{min-width:660px}.workbench-stage{padding:1rem .5rem;min-height:0}}
+@media(prefers-reduced-motion:reduce){.aw-flow-line{animation:none!important}}
+</style><script src="/assets/lang.js"></script>
 <!-- ISEGORIA:HEAD -->
 <link rel="stylesheet" href="/assets/site-shell.css?v=c21cd21e82">
 <script src="/assets/site-shell.js?v=c21cd21e82" ></script>
@@ -24,7 +45,7 @@
 <!-- /ISEGORIA:NAV --><a class="skip-link" href="#main">インタラクティブ機構図へ移動</a>
 <main class="lesson-main" id="main" data-lesson="watch"><section class="lesson-hero"><div><p class="eyebrow">インタラクティブ機械式時計</p><h1>運動が<br><em>数えられた時へ。</em></h1><p class="lesson-deck">部品より先に、問題の形をはっきりさせておきます。自動巻き時計は不規則な腕の動きを取り込み、蓄え、制御された小片として解放し、その小片を数え、表示しなければなりません。</p></div><p class="lesson-promise"><strong>因果の鎖を追う</strong>振動子がリズムを決め、脱進機が維持して数え、輪列がエネルギーを運んで針を回します。</p></section>
 <section class="lesson-workbench" aria-label="自動巻き時計のインタラクティブ機構" data-interactive-mount></section>
-<section class="lesson-sections"><article class="lesson-card is-wide"><p class="cue">エネルギー取込</p><h2>腕から主ゼンマイへ</h2><p>ローターは偏心した錘です。揺れると切替車が運動を巻上げ方向へ整流します。主ゼンマイは香箱内で弾性変形として仕事を蓄えます。</p><p>多くの自動巻き機構は滑りブライドルを使い、全巻き時にゼンマイを傷めず香箱壁に沿って滑らせます。</p></article><article class="lesson-card"><p class="cue">伝達</p><h2>トルクが速度へ変わる</h2><p>輪列は歯車比により、遅く強い香箱の回転から速い歯車を駆動します。噛み合うたび回転方向は反転します。</p></article><article class="lesson-card"><p class="cue">脱進機</p><h2>ロック・解放・衝撃・再ロック</h2><p>アンクルはガンギ車を交互にロックし、1 歯ずつ通します。同時にテンプへ小さな衝撃を返します。</p></article><article class="lesson-card"><p class="cue">振動子</p><h2>歩度を決めるのはテンプ</h2><span class="formula">f ∝ √(k/I)</span><p>ヒゲゼンマイの剛性 k が大きいほど周波数は上がり、テンプの慣性 I が大きいほど下がります。脱進機はエネルギーを補いますが固有周期は作りません。ここがいちばん大事な区別だと考えています。上の機構は理想化した振動子で、下に並べた摂動はここでは扱っていません。</p></article><article class="lesson-card"><p class="cue">振動数</p><h2>vph を正しく読む</h2><p>28,800 vph は毎秒 8 ビート、毎秒 4 往復です。1 ビートは半振動で、この単位が隠しているのはそこだと考えています。</p></article><article class="lesson-card is-full"><p class="cue">精度</p><h2>実機は摂動された振動子</h2><ul><li>姿勢により重力の軸受・テンプへの影響が変わる。</li><li>温度によりバネ弾性と寸法が変わる。</li><li>摩擦・潤滑・磁気・衝撃・ゼンマイトルクが振幅と歩度を乱す。</li><li>緩急調整はヒゲゼンマイ有効長または慣性を変え、エネルギーは加えない。</li></ul></article></section><nav class="lesson-footer-nav"><a href="/ja/#guides">← 一覧へ戻る</a><a href="/ja/quartz-lab/">クオーツ時計ラボへ</a><a href="/ja/explore/structure-before-algebra.html">次へ：認識アトラス →</a></nav></main><script src="../../assets/site.js"></script><script src="../../assets/interactive-watch.js"></script><!-- ISEGORIA:FOOT -->
+<section class="lesson-sections"><article class="lesson-card is-wide"><p class="cue">エネルギー取込</p><h2>腕から主ゼンマイへ</h2><p>ローターは偏心した錘です。揺れると切替車が運動を巻上げ方向へ整流します。主ゼンマイは香箱内で弾性変形として仕事を蓄えます。</p><p>多くの自動巻き機構は滑りブライドルを使い、全巻き時にゼンマイを傷めず香箱壁に沿って滑らせます。</p></article><article class="lesson-card"><p class="cue">伝達</p><h2>トルクが速度へ変わる</h2><p>輪列は歯車比により、遅く強い香箱の回転から速い歯車を駆動します。噛み合うたび回転方向は反転します。</p></article><article class="lesson-card"><p class="cue">脱進機</p><h2>ロック・解放・衝撃・再ロック</h2><p>アンクルはガンギ車を交互にロックし、1 歯ずつ通します。同時にテンプへ小さな衝撃を返します。</p></article><article class="lesson-card"><p class="cue">振動子</p><h2>歩度を決めるのはテンプ</h2><span class="formula">f ∝ √(k/I)</span><p>ヒゲゼンマイの剛性 k が大きいほど周波数は上がり、テンプの慣性 I が大きいほど下がります。脱進機はエネルギーを補いますが固有周期は作りません。ここがいちばん大事な区別だと考えています。上の機構は理想化した振動子で、下に並べた摂動はここでは扱っていません。</p></article><article class="lesson-card"><p class="cue">振動数</p><h2>vph を正しく読む</h2><p>28,800 vph は毎秒 8 ビート、毎秒 4 往復です。1 ビートは半振動で、この単位が隠しているのはそこだと考えています。</p></article><article class="lesson-card is-full"><p class="cue">精度</p><h2>実機は摂動された振動子</h2><ul><li>姿勢により重力の軸受・テンプへの影響が変わる。</li><li>温度によりバネ弾性と寸法が変わる。</li><li>摩擦・潤滑・磁気・衝撃・ゼンマイトルクが振幅と歩度を乱す。</li><li>緩急調整はヒゲゼンマイ有効長または慣性を変え、エネルギーは加えない。</li></ul></article></section><nav class="lesson-footer-nav"><a href="/ja/#guides">← 一覧へ戻る</a><a href="/ja/quartz-lab/">クオーツ時計ラボへ</a><a href="/ja/explore/structure-before-algebra.html">次へ：認識アトラス →</a></nav></main><script src="../../assets/site.js"></script><script src="../../watch-lab/watch-art.js"></script><script src="../../explore/automatic-watch.js"></script><!-- ISEGORIA:FOOT -->
 <footer id="ig-footer"><div><a href="/ja/">Isegoria · Benjamin Haire</a><nav aria-label="サイト内リンク"><a href="/ja/">ホームに戻る</a><a href="/ja/library.html">全コンテンツ</a><a href="#ig-content">ページ上部へ</a></nav></div></footer>
 <!-- /ISEGORIA:FOOT -->
 </body></html>

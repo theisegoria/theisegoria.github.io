@@ -51,6 +51,10 @@ body{line-height:1.8}
  capPlain:'Δf/f = −β(T − 25 °C)² · β ≈ 0.035 ppm/°C²',
  capComp:'温度補償あり · 放物線を測定し、間引き回数を温度に索引づけて打ち消す',
  yearsUnit:'年',
+ fork:{canT:'実物', canS:'真空容器を切り開いた図', canDim:'約 Ø 2 mm × 6 mm', trim:'トリミング質量', trimS:'金、レーザーで調整', mount:'マウントとリード', mountS:'封止部を通る支柱に接合', title:'たわみモード · 二本の腕は逆位相', key:'電極の電荷', exag:'先端の振れは ×2000 に誇張'},
+ motorArt:{coil:'コイル', coilS:'20 µm の銅線を約12 000回巻き', core:'軟鉄の芯', coreS:'ステータの脚にねじ止め', stator:'ステータ', statorS:'一枚の軟鉄', bridge:'飽和ブリッジ', bridgeS:'左右はここでだけつながる', notch:'ディテントの切り欠き', notchS:'静止角を決める', rotor:'ローター磁石', rotorS:'SmCo、直径約1.4 mm', pinion:'ローターのかな', pinionS:'6枚', fifth:'五番車', fifthS:'輪列の最初の段', field:'磁界の軸', detent:'ディテントの軸、45°ずれ', foot:'極性は毎秒反転するので、ローターが受ける磁界は反転しますが、回る向きは常に同じです。'},
+ train:{rotor:'ローター', rotorS:'180°ずつ · 平均30 rpm', rotorT:'かな6', fifth:'五番車', fifthS:'6 rpm', fourth:'四番車', fourthS:'1 rpm · 秒針', third:'三番車', thirdS:'1時間に8回転', centre:'二番車', centreS:'1時間に1回転 · 分針', inset:'文字盤側 · 日の裏', cannon:'筒かなと筒車', cannonS:'二番車の軸の上', cannonT:'12 → 36、10 → 40 · ÷12', minute:'日の裏車', foot:'5 × 6 × 7.5 × 8 × 12 = 21 600 : 1、ローターから時針まで · この連なりのどこにも脱進機はない', note:'歯数は代表値です。実際のキャリバーは減速の分け方が異なり、日付用に二つ目のモーターを持つことも多いです。', dialQ:'クオーツ · 毎秒1歩', dialM:'機械式 · 毎秒8拍'},
+ map:{battery:'酸化銀電池', batteryS:'1.55 V · 約25 mAh', crystal:'水晶振動子', crystalS:'真空容器の中の音叉', ic:'集積回路', icS:'発振・分周・ドライバ', pcb:'回路基板', pcbS:'パルスをコイルへ送る', coil:'コイル', coilS:'ラベット型ステッピングモーター', rotor:'ローターとステータ', rotorS:'1パルスで半回転', train:'減速輪列', trainS:'樹脂と真鍮の歯車', hands:'中心軸', handsS:'文字盤側で針を担う', note:'一般的な三針クオーツムーブメントを電池側から見た図。寸法比は典型的な値で、特定のキャリバーのものではありません。'},
  chain:{
   battery:['酸化銀電池','1.55 Vの酸化銀電池の容量はおよそ25 mAh。時計全体の消費はおよそ1.3マイクロアンペアなので、点検の周期を決めるのは機構ではなく化学です。電圧は最後まで平坦を保ち、そして落ちます。クオーツ時計が止まる直前まで完璧な時を刻むのはそのためです。',[['化学系','Ag₂O / Zn, 1.55 V'],['容量','≈25 mAh'],['寿命','2–3年'],['終わり方','緩やかでなく突然']]],
   crystal:['水晶発振回路','線形領域にバイアスされたCMOSインバータが、エッチングされた音叉型水晶を駆動し、その結果を自らの入力へ戻します。共振が鋭いため、ループは事実上ただ一つの周波数でしか発振を維持できません。',[['周波数','32 768 Hz = 2¹⁵'],['Q値','≈5×10⁴'],['駆動電力','< 1 µW'],['起動時間','≈0.5 s']]],
@@ -60,7 +64,7 @@ body{line-height:1.8}
   train:['減速輪列','普通の時計の輪列ですが、向きが逆です。遅い香箱から速い脱進機へ増速するのではなく、速いローターから遅い針へ減速します。ここに歩度を左右するものは何もありません。',[['総減速比','21 600 : 1'],['四番車','1 rpm'],['筒かな','1 rph'],['脱進機','なし']]],
   hands:['表示','毎秒6度の文字盤。目に見えるこの一歩は、分周器が1 Hzに到達しパルスを使い切ったことの直接の署名です。クオーツで秒針が掃く機種は、分周を高い段で取り出してモーターをより頻繁に歩ませているだけです。',[['1歩','6°'],['頻度','毎秒1回'],['掃き秒針','毎秒4・8・32歩など'],['パワーリザーブ','なし。電池が尽きれば止まる']]]
  }};</script>
-<script src="../../quartz-lab/quartz.js" defer></script><link rel="canonical" href="https://theisegoria.github.io/ja/quartz-lab/">
+<script src="../../watch-lab/watch-art.js" defer></script><script src="../../quartz-lab/quartz.js" defer></script><link rel="canonical" href="https://theisegoria.github.io/ja/quartz-lab/">
 <link rel="alternate" hreflang="en" href="https://theisegoria.github.io/quartz-lab/">
 <link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/quartz-lab/">
 <link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/quartz-lab/"><script src="/assets/lang.js"></script>
@@ -94,7 +98,7 @@ body{line-height:1.8}
 <h1>数え続ける<br>ひとつの石。</h1>
 <p>機械式時計はテンプの振れを数える。クオーツ版を最後まで追ってみたかった。クオーツ時計は、レーザーで整形された二酸化ケイ素の薄片の振動を数える。毎秒32,768回。その数を十五回半分にしていき、最後に残った一発のパルスで、磁石を半回転させる。</p>
 <a class="cta" href="#chain">信号を追う ↓</a></div>
-<div class="hero-orbit" aria-hidden="true"><div class="fork-glyph"><svg viewBox="0 0 200 200"><g><path class="tine a" d="M78 150V44"/><path class="tine b" d="M122 150V44"/><path d="M60 150h80" stroke="#5aa9c83d" stroke-width="18" stroke-linecap="round" fill="none"/></g></svg></div></div>
+<div class="hero-orbit" aria-hidden="true"><div class="fork-glyph"><svg id="hero-can" viewBox="0 0 300 420" focusable="false"></svg></div></div>
 </header>
 
 <main>
@@ -131,7 +135,9 @@ body{line-height:1.8}
 <p id="chain-copy">線形領域に保たれたCMOSインバータが音叉型水晶を駆動し、その出力を自らの入力へ戻します。水晶の共振が極めて鋭いため、ループはただ一つの周波数でしか発振を維持できません。</p>
 <dl class="spec" id="chain-spec"></dl>
 </aside></div>
-<p class="note">教育用の模式図です。歯数・電流・配置には代表的な値を選んでおり、特定のキャリバーのものではありません。</p>
+<div class="map-head"><h3>同じ七つの段を、部品として見る</h3><p>裏蓋を外すと、おおよそこう見えます。ここで部品を選んでも、上で段を選んでも、二つの図は連動します。毎秒、回路がパターンを通じてコイルへパルスを一つ送り、ローターが半回転します。</p></div>
+<div class="stage map-stage"><svg id="qmap" viewBox="0 0 1000 660" role="img" aria-labelledby="qmap-t qmap-d"><title id="qmap-t">クオーツムーブメントの中で各段がある場所</title><desc id="qmap-d">三針クオーツムーブメントを電池側から見た図です。酸化銀電池、集積回路と容器入りの水晶を載せた回路基板、ステッピングモーターのコイル・ステータ・ローター、そして針を担う中心軸まで続く減速輪列。</desc></svg></div>
+<p class="note">教育用の図解です。歯数・電流・配置には代表的な値を選んでおり、特定のキャリバーのものではありません。</p>
 </section>
 
 <!-- ============ 02 THE CRYSTAL ============ -->
@@ -146,26 +152,8 @@ body{line-height:1.8}
 </div>
 
 <div class="split"><div class="stage">
-<svg id="fork-svg" viewBox="0 0 640 572" role="img" aria-labelledby="fork-t fork-d" style="min-width:520px">
-<title id="fork-t">たわみモードで振動する水晶音叉</title><desc id="fork-d">エッチングされた二本の腕が逆位相で曲がり、運動量が基部で打ち消し合うため、エネルギーはほとんど外へ逃げません。</desc>
-<path class="ghost-path" d="M235 390V80h30v310M375 390V80h30v310"/>
-<path id="tine-l" class="tine-body"/><path id="tine-r" class="tine-body"/>
-<path id="el-l" class="electrode"/><path id="el-r" class="electrode"/>
-<path class="fork-base" d="M180 386h280v66H180z"/>
-<path class="fork-base" d="M280 452h80v58h-80z"/>
-<circle cx="300" cy="481" r="7" fill="#c2685a"/><circle cx="340" cy="481" r="7" fill="#5aa9c8"/>
-<text class="sub" x="320" y="530">気密封止のマウント &#183; 真空容器</text>
-<g id="momentum">
-<path class="arrow-m" id="mom-l" d="M250 108h0"/><path class="arrow-m" id="mom-r" d="M390 108h0"/>
-</g>
-<text class="lbl" x="320" y="62">たわみモード &#183; 二本の腕は逆位相</text>
-<g class="dim" stroke="#a9a397" stroke-width="1.5" fill="none"><path d="M496 80v310M488 80h16M488 390h16"/></g>
-<text class="tick" x="530" y="228" transform="rotate(90 530 228)">L &#8776; 2.4 mm</text>
-<path class="axis" d="M198 92h42"/><text class="tick" x="192" y="96" style="font-size:9px;text-anchor:end">t &#8776; 0.1 mm（腕の厚み）</text>
-<text class="tick" x="90" y="140" style="text-anchor:start">先端の振れは</text><text class="tick" x="90" y="154" style="text-anchor:start">&#215;2000に誇張:</text><text class="tick" x="90" y="168" style="text-anchor:start">実際は &#8776; 1 &#181;m</text>
-<text class="tick" x="90" y="300" style="text-anchor:start" id="fork-phase-l">腕A: +</text>
-<text class="tick" x="90" y="316" style="text-anchor:start" id="fork-phase-r">腕B: &#8722;</text>
-<text class="sub" x="320" y="556" id="fork-net">基部での正味の運動量 &#8776; 0</text>
+<svg id="fork-svg" viewBox="0 0 760 600" role="img" aria-labelledby="fork-t fork-d" style="min-width:520px">
+<title id="fork-t">真空容器の中の水晶音叉と、たわみモードで振動する音叉の拡大図</title><desc id="fork-d">左は、筒形の容器を切り開き、マウントに載った音叉を見せたものです。右はその拡大図で、各腕の表面と側面の金電極が半周期ごとに極性を変え、二本の腕は逆位相に曲がるので運動量が基部で打ち消し合います。先端のレーザートリミングされた金の質量が周波数を決めます。</desc>
 </svg>
 </div>
 <ol class="steps">
@@ -370,29 +358,8 @@ body{line-height:1.8}
 
 <div class="split even">
 <div class="stage">
-<svg id="motor-svg" viewBox="0 0 620 560" role="img" aria-labelledby="mo-t mo-d" style="min-width:460px">
-<title id="mo-t">ラベット型 単相ステッピングモーター</title><desc id="mo-d">切り欠きのある軟鉄ステータの穴に収まった二極永久磁石ローターを、極性を交互に反転させる一つのコイルで駆動します。</desc>
-<path class="stator" fill-rule="evenodd" d="M198 150H402A38 38 0 0 1 440 188V312A38 38 0 0 1 402 350H198A38 38 0 0 1 160 312V282H62V218H160V188A38 38 0 0 1 198 150ZM360 250A60 60 0 1 1 240 250A60 60 0 1 1 360 250Z"/>
-<rect class="coil-core" x="86" y="228" width="76" height="44" rx="4" opacity="0"/>
-<g id="coil"><ellipse class="coil-turn" cx="80" cy="250" rx="7" ry="34"/><ellipse class="coil-turn" cx="94" cy="250" rx="7" ry="34"/><ellipse class="coil-turn" cx="108" cy="250" rx="7" ry="34"/><ellipse class="coil-turn" cx="122" cy="250" rx="7" ry="34"/><ellipse class="coil-turn" cx="136" cy="250" rx="7" ry="34"/><ellipse class="coil-turn" cx="150" cy="250" rx="7" ry="34"/></g>
-<path id="flux" class="flux" d="M112 214C112 178 150 172 210 172H386C420 172 428 200 428 250C428 300 420 328 386 328H210C150 328 112 322 112 286"/>
-<circle class="notch-mark" cx="342.4" cy="207.6" r="15" fill="var(--paper)" stroke="var(--ink)" stroke-dasharray="0"/>
-<circle class="notch-mark" cx="257.6" cy="292.4" r="15" fill="var(--paper)" stroke="var(--ink)" stroke-dasharray="0"/>
-<g id="rotor"><path class="rot-n" d="M254 250a46 46 0 0 1 92 0z"/><path class="rot-s" d="M346 250a46 46 0 0 1-92 0z"/><circle class="rot-edge" cx="300" cy="250" r="46"/><path class="rot-edge" d="M254 250h92"/><text x="300" y="228" class="lbl" style="fill:#f3f0e7">N</text><text x="300" y="284" class="lbl" style="fill:#f3f0e7">S</text></g>
-<circle cx="300" cy="250" r="9" fill="#c49a54" stroke="#17201d" stroke-width="2"/>
-<line class="grid-l" x1="300" y1="250" x2="428" y2="250" stroke="#5aa9c8" stroke-width="2" stroke-dasharray="6 5"/>
-<line class="grid-l" x1="300" y1="250" x2="390" y2="340" stroke="#c2685a" stroke-width="2" stroke-dasharray="6 5"/>
-<text class="tick" x="452" y="240" style="text-anchor:start;fill:#5aa9c8">ステータ磁界の軸</text>
-<text class="tick" x="392" y="356" style="text-anchor:start;fill:#c2685a">ディテント軸（45&#176;ずれ）</text>
-<text class="tick" x="366" y="188" style="text-anchor:start">インデックス切り欠き</text>
-<text class="tick" x="196" y="316" style="text-anchor:end">インデックス切り欠き</text>
-<text class="lbl" x="112" y="200" id="coil-lbl">コイル</text>
-<text class="sub" x="112" y="304" id="coil-cur">i = 0</text>
-<text class="lbl" x="310" y="412" id="motor-state">静止中 &#183; ディテントトルクが保持</text>
-<text class="sub" x="310" y="426" id="motor-count">ステップ 0 &#183; ローター角 0&#176; &#183; パルス極性 +</text>
-<text class="sub" x="310" y="470">コイル &#8776; 20 &#181;m線を12 000回巻 &#183; 2 k&#937; &#183; ローター &#8776; 1.4 mm SmCo、直径方向に着磁</text>
-<text class="sub" x="310" y="492">軟鉄ステータ &#183; 各切り欠きの飽和くびれが静止方位を決める</text>
-<text class="sub" x="310" y="530">極性は毎秒反転するので、ローターは反転する磁界を見ながら、常に同じ向きに回ります。</text>
+<svg id="motor-svg" viewBox="-120 0 760 560" role="img" aria-labelledby="mo-t mo-d" style="min-width:460px">
+<title id="mo-t">ラベット型 単相ステッピングモーターの実際の姿</title><desc id="mo-d">軟鉄の芯に巻いた長いコイルが、一体型ステータの二本の脚にねじ止めされています。ステータの左右は、ローター穴の周りの細い飽和ブリッジ二か所でしかつながっていません。穴には二極磁石のローターが入り、そのかなが輪列の五番車を回します。パルスごとに磁束が芯とステータを回ってローターを横切り、ローターを半回転させます。</desc>
 </svg>
 </div>
 <div class="stage">
@@ -452,36 +419,15 @@ body{line-height:1.8}
 </div>
 
 <div class="stage">
-<svg id="train-svg" viewBox="0 0 1010 452" role="img" aria-labelledby="tr-t tr-d" style="min-width:900px">
-<title id="tr-t">ステッピングローターから時針までの減速輪列</title><desc id="tr-d">毎分三十回転を、十二時間に一回転まで順に落としていきます。</desc>
-<path class="wire mech" d="M40 212h930"/>
-<g class="gr" data-x="92" data-y="212" data-r="38" data-rate="-180"></g>
-<g class="gr" data-x="202" data-y="212" data-r="84" data-rate="36"></g>
-<g class="gr" data-x="369" data-y="212" data-r="102" data-rate="-6"></g>
-<g class="gr" data-x="543" data-y="212" data-r="91" data-rate="2.4"></g>
-<g class="gr" data-x="723" data-y="212" data-r="109" data-rate="-0.1"></g>
-<g class="gr" data-x="889" data-y="212" data-r="76" data-rate="0.008333"></g>
-<g class="train-labels">
-<text class="lbl" x="92" y="352">ローター</text><text class="sub" x="92" y="370">平均30 rpm</text>
-<text class="lbl" x="202" y="384">中間車</text><text class="sub" x="202" y="402">6 rpm</text>
-<text class="lbl" x="369" y="352">四番車</text><text class="sub" x="369" y="370">1 rpm &#183; 秒針</text>
-<text class="lbl" x="543" y="384">三番車</text><text class="sub" x="543" y="402">伝達</text>
-<text class="lbl" x="723" y="352">二番車 / 筒かな</text><text class="sub" x="723" y="370">1 rph &#183; 分針</text>
-<text class="lbl" x="889" y="384">時車</text><text class="sub" x="889" y="402">12時間に1回転</text>
-</g>
-<text class="sub" x="505" y="436">30 &#215; 60 &#215; 12 = 21 600 : 1（ローターから時針まで）&#183; この鎖のどこにも脱進機はない</text>
-<text class="tick" x="20" y="30" style="text-anchor:start">歯車の大きさと比は模式的です。実際のキャリバーは減速の配分が異なり、日付用に第二のモーターを持つことも多くあります。</text>
+<svg id="train-svg" viewBox="0 0 1010 500" role="img" aria-labelledby="tr-t tr-d" style="min-width:900px">
+<title id="tr-t">ステッピングローターから時針までの減速輪列</title><desc id="tr-d">ローターのかなが五番車を回し、続いて秒針を担う四番車、三番車、分針を担う二番車へ進みます。文字盤側では筒かな、日の裏車、筒車がさらに12分の1にします。ローターは毎秒半回転ずつ歩みます。</desc>
 </svg>
 </div>
 
 <div class="split even" style="margin-top:46px">
 <div class="stage">
-<svg id="dial-svg" viewBox="0 0 560 320" role="img" aria-labelledby="di-t di-d" style="min-width:440px">
-<title id="di-t">歩む秒針と、掃く秒針</title><desc id="di-d">クオーツの文字盤は毎秒6度跳び、機械式の文字盤は細かい拍で進みます。</desc>
-<g id="dial-q"><circle class="dial-face" cx="150" cy="160" r="112"/><g id="dial-q-ticks"></g><path class="hand-h" d="M150 160V96"/><path class="hand-m" d="M150 160l44 28"/><path class="hand-s" id="hand-sq" d="M150 160V70"/><circle cx="150" cy="160" r="5" fill="#c2685a"/></g>
-<text class="lbl" x="150" y="300">クオーツ &#183; 毎秒1歩</text>
-<g id="dial-m"><circle class="dial-face" cx="410" cy="160" r="112"/><g id="dial-m-ticks"></g><path class="hand-h" d="M410 160V96"/><path class="hand-m" d="M410 160l44 28"/><path class="hand-s" id="hand-sm" d="M410 160V70"/><circle cx="410" cy="160" r="5" fill="#c2685a"/></g>
-<text class="lbl" x="410" y="300">機械式 &#183; 毎秒8拍</text>
+<svg id="dial-svg" viewBox="0 0 560 330" role="img" aria-labelledby="di-t di-d" style="min-width:440px">
+<title id="di-t">歩む秒針と、掃く秒針</title><desc id="di-d">クオーツの文字盤は毎秒6度跳び、機械式の文字盤は毎秒8回の細かい拍で進みます。</desc>
 </svg>
 </div>
 <div>

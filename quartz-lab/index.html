@@ -9,7 +9,7 @@
 
 
 <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="styles.css"><script src="quartz.js" defer></script><link rel="canonical" href="https://theisegoria.github.io/quartz-lab/">
+<link rel="stylesheet" href="styles.css"><script src="../watch-lab/watch-art.js" defer></script><script src="quartz.js" defer></script><link rel="canonical" href="https://theisegoria.github.io/quartz-lab/">
 <link rel="alternate" hreflang="en" href="https://theisegoria.github.io/quartz-lab/">
 <link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/quartz-lab/">
 <link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/quartz-lab/"><script src="/assets/lang.js"></script>
@@ -43,7 +43,7 @@
 <h1>A stone that<br>keeps counting.</h1>
 <p>A mechanical watch counts swings of a wheel. I wanted to follow the quartz version all the way through: it counts vibrations of a laser-trimmed sliver of silicon dioxide, 32,768 of them every second, then divides that number in half fifteen times until one pulse is left over, and spends that pulse turning a magnet through half a revolution.</p>
 <a class="cta" href="#chain">Follow the signal ↓</a></div>
-<div class="hero-orbit" aria-hidden="true"><div class="fork-glyph"><svg viewBox="0 0 200 200"><g><path class="tine a" d="M78 150V44"/><path class="tine b" d="M122 150V44"/><path d="M60 150h80" stroke="#5aa9c83d" stroke-width="18" stroke-linecap="round" fill="none"/></g></svg></div></div>
+<div class="hero-orbit" aria-hidden="true"><div class="fork-glyph"><svg id="hero-can" viewBox="0 0 300 420" focusable="false"></svg></div></div>
 </header>
 
 <main>
@@ -80,7 +80,9 @@
 <p id="chain-copy">A CMOS inverter kept in its linear region drives a tuning-fork crystal and feeds its output back to its input. The crystal is so sharply resonant that the loop can only sustain oscillation at one frequency.</p>
 <dl class="spec" id="chain-spec"></dl>
 </aside></div>
-<p class="note">Educational schematic. I have used tooth counts, currents, and layouts that are typical rather than specific to any one calibre.</p>
+<div class="map-head"><h3>The same seven stages, as parts</h3><p>This is roughly what you see with the case back off. Select a part here or a stage above; the two stay in step. Every second the circuit sends one pulse down the trace to the coil and the rotor turns half a revolution.</p></div>
+<div class="stage map-stage"><svg id="qmap" viewBox="0 0 1000 660" role="img" aria-labelledby="qmap-t qmap-d"><title id="qmap-t">Where each stage sits in a quartz movement</title><desc id="qmap-d">Top view of a three-hand quartz movement: the silver-oxide cell, the circuit board carrying the integrated circuit and the quartz crystal in its can, the coil, stator and rotor of the stepper motor, and the reduction train ending at the centre arbor that carries the hands.</desc></svg></div>
+<p class="note">Educational illustration. I have used tooth counts, currents, and layouts that are typical rather than specific to any one calibre.</p>
 </section>
 
 <!-- ============ 02 THE CRYSTAL ============ -->
@@ -95,26 +97,8 @@
 </div>
 
 <div class="split"><div class="stage">
-<svg id="fork-svg" viewBox="0 0 640 572" role="img" aria-labelledby="fork-t fork-d" style="min-width:520px">
-<title id="fork-t">Quartz tuning fork vibrating in its flexural mode</title><desc id="fork-d">Two etched tines bend in antiphase; their momenta cancel at the base so almost no energy escapes into the mount.</desc>
-<path class="ghost-path" d="M235 390V80h30v310M375 390V80h30v310"/>
-<path id="tine-l" class="tine-body"/><path id="tine-r" class="tine-body"/>
-<path id="el-l" class="electrode"/><path id="el-r" class="electrode"/>
-<path class="fork-base" d="M180 386h280v66H180z"/>
-<path class="fork-base" d="M280 452h80v58h-80z"/>
-<circle cx="300" cy="481" r="7" fill="#c2685a"/><circle cx="340" cy="481" r="7" fill="#5aa9c8"/>
-<text class="sub" x="320" y="530">hermetically sealed mount &#183; vacuum can</text>
-<g id="momentum">
-<path class="arrow-m" id="mom-l" d="M250 108h0"/><path class="arrow-m" id="mom-r" d="M390 108h0"/>
-</g>
-<text class="lbl" x="320" y="62">FLEXURAL MODE &#183; TINES IN ANTIPHASE</text>
-<g class="dim" stroke="#a9a397" stroke-width="1.5" fill="none"><path d="M496 80v310M488 80h16M488 390h16"/></g>
-<text class="tick" x="530" y="228" transform="rotate(90 530 228)">L &#8776; 2.4 mm</text>
-<path class="axis" d="M198 92h42"/><text class="tick" x="192" y="96" style="font-size:9px;text-anchor:end">t &#8776; 0.1 mm (tine thickness)</text>
-<text class="tick" x="90" y="140" style="text-anchor:start">tip travel shown</text><text class="tick" x="90" y="154" style="text-anchor:start">&#215;2000 exaggerated:</text><text class="tick" x="90" y="168" style="text-anchor:start">real excursion &#8776; 1 &#181;m</text>
-<text class="tick" x="90" y="300" style="text-anchor:start" id="fork-phase-l">tine A: +</text>
-<text class="tick" x="90" y="316" style="text-anchor:start" id="fork-phase-r">tine B: &#8722;</text>
-<text class="sub" x="320" y="556" id="fork-net">net momentum at the base &#8776; 0</text>
+<svg id="fork-svg" viewBox="0 0 760 600" role="img" aria-labelledby="fork-t fork-d" style="min-width:520px">
+<title id="fork-t">Quartz tuning fork in its vacuum can, and magnified as it vibrates in its flexural mode</title><desc id="fork-d">Left, the tubular can cut open with the fork on its mount. Right, the fork magnified: gold electrodes on the faces and sides of each tine change polarity every half cycle, the tines bend in antiphase so their momenta cancel at the base, and laser-trimmed gold masses at the tips set the frequency.</desc>
 </svg>
 </div>
 <ol class="steps">
@@ -319,29 +303,8 @@
 
 <div class="split even">
 <div class="stage">
-<svg id="motor-svg" viewBox="0 0 620 560" role="img" aria-labelledby="mo-t mo-d" style="min-width:460px">
-<title id="mo-t">Lavet-type single-phase stepper motor</title><desc id="mo-d">A bipolar magnet rotor in a notched soft-iron stator bore, driven by one coil with alternating pulse polarity.</desc>
-<path class="stator" fill-rule="evenodd" d="M198 150H402A38 38 0 0 1 440 188V312A38 38 0 0 1 402 350H198A38 38 0 0 1 160 312V282H62V218H160V188A38 38 0 0 1 198 150ZM360 250A60 60 0 1 1 240 250A60 60 0 1 1 360 250Z"/>
-<rect class="coil-core" x="86" y="228" width="76" height="44" rx="4" opacity="0"/>
-<g id="coil"><ellipse class="coil-turn" cx="80" cy="250" rx="7" ry="34"/><ellipse class="coil-turn" cx="94" cy="250" rx="7" ry="34"/><ellipse class="coil-turn" cx="108" cy="250" rx="7" ry="34"/><ellipse class="coil-turn" cx="122" cy="250" rx="7" ry="34"/><ellipse class="coil-turn" cx="136" cy="250" rx="7" ry="34"/><ellipse class="coil-turn" cx="150" cy="250" rx="7" ry="34"/></g>
-<path id="flux" class="flux" d="M112 214C112 178 150 172 210 172H386C420 172 428 200 428 250C428 300 420 328 386 328H210C150 328 112 322 112 286"/>
-<circle class="notch-mark" cx="342.4" cy="207.6" r="15" fill="var(--paper)" stroke="var(--ink)" stroke-dasharray="0"/>
-<circle class="notch-mark" cx="257.6" cy="292.4" r="15" fill="var(--paper)" stroke="var(--ink)" stroke-dasharray="0"/>
-<g id="rotor"><path class="rot-n" d="M254 250a46 46 0 0 1 92 0z"/><path class="rot-s" d="M346 250a46 46 0 0 1-92 0z"/><circle class="rot-edge" cx="300" cy="250" r="46"/><path class="rot-edge" d="M254 250h92"/><text x="300" y="228" class="lbl" style="fill:#f3f0e7">N</text><text x="300" y="284" class="lbl" style="fill:#f3f0e7">S</text></g>
-<circle cx="300" cy="250" r="9" fill="#c49a54" stroke="#17201d" stroke-width="2"/>
-<line class="grid-l" x1="300" y1="250" x2="428" y2="250" stroke="#5aa9c8" stroke-width="2" stroke-dasharray="6 5"/>
-<line class="grid-l" x1="300" y1="250" x2="390" y2="340" stroke="#c2685a" stroke-width="2" stroke-dasharray="6 5"/>
-<text class="tick" x="452" y="240" style="text-anchor:start;fill:#5aa9c8">stator field axis</text>
-<text class="tick" x="392" y="356" style="text-anchor:start;fill:#c2685a">detent axis, 45&#176; off</text>
-<text class="tick" x="366" y="188" style="text-anchor:start">index notch</text>
-<text class="tick" x="196" y="316" style="text-anchor:end">index notch</text>
-<text class="lbl" x="112" y="200" id="coil-lbl">COIL</text>
-<text class="sub" x="112" y="304" id="coil-cur">i = 0</text>
-<text class="lbl" x="310" y="412" id="motor-state">RESTING &#183; held by detent torque</text>
-<text class="sub" x="310" y="426" id="motor-count">step 0 &#183; rotor angle 0&#176; &#183; pulse polarity +</text>
-<text class="sub" x="310" y="470">coil &#8776; 12 000 turns of 20 &#181;m wire &#183; 2 k&#937; &#183; rotor &#8776; 1.4 mm SmCo, magnetised across a diameter</text>
-<text class="sub" x="310" y="492">soft-iron stator &#183; saturable isthmus at each notch sets the rest orientation</text>
-<text class="sub" x="310" y="530">Polarity alternates every second, so the rotor sees a reversing field but always turns the same way.</text>
+<svg id="motor-svg" viewBox="-120 0 760 560" role="img" aria-labelledby="mo-t mo-d" style="min-width:460px">
+<title id="mo-t">Lavet-type single-phase stepper motor, as built</title><desc id="mo-d">A long coil wound on a soft-iron core is screwed to the two legs of a one-piece stator. The halves of the stator meet only at two thin saturable bridges round the bore, where a two-pole magnet rotor sits. Its pinion drives the fifth wheel of the train. Each pulse sends flux round the core and stator and across the rotor, turning it half a revolution.</desc>
 </svg>
 </div>
 <div class="stage">
@@ -401,36 +364,15 @@
 </div>
 
 <div class="stage">
-<svg id="train-svg" viewBox="0 0 1010 452" role="img" aria-labelledby="tr-t tr-d" style="min-width:900px">
-<title id="tr-t">Reduction train from stepper rotor to hour hand</title><desc id="tr-d">Successive reductions take thirty revolutions per minute down to one revolution per twelve hours.</desc>
-<path class="wire mech" d="M40 212h930"/>
-<g class="gr" data-x="92" data-y="212" data-r="38" data-rate="-180"></g>
-<g class="gr" data-x="202" data-y="212" data-r="84" data-rate="36"></g>
-<g class="gr" data-x="369" data-y="212" data-r="102" data-rate="-6"></g>
-<g class="gr" data-x="543" data-y="212" data-r="91" data-rate="2.4"></g>
-<g class="gr" data-x="723" data-y="212" data-r="109" data-rate="-0.1"></g>
-<g class="gr" data-x="889" data-y="212" data-r="76" data-rate="0.008333"></g>
-<g class="train-labels">
-<text class="lbl" x="92" y="352">ROTOR</text><text class="sub" x="92" y="370">30 rpm mean</text>
-<text class="lbl" x="202" y="384">INTERMEDIATE</text><text class="sub" x="202" y="402">6 rpm</text>
-<text class="lbl" x="369" y="352">FOURTH</text><text class="sub" x="369" y="370">1 rpm &#183; seconds hand</text>
-<text class="lbl" x="543" y="384">THIRD</text><text class="sub" x="543" y="402">transmission</text>
-<text class="lbl" x="723" y="352">CENTRE / CANNON</text><text class="sub" x="723" y="370">1 rph &#183; minute hand</text>
-<text class="lbl" x="889" y="384">HOUR WHEEL</text><text class="sub" x="889" y="402">1 turn / 12 h</text>
-</g>
-<text class="sub" x="505" y="436">30 &#215; 60 &#215; 12 = 21 600 : 1 from rotor to hour hand &#183; no escapement anywhere in this chain</text>
-<text class="tick" x="20" y="30" style="text-anchor:start">Wheel sizes and ratios are schematic; real calibres split the reduction differently and often add a second motor for the date.</text>
+<svg id="train-svg" viewBox="0 0 1010 500" role="img" aria-labelledby="tr-t tr-d" style="min-width:900px">
+<title id="tr-t">Reduction train from the stepper rotor to the hour hand</title><desc id="tr-d">The rotor pinion drives the fifth wheel, then the fourth wheel that carries the seconds hand, the third wheel and the centre wheel that carries the minute hand. On the dial side, the cannon pinion, minute wheel and hour wheel divide by twelve again. The rotor steps half a turn each second.</desc>
 </svg>
 </div>
 
 <div class="split even" style="margin-top:46px">
 <div class="stage">
-<svg id="dial-svg" viewBox="0 0 560 320" role="img" aria-labelledby="di-t di-d" style="min-width:440px">
-<title id="di-t">Stepping seconds hand versus sweeping seconds hand</title><desc id="di-d">The quartz dial jumps six degrees once a second; the mechanical dial advances in small beats.</desc>
-<g id="dial-q"><circle class="dial-face" cx="150" cy="160" r="112"/><g id="dial-q-ticks"></g><path class="hand-h" d="M150 160V96"/><path class="hand-m" d="M150 160l44 28"/><path class="hand-s" id="hand-sq" d="M150 160V70"/><circle cx="150" cy="160" r="5" fill="#c2685a"/></g>
-<text class="lbl" x="150" y="300">QUARTZ &#183; 1 step / s</text>
-<g id="dial-m"><circle class="dial-face" cx="410" cy="160" r="112"/><g id="dial-m-ticks"></g><path class="hand-h" d="M410 160V96"/><path class="hand-m" d="M410 160l44 28"/><path class="hand-s" id="hand-sm" d="M410 160V70"/><circle cx="410" cy="160" r="5" fill="#c2685a"/></g>
-<text class="lbl" x="410" y="300">MECHANICAL &#183; 8 beats / s</text>
+<svg id="dial-svg" viewBox="0 0 560 330" role="img" aria-labelledby="di-t di-d" style="min-width:440px">
+<title id="di-t">Stepping seconds hand versus sweeping seconds hand</title><desc id="di-d">The quartz dial jumps six degrees once a second; the mechanical dial advances in eight small beats a second.</desc>
 </svg>
 </div>
 <div>

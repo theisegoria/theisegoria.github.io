@@ -257,3 +257,68 @@ footer a{text-decoration:none}
   html{scroll-behavior:auto}
   .wire,.flux,.fork-glyph .tine{animation:none}
 }
+
+/* ---------- illustrated figures (watch-art.js) ---------- */
+.fork-bg{fill:#e7e2d6}
+.dark .fork-bg{fill:#151d1a}
+.zoom{fill:none;stroke:#8fa3aa;stroke-width:1;stroke-dasharray:4 5}
+.zoom-box{fill:#f1eee6;stroke:#a9b6ba;stroke-width:1}
+.tine-q{fill:url(#wa-quartz);stroke:#5f7c87;stroke-width:1.2;stroke-linejoin:round}
+.fork-body{fill:url(#wa-quartz-v);stroke:#5f7c87;stroke-width:1.2}
+.fork-shadow{fill:#000;opacity:.14;filter:url(#wa-soft)}
+.trace-a,.trace-b{fill:url(#wa-goldfilm)}
+.trace-ab{stroke:#d9ac45;fill:none}
+.lead{stroke:#8a6a2c;stroke-width:1;fill:none}
+.dimline path{stroke:#a9a397;stroke-width:1.4;fill:none}
+.pol-key .k-pos{fill:#d9654f}.pol-key .k-neg{fill:#3f97c4}
+.pol-key text{font:700 11px var(--mono);fill:var(--ink)}
+.arrow-m{stroke:var(--hot);stroke-width:3;marker-end:url(#wa-arrow-hot);fill:none}
+.motor-bg{fill:#ebe6da}
+.stator-art{fill:url(#wa-iron);stroke:#4d555c;stroke-width:1.2}
+.st-notch{fill:#ebe6da;stroke:#4d555c;stroke-width:1}
+.rot-n{fill:#d9654f;opacity:.55}.rot-s{fill:#3f97c4;opacity:.55}
+.rot-lbl{font:700 14px var(--sans);fill:#fff;text-anchor:middle}
+.coil-live{fill:#ff7a45;opacity:0;transition:opacity .08s;mix-blend-mode:screen}
+#motor-svg.pulsing .coil-live{opacity:.35}
+.axis-field{stroke:#3f97c4;stroke-width:1.5;stroke-dasharray:6 5}
+.axis-detent{stroke:#c2685a;stroke-width:1.5;stroke-dasharray:6 5}
+.flux{stroke:#f2b84b;stroke-width:3.2;stroke-dasharray:9 8;opacity:0;fill:none;stroke-linejoin:round}
+.flux.gap{stroke-dasharray:4 5}
+#motor-svg.pulsing .flux{opacity:.95;animation:dashfast .55s linear infinite}
+#motor-svg.pulsing.rev .flux{animation-direction:reverse}
+.wa-leader-line{stroke:#8a6a2c;stroke-width:1;fill:none}.wa-leader-dot{fill:#8a6a2c}
+.wa-leader-text{font:700 10.5px var(--sans);letter-spacing:.1em;fill:var(--ink)}
+.wa-leader-sub{font:400 9.5px var(--sans);fill:#6c756f}
+.dark .wa-leader-text{fill:var(--paper)}.dark .wa-leader-sub{fill:#9aa7a1}.dark .wa-leader-line{stroke:#c49a54}.dark .wa-leader-dot{fill:#c49a54}
+.train-bg{fill:#e3ddcf}
+.inset{fill:#d9d2c1;stroke:#b3ab99;stroke-width:1;stroke-dasharray:5 5}
+.arbor-link{fill:none;stroke:#8a6a2c;stroke-width:1.2;stroke-dasharray:3 5}
+.hand-hr,.hand-min{fill:url(#wa-hand);stroke:#0d1014;stroke-width:.6}
+.map-head{display:grid;grid-template-columns:1fr 2fr;gap:30px;align-items:end;margin:56px 0 18px}
+.map-head h3{font-family:var(--serif);font-weight:400;font-size:1.8rem;margin:0}
+.map-head p{margin:0;color:#59635f;font-size:.92rem;max-width:70ch}
+.map-stage svg{min-width:0}
+.qmap-bg{fill:#e6e0d3}
+.frame{fill:#2a2d31;stroke:#141618;stroke-width:2}
+.frame-in{fill:none;stroke:#3c4045;stroke-width:1.5}
+.pocket{fill:#1d1f22;stroke:#111}
+.cell-plus{font:700 28px var(--sans);fill:#8a9097}
+.trace{fill:none;stroke:#d9ac45;stroke-width:3;stroke-linejoin:round;opacity:.85}
+.pad{fill:#e9c46a;stroke:#8a6a2c}
+.pulse-trace{fill:none;stroke:#ffcf6b;stroke-width:4;stroke-dasharray:10 400;stroke-dashoffset:0;opacity:0}
+#qmap.pulsing .pulse-trace{opacity:1;animation:pulseRun .09s linear}
+@keyframes pulseRun{from{stroke-dashoffset:0}to{stroke-dashoffset:-160}}
+#qmap.pulsing .coil-live{opacity:.4}
+.shimmer{fill:none;stroke:#9fd3ea;stroke-width:2;opacity:.6;animation:shimmer .6s ease-in-out infinite alternate}
+@keyframes shimmer{from{stroke-opacity:.15}to{stroke-opacity:.9}}
+#qmap .mp,#qmap .mp-lbl{cursor:pointer;outline:none;transition:opacity .25s}
+#qmap.has-sel .mp:not(.selected){opacity:.55}
+#qmap .mp.selected{filter:drop-shadow(0 0 7px rgba(255,214,120,.8))}
+#qmap .mp-lbl:not(.selected){opacity:.75}
+#qmap .mp-lbl.selected .wa-leader-text{fill:#7a4f10}
+#qmap .mp:focus-visible,#qmap .mp-lbl:focus-visible{outline:2px solid var(--gold)}
+@media(max-width:980px){.map-head{grid-template-columns:1fr}}
+@media(max-width:600px){.map-stage svg{min-width:640px}}
+@media(prefers-reduced-motion:reduce){.shimmer{animation:none}}
+.wire-lead{fill:none;stroke:#c46d34;stroke-width:1.4}
+.fork-glyph #hero-can{width:62%;opacity:.55;transform:rotate(-14deg);filter:drop-shadow(0 20px 30px rgba(0,0,0,.5))}
