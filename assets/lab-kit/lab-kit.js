@@ -182,7 +182,7 @@ export async function mountLab(canvas, opts = {}) {
       elapsed += dt;
       needsFrame = false;
       hooks.update?.(dt, elapsed, lab);
-      renderer.render(scene, camera);
+      if (hooks.render) hooks.render(); else renderer.render(scene, camera);   // a lab with a post pipeline renders through it
     }
     if (!onDemand || needsFrame) schedule();
   }
