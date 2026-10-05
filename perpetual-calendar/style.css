@@ -22,11 +22,30 @@ main > section > p + p, main > section > h3 + p, .lab > p + p { margin-top: 1em;
 .stage-bar button.is-active { background: var(--ink); color: var(--paper); border-color: var(--ink); }
 .stage-bar button:hover, .part-list button:hover { border-color: var(--ink-soft); color: var(--ink); }
 .stage-text { font-size: .95rem; color: var(--ink-soft); min-height: 3.2em; margin: 0 0 .8rem; max-width: 62rem; }
-.lab-stage { aspect-ratio: 3 / 2; }
+/* the stage is a dark studio in both themes, as in product photography: steel and sapphire need dark surroundings to show their highlights */
+.lab-stage { --studio-0: color-mix(in oklab, #2b2c30 92%, var(--paper)); --studio-1: color-mix(in oklab, #141517 95%, var(--paper)); --studio-2: color-mix(in oklab, #08090a 96%, var(--paper));
+  aspect-ratio: 3 / 2; border-radius: 10px; overflow: hidden; color-scheme: dark;
+  background: radial-gradient(110% 85% at 50% 40%, var(--studio-0) 0%, var(--studio-1) 52%, var(--studio-2) 100%);
+  box-shadow: 0 1px 0 color-mix(in oklab, var(--ink) 6%, transparent), inset 0 0 0 1px rgb(255 255 255 / .05); }
+.lab-stage .lab-badge { background: rgb(20 20 22 / .7); color: #e8e4da; border-color: rgb(255 255 255 / .16); }
 .lab-labels { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
 .lab-labels[hidden] { display: none; }
-.lab-label { position: absolute; left: 0; top: 0; transform: translate(-100vw, -100vh); font-family: var(--sans); font-size: .7rem; line-height: 1.1; color: var(--ink); background: color-mix(in oklab, var(--paper) 82%, transparent); border: 1px solid var(--rule); border-radius: 3px; padding: .12rem .38rem; white-space: nowrap; margin: -1.2em 0 0 .5em; transition: opacity .2s; }
-.lab-label::before { content: ""; position: absolute; left: -.5em; top: 1.2em; width: .5em; height: 1px; background: var(--ink-soft); }
+.lab-leaders { position: absolute; inset: 0; overflow: visible; }
+.lab-leader { fill: none; stroke: rgb(246 242 232 / .78); stroke-width: 1; filter: drop-shadow(0 0 1.5px rgb(0 0 0 / .9)); }
+.lab-leader-dot { fill: #f6f2e8; stroke: rgb(0 0 0 / .65); stroke-width: 1; }
+.lab-label { position: absolute; left: 0; top: 0; transform: translate(-100vw, -100vh); font-family: var(--sans); font-size: .72rem; line-height: 1.15; color: #f4f0e6;
+  background: rgb(18 19 21 / .82); border: 1px solid rgb(255 255 255 / .2); border-radius: 4px; padding: .2rem .45rem; white-space: nowrap; max-width: 46%; overflow: hidden; text-overflow: ellipsis;
+  transition: opacity .2s; backdrop-filter: blur(3px); }
+/* loading veil */
+.lab-loading { position: absolute; inset: 0; display: grid; place-content: center; justify-items: center; gap: .7rem; color: #e9e5db; font-family: var(--sans); font-size: .82rem; letter-spacing: .02em;
+  background: radial-gradient(110% 85% at 50% 40%, var(--studio-0) 0%, var(--studio-1) 52%, var(--studio-2) 100%); transition: opacity .5s ease; z-index: 3; }
+.lab-loading.is-done { opacity: 0; pointer-events: none; }
+.lab-loading-ring { width: 34px; height: 34px; border-radius: 50%; border: 2px solid rgb(255 255 255 / .16); border-top-color: #f0ece2; animation: lab-spin 1s linear infinite; }
+.lab-loading-bar { width: 140px; height: 2px; background: rgb(255 255 255 / .14); border-radius: 2px; overflow: hidden; }
+.lab-loading-bar i { display: block; height: 100%; width: 3%; background: #f0ece2; transition: width .25s ease; }
+.lab-loading.is-error .lab-loading-ring, .lab-loading.is-error .lab-loading-bar { display: none; }
+@keyframes lab-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .lab-loading-ring { animation-duration: 3s; } }
 .part-list { margin: .8rem 0 0; font-size: .85rem; }
 .part-list summary { cursor: pointer; color: var(--ink-soft); }
 .part-list div { display: flex; flex-wrap: wrap; gap: .3rem; margin-top: .5rem; }
@@ -34,4 +53,4 @@ main > section > p + p, main > section > h3 + p, .lab > p + p { margin-top: 1em;
 .lab-controls fieldset button + button { margin-left: .4rem; }
 .lab-readout span { margin-right: 1rem; }
 h3 { font-size: 1.05rem; margin: 1.4rem 0 .4rem; }
-@media (max-width: 640px) { .lab-stage { aspect-ratio: 1; } .stage-text { min-height: 0; } }
+@media (max-width: 640px) { .lab-stage { aspect-ratio: 4 / 5; } .stage-text { min-height: 0; } .lab-label { font-size: .68rem; white-space: normal; width: max-content; max-width: 9.5rem; } }
