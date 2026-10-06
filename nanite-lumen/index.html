@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="en" class=" ig-document ig-editorial">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="How Unreal Engine 5 draws film-density geometry at one triangle per pixel (Nanite) and lights a fully dynamic world with multi-bounce global illumination (Lumen): the cluster DAG, the one-pixel error cut, software rasterization, the surface cache, distance fields, screen probes and the tracing ladder, with diagrams.">
+  <meta name="theme-color" content="#f7f7f5">
+  <meta property="og:title" content="Nanite and Lumen: the algorithms behind Unreal Engine 5">
+  <meta property="og:description" content="How Unreal Engine 5 draws film-density geometry at one triangle per pixel (Nanite) and lights a fully dynamic world with multi-bounce global illumination (Lumen): the cluster DAG, the one-pixel error cut, software rasterization, the surface cache, distance fields, screen probes and the tracing ladder, with diagrams.">
+  <meta property="og:type" content="article">
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <title>Nanite and Lumen: the algorithms behind Unreal Engine 5</title>
+<style>
+  :root {
+    --ground:#F7F7F5; --surface:#FFFFFF; --surface-2:#F0F1EC;
+    --ink:#17191B; --muted:#63686D; --rule:#DEE0DC;
+    --accent:#2E6FB7; --nanite:#2E6FB7; --lumen:#C0601A;
+    --nanite-soft:#2E6FB712; --lumen-soft:#E07B2214;
+    --f-display:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    --f-body:"Inter",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground:#101214; --surface:#181B1E; --surface-2:#1F2327;
+      --ink:#EDEFF1; --muted:#9BA3AA; --rule:#2C3237;
+      --accent:#6FA8E6; --nanite:#6FA8E6; --lumen:#F0964A;
+      --nanite-soft:#6FA8E61C; --lumen-soft:#F0964A1C;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground:#101214; --surface:#181B1E; --surface-2:#1F2327;
+    --ink:#EDEFF1; --muted:#9BA3AA; --rule:#2C3237;
+    --accent:#6FA8E6; --nanite:#6FA8E6; --lumen:#F0964A;
+    --nanite-soft:#6FA8E61C; --lumen-soft:#F0964A1C;
+  }
+  * { box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { margin:0; background:var(--ground); color:var(--ink); font-family:var(--f-body); font-size:17px; line-height:1.65; -webkit-font-smoothing:antialiased; }
+  a { color:var(--accent); text-underline-offset:.18em; }
+  .wrap { width:min(780px, calc(100% - 32px)); margin-inline:auto; }
+  .hero { padding:64px 0 36px; }
+  .label { color:var(--muted); font-size:.74rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; }
+  h1 { font-family:var(--f-display); font-weight:600; font-size:clamp(2rem, 5.4vw, 3.2rem); line-height:1.08; letter-spacing:-.02em; margin:.3em 0 .4em; }
+  h1 .amp { color:#D99A1E; }
+  h2 { font-family:var(--f-display); font-weight:600; font-size:1.6rem; line-height:1.25; margin:2.4em 0 .7em; letter-spacing:-.01em; }
+  h2 .num { display:block; font-family:var(--f-body); font-size:.72rem; font-weight:700; letter-spacing:.1em; color:var(--muted); margin-bottom:.45em; }
+  h3 { font-size:1.06rem; margin:2em 0 .5em; }
+  h4 { font-size:.98rem; margin:1.6em 0 .3em; }
+  .standfirst { font-size:1.12rem; color:var(--muted); }
+  .standfirst p { margin:0; max-width:none; }
+  p, li { max-width:72ch; }
+  .herometa { display:flex; flex-wrap:wrap; gap:10px; margin-top:24px; }
+  .pill { display:inline-block; padding:8px 14px; border:1px solid var(--rule); border-radius:999px; background:var(--surface); color:var(--ink); text-decoration:none; font-size:.9rem; }
+  .pill:hover { border-color:var(--accent); color:var(--accent); }
+  .toc { margin:30px 0 10px; padding:20px 22px; border:1px solid var(--rule); border-radius:12px; background:var(--surface); }
+  .toc ol { margin:.5em 0 0; padding-left:1.4em; columns:2; column-gap:28px; }
+  .toc li { margin:.28em 0; font-size:.92rem; break-inside:avoid; }
+  .part { margin:3.6em 0 -1em; font-size:.8rem; font-weight:800; letter-spacing:.14em; text-transform:uppercase; padding-top:1.2em; border-top:3px solid; }
+  .part-n { color:var(--nanite); border-color:var(--nanite); }
+  .part-l { color:var(--lumen); border-color:var(--lumen); }
+  section.lumen h2, section.lumen h3 { color:inherit; }
+  aside.key { margin:1.8em 0; padding:16px 20px; border-left:3px solid var(--nanite); background:var(--nanite-soft); border-radius:4px 10px 10px 4px; }
+  aside.key.l { border-color:var(--lumen); background:var(--lumen-soft); }
+  aside.key .klabel { margin:0 0 .4em; font-size:.74rem; font-weight:800; letter-spacing:.1em; text-transform:uppercase; color:var(--nanite); }
+  aside.key.l .klabel { color:var(--lumen); }
+  aside.key p:last-child { margin-bottom:0; }
+  figure { margin:32px 0; }
+  figure img { display:block; width:100%; height:auto; background:#fff; border:1px solid var(--rule); border-radius:12px; padding:14px; }
+  figcaption { margin-top:10px; font-size:.88rem; color:var(--muted); max-width:78ch; }
+  figcaption b { color:var(--ink); }
+  math[display="block"] { margin:1.2em 0; overflow-x:auto; overflow-y:hidden; max-width:100%; font-size:1.06em; }
+  math { font-family:"STIX Two Math","Cambria Math","Latin Modern Math",math; }
+  .algobox { padding:16px 20px; border:1px solid var(--rule); border-radius:12px; background:var(--surface); }
+  .algocap { margin:0 0 .6em; font-weight:700; color:var(--ink); font-size:.92rem; }
+  ol.algo { margin:0; padding-left:2.2em; font-size:.92rem; }
+  ol.algo li { margin:.2em 0; max-width:none; }
+  ol.algo li.pass { margin-top:.7em; }
+  ol.algo li.i1 { padding-left:1.2em; }
+  ol.algo li.i2 { padding-left:2.4em; }
+  ol.algo .cm { color:var(--muted); font-style:italic; margin-left:.6em; }
+  ol.algo .cm::before { content:"\25B8 "; }
+  .tablewrap { overflow-x:auto; margin:26px 0; }
+  table { border-collapse:collapse; width:100%; font-size:.92rem; }
+  th, td { text-align:left; vertical-align:top; padding:11px 14px 11px 0; border-bottom:1px solid var(--rule); }
+  th { font-size:.74rem; letter-spacing:.09em; text-transform:uppercase; font-weight:800; }
+  th.tn { color:var(--nanite); } th.tl { color:var(--lumen); }
+  td.k { font-weight:600; width:10em; color:var(--muted); }
+  .sources { margin-top:56px; padding-top:22px; border-top:1px solid var(--rule); font-size:.9rem; color:var(--muted); }
+  .sources p { max-width:84ch; }
+  @media (max-width:640px) { .toc ol { columns:1; } .hero { padding-top:40px; } figure img { padding:8px; border-radius:10px; } }
+</style>
+<link rel="canonical" href="https://theisegoria.github.io/nanite-lumen/">
+<link rel="alternate" hreflang="en" href="https://theisegoria.github.io/nanite-lumen/">
+<link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/nanite-lumen/">
+<link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/nanite-lumen/"><script src="/assets/lang.js"></script>
+<!-- ISEGORIA:HEAD -->
+<link rel="stylesheet" href="/assets/site-shell.css?v=c21cd21e82">
+<script src="/assets/site-shell.js?v=c21cd21e82" ></script>
+<!-- /ISEGORIA:HEAD -->
+<script defer data-isegoria-analytics src="/assets/analytics.js?v=9e6ebd463bf2"></script>
+</head>
+<body class="ig-site" data-site-kind="editorial" data-site-route="/nanite-lumen/">
+<!-- ISEGORIA:NAV -->
+<a class="ig-skip" href="#ig-content">Skip to content</a>
+<header id="ig-header"><div class="ig-nav-inner">
+<a class="ig-brand" href="/" aria-label="Isegoria, home"><strong>ISEGORIA</strong><span>Benjamin Haire</span></a>
+<div class="ig-header-actions"><a class="ig-language" href="/ja/nanite-lumen/" hreflang="ja" lang="ja">日本語</a><button class="ig-menu" type="button" aria-expanded="false" aria-controls="ig-primary">Menu</button></div>
+<nav id="ig-primary" aria-label="Primary navigation"><a href="/">Home</a><a href="/library.html">Library</a><a href="/math-encyclopedia/">Math encyclopedia</a><a href="/#interactive">Interactive</a><a href="/#preoccupations" aria-current="location">Research</a><a href="/#books">Books</a><a href="/projects.html">Projects</a><a href="/about.html">About</a><a class="ig-language" href="/ja/nanite-lumen/" hreflang="ja" lang="ja">日本語</a><button class="ig-theme" type="button" hidden>Theme</button></nav>
+</div></header>
+<nav id="ig-breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><a href="/#preoccupations">Research</a><span aria-hidden="true">/</span><span aria-current="page">Nanite and Lumen: the algorithms behind Unreal Engine 5</span></nav>
+<span id="ig-content" tabindex="-1"></span>
+<!-- /ISEGORIA:NAV -->
+<main>
+<div class="wrap">
+
+  <div class="hero">
+    <p class="label">Explainer / October 2026</p>
+    <h1>Nanite <span class="amp">&amp;</span> Lumen</h1>
+    <div class="standfirst"><p>Both systems attack the same enemy: cost that scales with <em>content</em> rather than with <em>pixels</em>. Nanite makes geometry cost scale with screen resolution by preprocessing every mesh into a hierarchy of tiny clusters and, each frame, picking exactly the clusters whose simplification error is below one pixel. Lumen makes lighting cost scale with resolution by refusing to trace rays per pixel: it traces from a sparse set of screen probes, into a cheap proxy of the world (distance fields and a cached, pre-lit “surface” of each mesh), and reuses everything it can across space and time. Nanite supplies the dense geometry; Lumen is what makes it look lit.</p>
+</div>
+    <div class="herometa">
+      <a class="pill" href="nanite-lumen.pdf" target="_blank" rel="noopener">PDF &middot; 15 pages</a>
+      <a class="pill" href="nanite-lumen-bilingual.pdf" target="_blank" rel="noopener">Bilingual PDF &middot; 32 pages</a>
+      <a class="pill" href="/ja/nanite-lumen/" hreflang="ja" lang="ja">日本語版</a>
+    </div>
+    <p class="label" style="margin-top:20px">cluster DAG &middot; QEM simplification &middot; HZB occlusion &middot; visibility buffer &middot; signed distance fields &middot; surface cache &middot; screen probes &middot; radiance cache</p>
+  </div>
+
+  <nav class="toc" aria-label="Contents">
+    <p class="label">Contents</p>
+    <ol>
+      <li><a href="#nanite-the-problem">Nanite: the problem</a></li>
+      <li><a href="#building-the-cluster-dag-offline">Building the cluster DAG (offline)</a></li>
+      <li><a href="#choosing-the-cut-view-dependent-lod">Choosing the cut: view-dependent LOD</a></li>
+      <li><a href="#two-pass-occlusion-culling">Two-pass occlusion culling</a></li>
+      <li><a href="#rasterization-software-for-tiny-triangles">Rasterization: software for tiny triangles</a></li>
+      <li><a href="#streaming-compression-and-the-long-tail">Streaming, compression and the long tail</a></li>
+      <li><a href="#lumen-the-problem">Lumen: the problem</a></li>
+      <li><a href="#representing-the-scene-for-rays">Representing the scene for rays</a></li>
+      <li><a href="#the-final-gather-screen-probes">The final gather: screen probes</a></li>
+      <li><a href="#the-tracing-ladder">The tracing ladder</a></li>
+      <li><a href="#reflections-translucency-and-the-rest">Reflections, translucency and the rest</a></li>
+      <li><a href="#how-the-two-fit-together">How the two fit together</a></li>
+    </ol>
+  </nav>
+
+  <article>
+<p class="part part-n">Part I &middot; Nanite</p>
+<h2 id="nanite-the-problem"><span class="num">1</span>Nanite: the problem</h2>
+<p>A traditional engine draws a mesh with a hardware draw call, picking one of a handful of artist-authored levels of detail (LODs) for the whole object. That design has three failure modes once source assets reach film density (millions of triangles per rock, thousands of rocks):</p>
+<ol>
+<li><p><strong>Whole-object LOD is too coarse.</strong> A cliff that is 2 m from the camera at its base and 400 m away at its top needs very different detail at each end.</p></li>
+<li><p><strong>Small triangles are wasteful in hardware.</strong> GPUs rasterize in <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mo>×</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">2\times2</annotation></semantics></math> pixel quads; a triangle covering one pixel still pays for four, and the fixed-function setup rate becomes the bottleneck long before pixel shading does.</p></li>
+<li><p><strong>Memory.</strong> Film-quality assets do not fit in VRAM all at once.</p></li>
+</ol>
+<aside class="key"><p class="klabel">Key idea</p>
+<p>Make the number of triangles drawn scale with the number of <em>pixels</em>, not the number of triangles in the source art. The target is “one triangle per pixel”: any more is invisible, any fewer is visibly faceted. Everything in Nanite is machinery for choosing, culling, rasterizing and streaming geometry at that density.</p>
+</aside>
+<figure id="fig1"><img src="fig/en/fig01.svg" alt="Nanite at a glance. Grey: offline or asynchronous; blue: every frame on the GPU. Culling and LOD selection are fused into one hierarchical traversal in practice." loading="lazy" width="100%"><figcaption><b>Figure 1.</b> Nanite at a glance. Grey: offline or asynchronous; blue: every frame on the GPU. Culling and LOD selection are fused into one hierarchical traversal in practice.</figcaption></figure>
+<h2 id="building-the-cluster-dag-offline"><span class="num">2</span>Building the cluster DAG (offline)</h2>
+<h3 id="clusters">Clusters</h3>
+<p>The source mesh is partitioned into <strong>clusters</strong> of up to 128 triangles each, using a graph partitioner (METIS) on the triangle adjacency graph so that clusters are spatially compact and share few boundary edges. A cluster is Nanite’s atom: it is culled, LOD-selected, streamed and rasterized as a unit. 128 triangles is small enough for fine-grained culling and large enough to amortize per-cluster work and to map well onto GPU workgroups.</p>
+<h3 id="group-simplify-split">Group, simplify, split</h3>
+<p>The naive way to get LODs per cluster would be to simplify each cluster independently. That fails immediately: two neighboring clusters at different LODs no longer share an edge, so cracks open between them. Locking cluster boundaries during simplification avoids cracks but then those boundary edges can <em>never</em> be simplified, and after a few levels the mesh is all boundary.</p>
+<p>Nanite’s answer is the core trick of the whole system:</p>
+<ol>
+<li><p><strong>Group</strong> neighboring clusters (typically 8–32, roughly 4 is the conceptual minimum) into a cluster group, again with a graph partitioner that minimizes shared edges.</p></li>
+<li><p><strong>Merge</strong> each group’s triangles and <strong>simplify</strong> the merged patch to half its triangle count with quadric error metrics, <em>locking only the group’s outer boundary</em>. Interior edges between the old clusters vanish.</p></li>
+<li><p><strong>Split</strong> the simplified patch back into new 128-triangle clusters.</p></li>
+<li><p>Repeat on the new clusters. Because the next grouping is computed fresh, the boundaries that were locked at this level land in the <em>interior</em> of groups at the next level, and get simplified there.</p></li>
+</ol>
+<figure id="fig2"><img src="fig/en/fig02.svg" alt="Group–simplify–split. Locking a group’s boundary prevents cracks at this level; regrouping at the next level puts that boundary inside a group, so no edge stays locked forever. Each level halves the triangle count." loading="lazy" width="100%"><figcaption><b>Figure 2.</b> Group–simplify–split. Locking a group’s boundary prevents cracks at this level; regrouping at the next level puts that boundary inside a group, so no edge stays locked forever. Each level halves the triangle count.</figcaption></figure>
+<h3 id="why-the-result-is-a-dag-not-a-tree">Why the result is a DAG, not a tree</h3>
+<p>A level-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">(</mo><mi>k</mi><mo>+</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(k{+}1)</annotation></semantics></math> cluster is made from the merged triangles of a whole <em>group</em> of level-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>k</mi><annotation encoding="application/x-tex">k</annotation></semantics></math> clusters, so it has several “children”; and since the simplified group is re-split into several clusters, each level-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>k</mi><annotation encoding="application/x-tex">k</annotation></semantics></math> cluster contributes to several parents. The hierarchy is therefore a directed acyclic graph. The important structural fact is that <strong>a group’s clusters and the clusters produced from that group cover exactly the same surface with exactly the same boundary</strong>. Swapping one set for the other is always watertight. LOD is decided per group, which is what lets neighboring regions sit at different detail without cracks.</p>
+<figure id="fig3"><img src="fig/en/fig03.svg" alt="The cluster DAG (simplified: real groups overlap irregularly). A frame renders a cut through the DAG, fine where the surface is close, coarse where it is far. Every cut is crack-free because cuts only switch whole groups." loading="lazy" width="100%"><figcaption><b>Figure 3.</b> The cluster DAG (simplified: real groups overlap irregularly). A frame renders a <em>cut</em> through the DAG, fine where the surface is close, coarse where it is far. Every cut is crack-free because cuts only switch whole groups.</figcaption></figure>
+<h2 id="choosing-the-cut-view-dependent-lod"><span class="num">3</span>Choosing the cut: view-dependent LOD</h2>
+<h3 id="error-metric">Error metric</h3>
+<p>Every simplification step records a geometric error <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>ϵ</mi><annotation encoding="application/x-tex">\epsilon</annotation></semantics></math> in object space (from the quadric error of the simplification). For a cluster <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>c</mi><annotation encoding="application/x-tex">c</annotation></semantics></math>, Nanite stores its own error <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ϵ</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>c</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\epsilon(c)</annotation></semantics></math> and a bounding sphere, and also the error and bounds of the <em>group it was simplified into</em>, i.e. its parents, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ϵ</mi><mrow><mo stretchy="true" form="prefix">(</mo><mrow><mi mathvariant="normal">p</mi><mi mathvariant="normal">a</mi><mi mathvariant="normal">r</mi><mi mathvariant="normal">e</mi><mi mathvariant="normal">n</mi><mi mathvariant="normal">t</mi></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mi>c</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\epsilon(\mathrm{parent}(c))</annotation></semantics></math>. At runtime the error is projected to the screen. For a sphere of center <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>𝐩</mi><annotation encoding="application/x-tex">\mathbf{p}</annotation></semantics></math>, distance <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>d</mi><mo>=</mo><mo stretchy="false" form="prefix">∥</mo><mi>𝐩</mi><mo>−</mo><mi>𝐞</mi><mo stretchy="false" form="postfix">∥</mo></mrow><annotation encoding="application/x-tex">d=\lVert \mathbf{p}-\mathbf{e}\rVert</annotation></semantics></math> from the eye, a vertical field of view <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>θ</mi><annotation encoding="application/x-tex">\theta</annotation></semantics></math> and a viewport <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>H</mi><annotation encoding="application/x-tex">H</annotation></semantics></math> pixels tall, <math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>ϵ</mi><mtext mathvariant="normal">px</mtext></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>c</mi><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.278em"></mspace><mo>=</mo><mspace width="0.278em"></mspace><mfrac><mrow><mi>ϵ</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>c</mi><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.167em"></mspace><mi>H</mi></mrow><mrow><mn>2</mn><mspace width="0.167em"></mspace><mi>d</mi><mspace width="0.167em"></mspace><mo>tan</mo><mrow><mo stretchy="true" form="prefix">(</mo><mi>θ</mi><mi>/</mi><mn>2</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">\epsilon_{\text{px}}(c) \;=\; \frac{\epsilon(c)\,H}{2\,d\,\tan(\theta/2)} .</annotation></semantics></math> (The real implementation uses the closest point of the bounding sphere, and accounts for instance scale.)</p>
+<h3 id="the-parallel-selection-rule">The parallel selection rule</h3>
+<p>Walking a DAG top-down on a GPU is awkward. Nanite instead makes the decision for every cluster <em>independently</em>: <math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><menclose notation="box"><mrow><mspace width="0.278em"></mspace><mrow><mtext mathvariant="normal">draw </mtext><mspace width="0.333em"></mspace></mrow><mi>c</mi><mo>⇔</mo><msub><mi>ϵ</mi><mtext mathvariant="normal">px</mtext></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>c</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>≤</mo><mi>τ</mi><mspace width="0.278em"></mspace><mspace width="0.278em"></mspace><mtext mathvariant="normal">and</mtext><mspace width="0.278em"></mspace><mspace width="0.278em"></mspace><msub><mi>ϵ</mi><mtext mathvariant="normal">px</mtext></msub><mo minsize="1.2" maxsize="1.2" stretchy="false" form="prefix">(</mo><mrow><mi mathvariant="normal">p</mi><mi mathvariant="normal">a</mi><mi mathvariant="normal">r</mi><mi mathvariant="normal">e</mi><mi mathvariant="normal">n</mi><mi mathvariant="normal">t</mi></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mi>c</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo minsize="1.2" maxsize="1.2" stretchy="false" form="postfix">)</mo><mo>&gt;</mo><mi>τ</mi><mspace width="0.278em"></mspace></mrow></menclose><mspace width="2.0em"></mspace><mrow><mo stretchy="true" form="prefix">(</mo><mi>τ</mi><mo>≈</mo><mn>1</mn><mspace width="0.222em"></mspace><mtext mathvariant="normal">pixel</mtext><mo stretchy="true" form="postfix">)</mo></mrow><mi>.</mi></mrow><annotation encoding="application/x-tex">\boxed{\;\text{draw } c \iff \epsilon_{\text{px}}(c) \le \tau \;\;\text{and}\;\; \epsilon_{\text{px}}\big(\mathrm{parent}(c)\big) &gt; \tau\;}
+\qquad(\tau \approx 1\ \text{pixel}).</annotation></semantics></math> “I am precise enough, and my parent is not.” This yields exactly one consistent cut <em>provided</em> that the projected error is monotonic along the DAG: a parent must always appear at least as erroneous as its children from any viewpoint. Nanite enforces this at build time by making each group’s stored error the max of its children’s errors and its bounding sphere enclose its children’s spheres. Then for any view there is precisely one level on every root-to-leaf path where the error crosses <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>τ</mi><annotation encoding="application/x-tex">\tau</annotation></semantics></math>, all clusters of a group make the same decision about their shared parent, and the cut is watertight.</p>
+<figure id="fig4"><img src="fig/en/fig04.svg" alt="Projected error falls as 1/d1/d. For each level the band where it is the coarsest level still under one pixel is where it is drawn (H=1080H=1080, 90∘90^\circ FOV). Because each level halves triangle count and the switch distance doubles with error, the triangle count per pixel stays roughly constant." loading="lazy" width="100%"><figcaption><b>Figure 4.</b> Projected error falls as <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mi>/</mi><mi>d</mi></mrow><annotation encoding="application/x-tex">1/d</annotation></semantics></math>. For each level the band where it is the <em>coarsest</em> level still under one pixel is where it is drawn (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>H</mi><mo>=</mo><mn>1080</mn></mrow><annotation encoding="application/x-tex">H=1080</annotation></semantics></math>, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn>90</mn><mo>∘</mo></msup><annotation encoding="application/x-tex">90^\circ</annotation></semantics></math> FOV). Because each level halves triangle count and the switch distance doubles with error, the triangle count per pixel stays roughly constant.</figcaption></figure>
+<h3 id="hierarchical-culling">Hierarchical culling</h3>
+<p>Testing every cluster in the scene each frame would still be millions of tests. The cluster groups are placed in a bounding-volume hierarchy (a wide BVH, 4 to 8 children per node). Traversal discards a whole subtree if its bounds are outside the frustum, occluded, or if <em>every</em> cluster beneath it would already be too fine (the parent error at that node is below <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>τ</mi><annotation encoding="application/x-tex">\tau</annotation></semantics></math>, so nothing beneath it can be the cut). Traversal runs as a single persistent compute dispatch with a global work queue, so it does not need one dispatch per tree level.</p>
+<h2 id="two-pass-occlusion-culling"><span class="num">4</span>Two-pass occlusion culling</h2>
+<p>Nanite culls against a hierarchical Z-buffer (HZB): a mip pyramid of the depth buffer where each texel stores the <em>farthest</em> depth beneath it. A cluster’s screen rectangle is tested against the mip level where it covers about <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mo>×</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">2\times2</annotation></semantics></math> texels; if its nearest depth is behind the stored farthest depth, it is hidden.</p>
+<p>The difficulty is that the current frame’s depth does not exist until you have drawn the frame. Nanite resolves the chicken-and-egg with two passes:</p>
+<figure class="algobox"><figcaption class="algocap">Two-pass occlusion culling, per frame</figcaption><ol class="algo">
+<li class="in"><b>Input:</b> HZB<sub>prev</sub> from last frame; the set V<sub>prev</sub> of instances and clusters visible last frame</li>
+<li class="pass"><b>Pass 1</b> <span class="cm">guess: what was visible stays visible</span></li>
+<li class="i1">for each node in V<sub>prev</sub>:</li>
+<li class="i2">if in the frustum and not occluded by HZB<sub>prev</sub> (reprojected): rasterize</li>
+<li>build HZB<sub>cur</sub> from the depth just rendered</li>
+<li class="pass"><b>Pass 2</b> <span class="cm">catch everything the guess got wrong</span></li>
+<li class="i1">for each node <i>not</i> drawn in pass 1:</li>
+<li class="i2">if in the frustum and not occluded by HZB<sub>cur</sub>: rasterize, mark visible</li>
+<li>rebuild HZB<sub>cur</sub>; store V<sub>cur</sub> for next frame</li>
+</ol></figure>
+<p>The first pass gets most of the frame right cheaply because consecutive frames are coherent. The second pass guarantees correctness: anything newly disoccluded is tested against a depth buffer that is <em>conservative for this frame</em> (it contains only things that really are visible now), so nothing visible is ever culled. The cost is one extra HZB build and a second, usually tiny, traversal.</p>
+<h2 id="rasterization-software-for-tiny-triangles"><span class="num">5</span>Rasterization: software for tiny triangles</h2>
+<h3 id="why-hardware-is-the-wrong-tool-at-one-triangle-per-pixel">Why hardware is the wrong tool at one triangle per pixel</h3>
+<p>Fixed-function rasterizers are built for triangles covering tens to hundreds of pixels: setup cost is paid once per triangle, then many pixels are filled in <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mo>×</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">2\times2</annotation></semantics></math> quads. At one pixel per triangle, setup throughput and quad overshading dominate. Nanite measured its compute-shader rasterizer at roughly three times faster than the hardware path for micro-triangles.</p>
+<h3 id="the-split">The split</h3>
+<p>Each visible cluster is binned by the screen size of its triangles. Clusters of small triangles go to a <strong>software rasterizer</strong> in a compute shader (one thread per triangle, scanline or edge-function iteration over a tiny bounding box). Clusters with large triangles go to the hardware rasterizer, where it is still faster.</p>
+<figure id="fig5"><img src="fig/en/fig05.svg" alt="Left: the software path wins where hardware would pay full setup and a 2×22\times2 quad for a one-pixel triangle. Right: the visibility-buffer encoding that makes a software depth test possible without ROPs." loading="lazy" width="100%"><figcaption><b>Figure 5.</b> Left: the software path wins where hardware would pay full setup and a <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mo>×</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">2\times2</annotation></semantics></math> quad for a one-pixel triangle. Right: the visibility-buffer encoding that makes a software depth test possible without ROPs.</figcaption></figure>
+<h3 id="visibility-buffer-not-gbuffer">Visibility buffer, not GBuffer</h3>
+<p>Neither rasterizer shades anything. They write a <strong>visibility buffer</strong>: per pixel, a 64-bit word with depth in the high bits and (visible-cluster index, triangle index) in the low bits. Because depth occupies the most significant bits, a single 64-bit atomic max (with reversed-Z, nearer = larger) both depth-tests and writes the payload, which is how a compute shader can rasterize without fixed-function ROPs and without races.</p>
+<h3 id="deferred-materials">Deferred materials</h3>
+<p>Shading happens afterwards, once per pixel. From the triangle id, a material pass fetches the three vertices, recomputes barycentrics and analytic derivatives for that pixel, interpolates attributes and runs the material shader, writing a standard GBuffer that the rest of the renderer (and Lumen) consumes. The original UE5 implementation drew one full-screen pass per material, using a material-ID depth test so each pass only touched its own pixels; later versions bin pixels by material and shade in compute. Two consequences: overdraw costs only a 64-bit atomic, never a material evaluation; and material count has a per-frame overhead that grows with the number of distinct materials visible.</p>
+<h2 id="streaming-compression-and-the-long-tail"><span class="num">6</span>Streaming, compression and the long tail</h2>
+<h3 id="virtualized-geometry">Virtualized geometry</h3>
+<p>Like virtual texturing, Nanite keeps only what the current views need. Cluster groups are packed into fixed-size pages (128 KB). A small set of <em>root pages</em> (the coarsest levels) is always resident so any mesh can always draw something. During culling, whenever the cut wants a cluster whose data is not resident, the GPU writes a request; the CPU streams pages in priority order and the cut refines over the next few frames. The DAG structure guarantees that a coarser, resident ancestor can always stand in.</p>
+<h3 id="compression">Compression</h3>
+<p>Positions are quantized to a per-mesh grid and stored with per-cluster bit widths relative to the cluster’s bounds; normals use octahedral encoding; indices are stored locally within the cluster’s vertex set. The in-memory format is decodable directly on the GPU, and the on-disk format adds a byte-oriented layout that general-purpose compressors (Oodle) shrink further. Published figures put a Nanite mesh at around 14 bytes per input triangle on disk, smaller than a typical non-Nanite mesh with its LOD chain.</p>
+<h3 id="limits-and-later-extensions">Limits and later extensions</h3>
+<ul>
+<li><p><strong>Aggregate geometry.</strong> Nanite simplifies surfaces. Grass, leaves and hair are many disconnected thin pieces; simplifying them erodes volume and they cannot be culled by self-occlusion. Foliage support arrived progressively (masked materials, programmable raster, and in 5.7 an experimental foliage path that adds instanced assemblies, skinned deformation and a voxel-like representation for distant canopies).</p></li>
+<li><p><strong>Deformation.</strong> Static meshes first; skeletal meshes, World Position Offset and displacement-based tessellation were added in 5.x releases.</p></li>
+<li><p><strong>Faceting at the cut.</strong> Because LOD switches per group, topology can change slightly as you move; at <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>τ</mi><mo>≈</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\tau\approx1</annotation></semantics></math> px this is generally invisible, but hard-edged detail like engraved text can shimmer.</p></li>
+<li><p><strong>Shadows.</strong> Nanite pairs with Virtual Shadow Maps (16k<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi></mi><mn>2</mn></msup><annotation encoding="application/x-tex">^2</annotation></semantics></math> virtual shadow maps rendered through the same Nanite pipeline), since conventional shadow maps cannot resolve micro-geometry.</p></li>
+</ul>
+<p class="part part-l">Part II &middot; Lumen</p>
+<h2 id="lumen-the-problem"><span class="num">7</span>Lumen: the problem</h2>
+<p>Global illumination means solving the rendering equation, not just the direct term: <math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>L</mi><mi>o</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>𝐱</mi><mo>,</mo><msub><mi>ω</mi><mi>o</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.278em"></mspace><mo>=</mo><mspace width="0.278em"></mspace><msub><mi>L</mi><mi>e</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>𝐱</mi><mo>,</mo><msub><mi>ω</mi><mi>o</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.278em"></mspace><mo>+</mo><mspace width="0.278em"></mspace><msub><mo>∫</mo><mi>Ω</mi></msub><msub><mi>f</mi><mi>r</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>𝐱</mi><mo>,</mo><msub><mi>ω</mi><mi>i</mi></msub><mo>,</mo><msub><mi>ω</mi><mi>o</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.278em"></mspace><msub><mi>L</mi><mi>i</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>𝐱</mi><mo>,</mo><msub><mi>ω</mi><mi>i</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.278em"></mspace><mrow><mo stretchy="true" form="prefix">(</mo><mi>𝐧</mi><mo>⋅</mo><msub><mi>ω</mi><mi>i</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><msub><mi>ω</mi><mi>i</mi></msub><mo>,</mo></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>L</mi><mi>i</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>𝐱</mi><mo>,</mo><msub><mi>ω</mi><mi>i</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.278em"></mspace><mo>=</mo><mspace width="0.278em"></mspace><msub><mi>L</mi><mi>o</mi></msub><mo minsize="1.2" maxsize="1.2" stretchy="false" form="prefix">(</mo><mrow><mi mathvariant="normal">t</mi><mi mathvariant="normal">r</mi><mi mathvariant="normal">a</mi><mi mathvariant="normal">c</mi><mi mathvariant="normal">e</mi></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mi>𝐱</mi><mo>,</mo><msub><mi>ω</mi><mi>i</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo><mspace width="0.167em"></mspace><mo>−</mo><msub><mi>ω</mi><mi>i</mi></msub><mo minsize="1.2" maxsize="1.2" stretchy="false" form="postfix">)</mo><mi>.</mi></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{gathered}L_o(\mathbf{x},\omega_o) \;=\; L_e(\mathbf{x},\omega_o) \;+\; \int_{\Omega} f_r(\mathbf{x},\omega_i,\omega_o)\; L_i(\mathbf{x},\omega_i)\;(\mathbf{n}\cdot\omega_i)\,\mathrm{d}\omega_i , \\
+L_i(\mathbf{x},\omega_i) \;=\; L_o\big(\mathrm{trace}(\mathbf{x},\omega_i),\,-\omega_i\big).\end{gathered}</annotation></semantics></math> The recursion inside <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>L</mi><mi>i</mi></msub><annotation encoding="application/x-tex">L_i</annotation></semantics></math> is what makes light bounce. Offline renderers estimate the integral by Monte Carlo with hundreds of rays per pixel. A game at 1440p and 60 fps can afford perhaps <em>one-half</em> of a ray per pixel, against a world that is fully dynamic (no baked lightmaps) and made of Nanite geometry far too dense to put in a ray-tracing structure at full detail.</p>
+<aside class="key l"><p class="klabel">Key idea</p>
+<p>Never trace the real scene at full detail, and never trace once per pixel. Trace from a sparse set of probes; trace against cheap proxies (signed distance fields) whose hits can be looked up in a pre-lit <em>surface cache</em>; let the cache feed back into itself to get infinite bounces over time; and spend expensive rays only where they matter, ordered from cheapest-and-most-accurate to cheapest-and-coarsest.</p>
+</aside>
+<figure id="fig6"><img src="fig/en/fig06.svg" alt="Lumen at a glance. Orange: per-frame screen-space work. Grey: world-space data structures, updated incrementally on a budget." loading="lazy" width="100%"><figcaption><b>Figure 6.</b> Lumen at a glance. Orange: per-frame screen-space work. Grey: world-space data structures, updated incrementally on a budget.</figcaption></figure>
+<h2 id="representing-the-scene-for-rays"><span class="num">8</span>Representing the scene for rays</h2>
+<h3 id="mesh-distance-fields">Mesh distance fields</h3>
+<p>Each mesh gets a precomputed <strong>signed distance field</strong> (SDF): a sparse 3D grid where each texel stores the distance to the nearest surface (negative inside). Ray marching an SDF is <em>sphere tracing</em>: at the current point, the stored distance is a radius in which nothing can be hit, so the ray can safely jump that far. <math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>𝐩</mi><mrow><mi>k</mi><mo>+</mo><mn>1</mn></mrow></msub><mspace width="0.278em"></mspace><mo>=</mo><mspace width="0.278em"></mspace><msub><mi>𝐩</mi><mi>k</mi></msub><mo>+</mo><mrow><mi mathvariant="normal">S</mi><mi mathvariant="normal">D</mi><mi mathvariant="normal">F</mi></mrow><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>𝐩</mi><mi>k</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.278em"></mspace><mi>ω</mi><mo>,</mo><mspace width="2.0em"></mspace><mrow><mtext mathvariant="normal">hit when </mtext><mspace width="0.333em"></mspace></mrow><mrow><mi mathvariant="normal">S</mi><mi mathvariant="normal">D</mi><mi mathvariant="normal">F</mi></mrow><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>𝐩</mi><mi>k</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>&lt;</mo><mi>ε</mi><mi>.</mi></mrow><annotation encoding="application/x-tex">\mathbf{p}_{k+1} \;=\; \mathbf{p}_k + \mathrm{SDF}(\mathbf{p}_k)\;\omega, \qquad \text{hit when } \mathrm{SDF}(\mathbf{p}_k) &lt; \varepsilon .</annotation></semantics></math> In open space the steps are huge; near surfaces they shrink. SDFs also give a nearly free soft-shadow and cone estimate, since the closest approach of a ray to geometry, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mo>min</mo><mi>k</mi></msub><mrow><mi mathvariant="normal">S</mi><mi mathvariant="normal">D</mi><mi mathvariant="normal">F</mi></mrow><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>𝐩</mi><mi>k</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mi>/</mi><msub><mi>t</mi><mi>k</mi></msub></mrow><annotation encoding="application/x-tex">\min_k \mathrm{SDF}(\mathbf{p}_k)/t_k</annotation></semantics></math>, approximates how much of a cone around the ray is blocked.</p>
+<figure id="fig7"><img src="fig/en/fig07.svg" alt="Sphere tracing a distance field: big steps through empty space, convergence near the surface. No triangles are touched." loading="lazy" width="100%"><figcaption><b>Figure 7.</b> Sphere tracing a distance field: big steps through empty space, convergence near the surface. No triangles are touched.</figcaption></figure>
+<h3 id="global-distance-field">Global distance field</h3>
+<p>Tracing dozens of overlapping mesh SDFs per ray gets expensive with distance. Lumen also merges all mesh SDFs into a <strong>global distance field</strong>: a set of camera-centered clipmaps (nested cubes of coarser resolution farther out), updated incrementally when objects move. It is cheaper and covers long range, but is low resolution and loses thin features. Lumen therefore uses precise mesh SDFs for the first couple of meters of a ray and switches to the global field beyond.</p>
+<h3 id="the-surface-cache">The surface cache</h3>
+<p>A distance-field hit tells you <em>where</em> the ray stopped, not <em>what color the light is there</em>. Evaluating full material shading and direct lighting at arbitrary hit points would be far too slow. Lumen’s answer is the <strong>surface cache</strong>:</p>
+<ul>
+<li><p>Each mesh is covered by a handful of <strong>cards</strong>: oriented rectangles placed around it (conceptually like an orthographic camera looking at the mesh from up to six sides; complex meshes get more cards from a build-time placement pass).</p></li>
+<li><p>Each card is rasterized (with Nanite, so it is cheap) into an atlas storing albedo, normal, emissive, opacity and depth. Card resolution follows distance to the camera and is updated on a per-frame budget.</p></li>
+<li><p>Lighting is then computed <em>in card space</em>: direct lighting with shadows, plus indirect lighting gathered by tracing short rays from the card texels themselves.</p></li>
+</ul>
+<figure id="fig8"><img src="fig/en/fig08.svg" alt="Cards capture each mesh from a few directions into an atlas. A ray that hits a mesh distance field projects the hit into that mesh’s cards and reads the already-computed lighting: a texture fetch instead of a material evaluation." loading="lazy" width="100%"><figcaption><b>Figure 8.</b> Cards capture each mesh from a few directions into an atlas. A ray that hits a mesh distance field projects the hit into that mesh’s cards and reads the already-computed lighting: a texture fetch instead of a material evaluation.</figcaption></figure>
+<h3 id="radiosity-in-the-cache-infinite-bounces-for-free">Radiosity in the cache: infinite bounces for free</h3>
+<p>When the surface cache computes indirect lighting for its own texels, it traces rays that themselves hit the surface cache and read <em>last frame’s</em> lit result. One bounce per frame accumulates into multi-bounce light within a few frames, a fixed-point iteration of the rendering equation over time: <math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>L</mi><mtext mathvariant="normal">cache</mtext><mrow><mo stretchy="true" form="prefix">(</mo><mi>n</mi><mo>+</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow></msubsup><mspace width="0.278em"></mspace><mo>=</mo><mspace width="0.278em"></mspace><msub><mi>L</mi><mtext mathvariant="normal">direct</mtext></msub><mspace width="0.278em"></mspace><mo>+</mo><mspace width="0.278em"></mspace><mi>𝒯</mi><mo minsize="1.2" maxsize="1.2" stretchy="false" form="prefix">[</mo><msubsup><mi>L</mi><mtext mathvariant="normal">cache</mtext><mrow><mo stretchy="true" form="prefix">(</mo><mi>n</mi><mo stretchy="true" form="postfix">)</mo></mrow></msubsup><mo minsize="1.2" maxsize="1.2" stretchy="false" form="postfix">]</mo><mo>,</mo></mrow><annotation encoding="application/x-tex">L^{(n+1)}_{\text{cache}} \;=\; L_{\text{direct}} \;+\; \mathcal{T}\big[L^{(n)}_{\text{cache}}\big],</annotation></semantics></math> where <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>𝒯</mi><annotation encoding="application/x-tex">\mathcal{T}</annotation></semantics></math> is the one-bounce transport operator. Since <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>𝒯</mi><annotation encoding="application/x-tex">\mathcal{T}</annotation></semantics></math> has norm below one for physical albedos, the iteration converges to the full multi-bounce solution. Updates are amortized: only a budgeted subset of cards is relit each frame, prioritized by distance and recent change, which is why Lumen’s indirect light visibly “settles” a beat after a light switches on.</p>
+<h2 id="the-final-gather-screen-probes"><span class="num">9</span>The final gather: screen probes</h2>
+<h3 id="why-probes">Why probes</h3>
+<p>Tracing even one ray per pixel and denoising leaves too much noise for diffuse GI. Lumen exploits the fact that indirect diffuse light is low-frequency: it places <strong>screen probes</strong> sparsely (by default one per <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>16</mn><mo>×</mo><mn>16</mn></mrow><annotation encoding="application/x-tex">16\times16</annotation></semantics></math> pixel tile, plus extra probes where depth or normal change sharply), traces a full hemisphere from each, and interpolates between them per pixel.</p>
+<h3 id="what-a-probe-holds">What a probe holds</h3>
+<p>Each probe stores incoming radiance over the hemisphere in an <strong>octahedral map</strong> (the sphere unfolded onto a square), typically <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>8</mn><mo>×</mo><mn>8</mn></mrow><annotation encoding="application/x-tex">8\times8</annotation></semantics></math> directions. With <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>64</mn><annotation encoding="application/x-tex">64</annotation></semantics></math> rays per probe at one probe per <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>256</mn><annotation encoding="application/x-tex">256</annotation></semantics></math> pixels, that is <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>64</mn><mi>/</mi><mn>256</mn><mo>=</mo><mn>0.25</mn></mrow><annotation encoding="application/x-tex">64/256 = 0.25</annotation></semantics></math> rays per pixel, yet each pixel effectively integrates over many more directions because it interpolates neighboring probes, and probes are reused temporally.</p>
+<figure id="fig9"><img src="fig/en/fig09.svg" alt="Screen probes sample incoming light sparsely; each stores a tiny directional image of the world around it." loading="lazy" width="100%"><figcaption><b>Figure 9.</b> Screen probes sample incoming light sparsely; each stores a tiny directional image of the world around it.</figcaption></figure>
+<h3 id="importance-sampling-the-probe-rays">Importance sampling the probe rays</h3>
+<p>Where should a probe’s 64 rays go? Uniform directions waste rays on dark parts of the hemisphere. Lumen builds a sampling PDF from two terms it already knows: the BRDF and normal of the pixels that will use the probe, and the probe’s <em>own radiance from last frame</em> (reprojected). Directions that were bright or that the BRDF weights heavily get more rays; the Monte Carlo estimate stays unbiased by dividing by that PDF, <math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>E</mi><mo accent="true">̂</mo></mover><mrow><mo stretchy="true" form="prefix">(</mo><mi>𝐱</mi><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.278em"></mspace><mo>=</mo><mspace width="0.278em"></mspace><mfrac><mn>1</mn><mi>N</mi></mfrac><munderover><mo>∑</mo><mrow><mi>k</mi><mo>=</mo><mn>1</mn></mrow><mi>N</mi></munderover><mfrac><mrow><msub><mi>L</mi><mi>i</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>𝐱</mi><mo>,</mo><msub><mi>ω</mi><mi>k</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.167em"></mspace><mrow><mo stretchy="true" form="prefix">(</mo><mi>𝐧</mi><mo>⋅</mo><msub><mi>ω</mi><mi>k</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><mrow><mi>p</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>ω</mi><mi>k</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow></mfrac><mo>,</mo><mspace width="2.0em"></mspace><mi>p</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>ω</mi><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.278em"></mspace><mo>∝</mo><mspace width="0.278em"></mspace><munder><munder><mrow><mo>cos</mo><mi>θ</mi></mrow><mo accent="true">⏟</mo></munder><mtext mathvariant="normal">BRDF</mtext></munder><mspace width="0.278em"></mspace><mo>×</mo><mspace width="0.278em"></mspace><munder><munder><mrow><msub><mover><mi>L</mi><mo accent="true">̃</mo></mover><mtext mathvariant="normal">prev</mtext></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>ω</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><mo accent="true">⏟</mo></munder><mtext mathvariant="normal">last frame</mtext></munder><mi>.</mi></mrow><annotation encoding="application/x-tex">\widehat{E}(\mathbf{x}) \;=\; \frac{1}{N}\sum_{k=1}^{N} \frac{L_i(\mathbf{x},\omega_k)\,(\mathbf{n}\cdot\omega_k)}{p(\omega_k)}, \qquad p(\omega)\;\propto\; \underbrace{\cos\theta}_{\text{BRDF}}\;\times\;\underbrace{\tilde{L}_{\text{prev}}(\omega)}_{\text{last frame}} .</annotation></semantics></math> This is the same product-importance-sampling idea used offline; doing it per probe rather than per pixel keeps the cost affordable.</p>
+<h3 id="filtering-and-integration">Filtering and integration</h3>
+<p>Probe radiance is filtered spatially across neighboring probes (rejecting neighbors whose depth/normal disagree, and whose rays would have been occluded), converted to a compact form for interpolation (low-order spherical harmonics for diffuse), and then each pixel interpolates its nearby probes with plane-distance weights. A final temporal filter accumulates over frames.</p>
+<h2 id="the-tracing-ladder"><span class="num">10</span>The tracing ladder</h2>
+<p>Every probe ray is traced through a sequence of increasingly coarse but increasingly long-range methods. Each stage picks up where the previous one gave up.</p>
+<figure id="fig10"><img src="fig/en/fig10.svg" alt="Lumen’s software tracing ladder for each probe ray. Hits from stages 2–3 read lighting from the surface cache; misses fall through to the next stage." loading="lazy" width="100%"><figcaption><b>Figure 10.</b> Lumen’s software tracing ladder for each probe ray. Hits from stages 2–3 read lighting from the surface cache; misses fall through to the next stage.</figcaption></figure>
+<h4 id="screen-traces.">1. Screen traces</h4>
+<p>March the ray through the HZB of the current depth buffer. If it hits something on screen, read last frame’s final lit color there. This is the most accurate source because it matches the actual rendered geometry (Nanite detail included) and catches small-scale contact bounce that coarse proxies miss.</p>
+<h4 id="distance-field-traces.">2–3. Distance-field traces</h4>
+<p>If the screen trace leaves the screen or passes behind a surface, continue from where it stopped, through mesh SDFs and then the global SDF, and shade hits with a surface-cache lookup.</p>
+<h4 id="radiance-cache.">4. Radiance cache</h4>
+<p>Long rays are both the most expensive and the least important individually. Lumen keeps a second, <em>world-space</em> probe set: sparse probes on camera-centered clipmaps, traced at higher angular resolution but updated slowly and reused by every screen probe. A screen-probe ray that travels past a set distance stops and samples the world radiance cache instead of tracing on. This is what makes small, bright, distant features (a lit window across a dark room) stable rather than noisy.</p>
+<h3 id="hardware-ray-tracing-mode">Hardware ray tracing mode</h3>
+<p>On RT-capable GPUs, stages 2–3 can be replaced by ray tracing real triangles through the hardware BVH. Nanite meshes enter the BVH via a simplified fallback mesh (the full micro-polygon detail would be too large), while screen traces still recover full detail near the surface. Hits can either read the surface cache (fast) or evaluate full material and lighting at the hit (“hit lighting”, slower, needed for mirror-like reflections). Hardware mode handles thin geometry, skinned meshes and accurate occlusion far better; software mode runs anywhere and scales to more instances. Recent releases (5.6, 5.7) have been shifting the default weight toward the hardware path as its console performance improved.</p>
+<h2 id="reflections-translucency-and-the-rest"><span class="num">11</span>Reflections, translucency and the rest</h2>
+<h4 id="reflections.">Reflections</h4>
+<p>Rough reflections are just indirect specular with a wide lobe, so they reuse the screen-probe radiance. Smoother surfaces (roughness below a threshold) get dedicated reflection rays traced per pixel at reduced resolution through the same ladder, spatially and temporally denoised. Mirror reflections in hardware mode use hit lighting so that reflected objects are fully shaded rather than looked up in the coarse surface cache.</p>
+<h4 id="translucency-and-fog.">Translucency and fog</h4>
+<p>A low-resolution froxel volume (frustum-aligned voxels) is lit by tracing from voxel centers into the same structures; translucent surfaces and volumetric fog sample it.</p>
+<h4 id="where-it-breaks.">Where it breaks</h4>
+<p>Thin walls below the SDF resolution leak light; meshes whose shape cards cannot cover (deep concavities) show missing or dark indirect light; fast lighting changes lag because the surface cache and temporal filters converge over several frames; and very large emissive-only scenes are noisy because emissive surfaces are found only by chance rays, not sampled directly. (MegaLights, introduced in 5.5 and extended in 5.7, addresses direct lighting from many lights, a separate problem.)</p>
+
+<h2 id="how-the-two-fit-together"><span class="num">12</span>How the two fit together</h2>
+<div class="tablewrap"><table><thead><tr><th></th><th class="tn">Nanite</th><th class="tl">Lumen</th></tr></thead><tbody>
+<tr><td class="k">Problem</td><td>Geometry cost scales with content</td><td>Lighting cost scales with rays per pixel</td></tr>
+<tr><td class="k">Core trick</td><td>Cluster DAG + one-pixel error cut</td><td>Sparse probes + proxy scene + caches</td></tr>
+<tr><td class="k">Hierarchy</td><td>Cluster DAG, BVH over groups</td><td>SDF clipmaps, probe clipmaps, mip HZB</td></tr>
+<tr><td class="k">Reuse over time</td><td>Last frame&#x27;s visible set (pass 1)</td><td>Surface cache, radiance cache, temporal filters, importance PDF</td></tr>
+<tr><td class="k">Reuse over space</td><td>One cluster serves many pixels</td><td>One probe serves ~256 pixels</td></tr>
+<tr><td class="k">GPU style</td><td>Persistent compute, 64-bit atomics</td><td>Compute probe tracing, async updates</td></tr>
+<tr><td class="k">Bottleneck it removes</td><td>Triangle setup, overdraw, VRAM</td><td>Ray count, material evaluation at hits</td></tr>
+<tr><td class="k">Typical artifact</td><td>Rare LOD topology shimmer</td><td>Light leaks, lag after sudden changes</td></tr>
+</tbody></table></div>
+<p>The dependency runs both ways. Lumen needs Nanite: cards are captured by rasterizing meshes, and doing that for thousands of cards a frame is only affordable because Nanite draws them cheaply. Nanite needs Lumen (or something like it): film-density geometry lit with flat ambient light looks like a plastic model; the micro-occlusion and bounce light that Lumen supplies is what sells the detail.</p>
+<aside class="key"><p class="klabel">The shared design principle</p>
+<p>Both are <em>output-sensitive</em> algorithms. They do not ask “how much is in the world?” but “how much can the screen show?” and then use hierarchy (to make that question cheap to answer), conservative bounds (so cheap answers are never wrong in the dangerous direction), and temporal coherence (so most of this frame’s answer is last frame’s answer). It is the same pattern as virtual memory and virtual texturing, applied to triangles and to light.</p>
+</aside>
+
+  </article>
+
+  <div class="sources">
+<p><b>Sources.</b> Brian Karis, Rune Stubbe and Graham Wihlidal, <i>A Deep Dive into Nanite Virtualized Geometry</i>, SIGGRAPH 2021 Advances in Real-Time Rendering. Daniel Wright, Krzysztof Narkowicz and Patrick Kelly, <i>Lumen: Real-time Global Illumination in Unreal Engine 5</i>, SIGGRAPH 2022 Advances. Burns and Hunt, <i>The Visibility Buffer</i>, JCGT 2013. John Hart, <i>Sphere Tracing</i>, The Visual Computer 1996. Cigolle et al., <i>A Survey of Efficient Representations for Independent Unit Vectors</i>, JCGT 2014. Epic Games, Unreal Engine 5 documentation and release notes through 5.7.</p>
+<p><b>What is and is not verified.</b> The algorithms are described from Epic's own talks and documentation; I have not profiled the engine myself. The figures quoted (128 triangles per cluster, 128 KB pages, about 14 bytes per triangle on disk, roughly three times faster software rasterization for micro-triangles, one screen probe per 16&times;16 tile with 8&times;8 directions) are Epic's published defaults or measurements and are tunable. The diagrams are schematic: the DAG and probe layouts are simplified, while the LOD error curves and the sphere-tracing figure are computed from the stated formulas. The 5.7 foliage path is experimental and only summarised here.</p>
+  </div>
+
+</div>
+</main>
+<!-- ISEGORIA:FOOT -->
+<footer id="ig-footer"><div><a href="/">Isegoria · Benjamin Haire</a><nav aria-label="Site links"><a href="/">Back to home</a><a href="/library.html">Browse the library</a><a href="#ig-content">Back to top</a></nav></div></footer>
+<!-- /ISEGORIA:FOOT -->
+</body>
+</html>

@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="ja" class=" ig-document ig-editorial">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Unreal Engine 5 が映画並みの密度のジオメトリを1ピクセル1三角形で描く仕組み（Nanite）と、完全に動的な世界を多重反射のグローバルイルミネーションで照らす仕組み（Lumen）。クラスタ DAG、1ピクセル誤差のカット、ソフトウェアラスタライズ、サーフェスキャッシュ、距離場、スクリーンプローブ、トレースのはしごを図解する。">
+  <meta name="theme-color" content="#f7f7f5">
+  <meta property="og:title" content="Nanite と Lumen：Unreal Engine 5 を支えるアルゴリズム">
+  <meta property="og:description" content="Unreal Engine 5 が映画並みの密度のジオメトリを1ピクセル1三角形で描く仕組み（Nanite）と、完全に動的な世界を多重反射のグローバルイルミネーションで照らす仕組み（Lumen）。クラスタ DAG、1ピクセル誤差のカット、ソフトウェアラスタライズ、サーフェスキャッシュ、距離場、スクリーンプローブ、トレースのはしごを図解する。">
+  <meta property="og:type" content="article">
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <title>Nanite と Lumen：Unreal Engine 5 を支えるアルゴリズム</title>
+<style>
+  :root {
+    --ground:#F7F7F5; --surface:#FFFFFF; --surface-2:#F0F1EC;
+    --ink:#17191B; --muted:#63686D; --rule:#DEE0DC;
+    --accent:#2E6FB7; --nanite:#2E6FB7; --lumen:#C0601A;
+    --nanite-soft:#2E6FB712; --lumen-soft:#E07B2214;
+    --f-display:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    --f-body:"Inter",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground:#101214; --surface:#181B1E; --surface-2:#1F2327;
+      --ink:#EDEFF1; --muted:#9BA3AA; --rule:#2C3237;
+      --accent:#6FA8E6; --nanite:#6FA8E6; --lumen:#F0964A;
+      --nanite-soft:#6FA8E61C; --lumen-soft:#F0964A1C;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground:#101214; --surface:#181B1E; --surface-2:#1F2327;
+    --ink:#EDEFF1; --muted:#9BA3AA; --rule:#2C3237;
+    --accent:#6FA8E6; --nanite:#6FA8E6; --lumen:#F0964A;
+    --nanite-soft:#6FA8E61C; --lumen-soft:#F0964A1C;
+  }
+  * { box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { margin:0; background:var(--ground); color:var(--ink); font-family:var(--f-body); font-size:17px; line-height:1.65; -webkit-font-smoothing:antialiased; }
+  a { color:var(--accent); text-underline-offset:.18em; }
+  .wrap { width:min(780px, calc(100% - 32px)); margin-inline:auto; }
+  .hero { padding:64px 0 36px; }
+  .label { color:var(--muted); font-size:.74rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; }
+  h1 { font-family:var(--f-display); font-weight:600; font-size:clamp(2rem, 5.4vw, 3.2rem); line-height:1.08; letter-spacing:-.02em; margin:.3em 0 .4em; }
+  h1 .amp { color:#D99A1E; }
+  h2 { font-family:var(--f-display); font-weight:600; font-size:1.6rem; line-height:1.25; margin:2.4em 0 .7em; letter-spacing:-.01em; }
+  h2 .num { display:block; font-family:var(--f-body); font-size:.72rem; font-weight:700; letter-spacing:.1em; color:var(--muted); margin-bottom:.45em; }
+  h3 { font-size:1.06rem; margin:2em 0 .5em; }
+  h4 { font-size:.98rem; margin:1.6em 0 .3em; }
+  .standfirst { font-size:1.12rem; color:var(--muted); }
+  .standfirst p { margin:0; max-width:none; }
+  p, li { max-width:72ch; }
+  .herometa { display:flex; flex-wrap:wrap; gap:10px; margin-top:24px; }
+  .pill { display:inline-block; padding:8px 14px; border:1px solid var(--rule); border-radius:999px; background:var(--surface); color:var(--ink); text-decoration:none; font-size:.9rem; }
+  .pill:hover { border-color:var(--accent); color:var(--accent); }
+  .toc { margin:30px 0 10px; padding:20px 22px; border:1px solid var(--rule); border-radius:12px; background:var(--surface); }
+  .toc ol { margin:.5em 0 0; padding-left:1.4em; columns:2; column-gap:28px; }
+  .toc li { margin:.28em 0; font-size:.92rem; break-inside:avoid; }
+  .part { margin:3.6em 0 -1em; font-size:.8rem; font-weight:800; letter-spacing:.14em; text-transform:uppercase; padding-top:1.2em; border-top:3px solid; }
+  .part-n { color:var(--nanite); border-color:var(--nanite); }
+  .part-l { color:var(--lumen); border-color:var(--lumen); }
+  section.lumen h2, section.lumen h3 { color:inherit; }
+  aside.key { margin:1.8em 0; padding:16px 20px; border-left:3px solid var(--nanite); background:var(--nanite-soft); border-radius:4px 10px 10px 4px; }
+  aside.key.l { border-color:var(--lumen); background:var(--lumen-soft); }
+  aside.key .klabel { margin:0 0 .4em; font-size:.74rem; font-weight:800; letter-spacing:.1em; text-transform:uppercase; color:var(--nanite); }
+  aside.key.l .klabel { color:var(--lumen); }
+  aside.key p:last-child { margin-bottom:0; }
+  figure { margin:32px 0; }
+  figure img { display:block; width:100%; height:auto; background:#fff; border:1px solid var(--rule); border-radius:12px; padding:14px; }
+  figcaption { margin-top:10px; font-size:.88rem; color:var(--muted); max-width:78ch; }
+  figcaption b { color:var(--ink); }
+  math[display="block"] { margin:1.2em 0; overflow-x:auto; overflow-y:hidden; max-width:100%; font-size:1.06em; }
+  math { font-family:"STIX Two Math","Cambria Math","Latin Modern Math",math; }
+  .algobox { padding:16px 20px; border:1px solid var(--rule); border-radius:12px; background:var(--surface); }
+  .algocap { margin:0 0 .6em; font-weight:700; color:var(--ink); font-size:.92rem; }
+  ol.algo { margin:0; padding-left:2.2em; font-size:.92rem; }
+  ol.algo li { margin:.2em 0; max-width:none; }
+  ol.algo li.pass { margin-top:.7em; }
+  ol.algo li.i1 { padding-left:1.2em; }
+  ol.algo li.i2 { padding-left:2.4em; }
+  ol.algo .cm { color:var(--muted); font-style:italic; margin-left:.6em; }
+  ol.algo .cm::before { content:"\25B8 "; }
+  .tablewrap { overflow-x:auto; margin:26px 0; }
+  table { border-collapse:collapse; width:100%; font-size:.92rem; }
+  th, td { text-align:left; vertical-align:top; padding:11px 14px 11px 0; border-bottom:1px solid var(--rule); }
+  th { font-size:.74rem; letter-spacing:.09em; text-transform:uppercase; font-weight:800; }
+  th.tn { color:var(--nanite); } th.tl { color:var(--lumen); }
+  td.k { font-weight:600; width:10em; color:var(--muted); }
+  .sources { margin-top:56px; padding-top:22px; border-top:1px solid var(--rule); font-size:.9rem; color:var(--muted); }
+  .sources p { max-width:84ch; }
+  @media (max-width:640px) { .toc ol { columns:1; } .hero { padding-top:40px; } figure img { padding:8px; border-radius:10px; } }
+
+  :root { --f-display:"Hiragino Mincho ProN","Yu Mincho","Noto Serif JP",serif; --f-body:"Hiragino Sans","Hiragino Kaku Gothic ProN","Noto Sans JP",system-ui,sans-serif; }
+  body { line-height:1.85; font-size:16.5px; }
+  h1, h2 { letter-spacing:0; }
+  .label, .part, aside.key .klabel, th { letter-spacing:.06em; }
+  em, i { font-style:normal; font-weight:600; }
+</style>
+<link rel="canonical" href="https://theisegoria.github.io/ja/nanite-lumen/">
+<link rel="alternate" hreflang="en" href="https://theisegoria.github.io/nanite-lumen/">
+<link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/nanite-lumen/">
+<link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/nanite-lumen/"><script src="/assets/lang.js"></script>
+<!-- ISEGORIA:HEAD -->
+<link rel="stylesheet" href="/assets/site-shell.css?v=c21cd21e82">
+<script src="/assets/site-shell.js?v=c21cd21e82" ></script>
+<!-- /ISEGORIA:HEAD -->
+<script defer data-isegoria-analytics src="/assets/analytics.js?v=9e6ebd463bf2"></script>
+</head>
+<body class="ig-site" data-site-kind="editorial" data-site-route="/ja/nanite-lumen/">
+<!-- ISEGORIA:NAV -->
+<a class="ig-skip" href="#ig-content">本文へ移動</a>
+<header id="ig-header"><div class="ig-nav-inner">
+<a class="ig-brand" href="/ja/" aria-label="Isegoria, ホーム"><strong>ISEGORIA</strong><span>Benjamin Haire</span></a>
+<div class="ig-header-actions"><a class="ig-language" href="/nanite-lumen/" hreflang="en" lang="en">English</a><button class="ig-menu" type="button" aria-expanded="false" aria-controls="ig-primary">メニュー</button></div>
+<nav id="ig-primary" aria-label="メインナビゲーション"><a href="/ja/">ホーム</a><a href="/ja/library.html">全コンテンツ</a><a href="/ja/math-encyclopedia/">数学百科事典</a><a href="/ja/#interactive">操作できる解説</a><a href="/ja/#preoccupations" aria-current="location">研究と解説</a><a href="/ja/#books">書籍</a><a href="/ja/projects.html">プロジェクト</a><a href="/ja/about.html">このサイトについて</a><a class="ig-language" href="/nanite-lumen/" hreflang="en" lang="en">English</a><button class="ig-theme" type="button" hidden>表示切替</button></nav>
+</div></header>
+<nav id="ig-breadcrumb" aria-label="パンくずリスト"><a href="/ja/">ホーム</a><span aria-hidden="true">/</span><a href="/ja/#preoccupations">研究と解説</a><span aria-hidden="true">/</span><span aria-current="page">Nanite と Lumen：Unreal Engine 5 を支えるアルゴリズム</span></nav>
+<span id="ig-content" tabindex="-1"></span>
+<!-- /ISEGORIA:NAV -->
+<main>
+<div class="wrap">
+
+  <div class="hero">
+    <p class="label">解説 / 2026年10月</p>
+    <h1>Nanite <span class="amp">と</span> Lumen</h1>
+    <div class="standfirst"><p>二つのシステムが相手にしているのは同じ敵である。すなわち、<em>ピクセル数</em>ではなく<em>コンテンツ量</em>に比例して増えるコストだ。Nanite は、あらゆるメッシュを微小なクラスタの階層へ前処理し、毎フレーム「簡略化誤差が1ピクセル未満となるクラスタ」だけを正確に選ぶことで、ジオメトリのコストを画面解像度に比例させる。Lumen は、ピクセルごとにレイを飛ばすことを拒むことで、ライティングのコストを解像度に比例させる。疎に配置したスクリーンプローブから、世界の安価な代理表現（距離場と、メッシュごとに事前にライティング済みの「サーフェス」のキャッシュ）に向けてレイを飛ばし、空間方向にも時間方向にも再利用できるものはすべて再利用する。Nanite が密なジオメトリを供給し、Lumen がそれを照らされたものに見せる。</p>
+</div>
+    <div class="herometa">
+      <a class="pill" href="/nanite-lumen/nanite-lumen-ja.pdf" target="_blank" rel="noopener">PDF &middot; 17 ページ</a>
+      <a class="pill" href="/nanite-lumen/nanite-lumen-bilingual.pdf" target="_blank" rel="noopener">二言語版 PDF &middot; 32 ページ</a>
+      <a class="pill" href="/nanite-lumen/" hreflang="en" lang="en">English</a>
+    </div>
+    <p class="label" style="margin-top:20px">クラスタ DAG &middot; QEM 簡略化 &middot; HZB オクルージョン &middot; ビジビリティバッファ &middot; 符号付き距離場 &middot; サーフェスキャッシュ &middot; スクリーンプローブ &middot; ラディアンスキャッシュ</p>
+  </div>
+
+  <nav class="toc" aria-label="目次">
+    <p class="label">目次</p>
+    <ol>
+      <li><a href="#nanite-the-problem">Nanite：問題設定</a></li>
+      <li><a href="#building-the-cluster-dag-offline">クラスタ DAG の構築（オフライン）</a></li>
+      <li><a href="#choosing-the-cut-view-dependent-lod">カットの選択：視点依存の LOD</a></li>
+      <li><a href="#two-pass-occlusion-culling">2パスのオクルージョンカリング</a></li>
+      <li><a href="#rasterization-software-for-tiny-triangles">ラスタライズ：微小三角形にはソフトウェアを</a></li>
+      <li><a href="#streaming-compression-and-the-long-tail">ストリーミング、圧縮、そして残された課題</a></li>
+      <li><a href="#lumen-the-problem">Lumen：問題設定</a></li>
+      <li><a href="#representing-the-scene-for-rays">レイのためのシーン表現</a></li>
+      <li><a href="#the-final-gather-screen-probes">最終ギャザー：スクリーンプローブ</a></li>
+      <li><a href="#the-tracing-ladder">トレースのはしご</a></li>
+      <li><a href="#reflections-translucency-and-the-rest">反射、半透明、その他</a></li>
+      <li><a href="#how-the-two-fit-together">二つはどう噛み合うか</a></li>
+    </ol>
+  </nav>
+
+  <article>
+<p class="part part-n">第I部 &middot; Nanite</p>
+<h2 id="nanite-the-problem"><span class="num">1</span>Nanite：問題設定</h2>
+<p>従来のエンジンは、メッシュをハードウェアのドローコールで描き、アーティストが用意した数段階の詳細度（LOD）のうち一つをオブジェクト全体に適用する。素材が映画並みの密度（岩一つに数百万三角形、その岩が数千個）に達すると、この設計は三つの点で破綻する。</p>
+<ol>
+<li><p><strong>オブジェクト単位の LOD は粗すぎる。</strong> 根元がカメラから2 m、頂上が400 m離れた崖は、両端でまったく異なる詳細度を必要とする。</p></li>
+<li><p><strong>小さな三角形はハードウェアにとって無駄が多い。</strong> GPU は <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mo>×</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">2\times2</annotation></semantics></math> ピクセルのクアッド単位でラスタライズするため、1ピクセルしか覆わない三角形でも4ピクセル分の費用を払う。ピクセルシェーディングよりはるか手前で、固定機能のセットアップ速度がボトルネックになる。</p></li>
+<li><p><strong>メモリ。</strong> 映画品質の素材は、一度にすべて VRAM に載らない。</p></li>
+</ol>
+<aside class="key"><p class="klabel">要点</p>
+<p>描画する三角形の数を、元素材の三角形数ではなく<em>ピクセル数</em>に比例させる。目標は「1ピクセルに1三角形」である。それより多くても見えず、少なければ角張って見える。Nanite のすべては、この密度でジオメトリを選び、カリングし、ラスタライズし、ストリーミングするための仕組みである。</p>
+</aside>
+<figure id="fig1"><img src="/nanite-lumen/fig/ja/fig01.svg" alt="Nanite の全体像。灰色はオフラインまたは非同期の処理、青は毎フレーム GPU 上で行われる処理。実際にはカリングと LOD 選択は一つの階層走査に統合されている。" loading="lazy" width="100%"><figcaption><b>図 1.</b> Nanite の全体像。灰色はオフラインまたは非同期の処理、青は毎フレーム GPU 上で行われる処理。実際にはカリングと LOD 選択は一つの階層走査に統合されている。</figcaption></figure>
+<h2 id="building-the-cluster-dag-offline"><span class="num">2</span>クラスタ DAG の構築（オフライン）</h2>
+<h3 id="クラスタ">クラスタ</h3>
+<p>元のメッシュは、三角形の隣接グラフにグラフ分割器（METIS）をかけることで、最大128三角形からなる<strong>クラスタ</strong>に分割される。クラスタは空間的にまとまり、境界の辺をなるべく共有しないように作られる。クラスタは Nanite の原子であり、カリング、LOD 選択、ストリーミング、ラスタライズはすべてクラスタ単位で行われる。128三角形という大きさは、細かいカリングができる程度に小さく、クラスタごとの処理を償却し GPU のワークグループにうまく対応する程度に大きい。</p>
+<h3 id="グループ化簡略化再分割">グループ化、簡略化、再分割</h3>
+<p>各クラスタを独立に簡略化して LOD を作るという素朴な方法は、すぐに破綻する。隣り合う二つのクラスタが異なる LOD になると辺が一致しなくなり、間に亀裂が生じるからだ。簡略化の際にクラスタ境界を固定すれば亀裂は防げるが、今度はその境界の辺が<em>永遠に</em>簡略化されず、数段階もするとメッシュは境界だらけになる。</p>
+<p>Nanite の答えは、システム全体の核となる次の手法である。</p>
+<ol>
+<li><p>隣接するクラスタ（典型的には8〜32個。概念上の最小は4個程度）を、共有辺を最小にするグラフ分割で<strong>クラスタグループ</strong>に<strong>まとめる</strong>。</p></li>
+<li><p>各グループの三角形を<strong>結合</strong>し、二次誤差計量（QEM）で三角形数が半分になるまで<strong>簡略化</strong>する。このとき<em>固定するのはグループの外周だけ</em>であり、旧クラスタ間の内部の辺は消える。</p></li>
+<li><p>簡略化したパッチを、再び128三角形のクラスタに<strong>再分割</strong>する。</p></li>
+<li><p>新しいクラスタに対して同じ手順を繰り返す。次のグループ分けは改めて計算されるため、この段で固定された境界は次の段ではグループの<em>内部</em>に入り、そこで簡略化される。</p></li>
+</ol>
+<figure id="fig2"><img src="/nanite-lumen/fig/ja/fig02.svg" alt="グループ化・簡略化・再分割。グループの境界を固定することでその段の亀裂を防ぎ、次の段で組み直すことでその境界がグループの内部に入るため、固定され続ける辺は存在しない。各段で三角形数は半分になる。" loading="lazy" width="100%"><figcaption><b>図 2.</b> グループ化・簡略化・再分割。グループの境界を固定することでその段の亀裂を防ぎ、次の段で組み直すことでその境界がグループの内部に入るため、固定され続ける辺は存在しない。各段で三角形数は半分になる。</figcaption></figure>
+<h3 id="結果が木ではなく-dag-になる理由">結果が木ではなく DAG になる理由</h3>
+<p>第<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi><mo>+</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">k{+}1</annotation></semantics></math>段のクラスタは第<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>k</mi><annotation encoding="application/x-tex">k</annotation></semantics></math>段のクラスタ<em>グループ</em>全体の三角形から作られるので、複数の「子」をもつ。また簡略化されたグループは複数のクラスタに再分割されるので、第<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>k</mi><annotation encoding="application/x-tex">k</annotation></semantics></math>段の各クラスタは複数の親に寄与する。したがって階層は有向非巡回グラフ（DAG）となる。構造上もっとも重要な事実は、<strong>あるグループのクラスタ群と、そのグループから作られたクラスタ群は、まったく同じ境界をもつまったく同じ曲面を覆う</strong>ということである。一方を他方に置き換えても、常に隙間は生じない。LOD はグループ単位で決まり、これによって隣接する領域が亀裂なしに異なる詳細度をとれる。</p>
+<figure id="fig3"><img src="/nanite-lumen/fig/ja/fig03.svg" alt="クラスタ DAG（簡略図。実際のグループは不規則に重なる）。各フレームは DAG を通るカットを描画する。曲面が近いところは細かく、遠いところは粗い。カットは常にグループ単位でしか切り替わらないため、どのカットにも亀裂はない。" loading="lazy" width="100%"><figcaption><b>図 3.</b> クラスタ DAG（簡略図。実際のグループは不規則に重なる）。各フレームは DAG を通る<em>カット</em>を描画する。曲面が近いところは細かく、遠いところは粗い。カットは常にグループ単位でしか切り替わらないため、どのカットにも亀裂はない。</figcaption></figure>
+<h2 id="choosing-the-cut-view-dependent-lod"><span class="num">3</span>カットの選択：視点依存の LOD</h2>
+<h3 id="誤差の尺度">誤差の尺度</h3>
+<p>簡略化の各段は、オブジェクト空間での幾何誤差 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>ϵ</mi><annotation encoding="application/x-tex">\epsilon</annotation></semantics></math>（簡略化の二次誤差から得る）を記録する。各クラスタ <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>c</mi><annotation encoding="application/x-tex">c</annotation></semantics></math> について、Nanite は自身の誤差 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ϵ</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>c</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\epsilon(c)</annotation></semantics></math> とバウンディング球を保持し、さらに<em>自身が簡略化されてできたグループ</em>、つまり親の誤差 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ϵ</mi><mrow><mo stretchy="true" form="prefix">(</mo><mrow><mi mathvariant="normal">p</mi><mi mathvariant="normal">a</mi><mi mathvariant="normal">r</mi><mi mathvariant="normal">e</mi><mi mathvariant="normal">n</mi><mi mathvariant="normal">t</mi></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mi>c</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\epsilon(\mathrm{parent}(c))</annotation></semantics></math> と境界も保持する。実行時には誤差を画面に投影する。中心 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>𝐩</mi><annotation encoding="application/x-tex">\mathbf{p}</annotation></semantics></math>、視点からの距離 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>d</mi><mo>=</mo><mo stretchy="false" form="prefix">∥</mo><mi>𝐩</mi><mo>−</mo><mi>𝐞</mi><mo stretchy="false" form="postfix">∥</mo></mrow><annotation encoding="application/x-tex">d=\lVert \mathbf{p}-\mathbf{e}\rVert</annotation></semantics></math>、垂直視野角 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>θ</mi><annotation encoding="application/x-tex">\theta</annotation></semantics></math>、高さ <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>H</mi><annotation encoding="application/x-tex">H</annotation></semantics></math> ピクセルのビューポートに対して、 <math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>ϵ</mi><mtext mathvariant="normal">px</mtext></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>c</mi><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.278em"></mspace><mo>=</mo><mspace width="0.278em"></mspace><mfrac><mrow><mi>ϵ</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>c</mi><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.167em"></mspace><mi>H</mi></mrow><mrow><mn>2</mn><mspace width="0.167em"></mspace><mi>d</mi><mspace width="0.167em"></mspace><mo>tan</mo><mrow><mo stretchy="true" form="prefix">(</mo><mi>θ</mi><mi>/</mi><mn>2</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">\epsilon_{\text{px}}(c) \;=\; \frac{\epsilon(c)\,H}{2\,d\,\tan(\theta/2)} .</annotation></semantics></math> （実装では、バウンディング球のもっとも近い点を用い、インスタンスのスケールも考慮する。）</p>
+<h3 id="並列な選択規則">並列な選択規則</h3>
+<p>GPU 上で DAG を上から順に辿るのは扱いにくい。そこで Nanite は、すべてのクラスタについて<em>独立に</em>判定を下す。 <math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><menclose notation="box"><mrow><mspace width="0.278em"></mspace><mi>c</mi><mrow><mspace width="0.333em"></mspace><mtext mathvariant="normal"> を描く</mtext></mrow><mo>⇔</mo><msub><mi>ϵ</mi><mtext mathvariant="normal">px</mtext></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>c</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>≤</mo><mi>τ</mi><mspace width="0.278em"></mspace><mspace width="0.278em"></mspace><mtext mathvariant="normal">かつ</mtext><mspace width="0.278em"></mspace><mspace width="0.278em"></mspace><msub><mi>ϵ</mi><mtext mathvariant="normal">px</mtext></msub><mo minsize="1.2" maxsize="1.2" stretchy="false" form="prefix">(</mo><mrow><mi mathvariant="normal">p</mi><mi mathvariant="normal">a</mi><mi mathvariant="normal">r</mi><mi mathvariant="normal">e</mi><mi mathvariant="normal">n</mi><mi mathvariant="normal">t</mi></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mi>c</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo minsize="1.2" maxsize="1.2" stretchy="false" form="postfix">)</mo><mo>&gt;</mo><mi>τ</mi><mspace width="0.278em"></mspace></mrow></menclose><mspace width="2.0em"></mspace><mrow><mo stretchy="true" form="prefix">(</mo><mi>τ</mi><mo>≈</mo><mn>1</mn><mspace width="0.222em"></mspace><mtext mathvariant="normal">ピクセル</mtext><mo stretchy="true" form="postfix">)</mo></mrow><mi>.</mi></mrow><annotation encoding="application/x-tex">\boxed{\;c \text{ を描く} \iff \epsilon_{\text{px}}(c) \le \tau \;\;\text{かつ}\;\; \epsilon_{\text{px}}\big(\mathrm{parent}(c)\big) &gt; \tau\;}
+\qquad(\tau \approx 1\ \text{ピクセル}).</annotation></semantics></math> 「自分は十分に精密で、親はそうではない」。これは、投影誤差が DAG に沿って単調である<em>ならば</em>、ちょうど一つの整合したカットを与える。つまり、どの視点から見ても親は子と同じかそれ以上に誤差が大きく見えなければならない。Nanite は構築時に、各グループに保存する誤差を子の誤差の最大値とし、そのバウンディング球が子の球を包むようにすることで、これを保証する。すると、どの視点についても根から葉へのすべての経路上で誤差が <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>τ</mi><annotation encoding="application/x-tex">\tau</annotation></semantics></math> をまたぐ段がちょうど一つ存在し、あるグループのクラスタはすべて共通の親について同じ判定を下し、カットは隙間なく閉じる。</p>
+<figure id="fig4"><img src="/nanite-lumen/fig/ja/fig04.svg" alt="投影誤差は 1/d1/d で減少する。各段は、1ピクセル未満に収まるもっとも粗い段となる距離帯で描かれる（H=1080H=1080、視野角 90∘90^\circ）。段ごとに三角形数は半分になり、切り替え距離は誤差とともに倍になるので、ピクセルあたりの三角形数はほぼ一定に保たれる。" loading="lazy" width="100%"><figcaption><b>図 4.</b> 投影誤差は <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mi>/</mi><mi>d</mi></mrow><annotation encoding="application/x-tex">1/d</annotation></semantics></math> で減少する。各段は、1ピクセル未満に収まる<em>もっとも粗い</em>段となる距離帯で描かれる（<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>H</mi><mo>=</mo><mn>1080</mn></mrow><annotation encoding="application/x-tex">H=1080</annotation></semantics></math>、視野角 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn>90</mn><mo>∘</mo></msup><annotation encoding="application/x-tex">90^\circ</annotation></semantics></math>）。段ごとに三角形数は半分になり、切り替え距離は誤差とともに倍になるので、ピクセルあたりの三角形数はほぼ一定に保たれる。</figcaption></figure>
+<h3 id="階層的カリング">階層的カリング</h3>
+<p>毎フレーム、シーン内の全クラスタを判定するのでは、それでも数百万回の判定になる。クラスタグループはバウンディングボリューム階層（子を4〜8個もつ幅の広い BVH）に格納される。走査では、境界が視錐台の外にある場合、遮蔽されている場合、またはその下の<em>すべての</em>クラスタがすでに細かすぎる場合（そのノードでの親誤差が <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>τ</mi><annotation encoding="application/x-tex">\tau</annotation></semantics></math> 未満なので、下にカットはありえない）に、部分木ごと捨てる。走査はグローバルな作業キューをもつ単一の常駐型コンピュートディスパッチとして実行されるため、木の段ごとにディスパッチを発行する必要がない。</p>
+<h2 id="two-pass-occlusion-culling"><span class="num">4</span>2パスのオクルージョンカリング</h2>
+<p>Nanite は階層 Z バッファ（HZB）に対してカリングを行う。HZB は深度バッファのミップピラミッドで、各テクセルはその下にある<em>もっとも遠い</em>深度を保持する。クラスタの画面上の矩形は、それがおよそ <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mo>×</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">2\times2</annotation></semantics></math> テクセルを覆うミップ段で判定され、もっとも近い深度が保存された最遠深度より奥にあれば隠れていると判断される。</p>
+<p>難しいのは、現在のフレームの深度は、そのフレームを描き終えるまで存在しないという点である。Nanite は、この鶏と卵の問題を2パスで解決する。</p>
+<figure class="algobox"><figcaption class="algocap">2パスのオクルージョンカリング（フレームごと）</figcaption><ol class="algo">
+<li class="in"><b>入力：</b>前フレームの HZB<sub>prev</sub>、前フレームで可視だったインスタンスとクラスタの集合 V<sub>prev</sub></li>
+<li class="pass"><b>パス1</b> <span class="cm">推測：見えていたものは引き続き見える</span></li>
+<li class="i1">V<sub>prev</sub> の各ノードについて：</li>
+<li class="i2">視錐台内かつ HZB<sub>prev</sub>（再投影）で遮蔽されていなければ、ラスタライズ</li>
+<li>いま描いた深度から HZB<sub>cur</sub> を構築</li>
+<li class="pass"><b>パス2</b> <span class="cm">推測が外れたものをすべて拾う</span></li>
+<li class="i1">パス1で描かれ<i>なかった</i>各ノードについて：</li>
+<li class="i2">視錐台内かつ HZB<sub>cur</sub> で遮蔽されていなければ、ラスタライズして可視と記録</li>
+<li>HZB<sub>cur</sub> を再構築し、次フレームのために V<sub>cur</sub> を保存</li>
+</ol></figure>
+<p>連続するフレームには一貫性があるので、パス1だけで大半を安く正しく描ける。パス2が正しさを保証する。新たに見えるようになったものは、<em>このフレームにとって保守的な</em>深度バッファ（いま本当に見えているものだけを含む）に対して判定されるので、見えるものが誤って捨てられることはない。代償は、HZB の構築が1回増えることと、通常はごく小さい2回目の走査である。</p>
+<h2 id="rasterization-software-for-tiny-triangles"><span class="num">5</span>ラスタライズ：微小三角形にはソフトウェアを</h2>
+<h3 id="ピクセル1三角形ではハードウェアが不向きな理由">1ピクセル1三角形ではハードウェアが不向きな理由</h3>
+<p>固定機能のラスタライザは、数十から数百ピクセルを覆う三角形のために作られている。セットアップの費用は三角形ごとに一度払い、その後 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mo>×</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">2\times2</annotation></semantics></math> のクアッドで多くのピクセルを埋める。三角形が1ピクセル程度になると、セットアップのスループットとクアッドの過剰シェーディングが支配的になる。Nanite のコンピュートシェーダ製ラスタライザは、微小三角形についてハードウェア経路のおよそ3倍速いと計測されている。</p>
+<h3 id="振り分け">振り分け</h3>
+<p>可視クラスタは、その三角形の画面上の大きさで振り分けられる。小さな三角形のクラスタはコンピュートシェーダの<strong>ソフトウェアラスタライザ</strong>へ送られ（三角形ごとに1スレッドで、小さなバウンディングボックス内を走査線またはエッジ関数で反復する）、大きな三角形のクラスタは、まだそちらが速いハードウェアラスタライザへ送られる。</p>
+<figure id="fig5"><img src="/nanite-lumen/fig/ja/fig05.svg" alt="左：ハードウェアなら1ピクセルの三角形にもセットアップ全体と 2×22\times2 クアッドを払うところで、ソフトウェア経路が勝つ。右：ROP なしでソフトウェアの深度テストを可能にするビジビリティバッファの符号化。" loading="lazy" width="100%"><figcaption><b>図 5.</b> 左：ハードウェアなら1ピクセルの三角形にもセットアップ全体と <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mo>×</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">2\times2</annotation></semantics></math> クアッドを払うところで、ソフトウェア経路が勝つ。右：ROP なしでソフトウェアの深度テストを可能にするビジビリティバッファの符号化。</figcaption></figure>
+<h3 id="gbuffer-ではなくビジビリティバッファ">GBuffer ではなくビジビリティバッファ</h3>
+<p>どちらのラスタライザも何もシェーディングしない。書き込むのは<strong>ビジビリティバッファ</strong>であり、ピクセルごとに64ビットの語の上位ビットに深度を、下位ビットに（可視クラスタ番号、三角形番号）を入れる。深度が最上位ビットを占めるので、64ビットのアトミック最大値演算一回（リバース Z では近いほど大きい）で深度テストと書き込みが同時に済む。これが、固定機能の ROP なしに、競合も起こさずにコンピュートシェーダでラスタライズできる理由である。</p>
+<h3 id="遅延マテリアル">遅延マテリアル</h3>
+<p>シェーディングはその後、ピクセルごとに一度だけ行われる。三角形番号からマテリアルパスが三頂点を取り出し、そのピクセルについて重心座標と解析的な微分を再計算し、属性を補間してマテリアルシェーダを実行し、標準的な GBuffer に書き込む。レンダラの残り（と Lumen）はそれを使う。初期の UE5 実装ではマテリアルごとに全画面パスを1回描き、マテリアル ID の深度テストで各パスが自分のピクセルだけに触れるようにしていた。後のバージョンでは、ピクセルをマテリアル別にビン分けしてコンピュートでシェーディングする。帰結は二つある。オーバードローの費用は64ビットのアトミック演算だけで、マテリアル評価は決して重複しない。そして、画面に見えている異なるマテリアルの数に応じてフレームごとのオーバーヘッドが増える。</p>
+<h2 id="streaming-compression-and-the-long-tail"><span class="num">6</span>ストリーミング、圧縮、そして残された課題</h2>
+<h3 id="仮想化ジオメトリ">仮想化ジオメトリ</h3>
+<p>仮想テクスチャと同様に、Nanite は現在のビューが必要とするものだけを保持する。クラスタグループは固定サイズ（128 KB）のページに詰められる。もっとも粗い段からなる少数の<em>ルートページ</em>は常駐しているので、どのメッシュも常に何かは描ける。カリング中に、カットが非常駐のクラスタを必要とすると GPU が要求を書き込み、CPU が優先度順にページを読み込み、カットは数フレームかけて細かくなる。DAG 構造により、常駐しているより粗い祖先が必ず代役を務められる。</p>
+<h3 id="圧縮">圧縮</h3>
+<p>位置はメッシュごとの格子に量子化され、クラスタの境界に対する相対値として、クラスタごとのビット幅で格納される。法線は八面体符号化を用い、インデックスはクラスタ内の頂点集合に対する局所値として格納される。メモリ上の形式は GPU で直接復号でき、ディスク上の形式は汎用圧縮器（Oodle）がさらに縮められるバイト指向の配置を加える。公表値では、Nanite メッシュはディスク上で入力三角形あたり約14バイトであり、LOD 一式をもつ通常の非 Nanite メッシュより小さい。</p>
+<h3 id="限界とその後の拡張">限界とその後の拡張</h3>
+<ul>
+<li><p><strong>集合的なジオメトリ。</strong> Nanite が簡略化するのは曲面である。草、葉、髪は多数の離れた薄い断片であり、簡略化すると体積がやせ、自己遮蔽によるカリングもきかない。フォリッジ対応は段階的に進んだ（マスクマテリアル、プログラマブルラスタ、そして 5.7 ではインスタンス化したアセンブリ、スキニングによる変形、遠景の樹冠向けのボクセル的表現を加えた実験的なフォリッジ経路）。</p></li>
+<li><p><strong>変形。</strong> 当初は静的メッシュのみだったが、スケルタルメッシュ、World Position Offset、ディスプレイスメントによるテッセレーションが 5.x の各版で追加された。</p></li>
+<li><p><strong>カットでの面のちらつき。</strong> LOD はグループ単位で切り替わるため、移動に伴ってトポロジーがわずかに変わることがある。<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>τ</mi><mo>≈</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\tau\approx1</annotation></semantics></math> ピクセルでは通常見えないが、刻まれた文字のような鋭い細部はちらつくことがある。</p></li>
+<li><p><strong>影。</strong> 従来のシャドウマップではマイクロジオメトリを解像できないため、Nanite は仮想シャドウマップ（同じ Nanite パイプラインで描かれる 16k<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi></mi><mn>2</mn></msup><annotation encoding="application/x-tex">^2</annotation></semantics></math> の仮想シャドウマップ）と組み合わされる。</p></li>
+</ul>
+<p class="part part-l">第II部 &middot; Lumen</p>
+<h2 id="lumen-the-problem"><span class="num">7</span>Lumen：問題設定</h2>
+<p>グローバルイルミネーションとは、直接光の項だけでなくレンダリング方程式そのものを解くことである。 <math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>L</mi><mi>o</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>𝐱</mi><mo>,</mo><msub><mi>ω</mi><mi>o</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.278em"></mspace><mo>=</mo><mspace width="0.278em"></mspace><msub><mi>L</mi><mi>e</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>𝐱</mi><mo>,</mo><msub><mi>ω</mi><mi>o</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.278em"></mspace><mo>+</mo><mspace width="0.278em"></mspace><msub><mo>∫</mo><mi>Ω</mi></msub><msub><mi>f</mi><mi>r</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>𝐱</mi><mo>,</mo><msub><mi>ω</mi><mi>i</mi></msub><mo>,</mo><msub><mi>ω</mi><mi>o</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.278em"></mspace><msub><mi>L</mi><mi>i</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>𝐱</mi><mo>,</mo><msub><mi>ω</mi><mi>i</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.278em"></mspace><mrow><mo stretchy="true" form="prefix">(</mo><mi>𝐧</mi><mo>⋅</mo><msub><mi>ω</mi><mi>i</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><msub><mi>ω</mi><mi>i</mi></msub><mo>,</mo></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>L</mi><mi>i</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>𝐱</mi><mo>,</mo><msub><mi>ω</mi><mi>i</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.278em"></mspace><mo>=</mo><mspace width="0.278em"></mspace><msub><mi>L</mi><mi>o</mi></msub><mo minsize="1.2" maxsize="1.2" stretchy="false" form="prefix">(</mo><mrow><mi mathvariant="normal">t</mi><mi mathvariant="normal">r</mi><mi mathvariant="normal">a</mi><mi mathvariant="normal">c</mi><mi mathvariant="normal">e</mi></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mi>𝐱</mi><mo>,</mo><msub><mi>ω</mi><mi>i</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo><mspace width="0.167em"></mspace><mo>−</mo><msub><mi>ω</mi><mi>i</mi></msub><mo minsize="1.2" maxsize="1.2" stretchy="false" form="postfix">)</mo><mi>.</mi></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{gathered}L_o(\mathbf{x},\omega_o) \;=\; L_e(\mathbf{x},\omega_o) \;+\; \int_{\Omega} f_r(\mathbf{x},\omega_i,\omega_o)\; L_i(\mathbf{x},\omega_i)\;(\mathbf{n}\cdot\omega_i)\,\mathrm{d}\omega_i , \\
+L_i(\mathbf{x},\omega_i) \;=\; L_o\big(\mathrm{trace}(\mathbf{x},\omega_i),\,-\omega_i\big).\end{gathered}</annotation></semantics></math> <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>L</mi><mi>i</mi></msub><annotation encoding="application/x-tex">L_i</annotation></semantics></math> の中の再帰が光を反射させる。オフラインレンダラは、ピクセルあたり数百本のレイでこの積分をモンテカルロ推定する。1440p・60 fps のゲームが払えるのは、ピクセルあたりおそらく<em>半本</em>のレイであり、しかも相手は完全に動的な世界（焼き込みライトマップなし）で、レイトレーシング用の構造に全詳細で入れるには密すぎる Nanite ジオメトリでできている。</p>
+<aside class="key l"><p class="klabel">要点</p>
+<p>実際のシーンを全詳細でトレースしない。ピクセルごとにもトレースしない。疎なプローブ群からトレースし、ヒット先を事前ライティング済みの<em>サーフェスキャッシュ</em>で引ける安価な代理表現（符号付き距離場）に対してトレースする。キャッシュを自分自身に還流させて、時間をかけて無限回の反射を得る。高価なレイは重要な箇所にだけ使い、安く正確なものから安く粗いものへと順に試す。</p>
+</aside>
+<figure id="fig6"><img src="/nanite-lumen/fig/ja/fig06.svg" alt="Lumen の全体像。橙は毎フレームのスクリーン空間の処理、灰色はワールド空間のデータ構造で、予算内で少しずつ更新される。" loading="lazy" width="100%"><figcaption><b>図 6.</b> Lumen の全体像。橙は毎フレームのスクリーン空間の処理、灰色はワールド空間のデータ構造で、予算内で少しずつ更新される。</figcaption></figure>
+<h2 id="representing-the-scene-for-rays"><span class="num">8</span>レイのためのシーン表現</h2>
+<h3 id="メッシュ距離場">メッシュ距離場</h3>
+<p>各メッシュには事前計算された<strong>符号付き距離場</strong>（SDF）がある。これは疎な3次元格子で、各テクセルにはもっとも近い曲面までの距離（内部では負）が入っている。SDF のレイマーチングは<em>スフィアトレーシング</em>である。現在の点で保存されている距離は、その半径の内側には何もぶつからないことを保証する半径なので、レイはその分だけ安全に進める。 <math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>𝐩</mi><mrow><mi>k</mi><mo>+</mo><mn>1</mn></mrow></msub><mspace width="0.278em"></mspace><mo>=</mo><mspace width="0.278em"></mspace><msub><mi>𝐩</mi><mi>k</mi></msub><mo>+</mo><mrow><mi mathvariant="normal">S</mi><mi mathvariant="normal">D</mi><mi mathvariant="normal">F</mi></mrow><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>𝐩</mi><mi>k</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.278em"></mspace><mi>ω</mi><mo>,</mo><mspace width="2.0em"></mspace><mrow><mi mathvariant="normal">S</mi><mi mathvariant="normal">D</mi><mi mathvariant="normal">F</mi></mrow><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>𝐩</mi><mi>k</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>&lt;</mo><mi>ε</mi><mrow><mspace width="0.333em"></mspace><mtext mathvariant="normal"> でヒット</mtext></mrow><mi>.</mi></mrow><annotation encoding="application/x-tex">\mathbf{p}_{k+1} \;=\; \mathbf{p}_k + \mathrm{SDF}(\mathbf{p}_k)\;\omega, \qquad \mathrm{SDF}(\mathbf{p}_k) &lt; \varepsilon \text{ でヒット}.</annotation></semantics></math> 開けた空間では歩幅が大きく、曲面の近くでは小さくなる。SDF はさらに、ソフトシャドウとコーンの推定をほぼ無料で与える。レイが幾何に最接近した度合い <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mo>min</mo><mi>k</mi></msub><mrow><mi mathvariant="normal">S</mi><mi mathvariant="normal">D</mi><mi mathvariant="normal">F</mi></mrow><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>𝐩</mi><mi>k</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mi>/</mi><msub><mi>t</mi><mi>k</mi></msub></mrow><annotation encoding="application/x-tex">\min_k \mathrm{SDF}(\mathbf{p}_k)/t_k</annotation></semantics></math> は、レイ周りのコーンがどれだけ遮られているかの近似になるからだ。</p>
+<figure id="fig7"><img src="/nanite-lumen/fig/ja/fig07.svg" alt="距離場のスフィアトレーシング。空いた空間では大股に進み、曲面の近くで収束する。三角形には一切触れない。" loading="lazy" width="100%"><figcaption><b>図 7.</b> 距離場のスフィアトレーシング。空いた空間では大股に進み、曲面の近くで収束する。三角形には一切触れない。</figcaption></figure>
+<h3 id="グローバル距離場">グローバル距離場</h3>
+<p>重なり合う多数のメッシュ SDF をレイごとに辿るのは、距離とともに高くつく。Lumen はさらに、すべてのメッシュ SDF を<strong>グローバル距離場</strong>に統合する。これはカメラ中心のクリップマップの集合（外側ほど解像度の粗い入れ子の立方体）で、物体が動くと少しずつ更新される。安価で遠くまで届くが、解像度が低く薄い形状を失う。そのため Lumen は、レイの最初の数メートルには精密なメッシュ SDF を使い、その先でグローバル距離場に切り替える。</p>
+<h3 id="サーフェスキャッシュ">サーフェスキャッシュ</h3>
+<p>距離場のヒットは、レイが<em>どこで</em>止まったかは教えてくれるが、<em>そこでの光の色</em>は教えてくれない。任意のヒット点でマテリアルの完全なシェーディングと直接光を評価していては遅すぎる。Lumen の答えが<strong>サーフェスキャッシュ</strong>である。</p>
+<ul>
+<li><p>各メッシュは少数の<strong>カード</strong>で覆われる。カードはメッシュの周りに置かれた向きをもつ矩形である（概念的には、最大6方向からメッシュを見る正射影カメラのようなもの。複雑なメッシュには構築時の配置処理でより多くのカードが割り当てられる）。</p></li>
+<li><p>各カードは（Nanite で、したがって安価に）アトラスへラスタライズされ、アルベド、法線、放射、不透明度、深度が格納される。カードの解像度はカメラからの距離に従い、フレームごとの予算内で更新される。</p></li>
+<li><p>そのうえでライティングは<em>カード空間で</em>計算される。影付きの直接光に加え、カードのテクセル自体から短いレイを飛ばして集めた間接光である。</p></li>
+</ul>
+<figure id="fig8"><img src="/nanite-lumen/fig/ja/fig08.svg" alt="カードは各メッシュをいくつかの方向からアトラスに写し取る。メッシュ距離場に当たったレイは、そのヒット点をメッシュのカードに投影し、計算済みのライティングを読む。マテリアル評価の代わりにテクスチャフェッチ一回で済む。" loading="lazy" width="100%"><figcaption><b>図 8.</b> カードは各メッシュをいくつかの方向からアトラスに写し取る。メッシュ距離場に当たったレイは、そのヒット点をメッシュのカードに投影し、計算済みのライティングを読む。マテリアル評価の代わりにテクスチャフェッチ一回で済む。</figcaption></figure>
+<h3 id="キャッシュ内のラジオシティ無限反射をただで">キャッシュ内のラジオシティ：無限反射をただで</h3>
+<p>サーフェスキャッシュが自身のテクセルの間接光を計算するとき、そのレイはサーフェスキャッシュ自体に当たり、<em>前フレーム</em>のライティング結果を読む。1フレームに1回の反射が数フレームで多重反射の光に蓄積される。これは時間方向に回すレンダリング方程式の不動点反復である。 <math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>L</mi><mtext mathvariant="normal">cache</mtext><mrow><mo stretchy="true" form="prefix">(</mo><mi>n</mi><mo>+</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow></msubsup><mspace width="0.278em"></mspace><mo>=</mo><mspace width="0.278em"></mspace><msub><mi>L</mi><mtext mathvariant="normal">direct</mtext></msub><mspace width="0.278em"></mspace><mo>+</mo><mspace width="0.278em"></mspace><mi>𝒯</mi><mo minsize="1.2" maxsize="1.2" stretchy="false" form="prefix">[</mo><msubsup><mi>L</mi><mtext mathvariant="normal">cache</mtext><mrow><mo stretchy="true" form="prefix">(</mo><mi>n</mi><mo stretchy="true" form="postfix">)</mo></mrow></msubsup><mo minsize="1.2" maxsize="1.2" stretchy="false" form="postfix">]</mo><mo>,</mo></mrow><annotation encoding="application/x-tex">L^{(n+1)}_{\text{cache}} \;=\; L_{\text{direct}} \;+\; \mathcal{T}\big[L^{(n)}_{\text{cache}}\big],</annotation></semantics></math> ここで <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>𝒯</mi><annotation encoding="application/x-tex">\mathcal{T}</annotation></semantics></math> は1回反射の輸送作用素である。物理的なアルベドでは <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>𝒯</mi><annotation encoding="application/x-tex">\mathcal{T}</annotation></semantics></math> のノルムは1未満なので、反復は多重反射の完全な解に収束する。更新は償却される。距離と最近の変化で優先順位を付け、フレームごとに予算内の一部のカードだけを再ライティングする。照明を点けたとき、Lumen の間接光が一拍遅れて目に見えて「落ち着く」のはこのためである。</p>
+<h2 id="the-final-gather-screen-probes"><span class="num">9</span>最終ギャザー：スクリーンプローブ</h2>
+<h3 id="なぜプローブか">なぜプローブか</h3>
+<p>ピクセルあたり1本のレイを飛ばしてデノイズしても、拡散 GI にはノイズが多すぎる。Lumen は、拡散の間接光が低周波であることを利用する。<strong>スクリーンプローブ</strong>を疎に配置し（既定では <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>16</mn><mo>×</mo><mn>16</mn></mrow><annotation encoding="application/x-tex">16\times16</annotation></semantics></math> ピクセルのタイルごとに一つ、深度や法線が急に変わるところには追加で配置）、各プローブから半球全体をトレースし、ピクセルごとにプローブ間を補間する。</p>
+<h3 id="プローブが保持するもの">プローブが保持するもの</h3>
+<p>各プローブは、半球にわたる入射ラディアンスを<strong>八面体マップ</strong>（球を正方形に展開したもの）に格納する。典型的には <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>8</mn><mo>×</mo><mn>8</mn></mrow><annotation encoding="application/x-tex">8\times8</annotation></semantics></math> 方向である。プローブあたり64本のレイを256ピクセルに一つのプローブで飛ばせば <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>64</mn><mi>/</mi><mn>256</mn><mo>=</mo><mn>0.25</mn></mrow><annotation encoding="application/x-tex">64/256 = 0.25</annotation></semantics></math> 本／ピクセルだが、各ピクセルは近隣プローブを補間し、プローブは時間方向にも再利用されるので、実質的にははるかに多くの方向について積分していることになる。</p>
+<figure id="fig9"><img src="/nanite-lumen/fig/ja/fig09.svg" alt="スクリーンプローブは入射光を疎にサンプリングする。各プローブは、周囲の世界の小さな方向別の画像を保持する。" loading="lazy" width="100%"><figcaption><b>図 9.</b> スクリーンプローブは入射光を疎にサンプリングする。各プローブは、周囲の世界の小さな方向別の画像を保持する。</figcaption></figure>
+<h3 id="プローブレイの重点サンプリング">プローブレイの重点サンプリング</h3>
+<p>プローブの64本のレイはどこへ向けるべきか。一様な方向では、半球の暗い部分にレイを浪費する。Lumen は、すでに分かっている二つの項からサンプリングの確率密度（PDF）を作る。プローブを使うピクセルの BRDF と法線、そしてプローブ<em>自身の前フレームのラディアンス</em>（再投影したもの）である。明るかった方向や BRDF が重く重み付けする方向にはより多くのレイが向かい、その PDF で割ることでモンテカルロ推定は不偏に保たれる。 <math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>E</mi><mo accent="true">̂</mo></mover><mrow><mo stretchy="true" form="prefix">(</mo><mi>𝐱</mi><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.278em"></mspace><mo>=</mo><mspace width="0.278em"></mspace><mfrac><mn>1</mn><mi>N</mi></mfrac><munderover><mo>∑</mo><mrow><mi>k</mi><mo>=</mo><mn>1</mn></mrow><mi>N</mi></munderover><mfrac><mrow><msub><mi>L</mi><mi>i</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>𝐱</mi><mo>,</mo><msub><mi>ω</mi><mi>k</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.167em"></mspace><mrow><mo stretchy="true" form="prefix">(</mo><mi>𝐧</mi><mo>⋅</mo><msub><mi>ω</mi><mi>k</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><mrow><mi>p</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>ω</mi><mi>k</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow></mfrac><mo>,</mo><mspace width="2.0em"></mspace><mi>p</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>ω</mi><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.278em"></mspace><mo>∝</mo><mspace width="0.278em"></mspace><munder><munder><mrow><mo>cos</mo><mi>θ</mi></mrow><mo accent="true">⏟</mo></munder><mtext mathvariant="normal">BRDF</mtext></munder><mspace width="0.278em"></mspace><mo>×</mo><mspace width="0.278em"></mspace><munder><munder><mrow><msub><mover><mi>L</mi><mo accent="true">̃</mo></mover><mtext mathvariant="normal">prev</mtext></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>ω</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><mo accent="true">⏟</mo></munder><mtext mathvariant="normal">前フレーム</mtext></munder><mi>.</mi></mrow><annotation encoding="application/x-tex">\widehat{E}(\mathbf{x}) \;=\; \frac{1}{N}\sum_{k=1}^{N} \frac{L_i(\mathbf{x},\omega_k)\,(\mathbf{n}\cdot\omega_k)}{p(\omega_k)}, \qquad p(\omega)\;\propto\; \underbrace{\cos\theta}_{\text{BRDF}}\;\times\;\underbrace{\tilde{L}_{\text{prev}}(\omega)}_{\text{前フレーム}} .</annotation></semantics></math> これはオフラインで使われる積の重点サンプリングと同じ発想であり、ピクセルごとではなくプローブごとに行うことで費用を抑えている。</p>
+<h3 id="フィルタリングと積分">フィルタリングと積分</h3>
+<p>プローブのラディアンスは近隣のプローブ間で空間的にフィルタリングされ（深度や法線が食い違う近隣、レイが遮られていたはずの近隣は除く）、補間しやすい小さな形式（拡散には低次の球面調和関数）に変換され、各ピクセルが平面距離による重みで近くのプローブを補間する。最後に時間フィルタが複数フレームにわたって蓄積する。</p>
+<h2 id="the-tracing-ladder"><span class="num">10</span>トレースのはしご</h2>
+<p>各プローブレイは、次第に粗くなるが次第に遠くまで届く手法の列に沿ってトレースされる。各段は前の段があきらめたところから引き継ぐ。</p>
+<figure id="fig10"><img src="/nanite-lumen/fig/ja/fig10.svg" alt="プローブレイ一本ごとの Lumen のソフトウェアトレースのはしご。第2〜3段のヒットはサーフェスキャッシュからライティングを読み、外れたレイは次の段へ落ちる。" loading="lazy" width="100%"><figcaption><b>図 10.</b> プローブレイ一本ごとの Lumen のソフトウェアトレースのはしご。第2〜3段のヒットはサーフェスキャッシュからライティングを読み、外れたレイは次の段へ落ちる。</figcaption></figure>
+<h4 id="スクリーントレース">1. スクリーントレース</h4>
+<p>現在の深度バッファの HZB の中をレイで進む。画面上の何かに当たれば、そこにある前フレームの最終ライティング結果を読む。実際に描画されたジオメトリ（Nanite の詳細を含む）と一致し、粗い代理表現が取りこぼす小さな接触反射も拾えるので、これがもっとも正確な情報源である。</p>
+<h4 id="距離場トレース">2〜3. 距離場トレース</h4>
+<p>スクリーントレースが画面外に出たり曲面の背後を通ったりしたら、止まったところからメッシュ SDF、次いでグローバル SDF を通して続け、ヒットはサーフェスキャッシュの参照でシェーディングする。</p>
+<h4 id="ラディアンスキャッシュ">4. ラディアンスキャッシュ</h4>
+<p>長いレイは、もっとも高価でありながら一本一本の重要度はもっとも低い。Lumen は第二の<em>ワールド空間</em>のプローブ群を保持する。カメラ中心のクリップマップ上の疎なプローブで、角度方向の解像度は高いがゆっくり更新され、すべてのスクリーンプローブから再利用される。一定距離を越えたスクリーンプローブのレイは、そこでトレースをやめてワールドのラディアンスキャッシュを参照する。小さく明るい遠方の特徴（暗い部屋の向こうの明るい窓）がノイズにならず安定するのはこのためである。</p>
+<h3 id="ハードウェアレイトレーシングモード">ハードウェアレイトレーシング・モード</h3>
+<p>RT 対応の GPU では、第2〜3段を、ハードウェア BVH を通じた実際の三角形へのレイトレーシングに置き換えられる。Nanite メッシュは簡略化したフォールバックメッシュとして BVH に入る（マイクロポリゴンの全詳細では大きすぎる）が、曲面の近くではスクリーントレースが全詳細を回復する。ヒットではサーフェスキャッシュを読む（速い）か、ヒット点でマテリアルとライティングを完全に評価する（「ヒットライティング」。遅いが、鏡のような反射には必要）かを選べる。ハードウェアモードは薄いジオメトリ、スキンメッシュ、正確な遮蔽をはるかにうまく扱い、ソフトウェアモードはどこでも動き、より多くのインスタンスにスケールする。最近の版（5.6、5.7）では、コンソールでの性能向上に伴い、既定の重心がハードウェア経路へ移りつつある。</p>
+<h2 id="reflections-translucency-and-the-rest"><span class="num">11</span>反射、半透明、その他</h2>
+<h4 id="反射">反射</h4>
+<p>粗い反射はローブの広い間接鏡面反射にすぎないので、スクリーンプローブのラディアンスを再利用する。より滑らかな面（ラフネスがしきい値未満）には、同じはしごを通して低解像度でピクセルごとに専用の反射レイを飛ばし、空間・時間方向にデノイズする。ハードウェアモードの鏡面反射はヒットライティングを使い、反射された物体が粗いサーフェスキャッシュの参照ではなく完全にシェーディングされるようにする。</p>
+<h4 id="半透明とフォグ">半透明とフォグ</h4>
+<p>低解像度のフロクセル（視錐台に沿ったボクセル）ボリュームを、ボクセル中心から同じ構造へトレースしてライティングする。半透明の面とボリューメトリックフォグはそれをサンプリングする。</p>
+<h4 id="破綻する場所">破綻する場所</h4>
+<p>SDF の解像度より薄い壁は光が漏れる。カードで覆いきれない形状（深いくぼみ）は間接光が欠けたり暗くなったりする。サーフェスキャッシュと時間フィルタは数フレームかけて収束するので、急な照明変化には遅れが出る。放射面はたまたま当たったレイでしか見つからず直接サンプリングされないため、放射面だけで照らす大きなシーンはノイズが多い。（5.5 で導入され 5.7 で拡張された MegaLights は、多数の光源からの直接光という別の問題を扱う。）</p>
+
+<h2 id="how-the-two-fit-together"><span class="num">12</span>二つはどう噛み合うか</h2>
+<div class="tablewrap"><table><thead><tr><th></th><th class="tn">Nanite</th><th class="tl">Lumen</th></tr></thead><tbody>
+<tr><td class="k">問題</td><td>ジオメトリの費用がコンテンツ量に比例する</td><td>ライティングの費用がピクセルあたりのレイ数に比例する</td></tr>
+<tr><td class="k">中心の手法</td><td>クラスタ DAG と1ピクセル誤差のカット</td><td>疎なプローブ、代理シーン、キャッシュ</td></tr>
+<tr><td class="k">階層</td><td>クラスタ DAG、グループ上の BVH</td><td>SDF クリップマップ、プローブのクリップマップ、HZB のミップ</td></tr>
+<tr><td class="k">時間方向の再利用</td><td>前フレームの可視集合（パス1）</td><td>サーフェスキャッシュ、ラディアンスキャッシュ、時間フィルタ、重点サンプリングの PDF</td></tr>
+<tr><td class="k">空間方向の再利用</td><td>一つのクラスタが多数のピクセルに</td><td>一つのプローブが約256ピクセルに</td></tr>
+<tr><td class="k">GPU の使い方</td><td>常駐型コンピュート、64ビットアトミック</td><td>コンピュートでのプローブトレース、非同期更新</td></tr>
+<tr><td class="k">取り除くボトルネック</td><td>三角形セットアップ、オーバードロー、VRAM</td><td>レイ数、ヒット点でのマテリアル評価</td></tr>
+<tr><td class="k">典型的なアーティファクト</td><td>まれな LOD のトポロジーのちらつき</td><td>光漏れ、急な変化の後の遅れ</td></tr>
+</tbody></table></div>
+<p>依存関係は双方向である。Lumen は Nanite を必要とする。カードはメッシュをラスタライズして写し取るものであり、毎フレーム数千枚のカードを写せるのは Nanite がそれを安く描くからだ。Nanite は Lumen（またはそれに類するもの）を必要とする。映画並みの密度のジオメトリも、平板な環境光で照らせばプラスチックの模型に見える。細部を本物らしく見せるのは、Lumen が与える微小な遮蔽と反射光である。</p>
+<aside class="key"><p class="klabel">共通する設計原理</p>
+<p>どちらも<em>出力感応型</em>のアルゴリズムである。「世界にどれだけあるか」ではなく「画面はどれだけ見せられるか」を問い、そのうえで、その問いを安く答えられるようにする階層、安い答えが危険な方向に決して間違わないようにする保守的な境界、そして今フレームの答えの大半を前フレームの答えにする時間的一貫性を使う。仮想メモリや仮想テクスチャと同じ型を、三角形と光に当てはめたものである。</p>
+</aside>
+
+  </article>
+
+  <div class="sources">
+<p><b>出典</b> Brian Karis, Rune Stubbe, Graham Wihlidal, <i>A Deep Dive into Nanite Virtualized Geometry</i>, SIGGRAPH 2021 Advances in Real-Time Rendering。Daniel Wright, Krzysztof Narkowicz, Patrick Kelly, <i>Lumen: Real-time Global Illumination in Unreal Engine 5</i>, SIGGRAPH 2022 Advances。Burns, Hunt, <i>The Visibility Buffer</i>, JCGT 2013。John Hart, <i>Sphere Tracing</i>, The Visual Computer 1996。Cigolle ほか, <i>A Survey of Efficient Representations for Independent Unit Vectors</i>, JCGT 2014。Epic Games, Unreal Engine 5 ドキュメントおよび 5.7 までのリリースノート。</p>
+<p><b>検証したこと、していないこと</b> アルゴリズムは Epic 自身の講演とドキュメントに基づいて記述しており、エンジンを自分でプロファイルしたわけではない。本文中の数値（クラスタあたり128三角形、128 KB のページ、ディスク上で三角形あたり約14バイト、微小三角形でソフトウェアラスタライズが約3倍速いこと、16&times;16 タイルごとに一つのスクリーンプローブと 8&times;8 方向）は Epic が公表した既定値または計測値であり、調整可能である。図は模式図であり、DAG とプローブの配置は簡略化しているが、LOD 誤差の曲線とスフィアトレーシングの図は本文の式から計算している。5.7 のフォリッジ経路は実験的機能であり、ここでは概要にとどめた。</p>
+  </div>
+
+</div>
+</main>
+<!-- ISEGORIA:FOOT -->
+<footer id="ig-footer"><div><a href="/ja/">Isegoria · Benjamin Haire</a><nav aria-label="サイト内リンク"><a href="/ja/">ホームに戻る</a><a href="/ja/library.html">全コンテンツ</a><a href="#ig-content">ページ上部へ</a></nav></div></footer>
+<!-- /ISEGORIA:FOOT -->
+</body>
+</html>
