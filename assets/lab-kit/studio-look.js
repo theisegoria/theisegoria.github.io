@@ -27,7 +27,10 @@
  * Works on both WebGPU and the WebGL 2 fallback (node materials compile to
  * either; the fallback keeps MSAA + AO). `?fx=classic` forces the pass-1
  * pipeline (MSAA + AO), `?fx=0..4` pins a quality level, `?lowfx` turns post
- * off. Usage, inside mountLab's setup:
+ * off, `?ssgi` tries screen-space GI, `?ssr=0` turns reflections off, `?hdri=1k`
+ * keeps the 1k studio. The ladder steps down when frames run slow and climbs
+ * back (never above where it started) when they run at the display rate again.
+ * Usage, inside mountLab's setup:
  *
  *   const look = await createStudio(lab, { scale: 40, floorY: -9 });
  *   look.upgrade(root);            // materials + shadows + uvs
@@ -624,7 +627,7 @@ export async function createStudio(lab, opts = {}) {
   const sharpness = opts.sharpen === false ? null : (opts.sharpen ?? 0.9);   // RCAS stops: 0 is strongest, 2 is gentle
   const ssrOpt = typeof opts.ssr === 'object' ? opts.ssr : {}, giOpt = typeof opts.ssgi === 'object' ? opts.ssgi : {};
   let dofOpt = typeof opts.dof === 'object' ? opts.dof : {};
-  const want = { ssr: opts.ssr !== false, ssgi: !!opts.ssgi, dof: !!opts.dof };
+  const want = { ssr: opts.ssr !== false && !/[?&]ssr=0\b/.test(q), ssgi: !!opts.ssgi || /[?&]ssgi\b/.test(q), dof: !!opts.dof };   // ?ssgi turns GI on to try it, ?ssr=0 turns reflections off
   let level = pinned ?? (small ? 2 : LEVELS.length - 1);
   let adaptive = pinned === null && (opts.adaptive ?? true);
   let mods = null, nodes = {}, built = '', glowing = 0, controls = opts.controls || null, focusPoint = null;
@@ -738,7 +741,8 @@ export async function createStudio(lab, opts = {}) {
 
   // ---------------------------------------------------------------- monitor: frame time, stillness, photo mode
   const stats = { backend: lab.backend, level, fps: 0, photo: false, effects: built, pinned: pinned !== null };
-  const iv = []; let lastT = 0, warm = 0, cooldown = 0, photoAllowed = true, stillT = 0, settle = 0;
+  const iv = []; let lastT = 0, warm = 0, cooldown = 0, photoAllowed = true, stillT = 0, settle = 0, fast = 0;
+  const drops = LEVELS.map(() => 0); let ceiling = level;   // the adaptive ladder never climbs above where it started
   const lastCam = new THREE.Matrix4(), lastProj = new THREE.Matrix4();
   let envTween = null;
   const _d = new THREE.Vector3(), _t = new THREE.Vector3();
@@ -754,20 +758,70 @@ export async function createStudio(lab, opts = {}) {
     if (aoPass) aoPass.samples.value = on ? 32 : 16;
     if (nodes.gi) nodes.gi.stepCount.value = on ? 16 : 8;
   }
+  /* Frame time is measured on the display frames themselves: a light rAF ticker runs while the page is
+   * drawing (and for a second after), and the gap between its ticks is what the reader sees, whether the
+   * time went to the GPU, to the page's own update or to the renderer. An on-demand page that has
+   * stopped drawing stops the ticker, so an idle stage never reads as a slow one. */
+  let ticking = false, lastRenderT = 0, slowRun = 0, lastTick = 0, classicVotes = 0;
+  const tk = [];
+  const tick = (t) => {
+    if (lastTick && t - lastTick < 1000) tk.push(t - lastTick);
+    lastTick = t;
+    if (performance.now() - lastRenderT < 1000) requestAnimationFrame(tick); else ticking = false;
+  };
   function measure(now) {
-    if (lastT) {
-      const d = now - lastT;
-      if (d > 150) { iv.length = 0; warm = Math.min(warm, 20); }      // a pause (scrolled away, tab hidden, on-demand idle)
-      else if (++warm > 30) iv.push(d);                               // skip the first frames: shader compiles
+    lastRenderT = now;
+    if (!ticking) { ticking = true; lastTick = 0; warm = Math.min(warm, 20); requestAnimationFrame(tick); }
+    for (const d of tk) {
+      if (++warm > 30) { iv.push(d); slowRun = d > 80 ? slowRun + 1 : 0; }   // skip the first frames: shader compiles
     }
+    tk.length = 0;
     lastT = now;
-    if (iv.length < 45) return;
+    // 45 frames is a long wait at 10 fps: six very slow frames in a row are enough to act on
+    if (iv.length < 45 && slowRun < 6) return;
+    slowRun = 0;
     iv.sort((a, b) => a - b); const med = iv[iv.length >> 1]; iv.length = 0;
     stats.fps = Math.round(1000 / med);
-    if (--cooldown > 0 || !adaptive || med < 1000 / 48) return;
+    if (--cooldown > 0 || !adaptive) return;
+    if (med < 1000 / 57) {
+      classicVotes = 0;
+      // comfortably at the display rate: after a few such windows, climb back one step (a busy moment,
+      // another tab, a shader compile, should not cost the page its effects for good); a level the
+      // ladder has had to leave twice is not tried again
+      if (++fast >= 4 && level < ceiling) { level = stepTo(+1); stats.level = level; build(); fast = 0; cooldown = 3; }
+      return;
+    }
+    fast = 0;
+    if (med < 1000 / 48) { classicVotes = 0; return; }
     if (stats.photo) { photoAllowed = false; setPhoto(false); }  // slow while still: give up the photo-mode boost first
-    else if (level > 0) { level--; stats.level = level; build(); }
+    else if (level > 0) { if (++drops[level] >= 2) ceiling = Math.min(ceiling, level - 1); level = stepTo(-1); stats.level = level; build(); }
+    else if (med > 1000 / 32 && ++classicVotes >= 3) toClassic();  // the bottom rung stays slow: drop to the pass-1 pipeline for good
     cooldown = 2;
+  }
+  /** The last rung: the pass-1 graph (MSAA scene pass + GTAO, no temporal filter or reflections). */
+  function toClassic() {
+    if (!mods) return;
+    try {
+      const prePass = pass(scene, camera, { samples: 0 });
+      prePass.transparent = false;
+      prePass.setMRT(mrt({ output: packNormalToRGB(normalView) }));
+      const preNormal = sample((st) => unpackRGBToNormal(prePass.getTextureNode().sample(st)));
+      const a = makeAO(prePass, preNormal);
+      const sp = pass(scene, camera, { samples: 4 });
+      sp.contextNode = builtinAOContext(a.getTextureNode().sample(screenUV).r);
+      pipeline.outputNode = sp; pipeline.needsUpdate = true;
+      aoPass = a; look.ao = a;
+      nodes.traa?.dispose(); nodes.sharp?.dispose();
+      mods = null; built = 'msaa+ao'; stats.effects = built; stats.level = -1; adaptive = false;
+      camera.clearViewOffset();
+    } catch (err) { console.warn('studio-look: classic fallback failed', err); }
+  }
+  /** what a level actually changes on this page (a page without SSGI or a lens skips the rungs that only add those) */
+  const effective = (l) => { const L = LEVELS[l]; return [want.ssr && L.ssr, !!mods?.ssgi && L.ssgi, !!mods?.dof && L.dof, L.ao].join(); };
+  function stepTo(dir) {
+    let l = level; const cur = effective(level);
+    while (l + dir >= 0 && l + dir <= (dir > 0 ? ceiling : LEVELS.length - 1)) { l += dir; if (effective(l) !== cur) break; }
+    return l;
   }
 
   const cache = new Map();
@@ -823,7 +877,7 @@ export async function createStudio(lab, opts = {}) {
     setAO(on) { if (aoPass) aoPass.scale.value = on ? aoStrength : 0; },
     /** Rotate the environment (radians about y) so highlights land on the edges a stage looks at; eased over ms. */
     setEnvRotation(y, ms = 0) {
-      if (!ms || !mods) { scene.environmentRotation.y = y; envTween = null; lab.invalidate(); return; }
+      if (!ms || !mods || reduced()) { scene.environmentRotation.y = y; envTween = null; lab.invalidate(); return; }
       envTween = { from: scene.environmentRotation.y, to: y, t0: performance.now(), ms }; lab.invalidate();
     },
     /** The orbit controls whose target is the depth-of-field focus. */
@@ -864,9 +918,11 @@ export async function createStudio(lab, opts = {}) {
       if (l === null) { adaptive = pinned === null && (opts.adaptive ?? true); return; }
       adaptive = false; level = Math.max(0, Math.min(LEVELS.length - 1, l)); stats.level = level; build(); lab.invalidate();
     },
+    /** Drop to the pass-1 pipeline (MSAA + AO) for the rest of the visit; the ladder does this itself when its bottom rung is slow. */
+    classic() { toClassic(); lab.invalidate(); },
     /** Restart temporal accumulation (after a cut). */
     settle() { settle = 0; lab.invalidate(); },
-    stats() { return { ...stats, level, built }; },
+    stats() { return { ...stats, level: mods ? level : (built === 'msaa+ao' && lab.backend === 'webgpu' ? -1 : level), built }; },
     dispose() { envTex.dispose(); pipeline?.dispose?.(); for (const t of texCache.values()) t.dispose(); texCache.clear(); },
   };
   build();

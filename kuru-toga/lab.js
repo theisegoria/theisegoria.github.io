@@ -239,7 +239,7 @@ const lab = await mountLab(canvas, {
     const look = await createStudio(lab, {
       // the wear view is a macro shot of two tips on paper: a shallow depth of field focused on the tips
       controls, dof: { bokeh: 1.3 },
-      scale: 20, hdri: 'studio', strips: 'product', shadows: false, keyIntensity: 0,
+      hdriRes: '2k', envSize: 512, scale: 20, hdri: 'studio', strips: 'product', shadows: false, keyIntensity: 0,
       exposure: 1.0, envIntensity: 0.95, aoRadius: 0.35, aoThickness: 0.12,
     });
     renderer.shadowMap.enabled = true;

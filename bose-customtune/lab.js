@@ -302,7 +302,7 @@ const lab = await mountLab(canvas, {
     // light: a real studio (soft boxes, CC0 HDRI) for image-based light, one soft warm key for
     // shadows, a cool rim to separate the head from the page; ambient occlusion in the post pass
     const look = await createStudio(lab, {
-      scale: 18, center: [3.5, 5.5, 0.5], floorY: null, hdri: 'softbox', strips: 'product', exposure: 1.0, envIntensity: 0.95,
+      hdriRes: '2k', scale: 18, center: [3.5, 5.5, 0.5], floorY: null, hdri: 'softbox', strips: 'product', exposure: 1.0, envIntensity: 0.95,
       keyIntensity: 1.35, keyColor: 0xfff0e2, keyDir: [0.75, 0.95, 0.85], shadows: !LITE, ao: !LITE && lab.backend === 'webgpu', aoRadius: 0.55, aoThickness: 0.25, aoStrength: 0.9, toneMapping: 'neutral',
     });
     if (look.key.shadow) { look.key.shadow.radius = 12; look.key.shadow.blurSamples = 16; look.key.shadow.bias = -0.0006; }

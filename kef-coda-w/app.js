@@ -1,5 +1,5 @@
 /* KEF Coda W, inside Uni-Q: the scene.
- * Product mode shows KEF's own Coda W model (credited in credits.txt).  Driver
+ * Product mode shows my own model of the speaker (assets/coda.glb, blender/build_coda.py).  Driver
  * mode loads a three-quarter section of a 12th-generation Uni-Q built in
  * Blender (assets/uniq.glb, speaker-models/build_uniq.py) from KEF's published
  * descriptions: the tweeter on its own motor inside the mid/bass voice coil,
@@ -14,7 +14,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
 import { mountLab } from '/assets/lab-kit/lab-kit.js';
-import { createStudio, turntable, surface } from '/assets/lab-kit/studio-look.js';
+import { createStudio, turntable, surface, scan, metricUVs } from '/assets/lab-kit/studio-look.js';
 import { createCallouts } from './callouts.js';
 import * as A from './acoustics.js';
 
@@ -45,8 +45,8 @@ function screenBounds(camera, W, H) {
 const callouts = createCallouts(host, { top: 10, bottom: 62, compactMax: 5, bounds: screenBounds });
 
 const copy = {
-  product: ['01 / PRODUCT', 'A stereo system.<br>A shared centre.', 'Coda W places a 25 mm aluminium tweeter inside a 130 mm bass/midrange cone. Each speaker uses a 12th-generation Uni-Q array.', 'KEF product model · Midnight Blue',
-    '01 / 製品', 'ステレオシステム。<br>中心を共有する。', 'Coda W は 130 mm の低中音コーンの中に 25 mm のアルミニウム製ツイーターを置く。各スピーカーは第 12 世代の Uni-Q アレイを使う。', 'KEF 製品モデル · Midnight Blue'],
+  product: ['01 / PRODUCT', 'A stereo system.<br>A shared centre.', 'Coda W places a 25 mm aluminium tweeter inside a 130 mm bass/midrange cone. Each speaker uses a 12th-generation Uni-Q array.', 'My model of Coda W · Midnight Blue finish',
+    '01 / 製品', 'ステレオシステム。<br>中心を共有する。', 'Coda W は 130 mm の低中音コーンの中に 25 mm のアルミニウム製ツイーターを置く。各スピーカーは第 12 世代の Uni-Q アレイを使う。', '私が作った Coda W のモデル · Midnight Blue 仕上げ'],
   driver: ['02 / DRIVER ANATOMY', 'Two drivers.<br>One axis.', 'A 12th-generation Uni-Q, cut away. The 25 mm dome sits on its own small motor inside the bore of the bass/midrange pole, so it radiates from the apex of the cone; the cone, the Z-flex surround and the trim ring then carry on as its waveguide. Behind the dome, the rear wave leaves through a duct in the centre poles. Separate the parts to see how they nest.', 'Uni-Q section · my reconstruction from KEF\'s published architecture',
     '02 / ドライバーの構造', '2 つのドライバー、<br>1 本の軸。', '第 12 世代 Uni-Q の断面である。25 mm のドームは低中音側のポールの穴の中に据えた専用の小さな磁気回路に載り、コーンの頂点から放射する。その先はコーン、Z-flex エッジ、トリムリングがそのまま導波路になる。ドームの背面の音は中心のポールを貫くダクトから抜ける。部品を分離して、入れ子の構造を見てみよう。', 'Uni-Q 断面 · KEF の公表構成から私が再構成したもの'],
   paths: ['03 / THE GEOMETRY', 'Why the axis matters.', 'A computed two-way response: woofer and tweeter through a fourth-order Linkwitz-Riley crossover at 2.5 kHz, summed at a listener 2 m away. Coincident sources add the same way at every angle. Separated sources add with a path difference that changes with angle, so the crossover region develops a dip that moves as you move.', 'Ideal sources · LR4 crossover · c = 343 m/s',
@@ -174,24 +174,49 @@ const loader = new GLTFLoader().setDRACOLoader(draco);
 function loadGLB(url) { return loader.loadAsync(url); }
 async function loadProduct() {
   try {
-    const g = await loadGLB('/kef-coda-w/coda-w.glb');
+    // My own model of the speaker (blender/build_coda.py), built from the published size and
+    // product photographs: no logo, a plain woven wrap, generic connectors.
+    const g = await loadGLB(ASSETS + 'coda.glb?v=2');
     const box = new THREE.Box3().setFromObject(g.scene), size = box.getSize(new THREE.Vector3()), center = box.getCenter(new THREE.Vector3());
     const wrapper = new THREE.Group(); wrapper.add(g.scene); g.scene.position.sub(center); wrapper.scale.setScalar(2.85 / size.y); product.add(wrapper);
-    // KEF's model is one material with baked maps; keep every map and move it to a physical
-    // material so the studio light reads it properly (satin cabinet, matte grille).
+    // finishes by material name; the wrap is a real CC0 fabric scan (ambientCG) tiled at its true size
+    const weave = scan('fabric_weave', 1), grain = surface('grain');
+    const S = THREE.DoubleSide;
+    const FIN = {
+      cabinet_fabric: { color: 0x182031, roughness: 0.9, sheen: 0.8, sheenColor: 0x4c5874, sheenRoughness: 0.5, specularIntensity: 0.3, normalMap: weave.normal, normalScale: 0.8, roughnessMap: weave.rough, uvTile: 0.008 },
+      baffle_trim: { color: 0x0b0c0e, roughness: 0.6 },
+      trim_ring: { color: 0x0c0d0f, roughness: 0.34, clearcoat: 0.35, clearcoatRoughness: 0.3, normalMap: grain, normalScale: 0.06, uvTile: 0.01 },
+      surround_rubber: { color: 0x0b0b0c, roughness: 0.72, specularIntensity: 0.4 },
+      cone_metal: { color: 0x34373c, metalness: 0.92, roughness: 0.36, envMapIntensity: 1.1 },
+      dome_metal: { color: 0x75787d, metalness: 1, roughness: 0.34, envMapIntensity: 1.0 },
+      plug_plastic: { color: 0x121316, roughness: 0.42, clearcoat: 0.2 },
+      port_plastic: { color: 0x0a0a0b, roughness: 0.55, clearcoat: 0.15 },
+      panel_plastic: { color: 0x15161a, roughness: 0.55, normalMap: grain, normalScale: 0.08, uvTile: 0.006 },
+      connector_metal: { color: 0xd2cfc8, metalness: 1, roughness: 0.22, envMapIntensity: 1.2 },
+      connector_dark: { color: 0x050506, roughness: 0.65 },
+      rca_red: { color: 0x8c1414, roughness: 0.38, clearcoat: 0.4 },
+      rca_white: { color: 0xd9d9d5, roughness: 0.38, clearcoat: 0.4 },
+      touch_gloss: { color: 0x07080a, roughness: 0.12, clearcoat: 1, clearcoatRoughness: 0.04, envMapIntensity: 1.1 },
+      led: { color: 0xe8eef8, roughness: 0.3, emissive: 0xdfe8ff, emissiveIntensity: 0.25 },
+      foot_rubber: { color: 0x0b0b0b, roughness: 0.9 },
+    };
     const cache = new Map();
     g.scene.traverse((o) => {
       if (!o.isMesh) return;
-      const s = o.material;
+      const s = o.material, f = FIN[s.name] || {};
       if (!cache.has(s)) {
-        const m = new THREE.MeshPhysicalMaterial({
-          name: s.name, map: s.map, normalMap: s.normalMap, normalScale: s.normalScale.clone(), aoMap: s.aoMap, aoMapIntensity: 1,
-          roughnessMap: s.roughnessMap, metalnessMap: s.metalnessMap, roughness: s.roughness, metalness: s.metalness,
-          envMapIntensity: 1.0, specularIntensity: 0.7, sheen: 0.18, sheenRoughness: 0.7, sheenColor: new THREE.Color(0x9aa4b4), side: s.side,
-        });
+        const m = new THREE.MeshPhysicalMaterial({ name: s.name, side: S });
+        for (const [k, v] of Object.entries(f)) {
+          if (k === 'uvTile') continue;
+          if (k === 'normalScale') m.normalScale.setScalar(v);
+          else if (k === 'color' || k === 'emissive' || k === 'sheenColor') m[k] = new THREE.Color(v);
+          else m[k] = v;
+        }
         cache.set(s, m);
       }
       o.material = cache.get(s); o.castShadow = true; o.receiveShadow = true;
+      // finishes in real units: one tile of the weave or grain per uvTile metres of the model
+      if (f.uvTile) metricUVs(o, { mode: 'box', tile: f.uvTile, center: 'bbox' });
     });
     // contact shadow: a soft dark footprint right under the cabinet (285 x 168 x 268 mm -> 0.01 unit per mm)
     const c = document.createElement('canvas'); c.width = c.height = 256; const x = c.getContext('2d');
@@ -424,6 +449,8 @@ function cameraView(which, instant = false) {
   controls.minDistance = v.min; controls.maxDistance = v.max;
   if (instant || reduced.matches) { lab.camera.position.copy(to); controls.target.copy(target); controls.update(); transition = null; }
   else transition = { start: performance.now(), from: lab.camera.position.clone(), to, oldTarget: controls.target.clone(), target };
+  // the driver section is a close-up: a shallow macro lens focused on the orbit target (WebGPU only)
+  look?.stage({ macro: state.mode === 'driver', radius: to.distanceTo(target) * 0.3, ms: instant ? 0 : 750 });
   occlusionDirty = true; lab.invalidate();
 }
 function zoom(f) { if (!lab) return; transition = null; const d = lab.camera.position.clone().sub(controls.target); d.setLength(THREE.MathUtils.clamp(d.length() * f, controls.minDistance, controls.maxDistance)); lab.camera.position.copy(controls.target).add(d); controls.update(); occlusionDirty = true; lab.invalidate(); }
@@ -458,11 +485,11 @@ lab = await mountLab(canvas, {
   camera: new THREE.PerspectiveCamera(30, 1, 0.05, 60),
   async setup({ renderer, scene, camera, lab: L_ }) {
     scene.add(product, driver, paths); driver.visible = false; paths.visible = false;
-    look = await createStudio(L_, { scale: 3.2, center: [0, 0, 0.3], floorY: -1.43, hdri: 'softbox', strips: 'product', exposure: 1.0, envIntensity: 1.05, keyIntensity: 1.0, keyDir: [-0.25, 1, 0.3], shadowOpacity: 0.26, aoRadius: 0.16, aoThickness: 0.06, aoStrength: 1.0, toneMapping: 'neutral' });
+    look = await createStudio(L_, { hdriRes: '2k', dof: { bokeh: 0.9 }, scale: 3.2, center: [0, 0, 0.3], floorY: -1.43, hdri: 'softbox', strips: 'product', exposure: 1.0, envIntensity: 1.05, keyIntensity: 1.0, keyDir: [-0.25, 1, 0.3], shadowOpacity: 0.26, aoRadius: 0.16, aoThickness: 0.06, aoStrength: 1.0, toneMapping: 'neutral' });
     look.key.shadow.radius = 26; look.key.shadow.blurSamples = 24;   // a soft-box shadow, not a sun
     camera.position.set(4.3, 1.9, 5.6);
     controls = new OrbitControls(camera, canvas); controls.enableDamping = false; controls.enablePan = false; controls.enableZoom = false; controls.minDistance = 2; controls.maxDistance = 12; controls.maxPolarAngle = Math.PI * 0.85;
-    controls.touches.TWO = THREE.TOUCH.DOLLY_ROTATE;
+    controls.touches.TWO = THREE.TOUCH.DOLLY_ROTATE; look.attach(controls);
     canvas.addEventListener('touchstart', (e) => { controls.enableZoom = e.touches.length > 1; }, { passive: true });
     controls.addEventListener('change', () => { occlusionDirty = true; L_.invalidate(); }); controls.addEventListener('start', () => { transition = null; userOrbit = true; });
     spin = turntable(controls, canvas, { speed: 0.45, resumeAfter: 9000 });

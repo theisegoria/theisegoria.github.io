@@ -747,6 +747,9 @@ const lab = await mountLab(canvas, {
     // a real studio: HDRI light with soft-box strips, a soft contact shadow on
     // the floor, ambient occlusion in the base's crowded interior
     const look = await createStudio(lab, {
+      // photoreal: the 2k studio and a 512 px reflection cube for the polished loop, and a macro lens
+      // that the close-up tour stops turn on (focused on the orbit target)
+      hdriRes: '2k', envSize: 512, controls, dof: { bokeh: 0.8 },
       scale: 0.7, center: [0, 0.32, 0], floorY: 0, hdri: 'studio', strips: 'product',
       exposure: 1.0, envIntensity: 1.0, keyIntensity: 1.3, keyDir: [-0.45, 1, -0.55], shadowOpacity: 0.2,
       aoRadius: 0.022, aoThickness: 0.008,
@@ -1102,6 +1105,8 @@ const lab = await mountLab(canvas, {
         camAnim = { p0: camera.position.clone(), t0: controls.target.clone(), p1: to.p, t1: to.t, start: performance.now(), dur: 1400 };
       }
       setFocus(stop);
+      // close-ups get a shallow depth of field; the whole-flow views stay sharp end to end
+      look.stage({ macro: !!stop.focus, radius: to.p.distanceTo(to.t) * 0.45, ms: instant ? 0 : 1400 });
       const cap = document.getElementById('tour-caption');
       if (cap) cap.textContent = stop.text;
       lab.invalidate();
