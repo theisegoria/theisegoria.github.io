@@ -1,0 +1,78 @@
+<!doctype html><html lang="ja" class="ig-document ig-editorial"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Daily Mathematics 解答：2026年10月7日 · Isegoria</title><meta name="description" content="2026年10月7日のThreadsカード2枚（難しい定積分とパトナム型の問題）の完全な解答。"><link rel="canonical" href="https://theisegoria.github.io/ja/daily-mathematics/2026-10-07/"><link rel="alternate" hreflang="en" href="https://theisegoria.github.io/daily-mathematics/2026-10-07/"><link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/daily-mathematics/2026-10-07/"><link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/daily-mathematics/2026-10-07/"><link rel="icon" href="/assets/favicon.svg"><link rel="stylesheet" href="/assets/isegoria.css?v=20260915"><link rel="stylesheet" href="/analysis-atlas/vendor/katex.min.css"><script defer src="/analysis-atlas/vendor/katex.min.js"></script><script defer src="/analysis-atlas/vendor/contrib/auto-render.min.js"></script><script>document.addEventListener("DOMContentLoaded",function(){if(window.renderMathInElement)renderMathInElement(document.querySelector("main"),{delimiters:[{left:"\\[",right:"\\]",display:true},{left:"\\(",right:"\\)",display:false}],throwOnError:false});});</script><style>
+.dm{max-width:46rem;margin:0 auto;padding:2.5rem 1.25rem 4rem}
+.dm .eyebrow{letter-spacing:.14em;text-transform:uppercase;font-size:.78rem;opacity:.7;margin:0 0 .4rem}
+.dm h1{margin:.1rem 0 .6rem;line-height:1.2}
+.dm .deck{opacity:.85;margin:0 0 2rem}
+.dm .card{margin:2.6rem 0 0;padding-top:1.4rem;border-top:2px solid var(--dm-accent,currentColor)}
+.dm .card h2{margin:.2rem 0 .9rem;line-height:1.3}
+.dm .kind{font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dm-accent);margin:0}
+.dm figure{margin:1rem 0 1.4rem}
+.dm figure img{width:100%;max-width:30rem;height:auto;display:block;border:1px solid rgba(127,127,127,.25)}
+.dm .statement{padding:.9rem 1.1rem;border-left:3px solid var(--dm-accent);background:rgba(127,127,127,.07)}
+.dm details{margin:1.2rem 0}
+.dm summary{cursor:pointer;font-weight:600}
+.dm .answer{margin-top:1.2rem;padding:.8rem 1.1rem;border:1px solid var(--dm-accent)}
+.dm .katex-display{overflow-x:auto;overflow-y:hidden;padding:.2rem 0}
+.dm .days{list-style:none;padding:0;margin:1.5rem 0 0}
+.dm .days li{padding:.9rem 0;border-top:1px solid rgba(127,127,127,.25)}
+.dm .days a.date{font-weight:600}
+.dm .days span{display:block;opacity:.85}
+html[lang=ja] .dm{line-height:1.85}
+</style><script src="/assets/lang.js"></script>
+<!-- ISEGORIA:HEAD -->
+<link rel="stylesheet" href="/assets/site-shell.css?v=c21cd21e82">
+<script src="/assets/site-shell.js?v=c21cd21e82" ></script>
+<!-- /ISEGORIA:HEAD -->
+<script defer data-isegoria-analytics src="/assets/analytics.js?v=9e6ebd463bf2"></script>
+</head><body class="ig-site" data-site-kind="editorial" data-site-route="/ja/daily-mathematics/2026-10-07/">
+<!-- ISEGORIA:NAV -->
+<a class="ig-skip" href="#ig-content">本文へ移動</a>
+<header id="ig-header"><div class="ig-nav-inner">
+<a class="ig-brand" href="/ja/" aria-label="Isegoria, ホーム"><strong>ISEGORIA</strong><span>Benjamin Haire</span></a>
+<div class="ig-header-actions"><a class="ig-language" href="/daily-mathematics/2026-10-07/" hreflang="en" lang="en">English</a><button class="ig-menu" type="button" aria-expanded="false" aria-controls="ig-primary">メニュー</button></div>
+<nav id="ig-primary" aria-label="メインナビゲーション"><a href="/ja/">ホーム</a><a href="/ja/library.html">全コンテンツ</a><a href="/ja/math-encyclopedia/" aria-current="location">数学百科事典</a><a href="/ja/#interactive">操作できる解説</a><a href="/ja/#preoccupations">研究と解説</a><a href="/ja/#books">書籍</a><a href="/ja/projects.html">プロジェクト</a><a href="/ja/about.html">このサイトについて</a><a class="ig-language" href="/daily-mathematics/2026-10-07/" hreflang="en" lang="en">English</a><button class="ig-theme" type="button" hidden>表示切替</button></nav>
+</div></header>
+<nav id="ig-breadcrumb" aria-label="パンくずリスト"><a href="/ja/">ホーム</a><span aria-hidden="true">/</span><a href="/ja/math-encyclopedia/">数学百科事典</a><span aria-hidden="true">/</span><a href="/ja/daily-mathematics/">Daily Mathematics 解答集</a><span aria-hidden="true">/</span><span aria-current="page">Daily Mathematics 解答：2026年10月7日</span></nav>
+<span id="ig-content" tabindex="-1"></span>
+<!-- /ISEGORIA:NAV -->
+<main id="main" class="dm"><p class="eyebrow">Daily Mathematics / 解答</p><h1>2026年10月7日の解答</h1><p class="deck">この日のカードは難しい定積分とオリジナルのパトナム型の問題の2枚である。まず自分で考え、詰まったら解答を開くこと。</p><section class="card" id="integral" style="--dm-accent:#24457F"><p class="kind">積分</p><h2>対数を分母にもつ三角関数の積分</h2><figure><img src="/daily-mathematics/2026-10-07/integral.png" width="1200" height="1200" loading="lazy" alt="カード: 対数を分母にもつ三角関数の積分"></figure><div class="statement"><p>次の積分を閉じた形で求めよ。</p>\[\int_0^{\pi/2}\frac{x\sin 2x-\cos 2x\,\ln(2\cos x)}{x^2+\ln^2(2\cos x)}\,dx\]</div><details><summary>解答を開く</summary><p>この積分を \(I\) とおき，\(L(x)=\ln(2\cos x)\) と書く。被積分関数は \([0,\pi/2)\) で連続である。実際，分母 \(x^2+L^2\) は \(x>0\) で正であり，\(x=0\) では \(\ln^2 2\) に等しい。\(x\to\pi/2^-\) のとき \(L\to-\infty\) であるから，被積分関数は \(-\cos 2x/L\to0\) のように振る舞う。よって有界であり，\(I\) は存在する。使える原始関数はなく，\(t=\tan x\) や \(u=2\cos x\) のような実の置換は対数の位置を動かすだけである。鍵は，分母が絶対値の二乗 \(x^2+L^2=|L+ix|^2\) であり，しかも \(L+ix\) がそれ自体ひとつの複素対数であることに気づくことである。</p>
+<p><strong>第1段：被積分関数はひとつの複素関数の実部である。</strong>\(|x|&lt;\pi/2\) のとき</p>
+\[1+e^{2ix}=e^{ix}\bigl(e^{-ix}+e^{ix}\bigr)=2\cos x\;e^{ix}\]
+<p>であり，\(2\cos x>0\)，\(|x|&lt;\pi\) であるから，主値の対数は \(\operatorname{Log}(1+e^{2ix})=L(x)+ix\) となる。したがって</p>
+\[\frac{e^{-2ix}}{\operatorname{Log}(1+e^{2ix})}=\frac{(\cos 2x-i\sin 2x)(L-ix)}{L^2+x^2},\qquad \operatorname{Re}\frac{e^{-2ix}}{\operatorname{Log}(1+e^{2ix})}=\frac{L\cos 2x-x\sin 2x}{x^2+L^2}\]
+<p>を得る。これは被積分関数の符号を変えたものであり，\(L\) が偶関数なので \(x\) について偶関数である。ゆえに</p>
+\[I=-\frac12\,\operatorname{Re}\int_{-\pi/2}^{\pi/2}\frac{e^{-2ix}\,dx}{\operatorname{Log}(1+e^{2ix})}.\]
+<p><strong>第2段：周回積分。</strong>\(g(z)=\dfrac{1}{z^2\operatorname{Log}(1+z)}\) とおく。\(|z|&lt;1\) では \(\operatorname{Re}(1+z)>0\) であるから \(\operatorname{Log}(1+z)\) はそこで正則であり，\(z=0\) でのみ0になる。よって \(g\) は穴あき単位円板で正則である。\(0\) の近くで \(\operatorname{Log}(1+z)=z-\frac{z^2}{2}+\frac{z^3}{3}-\cdots\) であり，\(\bigl(1-\frac z2+\frac{z^2}{3}-\cdots\bigr)\bigl(1+az+bz^2+\cdots\bigr)=1\) を解くと \(a=\frac12\)，\(b=\frac a2-\frac13=-\frac1{12}\) となる。したがって</p>
+\[\frac{z}{\operatorname{Log}(1+z)}=1+\frac z2-\frac{z^2}{12}+O(z^3),\qquad g(z)=\frac{1}{z^3}\Bigl(1+\frac z2-\frac{z^2}{12}+\cdots\Bigr)\]
+<p>であり，\(g\) の \(0\) における留数はグレゴリー係数 \(-\frac1{12}\) である。留数定理より，任意の \(0&lt;r&lt;1\) に対して</p>
+\[\oint_{|z|=r}g(z)\,dz=2\pi i\cdot\Bigl(-\frac1{12}\Bigr)=-\frac{\pi i}{6}.\]
+<p><strong>第3段：半径を1に近づける。</strong>\(z=re^{i\theta}\)，\(-\pi&lt;\theta&lt;\pi\) とおくと，この積分は \(\frac ir\int_{-\pi}^{\pi}\frac{e^{-i\theta}\,d\theta}{\operatorname{Log}(1+re^{i\theta})}\) に等しい。集合 \(\frac12\le|z|\le1\)，\(z\ne-1\) 上で \(|\operatorname{Log}(1+z)|\) は連続かつ0にならず，\(z\to-1\) で \(+\infty\) に発散する（実部が \(\ln|1+z|\) だからである）。よってそこである \(\delta>0\) で下から押さえられる。したがって \(r\ge\frac12\) で被積分関数は \(2/\delta\) で一様に有界であり，\(\theta\ne\pm\pi\) で各点収束する。優収束定理により</p>
+\[i\int_{-\pi}^{\pi}\frac{e^{-i\theta}\,d\theta}{\operatorname{Log}(1+e^{i\theta})}=-\frac{\pi i}{6},\qquad\text{すなわち}\qquad\int_{-\pi}^{\pi}\frac{e^{-i\theta}\,d\theta}{\operatorname{Log}(1+e^{i\theta})}=-\frac{\pi}{6}.\]
+<p><strong>第4段：実軸に戻る。</strong>\(\theta=2x\) とおく。\(d\theta=2\,dx\) であり，\(x\) はちょうど第1段が使える範囲 \((-\pi/2,\pi/2)\) を動くから</p>
+\[\int_{-\pi/2}^{\pi/2}\frac{e^{-2ix}\,dx}{\operatorname{Log}(1+e^{2ix})}=-\frac{\pi}{12}\]
+<p>を得る（被積分関数の虚部は奇関数なので，虚部が消えるのは当然である）。第1段より</p>
+\[I=-\frac12\cdot\Bigl(-\frac{\pi}{12}\Bigr)=\frac{\pi}{24}.\]
+<p>留数が \(\frac12\) である \(1/(z\operatorname{Log}(1+z))\) に同じ議論を適用すると，対になる値 \(\int_0^{\pi/2}\frac{\ln(2\cos x)}{x^2+\ln^2(2\cos x)}\,dx=\frac{\pi}{4}\) も得られる。</p>
+<p><strong>数値による確認。</strong>区間 \([0,\pi/2-\frac12]\) での120点ガウス・ルジャンドル複合求積に，端の部分を \(x=\pi/2-e^{-s}\)，\(s=\ln2+v/(1-v)\) で写したものを加え，40区画および200区画で計算すると \(0.13089969389957\ldots\) を得た。これは \(\pi/24\) と \(6\times10^{-17}\) 以内で一致する。対になる値 \(\pi/4\) も \(10^{-16}\) の精度で確かめた。</p><div class="answer"><strong>答え.</strong> \(\displaystyle\int_0^{\pi/2}\frac{x\sin 2x-\cos 2x\,\ln(2\cos x)}{x^2+\ln^2(2\cos x)}\,dx=\frac{\pi}{24}\approx0.13090\)</div></details></section><section class="card" id="competition" style="--dm-accent:#96311F"><p class="kind">競技数学の問題</p><h2>ベータ積分を成分とする行列の逆行列</h2><figure><img src="/daily-mathematics/2026-10-07/competition.png" width="1200" height="1200" loading="lazy" alt="カード: ベータ積分を成分とする行列の逆行列"></figure><div class="statement"><p>\(n\) を正の整数とし，\(n\times n\) 行列 \(A\) の成分を次で定める。</p>\[a_{ij}=\frac{i!\,j!}{(i+j+1)!}\qquad(0\le i,j\le n-1).\]<p>\(A\) が正則であることを示し，\(A^{-1}\) の \(n^2\) 個の成分の総和を求めよ。</p></div><details><summary>解答を開く</summary><p>和は \((-1)^{n-1}n\) であることを示す。たとえば \(n=2\) のとき \(A=\begin{pmatrix}1&amp;1/2\\1/2&amp;1/6\end{pmatrix}\)，\(A^{-1}=\begin{pmatrix}-2&amp;6\\6&amp;-12\end{pmatrix}\) であり，成分の和は \(-2\) である。</p>
+<p><strong>直接の計算が行き詰まる理由。</strong>\(A\) はヒルベルト行列の親類に見えるが，コーシー行列ではないので逆行列の既製の公式はない。行基本変形をしても成分に目に見える規則は現れない。鍵は，\(A\) を数の配列として見るのをやめ，多項式の空間の二つの基底の間の内積として読むことである。</p>
+<p><strong>第1段：各成分はベータ積分である。</strong>オイラーのベータ積分により \(\int_0^1x^i(1-x)^j\,dx=B(i+1,j+1)=\frac{i!\,j!}{(i+j+1)!}\) である。次数 \(n-1\) 以下の実係数多項式全体を \(V\) とし，内積を \(\langle f,g\rangle=\int_0^1fg\,dx\) で定めると</p>
+\[a_{ij}=\bigl\langle x^i,(1-x)^j\bigr\rangle\]
+<p>である。\(\{x^i\}_{i&lt;n}\) と \(\{(1-x)^j\}_{j&lt;n}\) はいずれも \(V\) の基底である。</p>
+<p><strong>第2段：正則性。</strong>\(Ay=0\) とし，\(q=\sum_jy_j(1-x)^j\in V\) とおく。すべての \(i&lt;n\) で \(\langle x^i,q\rangle=0\) であり，\(x^i\) は \(V\) を張るから \(\langle q,q\rangle=0\)，すなわち \(q=0\) である。\((1-x)^j\) は一次独立なので \(y=0\) となる。よって \(A\) は正則である。</p>
+<p><strong>第3段：成分の和は一点での値である。</strong>すべての成分が1のベクトルを \(\mathbf 1\) とし，\(y=A^{-1}\mathbf 1\)，\(q(x)=\sum_jy_j(1-x)^j\) とおく。\(A^{-1}\) の成分の総和は \(\mathbf 1^{\mathsf T}A^{-1}\mathbf 1=\sum_jy_j=q(0)\) である。一方，方程式 \(Ay=\mathbf 1\) は，すべての \(i&lt;n\) で \(\langle x^i,q\rangle=1\) となること，すなわち \(x^i\) の \(x=1\) での値を再現することを意味する。線形性より</p>
+\[\int_0^1r(x)\,q(x)\,dx=r(1)\qquad(r\in V)\]
+<p>が成り立つ。つまり \(q\) は点 \(1\) における \(V\) の再生核である。第2段の議論から，この性質をもつ \(V\) の元は高々一つである。</p>
+<p><strong>第4段：ずらしたルジャンドル多項式。</strong>\(k\ge0\) に対し \(u_k(x)=x^k(x-1)^k\)，\(\widetilde P_k=\frac1{k!}\,u_k^{(k)}\) とおく。これはちょうど \(k\) 次の多項式であるから，\(\widetilde P_0,\dots,\widetilde P_{n-1}\) は \(V\) の基底をなす。次の四つの事実を用いる。</p>
+<p>(a) <em>直交性。</em>\(u_k\) とその \(k-1\) 階までの導関数は \(0\) と \(1\) で0になる。よって \(m&lt;k\) のとき，部分積分を \(k\) 回行うと導関数はすべて \(\widetilde P_m\) に移り，そこで消える。ゆえに \(\langle\widetilde P_m,\widetilde P_k\rangle=0\) である。</p>
+<p>(b) <em>ノルム。</em>同じ部分積分により \(\langle\widetilde P_k,\widetilde P_k\rangle=\frac{(-1)^k}{k!^2}\int_0^1u_k\,u_k^{(2k)}=\frac{(2k)!}{k!^2}\int_0^1x^k(1-x)^k\,dx=\frac{(2k)!}{k!^2}\cdot\frac{k!^2}{(2k+1)!}=\frac1{2k+1}\) を得る。</p>
+<p>(c) <em>点1での値。</em>ライプニッツの公式により，\(x=1\) で残る \(u_k^{(k)}\) の項は，\(k\) 回の微分がすべて \((x-1)^k\) に作用する項だけである。その項は \(k!\,x^k\) であるから \(\widetilde P_k(1)=1\) である。</p>
+<p>(d) <em>点0での値。</em>\(u_k(1-x)=u_k(x)\) より \(\widetilde P_k(1-x)=(-1)^k\widetilde P_k(x)\) であり，したがって \(\widetilde P_k(0)=(-1)^k\) である。</p>
+<p><strong>第5段：再生核と答え。</strong>\(q^*=\sum_{k=0}^{n-1}(2k+1)\widetilde P_k\in V\) とおく。各 \(m&lt;n\) について，(a)，(b)，(c) より \(\langle\widetilde P_m,q^*\rangle=(2m+1)\cdot\frac1{2m+1}=1=\widetilde P_m(1)\) である。線形性によりすべての \(r\in V\) で \(\langle r,q^*\rangle=r(1)\) となるので，一意性から \(q^*=q\) である。(d) を用いると</p>
+\[\sum_{i,j}\bigl(A^{-1}\bigr)_{ij}=q(0)=\sum_{k=0}^{n-1}(-1)^k(2k+1)=(-1)^{n-1}n\]
+<p>を得る。最後の等号は \((-1)^{n-1}n-(-1)^{n-2}(n-1)=(-1)^{n-1}(2n-1)\) による帰納法で示される。項を \((1-3)+(5-7)+\cdots\) と組にしてもよい。</p>
+<p>同じ方法をヒルベルト行列 \(\langle x^i,x^j\rangle\) に適用すると，再生核を \(0\) ではなく \(1\) で評価することになり，古典的な値 \(n^2\) が得られる。本問では第二の基底が \((1-x)^j\) であるため再生核を区間の反対側の端で読むことになり，\(\widetilde P_k(0)\) の符号の交代によって和が \(\pm n\) につぶれるのである。</p>
+<p><strong>確認。</strong>\(n=1,\dots,16\) について \(A\) を有理数で厳密に逆行列計算すると，成分の和は \(1,-2,3,-4,\dots,-16\) となり，主張どおりである。</p><div class="answer"><strong>答え.</strong> \(A\) は正則であり，\(A^{-1}\) の成分の総和は \((-1)^{n-1}n\)</div></details></section><p><a href="/ja/daily-mathematics/">解答の一覧へ戻る</a> · <a href="/daily-mathematics/2026-10-07/" hreflang="en" lang="en">English</a></p></main>
+<!-- ISEGORIA:FOOT -->
+<footer id="ig-footer"><div><a href="/ja/">Isegoria · Benjamin Haire</a><nav aria-label="サイト内リンク"><a href="/ja/">ホームに戻る</a><a href="/ja/library.html">全コンテンツ</a><a href="#ig-content">ページ上部へ</a></nav></div></footer>
+<!-- /ISEGORIA:FOOT -->
+</body></html>

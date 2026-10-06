@@ -1,0 +1,78 @@
+<!doctype html><html lang="en" class="ig-document ig-editorial"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Daily Mathematics solutions: 7 October 2026 · Isegoria</title><meta name="description" content="Full solutions to the two Daily Mathematics cards of 7 October 2026: a hard definite integral and an original Putnam-style problem."><link rel="canonical" href="https://theisegoria.github.io/daily-mathematics/2026-10-07/"><link rel="alternate" hreflang="en" href="https://theisegoria.github.io/daily-mathematics/2026-10-07/"><link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/daily-mathematics/2026-10-07/"><link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/daily-mathematics/2026-10-07/"><link rel="icon" href="/assets/favicon.svg"><link rel="stylesheet" href="/assets/isegoria.css?v=20260915"><link rel="stylesheet" href="/analysis-atlas/vendor/katex.min.css"><script defer src="/analysis-atlas/vendor/katex.min.js"></script><script defer src="/analysis-atlas/vendor/contrib/auto-render.min.js"></script><script>document.addEventListener("DOMContentLoaded",function(){if(window.renderMathInElement)renderMathInElement(document.querySelector("main"),{delimiters:[{left:"\\[",right:"\\]",display:true},{left:"\\(",right:"\\)",display:false}],throwOnError:false});});</script><style>
+.dm{max-width:46rem;margin:0 auto;padding:2.5rem 1.25rem 4rem}
+.dm .eyebrow{letter-spacing:.14em;text-transform:uppercase;font-size:.78rem;opacity:.7;margin:0 0 .4rem}
+.dm h1{margin:.1rem 0 .6rem;line-height:1.2}
+.dm .deck{opacity:.85;margin:0 0 2rem}
+.dm .card{margin:2.6rem 0 0;padding-top:1.4rem;border-top:2px solid var(--dm-accent,currentColor)}
+.dm .card h2{margin:.2rem 0 .9rem;line-height:1.3}
+.dm .kind{font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dm-accent);margin:0}
+.dm figure{margin:1rem 0 1.4rem}
+.dm figure img{width:100%;max-width:30rem;height:auto;display:block;border:1px solid rgba(127,127,127,.25)}
+.dm .statement{padding:.9rem 1.1rem;border-left:3px solid var(--dm-accent);background:rgba(127,127,127,.07)}
+.dm details{margin:1.2rem 0}
+.dm summary{cursor:pointer;font-weight:600}
+.dm .answer{margin-top:1.2rem;padding:.8rem 1.1rem;border:1px solid var(--dm-accent)}
+.dm .katex-display{overflow-x:auto;overflow-y:hidden;padding:.2rem 0}
+.dm .days{list-style:none;padding:0;margin:1.5rem 0 0}
+.dm .days li{padding:.9rem 0;border-top:1px solid rgba(127,127,127,.25)}
+.dm .days a.date{font-weight:600}
+.dm .days span{display:block;opacity:.85}
+html[lang=ja] .dm{line-height:1.85}
+</style><script src="/assets/lang.js"></script>
+<!-- ISEGORIA:HEAD -->
+<link rel="stylesheet" href="/assets/site-shell.css?v=c21cd21e82">
+<script src="/assets/site-shell.js?v=c21cd21e82" ></script>
+<!-- /ISEGORIA:HEAD -->
+<script defer data-isegoria-analytics src="/assets/analytics.js?v=9e6ebd463bf2"></script>
+</head><body class="ig-site" data-site-kind="editorial" data-site-route="/daily-mathematics/2026-10-07/">
+<!-- ISEGORIA:NAV -->
+<a class="ig-skip" href="#ig-content">Skip to content</a>
+<header id="ig-header"><div class="ig-nav-inner">
+<a class="ig-brand" href="/" aria-label="Isegoria, home"><strong>ISEGORIA</strong><span>Benjamin Haire</span></a>
+<div class="ig-header-actions"><a class="ig-language" href="/ja/daily-mathematics/2026-10-07/" hreflang="ja" lang="ja">日本語</a><button class="ig-menu" type="button" aria-expanded="false" aria-controls="ig-primary">Menu</button></div>
+<nav id="ig-primary" aria-label="Primary navigation"><a href="/">Home</a><a href="/library.html">Library</a><a href="/math-encyclopedia/" aria-current="location">Math encyclopedia</a><a href="/#interactive">Interactive</a><a href="/#preoccupations">Research</a><a href="/#books">Books</a><a href="/projects.html">Projects</a><a href="/about.html">About</a><a class="ig-language" href="/ja/daily-mathematics/2026-10-07/" hreflang="ja" lang="ja">日本語</a><button class="ig-theme" type="button" hidden>Theme</button></nav>
+</div></header>
+<nav id="ig-breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><a href="/math-encyclopedia/">Math encyclopedia</a><span aria-hidden="true">/</span><a href="/daily-mathematics/">Daily Mathematics: solutions</a><span aria-hidden="true">/</span><span aria-current="page">Daily Mathematics solutions: 7 October 2026</span></nav>
+<span id="ig-content" tabindex="-1"></span>
+<!-- /ISEGORIA:NAV -->
+<main id="main" class="dm"><p class="eyebrow">Daily Mathematics / Solutions</p><h1>Solutions for 7 October 2026</h1><p class="deck">Two cards went out that day: a hard definite integral and an original Putnam-style problem. Try each one first; the solutions are folded away below.</p><section class="card" id="integral" style="--dm-accent:#24457F"><p class="kind">Integral</p><h2>A trigonometric integral with a logarithmic denominator</h2><figure><img src="/daily-mathematics/2026-10-07/integral.png" width="1200" height="1200" loading="lazy" alt="Card: A trigonometric integral with a logarithmic denominator"></figure><div class="statement"><p>Evaluate in closed form.</p>\[\int_0^{\pi/2}\frac{x\sin 2x-\cos 2x\,\ln(2\cos x)}{x^2+\ln^2(2\cos x)}\,dx\]</div><details><summary>Show the solution</summary><p>Call the integral \(I\) and write \(L(x)=\ln(2\cos x)\). The integrand is continuous on \([0,\pi/2)\): the denominator \(x^2+L^2\) is positive for \(x>0\), and at \(x=0\) it equals \(\ln^2 2\). As \(x\to\pi/2^-\) we have \(L\to-\infty\), so the integrand behaves like \(-\cos 2x/L\to0\). Hence it is bounded and \(I\) exists. There is no usable antiderivative, and real substitutions such as \(t=\tan x\) or \(u=2\cos x\) only move the logarithm around. The way in is to notice that the denominator is a squared modulus, \(x^2+L^2=|L+ix|^2\), and that \(L+ix\) is itself a single complex logarithm.</p>
+<p><strong>Step 1: the integrand is the real part of one complex function.</strong> For \(|x|&lt;\pi/2\),</p>
+\[1+e^{2ix}=e^{ix}\bigl(e^{-ix}+e^{ix}\bigr)=2\cos x\;e^{ix},\]
+<p>with \(2\cos x>0\) and \(|x|&lt;\pi\), so the principal logarithm is \(\operatorname{Log}(1+e^{2ix})=L(x)+ix\). Therefore</p>
+\[\frac{e^{-2ix}}{\operatorname{Log}(1+e^{2ix})}=\frac{(\cos 2x-i\sin 2x)(L-ix)}{L^2+x^2},\qquad \operatorname{Re}\frac{e^{-2ix}}{\operatorname{Log}(1+e^{2ix})}=\frac{L\cos 2x-x\sin 2x}{x^2+L^2}.\]
+<p>This is minus our integrand. It is an even function of \(x\) (since \(L\) is even), so</p>
+\[I=-\frac12\,\operatorname{Re}\int_{-\pi/2}^{\pi/2}\frac{e^{-2ix}\,dx}{\operatorname{Log}(1+e^{2ix})}.\]
+<p><strong>Step 2: a contour integral.</strong> Put \(g(z)=\dfrac{1}{z^2\operatorname{Log}(1+z)}\). For \(|z|&lt;1\) we have \(\operatorname{Re}(1+z)>0\), so \(\operatorname{Log}(1+z)\) is analytic there, and it vanishes only at \(z=0\). Thus \(g\) is analytic in the punctured unit disc. Near \(0\), \(\operatorname{Log}(1+z)=z-\frac{z^2}{2}+\frac{z^3}{3}-\cdots\). Solving \(\bigl(1-\frac z2+\frac{z^2}{3}-\cdots\bigr)\bigl(1+az+bz^2+\cdots\bigr)=1\) gives \(a=\frac12\) and \(b=\frac a2-\frac13=-\frac1{12}\), so</p>
+\[\frac{z}{\operatorname{Log}(1+z)}=1+\frac z2-\frac{z^2}{12}+O(z^3),\qquad g(z)=\frac{1}{z^3}\Bigl(1+\frac z2-\frac{z^2}{12}+\cdots\Bigr).\]
+<p>The residue of \(g\) at \(0\) is the Gregory coefficient \(-\frac1{12}\). By the residue theorem, for every \(0&lt;r&lt;1\),</p>
+\[\oint_{|z|=r}g(z)\,dz=2\pi i\cdot\Bigl(-\frac1{12}\Bigr)=-\frac{\pi i}{6}.\]
+<p><strong>Step 3: let the circle grow to radius 1.</strong> With \(z=re^{i\theta}\), \(-\pi&lt;\theta&lt;\pi\), the integral equals \(\frac ir\int_{-\pi}^{\pi}\frac{e^{-i\theta}\,d\theta}{\operatorname{Log}(1+re^{i\theta})}\). On the set \(\frac12\le|z|\le1\), \(z\ne-1\), the function \(|\operatorname{Log}(1+z)|\) is continuous and never zero, and it tends to \(+\infty\) as \(z\to-1\) (its real part is \(\ln|1+z|\)). So it is bounded below by some \(\delta>0\) there. The integrands are therefore bounded by \(2/\delta\) for \(r\ge\frac12\), and they converge pointwise for \(\theta\ne\pm\pi\). By dominated convergence,</p>
+\[i\int_{-\pi}^{\pi}\frac{e^{-i\theta}\,d\theta}{\operatorname{Log}(1+e^{i\theta})}=-\frac{\pi i}{6},\qquad\text{so}\qquad\int_{-\pi}^{\pi}\frac{e^{-i\theta}\,d\theta}{\operatorname{Log}(1+e^{i\theta})}=-\frac{\pi}{6}.\]
+<p><strong>Step 4: back to the real line.</strong> Substitute \(\theta=2x\). Then \(d\theta=2\,dx\), and \(x\) runs over \((-\pi/2,\pi/2)\), which is exactly where Step 1 applies:</p>
+\[\int_{-\pi/2}^{\pi/2}\frac{e^{-2ix}\,dx}{\operatorname{Log}(1+e^{2ix})}=-\frac{\pi}{12}.\]
+<p>(The imaginary part vanishes, as it must, because the imaginary part of the integrand is odd.) By Step 1,</p>
+\[I=-\frac12\cdot\Bigl(-\frac{\pi}{12}\Bigr)=\frac{\pi}{24}.\]
+<p>The same argument with \(1/(z\operatorname{Log}(1+z))\), whose residue is \(\frac12\), gives the companion value \(\int_0^{\pi/2}\frac{\ln(2\cos x)}{x^2+\ln^2(2\cos x)}\,dx=\frac{\pi}{4}\).</p>
+<p><strong>Numerical check.</strong> Composite 120-node Gauss-Legendre quadrature on \([0,\pi/2-\frac12]\), plus the end piece mapped by \(x=\pi/2-e^{-s}\) and \(s=\ln2+v/(1-v)\), with 40 and with 200 panels, gives \(0.13089969389957\ldots\). This agrees with \(\pi/24\) to within \(6\times10^{-17}\). The companion value \(\pi/4\) was confirmed to \(10^{-16}\).</p><div class="answer"><strong>Answer.</strong> \(\displaystyle\int_0^{\pi/2}\frac{x\sin 2x-\cos 2x\,\ln(2\cos x)}{x^2+\ln^2(2\cos x)}\,dx=\frac{\pi}{24}\approx0.13090\)</div></details></section><section class="card" id="competition" style="--dm-accent:#96311F"><p class="kind">Competition problem</p><h2>Inverting a matrix of Beta integrals</h2><figure><img src="/daily-mathematics/2026-10-07/competition.png" width="1200" height="1200" loading="lazy" alt="Card: Inverting a matrix of Beta integrals"></figure><div class="statement"><p>Let \(n\) be a positive integer and let \(A\) be the \(n\times n\) matrix with entries</p>\[a_{ij}=\frac{i!\,j!}{(i+j+1)!}\qquad(0\le i,j\le n-1).\]<p>Prove that \(A\) is invertible and find the sum of all \(n^2\) entries of \(A^{-1}\).</p></div><details><summary>Show the solution</summary><p>We show that the sum is \((-1)^{n-1}n\). For instance, when \(n=2\), \(A=\begin{pmatrix}1&amp;1/2\\1/2&amp;1/6\end{pmatrix}\) and \(A^{-1}=\begin{pmatrix}-2&amp;6\\6&amp;-12\end{pmatrix}\), whose entries sum to \(-2\).</p>
+<p><strong>Why the direct route stalls.</strong> \(A\) looks like a cousin of the Hilbert matrix, but it is not a Cauchy matrix, so there is no ready-made closed form for its inverse. Row reduction produces entries with no visible pattern. The trick is to stop looking at \(A\) as an array of numbers and to read it as a pairing between two bases of a space of polynomials.</p>
+<p><strong>Step 1: every entry is a Beta integral.</strong> By Euler's Beta integral, \(\int_0^1x^i(1-x)^j\,dx=B(i+1,j+1)=\frac{i!\,j!}{(i+j+1)!}\). Let \(V\) be the space of real polynomials of degree at most \(n-1\), with inner product \(\langle f,g\rangle=\int_0^1fg\,dx\). Then</p>
+\[a_{ij}=\bigl\langle x^i,(1-x)^j\bigr\rangle .\]
+<p>Both \(\{x^i\}_{i&lt;n}\) and \(\{(1-x)^j\}_{j&lt;n}\) are bases of \(V\).</p>
+<p><strong>Step 2: invertibility.</strong> Suppose \(Ay=0\) and put \(q=\sum_jy_j(1-x)^j\in V\). Then \(\langle x^i,q\rangle=0\) for every \(i&lt;n\). Since the \(x^i\) span \(V\), this gives \(\langle q,q\rangle=0\), so \(q=0\). Then \(y=0\), because the \((1-x)^j\) are linearly independent. Hence \(A\) is invertible.</p>
+<p><strong>Step 3: the sum of the entries is one point value.</strong> Let \(\mathbf 1\) be the all-ones vector, let \(y=A^{-1}\mathbf 1\), and put \(q(x)=\sum_jy_j(1-x)^j\). The sum of all entries of \(A^{-1}\) is \(\mathbf 1^{\mathsf T}A^{-1}\mathbf 1=\sum_jy_j=q(0)\). The equations \(Ay=\mathbf 1\) say that \(\langle x^i,q\rangle=1\) for every \(i&lt;n\), and \(1\) is the value of \(x^i\) at \(x=1\). By linearity,</p>
+\[\int_0^1r(x)\,q(x)\,dx=r(1)\qquad\text{for every }r\in V.\]
+<p>So \(q\) is the reproducing kernel of \(V\) at the point \(1\). By the argument of Step 2, there is at most one element of \(V\) with this property.</p>
+<p><strong>Step 4: the shifted Legendre polynomials.</strong> For \(k\ge0\), put \(u_k(x)=x^k(x-1)^k\) and \(\widetilde P_k=\frac1{k!}\,u_k^{(k)}\). This is a polynomial of degree exactly \(k\), so \(\widetilde P_0,\dots,\widetilde P_{n-1}\) form a basis of \(V\). We need four facts.</p>
+<p>(a) <em>Orthogonality.</em> \(u_k\) and its first \(k-1\) derivatives vanish at \(0\) and at \(1\). So for \(m&lt;k\), integrating by parts \(k\) times moves all the derivatives onto \(\widetilde P_m\), which is killed by them. This gives \(\langle\widetilde P_m,\widetilde P_k\rangle=0\).</p>
+<p>(b) <em>Norm.</em> The same integration by parts gives \(\langle\widetilde P_k,\widetilde P_k\rangle=\frac{(-1)^k}{k!^2}\int_0^1u_k\,u_k^{(2k)}=\frac{(2k)!}{k!^2}\int_0^1x^k(1-x)^k\,dx=\frac{(2k)!}{k!^2}\cdot\frac{k!^2}{(2k+1)!}=\frac1{2k+1}\).</p>
+<p>(c) <em>Value at 1.</em> By Leibniz's rule, the only term of \(u_k^{(k)}\) that survives at \(x=1\) is the one in which all \(k\) derivatives fall on \((x-1)^k\). That term is \(k!\,x^k\), so \(\widetilde P_k(1)=1\).</p>
+<p>(d) <em>Value at 0.</em> Since \(u_k(1-x)=u_k(x)\), we get \(\widetilde P_k(1-x)=(-1)^k\widetilde P_k(x)\), and hence \(\widetilde P_k(0)=(-1)^k\).</p>
+<p><strong>Step 5: the kernel and the answer.</strong> Put \(q^*=\sum_{k=0}^{n-1}(2k+1)\widetilde P_k\in V\). For each \(m&lt;n\), (a), (b) and (c) give \(\langle\widetilde P_m,q^*\rangle=(2m+1)\cdot\frac1{2m+1}=1=\widetilde P_m(1)\). By linearity \(\langle r,q^*\rangle=r(1)\) for all \(r\in V\), so \(q^*=q\) by uniqueness. Using (d),</p>
+\[\sum_{i,j}\bigl(A^{-1}\bigr)_{ij}=q(0)=\sum_{k=0}^{n-1}(-1)^k(2k+1)=(-1)^{n-1}n.\]
+<p>The last equality holds by induction, since \((-1)^{n-1}n-(-1)^{n-2}(n-1)=(-1)^{n-1}(2n-1)\). Equivalently, the terms pair up as \((1-3)+(5-7)+\cdots\).</p>
+<p>The same method applied to the Hilbert matrix \(\langle x^i,x^j\rangle\) evaluates the kernel at \(1\) instead of \(0\) and gives the classical value \(n^2\). Here the second basis is \((1-x)^j\), so the kernel is read off at the opposite end of the interval, and the alternating signs of \(\widetilde P_k(0)\) collapse the sum to \(\pm n\).</p>
+<p><strong>Check.</strong> Exact rational inversion of \(A\) for \(n=1,\dots,16\) gives entry sums \(1,-2,3,-4,\dots,-16\), as claimed.</p><div class="answer"><strong>Answer.</strong> \(A\) is invertible, and the entries of \(A^{-1}\) sum to \((-1)^{n-1}n\)</div></details></section><p><a href="/daily-mathematics/">All solutions</a> · <a href="/ja/daily-mathematics/2026-10-07/" hreflang="ja" lang="ja">日本語</a></p></main>
+<!-- ISEGORIA:FOOT -->
+<footer id="ig-footer"><div><a href="/">Isegoria · Benjamin Haire</a><nav aria-label="Site links"><a href="/">Back to home</a><a href="/library.html">Browse the library</a><a href="#ig-content">Back to top</a></nav></div></footer>
+<!-- /ISEGORIA:FOOT -->
+</body></html>
