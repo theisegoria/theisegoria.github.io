@@ -27,7 +27,7 @@ const veil = loadingVeil(canvas.parentElement, ja);
 const meta = await (await fetch(ASSETS + 'tourbillon-meta.json')).json();
 const L = meta.layout;
 const TAU = Math.PI * 2;
-let spin = null, binder = null, labRef = null, callouts = null, controlsRef = null, subject = null;
+let lookRef = null, spin = null, binder = null, labRef = null, callouts = null, controlsRef = null, subject = null;
 const params = { speed: 1, explode: 0, dial: true, hands: true, caseOn: true, bridges: true, labels: true, orientation: 0, stage: 0 };
 
 // ------------------------------------------------------------------ names
@@ -185,6 +185,8 @@ function applyStage(i, instant = false) {
   const frame = st.frame === 'all' ? [rootRef] : (st.frame || st.hi).map((n) => parts[n]);
   const v = fitView(frame, labRef.camera, st.view[0], st.view[1], st.margin ?? 1.15);
   if (v) { subject = st.hi.length ? v[2] : null; fly(v[0], v[1], instant); }
+  // the studio turns with the camera so each close-up keeps the hero shot's highlights; close-ups get the macro lens
+  lookRef?.stage({ azimuth: (st.view[0] - STAGES[0].view[0]) * Math.PI / 180, radius: v?.[2].radius, macro: !!(v && st.hi.length && v[2].radius < 12), ms: instant ? 0 : 900 });
 }
 function fly(pos, target, instant) {
   const camera = labRef.camera, controls = controlsRef;
@@ -199,7 +201,7 @@ const EXTRA = {
   brass: { color: 0xcfa75e, metalness: 1, roughness: 0.26, envMapIntensity: 1.1 },
   case_black: { color: 0xffffff, map: forgedCarbon(1.6), metalness: 0.05, roughness: 0.38, clearcoat: 0.85, clearcoatRoughness: 0.12, envMapIntensity: 1.0, specularIntensity: 0.7 },
   black_ti: { color: 0x2b2c30, metalness: 1, roughness: 0.3, anisotropy: 0.6, envMapIntensity: 1.1, surf: 'brushed', rep: 4, ns: 0.2 },
-  strap: { color: 0x2a2b2f, metalness: 0, roughness: 0.5, sheen: 0.4, sheenRoughness: 0.5, sheenColor: 0x9a9a9a, specularIntensity: 0.45, surf: 'grain', rep: 5, ns: 0.3 },
+  strap: { color: 0x2a2b2f, metalness: 0, roughness: 0.5, sheen: 0.4, sheenRoughness: 0.5, sheenColor: 0x9a9a9a, specularIntensity: 0.45, scan: 'leather_black', ns: 0.55 },   // scanned leather grain (ambientCG Leather026, CC0)
   skeleton: { color: 0x74777c, metalness: 0.95, roughness: 0.34, anisotropy: 0.5, envMapIntensity: 1.0, surf: 'brushed', rep: 3, ns: 0.2 },
   dial: { color: 0x1b1c1f, metalness: 0.4, roughness: 0.42, envMapIntensity: 0.9 },
   print: { color: 0xe6e2d6, metalness: 0, roughness: 0.55 },
@@ -219,9 +221,11 @@ const lab = await mountLab(canvas, {
     try { gltf = await loadGLB(ASSETS + 'tourbillon.glb', (f) => veil.progress(f * 0.85)); }
     catch (err) { veil.fail('The model could not be loaded.', 'モデルを読み込めなかった。'); throw err; }
     veil.step('Setting up the studio light', 'スタジオの光を準備中');
-    const look = await createStudio(lab, { scale: 50, center: [0, -1, 0], floorY: FLOOR_Y, hdri: 'studio', hdriGain: 0.8, strips: 'watch', rotateY: 0.6,
+    // photoreal: model in mm (scanned textures at true scale), a 512 px reflection cube for the polished case,
+    // and a macro lens (depth of field) that the close-up stages turn on, focused on the orbit target
+    const look = await createStudio(lab, { unit: 0.001, envSize: 512, hdriRes: '2k', controls, dof: { bokeh: 1.1 }, scale: 50, center: [0, -1, 0], floorY: FLOOR_Y, hdri: 'studio', hdriGain: 0.8, strips: 'watch', rotateY: 0.6,
       exposure: 1.12, envIntensity: 1.0, toneMapping: 'neutral', shadowOpacity: 0.42, keyIntensity: 1.4, aoRadius: 1.6, aoThickness: 0.6, aoStrength: 1.1 });
-    veil.progress(0.95); window.__look = look;
+    veil.progress(0.95); window.__look = look; lookRef = look;
     const root = gltf.scene; rootRef = root;
     look.upgrade(root, { extra: EXTRA });
     const byName = new Map(meta.parts.map((p) => [p.name, p]));

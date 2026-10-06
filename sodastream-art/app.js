@@ -2,14 +2,12 @@ import {t} from './i18n.js';
 import * as T from 'three';
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
 import {HDRLoader} from 'three/addons/loaders/HDRLoader.js';
-import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
-import {RenderPass} from 'three/addons/postprocessing/RenderPass.js';
 import {GTAOPass} from 'three/addons/postprocessing/GTAOPass.js';
-import {OutputPass} from 'three/addons/postprocessing/OutputPass.js';
 import {FullScreenQuad} from 'three/addons/postprocessing/Pass.js';
 import {HorizontalBlurShader} from 'three/addons/shaders/HorizontalBlurShader.js';
 import {VerticalBlurShader} from 'three/addons/shaders/VerticalBlurShader.js';
 import {buildArtModel} from './art-model.js';
+import {createPhotoreal, loadGainMapHDR, texSet} from './photoreal.js';
 
 const $ = s => document.querySelector(s), reduced = matchMedia('(prefers-reduced-motion: reduce)');
 let step = 0, presses = 0, busy = false, inside = false, pressStarted = 0, lastPressFinished = -10000, render = () => {}, cameraView = () => {}, currentView = 'hero';
@@ -82,8 +80,8 @@ function contactShadow(renderer, scene, {width = 3.6, depth = 4.2, far = 1.1, bl
 
 /* Studio environment: the CC0 soft-box HDRI on a sphere, plus three strip
    lights so the polished steel carries long, clean highlights. */
-async function studioEnvironment(renderer) {
-  const env = new T.Scene(), hdr = await new HDRLoader().loadAsync('/assets/hdri/studio_small_09_1k.hdr');
+async function studioEnvironment(renderer, source = null, size = 256) {
+  const env = new T.Scene(), hdr = source ? source.texture : await new HDRLoader().loadAsync('/assets/hdri/studio_small_09_1k.hdr');
   hdr.mapping = T.EquirectangularReflectionMapping;
   const sphereMat = new T.MeshBasicMaterial({map: hdr, side: T.BackSide}); sphereMat.color.setScalar(.62);
   const sphere = new T.Mesh(new T.SphereGeometry(30, 64, 32), sphereMat); sphere.rotation.y = -.9; env.add(sphere);
@@ -93,8 +91,8 @@ async function studioEnvironment(renderer) {
     const m = new T.Mesh(new T.PlaneGeometry(w * 15, h * 15), new T.MeshBasicMaterial({color: new T.Color(k, k, k), side: T.DoubleSide}));
     m.position.copy(new T.Vector3(...p).normalize().multiplyScalar(25)); m.lookAt(0, 0, 0); env.add(m);
   }
-  const pmrem = new T.PMREMGenerator(renderer), rt = pmrem.fromScene(env, 0, .1, 120);
-  env.traverse(o => {if (o.isMesh) {o.geometry.dispose(); o.material.dispose()}}); hdr.dispose(); pmrem.dispose();
+  const pmrem = new T.PMREMGenerator(renderer), rt = pmrem.fromScene(env, 0, .1, 120, {size});
+  env.traverse(o => {if (o.isMesh) {o.geometry.dispose(); o.material.dispose()}}); if (source) source.dispose(); else hdr.dispose(); pmrem.dispose();
   return rt;
 }
 
@@ -123,13 +121,21 @@ try {
   const floor = new T.Mesh(new T.PlaneGeometry(40, 40), new T.ShadowMaterial({opacity: .16})); floor.rotation.x = -Math.PI / 2; floor.receiveShadow = true; floor.userData.noContact = true; scene.add(floor);
 
   const model = buildArtModel(scene);
+  // CC0 scans (ambientCG) replace the procedural micro-surface where the finish is textured:
+  // moulding grain on the satin column (Plastic 010, about 2 cm tiles), brushed grain on the
+  // lever hub (Metal 009) and the rubber feet and gaskets (Rubber 004). The roughness maps
+  // vary around the photographed finish; base roughness is divided by each map's mean.
+  {const once = new Set(), texRedraw = () => render();
+    scene.traverse(o => {const m = o.material; if (!o.isMesh || !m || once.has(m)) return; once.add(m);
+      if (m.name === 'satin-black') {Object.assign(m, texSet('acg-plastic010-grain', [5, 5], texRedraw)); m.roughness = .5 / .363; m.normalScale.set(.35, .35)}
+      else if (m.name === 'brushed-steel') {Object.assign(m, texSet('acg-metal009-brushed', [2, 2], texRedraw)); m.roughness = .3 / .469}
+      else if (m.name === 'rubber') {Object.assign(m, texSet('acg-rubber004', [3, 3], texRedraw)); m.roughness = .88 / .591}
+      else return;
+      m.needsUpdate = true});}
   const contact = contactShadow(renderer, scene); scene.add(contact.plane);
 
-  const size = new T.Vector2(), composerTarget = new T.WebGLRenderTarget(1, 1, {type: T.HalfFloatType, samples: 4});
-  const composer = new EffectComposer(renderer, composerTarget);
-  composer.addPass(new RenderPass(scene, camera));
   let gtao = null;
-  if (!phone) {
+  {
     gtao = new GTAOPass(scene, camera, 512, 512);
     gtao.updateGtaoMaterial({radius: .22, distanceExponent: 1.4, thickness: 1, scale: 1.1, samples: 16, distanceFallOff: 1, screenSpaceRadius: false});
     gtao.updatePdMaterial({lumaPhi: 10, depthPhi: 2, normalPhi: 3, radius: 6, rings: 2, samples: 16});
@@ -137,12 +143,15 @@ try {
     // Glass, water and bubbles do not occlude: hide them from the AO G-buffer.
     const ov = gtao._overrideVisibility.bind(gtao);
     gtao._overrideVisibility = () => {ov(); scene.traverse(o => {if (o.visible && o.userData.noAO) {o.visible = false; gtao._visibilityCache.push(o)}})};
-    composer.addPass(gtao);
   }
-  composer.addPass(new OutputPass());
+  // Still frames converge to supersampled AA, stochastic reflections in the
+  // gloss black and steel, and (on the lever close-up) a thin-lens depth of field.
+  const pr = createPhotoreal({renderer, scene, camera, gtao, phone, ssr: {maxDistance: 2.6, thickness: .22, intensity: 1}});
 
   let envRT = null, ready = false;
-  studioEnvironment(renderer).then(rt => {envRT = rt; scene.environment = rt.texture; scene.environmentIntensity = 1; ready = true; $('#fallback').hidden = true; window.__labReady = true; draw()}).catch(err => {console.warn(err); ready = true; $('#fallback').hidden = true; draw()});
+  studioEnvironment(renderer).then(rt => {envRT = rt; scene.environment = rt.texture; scene.environmentIntensity = 1; ready = true; $('#fallback').hidden = true; window.__labReady = true; draw();
+    // then the 2k studio light for crisper strip-light reflections (desktop only)
+    if (!phone) loadGainMapHDR(renderer, '/assets/textures/studio-hdri-2k/studio_small_09', '/assets/textures/studio-hdri-2k/studio_small_09-gain').then(src => studioEnvironment(renderer, src, 512)).then(rt2 => {const old = envRT; envRT = rt2; scene.environment = rt2.texture; old.dispose(); window.__labEnv2k = true; draw()}).catch(e => console.warn(e))}).catch(err => {console.warn(err); ready = true; $('#fallback').hidden = true; draw()});
 
   // Labels
   const layer = $('#labels'), svg = layer.querySelector('svg'), key_ = $('#label-key');
@@ -201,8 +210,8 @@ try {
     const moving = busy || now - lastPressFinished < 6000 || (step === 3 && presses > 0 && now - lastPressFinished < 6000);
     const posing = model.update({inside, busy, presses, step, time: (now - started) / 1000, pressPhase: (now - pressStarted) / 1000, reduced: reduced.matches, now});
     if (busy || posing || contactDirty) {contact.update(); contactDirty = false}
-    composer.render(); placeLabels(); window.__labFrames++;
-    if (transition || posing || ((moving || busy) && !reduced.matches) || (inside && busy)) frame = requestAnimationFrame(draw);
+    const more = pr.render(); placeLabels(); window.__labFrames++;
+    if (more || transition || posing || ((moving || busy) && !reduced.matches) || (inside && busy)) frame = requestAnimationFrame(draw);
     else if (moving && reduced.matches) frame = 0;
   }
   render = () => {contactDirty = true; draw()}; controls.addEventListener('start', () => {transition = null}); controls.addEventListener('change', draw);
@@ -214,10 +223,11 @@ try {
     if (camera.position.length() > 1 && !reduced.matches) transition = {started: performance.now(), from: camera.position.clone(), to: position, targetFrom: controls.target.clone(), targetTo: new T.Vector3(...target)};
     else {camera.position.copy(position); controls.target.set(...target); controls.update()}
     document.querySelectorAll('[data-view]').forEach(b => {b.classList.toggle('active', b.dataset.view === name); b.setAttribute('aria-pressed', String(b.dataset.view === name))});
-    $('#view-label').textContent = VIEW_NAMES[name]; draw();
+    $('#view-label').textContent = VIEW_NAMES[name];
+    pr.setDof(name === 'detail' ? {focus: new T.Vector3(...target), aperture: .045} : null); draw();
   };
   function resize() {
-    const w = holder.clientWidth, h = holder.clientHeight; camera.aspect = w / h; camera.updateProjectionMatrix(); renderer.setSize(w, h); composer.setPixelRatio(renderer.getPixelRatio()); composer.setSize(w, h);
+    const w = holder.clientWidth, h = holder.clientHeight; camera.aspect = w / h; camera.updateProjectionMatrix(); pr.setSize(w, h);
     if (!transition) {const [dir, target, scale] = VIEWS[currentView], cur = camera.position.clone().sub(controls.target); if (cur.length() > 1) {camera.position.copy(controls.target).add(cur.normalize().multiplyScalar(fitDistance(scale))); controls.update()}}
     draw();
   }
@@ -228,7 +238,7 @@ try {
   addEventListener('languagechange', () => {labelSet = null; draw()});
   renderer.domElement.addEventListener('webglcontextlost', e => {e.preventDefault(); cancelAnimationFrame(frame); $('#fallback').hidden = false; $('#fallback').textContent = '3D rendering paused. Reload to restore it; the chemistry guide still works.'});
   camera.aspect = holder.clientWidth / Math.max(1, holder.clientHeight); cameraView('hero'); resize();
-  addEventListener('pagehide', () => {observer.disconnect(); themeWatch.disconnect(); cancelAnimationFrame(frame); controls.dispose(); envRT?.dispose(); contact.dispose(); composer.dispose(); renderer.dispose()}, {once: true});
+  addEventListener('pagehide', () => {observer.disconnect(); themeWatch.disconnect(); cancelAnimationFrame(frame); controls.dispose(); envRT?.dispose(); contact.dispose(); pr.dispose(); renderer.dispose()}, {once: true});
 } catch (error) {console.error(error); $('#fallback').hidden = false; $('#fallback').textContent = '3D is unavailable in this browser. The guided steps and interactive chemistry still work.'}
 
 if (document.modelContext?.registerTool) {const lifecycle = new AbortController(); addEventListener('pagehide', () => lifecycle.abort(), {once: true}); try {Promise.resolve(document.modelContext.registerTool({name: 'explore_art_step', description: 'Show a stage of the SodaStream ART educational guide and optionally reveal the illustrative gas path.', inputSchema: {type: 'object', properties: {step: {type: 'integer', minimum: 0, maximum: 3}, revealGasPath: {type: 'boolean'}}, required: ['step'], additionalProperties: false}, annotations: {readOnlyHint: false, untrustedContentHint: false}, execute(input) {if (!input || !Number.isInteger(input.step) || input.step < 0 || input.step > 3 || Object.keys(input).some(k => !['step', 'revealGasPath'].includes(k)) || (input.revealGasPath !== undefined && typeof input.revealGasPath !== 'boolean')) throw new Error('Expected step 0-3 and an optional boolean revealGasPath'); if (busy) throw new Error('Wait for the current lever press to finish'); if (input.revealGasPath !== undefined) {inside = input.revealGasPath; $('#inside').checked = inside} setStep(input.step); return {step, title: chapters[step][1], presses, revealGasPath: inside}}}, {signal: lifecycle.signal})).catch(console.warn)} catch (e) {console.warn(e)}}

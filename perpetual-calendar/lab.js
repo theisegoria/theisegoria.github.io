@@ -29,7 +29,7 @@ const meta = await (await fetch(ASSETS + 'perpetual-meta.json')).json();
 const L = meta.layout;
 const TAU = Math.PI * 2, DEG = Math.PI / 180;
 
-let spin = null, binder = null, labRef = null, callouts = null, controlsRef = null, subject = null, rootRef = null;
+let lookRef = null, spin = null, binder = null, labRef = null, callouts = null, controlsRef = null, subject = null, rootRef = null;
 const params = { speed: 1, explode: 0, dial: true, hands: true, caseOn: true, plate: true, labels: true, stage: 0 };
 
 const NAMES = {
@@ -184,6 +184,8 @@ function applyStage(i, instant = false) {
   const frame = st.frame === 'all' ? [rootRef] : (st.frame || st.hi).map((n) => parts[n]);
   const v = fitView(frame, labRef.camera, st.view[0], st.view[1], st.margin ?? 1.15);
   if (v) { subject = st.hi.length ? v[2] : null; fly(v[0], v[1], instant); }
+  // the studio turns with the camera so each close-up keeps the hero shot's highlights; close-ups get the macro lens
+  lookRef?.stage({ azimuth: (st.view[0] - STAGES[0].view[0]) * Math.PI / 180, radius: v?.[2].radius, macro: !!(v && st.hi.length && v[2].radius < 12), follow: 0.5, ms: instant ? 0 : 900 });
 }
 function fly(pos, target, instant) {
   const camera = labRef.camera, controls = controlsRef;
@@ -224,9 +226,11 @@ const lab = await mountLab(canvas, {
     try { gltf = await loadGLB(ASSETS + 'perpetual.glb', (f) => veil.progress(f * 0.85)); }
     catch (err) { veil.fail('The model could not be loaded.', 'モデルを読み込めなかった。'); throw err; }
     veil.step('Setting up the studio light', 'スタジオの光を準備中');
-    const look = await createStudio(lab, { scale: 50, center: [0, -1, 0], floorY: FLOOR_Y, hdri: 'studio', hdriGain: 0.42, strips: 'watch', rotateY: 0.6,
+    // photoreal: model in mm (scanned textures at true scale), a 512 px reflection cube for the polished case,
+    // and a macro lens (depth of field) that the close-up stages turn on, focused on the orbit target
+    const look = await createStudio(lab, { unit: 0.001, envSize: 512, hdriRes: '2k', controls, dof: { bokeh: 1.1 }, scale: 50, center: [0, -1, 0], floorY: FLOOR_Y, hdri: 'studio', hdriGain: 0.42, strips: 'watch', rotateY: 0.6,
       exposure: 1.0, envIntensity: 1.0, toneMapping: 'neutral', shadowOpacity: 0.42, keyIntensity: 0.25, aoRadius: 1.4, aoThickness: 0.5, aoStrength: 1.1 });
-    veil.progress(0.95); window.__look = look;
+    veil.progress(0.95); window.__look = look; lookRef = look;
     const root = gltf.scene; rootRef = root;
     look.upgrade(root, { extra: EXTRA });
     const byName = new Map(meta.parts.map((p) => [p.name, p]));

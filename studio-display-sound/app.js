@@ -2,11 +2,9 @@ import * as THREE from 'three';
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
 import {HDRLoader} from 'three/addons/loaders/HDRLoader.js';
 import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
-import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
-import {RenderPass} from 'three/addons/postprocessing/RenderPass.js';
 import {GTAOPass} from 'three/addons/postprocessing/GTAOPass.js';
-import {OutputPass} from 'three/addons/postprocessing/OutputPass.js';
 import {makeModels} from './models.js';
+import {createPhotoreal, loadGainMapHDR} from './photoreal.js';
 const $=s=>document.querySelector(s), all=s=>[...document.querySelectorAll(s)];
 const setText=(s,t)=>{const e=$(s);if(e)e.textContent=t};
 const reduced=matchMedia('(prefers-reduced-motion: reduce)');
@@ -36,14 +34,16 @@ ja:{tabs:['01 6基のドライバー','02 筐体の揺れを減らす','03 空�
  call:{enclosure:['アルミニウムの筐体','62.3 × 36.2 cm · Apple の仕様','spec'],glass:['27インチ5Kパネルを覆うガラス','Apple の仕様','spec'],edges:['上下の縁に並ぶ細かな穴','製品写真','photo'],stand:['傾き調整スタンド（1枚の曲げ板）','高さ47.8 cm・奥行き16.8 cm · Apple。板厚は推定','spec'],wooferL:['ウーファーのペア（左）','大きさと位置：分解写真 · 内部の対向配置：推定','photo'],wooferR:['ウーファーのペア（右）','大きさと位置：分解写真 · 内部の対向配置：推定','photo'],tweeterL:['ツイーター（左）','金属メッシュの奥 · 分解写真','photo'],tweeterR:['ツイーター（右）','金属メッシュの奥 · 分解写真','photo'],chamber:['側面の音響室','輪郭：分解写真 · 奥行きと役割：推定','photo'],outlet:['下縁から出る音','経路は推定。写真には写っていません','inferred'],fan:['冷却ファン（スピーカーではない）','分解写真','photo'],psu:['電源基板','輪郭と表面：分解写真','photo'],logic:['A13 Bionic を載せたロジックボード','チップ：Apple · 輪郭：分解写真','photo'],driverA:['ウーファーA','教材モデル、動きは誇張','inferred'],driverB:['ウーファーB','教材モデル、動きは誇張','inferred'],net:['支持部に残る力','A + B。一致していれば0','inferred'],srcL:['左スピーカー','理想的な点音源','inferred'],srcR:['右スピーカー','理想的な点音源','inferred'],listener:['聴く人','両耳の間隔0.18 m','inferred']}}};
 
 const scene=new THREE.Scene();
-const camera=new THREE.PerspectiveCamera(28,1,.05,120);let renderer,orbit,models,raf,contextLost=false,env,composer,gtao,flight;
+const camera=new THREE.PerspectiveCamera(28,1,.05,120);let renderer,orbit,models,raf,contextLost=false,env,pr,gtao,flight,accRaf=0;
 const host=$('#scene'),layer=$('#callout-layer'),list=$('#callout-list');
 const dark=()=>document.documentElement.dataset.theme==='dark'||(!document.documentElement.dataset.theme&&matchMedia('(prefers-color-scheme: dark)').matches);
 function backdrop(){const c=document.createElement('canvas');c.width=4;c.height=256;const x=c.getContext('2d');const g=x.createLinearGradient(0,0,0,256);const d=dark();g.addColorStop(0,d?'#2a2825':'#f7f5f1');g.addColorStop(.62,d?'#1c1a18':'#ebe7e0');g.addColorStop(1,d?'#141311':'#ddd8cf');x.fillStyle=g;x.fillRect(0,0,4,256);const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;scene.background?.dispose?.();scene.background=t}
-function draw(){if(!renderer||contextLost)return;models.update(state);if(gtao)gtao.enabled=state.stage!==1&&!models.isGhosted()&&!(state.stage===0&&state.cutaway&&state.photo)&&host.clientWidth>=480;composer.render();layoutCallouts()}
+// Live frames while anything moves; when still, the image converges to supersampled AA,
+// reflections in the display glass and aluminium, and depth of field on the speaker close-up.
+function draw(){if(!renderer||contextLost)return;models.update(state);pr.gtaoAllowed=state.stage!==1&&!models.isGhosted()&&!(state.stage===0&&state.cutaway&&state.photo);if(pr.render()&&!accRaf)accRaf=requestAnimationFrame(()=>{accRaf=0;draw()});layoutCallouts()}
 const presets={0:{reset:[[3.6,1.5,15.8],[0,.25,0]],front:[[0,.35,16.2],[0,.25,0]],side:[[14.5,1.4,4.6],[0,.2,0]],detail:[[3.95,-.2,3.9],[2.5,-.66,0]]},1:{reset:[[4.4,2.0,5.3],[0,.05,0]],front:[[0,.2,5.6],[0,0,0]],side:[[5.8,1,1.4],[0,0,0]],detail:[[2.7,1.1,3.2],[0,0,0]]},2:{reset:[[8.5,10,19.5],[0,-1,2.5]],front:[[0,4,21],[0,-.8,2]],side:[[19,6,7],[0,-1,2]],detail:[[8.5,10,19.5],[0,-1,2.5]]},3:{reset:[[0,22,5.2],[0,0,4.8]],front:[[0,22,5.2],[0,0,4.8]],side:[[11,8,13],[0,0,4]],detail:[[0,22,5.2],[0,0,4.8]]}};
 function cameraPreset(kind='reset',animate=true){
- if(!orbit)return;const [p,t]=presets[state.stage][kind];const narrow=host.clientWidth<620;const k=narrow&&state.stage!==3?1.06:1;const pos=new THREE.Vector3(...p).sub(new THREE.Vector3(...t)).multiplyScalar(k).add(new THREE.Vector3(...t));
+ if(!orbit)return;const [p,t]=presets[state.stage][kind];pr?.setDof(kind==='detail'&&state.stage===0?{focus:new THREE.Vector3(...t),aperture:.06}:null);const narrow=host.clientWidth<620;const k=narrow&&state.stage!==3?1.06:1;const pos=new THREE.Vector3(...p).sub(new THREE.Vector3(...t)).multiplyScalar(k).add(new THREE.Vector3(...t));
  orbit.minDistance=state.stage===1?2.5:3;orbit.maxDistance=30;
  cancelAnimationFrame(flight);if(!animate||reduced.matches){camera.position.copy(pos);orbit.target.set(...t);orbit.update();draw();return}
  const p0=camera.position.clone(),t0=orbit.target.clone(),t1=new THREE.Vector3(...t),start=performance.now();
@@ -54,15 +54,16 @@ try{
  renderer.domElement.addEventListener('wheel',e=>{if(!e.altKey)e.stopImmediatePropagation()},{capture:true,passive:true});
  renderer.domElement.addEventListener('webglcontextlost',e=>{e.preventDefault();contextLost=true;stopMotion();showFallback()});renderer.domElement.addEventListener('webglcontextrestored',()=>location.reload());
  const pm=new THREE.PMREMGenerator(renderer);const room=new RoomEnvironment();env=pm.fromScene(room,.04);scene.environment=env.texture;room.dispose();
- new HDRLoader().load('/assets/hdri/photo_studio_01_1k.hdr',hdr=>{const t=pm.fromEquirectangular(hdr).texture;hdr.dispose();env.dispose();env={texture:t,dispose:()=>t.dispose()};scene.environment=t;scene.environmentIntensity=.95;scene.environmentRotation.set(0,-.6,0);pm.dispose();draw()},undefined,()=>pm.dispose());
+ new HDRLoader().load('/assets/hdri/photo_studio_01_1k.hdr',hdr=>{const t=pm.fromEquirectangular(hdr).texture;hdr.dispose();env.dispose();env={texture:t,dispose:()=>t.dispose()};scene.environment=t;scene.environmentIntensity=.95;scene.environmentRotation.set(0,-.6,0);pm.dispose();draw();
+   // then the 2k studio light, for crisp strip-light reflections in the glass and aluminium
+   if(host.clientWidth>=620)loadGainMapHDR(renderer,'/assets/textures/studio-hdri-2k/photo_studio_01','/assets/textures/studio-hdri-2k/photo_studio_01-gain').then(src=>{const p2=new THREE.PMREMGenerator(renderer);const t2=p2.fromEquirectangular(src.texture).texture;src.dispose();p2.dispose();env.dispose();env={texture:t2,dispose:()=>t2.dispose()};scene.environment=t2;window.__labEnv2k=true;draw()}).catch(e=>console.warn(e))},undefined,()=>pm.dispose());
  scene.add(new THREE.HemisphereLight('#ffffff','#8b8478',.35));const key=new THREE.DirectionalLight('#ffffff',1.5);key.position.set(3.5,10,6.5);key.castShadow=true;key.shadow.mapSize.set(2048,2048);Object.assign(key.shadow.camera,{left:-6,right:6,top:6,bottom:-6,near:1,far:30});key.shadow.radius=6;key.shadow.bias=-.0003;key.shadow.normalBias=.02;scene.add(key);
  backdrop();
  const photoTex=new THREE.TextureLoader().load('./assets/ifixit-studio-display-2022-interior.jpg',()=>draw());photoTex.colorSpace=THREE.SRGBColorSpace;photoTex.anisotropy=8;
  models=makeModels(scene,photoTex);
- composer=new EffectComposer(renderer,new THREE.WebGLRenderTarget(1,1,{type:THREE.HalfFloatType,samples:4}));composer.addPass(new RenderPass(scene,camera));
- gtao=new GTAOPass(scene,camera,1,1);gtao.blendIntensity=.9;gtao.updateGtaoMaterial({radius:.3,distanceExponent:1.4,thickness:1,scale:1,samples:16,distanceFallOff:1});gtao.updatePdMaterial({lumaPhi:10,depthPhi:2,normalPhi:3,radius:5,rings:2,samples:16});composer.addPass(gtao);composer.addPass(new OutputPass());
+  gtao=new GTAOPass(scene,camera,1,1);gtao.blendIntensity=.9;gtao.updateGtaoMaterial({radius:.3,distanceExponent:1.4,thickness:1,scale:1,samples:16,distanceFallOff:1});gtao.updatePdMaterial({lumaPhi:10,depthPhi:2,normalPhi:3,radius:5,rings:2,samples:16});pr=createPhotoreal({renderer,scene,camera,gtao,phone:host.clientWidth<620||matchMedia('(pointer: coarse)').matches,ssr:{maxDistance:4,thickness:.3,intensity:1}});
  orbit=new OrbitControls(camera,renderer.domElement);orbit.enablePan=false;orbit.enableDamping=false;orbit.minPolarAngle=.01;orbit.maxPolarAngle=Math.PI*.6;orbit.addEventListener('change',draw);orbit.addEventListener('start',()=>{stopMotion();cancelAnimationFrame(flight)});
- new ResizeObserver(()=>{const w=host.clientWidth,h=host.clientHeight;if(!w||!h)return;camera.aspect=w/h;camera.updateProjectionMatrix();renderer.setSize(w,h);composer.setSize(w,h);draw()}).observe(host);
+ new ResizeObserver(()=>{const w=host.clientWidth,h=host.clientHeight;if(!w||!h)return;camera.aspect=w/h;camera.updateProjectionMatrix();pr.setSize(w,h);draw()}).observe(host);
  cameraPreset('reset',false);
  new MutationObserver(()=>{backdrop();draw()}).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
 }catch(e){console.warn('3D unavailable:',e.message);renderer=null;showFallback()}
@@ -131,4 +132,4 @@ function renderReading(){if(!content)return;const c=content[state.lang],t=copy[s
 function comparisonTable(){return state.lang==='en'?'<table class="comparison"><thead><tr><th>Documented feature</th><th>2022</th><th>2026</th></tr></thead><tbody><tr><td>Woofers / tweeters</td><td>4 / 2</td><td>4 / 2</td></tr><tr><td>Force cancellation</td><td>Yes</td><td>Yes</td></tr><tr><td>Atmos spatial audio</td><td>Yes</td><td>Yes</td></tr><tr><td>Bass statement</td><td>Reference generation</td><td>30% deeper, per Apple</td></tr><tr><td>Geometry shown here</td><td>Reference-informed</td><td>Not reconstructed</td></tr></tbody></table>':'<table class="comparison"><thead><tr><th>公表された機能</th><th>2022年</th><th>2026年</th></tr></thead><tbody><tr><td>ウーファー / ツイーター</td><td>4 / 2</td><td>4 / 2</td></tr><tr><td>力の相殺</td><td>対応</td><td>対応</td></tr><tr><td>Atmos 空間オーディオ</td><td>対応</td><td>対応</td></tr><tr><td>低音の説明</td><td>比較の基準</td><td>30%深い（Apple）</td></tr><tr><td>本教材の形状</td><td>公開資料を参照</td><td>未再構成</td></tr></tbody></table>'}
 updateUI();renderReading();draw();
 const lifecycle=new AbortController();if(document.modelContext?.registerTool){try{Promise.resolve(document.modelContext.registerTool({name:'configure_sound_exploration',title:'Explore Studio Display acoustics',description:'Select a teaching chapter and adjust its displayed physical parameters. Does not start audio.',inputSchema:{type:'object',properties:{stage:{type:'integer',minimum:0,maximum:3},frequency:{type:'number',minimum:50,maximum:2000},mismatch:{type:'number',minimum:0,maximum:100},listener:{type:'number',minimum:-.45,maximum:.45}},additionalProperties:false},annotations:{readOnlyHint:false},execute(input){if(!input||typeof input!=='object')throw Error('Expected parameters');const bounds={stage:[0,3],frequency:[50,2000],mismatch:[0,100],listener:[-.45,.45]};for(const[k,v]of Object.entries(input)){if(!bounds[k]||!Number.isFinite(v)||v<bounds[k][0]||v>bounds[k][1]||(k==='stage'&&!Number.isInteger(v)))throw Error('Invalid parameter '+k)}Object.assign(state,input);selectStage(state.stage);return{stage:state.stage,frequency:state.frequency,mismatch:state.mismatch,listener:state.listener,readout:$('#readout')?.textContent}}},{signal:lifecycle.signal})).catch(()=>{})}catch{}}
-window.addEventListener('pagehide',()=>{stopMotion();stopAudio();lifecycle.abort();orbit?.dispose();scene.traverse(o=>{o.geometry?.dispose();if(o.material){for(const m of(Array.isArray(o.material)?o.material:[o.material])){m.map?.dispose();m.dispose()}}});env?.dispose();composer?.dispose?.();renderer?.dispose()},{once:true});
+window.addEventListener('pagehide',()=>{stopMotion();stopAudio();lifecycle.abort();orbit?.dispose();scene.traverse(o=>{o.geometry?.dispose();if(o.material){for(const m of(Array.isArray(o.material)?o.material:[o.material])){m.map?.dispose();m.dispose()}}});env?.dispose();pr?.dispose?.();renderer?.dispose()},{once:true});

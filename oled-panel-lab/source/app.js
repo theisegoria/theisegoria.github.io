@@ -7,6 +7,8 @@ import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
 import {RenderPass} from 'three/addons/postprocessing/RenderPass.js';
 import {UnrealBloomPass} from 'three/addons/postprocessing/UnrealBloomPass.js';
 import {OutputPass} from 'three/addons/postprocessing/OutputPass.js';
+import {GTAOPass} from 'three/addons/postprocessing/GTAOPass.js';
+import {Accumulator, Adaptive} from './photoreal.js';
 
 const ja = document.documentElement.lang === 'ja', t = (a, b) => ja ? b : a;
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -42,7 +44,7 @@ document.querySelector('#app').innerHTML = `
 <footer><h2>${t('Sources & model boundaries', '出典とモデルの範囲')}</h2><ol><li><a href="https://oled.com/oleds/">Universal Display Corporation: OLED structure</a></li><li><a href="https://news.samsungdisplay.com/4660">Samsung Display: OLED principle & structure</a></li><li><a href="https://global.samsungdisplay.com/30927">Samsung Display: Backplane</a></li><li><a href="https://global.samsungdisplay.com/29626">Samsung Display: Encapsulation</a></li><li><a href="https://www.lgdisplay.com/eng/technology/tandem-woled">LG Display: Tandem WOLED</a></li><li><a href="https://global.samsungdisplay.com/31428">Samsung Display: QD-OLED emission architecture</a></li></ol><p>${t('A conceptual explainer, not a device simulation. No measured layer dimensions, carrier mobility, quantum efficiency, lifetime or luminance are inferred. Circuit details are reduced to one transistor, one capacitor and the two address lines per subpixel; optical interference and the polariser’s wavelength dependence are omitted.', '概念を理解するための解説であり、素子シミュレーションではありません。層寸法、キャリア移動度、量子効率、寿命、輝度の測定値を示すものではありません。回路は各サブピクセルにつきトランジスタ1個、容量1個、2本の配線に簡略化しています。光の干渉や偏光板の波長依存性は省略しています。')}</p><p>${t('14 September 2026, revised 6 October 2026 · English / Japanese', '2026年9月14日、2026年10月6日改訂 · 英語・日本語')}</p></footer></main>`;
 
 const $ = id => document.getElementById(id);
-let renderer, composer, bloom, scene, camera, controls, stackGroup, layerObjs = [], charges, colourGrid, shafts, tags = [], needs = true, narrow = false;
+let mobile = false, acc, adaptive, gtao, maxDpr = 1, camMoved = false, renderer, composer, bloom, scene, camera, controls, stackGroup, layerObjs = [], charges, colourGrid, shafts, tags = [], needs = true, narrow = false;
 const P = .36, NX = 14, NY = 9, PW = NX * P, PD = NY * P;
 const EMIT = [new THREE.Color(1, .02, .01), new THREE.Color(.03, 1, .06), new THREE.Color(.02, .05, 1)];
 // Relative emitting area per lattice cell (red and blue at half density, green at full): used so the
@@ -197,13 +199,27 @@ function animateCharges() {
   charges.userData.sp.material.color.copy(EMIT[1]).multiplyScalar(.08 + 1.1 * flash + (S.phase > .74 ? .4 * (1 - S.phase) : 0));
 }
 
+// Emitting subpixel as seen under a microscope: uniform in the opening, dimming where the bank slopes up at its rim.
+// R and B are diamonds (L1 distance), G is an ellipse (L2 distance); sizes match SUBGEO.
+function emitterMaterial(color, ci) {
+  const m = new THREE.MeshBasicMaterial({color});
+  const size = [[.125, .125], [.088, .058], [.152, .152]][ci];
+  m.onBeforeCompile = s => {
+    s.uniforms.uSize = {value: new THREE.Vector2(...size)};
+    s.vertexShader = s.vertexShader.replace('#include <common>', '#include <common>\nvarying vec2 vLoc;').replace('#include <begin_vertex>', '#include <begin_vertex>\nvLoc = position.xz;');
+    s.fragmentShader = s.fragmentShader.replace('#include <common>', `#include <common>\nvarying vec2 vLoc; uniform vec2 uSize;`)
+      .replace('#include <opaque_fragment>', `float d = ${ci === 1 ? 'length(vLoc / uSize)' : '(abs(vLoc.x) + abs(vLoc.y)) / uSize.x'};\noutgoingLight *= mix(1.0, 0.42, smoothstep(0.62, 1.0, d));\n#include <opaque_fragment>`);
+  };
+  m.customProgramCacheKey = () => 'emit' + ci;
+  return m;
+}
 // ------------------------------------------------------------ colour mixing grid (view 3 of the story)
 function buildColourGrid() {
   colourGrid = new THREE.Group(); scene.add(colourGrid);
   const NX2 = 40, NY2 = 26, st = sites(NX2, NY2, P);
   const base = new THREE.Mesh(new THREE.BoxGeometry(NX2 * P, .05, NY2 * P), new THREE.MeshPhysicalMaterial({color: '#0d0c0b', roughness: .35, clearcoat: 1, clearcoatRoughness: .1}));
   base.position.y = -.03; colourGrid.add(base);
-  const mats = EMIT.map(c => new THREE.MeshBasicMaterial({color: c.clone()}));
+  const mats = EMIT.map((c, i) => emitterMaterial(c.clone(), i));
   colourGrid.userData.mats = mats;
   instanced(SUBGEO.R(), mats[0], st.R, 0, 1, colourGrid); instanced(SUBGEO.G(), mats[1], st.G, 0, 1, colourGrid); instanced(SUBGEO.B(), mats[2], st.B, 0, 1, colourGrid);
 }
@@ -247,16 +263,18 @@ function paintBackground() {
   const gr = g.createRadialGradient(256, 200, 10, 256, 260, 430); gr.addColorStop(0, '#24262a'); gr.addColorStop(.55, '#151719'); gr.addColorStop(1, '#0b0c0d');
   g.fillStyle = gr; g.fillRect(0, 0, 512, 512); const tx = new THREE.CanvasTexture(c); tx.colorSpace = THREE.SRGBColorSpace; return tx;
 }
-async function studioEnv(pmrem) {
+async function studioEnv(pmrem, url = '/assets/hdri/studio_small_09_1k.hdr', size = 256) {
   try {
-    const hdr = await new HDRLoader().loadAsync('/assets/hdri/studio_small_09_1k.hdr'); hdr.mapping = THREE.EquirectangularReflectionMapping;
+    const hdr = await new HDRLoader().loadAsync(url); hdr.mapping = THREE.EquirectangularReflectionMapping;
     const env = new THREE.Scene(); env.background = hdr;
     for (const [w, h, i, p] of [[3, .6, 6, [-.5, .8, .35]], [.4, 2.6, 4, [.9, .2, -.3]], [2.4, .3, 3, [.1, .3, .95]]]) { const m = new THREE.Mesh(new THREE.PlaneGeometry(w, h), new THREE.MeshBasicMaterial({color: new THREE.Color(1, .98, .95).multiplyScalar(i), side: THREE.DoubleSide})); m.position.set(...p).multiplyScalar(4.5); m.lookAt(0, 0, 0); env.add(m); }
-    scene.environment = pmrem.fromScene(env, 0, .1, 100).texture; hdr.dispose(); needs = true;
+    const old = scene.environment; scene.environment = pmrem.fromScene(env, 0, .1, 100, {size}).texture; hdr.dispose(); needs = true; if (old) old.dispose();
+    // Desktop: swap in the 2k studio (CC0, Poly Haven) and a 512 px PMREM once the page has settled.
+    if (size === 256 && !mobile) setTimeout(() => (window.requestIdleCallback || setTimeout)(() => studioEnv(pmrem, '/assets/textures/pr2-hdri-2k/studio_small_09_2k.hdr', 512)), 2500);
   } catch (e) { /* RoomEnvironment remains */ }
 }
 try {
-  const mobile = matchMedia('(max-width: 740px), (pointer: coarse)').matches;
+  mobile = matchMedia('(max-width: 740px), (pointer: coarse)').matches;
   renderer = new THREE.WebGLRenderer({antialias: false, powerPreference: 'high-performance'}); renderer.setPixelRatio(Math.min(devicePixelRatio, mobile ? 1.6 : 1.75));
   renderer.outputColorSpace = THREE.SRGBColorSpace; renderer.toneMapping = THREE.NeutralToneMapping; renderer.toneMappingExposure = 1;
   $('canvas-host').append(renderer.domElement); renderer.domElement.setAttribute('aria-label', t('Interactive OLED teaching model', '操作できるOLED教材モデル')); renderer.domElement.setAttribute('role', 'img');
@@ -268,19 +286,37 @@ try {
   buildStack(); buildCharges(); buildColourGrid();
   composer = new EffectComposer(renderer, new THREE.WebGLRenderTarget(1, 1, {type: THREE.HalfFloatType, samples: 4}));
   composer.addPass(new RenderPass(scene, camera));
+  if (!mobile) {
+    // Ground-truth AO on the opaque parts (backplane transistors and lines, anodes, pixel bank); transparent films,
+    // light shafts and charge markers are left out of its depth so they do not cast false occlusion.
+    gtao = new GTAOPass(scene, camera, 1, 1); gtao.blendIntensity = .8;
+    gtao.updateGtaoMaterial({radius: .25, distanceExponent: 1.5, thickness: .6, scale: 1, samples: 16});
+    const render = gtao.render.bind(gtao), hidden = [];
+    gtao.render = (...a) => {
+      scene.traverse(o => { if ((o.isMesh || o.isLineSegments || o.isSprite) && o.visible) { const m = o.material; if (o === shafts || m.transparent || m.transmission > 0 || o.isLineSegments || o.isSprite) { o.visible = false; hidden.push(o); } } });
+      render(...a); hidden.forEach(o => { o.visible = true; }); hidden.length = 0;
+    };
+    composer.addPass(gtao);
+  }
   bloom = new UnrealBloomPass(new THREE.Vector2(256, 256), .6, .45, .95); composer.addPass(bloom);
+  // Still views converge to a supersampled image; the subpixel close-up also gets thin-lens depth of field.
+  acc = new Accumulator({max: mobile ? 16 : 48}); composer.addPass(acc);
   composer.addPass(new OutputPass());
+  maxDpr = renderer.getPixelRatio();
+  const steps = [maxDpr, maxDpr * .85, maxDpr * .72, maxDpr * .6, 1, .85].map(v => Math.max(.85, v)).filter((v, i, a) => i === 0 || v < a[i - 1] - .05);
+  adaptive = new Adaptive(steps, (v, i) => { if (gtao) gtao.enabled = i < steps.length - 1 || steps.length < 3; });
   // Layer tags (view 0) on the right-hand edge of each slab; charge-view tags on the left.
   layers.forEach((L, i) => makeTag(L.name, v => layerObjs[i].g.localToWorld(v.set(PW / 2, 0, PD / 2)), 0, 46, 0, {order: -i, stackUp: false, when: () => !narrow || i === S.layer, active: () => i === S.layer}));
   [[8, t('Polariser', '偏光板')], [7, t('Encapsulation', '封止層')], [6, t('Cathode (−)', '陰極（−）')], [5, t('Electron transport', '電子輸送層')], [EML, t('Emissive layer', '発光層')], [3, t('Hole transport', '正孔輸送層')], [2, t('Anode (+)', '陽極（＋）')], [9, t('Cover glass', 'カバーガラス')]].forEach(([i, text]) => makeTag(text, v => layerObjs[i].g.localToWorld(v.set(-PW / 2, 0, PD / 2)), 1, -46, 0, {order: -i}));
   const ray = new THREE.Raycaster(), mouse = new THREE.Vector2(); let down;
   renderer.domElement.addEventListener('pointerdown', e => down = [e.clientX, e.clientY]);
   renderer.domElement.addEventListener('pointerup', e => { if (S.view !== 0 || !down || Math.hypot(e.clientX - down[0], e.clientY - down[1]) > 5) return; const b = renderer.domElement.getBoundingClientRect(); mouse.set((e.clientX - b.left) / b.width * 2 - 1, -(e.clientY - b.top) / b.height * 2 + 1); ray.setFromCamera(mouse, camera); const hit = ray.intersectObjects(layerObjs.map(o => o.pick), false)[0]; if (hit) { S.layer = hit.object.parent.userData.layer; update(); } });
-  new ResizeObserver(() => { const b = $('canvas-host').getBoundingClientRect(); if (!b.width) return; renderer.setSize(b.width, b.height); composer.setSize(b.width, b.height); camera.aspect = b.width / b.height; camera.updateProjectionMatrix(); const was = narrow; narrow = camera.aspect < .9 || b.width < 520; if (was !== narrow) reset(); needs = true; }).observe($('canvas-host'));
+  new ResizeObserver(resizeAll).observe($('canvas-host'));
   renderer.domElement.addEventListener('webglcontextlost', e => { e.preventDefault(); $('fallback').hidden = false; });
-  controls.addEventListener('change', () => { needs = true; });
+  controls.addEventListener('change', () => { needs = true; camMoved = true; });
 } catch (e) { $('fallback').hidden = false; console.error(e); renderer = null; }
 
+function resizeAll() { const b = $('canvas-host').getBoundingClientRect(); if (!b.width || !renderer) return; renderer.setSize(b.width, b.height); composer.setPixelRatio(renderer.getPixelRatio()); composer.setSize(b.width, b.height); camera.aspect = b.width / b.height; camera.updateProjectionMatrix(); const was = narrow; narrow = camera.aspect < .9 || b.width < 520; if (was !== narrow) reset(); needs = true; }
 const CAMS = [{p: [8.4, 5.6, 10.2], t: [0, -.3, 0]}, {p: [5.4, 2.0, 8.2], t: [0, 0, 0]}, {p: [0, 8, 4.2], t: [0, 0, 0]}];
 function reset() {
   if (!camera) return; const c = CAMS[S.view], tg = new THREE.Vector3(...c.t);
@@ -334,10 +370,29 @@ if (params.has('rgb')) params.get('rgb').split(',').slice(0, 3).forEach((v, i) =
 $('language').href = langHref();
 update(); reset();
 let prev = 0, lastPhase = -1;
+const tmpSize = new THREE.Vector2(), tmpDir = new THREE.Vector3();
 function frame(now) {
-  const dt = prev ? Math.min((now - prev) / 1000, .05) : 0; prev = now;
-  if (!document.hidden && S.view === 1 && S.play) { S.phase = (S.phase + dt / 7) % 1; $('phase').value = S.phase * 100; $('phase-out').textContent = Math.round(S.phase * 100) + '%'; const ph = Math.floor(S.phase * 4); if (ph !== lastPhase) { lastPhase = ph; update(); } animateCharges(); needs = true; }
-  if (needs && renderer && !document.hidden) { composer.render(); layoutTags(); needs = false; window.__labFrames = (window.__labFrames || 0) + 1; }
+  const rawMs = prev ? now - prev : 0, dt = prev ? Math.min(rawMs / 1000, .05) : 0; prev = now;
+  const restart = needs, animating = S.view === 1 && S.play;
+  if (!document.hidden && animating) { S.phase = (S.phase + dt / 7) % 1; $('phase').value = S.phase * 100; $('phase-out').textContent = Math.round(S.phase * 100) + '%'; const ph = Math.floor(S.phase * 4); if (ph !== lastPhase) { lastPhase = ph; update(); } animateCharges(); needs = true; }
+  const moving = camMoved || animating;
+  if (renderer && acc) {
+    adaptive.frame(rawMs, moving);
+    const want = moving ? adaptive.level : maxDpr;
+    if (Math.abs(renderer.getPixelRatio() - want) > .01) { renderer.setPixelRatio(want); resizeAll(); }
+    if (restart || moving) acc.reset();
+    // Close-up of the subpixel lattice: shallow, microscope-like focus on the centre of the grid.
+    camera.getWorldDirection(tmpDir);
+    acc.aperture = !mobile && S.view === 2 && S.dist < .3 ? .09 * (1 - S.dist / .3) : 0; acc.focus = Math.max(1, -camera.position.dot(tmpDir));
+  }
+  const refine = renderer && acc && !acc.converged && !moving;
+  if ((needs || refine) && renderer && !document.hidden) {
+    const size = renderer.getDrawingBufferSize(tmpSize);
+    acc.jitter(camera, size.x, size.y); composer.render(); acc.restore(camera);
+    if (needs) layoutTags();
+    needs = false; window.__labFrames = (window.__labFrames || 0) + 1;
+  }
+  camMoved = false;
   requestAnimationFrame(frame);
 }
 requestAnimationFrame(frame);

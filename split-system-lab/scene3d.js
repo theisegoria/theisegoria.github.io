@@ -2,10 +2,8 @@ import * as THREE from 'three';
 import {OrbitControls} from './vendor/OrbitControls.js';
 import {RoundedBoxGeometry} from './vendor/RoundedBoxGeometry.js';
 import {HDRLoader} from 'three/addons/loaders/HDRLoader.js';
-import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
-import {RenderPass} from 'three/addons/postprocessing/RenderPass.js';
 import {GTAOPass} from 'three/addons/postprocessing/GTAOPass.js';
-import {OutputPass} from 'three/addons/postprocessing/OutputPass.js';
+import {createPhotoreal, markDynamic, loadGainMapHDR, texSet} from './photoreal.js';
 
 /* A generic wall-mounted reverse-cycle split system in a cut-away room corner.
    Metres, y up. Indoors is x < -0.25 (plaster wall behind the indoor unit),
@@ -22,24 +20,21 @@ const rnd=(i,k=0)=>{const x=Math.sin(i*12.9898+k*78.233)*43758.5453;return x-Mat
 /* ---------- procedural surface textures, drawn once on a canvas */
 function canvasTex(w,h,draw,repeat=[1,1],color=true){const c=document.createElement('canvas');c.width=w;c.height=h;const g=c.getContext('2d');draw(g,w,h);const t=new T.CanvasTexture(c);t.wrapS=t.wrapT=T.RepeatWrapping;t.repeat.set(...repeat);t.anisotropy=8;t.colorSpace=color?T.SRGBColorSpace:T.NoColorSpace;return t}
 function normalFrom(w,h,height,strength=2,repeat=[1,1]){return canvasTex(w,h,(g)=>{const img=g.createImageData(w,h);const H=(x,y)=>height(((x%w)+w)%w,((y%h)+h)%h);for(let y=0;y<h;y++)for(let x=0;x<w;x++){const dx=(H(x+1,y)-H(x-1,y))*strength,dy=(H(x,y+1)-H(x,y-1))*strength,l=Math.hypot(dx,dy,1),i=4*(y*w+x);img.data[i]=(-dx/l*.5+.5)*255;img.data[i+1]=(dy/l*.5+.5)*255;img.data[i+2]=(1/l*.5+.5)*255;img.data[i+3]=255}g.putImageData(img,0,0)},repeat,false)}
-const BRICK={w:512,h:512,bw:128,ch:64,m:6};
-function brickHeight(x,y){const row=Math.floor(y/BRICK.ch),off=row%2?BRICK.bw/2:0,bx=(x+off)%BRICK.bw,by=y%BRICK.ch;return bx<BRICK.m||by<BRICK.m?0:1-.08*rnd(Math.floor((x+off)/BRICK.bw)+row*17,3)}
-function brickMap(rep){return canvasTex(512,512,(g)=>{g.fillStyle='#cbc3b5';g.fillRect(0,0,512,512);for(let row=0;row<8;row++){const off=row%2?-64:0;for(let i=-1;i<5;i++){const x=i*128+off+6,y=row*64+6,k=rnd(i+row*9+40);const l=38+k*14,s=48+rnd(i*3+row)*14;g.fillStyle=`hsl(${14+k*8},${s}%,${l}%)`;g.fillRect(x,y,122,58);for(let n=0;n<70;n++){g.fillStyle=`rgba(${rnd(n,i+row)>.5?'255,230,210':'40,20,10'},${.08+rnd(n+3,row)*.1})`;g.fillRect(x+rnd(n,row*7+i)*120,y+rnd(n*2,i)*56,2,2)}}}},rep)}
 function finMaps(rep){const map=canvasTex(256,32,(g)=>{g.fillStyle='#8f969b';g.fillRect(0,0,256,32);for(let x=0;x<256;x+=4){g.fillStyle='#e3e7ea';g.fillRect(x,0,1.6,32);g.fillStyle='#5d6469';g.fillRect(x+2.6,0,1,32)}},rep);const nrm=normalFrom(256,32,(x)=>{const k=x%4;return k<1.6?1:k>2.6?0:.4},3,rep);return {map,nrm}}
 function plasterNormal(rep){return normalFrom(256,256,(x,y)=>rnd(x+y*256)*.5+rnd(Math.floor(x/4)+Math.floor(y/4)*97,2)*.5,.7,rep)}
-function woodMap(rep){return canvasTex(512,512,(g)=>{for(let p=0;p<8;p++){const y=p*64,k=rnd(p,5);g.fillStyle=`hsl(${28+k*6},${38+k*10}%,${48+k*9}%)`;g.fillRect(0,y,512,64);for(let n=0;n<26;n++){g.strokeStyle=`rgba(80,45,20,${.06+rnd(n,p)*.1})`;g.lineWidth=1+rnd(n+1,p)*1.5;g.beginPath();const yy=y+4+rnd(n,p+9)*56;g.moveTo(0,yy);for(let x=0;x<=512;x+=32)g.lineTo(x,yy+Math.sin(x*.02+n)*2.5);g.stroke()}g.fillStyle='rgba(50,30,15,.45)';g.fillRect(0,y,512,2);const cut=rnd(p,8)*512;g.fillRect(cut,y,2,64)}},rep)}
-function paverMap(rep){return canvasTex(512,512,(g)=>{g.fillStyle='#8d8a85';g.fillRect(0,0,512,512);for(let i=0;i<4;i++)for(let j=0;j<4;j++){const k=rnd(i*4+j,11);g.fillStyle=`hsl(35,${4+k*4}%,${62+k*8}%)`;g.fillRect(i*128+3,j*128+3,122,122);for(let n=0;n<160;n++){g.fillStyle=`rgba(0,0,0,${rnd(n,i+j*4)*.07})`;g.fillRect(i*128+3+rnd(n,j)*120,j*128+3+rnd(n*3,i)*120,2,2)}}},rep)}
 function tapeMap(){return canvasTex(64,256,(g)=>{g.fillStyle='#ecebe6';g.fillRect(0,0,64,256);g.strokeStyle='rgba(120,120,115,.35)';g.lineWidth=2;for(let y=-64;y<320;y+=24){g.beginPath();g.moveTo(0,y);g.lineTo(64,y+20);g.stroke()}},[1,30])}
 
 export function createSplitScene({host,state,tr,onPart,onLost}){
  const narrow0=host.clientWidth<600;
- const renderer=new T.WebGLRenderer({antialias:false,powerPreference:'high-performance'});
+ const renderer=new T.WebGLRenderer({antialias:true,powerPreference:'high-performance'});
  renderer.setPixelRatio(Math.min(devicePixelRatio,narrow0?2:1.75));renderer.outputColorSpace=T.SRGBColorSpace;renderer.toneMapping=T.NeutralToneMapping;renderer.toneMappingExposure=1;
- renderer.shadowMap.enabled=true;renderer.shadowMap.type=T.PCFSoftShadowMap;host.append(renderer.domElement);
+ renderer.shadowMap.enabled=true;renderer.shadowMap.type=T.PCFShadowMap;host.append(renderer.domElement);
  renderer.domElement.setAttribute('aria-label','3D split-system model; use component buttons for explanations and Reset view to restore the camera');renderer.domElement.tabIndex=0;
  const scene=new T.Scene();const pmrem=new T.PMREMGenerator(renderer);
  const sky=new T.Scene();sky.background=new T.Color(0xd9dde0);const env0=pmrem.fromScene(sky,0);scene.environment=env0.texture;scene.environmentIntensity=.9;
- new HDRLoader().load(HDRI,tex=>{tex.mapping=T.EquirectangularReflectionMapping;scene.environment=pmrem.fromEquirectangular(tex).texture;scene.environmentRotation.y=.5;scene.environmentIntensity=.8;tex.dispose();host.dataset.hdri='loaded';dirty=true;wake()},undefined,()=>{host.dataset.hdri='fallback'});
+ new HDRLoader().load(HDRI,tex=>{tex.mapping=T.EquirectangularReflectionMapping;scene.environment=pmrem.fromEquirectangular(tex).texture;scene.environmentRotation.y=.5;scene.environmentIntensity=.8;tex.dispose();host.dataset.hdri='loaded';dirty=true;wake();
+   // then the 2k studio light for crisper reflections in the gloss panels (desktop only)
+   if(!narrow0)loadGainMapHDR(renderer,'/assets/textures/studio-hdri-2k/studio_small_09','/assets/textures/studio-hdri-2k/studio_small_09-gain').then(src=>{const t2=pmrem.fromEquirectangular(src.texture).texture;src.dispose();scene.environment=t2;window.__labEnv2k=true;dirty=true;wake()}).catch(e=>console.warn(e))},undefined,()=>{host.dataset.hdri='fallback'});
  const sun=new T.DirectionalLight(0xfff8ee,1.55);sun.position.set(2.6,5.2,4.2);sun.target.position.set(-.2,1,0);sun.castShadow=true;sun.shadow.mapSize.set(1536,1536);Object.assign(sun.shadow.camera,{left:-3.4,right:3.4,top:3.4,bottom:-2,near:1,far:14});sun.shadow.bias=-.0003;sun.shadow.normalBias=.02;scene.add(sun,sun.target);
  scene.add(new T.HemisphereLight(0xf2f5f8,0x8b877f,.25));
  const camera=new T.PerspectiveCamera(30,1,.05,60);
@@ -47,26 +42,29 @@ export function createSplitScene({host,state,tr,onPart,onLost}){
 
  /* ---------- materials */
  const P=o=>new T.MeshPhysicalMaterial(o),S=o=>new T.MeshStandardMaterial(o);
- const plaster=S({color:'#ece9e3',roughness:.93,normalMap:plasterNormal([5,5]),normalScale:new T.Vector2(.35,.35)});
+ // CC0 scans (Poly Haven, ambientCG): face brick, laminate boards, pavers, concrete, painted plaster grain,
+ // powder-coat orange peel on the steel casing and moulding grain on the plastics. Brick tiles hold about
+ // thirteen 86 mm courses, so one tile spans about 1.1 m.
+ const texReady=()=>{dirty=true;wake()};
+ const plaster=S({color:'#ece9e3',roughness:.93,...texSet('ph-beige-wall-001',[4,5],texReady),normalScale:new T.Vector2(.5,.5)});
  const plasterCut=S({color:'#f4f2ee',roughness:.95});
  const insulation=S({color:'#e6d39f',roughness:1,normalMap:plasterNormal([3,8]),normalScale:new T.Vector2(1.2,1.2)});
  const stud=S({color:'#c99d66',roughness:.8});
  const cavity=S({color:'#3b3631',roughness:1});
- const brickN=(r)=>normalFrom(512,512,brickHeight,3.5,r);
- const brickC=S({map:brickMap([1.98,3.8]),normalMap:brickN([1.98,3.8]),roughness:.92});
- const brickB=S({map:brickMap([1.2,3.8]),normalMap:brickN([1.2,3.8]),roughness:.92});
+ const brickC=S({roughness:1,...texSet('ph-large-red-bricks',[1.7,2.35],texReady,['color','normal','rough']),normalScale:new T.Vector2(1.2,1.2)});
+ const brickB=S({roughness:1,...texSet('ph-large-red-bricks',[1.05,2.35],texReady,['color','normal','rough']),normalScale:new T.Vector2(1.2,1.2)});
  const brickCut=S({color:'#9c5236',roughness:.95});
- const floorWood=P({map:woodMap([1.35,1.2]),roughness:.5,clearcoat:.35,clearcoatRoughness:.35});
+ const floorWood=P({roughness:1,...texSet('ph-laminate-floor-02',[1.6,1.0],texReady,['color','normal','rough']),clearcoat:.3,clearcoatRoughness:.3});
  const skirting=S({color:'#f3f1ec',roughness:.6});
- const pavers=S({map:paverMap([1.2,.95]),roughness:.95});
- const concrete=S({color:'#b4b0a8',roughness:.95,normalMap:plasterNormal([2,2]),normalScale:new T.Vector2(.6,.6)});
- const unitWhite=P({color:'#f3f3f0',roughness:.34,clearcoat:.55,clearcoatRoughness:.25});
+ const pavers=S({roughness:1,...texSet('ph-concrete-pavers',[1.75,1.1],texReady,['color','normal','rough'])});
+ const concrete=S({color:'#c3beb5',roughness:1,...texSet('ph-concrete-floor-01',[1.5,1.5],texReady,['normal','rough'])});
+ const unitWhite=P({color:'#f3f3f0',roughness:.34,clearcoat:.55,clearcoatRoughness:.25,normalMap:texSet('acg-plastic010-grain',[6,2],texReady,['normal']).normalMap,normalScale:new T.Vector2(.25,.25)});
  const panelWhite=P({color:'#f6f6f3',roughness:.22,clearcoat:.85,clearcoatRoughness:.12});
  const outletDark=S({color:'#2d3236',roughness:.75});
  const vaneMat=S({color:'#6b7277',roughness:.6});
  const displayMat=P({color:'#14181b',roughness:.1,clearcoat:1});
  const ledMat=new T.MeshBasicMaterial({color:'#5fd0c0'});
- const steel=P({color:'#e4e3dd',roughness:.42,metalness:.15,clearcoat:.35,clearcoatRoughness:.3});
+ const steel=P({color:'#e4e3dd',roughness:.42,metalness:.15,clearcoat:.35,clearcoatRoughness:.3,normalMap:texSet('acg-metal028-powder',[4,3],texReady,['normal']).normalMap,normalScale:new T.Vector2(.35,.35)});
  const blackPlastic=S({color:'#1e2124',roughness:.55});
  const bladeMat=S({color:'#2a2e32',roughness:.45,side:T.DoubleSide});
  const galv=S({color:'#a8acaf',metalness:.85,roughness:.42});
@@ -158,6 +156,10 @@ export function createSplitScene({host,state,tr,onPart,onLost}){
  const topPanel=box(outdoor,[OW+.012,.014,OD+.014],[OW/2,OH+.007,OD/2],steel,.005);covers.push(topPanel);
  const sideR=box(outdoor,[.012,OH,OD],[OW-.006,OH/2,OD/2],steel,.004);covers.push(sideR);
  const valveCover=box(outdoor,[.014,.2,.13],[OW+.007,.40,OD-.075],steel,.004);covers.push(valveCover);
+ // panel screws (cross-head pan heads) and a blank rating plate, as on typical casings
+ {const g=new T.CylinderGeometry(.0045,.005,.0025,16);g.rotateX(Math.PI/2);const sp=[];for(const [x,y] of [[.018,.018],[.567,.018],[.018,OH-.018],[.567,OH-.018],[.603,.03],[OW-.018,.03],[.603,OH-.03],[OW-.018,OH-.03]])sp.push([x,y,OD+.0015]);
+  const sc=inst(outdoor,g,galv,sp);covers.push(sc);const vs=[];for(const y of [.33,.47])vs.push([OW+.0155,y,OD-.075,0,Math.PI/2,0]);covers.push(inst(outdoor,g,galv,vs));
+  covers.push(box(outdoor,[.0012,.075,.115],[OW+.0006,.17,.09],new T.MeshStandardMaterial({color:'#d9dcdf',metalness:.6,roughness:.38}),.002))}
  // bell mouth, guarded propeller fan, motor
  const bell=new T.Mesh(new T.TorusGeometry(fr,.016,12,64),blackPlastic);bell.position.set(fx,fy,OD-.02);outdoor.add(bell);
  const fanO=new T.Group();fanO.position.set(fx,fy,OD-.06);outdoor.add(fanO);
@@ -206,16 +208,17 @@ export function createSplitScene({host,state,tr,onPart,onLost}){
  const oOut=(p,t,s)=>{const a=rnd(s,4)*Math.PI*2,r=.05+rnd(s,5)*.13;const x=ox0+fx+Math.cos(a)*r,y=oy0+fy+Math.sin(a)*r;p.set(x+Math.cos(a)*.28*t,y+Math.sin(a)*.18*t+.08*t,oz0+OD+.03+1.15*t);return [Math.cos(a)*.28,.08,1.15]};
  const oIn=(p,t,s)=>{const side=rnd(s,6)<.6;if(side){const y=oy0+.06+rnd(s,7)*(OH-.12),z=oz0+.04+rnd(s,8)*(OD-.08);p.set(ox0-.6+.6*t,y,z);return [.6,0,0]}const x=ox0+.04+rnd(s,9)*.52;p.set(x,oy0+OH+.38-.6*t,oz0-.055);return [0,-.6,0]};
  add(narrow0?60:84,'iOut',iOut);add(narrow0?24:34,'iIn',iIn);add(narrow0?56:78,'oOut',oOut);add(narrow0?34:48,'oIn',oIn);
- const air=new T.InstancedMesh(new T.SphereGeometry(1,10,8),new T.MeshBasicMaterial({toneMapped:false,transparent:true,opacity:.9,depthWrite:false}),streams.length);air.frustumCulled=false;air.userData.noAO=true;air.instanceMatrix.setUsage(T.DynamicDrawUsage);air.renderOrder=4;scene.add(air);
+ const air=new T.InstancedMesh(new T.SphereGeometry(1,10,8),new T.MeshBasicMaterial({toneMapped:false,transparent:true,opacity:.9,depthWrite:false}),streams.length);markDynamic(air);markDynamic(fanO);markDynamic(xfan);air.frustumCulled=false;air.userData.noAO=true;air.instanceMatrix.setUsage(T.DynamicDrawUsage);air.renderOrder=4;scene.add(air);
  const cWarm=new T.Color(WARM),cCool=new T.Color(COOL),cRoom=new T.Color(ROOM),tp=new T.Vector3(),tq=new T.Quaternion(),ts=new T.Vector3(),tm=new T.Matrix4(),up=new T.Vector3(0,0,1),dv=new T.Vector3();
  let airTime=0;
  function placeAir(){const heat=state.mode==='heating';streams.forEach((s,i)=>{const life=s.kind==='iIn'||s.kind==='oIn'?3.2:2.6;const t=((airTime/life+s.ph)%1);const d=s.fn(tp,t,s.seed,heat);dv.set(...d).normalize();tq.setFromUnitVectors(up,dv);const k=Math.sin(Math.PI*t);const r=(s.kind.endsWith('In')?.0065:.0085)*(.55+.45*k);ts.set(r,r,r*(s.kind.endsWith('In')?3.2:4.2));tm.compose(tp,tq,ts);air.setMatrixAt(i,tm);air.setColorAt(i,s.kind==='iOut'?(heat?cWarm:cCool):s.kind==='oOut'?(heat?cCool:cWarm):cRoom)});air.instanceMatrix.needsUpdate=true;if(air.instanceColor)air.instanceColor.needsUpdate=true}
 
  /* ---------- shadows, AO, post */
  model.traverse(o=>{if(o.isMesh){const m=o.material;const tr=m.transparent;o.castShadow=!tr;o.receiveShadow=true}});
- const rt=new T.WebGLRenderTarget(2,2,{type:T.HalfFloatType,samples:4});
- const composer=new EffectComposer(renderer,rt);composer.addPass(new RenderPass(scene,camera));
- const gtao=new GTAOPass(scene,camera,2,2,undefined,{radius:.3,distanceExponent:1.5,thickness:1,scale:1,samples:12,distanceFallOff:1,screenSpaceRadius:false});gtao.blendIntensity=.9;composer.addPass(gtao);composer.addPass(new OutputPass());
+ const gtao=new GTAOPass(scene,camera,2,2,undefined,{radius:.3,distanceExponent:1.5,thickness:1,scale:1,samples:12,distanceFallOff:1,screenSpaceRadius:false});gtao.blendIntensity=.9;
+ // Live frames while the camera moves; when still, the room converges to supersampled AA, glossy
+ // reflections and (on the close-ups) depth of field, with the air and fans drawn live on top.
+ const pr=createPhotoreal({renderer,scene,camera,gtao,phone:narrow0||matchMedia('(pointer: coarse)').matches,ssr:{maxDistance:1.2,thickness:.08,intensity:1}});
  gtao._overrideVisibility=function(){const cache=this._visibilityCache;scene.traverse(o=>{if(!o.visible)return;if(o.isPoints||o.isLine||(o.isMesh&&(o.userData.noAO||o.material.transparent))){o.visible=false;cache.push(o)}})};
  const bg=new T.Color();
  function readTheme(){const dark=document.documentElement.dataset.theme==='dark';bg.set(dark?'#1d1b18':'#e6e5e2');scene.background=bg;host.dataset.theme3d=dark?'dark':'light';dirty=true;wake()}
@@ -260,7 +263,7 @@ export function createSplitScene({host,state,tr,onPart,onLost}){
  let tween=null;
  function pose([t,az,el,dist]){const w=host.clientWidth,h=host.clientHeight||1,aspect=w/h;const d=dist*(aspect<1.35?Math.min(1.9,1.4/aspect):1);return {t:new T.Vector3(...t),p:new T.Vector3(t[0]+d*Math.cos(el)*Math.sin(az),t[1]+d*Math.sin(el),t[2]+d*Math.cos(el)*Math.cos(az))}}
  let current='overview';
- function go(name,instant){current=name;const to=pose(views[name]);if(instant||matchMedia('(prefers-reduced-motion: reduce)').matches){camera.position.copy(to.p);controls.target.copy(to.t);controls.update();tween=null;dirty=true;wake();return}tween={t0:performance.now(),dur:950,fp:camera.position.clone(),ft:controls.target.clone(),...to};wake()}
+ function go(name,instant){current=name;const to=pose(views[name]);pr.setDof(name==='compressor'||name==='indoor'?{focus:to.t.clone(),aperture:name==='compressor'?.018:.022}:null);if(instant||matchMedia('(prefers-reduced-motion: reduce)').matches){camera.position.copy(to.p);controls.target.copy(to.t);controls.update();tween=null;dirty=true;wake();return}tween={t0:performance.now(),dur:950,fp:camera.position.clone(),ft:controls.target.clone(),...to};wake()}
  controls.addEventListener('start',()=>{tween=null});
 
  /* ---------- state sync */
@@ -276,16 +279,16 @@ export function createSplitScene({host,state,tr,onPart,onLost}){
  function reset(){go('overview')}
 
  /* ---------- loop */
- let raf=0,last=0,visible=true,dirty=true,drawing=false;
+ let raf=0,last=0,visible=true,dirty=true,drawing=false,acc=false;
  function frame(now){raf=0;if(!visible||document.hidden)return;const dt=last?Math.min((now-last)/1000,.05):0;last=now;
   if(tween){const k=Math.min(1,(now-tween.t0)/tween.dur),e=ease(k);camera.position.lerpVectors(tween.fp,tween.p,e);controls.target.lerpVectors(tween.ft,tween.t,e);drawing=true;controls.update();drawing=false;if(k>=1)tween=null;dirty=true}
   const targetFlap=state.mode==='heating'?-1.05:-.3;if(Math.abs(flapAngle-targetFlap)>.002){flapAngle+=(targetFlap-flapAngle)*Math.min(1,dt*4);dirty=true}flapPivot.rotation.x=-flapAngle;
   if(state.playing){airTime+=dt;fanO.rotation.z-=dt*9;for(const f of indoorFans)f.rotation.x-=dt*14;dirty=true}
-  if(dirty){placeAir();composer.render();layoutLabels();dirty=false;window.__labFrames=(window.__labFrames||0)+1}
-  if(state.playing||tween||Math.abs(flapAngle-targetFlap)>.002)raf=requestAnimationFrame(frame)}
+  if(dirty||acc){placeAir();acc=pr.render();layoutLabels();dirty=false;window.__labFrames=(window.__labFrames||0)+1}
+  if(acc||state.playing||tween||Math.abs(flapAngle-targetFlap)>.002)raf=requestAnimationFrame(frame)}
  function wake(){if(!raf&&visible&&!document.hidden){last=0;raf=requestAnimationFrame(frame)}}
  controls.addEventListener('change',()=>{if(drawing)return;dirty=true;wake()});
- const ro=new ResizeObserver(()=>{const w=host.clientWidth,h=host.clientHeight;if(!w||!h)return;renderer.setSize(w,h);composer.setSize(w,h);gtao.enabled=w>=600;camera.aspect=w/h;camera.updateProjectionMatrix();if(!tween)go(current,true);dirty=true;wake()});ro.observe(host);
+ const ro=new ResizeObserver(()=>{const w=host.clientWidth,h=host.clientHeight;if(!w||!h)return;pr.setSize(w,h);camera.aspect=w/h;camera.updateProjectionMatrix();if(!tween)go(current,true);dirty=true;wake()});ro.observe(host);
  new IntersectionObserver(e=>{visible=e[0].isIntersecting;if(visible){dirty=true;wake()}},{threshold:0}).observe(host);
  document.addEventListener('visibilitychange',wake);window.addEventListener('explainer-languagechange',()=>{dirty=true;wake()});
  renderer.domElement.addEventListener('webglcontextlost',e=>{e.preventDefault();onLost?.()});

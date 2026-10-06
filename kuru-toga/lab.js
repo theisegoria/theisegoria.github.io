@@ -11,7 +11,7 @@
 import * as THREE from 'three/webgpu';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { mountLab, bindControls, readColors, onThemeChange, isDark } from '/assets/lab-kit/lab-kit.js';
-import { createStudio, surface } from '/assets/lab-kit/studio-look.js';
+import { createStudio, surface, ensureUVs } from '/assets/lab-kit/studio-look.js';
 import { engineState, degreesPerStroke, makeTip, wearStroke, coneHalfAngle, DEG } from './model.js';
 
 const canvas = document.getElementById('stage');
@@ -237,6 +237,8 @@ const lab = await mountLab(canvas, {
      * view keeps its own key light, because one is in millimetres and the
      * other in fortieths of one. */
     const look = await createStudio(lab, {
+      // the wear view is a macro shot of two tips on paper: a shallow depth of field focused on the tips
+      controls, dof: { bokeh: 1.3 },
       scale: 20, hdri: 'studio', strips: 'product', shadows: false, keyIntensity: 0,
       exposure: 1.0, envIntensity: 0.95, aoRadius: 0.35, aoThickness: 0.12,
     });
@@ -360,6 +362,8 @@ const lab = await mountLab(canvas, {
       chuck.traverse((m) => { if (m.isMesh) { m.castShadow = true; m.receiveShadow = true; } });
       engine.add(group);
       camParts = { group, rotor, moving, spring };
+      // the moulding grain is a normal map, which needs UVs (and tangents) on the hand-built rings
+      group.traverse((o) => { if (o.isMesh && o.material.normalMap) ensureUVs(o.geometry, 1); });
     }
     buildEngine(params.teeth);
 
@@ -580,6 +584,7 @@ const lab = await mountLab(canvas, {
       wear.visible = name === 'wear';
       // paper under a desk lamp wants less fill than polished parts in a studio
       look.setEnvIntensity(name === 'wear' ? 0.55 : 0.95);
+      look.setDOF(name === 'wear' ? { on: true, range: 420 } : false);
       leaders.style.display = name === 'engine' ? '' : 'none';
       for (const l of engineLabels) l.e.hidden = name !== 'engine';
       for (const l of wearLabels) l.e.hidden = name !== 'wear';

@@ -429,7 +429,7 @@ function applyLayers() {
   
 }
 
-let controlsRef = null;
+let controlsRef = null, lookRef = null;
 function applyStage(i, controls, camera, instant = false) {
   const st = STAGES[i]; params.stage = i;
   if (stageBar) for (const b of stageBar.children) b.classList.toggle('is-active', +b.dataset.stage === i);
@@ -443,6 +443,9 @@ function applyStage(i, controls, camera, instant = false) {
   window.__spin?.set(i === 0);
   const [pos, target] = fitView(st, camera);
   flyTo(controls, camera, pos, target, instant);
+  // the studio turns part of the way with the camera; stages closer than 25 mm get the macro lens
+  const d = Math.hypot(pos[0] - target[0], pos[1] - target[1], pos[2] - target[2]);
+  lookRef?.stage({ azimuth: (st.view[2] - STAGES[0].view[2]) * DEG, radius: d * 0.2, macro: st.view[1] <= 24, follow: 0.6, ms: instant ? 0 : 900 });
 }
 /** Frame the parts a stage talks about: the camera looks from the stage's azimuth and
  *  elevation and backs off until their bounding sphere fits the narrower field of view. */
@@ -494,7 +497,9 @@ const lab = await mountLab(canvas, {
     controls.addEventListener('change', () => lab.invalidate());
 
     // darker studio and bright strips: polished steel and gilt read by the contrast of their reflections
-    const look = await createStudio(lab, { scale: 40, floorY: -10, hdri: 'studio', hdriGain: 0.7, strips: 'movement', exposure: 1.14, envIntensity: 1.15, keyIntensity: 1.1, aoRadius: 0.8, aoThickness: 0.35, shadowOpacity: 0.2 });
+    // photoreal: model in mm, a 512 px reflection cube for anglage and polished screws, and a macro lens
+    // (depth of field, focused on the orbit target) that the close-up stages turn on
+    const look = lookRef = await createStudio(lab, { unit: 0.001, envSize: 512, hdriRes: '2k', controls, dof: { bokeh: 1.0 }, scale: 40, floorY: -10, hdri: 'studio', hdriGain: 0.7, strips: 'movement', exposure: 1.14, envIntensity: 1.15, keyIntensity: 1.1, aoRadius: 0.8, aoThickness: 0.35, shadowOpacity: 0.2 });
 
     const draco = new DRACOLoader().setDecoderPath('/vendor/three/r186/examples-jsm/libs/draco/');
     const gltf = await new GLTFLoader().setDRACOLoader(draco).loadAsync(ASSETS + 'movement.glb');
@@ -523,12 +528,12 @@ const lab = await mountLab(canvas, {
     // procedural springs
     const springMat = new THREE.MeshPhysicalMaterial({ color: 0xe2d6c2, metalness: 1, roughness: 0.14, side: THREE.DoubleSide });
     const mainMat = new THREE.MeshPhysicalMaterial({ color: 0x8f969f, metalness: 1, roughness: 0.28, side: THREE.DoubleSide });
-    hairspring = new THREE.Mesh(ribbonGeometry(781), springMat);
+    hairspring = new THREE.Mesh(ribbonGeometry(781), springMat); hairspring.name = 'hairspring';   // named, so highlight() finds its owner
     hairspring.position.set(L.balance[0], -3.52, -L.balance[1]);
     hairspring.frustumCulled = false; root.add(hairspring); parts.hairspring = hairspring;
     const dimS = springMat.clone(); dimS.transparent = true; dimS.opacity = 0.12; dimS.depthWrite = false; dimS.envMapIntensity = 0.25; dimS.color.set(0x9a9894); dimS.metalness = 0;
     mats.normal.set(hairspring, springMat); mats.dim.set(hairspring, dimS); mats.ghost.set(hairspring, springMat);
-    mainspring = new THREE.Mesh(ribbonGeometry(901), mainMat);
+    mainspring = new THREE.Mesh(ribbonGeometry(901), mainMat); mainspring.name = 'mainspring';
     mainspring.position.set(L.barrel[0], -1.9, -L.barrel[1]);
     mainspring.frustumCulled = false; root.add(mainspring); parts.mainspring = mainspring;
     mats.normal.set(mainspring, mainMat); mats.dim.set(mainspring, dimS); mats.ghost.set(mainspring, mainMat);
