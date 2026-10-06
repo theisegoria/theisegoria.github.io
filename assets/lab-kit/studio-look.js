@@ -40,10 +40,12 @@
  */
 import * as THREE from 'three/webgpu';
 import { HDRLoader } from 'three/addons/loaders/HDRLoader.js';
+import { toCreasedNormals } from 'three/addons/utils/BufferGeometryUtils.js';
 import {
   pass, mrt, output, normalView, screenUV, builtinAOContext, packNormalToRGB, unpackRGBToNormal, sample, uv, float, smoothstep,
   vec2, vec3, vec4, uniform, velocity, Fn, screenSize, perspectiveDepthToViewZ, metalness, roughness, clearcoat, clearcoatRoughness, specularColorBlended, diffuseColor, materialOpacity, mix, max,
-  texture, pow, exp2,
+  texture, pow, exp2, min, int, reflect, reference, passTexture, getViewPosition, getScreenPosition, Loop, If, Break,
+  interleavedGradientNoise, screenCoordinate, userData, pmremTexture,
 } from 'three/tsl';
 import { ao } from 'three/addons/tsl/display/GTAONode.js';
 import { smaa } from 'three/addons/tsl/display/SMAANode.js';
@@ -498,6 +500,110 @@ function scaleJitter(traaNode, k) {
   };
 }
 
+/* Reflections in glass. A sapphire crystal is drawn transparent (transmission), so it is not in the
+ * opaque pre-pass that SSR traces from, and on its own it can only reflect the environment: the studio
+ * strips, never the bezel it sits in. A second, tiny pre-pass draws only the glass (its own layer, one
+ * override material) and stores its view normal scaled by its IOR, plus its depth. This node traces a
+ * mirror ray from each glass pixel against the OPAQUE depth and colour (so the glass never reflects
+ * itself or what lies behind it), and returns the colour it hits with a confidence in alpha. The
+ * composite (createStudio) swaps the environment the glass material already reflects for that colour,
+ * weighted by the glass's own Fresnel, so nothing is reflected twice. */
+const GLASS_LAYER = 29;
+/** Two camera matrices within `tol` in translation and `rot` in the other terms (both well under a pixel). */
+function nearly(a, b, tol, rot = 1e-5) {
+  const x = a.elements, y = b.elements;
+  for (let i = 0; i < 16; i++) if (Math.abs(x[i] - y[i]) > (i >= 12 && i < 15 ? tol : rot)) return false;
+  return true;
+}
+const _gQuad = new THREE.QuadMesh();
+const _gSize = new THREE.Vector2();
+let _gState;   // undefined, not null: RendererUtils fills in a fresh state object on first use
+class GlassReflectNode extends THREE.TempNode {
+  static get type() { return 'GlassReflectNode'; }
+  constructor(colorNode, depthNode, glassNormalNode, glassDepthNode, camera) {
+    super('vec4');
+    this.colorNode = colorNode; this.depthNode = depthNode; this.glassNormalNode = glassNormalNode; this.glassDepthNode = glassDepthNode; this.camera = camera;
+    this.resolutionScale = 0.5;
+    this.updateBeforeType = THREE.NodeUpdateType.FRAME;
+    this.maxDistance = uniform(1); this.thickness = uniform(0.1); this.steps = uniform(24);
+    this._proj = uniform(camera.projectionMatrix); this._projInv = uniform(camera.projectionMatrixInverse);
+    this._near = reference('near', 'float', camera); this._far = reference('far', 'float', camera);
+    this._frame = uniform(0);
+    this._rt = new THREE.RenderTarget(1, 1, { depthBuffer: false, type: THREE.HalfFloatType });
+    this._rt.texture.name = 'studio.glassReflect';
+    this._material = new THREE.NodeMaterial(); this._material.name = 'studio.glassReflect';
+    this._textureNode = passTexture(this, this._rt.texture);
+  }
+  getTextureNode() { return this._textureNode; }
+  setSize(w, h) {
+    w = Math.max(1, Math.round(this.resolutionScale * w)); h = Math.max(1, Math.round(this.resolutionScale * h));
+    this._rt.setSize(w, h);
+  }
+  updateBefore(frame) {
+    const { renderer } = frame;
+    _gState = THREE.RendererUtils.resetRendererState(renderer, _gState);
+    const size = renderer.getDrawingBufferSize(_gSize); this.setSize(size.width, size.height);
+    this._frame.value = (this._frame.value + 1) % 64;
+    renderer.setMRT(null); renderer.setClearColor(0x000000, 0);
+    renderer.setRenderTarget(this._rt);
+    _gQuad.material = this._material; _gQuad.name = 'Glass reflections'; _gQuad.render(renderer);
+    THREE.RendererUtils.restoreRendererState(renderer, _gState);
+  }
+  setup() {
+    const depthAt = (st) => this.depthNode.sample(st).r;
+    const viewZ = (d) => perspectiveDepthToViewZ(d, this._near, this._far);
+    const trace = Fn(() => {
+      const st = uv();
+      const gd = this.glassDepthNode.sample(st).r.toVar();
+      gd.greaterThanEqual(1).discard();                         // no glass here
+      gd.greaterThan(depthAt(st).add(1e-7)).discard();          // glass hidden behind an opaque part
+      const nRaw = this.glassNormalNode.sample(st).xyz.toVar();
+      const ior = nRaw.length().toVar();
+      ior.lessThan(0.5).discard();
+      const N = nRaw.div(ior).toVar();
+      const P = getViewPosition(st, gd, this._projInv).toVar();
+      const R = reflect(P.normalize(), N).normalize().toVar();
+      const P1 = P.add(R.mul(this.maxDistance)).toVar();
+      If(P1.z.greaterThan(this._near.negate()), () => {        // keep the ray in front of the near plane
+        P1.assign(P.add(R.mul(this._near.negate().sub(P.z).div(R.z).mul(0.98))));
+      });
+      const s0 = getScreenPosition(P, this._proj).toVar(), s1 = getScreenPosition(P1, this._proj).toVar();
+      const iz0 = float(1).div(P.z).toVar(), iz1 = float(1).div(P1.z).toVar();   // 1/z is linear in screen space
+      const jit = interleavedGradientNoise(screenCoordinate.xy.add(vec2(this._frame.mul(5.588238), this._frame.mul(3.13)))).toVar();
+      const hitS = float(-1).toVar(), lo = float(0).toVar(), lastZ = P.z.toVar();
+      // steps crowd toward the glass (s = t^2): what a crystal mirrors is mostly the bezel and rehaut a
+      // millimetre or two away, a thin target that evenly spaced steps would step over
+      Loop({ start: int(0), end: int(this.steps), type: 'int', condition: '<' }, ({ i }) => {
+        const t = float(i).add(jit).div(this.steps);
+        const s = t.mul(t).toVar();
+        const q = mix(s0, s1, s).toVar();
+        If(q.x.lessThan(0).or(q.x.greaterThan(1)).or(q.y.lessThan(0)).or(q.y.greaterThan(1)), () => { Break(); });
+        const sz = viewZ(depthAt(q));
+        const rz = float(1).div(mix(iz0, iz1, s)).toVar();
+        // a hit is the ray passing behind a surface by less than the thickness, or by less than this step's own depth travel
+        If(rz.lessThanEqual(sz).and(sz.sub(rz).lessThan(max(this.thickness, lastZ.sub(rz).abs().mul(1.5)))), () => { hitS.assign(s); Break(); });
+        lo.assign(s); lastZ.assign(rz);
+      });
+      const out = vec4(0).toVar();
+      If(hitS.greaterThanEqual(0), () => {
+        const a = lo.toVar(), b = hitS.toVar();
+        Loop({ start: int(0), end: int(5), type: 'int', condition: '<' }, () => {   // bisect to the surface
+          const m = a.add(b).mul(0.5).toVar();
+          If(float(1).div(mix(iz0, iz1, m)).lessThanEqual(viewZ(depthAt(mix(s0, s1, m)))), () => { b.assign(m); }).Else(() => { a.assign(m); });
+        });
+        const q = mix(s0, s1, b).toVar();
+        const edge = min(min(q.x, q.x.oneMinus()), min(q.y, q.y.oneMinus()));
+        out.assign(vec4(this.colorNode.sample(q).rgb, smoothstep(0, 0.05, edge)));
+      });
+      return out;
+    });
+    this._material.fragmentNode = trace();
+    this._material.needsUpdate = true;
+    return this._textureNode;
+  }
+  dispose() { super.dispose(); this._rt.dispose(); this._material.dispose(); }
+}
+
 /* A macro lens: depth of field as a single gather pass. Each pixel averages a Vogel disc of taps
  * whose radius is its circle of confusion; a tap only counts as far as its own blur reaches, so a sharp
  * subject never smears into the blurred background behind it. It blurs RGBA together, so on the
@@ -526,13 +632,15 @@ function macroLens(tex, depthTex, U) {
 /* Quality ladder, lowest first. The adaptive monitor walks down it: SSGI off, then depth of
  * field off, then SSR and AO at lower resolution, then SSR off. Only switching an effect on or
  * off rebuilds the graph (a short shader compile); resolution steps are free. Reflections run at
- * half resolution while the camera moves; photo mode (camera still) renders them at full size. */
+ * half resolution while the camera moves; photo mode (camera still) renders them at full size.
+ * Reflections in glass (crystals, windows) live on the top rung only, so they are the first thing
+ * the ladder gives up when frames run slow. */
 const LEVELS = [
-  { ssgi: false, ssr: 0,    dof: false, ao: 0.5 },
-  { ssgi: false, ssr: 0.35, dof: false, ao: 0.5 },
-  { ssgi: false, ssr: 0.5,  dof: false, ao: 1 },
-  { ssgi: false, ssr: 0.5,  dof: true,  ao: 1 },
-  { ssgi: true,  ssr: 0.5,  dof: true,  ao: 1 },
+  { ssgi: false, ssr: 0,    dof: false, ao: 0.5, glass: false },
+  { ssgi: false, ssr: 0.35, dof: false, ao: 0.5, glass: false },
+  { ssgi: false, ssr: 0.5,  dof: false, ao: 1,   glass: false },
+  { ssgi: false, ssr: 0.5,  dof: true,  ao: 1,   glass: false },
+  { ssgi: true,  ssr: 0.5,  dof: true,  ao: 1,   glass: true },
 ];
 
 /**
@@ -552,6 +660,9 @@ const LEVELS = [
  *   WebGPU photoreal pipeline (each optional; the WebGL 2 fallback keeps MSAA + AO):
  *   taa       temporal AA in place of MSAA (default true)
  *   ssr       true (default) | false | { intensity, maxDistance, thickness, dielectric }
+ *   glass     true (default) | false | { intensity, maxDistance, thickness }: glass (any material with
+ *             transmission > 0.5 that upgrade() met) reflects the opaque parts around it, Fresnel-weighted
+ *             by its IOR, in place of the environment it would otherwise show there; `?glass=0` turns it off
  *   ssgi      false (default) | true | { intensity, radius }
  *   dof       false (default) | true | { range, bokeh }: a macro lens focused on the orbit target
  *   bloom     { strength, radius } for materials that opt in with look.glow() or LOOK `glow`
@@ -559,7 +670,7 @@ const LEVELS = [
  *   sharpen   RCAS strength after the temporal filter, in stops (0 strongest, default 0.9; false for none)
  *   adaptive  measure the frame rate and step effects down (default true)
  * Returns { render, upgrade(root, opts), setFloor(y), setShadowCenter(x, z), floor, key, setEnvIntensity, setAO, dispose, pipeline,
- *           attach, setDOF, setFocus, setSSR, glow, setEnvRotation, setQuality, settle, stats }
+ *           attach, setDOF, setFocus, setSSR, setGlass, addGlass, glow, setEnvRotation, setQuality, settle, stats }
  *
  * Materials whose look sets `uv` ('planar' | 'radial' | 'polar' | 'box') get UVs in
  * model units from metricUVs(), so `tile` is the finish's real pitch.
@@ -627,13 +738,16 @@ export async function createStudio(lab, opts = {}) {
   const sharpness = opts.sharpen === false ? null : (opts.sharpen ?? 0.9);   // RCAS stops: 0 is strongest, 2 is gentle
   const ssrOpt = typeof opts.ssr === 'object' ? opts.ssr : {}, giOpt = typeof opts.ssgi === 'object' ? opts.ssgi : {};
   let dofOpt = typeof opts.dof === 'object' ? opts.dof : {};
-  const want = { ssr: opts.ssr !== false && !/[?&]ssr=0\b/.test(q), ssgi: !!opts.ssgi || /[?&]ssgi\b/.test(q), dof: !!opts.dof };   // ?ssgi turns GI on to try it, ?ssr=0 turns reflections off
+  const glassOpt = typeof opts.glass === 'object' ? opts.glass : {};
+  const want = { ssr: opts.ssr !== false && !/[?&]ssr=0\b/.test(q), ssgi: !!opts.ssgi || /[?&]ssgi\b/.test(q), dof: !!opts.dof, glass: opts.glass !== false && !/[?&]glass=0\b/.test(q) };   // ?ssgi turns GI on to try it, ?ssr=0 / ?glass=0 turn reflections off
+  const glassMeshes = new Set();   // meshes upgrade() found glass on; each frame they join the glass layer while they still wear glass
   let level = pinned ?? (small ? 2 : LEVELS.length - 1);
   let adaptive = pinned === null && (opts.adaptive ?? true);
   let mods = null, nodes = {}, built = '', glowing = 0, controls = opts.controls || null, focusPoint = null;
   const U = {
     ssr: uniform(ssrOpt.intensity ?? 1), gi: uniform(giOpt.intensity ?? 1), dielectric: uniform(ssrOpt.dielectric ?? 0.35),
     near: uniform(camera.near), far: uniform(camera.far), sharp: uniform(sharpness ?? 1), jitter: { value: opts.jitter ?? (msaaTAA ? 0.35 : 0.5) }, focus: uniform(scale), range: uniform(dofOpt.range ?? scale * 0.5), bokeh: uniform(dofOpt.bokeh ?? 1.2),
+    glass: uniform(glassOpt.intensity ?? 1), envI: uniform(scene.environmentIntensity ?? 1), envRot: uniform(new THREE.Matrix4()),
   };
 
   if (useAO && !photoreal) {
@@ -688,11 +802,56 @@ export async function createStudio(lab, opts = {}) {
     } catch (err) { console.warn('studio-look: photoreal pipeline unavailable, rendering direct', err); pipeline = null; mods = null; }
   }
 
+  /**
+   * Reflections in glass: a pre-pass of the glass alone (normal x IOR, depth), the trace against the
+   * opaque scene, and the term the composite adds. The glass material already reflects the studio
+   * there, with Schlick Fresnel on its clearcoat (F0 0.04) and on its base (F0 from the IOR: 0.077 for
+   * sapphire at 1.77, 0.04 for glass at 1.5), so where the trace hits a part, that same weight moves
+   * from the environment to the part: rgb += W (hit - env). Face-on W is about 0.11 and a crystal
+   * shows a faint image of the bezel; toward grazing W rises to 1 and the rehaut and bezel mirror
+   * cleanly along the far edge, as in a photograph. Where the trace misses, the studio stays.
+   */
+  function glassComposite() {
+    const layers = new THREE.Layers(); layers.set(GLASS_LAYER);
+    const gp = pass(scene, camera, { samples: 0 });
+    gp.setLayers(layers);
+    const om = new THREE.MeshBasicNodeMaterial({ side: THREE.FrontSide });
+    om.name = 'studio.glassPrepass';
+    gp.overrideMaterial = om;
+    gp.setMRT(mrt({ output: vec4(normalView.mul(userData('studioIOR', 'float')), 1) }).setClearColor('output', 0x000000, 0));
+    const gOut = gp.getTextureNode('output'), gDepth = gp.getTextureNode('depth');
+    const tr = new GlassReflectNode(nodes.beauty, nodes.preDepth, gOut, gDepth, camera);
+    tr.maxDistance.value = glassOpt.maxDistance ?? scale * 0.3;
+    tr.thickness.value = glassOpt.thickness ?? scale * 0.02;
+    nodes.glass = tr; nodes.glassPass = gp; applyRes(); setPhoto(stats.photo);
+    const refl = tr.getTextureNode();
+    const uProjInv = uniform(camera.projectionMatrixInverse), uCamWorld = uniform(camera.matrixWorld);
+    return Fn(() => {
+      const st = uv();
+      const gd = gDepth.sample(st).r;
+      const nRaw = gOut.sample(st).xyz;
+      const ior = nRaw.length().max(1e-3);
+      const isGlass = ior.greaterThan(0.5).and(gd.lessThan(1)).and(gd.lessThanEqual(nodes.preDepth.sample(st).r.add(1e-7)));
+      const N = nRaw.div(ior);
+      const I = getViewPosition(st, gd, uProjInv).normalize();
+      const f5 = N.dot(I.negate()).saturate().oneMinus().pow(5);
+      const f0 = ior.sub(1).div(ior.add(1)).pow(2);
+      const Fb = f0.add(f0.oneMinus().mul(f5)), Fc = float(0.04).add(f5.mul(0.96));
+      const W = Fc.add(Fc.oneMinus().mul(Fb));
+      // the studio as the glass material sees it in this direction (PMREM, with the scene's rotation; the PMREM is stored y-flipped)
+      const Rw = uCamWorld.mul(vec4(reflect(I, N), 0)).xyz;
+      const d = U.envRot.mul(vec4(Rw.x, Rw.y.negate(), Rw.z, 0)).xyz;
+      const env = pmremTexture(scene.environment, vec3(d.x, d.y.negate(), d.z), float(0.02)).rgb.mul(U.envI);
+      const r = refl.sample(st);
+      return isGlass.select(r.rgb.sub(env).mul(W).mul(r.a).mul(U.glass), vec3(0));
+    })();
+  }
+
   /** (Re)build the output graph for the current level and requests. Nodes are made once and reused. */
   function build() {
     if (!mods || !pipeline) return;
     const L = LEVELS[level];
-    const on = { ssr: want.ssr && L.ssr > 0, ssgi: want.ssgi && L.ssgi && !!mods.ssgi, dof: want.dof && L.dof && !!mods.dof && !reduced(), bloom: glowing > 0 && !!mods.bloom };
+    const on = { ssr: want.ssr && L.ssr > 0, ssgi: want.ssgi && L.ssgi && !!mods.ssgi, dof: want.dof && L.dof && !!mods.dof && !reduced(), bloom: glowing > 0 && !!mods.bloom, glass: want.glass && L.glass && glassMeshes.size > 0 };
     applyRes();
     const sig = JSON.stringify(on);
     if (sig === built) return;
@@ -707,6 +866,10 @@ export async function createStudio(lab, opts = {}) {
         nodes.ssr = s; applyRes();
       }
       rgb = rgb.add(nodes.ssr.rgb.mul(preMat.rgb).mul(aux.r).mul(U.ssr));
+    }
+    if (on.glass) {
+      if (!nodes.glassTerm) nodes.glassTerm = glassComposite();
+      rgb = rgb.add(nodes.glassTerm).max(0);
     }
     if (on.ssgi) {
       if (!nodes.gi) {
@@ -751,10 +914,31 @@ export async function createStudio(lab, opts = {}) {
     const L = LEVELS[level];
     if (aoPass) aoPass.resolutionScale = (devicePixelRatio > 1.5 ? 0.5 : 1) * L.ao;
     if (nodes.ssr) nodes.ssr.resolutionScale = Math.min(1, (L.ssr || 0.5) * (stats.photo ? 2 : 1));
+    if (nodes.glass) nodes.glass.resolutionScale = stats.photo ? 1 : 0.5;
+  }
+  /** Glass joins the glass pre-pass while it wears glass: a lab that swaps in a dimmed or ghosted
+   *  material (no transmission) for a stage takes it out, so a ghost never gets a crystal's reflection. */
+  const isGlassMat = (m) => !!m && m.visible !== false && (m.transmission ?? 0) > 0.5 && (m.opacity ?? 1) > 0.5;
+  function syncGlass() {
+    for (const o of glassMeshes) {
+      const m = Array.isArray(o.material) ? o.material.find(isGlassMat) : o.material;
+      if (isGlassMat(m)) { o.layers.enable(GLASS_LAYER); o.userData.studioIOR = m.ior ?? 1.5; } else o.layers.disable(GLASS_LAYER);
+    }
+    U.envI.value = scene.environmentIntensity ?? 1;
+    U.envRot.value.makeRotationFromEuler(scene.environmentRotation).transpose();
+  }
+  function addGlass(o) {
+    if (!o?.isMesh || glassMeshes.has(o)) return;
+    const m = Array.isArray(o.material) ? o.material.find(isGlassMat) : o.material;
+    if (!isGlassMat(m)) return;
+    o.userData.studioIOR = m.ior ?? 1.5;
+    glassMeshes.add(o);
+    if (glassMeshes.size === 1) build();
   }
   function setPhoto(on) {
     stats.photo = on; applyRes();
     if (nodes.ssr) nodes.ssr.quality.value = on ? 1 : 0.5;
+    if (nodes.glass) nodes.glass.steps.value = on ? 48 : 20;
     if (aoPass) aoPass.samples.value = on ? 32 : 16;
     if (nodes.gi) nodes.gi.stepCount.value = on ? 16 : 8;
   }
@@ -817,7 +1001,7 @@ export async function createStudio(lab, opts = {}) {
     } catch (err) { console.warn('studio-look: classic fallback failed', err); }
   }
   /** what a level actually changes on this page (a page without SSGI or a lens skips the rungs that only add those) */
-  const effective = (l) => { const L = LEVELS[l]; return [want.ssr && L.ssr, !!mods?.ssgi && L.ssgi, !!mods?.dof && L.dof, L.ao].join(); };
+  const effective = (l) => { const L = LEVELS[l]; return [want.ssr && L.ssr, !!mods?.ssgi && L.ssgi, !!mods?.dof && L.dof, L.ao, want.glass && glassMeshes.size > 0 && L.glass].join(); };
   function stepTo(dir) {
     let l = level; const cur = effective(level);
     while (l + dir >= 0 && l + dir <= (dir > 0 ? ceiling : LEVELS.length - 1)) { l += dir; if (effective(l) !== cur) break; }
@@ -841,9 +1025,12 @@ export async function createStudio(lab, opts = {}) {
         stillT = now;
       }
       camera.updateMatrixWorld();
-      if (!lastCam.equals(camera.matrixWorld) || !lastProj.equals(camera.projectionMatrix)) {
+      // "still" allows the last breath of orbit damping (it decays geometrically and would otherwise keep
+      // photo mode off for ten seconds after the reader lets go)
+      if (!nearly(lastCam, camera.matrixWorld, scale * 1e-4) || !nearly(lastProj, camera.projectionMatrix, 1e-6, 1e-6)) {
         lastCam.copy(camera.matrixWorld); lastProj.copy(camera.projectionMatrix); stillT = now; settle = 0;
       }
+      if (nodes.glass) syncGlass();
       const photo = photoAllowed && !look.noPhoto && now - stillT > 450;
       if (photo !== stats.photo) setPhoto(photo);
       if (nodes.dof) {   // focus on the subject: the orbit target (or a set point), measured along the view axis
@@ -856,7 +1043,8 @@ export async function createStudio(lab, opts = {}) {
       if (settle < 40 || envTween) { settle++; lab.invalidate(); }
     },
     /** Upgrade every mesh under root: materials by name, shadow casting, missing UVs. */
-    upgrade(root, { keepColor = false, extra = {}, cast = true, receive = false, skip } = {}) {
+    upgrade(root, { keepColor = false, extra = {}, cast = true, receive = false, skip, glassNormals = true } = {}) {
+      const creased = new Map();
       root.traverse((o) => {
         if (!o.isMesh || (skip && skip(o))) return;
         const mats = Array.isArray(o.material) ? o.material : [o.material];
@@ -864,6 +1052,16 @@ export async function createStudio(lab, opts = {}) {
         o.material = Array.isArray(o.material) ? up : up[0];
         const glass = up.some((m) => m.transmission > 0.5);
         o.castShadow = cast && !glass; o.receiveShadow = receive;
+        if (glass) {
+          // A flat crystal exported smooth-shaded is a fan from its centre to a rim whose normals lean
+          // into the chamfer, so the whole face shades as a shallow dome and bends every reflection.
+          // Creased normals (30 degrees) make flat faces flat and keep a finely tessellated dome smooth.
+          if (glassNormals && o.geometry.attributes.normal) {
+            if (!creased.has(o.geometry)) creased.set(o.geometry, toCreasedNormals(o.geometry, Math.PI / 6));
+            o.geometry = creased.get(o.geometry);
+          }
+          addGlass(o);
+        }
         const metric = up.find((m) => m.userData.uv);
         if (metric) metricUVs(o, metric.userData.uv);
         else if (up.some((m) => m.normalMap || m.anisotropy)) ensureUVs(o.geometry, 1);
@@ -902,6 +1100,10 @@ export async function createStudio(lab, opts = {}) {
     },
     /** SSR strength (0 hides it without a rebuild). */
     setSSR(v) { U.ssr.value = v; lab.invalidate(); },
+    /** Strength of the reflections in glass (0 hides them without a rebuild). */
+    setGlass(v) { U.glass.value = v; lab.invalidate(); },
+    /** Register glass the studio did not upgrade itself (any mesh whose material has transmission > 0.5). */
+    addGlass(root) { root?.traverse ? root.traverse(addGlass) : addGlass(root); lab.invalidate(); },
     /** RCAS sharpening in stops (0 strongest). */
     setSharpen(v) { U.sharp.value = v; lab.invalidate(); },
     setJitter(v) { U.jitter.value = v; settle = 0; lab.invalidate(); },
@@ -923,7 +1125,7 @@ export async function createStudio(lab, opts = {}) {
     /** Restart temporal accumulation (after a cut). */
     settle() { settle = 0; lab.invalidate(); },
     stats() { return { ...stats, level: mods ? level : (built === 'msaa+ao' && lab.backend === 'webgpu' ? -1 : level), built }; },
-    dispose() { envTex.dispose(); pipeline?.dispose?.(); for (const t of texCache.values()) t.dispose(); texCache.clear(); },
+    dispose() { envTex.dispose(); nodes.glass?.dispose(); nodes.glassPass?.dispose(); pipeline?.dispose?.(); for (const t of texCache.values()) t.dispose(); texCache.clear(); },
   };
   build();
   if (mods) setPhoto(false);

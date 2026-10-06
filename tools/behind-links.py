@@ -104,6 +104,7 @@ PAGES.update({
     'kef-coda-w/index.html': ('en', KEF),
     'ja/kef-coda-w/index.html': ('ja', KEF),
     'studio-display-sound/index.html': ('en', DISPLAY),
+    'ja/studio-display-sound/index.html': ('ja', DISPLAY),
     'bose-customtune/index.html': ('en', HEADPHONE),
     'ja/bose-customtune/index.html': ('ja', HEADPHONE),
 })
