@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ja" class=" ig-document ig-editorial">
+<html lang="ja" class="ig-document ig-editorial">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -143,13 +143,13 @@
     .fig .plate { padding:10px 8px; }
   }
   .note { color:var(--muted); font-size:.86rem; line-height:1.55; margin-top:10px; }
-</style><!-- ISEGORIA:HEAD -->
+</style>
+<!-- ISEGORIA:HEAD -->
 <link rel="stylesheet" href="/assets/site-shell.css?v=c21cd21e82">
 <script src="/assets/site-shell.js?v=c21cd21e82" ></script>
 <!-- /ISEGORIA:HEAD -->
-<script defer data-isegoria-analytics src="/assets/analytics.js?v=9e6ebd463bf2"></script>
 </head>
-<body class=" ig-site" data-site-kind="editorial" data-site-route="/ja/opus-5-5-fable-5-1-astra/">
+<body class="ig-site" data-site-kind="editorial" data-site-route="/ja/opus-5-5-fable-5-1-astra/">
 <!-- ISEGORIA:NAV -->
 <a class="ig-skip" href="#ig-content">本文へ移動</a>
 <header id="ig-header"><div class="ig-nav-inner">
@@ -159,11 +159,12 @@
 </div></header>
 <nav id="ig-breadcrumb" aria-label="パンくずリスト"><a href="/ja/">ホーム</a><span aria-hidden="true">/</span><a href="/ja/#preoccupations">研究と解説</a><span aria-hidden="true">/</span><span aria-current="page">Opus 5.5 に対して Fable 5.1 が今も与えるもの</span></nav>
 <span id="ig-content" tabindex="-1"></span>
-<!-- /ISEGORIA:NAV --><main>
+<!-- /ISEGORIA:NAV -->
+<main>
 <div class="wrap">
 
   <div class="hero">
-    <p class="label">ベンチマーク分析 / 2026年10月4日</p>
+    <p class="label">ベンチマーク分析 / 2026年10月4日(10月7日更新)</p>
     <h1>Opus 5.5 に対して Fable 5.1 が今も与えるもの</h1>
     <p class="standfirst">Opus 5.5 の料金は100万トークンあたり入力4ドル・出力20ドルで、Fable 5.1 の10ドルと50ドルを大きく下回る。それでいて、公表されている指標の多くでは上位モデルに並ぶか、上回っている。Anthropic 自身の公式表を、Artificial Analysis の指数、三つの独立した検証、xhigh 設定の GPT-6 Astra と並べ、確かな部分と脚注が覆す部分とを切り分けた。結論として、既定は Opus 5.5 でよい。Fable 5.1 に残るのは、難しく人手を介さない作業での信頼性というごく狭い理由であり、Astra は数学とタスクあたりの費用で勝つ。</p>
     <div class="herometa">
@@ -176,7 +177,7 @@
   <nav class="toc" aria-label="このページの目次">
     <p class="kt">このページの内容</p>
     <ol>
-<li><a href="#price">価格と指数</a></li><li><a href="#launch">Anthropic の表</a></li><li><a href="#astra">三つ目のモデル</a></li><li><a href="#strengths">Astra が先行する分野</a></li><li><a href="#tests">独立した検証</a></li><li><a href="#bill">トークンと請求額</a></li><li><a href="#verdict">私の使い分け</a></li><li><a href="/ja/fable-5-1-reasoning-effort/">前の記事: エフォートのつまみ</a></li>
+<li><a href="#price">価格と指数</a></li><li><a href="#effort">エフォートのつまみ、タスク別</a></li><li><a href="#launch">Anthropic の表</a></li><li><a href="#astra">三つ目のモデル</a></li><li><a href="#strengths">Astra が先行する分野</a></li><li><a href="#tests">独立した検証</a></li><li><a href="#bill">トークンと請求額</a></li><li><a href="#verdict">私の使い分け</a></li><li><a href="/ja/fable-5-1-reasoning-effort/">前の記事: エフォートのつまみ</a></li>
     </ol>
   </nav>
 
@@ -188,12 +189,8 @@
   </div>
 
   <div class="key">
-    <p class="kt">実測値と推計値の区別</p>
- <p>本稿の数値は一つを除いてすべて公表値である。Artificial Analysis は最大エフォート時の Opus 5.5 のタスクあたり費用を公表していない。
- そこで、最大エフォートでの指数全体の実行費用の比(8,708ドル対13,129ドル)を Fable 5.1 の7.63ドルに掛け、約5.06ドルと見積もった。
- 図では白抜きの点で示し、本文でも推計と明記している。Opus 5.5 の中・高エフォートの費用(1.34ドルと1.82ドル)は、
- Artificial Analysis のページそのものではなく、二次的な要約を通じて得た。指数のスケールは前の記事と同じ v4.3.2 で、
- 最大エフォートの Fable 5.1 はどちらでも53である。</p>
+    <p class="kt">公表値と二次情報の区別</p>
+ <p>本稿の数値はすべて公表値である。指数のスコアと Fable 5.1、Astra の費用は Artificial Analysis 自身のページによる。Opus 5.5 の五段階すべての指数と、最大エフォートの費用(1タスク5.98ドル)も同じである。Opus 5.5 の高と xhigh の費用(1.82ドルと3.46ドル)と、第二節のタスク別のエフォート別結果は、公表されたグラフの二次的な要約を通じて得ており、該当する箇所でその旨を記している。指数のスケールは前の記事と同じ v4.3.2 で、最大エフォートの Fable 5.1 はどちらでも53である。</p>
   </div>
 
   <h2 id="price"><span class="num">第一節</span>価格と指数</h2>
@@ -204,28 +201,40 @@
   Fable へ移るよう勧めている。既定のエフォート水準も異なり、Opus 5.5 は中、Fable 5.1 は高である。</p>
   <p>ここから最も公平な比較が導かれる。それぞれの既定設定どうしである。Artificial Analysis の知能指数では、
   中エフォートの Opus 5.5 と高エフォートの Fable 5.1 がともに51で、費用は Opus が1タスク1.34ドル、Fable が3.91ドルである。
-  上位では差が開く。最大エフォートで Opus 5.5 は58、Fable は53であり、Opus は高エフォートの時点で既に54に達し、Fable のどの設定をも上回る。</p>
+  上位では差が開く。最大エフォートで Opus 5.5 は58、Fable は53であり、Opus は高エフォートの時点で既に54に達し、Fable のどの設定をも上回る。xhigh は三つのモデルすべてに指数が公表されている唯一の設定で、Opus 5.5 は56(1タスク3.46ドル)、Fable 5.1 は53(5.98ドル)、Astra は52(2.31ドル)である。</p>
   </div>
   <div class="wide">
     <figure class="fig"><img src="figures/f1-frontier-ja.svg" alt="Opus 5.5、Fable 5.1、GPT-6 Astra の指数スコアとタスクあたり費用を対数軸で示した図" loading="lazy" decoding="async">
-      <figcaption>図1。タスクあたり費用(対数軸)に対する指数。Opus 5.5 は公表されたエフォート設定が三つで、最大は費用が私の推計であるため白抜きにした。Fable 5.1 と Astra は五段階すべてを示す。</figcaption></figure>
+      <figcaption>図1。タスクあたり費用(対数軸)に対する指数。三つのモデルとも、低から最大までの五段階すべてを示す。</figcaption></figure>
   </div>
   <div class="wrap">
 
   <p>Artificial Analysis 自身の比較ページも、構成要素については同じ傾向を示す。最大対最大で、Opus 5.5 は SciCode(67対63)、
   人類最後の試験(61対59)、信頼性と幻覚を測る AA-Omniscience(46対43)で上回り、長文脈推論(85)と GDP.pdf(26)では並ぶ。</p>
-  <p>図1では、見出しの差よりも次の二点を重く見る。中エフォートでの引き分け、すなわち約三分の一の費用で並ぶという結果は、
-  両モデルの既定設定に基づくもので、最も頼りになる。上位での差は最も信頼しにくい。導出した費用が一つ必要で、
-  最大エフォートのスコアも単一の比較ページでしか確認できなかったからである。</p>
+  <p>図1では、見出しの差よりも次の二点を重く見る。中エフォートでの引き分け、すなわち約三分の一の費用で並ぶという結果は、両モデルの既定設定に基づくもので、最も頼りになる。上位の差には、単一の比較ページより厚い裏付けがある。Artificial Analysis の公開一覧、Opus 5.5 の解説記事、モデルのページがいずれも最大で58を示し、モデルのページは費用5.98ドルを示す。最大では、Opus 5.5 はタスクあたり費用が Fable より低く(5.98ドル対7.63ドル)、スコアは5ポイント高い。</p>
 
-  <h2 id="launch"><span class="num">第二節</span>Anthropic の表と、その脚注</h2>
+  <h2 id="effort"><span class="num">第二節</span>エフォートのつまみを、タスク別に見る</h2>
+
+  <p>Artificial Analysis は Opus 5.5 の指数スコアについて、段階ごとの全体を公表している。低で42、中で51、高で54、xhigh で56、最大で58である。同じつまみでも、個々のタスクの動き方は大きく異なる。図2は、指数と、Anthropic のエフォート別グラフを第三者が書き起こした五つのベンチマークで、その様子を示す。</p>
+  </div>
+  <div class="wide">
+    <figure class="fig"><img src="figures/f7-effort-ja.svg" alt="Opus 5.5 の低・中・高・超高・最大でのスコアを示した六つの折れ線パネルと、各タスクの伸びのうち各水準で得られる割合を示したヒートマップ" loading="lazy" decoding="async">
+      <figcaption>図2。指数と五つのベンチマークでの、エフォート水準ごとの Opus 5.5 のスコアと、各タスクの伸びのうち各水準で得られる割合。橙は最良の水準、白抜きの点はそれ以前の水準より低いことを示す。</figcaption></figure>
+  </div>
+  <div class="wrap">
+
+  <p>低から中への段差は、どのタスクでも最大である。中だけで、低から最良の水準までの伸びの56%以上を取り込み、FrontierCode では全部を取り込む。</p>
+  <p>中より先では、タスクによって道が分かれる。知識労働は伸び続ける。GDPval-AA は中の1576から最大の1846へ、AA-Briefcase は1642から1822へ上がり、xhigh の時点で伸びの96%と92%に達している。コーディング系のベンチマークは平坦で、揺れが大きい。Terminal-Bench 4.0 は xhigh の66.4が頂点で、最大では64.8に下がる。FrontierCode は中の54.6を一度も超えず、54.0、51.4、54.4と揺れる。CursorBench は高と xhigh で56.0と並び、最大で57.8に達する。</p>
+  <p>小さな動きは慎重に扱うべきである。Anthropic は Opus の Terminal-Bench のスコアに約2.6ポイントの標準誤差を示している。これを他のタスクのノイズの目安としても使うが、仮定である。Terminal-Bench の1.6ポイントの低下と FrontierCode の揺れは、この範囲に収まる。残るのは形である。コーディングでは急な部分が中か高で終わり、知識労働では xhigh まで続く。タスクあたり費用はベンチマークごとに測り方が異なるため、図からは外した。</p>
+
+  <h2 id="launch"><span class="num">第三節</span>Anthropic の表と、その脚注</h2>
 
   <p>Anthropic の公式表では、比較可能な8つのベンチマークすべてで Opus 5.5 が Fable 5.1 を上回り、差は0.6ポイントから10.6ポイントである。
   最大の差は Terminal-Bench 4.0 の66.4対55.8。尺度の異なる知識労働ベンチマーク GDPval-AA も同じ向きで、1846 Elo 対 1735 Elo となっている。</p>
   </div>
   <div class="wide">
     <figure class="fig"><img src="figures/f2-launch-ja.svg" alt="Opus 5.5 が8つの公式ベンチマークで Fable 5.1 を上回る差を示した横棒グラフ" loading="lazy" decoding="async">
-      <figcaption>図2。Anthropic の公式ベンチマークにおける Opus 5.5 の Fable 5.1 に対するリード(ポイント)。AutomationBench は同じ表を伝える二次報告による。</figcaption></figure>
+      <figcaption>図3。Anthropic の公式ベンチマークにおける Opus 5.5 の Fable 5.1 に対するリード(ポイント)。AutomationBench は同じ表を伝える二次報告による。</figcaption></figure>
   </div>
   <div class="wrap">
 
@@ -234,18 +243,18 @@
   59.6対52.0と同じ向きを再現しているので、私はこの差を信じる。FrontierCode と CursorBench では逆に、Opus が既定の中、Fable が最大で走っている。
   これらの差は不利な条件を越えて残っている。</p>
   <p>Anthropic はさらに、九つの差のうち四つは誤差範囲に収まり、両モデルの差は「この点数が示すより小さい」と述べている。
-  私はこれを、図2の下半分は引き分けとして扱ってほしいという提供元の依頼だと読む。表の中に、Opus が劣る項目は一つもない。</p>
+  私はこれを、図3の下半分は引き分けとして扱ってほしいという提供元の依頼だと読む。表の中に、Opus が劣る項目は一つもない。</p>
 
-  <h2 id="astra"><span class="num">第三節</span>三つ目のモデル、xhigh での姿</h2>
+  <h2 id="astra"><span class="num">第四節</span>三つ目のモデル、xhigh での姿</h2>
 
   <p>GPT-6 Astra のトークン単価は Fable 5.1 と同じ10ドルと50ドルだが、書き出すトークンがはるかに少ないため、タスクあたりの請求額は控えめになる。
   xhigh では指数52、1タスク2.31ドルで、費用では中エフォートの Opus 5.5 と高エフォートの Fable の間に入り、スコアでは中エフォートの Opus 5.5(51)に並び、
-  最大エフォートの Fable(53)にわずかに届かない。出力速度は毎秒49トークンで、xhigh での最初のトークンまでの待ち時間は、
+  最大エフォートの Fable(53)にわずかに届かない。xhigh そのものでは Opus 5.5 が56、Fable 5.1 が53である。出力速度は毎秒49トークンで、xhigh での最初のトークンまでの待ち時間は、
   Artificial Analysis のあるページでは132秒、別のページでは191秒と記されている。中エフォートでは6秒である。</p>
   </div>
   <div class="wide">
     <figure class="fig"><img src="figures/f3-threeway-ja.svg" alt="Opus 5.5、Fable 5.1、GPT-6 Astra の共通5ベンチマークを示した棒グラフ" loading="lazy" decoding="async">
-      <figcaption>図3。三者が共通して報告するベンチマークの公式表スコア。Astra の数値はエフォート水準が明記されておらず、xhigh の結果とは限らない。</figcaption></figure>
+      <figcaption>図4。三者が共通して報告するベンチマークの公式表スコア。Astra の数値はエフォート水準が明記されておらず、xhigh の結果とは限らない。</figcaption></figure>
   </div>
   <div class="wrap">
 
@@ -254,14 +263,14 @@
   Artificial Analysis 自身の実行では、Astra は Terminal-Bench(60に対し59)と AutomationBench(70に対し69)で Opus とほぼ並び、
   どちらでも Fable をはっきり上回る。</p>
 
-  <h2 id="strengths"><span class="num">第四節</span>Astra が先行する分野</h2>
+  <h2 id="strengths"><span class="num">第五節</span>Astra が先行する分野</h2>
 
   <p>Astra が最も強いベンチマークの多くは、Anthropic が Opus 5.5 について報告していないため、比較の相手は Fable になる。
   Astra は FrontierMath Tier 4 で97.6%(Fable は87.8%)、ARC-AGI-2 で95%(同90%)を記録し、コーディングの DeepSWE でも74%対67%で先行する。</p>
   </div>
   <div class="wide">
     <figure class="fig"><img src="figures/f6-astra-ja.svg" alt="GPT-6 Astra と Fable 5.1 を FrontierMath、ARC-AGI-2、DeepSWE、OSWorld で比べた四組の棒グラフ" loading="lazy" decoding="async">
-      <figcaption>図4。Astra が先行する四つのベンチマークでの Astra と Fable 5.1 の比較。OSWorld の組は集計サイトによるもので、Anthropic の表とは版が異なる。</figcaption></figure>
+      <figcaption>図5。Astra が先行する四つのベンチマークでの Astra と Fable 5.1 の比較。OSWorld の組は集計サイトによるもので、Anthropic の表とは版が異なる。</figcaption></figure>
   </div>
   <div class="wrap">
 
@@ -269,7 +278,7 @@
   (Opus 81.8、Fable 80.7)とは版が違う。数学での差は信じてよい部分である。ARC Prize 自身の Opus 5.5 の記録は、
   高エフォートで ARC-AGI-2 が93.3%、xhigh で92.5%であり、この試験では Opus は Fable と Astra の間に位置する。</p>
 
-  <h2 id="tests"><span class="num">第五節</span>食い違う独立した検証</h2>
+  <h2 id="tests"><span class="num">第六節</span>食い違う独立した検証</h2>
 
   <p>外部の三組が、実際の作業で Opus 5.5 と Fable 5.1 を比べたが、結果は一致しない。Snorkel AI は最先端のエージェント課題で200件の試行を走らせた。
   合格率は Opus が68%、Fable が49%だが、pass@1 では両者は並ぶ(60.7%と61.5%)。Fable の失敗は早すぎる打ち切りと回復されなかった誤りで、
@@ -277,7 +286,7 @@
   </div>
   <div class="wide">
     <figure class="fig"><img src="figures/f4-tests-ja.svg" alt="Snorkel、Endor Labs、The New Stack による Opus 5.5 と Fable 5.1 の六組の棒グラフ" loading="lazy" decoding="async">
-      <figcaption>図5。独立した検証。Opus 5.5 は Snorkel の合格率で勝ち費用も大幅に低い。Fable 5.1 は Endor Labs の正しさと安全性、The New Stack の信頼性で勝つ。</figcaption></figure>
+      <figcaption>図6。独立した検証。Opus 5.5 は Snorkel の合格率で勝ち費用も大幅に低い。Fable 5.1 は Endor Labs の正しさと安全性、The New Stack の信頼性で勝つ。</figcaption></figure>
   </div>
   <div class="wrap">
 
@@ -290,34 +299,36 @@
   共通するのは形だ。Fable は難しく人手を介さない作業で失敗が少なく、テストに見えない近道を取る癖がある。Opus は速く、はるかに安い。
   15回は小さな標本であり、三つのどれも決定的とは言えない。</p>
 
-  <h2 id="bill"><span class="num">第六節</span>トークンと請求額</h2>
+  <h2 id="bill"><span class="num">第七節</span>トークンと請求額</h2>
 
   <p>Opus 5.5 はトークン単価が最も安く、書き出しも最も速い。同時に、最もよく考える。最大エフォートでは1タスクあたり約11.9万の出力トークンを使い、
   Fable は7.8万、Astra は2.7万である。最初のトークンまでの待ち時間は、Opus が705秒、Fable が239秒と記されている。</p>
   </div>
   <div class="wide">
     <figure class="fig"><img src="figures/f5-efficiency-ja.svg" alt="三つのモデルの出力単価、速度、出力トークン、タスクあたり費用を比べた四つのパネル" loading="lazy" decoding="async">
-      <figcaption>図6。最大エフォートでの価格、速度、トークン。Astra の速度は xhigh での測定値で、Opus 5.5 の最大費用は私の推計である。</figcaption></figure>
+      <figcaption>図7。最大エフォートでの価格、速度、トークン。Astra の速度は xhigh での測定値である。</figcaption></figure>
   </div>
   <div class="wrap">
 
-  <p>Opus はトークン単価が半額以下なので、思考量が5割増しでもなお Fable より安く、1タスク約5ドルに対して7.63ドルである。
+  <p>Opus はトークン単価が半額以下なので、思考量が5割増しでもなお Fable より安く、1タスク5.98ドルに対して7.63ドルである。
   Astra は Fable と同じ単価でも書き出す量が少ないので、3.26ドルとさらに安い。その代償が速度で、毎秒49トークン、
   しかも始まるまでに長い間がある。待ちながら使う用途よりも、バッチ処理に向く。</p>
 
-  <h2 id="verdict"><span class="num">第七節</span>私の使い分け</h2>
+  <h2 id="verdict"><span class="num">第八節</span>私の使い分け</h2>
 
-  <p>既定は中エフォートの Opus 5.5 である。足りなければ、モデルを替える前にエフォートを高に上げる。指数の上では高エフォートで既に Fable の最高値を超えるからだ。
+  <p>既定は中エフォートの Opus 5.5 である。足りなければ、モデルを替える前にエフォートを高に上げる。指数の上では高エフォートで既に Fable の最高値を超えるからだ。図2のコーディング系ベンチマークでは、高を超えるとつまみの効きはわずかなので、コーディングでは最大に上げるよりモデルを替える方を先に考える。
   Fable 5.1 は、長時間の無人実行、並行処理系のバグ、高エフォートの Opus が二度失敗した問題に使う。Astra は、形式的な数学や科学計算、
   そして速度よりタスクあたり費用が重要なバッチ処理に使う。</p>
-  <p>未解決の点がいくつか残る。Opus 5.5 と Fable 5.1 について、エフォート水準を揃えた xhigh の実行は公表されていないため、
-  依頼された設定での比較は Astra についてしか存在しない。Opus 5.5 と Astra を同じエフォート水準で直接比べた結果もない。
-  コンピュータ操作やその他の Astra の数値は集計サイトによるもので、Opus 5.5 の最大エフォート費用は私自身の推計である。</p>
+  <p>未解決の点がいくつか残る。エフォート水準を揃えた xhigh の比較は指数でしか存在せず、Opus 5.5、Fable 5.1、Astra でそれぞれ56、53、52である。Opus 5.5 と Fable 5.1 を xhigh で揃えて比べた、公表済みのタスク別ベンチマークは見つからず、これらのタスクで Opus 5.5 と Astra をエフォート水準を揃えて直接比べた結果もない。タスク別のエフォート結果は、Anthropic のグラフを第三者が書き起こしたものであり、コンピュータ操作やその他の Astra の数値は集計サイトによるものである。</p>
 
   <div class="sources">
  <h3>出典</h3>
- <p><strong>一次データ。</strong> Artificial Analysis の比較ページ:
+ <p><strong>一次データ。</strong> Artificial Analysis のページ:
  <a href="https://artificialanalysis.ai/models/comparisons/claude-opus-5-5-vs-claude-fable-5-1">Opus 5.5 対 Fable 5.1</a>、
+ <a href="https://artificialanalysis.ai/articles/claude-opus-5-5">Opus 5.5 の解説記事</a>、
+ <a href="https://artificialanalysis.ai/models/claude-opus-5-5">最大エフォートの Opus 5.5</a>、
+ <a href="https://artificialanalysis.ai/models/releases/claude-opus-5-5">Opus 5.5 のリリース一覧</a>、
+ <a href="https://artificialanalysis.ai/models/claude-fable-5-1-xhigh">xhigh の Fable 5.1</a>、
  <a href="https://artificialanalysis.ai/models/gpt-6-astra-xhigh">xhigh の GPT-6 Astra</a>、
  <a href="https://artificialanalysis.ai/models/comparisons/gpt-6-astra-medium-vs-gpt-6-astra-xhigh">Astra の中と xhigh</a>、
  <a href="https://artificialanalysis.ai/articles/benchmarking-gpt-6-astra">Astra の解説記事</a>。
@@ -327,21 +338,21 @@
  <a href="https://www.endorlabs.com/learn/opus-5-5-6x-cheaper-and-2x-faster-than-fable-5-1-but-memorization-keeps-it-off-the-top-spot">Endor Labs</a>、
  <a href="https://thenewstack.io/claude-opus-5-5-vs-fable-5-1/">The New Stack</a>。
  <a href="https://arcprize.org/results/anthropic-claude-opus-5-5">ARC Prize の Opus 5.5 の結果</a>。</p>
- <p><strong>二次データ。</strong> Opus 5.5 の中・高エフォートの費用と既定設定どうしの引き分けは
- <a href="https://emergent.sh/learn/claude-fable-5-1-vs-opus-5-5">Emergent</a> による。誤差範囲に関する記述と Anthropic の表の AutomationBench の行は
+ <p><strong>二次データ。</strong> Opus 5.5 の高と xhigh の費用は <a href="https://www.explainx.ai/blog/claude-opus-5-5-vs-sonnet-5-5-comparison-2026">explainx</a> による(高は <a href="https://emergent.sh/learn/claude-fable-5-1-vs-opus-5-5">Emergent</a> も)。既定設定どうしの引き分けも Emergent による。タスク別のエフォート結果は、Anthropic のエフォート別グラフの数値を <a href="https://www.digitalapplied.com/blog/sonnet-5-5-or-opus-5-5-effort-level-cost-per-task">Digital Applied</a>、<a href="https://kingy.ai/blog/gpt-6-astra-vs-claude-opus-5-5-reasoning-effort/">Kingy AI</a>、<a href="https://tosea.ai/blog/claude-opus-5-5-complete-guide">ToSea</a> が書き起こしたものである。Terminal-Bench は前の二つで、AA-Briefcase は一つ目と三つ目で、FrontierCode の中と最大は前の二つで一致する。FrontierCode のそれ以外の水準と CursorBench は一つ目だけ、GDPval-AA は二つ目だけに拠る。誤差範囲に関する記述と Anthropic の表の AutomationBench の行は
  <a href="https://codingfleet.com/blog/claude-opus-5-5-vs-fable-5-1/">CodingFleet</a> の報告による。Astra の公式表のスコアと、FrontierMath、ARC-AGI-2、DeepSWE、OSWorld の数値は
  <a href="https://www.featureflow.com/blog/claude-opus-5-5-vs-fable-5-1-vs-gpt-6-astra">Featureflow</a>、
  <a href="https://www.vellum.ai/blog/claude-opus-5-5-vs-gpt-6-astra">Vellum</a>、
  <a href="https://benchlm.ai/compare/claude-fable-5-1-vs-gpt-6-astra">BenchLM</a>、
  <a href="https://www.mindstudio.ai/blog/gpt6-astra-benchmark-comparison">MindStudio</a> による。</p>
  <p><strong>確認したこと。</strong> Artificial Analysis、Anthropic、Snorkel、Endor Labs、The New Stack、ARC Prize の数値は、
- 2026年10月3日と4日にそれぞれのページから読み取った。指数のスケールは<a href="/ja/fable-5-1-reasoning-effort/">前の記事</a>と一致している。</p>
- <p><strong>確認できなかったこと。</strong> Opus 5.5 の最大エフォートでのタスクあたり費用は公表値ではなく導出値で、中・高エフォートの費用は二次情報である。
+ 2026年10月3日、4日、7日にそれぞれのページから読み取った。Opus 5.5 の五段階すべての指数(42、51、54、56、58)、最大での費用5.98ドル、xhigh の Fable 5.1 の53と5.98ドルを含み、それぞれ固有のページにある。指数のスケールは<a href="/ja/fable-5-1-reasoning-effort/">前の記事</a>と一致している。</p>
+ <p><strong>確認できなかったこと。</strong> Opus 5.5 の高と xhigh の費用は二次情報であり、タスク別のエフォート結果は第三者による書き起こしで、Anthropic 自身のグラフとは照合していない。
  AutomationBench は公式表で40.0対31.4、Artificial Analysis で70対59と現れ、おそらく版が違うため、両者を混ぜていない。
  Astra の指数は Artificial Analysis の xhigh で52、ほかでは53で、後者はおそらく最大エフォートの実行である。集計サイトの数値にはエフォート水準の表示がない。
  Opus 5.5 についての LMArena や人間の選好データは見つからなかった。</p></div>
 </div>
-</main><!-- ISEGORIA:FOOT -->
+</main>
+<!-- ISEGORIA:FOOT -->
 <footer id="ig-footer"><div><a href="/ja/">Isegoria · Benjamin Haire</a><nav aria-label="サイト内リンク"><a href="/ja/">ホームに戻る</a><a href="/ja/library.html">全コンテンツ</a><a href="#ig-content">ページ上部へ</a></nav></div></footer>
 <!-- /ISEGORIA:FOOT -->
 </body>
