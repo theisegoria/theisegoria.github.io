@@ -1,0 +1,76 @@
+<!doctype html><html lang="ja" class="ig-document ig-editorial"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Daily Mathematics 解答：2026年10月8日 · Isegoria</title><meta name="description" content="2026年10月8日のThreadsカード2枚（難しい定積分とパトナム型の問題）の完全な解答。"><link rel="canonical" href="https://theisegoria.github.io/ja/daily-mathematics/2026-10-08/"><link rel="alternate" hreflang="en" href="https://theisegoria.github.io/daily-mathematics/2026-10-08/"><link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/daily-mathematics/2026-10-08/"><link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/daily-mathematics/2026-10-08/"><link rel="icon" href="/assets/favicon.svg"><link rel="stylesheet" href="/assets/isegoria.css?v=20260915"><link rel="stylesheet" href="/analysis-atlas/vendor/katex.min.css"><script defer src="/analysis-atlas/vendor/katex.min.js"></script><script defer src="/analysis-atlas/vendor/contrib/auto-render.min.js"></script><script>document.addEventListener("DOMContentLoaded",function(){if(window.renderMathInElement)renderMathInElement(document.querySelector("main"),{delimiters:[{left:"\\[",right:"\\]",display:true},{left:"\\(",right:"\\)",display:false}],throwOnError:false});});</script><style>
+.dm{max-width:46rem;margin:0 auto;padding:2.5rem 1.25rem 4rem}
+.dm .eyebrow{letter-spacing:.14em;text-transform:uppercase;font-size:.78rem;opacity:.7;margin:0 0 .4rem}
+.dm h1{margin:.1rem 0 .6rem;line-height:1.2}
+.dm .deck{opacity:.85;margin:0 0 2rem}
+.dm .card{margin:2.6rem 0 0;padding-top:1.4rem;border-top:2px solid var(--dm-accent,currentColor)}
+.dm .card h2{margin:.2rem 0 .9rem;line-height:1.3}
+.dm .kind{font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dm-accent);margin:0}
+.dm figure{margin:1rem 0 1.4rem}
+.dm figure img{width:100%;max-width:30rem;height:auto;display:block;border:1px solid rgba(127,127,127,.25)}
+.dm .statement{padding:.9rem 1.1rem;border-left:3px solid var(--dm-accent);background:rgba(127,127,127,.07)}
+.dm details{margin:1.2rem 0}
+.dm summary{cursor:pointer;font-weight:600}
+.dm .answer{margin-top:1.2rem;padding:.8rem 1.1rem;border:1px solid var(--dm-accent)}
+.dm .katex-display{overflow-x:auto;overflow-y:hidden;padding:.2rem 0}
+.dm .days{list-style:none;padding:0;margin:1.5rem 0 0}
+.dm .days li{padding:.9rem 0;border-top:1px solid rgba(127,127,127,.25)}
+.dm .days a.date{font-weight:600}
+.dm .days span{display:block;opacity:.85}
+html[lang=ja] .dm{line-height:1.85}
+</style><script src="/assets/lang.js"></script>
+<!-- ISEGORIA:HEAD -->
+<link rel="stylesheet" href="/assets/site-shell.css?v=c21cd21e82">
+<script src="/assets/site-shell.js?v=c21cd21e82" ></script>
+<!-- /ISEGORIA:HEAD -->
+<script defer data-isegoria-analytics src="/assets/analytics.js?v=9e6ebd463bf2"></script>
+</head><body class="ig-site" data-site-kind="editorial" data-site-route="/ja/daily-mathematics/2026-10-08/">
+<!-- ISEGORIA:NAV -->
+<a class="ig-skip" href="#ig-content">本文へ移動</a>
+<header id="ig-header"><div class="ig-nav-inner">
+<a class="ig-brand" href="/ja/" aria-label="Isegoria, ホーム"><strong>ISEGORIA</strong><span>Benjamin Haire</span></a>
+<div class="ig-header-actions"><a class="ig-language" href="/daily-mathematics/2026-10-08/" hreflang="en" lang="en">English</a><button class="ig-menu" type="button" aria-expanded="false" aria-controls="ig-primary">メニュー</button></div>
+<nav id="ig-primary" aria-label="メインナビゲーション"><a href="/ja/">ホーム</a><a href="/ja/library.html">全コンテンツ</a><a href="/ja/math-encyclopedia/" aria-current="location">数学百科事典</a><a href="/ja/#interactive">操作できる解説</a><a href="/ja/#preoccupations">研究と解説</a><a href="/ja/#books">書籍</a><a href="/ja/projects.html">プロジェクト</a><a href="/ja/about.html">このサイトについて</a><a class="ig-language" href="/daily-mathematics/2026-10-08/" hreflang="en" lang="en">English</a><button class="ig-theme" type="button" hidden>表示切替</button></nav>
+</div></header>
+<nav id="ig-breadcrumb" aria-label="パンくずリスト"><a href="/ja/">ホーム</a><span aria-hidden="true">/</span><a href="/ja/math-encyclopedia/">数学百科事典</a><span aria-hidden="true">/</span><a href="/ja/daily-mathematics/">Daily Mathematics 解答集</a><span aria-hidden="true">/</span><span aria-current="page">Daily Mathematics 解答：2026年10月8日</span></nav>
+<span id="ig-content" tabindex="-1"></span>
+<!-- /ISEGORIA:NAV -->
+<main id="main" class="dm"><p class="eyebrow">Daily Mathematics / 解答</p><h1>2026年10月8日の解答</h1><p class="deck">この日のカードは難しい定積分とオリジナルのパトナム型の問題の2枚である。まず自分で考え、詰まったら解答を開くこと。</p><section class="card" id="integral" style="--dm-accent:#24457F"><p class="kind">積分</p><h2>平方根の arccos を含む二重積分</h2><figure><img src="/daily-mathematics/2026-10-08/integral.png" width="1200" height="1200" loading="lazy" alt="カード: 平方根の arccos を含む二重積分"></figure><div class="statement"><p>次の二重積分を閉じた形で求めよ。</p>\[\int_{0}^{1}\!\!\int_{0}^{1}\frac{1}{1-x^{2}y^{2}}\,\arccos\frac{\sqrt{(1-x^{2})(1-y^{2})}}{1+xy}\,dx\,dy\]</div><details><summary>解答を開く</summary><p>積分の値が \(\pi^{3}/24\) であることを示す。</p>
+<p><strong>直接の計算が行き詰まる理由。</strong>\(x\) を固定して \(y\) で積分しても初等的な原始関数は得られない。代数関数の arccos を \(1-x^{2}y^{2}\) で割った形であり，しかも角 \((1,1)\) で対数的に発散する。積分する前に，被積分関数を一つの合成変数の関数として見抜く必要がある。</p>
+<p><strong>第1段：角に名前をつける。</strong>\(0\le x,y&lt;1\) に対し \(t=\frac{x+y}{1+xy}\in[0,1)\) とおく。展開すると</p>
+\[1-t^{2}=\frac{(1+xy)^{2}-(x+y)^{2}}{(1+xy)^{2}}=\frac{(1-x^{2})(1-y^{2})}{(1+xy)^{2}}\]
+<p>であるから，arccos の引数は \(\sqrt{1-t^{2}}\in(0,1]\) に等しく，\(\arccos\sqrt{1-t^{2}}=\arcsin t\) を得る。よって</p>
+\[I=\int_{0}^{1}\!\!\int_{0}^{1}\frac{1}{1-x^{2}y^{2}}\arcsin\frac{x+y}{1+xy}\,dx\,dy\]
+<p>である。</p>
+<p><strong>第2段：双曲線関数の加法定理。</strong>\(\frac{x+y}{1+xy}\) は \(\tanh\) の加法定理の形である。\(x=\tanh a\)，\(y=\tanh b\)（\(a,b\in[0,\infty)\)）とおくと \(\frac{x+y}{1+xy}=\tanh(a+b)\)，\(dx=\operatorname{sech}^{2}a\,da\)，\(dy=\operatorname{sech}^{2}b\,db\) であり，恒等式 \(\cosh(a+b)\cosh(a-b)=\cosh^{2}a\cosh^{2}b-\sinh^{2}a\sinh^{2}b\) により</p>
+\[1-x^{2}y^{2}=\frac{\cosh(a+b)\cosh(a-b)}{\cosh^{2}a\cosh^{2}b},\qquad \frac{dx\,dy}{1-x^{2}y^{2}}=\frac{da\,db}{\cosh(a+b)\cosh(a-b)}\]
+<p>となる。\(g(s)=\arcsin(\tanh s)\)（グーデルマン関数）とおく。\(\frac{d}{ds}\arcsin(\tanh s)=\frac{\operatorname{sech}^{2}s}{\sqrt{1-\tanh^{2}s}}=\operatorname{sech}s\) であるから，\(g(0)=0\)，\(g'(s)=\operatorname{sech}s\)，\(s\to\infty\) で \(g(s)\to\pi/2\) であり，\(g(s)=\int_{0}^{s}\operatorname{sech}u\,du\) である。したがって</p>
+\[I=\int_{0}^{\infty}\!\!\int_{0}^{\infty}\frac{g(a+b)}{\cosh(a+b)\cosh(a-b)}\,da\,db\]
+<p>を得る。</p>
+<p><strong>第3段：和と差の座標。</strong>\(s=a+b\)，\(d=a-b\) とおくと \(da\,db=\tfrac12\,ds\,dd\) であり，象限 \(a,b\ge0\) は \(|d|\le s\) に移る。内側の積分は \(\int_{-s}^{s}\operatorname{sech}d\,dd=2g(s)\) である。ゆえに</p>
+\[I=\int_{0}^{\infty}\frac{g(s)}{\cosh s}\cdot\frac12\cdot2g(s)\,ds=\int_{0}^{\infty}g(s)^{2}\,g'(s)\,ds=\Bigl[\tfrac13g(s)^{3}\Bigr]_{0}^{\infty}=\frac13\Bigl(\frac{\pi}{2}\Bigr)^{3}=\frac{\pi^{3}}{24}\]
+<p>である。被積分関数はすべて非負であるから，角での対数的特異性も含めて，変数変換と積分順序の交換はトネリの定理により正当化される。</p>
+<p><strong>注意。</strong>同じ計算により，一般に \(\int_0^1\!\int_0^1\frac{F\left(\frac{x+y}{1+xy}\right)}{1-x^2y^2}\,dx\,dy=\int_0^{\pi/2}\theta\,F(\sin\theta)\,d\theta\) が成り立つ。同値な見方として，カラビの置換 \(x=\frac{\sin u}{\cos v}\)，\(y=\frac{\sin v}{\cos u}\) は三角形 \(u,v\ge0\)，\(u+v\le\pi/2\) を単位正方形に写し，そのヤコビアンは \(1-x^2y^2\) であり，arccos の部分はちょうど \(u+v\) になる。</p>
+<p><strong>検証。</strong>角 \((1,1)\) に向けて幾何級数的に細かくしたパネル上の二次元ガウス・ルジャンドル則（各パネル40から80節点）により \(1.2919281950124926\) を得た。これは \(\pi^{3}/24=1.2919281950124923\ldots\) と \(4\times10^{-16}\) の精度で一致する。</p><div class="answer"><strong>答え.</strong> \(\dfrac{\pi^{3}}{24}\approx1.2919281950\)</div></details></section><section class="card" id="competition" style="--dm-accent:#96311F"><p class="kind">競技数学の問題</p><h2>ポリアの壺と二対一の比</h2><figure><img src="/daily-mathematics/2026-10-08/competition.png" width="1200" height="1200" loading="lazy" alt="カード: ポリアの壺と二対一の比"></figure><div class="statement"><p>壺に赤玉1個と青玉1個が入っている。各回，壺から玉を1個無作為に取り出し，それを同じ色の新しい玉1個とともに戻す。赤玉と青玉の個数をそれぞれ \(R,\,B\) とするとき，ある時点で \(R=2B\) となる確率を求めよ。</p></div><details><summary>解答を開く</summary><p>求める確率が \(\dfrac{\pi}{3\sqrt3}\approx0.6046\) であることを示す。</p>
+<p><strong>直接の計算が行き詰まる理由。</strong>自然な方針は状態に関する漸化式である。\(R=r\)，\(B=b\) から出発していつか \(R=2B\) となる確率を \(f(r,b)\) とすれば \(f(r,b)=\frac{r}{r+b}f(r+1,b)+\frac{b}{r+b}f(r,b+1)\) である。しかし格子は無限であり，無限遠での境界条件がなく，目標点 \((2m,m)\) への初到達確率を足し合わせても扱いにくい級数しか得られない。まず壺をもっと単純な確率的対象に置き換える必要がある。</p>
+<p><strong>第1段：壺は偏りが無作為な硬貨である。</strong>赤 \(r\) 回，青 \(b\) 回（\(r+b=n\)）を含む \(n\) 回の取り出し列を一つ固定する。\(k\) 回目の取り出しの直前には壺に \(k+1\) 個の玉があるから，各確率の分母は順に \(2,3,\dots,n+1\) である。また順序によらず，\(i\) 回目の赤は赤玉が \(i\) 個のときに，\(j\) 回目の青は青玉が \(j\) 個のときに起こる。よってこの列の確率は</p>
+\[\frac{r!\,b!}{(n+1)!}=\int_{0}^{1}p^{r}(1-p)^{b}\,dp\]
+<p>であり，後半の等号はオイラーのベータ積分である。したがって任意の \(n\) について，最初の \(n\) 回の取り出しは次の試行と同じ分布をもつ：\([0,1]\) から一様に \(p\) を選び，その後は独立に確率 \(p\) で赤を引く。ある時点で \(R=2B\) となる事象 \(E\) は，最初の \(n\) 回以内にそれが起こる事象 \(E_n\) の増大列の和集合であり，各 \(E_n\) は最初の \(n\) 回だけで決まる。単調収束定理により</p>
+\[\Pr(E)=\lim_{n\to\infty}\int_{0}^{1}\Pr\nolimits_{p}(E_n)\,dp=\int_{0}^{1}h(p)\,dp,\qquad h(p)=\Pr\nolimits_{p}(E)\]
+<p>を得る。</p>
+<p><strong>第2段：1段ずつしか上がらない酔歩。</strong>取り出しの後では \(R=1+(\text{赤の回数})\)，\(B=1+(\text{青の回数})\) である。\(W=(\text{赤の回数})-2(\text{青の回数})=R-2B+1\) とおく。\(W\) は \(0\) から出発し（このとき \(R\ne2B\)），確率 \(p\) で \(+1\)，確率 \(1-p\) で \(-2\) だけ動き，\(R=2B\) となるのはちょうど \(W=1\) のときである。\(W\) は上へは1ずつしか動かないので，\(E\) は \(W\) がいつか高さ \(1\) に達する事象であり，強マルコフ性により現在位置から \(k\) 段上に達する確率は \(h^{k}\) である。</p>
+<p><strong>第3段：1段上がる確率。</strong>一歩の平均は \(3p-2\) である。\(p&gt;2/3\) ならば大数の強法則により \(W\to+\infty\) であり，\(h(p)=1\) である。\(p&lt;2/3\) ならばほとんど確実に \(W\to-\infty\) であるから \(\sup W\) は有限であり，\(h^{k}=\Pr_p(\sup W\ge k)\to0\)，よって \(h&lt;1\) である。最初の1回で場合分けすると（青を引いた後は3段上がる必要がある）</p>
+\[h=p+(1-p)h^{3},\qquad\text{すなわち}\qquad (h-1)\bigl((1-p)h^{2}+(1-p)h-p\bigr)=0\]
+<p>である。\(h\ne1\) であるから \(h\) は2次式の非負の根である。判別式は \((1-p)^{2}+4p(1-p)=(1-p)(1+3p)\) であるから</p>
+\[h(p)=\frac12\left(\sqrt{\frac{1+3p}{1-p}}-1\right)\qquad(0\le p&lt;2/3)\]
+<p>を得る（この根が \(1\) より小さいのはちょうど \(p&lt;2/3\) のときであり，整合している。\(p=2/3\) の1点は測度 \(0\) である）。</p>
+<p><strong>第4段：\(p\) について平均する。</strong></p>
+\[\Pr(E)=\int_{0}^{2/3}h(p)\,dp+\frac13=\frac12\int_{0}^{2/3}\sqrt{\frac{1+3p}{1-p}}\,dp-\frac13+\frac13=\frac{J}{2}.\]
+<p>\(q=1-p\) とおくと \(J=\int_{1/3}^{1}\sqrt{\frac{4-3q}{q}}\,dq\) であり，さらに \(q=\frac43\sin^{2}\theta\) とおくと \(\sqrt{(4-3q)/q}=\sqrt3\cot\theta\)，\(dq=\frac83\sin\theta\cos\theta\,d\theta\)，\(\theta\) は \(\pi/6\) から \(\pi/3\) まで動く。よって</p>
+\[J=\frac{8}{\sqrt3}\int_{\pi/6}^{\pi/3}\cos^{2}\theta\,d\theta=\frac{8}{\sqrt3}\Bigl[\frac{\theta}{2}+\frac{\sin2\theta}{4}\Bigr]_{\pi/6}^{\pi/3}=\frac{8}{\sqrt3}\cdot\frac{\pi}{12}=\frac{2\pi}{3\sqrt3}\]
+<p>である（\(\sin\frac{2\pi}{3}=\sin\frac{\pi}{3}\) を用いた）。ゆえに \(\Pr(E)=\dfrac{\pi}{3\sqrt3}=\dfrac{\pi\sqrt3}{9}\) である。</p>
+<p><strong>検証。</strong>壺そのものに対する有理数の厳密な動的計画法は，30回以内のすべての期間でベータ混合による計算と完全に一致した。壺に対する浮動小数点の動的計画法を64000回まで行うと，極限との差は \(1/n\) のように縮み，16000回と64000回の値のリチャードソン補外は \(0.6045997874\) を与え，\(\pi/(3\sqrt3)=0.6045997880\ldots\) と \(7\times10^{-10}\) 以内で一致した。</p><div class="answer"><strong>答え.</strong> \(\dfrac{\pi}{3\sqrt3}=\dfrac{\pi\sqrt3}{9}\approx0.6045997881\)</div></details></section><p><a href="/ja/daily-mathematics/">解答の一覧へ戻る</a> · <a href="/daily-mathematics/2026-10-08/" hreflang="en" lang="en">English</a></p></main>
+<!-- ISEGORIA:FOOT -->
+<footer id="ig-footer"><div><a href="/ja/">Isegoria · Benjamin Haire</a><nav aria-label="サイト内リンク"><a href="/ja/">ホームに戻る</a><a href="/ja/library.html">全コンテンツ</a><a href="#ig-content">ページ上部へ</a></nav></div></footer>
+<!-- /ISEGORIA:FOOT -->
+</body></html>

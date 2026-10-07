@@ -1,0 +1,75 @@
+<!doctype html><html lang="en" class="ig-document ig-editorial"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Daily Mathematics solutions: 8 October 2026 · Isegoria</title><meta name="description" content="Full solutions to the two Daily Mathematics cards of 8 October 2026: a hard definite integral and an original Putnam-style problem."><link rel="canonical" href="https://theisegoria.github.io/daily-mathematics/2026-10-08/"><link rel="alternate" hreflang="en" href="https://theisegoria.github.io/daily-mathematics/2026-10-08/"><link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/daily-mathematics/2026-10-08/"><link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/daily-mathematics/2026-10-08/"><link rel="icon" href="/assets/favicon.svg"><link rel="stylesheet" href="/assets/isegoria.css?v=20260915"><link rel="stylesheet" href="/analysis-atlas/vendor/katex.min.css"><script defer src="/analysis-atlas/vendor/katex.min.js"></script><script defer src="/analysis-atlas/vendor/contrib/auto-render.min.js"></script><script>document.addEventListener("DOMContentLoaded",function(){if(window.renderMathInElement)renderMathInElement(document.querySelector("main"),{delimiters:[{left:"\\[",right:"\\]",display:true},{left:"\\(",right:"\\)",display:false}],throwOnError:false});});</script><style>
+.dm{max-width:46rem;margin:0 auto;padding:2.5rem 1.25rem 4rem}
+.dm .eyebrow{letter-spacing:.14em;text-transform:uppercase;font-size:.78rem;opacity:.7;margin:0 0 .4rem}
+.dm h1{margin:.1rem 0 .6rem;line-height:1.2}
+.dm .deck{opacity:.85;margin:0 0 2rem}
+.dm .card{margin:2.6rem 0 0;padding-top:1.4rem;border-top:2px solid var(--dm-accent,currentColor)}
+.dm .card h2{margin:.2rem 0 .9rem;line-height:1.3}
+.dm .kind{font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dm-accent);margin:0}
+.dm figure{margin:1rem 0 1.4rem}
+.dm figure img{width:100%;max-width:30rem;height:auto;display:block;border:1px solid rgba(127,127,127,.25)}
+.dm .statement{padding:.9rem 1.1rem;border-left:3px solid var(--dm-accent);background:rgba(127,127,127,.07)}
+.dm details{margin:1.2rem 0}
+.dm summary{cursor:pointer;font-weight:600}
+.dm .answer{margin-top:1.2rem;padding:.8rem 1.1rem;border:1px solid var(--dm-accent)}
+.dm .katex-display{overflow-x:auto;overflow-y:hidden;padding:.2rem 0}
+.dm .days{list-style:none;padding:0;margin:1.5rem 0 0}
+.dm .days li{padding:.9rem 0;border-top:1px solid rgba(127,127,127,.25)}
+.dm .days a.date{font-weight:600}
+.dm .days span{display:block;opacity:.85}
+html[lang=ja] .dm{line-height:1.85}
+</style><script src="/assets/lang.js"></script>
+<!-- ISEGORIA:HEAD -->
+<link rel="stylesheet" href="/assets/site-shell.css?v=c21cd21e82">
+<script src="/assets/site-shell.js?v=c21cd21e82" ></script>
+<!-- /ISEGORIA:HEAD -->
+<script defer data-isegoria-analytics src="/assets/analytics.js?v=9e6ebd463bf2"></script>
+</head><body class="ig-site" data-site-kind="editorial" data-site-route="/daily-mathematics/2026-10-08/">
+<!-- ISEGORIA:NAV -->
+<a class="ig-skip" href="#ig-content">Skip to content</a>
+<header id="ig-header"><div class="ig-nav-inner">
+<a class="ig-brand" href="/" aria-label="Isegoria, home"><strong>ISEGORIA</strong><span>Benjamin Haire</span></a>
+<div class="ig-header-actions"><a class="ig-language" href="/ja/daily-mathematics/2026-10-08/" hreflang="ja" lang="ja">日本語</a><button class="ig-menu" type="button" aria-expanded="false" aria-controls="ig-primary">Menu</button></div>
+<nav id="ig-primary" aria-label="Primary navigation"><a href="/">Home</a><a href="/library.html">Library</a><a href="/math-encyclopedia/" aria-current="location">Math encyclopedia</a><a href="/#interactive">Interactive</a><a href="/#preoccupations">Research</a><a href="/#books">Books</a><a href="/projects.html">Projects</a><a href="/about.html">About</a><a class="ig-language" href="/ja/daily-mathematics/2026-10-08/" hreflang="ja" lang="ja">日本語</a><button class="ig-theme" type="button" hidden>Theme</button></nav>
+</div></header>
+<nav id="ig-breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><a href="/math-encyclopedia/">Math encyclopedia</a><span aria-hidden="true">/</span><a href="/daily-mathematics/">Daily Mathematics: solutions</a><span aria-hidden="true">/</span><span aria-current="page">Daily Mathematics solutions: 8 October 2026</span></nav>
+<span id="ig-content" tabindex="-1"></span>
+<!-- /ISEGORIA:NAV -->
+<main id="main" class="dm"><p class="eyebrow">Daily Mathematics / Solutions</p><h1>Solutions for 8 October 2026</h1><p class="deck">Two cards went out that day: a hard definite integral and an original Putnam-style problem. Try each one first; the solutions are folded away below.</p><section class="card" id="integral" style="--dm-accent:#24457F"><p class="kind">Integral</p><h2>A double integral with an arccos of a square root</h2><figure><img src="/daily-mathematics/2026-10-08/integral.png" width="1200" height="1200" loading="lazy" alt="Card: A double integral with an arccos of a square root"></figure><div class="statement"><p>Evaluate in closed form.</p>\[\int_{0}^{1}\!\!\int_{0}^{1}\frac{1}{1-x^{2}y^{2}}\,\arccos\frac{\sqrt{(1-x^{2})(1-y^{2})}}{1+xy}\,dx\,dy\]</div><details><summary>Show the solution</summary><p>We show that the integral equals \(\pi^{3}/24\).</p>
+<p><strong>Why the direct route stalls.</strong> Integrating in \(y\) with \(x\) fixed gives nothing elementary: the arccos of an algebraic function is divided by \(1-x^{2}y^{2}\), and the integrand blows up logarithmically at the corner \((1,1)\). The integrand has to be recognised as a function of a single combined variable before anything can be integrated.</p>
+<p><strong>Step 1: name the angle.</strong> For \(0\le x,y&lt;1\) put \(t=\frac{x+y}{1+xy}\in[0,1)\). A direct expansion gives</p>
+\[1-t^{2}=\frac{(1+xy)^{2}-(x+y)^{2}}{(1+xy)^{2}}=\frac{(1-x^{2})(1-y^{2})}{(1+xy)^{2}},\]
+<p>so the argument of the arccos is \(\sqrt{1-t^{2}}\in(0,1]\), and therefore \(\arccos\sqrt{1-t^{2}}=\arcsin t\). The integral is</p>
+\[I=\int_{0}^{1}\!\!\int_{0}^{1}\frac{1}{1-x^{2}y^{2}}\arcsin\frac{x+y}{1+xy}\,dx\,dy .\]
+<p><strong>Step 2: the hyperbolic addition formula.</strong> The fraction \(\frac{x+y}{1+xy}\) is the addition formula for \(\tanh\). Put \(x=\tanh a\), \(y=\tanh b\) with \(a,b\in[0,\infty)\). Then \(\frac{x+y}{1+xy}=\tanh(a+b)\), \(dx=\operatorname{sech}^{2}a\,da\), \(dy=\operatorname{sech}^{2}b\,db\), and</p>
+\[1-x^{2}y^{2}=\frac{\cosh^{2}a\cosh^{2}b-\sinh^{2}a\sinh^{2}b}{\cosh^{2}a\cosh^{2}b}=\frac{\cosh(a+b)\cosh(a-b)}{\cosh^{2}a\cosh^{2}b},\]
+<p>using the identity \(\cosh(a+b)\cosh(a-b)=\cosh^{2}a\cosh^{2}b-\sinh^{2}a\sinh^{2}b\). Hence</p>
+\[\frac{dx\,dy}{1-x^{2}y^{2}}=\frac{da\,db}{\cosh(a+b)\cosh(a-b)}.\]
+<p>Let \(g(s)=\arcsin(\tanh s)\), the Gudermannian function. Since \(\frac{d}{ds}\arcsin(\tanh s)=\frac{\operatorname{sech}^{2}s}{\sqrt{1-\tanh^{2}s}}=\operatorname{sech}s\), we have \(g(0)=0\), \(g'(s)=\operatorname{sech}s\), \(g(s)\to\pi/2\) as \(s\to\infty\), and \(g(s)=\int_{0}^{s}\operatorname{sech}u\,du\). So</p>
+\[I=\int_{0}^{\infty}\!\!\int_{0}^{\infty}\frac{g(a+b)}{\cosh(a+b)\cosh(a-b)}\,da\,db .\]
+<p><strong>Step 3: sum and difference coordinates.</strong> Put \(s=a+b\), \(d=a-b\), so \(da\,db=\tfrac12\,ds\,dd\) and the quadrant \(a,b\ge0\) becomes \(|d|\le s\). The inner integral is \(\int_{-s}^{s}\operatorname{sech}d\,dd=2g(s)\). Therefore</p>
+\[I=\int_{0}^{\infty}\frac{g(s)}{\cosh s}\cdot\frac12\cdot2g(s)\,ds=\int_{0}^{\infty}g(s)^{2}\,g'(s)\,ds=\Bigl[\tfrac13g(s)^{3}\Bigr]_{0}^{\infty}=\frac13\Bigl(\frac{\pi}{2}\Bigr)^{3}=\frac{\pi^{3}}{24}.\]
+<p>Every integrand is nonnegative, so Tonelli's theorem justifies each change of variables and the order of integration, including the logarithmic singularity at the corner.</p>
+<p><strong>Remark.</strong> The same computation proves, for any reasonable \(F\), the identity \(\int_0^1\!\int_0^1\frac{F\left(\frac{x+y}{1+xy}\right)}{1-x^2y^2}\,dx\,dy=\int_0^{\pi/2}\theta\,F(\sin\theta)\,d\theta\). Equivalently, Calabi's substitution \(x=\frac{\sin u}{\cos v}\), \(y=\frac{\sin v}{\cos u}\) maps the triangle \(u,v\ge0\), \(u+v\le\pi/2\) onto the unit square with Jacobian \(1-x^2y^2\), and turns the arccos into exactly \(u+v\).</p>
+<p><strong>Check.</strong> A two-dimensional Gauss-Legendre rule (40 to 80 nodes per panel, with panels graded geometrically towards the corner \((1,1)\)) gives \(1.2919281950124926\), agreeing with \(\pi^{3}/24=1.2919281950124923\ldots\) to \(4\times10^{-16}\).</p><div class="answer"><strong>Answer.</strong> \(\dfrac{\pi^{3}}{24}\approx1.2919281950\)</div></details></section><section class="card" id="competition" style="--dm-accent:#96311F"><p class="kind">Competition problem</p><h2>A Pólya urn and the ratio two to one</h2><figure><img src="/daily-mathematics/2026-10-08/competition.png" width="1200" height="1200" loading="lazy" alt="Card: A Pólya urn and the ratio two to one"></figure><div class="statement"><p>An urn holds one red ball and one blue ball. At each step a ball is drawn uniformly at random and returned together with a new ball of the same colour. Let \(R\) and \(B\) be the numbers of red and blue balls. Find the probability that \(R=2B\) at some moment.</p></div><details><summary>Show the solution</summary><p>We show that the probability is \(\dfrac{\pi}{3\sqrt3}\approx0.6046\).</p>
+<p><strong>Why the direct route stalls.</strong> The obvious approach is a recursion on states: if \(f(r,b)\) is the probability of eventually reaching \(R=2B\) from \(R=r\), \(B=b\), then \(f(r,b)=\frac{r}{r+b}f(r+1,b)+\frac{b}{r+b}f(r,b+1)\). But the lattice is infinite, there is no boundary condition at infinity, and summing first-passage probabilities over the targets \((2m,m)\) gives an unwieldy series. The urn has to be replaced by a simpler random object first.</p>
+<p><strong>Step 1: the urn is a coin with a random bias.</strong> Fix a sequence of \(n\) draws containing \(r\) reds and \(b\) blues, \(r+b=n\). Before the \(k\)-th draw the urn holds \(k+1\) balls, so the denominators of the successive probabilities are \(2,3,\dots,n+1\). The \(i\)-th red draw happens when there are \(i\) red balls, and the \(j\)-th blue draw when there are \(j\) blue balls, whatever the order. Hence the sequence has probability</p>
+\[\frac{r!\,b!}{(n+1)!}=\int_{0}^{1}p^{r}(1-p)^{b}\,dp,\]
+<p>the second equality being Euler's Beta integral. So, for every \(n\), the first \(n\) draws have the same law as in the following experiment: choose \(p\) uniformly in \([0,1]\), then draw independently, red with probability \(p\). The event \(E\) that \(R=2B\) at some moment is the increasing union of the events \(E_n\) that this happens within the first \(n\) draws, each of which depends only on those draws. By monotone convergence,</p>
+\[\Pr(E)=\lim_{n\to\infty}\int_{0}^{1}\Pr\nolimits_{p}(E_n)\,dp=\int_{0}^{1}h(p)\,dp,\qquad h(p)=\Pr\nolimits_{p}(E).\]
+<p><strong>Step 2: a walk that climbs one step at a time.</strong> After the draws, \(R=1+\#\text{red}\) and \(B=1+\#\text{blue}\). Let \(W=\#\text{red}-2\,\#\text{blue}=R-2B+1\). Then \(W\) starts at \(0\) (where \(R\ne2B\)) and moves by \(+1\) with probability \(p\) and by \(-2\) with probability \(1-p\), and \(R=2B\) exactly when \(W=1\). Because \(W\) goes up only one unit at a time, \(E\) is the event that \(W\) ever reaches level \(1\), and by the strong Markov property the probability of ever climbing \(k\) levels above the current position is \(h^{k}\).</p>
+<p><strong>Step 3: the climbing probability.</strong> The mean step is \(3p-2\). If \(p&gt;2/3\), the strong law of large numbers gives \(W\to+\infty\), so \(h(p)=1\). If \(p&lt;2/3\), then \(W\to-\infty\) almost surely, so \(\sup W\) is finite and \(h^{k}=\Pr_p(\sup W\ge k)\to0\), which forces \(h&lt;1\). Conditioning on the first draw (after a blue draw the walk must climb three levels),</p>
+\[h=p+(1-p)h^{3},\qquad\text{i.e.}\qquad (h-1)\bigl((1-p)h^{2}+(1-p)h-p\bigr)=0 .\]
+<p>Since \(h\ne1\), \(h\) is the nonnegative root of the quadratic. Its discriminant is \((1-p)^{2}+4p(1-p)=(1-p)(1+3p)\), so</p>
+\[h(p)=\frac12\left(\sqrt{\frac{1+3p}{1-p}}-1\right)\qquad(0\le p&lt;2/3).\]
+<p>(This root is less than \(1\) exactly when \(p&lt;2/3\), as it must be. The single value \(p=2/3\) has measure zero.)</p>
+<p><strong>Step 4: average over \(p\).</strong></p>
+\[\Pr(E)=\int_{0}^{2/3}h(p)\,dp+\frac13=\frac12\int_{0}^{2/3}\sqrt{\frac{1+3p}{1-p}}\,dp-\frac13+\frac13=\frac{J}{2}.\]
+<p>Put \(q=1-p\), so \(J=\int_{1/3}^{1}\sqrt{\frac{4-3q}{q}}\,dq\), and then \(q=\frac43\sin^{2}\theta\). Then \(\sqrt{(4-3q)/q}=\sqrt3\cot\theta\), \(dq=\frac83\sin\theta\cos\theta\,d\theta\), and \(\theta\) runs from \(\pi/6\) to \(\pi/3\):</p>
+\[J=\frac{8}{\sqrt3}\int_{\pi/6}^{\pi/3}\cos^{2}\theta\,d\theta=\frac{8}{\sqrt3}\Bigl[\frac{\theta}{2}+\frac{\sin2\theta}{4}\Bigr]_{\pi/6}^{\pi/3}=\frac{8}{\sqrt3}\cdot\frac{\pi}{12}=\frac{2\pi}{3\sqrt3},\]
+<p>because \(\sin\frac{2\pi}{3}=\sin\frac{\pi}{3}\). Hence \(\Pr(E)=\dfrac{\pi}{3\sqrt3}=\dfrac{\pi\sqrt3}{9}\).</p>
+<p><strong>Check.</strong> An exact rational dynamic program on the urn itself agrees exactly with the Beta-mixture computation for every horizon up to 30 draws. A floating-point dynamic program on the urn up to 64000 draws gives hitting probabilities whose gap to the limit shrinks like \(1/n\), and Richardson extrapolation of the values at 16000 and 64000 draws gives \(0.6045997874\), within \(7\times10^{-10}\) of \(\pi/(3\sqrt3)=0.6045997880\ldots\)</p><div class="answer"><strong>Answer.</strong> \(\dfrac{\pi}{3\sqrt3}=\dfrac{\pi\sqrt3}{9}\approx0.6045997881\)</div></details></section><p><a href="/daily-mathematics/">All solutions</a> · <a href="/ja/daily-mathematics/2026-10-08/" hreflang="ja" lang="ja">日本語</a></p></main>
+<!-- ISEGORIA:FOOT -->
+<footer id="ig-footer"><div><a href="/">Isegoria · Benjamin Haire</a><nav aria-label="Site links"><a href="/">Back to home</a><a href="/library.html">Browse the library</a><a href="#ig-content">Back to top</a></nav></div></footer>
+<!-- /ISEGORIA:FOOT -->
+</body></html>
