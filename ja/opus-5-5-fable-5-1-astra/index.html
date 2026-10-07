@@ -215,17 +215,18 @@
 
   <h2 id="effort"><span class="num">第二節</span>エフォートのつまみを、タスク別に見る</h2>
 
-  <p>Artificial Analysis は Opus 5.5 の指数スコアについて、段階ごとの全体を公表している。低で42、中で51、高で54、xhigh で56、最大で58である。同じつまみでも、個々のタスクの動き方は大きく異なる。図2は、指数と、Anthropic のエフォート別グラフを第三者が書き起こした五つのベンチマークで、その様子を示す。</p>
+  <p>Artificial Analysis は Opus 5.5 の指数スコアについて、段階ごとの全体を公表している。低で42、中で51、高で54、xhigh で56、最大で58である。同じつまみでも、個々のタスクの動き方は大きく異なる。図2は、指数と、Anthropic のエフォート別グラフを第三者が書き起こした五つのベンチマークで、その様子を示す。Astra は、数値が見つかったところに緑で重ねた。</p>
   </div>
   <div class="wide">
-    <figure class="fig"><img src="figures/f7-effort-ja.svg" alt="Opus 5.5 の低・中・高・超高・最大でのスコアを示した六つの折れ線パネルと、各タスクの伸びのうち各水準で得られる割合を示したヒートマップ" loading="lazy" decoding="async">
-      <figcaption>図2。指数と五つのベンチマークでの、エフォート水準ごとの Opus 5.5 のスコアと、各タスクの伸びのうち各水準で得られる割合。橙は最良の水準、白抜きの点はそれ以前の水準より低いことを示す。</figcaption></figure>
+    <figure class="fig"><img src="figures/f7-effort-ja.svg" alt="Opus 5.5 の低・中・高・超高・最大でのスコアを示し、Astra の値がある場合は併記した六つの折れ線パネルと、各タスクの伸びのうち各水準で得られる割合を示したヒートマップ" loading="lazy" decoding="async">
+      <figcaption>図2。指数と五つのベンチマークでの、エフォート水準ごとの Opus 5.5 のスコアと、各タスクの伸びのうち各水準で得られる割合。橙は最良の水準、白抜きの点はそれ以前の水準より低いことを示す。緑は GPT-6 Astra で、三角は各水準の指数、破線は水準の表記がない発表時のスコアである。</figcaption></figure>
   </div>
   <div class="wrap">
 
   <p>低から中への段差は、どのタスクでも最大である。中だけで、低から最良の水準までの伸びの56%以上を取り込み、FrontierCode では全部を取り込む。</p>
-  <p>中より先では、タスクによって道が分かれる。知識労働は伸び続ける。GDPval-AA は中の1576から最大の1846へ、AA-Briefcase は1642から1822へ上がり、xhigh の時点で伸びの96%と92%に達している。コーディング系のベンチマークは平坦で、揺れが大きい。Terminal-Bench 4.0 は xhigh の66.4が頂点で、最大では64.8に下がる。FrontierCode は中の54.6を一度も超えず、54.0、51.4、54.4と揺れる。CursorBench は高と xhigh で56.0と並び、最大で57.8に達する。</p>
+  <p>中より先では、タスクによって道が分かれる。知識労働は伸び続ける。GDPval-AA は中の1576から最大の1846へ、AA-Briefcase は1642から1822へ上がり、xhigh の時点で伸びの96%と92%に達している。コーディング系のベンチマークは平坦で、揺れが大きい。Terminal-Bench 4.0 は xhigh の66.4が頂点で、最大では64.8に下がる。FrontierCode は中の54.6を一度も超えず、54.0、51.4、54.4と揺れる。ただし51.4は一つの書き起こしだけに拠り、54.4が xhigh と最大のどちらの値なのかも出典間で食い違う。そのため FrontierCode は、xhigh での低下ではなく、中から先は平坦だと読む。CursorBench は高と xhigh で56.0と並び、最大で57.8に達する。</p>
   <p>小さな動きは慎重に扱うべきである。Anthropic は Opus の Terminal-Bench のスコアに約2.6ポイントの標準誤差を示している。これを他のタスクのノイズの目安としても使うが、仮定である。Terminal-Bench の1.6ポイントの低下と FrontierCode の揺れは、この範囲に収まる。残るのは形である。コーディングでは急な部分が中か高で終わり、知識労働では xhigh まで続く。タスクあたり費用はベンチマークごとに測り方が異なるため、図からは外した。</p>
+  <p>GPT-6 Astra は指数のつまみが平坦である。46、50、51、52、53と、全段階で7ポイントしか上がらず、Opus の16ポイントと対照的である。中では両者は1ポイント以内(Opus 51、Astra 50)だが、高から先は Opus が離し、xhigh で4ポイント、最大で5ポイント上回る。一方、Astra の xhigh は1タスク2.31ドルで、Opus の3.46ドルより安い。タスクについては Astra のスコアを三つ見つけたが、どれにもエフォート水準の表示がない。Terminal-Bench 4.0 は57.8で、中の Opus(57.6)とほぼ同じであり、高から先の Opus を大きく下回る。FrontierCode 1.1 は53.3で、Opus の54.6と54.4との差は約1ポイント、つまりノイズの範囲内である。GDPval-AA は1542で、これは Vellum だけに拠り、中の Opus(1576)をやや下回り、最大の Opus を大きく下回る。ある集計サイトは、特記がなければ最大エフォートの数値だとしているが、この三つについては確認できなかった。CursorBench と AA-Briefcase には Astra の数値が見つからなかったので、そのパネルは Opus だけを示している。</p>
 
   <h2 id="launch"><span class="num">第三節</span>Anthropic の表と、その脚注</h2>
 
@@ -319,7 +320,7 @@
   <p>既定は中エフォートの Opus 5.5 である。足りなければ、モデルを替える前にエフォートを高に上げる。指数の上では高エフォートで既に Fable の最高値を超えるからだ。図2のコーディング系ベンチマークでは、高を超えるとつまみの効きはわずかなので、コーディングでは最大に上げるよりモデルを替える方を先に考える。
   Fable 5.1 は、長時間の無人実行、並行処理系のバグ、高エフォートの Opus が二度失敗した問題に使う。Astra は、形式的な数学や科学計算、
   そして速度よりタスクあたり費用が重要なバッチ処理に使う。</p>
-  <p>未解決の点がいくつか残る。エフォート水準を揃えた xhigh の比較は指数でしか存在せず、Opus 5.5、Fable 5.1、Astra でそれぞれ56、53、52である。Opus 5.5 と Fable 5.1 を xhigh で揃えて比べた、公表済みのタスク別ベンチマークは見つからず、これらのタスクで Opus 5.5 と Astra をエフォート水準を揃えて直接比べた結果もない。タスク別のエフォート結果は、Anthropic のグラフを第三者が書き起こしたものであり、コンピュータ操作やその他の Astra の数値は集計サイトによるものである。</p>
+  <p>未解決の点がいくつか残る。エフォート水準を揃えた xhigh の比較は指数でしか存在せず、Opus 5.5、Fable 5.1、Astra でそれぞれ56、53、52である。Opus 5.5 と Fable 5.1 を xhigh で揃えて比べた、公表済みのタスク別ベンチマークは見つからず、これらのタスクで Opus 5.5 と Astra をエフォート水準を揃えて直接比べた結果もない。図2の Astra のタスク別スコア三つにはエフォート水準の表示がなく、Astra のおおよその位置は示すが、xhigh での挙動は示さない。タスク別のエフォート結果は、Anthropic のグラフを第三者が書き起こしたものであり、コンピュータ操作やその他の Astra の数値は集計サイトによるものである。</p>
 
   <div class="sources">
  <h3>出典</h3>
@@ -338,7 +339,7 @@
  <a href="https://www.endorlabs.com/learn/opus-5-5-6x-cheaper-and-2x-faster-than-fable-5-1-but-memorization-keeps-it-off-the-top-spot">Endor Labs</a>、
  <a href="https://thenewstack.io/claude-opus-5-5-vs-fable-5-1/">The New Stack</a>。
  <a href="https://arcprize.org/results/anthropic-claude-opus-5-5">ARC Prize の Opus 5.5 の結果</a>。</p>
- <p><strong>二次データ。</strong> Opus 5.5 の高と xhigh の費用は <a href="https://www.explainx.ai/blog/claude-opus-5-5-vs-sonnet-5-5-comparison-2026">explainx</a> による(高は <a href="https://emergent.sh/learn/claude-fable-5-1-vs-opus-5-5">Emergent</a> も)。既定設定どうしの引き分けも Emergent による。タスク別のエフォート結果は、Anthropic のエフォート別グラフの数値を <a href="https://www.digitalapplied.com/blog/sonnet-5-5-or-opus-5-5-effort-level-cost-per-task">Digital Applied</a>、<a href="https://kingy.ai/blog/gpt-6-astra-vs-claude-opus-5-5-reasoning-effort/">Kingy AI</a>、<a href="https://tosea.ai/blog/claude-opus-5-5-complete-guide">ToSea</a> が書き起こしたものである。Terminal-Bench は前の二つで、AA-Briefcase は一つ目と三つ目で、FrontierCode の中と最大は前の二つで一致する。FrontierCode のそれ以外の水準と CursorBench は一つ目だけ、GDPval-AA は二つ目だけに拠る。誤差範囲に関する記述と Anthropic の表の AutomationBench の行は
+ <p><strong>二次データ。</strong> Opus 5.5 の高と xhigh の費用は <a href="https://www.explainx.ai/blog/claude-opus-5-5-vs-sonnet-5-5-comparison-2026">explainx</a> による(高は <a href="https://emergent.sh/learn/claude-fable-5-1-vs-opus-5-5">Emergent</a> も)。既定設定どうしの引き分けも Emergent による。タスク別のエフォート結果は、Anthropic のエフォート別グラフの数値を <a href="https://www.digitalapplied.com/blog/sonnet-5-5-or-opus-5-5-effort-level-cost-per-task">Digital Applied</a>、<a href="https://kingy.ai/blog/gpt-6-astra-vs-claude-opus-5-5-reasoning-effort/">Kingy AI</a>、<a href="https://tosea.ai/blog/claude-opus-5-5-complete-guide">ToSea</a> が書き起こしたものである。Terminal-Bench は前の二つで、AA-Briefcase は一つ目と三つ目で、FrontierCode の中と最大は前の二つで一致する。FrontierCode のそれ以外の水準と CursorBench は一つ目だけ、GDPval-AA は二つ目だけに拠る。Astra の GDPval-AA の1542は Vellum だけに拠る。FrontierCode の54.4について、<a href="https://www.orcarouter.ai/blog/claude-opus-5-5-benchmark">Orcarouter</a> は xhigh、<a href="https://llm-stats.com/blog/research/claude-opus-5-5-launch">llm-stats</a> と Vellum は、前記の書き起こしと同じく最大としている。誤差範囲に関する記述と Anthropic の表の AutomationBench の行は
  <a href="https://codingfleet.com/blog/claude-opus-5-5-vs-fable-5-1/">CodingFleet</a> の報告による。Astra の公式表のスコアと、FrontierMath、ARC-AGI-2、DeepSWE、OSWorld の数値は
  <a href="https://www.featureflow.com/blog/claude-opus-5-5-vs-fable-5-1-vs-gpt-6-astra">Featureflow</a>、
  <a href="https://www.vellum.ai/blog/claude-opus-5-5-vs-gpt-6-astra">Vellum</a>、
@@ -348,7 +349,7 @@
  2026年10月3日、4日、7日にそれぞれのページから読み取った。Opus 5.5 の五段階すべての指数(42、51、54、56、58)、最大での費用5.98ドル、xhigh の Fable 5.1 の53と5.98ドルを含み、それぞれ固有のページにある。指数のスケールは<a href="/ja/fable-5-1-reasoning-effort/">前の記事</a>と一致している。</p>
  <p><strong>確認できなかったこと。</strong> Opus 5.5 の高と xhigh の費用は二次情報であり、タスク別のエフォート結果は第三者による書き起こしで、Anthropic 自身のグラフとは照合していない。
  AutomationBench は公式表で40.0対31.4、Artificial Analysis で70対59と現れ、おそらく版が違うため、両者を混ぜていない。
- Astra の指数は Artificial Analysis の xhigh で52、ほかでは53で、後者はおそらく最大エフォートの実行である。集計サイトの数値にはエフォート水準の表示がない。
+ Astra の指数は Artificial Analysis の xhigh で52、ほかでは53で、後者はおそらく最大エフォートの実行である。集計サイトの数値には、図2の Astra のタスク別スコアを含め、エフォート水準の表示がない。FrontierCode の54.4がどの水準の値かは決められず、xhigh の51.4も一つの書き起こしにしか現れない。
  Opus 5.5 についての LMArena や人間の選好データは見つからなかった。</p></div>
 </div>
 </main>
