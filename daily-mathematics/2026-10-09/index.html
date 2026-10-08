@@ -1,0 +1,74 @@
+<!doctype html><html lang="en" class="ig-document ig-editorial"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Daily Mathematics solutions: 9 October 2026 · Isegoria</title><meta name="description" content="Full solutions to the two Daily Mathematics cards of 9 October 2026: a hard definite integral and an original Putnam-style problem."><link rel="canonical" href="https://theisegoria.github.io/daily-mathematics/2026-10-09/"><link rel="alternate" hreflang="en" href="https://theisegoria.github.io/daily-mathematics/2026-10-09/"><link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/daily-mathematics/2026-10-09/"><link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/daily-mathematics/2026-10-09/"><link rel="icon" href="/assets/favicon.svg"><link rel="stylesheet" href="/assets/isegoria.css?v=20260915"><link rel="stylesheet" href="/analysis-atlas/vendor/katex.min.css"><script defer src="/analysis-atlas/vendor/katex.min.js"></script><script defer src="/analysis-atlas/vendor/contrib/auto-render.min.js"></script><script>document.addEventListener("DOMContentLoaded",function(){if(window.renderMathInElement)renderMathInElement(document.querySelector("main"),{delimiters:[{left:"\\[",right:"\\]",display:true},{left:"\\(",right:"\\)",display:false}],throwOnError:false});});</script><style>
+.dm{max-width:46rem;margin:0 auto;padding:2.5rem 1.25rem 4rem}
+.dm .eyebrow{letter-spacing:.14em;text-transform:uppercase;font-size:.78rem;opacity:.7;margin:0 0 .4rem}
+.dm h1{margin:.1rem 0 .6rem;line-height:1.2}
+.dm .deck{opacity:.85;margin:0 0 2rem}
+.dm .card{margin:2.6rem 0 0;padding-top:1.4rem;border-top:2px solid var(--dm-accent,currentColor)}
+.dm .card h2{margin:.2rem 0 .9rem;line-height:1.3}
+.dm .kind{font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dm-accent);margin:0}
+.dm figure{margin:1rem 0 1.4rem}
+.dm figure img{width:100%;max-width:30rem;height:auto;display:block;border:1px solid rgba(127,127,127,.25)}
+.dm .statement{padding:.9rem 1.1rem;border-left:3px solid var(--dm-accent);background:rgba(127,127,127,.07)}
+.dm details{margin:1.2rem 0}
+.dm summary{cursor:pointer;font-weight:600}
+.dm .answer{margin-top:1.2rem;padding:.8rem 1.1rem;border:1px solid var(--dm-accent)}
+.dm .katex-display{overflow-x:auto;overflow-y:hidden;padding:.2rem 0}
+.dm .days{list-style:none;padding:0;margin:1.5rem 0 0}
+.dm .days li{padding:.9rem 0;border-top:1px solid rgba(127,127,127,.25)}
+.dm .days a.date{font-weight:600}
+.dm .days span{display:block;opacity:.85}
+html[lang=ja] .dm{line-height:1.85}
+</style><script src="/assets/lang.js"></script>
+<!-- ISEGORIA:HEAD -->
+<link rel="stylesheet" href="/assets/site-shell.css?v=c21cd21e82">
+<script src="/assets/site-shell.js?v=c21cd21e82" ></script>
+<!-- /ISEGORIA:HEAD -->
+<script defer data-isegoria-analytics src="/assets/analytics.js?v=9e6ebd463bf2"></script>
+</head><body class="ig-site" data-site-kind="editorial" data-site-route="/daily-mathematics/2026-10-09/">
+<!-- ISEGORIA:NAV -->
+<a class="ig-skip" href="#ig-content">Skip to content</a>
+<header id="ig-header"><div class="ig-nav-inner">
+<a class="ig-brand" href="/" aria-label="Isegoria, home"><strong>ISEGORIA</strong><span>Benjamin Haire</span></a>
+<div class="ig-header-actions"><a class="ig-language" href="/ja/daily-mathematics/2026-10-09/" hreflang="ja" lang="ja">日本語</a><button class="ig-menu" type="button" aria-expanded="false" aria-controls="ig-primary">Menu</button></div>
+<nav id="ig-primary" aria-label="Primary navigation"><a href="/">Home</a><a href="/library.html">Library</a><a href="/math-encyclopedia/" aria-current="location">Math encyclopedia</a><a href="/#interactive">Interactive</a><a href="/#preoccupations">Research</a><a href="/#books">Books</a><a href="/projects.html">Projects</a><a href="/about.html">About</a><a class="ig-language" href="/ja/daily-mathematics/2026-10-09/" hreflang="ja" lang="ja">日本語</a><button class="ig-theme" type="button" hidden>Theme</button></nav>
+</div></header>
+<nav id="ig-breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><a href="/math-encyclopedia/">Math encyclopedia</a><span aria-hidden="true">/</span><a href="/daily-mathematics/">Daily Mathematics: solutions</a><span aria-hidden="true">/</span><span aria-current="page">Daily Mathematics solutions: 9 October 2026</span></nav>
+<span id="ig-content" tabindex="-1"></span>
+<!-- /ISEGORIA:NAV -->
+<main id="main" class="dm"><p class="eyebrow">Daily Mathematics / Solutions</p><h1>Solutions for 9 October 2026</h1><p class="deck">Two cards went out that day: a hard definite integral and an original Putnam-style problem. Try each one first; the solutions are folded away below.</p><section class="card" id="integral" style="--dm-accent:#24457F"><p class="kind">Integral</p><h2>A squared logarithm against a Beta kernel</h2><figure><img src="/daily-mathematics/2026-10-09/integral.png" width="1200" height="1200" loading="lazy" alt="Card: A squared logarithm against a Beta kernel"></figure><div class="statement"><p>Evaluate in closed form.</p>
+\[\int_{0}^{1}\frac{\ln x\,\ln^{2}(1-x)}{x}\,dx\]</div><details><summary>Show the solution</summary><p>We show that the integral equals \(-\dfrac{\pi^{4}}{180}=-\dfrac{\zeta(4)}{2}\). Call it \(I\). It converges: near \(0\) the integrand behaves like \(x\ln x\), and near \(1\) like \(\ln^{2}(1-x)\).</p>
+<p><strong>Why the direct route stalls.</strong> Expanding \(\ln^{2}(1-x)=2\sum_{n\ge2}\frac{H_{n-1}}{n}x^{n}\) and using \(\int_0^1x^{n-1}\ln x\,dx=-1/n^{2}\) gives \(I=-2\sum_{n\ge2}H_{n-1}/n^{3}\), an Euler sum. Evaluating that sum is the whole difficulty, so the series only restates the problem. Instead we let the Beta function do the bookkeeping.</p>
+<p><strong>Step 1: a Beta function with its pole removed.</strong> For \(a&gt;-1\) and \(b&gt;-1\) put</p>
+\[G(a,b)=\int_{0}^{1}x^{a-1}\bigl((1-x)^{b}-1\bigr)\,dx .\]
+<p>This converges, because \((1-x)^{b}-1=O(x)\) near \(0\) and \((1-x)^{b}\) is integrable near \(1\). For \(a&gt;0\) we may split the integral, so \(G(a,b)=B(a,b+1)-\frac1a\). Differentiating under the integral sign (the derivatives are dominated by integrable functions on a neighbourhood of \((0,0)\)), \(\partial_a\) brings down \(\ln x\) and \(\partial_b^{2}\) brings down \(\ln^{2}(1-x)\), and the \(-1\) disappears. Hence</p>
+\[I=\partial_a\partial_b^{2}G(0,0),\]
+<p>so \(I\) is \(1!\,2!=2\) times the coefficient of \(ab^{2}\) in the Taylor expansion of \(G\) at the origin.</p>
+<p><strong>Step 2: pass to Gamma functions.</strong> Since \(\Gamma(a)=\Gamma(1+a)/a\),</p>
+\[G(a,b)=\frac{1}{a}\left(\frac{\Gamma(1+a)\Gamma(1+b)}{\Gamma(1+a+b)}-1\right)=\frac{e^{L(a,b)}-1}{a},\qquad L=\ln\Gamma(1+a)+\ln\Gamma(1+b)-\ln\Gamma(1+a+b).\]
+<p>So the coefficient of \(ab^{2}\) in \(G\) is the coefficient of \(a^{2}b^{2}\) in \(e^{L}-1\).</p>
+<p><strong>Step 3: expand the log-Gamma.</strong> For \(|z|&lt;1\) we have \(\ln\Gamma(1+z)=-\gamma z+\sum_{k\ge2}\frac{(-1)^{k}\zeta(k)}{k}z^{k}\). The linear terms cancel in \(L\), and</p>
+\[L(a,b)=\sum_{k\ge2}\frac{(-1)^{k}\zeta(k)}{k}\bigl(a^{k}+b^{k}-(a+b)^{k}\bigr)=-\zeta(2)\,ab+\zeta(3)\,(a^{2}b+ab^{2})-\frac{\zeta(4)}{4}\bigl(4a^{3}b+6a^{2}b^{2}+4ab^{3}\bigr)+\cdots\]
+<p>where the omitted terms have total degree at least \(5\).</p>
+<p><strong>Step 4: read off the coefficient.</strong> In \(e^{L}-1=L+\frac{L^{2}}{2}+\cdots\), every term of \(L\) has degree at least \(2\), so \(L^{3}\) and beyond have degree at least \(6\) and cannot contribute to \(a^{2}b^{2}\). From \(L\) we get \(-\frac32\zeta(4)\). From \(\frac{L^{2}}{2}\) only the square of the degree-two term contributes, giving \(\frac12\zeta(2)^{2}\). Since \(\zeta(2)^{2}=\frac{\pi^{4}}{36}=\frac52\zeta(4)\), the coefficient of \(a^{2}b^{2}\) is</p>
+\[-\frac32\zeta(4)+\frac54\zeta(4)=-\frac{\zeta(4)}{4}.\]
+<p><strong>Conclusion.</strong> Therefore \(I=2\cdot\left(-\frac{\zeta(4)}{4}\right)=-\frac{\zeta(4)}{2}=-\frac{\pi^{4}}{180}\). Comparing with the series in the first paragraph, the same computation proves Euler's evaluation \(\sum_{n\ge1}H_n/n^{3}=\frac54\zeta(4)\).</p>
+<p><strong>Numerical check.</strong> We split the interval at \(\frac12\), substituted \(x=t^{2}\) on \([0,\frac12]\) and \(x=1-s^{4}\) on \([\frac12,1]\) to remove both endpoint singularities, and ran composite 100-node Gauss-Legendre quadrature with 40 and with 200 panels. Both gave \(-0.5411616168555691\), agreeing with \(-\pi^{4}/180\) to within \(2\times10^{-16}\).</p><div class="answer"><strong>Answer.</strong> \(-\dfrac{\pi^{4}}{180}=-\dfrac{\zeta(4)}{2}\approx-0.5411616169\)</div></details></section><section class="card" id="competition" style="--dm-accent:#96311F"><p class="kind">Competition problem</p><h2>Alternating reciprocals of subset sums</h2><figure><img src="/daily-mathematics/2026-10-09/competition.png" width="1200" height="1200" loading="lazy" alt="Card: Alternating reciprocals of subset sums"></figure><div class="statement"><p>For a finite set \(S\) of positive integers let \(\sigma(S)\) be the sum of its elements. For \(n\ge1\) put</p>
+\[A_n=\sum_{\varnothing\ne S\subseteq\{1,\dots,n\}}\frac{(-1)^{|S|+1}}{\sigma(S)}\]
+<p>Find \(\displaystyle\lim_{n\to\infty}A_n\).</p></div><details><summary>Show the solution</summary><p>We show that the limit is \(\dfrac{4\pi}{\sqrt3}-6\approx1.2551974569\).</p>
+<p><strong>Why the direct route stalls.</strong> The finite sums have no visible pattern: \(A_1=1\), \(A_2=\frac76\), \(A_3=\frac{73}{60}\), and the denominators grow quickly because every subset sum up to \(n(n+1)/2\) occurs. Grouping subsets by size or by largest element gives nothing that telescopes. The reciprocals \(1/\sigma(S)\) are the obstacle, so we first turn them into something multiplicative.</p>
+<p><strong>Step 1: an integral representation.</strong> For every integer \(s\ge1\), \(\frac1s=\int_0^1x^{s-1}\,dx\). Summing over subsets, and using \(\sum_{S\subseteq\{1,\dots,n\}}(-1)^{|S|}x^{\sigma(S)}=\prod_{k=1}^{n}(1-x^{k})\), where the empty set contributes the term \(1\), we get</p>
+\[A_n=\int_{0}^{1}\frac{1-P_n(x)}{x}\,dx,\qquad P_n(x)=\prod_{k=1}^{n}(1-x^{k}).\]
+<p><strong>Step 2: the limit.</strong> For \(0\le x&lt;1\) each factor lies in \((0,1]\), so \(P_n(x)\) decreases in \(n\) to \(P(x)=\prod_{k\ge1}(1-x^{k})\) and the integrand \((1-P_n)/x\ge0\) increases. By monotone convergence \(A_n\to\int_0^1\frac{1-P(x)}{x}\,dx\), a priori possibly infinite.</p>
+<p><strong>Step 3: Euler's pentagonal number theorem.</strong> It states \(P(x)=\sum_{m\in\mathbb Z}(-1)^{m}x^{e_m}\) with \(e_m=\frac{m(3m-1)}{2}\). The exponents are distinct and \(e_m\ge1\) for \(m\ne0\), so \(\frac{1-P(x)}{x}=\sum_{m\ne0}(-1)^{m+1}x^{e_m-1}\). Since \(\sum_{m\ne0}\int_0^1x^{e_m-1}\,dx=\sum_{m\ne0}\frac1{e_m}&lt;\infty\), Fubini lets us integrate term by term, and the limit is finite:</p>
+\[L=\lim_{n\to\infty}A_n=\sum_{m\ne0}\frac{2(-1)^{m+1}}{m(3m-1)}.\]
+<p><strong>Step 4: summing the series.</strong> The series converges absolutely, so we may pair \(m=k\) with \(m=-k\). Since \((-k)(-3k-1)=k(3k+1)\), and \(\frac1{k(3k-1)}=\frac3{3k-1}-\frac1k\), \(\frac1{k(3k+1)}=\frac1k-\frac3{3k+1}\),</p>
+\[L=\sum_{k\ge1}(-1)^{k+1}\left(\frac{2}{k(3k-1)}+\frac{2}{k(3k+1)}\right)=6\sum_{k\ge1}(-1)^{k+1}\left(\frac1{3k-1}-\frac1{3k+1}\right).\]
+<p>Now \(\frac1{3k-1}-\frac1{3k+1}=\int_0^1t^{3k-2}(1-t^{2})\,dt\). The partial sums \(\sum_{k\le K}(-1)^{k+1}t^{3k-2}(1-t^{2})=\frac{t(1-t^{2})\bigl(1-(-t^{3})^{K}\bigr)}{1+t^{3}}\) are bounded by \(2\) on \([0,1]\), so by dominated convergence</p>
+\[L=6\int_{0}^{1}\frac{t(1-t^{2})}{1+t^{3}}\,dt=6\int_{0}^{1}\frac{t(1-t)}{t^{2}-t+1}\,dt=6\int_{0}^{1}\left(\frac{1}{t^{2}-t+1}-1\right)dt.\]
+<p>Finally \(\int_0^1\frac{dt}{(t-\frac12)^{2}+\frac34}=\frac{2}{\sqrt3}\Bigl[\arctan\frac{2t-1}{\sqrt3}\Bigr]_0^1=\frac{2}{\sqrt3}\cdot\frac{\pi}{3}\), hence</p>
+\[L=6\left(\frac{2\pi}{3\sqrt3}-1\right)=\frac{4\pi}{\sqrt3}-6.\]
+<p><strong>Numerical check.</strong> We computed \(A_n\) exactly in rational arithmetic by a signed subset-sum count, confirmed it against brute force over all subsets for \(n\le10\), and followed it to \(n=200\): \(A_{20}=1.25516508\), \(A_{80}=1.2551974566\), and \(A_{200}\) agrees with \(4\pi/\sqrt3-6=1.2551974569368713\) to within \(5\times10^{-16}\). The paired pentagonal series was also summed directly and agrees.</p><div class="answer"><strong>Answer.</strong> \(\dfrac{4\pi}{\sqrt3}-6\approx1.2551974569\)</div></details></section><p><a href="/daily-mathematics/">All solutions</a> · <a href="/ja/daily-mathematics/2026-10-09/" hreflang="ja" lang="ja">日本語</a></p></main>
+<!-- ISEGORIA:FOOT -->
+<footer id="ig-footer"><div><a href="/">Isegoria · Benjamin Haire</a><nav aria-label="Site links"><a href="/">Back to home</a><a href="/library.html">Browse the library</a><a href="#ig-content">Back to top</a></nav></div></footer>
+<!-- /ISEGORIA:FOOT -->
+</body></html>
