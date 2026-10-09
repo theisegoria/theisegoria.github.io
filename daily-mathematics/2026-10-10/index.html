@@ -1,0 +1,71 @@
+<!doctype html><html lang="en" class="ig-document ig-editorial"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Daily Mathematics solutions: 10 October 2026 · Isegoria</title><meta name="description" content="Full solutions to the two Daily Mathematics cards of 10 October 2026: a hard definite integral and an original Putnam-style problem."><link rel="canonical" href="https://theisegoria.github.io/daily-mathematics/2026-10-10/"><link rel="alternate" hreflang="en" href="https://theisegoria.github.io/daily-mathematics/2026-10-10/"><link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/daily-mathematics/2026-10-10/"><link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/daily-mathematics/2026-10-10/"><link rel="icon" href="/assets/favicon.svg"><link rel="stylesheet" href="/assets/isegoria.css?v=20260915"><link rel="stylesheet" href="/analysis-atlas/vendor/katex.min.css"><script defer src="/analysis-atlas/vendor/katex.min.js"></script><script defer src="/analysis-atlas/vendor/contrib/auto-render.min.js"></script><script>document.addEventListener("DOMContentLoaded",function(){if(window.renderMathInElement)renderMathInElement(document.querySelector("main"),{delimiters:[{left:"\\[",right:"\\]",display:true},{left:"\\(",right:"\\)",display:false}],throwOnError:false});});</script><style>
+.dm{max-width:46rem;margin:0 auto;padding:2.5rem 1.25rem 4rem}
+.dm .eyebrow{letter-spacing:.14em;text-transform:uppercase;font-size:.78rem;opacity:.7;margin:0 0 .4rem}
+.dm h1{margin:.1rem 0 .6rem;line-height:1.2}
+.dm .deck{opacity:.85;margin:0 0 2rem}
+.dm .card{margin:2.6rem 0 0;padding-top:1.4rem;border-top:2px solid var(--dm-accent,currentColor)}
+.dm .card h2{margin:.2rem 0 .9rem;line-height:1.3}
+.dm .kind{font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dm-accent);margin:0}
+.dm figure{margin:1rem 0 1.4rem}
+.dm figure img{width:100%;max-width:30rem;height:auto;display:block;border:1px solid rgba(127,127,127,.25)}
+.dm .statement{padding:.9rem 1.1rem;border-left:3px solid var(--dm-accent);background:rgba(127,127,127,.07)}
+.dm details{margin:1.2rem 0}
+.dm summary{cursor:pointer;font-weight:600}
+.dm .answer{margin-top:1.2rem;padding:.8rem 1.1rem;border:1px solid var(--dm-accent)}
+.dm .katex-display{overflow-x:auto;overflow-y:hidden;padding:.2rem 0}
+.dm .days{list-style:none;padding:0;margin:1.5rem 0 0}
+.dm .days li{padding:.9rem 0;border-top:1px solid rgba(127,127,127,.25)}
+.dm .days a.date{font-weight:600}
+.dm .days span{display:block;opacity:.85}
+html[lang=ja] .dm{line-height:1.85}
+</style><script src="/assets/lang.js"></script>
+<!-- ISEGORIA:HEAD -->
+<link rel="stylesheet" href="/assets/site-shell.css?v=c21cd21e82">
+<script src="/assets/site-shell.js?v=c21cd21e82" ></script>
+<!-- /ISEGORIA:HEAD -->
+<script defer data-isegoria-analytics src="/assets/analytics.js?v=9e6ebd463bf2"></script>
+</head><body class="ig-site" data-site-kind="editorial" data-site-route="/daily-mathematics/2026-10-10/">
+<!-- ISEGORIA:NAV -->
+<a class="ig-skip" href="#ig-content">Skip to content</a>
+<header id="ig-header"><div class="ig-nav-inner">
+<a class="ig-brand" href="/" aria-label="Isegoria, home"><strong>ISEGORIA</strong><span>Benjamin Haire</span></a>
+<div class="ig-header-actions"><a class="ig-language" href="/ja/daily-mathematics/2026-10-10/" hreflang="ja" lang="ja">日本語</a><button class="ig-menu" type="button" aria-expanded="false" aria-controls="ig-primary">Menu</button></div>
+<nav id="ig-primary" aria-label="Primary navigation"><a href="/">Home</a><a href="/library.html">Library</a><a href="/math-encyclopedia/" aria-current="location">Math encyclopedia</a><a href="/#interactive">Interactive</a><a href="/#preoccupations">Research</a><a href="/#books">Books</a><a href="/projects.html">Projects</a><a href="/about.html">About</a><a class="ig-language" href="/ja/daily-mathematics/2026-10-10/" hreflang="ja" lang="ja">日本語</a><button class="ig-theme" type="button" hidden>Theme</button></nav>
+</div></header>
+<nav id="ig-breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><a href="/math-encyclopedia/">Math encyclopedia</a><span aria-hidden="true">/</span><a href="/daily-mathematics/">Daily Mathematics: solutions</a><span aria-hidden="true">/</span><span aria-current="page">Daily Mathematics solutions: 10 October 2026</span></nav>
+<span id="ig-content" tabindex="-1"></span>
+<!-- /ISEGORIA:NAV -->
+<main id="main" class="dm"><p class="eyebrow">Daily Mathematics / Solutions</p><h1>Solutions for 10 October 2026</h1><p class="deck">Two cards went out that day: a hard definite integral and an original Putnam-style problem. Try each one first; the solutions are folded away below.</p><section class="card" id="integral" style="--dm-accent:#24457F"><p class="kind">Integral</p><h2>A squared logarithm of 1 + x over x</h2><figure><img src="/daily-mathematics/2026-10-10/integral.png" width="1200" height="1200" loading="lazy" alt="Card: A squared logarithm of 1 + x over x"></figure><div class="statement"><p>Evaluate in closed form.</p>
+\[\int_{0}^{1}\frac{\ln^{2}(1+x)}{x}\,dx\]</div><details><summary>Show the solution</summary><p>We show that the integral equals \(\dfrac{\zeta(3)}{4}\). Call it \(A\). It converges: near \(0\) the integrand behaves like \(x\), and it is continuous on \((0,1]\).</p>
+<p><strong>Why the direct route stalls.</strong> Expanding \(\ln^{2}(1+x)\) in powers of \(x\) produces the alternating Euler sum \(2\sum_{n\ge2}(-1)^{n}H_{n-1}/n^{2}\), whose evaluation is the whole problem. The substitution \(t=1/(1+x)\) instead leads to \(\operatorname{Li}_3(\tfrac12)\), \(\ln^{3}2\) and \(\pi^{2}\ln 2\), all of which must cancel at the end. Neither route shows why the answer is so clean. The trick is to stop looking at \(\ln(1+x)\) alone and to pair it with \(\ln(1-x)\).</p>
+<p><strong>Step 1: three companion integrals.</strong> Put \(a=\ln(1+x)\), \(b=\ln(1-x)\) and</p>
+\[A=\int_0^1\frac{a^{2}}{x}\,dx,\qquad B=\int_0^1\frac{b^{2}}{x}\,dx,\qquad C=\int_0^1\frac{ab}{x}\,dx .\]
+<p>All three converge: near \(0\) both \(a\) and \(b\) are \(O(x)\), and near \(1\) the factor \(b\) has only a logarithmic singularity, so \(b^{2}\) and \(ab\) are integrable.</p>
+<p><strong>Step 2: the value of \(B\).</strong> With \(x=1-u\),</p>
+\[B=\int_0^1\frac{\ln^{2}u}{1-u}\,du=\sum_{n\ge0}\int_0^1u^{n}\ln^{2}u\,du=\sum_{n\ge0}\frac{2}{(n+1)^{3}}=2\zeta(3),\]
+<p>where the termwise integration is justified by monotone convergence (every term is nonnegative) and \(\int_0^1u^{n}\ln^{2}u\,du=2/(n+1)^{3}\) follows from two integrations by parts.</p>
+<p><strong>Step 3: the sum \(a+b\).</strong> Since \(a+b=\ln(1-x^{2})\), the substitution \(u=x^{2}\), \(dx/x=du/(2u)\), gives</p>
+\[A+2C+B=\int_0^1\frac{\ln^{2}(1-x^{2})}{x}\,dx=\frac12\int_0^1\frac{\ln^{2}(1-u)}{u}\,du=\frac{B}{2}=\zeta(3).\]
+<p><strong>Step 4: the difference \(a-b\).</strong> Here \(a-b=\ln\frac{1+x}{1-x}\). Put \(t=\frac{1-x}{1+x}\), so \(x=\frac{1-t}{1+t}\), \(dx=-\frac{2\,dt}{(1+t)^{2}}\) and \(\frac{dx}{x}=-\frac{2\,dt}{1-t^{2}}\), while \(x:0\to1\) becomes \(t:1\to0\). Hence</p>
+\[A-2C+B=2\int_0^1\frac{\ln^{2}t}{1-t^{2}}\,dt=2\sum_{k\ge0}\frac{2}{(2k+1)^{3}}=4\cdot\frac78\,\zeta(3)=\frac72\,\zeta(3),\]
+<p>using \(\sum_{k\ge0}(2k+1)^{-3}=(1-2^{-3})\zeta(3)\) and again monotone convergence.</p>
+<p><strong>Step 5: solve the linear system.</strong> Adding the results of Steps 3 and 4 gives \(2A+2B=\frac92\zeta(3)\), so \(A=\frac94\zeta(3)-B=\frac94\zeta(3)-2\zeta(3)=\frac{\zeta(3)}{4}\). As a by-product, subtracting gives \(C=\int_0^1\frac{\ln(1+x)\ln(1-x)}{x}\,dx=-\frac58\zeta(3)\).</p>
+<p><strong>Check.</strong> Composite 100-node Gauss-Legendre quadrature on \([0,1]\) with 40 and with 200 panels reproduces \(\zeta(3)/4=0.30051422578989856\ldots\) to within \(2\times10^{-16}\); the companion values \(B=2\zeta(3)\) and \(C=-\frac58\zeta(3)\) were checked the same way, after the substitutions \(u=s^{4}\) and \(x=1-s^{4}\) that tame the logarithmic endpoint singularity, to within \(3\times10^{-15}\).</p><div class="answer"><strong>Answer.</strong> \(\dfrac{\zeta(3)}{4}\approx0.3005142258\)</div></details></section><section class="card" id="competition" style="--dm-accent:#96311F"><p class="kind">Competition problem</p><h2>Compositions into powers of two, modulo 4</h2><figure><img src="/daily-mathematics/2026-10-10/competition.png" width="1200" height="1200" loading="lazy" alt="Card: Compositions into powers of two, modulo 4"></figure><div class="statement"><p>Let \(f(n)\) be the number of ways to write the positive integer \(n\) as an ordered sum of powers of \(2\), order mattering. Thus \(f(3)=3\), since</p>
+\[3=1+2=2+1=1+1+1.\]
+<p>Determine all \(n\) with \(f(n)\equiv 3 \pmod{4}\).</p></div><details><summary>Show the solution</summary><p>We show that \(f(n)\equiv3\pmod4\) exactly when \(n=2^{k}-1\) with \(k\ge2\), that is, for \(n=3,7,15,31,\dots\).</p>
+<p><strong>Why the direct route stalls.</strong> Splitting a composition by its first part gives \(f(n)=\sum_{2^{j}\le n}f(n-2^{j})\), and the first values are \(1,2,3,6,10,18,31,56\). The data suggest the answer quickly, but an induction on this recurrence modulo \(4\) has to track the residues of all earlier values along a sparse, irregular set of lags, and the even values follow no visible pattern modulo \(4\). We work with the generating function instead, where squaring a sum over powers of \(2\) behaves very well.</p>
+<p><strong>Step 1: the generating function.</strong> Put \(f(0)=1\) (the empty sum), \(F(x)=\sum_{n\ge0}f(n)x^{n}\) and \(S(x)=\sum_{j\ge0}x^{2^{j}}\). The recurrence above says \(F=1+SF\), that is \((1-S)F=1\) in \(\mathbb Z[[x]]\).</p>
+<p><strong>Step 2: an exact identity.</strong> Squaring \(S\) separates the diagonal terms from the cross terms:</p>
+\[S^{2}=\sum_{j\ge0}x^{2^{j+1}}+2T=S-x+2T,\qquad T=\sum_{0\le i&lt;j}x^{2^{i}+2^{j}} .\]
+<p>Hence \((1-S)^{2}=1-2S+S^{2}=(1-S)-x+2T\). Multiplying by \(F=(1-S)^{-1}\) gives \(1-S=1-xF+2TF\), that is</p>
+\[xF=S+2TF .\]
+<p><strong>Step 3: parity.</strong> Reducing modulo \(2\) gives \(xF\equiv S\), so \(f(m)\) is odd if and only if \(m+1\) is a power of \(2\). This holds for every \(m\ge0\), including \(m=0\).</p>
+<p><strong>Step 4: modulo 4.</strong> Let \(t_r=1\) if \(r\) has exactly two \(1\)s in binary and \(t_r=0\) otherwise, and let \(s_n=1\) if \(n\) is a power of \(2\) and \(0\) otherwise. Comparing coefficients of \(x^{m+1}\) in Step 2,</p>
+\[f(m)=s_{m+1}+2\sum_{r\le m+1}t_r\,f(m+1-r).\]
+<p>Since \(2y\bmod4\) depends only on the parity of \(y\), Step 3 gives \(f(m)\equiv s_{m+1}+2N(m)\pmod4\), where \(N(m)\) counts the \(r\) with \(t_r=1\) for which \(m+2-r\) is a power of \(2\). If \(m+1\) is not a power of \(2\), then \(f(m)\equiv2N(m)\in\{0,2\}\pmod4\), so \(f(m)\not\equiv3\).</p>
+<p>Now let \(m+1=2^{k}\) with \(k\ge1\). The candidates are \(r=2^{k}+1-2^{j}\) with \(0\le j\le k\). For \(j=0\), \(r=2^{k}\) has one \(1\) in binary. For \(j=k\), \(r=1\) has one \(1\). For \(1\le j\le k-1\), \(2^{k}-2^{j}\) consists of \(k-j\) ones followed by \(j\ge1\) zeros, so adding \(1\) gives \(k-j+1\) ones, which equals \(2\) only for \(j=k-1\). Therefore \(N(2^{k}-1)=1\) when \(k\ge2\) and \(N(1)=0\). Consequently \(f(2^{k}-1)\equiv1+2=3\pmod4\) for \(k\ge2\), while \(f(1)=1\). This proves the claim.</p>
+<p><strong>Check.</strong> The exact values of \(f(n)\) from the recurrence for all \(n\le4100\) satisfy \(f(n)\equiv3\pmod4\) precisely at \(n=3,7,15,\dots,4095\), and they are odd precisely at \(n=2^{k}-1\).</p><div class="answer"><strong>Answer.</strong> \(n=2^{k}-1\) with \(k\ge2\), i.e. \(n=3,7,15,31,\dots\)</div></details></section><p><a href="/daily-mathematics/">All solutions</a> · <a href="/ja/daily-mathematics/2026-10-10/" hreflang="ja" lang="ja">日本語</a></p></main>
+<!-- ISEGORIA:FOOT -->
+<footer id="ig-footer"><div><a href="/">Isegoria · Benjamin Haire</a><nav aria-label="Site links"><a href="/">Back to home</a><a href="/library.html">Browse the library</a><a href="#ig-content">Back to top</a></nav></div></footer>
+<!-- /ISEGORIA:FOOT -->
+</body></html>
