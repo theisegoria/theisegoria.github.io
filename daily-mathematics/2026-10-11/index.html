@@ -1,0 +1,65 @@
+<!doctype html><html lang="en" class="ig-document ig-editorial"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Daily Mathematics solutions: 11 October 2026 · Isegoria</title><meta name="description" content="Full solutions to the two Daily Mathematics cards of 11 October 2026: a hard definite integral and an original Putnam-style problem."><link rel="canonical" href="https://theisegoria.github.io/daily-mathematics/2026-10-11/"><link rel="alternate" hreflang="en" href="https://theisegoria.github.io/daily-mathematics/2026-10-11/"><link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/daily-mathematics/2026-10-11/"><link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/daily-mathematics/2026-10-11/"><link rel="icon" href="/assets/favicon.svg"><link rel="stylesheet" href="/assets/isegoria.css?v=20260915"><link rel="stylesheet" href="/analysis-atlas/vendor/katex.min.css"><script defer src="/analysis-atlas/vendor/katex.min.js"></script><script defer src="/analysis-atlas/vendor/contrib/auto-render.min.js"></script><script>document.addEventListener("DOMContentLoaded",function(){if(window.renderMathInElement)renderMathInElement(document.querySelector("main"),{delimiters:[{left:"\\[",right:"\\]",display:true},{left:"\\(",right:"\\)",display:false}],throwOnError:false});});</script><style>
+.dm{max-width:46rem;margin:0 auto;padding:2.5rem 1.25rem 4rem}
+.dm .eyebrow{letter-spacing:.14em;text-transform:uppercase;font-size:.78rem;opacity:.7;margin:0 0 .4rem}
+.dm h1{margin:.1rem 0 .6rem;line-height:1.2}
+.dm .deck{opacity:.85;margin:0 0 2rem}
+.dm .card{margin:2.6rem 0 0;padding-top:1.4rem;border-top:2px solid var(--dm-accent,currentColor)}
+.dm .card h2{margin:.2rem 0 .9rem;line-height:1.3}
+.dm .kind{font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dm-accent);margin:0}
+.dm figure{margin:1rem 0 1.4rem}
+.dm figure img{width:100%;max-width:30rem;height:auto;display:block;border:1px solid rgba(127,127,127,.25)}
+.dm .statement{padding:.9rem 1.1rem;border-left:3px solid var(--dm-accent);background:rgba(127,127,127,.07)}
+.dm details{margin:1.2rem 0}
+.dm summary{cursor:pointer;font-weight:600}
+.dm .answer{margin-top:1.2rem;padding:.8rem 1.1rem;border:1px solid var(--dm-accent)}
+.dm .katex-display{overflow-x:auto;overflow-y:hidden;padding:.2rem 0}
+.dm .days{list-style:none;padding:0;margin:1.5rem 0 0}
+.dm .days li{padding:.9rem 0;border-top:1px solid rgba(127,127,127,.25)}
+.dm .days a.date{font-weight:600}
+.dm .days span{display:block;opacity:.85}
+html[lang=ja] .dm{line-height:1.85}
+</style><script src="/assets/lang.js"></script>
+<!-- ISEGORIA:HEAD -->
+<link rel="stylesheet" href="/assets/site-shell.css?v=c21cd21e82">
+<script src="/assets/site-shell.js?v=c21cd21e82" ></script>
+<!-- /ISEGORIA:HEAD -->
+<script defer data-isegoria-analytics src="/assets/analytics.js?v=9e6ebd463bf2"></script>
+</head><body class="ig-site" data-site-kind="editorial" data-site-route="/daily-mathematics/2026-10-11/">
+<!-- ISEGORIA:NAV -->
+<a class="ig-skip" href="#ig-content">Skip to content</a>
+<header id="ig-header"><div class="ig-nav-inner">
+<a class="ig-brand" href="/" aria-label="Isegoria, home"><strong>ISEGORIA</strong><span>Benjamin Haire</span></a>
+<div class="ig-header-actions"><a class="ig-language" href="/ja/daily-mathematics/2026-10-11/" hreflang="ja" lang="ja">日本語</a><button class="ig-menu" type="button" aria-expanded="false" aria-controls="ig-primary">Menu</button></div>
+<nav id="ig-primary" aria-label="Primary navigation"><a href="/">Home</a><a href="/library.html">Library</a><a href="/math-encyclopedia/" aria-current="location">Math encyclopedia</a><a href="/#interactive">Interactive</a><a href="/#preoccupations">Research</a><a href="/#books">Books</a><a href="/projects.html">Projects</a><a href="/about.html">About</a><a class="ig-language" href="/ja/daily-mathematics/2026-10-11/" hreflang="ja" lang="ja">日本語</a><button class="ig-theme" type="button" hidden>Theme</button></nav>
+</div></header>
+<nav id="ig-breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><a href="/math-encyclopedia/">Math encyclopedia</a><span aria-hidden="true">/</span><a href="/daily-mathematics/">Daily Mathematics: solutions</a><span aria-hidden="true">/</span><span aria-current="page">Daily Mathematics solutions: 11 October 2026</span></nav>
+<span id="ig-content" tabindex="-1"></span>
+<!-- /ISEGORIA:NAV -->
+<main id="main" class="dm"><p class="eyebrow">Daily Mathematics / Solutions</p><h1>Solutions for 11 October 2026</h1><p class="deck">Two cards went out that day: a hard definite integral and an original Putnam-style problem. Try each one first; the solutions are folded away below.</p><section class="card" id="integral" style="--dm-accent:#24457F"><p class="kind">Integral</p><h2>A logarithm of a trigonometric cubic over a half period</h2><figure><img src="/daily-mathematics/2026-10-11/integral.png" width="1200" height="1200" loading="lazy" alt="Card: A logarithm of a trigonometric cubic over a half period"></figure><div class="statement"><p>Evaluate in closed form.</p>
+\[\int_{0}^{\pi}\ln\bigl(3+2\cos x-2\cos 2x-2\cos 3x\bigr)\,dx\]</div><details><summary>Show the solution</summary><p>Write \(I\) for the integral and \(\rho\approx1.3247\) for the unique real root of \(t^{3}=t+1\) (the plastic number). We show \(I=2\pi\ln\rho\).</p>
+<p><strong>Why the direct route stalls.</strong> The argument of the logarithm is a trigonometric polynomial with no visible factorisation in real terms, so neither a substitution nor a Fourier expansion of the logarithm gets started. The key is to see it as a squared modulus on the unit circle.</p>
+<p><strong>Step 1: a hidden squared modulus.</strong> Let \(P(z)=z^{3}-z-1\) and \(z=e^{ix}\), so \(\bar z=z^{-1}\). Then</p>
+\[|P(z)|^{2}=(z^{3}-z-1)(z^{-3}-z^{-1}-1)=3+(z+z^{-1})-(z^{2}+z^{-2})-(z^{3}+z^{-3}),\]
+<p>which is \(3+2\cos x-2\cos 2x-2\cos 3x\). The integrand never vanishes: if \(|z|=1\) and \(z^{3}=z+1\), then \(|z+1|=1\), which forces \(z=e^{\pm 2\pi i/3}\); but then \(z^{3}=1\) while \(z+1=e^{\pm i\pi/3}\neq1\). So \(I=\int_{0}^{\pi}2\ln|P(e^{ix})|\,dx\).</p>
+<p><strong>Step 2: the full circle.</strong> Since \(P\) has real coefficients, \(|P(e^{-ix})|=|\overline{P(e^{ix})}|=|P(e^{ix})|\), so the integrand is even about \(x=\pi\) on \([0,2\pi]\) and</p>
+\[I=\int_{0}^{2\pi}\ln|P(e^{ix})|\,dx.\]
+<p><strong>Step 3: Jensen's formula for one linear factor.</strong> For a complex number \(r\) with \(|r|\neq1\) we claim \(\int_{0}^{2\pi}\ln|e^{ix}-r|\,dx=2\pi\ln\max(1,|r|)\). If \(|r|&lt;1\), then \(|e^{ix}-r|=|1-re^{-ix}|\) and \(\ln|1-re^{-ix}|=-\operatorname{Re}\sum_{n\ge1}r^{n}e^{-inx}/n\), a uniformly convergent series each of whose terms has mean zero, so the integral is \(0\). If \(|r|>1\), write \(|e^{ix}-r|=|r|\,|1-e^{ix}/r|\) and apply the same argument to \(1/r\), which gives \(2\pi\ln|r|\).</p>
+<p><strong>Step 4: locate the roots.</strong> Let \(f(t)=t^{3}-t-1\). Its derivative vanishes at \(t=\pm1/\sqrt3\), and the local maximum \(f(-1/\sqrt3)=-1+\tfrac{2}{3\sqrt3}\) is negative, so \(f\) has exactly one real root \(\rho\), and \(f(1)=-1&lt;0&lt;5=f(2)\) gives \(1&lt;\rho&lt;2\). The other two roots \(w,\bar w\) satisfy \(\rho\,|w|^{2}=1\) (the product of the roots is \(1\)), so \(|w|=\rho^{-1/2}&lt;1\).</p>
+<p><strong>Step 5: assemble.</strong> \(P(z)=(z-\rho)(z-w)(z-\bar w)\), so by Step 3 only the root outside the unit circle contributes:</p>
+\[I=2\pi\ln\rho,\qquad \rho=\sqrt[3]{\tfrac{9+\sqrt{69}}{18}}+\sqrt[3]{\tfrac{9-\sqrt{69}}{18}}\]
+<p>by Cardano's formula. In the language of number theory, \(I/(2\pi)\) is the logarithmic Mahler measure of \(t^{3}-t-1\), the smallest Mahler measure of any non-cyclotomic polynomial of degree \(3\).</p>
+<p><strong>Check.</strong> Composite 100-node Gauss-Legendre quadrature on \([0,\pi]\) with 40 and with 200 panels gives \(1.766829033771188\dots\), agreeing with \(2\pi\ln\rho\) to within \(10^{-15}\); the identity of Step 1 was checked on a grid of \(2\times10^{5}\) points to \(6\times10^{-15}\), and the integrand stays above \(0.12\).</p><div class="answer"><strong>Answer.</strong> \(2\pi\ln\rho\approx1.7668290\), where \(\rho\) is the real root of \(\rho^{3}=\rho+1\)</div></details></section><section class="card" id="competition" style="--dm-accent:#96311F"><p class="kind">Competition problem</p><h2>Vanishing power sums modulo a prime</h2><figure><img src="/daily-mathematics/2026-10-11/competition.png" width="1200" height="1200" loading="lazy" alt="Card: Vanishing power sums modulo a prime"></figure><div class="statement"><p>Let \(p\) be an odd prime. Find the least positive integer \(m\) such that, whenever integers \(a_1,\dots,a_p\) satisfy</p>
+\[a_1^k+a_2^k+\cdots+a_p^k\equiv 0 \pmod{p}\]
+<p>for \(k=1,\dots,m\), the \(a_i\) are either all congruent modulo \(p\) or pairwise incongruent modulo \(p\).</p></div><details><summary>Show the solution</summary><p>The answer is \(m=\tfrac{p-1}{2}\). Throughout we work in \(\mathbb F_p\) and write \(s_k=a_1^k+\cdots+a_p^k\).</p>
+<p><strong>Why the direct route stalls.</strong> If \(n_v\) is the number of \(i\) with \(a_i\equiv v\), the conditions read \(\sum_v n_v v^{k}=0\) for \(1\le k\le m\), together with \(\sum_v n_v=p\equiv0\). With \(m=p-2\) this is a full Vandermonde system and forces all \(n_v\) to be congruent modulo \(p\), which is the classical statement. For smaller \(m\) the linear system in the \(n_v\) has a large solution space, so linear algebra on the multiplicities alone cannot decide anything; one has to use that the \(n_v\) are nonnegative integers adding up to exactly \(p\). The polynomial \(\prod(t-a_i)\) packages this information.</p>
+<p><strong>Step 1: Newton's identities.</strong> Let \(F(t)=\prod_{i=1}^{p}(t-a_i)=t^{p}-e_1t^{p-1}+e_2t^{p-2}-\cdots\). Newton's identities \(ke_k=\sum_{j=1}^{k}(-1)^{j-1}e_{k-j}s_j\) hold for \(1\le k\le p\). Suppose \(s_1=\cdots=s_m=0\) with \(m=\tfrac{p-1}{2}\). For \(1\le k\le m\) the integer \(k\) is invertible modulo \(p\), so induction gives \(e_1=\cdots=e_m=0\). Hence</p>
+\[F(t)=t^{p}+g(t),\qquad \deg g\le p-m-1=\tfrac{p-1}{2}.\]
+<p><strong>Step 2: few distinct residues.</strong> Every residue \(v\) occurring among the \(a_i\) is a root of \(F\), and \(v^{p}=v\) in \(\mathbb F_p\), so \(v\) is a root of \(h(t)=t+g(t)\). If \(h\) is the zero polynomial, then \(F(t)=t^{p}-t=\prod_{v\in\mathbb F_p}(t-v)\), so the \(a_i\) run through every residue exactly once: they are pairwise incongruent. Otherwise \(h\) is a nonzero polynomial of degree at most \(\tfrac{p-1}{2}\), so at most \(\tfrac{p-1}{2}\) distinct residues occur.</p>
+<p><strong>Step 3: Vandermonde.</strong> Let \(b_1,\dots,b_r\) be the distinct nonzero residues that occur, with multiplicities \(c_1,\dots,c_r\in\{1,\dots,p\}\); by Step 2, \(r\le m\). Residues equal to \(0\) contribute nothing to \(s_k\), so \(\sum_{j=1}^{r}c_jb_j^{k}=0\) for \(k=1,\dots,r\). The matrix \((b_j^{k})_{1\le k,j\le r}\) is a Vandermonde matrix times \(\operatorname{diag}(b_1,\dots,b_r)\), hence invertible, so every \(c_j\equiv0\pmod p\), that is \(c_j=p\). Thus either \(r=0\) and every \(a_i\equiv0\), or \(r=1\) and every \(a_i\equiv b_1\). In both cases the \(a_i\) are all congruent. So \(m=\tfrac{p-1}{2}\) has the property.</p>
+<p><strong>Step 4: sharpness.</strong> For \(p=3\) the value \(\tfrac{p-1}{2}=1\) is already the least positive integer. For \(p\ge5\) take \(a_i=i^{2}\) for \(i=1,\dots,p\). For \(1\le k\le\tfrac{p-3}{2}\) we have \(0&lt;2k&lt;p-1\), and \(\sum_{x\in\mathbb F_p}x^{j}=0\) whenever \(0&lt;j&lt;p-1\) (with \(g\) a generator, the sum is \(\sum_{i=0}^{p-2}(g^{j})^{i}\), a geometric sum with ratio \(g^{j}\neq1\)). So \(s_1=\cdots=s_{(p-3)/2}=0\), yet \(1^{2}\equiv(p-1)^{2}\) while \(1^{2}\not\equiv p^{2}\): the \(a_i\) are neither all congruent nor pairwise incongruent. Hence no \(m\le\tfrac{p-3}{2}\) works, since a smaller \(m\) is a weaker hypothesis.</p>
+<p>Therefore the least \(m\) is \(\tfrac{p-1}{2}\).</p>
+<p><strong>Check.</strong> For \(p=5,7,11,13\) every multiplicity vector \((n_v)\) with \(\sum n_v=p\) was enumerated exhaustively. When the power sums vanish for \(k\le\tfrac{p-1}{2}\), the only survivors are the constant and the bijective patterns (the number of functions \(\mathbb F_p\to\mathbb F_p\) is exactly \(p!+p\)), while for \(k\le\tfrac{p-3}{2}\) other patterns appear, among them the squares.</p><div class="answer"><strong>Answer.</strong> \(m=\dfrac{p-1}{2}\)</div></details></section><p><a href="/daily-mathematics/">All solutions</a> · <a href="/ja/daily-mathematics/2026-10-11/" hreflang="ja" lang="ja">日本語</a></p></main>
+<!-- ISEGORIA:FOOT -->
+<footer id="ig-footer"><div><a href="/">Isegoria · Benjamin Haire</a><nav aria-label="Site links"><a href="/">Back to home</a><a href="/library.html">Browse the library</a><a href="#ig-content">Back to top</a></nav></div></footer>
+<!-- /ISEGORIA:FOOT -->
+</body></html>

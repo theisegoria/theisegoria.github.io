@@ -1,0 +1,65 @@
+<!doctype html><html lang="ja" class="ig-document ig-editorial"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Daily Mathematics 解答：2026年10月11日 · Isegoria</title><meta name="description" content="2026年10月11日のThreadsカード2枚（難しい定積分とパトナム型の問題）の完全な解答。"><link rel="canonical" href="https://theisegoria.github.io/ja/daily-mathematics/2026-10-11/"><link rel="alternate" hreflang="en" href="https://theisegoria.github.io/daily-mathematics/2026-10-11/"><link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/daily-mathematics/2026-10-11/"><link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/daily-mathematics/2026-10-11/"><link rel="icon" href="/assets/favicon.svg"><link rel="stylesheet" href="/assets/isegoria.css?v=20260915"><link rel="stylesheet" href="/analysis-atlas/vendor/katex.min.css"><script defer src="/analysis-atlas/vendor/katex.min.js"></script><script defer src="/analysis-atlas/vendor/contrib/auto-render.min.js"></script><script>document.addEventListener("DOMContentLoaded",function(){if(window.renderMathInElement)renderMathInElement(document.querySelector("main"),{delimiters:[{left:"\\[",right:"\\]",display:true},{left:"\\(",right:"\\)",display:false}],throwOnError:false});});</script><style>
+.dm{max-width:46rem;margin:0 auto;padding:2.5rem 1.25rem 4rem}
+.dm .eyebrow{letter-spacing:.14em;text-transform:uppercase;font-size:.78rem;opacity:.7;margin:0 0 .4rem}
+.dm h1{margin:.1rem 0 .6rem;line-height:1.2}
+.dm .deck{opacity:.85;margin:0 0 2rem}
+.dm .card{margin:2.6rem 0 0;padding-top:1.4rem;border-top:2px solid var(--dm-accent,currentColor)}
+.dm .card h2{margin:.2rem 0 .9rem;line-height:1.3}
+.dm .kind{font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dm-accent);margin:0}
+.dm figure{margin:1rem 0 1.4rem}
+.dm figure img{width:100%;max-width:30rem;height:auto;display:block;border:1px solid rgba(127,127,127,.25)}
+.dm .statement{padding:.9rem 1.1rem;border-left:3px solid var(--dm-accent);background:rgba(127,127,127,.07)}
+.dm details{margin:1.2rem 0}
+.dm summary{cursor:pointer;font-weight:600}
+.dm .answer{margin-top:1.2rem;padding:.8rem 1.1rem;border:1px solid var(--dm-accent)}
+.dm .katex-display{overflow-x:auto;overflow-y:hidden;padding:.2rem 0}
+.dm .days{list-style:none;padding:0;margin:1.5rem 0 0}
+.dm .days li{padding:.9rem 0;border-top:1px solid rgba(127,127,127,.25)}
+.dm .days a.date{font-weight:600}
+.dm .days span{display:block;opacity:.85}
+html[lang=ja] .dm{line-height:1.85}
+</style><script src="/assets/lang.js"></script>
+<!-- ISEGORIA:HEAD -->
+<link rel="stylesheet" href="/assets/site-shell.css?v=c21cd21e82">
+<script src="/assets/site-shell.js?v=c21cd21e82" ></script>
+<!-- /ISEGORIA:HEAD -->
+<script defer data-isegoria-analytics src="/assets/analytics.js?v=9e6ebd463bf2"></script>
+</head><body class="ig-site" data-site-kind="editorial" data-site-route="/ja/daily-mathematics/2026-10-11/">
+<!-- ISEGORIA:NAV -->
+<a class="ig-skip" href="#ig-content">本文へ移動</a>
+<header id="ig-header"><div class="ig-nav-inner">
+<a class="ig-brand" href="/ja/" aria-label="Isegoria, ホーム"><strong>ISEGORIA</strong><span>Benjamin Haire</span></a>
+<div class="ig-header-actions"><a class="ig-language" href="/daily-mathematics/2026-10-11/" hreflang="en" lang="en">English</a><button class="ig-menu" type="button" aria-expanded="false" aria-controls="ig-primary">メニュー</button></div>
+<nav id="ig-primary" aria-label="メインナビゲーション"><a href="/ja/">ホーム</a><a href="/ja/library.html">全コンテンツ</a><a href="/ja/math-encyclopedia/" aria-current="location">数学百科事典</a><a href="/ja/#interactive">操作できる解説</a><a href="/ja/#preoccupations">研究と解説</a><a href="/ja/#books">書籍</a><a href="/ja/projects.html">プロジェクト</a><a href="/ja/about.html">このサイトについて</a><a class="ig-language" href="/daily-mathematics/2026-10-11/" hreflang="en" lang="en">English</a><button class="ig-theme" type="button" hidden>表示切替</button></nav>
+</div></header>
+<nav id="ig-breadcrumb" aria-label="パンくずリスト"><a href="/ja/">ホーム</a><span aria-hidden="true">/</span><a href="/ja/math-encyclopedia/">数学百科事典</a><span aria-hidden="true">/</span><a href="/ja/daily-mathematics/">Daily Mathematics 解答集</a><span aria-hidden="true">/</span><span aria-current="page">Daily Mathematics 解答：2026年10月11日</span></nav>
+<span id="ig-content" tabindex="-1"></span>
+<!-- /ISEGORIA:NAV -->
+<main id="main" class="dm"><p class="eyebrow">Daily Mathematics / 解答</p><h1>2026年10月11日の解答</h1><p class="deck">この日のカードは難しい定積分とオリジナルのパトナム型の問題の2枚である。まず自分で考え、詰まったら解答を開くこと。</p><section class="card" id="integral" style="--dm-accent:#24457F"><p class="kind">積分</p><h2>三角多項式の対数の半周期にわたる積分</h2><figure><img src="/daily-mathematics/2026-10-11/integral.png" width="1200" height="1200" loading="lazy" alt="カード: 三角多項式の対数の半周期にわたる積分"></figure><div class="statement"><p>次の定積分を閉じた形で求めよ。</p>
+\[\int_{0}^{\pi}\ln\bigl(3+2\cos x-2\cos 2x-2\cos 3x\bigr)\,dx\]</div><details><summary>解答を開く</summary><p>積分を \(I\) とし，\(t^{3}=t+1\) のただ一つの実根（プラスチック数）を \(\rho\approx1.3247\) とおく。\(I=2\pi\ln\rho\) であることを示す。</p>
+<p><strong>直接の計算が行き詰まる理由。</strong>対数の中身は実の範囲では因数分解の見えない三角多項式であり，置換も対数のフーリエ展開も糸口にならない。鍵は，これを単位円上の絶対値の平方とみることである。</p>
+<p><strong>第1段：隠れた絶対値の平方。</strong>\(P(z)=z^{3}-z-1\)，\(z=e^{ix}\) とおくと \(\bar z=z^{-1}\) であり</p>
+\[|P(z)|^{2}=(z^{3}-z-1)(z^{-3}-z^{-1}-1)=3+(z+z^{-1})-(z^{2}+z^{-2})-(z^{3}+z^{-3})\]
+<p>となる。これは \(3+2\cos x-2\cos 2x-2\cos 3x\) にほかならない。被積分関数は \(0\) にならない。実際，\(|z|=1\) かつ \(z^{3}=z+1\) ならば \(|z+1|=1\) より \(z=e^{\pm 2\pi i/3}\) であるが，このとき \(z^{3}=1\)，\(z+1=e^{\pm i\pi/3}\neq1\) となり矛盾する。よって \(I=\int_{0}^{\pi}2\ln|P(e^{ix})|\,dx\) である。</p>
+<p><strong>第2段：円周全体へ。</strong>\(P\) は実係数なので \(|P(e^{-ix})|=|\overline{P(e^{ix})}|=|P(e^{ix})|\) であり，被積分関数は \([0,2\pi]\) 上で \(x=\pi\) に関して対称である。したがって</p>
+\[I=\int_{0}^{2\pi}\ln|P(e^{ix})|\,dx.\]
+<p><strong>第3段：一次因子に対する Jensen の公式。</strong>\(|r|\neq1\) なる複素数 \(r\) に対して \(\int_{0}^{2\pi}\ln|e^{ix}-r|\,dx=2\pi\ln\max(1,|r|)\) を示す。\(|r|&lt;1\) ならば \(|e^{ix}-r|=|1-re^{-ix}|\) であり，\(\ln|1-re^{-ix}|=-\operatorname{Re}\sum_{n\ge1}r^{n}e^{-inx}/n\) は一様収束し，各項の平均は \(0\) であるから積分は \(0\) である。\(|r|>1\) ならば \(|e^{ix}-r|=|r|\,|1-e^{ix}/r|\) と書いて \(1/r\) に同じ議論を適用すれば \(2\pi\ln|r|\) を得る。</p>
+<p><strong>第4段：根の位置。</strong>\(f(t)=t^{3}-t-1\) とおく。\(f'\) は \(t=\pm1/\sqrt3\) で \(0\) となり，極大値 \(f(-1/\sqrt3)=-1+\tfrac{2}{3\sqrt3}\) は負であるから，\(f\) の実根はただ一つ \(\rho\) であり，\(f(1)=-1&lt;0&lt;5=f(2)\) より \(1&lt;\rho&lt;2\) である。残りの二根 \(w,\bar w\) は根の積が \(1\) であることから \(\rho\,|w|^{2}=1\) をみたし，\(|w|=\rho^{-1/2}&lt;1\) である。</p>
+<p><strong>第5段：まとめ。</strong>\(P(z)=(z-\rho)(z-w)(z-\bar w)\) であるから，第3段により単位円の外にある根だけが寄与し</p>
+\[I=2\pi\ln\rho,\qquad \rho=\sqrt[3]{\tfrac{9+\sqrt{69}}{18}}+\sqrt[3]{\tfrac{9-\sqrt{69}}{18}}\]
+<p>を得る（\(\rho\) の表示は Cardano の公式による）。数論の言葉では，\(I/(2\pi)\) は \(t^{3}-t-1\) の対数 Mahler 測度であり，これは円分的でない 3 次多項式の Mahler 測度として最小のものである。</p>
+<p><strong>検算。</strong>\([0,\pi]\) 上で 100 点 Gauss-Legendre 則を 40 区間および 200 区間で用いると \(1.766829033771188\dots\) を得て，\(2\pi\ln\rho\) と \(10^{-15}\) 以内で一致した。第1段の恒等式は \(2\times10^{5}\) 点の格子上で \(6\times10^{-15}\) まで確かめ，被積分関数の値は常に \(0.12\) を上回ることも確認した。</p><div class="answer"><strong>答え.</strong> \(2\pi\ln\rho\approx1.7668290\)（\(\rho\) は \(\rho^{3}=\rho+1\) の実根）</div></details></section><section class="card" id="competition" style="--dm-accent:#96311F"><p class="kind">競技数学の問題</p><h2>素数を法として消えるべき和</h2><figure><img src="/daily-mathematics/2026-10-11/competition.png" width="1200" height="1200" loading="lazy" alt="カード: 素数を法として消えるべき和"></figure><div class="statement"><p>\(p\) を奇素数とする。整数 \(a_1,\dots,a_p\) が \(k=1,\dots,m\) のすべてに対して</p>
+\[a_1^k+a_2^k+\cdots+a_p^k\equiv 0 \pmod{p}\]
+<p>をみたすならば，\(a_i\) は \(p\) を法として必ずすべて合同であるか，どの二つも合同でない。このような最小の正の整数 \(m\) を求めよ。</p></div><details><summary>解答を開く</summary><p>答えは \(m=\tfrac{p-1}{2}\) である。以下 \(\mathbb F_p\) で考え，\(s_k=a_1^k+\cdots+a_p^k\) とおく。</p>
+<p><strong>直接の方針が行き詰まる理由。</strong>\(a_i\equiv v\) となる \(i\) の個数を \(n_v\) とすると，条件は \(1\le k\le m\) に対する \(\sum_v n_v v^{k}=0\) と \(\sum_v n_v=p\equiv0\) である。\(m=p-2\) ならばこれは完全な Vandermonde 系であり，すべての \(n_v\) が \(p\) を法として合同になる。これがよく知られた形である。\(m\) が小さいと \(n_v\) に関する線形系の解空間は大きく，重複度の線形代数だけでは何も決まらない。\(n_v\) が和がちょうど \(p\) になる非負整数であることを使わねばならず，その情報をまとめるのが多項式 \(\prod(t-a_i)\) である。</p>
+<p><strong>第1段：Newton の恒等式。</strong>\(F(t)=\prod_{i=1}^{p}(t-a_i)=t^{p}-e_1t^{p-1}+e_2t^{p-2}-\cdots\) とおく。Newton の恒等式 \(ke_k=\sum_{j=1}^{k}(-1)^{j-1}e_{k-j}s_j\) は \(1\le k\le p\) で成り立つ。\(m=\tfrac{p-1}{2}\) として \(s_1=\cdots=s_m=0\) と仮定する。\(1\le k\le m\) では \(k\) は \(p\) を法として可逆であるから，帰納法により \(e_1=\cdots=e_m=0\) を得る。よって</p>
+\[F(t)=t^{p}+g(t),\qquad \deg g\le p-m-1=\tfrac{p-1}{2}.\]
+<p><strong>第2段：相異なる剰余は少ない。</strong>\(a_i\) に現れる剰余 \(v\) はすべて \(F\) の根であり，\(\mathbb F_p\) では \(v^{p}=v\) であるから，\(v\) は \(h(t)=t+g(t)\) の根である。\(h\) が零多項式ならば \(F(t)=t^{p}-t=\prod_{v\in\mathbb F_p}(t-v)\) であり，\(a_i\) はすべての剰余をちょうど一度ずつとる。すなわちどの二つも合同でない。そうでなければ \(h\) は次数 \(\tfrac{p-1}{2}\) 以下の零でない多項式であり，現れる相異なる剰余は高々 \(\tfrac{p-1}{2}\) 個である。</p>
+<p><strong>第3段：Vandermonde。</strong>現れる相異なる \(0\) でない剰余を \(b_1,\dots,b_r\)，その重複度を \(c_1,\dots,c_r\in\{1,\dots,p\}\) とする。第2段より \(r\le m\) である。\(0\) に等しい剰余は \(s_k\) に寄与しないから，\(k=1,\dots,r\) に対して \(\sum_{j=1}^{r}c_jb_j^{k}=0\) である。行列 \((b_j^{k})_{1\le k,j\le r}\) は Vandermonde 行列と \(\operatorname{diag}(b_1,\dots,b_r)\) の積で正則であるから，すべての \(c_j\equiv0\pmod p\)，すなわち \(c_j=p\) である。したがって \(r=0\) ですべての \(a_i\equiv0\) となるか，\(r=1\) ですべての \(a_i\equiv b_1\) となる。いずれの場合も \(a_i\) はすべて合同である。ゆえに \(m=\tfrac{p-1}{2}\) は性質をみたす。</p>
+<p><strong>第4段：最良性。</strong>\(p=3\) のときは \(\tfrac{p-1}{2}=1\) がすでに最小の正の整数である。\(p\ge5\) のとき，\(i=1,\dots,p\) に対して \(a_i=i^{2}\) とおく。\(1\le k\le\tfrac{p-3}{2}\) ならば \(0&lt;2k&lt;p-1\) であり，\(0&lt;j&lt;p-1\) のとき \(\sum_{x\in\mathbb F_p}x^{j}=0\) である（原始根 \(g\) をとれば，この和は公比 \(g^{j}\neq1\) の等比数列の和 \(\sum_{i=0}^{p-2}(g^{j})^{i}\) である）。よって \(s_1=\cdots=s_{(p-3)/2}=0\) であるが，\(1^{2}\equiv(p-1)^{2}\) かつ \(1^{2}\not\equiv p^{2}\) なので，\(a_i\) はすべて合同でもなく，どの二つも合同でないわけでもない。\(m\) が小さいほど仮定は弱くなるから，\(m\le\tfrac{p-3}{2}\) はどれも性質をみたさない。</p>
+<p>以上より，最小の \(m\) は \(\tfrac{p-1}{2}\) である。</p>
+<p><strong>検算。</strong>\(p=5,7,11,13\) について，\(\sum n_v=p\) となる重複度の組 \((n_v)\) をすべて調べた。\(k\le\tfrac{p-1}{2}\) でべき和が消えるとき残るのは定数型と全単射型だけであり（\(\mathbb F_p\to\mathbb F_p\) の写像の個数はちょうど \(p!+p\)），\(k\le\tfrac{p-3}{2}\) では平方写像を含むほかの型が現れることを確かめた。</p><div class="answer"><strong>答え.</strong> \(m=\dfrac{p-1}{2}\)</div></details></section><p><a href="/ja/daily-mathematics/">解答の一覧へ戻る</a> · <a href="/daily-mathematics/2026-10-11/" hreflang="en" lang="en">English</a></p></main>
+<!-- ISEGORIA:FOOT -->
+<footer id="ig-footer"><div><a href="/ja/">Isegoria · Benjamin Haire</a><nav aria-label="サイト内リンク"><a href="/ja/">ホームに戻る</a><a href="/ja/library.html">全コンテンツ</a><a href="#ig-content">ページ上部へ</a></nav></div></footer>
+<!-- /ISEGORIA:FOOT -->
+</body></html>
