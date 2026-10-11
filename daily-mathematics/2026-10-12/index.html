@@ -1,0 +1,75 @@
+<!doctype html><html lang="en" class="ig-document ig-editorial"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Daily Mathematics solutions: 12 October 2026 · Isegoria</title><meta name="description" content="Full solutions to the two Daily Mathematics cards of 12 October 2026: a hard definite integral and an original Putnam-style problem."><link rel="canonical" href="https://theisegoria.github.io/daily-mathematics/2026-10-12/"><link rel="alternate" hreflang="en" href="https://theisegoria.github.io/daily-mathematics/2026-10-12/"><link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/daily-mathematics/2026-10-12/"><link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/daily-mathematics/2026-10-12/"><link rel="icon" href="/assets/favicon.svg"><link rel="stylesheet" href="/assets/isegoria.css?v=20260915"><link rel="stylesheet" href="/analysis-atlas/vendor/katex.min.css"><script defer src="/analysis-atlas/vendor/katex.min.js"></script><script defer src="/analysis-atlas/vendor/contrib/auto-render.min.js"></script><script>document.addEventListener("DOMContentLoaded",function(){if(window.renderMathInElement)renderMathInElement(document.querySelector("main"),{delimiters:[{left:"\\[",right:"\\]",display:true},{left:"\\(",right:"\\)",display:false}],throwOnError:false});});</script><style>
+.dm{max-width:46rem;margin:0 auto;padding:2.5rem 1.25rem 4rem}
+.dm .eyebrow{letter-spacing:.14em;text-transform:uppercase;font-size:.78rem;opacity:.7;margin:0 0 .4rem}
+.dm h1{margin:.1rem 0 .6rem;line-height:1.2}
+.dm .deck{opacity:.85;margin:0 0 2rem}
+.dm .card{margin:2.6rem 0 0;padding-top:1.4rem;border-top:2px solid var(--dm-accent,currentColor)}
+.dm .card h2{margin:.2rem 0 .9rem;line-height:1.3}
+.dm .kind{font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dm-accent);margin:0}
+.dm figure{margin:1rem 0 1.4rem}
+.dm figure img{width:100%;max-width:30rem;height:auto;display:block;border:1px solid rgba(127,127,127,.25)}
+.dm .statement{padding:.9rem 1.1rem;border-left:3px solid var(--dm-accent);background:rgba(127,127,127,.07)}
+.dm details{margin:1.2rem 0}
+.dm summary{cursor:pointer;font-weight:600}
+.dm .answer{margin-top:1.2rem;padding:.8rem 1.1rem;border:1px solid var(--dm-accent)}
+.dm .katex-display{overflow-x:auto;overflow-y:hidden;padding:.2rem 0}
+.dm .days{list-style:none;padding:0;margin:1.5rem 0 0}
+.dm .days li{padding:.9rem 0;border-top:1px solid rgba(127,127,127,.25)}
+.dm .days a.date{font-weight:600}
+.dm .days span{display:block;opacity:.85}
+html[lang=ja] .dm{line-height:1.85}
+</style><script src="/assets/lang.js"></script>
+<!-- ISEGORIA:HEAD -->
+<link rel="stylesheet" href="/assets/site-shell.css?v=c21cd21e82">
+<script src="/assets/site-shell.js?v=c21cd21e82" ></script>
+<!-- /ISEGORIA:HEAD -->
+<script defer data-isegoria-analytics src="/assets/analytics.js?v=9e6ebd463bf2"></script>
+</head><body class="ig-site" data-site-kind="editorial" data-site-route="/daily-mathematics/2026-10-12/">
+<!-- ISEGORIA:NAV -->
+<a class="ig-skip" href="#ig-content">Skip to content</a>
+<header id="ig-header"><div class="ig-nav-inner">
+<a class="ig-brand" href="/" aria-label="Isegoria, home"><strong>ISEGORIA</strong><span>Benjamin Haire</span></a>
+<div class="ig-header-actions"><a class="ig-language" href="/ja/daily-mathematics/2026-10-12/" hreflang="ja" lang="ja">日本語</a><button class="ig-menu" type="button" aria-expanded="false" aria-controls="ig-primary">Menu</button></div>
+<nav id="ig-primary" aria-label="Primary navigation"><a href="/">Home</a><a href="/library.html">Library</a><a href="/math-encyclopedia/" aria-current="location">Math encyclopedia</a><a href="/#interactive">Interactive</a><a href="/#preoccupations">Research</a><a href="/#books">Books</a><a href="/projects.html">Projects</a><a href="/about.html">About</a><a class="ig-language" href="/ja/daily-mathematics/2026-10-12/" hreflang="ja" lang="ja">日本語</a><button class="ig-theme" type="button" hidden>Theme</button></nav>
+</div></header>
+<nav id="ig-breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><a href="/math-encyclopedia/">Math encyclopedia</a><span aria-hidden="true">/</span><a href="/daily-mathematics/">Daily Mathematics: solutions</a><span aria-hidden="true">/</span><span aria-current="page">Daily Mathematics solutions: 12 October 2026</span></nav>
+<span id="ig-content" tabindex="-1"></span>
+<!-- /ISEGORIA:NAV -->
+<main id="main" class="dm"><p class="eyebrow">Daily Mathematics / Solutions</p><h1>Solutions for 12 October 2026</h1><p class="deck">Two cards went out that day: a hard definite integral and an original Putnam-style problem. Try each one first; the solutions are folded away below.</p><section class="card" id="integral" style="--dm-accent:#24457F"><p class="kind">Integral</p><h2>A periodic logarithm against the Fejér weight sin²x/x²</h2><figure><img src="/daily-mathematics/2026-10-12/integral.png" width="1200" height="1200" loading="lazy" alt="Card: A periodic logarithm against the Fejér weight sin²x/x²"></figure><div class="statement"><p>Evaluate in closed form.</p>
+\[\int_{0}^{\infty}\ln\bigl(3-\cos 2x\bigr)\,\frac{\sin^{2}x}{x^{2}}\,dx\]</div><details><summary>Show the solution</summary><p>Write \(I\) for the integral and \(f(x)=\ln(3-\cos 2x)\). We show \(I=\pi\ln\bigl(1+\tfrac{1}{\sqrt2}\bigr)\).</p>
+<p><strong>Why the direct route stalls.</strong> The integral converges absolutely (the integrand is \(O(x^{-2})\) and bounded near \(0\)), but \(f\) has no useful antiderivative against \(x^{-2}\), and integrating by parts only trades \(\sin^2x/x^2\) for \(\sin 2x/x\) times something worse. The point is that \(f\) is periodic with period \(\pi\), and so is \(\sin^{2}x\): all the non-periodic behaviour sits in the single factor \(x^{-2}\), which can be summed over the period lattice.</p>
+<p><strong>Step 1: fold onto one period (Lobachevsky's device).</strong> The integrand is even, so \(I=\tfrac12\int_{-\infty}^{\infty}f(x)\sin^{2}x\,x^{-2}\,dx\). Cut the line into the intervals \([k\pi,(k+1)\pi]\), \(k\in\mathbb Z\), and shift each back to \([0,\pi]\) by \(x\mapsto x+k\pi\). Since \(f\) and \(\sin^{2}\) have period \(\pi\),
+\[I=\frac12\int_{0}^{\pi}f(x)\sin^{2}x\sum_{k\in\mathbb Z}\frac{1}{(x+k\pi)^{2}}\,dx,\]
+where the interchange of sum and integral is justified by monotone convergence after splitting \(f=f^{+}-f^{-}\) (each piece is nonnegative and bounded). The partial-fraction expansion of the cosecant square, \(\sum_{k\in\mathbb Z}(x+k\pi)^{-2}=\csc^{2}x\), cancels \(\sin^{2}x\) exactly, so
+\[I=\frac12\int_{0}^{\pi}f(x)\,dx=\int_{0}^{\pi/2}\ln(3-\cos 2x)\,dx,\]
+the last step because \(f(\pi-x)=f(x)\).</p>
+<p><strong>Step 2: a log of a quadratic form.</strong> Since \(\cos 2x=\cos^{2}x-\sin^{2}x\) and \(3=3\cos^{2}x+3\sin^{2}x\), we get \(3-\cos 2x=2\cos^{2}x+4\sin^{2}x=2(\cos^{2}x+2\sin^{2}x)\). Hence
+\[I=\frac{\pi}{2}\ln 2+J(1,\sqrt2),\qquad J(a,b)=\int_{0}^{\pi/2}\ln\bigl(a^{2}\cos^{2}x+b^{2}\sin^{2}x\bigr)\,dx\quad(a,b>0).\]</p>
+<p><strong>Step 3: evaluate \(J\) by differentiating in a parameter.</strong> Fix \(a\) and differentiate in \(b\):
+\[\frac{\partial J}{\partial b}=\int_{0}^{\pi/2}\frac{2b\sin^{2}x}{a^{2}\cos^{2}x+b^{2}\sin^{2}x}\,dx=\int_{0}^{\infty}\frac{2b\,t^{2}}{(a^{2}+b^{2}t^{2})(1+t^{2})}\,dt\]
+with \(t=\tan x\). Partial fractions give \(\frac{2b}{b^{2}-a^{2}}\int_{0}^{\infty}\bigl(\frac{1}{1+t^{2}}-\frac{a^{2}}{a^{2}+b^{2}t^{2}}\bigr)dt=\frac{2b}{b^{2}-a^{2}}\bigl(\frac{\pi}{2}-\frac{a\pi}{2b}\bigr)=\frac{\pi}{a+b}\) (for \(b\neq a\), and by continuity at \(b=a\)). At \(b=a\) the integrand is constant: \(J(a,a)=\pi\ln a\). Integrating from \(a\) to \(b\),
+\[J(a,b)=\pi\ln a+\pi\ln\frac{a+b}{2a}=\pi\ln\frac{a+b}{2}.\]</p>
+<p><strong>Step 4: assemble.</strong> With \(a=1,\ b=\sqrt2\),
+\[I=\frac{\pi}{2}\ln 2+\pi\ln\frac{1+\sqrt2}{2}=\pi\ln\frac{1+\sqrt2}{\sqrt2}=\pi\ln\Bigl(1+\frac{1}{\sqrt2}\Bigr).\]</p>
+<p><strong>Check.</strong> The integral was computed independently of Step 1: composite Gauss-Legendre (60 nodes, 4000 panels) on \([0,1000\pi]\), plus the tail beyond \(1000\pi\) summed period by period with the trigamma function. The result \(1.6801237408968885\) agrees with \(\pi\ln(1+1/\sqrt2)=1.6801237408968794\) to \(10^{-14}\); the reduced integral \(\int_0^{\pi/2}\ln(3-\cos 2x)\,dx\) agrees to \(10^{-15}\).</p><div class="answer"><strong>Answer.</strong> \(\pi\ln\bigl(1+\tfrac{1}{\sqrt2}\bigr)=\pi\ln\frac{2+\sqrt2}{2}\approx1.6801237\)</div></details></section><section class="card" id="competition" style="--dm-accent:#96311F"><p class="kind">Competition problem</p><h2>Three terms in the expansion of an integral of an n-norm</h2><figure><img src="/daily-mathematics/2026-10-12/competition.png" width="1200" height="1200" loading="lazy" alt="Card: Three terms in the expansion of an integral of an n-norm"></figure><div class="statement"><p>For each positive integer \(n\) let</p>
+\[a_n=\int_0^1\bigl(x^n+(1-x)^n\bigr)^{1/n}\,dx.\]
+<p>Find real constants \(A\), \(B\), \(C\) such that \(a_n=A+B/n^2+C/n^3+o(1/n^3)\) as \(n\to\infty\).</p></div><details><summary>Show the solution</summary><p>We show \(A=\tfrac34\), \(B=\tfrac{\pi^{2}}{48}\), \(C=\tfrac{\zeta(3)}{8}\); in fact the error is \(O(n^{-4})\).</p>
+<p><strong>Why the obvious route stalls.</strong> The integrand tends to \(\max(x,1-x)\), which gives \(A=\tfrac34\) at once, and a Laplace-type localisation near the kink \(x=\tfrac12\) recovers the \(n^{-2}\) term. But at order \(n^{-3}\) that localisation has to track simultaneously the curvature of \(\ln\frac{1-x}{x}\), the slow variation of \(\max(x,1-x)\) and the next term of \((1+y)^{1/n}\), all with error bounds. A change of variables that makes \(n\) appear only through the exponent \(1/n\) removes all of this.</p>
+<p><strong>Step 1: a rational weight.</strong> The integrand is symmetric under \(x\mapsto1-x\), so \(a_n=2\int_{0}^{1/2}(x^n+(1-x)^n)^{1/n}dx\). Put \(t=x/(1-x)\in[0,1]\): then \(x=\frac{t}{1+t}\), \(1-x=\frac{1}{1+t}\), \(dx=\frac{dt}{(1+t)^{2}}\), and \((x^n+(1-x)^n)^{1/n}=\frac{(1+t^n)^{1/n}}{1+t}\). Hence
+\[a_n=2\int_{0}^{1}\frac{(1+t^n)^{1/n}}{(1+t)^{3}}\,dt.\]
+Since \(2\int_0^1(1+t)^{-3}dt=1-\tfrac14=\tfrac34\), we get \(A=\tfrac34\) and \(a_n-\tfrac34=2\int_0^1\frac{(1+t^n)^{1/n}-1}{(1+t)^{3}}dt\).</p>
+<p><strong>Step 2: push \(n\) into exponents.</strong> Substitute \(s=t^{n}\), so \(dt=\frac{1}{n}s^{1/n-1}ds\), and write \(\varepsilon=1/n\), \(L=\ln(1+s)\in[0,\ln2]\), \(v=\ln s\le0\). With \(h(y)=\frac{e^{y}}{(1+e^{y})^{3}}\) this becomes
+\[a_n-\tfrac34=2\varepsilon\int_{0}^{1}\bigl(e^{\varepsilon L}-1\bigr)\,h(\varepsilon v)\,\frac{ds}{s}.\]</p>
+<p><strong>Step 3: uniform expansions.</strong> On \(y\le0\) the function \(h\) and all its derivatives are bounded (each is \(e^{y}\) times a polynomial in \((1+e^{y})^{-1}\) and \(e^y\)). Also \(h(0)=\tfrac18\) and \(h'(0)=\tfrac18-\tfrac3{16}=-\tfrac1{16}\). By Taylor's theorem, \(h(\varepsilon v)=\tfrac18-\tfrac{\varepsilon v}{16}+O(\varepsilon^{2}v^{2})\) uniformly, and since \(\varepsilon L\le\ln2\), \(e^{\varepsilon L}-1=\varepsilon L+\tfrac12\varepsilon^{2}L^{2}+O(\varepsilon^{3}L^{3})\). Multiplying,
+\[\bigl(e^{\varepsilon L}-1\bigr)h(\varepsilon v)=\frac{\varepsilon L}{8}+\varepsilon^{2}\Bigl(\frac{L^{2}}{16}-\frac{Lv}{16}\Bigr)+E,\qquad |E|\le K\varepsilon^{3}\bigl(L^{3}+L^{2}|v|+Lv^{2}\bigr).\]
+Because \(L\le s\), the error satisfies \(\int_0^1|E|\,\frac{ds}{s}\le K\varepsilon^{3}\int_0^1(1+|\ln s|+\ln^{2}s)\,ds=O(\varepsilon^{3})\). This is the only delicate point: \(v=\ln s\) is unbounded, and it is the factor \(L/s\le1\) that keeps the remainder integrable.</p>
+<p><strong>Step 4: three polylogarithmic constants.</strong> From \(\ln(1+s)=\sum_{k\ge1}(-1)^{k+1}s^{k}/k\) and \(\int_0^1s^{k-1}\ln s\,ds=-1/k^{2}\):
+\[\int_0^1\frac{L}{s}\,ds=\sum_{k\ge1}\frac{(-1)^{k+1}}{k^{2}}=\frac{\pi^{2}}{12},\qquad \int_0^1\frac{L\ln s}{s}\,ds=-\sum_{k\ge1}\frac{(-1)^{k+1}}{k^{3}}=-\frac34\zeta(3).\]
+For the last one, integrate by parts (the boundary terms vanish): \(\int_0^1\frac{\ln^{2}(1+s)}{s}ds=-2\int_0^1\frac{\ln s\,\ln(1+s)}{1+s}ds\). Expanding \(\frac{\ln(1+s)}{1+s}=\sum_{k\ge1}(-1)^{k+1}H_k s^{k}\) and integrating termwise gives \(2\sum_{k\ge1}(-1)^{k+1}\frac{H_k}{(k+1)^{2}}\), and this alternating Euler sum equals \(\frac{\zeta(3)}{8}\), so \(\int_0^1\frac{\ln^{2}(1+s)}{s}ds=\frac{\zeta(3)}{4}\).</p>
+<p><strong>Step 5: assemble.</strong>
+\[a_n-\frac34=2\varepsilon\Bigl[\frac{\varepsilon}{8}\cdot\frac{\pi^{2}}{12}+\frac{\varepsilon^{2}}{16}\Bigl(\frac{\zeta(3)}{4}+\frac{3\zeta(3)}{4}\Bigr)\Bigr]+O(\varepsilon^{4})=\frac{\pi^{2}}{48n^{2}}+\frac{\zeta(3)}{8n^{3}}+O\Bigl(\frac{1}{n^{4}}\Bigr).\]</p>
+<p><strong>Check.</strong> The original integral and the transformed one were computed by composite Gauss-Legendre quadrature and agree to \(10^{-16}\) for \(n=5,20\). The quantity \(n^{3}\bigl(a_n-\tfrac34-\tfrac{\pi^{2}}{48n^{2}}\bigr)\) equals \(0.149218,\ 0.149744,\ 0.150002,\ 0.150130,\ 0.150194\) for \(n=100,200,400,800,1600\); the gap to \(\zeta(3)/8=0.1502571\) halves each time, as an \(O(1/n)\) error should, and Richardson extrapolation of the last two values gives \(0.1502573\).</p><div class="answer"><strong>Answer.</strong> \(A=\tfrac34,\ B=\tfrac{\pi^{2}}{48},\ C=\tfrac{\zeta(3)}{8}\)</div></details></section><p><a href="/daily-mathematics/">All solutions</a> · <a href="/ja/daily-mathematics/2026-10-12/" hreflang="ja" lang="ja">日本語</a></p></main>
+<!-- ISEGORIA:FOOT -->
+<footer id="ig-footer"><div><a href="/">Isegoria · Benjamin Haire</a><nav aria-label="Site links"><a href="/">Back to home</a><a href="/library.html">Browse the library</a><a href="#ig-content">Back to top</a></nav></div></footer>
+<!-- /ISEGORIA:FOOT -->
+</body></html>

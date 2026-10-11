@@ -1,0 +1,77 @@
+<!doctype html><html lang="ja" class="ig-document ig-editorial"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Daily Mathematics 解答：2026年10月12日 · Isegoria</title><meta name="description" content="2026年10月12日のThreadsカード2枚（難しい定積分とパトナム型の問題）の完全な解答。"><link rel="canonical" href="https://theisegoria.github.io/ja/daily-mathematics/2026-10-12/"><link rel="alternate" hreflang="en" href="https://theisegoria.github.io/daily-mathematics/2026-10-12/"><link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/daily-mathematics/2026-10-12/"><link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/daily-mathematics/2026-10-12/"><link rel="icon" href="/assets/favicon.svg"><link rel="stylesheet" href="/assets/isegoria.css?v=20260915"><link rel="stylesheet" href="/analysis-atlas/vendor/katex.min.css"><script defer src="/analysis-atlas/vendor/katex.min.js"></script><script defer src="/analysis-atlas/vendor/contrib/auto-render.min.js"></script><script>document.addEventListener("DOMContentLoaded",function(){if(window.renderMathInElement)renderMathInElement(document.querySelector("main"),{delimiters:[{left:"\\[",right:"\\]",display:true},{left:"\\(",right:"\\)",display:false}],throwOnError:false});});</script><style>
+.dm{max-width:46rem;margin:0 auto;padding:2.5rem 1.25rem 4rem}
+.dm .eyebrow{letter-spacing:.14em;text-transform:uppercase;font-size:.78rem;opacity:.7;margin:0 0 .4rem}
+.dm h1{margin:.1rem 0 .6rem;line-height:1.2}
+.dm .deck{opacity:.85;margin:0 0 2rem}
+.dm .card{margin:2.6rem 0 0;padding-top:1.4rem;border-top:2px solid var(--dm-accent,currentColor)}
+.dm .card h2{margin:.2rem 0 .9rem;line-height:1.3}
+.dm .kind{font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dm-accent);margin:0}
+.dm figure{margin:1rem 0 1.4rem}
+.dm figure img{width:100%;max-width:30rem;height:auto;display:block;border:1px solid rgba(127,127,127,.25)}
+.dm .statement{padding:.9rem 1.1rem;border-left:3px solid var(--dm-accent);background:rgba(127,127,127,.07)}
+.dm details{margin:1.2rem 0}
+.dm summary{cursor:pointer;font-weight:600}
+.dm .answer{margin-top:1.2rem;padding:.8rem 1.1rem;border:1px solid var(--dm-accent)}
+.dm .katex-display{overflow-x:auto;overflow-y:hidden;padding:.2rem 0}
+.dm .days{list-style:none;padding:0;margin:1.5rem 0 0}
+.dm .days li{padding:.9rem 0;border-top:1px solid rgba(127,127,127,.25)}
+.dm .days a.date{font-weight:600}
+.dm .days span{display:block;opacity:.85}
+html[lang=ja] .dm{line-height:1.85}
+</style><script src="/assets/lang.js"></script>
+<!-- ISEGORIA:HEAD -->
+<link rel="stylesheet" href="/assets/site-shell.css?v=c21cd21e82">
+<script src="/assets/site-shell.js?v=c21cd21e82" ></script>
+<!-- /ISEGORIA:HEAD -->
+<script defer data-isegoria-analytics src="/assets/analytics.js?v=9e6ebd463bf2"></script>
+</head><body class="ig-site" data-site-kind="editorial" data-site-route="/ja/daily-mathematics/2026-10-12/">
+<!-- ISEGORIA:NAV -->
+<a class="ig-skip" href="#ig-content">本文へ移動</a>
+<header id="ig-header"><div class="ig-nav-inner">
+<a class="ig-brand" href="/ja/" aria-label="Isegoria, ホーム"><strong>ISEGORIA</strong><span>Benjamin Haire</span></a>
+<div class="ig-header-actions"><a class="ig-language" href="/daily-mathematics/2026-10-12/" hreflang="en" lang="en">English</a><button class="ig-menu" type="button" aria-expanded="false" aria-controls="ig-primary">メニュー</button></div>
+<nav id="ig-primary" aria-label="メインナビゲーション"><a href="/ja/">ホーム</a><a href="/ja/library.html">全コンテンツ</a><a href="/ja/math-encyclopedia/" aria-current="location">数学百科事典</a><a href="/ja/#interactive">操作できる解説</a><a href="/ja/#preoccupations">研究と解説</a><a href="/ja/#books">書籍</a><a href="/ja/projects.html">プロジェクト</a><a href="/ja/about.html">このサイトについて</a><a class="ig-language" href="/daily-mathematics/2026-10-12/" hreflang="en" lang="en">English</a><button class="ig-theme" type="button" hidden>表示切替</button></nav>
+</div></header>
+<nav id="ig-breadcrumb" aria-label="パンくずリスト"><a href="/ja/">ホーム</a><span aria-hidden="true">/</span><a href="/ja/math-encyclopedia/">数学百科事典</a><span aria-hidden="true">/</span><a href="/ja/daily-mathematics/">Daily Mathematics 解答集</a><span aria-hidden="true">/</span><span aria-current="page">Daily Mathematics 解答：2026年10月12日</span></nav>
+<span id="ig-content" tabindex="-1"></span>
+<!-- /ISEGORIA:NAV -->
+<main id="main" class="dm"><p class="eyebrow">Daily Mathematics / 解答</p><h1>2026年10月12日の解答</h1><p class="deck">この日のカードは難しい定積分とオリジナルのパトナム型の問題の2枚である。まず自分で考え、詰まったら解答を開くこと。</p><section class="card" id="integral" style="--dm-accent:#24457F"><p class="kind">積分</p><h2>重み sin²x/x² に対する周期的な対数の積分</h2><figure><img src="/daily-mathematics/2026-10-12/integral.png" width="1200" height="1200" loading="lazy" alt="カード: 重み sin²x/x² に対する周期的な対数の積分"></figure><div class="statement"><p>次の定積分を閉じた形で求めよ。</p>
+\[\int_{0}^{\infty}\ln\bigl(3-\cos 2x\bigr)\,\frac{\sin^{2}x}{x^{2}}\,dx\]</div><details><summary>解答を開く</summary><p>積分を \(I\)，\(f(x)=\ln(3-\cos 2x)\) とおく。\(I=\pi\ln\bigl(1+\tfrac{1}{\sqrt2}\bigr)\) であることを示す。</p>
+<p><strong>直接の計算が行き詰まる理由。</strong>被積分関数は \(0\) の近くで有界で，無限遠では \(O(x^{-2})\) であるから積分は絶対収束する。しかし \(x^{-2}\) を相手に \(f\) の原始関数は役に立たず，部分積分をしても \(\sin^{2}x/x^{2}\) が \(\sin 2x/x\) とより悪い因子の積に変わるだけである。要点は，\(f\) も \(\sin^{2}x\) も周期 \(\pi\) をもつことである。周期的でない部分は因子 \(x^{-2}\) だけに集まっており，これは周期格子にわたって和をとることができる。</p>
+<p><strong>第1段：一周期への折りたたみ（ロバチェフスキーの方法）。</strong>被積分関数は偶関数なので \(I=\tfrac12\int_{-\infty}^{\infty}f(x)\sin^{2}x\,x^{-2}\,dx\) である。実数直線を区間 \([k\pi,(k+1)\pi]\)（\(k\in\mathbb Z\)）に分け，\(x\mapsto x+k\pi\) で各区間を \([0,\pi]\) に戻す。\(f\) と \(\sin^{2}\) は周期 \(\pi\) をもつから
+\[I=\frac12\int_{0}^{\pi}f(x)\sin^{2}x\sum_{k\in\mathbb Z}\frac{1}{(x+k\pi)^{2}}\,dx\]
+を得る。和と積分の交換は，\(f=f^{+}-f^{-}\) と分けて（各部分は非負かつ有界）単調収束定理を用いれば正当化される。余割の平方の部分分数展開 \(\sum_{k\in\mathbb Z}(x+k\pi)^{-2}=\csc^{2}x\) により \(\sin^{2}x\) がちょうど打ち消され，
+\[I=\frac12\int_{0}^{\pi}f(x)\,dx=\int_{0}^{\pi/2}\ln(3-\cos 2x)\,dx\]
+となる。最後の等号は \(f(\pi-x)=f(x)\) による。</p>
+<p><strong>第2段：二次形式の対数。</strong>\(\cos 2x=\cos^{2}x-\sin^{2}x\)，\(3=3\cos^{2}x+3\sin^{2}x\) より \(3-\cos 2x=2(\cos^{2}x+2\sin^{2}x)\) である。よって
+\[I=\frac{\pi}{2}\ln 2+J(1,\sqrt2),\qquad J(a,b)=\int_{0}^{\pi/2}\ln\bigl(a^{2}\cos^{2}x+b^{2}\sin^{2}x\bigr)\,dx\quad(a,b>0).\]</p>
+<p><strong>第3段：パラメータ微分による \(J\) の計算。</strong>\(a\) を固定して \(b\) で微分し，\(t=\tan x\) とおくと
+\[\frac{\partial J}{\partial b}=\int_{0}^{\pi/2}\frac{2b\sin^{2}x}{a^{2}\cos^{2}x+b^{2}\sin^{2}x}\,dx=\int_{0}^{\infty}\frac{2b\,t^{2}}{(a^{2}+b^{2}t^{2})(1+t^{2})}\,dt\]
+である。部分分数分解により，これは \(\frac{2b}{b^{2}-a^{2}}\bigl(\frac{\pi}{2}-\frac{a\pi}{2b}\bigr)=\frac{\pi}{a+b}\) に等しい（\(b\neq a\) のとき。\(b=a\) では連続性による）。\(b=a\) では被積分関数は定数であり \(J(a,a)=\pi\ln a\) である。\(a\) から \(b\) まで積分して
+\[J(a,b)=\pi\ln a+\pi\ln\frac{a+b}{2a}=\pi\ln\frac{a+b}{2}\]
+を得る。</p>
+<p><strong>第4段：まとめ。</strong>\(a=1,\ b=\sqrt2\) とおけば
+\[I=\frac{\pi}{2}\ln 2+\pi\ln\frac{1+\sqrt2}{2}=\pi\ln\frac{1+\sqrt2}{\sqrt2}=\pi\ln\Bigl(1+\frac{1}{\sqrt2}\Bigr).\]</p>
+<p><strong>検算。</strong>第1段とは独立に数値計算を行った。\([0,1000\pi]\) 上で合成ガウス・ルジャンドル求積（60点，4000区間）を行い，\(1000\pi\) より先の裾は周期ごとにトリガンマ関数で和をとった。結果 \(1.6801237408968885\) は \(\pi\ln(1+1/\sqrt2)=1.6801237408968794\) と \(10^{-14}\) の精度で一致し，折りたたんだ積分 \(\int_0^{\pi/2}\ln(3-\cos 2x)\,dx\) も \(10^{-15}\) の精度で一致した。</p><div class="answer"><strong>答え.</strong> \(\pi\ln\bigl(1+\tfrac{1}{\sqrt2}\bigr)=\pi\ln\frac{2+\sqrt2}{2}\approx1.6801237\)</div></details></section><section class="card" id="competition" style="--dm-accent:#96311F"><p class="kind">競技数学の問題</p><h2>n ノルムの積分の漸近展開の三項</h2><figure><img src="/daily-mathematics/2026-10-12/competition.png" width="1200" height="1200" loading="lazy" alt="カード: n ノルムの積分の漸近展開の三項"></figure><div class="statement"><p>各正の整数 \(n\) に対して</p>
+\[a_n=\int_0^1\bigl(x^n+(1-x)^n\bigr)^{1/n}\,dx\]
+<p>とおく。\(n\to\infty\) のとき \(a_n=A+B/n^2+C/n^3+o(1/n^3)\) となる実定数 \(A\)，\(B\)，\(C\) を求めよ。</p></div><details><summary>解答を開く</summary><p>\(A=\tfrac34\)，\(B=\tfrac{\pi^{2}}{48}\)，\(C=\tfrac{\zeta(3)}{8}\) であることを示す。実際，誤差は \(O(n^{-4})\) である。</p>
+<p><strong>素直な方法が行き詰まる理由。</strong>被積分関数は \(\max(x,1-x)\) に収束するので \(A=\tfrac34\) はすぐに得られ，折れ点 \(x=\tfrac12\) の近くでラプラス型の局所化を行えば \(n^{-2}\) の項も得られる。しかし \(n^{-3}\) の次数では，\(\ln\frac{1-x}{x}\) の曲がり，\(\max(x,1-x)\) のゆるやかな変化，\((1+y)^{1/n}\) の次の項を，誤差評価つきで同時に追わねばならない。\(n\) が指数 \(1/n\) を通してのみ現れるような変数変換をすれば，これらはすべて不要になる。</p>
+<p><strong>第1段：有理関数の重み。</strong>被積分関数は \(x\mapsto1-x\) で不変なので \(a_n=2\int_{0}^{1/2}(x^n+(1-x)^n)^{1/n}dx\) である。\(t=x/(1-x)\in[0,1]\) とおくと \(x=\frac{t}{1+t}\)，\(1-x=\frac{1}{1+t}\)，\(dx=\frac{dt}{(1+t)^{2}}\)，\((x^n+(1-x)^n)^{1/n}=\frac{(1+t^n)^{1/n}}{1+t}\) であるから
+\[a_n=2\int_{0}^{1}\frac{(1+t^n)^{1/n}}{(1+t)^{3}}\,dt\]
+を得る。\(2\int_0^1(1+t)^{-3}dt=1-\tfrac14=\tfrac34\) より \(A=\tfrac34\) であり，\(a_n-\tfrac34=2\int_0^1\frac{(1+t^n)^{1/n}-1}{(1+t)^{3}}dt\) となる。</p>
+<p><strong>第2段：\(n\) を指数に押し込む。</strong>\(s=t^{n}\) とおくと \(dt=\frac1n s^{1/n-1}ds\) である。\(\varepsilon=1/n\)，\(L=\ln(1+s)\in[0,\ln2]\)，\(v=\ln s\le0\)，\(h(y)=\frac{e^{y}}{(1+e^{y})^{3}}\) とおけば
+\[a_n-\tfrac34=2\varepsilon\int_{0}^{1}\bigl(e^{\varepsilon L}-1\bigr)\,h(\varepsilon v)\,\frac{ds}{s}\]
+となる。</p>
+<p><strong>第3段：一様な展開。</strong>\(y\le0\) において \(h\) とそのすべての導関数は有界である。また \(h(0)=\tfrac18\)，\(h'(0)=-\tfrac1{16}\) である。テイラーの定理により一様に \(h(\varepsilon v)=\tfrac18-\tfrac{\varepsilon v}{16}+O(\varepsilon^{2}v^{2})\) であり，\(\varepsilon L\le\ln2\) より \(e^{\varepsilon L}-1=\varepsilon L+\tfrac12\varepsilon^{2}L^{2}+O(\varepsilon^{3}L^{3})\) である。掛け合わせて
+\[\bigl(e^{\varepsilon L}-1\bigr)h(\varepsilon v)=\frac{\varepsilon L}{8}+\varepsilon^{2}\Bigl(\frac{L^{2}}{16}-\frac{Lv}{16}\Bigr)+E,\qquad |E|\le K\varepsilon^{3}\bigl(L^{3}+L^{2}|v|+Lv^{2}\bigr)\]
+を得る。\(L\le s\) であるから \(\int_0^1|E|\,\frac{ds}{s}\le K\varepsilon^{3}\int_0^1(1+|\ln s|+\ln^{2}s)\,ds=O(\varepsilon^{3})\) である。微妙な点はここだけである。\(v=\ln s\) は有界でないが，因子 \(L/s\le1\) が剰余項を可積分に保つ。</p>
+<p><strong>第4段：三つの多重対数型の定数。</strong>\(\ln(1+s)=\sum_{k\ge1}(-1)^{k+1}s^{k}/k\) と \(\int_0^1s^{k-1}\ln s\,ds=-1/k^{2}\) から
+\[\int_0^1\frac{L}{s}\,ds=\sum_{k\ge1}\frac{(-1)^{k+1}}{k^{2}}=\frac{\pi^{2}}{12},\qquad \int_0^1\frac{L\ln s}{s}\,ds=-\sum_{k\ge1}\frac{(-1)^{k+1}}{k^{3}}=-\frac34\zeta(3)\]
+を得る。残りの一つは古典的な値 \(\int_0^1\frac{\ln^{2}(1+s)}{s}ds=\frac{\zeta(3)}{4}\) である（部分積分で \(-2\int_0^1\frac{\ln s\ln(1+s)}{1+s}ds\) に直し，\(\frac{\ln(1+s)}{1+s}=\sum_{k\ge1}(-1)^{k+1}H_k s^{k}\) を項別に積分して \(\sum_{k\ge1}(-1)^{k+1}\frac{H_k}{(k+1)^{2}}=\frac{\zeta(3)}{8}\) を用いる）。</p>
+<p><strong>第5段：まとめ。</strong>
+\[a_n-\frac34=2\varepsilon\Bigl[\frac{\varepsilon}{8}\cdot\frac{\pi^{2}}{12}+\frac{\varepsilon^{2}}{16}\Bigl(\frac{\zeta(3)}{4}+\frac{3\zeta(3)}{4}\Bigr)\Bigr]+O(\varepsilon^{4})=\frac{\pi^{2}}{48n^{2}}+\frac{\zeta(3)}{8n^{3}}+O\Bigl(\frac{1}{n^{4}}\Bigr).\]</p>
+<p><strong>検算。</strong>元の積分と変換後の積分を合成ガウス・ルジャンドル求積で計算し，\(n=5,20\) で \(10^{-16}\) の精度で一致した。\(n^{3}\bigl(a_n-\tfrac34-\tfrac{\pi^{2}}{48n^{2}}\bigr)\) は \(n=100,200,400,800,1600\) に対して \(0.149218,\ 0.149744,\ 0.150002,\ 0.150130,\ 0.150194\) であり，\(\zeta(3)/8=0.1502571\) との差は \(n\) を倍にするごとに半分になる。これは \(O(1/n)\) の誤差と整合し，最後の二つの値のリチャードソン外挿は \(0.1502573\) を与える。</p><div class="answer"><strong>答え.</strong> \(A=\tfrac34,\ B=\tfrac{\pi^{2}}{48},\ C=\tfrac{\zeta(3)}{8}\)</div></details></section><p><a href="/ja/daily-mathematics/">解答の一覧へ戻る</a> · <a href="/daily-mathematics/2026-10-12/" hreflang="en" lang="en">English</a></p></main>
+<!-- ISEGORIA:FOOT -->
+<footer id="ig-footer"><div><a href="/ja/">Isegoria · Benjamin Haire</a><nav aria-label="サイト内リンク"><a href="/ja/">ホームに戻る</a><a href="/ja/library.html">全コンテンツ</a><a href="#ig-content">ページ上部へ</a></nav></div></footer>
+<!-- /ISEGORIA:FOOT -->
+</body></html>
