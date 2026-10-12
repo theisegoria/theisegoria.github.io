@@ -1,0 +1,72 @@
+<!doctype html><html lang="ja" class="ig-document ig-editorial"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Daily Mathematics 解答：2026年10月13日 · Isegoria</title><meta name="description" content="2026年10月13日のThreadsカード2枚（難しい定積分とパトナム型の問題）の完全な解答。"><link rel="canonical" href="https://theisegoria.github.io/ja/daily-mathematics/2026-10-13/"><link rel="alternate" hreflang="en" href="https://theisegoria.github.io/daily-mathematics/2026-10-13/"><link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/daily-mathematics/2026-10-13/"><link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/daily-mathematics/2026-10-13/"><link rel="icon" href="/assets/favicon.svg"><link rel="stylesheet" href="/assets/isegoria.css?v=20260915"><link rel="stylesheet" href="/analysis-atlas/vendor/katex.min.css"><script defer src="/analysis-atlas/vendor/katex.min.js"></script><script defer src="/analysis-atlas/vendor/contrib/auto-render.min.js"></script><script>document.addEventListener("DOMContentLoaded",function(){if(window.renderMathInElement)renderMathInElement(document.querySelector("main"),{delimiters:[{left:"\\[",right:"\\]",display:true},{left:"\\(",right:"\\)",display:false}],throwOnError:false});});</script><style>
+.dm{max-width:46rem;margin:0 auto;padding:2.5rem 1.25rem 4rem}
+.dm .eyebrow{letter-spacing:.14em;text-transform:uppercase;font-size:.78rem;opacity:.7;margin:0 0 .4rem}
+.dm h1{margin:.1rem 0 .6rem;line-height:1.2}
+.dm .deck{opacity:.85;margin:0 0 2rem}
+.dm .card{margin:2.6rem 0 0;padding-top:1.4rem;border-top:2px solid var(--dm-accent,currentColor)}
+.dm .card h2{margin:.2rem 0 .9rem;line-height:1.3}
+.dm .kind{font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dm-accent);margin:0}
+.dm figure{margin:1rem 0 1.4rem}
+.dm figure img{width:100%;max-width:30rem;height:auto;display:block;border:1px solid rgba(127,127,127,.25)}
+.dm .statement{padding:.9rem 1.1rem;border-left:3px solid var(--dm-accent);background:rgba(127,127,127,.07)}
+.dm details{margin:1.2rem 0}
+.dm summary{cursor:pointer;font-weight:600}
+.dm .answer{margin-top:1.2rem;padding:.8rem 1.1rem;border:1px solid var(--dm-accent)}
+.dm .katex-display{overflow-x:auto;overflow-y:hidden;padding:.2rem 0}
+.dm .days{list-style:none;padding:0;margin:1.5rem 0 0}
+.dm .days li{padding:.9rem 0;border-top:1px solid rgba(127,127,127,.25)}
+.dm .days a.date{font-weight:600}
+.dm .days span{display:block;opacity:.85}
+html[lang=ja] .dm{line-height:1.85}
+</style><script src="/assets/lang.js"></script>
+<!-- ISEGORIA:HEAD -->
+<link rel="stylesheet" href="/assets/site-shell.css?v=c21cd21e82">
+<script src="/assets/site-shell.js?v=c21cd21e82" ></script>
+<!-- /ISEGORIA:HEAD -->
+<script defer data-isegoria-analytics src="/assets/analytics.js?v=9e6ebd463bf2"></script>
+</head><body class="ig-site" data-site-kind="editorial" data-site-route="/ja/daily-mathematics/2026-10-13/">
+<!-- ISEGORIA:NAV -->
+<a class="ig-skip" href="#ig-content">本文へ移動</a>
+<header id="ig-header"><div class="ig-nav-inner">
+<a class="ig-brand" href="/ja/" aria-label="Isegoria, ホーム"><strong>ISEGORIA</strong><span>Benjamin Haire</span></a>
+<div class="ig-header-actions"><a class="ig-language" href="/daily-mathematics/2026-10-13/" hreflang="en" lang="en">English</a><button class="ig-menu" type="button" aria-expanded="false" aria-controls="ig-primary">メニュー</button></div>
+<nav id="ig-primary" aria-label="メインナビゲーション"><a href="/ja/">ホーム</a><a href="/ja/library.html">全コンテンツ</a><a href="/ja/math-encyclopedia/" aria-current="location">数学百科事典</a><a href="/ja/#interactive">操作できる解説</a><a href="/ja/#preoccupations">研究と解説</a><a href="/ja/#books">書籍</a><a href="/ja/projects.html">プロジェクト</a><a href="/ja/about.html">このサイトについて</a><a class="ig-language" href="/daily-mathematics/2026-10-13/" hreflang="en" lang="en">English</a><button class="ig-theme" type="button" hidden>表示切替</button></nav>
+</div></header>
+<nav id="ig-breadcrumb" aria-label="パンくずリスト"><a href="/ja/">ホーム</a><span aria-hidden="true">/</span><a href="/ja/math-encyclopedia/">数学百科事典</a><span aria-hidden="true">/</span><a href="/ja/daily-mathematics/">Daily Mathematics 解答集</a><span aria-hidden="true">/</span><span aria-current="page">Daily Mathematics 解答：2026年10月13日</span></nav>
+<span id="ig-content" tabindex="-1"></span>
+<!-- /ISEGORIA:NAV -->
+<main id="main" class="dm"><p class="eyebrow">Daily Mathematics / 解答</p><h1>2026年10月13日の解答</h1><p class="deck">この日のカードは難しい定積分とオリジナルのパトナム型の問題の2枚である。まず自分で考え、詰まったら解答を開くこと。</p><section class="card" id="integral" style="--dm-accent:#24457F"><p class="kind">積分</p><h2>双曲線正弦に対する 1 − cos x の積分</h2><figure><img src="/daily-mathematics/2026-10-13/integral.png" width="1200" height="1200" loading="lazy" alt="カード: 双曲線正弦に対する 1 − cos x の積分"></figure><div class="statement"><p>次の定積分を閉じた形で求めよ。</p>
+\[\int_{0}^{\infty}\frac{1-\cos x}{x\,\sinh x}\,dx\]</div><details><summary>解答を開く</summary><p>積分を \(I\) とおく。\(I=\ln\cosh\frac{\pi}{2}\) であることを示す。</p>
+<p><strong>直接の計算が行き詰まる理由。</strong>被積分関数は \((0,\infty)\) で連続であり，\(x\to0^{+}\) で \(\tfrac12\) に近づき，無限遠では \(O(e^{-x}/x)\) であるから，\(I\) は絶対収束する。まず思いつくのは \(1-\cos x\) を \(x\) のべき級数に展開することであるが，各項は \(\int_0^\infty x^{2m-1}/\sinh x\,dx\) となって \((2m-1)!\) のように増大し，\(m\) についての級数は発散する。展開すべきは \(1/\sinh x\) の方である。双曲線関数が指数関数の和に変わり，\(e^{-cx}\) に対しては因子 \((1-\cos x)/x\) のラプラス変換が初等的に求まるからである。</p>
+<p><strong>第1段：双曲線因子の展開。</strong>\(x>0\) に対して
+\[\frac{1}{\sinh x}=\frac{2e^{-x}}{1-e^{-2x}}=2\sum_{k\ge0}e^{-(2k+1)x}\]
+である。各項も \((1-\cos x)/x\) も非負であるから，単調収束定理により項別積分してよく，
+\[I=2\sum_{k\ge0}F(2k+1),\qquad F(c)=\int_0^\infty\frac{1-\cos x}{x}\,e^{-cx}\,dx\quad(c>0)\]
+を得る。</p>
+<p><strong>第2段：ラプラス変換 \(F\) の計算。</strong>\(0\le(1-\cos x)/x\le\min(x/2,\,2/x)\) であるから，任意の \(c_0>0\) について \(c\ge c_0\) で積分記号下の微分が許され，
+\[F'(c)=-\int_0^\infty(1-\cos x)e^{-cx}\,dx=-\Bigl(\frac1c-\frac{c}{c^{2}+1}\Bigr)\]
+となる。優収束定理より \(c\to\infty\) で \(F(c)\to0\) である。よって
+\[F(c)=\int_c^\infty\Bigl(\frac1t-\frac{t}{t^{2}+1}\Bigr)dt=\Bigl[\ln t-\tfrac12\ln(t^{2}+1)\Bigr]_c^\infty=\tfrac12\ln\Bigl(1+\frac{1}{c^{2}}\Bigr)\]
+を得る。</p>
+<p><strong>第3段：対数の和を無限積にまとめる。</strong>第1段と第2段から
+\[I=\sum_{k\ge0}\ln\Bigl(1+\frac{1}{(2k+1)^{2}}\Bigr)=\ln\prod_{k\ge0}\Bigl(1+\frac{1}{(2k+1)^{2}}\Bigr)\]
+であり，この無限積は絶対収束する。余弦のワイエルシュトラス積 \(\cos\frac{\pi z}{2}=\prod_{k\ge0}\bigl(1-\frac{z^{2}}{(2k+1)^{2}}\bigr)\) はすべての複素数 \(z\) で成り立ち，\(z=i\) とおくと \(\cosh\frac{\pi}{2}=\prod_{k\ge0}\bigl(1+\frac{1}{(2k+1)^{2}}\bigr)\) となる。したがって
+\[I=\ln\cosh\frac{\pi}{2}=\ln\frac{e^{\pi/2}+e^{-\pi/2}}{2}\approx0.9199554002\]
+である。</p>
+<p><strong>別解。</strong>高さ \(\pi\) の長方形の周回積分により \(\int_0^\infty\frac{\sin ax}{\sinh x}\,dx=\frac{\pi}{2}\tanh\frac{\pi a}{2}\) が得られる。これを \(a\) について \(0\) から \(1\) まで積分し，\(\int_0^1\sin ax\,da=(1-\cos x)/x\) を用いれば，\(\int_0^1\frac{\pi}{2}\tanh\frac{\pi a}{2}\,da=\ln\cosh\frac{\pi}{2}\) より同じ値に至る。</p>
+<p><strong>数値による確認。</strong>合成ガウス・ルジャンドル求積（100 節点，区間 \([0,80]\) を 40 分割と 200 分割，\(0\) の近くでの桁落ちを避けるため \(1-\cos x=2\sin^{2}(x/2)\) と書いた）は \(\ln\cosh\frac{\pi}{2}\) と \(6\times10^{-16}\) 以内で一致し，第3段の級数の部分和も同じ値に収束する。</p><div class="answer"><strong>答え.</strong> \(\ln\cosh\frac{\pi}{2}=\ln\frac{e^{\pi/2}+e^{-\pi/2}}{2}\approx0.9199554\)</div></details></section><section class="card" id="competition" style="--dm-accent:#96311F"><p class="kind">競技数学の問題</p><h2>2進の桁が重ならないことで定まる行列の行列式</h2><figure><img src="/daily-mathematics/2026-10-13/competition.png" width="1200" height="1200" loading="lazy" alt="カード: 2進の桁が重ならないことで定まる行列の行列式"></figure><div class="statement"><p>正の整数 \(i,j\) の2進表示において \(1\) が同じ桁に現れないとき \(i\perp j\) と書く。\(n\times n\) 行列 \(A_n\) を</p>
+\[(A_n)_{ij}=\begin{cases}1 &amp; (i\perp j)\\ 0 &amp; (\text{それ以外})\end{cases}\qquad 1\le i,j\le n\]
+<p>で定める。\(\det A_n\) を求めよ。</p></div><details><summary>解答を開く</summary><p>\(n\) が奇数ならば \(\det A_n=0\)，\(n\) が偶数ならば \(\det A_n=(-1)^{n/2}\) であることを示す。すなわち \(n=1,2,3,4,\dots\) に対する値は \(0,-1,0,1,0,-1,0,1,\dots\) である。以下，\(s(m)\) で \(m\) の2進表示に現れる \(1\) の個数を表し，添字 \(0\) も許す。\(0\) はすべての数と \(\perp\) の関係にある。</p>
+<p><strong>直接の計算が行き詰まる理由。</strong>小さな場合を計算すれば答えはすぐ予想でき，奇数の場合には一行の証明さえある。奇数 \(i\) と奇数 \(j\) は決して \(i\perp j\) とならないので，\((n+1)/2\) 本の奇数行は \((n-1)/2\) 本の偶数列だけに成分をもち，一次従属になる。しかし \(n\) が偶数のとき \(A_n\) をそのまま行基本変形すると込み入ってしまう。条件 \(i\perp j\) は2進の各桁についての積であるのに，添字集合 \(\{1,\dots,n\}\) は2のべきでもなく \(0\) から始まってもいないからである。そこで第 \(0\) 行と第 \(0\) 列を補い，\(A_n\) をクロネッカー積の首座ブロックの余因子として捉える。</p>
+<p><strong>第1段：クロネッカー積の構造。</strong>\(2^{r}&gt;n\) となる \(r\) を固定し，行と列の添字を \(0,1,\dots,2^{r}-1\) とする \(2^{r}\times2^{r}\) 行列 \(B\) を \(B_{ij}=[\,i\perp j\,]\) で定める。\(i=\sum_t i_t2^{t}\)，\(j=\sum_t j_t2^{t}\)（\(i_t,j_t\in\{0,1\}\)）と書けば \([\,i\perp j\,]=\prod_t K_{i_tj_t}\) であり，ここで \(K=\begin{pmatrix}1&amp;1\\1&amp;0\end{pmatrix}\)（行と列の添字は \(0,1\)）である。よって添字の自然な順序のもとで \(B=K^{\otimes r}\) となる。</p>
+<p><strong>第2段：LU 分解。</strong>\(L_0=\begin{pmatrix}1&amp;0\\1&amp;1\end{pmatrix}\)，\(U_0=\begin{pmatrix}1&amp;1\\0&amp;-1\end{pmatrix}\) とおくと \(K=L_0U_0\) であるから，\(L=L_0^{\otimes r}\)，\(U=U_0^{\otimes r}\) とおいて \(B=LU\) を得る。\(L_{ij}=\prod_t(L_0)_{i_tj_t}\) が \(0\) でないのはすべての桁で \(j_t\le i_t\) のときに限り，このとき \(j\le i\) である。また \(L_{ii}=1\) である。同様に \(U_{ij}\neq0\) ならば \(i\le j\) であり，\(U_{ii}=\prod_t(U_0)_{i_ti_t}=(-1)^{s(i)}\) である。したがって \(L\) は対角成分が \(1\) の下三角行列，\(U\) は上三角行列である。</p>
+<p><strong>第3段：首座ブロック。</strong>\(m\le2^{r}\) に対し，\(B_m,L_m,U_m\) を首座 \(m\times m\) ブロック（添字 \(0,\dots,m-1\)）とする。\((LU)_{ij}=\sum_{k\le\min(i,j)}L_{ik}U_{kj}\) であるから \(B_m=L_mU_m\) が成り立つ。よって \(\det B_m=\prod_{i=0}^{m-1}(-1)^{s(i)}=\pm1\)，\(B_m^{-1}=U_m^{-1}L_m^{-1}\) である。三角行列の首座ブロックの逆行列は逆行列の首座ブロックに等しく，\(U^{-1}=(U_0^{-1})^{\otimes r}=U_0^{\otimes r}\)（\(U_0^{2}=I\) による），\(L^{-1}=(L_0^{-1})^{\otimes r}\)，\(L_0^{-1}=\begin{pmatrix}1&amp;0\\-1&amp;1\end{pmatrix}\) である。</p>
+<p><strong>第4段：余因子としての \(A_n\)。</strong>\(A_n\) は \(B_{n+1}\) から第 \(0\) 行と第 \(0\) 列を除いたものであるから，余因子行列の公式により \(\det A_n=\det B_{n+1}\cdot(B_{n+1}^{-1})_{00}\) である。第3段を用いると
+\[(B_{n+1}^{-1})_{00}=\sum_{k=0}^{n}(U^{-1})_{0k}(L^{-1})_{k0}=\sum_{k=0}^{n}\prod_t(U_0)_{0\,k_t}\prod_t(L_0^{-1})_{k_t\,0}=\sum_{k=0}^{n}(-1)^{s(k)}\]
+を得る。</p>
+<p><strong>第5段：トゥエ・モース和。</strong>\(s(2c+1)=s(2c)+1\) であるから，\(k=2c\) と \(k=2c+1\) の項は打ち消し合う。\(n\) が奇数ならば \(\{0,\dots,n\}\) はこのような対に分かれるので和は \(0\) となり，\(\det A_n=0\) である。\(n\) が偶数ならば \(k=n\) の項だけが残り，\(\det A_n=(-1)^{\sum_{i=0}^{n}s(i)}\cdot(-1)^{s(n)}=(-1)^{\sum_{i=0}^{n-1}s(i)}\) となる。\(0,\dots,n-1\) を \(n/2\) 個の対 \((2c,2c+1)\) に分けると，各対の寄与 \(s(2c)+s(2c+1)=2s(c)+1\) は奇数であるから，指数の偶奇は \(n/2\) の偶奇に等しく，\(\det A_n=(-1)^{n/2}\) を得る。</p>
+<p><strong>確認。</strong>有理数演算による \(A_n\) の行列式の厳密計算は，\(n=1\) から \(96\) までのすべてで上の公式と一致した。また \(2^{r}=32\) について分解 \(B=LU\) と第4段の余因子の等式を，すべての \(n\le30\) で数値的に確かめた。</p><div class="answer"><strong>答え.</strong> \(n\) が奇数のとき \(\det A_n=0\)，\(n\) が偶数のとき \(\det A_n=(-1)^{n/2}\)</div></details></section><p><a href="/ja/daily-mathematics/">解答の一覧へ戻る</a> · <a href="/daily-mathematics/2026-10-13/" hreflang="en" lang="en">English</a></p></main>
+<!-- ISEGORIA:FOOT -->
+<footer id="ig-footer"><div><a href="/ja/">Isegoria · Benjamin Haire</a><nav aria-label="サイト内リンク"><a href="/ja/">ホームに戻る</a><a href="/ja/library.html">全コンテンツ</a><a href="#ig-content">ページ上部へ</a></nav></div></footer>
+<!-- /ISEGORIA:FOOT -->
+</body></html>
