@@ -1,0 +1,68 @@
+<!doctype html><html lang="en" class="ig-document ig-editorial"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Daily Mathematics solutions: 13 October 2026 · Isegoria</title><meta name="description" content="Full solutions to the two Daily Mathematics cards of 13 October 2026: a hard definite integral and an original Putnam-style problem."><link rel="canonical" href="https://theisegoria.github.io/daily-mathematics/2026-10-13/"><link rel="alternate" hreflang="en" href="https://theisegoria.github.io/daily-mathematics/2026-10-13/"><link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/daily-mathematics/2026-10-13/"><link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/daily-mathematics/2026-10-13/"><link rel="icon" href="/assets/favicon.svg"><link rel="stylesheet" href="/assets/isegoria.css?v=20260915"><link rel="stylesheet" href="/analysis-atlas/vendor/katex.min.css"><script defer src="/analysis-atlas/vendor/katex.min.js"></script><script defer src="/analysis-atlas/vendor/contrib/auto-render.min.js"></script><script>document.addEventListener("DOMContentLoaded",function(){if(window.renderMathInElement)renderMathInElement(document.querySelector("main"),{delimiters:[{left:"\\[",right:"\\]",display:true},{left:"\\(",right:"\\)",display:false}],throwOnError:false});});</script><style>
+.dm{max-width:46rem;margin:0 auto;padding:2.5rem 1.25rem 4rem}
+.dm .eyebrow{letter-spacing:.14em;text-transform:uppercase;font-size:.78rem;opacity:.7;margin:0 0 .4rem}
+.dm h1{margin:.1rem 0 .6rem;line-height:1.2}
+.dm .deck{opacity:.85;margin:0 0 2rem}
+.dm .card{margin:2.6rem 0 0;padding-top:1.4rem;border-top:2px solid var(--dm-accent,currentColor)}
+.dm .card h2{margin:.2rem 0 .9rem;line-height:1.3}
+.dm .kind{font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dm-accent);margin:0}
+.dm figure{margin:1rem 0 1.4rem}
+.dm figure img{width:100%;max-width:30rem;height:auto;display:block;border:1px solid rgba(127,127,127,.25)}
+.dm .statement{padding:.9rem 1.1rem;border-left:3px solid var(--dm-accent);background:rgba(127,127,127,.07)}
+.dm details{margin:1.2rem 0}
+.dm summary{cursor:pointer;font-weight:600}
+.dm .answer{margin-top:1.2rem;padding:.8rem 1.1rem;border:1px solid var(--dm-accent)}
+.dm .katex-display{overflow-x:auto;overflow-y:hidden;padding:.2rem 0}
+.dm .days{list-style:none;padding:0;margin:1.5rem 0 0}
+.dm .days li{padding:.9rem 0;border-top:1px solid rgba(127,127,127,.25)}
+.dm .days a.date{font-weight:600}
+.dm .days span{display:block;opacity:.85}
+html[lang=ja] .dm{line-height:1.85}
+</style><script src="/assets/lang.js"></script>
+<!-- ISEGORIA:HEAD -->
+<link rel="stylesheet" href="/assets/site-shell.css?v=c21cd21e82">
+<script src="/assets/site-shell.js?v=c21cd21e82" ></script>
+<!-- /ISEGORIA:HEAD -->
+<script defer data-isegoria-analytics src="/assets/analytics.js?v=9e6ebd463bf2"></script>
+</head><body class="ig-site" data-site-kind="editorial" data-site-route="/daily-mathematics/2026-10-13/">
+<!-- ISEGORIA:NAV -->
+<a class="ig-skip" href="#ig-content">Skip to content</a>
+<header id="ig-header"><div class="ig-nav-inner">
+<a class="ig-brand" href="/" aria-label="Isegoria, home"><strong>ISEGORIA</strong><span>Benjamin Haire</span></a>
+<div class="ig-header-actions"><a class="ig-language" href="/ja/daily-mathematics/2026-10-13/" hreflang="ja" lang="ja">日本語</a><button class="ig-menu" type="button" aria-expanded="false" aria-controls="ig-primary">Menu</button></div>
+<nav id="ig-primary" aria-label="Primary navigation"><a href="/">Home</a><a href="/library.html">Library</a><a href="/math-encyclopedia/" aria-current="location">Math encyclopedia</a><a href="/#interactive">Interactive</a><a href="/#preoccupations">Research</a><a href="/#books">Books</a><a href="/projects.html">Projects</a><a href="/about.html">About</a><a class="ig-language" href="/ja/daily-mathematics/2026-10-13/" hreflang="ja" lang="ja">日本語</a><button class="ig-theme" type="button" hidden>Theme</button></nav>
+</div></header>
+<nav id="ig-breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><a href="/math-encyclopedia/">Math encyclopedia</a><span aria-hidden="true">/</span><a href="/daily-mathematics/">Daily Mathematics: solutions</a><span aria-hidden="true">/</span><span aria-current="page">Daily Mathematics solutions: 13 October 2026</span></nav>
+<span id="ig-content" tabindex="-1"></span>
+<!-- /ISEGORIA:NAV -->
+<main id="main" class="dm"><p class="eyebrow">Daily Mathematics / Solutions</p><h1>Solutions for 13 October 2026</h1><p class="deck">Two cards went out that day: a hard definite integral and an original Putnam-style problem. Try each one first; the solutions are folded away below.</p><section class="card" id="integral" style="--dm-accent:#24457F"><p class="kind">Integral</p><h2>A one-minus-cosine integral against a hyperbolic sine</h2><figure><img src="/daily-mathematics/2026-10-13/integral.png" width="1200" height="1200" loading="lazy" alt="Card: A one-minus-cosine integral against a hyperbolic sine"></figure><div class="statement"><p>Evaluate in closed form.</p>
+\[\int_{0}^{\infty}\frac{1-\cos x}{x\,\sinh x}\,dx\]</div><details><summary>Show the solution</summary><p>Write \(I\) for the integral. We show \(I=\ln\cosh\frac{\pi}{2}\).</p>
+<p><strong>Why the direct route stalls.</strong> The integrand is continuous on \((0,\infty)\), tends to \(\tfrac12\) as \(x\to0^{+}\) and is \(O(e^{-x}/x)\) at infinity, so \(I\) converges absolutely. The tempting move is to expand \(1-\cos x\) in powers of \(x\): the terms become \(\int_0^\infty x^{2m-1}/\sinh x\,dx\), which grow like \((2m-1)!\), and the resulting series in \(m\) diverges. The expansion that works is the one of \(1/\sinh x\), because it turns the hyperbolic factor into exponentials, and against \(e^{-cx}\) the factor \((1-\cos x)/x\) has an elementary Laplace transform.</p>
+<p><strong>Step 1: expand the hyperbolic factor.</strong> For \(x>0\),
+\[\frac{1}{\sinh x}=\frac{2e^{-x}}{1-e^{-2x}}=2\sum_{k\ge0}e^{-(2k+1)x}.\]
+Every term is nonnegative and so is \((1-\cos x)/x\), so by monotone convergence we may integrate term by term:
+\[I=2\sum_{k\ge0}F(2k+1),\qquad F(c)=\int_0^\infty\frac{1-\cos x}{x}\,e^{-cx}\,dx\quad(c>0).\]</p>
+<p><strong>Step 2: the Laplace transform \(F\).</strong> Since \(0\le(1-\cos x)/x\le\min(x/2,\,2/x)\), differentiation under the integral sign is justified on every half-line \(c\ge c_0>0\), and
+\[F'(c)=-\int_0^\infty(1-\cos x)e^{-cx}\,dx=-\Bigl(\frac1c-\frac{c}{c^{2}+1}\Bigr).\]
+By dominated convergence \(F(c)\to0\) as \(c\to\infty\). Hence
+\[F(c)=\int_c^\infty\Bigl(\frac1t-\frac{t}{t^{2}+1}\Bigr)dt=\Bigl[\ln t-\tfrac12\ln(t^{2}+1)\Bigr]_c^\infty=\tfrac12\ln\Bigl(1+\frac{1}{c^{2}}\Bigr).\]</p>
+<p><strong>Step 3: sum the logarithms.</strong> Steps 1 and 2 give
+\[I=\sum_{k\ge0}\ln\Bigl(1+\frac{1}{(2k+1)^{2}}\Bigr)=\ln\prod_{k\ge0}\Bigl(1+\frac{1}{(2k+1)^{2}}\Bigr),\]
+the product converging absolutely. The Weierstrass product of the cosine, \(\cos\frac{\pi z}{2}=\prod_{k\ge0}\bigl(1-\frac{z^{2}}{(2k+1)^{2}}\bigr)\), holds for all complex \(z\); at \(z=i\) it reads \(\cosh\frac{\pi}{2}=\prod_{k\ge0}\bigl(1+\frac{1}{(2k+1)^{2}}\bigr)\). Therefore
+\[I=\ln\cosh\frac{\pi}{2}=\ln\frac{e^{\pi/2}+e^{-\pi/2}}{2}\approx0.9199554002.\]</p>
+<p><strong>A second route.</strong> A rectangular contour of height \(\pi\) gives \(\int_0^\infty\frac{\sin ax}{\sinh x}\,dx=\frac{\pi}{2}\tanh\frac{\pi a}{2}\). Integrating in \(a\) from \(0\) to \(1\) and using \(\int_0^1\sin ax\,da=(1-\cos x)/x\) gives the same value, since \(\int_0^1\frac{\pi}{2}\tanh\frac{\pi a}{2}\,da=\ln\cosh\frac{\pi}{2}\).</p>
+<p><strong>Check.</strong> Composite Gauss-Legendre quadrature (100 nodes, 40 and 200 panels on \([0,80]\), with \(1-\cos x\) written as \(2\sin^{2}(x/2)\) to avoid cancellation near \(0\)) agrees with \(\ln\cosh\frac{\pi}{2}\) to within \(6\times10^{-16}\), and the partial sums of the series in Step 3 converge to the same value.</p><div class="answer"><strong>Answer.</strong> \(\ln\cosh\frac{\pi}{2}=\ln\frac{e^{\pi/2}+e^{-\pi/2}}{2}\approx0.9199554\)</div></details></section><section class="card" id="competition" style="--dm-accent:#96311F"><p class="kind">Competition problem</p><h2>The determinant of a binary disjointness matrix</h2><figure><img src="/daily-mathematics/2026-10-13/competition.png" width="1200" height="1200" loading="lazy" alt="Card: The determinant of a binary disjointness matrix"></figure><div class="statement"><p>For positive integers \(i,j\) write \(i\perp j\) if their binary expansions have no digit \(1\) in a common position. Let \(A_n\) be the \(n\times n\) matrix with</p>
+\[(A_n)_{ij}=\begin{cases}1 &amp; \text{if } i\perp j,\\ 0 &amp; \text{otherwise,}\end{cases}\qquad 1\le i,j\le n.\]
+<p>Find \(\det A_n\).</p></div><details><summary>Show the solution</summary><p>We show that \(\det A_n=0\) for odd \(n\) and \(\det A_n=(-1)^{n/2}\) for even \(n\); so the values for \(n=1,2,3,4,\dots\) run \(0,-1,0,1,0,-1,0,1,\dots\). Throughout, \(s(m)\) denotes the number of \(1\)s in the binary expansion of \(m\), and we also allow the index \(0\), which is \(\perp\) to everything.</p>
+<p><strong>Why the direct route stalls.</strong> Small cases suggest the answer quickly, and the odd case even has a one-line proof: an odd \(i\) is never \(\perp\) an odd \(j\), so the \((n+1)/2\) odd rows live in the \((n-1)/2\) even columns and are dependent. For even \(n\), however, row-reducing \(A_n\) directly gets tangled, because the condition \(i\perp j\) is a product over binary digits while the index set \(\{1,\dots,n\}\) is neither a power of \(2\) nor starts at \(0\). The fix is to put row and column \(0\) back, so that \(A_n\) becomes a cofactor of a leading block of a Kronecker power.</p>
+<p><strong>Step 1: Kronecker structure.</strong> Fix \(r\) with \(2^{r}&gt;n\) and let \(B\) be the \(2^{r}\times2^{r}\) matrix with rows and columns indexed by \(0,1,\dots,2^{r}-1\) and \(B_{ij}=[\,i\perp j\,]\). Writing \(i=\sum_t i_t2^{t}\) and \(j=\sum_t j_t2^{t}\) with digits \(i_t,j_t\in\{0,1\}\), we have \([\,i\perp j\,]=\prod_t K_{i_tj_t}\) with \(K=\begin{pmatrix}1&amp;1\\1&amp;0\end{pmatrix}\) (rows and columns indexed by \(0,1\)). So \(B=K^{\otimes r}\) in the natural order of indices.</p>
+<p><strong>Step 2: an LU factorisation.</strong> \(K=L_0U_0\) with \(L_0=\begin{pmatrix}1&amp;0\\1&amp;1\end{pmatrix}\) and \(U_0=\begin{pmatrix}1&amp;1\\0&amp;-1\end{pmatrix}\), hence \(B=LU\) with \(L=L_0^{\otimes r}\), \(U=U_0^{\otimes r}\). Now \(L_{ij}=\prod_t(L_0)_{i_tj_t}\) is nonzero only if \(j_t\le i_t\) for every digit, which forces \(j\le i\), and \(L_{ii}=1\); likewise \(U_{ij}\neq0\) forces \(i\le j\), and \(U_{ii}=\prod_t(U_0)_{i_ti_t}=(-1)^{s(i)}\). So \(L\) is unit lower triangular and \(U\) is upper triangular.</p>
+<p><strong>Step 3: leading blocks.</strong> For \(m\le2^{r}\) let \(B_m,L_m,U_m\) be the leading \(m\times m\) blocks (indices \(0,\dots,m-1\)). Since \((LU)_{ij}=\sum_{k\le\min(i,j)}L_{ik}U_{kj}\), we get \(B_m=L_mU_m\). Therefore \(\det B_m=\prod_{i=0}^{m-1}(-1)^{s(i)}=\pm1\) and \(B_m^{-1}=U_m^{-1}L_m^{-1}\). The inverse of the leading block of a triangular matrix is the leading block of its inverse, and \(U^{-1}=(U_0^{-1})^{\otimes r}=U_0^{\otimes r}\) (as \(U_0^{2}=I\)), \(L^{-1}=(L_0^{-1})^{\otimes r}\) with \(L_0^{-1}=\begin{pmatrix}1&amp;0\\-1&amp;1\end{pmatrix}\).</p>
+<p><strong>Step 4: \(A_n\) as a cofactor.</strong> \(A_n\) is \(B_{n+1}\) with row \(0\) and column \(0\) deleted, so by the adjugate formula \(\det A_n=\det B_{n+1}\cdot(B_{n+1}^{-1})_{00}\). Using Step 3,
+\[(B_{n+1}^{-1})_{00}=\sum_{k=0}^{n}(U^{-1})_{0k}(L^{-1})_{k0}=\sum_{k=0}^{n}\prod_t(U_0)_{0\,k_t}\prod_t(L_0^{-1})_{k_t\,0}=\sum_{k=0}^{n}(-1)^{s(k)}.\]</p>
+<p><strong>Step 5: the Thue-Morse sum.</strong> Since \(s(2c+1)=s(2c)+1\), the terms for \(k=2c\) and \(k=2c+1\) cancel. If \(n\) is odd, \(\{0,\dots,n\}\) splits into such pairs, the sum is \(0\), and \(\det A_n=0\). If \(n\) is even, only \(k=n\) survives, so \(\det A_n=(-1)^{\sum_{i=0}^{n}s(i)}\cdot(-1)^{s(n)}=(-1)^{\sum_{i=0}^{n-1}s(i)}\). Grouping \(0,\dots,n-1\) into the \(n/2\) pairs \((2c,2c+1)\), each pair contributes \(s(2c)+s(2c+1)=2s(c)+1\), which is odd, so the exponent has the parity of \(n/2\) and \(\det A_n=(-1)^{n/2}\).</p>
+<p><strong>Check.</strong> Exact rational-arithmetic determinants of \(A_n\) agree with the formula for every \(n\) from \(1\) to \(96\); the factorisation \(B=LU\) and the cofactor identity of Step 4 were also checked numerically for \(2^{r}=32\) and every \(n\le30\).</p><div class="answer"><strong>Answer.</strong> \(\det A_n=0\) for odd \(n\), and \(\det A_n=(-1)^{n/2}\) for even \(n\)</div></details></section><p><a href="/daily-mathematics/">All solutions</a> · <a href="/ja/daily-mathematics/2026-10-13/" hreflang="ja" lang="ja">日本語</a></p></main>
+<!-- ISEGORIA:FOOT -->
+<footer id="ig-footer"><div><a href="/">Isegoria · Benjamin Haire</a><nav aria-label="Site links"><a href="/">Back to home</a><a href="/library.html">Browse the library</a><a href="#ig-content">Back to top</a></nav></div></footer>
+<!-- /ISEGORIA:FOOT -->
+</body></html>
