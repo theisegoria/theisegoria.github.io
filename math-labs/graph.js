@@ -112,7 +112,10 @@
     'wavelets': ['information-theory', 'numerical-analysis', 'quantum-mechanics'],
     'laser-physics': ['statistical-mechanics', 'dynamical-systems', 'atomic-physics'],
     'representation-theory': ['quantum-mechanics', 'lie-groups', 'fourier-analysis'],
-    'semiconductor-physics': ['electromagnetism', 'quantum-mechanics', 'laser-physics']
+    'semiconductor-physics': ['electromagnetism', 'quantum-mechanics', 'laser-physics'],
+    'combinatorics': ['probability-inference', 'statistical-mechanics', 'complex-analysis'],
+    'acoustics': ['fluid-dynamics', 'room-acoustics', 'loudspeakers'],
+    'switching-converters': ['control-theory', 'semiconductor-physics', 'crossovers-filters']
   };
   // Topics named in each topic's own prerequisite line (content.json "prerequisite").
   const PREREQ = {
@@ -155,7 +158,10 @@
     'wavelets': ['fourier-analysis', 'functional-analysis'],              // Fourier analysis and inner product spaces
     'laser-physics': ['optics', 'quantum-mechanics'],                    // Optics and quantum mechanics
     'representation-theory': ['group-theory', 'linear-algebra'],         // Group theory and linear algebra
-    'semiconductor-physics': ['solid-state-physics', 'statistical-mechanics'] // Solid-state physics and statistical mechanics
+    'semiconductor-physics': ['solid-state-physics', 'statistical-mechanics'], // Solid-state physics and statistical mechanics
+    'combinatorics': ['number-theory', 'graph-theory'],                  // Elementary counting, number theory and power series
+    'acoustics': ['partial-differential-equations', 'fourier-analysis'], // The wave equation, Fourier series and standing waves
+    'switching-converters': ['electromagnetism', 'crossovers-filters']   // Circuits with inductors and capacitors, and time averages
   };
 
   let topics = [], bySlug = new Map(), edges = [], drawn = [];

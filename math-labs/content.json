@@ -13255,5 +13255,648 @@
         "url": "https://www.pveducation.org/pvcdrom/solar-cell-operation/fill-factor"
       }
     ]
+  },
+  {
+    "slug": "combinatorics",
+    "title": [
+      "Combinatorics: counting by building",
+      "組合せ論：組み立てて数える"
+    ],
+    "description": [
+      "The cleanest way to show that two collections have the same size is to turn one into the other, piece by piece. A partition into odd parts becomes a partition into distinct parts by merging equal pieces; a mountain range of up and down steps becomes a tree and then a triangulated polygon. And once a count is packed into a generating function, the function’s nearest singularity in the complex plane says how fast the count grows.",
+      "二つの集まりが同じ大きさであることを示す最もすっきりした方法は、一方を他方へ一つずつ作り替えることです。奇数の部分への分割は、等しい部分を合わせることで相異なる部分への分割になります。上りと下りの歩みでできた山並みは木になり、さらに三角形分割した多角形になります。そして個数を母関数に詰め込めば、複素平面でその関数に最も近い特異点が、個数の増え方を教えてくれます。"
+    ],
+    "group": "foundations",
+    "prerequisite": [
+      "Elementary counting, number theory and power series",
+      "初歩的な数え上げ、数論、べき級数"
+    ],
+    "source": "Philippe Flajolet and Robert Sedgewick · Analytic Combinatorics (Cambridge University Press, 2009)",
+    "url": "https://algo.inria.fr/flajolet/Publications/book.pdf",
+    "labs": [
+      {
+        "id": "partitions-glaisher",
+        "title": [
+          "1. Odd parts and distinct parts",
+          "1. 奇数の部分と相異なる部分"
+        ],
+        "body": [
+          "A partition of n writes it as a sum of positive integers, ignoring order. Euler proved that the partitions of n into odd parts are exactly as many as those into distinct parts: for n = 6 there are four of each, 5+1, 3+3, 3+1+1+1 and 1+1+1+1+1+1 against 6, 5+1, 4+2 and 3+2+1. Glaisher’s bijection makes this visible. Take a partition into odd parts and, whenever two parts are equal, merge them into one part twice as long. Merging never changes the sum or the odd part of a row, so it ends at a partition into distinct parts in which each odd number o has split its multiplicity into powers of two. Press Play to watch the merges, step through the partitions with the slider, and drag n on the count chart.",
+          "n の分割とは、順序を無視して n を正の整数の和に書くことです。オイラーは、n の奇数の部分への分割と相異なる部分への分割がちょうど同じ数だけあることを証明しました。n = 6 では、5+1、3+3、3+1+1+1、1+1+1+1+1+1 と、6、5+1、4+2、3+2+1 がそれぞれ四つずつあります。グレイシャーの全単射はこれを目に見える形にします。奇数の部分への分割をとり、等しい部分が二つあればそれを長さが二倍の一つの部分に合わせます。合わせても和も行の奇数の部分も変わらないので、最後は相異なる部分への分割に行き着き、そこでは各奇数 o がその個数を 2 のべきに分けています。再生を押して合併を見て、スライダーで分割を順に選び、個数のグラフで n をドラッグしてください。"
+        ],
+        "formula": "\\prod_{k\\ge1}(1+x^k)=\\prod_{k\\ge1}\\frac{1-x^{2k}}{1-x^k}=\\prod_{k\\ge1}\\frac{1}{1-x^{2k-1}},\\qquad m=\\sum_j 2^{\\,j}\\ \\Rightarrow\\ o^{\\,m}\\ \\mapsto\\ \\{o\\cdot2^{\\,j}\\}",
+        "example": [
+          "Take \\(n=12\\) and the odd partition \\(3+3+3+1+1+1\\). Two 1s merge into a 2, giving \\(3+3+3+2+1\\); two 3s merge into a 6, giving \\(6+3+2+1\\), whose parts are distinct. In binary the three 3s became \\(3=2+1\\) copies, that is \\(3\\cdot2+3\\cdot1\\), and the three 1s became \\(1\\cdot2+1\\cdot1\\). Reading backwards, \\(6=3\\cdot2^1\\) splits into two 3s and \\(2=1\\cdot2^1\\) into two 1s, which recovers the start. There are 15 partitions of 12 of each kind, against \\(p(12)=77\\) in all.",
+          "\\(n=12\\) と奇数への分割 \\(3+3+3+1+1+1\\) をとります。1 が二つ合わさって 2 になり \\(3+3+3+2+1\\)、3 が二つ合わさって 6 になり \\(6+3+2+1\\) となって、部分は相異なります。二進法で見ると、三つの 3 は \\(3=2+1\\) 個、つまり \\(3\\cdot2+3\\cdot1\\) に、三つの 1 は \\(1\\cdot2+1\\cdot1\\) になりました。逆に読むと \\(6=3\\cdot2^1\\) は二つの 3 に、\\(2=1\\cdot2^1\\) は二つの 1 に分かれ、最初に戻ります。12 の分割はどちらの種類も 15 個あり、分割全体では \\(p(12)=77\\) 個です。"
+        ],
+        "caution": [
+          "The order in which equal parts are merged does not matter: whatever the order, the multiplicity of each odd part ends up written in binary, and binary expansions are unique. That is why the process is a function at all. The generating-function proof on the formula line is shorter but explains less; the bijection says which partition goes to which. The count chart stops at 24 because listing every partition of larger n would be slow, not because anything changes.",
+          "等しい部分を合わせる順序は結果に影響しません。どの順序でも各奇数の個数は最後に二進法で書かれ、二進展開は一通りだからです。そもそもこの手続きが関数になるのはそのためです。式の行にある母関数による証明は短いですが、説明する内容は少なく、全単射はどの分割がどの分割に移るかを教えてくれます。個数のグラフが 24 で止まっているのは、それより大きな n ですべての分割を並べると遅いからで、何かが変わるからではありません。"
+        ],
+        "question": [
+          "Why does every partition into distinct parts come from exactly one partition into odd parts?",
+          "なぜ相異なる部分への分割はどれも、ちょうど一つの奇数の部分への分割から来るのですか？"
+        ],
+        "answer": [
+          "Every positive integer is uniquely \\(o\\cdot2^j\\) with \\(o\\) odd. Splitting each distinct part \\(o\\cdot2^j\\) into \\(2^j\\) copies of \\(o\\) gives a partition into odd parts with the same sum, and merging that back reproduces the distinct parts, because distinct powers of two in the same odd class are exactly the binary digits of the multiplicity. Two maps that undo each other are bijections.",
+          "正の整数はどれも、\\(o\\) を奇数として \\(o\\cdot2^j\\) と一通りに書けます。相異なる部分 \\(o\\cdot2^j\\) をそれぞれ \\(2^j\\) 個の \\(o\\) に分けると、和が同じ奇数の部分への分割が得られます。それを合わせ直すと元の相異なる部分に戻ります。同じ奇数の類の中で相異なる 2 のべきは、ちょうど個数の二進法の各桁だからです。互いに打ち消し合う二つの写像は全単射です。"
+        ],
+        "params": [
+          [
+            "n",
+            "n",
+            "n",
+            3,
+            24,
+            1,
+            12
+          ],
+          [
+            "k",
+            "Partition number",
+            "分割の番号",
+            1,
+            150,
+            1,
+            12
+          ]
+        ],
+        "source": "George E. Andrews · The Theory of Partitions (Cambridge University Press, 1998), ch. 1",
+        "url": "https://doi.org/10.1017/CBO9780511608650"
+      },
+      {
+        "id": "catalan-objects",
+        "title": [
+          "2. Catalan objects in lockstep",
+          "2. そろって動くカタラン対象"
+        ],
+        "body": [
+          "The Catalan numbers 1, 1, 2, 5, 14, 42, 132, 429 count more than two hundred kinds of objects, and the reason is always a decomposition into two smaller objects of the same kind. A Dyck path, a walk of n up steps and n down steps that never goes below its start, splits at its first return to the axis into U A D B, with A and B smaller Dyck paths. Make A the left subtree and B the right subtree of a root node, and the path becomes a binary tree with n nodes. Stand a triangle on the base of a polygon with n + 2 corners, place the left subtree’s triangulation on its left side and the right subtree’s on its right, and the tree becomes a triangulation. Choose n, step through the objects, and pick a matched pair to see the same piece in all three.",
+          "カタラン数 1, 1, 2, 5, 14, 42, 132, 429 は二百種類を超える対象を数えますが、その理由はいつも、同じ種類の二つの小さな対象への分解です。ディック経路は、上り n 回と下り n 回からなり、出発点より下へ決して行かない歩みです。軸へ最初に戻る所で U A D B と分かれ、A と B はより小さなディック経路です。A を根の左部分木、B を右部分木にすると、経路は節点が n 個の二分木になります。n + 2 個の角をもつ多角形の底辺に三角形を立て、その左の辺に左部分木の三角形分割を、右の辺に右部分木の三角形分割を置くと、木は三角形分割になります。n を選び、対象を順にたどり、対応する組を選んで、三つの中の同じ部品を見てください。"
+        ],
+        "formula": "C_n=\\frac{1}{n+1}\\binom{2n}{n}=\\binom{2n}{n}-\\binom{2n}{n+1},\\qquad C_{n+1}=\\sum_{k=0}^{n}C_kC_{n-k},\\qquad C(z)=1+z\\,C(z)^2",
+        "example": [
+          "For \\(n=3\\) there are \\(\\binom63-\\binom64=20-15=5\\) Dyck paths: UDUDUD, UDUUDD, UUDDUD, UUDUDD and UUUDDD. Take UUDUDD: it first returns at the last step, so it is U A D with \\(A=\\) UDUD and \\(B\\) empty. The root therefore has only a left subtree, a node with a right child. In the pentagon with vertices 0 to 4 the root triangle stands on the side (0, 4) with apex 3, the left subtree fills the quadrilateral 0, 1, 2, 3 with the triangles (0, 1, 3) and (1, 2, 3), and the diagonals are 0–3 and 1–3.",
+          "\\(n=3\\) ではディック経路は \\(\\binom63-\\binom64=20-15=5\\) 本で、UDUDUD、UDUUDD、UUDDUD、UUDUDD、UUUDDD です。UUDUDD をとると、最後の歩みで初めて軸に戻るので U A D の形で、\\(A=\\) UDUD、\\(B\\) は空です。したがって根には左部分木だけがあり、それは右の子をもつ節点です。頂点 0 から 4 の五角形では、根の三角形が辺 (0, 4) の上に頂点 3 で立ち、左部分木が四角形 0, 1, 2, 3 を三角形 (0, 1, 3) と (1, 2, 3) で埋め、対角線は 0–3 と 1–3 です。"
+        ],
+        "caution": [
+          "Many bijections between Catalan families exist and they do not all agree; this one is built from the first-return decomposition, so the root triangle corresponds to the first up step and its matching down step. A different convention, for instance last return, would pair the objects differently while counting them the same. The reflection count assumes paths that start and end at height zero.",
+          "カタラン族どうしの全単射は数多くあり、すべてが一致するわけではありません。ここでの全単射は最初の帰還による分解から作っているので、根の三角形は最初の上りとそれに対応する下りに当たります。たとえば最後の帰還を使う別の約束では、数は同じでも対象の組み合わせ方が変わります。折り返しによる数え方は、高さ 0 で始まり 0 で終わる経路を前提にしています。"
+        ],
+        "question": [
+          "Why does the reflection trick count the bad paths as C(2n, n+1)?",
+          "なぜ折り返しの技法で、悪い経路の数が C(2n, n+1) になるのですか？"
+        ],
+        "answer": [
+          "A bad path first touches height \\(-1\\) at some step. Reflect everything after that step, swapping ups and downs: the path now ends at \\(-2\\) instead of 0, so it has \\(n-1\\) ups and \\(n+1\\) downs. Every path with those step counts must cross \\(-1\\), and reflecting back after its first touch undoes the map, so bad paths and paths with \\(n+1\\) downs are in bijection, and there are \\(\\binom{2n}{n+1}\\) of the latter.",
+          "悪い経路は、ある歩みで初めて高さ \\(-1\\) に触れます。その歩みより後をすべて折り返し、上りと下りを入れ替えます。すると経路は 0 ではなく \\(-2\\) で終わり、上りが \\(n-1\\) 回、下りが \\(n+1\\) 回になります。そのような歩数の経路はどれも \\(-1\\) を横切るはずで、最初に触れた後を折り返し直すと元に戻るので、悪い経路と下りが \\(n+1\\) 回の経路は一対一に対応し、後者は \\(\\binom{2n}{n+1}\\) 本あります。"
+        ],
+        "params": [
+          [
+            "n",
+            "n",
+            "n",
+            1,
+            7,
+            1,
+            4
+          ],
+          [
+            "k",
+            "Object number",
+            "対象の番号",
+            1,
+            429,
+            1,
+            7
+          ],
+          [
+            "sel",
+            "Matched pair",
+            "対応する組",
+            1,
+            7,
+            1,
+            1
+          ]
+        ],
+        "source": "Richard P. Stanley · Catalan Numbers (Cambridge University Press, 2015)",
+        "url": "https://doi.org/10.1017/CBO9781139871495"
+      },
+      {
+        "id": "gf-asymptotics",
+        "title": [
+          "3. Singularities predict growth",
+          "3. 特異点が増え方を予言する"
+        ],
+        "body": [
+          "Pack a sequence into a power series A(z) = Σ aₙ zⁿ. The series converges inside a disc whose radius ρ is the distance to the nearest singularity, so the coefficients grow like (1/ρ)ⁿ, and the type of the singularity fixes the correction: a simple pole gives a constant, a square-root branch point gives n^{−3/2}. This is singularity analysis, and it turns a picture of a function in the complex plane into a counting formula. The left panel colours each z by the argument of A(z), with bands at powers of two in modulus, so poles and branch points stand out as places where every colour meets. Choose a sequence and drag n to compare the true coefficients with the prediction.",
+          "数列をべき級数 A(z) = Σ aₙ zⁿ に詰め込みます。この級数は、最も近い特異点までの距離を半径 ρ とする円板の内側で収束するので、係数は (1/ρ)ⁿ のように増えます。そして特異点の型が補正を決めます。単純極なら定数、平方根型の分岐点なら n^{−3/2} です。これが特異点解析で、複素平面上の関数の図を数え上げの公式に変えます。左の図は各 z を A(z) の偏角で色づけし、絶対値の 2 のべきごとに縞を入れているので、極や分岐点はすべての色が集まる場所として目立ちます。数列を選び、n をドラッグして本当の係数と予言を比べてください。"
+        ],
+        "formula": "A(z)\\sim c\\,(1-z/\\rho)^{-\\alpha}\\ \\ (z\\to\\rho)\\quad\\Longrightarrow\\quad a_n\\sim\\frac{c}{\\Gamma(\\alpha)}\\,n^{\\alpha-1}\\rho^{-n},\\qquad \\alpha\\notin\\{0,-1,-2,\\dots\\}",
+        "example": [
+          "For the Catalan numbers \\(C(z)=(1-\\sqrt{1-4z})/2z\\), the nearest singularity is the branch point \\(z=1/4\\), where \\(C(z)=2-2\\sqrt{1-4z}+O(1-4z)\\). Here \\(\\alpha=-1/2\\), \\(c=-2\\) and \\(\\Gamma(-1/2)=-2\\sqrt\\pi\\), so \\(C_n\\sim4^n/(\\sqrt\\pi\\,n^{3/2})\\). At \\(n=10\\) this predicts 18 708 against the true \\(C_{10}=16\\,796\\), a ratio of 0.898; at \\(n=100\\) the ratio is 0.9889, close to the next-order estimate \\(1-9/8n\\).",
+          "カタラン数では \\(C(z)=(1-\\sqrt{1-4z})/2z\\) で、最も近い特異点は分岐点 \\(z=1/4\\) です。そこで \\(C(z)=2-2\\sqrt{1-4z}+O(1-4z)\\) です。\\(\\alpha=-1/2\\)、\\(c=-2\\)、\\(\\Gamma(-1/2)=-2\\sqrt\\pi\\) なので \\(C_n\\sim4^n/(\\sqrt\\pi\\,n^{3/2})\\) です。\\(n=10\\) ではこれは 18 708 を予言し、本当の値は \\(C_{10}=16\\,796\\) で比は 0.898 です。\\(n=100\\) では比は 0.9889 で、次の次数の見積もり \\(1-9/8n\\) に近い値です。"
+        ],
+        "caution": [
+          "The transfer theorem needs more than the nearest singularity: the function must extend a little beyond the circle except near \\(\\rho\\), in a so-called Delta domain, and every singularity on the circle contributes. Partitions fail this completely, since their generating function has the whole unit circle as a natural boundary; their asymptotics come from the saddle-point method instead. The colour plots of the algebraic functions use the principal square root, so the cuts drawn are a convention, not part of the function.",
+          "移行定理には最も近い特異点だけでは足りません。関数が \\(\\rho\\) の近く以外では円の少し外まで、いわゆるデルタ領域に延長できなければならず、円周上の特異点はすべて寄与します。分割数はこれをまったく満たしません。その母関数は単位円全体を自然境界としてもつからで、漸近形は代わりに鞍点法から得られます。代数関数の色の図は平方根の主値を使っているので、描かれた切断は約束事であり、関数そのものの一部ではありません。"
+        ],
+        "question": [
+          "Why do the derangement fractions converge so much faster than the Catalan ratio?",
+          "なぜ完全順列の割合は、カタラン数の比よりもずっと速く収束するのですか？"
+        ],
+        "answer": [
+          "Because \\(e^{-z}/(1-z)\\) has nothing but a simple pole at 1: subtracting \\(e^{-1}/(1-z)\\) leaves an entire function, whose coefficients shrink faster than any geometric rate, so \\(D_n/n!-1/e\\) is about \\(1/(n+1)!\\). The Catalan function has a branch point, whose expansion \\((1-4z)^{1/2},(1-4z)^{3/2},\\dots\\) contributes corrections in powers of \\(1/n\\), and those die out slowly.",
+          "\\(e^{-z}/(1-z)\\) には 1 での単純極しかないからです。\\(e^{-1}/(1-z)\\) を引くと整関数が残り、その係数はどんな幾何級数的な速さよりも速く縮むので、\\(D_n/n!-1/e\\) はおよそ \\(1/(n+1)!\\) です。カタラン数の関数は分岐点をもち、その展開 \\((1-4z)^{1/2},(1-4z)^{3/2},\\dots\\) は \\(1/n\\) のべきの補正を与え、それはゆっくりとしか消えません。"
+        ],
+        "params": [
+          [
+            "seq",
+            "Sequence",
+            "数列",
+            0,
+            4,
+            1,
+            1,
+            [
+              [
+                "Fibonacci",
+                "フィボナッチ"
+              ],
+              [
+                "Catalan",
+                "カタラン"
+              ],
+              [
+                "Motzkin",
+                "モツキン"
+              ],
+              [
+                "Derangements",
+                "完全順列"
+              ],
+              [
+                "Partitions",
+                "分割数"
+              ]
+            ]
+          ],
+          [
+            "n",
+            "n",
+            "n",
+            1,
+            100,
+            1,
+            30
+          ]
+        ],
+        "source": "Philippe Flajolet and Robert Sedgewick · Analytic Combinatorics (Cambridge University Press, 2009)",
+        "url": "https://algo.inria.fr/flajolet/Publications/book.pdf"
+      }
+    ]
+  },
+  {
+    "slug": "acoustics",
+    "title": [
+      "Acoustics: strings, plates and moving sources",
+      "音響学：弦、板、動く音源"
+    ],
+    "description": [
+      "Sound is a small pressure wave, and almost everything interesting about it comes from boundaries and motion. Where a string is plucked decides which harmonics it can never play, and a bow sustains a single circulating kink that is neither pluck nor strike. A vibrating plate draws its own standing waves in sand. And a source that moves squeezes its wavefronts ahead of it until, past the speed of sound, they fold into a cone.",
+      "音は小さな圧力の波で、その面白さのほとんどは境界と運動から生まれます。弦をどこで弾くかで、決して鳴らせない倍音が決まり、弓は弾くのとも打つのとも違う、めぐり続ける一つの折れ目を保ちます。振動する板は自分の定在波を砂で描きます。そして動く音源は前方の波面を押し縮め、音速を超えると波面は円錐に折りたたまれます。"
+    ],
+    "group": "physics",
+    "prerequisite": [
+      "The wave equation, Fourier series and standing waves",
+      "波動方程式、フーリエ級数、定在波"
+    ],
+    "source": "Neville H. Fletcher and Thomas D. Rossing · The Physics of Musical Instruments, 2nd ed. (Springer, 1998)",
+    "url": "https://doi.org/10.1007/978-0-387-21603-4",
+    "labs": [
+      {
+        "id": "string-harmonics",
+        "title": [
+          "1. Where you pluck decides what you hear",
+          "1. どこを弾くかで聞こえる音が決まる"
+        ],
+        "body": [
+          "A string fixed at both ends can vibrate only in modes sin(nπx/L), at frequencies n times the fundamental. Pluck it at a point and the initial triangle is a sum of those modes with amplitudes proportional to sin(nπβ)/n², where β is the pluck point as a fraction of the length: any mode with a node at the pluck point cannot be excited at all. A narrow hammer blow gives every mode the same kick, so the harmonics fall off only as 1/n. A bow does something different again: the string sticks to the bow, then slips back, and the result is Helmholtz motion, a single sharp corner running round two parabolas once per period. Choose the excitation, drag the point along the string, and compare the spectra and the force the string puts on the bridge.",
+          "両端を固定した弦は sin(nπx/L) というモードでしか振動できず、その周波数は基音の n 倍です。ある点で弾くと、最初の三角形はこれらのモードの和になり、振幅は sin(nπβ)/n² に比例します。β は弾く点の位置を長さに対する割合で表したものです。弾く点に節があるモードはまったく励起できません。細いハンマーで打つとすべてのモードに同じ衝撃が加わるので、倍音は 1/n でしか減りません。弓はまた別のことをします。弦は弓に張り付き、それから滑り戻り、その結果がヘルムホルツ運動です。一つの鋭い角が、一周期に一回、二つの放物線をめぐって走ります。励起の仕方を選び、弦に沿って点をドラッグし、スペクトルと弦が駒に及ぼす力を比べてください。"
+        ],
+        "formula": "y_{\\rm pluck}(x,t)=\\sum_{n\\ge1}\\frac{2h\\sin n\\pi\\beta}{n^2\\pi^2\\beta(1-\\beta)}\\sin\\frac{n\\pi x}{L}\\cos\\omega_nt,\\qquad \\omega_n=\\frac{n\\pi}{L}\\sqrt{\\frac{T}{\\mu}},\\qquad y_{\\rm Helmholtz}\\propto\\sum_{n\\ge1}\\frac{1}{n^2}\\sin\\frac{n\\pi x}{L}\\sin\\omega_nt",
+        "example": [
+          "A violin A string at 440 Hz plucked at \\(\\beta=1/5\\) has no 5th, 10th or 15th harmonic (2200, 4400 and 6600 Hz), and 43.8% of its vibrational energy is in the fundamental; plucked at the middle, only odd harmonics sound and the fundamental holds \\(8/\\pi^2=81.1\\%\\). Bowed at \\(\\beta=0.1\\), the string under the bow moves with the bow for 90% of each period and slips back at 9 times the bow speed, so a bow drawn at 0.2 m/s gives a slip at 1.8 m/s. In ideal Helmholtz motion the fundamental holds \\(6/\\pi^2=60.8\\%\\) of the energy whatever \\(\\beta\\) is.",
+          "440 Hz のヴァイオリンの A 線を \\(\\beta=1/5\\) で弾くと、第 5、第 10、第 15 倍音（2200、4400、6600 Hz）がなく、振動エネルギーの 43.8% が基音にあります。真ん中で弾くと奇数次の倍音だけが鳴り、基音は \\(8/\\pi^2=81.1\\%\\) を占めます。\\(\\beta=0.1\\) で弓を当てると、弓の下の弦は各周期の 90% は弓とともに動き、弓の速さの 9 倍で滑り戻ります。弓を 0.2 m/s で引けば滑りは 1.8 m/s です。理想的なヘルムホルツ運動では、\\(\\beta\\) によらず基音がエネルギーの \\(6/\\pi^2=60.8\\%\\) を占めます。"
+        ],
+        "caution": [
+          "The string here is ideal: perfectly flexible, lossless and fixed to rigid ends, so every harmonic is an exact multiple of the fundamental and the shape repeats for ever. Real strings are slightly stiff, which raises the upper partials (strongly so in pianos), and the bridge is not rigid, which is how sound gets out. The Helmholtz corner is drawn perfectly sharp; on a real violin it is rounded by the bow’s width and the string’s stiffness, and Raman showed that the stick phase carries small ripples. The time axis is slowed enormously.",
+          "ここでの弦は理想的で、完全にしなやかで損失がなく、剛体の両端に固定されています。そのためどの倍音も基音のちょうど整数倍で、形は永遠に繰り返します。実際の弦はわずかに曲げ剛性をもち、上の部分音を高めます（ピアノではそれが顕著です）。また駒は剛体ではなく、それが音が外へ出る道です。ヘルムホルツ運動の角は完全に鋭く描いていますが、実際のヴァイオリンでは弓の幅と弦の剛性で丸まり、ラマンは張り付きの間に小さな波打ちがあることを示しました。時間軸は大幅に遅くしています。"
+        ],
+        "question": [
+          "Why is the 5th harmonic missing when you pluck at one fifth of the length?",
+          "長さの五分の一の所で弾くと、なぜ第 5 倍音が欠けるのですか？"
+        ],
+        "answer": [
+          "Mode 5 has nodes at \\(x=L/5,2L/5,\\dots\\), so its shape is zero exactly where the string was pulled. The amplitude of a mode is the overlap \\(\\int y_0(x)\\sin(5\\pi x/L)\\,dx\\) of the initial shape with the mode, and for a triangle this overlap is proportional to the mode’s value at the corner, \\(\\sin(5\\pi\\beta)=\\sin\\pi=0\\). The same holds for the 10th, 15th and every multiple, which all share that node.",
+          "モード 5 は \\(x=L/5,2L/5,\\dots\\) に節をもつので、弦を引っ張ったちょうどその場所でその形は 0 です。モードの振幅は初期の形とモードの重なり \\(\\int y_0(x)\\sin(5\\pi x/L)\\,dx\\) で、三角形ではこの重なりは角でのモードの値 \\(\\sin(5\\pi\\beta)=\\sin\\pi=0\\) に比例します。同じ節を共有する第 10、第 15 などすべての倍数についても同じことが成り立ちます。"
+        ],
+        "params": [
+          [
+            "mode",
+            "Excitation",
+            "励起",
+            0,
+            2,
+            1,
+            0,
+            [
+              [
+                "Plucked",
+                "弾く"
+              ],
+              [
+                "Struck",
+                "打つ"
+              ],
+              [
+                "Bowed",
+                "弓"
+              ]
+            ]
+          ],
+          [
+            "beta",
+            "Point β along the string",
+            "弦上の位置 β",
+            0.04,
+            0.5,
+            0.01,
+            0.2
+          ]
+        ],
+        "source": "Neville H. Fletcher and Thomas D. Rossing · The Physics of Musical Instruments, 2nd ed. (Springer, 1998)",
+        "url": "https://doi.org/10.1007/978-0-387-21603-4"
+      },
+      {
+        "id": "chladni",
+        "title": [
+          "2. Chladni figures",
+          "2. クラドニ図形"
+        ],
+        "body": [
+          "In 1787 Ernst Chladni scattered sand on a metal plate clamped at its centre and bowed its edge. The plate rang at one of its natural frequencies, the sand danced away from the parts that moved and settled along the nodal lines that stayed still, drawing the standing wave. A square plate with free edges has no exact formula for its modes, but the classic approximation cos(mπx)cos(nπy) ± cos(nπx)cos(mπy) captures the patterns: each product alone has straight nodal lines, and the plus and minus combinations bend them into rings, diagonals and stars. Choose a mode in the gallery, flip the sign, and press Play to sprinkle the sand.",
+          "1787 年、エルンスト・クラドニは中心を固定した金属板に砂をまき、その縁を弓でこすりました。板は固有振動数の一つで鳴り、砂は動く部分から跳ね飛ばされ、静止したままの節線に沿って落ち着き、定在波を描きました。縁が自由な正方形の板のモードには厳密な式がありませんが、昔からの近似 cos(mπx)cos(nπy) ± cos(nπx)cos(mπy) が模様をとらえます。それぞれの積だけでは節線はまっすぐですが、プラスとマイナスの組み合わせはそれを輪や対角線や星形に曲げます。一覧でモードを選び、符号を切り替え、再生を押して砂をまいてください。"
+        ],
+        "formula": "D\\nabla^4w=\\rho h\\,\\omega^2w,\\qquad w_{mn}^{\\pm}(x,y)\\approx\\cos m\\pi x\\cos n\\pi y\\pm\\cos n\\pi x\\cos m\\pi y,\\qquad \\omega\\propto k^2=\\pi^2(m^2+n^2)",
+        "example": [
+          "The three lowest modes of a free square plate show why the approximation is only a guide. Mode (1, 1), with a cross of nodal lines along the midlines, is the plate twisting. The pair \\((2,0)\\pm(0,2)\\) gives two famous figures: the minus sign makes \\(\\cos2\\pi x=\\cos2\\pi y\\), whose nodal lines are the two diagonals, and the plus sign gives a closed ring. Here both have \\(m^2+n^2=4\\), twice the twisting mode. Leissa’s accurate values for a plate with Poisson ratio 0.3 put them at about 1.46 and 1.80 times the twisting mode: the free edges split the pair.",
+          "自由な正方形板の最も低い三つのモードを見ると、この近似が目安にすぎない理由がわかります。中央線に沿って十字の節線をもつモード (1, 1) は、板のねじれです。組 \\((2,0)\\pm(0,2)\\) は二つの有名な図形を与えます。マイナスの符号では \\(\\cos2\\pi x=\\cos2\\pi y\\) となり、節線は二本の対角線です。プラスの符号では閉じた輪になります。ここではどちらも \\(m^2+n^2=4\\) で、ねじれのモードの二倍です。ポアソン比 0.3 の板についてのリーサの正確な値では、それぞれねじれのモードの約 1.46 倍と 1.80 倍で、自由端がこの組を分けています。"
+        ],
+        "caution": [
+          "The patterns are the classic approximation, not exact solutions: the products of cosines have zero slope at the edges, as a free edge needs, but they do not make the bending moment and twisting force vanish there as well, so frequencies are only roughly right and some patterns are distorted near the edges. The sand is a random walk whose step grows with the local amplitude, which is enough to herd it onto the nodal lines; real sand bounces ballistically, and very fine powder can instead collect at the antinodes, carried by air currents, as Faraday showed.",
+          "模様は昔からの近似であり、厳密解ではありません。余弦の積は、自由端に必要なように縁で傾きが 0 になりますが、そこで曲げモーメントとねじりの力まで 0 にはしないので、周波数はおおよそしか合わず、縁の近くでは模様がゆがむものもあります。砂は、その場の振幅とともに歩幅が大きくなるランダムウォークとして動かしており、それだけで節線へ追い込むのに十分です。実際の砂は放物運動で跳ねます。ファラデーが示したように、とても細かい粉は空気の流れに運ばれて、逆に腹に集まることがあります。"
+        ],
+        "question": [
+          "Why do the + and − versions of a mode draw different figures at the same frequency?",
+          "あるモードの + 版と − 版は、なぜ同じ周波数で別の図形を描くのですか？"
+        ],
+        "answer": [
+          "Because \\(\\cos m\\pi x\\cos n\\pi y\\) and \\(\\cos n\\pi x\\cos m\\pi y\\) are two different standing waves with the same \\(m^2+n^2\\), so in the approximation they share a frequency, and any combination of them is also a mode. The symmetry of the square picks out the two combinations that are symmetric and antisymmetric under swapping \\(x\\) and \\(y\\), and these draw different nodal lines; the antisymmetric one always has the diagonal \\(x=y\\) as a nodal line. On a real plate the free edges couple the two products and push the two combinations to slightly different frequencies.",
+          "\\(\\cos m\\pi x\\cos n\\pi y\\) と \\(\\cos n\\pi x\\cos m\\pi y\\) は \\(m^2+n^2\\) が同じ別々の定在波なので、近似の中では周波数が同じで、その任意の組み合わせもまたモードになるからです。正方形の対称性は、\\(x\\) と \\(y\\) の入れ替えについて対称な組み合わせと反対称な組み合わせを選び出し、これらは別々の節線を描きます。反対称なものは必ず対角線 \\(x=y\\) を節線にもちます。実際の板では自由端が二つの積を結びつけ、二つの組み合わせをわずかに違う周波数へ押し分けます。"
+        ],
+        "params": [
+          [
+            "m",
+            "m",
+            "m",
+            0,
+            4,
+            1,
+            3
+          ],
+          [
+            "n",
+            "n",
+            "n",
+            0,
+            4,
+            1,
+            1
+          ],
+          [
+            "sign",
+            "Combination",
+            "組み合わせ",
+            0,
+            1,
+            1,
+            0,
+            [
+              [
+                "plus",
+                "プラス"
+              ],
+              [
+                "minus",
+                "マイナス"
+              ]
+            ]
+          ]
+        ],
+        "source": "Arthur W. Leissa · Vibration of Plates, NASA SP-160 (1969), ch. 4",
+        "url": "https://ntrs.nasa.gov/citations/19700009156"
+      },
+      {
+        "id": "doppler-mach",
+        "title": [
+          "3. The Doppler effect and the Mach cone",
+          "3. ドップラー効果とマッハ円錐"
+        ],
+        "body": [
+          "A source that moves keeps emitting crests from new places, so the crests ahead of it bunch up and those behind spread out: an approaching siren sounds higher and a receding one lower. What the listener hears depends on the angle θ between the source’s motion and the line to the listener at the moment the sound was emitted, f′ = f/(1 − M cos θ), where M is the source speed divided by the speed of sound. At M = 1 the crests ahead pile up into a single wall. Beyond it the source outruns its own sound, the crests fold into a cone of half-angle μ with sin μ = 1/M, and the listener hears nothing until the cone sweeps past with a boom, then two sounds at once, one of them backwards. Change the Mach number and drag the listener.",
+          "動く音源は新しい場所から山を出し続けるので、前方の山は詰まり、後方の山は広がります。近づくサイレンは高く、遠ざかるサイレンは低く聞こえます。聴き手に聞こえるものは、音が出された瞬間の音源の運動方向と聴き手への方向のなす角 θ で決まり、f′ = f/(1 − M cos θ) です。M は音源の速さを音速で割ったものです。M = 1 では前方の山が積み重なって一枚の壁になります。それを超えると音源は自分の音を追い越し、山は sin μ = 1/M を満たす半頂角 μ の円錐に折りたたまれます。聴き手は円錐がブームとともに通り過ぎるまで何も聞かず、その後は二つの音を同時に聞き、その一方は逆再生です。マッハ数を変え、聴き手をドラッグしてください。"
+        ],
+        "formula": "t_{\\rm arr}=t_e+\\frac{r(t_e)}{c},\\qquad \\frac{f^{\\prime}}{f}=\\Big(\\frac{dt_{\\rm arr}}{dt_e}\\Big)^{-1}=\\frac{1}{1-M\\cos\\theta},\\qquad \\sin\\mu=\\frac1M,\\qquad t_{\\rm boom}=\\frac{x_0+|y_0|\\sqrt{M^2-1}}{Mc}",
+        "example": [
+          "An ambulance at 25 m/s sounding 700 Hz has \\(M=25/343=0.0729\\): heard head-on it is \\(700/(1-0.0729)=755\\) Hz, and going away \\(700/1.0729=652\\) Hz, a drop of about two and a half semitones. Concorde at Mach 2 had a Mach angle \\(\\mu=30^\\circ\\); flying at 15 km, its boom reached a listener on the ground when it was already \\(15\\sqrt{M^2-1}=26\\) km beyond them.",
+          "25 m/s で 700 Hz を鳴らす救急車では \\(M=25/343=0.0729\\) です。真正面から近づくと \\(700/(1-0.0729)=755\\) Hz、遠ざかると \\(700/1.0729=652\\) Hz に聞こえ、約 2.5 半音下がります。マッハ 2 のコンコルドのマッハ角は \\(\\mu=30^\\circ\\) でした。高度 15 km を飛ぶとき、そのブームが地上の聴き手に届いたのは、機体がすでに \\(15\\sqrt{M^2-1}=26\\) km 先にいるときでした。"
+        ],
+        "caution": [
+          "The source moves in a straight line at constant speed through still air with a uniform speed of sound, and only the timing of the crests is modelled, not their loudness. The formula uses the angle at emission: by the time the sound arrives the source has moved on, so the angle you would see is different. Real booms come from the pressure of a solid body, are shaped by temperature layers in the atmosphere, and arrive as an N-shaped double crack; and a listener who moves also hears a Doppler shift, by a different formula.",
+          "音源は、音速が一様な静止した空気の中を一定の速さで直進し、モデルにしているのは山の到着時刻だけで、大きさではありません。式は音が出たときの角度を使います。音が届く頃には音源は先へ進んでいるので、目に見える角度は違います。実際のブームは固い物体が押しのける圧力から生まれ、大気の温度の層で形を変え、N 字形の二重の破裂音として届きます。また動く聴き手にもドップラー偏移は聞こえますが、それは別の式に従います。"
+        ],
+        "question": [
+          "Why does a supersonic plane’s sound arrive backwards after the boom?",
+          "なぜ超音速機の音は、ブームの後に逆再生で届くのですか？"
+        ],
+        "answer": [
+          "Because the plane outruns its sound, sound emitted later can arrive earlier. The arrival time \\(t_{\\rm arr}(t_e)\\) then has a minimum, at the emission for which \\(\\cos\\theta=1/M\\), and that minimum is the boom, where sound from a stretch of the path arrives at once. After it each arrival time has two emissions: one later than the boom emission, heard in the right order, and one earlier, for which \\(dt_{\\rm arr}/dt_e<0\\), so the sounds of the earlier approach arrive in reverse order.",
+          "飛行機が自分の音を追い越すので、後から出た音が先に届くことがあるからです。到着時刻 \\(t_{\\rm arr}(t_e)\\) は \\(\\cos\\theta=1/M\\) となる放出のところで最小になり、その最小がブームで、経路のある区間からの音が一度に届きます。その後は各到着時刻に二つの放出が対応します。一つはブームの放出より後のもので正しい順に聞こえ、もう一つはそれより前のもので \\(dt_{\\rm arr}/dt_e<0\\) なので、それ以前に近づいていたときの音は逆の順に届きます。"
+        ],
+        "params": [
+          [
+            "M",
+            "Mach number M",
+            "マッハ数 M",
+            0,
+            2.5,
+            0.05,
+            0.7
+          ],
+          [
+            "ox",
+            "Listener x",
+            "聴き手の x",
+            -6,
+            6,
+            0.1,
+            1.5
+          ],
+          [
+            "oy",
+            "Listener distance from the path",
+            "聴き手と経路の距離",
+            0.4,
+            3.3,
+            0.1,
+            1.8
+          ]
+        ],
+        "source": "Richard Feynman, Robert Leighton and Matthew Sands · The Feynman Lectures on Physics, vol. I, ch. 51: Waves",
+        "url": "https://www.feynmanlectures.caltech.edu/I_51.html"
+      }
+    ]
+  },
+  {
+    "slug": "switching-converters",
+    "title": [
+      "Switching power converters: chopping to convert",
+      "スイッチング電源：刻んで変換する"
+    ],
+    "description": [
+      "Every phone charger, laptop brick and processor voltage regulator changes one DC voltage into another without wasting the difference as heat. It does so by switching hundreds of thousands of times a second and letting an inductor and a capacitor average the chopped waveform. Volt-second balance on the inductor gives the conversion ratio in one line; the inductor’s own resistance puts a ceiling on how far a boost converter can step up; and at light load the current runs dry each cycle, which changes the rules.",
+      "携帯電話の充電器も、ノートパソコンの電源アダプタも、プロセッサの電圧レギュレータも、ある直流電圧を別の直流電圧に変え、その差を熱として捨てることはしません。毎秒数十万回スイッチを切り替え、刻まれた波形をインダクタとコンデンサに平均させるのです。インダクタのボルト秒の釣り合いから変換比が一行で求まり、インダクタ自身の抵抗が昇圧変換器で上げられる限界を決め、軽負荷では電流が毎周期尽きて規則が変わります。"
+    ],
+    "group": "engineering",
+    "prerequisite": [
+      "Circuits with inductors and capacitors, and time averages",
+      "インダクタとコンデンサを含む回路、時間平均"
+    ],
+    "source": "Robert W. Erickson and Dragan Maksimović · Fundamentals of Power Electronics, 3rd ed. (Springer, 2020)",
+    "url": "https://doi.org/10.1007/978-3-030-43881-4",
+    "labs": [
+      {
+        "id": "buck-converter",
+        "title": [
+          "1. The buck converter",
+          "1. 降圧変換器"
+        ],
+        "body": [
+          "A switch connects the input to an inductor for a fraction D of each period and disconnects it for the rest, while a diode, or a second switch, gives the inductor’s current a path to keep flowing. The switch node therefore sees a square wave between V_in and zero, whose average is D·V_in, and the inductor and capacitor form a low-pass filter that passes that average and blocks the switching. The inductor current is the clue: it ramps up at (V_in − V)/L while the switch is on and down at V/L while it is off, and in steady state it must end each period where it began. Watch the current path change with the switch, drag the end of the on time to change D, and make the load light enough for the current to run dry.",
+          "スイッチは各周期の割合 D の間だけ入力をインダクタにつなぎ、残りの間は切り離します。その間、ダイオードまたは第二のスイッチが、インダクタの電流が流れ続ける道をつくります。そのためスイッチ節点には V_in と 0 の間の方形波が現れ、その平均は D·V_in です。インダクタとコンデンサはこの平均を通し、スイッチングを遮る低域通過フィルタになります。手がかりはインダクタ電流です。スイッチがオンの間は (V_in − V)/L で増え、オフの間は V/L で減り、定常状態では各周期の終わりに始めの値へ戻らねばなりません。スイッチとともに電流の経路が変わる様子を見て、オン時間の終わりをドラッグして D を変え、電流が尽きるほど負荷を軽くしてみてください。"
+        ],
+        "formula": "\\frac{(V_{in}-V)\\,DT_s}{L}=\\frac{V(1-D)T_s}{L}\\ \\Rightarrow\\ V=D\\,V_{in},\\qquad \\Delta I_L=\\frac{(V_{in}-V)D}{Lf_s},\\qquad \\Delta V\\approx\\frac{\\Delta I_L}{8f_sC}",
+        "example": [
+          "Step 12 V down to 5 V at 200 kHz with \\(D=0.42\\): the output is \\(0.42\\times12=5.04\\) V. With \\(L=10\\) µH the current ripple is \\((12-5.04)\\times0.42/(10\\,\\mu\\mathrm H\\times200\\,\\mathrm{kHz})=1.46\\) A, so into a 2 Ω load the current swings between 1.79 and 3.25 A about its average of 2.52 A. A 47 µF capacitor holds the output ripple to \\(1.46/(8\\times200\\,\\mathrm{kHz}\\times47\\,\\mu\\mathrm F)=19.4\\) mV. The current stays continuous as long as the load draws more than half the ripple, 0.73 A, that is for any load below 6.9 Ω.",
+          "200 kHz、\\(D=0.42\\) で 12 V を 5 V に下げます。出力は \\(0.42\\times12=5.04\\) V です。\\(L=10\\) µH なら電流リプルは \\((12-5.04)\\times0.42/(10\\,\\mu\\mathrm H\\times200\\,\\mathrm{kHz})=1.46\\) A で、2 Ω の負荷では電流は平均 2.52 A のまわりを 1.79 A から 3.25 A まで振れます。47 µF のコンデンサが出力リプルを \\(1.46/(8\\times200\\,\\mathrm{kHz}\\times47\\,\\mu\\mathrm F)=19.4\\) mV に抑えます。負荷がリプルの半分 0.73 A より多く引く限り、つまり負荷が 6.9 Ω より小さい限り、電流は連続です。"
+        ],
+        "caution": [
+          "The switches and diode are ideal here: no on-resistance, no forward drop, no switching time, so the efficiency is 100% and the steady state is exact. In a real converter the diode’s 0.4 to 0.7 V forward drop is a large loss at low output voltage, which is why modern converters use a synchronous second switch; and the duty cycle is not set by hand but by a feedback loop that measures the output and adjusts D. The ripple formula for the capacitor assumes all the current ripple flows into it and ignores its series resistance, which in practice often dominates.",
+          "ここでのスイッチとダイオードは理想的で、オン抵抗も順方向電圧降下もスイッチング時間もないので、効率は 100% で、定常状態は厳密です。実際の変換器ではダイオードの 0.4〜0.7 V の順方向電圧降下は低い出力電圧で大きな損失になるので、現代の変換器は同期型の第二のスイッチを使います。またデューティ比は手で決めるのではなく、出力を測って D を調整する帰還ループが決めます。コンデンサのリプルの式は、電流リプルがすべてコンデンサに流れると仮定し、その直列抵抗を無視していますが、実際にはそれが支配的なこともよくあります。"
+        ],
+        "question": [
+          "Why must the inductor current end each period exactly where it started?",
+          "インダクタ電流は、なぜ各周期の終わりにちょうど始めの値に戻らねばならないのですか？"
+        ],
+        "answer": [
+          "Because otherwise it would drift by the same amount every period and grow without limit, which is not a steady state. The change over a period is \\(\\frac1L\\int_0^{T_s}v_L\\,dt\\), so the inductor’s average voltage must be zero: the volt-seconds it gains while on, \\((V_{in}-V)DT_s\\), must equal those it loses while off, \\(V(1-D)T_s\\). The same argument applied to the capacitor’s charge says its average current is zero, so the inductor’s average current equals the load current.",
+          "そうでなければ毎周期同じだけずれていき、限りなく増えてしまい、定常状態ではないからです。一周期の間の変化は \\(\\frac1L\\int_0^{T_s}v_L\\,dt\\) なので、インダクタの平均電圧は 0 でなければなりません。オンの間に得るボルト秒 \\((V_{in}-V)DT_s\\) は、オフの間に失うボルト秒 \\(V(1-D)T_s\\) に等しくなければなりません。同じ議論をコンデンサの電荷に当てはめると、その平均電流は 0 なので、インダクタの平均電流は負荷電流に等しくなります。"
+        ],
+        "params": [
+          [
+            "Vin",
+            "Input V_in, volts",
+            "入力 V_in、ボルト",
+            5,
+            48,
+            1,
+            12
+          ],
+          [
+            "D",
+            "Duty cycle D",
+            "デューティ比 D",
+            0.05,
+            0.95,
+            0.01,
+            0.42
+          ],
+          [
+            "L",
+            "Inductance L, µH",
+            "インダクタンス L、µH",
+            2,
+            100,
+            1,
+            10
+          ],
+          [
+            "R",
+            "Load R, ohms",
+            "負荷 R、オーム",
+            0.5,
+            20,
+            0.1,
+            2
+          ],
+          [
+            "sync",
+            "Freewheeling path",
+            "還流の経路",
+            0,
+            1,
+            1,
+            0,
+            [
+              [
+                "Diode",
+                "ダイオード"
+              ],
+              [
+                "Synchronous switch",
+                "同期スイッチ"
+              ]
+            ]
+          ]
+        ],
+        "source": "Texas Instruments · Basic calculation of a buck converter’s power stage, application report SLVA477B",
+        "url": "https://www.ti.com/lit/an/slva477b/slva477b.pdf"
+      },
+      {
+        "id": "conversion-ratios",
+        "title": [
+          "2. Buck, boost, buck-boost, and the limit on gain",
+          "2. 降圧、昇圧、昇降圧、そして利得の限界"
+        ],
+        "body": [
+          "Rearranging the same three parts, a switch, a diode and an inductor, gives converters that step down, step up, or invert. Each ratio follows from volt-second balance: the boost’s inductor sees V_in while the switch is on and V_in − V while it is off, so V = V_in/(1 − D), which seems to promise any gain as D approaches 1. It does not, because the inductor’s winding resistance R_L carries the input current, which is the load current divided by 1 − D, so its loss grows as 1/(1 − D)². Past a certain duty cycle more switching produces less output. Choose a converter, set the winding resistance as a percentage of the load, and drag the operating point along the curve.",
+          "同じ三つの部品、スイッチとダイオードとインダクタを並べ替えると、電圧を下げる、上げる、反転する変換器ができます。どの比もボルト秒の釣り合いから導かれます。昇圧のインダクタはスイッチがオンの間 V_in を、オフの間 V_in − V を受けるので V = V_in/(1 − D) で、D が 1 に近づくといくらでも利得が得られるように見えます。そうはなりません。インダクタの巻線抵抗 R_L には入力電流、つまり負荷電流を 1 − D で割ったものが流れるので、その損失は 1/(1 − D)² で増えるからです。あるデューティ比を超えると、スイッチを長く入れるほど出力は下がります。変換器を選び、巻線抵抗を負荷に対する割合で決め、曲線に沿って動作点をドラッグしてください。"
+        ],
+        "formula": "M_{\\rm buck}=\\frac{D}{1+a},\\qquad M_{\\rm boost}=\\frac{1}{1-D}\\cdot\\frac{1}{1+a/(1-D)^2},\\qquad M_{\\rm buck\\text{-}boost}=-\\frac{D}{1-D}\\cdot\\frac{1}{1+a/(1-D)^2},\\qquad a=\\frac{R_L}{R}",
+        "example": [
+          "Boost a 3.7 V lithium cell to 12 V. The ideal formula asks for \\(D=1-3.7/12=0.692\\), but with \\(R_L/R=2\\%\\) that duty cycle gives only \\(M=2.68\\), 9.9 V, at 82.6% efficiency. Reaching \\(M=12/3.7=3.24\\) takes \\(D=0.784\\), where the efficiency has fallen to 69.9%, and no duty cycle at all gives more than \\(1/(2\\sqrt{0.02})=3.54\\), reached at \\(D=1-\\sqrt{0.02}=0.859\\). A designer who needs a large step-up uses a transformer or a multi-stage converter instead.",
+          "3.7 V のリチウム電池を 12 V に昇圧します。理想の式は \\(D=1-3.7/12=0.692\\) を求めますが、\\(R_L/R=2\\%\\) ではこのデューティ比で得られるのは \\(M=2.68\\)、つまり 9.9 V だけで、効率は 82.6% です。\\(M=12/3.7=3.24\\) に届くには \\(D=0.784\\) が必要で、そこでは効率は 69.9% まで落ちています。そしてどんなデューティ比でも \\(1/(2\\sqrt{0.02})=3.54\\) より大きくはならず、それは \\(D=1-\\sqrt{0.02}=0.859\\) で達成されます。大きな昇圧が必要な設計者は、代わりに変圧器や多段の変換器を使います。"
+        ],
+        "caution": [
+          "Only one loss is modelled, the inductor’s winding resistance, with everything else ideal; real switch on-resistance, diode drop and switching loss add similar terms and lower the curves further. All three ratios assume continuous conduction. The buck-boost’s output is negative relative to the input’s ground, and its gain curve is drawn below the axis.",
+          "モデルに入れた損失はインダクタの巻線抵抗だけで、それ以外はすべて理想的です。実際のスイッチのオン抵抗、ダイオードの電圧降下、スイッチング損失も似た項を加え、曲線をさらに下げます。三つの比はどれも電流連続モードを仮定しています。昇降圧の出力は入力のグラウンドに対して負なので、その利得の曲線は軸の下に描いています。"
+        ],
+        "question": [
+          "Why does the buck converter’s efficiency not depend on the duty cycle, while the boost’s collapses near D = 1?",
+          "降圧変換器の効率はデューティ比によらないのに、昇圧の効率は D = 1 の近くで崩れるのはなぜですか？"
+        ],
+        "answer": [
+          "Because of where the inductor sits. In the buck it is in series with the load, so it always carries exactly the load current \\(I\\) and dissipates \\(I^2R_L\\), a fixed fraction of the output power. In the boost it is in series with the input, and power balance forces the input current up to \\(I/(1-D)\\); the loss \\(I^2R_L/(1-D)^2\\) therefore grows without bound as \\(D\\to1\\), while the power delivered cannot.",
+          "インダクタの位置のためです。降圧ではインダクタは負荷と直列なので、常にちょうど負荷電流 \\(I\\) を流し、\\(I^2R_L\\) を消費し、それは出力電力の一定の割合です。昇圧ではインダクタは入力と直列で、電力の釣り合いが入力電流を \\(I/(1-D)\\) まで押し上げます。そのため損失 \\(I^2R_L/(1-D)^2\\) は \\(D\\to1\\) で限りなく増えますが、送り出せる電力はそうはなりません。"
+        ],
+        "params": [
+          [
+            "type",
+            "Converter",
+            "変換器",
+            0,
+            2,
+            1,
+            1,
+            [
+              [
+                "Buck",
+                "降圧"
+              ],
+              [
+                "Boost",
+                "昇圧"
+              ],
+              [
+                "Buck-boost",
+                "昇降圧"
+              ]
+            ]
+          ],
+          [
+            "D",
+            "Duty cycle D",
+            "デューティ比 D",
+            0,
+            0.99,
+            0.01,
+            0.7
+          ],
+          [
+            "a",
+            "Winding resistance R_L, % of R",
+            "巻線抵抗 R_L、R に対する %",
+            0,
+            10,
+            0.1,
+            2
+          ]
+        ],
+        "source": "Robert W. Erickson and Dragan Maksimović · Fundamentals of Power Electronics, 3rd ed. (Springer, 2020)",
+        "url": "https://doi.org/10.1007/978-3-030-43881-4"
+      },
+      {
+        "id": "ccm-dcm",
+        "title": [
+          "3. When the current runs dry",
+          "3. 電流が尽きるとき"
+        ],
+        "body": [
+          "With a diode as the freewheeling path, the inductor current cannot reverse. If the load is light, the current falls to zero before the period ends and stays there: the diode blocks, nothing flows, and the capacitor alone feeds the load until the switch turns on again. This is discontinuous conduction. Volt-second balance still holds, but over D and the shorter falling interval D₂ instead of 1 − D, and the output now depends on the load as well as on D. One dimensionless number decides which regime you are in, K = 2L/(R·T_s), which compares the inductor’s time constant with the switching period: the boundary is K = 1 − D. Drag the operating point across the boundary.",
+          "還流の経路がダイオードだと、インダクタ電流は逆向きになれません。負荷が軽いと、電流は周期が終わる前に 0 まで下がり、そのままになります。ダイオードは阻止し、何も流れず、スイッチが再びオンになるまでコンデンサだけが負荷に電流を供給します。これが電流不連続モードです。ボルト秒の釣り合いはやはり成り立ちますが、それは 1 − D ではなく D とより短い下りの区間 D₂ についてであり、出力は D だけでなく負荷にも依存するようになります。どちらのモードにいるかを決めるのは、インダクタの時定数とスイッチング周期を比べる無次元数 K = 2L/(R·T_s) で、境界は K = 1 − D です。動作点をドラッグして境界を越えてください。"
+        ],
+        "formula": "K=\\frac{2L}{RT_s},\\qquad K<1-D\\ \\Rightarrow\\ M=\\frac{2}{1+\\sqrt{1+4K/D^2}},\\qquad (V_{in}-V)D=V D_2,\\qquad D_2=\\frac{D(1-M)}{M}",
+        "example": [
+          "Take the 12 V buck at 200 kHz with \\(D=0.42\\), but now \\(L=2\\) µH and a light 20 Ω load: \\(K=2\\times2\\,\\mu\\mathrm H/(20\\,\\Omega\\times5\\,\\mu\\mathrm s)=0.04\\), far below \\(1-D=0.58\\). The output is \\(M=2/(1+\\sqrt{1+0.16/0.1764})=0.840\\), so 10.08 V instead of 5.04 V. The current peaks at \\((1-M)D\\,V_{in}T_s/L=2.02\\) A, falls back to zero after a further \\(D_2=0.08\\) of the period, and then sits at zero for the remaining 50%.",
+          "200 kHz、\\(D=0.42\\) の 12 V 降圧変換器で、今度は \\(L=2\\) µH、負荷を軽い 20 Ω にします。\\(K=2\\times2\\,\\mu\\mathrm H/(20\\,\\Omega\\times5\\,\\mu\\mathrm s)=0.04\\) で、\\(1-D=0.58\\) よりずっと小さい値です。出力は \\(M=2/(1+\\sqrt{1+0.16/0.1764})=0.840\\) で、5.04 V ではなく 10.08 V になります。電流は \\((1-M)D\\,V_{in}T_s/L=2.02\\) A でピークに達し、さらに周期の \\(D_2=0.08\\) の後に 0 へ戻り、残りの 50% の間は 0 のままです。"
+        ],
+        "caution": [
+          "The formulas assume the output ripple is small, so the output voltage is effectively constant within a period, and ideal components. A synchronous converter, whose second switch conducts in both directions, never enters this mode: its current simply goes negative at light load and \\(M=D\\) holds, at the cost of circulating current. Many controllers deliberately switch to discontinuous or burst operation at light load because it reduces switching losses.",
+          "これらの式は出力リプルが小さく、出力電圧が一周期の間ほぼ一定であることと、部品が理想的であることを仮定しています。第二のスイッチが両方向に導通する同期型の変換器は、このモードに入りません。軽負荷では電流が単に負になり、循環電流の代償を払って \\(M=D\\) が保たれます。多くの制御器は、スイッチング損失を減らせるので、軽負荷ではわざと不連続動作や間欠動作に切り替えます。"
+        ],
+        "question": [
+          "Why does the output voltage rise above D·V_in when the load gets lighter?",
+          "負荷が軽くなると、なぜ出力電圧は D·V_in より上がるのですか？"
+        ],
+        "answer": [
+          "In discontinuous conduction the inductor delivers a fixed packet of energy each period, set by the on-time and the input-to-output voltage, rather than a steady current. A lighter load draws less, so the capacitor charges until the falling interval \\(D_2\\) has shrunk enough that the volt-seconds balance again: \\((V_{in}-V)D=VD_2\\) with a small \\(D_2\\) means \\(V\\) close to \\(V_{in}\\). That is why a converter left in this mode needs feedback to regulate its output.",
+          "電流不連続モードでは、インダクタは一定の電流ではなく、オン時間と入出力の電圧で決まる一定のエネルギーの包みを毎周期送り出します。負荷が軽いと引き出される量が少ないので、コンデンサは下りの区間 \\(D_2\\) がボルト秒が再び釣り合うほど短くなるまで充電されます。\\(D_2\\) が小さいときの \\((V_{in}-V)D=VD_2\\) は、\\(V\\) が \\(V_{in}\\) に近いことを意味します。だからこのモードで動かす変換器は、出力を安定させるために帰還を必要とします。"
+        ],
+        "params": [
+          [
+            "D",
+            "Duty cycle D",
+            "デューティ比 D",
+            0.05,
+            0.95,
+            0.01,
+            0.4
+          ],
+          [
+            "lk",
+            "log₁₀ K",
+            "log₁₀ K",
+            -2,
+            0.5,
+            0.01,
+            -0.6
+          ]
+        ],
+        "source": "Robert W. Erickson and Dragan Maksimović · Fundamentals of Power Electronics, 3rd ed. (Springer, 2020)",
+        "url": "https://doi.org/10.1007/978-3-030-43881-4"
+      }
+    ]
   }
 ]
