@@ -115,7 +115,10 @@
     'semiconductor-physics': ['electromagnetism', 'quantum-mechanics', 'laser-physics'],
     'combinatorics': ['probability-inference', 'statistical-mechanics', 'complex-analysis'],
     'acoustics': ['fluid-dynamics', 'room-acoustics', 'loudspeakers'],
-    'switching-converters': ['control-theory', 'semiconductor-physics', 'crossovers-filters']
+    'switching-converters': ['control-theory', 'semiconductor-physics', 'crossovers-filters'],
+    'game-theory': ['dynamical-systems', 'linear-algebra', 'markov-chains'],
+    'nuclear-physics': ['statistical-mechanics', 'markov-chains', 'atomic-physics'],
+    'piston-engines': ['thermodynamics', 'fourier-analysis', 'gears-mechanisms']
   };
   // Topics named in each topic's own prerequisite line (content.json "prerequisite").
   const PREREQ = {
@@ -161,7 +164,10 @@
     'semiconductor-physics': ['solid-state-physics', 'statistical-mechanics'], // Solid-state physics and statistical mechanics
     'combinatorics': ['number-theory', 'graph-theory'],                  // Elementary counting, number theory and power series
     'acoustics': ['partial-differential-equations', 'fourier-analysis'], // The wave equation, Fourier series and standing waves
-    'switching-converters': ['electromagnetism', 'crossovers-filters']   // Circuits with inductors and capacitors, and time averages
+    'switching-converters': ['electromagnetism', 'crossovers-filters'],  // Circuits with inductors and capacitors, and time averages
+    'game-theory': ['probability-inference', 'optimization'],            // Probability, expected values and linear optimisation
+    'nuclear-physics': ['quantum-mechanics', 'electromagnetism'],         // Quantum mechanics, exponential decay and electrostatics
+    'piston-engines': ['classical-mechanics', 'thermodynamics', 'fourier-analysis'] // Kinematics, thermodynamics of ideal gases, and Fourier series
   };
 
   let topics = [], bySlug = new Map(), edges = [], drawn = [];

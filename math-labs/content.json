@@ -13898,5 +13898,641 @@
         "url": "https://doi.org/10.1007/978-3-030-43881-4"
       }
     ]
+  },
+  {
+    "slug": "game-theory",
+    "title": [
+      "Game theory: strategy when others choose too",
+      "ゲーム理論：相手も選ぶときの戦略"
+    ],
+    "description": [
+      "When the outcome depends on what others choose, the best move depends on what you expect them to do, and they reason the same way about you. A Nash equilibrium is a set of choices no one wants to change alone, and it can be good for everyone, bad for everyone, or impossible without randomising. Let strategies spread by success instead of reasoning and the same payoffs drive a population around in cycles. In games of pure conflict, randomising optimally turns into a pair of dual linear programs.",
+      "結果が他人の選択にも左右されるとき、最善の手は相手が何をすると予想するかで決まり、相手もあなたについて同じように考えます。ナッシュ均衡とは、だれも一人だけでは変えたくない選択の組で、全員に良いこともあれば、全員に悪いこともあり、確率を混ぜなければ存在しないこともあります。推論の代わりに成功によって戦略が広まるとすると、同じ利得が集団を循環させます。そして純粋な対立のゲームでは、最適に確率を混ぜることが一組の双対な線形計画になります。"
+    ],
+    "group": "applications",
+    "prerequisite": [
+      "Probability, expected values and linear optimisation",
+      "確率、期待値、線形最適化"
+    ],
+    "source": "Martin J. Osborne and Ariel Rubinstein · A Course in Game Theory (MIT Press, 1994)",
+    "url": "https://arielrubinstein.tau.ac.il/books/GT.pdf",
+    "labs": [
+      {
+        "id": "nash-2x2",
+        "title": [
+          "1. Two players, two choices, and Nash equilibria",
+          "1. 二人、二つの選択、ナッシュ均衡"
+        ],
+        "body": [
+          "In a two-player game each player picks a row or a column, and the table gives both payoffs. A pair of choices is a Nash equilibrium if neither player gains by switching alone: in the table, a cell that no deviation arrow leaves. Players may also randomise, Row playing the first row with probability p and Column the first column with probability q. Each player’s best reply to the other’s mix is a step function, and the equilibria are exactly where the two best-reply graphs cross; a mixed equilibrium is where each player’s mix leaves the other indifferent. Choose a classic game and drag the strategy point: the streamlines show both players drifting towards better replies.",
+          "二人のゲームでは、各プレイヤーが行か列を選び、表が両者の利得を与えます。どちらのプレイヤーも一人だけ手を変えて得をしない選択の組がナッシュ均衡です。表の上では、逸脱の矢印が一本も出ていないマスです。プレイヤーは確率を混ぜることもでき、行は第 1 行を確率 p で、列は第 1 列を確率 q で選びます。相手の混合に対する各プレイヤーの最適応答は階段関数で、均衡はちょうど二つの最適応答のグラフが交わる所です。混合均衡は、各プレイヤーの混合が相手を無差別にする所です。有名なゲームを選んで戦略の点をドラッグしてください。流線は両プレイヤーがより良い応答へ流れていく様子を示します。"
+        ],
+        "formula": "(p^*,q^*)\\ \\text{is Nash}\\iff u_R(p^*,q^*)\\ge u_R(p,q^*)\\ \\forall p\\ \\text{and}\\ u_C(p^*,q^*)\\ge u_C(p^*,q)\\ \\forall q,\\qquad q^*:\\ u_R(\\text{row}_1,q^*)=u_R(\\text{row}_2,q^*)",
+        "example": [
+          "In the stag hunt, hunting stag pays 4 if the other hunts stag too and 0 otherwise, while hunting hare pays a sure 3. Row is indifferent when \\(4q=3\\), so \\(q^*=3/4\\), and by symmetry \\(p^*=3/4\\); at this mixed equilibrium each expects exactly 3, no better than the safe hare. In the battle of the sexes, Row is indifferent when \\(3q=2(1-q)\\), giving \\(q^*=2/5\\), and Column when \\(2p=3(1-p)\\), giving \\(p^*=3/5\\): both then expect \\(6/5\\), less than the 2 or 3 of either coordinated outcome.",
+          "鹿狩りでは、鹿を狩ると相手も鹿を狩れば 4、そうでなければ 0 で、兎を狩れば確実に 3 です。行は \\(4q=3\\) のとき無差別なので \\(q^*=3/4\\)、対称性から \\(p^*=3/4\\) です。この混合均衡ではどちらもちょうど 3 を期待し、安全な兎と変わりません。男女の争いでは、行は \\(3q=2(1-q)\\) のとき無差別で \\(q^*=2/5\\)、列は \\(2p=3(1-p)\\) のとき無差別で \\(p^*=3/5\\) です。このとき二人とも \\(6/5\\) を期待し、どちらの協調した結果の 2 や 3 よりも少なくなります。"
+        ],
+        "caution": [
+          "A Nash equilibrium is a stability condition, not a prediction or a recommendation: the prisoner’s dilemma has a unique equilibrium that both players would happily trade for another outcome, and games with several equilibria say nothing about which one will be played. The streamlines are the two-population replicator dynamics, one natural model of learning; other learning rules give other flows with the same equilibria.",
+          "ナッシュ均衡は安定性の条件であって、予測や推奨ではありません。囚人のジレンマにはただ一つの均衡がありますが、二人とも喜んで別の結果と交換するでしょう。また均衡が複数あるゲームは、どれが実際に選ばれるかについて何も言いません。流線は二集団のレプリケーター動学で、学習の自然なモデルの一つです。他の学習の規則は、均衡は同じでも別の流れを与えます。"
+        ],
+        "question": [
+          "Why must a player who randomises in equilibrium be indifferent between the choices they mix?",
+          "均衡で確率を混ぜるプレイヤーは、なぜ混ぜる選択肢の間で無差別でなければならないのですか？"
+        ],
+        "answer": [
+          "Because the expected payoff of a mix is the average of the pure payoffs, weighted by the probabilities. If one choice paid strictly more, shifting all the probability onto it would raise the average, so the mix would not be a best reply. That is why each player’s equilibrium mix is pinned down by the other player’s payoffs: it is chosen to make the opponent indifferent, not to help oneself.",
+          "混合の期待利得は、純粋戦略の利得を確率で重みづけた平均だからです。ある選択肢の方が厳密に多く払うなら、すべての確率をそれに移せば平均が上がるので、その混合は最適応答ではありません。だから各プレイヤーの均衡での混合は相手の利得で決まります。それは自分のためではなく、相手を無差別にするように選ばれるのです。"
+        ],
+        "params": [
+          [
+            "game",
+            "Game",
+            "ゲーム",
+            0,
+            4,
+            1,
+            1,
+            [
+              [
+                "Prisoner’s dilemma",
+                "囚人のジレンマ"
+              ],
+              [
+                "Stag hunt",
+                "鹿狩り"
+              ],
+              [
+                "Battle of the sexes",
+                "男女の争い"
+              ],
+              [
+                "Chicken",
+                "チキン"
+              ],
+              [
+                "Matching pennies",
+                "コイン合わせ"
+              ]
+            ]
+          ],
+          [
+            "q",
+            "q (Column’s first column)",
+            "q（列の第 1 列）",
+            0,
+            1,
+            0.01,
+            0.55
+          ],
+          [
+            "p",
+            "p (Row’s first row)",
+            "p（行の第 1 行）",
+            0,
+            1,
+            0.01,
+            0.3
+          ]
+        ],
+        "source": "Martin J. Osborne and Ariel Rubinstein · A Course in Game Theory (MIT Press, 1994)",
+        "url": "https://arielrubinstein.tau.ac.il/books/GT.pdf"
+      },
+      {
+        "id": "replicator",
+        "title": [
+          "2. Replicator dynamics: rock, paper, scissors",
+          "2. レプリケーター動学：グー、チョキ、パー"
+        ],
+        "body": [
+          "Replace reasoning players by a large population in which strategies spread in proportion to their success: the share of a strategy grows at a rate equal to how much better it does than the population average. In rock-paper-scissors every strategy is beaten by another, so the population cycles. Whether the cycles die down depends on a single number, the payoff w of a win when a loss costs 1. If a win is worth more than a loss costs, mixing pays and every orbit spirals in to one third each; if less, the cycles grow into wild booms and crashes; at w = 1 the product of the three shares is conserved and the cycles last for ever. Drag the starting point and change w.",
+          "推論するプレイヤーの代わりに、戦略が成功に比例して広まる大きな集団を考えます。ある戦略の割合は、それが集団の平均よりどれだけ良いかに等しい率で増えます。じゃんけんではどの戦略も他の戦略に負けるので、集団は循環します。循環が収まるかどうかは、負けの損失を 1 としたときの勝ちの利得 w というただ一つの数で決まります。勝ちの価値が負けの損失より大きければ混ざることが得になり、どの軌道も三分の一ずつの点へ渦を巻いて入ります。小さければ循環は激しい好況と崩壊へ育ちます。w = 1 では三つの割合の積が保存され、循環は永遠に続きます。出発点をドラッグし、w を変えてください。"
+        ],
+        "formula": "\\dot x_i=x_i\\big((Ax)_i-x\\cdot Ax\\big),\\qquad A=\\begin{pmatrix}0&-1&w\\\\ w&0&-1\\\\ -1&w&0\\end{pmatrix},\\qquad \\frac{d}{dt}\\log(x_1x_2x_3)=(w-1)\\big(1-3(x_1x_2+x_2x_3+x_3x_1)\\big)",
+        "example": [
+          "Every column of \\(A\\) sums to \\(w-1\\), so \\(\\sum_i(Ax)_i=w-1\\), and the average payoff is \\(x\\cdot Ax=(w-1)(x_1x_2+x_2x_3+x_3x_1)\\). Since \\((x_1+x_2+x_3)^2=1\\ge3(x_1x_2+x_2x_3+x_3x_1)\\), the bracket is never negative, so \\(\\log(x_1x_2x_3)\\) rises when \\(w>1\\) and falls when \\(w<1\\). Near the centre the motion is a spiral with eigenvalues \\((1-w)/6\\pm i(w+1)/(2\\sqrt3)\\): for \\(w=0.5\\), \\(0.083\\pm0.433i\\), one turn every 14.5 time units, growing by a factor \\(e^{0.083\\times14.5}=3.3\\) per turn.",
+          "\\(A\\) のどの列も和が \\(w-1\\) なので \\(\\sum_i(Ax)_i=w-1\\) で、平均利得は \\(x\\cdot Ax=(w-1)(x_1x_2+x_2x_3+x_3x_1)\\) です。\\((x_1+x_2+x_3)^2=1\\ge3(x_1x_2+x_2x_3+x_3x_1)\\) なので括弧の中は決して負にならず、\\(\\log(x_1x_2x_3)\\) は \\(w>1\\) のとき増え、\\(w<1\\) のとき減ります。中心の近くの運動は固有値 \\((1-w)/6\\pm i(w+1)/(2\\sqrt3)\\) の渦です。\\(w=0.5\\) では \\(0.083\\pm0.433i\\) で、14.5 時間単位ごとに一回転し、一回転ごとに \\(e^{0.083\\times14.5}=3.3\\) 倍に広がります。"
+        ],
+        "caution": [
+          "Replicator dynamics model a population, not individuals: shares change by differential success, which can mean imitation, reproduction or reinforcement learning, but no one is optimising. For \\(w<1\\) the orbits only approach the boundary, never reach it, and a finite population would lose a strategy to chance long before. Side-blotched lizards and some bacterial communities are often cited as natural rock-paper-scissors systems.",
+          "レプリケーター動学がモデルにするのは個人ではなく集団です。割合は成功の差によって変わり、それは模倣でも繁殖でも強化学習でもかまいませんが、だれも最適化はしていません。\\(w<1\\) では軌道は境界に近づくだけで、決して到達しません。有限の集団なら、それよりずっと前に偶然である戦略を失うでしょう。ワキモンユタトカゲや一部の細菌の群集は、自然界のじゃんけんの例としてよく挙げられます。"
+        ],
+        "question": [
+          "Why is the product of the shares conserved exactly when w = 1?",
+          "w = 1 のとき、なぜ割合の積がちょうど保存されるのですか？"
+        ],
+        "answer": [
+          "At \\(w=1\\) the game is zero-sum, \\(A=-A^{T}\\), so the average payoff \\(x\\cdot Ax\\) is zero for every population and each share changes at the rate \\((Ax)_i\\). Then \\(\\frac{d}{dt}\\sum\\log x_i=\\sum(Ax)_i\\), the sum of all entries weighted by \\(x\\), which is \\(w-1=0\\) because each column of \\(A\\) sums to zero. A conserved quantity whose level sets are closed curves around the centre forces every orbit to be periodic.",
+          "\\(w=1\\) ではゲームはゼロ和で \\(A=-A^{T}\\) なので、平均利得 \\(x\\cdot Ax\\) はどの集団でも 0 で、各割合は \\((Ax)_i\\) の率で変わります。すると \\(\\frac{d}{dt}\\sum\\log x_i=\\sum(Ax)_i\\) で、これは \\(A\\) の各列の和が 0 なので \\(w-1=0\\) です。等高線が中心を囲む閉曲線になる保存量があると、どの軌道も周期的になるしかありません。"
+        ],
+        "params": [
+          [
+            "w",
+            "Win payoff w (a loss costs 1)",
+            "勝ちの利得 w（負けの損失は 1）",
+            0.2,
+            2,
+            0.05,
+            0.8
+          ],
+          [
+            "xp",
+            "Starting share of paper",
+            "パーの初めの割合",
+            0.01,
+            0.95,
+            0.01,
+            0.25
+          ],
+          [
+            "xs",
+            "Starting share of scissors",
+            "チョキの初めの割合",
+            0.01,
+            0.95,
+            0.01,
+            0.1
+          ]
+        ],
+        "source": "Josef Hofbauer and Karl Sigmund · Evolutionary Games and Population Dynamics (Cambridge University Press, 1998)",
+        "url": "https://doi.org/10.1017/CBO9781139173179"
+      },
+      {
+        "id": "minimax-lp",
+        "title": [
+          "3. Zero-sum games and the minimax theorem",
+          "3. ゼロ和ゲームとミニマックス定理"
+        ],
+        "body": [
+          "In a zero-sum game one player’s gain is the other’s loss, so Row should assume Column will answer every mix with the column that hurts Row most. Against a fixed p each column gives Row a payoff that is linear in p, and Row can only count on the lowest of these lines, the lower envelope. The best guarantee is the top of that envelope. Column can reason the same way from the other side, and von Neumann’s minimax theorem says the two guarantees meet: there is a single value v that Row can secure and Column can hold Row down to. Finding the two optimal mixes is a pair of dual linear programs. Drag p and watch Column’s best reply change.",
+          "ゼロ和ゲームでは一方の得は他方の損なので、行は、列がどんな混合にも行に最も痛い列で答えると仮定すべきです。固定した p に対して各列は p について線形な利得を行に与え、行が当てにできるのはそれらの直線の最も低いもの、つまり下側の包絡線だけです。最良の保証はその包絡線の頂上です。列も反対側から同じように考えることができ、フォン・ノイマンのミニマックス定理は二つの保証が一致すると言います。行が確保でき、列が行をそこまで抑えられる、ただ一つの値 v があるのです。二つの最適な混合を求めることは、一組の双対な線形計画です。p をドラッグして、列の最適応答が変わる様子を見てください。"
+        ],
+        "formula": "\\max_{p}\\ \\min_{j}\\ \\big(p\\,a_{1j}+(1-p)\\,a_{2j}\\big)\\;=\\;v\\;=\\;\\min_{y\\in\\Delta}\\ \\max_{i}\\ \\sum_j a_{ij}y_j,\\qquad \\max v\\ \\ \\text{s.t.}\\ \\ p\\,a_{1j}+(1-p)\\,a_{2j}\\ge v\\ \\ \\forall j",
+        "example": [
+          "In the penalty kick, the kicker scores with probability 0.58 kicking left if the keeper dives left, 0.93 kicking right; against a dive right, 0.95 and 0.60. Equating the two dive lines, \\(0.93-0.35p=0.60+0.35p\\), gives \\(p^*=0.33/0.70=0.471\\): kick left 47% of the time, and score with probability 0.765 whatever the keeper does. The keeper’s best mix is to dive left and right half the time each and never stay, because staying would concede \\(0.83\\times0.471+0.80\\times0.529=0.814\\). These probabilities are illustrative, chosen in the range reported for professional penalties.",
+          "PK では、キーパーが左へ跳ぶとき、キッカーが左へ蹴れば確率 0.58、右へ蹴れば 0.93 で得点します。キーパーが右へ跳ぶときは 0.95 と 0.60 です。二本の跳ぶ直線を等しくおく \\(0.93-0.35p=0.60+0.35p\\) から \\(p^*=0.33/0.70=0.471\\) が得られます。47% の割合で左へ蹴れば、キーパーが何をしても確率 0.765 で得点できます。キーパーの最適な混合は左右に半々で跳び、決してとどまらないことです。とどまると \\(0.83\\times0.471+0.80\\times0.529=0.814\\) の失点を許すからです。これらの確率は例示で、プロの PK について報告されている範囲から選んでいます。"
+        ],
+        "caution": [
+          "The theorem needs mixed strategies: in pure strategies the row player’s best guarantee is usually strictly less than the column player’s, as in matching pennies. It also needs the game to be zero-sum; in general games the guarantees can differ and Nash equilibria take over. The graphical method works because Row has only two pure strategies; with more, the envelope becomes a surface over a simplex and the linear program does the work.",
+          "この定理には混合戦略が必要です。純粋戦略だけでは、コイン合わせのように行の最良の保証はふつう列の保証より厳密に小さくなります。またゲームがゼロ和である必要もあります。一般のゲームでは保証は一致しないことがあり、ナッシュ均衡がその役を引き継ぎます。図による方法が使えるのは行の純粋戦略が二つだけだからで、それより多いと包絡線は単体の上の曲面になり、線形計画がその仕事をします。"
+        ],
+        "question": [
+          "Why does the keeper never stay in the middle, even though staying is not the worst choice against either kick?",
+          "止まることはどちらのキックに対しても最悪の選択ではないのに、なぜキーパーは決して真ん中にとどまらないのですか？"
+        ],
+        "answer": [
+          "Because against the kicker’s optimal mix, staying concedes 0.814 while either dive concedes 0.765. A column that lies above the value at \\(p^*\\) can never be part of an optimal mix: mixing any weight onto it would raise the line the kicker faces above \\(v\\) somewhere, giving the kicker more than the value. Staying is a good answer to a predictable kicker, but against an optimal one it is dominated by randomising between the dives.",
+          "キッカーの最適な混合に対しては、とどまると 0.814 の失点を許しますが、どちらに跳んでも 0.765 だからです。\\(p^*\\) で値より上にある列は、最適な混合に決して入りません。それに少しでも重みを混ぜると、キッカーが直面する直線がどこかで \\(v\\) を超え、キッカーに値より多くを与えてしまいます。とどまるのは予測できるキッカーへの良い答えですが、最適なキッカーに対しては、二つの跳ぶ方向の間で確率を混ぜる方が優れています。"
+        ],
+        "params": [
+          [
+            "game",
+            "Game",
+            "ゲーム",
+            0,
+            2,
+            1,
+            0,
+            [
+              [
+                "Penalty kick",
+                "PK"
+              ],
+              [
+                "2 × 4 game",
+                "2 × 4 のゲーム"
+              ],
+              [
+                "Saddle point",
+                "鞍点"
+              ]
+            ]
+          ],
+          [
+            "p",
+            "p (Row’s first row)",
+            "p（行の第 1 行）",
+            0,
+            1,
+            0.001,
+            0.3
+          ]
+        ],
+        "source": "John von Neumann · Zur Theorie der Gesellschaftsspiele, Math. Ann. 100 (1928)",
+        "url": "https://doi.org/10.1007/BF01448847"
+      }
+    ]
+  },
+  {
+    "slug": "nuclear-physics",
+    "title": [
+      "Nuclear physics: binding, decay and tunnelling",
+      "原子核物理：結合、崩壊、トンネル効果"
+    ],
+    "description": [
+      "A nucleus is a drop of protons and neutrons held by a short-range force and pushed apart by the protons’ charge. Five terms of a liquid-drop formula account for almost all of its binding energy, explain why iron sits at the bottom of the energy valley and mark where nuclei stop existing. Unstable nuclei decay at random, yet chains of them settle into predictable equilibria. And alpha decay, whose half-lives range from microseconds to billions of years, is quantum tunnelling through a Coulomb barrier.",
+      "原子核は、短距離の力で保たれ、陽子の電荷で押し離される陽子と中性子の滴です。液滴の式の五つの項で結合エネルギーのほとんどが説明でき、鉄がエネルギーの谷の底にある理由も、原子核が存在できなくなる境界もわかります。不安定な原子核は無作為に崩壊しますが、その連鎖は予測できる平衡に落ち着きます。そして半減期がマイクロ秒から数十億年にわたるアルファ崩壊は、クーロン障壁を抜ける量子トンネル効果です。"
+    ],
+    "group": "physics",
+    "prerequisite": [
+      "Quantum mechanics, exponential decay and electrostatics",
+      "量子力学、指数関数的な減衰、静電気学"
+    ],
+    "source": "Kenneth S. Krane · Introductory Nuclear Physics (Wiley, 1988)",
+    "url": "https://archive.org/details/introductorynucl0000kran",
+    "labs": [
+      {
+        "id": "binding-energy",
+        "title": [
+          "1. The liquid drop and the valley of stability",
+          "1. 液滴と安定の谷"
+        ],
+        "body": [
+          "The binding energy B of a nucleus is the energy needed to pull it apart into free protons and neutrons. Treat the nucleus as a drop of incompressible nuclear fluid and B follows from five terms: a volume term, because each nucleon is bound only to its neighbours; a surface term, because nucleons on the surface have fewer neighbours; the Coulomb repulsion of the protons; an asymmetry term, because the Pauli principle makes unequal numbers of protons and neutrons cost energy; and a small pairing term. Together they draw the whole chart of nuclides: a narrow valley of stable nuclei, bending towards extra neutrons as the protons’ repulsion grows, bounded by drip lines. Drag across the chart to see any nucleus’s terms.",
+          "原子核の結合エネルギー B は、それをばらばらの陽子と中性子に引き離すのに必要なエネルギーです。原子核を圧縮できない核の流体の滴とみなすと、B は五つの項から得られます。各核子は隣の核子とだけ結びつくので体積項、表面の核子は隣が少ないので表面項、陽子どうしのクーロン反発、パウリの原理のため陽子と中性子の数が違うとエネルギーがかかるので非対称項、そして小さな対の項です。これらが合わさって核図表全体を描きます。安定な原子核の細い谷は、陽子の反発が強まるにつれて中性子の多い方へ曲がり、ドリップ線で囲まれています。図表の上をドラッグして、どの原子核の項でも見てください。"
+        ],
+        "formula": "B(A,Z)=a_VA-a_SA^{2/3}-a_C\\frac{Z(Z-1)}{A^{1/3}}-a_A\\frac{(A-2Z)^2}{A}\\pm\\frac{a_P}{\\sqrt A},\\qquad a_V=15.75,\\ a_S=17.8,\\ a_C=0.711,\\ a_A=23.7,\\ a_P=11.18\\ \\mathrm{MeV}",
+        "example": [
+          "For uranium‑238 the volume term gives 3748.5 MeV, the surface takes 683.6, the Coulomb repulsion of 92 protons 960.5, the excess of 54 neutrons 290.4, and pairing adds 0.7: \\(B=1814.7\\) MeV, against the measured 1801.7, a difference of 0.7%. Per nucleon that is 7.62 MeV, well below iron‑56’s 8.85 (measured 8.79), so splitting uranium into two medium nuclei releases about 1 MeV per nucleon, roughly 200 MeV per fission. The same formula gives uranium‑238 an alpha-decay energy \\(Q_\\alpha=4.34\\) MeV; the measured value is 4.27.",
+          "ウラン 238 では、体積項が 3748.5 MeV を与え、表面が 683.6、92 個の陽子のクーロン反発が 960.5、54 個の過剰な中性子が 290.4 を差し引き、対の項が 0.7 を加えます。\\(B=1814.7\\) MeV で、測定値 1801.7 との差は 0.7% です。核子あたりでは 7.62 MeV で、鉄 56 の 8.85（測定値 8.79）よりずっと小さいので、ウランを中くらいの二つの原子核に分けると核子あたり約 1 MeV、核分裂一回あたり約 200 MeV が放出されます。同じ式はウラン 238 のアルファ崩壊のエネルギーを \\(Q_\\alpha=4.34\\) MeV と与え、測定値は 4.27 です。"
+        ],
+        "caution": [
+          "The liquid drop knows nothing of shells: nuclei with 2, 8, 20, 28, 50, 82 or 126 protons or neutrons are bound more tightly than it predicts, by up to about 10 MeV, and those magic numbers explain why lead‑208 is so stable. It also fails for the lightest nuclei, where a few nucleons hardly form a drop (helium‑4 is bound far more strongly than the formula says). The coefficients are one common fit; others differ by a few per cent. The drip lines drawn here are where the formula’s last neutron or proton becomes unbound, and the real ones differ in detail.",
+          "液滴は殻を何も知りません。陽子や中性子が 2、8、20、28、50、82、126 個の原子核は予想より最大で約 10 MeV 強く束縛されていて、この魔法数が鉛 208 がとても安定な理由です。また最も軽い原子核にも合いません。数個の核子ではほとんど滴にならないからです（ヘリウム 4 は式よりはるかに強く束縛されています）。係数はよく使われる一つのあてはめで、他のものは数パーセント違います。ここに描いたドリップ線は、式で最後の中性子や陽子が束縛されなくなる所で、本当の線は細部で違います。"
+        ],
+        "question": [
+          "Why do heavy stable nuclei have more neutrons than protons, when the asymmetry term favours equal numbers?",
+          "非対称項は同数を好むのに、なぜ重い安定な原子核は陽子より中性子が多いのですか？"
+        ],
+        "answer": [
+          "Because the Coulomb energy grows as \\(Z^2/A^{1/3}\\) while the asymmetry penalty grows only as \\((N-Z)^2/A\\). Minimising the sum over \\(Z\\) at fixed \\(A\\) gives \\(Z_0=A/(2+0.0150A^{2/3})\\) approximately, close to \\(A/2\\) for light nuclei but only about 0.40\\(A\\) at \\(A=208\\). Each proton swapped for a neutron saves more repulsion than the asymmetry costs, until the two rates balance.",
+          "クーロンエネルギーは \\(Z^2/A^{1/3}\\) のように増えますが、非対称のペナルティは \\((N-Z)^2/A\\) のようにしか増えないからです。\\(A\\) を固定して和を \\(Z\\) について最小にすると、およそ \\(Z_0=A/(2+0.0150A^{2/3})\\) となり、軽い原子核では \\(A/2\\) に近いのですが、\\(A=208\\) では約 0.40\\(A\\) にすぎません。陽子を中性子に一つ替えるたびに、非対称の損よりも多くの反発が減り、それが二つの率がつり合うまで続きます。"
+        ],
+        "params": [
+          [
+            "Z",
+            "Protons Z",
+            "陽子数 Z",
+            1,
+            110,
+            1,
+            26
+          ],
+          [
+            "N",
+            "Neutrons N",
+            "中性子数 N",
+            0,
+            165,
+            1,
+            30
+          ]
+        ],
+        "source": "Meng Wang et al. · The AME 2020 atomic mass evaluation (II), Chinese Phys. C 45 (2021)",
+        "url": "https://doi.org/10.1088/1674-1137/abddaf"
+      },
+      {
+        "id": "decay-chain",
+        "title": [
+          "2. Decay chains and radioactive equilibrium",
+          "2. 崩壊系列と放射平衡"
+        ],
+        "body": [
+          "Each unstable nucleus has a fixed probability per unit time of decaying, independent of its age, so a large sample decays exponentially even though no single atom’s moment can be predicted. When the product is itself radioactive, the amounts follow Bateman’s equations: the daughter is fed by the parent and drained by its own decay. Its amount rises, peaks, and then, if it is shorter-lived than its parent, settles into equilibrium, decaying in step with the parent at a fixed ratio of activities. Set the two half-lives, press Play to watch 900 atoms decay one at a time, and compare their counts with the exact curves.",
+          "不安定な原子核はどれも、年齢によらない一定の単位時間あたりの崩壊確率をもつので、一つの原子の崩壊の瞬間は予測できなくても、大きな試料は指数関数的に崩壊します。生成物自体も放射性なら、量はベイトマンの方程式に従います。娘は親から補給され、自分の崩壊で減ります。その量は増えて最大に達し、その後、親より寿命が短ければ平衡に落ち着き、一定の放射能比で親と歩調を合わせて崩壊します。二つの半減期を決め、再生を押して 900 個の原子が一つずつ崩壊するのを見て、その数を厳密な曲線と比べてください。"
+        ],
+        "formula": "\\frac{dN_A}{dt}=-\\lambda_AN_A,\\qquad \\frac{dN_B}{dt}=\\lambda_AN_A-\\lambda_BN_B,\\qquad N_B(t)=\\frac{\\lambda_A}{\\lambda_B-\\lambda_A}\\big(e^{-\\lambda_At}-e^{-\\lambda_Bt}\\big)N_A(0),\\qquad \\lambda=\\frac{\\ln2}{t_{1/2}}",
+        "example": [
+          "Molybdenum‑99 (half-life 65.94 h) decays to technetium‑99m (6.007 h), the most widely used isotope in medical imaging. Starting from pure molybdenum, the technetium peaks after \\(\\ln(\\lambda_B/\\lambda_A)/(\\lambda_B-\\lambda_A)=22.8\\) h, when it is 7.2% of the original number of atoms, so hospitals milk their generators about once a day. From then on the technetium’s activity is \\(\\lambda_B/(\\lambda_B-\\lambda_A)=1.100\\) times the molybdenum’s: transient equilibrium.",
+          "モリブデン 99（半減期 65.94 h）は、医療画像で最も広く使われる同位体テクネチウム 99m（6.007 h）に崩壊します。純粋なモリブデンから始めると、テクネチウムは \\(\\ln(\\lambda_B/\\lambda_A)/(\\lambda_B-\\lambda_A)=22.8\\) h 後に最大となり、そのとき元の原子数の 7.2% です。だから病院はジェネレータからほぼ一日に一回テクネチウムを取り出します。それ以降テクネチウムの放射能はモリブデンの \\(\\lambda_B/(\\lambda_B-\\lambda_A)=1.100\\) 倍で、これが過渡平衡です。"
+        ],
+        "caution": [
+          "The chain here has two radioactive members and a stable end; real chains such as uranium‑238’s have fourteen steps and branch, and Bateman’s solution extends to any length. In the molybdenum example about 12% of decays bypass technetium‑99m, which lowers its amount by that fraction. The 900 atoms are simulated with exact random decay times, so their counts scatter about the curves by roughly the square root of the number.",
+          "ここでの系列は放射性の二つの成員と安定な終点からなります。ウラン 238 の系列のような実際の系列は十四段で枝分かれもしますが、ベイトマンの解はどんな長さにも拡張できます。モリブデンの例では崩壊の約 12% がテクネチウム 99m を経由しないので、その分だけ量が減ります。900 個の原子は厳密に無作為な崩壊時刻で模擬しているので、その数は曲線のまわりにおよそ個数の平方根ほど散らばります。"
+        ],
+        "question": [
+          "Why does secular equilibrium make the daughter’s activity equal to the parent’s?",
+          "永続平衡では、なぜ娘の放射能が親の放射能に等しくなるのですか？"
+        ],
+        "answer": [
+          "In equilibrium the daughter’s amount is steady, so it is produced as fast as it decays: \\(\\lambda_AN_A=\\lambda_BN_B\\), which says the two activities are equal. This only works when the parent changes negligibly over the daughter’s lifetime. In transient equilibrium the parent is visibly declining, the daughter lags behind it, and the ratio becomes \\(\\lambda_B/(\\lambda_B-\\lambda_A)\\), slightly above one.",
+          "平衡では娘の量は一定なので、崩壊するのと同じ速さで作られます。\\(\\lambda_AN_A=\\lambda_BN_B\\) で、これは二つの放射能が等しいということです。これは娘の寿命の間に親がほとんど変わらないときにだけ成り立ちます。過渡平衡では親ははっきり減っていき、娘はそれに遅れてついていき、比は 1 よりわずかに大きい \\(\\lambda_B/(\\lambda_B-\\lambda_A)\\) になります。"
+        ],
+        "params": [
+          [
+            "lA",
+            "log₁₀ parent half-life (h)",
+            "log₁₀ 親の半減期（h）",
+            -1,
+            4,
+            0.01,
+            1.82
+          ],
+          [
+            "lB",
+            "log₁₀ daughter half-life (h)",
+            "log₁₀ 娘の半減期（h）",
+            -1,
+            4,
+            0.01,
+            0.78
+          ]
+        ],
+        "source": "Kenneth S. Krane · Introductory Nuclear Physics (Wiley, 1988)",
+        "url": "https://archive.org/details/introductorynucl0000kran"
+      },
+      {
+        "id": "alpha-tunnelling",
+        "title": [
+          "3. Alpha decay by tunnelling",
+          "3. トンネル効果によるアルファ崩壊"
+        ],
+        "body": [
+          "An alpha particle inside a heavy nucleus has positive energy Q, yet it is trapped behind a Coulomb barrier six or seven times higher. Classically it could never leave. Quantum mechanically its wavefunction leaks through, and the probability of getting out on each attempt is the Gamow factor e^(−G), where G is an integral of the momentum it would need under the barrier. Multiply by the number of times per second it strikes the wall and you have the decay rate. Because Q enters G under a square root in an exponent, a factor of two in Q changes the half-life by more than twenty orders of magnitude, which is the Geiger–Nuttall law of 1911. Drag Q on either figure.",
+          "重い原子核の中のアルファ粒子は正のエネルギー Q をもちますが、その六、七倍も高いクーロン障壁の向こうに閉じ込められています。古典的には決して外へ出られません。量子力学ではその波動関数がしみ出し、一回の試みで外へ出る確率はガモフ因子 e^(−G) です。G は障壁の下で必要になる運動量の積分です。それに毎秒壁に当たる回数を掛ければ崩壊率になります。Q は指数の中の平方根に入っているので、Q が二倍違うと半減期は二十桁以上変わります。これが 1911 年のガイガー・ヌッタルの法則です。どちらかの図で Q をドラッグしてください。"
+        ],
+        "formula": "G=\\frac{2}{\\hbar}\\int_R^{b}\\!\\sqrt{2\\mu\\,(V(r)-Q)}\\,dr=\\frac{2\\sqrt{2\\mu Q}}{\\hbar}\\,b\\Big[\\arccos\\sqrt{\\tfrac Rb}-\\sqrt{\\tfrac Rb\\big(1-\\tfrac Rb\\big)}\\Big],\\qquad b=\\frac{2Z_de^2}{4\\pi\\varepsilon_0Q},\\qquad t_{1/2}=\\frac{\\ln2}{f\\,e^{-G}}",
+        "example": [
+          "For uranium‑238, \\(Q=4.270\\) MeV and the daughter thorium has \\(Z_d=90\\). With \\(R=1.2(A_d^{1/3}+4^{1/3})=9.30\\) fm the barrier top is 27.9 MeV, and the alpha must tunnel out to \\(b=60.7\\) fm, giving \\(G=88.0\\) and a probability \\(e^{-G}=6.1\\times10^{-39}\\) per attempt. Bouncing \\(7.8\\times10^{20}\\) times a second, it escapes after \\(4.6\\times10^9\\) years on average; the measured half-life is \\(4.47\\times10^9\\) years. Polonium‑212, with \\(Q=8.954\\) MeV, has \\(G=32.3\\) and a predicted half-life of 0.063 µs, against 0.30 µs measured.",
+          "ウラン 238 では \\(Q=4.270\\) MeV で、娘のトリウムは \\(Z_d=90\\) です。\\(R=1.2(A_d^{1/3}+4^{1/3})=9.30\\) fm とすると障壁の頂上は 27.9 MeV で、アルファ粒子は \\(b=60.7\\) fm までトンネルで抜けねばならず、\\(G=88.0\\)、一回の試みあたりの確率は \\(e^{-G}=6.1\\times10^{-39}\\) です。毎秒 \\(7.8\\times10^{20}\\) 回はね返るので、平均 \\(4.6\\times10^9\\) 年で抜け出します。測定された半減期は \\(4.47\\times10^9\\) 年です。\\(Q=8.954\\) MeV のポロニウム 212 では \\(G=32.3\\) で、予測される半減期は 0.063 µs、測定値は 0.30 µs です。"
+        ],
+        "caution": [
+          "This is Gamow’s original model: a sharp nuclear surface, a pure Coulomb barrier, an alpha particle that already exists inside the nucleus, and an attempt frequency \\(v/2R\\) from its speed at energy \\(Q\\). It ignores the probability of forming the alpha cluster, angular momentum and nuclear deformation, so its half-lives are only good to within about a factor of ten. The largest misses are at closed shells: polonium‑210, with 126 neutrons, lives forty times longer than the model says. The radius parameter 1.2 fm is a fit to these nuclei.",
+          "これはガモフの最初のモデルです。鋭い原子核の表面、純粋なクーロン障壁、原子核の中にすでに存在するアルファ粒子、そしてエネルギー \\(Q\\) での速さから得た試行の頻度 \\(v/2R\\) を仮定しています。アルファ粒子の集団が形成される確率、角運動量、原子核の変形は無視しているので、半減期はおよそ十倍の範囲でしか合いません。最も大きく外れるのは閉殻の所で、中性子が 126 個のポロニウム 210 はモデルの四十倍長く生きます。半径のパラメータ 1.2 fm はこれらの原子核へのあてはめです。"
+        ],
+        "question": [
+          "Why does a slightly larger Q shorten the half-life so enormously?",
+          "Q が少し大きいだけで、なぜ半減期がこれほど大きく縮むのですか？"
+        ],
+        "answer": [
+          "Because Q acts on the barrier twice: the outer turning point \\(b\\propto1/Q\\) moves inwards, so the barrier is thinner, and the height \\(V-Q\\) above the alpha’s energy shrinks everywhere under it. To leading order \\(G\\approx\\pi\\sqrt{2\\mu}\\,b\\sqrt{Q}/\\hbar\\propto Z_d/\\sqrt Q\\), and the probability is \\(e^{-G}\\) with \\(G\\) between 30 and 90, so a ten per cent change in \\(G\\) shifts the half-life by several factors of ten. That is the straight line of the Geiger–Nuttall plot, \\(\\log t_{1/2}=a+b\\,Z_d/\\sqrt Q\\).",
+          "Q は障壁に二重に作用するからです。外側の転回点 \\(b\\propto1/Q\\) が内側へ動くので障壁は薄くなり、アルファ粒子のエネルギーより上の高さ \\(V-Q\\) も障壁の下のどこでも縮みます。主要な次数では \\(G\\approx\\pi\\sqrt{2\\mu}\\,b\\sqrt{Q}/\\hbar\\propto Z_d/\\sqrt Q\\) で、確率は \\(e^{-G}\\)、\\(G\\) は 30 から 90 の間なので、\\(G\\) が 10% 変わると半減期は何桁も変わります。これがガイガー・ヌッタル図の直線 \\(\\log t_{1/2}=a+b\\,Z_d/\\sqrt Q\\) です。"
+        ],
+        "params": [
+          [
+            "el",
+            "Element",
+            "元素",
+            0,
+            4,
+            1,
+            4,
+            [
+              [
+                "Po",
+                "Po"
+              ],
+              [
+                "Rn",
+                "Rn"
+              ],
+              [
+                "Ra",
+                "Ra"
+              ],
+              [
+                "Th",
+                "Th"
+              ],
+              [
+                "U",
+                "U"
+              ]
+            ]
+          ],
+          [
+            "Q",
+            "Alpha energy Q (MeV)",
+            "アルファのエネルギー Q（MeV）",
+            3.8,
+            9.2,
+            0.001,
+            4.27
+          ]
+        ],
+        "source": "George Gamow · Zur Quantentheorie des Atomkernes, Z. Phys. 51 (1928)",
+        "url": "https://doi.org/10.1007/BF01343196"
+      }
+    ]
+  },
+  {
+    "slug": "piston-engines",
+    "title": [
+      "Piston engines: from crank to cycle",
+      "ピストンエンジン：クランクからサイクルまで"
+    ],
+    "description": [
+      "A piston engine turns pressure into rotation through a crank and a connecting rod, and almost everything about how it feels comes from that linkage. The rod’s tilt gives the piston a second harmonic at twice crank speed; the gas cycle sets the efficiency through the compression ratio alone; and the pulses of torque from each cylinder, and the shaking forces of each piston, either add up or cancel depending on how the crankshaft is laid out.",
+      "ピストンエンジンはクランクとコンロッドを通して圧力を回転に変えます。エンジンの感触のほとんどすべては、このリンク機構から生まれます。コンロッドの傾きはピストンにクランクの二倍の速さの二次成分を与え、気体のサイクルは圧縮比だけで効率を決め、各気筒からのトルクの脈動と各ピストンの揺さぶり力は、クランク軸の配置しだいで足し合わされるか打ち消し合います。"
+    ],
+    "group": "engineering",
+    "prerequisite": [
+      "Kinematics, thermodynamics of ideal gases, and Fourier series",
+      "運動学、理想気体の熱力学、フーリエ級数"
+    ],
+    "source": "John B. Heywood · Internal Combustion Engine Fundamentals, 2nd ed. (McGraw-Hill, 2018)",
+    "url": "https://search.worldcat.org/oclc/1046070057",
+    "labs": [
+      {
+        "id": "crank-slider",
+        "title": [
+          "1. The crank–slider and its second harmonic",
+          "1. クランク・スライダーとその二次成分"
+        ],
+        "body": [
+          "The crank turns at a steady rate, but the piston does not move as a pure sine wave, because the connecting rod tilts as it goes round. With crank radius r and rod length l, the piston’s distance from top dead centre has a second harmonic whose size is set by λ = r/l: the piston moves faster in the half of the stroke near the top and turns round more violently there. The acceleration it needs, and so the force on every bearing, grows with the square of engine speed. Turn the crank, change the rod ratio and the speed, and compare the exact acceleration with its first two harmonics.",
+          "クランクは一定の速さで回りますが、ピストンは純粋な正弦波では動きません。回るにつれてコンロッドが傾くからです。クランク半径を r、コンロッドの長さを l とすると、上死点からのピストンの距離には λ = r/l で大きさが決まる二次成分があります。ピストンは上側の半分の行程でより速く動き、そこでより激しく折り返します。それに必要な加速度、したがってすべての軸受にかかる力は、回転数の二乗で大きくなります。クランクを回し、コンロッド比と回転数を変え、厳密な加速度とその最初の二つの調和成分を比べてください。"
+        ],
+        "formula": "x(\\theta)=r(1-\\cos\\theta)+l\\Big(1-\\sqrt{1-\\lambda^2\\sin^2\\theta}\\Big),\\qquad \\ddot x\\approx r\\omega^2\\big(\\cos\\theta+\\lambda\\cos2\\theta\\big),\\qquad \\lambda=\\frac rl",
+        "example": [
+          "Take a 86 mm stroke (\\(r=43\\) mm) with \\(\\lambda=0.3\\), a rod of 143 mm, at 6000 rpm, so \\(\\omega=628\\) rad/s and \\(r\\omega^2=1731g\\). At top dead centre the piston decelerates at \\(r\\omega^2(1+\\lambda)=2250g\\), at bottom dead centre only \\(r\\omega^2(1-\\lambda)=1212g\\). A 450 g piston and pin therefore pull on the rod with almost 10 kN at the top of every exhaust stroke, 50 times a second. The mean piston speed is 17.2 m/s, but it peaks at 28.2 m/s at 74.5°, well before the crank is at right angles.",
+          "行程 86 mm（\\(r=43\\) mm）、\\(\\lambda=0.3\\)、コンロッド 143 mm で 6000 rpm とすると、\\(\\omega=628\\) rad/s、\\(r\\omega^2=1731g\\) です。上死点ではピストンは \\(r\\omega^2(1+\\lambda)=2250g\\) で減速し、下死点ではわずか \\(r\\omega^2(1-\\lambda)=1212g\\) です。そのため 450 g のピストンとピンは、毎秒 50 回、排気行程の頂点ごとにほぼ 10 kN でコンロッドを引っ張ります。平均ピストン速度は 17.2 m/s ですが、最大は 74.5° での 28.2 m/s で、クランクが直角になるずっと前です。"
+        ],
+        "caution": [
+          "The piston is drawn on the cylinder axis with no offset, and the crank turns at constant speed; in a real engine the crankshaft speeds up and slows down slightly within each cycle, which the third experiment measures. The two-harmonic formula drops terms of order \\(\\lambda^3\\), under 2% here. The drawing is to scale.",
+          "ピストンはオフセットなしに気筒の軸上に描き、クランクは一定の速さで回します。実際のエンジンではクランク軸は各サイクルの中でわずかに速くなったり遅くなったりし、それは三つ目の実験で測ります。二項の式は \\(\\lambda^3\\) の次数の項を落としており、ここではその差は 2% 未満です。図は縮尺どおりです。"
+        ],
+        "question": [
+          "Why is the piston fastest before the crank reaches 90°?",
+          "なぜピストンはクランクが 90° に達する前に最も速くなるのですか？"
+        ],
+        "answer": [
+          "At 90° the crank pin is moving straight along the cylinder axis, but the rod is tilted and is still swinging, so the piston is already being slowed by the rod’s rotation. Before 90° the rod’s swing adds to the pin’s motion. Differentiating \\(x(\\theta)\\) gives \\(\\dot x=r\\omega\\sin\\theta\\big(1+\\lambda\\cos\\theta/\\sqrt{1-\\lambda^2\\sin^2\\theta}\\big)\\), whose maximum moves to smaller \\(\\theta\\) as \\(\\lambda\\) grows.",
+          "90° ではクランクピンは気筒の軸に沿ってまっすぐ動いていますが、コンロッドは傾いていてまだ振れているので、ピストンはすでにコンロッドの回転で減速させられています。90° より前ではコンロッドの振れがピンの動きに加わります。\\(x(\\theta)\\) を微分すると \\(\\dot x=r\\omega\\sin\\theta\\big(1+\\lambda\\cos\\theta/\\sqrt{1-\\lambda^2\\sin^2\\theta}\\big)\\) となり、その最大は \\(\\lambda\\) が大きくなるほど小さい \\(\\theta\\) へ移ります。"
+        ],
+        "params": [
+          [
+            "lam",
+            "Rod ratio λ = r/l",
+            "コンロッド比 λ = r/l",
+            0.2,
+            0.45,
+            0.01,
+            0.3
+          ],
+          [
+            "rpm",
+            "Engine speed (rpm)",
+            "回転数（rpm）",
+            1000,
+            9000,
+            100,
+            6000
+          ],
+          [
+            "th",
+            "Crank angle θ (°)",
+            "クランク角 θ（°）",
+            0,
+            360,
+            1,
+            60
+          ]
+        ],
+        "source": "John B. Heywood · Internal Combustion Engine Fundamentals, 2nd ed. (McGraw-Hill, 2018)",
+        "url": "https://search.worldcat.org/oclc/1046070057"
+      },
+      {
+        "id": "otto-cycle",
+        "title": [
+          "2. The Otto and Diesel cycles",
+          "2. オットーサイクルとディーゼルサイクル"
+        ],
+        "body": [
+          "An ideal engine takes a kilogram of air through four processes: adiabatic compression by the compression ratio r, heat added by burning fuel, adiabatic expansion, and heat rejected with the exhaust. In the Otto cycle of a petrol engine the heat arrives at top dead centre, at constant volume; in the Diesel cycle fuel burns while the piston moves away, at roughly constant pressure. The work per cycle is the area enclosed on the pressure–volume diagram, and the efficiency depends on how far the gas expands after being heated, which is set by r. Change the compression ratio and the cycle, and press Play to follow the gas around the loop.",
+          "理想的なエンジンは 1 キログラムの空気に四つの過程をたどらせます。圧縮比 r による断熱圧縮、燃料の燃焼による加熱、断熱膨張、排気による放熱です。ガソリン機関のオットーサイクルでは熱は上死点で定積で加わり、ディーゼルサイクルではピストンが離れていく間にほぼ定圧で燃料が燃えます。一サイクルあたりの仕事は圧力・体積線図上の囲まれた面積で、効率は加熱された後に気体がどれだけ膨張するかで決まり、それは r で決まります。圧縮比とサイクルを変え、再生を押して輪をめぐる気体を追ってください。"
+        ],
+        "formula": "\\eta_{\\rm Otto}=1-\\frac{1}{r^{\\gamma-1}},\\qquad \\eta_{\\rm Diesel}=1-\\frac{1}{r^{\\gamma-1}}\\cdot\\frac{r_c^{\\gamma}-1}{\\gamma(r_c-1)},\\qquad T_2=T_1r^{\\gamma-1},\\qquad p_2=p_1r^{\\gamma}",
+        "example": [
+          "With \\(\\gamma=1.4\\) and \\(r=10\\), the Otto efficiency is \\(1-10^{-0.4}=60.2\\%\\). Compressing air from 300 K and 1 bar heats it to \\(300\\times10^{0.4}=754\\) K at 25.1 bar before any fuel burns. A Diesel at \\(r=18\\) with cutoff ratio 2 reaches 953 K by compression alone, enough to ignite injected fuel, and has an efficiency of 63.2%, less than the 68.5% an Otto cycle would have at the same compression, but more than a petrol engine can reach at the \\(r=10\\) to 13 that knock allows.",
+          "\\(\\gamma=1.4\\)、\\(r=10\\) のとき、オットーサイクルの効率は \\(1-10^{-0.4}=60.2\\%\\) です。300 K、1 bar の空気を圧縮すると、燃料が燃える前に 25.1 bar で \\(300\\times10^{0.4}=754\\) K まで熱くなります。\\(r=18\\)、締切比 2 のディーゼルは圧縮だけで 953 K に達し、噴射した燃料に火をつけるのに十分で、効率は 63.2% です。同じ圧縮比でのオットーサイクルの 68.5% より低いのですが、ノッキングが許す \\(r=10\\)〜13 でガソリン機関が達成できる値よりは高くなります。"
+        ],
+        "caution": [
+          "These are air-standard cycles: air as an ideal gas with constant specific heats, instant reversible processes, no heat loss to the walls and no friction, with 1.8 MJ of heat per kilogram of air in the Otto cycle. Real engines reach about half the ideal efficiency, and real cylinder pressures peak well below the ideal constant-volume spike because combustion takes time, as the third experiment models. The gas exchange strokes, intake and exhaust, add no net work here.",
+          "これらは空気標準サイクルです。空気を比熱一定の理想気体とし、過程は瞬間的で可逆、壁への熱損失も摩擦もなく、オットーサイクルでは空気 1 キログラムあたり 1.8 MJ の熱を加えています。実際のエンジンは理想効率のおよそ半分に達し、燃焼に時間がかかるので、実際の気筒内圧力の最大値は理想の定積の尖りよりずっと低くなります。それは三つ目の実験でモデルにしています。吸気と排気のガス交換の行程は、ここでは正味の仕事を加えません。"
+        ],
+        "question": [
+          "Why does a higher compression ratio give a higher efficiency?",
+          "なぜ圧縮比が高いほど効率が高いのですか？"
+        ],
+        "answer": [
+          "Because the heat is added to gas that is already hot and compressed, and then the expansion recovers it over a larger volume ratio. In the Otto cycle the exhaust temperature is the peak temperature divided by \\(r^{\\gamma-1}\\), and the fraction of heat thrown away is \\(T_4/T_3\\)\\(=r^{1-\\gamma}\\). Squeezing harder before burning means the gas cools further while doing work before it is let go.",
+          "熱はすでに熱く圧縮された気体に加えられ、その後の膨張がより大きな体積比にわたってそれを回収するからです。オットーサイクルでは排気の温度は最高温度を \\(r^{\\gamma-1}\\) で割ったもので、捨てられる熱の割合は \\(T_4/T_3=r^{1-\\gamma}\\) です。燃やす前に強く押し縮めるほど、気体は放たれる前に仕事をしながらより冷えるのです。"
+        ],
+        "params": [
+          [
+            "rc",
+            "Compression ratio r",
+            "圧縮比 r",
+            4,
+            22,
+            0.1,
+            10
+          ],
+          [
+            "cycle",
+            "Cycle",
+            "サイクル",
+            0,
+            1,
+            1,
+            0,
+            [
+              [
+                "Otto",
+                "オットー"
+              ],
+              [
+                "Diesel",
+                "ディーゼル"
+              ]
+            ]
+          ],
+          [
+            "cut",
+            "Diesel cutoff ratio r_c",
+            "ディーゼルの締切比 r_c",
+            1.2,
+            4,
+            0.05,
+            2
+          ]
+        ],
+        "source": "MIT OpenCourseWare · 2.61 Internal Combustion Engines (Spring 2017)",
+        "url": "https://ocw.mit.edu/courses/2-61-internal-combustion-engines-spring-2017/"
+      },
+      {
+        "id": "engine-balance",
+        "title": [
+          "3. Torque, flywheels and balance",
+          "3. トルク、フライホイール、バランス"
+        ],
+        "body": [
+          "Each cylinder delivers torque in a sharp pulse after it fires and takes torque back to compress its charge, and its piston adds an inertia torque that reverses twice a revolution. A flywheel stores the surplus and lends it back, but the more cylinders share the cycle, the smoother the sum. Separately, every piston shakes the engine along the cylinder axis with forces at crank speed and twice crank speed; arranging the cranks so that these forces, and the rocking couples they make along the crankshaft, cancel is the art of engine balance. Choose a layout and an engine speed; the torque comes from a single half-litre cylinder model with gradual combustion, repeated at each cylinder’s firing angle.",
+          "各気筒は爆発の後に鋭い脈動としてトルクを出し、混合気を圧縮するためにトルクを取り戻します。またピストンは一回転に二回向きを変える慣性トルクを加えます。フライホイールは余剰を蓄えて貸し戻しますが、サイクルを分け合う気筒が多いほど和はなめらかになります。それとは別に、各ピストンはクランクの速さとその二倍の速さの力でエンジンを気筒の軸に沿って揺さぶります。これらの力と、それがクランク軸に沿って作る揺れの偶力が打ち消し合うようにクランクを並べることが、エンジンのバランスの技術です。配置と回転数を選んでください。トルクは、燃焼が徐々に進む 0.5 リットルの単気筒モデルを、各気筒の爆発角で繰り返したものです。"
+        ],
+        "formula": "T(\\theta)=\\big(p(\\theta)-p_0\\big)A_p\\frac{dx}{d\\theta}-m_{\\rm rec}\\,\\ddot x\\,\\frac{dx}{d\\theta},\\qquad \\Delta E=\\max_\\theta\\int_0^{\\theta}(T-\\bar T)\\,d\\vartheta-\\min_\\theta\\int_0^{\\theta}(T-\\bar T)\\,d\\vartheta,\\qquad C_s=\\frac{\\Delta E}{I\\omega^2}",
+        "example": [
+          "An inline four at 3000 rpm and full load averages 258 N·m in this ideal model, with peaks of 755 N·m just after each firing. The flywheel must absorb and return \\(\\Delta E=286\\) J each cycle, so with \\(I=0.12\\) kg·m² the crankshaft speed swings by \\(286/(0.12\\times314^2)=2.4\\%\\). A single cylinder of the same size averages a quarter of the torque but needs to store 788 J, a speed swing of 6.7%, which is why single-cylinder engines have heavy flywheels.",
+          "3000 rpm、全負荷の直列 4 気筒は、この理想化したモデルでは平均 258 N·m で、各爆発の直後に 755 N·m の最大があります。フライホイールは毎サイクル \\(\\Delta E=286\\) J を吸収して返さねばならないので、\\(I=0.12\\) kg·m² ではクランク軸の回転は \\(286/(0.12\\times314^2)=2.4\\%\\) 振れます。同じ大きさの単気筒は平均で四分の一のトルクしか出しませんが、788 J を蓄える必要があり、回転の振れは 6.7% です。だから単気筒エンジンは重いフライホイールをもつのです。"
+        ],
+        "caution": [
+          "The cylinder model has no friction, heat loss or pumping loss, so its torques are higher than a real engine’s at the same size; the combustion follows a Wiebe function starting 10° before top dead centre and lasting 50°. Balance is shown for the reciprocating masses only, with the cylinders equally spaced along an inline crankshaft; rotating masses can be cancelled with counterweights and are left out. V engines and boxers add another set of possibilities, such as the perfectly balanced flat six.",
+          "気筒のモデルには摩擦も熱損失もポンプ損失もないので、トルクは同じ大きさの実際のエンジンより大きくなります。燃焼は上死点の 10° 前に始まり 50° 続くヴィーベ関数に従います。バランスは往復する質量だけについて示し、気筒は直列のクランク軸に沿って等間隔に並べています。回転する質量は釣り合いおもりで消せるので除いています。V 型や水平対向は、完全に釣り合う水平対向 6 気筒のような別の可能性を加えます。"
+        ],
+        "question": [
+          "Why does an inline four shake at twice crank speed, when its pistons are paired up and down?",
+          "直列 4 気筒のピストンは上下に対になっているのに、なぜクランクの二倍の速さで揺れるのですか？"
+        ],
+        "answer": [
+          "Because the second harmonic of piston motion does not care about the sign of \\(\\cos\\theta\\): \\(\\cos2\\theta\\) is the same for a piston at the top and one at the bottom. When pistons 1 and 4 are at top dead centre, decelerating hard, pistons 2 and 3 are at the bottom, decelerating less hard (\\(1+\\lambda\\) against \\(1-\\lambda\\)), so the four inertia forces add up to \\(4\\lambda r\\omega^2m\\) upwards. Half a turn later the situation repeats, so the net force oscillates at twice crank speed.",
+          "ピストンの運動の二次成分は \\(\\cos\\theta\\) の符号を気にしないからです。\\(\\cos2\\theta\\) は上にあるピストンでも下にあるピストンでも同じです。ピストン 1 と 4 が上死点で強く減速しているとき、ピストン 2 と 3 は下死点にあってそれほど強くは減速していないので（\\(1+\\lambda\\) と \\(1-\\lambda\\)）、四つの慣性力は上向きに \\(4\\lambda r\\omega^2m\\) を足し合わせます。半回転後に同じ状況が繰り返されるので、正味の力はクランクの二倍の速さで振動します。"
+        ],
+        "params": [
+          [
+            "lay",
+            "Layout",
+            "配置",
+            0,
+            4,
+            1,
+            3,
+            [
+              [
+                "Single",
+                "単気筒"
+              ],
+              [
+                "Twin",
+                "2 気筒"
+              ],
+              [
+                "Three",
+                "3 気筒"
+              ],
+              [
+                "Four",
+                "4 気筒"
+              ],
+              [
+                "Six",
+                "6 気筒"
+              ]
+            ]
+          ],
+          [
+            "rpm",
+            "Engine speed (rpm)",
+            "回転数（rpm）",
+            1000,
+            7000,
+            100,
+            3000
+          ]
+        ],
+        "source": "John B. Heywood · Internal Combustion Engine Fundamentals, 2nd ed. (McGraw-Hill, 2018)",
+        "url": "https://search.worldcat.org/oclc/1046070057"
+      }
+    ]
   }
 ]
