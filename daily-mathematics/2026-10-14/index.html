@@ -1,0 +1,71 @@
+<!doctype html><html lang="en" class="ig-document ig-editorial"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Daily Mathematics solutions: 14 October 2026 · Isegoria</title><meta name="description" content="Full solutions to the two Daily Mathematics cards of 14 October 2026: a hard definite integral and an original Putnam-style problem."><link rel="canonical" href="https://theisegoria.github.io/daily-mathematics/2026-10-14/"><link rel="alternate" hreflang="en" href="https://theisegoria.github.io/daily-mathematics/2026-10-14/"><link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/daily-mathematics/2026-10-14/"><link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/daily-mathematics/2026-10-14/"><link rel="icon" href="/assets/favicon.svg"><link rel="stylesheet" href="/assets/isegoria.css?v=20260915"><link rel="stylesheet" href="/analysis-atlas/vendor/katex.min.css"><script defer src="/analysis-atlas/vendor/katex.min.js"></script><script defer src="/analysis-atlas/vendor/contrib/auto-render.min.js"></script><script>document.addEventListener("DOMContentLoaded",function(){if(window.renderMathInElement)renderMathInElement(document.querySelector("main"),{delimiters:[{left:"\\[",right:"\\]",display:true},{left:"\\(",right:"\\)",display:false}],throwOnError:false});});</script><style>
+.dm{max-width:46rem;margin:0 auto;padding:2.5rem 1.25rem 4rem}
+.dm .eyebrow{letter-spacing:.14em;text-transform:uppercase;font-size:.78rem;opacity:.7;margin:0 0 .4rem}
+.dm h1{margin:.1rem 0 .6rem;line-height:1.2}
+.dm .deck{opacity:.85;margin:0 0 2rem}
+.dm .card{margin:2.6rem 0 0;padding-top:1.4rem;border-top:2px solid var(--dm-accent,currentColor)}
+.dm .card h2{margin:.2rem 0 .9rem;line-height:1.3}
+.dm .kind{font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dm-accent);margin:0}
+.dm figure{margin:1rem 0 1.4rem}
+.dm figure img{width:100%;max-width:30rem;height:auto;display:block;border:1px solid rgba(127,127,127,.25)}
+.dm .statement{padding:.9rem 1.1rem;border-left:3px solid var(--dm-accent);background:rgba(127,127,127,.07)}
+.dm details{margin:1.2rem 0}
+.dm summary{cursor:pointer;font-weight:600}
+.dm .answer{margin-top:1.2rem;padding:.8rem 1.1rem;border:1px solid var(--dm-accent)}
+.dm .katex-display{overflow-x:auto;overflow-y:hidden;padding:.2rem 0}
+.dm .days{list-style:none;padding:0;margin:1.5rem 0 0}
+.dm .days li{padding:.9rem 0;border-top:1px solid rgba(127,127,127,.25)}
+.dm .days a.date{font-weight:600}
+.dm .days span{display:block;opacity:.85}
+html[lang=ja] .dm{line-height:1.85}
+</style><script src="/assets/lang.js"></script>
+<!-- ISEGORIA:HEAD -->
+<link rel="stylesheet" href="/assets/site-shell.css?v=c21cd21e82">
+<script src="/assets/site-shell.js?v=c21cd21e82" ></script>
+<!-- /ISEGORIA:HEAD -->
+<script defer data-isegoria-analytics src="/assets/analytics.js?v=9e6ebd463bf2"></script>
+</head><body class="ig-site" data-site-kind="editorial" data-site-route="/daily-mathematics/2026-10-14/">
+<!-- ISEGORIA:NAV -->
+<a class="ig-skip" href="#ig-content">Skip to content</a>
+<header id="ig-header"><div class="ig-nav-inner">
+<a class="ig-brand" href="/" aria-label="Isegoria, home"><strong>ISEGORIA</strong><span>Benjamin Haire</span></a>
+<div class="ig-header-actions"><a class="ig-language" href="/ja/daily-mathematics/2026-10-14/" hreflang="ja" lang="ja">日本語</a><button class="ig-menu" type="button" aria-expanded="false" aria-controls="ig-primary">Menu</button></div>
+<nav id="ig-primary" aria-label="Primary navigation"><a href="/">Home</a><a href="/library.html">Library</a><a href="/math-encyclopedia/" aria-current="location">Math encyclopedia</a><a href="/#interactive">Interactive</a><a href="/#preoccupations">Research</a><a href="/#books">Books</a><a href="/projects.html">Projects</a><a href="/about.html">About</a><a class="ig-language" href="/ja/daily-mathematics/2026-10-14/" hreflang="ja" lang="ja">日本語</a><button class="ig-theme" type="button" hidden>Theme</button></nav>
+</div></header>
+<nav id="ig-breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><a href="/math-encyclopedia/">Math encyclopedia</a><span aria-hidden="true">/</span><a href="/daily-mathematics/">Daily Mathematics: solutions</a><span aria-hidden="true">/</span><span aria-current="page">Daily Mathematics solutions: 14 October 2026</span></nav>
+<span id="ig-content" tabindex="-1"></span>
+<!-- /ISEGORIA:NAV -->
+<main id="main" class="dm"><p class="eyebrow">Daily Mathematics / Solutions</p><h1>Solutions for 14 October 2026</h1><p class="deck">Two cards went out that day: a hard definite integral and an original Putnam-style problem. Try each one first; the solutions are folded away below.</p><section class="card" id="integral" style="--dm-accent:#24457F"><p class="kind">Integral</p><h2>An arctangent against a Bose weight</h2><figure><img src="/daily-mathematics/2026-10-14/integral.png" width="1200" height="1200" loading="lazy" alt="Card: An arctangent against a Bose weight"></figure><div class="statement"><p>Evaluate in closed form.</p>
+\[\int_{0}^{\infty}\frac{\arctan x}{e^{2\pi x}-1}\,dx\]</div><details><summary>Show the solution</summary><p>We show that the integral \(I\) equals \(\tfrac12-\tfrac14\ln(2\pi)\approx0.0405307\). This is the case \(z=1\) of Binet's second formula for \(\ln\Gamma(z)\); we prove everything we need from scratch.</p>
+<p><strong>Why the obvious route stalls.</strong> Expanding \(1/(e^{2\pi x}-1)=\sum_{k\ge1}e^{-2\pi kx}\) and integrating term by term against \(\arctan x\) gives \(\int_0^\infty e^{-2\pi kx}\arctan x\,dx=\frac{1}{2\pi k}\int_0^\infty\frac{e^{-2\pi kx}}{1+x^2}\,dx\), which is an auxiliary sine and cosine integral with no closed form, so the sum over \(k\) is hopeless as it stands. The fix is to expand \(\arctan x\) instead, so that the \(x\)-integral is taken against a sine.</p>
+<p><strong>Step 1: a Laplace representation of arctan.</strong> For \(x\ge0\) we have \(\int_0^\infty e^{-u}\frac{\sin xu}{u}\,du=\arctan x\): both sides vanish at \(x=0\), and the derivative of the left side is \(\int_0^\infty e^{-u}\cos xu\,du=\frac{1}{1+x^2}\).</p>
+<p><strong>Step 2: the sine kernel.</strong> For \(u>0\), using \(\int_0^\infty e^{-2\pi kx}\sin xu\,dx=\frac{u}{u^2+4\pi^2k^2}\), we get</p>
+\[\int_0^\infty\frac{\sin xu}{e^{2\pi x}-1}\,dx=\sum_{k\ge1}\frac{u}{u^2+4\pi^2k^2}=\frac14\coth\frac u2-\frac1{2u}\]
+<p>where the last equality is the partial fraction expansion \(\frac12\coth\frac u2=\frac1u+\sum_{k\ge1}\frac{2u}{u^2+4\pi^2k^2}\) (the expansion of \(\pi\cot\pi z\) at \(z=iu/(2\pi)\)). Termwise integration is justified because \(|\sin xu|\le xu\) and \(\sum_k\int_0^\infty xu\,e^{-2\pi kx}\,dx\lt\infty\).</p>
+<p><strong>Step 3: swap the integrals.</strong> The double integrand \(e^{-u}\sin(xu)/\big(u(e^{2\pi x}-1)\big)\) is bounded in absolute value by \(e^{-u}x/(e^{2\pi x}-1)\), which is integrable on \((0,\infty)^2\). By Fubini and Step 1,</p>
+\[I=\int_0^\infty\frac{e^{-u}}{u}\Big(\frac14\coth\frac u2-\frac1{2u}\Big)du=\frac12\,\varphi(1),\qquad \varphi(z)=\int_0^\infty\Big(\frac1{e^u-1}-\frac1u+\frac12\Big)\frac{e^{-zu}}{u}\,du\]
+<p>because \(\frac12\coth\frac u2=\frac1{e^u-1}+\frac12\). The bracket \(b(u)=\frac1{e^u-1}-\frac1u+\frac12\) satisfies \(0\le b(u)\le\min(u/12,\,1/2)\), so \(\varphi(z)\) converges for every \(z>0\) and \(0\le\varphi(z)\le\frac1{12z}\to0\) as \(z\to\infty\).</p>
+<p><strong>Step 4: a difference equation.</strong> Put \(D(z)=\varphi(z)-\varphi(z+1)=\int_0^\infty b(u)(1-e^{-u})e^{-zu}\,\frac{du}u\). Since \(b(u)(1-e^{-u})=e^{-u}-\frac{1-e^{-u}}u+\frac{1-e^{-u}}2\), differentiating under the integral sign gives</p>
+\[D'(z)=-\int_0^\infty b(u)\,(1-e^{-u})\,e^{-zu}\,du=-\frac1{z+1}+\ln\frac{z+1}z-\frac12\Big(\frac1z-\frac1{z+1}\Big)=\ln\Big(1+\frac1z\Big)-\frac{z+\frac12}{z(z+1)}\]
+<p>where we used the Frullani integral \(\int_0^\infty\frac{e^{-zu}-e^{-(z+1)u}}u\,du=\ln\frac{z+1}z\). The right side is the derivative of \(g(z)=(z+\frac12)\ln(1+\frac1z)-1\). Both \(D(z)\) and \(g(z)\) tend to \(0\) as \(z\to\infty\), so \(D=g\).</p>
+<p><strong>Step 5: telescoping to Stirling's constant.</strong> Hence \(\varphi(1)=\sum_{k=1}^{N}g(k)+\varphi(N+1)\) for every \(N\). A direct computation gives \(\sum_{k=1}^{N}\big[(k+\tfrac12)\ln\tfrac{k+1}k-1\big]=(N+\tfrac12)\ln(N+1)-\ln N!-N\). By Stirling's formula \(\ln N!=(N+\frac12)\ln N-N+\frac12\ln(2\pi)+o(1)\), this equals \((N+\frac12)\ln(1+\frac1N)-\frac12\ln(2\pi)+o(1)\to1-\frac12\ln(2\pi)\), while \(\varphi(N+1)\to0\). So \(\varphi(1)=1-\frac12\ln(2\pi)\) and \(I=\frac12-\frac14\ln(2\pi)\).</p>
+<p><strong>Check.</strong> Composite 100-node Gauss-Legendre quadrature on \([0,1]\) and on \([1,\infty)\) mapped by \(x=1+t/(1-t)\), with 40 and with 200 panels, gives \(0.04053073339766\ldots\), agreeing with \(\frac12-\frac14\ln(2\pi)\) to about \(10^{-16}\).</p><div class="answer"><strong>Answer.</strong> \(\displaystyle \frac12-\frac14\ln(2\pi)\approx0.0405307\)</div></details></section><section class="card" id="competition" style="--dm-accent:#96311F"><p class="kind">Competition problem</p><h2>How fast increasing triples become unavoidable</h2><figure><img src="/daily-mathematics/2026-10-14/competition.png" width="1200" height="1200" loading="lazy" alt="Card: How fast increasing triples become unavoidable"></figure><div class="statement"><p>Choose \(X_1,X_2,X_3,\dots\) independently and uniformly at random from \([0,1]\), and let \(p_n\) be the probability that no index \(k\le n-2\) satisfies \(X_k&lt;X_{k+1}&lt;X_{k+2}\). Find</p>
+\[\lim_{n\to\infty}\frac{p_{n+1}}{p_n}.\]</div><details><summary>Show the solution</summary><p>The limit is \(\dfrac{3\sqrt3}{2\pi}\approx0.8269933\). In fact we find the generating function of \(p_n\) in closed form.</p>
+<p><strong>Why counting is awkward.</strong> The \(X_i\) are almost surely distinct and exchangeable, so \(p_n=a_n/n!\) where \(a_n\) counts permutations of \(\{1,\dots,n\}\) with no three consecutive increasing entries: \(1,1,2,5,17,70,349,\dots\). There is no simple recursion for \(a_n\) alone, because whether a new entry may be appended depends on its rank relative to the last entry and on whether the last step was a rise. The way out is to keep the actual values and work with densities.</p>
+<p><strong>Step 1: two densities.</strong> Call the event that no \(k\le n-2\) has \(X_k&lt;X_{k+1}&lt;X_{k+2}\) the good event at time \(n\). Let \(u_n(x)\) be the density of \(X_n\) on the good event intersected with \(\{n=1\text{ or }X_{n-1}>X_n\}\), and let \(v_n(x)\) be the same with \(X_{n-1}&lt;X_n\) instead. Then \(u_1=1\), \(v_1=0\), \(p_n=\int_0^1(u_n+v_n)\), and conditioning on \(X_n\) gives</p>
+\[u_{n+1}(x)=\int_x^1\big(u_n(y)+v_n(y)\big)\,dy,\qquad v_{n+1}(x)=\int_0^x u_n(y)\,dy,\]
+<p>since a fall may follow anything, while a rise may only follow a fall or the first term.</p>
+<p><strong>Step 2: generating functions and an ODE.</strong> By induction \(0\le u_n,v_n\le1\), so for \(|t|&lt;1\) the series \(U(x)=\sum_{n\ge1}u_n(x)t^n\) and \(V(x)=\sum_{n\ge1}v_n(x)t^n\) converge uniformly on \([0,1]\), and</p>
+\[U(x)=t+t\int_x^1(U+V),\qquad V(x)=t\int_0^xU.\]
+<p>Thus \(U'=-t(U+V)\), \(V'=tU\), \(V(0)=0\), \(U(1)=t\), and eliminating \(U\) gives \(V''+tV'+t^2V=0\). With \(s=\frac{\sqrt3}2t\), the solution with \(V(0)=0\) is \(V=c\,e^{-tx/2}\sin sx\), and then \(U=V'/t=c\,e^{-tx/2}\cos\big(sx+\frac\pi6\big)\). The condition \(U(1)=t\) gives \(c=t\,e^{t/2}/\cos\big(s+\frac\pi6\big)\), which is legitimate for small \(|t|\).</p>
+<p><strong>Step 3: the generating function of \(p_n\).</strong> Integrating \(U'=-t(U+V)\) over \([0,1]\) gives \(t\int_0^1(U+V)=U(0)-U(1)\), that is \(\sum_{n\ge1}p_nt^{n+1}=U(0)-t\). Since \(U(0)=c\cos\frac\pi6\), we obtain</p>
+\[P(t):=1+\sum_{n\ge1}p_nt^n=\frac{\sqrt3}{2}\cdot\frac{e^{t/2}}{\cos\big(\frac{\sqrt3}{2}t+\frac\pi6\big)}.\]
+<p>Its expansion \(1+t+t^2+\frac56t^3+\frac{17}{24}t^4+\cdots\) agrees with the counts above. The identity holds for small \(|t|\), and the right side is meromorphic on \(\mathbb C\), so the radius of convergence of the series is the distance from \(0\) to the nearest pole, and the coefficients are governed by the poles.</p>
+<p><strong>Step 4: the dominant pole.</strong> The numerator never vanishes, and the zeros of the cosine are the real points \(t_k=\frac{2}{\sqrt3}\big(\frac\pi3+k\pi\big)\), \(k\in\mathbb Z\), all simple. The nearest to the origin is \(t_0=\frac{2\pi}{3\sqrt3}\approx1.2092\), and the next nearest is \(t_{-1}=-\frac{4\pi}{3\sqrt3}=-2t_0\). Near \(t_0\) we have \(\cos\big(\frac{\sqrt3}2t+\frac\pi6\big)=\frac{\sqrt3}2(t_0-t)+O\big((t-t_0)^2\big)\), so \(P(t)-\frac{e^{t_0/2}}{t_0-t}\) is analytic on \(|t|&lt;2t_0\) and its coefficients are \(O(\rho^{-n})\) for every \(\rho&lt;2t_0\). Since \(\frac{1}{t_0-t}=\sum_n t_0^{-n-1}t^n\),</p>
+\[p_n=e^{t_0/2}\,t_0^{-n-1}+O(\rho^{-n})\quad\text{for every }\rho&lt;2t_0,\]
+<p>and therefore \(p_{n+1}/p_n\to1/t_0=\dfrac{3\sqrt3}{2\pi}\).</p>
+<p><strong>Check.</strong> An exact rational dynamic programme over the relative rank of the last entry and the current run length reproduces \(p_n\) for all \(n\le320\). The ratio \(p_{n+1}/p_n\) agrees with \(3\sqrt3/(2\pi)\) to 16 digits from \(n=100\) on, and \(p_n\,t_0^{n+1}\) agrees with \(e^{t_0/2}\approx1.8305195\). As a side check, \(P(1)\approx7.9244\) is the expected index of the first increasing triple, and a simulation of \(4\times10^5\) sequences gave \(7.926\).</p><div class="answer"><strong>Answer.</strong> \(\dfrac{3\sqrt3}{2\pi}\approx0.8269933\)</div></details></section><p><a href="/daily-mathematics/">All solutions</a> · <a href="/ja/daily-mathematics/2026-10-14/" hreflang="ja" lang="ja">日本語</a></p></main>
+<!-- ISEGORIA:FOOT -->
+<footer id="ig-footer"><div><a href="/">Isegoria · Benjamin Haire</a><nav aria-label="Site links"><a href="/">Back to home</a><a href="/library.html">Browse the library</a><a href="#ig-content">Back to top</a></nav></div></footer>
+<!-- /ISEGORIA:FOOT -->
+</body></html>

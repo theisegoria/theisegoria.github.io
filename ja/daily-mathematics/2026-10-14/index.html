@@ -1,0 +1,71 @@
+<!doctype html><html lang="ja" class="ig-document ig-editorial"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Daily Mathematics 解答：2026年10月14日 · Isegoria</title><meta name="description" content="2026年10月14日のThreadsカード2枚（難しい定積分とパトナム型の問題）の完全な解答。"><link rel="canonical" href="https://theisegoria.github.io/ja/daily-mathematics/2026-10-14/"><link rel="alternate" hreflang="en" href="https://theisegoria.github.io/daily-mathematics/2026-10-14/"><link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/daily-mathematics/2026-10-14/"><link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/daily-mathematics/2026-10-14/"><link rel="icon" href="/assets/favicon.svg"><link rel="stylesheet" href="/assets/isegoria.css?v=20260915"><link rel="stylesheet" href="/analysis-atlas/vendor/katex.min.css"><script defer src="/analysis-atlas/vendor/katex.min.js"></script><script defer src="/analysis-atlas/vendor/contrib/auto-render.min.js"></script><script>document.addEventListener("DOMContentLoaded",function(){if(window.renderMathInElement)renderMathInElement(document.querySelector("main"),{delimiters:[{left:"\\[",right:"\\]",display:true},{left:"\\(",right:"\\)",display:false}],throwOnError:false});});</script><style>
+.dm{max-width:46rem;margin:0 auto;padding:2.5rem 1.25rem 4rem}
+.dm .eyebrow{letter-spacing:.14em;text-transform:uppercase;font-size:.78rem;opacity:.7;margin:0 0 .4rem}
+.dm h1{margin:.1rem 0 .6rem;line-height:1.2}
+.dm .deck{opacity:.85;margin:0 0 2rem}
+.dm .card{margin:2.6rem 0 0;padding-top:1.4rem;border-top:2px solid var(--dm-accent,currentColor)}
+.dm .card h2{margin:.2rem 0 .9rem;line-height:1.3}
+.dm .kind{font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dm-accent);margin:0}
+.dm figure{margin:1rem 0 1.4rem}
+.dm figure img{width:100%;max-width:30rem;height:auto;display:block;border:1px solid rgba(127,127,127,.25)}
+.dm .statement{padding:.9rem 1.1rem;border-left:3px solid var(--dm-accent);background:rgba(127,127,127,.07)}
+.dm details{margin:1.2rem 0}
+.dm summary{cursor:pointer;font-weight:600}
+.dm .answer{margin-top:1.2rem;padding:.8rem 1.1rem;border:1px solid var(--dm-accent)}
+.dm .katex-display{overflow-x:auto;overflow-y:hidden;padding:.2rem 0}
+.dm .days{list-style:none;padding:0;margin:1.5rem 0 0}
+.dm .days li{padding:.9rem 0;border-top:1px solid rgba(127,127,127,.25)}
+.dm .days a.date{font-weight:600}
+.dm .days span{display:block;opacity:.85}
+html[lang=ja] .dm{line-height:1.85}
+</style><script src="/assets/lang.js"></script>
+<!-- ISEGORIA:HEAD -->
+<link rel="stylesheet" href="/assets/site-shell.css?v=c21cd21e82">
+<script src="/assets/site-shell.js?v=c21cd21e82" ></script>
+<!-- /ISEGORIA:HEAD -->
+<script defer data-isegoria-analytics src="/assets/analytics.js?v=9e6ebd463bf2"></script>
+</head><body class="ig-site" data-site-kind="editorial" data-site-route="/ja/daily-mathematics/2026-10-14/">
+<!-- ISEGORIA:NAV -->
+<a class="ig-skip" href="#ig-content">本文へ移動</a>
+<header id="ig-header"><div class="ig-nav-inner">
+<a class="ig-brand" href="/ja/" aria-label="Isegoria, ホーム"><strong>ISEGORIA</strong><span>Benjamin Haire</span></a>
+<div class="ig-header-actions"><a class="ig-language" href="/daily-mathematics/2026-10-14/" hreflang="en" lang="en">English</a><button class="ig-menu" type="button" aria-expanded="false" aria-controls="ig-primary">メニュー</button></div>
+<nav id="ig-primary" aria-label="メインナビゲーション"><a href="/ja/">ホーム</a><a href="/ja/library.html">全コンテンツ</a><a href="/ja/math-encyclopedia/" aria-current="location">数学百科事典</a><a href="/ja/#interactive">操作できる解説</a><a href="/ja/#preoccupations">研究と解説</a><a href="/ja/#books">書籍</a><a href="/ja/projects.html">プロジェクト</a><a href="/ja/about.html">このサイトについて</a><a class="ig-language" href="/daily-mathematics/2026-10-14/" hreflang="en" lang="en">English</a><button class="ig-theme" type="button" hidden>表示切替</button></nav>
+</div></header>
+<nav id="ig-breadcrumb" aria-label="パンくずリスト"><a href="/ja/">ホーム</a><span aria-hidden="true">/</span><a href="/ja/math-encyclopedia/">数学百科事典</a><span aria-hidden="true">/</span><a href="/ja/daily-mathematics/">Daily Mathematics 解答集</a><span aria-hidden="true">/</span><span aria-current="page">Daily Mathematics 解答：2026年10月14日</span></nav>
+<span id="ig-content" tabindex="-1"></span>
+<!-- /ISEGORIA:NAV -->
+<main id="main" class="dm"><p class="eyebrow">Daily Mathematics / 解答</p><h1>2026年10月14日の解答</h1><p class="deck">この日のカードは難しい定積分とオリジナルのパトナム型の問題の2枚である。まず自分で考え、詰まったら解答を開くこと。</p><section class="card" id="integral" style="--dm-accent:#24457F"><p class="kind">積分</p><h2>ボース型の重みをつけた逆正接関数の積分</h2><figure><img src="/daily-mathematics/2026-10-14/integral.png" width="1200" height="1200" loading="lazy" alt="カード: ボース型の重みをつけた逆正接関数の積分"></figure><div class="statement"><p>次の定積分を閉じた形で求めよ。</p>
+\[\int_{0}^{\infty}\frac{\arctan x}{e^{2\pi x}-1}\,dx\]</div><details><summary>解答を開く</summary><p>積分の値 \(I\) が \(\tfrac12-\tfrac14\ln(2\pi)\approx0.0405307\) であることを示す。これは \(\ln\Gamma(z)\) に関するビネの第二公式の \(z=1\) の場合であり，必要なことはすべて一から証明する。</p>
+<p><strong>素直な方法が行き詰まる理由。</strong>\(1/(e^{2\pi x}-1)=\sum_{k\ge1}e^{-2\pi kx}\) と展開して \(\arctan x\) と項別に積分すると \(\int_0^\infty e^{-2\pi kx}\arctan x\,dx=\frac{1}{2\pi k}\int_0^\infty\frac{e^{-2\pi kx}}{1+x^2}\,dx\) となる。これは閉じた形をもたない補助的な正弦・余弦積分であり，このままでは \(k\) についての和は扱えない。そこで逆に \(\arctan x\) の方を展開し，\(x\) についての積分を正弦との積分にする。</p>
+<p><strong>第1段：arctan のラプラス型表示。</strong>\(x\ge0\) に対して \(\int_0^\infty e^{-u}\frac{\sin xu}{u}\,du=\arctan x\) である。実際，両辺は \(x=0\) で \(0\) となり，左辺の導関数は \(\int_0^\infty e^{-u}\cos xu\,du=\frac{1}{1+x^2}\) である。</p>
+<p><strong>第2段：正弦の核。</strong>\(u>0\) とする。\(\int_0^\infty e^{-2\pi kx}\sin xu\,dx=\frac{u}{u^2+4\pi^2k^2}\) を用いると</p>
+\[\int_0^\infty\frac{\sin xu}{e^{2\pi x}-1}\,dx=\sum_{k\ge1}\frac{u}{u^2+4\pi^2k^2}=\frac14\coth\frac u2-\frac1{2u}\]
+<p>を得る。最後の等号は部分分数展開 \(\frac12\coth\frac u2=\frac1u+\sum_{k\ge1}\frac{2u}{u^2+4\pi^2k^2}\)（\(\pi\cot\pi z\) の展開で \(z=iu/(2\pi)\) とおいたもの）による。\(|\sin xu|\le xu\) かつ \(\sum_k\int_0^\infty xu\,e^{-2\pi kx}\,dx\lt\infty\) であるから，項別積分は正当である。</p>
+<p><strong>第3段：積分順序の交換。</strong>被積分関数 \(e^{-u}\sin(xu)/\big(u(e^{2\pi x}-1)\big)\) の絶対値は，\((0,\infty)^2\) 上で可積分な \(e^{-u}x/(e^{2\pi x}-1)\) でおさえられる。フビニの定理と第1段により</p>
+\[I=\int_0^\infty\frac{e^{-u}}{u}\Big(\frac14\coth\frac u2-\frac1{2u}\Big)du=\frac12\,\varphi(1),\qquad \varphi(z)=\int_0^\infty\Big(\frac1{e^u-1}-\frac1u+\frac12\Big)\frac{e^{-zu}}{u}\,du\]
+<p>となる。ここで \(\frac12\coth\frac u2=\frac1{e^u-1}+\frac12\) を用いた。括弧の中の関数 \(b(u)=\frac1{e^u-1}-\frac1u+\frac12\) は \(0\le b(u)\le\min(u/12,\,1/2)\) をみたすので，\(\varphi(z)\) はすべての \(z>0\) で収束し，\(z\to\infty\) のとき \(0\le\varphi(z)\le\frac1{12z}\to0\) である。</p>
+<p><strong>第4段：差分方程式。</strong>\(D(z)=\varphi(z)-\varphi(z+1)=\int_0^\infty b(u)(1-e^{-u})e^{-zu}\,\frac{du}u\) とおく。\(b(u)(1-e^{-u})=e^{-u}-\frac{1-e^{-u}}u+\frac{1-e^{-u}}2\) であるから，積分記号下で微分して</p>
+\[D'(z)=-\int_0^\infty b(u)\,(1-e^{-u})\,e^{-zu}\,du=-\frac1{z+1}+\ln\frac{z+1}z-\frac12\Big(\frac1z-\frac1{z+1}\Big)=\ln\Big(1+\frac1z\Big)-\frac{z+\frac12}{z(z+1)}\]
+<p>を得る。ここでフルラーニ積分 \(\int_0^\infty\frac{e^{-zu}-e^{-(z+1)u}}u\,du=\ln\frac{z+1}z\) を用いた。右辺は \(g(z)=(z+\frac12)\ln(1+\frac1z)-1\) の導関数である。\(D(z)\) と \(g(z)\) はともに \(z\to\infty\) で \(0\) に収束するから，\(D=g\) である。</p>
+<p><strong>第5段：望遠鏡和とスターリングの定数。</strong>したがって，任意の \(N\) に対して \(\varphi(1)=\sum_{k=1}^{N}g(k)+\varphi(N+1)\) である。直接計算すると \(\sum_{k=1}^{N}\big[(k+\tfrac12)\ln\tfrac{k+1}k-1\big]=(N+\tfrac12)\ln(N+1)-\ln N!-N\) となる。スターリングの公式 \(\ln N!=(N+\frac12)\ln N-N+\frac12\ln(2\pi)+o(1)\) より，これは \((N+\frac12)\ln(1+\frac1N)-\frac12\ln(2\pi)+o(1)\to1-\frac12\ln(2\pi)\) に等しく，一方で \(\varphi(N+1)\to0\) である。よって \(\varphi(1)=1-\frac12\ln(2\pi)\) であり，\(I=\frac12-\frac14\ln(2\pi)\) を得る。</p>
+<p><strong>数値的な確認。</strong>\([0,1]\) 上と，\(x=1+t/(1-t)\) で写した \([1,\infty)\) 上で，100点のガウス・ルジャンドル求積を40区間と200区間で行うと \(0.04053073339766\ldots\) を得た。これは \(\frac12-\frac14\ln(2\pi)\) と約 \(10^{-16}\) まで一致する。</p><div class="answer"><strong>答え.</strong> \(\displaystyle \frac12-\frac14\ln(2\pi)\approx0.0405307\)</div></details></section><section class="card" id="competition" style="--dm-accent:#96311F"><p class="kind">競技数学の問題</p><h2>増加する3項が避けられなくなる速さ</h2><figure><img src="/daily-mathematics/2026-10-14/competition.png" width="1200" height="1200" loading="lazy" alt="カード: 増加する3項が避けられなくなる速さ"></figure><div class="statement"><p>\(X_1,X_2,X_3,\dots\) を区間 \([0,1]\) から独立に一様な確率で選ぶ。\(X_k&lt;X_{k+1}&lt;X_{k+2}\) をみたす添字 \(k\le n-2\) が存在しない確率を \(p_n\) とする。次の極限を求めよ。</p>
+\[\lim_{n\to\infty}\frac{p_{n+1}}{p_n}\]</div><details><summary>解答を開く</summary><p>極限は \(\dfrac{3\sqrt3}{2\pi}\approx0.8269933\) である。実際には \(p_n\) の母関数を閉じた形で求める。</p>
+<p><strong>数え上げが扱いにくい理由。</strong>\(X_i\) はほとんど確実に相異なり交換可能であるから，\(p_n=a_n/n!\) である。ここで \(a_n\) は \(\{1,\dots,n\}\) の順列のうち，連続する3項が増加する箇所をもたないものの個数で，\(1,1,2,5,17,70,349,\dots\) となる。新しい項を付け加えてよいかどうかは，直前の項に対する順位と，直前の一歩が上りであったかどうかに依存するので，\(a_n\) だけの簡単な漸化式は得られない。そこで実際の値を保持し，密度を用いて考える。</p>
+<p><strong>第1段：二つの密度。</strong>\(X_k&lt;X_{k+1}&lt;X_{k+2}\) となる \(k\le n-2\) が存在しない事象を，時刻 \(n\) における良い事象とよぶ。良い事象と \(\{n=1\text{ または }X_{n-1}>X_n\}\) の共通部分の上での \(X_n\) の密度を \(u_n(x)\) とし，後者を \(X_{n-1}&lt;X_n\) に替えたものを \(v_n(x)\) とする。このとき \(u_1=1\)，\(v_1=0\)，\(p_n=\int_0^1(u_n+v_n)\) であり，\(X_n\) で条件づけると</p>
+\[u_{n+1}(x)=\int_x^1\big(u_n(y)+v_n(y)\big)\,dy,\qquad v_{n+1}(x)=\int_0^x u_n(y)\,dy,\]
+<p>を得る。下りはどの状態の後にも続けられるが，上りは下りの後か初項の後にしか続けられないからである。</p>
+<p><strong>第2段：母関数と微分方程式。</strong>帰納法により \(0\le u_n,v_n\le1\) であるから，\(|t|&lt;1\) のとき級数 \(U(x)=\sum_{n\ge1}u_n(x)t^n\)，\(V(x)=\sum_{n\ge1}v_n(x)t^n\) は \([0,1]\) 上で一様収束し，</p>
+\[U(x)=t+t\int_x^1(U+V),\qquad V(x)=t\int_0^xU.\]
+<p>が成り立つ。よって \(U'=-t(U+V)\)，\(V'=tU\)，\(V(0)=0\)，\(U(1)=t\) であり，\(U\) を消去すると \(V''+tV'+t^2V=0\) を得る。\(s=\frac{\sqrt3}2t\) とおくと，\(V(0)=0\) をみたす解は \(V=c\,e^{-tx/2}\sin sx\) であり，このとき \(U=V'/t=c\,e^{-tx/2}\cos\big(sx+\frac\pi6\big)\) となる。条件 \(U(1)=t\) から \(c=t\,e^{t/2}/\cos\big(s+\frac\pi6\big)\) が定まり，これは \(|t|\) が小さいとき正当である。</p>
+<p><strong>第3段：\(p_n\) の母関数。</strong>\(U'=-t(U+V)\) を \([0,1]\) で積分すると \(t\int_0^1(U+V)=U(0)-U(1)\)，すなわち \(\sum_{n\ge1}p_nt^{n+1}=U(0)-t\) を得る。\(U(0)=c\cos\frac\pi6\) であるから</p>
+\[P(t):=1+\sum_{n\ge1}p_nt^n=\frac{\sqrt3}{2}\cdot\frac{e^{t/2}}{\cos\big(\frac{\sqrt3}{2}t+\frac\pi6\big)}.\]
+<p>となる。展開 \(1+t+t^2+\frac56t^3+\frac{17}{24}t^4+\cdots\) は上の個数と一致する。この等式は \(|t|\) が小さいところで成り立ち，右辺は \(\mathbb C\) 上で有理型であるから，級数の収束半径は原点から最も近い極までの距離に等しく，係数の振る舞いは極によって決まる。</p>
+<p><strong>第4段：主要な極。</strong>分子は零にならず，余弦の零点は実数 \(t_k=\frac{2}{\sqrt3}\big(\frac\pi3+k\pi\big)\)（\(k\in\mathbb Z\)）で，いずれも単純である。原点に最も近いのは \(t_0=\frac{2\pi}{3\sqrt3}\approx1.2092\) であり，次に近いのは \(t_{-1}=-\frac{4\pi}{3\sqrt3}=-2t_0\) である。\(t_0\) の近くで \(\cos\big(\frac{\sqrt3}2t+\frac\pi6\big)=\frac{\sqrt3}2(t_0-t)+O\big((t-t_0)^2\big)\) であるから，\(P(t)-\frac{e^{t_0/2}}{t_0-t}\) は \(|t|&lt;2t_0\) で正則であり，その係数は任意の \(\rho&lt;2t_0\) に対して \(O(\rho^{-n})\) である。\(\frac{1}{t_0-t}=\sum_n t_0^{-n-1}t^n\) より</p>
+\[p_n=e^{t_0/2}\,t_0^{-n-1}+O(\rho^{-n})\quad\text{（任意の }\rho&lt;2t_0\text{ に対して）}\]
+<p>を得る。したがって \(p_{n+1}/p_n\to1/t_0=\dfrac{3\sqrt3}{2\pi}\) である。</p>
+<p><strong>数値的な確認。</strong>最後の項の相対的な順位と現在の上りの長さについての厳密な有理数の動的計画法により，\(n\le320\) のすべての \(p_n\) を求めた。比 \(p_{n+1}/p_n\) は \(n=100\) 以降 \(3\sqrt3/(2\pi)\) と16桁まで一致し，\(p_n\,t_0^{n+1}\) は \(e^{t_0/2}\approx1.8305195\) と一致した。副次的な確認として，\(P(1)\approx7.9244\) は初めて増加する3項が現れる添字の期待値であり，\(4\times10^5\) 本の列のシミュレーションでは \(7.926\) を得た。</p><div class="answer"><strong>答え.</strong> \(\dfrac{3\sqrt3}{2\pi}\approx0.8269933\)</div></details></section><p><a href="/ja/daily-mathematics/">解答の一覧へ戻る</a> · <a href="/daily-mathematics/2026-10-14/" hreflang="en" lang="en">English</a></p></main>
+<!-- ISEGORIA:FOOT -->
+<footer id="ig-footer"><div><a href="/ja/">Isegoria · Benjamin Haire</a><nav aria-label="サイト内リンク"><a href="/ja/">ホームに戻る</a><a href="/ja/library.html">全コンテンツ</a><a href="#ig-content">ページ上部へ</a></nav></div></footer>
+<!-- /ISEGORIA:FOOT -->
+</body></html>
