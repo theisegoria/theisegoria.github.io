@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en" class=" ig-document ig-editorial">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>C++23, Metal and ARM64 field guides</title>
+<meta name="description" content="Three typeset field guides for writing a Metal C++ engine on Apple silicon: modern C++23 with pointers explained slowly, graphics with C++ and Metal 4, and arm64 assembly. Free PDFs.">
+<link rel="canonical" href="https://theisegoria.github.io/field-guides/">
+<style>
+.fg{max-width:46rem;margin:0 auto;padding:2rem 1rem 4rem;line-height:1.6}
+.fg h1{margin:.2em 0 .3em}
+.fg .guide{border-top:1px solid currentColor;border-top-color:color-mix(in srgb,currentColor 25%,transparent);padding:1.4rem 0}
+.fg .guide h2{margin:0 0 .3em}
+.fg .meta{opacity:.7;font-size:.9rem}
+.fg .dl{display:inline-block;margin-top:.5rem;font-weight:600}
+.fg .note{font-size:.92rem;opacity:.85}
+</style>
+<!-- ISEGORIA:HEAD -->
+<link rel="stylesheet" href="/assets/site-shell.css?v=c21cd21e82">
+<script src="/assets/site-shell.js?v=c21cd21e82" ></script>
+<!-- /ISEGORIA:HEAD -->
+<script defer data-isegoria-analytics src="/assets/analytics.js?v=9e6ebd463bf2"></script>
+</head>
+<body class=" ig-site" data-site-kind="editorial" data-site-route="/field-guides/">
+<!-- ISEGORIA:NAV -->
+<a class="ig-skip" href="#ig-content">Skip to content</a>
+<header id="ig-header"><div class="ig-nav-inner">
+<a class="ig-brand" href="/" aria-label="Isegoria, home"><strong>ISEGORIA</strong><span>Benjamin Haire</span></a>
+<div class="ig-header-actions"><a class="ig-language" href="/ja/" hreflang="ja" lang="ja">日本語</a><button class="ig-menu" type="button" aria-expanded="false" aria-controls="ig-primary">Menu</button></div>
+<nav id="ig-primary" aria-label="Primary navigation"><a href="/">Home</a><a href="/library.html">Library</a><a href="/math-encyclopedia/">Math encyclopedia</a><a href="/#interactive">Interactive</a><a href="/#preoccupations">Research</a><a href="/#books" aria-current="location">Books</a><a href="/projects.html">Projects</a><a href="/about.html">About</a><a class="ig-language" href="/ja/" hreflang="ja" lang="ja">日本語</a><button class="ig-theme" type="button" hidden>Theme</button></nav>
+</div></header>
+<nav id="ig-breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><a href="/#books">Books</a><span aria-hidden="true">/</span><span aria-current="page">C++23, Metal and ARM64 field guides</span></nav>
+<span id="ig-content" tabindex="-1"></span>
+<!-- /ISEGORIA:NAV -->
+<main class="fg">
+<p class="meta">FIELD GUIDES / C++ / METAL / ARM64</p>
+<h1>C++23, Metal and ARM64 field guides</h1>
+<p>Three companion booklets for building a real-time engine on Apple silicon. Each is typeset with worked listings and diagrams, and each says plainly what was run and what was only checked.</p>
+
+<section class="guide">
+<h2>The C++23 field guide</h2>
+<p class="meta">PDF · 105 pages</p>
+<p>Modern C++ from structs, classes, templates and containers through to move semantics, ranges and concurrency, with a long, slow chapter on pointers, plus a section on where inline arm64 assembly and NEON actually help.</p>
+<a class="dl" href="/field-guides/cpp23-field-guide.pdf" download target="_blank" rel="noopener" title="PDF, opens in a new tab">Download the PDF</a>
+</section>
+
+<section class="guide">
+<h2>The graphics field guide: C++23 and Metal 4</h2>
+<p class="meta">PDF · 88 pages</p>
+<p>The path from vertices to pixels: the Metal 4 command model, shaders, textures, compute and ray tracing, and the maths behind them. Figures are rendered by the guide's own CPU code. A closing section covers where arm64 and NEON matter on the CPU side.</p>
+<a class="dl" href="/field-guides/graphics-field-guide.pdf" download target="_blank" rel="noopener" title="PDF, opens in a new tab">Download the PDF</a>
+</section>
+
+<section class="guide">
+<h2>The arm64 assembly field guide</h2>
+<p class="meta">PDF · 58 pages</p>
+<p>Registers, instructions, memory, flags, the stack and calling convention, floating point and NEON, and how to read compiler output, written for Apple silicon.</p>
+<a class="dl" href="/field-guides/arm64-field-guide.pdf" download target="_blank" rel="noopener" title="PDF, opens in a new tab">Download the PDF</a>
+</section>
+
+<section class="guide">
+<h2>Sources and verification</h2>
+<p class="note">The arm64 listings were assembled with clang for the arm64-apple-macos target, and their behaviour was checked in an A64 interpreter written for the purpose. Nothing was run on ARM hardware. In the C++ and graphics guides, the NEON and inline-assembly branches were compile-checked for arm64 only; their logic was tested through a stand-in header on another CPU, and no speed was measured. The Metal host code was type-checked against Apple's headers but never run on a GPU, and the ray-tracing, texture and stage shaders were not compiled. Details specific to Metal 4.1 and macOS 27 are hedged where they appear.</p>
+</section>
+</main>
+<!-- ISEGORIA:FOOT -->
+<footer id="ig-footer"><div><a href="/">Isegoria · Benjamin Haire</a><nav aria-label="Site links"><a href="/">Back to home</a><a href="/library.html">Browse the library</a><a href="#ig-content">Back to top</a></nav></div></footer>
+<!-- /ISEGORIA:FOOT -->
+</body>
+</html>
