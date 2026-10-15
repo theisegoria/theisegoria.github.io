@@ -1,0 +1,64 @@
+<!doctype html><html lang="ja" class="ig-document ig-editorial"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Daily Mathematics 解答：2026年10月16日 · Isegoria</title><meta name="description" content="2026年10月16日のThreadsカード2枚（難しい定積分とパトナム型の問題）の完全な解答。"><link rel="canonical" href="https://theisegoria.github.io/ja/daily-mathematics/2026-10-16/"><link rel="alternate" hreflang="en" href="https://theisegoria.github.io/daily-mathematics/2026-10-16/"><link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/daily-mathematics/2026-10-16/"><link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/daily-mathematics/2026-10-16/"><link rel="icon" href="/assets/favicon.svg"><link rel="stylesheet" href="/assets/isegoria.css?v=20260915"><link rel="stylesheet" href="/analysis-atlas/vendor/katex.min.css"><script defer src="/analysis-atlas/vendor/katex.min.js"></script><script defer src="/analysis-atlas/vendor/contrib/auto-render.min.js"></script><script>document.addEventListener("DOMContentLoaded",function(){if(window.renderMathInElement)renderMathInElement(document.querySelector("main"),{delimiters:[{left:"\\[",right:"\\]",display:true},{left:"\\(",right:"\\)",display:false}],throwOnError:false});});</script><style>
+.dm{max-width:46rem;margin:0 auto;padding:2.5rem 1.25rem 4rem}
+.dm .eyebrow{letter-spacing:.14em;text-transform:uppercase;font-size:.78rem;opacity:.7;margin:0 0 .4rem}
+.dm h1{margin:.1rem 0 .6rem;line-height:1.2}
+.dm .deck{opacity:.85;margin:0 0 2rem}
+.dm .card{margin:2.6rem 0 0;padding-top:1.4rem;border-top:2px solid var(--dm-accent,currentColor)}
+.dm .card h2{margin:.2rem 0 .9rem;line-height:1.3}
+.dm .kind{font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dm-accent);margin:0}
+.dm figure{margin:1rem 0 1.4rem}
+.dm figure img{width:100%;max-width:30rem;height:auto;display:block;border:1px solid rgba(127,127,127,.25)}
+.dm .statement{padding:.9rem 1.1rem;border-left:3px solid var(--dm-accent);background:rgba(127,127,127,.07)}
+.dm details{margin:1.2rem 0}
+.dm summary{cursor:pointer;font-weight:600}
+.dm .answer{margin-top:1.2rem;padding:.8rem 1.1rem;border:1px solid var(--dm-accent)}
+.dm .katex-display{overflow-x:auto;overflow-y:hidden;padding:.2rem 0}
+.dm .days{list-style:none;padding:0;margin:1.5rem 0 0}
+.dm .days li{padding:.9rem 0;border-top:1px solid rgba(127,127,127,.25)}
+.dm .days a.date{font-weight:600}
+.dm .days span{display:block;opacity:.85}
+html[lang=ja] .dm{line-height:1.85}
+</style><script src="/assets/lang.js"></script>
+<!-- ISEGORIA:HEAD -->
+<link rel="stylesheet" href="/assets/site-shell.css?v=c21cd21e82">
+<script src="/assets/site-shell.js?v=c21cd21e82" ></script>
+<!-- /ISEGORIA:HEAD -->
+<script defer data-isegoria-analytics src="/assets/analytics.js?v=9e6ebd463bf2"></script>
+</head><body class="ig-site" data-site-kind="editorial" data-site-route="/ja/daily-mathematics/2026-10-16/">
+<!-- ISEGORIA:NAV -->
+<a class="ig-skip" href="#ig-content">本文へ移動</a>
+<header id="ig-header"><div class="ig-nav-inner">
+<a class="ig-brand" href="/ja/" aria-label="Isegoria, ホーム"><strong>ISEGORIA</strong><span>Benjamin Haire</span></a>
+<div class="ig-header-actions"><a class="ig-language" href="/daily-mathematics/2026-10-16/" hreflang="en" lang="en">English</a><button class="ig-menu" type="button" aria-expanded="false" aria-controls="ig-primary">メニュー</button></div>
+<nav id="ig-primary" aria-label="メインナビゲーション"><a href="/ja/">ホーム</a><a href="/ja/library.html">全コンテンツ</a><a href="/ja/math-encyclopedia/" aria-current="location">数学百科事典</a><a href="/ja/#interactive">操作できる解説</a><a href="/ja/#preoccupations">研究と解説</a><a href="/ja/#books">書籍</a><a href="/ja/projects.html">プロジェクト</a><a href="/ja/about.html">このサイトについて</a><a class="ig-language" href="/daily-mathematics/2026-10-16/" hreflang="en" lang="en">English</a><button class="ig-theme" type="button" hidden>表示切替</button></nav>
+</div></header>
+<nav id="ig-breadcrumb" aria-label="パンくずリスト"><a href="/ja/">ホーム</a><span aria-hidden="true">/</span><a href="/ja/math-encyclopedia/">数学百科事典</a><span aria-hidden="true">/</span><a href="/ja/daily-mathematics/">Daily Mathematics 解答集</a><span aria-hidden="true">/</span><span aria-current="page">Daily Mathematics 解答：2026年10月16日</span></nav>
+<span id="ig-content" tabindex="-1"></span>
+<!-- /ISEGORIA:NAV -->
+<main id="main" class="dm"><p class="eyebrow">Daily Mathematics / 解答</p><h1>2026年10月16日の解答</h1><p class="deck">この日のカードは難しい定積分とオリジナルのパトナム型の問題の2枚である。まず自分で考え、詰まったら解答を開くこと。</p><section class="card" id="integral" style="--dm-accent:#24457F"><p class="kind">積分</p><h2>楕円型の核をもつ二重積分</h2><figure><img src="/daily-mathematics/2026-10-16/integral.png" width="1200" height="1200" loading="lazy" alt="カード: 楕円型の核をもつ二重積分"></figure><div class="statement"><p>次の二重積分を閉じた形で求めよ。</p>
+\[\int_{0}^{1}\!\!\int_{0}^{\pi/2}\frac{d\theta\,dk}{(1+k)\sqrt{1-k^{2}\sin^{2}\theta}}\]</div><details><summary>解答を開く</summary><p>求める積分を \(I\) とおく。\(I=\tfrac{\pi^2}{8}\approx1.2337006\) であることを示す。</p>
+<p><strong>素直な方法が行き詰まる理由。</strong> \(k\) について先に積分するのは初等的にできるが，各 \(\theta\) に対して \(\sin\theta\)，\(\cos\theta\) の逆正接と対数が入り混じった式となり，その \(\theta\) 積分は扱いにくい。\(\theta\) について先に積分すると第一種完全楕円積分 \(K(k)=\int_0^{\pi/2}\frac{d\theta}{\sqrt{1-k^2\sin^2\theta}}\) が現れ，これは \(k\) について初等的な原始関数をもたない。よって \(I=\int_0^1\frac{K(k)}{1+k}\,dk\) であり，重み \(\frac{1}{1+k}\) が手がかりとなる。これはランデン変換に現れる因子そのものである。</p>
+<p><strong>第1段：ランデン変換。</strong> \(0\le k&lt;1\) に対し \(\ell=\frac{2\sqrt k}{1+k}\) とおく。\(K(\ell)=(1+k)K(k)\) を示す。ガウスの公式により \(K(k)=\frac{\pi}{2\,M(1,k')}\) である。ここで \(k'=\sqrt{1-k^2}\)，\(M\) は算術幾何平均である。\(1-\ell^2=\bigl(\frac{1-k}{1+k}\bigr)^2\) より \(\ell'=\frac{1-k}{1+k}\) であり，斉次性から \(M(1,\ell')=\frac{1}{1+k}M(1+k,1-k)\) を得る。算術幾何平均の一段階で \((1+k,1-k)\) は \(\bigl(1,\sqrt{1-k^2}\bigr)\) に移るから，\(M(1+k,1-k)=M(1,k')\) である。ゆえに \(K(\ell)=\frac{\pi(1+k)}{2M(1,k')}=(1+k)K(k)\) である。</p>
+<p><strong>第2段：母数の変換。</strong> 第1段より \(I=\int_0^1\frac{K(\ell)}{(1+k)^2}\,dk\) である。\(k\) が \(0\) から \(1\) まで動くとき \(\ell\) は \(0\) から \(1\) まで単調に増加し，\(\frac{d\ell}{dk}=\frac{1-k}{\sqrt k\,(1+k)^2}\) であるから \(\frac{dk}{(1+k)^2}=\frac{\sqrt k}{1-k}\,d\ell\) となる。\(\frac{\ell}{\sqrt{1-\ell^2}}=\frac{2\sqrt k}{1-k}\) なので，これは \(\frac12\cdot\frac{\ell\,d\ell}{\sqrt{1-\ell^2}}\) に等しい。したがって次を得る。</p>
+\[I=\frac12\int_0^1\frac{\ell\,K(\ell)}{\sqrt{1-\ell^2}}\,d\ell.\]
+<p><strong>第3段：順序を逆にした二重積分。</strong> \(K(\ell)\) を \(\theta\) の積分に戻し，積分順序を交換する（被積分関数は正であるからトネリの定理が使える）。すると \(I=\frac12\int_0^{\pi/2}J(\sin\theta)\,d\theta\) となる。ここで \(J(s)=\int_0^1\frac{\ell\,d\ell}{\sqrt{1-\ell^2}\sqrt{1-s^2\ell^2}}\) である。\(v=\ell^2\)，さらに \(w=\sqrt{1-v}\) とおけば \(J(s)=\int_0^1\frac{dw}{\sqrt{1-s^2+s^2w^2}}=\frac1s\operatorname{arsinh}\frac{s}{\sqrt{1-s^2}}\) を得る。\(c=\sqrt{1-s^2}\) とすると \(\operatorname{arsinh}\frac{s}{c}=\ln\frac{1+s}{c}\) であるから，\(0&lt;s&lt;1\) に対し \(J(s)=\frac{1}{2s}\ln\frac{1+s}{1-s}=\frac{\operatorname{artanh}s}{s}\) である。</p>
+<p><strong>第4段：ウォリス積分と逆正弦級数。</strong> \(\frac{\operatorname{artanh}s}{s}=\sum_{n\ge0}\frac{s^{2n}}{2n+1}\) と展開する。各項は正であるから項別積分してよく，ウォリスの公式 \(\int_0^{\pi/2}\sin^{2n}\theta\,d\theta=\frac{\pi}{2}\binom{2n}{n}4^{-n}\) により次を得る。</p>
+\[I=\frac{\pi}{4}\sum_{n\ge0}\binom{2n}{n}\frac{4^{-n}}{2n+1}.\]
+<p>この級数は \(\arcsin x=\sum_{n\ge0}\binom{2n}{n}\frac{4^{-n}x^{2n+1}}{2n+1}\) の \(x=1\) での値である。項の大きさは \(n^{-3/2}\) の程度なので \(x=1\) で収束し，アーベルの定理によりその和は \(\arcsin1=\frac{\pi}{2}\) である。ゆえに \(I=\frac{\pi}{4}\cdot\frac{\pi}{2}=\frac{\pi^2}{8}\) である。</p>
+<p><strong>検算。</strong> もとの二重積分を二次元の合成ガウス・ルジャンドル求積（100 節点，\(\theta\) 方向 40 区間，端点の特異性は内側の変数を \(k=1-v^4\) として除去）で計算し，\(\pi^2/8\) と \(4\times10^{-16}\) の精度で一致した。また \(K\) を算術幾何平均で計算した一変数積分 \(\int_0^1\frac{K(k)}{1+k}dk\) も 40 区間と 200 区間で \(2\times10^{-16}\) の精度で一致した。</p><div class="answer"><strong>答え.</strong> \(\dfrac{\pi^2}{8}\)</div></details></section><section class="card" id="competition" style="--dm-accent:#96311F"><p class="kind">競技数学の問題</p><h2>縮んでいく円板の中のランダムな点</h2><figure><img src="/daily-mathematics/2026-10-16/competition.png" width="1200" height="1200" loading="lazy" alt="カード: 縮んでいく円板の中のランダムな点"></figure><div class="statement"><p>\(r_0=1\) とする。\(k=1,2,3,\dots\) に対し，原点を中心とする半径 \(r_{k-1}\) の円板内に，それまでの選択とは独立に一様ランダムに点を一つとり，その点と原点との距離を \(r_k\) とする。次の不等式が成り立つ確率を求めよ。</p>
+\[r_1+r_2+r_3+\cdots&lt;1\]</div><details><summary>解答を開く</summary><p>答えは \(\frac{e^{-2\gamma}}{2}\approx0.157618\) である。ここで \(\gamma\) はオイラーの定数である。</p>
+<p><strong>素直な方法が行き詰まる理由。</strong> \(P(r_1+\dots+r_n&lt;1)\) を \(n\) 重積分で表して \(n\to\infty\) とすることはできるが，これらの積分には使える規則性が見えない。実際，和全体の分布は \(1\) より先では区分的に超越的である。突破口は，\([0,1]\) 上ではその分布関数が未知の定数一つだけを含むごく単純な形をしていることに気づき，その定数をラプラス変換の無限遠での振る舞いから決めることである。</p>
+<p><strong>第0段：1 ステップの法則。</strong> \(r_{k-1}\) を与えたとき，新しい点が原点から距離 \(xr_{k-1}\) 以内にある確率は，\(0\le x\le1\) に対して面積比 \(x^2\) である。よって \(r_k=r_{k-1}X_k\) と書ける。ここで \(X_1,X_2,\dots\) は独立で \([0,1]\) 上の密度 \(2x\) をもち，\(r_k=X_1X_2\cdots X_k\) である。\(E\,r_k=(2/3)^k\) であるから，和 \(S=\sum_{k\ge1}r_k\) は \(E\,S=2\) をみたし，ほとんど確実に有限である。さらに \(S=X_1(1+S')\) が成り立つ。ここで \(S'=\sum_{k\ge2}X_2\cdots X_k\) は \(S\) と同じ分布をもち，\(X_1\) と独立である。</p>
+<p><strong>第1段：\([0,1]\) 上での形。</strong> \(F(t)=P(S&lt;t)\) とおく。\(0\le t\le1\) のとき \(\frac{t}{1+S'}\le1\) であるから，\(S'\) で条件付けると \(F(t)=E\bigl[P\bigl(X_1&lt;\tfrac{t}{1+S'}\bigm|S'\bigr)\bigr]=E\bigl[\tfrac{t^2}{(1+S')^2}\bigr]=ct^2\) を得る。ただし \(c=E\bigl[(1+S)^{-2}\bigr]\) である。求める確率は \(F(1)=c\) である。</p>
+<p><strong>第2段：ラプラス変換。</strong> \(\lambda\ge0\) に対し \(\varphi(\lambda)=E\,e^{-\lambda S}\) とおく。これは連続かつ正で，\(\varphi(0)=1\) である。\(S=X_1(1+S')\) より次を得る。</p>
+\[\varphi(\lambda)=\int_0^1 2x\,e^{-\lambda x}\varphi(\lambda x)\,dx,\quad\Longrightarrow\quad \lambda^2\varphi(\lambda)=\int_0^\lambda 2y\,e^{-y}\varphi(y)\,dy.\]
+<p>右辺は連続微分可能であるから \(\varphi\) も \((0,\infty)\) で連続微分可能であり，微分すると \(2\lambda\varphi+\lambda^2\varphi'=2\lambda e^{-\lambda}\varphi\)，すなわち \(\frac{\varphi'}{\varphi}=-\frac{2(1-e^{-\lambda})}{\lambda}\) を得る。右辺は \(0\) の近くで有界であるから，\(0\) から積分して次を得る。</p>
+\[\varphi(\lambda)=\exp\Bigl(-2\int_0^\lambda\frac{1-e^{-u}}{u}\,du\Bigr).\]
+<p><strong>第3段：無限遠での振る舞い。</strong> 部分積分により \(\int_0^\lambda\frac{1-e^{-u}}{u}\,du=(1-e^{-\lambda})\ln\lambda-\int_0^\lambda e^{-u}\ln u\,du\) である（\(0\) での境界項は消える）。\(\lambda\to\infty\) のとき最後の積分は \(\Gamma'(1)=-\gamma\) に収束するので，左辺は \(\ln\lambda+\gamma+o(1)\) に等しい。ゆえに \(\lambda^2\varphi(\lambda)\to e^{-2\gamma}\) である。</p>
+<p><strong>第4段：第1段から同じ極限を求める。</strong> 変換を \(t=1\) で分ける：\(\varphi(\lambda)=\int_0^1 2ct\,e^{-\lambda t}\,dt+\int_{[1,\infty)}e^{-\lambda t}\,dF(t)\)。第1項は \(\frac{2c}{\lambda^2}\bigl(1-(1+\lambda)e^{-\lambda}\bigr)\) であり，第2項は \(0\) と \(e^{-\lambda}\) の間にある。よって \(\lambda^2\varphi(\lambda)\to2c\) である。第3段と比べて \(2c=e^{-2\gamma}\) を得るから，求める確率は \(c=\frac{e^{-2\gamma}}{2}\) である。</p>
+<p><strong>注意。</strong> \(S\) はパラメータ \(2\) の一般化ディックマン変数である。円板の代わりに線分上で一様に点をとれば古典的なディックマン分布となり，同じ議論で \(e^{-\gamma}\) を得る。</p>
+<p><strong>検算。</strong> \(4\times10^7\) 本の列（各 80 項）によるモンテカルロ法で \(0.157539\) を得た。これは \(0.157618\) から標準誤差の \(1.4\) 倍以内であり，比 \(P(S&lt;x)/x^2\) は \([0,1]\) 上で一定であった。また密度の遅れ型微分方程式 \(xf'(x)=f(x)-2f(x-1)\) を \(x=14\) まで数値積分し，定数 \(e^{-2\gamma}\) を \(10^{-9}\) の精度で再現した。</p><div class="answer"><strong>答え.</strong> \(\dfrac{e^{-2\gamma}}{2}\approx0.157618\)（\(\gamma\) はオイラーの定数）</div></details></section><p><a href="/ja/daily-mathematics/">解答の一覧へ戻る</a> · <a href="/daily-mathematics/2026-10-16/" hreflang="en" lang="en">English</a></p></main>
+<!-- ISEGORIA:FOOT -->
+<footer id="ig-footer"><div><a href="/ja/">Isegoria · Benjamin Haire</a><nav aria-label="サイト内リンク"><a href="/ja/">ホームに戻る</a><a href="/ja/library.html">全コンテンツ</a><a href="#ig-content">ページ上部へ</a></nav></div></footer>
+<!-- /ISEGORIA:FOOT -->
+</body></html>
