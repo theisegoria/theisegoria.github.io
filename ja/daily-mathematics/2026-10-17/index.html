@@ -1,0 +1,64 @@
+<!doctype html><html lang="ja" class="ig-document ig-editorial"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Daily Mathematics 解答：2026年10月17日 · Isegoria</title><meta name="description" content="2026年10月17日のThreadsカード2枚（難しい定積分とパトナム型の問題）の完全な解答。"><link rel="canonical" href="https://theisegoria.github.io/ja/daily-mathematics/2026-10-17/"><link rel="alternate" hreflang="en" href="https://theisegoria.github.io/daily-mathematics/2026-10-17/"><link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/daily-mathematics/2026-10-17/"><link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/daily-mathematics/2026-10-17/"><link rel="icon" href="/assets/favicon.svg"><link rel="stylesheet" href="/assets/isegoria.css?v=20260915"><link rel="stylesheet" href="/analysis-atlas/vendor/katex.min.css"><script defer src="/analysis-atlas/vendor/katex.min.js"></script><script defer src="/analysis-atlas/vendor/contrib/auto-render.min.js"></script><script>document.addEventListener("DOMContentLoaded",function(){if(window.renderMathInElement)renderMathInElement(document.querySelector("main"),{delimiters:[{left:"\\[",right:"\\]",display:true},{left:"\\(",right:"\\)",display:false}],throwOnError:false});});</script><style>
+.dm{max-width:46rem;margin:0 auto;padding:2.5rem 1.25rem 4rem}
+.dm .eyebrow{letter-spacing:.14em;text-transform:uppercase;font-size:.78rem;opacity:.7;margin:0 0 .4rem}
+.dm h1{margin:.1rem 0 .6rem;line-height:1.2}
+.dm .deck{opacity:.85;margin:0 0 2rem}
+.dm .card{margin:2.6rem 0 0;padding-top:1.4rem;border-top:2px solid var(--dm-accent,currentColor)}
+.dm .card h2{margin:.2rem 0 .9rem;line-height:1.3}
+.dm .kind{font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dm-accent);margin:0}
+.dm figure{margin:1rem 0 1.4rem}
+.dm figure img{width:100%;max-width:30rem;height:auto;display:block;border:1px solid rgba(127,127,127,.25)}
+.dm .statement{padding:.9rem 1.1rem;border-left:3px solid var(--dm-accent);background:rgba(127,127,127,.07)}
+.dm details{margin:1.2rem 0}
+.dm summary{cursor:pointer;font-weight:600}
+.dm .answer{margin-top:1.2rem;padding:.8rem 1.1rem;border:1px solid var(--dm-accent)}
+.dm .katex-display{overflow-x:auto;overflow-y:hidden;padding:.2rem 0}
+.dm .days{list-style:none;padding:0;margin:1.5rem 0 0}
+.dm .days li{padding:.9rem 0;border-top:1px solid rgba(127,127,127,.25)}
+.dm .days a.date{font-weight:600}
+.dm .days span{display:block;opacity:.85}
+html[lang=ja] .dm{line-height:1.85}
+</style><script src="/assets/lang.js"></script>
+<!-- ISEGORIA:HEAD -->
+<link rel="stylesheet" href="/assets/site-shell.css?v=c21cd21e82">
+<script src="/assets/site-shell.js?v=c21cd21e82" ></script>
+<!-- /ISEGORIA:HEAD -->
+<script defer data-isegoria-analytics src="/assets/analytics.js?v=9e6ebd463bf2"></script>
+</head><body class="ig-site" data-site-kind="editorial" data-site-route="/ja/daily-mathematics/2026-10-17/">
+<!-- ISEGORIA:NAV -->
+<a class="ig-skip" href="#ig-content">本文へ移動</a>
+<header id="ig-header"><div class="ig-nav-inner">
+<a class="ig-brand" href="/ja/" aria-label="Isegoria, ホーム"><strong>ISEGORIA</strong><span>Benjamin Haire</span></a>
+<div class="ig-header-actions"><a class="ig-language" href="/daily-mathematics/2026-10-17/" hreflang="en" lang="en">English</a><button class="ig-menu" type="button" aria-expanded="false" aria-controls="ig-primary">メニュー</button></div>
+<nav id="ig-primary" aria-label="メインナビゲーション"><a href="/ja/">ホーム</a><a href="/ja/library.html">全コンテンツ</a><a href="/ja/math-encyclopedia/" aria-current="location">数学百科事典</a><a href="/ja/#interactive">操作できる解説</a><a href="/ja/#preoccupations">研究と解説</a><a href="/ja/#books">書籍</a><a href="/ja/projects.html">プロジェクト</a><a href="/ja/about.html">このサイトについて</a><a class="ig-language" href="/daily-mathematics/2026-10-17/" hreflang="en" lang="en">English</a><button class="ig-theme" type="button" hidden>表示切替</button></nav>
+</div></header>
+<nav id="ig-breadcrumb" aria-label="パンくずリスト"><a href="/ja/">ホーム</a><span aria-hidden="true">/</span><a href="/ja/math-encyclopedia/">数学百科事典</a><span aria-hidden="true">/</span><a href="/ja/daily-mathematics/">Daily Mathematics 解答集</a><span aria-hidden="true">/</span><span aria-current="page">Daily Mathematics 解答：2026年10月17日</span></nav>
+<span id="ig-content" tabindex="-1"></span>
+<!-- /ISEGORIA:NAV -->
+<main id="main" class="dm"><p class="eyebrow">Daily Mathematics / 解答</p><h1>2026年10月17日の解答</h1><p class="deck">この日のカードは難しい定積分とオリジナルのパトナム型の問題の2枚である。まず自分で考え、詰まったら解答を開くこと。</p><section class="card" id="integral" style="--dm-accent:#24457F"><p class="kind">積分</p><h2>双曲線正割に有理関数の重みをつけた積分</h2><figure><img src="/daily-mathematics/2026-10-17/integral.png" width="1200" height="1200" loading="lazy" alt="カード: 双曲線正割に有理関数の重みをつけた積分"></figure><div class="statement"><p>次の積分を閉じた形で求めよ。</p>\[\int_{0}^{\infty}\frac{dx}{(1+4x^{2})\cosh \pi x}\]</div><details><summary>解答を開く</summary><p><strong>素直な方法が厄介な理由。</strong> 留数計算は可能だが煩雑である。\(1+4x^{2}\) と \(\cosh \pi x\) はともに \(x=i/2\) で零になるのでこの極は二位であり，さらに \(\operatorname{sech}\pi x\) は \(x=i(k+\tfrac12)\) に無限個の極をもつ。\(\operatorname{sech}\pi x=2\sum_{k\ge0}(-1)^{k}e^{-(2k+1)\pi x}\) と展開しても，残る積分 \(\int_0^\infty e^{-bx}\,dx/(1+4x^{2})\) は初等的でない。見通しのよい方法は，二つの因子がどちらも簡単なフーリエ変換をもつことに着目することである。</p>
+<p><strong>第1段：全実軸へ。</strong> 被積分関数は偶関数であるから，\(f(x)=\dfrac{1}{1+4x^{2}}\)，\(g(x)=\operatorname{sech}\pi x\) とおけば \(I=\tfrac12\int_{-\infty}^{\infty}f(x)g(x)\,dx\) である。どちらも \(L^{1}\cap L^{2}\) に属する。</p>
+<p><strong>第2段：二つの変換。</strong> \(\hat h(\omega)=\int_{-\infty}^{\infty}h(x)e^{-i\omega x}\,dx\) とおく。\(\int e^{-i\omega x}\,dx/(1+x^{2})=\pi e^{-|\omega|}\) と変数変換 \(x\mapsto 2x\) により \(\hat f(\omega)=\tfrac{\pi}{2}e^{-|\omega|/2}\) を得る。双曲線正割については \(u=e^{2t}\) とおくと，実数 \(|s|&lt;1\) に対して</p>
+\[\int_{-\infty}^{\infty}\frac{2e^{st}}{e^{t}+e^{-t}}\,dt=\int_{0}^{\infty}\frac{u^{(s-1)/2}}{1+u}\,du=\frac{\pi}{\sin\frac{\pi(s+1)}{2}}=\frac{\pi}{\cos\frac{\pi s}{2}}\]
+<p>が成り立つ。両辺は帯領域 \(|\operatorname{Re}s|&lt;1\) で正則であるから等式はそこで成り立ち，\(s=-i\xi\) とおけば \(\int e^{-i\xi t}\operatorname{sech}t\,dt=\pi\operatorname{sech}(\pi\xi/2)\) を得る。\(t=\pi x\) と置換すれば \(\hat g(\omega)=\operatorname{sech}(\omega/2)\) である。</p>
+<p><strong>第3段：パーセバルの等式。</strong> 二つの変換はともに実数値の偶関数であるから</p>
+\[\int_{-\infty}^{\infty}f g\,dx=\frac{1}{2\pi}\int_{-\infty}^{\infty}\hat f(\omega)\,\hat g(\omega)\,d\omega=\frac{1}{2\pi}\cdot 2\int_{0}^{\infty}\frac{\pi}{2}e^{-\omega/2}\operatorname{sech}\frac{\omega}{2}\,d\omega=\frac12\int_{0}^{\infty}e^{-\omega/2}\operatorname{sech}\frac{\omega}{2}\,d\omega\]
+<p>となる。</p>
+<p><strong>第4段：最後の積分。</strong> \(u=e^{-\omega/2}\) とおくと \(d\omega=-2\,du/u\)，\(\operatorname{sech}(\omega/2)=2u/(1+u^{2})\) であるから</p>
+\[\frac12\int_{0}^{1}u\cdot\frac{2u}{1+u^{2}}\cdot\frac{2\,du}{u}=2\int_{0}^{1}\frac{u\,du}{1+u^{2}}=\ln 2\]
+<p>を得る。よって全実軸上の積分は \(\ln 2\) であり，\(I=\tfrac12\ln 2\) である。</p>
+<p><strong>検算。</strong> 区間 \([0,30]\) 上で 100 点ガウス・ルジャンドル求積を 40 分割と 200 分割で行い（それより先の寄与は \(e^{-90}\) 未満である），\(\tfrac12\ln 2=0.346573590279972\ldots\) と \(3\times10^{-16}\) 以内で一致することを確かめた。</p><div class="answer"><strong>答え.</strong> \(\dfrac{\ln 2}{2}\)</div></details></section><section class="card" id="competition" style="--dm-accent:#96311F"><p class="kind">競技数学の問題</p><h2>2027 を法とする平方数にわたる積</h2><figure><img src="/daily-mathematics/2026-10-17/competition.png" width="1200" height="1200" loading="lazy" alt="カード: 2027 を法とする平方数にわたる積"></figure><div class="statement"><p>\(2027\) は素数である。次の積の値を求めよ。</p>\[\prod_{k=1}^{1013}\Bigl(1+e^{2\pi i k^{2}/2027}\Bigr)\]</div><details><summary>解答を開く</summary><p>\(p=2027\)，\(h=(p-1)/2=1013\)，\(\zeta=e^{2\pi i/p}\) とおく。\(2024=8\cdot 253\) であるから \(p\equiv 3\pmod 8\) である。</p>
+<p><strong>第1段：指数は平方剰余を一度ずつとる。</strong> \(1\le j,k\le h\) で \(k^{2}\equiv j^{2}\pmod p\) ならば \(p\mid (k-j)(k+j)\) であり，\(2\le k+j\le p-1\) であるから \(k=j\) である。よって \(k^{2}\) は 0 でない \(h\) 個の平方剰余をちょうど一度ずつとる。平方剰余全体を \(R\)，非剰余全体を \(N\) とする（ともに \(h\) 個）と，積は \(P=\prod_{r\in R}(1+\zeta^{r})\) である。</p>
+<p><strong>第2段：倍角の恒等式。</strong> \(p\nmid r\) のとき \(1+\zeta^{r}=\dfrac{1-\zeta^{2r}}{1-\zeta^{r}}\) であり，分母は 0 でない。\(p\equiv 3\pmod 8\) より \(2\) は非剰余であるから，\(r\mapsto 2r\) は \(R\) から \(N\) への全単射である。したがって</p>
+\[P=\frac{B}{A},\qquad A=\prod_{r\in R}(1-\zeta^{r}),\quad B=\prod_{n\in N}(1-\zeta^{n})\]
+<p>を得る。</p>
+<p><strong>第3段：複素共役。</strong> \(p\equiv 3\pmod 4\) より \(-1\) は非剰余であるから \(N=-R\) であり，\(B=\prod_{r\in R}(1-\zeta^{-r})=\overline{A}\) となる。ゆえに \(P=\overline{A}/A\) は絶対値 1 であり，問題は \(A\) の偏角だけである。</p>
+<p><strong>第4段：偏角。</strong> 代表元を \(r\in\{1,\dots,p-1\}\) にとる。\(1-e^{i\theta}=-2i\sin(\theta/2)\,e^{i\theta/2}\) かつ \(\sin(\pi r/p)&gt;0\) であるから</p>
+\[A=(-2i)^{h}\Bigl(\prod_{r\in R}\sin\frac{\pi r}{p}\Bigr)e^{i\pi S/p},\qquad S=\sum_{r\in R}r\]
+<p>となり，\(\overline{A}/A=\bigl(\overline{-2i}/(-2i)\bigr)^{h}e^{-2\pi i S/p}=(-1)^{h}e^{-2\pi i S/p}\) を得る。</p>
+<p><strong>第5段：剰余の和。</strong> 代表元は順序を除いて \(1^{2},\dots,h^{2}\) と合同であるから，\(S\equiv\sum_{k=1}^{h}k^{2}=\dfrac{h(h+1)(2h+1)}{6}=\dfrac{h(h+1)p}{6}\pmod p\) である。\(\gcd(6,p)=1\) より \(6\mid h(h+1)\) であり，\(p\mid S\)，すなわち \(e^{-2\pi i S/p}=1\) である。</p>
+<p><strong>結論。</strong> \(h=1013\) は奇数であるから \(P=(-1)^{1013}=-1\) である。同じ議論により，\(p&gt;3\) かつ \(p\equiv 3\pmod 4\) をみたす任意の素数に対し，積はルジャンドル記号 \((2/p)\) に等しい。\(2\) が剰余のときは第2段から直ちに \(P=1\) となる。</p>
+<p><strong>検算。</strong> \(p=2027\) および \(200\) 未満で \(p\equiv 3\pmod 4\) をみたすすべての素数について積を浮動小数点で直接計算し，いずれも \(10^{-9}\) 以内で \((2/p)\) に一致すること，特に \(p=2027\) では \(-1\) であることを確かめた。</p><div class="answer"><strong>答え.</strong> \(-1\)</div></details></section><p><a href="/ja/daily-mathematics/">解答の一覧へ戻る</a> · <a href="/daily-mathematics/2026-10-17/" hreflang="en" lang="en">English</a></p></main>
+<!-- ISEGORIA:FOOT -->
+<footer id="ig-footer"><div><a href="/ja/">Isegoria · Benjamin Haire</a><nav aria-label="サイト内リンク"><a href="/ja/">ホームに戻る</a><a href="/ja/library.html">全コンテンツ</a><a href="#ig-content">ページ上部へ</a></nav></div></footer>
+<!-- /ISEGORIA:FOOT -->
+</body></html>

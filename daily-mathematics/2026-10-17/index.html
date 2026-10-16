@@ -1,0 +1,62 @@
+<!doctype html><html lang="en" class="ig-document ig-editorial"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Daily Mathematics solutions: 17 October 2026 · Isegoria</title><meta name="description" content="Full solutions to the two Daily Mathematics cards of 17 October 2026: a hard definite integral and an original Putnam-style problem."><link rel="canonical" href="https://theisegoria.github.io/daily-mathematics/2026-10-17/"><link rel="alternate" hreflang="en" href="https://theisegoria.github.io/daily-mathematics/2026-10-17/"><link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/daily-mathematics/2026-10-17/"><link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/daily-mathematics/2026-10-17/"><link rel="icon" href="/assets/favicon.svg"><link rel="stylesheet" href="/assets/isegoria.css?v=20260915"><link rel="stylesheet" href="/analysis-atlas/vendor/katex.min.css"><script defer src="/analysis-atlas/vendor/katex.min.js"></script><script defer src="/analysis-atlas/vendor/contrib/auto-render.min.js"></script><script>document.addEventListener("DOMContentLoaded",function(){if(window.renderMathInElement)renderMathInElement(document.querySelector("main"),{delimiters:[{left:"\\[",right:"\\]",display:true},{left:"\\(",right:"\\)",display:false}],throwOnError:false});});</script><style>
+.dm{max-width:46rem;margin:0 auto;padding:2.5rem 1.25rem 4rem}
+.dm .eyebrow{letter-spacing:.14em;text-transform:uppercase;font-size:.78rem;opacity:.7;margin:0 0 .4rem}
+.dm h1{margin:.1rem 0 .6rem;line-height:1.2}
+.dm .deck{opacity:.85;margin:0 0 2rem}
+.dm .card{margin:2.6rem 0 0;padding-top:1.4rem;border-top:2px solid var(--dm-accent,currentColor)}
+.dm .card h2{margin:.2rem 0 .9rem;line-height:1.3}
+.dm .kind{font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dm-accent);margin:0}
+.dm figure{margin:1rem 0 1.4rem}
+.dm figure img{width:100%;max-width:30rem;height:auto;display:block;border:1px solid rgba(127,127,127,.25)}
+.dm .statement{padding:.9rem 1.1rem;border-left:3px solid var(--dm-accent);background:rgba(127,127,127,.07)}
+.dm details{margin:1.2rem 0}
+.dm summary{cursor:pointer;font-weight:600}
+.dm .answer{margin-top:1.2rem;padding:.8rem 1.1rem;border:1px solid var(--dm-accent)}
+.dm .katex-display{overflow-x:auto;overflow-y:hidden;padding:.2rem 0}
+.dm .days{list-style:none;padding:0;margin:1.5rem 0 0}
+.dm .days li{padding:.9rem 0;border-top:1px solid rgba(127,127,127,.25)}
+.dm .days a.date{font-weight:600}
+.dm .days span{display:block;opacity:.85}
+html[lang=ja] .dm{line-height:1.85}
+</style><script src="/assets/lang.js"></script>
+<!-- ISEGORIA:HEAD -->
+<link rel="stylesheet" href="/assets/site-shell.css?v=c21cd21e82">
+<script src="/assets/site-shell.js?v=c21cd21e82" ></script>
+<!-- /ISEGORIA:HEAD -->
+<script defer data-isegoria-analytics src="/assets/analytics.js?v=9e6ebd463bf2"></script>
+</head><body class="ig-site" data-site-kind="editorial" data-site-route="/daily-mathematics/2026-10-17/">
+<!-- ISEGORIA:NAV -->
+<a class="ig-skip" href="#ig-content">Skip to content</a>
+<header id="ig-header"><div class="ig-nav-inner">
+<a class="ig-brand" href="/" aria-label="Isegoria, home"><strong>ISEGORIA</strong><span>Benjamin Haire</span></a>
+<div class="ig-header-actions"><a class="ig-language" href="/ja/daily-mathematics/2026-10-17/" hreflang="ja" lang="ja">日本語</a><button class="ig-menu" type="button" aria-expanded="false" aria-controls="ig-primary">Menu</button></div>
+<nav id="ig-primary" aria-label="Primary navigation"><a href="/">Home</a><a href="/library.html">Library</a><a href="/math-encyclopedia/" aria-current="location">Math encyclopedia</a><a href="/#interactive">Interactive</a><a href="/#preoccupations">Research</a><a href="/#books">Books</a><a href="/projects.html">Projects</a><a href="/about.html">About</a><a class="ig-language" href="/ja/daily-mathematics/2026-10-17/" hreflang="ja" lang="ja">日本語</a><button class="ig-theme" type="button" hidden>Theme</button></nav>
+</div></header>
+<nav id="ig-breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><a href="/math-encyclopedia/">Math encyclopedia</a><span aria-hidden="true">/</span><a href="/daily-mathematics/">Daily Mathematics: solutions</a><span aria-hidden="true">/</span><span aria-current="page">Daily Mathematics solutions: 17 October 2026</span></nav>
+<span id="ig-content" tabindex="-1"></span>
+<!-- /ISEGORIA:NAV -->
+<main id="main" class="dm"><p class="eyebrow">Daily Mathematics / Solutions</p><h1>Solutions for 17 October 2026</h1><p class="deck">Two cards went out that day: a hard definite integral and an original Putnam-style problem. Try each one first; the solutions are folded away below.</p><section class="card" id="integral" style="--dm-accent:#24457F"><p class="kind">Integral</p><h2>A rational weight against a hyperbolic secant</h2><figure><img src="/daily-mathematics/2026-10-17/integral.png" width="1200" height="1200" loading="lazy" alt="Card: A rational weight against a hyperbolic secant"></figure><div class="statement"><p>Evaluate in closed form.</p>\[\int_{0}^{\infty}\frac{dx}{(1+4x^{2})\cosh \pi x}\]</div><details><summary>Show the solution</summary><p><strong>Why the obvious routes are awkward.</strong> Residues are possible but unpleasant: \(1+4x^{2}\) and \(\cosh \pi x\) both vanish at \(x=i/2\), so that pole is double, and \(\operatorname{sech}\pi x\) has infinitely many further poles at \(x=i(k+\tfrac12)\). Expanding \(\operatorname{sech}\pi x=2\sum_{k\ge0}(-1)^{k}e^{-(2k+1)\pi x}\) leaves integrals \(\int_0^\infty e^{-bx}\,dx/(1+4x^{2})\), which are not elementary. The clean route is to notice that both factors have simple Fourier transforms.</p>
+<p><strong>Step 1: the whole line.</strong> The integrand is even, so \(I=\tfrac12\int_{-\infty}^{\infty}f(x)g(x)\,dx\) with \(f(x)=\dfrac{1}{1+4x^{2}}\) and \(g(x)=\operatorname{sech}\pi x\). Both lie in \(L^{1}\cap L^{2}\).</p>
+<p><strong>Step 2: the two transforms.</strong> Write \(\hat h(\omega)=\int_{-\infty}^{\infty}h(x)e^{-i\omega x}\,dx\). From \(\int e^{-i\omega x}\,dx/(1+x^{2})=\pi e^{-|\omega|}\) and the scaling \(x\mapsto 2x\), \(\hat f(\omega)=\tfrac{\pi}{2}e^{-|\omega|/2}\). For the secant, put \(u=e^{2t}\): for real \(|s|&lt;1\),</p>
+\[\int_{-\infty}^{\infty}\frac{2e^{st}}{e^{t}+e^{-t}}\,dt=\int_{0}^{\infty}\frac{u^{(s-1)/2}}{1+u}\,du=\frac{\pi}{\sin\frac{\pi(s+1)}{2}}=\frac{\pi}{\cos\frac{\pi s}{2}}.\]
+<p>Both sides are analytic in the strip \(|\operatorname{Re}s|&lt;1\), so the identity holds there, and \(s=-i\xi\) gives \(\int e^{-i\xi t}\operatorname{sech}t\,dt=\pi\operatorname{sech}(\pi\xi/2)\). Substituting \(t=\pi x\) yields \(\hat g(\omega)=\operatorname{sech}(\omega/2)\).</p>
+<p><strong>Step 3: Parseval.</strong> Both transforms are real and even, so</p>
+\[\int_{-\infty}^{\infty}f g\,dx=\frac{1}{2\pi}\int_{-\infty}^{\infty}\hat f(\omega)\,\hat g(\omega)\,d\omega=\frac{1}{2\pi}\cdot 2\int_{0}^{\infty}\frac{\pi}{2}e^{-\omega/2}\operatorname{sech}\frac{\omega}{2}\,d\omega=\frac12\int_{0}^{\infty}e^{-\omega/2}\operatorname{sech}\frac{\omega}{2}\,d\omega.\]
+<p><strong>Step 4: the last integral.</strong> Put \(u=e^{-\omega/2}\), so \(d\omega=-2\,du/u\) and \(\operatorname{sech}(\omega/2)=2u/(1+u^{2})\):</p>
+\[\frac12\int_{0}^{1}u\cdot\frac{2u}{1+u^{2}}\cdot\frac{2\,du}{u}=2\int_{0}^{1}\frac{u\,du}{1+u^{2}}=\ln 2.\]
+<p>Hence the full-line integral is \(\ln 2\) and \(I=\tfrac12\ln 2\).</p>
+<p><strong>Check.</strong> Composite 100-node Gauss-Legendre quadrature on \([0,30]\) (the tail beyond is below \(e^{-90}\)) with 40 and with 200 panels agrees with \(\tfrac12\ln 2=0.346573590279972\ldots\) to within \(3\times10^{-16}\).</p><div class="answer"><strong>Answer.</strong> \(\dfrac{\ln 2}{2}\)</div></details></section><section class="card" id="competition" style="--dm-accent:#96311F"><p class="kind">Competition problem</p><h2>A product over the squares modulo 2027</h2><figure><img src="/daily-mathematics/2026-10-17/competition.png" width="1200" height="1200" loading="lazy" alt="Card: A product over the squares modulo 2027"></figure><div class="statement"><p>The number \(2027\) is prime. Evaluate the product</p>\[\prod_{k=1}^{1013}\Bigl(1+e^{2\pi i k^{2}/2027}\Bigr).\]</div><details><summary>Show the solution</summary><p>Let \(p=2027\), \(h=(p-1)/2=1013\) and \(\zeta=e^{2\pi i/p}\). Note that \(p\equiv 3\pmod 8\), since \(2024=8\cdot 253\).</p>
+<p><strong>Step 1: the exponents are the residues.</strong> If \(k^{2}\equiv j^{2}\pmod p\) with \(1\le j,k\le h\), then \(p\mid (k-j)(k+j)\) and \(2\le k+j\le p-1\), so \(k=j\). Thus \(k^{2}\) runs over the \(h\) nonzero quadratic residues exactly once. Writing \(R\) for the residues and \(N\) for the non-residues (both of size \(h\)), the product is \(P=\prod_{r\in R}(1+\zeta^{r})\).</p>
+<p><strong>Step 2: duplication.</strong> For \(p\nmid r\), \(1+\zeta^{r}=\dfrac{1-\zeta^{2r}}{1-\zeta^{r}}\), with nonzero denominator. Because \(p\equiv 3\pmod 8\), \(2\) is a non-residue, so \(r\mapsto 2r\) is a bijection from \(R\) onto \(N\). Hence</p>
+\[P=\frac{B}{A},\qquad A=\prod_{r\in R}(1-\zeta^{r}),\quad B=\prod_{n\in N}(1-\zeta^{n}).\]
+<p><strong>Step 3: conjugation.</strong> Because \(p\equiv 3\pmod 4\), \(-1\) is a non-residue, so \(N=-R\) and \(B=\prod_{r\in R}(1-\zeta^{-r})=\overline{A}\). Therefore \(P=\overline{A}/A\) has modulus \(1\), and only the argument of \(A\) matters.</p>
+<p><strong>Step 4: the phase.</strong> Choose representatives \(r\in\{1,\dots,p-1\}\). Since \(1-e^{i\theta}=-2i\sin(\theta/2)\,e^{i\theta/2}\) and \(\sin(\pi r/p)&gt;0\),</p>
+\[A=(-2i)^{h}\Bigl(\prod_{r\in R}\sin\frac{\pi r}{p}\Bigr)e^{i\pi S/p},\qquad S=\sum_{r\in R}r,\]
+<p>so \(\overline{A}/A=\bigl(\overline{-2i}/(-2i)\bigr)^{h}e^{-2\pi i S/p}=(-1)^{h}e^{-2\pi i S/p}\).</p>
+<p><strong>Step 5: the residue sum.</strong> The representatives are congruent to \(1^{2},\dots,h^{2}\) in some order, so \(S\equiv\sum_{k=1}^{h}k^{2}=\dfrac{h(h+1)(2h+1)}{6}=\dfrac{h(h+1)p}{6}\pmod p\). As \(\gcd(6,p)=1\), \(6\) divides \(h(h+1)\), so \(p\mid S\) and \(e^{-2\pi i S/p}=1\).</p>
+<p><strong>Conclusion.</strong> \(h=1013\) is odd, so \(P=(-1)^{1013}=-1\). The same argument shows that for every prime \(p\equiv 3\pmod 4\), \(p&gt;3\), the product equals the Legendre symbol \((2/p)\): when \(2\) is a residue, Step 2 gives \(P=1\) directly.</p>
+<p><strong>Check.</strong> The product was multiplied out in floating point for \(p=2027\) and for every prime \(p\equiv 3\pmod 4\) below \(200\); in every case it equals \((2/p)\) to within \(10^{-9}\), and for \(p=2027\) it is \(-1\).</p><div class="answer"><strong>Answer.</strong> \(-1\)</div></details></section><p><a href="/daily-mathematics/">All solutions</a> · <a href="/ja/daily-mathematics/2026-10-17/" hreflang="ja" lang="ja">日本語</a></p></main>
+<!-- ISEGORIA:FOOT -->
+<footer id="ig-footer"><div><a href="/">Isegoria · Benjamin Haire</a><nav aria-label="Site links"><a href="/">Back to home</a><a href="/library.html">Browse the library</a><a href="#ig-content">Back to top</a></nav></div></footer>
+<!-- /ISEGORIA:FOOT -->
+</body></html>
