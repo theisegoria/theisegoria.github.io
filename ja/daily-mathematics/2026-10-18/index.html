@@ -1,0 +1,77 @@
+<!doctype html><html lang="ja" class="ig-document ig-editorial"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Daily Mathematics 解答：2026年10月18日 · Isegoria</title><meta name="description" content="2026年10月18日のThreadsカード2枚（難しい定積分とパトナム型の問題）の完全な解答。"><link rel="canonical" href="https://theisegoria.github.io/ja/daily-mathematics/2026-10-18/"><link rel="alternate" hreflang="en" href="https://theisegoria.github.io/daily-mathematics/2026-10-18/"><link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/daily-mathematics/2026-10-18/"><link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/daily-mathematics/2026-10-18/"><link rel="icon" href="/assets/favicon.svg"><link rel="stylesheet" href="/assets/isegoria.css?v=20260915"><link rel="stylesheet" href="/analysis-atlas/vendor/katex.min.css"><script defer src="/analysis-atlas/vendor/katex.min.js"></script><script defer src="/analysis-atlas/vendor/contrib/auto-render.min.js"></script><script>document.addEventListener("DOMContentLoaded",function(){if(window.renderMathInElement)renderMathInElement(document.querySelector("main"),{delimiters:[{left:"\\[",right:"\\]",display:true},{left:"\\(",right:"\\)",display:false}],throwOnError:false});});</script><style>
+.dm{max-width:46rem;margin:0 auto;padding:2.5rem 1.25rem 4rem}
+.dm .eyebrow{letter-spacing:.14em;text-transform:uppercase;font-size:.78rem;opacity:.7;margin:0 0 .4rem}
+.dm h1{margin:.1rem 0 .6rem;line-height:1.2}
+.dm .deck{opacity:.85;margin:0 0 2rem}
+.dm .card{margin:2.6rem 0 0;padding-top:1.4rem;border-top:2px solid var(--dm-accent,currentColor)}
+.dm .card h2{margin:.2rem 0 .9rem;line-height:1.3}
+.dm .kind{font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dm-accent);margin:0}
+.dm figure{margin:1rem 0 1.4rem}
+.dm figure img{width:100%;max-width:30rem;height:auto;display:block;border:1px solid rgba(127,127,127,.25)}
+.dm .statement{padding:.9rem 1.1rem;border-left:3px solid var(--dm-accent);background:rgba(127,127,127,.07)}
+.dm details{margin:1.2rem 0}
+.dm summary{cursor:pointer;font-weight:600}
+.dm .answer{margin-top:1.2rem;padding:.8rem 1.1rem;border:1px solid var(--dm-accent)}
+.dm .katex-display{overflow-x:auto;overflow-y:hidden;padding:.2rem 0}
+.dm .days{list-style:none;padding:0;margin:1.5rem 0 0}
+.dm .days li{padding:.9rem 0;border-top:1px solid rgba(127,127,127,.25)}
+.dm .days a.date{font-weight:600}
+.dm .days span{display:block;opacity:.85}
+html[lang=ja] .dm{line-height:1.85}
+</style><script src="/assets/lang.js"></script>
+<!-- ISEGORIA:HEAD -->
+<link rel="stylesheet" href="/assets/site-shell.css?v=c21cd21e82">
+<script src="/assets/site-shell.js?v=c21cd21e82" ></script>
+<!-- /ISEGORIA:HEAD -->
+<script defer data-isegoria-analytics src="/assets/analytics.js?v=9e6ebd463bf2"></script>
+</head><body class="ig-site" data-site-kind="editorial" data-site-route="/ja/daily-mathematics/2026-10-18/">
+<!-- ISEGORIA:NAV -->
+<a class="ig-skip" href="#ig-content">本文へ移動</a>
+<header id="ig-header"><div class="ig-nav-inner">
+<a class="ig-brand" href="/ja/" aria-label="Isegoria, ホーム"><strong>ISEGORIA</strong><span>Benjamin Haire</span></a>
+<div class="ig-header-actions"><a class="ig-language" href="/daily-mathematics/2026-10-18/" hreflang="en" lang="en">English</a><button class="ig-menu" type="button" aria-expanded="false" aria-controls="ig-primary">メニュー</button></div>
+<nav id="ig-primary" aria-label="メインナビゲーション"><a href="/ja/">ホーム</a><a href="/ja/library.html">全コンテンツ</a><a href="/ja/math-encyclopedia/" aria-current="location">数学百科事典</a><a href="/ja/#interactive">操作できる解説</a><a href="/ja/#preoccupations">研究と解説</a><a href="/ja/#books">書籍</a><a href="/ja/projects.html">プロジェクト</a><a href="/ja/about.html">このサイトについて</a><a class="ig-language" href="/daily-mathematics/2026-10-18/" hreflang="en" lang="en">English</a><button class="ig-theme" type="button" hidden>表示切替</button></nav>
+</div></header>
+<nav id="ig-breadcrumb" aria-label="パンくずリスト"><a href="/ja/">ホーム</a><span aria-hidden="true">/</span><a href="/ja/math-encyclopedia/">数学百科事典</a><span aria-hidden="true">/</span><a href="/ja/daily-mathematics/">Daily Mathematics 解答集</a><span aria-hidden="true">/</span><span aria-current="page">Daily Mathematics 解答：2026年10月18日</span></nav>
+<span id="ig-content" tabindex="-1"></span>
+<!-- /ISEGORIA:NAV -->
+<main id="main" class="dm"><p class="eyebrow">Daily Mathematics / 解答</p><h1>2026年10月18日の解答</h1><p class="deck">この日のカードは難しい定積分とオリジナルのパトナム型の問題の2枚である。まず自分で考え、詰まったら解答を開くこと。</p><section class="card" id="integral" style="--dm-accent:#24457F"><p class="kind">積分</p><h2>円分多項式を重みとする対数の正弦の積分</h2><figure><img src="/daily-mathematics/2026-10-18/integral.png" width="1200" height="1200" loading="lazy" alt="カード: 円分多項式を重みとする対数の正弦の積分"></figure><div class="statement"><p>次の積分を閉じた形で求めよ。</p>\[\int_{0}^{\infty}\frac{\sin(\ln x)}{\ln x}\,\frac{dx}{x^{2}+x+1}\]</div><details><summary>解答を開く</summary><p>求める積分を \(I\) とおく。被積分関数は \((0,\infty)\) 上で連続（\(x=1\) での値は \(1\)）であり，\(1/(x^{2}+x+1)\) で抑えられるから \(I\) は絶対収束する。初等的な原始関数はなく，対称性 \(x\mapsto 1/x\)（両因子と \(dx/(x^{2}+x+1)\) を不変に保つ）も積分範囲を \((0,1)\) に折り返すだけで，分母の \(\ln x\) は消えない。そこでパラメータを導入してこの分母を取り除く。</p>
+<p><strong>第1段：パラメータ積分。</strong> すべての \(x&gt;0\) に対して \(\dfrac{\sin(\ln x)}{\ln x}=\displaystyle\int_{0}^{1}\cos(t\ln x)\,dt\) である（\(x=1\) では両辺とも \(1\)）。二重積分の被積分関数は \((0,\infty)\times[0,1]\) 上で可積分な \(1/(x^{2}+x+1)\) で抑えられるから，フビニの定理により</p>
+\[I=\int_{0}^{1}C(t)\,dt,\qquad C(t)=\int_{0}^{\infty}\frac{\cos(t\ln x)}{x^{2}+x+1}\,dx\]
+<p>を得る。</p>
+<p><strong>第2段：複素指数でのメリン変換。</strong> \(M(s)=\displaystyle\int_{0}^{\infty}\frac{x^{s-1}}{x^{2}+x+1}\,dx\) とおく。これは \(0&lt;\operatorname{Re}s&lt;2\) で収束し，正則である。\(x^{it}=\cos(t\ln x)+i\sin(t\ln x)\) であり，\(\int_{0}^{\infty}\sin(t\ln x)\,dx/(x^{2}+x+1)=0\)（置換 \(x\mapsto 1/x\) で符号が反転する）であるから，\(C(t)=M(1+it)\) である。</p>
+<p><strong>第3段：\(M\) の計算。</strong> \(\alpha=e^{i\pi/3}\) とおくと \(x^{2}+x+1=(x+\alpha)(x+\bar\alpha)\)，\(\bar\alpha-\alpha=-i\sqrt3\) である。実数 \(0&lt;s&lt;1\) と \(|\arg c|&lt;\pi\) に対して \(\int_{0}^{\infty}\frac{x^{s-1}}{x+c}\,dx=\frac{\pi\,c^{s-1}}{\sin\pi s}\)（主値の冪）が成り立つ。実際，\(c&gt;0\) のときは \(x=cy\) とおけばベータ積分 \(B(s,1-s)\) であり，両辺とも切れ目を入れた平面上で \(c\) について正則である。部分分数分解により</p>
+\[M(s)=\frac{1}{\bar\alpha-\alpha}\cdot\frac{\pi\,(\alpha^{s-1}-\bar\alpha^{s-1})}{\sin\pi s}=\frac{\pi\,\sin\!\bigl(\pi(1-s)/3\bigr)}{\sin(\pi/3)\,\sin\pi s}\]
+<p>を得る。右辺は \(0&lt;\operatorname{Re}s&lt;2\) で正則である（\(s=1\) における \(\sin\pi s\) の零点は分子の零点で打ち消される）から，一致の定理によりこの式は帯領域全体で成り立つ。\(s=1+it\) では \(\sin(-i\pi t/3)=-i\sinh(\pi t/3)\)，\(\sin(\pi+i\pi t)=-i\sinh\pi t\) であるから</p>
+\[C(t)=\frac{2\pi}{\sqrt3}\,\frac{\sinh(\pi t/3)}{\sinh\pi t}\qquad(t\ne0)\]
+<p>であり，\(t=0\) での極限値は当然 \(2\pi/(3\sqrt3)=\int_{0}^{\infty}dx/(x^{2}+x+1)\) である。</p>
+<p><strong>第4段：\(t\) についての積分。</strong> \(a=\pi t/3\) とおき，\(\sinh 3a=\sinh a\,(4\cosh^{2}a-1)=\sinh a\,(1+2\cosh 2a)\) を用いると</p>
+\[I=\frac{2\pi}{\sqrt3}\cdot\frac{3}{\pi}\int_{0}^{\pi/3}\frac{da}{1+2\cosh 2a}=2\sqrt3\int_{0}^{\pi/3}\frac{da}{1+2\cosh 2a}.\]
+<p>さらに \(u=\tanh a\) とおくと \(\cosh 2a=\frac{1+u^{2}}{1-u^{2}}\)，\(da=\frac{du}{1-u^{2}}\) であるから，被積分式は \(\frac{du}{(1-u^{2})+2(1+u^{2})}=\frac{du}{3+u^{2}}\) となる。したがって</p>
+\[I=2\sqrt3\cdot\frac{1}{\sqrt3}\arctan\frac{\tanh(\pi/3)}{\sqrt3}=2\arctan\!\left(\frac{\tanh(\pi/3)}{\sqrt3}\right)\approx 0.8469477380\]
+<p>を得る。</p>
+<p><strong>検算。</strong> 同値な形 \(I=2\int_{0}^{\infty}\frac{\sin u}{u\,(1+2\cosh u)}\,du\)（\(x=e^{u}\) とおく）を区間 \([0,60]\) 上で 100 点ガウス・ルジャンドル複合求積（40 区間および 200 区間）により計算し，さらに元の積分を \((0,1)\) と \((1,\infty)\) に分けて直接計算した。三つの値はいずれも閉じた形と約 \(10^{-16}\) の精度で一致した。</p><div class="answer"><strong>答え.</strong> \(2\arctan\!\left(\dfrac{\tanh(\pi/3)}{\sqrt3}\right)\approx 0.8469477380\)</div></details></section><section class="card" id="competition" style="--dm-accent:#96311F"><p class="kind">競技数学の問題</p><h2>二回合成しても後退しない関数の個数</h2><figure><img src="/daily-mathematics/2026-10-18/competition.png" width="1200" height="1200" loading="lazy" alt="カード: 二回合成しても後退しない関数の個数"></figure><div class="statement"><p>\(n\) を正の整数とする。\(\{1,\dots,n\}\) から自身への関数 \(f\) であって，次を満たすものを考える。</p>\[f(f(k))\ge k\qquad(1\le k\le n)\]<p>このような \(f\) の個数は，同着を許すときの \(n\) 人の走者の着順の決まり方の総数に等しいことを証明せよ。</p></div><details><summary>解答を開く</summary><p>有限の全順序集合 \(X\) に対し，\(g:X\to X\) がすべての \(x\in X\) で \(g(g(x))\ge x\) を満たすとき <em>良い写像</em> とよぶ。良い写像の個数は \(|X|\) のみによるから，\(|X|=m\) のときの個数を \(a_{m}\) とおく（\(a_{0}=1\)）。また同着を許す \(m\) 人の着順の総数（順序付き集合分割の数）を \(b_{m}\) とおく（\(b_{0}=1\)）。両者が同じ漸化式を満たすことを示して \(a_{n}=b_{n}\) を証明する。</p>
+<p><strong>素朴な方針が行き詰まる理由。</strong> 最大の元 \(n\) を取り除くと \(f(f(n))=n\) が従うが，残りの元への制約が \(f(n)\) の値に依存してしまう。像の大きさで分類しても，相異なる順位の数ごとの着順の数とは一致しない（\(n=3\) で像の大きさが 3 の良い写像は 4 個であり，\(3!=6\) 個ではない）。硬い振る舞いをするのは最小の元である。</p>
+<p><strong>第1段：\(b\) の漸化式。</strong> 1 着の走者の集合（大きさ \(j\ge1\)）を選び，残り \(n-j\) 人の着順を決めればよい。よって \(b_{n}=\sum_{j=1}^{n}\binom{n}{j}b_{n-j}=\sum_{r=0}^{n-1}\binom{n}{r}b_{r}\) である。</p>
+<p><strong>第2段：元 1 に関する二つの事実。</strong> \(f\) を \([n]=\{1,\dots,n\}\) 上の良い写像とし，\(C=f^{-1}(1)\)，\(b=f(1)\) とおく。</p>
+<p>(i) \(k\ge2\) ならば \(f(k)\notin C\) である。実際，そうでなければ \(f(f(k))=1&lt;k\) となる。</p>
+<p>(ii) \(c\in C\) における条件は \(f(f(c))=f(1)=b\ge c\) であるから，\(C\ne\varnothing\) ならば \(b\ge\max C\) である。1 自身における条件 \(f(f(1))\ge1\) は自明に成り立つ。</p>
+<p><strong>第3段：場合分け。</strong> \(R\subseteq\{2,\dots,n\}\) に対し \(C_{R}=\{2,\dots,n\}\setminus R\) とおく。</p>
+<p><em>場合 1：\(f(1)=1\)。</em> このとき \(1\in C\) であり，(ii) より \(\max C\le1\)，すなわち \(C=\{1\}\) である。(i) と合わせて \(f\) は \(\{2,\dots,n\}\) を自身に写し，そこで良い写像である。逆に \(\{2,\dots,n\}\) 上の良い写像を \(f(1)=1\) で延長したものは良い写像である。個数は \(a_{n-1}\) である。</p>
+<p><em>場合 2：\(C=\varnothing\)。</em> 1 に写る元はないから，\(f\) は \(\{2,\dots,n\}\) を自身に写し，そこで良い写像である。一方 \(f(1)=b\in\{2,\dots,n\}\) は任意である（1 における条件は自明であり，\(f(k)=1\) となる \(k\ge2\) がないので他の条件に \(f(1)\) は現れない）。個数は \((n-1)a_{n-1}\) である。</p>
+<p><em>場合 3：\(C\ne\varnothing\) かつ \(1\notin C\)。</em> このとき \(C\subseteq\{2,\dots,n\}\) であり，\(R=\{2,\dots,n\}\setminus C\) は真部分集合で \(C=C_{R}\) である。\(k\in R\) に対して \(f(k)\ne1\) かつ (i) より \(f(k)\notin C\) であるから，\(f(R)\subseteq R\) であり \(g=f|_{R}\) は良い写像である。また \(C_{R}\) 上で \(f\equiv1\) であり，(ii) より \(b\ge\max C_{R}\ge2\) である。</p>
+<p>&nbsp;&nbsp;(3a) \(b\in C_{R}\) のとき。\(b=\max C_{R}\) である。逆に，任意の真部分集合 \(R\) と \(R\) 上の良い写像 \(g\) に対し，\(R\) 上で \(f=g\)，\(C_{R}\) 上で \(f=1\)，\(f(1)=\max C_{R}\) と定めた \(f\) は良い写像である。実際，\(R\) 上では仮定より，1 では \(f(f(1))=1\ge1\)，\(k\in C_{R}\) では \(f(f(k))=f(1)=\max C_{R}\ge k\) である。寄与は \(\sum_{R\subsetneq\{2,\dots,n\}}a_{|R|}\) である。</p>
+<p>&nbsp;&nbsp;(3b) \(b\in R\) のとき。\(b&gt;\max C_{R}\) であり，これは \(\{b,b+1,\dots,n\}\subseteq R\) と同値である。逆に，任意の真部分集合 \(R\)，\(R\) 上の良い写像 \(g\)，およびそのような \(b\) から良い写像 \(f\) が得られる。実際，1 では \(f(f(1))=g(b)\ge1\)，\(k\in C_{R}\) では \(f(f(k))=b&gt;\max C_{R}\ge k\) である。寄与は \(\sum_{R}t(R)\,a_{|R|}\) である。ここで \(t(R)=\#\{b\in\{2,\dots,n\}:\{b,\dots,n\}\subseteq R\}\) とおいた。</p>
+<p>これらの場合は互いに排反で全体を尽くし，\(f\) から \((R,g,b)\) が一意に定まる。\(R=\{2,\dots,n\}\) のときは \(t(R)=n-1\) であるから，場合 1 と場合 2 の寄与の和はこの \(R\) に対する \((1+t(R))a_{|R|}\) に等しい。以上より</p>
+\[a_{n}=\sum_{R\subseteq\{2,\dots,n\}}\bigl(1+t(R)\bigr)\,a_{|R|}.\]
+<p><strong>第4段：大きさごとにまとめる。</strong> \(|R|=r\)（\(0\le r\le n-1\)）を固定する。そのような \(R\) は \(\binom{n-1}{r}\) 個ある。それらにわたる \(t(R)\) の和は \(\{b,\dots,n\}\subseteq R\) を満たす組 \((R,b)\) の個数である。\(j=n-b+1\in\{1,\dots,r\}\) とおくと，\(R\) の残り \(r-j\) 個の元は \(\{2,\dots,b-1\}\) の \(n-1-j\) 個の元から選ばれるから</p>
+\[\sum_{|R|=r}t(R)=\sum_{j=1}^{r}\binom{n-1-j}{r-j}=\sum_{i=0}^{r-1}\binom{n-1-r+i}{i}=\binom{n-1}{r-1}\]
+<p>である（ホッケースティック恒等式 \(\sum_{i=0}^{m}\binom{s+i}{i}=\binom{s+m+1}{m}\) による。\(r=0\) のときは空和で \(0\) である）。よって大きさ \(r\) の重みの合計は \(\binom{n-1}{r}+\binom{n-1}{r-1}=\binom{n}{r}\) であり</p>
+\[a_{n}=\sum_{r=0}^{n-1}\binom{n}{r}a_{r}\]
+<p>を得る。</p>
+<p><strong>結論。</strong> \(a_{0}=b_{0}=1\) であり，\(a\) と \(b\) は同じ漸化式を満たすから，強い帰納法によりすべての \(n\) で \(a_{n}=b_{n}\) である。すなわち良い関数の個数は同着を許す着順の総数（順序付きベル数 \(1,3,13,75,541,\dots\)）に等しい。</p>
+<p><strong>検算。</strong> \(n\le7\) について \(n^{n}\) 個の関数すべてを計算機で数え上げた。得られた個数 \(1,3,13,75,541,4683,47293\) は第1段の漸化式から計算した順序付きベル数と一致した。</p><div class="answer"><strong>答え.</strong> \(a_n=\sum_{r=0}^{n-1}\binom{n}{r}a_r\)，\(a_0=1\)：順序付きベル数（フビニ数）\(1,3,13,75,541,4683,\dots\) であり，同着を許す着順の総数に等しい。</div></details></section><p><a href="/ja/daily-mathematics/">解答の一覧へ戻る</a> · <a href="/daily-mathematics/2026-10-18/" hreflang="en" lang="en">English</a></p></main>
+<!-- ISEGORIA:FOOT -->
+<footer id="ig-footer"><div><a href="/ja/">Isegoria · Benjamin Haire</a><nav aria-label="サイト内リンク"><a href="/ja/">ホームに戻る</a><a href="/ja/library.html">全コンテンツ</a><a href="#ig-content">ページ上部へ</a></nav></div></footer>
+<!-- /ISEGORIA:FOOT -->
+</body></html>
