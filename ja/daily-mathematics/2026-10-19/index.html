@@ -1,0 +1,77 @@
+<!doctype html><html lang="ja" class="ig-document ig-editorial"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Daily Mathematics 解答：2026年10月19日 · Isegoria</title><meta name="description" content="2026年10月19日のThreadsカード2枚（難しい定積分とパトナム型の問題）の完全な解答。"><link rel="canonical" href="https://theisegoria.github.io/ja/daily-mathematics/2026-10-19/"><link rel="alternate" hreflang="en" href="https://theisegoria.github.io/daily-mathematics/2026-10-19/"><link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/daily-mathematics/2026-10-19/"><link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/daily-mathematics/2026-10-19/"><link rel="icon" href="/assets/favicon.svg"><link rel="stylesheet" href="/assets/isegoria.css?v=20260915"><link rel="stylesheet" href="/analysis-atlas/vendor/katex.min.css"><script defer src="/analysis-atlas/vendor/katex.min.js"></script><script defer src="/analysis-atlas/vendor/contrib/auto-render.min.js"></script><script>document.addEventListener("DOMContentLoaded",function(){if(window.renderMathInElement)renderMathInElement(document.querySelector("main"),{delimiters:[{left:"\\[",right:"\\]",display:true},{left:"\\(",right:"\\)",display:false}],throwOnError:false});});</script><style>
+.dm{max-width:46rem;margin:0 auto;padding:2.5rem 1.25rem 4rem}
+.dm .eyebrow{letter-spacing:.14em;text-transform:uppercase;font-size:.78rem;opacity:.7;margin:0 0 .4rem}
+.dm h1{margin:.1rem 0 .6rem;line-height:1.2}
+.dm .deck{opacity:.85;margin:0 0 2rem}
+.dm .card{margin:2.6rem 0 0;padding-top:1.4rem;border-top:2px solid var(--dm-accent,currentColor)}
+.dm .card h2{margin:.2rem 0 .9rem;line-height:1.3}
+.dm .kind{font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dm-accent);margin:0}
+.dm figure{margin:1rem 0 1.4rem}
+.dm figure img{width:100%;max-width:30rem;height:auto;display:block;border:1px solid rgba(127,127,127,.25)}
+.dm .statement{padding:.9rem 1.1rem;border-left:3px solid var(--dm-accent);background:rgba(127,127,127,.07)}
+.dm details{margin:1.2rem 0}
+.dm summary{cursor:pointer;font-weight:600}
+.dm .answer{margin-top:1.2rem;padding:.8rem 1.1rem;border:1px solid var(--dm-accent)}
+.dm .katex-display{overflow-x:auto;overflow-y:hidden;padding:.2rem 0}
+.dm .days{list-style:none;padding:0;margin:1.5rem 0 0}
+.dm .days li{padding:.9rem 0;border-top:1px solid rgba(127,127,127,.25)}
+.dm .days a.date{font-weight:600}
+.dm .days span{display:block;opacity:.85}
+html[lang=ja] .dm{line-height:1.85}
+</style><script src="/assets/lang.js"></script>
+<!-- ISEGORIA:HEAD -->
+<link rel="stylesheet" href="/assets/site-shell.css?v=c21cd21e82">
+<script src="/assets/site-shell.js?v=c21cd21e82" ></script>
+<!-- /ISEGORIA:HEAD -->
+<script defer data-isegoria-analytics src="/assets/analytics.js?v=9e6ebd463bf2"></script>
+</head><body class="ig-site" data-site-kind="editorial" data-site-route="/ja/daily-mathematics/2026-10-19/">
+<!-- ISEGORIA:NAV -->
+<a class="ig-skip" href="#ig-content">本文へ移動</a>
+<header id="ig-header"><div class="ig-nav-inner">
+<a class="ig-brand" href="/ja/" aria-label="Isegoria, ホーム"><strong>ISEGORIA</strong><span>Benjamin Haire</span></a>
+<div class="ig-header-actions"><a class="ig-language" href="/daily-mathematics/2026-10-19/" hreflang="en" lang="en">English</a><button class="ig-menu" type="button" aria-expanded="false" aria-controls="ig-primary">メニュー</button></div>
+<nav id="ig-primary" aria-label="メインナビゲーション"><a href="/ja/">ホーム</a><a href="/ja/library.html">全コンテンツ</a><a href="/ja/math-encyclopedia/" aria-current="location">数学百科事典</a><a href="/ja/#interactive">操作できる解説</a><a href="/ja/#preoccupations">研究と解説</a><a href="/ja/#books">書籍</a><a href="/ja/projects.html">プロジェクト</a><a href="/ja/about.html">このサイトについて</a><a class="ig-language" href="/daily-mathematics/2026-10-19/" hreflang="en" lang="en">English</a><button class="ig-theme" type="button" hidden>表示切替</button></nav>
+</div></header>
+<nav id="ig-breadcrumb" aria-label="パンくずリスト"><a href="/ja/">ホーム</a><span aria-hidden="true">/</span><a href="/ja/math-encyclopedia/">数学百科事典</a><span aria-hidden="true">/</span><a href="/ja/daily-mathematics/">Daily Mathematics 解答集</a><span aria-hidden="true">/</span><span aria-current="page">Daily Mathematics 解答：2026年10月19日</span></nav>
+<span id="ig-content" tabindex="-1"></span>
+<!-- /ISEGORIA:NAV -->
+<main id="main" class="dm"><p class="eyebrow">Daily Mathematics / 解答</p><h1>2026年10月19日の解答</h1><p class="deck">この日のカードは難しい定積分とオリジナルのパトナム型の問題の2枚である。まず自分で考え、詰まったら解答を開くこと。</p><section class="card" id="integral" style="--dm-accent:#24457F"><p class="kind">積分</p><h2>単位正方形の対数エネルギー</h2><figure><img src="/daily-mathematics/2026-10-19/integral.png" width="1200" height="1200" loading="lazy" alt="カード: 単位正方形の対数エネルギー"></figure><div class="statement"><p>次の積分を閉じた形で求めよ。</p>\[\iiiint_{[0,1]^{4}}\ln\bigl((x-u)^{2}+(y-v)^{2}\bigr)\,dx\,dy\,du\,dv\]</div><details><summary>解答を開く</summary><p>求める積分を \(I\) とおく。\(I\) は単位正方形内の独立な一様乱点 \(P=(x,y)\)，\(Q=(u,v)\) に対する \(\ln|P-Q|^{2}\) の平均である。対角線 \(P=Q\) 上の対数特異性は可積分である（2次元では \(\int r\ln r\,dr\) が収束する）から，\(I\) は有限である。四つの積分を一つずつ実行しようとすると，最初の二つで残りの変数についての逆正接と対数が絡み合い，見通しが失われる。鍵は被積分関数が差だけに依存することである。</p>
+<p><strong>第1段：2重積分への帰着。</strong> \(s=x-u\)，\(t=y-v\) とおく。\(x,u\) が独立に \([0,1]\) 上一様に分布するとき，\(s\) は \([-1,1]\) 上で三角形型の密度 \(1-|s|\) をもつ（\(\{u\in[0,1]:u+s\in[0,1]\}\) の長さである）。\(t\) も同様であり，\(s,t\) は互いに素な変数の組から作られるので独立である。よって</p>
+\[I=\int_{-1}^{1}\!\int_{-1}^{1}(1-|s|)(1-|t|)\ln(s^{2}+t^{2})\,ds\,dt=4\int_{0}^{1}\!\int_{0}^{1}(1-s)(1-t)\ln(s^{2}+t^{2})\,ds\,dt\]
+<p>を得る（\(s\) と \(t\) それぞれについての偶関数性を用いた）。</p>
+<p><strong>第2段：三角形上の極座標。</strong> 最後の被積分関数は \(s,t\) について対称であるから，\(I\) は三角形 \(0\le t\le s\le 1\) 上の積分の \(8\) 倍である。そこで \(s=r\cos\theta\)，\(t=r\sin\theta\)，\(0\le\theta\le\pi/4\)，\(0\le r\le\sec\theta\)（辺 \(s=1\)）とおく。\(\ln(s^{2}+t^{2})=2\ln r\) であるから</p>
+\[I=16\int_{0}^{\pi/4}\!\int_{0}^{\sec\theta}\bigl(r-(\cos\theta+\sin\theta)r^{2}+\cos\theta\sin\theta\,r^{3}\bigr)\ln r\,dr\,d\theta\]
+<p>である。</p>
+<p><strong>第3段：動径方向の積分。</strong> \(k\ge0\)，\(R&gt;0\) に対して \(\int_{0}^{R}r^{k}\ln r\,dr=R^{k+1}\Bigl(\dfrac{\ln R}{k+1}-\dfrac{1}{(k+1)^{2}}\Bigr)\) である。\(R=\sec\theta\)，\(\tau=\tan\theta\) とおくと \((\cos\theta+\sin\theta)R^{3}=R^{2}(1+\tau)\)，\(\cos\theta\sin\theta\,R^{4}=\tau R^{2}\) であるから，内側の積分は</p>
+\[\sec^{2}\theta\Bigl[\Bigl(\frac16-\frac{\tau}{12}\Bigr)\ln\sec\theta-\frac{5}{36}+\frac{7\tau}{144}\Bigr]\]
+<p>に等しい。実際 \(\frac12-\frac{1+\tau}{3}+\frac{\tau}{4}=\frac16-\frac{\tau}{12}\)，\(-\frac14+\frac{1+\tau}{9}-\frac{\tau}{16}=-\frac{5}{36}+\frac{7\tau}{144}\) である。</p>
+<p><strong>第4段：角度方向の積分。</strong> \(w=\tan\theta\) とおくと \(dw=\sec^{2}\theta\,d\theta\)，\(\ln\sec\theta=\frac12\ln(1+w^{2})\) であるから</p>
+\[I=16\int_{0}^{1}\Bigl[\Bigl(\frac1{12}-\frac{w}{24}\Bigr)\ln(1+w^{2})-\frac{5}{36}+\frac{7w}{144}\Bigr]dw\]
+<p>となる。部分積分により \(\int_{0}^{1}\ln(1+w^{2})\,dw=\bigl[w\ln(1+w^{2})-2w+2\arctan w\bigr]_{0}^{1}=\ln2-2+\frac{\pi}{2}\) であり，\(\pi\) はこの逆正接から現れる。また \(q=1+w^{2}\) とおけば \(\int_{0}^{1}w\ln(1+w^{2})\,dw=\frac12\int_{1}^{2}\ln q\,dq=\ln2-\frac12\) である。したがって括弧内の積分は</p>
+\[\frac{1}{12}\Bigl(\ln2-2+\frac{\pi}{2}\Bigr)-\frac1{24}\Bigl(\ln2-\frac12\Bigr)-\frac{5}{36}+\frac{7}{288}=\frac{\ln 2}{24}+\frac{\pi}{24}-\frac{25}{96}\]
+<p>であり，</p>
+\[I=\frac{2(\pi+\ln2)}{3}-\frac{25}{6}\approx-1.6101734439\]
+<p>を得る。言い換えれば，単位正方形内の2つの乱点の距離の対数の平均は \(\frac{\pi+\ln 2}{3}-\frac{25}{12}\) である。</p>
+<p><strong>検算。</strong> 第1段の2重積分を，角 \(s=t=0\) に向けて2進的に細分した区間（40 段および 50 段）上で 60 点および 80 点のガウス・ルジャンドル複合求積により計算し，いずれも閉じた形と \(10^{-15}\) 以内で一致した。さらに元の4重積分を \(10^{7}\) 個の標本によるモンテカルロ法で評価し，\(-1.61057\pm0.00040\) を得た。これは標準誤差の範囲内で一致する。</p><div class="answer"><strong>答え.</strong> \(\dfrac{2(\pi+\ln 2)}{3}-\dfrac{25}{6}\approx-1.6101734439\)</div></details></section><section class="card" id="competition" style="--dm-accent:#96311F"><p class="kind">競技数学の問題</p><h2>正六角形の頂点における交代和</h2><figure><img src="/daily-mathematics/2026-10-19/competition.png" width="1200" height="1200" loading="lazy" alt="カード: 正六角形の頂点における交代和"></figure><div class="statement"><p>連続関数 \(f:\mathbb{R}^{2}\to\mathbb{R}\) であって，平面上のすべての正六角形 \(P_{1}P_{2}P_{3}P_{4}P_{5}P_{6}\) に対して</p>\[\sum_{k=1}^{6}(-1)^{k}f(P_{k})=0\]<p>が成り立つものをすべて求めよ。</p></div><details><summary>解答を開く</summary><p>解は</p>
+\[f(x,y)=a+bx+cy+dx^{2}+exy+gy^{2}+(x^{2}+y^{2})(hx+ky)+m(x^{2}+y^{2})^{2}\]
+<p>（\(a,b,c,d,e,g,h,k,m\) は実定数）の形の関数全体，すなわち 9 次元の空間 \(V\) にちょうど一致することを示す。正方形の場合（頂点の交代和が消えるのは \(a+bx+cy+d(x^{2}+y^{2})\) に限る）からの類推や，低次の多項式を特別な六角形で試すことからは 4 次元の答えが予想されるが，それでは \((x^{2}+y^{2})^{2}\) のような 3 次と 4 次の解を見落とす。正しい視点は複素数である。</p>
+<p><strong>第1段：二つの正三角形。</strong> 平面を \(\mathbb{C}\) と同一視し，\(\zeta=e^{2\pi i/3}\) とおく。中心 \(c\) の正六角形 \(P_{1}\dots P_{6}\) では \(P_{k+3}-c=-(P_{k}-c)\) であり，\(P_{1},P_{3},P_{5}\) は正三角形をなすから，\(u=P_{1}-c\ne0\) として \(\{P_{1},P_{3},P_{5}\}=\{c+\zeta^{j}u\}\)，\(\{P_{2},P_{4},P_{6}\}=\{c-\zeta^{j}u\}\)（\(j=0,1,2\)）である。逆に任意の \(c\) と任意の \(u\ne0\) がこうして現れる。</p>
+\[T_{c}(u)=\sum_{j=0}^{2}f(c+\zeta^{j}u)\]
+<p>とおくと，条件は \(T_{c}(-u)-T_{c}(u)=0\)，すなわち <em>各 \(c\) について \(T_{c}\) が偶関数である</em> ことと同値である。この条件は \(f\) について線形であり，平行移動で不変である。</p>
+<p><strong>第2段：\(V\) の元はすべて解である。</strong> 整数 \(p,q\ge0\) に対して</p>
+\[\sum_{j=0}^{2}(c+\zeta^{j}u)^{p}\,\overline{(c+\zeta^{j}u)}^{\,q}=\sum_{i,l}\binom{p}{i}\binom{q}{l}c^{p-i}\bar c^{\,q-l}u^{i}\bar u^{\,l}\sum_{j=0}^{2}\zeta^{j(i-l)}\]
+<p>であり，内側の和は \(i\equiv l\pmod 3\) のとき \(3\)，それ以外のとき \(0\) である。\(p,q\le2\) ならば \(0\le i,l\le2\) であるから \(i=l\) の項だけが残り，それらは \(u\) について偶数次 \(2i\) であるから，和は \(u\) の偶関数である。\(p,q\le2\) に対する \(z^{p}\bar z^{q}\) の実部と虚部は \(1,x,y,x^{2}-y^{2},xy,x^{2}+y^{2},x(x^{2}+y^{2}),y(x^{2}+y^{2}),(x^{2}+y^{2})^{2}\) であり，これらは \(V\) を張る。たとえば \(\sum_{j}|c+\zeta^{j}u|^{4}=3(|c|^{2}+|u|^{2})^{2}+6|c|^{2}|u|^{2}\) である。</p>
+<p><strong>第3段：滑らかな解は \(V\) に属する。</strong> \(f\) を \(C^{\infty}\) 級の解とし，ヴィルティンガー微分 \(\partial=\frac12(\partial_{x}-i\partial_{y})\)，\(\bar\partial=\frac12(\partial_{x}+i\partial_{y})\) を用いる。\(f\) は実数値であるから \(\bar\partial^{\,3}f=\overline{\partial^{3}f}\) である。\(c,u\) を固定し，実数 \(t\) に対して \(h(t)=T_{c}(tu)\) とおく。\(t\ne0\) で \(h(t)=h(-t)\) であり，連続性によりすべての \(t\) で成り立つから \(h'''(0)=0\) である。方向 \(v\in\mathbb{C}\) に対して</p>
+\[\frac{d^{3}}{dt^{3}}f(c+tv)\Big|_{t=0}=\sum_{i+l=3}\binom{3}{i}v^{i}\bar v^{\,l}\,\partial^{i}\bar\partial^{\,l}f(c)\]
+<p>である。\(v=\zeta^{j}u\) について和をとると \((i,l)\) の項には \(\sum_{j}\zeta^{j(i-l)}\) が掛かり，\(i-l\in\{3,1,-1,-3\}\) であるから \((3,0)\) と \((0,3)\) だけが残って</p>
+\[0=h'''(0)=3\bigl(u^{3}\partial^{3}f(c)+\bar u^{3}\bar\partial^{\,3}f(c)\bigr)=6\,\mathrm{Re}\bigl(u^{3}\partial^{3}f(c)\bigr)\]
+<p>を得る。\(u^{3}\) は \(\mathbb{C}\) 全体を動くから \(\partial^{3}f\equiv0\)，したがって \(\bar\partial^{\,3}f\equiv0\) である。\(a+b=6\) の作用素 \(\partial^{a}\bar\partial^{\,b}\) は \(a\ge3\) または \(b\ge3\) を満たすので \(f\) を消す。\(\partial_{x}=\partial+\bar\partial\)，\(\partial_{y}=i(\partial-\bar\partial)\) であるから \(f\) の 6 階偏導関数はすべて 0 であり，\(f\) は 5 次以下の多項式である。これを \(f=\sum a_{pq}z^{p}\bar z^{q}\) と一意に表す。\(\partial^{3}(z^{p}\bar z^{q})=p(p-1)(p-2)z^{p-3}\bar z^{q}\) は相異なる単項式を相異なる単項式に写すから，\(\partial^{3}f=0\) より \(p\ge3\) のとき \(a_{pq}=0\) であり，同様に \(\bar\partial^{\,3}f=0\) より \(q\ge3\) のとき \(a_{pq}=0\) である。よって \(f\in V\) である。</p>
+<p><strong>第4段：連続から滑らかへ。</strong> \(f\) を連続な解とし，\(\varphi_{\varepsilon}\ge0\) を半径 \(\varepsilon\) の円板に台をもち積分が \(1\) の滑らかな関数とする。\(f_{\varepsilon}(z)=\int f(z-y)\varphi_{\varepsilon}(y)\,dy\) は滑らかであり，正六角形の平行移動 \(P_{k}-y\) もまた正六角形であるから</p>
+\[\sum_{k=1}^{6}(-1)^{k}f_{\varepsilon}(P_{k})=\int\Bigl(\sum_{k=1}^{6}(-1)^{k}f(P_{k}-y)\Bigr)\varphi_{\varepsilon}(y)\,dy=0\]
+<p>である。第3段より \(f_{\varepsilon}\in V\) である。\(\varepsilon\to0\) のとき，一様連続性により \(f_{\varepsilon}\) は任意の閉円板 \(K\) 上で \(f\) に一様収束する。\(V\) から \(K\) への制限は単射である（開集合上で消える多項式は 0）から，\(V|_{K}\) は \(C(K)\) の有限次元部分空間であり閉集合である。よって \(f|_{K}\in V|_{K}\) であり，対応する \(V\) の元は一意であるから \(K\) によらない。したがって \(f\in V\) である。</p>
+<p><strong>結論。</strong> 連続な解はちょうど上の 9 パラメータの族である。1 次関数と \(x^{2},xy,y^{2}\) のほかに，\(x(x^{2}+y^{2})\)，\(y(x^{2}+y^{2})\)，\((x^{2}+y^{2})^{2}\) も条件を満たす。</p>
+<p><strong>検算。</strong> 7 次以下の実多項式全体（36 次元）に対し，ランダムな 400 個の正六角形（両方の向き）で条件を課して計算機で解いた。解空間の次元はちょうど 9 であり，上の 9 個の基底関数はさらに 2000 個のランダムな正六角形で丸め誤差 \(2\times10^{-11}\) 以内で条件を満たし，\(x^{3}\)，\(x^{2}y^{2}\)，\((x^{2}+y^{2})x^{2}\) などの試験関数は条件を満たさなかった。</p><div class="answer"><strong>答え.</strong> \(f(x,y)=a+bx+cy+dx^{2}+exy+gy^{2}+(x^{2}+y^{2})(hx+ky)+m(x^{2}+y^{2})^{2}\)（\(a,\dots,m\) は実定数）の形の関数全体。9 次元の空間である（\(0\le p,q\le2\) に対する \(z^{p}\bar z^{q}\) の実部）。</div></details></section><p><a href="/ja/daily-mathematics/">解答の一覧へ戻る</a> · <a href="/daily-mathematics/2026-10-19/" hreflang="en" lang="en">English</a></p></main>
+<!-- ISEGORIA:FOOT -->
+<footer id="ig-footer"><div><a href="/ja/">Isegoria · Benjamin Haire</a><nav aria-label="サイト内リンク"><a href="/ja/">ホームに戻る</a><a href="/ja/library.html">全コンテンツ</a><a href="#ig-content">ページ上部へ</a></nav></div></footer>
+<!-- /ISEGORIA:FOOT -->
+</body></html>
