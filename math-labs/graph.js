@@ -118,7 +118,10 @@
     'switching-converters': ['control-theory', 'semiconductor-physics', 'crossovers-filters'],
     'game-theory': ['dynamical-systems', 'linear-algebra', 'markov-chains'],
     'nuclear-physics': ['statistical-mechanics', 'markov-chains', 'atomic-physics'],
-    'piston-engines': ['thermodynamics', 'fourier-analysis', 'gears-mechanisms']
+    'piston-engines': ['thermodynamics', 'fourier-analysis', 'gears-mechanisms'],
+    'ergodic-theory': ['statistical-mechanics', 'number-theory', 'markov-chains'],
+    'continuum-mechanics': ['fluid-dynamics', 'calculus-of-variations', 'rigid-body-dynamics'],
+    'electric-motors': ['switching-converters', 'control-theory', 'loudspeakers']
   };
   // Topics named in each topic's own prerequisite line (content.json "prerequisite").
   const PREREQ = {
@@ -167,7 +170,10 @@
     'switching-converters': ['electromagnetism', 'crossovers-filters'],  // Circuits with inductors and capacitors, and time averages
     'game-theory': ['probability-inference', 'optimization'],            // Probability, expected values and linear optimisation
     'nuclear-physics': ['quantum-mechanics', 'electromagnetism'],         // Quantum mechanics, exponential decay and electrostatics
-    'piston-engines': ['classical-mechanics', 'thermodynamics', 'fourier-analysis'] // Kinematics, thermodynamics of ideal gases, and Fourier series
+    'piston-engines': ['classical-mechanics', 'thermodynamics', 'fourier-analysis'], // Kinematics, thermodynamics of ideal gases, and Fourier series
+    'ergodic-theory': ['measure-theory', 'dynamical-systems'],           // Measure theory and dynamical systems
+    'continuum-mechanics': ['linear-algebra', 'classical-mechanics'],    // Linear algebra, calculus and Newton’s laws
+    'electric-motors': ['electromagnetism', 'classical-mechanics']       // Electromagnetic induction, phasors and rotational mechanics
   };
 
   let topics = [], bySlug = new Map(), edges = [], drawn = [];

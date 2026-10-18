@@ -14534,5 +14534,738 @@
         "url": "https://search.worldcat.org/oclc/1046070057"
       }
     ]
+  },
+  {
+    "slug": "ergodic-theory",
+    "title": [
+      "Ergodic theory: when time averages equal space averages",
+      "エルゴード理論：時間平均が空間平均に等しくなるとき"
+    ],
+    "description": [
+      "Ergodic theory asks what a single orbit of a dynamical system does in the long run. If a map preserves area or probability and cannot be split into two invariant pieces, then for almost every starting point the fraction of time the orbit spends in a region equals the size of that region. That one idea explains why an irrational rotation fills the circle evenly, why chaotic maps forget where they started, and why the powers of 2 begin with a 1 nearly a third of the time.",
+      "エルゴード理論は、力学系の一本の軌道が長い目で見て何をするかを問います。写像が面積や確率を保ち、二つの不変な部分に分けられないなら、ほとんどすべての出発点について、軌道がある領域で過ごす時間の割合はその領域の大きさに等しくなります。この一つの考えが、無理数回転が円を一様に満たす理由、カオス的な写像が出発点を忘れる理由、そして 2 のべきのおよそ三分の一が 1 で始まる理由を説明します。"
+    ],
+    "group": "analysis",
+    "prerequisite": [
+      "Measure theory and dynamical systems",
+      "測度論と力学系"
+    ],
+    "source": "Manfred Einsiedler and Thomas Ward · Ergodic Theory: with a view towards Number Theory (Springer, 2011)",
+    "url": "https://link.springer.com/book/10.1007/978-0-85729-021-2",
+    "labs": [
+      {
+        "id": "irrational-rotation",
+        "title": [
+          "1. Rotating a circle by an irrational angle",
+          "1. 円を無理数の角度で回す"
+        ],
+        "body": [
+          "Turn a circle of circumference 1 by a fixed amount α again and again, and mark where the point 0 lands. If α is a fraction p/q the marks repeat after q turns. If α is irrational they never repeat, and something stronger happens: every arc of the circle receives a share of the marks equal to its length, a fact Weyl proved in 1916. This is the simplest ergodic system: the rotation preserves length, and no arc other than the whole circle and nothing is carried exactly onto itself. Add points one by one, watch the gaps between them, and move the arc to test the equidistribution.",
+          "円周 1 の円を一定の量 α だけ繰り返し回し、点 0 がどこに着くかに印を付けます。α が分数 p/q なら印は q 回で繰り返します。α が無理数なら印は決して繰り返さず、さらに強いことが起こります。円のどの弧も、その長さに等しい割合の印を受け取るのです。これは 1916 年にワイルが証明しました。これが最も単純なエルゴード系です。回転は長さを保ち、円全体と空集合以外のどの弧もそれ自身にぴったり写されることはありません。点を一つずつ加え、点の間のすきまを見て、弧を動かして一様分布を確かめてください。"
+        ],
+        "formula": "x_{n}=x_0+n\\alpha \\bmod 1,\\qquad \\lim_{N\\to\\infty}\\frac{\\#\\{0\\le n<N:\\ x_n\\in A\\}}{N}=|A|\\quad(\\alpha\\notin\\mathbb Q),\\qquad D^*_N=\\sup_{0\\le t\\le1}\\Big|\\frac{\\#\\{n<N:x_n<t\\}}{N}-t\\Big|",
+        "example": [
+          "Take the golden mean \\(\\alpha=(\\sqrt5-1)/2\\approx0.618\\). The first four points \\(0,0.618,0.236,0.854\\) cut the circle into gaps of lengths 0.146, 0.236 and 0.382, and \\(0.382=0.146+0.236\\); the fifth, 0.472, splits the longest gap and leaves only two lengths. After 100 points the arc \\([0.1,0.35)\\), of length 0.25, holds exactly 25 of them, and the star discrepancy is about 0.02, close to the best possible for any sequence.",
+          "黄金比 \\(\\alpha=(\\sqrt5-1)/2\\approx0.618\\) をとります。最初の四点 \\(0,0.618,0.236,0.854\\) は円を長さ 0.146、0.236、0.382 のすきまに分け、\\(0.382=0.146+0.236\\) です。五点目の 0.472 は最長のすきまを分け、長さは二種類だけになります。100 点の後、長さ 0.25 の弧 \\([0.1,0.35)\\) にはちょうど 25 点が入り、スター・ディスクレパンシーはおよそ 0.02 で、どんな数列でもほぼ最良の値です。"
+        ],
+        "caution": [
+          "Equidistribution is a statement about the limit; how fast it happens depends on how well α can be approximated by fractions. The golden mean is the worst-approximable number and gives the most even spread, while \\(\\pi-3\\) lies very close to 1/7, so its first fifty points bunch into seven clusters before spreading out. The points are computed in floating point, which is exact enough here.",
+          "一様分布は極限についての主張で、どれだけ速く起こるかは α が分数でどれだけよく近似できるかで決まります。黄金比は最も近似しにくい数で、最も均等に広がります。一方 \\(\\pi-3\\) は 1/7 にとても近いので、最初の五十点は七つのかたまりに集まってから広がります。点は浮動小数点で計算しており、ここでは十分に正確です。"
+        ],
+        "question": [
+          "Why are there never more than three different gap lengths?",
+          "なぜすきまの長さは三種類を超えないのですか？"
+        ],
+        "answer": [
+          "Because the gaps are all made by the same rotation. Each gap starts at some point \\(x_i\\); shifting it by \\(-\\alpha\\) gives the gap at \\(x_{i-1}\\), unless that step would leave the set, which can happen at only a few points (the newest point and those next to 0). So all gaps are copies of at most three, and the three-gap theorem, conjectured by Steinhaus and proved in the 1950s, shows the longest is the sum of the other two.",
+          "すきまはすべて同じ回転で作られるからです。各すきまはある点 \\(x_i\\) から始まり、それを \\(-\\alpha\\) だけずらすと \\(x_{i-1}\\) のすきまになります。ただしその一歩で集合からはみ出す場合は別で、それが起こるのはごく少数の点（最新の点と 0 の隣）だけです。だからすきまはすべて高々三つの写しで、シュタインハウスが予想し 1950 年代に証明された三間隙定理は、最長のものが他の二つの和であることを示します。"
+        ],
+        "params": [
+          [
+            "al",
+            "Rotation α",
+            "回転 α",
+            0,
+            4,
+            1,
+            0,
+            [
+              [
+                "(√5−1)/2",
+                "(√5−1)/2"
+              ],
+              [
+                "√2−1",
+                "√2−1"
+              ],
+              [
+                "π−3",
+                "π−3"
+              ],
+              [
+                "e−2",
+                "e−2"
+              ],
+              [
+                "3/8",
+                "3/8"
+              ]
+            ]
+          ],
+          [
+            "n",
+            "Points n",
+            "点の数 n",
+            1,
+            400,
+            1,
+            60
+          ],
+          [
+            "len",
+            "Length of the arc A",
+            "弧 A の長さ",
+            0.05,
+            0.5,
+            0.01,
+            0.25
+          ]
+        ],
+        "source": "Manfred Einsiedler and Thomas Ward · Ergodic Theory: with a view towards Number Theory (Springer, 2011)",
+        "url": "https://link.springer.com/book/10.1007/978-0-85729-021-2"
+      },
+      {
+        "id": "mixing-maps",
+        "title": [
+          "2. Mixing: the cat map and the baker’s map",
+          "2. 混合：猫写像とパン屋の写像"
+        ],
+        "body": [
+          "Ergodicity says a single orbit visits everything fairly. Mixing is stronger: any blob of initial conditions spreads until it is evenly smeared over the whole space, so that knowing which blob you started in tells you nothing about where you are later. Arnold’s cat map does this on the torus with an integer matrix of determinant 1, which preserves area while stretching in one direction and squeezing in another. Move the disc, step the map, and compare it with a rotation of the torus, which is ergodic but never mixes.",
+          "エルゴード性は、一本の軌道がすべてを公平に訪れることをいいます。混合はより強い性質で、初期条件のどんな塊も、空間全体に一様に塗り広げられるまで広がるので、どの塊から出発したかを知っても後でどこにいるかについて何もわかりません。アーノルドの猫写像はトーラスの上でこれを行います。行列式 1 の整数行列で、面積を保ちながら一方向に伸ばし別の方向に縮めます。円板を動かし、写像を一歩ずつ施し、エルゴード的だが決して混合しないトーラスの回転と比べてください。"
+        ],
+        "formula": "T\\begin{pmatrix}x\\\\y\\end{pmatrix}=\\begin{pmatrix}2&1\\\\1&1\\end{pmatrix}\\begin{pmatrix}x\\\\y\\end{pmatrix}\\bmod 1,\\qquad \\lambda_\\pm=\\frac{3\\pm\\sqrt5}{2}=\\varphi^{\\pm2},\\qquad \\lim_{k\\to\\infty}\\mu\\big(T^{-k}A\\cap B\\big)=\\mu(A)\\,\\mu(B)",
+        "example": [
+          "The matrix has eigenvalues \\(2.618\\) and \\(0.382\\), whose product is the determinant 1. A disc of radius 0.17 is stretched by 2.618 per step, so after 6 steps a filament of the disc is \\(2.618^6\\approx320\\) times longer and wraps the torus dozens of times. With a test square of area 0.09, the fraction of the disc inside it is 0 at the start and stays within 0.01 of 0.09 from step 3 on.",
+          "この行列の固有値は \\(2.618\\) と \\(0.382\\) で、その積は行列式の 1 です。半径 0.17 の円板は一歩ごとに 2.618 倍に伸ばされるので、6 歩後には円板の糸は \\(2.618^6\\approx320\\) 倍の長さになり、トーラスに何十回も巻きつきます。面積 0.09 の検査用の正方形に入る円板の割合は、はじめは 0 で、3 歩目からは 0.09 から 0.01 以内に留まります。"
+        ],
+        "caution": [
+          "The picture is drawn by pulling each pixel back through the inverse map, so once the filaments are thinner than a pixel the image shows a fine grey-gold texture rather than the true filaments: the evenness you see is real, the texture is sampling. The curve counts 6000 sample points of the disc. On a finite grid of rational points the cat map is a permutation and pictures return after a fixed number of steps, which is not a contradiction: those points have measure zero.",
+          "図は各画素を逆写像でたどって描いているので、糸が画素より細くなると、本当の糸ではなく細かい灰色と金色の模様が見えます。見える一様さは本物で、模様は標本化によるものです。曲線は円板の 6000 個の標本点を数えています。有理点の有限格子の上では猫写像は置換で、絵は決まった歩数で戻りますが、矛盾ではありません。それらの点の測度は 0 だからです。"
+        ],
+        "question": [
+          "Why does the rotation of the torus never mix, even though it is ergodic?",
+          "トーラスの回転はエルゴード的なのに、なぜ決して混合しないのですか？"
+        ],
+        "answer": [
+          "A rotation is an isometry: it moves the disc without changing its shape, so the disc stays a disc of the same radius forever. The fraction of it inside the square is then 0 whenever the disc is elsewhere and large when it passes through, and those values keep recurring. Ergodicity only needs the long-run average of that fraction to be \\(\\mu(A)\\mu(B)\\); mixing needs the fraction itself to converge, which requires stretching.",
+          "回転は等長写像です。円板の形を変えずに動かすので、円板はいつまでも同じ半径の円板のままです。正方形に入る割合は、円板が別の場所にあるときは 0、通り抜けるときは大きくなり、その値が繰り返し現れます。エルゴード性に必要なのはその割合の長期平均が \\(\\mu(A)\\mu(B)\\) になることだけで、混合には割合そのものが収束することが必要で、それには引き伸ばしが要ります。"
+        ],
+        "params": [
+          [
+            "map",
+            "Map",
+            "写像",
+            0,
+            2,
+            1,
+            0,
+            [
+              [
+                "Cat map",
+                "猫写像"
+              ],
+              [
+                "Baker’s map",
+                "パン屋の写像"
+              ],
+              [
+                "Rotation",
+                "回転"
+              ]
+            ]
+          ],
+          [
+            "k",
+            "Steps k",
+            "歩数 k",
+            0,
+            20,
+            1,
+            3
+          ]
+        ],
+        "source": "Manfred Einsiedler and Thomas Ward · Ergodic Theory: with a view towards Number Theory (Springer, 2011)",
+        "url": "https://link.springer.com/book/10.1007/978-0-85729-021-2"
+      },
+      {
+        "id": "birkhoff-averages",
+        "title": [
+          "3. Birkhoff averages and Benford’s law",
+          "3. バーコフ平均とベンフォードの法則"
+        ],
+        "body": [
+          "Birkhoff’s ergodic theorem says that for an ergodic map preserving a probability measure μ, the time average of any integrable quantity along almost every orbit converges to its average over space. The measure decides what “fair” means: for the doubling map it is length, for the logistic map at r = 4 it is the arcsine distribution, which crowds near the ends. The same theorem, applied to a rotation by log₁₀ 2, explains why the powers of 2 obey Benford’s law. Choose a system, drag the starting point and lengthen the orbit.",
+          "バーコフのエルゴード定理によれば、確率測度 μ を保つエルゴード的な写像では、積分可能な量のほとんどすべての軌道に沿った時間平均は、その空間平均に収束します。何が「公平」かは測度が決めます。倍写像では長さ、r = 4 のロジスティック写像では両端に集まる逆正弦分布です。同じ定理を log₁₀ 2 による回転に当てはめると、2 のべきがベンフォードの法則に従う理由がわかります。系を選び、出発点をドラッグし、軌道を長くしてください。"
+        ],
+        "formula": "\\lim_{N\\to\\infty}\\frac1N\\sum_{k=0}^{N-1}f\\big(T^kx\\big)=\\int f\\,d\\mu\\ \\ \\text{for }\\mu\\text{-a.e. }x,\\qquad d\\mu_{\\rm logistic}=\\frac{dx}{\\pi\\sqrt{x(1-x)}},\\qquad \\Pr(\\text{first digit}=d)=\\log_{10}\\!\\Big(1+\\frac1d\\Big)",
+        "example": [
+          "For the logistic map, \\(\\int_0^1x^2\\,\\frac{dx}{\\pi\\sqrt{x(1-x)}}=\\frac38\\), while the uniform average would be \\(\\frac13\\): an orbit of \\(10^4\\) steps from almost any start lands within about 0.005 of 0.375. Among the first \\(10^4\\) powers of 2, 3010 begin with a 1, against \\(10^4\\log_{10}2=3010.3\\), and 458 begin with a 9, against 457.6.",
+          "ロジスティック写像では \\(\\int_0^1x^2\\,\\frac{dx}{\\pi\\sqrt{x(1-x)}}=\\frac38\\) で、一様分布での平均なら \\(\\frac13\\) になるところです。ほとんどどの出発点からでも \\(10^4\\) 歩の軌道は 0.375 からおよそ 0.005 以内に入ります。2 のべきの最初の \\(10^4\\) 個のうち 1 で始まるのは 3010 個で、\\(10^4\\log_{10}2=3010.3\\) と比べられます。9 で始まるのは 458 個で、457.6 と比べられます。"
+        ],
+        "caution": [
+          "The theorem says almost every starting point, not every one: \\(x_0=1/3\\) under the doubling map cycles between 1/3 and 2/3 and averages 5/18 for \\(x^2\\). The doubling orbits here are generated as shifts of binary digits, with the first 30 digits from the chosen \\(x_0\\) and the rest random, because repeated doubling in floating point reaches 0 after 53 steps. The logistic orbit is iterated in floating point; it is not the exact orbit of \\(x_0\\) after a few dozen steps, but it stays close to some true orbit.",
+          "定理がいうのはすべての出発点ではなく、ほとんどすべての出発点です。倍写像のもとで \\(x_0=1/3\\) は 1/3 と 2/3 の間を回り、\\(x^2\\) の平均は 5/18 になります。ここでの倍写像の軌道は二進数の桁のずらしとして作っており、最初の 30 桁を選んだ \\(x_0\\) から取り、残りはランダムです。浮動小数点で二倍を繰り返すと 53 歩で 0 になってしまうからです。ロジスティック写像の軌道は浮動小数点で反復しています。数十歩を過ぎると \\(x_0\\) の厳密な軌道ではなくなりますが、ある本当の軌道の近くに留まります。"
+        ],
+        "question": [
+          "Why do the logistic map’s orbits pile up near 0 and 1?",
+          "なぜロジスティック写像の軌道は 0 と 1 の近くに集まるのですか？"
+        ],
+        "answer": [
+          "Near \\(x=1/2\\) the map is flat, since its derivative \\(4-8x\\) vanishes there, so a whole interval of points near 1/2 is sent into a tiny interval near 1, and from there into a tiny interval near 0. Orbits therefore return to the ends far more often than an even spread would suggest. The substitution \\(x=\\sin^2(\\pi\\theta/2)\\) turns the map into the tent map, which spreads \\(\\theta\\) evenly, and the arcsine density is the image of that even spread.",
+          "\\(x=1/2\\) の近くで写像は平らで、導関数 \\(4-8x\\) がそこで 0 になります。そのため 1/2 の近くの区間全体が 1 の近くの小さな区間に送られ、そこから 0 の近くの小さな区間に送られます。だから軌道は一様に広がる場合よりはるかに頻繁に両端へ戻ります。置き換え \\(x=\\sin^2(\\pi\\theta/2)\\) で写像はテント写像になり、テント写像は \\(\\theta\\) を一様に広げます。逆正弦密度はその一様な広がりの像です。"
+        ],
+        "params": [
+          [
+            "sys",
+            "System",
+            "系",
+            0,
+            2,
+            1,
+            1,
+            [
+              [
+                "Doubling",
+                "倍写像"
+              ],
+              [
+                "Logistic",
+                "ロジスティック"
+              ],
+              [
+                "Powers bⁿ",
+                "べき bⁿ"
+              ]
+            ]
+          ],
+          [
+            "lgN",
+            "Orbit length log₁₀ N",
+            "軌道の長さ log₁₀ N",
+            2,
+            5,
+            0.1,
+            4
+          ]
+        ],
+        "source": "Manfred Einsiedler and Thomas Ward · Ergodic Theory: with a view towards Number Theory (Springer, 2011)",
+        "url": "https://link.springer.com/book/10.1007/978-0-85729-021-2"
+      }
+    ]
+  },
+  {
+    "slug": "continuum-mechanics",
+    "title": [
+      "Continuum mechanics: how solids stretch, bend and buckle",
+      "連続体力学：固体はどう伸び、曲がり、座屈するか"
+    ],
+    "description": [
+      "Continuum mechanics treats a solid as a smooth body whose every small piece can stretch, shear and turn. The deformation gradient says exactly how each piece moves, and separating its stretch from its rotation is the key to measuring strain correctly. Applied to a slender beam, the same ideas give the Euler–Bernoulli equation for bending; applied to a slender column under compression, they predict a load at which straightness itself becomes unstable.",
+      "連続体力学は固体を、どの小さな部分も伸び、せん断し、回転できるなめらかな物体として扱います。変形勾配は各部分がどう動くかを正確に表し、その伸びと回転を分けることがひずみを正しく測る鍵です。細長いはりに当てはめると同じ考えから曲げのオイラー・ベルヌーイ方程式が得られ、圧縮を受ける細長い柱に当てはめると、まっすぐであること自体が不安定になる荷重が予言されます。"
+    ],
+    "group": "physics",
+    "prerequisite": [
+      "Linear algebra, calculus and Newton’s laws",
+      "線形代数、微積分、ニュートンの法則"
+    ],
+    "source": "MIT OpenCourseWare · 2.001 Mechanics and Materials I (Fall 2006)",
+    "url": "https://ocw.mit.edu/courses/2-001-mechanics-materials-i-fall-2006/",
+    "labs": [
+      {
+        "id": "deformation-gradient",
+        "title": [
+          "1. Deformation gradient, stretch and rotation",
+          "1. 変形勾配、伸びと回転"
+        ],
+        "body": [
+          "Follow a small square of material as the body deforms. If the deformation is smooth, close enough to any point it is linear: a vector of material \\(dX\\) becomes \\(dx = F\\,dX\\), where F is the deformation gradient. Its columns are where the two edges of the square go. Every such F splits uniquely into a pure stretch U along two perpendicular directions followed by a rotation R, and only the stretch should count as strain. Drag the edges, then add a rigid rotation and see which strain measure notices.",
+          "物体が変形するときの材料の小さな正方形を追いかけます。変形がなめらかなら、どの点でも十分近くでは線形で、材料のベクトル \\(dX\\) は \\(dx = F\\,dX\\) になります。F が変形勾配で、その列は正方形の二つの辺の行き先です。このような F はどれも、直交する二方向に沿った純粋な伸び U と、それに続く回転 R にただ一通りに分かれ、ひずみとして数えるべきなのは伸びだけです。辺をドラッグし、それから剛体回転を加えて、どのひずみの尺度がそれに気づくかを見てください。"
+        ],
+        "formula": "F=\\frac{\\partial x}{\\partial X},\\qquad F=RU,\\quad U=\\sqrt{F^{\\mathsf T}F},\\qquad E=\\tfrac12\\big(F^{\\mathsf T}F-I\\big),\\qquad \\varepsilon=\\tfrac12\\big(F+F^{\\mathsf T}\\big)-I,\\qquad J=\\det F=\\lambda_1\\lambda_2",
+        "example": [
+          "Simple shear by \\(\\gamma=0.6\\), \\(F=\\begin{pmatrix}1&0.6\\\\0&1\\end{pmatrix}\\), keeps the area (\\(J=1\\)) but stretches by \\(\\lambda_1=\\gamma/2+\\sqrt{1+\\gamma^2/4}=1.344\\) and shortens by \\(\\lambda_2=1/\\lambda_1=0.744\\), along axes that are then turned by \\(-16.7^\\circ\\). The Green–Lagrange principal strains are 0.403 and \\(-0.223\\); the small-strain estimate gives \\(\\pm0.3\\). A rigid turn by 30° has \\(E=0\\), yet its small strain is \\(\\cos30^\\circ-1=-0.134\\) in every direction.",
+          "\\(\\gamma=0.6\\) の単純せん断 \\(F=\\begin{pmatrix}1&0.6\\\\0&1\\end{pmatrix}\\) は面積を保ちます（\\(J=1\\)）が、\\(\\lambda_1=\\gamma/2+\\sqrt{1+\\gamma^2/4}=1.344\\) だけ伸び \\(\\lambda_2=1/\\lambda_1=0.744\\) だけ縮みます。その軸はその後 \\(-16.7^\\circ\\) 回ります。グリーン・ラグランジュの主ひずみは 0.403 と \\(-0.223\\) で、微小ひずみの見積もりは \\(\\pm0.3\\) です。30° の剛体回転では \\(E=0\\) なのに、微小ひずみはどの方向にも \\(\\cos30^\\circ-1=-0.134\\) になります。"
+        ],
+        "caution": [
+          "The deformation here is homogeneous: the same F everywhere, so straight lines stay straight. In a real body F varies from point to point and this picture applies to each infinitesimal neighbourhood. The Mohr diagram plots, for each plane through the point, its normal strain against half its shear strain, as in the strain tensor’s components.",
+          "ここでの変形は一様で、どこでも同じ F なので、直線は直線のままです。実際の物体では F は点ごとに変わり、この図はそれぞれの無限小の近傍に当てはまります。モールの図は、点を通る各面について、その垂直ひずみとせん断ひずみの半分（ひずみテンソルの成分どおり）を描いています。"
+        ],
+        "question": [
+          "Why is the small strain ε wrong under a rotation, when it is used everywhere in engineering?",
+          "微小ひずみ ε は工学のいたるところで使われているのに、なぜ回転のもとでは誤るのですか？"
+        ],
+        "answer": [
+          "Because it is the first-order part of E. Writing \\(F=I+H\\), \\(E=\\varepsilon+\\tfrac12H^{\\mathsf T}H\\), and for a rotation by θ the quadratic term is of size \\(\\theta^2/2\\), which exactly cancels the spurious \\(\\cos\\theta-1\\). When strains and rotations are both small, say under 1%, the dropped term is under \\(10^{-4}\\) and ε is excellent; for rubber, soft tissue or a slender rod that rotates a lot, it is not.",
+          "ε は E の一次の部分だからです。\\(F=I+H\\) と書くと \\(E=\\varepsilon+\\tfrac12H^{\\mathsf T}H\\) で、角 θ の回転では二次の項の大きさは \\(\\theta^2/2\\) で、見かけの \\(\\cos\\theta-1\\) をちょうど打ち消します。ひずみと回転がどちらも小さい、たとえば 1% 未満なら、落とした項は \\(10^{-4}\\) 未満で ε はすばらしい近似です。ゴム、軟組織、大きく回る細い棒ではそうではありません。"
+        ],
+        "params": [
+          [
+            "f11",
+            "F₁₁",
+            "F₁₁",
+            -2.2,
+            2.2,
+            0.01,
+            1
+          ],
+          [
+            "f21",
+            "F₂₁",
+            "F₂₁",
+            -2.2,
+            2.2,
+            0.01,
+            0
+          ],
+          [
+            "f12",
+            "F₁₂",
+            "F₁₂",
+            -2.2,
+            2.2,
+            0.01,
+            0.6
+          ],
+          [
+            "f22",
+            "F₂₂",
+            "F₂₂",
+            -2.2,
+            2.2,
+            0.01,
+            1
+          ],
+          [
+            "rot",
+            "Extra rigid rotation (°)",
+            "追加の剛体回転（°）",
+            -90,
+            90,
+            1,
+            0
+          ]
+        ],
+        "source": "MIT OpenCourseWare · 2.001 Mechanics and Materials I (Fall 2006)",
+        "url": "https://ocw.mit.edu/courses/2-001-mechanics-materials-i-fall-2006/"
+      },
+      {
+        "id": "beam-bending",
+        "title": [
+          "2. Bending of beams",
+          "2. はりの曲げ"
+        ],
+        "body": [
+          "A beam carries load by bending: one side stretches, the other compresses, and the stress grows linearly with distance from the neutral axis. Bernoulli’s assumption that cross-sections stay plane and perpendicular to the axis turns that into one equation: the curvature equals the bending moment divided by the bending stiffness EI, which with equilibrium gives \\(EI\\,w^{\\prime\\prime\\prime\\prime}=-q\\). Choose how the bar is held, place the load, and read the deflection, the shear and moment diagrams and the stress.",
+          "はりは曲がることで荷重を支えます。片側が伸び、反対側が縮み、応力は中立軸からの距離に比例して増えます。断面は平面のまま軸に垂直であり続けるというベルヌーイの仮定によって、これは一つの方程式になります。曲率は曲げモーメントを曲げ剛性 EI で割ったものに等しく、つり合いと合わせると \\(EI\\,w^{\\prime\\prime\\prime\\prime}=-q\\) が得られます。棒の支え方を選び、荷重を置き、たわみ、せん断力図とモーメント図、応力を読んでください。"
+        ],
+        "formula": "EI\\,\\frac{d^4w}{dx^4}=-q(x),\\qquad M=EI\\,\\frac{d^2w}{dx^2},\\qquad V=\\frac{dM}{dx},\\qquad \\sigma=-\\frac{M\\,y}{I},\\qquad I=\\frac{bh^3}{12}",
+        "example": [
+          "For the 40 × 60 mm steel bar, \\(I=bh^3/12=7.2\\times10^{-7}\\) m⁴ and \\(EI=144\\) kN·m². A 3 kN load at the tip of a 1 m cantilever deflects it by \\(PL^3/3EI=6.94\\) mm and makes a root moment of 3 kN·m, so the outer fibres carry \\(\\sigma=Mc/I=3000\\times0.03/7.2\\times10^{-7}=125\\) MPa, half the yield stress. The same load at the middle of the bar on simple supports gives only 0.43 mm, and clamped at both ends 0.11 mm.",
+          "40 × 60 mm の鋼の棒では \\(I=bh^3/12=7.2\\times10^{-7}\\) m⁴、\\(EI=144\\) kN·m² です。長さ 1 m の片持ちはりの先端に 3 kN の荷重をかけると、たわみは \\(PL^3/3EI=6.94\\) mm で、根元のモーメントは 3 kN·m です。最も外側の繊維は \\(\\sigma=Mc/I=3000\\times0.03/7.2\\times10^{-7}=125\\) MPa を負担し、降伏応力の半分です。同じ荷重を単純支持の棒の中央にかけると 0.43 mm、両端固定では 0.11 mm にしかなりません。"
+        ],
+        "caution": [
+          "Euler–Bernoulli theory ignores shear deformation and assumes small slopes; it is accurate when the beam is more than about ten times longer than it is deep, as here. The deflections are exact solutions of the equation for these loads and supports, written in closed form; the drawing exaggerates them and the depth so that both can be seen.",
+          "オイラー・ベルヌーイの理論はせん断変形を無視し、傾きが小さいと仮定します。ここでのように、はりの長さが高さのおよそ十倍以上なら正確です。たわみはこれらの荷重と支持についての方程式の厳密解で、閉じた形で書いています。図では両方が見えるように、たわみと高さを誇張しています。"
+        ],
+        "question": [
+          "Why does doubling a beam’s depth make it eight times stiffer, but doubling its width only twice as stiff?",
+          "なぜはりの高さを二倍にすると八倍硬くなるのに、幅を二倍にしても二倍にしかならないのですか？"
+        ],
+        "answer": [
+          "Material far from the neutral axis does more work: it is strained in proportion to its distance y, carries stress in proportion to y, and that stress has a lever arm y, so its contribution to stiffness goes as \\(y^2\\). Integrating \\(y^2\\) over a depth h gives \\(h^3\\), while width just adds more of the same strips. This is why I-beams put almost all their material in the flanges.",
+          "中立軸から遠い材料ほど多くの仕事をするからです。距離 y に比例してひずみ、y に比例して応力を負担し、その応力は腕の長さ y をもつので、剛さへの寄与は \\(y^2\\) に比例します。高さ h にわたって \\(y^2\\) を積分すると \\(h^3\\) になり、幅は同じ帯を増やすだけです。だから I 形鋼は材料のほとんどをフランジに置くのです。"
+        ],
+        "params": [
+          [
+            "sup",
+            "Supports",
+            "支持",
+            0,
+            2,
+            1,
+            0,
+            [
+              [
+                "Cantilever",
+                "片持ち"
+              ],
+              [
+                "Simple",
+                "単純支持"
+              ],
+              [
+                "Fixed–fixed",
+                "両端固定"
+              ]
+            ]
+          ],
+          [
+            "P",
+            "Point load P (kN)",
+            "集中荷重 P（kN）",
+            0,
+            10,
+            0.1,
+            3
+          ],
+          [
+            "a",
+            "Load position a (m)",
+            "荷重の位置 a（m）",
+            0,
+            1,
+            0.01,
+            1
+          ],
+          [
+            "q",
+            "Distributed load q (kN/m)",
+            "分布荷重 q（kN/m）",
+            0,
+            10,
+            0.1,
+            0
+          ]
+        ],
+        "source": "MIT OpenCourseWare · 2.001 Mechanics and Materials I (Fall 2006)",
+        "url": "https://ocw.mit.edu/courses/2-001-mechanics-materials-i-fall-2006/"
+      },
+      {
+        "id": "buckling",
+        "title": [
+          "3. Buckling and Euler’s elastica",
+          "3. 座屈とオイラーのエラスティカ"
+        ],
+        "body": [
+          "Push on the ends of a ruler and it stays straight, until suddenly it bows sideways. Euler found the load at which this happens in 1744: below it the straight shape is stable, above it the straight shape still balances but the slightest disturbance makes the rod bend. The critical load depends only on the bending stiffness and the effective length KL, set by how the ends are held. Beyond it, the exact shapes are the elastica curves Euler also described. Choose the end conditions and the length, add a small crookedness, and load the column.",
+          "定規の両端を押すと、まっすぐなままですが、ある時突然横に反ります。オイラーは 1744 年にそれが起こる荷重を見つけました。それより下ではまっすぐな形は安定で、上ではまっすぐな形もつり合ってはいますが、わずかな乱れで棒は曲がります。限界荷重は曲げ剛性と、端の支え方で決まる有効長さ KL だけで決まります。それを超えたときの厳密な形は、やはりオイラーが描いたエラスティカ曲線です。端の条件と長さを選び、小さな曲がりを加え、柱に荷重をかけてください。"
+        ],
+        "formula": "P_{\\rm cr}=\\frac{\\pi^2EI}{(KL)^2},\\qquad EI\\,\\theta^{\\prime\\prime}+P\\sin\\theta=0,\\qquad \\frac{P}{P_{\\rm cr}}=\\Big(\\frac{2K(p)}{\\pi}\\Big)^2,\\ p=\\sin\\frac{\\alpha}{2},\\qquad \\delta=\\frac{\\delta_0}{1-P/P_{\\rm cr}}",
+        "example": [
+          "A 20 mm steel rod has \\(I=\\pi d^4/64=7.85\\times10^{-9}\\) m⁴ and radius of gyration \\(r=d/4=5\\) mm. Pinned at both ends and 1.2 m long, its slenderness is 240 and it buckles at \\(P_{\\rm cr}=\\pi^2EI/L^2=10.8\\) kN, a stress of only 34 MPa, a seventh of yield. Past that load the elastica rises slowly: 1% more load bows the rod by 8.9% of its length with end slopes of 16°, and 10% more load by 25% with end slopes of 50°.",
+          "直径 20 mm の鋼の棒は \\(I=\\pi d^4/64=7.85\\times10^{-9}\\) m⁴、断面二次半径 \\(r=d/4=5\\) mm です。両端ピンで長さ 1.2 m なら細長比は 240 で、\\(P_{\\rm cr}=\\pi^2EI/L^2=10.8\\) kN で座屈します。応力はわずか 34 MPa で、降伏の七分の一です。その荷重を超えるとエラスティカはゆっくりと上がります。1% 多い荷重で棒は長さの 8.9% だけ反って端の傾きは 16°、10% 多い荷重で 25% 反って端の傾きは 50° になります。"
+        ],
+        "caution": [
+          "The elastica is exact for a perfectly straight, inextensible, elastic rod; real steel yields long before such large deflections. For a crooked rod the formula \\(\\delta_0/(1-P/P_{\\rm cr})\\) holds only for small deflections, so the drawing stops at 0.985 \\(P_{\\rm cr}\\); above \\(P_{\\rm cr}\\) it shows the perfect rod. The Johnson parabola is an empirical design curve, not a law of mechanics.",
+          "エラスティカは完全にまっすぐで伸びない弾性の棒について厳密です。実際の鋼はそのような大きなたわみのずっと前に降伏します。曲がった棒の式 \\(\\delta_0/(1-P/P_{\\rm cr})\\) は小さなたわみでしか成り立たないので、図は 0.985 \\(P_{\\rm cr}\\) で止まります。\\(P_{\\rm cr}\\) を超えると完全な棒を示します。ジョンソンの放物線は経験的な設計曲線で、力学の法則ではありません。"
+        ],
+        "question": [
+          "Why does freeing one end make the column four times weaker, and clamping both ends four times stronger?",
+          "なぜ一端を自由にすると柱は四分の一に弱くなり、両端を固定すると四倍強くなるのですか？"
+        ],
+        "answer": [
+          "Because the buckled shapes are pieces of the same curve. A fixed–free column of length L bends like one half of a pinned–pinned column of length 2L, so its effective length is 2L; a fixed–fixed column has inflection points a quarter of the way from each end, so its middle half bends like a pinned–pinned column of length L/2. Since \\(P_{\\rm cr}\\propto1/(KL)^2\\), doubling or halving the effective length divides or multiplies the load by four.",
+          "座屈した形が同じ曲線の一部だからです。長さ L の固定・自由の柱は、長さ 2L の両端ピンの柱の半分のように曲がるので、有効長さは 2L です。両端固定の柱は各端から四分の一のところに変曲点をもち、中央の半分が長さ L/2 の両端ピンの柱のように曲がります。\\(P_{\\rm cr}\\propto1/(KL)^2\\) なので、有効長さを二倍や半分にすると荷重は四分の一や四倍になります。"
+        ],
+        "params": [
+          [
+            "bc",
+            "End conditions",
+            "端の条件",
+            0,
+            2,
+            1,
+            0,
+            [
+              [
+                "Pinned–pinned",
+                "両端ピン"
+              ],
+              [
+                "Fixed–free",
+                "固定・自由"
+              ],
+              [
+                "Fixed–fixed",
+                "両端固定"
+              ]
+            ]
+          ],
+          [
+            "load",
+            "Load P/P_cr",
+            "荷重 P/P_cr",
+            0,
+            1.6,
+            0.01,
+            0.9
+          ],
+          [
+            "imp",
+            "Initial bow δ₀ (% of L)",
+            "初期の曲がり δ₀（L の %）",
+            0,
+            1,
+            0.05,
+            0.5
+          ],
+          [
+            "len",
+            "Length L (m)",
+            "長さ L（m）",
+            0.3,
+            3,
+            0.05,
+            1.2
+          ]
+        ],
+        "source": "MIT OpenCourseWare · 2.001 Mechanics and Materials I (Fall 2006)",
+        "url": "https://ocw.mit.edu/courses/2-001-mechanics-materials-i-fall-2006/"
+      }
+    ]
+  },
+  {
+    "slug": "electric-motors",
+    "title": [
+      "Electric motors: turning current into torque",
+      "電動機：電流をトルクに変える"
+    ],
+    "description": [
+      "Every electric motor uses the same two facts: a current in a magnetic field feels a force, and a conductor moving through a field has a voltage induced in it. In a DC motor the commutator keeps the current in each conductor pointing the right way, and the induced back EMF sets the speed. In an AC motor three stationary windings, fed with currents a third of a cycle apart, produce a magnetic field that rotates by itself, and an induction motor’s rotor is dragged along by the currents that field induces in it.",
+      "すべての電動機は同じ二つの事実を使います。磁界の中の電流は力を受け、磁界の中を動く導体には電圧が誘導されます。直流電動機では整流子が各導体の電流を正しい向きに保ち、誘導される逆起電力が回転速度を決めます。交流電動機では、三分の一周期ずつずれた電流を流した三つの静止した巻線が、ひとりでに回る磁界を作ります。誘導電動機の回転子は、その磁界が回転子に誘導する電流によって引きずられて回ります。"
+    ],
+    "group": "engineering",
+    "prerequisite": [
+      "Electromagnetic induction, phasors and rotational mechanics",
+      "電磁誘導、フェーザ、回転の力学"
+    ],
+    "source": "MIT OpenCourseWare · 6.685 Electric Machines (Fall 2013), James L. Kirtley Jr.",
+    "url": "https://ocw.mit.edu/courses/6-685-electric-machines-fall-2013/",
+    "labs": [
+      {
+        "id": "rotating-field",
+        "title": [
+          "1. A field that rotates by itself",
+          "1. ひとりでに回る磁界"
+        ],
+        "body": [
+          "Put three windings round a stator with their axes 120° apart and feed them three-phase currents, each lagging the last by a third of a cycle. Each winding on its own makes a field that only pulses back and forth along its axis, but the three pulses add up to a field of constant strength that turns steadily round the bore. With p pairs of poles it turns once every p cycles of the supply. Run the supply, unbalance one phase, swap two leads, or take two phases away and see what is left.",
+          "固定子のまわりに軸が 120° ずつずれた三つの巻線を置き、それぞれが三分の一周期ずつ遅れる三相電流を流します。巻線一つだけでは磁界はその軸に沿って脈動するだけですが、三つの脈動を足し合わせると、一定の強さで内側を一様に回る磁界になります。極対が p なら、電源の p 周期で一回転します。電源を流し、一相を不平衡にし、二本の線を入れ替え、あるいは二相を外して何が残るかを見てください。"
+        ],
+        "formula": "\\mathbf B(t)\\propto\\sum_{k=0}^{2}I\\cos\\!\\Big(\\omega t-\\frac{2\\pi k}{3}\\Big)\\,\\hat{\\mathbf u}_k=\\frac32\\,I\\,\\big(\\cos\\omega t,\\ \\sin\\omega t\\big),\\qquad n_s=\\frac{60f}{p}\\ \\text{rpm}",
+        "example": [
+          "A four-pole motor (\\(p=2\\)) on a 50 Hz supply has a field turning at \\(60\\times50/2=1500\\) rpm; a two-pole motor on 60 Hz, 3600 rpm. If phase c carries only half the current of the others, the field splits into a forward part of 1.25 and a backward part of 0.25 (in units of one phase’s peak), so its tip traces an ellipse with semi-axes 1.5 and 1.0 instead of a circle of radius 1.5.",
+          "50 Hz の電源につないだ四極の電動機（\\(p=2\\)）では磁界は \\(60\\times50/2=1500\\) rpm で回り、60 Hz の二極の電動機では 3600 rpm です。c 相の電流が他の相の半分しかないと、磁界は 1.25 の正転部分と 0.25 の逆転部分（一相の最大値を単位とする）に分かれ、その先端は半径 1.5 の円ではなく、半軸が 1.5 と 1.0 の楕円を描きます。"
+        ],
+        "caution": [
+          "Each winding is idealised as producing a field that varies as the cosine of angle around the gap, which real distributed windings approximate closely but not exactly; the space harmonics they add are left out. The field strength is in arbitrary units, and the central arrows are in electrical degrees, which equal mechanical degrees only for one pole pair.",
+          "各巻線は、ギャップのまわりの角度の余弦で変わる磁界を作るものと理想化しています。実際の分布巻線はこれをよく近似しますが厳密ではなく、それが加える空間高調波は除いています。磁界の強さは任意単位で、中央の矢印は電気角で描いています。電気角は極対が一つのときだけ機械角に等しくなります。"
+        ],
+        "question": [
+          "Where does the factor 3/2 come from?",
+          "3/2 という係数はどこから来るのですか？"
+        ],
+        "answer": [
+          "Write each pulsating field as two half-size fields turning in opposite directions: \\(\\cos(\\omega t-\\phi)\\,\\hat{\\mathbf u}\\) is half a forward-turning vector plus half a backward-turning one. With the windings and currents both 120° apart, the three forward halves line up and add to \\(3\\times\\frac12=\\frac32\\), while the three backward halves point 120° apart from each other and cancel exactly.",
+          "各脈動磁界を、逆向きに回る大きさ半分の二つの磁界として書きます。\\(\\cos(\\omega t-\\phi)\\,\\hat{\\mathbf u}\\) は正転するベクトルの半分と逆転するベクトルの半分の和です。巻線と電流がどちらも 120° ずつずれていると、三つの正転の半分はそろって \\(3\\times\\frac12=\\frac32\\) になり、三つの逆転の半分は互いに 120° ずつずれた向きを指してちょうど打ち消し合います。"
+        ],
+        "params": [
+          [
+            "mode",
+            "Supply",
+            "電源",
+            0,
+            3,
+            1,
+            0,
+            [
+              [
+                "Balanced",
+                "平衡"
+              ],
+              [
+                "Unbalanced",
+                "不平衡"
+              ],
+              [
+                "Reversed",
+                "逆相"
+              ],
+              [
+                "Single phase",
+                "単相"
+              ]
+            ]
+          ],
+          [
+            "ub",
+            "Phase c amplitude (unbalanced)",
+            "c 相の振幅（不平衡）",
+            0,
+            1.5,
+            0.05,
+            0.5
+          ],
+          [
+            "pp",
+            "Pole pairs p",
+            "極対 p",
+            1,
+            4,
+            1,
+            2
+          ],
+          [
+            "f",
+            "Supply frequency (Hz)",
+            "電源周波数（Hz）",
+            10,
+            60,
+            1,
+            50
+          ]
+        ],
+        "source": "MIT OpenCourseWare · 6.685 Electric Machines (Fall 2013), James L. Kirtley Jr.",
+        "url": "https://ocw.mit.edu/courses/6-685-electric-machines-fall-2013/"
+      },
+      {
+        "id": "dc-motor",
+        "title": [
+          "2. The DC motor: torque, back EMF and efficiency",
+          "2. 直流電動機：トルク、逆起電力、効率"
+        ],
+        "body": [
+          "In a permanent-magnet DC motor the torque is proportional to the armature current, and the spinning armature generates a back EMF proportional to its speed, with the same constant k in both. Ohm’s law then ties them together: the applied voltage is shared between the back EMF and the resistance drop. That makes speed fall in a straight line as load rises, and it makes power and efficiency peak at very different loads. Change the voltage and the winding resistance, drag the load, and watch the motor start.",
+          "永久磁石直流電動機では、トルクは電機子電流に比例し、回る電機子はその速度に比例する逆起電力を生み、どちらにも同じ定数 k が現れます。オームの法則がそれらを結びつけます。加えた電圧は逆起電力と抵抗での電圧降下に分けられます。そのため負荷が増えると速度は直線的に下がり、出力と効率はまったく異なる負荷で最大になります。電圧と巻線抵抗を変え、負荷をドラッグし、電動機が始動する様子を見てください。"
+        ],
+        "formula": "T=k\\,i,\\qquad e=k\\,\\omega,\\qquad V=R\\,i+L\\frac{di}{dt}+k\\,\\omega,\\qquad J\\frac{d\\omega}{dt}=k\\,i-T_{\\rm load}-T_f,\\qquad \\eta_{\\max}=\\Big(1-\\sqrt{I_0/I_{\\rm stall}}\\Big)^2",
+        "example": [
+          "With \\(k=0.02\\) N·m/A, \\(R=0.6\\ \\Omega\\) and 0.01 N·m of friction at 12 V, the motor runs unloaded at 5590 rpm and stalls at 0.39 N·m. Loaded with 0.1 N·m it turns at 4150 rpm, draws 5.5 A and delivers 43.5 W from 66 W, an efficiency of 66%. Its maximum power, 57 W, comes at half the stall torque, but its best efficiency, 71%, comes at only 0.053 N·m, where the current is \\(\\sqrt{0.5\\times20}=3.2\\) A.",
+          "\\(k=0.02\\) N·m/A、\\(R=0.6\\ \\Omega\\)、摩擦 0.01 N·m で 12 V をかけると、電動機は無負荷で 5590 rpm で回り、0.39 N·m で拘束されます。0.1 N·m の負荷では 4150 rpm で回り、5.5 A を流し、66 W から 43.5 W を出すので効率は 66% です。最大出力 57 W は拘束トルクの半分で得られますが、最高効率 71% はわずか 0.053 N·m で得られ、そこでの電流は \\(\\sqrt{0.5\\times20}=3.2\\) A です。"
+        ],
+        "caution": [
+          "The model has one constant friction torque and ignores iron loss, brush drop and armature reaction, and the resistance is taken at room temperature; a real winding heats up and its resistance rises by about 0.4% per degree. The transient is the exact solution of the two coupled equations above, integrated numerically, with the rotor held still until the motor’s torque exceeds the load.",
+          "モデルは一定の摩擦トルクを一つだけもち、鉄損、ブラシの電圧降下、電機子反作用を無視し、抵抗は室温の値としています。実際の巻線は熱くなり、抵抗は 1 度あたりおよそ 0.4% 上がります。過渡応答は上の二つの連立方程式の厳密解を数値的に積分したもので、電動機のトルクが負荷を超えるまで回転子は止まっています。"
+        ],
+        "question": [
+          "Why does a stalled motor burn out, but a running one does not?",
+          "なぜ拘束された電動機は焼けるのに、回っている電動機は焼けないのですか？"
+        ],
+        "answer": [
+          "Because the only thing limiting the current at standstill is the winding resistance: \\(i=V/R\\), here 20 A, and the heat \\(i^2R\\) is 240 W, all of it in the winding. Once the motor turns, the back EMF \\(k\\omega\\) opposes the supply and the current falls to what the load needs. A running motor is protected by its own speed.",
+          "止まっているときに電流を制限するのは巻線の抵抗だけだからです。\\(i=V/R\\) はここでは 20 A で、熱 \\(i^2R\\) は 240 W、そのすべてが巻線で発生します。いったん回り出すと逆起電力 \\(k\\omega\\) が電源に逆らい、電流は負荷が必要とする量まで下がります。回っている電動機は自分の回転速度に守られているのです。"
+        ],
+        "params": [
+          [
+            "V",
+            "Supply voltage V",
+            "電源電圧 V",
+            0,
+            24,
+            0.5,
+            12
+          ],
+          [
+            "R",
+            "Winding resistance R (Ω)",
+            "巻線抵抗 R（Ω）",
+            0.2,
+            3,
+            0.05,
+            0.6
+          ],
+          [
+            "TL",
+            "Load torque (N·m)",
+            "負荷トルク（N·m）",
+            0,
+            2.4,
+            0.001,
+            0.1
+          ]
+        ],
+        "source": "MIT OpenCourseWare · 6.685 Electric Machines (Fall 2013), James L. Kirtley Jr.",
+        "url": "https://ocw.mit.edu/courses/6-685-electric-machines-fall-2013/"
+      },
+      {
+        "id": "induction-torque",
+        "title": [
+          "3. The induction motor’s torque–speed curve",
+          "3. 誘導電動機のトルク・速度曲線"
+        ],
+        "body": [
+          "An induction motor’s rotor has no connection to the supply. The rotating field sweeps past its bars, induces currents in them, and the force on those currents drags the rotor round. If the rotor ever caught up with the field nothing would be induced, so it always runs slightly slow; that shortfall, the slip, sets everything. From Steinmetz’s equivalent circuit comes the whole torque–speed curve, from braking through motoring to generating. Change the load, the rotor resistance and the supply frequency.",
+          "誘導電動機の回転子は電源とつながっていません。回る磁界が回転子の導体棒を横切ってそこに電流を誘導し、その電流にはたらく力が回転子を引きずって回します。回転子が磁界に追いついてしまうと何も誘導されないので、いつもわずかに遅く回ります。その遅れであるすべりがすべてを決めます。シュタインメッツの等価回路から、制動、電動、発電にわたるトルク・速度曲線全体が得られます。負荷、回転子の抵抗、電源周波数を変えてください。"
+        ],
+        "formula": "s=\\frac{n_s-n}{n_s},\\qquad T=\\frac{3\\,|I_2|^2R_2/s}{\\omega_s},\\qquad T_{\\max}=\\frac{3V_{\\rm th}^2}{2\\omega_s\\big(R_{\\rm th}+\\sqrt{R_{\\rm th}^2+(X_{\\rm th}+X_2)^2}\\big)},\\qquad s_{\\max}=\\frac{R_2}{\\sqrt{R_{\\rm th}^2+(X_{\\rm th}+X_2)^2}}",
+        "example": [
+          "The motor here, star-connected at 400 V and 50 Hz with \\(R_1=0.4\\), \\(X_1=X_2=1.0\\), \\(X_m=30\\) and \\(R_2=0.35\\ \\Omega\\), gives 74.7 N·m at 3% slip, 1455 rpm: 11.4 kW at 20.2 A and a power factor of 0.87. Its breakdown torque is 200 N·m, 2.7 times that, at 17% slip. Starting straight on the line it gives 76 N·m but draws 110 A, 5.4 times its running current. Tripling the rotor resistance moves the breakdown to 52% slip with exactly the same 200 N·m.",
+          "ここでの電動機は 400 V、50 Hz の星形結線で、\\(R_1=0.4\\)、\\(X_1=X_2=1.0\\)、\\(X_m=30\\)、\\(R_2=0.35\\ \\Omega\\) です。すべり 3%、1455 rpm で 74.7 N·m を出し、20.2 A、力率 0.87 で 11.4 kW です。停動トルクは 200 N·m でその 2.7 倍、すべり 17% で生じます。電源に直接つないで始動すると 76 N·m を出しますが、運転電流の 5.4 倍の 110 A を流します。回転子の抵抗を三倍にすると、停動点はまったく同じ 200 N·m のまますべり 52% に移ります。"
+        ],
+        "caution": [
+          "The parameters are representative of a motor of this size, not a particular product. The circuit ignores iron loss, friction and windage, and saturation, so the efficiency shown counts only copper losses and is optimistic by a few percent. Real squirrel-cage rotors also change their effective resistance with slip because of the skin effect in deep bars, which raises the starting torque above this curve.",
+          "パラメータはこの大きさの電動機の代表的な値で、特定の製品のものではありません。回路は鉄損、摩擦と風損、飽和を無視しているので、示す効率は銅損だけを数えたもので数パーセント楽観的です。実際のかご形回転子は、深い導体棒の表皮効果によってすべりとともに実効抵抗が変わり、始動トルクはこの曲線より高くなります。"
+        ],
+        "question": [
+          "Why does the breakdown torque not depend on the rotor resistance?",
+          "なぜ停動トルクは回転子の抵抗によらないのですか？"
+        ],
+        "answer": [
+          "Because the rotor resistance only ever appears divided by the slip, as \\(R_2/s\\). Doubling \\(R_2\\) and doubling s gives the same circuit, the same currents and the same air-gap power, so every point on the curve simply moves to twice the slip at the same torque. The peak moves sideways but keeps its height, which is why wound-rotor motors add resistance to start heavy loads and remove it once running.",
+          "回転子の抵抗はいつもすべりで割った \\(R_2/s\\) の形でしか現れないからです。\\(R_2\\) を二倍にして s を二倍にすると同じ回路、同じ電流、同じエアギャップ電力になるので、曲線上のすべての点は同じトルクのまま二倍のすべりへ移るだけです。最大値は横に動いても高さは変わりません。だから巻線形の電動機は重い負荷を始動するときに抵抗を加え、回り出したら取り除くのです。"
+        ],
+        "params": [
+          [
+            "TL",
+            "Load at rated torque",
+            "定格トルクに対する負荷",
+            0,
+            1.6,
+            0.01,
+            1
+          ],
+          [
+            "load",
+            "Load type",
+            "負荷の種類",
+            0,
+            1,
+            1,
+            0,
+            [
+              [
+                "Constant torque",
+                "定トルク"
+              ],
+              [
+                "Fan (∝ n²)",
+                "ファン（∝ n²）"
+              ]
+            ]
+          ],
+          [
+            "rr",
+            "Rotor resistance (× normal)",
+            "回転子の抵抗（通常の何倍か）",
+            0.5,
+            5,
+            0.1,
+            1
+          ],
+          [
+            "f",
+            "Supply frequency, V/f constant (Hz)",
+            "電源周波数、V/f 一定（Hz）",
+            10,
+            60,
+            1,
+            50
+          ]
+        ],
+        "source": "MIT OpenCourseWare · 6.685 Electric Machines (Fall 2013), James L. Kirtley Jr.",
+        "url": "https://ocw.mit.edu/courses/6-685-electric-machines-fall-2013/"
+      }
+    ]
   }
 ]
