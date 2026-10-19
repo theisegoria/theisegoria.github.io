@@ -1,0 +1,69 @@
+<!doctype html><html lang="ja" class="ig-document ig-editorial"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Daily Mathematics 解答：2026年10月20日 · Isegoria</title><meta name="description" content="2026年10月20日のThreadsカード2枚（難しい定積分とパトナム型の問題）の完全な解答。"><link rel="canonical" href="https://theisegoria.github.io/ja/daily-mathematics/2026-10-20/"><link rel="alternate" hreflang="en" href="https://theisegoria.github.io/daily-mathematics/2026-10-20/"><link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/daily-mathematics/2026-10-20/"><link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/daily-mathematics/2026-10-20/"><link rel="icon" href="/assets/favicon.svg"><link rel="stylesheet" href="/assets/isegoria.css?v=20260915"><link rel="stylesheet" href="/analysis-atlas/vendor/katex.min.css"><script defer src="/analysis-atlas/vendor/katex.min.js"></script><script defer src="/analysis-atlas/vendor/contrib/auto-render.min.js"></script><script>document.addEventListener("DOMContentLoaded",function(){if(window.renderMathInElement)renderMathInElement(document.querySelector("main"),{delimiters:[{left:"\\[",right:"\\]",display:true},{left:"\\(",right:"\\)",display:false}],throwOnError:false});});</script><style>
+.dm{max-width:46rem;margin:0 auto;padding:2.5rem 1.25rem 4rem}
+.dm .eyebrow{letter-spacing:.14em;text-transform:uppercase;font-size:.78rem;opacity:.7;margin:0 0 .4rem}
+.dm h1{margin:.1rem 0 .6rem;line-height:1.2}
+.dm .deck{opacity:.85;margin:0 0 2rem}
+.dm .card{margin:2.6rem 0 0;padding-top:1.4rem;border-top:2px solid var(--dm-accent,currentColor)}
+.dm .card h2{margin:.2rem 0 .9rem;line-height:1.3}
+.dm .kind{font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dm-accent);margin:0}
+.dm figure{margin:1rem 0 1.4rem}
+.dm figure img{width:100%;max-width:30rem;height:auto;display:block;border:1px solid rgba(127,127,127,.25)}
+.dm .statement{padding:.9rem 1.1rem;border-left:3px solid var(--dm-accent);background:rgba(127,127,127,.07)}
+.dm details{margin:1.2rem 0}
+.dm summary{cursor:pointer;font-weight:600}
+.dm .answer{margin-top:1.2rem;padding:.8rem 1.1rem;border:1px solid var(--dm-accent)}
+.dm .katex-display{overflow-x:auto;overflow-y:hidden;padding:.2rem 0}
+.dm .days{list-style:none;padding:0;margin:1.5rem 0 0}
+.dm .days li{padding:.9rem 0;border-top:1px solid rgba(127,127,127,.25)}
+.dm .days a.date{font-weight:600}
+.dm .days span{display:block;opacity:.85}
+html[lang=ja] .dm{line-height:1.85}
+</style><script src="/assets/lang.js"></script>
+<!-- ISEGORIA:HEAD -->
+<link rel="stylesheet" href="/assets/site-shell.css?v=c21cd21e82">
+<script src="/assets/site-shell.js?v=c21cd21e82" ></script>
+<!-- /ISEGORIA:HEAD -->
+<script defer data-isegoria-analytics src="/assets/analytics.js?v=9e6ebd463bf2"></script>
+</head><body class="ig-site" data-site-kind="editorial" data-site-route="/ja/daily-mathematics/2026-10-20/">
+<!-- ISEGORIA:NAV -->
+<a class="ig-skip" href="#ig-content">本文へ移動</a>
+<header id="ig-header"><div class="ig-nav-inner">
+<a class="ig-brand" href="/ja/" aria-label="Isegoria, ホーム"><strong>ISEGORIA</strong><span>Benjamin Haire</span></a>
+<div class="ig-header-actions"><a class="ig-language" href="/daily-mathematics/2026-10-20/" hreflang="en" lang="en">English</a><button class="ig-menu" type="button" aria-expanded="false" aria-controls="ig-primary">メニュー</button></div>
+<nav id="ig-primary" aria-label="メインナビゲーション"><a href="/ja/">ホーム</a><a href="/ja/library.html">全コンテンツ</a><a href="/ja/math-encyclopedia/" aria-current="location">数学百科事典</a><a href="/ja/#interactive">操作できる解説</a><a href="/ja/#preoccupations">研究と解説</a><a href="/ja/#books">書籍</a><a href="/ja/projects.html">プロジェクト</a><a href="/ja/about.html">このサイトについて</a><a class="ig-language" href="/daily-mathematics/2026-10-20/" hreflang="en" lang="en">English</a><button class="ig-theme" type="button" hidden>表示切替</button></nav>
+</div></header>
+<nav id="ig-breadcrumb" aria-label="パンくずリスト"><a href="/ja/">ホーム</a><span aria-hidden="true">/</span><a href="/ja/math-encyclopedia/">数学百科事典</a><span aria-hidden="true">/</span><a href="/ja/daily-mathematics/">Daily Mathematics 解答集</a><span aria-hidden="true">/</span><span aria-current="page">Daily Mathematics 解答：2026年10月20日</span></nav>
+<span id="ig-content" tabindex="-1"></span>
+<!-- /ISEGORIA:NAV -->
+<main id="main" class="dm"><p class="eyebrow">Daily Mathematics / 解答</p><h1>2026年10月20日の解答</h1><p class="deck">この日のカードは難しい定積分とオリジナルのパトナム型の問題の2枚である。まず自分で考え、詰まったら解答を開くこと。</p><section class="card" id="integral" style="--dm-accent:#24457F"><p class="kind">積分</p><h2>3つのコーシー型の重みをもつ対数の3重積分</h2><figure><img src="/daily-mathematics/2026-10-20/integral.png" width="1200" height="1200" loading="lazy" alt="カード: 3つのコーシー型の重みをもつ対数の3重積分"></figure><div class="statement"><p>次の積分を閉じた形で求めよ。</p>\[\iiint_{\mathbb{R}^{3}}\frac{\ln\lvert xy+yz+zx\rvert}{(1+x^{2})(4+y^{2})(9+z^{2})}\,dx\,dy\,dz\]</div><details><summary>解答を開く</summary><p>求める積分を \(I\) とおく。変数を1つずつ積分することもできるが見通しが悪い。\(a=xy\), \(b=x+y\) として \(\ln\lvert a+bz\rvert/(9+z^{2})\) を \(z\) について積分すると \(\tfrac{\pi}{6}\ln\bigl(x^{2}y^{2}+9(x+y)^{2}\bigr)\) が残り，この2重積分には明らかな構造がない。3つの重みを確率密度とみなすのが自然な道である。</p>
+<p><strong>第1段：コーシー密度．</strong> \(c&gt;0\) に対し \(\rho_{c}(t)=\dfrac{c}{\pi(t^{2}+c^{2})}\) を尺度 \(c\) のコーシー分布 \(\mathrm{C}(c)\) の密度とする。このとき</p>
+\[\frac{1}{(1+x^{2})(4+y^{2})(9+z^{2})}=\pi\cdot\frac{\pi}{2}\cdot\frac{\pi}{3}\,\rho_{1}(x)\rho_{2}(y)\rho_{3}(z)\]
+<p>であるから，独立な \(X\sim\mathrm{C}(1)\), \(Y\sim\mathrm{C}(2)\), \(Z\sim\mathrm{C}(3)\) を用いて \(I=\dfrac{\pi^{3}}{6}\,\mathbb{E}\ln\lvert XY+YZ+ZX\rvert\) と書ける。次の3つの事実を用いる。</p>
+<p><strong>事実A：\(W\sim\mathrm{C}(c)\) ならば \(\mathbb{E}\ln\lvert W\rvert=\ln c\)．</strong> \(W=cU\), \(U\sim\mathrm{C}(1)\) と書けば \(\mathbb{E}\ln\lvert W\rvert=\ln c+\frac{1}{\pi}\int_{\mathbb{R}}\frac{\ln\lvert u\rvert}{1+u^{2}}\,du\) である。最後の積分は絶対収束し，値は \(0\) である。実際，置換 \(u\mapsto1/u\) は \((0,1)\) を \((1,\infty)\) に写し，\(du/(1+u^{2})\) を保ち，\(\ln u\) の符号を変える。とくに \(\ln\lvert W\rvert\) は可積分である。</p>
+<p><strong>事実B：\(W\sim\mathrm{C}(c)\) ならば \(1/W\sim\mathrm{C}(1/c)\)．</strong> \(V=1/W\) の密度は \(\rho_{c}(1/v)\,v^{-2}=\dfrac{c}{\pi(1+c^{2}v^{2})}=\dfrac{1/c}{\pi(v^{2}+c^{-2})}=\rho_{1/c}(v)\) である。</p>
+<p><strong>事実C：独立な \(\mathrm{C}(a)\) と \(\mathrm{C}(b)\) の和は \(\mathrm{C}(a+b)\) に従う．</strong> \(\mathrm{C}(c)\) の特性関数は \(\int e^{itw}\rho_{c}(w)\,dw=e^{-c\lvert t\rvert}\) である（初等的な等式 \(\int e^{-c\lvert s\rvert}e^{-isw}\,ds=2c/(c^{2}+w^{2})\) のフーリエ逆変換）。独立な和の特性関数は積になり，\(e^{-a\lvert t\rvert}e^{-b\lvert t\rvert}=e^{-(a+b)\lvert t\rvert}\) を得る。</p>
+<p><strong>第2段：多項式の分解．</strong> ほとんど確実に \(X,Y,Z\neq0\) であり，このとき</p>
+\[XY+YZ+ZX=XYZ\Bigl(\frac{1}{X}+\frac{1}{Y}+\frac{1}{Z}\Bigr),\qquad \ln\lvert XY+YZ+ZX\rvert=\ln\lvert X\rvert+\ln\lvert Y\rvert+\ln\lvert Z\rvert+\ln\Bigl\lvert\frac{1}{X}+\frac{1}{Y}+\frac{1}{Z}\Bigr\rvert\]
+<p>が成り立つ。事実Bより \(1/X,1/Y,1/Z\) は独立でそれぞれ \(\mathrm{C}(1),\mathrm{C}(\tfrac12),\mathrm{C}(\tfrac13)\) に従うから，事実Cよりその和は \(\mathrm{C}(\tfrac{11}{6})\) に従う。右辺の4項は事実Aによりいずれも可積分であるから左辺も可積分であり，もとの積分の絶対収束と項別に期待値をとることが正当化される。</p>
+<p><strong>第3段：合計．</strong> 事実Aより</p>
+\[\mathbb{E}\ln\lvert XY+YZ+ZX\rvert=\ln1+\ln2+\ln3+\ln\frac{11}{6}=\ln 11,\qquad I=\frac{\pi^{3}}{6}\ln 11\approx 12.3916340465\]
+<p>を得る。定数 \(1,2,3\) は \(abc\cdot(\tfrac1a+\tfrac1b+\tfrac1c)=ab+bc+ca\) を通してのみ現れるので，答えは \(1\cdot2+2\cdot3+3\cdot1=11\) の対数になるのである。</p>
+<p><strong>検証．</strong> 内側の公式 \(\int\ln\lvert a+bz\rvert\,dz/(9+z^{2})=\tfrac{\pi}{6}\ln(a^{2}+9b^{2})\) は，ランダムな \((a,b)\) に対してガウス・ルジャンドル求積で誤差 \(3\times10^{-15}\) 以内で確認した。さらに残る2変数の積分を数値的に計算した（100点ガウス・ルジャンドル，\(x=\tan u\) として \(u=0\) と \(u=\pm\pi/2\) に向けて細かくした区間分割，\(y\) については特異に近い曲線を中心とする \(\sinh\) 置換）。結果は \(12.39163404646152\) であり，\(\tfrac{\pi^{3}}{6}\ln11\) と \(3\times10^{-14}\) 以内で一致した。</p><div class="answer"><strong>答え.</strong> \(\dfrac{\pi^{3}}{6}\ln 11\approx 12.3916\)</div></details></section><section class="card" id="competition" style="--dm-accent:#96311F"><p class="kind">競技数学の問題</p><h2>手紙の受取人とランダムな写像の形</h2><figure><img src="/daily-mathematics/2026-10-20/competition.png" width="1200" height="1200" loading="lazy" alt="カード: 手紙の受取人とランダムな写像の形"></figure><div class="statement"><p>\(n\) 人が各自1通の手紙を，\(n\) 人から独立に一様ランダムに選んだ1人（自分も可）に送る。手紙を受け取った人を受取人と呼ぶ。どの受取人もある受取人から手紙を受け取っている確率を \(p_{n}\) とするとき，次の極限を求めよ。</p>\[\lim_{n\to\infty}p_{n}^{1/n}\]</div><details><summary>解答を開く</summary><p>\(S=\{1,\dots,n\}\) とし，\(x\) が手紙を送る相手を \(f(x)\) とおく。\(f\) は \(S\to S\) の一様ランダムな写像であり，条件を満たす写像の個数を \(a_{n}\) とすれば \(p_{n}=a_{n}/n^{n}\) である。受取人の全体は像 \(R=f(S)\) である。\(p_{n}\) は指数的に \(0\) に近づくので，問われているのは正確な指数的減衰率である。誰が何を受け取るかについて包除原理を直接適用すると交代和になり，支配的な項が見えない。条件を満たす写像を構造的に特徴づけるのが鍵である。</p>
+<p><strong>第1段：条件の意味．</strong> 条件は \(R\subseteq f(R)\) である。常に \(f(R)\subseteq f(S)=R\) であるから，条件は \(f(R)=R\) と同値であり，\(R\) は有限なので \(f\) は \(R\) 上の置換となる。ある \(m\ge1\) で \(f^{m}(x)=x\) となる \(x\) を巡回点と呼び，巡回点全体を \(C\) とする。巡回点は \(f\) の値であるから常に \(C\subseteq R\) であり，\(f\) は常に \(C\) を置換する。\(f\) が \(R\) を置換するなら \(R\) の各点は巡回点であり \(R=C\) となる。逆に \(R=C\) ならば \(f\) は \(R\) を置換する。ゆえに<em>条件は \(f(S)\subseteq C\) と同値</em>である。すなわち巡回点でない人は全員，巡回点の人に直接送る。</p>
+<p><strong>第2段：正確な数え上げ．</strong> \(k=\lvert C\rvert\) を固定する。条件を満たす写像は，\(k\) 元集合 \(C\)，\(C\) 上の置換，残りの \(n-k\) 人それぞれの \(C\) 内の送り先を選ぶことで作られる。こうして作った写像は条件を満たし，その巡回点集合はちょうど \(C\) である（\(C\) の外の点は \(C\) に送られてそこに留まるので，元に戻らない）。また条件を満たす写像はちょうど1回ずつ現れる。したがって</p>
+\[a_{n}=\sum_{k=1}^{n}\binom{n}{k}k!\,k^{\,n-k},\qquad p_{n}=\sum_{k=1}^{n}T_{k},\quad T_{k}=\frac{n!}{(n-k)!}\cdot\frac{k^{\,n-k}}{n^{n}}\]
+<p>を得る。\(n=1,\dots,7\) に対し \(a_{n}=1,4,21,148,1305,13806,170401\) である。</p>
+<p><strong>第3段：各項の大きさ．</strong> \(m\ge1\) に対し，\(\ln m!=\sum_{j\le m}\ln j\) と \(\int_{1}^{m}\ln t\,dt\) を比較して \(e(m/e)^{m}\le m!\le e\,m\,(m/e)^{m}\) を得る。これを \(1\le k\le n-1\) のときの \(n!\) と \((n-k)!\) に適用し，\(x=k/n\) とおくと</p>
+\[T_{k}=c_{n,k}\,e^{\,n\,g(x)},\qquad g(x)=-x+(1-x)\ln\frac{x}{1-x},\qquad \frac{1}{n}\le c_{n,k}\le n\]
+<p>となる。実際 \((n/e)^{n}((n-k)/e)^{-(n-k)}k^{n-k}n^{-n}=e^{-k}\bigl(k/(n-k)\bigr)^{n-k}\) である。\(k=n\) のときは \(T_{n}=n!/n^{n}\le e\,n\,e^{-n}\) であり，\(g(1)=-1\) として同じ評価が成り立つ。</p>
+<p><strong>第4段：\(g\) の最大化．</strong> 微分すると，\(t=(1-x)/x\) として \(g'(x)=\dfrac{1}{x}-1-\ln\dfrac{x}{1-x}=t+\ln t\) である。\(x\) が増えると \(t\) は減り，\(t+\ln t\) は \(t\) について増加するから，\(g'\) は \(0^{+}\) での \(+\infty\) から \(1^{-}\) での \(-\infty\) まで狭義単調減少する。よって \(g\) は \((0,1]\) 上で唯一の最大点をもち，そこでは \(t+\ln t=0\)，すなわち \(te^{t}=1\) である。したがって \(t=\Omega\approx0.5671433\)（オメガ定数），\(x^{*}=1/(1+\Omega)\) となる。このとき \(\ln(x^{*}/(1-x^{*}))=\ln(1/\Omega)=\Omega\) であるから</p>
+\[g(x^{*})=-\frac{1}{1+\Omega}+\frac{\Omega}{1+\Omega}\cdot\Omega=\frac{\Omega^{2}-1}{1+\Omega}=\Omega-1\]
+<p>を得る。</p>
+<p><strong>第5段：はさみうち．</strong> 高々 \(n\) 個の項の和であるから \(p_{n}\le e\,n^{2}e^{n(\Omega-1)}\) である。下からの評価には \(k_{n}=\lceil nx^{*}\rceil\) をとる。\(n\) が大きければ \(1\le k_{n}\le n-1\) であり，\(g\) は \(x^{*}\) の近くで滑らかで \(\lvert k_{n}/n-x^{*}\rvert\le1/n\) であるから \(n\,g(k_{n}/n)=n(\Omega-1)+O(1)\) となり，\(p_{n}\ge T_{k_{n}}\ge n^{-1}e^{\,n(\Omega-1)+O(1)}\) を得る。\(n\) 乗根をとって</p>
+\[\lim_{n\to\infty}p_{n}^{1/n}=e^{\Omega-1}=\frac{1}{e\,\Omega}\approx0.6486534\]
+<p>である。最後の形には \(e^{\Omega}=1/\Omega\) を用いた。</p>
+<p><strong>検証．</strong> \(n\le7\) について \(n^{n}\) 個の写像すべてを調べ，\(1,4,21,148,1305,13806,170401\) を正確に再現した。正確な和を評価すると \(p_{n}^{1/n}\) は \(n=100\) で \(0.66689\)，\(n=1000\) で \(0.65120\)，\(n=10^{5}\) で \(0.648694\)，\(n=10^{6}\) で \(0.648658\) となり，第5段の多項式因子から予想される \(O(\ln n/n)\) の速さで \(e^{\Omega-1}=0.6486534\) に近づく。</p><div class="answer"><strong>答え.</strong> \(e^{\Omega-1}=\dfrac{1}{e\,\Omega}\approx0.64865\)（\(\Omega\approx0.567143\) は \(\Omega e^{\Omega}=1\) の根）</div></details></section><p><a href="/ja/daily-mathematics/">解答の一覧へ戻る</a> · <a href="/daily-mathematics/2026-10-20/" hreflang="en" lang="en">English</a></p></main>
+<!-- ISEGORIA:FOOT -->
+<footer id="ig-footer"><div><a href="/ja/">Isegoria · Benjamin Haire</a><nav aria-label="サイト内リンク"><a href="/ja/">ホームに戻る</a><a href="/ja/library.html">全コンテンツ</a><a href="#ig-content">ページ上部へ</a></nav></div></footer>
+<!-- /ISEGORIA:FOOT -->
+</body></html>
