@@ -1,0 +1,68 @@
+<!doctype html><html lang="ja" class="ig-document ig-editorial"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Daily Mathematics 解答：2026年10月21日 · Isegoria</title><meta name="description" content="2026年10月21日のThreadsカード2枚（難しい定積分とパトナム型の問題）の完全な解答。"><link rel="canonical" href="https://theisegoria.github.io/ja/daily-mathematics/2026-10-21/"><link rel="alternate" hreflang="en" href="https://theisegoria.github.io/daily-mathematics/2026-10-21/"><link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/daily-mathematics/2026-10-21/"><link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/daily-mathematics/2026-10-21/"><link rel="icon" href="/assets/favicon.svg"><link rel="stylesheet" href="/assets/isegoria.css?v=20260915"><link rel="stylesheet" href="/analysis-atlas/vendor/katex.min.css"><script defer src="/analysis-atlas/vendor/katex.min.js"></script><script defer src="/analysis-atlas/vendor/contrib/auto-render.min.js"></script><script>document.addEventListener("DOMContentLoaded",function(){if(window.renderMathInElement)renderMathInElement(document.querySelector("main"),{delimiters:[{left:"\\[",right:"\\]",display:true},{left:"\\(",right:"\\)",display:false}],throwOnError:false});});</script><style>
+.dm{max-width:46rem;margin:0 auto;padding:2.5rem 1.25rem 4rem}
+.dm .eyebrow{letter-spacing:.14em;text-transform:uppercase;font-size:.78rem;opacity:.7;margin:0 0 .4rem}
+.dm h1{margin:.1rem 0 .6rem;line-height:1.2}
+.dm .deck{opacity:.85;margin:0 0 2rem}
+.dm .card{margin:2.6rem 0 0;padding-top:1.4rem;border-top:2px solid var(--dm-accent,currentColor)}
+.dm .card h2{margin:.2rem 0 .9rem;line-height:1.3}
+.dm .kind{font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dm-accent);margin:0}
+.dm figure{margin:1rem 0 1.4rem}
+.dm figure img{width:100%;max-width:30rem;height:auto;display:block;border:1px solid rgba(127,127,127,.25)}
+.dm .statement{padding:.9rem 1.1rem;border-left:3px solid var(--dm-accent);background:rgba(127,127,127,.07)}
+.dm details{margin:1.2rem 0}
+.dm summary{cursor:pointer;font-weight:600}
+.dm .answer{margin-top:1.2rem;padding:.8rem 1.1rem;border:1px solid var(--dm-accent)}
+.dm .katex-display{overflow-x:auto;overflow-y:hidden;padding:.2rem 0}
+.dm .days{list-style:none;padding:0;margin:1.5rem 0 0}
+.dm .days li{padding:.9rem 0;border-top:1px solid rgba(127,127,127,.25)}
+.dm .days a.date{font-weight:600}
+.dm .days span{display:block;opacity:.85}
+html[lang=ja] .dm{line-height:1.85}
+</style><script src="/assets/lang.js"></script>
+<!-- ISEGORIA:HEAD -->
+<link rel="stylesheet" href="/assets/site-shell.css?v=c21cd21e82">
+<script src="/assets/site-shell.js?v=c21cd21e82" ></script>
+<!-- /ISEGORIA:HEAD -->
+<script defer data-isegoria-analytics src="/assets/analytics.js?v=9e6ebd463bf2"></script>
+</head><body class="ig-site" data-site-kind="editorial" data-site-route="/ja/daily-mathematics/2026-10-21/">
+<!-- ISEGORIA:NAV -->
+<a class="ig-skip" href="#ig-content">本文へ移動</a>
+<header id="ig-header"><div class="ig-nav-inner">
+<a class="ig-brand" href="/ja/" aria-label="Isegoria, ホーム"><strong>ISEGORIA</strong><span>Benjamin Haire</span></a>
+<div class="ig-header-actions"><a class="ig-language" href="/daily-mathematics/2026-10-21/" hreflang="en" lang="en">English</a><button class="ig-menu" type="button" aria-expanded="false" aria-controls="ig-primary">メニュー</button></div>
+<nav id="ig-primary" aria-label="メインナビゲーション"><a href="/ja/">ホーム</a><a href="/ja/library.html">全コンテンツ</a><a href="/ja/math-encyclopedia/" aria-current="location">数学百科事典</a><a href="/ja/#interactive">操作できる解説</a><a href="/ja/#preoccupations">研究と解説</a><a href="/ja/#books">書籍</a><a href="/ja/projects.html">プロジェクト</a><a href="/ja/about.html">このサイトについて</a><a class="ig-language" href="/daily-mathematics/2026-10-21/" hreflang="en" lang="en">English</a><button class="ig-theme" type="button" hidden>表示切替</button></nav>
+</div></header>
+<nav id="ig-breadcrumb" aria-label="パンくずリスト"><a href="/ja/">ホーム</a><span aria-hidden="true">/</span><a href="/ja/math-encyclopedia/">数学百科事典</a><span aria-hidden="true">/</span><a href="/ja/daily-mathematics/">Daily Mathematics 解答集</a><span aria-hidden="true">/</span><span aria-current="page">Daily Mathematics 解答：2026年10月21日</span></nav>
+<span id="ig-content" tabindex="-1"></span>
+<!-- /ISEGORIA:NAV -->
+<main id="main" class="dm"><p class="eyebrow">Daily Mathematics / 解答</p><h1>2026年10月21日の解答</h1><p class="deck">この日のカードは難しい定積分とオリジナルのパトナム型の問題の2枚である。まず自分で考え、詰まったら解答を開くこと。</p><section class="card" id="integral" style="--dm-accent:#24457F"><p class="kind">積分</p><h2>双曲線正割関数とフレネル型の位相の積分</h2><figure><img src="/daily-mathematics/2026-10-21/integral.png" width="1200" height="1200" loading="lazy" alt="カード: 双曲線正割関数とフレネル型の位相の積分"></figure><div class="statement"><p>次の積分を閉じた形で求めよ。</p>\[\int_{0}^{\infty}\frac{\sin(\pi x^{2})}{\cosh(\pi x)}\,dx\]</div><details><summary>解答を開く</summary><p>求める積分を \(I\) とおく。素直に \(\operatorname{sech}(\pi x)=2\sum_{k\ge0}(-1)^{k}e^{-(2k+1)\pi x}\) と展開すると，各項は不完全フレネル積分 \(\int_{0}^{\infty}\sin(\pi x^{2})e^{-(2k+1)\pi x}\,dx\) となり，どれも閉じた形をもたないので項別計算は行き詰まる。自己双対な組 \(\operatorname{sech}(\pi x)\) と \(e^{\pi i x^{2}}\) にパーセヴァルの等式を用いても，全実軸上の積分の偏角が \(\pi/8\) であることしかわからず，大きさは決まらない。有効なのは \(\cosh\) の半周期だけ積分路をずらす方法である。</p>
+<p><strong>第1段：複素化。</strong> \(J=\int_{-\infty}^{\infty}\frac{e^{\pi i x^{2}}}{\cosh(\pi x)}\,dx\) とおく。これは絶対収束する。\(I\) の被積分関数は偶関数であるから \(I=\tfrac12\operatorname{Im}J\) である。</p>
+<p><strong>第2段：積分路。</strong> \(\varphi(w)=e^{\pi i w^{2}}/\cosh(\pi w)\) とおく。\(\cosh(\pi w)\) の零点は \(w=i(k+\tfrac12)\) であるから，閉じた帯 \(0\le\operatorname{Im}w\le\tfrac12\) 内の極は上辺上の \(w=i/2\) ただ1つである。頂点 \(\pm T,\ \pm T+\tfrac{i}{2}\) の長方形に沿って \(\varphi\) を積分し，上辺は \(i/2\) の下側を小さな半円で迂回させる。内部で正則であるから周回積分は \(0\) である。半径を \(0\) に近づけると，時計回りの半円は \(-\pi i\operatorname{Res}_{w=i/2}\varphi\) を与えるので</p>
+\[\int_{-T}^{T}\varphi(x)\,dx=\mathrm{PV}\!\int_{-T}^{T}\varphi\!\left(x+\tfrac{i}{2}\right)dx+\pi i\operatorname{Res}_{w=i/2}\varphi-(\text{縦の辺})\]
+<p>を得る。</p>
+<p><strong>第3段：縦の辺は消える。</strong> \(w=\pm T+iy\ (0\le y\le\tfrac12)\) 上では \(\lvert e^{\pi i w^{2}}\rvert=e^{\mp2\pi Ty}\)，\(\lvert\cosh(\pi w)\rvert\ge\sinh(\pi T)\) である。右の辺の寄与は \(\tfrac12/\sinh(\pi T)\) 以下，左の辺の寄与は \(\int_{0}^{1/2}e^{2\pi Ty}\,dy/\sinh(\pi T)\le e^{\pi T}/(2\pi T\sinh(\pi T))\) 以下であり，ともに \(0\) に収束する。</p>
+<p><strong>第4段：留数。</strong> \(\frac{d}{dw}\cosh(\pi w)=\pi\sinh(\pi w)\) は \(w=i/2\) で \(\pi i\) に等しく，\(e^{\pi i(i/2)^{2}}=e^{-\pi i/4}\) であるから \(\operatorname{Res}_{w=i/2}\varphi=e^{-\pi i/4}/(\pi i)\)，すなわち \(\pi i\operatorname{Res}=e^{-\pi i/4}\) である。</p>
+<p><strong>第5段：上辺。</strong> \(\cosh\bigl(\pi x+\tfrac{\pi i}{2}\bigr)=i\sinh(\pi x)\)，\(e^{\pi i(x+i/2)^{2}}=e^{\pi i x^{2}}e^{-\pi x}e^{-\pi i/4}\) より</p>
+\[\varphi\!\left(x+\tfrac{i}{2}\right)=\frac{e^{-\pi i/4}}{i}\,e^{\pi i x^{2}}\,\frac{e^{-\pi x}}{\sinh(\pi x)}=\frac{e^{-\pi i/4}}{i}\,e^{\pi i x^{2}}\bigl(\coth(\pi x)-1\bigr)\]
+<p>である。\(e^{\pi i x^{2}}\coth(\pi x)\) は奇関数であるから，\([-T,T]\) 上の主値はすべての \(T\) で \(0\) である。残りの部分は \(-\frac{e^{-\pi i/4}}{i}\int_{-T}^{T}e^{\pi i x^{2}}\,dx\) であり，フレネル積分 \(\int_{-\infty}^{\infty}e^{\pi i x^{2}}\,dx=e^{\pi i/4}\) により \(-\frac{e^{-\pi i/4}e^{\pi i/4}}{i}=i\) に収束する。</p>
+<p><strong>第6段：まとめ。</strong> \(T\to\infty\) として</p>
+\[J=i+e^{-\pi i/4}=\frac{1}{\sqrt2}+i\left(1-\frac{1}{\sqrt2}\right)\]
+<p>を得る。検算として \(\tan(\arg J)=\sqrt2-1=\tan(\pi/8)\) であり，パーセヴァルから予想される偏角と一致する。虚部をとれば \(\int_{-\infty}^{\infty}\frac{\sin(\pi x^{2})}{\cosh(\pi x)}\,dx=1-\frac{1}{\sqrt2}\)，よって \(I=\frac{2-\sqrt2}{4}\) である。実部からは \(\int_{0}^{\infty}\frac{\cos(\pi x^{2})}{\cosh(\pi x)}\,dx=\frac{1}{2\sqrt2}\) も得られる。これらはラマヌジャンによる値であり，モーデル積分の特別な場合である。</p>
+<p><strong>数値検証。</strong> \([0,16]\) 上で100点ガウス・ルジャンドル則を200区間および800区間で合成した値は \((2-\sqrt2)/4\approx0.1464466094\) と \(3\times10^{-16}\) 以内で一致し，余弦版も \(1/(2\sqrt2)\) と同じ精度で一致した。</p><div class="answer"><strong>答え.</strong> \(\dfrac{2-\sqrt2}{4}\)</div></details></section><section class="card" id="competition" style="--dm-accent:#96311F"><p class="kind">競技数学の問題</p><h2>係数を入れ替えた2つの2次式と素数を法とする根</h2><figure><img src="/daily-mathematics/2026-10-21/competition.png" width="1200" height="1200" loading="lazy" alt="カード: 係数を入れ替えた2つの2次式と素数を法とする根"></figure><div class="statement"><p>\(p\) を \(p\equiv 5\pmod 6\) を満たす素数とする。\(a,b\in\{0,1,\dots,p-1\}\) の順序対 \((a,b)\) のうち，</p>\[x^{2}+ax+b\quad\text{と}\quad x^{2}+bx+a\]<p>がともに \(p\) を法として根をもつものの個数を，\(p\) を用いて表せ。</p></div><details><summary>解答を開く</summary><p>\(\mathbb{F}_{p}\) で考える。\(\chi\) を \(\chi(0)=0\) としたルジャンドル記号とし，\(D=0\) のとき \(\delta(D)=1\)，それ以外で \(\delta(D)=0\) とおく。\(D_{1}=a^{2}-4b\)，\(D_{2}=b^{2}-4a\) とし，求める個数を \(N\) とおく。すべてをルジャンドル記号で展開するのが自然な第一手であるが，それでは和 \(\sum_{a,b}\chi\bigl((a^{2}-4b)(b^{2}-4a)\bigr)\) が残る。これは4次曲面に沿った指標和であり，一般には閉じた形をもたない。実際 \(p\equiv1\pmod 6\) では個数は不規則である（\(p=7\) で \(22\)，\(p=13\) で \(55\)）。要点は，この和を根の個数として数え直すことである。</p>
+<p><strong>第1段：指示関数。</strong> \(p\) は奇数であるから，\(x^{2}+ax+b\) が根をもつのは \(D_{1}\) が平方数または \(0\) のときに限り，そのとき根はちょうど \(1+\chi(D_{1})\) 個ある。この事象の指示関数は \(\tfrac12\bigl(1+\chi(D_{1})+\delta(D_{1})\bigr)\) であるから</p>
+\[4N=\sum_{a,b}\bigl(1+\chi(D_{1})+\delta(D_{1})\bigr)\bigl(1+\chi(D_{2})+\delta(D_{2})\bigr)\]
+<p>である。</p>
+<p><strong>第2段：鍵となる事実。</strong> \(p\equiv2\pmod 3\) より \(\gcd(3,p-1)=1\) であり，\(x\mapsto x^{3}\) は \(\mathbb{F}_{p}\) の全単射である。とくに1の3乗根は \(1\) のみであり，\(64\) の3乗根は \(4\) ただ1つである。</p>
+<p><strong>第3段：易しい項。</strong> \(\sum1=p^{2}\) である。\(a\) を固定して \(b\) を動かすと \(D_{1}\) は \(\mathbb{F}_{p}\) 全体を動くので，\(\sum\chi(D_{1})=0\)，\(\sum\delta(D_{1})=p\) である。\(D_{2}\) についても同様である。\(D_{1}=D_{2}=0\) となる組は \(4b=a^{2}\) かつ \(a^{4}=64a\) を満たすので \(a=0\) または \(a^{3}=64\) であり，\((0,0)\) と \((4,4)\) のみである。よって \(\sum\delta(D_{1})\delta(D_{2})=2\) である。</p>
+<p><strong>第4段：混合項。</strong> \(\delta(D_{2})=1\) ならば \(a=b^{2}/4\) である。\(b=4c\) とおくと \(a=4c^{2}\)，\(D_{1}=16(c^{4}-c)\) となるから \(\sum\chi(D_{1})\delta(D_{2})=\sum_{c}\chi(c^{4}-c)\) である。\(c=0\) の項は \(0\) であり，\(c\ne0\) では \(\chi(c^{4}-c)=\chi(c^{4})\chi(1-c^{-3})=\chi(1-c^{-3})\) である。第2段より \(u=c^{-3}\) は \(\mathbb{F}_{p}^{\times}\) 全体を動くので，和は \(\sum_{u\ne0}\chi(1-u)=\sum_{v}\chi(v)-\chi(1)=-1\) である。対称性より \(\sum\delta(D_{1})\chi(D_{2})=-1\) も成り立つ。</p>
+<p><strong>第5段：難しい項を2通りに数える。</strong> \(r^{2}+ar+b=0\) かつ \(s^{2}+bs+a=0\) を満たす4つ組 \((a,b,r,s)\) の個数を \(M\) とおく。各 \((a,b)\) について根を数えれば</p>
+\[M=\sum_{a,b}\bigl(1+\chi(D_{1})\bigr)\bigl(1+\chi(D_{2})\bigr)=p^{2}+S,\qquad S=\sum_{a,b}\chi(D_{1})\chi(D_{2})\]
+<p>である。一方 \((r,s)\) ごとに数える。第1式から \(b=-r^{2}-ar\) であり，第2式は \(s^{2}-r^{2}s+a(1-rs)=0\) となって \(a\) について1次である。\(rs\ne1\) ならば \(a\) はただ1つに定まり（\(b\) も定まる），そのような組は \(p^{2}-(p-1)\) 個ある。\(rs=1\) ならば \(s(s-r^{2})=0\) が必要であり，\(s\ne0\) より \(s=r^{2}\)，したがって \(r^{3}=1\) である。第2段より \(r=s=1\) であり，このときすべての \(a\) が条件を満たすので解は \(p\) 個ある。\(rs=1\) となる残りの \(p-2\) 組には解がない。よって \(M=p^{2}-p+1+p=p^{2}+1\)，すなわち \(S=1\) である。</p>
+<p><strong>第6段：合計。</strong> すべてを加えて</p>
+\[4N=p^{2}+(0+0)+(p+p)+S+(-1)+(-1)+2=p^{2}+2p+1\]
+<p>を得るから \(N=\left(\frac{p+1}{2}\right)^{2}\) である。たとえば \(p=5\) では \(9\)，\(p=2027\) では \(1014^{2}\) である。</p>
+<p><strong>数値検証。</strong> \(400\) 未満の \(p\equiv5\pmod 6\) を満たすすべての素数（\(5\) から \(389\) までの39個）について，\(p^{2}\) 個の組をすべて調べた個数が \(\bigl(\tfrac{p+1}{2}\bigr)^{2}\) と一致すること，また \(p\equiv1\pmod 6\) ではこの公式が成り立たないことを確認した。</p><div class="answer"><strong>答え.</strong> \(\left(\dfrac{p+1}{2}\right)^{2}\)</div></details></section><p><a href="/ja/daily-mathematics/">解答の一覧へ戻る</a> · <a href="/daily-mathematics/2026-10-21/" hreflang="en" lang="en">English</a></p></main>
+<!-- ISEGORIA:FOOT -->
+<footer id="ig-footer"><div><a href="/ja/">Isegoria · Benjamin Haire</a><nav aria-label="サイト内リンク"><a href="/ja/">ホームに戻る</a><a href="/ja/library.html">全コンテンツ</a><a href="#ig-content">ページ上部へ</a></nav></div></footer>
+<!-- /ISEGORIA:FOOT -->
+</body></html>
