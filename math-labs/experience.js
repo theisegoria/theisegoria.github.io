@@ -407,5 +407,46 @@
     };
   }
 
-  window.MathExperience = window.Lab = { fig, stage, legend, readout, animator, colours, cmaps, fmt, seq, sample, clamp, el, h, T, ja, TAU, reduced, ticks, onTheme: (f) => invalidate.push(f) };
+
+  /* ---------- 3D (three3d.js, loaded on first use) ----------
+   * view3d(ctx, v, {init(S, v), update(S, v), fallback(ctx, v), host, ...scene options})
+   * The experiment's definition sets three: true. init runs once when the scene
+   * exists; update runs on every control change. When neither WebGPU nor WebGL 2
+   * is available, or ?flat is in the URL, fallback draws the 2D figure instead. */
+  const V3 = '20261025';
+  let three3d = null;
+  const flat = /[?&]flat\b/.test(location.search);
+  function view3d(ctx, v, o) {
+    const st = ctx.state;
+    st.__v3v = v;
+    const host = o.host || ctx.host;
+    if (flat || st.__v3fallback) { if (!o.host) ctx.host.replaceChildren(); st.__v3fallback = true; o.fallback?.(ctx, v); return; }
+    if (st.__v3 && st.__v3.wrap.isConnected) { o.update?.(st.__v3, v); return; }
+    if (st.__v3) { try { st.__v3.dispose(); } catch (e) { /* gone */ } st.__v3 = null; }
+    if (st.__v3loading) return;
+    if (!o.host) ctx.host.replaceChildren();
+    const ph = h('div', 'lab3d is-loading', host);
+    ph.style.setProperty('--lab3d-aspect', String(o.aspect ?? 0.62));
+    if (o.maxH) ph.style.setProperty('--lab3d-maxh', o.maxH + 'px');
+    st.__v3loading = true;
+    three3d = three3d || import('/math-labs/three3d.js?v=' + V3);
+    three3d.then((m) => m.create(host, o)).then((S) => {
+      st.__v3loading = false;
+      ph.remove();
+      if (!S) throw new Error('no WebGPU or WebGL 2');
+      if (!host.isConnected) { S.dispose(); ctx.redraw?.(); return; }   // the figure was rebuilt while loading
+      st.__v3 = S;
+      o.init?.(S, st.__v3v);
+      o.update?.(S, st.__v3v);
+    }).catch((err) => {
+      console.warn('3D unavailable, drawing the 2D figure:', err);
+      st.__v3loading = false; ph.remove();
+      if (!host.isConnected) { ctx.redraw?.(); return; }
+      st.__v3fallback = true;
+      if (!o.host) ctx.host.replaceChildren();
+      o.fallback?.(ctx, st.__v3v);
+    });
+  }
+
+  window.MathExperience = window.Lab = { fig, stage, legend, readout, animator, colours, cmaps, fmt, seq, sample, clamp, el, h, T, ja, TAU, reduced, ticks, view3d, onTheme: (f) => invalidate.push(f) };
 })();

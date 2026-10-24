@@ -12,7 +12,7 @@ function interpolation(n,cheb){const xs=seq(n+1,j=>cheb?Math.cos(j*Math.PI/n):-1
 window.MathLabs={rank2,homology,betaDensity,logistic,ode,interpolation,gcd};
 
 /*HELPERS-END*/
-const VERSION='20260922';
+const VERSION='20261025';
 const Lab=window.Lab;
 const defs=window.LabDefs=window.LabDefs||{};
 const sections=[...document.querySelectorAll('[data-lab]')];
@@ -50,10 +50,11 @@ function ctxFor(section){
   width(){return host.clientWidth||section.clientWidth||640;}};
  section.__ctx=ctx;return ctx;
 }
+function wipe(s){const c=ctxFor(s);try{c.state.__v3?.dispose?.();}catch(e){}c.state.__v3=null;c.host.replaceChildren();}
 function run(section){
  const def=defs[section.dataset.lab];if(!def)return;
  const ctx=ctxFor(section),v=values(section);
- if(!def.persist)ctx.host.replaceChildren();
+ if(!def.persist&&!def.three)ctx.host.replaceChildren();
  try{def.render(ctx,v);}catch(err){console.error(section.dataset.lab,err);ctx.host.replaceChildren();const p=document.createElement('p');p.className='lab-error';p.textContent=Lab.T('This experiment could not be drawn.','この実験を描画できませんでした。');ctx.host.append(p);}
  ctx.host.setAttribute('aria-label',section.querySelector('h2').textContent+'. '+(ctx.out.textContent||''));
 }
@@ -62,23 +63,25 @@ function tools(section){
  const reset=document.createElement('button');reset.type='button';reset.textContent=Lab.T('Reset','リセット');
  const copy=document.createElement('button');copy.type='button';copy.textContent=Lab.T('Copy link','リンクをコピー');
  const status=document.createElement('span');status.className='lab-status';status.setAttribute('role','status');
- reset.addEventListener('click',()=>{const url=new URL(location.href);section.querySelectorAll('.controls input').forEach(input=>{input.value=input.defaultValue;input.__paint?.();url.searchParams.delete(section.id+'.'+input.dataset.key);});history.replaceState(null,'',url);const ctx=ctxFor(section);ctx.state={};if(defs[section.dataset.lab]?.persist)ctx.host.replaceChildren();run(section);syncLanguages();});
+ reset.addEventListener('click',()=>{const url=new URL(location.href);section.querySelectorAll('.controls input').forEach(input=>{input.value=input.defaultValue;input.__paint?.();url.searchParams.delete(section.id+'.'+input.dataset.key);});history.replaceState(null,'',url);const ctx=ctxFor(section);if(defs[section.dataset.lab]?.persist||defs[section.dataset.lab]?.three)wipe(section);ctx.state.anim?.stop?.();ctx.state={};run(section);syncLanguages();});
  copy.addEventListener('click',async()=>{const url=new URL(location.href);url.hash=section.id;try{await navigator.clipboard.writeText(url.href);status.textContent=Lab.T('Copied','コピーしました');}catch(e){status.textContent=Lab.T('Copy the address bar instead','アドレスバーからコピーしてください');}setTimeout(()=>{status.textContent='';},2200);});
  bar.append(reset,copy,status);section.querySelector('.controls').after(bar);
 }
 function syncLanguages(){document.querySelectorAll('a[hreflang]').forEach(a=>{try{const u=new URL(a.href);u.search=location.search;u.hash=location.hash;a.href=u.href;}catch(e){}});}
 function renderTex(){for(const node of document.querySelectorAll('[data-tex]')){if(window.katex&&!node.dataset.done){try{window.katex.render(node.dataset.tex,node,{displayMode:true,throwOnError:false});node.dataset.done='1';}catch(e){}}}}
 function start(){
- sections.forEach(s=>{enhance(s);tools(s);});
+ sections.forEach(s=>{enhance(s);tools(s);s.__getCtx=()=>ctxFor(s);});
+ loadPractice();
  const go=()=>{sections.forEach(run);};
  const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting&&!e.target.__drawn){e.target.__drawn=true;run(e.target);}});},{rootMargin:'400px'});
  sections.forEach(s=>io.observe(s));
- Lab.onTheme(()=>sections.forEach(s=>{if(s.__drawn){if(defs[s.dataset.lab]?.persist)ctxFor(s).host.replaceChildren();run(s);}}));
+ Lab.onTheme(()=>sections.forEach(s=>{if(s.__drawn){if(defs[s.dataset.lab]?.persist||defs[s.dataset.lab]?.three)wipe(s);run(s);}}));
  let lastW=document.querySelector('.math-wrap').clientWidth,timer;
- new ResizeObserver(es=>{const w=Math.round(es[0].contentRect.width);if(Math.abs(w-lastW)<2)return;lastW=w;clearTimeout(timer);timer=setTimeout(()=>sections.forEach(s=>{if(s.__drawn){if(defs[s.dataset.lab]?.persist)ctxFor(s).host.replaceChildren();run(s);}}),120);}).observe(document.querySelector('.math-wrap'));
+ new ResizeObserver(es=>{const w=Math.round(es[0].contentRect.width);if(Math.abs(w-lastW)<2)return;lastW=w;clearTimeout(timer);timer=setTimeout(()=>sections.forEach(s=>{if(s.__drawn){const d=defs[s.dataset.lab];if(d?.three&&!ctxFor(s).state.__v3fallback&&!d.resize2d)return;if(d?.persist||d?.three)wipe(s);run(s);}}),120);}).observe(document.querySelector('.math-wrap'));
  syncLanguages();window.addEventListener('hashchange',syncLanguages);
  renderTex();window.addEventListener('load',renderTex);
  void go;
 }
+function loadPractice(){if(!topic||!document.querySelector('[data-practice]'))return;const q=document.createElement('script');q.src=`/math-labs/questions/${topic}.js?v=${VERSION}`;q.onload=()=>{const go=()=>window.Practice?.mountAll();if(window.Practice)go();else window.addEventListener('load',go);};document.head.appendChild(q);}
 if(topic){const sc=document.createElement('script');sc.src=`/math-labs/topics/${topic}.js?v=${VERSION}`;sc.onload=start;sc.onerror=start;document.head.appendChild(sc);}else start();
 })();

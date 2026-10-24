@@ -159,3 +159,148 @@ dark, and fix what looks wrong before you finish. Also try the extreme values
 of every slider (append `?<labid>.<key>=<value>` to the URL, or temporarily
 change defaults) and make sure nothing breaks or leaves the frame.
 `node math-labs/verify.cjs` must still pass.
+
+## Practice questions (generators)
+
+Every experiment ends with a practice card: three tiers (Warm-up, Standard,
+Challenge), a fresh question on every press of "New question", answer
+checking, a hint, a worked solution, and "Show in the figure", which sets the
+experiment's controls to the question's case. The fixed question in
+content.json is only the no-JavaScript fallback.
+
+Generators live in `math-labs/questions/<slug>.js`, one file per topic,
+loaded by app.js after the topic module. Reference: `questions/differential-geometry.js`.
+
+```js
+'use strict';
+(() => {
+  const Q = (typeof window !== 'undefined' ? window : globalThis).LabQuestions ||= {};
+  const P = (typeof window !== 'undefined' && window.Practice) || globalThis.Practice;
+  const { fmtNum: n, sig, frac, terms, mat } = P.util;
+  Q['lab-id'] = [warmUp, standard, challenge];   // exactly three functions (r) => question
+})();
+```
+
+A generator receives `r`, a seeded random source: `r.int(a, b)`, `r.nz(a, b)`
+(non-zero int), `r.real(a, b, decimals)`, `r.step(a, b, step)`, `r.pick(arr)`,
+`r.shuffle(arr)`, `r.sample(arr, k)`, `r.sign()`, `r.chance(p)`, `r.u()`.
+It must be pure: same seed, same question. It returns:
+
+- `q: [en, ja]` the prompt. Inline TeX in `$...$` (KaTeX); escape backslashes
+  in JS strings (`\\frac`). Plain words outside the dollars.
+- `a` the answer:
+  - `{type:'num', v, tol?, rel?, unit?:[en,ja], show?}` readers may type
+    `3/4`, `2pi`, `sqrt(3)/2`, `1.6e-19`. Default tolerance is 0.5% relative;
+    set `tol` (absolute) when the prompt asks for decimals, matched to them.
+    `show` is TeX for the exact value when it is nicer than the decimal.
+  - `{type:'int', v}` exact integers (counts, orders, indices).
+  - `{type:'choice', opts:[[en,ja],...], v}` options are shuffled unless
+    `fixed:true` (use fixed for yes/no and ordered options). Wrong options
+    must be the mistakes people actually make, not filler.
+  - `{type:'tuple', v:[...], labels:['$x$','$y$'], tol?}` several numbers.
+  - `{type:'expr', v:'6x/(1+9x^4)^(3/2)', vars:['x'], dom?:{x:[lo,hi]}, const?:true, lhs?:[en,ja]}`
+    a symbolic answer, checked by evaluating at random points in `dom`
+    (default 0.35..2.15, so keep it inside the domain where both sides are
+    defined). `const:true` accepts any antiderivative. Use symbolic answers
+    wherever the natural answer is a formula: derivatives, densities,
+    transforms, solutions of ODEs, closed forms of sums.
+- `sol: [[en, ja], ...]` the worked solution, 2 to 5 steps, each a full
+  sentence with the numbers substituted. The final "Answer:" line is added
+  automatically. The last step should say what the result means.
+- `hint: [en, ja]` optional; the idea, not the answer.
+- `set: {key: value}` optional; control values (keys from the experiment's
+  params, inside their ranges and on their steps) that put this case on the
+  figure. Use it whenever the question's case is reachable by the controls.
+
+Writing the three tiers:
+- Warm-up: one idea, one step: read off, recall the definition, a single
+  substitution. Still generated (vary the numbers and the form).
+- Standard: the experiment's own formula used properly, 2 to 3 steps, the
+  kind of thing the readout computes.
+- Challenge: reasoning, not just arithmetic: a symbolic answer, an inverse
+  problem (find the parameter that produces an effect), a limiting case, a
+  classification with a justification, or two ideas combined.
+- Each tier should draw from more than one question form where the topic
+  allows (pick a form with `r.int(0, k)`), so pressing "New question" ten
+  times does not feel like the same question.
+- Numbers chosen so the arithmetic is clean where exactness matters and
+  realistic where physics matters (real constants, sensible magnitudes,
+  `sig()` for significant figures).
+- Compute every answer in the generator from first principles; never
+  hard-code an answer. Where the topic module exports a model
+  (`window.LabModels[slug]`), you may cross-check against it in the checks
+  file, but generators must not depend on topic modules (they load separately).
+- Japanese in です・ます, same register as the pages; no em-dashes in either language.
+
+Check with `node math-labs/verify-practice.cjs <slug>`: it runs every tier
+for 120 seeds and fails on exceptions, NaN, a missing language, TeX that
+KaTeX cannot render, an answer its own checker rejects, `set` keys that do
+not exist or fall outside their range, or too little variety.
+
+## 3D experiments
+
+`math-labs/three3d.js` adds a three.js scene to an experiment, through the
+site's lab-kit runtime (WebGPU, WebGL 2 fallback). Use it where the object is
+genuinely three-dimensional and depth carries meaning: surfaces and their
+curvature, curves in space, rotations and orientation, fields and flows in
+space, orbitals and densities in 3D, lattices and crystals, mechanisms,
+spacetime with one space dimension as a sheet, or a function of two
+variables whose shape (not just its values) is the point. Do not use it for
+graphs of one variable, tables, 2D diagrams, or anything that reads better
+flat. A painter's-algorithm SVG pseudo-3D figure is the clearest sign a lab
+should move to 3D. Reference: `topics/differential-geometry.js`
+(`geodesic-surface`, `gaussian`).
+
+```js
+D['lab-id'] = {
+  three: true,                      // the runtime keeps the scene between renders
+  render(ctx, v) {
+    const st = ctx.state;
+    if (!st.frame || !st.frame.isConnected) {          // build containers once
+      ctx.host.replaceChildren();
+      st.frame = L.h('div', '', ctx.host);
+      st.v3 = L.h('div', '', st.frame);                // or a .lab-row with a 2D column beside it
+      st.leg = L.h('div', '', st.frame);
+    }
+    L.view3d(ctx, v, {
+      host: st.v3, aspect: 0.62, maxH: 520, camera: [5, -6, 4], target: [0, 0, 0], fov: 35,
+      init(S) { st.flat = false; /* build meshes once; keep references on st */ },
+      update(S, v) { /* move/recompute from v; also redraw 2D side panels, legend, readout */ },
+      fallback(ctx, v) { st.flat = true; /* draw the old 2D figure into st.v3 */ },
+    });
+    if (!st.__v3 && !st.flat) { /* still loading: draw side panels and readout now */ }
+  },
+};
+```
+
+Always keep a 2D fallback (the previous figure is ideal): it runs when the
+browser has neither WebGPU nor WebGL 2, and with `?flat` in the URL.
+Coordinates are mathematical with **Z up**. `S` provides:
+
+- `S.surface(fn(u, v) -> [x, y, z], {u:[a,b], v:[a,b], nu, nv, c, colour(u, v, p) -> THREE.Color, wire, wireEvery, opacity, rough, metal, coat})` with `.update(fn)`
+- `S.graph(f(x, y), {x, y, nu, nv, zRange, cmap, colour, wire})` z = f(x, y), with `.update(f)`
+- `S.tube(points | fn(t), {r, c, closed, t:[a,b], n, glow})` with `.update(points)`
+- `S.lines(segments, {c, opacity})`, `S.polyline(points, o)` thin lines, many at once, `.update(...)`
+- `S.arrow(from, vec, {c, r, glow})` with `.set(from, vec)`; `S.sphere(p, r, {c})` with `.at(p)`
+- `S.points(pts, {c, r, max, colours, radii})` instanced spheres, `.update(pts, colours, radii)`
+- `S.axes({len, names, neg, only})`, `S.floor({size, n, z})`, `S.disc(c, n, r)`, `S.box(size, c)`
+- `S.label(text, p, {math, small, c, align:'end'|'middle'})` DOM text pinned to a point, `.set(p, text)`
+- `S.handle(p, {plane:[n, q] | sphere:[c, r], bounds, onDrag(vec3) -> p?, c, label})` direct
+  manipulation in 3D; onDrag may return the constrained point. Prefer it to sliders where the
+  reader would grab the thing itself; call `ctx.set` or `ctx.redraw()` from it.
+- `S.mat(token, opts)`, `S.colour(token)`, `S.cmap.seq|warm|div|phase` (THREE.Color),
+  `S.cols` theme colours, `S.THREE`, `S.scene`, `S.camera`, `S.add(obj)`
+- `S.animate((dt, t) => more)` per-frame callback; return false to stop. Respect `S.reduced()`:
+  under reduced motion draw the finished state instead of animating.
+- `S.invalidate()` after changing anything by hand (the helpers do it for you).
+
+Rendering is on demand: frames are drawn only when something changes, the
+reader drags, or an animation runs. Budget: under ~200k triangles and
+~40 tubes per scene; surfaces rarely need more than 140 × 140. Colours come
+from the same tokens as the 2D kit, so light and dark both work; the theme
+switch rebuilds the scene. Labels sparingly: the three or four things a reader
+must identify. Readouts, legends and captions stay HTML, outside the canvas.
+
+Check with `node math-labs/dev/shoot3d.cjs <slug>` (prints the backend:
+webgl2 in the sandbox, webgpu on a real GPU) and look at every screenshot,
+light and dark, at 1100 and 390 px width.

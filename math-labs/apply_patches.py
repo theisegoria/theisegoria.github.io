@@ -52,7 +52,7 @@ def section(l, ja):
             f'<p class="readout" aria-live="polite"></p><div class="formula" data-tex="{esc(l["formula"], quote=True)}"></div>'
             f'<div class="notes"><p><strong>{"計算例" if ja else "Worked example"}.</strong> {esc(l["example"][lang])}</p>'
             f'<p><strong>{"注意点" if ja else "Watch out"}.</strong> {esc(l["caution"][lang])}</p>'
-            f'<details><summary>{esc(l["question"][lang])}</summary><p>{esc(l["answer"][lang])}</p></details></div>'
+            f'</div><div class="practice" data-practice="{l["id"]}"><details><summary>{esc(l["question"][lang])}</summary><p>{esc(l["answer"][lang])}</p></details></div>'
             f'<a class="source" href="{l["url"]}">{"参考文献" if ja else "Reference"}: {esc(l["source"])}</a></section>')
 
 
