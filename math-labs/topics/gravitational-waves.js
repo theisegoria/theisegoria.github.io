@@ -202,8 +202,8 @@
           }
           st.g.line(pts, { c: 'c1', w: 1.3, layer: 'under' });
           st.g.line(pts.map(([t, y], i) => [t, strain(fpts[i][1], Mc, Dm) * 1e21]), { c: 'c2', w: 1.4, dash: '4 3', layer: 'under' });
-          st.g.text(-tShow, 1.05 * hmax * 1e21, T(`from ${fmt(fLo, 1)} Hz`, `${fmt(fLo, 1)} Hz から`), { small: true, c: 'muted', dx: 4 });
-          st.g.text(0, 1.05 * hmax * 1e21, `${fmt(fi, 0)} Hz`, { small: true, c: 'muted', anchor: 'end', dx: -4 });
+          st.g.text(-tShow, 1.05 * hmax * 1e21, T(`from ${fmt(fLo, 1)} Hz`, `${fmt(fLo, 1)} Hz から`), { small: true, c: 'muted', dx: 4 , layer: 'main' });
+          st.g.text(0, 1.05 * hmax * 1e21, `${fmt(fi, 0)} Hz`, { small: true, c: 'muted', anchor: 'end', dx: -4 , layer: 'main' });
           st.leg.replaceChildren();
           L.legend(st.leg, [{ c: 'c1', label: T('h₊ at Earth, face-on', '地球での h₊（正面から見た場合）') }, { c: 'c2', dash: true, label: T('amplitude ∝ f^{2/3}', '振幅 ∝ f^{2/3}') }, { kind: 'fill', c: 'pos', label: T('space stretched along this direction', 'この向きに空間が伸びている') }, { kind: 'fill', c: 'neg', label: T('space squeezed', '空間が縮んでいる') }]);
           st.tShow = tShow; st.tauIs = tauIs;

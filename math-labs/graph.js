@@ -123,7 +123,8 @@
     'continuum-mechanics': ['fluid-dynamics', 'calculus-of-variations', 'rigid-body-dynamics'],
     'electric-motors': ['switching-converters', 'control-theory', 'loudspeakers'],
     'gravitational-waves': ['optics', 'fourier-analysis', 'cosmology'],
-    'robot-kinematics': ['linear-algebra', 'quaternions', 'lie-groups']
+    'robot-kinematics': ['linear-algebra', 'quaternions', 'lie-groups'],
+    'riemann-surfaces': ['elliptic-curves', 'differential-geometry', 'hyperbolic-geometry']
   };
   // Topics named in each topic's own prerequisite line (content.json "prerequisite").
   const PREREQ = {
@@ -177,7 +178,8 @@
     'continuum-mechanics': ['linear-algebra', 'classical-mechanics'],    // Linear algebra, calculus and Newton’s laws
     'electric-motors': ['electromagnetism', 'classical-mechanics'],      // Electromagnetic induction, phasors and rotational mechanics
     'gravitational-waves': ['general-relativity'],                       // General relativity, oscillations and Kepler orbits
-    'robot-kinematics': ['linear-algebra', 'classical-mechanics']        // Trigonometry, vectors and matrices, partial derivatives
+    'robot-kinematics': ['linear-algebra', 'classical-mechanics'],       // Trigonometry, vectors and matrices, partial derivatives
+    'riemann-surfaces': ['complex-analysis', 'algebraic-topology']       // Complex numbers, the complex logarithm, and the Euler characteristic
   };
 
   let topics = [], bySlug = new Map(), edges = [], drawn = [];
