@@ -372,10 +372,16 @@
   function renderMath(node, text) {
     node.replaceChildren();
     const parts = String(text).split(/(\$[^$]+\$)/g);
-    for (const part of parts) {
+    let lastMath = null;
+    for (let part of parts) {
       if (!part) continue;
+      // keep punctuation that follows a formula on the same line as it
+      if (lastMath && /^[.,;:!?)、。，．）]/.test(part)) { const m = /^[.,;:!?)、。，．）]+/.exec(part)[0]; lastMath.append(doc.createTextNode(m)); part = part.slice(m.length); if (!part) continue; }
+      lastMath = null;
       if (part.length > 2 && part[0] === '$' && part.at(-1) === '$') {
-        const span = h('span', 'pr-m', node);
+        const wrapSpan = h('span', 'pr-mw', node);
+        lastMath = wrapSpan;
+        const span = h('span', 'pr-m', wrapSpan);
         const tex = part.slice(1, -1);
         if (root.katex) { try { root.katex.render(tex, span, { throwOnError: false, displayMode: false }); continue; } catch (e) { /* fall through */ } }
         span.textContent = tex.replace(/\\[a-z]+/gi, (m) => m.slice(1)).replace(/[{}]/g, '');

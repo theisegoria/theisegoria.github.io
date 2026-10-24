@@ -121,7 +121,9 @@
     'piston-engines': ['thermodynamics', 'fourier-analysis', 'gears-mechanisms'],
     'ergodic-theory': ['statistical-mechanics', 'number-theory', 'markov-chains'],
     'continuum-mechanics': ['fluid-dynamics', 'calculus-of-variations', 'rigid-body-dynamics'],
-    'electric-motors': ['switching-converters', 'control-theory', 'loudspeakers']
+    'electric-motors': ['switching-converters', 'control-theory', 'loudspeakers'],
+    'gravitational-waves': ['optics', 'fourier-analysis', 'cosmology'],
+    'robot-kinematics': ['linear-algebra', 'quaternions', 'lie-groups']
   };
   // Topics named in each topic's own prerequisite line (content.json "prerequisite").
   const PREREQ = {
@@ -173,7 +175,9 @@
     'piston-engines': ['classical-mechanics', 'thermodynamics', 'fourier-analysis'], // Kinematics, thermodynamics of ideal gases, and Fourier series
     'ergodic-theory': ['measure-theory', 'dynamical-systems'],           // Measure theory and dynamical systems
     'continuum-mechanics': ['linear-algebra', 'classical-mechanics'],    // Linear algebra, calculus and Newton’s laws
-    'electric-motors': ['electromagnetism', 'classical-mechanics']       // Electromagnetic induction, phasors and rotational mechanics
+    'electric-motors': ['electromagnetism', 'classical-mechanics'],      // Electromagnetic induction, phasors and rotational mechanics
+    'gravitational-waves': ['general-relativity'],                       // General relativity, oscillations and Kepler orbits
+    'robot-kinematics': ['linear-algebra', 'classical-mechanics']        // Trigonometry, vectors and matrices, partial derivatives
   };
 
   let topics = [], bySlug = new Map(), edges = [], drawn = [];
