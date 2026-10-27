@@ -49,39 +49,167 @@
     },
   };
 
+  // ---------- 2. determinant as signed volume ----------
+  // A = [[a, c, p], [0, d, q], [0, 0, k]]: the first two columns lie in the floor, so det A = a d k.
+  const detCols = (v, s = 1) => {
+    const m = (x, y) => x + (y - x) * s;
+    return [[m(1, v.a), 0, 0], [m(0, v.c), m(1, v.d), 0], [m(0, v.p ?? 0), m(0, v.q ?? 0), m(1, v.k ?? 1)]];
+  };
+  const det3 = ([u, w, z]) => u[0] * (w[1] * z[2] - w[2] * z[1]) - w[0] * (u[1] * z[2] - u[2] * z[1]) + z[0] * (u[1] * w[2] - u[2] * w[1]);
+  function rank3(cols) {
+    const M = [0, 1, 2].map((i) => cols.map((c) => c[i]));
+    let r = 0;
+    for (let c = 0; c < 3 && r < 3; c++) {
+      let piv = r; for (let i = r; i < 3; i++) if (Math.abs(M[i][c]) > Math.abs(M[piv][c])) piv = i;
+      if (Math.abs(M[piv][c]) < 1e-9) continue;
+      [M[r], M[piv]] = [M[piv], M[r]];
+      for (let i = r + 1; i < 3; i++) { const f = M[i][c] / M[r][c]; for (let j = c; j < 3; j++) M[i][j] -= f * M[r][j]; }
+      r++;
+    }
+    return r;
+  }
+  // orthographic view of 3D points for the no-3D fallbacks: camera position (looking at target), z up
+  function ortho(cam, target) {
+    const sub = (a, b) => [a[0] - b[0], a[1] - b[1], a[2] - b[2]], nrm = (a) => { const l = Math.hypot(...a) || 1; return a.map((x) => x / l); };
+    const cr = (a, b) => [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]], dt = (a, b) => a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
+    const F = nrm(sub(target, cam)), R = nrm(cr(F, [0, 0, 1])), U = cr(R, F);
+    return { P: (q) => [dt(q, R), dt(q, U)], depth: (q) => dt(q, F) };
+  }
+  function orthoFig(host, pts, O) {
+    const xs = pts.map((q) => O.P(q)[0]), ys = pts.map((q) => O.P(q)[1]);
+    const x0 = Math.min(...xs), x1 = Math.max(...xs), y0 = Math.min(...ys), y1 = Math.max(...ys), m = 0.12 * Math.max(x1 - x0, y1 - y0);
+    return L.fig(host, { axes: false, grid: false, equal: true, x: [x0 - m, x1 + m], y: [y0 - m, y1 + m], maxH: 400 });
+  }
+  const easeIO = (s) => (s < 0.5 ? 2 * s * s : 1 - 2 * (1 - s) ** 2);
+  const CUBE_FACES = [[0, 2, 3, 1], [4, 5, 7, 6], [0, 1, 5, 4], [2, 6, 7, 3], [0, 4, 6, 2], [1, 3, 7, 5]];
+  const CUBE_EDGES = [[0, 1], [2, 3], [4, 5], [6, 7], [0, 2], [1, 3], [4, 6], [5, 7], [0, 4], [1, 5], [2, 6], [3, 7]];
+  const corners = ([u, w, z]) => L.seq(8, (n) => { const i = n & 1, j = (n >> 1) & 1, l = (n >> 2) & 1; return [0, 1, 2].map((r) => i * u[r] + j * w[r] + l * z[r]); });
   D.det = {
+    three: true,
     render(ctx, v) {
-      ctx.state.anim?.stop();
-      const { a, d, c } = v, det = a * d, M = [a, c, 0, d];
-      const f = L.fig(ctx.host, { x: [-2.8, 2.8], y: [-2.3, 2.3], equal: true, maxH: 480 });
+      const st = ctx.state, DUR = 1.8;
+      if (!st.frame || !st.frame.isConnected) {
+        st.anim?.stop(); st.anim = null;
+        ctx.host.replaceChildren();
+        st.frame = L.h('div', '', ctx.host);
+        const row = L.h('div', 'lab-row is-wide', st.frame);
+        st.c1 = L.h('div', 'lab-col', row); st.c2 = L.h('div', 'lab-col', row);
+        st.cap1 = L.h('p', 'lab-cap', st.c1, T('The unit cube (grey edges) and its image, the parallelepiped spanned by the columns Ae₁, Ae₂, Ae₃. Drag the three tips; drag elsewhere to turn the view.', '単位立方体（灰色の辺）とその像、列 Ae₁, Ae₂, Ae₃ が張る平行六面体です。三つの先端をドラッグでき、それ以外の場所をドラッグすると視点が回ります。'));
+        st.v3 = L.h('div', '', st.c1);
+        L.h('p', 'lab-cap', st.c2, T('The floor face from above: the 2 × 2 block sends the unit square to the parallelogram spanned by Ae₁ and Ae₂, of area |ad|.', '上から見た底面です。2 × 2 の区画が単位正方形を Ae₁ と Ae₂ の張る平行四辺形に移し、その面積は |ad| です。'));
+        st.g2 = L.h('div', '', st.c2);
+        st.bar = L.h('div', '', st.frame);
+        st.leg = L.h('div', '', st.frame);
+      }
+      st.anim?.stop();
+      st.g2.replaceChildren(); st.bar.replaceChildren(); st.leg.replaceChildren();
+      const cols = detCols(v), det = det3(cols), base = v.a * v.d, rank = rank3(cols);
+      // 2D: the floor face
+      const f = L.fig(st.g2, { x: [-2.8, 2.8], y: [-2.3, 2.3], equal: true, maxH: 400 });
       L.seq(9, (i) => i - 4).forEach((i) => {
         f.line([[-4, i], [4, i]], { c: 'muted', w: 0.8, op: 0.22, layer: 'under' });
         f.line([[i, -4], [i, 4]], { c: 'muted', w: 0.8, op: 0.22, layer: 'under' });
       });
       f.poly([[0, 0], [1, 0], [1, 1], [0, 1]], { c: 'muted', fo: 0.04, dash: '4 4', w: 1.1, layer: 'under' });
-      const draw = (s) => {
-        f.clear('main');
-        const Ms = [1 + (M[0] - 1) * s, M[1] * s, 0, 1 + (M[3] - 1) * s], dt = Ms[0] * Ms[3];
+      const draw2d = (s) => {
+        f.clear('main'); f.clear('over');
+        const Ms = [1 + (v.a - 1) * s, v.c * s, 0, 1 + (v.d - 1) * s], dt = Ms[0] * Ms[3];
         grid(f, Ms, 5);
         const img = [[0, 0], [1, 0], [1, 1], [0, 1]].map((p) => apply(Ms, p));
-        const col = dt < -1e-9 ? 'c2' : 'c1';
-        f.poly(img, { c: col, fo: 0.26, w: 2 });
+        f.poly(img, { c: dt < -1e-9 ? 'c2' : 'c1', fo: 0.26, w: 2 });
         f.arrow([0, 0], apply(Ms, [1, 0]), { c: 'c2', w: 2.8 });
         f.arrow([0, 0], apply(Ms, [0, 1]), { c: 'c3', w: 2.8 });
-        f.clear('over');
         const cen = apply(Ms, [0.5, 0.5]);
-        if (Math.abs(dt) > 0.2) f.text(cen[0], cen[1], `${T('area', '面積')} ${fmt(Math.abs(dt), 2)}`, { dy: 4 });
+        if (Math.abs(dt) > 0.2) f.text(cen[0], cen[1], `${T('area', '面積')} ${fmt(Math.abs(dt), 2)}`, { dy: 4, layer: 'over' });
       };
-      const rank = Math.abs(det) > 1e-9 ? 2 : (Math.abs(a) + Math.abs(c) + Math.abs(d) > 1e-9 ? 1 : 0);
-      const DUR = 1.8;
-      ctx.state.anim = L.animator(ctx.host, (dt, t, label) => {
-        const s = Math.min(1, t / DUR), e = s < 0.5 ? 2 * s * s : 1 - 2 * (1 - s) ** 2;
-        draw(e);
+      f.handle(v.a, 0, { c: 'c2', axis: 'x', snap: 0.1, bounds: [-2, 2, 0, 0], label: T('Tip of Ae₁', 'Ae₁ の先端'), onDrag: (x) => ctx.set('a', x) });
+      f.handle(v.c, v.d, { c: 'c3', snap: 0.1, bounds: [-2, 2, -2, 2], label: T('Tip of Ae₂', 'Ae₂ の先端'), onDrag: (x, y) => { ctx.set('c', x, true); ctx.set('d', y); } });
+      const frameAt = (s) => { draw2d(s); st.e = s; st.shape3d?.(s); };
+      st.anim = L.animator(st.bar, (dt, t, label) => {
+        const s = Math.min(1, t / DUR), e = easeIO(s);
+        frameAt(e);
         label.textContent = e < 1 ? T('from I to A', 'I から A へ') + ` · ${Math.round(e * 100)}%` : '';
         return s < 1;
       }, { autoplay: false, once: true, duration: DUR, initialT: DUR, playLabel: T('Play I → A', 'I → A を再生') });
-      L.legend(ctx.host, [{ kind: 'fill', c: det < -1e-9 ? 'c2' : 'c1', label: det < -1e-9 ? T('Image of the unit square, orientation reversed', '単位正方形の像（向きが反転）') : T('Image of the unit square', '単位正方形の像') }, { c: 'c2', label: 'Ae₁' }, { c: 'c3', label: 'Ae₂' }]);
-      ctx.readout([{ k: 'det A', v: fmt(det), tone: 'key' }, { k: T('Area', '面積'), v: fmt(Math.abs(det)) }, { k: T('Rank', '階数'), v: String(rank), tone: rank < 2 ? 'warn' : undefined }, { k: T('Orientation', '向き'), v: det < -1e-9 ? T('reversed', '反転') : det > 1e-9 ? T('kept', '保存') : T('collapsed', '潰れる') }]);
+      const neg = det < -1e-9;
+      L.legend(st.leg, [
+        { kind: 'fill', c: neg ? 'c2' : 'c1', label: neg ? T('Image of the unit cube, orientation reversed', '単位立方体の像（向きが反転）') : T('Image of the unit cube', '単位立方体の像') },
+        { c: 'c2', label: 'Ae₁' }, { c: 'c3', label: 'Ae₂' }, { c: 'c4', label: T('Ae₃, at height k above the floor', 'Ae₃（床からの高さ k）') },
+      ]);
+      ctx.readout([
+        { k: 'det A = a·d·k', v: fmt(det), tone: 'key' },
+        { k: T('base area |ad|', '底面積 |ad|'), v: fmt(Math.abs(base)) },
+        { k: T('height |k|', '高さ |k|'), v: fmt(Math.abs(v.k)) },
+        { k: T('Rank', '階数'), v: String(rank), tone: rank < 3 ? 'warn' : undefined },
+        { k: T('Orientation', '向き'), v: neg ? T('reversed', '反転') : det > 1e-9 ? T('kept', '保存') : T('collapsed', '潰れる') },
+      ], rank < 3 ? T('A zero factor flattens the solid: the volume is zero and the columns span only a plane or a line.', '因子が一つでも 0 だと立体は潰れ、体積は 0 で、列は平面か直線しか張りません。') : T('Moving the top vector sideways (p and q) shears the solid without changing its volume: base times height is unchanged.', '上のベクトルを横に動かす（p と q）と立体はせん断されますが、底面積 × 高さは変わらないので体積も変わりません。'));
+      L.view3d(ctx, v, {
+        host: st.v3, aspect: 0.82, maxH: 440, camera: [3.9, -4.4, 3.1], target: [0.35, 0.35, 0.45], fov: 34,
+        init(S) {
+          st.flat = false;
+          const THREE = S.THREE;
+          S.floor({ size: 2.5, n: 10, z: 0 });
+          S.axes({ len: 2.4, negFrac: 0.35 });
+          S.lines(CUBE_EDGES.map(([i, j]) => { const P = corners([[1, 0, 0], [0, 1, 0], [0, 0, 1]]); return [P[i], P[j]]; }), { c: 'muted', opacity: 0.75 });
+          const geo = new THREE.BufferGeometry();
+          geo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(36 * 3), 3));
+          st.solidMat = S.mat('c1', { opacity: 0.42, rough: 0.45, coat: 0.3 });
+          st.solid = new THREE.Mesh(geo, st.solidMat); S.add(st.solid);
+          const bgeo = new THREE.BufferGeometry();
+          bgeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(6 * 3), 3));
+          st.baseMat = S.mat('c1', { opacity: 0.5, rough: 0.6 });
+          st.base = new THREE.Mesh(bgeo, st.baseMat); S.add(st.base);
+          st.edges = S.lines(CUBE_EDGES.map(() => [[0, 0, 0], [0, 0, 0]]), { c: 'ink', opacity: 0.8 });
+          st.drop = S.lines([[[0, 0, 0], [0, 0, 0]]], { c: 'c4', opacity: 0.7 });
+          st.ar = [S.arrow([0, 0, 0], [1, 0, 0], { c: 'c2', r: 0.03 }), S.arrow([0, 0, 0], [0, 1, 0], { c: 'c3', r: 0.03 }), S.arrow([0, 0, 0], [0, 0, 1], { c: 'c4', r: 0.03 })];
+          const snap = (x, lo, hi) => L.clamp(Math.round(x * 10) / 10, lo, hi);
+          st.h = [
+            S.handle([1, 0, 0], { c: 'c2', r: 0.085, label: 'Ae₁', plane: [[0, 0, 1], [0, 0, 0]], onDrag: (q) => { const a = snap(q.x, -2, 2); ctx.set('a', a); return [a, 0, 0]; } }),
+            S.handle([0, 1, 0], { c: 'c3', r: 0.085, label: 'Ae₂', plane: [[0, 0, 1], [0, 0, 0]], onDrag: (q) => { const c = snap(q.x, -2, 2), d = snap(q.y, -2, 2); ctx.set('c', c, true); ctx.set('d', d); return [c, d, 0]; } }),
+            S.handle([0, 0, 1], { c: 'c4', r: 0.085, label: 'Ae₃', plane: [[0, 0, 1], [0, 0, 1]], onDrag: (q) => { const p = snap(q.x, -1.5, 1.5), qq = snap(q.y, -1.5, 1.5); ctx.set('p', p, true); ctx.set('q', qq); return [p, qq, st.v.k]; } }),
+          ];
+          st.kLab = S.label('k', [0, 0, 0.5], { math: true, c: 'c4' });
+          st.volLab = S.label('', [0.5, 0.5, 0.5], { small: true, align: 'middle' });
+          st.shape3d = (s) => {
+            const C = detCols(st.v, s), P = corners(C), dt = det3(C);
+            const pos = st.solid.geometry.attributes.position.array;
+            let o = 0;
+            CUBE_FACES.forEach((fc) => [fc[0], fc[1], fc[2], fc[0], fc[2], fc[3]].forEach((n) => { pos[o++] = P[n][0]; pos[o++] = P[n][1]; pos[o++] = P[n][2]; }));
+            st.solid.geometry.attributes.position.needsUpdate = true; st.solid.geometry.computeVertexNormals(); st.solid.geometry.computeBoundingSphere();
+            const bp = st.base.geometry.attributes.position.array, z0 = 0.004;
+            [0, 1, 3, 0, 3, 2].forEach((n, i) => { bp[3 * i] = P[n][0]; bp[3 * i + 1] = P[n][1]; bp[3 * i + 2] = z0; });
+            st.base.geometry.attributes.position.needsUpdate = true; st.base.geometry.computeVertexNormals(); st.base.geometry.computeBoundingSphere();
+            const tone = dt < -1e-9 ? 'c2' : 'c1';
+            st.solidMat.color.copy(S.colour(tone)); st.baseMat.color.copy(S.colour(tone));
+            st.edges.update(CUBE_EDGES.map(([i, j]) => [P[i], P[j]]));
+            st.drop.update([[C[2], [C[2][0], C[2][1], 0]]]);
+            C.forEach((c, i) => { st.ar[i].visible = Math.hypot(...c) > 1e-6; if (st.ar[i].visible) st.ar[i].set([0, 0, 0], c); st.h[i].at(c); });
+            st.h[2].userData.handle.plane = [[0, 0, 1], [0, 0, C[2][2]]];
+            st.kLab.set([C[2][0] + 0.08, C[2][1], C[2][2] / 2]);
+            st.kLab.el.style.opacity = Math.abs(C[2][2]) > 0.25 ? '' : '0';
+            const cen = P.reduce((acc, q) => acc.map((x, i) => x + q[i] / 8), [0, 0, 0]);
+            st.volLab.set(cen, `det = ${fmt(dt, 2)}`);
+            S.invalidate();
+          };
+        },
+        update(S, vv) { st.v = vv; st.shape3d(st.e ?? 1); },
+        fallback() {
+          st.flat = true; st.shape3d = null;
+          st.v3.replaceChildren();
+          st.cap1.textContent = T('The unit cube (grey dashed edges) and its image, the parallelepiped spanned by Ae₁, Ae₂, Ae₃, in a fixed oblique view.', '単位立方体（灰色の破線）とその像、Ae₁, Ae₂, Ae₃ の張る平行六面体を、固定した斜めの視点から描いています。');
+          const O = ortho([3.9, -4.4, 3.1], [0.35, 0.35, 0.45]), C = detCols(v), Pc = corners(C), U = corners([[1, 0, 0], [0, 1, 0], [0, 0, 1]]);
+          const ax = [[2.2, 0, 0], [0, 2.2, 0], [0, 0, 2.2]];
+          const f = orthoFig(st.v3, [...Pc, ...U, ...ax, [-0.6, 0, 0], [0, -0.6, 0]], O);
+          ax.forEach((a, i) => { f.arrow(O.P(a.map((x) => -0.3 * x)), O.P(a), { c: 'muted', w: 1, op: 0.7 }); f.text(...O.P(a), 'xyz'[i], { math: true, c: 'muted', dx: 6 }); });
+          CUBE_EDGES.forEach(([i, j]) => f.line([O.P(U[i]), O.P(U[j])], { c: 'muted', w: 1, dash: '3 3', op: 0.8 }));
+          const tone = det < -1e-9 ? 'c2' : 'c1';
+          CUBE_FACES.map((fc) => ({ fc, d: fc.reduce((acc, k) => acc + O.depth(Pc[k]), 0) })).sort((p1, p2) => p2.d - p1.d)
+            .forEach(({ fc }) => f.poly(fc.map((k) => O.P(Pc[k])), { c: tone, fo: 0.16, w: 1.1 }));
+          f.line([O.P(C[2]), O.P([C[2][0], C[2][1], 0])], { c: 'c4', w: 1.2, dash: '4 3' });
+          ['c2', 'c3', 'c4'].forEach((c, i) => { if (Math.hypot(...C[i]) > 1e-6) { f.arrow(O.P([0, 0, 0]), O.P(C[i]), { c, w: 2.6 }); f.text(...O.P(C[i]), `Ae${'₁₂₃'[i]}`, { c, dx: 8, dy: -6, small: true }); } });
+        },
+      });
+      st.v = v;
     },
   };
 
@@ -121,28 +249,119 @@
     },
   };
 
+  // ---------- 4. least squares as projection onto the column space ----------
+  // Fit y = x0 + x1 t to (0, b1), (1, b2), (2, b3): A = [1 0; 1 1; 1 2], AᵀA = [3 3; 3 5].
+  function lsq(b) {
+    const s0 = b[0] + b[1] + b[2], s1 = b[1] + 2 * b[2];
+    const x0 = (5 * s0 - 3 * s1) / 6, x1 = (s1 - s0) / 2;
+    const p = [x0, x0 + x1, x0 + 2 * x1], e = b.map((y, i) => y - p[i]);
+    return { x0, x1, p, e, atb: [s0, s1], e2: e.reduce((s, y) => s + y * y, 0) };
+  }
+  const sub3 = (u, w) => [u[0] - w[0], u[1] - w[1], u[2] - w[2]];
+  const add3 = (u, w, k = 1) => [u[0] + k * w[0], u[1] + k * w[1], u[2] + k * w[2]];
+  const unit3 = (u) => { const l = Math.hypot(...u) || 1; return u.map((x) => x / l); };
   D.projection = {
+    three: true,
     render(ctx, v) {
-      const a = rad(v.angle), u = [Math.cos(a), Math.sin(a)], w = [2, 1], dot = u[0] * w[0] + u[1] * w[1], p = [u[0] * dot, u[1] * dot], r = [w[0] - p[0], w[1] - p[1]];
-      const f = L.fig(ctx.host, { x: [-1.6, 3.2], y: [-1.2, 2.4], equal: true, maxH: 470 });
-      f.line([[-6 * u[0], -6 * u[1]], [6 * u[0], 6 * u[1]]], { c: 'muted', w: 1.6 });
-      // right-angle marker at the foot
-      const rl = Math.hypot(...r);
-      if (rl > 0.08) {
-        const s = 0.16, e1 = u.map((x) => x * s * Math.sign(dot || 1) * -1), e2 = r.map((x) => x / rl * s);
-        f.line([[p[0] + e1[0], p[1] + e1[1]], [p[0] + e1[0] + e2[0], p[1] + e1[1] + e2[1]], [p[0] + e2[0], p[1] + e2[1]]], { c: 'muted', w: 1.2 });
+      const st = ctx.state, b = [v.b1, v.b2, v.b3], F = lsq(b);
+      if (!st.frame || !st.frame.isConnected) {
+        ctx.host.replaceChildren();
+        st.frame = L.h('div', '', ctx.host);
+        const row = L.h('div', 'lab-row is-wide', st.frame);
+        st.c1 = L.h('div', 'lab-col', row); st.c2 = L.h('div', 'lab-col', row);
+        st.cap1 = L.h('p', 'lab-cap', st.c1, T('ℝ³, one axis per data point. The blue plane is every vector Ax, the column space of A. Drag b; drag elsewhere to turn the view.', 'データ点ごとに一つの軸をとった ℝ³ です。青い平面は Ax の全体、つまり A の列空間です。b をドラッグでき、それ以外の場所をドラッグすると視点が回ります。'));
+        st.v3 = L.h('div', '', st.c1);
+        L.h('p', 'lab-cap', st.c2, T('The same fit as data: drag the three points. The orange misses are the three components of e.', '同じ当てはめをデータとして見た図です。三つの点をドラッグできます。橙色のずれが e の三つの成分です。'));
+        st.g2 = L.h('div', '', st.c2);
+        st.leg = L.h('div', '', st.frame);
       }
-      f.circle(w[0], w[1], rl, { c: 'c2', w: 1, dash: '3 4', op: 0.5 });
-      f.arrow([0, 0], w, { c: 'ink', w: 2.4 });
-      f.arrow([0, 0], p, { c: 'c1', w: 3 });
-      f.line([p, w], { c: 'c2', w: 2.4 });
-      f.dot(p[0], p[1], { c: 'c1' });
-      f.text(w[0], w[1], 'v', { math: true, dx: 10, dy: -8 });
-      f.text(p[0], p[1], 'v̂', { math: true, dx: -12, dy: 18, c: 'c1' });
-      const tip = [2.6 * u[0], 2.6 * u[1]];
-      f.handle(tip[0], tip[1], { c: 'c3', label: T('Direction of the line', '直線の向き'), onDrag: (x, y) => { let deg = Math.atan2(y, x) * 180 / Math.PI; if (deg < 0) deg += 180; if (deg > 180) deg -= 180; ctx.set('angle', deg); } });
-      L.legend(ctx.host, [{ c: 'c1', label: T('Projection v̂', '射影 v̂') }, { c: 'c2', label: T('Residual v − v̂, perpendicular to the line', '残差 v − v̂（直線に垂直）') }, { c: 'c2', dash: true, label: T('Every closer point would lie inside this circle', 'より近い点はこの円の内側にある') }]);
-      ctx.readout([{ k: '‖v − v̂‖²', v: fmt(rl * rl), tone: 'key' }, { k: 'u·(v − v̂)', v: fmt(u[0] * r[0] + u[1] * r[1]), tone: 'good' }, { k: 'v̂', v: `(${fmt(p[0], 3)}, ${fmt(p[1], 3)})` }], T('Drag the teal handle to turn the line.', '青緑のハンドルで直線を回せます。'));
+      st.g2.replaceChildren(); st.leg.replaceChildren();
+      // 2D: data and fitted line
+      const g = L.fig(st.g2, { x: [-0.5, 2.5], y: [-0.6, 3.6], aspect: 1.05, maxH: 420, xlabel: 't', ylabel: 'y', ticksX: [[0, '0'], [1, '1'], [2, '2']] });
+      g.line([[-0.5, F.x0 - 0.5 * F.x1], [2.5, F.x0 + 2.5 * F.x1]], { c: 'c1', w: 2.4 });
+      [0, 1, 2].forEach((t) => {
+        if (Math.abs(F.e[t]) > 1e-3) g.line([[t, F.p[t]], [t, b[t]]], { c: 'c2', w: 2.4 });
+        g.dot(t, F.p[t], { c: 'hl', r: 4.5 });
+        if (Math.abs(F.e[t]) > 0.15) g.text(t, (F.p[t] + b[t]) / 2, `e${'₁₂₃'[t]}`, { c: 'c2', dx: 8, small: true, math: true });
+        g.handle(t, b[t], { c: 'ink', axis: 'y', snap: 0.1, bounds: [t, t, 0, 3], label: T(`Data point ${t + 1}`, `データ点 ${t + 1}`), onDrag: (x, y) => ctx.set('b' + (t + 1), y) });
+      });
+      L.legend(st.leg, [
+        { c: 'ink', kind: 'dot', label: T('data b = (b₁, b₂, b₃)', 'データ b = (b₁, b₂, b₃)') },
+        { c: 'hl', kind: 'dot', label: T('projection p = Ax̂: the fitted values', '射影 p = Ax̂：当てはめた値') },
+        { c: 'c2', label: T('residual e = b − p, perpendicular to the plane', '残差 e = b − p（平面に垂直）') },
+        { c: 'c1', label: T('column space of A, and the fitted line y = x̂₀ + x̂₁t', 'A の列空間と当てはめた直線 y = x̂₀ + x̂₁t') },
+      ]);
+      const ate = [F.e[0] + F.e[1] + F.e[2], F.e[1] + 2 * F.e[2]];
+      ctx.readout([
+        { k: T('x̂ = (intercept, slope)', 'x̂ =（切片, 傾き）'), v: `(${fmt(F.x0, 3)}, ${fmt(F.x1, 3)})`, tone: 'key' },
+        { k: 'p = Ax̂', v: `(${fmt(F.p[0], 3)}, ${fmt(F.p[1], 3)}, ${fmt(F.p[2], 3)})` },
+        { k: '‖e‖²', v: fmt(F.e2, 4) },
+        { k: 'Aᵀe', v: `(${fmt(Math.abs(ate[0]) < 5e-10 ? 0 : ate[0], 3)}, ${fmt(Math.abs(ate[1]) < 5e-10 ? 0 : ate[1], 3)})`, tone: 'good' },
+      ], F.e2 < 1e-9 ? T('The three points are collinear: b lies in the plane, so p = b and the residual vanishes.', '三点が一直線上にあります。b が平面上にあるので p = b で、残差は 0 です。') : T('Aᵀe = 0 says the residual is perpendicular to both columns, so to the whole plane: that is the normal equation AᵀAx̂ = Aᵀb.', 'Aᵀe = 0 は残差が両方の列に、したがって平面全体に垂直であることを表します。これが正規方程式 AᵀAx̂ = Aᵀb です。'));
+      L.view3d(ctx, v, {
+        host: st.v3, aspect: 0.82, maxH: 460, camera: [-2.0, -4.4, 5.2], target: [1.05, 1.05, 1.0], fov: 36,
+        init(S) {
+          st.flat = false;
+          const q1 = unit3([1, 1, 1]), q2 = unit3([-1, 0, 1]), c0 = [1.3, 1.3, 1.3];
+          const plane = (al, be) => add3(add3(c0, q1, al), q2, be);
+          S.surface(plane, { u: [-2.3, 2.3], v: [-1.4, 1.4], nu: 2, nv: 2, c: 'c1', opacity: 0.2, rough: 0.7 });
+          const segs = [];
+          for (let i = -4; i <= 4; i++) segs.push([plane(i * 2.3 / 4, -1.4), plane(i * 2.3 / 4, 1.4)]);
+          for (let j = -2; j <= 2; j++) segs.push([plane(-2.3, j * 1.4 / 2), plane(2.3, j * 1.4 / 2)]);
+          S.lines(segs, { c: 'c1', opacity: 0.35 });
+          S.axes({ len: 3.2, negFrac: 0.15, names: ['t = 0', 't = 1', 't = 2'] });
+          S.arrow([0, 0, 0], [1, 1, 1], { c: 'muted', r: 0.022 });
+          S.arrow([0, 0, 0], [0, 1, 2], { c: 'muted', r: 0.022 });
+          S.label('a₁', [1.05, 1.05, 1.12], { math: true, c: 'muted' });
+          S.label('a₂', [0, 0.95, 1.9], { math: true, c: 'muted', align: 'end' });
+          st.bArrow = S.arrow([0, 0, 0], [1, 1, 1], { c: 'ink', r: 0.03 });
+          st.pArrow = S.arrow([0, 0, 0], [1, 1, 1], { c: 'hl', r: 0.034, glow: 0.2 });
+          st.eTube = S.tube([[0, 0, 0], [0, 0, 0.01]], { c: 'c2', r: 0.03 });
+          st.combo = S.lines([[[0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0]]], { c: 'hl', opacity: 0.6 });
+          st.corner = S.lines([[[0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0]]], { c: 'ink', opacity: 0.8 });
+          st.pDot = S.sphere([0, 0, 0], 0.05, { c: 'hl' });
+          st.pLab = S.label('p', [0, 0, 0], { math: true, c: 'hl' });
+          st.eLab = S.label('e', [0, 0, 0], { math: true, c: 'c2' });
+          const camDir = () => { const d = new S.THREE.Vector3(); S.camera.getWorldDirection(d); return [d.x, d.y, d.z]; };
+          const ho = { c: 'ink', r: 0.075, label: 'b', onDrag: (q) => { const s = (x) => L.clamp(Math.round(x * 10) / 10, 0, 3); const nb = [s(q.x), s(q.y), s(q.z)]; ctx.set('b1', nb[0], true); ctx.set('b2', nb[1], true); ctx.set('b3', nb[2]); return nb; } };
+          Object.defineProperty(ho, 'plane', { get: () => [camDir(), st.b] });
+          st.bh = S.handle([0, 0, 0], ho);
+        },
+        update(S, vv) {
+          const bb = [vv.b1, vv.b2, vv.b3], G = lsq(bb);
+          st.b = bb;
+          st.bArrow.set([0, 0, 0], bb); st.bh.at(bb);
+          st.pArrow.visible = Math.hypot(...G.p) > 1e-6; if (st.pArrow.visible) st.pArrow.set([0, 0, 0], G.p);
+          st.pDot.at(G.p);
+          const el = Math.sqrt(G.e2);
+          st.eTube.visible = el > 1e-3; if (el > 1e-3) st.eTube.update([G.p, bb]);
+          const m1 = [G.x0, G.x0, G.x0];
+          st.combo.update([[[0, 0, 0], m1], [m1, G.p]]);
+          if (el > 0.12 && Math.hypot(...G.p) > 0.3) {
+            const s = 0.16, ue = unit3(G.e), ud = unit3(G.p.map((x) => -x));
+            st.corner.update([[add3(G.p, ue, s), add3(add3(G.p, ue, s), ud, s)], [add3(add3(G.p, ue, s), ud, s), add3(G.p, ud, s)]]);
+          } else st.corner.update([[[0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0]]]);
+          st.pLab.set(add3(G.p, [0.05, 0, -0.18]));
+          st.eLab.set(add3(add3(G.p, G.e, 0.5), unit3(G.p), 0.12)); st.eLab.el.style.opacity = el > 0.25 ? '' : '0';
+          S.invalidate();
+        },
+        fallback() {
+          st.flat = true; st.v3.replaceChildren();
+          st.cap1.textContent = T('ℝ³, one axis per data point, in a fixed oblique view. The blue plane is the column space of A; e is perpendicular to it.', 'データ点ごとに一つの軸をとった ℝ³ を、固定した斜めの視点から描いています。青い平面は A の列空間で、e はそれに垂直です。');
+          const O = ortho([-2.0, -4.4, 5.2], [1.05, 1.05, 1.0]), q1 = unit3([1, 1, 1]), q2 = unit3([-1, 0, 1]), c0 = [1.3, 1.3, 1.3];
+          const pl = (al, be) => add3(add3(c0, q1, al), q2, be), corn = [pl(-2.3, -1.4), pl(2.3, -1.4), pl(2.3, 1.4), pl(-2.3, 1.4)];
+          const ax = [[3.2, 0, 0], [0, 3.2, 0], [0, 0, 3.2]];
+          const f = orthoFig(st.v3, [...corn, ...ax, b], O);
+          ax.forEach((a, i) => { f.arrow(O.P([0, 0, 0]), O.P(a), { c: 'muted', w: 1, op: 0.7 }); f.text(...O.P(a), `t = ${i}`, { c: 'muted', small: true, dx: 4 }); });
+          f.poly(corn.map(O.P), { c: 'c1', fo: 0.14, w: 1 });
+          [[1, 1, 1], [0, 1, 2]].forEach((a, i) => { f.arrow(O.P([0, 0, 0]), O.P(a), { c: 'muted', w: 1.8 }); f.text(...O.P(a), `a${'₁₂'[i]}`, { c: 'muted', small: true, dx: 6 }); });
+          f.arrow(O.P([0, 0, 0]), O.P(b), { c: 'ink', w: 2.2 });
+          f.arrow(O.P([0, 0, 0]), O.P(F.p), { c: 'hl', w: 2.6 });
+          f.line([O.P(F.p), O.P(b)], { c: 'c2', w: 2.6 });
+          f.text(...O.P(b), 'b', { math: true, dx: 8, dy: -6 });
+          f.text(...O.P(F.p), 'p', { math: true, c: 'hl', dx: 8, dy: 12 });
+        },
+      });
     },
   };
 

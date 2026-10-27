@@ -277,56 +277,154 @@
   };
 
   /* ---------- 3. the complex torus ---------- */
+  // everything the lab shows for one setting of the controls
+  function latticeData(v) {
+    const t = v.t, lineY = (k) => (k ? t / 2 : 0);
+    const u = [v.ux, lineY(v.ul)], w = [v.vx, lineY(v.vl)];
+    let sx = u[0] + w[0]; sx -= Math.round(sx);
+    const sl = (v.ul + v.vl) % 2, s = [sx, lineY(sl)];
+    let rx = -sx; rx -= Math.round(rx); if (rx < -0.5 + 1e-9) rx += 1;
+    const r3 = [rx, lineY(sl)];
+    const isO = (z) => Math.abs(z[0]) < 0.004 && z[1] === 0;
+    const [g2, g3] = g2g3(t), e = eRoots(t);
+    const toPt = (z) => { if (isO(z)) return null; const W = wp(z, t); return [W[0][0], W[1][0]]; };
+    const P = toPt(u), Q = toPt(w), S = addW(P, Q, g2), Wz = toPt(s);
+    return { t, u, w, s, sl, r3, isO, g2, g3, e, P, Q, S, Wz };
+  }
+  // the old flat picture: the plane coloured by the phase of p, with the period rectangle (also the no-3D fallback)
+  function latticeFlat(ctx, host, d) {
+    const { t, u, w, s, isO } = d;
+    const f = L.fig(host, { x: [-0.56, 0.56], y: [-0.24 * t, 1.08 * t], equal: true, axes: false, grid: false, maxH: 460 });
+    const col = L.colours();
+    f.raster((x, y) => { const W = wp([x, y], t); if (!W) return col.plate; const val = W[0]; return mixc(L.cmaps.phase(Math.atan2(val[1], val[0]), Math.hypot(val[0], val[1])), col.plate, 0.28); }, { res: 3 });
+    f.rect(-0.5, 0, 1, t, { c: 'ink', fill: false, fo: 0, w: 1.4, dash: '5 4' });
+    f.line([[-0.56, 0], [0.56, 0]], { c: 'c1', w: 3 });
+    f.line([[-0.56, t / 2], [0.56, t / 2]], { c: 'c3', w: 3 });
+    [[0, 0], [-0.5, 0], [0.5, 0], [0, t], [-0.5, t], [0.5, t]].forEach(([x, y]) => f.dot(x, y, { c: 'ink', r: 3.5 }));
+    f.text(0, 0, '0', { math: true, dx: -9, dy: 16 });
+    f.text(0, t, 'τ', { math: true, dx: -9, dy: -8 });
+    if (!isO(s)) { f.dot(s[0], s[1], { c: 'hl', r: 7.5, layer: 'over' }); f.text(s[0], s[1], 'u+v', { math: true, dx: 10, dy: -12, anchor: 'start' }); }
+    if (!isO(d.r3)) f.dot(d.r3[0], d.r3[1], { c: 'c2', r: 5.5, hollow: true, layer: 'over' });
+    const drag = (kx, kl) => (x, y) => { ctx.set(kx, L.clamp(x, -0.5, 0.5), true); const m = ((y % t) + t) % t; ctx.set(kl, Math.abs(m - t / 2) < t / 4 ? 1 : 0, true); ctx.redraw(); };
+    f.handle(u[0], u[1], { c: 'c4', label: T('Point u of the torus', 'トーラスの点 u'), bounds: [-0.5, 0.5, -0.2 * t, 1.05 * t], onDrag: drag('ux', 'ul') });
+    f.handle(w[0], w[1], { c: 'c4', label: T('Point v of the torus', 'トーラスの点 v'), bounds: [-0.5, 0.5, -0.2 * t, 1.05 * t], onDrag: drag('vx', 'vl') });
+    f.text(u[0], u[1], 'u', { math: true, dx: -12, dy: -12 });
+    f.text(w[0], w[1], 'v', { math: true, dx: -12, dy: -12 });
+  }
+  // the real curve y^2 = 4x^3 - g2 x - g3 with the chord, the third point and the sum
+  function latticeCurve(host, d) {
+    const { e, g2, g3, P, Q, S, Wz } = d, [e1, e2, e3] = e;
+    const span = e1 - e3, X0 = e3 - 0.25 * span, X1 = e1 + 0.5 * span;
+    const Fw = (x) => 4 * x * x * x - g2 * x - g3, Y = 1.08 * Math.sqrt(Math.max(1e-9, Fw(X1))), box = [X0, X1, -Y, Y];
+    const g = L.fig(host, { x: [X0, X1], y: [-Y, Y], aspect: 0.95, maxH: 440, xlabel: 'x = ℘(z)', ylabel: 'y = ℘′(z)' });
+    locus(Fw, [e3, e2, e1], X0, X1, Y).forEach((pc) => g.line(pc, { c: pc[0][0] < e2 + 1e-9 && pc.every((q) => q[0] <= e2 + 1e-6) ? 'c3' : 'c1', w: 2.8 }));
+    if (P && Q) {
+      const lam = S && Math.abs(P[0] - Q[0]) > 1e-9 * (1 + Math.abs(P[0])) ? (Q[1] - P[1]) / (Q[0] - P[0]) : S ? (12 * P[0] * P[0] - g2) / (2 * P[1]) : Infinity;
+      const seg = Number.isFinite(lam) ? clipLine(P[0], P[1], 1, lam, box) : clipLine(P[0], P[1], 0, 1, box);
+      if (seg) g.line(seg, { c: 'c2', w: 1.8 });
+      if (S && inBox(S, box) && inBox([S[0], -S[1]], box)) g.line([[S[0], -S[1]], S], { c: 'muted', w: 1.2, dash: '4 3' });
+      if (S && inBox([S[0], -S[1]], box)) g.dot(S[0], -S[1], { c: 'c2', r: 5.5, hollow: true });
+    }
+    [[P, 'P'], [Q, 'Q']].forEach(([X, lb]) => { if (X && inBox(X, box)) { g.dot(X[0], X[1], { c: 'c4', r: 6.5 }); g.text(X[0], X[1], lb, { math: true, dx: -12, dy: -10 }); } });
+    if (Wz && inBox(Wz, box)) g.dot(Wz[0], Wz[1], { c: 'ink', r: 12, hollow: true });
+    if (S && inBox(S, box)) { g.dot(S[0], S[1], { c: 'hl', r: 6.5, layer: 'over' }); g.text(S[0], S[1], 'P+Q', { math: true, dx: 14, dy: -14, anchor: 'start' }); }
+  }
+  function latticeReadout(ctx, d) {
+    const { t, g2, g3, P, Q, S, Wz } = d;
+    const agree = S && Wz ? Math.abs(S[0] - Wz[0]) / (1 + Math.abs(Wz[0])) : (!S && !Wz ? 0 : 1);
+    const box = (() => { const [e1, , e3] = d.e, span = e1 - e3, X0 = e3 - 0.25 * span, X1 = e1 + 0.5 * span, Y = 1.08 * Math.sqrt(Math.max(1e-9, 4 * X1 ** 3 - g2 * X1 - g3)); return [X0, X1, -Y, Y]; })();
+    ctx.readout([{ k: 'τ', v: `${fmt(t, 2)}i` }, { k: 'g₂', v: fmt(g2, 4) }, { k: 'g₃', v: fmt(g3, 4) }, { k: T('P + Q from the chord', '弦から求めた P + Q'), v: pt(S, 3), tone: 'key' }, { k: '(℘(u+v), ℘′(u+v))', v: pt(Wz, 3), tone: agree < 1e-6 ? 'good' : 'warn' }],
+      !P || !Q ? T('A point at a lattice point of the torus maps to O, the point at infinity. Move u or v off the corner.', '格子点にあるトーラスの点は無限遠点 O に写ります。u か v を角から離してください。')
+        : !S ? T('u + v is a lattice point, so P + Q = O: the vertical line through P and Q meets the curve only at infinity.', 'u + v が格子点なので P + Q = O です。P と Q を通る垂直な直線は無限遠でしか曲線と交わりません。')
+          : !inBox(S, box) ? T('Here u + v lies near a lattice point, where ℘ has a double pole, so P + Q is far off the chart. Both computations still agree, as the readout shows.', 'ここでは u + v が格子点の近くにあり、℘ はそこで二位の極を持つので、P + Q は図のはるか外です。読み取り欄のとおり、二つの計算はそれでも一致します。')
+            : T('Adding u and v on the torus and adding P and Q with a ruler give the same point: the gold dot sits inside the ring. The third point of the line is the image of −(u + v), because three points on a line add to O. Two points on the oval add to a point on the branch, and a branch point plus an oval point lands on the oval, matching Im(u + v) on the torus.', 'トーラス上で u と v を足すことと、定規で P と Q を足すことは同じ点を与えます。金色の点が輪の中に収まっています。直線の三つ目の点は −(u + v) の像です。一直線上の三点の和は O だからです。楕円形上の二点の和は枝の上に、枝の点と楕円形の点の和は楕円形の上に来て、トーラス上の Im(u + v) と対応します。'));
+  }
+  // the doughnut: Re z goes round the axis, Im z round the tube. Im z = 0 is the outer equator, Im z = t/2 the inner one.
+  const TOR_R = 1.55, TOR_r = 0.62;
+  const torusPt = (x, y, t, lift = 0) => { const ph = 2 * PI * x, th = 2 * PI * y / t, rr = TOR_r + lift, R = TOR_R + rr * Math.cos(th); return [R * Math.cos(ph), R * Math.sin(ph), rr * Math.sin(th)]; };
+  const flatPath = (a, b, t, lift, n = 90) => L.seq(n + 1, (i) => torusPt(a[0] + (b[0] - a[0]) * i / n, a[1] + (b[1] - a[1]) * i / n, t, lift));
   D['lattice-torus'] = {
+    three: true,
     render(ctx, v) {
-      const t = v.t, lineY = (k) => (k ? t / 2 : 0);
-      const u = [v.ux, lineY(v.ul)], w = [v.vx, lineY(v.vl)];
-      let sx = u[0] + w[0]; sx -= Math.round(sx);
-      const sl = (v.ul + v.vl) % 2, s = [sx, lineY(sl)];
-      const isO = (z) => Math.abs(z[0]) < 0.004 && z[1] === 0;
-      const [g2, g3] = g2g3(t), [e1, e2, e3] = eRoots(t);
-      const toPt = (z) => { if (isO(z)) return null; const W = wp(z, t); return [W[0][0], W[1][0]]; };
-      const P = toPt(u), Q = toPt(w), S = addW(P, Q, g2), Wz = toPt(s);
-      const row = L.h('div', 'lab-row', ctx.host), c1 = L.h('div', 'lab-col', row), c2 = L.h('div', 'lab-col', row);
-      L.h('p', 'lab-cap', c1, T('The plane coloured by the value of ℘ (hue = argument). The pattern repeats across the dashed period rectangle: this is the torus ℂ/Λ. Drag u and v along the two lines where ℘ is real.', '℘ の値で色づけした平面です（色相が偏角）。模様は点線の周期長方形ごとに繰り返し、これがトーラス ℂ/Λ です。℘ が実数になる二本の線に沿って u と v をドラッグしてください。'));
-      const f = L.fig(c1, { x: [-0.56, 0.56], y: [-0.24 * t, 1.08 * t], equal: true, axes: false, grid: false, maxH: 460 });
-      const col = L.colours();
-      f.raster((x, y) => { const W = wp([x, y], t); if (!W) return col.plate; const val = W[0]; return mixc(L.cmaps.phase(Math.atan2(val[1], val[0]), Math.hypot(val[0], val[1])), col.plate, 0.28); }, { res: 3 });
-      f.rect(-0.5, 0, 1, t, { c: 'ink', fill: false, fo: 0, w: 1.4, dash: '5 4' });
-      f.line([[-0.56, 0], [0.56, 0]], { c: 'c1', w: 3 });
-      f.line([[-0.56, t / 2], [0.56, t / 2]], { c: 'c3', w: 3 });
-      [[0, 0], [-0.5, 0], [0.5, 0], [0, t], [-0.5, t], [0.5, t]].forEach(([x, y]) => f.dot(x, y, { c: 'ink', r: 3.5 }));
-      f.text(0, 0, '0', { math: true, dx: -9, dy: 16 });
-      f.text(0, t, 'τ', { math: true, dx: -9, dy: -8 });
-      if (!isO(s)) { f.dot(s[0], s[1], { c: 'hl', r: 7.5, layer: 'over' }); f.text(s[0], s[1], 'u+v', { math: true, dx: 10, dy: -12, anchor: 'start' }); }
-      const drag = (kx, kl) => (x, y) => { ctx.set(kx, L.clamp(x, -0.5, 0.5), true); const m = ((y % t) + t) % t; ctx.set(kl, Math.abs(m - t / 2) < t / 4 ? 1 : 0, true); ctx.redraw(); };
-      f.handle(u[0], u[1], { c: 'c4', label: T('Point u of the torus', 'トーラスの点 u'), bounds: [-0.5, 0.5, -0.2 * t, 1.05 * t], onDrag: drag('ux', 'ul') });
-      f.handle(w[0], w[1], { c: 'c4', label: T('Point v of the torus', 'トーラスの点 v'), bounds: [-0.5, 0.5, -0.2 * t, 1.05 * t], onDrag: drag('vx', 'vl') });
-      f.text(u[0], u[1], 'u', { math: true, dx: -12, dy: -12 });
-      f.text(w[0], w[1], 'v', { math: true, dx: -12, dy: -12 });
-
-      // the real curve y^2 = 4x^3 - g2 x - g3
-      L.h('p', 'lab-cap', c2, T('Its image under z ↦ (℘(z), ℘′(z)): the curve y² = 4x³ − g₂x − g₃', 'z ↦ (℘(z), ℘′(z)) による像：曲線 y² = 4x³ − g₂x − g₃'));
-      const span = e1 - e3, X0 = e3 - 0.25 * span, X1 = e1 + 0.5 * span;
-      const Fw = (x) => 4 * x * x * x - g2 * x - g3, Y = 1.08 * Math.sqrt(Math.max(1e-9, Fw(X1))), box = [X0, X1, -Y, Y];
-      const g = L.fig(c2, { x: [X0, X1], y: [-Y, Y], aspect: 0.95, maxH: 440, xlabel: 'x = ℘(z)', ylabel: 'y = ℘′(z)' });
-      locus(Fw, [e3, e2, e1], X0, X1, Y).forEach((pc) => g.line(pc, { c: pc[0][0] < e2 + 1e-9 && pc.every((q) => q[0] <= e2 + 1e-6) ? 'c3' : 'c1', w: 2.8 }));
-      if (P && Q) {
-        const lam = S && Math.abs(P[0] - Q[0]) > 1e-9 * (1 + Math.abs(P[0])) ? (Q[1] - P[1]) / (Q[0] - P[0]) : S ? (12 * P[0] * P[0] - g2) / (2 * P[1]) : Infinity;
-        const seg = Number.isFinite(lam) ? clipLine(P[0], P[1], 1, lam, box) : clipLine(P[0], P[1], 0, 1, box);
-        if (seg) g.line(seg, { c: 'c2', w: 1.8 });
-        if (S && inBox(S, box) && inBox([S[0], -S[1]], box)) g.line([[S[0], -S[1]], S], { c: 'muted', w: 1.2, dash: '4 3' });
+      const st = ctx.state;
+      if (!st.frame || !st.frame.isConnected) {
+        ctx.host.replaceChildren();
+        st.frame = L.h('div', '', ctx.host);
+        const row = L.h('div', 'lab-row is-wide', st.frame);
+        st.c1 = L.h('div', 'lab-col', row); st.c2 = L.h('div', 'lab-col', row);
+        st.cap1 = L.h('p', 'lab-cap', st.c1, T('The torus ℂ/Λ, coloured by the value of ℘ (hue = argument). Re z runs round the axis and Im z round the tube; the blue and teal circles are the lines Im z = 0 and Im z = t/2, where ℘ is real. Drag u and v along them. The doughnut’s proportions are fixed for the picture; τ changes the colouring.', '℘ の値で色づけしたトーラス ℂ/Λ です（色相が偏角）。Re z は軸のまわりを、Im z は管のまわりを回ります。青と青緑の円は ℘ が実数になる直線 Im z = 0 と Im z = t/2 で、u と v をその上でドラッグできます。ドーナツの形は図のために固定しており、τ は色づけを変えます。'));
+        st.v3 = L.h('div', '', st.c1);
+        L.h('p', 'lab-cap', st.c2, T('Its image under z ↦ (℘(z), ℘′(z)): the curve y² = 4x³ − g₂x − g₃', 'z ↦ (℘(z), ℘′(z)) による像：曲線 y² = 4x³ − g₂x − g₃'));
+        st.g2 = L.h('div', '', st.c2);
+        st.leg = L.h('div', '', st.frame);
       }
-      [[P, 'P'], [Q, 'Q']].forEach(([X, lb]) => { if (X && inBox(X, box)) { g.dot(X[0], X[1], { c: 'c4', r: 6.5 }); g.text(X[0], X[1], lb, { math: true, dx: -12, dy: -10 }); } });
-      if (Wz && inBox(Wz, box)) g.dot(Wz[0], Wz[1], { c: 'ink', r: 12, hollow: true });
-      if (S && inBox(S, box)) { g.dot(S[0], S[1], { c: 'hl', r: 6.5, layer: 'over' }); g.text(S[0], S[1], 'P+Q', { math: true, dx: 14, dy: -14, anchor: 'start' }); }
-      L.legend(ctx.host, [{ c: 'c1', label: T('image of the line Im z = 0 (the unbounded branch)', '直線 Im z = 0 の像（非有界な枝）') }, { c: 'c3', label: T('image of Im z = t/2 (the oval)', 'Im z = t/2 の像（楕円形の閉曲線）') }, { kind: 'dot', c: 'hl', label: T('P + Q by chord and tangent', '弦と接線による P + Q') }, { kind: 'dot', c: 'ink', label: T('ring: (℘(u + v), ℘′(u + v)) computed directly', '輪：直接計算した (℘(u + v), ℘′(u + v))') }]);
-      const agree = S && Wz ? Math.abs(S[0] - Wz[0]) / (1 + Math.abs(Wz[0])) : (!S && !Wz ? 0 : 1);
-      ctx.readout([{ k: 'τ', v: `${fmt(t, 2)}i` }, { k: 'g₂', v: fmt(g2, 4) }, { k: 'g₃', v: fmt(g3, 4) }, { k: T('P + Q from the chord', '弦から求めた P + Q'), v: pt(S, 3), tone: 'key' }, { k: '(℘(u+v), ℘′(u+v))', v: pt(Wz, 3), tone: agree < 1e-6 ? 'good' : 'warn' }],
-        !P || !Q ? T('A point at a lattice point of the torus maps to O, the point at infinity. Move u or v off the corner.', '格子点にあるトーラスの点は無限遠点 O に写ります。u か v を角から離してください。')
-          : !S ? T('u + v is a lattice point, so P + Q = O: the vertical line through P and Q meets the curve only at infinity.', 'u + v が格子点なので P + Q = O です。P と Q を通る垂直な直線は無限遠でしか曲線と交わりません。')
-            : !inBox(S, box) ? T('Here u + v lies near a lattice point, where ℘ has a double pole, so P + Q is far off the chart. Both computations still agree, as the readout shows.', 'ここでは u + v が格子点の近くにあり、℘ はそこで二位の極を持つので、P + Q は図のはるか外です。読み取り欄のとおり、二つの計算はそれでも一致します。')
-              : T('Adding u and v on the torus and adding P and Q with a ruler give the same point: the gold dot sits inside the ring. Two points on the oval add to a point on the branch, and a branch point plus an oval point lands on the oval, matching Im(u + v) on the torus.', 'トーラス上で u と v を足すことと、定規で P と Q を足すことは同じ点を与えます。金色の点が輪の中に収まっています。楕円形上の二点の和は枝の上に、枝の点と楕円形の点の和は楕円形の上に来て、トーラス上の Im(u + v) と対応します。'));
+      const panels = (d) => {
+        st.g2.replaceChildren(); st.leg.replaceChildren();
+        if (st.flat) {
+          st.v3.replaceChildren();
+          st.cap1.textContent = T('The plane coloured by the value of ℘ (hue = argument). The pattern repeats across the dashed period rectangle: this is the torus ℂ/Λ. Drag u and v along the two lines where ℘ is real.', '℘ の値で色づけした平面です（色相が偏角）。模様は点線の周期長方形ごとに繰り返し、これがトーラス ℂ/Λ です。℘ が実数になる二本の線に沿って u と v をドラッグしてください。');
+          latticeFlat(ctx, st.v3, d);
+        }
+        latticeCurve(st.g2, d);
+        L.legend(st.leg, [{ c: 'c1', label: T('Im z = 0 and its image, the unbounded branch', 'Im z = 0 とその像（非有界な枝）') }, { c: 'c3', label: T('Im z = t/2 and its image, the oval', 'Im z = t/2 とその像（楕円形の閉曲線）') }].concat(st.flat ? [] : [{ c: 'c4', label: T('u, v and the parallelogram 0, u, u + v, v', 'u、v と平行四辺形 0, u, u + v, v') }]).concat([{ kind: 'dot', c: 'hl', label: T('u + v and P + Q by chord and tangent', 'u + v と、弦と接線による P + Q') }, { kind: 'dot', c: 'c2', label: T('third point on the line: −(u + v)', '直線上の三つ目の点：−(u + v)') }, { kind: 'dot', c: 'ink', label: T('ring: (℘(u + v), ℘′(u + v)) computed directly', '輪：直接計算した (℘(u + v), ℘′(u + v))') }]));
+        latticeReadout(ctx, d);
+      };
+      const d0 = latticeData(v);
+      L.view3d(ctx, v, {
+        host: st.v3, aspect: 0.8, maxH: 470, camera: [-4.95, 2.85, 3.7], target: [0, 0, -0.2], fov: 34,
+        label: T('3D torus coloured by the Weierstrass ℘ function. Drag to rotate.', 'ワイエルシュトラスの ℘ 関数で色づけした 3D のトーラス。ドラッグで回転できます。'),
+        init(S) {
+          st.flat = false;
+          const ink = S.colour('ink').clone(), plate = S.colour('plate');
+          st.colour = (tt) => (a, b) => { const W = wp([a, b * tt], tt); if (!W) return ink; const val = W[0]; const h = ((Math.atan2(val[1], val[0]) / (2 * PI)) % 1 + 1) % 1, m = Math.hypot(val[0], val[1]), band = m > 0 ? 0.5 - 0.5 * Math.cos(2 * PI * Math.log2(m)) : 0; return new S.THREE.Color().setHSL(h, 0.78, (S.dark ? 0.4 : 0.35) + 0.12 * band, S.THREE.SRGBColorSpace).lerp(plate, 0.04); };
+          st.tCol = d0.t;
+          st.surf = S.surface((a, b) => torusPt(a, b, 1), { u: [-0.5, 0.5], v: [0, 1], nu: 168, nv: 84, colour: st.colour(d0.t), rough: 0.62, coat: 0.12 });
+          st.eq0 = S.tube(L.seq(161, (i) => torusPt(-0.5 + i / 160, 0, 1, 0.012)), { c: 'c1', r: 0.022, closed: true });
+          st.eqH = S.tube(L.seq(161, (i) => torusPt(-0.5 + i / 160, 0.5, 1, 0.012)), { c: 'c3', r: 0.022, closed: true });
+          st.edges = [0, 1, 2, 3].map(() => S.tube([[0, 0, 0], [0, 0, 0.01]], { c: 'c4', r: 0.014 }));
+          st.zero = S.sphere(torusPt(0, 0, 1, 0.02), 0.055, { c: 'ink' });
+          st.zeroLab = S.label('0', torusPt(0, 0, 1, 0.1), { math: true });
+          st.sum = S.sphere([0, 0, 0], 0.075, { c: 'hl', glow: 0.35 });
+          st.sumLab = S.label('u+v', [0, 0, 0], { math: true });
+          st.third = S.sphere([0, 0, 0], 0.055, { c: 'c2' });
+          const drag = (kx, kl) => (q) => {
+            const x = L.clamp(Math.atan2(q.y, q.x) / (2 * PI), -0.5, 0.5), line = Math.hypot(q.x, q.y) < TOR_R ? 1 : 0;
+            ctx.set(kx, x, true); ctx.set(kl, line, true); ctx.redraw();
+            return torusPt(Math.round(x / 0.005) * 0.005, line ? 0.5 : 0, 1, 0.03);
+          };
+          st.hu = S.handle(torusPt(d0.u[0], d0.u[1], d0.t, 0.03), { c: 'c4', r: 0.075, plane: [[0, 0, 1], [0, 0, 0]], label: 'u', onDrag: drag('ux', 'ul') });
+          st.hv = S.handle(torusPt(d0.w[0], d0.w[1], d0.t, 0.03), { c: 'c4', r: 0.075, plane: [[0, 0, 1], [0, 0, 0]], label: 'v', onDrag: drag('vx', 'vl') });
+          // labels are HTML over the canvas, so hide each one while its point is on the far side of the torus
+          st.occl = [[st.zeroLab, () => [0, 0]], [st.hu.labelItem, () => st.d.u], [st.hv.labelItem, () => st.d.w], [st.sumLab, () => st.d.s]];
+          st.occlude = () => {
+            if (!st.d) return;
+            const c = S.camera.position, t = st.d.t;
+            for (const [item, at] of st.occl) {
+              const [x, y] = at(), ph = 2 * PI * x, th = 2 * PI * y / t, q = torusPt(x, y, t, 0), nn = [Math.cos(th) * Math.cos(ph), Math.cos(th) * Math.sin(ph), Math.sin(th)];
+              const dv = [c.x - q[0], c.y - q[1], c.z - q[2]], dl = Math.hypot(...dv);
+              item.el.dataset.hidden = (dv[0] * nn[0] + dv[1] * nn[1] + dv[2] * nn[2]) / dl < 0.08 ? '1' : '';
+            }
+          };
+          S.controls.addEventListener('change', st.occlude);
+        },
+        update(S, vv) {
+          const d = latticeData(vv), t = d.t;
+          if (st.tCol !== t) { st.tCol = t; st.surf.update((a, b) => torusPt(a, b, 1), st.colour(t)); }
+          const uu = [d.u[0] + d.w[0], d.u[1] + d.w[1]], lift = 0.022;
+          st.edges[0].update(flatPath([0, 0], d.u, t, lift)); st.edges[1].update(flatPath(d.u, uu, t, lift));
+          st.edges[2].update(flatPath([0, 0], d.w, t, lift)); st.edges[3].update(flatPath(d.w, uu, t, lift));
+          st.hu.at(torusPt(d.u[0], d.u[1], t, 0.03)); st.hv.at(torusPt(d.w[0], d.w[1], t, 0.03));
+          const sp = torusPt(d.s[0], d.s[1], t, 0.035);
+          st.sum.visible = st.third.visible = !d.isO(d.s);
+          st.sum.position.set(...sp); st.sumLab.set(torusPt(d.s[0], d.s[1], t, 0.12), d.isO(d.s) ? '' : 'u+v');
+          st.third.position.set(...torusPt(d.r3[0], d.r3[1], t, 0.03));
+          st.d = d; st.occlude();
+          S.invalidate();
+          panels(d);
+        },
+        fallback(c, vv) { st.flat = true; panels(latticeData(vv)); },
+      });
+      if (!st.__v3 && !st.flat) panels(d0);
     },
   };
 })();

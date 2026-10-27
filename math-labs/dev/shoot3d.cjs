@@ -16,7 +16,7 @@ const q=(args.find(a=>a.startsWith('--q='))||'--q=').slice(4);
  if(dark)await p.evaluate(()=>{document.documentElement.dataset.theme='dark';document.documentElement.style.colorScheme='dark';});
  const ids=await p.$$eval('[data-lab]',s=>s.map(x=>x.id));
  for(const id of ids){await p.locator('#'+id).scrollIntoViewIfNeeded();await p.waitForTimeout(400);
-  const has3d=await p.$eval('#'+id,s=>!!s.querySelector('.lab3d'));if(has3d)await p.waitForTimeout(wait);
+  const has3d=await p.$eval('#'+id,s=>!!s.querySelector('.lab3d'));if(has3d){await p.waitForFunction(i=>{const c=document.querySelector('#'+i+' .lab3d-canvas');return !document.querySelector('#'+i+' .lab3d.is-loading')&&(!c||c.dataset.backend);},id,{timeout:20000}).catch(()=>{});await p.waitForTimeout(wait);}
   const info=await p.$eval('#'+id,s=>{const c=s.querySelector('.lab3d-canvas');const plot=s.querySelector('.plot');return {backend:c?c.dataset.backend||'?':'2d',empty:!plot||plot.children.length===0,err:!!s.querySelector('.lab-error'),readout:(s.querySelector('.readout')||{}).textContent||'',q:(s.querySelector('.pr-q')||{}).textContent||'NO PRACTICE'};});
   await p.locator('#'+id+' .plot').screenshot({path:`${out}/${slug}${ja?'-ja':''}${dark?'-dark':''}-${id}.png`});
   const pr=p.locator('#'+id+' .practice');if(await pr.count())await pr.screenshot({path:`${out}/${slug}${ja?'-ja':''}${dark?'-dark':''}-${id}-practice.png`});

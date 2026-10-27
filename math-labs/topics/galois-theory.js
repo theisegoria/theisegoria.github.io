@@ -180,8 +180,12 @@
       L.h('p', 'lab-cap', ctx.host, T('Left: the subgroups of the Galois group, smallest at the top. Right: the intermediate fields, largest at the top. Each subgroup sits level with the field it fixes; click any node.', '左はガロア群の部分群で、最小のものが上です。右は中間体で、最大のものが上です。各部分群はそれが固定する体と同じ高さにあります。どのノードでもクリックできます。'));
       const W = 160, H = 10 + 16 * levels, f = L.stage(ctx.host, { w: W, h: H, maxH: 560 });
       const pos = new Map();
-      orders.forEach((o, li) => { const group = subs.filter((s) => s.order === o); const y = H - 12 - li * 16; group.forEach((s, k) => { pos.set(s, { x: 3 + (k + 0.5) / group.length * 74, y, fx: 83 + (k + 0.5) / group.length * 74 }); }); });
-      const boxW = (txt) => Math.max(9, 1.55 * txt.length + 3.5), node = (x, y, txt, on, dim, kind) => {
+      const boxW = (txt) => Math.max(9, 1.55 * txt.length + 3.5);
+      const hLabel = (s) => (s.order === 1 ? '{e}' : s.order === G.length ? 'G' : '⟨' + s.gens.join(', ') + '⟩');
+      // place the boxes of one level left to right with equal gaps, so long field names do not collide
+      const spread = (ws, x0, x1) => { const tot = ws.reduce((a, b) => a + b, 0), gap = Math.max(1.2, (x1 - x0 - tot) / ws.length); let x = x0 + gap / 2; return ws.map((w) => { const c = x + w / 2; x += w + gap; return c; }); };
+      orders.forEach((o, li) => { const group = subs.filter((s) => s.order === o); const y = H - 12 - li * 16; const xs = spread(group.map((s) => boxW(hLabel(s))), 2, 64), fxs = spread(group.map((s) => boxW(s.field.name)), 70, 158); group.forEach((s, k) => { pos.set(s, { x: xs[k], y, fx: fxs[k] }); }); });
+      const node = (x, y, txt, on, dim, kind) => {
         const w = boxW(txt); f.rect(x - w / 2, y - 3.6, w, 7.2, { c: on ? 'hl' : kind === 'H' ? 'c1' : 'c3', w: on ? 1.8 : 1, fill: on ? 'hl' : kind === 'H' ? 'c1' : 'c3', fo: on ? 0.32 : dim ? 0.05 : 0.15, op: dim ? 0.4 : 1, layer: 'main' });
         const t = f.text(x, y, txt, { c: on ? 'hl' : 'ink', dy: 4, layer: 'over' }); t.style.fontSize = '12px'; if (dim) t.style.opacity = 0.4; return w;
       };
@@ -194,9 +198,9 @@
         f.seg([a.x, a.y - 3.6], [b.x, b.y + 3.6], { c: on ? 'hl' : 'c1', w: on ? 1.8 : 0.8, op: sel && !on ? 0.18 : 0.7, layer: 'under' });
         f.seg([a.fx, a.y - 3.6], [b.fx, b.y + 3.6], { c: on ? 'hl' : 'c3', w: on ? 1.8 : 0.8, op: sel && !on ? 0.18 : 0.7, layer: 'under' });
       }));
-      if (sel) { const a = pos.get(sel); f.seg([a.x + boxW(sel.order === 1 ? '{e}' : sel.order === G.length ? 'G' : '⟨' + sel.gens.join(', ') + '⟩') / 2 + 1, a.y], [a.fx - boxW(sel.field.name) / 2 - 1, a.y], { c: 'hl', w: 1.3, dash: '2 2', op: 0.9, layer: 'under' }); }
-      f.text(40, H - 1.5, T('subgroups H of G, order above each', 'G の部分群 H、上に位数'), { small: true, c: 'c1', layer: 'over' });
-      f.text(120, H - 1.5, T('fixed fields Kᴴ, degree over ℚ above each', '固定体 Kᴴ、上に ℚ 上の次数'), { small: true, c: 'c3', layer: 'over' });
+      if (sel) { const a = pos.get(sel), yb = a.y - 6.2; [[[a.x, a.y - 3.6], [a.x, yb]], [[a.x, yb], [a.fx, yb]], [[a.fx, yb], [a.fx, a.y - 3.6]]].forEach(([p0, p1]) => f.seg(p0, p1, { c: 'hl', w: 1.3, dash: '2 2', op: 0.9, layer: 'under' })); }
+      f.text(33, H - 1.5, T('subgroups H of G, order above each', 'G の部分群 H、上に位数'), { small: true, c: 'c1', layer: 'over' });
+      f.text(114, H - 1.5, T('fixed fields Kᴴ, degree over ℚ above each', '固定体 Kᴴ、上に ℚ 上の次数'), { small: true, c: 'c3', layer: 'over' });
       subs.forEach((s, i) => {
         const a = pos.get(s), on = sel === s, dim = !!sel && !chainOf.has(s);
         const label = s.order === 1 ? '{e}' : s.order === G.length ? 'G' : '⟨' + s.gens.join(', ') + '⟩';
@@ -224,14 +228,14 @@
       const row = L.h('div', 'lab-row', ctx.host), c1 = L.h('div', 'lab-col', row), c2 = L.h('div', 'lab-col', row);
       if (v.problem === 0) {
         const n = v.n, ph = phi(n), ok = isPow2(ph), fac = factor(n);
-        L.h('p', 'lab-cap', c1, T(`The regular ${n}-gon, vertices at the n-th roots of unity. Solid if constructible, dashed if not.`, `正 ${n} 角形で、頂点は 1 の n 乗根です。作図可能なら実線、不可能なら破線です。`));
+        L.h('p', 'lab-cap', c1, T(`The regular ${n}-gon, vertices at the n-th roots of unity; ζ = e^(2πi/n) is the first one. Solid if constructible, dashed if not.`, `正 ${n} 角形で、頂点は 1 の n 乗根です。ζ = e^(2πi/n) が最初の頂点です。作図可能なら実線、不可能なら破線です。`));
         const f = L.fig(c1, { x: [-1.3, 1.3], y: [-1.3, 1.3], equal: true, axes: false, maxH: 400 });
         f.circle(0, 0, 1, { c: 'muted', w: 1, op: 0.5, layer: 'under' });
         const pts = L.seq(n + 1, (k) => [Math.cos(TAU * k / n), Math.sin(TAU * k / n)]);
         f.line(pts, { c: ok ? 'c1' : 'c2', w: 2, dash: ok ? undefined : '4 3', layer: 'main' });
         if (n <= 24) pts.slice(0, n).forEach(([x, y]) => f.dot(x, y, { c: ok ? 'c1' : 'c2', r: 3.5, layer: 'main' }));
         f.dot(1, 0, { c: 'hl', r: 5, layer: 'over' }); f.dot(Math.cos(TAU / n), Math.sin(TAU / n), { c: 'hl', r: 5, layer: 'over' });
-        f.text(Math.cos(TAU / n), Math.sin(TAU / n), 'ζ = e^{2πi/n}', { c: 'hl', dx: 10, dy: -8, anchor: 'start', layer: 'over' });
+        f.text(Math.cos(TAU / n), Math.sin(TAU / n), 'ζ', { c: 'hl', math: true, dx: 9, dy: -6, anchor: 'start', layer: 'over' });
         f.seg([0, 0], [Math.cos(TAU / n), 0], { c: 'hl', w: 1.2, dash: '2 2', layer: 'over' }); f.seg([Math.cos(TAU / n), 0], [Math.cos(TAU / n), Math.sin(TAU / n)], { c: 'hl', w: 1.2, dash: '2 2', layer: 'over' });
         f.text(Math.cos(TAU / n) / 2, 0, 'cos(2π/n)', { small: true, c: 'hl', dy: 14, layer: 'over' });
         L.h('p', 'lab-cap', c2, T('φ(n) for n = 3 … 64 on a log₂ scale. Powers of 2 sit on the grid lines: those n-gons are constructible. Click a bar.', 'n = 3 … 64 の φ(n) を log₂ 目盛で示します。2 のべきは格子線の上に乗り、その n 角形は作図可能です。棒をクリックできます。'));

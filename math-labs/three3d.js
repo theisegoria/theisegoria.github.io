@@ -315,7 +315,8 @@ export async function create(host, opts = {}) {
   /* many small spheres, one draw call */
   S.points = (pts, o = {}) => {
     const n = o.max ?? pts.length;
-    const im = new THREE.InstancedMesh(new THREE.SphereGeometry(1, 12, 8), S.mat(o.c ?? 'c1', { rough: 0.35, ...o }), Math.max(1, n));
+    // per-instance colours multiply the material colour, so the base must be white when they are given
+    const im = new THREE.InstancedMesh(new THREE.SphereGeometry(1, 12, 8), S.mat(o.colours ? new THREE.Color(1, 1, 1) : (o.c ?? 'c1'), { rough: 0.35, ...o }), Math.max(1, n));
     const M = new THREE.Matrix4(), Q = new THREE.Quaternion(), Sc = new THREE.Vector3();
     im.update = (p = pts, colours, radii) => {
       pts = p; im.count = Math.min(n, p.length);
@@ -374,6 +375,7 @@ export async function create(host, opts = {}) {
 
   /* ---------- labels: DOM text pinned to 3D points ---------- */
   const proj = new THREE.Vector3();
+  const occRay = new THREE.Raycaster();
   S.label = (text, p, o = {}) => {
     const el = document.createElement('span');
     el.className = 'lab3d-label' + (o.math ? ' is-math' : '') + (o.small ? ' is-small' : '');
@@ -391,7 +393,13 @@ export async function create(host, opts = {}) {
     const w = canvas.clientWidth, h = canvas.clientHeight;
     for (const it of S.labels) {
       proj.copy(it.p).project(camera);
-      const hidden = proj.z > 1 || it.el.dataset.hidden === '1';
+      let hidden = proj.z > 1 || it.el.dataset.hidden === '1';
+      if (!hidden && it.o.occlude) {
+        const dir = it.p.clone().sub(camera.position), dist = dir.length();
+        occRay.set(camera.position, dir.normalize()); occRay.far = dist - (it.o.occludeSlack ?? 0.05);
+        const hit = occRay.intersectObjects(S.scene.children, true).find((h) => h.object.isMesh && h.object.visible && !h.object.userData.noOcclude);
+        if (hit) hidden = true;
+      }
       it.el.style.transform = `translate(${((proj.x + 1) / 2 * w + (it.o.dx ?? (it.o.align === 'end' ? -6 : 6))).toFixed(1)}px, ${((1 - proj.y) / 2 * h + (it.o.dy ?? -6)).toFixed(1)}px) translate(${it.o.align === 'end' ? '-100%' : it.o.align === 'middle' ? '-50%' : '0'}, -100%)`;
       it.el.style.opacity = hidden ? '0' : '';
     }
@@ -421,6 +429,7 @@ export async function create(host, opts = {}) {
       // outside the silhouette: project the closest point of the ray onto the sphere
       ray.ray.closestPointToPoint(c, out); return out.sub(c).setLength(r).add(c);
     }
+    if (o.facing) { const nrm = camera.getWorldDirection(new THREE.Vector3()).negate(); const pl = new THREE.Plane().setFromNormalAndCoplanarPoint(nrm, dragging.position); const out = new THREE.Vector3(); return ray.ray.intersectPlane(pl, out) ? out : null; }
     const [n, q] = o.plane ?? [[0, 0, 1], [0, 0, 0]];
     const pl = new THREE.Plane().setFromNormalAndCoplanarPoint(V(n).normalize(), V(q));
     const out = new THREE.Vector3();

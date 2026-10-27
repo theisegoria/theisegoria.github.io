@@ -171,46 +171,111 @@
 
   /* ---------- 3. normal modes of a ring ---------- */
   D['ring-vibrations'] = {
+    three: true,
     render(ctx, v) {
-      ctx.state.anim?.stop();
-      const n = v.n, mu = v.mu, k = Math.min(v.m, n - 1), modes = ringModes(n, mu), uni = ringModes(n, 1), md = modes[k];
-      const row = L.h('div', 'lab-row', ctx.host), c1 = L.h('div', 'lab-col', row), c2 = L.h('div', 'lab-col', row);
-      L.h('p', 'lab-cap', c1, T(`${n} beads on a closed string, each displaced along its spoke; mode ${k + 1} of ${n}. ${mu !== 1 ? `Bead 1 is ${fmt(mu, 3)} times heavier.` : ''}`, `閉じた弦の上の ${n} 個のビーズで、各ビーズは自分の放射方向に変位します。${n} 個中のモード ${k + 1} です。${mu !== 1 ? `ビーズ 1 は ${fmt(mu, 3)} 倍重くしてあります。` : ''}`));
-      const f = L.fig(c1, { x: [-1.5, 1.5], y: [-1.5, 1.5], equal: true, axes: false, grid: false, maxH: 380 });
-      f.circle(0, 0, 1, { c: 'muted', w: 1, dash: '3 4', op: 0.6 });
-      if (mu !== 1) f.seg([-1.45, 0], [1.45, 0], { c: 'c4', w: 1.2, dash: '6 4' });
-      const dyn = f.group('main');
-      const amp = 0.28;
-      const draw = (ph) => {
-        while (dyn.firstChild) dyn.removeChild(dyn.firstChild);
-        const pts = L.seq(n, (j) => { const a = (2 * Math.PI * j) / n, r = 1 + amp * md.v[j] * Math.cos(ph); return [r * Math.cos(a), r * Math.sin(a)]; });
-        dyn.appendChild(f.poly(pts, { c: 'c1', w: 2, fill: 'c1', fo: 0.08, layer: 'main' }));
-        pts.forEach((p, j) => { const a = (2 * Math.PI * j) / n; dyn.appendChild(f.seg([Math.cos(a) * 0.62, Math.sin(a) * 0.62], [Math.cos(a) * 1.38, Math.sin(a) * 1.38], { c: 'muted', w: 0.6, op: 0.4, layer: 'under' })); dyn.appendChild(f.circle(p[0], p[1], j === 0 ? 0.075 * Math.sqrt(mu) : 0.075, { c: j === 0 && mu !== 1 ? 'c2' : 'hl', fill: j === 0 && mu !== 1 ? 'c2' : 'hl', fo: 1, w: 1, layer: 'over' })); });
+      const st = ctx.state;
+      const n = v.n, mu = v.mu, k = Math.min(v.m, n - 1);
+      if (st.key !== `${n}|${mu}`) { st.key = `${n}|${mu}`; st.modes = ringModes(n, mu); st.uni = ringModes(n, 1); }
+      const modes = st.modes, uni = st.uni, md = modes[k];
+      st.md = md; st.n = n; st.mu = mu;
+      const capText = () => (st.flat
+        ? T(`${n} beads on a closed string, with each bead's displacement out of the plane drawn along its spoke; mode ${k + 1} of ${n}. ${mu !== 1 ? `Bead 1 is ${fmt(mu, 3)} times heavier.` : ''}`, `閉じた弦の上の ${n} 個のビーズで、平面に垂直な変位を放射方向に描いています。${n} 個中のモード ${k + 1} です。${mu !== 1 ? `ビーズ 1 は ${fmt(mu, 3)} 倍重くしてあります。` : ''}`)
+        : T(`${n} beads on a closed string under tension, each moving at right angles to the plane of the ring; mode ${k + 1} of ${n}. ${mu !== 1 ? `Bead 1 is ${fmt(mu, 3)} times heavier.` : ''} Drag to turn the view.`, `張力のかかった閉じた弦の上の ${n} 個のビーズで、各ビーズは環の平面に垂直に動きます。${n} 個中のモード ${k + 1} です。${mu !== 1 ? `ビーズ 1 は ${fmt(mu, 3)} 倍重くしてあります。` : ''}ドラッグで視点を回せます。`));
+      if (!st.frame || !st.frame.isConnected) {
+        st.anim?.stop(); st.anim = null;
+        ctx.host.replaceChildren();
+        st.frame = L.h('div', '', ctx.host);
+        const row = L.h('div', 'lab-row', st.frame);
+        st.c1 = L.h('div', 'lab-col', row); st.c2 = L.h('div', 'lab-col', row);
+        st.cap1 = L.h('p', 'lab-cap', st.c1, '');
+        st.v3 = L.h('div', '', st.c1);
+        st.bar = L.h('div', '', st.frame);
+        st.leg = L.h('div', '', st.frame);
+      }
+      st.cap1.textContent = capText();
+      const AMP = 0.3;
+      // one frame of the oscillation at phase ph, in whichever view exists
+      st.drawPh = (ph) => {
+        st.ph = ph;
+        if (st.flat) { st.flatDraw?.(ph); return; }
+        if (!st.S || !st.beads || st.builtN !== st.n) return;
+        const N = st.n, c = Math.cos(ph), R = 1;
+        const P = L0.seq(N, (j) => { const a = (2 * Math.PI * j) / N; return [R * Math.cos(a), R * Math.sin(a), AMP * st.md.v[j] * c]; });
+        st.beads.update(P, st.beadCols, st.beadRad);
+        // the string is straight between beads
+        const pts = []; for (let j = 0; j < N; j++) { const p = P[j], q = P[(j + 1) % N]; for (let s = 0; s < 6; s++) { const t = s / 6; pts.push([p[0] + (q[0] - p[0]) * t, p[1] + (q[1] - p[1]) * t, p[2] + (q[2] - p[2]) * t]); } }
+        pts.push(P[0]);
+        st.string.update(pts);
+        st.l1.set([P[0][0] + 0.12, P[0][1], P[0][2] + 0.1]);
+        st.S.invalidate();
       };
-      L.h('p', 'lab-cap', c2, T('Frequencies ω / ω₀, sorted. Hollow dots: the symmetric ring, where the modes pair up. Filled: with bead 1 changed. Drag the gold handle to choose a mode.', '振動数 ω / ω₀ を小さい順に並べています。白抜きの点は対称な環で、モードが対になります。塗りつぶしの点はビーズ 1 を変えたときです。金色のハンドルをドラッグしてモードを選んでください。'));
-      const g = L.fig(c2, { x: [-0.6, n - 0.4], y: [0, 2.25], aspect: 0.8, xlabel: T('mode, by frequency', 'モード（振動数順）'), ylabel: 'ω / ω₀', ticksX: L.seq(n, (i) => [i, String(i + 1)]), maxH: 380 });
-      uni.forEach((u, i) => g.dot(i, u.w, { c: 'muted', r: 6, hollow: true }));
-      modes.forEach((u, i) => { const p = mirrorParity(u.v); g.dot(i, u.w, { c: mu === 1 ? 'c1' : p < 0 ? 'c3' : 'c2', r: 4.2 }); });
-      // pair brackets for degenerate uniform levels
-      for (let i = 1; i < n; i++) if (Math.abs(uni[i].w - uni[i - 1].w) < 1e-9) g.seg([i - 1, uni[i].w + 0.1], [i, uni[i].w + 0.1], { c: 'muted', w: 1.2 });
-      g.handle(k, 0.04, { c: 'hl', r: 7, axis: 'x', snap: 1, label: T('Mode', 'モード'), bounds: [0, n - 1, 0, 2], onDrag: (x) => ctx.set('m', Math.round(x)) });
-      g.vline(k, { c: 'hl', w: 1, dash: '3 3', layer: 'under' });
-      const par = mirrorParity(md.v), uniK = uni[k].w, deg = uni.filter((u) => Math.abs(u.w - uniK) < 1e-9).length;
-      const kk = Math.round((n * Math.asin(Math.min(1, uniK / 2))) / Math.PI);
-      const irrep = mu !== 1 ? (par > 0 ? T("A′ (even under the mirror)", "A′（鏡映で偶）") : par < 0 ? T("A″ (odd under the mirror)", "A″（鏡映で奇）") : '?') : kk === 0 ? 'A₁' : 2 * kk === n ? 'B' : `E${sub(kk)}`;
-      L.legend(ctx.host, [{ c: 'muted', kind: 'dot', label: T('symmetric ring', '対称な環') }, ...(mu !== 1 ? [{ c: 'c2', kind: 'dot', label: T('even about the mirror', '鏡映で偶') }, { c: 'c3', kind: 'dot', label: T('odd: node at bead 1, frequency unchanged', '奇：ビーズ 1 が節、振動数は不変') }] : [{ c: 'c1', kind: 'dot', label: T('frequencies', '振動数') }]), { c: 'hl', kind: 'dot', label: T('chosen mode', '選んだモード') }]);
-      ctx.readout([
-        { k: T('mode', 'モード'), v: `${k + 1} / ${n}`, tone: 'key' },
-        { k: 'ω / ω₀', v: fmt(md.w, 4), tone: 'good' },
-        { k: T('symmetric ring: 2 sin(πq/n)', '対称な環：2 sin(πq/n)'), v: fmt(uniK, 4) },
-        { k: T('irreducible representation', '既約表現'), v: irrep },
-        { k: T('degeneracy (symmetric ring)', '縮退度（対称な環）'), v: String(deg) },
-        { k: T('mass ratio μ', '質量比 μ'), v: fmt(mu, 3) },
-      ], mu === 1
-        ? T(`The ring has the symmetry D${sub(n)}, so the modes are its irreducible representations: Fourier waves around the ring. Waves q and n − q are mirror images and together form one two-dimensional irreducible representation, which is why they share a frequency. Every degeneracy here is forced by symmetry.`, `環は D${sub(n)} の対称性をもつので、モードはその既約表現、環を一周するフーリエ波です。波 q と n − q は互いの鏡像で、合わせて一つの二次元既約表現をなします。だから同じ振動数を共有します。ここでの縮退はすべて対称性が強いるものです。`)
-        : T('A heavier bead leaves only the mirror through it. Each pair splits into an even mode, which moves the heavy bead and slows down, and an odd mode with a node exactly at bead 1, which never feels the extra mass and keeps its frequency to every digit.', '重いビーズがあると、それを通る鏡映だけが残ります。各対は、重いビーズを動かして遅くなる偶のモードと、ちょうどビーズ 1 に節をもつ奇のモードに分かれます。奇のモードは余分な質量をまったく感じず、振動数をすべての桁で保ちます。'));
-      draw(0);
-      ctx.state.anim = L.animator(ctx.host, (dt, t, lb) => { draw(md.w < 1e-6 ? 0 : 2 * Math.PI * 0.55 * Math.max(md.w, 0.15) * t); lb.textContent = `ω / ω₀ = ${fmt(md.w, 3)}`; }, { autoplay: true, initialT: 0 });
+      if (!st.anim) st.anim = L.animator(st.bar, (dt, t, lb) => { const w = st.md.w; st.drawPh(w < 1e-6 ? 0 : 2 * Math.PI * 0.55 * Math.max(w, 0.15) * t); lb.textContent = `ω / ω₀ = ${fmt(w, 3)}`; }, { autoplay: true, initialT: 0 });
+      const side = () => {
+        st.c2.replaceChildren(); st.leg.replaceChildren();
+        L.h('p', 'lab-cap', st.c2, T('Frequencies ω / ω₀, sorted. Hollow dots: the symmetric ring, where the modes pair up. Filled: with bead 1 changed. Drag the gold handle to choose a mode.', '振動数 ω / ω₀ を小さい順に並べています。白抜きの点は対称な環で、モードが対になります。塗りつぶしの点はビーズ 1 を変えたときです。金色のハンドルをドラッグしてモードを選んでください。'));
+        const g = L.fig(st.c2, { x: [-0.6, n - 0.4], y: [0, 2.25], aspect: 0.8, xlabel: T('mode, by frequency', 'モード（振動数順）'), ylabel: 'ω / ω₀', ticksX: L.seq(n, (i) => [i, String(i + 1)]), maxH: 380 });
+        uni.forEach((u, i) => g.dot(i, u.w, { c: 'muted', r: 6, hollow: true }));
+        modes.forEach((u, i) => { const p = mirrorParity(u.v); g.dot(i, u.w, { c: mu === 1 ? 'c1' : p < 0 ? 'c3' : 'c2', r: 4.2 }); });
+        for (let i = 1; i < n; i++) if (Math.abs(uni[i].w - uni[i - 1].w) < 1e-9) g.seg([i - 1, uni[i].w + 0.1], [i, uni[i].w + 0.1], { c: 'muted', w: 1.2 });
+        g.handle(k, 0.04, { c: 'hl', r: 7, axis: 'x', snap: 1, label: T('Mode', 'モード'), bounds: [0, n - 1, 0, 2], onDrag: (x) => ctx.set('m', Math.round(x)) });
+        g.vline(k, { c: 'hl', w: 1, dash: '3 3', layer: 'under' });
+        const par = mirrorParity(md.v), uniK = uni[k].w, deg = uni.filter((u) => Math.abs(u.w - uniK) < 1e-9).length;
+        const kk = Math.round((n * Math.asin(Math.min(1, uniK / 2))) / Math.PI);
+        const irrep = mu !== 1 ? (par > 0 ? T("A′ (even under the mirror)", "A′（鏡映で偶）") : par < 0 ? T("A″ (odd under the mirror)", "A″（鏡映で奇）") : '?') : kk === 0 ? 'A₁' : 2 * kk === n ? 'B' : `E${sub(kk)}`;
+        L.legend(st.leg, [{ c: 'muted', kind: 'dot', label: T('symmetric ring', '対称な環') }, ...(mu !== 1 ? [{ c: 'c2', kind: 'dot', label: T('even about the mirror', '鏡映で偶') }, { c: 'c3', kind: 'dot', label: T('odd: node at bead 1, frequency unchanged', '奇：ビーズ 1 が節、振動数は不変') }] : [{ c: 'c1', kind: 'dot', label: T('frequencies', '振動数') }]), { c: 'hl', kind: 'dot', label: T('chosen mode', '選んだモード') }].concat(!st.flat && mu !== 1 ? [{ c: 'c4', kind: 'fill', label: T('mirror through bead 1', 'ビーズ 1 を通る鏡') }] : []));
+        ctx.readout([
+          { k: T('mode', 'モード'), v: `${k + 1} / ${n}`, tone: 'key' },
+          { k: 'ω / ω₀', v: fmt(md.w, 4), tone: 'good' },
+          { k: T('symmetric ring: 2 sin(πq/n)', '対称な環：2 sin(πq/n)'), v: fmt(uniK, 4) },
+          { k: T('irreducible representation', '既約表現'), v: irrep },
+          { k: T('degeneracy (symmetric ring)', '縮退度（対称な環）'), v: String(deg) },
+          { k: T('mass ratio μ', '質量比 μ'), v: fmt(mu, 3) },
+        ], mu === 1
+          ? T(`The ring has the symmetry D${sub(n)}, so the modes are its irreducible representations: Fourier waves around the ring. Waves q and n − q are mirror images and together form one two-dimensional irreducible representation, which is why they share a frequency. Every degeneracy here is forced by symmetry.`, `環は D${sub(n)} の対称性をもつので、モードはその既約表現、環を一周するフーリエ波です。波 q と n − q は互いの鏡像で、合わせて一つの二次元既約表現をなします。だから同じ振動数を共有します。ここでの縮退はすべて対称性が強いるものです。`)
+          : T('A heavier bead leaves only the mirror through it. Each pair splits into an even mode, which moves the heavy bead and slows down, and an odd mode with a node exactly at bead 1, which never feels the extra mass and keeps its frequency to every digit.', '重いビーズがあると、それを通る鏡映だけが残ります。各対は、重いビーズを動かして遅くなる偶のモードと、ちょうどビーズ 1 に節をもつ奇のモードに分かれます。奇のモードは余分な質量をまったく感じず、振動数をすべての桁で保ちます。'));
+      };
+      L.view3d(ctx, v, {
+        host: st.v3, aspect: 0.86, maxH: 420, camera: [1.1, -4.1, 2.5], target: [0, 0, -0.08], fov: 33,
+        init(S) {
+          st.flat = false; st.S = S; st.builtN = null;
+          st.rest = S.lines([[[0, 0, 0], [0, 0, 0]]], { c: 'muted', opacity: 0.7 });
+          st.guides = S.lines([[[0, 0, 0], [0, 0, 0]]], { c: 'muted', opacity: 0.35 });
+          st.string = S.tube([[0, 0, 0], [0, 0, 0.01]], { c: 'c1', r: 0.012 });
+          st.beads = S.points([[0, 0, 0]], { max: 12, r: 0.07, c: 0xffffff, rough: 0.3, coat: 0.8 });
+          st.mirror = S.box([2.5, 0.004, 0.8], [0, 0, 0], { c: 'c4', opacity: 0.11, rough: 0.8, coat: 0 });
+          st.l1 = S.label('1', [1, 0, 0], { small: true });
+        },
+        update(S, vv) {
+          const N = vv.n, M = vv.mu;
+          if (st.builtN !== N || st.builtMu !== M) {
+            st.builtN = N; st.builtMu = M;
+            const ring = L0.seq(N, (j) => { const a = (2 * Math.PI * j) / N; return [Math.cos(a), Math.sin(a), 0]; });
+            const segs = []; for (let j = 0; j < N; j++) { const p = ring[j], q = ring[(j + 1) % N]; for (let s = 0; s < 8; s += 2) segs.push([[p[0] + (q[0] - p[0]) * s / 8, p[1] + (q[1] - p[1]) * s / 8, 0], [p[0] + (q[0] - p[0]) * (s + 1) / 8, p[1] + (q[1] - p[1]) * (s + 1) / 8, 0]]); }
+            st.rest.update(segs);
+            st.guides.update(ring.map((p) => [[p[0], p[1], -AMP * 1.15], [p[0], p[1], AMP * 1.15]]));
+            st.beadCols = ring.map((_, j) => S.colour(j === 0 && M !== 1 ? 'c2' : 'hl'));
+            st.beadRad = ring.map((_, j) => 0.07 * (j === 0 ? Math.cbrt(M) : 1));
+          }
+          st.mirror.visible = M !== 1;
+          side();
+          st.drawPh(st.ph ?? 0);
+        },
+        fallback() {
+          st.flat = true; st.v3.replaceChildren(); st.cap1.textContent = capText();
+          const f = L.fig(st.v3, { x: [-1.5, 1.5], y: [-1.5, 1.5], equal: true, axes: false, grid: false, maxH: 380 });
+          f.circle(0, 0, 1, { c: 'muted', w: 1, dash: '3 4', op: 0.6 });
+          if (mu !== 1) f.seg([-1.45, 0], [1.45, 0], { c: 'c4', w: 1.2, dash: '6 4' });
+          const dyn = f.group('main');
+          st.flatDraw = (ph) => {
+            while (dyn.firstChild) dyn.removeChild(dyn.firstChild);
+            const pts = L.seq(n, (j) => { const a = (2 * Math.PI * j) / n, rr = 1 + 0.28 * md.v[j] * Math.cos(ph); return [rr * Math.cos(a), rr * Math.sin(a)]; });
+            dyn.appendChild(f.poly(pts, { c: 'c1', w: 2, fill: 'c1', fo: 0.08, layer: 'main' }));
+            pts.forEach((p, j) => { const a = (2 * Math.PI * j) / n; dyn.appendChild(f.seg([Math.cos(a) * 0.62, Math.sin(a) * 0.62], [Math.cos(a) * 1.38, Math.sin(a) * 1.38], { c: 'muted', w: 0.6, op: 0.4, layer: 'under' })); dyn.appendChild(f.circle(p[0], p[1], j === 0 ? 0.075 * Math.sqrt(mu) : 0.075, { c: j === 0 && mu !== 1 ? 'c2' : 'hl', fill: j === 0 && mu !== 1 ? 'c2' : 'hl', fo: 1, w: 1, layer: 'over' })); });
+          };
+          side(); st.drawPh(st.ph ?? 0);
+        },
+      });
+      if (!st.__v3 && !st.flat) side();
     },
   };
 })();

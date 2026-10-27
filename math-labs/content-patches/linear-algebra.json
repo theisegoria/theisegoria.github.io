@@ -1,0 +1,129 @@
+{
+ "det": {
+  "title": [
+   "2. Determinant, volume and rank",
+   "2. 行列式、体積、階数"
+  ],
+  "body": [
+   "The columns of A are the images of the basis vectors, so A sends the unit cube to the parallelepiped spanned by Ae₁, Ae₂ and Ae₃, and its signed volume is det A. Here the first two columns lie in the floor, so the floor face is the parallelogram of the 2 × 2 block, with area |ad|, and the volume is that base times the height k: det A = adk. Sliding the top vector sideways (p and q) is a shear and leaves the volume alone. A negative determinant reverses orientation, and a zero factor flattens the solid, so the rank falls. Press Play to watch the cube turn into the image.",
+   "A の列は基底ベクトルの像なので、A は単位立方体を Ae₁, Ae₂, Ae₃ の張る平行六面体に移し、その符号付き体積が det A です。ここでは最初の二つの列が床の上にあるので、底面は 2 × 2 の区画が作る平行四辺形で面積は |ad|、体積はその底面積に高さ k を掛けた det A = adk になります。上のベクトルを横に動かす（p と q）のはせん断で、体積は変わりません。行列式が負なら向きが反転し、因子が一つでも 0 なら立体は潰れて階数が下がります。再生を押すと、立方体が像へと変わる様子が見えます。"
+  ],
+  "formula": "A=\\begin{pmatrix}a&c&p\\\\0&d&q\\\\0&0&k\\end{pmatrix},\\qquad \\det A=a\\,d\\,k,\\qquad \\operatorname{vol}A(C)=|\\det A|\\,\\operatorname{vol}C",
+  "example": [
+   "For diag(−2, 1, 1) the volume doubles and the orientation reverses; for a = d = k = 1 with c = 0.7, p = 0.4, q = 0.3 the cube is sheared but its volume is still 1.",
+   "diag(−2, 1, 1) は体積を 2 倍にし、向きを反転させます。a = d = k = 1、c = 0.7、p = 0.4、q = 0.3 では立方体はせん断されますが、体積は 1 のままです。"
+  ],
+  "params": [
+   [
+    "a",
+    "Horizontal scale a",
+    "横方向の倍率 a",
+    -2,
+    2,
+    0.1,
+    1
+   ],
+   [
+    "d",
+    "Vertical scale d",
+    "縦方向の倍率 d",
+    -2,
+    2,
+    0.1,
+    1
+   ],
+   [
+    "c",
+    "Shear c",
+    "せん断 c",
+    -2,
+    2,
+    0.1,
+    0.7
+   ],
+   [
+    "p",
+    "Third column, p",
+    "第3列の p",
+    -1.5,
+    1.5,
+    0.1,
+    0.4
+   ],
+   [
+    "q",
+    "Third column, q",
+    "第3列の q",
+    -1.5,
+    1.5,
+    0.1,
+    0.3
+   ],
+   [
+    "k",
+    "Height k",
+    "高さ k",
+    -2,
+    2,
+    0.1,
+    1
+   ]
+  ]
+ },
+ "projection": {
+  "title": [
+   "4. Least squares as projection",
+   "4. 射影としての最小二乗法"
+  ],
+  "body": [
+   "Fit a line y = x₀ + x₁t to three data points at t = 0, 1, 2. No line passes through all three in general, so Ax = b has no solution: the data vector b lies off the plane of all vectors Ax, the column space of A. Least squares picks the point p = Ax̂ of that plane closest to b, which is the orthogonal projection, and the residual e = b − p is perpendicular to the plane. Its three components are the vertical misses in the data plot. Drag the data points, or drag b in the 3D view.",
+   "直線 y = x₀ + x₁t を t = 0, 1, 2 の三つのデータ点に当てはめます。一般に三点すべてを通る直線はないので、Ax = b には解がありません。データのベクトル b は、Ax の全体である平面、つまり A の列空間の外にあります。最小二乗法はその平面上で b に最も近い点 p = Ax̂ を選び、これが直交射影です。残差 e = b − p は平面に垂直で、その三つの成分がデータの図での縦のずれです。データ点をドラッグするか、3D 表示で b をドラッグしてください。"
+  ],
+  "formula": "A=\\begin{pmatrix}1&0\\\\1&1\\\\1&2\\end{pmatrix},\\qquad A^{T}A\\,\\hat x=A^{T}b,\\qquad p=A\\hat x,\\qquad A^{T}(b-p)=0",
+  "example": [
+   "For b = (0.6, 2.4, 1.8): Aᵀb = (4.8, 6), and AᵀA = [[3, 3], [3, 5]] gives x̂ = (1, 0.6). So p = (1, 1.6, 2.2) and e = (−0.4, 0.8, −0.4), which is perpendicular to both columns (1, 1, 1) and (0, 1, 2).",
+   "b = (0.6, 2.4, 1.8) のとき Aᵀb = (4.8, 6) で、AᵀA = [[3, 3], [3, 5]] から x̂ = (1, 0.6) です。よって p = (1, 1.6, 2.2)、e = (−0.4, 0.8, −0.4) で、e は両方の列 (1, 1, 1) と (0, 1, 2) に垂直です。"
+  ],
+  "caution": [
+   "Least squares minimises the sum of squared vertical misses. It is not the line closest to the points in perpendicular distance, and a single outlier pulls it strongly.",
+   "最小二乗法が最小化するのは縦のずれの二乗和です。点との垂直距離が最小の直線ではなく、外れ値が一つあるだけで大きく引っ張られます。"
+  ],
+  "question": [
+   "When is the residual zero?",
+   "残差が 0 になるのはいつですか？"
+  ],
+  "answer": [
+   "When b already lies in the column space, that is, when the three points are collinear: b₁ − 2b₂ + b₃ = 0, since (1, −2, 1) is perpendicular to both columns.",
+   "b がはじめから列空間にあるとき、つまり三点が一直線上にあるときです。(1, −2, 1) は両方の列に垂直なので、条件は b₁ − 2b₂ + b₃ = 0 です。"
+  ],
+  "params": [
+   [
+    "b1",
+    "Data at t = 0, b₁",
+    "t = 0 のデータ b₁",
+    0,
+    3,
+    0.1,
+    0.6
+   ],
+   [
+    "b2",
+    "Data at t = 1, b₂",
+    "t = 1 のデータ b₂",
+    0,
+    3,
+    0.1,
+    2.4
+   ],
+   [
+    "b3",
+    "Data at t = 2, b₃",
+    "t = 2 のデータ b₃",
+    0,
+    3,
+    0.1,
+    1.8
+   ]
+  ]
+ }
+}

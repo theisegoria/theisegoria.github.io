@@ -4,7 +4,7 @@
   const mid = (a, b) => [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2];
   // Shorten a segment so it stops at the node circles.
   const trim = (a, b, r) => { const dx = b[0] - a[0], dy = b[1] - a[1], l = Math.hypot(dx, dy) || 1; return [[a[0] + dx / l * r, a[1] + dy / l * r], [b[0] - dx / l * r, b[1] - dy / l * r]]; };
-  const weightTag = (f, p, w, o = {}) => { f.rect(p[0] - 0.2, p[1] - 0.27, 0.4, 0.36, { c: o.c || 'muted', fill: 'plate', fo: 1, w: o.strong ? 1.6 : 0.8, rx: 3, layer: 'main' }); f.text(p[0], p[1], String(w), { dy: 2, small: true, c: o.c || 'ink' }); };
+  const weightTag = (f, p, w, o = {}) => { f.rect(p[0] - 0.2, p[1] - 0.18, 0.4, 0.36, { c: o.c || 'muted', fill: 'plate', fo: 1, w: o.strong ? 1.6 : 0.8, rx: 3, layer: 'main' }); f.text(p[0], p[1], String(w), { dy: 4, small: true, c: o.c || 'ink' }); };
   const clickable = (el, label, fn) => { el.style.cursor = 'pointer'; el.setAttribute('tabindex', '0'); el.setAttribute('role', 'button'); el.setAttribute('aria-label', label); el.addEventListener('click', fn); el.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fn(); } }); };
 
   /* ---------- 1. Dijkstra ---------- */
@@ -183,11 +183,11 @@
         f.text(P[0], P[1], names[i], { dy: 5 });
       });
       L.h('p', 'lab-cap', ctx.host, T('All three measures for every node, each scaled so its largest value is 1', '全ノードの3つの指標（各指標の最大値を1に揃えています）'));
-      const g = L.fig(ctx.host, { x: [-0.6, n - 0.4], y: [0, 1.24], aspect: 0.26, minH: 170, maxH: 230, ticksX: names.map((s, i) => [i, s]), ticksY: [[0, '0'], [0.5, '0.5'], [1, '1']] });
-      g.rect(top - 0.46, 0, 0.92, 1.24, { c: 'hl', fill: true, fo: 0.16, w: 1.4, layer: 'under' });
-      g.text(top, 1.24, T(`top: ${names[top]}`, `最上位：${names[top]}`), { dy: 12, small: true, c: 'hl' });
-      keys.forEach((k, j) => { const m = Math.max(...M[k]) || 1; M[k].forEach((x, i) => g.rect(i - 0.36 + j * 0.24, 0, 0.22, x / m, { c: i === top && j === mode ? 'hl' : cols[j], fo: j === mode ? 0.8 : 0.3, w: i === top && j === mode ? 2 : j === mode ? 1.4 : 0.6 })); });
-      g.hover((x) => { const i = Math.round(x); if (i < 0 || i >= n) return null; return { x: i, text: `${names[i]}: ${lab[0]} ${fmt(M.deg[i], 3)}, ${lab[1]} ${fmt(M.clo[i], 3)}, ${lab[2]} ${fmt(M.bet[i], 3)}` }; });
+      const g = L.fig(ctx.host, { x: [0.4, n + 0.6], y: [0, 1.24], aspect: 0.26, minH: 170, maxH: 230, ticksX: names.map((s, i) => [i + 1, s]), ticksY: [[0, '0'], [0.5, '0.5'], [1, '1']] });
+      g.rect(top + 1 - 0.46, 0, 0.92, 1.24, { c: 'hl', fill: true, fo: 0.16, w: 1.4, layer: 'under' });
+      g.text(top + 1, 1.24, T(`top: ${names[top]}`, `最上位：${names[top]}`), { dy: 12, small: true, c: 'hl' });
+      keys.forEach((k, j) => { const m = Math.max(...M[k]) || 1; M[k].forEach((x, i) => g.rect(i + 1 - 0.36 + j * 0.24, 0, 0.22, x / m, { c: i === top && j === mode ? 'hl' : cols[j], fo: j === mode ? 0.8 : 0.3, w: i === top && j === mode ? 2 : j === mode ? 1.4 : 0.6 })); });
+      g.hover((x) => { const i = Math.round(x) - 1; if (i < 0 || i >= n) return null; return { x: i + 1, text: `${names[i]}: ${lab[0]} ${fmt(M.deg[i], 3)}, ${lab[1]} ${fmt(M.clo[i], 3)}, ${lab[2]} ${fmt(M.bet[i], 3)}` }; });
       L.legend(ctx.host, keys.map((k, j) => ({ kind: 'fill', c: cols[j], label: lab[j] + (j === mode ? T(' (node size above)', '（上図のノードの大きさ）') : '') })).concat(extra ? [{ c: 'c4', label: T('extra links between the groups', '群の間の追加リンク') }] : []));
       const iX = names.indexOf('X'), iC = names.indexOf('C');
       ctx.readout([{ k: T(`top by ${lab[mode]}`, `${lab[mode]}の最上位`), v: `${names[top]} (${fmt(mx, 3)})`, tone: 'key' }, { k: T('leaves on C, extra links', 'C の葉、追加リンク'), v: `${hub}, ${extra}` }, { k: T('bridge X: degree, betweenness', '橋 X：次数、媒介'), v: `${fmt(M.deg[iX], 3)}, ${fmt(M.bet[iX], 3)}` }, { k: T('hub C: degree, betweenness', 'ハブ C：次数、媒介'), v: `${fmt(M.deg[iC], 3)}, ${fmt(M.bet[iC], 3)}` }],

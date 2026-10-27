@@ -304,3 +304,11 @@ must identify. Readouts, legends and captions stay HTML, outside the canvas.
 Check with `node math-labs/dev/shoot3d.cjs <slug>` (prints the backend:
 webgl2 in the sandbox, webgpu on a real GPU) and look at every screenshot,
 light and dark, at 1100 and 390 px width.
+
+Notes from the upgrade:
+- `S.label(text, p, {occlude: true})` hides a label while a mesh is between it and the camera.
+- `S.handle(p, {facing: true})` drags in the plane through the handle facing the camera.
+- `S.points` with `colours` uses a white base material, so the colours come through unmultiplied.
+- The view3d `aspect` is fixed when the scene is created; read `ctx.host.clientWidth` before calling view3d if a phone needs a taller aspect.
+- Practice text supports inline `$...$` only, not `$$...$$`; write arrays inline.
+- `expr` answers are checked at random real points, so avoid `!` and binomials in them.

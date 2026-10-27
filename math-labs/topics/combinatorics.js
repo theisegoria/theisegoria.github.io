@@ -181,10 +181,10 @@
       // Dyck path
       L.h('p', 'lab-cap', A, T('A Dyck path: up and down steps that never go below the axis. The gold pair is an up step and the down step that first returns to its level.', 'ディック経路：軸の下へ決して行かない上りと下りの歩みです。金色の組は上りと、それが最初に同じ高さへ戻る下りです。'));
       const H = Math.max(2, n), pf = L.fig(A, { x: [-0.3, 2 * n + 0.3], y: [-0.4, H + 0.4], equal: true, axes: false, grid: false, maxH: 300 });
-      for (let x = 0; x <= 2 * n; x++) for (let y = (x % 2); y <= Math.min(x, 2 * n - x, H); y += 2) pf.dot(x, y, { c: 'muted', r: 1.4, layer: 'under' });
+      for (let x = 0; x <= 2 * n; x++) for (let y = (x % 2); y <= Math.min(x, 2 * n - x, H); y += 2) pf.dot(x, y, { c: 'muted', r: 2, op: 0.55, layer: 'under' });
       pf.seg([0, 0], [2 * n, 0], { c: 'muted', w: 1.2, layer: 'under' });
       const ys = [0]; for (const s of w) ys.push(ys[ys.length - 1] + (s === 'U' ? 1 : -1));
-      pf.poly([[selOpen, ys[selOpen]]].concat(L.seq(selClose - selOpen + 1, (i) => [selOpen + i, ys[selOpen + i]])), { c: 'hl', fill: 'hl', fo: 0.14, w: 0 });
+      pf.poly(L.seq(selClose - selOpen + 2, (i) => [selOpen + i, ys[selOpen + i]]), { c: 'hl', fill: 'hl', fo: 0.14, w: 0 });
       pf.line(ys.map((y, i) => [i, y]), { c: 'c1', w: 2.6 });
       pf.seg([selOpen, ys[selOpen]], [selOpen + 1, ys[selOpen + 1]], { c: 'hl', w: 4.2, layer: 'over' }); pf.seg([selClose, ys[selClose]], [selClose + 1, ys[selClose + 1]], { c: 'hl', w: 4.2, layer: 'over' });
       // binary tree, laid out in order with its n + 1 leaves

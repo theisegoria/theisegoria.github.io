@@ -16,55 +16,147 @@
   const fig = (host, o) => { const f = L.fig(host, o); f.svg.setAttribute('data-ig-tex', 'off'); return f; };
   const FLAG = [[0, 0.1], [0, 0.7], [-0.36, 0.57], [0, 0.44]];
 
-  D.compose = {
-    render(ctx, v) {
-      ctx.state.anim?.stop();
-      const n = Math.round(v.n), k = mod(Math.round(v.k), n), step = L.TAU / n;
-      const row = L.h('div', 'lab-row', ctx.host);
-      const panels = [
-        { cap: T(`rᵏ ∘ s: reflect first, then rotate ${k} step${k === 1 ? '' : 's'}`, `rᵏ ∘ s：先に反転し、次に ${k} ステップ回転`), first: 's' },
-        { cap: T(`s ∘ rᵏ: rotate ${k} step${k === 1 ? '' : 's'} first, then reflect`, `s ∘ rᵏ：先に ${k} ステップ回転し、次に反転`), first: 'r' },
-      ].map((p) => {
-        const col = L.h('div', 'lab-col', row);
-        L.h('p', 'lab-cap', col, p.cap);
-        const f = fig(col, { axes: false, x: [-1.42, 1.42], y: [-1.36, 1.42], equal: true, maxH: 330 });
-        const out = L.seq(n + 1, (i) => vpos(i, n));
-        f.poly(out, { c: 'muted', fo: 0.07, w: 1.6, layer: 'under' });
-        f.line([[0, -1.3], [0, 1.3]], { c: 'c2', w: 1.3, dash: '6 5', op: 0.8, layer: 'under' });
-        f.text(0, -1.3, T('mirror of s', 's の鏡'), { small: true, c: 'c2', dx: 6, dy: -2, anchor: 'start' });
-        L.seq(n, (i) => { const q = vpos(i, n, 1.25); f.text(q[0], q[1], String(i), { small: true, c: 'muted', dy: 4, layer: 'under' }); });
-        return Object.assign(p, { f });
+  const DUR = 2.8;
+  // where the motion is at time t: the first step runs over [0, 1.2], the second over [1.5, 2.7]
+  const steps = (t) => [ease(t / 1.2), ease((t - 1.5) / 1.2)];
+  const composeCaps = (k) => [
+    T(`rᵏ ∘ s: reflect first, then rotate ${k} step${k === 1 ? '' : 's'}`, `rᵏ ∘ s：先に反転し、次に ${k} ステップ回転`),
+    T(`s ∘ rᵏ: rotate ${k} step${k === 1 ? '' : 's'} first, then reflect`, `s ∘ rᵏ：先に ${k} ステップ回転し、次に反転`),
+  ];
+  // the previous flat figure: two panels, the reflection drawn as a squash through the mirror line
+  function composeFlat(host, n, k) {
+    const step = L.TAU / n;
+    const row = L.h('div', 'lab-row', host);
+    const panels = composeCaps(k).map((cap, i) => {
+      const col = L.h('div', 'lab-col', row);
+      L.h('p', 'lab-cap', col, cap);
+      const f = fig(col, { axes: false, x: [-1.42, 1.42], y: [-1.36, 1.42], equal: true, maxH: 330 });
+      f.poly(L.seq(n + 1, (j) => vpos(j, n)), { c: 'muted', fo: 0.07, w: 1.6, layer: 'under' });
+      f.line([[0, -1.3], [0, 1.3]], { c: 'c2', w: 1.3, dash: '6 5', op: 0.8, layer: 'under' });
+      f.text(0, -1.3, T('mirror of s', 's の鏡'), { small: true, c: 'c2', dx: 6, dy: -2, anchor: 'start' });
+      L.seq(n, (j) => { const q = vpos(j, n, 1.25); f.text(q[0], q[1], String(j), { small: true, c: 'muted', dy: 4, layer: 'under' }); });
+      return { f, first: i === 0 ? 's' : 'r' };
+    });
+    const move = (pt, first, s1, s2) => (first === 's' ? rot(flip(pt, s1), k * step * s2) : flip(rot(pt, k * step * s1), s2));
+    return (t) => {
+      const [s1, s2] = steps(t);
+      panels.forEach(({ f, first }) => {
+        f.clear('main'); f.clear('over');
+        f.poly(FLAG.map((p) => move(p, first, s1, s2)), { c: 'c4', fo: 0.55, w: 1.4 });
+        for (let l = 0; l < n; l++) {
+          const q = move(vpos(l, n), first, s1, s2);
+          f.dot(q[0], q[1], { c: l === 0 ? 'hl' : 'c1', r: 12 });
+          f.text(q[0], q[1], String(l), { c: 'plate', dy: 4.5 }).style.stroke = 'none';
+        }
       });
-      const move = (pt, first, s1, s2) => (first === 's' ? rot(flip(pt, s1), k * step * s2) : flip(rot(pt, k * step * s1), s2));
-      const draw = (t) => {
-        const s1 = ease(t / 1.2), s2 = ease((t - 1.5) / 1.2);
-        panels.forEach(({ f, first }) => {
-          f.clear('main'); f.clear('over');
-          f.poly(FLAG.map((p) => move(p, first, s1, s2)), { c: 'c4', fo: 0.55, w: 1.4 });
-          for (let l = 0; l < n; l++) {
-            const q = move(vpos(l, n), first, s1, s2);
-            f.dot(q[0], q[1], { c: l === 0 ? 'hl' : 'c1', r: 12 });
-            f.text(q[0], q[1], String(l), { c: 'plate', dy: 4.5 }).style.stroke = 'none';
-          }
-        });
+    };
+  }
+  // one polygon plate in 3D: blue on the front, orange on the back, a teal flag through it and numbered beads at the corners
+  function buildStage(S, cx, n) {
+    const THREE = S.THREE;
+    const outer = new THREE.Group(); outer.position.x = cx; outer.rotation.x = Math.PI / 2;   // local z (the plate normal) faces the viewer
+    S.add(outer);
+    const inner = new THREE.Group(); outer.add(inner);
+    const verts = L.seq(n, (j) => vpos(j, n));
+    const shape = new THREE.Shape(); verts.forEach(([x, y], j) => (j ? shape.lineTo(x, y) : shape.moveTo(x, y))); shape.closePath();
+    const TH = 0.06;
+    const slab = new THREE.ExtrudeGeometry(shape, { depth: TH, bevelEnabled: false }); slab.translate(0, 0, -TH / 2);
+    inner.add(new THREE.Mesh(slab, S.mat('muted', { rough: 0.5, coat: 0.3 })));
+    const front = new THREE.Mesh(new THREE.ShapeGeometry(shape), S.mat('c1', { rough: 0.45, coat: 0.5, side: THREE.FrontSide }));
+    front.position.z = TH / 2 + 0.002;
+    const back = new THREE.Mesh(new THREE.ShapeGeometry(shape), S.mat('c2', { rough: 0.45, coat: 0.5, side: THREE.FrontSide }));
+    back.rotation.y = Math.PI; back.position.z = -TH / 2 - 0.002;
+    const fs = new THREE.Shape(); FLAG.forEach(([x, y], j) => (j ? fs.lineTo(x, y) : fs.moveTo(x, y))); fs.closePath();
+    const flagGeo = new THREE.ExtrudeGeometry(fs, { depth: TH + 0.03, bevelEnabled: false }); flagGeo.translate(0, 0, -(TH + 0.03) / 2);
+    const flagM = new THREE.Mesh(flagGeo, S.mat('c3', { rough: 0.35, coat: 0.7 }));
+    const beads = S.points(verts.map(([x, y]) => [x, y, 0]), { add: false, r: 0.075, c: 0xffffff, colours: verts.map((_, j) => S.colour(j === 0 ? 'hl' : 'ink')) });
+    inner.add(front, back, flagM, beads);
+    // fixed parts: the slot the plate returns to, and the mirror line of s
+    const slot = []; for (let j = 0; j < n; j++) { const a = verts[j], b = verts[(j + 1) % n]; slot.push([[a[0] * 1.03, a[1] * 1.03, -0.09], [b[0] * 1.03, b[1] * 1.03, -0.09]]); }
+    const slotL = S.lines(slot, { c: 'muted', opacity: 0.9, add: false }); outer.add(slotL);
+    const mirror = S.tube([[0, -1.32, 0], [0, 1.32, 0]], { c: 'c4', r: 0.012, add: false }); outer.add(mirror);
+    const nums = verts.map(([x, y], j) => S.label(String(j), [0, 0, 0], { small: true, c: 'muted', align: 'middle', dy: 6 }));
+    const tags = verts.map((_, j) => S.label(String(j), [0, 0, 0], { align: 'middle', dy: 8, c: j === 0 ? 'hl' : 'plate' }));
+    const V = new THREE.Vector3();
+    const world = (obj, p) => { obj.updateWorldMatrix(true, false); return V.set(p[0], p[1], p[2] ?? 0).applyMatrix4(obj.matrixWorld).toArray(); };
+    nums.forEach((lab, j) => lab.set(world(outer, [verts[j][0] * 1.36, verts[j][1] * 1.36, -0.09])));
+    const disposeAll = () => {
+      S.scene.remove(outer);
+      outer.traverse((o) => { o.geometry?.dispose(); if (o.material) [].concat(o.material).forEach((m) => m.dispose()); });
+      nums.concat(tags).forEach((l) => l.remove());
+    };
+    return {
+      outer, inner, disposeAll,
+      pose(qu) { inner.quaternion.copy(qu); tags.forEach((lab, j) => lab.set(world(inner, [verts[j][0] * 0.78, verts[j][1] * 0.78, 0]))); },
+    };
+  }
+  D.compose = {
+    three: true,
+    render(ctx, v) {
+      const st = ctx.state, n = Math.round(v.n), k = mod(Math.round(v.k), n), step = L.TAU / n;
+      if (!st.frame || !st.frame.isConnected) {
+        st.anim?.stop(); st.anim = null;
+        ctx.host.replaceChildren();
+        st.frame = L.h('div', '', ctx.host);
+        st.cap = L.h('p', 'lab-cap', st.frame, T('Two copies of the polygon, each a plate that is blue in front and orange behind. Left: reflect first, then rotate. Right: rotate first, then reflect. A reflection of the plane is a half turn of the plate about the mirror line, which is why it shows the back. Drag to turn the view.', '多角形の板を二枚、表は青、裏はオレンジにしています。左は先に反転してから回転、右は先に回転してから反転します。平面の鏡映は鏡の線のまわりの板の半回転なので、裏が見えます。ドラッグで視点を回せます。'));
+        st.v3 = L.h('div', '', st.frame);
+        st.bar = L.h('div', '', st.frame);
+        st.leg = L.h('div', '', st.frame);
+      }
+      st.drawAt = (t) => {
+        st.t = t;
+        if (st.flat) { st.flatDraw?.(t); return; }
+        if (!st.stages || !st.S) return;
+        const S = st.S, THREE = S.THREE, [s1, s2] = steps(t), Y = new THREE.Vector3(0, 1, 0), Z = new THREE.Vector3(0, 0, 1);
+        const qy = (s) => new THREE.Quaternion().setFromAxisAngle(Y, Math.PI * s), qz = (s) => new THREE.Quaternion().setFromAxisAngle(Z, st.k * (L.TAU / st.n) * s);
+        st.stages[0].pose(qz(s2).multiply(qy(s1)));   // r^k after s
+        st.stages[1].pose(qy(s2).multiply(qz(s1)));   // s after r^k
+        S.invalidate();
       };
-      const DUR = 2.8;
-      ctx.state.anim = L.animator(ctx.host, (dt, t, label) => {
-        draw(Math.min(t, DUR));
+      if (!st.anim) st.anim = L.animator(st.bar, (dt, t, label) => {
+        st.drawAt?.(Math.min(t, DUR));
         label.textContent = t < DUR ? (t < 1.35 ? T('first step', '1段階目') : T('second step', '2段階目')) : '';
         return t < DUR;
       }, { autoplay: false, once: true, duration: DUR, initialT: DUR, playLabel: T('Play both compositions', '2つの合成を再生') });
-      L.legend(ctx.host, [{ kind: 'dot', c: 'c1', label: T('Vertex labels, carried by the motion', '動きに運ばれる頂点ラベル') }, { kind: 'dot', c: 'hl', label: T('Label 0', 'ラベル 0') }, { kind: 'fill', c: 'c4', label: T('Flag: shows orientation', '旗：向きを示す') }, { c: 'muted', label: T('Grey numbers: fixed positions', '灰色の数字：固定された位置') }]);
-      const A = mod(k, n), B = mod(-k, n);
-      const reads = (m) => L.seq(n, (p) => mod(m - p, n)).join(' ');
-      const same = A === B;
-      ctx.readout([
-        { k: 'rᵏ ∘ s', v: name(A, 1), tone: 'key' },
-        { k: 's ∘ rᵏ', v: name(B, 1), tone: 'key' },
-        { k: T('labels at positions 0…n−1', '位置 0…n−1 のラベル'), v: `${reads(A)}  |  ${reads(B)}` },
-        { k: T('compositions', '合成'), v: same ? T('agree', '一致') : T('differ', '異なる'), tone: same ? 'good' : 'warn' },
-      ], same ? T(`Here 2k = ${2 * k} is divisible by n = ${n}, so rᵏ = r⁻ᵏ and the two orders give the same symmetry.`, `ここでは 2k = ${2 * k} が n = ${n} で割り切れるので rᵏ = r⁻ᵏ となり、2つの順序は同じ対称になります。`)
-        : T(`srᵏ = r⁻ᵏs, so the two results differ by r²ᵏ = ${name(mod(2 * k, n), 0)}.`, `srᵏ = r⁻ᵏs なので、2つの結果は r²ᵏ = ${name(mod(2 * k, n), 0)} だけ異なります。`) + (Math.round(v.k) >= n ? T(` (k is read modulo ${n}.)`, `（k は ${n} を法として読みます。）`) : ''));
+      const side = () => {
+        st.leg.replaceChildren();
+        L.legend(st.leg, st.flat
+          ? [{ kind: 'dot', c: 'c1', label: T('Vertex labels, carried by the motion', '動きに運ばれる頂点ラベル') }, { kind: 'dot', c: 'hl', label: T('Label 0', 'ラベル 0') }, { kind: 'fill', c: 'c4', label: T('Flag: shows orientation', '旗：向きを示す') }, { c: 'muted', label: T('Grey numbers: fixed positions', '灰色の数字：固定された位置') }]
+          : [{ kind: 'fill', c: 'c1', label: T('front face', '表') }, { kind: 'fill', c: 'c2', label: T('back face: the plate has been flipped', '裏：板が裏返された') }, { kind: 'fill', c: 'c3', label: T('flag: shows orientation', '旗：向きを示す') }, { kind: 'dot', c: 'hl', label: T('label 0', 'ラベル 0') }, { c: 'c4', label: T('mirror line of s', 's の鏡の線') }, { c: 'muted', label: T('grey numbers: fixed positions', '灰色の数字：固定された位置') }]);
+        const A = mod(k, n), B = mod(-k, n);
+        const reads = (m) => L.seq(n, (p) => mod(m - p, n)).join(' ');
+        const same = A === B;
+        ctx.readout([
+          { k: 'rᵏ ∘ s', v: name(A, 1), tone: 'key' },
+          { k: 's ∘ rᵏ', v: name(B, 1), tone: 'key' },
+          { k: T('labels at positions 0…n−1', '位置 0…n−1 のラベル'), v: `${reads(A)}  |  ${reads(B)}` },
+          { k: T('compositions', '合成'), v: same ? T('agree', '一致') : T('differ', '異なる'), tone: same ? 'good' : 'warn' },
+        ], same ? T(`Here 2k = ${2 * k} is divisible by n = ${n}, so rᵏ = r⁻ᵏ and the two orders give the same symmetry.`, `ここでは 2k = ${2 * k} が n = ${n} で割り切れるので rᵏ = r⁻ᵏ となり、2つの順序は同じ対称になります。`)
+          : T(`srᵏ = r⁻ᵏs, so the two results differ by r²ᵏ = ${name(mod(2 * k, n), 0)}.`, `srᵏ = r⁻ᵏs なので、2つの結果は r²ᵏ = ${name(mod(2 * k, n), 0)} だけ異なります。`) + (Math.round(v.k) >= n ? T(` (k is read modulo ${n}.)`, `（k は ${n} を法として読みます。）`) : ''));
+      };
+      if (st.narrow === undefined) st.narrow = (ctx.host.clientWidth || 800) < 600;
+      L.view3d(ctx, v, {
+        host: st.v3, aspect: st.narrow ? 0.72 : 0.5, maxH: 440, camera: [0.7, -6.9, 2.5], target: [0, 0, 0.02], fov: st.narrow ? 36 : 30,
+        init(S) {
+          st.flat = false; st.S = S; st.builtN = null; st.stages = null;
+          st.capL = [S.label('', [-1.6, 0, 1.5], { small: true, align: 'middle' }), S.label('', [1.6, 0, 1.5], { small: true, align: 'middle' })];
+        },
+        update(S, vv) {
+          const nn = Math.round(vv.n);
+          st.n = nn; st.k = mod(Math.round(vv.k), nn);
+          if (st.builtN !== nn) { st.stages?.forEach((sg) => sg.disposeAll()); st.stages = [-1.6, 1.6].map((cx) => buildStage(S, cx, nn)); st.builtN = nn; }
+          const caps = st.narrow ? ['rᵏ ∘ s', 's ∘ rᵏ'] : composeCaps(st.k); st.capL[0].set(null, caps[0]); st.capL[1].set(null, caps[1]);
+          side();
+          st.drawAt(st.t ?? DUR);
+        },
+        fallback() {
+          st.flat = true; st.v3.replaceChildren();
+          st.cap.textContent = T('The same two symmetries applied in both orders. Press Play to watch the labels and the flag move.', '同じ二つの対称を両方の順序で施します。再生ボタンでラベルと旗の動きを見られます。');
+          st.flatDraw = composeFlat(st.v3, n, k); side(); st.drawAt(st.t ?? DUR);
+        },
+      });
+      void step;
+      if (!st.__v3 && !st.flat) side();
     },
   };
 
