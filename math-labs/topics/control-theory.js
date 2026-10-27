@@ -41,7 +41,8 @@
     }
     return out;
   }
-  const pidPoles = (kp, ki, kd) => roots([1, 3, 3 + kd, 1 + kp, ki]);
+  // with no integral action the integrator state is disconnected, and the loop is the cubic s³ + 3s² + (3 + Kd)s + 1 + Kp
+  const pidPoles = (kp, ki, kd) => (ki === 0 ? roots([1, 3, 3 + kd, 1 + kp]) : roots([1, 3, 3 + kd, 1 + kp, ki]));
   // loop L(i w) = K e^{-i w tau} / (1 + i w)^3
   const loopAt = (K, tau, w) => { const mag = K / Math.pow(1 + w * w, 1.5), ph = -3 * Math.atan(w) - w * tau; return [mag * Math.cos(ph), mag * Math.sin(ph), mag, ph]; };
   function margins(K, tau) {
@@ -64,42 +65,103 @@
 
   /* ---------- 1. poles ---------- */
   D.poles = {
+    three: true,
     render(ctx, v) {
-      ctx.state.anim?.stop();
-      const sig = v.sigma, om = v.omega;
-      const row = L.h('div', 'lab-row', ctx.host);
-      const c1 = L.h('div', 'lab-col', row), c2 = L.h('div', 'lab-col', row);
-      L.h('p', 'lab-cap', c1, T('The s-plane: drag the upper pole', 's 平面：上の極をドラッグしてください'));
-      const f = L.fig(c1, { x: [-3.5, 1.5], y: [-6.5, 6.5], aspect: 1.1, maxH: 400, xlabel: 'Re s', ylabel: 'Im s' });
+      const st = ctx.state;
+      if (!st.frame || !st.frame.isConnected) {
+        st.anim?.stop(); st.anim = null;
+        ctx.host.replaceChildren();
+        st.frame = L.h('div', '', ctx.host);
+        const row = L.h('div', 'lab-row is-wide', st.frame);
+        st.c1 = L.h('div', 'lab-col', row); st.c2 = L.h('div', 'lab-col', row);
+        st.cap1 = L.h('p', 'lab-cap', st.c1, T('|H(s)| over the s-plane on a log scale: each pole lifts the surface like a tent pole. Its profile along the imaginary axis (gold) is the frequency response |H(iω)|. Drag the upper pole.', 's 平面上の |H(s)|（対数目盛）。極はテントの支柱のように曲面を持ち上げます。虚軸に沿った断面（金）が周波数応答 |H(iω)| です。上の極をドラッグしてください。'));
+        st.v3 = L.h('div', '', st.c1);
+        st.p2 = L.h('div', '', st.c2);
+        st.bar = L.h('div', '', st.frame);
+        st.leg = L.h('div', '', st.frame);
+      }
+      const YS = 0.45, A = 1.6, ZS = 0.75;
+      const logH = (sig, om, x, y) => { const n2 = sig * sig + om * om, d1 = Math.hypot(x - sig, y - om), d2 = Math.hypot(x - sig, y + om); return Math.log10(Math.max(1e-12, n2) / Math.max(1e-9, d1 * d2)); };
+      const height = (sig, om, x, y) => ZS * A * Math.tanh(logH(sig, om, x, y) / A);
+      const draw2d = (vv) => polesPanels(ctx, vv, st);
+      L.view3d(ctx, v, {
+        host: st.v3, aspect: 0.72, maxH: 440, camera: [8.0, -3.8, 5.8], target: [-0.9, 0, 0.1], fov: 33,
+        init(S) {
+          st.flat = false; st.key3 = null;
+          st.surf = S.graph(() => 0, { x: [-3.5, 1.5], y: [-6.5 * YS, 6.5 * YS], nu: 150, nv: 190, rough: 0.5, coat: 0.3 });
+          st.prof = S.tube([[0, 0, 0], [0, 0, 0.01]], { c: 'hl', r: 0.03, glow: 0.3 });
+          st.ray = S.lines([], { c: 'c4', opacity: 0.8 });
+          st.reAx = S.lines([[[-3.5, 0, 0], [1.5, 0, 0]]], { c: 'ink', opacity: 0.45 });
+          st.mirror = S.sphere([0, 0, 0], 0.085, { c: 'c1' });
+          st.h = S.handle([0, 0, 0], { c: 'c1', r: 0.12, plane: [[0, 0, 1], [0, 0, 1.3]], bounds: [-3, 1, 0, 6 * YS], onDrag: (q) => { ctx.set('sigma', q.x, true); ctx.set('omega', q.y / YS, true); ctx.redraw(); } });
+          S.label(T('stable', '安定'), [-3.3, -6.3 * YS, 0], { small: true, c: 'c3' });
+          S.label(T('unstable', '不安定'), [1.4, -6.3 * YS, 0], { small: true, c: 'c2', align: 'end' });
+          S.label('Re s', [1.55, 0, 0], { math: true, c: 'muted' });
+          st.profLab = S.label('|H(iω)|', [0, 6.2 * YS, 0], { small: true, c: 'hl' });
+          st.poleLab = S.label('', [0, 0, 0], { small: true, c: 'c1' });
+        },
+        update(S, vv) {
+          const sig = vv.sigma, om = vv.omega, key = `${sig}|${om}`;
+          if (st.key3 !== key) {
+            st.key3 = key;
+            const lo = S.colour('c1').clone().lerp(S.colour('plate'), 0.45), hi = S.colour('c1'), warm = S.colour('c2').clone().lerp(S.colour('plate'), 0.35), top = S.colour('hl');
+            const zTop = ZS * A;
+            st.surf.update((x, y) => height(sig, om, x, y / YS), (x, y, p) => { const t = L.clamp((p[2] + 0.6) / (zTop + 0.6), 0, 1); const c = (x > 0 ? warm : lo).clone().lerp(hi, 0.65 * t); return t > 0.86 ? c.lerp(top, (t - 0.86) / 0.14 * 0.6) : c; });
+            st.prof.update(L.seq(261, (i) => { const w = -6.5 + 13 * i / 260; return [0, w * YS, height(sig, om, 0, w) + 0.02]; }));
+            const pz = height(sig, om, sig, om) + 0.06;
+            st.h.at([sig, om * YS, pz]); st.h.userData.handle.plane = [[0, 0, 1], [0, 0, pz]];
+            st.mirror.at([sig, -om * YS, height(sig, om, sig, -om) + 0.06]);
+            st.mirror.visible = om > 1e-6;
+            st.poleLab.set([sig, om * YS, pz + 0.1], `${fmt(sig, 2)} + ${fmt(om, 2)}i`);
+            const wn = Math.hypot(sig, om), segs = [];
+            if (sig < 0 && wn > 0.05) { const t1 = Math.min(3.5 / -sig * 0.98, 6.5 / Math.max(1e-6, om) * 0.98, 4); let prev = null; for (let i = 0; i <= 60; i++) { const t = t1 * i / 60, x = sig * t, y = om * t, q = [x, y * YS, height(sig, om, x, y) + 0.015]; if (prev) segs.push([prev, q]); prev = q; } }
+            st.ray.update(segs);
+          }
+          draw2d(vv);
+        },
+        fallback(c, vv) { st.flat = true; draw2d(vv); },
+      });
+      if (!st.__v3 && !st.flat) draw2d(v);
+    },
+  };
+  function polesPanels(ctx, v, st) {
+    const sig = v.sigma, om = v.omega;
+    st.anim?.stop(); st.p2.replaceChildren(); st.bar.replaceChildren(); st.leg.replaceChildren();
+    const wn = Math.hypot(sig, om);
+    if (st.flat) {
+      st.c1.replaceChildren(); st.c2.replaceChildren(); st.c1.parentNode.classList.remove('is-wide'); st.p2 = L.h('div', '', st.c2);
+      L.h('p', 'lab-cap', st.c1, T('The s-plane: drag the upper pole', 's 平面：上の極をドラッグしてください'));
+      const f = L.fig(st.c1, { x: [-3.5, 1.5], y: [-6.5, 6.5], aspect: 1.1, maxH: 400, xlabel: 'Re s', ylabel: 'Im s' });
       f.rect(-3.5, -6.5, 3.5, 13, { c: 'c3', fo: 0.07, nostroke: true, layer: 'under' });
       f.rect(0, -6.5, 1.5, 13, { c: 'c2', fo: 0.1, nostroke: true, layer: 'under' });
       f.text(-3.35, -6.0, T('stable', '安定'), { anchor: 'start', small: true, c: 'c3' });
       f.text(1.35, -6.0, T('unstable', '不安定'), { anchor: 'end', small: true, c: 'c2' });
-      const wn = Math.hypot(sig, om);
       if (wn > 0.05) {
         f.line(L.seq(121, (i) => { const a = PI / 2 + PI * i / 120; return [wn * Math.cos(a), wn * Math.sin(a)]; }), { c: 'muted', w: 1, dash: '3 4' });
         if (sig < 0) f.seg([0, 0], [sig * 20 / wn, om * 20 / wn], { c: 'c4', w: 1.2, dash: '5 4' });
       }
       cross(f, sig, -om, 'c1');
       f.handle(sig, om, { c: 'c1', r: 9, label: T('Pole', '極'), bounds: [-3, 1, 0, 6], onDrag: (x, y) => { ctx.set('sigma', x, true); ctx.set('omega', y, true); ctx.redraw(); } });
-      L.h('p', 'lab-cap', c2, T('Step response y(t)', 'ステップ応答 y(t)'));
-      const tMax = 10;
-      const ys = L.sample(0, tMax, 600, (t) => step2(sig, om, t));
-      const ymax = L.clamp(Math.max(1.3, ...ys.map((p) => p[1]).filter(Number.isFinite)) + 0.1, 1.3, 2.4);
-      const g = L.fig(c2, { x: [0, tMax], y: [-0.6, ymax], aspect: 0.8, maxH: 400, xlabel: 't', ylabel: 'y' });
-      g.hline(1, { c: 'ink', dash: '4 4' });
-      if (sig < 0 && om > 1e-6) { const A = Math.hypot(1, sig / om); for (const s of [1, -1]) g.line(L.sample(0, tMax, 200, (t) => 1 + s * A * Math.exp(sig * t)), { c: 'c4', w: 1.2, dash: '3 3' }); }
-      const os = sig < 0 && om > 1e-6 ? Math.exp(PI * sig / om) : null, ts = sig < 0 ? 4 / -sig : null;
-      if (os !== null && PI / om < tMax) { g.dot(PI / om, 1 + os, { c: 'c2', r: 5 }); g.text(PI / om, 1 + os, T(`overshoot ${fmt(os * 100, 1)}%`, `オーバーシュート ${fmt(os * 100, 1)}%`), { small: true, c: 'c2', dy: -10, anchor: 'start', dx: 6 }); }
-      if (ts !== null && ts < tMax) { g.vline(ts, { c: 'c3', dash: '2 3' }); g.text(ts, -0.45, T('settling ≈ 4/|σ|', '整定 ≈ 4/|σ|'), { small: true, c: 'c3', dx: 4, anchor: 'start' }); }
-      g.line(ys, { c: 'c1', w: 2.6 });
-      ctx.state.anim = L.animator(ctx.host, (dt, t) => { g.clear('over'); const tt = Math.min(tMax, t * 2.5); const y = step2(sig, om, tt); if (Number.isFinite(y) && y > -0.6 && y < ymax) g.dot(tt, y, { c: 'hl', r: 6.5 }); if (tt >= tMax) return false; }, { autoplay: false, once: true, initialT: 0, playLabel: T('Trace the response', '応答をたどる') });
-      L.legend(ctx.host, [{ c: 'c1', label: T('poles σ ± iω and the response', '極 σ ± iω と応答') }, { c: 'c4', dash: true, label: T('envelope e^(σt), and the constant-overshoot ray', '包絡線 e^(σt) と、オーバーシュート一定の半直線') }, { c: 'muted', dash: true, label: T('natural frequency |s|', '固有振動数 |s|') }]);
-      const zeta = wn > 0 ? -sig / wn : 0;
-      ctx.readout([{ k: T('poles', '極'), v: `${fmt(sig, 2)} ± ${fmt(om, 2)}i`, tone: 'key' }, { k: T('damping ratio ζ', '減衰比 ζ'), v: fmt(zeta, 3) }, { k: T('overshoot', 'オーバーシュート'), v: os === null ? (sig < 0 ? '0%' : '∞') : `${fmt(os * 100, 1)}%` }, { k: T('settling time', '整定時間'), v: ts === null ? '∞' : fmt(ts, 2), tone: sig >= 0 ? 'warn' : undefined }],
-        sig > 0 ? T('A pole in the right half-plane: every disturbance grows like e^(σt).', '右半平面の極：あらゆる乱れが e^(σt) のように増大します。') : Math.abs(sig) < 1e-9 ? T('On the imaginary axis the response oscillates forever without decaying.', '虚軸上では、応答は減衰せずに永遠に振動します。') : om < 1e-9 ? T('Real poles: no oscillation, no overshoot.', '実数の極：振動もオーバーシュートもありません。') : T('Drag along the dashed ray and the overshoot stays fixed while the speed changes.', '点線の半直線に沿ってドラッグすると、速さは変わりますがオーバーシュートは一定です。'));
-    },
-  };
+    }
+    L.h('p', 'lab-cap', st.p2, T('Step response y(t)', 'ステップ応答 y(t)'));
+    const tMax = 10;
+    const ys = L.sample(0, tMax, 600, (t) => step2(sig, om, t));
+    const ymax = L.clamp(Math.max(1.3, ...ys.map((p) => p[1]).filter(Number.isFinite)) + 0.1, 1.3, 2.4);
+    const g = L.fig(st.p2, { x: [0, tMax], y: [-0.6, ymax], aspect: st.flat ? 0.8 : 0.95, maxH: 400, xlabel: 't', ylabel: 'y' });
+    g.hline(1, { c: 'ink', dash: '4 4' });
+    if (sig < 0 && om > 1e-6) { const Am = Math.hypot(1, sig / om); for (const s of [1, -1]) g.line(L.sample(0, tMax, 200, (t) => 1 + s * Am * Math.exp(sig * t)), { c: 'c4', w: 1.2, dash: '3 3' }); }
+    const os = sig < 0 && om > 1e-6 ? Math.exp(PI * sig / om) : null, ts = sig < 0 ? 4 / -sig : null;
+    if (os !== null && PI / om < tMax) { g.dot(PI / om, 1 + os, { c: 'c2', r: 5 }); g.text(PI / om, 1 + os, T(`overshoot ${fmt(os * 100, 1)}%`, `オーバーシュート ${fmt(os * 100, 1)}%`), { small: true, c: 'c2', dy: -10, anchor: 'start', dx: 6 }); }
+    if (ts !== null && ts < tMax) { g.vline(ts, { c: 'c3', dash: '2 3' }); g.text(ts, -0.45, T('settling ≈ 4/|σ|', '整定 ≈ 4/|σ|'), { small: true, c: 'c3', dx: 4, anchor: 'start' }); }
+    g.line(ys, { c: 'c1', w: 2.6 });
+    st.anim = L.animator(st.bar, (dt, t) => { g.clear('over'); const tt = Math.min(tMax, t * 2.5); const y = step2(sig, om, tt); if (Number.isFinite(y) && y > -0.6 && y < ymax) g.dot(tt, y, { c: 'hl', r: 6.5 }); if (tt >= tMax) return false; }, { autoplay: false, once: true, initialT: 0, playLabel: T('Trace the response', '応答をたどる') });
+    L.legend(st.leg, (st.flat ? [{ c: 'c1', label: T('poles σ ± iω and the response', '極 σ ± iω と応答') }, { c: 'c4', dash: true, label: T('envelope e^(σt), and the constant-overshoot ray', '包絡線 e^(σt) と、オーバーシュート一定の半直線') }, { c: 'muted', dash: true, label: T('natural frequency |s|', '固有振動数 |s|') }]
+      : [{ c: 'c1', label: T('poles σ ± iω and the step response', '極 σ ± iω とステップ応答') }, { c: 'hl', label: T('|H(iω)| along the imaginary axis', '虚軸に沿った |H(iω)|') }, { c: 'c4', dash: true, label: T('envelope e^(σt); on the surface, the constant-overshoot ray', '包絡線 e^(σt)。曲面上はオーバーシュート一定の半直線') }]));
+    const zeta = wn > 0 ? -sig / wn : 0;
+    let pk = 0, wpk = 0; for (let i = 0; i <= 2000; i++) { const w = 8 * i / 2000, m = (sig * sig + om * om) / Math.hypot(sig, w - om) / Math.hypot(sig, w + om); if (m > pk) { pk = m; wpk = w; } }
+    ctx.readout([{ k: T('poles', '極'), v: `${fmt(sig, 2)} ± ${fmt(om, 2)}i`, tone: 'key' }, { k: T('damping ratio ζ', '減衰比 ζ'), v: fmt(zeta, 3) }, { k: T('overshoot', 'オーバーシュート'), v: os === null ? (sig < 0 ? '0%' : '∞') : `${fmt(os * 100, 1)}%` }, { k: T('settling time', '整定時間'), v: ts === null ? '∞' : fmt(ts, 2), tone: sig >= 0 ? 'warn' : undefined }, { k: T('peak of |H(iω)|', '|H(iω)| の最大値'), v: sig >= 0 ? '∞' : `${fmt(pk, 3)} ${T('at', '、')} ω = ${fmt(wpk, 2)}` }],
+      sig > 0 ? T('A pole in the right half-plane: every disturbance grows like e^(σt).', '右半平面の極：あらゆる乱れが e^(σt) のように増大します。') : Math.abs(sig) < 1e-9 ? T('On the imaginary axis the response oscillates forever without decaying, and |H(iω)| is infinite at ω equal to the pole.', '虚軸上では応答は減衰せずに永遠に振動し、ω が極に等しいところで |H(iω)| は無限大になります。') : om < 1e-9 ? T('Real poles: no oscillation, no overshoot.', '実数の極：振動もオーバーシュートもありません。') : T('The closer the pole comes to the imaginary axis, the taller and sharper the resonance peak of |H(iω)|, and the longer the response rings. Along the purple ray the overshoot stays fixed.', '極が虚軸に近づくほど、|H(iω)| の共振のピークは高く鋭くなり、応答は長く鳴り続けます。紫の半直線に沿って動かすとオーバーシュートは一定です。'));
+  }
 
   /* ---------- 2. PID ---------- */
   D.pid = {

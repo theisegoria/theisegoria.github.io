@@ -257,7 +257,6 @@
       // right: the invariants along the move
       L.h('p', 'lab-cap', c2, T('The same quantities along the move, read off the diagram at each instant. The gold marker is the frame on the left.', '移動の途中の各瞬間に図から読み取った同じ量です。金色の印が左の図の時刻を示します。'));
       const g = L.fig(c2, { x: [0, 1], y: [-0.5, 7.5], aspect: 0.75, xlabel: T('progress of the move (0 before, 1 after)', '移動の進み具合（0 が前、1 が後）'), ticksX: [[0, '0'], [0.5, '½'], [1, '1']], ticksY: [[0, '0'], [2, '2'], [4, '4'], [6, '6']], maxH: 360 });
-      g.text(TAU * 0.97, TAU * 0.94, T('ψ, through the hole', 'ψ：穴を通る'), { anchor: 'end', small: true, c: 'muted' });
       const series = (key, c, o) => g.line(st.curves.map((s) => [s.lam, s.dg[key]]), Object.assign({ c }, o));
       series('n', 'c1', { w: 3.4 }); series('writhe', 'c2', { w: 2.2, dash: '6 4' }); series('det', 'c3', { w: 2.4 });
       const mark = (lam) => { g.clear('over'); const s = st.curves[Math.round(lam * (st.curves.length - 1))]; g.vline(lam, { c: 'hl', w: 1.2, dash: '3 3', layer: 'over' }); [['n', 'c1'], ['writhe', 'c2'], ['det', 'c3']].forEach(([k, c]) => g.dot(lam, s.dg[k], { c, r: 4.5, layer: 'over' })); };
@@ -338,67 +337,134 @@
     const x = pt[0] * cy + pt[1] * sy, y1 = -pt[0] * sy + pt[1] * cy, z = pt[2];
     return [x, y1 * cp - z * sp, y1 * sp + z * cp]; // screen x, screen y (up), depth toward the viewer
   };
+  // the previous figure, kept as the fallback when there is no WebGL: depth-sorted tube chunks in SVG
+  function flatKnot(ctx, st, comps, host) {
+    host.replaceChildren();
+    L.h('p', 'lab-cap', host, T('T(p, q) on its torus: p turns around the axis, q turns through the hole. Drag to rotate (arrow keys work too). Nearer tube segments are drawn over farther ones.', 'トーラス上の T(p, q) です。軸のまわりを p 回、穴を q 回通ります。ドラッグで回転できます（矢印キーでも動きます）。手前の管が奥の管の上に描かれます。'));
+    st.yaw ??= 0.55; st.pitch ??= -1.05;
+    const Rv = 3.15, f = L.fig(host, { x: [-Rv, Rv], y: [-Rv, Rv], equal: true, axes: false, maxH: 460 });
+    const R = 2, r = 0.85, ring = (fn) => f.line(L.seq(73, (i) => { const [x, y] = rotate(fn(TAU * i / 72), st.yaw, st.pitch); return [x, y]; }), { c: 'muted', w: 0.9, op: 0.45, layer: 'under' });
+    for (let k = 0; k < 8; k++) { const a = TAU * k / 8; ring((w) => [(R + r * Math.cos(w)) * Math.cos(a), (R + r * Math.cos(w)) * Math.sin(a), r * Math.sin(w)]); }
+    [0, PI / 2, PI, 3 * PI / 2].forEach((w) => ring((a) => [(R + r * Math.cos(w)) * Math.cos(a), (R + r * Math.cos(w)) * Math.sin(a), r * Math.sin(w)]));
+    const chunks = [];
+    comps.forEach((pts, ci) => {
+      const S = pts.map((pt) => rotate(pt, st.yaw, st.pitch)), n = S.length;
+      for (let i = 0; i < n; i += 2) { const a = S[i], b = S[(i + 1) % n], c = S[(i + 2) % n]; chunks.push({ z: (a[2] + b[2] + c[2]) / 3, pts: [[a[0], a[1]], [b[0], b[1]], [c[0], c[1]]], c: COL4[ci % 4] }); }
+    });
+    chunks.sort((a, b) => a.z - b.z);
+    for (const ch of chunks) {
+      // butt caps throughout: a chunk never paints back over its predecessor, so the tube reads as continuous
+      f.line(ch.pts, { c: 'plate', w: 11 }).style.strokeLinecap = 'butt';
+      f.line(ch.pts, { c: ch.c, w: 5.6 }).style.strokeLinecap = 'butt';
+      f.line(ch.pts, { c: 'plate', w: 1.5, op: 0.35 }).style.strokeLinecap = 'butt';
+    }
+    f.svg.style.cursor = 'grab'; f.wrap.tabIndex = 0; f.wrap.setAttribute('aria-label', T('Rotate the torus knot', 'トーラス結び目を回転'));
+    f.svg.addEventListener('pointerdown', (e) => {
+      e.preventDefault(); let lx = e.clientX, ly = e.clientY, raf = 0;
+      const move = (ev) => { st.yaw += (ev.clientX - lx) * 0.012; st.pitch = clamp(st.pitch + (ev.clientY - ly) * 0.012, -PI, PI); lx = ev.clientX; ly = ev.clientY; if (!raf) raf = requestAnimationFrame(() => { raf = 0; ctx.redraw(); }); };
+      const end = () => { document.removeEventListener('pointermove', move); document.removeEventListener('pointerup', end); document.removeEventListener('pointercancel', end); };
+      document.addEventListener('pointermove', move); document.addEventListener('pointerup', end); document.addEventListener('pointercancel', end);
+    });
+    f.wrap.addEventListener('keydown', (e) => { const dd = { ArrowLeft: [-0.12, 0], ArrowRight: [0.12, 0], ArrowUp: [0, -0.12], ArrowDown: [0, 0.12] }[e.key]; if (!dd) return; e.preventDefault(); st.yaw += dd[0]; st.pitch += dd[1]; ctx.redraw(); });
+  }
+  const KR = 2, Kr = 0.85, TRACE = 9;
+  const torusAt = (phi, th, r = Kr) => { const rr = KR + r * Math.cos(th); return [rr * Math.cos(phi), rr * Math.sin(phi), r * Math.sin(th)]; };
   D['torus-knots'] = {
+    three: true,
     render(ctx, v) {
       const st = ctx.state, p = v.p, q = v.q, d = gcd(p, q);
-      st.yaw ??= 0.55; st.pitch ??= -1.05;
-      const comps = torusPoints(p, q, 2, 0.85, 120);
-      const row = L.h('div', 'lab-row', ctx.host), c1 = L.h('div', 'lab-col', row), c2 = L.h('div', 'lab-col', row);
-      L.h('p', 'lab-cap', c1, T('T(p, q) on its torus: p turns around the axis, q turns through the hole. Drag to rotate (arrow keys work too). Nearer tube segments are drawn over farther ones.', 'トーラス上の T(p, q) です。軸のまわりを p 回、穴を q 回通ります。ドラッグで回転できます（矢印キーでも動きます）。手前の管が奥の管の上に描かれます。'));
-      const Rv = 3.15, f = L.fig(c1, { x: [-Rv, Rv], y: [-Rv, Rv], equal: true, axes: false, maxH: 460 });
-      // the torus itself, as meridians and parallels
-      const R = 2, r = 0.85, ring = (fn) => f.line(L.seq(73, (i) => { const [x, y] = rotate(fn(TAU * i / 72), st.yaw, st.pitch); return [x, y]; }), { c: 'muted', w: 0.9, op: 0.45, layer: 'under' });
-      for (let k = 0; k < 8; k++) { const a = TAU * k / 8; ring((w) => [(R + r * Math.cos(w)) * Math.cos(a), (R + r * Math.cos(w)) * Math.sin(a), r * Math.sin(w)]); }
-      [0, PI / 2, PI, 3 * PI / 2].forEach((w) => ring((a) => [(R + r * Math.cos(w)) * Math.cos(a), (R + r * Math.cos(w)) * Math.sin(a), r * Math.sin(w)]));
-      // depth-sorted tube chunks
-      const chunks = [];
-      comps.forEach((pts, ci) => {
-        const S = pts.map((pt) => rotate(pt, st.yaw, st.pitch)), n = S.length;
-        for (let i = 0; i < n; i += 2) { const a = S[i], b = S[(i + 1) % n], c = S[(i + 2) % n]; chunks.push({ z: (a[2] + b[2] + c[2]) / 3, pts: [[a[0], a[1]], [b[0], b[1]], [c[0], c[1]]], c: COL4[ci % 4] }); }
-      });
-      chunks.sort((a, b) => a.z - b.z);
-      for (const ch of chunks) {
-        // butt caps throughout: a chunk never paints back over its predecessor, so the tube reads as continuous
-        f.line(ch.pts, { c: 'plate', w: 11 }).style.strokeLinecap = 'butt';
-        f.line(ch.pts, { c: ch.c, w: 5.6 }).style.strokeLinecap = 'butt';
-        f.line(ch.pts, { c: 'plate', w: 1.5, op: 0.35 }).style.strokeLinecap = 'butt';
+      st.v = v;
+      if (!st.frame || !st.frame.isConnected) {
+        st.anim?.stop(); st.anim = null; st.g = null; st.key = null;
+        ctx.host.replaceChildren();
+        st.frame = L.h('div', '', ctx.host);
+        const row = L.h('div', 'lab-row is-wide', st.frame);
+        st.c1 = L.h('div', 'lab-col', row); st.c2 = L.h('div', 'lab-col', row);
+        st.cap1 = L.h('p', 'lab-cap', st.c1, T('T(p, q) wound on its torus: p turns around the axis, q turns through the hole. Drag to turn it; Play sends a bead along the knot.', 'トーラスに巻きついた T(p, q) です。軸のまわりを p 回、穴を q 回通ります。ドラッグで回転でき、再生を押すと玉が結び目に沿って進みます。'));
+        st.v3 = L.h('div', '', st.c1);
+        st.g2 = L.h('div', '', st.c2);
+        st.bar = L.h('div', '', st.frame);
+        st.leg = L.h('div', '', st.frame);
       }
-      // rotation by dragging anywhere, or with the arrow keys
-      f.svg.style.cursor = 'grab'; f.wrap.tabIndex = 0; f.wrap.setAttribute('aria-label', T('Rotate the torus knot', 'トーラス結び目を回転'));
-      f.svg.addEventListener('pointerdown', (e) => {
-        e.preventDefault(); let lx = e.clientX, ly = e.clientY, raf = 0;
-        const move = (ev) => { st.yaw += (ev.clientX - lx) * 0.012; st.pitch = clamp(st.pitch + (ev.clientY - ly) * 0.012, -PI, PI); lx = ev.clientX; ly = ev.clientY; if (!raf) raf = requestAnimationFrame(() => { raf = 0; ctx.redraw(); }); };
-        const end = () => { document.removeEventListener('pointermove', move); document.removeEventListener('pointerup', end); document.removeEventListener('pointercancel', end); };
-        document.addEventListener('pointermove', move); document.addEventListener('pointerup', end); document.addEventListener('pointercancel', end);
+      const comps = torusPoints(p, q, KR, Kr, 120);
+      // the bead: component 1 at parameter s in [0, 1), i.e. phi = p t, theta = q t with t = 2 pi s / d
+      const bead = (s) => { const t = TAU / d * s; return { phi: p * t, th: q * t }; };
+      const side = () => {
+        const key = p + ',' + q;
+        if (st.key !== key || !st.g || !st.g.svg.isConnected) {
+          st.key = key;
+          st.g2.replaceChildren();
+          L.h('p', 'lab-cap', st.g2, T('The same curve on the flat torus, the square with opposite edges glued, φ across and θ (through the hole) up: a straight line of slope q/p. Its left edge is the meridian and its bottom edge the longitude drawn on the torus.', '同じ曲線を平らなトーラス（向かい合う辺を貼り合わせた正方形。横が φ、縦が穴を通る向きの θ）で見たものです。傾き q/p の直線になります。左の辺がトーラス上の子午線、下の辺が経線です。'));
+          const g = st.g = L.fig(st.g2, { x: [0, TAU], y: [0, TAU], equal: true, xlabel: T('φ, around the axis', 'φ：軸のまわり'), ylabel: 'θ', ticksX: [[0, '0'], [PI, 'π'], [TAU, '2π']], ticksY: [[0, '0'], [PI, 'π'], [TAU, '2π']], maxH: 380 });
+          g.line([[0, 0], [0, TAU]], { c: 'ink', w: 2.4, op: 0.55, layer: 'under' });
+          g.line([[0, 0], [TAU, 0]], { c: 'ink', w: 2.4, op: 0.55, dash: '6 4', layer: 'under' });
+          comps.forEach((pts, ci) => {
+            let run = [];
+            const flush = () => { if (run.length > 1) g.line(run, { c: COL4[ci % 4], w: 2.4 }); run = []; };
+            pts.forEach((pt) => { const a = ((pt[3] % TAU) + TAU) % TAU, w = ((pt[4] % TAU) + TAU) % TAU; const last = run[run.length - 1]; if (last && (Math.abs(a - last[0]) > PI || Math.abs(w - last[1]) > PI)) flush(); run.push([a, w]); });
+            flush();
+          });
+          st.leg.replaceChildren();
+          const legend = L.seq(Math.min(d, 4), (i) => ({ c: COL4[i], label: d === 1 ? T('the knot', '結び目') : T(`component ${i + 1}`, `成分 ${i + 1}`) }));
+          if (d > 4) legend.push({ c: 'muted', label: T('colours repeat beyond four components', '成分が四つを超えると色を繰り返します') });
+          legend.push({ c: 'ink', label: T('meridian φ = 0', '子午線 φ = 0') }, { c: 'ink', dash: true, label: T('longitude θ = 0 (outer equator)', '経線 θ = 0（外側の赤道）') }, { kind: 'dot', c: 'hl', label: T('the bead', '玉') });
+          L.legend(st.leg, legend);
+          const isKnot = d === 1, alex = alexander(p, q), same = (a, b) => (p === a && q === b) || (p === b && q === a);
+          const special = q === 1 || p === 1 ? T('the unknot', '自明な結び目') : same(2, 3) ? T('the trefoil 3₁', '三葉結び目 3₁') : same(2, 5) ? T('the cinquefoil 5₁', '五つ葉結び目 5₁') : same(2, 2) ? T('the Hopf link', 'ホップ絡み目') : same(2, 7) ? T('the knot 7₁', '結び目 7₁') : same(3, 4) ? T('the knot 8₁₉', '結び目 8₁₉') : null;
+          ctx.readout([
+            { k: 'T(p, q)', v: `T(${p}, ${q})` + (special ? ' = ' + special : ''), tone: 'key' },
+            { k: T('components gcd(p, q)', '成分の数 gcd(p, q)'), v: String(d), tone: d > 1 ? 'warn' : undefined },
+            { k: T('crossings as a braid on p strands, q(p−1)', 'p 本の組みひもとしての交点 q(p−1)'), v: String(q * (p - 1)) },
+            { k: T('crossing number min(p(q−1), q(p−1))', '交点数 min(p(q−1), q(p−1))'), v: String(crossingNumber(p, q)), tone: 'good' },
+            { k: T('genus of the fibre surface', 'ファイバー曲面の種数'), v: fmt(genus(p, q), 0) },
+            { k: T('unknotting number (p−1)(q−1)/2', '結び目解消数 (p−1)(q−1)/2'), v: isKnot ? fmt(unknotting(p, q), 0) : T('knots only', '結び目のみ') },
+            { k: 'Δ(t)', v: polyString(alex) },
+            { k: T('braid word', '組みひもの語'), v: braidWord(p, q) },
+            { k: d > 1 ? T('linking number of two components', '二成分の絡み数') : 'T(q, p) ≅ T(p, q)', v: d > 1 ? String(p * q / (d * d)) : T('yes, always', 'はい、つねに') },
+          ], isKnot
+            ? T(`gcd(p, q) = 1, so this is a knot. Its Alexander polynomial has degree (p−1)(q−1) = ${(p - 1) * (q - 1)}, twice the genus, and the braid ${braidWord(p, q)} closes up to it on p = ${p} strands.`, `gcd(p, q) = 1 なので結び目です。アレクサンダー多項式の次数は (p−1)(q−1) = ${(p - 1) * (q - 1)} で種数の二倍、組みひも ${braidWord(p, q)} を p = ${p} 本のひもで閉じるとこの結び目になります。`)
+            : T(`gcd(p, q) = ${d}, so this is a link of ${d} components, each a T(${p / d}, ${q / d}) torus knot, and any two of them link ${p * q / (d * d)} times. Δ(t) is the one-variable Alexander polynomial (t−1)(t^{pq/d}−1)^d / ((t^p−1)(t^q−1)); crossing number and genus use the same formulas as for knots.`, `gcd(p, q) = ${d} なので ${d} 成分の絡み目で、各成分はトーラス結び目 T(${p / d}, ${q / d})、どの二成分も ${p * q / (d * d)} 回絡みます。Δ(t) は一変数のアレクサンダー多項式 (t−1)(t^{pq/d}−1)^d / ((t^p−1)(t^q−1)) で、交点数と種数は結び目と同じ公式です。`));
+        }
+        return st.g;
+      };
+      const frameAt = (T0, lab) => {
+        const s = Math.min(T0 / TRACE, 1) % 1, b = bead(s), g = side();
+        g.clear('over');
+        g.dot(((b.phi % TAU) + TAU) % TAU, ((b.th % TAU) + TAU) % TAU, { c: 'hl', r: 6.5, layer: 'over' });
+        st.moveBead?.(b);
+        if (lab) {
+          const u = s * TAU / d, ka = Math.floor(p * u / TAU + 1e-9), kh = Math.floor(q * u / TAU + 1e-9);
+          lab.textContent = T(`around the axis ${ka} of ${p / d} · through the hole ${kh} of ${q / d}`, `軸のまわり ${p / d} 回中 ${ka} 回・穴を ${q / d} 回中 ${kh} 回`);
+        }
+      };
+      st.frameAt = frameAt; st.key = null;
+      if (!st.anim) {
+        st.anim = L.animator(st.bar, (dt, t, lab) => { st.frameAt(t, lab); if (t >= TRACE) { st.frameAt(0, lab); return false; } }, { autoplay: false, once: true, duration: TRACE, initialT: 0, playLabel: T('Trace the knot', '結び目をたどる') });
+      }
+      L.view3d(ctx, v, {
+        host: st.v3, aspect: 0.8, maxH: 470, camera: [4.6, -5.8, 5.3], target: [0, 0, -0.15], fov: 33,
+        init(S) {
+          st.flat = false;
+          S.surface((u, w) => torusAt(u, w, Kr - 0.05), { u: [0, TAU], v: [0, TAU], nu: 96, nv: 48, c: 'muted', opacity: 0.22, rough: 0.55, coat: 0.5, wire: true, wireEvery: 8, wireEveryV: 8, wireOpacity: S.dark ? 0.16 : 0.12 });
+          S.tube(L.seq(97, (i) => torusAt(0, TAU * i / 96, Kr + 0.01)), { c: 'ink', r: 0.016, opacity: 0.55, closed: true });
+          S.tube(L.seq(193, (i) => torusAt(TAU * i / 192, 0, Kr + 0.01)), { c: 'ink', r: 0.016, opacity: 0.55, closed: true });
+          S.lines([[[0, 0, -1.7], [0, 0, 1.7]]], { c: 'muted', opacity: 0.7 });
+          S.label(T('axis', '軸'), [0, 0, 1.75], { small: true, c: 'muted' });
+          S.label(T('meridian', '子午線'), torusAt(0, PI / 2, Kr + 0.06), { small: true, occlude: true });
+          S.label(T('longitude', '経線'), torusAt(-PI / 2.6, 0, Kr + 0.06), { small: true, occlude: true, align: 'end' });
+          st.tubes = L.seq(7, (i) => S.tube([[0, 0, 0], [0, 0, 0.01]], { c: COL4[i % 4], r: 0.075, rough: 0.28, coat: 0.8, closed: true }));
+          st.beadM = S.sphere([0, 0, 0], 0.13, { c: 'hl', glow: 0.35 });
+          st.moveBead = (b) => { st.beadM.at(torusAt(b.phi, b.th, Kr + 0.02)); };
+        },
+        update(S, vv) {
+          const cs = torusPoints(vv.p, vv.q, KR, Kr, 160);
+          st.tubes.forEach((tb, i) => { tb.visible = i < cs.length; if (tb.visible) tb.update(cs[i].map((pt) => [pt[0], pt[1], pt[2]])); });
+          S.invalidate();
+          st.anim?.redraw();
+        },
+        fallback(c, vv) { st.flat = true; st.moveBead = null; flatKnot(ctx, st, torusPoints(vv.p, vv.q, KR, Kr, 120), st.c1); st.anim?.redraw(); },
       });
-      f.wrap.addEventListener('keydown', (e) => { const dd = { ArrowLeft: [-0.12, 0], ArrowRight: [0.12, 0], ArrowUp: [0, -0.12], ArrowDown: [0, 0.12] }[e.key]; if (!dd) return; e.preventDefault(); st.yaw += dd[0]; st.pitch += dd[1]; ctx.redraw(); });
-      // right: the flat torus, where T(p, q) is a straight line of slope q/p
-      L.h('p', 'lab-cap', c2, T('The same curve on the flat torus (opposite edges glued): a straight line of slope q/p. Each component is one line; a link with gcd(p, q) components is gcd(p, q) parallel lines.', '平らなトーラス（向かい合う辺を貼り合わせたもの）上の同じ曲線です。傾き q/p の直線になります。各成分が一本の直線で、gcd(p, q) 成分の絡み目は gcd(p, q) 本の平行線です。'));
-      const g = L.fig(c2, { x: [0, TAU], y: [0, TAU], equal: true, xlabel: T('φ, around the axis', 'φ：軸のまわり'), ylabel: '', ticksX: [[0, '0'], [PI, 'π'], [TAU, '2π']], ticksY: [[0, '0'], [PI, 'π'], [TAU, '2π']], maxH: 360 });
-      comps.forEach((pts, ci) => {
-        let run = [];
-        const flush = () => { if (run.length > 1) g.line(run, { c: COL4[ci % 4], w: 2.2 }); run = []; };
-        pts.forEach((pt) => { const a = ((pt[3] % TAU) + TAU) % TAU, w = ((pt[4] % TAU) + TAU) % TAU; const last = run[run.length - 1]; if (last && (Math.abs(a - last[0]) > PI || Math.abs(w - last[1]) > PI)) flush(); run.push([a, w]); });
-        flush();
-      });
-      const legend = L.seq(Math.min(d, 4), (i) => ({ c: COL4[i], label: d === 1 ? T('the knot', '結び目') : T(`component ${i + 1}`, `成分 ${i + 1}`) }));
-      if (d > 4) legend.push({ c: 'muted', label: T('colours repeat beyond four components', '成分が四つを超えると色を繰り返します') });
-      L.legend(ctx.host, legend);
-      const isKnot = d === 1, alex = alexander(p, q), same = (a, b) => (p === a && q === b) || (p === b && q === a);
-      const special = q === 1 || p === 1 ? T('the unknot', '自明な結び目') : same(2, 3) ? T('the trefoil 3₁', '三葉結び目 3₁') : same(2, 5) ? T('the cinquefoil 5₁', '五つ葉結び目 5₁') : same(2, 2) ? T('the Hopf link', 'ホップ絡み目') : same(2, 7) ? T('the knot 7₁', '結び目 7₁') : same(3, 4) ? T('the knot 8₁₉', '結び目 8₁₉') : null;
-      ctx.readout([
-        { k: 'T(p, q)', v: `T(${p}, ${q})` + (special ? ' = ' + special : ''), tone: 'key' },
-        { k: T('components gcd(p, q)', '成分の数 gcd(p, q)'), v: String(d), tone: d > 1 ? 'warn' : undefined },
-        { k: T('crossings in this drawing q(p−1)', 'この図の交点 q(p−1)'), v: String(q * (p - 1)) },
-        { k: T('crossing number min(p(q−1), q(p−1))', '交点数 min(p(q−1), q(p−1))'), v: String(crossingNumber(p, q)), tone: 'good' },
-        { k: T('genus of the fibre surface', 'ファイバー曲面の種数'), v: fmt(genus(p, q), 0) },
-        { k: T('unknotting number (p−1)(q−1)/2', '結び目解消数 (p−1)(q−1)/2'), v: isKnot ? fmt(unknotting(p, q), 0) : T('knots only', '結び目のみ') },
-        { k: 'Δ(t)', v: polyString(alex) },
-        { k: T('braid word', '組みひもの語'), v: braidWord(p, q) },
-        { k: 'T(q, p) ≅ T(p, q)', v: T('yes, always', 'はい、つねに') },
-      ], isKnot
-        ? T(`gcd(p, q) = 1, so this is a knot. Its Alexander polynomial has degree (p−1)(q−1) = ${(p - 1) * (q - 1)}, twice the genus, and the braid ${braidWord(p, q)} closes up to it on p = ${p} strands.`, `gcd(p, q) = 1 なので結び目です。アレクサンダー多項式の次数は (p−1)(q−1) = ${(p - 1) * (q - 1)} で種数の二倍、組みひも ${braidWord(p, q)} を p = ${p} 本のひもで閉じるとこの結び目になります。`)
-        : T(`gcd(p, q) = ${d}, so this is a link of ${d} components, each a T(${p / d}, ${q / d}) torus knot. Δ(t) is the one-variable Alexander polynomial (t−1)(t^{pq/d}−1)^d / ((t^p−1)(t^q−1)); crossing number and genus use the same formulas as for knots.`, `gcd(p, q) = ${d} なので ${d} 成分の絡み目で、各成分はトーラス結び目 T(${p / d}, ${q / d}) です。Δ(t) は一変数のアレクサンダー多項式 (t−1)(t^{pq/d}−1)^d / ((t^p−1)(t^q−1)) で、交点数と種数は結び目と同じ公式です。`));
+      st.anim?.redraw();
     },
   };
 })();

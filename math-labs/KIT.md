@@ -312,3 +312,6 @@ Notes from the upgrade:
 - The view3d `aspect` is fixed when the scene is created; read `ctx.host.clientWidth` before calling view3d if a phone needs a taller aspect.
 - Practice text supports inline `$...$` only, not `$$...$$`; write arrays inline.
 - `expr` answers are checked at random real points, so avoid `!` and binomials in them.
+- `handle.setPlane(normal, point)` moves a handle's drag plane; `S.look(position, target)` re-aims the camera.
+- `S.surface(..., {side: THREE.FrontSide | THREE.BackSide})` draws one face only (two-coloured ribbons).
+- A `fallback` must not call `ctx.redraw()` synchronously; defer it with `setTimeout`.

@@ -747,8 +747,8 @@
           "1. 勾配降下法と条件数"
         ],
         "body": [
-          "Follow constant-step gradient descent across the elliptical contours of f, starting from a point you can drag. Each coordinate is multiplied by its own factor every step, so strongly unequal curvatures force a small step and make the fast direction zigzag. The right panel shows f on a log scale: the iterates fall along a straight line whose slope is set by ρ. Newton’s exact step, dashed, reaches this quadratic minimum at once.",
-          "楕円の等高線を横切る一定刻みの勾配降下法を、ドラッグできる始点から追います。各座標は毎回それぞれの倍率で掛けられるので、曲率の差が大きいと刻みを小さくせざるを得ず、速い方向ではジグザグになります。右図は f を対数目盛で示し、反復は ρ で決まる傾きの直線に沿って減ります。破線のニュートン法の厳密な1ステップは、この二次関数の最小点に一度で達します。"
+          "Follow constant-step gradient descent on f from a starting point you can drag, both on its 3D graph and on its elliptical contours. Each coordinate is multiplied by its own factor every step, so strongly unequal curvatures force a small step and make the steep direction zigzag across the valley. The lower panel shows f on a log scale: the iterates fall along a straight line whose slope is set by ρ. Newton’s exact step, dashed, reaches this quadratic minimum at once.",
+          "f の 3D のグラフと楕円の等高線の両方で、ドラッグできる始点からの一定刻みの勾配降下法を追います。各座標は毎回それぞれの倍率で掛けられるので、曲率の差が大きいと刻みを小さくせざるを得ず、急な方向では谷を横切ってジグザグになります。下の図は f を対数目盛で示し、反復は ρ で決まる傾きの直線に沿って減ります。破線のニュートン法の厳密な1ステップは、この二次関数の最小点に一度で達します。"
         ],
         "formula": "f(x,y)=\\tfrac12(x^2+\\kappa y^2),\\quad x_{n+1}=(1-\\eta)x_n,\\quad y_{n+1}=(1-\\eta\\kappa)y_n,\\quad \\rho=\\max(|1-\\eta|,|1-\\eta\\kappa|)",
         "example": [
@@ -797,8 +797,8 @@
           "2. 動く制約"
         ],
         "body": [
-          "Drag the constraint line x + y = b across the circular contours of x² + y², and slide a trial point along it. The optimum is where the smallest reachable circle just touches the line; any other point lies on a larger circle, as the right panel shows. Switch to the inequality x + y ≥ b to see the constraint become inactive when the origin is feasible.",
-          "制約の直線 x + y = b を x² + y² の同心円の上でドラッグし、直線上の試験点を動かします。最適点は、到達できる最小の円が直線にちょうど接する点です。他の点はより大きな円の上にあることが右図から分かります。不等式 x + y ≥ b に切り替えると、原点が実行可能なとき制約が効かなくなる様子が見られます。"
+          "Drag the constraint line x + y = b across the circular contours of x² + y², and slide a trial point along it. In 3D the constraint is a vertical plane cutting the bowl of f, and the cut is a parabola whose lowest point is the optimum. There the smallest reachable contour circle just touches the line; any other point of the line lies on a larger circle, as the lower panel shows. Switch to the inequality x + y ≥ b to see the constraint become inactive when the origin is feasible.",
+          "制約の直線 x + y = b を x² + y² の同心円の上でドラッグし、直線上の試験点を動かします。3D では制約は f の鉢を切る垂直な平面で、切り口は放物線になり、その最低点が最適点です。そこでは到達できる最小の等高線の円が直線にちょうど接し、直線上の他の点はより大きな円の上にあることが下の図から分かります。不等式 x + y ≥ b に切り替えると、原点が実行可能なとき制約が効かなくなる様子が見られます。"
         ],
         "formula": "\\min_{x+y=b}(x^2+y^2),\\qquad x_*=y_*=b/2,\\quad f_*=b^2/2,\\qquad \\nabla f(x_*)=\\lambda_*\\nabla(x+y)",
         "example": [
@@ -2532,8 +2532,8 @@
           "2. 球面上の測地線"
         ],
         "body": [
-          "Two cities share a latitude. On a longitude–latitude map the parallel joining them is a straight line, but it is not the shortest route. Drag the handle to deform the path through a family that runs from the parallel through the great circle and beyond: the length is stationary, and least, at the great circle, which bulges toward the nearer pole on the map.",
-          "2つの都市が同じ緯度にあります。経度・緯度の地図では両者を結ぶ緯線は直線ですが、最短経路ではありません。ハンドルをドラッグして、緯線から大円を経てさらに先まで続く経路の族の中で経路を変形します。長さは大円で停留し最小になります。大円は地図上では近い方の極へ膨らみます。"
+          "Two cities share a latitude. On a longitude–latitude map the parallel joining them is a straight line, but it is not the shortest route. Drag the handle to deform the path through a family that runs from the parallel through the great circle and beyond: the length is stationary, and least, at the great circle, which bulges toward the nearer pole on the map. On the globe the great circle is where a plane through the centre cuts the sphere; the parallel's plane misses the centre.",
+          "2つの都市が同じ緯度にあります。経度・緯度の地図では両者を結ぶ緯線は直線ですが、最短経路ではありません。ハンドルをドラッグして、緯線から大円を経てさらに先まで続く経路の族の中で経路を変形します。長さは大円で停留し最小になります。大円は地図上では近い方の極へ膨らみます。地球儀上では、大円は中心を通る平面が球面を切る線です。緯線の平面は中心を通りません。"
         ],
         "formula": "\\delta\\int ds=0,\\qquad ds^2=d\\varphi^2+\\cos^2\\!\\varphi\\,d\\lambda^2",
         "example": [
@@ -5274,10 +5274,10 @@
           "2. ストークスの定理"
         ],
         "body": [
-          "For the one-form ω = (−y/2 + y³/3) dx + (x/2 − x³/3 + 0.4x²) dy, the colour shows dω, positive in the middle and negative outside the dashed circle. Drag the disk and its edge: the circulation of ω around the boundary always equals the integral of dω over the disk. The graph checks this for every radius at once, and reversing the orientation flips both sides together.",
-          "1形式 ω = (−y/2 + y³/3) dx + (x/2 − x³/3 + 0.4x²) dy について、色は dω を表します。中央で正、破線の円の外で負です。円板とその縁をドラッグしてください。境界に沿った ω の循環は、いつも円板上の dω の積分に等しくなります。グラフはすべての半径について同時にこれを確かめます。向きを反転すると両辺がそろって符号を変えます。"
+          "For the one-form ω = (−y/2 + y³/3) dx + (x/2 − x³/3 + 0.4x²) dy, the floor is coloured by dω, positive in the middle and negative outside the dashed circle. Drag the loop's centre and its edge: the circulation of ω around the loop always equals the integral of dω over the disk inside it. In space, ω is the vector field F = (P, Q, 0), dω is the vertical curl ∇×F, and the loop also bounds a spherical cap; raise the cap and its flux, computed on the curved surface itself, stays equal to the circulation. The graph checks the theorem for every radius at once, and reversing the orientation flips both sides together.",
+          "1形式 ω = (−y/2 + y³/3) dx + (x/2 − x³/3 + 0.4x²) dy について、床の色は dω を表します。中央で正、破線の円の外で負です。輪の中心と縁をドラッグしてください。輪に沿った ω の循環は、いつも内側の円板上の dω の積分に等しくなります。空間では ω はベクトル場 F = (P, Q, 0)、dω は鉛直なカール ∇×F で、輪は球冠の縁にもなっています。球冠を持ち上げても、曲面そのものの上で計算した流束は循環に等しいままです。グラフはすべての半径について同時に定理を確かめます。向きを反転すると両辺がそろって符号を変えます。"
         ],
-        "formula": "\\oint_{\\partial S}\\omega=\\iint_S d\\omega,\\qquad d(P\\,dx+Q\\,dy)=\\Big(\\frac{\\partial Q}{\\partial x}-\\frac{\\partial P}{\\partial y}\\Big)dx\\wedge dy",
+        "formula": "\\oint_{\\partial S}\\omega=\\iint_S d\\omega,\\qquad d(P\\,dx+Q\\,dy)=\\Big(\\frac{\\partial Q}{\\partial x}-\\frac{\\partial P}{\\partial y}\\Big)dx\\wedge dy,\\qquad \\oint_{\\partial S}\\mathbf F\\cdot d\\mathbf r=\\iint_{S'}(\\nabla\\times\\mathbf F)\\cdot d\\mathbf S",
         "example": [
           "Changing orientation reverses both integrals together.",
           "向きを反転すると二つの積分が同時に符号反転します。"
@@ -5322,6 +5322,15 @@
                 "反時計回り"
               ]
             ]
+          ],
+          [
+            "cap",
+            "Cap height",
+            "キャップの高さ",
+            0,
+            1.5,
+            0.05,
+            0.6
           ]
         ],
         "source": "MIT OpenCourseWare · Differential Forms",
@@ -5932,8 +5941,8 @@
           "1. 指数写像"
         ],
         "body": [
-          "A rotation is the exponential of an infinitesimal one. Choose an axis and an angle, then add terms of the power series one at a time. The true rotation moves a point around a circle; each truncated series lands off that circle, and the gap closes as terms are added. Drag in the figure to turn the view.",
-          "回転は無限小回転の指数関数です。軸と角度を選び、べき級数の項を一つずつ加えてください。本当の回転は点を円に沿って動かしますが、打ち切った級数はその円から外れ、項を増やすとずれが縮みます。図をドラッグすると視点を回せます。"
+          "A rotation is the exponential of an infinitesimal one. Choose an axis and an angle, then add terms of the power series one at a time. The true rotation moves a point around a circle; each truncated series lands off that circle, and the gap closes as terms are added. Drag the gold point around its circle to change the angle, and drag anywhere else to turn the view.",
+          "回転は無限小回転の指数関数です。軸と角度を選び、べき級数の項を一つずつ加えてください。本当の回転は点を円に沿って動かしますが、打ち切った級数はその円から外れ、項を増やすとずれが縮みます。金色の点を円に沿ってドラッグすると角度が変わり、それ以外の場所をドラッグすると視点を回せます。"
         ],
         "formula": "R(\\theta)=e^{\\theta K}=\\sum_{n=0}^{\\infty}\\frac{(\\theta K)^n}{n!}=I+\\sin\\theta\\,K+(1-\\cos\\theta)\\,K^2",
         "example": [
@@ -5991,8 +6000,8 @@
           "2. 二重被覆：戻るのに 720°"
         ],
         "body": [
-          "Turn an object about a fixed axis. Its orientation returns after 360°, but the unit quaternion that produced it has only reached −1; it needs a second full turn to return to +1. The ribbon tied to the wall records the same fact. At 720°, drag Untwist: the double twist straightens while the block stays still. At 360° no such move exists.",
-          "物体を固定軸のまわりに回します。姿勢は 360° で元に戻りますが、それを生む単位四元数はまだ −1 にしか達していません。+1 に戻るにはもう一回転が必要です。壁に結んだリボンも同じことを記録します。720° で「ほどく」をドラッグすると、ブロックは静止したまま二重のねじれがまっすぐになります。360° ではそのような動かし方はありません。"
+          "Turn an object about a fixed axis. Its orientation returns after 360°, but the unit quaternion that produced it has only reached −1; it needs a second full turn to return to +1. The ribbon tied to the wall records the same fact. At 720°, drag Untwist or press Play: the double twist straightens while the block stays still. At 360° no such move exists.",
+          "物体を固定軸のまわりに回します。姿勢は 360° で元に戻りますが、それを生む単位四元数はまだ −1 にしか達していません。+1 に戻るにはもう一回転が必要です。壁に結んだリボンも同じことを記録します。720° で「ほどく」をドラッグするか再生を押すと、ブロックは静止したまま二重のねじれがまっすぐになります。360° ではそのような動かし方はありません。"
         ],
         "formula": "q(\\theta)=\\cos\\tfrac{\\theta}{2}+\\sin\\tfrac{\\theta}{2}\\,(n_x\\mathbf i+n_y\\mathbf j+n_z\\mathbf k),\\qquad R_q(\\mathbf v)=q\\,\\mathbf v\\,\\bar q",
         "example": [
@@ -6408,8 +6417,8 @@
           "3. 経路とその密度"
         ],
         "body": [
-          "An Ornstein–Uhlenbeck particle is pulled toward zero and kicked by noise. Watch individual paths wander while the density they build obeys a deterministic equation. Drag the time slice: the histogram of the simulated paths matches the exact Gaussian solution.",
-          "オルンシュタイン・ウーレンベック過程の粒子は 0 へ引き戻されながらノイズに揺さぶられます。個々の経路がさまよう一方で、それらが作る密度は決定論的な方程式に従います。時刻の断面をドラッグしてください。シミュレーション経路のヒストグラムは厳密なガウス解と一致します。"
+          "An Ornstein–Uhlenbeck particle is pulled toward zero and kicked by noise. The surface is its exact density p(x, t) over the (t, x) plane: a spike at x₀ that drifts toward zero and spreads until the pull and the noise balance. Individual paths wander over it, yet the density they build obeys a deterministic equation. Drag the time slice: the histogram of the simulated paths matches the exact Gaussian solution.",
+          "オルンシュタイン・ウーレンベック過程の粒子は 0 へ引き戻されながらノイズに揺さぶられます。曲面は (t, x) 平面上の厳密な密度 p(x, t) で、x₀ に尖った山が 0 へ移りながら広がり、引き戻しとノイズが釣り合ったところで落ち着きます。個々の経路はその上をさまよいますが、それらが作る密度は決定論的な方程式に従います。時刻の断面をドラッグしてください。シミュレーション経路のヒストグラムは厳密なガウス解と一致します。"
         ],
         "formula": "dX=-\\theta X\\,dt+\\sigma\\,dW,\\qquad \\partial_tp=\\partial_x(\\theta xp)+\\tfrac{\\sigma^2}{2}\\partial_x^2p",
         "example": [
@@ -6693,8 +6702,8 @@
           "1. 極が応答を決める"
         ],
         "body": [
-          "A second-order system has a pair of poles in the complex s-plane. Drag the upper pole (its mirror follows). Moving it left makes the response settle faster; moving it up makes it oscillate faster; crossing into the right half-plane makes it blow up.",
-          "二次系は複素 s 平面に一対の極を持ちます。上の極をドラッグしてください（鏡像の極もついてきます）。左へ動かすと応答は速く落ち着き、上へ動かすと速く振動し、右半平面へ入ると発散します。"
+          "A second-order system has a pair of poles in the complex s-plane. Drag the upper pole (its mirror follows). Moving it left makes the response settle faster; moving it up makes it oscillate faster; crossing into the right half-plane makes it blow up. The 3D view shows why poles carry their name: |H(s)| rises without bound at each one, like a tent pole, and the profile of the surface along the imaginary axis is the frequency response |H(iω)|, which grows a sharp resonance peak as a pole nears the axis.",
+          "二次系は複素 s 平面に一対の極を持ちます。上の極をドラッグしてください（鏡像の極もついてきます）。左へ動かすと応答は速く落ち着き、上へ動かすと速く振動し、右半平面へ入ると発散します。3D の図は極という名前の由来を示します。|H(s)| はそれぞれの極で限りなく大きくなり、テントの支柱のように曲面を持ち上げます。虚軸に沿った曲面の断面が周波数応答 |H(iω)| で、極が虚軸に近づくと鋭い共振のピークが育ちます。"
         ],
         "formula": "H(s)=\\frac{\\sigma^2+\\omega^2}{(s-\\sigma)^2+\\omega^2},\\qquad y(t)=1-e^{\\sigma t}\\Bigl(\\cos\\omega t-\\frac{\\sigma}{\\omega}\\sin\\omega t\\Bigr)",
         "example": [

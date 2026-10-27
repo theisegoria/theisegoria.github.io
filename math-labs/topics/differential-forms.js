@@ -69,41 +69,112 @@
   const curl = (x, y) => 1 - x * x - y * y + 0.8 * x;
   const circ = (c, r) => simpson((t) => { const x = c[0] + r * Math.cos(t), y = c[1] + r * Math.sin(t); return P(x, y) * (-r * Math.sin(t)) + Q(x, y) * (r * Math.cos(t)); }, 0, TAU, 240);
   const flux = (c, r) => simpson((rho) => rho * simpson((t) => curl(c[0] + rho * Math.cos(t), c[1] + rho * Math.sin(t)), 0, TAU, 48), 0, r, 40);
+  // flux of curl F = (0, 0, dω) up through the spherical cap of height h over the circle (c, r), computed on the cap itself
+  function capFlux(c, r, h) {
+    if (h < 0.02) return flux(c, r);
+    const z0 = (h * h - r * r) / (2 * h), Rs = (r * r + h * h) / (2 * h), pm = Math.acos(L.clamp(-z0 / Rs, -1, 1));
+    return simpson((ph) => Rs * Rs * Math.sin(ph) * Math.cos(ph) * simpson((t) => curl(c[0] + Rs * Math.sin(ph) * Math.cos(t), c[1] + Rs * Math.sin(ph) * Math.sin(t)), 0, TAU, 48), 0, pm, 60);
+  }
+  const capPoint = (c, r, h) => {
+    if (h < 0.02) return (s, t) => [c[0] + r * s * Math.cos(t), c[1] + r * s * Math.sin(t), 0.012];
+    const z0 = (h * h - r * r) / (2 * h), Rs = (r * r + h * h) / (2 * h), pm = Math.acos(L.clamp(-z0 / Rs, -1, 1));
+    return (s, t) => { const ph = pm * s; return [c[0] + Rs * Math.sin(ph) * Math.cos(t), c[1] + Rs * Math.sin(ph) * Math.sin(t), z0 + Rs * Math.cos(ph)]; };
+  };
+  function stokesFlat(ctx, st, host, v) {
+    const r = v.radius, o = v.orientation >= 0 ? 1 : -1, c = st.c;
+    host.replaceChildren();
+    L.h('p', 'lab-cap', host, T('Colour shows dω = (1 − x² − y² + 0.8x) dx∧dy; arrows show ω. Drag the disk.', '色は dω = (1 − x² − y² + 0.8x) dx∧dy、矢印は ω を表します。円板はドラッグできます。'));
+    const f = fig(host, { x: [-2, 2], y: [-2, 2], equal: true, maxH: 400, grid: false });
+    f.raster((x, y) => curl(x, y) / 2.2, { cmap: 'div', res: 3 });
+    f.field((x, y) => [P(x, y), Q(x, y)], { n: f.small ? 11 : 15, c: 'ink' });
+    f.line(L.sample(0, TAU, 160, (t) => [0.4 + Math.sqrt(1.16) * Math.cos(t), Math.sqrt(1.16) * Math.sin(t)]), { c: 'ink', w: 1, dash: '2 4', op: 0.6 });
+    f.circle(c[0], c[1], r, { c: 'c4', fill: true, fo: 0.12, w: 2.8 });
+    for (let k = 0; k < 6; k++) { const t = TAU * (k + 0.5) / 6, p = [c[0] + r * Math.cos(t), c[1] + r * Math.sin(t)], d = [-Math.sin(t) * o, Math.cos(t) * o]; f.arrow([p[0] - d[0] * 0.1, p[1] - d[1] * 0.1], [p[0] + d[0] * 0.12, p[1] + d[1] * 0.12], { c: 'c4', w: 2.6 }); }
+    f.handle(c[0], c[1], { c: 'c4', label: T('Centre of the disk', '円板の中心'), bounds: [-1.4, 1.4, -1.4, 1.4], onDrag: (x, y) => { st.c = [x, y]; ctx.redraw(); } });
+    f.handle(c[0] + r, c[1], { c: 'hl', label: T('Edge of the disk (sets the radius)', '円板の縁（半径を決める）'), onDrag: (x, y) => ctx.set('radius', Math.hypot(x - c[0], y - c[1])) });
+  }
   D.stokes = {
+    three: true,
     render(ctx, v) {
-      const st = ctx.state, r = v.radius, o = v.orientation >= 0 ? 1 : -1;
+      const st = ctx.state;
       st.c ||= [0, 0];
-      const c = st.c;
-      const row = L.h('div', 'lab-row', ctx.host);
-      const c1 = L.h('div', 'lab-col', row), c2 = L.h('div', 'lab-col', row);
-      L.h('p', 'lab-cap', c1, T('Colour shows dω = (1 − x² − y² + 0.8x) dx∧dy; arrows show ω. Drag the disk.', '色は dω = (1 − x² − y² + 0.8x) dx∧dy、矢印は ω を表します。円板はドラッグできます。'));
-      const f = fig(c1, { x: [-2, 2], y: [-2, 2], equal: true, maxH: 400, grid: false });
-      f.raster((x, y) => curl(x, y) / 2.2, { cmap: 'div', res: 3 });
-      f.field((x, y) => [P(x, y), Q(x, y)], { n: f.small ? 11 : 15, c: 'ink' });
-      // level set dω = 0
-      f.line(L.sample(0, TAU, 160, (t) => [0.4 + Math.sqrt(1.16) * Math.cos(t), Math.sqrt(1.16) * Math.sin(t)]), { c: 'ink', w: 1, dash: '2 4', op: 0.6 });
-      f.circle(c[0], c[1], r, { c: 'c4', fill: true, fo: 0.12, w: 2.8 });
-      for (let k = 0; k < 6; k++) { const t = TAU * (k + 0.5) / 6, p = [c[0] + r * Math.cos(t), c[1] + r * Math.sin(t)], d = [-Math.sin(t) * o, Math.cos(t) * o]; f.arrow([p[0] - d[0] * 0.1, p[1] - d[1] * 0.1], [p[0] + d[0] * 0.12, p[1] + d[1] * 0.12], { c: 'c4', w: 2.6 }); }
-      f.handle(c[0], c[1], { c: 'c4', label: T('Centre of the disk', '円板の中心'), bounds: [-1.4, 1.4, -1.4, 1.4], onDrag: (x, y) => { st.c = [x, y]; ctx.redraw(); } });
-      const pe = [c[0] + r, c[1]];
-      f.handle(pe[0], pe[1], { c: 'hl', label: T('Edge of the disk (sets the radius)', '円板の縁（半径を決める）'), onDrag: (x, y) => ctx.set('radius', Math.hypot(x - c[0], y - c[1])) });
-      // right: both sides as functions of the radius
-      L.h('p', 'lab-cap', c2, T('Both sides of Stokes’ theorem for disks of every radius about this centre.', 'この中心をもつあらゆる半径の円板についての、ストークスの定理の両辺。'));
-      const rs = L.seq(31, (i) => 0.05 * i), lin = rs.map((x) => [x, o * circ(c, x)]), are = rs.map((x) => [x, o * flux(c, x)]);
-      const all = lin.map((p) => p[1]), lo = Math.min(0, ...all), hi = Math.max(0, ...all), pad = Math.max(0.2, (hi - lo) * 0.1);
-      const g = fig(c2, { x: [0, 1.5], y: [lo - pad, hi + pad], aspect: 0.85, maxH: 400, xlabel: T('radius', '半径'), ylabel: T('integral', '積分') });
-      g.line(lin, { c: 'c4', w: 2.6 });
-      are.forEach(([x, y], i) => { if (i % 2 === 0) g.dot(x, y, { c: 'c3', r: 4.5 }); });
-      const L1 = o * circ(c, r), A1 = o * flux(c, r);
-      g.vline(r, { c: 'hl', w: 1.2 });
-      g.dot(r, L1, { c: 'hl', r: 7 });
-      L.legend(ctx.host, [{ kind: 'fill', c: 'pos', label: 'dω > 0' }, { kind: 'fill', c: 'neg', label: 'dω < 0' }, { c: 'ink', dash: true, label: 'dω = 0' }, { c: 'c4', label: T('∮ over the boundary ∂S', '境界 ∂S 上の ∮') }, { kind: 'dot', c: 'c3', label: T('∬ of dω over S', 'S 上の dω の ∬') }]);
-      ctx.readout([
-        { k: T('∮ ω over ∂S', '∂S 上の ∮ ω'), v: fmt(L1, 5), tone: 'key' },
-        { k: T('∬ dω over S', 'S 上の ∬ dω'), v: fmt(A1, 5), tone: 'key' },
-        { k: T('difference', '差'), v: fmt(L1 - A1, 2), tone: 'good' },
-        { k: T('orientation', '向き'), v: o > 0 ? T('anticlockwise', '反時計回り') : T('clockwise', '時計回り') },
-      ], T('ω = (−y/2 + y³/3) dx + (x/2 − x³/3 + 0.4x²) dy. Once the disk reaches the region where dω < 0, growing it can make both integrals shrink together.', 'ω = (−y/2 + y³/3) dx + (x/2 − x³/3 + 0.4x²) dy です。円板が dω < 0 の領域に入ると、円板を大きくしても両方の積分がそろって減ることがあります。'));
+      if (!st.frame || !st.frame.isConnected) {
+        ctx.host.replaceChildren();
+        st.frame = L.h('div', '', ctx.host);
+        const row = L.h('div', 'lab-row is-wide', st.frame);
+        st.c1 = L.h('div', 'lab-col', row); st.c2 = L.h('div', 'lab-col', row);
+        L.h('p', 'lab-cap', st.c1, T('The floor is coloured by dω, with ω as arrows; the loop ∂S bounds the flat disk S and the raised cap S′. Vertical arrows are ∇×F. Drag the violet centre or the gold edge; drag elsewhere to turn the view.', '床は dω で色分けし、ω を矢印で示しています。輪 ∂S は平らな円板 S と持ち上げた球冠 S′ の縁です。鉛直な矢印が ∇×F です。紫の中心や金色の縁をドラッグでき、それ以外をドラッグすると視点が回ります。'));
+        st.v3 = L.h('div', '', st.c1);
+        st.leg = L.h('div', '', st.frame);
+      }
+      const side = (vv) => {
+        const r = vv.radius, o = vv.orientation >= 0 ? 1 : -1, h = vv.cap ?? 0, c = st.c;
+        st.c2.replaceChildren(); st.leg.replaceChildren();
+        L.h('p', 'lab-cap', st.c2, T('Both sides of Stokes’ theorem for loops of every radius about this centre.', 'この中心をもつあらゆる半径の輪についての、ストークスの定理の両辺。'));
+        const rs = L.seq(31, (i) => 0.05 * i), lin = rs.map((x) => [x, o * circ(c, x)]), are = rs.map((x) => [x, o * flux(c, x)]);
+        const all = lin.map((q) => q[1]), lo = Math.min(0, ...all), hi = Math.max(0, ...all), pad = Math.max(0.2, (hi - lo) * 0.1);
+        const g = fig(st.c2, { x: [0, 1.5], y: [lo - pad, hi + pad], aspect: 0.85, maxH: 400, xlabel: T('radius', '半径'), ylabel: T('integral', '積分') });
+        g.line(lin, { c: 'c4', w: 2.6 });
+        are.forEach(([x, y], i) => { if (i % 2 === 0) g.dot(x, y, { c: 'c3', r: 4.5 }); });
+        const L1 = o * circ(c, r), A1 = o * flux(c, r), C1 = o * capFlux(c, r, h);
+        g.vline(r, { c: 'hl', w: 1.2 });
+        g.dot(r, L1, { c: 'hl', r: 7 });
+        L.legend(st.leg, [{ kind: 'fill', c: 'pos', label: 'dω > 0' }, { kind: 'fill', c: 'neg', label: 'dω < 0' }, { c: 'ink', dash: true, label: 'dω = 0' }, { c: 'c4', label: T('∮ ω over the loop ∂S', '輪 ∂S 上の ∮ ω') }, { kind: 'dot', c: 'c3', label: T('∬ dω over the disk S', '円板 S 上の ∬ dω') }].concat(st.flat ? [] : [{ c: 'pos', label: T('∇×F = (0, 0, dω): up where dω > 0, down where dω < 0', '∇×F = (0, 0, dω)：dω > 0 で上向き、dω < 0 で下向き') }]));
+        ctx.readout([
+          { k: T('∮ ω over ∂S', '∂S 上の ∮ ω'), v: fmt(L1, 5), tone: 'key' },
+          { k: T('∬ dω over the disk S', '円板 S 上の ∬ dω'), v: fmt(A1, 5), tone: 'key' },
+          { k: T(`flux of ∇×F through the cap S′ (height ${fmt(h, 2)})`, `球冠 S′（高さ ${fmt(h, 2)}）を通る ∇×F の流束`), v: fmt(C1, 5), tone: 'key' },
+          { k: T('largest difference', '最大の差'), v: fmt(Math.max(Math.abs(L1 - A1), Math.abs(L1 - C1)), 2), tone: 'good' },
+          { k: T('orientation', '向き'), v: o > 0 ? T('anticlockwise, normal up', '反時計回り、法線は上向き') : T('clockwise, normal down', '時計回り、法線は下向き') },
+        ], T('ω = (−y/2 + y³/3) dx + (x/2 − x³/3 + 0.4x²) dy, or F = (P, Q, 0) in space. The three numbers are computed independently: along the loop, over the flat disk, and over the curved cap with its own normal. They agree because ∇·(∇×F) = 0: whatever flows up through the disk must flow out through any cap on the same loop.', 'ω = (−y/2 + y³/3) dx + (x/2 − x³/3 + 0.4x²) dy、空間では F = (P, Q, 0) です。三つの数は独立に計算しています。輪に沿って、平らな円板の上で、そして自分の法線をもつ曲がった球冠の上でです。∇·(∇×F) = 0 なので、円板を上へ通り抜けたものは、同じ輪を縁とするどの球冠からも出ていかなければならず、三つは一致します。'));
+      };
+      L.view3d(ctx, v, {
+        host: st.v3, aspect: ctx.host.clientWidth && ctx.host.clientWidth < 520 ? 1.05 : 0.8, maxH: 470, camera: [2.75, -3.85, 2.85], target: [0, 0.1, 0.3], fov: 36,
+        init(S) {
+          st.flat = false;
+          S.graph(() => 0, { x: [-2, 2], y: [-2, 2], nu: 100, nv: 100, colour: (x, y) => S.cmap.div(curl(x, y) / 2.2), rough: 0.85, coat: 0 });
+          S.polyline(L.sample(0, TAU, 160, (t) => [0.4 + Math.sqrt(1.16) * Math.cos(t), Math.sqrt(1.16) * Math.sin(t), 0.006]), { c: 'ink', opacity: 0.7 });
+          const G = L.seq(9, (i) => -1.8 + 3.6 * i / 8);
+          G.forEach((x) => G.forEach((y) => { const F = [P(x, y), Q(x, y)], m = Math.hypot(...F), sc = Math.min(0.36, 0.22 * m) / (m || 1); S.arrow([x - F[0] * sc / 2, y - F[1] * sc / 2, 0.01], [F[0] * sc, F[1] * sc, 0], { c: 'ink', r: 0.008 }); }));
+          st.loop = S.tube([[0, 0, 0], [0, 0, 0.01]], { c: 'c4', r: 0.028, closed: true, glow: 0.15 });
+          st.dirs = L.seq(5, () => S.arrow([0, 0, 0], [0.1, 0, 0], { c: 'c4', r: 0.02 }));
+          st.cap = S.surface(() => [0, 0, 0], { u: [0, 1], v: [0, TAU], nu: 36, nv: 72, c: 'c4', opacity: 0.42, rough: 0.35, coat: 0.6, wire: true, wireEvery: 6, wireEveryV: 12, wireColour: 'c4', wireOpacity: 0.35 });
+          st.capN = S.arrow([0, 0, 0], [0, 0, 0.4], { c: 'ink', r: 0.014 });
+          st.curlUp = L.seq(7, () => S.arrow([0, 0, 0], [0, 0, 0.1], { c: 'pos', r: 0.02 }));
+          st.curlDn = L.seq(7, () => S.arrow([0, 0, 0], [0, 0, -0.1], { c: 'neg', r: 0.02 }));
+          st.hC = S.handle([0, 0, 0], { c: 'c4', r: 0.085, plane: [[0, 0, 1], [0, 0, 0]], bounds: [-1.4, 1.4, -1.4, 1.4], onDrag: (q) => { st.c = [q.x, q.y]; ctx.redraw(); return [q.x, q.y, 0.03]; } });
+          st.hE = S.handle([0, 0, 0], { c: 'hl', r: 0.075, plane: [[0, 0, 1], [0, 0, 0]], onDrag: (q) => { const c = st.c, d = Math.hypot(q.x - c[0], q.y - c[1]) || 1; ctx.set('radius', d); const rr = st.r ?? d; return [c[0] + (q.x - c[0]) / d * rr, c[1] + (q.y - c[1]) / d * rr, 0.03]; } });
+          st.lLoop = S.label('∂S', [0, 0, 0], { small: true });
+          st.lCap = S.label('S′', [0, 0, 0], { small: true, align: 'end' });
+          st.lCurl = S.label('∇×F', [0, 0, 0], { small: true });
+          S.label('dω = 0', [0.4 - Math.sqrt(1.16) * 0.71, -Math.sqrt(1.16) * 0.71, 0.02], { small: true, c: 'muted', align: 'end' });
+        },
+        update(S, vv) {
+          const r = vv.radius, o = vv.orientation >= 0 ? 1 : -1, h = vv.cap ?? 0, c = st.c;
+          st.r = r;
+          st.loop.update(L.seq(120, (i) => { const t = TAU * i / 120; return [c[0] + r * Math.cos(t), c[1] + r * Math.sin(t), 0.02]; }));
+          st.dirs.forEach((a, k) => { const t = TAU * (k + 0.25) / 5, p = [c[0] + r * Math.cos(t), c[1] + r * Math.sin(t)], d = [-Math.sin(t) * o, Math.cos(t) * o]; a.set([p[0] - d[0] * 0.1, p[1] - d[1] * 0.1, 0.02], [d[0] * 0.22, d[1] * 0.22, 0]); });
+          const X = capPoint(c, r, h);
+          st.cap.update(X, (s, t, p) => S.cmap.div(curl(p[0], p[1]) / 2.2).lerp(S.colour('c4'), 0.35));
+          const top = X(0, 0), nrm = h < 0.02 ? [0, 0, 1] : [0, 0, 1];
+          st.capN.set(top, [nrm[0] * 0.45 * o, nrm[1] * 0.45 * o, nrm[2] * 0.45 * o]);
+          const pts = [[0, 0]].concat(L.seq(6, (k) => [0.62 * Math.cos(TAU * k / 6 + 0.3), 0.62 * Math.sin(TAU * k / 6 + 0.3)]));
+          pts.forEach(([a, b], i) => {
+            const x = c[0] + r * a, y = c[1] + r * b, cv = curl(x, y), L0 = 0.42 * cv;
+            st.curlUp[i].visible = cv > 0.02; st.curlDn[i].visible = cv < -0.02;
+            if (cv > 0.02) st.curlUp[i].set([x, y, 0.02], [0, 0, L0]); else if (cv < -0.02) st.curlDn[i].set([x, y, 0.02], [0, 0, L0]);
+          });
+                    st.hC.at([c[0], c[1], 0.03]); st.hE.at([c[0] + r, c[1], 0.03]);
+          st.lLoop.set([c[0] + r * Math.cos(-1.1), c[1] + r * Math.sin(-1.1), 0.05]);
+          const side3 = X(0.55, 2.6); st.lCap.set([side3[0], side3[1], side3[2] + 0.04]);
+          const lp = pts[4], lx = c[0] + r * lp[0], ly = c[1] + r * lp[1], lc = curl(lx, ly); st.lCurl.set([lx + 0.04, ly, 0.42 * lc + (lc >= 0 ? 0.08 : -0.02)]);
+          st.lCurl.el.style.opacity = Math.abs(lc) > 0.02 ? '' : '0';
+          S.invalidate();
+          side(vv);
+        },
+        fallback(cx, vv) { st.flat = true; stokesFlat(ctx, st, st.c1, vv); side(vv); },
+      });
+      if (!st.__v3 && !st.flat) side(v);
     },
   };
 

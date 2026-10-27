@@ -163,25 +163,49 @@
   };
 
   /* ---------- 2. triangles: angle sum = pi - area ---------- */
+  // the hyperboloid model: the disc point z lifts to (2z, 1 + |z|^2)/(1 - |z|^2); geodesic triangles are flat in the Klein model k = 2z/(1 + |z|^2)
+  const lift = (z) => { const q = 1 - z[0] * z[0] - z[1] * z[1]; return [2 * z[0] / q, 2 * z[1] / q, (2 - q) / q]; };
+  const toKlein = (z) => { const q = 1 + z[0] * z[0] + z[1] * z[1]; return [2 * z[0] / q, 2 * z[1] / q]; };
+  const fromKlein = (k) => { const s2 = Math.sqrt(Math.max(0, 1 - k[0] * k[0] - k[1] * k[1])); return [k[0] / (1 + s2), k[1] / (1 + s2)]; };
+  const kleinLift = (k) => { const s2 = Math.sqrt(Math.max(1e-12, 1 - k[0] * k[0] - k[1] * k[1])); return [k[0] / s2, k[1] / s2, 1 / s2]; };
   D['hyperbolic-triangle'] = {
+    three: true,
     render(ctx, v) {
-      ctx.state.anim?.stop();
+      const st = ctx.state;
+      st.anim?.stop(); st.anim = null;
       const V = [inDisc(v.ax, v.ay), inDisc(v.bx, v.by), inDisc(v.cx, v.cy)];
-      const row = L.h('div', 'lab-row', ctx.host);
-      const c1 = L.h('div', 'lab-col', row), c2 = L.h('div', 'lab-col', row);
-      L.h('p', 'lab-cap', c1, T('Drag the three vertices. The sides are geodesics; the dashed triangle joins the same points with straight chords.', '三つの頂点をドラッグしてください。辺は測地線です。点線の三角形は同じ点を直線の弦で結んだものです。'));
-      const f = L.fig(c1, { x: [-1.08, 1.08], y: [-1.08, 1.08], equal: true, axes: false, grid: false, maxH: 470 });
+      if (!st.frame || !st.frame.isConnected) {
+        ctx.host.replaceChildren();
+        st.frame = L.h('div', '', ctx.host);
+        const row = L.h('div', 'lab-row is-wide', st.frame);
+        st.c1 = L.h('div', 'lab-col', row); st.c2 = L.h('div', 'lab-col', row);
+        st.discHost = L.h('div', '', st.c1);
+        st.cap3 = L.h('p', 'lab-cap', st.c2, T('The same triangle on the hyperboloid t² − x² − y² = 1. Projecting from (0, 0, −1) onto the plane t = 0 gives the disc; each side is where the sheet meets a plane through the origin. Drag to turn.', '同じ三角形を双曲面 t² − x² − y² = 1 の上に描いたものです。(0, 0, −1) から平面 t = 0 へ射影すると円板になり、各辺は原点を通る平面と双曲面の交わりです。ドラッグで回転できます。'));
+        st.v3 = L.h('div', '', st.c2);
+        st.barHost = L.h('div', '', st.frame);
+        st.animHost = L.h('div', '', st.frame);
+        st.leg = L.h('div', '', st.frame);
+      }
+      // without WebGL the angle bars take the 3D view's place beside the disc
+      const goFlat = () => { st.flat = true; st.draw3d = null; st.c2.replaceChildren(st.barHost); };
+      if (!st.flat && (/[?&]flat\b/.test(location.search) || st.__v3fallback)) goFlat();
+      st.discHost.replaceChildren(); st.barHost.replaceChildren(); st.animHost.replaceChildren(); st.leg.replaceChildren();
+      L.h('p', 'lab-cap', st.discHost, T('Drag the three vertices. The sides are geodesics; the dashed triangle joins the same points with straight chords.', '三つの頂点をドラッグしてください。辺は測地線です。点線の三角形は同じ点を直線の弦で結んだものです。'));
+      const f = L.fig(st.discHost, { x: [-1.08, 1.08], y: [-1.08, 1.08], equal: true, axes: false, grid: false, maxH: 470 });
       disc(f);
       [['ax', 'ay'], ['bx', 'by'], ['cx', 'cy']].forEach(([kx, ky], i) => dragPoint(ctx, f, V[i], kx, ky, 'ink', T(`Vertex ${'ABC'[i]}`, `頂点 ${'ABC'[i]}`)));
-      L.h('p', 'lab-cap', c2, T('The three angles laid end to end against a straight angle π', '三つの角を並べて、平角 π と比べたもの'));
-      const g = L.fig(c2, { x: [0, PI], y: [0, 2.35], aspect: 0.6, maxH: 270, grid: false, ticksY: [], ticksX: [[0, '0'], [PI / 4, 'π/4'], [PI / 2, 'π/2'], [3 * PI / 4, '3π/4'], [PI, 'π']] });
+      L.h('p', 'lab-cap', st.barHost, T('The three angles laid end to end against a straight angle π', '三つの角を並べて、平角 π と比べたもの'));
+      const g = L.fig(st.barHost, { x: [0, PI], y: [0, 2.35], aspect: st.flat ? 0.6 : 0.32, maxH: st.flat ? 270 : 210, grid: false, ticksY: [], ticksX: [[0, '0'], [PI / 4, 'π/4'], [PI / 2, 'π/2'], [3 * PI / 4, '3π/4'], [PI, 'π']] });
       const cols = ['c1', 'c3', 'c4'];
+      // the scene scale: the sheet is drawn up to a height that holds the triangle, and everything is shrunk to fit the frame
+      const tMax = Math.max(3.2, 1.12 * Math.max(...V.map((z) => lift(z)[2])));
+      st.k3 = 3.2 / tMax; st.tMax = tMax;
       const draw = (k) => {
         f.clear('main'); f.clear('over'); g.clear('main'); g.clear('over');
         const W = V.map((z) => { const r = abs(z); return r < 1e-9 ? z : scale(z, Math.tanh(k * Math.atanh(r)) / r); });
         const sides = [segment(W[0], W[1]), segment(W[1], W[2]), segment(W[2], W[0])];
         f.poly([...sides[0], ...sides[1], ...sides[2]], { c: 'hl', fo: 0.28, w: 0 });
-        sides.forEach((s) => f.line(s, { c: 'ink', w: 2.6 }));
+        sides.forEach((sd) => f.line(sd, { c: 'ink', w: 2.6 }));
         f.poly(W, { c: 'muted', fill: false, fo: 0, w: 1.2, dash: '4 3', op: 0.8 });
         const ang = W.map((z, i) => angleAt(z, W[(i + 1) % 3], W[(i + 2) % 3]));
         W.forEach((z, i) => {
@@ -198,12 +222,65 @@
         g.rect(0, 1.35, PI, 0.6, { c: 'muted', fo: 0.3, w: 0.8 });
         g.text(0, 2.1, T('any flat triangle: α + β + γ = π', '平面の三角形：α + β + γ = π'), { small: true, anchor: 'start', dy: 4 });
         g.text(0, 1.1, T('this hyperbolic triangle', 'この双曲三角形'), { small: true, anchor: 'start', dy: 4 });
+        st.draw3d?.(W);
         const areaInt = areaByIntegration(W[0], W[1], W[2]);
-        ctx.readout([{ k: 'α + β + γ', v: `${fmt(sum * DEG, 2)}°`, tone: 'key' }, { k: T('defect π − (α + β + γ)', '欠損 π − (α + β + γ)'), v: fmt(defect, 4) }, { k: T('area by integration', '積分で求めた面積'), v: fmt(areaInt, 4), tone: Math.abs(areaInt - defect) < 1e-3 ? 'good' : 'warn' }, { k: T('largest possible area', '面積の上限'), v: 'π' }],
+        const H = W.map(lift), mink = (a, b) => a[2] * b[2] - a[0] * b[0] - a[1] * b[1];
+        ctx.readout([{ k: 'α + β + γ', v: `${fmt(sum * DEG, 2)}°`, tone: 'key' }, { k: T('defect π − (α + β + γ)', '欠損 π − (α + β + γ)'), v: fmt(defect, 4) }, { k: T('area by integration', '積分で求めた面積'), v: fmt(areaInt, 4), tone: Math.abs(areaInt - defect) < 1e-3 ? 'good' : 'warn' }, { k: T('sides a, b, c from cosh d = t₁t₂ − x₁x₂ − y₁y₂', '辺 a, b, c（cosh d = t₁t₂ − x₁x₂ − y₁y₂ から）'), v: [[1, 2], [2, 0], [0, 1]].map(([i, j]) => fmt(Math.acosh(Math.max(1, mink(H[i], H[j]))), 3)).join(', ') }, { k: T('largest possible area', '面積の上限'), v: 'π' }],
           k < 0.999 ? T('Growing from a tiny triangle: while it is small it is almost Euclidean and the angles fill the whole bar.', '小さな三角形から成長させています。小さいうちはほぼユークリッド的で、角が帯全体を埋めます。') : sum < 0.3 ? T('With the vertices near the rim the angles all but vanish and the area approaches π, the area of an ideal triangle.', '頂点が縁に近いと角はほとんど消え、面積は理想三角形の面積 π に近づきます。') : T('The shortfall of the angle sum is exactly the area: two independent computations, one from angles and one from integrating the metric, agree.', '角の和の不足分はちょうど面積に等しくなります。角から求めた値と、計量を積分して求めた値という独立な二つの計算が一致します。'));
       };
-      ctx.state.anim = L.animator(ctx.host, (dt, t) => { const k = Math.min(1, 0.04 + t / 3); draw(k); if (k >= 1) return false; }, { autoplay: false, once: true, initialT: 3, playLabel: T('Grow the triangle from a point', '点から三角形を成長させる') });
-      L.legend(ctx.host, [{ kind: 'fill', c: 'hl', label: T('geodesic triangle', '測地三角形') }, { c: 'muted', dash: true, label: T('straight chords (not geodesics)', '直線の弦（測地線ではない）') }, { c: 'c1', label: 'α' }, { c: 'c3', label: 'β' }, { c: 'c4', label: 'γ' }]);
+      st.draw = draw;
+      const legend = () => { st.leg.replaceChildren(); L.legend(st.leg, [{ kind: 'fill', c: 'hl', label: T('geodesic triangle', '測地三角形') }, { c: 'muted', dash: true, label: T('straight chords (not geodesics)', '直線の弦（測地線ではない）') }, { c: 'c1', label: 'α' }, { c: 'c3', label: 'β' }, { c: 'c4', label: 'γ' }].concat(st.flat ? [] : [{ c: 'muted', label: T('projection lines through (0, 0, −1)', '(0, 0, −1) を通る射影線') }])); };
+      legend();
+      L.view3d(ctx, v, {
+        host: st.v3, aspect: 1.0, maxH: 470, camera: [7.7, -10.0, 4.3], target: [0, 0, 1.2], fov: 30,
+        init(S) {
+          st.flat = false;
+          st.sheet = S.surface(() => [0, 0, 0], { u: [0, 1], v: [0, 2 * PI], nu: 40, nv: 96, c: 'c1', opacity: 0.26, rough: 0.5, coat: 0.5, wire: true, wireEvery: 5, wireEveryV: 8, wireOpacity: S.dark ? 0.28 : 0.2 });
+          st.discM = S.surface(() => [0, 0, 0], { u: [0, 1], v: [0, 2 * PI], nu: 2, nv: 96, c: 'c1', opacity: 0.16, rough: 0.8 });
+          st.rim = S.tube([[0, 0, 0], [0, 0, 0.01]], { c: 'ink', r: 0.012, closed: true, opacity: 0.7 });
+          st.patch = S.surface(() => [0, 0, 0], { u: [0, 1], v: [0, 1], nu: 28, nv: 28, c: 'hl', rough: 0.75, coat: 0.05, glow: S.dark ? 0.12 : 0 });
+          st.patchD = S.surface(() => [0, 0, 0], { u: [0, 1], v: [0, 1], nu: 24, nv: 24, c: 'hl', rough: 0.8, coat: 0 });
+          st.sides = L.seq(3, () => S.tube([[0, 0, 0], [0, 0, 0.01]], { c: 'ink', r: 0.022 }));
+          st.sidesD = L.seq(3, () => S.tube([[0, 0, 0], [0, 0, 0.01]], { c: 'ink', r: 0.012 }));
+          st.rays = S.lines([[[0, 0, 0], [0, 0, 0]]], { c: 'muted', opacity: S.dark ? 0.75 : 0.65 });
+          st.south = S.sphere([0, 0, 0], 0.05, { c: 'ink' });
+          st.vtx = L.seq(3, () => S.sphere([0, 0, 0], 0.07, { c: 'ink' }));
+          st.vtxD = L.seq(3, () => S.sphere([0, 0, 0], 0.035, { c: 'ink' }));
+          st.lab = L.seq(3, (i) => S.label('ABC'[i], [0, 0, 0], { math: true }));
+          st.lSouth = S.label('(0, 0, −1)', [0, 0, 0], { small: true, c: 'muted' });
+          st.lSheet = S.label('t² − x² − y² = 1', [0, 0, 0], { small: true, c: 'muted', align: 'end' });
+          st.lDisc = S.label(T('Poincaré disc, t = 0', 'ポアンカレ円板、t = 0'), [0, 0, 0], { small: true, c: 'muted', align: 'end' });
+          st.sheetT = null;
+          st.draw3d = (W) => {
+            const k3 = st.k3, sc = (p) => [p[0] * k3, p[1] * k3, p[2] * k3];
+            if (st.sheetT !== st.tMax) {
+              st.sheetT = st.tMax;
+              const rho = Math.sqrt((st.tMax - 1) / (st.tMax + 1));
+              st.sheet.update((u, w) => sc(lift([rho * u * Math.cos(w), rho * u * Math.sin(w)])));
+              st.discM.update((u, w) => [k3 * u * Math.cos(w), k3 * u * Math.sin(w), 0]);
+              st.rim.update(L.seq(96, (i) => [k3 * Math.cos(2 * PI * i / 96), k3 * Math.sin(2 * PI * i / 96), 0]));
+              st.south.at([0, 0, -k3]); st.lSouth.set([0.05, 0, -k3]);
+              const top = lift([rho * Math.cos(-0.15), rho * Math.sin(-0.15)]);
+              st.lSheet.set(sc(top)); st.lDisc.set([-k3 * 1.02, -k3 * 0.2, 0]);
+            }
+            const Kv = W.map(toKlein), bary = (u, w) => { const a = 1 - u, b = u * (1 - w), c = u * w; return [a * Kv[0][0] + b * Kv[1][0] + c * Kv[2][0], a * Kv[0][1] + b * Kv[1][1] + c * Kv[2][1]]; };
+            st.patch.update((u, w) => sc(kleinLift(bary(u, w))));
+            st.patchD.update((u, w) => { const z = fromKlein(bary(u, w)); return [k3 * z[0], k3 * z[1], 0.004]; });
+            [[0, 1], [1, 2], [2, 0]].forEach(([i, j], m) => {
+              const seg = L.seq(41, (n2) => { const t = n2 / 40; return [Kv[i][0] + (Kv[j][0] - Kv[i][0]) * t, Kv[i][1] + (Kv[j][1] - Kv[i][1]) * t]; });
+              st.sides[m].update(seg.map((kk) => sc(kleinLift(kk))));
+              st.sidesD[m].update(seg.map((kk) => { const z = fromKlein(kk); return [k3 * z[0], k3 * z[1], 0.006]; }));
+            });
+            const Hs = W.map((z) => sc(lift(z)));
+            st.rays.update(W.map((z, i) => [[0, 0, -k3], Hs[i]]));
+            W.forEach((z, i) => { st.vtx[i].at(Hs[i]); st.vtxD[i].at([k3 * z[0], k3 * z[1], 0]); st.lab[i].set([Hs[i][0], Hs[i][1], Hs[i][2] + 0.12]); });
+            S.invalidate();
+          };
+        },
+        update() { st.draw(st.anim ? Math.min(1, 0.04 + (st.anim.t ?? 3) / 3) : 1); },
+        fallback() { if (!st.flat) { goFlat(); setTimeout(() => ctx.redraw(), 0); } },
+      });
+      st.anim = L.animator(st.animHost, (dt, t) => { const k = Math.min(1, 0.04 + t / 3); draw(k); if (k >= 1) return false; }, { autoplay: false, once: true, initialT: 3, playLabel: T('Grow the triangle from a point', '点から三角形を成長させる') });
     },
   };
 

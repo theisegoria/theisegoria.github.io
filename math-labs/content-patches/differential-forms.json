@@ -59,10 +59,10 @@
  },
  "stokes": {
   "body": [
-   "For the one-form ω = (−y/2 + y³/3) dx + (x/2 − x³/3 + 0.4x²) dy, the colour shows dω, positive in the middle and negative outside the dashed circle. Drag the disk and its edge: the circulation of ω around the boundary always equals the integral of dω over the disk. The graph checks this for every radius at once, and reversing the orientation flips both sides together.",
-   "1形式 ω = (−y/2 + y³/3) dx + (x/2 − x³/3 + 0.4x²) dy について、色は dω を表します。中央で正、破線の円の外で負です。円板とその縁をドラッグしてください。境界に沿った ω の循環は、いつも円板上の dω の積分に等しくなります。グラフはすべての半径について同時にこれを確かめます。向きを反転すると両辺がそろって符号を変えます。"
+   "For the one-form ω = (−y/2 + y³/3) dx + (x/2 − x³/3 + 0.4x²) dy, the floor is coloured by dω, positive in the middle and negative outside the dashed circle. Drag the loop's centre and its edge: the circulation of ω around the loop always equals the integral of dω over the disk inside it. In space, ω is the vector field F = (P, Q, 0), dω is the vertical curl ∇×F, and the loop also bounds a spherical cap; raise the cap and its flux, computed on the curved surface itself, stays equal to the circulation. The graph checks the theorem for every radius at once, and reversing the orientation flips both sides together.",
+   "1形式 ω = (−y/2 + y³/3) dx + (x/2 − x³/3 + 0.4x²) dy について、床の色は dω を表します。中央で正、破線の円の外で負です。輪の中心と縁をドラッグしてください。輪に沿った ω の循環は、いつも内側の円板上の dω の積分に等しくなります。空間では ω はベクトル場 F = (P, Q, 0)、dω は鉛直なカール ∇×F で、輪は球冠の縁にもなっています。球冠を持ち上げても、曲面そのものの上で計算した流束は循環に等しいままです。グラフはすべての半径について同時に定理を確かめます。向きを反転すると両辺がそろって符号を変えます。"
   ],
-  "formula": "\\oint_{\\partial S}\\omega=\\iint_S d\\omega,\\qquad d(P\\,dx+Q\\,dy)=\\Big(\\frac{\\partial Q}{\\partial x}-\\frac{\\partial P}{\\partial y}\\Big)dx\\wedge dy",
+  "formula": "\\oint_{\\partial S}\\omega=\\iint_S d\\omega,\\qquad d(P\\,dx+Q\\,dy)=\\Big(\\frac{\\partial Q}{\\partial x}-\\frac{\\partial P}{\\partial y}\\Big)dx\\wedge dy,\\qquad \\oint_{\\partial S}\\mathbf F\\cdot d\\mathbf r=\\iint_{S'}(\\nabla\\times\\mathbf F)\\cdot d\\mathbf S",
   "params": [
    [
     "radius",
@@ -91,6 +91,15 @@
       "反時計回り"
      ]
     ]
+   ],
+   [
+    "cap",
+    "Cap height",
+    "キャップの高さ",
+    0,
+    1.5,
+    0.05,
+    0.6
    ]
   ]
  },

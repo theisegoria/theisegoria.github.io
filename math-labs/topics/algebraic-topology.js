@@ -181,9 +181,30 @@
     return out;
   }
 
+  // The same four triangulations embedded in space: chart points per triangle (same order as surfaces()) and the chart map.
+  function surfaces3() {
+    const TAU = L.TAU;
+    const disk = { map: (c) => [c[0], c[1], 0], tri: surfaces()[0].tri.map((t) => t.pts) };
+    const TV = [[0, 0, 1.4]].concat([90, 210, 330].map((a) => [1.32 * Math.cos(a * Math.PI / 180), 1.32 * Math.sin(a * Math.PI / 180), -0.47]));
+    const tetra = { map: (c) => c, tri: [[0, 1, 3], [1, 2, 3], [0, 2, 3], [0, 1, 2]].map((t) => t.map((i) => TV[i])) };
+    const RC = 1.15, HZ = 0.5, cyl = (c) => [RC * Math.cos(c[0]), RC * Math.sin(c[0]), c[1]];
+    const ann = { map: cyl, tri: [] };
+    for (let i = 0; i < 6; i++) {
+      const o0 = [TAU * i / 6, -HZ], o1 = [TAU * (i + 1) / 6, -HZ], i0 = [TAU * (i + 0.5) / 6, HZ], i1 = [TAU * (i + 1.5) / 6, HZ];
+      ann.tri.push([o0, o1, i0], [i0, o1, i1]);
+    }
+    const TR = 1.25, Tr = 0.55, tor = { map: (c) => [(TR + Tr * Math.cos(c[1])) * Math.cos(c[0]), (TR + Tr * Math.cos(c[1])) * Math.sin(c[0]), Tr * Math.sin(c[1])], tri: [] };
+    const G = (i, j) => [TAU * i / 3, TAU * j / 3];
+    for (let j = 0; j < 3; j++) for (let i = 0; i < 3; i++) tor.tri.push([G(i, j), G(i + 1, j), G(i + 1, j + 1)], [G(i, j), G(i + 1, j + 1), G(i, j + 1)]);
+    return [disk, tetra, ann, tor];
+  }
+  const lerpC = (a, b, t) => a.map((x, i) => x + (b[i] - x) * t);
+
   D.euler = {
+    three: true,
     render(ctx, v) {
-      ctx.state.anim?.stop();
+      const st = ctx.state;
+      st.anim?.stop();
       const which = Math.round(v.solid), S = surfaces()[which];
       const names = [T('Disk', '円板'), T('Sphere (tetrahedron surface)', '球面（四面体の表面）'), T('Annulus', '円環'), T('Torus', 'トーラス')];
       // order the triangles so the surface grows through shared edges
@@ -203,16 +224,30 @@
         const b = vs.length ? H()(vs.length, es, fs) : [0, 0, 0];
         return { V: vs.length, E: es.length, F: fs.length, b, vs: new Set(vs) };
       };
-      const row = L.h('div', 'lab-row', ctx.host);
-      const col1 = L.h('div', 'lab-col', row), col2 = L.h('div', 'lab-col', row);
-      const capText = which === 3 ? T('The torus is drawn as a square whose opposite sides are glued in the direction of the arrows; the 16 drawn corners are only 9 vertices.', 'トーラスは、向かい合う辺を矢印の向きに貼り合わせた正方形として描いています。描いた16個の角は9個の頂点にすぎません。') : which === 1 ? T('Edges to the vertex at the back are dashed.', '奥の頂点へ向かう辺は破線です。') : T('The surface, built one triangle at a time.', '三角形を1枚ずつ置いて作る曲面。');
-      L.h('p', 'lab-cap', col1, capText);
-      const f = fig(col1, { axes: false, x: [-1.75, 1.75], y: [-1.6, 1.6], equal: true, maxH: 380 });
+      if (!st.frame || !st.frame.isConnected) {
+        ctx.host.replaceChildren();
+        st.frame = L.h('div', '', ctx.host);
+        const row = L.h('div', 'lab-row is-wide', st.frame);
+        st.c1 = L.h('div', 'lab-col', row); st.c2 = L.h('div', 'lab-col', row);
+        st.cap1 = L.h('p', 'lab-cap', st.c1, '');
+        st.v3 = L.h('div', '', st.c1);
+        L.h('p', 'lab-cap', st.c2, T('Counts after each triangle: V, E, F and χ = V − E + F.', '三角形を置くたびの個数：V、E、F と χ = V − E + F。'));
+        st.g2 = L.h('div', '', st.c2);
+        st.bar = L.h('div', '', st.frame);
+        st.leg = L.h('div', '', st.frame);
+      }
+      const setCap = () => {
+        st.cap1.textContent = st.flat
+          ? (which === 3 ? T('The torus is drawn as a square whose opposite sides are glued in the direction of the arrows; the 16 drawn corners are only 9 vertices.', 'トーラスは、向かい合う辺を矢印の向きに貼り合わせた正方形として描いています。描いた16個の角は9個の頂点にすぎません。') : which === 1 ? T('Edges to the vertex at the back are dashed.', '奥の頂点へ向かう辺は破線です。') : T('The surface, built one triangle at a time.', '三角形を1枚ずつ置いて作る曲面。'))
+          : [T('A hexagonal disk of six triangles, built one triangle at a time. Drag to turn it.', '6枚の三角形からなる六角形の円板。三角形を1枚ずつ置いていきます。ドラッグで回せます。'), T('The sphere as the surface of a tetrahedron: four triangles, hollow inside. Drag to turn it.', '四面体の表面としての球面。4枚の三角形で、中は空洞です。ドラッグで回せます。'), T('The annulus as a band around a cylinder: twelve triangles between two rings. Drag to turn it.', '円柱を巻く帯としての円環。2つの輪の間の12枚の三角形です。ドラッグで回せます。'), T('The 3 × 3 torus: nine vertices and eighteen triangles, drawn on a round torus. Drag to turn it.', '3 × 3 のトーラス。9個の頂点と18枚の三角形を丸いトーラス上に描いています。ドラッグで回せます。')][which];
+      };
+      setCap();
       // Running count: V, E, F and χ after each triangle, so the sum can be watched changing.
       const N = S.tri.length, hist = L.seq(N, (i) => stats(i + 1));
       const yMax = Math.max(...hist.map((h) => h.E)) + 1;
-      L.h('p', 'lab-cap', col2, T('Counts after each triangle: V, E, F and χ = V − E + F.', '三角形を置くたびの個数：V、E、F と χ = V − E + F。'));
-      const g = fig(col2, { x: [0.5, N + Math.max(1, 0.28 * N)], y: [-0.8, yMax + 0.5], aspect: 0.85, maxH: 380, xlabel: T('triangles placed', '置いた三角形の数'), ticksX: L.seq(N, (i) => [i + 1, String(i + 1)]).filter((t, i) => N <= 8 || i % 2 === 1) });
+      st.g2.replaceChildren();
+      const yMin = Math.min(0, ...hist.map((h) => h.V - h.E + h.F)) - 0.8;
+      const g = fig(st.g2, { x: [0.5, N + Math.max(1, 0.28 * N)], y: [yMin, yMax + 0.5], aspect: 0.85, maxH: 380, xlabel: T('triangles placed', '置いた三角形の数'), ticksX: L.seq(N, (i) => [i + 1, String(i + 1)]).filter((t, i) => N <= 8 || i % 2 === 1) });
       const series = [['V', (h) => h.V, 'c2'], ['E', (h) => h.E, 'ink'], ['F', (h) => h.F, 'c1'], ['χ', (h) => h.V - h.E + h.F, 'hl']];
       g.hline(0, { c: 'muted', w: 0.8, layer: 'under' });
       series.forEach(([nm, fn, c]) => g.line(hist.map((h, i) => [i + 1, fn(h)]), { c, w: 1.2, op: 0.3, dash: '3 3', layer: 'under' }));
@@ -226,42 +261,117 @@
           g.dot(x, y, { c, r: 4.5 });
           return { nm, c, x, y, py: g.Y(y) };
         });
-        // labels to the right of the last points, pushed apart so equal values do not overlap
         const ord = ends.slice().sort((a, b) => a.py - b.py);
         for (let i = 1; i < ord.length; i++) if (ord[i].py - ord[i - 1].py < 14) ord[i].py = ord[i - 1].py + 14;
         for (let i = ord.length - 2; i >= 0; i--) if (ord[i + 1].py - ord[i].py < 14) ord[i].py = ord[i + 1].py - 14;
         ends.forEach((e) => g.text(e.x, e.y, `${e.nm} = ${e.y}`, { anchor: 'start', dx: 9, dy: e.py - g.Y(e.y) + 4, small: true, c: e.c }));
       };
-      if (S.square) { const q = S.square; f.poly([[-q, -q], [q, -q], [q, q], [-q, q]], { c: 'muted', fo: 0.03, w: 0, layer: 'under' }); }
-      const drawTo = (m) => {
+      // the flat figure (no 3D)
+      const flatTo = (m) => {
+        if (!st.f || !st.f.svg.isConnected || st.fWhich !== which) {
+          st.v3.replaceChildren(); st.fWhich = which;
+          st.f = fig(st.v3, { axes: false, x: [-1.75, 1.75], y: [-1.6, 1.6], equal: true, maxH: 380 });
+          if (S.square) { const q = S.square; st.f.poly([[-q, -q], [q, -q], [q, q], [-q, q]], { c: 'muted', fo: 0.03, w: 0, layer: 'under' }); }
+        }
+        const f = st.f;
         f.clear('main'); f.clear('over');
-        if (S.square) { /* re-add side arrows */ const q = S.square; const tick = (a, b, cc, k) => { const mm = [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2], d = [(b[0] - a[0]), (b[1] - a[1])], l = Math.hypot(...d), u = [d[0] / l, d[1] / l]; for (let i = 0; i < k; i++) { const c0 = [mm[0] + u[0] * 0.13 * (i - (k - 1) / 2), mm[1] + u[1] * 0.13 * (i - (k - 1) / 2)]; f.arrow([c0[0] - u[0] * 0.12, c0[1] - u[1] * 0.12], [c0[0] + u[0] * 0.08, c0[1] + u[1] * 0.08], { c: cc, w: 2.4, layer: 'over' }); } }; for (const y of [-q, q]) tick([-q, y], [q, y], 'c2', 1); for (const x of [-q, q]) tick([x, -q], [x, q], 'c4', 2); }
+        if (S.square) { const q = S.square; const tick = (a, b, cc, k) => { const mm = [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2], d = [(b[0] - a[0]), (b[1] - a[1])], l = Math.hypot(...d), u = [d[0] / l, d[1] / l]; for (let i = 0; i < k; i++) { const c0 = [mm[0] + u[0] * 0.13 * (i - (k - 1) / 2), mm[1] + u[1] * 0.13 * (i - (k - 1) / 2)]; f.arrow([c0[0] - u[0] * 0.12, c0[1] - u[1] * 0.12], [c0[0] + u[0] * 0.08, c0[1] + u[1] * 0.08], { c: cc, w: 2.4, layer: 'over' }); } }; for (const y of [-q, q]) tick([-q, y], [q, y], 'c2', 1); for (const x of [-q, q]) tick([x, -q], [x, q], 'c4', 2); }
         const shown = order.slice(0, m);
         shown.forEach((k, i) => f.poly(S.tri[k].pts, { c: i === m - 1 && m < S.tri.length ? 'hl' : 'c1', fo: i === m - 1 && m < S.tri.length ? 0.5 : S.back !== undefined ? 0.12 : 0.2, w: 0 }));
         const drawn = new Set();
         shown.forEach((k) => { const t = S.tri[k]; [[0, 1], [1, 2], [0, 2]].forEach(([a, b]) => { const key = t.pts[a].concat(t.pts[b]).map((x) => x.toFixed(3)).join(); const key2 = t.pts[b].concat(t.pts[a]).map((x) => x.toFixed(3)).join(); if (drawn.has(key) || drawn.has(key2)) return; drawn.add(key); const back = S.back !== undefined && (t.ids[a] === S.back || t.ids[b] === S.back); f.line([t.pts[a], t.pts[b]], { c: 'ink', w: 1.5, dash: back ? '5 4' : false, op: back ? 0.6 : 0.85 }); }); });
-        const st = stats(m);
-        drawCounts(m);
-        S.vpts.forEach(({ id, p }) => { if (st.vs.has(id)) { f.dot(p[0], p[1], { c: 'c2', r: 5.5 }); if (S.square) f.text(p[0], p[1], String(id + 1), { small: true, dx: -9, dy: -6, c: 'muted' }); } });
-        return st;
+        const vsShown = new Set(shown.flatMap((k) => S.tri[k].ids));
+        S.vpts.forEach(({ id, p }) => { if (vsShown.has(id)) { f.dot(p[0], p[1], { c: 'c2', r: 5.5 }); if (S.square) f.text(p[0], p[1], String(id + 1), { small: true, dx: -9, dy: -6, c: 'muted' }); } });
       };
-      const put = (st, m) => {
-        const chi = st.V - st.E + st.F, bchi = st.b[0] - st.b[1] + st.b[2];
+      const put = (st2, m) => {
+        const chi = st2.V - st2.E + st2.F, bchi = st2.b[0] - st2.b[1] + st2.b[2];
         ctx.readout([
-          { k: 'V − E + F', v: `${st.V} − ${st.E} + ${st.F} = ${chi}`, tone: 'key' },
-          { k: 'β₀ − β₁ + β₂', v: `${st.b[0]} − ${st.b[1]} + ${st.b[2]} = ${bchi}`, tone: chi === bchi ? 'good' : 'warn' },
+          { k: 'V − E + F', v: `${st2.V} − ${st2.E} + ${st2.F} = ${chi}`, tone: 'key' },
+          { k: 'β₀ − β₁ + β₂', v: `${st2.b[0]} − ${st2.b[1]} + ${st2.b[2]} = ${bchi}`, tone: chi === bchi ? 'good' : 'warn' },
           { k: T('triangles placed', '置いた三角形'), v: `${m} / ${S.tri.length}` },
         ], m < S.tri.length ? T('The two alternating sums agree at every stage of the construction, not only at the end.', '2つの交代和は、完成時だけでなく構成のどの段階でも一致します。') : [T('One component and no holes: χ = 1.', '連結成分が1つで穴がないので χ = 1 です。'), T('The last face closes the surface and creates a 2-cycle: β₂ = 1, χ = 2.', '最後の面が曲面を閉じて2次元のサイクルを作り、β₂ = 1、χ = 2 になります。'), T('The loop around the hole gives β₁ = 1, so χ = 0.', '穴を回るループで β₁ = 1 となり、χ = 0 です。'), T('Two independent loops and one enclosed surface: 1 − 2 + 1 = 0. The annulus also has χ = 0, so χ alone does not tell surfaces apart.', '独立な2つのループと閉じた面が1つで 1 − 2 + 1 = 0 です。円環も χ = 0 なので、χ だけでは曲面を区別できません。')][which]);
       };
+      const drawTo = (m) => {
+        st.m = m;
+        if (st.flat) flatTo(m); else st.draw3d?.(m);
+        drawCounts(m);
+        put(hist[m - 1], m);
+      };
+      const legend = () => { st.leg.replaceChildren(); L.legend(st.leg, [{ kind: 'fill', c: 'c1', label: T('Faces', '面') }, { c: 'ink', label: T('Edges', '辺') }, { kind: 'dot', c: 'c2', label: T('Vertices', '頂点') }, { kind: 'fill', c: 'hl', label: T('Face just added', '追加したばかりの面') }].concat(S.square && st.flat ? [{ c: 'c2', label: T('Sides glued: one arrow to one arrow, two to two', '貼り合わせる辺：矢印1本どうし、2本どうし') }] : [])); };
+      legend();
       const STEP = 0.35, DUR = N * STEP + 0.2;
       let lastM = -1;
-      ctx.state.anim = L.animator(ctx.host, (dt, t, label) => {
+      st.bar.replaceChildren();
+      st.anim = L.animator(st.bar, (dt, t, label) => {
         const m = Math.min(N, Math.floor(t / STEP) + 1);
-        if (m !== lastM) { lastM = m; const st = drawTo(m); put(st, m); }
+        if (m !== lastM) { lastM = m; drawTo(m); }
         label.textContent = m < N ? `${names[which]} · ${m} / ${N}` : '';
         return t < DUR;
       }, { autoplay: false, once: true, duration: DUR, initialT: DUR, playLabel: T('Build it triangle by triangle', '三角形を1枚ずつ置く') });
-      L.legend(ctx.host, [{ kind: 'fill', c: 'c1', label: T('Faces', '面') }, { c: 'ink', label: T('Edges', '辺') }, { kind: 'dot', c: 'c2', label: T('Vertices', '頂点') }, { kind: 'fill', c: 'hl', label: T('Face just added', '追加したばかりの面') }].concat(S.square ? [{ c: 'c2', label: T('Sides glued: one arrow to one arrow, two to two', '貼り合わせる辺：矢印1本どうし、2本どうし') }] : []));
+      // 3D: one mesh holding every triangle in build order, so a draw range shows the first m
+      const build3 = (S3d) => {
+        const THREE = S3d.THREE, Sx = surfaces3()[which], SUB = which === 1 ? 1 : 10;
+        if (st.grp) { S3d.scene.remove(st.grp); st.grp.traverse((o) => { o.geometry?.dispose(); }); }
+        const grp = st.grp = new THREE.Group();
+        const pos = [], chartPts = [], perTri = SUB * SUB * 3;
+        order.forEach((k) => {
+          const [A, B, C] = Sx.tri[k];
+          const Cp = (i, j) => lerpC(lerpC(A, B, i / SUB), lerpC(A, C, i / SUB), i ? j / i : 0);
+          const put = (...cs) => cs.forEach((c) => { chartPts.push(c); pos.push(...Sx.map(c)); });
+          for (let i = 0; i < SUB; i++) for (let j = 0; j <= i; j++) {
+            put(Cp(i, j), Cp(i + 1, j), Cp(i + 1, j + 1));
+            if (j < i) put(Cp(i, j), Cp(i + 1, j + 1), Cp(i, j + 1));
+          }
+        });
+        const geo = new THREE.BufferGeometry();
+        geo.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+        geo.setAttribute('color', new THREE.Float32BufferAttribute(new Float32Array(pos.length), 3));
+        geo.computeVertexNormals();
+        if (chartPts[0].length === 2 && which !== 0) {
+          // smooth shading on the curved surfaces: the chart's own normal, oriented like the facet it belongs to
+          const nr = geo.attributes.normal, e = 1e-4;
+          chartPts.forEach((c, q) => {
+            const a = Sx.map([c[0] + e, c[1]]), b = Sx.map([c[0] - e, c[1]]), d = Sx.map([c[0], c[1] + e]), f = Sx.map([c[0], c[1] - e]);
+            const du = [a[0] - b[0], a[1] - b[1], a[2] - b[2]], dv = [d[0] - f[0], d[1] - f[1], d[2] - f[2]];
+            let m = [du[1] * dv[2] - du[2] * dv[1], du[2] * dv[0] - du[0] * dv[2], du[0] * dv[1] - du[1] * dv[0]];
+            const l = Math.hypot(...m) || 1; m = m.map((x) => x / l);
+            if (m[0] * nr.getX(q) + m[1] * nr.getY(q) + m[2] * nr.getZ(q) < 0) m = m.map((x) => -x);
+            nr.setXYZ(q, m[0], m[1], m[2]);
+          });
+          nr.needsUpdate = true;
+        }
+        const mesh = new THREE.Mesh(geo, S3d.mat('c1', { vertexColors: true, rough: 0.5, coat: 0.3 }));
+        grp.add(mesh);
+        // edges: each combinatorial edge once, as a curve in the chart
+        const edges = new Map();
+        order.forEach((k, pos2) => { const t = S.tri[k], c = Sx.tri[k]; [[0, 1], [1, 2], [0, 2]].forEach(([a, b]) => { const key = ekey(t.ids[a], t.ids[b]); if (!edges.has(key)) edges.set(key, { at: pos2, pts: L.seq(13, (i) => Sx.map(lerpC(c[a], c[b], i / 12))) }); }); });
+        const tubes = [...edges.values()].map((e) => ({ at: e.at, m: S3d.tube(e.pts, { c: 'ink', r: 0.018, add: false }) }));
+        tubes.forEach((t) => grp.add(t.m));
+        // vertices, in the order they first appear
+        const vfirst = new Map();
+        order.forEach((k, p2) => S.tri[k].ids.forEach((id, a) => { if (!vfirst.has(id)) vfirst.set(id, { at: p2, p: Sx.map(Sx.tri[k][a]) }); }));
+        const verts = [...vfirst.values()];
+        const pts = S3d.points(verts.map((x) => x.p), { c: 'c2', r: 0.06, max: verts.length, add: false });
+        grp.add(pts);
+        S3d.add(grp);
+        const cBase = S3d.colour('c1'), cNew = S3d.colour('hl'), col = geo.attributes.color;
+        st.draw3d = (m) => {
+          geo.setDrawRange(0, m * perTri);
+          for (let k = 0; k < Math.min(m, N); k++) { const c = k === m - 1 && m < N ? cNew : cBase; for (let q = k * perTri; q < (k + 1) * perTri; q++) col.setXYZ(q, c.r, c.g, c.b); }
+          col.needsUpdate = true;
+          tubes.forEach((t) => { t.m.visible = t.at < m; });
+          const shownV = verts.filter((x) => x.at < m).map((x) => x.p);
+          pts.update(shownV.length ? shownV : [[0, 0, -99]]); pts.visible = shownV.length > 0;
+          S3d.invalidate();
+        };
+      };
+      L.view3d(ctx, v, {
+        host: st.v3, aspect: 0.8, maxH: 420, camera: [3.4, -4.6, 3.4], target: [0, 0, 0], fov: 30,
+        init(S3d) { st.flat = false; },
+        update(S3d) { if (st.built !== which || !st.grp) { st.built = which; build3(S3d); } drawTo(st.m && st.mWhich === which ? st.m : N); st.mWhich = which; },
+        fallback() { st.flat = true; setCap(); legend(); drawTo(N); },
+      });
+      if (!st.__v3 && !st.flat) { drawCounts(N); put(hist[N - 1], N); }
     },
   };
 })();

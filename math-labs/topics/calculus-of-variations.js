@@ -4,6 +4,7 @@
   const fig = (host, o) => { const f = L.fig(host, o); f.svg.setAttribute('data-ig-tex', 'off'); return f; };
   const PI = Math.PI, rad = (d) => d * PI / 180, deg = (r) => r * 180 / PI;
   // Composite Simpson rule on [a, b] with n (even) panels.
+  const cross3 = (a, b) => [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]];
   const simpson = (fn, a, b, n = 400) => { const h = (b - a) / n; let s = fn(a) + fn(b); for (let i = 1; i < n; i++) s += (i % 2 ? 4 : 2) * fn(a + i * h); return s * h / 3; };
 
   D['euler-lagrange'] = {
@@ -57,61 +58,125 @@
     },
   };
 
+  // geodesic family on the unit sphere: latitude as a function of longitude, l in [-h, h]
+  function geoModel(v) {
+    const p0 = rad(v.latitude), dl = rad(v.arc), h = dl / 2;
+    const A = Math.tan(p0) / Math.cos(h);
+    const gc = (l) => Math.atan(A * Math.cos(l));
+    // keep every path of the family on the sphere: it must not run past the pole
+    const gap = Math.abs(gc(0) - p0), smax = gap > 1e-9 ? Math.min(2, 0.97 * (PI / 2 - Math.abs(p0)) / gap) : 2, s = Math.min(v.pull ?? 1, smax);
+    const curve = (sv) => (l) => p0 + sv * (gc(l) - p0);
+    const lenOf = (fn) => simpson((l) => { const e = 1e-5, d = (fn(l + e) - fn(l - e)) / (2 * e); return Math.sqrt(d * d + Math.cos(fn(l)) ** 2); }, -h, h, 200);
+    const Lpar = dl * Math.cos(p0), Lgc = 2 * Math.asin(Math.min(1, Math.cos(p0) * Math.sin(h))), Ls = lenOf(curve(s));
+    return { p0, dl, h, gc, smax, s, curve, lenOf, Lpar, Lgc, Ls, top: gc(0) };
+  }
+  // the globe with longitude 0 (the midpoint of the two cities) facing the -y direction
+  const G3 = (l, p, r = 1) => [r * Math.cos(p) * Math.sin(l), -r * Math.cos(p) * Math.cos(l), r * Math.sin(p)];
+  function geoFlatGlobe(host, M) {
+    const { p0, h, gc, curve, s } = M;
+    const gf = fig(host, { axes: false, x: [-1.15, 1.15], y: [-1.15, 1.15], equal: true, maxH: 360 });
+    const tilt = L.clamp(p0 * 0.8, -1.1, 1.1);
+    const proj = (l, p) => { const x = Math.cos(p) * Math.sin(l), y = Math.sin(p), z = Math.cos(p) * Math.cos(l); return [x, y * Math.cos(tilt) - z * Math.sin(tilt), y * Math.sin(tilt) + z * Math.cos(tilt)]; };
+    const draw3 = (pts, o) => { let seg = [], front = null; const flush = () => { if (seg.length > 1) gf.line(seg, Object.assign({}, o, front ? {} : { dash: '3 4', op: (o.op ?? 1) * 0.45 })); seg = []; }; pts.forEach(([l, p]) => { const [x, y, z] = proj(l, p), fr = z >= 0; if (front !== null && fr !== front) { seg.push([x, y]); flush(); } front = fr; seg.push([x, y]); }); flush(); };
+    gf.circle(0, 0, 1, { c: 'muted', fill: true, fo: 0.05, w: 1.4 });
+    for (let p = -60; p <= 60; p += 30) { const pts = L.sample(-PI, PI, 120, (l) => [l, rad(p)]); let seg = []; pts.forEach(([l, pp]) => { const [x, y, z] = proj(l, pp); if (z >= 0) seg.push([x, y]); else { if (seg.length > 1) gf.line(seg, { c: 'muted', w: 0.8, op: 0.4, layer: 'under' }); seg = []; } }); if (seg.length > 1) gf.line(seg, { c: 'muted', w: 0.8, op: 0.4, layer: 'under' }); }
+    for (let l = -180; l < 180; l += 30) { const pts = L.sample(-PI / 2, PI / 2, 80, (pp) => [rad(l), pp]); let seg = []; pts.forEach(([ll, pp]) => { const [x, y, z] = proj(ll, pp); if (z >= 0) seg.push([x, y]); else { if (seg.length > 1) gf.line(seg, { c: 'muted', w: 0.8, op: 0.4, layer: 'under' }); seg = []; } }); if (seg.length > 1) gf.line(seg, { c: 'muted', w: 0.8, op: 0.4, layer: 'under' }); }
+    const on = (fn) => L.sample(-h, h, 160, (l) => [l, fn(l)]);
+    draw3(on(() => p0), { c: 'c2', w: 2.2, dash: '6 4' });
+    draw3(on(gc), { c: 'c1', w: 2.6 });
+    draw3(on(curve(s)), { c: 'hl', w: 2.6 });
+    [-h, h].forEach((l) => { const [x, y] = proj(l, p0); gf.dot(x, y, { c: 'ink', r: 5.5 }); });
+  }
   D.geodesic = {
+    three: true,
     render(ctx, v) {
-      const p0 = rad(v.latitude), dl = rad(v.arc), h = dl / 2;
-      const A = Math.tan(p0) / Math.cos(h);
-      const gc = (l) => Math.atan(A * Math.cos(l));
-      // keep every path of the family on the sphere: it must not run past the pole
-      const gap = Math.abs(gc(0) - p0), smax = gap > 1e-9 ? Math.min(2, 0.97 * (PI / 2 - Math.abs(p0)) / gap) : 2, s = Math.min(v.pull ?? 1, smax);
-      const curve = (sv) => (l) => p0 + sv * (gc(l) - p0);
-      const lenOf = (fn) => simpson((l) => { const e = 1e-5, d = (fn(l + e) - fn(l - e)) / (2 * e); return Math.sqrt(d * d + Math.cos(fn(l)) ** 2); }, -h, h, 200);
-      const Lpar = dl * Math.cos(p0), Lgc = 2 * Math.asin(Math.min(1, Math.cos(p0) * Math.sin(h))), Ls = lenOf(curve(s));
-      const row = L.h('div', 'lab-row', ctx.host);
-      const c1 = L.h('div', 'lab-col', row), c2 = L.h('div', 'lab-col', row);
-      L.h('p', 'lab-cap', c1, T('Longitude–latitude map. Drag the handle to vary the path between the two cities.', '経度・緯度の地図。ハンドルをドラッグして2都市間の経路を変えます。'));
-      const far = deg(curve(smax)(0)), ylo = L.clamp(Math.min(deg(p0), far) - 22, -90, 60), yhi = L.clamp(Math.max(deg(p0), far) + 22, -60, 90);
-      const m = fig(c1, { x: [-95, 95], y: [ylo, yhi], aspect: 0.8, maxH: 360, xlabel: T('longitude (°)', '経度（°）'), ylabel: T('latitude (°)', '緯度（°）'), ticksX: [-90, -45, 0, 45, 90].map((x) => [x, String(x).replace('-', '−')]), ticksY: [-90, -75, -60, -45, -30, -15, 0, 15, 30, 45, 60, 75, 90].filter((x) => x >= ylo && x <= yhi).map((x) => [x, String(x).replace('-', '−')]) });
-      const inMap = (fn) => L.sample(-h, h, 160, (l) => [deg(l), deg(fn(l))]);
-      [0, 0.5, 1.5, 2].filter((sv) => sv <= smax).forEach((sv) => m.line(inMap(curve(sv)), { c: 'muted', w: 1, op: 0.35 }));
-      m.line(inMap(() => p0), { c: 'c2', w: 2.2, dash: '6 4' });
-      m.line(inMap(gc), { c: 'c1', w: 2.6 });
-      m.line(inMap(curve(s)), { c: 'hl', w: 2.6 });
-      [-h, h].forEach((l) => m.dot(deg(l), deg(p0), { c: 'ink', r: 5.5 }));
-      const top = gc(0);
-      m.handle(0, deg(curve(s)(0)), { c: 'c2', axis: 'y', label: T('Trial path', '試行経路'), bounds: [-95, 95, ylo, yhi], onDrag: (x, y) => { if (Math.abs(top - p0) > 1e-6) ctx.set('pull', (rad(y) - p0) / (top - p0)); } });
-      // orthographic view of the globe
-      L.h('p', 'lab-cap', c2, T('The same paths on the globe (dashed where they pass behind).', '同じ経路を地球儀上に表示（裏側は破線）。'));
-      const gf = fig(c2, { axes: false, x: [-1.15, 1.15], y: [-1.15, 1.15], equal: true, maxH: 360 });
-      const tilt = L.clamp(p0 * 0.8, -1.1, 1.1);
-      const proj = (l, p) => { const x = Math.cos(p) * Math.sin(l), y = Math.sin(p), z = Math.cos(p) * Math.cos(l); return [x, y * Math.cos(tilt) - z * Math.sin(tilt), y * Math.sin(tilt) + z * Math.cos(tilt)]; };
-      const draw3 = (pts, o) => { let seg = [], front = null; const flush = () => { if (seg.length > 1) gf.line(seg, Object.assign({}, o, front ? {} : { dash: '3 4', op: (o.op ?? 1) * 0.45 })); seg = []; }; pts.forEach(([l, p]) => { const [x, y, z] = proj(l, p), fr = z >= 0; if (front !== null && fr !== front) { seg.push([x, y]); flush(); } front = fr; seg.push([x, y]); }); flush(); };
-      gf.circle(0, 0, 1, { c: 'muted', fill: true, fo: 0.05, w: 1.4 });
-      for (let p = -60; p <= 60; p += 30) { const pts = L.sample(-PI, PI, 120, (l) => [l, rad(p)]); let seg = []; pts.forEach(([l, pp]) => { const [x, y, z] = proj(l, pp); if (z >= 0) seg.push([x, y]); else { if (seg.length > 1) gf.line(seg, { c: 'muted', w: 0.8, op: 0.4, layer: 'under' }); seg = []; } }); if (seg.length > 1) gf.line(seg, { c: 'muted', w: 0.8, op: 0.4, layer: 'under' }); }
-      for (let l = -180; l < 180; l += 30) { const pts = L.sample(-PI / 2, PI / 2, 80, (pp) => [rad(l), pp]); let seg = []; pts.forEach(([ll, pp]) => { const [x, y, z] = proj(ll, pp); if (z >= 0) seg.push([x, y]); else { if (seg.length > 1) gf.line(seg, { c: 'muted', w: 0.8, op: 0.4, layer: 'under' }); seg = []; } }); if (seg.length > 1) gf.line(seg, { c: 'muted', w: 0.8, op: 0.4, layer: 'under' }); }
-      const on = (fn) => L.sample(-h, h, 160, (l) => [l, fn(l)]);
-      draw3(on(() => p0), { c: 'c2', w: 2.2, dash: '6 4' });
-      draw3(on(gc), { c: 'c1', w: 2.6 });
-      draw3(on(curve(s)), { c: 'hl', w: 2.6 });
-      [-h, h].forEach((l) => { const [x, y] = proj(l, p0); gf.dot(x, y, { c: 'ink', r: 5.5 }); });
-      // length of the trial path as a function of the pull
-      L.h('p', 'lab-cap', ctx.host, T('Length of the trial path as the pull varies: it is stationary, and smallest, at the great circle.', '引き寄せ量を変えたときの試行経路の長さ。大円で停留し、最小になります。'));
-      const Ls_ = L.sample(0, smax, 60, (sv) => lenOf(curve(sv)));
-      const ymin = Math.min(...Ls_.map((p) => p[1])), ymax = Math.max(...Ls_.map((p) => p[1]));
-      const pad = Math.max(0.02, (ymax - ymin) * 0.15);
-      const lf = fig(ctx.host, { x: [0, Math.max(smax, 1.2)], y: [ymin - pad, ymax + pad], aspect: 0.3, minH: 170, maxH: 220, xlabel: T('pull toward the great circle (0 = parallel, 1 = great circle)', '大円への引き寄せ（0 = 緯線、1 = 大円）'), ylabel: T('length', '長さ') });
-      lf.line(Ls_, { c: 'ink', w: 2 });
-      lf.dot(0, Lpar, { c: 'c2', r: 5.5 }); lf.dot(1, Lgc, { c: 'c1', r: 6 }); lf.dot(s, Ls, { c: 'hl', r: 7 });
-      L.legend(ctx.host, [{ c: 'c2', dash: true, label: T('Parallel of latitude: straight on the map', '緯線：地図上では直線') }, { c: 'c1', label: T('Great circle: the geodesic', '大円：測地線') }, { c: 'hl', label: T('Trial path', '試行経路') }, { c: 'muted', label: T('Other paths in the family', '族の他の経路') }]);
-      const km = (x) => `${fmt(x, 4)} (${Math.round(x * 6371).toLocaleString('en-US')} km)`;
-      ctx.readout([
-        { k: T('parallel', '緯線'), v: km(Lpar) },
-        { k: T('great circle', '大円'), v: km(Lgc), tone: 'good' },
-        { k: T('trial path', '試行経路'), v: km(Ls), tone: 'key' },
-      ], (v.pull > smax + 1e-9 ? T(`Pulls beyond ${fmt(smax, 2)} would carry the path past the pole, so the family stops there. `, `${fmt(smax, 2)} を超える引き寄せでは経路が極を越えてしまうので、族はそこで止めます。`) : '') + (Math.abs(p0) < 1e-9 ? T('On the equator the parallel is itself a great circle, so every path in this family coincides.', '赤道では緯線自体が大円なので、この族の経路はすべて一致します。') : T('Lengths on the unit sphere, and on Earth with radius 6371 km. The great circle bulges toward the nearer pole on the map, yet it is shorter.', '単位球面上の長さと、半径 6371 km の地球上の長さです。大円は地図上では近い方の極へ膨らみますが、より短くなります。')));
+      const st = ctx.state;
+      if (!st.frame || !st.frame.isConnected) {
+        ctx.host.replaceChildren();
+        st.frame = L.h('div', '', ctx.host);
+        const row = L.h('div', 'lab-row', st.frame);
+        st.c1 = L.h('div', 'lab-col', row); st.c2 = L.h('div', 'lab-col', row);
+        L.h('p', 'lab-cap', st.c1, T('Longitude–latitude map. Drag the handle to vary the path between the two cities.', '経度・緯度の地図。ハンドルをドラッグして2都市間の経路を変えます。'));
+        st.map = L.h('div', '', st.c1);
+        st.cap2 = L.h('p', 'lab-cap', st.c2, T('The same paths on the globe, with the plane of the great circle through the centre. Drag the gold point along its meridian, or drag elsewhere to turn the globe.', '同じ経路を地球儀上に表示し、中心を通る大円の平面も示します。金色の点は子午線に沿ってドラッグでき、それ以外の場所をドラッグすると地球儀が回ります。'));
+        st.v3 = L.h('div', '', st.c2);
+        st.lcap = L.h('p', 'lab-cap', st.frame, T('Length of the trial path as the pull varies: it is stationary, and smallest, at the great circle.', '引き寄せ量を変えたときの試行経路の長さ。大円で停留し、最小になります。'));
+        st.len = L.h('div', '', st.frame);
+        st.leg = L.h('div', '', st.frame);
+      }
+      const draw2d = (vv) => {
+        const M = geoModel(vv), { p0, h, gc, smax, s, curve, lenOf, Lpar, Lgc, Ls, top } = M;
+        st.map.replaceChildren(); st.len.replaceChildren(); st.leg.replaceChildren();
+        const far = deg(curve(smax)(0)), ylo = L.clamp(Math.min(deg(p0), far) - 22, -90, 60), yhi = L.clamp(Math.max(deg(p0), far) + 22, -60, 90);
+        const m = fig(st.map, { x: [-95, 95], y: [ylo, yhi], aspect: 0.8, maxH: 360, xlabel: T('longitude (°)', '経度（°）'), ylabel: T('latitude (°)', '緯度（°）'), ticksX: [-90, -45, 0, 45, 90].map((x) => [x, String(x).replace('-', '−')]), ticksY: [-90, -75, -60, -45, -30, -15, 0, 15, 30, 45, 60, 75, 90].filter((x) => x >= ylo && x <= yhi).map((x) => [x, String(x).replace('-', '−')]) });
+        const inMap = (fn) => L.sample(-h, h, 160, (l) => [deg(l), deg(fn(l))]);
+        [0, 0.5, 1.5, 2].filter((sv) => sv <= smax).forEach((sv) => m.line(inMap(curve(sv)), { c: 'muted', w: 1, op: 0.35 }));
+        m.line(inMap(() => p0), { c: 'c2', w: 2.2, dash: '6 4' });
+        m.line(inMap(gc), { c: 'c1', w: 2.6 });
+        m.line(inMap(curve(s)), { c: 'hl', w: 2.6 });
+        [-h, h].forEach((l) => m.dot(deg(l), deg(p0), { c: 'ink', r: 5.5 }));
+        m.handle(0, deg(curve(s)(0)), { c: 'c2', axis: 'y', label: T('Trial path', '試行経路'), bounds: [-95, 95, ylo, yhi], onDrag: (x, y) => { if (Math.abs(top - p0) > 1e-6) ctx.set('pull', (rad(y) - p0) / (top - p0)); } });
+        if (st.flat) { st.v3.replaceChildren(); geoFlatGlobe(st.v3, M); }
+        const Ls_ = L.sample(0, smax, 60, (sv) => lenOf(curve(sv)));
+        const ymin = Math.min(...Ls_.map((p) => p[1])), ymax = Math.max(...Ls_.map((p) => p[1]));
+        const pad = Math.max(0.02, (ymax - ymin) * 0.15);
+        const lf = fig(st.len, { x: [0, Math.max(smax, 1.2)], y: [ymin - pad, ymax + pad], aspect: 0.3, minH: 170, maxH: 220, xlabel: T('pull toward the great circle (0 = parallel, 1 = great circle)', '大円への引き寄せ（0 = 緯線、1 = 大円）'), ylabel: T('length', '長さ') });
+        lf.line(Ls_, { c: 'ink', w: 2 });
+        lf.dot(0, Lpar, { c: 'c2', r: 5.5 }); lf.dot(1, Lgc, { c: 'c1', r: 6 }); lf.dot(s, Ls, { c: 'hl', r: 7 });
+        L.legend(st.leg, [{ c: 'c2', dash: true, label: T('Parallel of latitude: straight on the map', '緯線：地図上では直線') }, { c: 'c1', label: T('Great circle: the geodesic', '大円：測地線') }, { c: 'hl', label: T('Trial path', '試行経路') }, { c: 'muted', label: T('Other paths in the family', '族の他の経路') }].concat(st.flat ? [] : [{ kind: 'fill', c: 'c1', label: T('Plane of the great circle, through the centre', '中心を通る大円の平面') }]));
+        const km = (x) => `${fmt(x, 4)} (${Math.round(x * 6371).toLocaleString('en-US')} km)`;
+        ctx.readout([
+          { k: T('parallel', '緯線'), v: km(Lpar) },
+          { k: T('great circle', '大円'), v: km(Lgc), tone: 'good' },
+          { k: T('trial path', '試行経路'), v: km(Ls), tone: 'key' },
+        ], (vv.pull > smax + 1e-9 ? T(`Pulls beyond ${fmt(smax, 2)} would carry the path past the pole, so the family stops there. `, `${fmt(smax, 2)} を超える引き寄せでは経路が極を越えてしまうので、族はそこで止めます。`) : '') + (Math.abs(p0) < 1e-9 ? T('On the equator the parallel is itself a great circle, so every path in this family coincides.', '赤道では緯線自体が大円なので、この族の経路はすべて一致します。') : T('Lengths on the unit sphere, and on Earth with radius 6371 km. The great circle bulges toward the nearer pole on the map, yet it is shorter.', '単位球面上の長さと、半径 6371 km の地球上の長さです。大円は地図上では近い方の極へ膨らみますが、より短くなります。')));
+        return M;
+      };
+      // look down from the pole side of the cities, a little off their meridian, so both arcs show their curvature
+      const camFor = (vv) => G3(rad(-22), rad(L.clamp(vv.latitude + (vv.latitude >= 0 ? 38 : -38), -84, 84)), 4.6);
+      L.view3d(ctx, v, {
+        host: st.v3, aspect: 0.9, maxH: 380, camera: camFor(v), target: [0, 0, 0], fov: 34,
+        init(S) {
+          st.flat = false;
+          S.surface((l, p) => G3(l, p), { u: [-PI, PI], v: [-PI / 2, PI / 2], nu: 96, nv: 48, c: 'grid', rough: 0.85, coat: 0.1 });
+          const segs = [];
+          for (let p = -60; p <= 60; p += 30) for (let i = 0; i < 120; i++) segs.push([G3(-PI + L.TAU * i / 120, rad(p), 1.002), G3(-PI + L.TAU * (i + 1) / 120, rad(p), 1.002)]);
+          for (let l = -180; l < 180; l += 30) for (let i = 0; i < 60; i++) segs.push([G3(rad(l), -PI / 2 + PI * i / 60, 1.002), G3(rad(l), -PI / 2 + PI * (i + 1) / 60, 1.002)]);
+          S.lines(segs, { c: 'muted', opacity: S.dark ? 0.5 : 0.55 });
+          S.label(T('N', '北極'), [0, 0, 1.12], { small: true, c: 'muted', align: 'middle', occlude: true });
+          st.plane = S.disc([0, 0, 0], [0, 0, 1], 1.16, { c: 'c1', opacity: 0.12, rough: 0.9, coat: 0 });
+          st.plane.userData.noOcclude = true;
+          S.sphere([0, 0, 0], 0.03, { c: 'c1' });
+          st.par = S.tube([[0, 0, 0], [0, 0, 0.01]], { c: 'c2', r: 0.011 });
+          st.gct = S.tube([[0, 0, 0], [0, 0, 0.01]], { c: 'c1', r: 0.016 });
+          st.tri = S.tube([[0, 0, 0], [0, 0, 0.01]], { c: 'hl', r: 0.02, glow: 0.2 });
+          st.cities = S.points([[0, 0, 0], [0, 0, 0]], { c: 'ink', r: 0.035, max: 2 });
+          st.h = S.handle([0, 0, 1], { r: 0.05, sphere: [[0, 0, 0], 1.02], onDrag: (q) => {
+            const M = st.M; if (!M) return null;
+            const lat = Math.asin(L.clamp(q.z / 1.02, -1, 1));
+            if (Math.abs(M.top - M.p0) > 1e-6) ctx.set('pull', (lat - M.p0) / (M.top - M.p0));
+            const s = Math.min(ctx.state.__v3v?.pull ?? M.s, M.smax);
+            return G3(0, M.curve(s)(0), 1.02);
+          } });
+          st.lat = `${v.latitude}|${v.arc}`;
+        },
+        update(S, vv) {
+          const M = st.M = draw2d(vv), { p0, h, gc, curve, s } = M;
+          const path = (fn, r) => L.sample(-h, h, 120, (l) => G3(l, fn(l), r));
+          st.par.update(path(() => p0, 1.006));
+          st.gct.update(path(gc, 1.008));
+          st.tri.update(path(curve(s), 1.012));
+          st.cities.update([G3(-h, p0, 1.01), G3(h, p0, 1.01)]);
+          const nrm = cross3(G3(-h, p0), G3(h, p0));
+          st.plane.lookAt(nrm[0], nrm[1], nrm[2]); S.invalidate();
+          st.h.at(G3(0, curve(s)(0), 1.02));
+          if (st.lat !== `${vv.latitude}|${vv.arc}`) { st.lat = `${vv.latitude}|${vv.arc}`; S.camera.position.set(...camFor(vv)); S.controls.update(); S.invalidate(); }
+        },
+        fallback(c, vv) { st.flat = true; st.cap2.textContent = T('The same paths on the globe (dashed where they pass behind).', '同じ経路を地球儀上に表示（裏側は破線）。'); draw2d(vv); },
+      });
+      if (!st.__v3 && !st.flat) draw2d(v);
     },
   };
-
   D['least-action'] = {
     render(ctx, v) {
       const spans = [PI / 2, 3 * PI / 4, 5 * PI / 4, 3 * PI / 2], names = ['π/2', '3π/4', '5π/4', '3π/2'];

@@ -100,42 +100,133 @@
     },
   };
 
-  /* ---------- 3. Fokker-Planck ---------- */
+  /* ---------- 3. Fokker-Planck: the density p(x, t) as a surface over (t, x) ---------- */
+  const FP = { tMax: 4, xMax: 3.6, dt: 0.02, N: 600, shown: 30 };
+  // world coordinates: x runs along X, time comes toward the viewer along -Y (t = 0 at the back), density up Z
+  const WX = (x) => x * 2 / 3, WY = (t) => 2.4 - 1.2 * t;
   D['fokker-planck'] = {
+    three: true,
     render(ctx, v) {
-      ctx.state.anim?.stop();
-      const st = ctx.state, key = `${v.theta}|${v.sigma}|${v.x0}`, dt = 0.02, tMax = 4;
-      if (st.key !== key) { st.paths = ouPaths(v.x0, v.theta, v.sigma, tMax, dt, 600, 11); st.key = key; }
-      const row = L.h('div', 'lab-row', ctx.host);
-      const c1 = L.h('div', 'lab-col', row), c2 = L.h('div', 'lab-col', row);
-      L.h('p', 'lab-cap', c1, T('Exact density (shading) with 30 of the 600 simulated paths. Drag the gold line to move the time slice.', '厳密な密度（濃淡）と、600 本のシミュレーション経路のうち 30 本。金色の線をドラッグすると時刻の断面を動かせます。'));
-      const f = L.fig(c1, { x: [0, tMax], y: [-3.6, 3.6], aspect: 0.7, maxH: 380, xlabel: 't', ylabel: 'x', grid: false });
-      f.raster((t, x) => { const vv = Math.max(ouVar(v.sigma, v.theta, t), 0.004); const p = normPdf(x, ouMean(v.x0, v.theta, t), vv) * Math.sqrt(2 * Math.PI * vv); return Math.pow(p, 0.8) * 0.85; }, { cmap: 'warm', res: 3 });
-      st.paths.slice(0, 30).forEach((p) => f.line(L.seq(p.length, (i) => [i * dt, p[i]]), { c: 'ink', w: 0.9, op: 0.55 }));
-      f.line(L.sample(0, tMax, 200, (t) => ouMean(v.x0, v.theta, t)), { c: 'ink', w: 1.6, dash: '5 4' });
-      for (const s of [1, -1]) f.line(L.sample(0, tMax, 200, (t) => ouMean(v.x0, v.theta, t) + s * 2 * Math.sqrt(ouVar(v.sigma, v.theta, t))), { c: 'c4', w: 1.4, dash: '3 3' });
-      L.h('p', 'lab-cap', c2, T('Histogram of all 600 paths at the slice, against the exact solution', '断面での 600 本すべてのヒストグラムと厳密解'));
-      const g = L.fig(c2, { x: [-3.6, 3.6], y: [0, 1.2], aspect: 0.7, maxH: 380, xlabel: 'x' });
+      const st = ctx.state, { tMax, xMax, dt } = FP;
+      const key = `${v.theta}|${v.sigma}|${v.x0}`;
+      if (st.key !== key) { st.paths = ouPaths(v.x0, v.theta, v.sigma, tMax, dt, FP.N, 11); st.key = key; st.dirty = true; }
+      const mean = (t) => ouMean(v.x0, v.theta, t), vari = (t) => Math.max(ouVar(v.sigma, v.theta, t), 1e-6);
+      const dens = (x, t) => normPdf(x, mean(t), vari(t));
+      // height scale: the peak density at t = 0.6 maps to 1.3 units; the spike near t = 0 is clipped at 1.3 times that
+      const pRef = 1 / Math.sqrt(2 * Math.PI * vari(0.6)), zs = 1.3 / pRef, pCap = 1.3 * pRef;
+      const Z = (p) => zs * Math.min(p, pCap);
+      st.Z = Z;
+      if (!st.frame || !st.frame.isConnected) {
+        ctx.host.replaceChildren();
+        st.frame = L.h('div', '', ctx.host);
+        const row = L.h('div', 'lab-row is-wide', st.frame);
+        st.c1 = L.h('div', 'lab-col', row); st.c2 = L.h('div', 'lab-col', row);
+        st.cap1 = L.h('p', 'lab-cap', st.c1, '');
+        st.v3 = L.h('div', '', st.c1);
+        L.h('p', 'lab-cap', st.c2, T('Histogram of all 600 paths at the slice, against the exact solution', '断面での 600 本すべてのヒストグラムと厳密解'));
+        st.g2 = L.h('div', '', st.c2);
+        st.bar = L.h('div', '', st.frame);
+        st.leg = L.h('div', '', st.frame);
+        st.anim = null;
+      }
+      st.cap1.textContent = st.flat
+        ? T('Exact density (shading) with 30 of the 600 simulated paths. Drag the gold line to move the time slice.', '厳密な密度（濃淡）と、600 本のシミュレーション経路のうち 30 本。金色の線をドラッグすると時刻の断面を動かせます。')
+        : T('The exact density p(x, t) as a surface over the (t, x) floor, with 30 of the 600 simulated paths draped over it. Drag the gold handle to move the time slice; drag elsewhere to turn the view. Heights near t = 0, where the density starts as a spike at x₀, are clipped.', '厳密な密度 p(x, t) を (t, x) の床の上の曲面として描き、600 本のシミュレーション経路のうち 30 本を曲面の上に重ねています。金色のハンドルで時刻の断面を動かし、それ以外の場所をドラッグすると視点が回ります。x₀ の尖った山から始まる t = 0 付近の高さは切り詰めています。');
+
+      // the 2D panel: histogram of the paths at the slice against the exact density
+      st.g2.replaceChildren();
+      const g = L.fig(st.g2, { x: [-xMax, xMax], y: [0, 1.2], aspect: 0.7, maxH: 380, xlabel: 'x' });
+      let flatFig = null;
       const drawSlice = (t) => {
-        f.clear('over'); g.clear('main'); g.clear('under');
-        f.seg([t, -3.6], [t, 3.6], { c: 'hl', w: 2.4, layer: 'over' });
+        t = Math.min(tMax, Math.max(0.05, t));
+        g.clear('main'); g.clear('under'); g.clear('over');
         const k = Math.round(t / dt), xs = st.paths.map((p) => p[k]);
-        const bw = 0.2, counts = new Map(); xs.forEach((x) => { const b = Math.floor((x + 3.6) / bw); counts.set(b, (counts.get(b) || 0) + 1); });
-        const m = ouMean(v.x0, v.theta, t), vv = ouVar(v.sigma, v.theta, t);
-        const peak = normPdf(m, m, vv);
-        g.clear('over');
-        const ymax = Math.max(1.2, peak * 1.1);
-        const sy = 1.2 / ymax;
-        counts.forEach((c, b) => g.rect(-3.6 + b * bw, 0, bw, c / (600 * bw) * sy, { c: 'c1', fo: 0.45, w: 0.6 }));
-        g.line(L.sample(-3.6, 3.6, 300, (x) => normPdf(x, m, vv) * sy), { c: 'c2', w: 2.4 });
+        const bw = 0.2, counts = new Map(); xs.forEach((x) => { const b = Math.floor((x + xMax) / bw); counts.set(b, (counts.get(b) || 0) + 1); });
+        const m = mean(t), vv = vari(t), peak = normPdf(m, m, vv), ymax = Math.max(1.2, peak * 1.1), sy = 1.2 / ymax;
+        counts.forEach((c, b) => g.rect(-xMax + b * bw, 0, bw, c / (FP.N * bw) * sy, { c: 'c1', fo: 0.45, w: 0.6 }));
+        g.line(L.sample(-xMax, xMax, 300, (x) => normPdf(x, m, vv) * sy), { c: 'c2', w: 2.4 });
         const sm = xs.reduce((s, x) => s + x, 0) / xs.length, sv = xs.reduce((s, x) => s + (x - sm) ** 2, 0) / (xs.length - 1);
-        ctx.readout([{ k: 't', v: fmt(t, 2) }, { k: T('mean: paths / exact', '平均：経路 / 厳密'), v: `${fmt(sm, 3)} / ${fmt(m, 3)}`, tone: 'key' }, { k: T('variance: paths / exact', '分散：経路 / 厳密'), v: `${fmt(sv, 3)} / ${fmt(vv, 3)}`, tone: 'key' }, { k: T('long-run variance σ²/2θ', '長時間後の分散 σ²/2θ'), v: v.theta > 0 ? fmt(v.sigma * v.sigma / (2 * v.theta), 3) : '∞' }, ].concat(sy < 0.999 ? [{ k: T('histogram scale', 'ヒストグラムの縮尺'), v: `×${fmt(sy, 2)}` }] : []),
+        ctx.readout([{ k: 't', v: fmt(t, 2) }, { k: T('mean: paths / exact', '平均：経路 / 厳密'), v: `${fmt(sm, 3)} / ${fmt(m, 3)}`, tone: 'key' }, { k: T('variance: paths / exact', '分散：経路 / 厳密'), v: `${fmt(sv, 3)} / ${fmt(vv, 3)}`, tone: 'key' }, { k: T('long-run variance σ²/2θ', '長時間後の分散 σ²/2θ'), v: v.theta > 0 ? fmt(v.sigma * v.sigma / (2 * v.theta), 3) : '∞' }].concat(sy < 0.999 ? [{ k: T('histogram scale', 'ヒストグラムの縮尺'), v: `×${fmt(sy, 2)}` }] : []),
           v.theta === 0 ? T('With no pull back to zero the spread grows like σ√t forever: pure diffusion.', '0 への引き戻しがなければ広がりは σ√t のように増え続けます。純粋な拡散です。') : T('The spread saturates: noise injects variance at rate σ², the drift removes it at rate 2θ times the variance.', '広がりは飽和します。ノイズは分散を速さ σ² で注ぎ、ドリフトは分散の 2θ 倍の速さで取り除きます。'));
+        if (flatFig) { flatFig.clear('over'); flatFig.seg([t, -xMax], [t, xMax], { c: 'hl', w: 2.4, layer: 'over' }); }
+        st.slice3d?.(t);
+        st.tNow = t;
       };
-      drawSlice(v.t);
-      f.handle(v.t, 3.2, { c: 'hl', r: 8, axis: 'x', label: T('Time slice', '時刻の断面'), bounds: [0.05, tMax, 3.2, 3.2], onDrag: (x) => { ctx.set('t', x, true); ctx.redraw(); } });
-      st.anim = L.animator(ctx.host, (d, t) => { if (d === 0 && t === 0) return; const tt = Math.min(tMax, 0.05 + t * 0.8); ctx.set('t', tt, true); drawSlice(tt); if (tt >= tMax) return false; }, { autoplay: false, once: true, playLabel: T('Sweep the slice', '断面を動かす') });
-      L.legend(ctx.host, [{ c: 'ink', label: T('sample paths', '標本経路') }, { c: 'ink', dash: true, label: T('exact mean x₀·exp(−θt)', '厳密な平均 x₀·exp(−θt)') }, { c: 'c4', dash: true, label: T('mean ± 2 standard deviations', '平均 ± 2 標準偏差') }, { c: 'c2', label: T('exact density at the slice', '断面での厳密な密度') }]);
+      st.drawSlice = drawSlice;
+      const flat2d = () => {
+        st.v3.replaceChildren();
+        const f = flatFig = L.fig(st.v3, { x: [0, tMax], y: [-xMax, xMax], aspect: 0.7, maxH: 380, xlabel: 't', ylabel: 'x', grid: false });
+        f.raster((t, x) => { const vv = Math.max(ouVar(v.sigma, v.theta, t), 0.004); const p = normPdf(x, mean(t), vv) * Math.sqrt(2 * Math.PI * vv); return Math.pow(p, 0.8) * 0.85; }, { cmap: 'warm', res: 3 });
+        st.paths.slice(0, FP.shown).forEach((p) => f.line(L.seq(p.length, (i) => [i * dt, p[i]]), { c: 'ink', w: 0.9, op: 0.55 }));
+        f.line(L.sample(0, tMax, 200, mean), { c: 'ink', w: 1.6, dash: '5 4' });
+        for (const s of [1, -1]) f.line(L.sample(0, tMax, 200, (t) => mean(t) + s * 2 * Math.sqrt(vari(t))), { c: 'c4', w: 1.4, dash: '3 3' });
+        f.handle(v.t, 3.2, { c: 'hl', r: 8, axis: 'x', label: T('Time slice', '時刻の断面'), bounds: [0.05, tMax, 3.2, 3.2], onDrag: (x) => { ctx.set('t', x, true); drawSlice(Math.round(x * 20) / 20); } });
+      };
+
+      L.view3d(ctx, v, {
+        host: st.v3, aspect: 0.78, maxH: 470, camera: [2.6, -8.6, 5.4], target: [0, 0, 0.3], fov: 32,
+        init(S) {
+          st.flat = false; st.dirty = true;
+          const W = (t, x, z = 0) => [WX(x), WY(t), z];
+          st.surf = S.surface((t, x) => W(t, x), { u: [0.02, tMax], v: [-xMax, xMax], nu: 110, nv: 170, rough: 0.6, coat: 0.25, colour: () => S.cmap.warm(0) });
+          // floor: frame, ticks and labels
+          const xa = WX(-xMax), xb = WX(xMax), ya = WY(tMax), yb = WY(0);
+          S.lines([[[xa, ya, 0], [xb, ya, 0]], [[xb, ya, 0], [xb, yb, 0]], [[xb, yb, 0], [xa, yb, 0]], [[xa, yb, 0], [xa, ya, 0]], [W(0, 0), W(tMax, 0)]], { c: 'muted', opacity: 0.55 });
+          S.lines([1, 2, 3].map((t) => [W(t, xMax), W(t, xMax - 0.18)]).concat([-2, 2].map((x) => [W(tMax, x), W(tMax - 0.1, x)])), { c: 'muted', opacity: 0.7 });
+          [0, 1, 2, 3, 4].forEach((t) => S.label(String(t), W(t, xMax + 0.15), { small: true, c: 'muted' }));
+          [-2, 0, 2].forEach((x) => S.label(fmt(x, 0), W(tMax + 0.12, x), { small: true, c: 'muted', align: 'middle', dy: 18 }));
+          S.label('t', W(tMax + 0.45, xMax + 0.15), { math: true, c: 'muted' });
+          S.label('x', W(tMax + 0.12, 3.3), { math: true, c: 'muted', align: 'middle', dy: 18 });
+          st.pathLines = S.lines([[[0, 0, 0], [0, 0, 0]]], { c: 'ink', opacity: S.dark ? 0.24 : 0.28 });
+          st.env = S.lines([[[0, 0, 0], [0, 0, 0]]], { c: 'c4', opacity: 1 });
+          st.ridge = S.tube([[0, 0, 0], [0.01, 0, 0]], { c: 'ink', r: 0.014 });
+          st.cut = S.tube([[0, 0, 0], [0.01, 0, 0]], { c: 'c2', r: 0.028, glow: 0.15 });
+          st.floorCut = S.lines([[[0, 0, 0], [0, 0, 0]]], { c: 'hl', opacity: 0.95 });
+          st.pLab = S.label('p(x, t)', [0, 0, 0], { math: true, small: true, align: 'middle' });
+          st.tLab = S.label('', [0, 0, 0], { small: true, c: 'hl', align: 'end' });
+          const hx = -xMax - 0.25;
+          st.h = S.handle(W(v.t, hx), { r: 0.09, plane: [[0, 0, 1], [0, 0, 0]], onDrag: (q) => {
+            const t = Math.round(L.clamp((2.4 - q.y) / 1.2, 0.05, tMax) * 20) / 20;
+            ctx.set('t', t, true); drawSlice(t);
+            return W(t, hx);
+          } });
+          st.slice3d = (t) => {
+            const m = mean(t), vv = vari(t), Zs = st.Z;
+            st.cut.update(L.sample(-xMax, xMax, 160, (x) => W(t, x, Zs(normPdf(x, m, vv)) + 0.012)));
+            st.floorCut.update([[W(t, hx, 0.004), W(t, xMax, 0.004)]]);
+            st.h.at(W(t, hx));
+            st.tLab.set(W(t, hx - 0.15, 0.05), `t = ${fmt(t, 2)}`);
+            S.invalidate();
+          };
+          st.W = W;
+        },
+        update(S) {
+          if (st.dirty) {
+            st.dirty = false;
+            const Zs = st.Z, top = Zs(pCap), W = st.W, base = S.cols.plate.clone().lerp(S.cols.muted, S.dark ? 0.35 : 0.22);
+            st.surf.update((t, x) => W(t, x, Zs(dens(x, t))), (t, x, p) => { const u = Math.min(1, p[2] / top), w = Math.min(1, 4 * u); return base.clone().lerp(S.cmap.seq(0.08 + 0.92 * u), w * w * (3 - 2 * w)).multiplyScalar(S.dark ? 0.78 : 1); });
+            const segs = [];
+            // paths are draped on the surface: each point sits at its (t, x) with the surface height above it
+            const on = (t, x) => { const xc = L.clamp(x, -xMax, xMax); return W(t, xc, Zs(dens(xc, t)) + 0.03); };
+            st.paths.slice(0, FP.shown).forEach((p) => { for (let i = Math.round(0.3 / dt); i + 1 < p.length; i++) segs.push([on(i * dt, p[i]), on((i + 1) * dt, p[i + 1])]); });
+            st.pathLines.update(segs);
+            const env = [];
+            for (const s of [1, -1]) { const pts = L.sample(0.04, tMax, 120, (t) => on(t, mean(t) + s * 2 * Math.sqrt(vari(t)))); for (let i = 0; i + 1 < pts.length; i += 2) env.push([pts[i], pts[i + 1]]); }
+            st.env.update(env);
+            st.ridge.update(L.sample(0.02, tMax, 160, (t) => W(t, L.clamp(mean(t), -xMax, xMax), Zs(dens(mean(t), t)) + 0.01)));
+            const tl = 0.3, ml = L.clamp(mean(tl), -xMax, xMax);
+            st.pLab.set(W(tl, ml, Zs(dens(ml, tl)) + 0.12));
+          }
+          drawSlice(v.t);
+        },
+        fallback() { st.flat = true; st.slice3d = null; st.cap1.textContent = T('Exact density (shading) with 30 of the 600 simulated paths. Drag the gold line to move the time slice.', '厳密な密度（濃淡）と、600 本のシミュレーション経路のうち 30 本。金色の線をドラッグすると時刻の断面を動かせます。'); flat2d(); drawSlice(v.t); },
+      });
+      if (!st.__v3 && !st.flat) drawSlice(v.t);
+      if (!st.anim) {
+        st.anim = L.animator(st.bar, (d, t) => { if (d === 0 && t === 0) return; const tt = Math.min(tMax, 0.05 + t * 0.8); ctx.set('t', Math.round(tt * 20) / 20, true); st.drawSlice(tt); if (tt >= tMax) return false; }, { autoplay: false, once: true, playLabel: T('Sweep the slice', '断面を動かす') });
+      }
+      const legend = (flat) => { st.leg.replaceChildren(); L.legend(st.leg, [{ c: 'ink', label: flat ? T('sample paths', '標本経路') : T('sample paths, draped over the surface', '標本経路（曲面に重ねて表示）') }, { c: 'ink', dash: flat, label: flat ? T('exact mean x₀·exp(−θt)', '厳密な平均 x₀·exp(−θt)') : T('exact mean x₀·exp(−θt), along the ridge', '厳密な平均 x₀·exp(−θt)（尾根に沿う線）') }, { c: 'c4', dash: true, label: T('mean ± 2 standard deviations', '平均 ± 2 標準偏差') }, { c: 'c2', label: T('exact density at the slice', '断面での厳密な密度') }].concat(flat ? [] : [{ c: 'hl', label: T('time slice', '時刻の断面') }])); };
+      legend(!!st.flat);
     },
   };
 })();

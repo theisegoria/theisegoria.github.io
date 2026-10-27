@@ -1,8 +1,8 @@
 {
  "descent": {
   "body": [
-   "Follow constant-step gradient descent across the elliptical contours of f, starting from a point you can drag. Each coordinate is multiplied by its own factor every step, so strongly unequal curvatures force a small step and make the fast direction zigzag. The right panel shows f on a log scale: the iterates fall along a straight line whose slope is set by ρ. Newton’s exact step, dashed, reaches this quadratic minimum at once.",
-   "楕円の等高線を横切る一定刻みの勾配降下法を、ドラッグできる始点から追います。各座標は毎回それぞれの倍率で掛けられるので、曲率の差が大きいと刻みを小さくせざるを得ず、速い方向ではジグザグになります。右図は f を対数目盛で示し、反復は ρ で決まる傾きの直線に沿って減ります。破線のニュートン法の厳密な1ステップは、この二次関数の最小点に一度で達します。"
+   "Follow constant-step gradient descent on f from a starting point you can drag, both on its 3D graph and on its elliptical contours. Each coordinate is multiplied by its own factor every step, so strongly unequal curvatures force a small step and make the steep direction zigzag across the valley. The lower panel shows f on a log scale: the iterates fall along a straight line whose slope is set by ρ. Newton’s exact step, dashed, reaches this quadratic minimum at once.",
+   "f の 3D のグラフと楕円の等高線の両方で、ドラッグできる始点からの一定刻みの勾配降下法を追います。各座標は毎回それぞれの倍率で掛けられるので、曲率の差が大きいと刻みを小さくせざるを得ず、急な方向では谷を横切ってジグザグになります。下の図は f を対数目盛で示し、反復は ρ で決まる傾きの直線に沿って減ります。破線のニュートン法の厳密な1ステップは、この二次関数の最小点に一度で達します。"
   ],
   "formula": "f(x,y)=\\tfrac12(x^2+\\kappa y^2),\\quad x_{n+1}=(1-\\eta)x_n,\\quad y_{n+1}=(1-\\eta\\kappa)y_n,\\quad \\rho=\\max(|1-\\eta|,|1-\\eta\\kappa|)",
   "example": [
@@ -16,8 +16,8 @@
    "2. 動く制約"
   ],
   "body": [
-   "Drag the constraint line x + y = b across the circular contours of x² + y², and slide a trial point along it. The optimum is where the smallest reachable circle just touches the line; any other point lies on a larger circle, as the right panel shows. Switch to the inequality x + y ≥ b to see the constraint become inactive when the origin is feasible.",
-   "制約の直線 x + y = b を x² + y² の同心円の上でドラッグし、直線上の試験点を動かします。最適点は、到達できる最小の円が直線にちょうど接する点です。他の点はより大きな円の上にあることが右図から分かります。不等式 x + y ≥ b に切り替えると、原点が実行可能なとき制約が効かなくなる様子が見られます。"
+   "Drag the constraint line x + y = b across the circular contours of x² + y², and slide a trial point along it. In 3D the constraint is a vertical plane cutting the bowl of f, and the cut is a parabola whose lowest point is the optimum. There the smallest reachable contour circle just touches the line; any other point of the line lies on a larger circle, as the lower panel shows. Switch to the inequality x + y ≥ b to see the constraint become inactive when the origin is feasible.",
+   "制約の直線 x + y = b を x² + y² の同心円の上でドラッグし、直線上の試験点を動かします。3D では制約は f の鉢を切る垂直な平面で、切り口は放物線になり、その最低点が最適点です。そこでは到達できる最小の等高線の円が直線にちょうど接し、直線上の他の点はより大きな円の上にあることが下の図から分かります。不等式 x + y ≥ b に切り替えると、原点が実行可能なとき制約が効かなくなる様子が見られます。"
   ],
   "formula": "\\min_{x+y=b}(x^2+y^2),\\qquad x_*=y_*=b/2,\\quad f_*=b^2/2,\\qquad \\nabla f(x_*)=\\lambda_*\\nabla(x+y)",
   "params": [

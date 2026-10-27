@@ -249,7 +249,8 @@ export async function create(host, opts = {}) {
       pts = p;
       const arr = (typeof p === 'function' ? Array.from({ length: (o.n ?? 200) + 1 }, (_, i) => p((o.t?.[0] ?? 0) + ((o.t?.[1] ?? 1) - (o.t?.[0] ?? 0)) * i / (o.n ?? 200))) : p).filter((q) => q && q.every(Number.isFinite)).map(V);
       mesh.geometry.dispose();
-      if (arr.length < 2) { mesh.geometry = new THREE.BufferGeometry(); lab.invalidate(); return mesh; }
+      if (arr.length < 2) { mesh.geometry = new THREE.TubeGeometry(new THREE.LineCurve3(new THREE.Vector3(), new THREE.Vector3(0, 0, 1e-6)), 1, 1e-6, 3); mesh.visible = false; lab.invalidate(); return mesh; }
+      mesh.visible = true;
       const curve = new THREE.CatmullRomCurve3(arr, !!o.closed, 'centripetal');
       mesh.geometry = new THREE.TubeGeometry(curve, o.segments ?? Math.min(1200, arr.length * 2), o.r ?? 0.035, o.radial ?? 10, !!o.closed);
       lab.invalidate();
@@ -418,6 +419,7 @@ export async function create(host, opts = {}) {
     const halo = new THREE.Mesh(new THREE.SphereGeometry(1, 24, 16), new THREE.MeshBasicMaterial({ color: colour(o.c ?? 'hl'), transparent: true, opacity: 0.18, depthWrite: false }));
     halo.scale.setScalar(1.9); m.add(halo);
     m.userData.handle = o; S.handles.push(m);
+    m.setPlane = (nrm, q) => { o.plane = [nrm, q]; return m; };
     if (o.label) m.labelItem = S.label(o.label, p, { math: true });
     const at = m.at; m.at = (q) => { at(q); m.labelItem?.set(q); return m; };
     return m;
@@ -466,6 +468,7 @@ export async function create(host, opts = {}) {
 
   /* continuous animation while fn returns anything but false */
   S.animate = (fn) => { S.tick = fn; lab.invalidate(); };
+  S.look = (pos, tgt) => { camera.position.copy(V(pos)); if (tgt) controls.target.copy(V(tgt)); controls.update(); lab.invalidate(); };
   S.reduced = prefersReducedMotion;
   S.dispose = () => {
     S.disposers.forEach((f) => f());

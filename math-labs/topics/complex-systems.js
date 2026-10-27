@@ -213,7 +213,7 @@
         g.clear('main'); g.clear('over');
         const H = sizeHistogram(S.sizes);
         H.rows.forEach((r) => g.dot(Math.log10(r.s), Math.log10(r.p), { c: r.count >= 8 ? 'c1' : 'muted', r: 4, layer: 'main' }));
-        if (H.slope !== null) { const fitted = H.rows.filter((r) => r.count >= 8), x0 = Math.log10(fitted[0].s), x1 = Math.log10(fitted[fitted.length - 1].s), y0 = Math.log10(fitted[0].p); g.line([[x0, y0], [x1, y0 + H.slope * (x1 - x0)]], { c: 'hl', w: 2, layer: 'main' }); g.text(x1, y0 + H.slope * (x1 - x0), `slope ${fmt(H.slope, 2)}`, { c: 'hl', dx: 8, dy: -8, anchor: 'end', layer: 'over' }); }
+        if (H.slope !== null) { const fitted = H.rows.filter((r) => r.count >= 8), x0 = Math.log10(fitted[0].s), x1 = Math.log10(fitted[fitted.length - 1].s), y0 = Math.log10(fitted[0].p); g.line([[x0, y0], [x1, y0 + H.slope * (x1 - x0)]], { c: 'hl', w: 2, layer: 'main' }); g.text(x1, y0 + H.slope * (x1 - x0), `slope ${fmt(H.slope, 2)}`, { c: 'hl', dx: -10, dy: -10, anchor: 'end', layer: 'over' }); }
         return H;
       };
       const readout = (S, H) => {
