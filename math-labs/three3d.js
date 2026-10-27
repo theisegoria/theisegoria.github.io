@@ -193,6 +193,7 @@ export async function create(host, opts = {}) {
     }
     mesh.update = (f = fn, colourFn = o.colour) => {
       fn = f;
+      if (colourFn && !material.vertexColors) { material.vertexColors = true; material.color.set(1, 1, 1); material.needsUpdate = true; }
       let k = 0;
       const tmp = new THREE.Color();
       for (let i = 0; i <= nu; i++) {
@@ -235,7 +236,7 @@ export async function create(host, opts = {}) {
     const colourFn = o.colour ?? (zr ? (u, v, p) => S.cmap[o.cmap ?? 'seq']((p[2] - zr[0]) / (zr[1] - zr[0])) : null);
     const m = S.surface((u, v) => [u, v, f(u, v)], { ...o, u: [x0, x1], v: [y0, y1], colour: colourFn });
     const upd = m.update;
-    m.update = (g = f) => { f = g; return upd((u, v) => [u, v, f(u, v)], colourFn); };
+    m.update = (g = f, cf = colourFn) => { f = g; return upd((u, v) => [u, v, f(u, v)], cf); };
     return m;
   };
 
@@ -263,6 +264,7 @@ export async function create(host, opts = {}) {
     const geo = new THREE.BufferGeometry();
     const line = new THREE.LineSegments(geo, new THREE.LineBasicMaterial({ color: colour(o.c ?? 'muted'), transparent: true, opacity: o.opacity ?? 0.6, depthWrite: false, vertexColors: !!o.colours }));
     line.update = (segs = segments, colours) => {
+      if (!segs || !segs.length) segs = [[[0, 0, 0], [0, 0, 0]]];
       const flat = []; for (const [a, b] of segs) flat.push(a[0], a[1], a[2] ?? 0, b[0], b[1], b[2] ?? 0);
       geo.setAttribute('position', new THREE.Float32BufferAttribute(flat, 3));
       if (colours) { const c = []; for (const col of colours) c.push(col.r, col.g, col.b, col.r, col.g, col.b); geo.setAttribute('color', new THREE.Float32BufferAttribute(c, 3)); }

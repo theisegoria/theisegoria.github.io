@@ -7,45 +7,119 @@
   const ball = (nf, n = 360) => L.seq(n + 1, (i) => { const t = TAU * i / n, u = [Math.cos(t), Math.sin(t)], m = nf(u); return [u[0] / m, u[1] / m]; });
 
   /* ---------- 1. unit balls ---------- */
+  const pn3 = (x, p) => x.reduce((s, t) => s + Math.abs(t) ** p, 0) ** (1 / p);
+  const inf3 = (x) => Math.max(...x.map(Math.abs));
+  // the boundary of {‖x‖ₚ ≤ 1} along the direction with azimuth u and polar angle w (every ray meets it once)
+  const ballPt = (p, sc = 1) => (u, w) => { const d = [Math.sin(w) * Math.cos(u), Math.sin(w) * Math.sin(u), Math.cos(w)], m = pn3(d, p); return [sc * d[0] / m, sc * d[1] / m, sc * d[2] / m]; };
+  function normsGraph(host, x, p, ctx) {
+    const np = pn3(x, p), n05 = pn3(x, 0.5), ymax = Math.max(0.5, n05 * 1.2);
+    const g = L.fig(host, { x: [0.5, 8], y: [0, ymax], aspect: 0.8, maxH: 380, xlabel: 'p', ylabel: '‖x‖ₚ', ticksX: [0.5, 1, 2, 4, 6, 8].map((k) => [k, String(k)]) });
+    g.rect(0.5, 0, 0.5, ymax, { c: 'muted', fo: 0.1, nostroke: true, layer: 'under' });
+    g.text(0.53, ymax * 0.03, T('not a norm', 'ノルムでない'), { anchor: 'start', dy: -4, small: true, c: 'muted' });
+    g.hline(inf3(x), { c: 'c4', w: 1.4, dash: '5 4' });
+    g.text(8, inf3(x), '‖x‖∞', { anchor: 'end', dy: -6, small: true, c: 'c4' });
+    g.line(L.sample(0.5, 8, 300, (q) => pn3(x, q)), { c: 'c2', w: 2.4 });
+    g.dot(1, pn3(x, 1), { c: 'c1', r: 4.5 }); g.dot(2, pn3(x, 2), { c: 'c3', r: 4.5 });
+    g.vline(p, { c: 'hl', w: 1.2, dash: '2 3' });
+    g.dot(p, np, { c: 'hl', r: 6 });
+    g.handle(p, 0, { c: 'hl', axis: 'x', r: 7, bounds: [0.5, 8, 0, ymax], label: T('Exponent p', '指数 p'), onDrag: (q) => ctx.set('order', q) });
+  }
+  function normsFlat(host, x, p, ctx, st) {
+    const f = L.fig(host, { x: [-1.7, 1.7], y: [-1.7, 1.7], equal: true, maxH: 380, xlabel: 'x₁', ylabel: 'x₂' });
+    const ball = (nf, n = 360) => L.seq(n + 1, (i) => { const t = TAU * i / n, u = [Math.cos(t), Math.sin(t)], m = nf(u); return [u[0] / m, u[1] / m]; });
+    f.line(ball((u) => pn3(u, 1)), { c: 'c1', w: 1.3, dash: '5 4', op: 0.8 });
+    f.line(ball((u) => pn3(u, 2)), { c: 'c3', w: 1.3, dash: '5 4', op: 0.8 });
+    f.line(ball(inf3), { c: 'c4', w: 1.3, dash: '5 4', op: 0.8 });
+    f.poly(ball((u) => pn3(u, p)), { c: 'c2', fo: 0.18, w: 2.6 });
+    const np = pn3(x, p), s = [x[0] / np, x[1] / np];
+    f.arrow([0, 0], x, { c: 'hl', w: 2.6 });
+    f.seg([0, 0], s, { c: 'c2', w: 1.4, dash: '2 3', layer: 'over' });
+    f.dot(s[0], s[1], { c: 'c2', r: 5.5 });
+    f.text(s[0], s[1], 'x/‖x‖ₚ', { dx: s[0] < 0 ? 10 : -10, dy: 18, anchor: s[0] < 0 ? 'start' : 'end', small: true, c: 'c2' });
+    f.handle(x[0], x[1], { c: 'hl', snap: 0.05, bounds: [-1.6, 1.6, -1.6, 1.6], label: T('Vector x', 'ベクトル x'), onDrag: (a, b) => { st.x = [a, b, 0]; ctx.redraw(); } });
+  }
+  const OCTA = [[1, 0, 0], [-1, 0, 0], [0, 1, 0], [0, -1, 0], [0, 0, 1], [0, 0, -1]];
+  const OCTA_E = []; for (let i = 0; i < 6; i++) for (let j = i + 1; j < 6; j++) if (Math.abs(OCTA[i].reduce((s, t, k) => s + t * OCTA[j][k], 0)) < 0.5) OCTA_E.push([OCTA[i], OCTA[j]]);
+  const CUBE_E = []; for (const a of [-1, 1]) for (const b of [-1, 1]) { CUBE_E.push([[-1, a, b], [1, a, b]], [[a, -1, b], [a, 1, b]], [[a, b, -1], [a, b, 1]]); }
+  const cageSegs = (p, sc) => {
+    const out = [], f = ballPt(p, sc), N = 72;
+    for (const w of [PI / 6, PI / 3, PI / 2, 2 * PI / 3, 5 * PI / 6]) for (let i = 0; i < N; i++) out.push([f(TAU * i / N, w), f(TAU * (i + 1) / N, w)]);
+    for (let k = 0; k < 8; k++) for (let i = 0; i < N / 2; i++) out.push([f(k * PI / 4, PI * i / (N / 2)), f(k * PI / 4, PI * (i + 1) / (N / 2))]);
+    return out;
+  };
+
   D.norms = {
+    three: true,
     render(ctx, v) {
-      const p = v.order, st = ctx.state; st.x ||= [1.1, 0.6];
-      const x = st.x;
-      const row = L.h('div', 'lab-row', ctx.host);
-      const c1 = L.h('div', 'lab-col', row), c2 = L.h('div', 'lab-col', row);
-      L.h('p', 'lab-cap', c1, T('Unit balls {‖x‖ₚ ≤ 1}. Drag the gold vector x.', '単位球 {‖x‖ₚ ≤ 1}。金色のベクトル x をドラッグできます。'));
-      L.h('p', 'lab-cap', c2, T('‖x‖ₚ as a function of p for the same x: it decreases towards ‖x‖∞.', '同じ x に対する p の関数としての ‖x‖ₚ：‖x‖∞ に向かって減少します。'));
-      const f = L.fig(c1, { x: [-1.7, 1.7], y: [-1.7, 1.7], equal: true, maxH: 380, xlabel: 'x₁', ylabel: 'x₂' });
-      f.line(ball((u) => pn(u, 1)), { c: 'c1', w: 1.3, dash: '5 4', op: 0.8 });
-      f.line(ball((u) => pn(u, 2)), { c: 'c3', w: 1.3, dash: '5 4', op: 0.8 });
-      f.line(ball(inf), { c: 'c4', w: 1.3, dash: '5 4', op: 0.8 });
-      f.poly(ball((u) => pn(u, p)), { c: 'c2', fo: 0.18, w: 2.6 });
-      const np = pn(x, p), s = [x[0] / np, x[1] / np];
-      f.arrow([0, 0], x, { c: 'hl', w: 2.6 });
-      f.seg([0, 0], s, { c: 'c2', w: 1.4, dash: '2 3', layer: 'over' });
-      f.dot(s[0], s[1], { c: 'c2', r: 5.5 });
-      f.text(s[0], s[1], 'x/‖x‖ₚ', { dx: s[0] < 0 ? 10 : -10, dy: 18, anchor: s[0] < 0 ? 'start' : 'end', small: true, c: 'c2' });
-      f.handle(x[0], x[1], { c: 'hl', snap: 0.05, bounds: [-1.6, 1.6, -1.6, 1.6], label: T('Vector x', 'ベクトル x'), onDrag: (a, b) => { st.x = [a, b]; ctx.redraw(); } });
-      const n05 = pn(x, 0.5), ymax = Math.max(0.5, n05 * 1.08);
-      const g = L.fig(c2, { x: [0.5, 8], y: [0, ymax], aspect: 0.8, maxH: 380, xlabel: 'p', ylabel: '‖x‖ₚ', ticksX: [0.5, 1, 2, 4, 6, 8].map((k) => [k, String(k)]) });
-      g.rect(0.5, 0, 0.5, ymax, { c: 'muted', fo: 0.1, nostroke: true, layer: 'under' });
-      g.text(0.75, ymax, T('not a norm', 'ノルムでない'), { dy: 14, small: true, c: 'muted' });
-      g.hline(inf(x), { c: 'c4', w: 1.4, dash: '5 4' });
-      g.text(8, inf(x), '‖x‖∞', { anchor: 'end', dy: -6, small: true, c: 'c4' });
-      g.line(L.sample(0.5, 8, 300, (q) => pn(x, q)), { c: 'c2', w: 2.4 });
-      g.dot(1, pn(x, 1), { c: 'c1', r: 4.5 }); g.dot(2, pn(x, 2), { c: 'c3', r: 4.5 });
-      g.vline(p, { c: 'hl', w: 1.2, dash: '2 3' });
-      g.dot(p, np, { c: 'hl', r: 6 });
-      g.handle(p, 0, { c: 'hl', axis: 'x', r: 7, bounds: [0.5, 8, 0, ymax], label: T('Exponent p', '指数 p'), onDrag: (q) => ctx.set('order', q) });
-      const leg = [{ c: 'c2', label: T(`unit ball for p = ${fmt(p, 1)}`, `p = ${fmt(p, 1)} の単位球`) }];
-      if (Math.abs(p - 1) > 0.05) leg.push({ c: 'c1', dash: true, label: 'p = 1' });
-      if (Math.abs(p - 2) > 0.05) leg.push({ c: 'c3', dash: true, label: 'p = 2' });
-      leg.push({ c: 'c4', dash: true, label: 'p = ∞' });
-      L.legend(ctx.host, leg);
-      ctx.readout([
-        { k: '‖x‖₁', v: fmt(pn(x, 1), 3) }, { k: '‖x‖₂', v: fmt(pn(x, 2), 3) }, { k: '‖x‖∞', v: fmt(inf(x), 3) },
-        { k: `‖x‖ₚ, p = ${fmt(p, 1)}`, v: fmt(np, 3), tone: p < 1 ? 'warn' : 'key' },
-      ], p < 1 ? T('For p < 1 the ball is not convex and the triangle inequality fails, so ‖·‖ₚ is not a norm.', 'p < 1 では球が凸でなく三角不等式が成り立たないため、‖·‖ₚ はノルムではありません。') : T('Every ball contains the p = 1 diamond and sits inside the p = ∞ square; larger p means a larger ball and a smaller ‖x‖ₚ.', 'どの球も p = 1 のひし形を含み、p = ∞ の正方形の内側にあります。p が大きいほど球は大きく、‖x‖ₚ は小さくなります。'));
+      const p = v.order, st = ctx.state;
+      if (!st.x || st.x.length < 3) st.x = [0.3, -1.3, 0.7];
+      if (!st.frame || !st.frame.isConnected) {
+        ctx.host.replaceChildren();
+        st.frame = L.h('div', '', ctx.host);
+        const row = L.h('div', 'lab-row is-wide', st.frame);
+        st.c1 = L.h('div', 'lab-col', row); st.c2 = L.h('div', 'lab-col', row);
+        L.h('p', 'lab-cap', st.c1, T('The unit ball {‖x‖ₚ ≤ 1} in three dimensions, with the p = 1 octahedron and the p = ∞ cube. Drag the gold tip of x; drag elsewhere to turn the view.', '3次元の単位球 {‖x‖ₚ ≤ 1} と、p = 1 の正八面体、p = ∞ の立方体です。x の金色の先端をドラッグでき、それ以外の場所をドラッグすると視点が回ります。'));
+        st.v3 = L.h('div', '', st.c1);
+        st.leg = L.h('div', '', st.frame);
+      }
+      const draw2d = () => {
+        const x = st.flat ? [st.x[0], st.x[1], 0] : st.x, np = pn3(x, p);
+        st.c2.replaceChildren(); st.leg.replaceChildren();
+        if (st.flat) {
+          st.c1.replaceChildren();
+          L.h('p', 'lab-cap', st.c1, T('Unit balls {‖x‖ₚ ≤ 1} in the plane. Drag the gold vector x.', '平面の単位球 {‖x‖ₚ ≤ 1}。金色のベクトル x をドラッグできます。'));
+          normsFlat(st.c1, x, p, ctx, st);
+        }
+        L.h('p', 'lab-cap', st.c2, T('‖x‖ₚ as a function of p for the same x: it decreases towards ‖x‖∞.', '同じ x に対する p の関数としての ‖x‖ₚ：‖x‖∞ に向かって減少します。'));
+        normsGraph(st.c2, x, p, ctx);
+        const leg = st.flat
+          ? [{ c: 'c2', label: T(`unit ball for p = ${fmt(p, 1)}`, `p = ${fmt(p, 1)} の単位球`) }, { c: 'c1', dash: true, label: 'p = 1' }, { c: 'c3', dash: true, label: 'p = 2' }, { c: 'c4', dash: true, label: 'p = ∞' }]
+          : [{ kind: 'fill', c: 'c2', label: T(`unit ball for p = ${fmt(p, 1)}; solid curve: its slice x₃ = 0`, `p = ${fmt(p, 1)} の単位球。実線はその断面 x₃ = 0`) }, { c: 'c1', label: T('p = 1 octahedron', 'p = 1 の正八面体') }, { c: 'c4', label: T('p = ∞ cube', 'p = ∞ の立方体') }, { c: 'c2', label: T('faint cage: the ball scaled by ‖x‖ₚ, through x (hidden when it leaves the view)', '淡いかご：‖x‖ₚ 倍に拡大して x を通る球（視野からはみ出すときは隠します）') }];
+        L.legend(st.leg, leg);
+        ctx.readout([
+          { k: '‖x‖₁', v: fmt(pn3(x, 1), 3) }, { k: '‖x‖₂', v: fmt(pn3(x, 2), 3) }, { k: '‖x‖∞', v: fmt(inf3(x), 3) },
+          { k: `‖x‖ₚ, p = ${fmt(p, 1)}`, v: fmt(np, 3), tone: p < 1 ? 'warn' : 'key' },
+        ], p < 1 ? T('For p < 1 the ball caves in and is not convex: the triangle inequality fails, so ‖·‖ₚ is not a norm.', 'p < 1 では球がへこんで凸でなくなり、三角不等式が成り立たないため、‖·‖ₚ はノルムではありません。') : st.flat ? T('Every ball contains the p = 1 diamond and sits inside the p = ∞ square; larger p means a larger ball and a smaller ‖x‖ₚ.', 'どの球も p = 1 のひし形を含み、p = ∞ の正方形の内側にあります。p が大きいほど球は大きく、‖x‖ₚ は小さくなります。') : T('Every ball contains the p = 1 octahedron and sits inside the p = ∞ cube; larger p means a larger ball and a smaller ‖x‖ₚ.', 'どの球も p = 1 の正八面体を含み、p = ∞ の立方体の内側にあります。p が大きいほど球は大きく、‖x‖ₚ は小さくなります。'));
+      };
+      L.view3d(ctx, v, {
+        host: st.v3, aspect: 0.86, maxH: 440, camera: [3.9, -4.7, 3.0], target: [0, 0, -0.05], fov: 30,
+        init(S) {
+          st.flat = false; st.p3 = null;
+          S.axes({ len: 1.75, names: ['x₁', 'x₂', 'x₃'] });
+          st.ball = S.surface(ballPt(p), { u: [0, TAU], v: [0, PI], nu: 112, nv: 56, c: 'c2', opacity: 0.5, rough: 0.55, coat: 0.3 });
+          st.ball.userData.noOcclude = true;
+          S.lines(OCTA_E, { c: 'c1', opacity: 0.85 });
+          S.lines(CUBE_E, { c: 'c4', opacity: 0.7 });
+          st.eq = S.tube([[0, 0, 0], [0, 0, 0.01]], { c: 'c2', r: 0.016, closed: true });
+          st.cage = S.lines([], { c: 'c2', opacity: 0.32 });
+          st.drop = S.lines([], { c: 'muted', opacity: 0.7 });
+          st.arrow = S.arrow([0, 0, 0], st.x, { c: 'hl', r: 0.022 });
+          st.foot = S.sphere([0, 0, 0], 0.05, { c: 'c2' });
+          st.h = S.handle(st.x, { r: 0.075, facing: true, bounds: [-1.6, 1.6, -1.6, 1.6, -1.6, 1.6], onDrag: (q) => { const y = [q.x, q.y, q.z]; if (Math.hypot(...y) < 0.08) return st.x; st.x = y; ctx.redraw(); return y; } });
+          st.lx = S.label('x', st.x, { math: true });
+          st.ls = S.label('x/‖x‖ₚ', [0, 0, 0], { small: true, c: 'c2' });
+          S.label('p = 1', [0.5, -0.5, 0], { small: true, c: 'c1', align: 'end' });
+          S.label('p = ∞', [-1, -1, 1], { small: true, c: 'c4', align: 'end' });
+        },
+        update(S, vv) {
+          const q = vv.order, x = st.x, np = pn3(x, q), sp = [x[0] / np, x[1] / np, x[2] / np];
+          if (st.p3 !== q) {
+            st.p3 = q;
+            st.ball.update(ballPt(q));
+            st.eq.update(L.seq(240, (i) => ballPt(q)(TAU * i / 240, PI / 2)));
+          }
+          st.cage.update(np <= 2.1 ? cageSegs(q, np) : []);
+          st.drop.update([[x, [x[0], x[1], 0]], [[0, 0, 0], [x[0], x[1], 0]]]);
+          st.arrow.set([0, 0, 0], x);
+          st.foot.at(sp);
+          st.h.at(x);
+          st.lx.set([x[0] * 1.06, x[1] * 1.06, x[2] * 1.06 + 0.06]);
+          st.ls.set(sp);
+          draw2d();
+        },
+        fallback() { st.flat = true; draw2d(); },
+      });
+      if (!st.__v3 && !st.flat) draw2d();
     },
   };
 

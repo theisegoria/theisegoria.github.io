@@ -2099,8 +2099,8 @@
           "1. 熱拡散"
         ],
         "body": [
-          "A rod of length 10 starts with two warm spots. The heat equation is solved by finite differences, and the time slider (or Play) shows the temperature at any moment; the space–time picture below shows the whole history at once. Sharp peaks decay fastest because the flux is proportional to the gradient. Compare insulated ends, which keep the total heat fixed, with ends held at zero, which let it drain away.",
-          "長さ 10 の棒に、はじめ2つの暖かい部分があります。熱方程式を差分法で解き、時間スライダー（または再生）で任意の時刻の温度を表示します。下の時空図は全経過を一度に示します。流束は勾配に比例するので、鋭いピークほど速く減衰します。総熱量を保つ断熱端と、熱が逃げていく 0 に保った端を比べてください。"
+          "A rod of length 10 starts with two warm spots. The heat equation is solved by finite differences, and the whole history u(x, t) is drawn as a surface over position and time: turn it to see the sharp first peak collapse almost at once while the broad shape lingers, because the flux is proportional to the gradient. The time slider (or Play) moves the blue slice, which the graph beside it shows as the temperature along the rod at that moment. Compare insulated ends, which keep the total heat fixed, with ends held at zero, which let it drain away.",
+          "長さ 10 の棒に、はじめ2つの暖かい部分があります。熱方程式を差分法で解き、全経過 u(x, t) を位置と時間の上の曲面として描いています。曲面を回すと、鋭い最初の山がすぐに崩れ、なだらかな形が長く残る様子が見えます。流束は勾配に比例するからです。時間スライダー（または再生）で青い切り口が動き、隣のグラフはその時刻の棒に沿った温度を示します。総熱量を保つ断熱端と、熱が逃げていく 0 に保った端を比べてください。"
         ],
         "formula": "\\partial_tu=\\kappa\\,\\partial_{xx}u,\\qquad u_i^{n+1}=u_i^n+r\\,(u_{i-1}^n-2u_i^n+u_{i+1}^n),\\quad r=\\frac{\\kappa\\Delta t}{\\Delta x^2}",
         "example": [
@@ -2237,8 +2237,8 @@
           "3. ポテンシャル場"
         ],
         "body": [
-          "Two small electrodes sit inside a grounded box. Drag them and set their potentials. The potential everywhere else solves Laplace’s equation, computed on a grid by relaxation until every value equals the average of its four neighbours. Equipotentials are drawn every 0.1, and field lines follow E = −∇V from the electrodes, crossing the equipotentials at right angles.",
-          "接地された箱の中に小さな電極が2つあります。電極をドラッグし、電位を設定してください。それ以外の場所の電位はラプラス方程式の解で、格子上で各値が隣接4点の平均に等しくなるまで緩和法で計算しています。等電位線は 0.1 ごとに描き、電気力線は電極から E = −∇V に沿って伸び、等電位線と直交します。"
+          "Two small electrodes sit inside a grounded box. Drag them and set their potentials. The potential everywhere else solves Laplace’s equation, computed on a grid by relaxation until every value equals the average of its four neighbours, and it is drawn as a sheet whose height is V: pinned to 0 at the walls, pushed up or down at the electrodes, with no bumps or dips of its own in between. Equipotentials are drawn every 0.1, and field lines follow E = −∇V from the electrodes, running straight downhill and crossing the equipotentials at right angles.",
+          "接地された箱の中に小さな電極が2つあります。電極をドラッグし、電位を設定してください。それ以外の場所の電位はラプラス方程式の解で、格子上で各値が隣接4点の平均に等しくなるまで緩和法で計算し、高さが V の膜として描いています。膜は壁で 0 に留められ、電極で押し上げられたり押し下げられたりしますが、その間に自分自身の山や谷はありません。等電位線は 0.1 ごとに描き、電気力線は電極から E = −∇V に沿ってまっすぐ坂を下り、等電位線と直交します。"
         ],
         "formula": "\\nabla^2V=0,\\qquad \\mathbf E=-\\nabla V",
         "example": [
@@ -3768,8 +3768,8 @@
           "2. 極のまわりの留数"
         ],
         "body": [
-          "The function f(z) = 1/(z − a) + 2/(z − b) has residue 1 at a and 2 at b. Drag the centre of the circular contour, change its radius and move the pole a. The right panel traces the integral accumulated along the way: it returns to 0 when no pole is enclosed and ends at 2πi times the enclosed residues otherwise, jumping when a pole crosses the contour.",
-          "関数 f(z) = 1/(z − a) + 2/(z − b) は a で留数1、b で留数2をもちます。円形の経路の中心をドラッグし、半径と極 a の位置を変えます。右の図は経路に沿って積み上がる積分を描きます。極を囲まなければ0に戻り、囲めば囲んだ留数の和の 2πi 倍で終わり、極が経路を横切ると値が跳びます。"
+          "The function f(z) = 1/(z − a) + 2/(z − b) has residue 1 at a and 2 at b. The surface is log|f| over the plane, coloured by the phase of f: each pole rises as a tower and the zero of f sinks as a pit. Drag the centre of the circular contour, change its radius and move the pole a, or press Play to walk the contour. The right panel traces the integral accumulated along the way: it returns to 0 when no pole is enclosed and ends at 2πi times the enclosed residues otherwise, jumping when a pole crosses the contour.",
+          "関数 f(z) = 1/(z − a) + 2/(z − b) は a で留数1、b で留数2をもちます。曲面は平面の上の log|f| で、f の偏角で色を付けています。極は塔のようにそびえ、f の零点は穴のように沈みます。円形の経路の中心をドラッグし、半径と極 a の位置を変えてください。再生を押すと経路を一周します。右の図は経路に沿って積み上がる積分を描きます。極を囲まなければ0に戻り、囲めば囲んだ留数の和の 2πi 倍で終わり、極が経路を横切ると値が跳びます。"
         ],
         "formula": "\\oint_\\gamma f(z)\\,dz=2\\pi i\\sum\\operatorname{Res}(f;z_k)",
         "example": [
@@ -3806,6 +3806,24 @@
             1.8,
             0.05,
             0.4
+          ],
+          [
+            "cx",
+            "Centre of the contour, real part",
+            "経路の中心の実部",
+            -1.8,
+            1.8,
+            0.05,
+            0
+          ],
+          [
+            "cy",
+            "Centre of the contour, imaginary part",
+            "経路の中心の虚部",
+            -1.8,
+            1.8,
+            0.05,
+            0
           ]
         ],
         "source": "MIT OpenCourseWare · Complex Variables",
@@ -3818,10 +3836,10 @@
           "3. 共役調和関数"
         ],
         "body": [
-          "Level curves of u = Re f (blue) and v = Im f (orange) for a holomorphic f, rotated by the phase φ. Drag the probe: the two gradients are always perpendicular and equally long, as the Cauchy–Riemann equations demand, except at critical points where f′ = 0.",
-          "正則関数 f の u = Re f（青）と v = Im f（橙）の等高線を、位相 φ だけ回転させて描きます。調べる点をドラッグすると、コーシー・リーマン方程式の通り、2つの勾配は常に直交し長さも等しいことがわかります。例外は f′ = 0 となる臨界点です。"
+          "For a holomorphic f, rotated by the phase φ, the surface is the graph of u = Re f, with the level curves of u (blue) and of its conjugate v = Im f (orange) drawn on it. A harmonic function has no peaks or pits, only saddles and slopes: its value at any point is the average round every circle about that point, shown by the gold ring. Drag the probe: the two gradients are always perpendicular and equally long, as the Cauchy–Riemann equations demand, except at critical points where f′ = 0.",
+          "位相 φ だけ回転させた正則関数 f について、曲面は u = Re f のグラフで、その上に u の等高線（青）と共役な v = Im f の等高線（橙）を描いています。調和関数には山頂も窪みもなく、鞍と斜面だけがあります。どの点での値も、その点を中心とするどの円の上の平均にも等しく、金色の輪がそれを示します。調べる点をドラッグすると、コーシー・リーマン方程式の通り、2つの勾配は常に直交し長さも等しいことがわかります。例外は f′ = 0 となる臨界点です。"
         ],
-        "formula": "u_x=v_y,\\quad u_y=-v_x\\quad\\Longrightarrow\\quad \\nabla u\\cdot\\nabla v=0,\\ \\ |\\nabla u|=|\\nabla v|=|f\\prime|",
+        "formula": "u_x=v_y,\\quad u_y=-v_x\\quad\\Longrightarrow\\quad \\nabla u\\cdot\\nabla v=0,\\ \\ |\\nabla u|=|\\nabla v|=|f\\prime|,\\qquad u(z_0)=\\frac1{2\\pi}\\int_0^{2\\pi}u(z_0+re^{i\\theta})\\,d\\theta",
         "example": [
           "The real and imaginary parts of z² are x²−y² and 2xy.",
           "z²の実部と虚部はx²−y²と2xyです。"
@@ -3874,6 +3892,24 @@
             180,
             5,
             30
+          ],
+          [
+            "px",
+            "Probe x",
+            "調べる点の x",
+            -1.9,
+            1.9,
+            0.05,
+            0.9
+          ],
+          [
+            "py",
+            "Probe y",
+            "調べる点の y",
+            -1.9,
+            1.9,
+            0.05,
+            0.6
           ]
         ],
         "source": "MIT OpenCourseWare · Complex Variables",
@@ -5529,17 +5565,17 @@
           "1. ノルムと単位球"
         ],
         "body": [
-          "Change p and watch the unit ball move from the p = 1 diamond through the p = 2 circle towards the p = ∞ square. Drag the vector x: its p-norm is how far the ball must be scaled to reach it, and the right panel shows that this number decreases as p grows. Below p = 1 the ball stops being convex.",
-          "p を変え、単位球が p = 1 のひし形から p = 2 の円を経て p = ∞ の正方形へ移る様子を見ます。ベクトル x をドラッグすると、その p ノルムは x に届くまで球を拡大する倍率であり、右の図はこの値が p とともに減少することを示します。p = 1 未満では球は凸でなくなります。"
+          "Change p and watch the unit ball in three dimensions move from the p = 1 octahedron through the p = 2 sphere towards the p = ∞ cube. Its slice by the plane x₃ = 0, the solid curve, is the two-dimensional ball: a diamond, a circle, a square. Drag the tip of the vector x: its p-norm is how far the ball must be scaled to reach it, shown by the faint cage through x, and the right panel shows that this number decreases as p grows. Below p = 1 the ball caves in and stops being convex.",
+          "p を変え、3次元の単位球が p = 1 の正八面体から p = 2 の球を経て p = ∞ の立方体へ移る様子を見ます。平面 x₃ = 0 による断面（実線）は2次元の単位球で、ひし形、円、正方形になります。ベクトル x の先端をドラッグすると、その p ノルムは x に届くまで球を拡大する倍率で、x を通る淡いかごがそれを示します。右の図はこの値が p とともに減少することを示します。p = 1 未満では球がへこみ、凸でなくなります。"
         ],
-        "formula": "\\|x\\|_p=\\left(|x_1|^p+|x_2|^p\\right)^{1/p},\\qquad \\|x\\|_\\infty=\\max(|x_1|,|x_2|)=\\lim_{p\\to\\infty}\\|x\\|_p",
+        "formula": "\\|x\\|_p=\\left(|x_1|^p+|x_2|^p+|x_3|^p\\right)^{1/p},\\qquad \\|x\\|_\\infty=\\max_i|x_i|=\\lim_{p\\to\\infty}\\|x\\|_p",
         "example": [
-          "For \\(p=2\\), the unit ball is the Euclidean circle.",
-          "\\(p=2\\)では単位球はユークリッド円です。"
+          "For \\(p=2\\) the unit ball is the round sphere, and its slice \\(x_3=0\\) is the Euclidean circle.",
+          "\\(p=2\\) では単位球は丸い球で、その断面 \\(x_3=0\\) はユークリッド円です。"
         ],
         "caution": [
-          "For p < 1 the formula still defines a unit ball, but the triangle inequality fails, so it is not a norm. The p = ∞ square is drawn exactly as the maximum norm.",
-          "p < 1 でも式は単位球を定めますが、三角不等式が成り立たないのでノルムではありません。p = ∞ の正方形は最大ノルムとして正確に描いています。"
+          "For p < 1 the formula still defines a unit ball, but the triangle inequality fails, so it is not a norm. The p = ∞ cube is drawn exactly as the maximum norm.",
+          "p < 1 でも式は単位球を定めますが、三角不等式が成り立たないのでノルムではありません。p = ∞ の立方体は最大ノルムとして正確に描いています。"
         ],
         "question": [
           "Which unit ball has the sharpest corners?",

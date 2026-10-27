@@ -428,13 +428,16 @@
       drawUpto(Infinity);
       const total = tt.pts.length, DUR = 6;
       st.anim = L.animator(ctx.host, (dt, t, lab) => { const k = Math.min(total, Math.floor(total * Math.min(1, t / DUR))); drawUpto(k); lab.textContent = T(`${Math.min(k, tt.segs).toLocaleString()} segments`, `${Math.min(k, tt.segs).toLocaleString()} 線分`); if (k >= total) return false; }, { autoplay: false, once: true, initialT: DUR + 1, duration: DUR + 1, playLabel: T('Draw with the turtle', 'タートルで描く') });
-      const dim = lsystemDim(S.copies, S.scale), span = Math.hypot(tt.end[0], tt.end[1]);
+      // the Koch rule stays self-similar at any angle: the generator spans 2 + 2 cos δ unit steps
+      const kochScale = v.sys === 0 ? 2 + 2 * Math.cos(angle * Math.PI / 180) : null;
+      const copies = S.copies, scale = v.sys === 0 ? kochScale : S.scale;
+      const dim = v.sys === 0 ? (kochScale > 2 + 1e-9 ? lsystemDim(4, kochScale) : null) : lsystemDim(S.copies, S.scale), span = Math.hypot(tt.end[0], tt.end[1]);
       const rulesTxt = Object.entries(S.rules).map(([k, r]) => `${k} → ${r}`).join(',  ');
       ctx.readout([
         { k: T('rules', '規則'), v: rulesTxt, tone: 'key' },
         { k: T('segments', '線分の数'), v: tt.segs.toLocaleString() },
         { k: T('end-to-end span (unit steps)', '両端の距離（単位長）'), v: fmt(span, 2) },
-        { k: T('copies, scale factor', '写しの数、縮尺'), v: S.copies ? `${S.copies}, ${fmt(S.scale, 3)}` : T('not self-similar', '自己相似ではない') },
+        { k: T('copies, scale factor', '写しの数、縮尺'), v: copies ? `${copies}, ${fmt(scale, 3)}` : T('not self-similar', '自己相似ではない') },
         { k: T('similarity dimension', '相似次元'), v: dim === null ? '·' : fmt(dim, 4), tone: dim === null ? 'warn' : 'good' },
         { k: T('log(segments) / log(span)', 'log(線分の数) / log(距離)'), v: span > 1 && tt.segs > 1 ? fmt(Math.log(tt.segs) / Math.log(span), 4) : '·' },
       ], angle === S.angle
@@ -442,7 +445,11 @@
           T('The dragon: fold a strip of paper in half n times and open every fold to a right angle. Each level is two copies of the previous one, rotated 45° and scaled by 1/√2, which is why the ratio of log(segments) to log(span) is exactly 2.', 'ドラゴン曲線は、紙の帯を n 回半分に折り、すべての折り目を直角に開いたものです。各レベルは前のレベルを 45° 回転して 1/√2 に縮めた写し二つなので、log(線分の数) と log(距離) の比はちょうど 2 です。'),
           T('Two symbols, A and B, both draw, and the rules for them are mirror images: the curve alternates its handedness at every level and converges to the Sierpinski triangle, with the same dimension log 3 / log 2 as the chaos game gave.', '二つの記号 A と B はどちらも描画し、その規則は互いに鏡像です。曲線はレベルごとに向きを反転させながらシェルピンスキーの三角形へ収束し、次元はカオスゲームで得た log 3 / log 2 と同じです。'),
           T('X carries the branching structure and draws nothing; F → FF stretches every existing segment while X sprouts new branches, so old growth lengthens as new growth appears, as in a real plant. The brackets return the turtle to the branch point.', 'X は枝分かれの構造を担い、何も描きません。F → FF は既存のすべての線分を引き伸ばし、X は新しい枝を芽吹かせるので、実際の植物のように新しい成長が現れる間に古い部分が長くなります。括弧はタートルを分岐点へ戻します。')][v.sys]
-        : T(`With δ = ${angle}° instead of ${S.angle}° the rewriting is unchanged but the geometry is not: the pieces no longer fit end to end as scaled copies, so the similarity dimension no longer applies to the drawing.`, `δ を ${S.angle}° ではなく ${angle}° にしても書き換えは同じですが幾何は変わります。部分はもはや縮小した写しとして端と端で接がらないので、相似次元はこの描画には当てはまりません。`));
+        : v.sys === 0
+          ? (kochScale > 2 + 1e-9
+            ? T(`With δ = ${angle}° the generator spans 2 + 2 cos δ = ${fmt(kochScale, 3)} unit steps, and every step is still replaced by a rotated copy of it, so the curve stays self-similar: four copies scaled by 1/${fmt(kochScale, 3)}, dimension log 4 / log ${fmt(kochScale, 3)} = ${fmt(dim, 4)}. Flatter bumps give dimensions nearer 1; at δ = 90° the copies touch and the dimension reaches 2.`, `δ = ${angle}° では生成子の両端の距離は 2 + 2 cos δ = ${fmt(kochScale, 3)} 単位で、各ステップは依然としてその回転した写しで置き換えられるので、曲線は自己相似のままです。1/${fmt(kochScale, 3)} に縮めた四つの写しからなり、次元は log 4 / log ${fmt(kochScale, 3)} = ${fmt(dim, 4)} です。山が低いほど次元は 1 に近づき、δ = 90° で写しどうしが接して次元は 2 に達します。`)
+            : T(`With δ = ${angle}° the generator spans only 2 + 2 cos δ = ${fmt(kochScale, 3)} unit steps, so the four copies of each level overlap. The Moran root log 4 / log(2 + 2 cos δ) would be at least 2 and is no longer the dimension of the drawing.`, `δ = ${angle}° では生成子の両端の距離は 2 + 2 cos δ = ${fmt(kochScale, 3)} 単位しかなく、各レベルの四つの写しが重なります。モランの根 log 4 / log(2 + 2 cos δ) は 2 以上になり、もはや描画の次元ではありません。`))
+          : T(`With δ = ${angle}° instead of ${S.angle}° the rewriting is unchanged but the geometry is not: the pieces no longer fit end to end as scaled copies, so the similarity dimension no longer applies to the drawing.`, `δ を ${S.angle}° ではなく ${angle}° にしても書き換えは同じですが幾何は変わります。部分はもはや縮小した写しとして端と端で接がらないので、相似次元はこの描画には当てはまりません。`));
     },
   };
 

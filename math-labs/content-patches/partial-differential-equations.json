@@ -1,8 +1,8 @@
 {
  "heat": {
   "body": [
-   "A rod of length 10 starts with two warm spots. The heat equation is solved by finite differences, and the time slider (or Play) shows the temperature at any moment; the space–time picture below shows the whole history at once. Sharp peaks decay fastest because the flux is proportional to the gradient. Compare insulated ends, which keep the total heat fixed, with ends held at zero, which let it drain away.",
-   "長さ 10 の棒に、はじめ2つの暖かい部分があります。熱方程式を差分法で解き、時間スライダー（または再生）で任意の時刻の温度を表示します。下の時空図は全経過を一度に示します。流束は勾配に比例するので、鋭いピークほど速く減衰します。総熱量を保つ断熱端と、熱が逃げていく 0 に保った端を比べてください。"
+   "A rod of length 10 starts with two warm spots. The heat equation is solved by finite differences, and the whole history u(x, t) is drawn as a surface over position and time: turn it to see the sharp first peak collapse almost at once while the broad shape lingers, because the flux is proportional to the gradient. The time slider (or Play) moves the blue slice, which the graph beside it shows as the temperature along the rod at that moment. Compare insulated ends, which keep the total heat fixed, with ends held at zero, which let it drain away.",
+   "長さ 10 の棒に、はじめ2つの暖かい部分があります。熱方程式を差分法で解き、全経過 u(x, t) を位置と時間の上の曲面として描いています。曲面を回すと、鋭い最初の山がすぐに崩れ、なだらかな形が長く残る様子が見えます。流束は勾配に比例するからです。時間スライダー（または再生）で青い切り口が動き、隣のグラフはその時刻の棒に沿った温度を示します。総熱量を保つ断熱端と、熱が逃げていく 0 に保った端を比べてください。"
   ],
   "formula": "\\partial_tu=\\kappa\\,\\partial_{xx}u,\\qquad u_i^{n+1}=u_i^n+r\\,(u_{i-1}^n-2u_i^n+u_{i+1}^n),\\quad r=\\frac{\\kappa\\Delta t}{\\Delta x^2}",
   "example": [
@@ -109,8 +109,8 @@
  },
  "laplace": {
   "body": [
-   "Two small electrodes sit inside a grounded box. Drag them and set their potentials. The potential everywhere else solves Laplace’s equation, computed on a grid by relaxation until every value equals the average of its four neighbours. Equipotentials are drawn every 0.1, and field lines follow E = −∇V from the electrodes, crossing the equipotentials at right angles.",
-   "接地された箱の中に小さな電極が2つあります。電極をドラッグし、電位を設定してください。それ以外の場所の電位はラプラス方程式の解で、格子上で各値が隣接4点の平均に等しくなるまで緩和法で計算しています。等電位線は 0.1 ごとに描き、電気力線は電極から E = −∇V に沿って伸び、等電位線と直交します。"
+   "Two small electrodes sit inside a grounded box. Drag them and set their potentials. The potential everywhere else solves Laplace’s equation, computed on a grid by relaxation until every value equals the average of its four neighbours, and it is drawn as a sheet whose height is V: pinned to 0 at the walls, pushed up or down at the electrodes, with no bumps or dips of its own in between. Equipotentials are drawn every 0.1, and field lines follow E = −∇V from the electrodes, running straight downhill and crossing the equipotentials at right angles.",
+   "接地された箱の中に小さな電極が2つあります。電極をドラッグし、電位を設定してください。それ以外の場所の電位はラプラス方程式の解で、格子上で各値が隣接4点の平均に等しくなるまで緩和法で計算し、高さが V の膜として描いています。膜は壁で 0 に留められ、電極で押し上げられたり押し下げられたりしますが、その間に自分自身の山や谷はありません。等電位線は 0.1 ごとに描き、電気力線は電極から E = −∇V に沿ってまっすぐ坂を下り、等電位線と直交します。"
   ],
   "example": [
    "Field lines cross equipotentials at right angles, and with both electrodes positive the potential between them has a saddle, not a dip.",

@@ -1,13 +1,13 @@
 {
  "norms": {
   "body": [
-   "Change p and watch the unit ball move from the p = 1 diamond through the p = 2 circle towards the p = ∞ square. Drag the vector x: its p-norm is how far the ball must be scaled to reach it, and the right panel shows that this number decreases as p grows. Below p = 1 the ball stops being convex.",
-   "p を変え、単位球が p = 1 のひし形から p = 2 の円を経て p = ∞ の正方形へ移る様子を見ます。ベクトル x をドラッグすると、その p ノルムは x に届くまで球を拡大する倍率であり、右の図はこの値が p とともに減少することを示します。p = 1 未満では球は凸でなくなります。"
+   "Change p and watch the unit ball in three dimensions move from the p = 1 octahedron through the p = 2 sphere towards the p = ∞ cube. Its slice by the plane x₃ = 0, the solid curve, is the two-dimensional ball: a diamond, a circle, a square. Drag the tip of the vector x: its p-norm is how far the ball must be scaled to reach it, shown by the faint cage through x, and the right panel shows that this number decreases as p grows. Below p = 1 the ball caves in and stops being convex.",
+   "p を変え、3次元の単位球が p = 1 の正八面体から p = 2 の球を経て p = ∞ の立方体へ移る様子を見ます。平面 x₃ = 0 による断面（実線）は2次元の単位球で、ひし形、円、正方形になります。ベクトル x の先端をドラッグすると、その p ノルムは x に届くまで球を拡大する倍率で、x を通る淡いかごがそれを示します。右の図はこの値が p とともに減少することを示します。p = 1 未満では球がへこみ、凸でなくなります。"
   ],
-  "formula": "\\|x\\|_p=\\left(|x_1|^p+|x_2|^p\\right)^{1/p},\\qquad \\|x\\|_\\infty=\\max(|x_1|,|x_2|)=\\lim_{p\\to\\infty}\\|x\\|_p",
+  "formula": "\\|x\\|_p=\\left(|x_1|^p+|x_2|^p+|x_3|^p\\right)^{1/p},\\qquad \\|x\\|_\\infty=\\max_i|x_i|=\\lim_{p\\to\\infty}\\|x\\|_p",
   "caution": [
-   "For p < 1 the formula still defines a unit ball, but the triangle inequality fails, so it is not a norm. The p = ∞ square is drawn exactly as the maximum norm.",
-   "p < 1 でも式は単位球を定めますが、三角不等式が成り立たないのでノルムではありません。p = ∞ の正方形は最大ノルムとして正確に描いています。"
+   "For p < 1 the formula still defines a unit ball, but the triangle inequality fails, so it is not a norm. The p = ∞ cube is drawn exactly as the maximum norm.",
+   "p < 1 でも式は単位球を定めますが、三角不等式が成り立たないのでノルムではありません。p = ∞ の立方体は最大ノルムとして正確に描いています。"
   ],
   "params": [
    [
@@ -19,6 +19,10 @@
     0.1,
     2
    ]
+  ],
+  "example": [
+   "For \\(p=2\\) the unit ball is the round sphere, and its slice \\(x_3=0\\) is the Euclidean circle.",
+   "\\(p=2\\) では単位球は丸い球で、その断面 \\(x_3=0\\) はユークリッド円です。"
   ]
  },
  "projection-hilbert": {

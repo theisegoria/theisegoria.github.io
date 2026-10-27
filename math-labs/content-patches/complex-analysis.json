@@ -46,8 +46,8 @@
  },
  "residue": {
   "body": [
-   "The function f(z) = 1/(z − a) + 2/(z − b) has residue 1 at a and 2 at b. Drag the centre of the circular contour, change its radius and move the pole a. The right panel traces the integral accumulated along the way: it returns to 0 when no pole is enclosed and ends at 2πi times the enclosed residues otherwise, jumping when a pole crosses the contour.",
-   "関数 f(z) = 1/(z − a) + 2/(z − b) は a で留数1、b で留数2をもちます。円形の経路の中心をドラッグし、半径と極 a の位置を変えます。右の図は経路に沿って積み上がる積分を描きます。極を囲まなければ0に戻り、囲めば囲んだ留数の和の 2πi 倍で終わり、極が経路を横切ると値が跳びます。"
+   "The function f(z) = 1/(z − a) + 2/(z − b) has residue 1 at a and 2 at b. The surface is log|f| over the plane, coloured by the phase of f: each pole rises as a tower and the zero of f sinks as a pit. Drag the centre of the circular contour, change its radius and move the pole a, or press Play to walk the contour. The right panel traces the integral accumulated along the way: it returns to 0 when no pole is enclosed and ends at 2πi times the enclosed residues otherwise, jumping when a pole crosses the contour.",
+   "関数 f(z) = 1/(z − a) + 2/(z − b) は a で留数1、b で留数2をもちます。曲面は平面の上の log|f| で、f の偏角で色を付けています。極は塔のようにそびえ、f の零点は穴のように沈みます。円形の経路の中心をドラッグし、半径と極 a の位置を変えてください。再生を押すと経路を一周します。右の図は経路に沿って積み上がる積分を描きます。極を囲まなければ0に戻り、囲めば囲んだ留数の和の 2πi 倍で終わり、極が経路を横切ると値が跳びます。"
   ],
   "params": [
    [
@@ -67,15 +67,33 @@
     1.8,
     0.05,
     0.4
+   ],
+   [
+    "cx",
+    "Centre of the contour, real part",
+    "経路の中心の実部",
+    -1.8,
+    1.8,
+    0.05,
+    0
+   ],
+   [
+    "cy",
+    "Centre of the contour, imaginary part",
+    "経路の中心の虚部",
+    -1.8,
+    1.8,
+    0.05,
+    0
    ]
   ]
  },
  "harmonic": {
   "body": [
-   "Level curves of u = Re f (blue) and v = Im f (orange) for a holomorphic f, rotated by the phase φ. Drag the probe: the two gradients are always perpendicular and equally long, as the Cauchy–Riemann equations demand, except at critical points where f′ = 0.",
-   "正則関数 f の u = Re f（青）と v = Im f（橙）の等高線を、位相 φ だけ回転させて描きます。調べる点をドラッグすると、コーシー・リーマン方程式の通り、2つの勾配は常に直交し長さも等しいことがわかります。例外は f′ = 0 となる臨界点です。"
+   "For a holomorphic f, rotated by the phase φ, the surface is the graph of u = Re f, with the level curves of u (blue) and of its conjugate v = Im f (orange) drawn on it. A harmonic function has no peaks or pits, only saddles and slopes: its value at any point is the average round every circle about that point, shown by the gold ring. Drag the probe: the two gradients are always perpendicular and equally long, as the Cauchy–Riemann equations demand, except at critical points where f′ = 0.",
+   "位相 φ だけ回転させた正則関数 f について、曲面は u = Re f のグラフで、その上に u の等高線（青）と共役な v = Im f の等高線（橙）を描いています。調和関数には山頂も窪みもなく、鞍と斜面だけがあります。どの点での値も、その点を中心とするどの円の上の平均にも等しく、金色の輪がそれを示します。調べる点をドラッグすると、コーシー・リーマン方程式の通り、2つの勾配は常に直交し長さも等しいことがわかります。例外は f′ = 0 となる臨界点です。"
   ],
-  "formula": "u_x=v_y,\\quad u_y=-v_x\\quad\\Longrightarrow\\quad \\nabla u\\cdot\\nabla v=0,\\ \\ |\\nabla u|=|\\nabla v|=|f\\prime|",
+  "formula": "u_x=v_y,\\quad u_y=-v_x\\quad\\Longrightarrow\\quad \\nabla u\\cdot\\nabla v=0,\\ \\ |\\nabla u|=|\\nabla v|=|f\\prime|,\\qquad u(z_0)=\\frac1{2\\pi}\\int_0^{2\\pi}u(z_0+re^{i\\theta})\\,d\\theta",
   "params": [
    [
     "fn",
@@ -112,6 +130,24 @@
     180,
     5,
     30
+   ],
+   [
+    "px",
+    "Probe x",
+    "調べる点の x",
+    -1.9,
+    1.9,
+    0.05,
+    0.9
+   ],
+   [
+    "py",
+    "Probe y",
+    "調べる点の y",
+    -1.9,
+    1.9,
+    0.05,
+    0.6
    ]
   ]
  }
