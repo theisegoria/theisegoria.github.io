@@ -148,7 +148,7 @@ body{line-height:1.8}
 <button class="btn" id="fork-toggle" type="button" aria-pressed="true">振動を止める</button>
 <label class="ctl">表示振幅<strong id="fork-amp-v">&#215;1.0</strong><input id="fork-amp" type="range" min=".2" max="1.6" step=".1" value="1"></label>
 <label class="ctl">アニメーションの減速<strong id="fork-slow-v">&#215;1/32 768</strong><input id="fork-slow" type="range" min="0" max="3" step="1" value="0"></label>
-<button class="btn ghost" id="fork-mode" type="button" aria-pressed="true">同相モードを見る</button>
+<button class="btn ghost" id="fork-mode" data-analytics-milestone="preset_selected" type="button" aria-pressed="true">同相モードを見る</button>
 </div>
 
 <div class="split"><div class="stage">
@@ -292,7 +292,7 @@ body{line-height:1.8}
 </div></div>
 
 <div class="controls" style="margin-top:30px">
-<button class="btn" id="pi-restart" type="button">起動を再生</button>
+<button class="btn" id="pi-restart" data-analytics-milestone="experiment_reset" type="button">起動を再生</button>
 <label class="ctl"><span>インバータの相互コンダクタンス g<sub>m</sub></span> <strong id="gm-v">1.00 &#181;S</strong><input id="gm" type="range" min=".1" max="4" step=".05" value="1"></label>
 <label class="ctl"><span>負荷容量 C<sub>g</sub> = C<sub>d</sub></span> <strong id="cc-v">12 pF</strong><input id="cc" type="range" min="4" max="24" step="1" value="12"></label>
 </div>
@@ -532,6 +532,7 @@ body{line-height:1.8}
 <h2>機械式時計は測る。<br>クオーツ時計は<br>数える。</h2>
 <p>脱進機はアナログの交渉です。エネルギーが入り、テンプが間隔で答え、交渉の不完全さはすべて歩度として現れます。クオーツ時計はその交渉を取り除きました。間隔は水晶だけが決め、しかも分周が厳密であり微調整が整数でありうる領域で決めます。機構に残された仕事は、毎秒一発のパルスで磁石を回すことだけ。この時計の中で、いまも難しくあることを許されている唯一の場所だと考えています。</p>
 </section>
+<section class="card" style="padding:20px;margin:24px 0"><button class="btn" type="button" data-analytics-milestone="simulation_completed" onclick="this.disabled=true;this.textContent='完了を記録しました'">この探索を完了として記録</button></section>
 </main>
 
 <footer><span>クオーツ時計ラボ</span><p style="margin:0">教育用の模式図 &#183; 部品定数・電流・比には代表的な値を選んでおり、特定のキャリバーのものではありません。姉妹編は<a href="/ja/watch-lab/">自動巻き時計ラボ</a>.</p><a href="/quartz-lab/inside-a-quartz-watch.pdf" target="_blank" rel="noopener" title="PDF、新しいタブで開く">印刷版（PDF・英語）</a><a href="#top">ページ先頭へ &#8593;</a></footer><!-- BEHIND:START -->
