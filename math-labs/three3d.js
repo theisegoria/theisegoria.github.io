@@ -14,6 +14,7 @@ import * as THREE from 'three/webgpu';
 import { mountLab, readColors, isDark, prefersReducedMotion } from '/assets/lab-kit/lab-kit.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+import { screenUV, vec2, vec3, mix, smoothstep, float } from 'three/tsl';
 
 const TOKENS = ['c1', 'c2', 'c3', 'c4', 'hl', 'ink', 'muted', 'plate', 'grid', 'pos', 'neg', 'zero'];
 const ja = document.documentElement.lang === 'ja';
@@ -192,11 +193,23 @@ export async function create(host, opts = {}) {
       vertexColors: !!o.vertexColors, emissive: o.glow ? colour(o.glowColour ?? c) : new THREE.Color(0), emissiveIntensity: o.glow ?? 0,
       flatShading: !!o.flat,
     });
-    if (o.glass && ST) { m.transmission = 1; m.thickness = o.thickness ?? 0.2; m.ior = o.ior ?? 1.45; m.roughness = o.rough ?? 0.06; m.transparent = false; m.opacity = 1; m.depthWrite = true; }
+    if (o.glass && ST) { m.transmission = 1; m.color = colour(c).clone().lerp(new THREE.Color(1, 1, 1), 0.82); m.thickness = o.thickness ?? 0.2; m.ior = o.ior ?? 1.45; m.roughness = o.rough ?? 0.06; m.transparent = false; m.opacity = 1; m.depthWrite = true; }
     if (o.sheen) { m.sheen = o.sheen; m.sheenColor = colour(o.sheenColour ?? 'hl'); m.sheenRoughness = 0.5; }
     if (o.iridescence) { m.iridescence = o.iridescence; m.iridescenceIOR = 1.3; }
     if (o.glow && ST) S.studio.glow(m, Math.min(1, o.glow));
     return m;
+  };
+  /* Glass refracts what is behind it, and a transparent canvas has nothing behind it but black. A scene
+     with glass therefore paints the figure's own paper sweep (the .lab3d background) into the frame. */
+  let backdropOn = false;
+  S.backdrop = () => {
+    if (backdropOn) return; backdropOn = true;
+    const c = (x) => vec3(x.r, x.g, x.b);
+    const A = dark ? cols.plate.clone().lerp(new THREE.Color(0x6f7c99), 0.18) : cols.plate.clone().lerp(new THREE.Color(1, 1, 1), 0.3);
+    const B = cols.plate.clone(), C = dark ? new THREE.Color(0x0d0c0b) : cols.plate.clone().lerp(cols.ink, 0.12);
+    const d = screenUV.sub(vec2(0.5, 0.18)).div(vec2(1.2, 0.9)).length();
+    S.scene.backgroundNode = mix(mix(c(A), c(B), smoothstep(float(0), float(0.58), d)), c(C), smoothstep(float(0.58), float(1), d));
+    lab.invalidate();
   };
   /* shadows: in the studio every solid part casts onto the catcher (opts.shadows false turns it off);
      without it only figures that ask for shadows do. Faint, see-through parts never cast. */
@@ -232,7 +245,8 @@ export async function create(host, opts = {}) {
     geo.setAttribute('color', new THREE.BufferAttribute(col, 3));
     const material = S.mat(o.c ?? 'c1', { ...o, vertexColors: !!o.colour });
     const mesh = new THREE.Mesh(geo, material);
-    mesh.castShadow = castOK(mesh); mesh.receiveShadow = !!opts.shadows;
+    if (material.transmission > 0.5) { mesh.castShadow = false; S.backdrop(); S.studio?.addGlass(mesh); }
+    else mesh.castShadow = castOK(mesh); mesh.receiveShadow = !!opts.shadows;
     let wire = null;
     if (o.wire) {
       wire = new THREE.LineSegments(new THREE.BufferGeometry(), new THREE.LineBasicMaterial({ color: colour(o.wireColour ?? 'ink'), transparent: true, opacity: o.wireOpacity ?? (dark ? 0.22 : 0.16), depthWrite: false }));

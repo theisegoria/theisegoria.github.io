@@ -328,7 +328,7 @@
         label: T('3D Bloch sphere. Drag to rotate.', '3D のブロッホ球。ドラッグで回転できます。'),
         init(S) {
           st.flat = false;
-          S.surface((u, w) => [Math.sin(w) * Math.cos(u), Math.sin(w) * Math.sin(u), Math.cos(w)], { u: [0, 2 * PI], v: [0, PI], nu: 64, nv: 32, c: 'c3', opacity: 0.13, rough: 0.2, coat: 0.8 });
+          S.surface((u, w) => [Math.sin(w) * Math.cos(u), Math.sin(w) * Math.sin(u), Math.cos(w)], { u: [0, 2 * PI], v: [0, PI], nu: 64, nv: 32, c: 'c3', opacity: 0.13, rough: 0.2, coat: 0.8, glass: true, thickness: 0.05, ior: 1.2 });
           const segs = [], circ = (f) => { for (let i = 0; i < 96; i++) segs.push([f(2 * PI * i / 96), f(2 * PI * (i + 1) / 96)]); };
           for (const la of [-60, -30, 30, 60]) { const z = Math.sin(la * DEG), r = Math.cos(la * DEG); circ((q) => [r * Math.cos(q), r * Math.sin(q), z]); }
           for (let k = 0; k < 6; k++) { const lo = k * PI / 6; circ((q) => [Math.cos(q) * Math.cos(lo), Math.cos(q) * Math.sin(lo), Math.sin(q)]); }
