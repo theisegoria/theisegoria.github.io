@@ -239,6 +239,21 @@ not exist or fall outside their range, or too little variety.
 
 ## 3D experiments
 
+**Lighting is the photographic studio.** Every 3D scene renders through
+`assets/lab-kit/studio-look.js`, the same pipeline as the watch and speaker
+labs: an HDRI with soft-box strips (turned so its sky is +Z), a soft key
+shadow on a catcher that `S.fitStage()` lays just under the figure (or on
+`S.floor`'s grid), and on WebGPU the temporal pipeline with ambient
+occlusion, screen-space reflections and bloom for anything made with
+`glow`. It measures its own frame rate and steps effects down; phones on
+WebGL 2 get MSAA, a 1024 shadow map and no AO. `S.mat` gives a lacquered
+finish (clear coat 0.55 at roughness 0.14) and takes `glass`, `sheen`,
+`iridescence`, `metal`, `coatRough`. Solid parts cast shadows; parts below
+opacity 0.6 do not; `opts.shadows: false` turns them off for a scene.
+Query switches: `?studio=0` (old room light), `?shadows=0`, plus the studio's
+own `?lowfx`, `?fx=0..4`, `?ssr=0`. The sandbox's software GPU renders the
+soft shadow very slowly, so shoot with `--q=shadows=0` when checking layout.
+
 `math-labs/three3d.js` adds a three.js scene to an experiment, through the
 site's lab-kit runtime (WebGPU, WebGL 2 fallback). Use it where the object is
 genuinely three-dimensional and depth carries meaning: surfaces and their

@@ -413,7 +413,7 @@
    * The experiment's definition sets three: true. init runs once when the scene
    * exists; update runs on every control change. When neither WebGPU nor WebGL 2
    * is available, or ?flat is in the URL, fallback draws the 2D figure instead. */
-  const V3 = '20261028e';
+  const V3 = '20261029a';
   let three3d = null;
   const flat = /[?&]flat\b/.test(location.search);
   function view3d(ctx, v, o) {

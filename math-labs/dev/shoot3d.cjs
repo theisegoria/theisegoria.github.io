@@ -18,7 +18,7 @@ const q=(args.find(a=>a.startsWith('--q='))||'--q=').slice(4);
  for(const id of ids){await p.locator('#'+id).scrollIntoViewIfNeeded();await p.waitForTimeout(400);
   const has3d=await p.$eval('#'+id,s=>!!s.querySelector('.lab3d'));if(has3d){await p.waitForFunction(i=>{const c=document.querySelector('#'+i+' .lab3d-canvas');return !document.querySelector('#'+i+' .lab3d.is-loading')&&(!c||c.dataset.backend);},id,{timeout:20000}).catch(()=>{});await p.waitForTimeout(wait);}
   const info=await p.$eval('#'+id,s=>{const c=s.querySelector('.lab3d-canvas');const plot=s.querySelector('.plot');return {backend:c?c.dataset.backend||'?':'2d',empty:!plot||plot.children.length===0,err:!!s.querySelector('.lab-error'),readout:(s.querySelector('.readout')||{}).textContent||'',q:(s.querySelector('.pr-q')||{}).textContent||'NO PRACTICE'};});
-  await p.locator('#'+id+' .plot').screenshot({path:`${out}/${slug}${ja?'-ja':''}${dark?'-dark':''}-${id}.png`});
+  {const shotPath=`${out}/${slug}${ja?'-ja':''}${dark?'-dark':''}-${id}.png`;try{await p.locator('#'+id+' .plot').screenshot({path:shotPath,timeout:15000});}catch(e){const bb=await p.locator('#'+id+' .plot').boundingBox();await p.screenshot({path:shotPath,clip:bb,timeout:60000}).catch(()=>{});console.log(id+': unstable element, clipped page shot');}}
   const pr=p.locator('#'+id+' .practice');if(await pr.count())await pr.screenshot({path:`${out}/${slug}${ja?'-ja':''}${dark?'-dark':''}-${id}-practice.png`});
   console.log(`${id}: [${info.backend}] ${info.empty?'EMPTY ':''}${info.err?'ERROR ':''}| ${info.readout.slice(0,100)}\n   Q: ${info.q.slice(0,150)}`);}
  if(errs.length)console.log('ERRORS:\n'+[...new Set(errs)].slice(0,12).join('\n'));

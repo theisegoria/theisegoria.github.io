@@ -706,7 +706,9 @@ export async function createStudio(lab, opts = {}) {
   let floor = null;
   if (shadows) {
     renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.VSMShadowMap;
-    key.castShadow = true; key.shadow.mapSize.set(2048, 2048); key.shadow.radius = 10; key.shadow.blurSamples = 16; key.shadow.bias = -0.0003;
+    // a phone on WebGL 2 gets a smaller map and a lighter blur: the soft shadow is most of its frame time
+    const sm = opts.shadowMapSize ?? (low || small ? 1024 : 2048);
+    key.castShadow = true; key.shadow.mapSize.set(sm, sm); key.shadow.radius = sm < 2048 ? 6 : 10; key.shadow.blurSamples = low ? 8 : 16; key.shadow.bias = -0.0003;
     const c = key.shadow.camera; const r = scale * 0.9; c.left = -r; c.right = r; c.top = r; c.bottom = -r; c.near = scale * 0.2; c.far = scale * 6;
     if (floorY !== null) {
       // The catcher stays inside the shadow camera's frustum and fades out toward its

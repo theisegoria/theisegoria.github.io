@@ -63,33 +63,65 @@ export async function create(host, opts = {}) {
   camera.lookAt(target);
 
   const S = { THREE, host, wrap, canvas, camera, cols, dark, T, ja, labels: [], handles: [], disposers: [], state: {} };
+  const q = location.search;
+  const useStudio = opts.studio !== false && !/[?&]studio=0\b/.test(q);
+  const noShadowQ = /[?&]shadows=0\b/.test(q);
+  const small = matchMedia('(max-width: 600px)').matches || matchMedia('(pointer: coarse)').matches;
+  const camDist = camPos.distanceTo(target);
+  const stageScale = opts.scale ?? camDist * 0.5;
+  // depth precision for the screen-space effects: a near plane in proportion to the view
+  camera.near = Math.max(0.005, camDist * 0.015); camera.far = camDist * 30; camera.updateProjectionMatrix();
 
   const mountOpts = {
     camera,
     maxDpr: opts.maxDpr ?? 2,
     onDemand: true,
-    setup: ({ renderer, scene }) => {
+    setup: async ({ renderer, scene, lab: L }) => {
       S.renderer = renderer; S.scene = scene;
-      renderer.toneMapping = THREE.AgXToneMapping;
-      renderer.toneMappingExposure = dark ? 1.05 : 1.0;
+      // The photographic studio (studio-look.js): an HDRI with soft-box strips for image-based light,
+      // a soft key shadow on a catcher under the figure, and on WebGPU the temporal pipeline with
+      // ambient occlusion and screen-space reflections, stepping itself down on a slow device.
+      // ?studio=0 (or opts.studio false) keeps the plain room light.
+      if (useStudio) {
+        try {
+          const { createStudio } = await import('/assets/lab-kit/studio-look.js');
+          const look = await createStudio(L, {
+            scale: stageScale, center: [target.x, target.y, target.z], floorY: 0,
+            hdri: opts.hdri ?? 'studio', strips: opts.strips ?? 'product', toneMapping: 'neutral',
+            exposure: opts.exposure ?? (dark ? 0.92 : 1.0), envIntensity: opts.envIntensity ?? (dark ? 0.95 : 1.05),
+            keyIntensity: opts.keyIntensity ?? 1.5, keyDir: opts.keyDir ?? [0.55, -0.75, 1.15],
+            shadowOpacity: dark ? 0.5 : 0.26, shadows: opts.shadows !== false && !noShadowQ,
+            aoStrength: 1.1, bloom: { strength: 0.55, radius: 0.4 }, sharpen: 1.1,
+          });
+          // the studio is built Y-up; turn its sky to +Z, and lay its shadow catcher in a z plane
+          scene.environmentRotation.set(Math.PI / 2, 0, 0);
+          if (look.floor) { look.floor.rotation.set(0, 0, 0); look.floor.visible = false; }
+          S.studio = look; S.key = look.key;
+          S.disposers.push(() => look.dispose());
+        } catch (err) { console.warn('three3d: studio unavailable, using the room light', err); S.studio = null; }
+      }
+      if (!S.studio) {
+        renderer.toneMapping = THREE.AgXToneMapping;
+        renderer.toneMappingExposure = dark ? 1.05 : 1.0;
+        if (opts.shadows) { renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap; }
+        // image-based light: a neutral room gives metals and glossy surfaces something to reflect
+        const pmrem = new THREE.PMREMGenerator(renderer);
+        const env = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+        scene.environment = env;
+        scene.environmentIntensity = opts.envIntensity ?? (dark ? 0.55 : 0.75);
+        pmrem.dispose();
+        S.disposers.push(() => env.dispose());
+        const hemi = new THREE.HemisphereLight(0xffffff, cols.plate.clone().multiplyScalar(0.6), dark ? 0.5 : 0.9);
+        hemi.position.set(0, 0, 1);
+        const key = new THREE.DirectionalLight(0xffffff, dark ? 1.6 : 2.0);
+        key.position.set(4, -6, 9);
+        if (opts.shadows) { key.castShadow = true; key.shadow.mapSize.set(1024, 1024); key.shadow.radius = 4; const c = key.shadow.camera; c.left = c.bottom = -8; c.right = c.top = 8; c.near = 1; c.far = 40; }
+        const rim = new THREE.DirectionalLight(0xffffff, dark ? 0.6 : 0.5);
+        rim.position.set(-6, 5, 3);
+        scene.add(hemi, key, rim);
+        S.key = key;
+      }
       renderer.outputColorSpace = THREE.SRGBColorSpace;
-      if (opts.shadows) { renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap; }
-      // image-based light: a neutral room gives metals and glossy surfaces something to reflect
-      const pmrem = new THREE.PMREMGenerator(renderer);
-      const env = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
-      scene.environment = env;
-      scene.environmentIntensity = opts.envIntensity ?? (dark ? 0.55 : 0.75);
-      pmrem.dispose();
-      S.disposers.push(() => env.dispose());
-      const hemi = new THREE.HemisphereLight(0xffffff, cols.plate.clone().multiplyScalar(0.6), dark ? 0.5 : 0.9);
-      hemi.position.set(0, 0, 1);
-      const key = new THREE.DirectionalLight(0xffffff, dark ? 1.6 : 2.0);
-      key.position.set(4, -6, 9);
-      if (opts.shadows) { key.castShadow = true; key.shadow.mapSize.set(1024, 1024); key.shadow.radius = 4; const c = key.shadow.camera; c.left = c.bottom = -8; c.right = c.top = 8; c.near = 1; c.far = 40; }
-      const rim = new THREE.DirectionalLight(0xffffff, dark ? 0.6 : 0.5);
-      rim.position.set(-6, 5, 3);
-      scene.add(hemi, key, rim);
-      S.key = key;
       return {
         update(dt, t) {
           const moving = S.controls?.update();
@@ -98,6 +130,7 @@ export async function create(host, opts = {}) {
           if (S.labels.length) S.placeLabels();
           if (more) S.lab?.invalidate();
         },
+        render: S.studio ? S.studio.render : undefined,
         resize() { S.placeLabels?.(); },
       };
     },
@@ -148,13 +181,27 @@ export async function create(host, opts = {}) {
   /* ---------- materials and colour ---------- */
   const colour = (c) => (c instanceof THREE.Color ? c : typeof c === 'string' && cols[c] ? cols[c] : new THREE.Color(c ?? cols.c1));
   S.colour = colour;
-  S.mat = (c = 'c1', o = {}) => new THREE.MeshPhysicalMaterial({
-    color: o.vertexColors ? new THREE.Color(1, 1, 1) : colour(c), roughness: o.rough ?? 0.42, metalness: o.metal ?? 0.0,
-    clearcoat: o.coat ?? 0.35, clearcoatRoughness: 0.35, side: o.side ?? THREE.DoubleSide,
-    transparent: (o.opacity ?? 1) < 1, opacity: o.opacity ?? 1, depthWrite: (o.opacity ?? 1) >= 1 || o.depthWrite === true,
-    vertexColors: !!o.vertexColors, emissive: o.glow ? colour(o.glowColour ?? c) : new THREE.Color(0), emissiveIntensity: o.glow ?? 0,
-    flatShading: !!o.flat,
-  });
+  // In the studio a figure reads as a lacquered object: a tighter clear coat that the reflections pass
+  // picks up, and a slightly smoother base. Anything with `glow` blooms on the WebGPU path.
+  const ST = !!S.studio;
+  S.mat = (c = 'c1', o = {}) => {
+    const m = new THREE.MeshPhysicalMaterial({
+      color: o.vertexColors ? new THREE.Color(1, 1, 1) : colour(c), roughness: o.rough ?? (ST ? 0.36 : 0.42), metalness: o.metal ?? 0.0,
+      clearcoat: o.coat ?? (ST ? 0.55 : 0.35), clearcoatRoughness: o.coatRough ?? (ST ? 0.14 : 0.35), side: o.side ?? THREE.DoubleSide,
+      transparent: (o.opacity ?? 1) < 1, opacity: o.opacity ?? 1, depthWrite: (o.opacity ?? 1) >= 1 || o.depthWrite === true,
+      vertexColors: !!o.vertexColors, emissive: o.glow ? colour(o.glowColour ?? c) : new THREE.Color(0), emissiveIntensity: o.glow ?? 0,
+      flatShading: !!o.flat,
+    });
+    if (o.glass && ST) { m.transmission = 1; m.thickness = o.thickness ?? 0.2; m.ior = o.ior ?? 1.45; m.roughness = o.rough ?? 0.06; m.transparent = false; m.opacity = 1; m.depthWrite = true; }
+    if (o.sheen) { m.sheen = o.sheen; m.sheenColor = colour(o.sheenColour ?? 'hl'); m.sheenRoughness = 0.5; }
+    if (o.iridescence) { m.iridescence = o.iridescence; m.iridescenceIOR = 1.3; }
+    if (o.glow && ST) S.studio.glow(m, Math.min(1, o.glow));
+    return m;
+  };
+  /* shadows: in the studio every solid part casts onto the catcher (opts.shadows false turns it off);
+     without it only figures that ask for shadows do. Faint, see-through parts never cast. */
+  const SHADOWS = ST ? opts.shadows !== false && !noShadowQ : !!opts.shadows;
+  const castOK = (m) => SHADOWS && ((m.material?.opacity ?? 1) >= 0.6);
   S.cmap = {
     seq: ramp({ a: cols.c1.clone().lerp(cols.plate, 0.15), b: cols.c3, c: cols.hl }, ['a', 'b', 'c']),
     warm: ramp({ a: cols.c4, b: cols.c2, c: cols.hl }, ['a', 'b', 'c']),
@@ -185,7 +232,7 @@ export async function create(host, opts = {}) {
     geo.setAttribute('color', new THREE.BufferAttribute(col, 3));
     const material = S.mat(o.c ?? 'c1', { ...o, vertexColors: !!o.colour });
     const mesh = new THREE.Mesh(geo, material);
-    mesh.castShadow = !!opts.shadows; mesh.receiveShadow = !!opts.shadows;
+    mesh.castShadow = castOK(mesh); mesh.receiveShadow = !!opts.shadows;
     let wire = null;
     if (o.wire) {
       wire = new THREE.LineSegments(new THREE.BufferGeometry(), new THREE.LineBasicMaterial({ color: colour(o.wireColour ?? 'ink'), transparent: true, opacity: o.wireOpacity ?? (dark ? 0.22 : 0.16), depthWrite: false }));
@@ -244,7 +291,7 @@ export async function create(host, opts = {}) {
   S.tube = (pts, o = {}) => {
     const material = S.mat(o.c ?? 'c2', { rough: 0.32, coat: 0.6, ...o });
     const mesh = new THREE.Mesh(new THREE.BufferGeometry(), material);
-    mesh.castShadow = !!opts.shadows;
+    mesh.castShadow = castOK(mesh);
     mesh.update = (p = pts) => {
       pts = p;
       const arr = (typeof p === 'function' ? Array.from({ length: (o.n ?? 200) + 1 }, (_, i) => p((o.t?.[0] ?? 0) + ((o.t?.[1] ?? 1) - (o.t?.[0] ?? 0)) * i / (o.n ?? 200))) : p).filter((q) => q && q.every(Number.isFinite)).map(V);
@@ -285,10 +332,10 @@ export async function create(host, opts = {}) {
   /* arrow from a along vector d */
   S.arrow = (a, d, o = {}) => {
     const g = new THREE.Group();
-    const material = S.mat(o.c ?? 'c2', { rough: 0.3, coat: 0.7, glow: o.glow, opacity: o.opacity });
+    const material = S.mat(o.c ?? 'c2', { rough: o.rough ?? 0.3, metal: o.metal, coat: 0.7, glow: o.glow, opacity: o.opacity });
     const shaft = new THREE.Mesh(new THREE.CylinderGeometry(1, 1, 1, 14), material);
     const head = new THREE.Mesh(new THREE.ConeGeometry(1, 1, 18), material);
-    shaft.castShadow = head.castShadow = !!opts.shadows;
+    shaft.castShadow = head.castShadow = castOK(shaft) && !o.noShadow;
     g.add(shaft, head);
     const up = new THREE.Vector3(0, 1, 0);
     g.set = (from = a, vec = d) => {
@@ -310,7 +357,7 @@ export async function create(host, opts = {}) {
   };
   S.sphere = (p, r = 0.08, o = {}) => {
     const m = new THREE.Mesh(new THREE.SphereGeometry(1, 32, 20), S.mat(o.c ?? 'hl', { rough: 0.25, coat: 0.8, ...o }));
-    m.scale.setScalar(r); m.position.copy(V(p)); m.castShadow = !!opts.shadows;
+    m.scale.setScalar(r); m.position.copy(V(p)); m.castShadow = castOK(m);
     m.at = (q) => { m.position.copy(V(q)); lab.invalidate(); return m; };
     if (o.add !== false) S.add(m);
     return m;
@@ -332,7 +379,7 @@ export async function create(host, opts = {}) {
       im.computeBoundingSphere?.();
       lab.invalidate(); return im;
     };
-    im.frustumCulled = false;
+    im.frustumCulled = false; im.castShadow = castOK(im);
     im.update(pts, o.colours, o.radii);
     if (o.add !== false) S.add(im);
     return im;
@@ -345,7 +392,7 @@ export async function create(host, opts = {}) {
     dirs.forEach((d, i) => {
       if (o.only && !o.only.includes(i)) return;
       const lo = o.neg === false ? 0 : -len * (o.negFrac ?? 1);
-      g.add(S.arrow([d[0] * lo, d[1] * lo, d[2] * lo], [d[0] * (len - lo), d[1] * (len - lo), d[2] * (len - lo)], { c: 'muted', r: o.r ?? 0.012, add: false }));
+      g.add(S.arrow([d[0] * lo, d[1] * lo, d[2] * lo], [d[0] * (len - lo), d[1] * (len - lo), d[2] * (len - lo)], { c: 'muted', r: o.r ?? 0.012, add: false, noShadow: true, metal: ST ? 0.75 : 0, rough: ST ? 0.28 : 0.3 }));
       if (names[i]) S.label(names[i], [d[0] * (len + 0.18), d[1] * (len + 0.18), d[2] * (len + 0.18)], { math: true, c: 'muted' });
     });
     S.add(g);
@@ -357,7 +404,8 @@ export async function create(host, opts = {}) {
     const segs = [];
     for (let i = 0; i <= n; i++) { const t = -half + 2 * half * i / n; segs.push([[t, -half, z], [t, half, z]], [[-half, t, z], [half, t, z]]); }
     const l = S.lines(segs, { c: 'grid', opacity: o.opacity ?? (dark ? 0.55 : 0.9) });
-    if (o.shadow) {
+    S._floorZ = z;
+    if (o.shadow && !ST) {
       const m = new THREE.Mesh(new THREE.PlaneGeometry(half * 2, half * 2), new THREE.ShadowMaterial({ opacity: dark ? 0.35 : 0.16 }));
       m.position.z = z - 0.001; m.receiveShadow = true; S.add(m);
     }
@@ -371,7 +419,7 @@ export async function create(host, opts = {}) {
   };
   S.box = (size, center, o = {}) => {
     const m = new THREE.Mesh(new THREE.BoxGeometry(...size), S.mat(o.c ?? 'c1', o));
-    m.position.copy(V(center)); m.castShadow = m.receiveShadow = !!opts.shadows;
+    m.position.copy(V(center)); m.castShadow = castOK(m); m.receiveShadow = !!opts.shadows;
     if (o.add !== false) S.add(m);
     return m;
   };
@@ -474,9 +522,31 @@ export async function create(host, opts = {}) {
   S.look = (pos, tgt, keep) => { camera.position.copy(V(pos)); if (tgt) controls.target.copy(V(tgt)); if (keep) { camPos.copy(V(pos)); if (tgt) target.copy(V(tgt)); } controls.update(); lab.invalidate(); };
   S.reduced = prefersReducedMotion;
   // a scene built off-screen can be skipped while its shaders compile; ask for frames until they are ready
-  S.settle = (ms = 4000) => { const t0 = performance.now(); const tick = () => { lab.invalidate(); if (performance.now() - t0 < ms) setTimeout(tick, 250); }; tick(); };
+  /* Fit the studio to the figure once it exists: the shadow catcher just under its lowest point (or on
+     its floor grid), the key light's shadow frustum around it, so contact shadows stay crisp. */
+  let fitted = false;
+  S.fitStage = () => {
+    const look = S.studio; if (!look?.floor) return;
+    S.scene.updateMatrixWorld();
+    const box = new THREE.Box3(), tmp = new THREE.Box3();
+    S.scene.traverse((o) => { if ((o.isMesh || o.isInstancedMesh) && o.visible && o !== look.floor && o.geometry) { o.geometry.computeBoundingBox?.(); if (!o.geometry.boundingBox) return; tmp.copy(o.geometry.boundingBox).applyMatrix4(o.matrixWorld); if (Number.isFinite(tmp.min.x)) box.union(tmp); } });
+    if (box.isEmpty()) return;
+    fitted = true;
+    const c = box.getCenter(new THREE.Vector3()), sz = box.getSize(new THREE.Vector3());
+    const R = Math.max(0.5, Math.hypot(sz.x, sz.y) * 0.62 + sz.z * 0.25);
+    const z = S._floorZ ?? (box.min.z - Math.max(0.02, R * 0.06));
+    const f = look.floor; const r0 = f.geometry.parameters?.radius || 1;
+    f.scale.setScalar((R * 1.25) / r0); f.position.set(c.x, c.y, z); f.visible = true;
+    const key = look.key, dir = key.position.clone().sub(key.target.position).normalize();
+    key.target.position.set(c.x, c.y, (z + box.max.z) / 2); key.target.updateMatrixWorld();
+    key.position.copy(key.target.position).addScaledVector(dir, R * 3);
+    const sc = key.shadow.camera; sc.left = sc.bottom = -R * 1.3; sc.right = sc.top = R * 1.3; sc.near = R * 0.5; sc.far = R * 7; sc.updateProjectionMatrix();
+    look.settle(); lab.invalidate();
+  };
+  S.settle = (ms = 4000) => {
+    if (!fitted) S.fitStage(); const t0 = performance.now(); const tick = () => { lab.invalidate(); if (performance.now() - t0 < ms) setTimeout(tick, 250); }; tick(); };
   { const io = new IntersectionObserver((es) => { if (es[0].isIntersecting) S.settle(2500); }); io.observe(wrap); S.disposers.push(() => io.disconnect()); }
-  S.light = (k = 1) => { S.scene.environmentIntensity *= k; S.scene.children.forEach((o) => { if (o.isLight) o.intensity *= k; }); lab.invalidate(); };
+  S.light = (k = 1) => { S.scene.environmentIntensity *= k; S.studio?.settle(); S.scene.children.forEach((o) => { if (o.isLight) o.intensity *= k; }); lab.invalidate(); };
   S.dispose = () => {
     S.disposers.forEach((f) => f());
     controls.dispose();
