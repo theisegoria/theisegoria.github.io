@@ -45,6 +45,20 @@ const experiments=[
 ];
 
 const state=new Map(experiments.map(e=>[e.id,Object.fromEntries(e.fields.map(f=>[f.key,f.value]))]));
+
+/* 3D view for the solids: the SVG figure stays as the fallback (no WebGL, or ?flat) */
+const solid3d=new Set(['cone','solids','scale']);
+let v3=null,v3p=null;
+function ensure3d(){if(!v3p)v3p=(/[?&]flat\b/.test(location.search)?Promise.resolve(null):import('/explore/geometry-lab/solids3d.mjs').then(m=>m.mount($('lab-3d'))).catch(()=>null)).then(c=>(v3=c,c));return v3p;}
+function sync3d(){
+ const id=active.id,host=$('lab-3d'),svg=$('lab-svg'),flat=()=>{host.hidden=true;svg.style.display='';};
+ if(!solid3d.has(id)){flat();return;}
+ const params=()=>{const q=state.get(active.id);return active.id==='scale'?{k:q.k}:{r:q.r,h:q.h};};
+ if(v3){host.hidden=false;svg.style.display='none';v3.show(id,params());return;}
+ if(v3p&&!v3){const done=v3p;done.then(c=>{if(!c)flat();});if(!solid3d.has(id))return;host.hidden=false;return;}
+ host.hidden=false;
+ ensure3d().then(c=>{if(!c){flat();return;}if(solid3d.has(active.id)){host.hidden=false;svg.style.display='none';c.show(active.id,params());}else flat();});
+}
 let active=experiments[0];
 let announceTimer;
 function update(announce=true){
@@ -55,6 +69,7 @@ function update(announce=true){
  shapes=[];active.draw(p,m,width,height);
  $('lab-svg').setAttribute('viewBox',`0 0 ${width} ${height}`);
  $('lab-svg').innerHTML=`<title id="diagram-title">${escape(active.title)}</title><desc id="diagram-desc">${escape(values.map(v=>`${v.label}: ${fmt(v.value)} ${v.unit}`).join('. '))}</desc>`+shapes.join('');
+ sync3d();
  if(announce){clearTimeout(announceTimer);announceTimer=setTimeout(()=>{$('live-results').textContent=values.map(v=>`${v.label} ${fmt(v.value)} ${v.unit}`).join(', ');},220);}
 }
 function select(id,focus=false){
@@ -72,3 +87,8 @@ $('lab-tabs').addEventListener('click',e=>{const id=e.target.closest('button')?.
 $('lab-tabs').addEventListener('keydown',e=>{const index=experiments.indexOf(active);let next;if(e.key==='ArrowRight')next=(index+1)%experiments.length;if(e.key==='ArrowLeft')next=(index+experiments.length-1)%experiments.length;if(e.key==='Home')next=0;if(e.key==='End')next=experiments.length-1;if(next!==undefined){e.preventDefault();select(experiments[next].id,true);history.replaceState(null,'',`#${active.id}`);}});
 select(location.hash.slice(1));window.addEventListener('hashchange',()=>select(location.hash.slice(1)));
 new ResizeObserver(()=>update(false)).observe($('lab-svg').parentElement);
+
+/* practice cards: "Show in the figure" selects the tab and sets its sliders */
+window.PracticeHosts=window.PracticeHosts||{};
+const practiceHost={set(v){const e=experiments.find(x=>x.id===v.exp);if(!e)return;const cur=state.get(e.id);for(const f of e.fields)if(typeof v[f.key]==='number')cur[f.key]=Math.min(f.max,Math.max(f.min,v[f.key]));select(e.id);history.replaceState(null,'','#'+e.id);$('lab-panel').scrollIntoView({block:'nearest',behavior:'smooth'});}};
+for(const id of ['plane','polygon','solids','scale'])window.PracticeHosts['explore-geometry-mensuration-'+id]=practiceHost;

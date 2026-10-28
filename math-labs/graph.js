@@ -124,7 +124,10 @@
     'electric-motors': ['switching-converters', 'control-theory', 'loudspeakers'],
     'gravitational-waves': ['optics', 'fourier-analysis', 'cosmology'],
     'robot-kinematics': ['linear-algebra', 'quaternions', 'lie-groups'],
-    'riemann-surfaces': ['elliptic-curves', 'differential-geometry', 'hyperbolic-geometry']
+    'riemann-surfaces': ['elliptic-curves', 'differential-geometry', 'hyperbolic-geometry'],
+    'projective-geometry': ['optics', 'riemann-surfaces', 'hyperbolic-geometry'],
+    'stellar-astrophysics': ['statistical-mechanics', 'fluid-dynamics'],
+    'structural-mechanics': ['continuum-mechanics', 'robot-kinematics', 'calculus-of-variations']
   };
   // Topics named in each topic's own prerequisite line (content.json "prerequisite").
   const PREREQ = {
@@ -179,7 +182,10 @@
     'electric-motors': ['electromagnetism', 'classical-mechanics'],      // Electromagnetic induction, phasors and rotational mechanics
     'gravitational-waves': ['general-relativity'],                       // General relativity, oscillations and Kepler orbits
     'robot-kinematics': ['linear-algebra', 'classical-mechanics'],       // Trigonometry, vectors and matrices, partial derivatives
-    'riemann-surfaces': ['complex-analysis', 'algebraic-topology']       // Complex numbers, the complex logarithm, and the Euler characteristic
+    'riemann-surfaces': ['complex-analysis', 'algebraic-topology'],      // Complex numbers, the complex logarithm, and the Euler characteristic
+    'projective-geometry': ['linear-algebra'],                           // Vectors, planes and matrices
+    'stellar-astrophysics': ['thermodynamics', 'nuclear-physics'],       // Ideal gases, radiation, and fusion energetics
+    'structural-mechanics': ['linear-algebra', 'classical-mechanics']    // Statics, linear systems, and the second derivative
   };
 
   let topics = [], bySlug = new Map(), edges = [], drawn = [];

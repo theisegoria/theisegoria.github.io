@@ -9,6 +9,12 @@
 <link rel="alternate" hreflang="en" href="https://theisegoria.github.io/explore/jacobians-wronskians-hessians.html">
 <link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/explore/jacobians-wronskians-hessians.html">
 <link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/explore/jacobians-wronskians-hessians.html"><link rel="stylesheet" href="/analysis-atlas/vendor/katex.min.css"><script src="/analysis-atlas/vendor/katex.min.js"></script><script src="/assets/math-notation.js?v=20260922"></script>
+<script type="importmap">{"imports":{"three":"/vendor/three/r186/build/three.webgpu.js","three/webgpu":"/vendor/three/r186/build/three.webgpu.js","three/tsl":"/vendor/three/r186/build/three.tsl.js","three/addons/":"/vendor/three/r186/examples-jsm/"}}</script>
+<link rel="stylesheet" href="/math-labs/labs.css?v=20261028">
+<link rel="stylesheet" href="/explore/m3d.css?v=20261028">
+<script defer src="/math-labs/practice.js?v=20261028"></script>
+<script defer src="/math-labs/questions/standalone/explore-jacobians-wronskians-hessians.js?v=20261028"></script>
+<script defer src="/math-labs/practice-embed.js?v=20261028"></script>
 <script src="/assets/lang.js"></script>
 <!-- ISEGORIA:HEAD -->
 <link rel="stylesheet" href="/assets/site-shell.css?v=c21cd21e82">
@@ -35,7 +41,20 @@
 <article class="lesson-card"><p class="cue">Hessian</p><h2>Directional curvature</h2><p>For a scalar field f, Hᶠ contains every second partial derivative. In a unit direction u, the second directional derivative is uᵀHᶠu.</p></article>
 <article class="lesson-card"><p class="cue">Classification</p><h2>Read the eigenvalue signs</h2><p>At a critical point: two positive eigenvalues mean a local minimum; two negative a maximum; mixed signs a saddle. A zero eigenvalue makes the quadratic test inconclusive.</p></article>
 <article class="lesson-card is-full"><p class="cue">The habits I drill</p><h2>Keep the indexing visible</h2><ul><li>Jacobian: outputs label rows, inputs label columns.</li><li>Wronskian: choose a consistent order for functions and derivative rows.</li><li>Hessian: mixed partials should agree when f is C²; asymmetry is usually an algebra error.</li><li>Always interpret a determinant with its domain, codomain, and units.</li></ul></article>
-</section><nav class="lesson-footer-nav"><a href="/#guides">← Back to the index</a><a href="mobius-schwarzian.html">Next: Möbius geometry →</a></nav></main><script src="../assets/site.js"></script><script src="../assets/interactive-derivatives.js"></script><!-- ISEGORIA:FOOT -->
+</section><section class="m3d-section" aria-labelledby="h3d-h"><h2 id="h3d-h">The Hessian as a surface</h2><p class="m3d-lede">Here the quadratic model q(u, v) = ½(au² + 2buv + cv²) is drawn as the surface it really is. A cut along any direction is a parabola whose curvature at the origin is uᵀHu; the green and violet curves along the eigen-directions give the largest and smallest of those curvatures.</p><div data-hessian3d></div></section>
+<script>window.PracticeHosts=window.PracticeHosts||{};window.PracticeHosts["explore-jacobians-wronskians-hessians-hessian"]={set:function(v){if(window.__h3dSet)window.__h3dSet(v);else window.__h3dPending=v;}};</script>
+<script type="module" src="/explore/hessian-3d.js?v=20261028"></script>
+<section class="practice-embed" aria-labelledby="pe-h">
+<h2 id="pe-h">Practice</h2>
+<p class="pe-lede">Practise the moves that work for any Jacobian, Wronskian or Hessian. Questions are generated fresh at three levels.</p>
+<h3 class="pe-h">The Jacobian as a local map</h3>
+<div class="practice" data-practice="explore-jacobians-wronskians-hessians-jacobian"><details><summary>For F(x, y) = (x² − y, xy + y²), what is det DF at (1, 2)?</summary><p>DF = [[2x, −1], [y, x + 2y]], so DF(1, 2) = [[2, −1], [2, 5]] and det = 10 + 2 = 12.</p></details></div>
+<h3 class="pe-h">The Wronskian as state-space area</h3>
+<div class="practice" data-practice="explore-jacobians-wronskians-hessians-wronskian"><details><summary>What is W(cos t, sin t)?</summary><p>W = cos t · cos t − sin t · (−sin t) = 1, never zero.</p></details></div>
+<h3 class="pe-h">The Hessian as curvature</h3>
+<div class="practice" data-practice="explore-jacobians-wronskians-hessians-hessian"><details><summary>At a critical point H = [[2, 0], [0, −3]]. What does the second-derivative test say?</summary><p>The eigenvalues 2 and −3 have opposite signs, so it is a saddle.</p></details></div>
+</section>
+<nav class="lesson-footer-nav"><a href="/#guides">← Back to the index</a><a href="mobius-schwarzian.html">Next: <span data-ig-no-math>Möbius</span> geometry →</a></nav></main><script src="../assets/site.js"></script><script src="../assets/interactive-derivatives.js"></script><!-- ISEGORIA:FOOT -->
 <footer id="ig-footer"><div><a href="/">Isegoria · Benjamin Haire</a><nav aria-label="Site links"><a href="/">Back to home</a><a href="/library.html">Browse the library</a><a href="#ig-content">Back to top</a></nav></div></footer>
 <!-- /ISEGORIA:FOOT -->
 </body></html>

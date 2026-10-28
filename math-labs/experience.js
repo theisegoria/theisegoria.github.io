@@ -95,6 +95,7 @@
 
   /* ---------- figure ---------- */
   let figId = 0;
+  const nativeContext = HTMLCanvasElement.prototype.getContext;
   function fig(host, o = {}) {
     const opt = Object.assign({ x: [-1, 1], y: [-1, 1], equal: false, aspect: 0.6, axes: true, grid: true, xlabel: '', ylabel: '', maxH: 540, minH: 220, ticksX: null, ticksY: null, frame: true, pad: null, piX: false }, o);
     const wrap = h('div', 'lab-fig' + (opt.dark ? ' is-dark' : ''), host);
@@ -124,11 +125,15 @@
     const defs = el('defs', {}, svg);
     const clip = el('clipPath', { id: `${id}c` }, defs);
     el('rect', { x: pad.l, y: pad.t, width: pw, height: ph }, clip);
+    // arrowheads: 'a' keeps the tip on the path end; 'p' sits its tip ARROW_PULL px past the path end, so the
+    // shaft (butt-ended, shortened by that much) stops at the head's base instead of poking through its tip
     ['c1', 'c2', 'c3', 'c4', 'hl', 'ink', 'muted'].forEach((c) => {
-      const m = el('marker', { id: `${id}a${c}`, viewBox: '0 0 10 10', refX: 8.5, refY: 5, markerWidth: 7, markerHeight: 7, orient: 'auto-start-reverse', markerUnits: 'userSpaceOnUse' }, defs);
-      el('path', { d: 'M0 1L9 5L0 9z', style: `fill:var(--lab-${c})` }, m);
+      for (const [k, refX] of [['a', 8.5], ['p', 1.3]]) {
+        const m = el('marker', { id: `${id}${k}${c}`, viewBox: '0 0 10 10', refX, refY: 5, markerWidth: 7, markerHeight: 7, orient: 'auto-start-reverse', markerUnits: 'userSpaceOnUse' }, defs);
+        el('path', { d: 'M0 1L9 5L0 9z', style: `fill:var(--lab-${c});stroke:var(--lab-${c});stroke-width:1.1;stroke-linejoin:round` }, m);
+      }
     });
-    let canvas = null;
+    let canvas = null, hiCanvas = null, rasterJob = null;
     const layers = {};
     const gridG = el('g', { class: 'lab-grid' }, svg);
     layers.under = el('g', { 'clip-path': `url(#${id}c)` }, svg);
@@ -147,6 +152,10 @@
       if (opt.frame) el('rect', { x: pad.l, y: pad.t, width: pw, height: ph, class: 'lab-frame' }, axisG);
       if (x0 < 0 && x1 > 0) el('line', { x1: X(0), x2: X(0), y1: pad.t, y2: pad.t + ph, class: 'lab-zero' }, axisG);
       if (y0 < 0 && y1 > 0) el('line', { y1: Y(0), y2: Y(0), x1: pad.l, x2: pad.l + pw, class: 'lab-zero' }, axisG);
+      if (opt.frame) {
+        tx.forEach(([v]) => el('line', { x1: X(v), x2: X(v), y1: pad.t + ph, y2: pad.t + ph + 4, class: 'lab-tickmark' }, axisG));
+        ty.forEach(([v]) => el('line', { y1: Y(v), y2: Y(v), x1: pad.l, x2: pad.l - 4, class: 'lab-tickmark' }, axisG));
+      }
       tx.forEach(([v, s]) => { const t = el('text', { x: X(v), y: pad.t + ph + 16, 'text-anchor': 'middle', class: 'lab-tick' }, axisG); t.textContent = s; });
       ty.forEach(([v, s]) => { const t = el('text', { x: pad.l - 7, y: Y(v) + 4, 'text-anchor': 'end', class: 'lab-tick' }, axisG); t.textContent = s; });
       if (opt.xlabel) { const t = el('text', { x: pad.l + pw / 2, y: H - 6, 'text-anchor': 'middle', class: 'lab-axlabel' }, axisG); t.textContent = opt.xlabel; }
@@ -163,21 +172,44 @@
       if (o2.op !== undefined) s.push(`opacity:${o2.op}`);
       return s.join(';');
     };
-    const pathD = (pts, closed) => {
-      let d = '', pen = false;
+    // pull: shorten the final run by this many screen px, so a butt-ended shaft stops at the base of an arrowhead
+    let pulled = false;
+    const pathD = (pts, closed, pull = 0) => {
+      const runs = [];
+      pulled = false;
+      let cur = null;
       for (const p of pts) {
-        if (!p || !Number.isFinite(p[0]) || !Number.isFinite(p[1])) { pen = false; continue; }
+        if (!p || !Number.isFinite(p[0]) || !Number.isFinite(p[1])) { cur = null; continue; }
         const px = X(p[0]), py = Y(p[1]);
-        if (Math.abs(py) > 1e5 || Math.abs(px) > 1e5) { pen = false; continue; }
-        d += (pen ? 'L' : 'M') + px.toFixed(2) + ' ' + py.toFixed(2);
-        pen = true;
+        if (Math.abs(py) > 1e5 || Math.abs(px) > 1e5) { cur = null; continue; }
+        if (!cur) { cur = []; runs.push(cur); }
+        cur.push([px, py]);
       }
+      if (pull > 0 && runs.length) {
+        const r = runs[runs.length - 1];
+        if (r.length > 1) {
+          const [bx, by] = r[r.length - 2], [ex, ey] = r[r.length - 1], len = Math.hypot(ex - bx, ey - by);
+          if (len > pull + 1) { pulled = true; r[r.length - 1] = [ex - (ex - bx) / len * pull, ey - (ey - by) / len * pull]; }
+        }
+      }
+      let d = '';
+      for (const r of runs) r.forEach(([px, py], i) => { d += (i ? 'L' : 'M') + px.toFixed(2) + ' ' + py.toFixed(2); });
       return d + (closed && d ? 'Z' : '');
     };
+    // dash patterns: round caps would swell every dash into its neighbour, so dashes get butt caps
+    // unless the pattern asks for dots (a dash of about a stroke width or less)
+    const dashCss = (dash, w) => {
+      if (!dash) return '';
+      const pat = dash === true ? '5 5' : String(dash);
+      const first = parseFloat(pat);
+      return `;stroke-dasharray:${pat}` + (first > Math.max(1.5, w * 1.2) ? ';stroke-linecap:butt' : '');
+    };
+    const ARROW_PULL = 5.4;  // = (9 - 1.3) / 10 * 7, the marker's tip distance from its ref point
     const f = {
       svg, wrap, W, H, pad, pw, ph, X, Y, IX, IY, layers, x: [x0, x1], y: [y0, y1], small,
       line(pts, o2 = {}) {
-        return el('path', { d: pathD(pts, o2.closed), class: 'lab-line' + (o2.cls ? ' ' + o2.cls : ''), style: style(o2) + `;stroke-width:${o2.w ?? 2.25}` + (o2.dash ? `;stroke-dasharray:${o2.dash === true ? '5 5' : o2.dash}` : ''), 'marker-end': o2.arrow ? `url(#${id}a${o2.c || 'c1'})` : null }, o2.layer ? layers[o2.layer] : layers.main);
+        const d = pathD(pts, o2.closed, o2.arrow ? ARROW_PULL : 0), mk = pulled ? 'p' : 'a';
+        return el('path', { d, class: 'lab-line' + (o2.cls ? ' ' + o2.cls : ''), style: style(o2) + `;stroke-width:${o2.w ?? 2.25}` + dashCss(o2.dash, o2.w ?? 2.25) + (o2.arrow ? ';stroke-linecap:butt' : ''), 'marker-end': o2.arrow ? `url(#${id}${mk}${o2.c || 'c1'})` : null }, o2.layer ? layers[o2.layer] : layers.main);
       },
       area(pts, o2 = {}) {
         const base = o2.base ?? 0;
@@ -185,7 +217,7 @@
         return el('path', { d: pathD(full, true), style: style(o2, 'fill') + ';stroke:none' }, o2.layer ? layers[o2.layer] : layers.under);
       },
       poly(pts, o2 = {}) {
-        return el('path', { d: pathD(pts, true), class: 'lab-line', style: style(Object.assign({ fill: true }, o2)) + `;stroke-width:${o2.w ?? 1.6}` + (o2.dash ? `;stroke-dasharray:${o2.dash === true ? '5 5' : o2.dash}` : ''), 'stroke-linejoin': 'round' }, o2.layer ? layers[o2.layer] : layers.main);
+        return el('path', { d: pathD(pts, true), class: 'lab-line', style: style(Object.assign({ fill: true }, o2)) + `;stroke-width:${o2.w ?? 1.6}` + dashCss(o2.dash, o2.w ?? 1.6), 'stroke-linejoin': 'round' }, o2.layer ? layers[o2.layer] : layers.main);
       },
       seg(a, b, o2 = {}) { return f.line([a, b], o2); },
       arrow(a, b, o2 = {}) { return f.line([a, b], Object.assign({ arrow: true }, o2)); },
@@ -194,7 +226,7 @@
         return el('rect', { x: px, y: py, width: Math.abs(X(x + w) - X(x)), height: Math.abs(Y(y + hh) - Y(y)), rx: o2.rx ?? 0, style: style(Object.assign({ fill: true }, o2)) + `;stroke-width:${o2.w ?? 1}` + (o2.nostroke ? ';stroke:none' : '') }, o2.layer ? layers[o2.layer] : layers.main);
       },
       circle(x, y, r, o2 = {}) {
-        return el('ellipse', { cx: X(x), cy: Y(y), rx: Math.abs(X(x + r) - X(x)), ry: Math.abs(Y(y + r) - Y(y)), style: style(o2) + `;stroke-width:${o2.w ?? 1.6}` + (o2.dash ? `;stroke-dasharray:${o2.dash === true ? '5 5' : o2.dash}` : '') }, o2.layer ? layers[o2.layer] : layers.main);
+        return el('ellipse', { cx: X(x), cy: Y(y), rx: Math.abs(X(x + r) - X(x)), ry: Math.abs(Y(y + r) - Y(y)), style: style(o2) + `;stroke-width:${o2.w ?? 1.6}` + dashCss(o2.dash, o2.w ?? 1.6) }, o2.layer ? layers[o2.layer] : layers.main);
       },
       dot(x, y, o2 = {}) {
         const c = o2.c || 'c1';
@@ -207,33 +239,85 @@
       },
       vline(x, o2 = {}) { return f.line([[x, y0 - 2 * (y1 - y0)], [x, y1 + 2 * (y1 - y0)]], Object.assign({ w: 1.2, c: 'muted', dash: '4 4' }, o2)); },
       hline(y, o2 = {}) { return f.line([[x0 - 2 * (x1 - x0), y], [x1 + 2 * (x1 - x0), y]], Object.assign({ w: 1.2, c: 'muted', dash: '4 4' }, o2)); },
+      /* Heatmaps and fields. A coarse draft (one sample per res CSS px) is drawn at once so dragging stays
+         instant; when calls stop for a moment the same function is re-sampled at device-pixel resolution
+         (capped, time-sliced, never blocking input) onto a second canvas laid over the draft.
+         o.pixel marks lattice pictures that must stay blocky, and o.refine === false opts out. A caller
+         that takes the returned canvas and calls getContext itself (to draw on it) keeps the draft only. */
       raster(fn, o2 = {}) {
         if (!canvas) {
           canvas = h('canvas', 'lab-raster', wrap);
           wrap.insertBefore(canvas, svg);
         }
-        const dpr = Math.min(2, window.devicePixelRatio || 1);
+        if (rasterJob) { rasterJob.cancel(); rasterJob = null; }
+        if (hiCanvas) hiCanvas.hidden = true;
         const res = o2.res ?? (small ? 2 : 3);
         const cw = Math.max(1, Math.round(pw / res)), chh = Math.max(1, Math.round(ph / res));
         canvas.width = cw; canvas.height = chh;
-        canvas.style.left = (pad.l / W * 100) + '%'; canvas.style.top = (pad.t / H * 100) + '%';
-        canvas.style.width = (pw / W * 100) + '%'; canvas.style.height = (ph / H * 100) + '%';
+        const box = (c) => {
+          c.style.left = (pad.l / W * 100) + '%'; c.style.top = (pad.t / H * 100) + '%';
+          c.style.width = (pw / W * 100) + '%'; c.style.height = (ph / H * 100) + '%';
+        };
+        box(canvas);
         canvas.style.imageRendering = o2.pixel ? 'pixelated' : 'auto';
-        const ctx = canvas.getContext('2d');
-        const img = ctx.createImageData(cw, chh);
+        const ctx = nativeContext.call(canvas, '2d');
         const cmap = typeof o2.cmap === 'function' ? o2.cmap : cmaps[o2.cmap || 'div'];
-        for (let j = 0; j < chh; j++) {
-          const y = y1 - (j + 0.5) / chh * (y1 - y0);
-          for (let i = 0; i < cw; i++) {
-            const x = x0 + (i + 0.5) / cw * (x1 - x0);
-            const v = fn(x, y);
-            const col = Array.isArray(v) ? v : cmap(v);
-            const k = (j * cw + i) * 4;
-            img.data[k] = col[0]; img.data[k + 1] = col[1]; img.data[k + 2] = col[2]; img.data[k + 3] = 255;
+        const t0 = performance.now();
+        const paint = (g, w, hh, j0, j1, data) => {
+          for (let j = j0; j < j1; j++) {
+            const y = y1 - (j + 0.5) / hh * (y1 - y0);
+            for (let i = 0; i < w; i++) {
+              const x = x0 + (i + 0.5) / w * (x1 - x0);
+              const v = fn(x, y);
+              const col = Array.isArray(v) ? v : cmap(v);
+              const k = ((j - j0) * w + i) * 4;
+              data[k] = col[0]; data[k + 1] = col[1]; data[k + 2] = col[2]; data[k + 3] = 255;
+            }
           }
-        }
+        };
+        const img = ctx.createImageData(cw, chh);
+        paint(ctx, cw, chh, 0, chh, img.data);
         ctx.putImageData(img, 0, 0);
-        void dpr;
+        const perSample = (performance.now() - t0) / (cw * chh);
+        // the caller may draw on the draft canvas, which a hi-res layer would hide: then it stays the draft
+        let claimed = false;
+        canvas.getContext = function (...a) { claimed = true; if (rasterJob) { rasterJob.cancel(); rasterJob = null; } if (hiCanvas) hiCanvas.hidden = true; return nativeContext.apply(this, a); };
+        if (o2.pixel || o2.refine === false || res <= 1) return canvas;
+        const job = { dead: false, cancel() { this.dead = true; clearTimeout(this.timer); cancelAnimationFrame(this.raf); } };
+        rasterJob = job;
+        job.timer = setTimeout(() => {
+          if (job.dead || claimed || !wrap.isConnected) return;
+          // device pixels, capped: a little supersampling on a standard display, the cap on a dense one
+          const dpr = Math.min(2, window.devicePixelRatio || 1);
+          const capN = small ? 1000000 : 1500000;
+          // 2x the device pixels (about 1.4x per axis, smoothed down by the browser) when that is cheap, else 1x
+          const dev = pw * ph * dpr * dpr;
+          let target = Math.min(capN, dev * (perSample * dev * 2 > 800 ? 1 : 2));
+          // slow functions: stay within about 2.5 s of background work, never below 2x the draft's linear detail
+          target = Math.min(target, Math.max(cw * chh * 4, 2500 / Math.max(perSample, 1e-6)));
+          const k = Math.sqrt(target / (pw * ph));
+          const hw = Math.max(cw, Math.round(pw * k)), hh = Math.max(chh, Math.round(ph * k));
+          if (hw * hh < cw * chh * 2) return;
+          if (!hiCanvas) { hiCanvas = h('canvas', 'lab-raster lab-raster-hi', wrap); wrap.insertBefore(hiCanvas, canvas.nextSibling); }
+          hiCanvas.width = hw; hiCanvas.height = hh; box(hiCanvas); hiCanvas.hidden = false; delete hiCanvas.dataset.done;
+          const hctx = hiCanvas.getContext('2d');
+          const budget = small ? 7 : 10;
+          let j = 0;
+          const step = () => {
+            if (job.dead || !wrap.isConnected) return;
+            const start = performance.now();
+            const rows = Math.max(1, Math.min(16, Math.floor(32768 / hw)));
+            while (j < hh && performance.now() - start < budget) {
+              const j1 = Math.min(hh, j + rows);
+              const chunk = hctx.createImageData(hw, j1 - j);
+              paint(hctx, hw, hh, j, j1, chunk.data);
+              hctx.putImageData(chunk, 0, j);
+              j = j1;
+            }
+            if (j < hh) job.raf = requestAnimationFrame(step); else { hiCanvas.dataset.done = '1'; if (rasterJob === job) rasterJob = null; }
+          };
+          job.raf = requestAnimationFrame(step);
+        }, o2.settle ?? 140);
         return canvas;
       },
       field(fn, o2 = {}) {
@@ -253,7 +337,8 @@
         for (const [x, y, u, v, m] of vals) {
           const s = o2.scaled === false ? 1 : clamp(Math.sqrt(m / ref), 0.25, 1);
           const a = [x - u * len * s / 2, y - v * len * s / 2], b = [x + u * len * s / 2, y + v * len * s / 2];
-          const p = el('path', { d: pathD([a, b]), style: `stroke:var(--lab-${o2.c || 'muted'});opacity:${(0.35 + 0.6 * s).toFixed(2)};stroke-width:1.3`, 'marker-end': `url(#${id}a${o2.c || 'muted'})` }, g);
+          const fd = pathD([a, b], false, ARROW_PULL), fm = pulled ? 'p' : 'a';
+          const p = el('path', { d: fd, style: `stroke:var(--lab-${o2.c || 'muted'});stroke-linecap:butt;opacity:${(0.35 + 0.6 * s).toFixed(2)};stroke-width:1.3`, 'marker-end': `url(#${id}${fm}${o2.c || 'muted'})` }, g);
           void p;
         }
         return g;
@@ -413,7 +498,7 @@
    * The experiment's definition sets three: true. init runs once when the scene
    * exists; update runs on every control change. When neither WebGPU nor WebGL 2
    * is available, or ?flat is in the URL, fallback draws the 2D figure instead. */
-  const V3 = '20261029a';
+  const V3 = '20261029e';
   let three3d = null;
   const flat = /[?&]flat\b/.test(location.search);
   function view3d(ctx, v, o) {

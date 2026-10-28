@@ -21,7 +21,7 @@
 
 
 
-<link rel="canonical" href="https://theisegoria.github.io/lebesgue-integration/lab.html">
+<link rel="stylesheet" href="/analysis-atlas/vendor/katex.min.css"><link rel="stylesheet" href="/math-labs/labs.css?v=20261028"><script defer src="/analysis-atlas/vendor/katex.min.js"></script><script defer src="/math-labs/practice.js?v=20261028"></script><script defer src="/math-labs/questions/standalone/lebesgue-integration-lab.js?v=20261028"></script><script defer src="/math-labs/practice-embed.js?v=20261028"></script><link rel="canonical" href="https://theisegoria.github.io/lebesgue-integration/lab.html">
 <link rel="alternate" hreflang="en" href="https://theisegoria.github.io/lebesgue-integration/lab.html">
 <link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/lebesgue-integration/lab.html">
 <link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/lebesgue-integration/lab.html"><link rel="stylesheet" href="/analysis-atlas/vendor/katex.min.css"><script src="/analysis-atlas/vendor/katex.min.js"></script><script src="/assets/math-notation.js?v=20260922"></script>
@@ -58,7 +58,14 @@
     <section class="section" id="simple"><div class="section-head"><h2>Calculate a simple function.</h2><p>Each slider sets the height on an interval of length one. Because the intervals are disjoint, the Lebesgue integral is the sum of height times measure.</p></div><div class="simple-grid"><div class="editor"><h3>Heights on three measurable sets</h3><div class="row"><label for="h1">[0,1)</label><input id="h1" type="range" min="0" max="8" step="0.5" value="3"><output>3</output></div><div class="row"><label for="h2">[1,2)</label><input id="h2" type="range" min="0" max="8" step="0.5" value="0.5"><output>0.5</output></div><div class="row"><label for="h3">[2,3]</label><input id="h3" type="range" min="0" max="8" step="0.5" value="2"><output>2</output></div></div><div class="result"><h3>Integral</h3><div class="formula" id="simple-formula">3·1 + 0.5·1 + 2·1 = 5.5</div><p class="sum">Changing endpoints does not alter the answer: finite sets have measure zero.</p></div></div></section>
 
     <section class="section" id="limits"><div class="section-head"><h2>Choose the theorem that controls the limit.</h2><p>Pointwise convergence is only the beginning, and this is the point I labour hardest. Switch sequences to see how monotonicity, domination, or concentration changes what may pass through the integral.</p></div><div class="theorem-controls" role="group" aria-label="Convergence example"><button type="button" data-seq="monotone" aria-pressed="true">Increasing truncations</button><button type="button" data-seq="dominated" aria-pressed="false">Dominated powers</button><button type="button" data-seq="spike" aria-pressed="false">Moving spike</button></div><div class="theorem"><div class="theorem-layout"><svg id="sequence" viewBox="0 0 620 330" role="img" aria-label="Sequence of functions"><rect class="frame" x="44" y="15" width="550" height="260"/><line class="axis" x1="44" y1="275" x2="594" y2="275"/><line class="axis" x1="44" y1="15" x2="44" y2="275"/><g class="sequence-lines"></g><text x="590" y="299" fill="currentColor">x</text></svg><div class="theorem-copy"><p class="eyebrow" id="theorem-label">Monotone convergence</p><h3 id="theorem-title">Approximate from below.</h3><p id="theorem-body">Nonnegative truncations rise pointwise to the target, so their integrals rise to the integral of the limit.</p><ul class="checks" id="theorem-checks"><li>Nonnegative measurable functions</li><li>Increasing pointwise</li><li>Infinity is allowed</li></ul></div></div></div></section>
-  </main>
+  <section class="practice-embed" aria-labelledby="pe-h"><h2 id="pe-h">Practice</h2><p class="pe-lede">Practice simple-function integrals and the convergence theorems from this lab; questions are generated fresh at three levels.</p>
+<h3 class="pe-h">Simple functions</h3>
+<div class="practice" data-practice="lebesgue-integration-lab-simple"><details><summary>A simple function has heights 3, 0.5 and 2 on [0, 1), [1, 2) and [2, 3]. What is its integral over [0, 3]?</summary><p>5.5, because 3·1 + 0.5·1 + 2·1 = 5.5.</p></details></div>
+<h3 class="pe-h">Convergence theorems</h3>
+<div class="practice" data-practice="lebesgue-integration-lab-limits"><details><summary>What is the integral of fₙ = xⁿ over [0, 1] for n = 3, and which theorem controls its limit?</summary><p>1/4. Dominated convergence applies, because 0 ≤ xⁿ ≤ 1.</p></details></div>
+</section>
+<script>window.PracticeHosts=Object.assign(window.PracticeHosts||{},{'lebesgue-integration-lab-simple':{set(v){let last;for(const k of ['h1','h2','h3'])if(k in v){const el=document.getElementById(k);el.value=v[k];last=el}if(last)last.dispatchEvent(new Event('input',{bubbles:true}))}}});</script>
+</main>
   <footer><span>Lebesgue Integration Lab</span><a href="/">All projects</a></footer>
   <script>
     (()=>{

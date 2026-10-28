@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="referrer" content="no-referrer">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; style-src 'self' 'unsafe-inline' blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; img-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; font-src 'self' blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; media-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; worker-src blob:; connect-src blob: data: https://isegoria-analytics.isegoria-analytics.workers.dev; frame-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; style-src 'self' 'unsafe-inline' blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; img-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; font-src 'self' blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; media-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; worker-src blob:; connect-src 'self' blob: data: https://isegoria-analytics.isegoria-analytics.workers.dev; frame-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <title>Cone Dimensions - Interactive Geometry</title><meta name="description" content="Adjust the perpendicular height of a cone and see its slant height, volume and curved surface area change.">
 <style>:root{color-scheme:light dark;background:light-dark(rgb(255 255 255), rgb(24 24 24))}html,body{margin:0}body{box-sizing:border-box;padding:1rem;background:inherit}iframe{display:block;width:100%;height:calc(100vh - 2rem);margin:0 auto;border:0}</style>
 
@@ -14,7 +14,26 @@
 <link rel="alternate" hreflang="en" href="https://theisegoria.github.io/explore/cone-dimensions.html">
 <link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/explore/cone-dimensions.html">
 <link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/explore/cone-dimensions.html"><link rel="stylesheet" href="/analysis-atlas/vendor/katex.min.css"><script src="/analysis-atlas/vendor/katex.min.js"></script><script src="/assets/math-notation.js?v=20260922"></script>
-<script src="/assets/lang.js"></script>
+<script type="importmap">{"imports":{"three":"/vendor/three/r186/build/three.webgpu.js","three/webgpu":"/vendor/three/r186/build/three.webgpu.js","three/tsl":"/vendor/three/r186/build/three.tsl.js","three/addons/":"/vendor/three/r186/examples-jsm/"}}</script>
+<style id="cone3d-css">
+iframe{height:clamp(420px,64vh,470px)!important}
+@media(max-width:520px){iframe{height:540px!important}}
+.cone3d{max-width:1080px;margin:36px auto 8px;padding:0 4px;color:var(--lab-ink)}
+.cone3d h2{font:400 clamp(1.5rem,3vw,2rem)/1.15 var(--ig-serif,Georgia,serif);margin:0 0 6px}
+.cone3d .c3-lede{color:var(--lab-muted);max-width:70ch;line-height:1.65;margin:0 0 18px}
+.cone3d .c3-grid{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(230px,1fr);gap:24px;align-items:start}
+.cone3d .c3-side{display:grid;gap:16px}
+.cone3d .c3-read{display:grid;grid-template-columns:1fr 1fr;gap:12px 18px;margin:6px 0 0}
+.cone3d .c3-read div{border-top:1px solid var(--lab-grid);padding-top:8px}
+.cone3d dt{font-size:.78rem;color:var(--lab-muted);margin:0 0 2px}
+.cone3d dd{margin:0;font:600 1.2rem var(--lab-mono);font-variant-numeric:tabular-nums}
+.cone3d .c3-note{font-size:.88rem;line-height:1.6;color:var(--lab-muted);margin:0}
+@media(max-width:760px){.cone3d .c3-grid{grid-template-columns:1fr;gap:14px}}
+</style>
+<link rel="stylesheet" href="/math-labs/labs.css?v=20261028">
+<script defer src="/math-labs/practice.js?v=20261028"></script>
+<script defer src="/math-labs/questions/standalone/explore-cone-dimensions.js?v=20261028"></script>
+<script defer src="/math-labs/practice-embed.js?v=20261028"></script><script src="/assets/lang.js"></script>
 <!-- ISEGORIA:HEAD -->
 <link rel="stylesheet" href="/assets/site-shell.css?v=c21cd21e82">
 <script src="/assets/site-shell.js?v=c21cd21e82" ></script>
@@ -1128,7 +1147,9 @@ html&gt;body{padding:0}&lt;/style&gt;
         renderMath(get(&#x27;cone-area&#x27;),String.raw`${(Math.PI*r*l).toFixed(2)}\,\mathrm{units}^{2}`);
         get(&#x27;cone-description&#x27;).textContent=`Right circular cone. Radius 3 units, perpendicular height ${h.toFixed(1)} units, slant height ${l.toFixed(2)} units.`;
       }
-      range.addEventListener(&#x27;input&#x27;,update);update();
+      range.addEventListener(&#x27;input&#x27;,()=&gt;{update();try{parent.postMessage({coneH:Number(range.value)},&#x27;*&#x27;);}catch(e){}});
+      window.addEventListener(&#x27;message&#x27;,e=&gt;{const d=e.data;if(d&amp;&amp;typeof d.coneH===&#x27;number&#x27;){range.value=String(Math.min(8,Math.max(1,d.coneH)));update();}});
+      update();
     })();
   &lt;/script&gt;
 &lt;/div&gt;
@@ -1485,7 +1506,36 @@ html&gt;body{padding:0}&lt;/style&gt;
 
 &lt;/body&gt;
 &lt;/html&gt;
-"></iframe><!-- ISEGORIA:FOOT -->
+"></iframe>
+<section class="cone3d math-wrap" id="cone3d-section" aria-labelledby="c3-title" hidden>
+<h2 id="c3-title">The same cone in three dimensions</h2>
+<p class="c3-lede">Drag to turn it. The height slider is shared with the figure above. Then unroll the curved surface: it flattens into a circular sector whose radius is the slant height ℓ and whose arc is the circumference of the base.</p>
+<div class="c3-grid">
+<div id="cone3d-view"></div>
+<div class="c3-side">
+<div class="lab-control"><span>Height h</span><output id="c3-hv">4.0</output><input id="c3-h" type="range" min="1" max="8" step="0.1" value="4" aria-label="Cone height"></div>
+<div class="lab-control"><span>Unroll the curved surface</span><output id="c3-uv">0%</output><input id="c3-u" type="range" min="0" max="1" step="0.01" value="0" aria-label="Unroll the curved surface"></div>
+<dl class="c3-read" aria-live="polite">
+<div><dt>Slant height ℓ</dt><dd id="c3-l">5.00</dd></div>
+<div><dt>Sector angle θ</dt><dd id="c3-t">216.0°</dd></div>
+<div><dt>Volume</dt><dd id="c3-v">37.70</dd></div>
+<div><dt>Curved area</dt><dd id="c3-a">47.12</dd></div>
+</dl>
+<p class="c3-note">The radius stays at r = 3. The flat sector has angle θ = 360° · r/ℓ, so a taller cone gives a thinner sector, and its area ½ℓ · 2πr is the curved area πrℓ.</p>
+</div>
+</div>
+</section>
+<script type="module" src="/explore/cone-dimensions-3d.mjs?v=20261029"></script>
+<section class="practice-embed" aria-labelledby="pe-h">
+<h2 id="pe-h">Practice</h2>
+<p class="pe-lede">Practise the cone of this page: slant height from the right triangle, volume and curved area as the height changes, and the sector that the curved surface unrolls into. Questions are generated fresh at three levels; those with radius 3 can be shown in the figure.</p>
+<h3 class="pe-h">Slant height, height and radius</h3>
+<div class="practice" data-practice="explore-cone-dimensions-slant"><details><summary>The cone has radius 3 and height 4. What is its slant height?</summary><p>ℓ = √(3² + 4²) = 5.</p></details></div>
+<h3 class="pe-h">Volume and curved surface area</h3>
+<div class="practice" data-practice="explore-cone-dimensions-volume"><details><summary>The cone has radius 3 and height 4. What is its volume?</summary><p>V = ⅓π · 9 · 4 = 12π ≈ 37.70.</p></details></div>
+<h3 class="pe-h">The curved surface unrolled</h3>
+<div class="practice" data-practice="explore-cone-dimensions-unroll"><details><summary>The curved surface of the cone with radius 3 and height 4 unrolls into a sector. What is its central angle?</summary><p>θ = 360° · 3/5 = 216°.</p></details></div>
+</section><!-- ISEGORIA:FOOT -->
 <footer id="ig-footer"><div><a href="/">Isegoria · Benjamin Haire</a><nav aria-label="Site links"><a href="/">Back to home</a><a href="/library.html">Browse the library</a><a href="#ig-content">Back to top</a></nav></div></footer>
 <!-- /ISEGORIA:FOOT -->
 </body>

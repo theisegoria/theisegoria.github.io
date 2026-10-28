@@ -195,7 +195,7 @@
           st.flat = false;
           S.floor({ size: 1.4, n: 14, z: 0 });
           const sh = [0, 0, D1];
-          S.surface((u, w) => [sh[0] + (L2 + L3) * Math.sin(u) * Math.cos(w), sh[1] + (L2 + L3) * Math.sin(u) * Math.sin(w), sh[2] + (L2 + L3) * Math.cos(u)], { u: [0, PI], v: [0, 2 * PI], nu: 40, nv: 72, c: 'c3', opacity: 0.07, wire: true, wireEvery: 5, wireEveryV: 6, wireOpacity: 0.1 });
+          S.surface((u, w) => [sh[0] + (L2 + L3) * Math.sin(u) * Math.cos(w), sh[1] + (L2 + L3) * Math.sin(u) * Math.sin(w), sh[2] + (L2 + L3) * Math.cos(u)], { u: [0, PI], v: [0, 2 * PI], nu: 40, nv: 72, c: 'c3', opacity: 0.07, glass: true, thickness: 0.04, ior: 1.15, wire: true, wireEvery: 5, wireEveryV: 6, wireOpacity: 0.1 });
           S.surface((u, w) => [sh[0] + (L2 - L3) * Math.sin(u) * Math.cos(w), sh[1] + (L2 - L3) * Math.sin(u) * Math.sin(w), sh[2] + (L2 - L3) * Math.cos(u)], { u: [0, PI], v: [0, 2 * PI], nu: 20, nv: 36, c: 'c2', opacity: 0.12 });
           st.ghost = buildArm(S, { opacity: 0.22, joint: 'muted' });
           st.arm = buildArm(S);

@@ -69,7 +69,10 @@
 <link rel="alternate" hreflang="en" href="https://theisegoria.github.io/algebraic-varieties-introduction/">
 <link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/algebraic-varieties-introduction/">
 <link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/algebraic-varieties-introduction/"><link rel="stylesheet" href="/analysis-atlas/vendor/katex.min.css"><script src="/analysis-atlas/vendor/katex.min.js"></script><script src="/assets/math-notation.js?v=20260922"></script>
-<script src="/assets/lang.js"></script>
+<link rel="stylesheet" href="/math-labs/labs.css?v=20261028">
+<script defer src="/math-labs/practice.js?v=20261028"></script>
+<script defer src="/math-labs/questions/standalone/algebraic-varieties-introduction.js?v=20261028"></script>
+<script defer src="/math-labs/practice-embed.js?v=20261028"></script><script src="/assets/lang.js"></script>
 <!-- ISEGORIA:HEAD -->
 <link rel="stylesheet" href="/assets/site-shell.css?v=c21cd21e82">
 <script src="/assets/site-shell.js?v=c21cd21e82" ></script>
@@ -122,6 +125,16 @@
 <p>ゼロ集合、イデアル、特異点、座標環、マップ、および射影閉包についての8ページの簡潔な説明</p>
 </div>
 <a class="button primary" data-document-language="en" download="" href="/algebraic-varieties-introduction/report.pdf" rel="noopener" target="_blank" title="PDF、新しいタブで開きます">PDFをダウンロード（英語PDF）</a>
+</section>
+<section class="practice-embed" aria-labelledby="pe-h">
+<h2 id="pe-h">練習問題</h2>
+<p class="pe-lede">代数的多様体の三つの話題を練習します。3次曲線の判別式、勾配による特異点の判定、座標環と射影閉包です。問題は三つのレベルで毎回新しく生成されます。</p>
+<h3 class="pe-h">3次曲線 y² = x³ + ax + b</h3>
+<div class="practice" data-practice="algebraic-varieties-introduction-cubic"><details><summary>y² = x³ − 3x + 2 は特異ですか。判別式 4a³ + 27b² を計算してください。</summary><p>4(−27) + 27 · 4 = 0 なので特異です。x³ − 3x + 2 = (x − 1)²(x + 2) から x = 1 が重解で、そこがノードです。</p></details></div>
+<h3 class="pe-h">勾配と特異点</h3>
+<div class="practice" data-practice="algebraic-varieties-introduction-singular"><details><summary>y² = x³ の特異点を勾配から求めてください。</summary><p>f = y² − x³ の勾配は (−3x², 2y) で、原点だけで 0 になります。そこはクスプです。</p></details></div>
+<h3 class="pe-h">座標環と射影閉包</h3>
+<div class="practice" data-practice="algebraic-varieties-introduction-ring"><details><summary>y² = x³ + 1 を同次化し、無限遠点を求めてください。</summary><p>y²z = x³ + z³ で z = 0 とすると x = 0 なので、無限遠点は (0 : 1 : 0) の一つだけです。</p></details></div>
 </section>
 <footer>ベンジャミン・マイケル・ヘアが執筆・デザイン。教育的導入；本書では慣例は明記されている</footer>
 </main>

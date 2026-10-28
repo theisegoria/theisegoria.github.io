@@ -11,6 +11,10 @@
 <script src="/assets/mathematical-worlds/vendor/katex.min.js"></script>
 <script type="module" src="/assets/mathematical-worlds/app.js"></script>
 <link rel="stylesheet" href="/analysis-atlas/vendor/katex.min.css"><script src="/analysis-atlas/vendor/katex.min.js"></script><script src="/assets/math-notation.js?v=20260922"></script>
+<link rel="stylesheet" href="/math-labs/labs.css?v=20261028">
+<script defer src="/math-labs/practice.js?v=20261028"></script>
+<script defer src="/math-labs/questions/standalone/category-theory.js?v=20261028"></script>
+<script defer src="/math-labs/practice-embed.js?v=20261028"></script>
 <script src="/assets/lang.js"></script>
 <!-- ISEGORIA:HEAD -->
 <link rel="stylesheet" href="/assets/site-shell.css?v=c21cd21e82">
@@ -27,7 +31,16 @@
 </div></header>
 <nav id="ig-breadcrumb" aria-label="パンくずリスト"><a href="/ja/">ホーム</a><span aria-hidden="true">/</span><a href="/ja/math-encyclopedia/">数学百科事典</a><span aria-hidden="true">/</span><span aria-current="page">圏論入門</span></nav>
 <span id="ig-content" tabindex="-1"></span>
-<!-- /ISEGORIA:NAV --><div id="app"></div><noscript><div class="nojs"><h1>圏論入門</h1><p>5つの数学的な考え方を、操作できる図、具体例、確認問題で学びます。</p><p>レッスンの操作と数式の表示にはJavaScriptを有効にしてください。</p></div></noscript><!-- ISEGORIA:FOOT -->
+<!-- /ISEGORIA:NAV --><div id="app"></div><noscript><div class="nojs"><h1>圏論入門</h1><p>5つの数学的な考え方を、操作できる図、具体例、確認問題で学びます。</p><p>レッスンの操作と数式の表示にはJavaScriptを有効にしてください。</p></div></noscript><section class="practice-embed" aria-labelledby="pe-h">
+<h2 id="pe-h">練習問題</h2>
+<p class="pe-lede">問題は3つのレベルで毎回新しく作られるので、何度でも練習できます。</p>
+<h3 class="pe-h">合成と結合法則</h3>
+<div class="practice" data-practice="category-theory-composition"><details><summary>$f(x) = 2x$、$g(x) = x + 3$ のとき、$(g \circ f)(4)$ はいくつですか。</summary><p>$g(f(4)) = g(8) = 11$ です。合成では右側の関数を先に適用します。</p></details></div>
+<h3 class="pe-h">関手</h3>
+<div class="practice" data-practice="category-theory-functors"><details><summary>関手は恒等射を恒等射に、合成を合成に写します。鎖 $0 \le 1 \le 2$ から鎖 $0 \le \dots \le 4$ への $F(i) = 2i$ は順序を保ちますか。</summary><p>はい。$i \le j$ なら $2i \le 2j$ なので、すべての射が射に写ります。対象の間の射は高々1本なので、合成も保たれます。</p></details></div>
+<h3 class="pe-h">普遍性</h3>
+<div class="practice" data-practice="category-theory-universal"><details><summary>集合の圏で、3元集合から1点集合への射は何本ありますか。</summary><p>ちょうど1本です。どの元も唯一の点に写る必要があります。これが終対象の普遍性です。</p></details></div>
+</section><!-- ISEGORIA:FOOT -->
 <footer id="ig-footer"><div><a href="/ja/">Isegoria · Benjamin Haire</a><nav aria-label="サイト内リンク"><a href="/ja/">ホームに戻る</a><a href="/ja/library.html">全コンテンツ</a><a href="#ig-content">ページ上部へ</a></nav></div></footer>
 <!-- /ISEGORIA:FOOT -->
 </body></html>

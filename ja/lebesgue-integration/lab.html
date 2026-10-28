@@ -22,7 +22,7 @@
 
 
 
-<link rel="canonical" href="https://theisegoria.github.io/ja/lebesgue-integration/lab.html">
+<link rel="stylesheet" href="/analysis-atlas/vendor/katex.min.css"><link rel="stylesheet" href="/math-labs/labs.css?v=20261028"><script defer src="/analysis-atlas/vendor/katex.min.js"></script><script defer src="/math-labs/practice.js?v=20261028"></script><script defer src="/math-labs/questions/standalone/lebesgue-integration-lab.js?v=20261028"></script><script defer src="/math-labs/practice-embed.js?v=20261028"></script><link rel="canonical" href="https://theisegoria.github.io/ja/lebesgue-integration/lab.html">
 <link rel="alternate" hreflang="en" href="https://theisegoria.github.io/lebesgue-integration/lab.html">
 <link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/lebesgue-integration/lab.html">
 <link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/lebesgue-integration/lab.html"><link rel="stylesheet" href="/analysis-atlas/vendor/katex.min.css"><script src="/analysis-atlas/vendor/katex.min.js"></script><script src="/assets/math-notation.js?v=20260922"></script>
@@ -56,6 +56,13 @@
 </section>
 <section class="section" id="simple"><div class="section-head"><h2>単純関数を計算します。</h2><p>各スライダーは長さ1の区間における高さを設定します。区間は互いに交わらないため、ルベーグ積分は高さ×測度の和になります。</p></div><div class="simple-grid"><div class="editor"><h3>3つの可測集合における高さ</h3><div class="row"><label for="h1">[0,1)</label><input id="h1" max="8" min="0" step="0.5" type="range" value="3"/><output>3</output></div><div class="row"><label for="h2">[1,2)</label><input id="h2" max="8" min="0" step="0.5" type="range" value="0.5"/><output>0.5</output></div><div class="row"><label for="h3">[2,3]</label><input id="h3" max="8" min="0" step="0.5" type="range" value="2"/><output>2</output></div></div><div class="result"><h3>積分</h3><div class="formula" id="simple-formula">3·1 + 0.5·1 + 2·1 = 5.5</div><p class="sum">端点を変更しても答えは変わりません：有限集合は測度ゼロです。</p></div></div></section>
 <section class="section" id="limits"><div class="section-head"><h2>どの定理が極限を制御するかを選択します。</h2><p>点収束はただの始まりであり、これが私の最も苦心するポイントです。シーケンスを変更して、単調性、支配性、または集中が積分を通るかどうかに与える影響を見てください。</p></div><div aria-label="収束の例" class="theorem-controls" role="group"><button aria-pressed="true" data-seq="monotone" type="button">増加するトリッパクション</button><button aria-pressed="false" data-seq="dominated" type="button">支配されるべきべき関数</button><button aria-pressed="false" data-seq="spike" type="button">スパイクの移動</button></div><div class="theorem"><div class="theorem-layout"><svg aria-label="関数の列" id="sequence" role="img" viewbox="0 0 620 330"><rect class="frame" height="260" width="550" x="44" y="15"></rect><line class="axis" x1="44" x2="594" y1="275" y2="275"></line><line class="axis" x1="44" x2="44" y1="15" y2="275"></line><g class="sequence-lines"></g><text fill="currentColor" x="590" y="299">x</text></svg><div class="theorem-copy"><p class="eyebrow" id="theorem-label">単調収束</p><h3 id="theorem-title">下から近似します。</h3><p id="theorem-body">非負のトリッパクションは点収束して目標関数に近づき、その積分は極限関数の積分に近づきます。</p><ul class="checks" id="theorem-checks"><li>非負の可測関数</li><li>点収束で増加</li><li>無限も許容されます</li></ul></div></div></div></section>
+<section class="practice-embed" aria-labelledby="pe-h"><h2 id="pe-h">練習問題</h2><p class="pe-lede">この実験室で扱った単関数の積分と収束定理を練習します。問題は難易度を三段階に分けて、毎回新しく生成されます。</p>
+<h3 class="pe-h">単関数</h3>
+<div class="practice" data-practice="lebesgue-integration-lab-simple"><details><summary>単関数の高さが [0, 1)、[1, 2)、[2, 3] でそれぞれ 3、0.5、2 です。[0, 3] での積分はいくつですか。</summary><p>5.5 です。3·1 + 0.5·1 + 2·1 = 5.5 だからです。</p></details></div>
+<h3 class="pe-h">収束定理</h3>
+<div class="practice" data-practice="lebesgue-integration-lab-limits"><details><summary>fₙ = xⁿ の [0, 1] 上の積分は n = 3 のときいくつですか。また、その極限を保証する定理はどれですか。</summary><p>1/4 です。0 ≤ xⁿ ≤ 1 なので優収束定理が使えます。</p></details></div>
+</section>
+<script>window.PracticeHosts=Object.assign(window.PracticeHosts||{},{'lebesgue-integration-lab-simple':{set(v){let last;for(const k of ['h1','h2','h3'])if(k in v){const el=document.getElementById(k);el.value=v[k];last=el}if(last)last.dispatchEvent(new Event('input',{bubbles:true}))}}});</script>
 </main>
 <footer><span>ルベーグ積分実験室</span><a href="/ja/">すべてのプロジェクト</a></footer>
 <script>

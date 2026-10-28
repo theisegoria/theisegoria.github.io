@@ -9,7 +9,7 @@
 <link rel="canonical" href="https://theisegoria.github.io/gamma-beta/">
 <link rel="alternate" hreflang="en" href="https://theisegoria.github.io/gamma-beta/">
 <link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/gamma-beta/">
-<link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/gamma-beta/"><link rel="stylesheet" href="/analysis-atlas/vendor/katex.min.css"><script src="/analysis-atlas/vendor/katex.min.js"></script><script src="/assets/math-notation.js?v=20260922"></script>
+<link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/gamma-beta/"><link rel="stylesheet" href="/analysis-atlas/vendor/katex.min.css"><script src="/analysis-atlas/vendor/katex.min.js"></script><link rel="stylesheet" href="/math-labs/labs.css?v=20261028"><script defer src="/math-labs/practice.js?v=20261028"></script><script defer src="/math-labs/questions/standalone/gamma-beta.js?v=20261028"></script><script defer src="/math-labs/practice-embed.js?v=20261028"></script><script src="/assets/math-notation.js?v=20260922"></script>
 <script src="/assets/lang.js"></script>
 <!-- ISEGORIA:HEAD -->
 <link rel="stylesheet" href="/assets/site-shell.css?v=c21cd21e82">
@@ -52,6 +52,14 @@
 <details><summary>Why does Beta also describe an infinite interval?</summary><p>In \(B(a,b)\), substitute \(t=u/(1+u)\). Then \(1-t=1/(1+u)\), \(dt=du/(1+u)^2\), and \([0,1)\) becomes \([0,\infty)\).</p><div class="equation">$$B(a,b)=\int_0^\infty\frac{u^{a-1}}{(1+u)^{a+b}}du,\quad a,b>0.$$</div><p>In the rational family above, zero requires \(p&gt;0\). At infinity the integrand behaves like \(x^{p-1-rq}\), so \(p&lt;rq\). This is exactly the condition that both Beta arguments are positive.</p></details>
 <details><summary>Common errors to catch before the last line</summary><p><strong>Off by one:</strong> the power \(t^k\) corresponds to \(\Gamma(k+1)\). <strong>Missing scale:</strong> transform \(dx\) too. <strong>Wrong Beta argument:</strong> in the rational form, the denominator exponent is \(a+b\), not \(b\). <strong>Wrong range:</strong> the trigonometric identity here is for \([0,\pi/2]\). <strong>Divergence:</strong> a formal Gamma ratio cannot replace an endpoint test.</p></details></section>
 <section id="practice" class="section"><p class="eyebrow">06 / TRY IT YOURSELF</p><h2>Eight practice integrals</h2><p class="section-lead">For each integral, check convergence, identify the family, and write the substitution before opening the solution. One integral diverges.</p><div id="practice-items" class="practice-grid"></div></section>
+<section class="practice-embed" aria-labelledby="pe-h"><h2 id="pe-h">Practice</h2><p class="pe-lede">Practice the Gamma function, the Beta function and the substitutions that reduce integrals to them; questions are generated fresh at three levels.</p>
+<h3 class="pe-h">The Gamma function</h3>
+<div class="practice" data-practice="gamma-beta-gamma"><details><summary>What is Γ(5)?</summary><p>24, because Γ(n + 1) = n! and 4! = 24.</p></details></div>
+<h3 class="pe-h">The Beta function</h3>
+<div class="practice" data-practice="gamma-beta-beta"><details><summary>What is B(2, 3)?</summary><p>1/12, because B(2, 3) = Γ(2)Γ(3)/Γ(5) = 1·2/24.</p></details></div>
+<h3 class="pe-h">Recognizing the family</h3>
+<div class="practice" data-practice="gamma-beta-integrals"><details><summary>What is the integral of sin θ cos θ from 0 to π/2?</summary><p>1/2. This is ½·B(1, 1) = ½.</p></details></div>
+</section>
 <section class="section sources" id="sources"><h2>Sources &amp; scope</h2><p>The definitions and standard identities were checked against the NIST Digital Library of Mathematical Functions. Worked values and calculator cases were also checked numerically; numerical checks support the calculations but do not replace the convergence arguments.</p><a href="https://dlmf.nist.gov/5.2">§5.2: Gamma definition and digamma</a><a href="https://dlmf.nist.gov/5.4">§5.4: special values</a><a href="https://dlmf.nist.gov/5.5">§5.5: recurrence and reflection</a><a href="https://dlmf.nist.gov/5.9">§5.9: integral representations</a><a href="https://dlmf.nist.gov/5.12">§5.12: Beta integrals</a><p style="margin-top:15px">The plots show integrands, not the graph of Γ(s) or a normalized probability density. Cropped endpoints and tails are disclosed beneath each plot. Displayed values use Gamma identities evaluated in logarithmic form. All examples concern ordinary real improper integrals.</p><p><a href="gamma-beta-guide.pdf" target="_blank" rel="noopener" title="PDF, opens in a new tab">Download the complete standalone PDF</a></p></section>
 
 <footer class="endnote">Isegoria · Mathematics · 12 September 2026</footer></main><!-- ISEGORIA:FOOT -->

@@ -189,7 +189,7 @@
     return g;
   }
   // a faint unit sphere with latitude and longitude lines, so directions read as points on it
-  const unitSphere = (S, o = {}) => S.surface((u, w) => [Math.cos(u) * Math.cos(w), Math.sin(u) * Math.cos(w), Math.sin(w)], { u: [0, L.TAU], v: [-PI / 2, PI / 2], nu: 72, nv: 36, c: o.c ?? 'muted', opacity: o.opacity ?? (S.dark ? 0.1 : 0.12), rough: 0.6, coat: 0, wire: true, wireEvery: 6, wireEveryV: 6, wireOpacity: S.dark ? 0.2 : 0.16 });
+  const unitSphere = (S, o = {}) => S.surface((u, w) => [Math.cos(u) * Math.cos(w), Math.sin(u) * Math.cos(w), Math.sin(w)], { u: [0, L.TAU], v: [-PI / 2, PI / 2], nu: 72, nv: 36, c: o.c ?? 'muted', opacity: o.opacity ?? (S.dark ? 0.1 : 0.12), rough: 0.08, coat: 0.6, glass: true, thickness: 0.05, ior: 1.2, wire: true, wireEvery: 6, wireEveryV: 6, wireOpacity: S.dark ? 0.2 : 0.16 });
   const onSphere = (q) => { const l = Math.hypot(q.x, q.y, q.z) || 1; return [q.x / l, q.y / l, q.z / l]; };
 
   /* ---------- 1. the sandwich q v q* ---------- */

@@ -6,7 +6,7 @@
 <meta content="width=device-width,initial-scale=1" name="viewport"/>
 <title>幾何と計量の実験室</title>
 <meta content="7つのインタラクティブな図形を使って幾何学を探索できます：三角形の面積、ピタゴラスの定理、セクター、正多角形、円錐、円柱および球体、そして相似性。4ページのPDFに公式一覧と18の視覚的説明が含まれています。" name="description"/>
-<link href="/explore/geometry-lab/lab.css" rel="stylesheet"/>
+<link href="/explore/geometry-lab/lab.css?v=20261029" rel="stylesheet"/>
 <link href="/assets/favicon.svg" rel="icon"/>
 
 
@@ -15,7 +15,11 @@
 <link rel="alternate" hreflang="en" href="https://theisegoria.github.io/explore/geometry-mensuration.html">
 <link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/explore/geometry-mensuration.html">
 <link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/explore/geometry-mensuration.html"><link rel="stylesheet" href="/analysis-atlas/vendor/katex.min.css"><script src="/analysis-atlas/vendor/katex.min.js"></script><script src="/assets/math-notation.js?v=20260922"></script>
-<script src="/assets/lang.js"></script>
+<script type="importmap">{"imports":{"three":"/vendor/three/r186/build/three.webgpu.js","three/webgpu":"/vendor/three/r186/build/three.webgpu.js","three/tsl":"/vendor/three/r186/build/three.tsl.js","three/addons/":"/vendor/three/r186/examples-jsm/"}}</script>
+<link rel="stylesheet" href="/math-labs/labs.css?v=20261028">
+<script defer src="/math-labs/practice.js?v=20261028"></script>
+<script defer src="/math-labs/questions/standalone/explore-geometry-mensuration.js?v=20261028"></script>
+<script defer src="/math-labs/practice-embed.js?v=20261028"></script><script src="/assets/lang.js"></script>
 <!-- ISEGORIA:HEAD -->
 <link rel="stylesheet" href="/assets/site-shell.css?v=c21cd21e82">
 <script src="/assets/site-shell.js?v=c21cd21e82" ></script>
@@ -38,15 +42,27 @@
 <section aria-labelledby="tab-triangle" id="lab-panel" role="tabpanel">
 <div class="lab-heading"><h2 id="experiment-title">三角形の面積</h2><p id="experiment-description">頂点を水平方向にずらします。底辺と高さが一定のとき、面積は変化しません。</p></div>
 <div class="lab-workspace">
-<div class="lab-picture"><svg aria-labelledby="diagram-title diagram-desc" id="lab-svg" role="img" viewbox="0 0 600 340"><title id="diagram-title">三角形の面積</title><desc id="diagram-desc">底辺、垂直高さ、および頂点位置が調整可能な三角形</desc></svg><div class="diagram-caption" id="diagram-caption"></div></div>
+<div class="lab-picture"><div class="math-wrap lab-3d-host" id="lab-3d" hidden></div><svg aria-labelledby="diagram-title diagram-desc" id="lab-svg" role="img" viewbox="0 0 600 340"><title id="diagram-title">三角形の面積</title><desc id="diagram-desc">底辺、垂直高さ、および頂点位置が調整可能な三角形</desc></svg><div class="diagram-caption" id="diagram-caption"></div></div>
 <div class="lab-settings"><div class="lab-controls" id="lab-controls"></div><dl class="lab-results" id="lab-results"></dl><p aria-atomic="true" aria-live="polite" class="lab-sr-only" id="live-results" role="status"></p></div>
 </div>
 <div class="lab-explanation"><div><h3>公式</h3><div class="lab-formulas" id="lab-formulas"></div></div><div><h3>試してみよう</h3><p id="lab-insight"></p><p class="lab-condition" id="lab-condition"></p></div></div>
 </section>
 <p class="lab-footnote">長さは任意の単位を使用します。面積は単位²、体積は単位³です。立体図形はスケッチ投影を使用します。表示値は3桁の小数点まで四捨五入されています。</p>
+<section class="practice-embed" aria-labelledby="pe-h">
+<h2 id="pe-h">練習問題</h2>
+<p class="pe-lede">七つの実験が示す公式を練習します。面積と弧、正多角形、三つの立体、そして相似による拡大・縮小です。問題は三つのレベルで毎回新しく生成され、多くは図の上で確かめられます。</p>
+<h3 class="pe-h">三角形・三平方の定理・扇形</h3>
+<div class="practice" data-practice="explore-geometry-mensuration-plane"><details><summary>底辺 6、高さ 4 の三角形の面積はいくつですか。</summary><p>A = ½ · 6 · 4 = 12 です。</p></details></div>
+<h3 class="pe-h">正多角形</h3>
+<div class="practice" data-practice="explore-geometry-mensuration-polygon"><details><summary>半径 4 の円に内接する正六角形の 1 辺の長さはいくつですか。</summary><p>a = 2R sin(π/6) = 4 で、半径に等しくなります。</p></details></div>
+<h3 class="pe-h">円錐・円柱・球</h3>
+<div class="practice" data-practice="explore-geometry-mensuration-solids"><details><summary>半径 3、高さ 4 の円錐の母線の長さはいくつですか。</summary><p>ℓ = √(3² + 4²) = 5 です。</p></details></div>
+<h3 class="pe-h">長さ・面積・体積の拡大・縮小</h3>
+<div class="practice" data-practice="explore-geometry-mensuration-scale"><details><summary>立体のすべての長さを 2 倍にすると、体積は何倍になりますか。</summary><p>2³ = 8 倍です。</p></details></div>
+</section>
 <noscript><p>JavaScriptを有効にすることで図を調整できます。印刷用の公式表は上部で常に利用可能です。</p></noscript>
 </main>
-<script src="/ja/explore/geometry-lab/lab.mjs" type="module"></script>
+<script src="/ja/explore/geometry-lab/lab.mjs?v=20261029" type="module"></script>
 <p class="ig-translation-note"><a href="/explore/geometry-mensuration.html" hreflang="en" lang="en">英語原文</a></p><!-- ISEGORIA:FOOT -->
 <footer id="ig-footer"><div><a href="/ja/">Isegoria · Benjamin Haire</a><nav aria-label="サイト内リンク"><a href="/ja/">ホームに戻る</a><a href="/ja/library.html">全コンテンツ</a><a href="#ig-content">ページ上部へ</a></nav></div></footer>
 <!-- /ISEGORIA:FOOT -->

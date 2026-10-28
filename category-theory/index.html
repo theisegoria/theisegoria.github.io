@@ -11,6 +11,10 @@
 <script src="/assets/mathematical-worlds/vendor/katex.min.js"></script>
 <script type="module" src="/assets/mathematical-worlds/app.js"></script>
 <link rel="stylesheet" href="/analysis-atlas/vendor/katex.min.css"><script src="/analysis-atlas/vendor/katex.min.js"></script><script src="/assets/math-notation.js?v=20260922"></script>
+<link rel="stylesheet" href="/math-labs/labs.css?v=20261028">
+<script defer src="/math-labs/practice.js?v=20261028"></script>
+<script defer src="/math-labs/questions/standalone/category-theory.js?v=20261028"></script>
+<script defer src="/math-labs/practice-embed.js?v=20261028"></script>
 <script src="/assets/lang.js"></script>
 <!-- ISEGORIA:HEAD -->
 <link rel="stylesheet" href="/assets/site-shell.css?v=c21cd21e82">
@@ -27,7 +31,16 @@
 </div></header>
 <nav id="ig-breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><a href="/math-encyclopedia/">Math encyclopedia</a><span aria-hidden="true">/</span><span aria-current="page">An introduction to category theory</span></nav>
 <span id="ig-content" tabindex="-1"></span>
-<!-- /ISEGORIA:NAV --><div id="app"></div><noscript><div class="nojs"><h1>An introduction to category theory</h1><p>Explore five mathematical ideas through interactive diagrams, worked examples, and questions.</p><p>Enable JavaScript to use the interactive lessons and mathematics rendering.</p></div></noscript><!-- ISEGORIA:FOOT -->
+<!-- /ISEGORIA:NAV --><div id="app"></div><noscript><div class="nojs"><h1>An introduction to category theory</h1><p>Explore five mathematical ideas through interactive diagrams, worked examples, and questions.</p><p>Enable JavaScript to use the interactive lessons and mathematics rendering.</p></div></noscript><section class="practice-embed" aria-labelledby="pe-h">
+<h2 id="pe-h">Practice</h2>
+<p class="pe-lede">Questions are generated fresh at three levels, so you can keep practising.</p>
+<h3 class="pe-h">Composition and associativity</h3>
+<div class="practice" data-practice="category-theory-composition"><details><summary>If $f(x) = 2x$ and $g(x) = x + 3$, what is $(g \circ f)(4)$?</summary><p>$g(f(4)) = g(8) = 11$. Composition applies the right-hand function first.</p></details></div>
+<h3 class="pe-h">Functors</h3>
+<div class="practice" data-practice="category-theory-functors"><details><summary>A functor sends identities to identities and composites to composites. Does $F(i) = 2i$ from the chain $0 \le 1 \le 2$ to the chain $0 \le \dots \le 4$ respect order?</summary><p>Yes: if $i \le j$ then $2i \le 2j$, so every arrow goes to an arrow, and composites are preserved because there is at most one arrow between objects.</p></details></div>
+<h3 class="pe-h">Universal properties</h3>
+<div class="practice" data-practice="category-theory-universal"><details><summary>In the category of sets, how many arrows are there from a 3-element set into a one-point set?</summary><p>Exactly one: every element must go to the single point. This is the universal property of the terminal object.</p></details></div>
+</section><!-- ISEGORIA:FOOT -->
 <footer id="ig-footer"><div><a href="/">Isegoria · Benjamin Haire</a><nav aria-label="Site links"><a href="/">Back to home</a><a href="/library.html">Browse the library</a><a href="#ig-content">Back to top</a></nav></div></footer>
 <!-- /ISEGORIA:FOOT -->
 </body></html>

@@ -1,0 +1,28 @@
+/* 3D sections and practice cards on the Explore pages (derivative arrays, Mobius). */
+.m3d-section{margin:clamp(2.5rem,6vw,4.5rem) 0 0}
+.m3d-section>h2{font-family:var(--serif);font-size:clamp(1.7rem,3.4vw,2.4rem);font-weight:500;letter-spacing:-.02em;line-height:1.1;margin:0 0 .55rem}
+.m3d-section>p.m3d-lede{max-width:68ch;color:var(--ink-soft);line-height:1.65;margin:0 0 1.4rem}
+.m3d .workbench-stage{padding:0;display:block;background:none}
+.m3d .workbench-grid{min-height:0;grid-template-columns:minmax(260px,.62fr) minmax(0,1.38fr)}
+.m3d .workbench-stage{min-width:0}
+.m3d-tokens.math-wrap{max-width:none;margin:0;padding:0}
+.m3d-tokens{min-width:0}
+.m3d-tokens .lab3d{margin:0;border:0;border-radius:0;aspect-ratio:auto;height:clamp(420px,50vw,580px);min-height:0;max-height:none}
+.m3d .equation-strip{overflow-wrap:anywhere}
+.m3d-note{margin:0;padding:1rem 1.25rem;color:var(--ink-soft);font-size:.9rem}
+.m3d-two{display:grid;grid-template-columns:1fr 1fr;gap:.6rem}
+.m3d-legend{display:flex;flex-wrap:wrap;gap:.4rem 1.1rem;padding:.7rem 1.1rem;border-top:1px solid var(--line);font-size:.78rem;color:var(--ink-soft)}
+.m3d-legend i{display:inline-block;width:.8rem;height:.8rem;border-radius:50%;margin-right:.4rem;vertical-align:-.1rem}
+.m3d .readout-grid{grid-template-columns:repeat(4,1fr)}
+@media(max-width:780px){
+  .m3d .workbench-controls{border-right:0;border-bottom:1px solid var(--line)}
+  .m3d .readout-grid{grid-template-columns:1fr 1fr}
+  .m3d .readout-item:nth-child(2){border-right:0}
+  .m3d .readout-item:nth-child(-n+2){border-bottom:1px solid var(--line)}
+  .m3d .workbench-grid{grid-template-columns:1fr}
+  .m3d-tokens .lab3d{height:min(112vw,480px)}
+}
+/* practice cards inside the editorial layout */
+.practice-embed{max-width:none;padding:0;margin:clamp(2.5rem,6vw,4.5rem) 0 0;border-top:1px solid var(--line);padding-top:clamp(2rem,4vw,3rem)}
+.practice-embed>h2{font-family:var(--serif);font-weight:500;letter-spacing:-.02em}
+.practice-embed .practice{max-width:880px}

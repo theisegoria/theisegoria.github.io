@@ -59,6 +59,13 @@ it continuously): avoid more than ~60k raster samples or ~3k SVG elements.
     `hollow` (dot), `nostroke` (rect); text: `anchor`, `dx`, `dy`, `math` (italic
     serif, for variables), `small`, `c`
   - `f.raster(fn, {cmap, res})` fills the plot area on a canvas under the SVG.
+    `res` sets the quick draft (CSS px per sample, so the 60k budget above still applies). When calls stop for
+    about 140 ms the same `fn` is re-sampled at device-pixel resolution (about 1.5M samples at most, 1M on small
+    screens, time-sliced, cancelled by the next call) on a second canvas over the draft; the returned canvas and
+    its width/height stay the draft's. `pixel: true` (lattice pictures) and `refine: false` skip the refinement,
+    and a caller that calls `canvas.getContext` on the returned canvas to draw on it keeps the draft only.
+    Keep `fn` pure and cheap: it runs again later. Arrows (`f.arrow`, `arrow: true`, `f.field`) stop their shaft
+    at the head's base; dashed lines get butt caps; framed axes carry small tick marks.
     `fn(x,y)` returns a number for the colour map (`div` −1..1 diverging, `seq`
     0..1, `warm` 0..1) or an `[r,g,b]` triple directly. `L.cmaps.phase(arg, mag)`
     gives domain-colouring triples.

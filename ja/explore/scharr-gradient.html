@@ -22,6 +22,11 @@
 <link rel="alternate" hreflang="en" href="https://theisegoria.github.io/explore/scharr-gradient.html">
 <link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/explore/scharr-gradient.html">
 <link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/explore/scharr-gradient.html"><link rel="stylesheet" href="/analysis-atlas/vendor/katex.min.css"><script src="/analysis-atlas/vendor/katex.min.js"></script><script src="/assets/math-notation.js?v=20260922"></script>
+<link rel="stylesheet" href="/math-labs/labs.css?v=20261028">
+<link rel="stylesheet" href="/explore/m3d.css?v=20261028">
+<script defer src="/math-labs/practice.js?v=20261028"></script>
+<script defer src="/math-labs/questions/standalone/explore-scharr-gradient.js?v=20261028"></script>
+<script defer src="/math-labs/practice-embed.js?v=20261028"></script>
 <script src="/assets/lang.js"></script>
 <!-- ISEGORIA:HEAD -->
 <link rel="stylesheet" href="/assets/site-shell.css?v=c21cd21e82">
@@ -90,7 +95,15 @@
       </article>
     </section>
 
-    <nav class="lesson-footer-nav" aria-label="教材ナビゲーション"><a href="/ja/#guides">← 一覧へ戻る</a><a href="/ja/explore/jacobians-wronskians-hessians.html">次へ：微分配列 →</a></nav>
+    <section class="practice-embed" aria-labelledby="pe-h">
+<h2 id="pe-h">練習問題</h2>
+<p class="pe-lede">パッチから勾配、大きさ、方向、エッジの向きを求める手順と、カーネルそのものの性質を練習します。問題は三つのレベルで毎回新しく作られます。</p>
+<h3 class="pe-h">パッチから勾配へ</h3>
+<div class="practice" data-practice="explore-scharr-gradient-gradient"><details><summary>列ごとに一定で、左から右へ 0、100、200 の画素パッチがあります。正規化した Scharr の G_x はいくつですか。</summary><p>定数の列は縦に平滑化すると 16 倍になるので G_x = 16(200 − 0)/32 = 100 です。</p></details></div>
+<h3 class="pe-h">カーネルの構造</h3>
+<div class="practice" data-practice="explore-scharr-gradient-kernel"><details><summary>平滑化の重み [3, 10, 3] と微分 [−1, 0, 1] からなるカーネルが傾斜に対して正確になる除数はいくつですか。</summary><p>2(3 + 10 + 3) = 32 です。</p></details></div>
+</section>
+<nav class="lesson-footer-nav" aria-label="教材ナビゲーション"><a href="/ja/#guides">← 一覧へ戻る</a><a href="/ja/explore/jacobians-wronskians-hessians.html">次へ：微分配列 →</a></nav>
   </main>
   <script src="../../assets/site.js"></script>
   <script src="../../assets/interactive.js"></script><!-- ISEGORIA:FOOT -->

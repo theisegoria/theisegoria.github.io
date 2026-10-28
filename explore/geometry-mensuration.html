@@ -6,7 +6,7 @@
   <title>Geometry &amp; Mensuration Lab</title>
   <meta name="description" content="Explore geometry with seven interactive diagrams: triangle area, Pythagoras, sectors, regular polygons, cones, cylinders and spheres, and similarity. Includes a four-page PDF with a formula reference and 18 visual explanations.">
 
-  <link rel="stylesheet" href="geometry-lab/lab.css">
+  <link rel="stylesheet" href="geometry-lab/lab.css?v=20261029">
   <link rel="icon" href="/assets/favicon.svg">
 
 
@@ -15,7 +15,11 @@
 <link rel="alternate" hreflang="en" href="https://theisegoria.github.io/explore/geometry-mensuration.html">
 <link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/explore/geometry-mensuration.html">
 <link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/explore/geometry-mensuration.html"><link rel="stylesheet" href="/analysis-atlas/vendor/katex.min.css"><script src="/analysis-atlas/vendor/katex.min.js"></script><script src="/assets/math-notation.js?v=20260922"></script>
-<script src="/assets/lang.js"></script>
+<script type="importmap">{"imports":{"three":"/vendor/three/r186/build/three.webgpu.js","three/webgpu":"/vendor/three/r186/build/three.webgpu.js","three/tsl":"/vendor/three/r186/build/three.tsl.js","three/addons/":"/vendor/three/r186/examples-jsm/"}}</script>
+<link rel="stylesheet" href="/math-labs/labs.css?v=20261028">
+<script defer src="/math-labs/practice.js?v=20261028"></script>
+<script defer src="/math-labs/questions/standalone/explore-geometry-mensuration.js?v=20261028"></script>
+<script defer src="/math-labs/practice-embed.js?v=20261028"></script><script src="/assets/lang.js"></script>
 <!-- ISEGORIA:HEAD -->
 <link rel="stylesheet" href="/assets/site-shell.css?v=c21cd21e82">
 <script src="/assets/site-shell.js?v=c21cd21e82" ></script>
@@ -38,15 +42,27 @@
   <section id="lab-panel" role="tabpanel" aria-labelledby="tab-triangle">
     <div class="lab-heading"><h2 id="experiment-title">Triangle area</h2><p id="experiment-description">Slide the apex sideways. The area stays the same when the base and height stay fixed.</p></div>
     <div class="lab-workspace">
-      <div class="lab-picture"><svg id="lab-svg" role="img" aria-labelledby="diagram-title diagram-desc" viewBox="0 0 600 340"><title id="diagram-title">Triangle area</title><desc id="diagram-desc">A triangle with adjustable base, perpendicular height and apex position.</desc></svg><div id="diagram-caption" class="diagram-caption"></div></div>
+      <div class="lab-picture"><div class="math-wrap lab-3d-host" id="lab-3d" hidden></div><svg id="lab-svg" role="img" aria-labelledby="diagram-title diagram-desc" viewBox="0 0 600 340"><title id="diagram-title">Triangle area</title><desc id="diagram-desc">A triangle with adjustable base, perpendicular height and apex position.</desc></svg><div id="diagram-caption" class="diagram-caption"></div></div>
       <div class="lab-settings"><div id="lab-controls" class="lab-controls"></div><dl id="lab-results" class="lab-results"></dl><p id="live-results" class="lab-sr-only" role="status" aria-live="polite" aria-atomic="true"></p></div>
     </div>
     <div class="lab-explanation"><div><h3>The formula</h3><div id="lab-formulas" class="lab-formulas"></div></div><div><h3>Try this</h3><p id="lab-insight"></p><p id="lab-condition" class="lab-condition"></p></div></div>
   </section>
   <p class="lab-footnote">Lengths use arbitrary units. Areas use units²; volumes use units³. Solid figures use schematic projections. Readouts are rounded to three decimal places.</p>
-  <noscript><p>Enable JavaScript to adjust the diagrams. The printable formula sheet remains available above.</p></noscript>
+  <section class="practice-embed" aria-labelledby="pe-h">
+<h2 id="pe-h">Practice</h2>
+<p class="pe-lede">Practise the formulas the seven experiments show: areas and arcs, regular polygons, the three solids, and scaling. Questions are generated fresh at three levels, and most can be shown in the figure.</p>
+<h3 class="pe-h">Triangles, Pythagoras and sectors</h3>
+<div class="practice" data-practice="explore-geometry-mensuration-plane"><details><summary>A triangle has base 6 and height 4. What is its area?</summary><p>A = ½ · 6 · 4 = 12.</p></details></div>
+<h3 class="pe-h">Regular polygons</h3>
+<div class="practice" data-practice="explore-geometry-mensuration-polygon"><details><summary>A regular hexagon is inscribed in a circle of radius 4. How long is each side?</summary><p>a = 2R sin(π/6) = 4, equal to the radius.</p></details></div>
+<h3 class="pe-h">Cone, cylinder and sphere</h3>
+<div class="practice" data-practice="explore-geometry-mensuration-solids"><details><summary>A cone has radius 3 and height 4. What is its slant height?</summary><p>ℓ = √(3² + 4²) = 5.</p></details></div>
+<h3 class="pe-h">Scaling lengths, areas and volumes</h3>
+<div class="practice" data-practice="explore-geometry-mensuration-scale"><details><summary>Every length of a solid is doubled. By what factor does the volume change?</summary><p>2³ = 8 times.</p></details></div>
+</section>
+<noscript><p>Enable JavaScript to adjust the diagrams. The printable formula sheet remains available above.</p></noscript>
 </main>
-<script type="module" src="geometry-lab/lab.mjs"></script><!-- ISEGORIA:FOOT -->
+<script type="module" src="geometry-lab/lab.mjs?v=20261029"></script><!-- ISEGORIA:FOOT -->
 <footer id="ig-footer"><div><a href="/">Isegoria · Benjamin Haire</a><nav aria-label="Site links"><a href="/">Back to home</a><a href="/library.html">Browse the library</a><a href="#ig-content">Back to top</a></nav></div></footer>
 <!-- /ISEGORIA:FOOT -->
 </body>

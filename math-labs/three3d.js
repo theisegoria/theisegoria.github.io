@@ -14,7 +14,9 @@ import * as THREE from 'three/webgpu';
 import { mountLab, readColors, isDark, prefersReducedMotion } from '/assets/lab-kit/lab-kit.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
-import { screenUV, vec2, vec3, mix, smoothstep, float } from 'three/tsl';
+import { LineSegments2 } from 'three/addons/lines/webgpu/LineSegments2.js';
+import { LineSegmentsGeometry } from 'three/addons/lines/LineSegmentsGeometry.js';
+import { screenUV, vec2, vec3, mix, smoothstep, float, materialColor, normalView, positionView } from 'three/tsl';
 
 const TOKENS = ['c1', 'c2', 'c3', 'c4', 'hl', 'ink', 'muted', 'plate', 'grid', 'pos', 'neg', 'zero'];
 const ja = document.documentElement.lang === 'ja';
@@ -186,6 +188,16 @@ export async function create(host, opts = {}) {
   // picks up, and a slightly smoother base. Anything with `glow` blooms on the WebGPU path.
   const ST = !!S.studio;
   S.mat = (c = 'c1', o = {}) => {
+    // a self-luminous body (a star, a hot filament): unlit, its own colour, darkening toward the limb
+    // as a photosphere does, I(mu) = 1 - u (1 - mu); blooms on the WebGPU path
+    if (o.limb !== undefined) {
+      const m = new THREE.MeshBasicNodeMaterial({ color: colour(c), transparent: (o.opacity ?? 1) < 1, opacity: o.opacity ?? 1 });
+      const mu = normalView.dot(positionView.normalize().negate()).clamp(0, 1);
+      m.colorNode = materialColor.mul(float(1).sub(float(o.limb).mul(float(1).sub(mu)))).mul(o.gain ?? 1);
+      m.userData.limb = true;
+      if (ST) S.studio.glow(m, o.bloom ?? 0.6);
+      return m;
+    }
     const m = new THREE.MeshPhysicalMaterial({
       color: o.vertexColors ? new THREE.Color(1, 1, 1) : colour(c), roughness: o.rough ?? (ST ? 0.36 : 0.42), metalness: o.metal ?? 0.0,
       clearcoat: o.coat ?? (ST ? 0.55 : 0.35), clearcoatRoughness: o.coatRough ?? (ST ? 0.14 : 0.35), side: o.side ?? THREE.DoubleSide,
@@ -233,6 +245,29 @@ export async function create(host, opts = {}) {
   };
   S.invalidate = () => lab.invalidate();
 
+  /* Lines are screen-space ribbons (LineSegments2) with smoothed edges, not 1 px hairlines: they keep
+     their width on a high-density display and their edges stay anti-aliased however they turn.
+     seg(flat, colours) takes [x0,y0,z0,x1,y1,z1, ...] and optional per-vertex rgb. */
+  const fatLines = (c, opacity, width, vertexColors) => {
+    const material = new THREE.Line2NodeMaterial({ color: vertexColors ? 0xffffff : colour(c), linewidth: width, transparent: true, opacity, depthWrite: false, vertexColors: !!vertexColors, worldUnits: false });
+    // a ribbon is flat to the screen, so where it lies on a surface (a circle drawn on a sphere) half its
+    // width dips under that surface; a small depth bias keeps it whole without lifting it off
+    material.polygonOffset = true; material.polygonOffsetFactor = -2; material.polygonOffsetUnits = -8;
+    const line = new LineSegments2(new LineSegmentsGeometry(), material);
+    line.userData.noOcclude = true;
+    line.raycast = () => {};
+    line.seg = (flat, cols) => {
+      line.geometry.dispose();
+      const g = new LineSegmentsGeometry();
+      g.setPositions(flat.length ? flat : [0, 0, 0, 0, 0, 0]);
+      if (cols) g.setColors(cols);
+      line.geometry = g;
+      line.visible = flat.length > 0;
+      return line;
+    };
+    return line;
+  };
+  S.fatLines = fatLines;
   /* parametric surface fn(u, v) -> [x, y, z]; colour(u, v, p) -> THREE.Color for vertex colours */
   S.surface = (fn, o = {}) => {
     const [u0, u1] = o.u ?? [0, 1], [v0, v1] = o.v ?? [0, 1];
@@ -253,7 +288,7 @@ export async function create(host, opts = {}) {
     mesh.castShadow = material.transmission > 0.5 ? false : castOK(mesh); mesh.receiveShadow = !!opts.shadows;
     let wire = null;
     if (o.wire) {
-      wire = new THREE.LineSegments(new THREE.BufferGeometry(), new THREE.LineBasicMaterial({ color: colour(o.wireColour ?? 'ink'), transparent: true, opacity: o.wireOpacity ?? (dark ? 0.22 : 0.16), depthWrite: false }));
+      wire = fatLines(o.wireColour ?? 'ink', o.wireOpacity ?? (dark ? 0.22 : 0.16), o.wireWidth ?? 1.1);
       mesh.add(wire);
     }
     mesh.update = (f = fn, colourFn = o.colour) => {
@@ -283,9 +318,7 @@ export async function create(host, opts = {}) {
         for (let i = 0; i <= nu; i += every) for (let j = 0; j < nv; j++) seg.push(...P(i, j), ...P(i, j + 1));
         const everyV = o.wireEveryV ?? Math.max(1, Math.round(nv / 16));
         for (let j = 0; j <= nv; j += everyV) for (let i = 0; i < nu; i++) seg.push(...P(i, j), ...P(i + 1, j));
-        wire.geometry.dispose();
-        wire.geometry = new THREE.BufferGeometry();
-        wire.geometry.setAttribute('position', new THREE.Float32BufferAttribute(seg, 3));
+        wire.seg(seg);
       }
       lab.invalidate();
       return mesh;
@@ -327,14 +360,14 @@ export async function create(host, opts = {}) {
   };
   /* thin line, for many curves at once (grids, trails) */
   S.lines = (segments, o = {}) => {
-    const geo = new THREE.BufferGeometry();
-    const line = new THREE.LineSegments(geo, new THREE.LineBasicMaterial({ color: colour(o.c ?? 'muted'), transparent: true, opacity: o.opacity ?? 0.6, depthWrite: false, vertexColors: !!o.colours }));
+    const line = fatLines(o.c ?? 'muted', o.opacity ?? 0.6, o.w ?? 1.5, !!o.colours);
     line.update = (segs = segments, colours) => {
-      if (!segs || !segs.length) segs = [[[0, 0, 0], [0, 0, 0]]];
+      if (!segs || !segs.length) segs = [];
       const flat = []; for (const [a, b] of segs) flat.push(a[0], a[1], a[2] ?? 0, b[0], b[1], b[2] ?? 0);
-      geo.setAttribute('position', new THREE.Float32BufferAttribute(flat, 3));
-      if (colours) { const c = []; for (const col of colours) c.push(col.r, col.g, col.b, col.r, col.g, col.b); geo.setAttribute('color', new THREE.Float32BufferAttribute(c, 3)); }
-      geo.computeBoundingSphere(); lab.invalidate(); return line;
+      let c = null;
+      if (colours && !line.material.vertexColors) { line.material.vertexColors = true; line.material.color.set(0xffffff); line.material.needsUpdate = true; }
+      if (colours) { c = []; for (const col of colours) c.push(col.r, col.g, col.b, col.r, col.g, col.b); }
+      line.seg(flat, c); lab.invalidate(); return line;
     };
     line.update(segments, o.colours);
     if (o.add !== false) S.add(line);
@@ -375,7 +408,7 @@ export async function create(host, opts = {}) {
   };
   S.sphere = (p, r = 0.08, o = {}) => {
     const m = new THREE.Mesh(new THREE.SphereGeometry(1, 32, 20), S.mat(o.c ?? 'hl', { rough: 0.25, coat: 0.8, ...o }));
-    m.scale.setScalar(r); m.position.copy(V(p)); m.castShadow = castOK(m);
+    m.scale.setScalar(r); m.position.copy(V(p)); m.castShadow = castOK(m) && !m.material.userData.limb;
     m.at = (q) => { m.position.copy(V(q)); lab.invalidate(); return m; };
     if (o.add !== false) S.add(m);
     return m;
@@ -421,7 +454,7 @@ export async function create(host, opts = {}) {
     const half = o.size ?? 3, n = o.n ?? 12, z = o.z ?? 0;
     const segs = [];
     for (let i = 0; i <= n; i++) { const t = -half + 2 * half * i / n; segs.push([[t, -half, z], [t, half, z]], [[-half, t, z], [half, t, z]]); }
-    const l = S.lines(segs, { c: 'grid', opacity: o.opacity ?? (dark ? 0.55 : 0.9) });
+    const l = S.lines(segs, { c: 'grid', w: o.w ?? 1.1, opacity: o.opacity ?? (dark ? 0.55 : 0.9) });
     S._floorZ = z;
     if (o.shadow && !ST) {
       const m = new THREE.Mesh(new THREE.PlaneGeometry(half * 2, half * 2), new THREE.ShadowMaterial({ opacity: dark ? 0.35 : 0.16 }));

@@ -55,7 +55,7 @@
   function renderReadouts(items) { readouts.innerHTML = items.map(([label, value]) => `<div class="readout-item"><span>${label}</span><strong>${value}</strong></div>`).join(''); }
 
   function jacobian() {
-    controls.innerHTML = `<h2 class="control-heading">${t('Local map', '局所写像')}</h2><p class="control-equation">F(x,y) = (x² − y, xy + y²)</p>${rangeRow('x', 'x', -2, 2, .05)}${rangeRow('y', 'y', -2, 2, .05)}<div class="control-group"><span class="control-label">DF(x,y)</span><div class="matrix-readout" data-matrix></div><p class="control-note">${t('Rows are outputs; columns are inputs.', '行は出力、列は入力です。')}</p></div>`;
+    controls.innerHTML = `<h2 class="control-heading">${t('Local map', '局所写像')}</h2><p class="control-equation">F(x,y) = (x² − y, xy + y²)</p>${rangeRow('x', 'x', -2, 2, .05)}${rangeRow('y', 'y', -2, 2, .05)}<div class="control-group"><span class="control-label" style="text-transform:none">DF(x,y)</span><div class="matrix-readout" data-matrix></div><p class="control-note">${t('Rows are outputs; columns are inputs.', '行は出力、列は入力です。')}</p></div>`;
     const draw = () => {
       const m = [[2 * state.x, -1], [state.y, state.x + 2 * state.y]];
       const det = m[0][0] * m[1][1] - m[0][1] * m[1][0];

@@ -51,6 +51,13 @@
 .lab-fig+.lab-fig{margin-top:12px}
 .lab-svg{display:block;width:100%;height:auto;position:relative;color:var(--lab-ink);font-family:var(--ig-sans,system-ui);touch-action:pan-y}
 .lab-raster{position:absolute;display:block}
+.lab-raster[hidden]{display:none}
+.lab-svg{text-rendering:geometricPrecision;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+.lab-svg path,.lab-svg ellipse,.lab-svg circle{shape-rendering:geometricPrecision}
+/* axis-aligned hairlines (grid, frame, axes, ticks) snap to the device pixel grid instead of smearing over two */
+.lab-grid line,.lab-frame,.lab-zero,.lab-tickmark{shape-rendering:crispEdges}
+.lab-tickmark{stroke:var(--lab-muted);stroke-width:1;opacity:.8}
+.lab-field path,.lab-stream path{stroke-linecap:round;stroke-linejoin:round}
 .lab-grid line{stroke:var(--lab-grid);stroke-width:1}
 .lab-frame{fill:none;stroke:var(--lab-grid);stroke-width:1}
 .lab-zero{stroke:var(--lab-zero);stroke-width:1.2}

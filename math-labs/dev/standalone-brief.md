@@ -37,6 +37,8 @@ READ FIRST: math-labs/KIT.md sections "Practice questions (generators)" and "3D 
 
 4. Fix clear mathematical or visual errors you notice on these pages.
 
+Note: math-labs/three3d.js now renders through the photographic studio (HDRI light, contact shadows, glossy materials; `S.mat(c, { glass: true, thickness, ior })` for real glass). The sandbox has no GPU and the soft shadow is very slow there: load pages with `?shadows=0` for screenshots. Another worker is upgrading three3d.js line rendering and 2D anti-aliasing at the same time; if a shared-file change breaks your page, wait a few minutes and retry before reporting it.
+
 ## Checks (all must pass)
 - `node math-labs/verify-practice.cjs standalone`: zero failures (it checks every file in questions/standalone).
 - No console errors on the page (other than the expected "No available adapters" WebGPU warning in this sandbox), in English and Japanese, light and dark, 1100 px and 390 px. LOOK at screenshots of the practice section and any 3D scene with the Read tool.

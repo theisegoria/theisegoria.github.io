@@ -22,6 +22,11 @@
 <link rel="alternate" hreflang="en" href="https://theisegoria.github.io/explore/scharr-gradient.html">
 <link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/explore/scharr-gradient.html">
 <link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/explore/scharr-gradient.html"><link rel="stylesheet" href="/analysis-atlas/vendor/katex.min.css"><script src="/analysis-atlas/vendor/katex.min.js"></script><script src="/assets/math-notation.js?v=20260922"></script>
+<link rel="stylesheet" href="/math-labs/labs.css?v=20261028">
+<link rel="stylesheet" href="/explore/m3d.css?v=20261028">
+<script defer src="/math-labs/practice.js?v=20261028"></script>
+<script defer src="/math-labs/questions/standalone/explore-scharr-gradient.js?v=20261028"></script>
+<script defer src="/math-labs/practice-embed.js?v=20261028"></script>
 <script src="/assets/lang.js"></script>
 <!-- ISEGORIA:HEAD -->
 <link rel="stylesheet" href="/assets/site-shell.css?v=c21cd21e82">
@@ -90,7 +95,15 @@
       </article>
     </section>
 
-    <nav class="lesson-footer-nav" aria-label="Lesson navigation"><a href="/#guides">← Back to the index</a><a href="jacobians-wronskians-hessians.html">Next: derivative arrays →</a></nav>
+    <section class="practice-embed" aria-labelledby="pe-h">
+<h2 id="pe-h">Practice</h2>
+<p class="pe-lede">Practise turning a patch into a gradient, a magnitude, a direction and an edge orientation, and the properties of the kernel itself. Questions are generated fresh at three levels.</p>
+<h3 class="pe-h">From a patch to a gradient</h3>
+<div class="practice" data-practice="explore-scharr-gradient-gradient"><details><summary>A patch has constant columns with intensities 0, 100, 200 from left to right. What is G_x from the normalized Scharr operator?</summary><p>Smoothing down a constant column multiplies it by 16, so G_x = 16(200 − 0)/32 = 100.</p></details></div>
+<h3 class="pe-h">The structure of the kernel</h3>
+<div class="practice" data-practice="explore-scharr-gradient-kernel"><details><summary>Smoothing weights [3, 10, 3] with derivative [−1, 0, 1]: what divisor makes the response to a ramp exactly its slope?</summary><p>2(3 + 10 + 3) = 32.</p></details></div>
+</section>
+<nav class="lesson-footer-nav" aria-label="Lesson navigation"><a href="/#guides">← Back to the index</a><a href="jacobians-wronskians-hessians.html">Next: derivative arrays →</a></nav>
   </main>
   <script src="../assets/site.js"></script>
   <script src="../assets/interactive.js"></script><!-- ISEGORIA:FOOT -->

@@ -5,7 +5,7 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="no-referrer" name="referrer"/>
-<meta content="default-src 'none'; script-src 'self' 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; style-src 'self' 'unsafe-inline' blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; img-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; font-src 'self' blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; media-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; worker-src blob:; connect-src blob: data: https://isegoria-analytics.isegoria-analytics.workers.dev; frame-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'" http-equiv="Content-Security-Policy"/>
+<meta content="default-src 'none'; script-src 'self' 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; style-src 'self' 'unsafe-inline' blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; img-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; font-src 'self' blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; media-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; worker-src blob:; connect-src 'self' blob: data: https://isegoria-analytics.isegoria-analytics.workers.dev; frame-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'" http-equiv="Content-Security-Policy"/>
 <title>円錐の寸法 - インタラクティブな幾何学</title><meta content="円錐の垂直高さを調整し、その母線の長さ、体積、および曲面積が変化するのを確認してください。" name="description"/>
 <style>:root{color-scheme:light dark;background:light-dark(rgb(255 255 255), rgb(24 24 24))}html,body{margin:0}body{box-sizing:border-box;padding:1rem;background:inherit}iframe{display:block;width:100%;height:calc(100vh - 2rem);margin:0 auto;border:0}</style>
 
@@ -15,7 +15,26 @@
 <link rel="alternate" hreflang="en" href="https://theisegoria.github.io/explore/cone-dimensions.html">
 <link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/explore/cone-dimensions.html">
 <link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/explore/cone-dimensions.html"><link rel="stylesheet" href="/analysis-atlas/vendor/katex.min.css"><script src="/analysis-atlas/vendor/katex.min.js"></script><script src="/assets/math-notation.js?v=20260922"></script>
-<script src="/assets/lang.js"></script>
+<script type="importmap">{"imports":{"three":"/vendor/three/r186/build/three.webgpu.js","three/webgpu":"/vendor/three/r186/build/three.webgpu.js","three/tsl":"/vendor/three/r186/build/three.tsl.js","three/addons/":"/vendor/three/r186/examples-jsm/"}}</script>
+<style id="cone3d-css">
+iframe{height:clamp(420px,64vh,470px)!important}
+@media(max-width:520px){iframe{height:540px!important}}
+.cone3d{max-width:1080px;margin:36px auto 8px;padding:0 4px;color:var(--lab-ink)}
+.cone3d h2{font:400 clamp(1.5rem,3vw,2rem)/1.15 var(--ig-serif,Georgia,serif);margin:0 0 6px}
+.cone3d .c3-lede{color:var(--lab-muted);max-width:70ch;line-height:1.65;margin:0 0 18px}
+.cone3d .c3-grid{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(230px,1fr);gap:24px;align-items:start}
+.cone3d .c3-side{display:grid;gap:16px}
+.cone3d .c3-read{display:grid;grid-template-columns:1fr 1fr;gap:12px 18px;margin:6px 0 0}
+.cone3d .c3-read div{border-top:1px solid var(--lab-grid);padding-top:8px}
+.cone3d dt{font-size:.78rem;color:var(--lab-muted);margin:0 0 2px}
+.cone3d dd{margin:0;font:600 1.2rem var(--lab-mono);font-variant-numeric:tabular-nums}
+.cone3d .c3-note{font-size:.88rem;line-height:1.6;color:var(--lab-muted);margin:0}
+@media(max-width:760px){.cone3d .c3-grid{grid-template-columns:1fr;gap:14px}}
+</style>
+<link rel="stylesheet" href="/math-labs/labs.css?v=20261028">
+<script defer src="/math-labs/practice.js?v=20261028"></script>
+<script defer src="/math-labs/questions/standalone/explore-cone-dimensions.js?v=20261028"></script>
+<script defer src="/math-labs/practice-embed.js?v=20261028"></script><script src="/assets/lang.js"></script>
 <!-- ISEGORIA:HEAD -->
 <link rel="stylesheet" href="/assets/site-shell.css?v=c21cd21e82">
 <script src="/assets/site-shell.js?v=c21cd21e82" ></script>
@@ -34,13 +53,13 @@
 <span id="ig-content" tabindex="-1"></span>
 <!-- /ISEGORIA:NAV --><nav aria-label="このページで" class="ig-page-nav"><a href="/ja/explore/geometry-mensuration.html">すべての7つの幾何学実験を体験</a><a href="/ja/explore/geometry-mensuration.html#cone">円錐の半径と高さを調整</a></nav>
 <iframe referrerpolicy="no-referrer" sandbox="allow-scripts" srcdoc="&lt;!doctype html&gt;
-&lt;html lang=&quot;en&quot; data-visualize-standalone&gt;
+&lt;html lang=&quot;ja&quot; data-visualize-standalone&gt;
 &lt;head&gt;
 &lt;meta charset=&quot;utf-8&quot;&gt;
 &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
 &lt;meta name=&quot;referrer&quot; content=&quot;no-referrer&quot;&gt;
 &lt;meta http-equiv=&quot;Content-Security-Policy&quot; content=&quot;default-src &#x27;none&#x27;; script-src &#x27;unsafe-inline&#x27; &#x27;unsafe-eval&#x27; &#x27;wasm-unsafe-eval&#x27; blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; style-src &#x27;unsafe-inline&#x27; blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; img-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; font-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; media-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; worker-src blob:; connect-src blob: data:; frame-src &#x27;none&#x27;; object-src &#x27;none&#x27;; base-uri &#x27;none&#x27;; form-action &#x27;none&#x27;&quot;&gt;
-&lt;title&gt;Geometry and mensuration - interactive cone&lt;/title&gt;
+&lt;title&gt;幾何と計量：円錐の対話図&lt;/title&gt;
 &lt;style&gt;:root {
   color-scheme: light dark;
   background-color: var(
@@ -1070,14 +1089,14 @@ html&gt;body{padding:0}&lt;/style&gt;
     @media(max-width:460px){#cone-dimensions .cone-layout{grid-template-columns:1fr;gap:4px}#cone-dimensions .cone-result{grid-template-columns:1fr 1fr;gap:10px}}
   &lt;/style&gt;
   &lt;div class=&quot;viz-controls&quot;&gt;
-    &lt;label class=&quot;form-label&quot; for=&quot;cone-height&quot;&gt;&lt;span&gt;Cone height h&lt;/span&gt;&lt;span&gt;&lt;output id=&quot;cone-height-value&quot;&gt;4.0&lt;/output&gt; units&lt;/span&gt;
+    &lt;label class=&quot;form-label&quot; for=&quot;cone-height&quot;&gt;&lt;span&gt;円錐の高さ h&lt;/span&gt;&lt;span&gt;&lt;output id=&quot;cone-height-value&quot;&gt;4.0&lt;/output&gt; 単位&lt;/span&gt;
       &lt;input class=&quot;form-range&quot; id=&quot;cone-height&quot; type=&quot;range&quot; min=&quot;1&quot; max=&quot;8&quot; value=&quot;4&quot; step=&quot;0.1&quot;&gt;
     &lt;/label&gt;
   &lt;/div&gt;
   &lt;div class=&quot;cone-layout&quot;&gt;
     &lt;svg class=&quot;cone-figure&quot; viewBox=&quot;0 0 320 280&quot; role=&quot;img&quot; aria-labelledby=&quot;cone-title cone-description&quot;&gt;
-      &lt;title id=&quot;cone-title&quot;&gt;Perpendicular and slant height of a right circular cone&lt;/title&gt;
-      &lt;desc id=&quot;cone-description&quot;&gt;The radius stays at 3 units. Adjust the height to change the slant height, volume and curved surface area.&lt;/desc&gt;
+      &lt;title id=&quot;cone-title&quot;&gt;直円錐の垂直な高さと母線&lt;/title&gt;
+      &lt;desc id=&quot;cone-description&quot;&gt;半径は 3 単位のままです。高さを変えると、母線、体積、側面積が変わります。&lt;/desc&gt;
       &lt;path id=&quot;cone-surface&quot; d=&quot;M70 235L155 125L240 235A85 19 0 0 1 70 235Z&quot; fill=&quot;var(--viz-series-1)&quot; fill-opacity=&quot;.12&quot; stroke=&quot;var(--foreground)&quot; stroke-width=&quot;1.5&quot;&gt;&lt;/path&gt;
       &lt;path d=&quot;M70 235A85 19 0 0 1 240 235&quot; fill=&quot;none&quot; stroke=&quot;var(--muted-foreground)&quot; stroke-width=&quot;1.2&quot; stroke-dasharray=&quot;5 4&quot;&gt;&lt;/path&gt;
       &lt;path id=&quot;cone-h-line&quot; d=&quot;M155 125V235&quot; fill=&quot;none&quot; stroke=&quot;var(--viz-series-1)&quot; stroke-width=&quot;2&quot; stroke-dasharray=&quot;5 4&quot;&gt;&lt;/path&gt;
@@ -1087,8 +1106,8 @@ html&gt;body{padding:0}&lt;/style&gt;
       &lt;text id=&quot;cone-radius-label&quot; x=&quot;199&quot; y=&quot;276&quot; text-anchor=&quot;middle&quot; aria-hidden=&quot;true&quot;&gt;r = 3&lt;/text&gt;
     &lt;/svg&gt;
     &lt;div class=&quot;cone-result&quot; aria-live=&quot;polite&quot;&gt;
-      &lt;div&gt;&lt;div class=&quot;text-muted&quot;&gt;Volume&lt;/div&gt;&lt;div class=&quot;cone-number&quot; id=&quot;cone-volume&quot;&gt;37.70 units³&lt;/div&gt;&lt;/div&gt;
-      &lt;div&gt;&lt;div class=&quot;text-muted&quot;&gt;Curved surface area&lt;/div&gt;&lt;div class=&quot;cone-number&quot; id=&quot;cone-area&quot;&gt;47.12 units²&lt;/div&gt;&lt;/div&gt;
+      &lt;div&gt;&lt;div class=&quot;text-muted&quot;&gt;体積&lt;/div&gt;&lt;div class=&quot;cone-number&quot; id=&quot;cone-volume&quot;&gt;37.70 単位³&lt;/div&gt;&lt;/div&gt;
+      &lt;div&gt;&lt;div class=&quot;text-muted&quot;&gt;側面積&lt;/div&gt;&lt;div class=&quot;cone-number&quot; id=&quot;cone-area&quot;&gt;47.12 単位²&lt;/div&gt;&lt;/div&gt;
     &lt;/div&gt;
   &lt;/div&gt;
   &lt;script&gt;
@@ -1125,11 +1144,13 @@ html&gt;body{padding:0}&lt;/style&gt;
         get(&#x27;cone-h-line&#x27;).setAttribute(&#x27;d&#x27;,`M155 ${apex}V235`);
         get(&#x27;cone-h-label&#x27;).setAttribute(&#x27;y&#x27;,String((apex+235)/2));
         get(&#x27;cone-slant-label&#x27;).setAttribute(&#x27;y&#x27;,String((apex+235)/2-8));
-        renderMath(get(&#x27;cone-volume&#x27;),String.raw`${(Math.PI*r*r*h/3).toFixed(2)}\,\mathrm{units}^{3}`);
-        renderMath(get(&#x27;cone-area&#x27;),String.raw`${(Math.PI*r*l).toFixed(2)}\,\mathrm{units}^{2}`);
-        get(&#x27;cone-description&#x27;).textContent=`Right circular cone. Radius 3 units, perpendicular height ${h.toFixed(1)} units, slant height ${l.toFixed(2)} units.`;
+        renderMath(get(&#x27;cone-volume&#x27;),String.raw`${(Math.PI*r*r*h/3).toFixed(2)}\,\text{ 単位}^{3}`);
+        renderMath(get(&#x27;cone-area&#x27;),String.raw`${(Math.PI*r*l).toFixed(2)}\,\text{ 単位}^{2}`);
+        get(&#x27;cone-description&#x27;).textContent=`直円錐。半径 3 単位、垂直な高さ ${h.toFixed(1)} 単位、母線 ${l.toFixed(2)} 単位。`;
       }
-      range.addEventListener(&#x27;input&#x27;,update);update();
+      range.addEventListener(&#x27;input&#x27;,()=&gt;{update();try{parent.postMessage({coneH:Number(range.value)},&#x27;*&#x27;);}catch(e){}});
+      window.addEventListener(&#x27;message&#x27;,e=&gt;{const d=e.data;if(d&amp;&amp;typeof d.coneH===&#x27;number&#x27;){range.value=String(Math.min(8,Math.max(1,d.coneH)));update();}});
+      update();
     })();
   &lt;/script&gt;
 &lt;/div&gt;
@@ -1487,7 +1508,36 @@ html&gt;body{padding:0}&lt;/style&gt;
 &lt;/body&gt;
 &lt;/html&gt;
 "></iframe>
-<p class="ig-translation-note"><a href="/explore/cone-dimensions.html" hreflang="en" lang="en">英語原文</a></p><!-- ISEGORIA:FOOT -->
+<section class="cone3d math-wrap" id="cone3d-section" aria-labelledby="c3-title" hidden>
+<h2 id="c3-title">同じ円錐を三次元で見る</h2>
+<p class="c3-lede">ドラッグで回してみましょう。高さのスライダーは上の図と連動しています。次に側面を切り開くと、半径が母線 ℓ、弧が底面の円周に等しい扇形になります。</p>
+<div class="c3-grid">
+<div id="cone3d-view"></div>
+<div class="c3-side">
+<div class="lab-control"><span>高さ h</span><output id="c3-hv">4.0</output><input id="c3-h" type="range" min="1" max="8" step="0.1" value="4" aria-label="円錐の高さ"></div>
+<div class="lab-control"><span>側面を切り開く</span><output id="c3-uv">0%</output><input id="c3-u" type="range" min="0" max="1" step="0.01" value="0" aria-label="側面を切り開く"></div>
+<dl class="c3-read" aria-live="polite">
+<div><dt>母線 ℓ</dt><dd id="c3-l">5.00</dd></div>
+<div><dt>扇形の中心角 θ</dt><dd id="c3-t">216.0°</dd></div>
+<div><dt>体積</dt><dd id="c3-v">37.70</dd></div>
+<div><dt>側面積</dt><dd id="c3-a">47.12</dd></div>
+</dl>
+<p class="c3-note">半径は r = 3 のままです。平らな扇形の中心角は θ = 360° · r/ℓ なので、背の高い円錐ほど細い扇形になり、その面積 ½ℓ · 2πr は側面積 πrℓ に等しくなります。</p>
+</div>
+</div>
+</section>
+<script type="module" src="/explore/cone-dimensions-3d.mjs?v=20261029"></script>
+
+<p class="ig-translation-note"><a href="/explore/cone-dimensions.html" hreflang="en" lang="en">英語原文</a></p><section class="practice-embed" aria-labelledby="pe-h">
+<h2 id="pe-h">練習問題</h2>
+<p class="pe-lede">このページの円錐を練習します。直角三角形から求める母線、高さを変えたときの体積と側面積、そして側面を切り開いた扇形です。問題は三つのレベルで毎回新しく生成され、半径 3 の問題は図の上で確かめられます。</p>
+<h3 class="pe-h">母線・高さ・半径</h3>
+<div class="practice" data-practice="explore-cone-dimensions-slant"><details><summary>半径 3、高さ 4 の円錐の母線の長さはいくつですか。</summary><p>ℓ = √(3² + 4²) = 5 です。</p></details></div>
+<h3 class="pe-h">体積と側面積</h3>
+<div class="practice" data-practice="explore-cone-dimensions-volume"><details><summary>半径 3、高さ 4 の円錐の体積はいくつですか。</summary><p>V = ⅓π · 9 · 4 = 12π ≈ 37.70 です。</p></details></div>
+<h3 class="pe-h">切り開いた側面</h3>
+<div class="practice" data-practice="explore-cone-dimensions-unroll"><details><summary>半径 3、高さ 4 の円錐の側面を切り開くと扇形になります。その中心角は何度ですか。</summary><p>θ = 360° · 3/5 = 216° です。</p></details></div>
+</section><!-- ISEGORIA:FOOT -->
 <footer id="ig-footer"><div><a href="/ja/">Isegoria · Benjamin Haire</a><nav aria-label="サイト内リンク"><a href="/ja/">ホームに戻る</a><a href="/ja/library.html">全コンテンツ</a><a href="#ig-content">ページ上部へ</a></nav></div></footer>
 <!-- /ISEGORIA:FOOT -->
 </body>

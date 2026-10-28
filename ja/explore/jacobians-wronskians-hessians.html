@@ -9,6 +9,12 @@
 <link rel="alternate" hreflang="en" href="https://theisegoria.github.io/explore/jacobians-wronskians-hessians.html">
 <link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/explore/jacobians-wronskians-hessians.html">
 <link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/explore/jacobians-wronskians-hessians.html"><link rel="stylesheet" href="/analysis-atlas/vendor/katex.min.css"><script src="/analysis-atlas/vendor/katex.min.js"></script><script src="/assets/math-notation.js?v=20260922"></script>
+<script type="importmap">{"imports":{"three":"/vendor/three/r186/build/three.webgpu.js","three/webgpu":"/vendor/three/r186/build/three.webgpu.js","three/tsl":"/vendor/three/r186/build/three.tsl.js","three/addons/":"/vendor/three/r186/examples-jsm/"}}</script>
+<link rel="stylesheet" href="/math-labs/labs.css?v=20261028">
+<link rel="stylesheet" href="/explore/m3d.css?v=20261028">
+<script defer src="/math-labs/practice.js?v=20261028"></script>
+<script defer src="/math-labs/questions/standalone/explore-jacobians-wronskians-hessians.js?v=20261028"></script>
+<script defer src="/math-labs/practice-embed.js?v=20261028"></script>
 <script src="/assets/lang.js"></script>
 <!-- ISEGORIA:HEAD -->
 <link rel="stylesheet" href="/assets/site-shell.css?v=c21cd21e82">
@@ -35,7 +41,20 @@
 <article class="lesson-card"><p class="cue">ヘッセ行列</p><h2>方向曲率</h2><p>スカラー場 f の Hᶠ は全ての二階偏微分を含みます。単位方向 u の二階方向微分は uᵀHᶠu です。</p></article>
 <article class="lesson-card"><p class="cue">分類</p><h2>固有値の符号を読む</h2><p>臨界点で固有値が二つとも正なら局所最小、二つとも負なら最大、符号が混ざれば鞍点です。0 があれば二次判定は不十分です。</p></article>
 <article class="lesson-card is-full"><p class="cue">徹底させている習慣</p><h2>添字を見えるままにする</h2><ul><li>ヤコビアン：出力を行、入力を列に置く。</li><li>ロンスキー行列式：関数の順序と微分の行を一貫させる。</li><li>ヘッセ行列：f が C² なら混合偏微分は一致する。非対称は通常代数ミス。</li><li>行列式は定義域・値域・単位と共に解釈する。</li></ul></article>
-</section><nav class="lesson-footer-nav"><a href="/ja/#guides">← 一覧へ戻る</a><a href="/ja/explore/mobius-schwarzian.html">次へ：Möbius 幾何 →</a></nav></main><script src="../../assets/site.js"></script><script src="../../assets/interactive-derivatives.js"></script><!-- ISEGORIA:FOOT -->
+</section><section class="m3d-section" aria-labelledby="h3d-h"><h2 id="h3d-h">曲面としてのヘッセ行列</h2><p class="m3d-lede">二次モデル q(u, v) = ½(au² + 2buv + cv²) を、実際の曲面として描きます。任意の方向の切り口は放物線で、その原点での曲率が uᵀHu です。固有方向に沿う緑と紫の曲線は、その曲率の最大と最小を与えます。</p><div data-hessian3d></div></section>
+<script>window.PracticeHosts=window.PracticeHosts||{};window.PracticeHosts["explore-jacobians-wronskians-hessians-hessian"]={set:function(v){if(window.__h3dSet)window.__h3dSet(v);else window.__h3dPending=v;}};</script>
+<script type="module" src="/explore/hessian-3d.js?v=20261028"></script>
+<section class="practice-embed" aria-labelledby="pe-h">
+<h2 id="pe-h">練習問題</h2>
+<p class="pe-lede">どのヤコビアン、ロンスキアン、ヘッセ行列にも使える手順を練習します。問題は三つのレベルで毎回新しく作られます。</p>
+<h3 class="pe-h">局所写像としてのヤコビアン</h3>
+<div class="practice" data-practice="explore-jacobians-wronskians-hessians-jacobian"><details><summary>F(x, y) = (x² − y, xy + y²) の (1, 2) での det DF はいくつですか。</summary><p>DF = [[2x, −1], [y, x + 2y]] なので DF(1, 2) = [[2, −1], [2, 5]]、det = 10 + 2 = 12 です。</p></details></div>
+<h3 class="pe-h">状態空間の面積としてのロンスキアン</h3>
+<div class="practice" data-practice="explore-jacobians-wronskians-hessians-wronskian"><details><summary>W(cos t, sin t) はいくつですか。</summary><p>W = cos t · cos t − sin t · (−sin t) = 1 で、どこでも 0 になりません。</p></details></div>
+<h3 class="pe-h">曲率としてのヘッセ行列</h3>
+<div class="practice" data-practice="explore-jacobians-wronskians-hessians-hessian"><details><summary>臨界点で H = [[2, 0], [0, −3]] のとき、二階微分判定は何を示しますか。</summary><p>固有値は 2 と −3 で符号が異なるので、鞍点です。</p></details></div>
+</section>
+<nav class="lesson-footer-nav"><a href="/ja/#guides">← 一覧へ戻る</a><a href="/ja/explore/mobius-schwarzian.html">次へ：<span data-ig-no-math>Möbius</span> 幾何 →</a></nav></main><script src="../../assets/site.js"></script><script src="../../assets/interactive-derivatives.js"></script><!-- ISEGORIA:FOOT -->
 <footer id="ig-footer"><div><a href="/ja/">Isegoria · Benjamin Haire</a><nav aria-label="サイト内リンク"><a href="/ja/">ホームに戻る</a><a href="/ja/library.html">全コンテンツ</a><a href="#ig-content">ページ上部へ</a></nav></div></footer>
 <!-- /ISEGORIA:FOOT -->
 </body></html>

@@ -209,8 +209,10 @@
         point.hidden = false;
         point.setAttribute('cx', sx(x0));
         point.setAttribute('cy', sy(0));
-        const kind = Math.abs(a) < 1e-9 && Math.abs(b) < 1e-9 ? "クスプ" : "ノード";
-        status.innerHTML = `<b>${kind} において (${x0.toFixed(2)}, 0)。</b> 3次関数は重解を持つため、両方の偏導関数はその点でゼロになる。`;
+        const cusp = Math.abs(a) < 1e-9 && Math.abs(b) < 1e-9;
+        const kind = cusp ? "クスプ" : (x0 < 0 ? "孤立点（アクノード）" : "ノード");
+        const extra = !cusp && x0 < 0 ? " 実数の曲線ではこの点だけが離れて残り、接線は複素数の傾きになる。" : "";
+        status.innerHTML = `<b>${kind} において (${x0.toFixed(2)}, 0)。</b> 3次関数は重解を持つため、両方の偏導関数はその点でゼロになる。${extra}`;
       } else {
         point.hidden = true;
         status.innerHTML = "<b>滑らか。</b> 3次曲線は重解を持たないため、勾配は曲線上で消えず、常に非ゼロである。";
