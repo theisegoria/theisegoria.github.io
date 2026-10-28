@@ -236,7 +236,7 @@
       return `${Number(m)} \\times 10^{${Number(e)}}`;
     }
     const s = Number(x.toFixed(d));
-    return String(s === 0 ? Number(x.toPrecision(d)) : s);
+    return String(s === 0 ? Number(x.toPrecision(Math.max(1, d))) : s);
   }
   /* significant figures, for physical quantities */
   function sig(x, n = 3) {

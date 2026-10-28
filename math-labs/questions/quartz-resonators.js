@@ -17,7 +17,7 @@
   /* ---------- 1. the tuning fork ---------- */
   Q['tuning-fork'] = [
     (r) => {
-      const form = r.int(0, 2);
+      const form = r.int(0, 3);
       if (form === 0) {
         const k = r.int(10, 22), f = 2 ** k;
         return {
@@ -61,14 +61,14 @@
           set: { L, t },
         };
       }
-      if (form === 1) {
+      if (form === 2) {
         const t = r.step(0.12, 0.3, 0.01), L = LFor(32768, t);
         return {
           q: [`With $f_1 = ${n(KF, 1)}\\,t/L^2$ (SI units) for a quartz tine, how long must a tine $${n(t)}$ mm wide be to vibrate at exactly 32,768 Hz? Give mm.`, `水晶の歯について SI 単位で $f_1 = ${n(KF, 1)}\\,t/L^2$ とします。幅 $${n(t)}$ mm の歯がちょうど 32,768 Hz で振動するには、長さは何 mm でなければなりませんか。`],
           a: { type: 'num', v: L, tol: 0.002, unit: ['mm', 'mm'] },
           hint: ['Solve for $L$: $L = \\sqrt{K t / f}$.', '$L$ について解くと $L = \\sqrt{K t / f}$ です。'],
           sol: [[`$L = \\sqrt{${n(KF, 1)} \\times ${sig(t * 1e-3, 3)}/32768} = ${sig(L * 1e-3, 4)}$ m.`, `$L = \\sqrt{${n(KF, 1)} \\times ${sig(t * 1e-3, 3)}/32768} = ${sig(L * 1e-3, 4)}$ m です。`], [`That is $${n(L, 4)}$ mm: wider tines are stiffer and need to be longer for the same note.`, `つまり $${n(L, 4)}$ mm です。幅の広い歯は硬いので、同じ音にするにはより長くなければなりません。`]],
-          set: { t, L: r4(L) },
+          set: L >= 1.8 && L <= 3 ? { t, L: r4(L) } : undefined,
         };
       }
       const dL = r.pick([0.5, 1, 2, 3, 5]), L = r.pick([2.1, 2.2, 2.32, 2.4, 2.5]), longer = r.chance(0.35);
@@ -98,7 +98,7 @@
           a: { type: 'num', v: L, tol: 0.0002, unit: ['mm', 'mm'] },
           hint: ['First turn the daily error into the actual frequency, then solve for $L$.', 'まず一日の誤差を実際の周波数に直し、それから $L$ について解きます。'],
           sol: [[`The rate is $${sgn(g, 1)}/86{,}400 = ${sgn(g / DAY * 1e6, 1)}$ ppm, so $f = 32768 \\times (1 ${g > 0 ? '+' : '-'} ${sig(Math.abs(g) / DAY, 3)}) = ${n(f, 3)}$ Hz.`, `歩度は $${sgn(g, 1)}/86{,}400 = ${sgn(g / DAY * 1e6, 1)}$ ppm なので、$f = 32768 \\times (1 ${g > 0 ? '+' : '-'} ${sig(Math.abs(g) / DAY, 3)}) = ${n(f, 3)}$ Hz です。`], [`$L = \\sqrt{${n(KF, 1)} \\times ${sig(t * 1e-3, 3)}/${n(f, 3)}} = ${n(L, 4)}$ mm, against $${n(LFor(32768, t), 4)}$ mm for a perfect fork.`, `$L = \\sqrt{${n(KF, 1)} \\times ${sig(t * 1e-3, 3)}/${n(f, 3)}} = ${n(L, 4)}$ mm で、完全な音叉の $${n(LFor(32768, t), 4)}$ mm と比べられます。`], [`The difference is ${n(Math.abs(L - LFor(32768, t)) * 1e3, 2)} µm: a ${g > 0 ? 'fast' : 'slow'} watch has tines that are ${g > 0 ? 'too short' : 'too long'} by well under the width of a hair.`, `差は ${n(Math.abs(L - LFor(32768, t)) * 1e3, 2)} µm です。${g > 0 ? '進む' : '遅れる'}時計の歯は、髪の毛の太さよりずっと小さい量だけ${g > 0 ? '短すぎる' : '長すぎる'}のです。`]],
-          set: { t, L: r4(L) },
+          set: L >= 1.8 && L <= 3 ? { t, L: r4(L) } : undefined,
         };
       }
       const opts = [
@@ -133,7 +133,7 @@
         };
       }
       if (form === 1) {
-        const R1 = r.step(10, 80, 5), fs = 32768, C1 = r.pick([1.8, 2, 2.4]) * 1e-15, L1 = 1 / ((TAU * fs) ** 2 * C1), Qv = TAU * fs * L1 / R1;
+        const R1 = r.step(10, 80, 5), fs = 32768, C1 = r.pick([1.8, 2, 2.4]) * 1e-15, L1 = 1 / ((TAU * fs) ** 2 * C1), Qv = TAU * fs * L1 / (R1 * 1e3);
         return {
           q: [`A 32,768 Hz crystal has $L_1 = ${n(L1 / 1000, 2)}$ kH and motional resistance $R_1 = ${R1}$ kΩ. What is its quality factor $Q = 2\\pi f_s L_1/R_1$?`, `32,768 Hz の水晶の $L_1 = ${n(L1 / 1000, 2)}$ kH、動的抵抗 $R_1 = ${R1}$ kΩ です。品質係数 $Q = 2\\pi f_s L_1/R_1$ はいくつですか。`],
           a: { type: 'num', v: TAU * fs * Number((L1 / 1000).toFixed(2)) * 1000 / (R1 * 1e3), rel: 0.005 },
