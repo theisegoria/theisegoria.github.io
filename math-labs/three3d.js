@@ -225,7 +225,12 @@ export async function create(host, opts = {}) {
   /* ---------- geometry helpers (all in math coordinates, Z up) ---------- */
   const V = (p) => (p instanceof THREE.Vector3 ? p : new THREE.Vector3(p[0], p[1], p[2] ?? 0));
   S.V = V;
-  S.add = (o) => { S.scene.add(o); lab.invalidate(); return o; };
+  S.add = (o) => {
+    S.scene.add(o);
+    // glass anywhere under o joins the studio's glass reflections and gets the painted backdrop
+    o.traverse?.((m) => { if (m.isMesh && m.material?.transmission > 0.5) { m.castShadow = false; S.backdrop(); S.studio?.addGlass(m); } });
+    lab.invalidate(); return o;
+  };
   S.invalidate = () => lab.invalidate();
 
   /* parametric surface fn(u, v) -> [x, y, z]; colour(u, v, p) -> THREE.Color for vertex colours */
@@ -245,8 +250,7 @@ export async function create(host, opts = {}) {
     geo.setAttribute('color', new THREE.BufferAttribute(col, 3));
     const material = S.mat(o.c ?? 'c1', { ...o, vertexColors: !!o.colour });
     const mesh = new THREE.Mesh(geo, material);
-    if (material.transmission > 0.5) { mesh.castShadow = false; S.backdrop(); S.studio?.addGlass(mesh); }
-    else mesh.castShadow = castOK(mesh); mesh.receiveShadow = !!opts.shadows;
+    mesh.castShadow = material.transmission > 0.5 ? false : castOK(mesh); mesh.receiveShadow = !!opts.shadows;
     let wire = null;
     if (o.wire) {
       wire = new THREE.LineSegments(new THREE.BufferGeometry(), new THREE.LineBasicMaterial({ color: colour(o.wireColour ?? 'ink'), transparent: true, opacity: o.wireOpacity ?? (dark ? 0.22 : 0.16), depthWrite: false }));

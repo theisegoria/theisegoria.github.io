@@ -334,7 +334,7 @@
           const edges = new TH.LineSegments(new TH.EdgesGeometry(box.geometry), new TH.LineBasicMaterial({ color: S.colour('ink'), transparent: true, opacity: 0.55 }));
           st.body.add(box, edges);
           // the body-fixed sphere: its front face writes depth so curves on the far side are hidden
-          const shell = new TH.Mesh(new TH.SphereGeometry(RS, 64, 40), S.mat('c4', { opacity: 0.07, rough: 0.2, coat: 0.9, depthWrite: true }));
+          const shell = new TH.Mesh(new TH.SphereGeometry(RS, 64, 40), S.mat('c4', { opacity: 0.07, rough: 0.2, coat: 0.9, depthWrite: true, glass: true, thickness: 0.04, ior: 1.15 }));
           shell.renderOrder = 1; shell.userData.noOcclude = true; st.body.add(shell);
           const curves = (list) => { const segs = []; list.forEach((pts) => { for (let i = 0; i + 1 < pts.length; i++) segs.push([pts[i].map((x) => x * RS * 1.004), pts[i + 1].map((x) => x * RS * 1.004)]); }); return segs; };
           const k = sepSlope(IBOX), bs = Math.atan(k), pol = [];

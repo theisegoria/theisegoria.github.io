@@ -453,7 +453,7 @@
           st.flat = false;
           st.balls = [-BALL, BALL].map((cx0, i) => {
             const at = (p) => [p[0] + cx0, p[1], p[2]];
-            S.surface((u, w) => at([Math.sin(w) * Math.cos(u), Math.sin(w) * Math.sin(u), Math.cos(w)]), { u: [0, 2 * PI], v: [0, PI], nu: 56, nv: 28, c: 'c3', opacity: 0.1, rough: 0.2, coat: 0.8 });
+            S.surface((u, w) => at([Math.sin(w) * Math.cos(u), Math.sin(w) * Math.sin(u), Math.cos(w)]), { u: [0, 2 * PI], v: [0, PI], nu: 56, nv: 28, c: 'c3', opacity: 0.1, rough: 0.2, coat: 0.8, glass: true, thickness: 0.05, ior: 1.2 });
             const segs = [], circ = (fn, c0) => { for (let k = 0; k < 96; k++) c0.push([at(fn(2 * PI * k / 96)), at(fn(2 * PI * (k + 1) / 96))]); };
             circ((q) => [Math.cos(q), Math.sin(q), 0], segs);
             S.lines(segs, { c: 'muted', opacity: 0.35 });
