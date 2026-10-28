@@ -185,3 +185,12 @@
 .pr-mw{white-space:nowrap}
 .lab-row.is-wide{grid-template-columns:minmax(0,1.35fr) minmax(0,1fr)}
 @media(max-width:700px){.lab-row.is-wide{grid-template-columns:1fr}}
+/* practice cards embedded in pages outside the kit */
+.practice-embed{
+ --lab-plate:light-dark(#fdfcf9,#1a1816);--lab-ink:var(--ig-ink,light-dark(#1b1917,#ece7df));--lab-muted:light-dark(#7b736a,#a0978b);
+ --lab-grid:light-dark(#ebe5da,#2b2723);--lab-c1:light-dark(#2f5ea8,#8ab3f0);--lab-c2:light-dark(#c2572b,#f2a174);--lab-c3:light-dark(#1f8577,#6fd2c1);
+ --lab-c4:light-dark(#8a4fb0,#caa3ea);--lab-hl:light-dark(#c38c0c,#f1c65a);--lab-accent:var(--ig-accent,#8a4b26);--lab-mono:"JetBrains Mono","SF Mono",ui-monospace,Menlo,monospace;
+ max-width:880px;margin:48px auto 64px;padding:0 20px;color:var(--lab-ink)}
+.practice-embed>h2{font:400 clamp(1.5rem,3vw,2rem)/1.15 var(--ig-serif,Georgia,serif);margin:0 0 6px}
+.practice-embed>p.pe-lede{color:var(--lab-muted);max-width:68ch;line-height:1.65;margin:0 0 18px}
+.practice-embed h3.pe-h{font:600 .95rem/1.4 var(--ig-sans,system-ui);margin:28px 0 8px;color:var(--lab-ink)}

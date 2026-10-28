@@ -103,6 +103,39 @@ for (const slug of topics) {
   }
   for (const id of Object.keys(Q)) if (!topic.labs.some((l) => l.id === id)) fail(slug, `generators for unknown experiment ${id}`);
 }
+// standalone pages: questions/standalone/<page>.js, every id must have three generators that pass the same text and answer checks
+const sdir = path.join(qdir, 'standalone');
+if (fs.existsSync(sdir) && (!only.length || only.includes('standalone'))) for (const f of fs.readdirSync(sdir).filter((x) => x.endsWith('.js'))) {
+  globalThis.LabQuestions = {};
+  require(path.join(sdir, f));
+  const Q = globalThis.LabQuestions, ids = Object.keys(Q);
+  if (!ids.length) fail(`standalone/${f}`, 'registers no generators');
+  for (const id of ids) {
+    const gens = Q[id];
+    if (!Array.isArray(gens) || gens.length !== 3) { fail(`standalone/${f}/${id}`, 'needs exactly three generators'); continue; }
+    for (let tier = 0; tier < 3; tier++) {
+      const prompts = new Set(); let errs = 0;
+      for (let sd = 1; sd <= seeds && errs < 3; sd++) {
+        const where = `standalone/${f}/${id} tier ${tier + 1} seed ${sd}`;
+        let q; try { q = P.generate(gens, tier, sd); } catch (e) { fail(where, 'threw ' + String(e.stack || e).split('\n').slice(0, 2).join(' ')); errs++; continue; }
+        const before = failures.length;
+        textCheck(where, q.q, 'q'); textCheck(where, q.hint, 'hint');
+        if (!Array.isArray(q.sol) || !q.sol.length) fail(where, 'no solution steps'); else q.sol.forEach((st, i) => textCheck(where, st, `sol[${i}]`));
+        prompts.add(q.q?.[0] + '|' + JSON.stringify(q.a?.v));
+        const a = q.a || {};
+        if (a.unit) textCheck(where, a.unit, 'unit');
+        if (a.type === 'choice') { a.opts?.forEach((o, i) => textCheck(where, o, `opt ${i}`)); if (!P.check(a, a.v).ok) fail(where, 'own choice rejected'); }
+        else if (a.type === 'expr') { try { P.parse(a.v, a.vars); if (!P.check(a, a.v).ok) fail(where, 'own expression rejected'); } catch (e) { fail(where, 'expression does not parse'); } }
+        else if (a.type === 'tuple') { if (!a.v.every(Number.isFinite) || !P.check(a, a.v.map(String)).ok) fail(where, 'own tuple rejected'); }
+        else if (a.type === 'num' || a.type === 'int') { if (!Number.isFinite(a.v) || !P.check(a, String(a.v)).ok) fail(where, 'own answer rejected'); }
+        else fail(where, 'unknown answer type ' + a.type);
+        if (failures.length > before) errs++;
+        checks++;
+      }
+      if (prompts.size < Math.min(5, seeds)) fail(`standalone/${f}/${id} tier ${tier + 1}`, `only ${prompts.size} distinct questions`);
+    }
+  }
+}
 if (failures.length) {
   console.error(failures.slice(0, 60).join('\n'));
   console.error(`\n${failures.length} practice failures`);
