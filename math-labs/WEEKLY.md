@@ -46,6 +46,14 @@ do not exist yet in content.json are simply left out of graph.js.
    its hub `description`/`description_ja` to one short sentence each, and move
    the entry to sit sensibly within its group (the list is ordered).
 
+6. `math-labs/questions/S.js`: practice generators, exactly three per
+   experiment (warm-up, standard, challenge), written to KIT.md's "Practice
+   questions (generators)" section. Several question forms per tier, answers
+   computed in the generator, a worked solution, a hint, `set` wherever the
+   controls can show the case, and symbolic (`expr`) answers wherever the
+   natural answer is a formula. The fixed question/answer in the addition file
+   is only the no-JavaScript fallback; keep it short.
+
 Lab ids must be unique across ALL topics (grep content.json). Param keys are
 plain identifiers.
 
@@ -59,6 +67,13 @@ show the mechanism. Beyond KIT.md's design bar:
   both matter. Use `f.raster` for fields and densities, `f.stream` for flows.
 - Real equations only; if schematic, say so in a caption.
 - Readouts quote the quantities the formula names.
+- 3D: at least one experiment per topic should be a three.js scene through
+  `L.view3d` (KIT.md, "3D experiments") when the subject has anything
+  genuinely spatial: a surface, a curve in space, a rotation, a field, an
+  orbital, a mechanism. Keep a 2D graph beside it with `lab-row is-wide`, a
+  `fallback` that draws a 2D figure, and direct manipulation with `S.handle`.
+  Do not force 3D onto subjects that are flat by nature. The newest topics
+  (gravitational-waves, robot-kinematics, riemann-surfaces) are the reference.
 
 ## 4. Build (exact order)
 
@@ -71,6 +86,7 @@ LIBRARY_EXCLUDE=$EXCL python3 tools/update-library.py
 python3 tools/site-shell.py
 python3 tools/track-pages.py
 node math-labs/verify.cjs
+node math-labs/verify-practice.cjs --require-all
 python3 tools/check-index.py
 ```
 
@@ -86,10 +102,16 @@ session's new page) out of library.html; check the library diff adds only your t
 python3 -m http.server 8770 >/dev/null 2>&1 &   # from repo root
 export NODE_PATH=$(npm root -g)
 for S in <math-slug> <physics-slug>; do
-  node math-labs/dev/shoot.cjs $S; node math-labs/dev/shoot.cjs $S --dark
-  node math-labs/dev/shoot.cjs $S --ja; node math-labs/dev/shoot.cjs $S --width=390
+  node math-labs/dev/shoot3d.cjs $S; node math-labs/dev/shoot3d.cjs $S --dark
+  node math-labs/dev/shoot3d.cjs $S --ja; node math-labs/dev/shoot3d.cjs $S --width=390 --out=/tmp/labshots/phone
 done
 ```
+
+shoot3d.cjs waits for 3D scenes, prints each experiment's backend
+(`[webgpu]` on the Mac, `[webgl2]` in a sandbox, `[2d]` for flat labs) and its
+current practice question, and also saves `<slug>-<lab>-practice.png`. Look at
+the practice cards too, in both languages. Check the 3D fallback once with
+`--q=flat`.
 
 Any EMPTY, ERROR, NONFINITE or page error is a failure. Build contact sheets with
 `python3 math-labs/dev/sheet.py /tmp/<S>-sheet.png /tmp/labshots/<S>*.png` and LOOK
@@ -100,10 +122,11 @@ reshoot until it is right. Kill the server afterwards.
 
 ## 6. Gate and ship
 
-Ship only if verify.cjs, check-index.py and the QA all pass. Stage explicit paths only (never `git add -A`):
+Ship only if verify.cjs, verify-practice.cjs, check-index.py and the QA all pass. Stage explicit paths only (never `git add -A`):
 
 ```
 git add math-labs/additions/ math-labs/topics/<S1>.js math-labs/topics/<S2>.js \
+  math-labs/questions/<S1>.js math-labs/questions/<S2>.js \
   math-labs/checks/ math-labs/graph.js math-labs/content.json math-labs/queue.json \
   <S1>/ ja/<S1>/ <S2>/ ja/<S2>/ tools/math-encyclopedia.json \
   math-encyclopedia/ ja/math-encyclopedia/ index.html ja/index.html sitemap.xml \

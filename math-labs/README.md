@@ -1,6 +1,6 @@
 # Math encyclopedia topics
 
-Thirty-six paired English/Japanese topics with 110 original interactive experiments. Static pages use the site's shared navigation and vendored KaTeX. The experiments share the `math-labs/experience.js` 2D rendering layer: responsive semantic SVG surfaces, one mathematical coordinate system, keyboard-safe handles, and reduced-motion-aware transitions. No runtime network requests or external application dependencies are needed for the experiments.
+Seventy-two paired English/Japanese topics with 222 interactive experiments. Static pages use the site's shared navigation and vendored KaTeX. The experiments share the `math-labs/experience.js` 2D rendering layer (responsive semantic SVG surfaces, one mathematical coordinate system, keyboard-safe handles, reduced-motion-aware transitions) and, where the subject is spatial, the `math-labs/three3d.js` 3D layer on the site's three.js runtime (WebGPU with a WebGL 2 fallback, and the 2D figure when neither exists). Every experiment ends with practice questions generated at three levels by `math-labs/questions/<slug>.js` through `math-labs/practice.js`. No runtime network requests or external application dependencies are needed for the experiments.
 
 ## Rebuild
 
@@ -13,6 +13,7 @@ python3 tools/update-library.py
 python3 tools/site-shell.py
 python3 tools/track-pages.py
 node math-labs/verify.cjs
+node math-labs/verify-practice.cjs --require-all
 ```
 
 `build.py` owns the topic pages and `content.json`; the six topics added in September 2026 are defined in `batch-six.py`, which `build.py` loads. `integrate.py` applies the shared shell, adds any missing topic to `tools/math-encyclopedia.json`, rebuilds both hubs with `tools/build-math-hub.py` (one section per group, each entry once) and adds sitemap URLs. It does not touch the home page. Latest-work promotion uses `tools/latest.py` separately.
