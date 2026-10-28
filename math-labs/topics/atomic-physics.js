@@ -87,45 +87,241 @@
   const region = (nm) => (nm < 380 ? T('ultraviolet', '紫外') : nm <= 750 ? T('visible', '可視') : T('infrared', '赤外'));
 
   /* ---------- 1. orbitals ---------- */
-  D['hydrogen-orbitals'] = {
-    render(ctx, v) {
-      const n = Math.round(v.n); let l = Math.round(v.l), m = Math.round(v.m);
-      if (l > n - 1) { l = n - 1; ctx.set('l', l, true); }
-      if (Math.abs(m) > l) { m = Math.sign(m) * l; ctx.set('m', m, true); }
-      const ph = v.phi * PI / 180, R = 2.5 * n * n + 2.5, psi = (s, z) => psiSlice(n, l, m, ph, s, z);
-      let pmax = 0; for (let i = 0; i < 90; i++) for (let j = 0; j < 90; j++) pmax = Math.max(pmax, Math.abs(psi(-R + 2 * R * (i + 0.5) / 90, -R + 2 * R * (j + 0.5) / 90)));
-      const azi = m === 0 ? 1 : m > 0 ? Math.cos(m * ph) : Math.sin(-m * ph), dead = Math.abs(azi) < 1e-6;
-      const row = L.h('div', 'lab-row', ctx.host), c1 = L.h('div', 'lab-col', row), c2 = L.h('div', 'lab-col', row);
-      L.h('p', 'lab-cap', c1, T('A slice through the atom containing the z axis. Colour shows the sign of ψ (orange positive, blue negative), stronger where |ψ| is larger. Dashed lines are nodes. Drag the gold probe.', 'z 軸を含む平面で原子を切った断面です。色は ψ の符号（橙が正、青が負）を表し、|ψ| が大きいほど濃くなります。点線は節です。金色の探針をドラッグしてください。'));
-      const f = L.fig(c1, { x: [-R, R], y: [-R, R], equal: true, maxH: 470, grid: false, xlabel: T('distance from the z axis (Bohr radii)', 'z 軸からの距離（ボーア半径）'), ylabel: 'z' });
-      if (!dead && pmax > 0) f.raster((s, z) => { const q = psi(s, z) / pmax; return Math.sign(q) * Math.pow(Math.abs(q), 0.55); }, { cmap: 'div', res: 3 });
-      const rn = radialNodes(n, l), pn = polarNodes(l, m);
-      rn.forEach((r) => f.circle(0, 0, r, { c: 'ink', w: 1.2, dash: '4 3', op: 0.7 }));
-      pn.forEach((th) => [1, -1].forEach((sg) => f.line([[0, 0], [sg * 1.5 * R * Math.sin(th), 1.5 * R * Math.cos(th)]], { c: 'ink', w: 1.2, dash: '4 3', op: 0.7 })));
-      if (m !== 0) f.line([[0, -R], [0, R]], { c: 'ink', w: 1.2, dash: '4 3', op: 0.7 });
-      const pr = ctx.state.probe && Math.abs(ctx.state.probe[0]) <= R && Math.abs(ctx.state.probe[1]) <= R ? ctx.state.probe : [0.3 * R, 0.4 * R];
-      const pv = psi(pr[0], pr[1]), prr = Math.hypot(pr[0], pr[1]);
-      f.handle(pr[0], pr[1], { c: 'hl', label: T('Probe point', '探針'), onDrag: (x, y) => { ctx.state.probe = [x, y]; ctx.redraw(); } });
-      const [on, os] = orbitalParts(n, l, m);
-      f.text(R, R, on, { anchor: 'end', dx: -10 - (os ? 5.5 * os.length + 1 : 0), dy: 24 });
-      if (os) f.text(R, R, os, { small: true, anchor: 'end', dx: -10, dy: 30 });
-      // radial probability for every l of this n
-      L.h('p', 'lab-cap', c2, T(`Radial probability r²R² for n = ${n}; the solid curve is l = ${l}`, `n = ${n} の動径確率 r²R²。実線が l = ${l} です`));
-      const curves = L.seq(n, (ll) => L.sample(0, R, 400, (r) => r * r * radial(n, ll, r) ** 2));
-      const ymax = Math.max(...curves.flat().map((q) => q[1]));
-      const g = L.fig(c2, { x: [0, R], y: [0, ymax * 1.3], aspect: 0.78, maxH: 360, xlabel: T('r (Bohr radii)', 'r（ボーア半径）'), ylabel: T('r²R² (arbitrary units)', 'r²R²（任意単位）'), ticksY: [] });
-      curves.forEach((cv, ll) => { if (ll !== l) g.line(cv, { c: 'muted', w: 1.2, dash: '4 3', op: 0.8 }); });
-      g.area(curves[l], { c: 'c1', fo: 0.25 }); g.line(curves[l], { c: 'c1', w: 2.6 });
-      rn.forEach((r) => g.dot(r, 0, { c: 'ink', r: 4, hollow: true }));
-      const mr = meanR(n, l); g.vline(mr, { c: 'c2', w: 1.6, dash: false }); g.text(mr, ymax * 1.14, '⟨r⟩', { math: true, small: true, dx: 6, dy: 4, anchor: 'start', c: 'c2' });
-      if (prr <= R) g.vline(prr, { c: 'hl', w: 1.4, dash: '3 3' });
-      g.hover((x) => (x < 0 || x > R ? null : { x, y: x * x * radial(n, l, x) ** 2, text: `r = ${fmt(x, 2)}  r²R² = ${fmt(x * x * radial(n, l, x) ** 2, 3)}` }));
-      L.legend(ctx.host, [{ kind: 'fill', c: 'pos', label: T('ψ > 0', 'ψ > 0') }, { kind: 'fill', c: 'neg', label: T('ψ < 0', 'ψ < 0') }, { c: 'ink', dash: true, label: T('nodes', '節') }, { c: 'c1', label: T(`r²R² for l = ${l}`, `l = ${l} の r²R²`) }, { c: 'muted', dash: true, label: T(`the other l with n = ${n}`, `n = ${n} の他の l`) }, { c: 'c2', label: '⟨r⟩' }]);
-      const num = integrateR(n, l, (r, Rv) => r * r * r * Rv * Rv);
-      ctx.readout([{ k: T('orbital', '軌道'), v: orbitalName(n, l, m) }, { k: 'Eₙ', v: `${fmt(level(n), 3)} eV`, tone: 'key' }, { k: T('radial nodes n − l − 1', '動径方向の節 n − l − 1'), v: String(n - l - 1) }, { k: T('angular nodes l', '角度方向の節 l'), v: String(l) }, { k: '⟨r⟩ = (3n² − l(l+1))/2', v: fmt(mr, 3) }, { k: T('⟨r⟩ by integration', '積分で求めた ⟨r⟩'), v: fmt(num, 3), tone: Math.abs(num - mr) < 1e-3 ? 'good' : 'warn' }, { k: T('probe |ψ|²', '探針での |ψ|²'), v: `${fmt(pv * pv, 3)} a₀⁻³` }],
-        dead ? T('This slice lies in a nodal plane of the azimuthal factor, so ψ vanishes on all of it. Turn the slice.', 'この断面は方位角因子の節面に一致しているので、ψ は断面全体で 0 です。断面を回してください。')
-          : n === 1 ? T('The ground state 1s has no nodes at all: ψ is positive everywhere and falls off as e^(−r/a₀). It is the only orbital with n = 1.', '基底状態 1s には節がまったくありません。ψ はどこでも正で、e^(−r/a₀) のように減衰します。n = 1 の軌道はこれだけです。')
+  const ORB_F = 0.8;   // the isosurface |psi| = c encloses this fraction of the probability
+  const psi3 = (n, l, m, x, y, z) => { const r = Math.hypot(x, y, z); if (r < 1e-9) return l === 0 ? radial(n, 0, 0) * realY(0, 0, 0, 0) : 0; return radial(n, l, r) * realY(l, m, Math.acos(Math.max(-1, Math.min(1, z / r))), Math.atan2(y, x)); };
+  // radius inside which the electron is found with probability q
+  function radiusFor(n, l, q) { const rmax = 8 * n * n + 30, N = 4000, h = rmax / N; let s = 0; for (let i = 1; i <= N; i++) { const r = (i - 0.5) * h; s += r * r * radial(n, l, r) ** 2 * h; if (s >= q) return i * h; } return rmax; }
+  // sample psi on a cube and extract the two isosurfaces psi = +c and psi = -c by marching tetrahedra
+  const TETS = [[0, 5, 1, 6], [0, 1, 2, 6], [0, 2, 3, 6], [0, 3, 7, 6], [0, 7, 4, 6], [0, 4, 5, 6]];
+  const CORN = [[0, 0, 0], [1, 0, 0], [1, 1, 0], [0, 1, 0], [0, 0, 1], [1, 0, 1], [1, 1, 1], [0, 1, 1]];
+  function orbitalMesh(n, l, m) {
+    const Rc = radiusFor(n, l, 0.985), N = 46, h = 2 * Rc / N, M = N + 1;
+    const V = new Float32Array(M * M * M), at = (i, j, k) => (i * M + j) * M + k, X = (i) => -Rc + i * h;
+    let vmax = 0;
+    for (let i = 0; i < M; i++) for (let j = 0; j < M; j++) for (let k = 0; k < M; k++) { const p = psi3(n, l, m, X(i), X(j), X(k)); V[at(i, j, k)] = p; vmax = Math.max(vmax, Math.abs(p)); }
+    // the level c: the largest |psi| whose superlevel set holds ORB_F of the probability on the grid
+    const sq = Array.from(V, (p) => p * p).sort((a, b) => b - a), tot = sq.reduce((s, x) => s + x, 0);
+    let acc = 0, c = 0; for (const x of sq) { acc += x; if (acc >= ORB_F * tot) { c = Math.sqrt(x); break; } }
+    const grad = (i, j, k) => { const g = (a, b, d) => (V[b] - V[a]) / d; const i0 = Math.max(0, i - 1), i1 = Math.min(N, i + 1), j0 = Math.max(0, j - 1), j1 = Math.min(N, j + 1), k0 = Math.max(0, k - 1), k1 = Math.min(N, k + 1); return [g(at(i0, j, k), at(i1, j, k), (i1 - i0) * h), g(at(i, j0, k), at(i, j1, k), (j1 - j0) * h), g(at(i, j, k0), at(i, j, k1), (k1 - k0) * h)]; };
+    const lobes = [1, -1].map((sg) => {
+      const P = [], Nn = [];
+      const ix = new Int32Array(8 * 3), f = new Float64Array(8);
+      for (let i = 0; i < N; i++) for (let j = 0; j < N; j++) for (let k = 0; k < N; k++) {
+        let any = false, all = true;
+        for (let q = 0; q < 8; q++) { const [a, b, d] = CORN[q]; ix[3 * q] = i + a; ix[3 * q + 1] = j + b; ix[3 * q + 2] = k + d; f[q] = sg * V[at(i + a, j + b, k + d)] - c; if (f[q] > 0) any = true; else all = false; }
+        if (!any || all) continue;
+        for (const t of TETS) {
+          const ins = t.filter((q) => f[q] > 0), out = t.filter((q) => f[q] <= 0);
+          if (!ins.length || !out.length) continue;
+          const E = (a, b) => {
+            const u = f[a] / (f[a] - f[b]);
+            const ga = grad(ix[3 * a], ix[3 * a + 1], ix[3 * a + 2]), gb = grad(ix[3 * b], ix[3 * b + 1], ix[3 * b + 2]);
+            const p = [0, 1, 2].map((d) => X(ix[3 * a + d]) + u * (ix[3 * b + d] - ix[3 * a + d]) * h);
+            const g = [0, 1, 2].map((d) => -sg * (ga[d] + u * (gb[d] - ga[d])));
+            const L2 = Math.hypot(...g) || 1;
+            return [p, g.map((x) => x / L2)];
+          };
+          let tris;
+          if (ins.length === 1) tris = [[E(ins[0], out[0]), E(ins[0], out[1]), E(ins[0], out[2])]];
+          else if (ins.length === 3) tris = [[E(out[0], ins[0]), E(out[0], ins[1]), E(out[0], ins[2])]];
+          else { const q = [E(ins[0], out[0]), E(ins[0], out[1]), E(ins[1], out[1]), E(ins[1], out[0])]; tris = [[q[0], q[1], q[2]], [q[0], q[2], q[3]]]; }
+          for (let [A, B, C] of tris) {
+            const e1 = [0, 1, 2].map((d) => B[0][d] - A[0][d]), e2 = [0, 1, 2].map((d) => C[0][d] - A[0][d]);
+            const cr = [e1[1] * e2[2] - e1[2] * e2[1], e1[2] * e2[0] - e1[0] * e2[2], e1[0] * e2[1] - e1[1] * e2[0]];
+            if (cr[0] * (A[1][0] + B[1][0] + C[1][0]) + cr[1] * (A[1][1] + B[1][1] + C[1][1]) + cr[2] * (A[1][2] + B[1][2] + C[1][2]) < 0) [B, C] = [C, B];
+            for (const V3 of [A, B, C]) { P.push(...V3[0]); Nn.push(...V3[1]); }
+          }
+        }
+      }
+      return { P: new Float32Array(P), N: new Float32Array(Nn) };
+    });
+    return { Rc, c, vmax, lobes };
+  }
+  // keep the part of a triangle soup on the far side (d >= 0) of the plane through the z axis with normal nv
+  function clipSoup({ P, N }, nv) {
+    const oP = [], oN = [];
+    for (let t = 0; t < P.length; t += 9) {
+      const vs = [0, 1, 2].map((q) => ({ p: [P[t + 3 * q], P[t + 3 * q + 1], P[t + 3 * q + 2]], n: [N[t + 3 * q], N[t + 3 * q + 1], N[t + 3 * q + 2]] }));
+      const d = vs.map((v) => v.p[0] * nv[0] + v.p[1] * nv[1]);
+      if (d[0] >= 0 && d[1] >= 0 && d[2] >= 0) { for (const v of vs) { oP.push(...v.p); oN.push(...v.n); } continue; }
+      if (d[0] < 0 && d[1] < 0 && d[2] < 0) continue;
+      const poly = [];
+      for (let q = 0; q < 3; q++) {
+        const a = vs[q], b = vs[(q + 1) % 3], da = d[q], db = d[(q + 1) % 3];
+        if (da >= 0) poly.push(a);
+        if ((da >= 0) !== (db >= 0)) { const u = da / (da - db); poly.push({ p: a.p.map((x, k) => x + u * (b.p[k] - x)), n: a.n.map((x, k) => x + u * (b.n[k] - x)) }); }
+      }
+      for (let q = 1; q + 1 < poly.length; q++) for (const v of [poly[0], poly[q], poly[q + 1]]) { oP.push(...v.p); oN.push(...v.n); }
+    }
+    return { P: new Float32Array(oP), N: new Float32Array(oN) };
+  }
+
+  function orbitalState(ctx, v) {
+    const n = Math.round(v.n); let l = Math.round(v.l), m = Math.round(v.m);
+    if (l > n - 1) { l = n - 1; ctx.set('l', l, true); }
+    if (Math.abs(m) > l) { m = Math.sign(m) * l; ctx.set('m', m, true); }
+    const ph = v.phi * PI / 180, R = 2.5 * n * n + 2.5;
+    return { n, l, m, ph, R, psi: (s, z) => psiSlice(n, l, m, ph, s, z) };
+  }
+  function drawSlice(ctx, col, o, big) {
+    const { n, l, m, ph, R, psi } = o;
+    let pmax = 0; for (let i = 0; i < 90; i++) for (let j = 0; j < 90; j++) pmax = Math.max(pmax, Math.abs(psi(-R + 2 * R * (i + 0.5) / 90, -R + 2 * R * (j + 0.5) / 90)));
+    const azi = m === 0 ? 1 : m > 0 ? Math.cos(m * ph) : Math.sin(-m * ph), dead = Math.abs(azi) < 1e-6;
+    L.h('p', 'lab-cap', col, big ? T('A slice through the atom containing the z axis. Colour shows the sign of ψ (orange positive, blue negative), stronger where |ψ| is larger. Dashed lines are nodes. Drag the gold probe.', 'z 軸を含む平面で原子を切った断面です。色は ψ の符号（橙が正、青が負）を表し、|ψ| が大きいほど濃くなります。点線は節です。金色の探針をドラッグしてください。')
+      : T('The same slice flat, with its nodes dashed. Drag the gold probe here or on the plane in 3D.', '同じ断面を平面で示し、節を点線で描いています。金色の探針はここでも 3D の面上でもドラッグできます。'));
+    const f = L.fig(col, { x: [-R, R], y: [-R, R], equal: true, maxH: big ? 470 : 300, grid: false, xlabel: T('distance from the z axis (Bohr radii)', 'z 軸からの距離（ボーア半径）'), ylabel: 'z' });
+    if (!dead && pmax > 0) f.raster((s, z) => { const q = psi(s, z) / pmax; return Math.sign(q) * Math.pow(Math.abs(q), 0.55); }, { cmap: 'div', res: 3 });
+    const rn = radialNodes(n, l), pn = polarNodes(l, m);
+    rn.forEach((r) => f.circle(0, 0, r, { c: 'ink', w: 1.2, dash: '4 3', op: 0.7 }));
+    pn.forEach((th) => [1, -1].forEach((sg) => f.line([[0, 0], [sg * 1.5 * R * Math.sin(th), 1.5 * R * Math.cos(th)]], { c: 'ink', w: 1.2, dash: '4 3', op: 0.7 })));
+    if (m !== 0) f.line([[0, -R], [0, R]], { c: 'ink', w: 1.2, dash: '4 3', op: 0.7 });
+    const pr = ctx.state.probe && Math.abs(ctx.state.probe[0]) <= R && Math.abs(ctx.state.probe[1]) <= R ? ctx.state.probe : [0.3 * R, 0.4 * R];
+    f.handle(pr[0], pr[1], { c: 'hl', label: T('Probe point', '探針'), onDrag: (x, y) => { ctx.state.probe = [x, y]; ctx.redraw(); } });
+    const [on, os] = orbitalParts(n, l, m);
+    f.text(R, R, on, { anchor: 'end', dx: -10 - (os ? 5.5 * os.length + 1 : 0), dy: 24 });
+    if (os) f.text(R, R, os, { small: true, anchor: 'end', dx: -10, dy: 30 });
+    return { pr, dead, rn };
+  }
+  function drawRadial(col, o, prr, rn, compact) {
+    const { n, l, R } = o;
+    L.h('p', 'lab-cap', col, T(`Radial probability r²R² for n = ${n}; the solid curve is l = ${l}`, `n = ${n} の動径確率 r²R²。実線が l = ${l} です`));
+    const curves = L.seq(n, (ll) => L.sample(0, R, 400, (r) => r * r * radial(n, ll, r) ** 2));
+    const ymax = Math.max(...curves.flat().map((q) => q[1]));
+    const g = L.fig(col, { x: [0, R], y: [0, ymax * 1.3], aspect: compact ? 0.6 : 0.78, maxH: compact ? 250 : 360, xlabel: T('r (Bohr radii)', 'r（ボーア半径）'), ylabel: T('r²R² (arbitrary units)', 'r²R²（任意単位）'), ticksY: [] });
+    curves.forEach((cv, ll) => { if (ll !== l) g.line(cv, { c: 'muted', w: 1.2, dash: '4 3', op: 0.8 }); });
+    g.area(curves[l], { c: 'c1', fo: 0.25 }); g.line(curves[l], { c: 'c1', w: 2.6 });
+    rn.forEach((r) => g.dot(r, 0, { c: 'ink', r: 4, hollow: true }));
+    const mr = meanR(n, l); g.vline(mr, { c: 'c2', w: 1.6, dash: false }); g.text(mr, ymax * 1.14, '⟨r⟩', { math: true, small: true, dx: 6, dy: 4, anchor: 'start', c: 'c2' });
+    if (prr <= R) g.vline(prr, { c: 'hl', w: 1.4, dash: '3 3' });
+    g.hover((x) => (x < 0 || x > R ? null : { x, y: x * x * radial(n, l, x) ** 2, text: `r = ${fmt(x, 2)}  r²R² = ${fmt(x * x * radial(n, l, x) ** 2, 3)}` }));
+  }
+  function orbitalReadout(ctx, o, pr, dead, flat) {
+    const { n, l, m, psi } = o, pv = psi(pr[0], pr[1]);
+    const mr = meanR(n, l), num = integrateR(n, l, (r, Rv) => r * r * r * Rv * Rv);
+    ctx.readout([{ k: T('orbital', '軌道'), v: orbitalName(n, l, m) }, { k: 'Eₙ', v: `${fmt(level(n), 3)} eV`, tone: 'key' }, { k: T('radial nodes n − l − 1', '動径方向の節 n − l − 1'), v: String(n - l - 1) }, { k: T('angular nodes l', '角度方向の節 l'), v: String(l) }, { k: '⟨r⟩ = (3n² − l(l+1))/2', v: fmt(mr, 3) }, { k: T('⟨r⟩ by integration', '積分で求めた ⟨r⟩'), v: fmt(num, 3), tone: Math.abs(num - mr) < 1e-3 ? 'good' : 'warn' }, { k: T('probe |ψ|²', '探針での |ψ|²'), v: `${fmt(pv * pv, 3)} a₀⁻³` }],
+      dead ? T(`This slice lies in a nodal plane of the azimuthal factor, so ψ vanishes on all of it.${flat ? '' : ' The 3D surfaces show where the lobes are.'} Turn the slice.`, `この断面は方位角因子の節面に一致しているので、ψ は断面全体で 0 です。${flat ? '' : '3D の曲面がローブの位置を示しています。'}断面を回してください。`)
+        : n === 1 ? T('The ground state 1s has no nodes at all: ψ is positive everywhere and falls off as e^(−r/a₀). It is the only orbital with n = 1.', '基底状態 1s には節がまったくありません。ψ はどこでも正で、e^(−r/a₀) のように減衰します。n = 1 の軌道はこれだけです。')
           : T(`All ${n * n} orbitals with n = ${n} share the energy ${fmt(level(n), 3)} eV: in hydrogen the energy depends on n alone. Each has n − 1 = ${n - 1} nodes in total, split between spheres (radial) and cones or planes (angular).`, `n = ${n} の ${n * n} 個の軌道はすべて同じエネルギー ${fmt(level(n), 3)} eV を持ちます。水素ではエネルギーは n だけで決まります。どの軌道も節は合計 n − 1 = ${n - 1} 個で、球面（動径方向）と円錐面や平面（角度方向）に分かれます。`));
+  }
+  const orbitalLegend = (host, l, n, flat) => L.legend(host, [{ kind: 'fill', c: 'pos', label: T('ψ > 0', 'ψ > 0') }, { kind: 'fill', c: 'neg', label: T('ψ < 0', 'ψ < 0') }, { c: 'ink', dash: true, label: T('nodes', '節') }, { c: 'c1', label: T(`r²R² for l = ${l}`, `l = ${l} の r²R²`) }, { c: 'muted', dash: true, label: T(`the other l with n = ${n}`, `n = ${n} の他の l`) }, { c: 'c2', label: '⟨r⟩' }].concat(flat ? [] : [{ kind: 'dot', c: 'hl', label: T('probe', '探針') }]));
+
+  D['hydrogen-orbitals'] = {
+    three: true,
+    render(ctx, v) {
+      const st = ctx.state;
+      if (!st.frame || !st.frame.isConnected) {
+        ctx.host.replaceChildren();
+        st.frame = L.h('div', '', ctx.host);
+        const row = L.h('div', 'lab-row is-wide', st.frame);
+        st.c1 = L.h('div', 'lab-col', row); st.c2 = L.h('div', 'lab-col', row);
+        st.cap1 = L.h('p', 'lab-cap', st.c1, '');
+        st.v3 = L.h('div', '', st.c1);
+        st.leg = L.h('div', '', st.frame);
+      }
+      const draw2d = (o) => {
+        st.c2.replaceChildren(); st.leg.replaceChildren();
+        let res;
+        if (st.flat) {
+          st.c1.replaceChildren();
+          res = drawSlice(ctx, st.c1, o, true);
+        } else {
+          st.cap1.textContent = Number(v.view) === 1
+            ? T(`The whole orbital: the surfaces |ψ| = const that enclose ${Math.round(ORB_F * 100)}% of the probability, orange where ψ > 0 and blue where ψ < 0. The frame marks the slice plane.`, `軌道全体です。確率の ${Math.round(ORB_F * 100)}% を囲む |ψ| = 一定の曲面を、ψ > 0 は橙、ψ < 0 は青で描いています。枠は断面の位置を示します。`)
+            : T(`The surfaces |ψ| = const enclosing ${Math.round(ORB_F * 100)}% of the probability, cut open along the slice plane, which is painted with ψ. Drag to turn the atom; drag the gold probe on the plane.`, `確率の ${Math.round(ORB_F * 100)}% を囲む |ψ| = 一定の曲面を断面で切り開き、断面には ψ を塗っています。ドラッグで原子を回し、金色の探針は面上でドラッグできます。`);
+          res = drawSlice(ctx, st.c2, o, false);
+        }
+        drawRadial(st.flat ? st.c2 : st.c2, o, Math.hypot(res.pr[0], res.pr[1]), res.rn, !st.flat);
+        orbitalLegend(st.leg, o.l, o.n, st.flat);
+        orbitalReadout(ctx, o, res.pr, res.dead, st.flat);
+        return res;
+      };
+      L.view3d(ctx, v, {
+        host: st.v3, aspect: 1, maxH: 540, camera: [2.2, -6.2, 2.7], target: [0, 0, 0], fov: 32,
+        label: T('3D hydrogen orbital. Drag to rotate.', '3D の水素軌道。ドラッグで回転できます。'),
+        init(S) {
+          st.flat = false;
+          const THREE = S.THREE;
+          st.lobeM = [S.mat('pos', { rough: 0.45, coat: 0.5 }), S.mat('neg', { rough: 0.45, coat: 0.5 })].map((mat) => { const me = new THREE.Mesh(new THREE.BufferGeometry(), mat); S.add(me); return me; });
+          st.cv = document.createElement('canvas'); st.cv.width = st.cv.height = 200;
+          st.tex = new THREE.CanvasTexture(st.cv); st.tex.colorSpace = THREE.SRGBColorSpace;
+          st.planeG = new THREE.BufferGeometry();
+          st.planeG.setAttribute('position', new THREE.Float32BufferAttribute(new Array(12).fill(0), 3));
+          st.planeG.setAttribute('uv', new THREE.Float32BufferAttribute([0, 0, 1, 0, 1, 1, 0, 1], 2));
+          st.planeG.setIndex([0, 1, 2, 0, 2, 3]);
+          st.plane = new THREE.Mesh(st.planeG, new THREE.MeshBasicMaterial({ map: st.tex, transparent: true, side: THREE.DoubleSide, depthWrite: false, toneMapped: false }));
+          st.plane.renderOrder = 2; st.plane.userData.noOcclude = true; S.add(st.plane);
+          st.frameL = S.lines([[[0, 0, 0], [0, 0, 0]]], { c: 'muted', opacity: 0.7 });
+          S.lines([[[0, 0, -1.9], [0, 0, 1.9]]], { c: 'ink', opacity: 0.45 });
+          S.sphere([0, 0, 0], 0.028, { c: 'ink' });
+          S.label('z', [0, 0, 1.98], { math: true, c: 'muted' });
+          st.nameL = S.label('', [0, 0, -2.08], { align: 'middle' });
+          st.phiL = S.label('', [0, 0, 0], { small: true, c: 'muted', align: 'end', dy: 14 });
+          st.probe3 = S.handle([0, 0, 0], { r: 0.06, plane: [[0, 1, 0], [0, 0, 0]], onDrag: (q) => {
+            const o = st.o3; if (!o) return null;
+            const u = [Math.cos(o.ph), Math.sin(o.ph)], K = 1.6 / o.mesh.Rc, lim = 1.6;
+            let s = (q.x * u[0] + q.y * u[1]), z = q.z; s = Math.max(-lim, Math.min(lim, s)); z = Math.max(-lim, Math.min(lim, z));
+            st.probe = [s / K, z / K]; ctx.redraw();
+            return [s * u[0], s * u[1], z];
+          } });
+          st.key3 = ''; st.keyCut = ''; st.keyTex = '';
+        },
+        update(S, vv) {
+          const o = orbitalState(ctx, vv), THREE = S.THREE;
+          const key = `${o.n},${o.l},${o.m}`;
+          if (st.key3 !== key) { st.key3 = key; st.mesh = orbitalMesh(o.n, o.l, o.m); st.keyCut = ''; st.keyTex = ''; }
+          const mesh = st.mesh, K = 1.6 / mesh.Rc, cut = Number(vv.view) !== 1;
+          o.mesh = mesh; st.o3 = o;
+          const u = [Math.cos(o.ph), Math.sin(o.ph)], nv = [-u[1], u[0]];
+          const ck = `${cut ? vv.phi : 'whole'}`;
+          if (st.keyCut !== ck) {
+            st.keyCut = ck;
+            mesh.lobes.forEach((lb, i) => {
+              const sp = cut ? clipSoup(lb, nv) : lb, me = st.lobeM[i];
+              me.geometry.dispose(); me.geometry = new THREE.BufferGeometry();
+              me.geometry.setAttribute('position', new THREE.BufferAttribute(sp.P.slice(), 3));
+              me.geometry.setAttribute('normal', new THREE.BufferAttribute(sp.N.slice(), 3));
+              me.geometry.computeBoundingSphere(); me.scale.setScalar(K); me.visible = sp.P.length > 0;
+            });
+          }
+          // the slice plane, painted with psi where it cuts the lobes
+          const E = 1.6, cor = [[-E, -E], [E, -E], [E, E], [-E, E]].map(([s, z]) => [s * u[0], s * u[1], z]);
+          st.planeG.attributes.position.array.set(cor.flat()); st.planeG.attributes.position.needsUpdate = true; st.planeG.computeBoundingSphere();
+          st.frameL.update(cor.map((p, i) => [p, cor[(i + 1) % 4]]));
+          const tk = `${key},${vv.phi},${cut}`;
+          if (st.keyTex !== tk) {
+            st.keyTex = tk;
+            const W = st.cv.width, cx = st.cv.getContext('2d'), img = cx.createImageData(W, W), Rc = mesh.Rc;
+            if (cut) {
+              for (let j = 0; j < W; j++) for (let i = 0; i < W; i++) {
+                const s = -Rc + 2 * Rc * (i + 0.5) / W, z = Rc - 2 * Rc * (j + 0.5) / W, p = o.psi(s, z), q = p / mesh.vmax;
+                const inside = Math.abs(p) >= mesh.c, w = inside ? 0.82 + 0.18 * (Math.abs(p) - mesh.c) / (mesh.vmax - mesh.c + 1e-12) : Math.pow(Math.abs(q), 0.55);
+                const hex = S.cmap.div(Math.sign(q) * w).getHex(), a = inside ? 252 : 70 * (Math.abs(p) / mesh.c) ** 2, k4 = 4 * (j * W + i);
+                img.data[k4] = hex >> 16 & 255; img.data[k4 + 1] = hex >> 8 & 255; img.data[k4 + 2] = hex & 255; img.data[k4 + 3] = a;
+              }
+            }
+            cx.putImageData(img, 0, 0);
+            if (cut) {
+              const px = (x) => (x + Rc) / (2 * Rc) * W, pz = (z) => (Rc - z) / (2 * Rc) * W;
+              cx.save(); cx.strokeStyle = S.colour('ink').getStyle(); cx.globalAlpha = 0.6; cx.lineWidth = 1.2; cx.setLineDash([4, 3]);
+              radialNodes(o.n, o.l).forEach((r) => { cx.beginPath(); cx.arc(px(0), pz(0), r / (2 * Rc) * W, 0, 2 * PI); cx.stroke(); });
+              polarNodes(o.l, o.m).forEach((th) => [1, -1].forEach((sg) => { cx.beginPath(); cx.moveTo(px(0), pz(0)); cx.lineTo(px(sg * 2 * Rc * Math.sin(th)), pz(2 * Rc * Math.cos(th))); cx.stroke(); }));
+              if (o.m !== 0) { cx.beginPath(); cx.moveTo(px(0), 0); cx.lineTo(px(0), W); cx.stroke(); }
+              cx.restore();
+            }
+            st.tex.needsUpdate = true; st.plane.visible = cut;
+          }
+          const [on, os] = orbitalParts(o.n, o.l, o.m);
+          st.nameL.set([0, 0, -2.08], os ? `${on} (${os})` : on);
+          st.phiL.set([E * u[0], E * u[1], -E], T(`slice φ₀ = ${Math.round(vv.phi)}°`, `断面 φ₀ = ${Math.round(vv.phi)}°`));
+          const res = draw2d(o);
+          const pk = [Math.max(-E, Math.min(E, res.pr[0] * K)), Math.max(-E, Math.min(E, res.pr[1] * K))];
+          st.probe3.setPlane([nv[0], nv[1], 0], [0, 0, 0]);
+          st.probe3.at([pk[0] * u[0], pk[0] * u[1], pk[1]]);
+          S.invalidate();
+        },
+        fallback(c, vv) { st.flat = true; draw2d(orbitalState(c, vv)); },
+      });
+      if (!st.__v3 && !st.flat) draw2d(orbitalState(ctx, v));
     },
   };
 
