@@ -225,3 +225,42 @@ html:lang(ja) .kg .kg-d-h,html:lang(ja) .kg-kicker{letter-spacing:.04em}
 @media (prefers-reduced-motion:reduce){
   .kg *{transition:none!important}
 }
+
+/* living background and motion (graph-atmo.js draws the nebulae and motes on a canvas under the SVG) */
+.kg-atmo{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none;z-index:0;opacity:0;transition:opacity 1.2s ease}
+.kg.has-atmo .kg-atmo{opacity:1}
+.kg-svg{position:relative;z-index:1}
+.kg.has-atmo .kg-figure{background:radial-gradient(circle,color-mix(in srgb,var(--kg-rule) 45%,transparent) 1px,transparent 1.2px) 0 0/22px 22px}
+/* node halos */
+.kg-halo{fill:var(--g);opacity:.1;transition:opacity .25s,r .25s;pointer-events:none}
+.kg-node:hover .kg-halo,.kg-node:focus-visible .kg-halo,.kg-node.is-focus .kg-halo,.kg-node.is-match .kg-halo{opacity:.24}
+.kg-node.is-center .kg-halo{opacity:.22;animation:kg-breathe 3.6s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+.kg-node.is-center .kg-ring{animation:kg-ring 3.6s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+@keyframes kg-breathe{50%{opacity:.34;transform:scale(1.18)}}
+@keyframes kg-ring{50%{transform:scale(1.12);opacity:.7}}
+.is-focusing .kg-node:not(:is(.is-focus,.is-pre,.is-dep,.is-rel)) .kg-halo{opacity:0}
+.kg-dot{transition:opacity .18s,filter .25s}
+.kg-node:hover .kg-dot,.kg-node.is-center .kg-dot{filter:drop-shadow(0 0 5px color-mix(in srgb,var(--g) 70%,transparent))}
+/* glassy subject bubbles with a slowly turning dotted orbit */
+.kg-bubble-bg{fill-opacity:1}
+.kg-bubble.g-foundations .kg-bubble-bg{fill:url(#kg-bub-foundations)}.kg-bubble.g-analysis .kg-bubble-bg{fill:url(#kg-bub-analysis)}.kg-bubble.g-geometry .kg-bubble-bg{fill:url(#kg-bub-geometry)}.kg-bubble.g-applications .kg-bubble-bg{fill:url(#kg-bub-applications)}.kg-bubble.g-physics .kg-bubble-bg{fill:url(#kg-bub-physics)}.kg-bubble.g-engineering .kg-bubble-bg{fill:url(#kg-bub-engineering)}
+.kg-bubble:hover .kg-bubble-bg,.kg-bubble.is-on .kg-bubble-bg{fill-opacity:1;filter:drop-shadow(0 0 14px color-mix(in srgb,var(--g) 45%,transparent))}
+.kg-bubble-orbit{fill:none;stroke:var(--g);stroke-opacity:.35;stroke-width:1.2;stroke-dasharray:1.5 9;stroke-linecap:round;transform-box:fill-box;transform-origin:center;animation:kg-spin 60s linear infinite;pointer-events:none}
+.kg-bubble:hover .kg-bubble-orbit,.kg-bubble.is-on .kg-bubble-orbit{stroke-opacity:.8;animation-duration:18s}
+@keyframes kg-spin{to{transform:rotate(360deg)}}
+/* light travelling along each directed link, from prerequisite to what builds on it */
+.kg-flow{fill:none;stroke:var(--g,var(--kg-accent));stroke-width:2.2;stroke-linecap:round;stroke-dasharray:2 26;opacity:0;animation:kg-flow 2.8s linear infinite;pointer-events:none}
+.kg-edge.is-pre .kg-flow{stroke:var(--kg-pre);opacity:.75}
+.kg-edge.is-dep .kg-flow{stroke:var(--kg-dep);opacity:.85}
+.kg-edge.is-path .kg-flow{stroke:var(--kg-pre);opacity:.35}
+.kg-edge.is-inner .kg-flow{stroke:var(--kg-accent);opacity:.35}
+.is-focusing .kg-edge.is-hpre .kg-flow{stroke:var(--kg-pre);opacity:1}
+.is-focusing .kg-edge.is-hdep .kg-flow{stroke:var(--kg-dep);opacity:1}
+.is-focusing .kg-edge:not(.is-on) .kg-flow{opacity:0}
+@keyframes kg-flow{to{stroke-dashoffset:-28}}
+.kg-band-flow{fill:none;stroke:var(--kg-accent);stroke-linecap:round;stroke-dasharray:1 22;opacity:0;animation:kg-flow 3.4s linear infinite;pointer-events:none;transition:opacity .25s}
+.is-grouping .kg-band.is-on .kg-band-flow{opacity:.9}
+@media (prefers-reduced-motion:reduce){.kg-flow,.kg-band-flow,.kg-bubble-orbit,.kg-node.is-center .kg-halo,.kg-node.is-center .kg-ring{animation:none}}
+.kg-svg[data-level="overview"] .kg-halo{opacity:0}
+.kg-svg[data-level="overview"] .kg-node:hover .kg-halo{opacity:.3}
+.kg-halo{opacity:.08}

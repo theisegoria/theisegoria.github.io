@@ -246,6 +246,12 @@
 
   // ---------- scene ----------
   const gView = el('g', { class: 'kg-view' }); svg.replaceChildren(gView);
+  // glassy fills for the subject bubbles, one radial gradient per subject
+  const defs = el('defs', {}); svg.prepend(defs);
+  GROUPS.forEach(g => {
+    const rg = el('radialGradient', { id: `kg-bub-${g}`, cx: '38%', cy: '30%', r: '75%' }, defs);
+    [['0%', .30], ['55%', .13], ['100%', .05]].forEach(([o, a]) => el('stop', { offset: o, style: `stop-color:var(--kg-${g});stop-opacity:${a}` }, rg));
+  });
   const gBack = el('g', { class: 'kg-back', 'aria-hidden': 'true' }, gView);
   const gEdges = el('g', { class: 'kg-edges', 'aria-hidden': 'true' }, gView);
   const gFront = el('g', { class: 'kg-front' }, gView); // bubbles (overview)
@@ -259,6 +265,7 @@
       const a = el('a', { href: pageHref(d), class: `kg-node g-${d.group} is-hidden`, tabindex: '-1', 'data-slug': d.slug }, gNodes);
       a.setAttribute('aria-label', `${d.title[L]}. ${T.groups[d.group]}. ${T.links(d.degree)}.`);
       d.hit = el('circle', { class: 'kg-hit', r: 16 }, a);
+      d.halo = el('circle', { class: 'kg-halo', r: 12 }, a);
       d.ring = el('circle', { class: 'kg-ring', r: 10 }, a);
       d.dot = el('circle', { class: 'kg-dot', r: 5 }, a);
       d.text = el('text', { class: 'kg-label' }, a);
@@ -330,6 +337,7 @@
     bands.sort((a, b) => a.n - b.n).forEach(b => {
       const g = el('g', { class: 'kg-band', 'data-g1': b.g1, 'data-g2': b.g2 }, gb);
       el('path', { d: b.d, 'stroke-width': f1(1.5 + b.n * 0.95) }, g);
+      el('path', { d: b.d, class: 'kg-band-flow', 'stroke-width': f1(1 + b.n * 0.5), style: `animation-delay:${(-Math.random() * 4).toFixed(2)}s` }, g);
       const t = el('g', { class: 'kg-band-n', transform: `translate(${f1(b.lx)} ${f1(b.ly)})` }, g);
       el('rect', { x: -12, y: -9, width: 24, height: 18, rx: 9 }, t);
       el('text', { y: 4 }, t).textContent = String(b.n);
@@ -338,7 +346,8 @@
       const c = centres[g], n = inGroup(g).length;
       const inside = pairCount(g, g);
       const b = el('g', { class: `kg-bubble g-${g}`, tabindex: '-1', role: 'button', 'data-group': g, 'aria-label': `${T.groups[g]}. ${T.topics(n)}. ${T.links(inside)}.` }, gFront);
-      el('circle', { cx: f1(c.x), cy: f1(c.y), r: f1(c.r), class: 'kg-bubble-bg' }, b);
+      el('circle', { cx: f1(c.x), cy: f1(c.y), r: f1(c.r), class: 'kg-bubble-bg', fill: `url(#kg-bub-${g})` }, b);
+      el('circle', { cx: f1(c.x), cy: f1(c.y), r: f1(c.r + 7), class: 'kg-bubble-orbit' }, b);
       const below = Math.sin(c.a) > -0.3;
       const ly = c.y + (below ? c.r + 22 : -c.r - 26);
       el('text', { x: f1(c.x), y: f1(ly), class: 'kg-bubble-name' }, b).textContent = T.groups[g];
@@ -524,14 +533,15 @@
     gEdges.replaceChildren(); edgeRecs = [];
     list.forEach(({ e, cls }) => {
       const g = el('g', { class: `kg-edge ${cls}` + (e.dir ? ' is-dir' : '') }, gEdges);
-      const p = el('path', {}, g), arr = e.dir ? el('path', { class: 'kg-arrow' }, g) : null;
-      edgeRecs.push({ e, g, p, arr });
+      const p = el('path', {}, g), flow = e.dir ? el('path', { class: 'kg-flow' }, g) : null, arr = e.dir ? el('path', { class: 'kg-arrow' }, g) : null;
+      if (flow) flow.style.animationDelay = `${(-Math.random() * 3).toFixed(2)}s`;
+      edgeRecs.push({ e, g, p, flow, arr });
     });
     updateEdges();
   }
   function updateEdges() {
     edgeRecs.forEach(r => {
-      const q = edgePath(r.e); r.p.setAttribute('d', q.d);
+      const q = edgePath(r.e); r.p.setAttribute('d', q.d); if (r.flow) r.flow.setAttribute('d', q.d);
       if (r.arr) { const s = 6.5, a = q.ang; r.arr.setAttribute('d', `M${f1(q.ex)},${f1(q.ey)} L${f1(q.ex - s * Math.cos(a - .42))},${f1(q.ey - s * Math.sin(a - .42))} L${f1(q.ex - s * Math.cos(a + .42))},${f1(q.ey - s * Math.sin(a + .42))} Z`); }
     });
   }
@@ -542,7 +552,7 @@
     const a = nodeEls.get(d.slug), c = d.cur;
     a.setAttribute('transform', `translate(${f1(c.x)} ${f1(c.y)})`);
     a.style.opacity = c.o < 0.999 ? c.o.toFixed(3) : '';
-    d.dot.setAttribute('r', f1(c.r)); d.ring.setAttribute('r', f1(c.r + 5)); d.hit.setAttribute('r', f1(view.level === 'overview' ? c.r + 2.5 : Math.max(12, c.r + 8)));
+    d.dot.setAttribute('r', f1(c.r)); d.ring.setAttribute('r', f1(c.r + 5)); d.halo.setAttribute('r', f1(c.r * 2.4 + 4)); d.hit.setAttribute('r', f1(view.level === 'overview' ? c.r + 2.5 : Math.max(12, c.r + 8)));
   }
   function layoutView() {
     const box = figure.getBoundingClientRect();
@@ -574,17 +584,40 @@
     resetZoom(false);
     const dur = animate && !reduce.matches ? 520 : 0, t0 = performance.now();
     gEdges.style.opacity = dur ? '0' : '';
+    const [fx, fy] = view.level === 'topic' ? [bySlug.get(view.slug).tgt.x, bySlug.get(view.slug).tgt.y] : cxy();
+    const far = Math.hypot(W, H) / 2, lag = topics.map(d => Math.min(1, Math.hypot(d.tgt.x - fx, d.tgt.y - fy) / far) * 0.32);
+    const ease = k => (k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2);
+    const total = dur * 1.32;
     const step = now => {
-      const k = dur ? Math.min(1, (now - t0) / dur) : 1, e = k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2;
-      topics.forEach((d, i) => { const a = from[i], t = d.tgt; d.cur.x = a.x + (t.x - a.x) * e; d.cur.y = a.y + (t.y - a.y) * e; d.cur.r = a.r + (t.r - a.r) * e; d.cur.o = a.o + (t.o - a.o) * e; applyNode(d); });
+      const k = dur ? Math.min(1, (now - t0) / total) : 1;
+      topics.forEach((d, i) => { const ki = dur ? Math.min(1, Math.max(0, ((now - t0) / dur - lag[i]))) : 1, e = ease(ki), a = from[i], t = d.tgt; d.cur.x = a.x + (t.x - a.x) * e; d.cur.y = a.y + (t.y - a.y) * e; d.cur.r = a.r + (t.r - a.r) * e; d.cur.o = a.o + (t.o - a.o) * e; applyNode(d); });
       updateEdges();
       if (dur) gEdges.style.opacity = String(Math.max(0, (k - 0.35) / 0.65));
       if (k < 1) anim = requestAnimationFrame(step); else { gEdges.style.opacity = ''; }
     };
     if (dur) anim = requestAnimationFrame(step); else step(performance.now());
+    atmoScene();
     built = true;
     const first = focusables()[0]; if (first) setRoving(first, true);
     render();
+  }
+  // the WebGL background: soft nebulae where the subjects are, keyed by subject so they glide between views
+  let atmo = null;
+  function atmoScene() {
+    if (!atmo || !W) return;
+    const list = [];
+    if (view.level === 'overview') RING.forEach(g => { const c = ctx.centres[g]; list.push({ key: g, group: g, x: c.x, y: c.y, r: c.r * 1.55, w: 1 }); });
+    else if (view.level === 'subject') {
+      const [cx, cy] = cxy();
+      list.push({ key: ctx.g, group: ctx.g, x: cx, y: cy, r: Math.max(ctx.rx, ctx.ry) * 1.05, w: 1.1 });
+      ctx.arcs.forEach(a => { if (!a.seg.length) return; const m = a.seg.reduce((p, q) => [p[0] + q[0], p[1] + q[1]], [0, 0]); list.push({ key: a.g + ':' + a.side, group: a.g, x: m[0] / a.seg.length, y: m[1] / a.seg.length, r: 70 + 18 * Math.sqrt(a.seg.length), w: 0.55 }); });
+    } else {
+      const f = bySlug.get(view.slug), by = new Map();
+      topics.forEach(d => { if (d.tgt.o > 0 && d !== f) { const b = by.get(d.group) || []; b.push(d.tgt); by.set(d.group, b); } });
+      list.push({ key: f.group, group: f.group, x: f.tgt.x, y: f.tgt.y, r: Math.min(W, H) * 0.3, w: 1.1 });
+      by.forEach((pts, g) => { const x = pts.reduce((s, p) => s + p.x, 0) / pts.length, y = pts.reduce((s, p) => s + p.y, 0) / pts.length; list.push({ key: g + ':n', group: g, x, y, r: 60 + 40 * Math.sqrt(pts.length), w: 0.45 }); });
+    }
+    atmo.setScene(list, W, H);
   }
   function go(v, push = true) {
     if (v.level === 'topic' && !bySlug.has(v.slug)) v = { level: 'overview' };
@@ -753,7 +786,7 @@
 
   // pan and zoom act on one transform over the whole scene; they reset whenever the level changes
   let zk = 1, zx = 0, zy = 0, panMoved = false;
-  const applyZoom = () => { gView.setAttribute('transform', zk === 1 && !zx && !zy ? '' : `translate(${f1(zx)} ${f1(zy)}) scale(${zk.toFixed(3)})`); zoomReset.hidden = zk === 1 && !zx && !zy; };
+  const applyZoom = () => { gView.setAttribute('transform', zk === 1 && !zx && !zy ? '' : `translate(${f1(zx)} ${f1(zy)}) scale(${zk.toFixed(3)})`); zoomReset.hidden = zk === 1 && !zx && !zy; atmo?.setZoom(zk, zx, zy); };
   function zoomAt(k, px, py) { const nk = Math.max(1, Math.min(4, zk * k)); zx = px - (px - zx) * nk / zk; zy = py - (py - zy) * nk / zk; zk = nk; if (zk === 1) { zx = 0; zy = 0; } clampPan(); applyZoom(); }
   function clampPan() { zx = Math.min(0, Math.max(W - W * zk, zx)); zy = Math.min(0, Math.max(H - H * zk, zy)); }
   function resetZoom() { zk = 1; zx = 0; zy = 0; applyZoom(); }
@@ -888,5 +921,16 @@
     if (lastW) show(false); else render();
     ro.observe(figure);
     root.classList.add('is-ready');
+    // the living background is an enhancement: load it after the graph works, and only where the figure is shown
+    if (lastW && 'IntersectionObserver' in window) {
+      import('/math-labs/graph-atmo.js?v=20261028').then(m => {
+        atmo = m.mount(figure); if (!atmo) return;
+        root.classList.add('has-atmo');
+        atmo.setZoom(zk, zx, zy); atmoScene();
+        const retheme = () => atmo?.theme();
+        new MutationObserver(retheme).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme', 'class', 'style'] });
+        matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change', retheme);
+      }).catch(err => console.warn('graph background unavailable', err));
+    }
   }).catch(err => { status.textContent = T.failed; console.error(err); });
 })();
