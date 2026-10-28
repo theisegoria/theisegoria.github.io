@@ -225,7 +225,7 @@
       const pts = dcm ? [[0, 0], [Dc, ip], [Dc + D2, 0], [1, 0]] : [[0, i0], [Dc, ip], [1, i0]];
       const top = Math.max(ip * 1.2, 0.05);
       const h = L.fig(c2, { x: [0, 1], y: [0, top], aspect: 0.36, xlabel: T('time / T_s', '時間 / T_s'), maxH: 160 });
-      h.area(pts, { c: 'c1', fill: 'c1', fo: 0.15, base: 0, w: 2.6 });
+      h.area(pts, { c: 'c1', fill: 'c1', fo: 0.15, base: 0, w: 2.6 }); h.line(pts, { c: 'c1', w: 2.6 });
       h.hline(Iav, { c: 'c1', w: 1.2, dash: '5 4', layer: 'under' });
       h.vline(Dc, { c: 'muted', w: 1, dash: '2 3', layer: 'under' }); if (dcm) h.vline(Dc + D2, { c: 'muted', w: 1, dash: '2 3', layer: 'under' });
       h.text(Dc / 2, top * 0.88, 'D', { small: true, c: 'ink' }); h.text(Dc + D2 / 2, top * 0.88, 'D₂', { small: true, c: 'ink' }); if (dcm && Dc + D2 < 0.97) h.text((1 + Dc + D2) / 2, top * 0.88, 'D₃', { small: true, c: 'c2' });

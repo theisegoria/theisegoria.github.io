@@ -79,35 +79,88 @@
 
   /* ---------- 1. the rotating magnetic field ---------- */
   const MODES = [['balanced three-phase', '平衡三相'], ['unbalanced', '不平衡'], ['phases b and c swapped', 'b 相と c 相を入れ替え'], ['single phase', '単相']];
+  // machine geometry for the 3D view: axis along y, cross-section in the x–z plane, angle θ from x towards z
+  const RS = 1.45, RB = 1.05, RR = 0.8, LH = 0.55, RC = 1.11;
+  const PM = (r, th, y) => [r * Math.cos(th), y, r * Math.sin(th)];
+  // where the rotor of a lightly loaded synchronous machine points (mechanical): it follows the stronger rotating part
+  // of the field, lagging it by a constant load angle of 25 electrical degrees; a purely pulsating field leaves it at rest
+  const LOAD_ANGLE = (25 * Math.PI) / 180;
+  function rotorAngle(seq, wt, p) {
+    const F = seq.F, B = seq.B;
+    if (F > B + 1e-9) return (Math.atan2(seq.Fc[1], seq.Fc[0]) + wt - LOAD_ANGLE) / p;
+    if (B > F + 1e-9) return (Math.atan2(seq.Bc[1], seq.Bc[0]) - wt + LOAD_ANGLE) / p;
+    return (Math.atan2(seq.Fc[1], seq.Fc[0]) + Math.atan2(seq.Bc[1], seq.Bc[0])) / (2 * p);
+  }
+  // one full-pitch coil of phase k under pole pair m, as a closed loop (bars through the stack, end turns at both ends)
+  function coilLoop(k, m, p) {
+    const ax = (AXES[k] + TAU * m) / p, ta = ax + Math.PI / (2 * p), tb = ax - Math.PI / (2 * p);
+    const ye = LH + 0.1 + 0.075 * k, re = 1.17 + 0.065 * k, pts = [];
+    const seg = (a, b, nn) => { for (let i = 0; i < nn; i++) { const t = i / nn; pts.push([a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t, a[2] + (b[2] - a[2]) * t]); } };
+    const arc = (t0, t1, y, nn) => { for (let i = 0; i < nn; i++) pts.push(PM(re, t0 + (t1 - t0) * i / nn, y)); };
+    const na = Math.max(10, Math.round(40 / p));
+    seg(PM(RC, ta, LH + 0.02), PM(RC, ta, -LH - 0.02), 14);
+    seg(PM(RC, ta, -LH - 0.02), PM(re, ta, -ye), 4);
+    arc(ta, tb, -ye, na);
+    seg(PM(re, tb, -ye), PM(RC, tb, -LH - 0.02), 4);
+    seg(PM(RC, tb, -LH - 0.02), PM(RC, tb, LH + 0.02), 14);
+    seg(PM(RC, tb, LH + 0.02), PM(re, tb, ye), 4);
+    arc(tb, ta, ye, na);
+    seg(PM(re, ta, ye), PM(RC, ta, LH + 0.02), 4);
+    return { pts, mid: PM(re + 0.08, ax, -ye - 0.02) };
+  }
+  // the previous 2D cross-section, kept as the fallback; returns draw(wt)
+  function flatStator(host, s, p) {
+    const f = L.fig(host, { x: [-1.5, 1.5], y: [-1.5, 1.5], equal: true, axes: false, grid: false, maxH: 400 });
+    const col = L.colours();
+    f.circle(0, 0, 1.38, { c: 'muted', w: 1.2, fill: 'muted', fo: 0.12, layer: 'under' });
+    f.circle(0, 0, 0.93, { c: 'muted', w: 1.2, fill: 'muted', fo: 0.08, layer: 'under' });
+    for (let k = 0; k < 3; k++) for (let m = 0; m < p; m++) {
+      const ax = (AXES[k] + TAU * m) / p;
+      [ax + Math.PI / (2 * p), ax - Math.PI / (2 * p)].forEach((a, j) => { f.circle(1.25 * Math.cos(a), 1.25 * Math.sin(a), 0.055, { c: PH[k], w: 1.4, fill: PH[k], fo: j ? 0.15 : 0.75, layer: 'under' }); });
+      if (m === 0) f.text(1.25 * Math.cos(ax + Math.PI / (2 * p)) * 1.12, 1.25 * Math.sin(ax + Math.PI / (2 * p)) * 1.12, 'abc'[k], { c: PH[k], math: true, small: true, layer: 'under' });
+    }
+    const rs = 0.42;
+    f.line(L.sample(0, TAU, 160, (t) => fieldVec(s, t).map((x) => x * rs)), { c: 'hl', w: 1.4, dash: '4 4', op: 0.8, layer: 'under' });
+    return (wt) => {
+      f.clear('main'); f.clear('over');
+      f.raster((x, y) => { const r = Math.hypot(x, y); if (r < 0.95 || r > 1.13) return col.plate; return L.cmaps.div(airgap(s, wt, Math.atan2(y, x), p) / 1.6); }, { res: f.small ? 2 : 2.5 });
+      const i = currents(s, wt); let tip = [0, 0];
+      i.forEach((x, k) => { if (s.A[k] === 0) return; const nxt = [tip[0] + x * rs * Math.cos(AXES[k]), tip[1] + x * rs * Math.sin(AXES[k])]; if (Math.abs(x) > 0.02) f.arrow(tip, nxt, { c: PH[k], w: 2.2 }); tip = nxt; });
+      if (Math.hypot(...tip) > 0.01) f.arrow([0, 0], tip, { c: 'hl', w: 3.4, layer: 'over' });
+      f.dot(0, 0, { c: 'ink', r: 2.5, layer: 'over' });
+    };
+  }
   D['rotating-field'] = {
+    three: true,
     render(ctx, v) {
-      ctx.state.anim?.stop();
-      const s = supply(v.mode, v.ub), p = v.pp, seq = sequences(s), ns = (60 * v.f) / p;
-      const row = L.h('div', 'lab-row', ctx.host), c1 = L.h('div', 'lab-col', row), c2 = L.h('div', 'lab-col', row);
-      L.h('p', 'lab-cap', c1, T(`A stator with ${p} pole pair${p > 1 ? 's' : ''}, cut across. The ring is the air gap, coloured by the radial field (warm: north, cool: south). Dots are the conductors of phases a, b and c. In the middle, each phase’s contribution as an arrow along its winding axis and their sum (gold), in electrical degrees.`, `${p} 極対の固定子の断面です。輪がエアギャップで、半径方向の磁界で色分けしています（暖色が N、寒色が S）。点は a、b、c 相の導体です。中央には各相の寄与を巻線の軸に沿った矢印で、その和を金色で示しています（電気角）。`));
-      const f = L.fig(c1, { x: [-1.5, 1.5], y: [-1.5, 1.5], equal: true, axes: false, grid: false, maxH: 400 });
-      const col = L.colours();
-      f.circle(0, 0, 1.38, { c: 'muted', w: 1.2, fill: 'muted', fo: 0.12, layer: 'under' });
-      f.circle(0, 0, 0.93, { c: 'muted', w: 1.2, fill: 'muted', fo: 0.08, layer: 'under' });
-      // conductors: full-pitch coils, go and return sides half a pole apart
-      for (let k = 0; k < 3; k++) for (let m = 0; m < p; m++) {
-        const ax = (AXES[k] + TAU * m) / p;
-        [ax + Math.PI / (2 * p), ax - Math.PI / (2 * p)].forEach((a, j) => { f.circle(1.25 * Math.cos(a), 1.25 * Math.sin(a), 0.055, { c: PH[k], w: 1.4, fill: PH[k], fo: j ? 0.15 : 0.75 }); });
-        if (m === 0) f.text(1.25 * Math.cos(ax + Math.PI / (2 * p)) * 1.12, 1.25 * Math.sin(ax + Math.PI / (2 * p)) * 1.12, 'abc'[k], { c: PH[k], math: true, small: true });
+      const st = ctx.state, s = supply(v.mode, v.ub), p = v.pp, seq = sequences(s), ns = (60 * v.f) / p;
+      if (!st.frame || !st.frame.isConnected) {
+        st.anim?.stop(); st.anim = null;
+        ctx.host.replaceChildren();
+        st.frame = L.h('div', '', ctx.host);
+        const row = L.h('div', 'lab-row is-wide', st.frame);
+        st.c1 = L.h('div', 'lab-col', row); st.c2 = L.h('div', 'lab-col', row);
+        st.cap1 = L.h('p', 'lab-cap', st.c1, '');
+        st.v3 = L.h('div', '', st.c1);
+        st.g2 = L.h('div', '', st.c2);
+        st.bar = L.h('div', '', st.frame);
+        st.leg = L.h('div', '', st.frame);
       }
-      const G = f.group('main'), Go = f.group('over');
-      // locus of the field vector
-      const rs = 0.42;
-      f.line(L.sample(0, TAU, 160, (t) => fieldVec(s, t).map((x) => x * rs)), { c: 'hl', w: 1.4, dash: '4 4', op: 0.8 });
-      L.h('p', 'lab-cap', c2, T('Phase currents over two cycles, with the present instant marked. The three are equal in size and 120° apart in a balanced supply.', '二周期にわたる相電流で、現在の瞬間に印を付けています。平衡な電源では三つは同じ大きさで 120° ずつずれています。'));
-      const g = L.fig(c2, { x: [0, 720], y: [-1.6, 1.6], aspect: 0.6, maxH: 280, xlabel: T('electrical angle ωt (°)', '電気角 ωt（°）'), ylabel: T('current', '電流'), ticksX: [[0, '0'], [180, '180'], [360, '360'], [540, '540'], [720, '720']] });
+      st.cap1.textContent = T(`A stator with ${p} pole pair${p > 1 ? 's' : ''} and its three-phase winding, one coil per phase per pole pair, each glowing with the size of its current. The ring in the air gap and the permanent-magnet rotor are coloured by the radial field: warm where it points outward, cool where inward. The gold arrow${p > 1 ? 's point' : ' points'} along the field; the rotor, lightly loaded, follows ${p > 1 ? 'them' : 'it'} 25 electrical degrees behind. Drag to turn the view.`, `${p} 極対の固定子と三相巻線です。各相には極対ごとに一つのコイルがあり、電流の大きさに応じて光ります。エアギャップの輪と永久磁石の回転子は半径方向の磁界で色分けしています（暖色は外向き、寒色は内向き）。金色の矢印は磁界の向きで、軽い負荷のかかった回転子は電気角で 25° 遅れてそれに従います。ドラッグすると視点を回せます。`);
+      // 2D column: the construction in electrical degrees, the currents, the size of the field
+      st.g2.replaceChildren();
+      L.h('p', 'lab-cap', st.g2, T('In electrical degrees: each phase’s contribution along its winding axis, added tip to tail, and the sum (gold). The dashed curve is the path of its tip over a cycle.', '電気角で見た作図です。各相の寄与を巻線の軸に沿った矢印として次々につなぎ、その和を金色で示します。破線は一周期での先端の軌跡です。'));
+      const rs = 0.62, vf = L.fig(st.g2, { x: [-1.45, 1.45], y: [-1.3, 1.3], equal: true, axes: false, grid: false, maxH: 190 });
+      AXES.forEach((a, k) => { vf.seg([-1.15 * Math.cos(a), -1.15 * Math.sin(a)], [1.15 * Math.cos(a), 1.15 * Math.sin(a)], { c: PH[k], w: 1, dash: '2 4', op: 0.7, layer: 'under' }); vf.text(1.3 * Math.cos(a), 1.3 * Math.sin(a), 'abc'[k], { c: PH[k], math: true, small: true, dy: 4 }); });
+      vf.line(L.sample(0, TAU, 160, (t) => fieldVec(s, t).map((x) => x * rs)), { c: 'hl', w: 1.4, dash: '4 4', op: 0.8, layer: 'under' });
+      L.h('p', 'lab-cap', st.g2, T('Phase currents over two cycles, and the size of the field: constant when balanced, wobbling when unbalanced, collapsing twice a cycle for a single phase.', '二周期にわたる相電流と磁界の大きさです。平衡なら一定、不平衡ならゆらぎ、単相では一周期に二回 0 になります。'));
+      const g = L.fig(st.g2, { x: [0, 720], y: [-1.6, 1.6], aspect: 0.5, maxH: 175, xlabel: T('electrical angle ωt (°)', '電気角 ωt（°）'), ylabel: T('current', '電流'), ticksX: [[0, '0'], [180, '180'], [360, '360'], [540, '540'], [720, '720']] });
       g.hline(0, { c: 'muted', w: 1, dash: false });
       for (let k = 0; k < 3; k++) if (s.A[k] > 0) g.line(L.sample(0, 720, 240, (x) => currents(s, (x * Math.PI) / 180)[k]), { c: PH[k], w: 2.2 });
-      L.h('p', 'lab-cap', c2, T('Size of the field vector over a cycle: constant for a balanced supply, wobbling when unbalanced, collapsing twice a cycle for a single phase.', '一周期にわたる磁界ベクトルの大きさです。平衡な電源では一定、不平衡ではゆらぎ、単相では一周期に二回 0 になります。'));
-      const hm = L.fig(c2, { x: [0, 720], y: [0, 2.2], aspect: 0.35, maxH: 160, xlabel: T('electrical angle ωt (°)', '電気角 ωt（°）'), ylabel: '|B|', ticksX: [[0, '0'], [360, '360'], [720, '720']] });
+      const hm = L.fig(st.g2, { x: [0, 720], y: [0, 2.2], aspect: 0.3, maxH: 120, xlabel: T('electrical angle ωt (°)', '電気角 ωt（°）'), ylabel: '|B|', ticksX: [[0, '0'], [360, '360'], [720, '720']], ticksY: [[0, '0'], [1.5, '1.5']] });
       hm.line(L.sample(0, 720, 240, (x) => Math.hypot(...fieldVec(s, (x * Math.PI) / 180))), { c: 'hl', w: 2.2 });
-      const cur = g.group('over'), cur2 = hm.group('over');
-      L.legend(ctx.host, [{ c: 'c1', label: T('phase a', 'a 相') }, { c: 'c2', label: T('phase b', 'b 相') }, { c: 'c3', label: T('phase c', 'c 相') }, { c: 'hl', label: T('resultant field', '合成磁界') }]);
+      st.leg.replaceChildren();
+      L.legend(st.leg, [{ c: 'c1', label: T('phase a', 'a 相') }, { c: 'c2', label: T('phase b', 'b 相') }, { c: 'c3', label: T('phase c', 'c 相') }, { c: 'hl', label: T('resultant field', '合成磁界') }]);
       const dir = seq.F > seq.B + 1e-9 ? 1 : seq.B > seq.F + 1e-9 ? -1 : 0;
       ctx.readout([
         { k: T('supply', '電源'), v: T(...MODES[v.mode]), tone: 'key' },
@@ -115,24 +168,92 @@
         { k: T('forward, backward field', '正転、逆転の磁界'), v: `${fmt(seq.F, 3)}, ${fmt(seq.B, 3)}` },
         { k: T('rotation', '回転'), v: dir > 0 ? T('anticlockwise', '反時計回り') : dir < 0 ? T('clockwise', '時計回り') : T('none, pulsating', 'なし、脈動のみ'), tone: dir ? 'good' : 'warn' },
       ], [
-        T(`Three equal currents 120° apart in three windings 120° apart add up to a field of constant size, 3/2 of one phase’s peak, that turns smoothly at the supply frequency in electrical degrees, ${fmt(ns, 0)} rpm mechanically with ${p} pole pair${p > 1 ? 's' : ''}. Nothing moves, yet the field rotates: this is the trick behind every induction and synchronous motor.`, `120° ずつずれた三つの巻線に流れる、120° ずつずれた三つの等しい電流は、一相の最大値の 3/2 の一定の大きさの磁界になり、電気角で電源周波数でなめらかに回ります。${p} 極対では機械的には ${fmt(ns, 0)} rpm です。何も動かないのに磁界は回ります。これがすべての誘導電動機と同期電動機の秘訣です。`),
-        T(`With phase c at ${fmt(v.ub, 2)} of the others, the field is a forward part of size ${fmt(seq.F, 3)} plus a backward part of size ${fmt(seq.B, 3)} turning the other way, so its tip traces an ellipse and its size pulses at twice the supply frequency. The backward part brakes the rotor and heats it, which is why motors are derated on unbalanced supplies.`, `c 相が他の相の ${fmt(v.ub, 2)} 倍のとき、磁界は大きさ ${fmt(seq.F, 3)} の正転部分と、逆向きに回る大きさ ${fmt(seq.B, 3)} の逆転部分の和になるので、先端は楕円を描き、大きさは電源周波数の二倍で脈動します。逆転部分は回転子にブレーキをかけて熱するので、不平衡な電源では電動機の定格を下げます。`),
-        T('Swapping any two supply leads reverses the phase sequence, so the field turns the other way at the same speed. This is how a three-phase motor is reversed: no change inside the motor at all.', '電源の任意の二本の線を入れ替えると相順が逆になり、磁界は同じ速さで逆向きに回ります。三相電動機はこうして逆転させます。電動機の中は何も変えません。'),
-        T('One winding alone gives a field that only pulses back and forth along its axis. That pulsating field is the sum of two equal fields turning in opposite directions, each half the size, so a single-phase motor has no starting torque and needs a second, phase-shifted winding (a capacitor or shaded pole) to choose a direction.', '巻線が一つだけだと、磁界はその軸に沿って行ったり来たりと脈動するだけです。その脈動する磁界は逆向きに回る二つの等しい磁界の和で、それぞれの大きさは半分です。そのため単相電動機には始動トルクがなく、向きを選ぶには位相をずらした二つ目の巻線（コンデンサやくま取りコイル）が必要です。'),
+        T(`Three equal currents 120° apart in three windings 120° apart add up to a field of constant size, 3/2 of one phase’s peak, that turns smoothly at the supply frequency in electrical degrees, ${fmt(ns, 0)} rpm mechanically with ${p} pole pair${p > 1 ? 's' : ''}. Nothing moves, yet the field rotates, and a magnet rotor is dragged round with it: this is the trick behind every induction and synchronous motor.`, `120° ずつずれた三つの巻線に流れる、120° ずつずれた三つの等しい電流は、一相の最大値の 3/2 の一定の大きさの磁界になり、電気角で電源周波数でなめらかに回ります。${p} 極対では機械的には ${fmt(ns, 0)} rpm です。何も動かないのに磁界は回り、磁石の回転子はそれに引きずられて回ります。これがすべての誘導電動機と同期電動機の秘訣です。`),
+        T(`With phase c at ${fmt(v.ub, 2)} of the others, the field is a forward part of size ${fmt(seq.F, 3)} plus a backward part of size ${fmt(seq.B, 3)} turning the other way, so its tip traces an ellipse and its size pulses at twice the supply frequency. The rotor turns steadily, so the field swings ahead of it and behind it: a torque ripple. The backward part also brakes and heats an induction rotor, which is why motors are derated on unbalanced supplies.`, `c 相が他の相の ${fmt(v.ub, 2)} 倍のとき、磁界は大きさ ${fmt(seq.F, 3)} の正転部分と、逆向きに回る大きさ ${fmt(seq.B, 3)} の逆転部分の和になるので、先端は楕円を描き、大きさは電源周波数の二倍で脈動します。回転子は一定の速さで回るので、磁界はその前後に揺れ、トルクが脈動します。逆転部分は誘導電動機の回転子にブレーキをかけて熱するので、不平衡な電源では電動機の定格を下げます。`),
+        T('Swapping any two supply leads reverses the phase sequence, so the field and the rotor turn the other way at the same speed. This is how a three-phase motor is reversed: no change inside the motor at all.', '電源の任意の二本の線を入れ替えると相順が逆になり、磁界と回転子は同じ速さで逆向きに回ります。三相電動機はこうして逆転させます。電動機の中は何も変えません。'),
+        T('One winding alone gives a field that only pulses back and forth along its axis, and the rotor stays put. That pulsating field is the sum of two equal fields turning in opposite directions, each half the size, so a single-phase motor has no starting torque and needs a second, phase-shifted winding (a capacitor or shaded pole) to choose a direction.', '巻線が一つだけだと、磁界はその軸に沿って行ったり来たりと脈動するだけで、回転子は動きません。その脈動する磁界は逆向きに回る二つの等しい磁界の和で、それぞれの大きさは半分です。そのため単相電動機には始動トルクがなく、向きを選ぶには位相をずらした二つ目の巻線（コンデンサやくま取りコイル）が必要です。'),
       ][v.mode]);
-      const draw = (wt) => {
-        empty(G); empty(Go); empty(cur); empty(cur2);
-        f.raster((x, y) => { const r = Math.hypot(x, y); if (r < 0.95 || r > 1.13) return col.plate; return L.cmaps.div(airgap(s, wt, Math.atan2(y, x), p) / 1.6); }, { res: f.small ? 2 : 2.5 });
+
+      const draw2d = (wt) => {
+        vf.clear('main'); vf.clear('over'); g.clear('over'); hm.clear('over');
         const i = currents(s, wt); let tip = [0, 0];
-        i.forEach((x, k) => { if (s.A[k] === 0) return; const nxt = [tip[0] + x * rs * Math.cos(AXES[k]), tip[1] + x * rs * Math.sin(AXES[k])]; if (Math.abs(x) > 0.02) put(G, f.arrow(tip, nxt, { c: PH[k], w: 2.2 })); tip = nxt; });
-        if (Math.hypot(...tip) > 0.01) put(Go, f.arrow([0, 0], tip, { c: 'hl', w: 3.4, layer: 'over' }));
-        put(Go, f.dot(0, 0, { c: 'ink', r: 2.5 }));
+        i.forEach((x, k) => { if (s.A[k] === 0) return; const nxt = [tip[0] + x * rs * Math.cos(AXES[k]), tip[1] + x * rs * Math.sin(AXES[k])]; if (Math.abs(x) > 0.02) vf.arrow(tip, nxt, { c: PH[k], w: 2.2 }); tip = nxt; });
+        if (Math.hypot(...tip) > 0.01) vf.arrow([0, 0], tip, { c: 'hl', w: 3.2, layer: 'over' });
+        vf.dot(0, 0, { c: 'ink', r: 2.5, layer: 'over' });
         const deg = ((((wt * 180) / Math.PI) % 720) + 720) % 720;
-        put(cur, g.vline(deg, { c: 'ink', w: 1.2, dash: '3 3', layer: 'over' })); i.forEach((x, k) => { if (s.A[k] > 0) put(cur, g.dot(deg, x, { c: PH[k], r: 4.5 })); });
-        put(cur2, hm.vline(deg, { c: 'ink', w: 1.2, dash: '3 3', layer: 'over' })); put(cur2, hm.dot(deg, Math.hypot(...tip) / rs, { c: 'hl', r: 4.5 }));
+        g.vline(deg, { c: 'ink', w: 1.2, dash: '3 3', layer: 'over' }); i.forEach((x, k) => { if (s.A[k] > 0) g.dot(deg, x, { c: PH[k], r: 4.5, layer: 'over' }); });
+        hm.vline(deg, { c: 'ink', w: 1.2, dash: '3 3', layer: 'over' }); hm.dot(deg, Math.hypot(...tip) / rs, { c: 'hl', r: 4.5, layer: 'over' });
         return deg;
       };
-      ctx.state.anim = L.animator(ctx.host, (dt, t, lb) => { const deg = draw(t * TAU * 0.25); lb.textContent = `ωt = ${fmt(Math.round(deg), 3)}°`; }, { autoplay: false, initialT: 0.35, playLabel: T('Play: run the supply', '再生：電源を流す') });
+      st.drawAt = (wt) => { const deg = draw2d(wt); if (st.flat) st.flatDraw?.(wt); else st.draw3d?.(wt); return deg; };
+      if (!st.anim) st.anim = L.animator(st.bar, (dt, t, lb) => { const deg = st.drawAt(t * TAU * 0.25); lb.textContent = `ωt = ${fmt(Math.round(deg), 3)}°`; }, { autoplay: true, initialT: 0.35, playLabel: T('Play: run the supply', '再生：電源を流す') });
+
+      L.view3d(ctx, v, {
+        host: st.v3, aspect: 1, maxH: 560, camera: [2.5, -5.9, 2.7], target: [0, 0.05, 0], fov: 34,
+        init(S) {
+          st.flat = false; st.coilP = null;
+          const iron = { c: 'muted', metal: 0.55, rough: 0.38, coat: 0.3 };
+          S.surface((u, w) => PM(RS, w, u), { u: [-LH, LH], v: [0, TAU], nu: 2, nv: 120, ...iron });
+          S.surface((u, w) => PM(u, w, -LH), { u: [RB, RS], v: [0, TAU], nu: 2, nv: 120, ...iron });
+          S.surface((u, w) => PM(u, w, LH), { u: [RB, RS], v: [0, TAU], nu: 2, nv: 120, ...iron });
+          // laminations
+          const lam = []; for (let j = 1; j < 14; j++) { const y = -LH + (2 * LH * j) / 14; for (let i = 0; i < 96; i++) lam.push([PM(RS + 0.002, (TAU * i) / 96, y), PM(RS + 0.002, (TAU * (i + 1)) / 96, y)]); }
+          S.lines(lam, { c: 'ink', opacity: S.dark ? 0.25 : 0.18 });
+          // the air gap: the stator bore and a ring at the front, both coloured by the radial field
+          st.bore = S.surface((u, w) => PM(RB, w, u), { u: [-LH, LH], v: [0, TAU], nu: 2, nv: 180, colour: () => S.cmap.div(0), rough: 0.5, coat: 0.1 });
+          st.ring = S.surface((u, w) => PM(u, w, -LH - 0.046), { u: [RR + 0.012, RB], v: [0, TAU], nu: 1, nv: 180, colour: () => S.cmap.div(0), rough: 0.6, coat: 0.05 });
+          // rotor: a permanent magnet with p pole pairs, coloured by its own radial magnetisation
+          st.rotor = new S.THREE.Group();
+          const mag = (w) => S.cmap.div(0.7 * Math.tanh(4 * Math.cos(st.rp * w)));
+          st.rp = p;
+          st.rotorSkin = [
+            S.surface((u, w) => PM(RR, w, u), { u: [-LH - 0.04, LH + 0.04], v: [0, TAU], nu: 2, nv: 160, colour: (u, w) => mag(w), add: false, rough: 0.55, coat: 0.15 }),
+            S.surface((u, w) => PM(u, w, -LH - 0.04), { u: [0.12, RR], v: [0, TAU], nu: 2, nv: 160, colour: (u, w) => mag(w), add: false, rough: 0.55, coat: 0.15 }),
+            S.surface((u, w) => PM(u, w, LH + 0.04), { u: [0.12, RR], v: [0, TAU], nu: 2, nv: 160, colour: (u, w) => mag(w), add: false, rough: 0.55, coat: 0.15 }),
+          ];
+          st.rotorMag = mag;
+          st.rotor.add(...st.rotorSkin);
+          S.add(st.rotor);
+          S.tube([[0, -LH - 0.75, 0], [0, LH + 0.5, 0]], { c: 'ink', r: 0.11, metal: 0.85, rough: 0.25 });
+          st.arrows = [0, 1, 2, 3].map(() => S.arrow([0, -LH - 0.06, 0], [0.5, 0, 0], { c: 'hl', r: 0.03, glow: 0.35 }));
+          st.coilG = new S.THREE.Group(); S.add(st.coilG);
+          st.lab = [0, 1, 2].map((k) => S.label('abc'[k], [0, 0, 0], { math: true, c: PH[k] }));
+          st.bLab = S.label('B', [0, 0, 0], { math: true, c: 'hl' });
+          st.S3 = S;
+        },
+        update(S) {
+          if (st.coilP !== p) {
+            st.coilP = p;
+            for (const c of [...st.coilG.children]) { st.coilG.remove(c); c.geometry?.dispose(); c.material?.dispose(); }
+            st.coilMats = [[], [], []];
+            for (let k = 0; k < 3; k++) for (let m = 0; m < p; m++) {
+              const lp = coilLoop(k, m, p), tube = S.tube(lp.pts, { c: PH[k], r: 0.034, closed: true, add: false, glow: 0.3, metal: 0.35, rough: 0.3 });
+              st.coilG.add(tube); st.coilMats[k].push(tube.material);
+              if (m === 0) st.lab[k].set(lp.mid);
+            }
+            st.rp = p; st.rotorSkin.forEach((m) => m.update(undefined, (u, w) => st.rotorMag(w)));
+          }
+          st.draw3d = (wt) => {
+            const i = currents(s, wt), B = fieldVec(s, wt), mB = Math.hypot(...B), aB = Math.atan2(B[1], B[0]);
+            const ag = (w) => { const b = airgap(s, wt, w, p) / 1.5; return S.cmap.div(Math.sign(b) * Math.abs(b) ** 0.75); };
+            st.bore.update(undefined, (u, w) => ag(w)); st.ring.update(undefined, (u, w) => ag(w));
+            st.rotor.rotation.y = -rotorAngle(seq, wt, p);
+            st.coilMats.forEach((ms, k) => ms.forEach((mt) => { mt.emissiveIntensity = s.A[k] === 0 ? 0 : 0.06 + 0.7 * Math.abs(i[k]); mt.opacity = 1; }));
+            const len = (0.62 * mB) / 1.5;
+            st.arrows.forEach((a, m) => { if (m >= p || mB < 0.02) { a.set([0, -LH - 0.06, 0], [0, 0, 0]); return; } const ph = (aB + TAU * m) / p; a.set([0, -LH - 0.06, 0], [len * Math.cos(ph), 0, len * Math.sin(ph)]); });
+            const ph0 = aB / p; st.bLab.set([(len + 0.08) * Math.cos(ph0), -LH - 0.06, (len + 0.08) * Math.sin(ph0)]); st.bLab.show(mB > 0.05);
+            S.invalidate();
+          };
+          st.anim?.redraw();
+        },
+        fallback() {
+          st.flat = true; st.v3.replaceChildren();
+          st.cap1.textContent = T(`A stator with ${p} pole pair${p > 1 ? 's' : ''}, cut across. The ring is the air gap, coloured by the radial field (warm: outward, cool: inward). Dots are the conductors of phases a, b and c. In the middle, each phase’s contribution along its winding axis and their sum (gold), in electrical degrees.`, `${p} 極対の固定子の断面です。輪がエアギャップで、半径方向の磁界で色分けしています（暖色が外向き、寒色が内向き）。点は a、b、c 相の導体です。中央には各相の寄与を巻線の軸に沿った矢印で、その和を金色で示しています（電気角）。`);
+          st.flatDraw = flatStator(st.v3, s, p);
+          st.anim?.redraw();
+        },
+      });
+      st.anim?.redraw();
     },
   };
 
@@ -190,7 +311,7 @@
       const f = L.fig(c1, { x: [nmin, nmax], y: [ymin, ymax], aspect: 0.72, maxH: 380, xlabel: T('shaft speed (rpm)', '軸の回転速度（rpm）'), ylabel: 'N·m' });
       f.rect(nmin, ymin, -nmin, ymax - ymin, { c: 'c4', fill: 'c4', fo: 0.06, nostroke: true, layer: 'under' });
       f.rect(ns, ymin, nmax - ns, ymax - ymin, { c: 'c3', fill: 'c3', fo: 0.07, nostroke: true, layer: 'under' });
-      f.text(nmin / 2, ymax * 0.9, T('braking', '制動'), { small: true, c: 'c4' }); f.text((ns + nmax) / 2, ymax * 0.9, T('generating', '発電'), { small: true, c: 'c3' }); f.text(ns * 0.45, ymax * 0.9, T('motoring', '電動'), { small: true, c: 'muted' });
+      f.text(nmin / 2, ymax * 0.74, T('braking', '制動'), { small: true, c: 'c4' }); f.text((ns + nmax) / 2, ymax * 0.9, T('generating', '発電'), { small: true, c: 'c3' }); f.text(ns * 0.45, ymax * 0.9, T('motoring', '電動'), { small: true, c: 'muted' });
       f.hline(0, { c: 'muted', w: 1, dash: false }); f.vline(ns, { c: 'muted', w: 1 }); f.text(ns, ymin, `n_s = ${fmt(ns, 0)}`, { small: true, c: 'muted', dy: -6, dx: 4, anchor: 'start' });
       const curve = (fr, r) => { const n_s = (60 * fr) / IM.p; return L.sample(nmin, nmax, 500, (n) => { const s = 1 - n / n_s; return [n, imCircuit(Math.abs(s) < 1e-9 ? 1e-9 : s, fr, r).T]; }); };
       if (Math.abs(fq - 50) > 0.5 || Math.abs(rr - 1) > 0.01) f.line(curve(50, 1), { c: 'muted', w: 1.4, dash: '5 4' });

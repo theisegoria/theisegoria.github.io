@@ -157,39 +157,110 @@
   };
 
   /* ---------- 3. piston directivity ---------- */
+  const rOfP = (db) => Math.max(0, 1 + db / 36);   // radius scale: rings every 6 dB, −36 dB at the centre
+  const lvlP = (ka, th) => 20 * Math.log10(Math.abs(piston(ka, th)) + 1e-9);
+  const AV = 4;                                      // piston drawn at 4 scene units per metre of radius
   D['piston-directivity'] = {
+    three: true,
     render(ctx, v) {
+      const st = ctx.state;
+      if (!st.frame || !st.frame.isConnected) {
+        ctx.host.replaceChildren();
+        st.frame = L.h('div', '', ctx.host);
+        const row = L.h('div', 'lab-row is-wide', st.frame);
+        st.c1 = L.h('div', 'lab-col', row); st.c2 = L.h('div', 'lab-col', row);
+        st.cap1 = L.h('p', 'lab-cap', st.c1, '');
+        st.v3 = L.h('div', '', st.c1);
+        st.leg = L.h('div', '', st.frame);
+      }
+      st.v = v;
       const a = v.a / 100, f = Math.pow(10, v.lf), k = TAU * f / C_AIR, ka = k * a;
-      const row = L.h('div', 'lab-row', ctx.host), c1 = L.h('div', 'lab-col', row), c2 = L.h('div', 'lab-col', row);
-      L.h('p', 'lab-cap', c1, T(`Polar pattern in front of the piston at ${hz(f)} (solid), and an octave below and above (faint). Rings every 6 dB.`, `${hz(f)} でのピストン前方の極座標パターン（実線）と、一オクターブ下と上（薄い線）です。同心円は 6 dB ごとです。`));
-      const pf = L.fig(c1, { x: [-0.15, 1.12], y: [-1.1, 1.1], equal: true, axes: false, maxH: 400 });
-      const rOf = (db) => Math.max(0, 1 + db / 36);
-      for (let d = 0; d >= -30; d -= 6) pf.line(L.sample(-Math.PI / 2, Math.PI / 2, 60, (t) => [rOf(d) * Math.cos(t), rOf(d) * Math.sin(t)]), { c: 'muted', w: d === 0 ? 1.2 : 0.7, op: 0.6, layer: 'under' });
-      [0, 30, 60, 90].forEach((dg) => { const t = dg * Math.PI / 180; [1, -1].forEach((sg) => pf.seg([0, 0], [Math.cos(t), sg * Math.sin(t)], { c: 'muted', w: 0.6, op: 0.5, layer: 'under' })); pf.text(1.06 * Math.cos(dg * Math.PI / 180), 1.06 * Math.sin(dg * Math.PI / 180), `${dg}°`, { small: true, c: 'muted' }); });
-      pf.text(rOf(-18), -0.04, '−18 dB', { small: true, c: 'muted', dy: 12 });
-      const pat = (kaa) => L.sample(-Math.PI / 2, Math.PI / 2, 360, (t) => { const r = rOf(20 * Math.log10(Math.abs(piston(kaa, t)) + 1e-9)); return [r * Math.cos(t), r * Math.sin(t)]; });
-      pf.line(pat(ka / 2), { c: 'c3', w: 1.2, op: 0.7, layer: 'main' }); pf.line(pat(ka * 2), { c: 'c4', w: 1.2, op: 0.7, layer: 'main' }); pf.line(pat(ka), { c: 'c1', w: 2.6, layer: 'main' });
-      pf.rect(-0.12, -a * 4, 0.1, a * 8, { c: 'ink', fill: 'ink', fo: 0.5, w: 1, layer: 'over' });
-      L.h('p', 'lab-cap', c2, T('Level off axis relative to on axis, against frequency, for this radius. Drag the gold point.', 'この半径での、軸上に対する軸外のレベルを周波数に対して示します。金色の点をドラッグしてください。'));
-      const g = L.fig(c2, { x: [2, 4.3], y: [-30, 3], aspect: 0.72, xlabel: 'f (Hz)', ylabel: 'dB', maxH: 400, ticksX: LOGT.filter((t) => t[0] >= 2) });
-      const cols = [['c3', 30], ['c2', 60], ['c4', 90]];
+      const ha = halfAngle6dB(ka);
+      // right: off-axis level against frequency
+      st.c2.replaceChildren();
+      L.h('p', 'lab-cap', st.c2, T('Level off axis relative to on axis, against frequency, for this radius. Drag the gold point.', 'この半径での、軸上に対する軸外のレベルを周波数に対して示します。金色の点をドラッグしてください。'));
+      const g = L.fig(st.c2, { x: [2, 4.3], y: [-30, 3], aspect: 0.8, xlabel: 'f (Hz)', ylabel: 'dB', maxH: 400, ticksX: LOGT.filter((t) => t[0] >= 2) });
       g.hline(0, { c: 'c1', w: 2, layer: 'main' });
-      cols.forEach(([c, dg]) => g.line(L.sample(2, 4.3, 300, (lf) => Math.max(-40, 20 * Math.log10(Math.abs(piston(TAU * Math.pow(10, lf) / C_AIR * a, dg * Math.PI / 180)) + 1e-9))), { c, w: 1.8, layer: 'main' }));
+      [['c3', 30], ['c2', 60], ['c4', 90]].forEach(([c, dg]) => g.line(L.sample(2, 4.3, 300, (lf) => Math.max(-40, lvlP(TAU * Math.pow(10, lf) / C_AIR * a, dg * Math.PI / 180))), { c, w: 1.8, layer: 'main' }));
       g.vline(Math.log10(C_AIR / (TAU * a)), { c: 'muted', w: 1, dash: '3 3', layer: 'under' }); g.text(Math.log10(C_AIR / (TAU * a)), 2, 'ka = 1', { small: true, c: 'muted', anchor: 'start', dx: 4 });
       g.handle(v.lf, 0, { c: 'hl', r: 7, axis: 'x', label: T('Frequency', '周波数'), bounds: [2, 4.3, -30, 3], onDrag: (x) => ctx.set('lf', Math.round(x * 100) / 100) });
-      L.legend(ctx.host, [{ c: 'c1', label: T('on axis (reference), and the pattern at this frequency', '軸上（基準）、およびこの周波数でのパターン') }, { c: 'c3', label: T('30°; and one octave lower', '30°、および一オクターブ下') }, { c: 'c2', label: '60°' }, { c: 'c4', label: T('90°; and one octave higher', '90°、および一オクターブ上') }]);
-      const ha = halfAngle6dB(ka);
+      const legend = () => { st.leg.replaceChildren(); L.legend(st.leg, [{ c: 'c1', label: T('on axis (reference), and the pattern at this frequency', '軸上（基準）、およびこの周波数でのパターン') }, { c: 'c3', label: T('30°; and one octave lower', '30°、および一オクターブ下') }, { c: 'c2', label: '60°' }, { c: 'c4', label: T('90°; and one octave higher', '90°、および一オクターブ上') }].concat(st.flat ? [] : [{ c: 'hl', label: T('the −6 dB contour on the balloon', '風船上の −6 dB の等高線') }])); };
+      legend();
       ctx.readout([
         { k: 'f, a', v: `${hz(f)}, ${fmt(v.a, 1)} cm`, tone: 'key' },
         { k: 'ka', v: fmt(ka, 2) },
         { k: T('wavelength', '波長'), v: `${fmt(C_AIR / f * 100, 1)} cm` },
         { k: T('−6 dB half-angle', '−6 dB 半角'), v: ha >= 90 ? T('wider than 90°', '90° より広い') : `${fmt(ha, 1)}°` },
         { k: T('directivity index', '指向性指数'), v: `${fmt(directivityIndex(ka), 1)} dB` },
-        { k: T('level at 60°', '60° でのレベル'), v: `${fmt(20 * Math.log10(Math.abs(piston(ka, Math.PI / 3)) + 1e-12), 1)} dB` },
+        { k: T('level at 60°', '60° でのレベル'), v: `${fmt(lvlP(ka, Math.PI / 3), 1)} dB` },
       ], ka < 1
         ? T('The piston is small compared with the wavelength: every point of it is nearly in phase at any listening angle, and the sound spreads evenly over the front half-space.', 'ピストンは波長に比べて小さく、どの聴取角度でもその各点はほぼ同位相で、音は前方の半空間に一様に広がります。')
         : ka < 3.83 ? T('The circumference is now comparable to the wavelength: off-axis listeners hear the edges partly cancel, and the treble narrows into a beam. This is the range where a two-way speaker should cross over.', '円周が波長と同程度になりました。軸外の聴き手には縁の寄与が部分的に打ち消し合って聞こえ、高音はビームに細まります。2 ウェイスピーカーがクロスオーバーすべきなのはこの範囲です。')
           : T(`ka = ${fmt(ka, 2)} exceeds 3.83, the first zero of J₁: a null has entered the front half-space at ${fmt(Math.asin(3.8317 / ka) * 180 / Math.PI, 1)}°, with side lobes beyond it. Only a smaller driver can cover this range evenly.`, `ka = ${fmt(ka, 2)} は J₁ の最初の零点 3.83 を超えました。前方の半空間の ${fmt(Math.asin(3.8317 / ka) * 180 / Math.PI, 1)}° に零点が現れ、その先に副ローブがあります。この帯域を一様に覆えるのは、より小さなドライバーだけです。`));
+      const flatPolar = () => {
+        st.v3.replaceChildren();
+        st.cap1.textContent = T(`Polar pattern in front of the piston at ${hz(f)} (solid), and an octave below and above (faint). Rings every 6 dB.`, `${hz(f)} でのピストン前方の極座標パターン（実線）と、一オクターブ下と上（薄い線）です。同心円は 6 dB ごとです。`);
+        const pf = L.fig(st.v3, { x: [-0.15, 1.12], y: [-1.1, 1.1], equal: true, axes: false, maxH: 400 });
+        for (let d = 0; d >= -30; d -= 6) pf.line(L.sample(-Math.PI / 2, Math.PI / 2, 60, (t) => [rOfP(d) * Math.cos(t), rOfP(d) * Math.sin(t)]), { c: 'muted', w: d === 0 ? 1.2 : 0.7, op: 0.6, layer: 'under' });
+        [0, 30, 60, 90].forEach((dg) => { const t = dg * Math.PI / 180; [1, -1].forEach((sg) => pf.seg([0, 0], [Math.cos(t), sg * Math.sin(t)], { c: 'muted', w: 0.6, op: 0.5, layer: 'under' })); pf.text(1.06 * Math.cos(t), 1.06 * Math.sin(t), `${dg}°`, { small: true, c: 'muted' }); });
+        pf.text(rOfP(-18), -0.04, '−18 dB', { small: true, c: 'muted', dy: 12 });
+        const pat = (kaa) => L.sample(-Math.PI / 2, Math.PI / 2, 360, (t) => { const r = rOfP(lvlP(kaa, t)); return [r * Math.cos(t), r * Math.sin(t)]; });
+        pf.line(pat(ka / 2), { c: 'c3', w: 1.2, op: 0.7, layer: 'main' }); pf.line(pat(ka * 2), { c: 'c4', w: 1.2, op: 0.7, layer: 'main' }); pf.line(pat(ka), { c: 'c1', w: 2.6, layer: 'main' });
+        pf.rect(-0.12, -a * 4, 0.1, a * 8, { c: 'ink', fill: 'ink', fo: 0.5, w: 1, layer: 'over' });
+      };
+      const narrow = (ctx.host.clientWidth || 900) < 560;
+      L.view3d(ctx, v, {
+        host: st.v3, aspect: narrow ? 1 : 0.86, maxH: 470, camera: [2.2, -3.2, 1.45], target: [0.5, 0.14, -0.04], fov: 34,
+        label: T('3D radiation balloon of a piston in a wall. Drag to rotate; drag the gold point on the piston rim to resize it.', '壁にはめたピストンの 3D 放射パターン。ドラッグで回転し、ピストンの縁の金色の点をドラッグすると大きさを変えられます。'),
+        init(S) {
+          st.flat = false;
+          const cA = S.colour('c1'), cB = S.colour('c3'), cC = S.colour('c4');
+          st.lvlCol = (d) => { const t = clamp(-d / 30, 0, 1); return t < 0.4 ? cA.clone().lerp(cB, t / 0.4) : cB.clone().lerp(cC, (t - 0.4) / 0.6); };
+          st.cap1.textContent = T(`The radiation balloon at ${hz(f)}: distance from the piston is the level in that direction (6 dB per ring), cut open along a vertical plane through the axis. Drag the gold point on the piston's rim to change its size.`, `${hz(f)} での放射の風船です。ピストンからの距離がその方向のレベルを表し（輪は 6 dB ごと）、軸を含む鉛直面で切り開いています。ピストンの縁の金色の点をドラッグすると大きさが変わります。`);
+          // polar grid in the cut plane y = 0
+          const G = [];
+          for (let d = 0; d >= -30; d -= 6) { const r = rOfP(d); for (let i = 0; i < 48; i++) { const t0 = -Math.PI / 2 + Math.PI * i / 48, t1 = -Math.PI / 2 + Math.PI * (i + 1) / 48; G.push([[r * Math.cos(t0), 0, r * Math.sin(t0)], [r * Math.cos(t1), 0, r * Math.sin(t1)]]); } }
+          [-90, -60, -30, 0, 30, 60, 90].forEach((dg) => { const t = dg * Math.PI / 180; G.push([[0, 0, 0], [1.04 * Math.cos(t), 0, 1.04 * Math.sin(t)]]); });
+          S.lines(G, { c: 'muted', opacity: 0.55 });
+          [0, 30, 60, 90].forEach((dg) => { const t = dg * Math.PI / 180; S.label(`${dg}°`, [1.12 * Math.cos(t), 0, 1.12 * Math.sin(t)], { small: true, c: 'muted', align: 'middle' }); });
+          // baffle and piston
+          S.box([0.02, 1.6, 2.1], [-0.012, 0.35, 0], { c: 'muted', opacity: 0.14, rough: 0.8, coat: 0 }).userData.noOcclude = true;
+          st.disc = S.disc([0.004, 0, 0], [1, 0, 0], 1, { c: 'ink', opacity: 0.85, rough: 0.5 });
+          st.rim = S.tube(L.sample(0, TAU, 64, (t) => [0.006, Math.cos(t), Math.sin(t)]), { c: 'ink', r: 0.008, closed: true });
+          // the balloon: theta from the axis, phi round it, the half behind the cut (y >= 0)
+          st.ball = S.surface(() => [0, 0, 0], { u: [0, Math.PI / 2], v: [0, Math.PI], nu: 150, nv: 64, colour: () => S.colour('c1'), rough: 0.45, coat: 0.3, wire: true, wireEvery: 15, wireEveryV: 8 });
+          st.cut = S.tube([[0, 0, 0], [0, 0, 0.01]], { c: 'c1', r: 0.011 });
+          st.lo = S.tube([[0, 0, 0], [0, 0, 0.01]], { c: 'c3', r: 0.005 });
+          st.hi = S.tube([[0, 0, 0], [0, 0, 0.01]], { c: 'c4', r: 0.005 });
+          st.ring = S.tube([[0, 0, 0], [0, 0, 0.01]], { c: 'hl', r: 0.012 });
+          st.ringL = S.label('−6 dB', [0, 0, 0], { small: true, occlude: true });
+          st.nullL = S.label('', [0, 0, 0], { small: true, c: 'muted' });
+          st.hand = S.handle([0.02, -0.26, 0], { r: 0.055, label: 'a', plane: [[1, 0, 0], [0.02, 0, 0]], onDrag: (q) => {
+            const y = clamp(-q.y, 0.01 * AV, 0.15 * AV), cm = Math.round(y / AV * 1000) / 10;
+            ctx.set('a', clamp(cm, 1, 15));
+            return [0.02, -cm / 100 * AV, 0];
+          } });
+        },
+        update(S, vv) {
+          const aa = vv.a / 100, ff = Math.pow(10, vv.lf), kk = TAU * ff / C_AIR * aa, av = aa * AV;
+          st.cap1.textContent = T(`The radiation balloon at ${hz(ff)}: distance from the piston is the level in that direction (6 dB per ring), cut open along a vertical plane through the axis. Drag the gold point on the piston's rim to change its size.`, `${hz(ff)} での放射の風船です。ピストンからの距離がその方向のレベルを表し（輪は 6 dB ごと）、軸を含む鉛直面で切り開いています。ピストンの縁の金色の点をドラッグすると大きさが変わります。`);
+          const R = (t) => rOfP(lvlP(kk, t)), lvlCol = st.lvlCol;
+          st.ball.update((t, ph) => { const r = R(t); return [r * Math.cos(t), r * Math.sin(t) * Math.sin(ph), r * Math.sin(t) * Math.cos(ph)]; }, (t) => lvlCol(lvlP(kk, t)));
+          const cutOf = (kq) => L.sample(-Math.PI / 2, Math.PI / 2, 361, (t) => { const r = rOfP(lvlP(kq, t)); return [r * Math.cos(t), -0.003, r * Math.sin(t)]; });
+          st.cut.update(cutOf(kk)); st.lo.update(cutOf(kk / 2)); st.hi.update(cutOf(kk * 2));
+          const h6 = halfAngle6dB(kk);
+          if (h6 < 90) {
+            const t6 = h6 * Math.PI / 180, r6 = rOfP(-6.0206) + 0.004;
+            st.ring.visible = true; st.ring.update(L.sample(0, Math.PI, 72, (ph) => [r6 * Math.cos(t6), r6 * Math.sin(t6) * Math.sin(ph), r6 * Math.sin(t6) * Math.cos(ph)]));
+            st.ringL.set([r6 * Math.cos(t6), 0, r6 * Math.sin(t6)]).show(true);
+          } else { st.ring.visible = false; st.ringL.show(false); }
+          if (kk > 3.8317) { const t1 = Math.asin(3.8317 / kk); st.nullL.set([0.5 * Math.cos(t1), 0, -0.5 * Math.sin(t1)], T(`null ${fmt(t1 * 180 / Math.PI, 0)}°`, `零点 ${fmt(t1 * 180 / Math.PI, 0)}°`)).show(true); } else st.nullL.show(false);
+          st.disc.scale.setScalar(av); st.rim.update(L.sample(0, TAU, 64, (t) => [0.006, av * Math.cos(t), av * Math.sin(t)]));
+          st.hand.at([0.02, -av, 0]);
+          S.invalidate();
+        },
+        fallback() { st.flat = true; flatPolar(); legend(); },
+      });
     },
   };
 })();

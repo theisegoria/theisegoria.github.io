@@ -413,7 +413,7 @@
    * The experiment's definition sets three: true. init runs once when the scene
    * exists; update runs on every control change. When neither WebGPU nor WebGL 2
    * is available, or ?flat is in the URL, fallback draws the 2D figure instead. */
-  const V3 = '20261028d';
+  const V3 = '20261028e';
   let three3d = null;
   const flat = /[?&]flat\b/.test(location.search);
   function view3d(ctx, v, o) {
@@ -439,6 +439,7 @@
       const oo = st.__v3o || o;               // the newest options: controls may have moved while loading
       oo.init?.(S, st.__v3v);
       oo.update?.(S, st.__v3v);
+      S.settle?.();
     }).catch((err) => {
       console.warn('3D unavailable, drawing the 2D figure:', err);
       st.__v3loading = false; ph.remove();

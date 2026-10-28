@@ -285,7 +285,7 @@ export async function create(host, opts = {}) {
   /* arrow from a along vector d */
   S.arrow = (a, d, o = {}) => {
     const g = new THREE.Group();
-    const material = S.mat(o.c ?? 'c2', { rough: 0.3, coat: 0.7, glow: o.glow });
+    const material = S.mat(o.c ?? 'c2', { rough: 0.3, coat: 0.7, glow: o.glow, opacity: o.opacity });
     const shaft = new THREE.Mesh(new THREE.CylinderGeometry(1, 1, 1, 14), material);
     const head = new THREE.Mesh(new THREE.ConeGeometry(1, 1, 18), material);
     shaft.castShadow = head.castShadow = !!opts.shadows;
@@ -421,6 +421,7 @@ export async function create(host, opts = {}) {
     halo.scale.setScalar(1.9); m.add(halo);
     m.userData.handle = o; S.handles.push(m);
     m.setPlane = (nrm, q) => { o.plane = [nrm, q]; return m; };
+    m.enable = (on) => { const i = S.handles.indexOf(m); if (on && i < 0) S.handles.push(m); if (!on && i >= 0) S.handles.splice(i, 1); m.visible = !!on; m.labelItem?.show(!!on); lab.invalidate(); return m; };
     m.setColour = (c) => { const col = colour(c); m.material.color.copy(col); m.material.emissive.copy(col); m.children[0].material.color.copy(col); lab.invalidate(); return m; };
     if (o.label) m.labelItem = S.label(o.label, p, { math: true });
     const at = m.at; m.at = (q) => { at(q); m.labelItem?.set(q); return m; };
@@ -472,6 +473,10 @@ export async function create(host, opts = {}) {
   S.animate = (fn) => { S.tick = fn; lab.invalidate(); };
   S.look = (pos, tgt, keep) => { camera.position.copy(V(pos)); if (tgt) controls.target.copy(V(tgt)); if (keep) { camPos.copy(V(pos)); if (tgt) target.copy(V(tgt)); } controls.update(); lab.invalidate(); };
   S.reduced = prefersReducedMotion;
+  // a scene built off-screen can be skipped while its shaders compile; ask for frames until they are ready
+  S.settle = (ms = 4000) => { const t0 = performance.now(); const tick = () => { lab.invalidate(); if (performance.now() - t0 < ms) setTimeout(tick, 250); }; tick(); };
+  { const io = new IntersectionObserver((es) => { if (es[0].isIntersecting) S.settle(2500); }); io.observe(wrap); S.disposers.push(() => io.disconnect()); }
+  S.light = (k = 1) => { S.scene.environmentIntensity *= k; S.scene.children.forEach((o) => { if (o.isLight) o.intensity *= k; }); lab.invalidate(); };
   S.dispose = () => {
     S.disposers.forEach((f) => f());
     controls.dispose();

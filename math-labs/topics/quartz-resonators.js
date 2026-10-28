@@ -47,39 +47,53 @@
   const F0 = 32768;
 
   /* ---------- 1. the tuning fork ---------- */
+  const GAP = 0.16, H_WAFER = 0.1, TIP = 0.25;   // mm: slot between the tines, wafer thickness, length of the tip weights
+  // the previous flat figure, used as the fallback; returns draw(amp)
+  function flatFork(host, v) {
+    const fg = L.fig(host, { x: [-1.3, 1.3], y: [-0.9, 3.2], equal: true, xlabel: 'mm', maxH: 420, grid: false });
+    const xc = GAP / 2 + v.t / 2;
+    fg.rect(-(xc + v.t / 2 + 0.25), -0.7, 2 * (xc + v.t / 2 + 0.25), 0.7, { c: 'c3', fill: 'c3', fo: 0.3, w: 1.2, layer: 'under' });
+    fg.text(0, -0.35, T('base, mounted', '根元（固定）'), { small: true, c: 'c3' });
+    fg.text(xc + v.t / 2 + 0.08, v.L / 2, `L = ${fmt(v.L, 3)} mm`, { small: true, c: 'c1', anchor: 'start' });
+    fg.text(xc, v.L + 0.15, T('gold tip weights', '金のおもり'), { small: true, c: 'hl', dy: -4 });
+    return { fg, xc, draw(amp) {
+      fg.clear('main');
+      [-1, 1].forEach((side) => {
+        const cx = side * xc, pts = [];
+        for (let i = 0; i <= 40; i++) { const u = i / 40; pts.push([cx - v.t / 2 + side * amp * modeShape(u), u * v.L]); }
+        for (let i = 40; i >= 0; i--) { const u = i / 40; pts.push([cx + v.t / 2 + side * amp * modeShape(u), u * v.L]); }
+        fg.poly(pts, { c: 'c1', w: 1.4, fill: 'c1', fo: 0.22, layer: 'main' });
+        fg.rect(cx - v.t / 2 + side * amp, v.L - TIP, v.t, TIP, { c: 'hl', fill: 'hl', fo: 0.55, w: 0.8, layer: 'main' });
+      });
+    } };
+  }
   D['tuning-fork'] = {
+    three: true,
     render(ctx, v) {
-      ctx.state.anim?.stop();
-      const Lm = v.L * 1e-3, tm = v.t * 1e-3, f = forkFreq(Lm, tm), ppm = (f / F0 - 1) * 1e6;
-      const row = L.h('div', 'lab-row', ctx.host), c1 = L.h('div', 'lab-col', row), c2 = L.h('div', 'lab-col', row);
-      L.h('p', 'lab-cap', c1, T('The fork seen from above, in the plane it vibrates in (to scale, in mm). The deflection is exaggerated thousands of times. Drag the gold tip to change the length.', '振動面の上から見た音叉です（mm 単位の実寸比）。たわみは数千倍に誇張しています。金色の先端をドラッグして長さを変えてください。'));
-      const fg = L.fig(c1, { x: [-1.3, 1.3], y: [-0.9, 3.2], equal: true, xlabel: 'mm', maxH: 420, grid: false });
-      const gap = 0.16, xc = gap / 2 + v.t / 2, base = 0;
-      fg.rect(-(xc + v.t / 2 + 0.25), -0.7, 2 * (xc + v.t / 2 + 0.25), 0.7, { c: 'c3', fill: 'c3', fo: 0.3, w: 1.2, layer: 'under' });
-      fg.text(0, -0.35, T('base, mounted', '根元（固定）'), { small: true, c: 'c3' });
-      const G = fg.group('main');
-      const draw = (amp) => {
-        while (G.firstChild) G.removeChild(G.firstChild);
-        [-1, 1].forEach((side) => {
-          const cx = side * xc, pts = [];
-          for (let i = 0; i <= 40; i++) { const u = i / 40; pts.push([cx - v.t / 2 + side * amp * modeShape(u), base + u * v.L]); }
-          for (let i = 40; i >= 0; i--) { const u = i / 40; pts.push([cx + v.t / 2 + side * amp * modeShape(u), base + u * v.L]); }
-          G.appendChild(fg.poly(pts, { c: 'c1', w: 1.4, fill: 'c1', fo: 0.22, layer: 'main' }));
-          G.appendChild(fg.rect(cx - v.t / 2 + side * amp, v.L - 0.25, v.t, 0.25, { c: 'hl', fill: 'hl', fo: 0.55, w: 0.8, layer: 'main' }));
-        });
-      };
-      draw(0);
-      fg.handle(xc, v.L, { c: 'hl', r: 7, axis: 'y', label: T('Tine length', '歯の長さ'), bounds: [0, 1, 1.8, 3.0], onDrag: (x, y) => ctx.set('L', Math.round(y * 10000) / 10000) });
-      fg.text(xc + v.t / 2 + 0.08, v.L / 2, `L = ${fmt(v.L, 3)} mm`, { small: true, c: 'c1', anchor: 'start' });
-      fg.text(xc, v.L + 0.15, T('gold tip weights', '金のおもり'), { small: true, c: 'hl', dy: -4 });
-      L.h('p', 'lab-cap', c2, T('The first bending frequency against tine length for this width. The dashed line is 32,768 Hz = 2¹⁵ Hz.', 'この幅での、歯の長さに対する一次の曲げ振動数です。破線が 32,768 Hz = 2¹⁵ Hz です。'));
-      const g = L.fig(c2, { x: [1.8, 3.0], y: [10, 90], aspect: 0.75, xlabel: 'L (mm)', ylabel: 'f (kHz)', maxH: 420 });
+      const st = ctx.state, Lm = v.L * 1e-3, tm = v.t * 1e-3, f = forkFreq(Lm, tm), ppm = (f / F0 - 1) * 1e6, xc = GAP / 2 + v.t / 2;
+      if (!st.frame || !st.frame.isConnected) {
+        st.anim?.stop(); st.anim = null;
+        ctx.host.replaceChildren();
+        st.frame = L.h('div', '', ctx.host);
+        const row = L.h('div', 'lab-row', st.frame);
+        st.c1 = L.h('div', 'lab-col', row); st.c2 = L.h('div', 'lab-col', row);
+        st.cap1 = L.h('p', 'lab-cap', st.c1, '');
+        st.v3 = L.h('div', '', st.c1);
+        st.g2 = L.h('div', '', st.c2);
+        st.bar = L.h('div', '', st.frame);
+        st.leg = L.h('div', '', st.frame);
+      }
+      st.cap1.textContent = T('The fork as cut from the quartz wafer, to scale in millimetres, with the bending exaggerated thousands of times. The tines swing in antiphase, so the mounted base hardly moves. Electrodes on the faces (orange and violet, the two terminals) drive the bending through the piezoelectric effect: each tine’s broad faces are wired to the other tine’s sides. Drag the gold tip to change the length.', '水晶の薄板から切り出した音叉を mm 単位の実寸比で示し、曲げは数千倍に誇張しています。二本の歯は逆位相で振れるので、固定した根元はほとんど動きません。面上の電極（オレンジと紫が二つの端子）が圧電効果で曲げを駆動します。一方の歯の広い面は、もう一方の歯の側面と結線されています。金色の先端をドラッグして長さを変えてください。');
+      st.g2.replaceChildren();
+      L.h('p', 'lab-cap', st.g2, T('The first bending frequency against tine length for this width. The dashed line is 32,768 Hz = 2¹⁵ Hz.', 'この幅での、歯の長さに対する一次の曲げ振動数です。破線が 32,768 Hz = 2¹⁵ Hz です。'));
+      const g = L.fig(st.g2, { x: [1.8, 3.0], y: [10, 90], aspect: 0.75, xlabel: 'L (mm)', ylabel: 'f (kHz)', maxH: 420 });
       g.hline(32.768, { c: 'hl', w: 1.4, dash: '5 4', layer: 'under' });
       [0.1, 0.2, 0.3].forEach((tt) => g.line(L.sample(1.8, 3.0, 120, (x) => forkFreq(x * 1e-3, tt * 1e-3) / 1000), { c: 'muted', w: 1, op: 0.6, layer: 'under' }));
       g.line(L.sample(1.8, 3.0, 160, (x) => forkFreq(x * 1e-3, tm) / 1000), { c: 'c1', w: 2.4, layer: 'main' });
       const Lstar = lengthFor(F0, tm) * 1e3; if (Lstar >= 1.8 && Lstar <= 3) g.dot(Lstar, 32.768, { c: 'hl', r: 4, hollow: true, layer: 'over' });
       g.handle(v.L, f / 1000, { c: 'hl', r: 7, axis: 'x', label: T('Tine length', '歯の長さ'), bounds: [1.8, 3.0, 10, 90], onDrag: (x) => ctx.set('L', Math.round(x * 10000) / 10000) });
-      L.legend(ctx.host, [{ c: 'c1', label: T(`t = ${fmt(v.t, 3)} mm`, `t = ${fmt(v.t, 3)} mm`) }, { c: 'muted', label: T('t = 0.10, 0.20, 0.30 mm', 't = 0.10、0.20、0.30 mm') }, { c: 'hl', dash: true, label: '2¹⁵ Hz' }]);
+      st.leg.replaceChildren();
+      L.legend(st.leg, [{ c: 'c1', label: T(`t = ${fmt(v.t, 3)} mm`, `t = ${fmt(v.t, 3)} mm`) }, { c: 'muted', label: T('t = 0.10, 0.20, 0.30 mm', 't = 0.10、0.20、0.30 mm') }, { c: 'hl', dash: true, label: '2¹⁵ Hz' }]);
       const one = divide(f);
       ctx.readout([
         { k: 'f₁', v: `${fmt(f, 1)} Hz`, tone: 'key' },
@@ -90,7 +104,75 @@
       ], Math.abs(ppm) < 20
         ? T('Tuned to 2¹⁵ Hz: fifteen divide-by-two stages turn it into exactly one pulse a second for the stepping motor. The final few ppm are removed by laser trimming and by the digital correction of the third experiment.', '2¹⁵ Hz に調律されています。十五段の二分周がそれをステップモーター用のちょうど毎秒一パルスにします。最後の数 ppm はレーザー調整と、三つ目の実験のデジタル補正で取り除かれます。')
         : T(`A frequency ${ppm > 0 ? 'above' : 'below'} 2¹⁵ Hz divides down to ${fmt(one, 4)} Hz, and the watch would ${ppm > 0 ? 'gain' : 'lose'} ${fmt(Math.abs(ppmToSecPerDay(ppm)), 0)} s a day. Because f ∝ 1/L², a fractional change in length costs twice as much in frequency.`, `2¹⁵ Hz より${ppm > 0 ? '高い' : '低い'}周波数は ${fmt(one, 4)} Hz に分周され、時計は一日に ${fmt(Math.abs(ppmToSecPerDay(ppm)), 0)} 秒${ppm > 0 ? '進み' : '遅れ'}ます。f ∝ 1/L² なので、長さの相対変化は周波数では二倍の損失になります。`));
-      ctx.state.anim = L.animator(ctx.host, (dt, t, lab) => { draw(0.09 * Math.sin(TAU * 1.2 * t)); lab.textContent = T(`slowed ${fmt(f / 1.2, 0)} times`, `${fmt(f / 1.2, 0)} 倍遅く表示`); }, { autoplay: true, initialT: 0 });
+
+      const AMP = 0.09;
+      st.f = f;
+      st.drawAt = (amp) => { if (st.flat) st.flatF?.draw(amp); else st.draw3d?.(amp); };
+      if (!st.anim) st.anim = L.animator(st.bar, (dt, t, lab) => { st.drawAt(AMP * Math.sin(TAU * 1.2 * t)); lab.textContent = T(`slowed ${fmt(st.f / 1.2, 0)} times`, `${fmt(st.f / 1.2, 0)} 倍遅く表示`); }, { autoplay: true, initialT: 1 / (4 * 1.2) });
+
+      L.view3d(ctx, v, {
+        host: st.v3, aspect: 1.05, maxH: 460, camera: [2.1, -7.4, 3.3], target: [0, 0, 1.12], fov: 32,
+        init(S) {
+          st.flat = false; st.built = null;
+          const quartz = { c: 'c1', opacity: 0.55, rough: 0.12, coat: 1, metal: 0 };
+          // the two tines: four faces each, rebuilt when the controls change, deflected every frame
+          st.tines = [-1, 1].map((side) => ({
+            side,
+            faces: [0, 1, 2, 3].map(() => S.surface(() => [0, 0, 0], { u: [0, 1], v: [0, 1], nu: 40, nv: 1, ...quartz })),
+            cap: S.surface(() => [0, 0, 0], { u: [0, 1], v: [0, 1], nu: 1, nv: 1, ...quartz }),
+            // electrodes: a strip down each broad face, and one down each side face
+            el: [0, 1, 2, 3].map((j) => S.surface(() => [0, 0, 0], { u: [0, 1], v: [0, 1], nu: 30, nv: 1, c: (j < 2) === (side < 0) ? 'c2' : 'c4', metal: 0.8, rough: 0.3, coat: 0.4 })),
+            tip: [0, 1].map(() => S.surface(() => [0, 0, 0], { u: [0, 1], v: [0, 1], nu: 4, nv: 4, c: 'hl', metal: 0.9, rough: 0.22, coat: 0.6 })),
+          }));
+          st.base = S.box([1, H_WAFER, 0.7], [0, 0, -0.35], { ...quartz, opacity: 0.7 });
+          st.rest = S.lines([[[0, 0, 0], [0, 0, 0]]], { c: 'ink', opacity: 0.35 });
+          st.handle = S.handle([xc, 0, v.L], { plane: [[0, 1, 0], [0, 0, 0]], r: 0.06, onDrag: (q) => { const Ln = Math.round(L.clamp(q.z, 1.8, 3.0) * 10000) / 10000; ctx.set('L', Ln); return [st.xc, 0, Ln]; } });
+          st.labs = { base: S.label(T('base, mounted', '根元（固定）'), [0, -H_WAFER / 2, -0.45], { small: true, c: 'c3', align: 'middle' }), el: S.label(T('electrodes', '電極'), [0, 0, 0], { small: true, align: 'end' }), tip: S.label(T('gold tip weights', '金のおもり'), [0, 0, 0], { small: true, c: 'hl', align: 'end' }), len: S.label('', [0, 0, 0], { small: true, c: 'c1' }) };
+        },
+        update(S) {
+          const t = v.t, Lh = v.L, hw = H_WAFER / 2; st.xc = xc;
+          st.base.scale.set(2 * (xc + t / 2 + 0.25), 1, 1);
+          st.handle.at([xc, 0, Lh]);
+          const yAt = (u) => u * Lh;
+          st.draw3d = (amp) => {
+            st.tines.forEach((tn) => {
+              const cx = tn.side * xc, d = (u) => tn.side * amp * modeShape(u);
+              const X = (u, a) => cx + a + d(u);
+              tn.faces[0].update((u, w) => [X(u, -t / 2 + t * w), -hw, yAt(u)]);
+              tn.faces[1].update((u, w) => [X(u, -t / 2 + t * w), hw, yAt(u)]);
+              tn.faces[2].update((u, w) => [X(u, -t / 2), -hw + 2 * hw * w, yAt(u)]);
+              tn.faces[3].update((u, w) => [X(u, t / 2), -hw + 2 * hw * w, yAt(u)]);
+              tn.cap.update((u, w) => [X(1, -t / 2 + t * u), -hw + 2 * hw * w, Lh]);
+              const eu = (u) => 0.04 + u * (Lh - TIP - 0.12) / Lh;   // electrodes run from the base to below the tip weights
+              tn.el[0].update((u, w) => [X(eu(u), -t * 0.28 + t * 0.56 * w), -hw - 0.004, yAt(eu(u))]);
+              tn.el[1].update((u, w) => [X(eu(u), -t * 0.28 + t * 0.56 * w), hw + 0.004, yAt(eu(u))]);
+              tn.el[2].update((u, w) => [X(eu(u), -t / 2) - 0.004, -hw * 0.7 + 1.4 * hw * w, yAt(eu(u))]);
+              tn.el[3].update((u, w) => [X(eu(u), t / 2) + 0.004, -hw * 0.7 + 1.4 * hw * w, yAt(eu(u))]);
+              const tu = (u) => (Lh - TIP + TIP * u) / Lh;
+              tn.tip[0].update((u, w) => [X(tu(u), -t / 2 + t * w), -hw - 0.012, yAt(tu(u))]);
+              tn.tip[1].update((u, w) => [X(tu(u), -t / 2 + t * w), hw + 0.012, yAt(tu(u))]);
+            });
+            st.handle.at([xc + amp * modeShape(1), 0, Lh]);
+            S.invalidate();
+          };
+          // the tines at rest, outlined
+          const rest = [];
+          [-1, 1].forEach((side) => { const cx = side * xc; [[-t / 2, -hw], [t / 2, -hw]].forEach(([a, y]) => rest.push([[cx + a, y, 0], [cx + a, y, Lh]])); rest.push([[cx - t / 2, -hw, Lh], [cx + t / 2, -hw, Lh]]); });
+          st.rest.update(rest);
+          st.labs.el.set([-xc - t / 2 - 0.04, -hw, Lh * 0.45]);
+          st.labs.tip.set([-xc - t / 2 - 0.05, -hw, Lh - TIP / 2]);
+          st.labs.len.set([xc + t / 2 + 0.14, -hw, Lh / 2], `L = ${fmt(Lh, 3)} mm`);
+          st.anim?.redraw();
+        },
+        fallback() {
+          st.flat = true; st.v3.replaceChildren();
+          st.cap1.textContent = T('The fork seen from above, in the plane it vibrates in (to scale, in mm). The deflection is exaggerated thousands of times. Drag the gold tip to change the length.', '振動面の上から見た音叉です（mm 単位の実寸比）。たわみは数千倍に誇張しています。金色の先端をドラッグして長さを変えてください。');
+          st.flatF = flatFork(st.v3, v);
+          st.flatF.fg.handle(st.flatF.xc, v.L, { c: 'hl', r: 7, axis: 'y', label: T('Tine length', '歯の長さ'), bounds: [0, 1, 1.8, 3.0], onDrag: (x, y) => ctx.set('L', Math.round(y * 10000) / 10000) });
+          st.anim?.redraw();
+        },
+      });
+      st.anim?.redraw();
     },
   };
 

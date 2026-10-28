@@ -67,46 +67,139 @@
   const rng = (seed) => () => { seed |= 0; seed = (seed + 0x6D2B79F5) | 0; let t = Math.imul(seed ^ (seed >>> 15), 1 | seed); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
 
   /* ---------- 1. room modes ---------- */
+  const SC = 0.55; // scene units per metre
   D['room-modes'] = {
+    three: true,
     render(ctx, v) {
-      ctx.state.anim?.stop();
+      const st = ctx.state;
+      if (!st.frame || !st.frame.isConnected) {
+        st.anim?.stop(); st.anim = null;
+        ctx.host.replaceChildren();
+        st.frame = L.h('div', '', ctx.host);
+        const row = L.h('div', 'lab-row is-wide', st.frame);
+        st.c1 = L.h('div', 'lab-col', row); st.c2 = L.h('div', 'lab-col', row);
+        st.cap1 = L.h('p', 'lab-cap', st.c1, '');
+        st.v3 = L.h('div', '', st.c1);
+        st.bar = L.h('div', '', st.frame);
+        st.leg = L.h('div', '', st.frame);
+      }
+      st.v = v;
       const Lx = v.L, Ly = v.W, Lz = v.H, n = [v.nx, v.ny, v.nz], V = Lx * Ly * Lz;
       const list = modeList(Lx, Ly, Lz, 400), sel = n.some((k) => k > 0), fsel = modeFreq(Lx, Ly, Lz, ...n);
-      const src = [0, 0, 0], rcv = [v.lx * Lx, v.ly * Ly, EAR], zf = Math.cos(n[2] * Math.PI * EAR / Lz);
-      const row = L.h('div', 'lab-row', ctx.host), c1 = L.h('div', 'lab-col', row), c2 = L.h('div', 'lab-col', row);
-      L.h('p', 'lab-cap', c1, sel
-        ? T(`Floor plan, ${fmt(Lx, 2)} × ${fmt(Ly, 2)} m, coloured by the pressure of mode (${n.join(', ')}) at ${hz(fsel)}, at ear height. The speaker is in the bottom-left corner; drag the listener.`, `${fmt(Lx, 2)} × ${fmt(Ly, 2)} m の平面図を、${hz(fsel)} のモード (${n.join(', ')}) の耳の高さでの圧力で色分けしています。スピーカーは左下の隅にあります。聴き手をドラッグしてください。`)
-        : T('Choose a mode with at least one index above zero.', '少なくとも一つの番号が 0 より大きいモードを選んでください。'));
-      const pf = L.fig(c1, { x: [0, Lx], y: [0, Ly], equal: true, maxH: 340, xlabel: T('length (m)', '長さ（m）'), ylabel: T('width (m)', '幅（m）') });
-      const paint = (ph) => pf.raster((x, y) => (sel ? modeShape(n, Lx, Ly, Lz, x, y, EAR) * Math.cos(ph) : 0), { cmap: 'div', res: 3 });
-      paint(0);
-      pf.rect(0, 0, Lx, Ly, { c: 'ink', w: 2.4, layer: 'under' });
-      pf.rect(0.04, 0.04, 0.32, 0.28, { c: 'ink', fill: 'ink', fo: 0.85, w: 1, layer: 'main' }); pf.text(0.44, 0.2, T('speaker', 'スピーカー'), { small: true, c: 'ink', anchor: 'start' });
-      pf.handle(rcv[0], rcv[1], { c: 'hl', r: 8, label: T('Listener', '聴き手'), bounds: [0.02 * Lx, 0.98 * Lx, 0.02 * Ly, 0.98 * Ly], onDrag: (x, y) => { ctx.set('lx', Math.round(clamp(x / Lx, 0.02, 0.98) * 100) / 100, true); ctx.set('ly', Math.round(clamp(y / Ly, 0.02, 0.98) * 100) / 100); } });
-      // response
+      const src = [0, 0, 0], rcv = [v.lx * Lx, v.ly * Ly, EAR];
+      st.cap1.textContent = sel
+        ? T(`The room in 3D, ${fmt(Lx, 2)} × ${fmt(Ly, 2)} × ${fmt(Lz, 2)} m, with mode (${n.join(', ')}) at ${hz(fsel)} painted on the two far walls and on a slice at ear height (1.2 m). Drag the gold listener across the slice; drag elsewhere to turn the room.`, `${fmt(Lx, 2)} × ${fmt(Ly, 2)} × ${fmt(Lz, 2)} m の部屋を 3D で示し、${hz(fsel)} のモード (${n.join(', ')}) を奥の二つの壁と耳の高さ（1.2 m）の断面に塗っています。金色の聴き手を断面上でドラッグしてください。それ以外の場所をドラッグすると部屋が回ります。`)
+        : T('Choose a mode with at least one index above zero.', '少なくとも一つの番号が 0 より大きいモードを選んでください。');
+      // the response at the listener, and the readout
+      st.c2.replaceChildren();
       const F0 = 20, F1 = 250, N = 460, fs = L.seq(N, (i) => F0 + i * (F1 - F0) / (N - 1));
       const ps = fs.map((f) => modalResponse(Lx, Ly, Lz, src, rcv, f, T60M, list)), e = ps.map((z) => cx.abs(z) ** 2), ref = 10 * Math.log10(e.reduce((s, x) => s + x, 0) / N);
       const lv = e.map((x) => 10 * Math.log10(x) - ref);
-      L.h('p', 'lab-cap', c2, T('The response at the listener, summed over every mode below 400 Hz. The ticks along the bottom are the modes: axial, tangential, oblique.', '聴き手での応答で、400 Hz より下のすべてのモードを足し合わせています。下端の目盛りがモードで、軸、接線、斜めの別に色分けしています。'));
-      const g = L.fig(c2, { x: [F0, F1], y: [-30, 15], aspect: 0.66, xlabel: 'f (Hz)', ylabel: 'dB', maxH: 320, ticksX: [[20, '20'], [50, '50'], [100, '100'], [150, '150'], [200, '200'], [250, '250']], ticksY: [[15, '+15'], [10, '+10'], [0, '0'], [-10, '−10'], [-20, '−20'], [-30, '−30']] });
+      L.h('p', 'lab-cap', st.c2, T('The response at the listener, summed over every mode below 400 Hz. The ticks along the bottom are the modes: axial, tangential, oblique.', '聴き手での応答で、400 Hz より下のすべてのモードを足し合わせています。下端の目盛りがモードで、軸、接線、斜めの別に色分けしています。'));
+      const g = L.fig(st.c2, { x: [F0, F1], y: [-30, 15], aspect: 0.72, xlabel: 'f (Hz)', ylabel: 'dB', maxH: 340, ticksX: [[20, '20'], [50, '50'], [100, '100'], [150, '150'], [200, '200'], [250, '250']], ticksY: [[15, '+15'], [10, '+10'], [0, '0'], [-10, '−10'], [-20, '−20'], [-30, '−30']] });
       g.hline(0, { c: 'muted', w: 1, layer: 'under' });
       list.filter((m) => m.f <= F1).forEach((m) => g.seg([m.f, -30], [m.f, m.kind === 'axial' ? -26 : m.kind === 'tangential' ? -27.5 : -28.5], { c: kindCol[m.kind], w: 2, layer: 'under' }));
       const fS = schroeder(T60M, V); if (fS < F1) { g.vline(fS, { c: 'c4', w: 1.2, dash: '4 3', layer: 'under' }); g.text(fS, 13, `f_S ≈ ${hz(fS)}`, { small: true, c: 'c4', anchor: 'start', dx: 4 }); }
       if (sel && fsel <= F1) { g.vline(fsel, { c: 'hl', w: 1.4, dash: '2 3', layer: 'under' }); }
       g.line(fs.map((f, i) => [f, clamp(lv[i], -34, 19)]), { c: 'ink', w: 2.2, layer: 'main' });
-      L.legend(ctx.host, [{ c: 'c1', label: T('axial modes', '軸モード') }, { c: 'c2', label: T('tangential', '接線モード') }, { c: 'c3', label: T('oblique', '斜めモード') }, { c: 'ink', label: T('response at the listener', '聴き手での応答') }, { c: 'hl', dash: true, label: T('selected mode', '選んだモード') }]);
+      st.leg.replaceChildren();
+      L.legend(st.leg, [{ kind: 'fill', c: 'pos', label: T('pressure +', '圧力 +') }, { kind: 'fill', c: 'neg', label: T('pressure −, opposite phase', '圧力 −、逆位相') }, { c: 'c1', label: T('axial modes', '軸モード') }, { c: 'c2', label: T('tangential', '接線モード') }, { c: 'c3', label: T('oblique', '斜めモード') }, { c: 'ink', label: T('response at the listener', '聴き手での応答') }, { c: 'hl', dash: true, label: T('selected mode', '選んだモード') }]);
       const psiR = sel ? modeShape(n, Lx, Ly, Lz, ...rcv) : 0, band = fs.map((f, i) => [f, lv[i]]).filter(([f]) => f >= 30 && f <= 150).map(([, y]) => y);
-      const deg = list.filter((m) => sel && Math.abs(m.f - fsel) < 0.5 && m.n.join() !== n.join());
+      const degn = list.filter((m) => sel && Math.abs(m.f - fsel) < 0.5 && m.n.join() !== n.join());
       ctx.readout([
         { k: T('selected mode', '選んだモード'), v: sel ? `(${n.join(', ')}) ${hz(fsel)}, ${T(...kindName[modeKind(n)])}` : '–', tone: 'key' },
         { k: T('its amplitude at the listener', '聴き手でのその振幅'), v: sel ? (Math.abs(psiR) < 0.03 ? T('near a node', '節の近く') : `${sgn(dB(psiR), 1)} dB`) : '–' },
         { k: T('modes below 100 Hz, 200 Hz', '100 Hz、200 Hz より下のモード'), v: `${list.filter((m) => m.f < 100).length}, ${list.filter((m) => m.f < 200).length}` },
         { k: T('Schroeder frequency (T₆₀ = 0.4 s)', 'シュレーダー周波数（T₆₀ = 0.4 s）'), v: hz(fS) },
         { k: T('spread 30 to 150 Hz', '30〜150 Hz の上下幅'), v: `${fmt(Math.max(...band) - Math.min(...band), 1)} dB` },
-      ], deg.length
-        ? T(`Mode (${n.join(', ')}) shares its frequency with (${deg[0].n.join(', ')}): the room’s proportions stack two modes on one note, which makes that note boom. Room ratios such as 1 : 1.4 : 1.9 are chosen to spread the modes evenly.`, `モード (${n.join(', ')}) は (${deg[0].n.join(', ')}) と周波数が同じです。部屋の比率が二つのモードを一つの音に積み重ね、その音を響かせます。1 : 1.4 : 1.9 のような部屋の比率は、モードを均等に散らすために選ばれます。`)
+      ], degn.length
+        ? T(`Mode (${n.join(', ')}) shares its frequency with (${degn[0].n.join(', ')}): the room’s proportions stack two modes on one note, which makes that note boom. Room ratios such as 1 : 1.4 : 1.9 are chosen to spread the modes evenly.`, `モード (${n.join(', ')}) は (${degn[0].n.join(', ')}) と周波数が同じです。部屋の比率が二つのモードを一つの音に積み重ね、その音を響かせます。1 : 1.4 : 1.9 のような部屋の比率は、モードを均等に散らすために選ばれます。`)
         : T('Move the listener towards a wall and the low modes grow; move it to the middle and every mode with an odd index along that direction disappears. The shape of the curve below about 150 Hz is set by where you sit, not by the speaker.', '聴き手を壁に近づけると低いモードが大きくなり、中央に動かすとその方向の番号が奇数のモードはすべて消えます。およそ 150 Hz より下の曲線の形を決めるのは、スピーカーではなく座る場所です。'));
-      if (sel) ctx.state.anim = L.animator(ctx.host, (dt, t, lab) => { paint(TAU * 0.5 * t); lab.textContent = T(`oscillating, slowed from ${hz(fsel)}`, `${hz(fsel)} から遅くして振動を表示`); }, { autoplay: !L.reduced(), initialT: 0 });
+      // the oscillation, shared by the 3D scene and the flat plan
+      st.phase ??= 0;
+      if (!st.anim) st.anim = L.animator(st.bar, (dt, t, lab) => {
+        st.phase = TAU * 0.5 * t;
+        if (st.flat) st.paint2d?.(st.phase); else st.paint3d?.(st.phase);
+        const vv = st.v, nn = [vv.nx, vv.ny, vv.nz];
+        lab.textContent = nn.some((k) => k > 0) ? T(`oscillating, slowed from ${hz(modeFreq(vv.L, vv.W, vv.H, ...nn))}`, `${hz(modeFreq(vv.L, vv.W, vv.H, ...nn))} から遅くして振動を表示`) : '';
+      }, { autoplay: !L.reduced(), initialT: 0 });
+      const flatPlan = () => {
+        st.v3.replaceChildren();
+        const vv = st.v, nn = [vv.nx, vv.ny, vv.nz], ok = nn.some((k) => k > 0), fm = modeFreq(vv.L, vv.W, vv.H, ...nn);
+        st.cap1.textContent = ok
+          ? T(`Floor plan, ${fmt(vv.L, 2)} × ${fmt(vv.W, 2)} m, coloured by the pressure of mode (${nn.join(', ')}) at ${hz(fm)}, at ear height. The speaker is in the bottom-left corner; drag the listener.`, `${fmt(vv.L, 2)} × ${fmt(vv.W, 2)} m の平面図を、${hz(fm)} のモード (${nn.join(', ')}) の耳の高さでの圧力で色分けしています。スピーカーは左下の隅にあります。聴き手をドラッグしてください。`)
+          : T('Choose a mode with at least one index above zero.', '少なくとも一つの番号が 0 より大きいモードを選んでください。');
+        const pf = L.fig(st.v3, { x: [0, vv.L], y: [0, vv.W], equal: true, maxH: 340, xlabel: T('length (m)', '長さ（m）'), ylabel: T('width (m)', '幅（m）') });
+        st.paint2d = (ph) => pf.raster((x, y) => (ok ? modeShape(nn, vv.L, vv.W, vv.H, x, y, EAR) * Math.cos(ph) : 0), { cmap: 'div', res: 3 });
+        st.paint2d(st.phase);
+        pf.rect(0, 0, vv.L, vv.W, { c: 'ink', w: 2.4, layer: 'under' });
+        pf.rect(0.04, 0.04, 0.32, 0.28, { c: 'ink', fill: 'ink', fo: 0.85, w: 1, layer: 'main' }); pf.text(0.44, 0.2, T('speaker', 'スピーカー'), { small: true, c: 'ink', anchor: 'start' });
+        pf.handle(vv.lx * vv.L, vv.ly * vv.W, { c: 'hl', r: 8, label: T('Listener', '聴き手'), bounds: [0.02 * vv.L, 0.98 * vv.L, 0.02 * vv.W, 0.98 * vv.W], onDrag: (x, y) => { ctx.set('lx', Math.round(clamp(x / vv.L, 0.02, 0.98) * 100) / 100, true); ctx.set('ly', Math.round(clamp(y / vv.W, 0.02, 0.98) * 100) / 100); } });
+      };
+      const narrow = (ctx.host.clientWidth || 900) < 560;
+      L.view3d(ctx, v, {
+        host: st.v3, aspect: narrow ? 0.95 : 0.78, maxH: 470, camera: [3.9, -4.3, 2.75], target: [0, 0, -0.12], fov: 32,
+        label: T('3D room. Drag to rotate; drag the gold listener to move it.', '3D の部屋。ドラッグで回転し、金色の聴き手をドラッグすると動かせます。'),
+        init(S) {
+          st.flat = false;
+          S.scene.environmentIntensity *= 0.55; S.key.intensity *= 0.75; S.scene.children.forEach((o) => { if (o.isHemisphereLight) o.intensity *= 0.6; });
+          const P = (x, y, z) => { const vv = st.v; return [(x - vv.L / 2) * SC, (y - vv.W / 2) * SC, (z - vv.H / 2) * SC]; };
+          st.P = P;
+          const pr = (x, y, z) => { const vv = st.v, nn = [vv.nx, vv.ny, vv.nz]; return nn.some((k) => k > 0) ? modeShape(nn, vv.L, vv.W, vv.H, x, y, z) : 0; };
+          const col = (p) => { const q = p * Math.cos(st.phase); return S.cmap.div(Math.sign(q) * Math.abs(q) ** 0.7); };
+          const o = { nu: 56, nv: 40, rough: 0.9, coat: 0 };
+          st.wallX = S.surface(() => [0, 0, 0], { ...o, colour: () => S.colour('muted') });
+          st.wallY = S.surface(() => [0, 0, 0], { ...o, colour: () => S.colour('muted') });
+          st.slice = S.surface(() => [0, 0, 0], { ...o, nu: 64, nv: 52, colour: () => S.colour('muted') });
+          st.floorM = S.surface(() => [0, 0, 0], { nu: 1, nv: 1, c: 'plate', rough: 0.9, coat: 0, opacity: 0.55 });
+          st.edges = S.lines([], { c: 'ink', opacity: 0.55 });
+          st.nodal = S.lines([], { c: 'ink', opacity: 0.6 });
+          st.drop = S.lines([], { c: 'hl', opacity: 0.8 });
+          st.spk = S.box([0.3 * SC, 0.3 * SC, 0.5 * SC], [0, 0, 0], { c: 'ink', rough: 0.5 });
+          st.spkL = S.label(T('speaker', 'スピーカー'), [0, 0, 0], { small: true });
+          st.dimL = S.label('', [0, 0, 0], { small: true, c: 'muted', align: 'middle' });
+          st.dimW = S.label('', [0, 0, 0], { small: true, c: 'muted', align: 'middle' });
+          st.dimH = S.label('', [0, 0, 0], { small: true, c: 'muted' });
+          st.earL = S.label(T('ear height', '耳の高さ'), [0, 0, 0], { small: true, c: 'muted' });
+          st.hand = S.handle([0, 0, 0], { r: 0.1, label: T('listener', '聴き手'), plane: [[0, 0, 1], [0, 0, 0]], onDrag: (q) => {
+            const vv = st.v, x = clamp(q.x / SC + vv.L / 2, 0.02 * vv.L, 0.98 * vv.L), y = clamp(q.y / SC + vv.W / 2, 0.02 * vv.W, 0.98 * vv.W);
+            ctx.set('lx', Math.round(x / vv.L * 100) / 100, true); ctx.set('ly', Math.round(y / vv.W * 100) / 100);
+            return P(x, y, EAR);
+          } });
+          st.paint3d = () => {
+            st.wallX.update((u, w) => P(0, u * st.v.W, w * st.v.H), (u, w) => col(pr(0, u * st.v.W, w * st.v.H)));
+            st.wallY.update((u, w) => P(u * st.v.L, st.v.W, w * st.v.H), (u, w) => col(pr(u * st.v.L, st.v.W, w * st.v.H)));
+            st.slice.update((u, w) => P(u * st.v.L, w * st.v.W, EAR), (u, w) => col(pr(u * st.v.L, w * st.v.W, EAR)));
+          };
+        },
+        update(S, vv) {
+          const P = st.P, Lx = vv.L, Ly = vv.W, Lz = vv.H, nn = [vv.nx, vv.ny, vv.nz];
+          st.paint3d();
+          st.floorM.update((u, w) => P(u * Lx, w * Ly, -0.004));
+          const c = [[0, 0, 0], [Lx, 0, 0], [Lx, Ly, 0], [0, Ly, 0]], E = [];
+          for (let i = 0; i < 4; i++) { const a = c[i], b = c[(i + 1) % 4]; E.push([P(...a), P(...b)], [P(a[0], a[1], Lz), P(b[0], b[1], Lz)], [P(...a), P(a[0], a[1], Lz)]); }
+          E.push([P(0, 0, EAR), P(Lx, 0, EAR)], [P(Lx, 0, EAR), P(Lx, Ly, EAR)]);
+          st.edges.update(E);
+          // nodal lines on the slice and the walls: cos(n pi s) = 0 at s = (k + 1/2)/n
+          const NL = [], lift = 0.012;
+          for (let k = 0; k < nn[0]; k++) { const x = (k + 0.5) / nn[0] * Lx; NL.push([P(x, 0, EAR).map((q, i) => q + (i === 2 ? lift : 0)), P(x, Ly, EAR).map((q, i) => q + (i === 2 ? lift : 0))], [P(x, Ly - 0.02, 0), P(x, Ly - 0.02, Lz)]); }
+          for (let k = 0; k < nn[1]; k++) { const y = (k + 0.5) / nn[1] * Ly; NL.push([P(0, y, EAR).map((q, i) => q + (i === 2 ? lift : 0)), P(Lx, y, EAR).map((q, i) => q + (i === 2 ? lift : 0))], [P(0.02, y, 0), P(0.02, y, Lz)]); }
+          for (let k = 0; k < nn[2]; k++) { const z = (k + 0.5) / nn[2] * Lz; NL.push([P(0.02, 0, z), P(0.02, Ly, z)], [P(0, Ly - 0.02, z), P(Lx, Ly - 0.02, z)]); }
+          st.nodal.update(NL);
+          const r = [vv.lx * Lx, vv.ly * Ly];
+          st.hand.setPlane([0, 0, 1], P(0, 0, EAR));
+          st.hand.at(P(r[0], r[1], EAR));
+          st.drop.update([[P(r[0], r[1], EAR), P(r[0], r[1], 0)]]);
+          st.spk.position.set(...P(0.15, 0.15, 0.25));
+          st.spkL.set(P(0.1, 0.1, 0.62));
+          st.dimL.set(P(Lx / 2, 0, 0), `L = ${fmt(Lx, 2)} m`);
+          st.dimW.set(P(Lx, Ly / 2, 0), `W = ${fmt(Ly, 2)} m`);
+          st.dimH.set(P(Lx, 0, Lz * 0.85), `H = ${fmt(Lz, 2)} m`);
+          st.earL.set(P(Lx, 0, EAR));
+          S.invalidate();
+        },
+        fallback() { st.flat = true; flatPlan(); },
+      });
     },
   };
 

@@ -184,7 +184,7 @@
       ], [
         T('First order: the two halves are 90° apart at every frequency and their sum is exactly 1. The price is a shallow 6 dB/octave slope that leaves the tweeter handling a lot of low-frequency energy.', '一次：二つの半分はどの周波数でも 90° 離れていて、和はちょうど 1 です。代償は 6 dB/オクターブのなだらかな傾きで、ツイーターに多くの低域のエネルギーを負わせます。'),
         T('Second-order Butterworth: at the crossover the two arrows point in opposite directions and cancel. This is the notch that wiring the tweeter in reverse is meant to fix.', '二次バターワース：クロスオーバーで二つの矢印は逆向きを指し、打ち消し合います。ツイーターを逆に配線するのは、この落ち込みを直すためです。'),
-        T('Inverted, the second-order Butterworth pair adds at right angles to magnitude √2 at f_c: a 3 dB bump. Its powers sum flat, its voltages do not.', '反転すると、二次バターワースの組は f_c で直角に足し合わされて大きさ √2、3 dB の盛り上がりになります。パワーの和は平らですが、電圧の和は平らではありません。'),
+        T('Inverted, the second-order Butterworth pair is in phase at f_c, each half 1/√2, so they add to √2: a 3 dB bump. Its powers sum flat, its voltages do not.', '反転すると、二次バターワースの組は f_c で同位相になり、大きさ 1/√2 の半分どうしが足されて √2、3 dB の盛り上がりになります。パワーの和は平らですが、電圧の和は平らではありません。'),
         T('LR2 with the tweeter inverted: each half is −6 dB at f_c and they are in phase, so the sum is flat everywhere, an all-pass whose phase turns through 180°.', 'ツイーターを反転した LR2：各半分は f_c で −6 dB で同位相なので、和はどこでも平らで、位相が 180° 回るオールパスになります。'),
         T('LR4: two Butterworth sections in cascade. Each half is −6 dB and in phase at f_c, the sum is flat to within rounding, and the phase turns through a full 360°.', 'LR4：二段のバターワースを縦続にしたものです。各半分は f_c で −6 dB かつ同位相で、和は丸め誤差の範囲で平らになり、位相はまるまる 360° 回ります。'),
       ][type]);
@@ -192,38 +192,38 @@
   };
 
   /* ---------- 3. driver offset ---------- */
+  const rOfO = (d) => Math.max(0, (d + 30) / 30);   // rings at 0, −10, −20 dB
+  const KO = 0.4 / 0.3;                              // scene units per metre of driver geometry
+  // the LR4 sum in any direction u = [ux, uy, uz]: the tweeter sits h above and dz behind the woofer
+  const respDir = (h, dz, fc, f, u) => { const X = xover(4, f, fc), dt = (dz * u[0] - h * u[2]) / C_AIR; return cx.add(X.lp, cx.mul(X.hp, cx.expj(-TAU * f * dt))); };
   D['driver-offset'] = {
+    three: true,
     render(ctx, v) {
+      const st = ctx.state;
+      if (!st.frame || !st.frame.isConnected) {
+        ctx.host.replaceChildren();
+        st.frame = L.h('div', '', ctx.host);
+        const row = L.h('div', 'lab-row is-wide', st.frame);
+        st.c1 = L.h('div', 'lab-col', row); st.c2 = L.h('div', 'lab-col', row);
+        st.cap1 = L.h('p', 'lab-cap', st.c1, '');
+        st.v3 = L.h('div', '', st.c1);
+        st.leg = L.h('div', '', st.frame);
+      }
+      st.v = v;
       const h = v.h / 100, dz = v.dz / 100, fc = v.fc, ang = v.ang;
-      const row = L.h('div', 'lab-row', ctx.host), c1 = L.h('div', 'lab-col', row), c2 = L.h('div', 'lab-col', row);
-      L.h('p', 'lab-cap', c1, T('Vertical radiation pattern (side view, speaker facing right). Rings at 0, −10 and −20 dB. Drag the listener around the arc.', '縦方向の放射パターン（側面図、スピーカーは右向き）です。輪は 0、−10、−20 dB です。聴き手を弧に沿ってドラッグしてください。'));
-      const rOf = (d) => Math.max(0, (d + 30) / 30);
-      const pf = L.fig(c1, { x: [-0.45, 1.3], y: [-1.15, 1.15], equal: true, axes: false, maxH: 360 });
-      [0, -10, -20].forEach((d) => { pf.line(L.sample(-90, 90, 60, (t) => [rOf(d) * Math.cos(t * Math.PI / 180), rOf(d) * Math.sin(t * Math.PI / 180)]), { c: 'muted', w: 0.9, dash: d ? '2 4' : '3 3', layer: 'under' }); pf.text(0.03, -rOf(d) + 0.05, d ? `${String(d).replace('-', '−')}` : '0 dB', { small: true, c: 'muted', anchor: 'start' }); });
-      [-60, -30, 30, 60].forEach((a) => { const t = a * Math.PI / 180; pf.seg([0, 0], [1.02 * Math.cos(t), 1.02 * Math.sin(t)], { c: 'muted', w: 0.6, op: 0.5, layer: 'under' }); pf.text(1.1 * Math.cos(t), 1.1 * Math.sin(t), `${a > 0 ? '+' : '−'}${Math.abs(a)}°`, { small: true, c: 'muted' }); });
-      pf.seg([0, 0], [1.05, 0], { c: 'muted', w: 0.8, layer: 'under' });
-      // the baffle, to scale (30 cm spans 0.4 units)
-      const k = 0.4 / 0.3; pf.rect(-0.12 - Math.max(0, dz) * k, -0.18, 0.06, 0.18 + h * k + 0.12, { c: 'muted', fill: 'muted', fo: 0.12, w: 1, layer: 'under' });
-      pf.circle(0, 0, 0.055, { c: 'c1', fill: 'c1', fo: 0.35, w: 1.5, layer: 'main' }); pf.circle(-dz * k, h * k, 0.03, { c: 'c2', fill: 'c2', fo: 0.5, w: 1.5, layer: 'main' });
-      const polar = (f) => L.sample(-90, 90, 361, (t) => { const r = rOf(dB(offsetResp(h, dz, fc, f, t))), a = t * Math.PI / 180; return [r * Math.cos(a), r * Math.sin(a)]; });
-      pf.line(polar(fc / 2), { c: 'c3', w: 1.4, dash: '5 3', layer: 'main' });
-      pf.line(polar(fc * 2), { c: 'c4', w: 1.4, dash: '5 3', layer: 'main' });
-      pf.line(polar(fc), { c: 'c1', w: 2.6, layer: 'main' });
-      const tilt = lobeTilt(h, dz); if (h > 0) { const t = tilt * Math.PI / 180; pf.seg([0, 0], [1.02 * Math.cos(t), 1.02 * Math.sin(t)], { c: 'c1', w: 1, dash: '1 3', layer: 'main' }); }
-      const ta = ang * Math.PI / 180, Rl = 1.02;
-      pf.seg([0, 0], [Rl * Math.cos(ta), Rl * Math.sin(ta)], { c: 'hl', w: 1.2, dash: '3 3', layer: 'over' });
-      pf.handle(Rl * Math.cos(ta), Rl * Math.sin(ta), { c: 'hl', r: 8, label: T('Listener', '聴き手'), bounds: [-0.45, 1.3, -1.15, 1.15], onDrag: (x, y) => ctx.set('ang', Math.round(clamp(Math.atan2(y, Math.max(1e-6, x)) * 180 / Math.PI, -60, 60))) });
       // right: response at the seat
+      st.c2.replaceChildren();
       const N = 400, lfs = L.seq(N, (i) => 2 + i * 2.3 / (N - 1));
-      L.h('p', 'lab-cap', c2, T(`Frequency response at the listener, ${sgn(ang, 0)}° from the axis, against the response on the axis.`, `軸から ${sgn(ang, 0)}° の聴き手での周波数応答を、軸上の応答と比べて示します。`));
-      const b = L.fig(c2, { x: [2, 4.3], y: [-30, 6], aspect: 0.66, xlabel: 'f (Hz)', ylabel: 'dB', maxH: 320, ticksX: LOGT.slice(2), ticksY: [[6, '+6'], [0, '0'], [-6, '−6'], [-12, '−12'], [-18, '−18'], [-24, '−24'], [-30, '−30']] });
+      L.h('p', 'lab-cap', st.c2, T(`Frequency response at the listener, ${sgn(ang, 0)}° from the axis, against the response on the axis.`, `軸から ${sgn(ang, 0)}° の聴き手での周波数応答を、軸上の応答と比べて示します。`));
+      const b = L.fig(st.c2, { x: [2, 4.3], y: [-30, 6], aspect: 0.72, xlabel: 'f (Hz)', ylabel: 'dB', maxH: 340, ticksX: LOGT.slice(2), ticksY: [[6, '+6'], [0, '0'], [-6, '−6'], [-12, '−12'], [-18, '−18'], [-24, '−24'], [-30, '−30']] });
       b.hline(0, { c: 'muted', w: 1, layer: 'under' }); b.vline(Math.log10(fc), { c: 'muted', w: 1.2, dash: '4 3', layer: 'under' }); b.text(Math.log10(fc), 4.5, `f_c = ${hz(fc)}`, { small: true, c: 'muted', anchor: 'start', dx: 5 });
       const cl = (y) => clamp(y, -34, 8);
       b.line(lfs.map((x) => [x, cl(dB(offsetResp(h, dz, fc, Math.pow(10, x), 0)))]), { c: 'muted', w: 1.8, dash: '4 3', layer: 'main' });
       b.line(lfs.map((x) => [x, cl(dB(offsetResp(h, dz, fc, Math.pow(10, x), ang)))]), { c: 'hl', w: 2.6, layer: 'main' });
-      L.legend(ctx.host, [{ c: 'c1', label: T('pattern at f_c', 'f_c でのパターン') }, { c: 'c3', dash: true, label: T('at f_c/2', 'f_c/2 で') }, { c: 'c4', dash: true, label: T('at 2f_c', '2f_c で') }, { c: 'hl', label: T('response at the listener', '聴き手での応答') }, { c: 'muted', dash: true, label: T('on axis', '軸上') }]);
-      const dt = pathDelay(h, dz, ang), atSeat = dB(offsetResp(h, dz, fc, fc, ang)), nl = firstNulls(h, dz, fc);
-      const nullTxt = (n) => (n === null ? T('none in front', '前方にはなし') : `${sgn(n, 1)}°`);
+      st.leg.replaceChildren();
+      L.legend(st.leg, [{ c: 'c1', label: T('pattern at f_c', 'f_c でのパターン') }, { c: 'c3', dash: true, label: T('at f_c/2', 'f_c/2 で') }, { c: 'c4', dash: true, label: T('at 2f_c', '2f_c で') }, { c: 'hl', label: T('response at the listener', '聴き手での応答') }, { c: 'muted', dash: true, label: T('on axis', '軸上') }]);
+      const dt = pathDelay(h, dz, ang), atSeat = dB(offsetResp(h, dz, fc, fc, ang)), nl = firstNulls(h, dz, fc), tilt = lobeTilt(h, dz);
+      const nullTxt = (x) => (x === null ? T('none in front', '前方にはなし') : `${sgn(x, 1)}°`);
       ctx.readout([
         { k: T('extra path to the tweeter', 'ツイーターまでの経路差'), v: `${sgn(dt * C_AIR * 100, 1)} cm, ${sgn(dt * 1e6, 0)} µs` },
         { k: T('level at the seat, at f_c', '席での f_c のレベル'), v: `${sgn(atSeat, 1)} dB`, tone: 'key' },
@@ -234,7 +234,77 @@
         ? (Math.abs(dz) < 1e-9
           ? T('Coincident: both drivers radiate from the same point, the delay is zero at every angle, and the sum is flat everywhere. This is what a coaxial driver aims for.', '一致：両方のドライバーが同じ点から放射し、遅延はどの角度でも 0 で、和はどこでも平らです。これが同軸型ドライバーの目指すものです。')
           : T(`On one axis but ${fmt(Math.abs(dz) * 100, 1)} cm apart in depth: the delay is nearly the same at every angle near the front, so a fixed ${fmt(Math.abs(dz) / C_AIR * 1e6, 0)} µs electronic delay on the ${dz > 0 ? 'woofer' : 'tweeter'} would restore a flat sum for everyone.`, `同じ軸上で奥行きが ${fmt(Math.abs(dz) * 100, 1)} cm ずれています。前方付近の遅延はどの角度でもほぼ同じなので、${dz > 0 ? 'ウーファー' : 'ツイーター'}に ${fmt(Math.abs(dz) / C_AIR * 1e6, 0)} µs の固定した電子的遅延を入れれば、全員に対して平らな和を取り戻せます。`))
-        : T(`Near f_c the drivers play equally, so the pattern there is a two-source interference pattern with lobes and nulls; an octave away one driver dominates and the pattern is nearly round. Closer spacing, or a lower crossover frequency, pushes the first null further off axis.`, `f_c 付近では両ドライバーが等しく鳴るので、そこでのパターンはローブと零点をもつ二音源の干渉パターンになります。1 オクターブ離れると片方のドライバーが支配的になり、パターンはほぼ丸くなります。間隔を狭めるか、クロスオーバー周波数を下げると、最初の零点は軸から遠ざかります。`));
+        : T('Near f_c the drivers play equally, so the pattern there is a two-source interference pattern: the nulls are cones around the line joining the drivers, so they cut the vertical plane but leave the horizontal plane through the axis almost untouched. An octave away one driver dominates and the pattern is nearly round. Closer spacing, or a lower crossover frequency, pushes the first null further off axis.', 'f_c 付近では両ドライバーが等しく鳴るので、そこでのパターンは二音源の干渉パターンになります。零点はドライバーを結ぶ線のまわりの円錐なので、鉛直面は切り裂きますが、軸を通る水平面にはほとんど影響しません。1 オクターブ離れると片方のドライバーが支配的になり、パターンはほぼ丸くなります。間隔を狭めるか、クロスオーバー周波数を下げると、最初の零点は軸から遠ざかります。'));
+      const flatPolar = () => {
+        st.v3.replaceChildren();
+        st.cap1.textContent = T('Vertical radiation pattern (side view, speaker facing right). Rings at 0, −10 and −20 dB. Drag the listener around the arc.', '縦方向の放射パターン（側面図、スピーカーは右向き）です。輪は 0、−10、−20 dB です。聴き手を弧に沿ってドラッグしてください。');
+        const pf = L.fig(st.v3, { x: [-0.45, 1.3], y: [-1.15, 1.15], equal: true, axes: false, maxH: 360 });
+        [0, -10, -20].forEach((d) => { pf.line(L.sample(-90, 90, 60, (t) => [rOfO(d) * Math.cos(t * Math.PI / 180), rOfO(d) * Math.sin(t * Math.PI / 180)]), { c: 'muted', w: 0.9, dash: d ? '2 4' : '3 3', layer: 'under' }); pf.text(0.03, -rOfO(d) + 0.05, d ? `${String(d).replace('-', '−')}` : '0 dB', { small: true, c: 'muted', anchor: 'start' }); });
+        [-60, -30, 30, 60].forEach((a) => { const t = a * Math.PI / 180; pf.seg([0, 0], [1.02 * Math.cos(t), 1.02 * Math.sin(t)], { c: 'muted', w: 0.6, op: 0.5, layer: 'under' }); pf.text(1.1 * Math.cos(t), 1.1 * Math.sin(t), `${a > 0 ? '+' : '−'}${Math.abs(a)}°`, { small: true, c: 'muted' }); });
+        pf.seg([0, 0], [1.05, 0], { c: 'muted', w: 0.8, layer: 'under' });
+        pf.rect(-0.12 - Math.max(0, dz) * KO, -0.18, 0.06, 0.18 + h * KO + 0.12, { c: 'muted', fill: 'muted', fo: 0.12, w: 1, layer: 'under' });
+        pf.circle(0, 0, 0.055, { c: 'c1', fill: 'c1', fo: 0.35, w: 1.5, layer: 'main' }); pf.circle(-dz * KO, h * KO, 0.03, { c: 'c2', fill: 'c2', fo: 0.5, w: 1.5, layer: 'main' });
+        const polar = (f) => L.sample(-90, 90, 361, (t) => { const r = rOfO(dB(offsetResp(h, dz, fc, f, t))), a = t * Math.PI / 180; return [r * Math.cos(a), r * Math.sin(a)]; });
+        pf.line(polar(fc / 2), { c: 'c3', w: 1.4, dash: '5 3', layer: 'main' });
+        pf.line(polar(fc * 2), { c: 'c4', w: 1.4, dash: '5 3', layer: 'main' });
+        pf.line(polar(fc), { c: 'c1', w: 2.6, layer: 'main' });
+        if (h > 0) { const t = tilt * Math.PI / 180; pf.seg([0, 0], [1.02 * Math.cos(t), 1.02 * Math.sin(t)], { c: 'c1', w: 1, dash: '1 3', layer: 'main' }); }
+        const ta = ang * Math.PI / 180, Rl = 1.02;
+        pf.seg([0, 0], [Rl * Math.cos(ta), Rl * Math.sin(ta)], { c: 'hl', w: 1.2, dash: '3 3', layer: 'over' });
+        pf.handle(Rl * Math.cos(ta), Rl * Math.sin(ta), { c: 'hl', r: 8, label: T('Listener', '聴き手'), bounds: [-0.45, 1.3, -1.15, 1.15], onDrag: (x, y) => ctx.set('ang', Math.round(clamp(Math.atan2(y, Math.max(1e-6, x)) * 180 / Math.PI, -60, 60))) });
+      };
+      const narrow = (ctx.host.clientWidth || 900) < 560;
+      const RL = 1.08;
+      L.view3d(ctx, v, {
+        host: st.v3, aspect: narrow ? 1 : 0.86, maxH: 470, camera: [1.95, -3.4, 1.25], target: [0.48, 0.2, 0.0], fov: 34,
+        label: T('3D radiation pattern of two drivers at the crossover frequency. Drag to rotate; drag the gold listener along the arc.', 'クロスオーバー周波数での二つのドライバーの 3D 放射パターン。ドラッグで回転し、金色の聴き手を弧に沿ってドラッグできます。'),
+        init(S) {
+          st.flat = false;
+          st.cap1.textContent = T('The radiation balloon at f_c in 3D, cut open along the vertical plane through both drivers: distance from the woofer is the level in that direction (rings at 0, −10, −20 dB). Drag the gold listener round the arc.', 'f_c での放射の風船を 3D で示し、二つのドライバーを通る鉛直面で切り開いています。ウーファーからの距離がその方向のレベルです（輪は 0、−10、−20 dB）。金色の聴き手を弧に沿ってドラッグしてください。');
+          const G = [];
+          [0, -10, -20].forEach((d) => { const r = rOfO(d); for (let i = 0; i < 48; i++) { const t0 = -Math.PI / 2 + Math.PI * i / 48, t1 = -Math.PI / 2 + Math.PI * (i + 1) / 48; G.push([[r * Math.cos(t0), 0, r * Math.sin(t0)], [r * Math.cos(t1), 0, r * Math.sin(t1)]]); } });
+          [-60, -30, 0, 30, 60].forEach((dg) => { const t = dg * Math.PI / 180; G.push([[0, 0, 0], [1.04 * Math.cos(t), 0, 1.04 * Math.sin(t)]]); });
+          S.lines(G, { c: 'muted', opacity: 0.55 });
+          [-60, -30, 30, 60].forEach((dg) => { const t = dg * Math.PI / 180; S.label(`${dg > 0 ? '+' : '−'}${Math.abs(dg)}°`, [1.16 * Math.cos(t), 0, 1.16 * Math.sin(t)], { small: true, c: 'muted', align: 'middle' }); });
+          st.baffle = S.box([0.03, 0.5, 1], [0, 0, 0], { c: 'muted', opacity: 0.2, rough: 0.8, coat: 0 });
+          st.baffle.userData.noOcclude = true;
+          st.woof = S.disc([0.004, 0, 0], [1, 0, 0], 0.075, { c: 'c1', opacity: 1, rough: 0.5 });
+          st.tw = S.disc([0, 0, 0], [1, 0, 0], 0.04, { c: 'c2', opacity: 1, rough: 0.5 });
+          st.woofL = S.label(T('woofer', 'ウーファー'), [0, 0, -0.1], { small: true, align: 'end' });
+          st.twL = S.label(T('tweeter', 'ツイーター'), [0, 0, 0], { small: true, align: 'end' });
+          // directions: elevation e from the axis in the vertical plane, azimuth az round to the side (y >= 0)
+          st.ball = S.surface(() => [0, 0, 0], { u: [-Math.PI / 2, Math.PI / 2], v: [0, Math.PI / 2], nu: 160, nv: 48, colour: () => S.colour('c1'), rough: 0.45, coat: 0.3, wire: true, wireEvery: 16, wireEveryV: 8 });
+          const cA = S.colour('c1'), cB = S.colour('c3'), cC = S.colour('c4');
+          st.col = (d) => { const t = clamp(-d / 30, 0, 1); return t < 0.4 ? cA.clone().lerp(cB, t / 0.4) : cB.clone().lerp(cC, (t - 0.4) / 0.6); };
+          st.cut = S.tube([[0, 0, 0], [0, 0, 0.01]], { c: 'c1', r: 0.011 });
+          st.lo = S.tube([[0, 0, 0], [0, 0, 0.01]], { c: 'c3', r: 0.005 });
+          st.hi = S.tube([[0, 0, 0], [0, 0, 0.01]], { c: 'c4', r: 0.005 });
+          st.ray = S.lines([], { c: 'hl', opacity: 0.9 });
+          st.tiltL = S.lines([], { c: 'c1', opacity: 0.7 });
+          st.hand = S.handle([RL, 0, 0], { r: 0.05, label: T('listener', '聴き手'), plane: [[0, 1, 0], [0, 0, 0]], onDrag: (q) => {
+            const a = Math.round(clamp(Math.atan2(q.z, Math.max(1e-6, q.x)) * 180 / Math.PI, -60, 60));
+            ctx.set('ang', a);
+            return [RL * Math.cos(a * Math.PI / 180), 0, RL * Math.sin(a * Math.PI / 180)];
+          } });
+        },
+        update(S, vv) {
+          const hh = vv.h / 100, dd = vv.dz / 100, ff = vv.fc, aa = vv.ang * Math.PI / 180;
+          const dir = (e, az) => [Math.cos(e) * Math.cos(az), Math.cos(e) * Math.sin(az), Math.sin(e)];
+          const lvl = (u, f) => dB(respDir(hh, dd, ff, f, u));
+          st.ball.update((e, az) => { const u = dir(e, az), r = rOfO(lvl(u, ff)); return [r * u[0], r * u[1], r * u[2]]; }, (e, az) => st.col(lvl(dir(e, az), ff)));
+          const cutOf = (f) => L.sample(-Math.PI / 2, Math.PI / 2, 361, (e) => { const u = dir(e, 0), r = rOfO(lvl(u, f)); return [r * u[0], -0.003, r * u[2]]; });
+          st.cut.update(cutOf(ff)); st.lo.update(cutOf(ff / 2)); st.hi.update(cutOf(ff * 2));
+          const tw = [-dd * KO, 0, hh * KO];
+          st.tw.position.set(tw[0] + 0.004, 0, tw[2]); st.twL.set([tw[0], 0, tw[2] + 0.06]);
+          st.baffle.scale.set(1, 1, (hh * KO + 0.36)); st.baffle.position.set(Math.min(0, -dd * KO) - 0.02, 0, (hh * KO) / 2);
+          st.hand.at([RL * Math.cos(aa), 0, RL * Math.sin(aa)]);
+          st.ray.update([[[0, 0, 0], [RL * Math.cos(aa), 0, RL * Math.sin(aa)]]]);
+          const t = lobeTilt(hh, dd) * Math.PI / 180;
+          st.tiltL.update(hh > 0 ? [[[0, 0, 0], [1.04 * Math.cos(t), 0, 1.04 * Math.sin(t)]]] : []);
+          S.invalidate();
+        },
+        fallback() { st.flat = true; flatPolar(); },
+      });
     },
   };
 })();

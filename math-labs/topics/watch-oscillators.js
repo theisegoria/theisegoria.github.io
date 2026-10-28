@@ -87,45 +87,50 @@
     return g;
   }
 
+  /* ---------- 3D helpers ---------- */
+  const METAL = { metal: 0.75, rough: 0.28, coat: 0.6 };
+  // new materials compile in parallel on the WebGL 2 path and are skipped until ready; ask for frames for a few seconds after a build and whenever the view comes into sight
+  const settle = (S) => { let k = 0; const tick = () => { S.invalidate(); if (++k < 28) setTimeout(tick, 250); }; tick(); };
+  const watch = (S) => { try { new IntersectionObserver((e) => { if (e[0].isIntersecting && S.wrap.isConnected) settle(S); }).observe(S.wrap); } catch (e) { /* no observer */ } };
+  const SPRING = { r0: 0.12, r1: 0.62, N: 12, z: 0.2, h: 0.035 };
+  // the hairspring as a thin vertical ribbon: an Archimedean spiral whose inner end turns with the balance and whose outer end is pinned
+  const springPt = (u, th, z) => { const r = SPRING.r0 + (SPRING.r1 - SPRING.r0) * u, a = u * SPRING.N * TAU + th * (1 - u) - Math.PI / 2; return [r * Math.cos(a), r * Math.sin(a), z]; };
+
   /* ---------- 1. balance, hairspring and timegrapher ---------- */
   const REG_ARC = [200, 250]; // degrees on the outer turn where the regulator index can sit
+  const RS = 1.22, a0R = REG_ARC[0] * DEG, a1R = REG_ARC[1] * DEG, tOf = (d) => a0R + (d + 0.5) * (a1R - a0R), dOf = (a) => clamp((a - a0R) / (a1R - a0R) - 0.5, -0.5, 0.5);
+  function frameBH(ctx) {
+    const st = ctx.state;
+    if (st.frame && st.frame.isConnected) return st;
+    st.anim?.stop(); st.anim = null;
+    ctx.host.replaceChildren();
+    st.frame = L.h('div', '', ctx.host);
+    const row = L.h('div', 'lab-row is-wide', st.frame);
+    st.c1 = L.h('div', 'lab-col', row); st.c2 = L.h('div', 'lab-col', row);
+    st.cap1 = L.h('p', 'lab-cap', st.c1); st.v3 = L.h('div', '', st.c1);
+    st.cap2 = L.h('p', 'lab-cap', st.c2); st.g2 = L.h('div', '', st.c2);
+    st.bar = L.h('div', '', st.frame); st.leg = L.h('div', '', st.frame);
+    return st;
+  }
   D['balance-hairspring'] = {
+    three: true,
     render(ctx, v) {
-      ctx.state.anim?.stop();
+      const st = frameBH(ctx);
       const vph = VPH[v.vph], fr = freqOf(vph), kappa = kappaFor(fr), dL = v.reg / 1000, rate = regulatorRate(dL), be = v.beat / 1000, A = v.amp * DEG, Q = 250;
-      const row = L.h('div', 'lab-row', ctx.host), c1 = L.h('div', 'lab-col', row), c2 = L.h('div', 'lab-col', row);
-      L.h('p', 'lab-cap', c1, T('The balance and its hairspring, in slow motion (one eighth of real speed). Drag the gold regulator index along its scale.', 'てんぷとひげぜんまいです（実際の 8 分の 1 の速さ）。金色の緩急針を目盛りに沿ってドラッグしてください。'));
-      const f = L.fig(c1, { x: [-1.35, 1.35], y: [-1.35, 1.35], equal: true, axes: false, maxH: 400 });
-      // regulator scale: an arc outside the spiral, from 'slow' to 'fast'
-      const rS = 1.22, a0 = REG_ARC[0] * DEG, a1 = REG_ARC[1] * DEG, tOf = (d) => a0 + (d + 0.5) / 1 * (a1 - a0), dOf = (a) => clamp((a - a0) / (a1 - a0) - 0.5, -0.5, 0.5);
-      f.line(L.sample(a0, a1, 40, (a) => [rS * Math.cos(a), rS * Math.sin(a)]), { c: 'muted', w: 1.2, layer: 'under' });
-      for (let k = 0; k <= 10; k++) { const a = a0 + k / 10 * (a1 - a0); f.seg([rS * Math.cos(a), rS * Math.sin(a)], [(rS + (k % 5 ? 0.04 : 0.08)) * Math.cos(a), (rS + (k % 5 ? 0.04 : 0.08)) * Math.sin(a)], { c: 'muted', w: 1, layer: 'under' }); }
-      f.text((rS + 0.14) * Math.cos(a0), (rS + 0.14) * Math.sin(a0), T('S', 'S'), { small: true, c: 'muted' }); f.text((rS + 0.14) * Math.cos(a1), (rS + 0.14) * Math.sin(a1), T('F', 'F'), { small: true, c: 'muted' });
-      // v.reg in permille: map to the arc (negative dL = shorter = fast)
       const aReg = tOf(-v.reg);
-      f.handle(rS * Math.cos(aReg), rS * Math.sin(aReg), { c: 'hl', r: 7, label: T('Regulator index', '緩急針'), onDrag: (x, y) => { let a = Math.atan2(y, x); if (a < 0) a += TAU; ctx.set('reg', Math.round(-dOf(a) * 100) / 100); } });
-      const spiral = f.group('main'), bal = f.group('over');
-      const drawFrame = (th) => {
-        while (spiral.firstChild) spiral.removeChild(spiral.firstChild); while (bal.firstChild) bal.removeChild(bal.firstChild);
-        // Archimedean spiral from the collet (r 0.12) to the stud (r 0.62), 12 turns; the inner end turns with the balance, the outer end is fixed
-        const N = 12, pts = L.seq(900, (i) => { const u = i / 899, r = 0.12 + 0.5 * u, a = u * N * TAU + th * (1 - u) - Math.PI / 2; return [r * Math.cos(a), r * Math.sin(a)]; });
-        spiral.appendChild(f.line(pts, { c: 'c3', w: 1.1, layer: 'main' }));
-        bal.appendChild(drawBalance(f, 0, 0, 1, th, { layer: 'over' }));
-        // regulator pins at the outer turn, radial line from the index to the spring
-        bal.appendChild(f.seg([0.62 * Math.cos(aReg), 0.62 * Math.sin(aReg)], [(rS - 0.05) * Math.cos(aReg), (rS - 0.05) * Math.sin(aReg)], { c: 'hl', w: 2, layer: 'over' }));
-      };
-      drawFrame(0);
+      st.cap1.textContent = T('The balance and its hairspring, in slow motion (one eighth of real speed). Drag the gold regulator index along its scale: its two pins hold the outer turn of the spring, and moving them changes the spring’s active length.', 'てんぷとひげぜんまいです（実際の 8 分の 1 の速さ）。金色の緩急針を目盛りに沿ってドラッグしてください。その二本のピンがばねの外側の一巻きを挟み、それを動かすとばねの有効長さが変わります。');
+      st.cap2.textContent = T('Timegrapher: the time of every tick against a perfect clock over one minute. The slope of the lines is the rate.', 'タイムグラファー：1 分間の各刻みの時刻を完全な時計と比べたものです。線の傾きが歩度です。');
       // right: the timegrapher
-      L.h('p', 'lab-cap', c2, T('Timegrapher: the time of every tick against a perfect clock over one minute. The slope of the lines is the rate.', 'タイムグラファー：1 分間の各刻みの時刻を完全な時計と比べたものです。線の傾きが歩度です。'));
+      st.g2.replaceChildren(); st.leg.replaceChildren();
       const span = 60, yMax = Math.max(3, Math.abs(rate) / DAY * span * 1000 * 1.2 + be * 1000);
-      const g = L.fig(c2, { x: [0, span], y: [-yMax, yMax], aspect: 0.72, xlabel: T('time (s)', '時間（s）'), ylabel: T('deviation (ms)', 'ずれ（ms）'), maxH: 400 });
+      const g = L.fig(st.g2, { x: [0, span], y: [-yMax, yMax], aspect: 0.72, xlabel: T('time (s)', '時間（s）'), ylabel: T('deviation (ms)', 'ずれ（ms）'), maxH: 400 });
       g.hline(0, { c: 'muted', w: 1, dash: '3 3', layer: 'under' });
       const nBeats = Math.floor(span * 2 * fr);
-      for (let n = 0; n <= nBeats; n += 2 * Math.max(1, Math.round(fr / 2))) for (const m of [n, n + 1]) g.dot(m / (2 * fr), tickDeviation(m, fr, rate, be) * 1000, { c: m % 2 ? 'c2' : 'c1', r: 1.8, layer: 'main' });
+      for (let nb = 0; nb <= nBeats; nb += 2 * Math.max(1, Math.round(fr / 2))) for (const m of [nb, nb + 1]) g.dot(m / (2 * fr), tickDeviation(m, fr, rate, be) * 1000, { c: m % 2 ? 'c2' : 'c1', r: 1.8, layer: 'main' });
       g.text(span * 0.97, (rate / DAY * span * 0.97 * 1000) + be * 500 + yMax * 0.08, T('tic', 'チク'), { small: true, c: 'c1', anchor: 'end' });
       g.text(span * 0.97, (rate / DAY * span * 0.97 * 1000) - be * 500 - yMax * 0.08, T('toc', 'タク'), { small: true, c: 'c2', anchor: 'end', dy: 8 });
       const cursor = L.el('line', { y1: g.Y(yMax), y2: g.Y(-yMax), style: 'stroke:var(--lab-hl);stroke-width:1.5' }, g.layers.over);
-      L.legend(ctx.host, [{ c: 'c3', label: T('hairspring', 'ひげぜんまい') }, { c: 'hl', kind: 'dot', label: T('regulator index', '緩急針') }, { c: 'c1', kind: 'dot', label: T('tic', 'チク') }, { c: 'c2', kind: 'dot', label: T('toc', 'タク') }]);
+      L.legend(st.leg, [{ c: 'c1', kind: 'fill', label: T('balance wheel', 'てん輪') }, { c: 'c3', label: T('hairspring', 'ひげぜんまい') }, { c: 'hl', kind: 'dot', label: T('regulator index', '緩急針') }, { c: 'c1', kind: 'dot', label: T('tic', 'チク') }, { c: 'c2', kind: 'dot', label: T('toc', 'タク') }]);
       ctx.readout([
         { k: T('beat rate', '振動数'), v: `${vph.toLocaleString()} vph = ${fmt(fr, 1)} Hz`, tone: 'key' },
         { k: 'κ = Iω²', v: `${fmt(kappa * 1e7, 2)} × 10⁻⁷ N·m/rad` },
@@ -137,12 +142,82 @@
         ? T('With the index in the middle the balance runs at its nominal frequency and the tic and toc lines are flat; only the beat error separates them.', '緩急針が中央にあると、てんぷは公称の振動数で振動し、チクとタクの線は水平です。二本を分けるのは片振りだけです。')
         : T(`Moving the index ${v.reg < 0 ? 'towards F shortens' : 'towards S lengthens'} the active hairspring by ${fmt(Math.abs(v.reg), 2)}‰, the stiffness ${v.reg < 0 ? 'rises' : 'falls'} in proportion, and the frequency by half as much: ${sgn(rate, 1)} s a day, which the timegrapher draws as a slope of ${sgn(rate / DAY * 1000, 3)} ms per second.`, `緩急針を ${v.reg < 0 ? 'F 側へ動かすと' : 'S 側へ動かすと'}ひげぜんまいの有効長さが ${fmt(Math.abs(v.reg), 2)}‰ ${v.reg < 0 ? '短く' : '長く'}なり、剛性はそれに比例して${v.reg < 0 ? '増え' : '減り'}、振動数はその半分だけ変わります。一日に ${sgn(rate, 1)} 秒で、タイムグラファーはこれを毎秒 ${sgn(rate / DAY * 1000, 3)} ms の傾きとして描きます。`));
       const slow = 8;
-      ctx.state.anim = L.animator(ctx.host, (dt, t, lab) => {
-        const tt = t / slow;
-        drawFrame(A * Math.sin(TAU * fr * (1 + rate / DAY) * tt));
-        const x = tt % span; cursor.setAttribute('x1', g.X(x)); cursor.setAttribute('x2', g.X(x));
-        lab.textContent = T(`t = ${fmt(tt, 2)} s (×1/${slow})`, `t = ${fmt(tt, 2)} 秒（×1/${slow}）`);
-      }, { autoplay: false, initialT: 0, playLabel: T('Set the balance swinging', 'てんぷを振らせる') });
+      // the balance at angle th, in 3D or in the 2D fallback
+      const pose = (th, tt) => {
+        const P = st.parts;
+        if (P && P.wheel && !st.flat) {
+          P.wheel.rotation.z = th;
+          P.spring.update((u, w) => springPt(u, th, SPRING.z + w * SPRING.h));
+          st.S.invalidate();
+        }
+        if (st.flat && st.flatPose) st.flatPose(th);
+        const x = (tt ?? 0) % span; cursor.setAttribute('x1', g.X(x)); cursor.setAttribute('x2', g.X(x));
+      };
+      st.pose = pose; st.A = A; st.fr = fr; st.rate = rate;
+      if (!st.anim) st.anim = L.animator(st.bar, (dt, t, lab) => { const tt = t / slow; st.pose(st.A * Math.sin(TAU * st.fr * (1 + st.rate / DAY) * tt), tt); lab.textContent = T(`t = ${fmt(tt, 2)} s (×1/${slow})`, `t = ${fmt(tt, 2)} 秒（×1/${slow}）`); }, { autoplay: false, initialT: 0, playLabel: T('Set the balance swinging', 'てんぷを振らせる') });
+      const zI = SPRING.z + 0.2;
+      const placeIndex = (S) => {
+        const P = st.parts;
+        P.index.rotation.z = aReg;
+        P.knob.at([RS * Math.cos(aReg), RS * Math.sin(aReg), zI]);
+      };
+      L.view3d(ctx, v, {
+        host: st.v3, aspect: 0.86, maxH: 480, camera: [0.55, -3.15, 4.3], target: [-0.12, -0.14, 0], fov: 30,
+        label: T('3D balance wheel and hairspring. Drag to rotate; drag the gold knob to move the regulator index.', '3D のてん輪とひげぜんまい。ドラッグで回転、金色のつまみで緩急針を動かせます。'),
+        init(S) {
+          st.flat = false; st.S = S; watch(S);
+          const THREE = S.THREE, P = st.parts = {}, mB = S.mat('c1', METAL), mI = S.mat('ink', METAL);
+          // the balance wheel: a rim of rectangular section, three arms, timing screws, the staff and the roller table
+          const wheel = P.wheel = new THREE.Group();
+          const ann = new THREE.Shape(L.seq(120, (i) => new THREE.Vector2(1.04 * Math.cos((TAU * i) / 120), 1.04 * Math.sin((TAU * i) / 120))));
+          ann.holes.push(new THREE.Path(L.seq(120, (i) => new THREE.Vector2(0.93 * Math.cos((TAU * i) / 120), 0.93 * Math.sin((TAU * i) / 120)))));
+          const rimG = new THREE.ExtrudeGeometry(ann, { depth: 0.13, bevelEnabled: false, curveSegments: 4 }); rimG.translate(0, 0, -0.065);
+          wheel.add(new THREE.Mesh(rimG, mB));
+          for (let k = 0; k < 3; k++) { const a = Math.PI / 2 + (k * TAU) / 3, arm = new THREE.Mesh(new THREE.BoxGeometry(0.9, 0.075, 0.06), mB); arm.position.set(0.5 * Math.cos(a), 0.5 * Math.sin(a), 0); arm.rotation.z = a; wheel.add(arm); }
+          for (let k = 0; k < 8; k++) { const a = (k * TAU) / 8 + Math.PI / 8, sc = new THREE.Mesh(new THREE.CylinderGeometry(0.045, 0.045, 0.1, 16), S.mat('hl', METAL)); sc.position.set(1.08 * Math.cos(a), 1.08 * Math.sin(a), 0); sc.rotation.z = a - Math.PI / 2; wheel.add(sc); }
+          const staff = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.03, 0.9, 16).rotateX(Math.PI / 2), mI); staff.position.z = 0.05; wheel.add(staff);
+          const collet = new THREE.Mesh(new THREE.CylinderGeometry(SPRING.r0, SPRING.r0, SPRING.h, 24).rotateX(Math.PI / 2), mI); collet.position.z = SPRING.z + SPRING.h / 2; wheel.add(collet);
+          const roller = new THREE.Mesh(new THREE.CylinderGeometry(0.17, 0.17, 0.04, 32).rotateX(Math.PI / 2), mI); roller.position.z = -0.24; wheel.add(roller);
+          const jewel = new THREE.Mesh(new THREE.BoxGeometry(0.035, 0.035, 0.09), S.mat('neg', { rough: 0.1, coat: 1 })); jewel.position.set(0, -0.14, -0.29); wheel.add(jewel);
+          S.add(wheel);
+          P.spring = S.surface((u, w) => springPt(u, 0, SPRING.z + w * SPRING.h), { u: [0, 1], v: [0, 1], nu: 900, nv: 1, c: 'c3', metal: 0.7, rough: 0.3, coat: 0.6 });
+          const stud = new THREE.Mesh(new THREE.BoxGeometry(0.07, 0.09, 0.12), mI); stud.position.set(0, -SPRING.r1 - 0.04, SPRING.z + SPRING.h / 2); S.add(stud);
+          // the regulator: an index pivoted on the axis, its pins straddling the outer turn, and its scale
+          const index = P.index = new THREE.Group(), mH = S.mat('hl', METAL);
+          const bar = new THREE.Mesh(new THREE.BoxGeometry(RS - 0.1, 0.06, 0.035), mH); bar.position.set((RS - 0.1) / 2 + 0.05, 0, zI); index.add(bar);
+          const hub = new THREE.Mesh(new THREE.CylinderGeometry(0.09, 0.09, 0.05, 24).rotateX(Math.PI / 2), mH); hub.position.z = zI; index.add(hub);
+          for (const rr of [SPRING.r1 - 0.035, SPRING.r1 + 0.035]) { const pin = new THREE.Mesh(new THREE.CylinderGeometry(0.014, 0.014, zI - SPRING.z + 0.01, 10).rotateX(Math.PI / 2), mH); pin.position.set(rr, 0, (zI + SPRING.z) / 2 - 0.005); index.add(pin); }
+          S.add(index);
+          const segs = []; const arc = (r, a, b) => { const n = 30; for (let i = 0; i < n; i++) { const p = a + ((b - a) * i) / n, q = a + ((b - a) * (i + 1)) / n; segs.push([[r * Math.cos(p), r * Math.sin(p), zI], [r * Math.cos(q), r * Math.sin(q), zI]]); } };
+          arc(RS + 0.03, a0R, a1R);
+          for (let k = 0; k <= 10; k++) { const a = a0R + (k / 10) * (a1R - a0R), r2 = RS + 0.03 + (k % 5 ? 0.04 : 0.08); segs.push([[(RS + 0.03) * Math.cos(a), (RS + 0.03) * Math.sin(a), zI], [r2 * Math.cos(a), r2 * Math.sin(a), zI]]); }
+          S.lines(segs, { c: 'ink', opacity: 0.7 });
+          S.label('S', [(RS + 0.17) * Math.cos(a0R), (RS + 0.17) * Math.sin(a0R), zI], { small: true, align: 'middle' }); S.label('F', [(RS + 0.17) * Math.cos(a1R), (RS + 0.17) * Math.sin(a1R), zI], { small: true, align: 'middle' });
+          P.knob = S.handle([RS * Math.cos(aReg), RS * Math.sin(aReg), zI], { plane: [[0, 0, 1], [0, 0, zI]], r: 0.06, onDrag: (q) => { let a = Math.atan2(q.y, q.x); if (a < 0) a += TAU; const reg = Math.round(-dOf(a) * 100) / 100; ctx.set('reg', reg); const b = tOf(-reg); return [RS * Math.cos(b), RS * Math.sin(b), zI]; } });
+          S.label(T('balance wheel', 'てん輪'), [0.62, 0.95, 0.06], { small: true });
+          S.label(T('hairspring', 'ひげぜんまい'), [-0.45, 0.3, SPRING.z + 0.04], { small: true, align: 'end' });
+          S.label(T('regulator index', '緩急針'), [-0.15, -0.55, zI + 0.06], { small: true, align: 'end' });
+        },
+        update(S) { placeIndex(S); st.pose(0, 0); if (!st.parts.settled) { st.parts.settled = true; settle(S); } },
+        fallback() {
+          st.flat = true; st.v3.replaceChildren();
+          const f = L.fig(st.v3, { x: [-1.35, 1.35], y: [-1.35, 1.35], equal: true, axes: false, maxH: 400 });
+          f.line(L.sample(a0R, a1R, 40, (a) => [RS * Math.cos(a), RS * Math.sin(a)]), { c: 'muted', w: 1.2, layer: 'under' });
+          for (let k = 0; k <= 10; k++) { const a = a0R + (k / 10) * (a1R - a0R); f.seg([RS * Math.cos(a), RS * Math.sin(a)], [(RS + (k % 5 ? 0.04 : 0.08)) * Math.cos(a), (RS + (k % 5 ? 0.04 : 0.08)) * Math.sin(a)], { c: 'muted', w: 1, layer: 'under' }); }
+          f.text((RS + 0.14) * Math.cos(a0R), (RS + 0.14) * Math.sin(a0R), 'S', { small: true, c: 'muted' }); f.text((RS + 0.14) * Math.cos(a1R), (RS + 0.14) * Math.sin(a1R), 'F', { small: true, c: 'muted' });
+          f.handle(RS * Math.cos(aReg), RS * Math.sin(aReg), { c: 'hl', r: 7, label: T('Regulator index', '緩急針'), onDrag: (x, y) => { let a = Math.atan2(y, x); if (a < 0) a += TAU; ctx.set('reg', Math.round(-dOf(a) * 100) / 100); } });
+          const spiral = f.group('main'), bal = f.group('over');
+          st.flatPose = (th) => {
+            spiral.replaceChildren(); bal.replaceChildren();
+            const pts = L.seq(900, (i) => { const p = springPt(i / 899, th, 0); return [p[0], p[1]]; });
+            spiral.appendChild(f.line(pts, { c: 'c3', w: 1.1, layer: 'main' }));
+            bal.appendChild(drawBalance(f, 0, 0, 1, th, { layer: 'over' }));
+            bal.appendChild(f.seg([0.62 * Math.cos(aReg), 0.62 * Math.sin(aReg)], [(RS - 0.05) * Math.cos(aReg), (RS - 0.05) * Math.sin(aReg)], { c: 'hl', w: 2, layer: 'over' }));
+          };
+          setTimeout(() => st.pose(0, 0), 0);
+        },
+      });
+      pose(0, 0);
     },
   };
 

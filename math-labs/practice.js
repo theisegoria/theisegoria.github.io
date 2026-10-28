@@ -334,6 +334,8 @@
       try { tree = parse(String(input).replace(/^\s*[a-zA-Z]\s*(\([a-z]\))?\s*=/, ''), a.vars); } catch (e) { return { ok: false, err: 'syntax' }; }
       return { ok: exprEqual(tree, a), parsed: toTeX(tree) };
     }
+    // an answer given in percent may be typed with its % sign
+    if (a.unit && (a.unit[0] === '%' || a.unit === '%')) input = String(input).replace(/%\s*$/, '');
     const n = parseNumber(input);
     if (n.err) return { ok: false, err: n.err };
     if (a.type === 'int') return { ok: Math.abs(n.v - a.v) < 1e-9 };

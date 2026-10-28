@@ -73,41 +73,80 @@
   const T = L.T, fmt = L.fmt;
   const ALPHAS = [14.5, 20, 25];
 
+  /* ---------- 3D helpers ---------- */
+  const METAL = { metal: 0.75, rough: 0.3, coat: 0.55 };
+  // see piston-engines: frames are requested for a few seconds after a build and whenever the view comes into sight
+  const settle = (S) => { let k = 0; const tick = () => { S.invalidate(); if (++k < 28) setTimeout(tick, 250); }; tick(); };
+  const watch = (S) => { try { new IntersectionObserver((e) => { if (e[0].isIntersecting && S.wrap.isConnected) settle(S); }).observe(S.wrap); } catch (e) { /* no observer */ } };
+  const ring2 = (R, n = 96, cx = 0, cy = 0) => L.seq(n, (i) => [cx + R * Math.cos((TAU * i) / n), cy + R * Math.sin((TAU * i) / n)]);
+  // an extruded gear from a closed 2D outline (gear frame, tooth 0 on +x), face width W centred on z = 0, with holes
+  function gearMesh(S, pts, W, holes, c, o = {}) {
+    const THREE = S.THREE, V2 = (p) => new THREE.Vector2(p[0], p[1]);
+    const P = pts.slice(); if (Math.hypot(P[0][0] - P[P.length - 1][0], P[0][1] - P[P.length - 1][1]) < 1e-9) P.pop();
+    const sh = new THREE.Shape(P.map(V2));
+    holes.forEach((h) => sh.holes.push(new THREE.Path(h.map(V2))));
+    const geo = new THREE.ExtrudeGeometry(sh, { depth: W, bevelEnabled: false, curveSegments: 4 });
+    geo.translate(0, 0, -W / 2);
+    return new THREE.Mesh(geo, S.mat(c, { ...METAL, ...o }));
+  }
+  // holes for a spur gear: a bore, and four lightening holes when the web is large enough
+  function gearHoles(G) {
+    const bore = Math.max(0.9, G.rf * 0.16), hs = [ring2(bore, 40)];
+    if (G.rf > 9) for (let k = 0; k < 4; k++) { const a = Math.PI / 4 + (k * TAU) / 4, rc = G.rf * 0.56; hs.push(ring2(G.rf * 0.2, 40, rc * Math.cos(a), rc * Math.sin(a))); }
+    return hs;
+  }
+  function shaft(S, r, len, c = 'muted') { const g = new S.THREE.CylinderGeometry(r, r, len, 32); g.rotateX(Math.PI / 2); return new S.THREE.Mesh(g, S.mat(c, METAL)); }
+
   /* ---------- 1. involute gearing ---------- */
+  const GW = 5; // face width in modules
+  function frameIG(ctx) {
+    const st = ctx.state;
+    if (st.frame && st.frame.isConnected) return st;
+    st.anim?.stop(); st.anim = null;
+    ctx.host.replaceChildren();
+    st.frame = L.h('div', '', ctx.host);
+    const row = L.h('div', 'lab-row is-wide', st.frame);
+    st.c1 = L.h('div', 'lab-col', row); st.c2 = L.h('div', 'lab-col', row);
+    st.cap1 = L.h('p', 'lab-cap', st.c1); st.v3 = L.h('div', '', st.c1);
+    st.cap2 = L.h('p', 'lab-cap', st.c2); st.g2 = L.h('div', '', st.c2);
+    st.bar = L.h('div', '', st.frame); st.leg = L.h('div', '', st.frame);
+    return st;
+  }
   D['involute-gearing'] = {
+    three: true,
     render(ctx, v) {
-      ctx.state.anim?.stop();
-      const st = ctx.state, a0 = ALPHAS[v.alpha] * DEG, M = mesh(v.z1, v.z2, a0, v.da);
+      const st = frameIG(ctx), a0 = ALPHAS[v.alpha] * DEG, M = mesh(v.z1, v.z2, a0, v.da);
       st.phi ??= 0;
-      const row = L.h('div', 'lab-row', ctx.host), c1 = L.h('div', 'lab-col', row), c2 = L.h('div', 'lab-col', row);
-      L.h('p', 'lab-cap', c1, T('The two gears, the driver on the left turning clockwise. Dashed: pitch circles; dotted: base circles.', '二つの歯車で、左の駆動歯車が時計回りに回ります。破線はピッチ円、点線は基礎円です。'));
-      const R2 = M.g2.ra, X0 = -M.g1.ra - 0.5, X1 = M.a + R2 + 0.5, Yh = Math.max(M.g1.ra, R2) + 0.5;
-      const f = L.fig(c1, { x: [X0, X1], y: [-Yh, Yh], equal: true, axes: false, maxH: 380 });
+      st.cap1.textContent = T('The two gears, the driver (blue) turning clockwise seen from above. The gold band is the plane of action between the tip circles: every contact line lies on it. Drag the gold knob on the driven shaft to pull the centres apart.', '二つの歯車で、上から見て駆動歯車（青）が時計回りに回ります。金色の帯は歯先円の間の作用面で、すべての接触線がその上にあります。被動軸の上の金色のつまみをドラッグして中心を引き離してください。');
+      st.cap2.textContent = T('Close-up of the mesh, seen along the axes: the line of action (gold between the tip circles) and the points of contact on it.', '軸の方向から見たかみ合い部の拡大図です。作用線（歯先円の間は金色）とその上の接触点を示します。');
       const rp1 = M.g1.rb / Math.cos(M.ap), rp2 = M.g2.rb / Math.cos(M.ap);
-      for (const [cx, G, rp] of [[0, M.g1, rp1], [M.a, M.g2, rp2]]) { f.circle(cx, 0, rp, { c: 'muted', w: 1, dash: '5 4', layer: 'under' }); f.circle(cx, 0, G.rb, { c: 'muted', w: 0.8, dash: '1 3', layer: 'under' }); f.dot(cx, 0, { c: 'ink', r: 2.5, layer: 'under' }); }
-      L.h('p', 'lab-cap', c2, T('Close-up of the mesh: the line of action (gold between the tip circles) and the points of contact on it.', 'かみ合い部の拡大図です。作用線（歯先円の間は金色）とその上の接触点を示します。'));
-      const P = [rp1, 0], zw = 3.2, g = L.fig(c2, { x: [P[0] - zw, P[0] + zw], y: [-zw * 0.8, zw * 0.8], equal: true, axes: false, maxH: 380 });
+      const P0 = [rp1, 0], zw = 3.2;
+      st.g2.replaceChildren(); st.leg.replaceChildren();
+      const g = L.fig(st.g2, { x: [P0[0] - zw, P0[0] + zw], y: [-zw * 0.8, zw * 0.8], equal: true, axes: false, maxH: 380 });
       const lineEnds = [M.T1, [M.T1[0] + M.L * M.u[0], M.T1[1] + M.L * M.u[1]]], act = [[M.T1[0] + M.sMin * M.u[0], M.T1[1] + M.sMin * M.u[1]], [M.T1[0] + M.sMax * M.u[0], M.T1[1] + M.sMax * M.u[1]]];
-      for (const F of [f, g]) { F.seg(lineEnds[0], lineEnds[1], { c: 'muted', w: 1, dash: '4 3', layer: 'under' }); F.seg(act[0], act[1], { c: 'hl', w: 2.4, op: 0.8, layer: 'under' }); F.seg([0, 0], [M.a, 0], { c: 'muted', w: 0.8, layer: 'under' }); }
+      g.seg(lineEnds[0], lineEnds[1], { c: 'muted', w: 1, dash: '4 3', layer: 'under' }); g.seg(act[0], act[1], { c: 'hl', w: 2.4, op: 0.8, layer: 'under' }); g.seg([0, 0], [M.a, 0], { c: 'muted', w: 0.8, layer: 'under' });
       g.circle(0, 0, rp1, { c: 'muted', w: 1, dash: '5 4', layer: 'under' }); g.circle(M.a, 0, rp2, { c: 'muted', w: 1, dash: '5 4', layer: 'under' });
-      g.dot(P[0], 0, { c: 'ink', r: 3.5, layer: 'over' }); g.text(P[0], 0, 'P', { math: true, c: 'ink', dx: -10, dy: -8, layer: 'over' });
+      g.dot(P0[0], 0, { c: 'ink', r: 3.5, layer: 'over' }); g.text(P0[0], 0, 'P', { math: true, c: 'ink', dx: -10, dy: -8, layer: 'over' });
       g.text(act[1][0], act[1][1], T('line of action', '作用線'), { small: true, c: 'hl', dx: 8, dy: 4, anchor: 'start', layer: 'over' });
-      const gA = f.group('main'), gB = g.group('main'), gC = g.group('over'), gD = f.group('over');
-      const clear = (G) => { while (G.firstChild) G.removeChild(G.firstChild); };
-      const frame = (phi) => {
+      const gB = g.group('main'), gC = g.group('over');
+      L.legend(st.leg, [{ c: 'c1', kind: 'fill', label: T(`driver, z₁ = ${v.z1}`, `駆動歯車、z₁ = ${v.z1}`) }, { c: 'c3', kind: 'fill', label: T(`driven, z₂ = ${v.z2}`, `被動歯車、z₂ = ${v.z2}`) }, { c: 'hl', label: T('line and plane of action, contact points and lines', '作用線と作用面、接触点と接触線') }]);
+      const pose = (phi) => {
         const C = contacts(M, phi);
-        clear(gA); clear(gB); clear(gC); clear(gD);
+        gB.replaceChildren(); gC.replaceChildren();
         const o1 = outline(M.g1, -phi), o2 = outline(M.g2, C.rot2, M.a, 0);
-        gA.appendChild(f.poly(o1, { c: 'c1', w: 1.2, fill: 'c1', fo: 0.14, layer: 'main' })); gA.appendChild(f.poly(o2, { c: 'c3', w: 1.2, fill: 'c3', fo: 0.14, layer: 'main' }));
         gB.appendChild(g.poly(o1, { c: 'c1', w: 1.6, fill: 'c1', fo: 0.14, layer: 'main' })); gB.appendChild(g.poly(o2, { c: 'c3', w: 1.6, fill: 'c3', fo: 0.14, layer: 'main' }));
-        // a marker spoke on each gear to see the rotation
-        gA.appendChild(f.seg([0, 0], [0.8 * M.g1.rf * Math.cos(-phi + Math.PI / M.g1.z), 0.8 * M.g1.rf * Math.sin(-phi + Math.PI / M.g1.z)], { c: 'c1', w: 2.4, layer: 'main' }));
-        gA.appendChild(f.seg([M.a, 0], [M.a + 0.8 * M.g2.rf * Math.cos(C.rot2 + Math.PI / M.g2.z), 0.8 * M.g2.rf * Math.sin(C.rot2 + Math.PI / M.g2.z)], { c: 'c3', w: 2.4, layer: 'main' }));
-        C.s.forEach((s) => { const q = C.point(s); gC.appendChild(g.dot(q[0], q[1], { c: 'hl', r: 6, layer: 'over' })); gD.appendChild(f.dot(q[0], q[1], { c: 'hl', r: 3.5, layer: 'over' })); });
+        C.s.forEach((s) => { const q = C.point(s); gC.appendChild(g.dot(q[0], q[1], { c: 'hl', r: 6, layer: 'over' })); });
+        const P = st.parts;
+        if (P && P.gear1 && !st.flat) {
+          P.gear1.rotation.z = -phi; P.gear2.rotation.z = C.rot2; P.gear2.position.x = M.a;
+          P.cl.forEach((m, i) => { const s = C.s[i]; m.visible = s !== undefined; if (m.visible) { const q = C.point(s); m.position.set(q[0], q[1], 0); } });
+          st.S.invalidate();
+        }
+        if (st.flat && st.flatPose) st.flatPose(phi, C);
         return C.s.length;
       };
-      const nNow = frame(st.phi);
-      L.legend(ctx.host, [{ c: 'c1', kind: 'fill', label: T(`driver, z₁ = ${v.z1}`, `駆動歯車、z₁ = ${v.z1}`) }, { c: 'c3', kind: 'fill', label: T(`driven, z₂ = ${v.z2}`, `被動歯車、z₂ = ${v.z2}`) }, { c: 'hl', label: T('line of action and contact points', '作用線と接触点') }]);
+      st.pose = pose;
+      const nNow = pose(st.phi);
       ctx.readout([
         { k: T('ratio ω₁/ω₂', '速度比 ω₁/ω₂'), v: `${v.z2}/${v.z1} = ${fmt(v.z2 / v.z1, 4)}`, tone: 'key' },
         { k: T('centre distance', '中心距離'), v: `${fmt(M.a, 2)} m` },
@@ -118,7 +157,71 @@
       ], v.da > 0
         ? T(`The centres are ${fmt(v.da, 2)} modules apart from standard. The line of action has tilted to ${fmt(M.ap / DEG, 1)}° and shortened, so fewer pairs overlap (ε = ${fmt(M.eps, 2)}), and the teeth have play; but the base circles are untouched, so the ratio is still exactly ${v.z2}/${v.z1}.`, `中心は標準より ${fmt(v.da, 2)} モジュール離れています。作用線は ${fmt(M.ap / DEG, 1)}° に傾いて短くなり、重なる組は減り（ε = ${fmt(M.eps, 2)}）、歯には遊びが生じます。しかし基礎円は変わらないので、比はなお正確に ${v.z2}/${v.z1} です。`)
         : T(`At the standard centre distance the pitch circles roll on each other at P. Every contact lies on the gold segment, and a new pair engages before the old one leaves, ${fmt(M.eps, 2)} pairs on average.`, `標準の中心距離ではピッチ円どうしが P で転がり合います。すべての接触は金色の線分上にあり、古い組が離れる前に新しい組がかみ合い始めます。平均 ${fmt(M.eps, 2)} 組です。`));
-      st.anim = L.animator(ctx.host, (dt, t, lab) => { st.phi += dt * 0.25; frame(st.phi); lab.textContent = T(`driver turned ${fmt((st.phi / DEG) % 360, 0)}°`, `駆動歯車の回転 ${fmt((st.phi / DEG) % 360, 0)}°`); }, { autoplay: false, initialT: 0, playLabel: T('Turn the gears', '歯車を回す') });
+      if (!st.anim) st.anim = L.animator(st.bar, (dt, t, lab) => { st.phi += dt * 0.25; st.pose(st.phi); lab.textContent = T(`driver turned ${fmt((st.phi / DEG) % 360, 0)}°`, `駆動歯車の回転 ${fmt((st.phi / DEG) % 360, 0)}°`); }, { autoplay: false, initialT: 0, playLabel: T('Turn the gears', '歯車を回す') });
+      const key = `${v.z1},${v.z2},${v.alpha}`, zTop = GW / 2 + 2.6;
+      const build = (S) => {
+        const P = st.parts, THREE = S.THREE;
+        if (P.key !== key) {
+          P.key = key;
+          (P.objs || []).forEach((o) => { S.scene.remove(o); o.traverse((m) => m.geometry?.dispose?.()); });
+          P.objs = [];
+          const add = (o) => { S.add(o); P.objs.push(o); return o; };
+          P.gear1 = add(new THREE.Group()); P.gear2 = add(new THREE.Group());
+          P.gear1.add(gearMesh(S, outline(M.g1, 0), GW, gearHoles(M.g1), 'c1'));
+          P.gear2.add(gearMesh(S, outline(M.g2, 0), GW, gearHoles(M.g2), 'c3'));
+          P.s1 = add(shaft(S, Math.max(0.9, M.g1.rf * 0.16) * 0.98, GW + 4)); P.s2 = add(shaft(S, Math.max(0.9, M.g2.rf * 0.16) * 0.98, GW + 4));
+          P.s1.position.z = 0.6; P.s2.position.z = 0.6;
+          // the pitch circles on the top faces
+          P.pc = add(S.lines([], { c: 'ink', opacity: 0.55 }));
+          P.cl = [0, 1, 2].map(() => { const m = shaft(S, 0.16, GW + 0.3, 'hl'); m.material.emissive.copy(S.colour('hl')); m.material.emissiveIntensity = 0.25; return add(m); });
+          P.plane = add(new THREE.Mesh(new THREE.BufferGeometry(), S.mat('hl', { opacity: 0.32, rough: 0.5, coat: 0 })));
+          P.plane.userData.noOcclude = true;
+          P.loa = add(S.lines([], { c: 'hl', opacity: 0.9 }));
+          const w = M.g1.ra + M.a + M.g2.ra + 2, cx = (M.a + M.g2.ra - M.g1.ra) / 2, d = w * 1.75 + 8;
+          S.look([cx + d * 0.06, -d * 0.66, d * 0.72], [cx, 2.5, -1], true);
+        }
+        // everything that moves with the centre distance
+        const rp1n = M.g1.rb / Math.cos(M.ap), rp2n = M.g2.rb / Math.cos(M.ap), z = GW / 2 + 0.03, segs = [];
+        const circ = (cx, r) => { for (let i = 0; i < 120; i++) { const a = (TAU * i) / 120, b = (TAU * (i + 1)) / 120; if (i % 2 === 0) segs.push([[cx + r * Math.cos(a), r * Math.sin(a), z], [cx + r * Math.cos(b), r * Math.sin(b), z]]); } };
+        circ(0, rp1n); circ(M.a, rp2n);
+        P.pc.update(segs);
+        P.s2.position.x = M.a;
+        const A = act[0], B = act[1], h = GW / 2 + 0.02;
+        const pos = new Float32Array([A[0], A[1], -h, B[0], B[1], -h, B[0], B[1], h, A[0], A[1], -h, B[0], B[1], h, A[0], A[1], h]);
+        P.plane.geometry.setAttribute('position', new THREE.BufferAttribute(pos, 3)); P.plane.geometry.computeVertexNormals(); P.plane.geometry.computeBoundingSphere();
+        P.loa.update([[[lineEnds[0][0], lineEnds[0][1], h + 0.01], [lineEnds[1][0], lineEnds[1][1], h + 0.01]]]);
+        P.knob.at([M.a, 0, zTop]); P.lP.set([rp1n, 0, h + 0.4]);
+        P.l1.set([-M.g1.ra * 0.7, -M.g1.ra * 0.7, h]); P.l2.set([M.a + M.g2.ra * 0.7, -M.g2.ra * 0.7, h]); P.lA.set([B[0], B[1], -h]);
+      };
+      L.view3d(ctx, v, {
+        host: st.v3, aspect: 0.78, maxH: 480, camera: [16, -40, 50], target: [16, 0, 0], fov: 30,
+        label: T('3D pair of involute spur gears. Drag to rotate; drag the gold knob to move the driven gear.', '3D のインボリュート平歯車の組。ドラッグで回転、金色のつまみで被動歯車を動かせます。'),
+        init(S) {
+          st.flat = false; st.S = S; watch(S);
+          const P = st.parts = {};
+          P.knob = S.handle([M.a, 0, zTop], { plane: [[0, 0, 1], [0, 0, zTop]], r: 0.9, onDrag: (q) => { const base = (st.vz1 + st.vz2) / 2, da = clamp(Math.round((q.x - base) / 0.02) * 0.02, 0, 0.6); ctx.set('da', da); return [base + da, 0, zTop]; } });
+          P.lP = S.label('P', [0, 0, 0], { math: true });
+          P.l1 = S.label(T('driver', '駆動歯車'), [0, 0, 0], { small: true, align: 'end' }); P.l2 = S.label(T('driven', '被動歯車'), [0, 0, 0], { small: true });
+          P.lA = S.label(T('plane of action', '作用面'), [0, 0, 0], { small: true, c: 'hl' });
+        },
+        update(S) { const was = st.parts.key; P_(); build(S); st.pose(st.phi); if (was !== key) settle(S); },
+        fallback() {
+          st.flat = true; st.v3.replaceChildren();
+          const R2 = M.g2.ra, X0 = -M.g1.ra - 0.5, X1 = M.a + R2 + 0.5, Yh = Math.max(M.g1.ra, R2) + 0.5;
+          const f = L.fig(st.v3, { x: [X0, X1], y: [-Yh, Yh], equal: true, axes: false, maxH: 380 });
+          for (const [cx, G, rp] of [[0, M.g1, rp1], [M.a, M.g2, rp2]]) { f.circle(cx, 0, rp, { c: 'muted', w: 1, dash: '5 4', layer: 'under' }); f.circle(cx, 0, G.rb, { c: 'muted', w: 0.8, dash: '1 3', layer: 'under' }); f.dot(cx, 0, { c: 'ink', r: 2.5, layer: 'under' }); }
+          f.seg(lineEnds[0], lineEnds[1], { c: 'muted', w: 1, dash: '4 3', layer: 'under' }); f.seg(act[0], act[1], { c: 'hl', w: 2.4, op: 0.8, layer: 'under' });
+          const gA = f.group('main'), gD = f.group('over');
+          st.flatPose = (phi, C) => {
+            gA.replaceChildren(); gD.replaceChildren();
+            gA.appendChild(f.poly(outline(M.g1, -phi), { c: 'c1', w: 1.2, fill: 'c1', fo: 0.14, layer: 'main' })); gA.appendChild(f.poly(outline(M.g2, C.rot2, M.a, 0), { c: 'c3', w: 1.2, fill: 'c3', fo: 0.14, layer: 'main' }));
+            C.s.forEach((s) => { const q = C.point(s); gD.appendChild(f.dot(q[0], q[1], { c: 'hl', r: 3.5, layer: 'over' })); });
+          };
+          setTimeout(() => st.pose(st.phi), 0);
+        },
+      });
+      function P_() { st.vz1 = v.z1; st.vz2 = v.z2; }
+      P_();
     },
   };
 
@@ -182,50 +285,45 @@
 
   /* ---------- 3. epicyclic ---------- */
   const FIX_NAME = [['ring fixed', '内歯車固定'], ['carrier fixed', 'キャリア固定'], ['sun fixed', '太陽固定'], ['tourbillon', 'トゥールビヨン']];
+  const EW = 6; // face width
+  function frameEP(ctx) {
+    const st = ctx.state;
+    if (st.frame && st.frame.isConnected) return st;
+    st.anim?.stop(); st.anim = null;
+    ctx.host.replaceChildren();
+    st.frame = L.h('div', '', ctx.host);
+    const row = L.h('div', 'lab-row is-wide', st.frame);
+    st.c1 = L.h('div', 'lab-col', row); st.c2 = L.h('div', 'lab-col', row);
+    st.cap1 = L.h('p', 'lab-cap', st.c1); st.v3 = L.h('div', '', st.c1);
+    st.cap2 = L.h('p', 'lab-cap', st.c2); st.g2 = L.h('div', '', st.c2);
+    st.bar = L.h('div', '', st.frame); st.leg = L.h('div', '', st.frame);
+    return st;
+  }
   D['epicyclic'] = {
+    three: true,
     render(ctx, v) {
-      ctx.state.anim?.stop();
+      const st = frameEP(ctx);
       const zs = v.zs, zp = v.zp, n = v.n, fixed = v.fixed, E = epicyclic(zs, zp, fixed, 1), zr = E.zr, m = 1, a0 = 20 * DEG;
-      const S = gear(zs, m, a0), Pg = gear(zp, m, a0), Rg = gear(zr, m, a0), dc = S.r + Pg.r, eq = equalSpacing(zs, zr, n), tour = fixed === 3;
+      const S0 = gear(zs, m, a0), Pg = gear(zp, m, a0), Rg = gear(zr, m, a0), dc = S0.r + Pg.r, eq = equalSpacing(zs, zr, n), tour = fixed === 3;
       // initial phases: sun tooth 0 at angle 0; planet j at psi_j; mesh by the pitch-point rule
-      const psi = L.seq(n, (j) => TAU * j / n);
-      const planet0 = psi.map((ps) => { const ds = mod(ps, TAU / zs); return ps + Math.PI - ds * S.r / Pg.r + Math.PI / zp; });
-      const ring0 = (() => { const ps = psi[0], dp = mod(planet0[0] - ps, TAU / zp); return ps + dp * Pg.r / Rg.r; })();
-      const row = L.h('div', 'lab-row', ctx.host), c1 = L.h('div', 'lab-col', row), c2 = L.h('div', 'lab-col', row);
-      L.h('p', 'lab-cap', c1, tour ? T('Tourbillon: the cage (arm) turns, carrying the escape pinion round the fixed wheel.', 'トゥールビヨン：かご（腕）が回り、がんぎかなを固定車の周りに運びます。') : T('Sun (blue), planets (teal) on the carrier arm (gold), ring (violet). The fixed member is drawn faint.', '太陽（青）、キャリアの腕（金）に載った遊星（ティール）、内歯車（紫）です。固定した部材は薄く描いています。'));
-      const Rv = tour ? dc + Pg.ra + 1 : Rg.r + 2.4;
-      const f = L.fig(c1, { x: [-Rv, Rv], y: [-Rv, Rv], equal: true, axes: false, maxH: 400 });
-      const G = f.group('main'), O = f.group('over');
-      const draw = (t) => {
-        while (G.firstChild) G.removeChild(G.firstChild); while (O.firstChild) O.removeChild(O.firstChild);
-        const th = { s: TAU * E.ws * t, r: TAU * E.wr * t, c: TAU * E.wc * t, p: TAU * E.wp * t };
-        if (!tour) {
-          // the ring: the annulus between an outer circle and the inner toothed boundary (drawn as the outline of its tooth spaces), filled even-odd
-          const inner = outline(Rg, ring0 + th.r, 0, 0, { ra: Rg.r + 1.25 * m, rf: Rg.r - m }), outer = L.seq(121, (i) => [(Rg.r + 2.2) * Math.cos(TAU * i / 120), (Rg.r + 2.2) * Math.sin(TAU * i / 120)]);
-          const d = [inner, outer].map((ring) => 'M' + ring.map(([x, y]) => f.X(x).toFixed(1) + ' ' + f.Y(y).toFixed(1)).join('L') + 'Z').join('');
-          G.appendChild(L.el('path', { d, 'fill-rule': 'evenodd', style: `fill:var(--lab-c4);fill-opacity:${fixed === 0 ? 0.08 : 0.18};stroke:var(--lab-c4);stroke-width:1.2;opacity:${fixed === 0 ? 0.6 : 1}` }));
-        }
-        G.appendChild(f.poly(outline(S, th.s), { c: 'c1', w: 1.2, fill: 'c1', fo: fixed === 2 || tour ? 0.05 : 0.16, op: fixed === 2 || tour ? 0.6 : 1, layer: 'main' }));
-        psi.forEach((ps, j) => { const a = ps + th.c, cx = dc * Math.cos(a), cy = dc * Math.sin(a); if (!tour || j === 0) { G.appendChild(f.poly(outline(Pg, planet0[j] + th.p, cx, cy), { c: tour ? 'c2' : 'c3', w: 1.2, fill: tour ? 'c2' : 'c3', fo: 0.18, layer: 'main' })); O.appendChild(f.seg([cx, cy], [cx + 0.7 * Pg.rf * Math.cos(planet0[j] + th.p), cy + 0.7 * Pg.rf * Math.sin(planet0[j] + th.p)], { c: tour ? 'c2' : 'c3', w: 2, layer: 'over' })); } });
-        // carrier arm(s)
-        psi.forEach((ps, j) => { if (tour && j) return; const a = ps + th.c; O.appendChild(f.seg([0, 0], [dc * Math.cos(a), dc * Math.sin(a)], { c: 'hl', w: 4, op: 0.85, layer: 'over' })); O.appendChild(f.dot(dc * Math.cos(a), dc * Math.sin(a), { c: 'hl', r: 4, layer: 'over' })); });
-        if (tour) { const a = th.c; O.appendChild(f.circle(0, 0, dc + Pg.ra + 0.3, { c: 'hl', w: 1.2, dash: '5 4', layer: 'over' })); void a; }
-        O.appendChild(f.dot(0, 0, { c: 'ink', r: 3, layer: 'over' }));
-      };
-      draw(0);
-      // right: velocity diagram along the radius through planet 0 at t = 0 (tangential speed against radius)
-      L.h('p', 'lab-cap', c2, T('Velocity diagram along the radius through one planet: tangential speed against radius. Across the planet the speed is a straight line.', '一つの遊星を通る半径に沿った速度線図です。半径に対する接線方向の速さで、遊星を横切る速さは直線になります。'));
-      const vS = E.ws * S.r, vR = E.wr * Rg.r, vC = E.wc * dc, vmax = Math.max(Math.abs(vS), Math.abs(vR), Math.abs(vC), 1e-9) * 1.2;
-      const g = L.fig(c2, { x: [0, Rg.r * 1.08], y: [-vmax, vmax], aspect: 0.8, xlabel: T('radius', '半径'), ylabel: T('tangential speed', '接線速度'), maxH: 400 });
+      const psi = L.seq(n, (j) => (TAU * j) / n);
+      const planet0 = psi.map((ps) => { const ds = mod(ps, TAU / zs); return ps + Math.PI - (ds * S0.r) / Pg.r + Math.PI / zp; });
+      const ring0 = (() => { const ps = psi[0], dp = mod(planet0[0] - ps, TAU / zp); return ps + (dp * Pg.r) / Rg.r; })();
+      st.cap1.textContent = tour ? T('Tourbillon: the cage (gold) turns, carrying the escape pinion (orange) round the fixed wheel (grey) and the balance with it.', 'トゥールビヨン：かご（金）が回り、がんぎかな（オレンジ）を固定車（灰）の周りに運び、てんぷも一緒に運びます。') : T('Sun (blue), planets (teal) on the gold carrier, ring (violet). The fixed member is drawn in grey, like the frame it is bolted to.', '太陽（青）、金色のキャリアに載った遊星（青緑）、内歯車（紫）です。固定した部材は、それを留めた枠と同じ灰色で描いています。');
+      st.cap2.textContent = T('Velocity diagram along the radius through one planet: tangential speed against radius. Across the planet the speed is a straight line.', '一つの遊星を通る半径に沿った速度線図です。半径に対する接線方向の速さで、遊星を横切る速さは直線になります。');
+      // right: velocity diagram
+      st.g2.replaceChildren(); st.leg.replaceChildren();
+      const vS = E.ws * S0.r, vR = E.wr * Rg.r, vC = E.wc * dc, vmax = Math.max(Math.abs(vS), Math.abs(vR), Math.abs(vC), 1e-9) * 1.2;
+      const g = L.fig(st.g2, { x: [0, Rg.r * 1.08], y: [-vmax, vmax], aspect: 0.8, xlabel: T('radius', '半径'), ylabel: T('tangential speed', '接線速度'), maxH: 400 });
       g.hline(0, { c: 'muted', w: 1, layer: 'under' });
-      g.rect(0, -vmax, S.r, 2 * vmax, { c: 'c1', fill: 'c1', fo: 0.06, nostroke: true, layer: 'under' });
-      g.rect(S.r, -vmax, 2 * Pg.r, 2 * vmax, { c: 'c3', fill: 'c3', fo: 0.08, nostroke: true, layer: 'under' });
-      g.line([[0, 0], [S.r, vS]], { c: 'c1', w: 2.2, layer: 'main' });
-      g.line([[S.r, vS], [S.r + 2 * Pg.r, tour ? vS + 2 * (vC - vS) : vR]], { c: 'c3', w: 2.6, layer: 'main' });
+      g.rect(0, -vmax, S0.r, 2 * vmax, { c: 'c1', fill: 'c1', fo: 0.06, nostroke: true, layer: 'under' });
+      g.rect(S0.r, -vmax, 2 * Pg.r, 2 * vmax, { c: 'c3', fill: 'c3', fo: 0.08, nostroke: true, layer: 'under' });
+      g.line([[0, 0], [S0.r, vS]], { c: 'c1', w: 2.2, layer: 'main' });
+      g.line([[S0.r, vS], [S0.r + 2 * Pg.r, tour ? vS + 2 * (vC - vS) : vR]], { c: 'c3', w: 2.6, layer: 'main' });
       g.line([[0, 0], [dc, vC]], { c: 'hl', w: 1.4, dash: '5 3', layer: 'main' });
       if (!tour) g.line([[0, 0], [Rg.r, vR]], { c: 'c4', w: 1.4, dash: '2 3', layer: 'main' });
-      [[S.r, vS, 'c1', T('sun', '太陽')], [dc, vC, 'hl', T('carrier', 'キャリア')], [Rg.r, tour ? null : vR, 'c4', T('ring', '内歯車')]].forEach(([x, y, c, name]) => { if (y === null) return; g.dot(x, y, { c, r: 5, layer: 'over' }); g.text(x, y, name, { small: true, c, dx: 6, dy: y >= 0 ? -8 : 14, anchor: 'start', layer: 'over' }); });
-      L.legend(ctx.host, [{ c: 'c1', label: T('sun', '太陽') }, { c: tour ? 'c2' : 'c3', label: T(tour ? 'escape pinion' : 'planet', tour ? 'がんぎかな' : '遊星') }, { c: 'hl', label: T('carrier arm', 'キャリアの腕') }].concat(tour ? [] : [{ c: 'c4', label: T('ring', '内歯車') }]));
+      [[S0.r, vS, 'c1', T('sun', '太陽')], [dc, vC, 'hl', T('carrier', 'キャリア')], [Rg.r, tour ? null : vR, 'c4', T('ring', '内歯車')]].forEach(([x, y, c, name]) => { if (y === null) return; g.dot(x, y, { c, r: 5, layer: 'over' }); g.text(x, y, name, { small: true, c, dx: 6, dy: y >= 0 ? -8 : 14, anchor: 'start', layer: 'over' }); });
+      L.legend(st.leg, [{ c: 'c1', label: T('sun', '太陽') }, { c: tour ? 'c2' : 'c3', label: T(tour ? 'escape pinion' : 'planet', tour ? 'がんぎかな' : '遊星') }, { c: 'hl', label: T(tour ? 'cage' : 'carrier', tour ? 'かご' : 'キャリア') }].concat(tour ? [] : [{ c: 'c4', label: T('ring', '内歯車') }], [{ c: 'muted', kind: 'fill', label: T('fixed member', '固定した部材') }]));
       const ratioTxt = fixed === 0 ? `ω_c/ω_s = ${zs}/${zs + zr} = ${fmt(E.wc, 4)}` : fixed === 1 ? `ω_r/ω_s = −${zs}/${zr} = ${fmt(E.wr, 4)}` : fixed === 2 ? `ω_c/ω_r = ${zr}/${zs + zr} = ${fmt(E.wc / E.wr, 4)}` : `ω_p/ω_c = 1 + ${zs}/${zp} = ${fmt(E.wp / E.wc, 3)}`;
       ctx.readout([
         { k: T('teeth sun, planet, ring', '歯数：太陽、遊星、内歯車'), v: `${zs}, ${zp}, ${zr}`, tone: 'key' },
@@ -238,7 +336,89 @@
         : fixed === 0 ? T(`With the ring held, the planets roll on it and the carrier follows at ${fmt(E.wc, 3)} of the sun’s speed: one stage gives a reduction of ${fmt(1 / E.wc, 2)} : 1 with the load shared between ${n} planets.`, `内歯車を固定すると遊星はその上を転がり、キャリアは太陽の速さの ${fmt(E.wc, 3)} でついていきます。一段で ${fmt(1 / E.wc, 2)} : 1 の減速が得られ、荷重は ${n} 個の遊星で分担されます。`)
           : fixed === 1 ? T('With the carrier held, the planets are just idlers on fixed axles: the ring turns the opposite way to the sun, slowed by z_s/z_r.', 'キャリアを固定すると遊星は固定軸上の中間車にすぎず、内歯車は太陽と逆向きに z_s/z_r だけ遅く回ります。')
             : T('With the sun held and the ring driving, the carrier turns the same way as the ring but slower, and each planet rolls round the fixed sun.', '太陽を固定して内歯車で駆動すると、キャリアは内歯車と同じ向きにより遅く回り、各遊星は固定された太陽の周りを転がります。'));
-      ctx.state.anim = L.animator(ctx.host, (dt, t, lab) => { draw(t * 0.08); lab.textContent = T('input turning', '入力を回転中'); }, { autoplay: false, initialT: 0, playLabel: T('Drive it', '駆動する') });
+      const pose = (t) => {
+        const th = { s: TAU * E.ws * t, r: TAU * E.wr * t, c: TAU * E.wc * t, p: TAU * E.wp * t };
+        const P = st.parts;
+        if (P && P.sun && !st.flat) {
+          P.sun.rotation.z = th.s; if (P.ring) P.ring.rotation.z = ring0 + th.r; P.carrier.rotation.z = th.c;
+          P.planets.forEach((pm, j) => { const a = psi[j] + th.c; pm.position.set(dc * Math.cos(a), dc * Math.sin(a), 0); pm.rotation.z = planet0[j] + th.p; });
+          if (P.bal) P.bal.rotation.z = 0.9 * Math.sin(TAU * 2.5 * t * 4);
+          st.S.invalidate();
+        }
+        if (st.flat && st.flatPose) st.flatPose(th);
+      };
+      st.pose = pose; st.t ??= 0;
+      if (!st.anim) st.anim = L.animator(st.bar, (dt, t, lab) => { st.t = t * 0.08; st.pose(st.t); lab.textContent = T('input turning', '入力を回転中'); }, { autoplay: false, initialT: 0, playLabel: T('Drive it', '駆動する') });
+      const key = `${zs},${zp},${n},${fixed}`;
+      const build = (S) => {
+        const P = st.parts, THREE = S.THREE;
+        if (P.key === key) return;
+        P.key = key;
+        (P.objs || []).forEach((o) => { S.scene.remove(o); o.traverse((q) => q.geometry?.dispose?.()); });
+        P.objs = []; P.ring = null; P.bal = null;
+        const add = (o) => { S.add(o); P.objs.push(o); return o; };
+        const col = (k, c) => (k ? 'muted' : c);
+        P.sun = add(new THREE.Group()); P.sun.add(gearMesh(S, outline(S0, 0), EW, gearHoles(S0), col(fixed === 2 || tour, 'c1')));
+        const ax = add(shaft(S, Math.max(0.9, S0.rf * 0.16) * 0.98, EW + 5, 'muted')); ax.position.z = -1;
+        if (!tour) {
+          const inner = outline(Rg, 0, 0, 0, { ra: Rg.r + 1.25 * m, rf: Rg.r - m });
+          P.ring = add(new THREE.Group()); P.ring.add(gearMesh(S, ring2(Rg.r + 2.4, 160), EW, [inner], col(fixed === 0, 'c4')));
+        }
+        P.planets = (tour ? [psi[0]] : psi).map(() => { const gp = add(new THREE.Group()); gp.add(gearMesh(S, outline(Pg, 0), EW, [ring2(Math.max(0.5, Pg.rf * 0.18), 28)], tour ? 'c2' : 'c3')); return gp; });
+        // the carrier: a plate above the gears with an arm and a pin to each planet
+        const car = P.carrier = add(new THREE.Group()), cm = S.mat(fixed === 1 ? 'muted' : 'hl', METAL), zc = EW / 2 + 0.9;
+        const hub = new THREE.Mesh(new THREE.CylinderGeometry(2.2, 2.2, 0.9, 40).rotateX(Math.PI / 2), cm); hub.position.z = zc; car.add(hub);
+        (tour ? [psi[0], psi[0] + Math.PI] : psi).forEach((a, j) => {
+          const arm = new THREE.Mesh(new THREE.BoxGeometry(dc, 1.6, 0.6), cm); arm.position.set((dc / 2) * Math.cos(a), (dc / 2) * Math.sin(a), zc); arm.rotation.z = a; car.add(arm);
+          const boss = new THREE.Mesh(new THREE.CylinderGeometry(1.3, 1.3, 0.9, 32).rotateX(Math.PI / 2), cm); boss.position.set(dc * Math.cos(a), dc * Math.sin(a), zc); car.add(boss);
+          if (!tour || j === 0) { const pin = new THREE.Mesh(new THREE.CylinderGeometry(Math.max(0.45, Pg.rf * 0.17), Math.max(0.45, Pg.rf * 0.17), EW + 1.2, 24).rotateX(Math.PI / 2), cm); pin.position.set(dc * Math.cos(a), dc * Math.sin(a), 0.3); car.add(pin); }
+        });
+        if (tour) {
+          const rim = new THREE.Mesh(new THREE.TorusGeometry(dc + Pg.ra + 0.6, 0.35, 12, 120), cm); rim.position.z = zc; car.add(rim);
+          // a balance wheel riding on the cage opposite the pinion
+          const bal = P.bal = new THREE.Group(), bm = S.mat('c1', METAL), rb = Math.min(dc * 0.55, Pg.ra * 1.6);
+          bal.add(new THREE.Mesh(new THREE.TorusGeometry(rb, 0.28, 12, 72), bm));
+          for (let k = 0; k < 3; k++) { const sp = new THREE.Mesh(new THREE.BoxGeometry(rb, 0.3, 0.25), bm); const b = (k * TAU) / 3; sp.position.set((rb / 2) * Math.cos(b), (rb / 2) * Math.sin(b), 0); sp.rotation.z = b; bal.add(sp); }
+          const holder = new THREE.Group(); holder.position.set(-dc * Math.cos(psi[0]), -dc * Math.sin(psi[0]), zc + 0.9); holder.add(bal); car.add(holder);
+        }
+        const Rv = tour ? dc + Pg.ra + 1 : Rg.r + 2.4, d = Rv * 3.9 + 8;
+        S.look([0, -d * 0.64, d * 0.77], [0, -Rv * 0.05, -1], true);
+        P.lS.set([0, 0, EW / 2 + 3.6], tour ? T('fixed wheel', '固定車') : T(fixed === 2 ? 'sun (fixed)' : 'sun', fixed === 2 ? '太陽（固定）' : '太陽'));
+        P.lR.show(!tour); P.lR.set([Rg.r * 0.72, -(Rg.r + 2.4) * 0.72, EW / 2], T(fixed === 0 ? 'ring (fixed)' : 'ring', fixed === 0 ? '内歯車（固定）' : '内歯車'));
+        P.lC.set([dc * 0.5, 0, zc + 0.8], T(tour ? 'cage' : fixed === 1 ? 'carrier (fixed)' : 'carrier', tour ? 'かご' : fixed === 1 ? 'キャリア（固定）' : 'キャリア'));
+        settle(S);
+      };
+      L.view3d(ctx, v, {
+        host: st.v3, aspect: 0.8, maxH: 480, camera: [0, -90, 110], target: [0, 0, 0], fov: 30,
+        label: T('3D epicyclic gear set. Drag to rotate.', '3D の遊星歯車列。ドラッグで回転できます。'),
+        init(S) {
+          st.flat = false; st.S = S; watch(S);
+          const P = st.parts = {};
+          P.lS = S.label('', [0, 0, 0], { small: true }); P.lR = S.label('', [0, 0, 0], { small: true }); P.lC = S.label('', [0, 0, 0], { small: true });
+        },
+        update(S) { build(S); st.pose(st.t); },
+        fallback() {
+          st.flat = true; st.v3.replaceChildren();
+          const Rv = tour ? dc + Pg.ra + 1 : Rg.r + 2.4;
+          const f = L.fig(st.v3, { x: [-Rv, Rv], y: [-Rv, Rv], equal: true, axes: false, maxH: 400 });
+          const G = f.group('main'), O = f.group('over');
+          st.flatPose = (th) => {
+            G.replaceChildren(); O.replaceChildren();
+            if (!tour) {
+              const inner = outline(Rg, ring0 + th.r, 0, 0, { ra: Rg.r + 1.25 * m, rf: Rg.r - m }), outer = L.seq(121, (i) => [(Rg.r + 2.2) * Math.cos((TAU * i) / 120), (Rg.r + 2.2) * Math.sin((TAU * i) / 120)]);
+              const d = [inner, outer].map((ring) => 'M' + ring.map(([x, y]) => f.X(x).toFixed(1) + ' ' + f.Y(y).toFixed(1)).join('L') + 'Z').join('');
+              G.appendChild(L.el('path', { d, 'fill-rule': 'evenodd', style: `fill:var(--lab-c4);fill-opacity:${fixed === 0 ? 0.08 : 0.18};stroke:var(--lab-c4);stroke-width:1.2;opacity:${fixed === 0 ? 0.6 : 1}` }));
+            }
+            G.appendChild(f.poly(outline(S0, th.s), { c: 'c1', w: 1.2, fill: 'c1', fo: fixed === 2 || tour ? 0.05 : 0.16, op: fixed === 2 || tour ? 0.6 : 1, layer: 'main' }));
+            psi.forEach((ps, j) => { const a = ps + th.c, cx = dc * Math.cos(a), cy = dc * Math.sin(a); if (!tour || j === 0) { G.appendChild(f.poly(outline(Pg, planet0[j] + th.p, cx, cy), { c: tour ? 'c2' : 'c3', w: 1.2, fill: tour ? 'c2' : 'c3', fo: 0.18, layer: 'main' })); } });
+            psi.forEach((ps, j) => { if (tour && j) return; const a = ps + th.c; O.appendChild(f.seg([0, 0], [dc * Math.cos(a), dc * Math.sin(a)], { c: 'hl', w: 4, op: 0.85, layer: 'over' })); O.appendChild(f.dot(dc * Math.cos(a), dc * Math.sin(a), { c: 'hl', r: 4, layer: 'over' })); });
+            if (tour) O.appendChild(f.circle(0, 0, dc + Pg.ra + 0.3, { c: 'hl', w: 1.2, dash: '5 4', layer: 'over' }));
+            O.appendChild(f.dot(0, 0, { c: 'ink', r: 3, layer: 'over' }));
+          };
+          setTimeout(() => st.pose(st.t), 0);
+        },
+      });
+      pose(st.t);
     },
   };
 })();

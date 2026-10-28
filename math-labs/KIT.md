@@ -317,3 +317,5 @@ Notes from the upgrade:
 - A `fallback` must not call `ctx.redraw()` synchronously; defer it with `setTimeout`.
 - `handle.setColour(token)`, `label.show(bool)`; `S.look(pos, target, true)` also makes that the Reset view position.
 - view3d always uses the newest options when the 3D module finishes loading, so `update` may close over `v`.
+- `S.settle(ms)` keeps rendering while shaders compile (scenes now also settle each time they scroll into view); `S.light(k)` scales every light, for surfaces painted with colour maps; `S.arrow(..., {opacity})`; `handle.enable(bool)`.
+- Answers with `unit: ['%', '%']` accept a typed % sign.
