@@ -139,51 +139,69 @@
   };
 
   /* ---------------- 3. Polarisation ---------------- */
+  const polSetup = (v) => {
+    const th = rad(v.angle), I0 = v.i0, three = v.middle > 0.5;
+    const plates = three ? [0, th / 2, th] : [0, th];
+    const amps = [Math.sqrt(I0)];
+    for (let i = 1; i < plates.length; i++) amps.push(amps[i - 1] * Math.cos(plates[i] - plates[i - 1]));
+    return { th, I0, three, plates, amps, Iout: amps[amps.length - 1] ** 2, tones: three ? ['c1', 'c3', 'c2'] : ['c1', 'c2'] };
+  };
+  function polFrame(ctx) {
+    const st = ctx.state;
+    if (st.frame && st.frame.isConnected) return st;
+    st.anim?.stop(); st.anim = null;
+    ctx.host.replaceChildren();
+    st.frame = L.h('div', '', ctx.host);
+    st.cap1 = L.h('p', 'lab-cap', st.frame, T('The beam in 3D: the electric field at each point along it, drawn as a vector from the axis. It oscillates in the plane each filter lets through and shrinks at each filter. Drag the gold handle on the analyser to turn it, or drag elsewhere to turn the view.', '3D のビームです。ビーム上の各点の電場を、軸から伸びるベクトルで描いています。電場は各フィルターが通す面の中で振動し、フィルターごとに小さくなります。検光子の金色のハンドルをドラッグすると検光子が回り、それ以外の場所をドラッグすると視点が回ります。'));
+    st.v3 = L.h('div', '', st.frame);
+    const row = L.h('div', 'lab-row', st.frame);
+    st.cA = L.h('div', 'lab-col', row); st.cB = L.h('div', 'lab-col', row);
+    st.leg = L.h('div', '', st.frame);
+    st.bar = L.h('div', '', st.frame);
+    return st;
+  }
+  // phones show 3D figures at aspect 0.8 or taller (labs.css), so wide scenes step back to keep their width
+  const narrowView = () => typeof window.matchMedia === 'function' && window.matchMedia('(max-width: 600px)').matches;
+  const BEAM = 3.9, KW = 2 * Math.PI / 0.78, RF = 1.05, AMP = 0.82;
+  const dir3 = (a) => [0, Math.sin(a), Math.cos(a)];
+  const filterX = (three) => (three ? [-2.2, 0, 2.2] : [-1.6, 1.6]);
+  // unpolarised light: the plane of the field wanders, carried along with the wave
+  const wander = (u) => 1.4 * Math.sin(1.9 * u) + 0.9 * Math.sin(4.7 * u + 1.3) + 0.5 * Math.sin(9.1 * u + 0.4);
+  function polOblique(st, P) {
+    st.v3.replaceChildren();
+    const s = L.fig(st.v3, { axes: false, x: [0, 12], y: [-1.9, 1.9], equal: true, maxH: 300 });
+    const xs = P.three ? [2.2, 5.6, 9] : [2.6, 8];
+    const proj = (x, ang, r) => [x - 0.42 * r * Math.sin(ang), r * Math.cos(ang) - 0.28 * r * Math.sin(ang)];
+    const R = 1.45;
+    s.seg([0, 0], [12, 0], { c: 'muted', w: 1, dash: '3 4', layer: 'under' });
+    xs.forEach((x, i) => {
+      s.poly(L.seq(61, (j) => { const a = j / 60 * L.TAU; return proj(x, a, R); }), { c: P.tones[i], fo: 0.1, w: 1.4, layer: 'under' });
+      s.seg(proj(x, P.plates[i], 0.86 * R), proj(x, P.plates[i] + Math.PI, 0.86 * R), { c: P.tones[i], w: 1.6, dash: '5 4', op: 0.85, layer: 'under' });
+      s.text(...proj(x, 0, R), [T('polariser', '偏光子'), P.three ? T('middle', '中間') : T('analyser', '検光子'), T('analyser', '検光子')][i], { dy: -8, small: true, c: P.tones[i] });
+    });
+    s.text(0.9, -1.55, T('unpolarised in', '非偏光'), { small: true, c: 'muted' });
+    const gap = 0.14;
+    const segs = [[0.2, xs[0] - gap]].concat(xs.map((x, i) => [x + gap, i + 1 < xs.length ? xs[i + 1] - gap : 12]));
+    st.wave2d = (ph) => {
+      s.clear('over');
+      [0.3, 1.2, 2.1].forEach((a) => s.line(L.sample(segs[0][0], segs[0][1], 80, (x) => proj(x, a, 1.0 * Math.sin(5 * x - ph))), { c: 'muted', w: 1.2, op: 0.5, layer: 'over' }));
+      segs.slice(1).forEach(([xa, xb], i) => { const A = P.amps[i]; if (A < 0.01) return; s.line(L.sample(xa, xb, 90, (x) => proj(x, P.plates[i], A * Math.sin(5 * x - ph))), { c: P.tones[i], w: 2.2, layer: 'over' }); });
+    };
+  }
   D.polarization = {
+    three: true,
     render(ctx, v) {
-      ctx.state.anim?.stop();
-      const th = rad(v.angle), I0 = v.i0, three = v.middle > 0.5;
-      const plates = three ? [0, th / 2, th] : [0, th];
-      const amps = [Math.sqrt(I0)];
-      for (let i = 1; i < plates.length; i++) amps.push(amps[i - 1] * Math.cos(plates[i] - plates[i - 1]));
-      const Iout = amps[amps.length - 1] ** 2;
-      // oblique view of the beam
-      L.h('p', 'lab-cap', ctx.host, T('The beam from the side: the electric field oscillates in the plane each filter lets through, and shrinks at each filter', '横から見たビーム：電場は各フィルターが通す面の中で振動し、フィルターごとに小さくなります'));
-      const s = L.fig(ctx.host, { axes: false, x: [0, 12], y: [-1.9, 1.9], equal: true, maxH: 300 });
-      const xs = three ? [2.2, 5.6, 9] : [2.6, 8];
-      const proj = (x, ang, r) => [x - 0.42 * r * Math.sin(ang), r * Math.cos(ang) - 0.28 * r * Math.sin(ang)];
-      const R = 1.45;
-      s.seg([0, 0], [12, 0], { c: 'muted', w: 1, dash: '3 4', layer: 'under' });
-      const tones = three ? ['c1', 'c3', 'c2'] : ['c1', 'c2'];
-      xs.forEach((x, i) => {
-        s.poly(L.seq(61, (j) => { const a = j / 60 * L.TAU; return proj(x, a, R); }), { c: tones[i], fo: 0.1, w: 1.4, layer: 'under' });
-        s.seg(proj(x, plates[i], 0.86 * R), proj(x, plates[i] + Math.PI, 0.86 * R), { c: tones[i], w: 1.6, dash: '5 4', op: 0.85, layer: 'under' }); // transmission axis, kept inside the disc
-        s.text(...proj(x, 0, R), [T('polariser', '偏光子'), three ? T('middle', '中間') : T('analyser', '検光子'), T('analyser', '検光子')][i], { dy: -8, small: true, c: tones[i] });
-      });
-      s.text(0.9, -1.55, T('unpolarised in', '非偏光'), { small: true, c: 'muted' });
-      s.layers.wave = s.group('main');
-      // each wave stops just short of a filter and the next one starts just after it, so the change of plane happens inside the disc
-      const gap = 0.14;
-      const segs = [[0.2, xs[0] - gap]].concat(xs.map((x, i) => [x + gap, i + 1 < xs.length ? xs[i + 1] - gap : 12]));
-      const wave = (ph) => {
-        s.clear('wave');
-        // unpolarised light: a few random planes, drawn faintly
-        [0.3, 1.2, 2.1].forEach((a) => s.line(L.sample(segs[0][0], segs[0][1], 80, (x) => proj(x, a, 1.0 * Math.sin(5 * x - ph))), { c: 'muted', w: 1.2, op: 0.5, layer: 'wave' }));
-        segs.slice(1).forEach(([xa, xb], i) => {
-          const A = amps[i] / Math.sqrt(Math.max(I0, 1e-9)) * 1.0 * Math.sqrt(I0);
-          if (A < 0.01) return;
-          s.line(L.sample(xa, xb, 90, (x) => proj(x, plates[i], A * Math.sin(5 * x - ph))), { c: tones[i], w: 2.2, layer: 'wave' });
-        });
-      };
-      const row = L.h('div', 'lab-row', ctx.host);
-      const cA = L.h('div', 'lab-col', row), cB = L.h('div', 'lab-col', row);
-      L.h('p', 'lab-cap', cA, T('Looking along the beam: the field is projected onto each axis', 'ビームの方向から見る：電場は各軸へ射影されます'));
-      L.h('p', 'lab-cap', cB, T('Transmitted intensity against the analyser angle', '検光子の角度に対する透過強度'));
-      const b = L.fig(cA, { x: [-1.35, 1.35], y: [-1.25, 1.25], equal: true, maxH: 300, axes: false });
+      const st = polFrame(ctx);
+      st.v = v;
+      const P = polSetup(v), { th, I0, three, plates, amps, Iout, tones } = P;
+      // looking along the beam, and Malus's law
+      st.cA.replaceChildren(); st.cB.replaceChildren();
+      L.h('p', 'lab-cap', st.cA, T('Looking along the beam: the field is projected onto each axis', 'ビームの方向から見る：電場は各軸へ射影されます'));
+      L.h('p', 'lab-cap', st.cB, T('Transmitted intensity against the analyser angle', '検光子の角度に対する透過強度'));
+      const b = L.fig(st.cA, { x: [-1.35, 1.35], y: [-1.25, 1.25], equal: true, maxH: 300, axes: false });
       b.circle(0, 0, 1.1, { c: 'muted', w: 1, fill: true, fo: 0.04 });
       const dir = (a) => [Math.sin(a), Math.cos(a)];
       plates.forEach((a, i) => { const u = dir(a); b.seg([-1.1 * u[0], -1.1 * u[1]], [1.1 * u[0], 1.1 * u[1]], { c: tones[i], w: 1.4, dash: '6 4', op: 0.8 }); });
-      // successive projections of the field amplitude
       let prev = [0, amps[0] / Math.sqrt(Math.max(I0, 1e-9))];
       b.arrow([0, 0], prev, { c: 'c1', w: 3 });
       for (let i = 1; i < plates.length; i++) {
@@ -197,18 +215,88 @@
       b.text(prev[0] / 2, prev[1] / 2, three ? 'E₀cos²(θ/2)' : 'E₀cos θ', { math: true, dx: 10, dy: 14, anchor: 'start', c: 'c2' });
       const hp = [1.1 * tipA[0], 1.1 * tipA[1]];
       b.handle(hp[0], hp[1], { c: 'c2', label: T('Analyser angle', '検光子の角度'), onDrag: (x, y) => { let d = Math.atan2(x, y) * 180 / Math.PI; if (d < 0) d += 180; ctx.set('angle', d); } });
-      b.text(hp[0], hp[1], `θ = ${Math.round(v.angle)}°`, { dx: hp[0] > 0 ? 14 : -14, dy: hp[1] > 0 ? -8 : 16, anchor: hp[0] > 0 ? 'start' : 'end', small: true });
-      const g = L.fig(cB, { x: [0, 180], y: [0, 1.22], aspect: 0.8, maxH: 300, xlabel: T('analyser angle θ (degrees)', '検光子の角度 θ（度）'), ylabel: 'I/I₀', ticksX: [0, 45, 90, 135, 180].map((t) => [t, String(t)]), ticksY: [0, 0.25, 0.5, 0.75, 1].map((t) => [t, String(t)]) });
+      b.text(hp[0], hp[1], `θ = ${Math.round(v.angle)}°`, Math.abs(hp[0]) > 0.75 ? { dy: hp[1] >= 0 ? -14 : 24, anchor: hp[0] > 0 ? 'end' : 'start', small: true } : { dx: hp[0] > 0 ? 14 : -14, dy: hp[1] > 0 ? -8 : 16, anchor: hp[0] > 0 ? 'start' : 'end', small: true });
+      const g = L.fig(st.cB, { x: [0, 180], y: [0, 1.22], aspect: 0.8, maxH: 300, xlabel: T('analyser angle θ (degrees)', '検光子の角度 θ（度）'), ylabel: 'I/I₀', ticksX: [0, 45, 90, 135, 180].map((t) => [t, String(t)]), ticksY: [0, 0.25, 0.5, 0.75, 1].map((t) => [t, String(t)]) });
       g.line(L.sample(0, 180, 180, (x) => Math.abs(Math.cos(rad(x)))), { c: 'muted', w: 1.2, dash: '3 4' });
       g.line(L.sample(0, 180, 180, (x) => Math.cos(rad(x)) ** 2), { c: 'c2', w: three ? 1.6 : 2.6, op: three ? 0.5 : 1 });
       g.line(L.sample(0, 180, 180, (x) => Math.cos(rad(x / 2)) ** 4), { c: 'c3', w: three ? 2.6 : 1.6, op: three ? 1 : 0.5 });
       g.vline(v.angle, { c: 'hl', dash: '2 3' });
       g.dot(v.angle, Iout / I0, { c: 'hl', r: 6.5 });
-      L.legend(ctx.host, [{ c: 'c2', label: T('two filters: cos²θ', 'フィルター2枚: cos²θ') }, { c: 'c3', label: T('middle filter at θ/2: cos⁴(θ/2)', '中間に θ/2 のフィルター: cos⁴(θ/2)') }, { c: 'muted', dash: true, label: T('field amplitude |cos θ|', '電場振幅 |cos θ|') }]);
-      ctx.state.anim = L.animator(ctx.host, (dt, t) => { wave(t * 6); }, { autoplay: true });
-      ctx.readout([{ k: T('transmitted I', '透過強度 I'), v: fmt(Iout, 3), tone: 'key' }, { k: 'I/I₀', v: fmt(Iout / I0, 3) }, ].concat(three ? [{ k: T('without the middle filter', '中間フィルターなし'), v: fmt(I0 * Math.cos(th) ** 2, 3), tone: 'warn' }] : []),
+      st.leg.replaceChildren();
+      L.legend(st.leg, [{ c: 'c2', label: T('two filters: cos²θ', 'フィルター2枚: cos²θ') }, { c: 'c3', label: T('middle filter at θ/2: cos⁴(θ/2)', '中間に θ/2 のフィルター: cos⁴(θ/2)') }, { c: 'muted', dash: true, label: T('field amplitude |cos θ|', '電場振幅 |cos θ|') }]);
+      ctx.readout([{ k: T('transmitted I', '透過強度 I'), v: fmt(Iout, 3), tone: 'key' }, { k: 'I/I₀', v: fmt(Iout / I0, 3) }].concat(three ? [{ k: T('without the middle filter', '中間フィルターなし'), v: fmt(I0 * Math.cos(th) ** 2, 3), tone: 'warn' }] : []),
         three ? T('Adding a filter can let more light through: at θ = 90° two crossed filters pass nothing, but a third at 45° between them passes I₀/4.', 'フィルターを足すと光が増えることがあります。θ = 90° の直交した2枚は光を通しませんが、間に 45° の3枚目を入れると I₀/4 が通ります。')
-          : T('Drag the orange handle to turn the analyser. The field amplitude is projected once, cos θ, and intensity is its square.', '橙のハンドルで検光子を回せます。電場振幅は一度射影されて cos θ 倍になり、強度はその二乗です。'));
+          : T('Drag the gold handle to turn the analyser. The field amplitude is projected once, cos θ, and intensity is its square.', '金色のハンドルで検光子を回せます。電場振幅は一度射影されて cos θ 倍になり、強度はその二乗です。'));
+      // the beam
+      L.view3d(ctx, v, {
+        host: st.v3, aspect: 0.46, maxH: 400, camera: narrowView() ? [-4.6, -13.4, 4.3] : [-2.5, -7.9, 2.7], target: [0.25, 0, 0], fov: 30,
+        init(S) {
+          st.flat = false;
+          S.lines([[[-BEAM - 0.2, 0, 0], [BEAM + 0.3, 0, 0]]], { c: 'muted', opacity: 0.6 });
+          S.arrow([BEAM - 0.1, 0, 0], [0.5, 0, 0], { c: 'muted', r: 0.014 });
+          st.F = [0, 1, 2].map(() => {
+            const disc = S.disc([0, 0, 0], [1, 0, 0], RF, { c: 'c1', opacity: 0.14, rough: 0.6 });
+            disc.userData.noOcclude = true;
+            const rim = S.tube(L.seq(97, (j) => { const a = j / 96 * L.TAU; return [0, RF * Math.sin(a), RF * Math.cos(a)]; }), { c: 'c1', r: 0.016, closed: true });
+            const axis = S.tube([[0, 0, -RF], [0, 0, RF]], { c: 'c1', r: 0.014, opacity: 0.85 });
+            const lab = S.label('', [0, 0, -RF - 0.2], { small: true, align: 'middle', dy: 18 });
+            return { disc, rim, axis, lab };
+          });
+          st.hair = [0, 1, 2, 3].map((i) => S.lines([], { c: i ? 'c1' : 'muted', opacity: i ? 0.6 : 0.4 }));
+          st.tip = [0, 1, 2, 3].map((i) => S.tube([[0, 0, 0], [0.01, 0, 0]], { c: i ? 'c1' : 'muted', r: i ? 0.022 : 0.012 }));
+          st.lu = S.label(T('unpolarised', '非偏光'), [-BEAM + 0.3, 0, -RF - 0.06], { small: true, c: 'muted', dy: 18 });
+          st.lth = S.label('', [0, 0, 0], { small: true });
+          st.h = S.handle([0, 0, RF], { r: 0.085, c: 'hl', plane: [[1, 0, 0], [0, 0, 0]], onDrag: (q) => {
+            const x = filterX(st.v.middle > 0.5).at(-1);
+            let d = Math.atan2(q.y, q.z) * 180 / Math.PI; if (d < 0) d += 180; if (d >= 180) d -= 180;
+            d = Math.round(d); ctx.set('angle', d);
+            const u = dir3(rad(d)); return [x, RF * u[1], RF * u[2]];
+          } });
+        },
+        update(S, vv) {
+          const Q = polSetup(vv), xs = filterX(Q.three);
+          st.F.forEach((F, i) => {
+            const on = i < xs.length;
+            [F.disc, F.rim, F.axis].forEach((o) => { o.visible = on; });
+            F.lab.el.style.display = on ? '' : 'none';
+            if (!on) return;
+            const x = xs[i], col = S.colour(Q.tones[i]), u = dir3(Q.plates[i]);
+            F.disc.position.x = x; F.rim.position.x = x; F.disc.material.color.copy(col); F.rim.material.color.copy(col);
+            F.axis.material.color.copy(col);
+            F.axis.update([[x, -RF * u[1], -RF * u[2]], [x, RF * u[1], RF * u[2]]]);
+            F.lab.set([x, 0, -RF - 0.06], [T('polariser', '偏光子'), Q.three ? T('middle, θ/2', '中間、θ/2') : T('analyser', '検光子'), T('analyser', '検光子')][i]);
+            F.lab.el.style.color = '#' + col.getHexString();
+          });
+          const xa = xs.at(-1), ua = dir3(Q.th);
+          st.h.setPlane([1, 0, 0], [xa, 0, 0]);
+          st.h.at([xa, RF * ua[1], RF * ua[2]]);
+          st.lth.set([xa, RF * ua[1] * 1.18, RF * ua[2] * 1.18 + 0.12], `θ = ${Math.round(vv.angle)}°`);
+          // sections of the beam: before the first filter, then after each one
+          const gap = 0.06, secs = [{ x0: -BEAM, x1: xs[0] - gap, un: true }].concat(xs.map((x, i) => ({ x0: x + gap, x1: i + 1 < xs.length ? xs[i + 1] - gap : BEAM, a: Q.plates[i], A: Q.amps[i] * AMP, tone: Q.tones[i] })));
+          for (let i = 1; i < 4; i++) { const sc = secs[i]; if (sc) { st.hair[i].material.color.copy(S.colour(sc.tone)); st.tip[i].material.color.copy(S.colour(sc.tone)); } }
+          st.wave3d = (ph) => {
+            secs.forEach((sc, i) => {
+              const hs = [], tp = [];
+              const E = (x) => {
+                if (sc.un) { const a = wander(x - ph / KW), A = Math.SQRT2 * Math.sqrt(Q.I0) * AMP; const s = A * Math.sin(KW * x - ph); const u = dir3(a); return [x, s * u[1], s * u[2]]; }
+                const s = sc.A * Math.sin(KW * x - ph), u = dir3(sc.a); return [x, s * u[1], s * u[2]];
+              };
+              const nh = Math.max(2, Math.round((sc.x1 - sc.x0) / 0.06));
+              for (let k = 0; k <= nh; k++) { const x = sc.x0 + (sc.x1 - sc.x0) * k / nh; hs.push([[x, 0, 0], E(x)]); }
+              const nt = Math.max(4, Math.round((sc.x1 - sc.x0) / 0.025));
+              for (let k = 0; k <= nt; k++) tp.push(E(sc.x0 + (sc.x1 - sc.x0) * k / nt));
+              const dead = !sc.un && sc.A < 0.012;
+              st.hair[i].update(dead ? [] : hs); st.tip[i].visible = !dead; if (!dead) st.tip[i].update(tp);
+            });
+            for (let i = secs.length; i < 4; i++) { st.hair[i].update([]); st.tip[i].visible = false; }
+            S.invalidate();
+          };
+          st.anim?.redraw();
+        },
+        fallback() { st.flat = true; st.cap1.textContent = T('The beam from the side: the electric field oscillates in the plane each filter lets through, and shrinks at each filter', '横から見たビーム：電場は各フィルターが通す面の中で振動し、フィルターごとに小さくなります'); polOblique(st, polSetup(st.v)); st.anim?.redraw(); },
+      });
+      if (!st.anim) st.anim = L.animator(st.bar, (dt, t) => { const ph = t * 6; if (st.flat) st.wave2d?.(ph); else st.wave3d?.(ph); }, { autoplay: true });
+      else st.anim.redraw();
     },
   };
 })();

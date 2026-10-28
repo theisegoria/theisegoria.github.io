@@ -151,57 +151,131 @@
     },
   };
 
-  /* ---------------- 3. Ideal gas law ---------------- */
+  /* ---------------- 3. Ideal gas law: the P(V, T) surface ---------------- */
   const rng = (seed) => () => { seed = (seed * 1664525 + 1013904223) >>> 0; return seed / 4294967296; };
   const gauss = (r) => Math.sqrt(-2 * Math.log(r() + 1e-12)) * Math.cos(2 * Math.PI * r());
+  const R = 8.314;
+  // scene coordinates: V 5..50 L -> x -2..2, T 200..800 K -> y -1.5..1.5, z = P / P(5 L, 800 K) * ZH
+  const VX = (V) => -2 + 4 * (V - 5) / 45, TY = (t) => -1.5 + 3 * (t - 200) / 600, ZH = 2.4;
+  const zOf = (V, t) => ZH * (t / 800) * (5 / V);
+  const XV = (x) => 5 + 45 * (x + 2) / 4, YT = (y) => 200 + 600 * (y + 1.5) / 3;
+  function moleculeBox(host, st, n, Tt, V, small) {
+    const box = L.fig(host, { axes: false, x: [0, 10], y: [0, 6.4], equal: true, maxH: small ? 150 : 330 });
+    const Wb = 9.6 * Math.sqrt(V / 50), H = 5.4, y0 = 0.5, x0 = 0.3; // width ∝ √V so the smallest box is still a box
+    box.rect(x0, y0, Wb, H, { c: 'ink', fo: 0.03, w: 2 });
+    box.rect(x0 + Wb, y0 - 0.2, 0.18, H + 0.4, { c: 'ink', fo: 0.8, nostroke: true });
+    const rand = rng(12345), cnt = Math.round(n * 30), sp = 0.9 * Math.sqrt(Tt / 300);
+    const mols = L.seq(90, () => [rand(), rand(), gauss(rand) * sp, gauss(rand) * sp]).slice(0, cnt);
+    const fold = (p, L0) => { const m = ((p % (2 * L0)) + 2 * L0) % (2 * L0); return m > L0 ? 2 * L0 - m : m; };
+    box.layers.dyn = box.group('main');
+    st.anim?.stop();
+    st.bar.replaceChildren();
+    st.anim = L.animator(st.bar, (dt, t) => {
+      box.clear('dyn');
+      const w = Wb - 0.2, h = H - 0.2;
+      mols.forEach(([a, b, vx, vy], i) => { const x = x0 + 0.1 + fold(a * w + vx * t, w), y = y0 + 0.1 + fold(b * h + vy * t, h); box.dot(x, y, { c: i === 0 ? 'hl' : 'c1', r: i === 0 ? 4.5 : 3, layer: 'dyn' }); });
+    }, { autoplay: true, playLabel: T('Move the molecules', '分子を動かす') });
+  }
   D['equation-state'] = {
+    three: true,
     render(ctx, v) {
-      ctx.state.anim?.stop();
-      const R = 8.314, n = v.n, Tt = v.temperature, V = v.volume;
-      const P = n * R * Tt / V; // kPa, with V in litres
-      const row = L.h('div', 'lab-row', ctx.host);
-      const cA = L.h('div', 'lab-col', row), cB = L.h('div', 'lab-col', row);
-      L.h('p', 'lab-cap', cA, T('Molecules in a box: count ∝ n, width ∝ V, speed ∝ √T (schematic)', '箱の中の分子：数は n、幅は V、速さは √T に比例（模式図）'));
-      L.h('p', 'lab-cap', cB, T('Isotherms P = nRT/V for this n; the rectangle has area PV = nRT', 'この n での等温線 P = nRT/V。長方形の面積は PV = nRT です'));
-      const box = L.fig(cA, { axes: false, x: [0, 10], y: [0, 6.4], equal: true, maxH: 330 });
-      const Wb = 9.6 * Math.sqrt(V / 50), H = 5.4, y0 = 0.5, x0 = 0.3; // width ∝ √V so the smallest box is still a box
-      box.rect(x0, y0, Wb, H, { c: 'ink', fo: 0.03, w: 2 });
-      box.rect(x0 + Wb, y0 - 0.2, 0.18, H + 0.4, { c: 'ink', fo: 0.8, nostroke: true });
-      const rand = rng(12345), cnt = Math.round(n * 30), sp = 0.9 * Math.sqrt(Tt / 300);
-      const mols = L.seq(90, () => [rand(), rand(), gauss(rand) * sp, gauss(rand) * sp]).slice(0, cnt);
-      const fold = (p, L0) => { const m = ((p % (2 * L0)) + 2 * L0) % (2 * L0); return m > L0 ? 2 * L0 - m : m; };
-      box.layers.dyn = box.group('main');
-      ctx.state.anim = L.animator(ctx.host, (dt, t) => {
-        box.clear('dyn');
-        const w = Wb - 0.2, h = H - 0.2;
-        mols.forEach(([a, b, vx, vy], i) => { const x = x0 + 0.1 + fold(a * w + vx * t, w), y = y0 + 0.1 + fold(b * h + vy * t, h); box.dot(x, y, { c: i === 0 ? 'hl' : 'c1', r: i === 0 ? 4.5 : 3, layer: 'dyn' }); });
-      }, { autoplay: true });
-      const YP = niceUp(P * 2.4); // the state point always sits at about 40% of the axis, whatever V is
-      const g = L.fig(cB, { x: [0, 52], y: [0, YP], aspect: 0.75, maxH: 330, xlabel: T('volume V (L)', '体積 V (L)') });
-      yLabelRight(g, T('pressure P (kPa)', '圧力 P (kPa)'));
-      const temps = [200, 400, 600, 800].filter((t) => Math.abs(t - Tt) >= 5).concat([Tt]).sort((p, q) => p - q);
-      let kTop = 0, lastRight = Infinity;
-      temps.slice().reverse().forEach((t) => { // hottest first, so the right-edge labels thin out from the top
-        const cur = Math.abs(t - Tt) < 5;
-        const vIn = n * R * t / YP; // where this isotherm enters the plot from the top
-        if (vIn >= 50) return; // entirely above the plot
-        if (!cur) g.line(L.sample(Math.max(2, vIn), 52, 200, (x) => n * R * t / x), { c: 'muted', w: 1, op: 0.7 });
-        // label where the curve leaves the plot: on the right edge if it gets there, else staggered down the curves that leave through the top
-        const atRight = n * R * t / 50 < 0.86 * YP;
-        const frac = atRight ? 1 : Math.max(0.3, 0.9 - 0.16 * kTop++);
-        const xl = atRight ? 50 : n * R * t / (frac * YP), yl = n * R * t / xl;
-        if (Math.abs(xl - V) < 6 && Math.abs(yl - P) < 0.12 * YP) return; // would sit on the state point
-        if (atRight) { if (lastRight - yl < 0.07 * YP) return; lastRight = yl; } // too close to the label above
-        g.text(xl, yl, `${t} K`, atRight ? { small: true, dy: -5, anchor: 'end', c: cur ? 'c1' : 'muted' } : { small: true, dy: 13, dx: 4, anchor: 'start', c: cur ? 'c1' : 'muted' });
+      const st = ctx.state;
+      if (!st.frame || !st.frame.isConnected) {
+        st.anim?.stop(); st.anim = null;
+        ctx.host.replaceChildren();
+        st.frame = L.h('div', '', ctx.host);
+        const row = L.h('div', 'lab-row is-wide', st.frame);
+        st.c1 = L.h('div', 'lab-col', row); st.c2 = L.h('div', 'lab-col', row);
+        st.cap1 = L.h('p', 'lab-cap', st.c1, T('The surface P(V, T) = nRT/V. Its grid lines are isotherms (T fixed) and isochores (V fixed). Drag the gold state point across it; drag elsewhere to turn the view.', '曲面 P(V, T) = nRT/V。格子線は等温線（T 一定）と等積線（V 一定）です。金色の状態点を曲面上でドラッグでき、それ以外の場所をドラッグすると視点が回ります。'));
+        st.v3 = L.h('div', '', st.c1);
+        st.cap2 = L.h('p', 'lab-cap', st.c2, T('The slice at this temperature: the isotherm P = nRT/V. The rectangle has area PV = nRT.', 'この温度での切り口、等温線 P = nRT/V。長方形の面積は PV = nRT です。'));
+        st.g2 = L.h('div', '', st.c2);
+        st.capBox = L.h('p', 'lab-cap', st.c2, T('Molecules in a box: count ∝ n, width ∝ V, speed ∝ √T (schematic)', '箱の中の分子：数は n、幅は V、速さは √T に比例（模式図）'));
+        st.box = L.h('div', '', st.c2);
+        st.bar = L.h('div', '', st.frame);
+        st.leg = L.h('div', '', st.frame);
+      }
+      const draw2d = (vv) => {
+        const n = vv.n, Tt = vv.temperature, V = vv.volume, P = n * R * Tt / V; // kPa, with V in litres
+        st.g2.replaceChildren(); st.box.replaceChildren(); st.leg.replaceChildren();
+        if (st.flat) {
+          st.cap1.textContent = T('Molecules in a box: count ∝ n, width ∝ V, speed ∝ √T (schematic)', '箱の中の分子：数は n、幅は V、速さは √T に比例（模式図）');
+          st.capBox.hidden = true;
+          st.v3.replaceChildren();
+          moleculeBox(st.v3, st, n, Tt, V, false);
+        } else moleculeBox(st.box, st, n, Tt, V, true);
+        const YP = niceUp(P * 2.4); // the state point always sits at about 40% of the axis, whatever V is
+        const g = L.fig(st.g2, { x: [0, 52], y: [0, YP], aspect: 0.75, maxH: 330, xlabel: T('volume V (L)', '体積 V (L)') });
+        yLabelRight(g, T('pressure P (kPa)', '圧力 P (kPa)'));
+        const temps = [200, 400, 600, 800].filter((t) => Math.abs(t - Tt) >= 5).concat([Tt]).sort((p, q) => p - q);
+        let kTop = 0, lastRight = Infinity;
+        temps.slice().reverse().forEach((t) => { // hottest first, so the right-edge labels thin out from the top
+          const cur = Math.abs(t - Tt) < 5;
+          const vIn = n * R * t / YP; // where this isotherm enters the plot from the top
+          if (vIn >= 50) return;
+          if (!cur) g.line(L.sample(Math.max(2, vIn), 52, 200, (x) => n * R * t / x), { c: 'muted', w: 1, op: 0.7 });
+          const atRight = n * R * t / 50 < 0.86 * YP;
+          const frac = atRight ? 1 : Math.max(0.3, 0.9 - 0.16 * kTop++);
+          const xl = atRight ? 50 : n * R * t / (frac * YP), yl = n * R * t / xl;
+          if (Math.abs(xl - V) < 6 && Math.abs(yl - P) < 0.12 * YP) return;
+          if (atRight) { if (lastRight - yl < 0.07 * YP) return; lastRight = yl; }
+          g.text(xl, yl, `${t} K`, atRight ? { small: true, dy: -5, anchor: 'end', c: cur ? 'c1' : 'muted' } : { small: true, dy: 13, dx: 4, anchor: 'start', c: cur ? 'c1' : 'muted' });
+        });
+        g.rect(0, 0, V, P, { c: 'hl', fo: 0.14, w: 1, dash: '3 3' });
+        g.line(L.sample(Math.max(2, n * R * Tt / YP), 52, 240, (x) => n * R * Tt / x), { c: 'c1', w: 2.6 });
+        g.dot(V, P, { c: 'hl', r: 6.5 });
+        g.handle(V, P, { c: 'hl', label: T('Volume', '体積'), axis: 'x', bounds: [5, 50, 0, YP], onDrag: (x) => ctx.set('volume', x) });
+        g.text(V, P, `${fmt(P, 1)} kPa`, { dx: 10, dy: 20, anchor: 'start', small: true });
+        L.legend(st.leg, [{ c: 'c1', label: T(`isotherm T = ${Tt} K`, `等温線 T = ${Tt} K`) }].concat(st.flat ? [{ c: 'muted', label: T('other temperatures', '他の温度') }] : [{ c: 'c3', label: T(`isochore V = ${V} L: P ∝ T`, `等積線 V = ${V} L：P ∝ T`) }, { c: 'c4', label: T(`isobar P = ${fmt(P, 1)} kPa: V ∝ T`, `等圧線 P = ${fmt(P, 1)} kPa：V ∝ T`) }]).concat([{ kind: 'fill', c: 'hl', label: 'PV = nRT' }]));
+        ctx.readout([{ k: 'P = nRT/V', v: `${fmt(P, 1)} kPa`, tone: 'key' }, { k: T('in atmospheres', '気圧換算'), v: `${fmt(P / 101.325, 3)} atm` }, { k: 'PV = nRT', v: `${fmt(n * R * Tt, 0)} J` }, { k: T('number density', '数密度'), v: `${fmt(n * 6.022e23 / (V * 1e-3), 3)} m⁻³` }],
+          T('Every equilibrium state of the gas lies on this one surface. Isotherms are hyperbolas, isochores are straight lines through P = 0 at T = 0, and isobars run straight across it with V ∝ T. Changing n rescales the height without changing the shape.', '気体の平衡状態はすべてこの1枚の曲面の上にあります。等温線は双曲線、等積線は T = 0 で P = 0 を通る直線、等圧線は V ∝ T の直線として曲面を横切ります。n を変えると形はそのままで高さの目盛りだけが変わります。'));
+      };
+      L.view3d(ctx, v, {
+        host: st.v3, aspect: 0.8, maxH: 470, camera: [6.1, -7.4, 5.0], target: [0, 0, 0.85], fov: 31,
+        init(S) {
+          st.flat = false;
+          const cold = S.cols.c1.clone().lerp(S.cols.plate, S.dark ? 0.55 : 0.32), hot = S.cols.c2.clone().lerp(S.cols.plate, S.dark ? 0.55 : 0.3);
+          S.surface((a, b) => { const V = 5 + 45 * a, t = 200 + 600 * b; return [VX(V), TY(t), zOf(V, t)]; }, { u: [0, 1], v: [0, 1], nu: 90, nv: 60, colour: (a, b) => cold.clone().lerp(hot, b), wire: true, wireEvery: 10, wireEveryV: 10, wireOpacity: S.dark ? 0.4 : 0.32, rough: 0.55, coat: 0.25 });
+          S.lines([[[-2, -1.5, 0], [2, -1.5, 0]], [[2, -1.5, 0], [2, 1.5, 0]], [[2, 1.5, 0], [-2, 1.5, 0]], [[-2, 1.5, 0], [-2, -1.5, 0]], [[-2, -1.5, 0], [-2, -1.5, ZH + 0.25]]], { c: 'muted', opacity: 0.7 });
+          [10, 20, 30, 40].forEach((V) => S.label(`${V}`, [VX(V), -1.5, 0], { small: true, c: 'muted', dy: 16, align: 'middle' }));
+          S.label(T('V (L)', 'V (L)'), [VX(48), -1.5, 0], { small: true, dy: 16, dx: 2 });
+          [300, 500, 700].forEach((t) => S.label(`${t}`, [2, TY(t), 0], { small: true, c: 'muted', dx: 8, dy: 10 }));
+          S.label(T('T (K)', 'T (K)'), [2, 1.5, 0], { small: true, dx: 8, dy: 8 });
+          st.pLab = S.label('P', [-2, -1.5, ZH + 0.3], { small: true, align: 'middle' });
+          st.pTicks = [0, 1, 2].map(() => S.label('', [-2, -1.5, 0], { small: true, c: 'muted', align: 'end' }));
+          st.iso = S.tube([[0, 0, 0], [0, 0, 0.01]], { c: 'c1', r: 0.045, glow: S.dark ? 0.25 : 0 });
+          st.isoV = S.tube([[0, 0, 0], [0, 0, 0.01]], { c: 'c3', r: 0.034, glow: S.dark ? 0.2 : 0 });
+          st.isoP = S.tube([[0, 0, 0], [0, 0, 0.01]], { c: 'c4', r: 0.034, glow: S.dark ? 0.2 : 0 });
+          st.drop = S.lines([[[0, 0, 0], [0, 0, 0]]], { c: 'ink', opacity: 0.55 });
+          st.foot = S.sphere([0, 0, 0], 0.045, { c: 'ink' });
+          st.h = S.handle([0, 0, 0], { r: 0.085, plane: [[0, 0, 1], [0, 0, 0]], bounds: [-2, 2, -1.5, 1.5], onDrag: (q) => {
+            const V = L.clamp(Math.round(XV(q.x)), 5, 50), t = L.clamp(Math.round(YT(q.y) / 10) * 10, 200, 800);
+            ctx.set('volume', V, true); ctx.set('temperature', t);
+            return [VX(V), TY(t), zOf(V, t) + 0.02];
+          } });
+          st.stLab = S.label('', [0, 0, 0], { small: true });
+        },
+        update(S, vv) {
+          const n = vv.n, Tt = vv.temperature, V = vv.volume, P = n * R * Tt / V, lift = 0.018;
+          const Pmax = n * R * 800 / 5;
+          st.iso.update(L.sample(5, 50, 160, (x) => [VX(x), TY(Tt), zOf(x, Tt) + lift]));
+          st.isoV.update(L.sample(200, 800, 60, (t) => [VX(V), TY(t), zOf(V, t) + lift]));
+          // isobar: V = P V0 / ... on the surface, V ∝ T, clipped to the box
+          const iso = L.sample(200, 800, 120, (t) => { const Vb = n * R * t / P; return Vb >= 5 && Vb <= 50 ? [VX(Vb), TY(t), zOf(Vb, t) + lift] : null; }).filter(Boolean);
+          st.isoP.update(iso);
+          const p = [VX(V), TY(Tt), zOf(V, Tt)];
+          st.h.at([p[0], p[1], p[2] + 0.02]);
+          st.drop.update([[[p[0], p[1], 0], p]]);
+          st.foot.at([p[0], p[1], 0]);
+          st.stLab.set([p[0], p[1], p[2] + 0.16], `${fmt(P, 1)} kPa`);
+          const step = niceUp(Pmax / 3.2), ticks = [step, 2 * step, 3 * step].filter((x) => x <= Pmax * 1.02);
+          st.pTicks.forEach((lab, i) => { const pk = ticks[i]; lab.set([-2, -1.5, pk !== undefined ? ZH * pk / Pmax : 0], pk !== undefined ? fmt(pk, 0) : ''); lab.el.hidden = pk === undefined; });
+          st.pLab.set(null, T('P (kPa)', 'P (kPa)'));
+          draw2d(vv);
+        },
+        fallback() { st.flat = true; draw2d(v); },
       });
-      g.rect(0, 0, V, P, { c: 'hl', fo: 0.14, w: 1, dash: '3 3' });
-      g.line(L.sample(Math.max(2, n * R * Tt / YP), 52, 240, (x) => n * R * Tt / x), { c: 'c1', w: 2.6 });
-      g.dot(V, P, { c: 'hl', r: 6.5 });
-      g.handle(V, P, { c: 'hl', label: T('Volume', '体積'), axis: 'x', bounds: [5, 50, 0, YP], onDrag: (x) => ctx.set('volume', x) });
-      g.text(V, P, `${fmt(P, 1)} kPa`, { dx: 10, dy: 20, anchor: 'start', small: true });
-      L.legend(ctx.host, [{ c: 'c1', label: T(`isotherm T = ${Tt} K`, `等温線 T = ${Tt} K`) }, { c: 'muted', label: T('other temperatures', '他の温度') }, { kind: 'fill', c: 'hl', label: 'PV = nRT' }]);
-      ctx.readout([{ k: 'P = nRT/V', v: `${fmt(P, 1)} kPa`, tone: 'key' }, { k: T('in atmospheres', '気圧換算'), v: `${fmt(P / 101.325, 3)} atm` }, { k: 'PV = nRT', v: `${fmt(n * R * Tt, 0)} J` }, { k: T('number density', '数密度'), v: `${fmt(n * 6.022e23 / (V * 1e-3), 3)} m⁻³` }],
-        T('Drag the gold point along the isotherm. Doubling T at fixed n and V doubles P; halving V at fixed T also doubles it, because PV stays equal to nRT.', '金色の点を等温線に沿ってドラッグできます。n と V を固定して T を2倍にすると P は2倍になり、T を固定して V を半分にしても PV = nRT が保たれるので P は2倍になります。'));
+      if (!st.__v3 && !st.flat) draw2d(v);
     },
   };
 })();

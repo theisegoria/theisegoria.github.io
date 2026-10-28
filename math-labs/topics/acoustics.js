@@ -133,34 +133,49 @@
   };
 
   /* ---------- 2. Chladni figures ---------- */
-  const NS = 2600, ITER = 320;
+  const NS = 2600, ITER = 320, PA = 0.2;
+  function chladniFrame(ctx) {
+    const st = ctx.state;
+    if (st.frame && st.frame.isConnected) return st;
+    st.anim?.stop(); st.anim = null;
+    ctx.host.replaceChildren();
+    st.frame = L.h('div', '', ctx.host);
+    st.row = L.h('div', 'lab-row is-wide', st.frame);
+    st.c1 = L.h('div', 'lab-col', st.row); st.c2 = L.h('div', 'lab-col', st.row);
+    st.cap1 = L.h('p', 'lab-cap', st.c1, '');
+    st.v3 = L.h('div', '', st.c1);
+    st.cap2 = L.h('p', 'lab-cap', st.c2, '');
+    st.g2 = L.h('div', '', st.c2);
+    st.bar = L.h('div', '', st.frame);
+    st.leg = L.h('div', '', st.frame);
+    return st;
+  }
   D['chladni'] = {
+    three: true,
     render(ctx, v) {
-      ctx.state.anim?.stop();
-      const m = v.m, n = v.n, sg = v.sign === 0 ? 1 : -1, st = ctx.state;
+      const st = chladniFrame(ctx);
+      const m = v.m, n = v.n, sg = v.sign === 0 ? 1 : -1;
       const zero = m === 0 && n === 0;
       const key = `${m}|${n}|${sg}`;
       if (st.key !== key && !zero) { st.snaps = sand(m, n, sg, NS, ITER); st.key = key; }
-      const w = chladniW(m, n, sg), amp = m === n ? 1 : 2;
-      const row = L.h('div', 'lab-row', ctx.host), c1 = L.h('div', 'lab-col', row), c2 = L.h('div', 'lab-col', row);
-      L.h('p', 'lab-cap', c1, zero
+      st.mode = { m, n, sg, zero, w: chladniW(m, n, sg), amp: m === n ? 1 : 2 };
+      const label = `(${m}, ${n}${m === n ? '' : sg > 0 ? ', +' : ', −'})`, labelJ = `(${m}, ${n}${m === n ? '' : sg > 0 ? '、+' : '、−'})`;
+      const capFlat = T(`Sand on a square plate vibrating in mode ${label}. Colour is the displacement at one instant, warm up and cool down. Sand is thrown about where the plate moves and comes to rest on the nodal lines, where it does not.`, `モード ${labelJ} で振動する正方形の板の上の砂です。色はある瞬間の変位で、暖色が上、寒色が下です。砂は板が動く所で跳ね飛ばされ、動かない節線の上で止まります。`);
+      st.cap1.textContent = zero
         ? T('Mode (0, 0) is the plate moving up and down as a rigid body: there is no bending and no nodal line. Choose another mode.', 'モード (0, 0) は板が剛体として上下に動くだけで、曲げも節線もありません。別のモードを選んでください。')
-        : T(`Sand on a square plate vibrating in mode (${m}, ${n}${m === n ? '' : sg > 0 ? ', +' : ', −'}). Colour is the displacement at one instant, warm up and cool down. Sand is thrown about where the plate moves and comes to rest on the nodal lines, where it does not.`, `モード (${m}, ${n}${m === n ? '' : sg > 0 ? '、+' : '、−'}) で振動する正方形の板の上の砂です。色はある瞬間の変位で、暖色が上、寒色が下です。砂は板が動く所で跳ね飛ばされ、動かない節線の上で止まります。`));
-      const f = L.fig(c1, { x: [0, 1], y: [0, 1], equal: true, axes: false, grid: false, maxH: 420 });
-      if (!zero) f.raster((x, y) => 0.55 * w(x, y) / amp, { cmap: 'div', res: 3 });
-      f.rect(0, 0, 1, 1, { c: 'ink', w: 2.4, layer: 'under' });
-      const G = f.group('over');
-      const P = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-      P.setAttribute('style', 'fill:none;stroke:var(--lab-ink);stroke-width:2.3;stroke-linecap:round;opacity:0.9'); G.appendChild(P);
-      const draw = (k) => { if (zero) return; const [xs, ys] = st.snaps[clamp(k, 0, st.snaps.length - 1)]; let d = ''; for (let i = 0; i < xs.length; i++) d += `M${f.X(xs[i]).toFixed(1)} ${f.Y(ys[i]).toFixed(1)}h0`; P.setAttribute('d', d); };
+        : st.flat
+          ? T(`Sand on a square plate vibrating in mode ${label}. Colour is the displacement at one instant, warm up and cool down. Sand is thrown about where the plate moves and comes to rest on the nodal lines, where it does not.`, `モード ${labelJ} で振動する正方形の板の上の砂です。色はある瞬間の変位で、暖色が上、寒色が下です。砂は板が動く所で跳ね飛ばされ、動かない節線の上で止まります。`)
+          : T(`The plate vibrating in mode ${label}, with its motion greatly exaggerated and coloured by displacement. Sand is thrown off the parts that move and settles on the nodal lines, which stay still. Press Play to sprinkle it again; drag to turn the plate.`, `モード ${labelJ} で振動する板です。動きを大きく誇張し、変位で色分けしています。砂は動く部分から跳ね飛ばされ、静止したままの節線の上に集まります。再生で砂をまき直せます。ドラッグで板を回せます。`);
       // gallery of modes: drag the gold square to choose (m, n)
-      L.h('p', 'lab-cap', c2, T(`Nodal lines of every mode up to (4, 4) with the ${sg > 0 ? '+' : '−'} combination. Drag the gold point to choose a mode.`, `${sg > 0 ? '+' : '−'} の組み合わせで (4, 4) までのすべてのモードの節線です。金色の点をドラッグしてモードを選んでください。`));
-      const g = L.fig(c2, { x: [0, 5], y: [0, 5], equal: true, axes: true, grid: false, maxH: 420, xlabel: 'm', ylabel: 'n', ticksX: L.seq(5, (i) => [i + 0.5, String(i)]), ticksY: L.seq(5, (i) => [i + 0.5, String(i)]) });
+      st.cap2.textContent = T(`Nodal lines of every mode up to (4, 4) with the ${sg > 0 ? '+' : '−'} combination. Drag the gold point to choose a mode.`, `${sg > 0 ? '+' : '−'} の組み合わせで (4, 4) までのすべてのモードの節線です。金色の点をドラッグしてモードを選んでください。`);
+      st.g2.replaceChildren();
+      const g = L.fig(st.g2, { x: [0, 5], y: [0, 5], equal: true, axes: true, grid: false, maxH: 420, xlabel: 'm', ylabel: 'n', ticksX: L.seq(5, (i) => [i + 0.5, String(i)]), ticksY: L.seq(5, (i) => [i + 0.5, String(i)]) });
       const col = L.colours(), ink = col.ink, pl = col.plate, hl = col.c1;
       g.raster((x, y) => { const i = Math.floor(x), j = Math.floor(y), u = (x - i - 0.06) / 0.88, vv = (y - j - 0.06) / 0.88; if (u < 0 || u > 1 || vv < 0 || vv > 1 || (i === 0 && j === 0)) return pl; const ww = chladniW(i, j, sg)(u, vv) / (i === j ? 1 : 2); const e = Math.abs(ww); return e < 0.05 ? ink : ww > 0 ? hl.map((c, q) => 0.25 * c + 0.75 * pl[q]) : pl; }, { res: 2 });
       g.rect(m + 0.02, n + 0.02, 0.96, 0.96, { c: 'hl', w: 2.6, layer: 'over' });
       g.handle(m + 0.5, n + 0.5, { c: 'hl', r: 6, snap: 1, label: T('Mode (m, n)', 'モード (m, n)'), bounds: [0.5, 4.5, 0.5, 4.5], onDrag: (x, y) => { const mi = Math.round(x - 0.5), ni = Math.round(y - 0.5); ctx.set('m', mi, true); ctx.set('n', ni); } });
-      L.legend(ctx.host, [{ c: 'pos', kind: 'fill', label: T('moving up', '上へ動く') }, { c: 'neg', kind: 'fill', label: T('moving down', '下へ動く') }, { c: 'ink', kind: 'dot', label: T('sand, collecting on nodal lines', '節線に集まる砂') }]);
+      st.leg.replaceChildren();
+      L.legend(st.leg, [{ c: 'pos', kind: 'fill', label: T('moving up', '上へ動く') }, { c: 'neg', kind: 'fill', label: T('moving down', '下へ動く') }, { c: 'ink', kind: 'dot', label: T('sand, collecting on nodal lines', '節線に集まる砂') }]);
       const rel = chladniRel(m, n) / chladniRel(1, 1);
       ctx.readout([
         { k: T('mode', 'モード'), v: `(${m}, ${n})${m === n ? '' : sg > 0 ? ' +' : ' −'}`, tone: 'key' },
@@ -169,12 +184,67 @@
       ], zero ? '' : m === n
         ? T('With m = n the two terms coincide: the + combination is a plain grid of nodal lines, and the − combination would vanish identically, so the same grid is shown for both.', 'm = n では二つの項が一致します。+ の組み合わせは節線の単純な格子になり、− の組み合わせは恒等的に消えてしまうので、どちらにも同じ格子を示します。')
         : T(`The + and − combinations of (${m}, ${n}) share one frequency in this approximation and draw different figures, one symmetric and one antisymmetric under swapping x and y. On a real plate the free edges split the pair a little, which is why Chladni heard them as separate notes.`, `(${m}, ${n}) の + と − の組み合わせは、この近似では周波数が同じで、x と y の入れ替えについて対称なものと反対称なものという別の図形を描きます。実際の板では自由端がこの組をわずかに分けるので、クラドニは別々の音として聞きました。`));
-      if (zero) { P.setAttribute('d', ''); return; }
-      const S = st.snaps.length - 1;
-      ctx.state.anim = L.animator(ctx.host, (dt, t, lb) => { const k = Math.min(S, Math.floor(t * 18)); draw(k); lb.textContent = T(`${k * 4} bounces`, `${k * 4} 回跳ねた後`); return k < S; }, { autoplay: false, once: true, initialT: 1e4, playLabel: T('Play: sprinkle sand and bow the plate', '再生：砂をまいて板を弓で鳴らす') });
+      // the flat picture, for browsers without 3D
+      const flat2d = () => {
+        if (!st.f || !st.f.svg.isConnected || st.fKey !== key) {
+          st.fKey = key; st.v3.replaceChildren();
+          const f = L.fig(st.v3, { x: [0, 1], y: [0, 1], equal: true, axes: false, grid: false, maxH: 420 });
+          if (!zero) f.raster((x, y) => 0.55 * st.mode.w(x, y) / st.mode.amp, { cmap: 'div', res: 3 });
+          f.rect(0, 0, 1, 1, { c: 'ink', w: 2.4, layer: 'under' });
+          const G = f.group('over');
+          st.P = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+          st.P.setAttribute('style', 'fill:none;stroke:var(--lab-ink);stroke-width:2.3;stroke-linecap:round;opacity:0.9'); G.appendChild(st.P);
+          st.f = f;
+        }
+        return st.f;
+      };
+      st.drawFrame = (k, phase, done) => {
+        const md = st.mode;
+        if (st.flat) {
+          const f = flat2d();
+          if (md.zero) { st.P.setAttribute('d', ''); return; }
+          const [xs, ys] = st.snaps[clamp(k, 0, st.snaps.length - 1)]; let d = ''; for (let i = 0; i < xs.length; i++) d += `M${f.X(xs[i]).toFixed(1)} ${f.Y(ys[i]).toFixed(1)}h0`; st.P.setAttribute('d', d);
+          return;
+        }
+        st.draw3d?.(k, done ? 0.85 : Math.cos(phase));
+      };
+      L.view3d(ctx, v, {
+        host: st.v3, aspect: 0.86, maxH: 470, camera: [2.35, -3.3, 2.6], target: [0, 0, -0.1], fov: 31,
+        init(S) {
+          st.flat = false;
+          st.plate = S.surface((u, w) => [u, w, 0], { u: [-1, 1], v: [-1, 1], nu: 96, nv: 96, colour: () => S.colour('plate'), rough: 0.72, coat: 0.15 });
+          st.plate.userData.noOcclude = true;
+          st.edge = S.lines([], { c: 'ink', opacity: 0.9 });
+          st.grains = S.points(L.seq(NS, () => [0, 0, 0]), { c: 'ink', r: 0.011, max: NS, rough: 0.9, coat: 0 });
+          st.post = S.tube([[0, 0, -0.5], [0, 0, -0.02]], { c: 'muted', r: 0.02 });
+          st.draw3d = (k, c) => {
+            const md = st.mode, A = md.zero ? 0.12 : PA, wn = (x, y) => (md.zero ? 1 : md.w(x, y) / md.amp);
+            const Z = (X, Y) => A * c * wn((X + 1) / 2, (Y + 1) / 2);
+            st.plate.update((X, Y) => [X, Y, Z(X, Y)], (X, Y) => S.cmap.div(md.zero ? 0.5 * c : Math.max(-1, Math.min(1, 1.25 * c * wn((X + 1) / 2, (Y + 1) / 2)))));
+            const e = []; const N = 48;
+            for (let i = 0; i < N; i++) { const a = -1 + 2 * i / N, b = -1 + 2 * (i + 1) / N; e.push([[a, -1, Z(a, -1)], [b, -1, Z(b, -1)]], [[a, 1, Z(a, 1)], [b, 1, Z(b, 1)]], [[-1, a, Z(-1, a)], [-1, b, Z(-1, b)]], [[1, a, Z(1, a)], [1, b, Z(1, b)]]); }
+            st.edge.update(e);
+            st.post.update([[0, 0, -0.55], [0, 0, Z(0, 0) - 0.01]]);
+            if (md.zero) { st.grains.visible = false; S.invalidate(); return; }
+            st.grains.visible = true;
+            const [xs, ys] = st.snaps[clamp(k, 0, st.snaps.length - 1)], pts = new Array(xs.length);
+            for (let i = 0; i < xs.length; i++) { const X = 2 * xs[i] - 1, Y = 2 * ys[i] - 1; pts[i] = [X, Y, Z(X, Y) + 0.012]; }
+            st.grains.update(pts);
+          };
+        },
+        update() { st.anim?.redraw(); },
+        fallback() { st.flat = true; st.row.classList.remove('is-wide'); if (!zero) st.cap1.textContent = capFlat; st.f = null; st.anim?.redraw(); },
+      });
+      const S0 = zero ? 0 : st.snaps.length - 1;
+      st.anim?.stop();
+      st.anim = L.animator(st.bar.firstChild ? (st.bar.replaceChildren(), st.bar) : st.bar, (dt, t, lb) => {
+        const k = Math.min(S0, Math.floor(t * 18)), done = zero ? t >= 6 : k >= S0;
+        st.drawFrame(k, t * 2 * PI * 2.2, done);
+        lb.textContent = zero ? '' : T(`${k * 4} bounces`, `${k * 4} 回跳ねた後`);
+        return zero ? t < 6 : k < S0;
+      }, { autoplay: false, once: true, initialT: 1e4, playLabel: T('Play: sprinkle sand and bow the plate', '再生：砂をまいて板を弓で鳴らす') });
     },
   };
-
   /* ---------- 3. Doppler effect and the Mach cone ---------- */
   D['doppler-mach'] = {
     render(ctx, v) {

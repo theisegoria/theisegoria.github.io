@@ -1,8 +1,81 @@
 {
  "induction": {
   "params": [
-   ["position", "Magnet position", "磁石の位置", -2, 2, 0.1, -0.8],
-   ["speed", "Sweep speed", "移動速度", 0.2, 2, 0.1, 1]
+   [
+    "position",
+    "Magnet position",
+    "磁石の位置",
+    -2,
+    2,
+    0.1,
+    -0.8
+   ],
+   [
+    "speed",
+    "Sweep speed",
+    "移動速度",
+    0.2,
+    2,
+    0.1,
+    1
+   ]
+  ],
+  "body": [
+   "A small magnet moves along the axis of a wire loop. Its field lines are drawn exactly, and those that pass through the loop are bold, so their number follows the flux. Drag the magnet or press Play to sweep it through, and watch the induced emf and current: largest where the flux changes fastest, and reversing as the magnet passes.",
+   "小さな磁石が針金のループの軸に沿って動きます。磁力線を正確に描き、ループを通り抜ける線を太くしているので、その本数が磁束に従います。磁石をドラッグするか、再生で通り抜けさせて、誘導起電力と電流を見てください。磁束が最も速く変わる所で最大になり、磁石が通過すると反転します。"
+  ]
+ },
+ "lorentz": {
+  "params": [
+   [
+    "b",
+    "Magnetic field",
+    "磁場",
+    0.2,
+    2,
+    0.1,
+    1
+   ],
+   [
+    "vz",
+    "Parallel velocity",
+    "平行速度",
+    -1,
+    1,
+    0.1,
+    0.3
+   ],
+   [
+    "e",
+    "Electric field E (along y)",
+    "電場 E（y 方向）",
+    0,
+    1,
+    0.1,
+    0
+   ]
+  ],
+  "body": [
+   "A positive charge in a uniform magnetic field B, with an electric field E that can be switched on across it. Change B and the velocity along B to turn the circle into a helix, then add E: the circle drifts sideways at E/B, perpendicular to both fields, whatever the charge.",
+   "一様な磁場 B の中の正電荷で、B に垂直な電場 E を加えることもできます。B と B 方向の速度を変えると円がらせんになります。次に E を加えると、円は電荷によらず両方の場に垂直な向きへ E/B の速さで横に流れていきます。"
+  ],
+  "example": [
+   "A velocity perpendicular to B bends continuously; parallel velocity is unchanged. With E across B the guiding centre moves at E/B.",
+   "B に垂直な速度は曲がり続け、平行成分は変わりません。B に垂直な E があると、案内中心は E/B で動きます。"
+  ]
+ },
+ "electric-field": {
+  "body": [
+   "Two point charges and their field in space. Drag either charge, in the 3D view or in the slice beside it, and change their sizes. Each charge sends out a number of field lines proportional to its charge, evenly in every direction, so the density of the lines measures the strength of the field. The slice through both charges shows the potential and its equipotentials, which the field lines cross at right angles.",
+   "2つの点電荷と、空間につくられる電場です。3D の図でも横の断面図でも電荷をドラッグでき、電荷の大きさも変えられます。各電荷は電荷に比例する本数の力線をあらゆる方向に均等に出すので、力線の密度が電場の強さを表します。両方の電荷を通る断面には電位と等電位線を示し、力線はそれらと直角に交わります。"
+  ],
+  "question": [
+   "Why does the density of field lines in 3D measure the field strength, when a flat drawing cannot?",
+   "3 次元では力線の密度が電場の強さを表すのに、平面の図ではそうならないのはなぜですか？"
+  ],
+  "answer": [
+   "A charge's lines spread over a sphere of area 4πr², so their density falls as 1/r², exactly like the field. In a flat drawing they spread over a circle and thin out only as 1/r.",
+   "電荷から出た力線は面積 4πr² の球面に広がるので、密度は電場と同じく 1/r² で減ります。平面の図では円周に広がるので、1/r でしか薄くなりません。"
   ]
  }
 }

@@ -387,6 +387,7 @@ export async function create(host, opts = {}) {
     overlay.appendChild(el);
     const item = { el, p: V(p), o };
     item.set = (q, t) => { if (q) item.p = V(q); if (t !== undefined) el.textContent = t; lab.invalidate(); return item; };
+    item.show = (on) => { el.style.display = on ? '' : 'none'; return item; };
     item.remove = () => { el.remove(); S.labels.splice(S.labels.indexOf(item), 1); };
     S.labels.push(item);
     lab.invalidate();
@@ -420,6 +421,7 @@ export async function create(host, opts = {}) {
     halo.scale.setScalar(1.9); m.add(halo);
     m.userData.handle = o; S.handles.push(m);
     m.setPlane = (nrm, q) => { o.plane = [nrm, q]; return m; };
+    m.setColour = (c) => { const col = colour(c); m.material.color.copy(col); m.material.emissive.copy(col); m.children[0].material.color.copy(col); lab.invalidate(); return m; };
     if (o.label) m.labelItem = S.label(o.label, p, { math: true });
     const at = m.at; m.at = (q) => { at(q); m.labelItem?.set(q); return m; };
     return m;
@@ -468,7 +470,7 @@ export async function create(host, opts = {}) {
 
   /* continuous animation while fn returns anything but false */
   S.animate = (fn) => { S.tick = fn; lab.invalidate(); };
-  S.look = (pos, tgt) => { camera.position.copy(V(pos)); if (tgt) controls.target.copy(V(tgt)); controls.update(); lab.invalidate(); };
+  S.look = (pos, tgt, keep) => { camera.position.copy(V(pos)); if (tgt) controls.target.copy(V(tgt)); if (keep) { camPos.copy(V(pos)); if (tgt) target.copy(V(tgt)); } controls.update(); lab.invalidate(); };
   S.reduced = prefersReducedMotion;
   S.dispose = () => {
     S.disposers.forEach((f) => f());

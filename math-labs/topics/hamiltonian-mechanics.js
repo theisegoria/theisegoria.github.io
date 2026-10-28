@@ -139,39 +139,96 @@
   };
 
   /* ---------- 3. Noether ---------- */
+  // the potential is drawn as a landscape z = ZS V(x, y) over the disc r <= RV; the motion itself stays in the plane
+  const ZS = 0.55, RV = 1.42, LS = 1.1;
   D.noether = {
+    three: true,
     render(ctx, v) {
-      ctx.state.anim?.stop();
-      const run = integrateRipple(v.eps, v.n, v.time);
-      const row = L.h('div', 'lab-row', ctx.host);
-      const c1 = L.h('div', 'lab-col', row), c2 = L.h('div', 'lab-col', row);
-      L.h('p', 'lab-cap', c1, T('The orbit over the potential V, shaded by height: the ripple shows as n lobes in the shading', 'ポテンシャル V の高さで陰影を付けた上の軌道：うねりは陰影の n 個の突起として見えます'));
-      const f = L.fig(c1, { x: [-1.6, 1.6], y: [-1.6, 1.6], equal: true, maxH: 400, grid: false, axes: false });
-      f.raster((x, y) => Math.min(1, Math.sqrt(rippleV(x, y, v.eps, v.n) / 1.6)) * 0.42, { cmap: 'seq', res: 2 });
-      f.line(run.map((s) => [s.x, s.y]), { c: 'c1', w: 1.1, op: 0.55 });
-      L.h('p', 'lab-cap', c2, T('Angular momentum L and energy E along the run', '実行中の角運動量 L とエネルギー E'));
-      const Ls = run.map((s) => s.L), Es = run.map((s) => s.E);
-      const lo = Math.min(...Ls, ...Es), hi = Math.max(...Ls, ...Es), pad = Math.max(0.05, (hi - lo) * 0.12);
-      const g = L.fig(c2, { x: [0, v.time], y: [Math.min(0, lo - pad), hi + pad], aspect: 0.8, maxH: 380, xlabel: T('time', '時間') });
-      g.line(run.map((s) => [s.t, s.E]), { c: 'c3', w: 2.4, layer: 'under' });
-      g.line(run.map((s) => [s.t, s.L]), { c: 'c2', w: 2.2, layer: 'under' });
-      g.text(v.time * 0.98, run.at(-1).E, 'E', { anchor: 'end', c: 'c3', math: true, dy: -8 });
-      g.text(v.time * 0.98, run.at(-1).L, 'L', { anchor: 'end', c: 'c2', math: true, dy: 16 });
-      const draw = (t) => {
-        f.clear('over'); g.clear('main');
-        const k = Math.min(run.length - 1, run.findIndex((s) => s.t >= t) < 0 ? run.length - 1 : run.findIndex((s) => s.t >= t));
-        const tail = run.slice(Math.max(0, k - 120), k + 1).map((s) => [s.x, s.y]);
-        f.line(tail, { c: 'c1', w: 3, layer: 'over' });
-        f.dot(run[k].x, run[k].y, { c: 'hl', r: 6.5 });
-        g.vline(run[k].t, { c: 'hl', w: 1.4, dash: '3 3', layer: 'main' });
-        g.dot(run[k].t, run[k].L, { c: 'c2', r: 4.5 }); g.dot(run[k].t, run[k].E, { c: 'c3', r: 4.5 });
+      const st = ctx.state;
+      st.anim?.stop();
+      if (!st.frame || !st.frame.isConnected) {
+        ctx.host.replaceChildren();
+        st.frame = L.h('div', '', ctx.host);
+        const row = L.h('div', 'lab-row is-wide', st.frame);
+        st.c1 = L.h('div', 'lab-col', row); st.c2 = L.h('div', 'lab-col', row);
+        L.h('p', 'lab-cap', st.c1, T('The orbit drawn on the landscape z = V(x, y), so height is potential energy and the colour marks the ripple: n warm ridges and n cool valleys. The particle moves in the plane; the landscape only shows where V is high. The orange arrow is the angular momentum L. Drag to turn the view.', '軌道を地形 z = V(x, y) の上に描いています。高さが位置エネルギーで、色がうねりを示します。暖色が n 本の尾根、寒色が n 本の谷です。粒子は平面内を動き、地形は V の高いところを示すだけです。橙の矢印は角運動量 L です。ドラッグで視点を回せます。'));
+        st.v3 = L.h('div', '', st.c1);
+        st.bar = L.h('div', '', st.frame);
+        st.leg = L.h('div', '', st.frame);
+      }
+      st.v = v;
+      const key = `${v.eps}|${v.n}|${v.time}`;
+      if (st.key !== key) { st.run = integrateRipple(v.eps, v.n, v.time); st.key = key; st.dirty = true; }
+      const lift = (s, h = 0.012) => [s.x, s.y, ZS * rippleV(s.x, s.y, st.v.eps, st.v.n) + h];
+      const paint = () => {
+        const v = st.v, run = st.run;
+        st.c2.replaceChildren(); st.leg.replaceChildren(); st.bar.replaceChildren();
+        let f = null;
+        if (st.flat) {
+          st.c1.replaceChildren();
+          L.h('p', 'lab-cap', st.c1, T('The orbit over the potential V, shaded by height: the ripple shows as n lobes in the shading', 'ポテンシャル V の高さで陰影を付けた上の軌道：うねりは陰影の n 個の突起として見えます'));
+          f = L.fig(st.c1, { x: [-1.6, 1.6], y: [-1.6, 1.6], equal: true, maxH: 400, grid: false, axes: false });
+          f.raster((x, y) => Math.min(1, Math.sqrt(rippleV(x, y, v.eps, v.n) / 1.6)) * 0.42, { cmap: 'seq', res: 2 });
+          f.line(run.map((s) => [s.x, s.y]), { c: 'c1', w: 1.1, op: 0.55 });
+        }
+        L.h('p', 'lab-cap', st.c2, T('Angular momentum L and energy E along the run', '実行中の角運動量 L とエネルギー E'));
+        const Ls = run.map((s) => s.L), Es = run.map((s) => s.E);
+        const lo = Math.min(...Ls, ...Es), hi = Math.max(...Ls, ...Es), pad = Math.max(0.05, (hi - lo) * 0.12);
+        const g = L.fig(st.c2, { x: [0, v.time], y: [Math.min(0, lo - pad), hi + pad], aspect: 0.8, maxH: 380, xlabel: T('time', '時間') });
+        g.line(run.map((s) => [s.t, s.E]), { c: 'c3', w: 2.4, layer: 'under' });
+        g.line(run.map((s) => [s.t, s.L]), { c: 'c2', w: 2.2, layer: 'under' });
+        const up = run[0].L >= run[0].E;
+        g.text(v.time * 0.015, run[0].E, 'E', { anchor: 'start', c: 'c3', math: true, dy: up ? 16 : -8 });
+        g.text(v.time * 0.015, run[0].L, 'L', { anchor: 'start', c: 'c2', math: true, dy: up ? -8 : 16 });
+        const draw = (t) => {
+          st.tNow = t;
+          g.clear('main');
+          let k = run.findIndex((s) => s.t >= t); if (k < 0) k = run.length - 1;
+          const tail = run.slice(Math.max(0, k - 120), k + 1);
+          if (f) { f.clear('over'); f.line(tail.map((s) => [s.x, s.y]), { c: 'c1', w: 3, layer: 'over' }); f.dot(run[k].x, run[k].y, { c: 'hl', r: 6.5 }); }
+          if (st.S && !st.flat) st.place(tail, run[k]);
+          g.vline(run[k].t, { c: 'hl', w: 1.4, dash: '3 3', layer: 'main' });
+          g.dot(run[k].t, run[k].L, { c: 'c2', r: 4.5 }); g.dot(run[k].t, run[k].E, { c: 'c3', r: 4.5 });
+        };
+        draw(Math.min(v.time, st.tNow ?? v.time));
+        st.anim = L.animator(st.bar, (dt, t) => { const tt = Math.min(v.time, t * 4); draw(tt); if (tt >= v.time) return false; }, { autoplay: false, once: true, initialT: v.time / 4, playLabel: T('Replay the particle', '粒子を再生') });
+        const Lmin = Math.min(...Ls), Lmax = Math.max(...Ls), Emin = Math.min(...Es), Emax = Math.max(...Es);
+        L.legend(st.leg, [{ c: st.flat ? 'c1' : 'ink', label: T('trajectory', '軌道') }, { c: 'c2', label: T('angular momentum L', '角運動量 L') }, { c: 'c3', label: T('energy E', 'エネルギー E') }].concat(st.flat ? [] : [{ kind: 'fill', c: 'pos', label: T('ridge: V above the round bowl', '尾根：V が丸い鉢より高い') }, { kind: 'fill', c: 'neg', label: T('valley: V below it', '谷：V が丸い鉢より低い') }]));
+        ctx.readout([{ k: T('L range', 'L の範囲'), v: `${fmt(Lmin, 3)} … ${fmt(Lmax, 3)}`, tone: v.eps === 0 ? 'good' : 'warn' }, { k: T('E range', 'E の範囲'), v: `${fmt(Emin, 4)} … ${fmt(Emax, 4)}`, tone: 'good' }, { k: T('symmetry', '対称性'), v: v.eps === 0 ? T('all rotations', 'すべての回転') : T(`${v.n}-fold only`, `${v.n} 回対称のみ`), tone: 'key' }],
+          v.eps === 0 ? T('With a round potential, L is constant to rounding error and the orbit is a rosette confined between two circles.', '丸いポテンシャルでは L は丸め誤差の範囲で一定で、軌道は二つの円の間に収まるロゼットです。') : T('The ripple exerts a torque, so L swaps back and forth with the radial motion while E stays put: energy survives because the potential still does not depend on time.', 'うねりがトルクを及ぼすので、L は動径方向の運動と行き来しますが E は動きません。ポテンシャルが時間に依存しないので、エネルギーは保存されたままです。'));
       };
-      draw(v.time);
-      ctx.state.anim = L.animator(ctx.host, (dt, t) => { const tt = Math.min(v.time, t * 4); draw(tt); if (tt >= v.time) return false; }, { autoplay: false, once: true, initialT: v.time / 4, playLabel: T('Replay the particle', '粒子を再生') });
-      const Lmin = Math.min(...Ls), Lmax = Math.max(...Ls), Emin = Math.min(...Es), Emax = Math.max(...Es);
-      L.legend(ctx.host, [{ c: 'c1', label: T('trajectory', '軌道') }, { c: 'c2', label: T('angular momentum L', '角運動量 L') }, { c: 'c3', label: T('energy E', 'エネルギー E') }]);
-      ctx.readout([{ k: T('L range', 'L の範囲'), v: `${fmt(Lmin, 3)} … ${fmt(Lmax, 3)}`, tone: v.eps === 0 ? 'good' : 'warn' }, { k: T('E range', 'E の範囲'), v: `${fmt(Emin, 4)} … ${fmt(Emax, 4)}`, tone: 'good' }, { k: T('symmetry', '対称性'), v: v.eps === 0 ? T('all rotations', 'すべての回転') : T(`${v.n}-fold only`, `${v.n} 回対称のみ`), tone: 'key' }],
-        v.eps === 0 ? T('With a round potential, L is constant to rounding error and the orbit is a rosette confined between two circles.', '丸いポテンシャルでは L は丸め誤差の範囲で一定で、軌道は二つの円の間に収まるロゼットです。') : T('The ripple exerts a torque, so L swaps back and forth with the radial motion while E stays put: energy survives because the potential still does not depend on time.', 'うねりがトルクを及ぼすので、L は動径方向の運動と行き来しますが E は動きません。ポテンシャルが時間に依存しないので、エネルギーは保存されたままです。'));
+      const surfFn = (vv) => (rr, ph) => { const x = rr * Math.cos(ph), y = rr * Math.sin(ph); return [x, y, ZS * rippleV(x, y, vv.eps, vv.n)]; };
+      // colour shows the ripple alone, eps cos(n phi): warm where V rises above the round bowl, cool where it dips below
+      const surfCol = (S, vv) => (rr, ph) => S.cmap.div(L.clamp(vv.eps * Math.cos(vv.n * ph) / 0.15, -1, 1) * 0.9 * L.clamp((rr - 0.15) / 0.6, 0, 1));
+      L.view3d(ctx, v, {
+        host: st.v3, aspect: 0.82, maxH: 460, camera: [2.55, -3.25, 2.75], target: [0, 0, 0.32], fov: 34,
+        init(S) {
+          st.flat = false; st.S = S; st.sk = null;
+          st.surf = S.surface(surfFn(v), { u: [0, RV], v: [0, TAU], nu: 56, nv: 168, colour: surfCol(S, v), rough: 0.55, coat: 0.3, wire: true, wireEvery: 8, wireEveryV: 14 });
+          st.path = S.polyline([[0, 0, 0], [0, 0, 0]], { c: 'ink', opacity: 0.55 });
+          st.tail = S.tube([[0, 0, 0], [0, 0, 0.01]], { c: 'ink', r: 0.016 });
+          st.ball = S.sphere([1, 0, 0], 0.05, { c: 'hl', glow: 0.35 });
+          S.lines([[[0, 0, 0], [0, 0, -0.05]]], { c: 'ink', opacity: 0.4 });
+          st.Larrow = S.arrow([0, 0, 0], [0, 0, 0.8], { c: 'c2', r: 0.03, glow: 0.2 });
+          st.Llab = S.label('L', [0, 0, 0.9], { math: true, c: 'c2' });
+          st.place = (tail, s) => {
+            if (tail.length > 1) st.tail.update(tail.map((q) => lift(q, 0.02))); else st.tail.visible = false;
+            st.ball.at(lift(s, 0.03));
+            const len = s.L * LS;
+            st.Larrow.set([0, 0, 0], [0, 0, Math.abs(len) < 1e-3 ? 1e-3 : len]);
+            st.Llab.set([0, 0, len + (len >= 0 ? 0.1 : -0.1)]);
+            S.invalidate();
+          };
+        },
+        update(S, vv) {
+          const sk = `${vv.eps}|${vv.n}`;
+          if (st.sk !== sk) { st.sk = sk; st.surf.update(surfFn(vv), surfCol(S, vv)); }
+          if (st.dirty) { st.dirty = false; st.path.update(st.run.filter((_, i) => i % 2 === 0).map((s) => lift(s))); }
+          paint();
+        },
+        fallback() { st.flat = true; paint(); },
+      });
+      if (!st.__v3 && !st.flat) paint();
     },
   };
 })();

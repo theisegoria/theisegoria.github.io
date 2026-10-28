@@ -106,30 +106,52 @@
   };
 
   /* ---------- 2. cavity modes ---------- */
-  const LAM = 632.8e-9, FWHM = 1.5e9, SPAN = 2.4e9;
+  const LAM = 632.8e-9, FWHM = 1.5e9, SPAN = 2.4e9, RM = 1;   // mirrors: radius of curvature 1 m
+  // TEM00 mode of a symmetric two-mirror cavity: waist at the centre
+  const zRayleigh = (Lm, R = RM) => Math.sqrt(Lm * (2 * R - Lm)) / 2;
+  const waist = (Lm, R = RM) => Math.sqrt(LAM * zRayleigh(Lm, R) / Math.PI);
+  const beamW = (z, Lm, R = RM) => waist(Lm, R) * Math.sqrt(1 + (z / zRayleigh(Lm, R)) ** 2);
+  // phones show 3D figures at aspect 0.8 or taller (labs.css), so this wide scene steps back to keep its width
+  const narrowView = () => typeof window.matchMedia === 'function' && window.matchMedia('(max-width: 600px)').matches;
+  const AX = 0.06, X0 = -3.05, WS = 900, AP = 0.62; // scene: 0.06 per cm along the axis (6 per metre), beam width 900 per metre, so widths are ×150
+  function cavFrame(ctx) {
+    const st = ctx.state;
+    if (st.frame && st.frame.isConnected) return st;
+    ctx.host.replaceChildren();
+    st.frame = L.h('div', '', ctx.host);
+    st.cap1 = L.h('p', 'lab-cap', st.frame, T('The cavity: two concave mirrors (radius of curvature 1 m), the gain tube between them, and the beam of the mode nearest line centre, its width drawn about 150 times larger than its length. Bright bands mark the antinodes of the standing wave, drawn with 12 half-wavelengths; a real He–Ne cavity holds about a million. Drag the gold handle to move the right-hand mirror.', '共振器です。二枚の凹面鏡（曲率半径 1 m）、その間の利得管、そして線中心に最も近いモードのビームを示します。ビームの太さは長さの約 150 倍に拡大しています。明るい帯は定在波の腹で、半波長 12 個で描いています。実際のヘリウムネオン共振器にはおよそ百万個が入ります。金色のハンドルをドラッグすると右の鏡が動きます。'));
+    st.v3 = L.h('div', '', st.frame);
+    st.cap2 = L.h('p', 'lab-cap', st.frame, T('The spectrum near 632.8 nm: Doppler-broadened gain per pass (orange), the loss it must beat (dashed), the cavity resonances (blue), and the modes that lase (gold). Frequencies are offsets from line centre.', '632.8 nm 付近のスペクトルです。ドップラー広がりをもつ一往路あたりの利得（橙）、それが上回るべき損失（破線）、共振器の共鳴（青）、そして発振するモード（金）を示します。周波数は線中心からのずれです。'));
+    st.d2 = L.h('div', '', st.frame);
+    st.leg = L.h('div', '', st.frame);
+    return st;
+  }
+  function cavFlat(ctx, st, v, las, excess) {
+    st.v3.replaceChildren();
+    const Lcm = v.L;
+    const s = L.fig(st.v3, { x: [-6, 112], y: [-1.2, 1.2], aspect: ctx.host.clientWidth < 560 ? 0.42 : 0.22, axes: false, grid: false, maxH: 190 });
+    const mirror = (x, sgn) => s.line(L.sample(-0.95, 0.95, 40, (y) => [x + sgn * 2.2 * y * y, y]), { c: 'ink', w: 4 });
+    mirror(0, -1); mirror(Lcm, 1);
+    s.rect(Lcm * 0.18, -0.38, Lcm * 0.64, 0.76, { c: 'c2', fill: 'c2', fo: 0.13, w: 1 });
+    s.text(Lcm * 0.5, -0.98, T('gain medium', '利得媒質'), { small: true, c: 'c2' });
+    const q = 12, amp = 0.62;
+    s.line(L.sample(0, Lcm, 400, (x) => [x, amp * Math.sin((Math.PI * q * x) / Lcm)]), { c: 'c1', w: 1.8 });
+    s.line(L.sample(0, Lcm, 400, (x) => [x, -amp * Math.sin((Math.PI * q * x) / Lcm)]), { c: 'c1', w: 1.2, op: 0.45 });
+    const pw = clamp(excess / 0.05, 0, 1);
+    if (las.length) { s.rect(Lcm + 2.5, -0.06 - 0.16 * pw, 110 - Lcm, 0.12 + 0.32 * pw, { fill: 'hl', fo: 0.3 + 0.5 * pw, nostroke: true }); s.text(Math.min(104, Lcm + 8), 0.42, T('output', '出力'), { small: true, c: 'hl', anchor: 'start' }); }
+    s.text(Lcm / 2, 1.05, `L = ${fmt(Lcm, 3)} cm`, { small: true, c: 'muted' });
+    s.handle(Lcm, 0, { c: 'hl', r: 8, axis: 'x', snap: 0.5, label: T('Mirror position', '鏡の位置'), bounds: [10, 100, -1, 1], onDrag: (x) => ctx.set('L', Math.round(x * 2) / 2) });
+  }
   D['laser-cavity-modes'] = {
+    three: true,
     render(ctx, v) {
+      const st = cavFrame(ctx);
       const Lcm = v.L, Lm = Lcm / 100 + v.dz * 1e-9, R = v.R, G0 = v.G / 100, F = fsr(Lm), Fin = finesse(R), Gth = thresholdGain(R);
       const md = modes(Lm, LAM, SPAN), las = md.filter((d) => dopplerGain(d, G0, FWHM) > Gth);
       const excess = las.reduce((s, d) => s + dopplerGain(d, G0, FWHM) - Gth, 0);
-      L.h('p', 'lab-cap', ctx.host, T('The cavity: two mirrors, the gain tube between them, and the standing wave of the mode nearest line centre. Drag the right-hand mirror. The wave is drawn with 12 half-wavelengths; a real He–Ne cavity holds about a million.', '共振器です。二枚の鏡、その間の利得管、そして線中心に最も近いモードの定在波を示します。右の鏡をドラッグしてください。波は半波長 12 個で描いています。実際のヘリウムネオン共振器にはおよそ百万個が入ります。'));
-      const s = L.fig(ctx.host, { x: [-6, 112], y: [-1.2, 1.2], aspect: ctx.host.clientWidth < 560 ? 0.42 : 0.22, axes: false, grid: false, maxH: 190 });
-      const mirror = (x, sgn) => s.line(L.sample(-0.95, 0.95, 40, (y) => [x + sgn * 2.2 * y * y, y]), { c: 'ink', w: 4 });
-      mirror(0, -1); mirror(Lcm, 1);
-      s.rect(Lcm * 0.18, -0.38, Lcm * 0.64, 0.76, { c: 'c2', fill: 'c2', fo: 0.13, w: 1 });
-      s.text(Lcm * 0.5, -0.98, T('gain medium', '利得媒質'), { small: true, c: 'c2' });
-      const q = 12, amp = 0.62;
-      s.line(L.sample(0, Lcm, 400, (x) => [x, amp * Math.sin((Math.PI * q * x) / Lcm)]), { c: 'c1', w: 1.8 });
-      s.line(L.sample(0, Lcm, 400, (x) => [x, -amp * Math.sin((Math.PI * q * x) / Lcm)]), { c: 'c1', w: 1.2, op: 0.45 });
-      const pw = clamp(excess / 0.05, 0, 1);
-      if (las.length) { s.rect(Lcm + 2.5, -0.06 - 0.16 * pw, 110 - Lcm, 0.12 + 0.32 * pw, { fill: 'hl', fo: 0.3 + 0.5 * pw, nostroke: true }); s.text(Math.min(104, Lcm + 8), 0.42, T('output', '出力'), { small: true, c: 'hl', anchor: 'start' }); }
-      s.text(Lcm / 2, 1.05, `L = ${fmt(Lcm, 3)} cm`, { small: true, c: 'muted' });
-      s.handle(Lcm, 0, { c: 'hl', r: 8, axis: 'x', snap: 0.5, label: T('Mirror position', '鏡の位置'), bounds: [10, 100, -1, 1], onDrag: (x) => ctx.set('L', Math.round(x * 2) / 2) });
-
-      L.h('p', 'lab-cap', ctx.host, T('The spectrum near 632.8 nm: Doppler-broadened gain per pass (orange), the loss it must beat (dashed), the cavity resonances (blue), and the modes that lase (gold). Frequencies are offsets from line centre.', '632.8 nm 付近のスペクトルです。ドップラー広がりをもつ一往路あたりの利得（橙）、それが上回るべき損失（破線）、共振器の共鳴（青）、そして発振するモード（金）を示します。周波数は線中心からのずれです。'));
+      st.d2.replaceChildren();
       const ymax = Math.max(G0, Gth) * 100 * 1.25;
-      const g = L.fig(ctx.host, { x: [-SPAN / 1e9, SPAN / 1e9], y: [0, ymax], aspect: 0.42, xlabel: T('ν − ν₀, GHz', 'ν − ν₀、GHz'), ylabel: T('gain per pass, %', '一往路あたりの利得、%'), maxH: 380 });
-      // Airy transmission scaled to the full height: a coarse sweep plus a fine one around each resonance
+      const g = L.fig(st.d2, { x: [-SPAN / 1e9, SPAN / 1e9], y: [0, ymax], aspect: 0.42, xlabel: T('ν − ν₀, GHz', 'ν − ν₀、GHz'), ylabel: T('gain per pass, %', '一往路あたりの利得、%'), maxH: 380 });
       const pts = []; const hw = F / Fin; md.forEach((d) => { for (let k = -24; k <= 24; k++) { const x = d + (k / 4) * hw * Math.max(1, Math.abs(k) / 6); pts.push(x); } });
       for (let i = 0; i <= 1600; i++) pts.push(-SPAN + (2 * SPAN * i) / 1600);
       pts.sort((a, b) => a - b);
@@ -139,7 +161,8 @@
       g.hline(100 * Gth, { c: 'ink', w: 1.4, dash: '5 4', layer: 'main' }); g.text(-SPAN / 1e9, 100 * Gth, T(`loss: −ln R = ${fmt(100 * Gth, 3)}%`, `損失：−ln R = ${fmt(100 * Gth, 3)}%`), { small: true, anchor: 'start', dx: 6, dy: -6 });
       las.forEach((d) => { const gv = 100 * dopplerGain(d, G0, FWHM); g.seg([d / 1e9, 0], [d / 1e9, gv], { c: 'hl', w: 3, layer: 'over' }); g.dot(d / 1e9, gv, { c: 'hl', r: 5, layer: 'over' }); });
       if (md.length > 1) { const a = md[Math.floor(md.length / 2)] / 1e9, b = a + F / 1e9, yy = ymax * 0.9; g.arrow([a, yy], [b, yy], { c: 'c1', w: 1.2, layer: 'over' }); g.arrow([b, yy], [a, yy], { c: 'c1', w: 1.2, layer: 'over' }); g.text((a + b) / 2, yy, T(`FSR ${fmt(F / 1e6, 3)} MHz`, `FSR ${fmt(F / 1e6, 3)} MHz`), { small: true, c: 'c1', dy: -8 }); }
-      L.legend(ctx.host, [{ c: 'c2', kind: 'fill', label: T('gain, Doppler width 1.5 GHz', '利得、ドップラー幅 1.5 GHz') }, { c: 'ink', dash: true, label: T('threshold: loss per pass', 'しきい値：一往路あたりの損失') }, { c: 'c1', kind: 'fill', label: T('cavity transmission (Airy)', '共振器の透過（エアリー）') }, { c: 'hl', label: T('lasing modes', '発振モード') }]);
+      st.leg.replaceChildren();
+      L.legend(st.leg, [{ c: 'c2', kind: 'fill', label: T('gain, Doppler width 1.5 GHz', '利得、ドップラー幅 1.5 GHz') }, { c: 'ink', dash: true, label: T('threshold: loss per pass', 'しきい値：一往路あたりの損失') }, { c: 'c1', kind: 'fill', label: T('cavity transmission (Airy)', '共振器の透過（エアリー）') }, { c: 'hl', label: T('lasing modes', '発振モード') }]);
       const dnu = F / Fin;
       ctx.readout([
         { k: T('free spectral range c/2L', '自由スペクトル領域 c/2L'), v: `${fmt(F / 1e6, 4)} MHz`, tone: 'key' },
@@ -147,15 +170,52 @@
         { k: T('mode linewidth', 'モードの線幅'), v: `${fmt(dnu / 1e6, 3)} MHz` },
         { k: T('photon lifetime τ꜀', '光子寿命 τ꜀'), v: `${fmt(1e9 / (2 * Math.PI * dnu), 3)} ns` },
         { k: 'Q', v: fmt(C / LAM / dnu, 2) },
+        { k: T('beam waist w₀', 'ビームウエスト w₀'), v: `${fmt(waist(Lm) * 1000, 3)} mm` },
         { k: T('lasing modes', '発振モード'), v: String(las.length), tone: las.length ? 'good' : 'warn' },
       ], !las.length
         ? T(`No mode lases: the peak gain ${fmt(100 * G0, 3)}% per pass is below the mirror loss ${fmt(100 * Gth, 3)}%. Raise the gain or the reflectivity.`, `発振するモードはありません。一往路あたりのピーク利得 ${fmt(100 * G0, 3)}% が鏡の損失 ${fmt(100 * Gth, 3)}% を下回っています。利得か反射率を上げてください。`)
         : las.length === 1
           ? T('A single longitudinal mode: the cavity is short enough that only one resonance fits under the part of the gain curve above threshold. Nudge the mirror by a fraction of a wavelength and the comb slides, and the laser hops to the neighbouring mode.', '単一の縦モードです。共振器が十分短いので、利得曲線のうちしきい値を超える部分には共鳴が一つしか入りません。鏡を波長の何分の一か動かすと櫛が滑り、レーザーは隣のモードへ跳び移ります。')
           : T(`${las.length} modes lase at once. Each sees its own slice of atoms with the right Doppler shift, so in this inhomogeneously broadened gas they do not compete; lengthen the cavity and more resonances fit under the gain.`, `${las.length} 個のモードが同時に発振します。各モードはちょうどよいドップラーずれをもつ原子の一部だけを見るので、この不均一広がりの気体では互いに競合しません。共振器を長くすると、利得の下により多くの共鳴が入ります。`));
+      L.view3d(ctx, v, {
+        host: st.v3, aspect: 0.36, maxH: 330, camera: narrowView() ? [0.9, -15.5, 5.1] : [0.5, -6.9, 2.3], target: [0.15, 0, -0.05], fov: 29,
+        init(S) {
+          st.flat = false;
+          const cap = (sgn) => S.surface((rho, ph) => [-sgn * rho * rho / (2 * RM * 100 * AX) * 6, rho * Math.cos(ph), rho * Math.sin(ph)], { u: [0, AP], v: [0, 2 * Math.PI], nu: 12, nv: 48, c: 'muted', metal: 0.6, rough: 0.3, coat: 0.6 });
+          st.m1 = cap(1); st.m2 = cap(-1);
+          st.m1.position.x = X0;
+          st.beam = S.surface((u, ph) => [u, 0.1 * Math.cos(ph), 0.1 * Math.sin(ph)], { u: [0, 1], v: [0, 2 * Math.PI], nu: 240, nv: 32, colour: () => S.colour('c1'), opacity: 0.88, rough: 0.5, coat: 0.3, glow: 0.15 });
+          st.tube = S.surface((u, ph) => [u, 0.45 * Math.cos(ph), 0.45 * Math.sin(ph)], { u: [0, 1], v: [0, 2 * Math.PI], nu: 2, nv: 48, c: 'c2', opacity: 0.16, rough: 0.2, coat: 0.8 });
+          st.tube.userData.noOcclude = true;
+          st.out = S.surface((u, ph) => [u, 0.1 * Math.cos(ph), 0.1 * Math.sin(ph)], { u: [0, 1], v: [0, 2 * Math.PI], nu: 2, nv: 24, c: 'hl', opacity: 0.5, glow: 0.6 });
+          st.out.userData.noOcclude = true;
+          st.lg = S.label(T('gain medium', '利得媒質'), [0, 0, -0.5], { small: true, c: 'c2', align: 'middle', dy: 16 });
+          st.lL = S.label('', [0, 0, 0.9], { small: true, c: 'muted', align: 'middle' });
+          st.lo = S.label(T('output', '出力'), [0, 0, 0.3], { small: true, c: 'hl' });
+          st.h = S.handle([0, 0, AP + 0.12], { r: 0.08, c: 'hl', plane: [[0, 1, 0], [0, 0, 0]], onDrag: (q) => { const Lc = Math.round(clamp((q.x - X0) / AX, 10, 100) * 2) / 2; ctx.set('L', Lc); return [X0 + Lc * AX, 0, AP + 0.1]; } });
+        },
+        update(S, vv) {
+          const Lc = vv.L, Lmm = Lc / 100, x2 = X0 + Lc * AX, len = x2 - X0, Rr = vv.R, G = vv.G / 100;
+          const lasing = modes(Lmm, LAM, SPAN).some((d) => dopplerGain(d, G, FWHM) > thresholdGain(Rr));
+          const ex = modes(Lmm, LAM, SPAN).reduce((s, d) => s + Math.max(0, dopplerGain(d, G, FWHM) - thresholdGain(Rr)), 0), pw = clamp(ex / 0.05, 0, 1);
+          st.m2.position.x = x2;
+          const w = (u) => beamW((u - 0.5) * Lmm, Lmm) * WS;
+          const c1 = S.colour('c1'), hl = S.colour('hl'), q = 12;
+          st.beam.update((u, ph) => [X0 + u * len, w(u) * Math.cos(ph), w(u) * Math.sin(ph)], (u) => { const I = Math.sin(Math.PI * q * u) ** 2; return c1.clone().lerp(hl, lasing ? 0.15 + 0.85 * I : 0.25 * I); });
+          st.beam.material.opacity = lasing ? 0.9 : 0.35;
+          st.tube.update((u, ph) => [X0 + len * (0.18 + 0.64 * u), 0.42 * Math.cos(ph), 0.42 * Math.sin(ph)]);
+          const wo = w(1) * 0.7;
+          st.out.visible = lasing; st.lo.el.style.display = lasing ? '' : 'none';
+          st.out.update((u, ph) => [x2 + 0.03 + u * Math.max(0.05, 3.4 - x2), wo * Math.cos(ph), wo * Math.sin(ph)]);
+          st.out.material.opacity = 0.12 + 0.4 * pw;
+          st.lg.set([X0 + len / 2, 0, -0.45]); st.lL.set([X0 + len / 2, 0, AP + 0.18], `L = ${fmt(Lc, 3)} cm`);
+          st.lo.set([Math.min(2.9, x2 + 0.45), 0, wo + 0.05]);
+          st.h.at([x2, 0, AP + 0.1]);
+        },
+        fallback() { st.flat = true; st.cap1.textContent = T('The cavity: two mirrors, the gain tube between them, and the standing wave of the mode nearest line centre. Drag the right-hand mirror. The wave is drawn with 12 half-wavelengths; a real He–Ne cavity holds about a million.', '共振器です。二枚の鏡、その間の利得管、そして線中心に最も近いモードの定在波を示します。右の鏡をドラッグしてください。波は半波長 12 個で描いています。実際のヘリウムネオン共振器にはおよそ百万個が入ります。'); cavFlat(ctx, st, v, las, excess); },
+      });
     },
   };
-
   /* ---------- 3. mode locking ---------- */
   D['mode-locking'] = {
     render(ctx, v) {

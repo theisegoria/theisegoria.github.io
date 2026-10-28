@@ -315,3 +315,5 @@ Notes from the upgrade:
 - `handle.setPlane(normal, point)` moves a handle's drag plane; `S.look(position, target)` re-aims the camera.
 - `S.surface(..., {side: THREE.FrontSide | THREE.BackSide})` draws one face only (two-coloured ribbons).
 - A `fallback` must not call `ctx.redraw()` synchronously; defer it with `setTimeout`.
+- `handle.setColour(token)`, `label.show(bool)`; `S.look(pos, target, true)` also makes that the Reset view position.
+- view3d always uses the newest options when the 3D module finishes loading, so `update` may close over `v`.

@@ -413,12 +413,12 @@
    * The experiment's definition sets three: true. init runs once when the scene
    * exists; update runs on every control change. When neither WebGPU nor WebGL 2
    * is available, or ?flat is in the URL, fallback draws the 2D figure instead. */
-  const V3 = '20261028c';
+  const V3 = '20261028d';
   let three3d = null;
   const flat = /[?&]flat\b/.test(location.search);
   function view3d(ctx, v, o) {
     const st = ctx.state;
-    st.__v3v = v;
+    st.__v3v = v; st.__v3o = o;
     const host = o.host || ctx.host;
     if (flat || st.__v3fallback) { if (!o.host) ctx.host.replaceChildren(); st.__v3fallback = true; o.fallback?.(ctx, v); return; }
     if (st.__v3 && st.__v3.wrap.isConnected) { o.update?.(st.__v3, v); return; }
@@ -436,15 +436,16 @@
       if (!S) throw new Error('no WebGPU or WebGL 2');
       if (!host.isConnected) { S.dispose(); ctx.redraw?.(); return; }   // the figure was rebuilt while loading
       st.__v3 = S;
-      o.init?.(S, st.__v3v);
-      o.update?.(S, st.__v3v);
+      const oo = st.__v3o || o;               // the newest options: controls may have moved while loading
+      oo.init?.(S, st.__v3v);
+      oo.update?.(S, st.__v3v);
     }).catch((err) => {
       console.warn('3D unavailable, drawing the 2D figure:', err);
       st.__v3loading = false; ph.remove();
       if (!host.isConnected) { ctx.redraw?.(); return; }
       st.__v3fallback = true;
       if (!o.host) ctx.host.replaceChildren();
-      o.fallback?.(ctx, st.__v3v);
+      (st.__v3o || o).fallback?.(ctx, st.__v3v);
     });
   }
 

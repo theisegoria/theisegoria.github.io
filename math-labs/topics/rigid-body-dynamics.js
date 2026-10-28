@@ -132,7 +132,8 @@
     const colOf = (x) => (x.ax === 1 ? 'c2' : x.ax === 2 ? (x.sg > 0 ? 'c1' : 'c3') : 'ink');
     faces.forEach((x) => f.poly(x.o.map(cam.P), { c: colOf(x), fo: x.ax === 0 ? 0.12 + 0.25 * x.vis : 0.35 + 0.5 * x.vis, w: 1.2, layer }));
   }
-  D['tennis-racket'] = {
+  // the previous SVG figure, kept as the fallback when there is no 3D
+  const tennisFlat = {
     render(ctx, v) {
       ctx.state.anim?.stop();
       const st = ctx.state, j = Math.round(v.axis), key = `${j}|${v.eps}|${v.time}`;
@@ -207,7 +208,7 @@
   };
 
   /* ---------- 2. the gyroscope: precession and nutation ---------- */
-  D.gyroscope = {
+  const gyroFlat = {
     render(ctx, v) {
       ctx.state.anim?.stop();
       const st = ctx.state, P = { I1: 1, I3: 0.8, mgl: 4, w3: v.spin, th0: v.tilt / DEG, mode: Math.round(v.start) };
@@ -228,7 +229,7 @@
       g.line(S.map((x, i) => [phs[i], -el[i]]), { c: 'c4', w: 2, layer: 'under' });
       g.hline(-v.tilt, { c: 'muted', dash: '4 4' });
       const draw = (t) => {
-        const cam = camera(st, 'v', -1.15, 0.5);
+        const cam = camera(st, 'gv', -1.15, 0.5);
         const k = Math.min(S.length - 1, Math.round(t / dtS)), x = S[k], n = axisOf(x);
         f.clear('under'); f.clear('main'); f.clear('over');
         // floor ring, vertical, pedestal
@@ -253,9 +254,213 @@
         ctx.readout([{ k: 't', v: fmt(x.t, 1) }, { k: T('mean precession rate', '平均の歳差角速度'), v: fmt(avg, 4), tone: 'key' }, { k: T('fast-top estimate mgl / (I₃ω₃)', '速いこまの近似 mgl / (I₃ω₃)'), v: fmt(P.mgl / (P.I3 * P.w3), 4) }, { k: T('nutation frequency ≈ I₃ω₃ / I₁', '章動の角振動数 ≈ I₃ω₃ / I₁'), v: fmt(P.I3 * P.w3 / P.I1, 2) }, { k: T('tilt θ range', '傾き θ の範囲'), v: `${fmt(eLo, 1)}° … ${fmt(eHi, 1)}°` }],
           steady === null && P.mode !== 0 ? T('At this spin and tilt no steady precession exists: the spin is too slow to hold the wheel up, so it is released from rest instead.', 'この回転の速さと傾きでは定常歳差は存在しません。車輪を支えるには回転が遅すぎるので、代わりに静止状態から放しています。') : P.mode === 0 ? T('Released from rest, the axle first drops, the gyroscopic torque turns the drop sideways, and the tip traces cusps: it stops dead at the top of every arch.', '静止状態から放すと、軸はまず下がり、ジャイロ効果のトルクがその落下を横向きに変え、先端はカスプを描きます。各アーチの頂点で一瞬完全に止まります。') : P.mode === 1 ? T('Launched at exactly the steady precession rate, the tilt never changes: gravity’s torque is balanced by turning the angular momentum.', 'ちょうど定常歳差の角速度で送り出すと、傾きはまったく変わりません。重力のトルクは角運動量の向きを変えることで釣り合います。') : T('Pushed against the natural precession, the tip overshoots backwards on every cycle and draws loops.', '自然な歳差と逆向きに押すと、先端は毎周期うしろへ行き過ぎ、ループを描きます。'));
       };
-      orbit(f, ctx, 'v', () => draw(st.tNow ?? v.time));
+      orbit(f, ctx, 'gv', () => draw(st.tNow ?? v.time));
       st.anim = L.animator(ctx.host, (dt, t) => { const tt = Math.min(v.time, t); st.tNow = tt; draw(tt); if (tt >= v.time) return false; }, { autoplay: false, once: true, initialT: v.time, playLabel: T('Release the gyroscope', 'ジャイロを放す') });
       L.legend(ctx.host, [{ c: 'c4', label: T('path of the axle tip', '軸の先端の道') }, { c: 'c2', label: T('one spoke, to show the spin', '回転を示す一本のスポーク') }, { c: 'muted', dash: true, label: T('starting tilt θ', '最初の傾き θ') }]);
+    },
+  };
+
+  /* ---------- 3D versions of the tennis racket and the gyroscope ---------- */
+  function frame3(ctx, caps) {
+    const st = ctx.state;
+    if (st.frame && st.frame.isConnected) return st;
+    st.anim?.stop(); st.anim = null; st.key = null; st.gKey = null;
+    ctx.host.replaceChildren();
+    st.frame = L.h('div', '', ctx.host);
+    const row = L.h('div', 'lab-row is-wide', st.frame);
+    st.c1 = L.h('div', 'lab-col', row); st.c2 = L.h('div', 'lab-col', row);
+    L.h('p', 'lab-cap', st.c1, caps[0]);
+    st.v3 = L.h('div', '', st.c1);
+    L.h('p', 'lab-cap', st.c2, caps[1]);
+    st.g2 = L.h('div', '', st.c2);
+    st.bar = L.h('div', '', st.frame);
+    st.leg = L.h('div', '', st.frame);
+    return st;
+  }
+  const toQ = (S, q) => new S.THREE.Quaternion(q[1], q[2], q[3], q[0]);
+  const RS = 1.08; // radius of the body-fixed sphere that carries the polhodes
+
+  D['tennis-racket'] = {
+    three: true,
+    render(ctx, v) {
+      const st = ctx.state;
+      if (st.__v3fallback) { st.anim?.stop(); ctx.host.replaceChildren(); tennisFlat.render(ctx, v); return; }
+      frame3(ctx, [T('The box in space, inside a sphere that turns with it. The grey curves on the sphere are polhodes, fixed in the body; the angular momentum L stays fixed in space and pierces the sphere at the gold point, which the polhode under it carries along. Drag to turn the view.', '空間の中の箱と、箱とともに回る球面。球面上の灰色の曲線はポールホードで、物体に固定されています。角運動量 L は空間に固定されたまま金色の点で球面を貫き、その下のポールホードが点を運びます。ドラッグで視点を回せます。'),
+        T('Body-frame angular velocity ω₁, ω₂, ω₃ against time', '物体座標での角速度 ω₁, ω₂, ω₃ と時間')]);
+      st.v = v;
+      const j = Math.round(v.axis), key = `${j}|${v.eps}|${v.time}`;
+      if (st.key !== key) {
+        const w0 = [v.eps, v.eps, v.eps]; w0[j] = 1;
+        st.run = integrateFree(IBOX, w0, v.time); st.key = key;
+        const cr = []; for (let i = 1; i < st.run.length; i++) if (Math.sign(st.run[i].w[j]) !== Math.sign(st.run[i - 1].w[j])) cr.push(st.run[i].t);
+        st.cross = cr; st.tStar = cr.length ? cr[0] : v.time * 0.3;
+        st.L0 = unit(Lspace(IBOX, st.run[0]));
+        st.anim?.stop(); st.bar.replaceChildren(); st.anim = null; st.tNow = null;
+        // the angular-velocity plot
+        st.g2.replaceChildren();
+        const s = L.fig(st.g2, { x: [0, v.time], y: [-1.2, 1.2], aspect: 0.72, maxH: 380, xlabel: T('time t', '時間 t'), ticksY: [[-1, '−1'], [0, '0'], [1, '1']] });
+        ['c1', 'c2', 'c3'].forEach((c, k) => s.line(st.run.map((x) => [x.t, x.w[k]]), { c, w: k === j ? 2.4 : 1.6, op: 0.9, layer: 'under' }));
+        st.s = s; st.dirty = true;
+      }
+      const run = st.run, wb = wobble(IBOX, j, 1), dtS = run[1].t - run[0].t;
+      st.show = (t) => {
+        st.tNow = t;
+        const smp = run[Math.min(run.length - 1, Math.max(0, Math.round(t / dtS)))];
+        if (st.S && !st.flat) st.place(smp);
+        const s = st.s; s.clear('main'); s.clear('over');
+        s.vline(smp.t, { c: 'hl', w: 1.4, dash: '3 3', layer: 'main' });
+        ['c1', 'c2', 'c3'].forEach((c, i) => s.dot(smp.t, smp.w[i], { c, r: 4 }));
+      };
+      if (!st.anim) st.anim = L.animator(st.bar, (dt, t) => { if (dt === 0 && t === 0) { st.show(st.tNow ?? st.tStar); return; } st.show((st.tStar + 4 * t) % st.v.time); }, { autoplay: true, initialT: 0, playLabel: T('Spin it', '回す') });
+      st.leg.replaceChildren();
+      L.legend(st.leg, [{ c: 'c1', label: T('ω₁, smallest moment (long axis)', 'ω₁（最小の慣性モーメント、長軸）') }, { c: 'c2', label: T('ω₂, middle moment; orange faces end this axis', 'ω₂（中間の慣性モーメント、橙の面がこの軸の両端）') }, { c: 'c3', label: T('ω₃, largest moment (short axis)', 'ω₃（最大の慣性モーメント、短軸）') }, { c: 'c4', label: T('this run, traced on the body’s sphere', 'この運動が物体の球面に描く軌跡') }, { c: 'ink', label: T('separatrix', 'セパラトリクス') }, { kind: 'dot', c: 'hl', label: T('where L pierces the sphere', 'L が球面を貫く点') }]);
+      const E = run.map((x) => energy(IBOX, x.w)), Lm = run.map((x) => norm(Lbody(IBOX, x.w)));
+      const drift = Math.max(Math.max(...E) - Math.min(...E), Math.max(...Lm) - Math.min(...Lm));
+      const gaps = st.cross.slice(1).map((x, i) => x - st.cross[i]), meanGap = gaps.length ? gaps.reduce((a, b) => a + b, 0) / gaps.length : NaN;
+      const items = [{ k: T('moments I₁ : I₂ : I₃', '慣性モーメント I₁ : I₂ : I₃'), v: IBOX.map((x) => fmt(x, 3)).join(' : ') }];
+      if (wb.stable) items.push({ k: T('wobble period 2π/Ω', 'ぐらつきの周期 2π/Ω'), v: fmt(TAU / wb.rate, 2), tone: 'key' });
+      else items.push({ k: T('growth rate λ', '成長率 λ'), v: fmt(wb.rate, 3), tone: 'key' }, { k: T('time between flips', '反転の間隔'), v: Number.isFinite(meanGap) ? fmt(meanGap, 2) : st.cross.length ? T('one flip so far', 'まだ一回') : T('none yet', 'まだなし') });
+      items.push({ k: T('drift in E and |L|', 'E と |L| のずれ'), v: drift < 1e-9 ? '< 10⁻⁹' : fmt(drift, 3), tone: drift < 1e-6 ? 'good' : 'warn' });
+      ctx.readout(items, wb.stable ? T('Spin about the long or the short axis and the body only wobbles: the gold point circles the axis on a small closed polhode.', '長軸か短軸のまわりに回すと、物体はぐらつくだけです。金色の点は小さな閉じたポールホードの上で軸のまわりを回ります。') : T('Spin about the middle axis and the smallest nudge grows like exp(λt). The gold point runs along the separatrix to the opposite pole, so the body flips over, again and again, while L in space stays fixed.', '中間の軸のまわりに回すと、ほんのわずかなずれが exp(λt) のように成長します。金色の点はセパラトリクスに沿って反対の極まで走るので、空間の L は固定されたまま、物体は何度も裏返ります。'));
+      L.view3d(ctx, v, {
+        host: st.v3, aspect: 0.86, maxH: 470, camera: [3.0, -3.7, 1.9], target: [0, 0, 0.05], fov: 33,
+        init(S) {
+          st.flat = false; st.S = S;
+          const TH = S.THREE;
+          st.world = new TH.Group(); st.body = new TH.Group(); st.world.add(st.body); S.add(st.world);
+          const h = DIMS.map((x) => x / 2);
+          const faceMat = (c, o = {}) => S.mat(c, { rough: 0.48, coat: 0.5, ...o });
+          const box = new TH.Mesh(new TH.BoxGeometry(...h), [faceMat('muted'), faceMat('muted'), faceMat('c2'), faceMat('c2'), faceMat('c1'), faceMat('c3')]);
+          const edges = new TH.LineSegments(new TH.EdgesGeometry(box.geometry), new TH.LineBasicMaterial({ color: S.colour('ink'), transparent: true, opacity: 0.55 }));
+          st.body.add(box, edges);
+          // the body-fixed sphere: its front face writes depth so curves on the far side are hidden
+          const shell = new TH.Mesh(new TH.SphereGeometry(RS, 64, 40), S.mat('c4', { opacity: 0.07, rough: 0.2, coat: 0.9, depthWrite: true }));
+          shell.renderOrder = 1; shell.userData.noOcclude = true; st.body.add(shell);
+          const curves = (list) => { const segs = []; list.forEach((pts) => { for (let i = 0; i + 1 < pts.length; i++) segs.push([pts[i].map((x) => x * RS * 1.004), pts[i + 1].map((x) => x * RS * 1.004)]); }); return segs; };
+          const k = sepSlope(IBOX), bs = Math.atan(k), pol = [];
+          [0.3, 0.62, 0.88].forEach((fr) => [bs * fr, PI / 2 - (PI / 2 - bs) * fr].forEach((b) => { const pts = polhode(IBOX, [Math.cos(b), 0, Math.sin(b)]); [1, -1].forEach((sg) => pol.push(pts.map((p) => p.map((x) => x * sg)))); }));
+          const pl = S.lines(curves(pol), { c: 'muted', opacity: 0.85, add: false }); pl.renderOrder = 2; st.body.add(pl);
+          const sep = [1, -1].map((sg) => { const n = unit([1, 0, sg * k]); return L.seq(181, (i) => { const a = TAU * i / 180; return [Math.sin(a) * n[0], Math.cos(a), Math.sin(a) * n[2]]; }); });
+          const sl = S.lines(curves(sep), { c: 'ink', opacity: 0.9, add: false }); sl.renderOrder = 2; st.body.add(sl);
+          // body axes poking out of the sphere, labelled 1, 2, 3
+          st.axLab = [];
+          [[1, 0, 0], [0, 1, 0], [0, 0, 1]].forEach((d, i) => [1, -1].forEach((sg) => {
+            const a = d.map((x) => x * sg * RS), b = d.map((x) => x * sg * RS * 1.28);
+            st.body.add(S.tube([a, b], { c: ['c1', 'c2', 'c3'][i], r: 0.016, add: false }));
+            if (sg > 0) st.axLab.push({ p: d.map((x) => x * RS * 1.4), el: S.label(String(i + 1), [0, 0, 0], { c: ['c1', 'c2', 'c3'][i], small: true, occlude: true }) });
+          }));
+          st.trail = S.tube([[0, 0, 0], [0, 0, 0.01]], { c: 'c4', r: 0.012, add: false }); st.trail.renderOrder = 2; st.body.add(st.trail);
+          // L is fixed in space; the scene is turned so that it points up
+          S.lines([[[0, 0, -1.5], [0, 0, 0]]], { c: 'ink', opacity: 0.35 });
+          S.arrow([0, 0, 0], [0, 0, 1.62], { c: 'ink', r: 0.02 });
+          S.label('L', [0, 0, 1.68], { math: true });
+          S.sphere([0, 0, RS * 1.004], 0.05, { c: 'hl', glow: 0.35 });
+          st.place = (smp) => {
+            st.body.quaternion.copy(toQ(S, smp.q));
+            const qw = qmul(st.q0, smp.q);
+            st.axLab.forEach((a) => a.el.set(qrot(qw, a.p)));
+            S.invalidate();
+          };
+        },
+        update(S) {
+          if (st.dirty || !st.q0) {
+            st.dirty = false;
+            const TH = S.THREE, q0 = new TH.Quaternion().setFromUnitVectors(new TH.Vector3(...st.L0), new TH.Vector3(0, 0, 1));
+            st.world.quaternion.copy(q0); st.q0 = [q0.w, q0.x, q0.y, q0.z];
+            st.trail.update(st.run.filter((_, i) => i % 2 === 0).map((x) => unit(Lbody(IBOX, x.w)).map((c) => c * RS * 1.006)));
+          }
+          st.show(st.tNow ?? st.tStar);
+        },
+        fallback() { st.flat = true; st.anim?.stop(); setTimeout(() => ctx.redraw(), 0); },
+      });
+      if (!st.__v3) st.show(st.tNow ?? st.tStar);
+    },
+  };
+
+  D.gyroscope = {
+    three: true,
+    render(ctx, v) {
+      const st = ctx.state;
+      if (st.__v3fallback) { st.anim?.stop(); ctx.host.replaceChildren(); gyroFlat.render(ctx, v); return; }
+      frame3(ctx, [T('A spinning wheel on a pivot. The violet trail is the path of the tip of its axle; the grey circle is the starting tilt. Drag to turn the view.', '支点の上で回る車輪。紫の軌跡は軸の先端がたどる道で、灰色の円は最初の傾きです。ドラッグで視点を回せます。'),
+        T('The tip’s path unrolled: the axle’s tilt θ from vertical against how far it has precessed. Down on the graph is down on the gyroscope.', '先端の道を展開したもの：軸の鉛直からの傾き θ と歳差の進み。グラフの下向きはジャイロの下向きです。')]);
+      st.v = v;
+      const P = { I1: 1, I3: 0.8, mgl: 4, w3: v.spin, th0: v.tilt / DEG, mode: Math.round(v.start) };
+      const key = `${v.spin}|${v.tilt}|${v.start}|${v.time}`;
+      const axisOf = (x) => [Math.sin(x.th) * Math.cos(x.ph), Math.sin(x.th) * Math.sin(x.ph), Math.cos(x.th)];
+      if (st.key !== key) {
+        st.res = topRun(P, v.time); st.key = key; st.dirty = true;
+        st.anim?.stop(); st.bar.replaceChildren(); st.anim = null; st.tNow = v.time;
+        const S0 = st.res.samples, el = S0.map((x) => x.th * DEG), phs = S0.map((x) => x.ph * DEG);
+        const eLo = Math.min(...el), eHi = Math.max(...el), pad = Math.max(4, (eHi - eLo) * 0.25), mid = (eLo + eHi) / 2, half = Math.max(12, (eHi - eLo) / 2 + pad);
+        const pLo = Math.min(0, ...phs), pHi = Math.max(10, ...phs);
+        st.g2.replaceChildren();
+        const g = L.fig(st.g2, { x: [pLo, pHi], y: [-(mid + half), -(mid - half)], aspect: 0.8, maxH: 380, xlabel: T('precession angle φ (degrees)', '歳差の角 φ（度）'), ylabel: T('tilt from vertical θ (degrees, larger is lower)', '鉛直からの傾き θ（度、大きいほど低い）'), ticksY: L.ticks(mid - half, mid + half, 5).map((t) => [-t, `${t}°`]) });
+        g.line(S0.map((x, i) => [phs[i], -el[i]]), { c: 'c4', w: 2, layer: 'under' });
+        g.hline(-v.tilt, { c: 'muted', dash: '4 4' });
+        Object.assign(st, { g, el, phs, eLo, eHi });
+      }
+      const { samples: SM, steady } = st.res, dtS = SM[1].t - SM[0].t;
+      st.draw = (t) => {
+        st.tNow = t;
+        const k = Math.min(SM.length - 1, Math.round(t / dtS)), x = SM[k];
+        if (st.S && !st.flat) st.place(k, x);
+        st.g.clear('over'); st.g.dot(st.phs[k], -st.el[k], { c: 'hl', r: 6.5 });
+        const avg = x.t > 0 ? x.ph / x.t : NaN;
+        ctx.readout([{ k: 't', v: fmt(x.t, 1) }, { k: T('mean precession rate', '平均の歳差角速度'), v: fmt(avg, 4), tone: 'key' }, { k: T('fast-top estimate mgl / (I₃ω₃)', '速いこまの近似 mgl / (I₃ω₃)'), v: fmt(P.mgl / (P.I3 * P.w3), 4) }, { k: T('nutation frequency ≈ I₃ω₃ / I₁', '章動の角振動数 ≈ I₃ω₃ / I₁'), v: fmt(P.I3 * P.w3 / P.I1, 2) }, { k: T('tilt θ range', '傾き θ の範囲'), v: `${fmt(st.eLo, 1)}° … ${fmt(st.eHi, 1)}°` }],
+          steady === null && P.mode !== 0 ? T('At this spin and tilt no steady precession exists: the spin is too slow to hold the wheel up, so it is released from rest instead.', 'この回転の速さと傾きでは定常歳差は存在しません。車輪を支えるには回転が遅すぎるので、代わりに静止状態から放しています。') : P.mode === 0 ? T('Released from rest, the axle first drops, the gyroscopic torque turns the drop sideways, and the tip traces cusps: it stops dead at the top of every arch, back on the starting circle.', '静止状態から放すと、軸はまず下がり、ジャイロ効果のトルクがその落下を横向きに変え、先端はカスプを描きます。各アーチの頂点で、最初の円の上に戻って一瞬完全に止まります。') : P.mode === 1 ? T('Launched at exactly the steady precession rate, the tilt never changes: gravity’s torque is balanced by turning the angular momentum.', 'ちょうど定常歳差の角速度で送り出すと、傾きはまったく変わりません。重力のトルクは角運動量の向きを変えることで釣り合います。') : T('Pushed against the natural precession, the tip overshoots backwards on every cycle and draws loops.', '自然な歳差と逆向きに押すと、先端は毎周期うしろへ行き過ぎ、ループを描きます。'));
+      };
+      if (!st.anim) st.anim = L.animator(st.bar, (dt, t) => { const tt = Math.min(st.v.time, t); st.draw(tt); if (tt >= st.v.time) return false; }, { autoplay: false, once: true, initialT: v.time, playLabel: T('Release the gyroscope', 'ジャイロを放す') });
+      st.leg.replaceChildren();
+      L.legend(st.leg, [{ c: 'c4', label: T('path of the axle tip', '軸の先端の道') }, { c: 'c2', label: T('one spoke, to show the spin', '回転を示す一本のスポーク') }, { c: 'muted', dash: true, label: T('starting tilt θ', '最初の傾き θ') }]);
+      const ZB = -0.72, TIP = 1.05;
+      L.view3d(ctx, v, {
+        host: st.v3, aspect: 0.86, maxH: 470, camera: [2.75, -3.2, 1.55], target: [0, 0, 0.12], fov: 33,
+        init(S) {
+          st.flat = false; st.S = S;
+          const TH = S.THREE, metal = { metal: 0.65, rough: 0.32, coat: 0.5 };
+          S.floor({ size: 1.6, n: 16, z: ZB });
+          const ped = new TH.Mesh(new TH.CylinderGeometry(0.022, 0.17, -ZB - 0.03, 40), S.mat('muted', metal)); ped.rotation.x = PI / 2; ped.position.z = (ZB + 0.03) / 2 - 0.0; S.add(ped);
+          const base = new TH.Mesh(new TH.CylinderGeometry(0.32, 0.34, 0.05, 56), S.mat('muted', metal)); base.rotation.x = PI / 2; base.position.z = ZB + 0.025; S.add(base);
+          S.sphere([0, 0, 0], 0.045, { c: 'ink', metal: 0.6 });
+          S.lines([[[0, 0, 0], [0, 0, 1.35]]], { c: 'muted', opacity: 0.6 });
+          st.ring = S.lines([[[0, 0, 0], [0, 0, 0]]], { c: 'muted', opacity: 0.9 });
+          // the gyroscope: precession and tilt turn gyro, the spin turns wheel inside it
+          st.gyro = new TH.Group(); st.wheel = new TH.Group(); st.gyro.add(st.wheel); S.add(st.gyro);
+          const axle = new TH.Mesh(new TH.CylinderGeometry(0.018, 0.018, TIP, 16), S.mat('ink', metal)); axle.rotation.x = PI / 2; axle.position.z = TIP / 2; st.gyro.add(axle);
+          const rim = new TH.Mesh(new TH.TorusGeometry(0.42, 0.032, 18, 120), S.mat('c1', { metal: 0.35, rough: 0.3, coat: 0.8 })); rim.position.z = 0.72; st.wheel.add(rim);
+          const disc = new TH.Mesh(new TH.CircleGeometry(0.41, 72), S.mat('c1', { opacity: 0.2 })); disc.position.z = 0.72; st.wheel.add(disc);
+          const hub = new TH.Mesh(new TH.CylinderGeometry(0.06, 0.06, 0.07, 28), S.mat('muted', metal)); hub.rotation.x = PI / 2; hub.position.z = 0.72; st.wheel.add(hub);
+          for (let s6 = 0; s6 < 6; s6++) {
+            const a = s6 * PI / 3, sp = new TH.Mesh(new TH.CylinderGeometry(0.012, 0.012, 0.36, 10), S.mat(s6 === 0 ? 'c2' : 'c1', { rough: 0.35 }));
+            sp.position.set(0.24 * Math.cos(a), 0.24 * Math.sin(a), 0.72); sp.rotation.z = a - PI / 2; st.wheel.add(sp);
+          }
+          st.tip = S.sphere([0, 0, TIP], 0.05, { c: 'hl', glow: 0.35 });
+          st.trail = S.tube([[0, 0, 0], [0, 0, 0.01]], { c: 'c4', r: 0.011 });
+          st.place = (k, x) => {
+            const Qz = (a) => new TH.Quaternion().setFromAxisAngle(new TH.Vector3(0, 0, 1), a), Qy = (a) => new TH.Quaternion().setFromAxisAngle(new TH.Vector3(0, 1, 0), a);
+            st.gyro.quaternion.copy(Qz(x.ph).multiply(Qy(x.th)));
+            st.wheel.rotation.z = x.ps;
+            const n = axisOf(x); st.tip.at(n.map((c) => c * TIP));
+            const step = Math.max(1, Math.ceil(k / 900)), pts = [];
+            for (let i = 0; i <= k; i += step) pts.push(axisOf(SM[i]).map((c) => c * TIP));
+            if (pts.length && (k % step)) pts.push(n.map((c) => c * TIP));
+            st.trail.update(pts.length > 1 ? pts : [[0, 0, 0], [0, 0, 0.001]]);
+            st.trail.visible = pts.length > 1;
+            S.invalidate();
+          };
+        },
+        update() {
+          if (st.dirty) {
+            st.dirty = false;
+            const r = TIP * Math.sin(P.th0), z = TIP * Math.cos(P.th0), pts = L.seq(121, (i) => [r * Math.cos(TAU * i / 120), r * Math.sin(TAU * i / 120), z]);
+            st.ring.update(pts.slice(0, -1).map((p, i) => [p, pts[i + 1]]).filter((_, i) => i % 2 === 0));
+          }
+          st.draw(st.tNow ?? st.v.time);
+        },
+        fallback() { st.flat = true; st.anim?.stop(); setTimeout(() => ctx.redraw(), 0); },
+      });
+      if (!st.__v3) st.draw(st.tNow ?? v.time);
     },
   };
 

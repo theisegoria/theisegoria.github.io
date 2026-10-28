@@ -16,17 +16,17 @@
  },
  "cyclotron": {
   "body": [
-   "In a uniform magnetic field the Lorentz force is always perpendicular to the velocity, so it bends the path into a circle without changing the speed. Change the signed charge-to-mass ratio and the perpendicular speed: the radius depends on |q|/m, while the sign of q decides the sense of rotation, shown against the dashed orbit of the opposite charge.",
-   "一様な磁場の中では、ローレンツ力は常に速度に垂直なので、速さを変えずに軌道を円に曲げます。符号付きの電荷質量比と垂直速度を変えてください。半径は |q|/m で決まり、回転の向きは q の符号で決まります。破線は逆符号の電荷の軌道です。"
+   "In a uniform magnetic field the Lorentz force is always perpendicular to the velocity, so it bends the path without changing the speed. Across the field the motion is a circle; along the field nothing acts, so any velocity \\(v_\\parallel\\) along \\(\\mathbf B\\) carries the circle steadily upward into a helix. Change the signed charge-to-mass ratio and the two speeds: the radius depends on |q|/m and \\(v_\\perp\\), the pitch on \\(v_\\parallel\\), while the sign of q decides the sense of rotation, shown against the faint helix of the opposite charge.",
+   "一様な磁場の中では、ローレンツ力は常に速度に垂直なので、速さを変えずに軌道を曲げます。磁場を横切る方向の運動は円になり、磁場に沿う方向には何も働かないので、\\(\\mathbf B\\) に沿った速度 \\(v_\\parallel\\) があれば円は一定の割合で上へ運ばれてらせんになります。符号付きの電荷質量比と2つの速さを変えてください。半径は |q|/m と \\(v_\\perp\\) で、ピッチは \\(v_\\parallel\\) で決まり、回転の向きは q の符号で決まります。薄い線は逆符号の電荷のらせんです。"
   ],
-  "formula": "\\begin{gathered}m\\frac{d\\mathbf v}{dt}=q\\,\\mathbf v\\times\\mathbf B\\\\\\omega_c=\\frac{qB}{m},\\quad r_L=\\frac{v_\\perp}{|\\omega_c|}\\end{gathered}",
+  "formula": "\\begin{gathered}m\\frac{d\\mathbf v}{dt}=q\\,\\mathbf v\\times\\mathbf B\\\\\\omega_c=\\frac{qB}{m},\\quad r_L=\\frac{v_\\perp}{|\\omega_c|},\\quad p=\\frac{2\\pi v_\\parallel}{|\\omega_c|}\\end{gathered}",
   "example": [
    "With B = 1, q/m = 1 and v⊥ = 1, the orbit has radius 1 and period 2π. Doubling q/m halves both; flipping its sign reverses the rotation.",
    "B = 1、q/m = 1、v⊥ = 1 では、軌道の半径は1、周期は 2π です。q/m を2倍にすると両方とも半分になり、符号を反転すると回転が逆になります。"
   ],
   "caution": [
-   "Uniform field, no electric field, no collisions and speeds far below c. A velocity component along B would add a steady drift out of the page, turning the circle into a helix.",
-   "一様磁場で電場も衝突もなく、速さは c よりずっと小さいとしています。B に沿った速度成分があれば紙面に垂直な一定の移動が加わり、円はらせんになります。"
+   "Uniform field, no electric field, no collisions and speeds far below c. An electric field or a gradient in B would add a slow drift of the guiding centre across the field.",
+   "一様磁場で電場も衝突もなく、速さは c よりずっと小さいとしています。電場や B の勾配があると、案内中心が磁場を横切ってゆっくり移動（ドリフト）します。"
   ],
   "question": [
    "What reverses when q changes sign, and what does not?",
@@ -35,6 +35,35 @@
   "answer": [
    "The sense of gyration reverses; the radius, the period and the speed depend only on |q|, so they stay the same.",
    "旋回の向きが反転します。半径、周期、速さは |q| だけで決まるので変わりません。"
+  ],
+  "params": [
+   [
+    "ratio",
+    "Charge-to-mass ratio \\(q/m\\)",
+    "電荷質量比 \\(q/m\\)",
+    -2,
+    2,
+    0.05,
+    1
+   ],
+   [
+    "speed",
+    "Perpendicular speed \\(v_\\perp\\)",
+    "垂直速度 \\(v_\\perp\\)",
+    0.2,
+    2,
+    0.05,
+    1
+   ],
+   [
+    "parallel",
+    "Speed along the field \\(v_\\parallel\\)",
+    "磁場方向の速度 \\(v_\\parallel\\)",
+    0,
+    1.5,
+    0.05,
+    0.3
+   ]
   ]
  },
  "dispersion": {

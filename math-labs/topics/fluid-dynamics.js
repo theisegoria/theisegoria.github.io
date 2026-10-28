@@ -117,60 +117,173 @@
     const a = r1 * r1 * Math.acos((d * d + r1 * r1 - r2 * r2) / (2 * d * r1)), b = r2 * r2 * Math.acos((d * d + r2 * r2 - r1 * r1) / (2 * d * r2));
     return a + b - 0.5 * Math.sqrt((-d + r1 + r2) * (d + r1 - r2) * (d - r1 + r2) * (d + r1 + r2));
   };
+  const VA = 0.6, VR = 2.2; // core radius of the Rankine vortex; radius of the drawn disc
+  const vortex = (prof, Om) => {
+    const uth = (r) => prof === 0 ? Om * r : prof === 1 ? Om * VA * VA / Math.max(r, 1e-6) : (r < VA ? Om * r : Om * VA * VA / r);
+    const om = (r) => prof === 0 ? 2 * Om : prof === 1 ? 0 : (r < VA ? 2 * Om : 0);
+    const vel = (x, y) => { const r = Math.hypot(x, y); if (r < 1e-9) return [0, 0]; const q = uth(r) / r; return [-q * y, q * x]; };
+    return { uth, om, vel };
+  };
+  // paddle wheels: carried round at angular speed u/r, turning at ω/2
+  const WHEELS = []; [0.35, 0.95, 1.6].forEach((r, i) => { for (let j = 0; j < 3; j++) WHEELS.push([r, j * L.TAU / 3 + i * 0.5]); });
+  const wheelAt = (F, r, p0, tt) => { const ang = p0 + F.uth(r) / r * tt; return [r * Math.cos(ang), r * Math.sin(ang), F.om(r) / 2 * tt]; };
   D.vorticity = {
+    three: true,
     render(ctx, v) {
-      ctx.state.anim?.stop();
       const st = ctx.state; st.c ||= [0, 0];
-      const prof = Math.round(v.profile), Om = v.rotation, rho = v.radius, a = 0.6;
-      const uth = (r) => prof === 0 ? Om * r : prof === 1 ? Om * a * a / Math.max(r, 1e-6) : (r < a ? Om * r : Om * a * a / r);
-      const om = (r) => prof === 0 ? 2 * Om : prof === 1 ? 0 : (r < a ? 2 * Om : 0);
-      const vel = (x, y) => { const r = Math.hypot(x, y); if (r < 1e-9) return [0, 0]; const q = uth(r) / r; return [-q * y, q * x]; };
-      const row = L.h('div', 'lab-row', ctx.host);
-      const cA = L.h('div', 'lab-col', row), cB = L.h('div', 'lab-col', row);
-      L.h('p', 'lab-cap', cA, T('Velocity field, vorticity (colour) and the loop C. Crosses are paddle wheels carried by the flow.', '速度場、渦度（色）、ループ C。十字は流れに運ばれる水車です。'));
-      L.h('p', 'lab-cap', cB, T('Profiles against radius r', '半径 r に対する分布'));
-      const f = L.fig(cA, { x: [-2.2, 2.2], y: [-2.2, 2.2], equal: true, maxH: 440, grid: false });
-      if (prof !== 1 && Math.abs(Om) > 1e-9) f.raster((x, y) => om(Math.hypot(x, y)) / 4 * 0.9, { cmap: 'div' });
-      [0.3, 0.6, 1.0, 1.4, 1.8].forEach((r) => f.circle(0, 0, r, { c: 'muted', w: 0.8, op: 0.45, layer: 'under' }));
-      if (Math.abs(Om) > 1e-9) f.field(vel, { n: f.small ? 11 : 15, c: 'ink' });
-      if (prof === 2) f.circle(0, 0, a, { c: 'ink', w: 1, dash: '3 4', op: 0.7 });
-      if (prof === 1 && Math.abs(Om) > 1e-9) f.dot(0, 0, { c: Om > 0 ? 'pos' : 'neg', r: 5, layer: 'main' });
+      const prof = Math.round(v.profile), Om = v.rotation, rho = v.radius, a = VA;
+      const F = vortex(prof, Om), { uth, om, vel } = F;
+      if (!st.frame || !st.frame.isConnected) {
+        st.anim?.stop(); st.anim = null;
+        ctx.host.replaceChildren();
+        st.frame = L.h('div', '', ctx.host);
+        const row = L.h('div', 'lab-row is-wide', st.frame);
+        st.c1 = L.h('div', 'lab-col', row); st.c2 = L.h('div', 'lab-col', row);
+        st.cap1 = L.h('p', 'lab-cap', st.c1, T('The flow in its plane, coloured by vorticity, with the vorticity vectors standing on it. Those threading the loop C (orange) add up to the circulation. Drag the loop; drag elsewhere to turn the view.', '平面内の流れを渦度で色分けし、その上に渦度ベクトルを立てています。ループ C（橙）を貫くベクトルの合計が循環です。ループはドラッグでき、それ以外の場所をドラッグすると視点が回ります。'));
+        st.v3 = L.h('div', '', st.c1);
+        L.h('p', 'lab-cap', st.c2, T('Profiles against radius r', '半径 r に対する分布'));
+        st.g2 = L.h('div', '', st.c2);
+        st.bar = L.h('div', '', st.frame);
+        st.leg = L.h('div', '', st.frame);
+      }
       // the loop and the circulation along it
       const [cx, cy] = st.c, M = 720;
       let G = 0;
       for (let i = 0; i < M; i++) { const t = (i + 0.5) / M * L.TAU, x = cx + rho * Math.cos(t), y = cy + rho * Math.sin(t), q = vel(x, y); G += (q[0] * -Math.sin(t) + q[1] * Math.cos(t)) * rho * L.TAU / M; }
       const d0 = Math.hypot(cx, cy);
       const flux = prof === 0 ? 2 * Om * Math.PI * rho * rho : prof === 1 ? (d0 < rho ? 2 * Math.PI * Om * a * a : 0) : 2 * Om * lens(rho, a, d0);
-      f.circle(cx, cy, rho, { c: 'c2', w: 2.8 });
-      const ta = Math.PI / 4, pa = [cx + rho * Math.cos(ta), cy + rho * Math.sin(ta)];
-      f.arrow(pa, [pa[0] - 0.02 * Math.sin(ta), pa[1] + 0.02 * Math.cos(ta)], { c: 'c2', w: 2.8 });
-      const cLab = f.text(cx + (rho + 0.06) * 0.72, cy - (rho + 0.06) * 0.72, 'C', { math: true, dx: 9, dy: 13, c: 'c2' }); // just outside the loop, below right
-      if (prof !== 1) cLab.style.stroke = 'none'; // no plate halo on the coloured vorticity fill
-      f.handle(cx, cy, { c: 'c2', r: 7, label: T('Loop centre', 'ループの中心'), bounds: [-1.6, 1.6, -1.6, 1.6], onDrag: (x, y) => { st.c = [x, y]; ctx.redraw(); } });
-      // paddle wheels: carried round at angular speed u/r, turning at ω/2
-      const wheels = [];
-      [0.35, 0.95, 1.6].forEach((r, i) => { for (let j = 0; j < 3; j++) wheels.push([r, j * L.TAU / 3 + i * 0.5]); });
-      f.layers.dyn = f.group('main');
-      ctx.state.anim = L.animator(ctx.host, (dt, t) => {
-        f.clear('dyn');
-        const tt = t * 0.6;
-        wheels.forEach(([r, p0]) => {
-          const ang = p0 + uth(r) / r * tt, x = r * Math.cos(ang), y = r * Math.sin(ang), spin = om(r) / 2 * tt, s = 0.13;
-          for (const k of [0, Math.PI / 2]) f.seg([x - s * Math.cos(spin + k), y - s * Math.sin(spin + k)], [x + s * Math.cos(spin + k), y + s * Math.sin(spin + k)], { c: 'hl', w: 3, layer: 'dyn' });
-          f.seg([x, y], [x + s * Math.cos(spin), y + s * Math.sin(spin)], { c: 'c4', w: 3, layer: 'dyn' });
-        });
-      }, { autoplay: true });
-      const ym = Math.max(1, 2.7 * Math.abs(Om)); // ω = 2Ω then sits at three quarters of the height, clear of the border
-      const g = L.fig(cB, { x: [0, 2.2], y: [-ym, ym], aspect: 0.9, maxH: 440, xlabel: 'r', ylabel: '' });
-      g.line(L.sample(0.005, 2.2, 400, (r) => { const q = uth(r); return Math.abs(q) > 1.5 * ym ? NaN : q; }), { c: 'c1', w: 2.4 });
-      if (prof === 1) { g.line(L.sample(0, 2.2, 2, () => 0), { c: 'c3', w: 2.4 }); g.text(0.05, 0, T('ω = 0 for r > 0', 'r > 0 で ω = 0'), { anchor: 'start', dy: -8, small: true, c: 'c3' }); }
-      else g.line(L.sample(0, 2.2, 400, om), { c: 'c3', w: 2.4 });
-      if (prof === 2) g.vline(a, { c: 'muted' });
-      if (d0 < 1e-6 || prof === 0) g.vline(rho, { c: 'c2', dash: '4 3', w: 1.4 });
-      L.legend(ctx.host, [{ c: 'c1', label: T('speed u_θ(r)', '周方向速度 u_θ(r)') }, { c: 'c3', label: T('vorticity ω(r)', '渦度 ω(r)') }, { c: 'c2', label: T('loop C', 'ループ C') }, { kind: 'fill', c: 'pos', label: T('vorticity > 0', '渦度 > 0') }, { c: 'hl', label: T('paddle wheels', '水車') }]);
-      const inside = prof === 1 ? (d0 < rho ? T('The loop encloses the vortex line', 'ループが渦糸を囲んでいます') : T('The loop misses the vortex line, so Γ = 0', 'ループが渦糸を囲まないので Γ = 0')) : '';
-      ctx.readout([{ k: 'Γ = ∮u·dl', v: fmt(G, 3), tone: 'key' }, { k: '∬ω dA', v: fmt(flux, 3) }, { k: T('ω at the loop centre', 'ループ中心の ω'), v: prof === 1 ? (d0 < 1e-6 ? '∞' : '0') : fmt(om(d0), 3) }],
-        (inside ? inside + T('. ', '。') : '') + T('Drag the loop. Stokes: the circulation equals the vorticity flux through the loop. In the free vortex the paddle wheels orbit without turning.', 'ループをドラッグできます。ストークスの定理により、循環はループを貫く渦度の流束に等しくなります。自由渦では水車は回転せずに周回します。'));
+      let flat2d = null;
+      const drawFlat = () => {
+        st.v3.replaceChildren();
+        st.cap1.textContent = T('Velocity field, vorticity (colour) and the loop C. Crosses are paddle wheels carried by the flow.', '速度場、渦度（色）、ループ C。十字は流れに運ばれる水車です。');
+        const f = L.fig(st.v3, { x: [-2.2, 2.2], y: [-2.2, 2.2], equal: true, maxH: 440, grid: false });
+        if (prof !== 1 && Math.abs(Om) > 1e-9) f.raster((x, y) => om(Math.hypot(x, y)) / 4 * 0.9, { cmap: 'div' });
+        [0.3, 0.6, 1.0, 1.4, 1.8].forEach((r) => f.circle(0, 0, r, { c: 'muted', w: 0.8, op: 0.45, layer: 'under' }));
+        if (Math.abs(Om) > 1e-9) f.field(vel, { n: f.small ? 11 : 15, c: 'ink' });
+        if (prof === 2) f.circle(0, 0, a, { c: 'ink', w: 1, dash: '3 4', op: 0.7 });
+        if (prof === 1 && Math.abs(Om) > 1e-9) f.dot(0, 0, { c: Om > 0 ? 'pos' : 'neg', r: 5, layer: 'main' });
+        f.circle(cx, cy, rho, { c: 'c2', w: 2.8 });
+        const ta = Math.PI / 4, pa = [cx + rho * Math.cos(ta), cy + rho * Math.sin(ta)];
+        f.arrow(pa, [pa[0] - 0.02 * Math.sin(ta), pa[1] + 0.02 * Math.cos(ta)], { c: 'c2', w: 2.8 });
+        const cLab = f.text(cx + (rho + 0.06) * 0.72, cy - (rho + 0.06) * 0.72, 'C', { math: true, dx: 9, dy: 13, c: 'c2' });
+        if (prof !== 1) cLab.style.stroke = 'none';
+        f.handle(cx, cy, { c: 'c2', r: 7, label: T('Loop centre', 'ループの中心'), bounds: [-1.6, 1.6, -1.6, 1.6], onDrag: (x, y) => { st.c = [x, y]; ctx.redraw(); } });
+        f.layers.dyn = f.group('main');
+        return f;
+      };
+      const draw2d = () => {
+        st.g2.replaceChildren(); st.leg.replaceChildren();
+        const ym = Math.max(1, 2.7 * Math.abs(Om)); // ω = 2Ω then sits at three quarters of the height, clear of the border
+        const g = L.fig(st.g2, { x: [0, 2.2], y: [-ym, ym], aspect: 0.9, maxH: 440, xlabel: 'r', ylabel: '' });
+        g.line(L.sample(0.005, 2.2, 400, (r) => { const q = uth(r); return Math.abs(q) > 1.5 * ym ? NaN : q; }), { c: 'c1', w: 2.4 });
+        if (prof === 1) { g.line(L.sample(0, 2.2, 2, () => 0), { c: 'c3', w: 2.4 }); g.text(0.05, 0, T('ω = 0 for r > 0', 'r > 0 で ω = 0'), { anchor: 'start', dy: -8, small: true, c: 'c3' }); }
+        else g.line(L.sample(0, 2.2, 400, om), { c: 'c3', w: 2.4 });
+        if (prof === 2) g.vline(a, { c: 'muted' });
+        if (d0 < 1e-6 || prof === 0) g.vline(rho, { c: 'c2', dash: '4 3', w: 1.4 });
+        L.legend(st.leg, [{ c: 'c1', label: T('speed u_θ(r)', '周方向速度 u_θ(r)') }, { c: 'c3', label: T('vorticity ω(r)', '渦度 ω(r)') }, { c: 'c2', label: T('loop C', 'ループ C') }, { kind: 'fill', c: 'pos', label: T('vorticity > 0', '渦度 > 0') }, { c: 'hl', label: T('paddle wheels', '水車') }].concat(st.flat ? [] : [{ c: 'c2', label: T('vorticity vectors threading C', 'C を貫く渦度ベクトル') }, { c: 'muted', label: T('vorticity vectors outside C', 'C の外の渦度ベクトル') }]));
+        const inside = prof === 1 ? (d0 < rho ? T('The loop encloses the vortex line', 'ループが渦糸を囲んでいます') : T('The loop misses the vortex line, so Γ = 0', 'ループが渦糸を囲まないので Γ = 0')) : '';
+        ctx.readout([{ k: 'Γ = ∮u·dl', v: fmt(G, 3), tone: 'key' }, { k: '∬ω dA', v: fmt(flux, 3) }, { k: T('ω at the loop centre', 'ループ中心の ω'), v: prof === 1 ? (d0 < 1e-6 ? '∞' : '0') : fmt(om(d0), 3) }],
+          (inside ? inside + T('. ', '。') : '') + T('Stokes: the circulation equals the vorticity flux through the loop. Vorticity is a vector perpendicular to the plane of the flow, so the flux counts the vectors that thread C. In the free vortex the paddle wheels orbit without turning.', 'ストークスの定理により、循環はループを貫く渦度の流束に等しくなります。渦度は流れの面に垂直なベクトルなので、流束は C を貫くベクトルを数えることになります。自由渦では水車は回転せずに周回します。'));
+      };
+      const startAnim = () => {
+        st.anim?.stop(); st.bar.replaceChildren();
+        st.anim = L.animator(st.bar, (dt, t) => {
+          const tt = t * 0.6;
+          if (st.flat && flat2d) {
+            const f = flat2d; f.clear('dyn');
+            WHEELS.forEach(([r, p0]) => {
+              const [x, y, spin] = wheelAt(F, r, p0, tt), s = 0.13;
+              for (const k of [0, Math.PI / 2]) f.seg([x - s * Math.cos(spin + k), y - s * Math.sin(spin + k)], [x + s * Math.cos(spin + k), y + s * Math.sin(spin + k)], { c: 'hl', w: 3, layer: 'dyn' });
+              f.seg([x, y], [x + s * Math.cos(spin), y + s * Math.sin(spin)], { c: 'c4', w: 3, layer: 'dyn' });
+            });
+          } else st.wheels3d?.(tt);
+        }, { autoplay: true, playLabel: T('Release the paddle wheels', '水車を流す') });
+      };
+      L.view3d(ctx, v, {
+        host: st.v3, aspect: 0.8, maxH: 450, camera: [2.9, -4.6, 3.6], target: [0, 0, 0.12], fov: 34,
+        init(S) {
+          st.flat = false;
+          const THREE = S.THREE;
+          st.disc = S.surface((r, th) => [r * Math.cos(th), r * Math.sin(th), 0], { u: [0, VR], v: [0, L.TAU], nu: 66, nv: 96, colour: () => S.cmap.div(0), rough: 0.7, coat: 0.1 });
+          S.lines([0.3, 1.0, 1.4, 1.8].map((r) => L.seq(96, (k) => [[r * Math.cos(k / 96 * L.TAU), r * Math.sin(k / 96 * L.TAU), 0.006], [r * Math.cos((k + 1) / 96 * L.TAU), r * Math.sin((k + 1) / 96 * L.TAU), 0.006]])).flat(), { c: 'muted', opacity: 0.35 });
+          st.core = S.lines([[[0, 0, 0], [0, 0, 0]]], { c: 'ink', opacity: 0.6 });
+          st.field = S.lines([[[0, 0, 0], [0, 0, 0]]], { c: 'ink', opacity: S.dark ? 0.75 : 0.7 });
+          // vorticity vectors: instanced shafts and cone heads, one per grid point inside the disc
+          st.grid = [];
+          for (let x = -2; x <= 2.01; x += 0.4) for (let y = -2; y <= 2.01; y += 0.4) if (Math.hypot(x, y) < 2.08) st.grid.push([x, y]);
+          for (let x = -0.5; x <= 0.51; x += 0.25) for (let y = -0.5; y <= 0.51; y += 0.25) if (Math.hypot(x, y) < 0.58 && !st.grid.some((g) => Math.hypot(g[0] - x, g[1] - y) < 0.2)) st.grid.push([x, y]); // denser in the core
+          const N = st.grid.length, shaftG = new THREE.CylinderGeometry(1, 1, 1, 8), headG = new THREE.ConeGeometry(1, 1, 14);
+          const mk = (geo, c, o) => { const m = new THREE.InstancedMesh(geo, S.mat(c, { rough: 0.4, coat: 0.5, ...o }), N); m.frustumCulled = false; S.add(m); return m; };
+          st.vin = [mk(shaftG, 'c2'), mk(headG, 'c2')];
+          st.vout = [mk(shaftG, 'muted', { opacity: 0.45 }), mk(headG, 'muted', { opacity: 0.45 })];
+          st.fil = S.tube([[0, 0, -0.9], [0, 0, 1.3]], { c: 'pos', r: 0.035 });
+          st.filHead = S.arrow([0, 0, 1.2], [0, 0, 0.3], { c: 'pos', r: 0.035 });
+          st.filLab = S.label(T('vortex line', '渦糸'), [0, 0, 1.55], { small: true, align: 'middle' });
+          st.loop = S.tube([[0, 0, 0], [0, 0, 0.01]], { c: 'c2', r: 0.03, closed: true });
+          st.span = S.disc([0, 0, 0.012], [0, 0, 1], 1, { c: 'c2', opacity: 0.16 });
+          st.span.userData.noOcclude = true;
+          st.cLab = S.label('C', [0, 0, 0], { math: true, c: 'c2' });
+          st.wLab = S.label('ω', [0, 0, 0], { math: true });
+          st.h = S.handle([0, 0, 0.05], { r: 0.07, c: 'c2', plane: [[0, 0, 1], [0, 0, 0]], bounds: [-1.6, 1.6, -1.6, 1.6], onDrag: (q) => { st.c = [q.x, q.y]; ctx.redraw(); return [q.x, q.y, 0.05]; } });
+          // paddle wheels
+          const bar = new THREE.BoxGeometry(0.26, 0.032, 0.032), half = new THREE.BoxGeometry(0.13, 0.036, 0.036), mH = S.mat('hl', { rough: 0.35, coat: 0.6 }), mM = S.mat('c4', { rough: 0.35, coat: 0.6 });
+          st.wheelM = WHEELS.map(() => { const g = new THREE.Group(); const b1 = new THREE.Mesh(bar, mH), b2 = new THREE.Mesh(bar, mH), mk = new THREE.Mesh(half, mM); b2.rotation.z = Math.PI / 2; mk.position.set(0.065, 0, 0.012); g.add(b1, b2, mk); S.add(g); return g; });
+          st.wheels3d = (tt) => { WHEELS.forEach(([r, p0], i) => { const [x, y, spin] = wheelAt(st.F, r, p0, tt); st.wheelM[i].position.set(x, y, 0.07); st.wheelM[i].rotation.z = spin; }); S.invalidate(); };
+          st.S = S;
+        },
+        update(S, vv) {
+          const p = Math.round(vv.profile), O = vv.rotation, R0 = vv.radius, Fv = vortex(p, O);
+          st.F = Fv;
+          const key = p + ':' + O;
+          if (st.key !== key) {
+            st.key = key;
+            st.disc.update(undefined, (r) => S.cmap.div(Math.max(-1, Math.min(1, Fv.om(r + 1e-6) / (S.dark ? 4.6 : 3.2)))));
+            const segs = [];
+            if (Math.abs(O) > 1e-9) for (let x = -2.0; x <= 2.01; x += 0.4) for (let y = -2.0; y <= 2.01; y += 0.4) {
+              if (Math.hypot(x, y) > 2.1 || Math.hypot(x, y) < 0.12) continue;
+              const u = Fv.vel(x, y), sp = Math.hypot(u[0], u[1]); if (sp < 1e-6) continue;
+              const len = Math.min(0.36, 0.16 + 0.16 * sp), ex = u[0] / sp, ey = u[1] / sp;
+              const a0 = [x - ex * len / 2, y - ey * len / 2, 0.012], a1 = [x + ex * len / 2, y + ey * len / 2, 0.012], hs = 0.07;
+              segs.push([a0, a1], [a1, [a1[0] - hs * (ex + 0.5 * ey), a1[1] - hs * (ey - 0.5 * ex), 0.012]], [a1, [a1[0] - hs * (ex - 0.5 * ey), a1[1] - hs * (ey + 0.5 * ex), 0.012]]);
+            }
+            st.field.update(segs);
+            st.core.update(p === 2 ? L.seq(48, (k) => (k % 2 ? null : [[VA * Math.cos(k / 48 * L.TAU), VA * Math.sin(k / 48 * L.TAU), 0.01], [VA * Math.cos((k + 1) / 48 * L.TAU), VA * Math.sin((k + 1) / 48 * L.TAU), 0.01]])).filter(Boolean) : [[[0, 0, 0], [0, 0, 0]]]);
+            const fv = p === 1 && Math.abs(O) > 1e-9, sg = O >= 0 ? 1 : -1;
+            st.fil.visible = st.filHead.visible = fv;
+            if (fv) { const tone = S.colour(O > 0 ? 'pos' : 'neg'); st.fil.material.color.copy(tone); st.filHead.children.forEach((m) => m.material.color.copy(tone)); st.fil.update([[0, 0, -0.9 * sg], [0, 0, 1.15 * sg]]); st.filHead.set([0, 0, 1.15 * sg], [0, 0, 0.32 * sg]); st.filLab.set([0, 0, sg > 0 ? 1.62 : -1.2]); }
+            st.filLab.el.hidden = !fv;
+          }
+          const [lx, ly] = st.c;
+          st.loop.update(L.seq(97, (k) => [lx + R0 * Math.cos(k / 96 * L.TAU), ly + R0 * Math.sin(k / 96 * L.TAU), 0.03]));
+          st.span.position.set(lx, ly, 0.012); st.span.scale.set(R0, R0, 1);
+          st.h.at([lx, ly, 0.05]);
+          st.cLab.set([lx + R0 * 0.71 + 0.16, ly - R0 * 0.71 - 0.16, 0.04]);
+          // vorticity vectors: length ∝ ω, orange where they thread the loop
+          const THREE = S.THREE, Mx = new THREE.Matrix4(), q = new THREE.Quaternion(), up = new THREE.Vector3(0, 1, 0), zz = new THREE.Vector3(0, 0, 1), sc = new THREE.Vector3(), pos = new THREE.Vector3();
+          let top = null;
+          const zero = new THREE.Matrix4().makeScale(0, 0, 0), all = [...st.vin, ...st.vout];
+          st.grid.forEach(([x, y], i) => {
+            const w = Fv.om(Math.hypot(x, y)), len = 0.24 * Math.abs(w);
+            all.forEach((m) => m.setMatrixAt(i, zero));
+            if (len < 1e-6) return;
+            const inside = Math.hypot(x - lx, y - ly) < R0, [shaft, head] = inside ? st.vin : st.vout;
+            const sg = w > 0 ? 1 : -1, hl = Math.min(0.12, len * 0.45);
+            q.setFromUnitVectors(up, zz.clone().multiplyScalar(sg));
+            // vectors stand above the plane: ω > 0 rises from it, ω < 0 comes down onto it
+            const zs = sg > 0 ? (len - hl) / 2 : hl + (len - hl) / 2, zh = sg > 0 ? len - hl / 2 : hl / 2;
+            Mx.compose(pos.set(x, y, zs), q, sc.set(0.014, len - hl, 0.014)); shaft.setMatrixAt(i, Mx);
+            Mx.compose(pos.set(x, y, zh), q, sc.set(0.04, hl, 0.04)); head.setMatrixAt(i, Mx);
+            if (!top || (x - 0.9) ** 2 + (y + 0.9) ** 2 < (top[0] - 0.9) ** 2 + (top[1] + 0.9) ** 2) top = [x, y, len];
+          });
+          all.forEach((m) => { m.instanceMatrix.needsUpdate = true; });
+          st.wLab.el.hidden = !top;
+          if (top) st.wLab.set([top[0], top[1], top[2] + 0.08]);
+          S.invalidate();
+          draw2d(); startAnim();
+        },
+        fallback() { st.flat = true; flat2d = drawFlat(); draw2d(); startAnim(); },
+      });
+      if (!st.__v3 && !st.flat) { draw2d(); startAnim(); }
     },
   };
 })();

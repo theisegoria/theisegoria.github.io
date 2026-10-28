@@ -3,7 +3,7 @@
   const L = window.Lab, T = L.T, fmt = L.fmt, D = window.LabDefs = window.LabDefs || {};
   const PI = Math.PI, SQ2 = Math.SQRT2;
   const sub = (n) => String(n).split('').map((d) => '₀₁₂₃₄₅₆₇₈₉'[d]).join('');
-  const deg = (r) => r * 180 / PI;
+  const deg = (r) => r * 180 / PI, rad = (d) => d * PI / 180;
 
   /* ---------- 1. Particle in a box (units ħ = m = L = 1, so Eₙ = n²π²/2 = n²E₁) ---------- */
   const psi = (k, x) => SQ2 * Math.sin(k * PI * x);
@@ -136,9 +136,9 @@
     },
   };
 
-  /* ---------- 3. Bloch sphere, drawn in 2D with an orthographic camera ---------- */
-  D.bloch = {
-    render(ctx, v) {
+  /* ---------- 3. Bloch sphere ---------- */
+  // the previous figure: the sphere drawn in 2D with an orthographic camera (fallback when there is no 3D)
+  function blochFlat(ctx, c1, v) {
       const st = ctx.state;
       st.view ||= { a: 0.52, e: 0.36 };
       const th = v.theta * PI / 180, ph = v.phi * PI / 180;
@@ -148,9 +148,6 @@
       const dot3 = (p, q) => p[0] * q[0] + p[1] * q[1] + p[2] * q[2];
       const P = (p) => [dot3(p, R), dot3(p, U)], depth = (p) => dot3(p, N);
 
-      const row = L.h('div', 'lab-row', ctx.host);
-      const c1 = L.h('div', 'lab-col', row), c2 = L.h('div', 'lab-col', row);
-      L.h('p', 'lab-cap', c1, T('Drag the gold tip to set the state; drag anywhere else to turn the sphere', '金色の先端をドラッグして状態を決め、それ以外の場所をドラッグすると球を回せます'));
       const f = L.fig(c1, { x: [-1.5, 1.5], y: [-1.42, 1.42], equal: true, axes: false, maxH: 420 });
       f.svg.style.cursor = 'grab'; f.svg.style.touchAction = 'none';
       // wireframe: split each circle into front (solid) and back (faint dashed) runs
@@ -208,6 +205,11 @@
         document.addEventListener('pointermove', move); document.addEventListener('pointerup', end); document.addEventListener('pointercancel', end);
       });
 
+  }
+  function blochSide(ctx, c2, leg, v) {
+      const th = v.theta * PI / 180, ph = v.phi * PI / 180;
+      const s = [Math.sin(th) * Math.cos(ph), Math.sin(th) * Math.sin(ph), Math.cos(th)];
+      c2.replaceChildren(); leg.replaceChildren();
       // Right: amplitudes as phasors, and measurement probabilities along three axes
       const al = Math.cos(th / 2), be = Math.sin(th / 2);
       L.h('p', 'lab-cap', c2, T('Amplitudes α = ⟨0|ψ⟩ and β = ⟨1|ψ⟩ in the complex plane', '複素平面上の振幅 α = ⟨0|ψ⟩ と β = ⟨1|ψ⟩'));
@@ -228,10 +230,88 @@
         b.text(0, y, `${up} ${fmt(p, 2)}`, { anchor: 'start', small: true, dy: 0, c: 'c1' });
         b.text(1, y, `${dn} ${fmt(1 - p, 2)}`, { anchor: 'end', small: true, dy: 0, c: 'c2' });
       });
-      L.legend(ctx.host, [{ c: 'hl', label: T('Bloch vector (⟨σx⟩, ⟨σy⟩, ⟨σz⟩)', 'ブロッホベクトル (⟨σx⟩, ⟨σy⟩, ⟨σz⟩)') }, { c: 'c4', dash: true, label: T('its projections', 'その射影') }, { c: 'c1', label: T('θ and |α|² = cos²(θ/2)', 'θ と |α|² = cos²(θ/2)') }, { c: 'c2', label: T('φ, the relative phase of β', 'φ（β の相対位相）') }]);
+      L.legend(leg, [{ c: 'hl', label: T('Bloch vector (⟨σx⟩, ⟨σy⟩, ⟨σz⟩)', 'ブロッホベクトル (⟨σx⟩, ⟨σy⟩, ⟨σz⟩)') }, { c: 'c4', dash: true, label: T('its projections', 'その射影') }, { c: 'c1', label: T('θ and |α|² = cos²(θ/2)', 'θ と |α|² = cos²(θ/2)') }, { c: 'c2', label: T('φ, the relative phase of β', 'φ（β の相対位相）') }]);
       ctx.readout([{ k: 'α, β', v: `${fmt(al, 3)}, ${fmt(be, 3)}·e^(i·${fmt(v.phi, 0)}°)` }, { k: 'P(0) = cos²(θ/2)', v: fmt(al * al, 3), tone: 'key' }, { k: 'P(1)', v: fmt(be * be, 3) }, { k: T('Bloch vector', 'ブロッホベクトル'), v: `(${fmt(s[0], 2)}, ${fmt(s[1], 2)}, ${fmt(s[2], 2)})` }],
         Math.abs(th - PI / 2) < 0.01 ? T('On the equator both outcomes along z are equally likely; φ decides what an x or y measurement gives.', '赤道上では z 方向の2つの結果は等確率で、x や y の測定結果は φ が決めます。') : T('Changing φ never changes P(0) or P(1); it only changes the x and y probabilities.', 'φ を変えても P(0) と P(1) は変わらず、x と y の確率だけが変わります。'));
-      void deg;
+  }
+  const wrapDeg = (x) => ((x + 180) % 360 + 360) % 360 - 180;
+
+  D.bloch = {
+    three: true,
+    render(ctx, v) {
+      const st = ctx.state;
+      if (!st.frame || !st.frame.isConnected) {
+        ctx.host.replaceChildren();
+        st.frame = L.h('div', '', ctx.host);
+        const row = L.h('div', 'lab-row', st.frame);
+        st.c1 = L.h('div', 'lab-col', row); st.c2 = L.h('div', 'lab-col', row);
+        st.cap1 = L.h('p', 'lab-cap', st.c1, T('Drag the gold tip over the sphere to set the state; drag elsewhere to turn the sphere. The faint gold circle is the path of free precession about z.', '金色の先端を球面上でドラッグして状態を決め、それ以外の場所をドラッグすると球を回せます。淡い金色の円は z 軸まわりの自由な歳差運動の道筋です。'));
+        st.v3 = L.h('div', '', st.c1);
+        st.bar = L.h('div', '', st.c1);
+        st.leg = L.h('div', '', st.frame);
+        st.pa = null;
+        const bar = st.bar;
+        st.anim = L.animator(bar, (dt) => {
+          if (!bar.isConnected) return false;
+          if (!dt) return;
+          const cur = st.__v3v || v;
+          st.pa = (st.pa === null || Math.abs(wrapDeg(st.pa - cur.phi)) > 1) ? cur.phi : st.pa;
+          st.pa = wrapDeg(st.pa + 60 * dt);
+          ctx.set('phi', Math.round(st.pa));
+        }, { autoplay: false, playLabel: T('Precess about z', 'z 軸まわりに歳差運動') });
+      }
+      const lift = (p, k = 1) => p.map((x) => x * k);
+      const sv = (vv) => { const th = rad(vv.theta), ph = rad(vv.phi); return [Math.sin(th) * Math.cos(ph), Math.sin(th) * Math.sin(ph), Math.cos(th)]; };
+      L.view3d(ctx, v, {
+        host: st.v3, aspect: 0.86, maxH: 430, camera: [4.96, -1.06, 1.85], target: [0, 0, -0.02], fov: 33,
+        init(S) {
+          st.flat = false;
+          S.sphere([0, 0, 0], 1, { c: 'c1', opacity: S.dark ? 0.1 : 0.08, rough: 0.7, coat: 0.1 });
+          const circ = (f, n = 120) => L.seq(n, (i) => [f(L.TAU * i / n), f(L.TAU * (i + 1) / n)]);
+          const grid = [];
+          for (let k = -2; k <= 2; k++) if (k) { const la = k * PI / 6, z = Math.sin(la), r = Math.cos(la); grid.push(...circ((q) => [r * Math.cos(q), r * Math.sin(q), z])); }
+          for (let k = 0; k < 6; k++) { const lo = k * PI / 6; grid.push(...circ((q) => [Math.cos(q) * Math.cos(lo), Math.cos(q) * Math.sin(lo), Math.sin(q)])); }
+          S.lines(grid, { c: 'muted', opacity: S.dark ? 0.32 : 0.38 });
+          S.tube(L.seq(121, (i) => { const q = L.TAU * i / 120; return [Math.cos(q), Math.sin(q), 0]; }), { c: 'ink', r: 0.006, closed: true, opacity: 0.6 });
+          S.lines([[[-1.25, 0, 0], [1.25, 0, 0]], [[0, -1.25, 0], [0, 1.25, 0]], [[0, 0, -1.25], [0, 0, 1.25]]], { c: 'ink', opacity: 0.5 });
+          [[[0, 0, 1.18], '|0⟩'], [[0, 0, -1.18], '|1⟩'], [[1.2, 0, 0], '|+⟩'], [[-1.2, 0, 0], '|−⟩'], [[0, 1.2, 0], '|+i⟩'], [[0, -1.2, 0], '|−i⟩']].forEach(([p, t]) => S.label(t, p, { small: true, align: 'middle', dy: 8, occlude: true, occludeSlack: 0.02 }));
+          [[[1.4, 0, 0], 'x'], [[0, 1.38, 0], 'y'], [[0, 0, 1.38], 'z']].forEach(([p, t]) => S.label(t, p, { math: true, c: 'muted', align: 'middle', dy: 8 }));
+          st.arrow = S.arrow([0, 0, 0], [0, 0, 1], { c: 'hl', r: 0.026, glow: 0.3 });
+          st.thArc = S.tube([[0, 0, 0], [0, 0, 0.01]], { c: 'c1', r: 0.016 });
+          st.phArc = S.tube([[0, 0, 0], [0, 0, 0.01]], { c: 'c2', r: 0.016 });
+          st.proj = S.lines([[[0, 0, 0], [0, 0, 0]]], { c: 'c4', opacity: 0.9 });
+          st.prec = S.lines([[[0, 0, 0], [0, 0, 0]]], { c: 'hl', opacity: 0.55 });
+          st.foot = S.points([[0, 0, 0], [0, 0, 0]], { c: 'c4', r: 0.028 });
+          st.labTh = S.label('θ', [0, 0, 0], { math: true, c: 'c1', align: 'middle', dy: 8 });
+          st.labPh = S.label('φ', [0, 0, 0], { math: true, c: 'c2', align: 'middle', dy: 8 });
+          st.h = S.handle([0, 0, 1], { r: 0.058, sphere: [[0, 0, 0], 1], onDrag: (q) => {
+            const r = q.length() || 1, z = L.clamp(q.z / r, -1, 1);
+            ctx.set('theta', Math.acos(z) * 180 / PI, true);
+            if (Math.hypot(q.x, q.y) > 1e-3) ctx.set('phi', Math.atan2(q.y, q.x) * 180 / PI, true);
+            st.pa = null;
+            ctx.redraw();
+            return sv(st.__v3v || v);
+          } });
+        },
+        update(S, vv) {
+          const th = rad(vv.theta), ph = rad(vv.phi), s = sv(vv), sp = Math.hypot(s[0], s[1]);
+          st.arrow.set([0, 0, 0], lift(s, 0.94));
+          st.h.at(s);
+          st.thArc.update(th > 0.02 ? L.seq(41, (i) => { const q = th * i / 40; return [0.36 * Math.sin(q) * Math.cos(ph), 0.36 * Math.sin(q) * Math.sin(ph), 0.36 * Math.cos(q)]; }) : [[0, 0, 0], [0, 0, 0.001]]);
+          st.phArc.update(sp > 0.02 && Math.abs(ph) > 0.02 ? L.seq(41, (i) => { const q = ph * i / 40; return [0.28 * Math.cos(q), 0.28 * Math.sin(q), 0]; }) : [[0, 0, 0], [0, 0, 0.001]]);
+          st.labTh.set([0.5 * Math.sin(th / 2) * Math.cos(ph), 0.5 * Math.sin(th / 2) * Math.sin(ph), 0.5 * Math.cos(th / 2)]);
+          st.labTh.el.style.display = th > 0.15 ? '' : 'none';
+          st.labPh.set([0.4 * Math.cos(ph / 2), 0.4 * Math.sin(ph / 2), 0]);
+          st.labPh.el.style.display = sp > 0.1 && Math.abs(ph) > 0.2 ? '' : 'none';
+          const foot = [s[0], s[1], 0];
+          st.proj.update([[s, foot], [[0, 0, 0], foot], [s, [0, 0, s[2]]]]);
+          st.foot.update([foot, [0, 0, s[2]]]);
+          st.prec.update(sp > 0.02 ? L.seq(96, (i) => { const a = L.TAU * i / 96, b = L.TAU * (i + 1) / 96; return [[sp * Math.cos(a), sp * Math.sin(a), s[2]], [sp * Math.cos(b), sp * Math.sin(b), s[2]]]; }) : [[[0, 0, 0], [0, 0, 0]]]);
+          blochSide(ctx, st.c2, st.leg, vv);
+        },
+        fallback(c, vv) { st.flat = true; st.cap1.textContent = T('Drag the gold tip to set the state; drag anywhere else to turn the sphere', '金色の先端をドラッグして状態を決め、それ以外の場所をドラッグすると球を回せます'); st.v3.replaceChildren(); blochFlat(ctx, st.v3, vv); blochSide(ctx, st.c2, st.leg, vv); },
+      });
+      if (!st.__v3 && !st.flat) blochSide(ctx, st.c2, st.leg, v);
     },
   };
 })();
