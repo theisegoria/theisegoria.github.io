@@ -93,7 +93,7 @@
 <button class="btn" id="fork-toggle" type="button" aria-pressed="true">Pause vibration</button>
 <label class="ctl">Displayed amplitude <strong id="fork-amp-v">&#215;1.0</strong><input id="fork-amp" type="range" min=".2" max="1.6" step=".1" value="1"></label>
 <label class="ctl">Animation slowdown <strong id="fork-slow-v">&#215;1/32 768</strong><input id="fork-slow" type="range" min="0" max="3" step="1" value="0"></label>
-<button class="btn ghost" id="fork-mode" type="button" aria-pressed="true">Show in-phase mode</button>
+<button class="btn ghost" id="fork-mode" data-analytics-milestone="preset_selected" type="button" aria-pressed="true">Show in-phase mode</button>
 </div>
 
 <div class="split"><div class="stage">
@@ -237,7 +237,7 @@
 </div></div>
 
 <div class="controls" style="margin-top:30px">
-<button class="btn" id="pi-restart" type="button">Replay start-up</button>
+<button class="btn" id="pi-restart" data-analytics-milestone="experiment_reset" type="button">Replay start-up</button>
 <label class="ctl"><span>Inverter transconductance g<sub>m</sub></span> <strong id="gm-v">1.00 &#181;S</strong><input id="gm" type="range" min=".1" max="4" step=".05" value="1"></label>
 <label class="ctl"><span>Load capacitors C<sub>g</sub> = C<sub>d</sub></span> <strong id="cc-v">12 pF</strong><input id="cc" type="range" min="4" max="24" step="1" value="12"></label>
 </div>
@@ -477,6 +477,7 @@
 <h2>Mechanical watches<br>measure. Quartz<br>watches count.</h2>
 <p>An escapement is an analogue negotiation: energy goes in, the balance answers with an interval, and every imperfection in the negotiation shows up as rate. A quartz watch removes the negotiation. The crystal decides the interval alone, in a domain where a divider can be exact and a trim can be an integer. What is left for the mechanism to do is to spend one pulse a second turning a magnet, which is, I think, the only place in the whole watch where anything is still allowed to be difficult.</p>
 </section>
+<section class="card" style="padding:20px;margin:24px 0"><button class="btn" type="button" data-analytics-milestone="simulation_completed" onclick="this.disabled=true;this.textContent='Completion recorded'">Mark this exploration complete</button></section>
 </main>
 
 <footer><span>Quartz Watch Lab</span><p style="margin:0">Educational schematic &#183; the component values, currents, and ratios I have used are typical rather than specific to any calibre. Companion to the <a href="../watch-lab/">Automatic Watch Lab</a> and to <a href="electricity-quartz-motor.html">Electricity, quartz, motor</a>.</p><a href="inside-a-quartz-watch.pdf" target="_blank" rel="noopener" title="PDF, opens in a new tab">Print edition (PDF)</a><a href="#top">Back to top &#8593;</a></footer><!-- BEHIND:START -->
