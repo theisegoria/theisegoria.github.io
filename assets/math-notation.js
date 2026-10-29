@@ -65,7 +65,7 @@ function runs(s){
  }finish();return list;
 }
 function inlineHTML(text){let result='',last=0;for(const r of runs(text)){result+=ESC(text.slice(last,r.start))+'<span class="ig-latex'+(r.display?' ig-latex-display':'')+'" data-ig-tex="'+ESC(r.authored?r.raw:convert(r.raw))+'">'+mathHTML(r.raw,r.authored)+'</span>';last=r.end;}return result+ESC(text.slice(last));}
-const skip='script,style,pre,code,textarea,input,select,option,noscript,.katex,.MathJax,mjx-container,[data-ig-tex],[data-ig-no-math],.ig-canvas-math,[contenteditable="true"]';
+const skip='#ig-header,#ig-breadcrumb,#ig-footer,script,style,pre,code,textarea,input,select,option,noscript,.katex,.MathJax,mjx-container,[data-ig-tex],[data-ig-no-math],.ig-canvas-math,[contenteditable="true"]';
 const sourceNodes=new Map(),svgNodes=new WeakMap();let ready=!!window.katex,observer,timer;
 function richRaw(node){if(node.nodeType===3)return node.data;if(node.nodeType!==1)return '';if(node.tagName==='BR')return '\n';if(node.tagName==='SUB')return '_{'+node.textContent+'}';if(node.tagName==='SUP')return '^{'+node.textContent+'}';return [...node.childNodes].map(richRaw).join('');}
 function svgMath(node){const text=node.textContent;if(!runs(text).length)return;let state=svgNodes.get(node);if(state&&state.text===text&&state.x===node.getAttribute('x')&&state.y===node.getAttribute('y'))return;if(state)state.fo.remove();
