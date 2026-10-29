@@ -1,5 +1,5 @@
 {
- "_readme": "Scheduled encyclopedia queue. Each run takes the FIRST entry with status 'queued' from each list, builds it, and sets status to 'done' with date and commit. Reorder freely; add entries in the same shape. 'labs' are starting ideas, not specs: improve them if a better mechanism exists. 'prereq' and 'cross' are existing slugs used for graph.js PREREQ and CROSS.",
+ "_readme": "Scheduled encyclopedia queue. Each run takes the FIRST entry with status 'queued' from each list, builds it, and sets status to 'done' with date and commit. Reorder freely; add entries in the same shape. 'labs' are starting ideas, not specs: improve them if a better mechanism exists. 'prereq' and 'cross' are existing slugs used for graph.js PREREQ and CROSS. The 'engineering' list holds subjects chosen to show off 3D mechanisms; take from it when an engineering topic is asked for.",
  "math": [
   {
    "slug": "hyperbolic-geometry",
@@ -1060,6 +1060,137 @@
     "Bose–Einstein vs Fermi–Dirac vs Boltzmann occupation with temperature",
     "Bose–Einstein condensation: condensate fraction below T_c in a harmonic trap",
     "Exchange symmetry: two-particle wavefunctions symmetric/antisymmetric, Pauli hole and bunching"
+   ],
+   "status": "queued"
+  }
+ ],
+ "engineering": [
+  {
+   "slug": "helicopter-rotors",
+   "title": [
+    "Helicopter rotors: how a swashplate steers",
+    "ヘリコプターのロータ：スワッシュプレートはどう操縦するか"
+   ],
+   "group": "engineering",
+   "prereq": [
+    "aerodynamics",
+    "rigid-body-dynamics"
+   ],
+   "cross": [
+    "gears-mechanisms",
+    "fourier-analysis"
+   ],
+   "labs": [
+    "3D rotor head: swashplate, pitch links and blades; collective lifts the plate, cyclic tilts it; blade pitch traced once per revolution",
+    "Blade flapping: lift asymmetry in forward flight, flap angle and the tilt of the tip-path plane, retreating-blade stall region on a rotor disc map",
+    "Momentum theory: induced velocity, hover power, figure of merit; autorotation as a power balance"
+   ],
+   "status": "queued"
+  },
+  {
+   "slug": "jet-engines",
+   "title": [
+    "Jet engines: the Brayton cycle in rotating metal",
+    "ジェットエンジン：回転する金属の中のブレイトン・サイクル"
+   ],
+   "group": "engineering",
+   "prereq": [
+    "thermodynamics",
+    "aerodynamics"
+   ],
+   "cross": [
+    "fluid-dynamics",
+    "piston-engines"
+   ],
+   "labs": [
+    "3D turbofan cutaway: fan, compressor stages, combustor and turbine spinning at their own speeds; bypass stream and core stream as particles",
+    "Brayton cycle on T-s and p-v with pressure ratio and turbine inlet temperature; thermal efficiency and specific work",
+    "Velocity triangles in one compressor stage: drag the blade speed and flow angle, read the work per stage (Euler turbine equation)"
+   ],
+   "status": "queued"
+  },
+  {
+   "slug": "wind-turbines",
+   "title": [
+    "Wind turbines: the Betz limit and the blade",
+    "風力タービン：ベッツ限界と翼"
+   ],
+   "group": "engineering",
+   "prereq": [
+    "aerodynamics",
+    "fluid-dynamics"
+   ],
+   "cross": [
+    "optimization",
+    "electric-motors"
+   ],
+   "labs": [
+    "3D rotor with the stream tube expanding through it; drag the axial induction factor, read power coefficient against the Betz limit 16/27",
+    "Blade element momentum: twist and chord along the blade, local angle of attack, power curve against wind speed with pitch control",
+    "Tip-speed ratio and wake rotation; why big turbines turn slowly"
+   ],
+   "status": "queued"
+  },
+  {
+   "slug": "astrodynamics",
+   "title": [
+    "Astrodynamics: getting from orbit to orbit",
+    "アストロダイナミクス：軌道から軌道へ"
+   ],
+   "group": "engineering",
+   "prereq": [
+    "classical-mechanics"
+   ],
+   "cross": [
+    "dynamical-systems",
+    "general-relativity"
+   ],
+   "labs": [
+    "3D Hohmann and bi-elliptic transfers around the Earth with burn arrows and delta-v budget",
+    "Plane changes and the cost of inclination; launch azimuth from a latitude",
+    "Gravity assist in the planet's frame and the Sun's frame: the velocity vector rotates, the energy changes"
+   ],
+   "status": "queued"
+  },
+  {
+   "slug": "suspension-bridges",
+   "title": [
+    "Suspension bridges: cables, decks and flutter",
+    "吊り橋：ケーブル、床版、フラッター"
+   ],
+   "group": "engineering",
+   "prereq": [
+    "structural-mechanics"
+   ],
+   "cross": [
+    "continuum-mechanics",
+    "dynamical-systems"
+   ],
+   "labs": [
+    "3D bridge: main cable under a uniform deck load is a parabola, under self-weight a catenary; cable tension and tower forces",
+    "Deck modes: vertical and torsional vibration shapes animated in 3D, with frequencies",
+    "Torsional flutter: aerodynamic damping turns negative above a critical wind speed (the Tacoma Narrows mechanism), a two-degree-of-freedom model"
+   ],
+   "status": "queued"
+  },
+  {
+   "slug": "stirling-engines",
+   "title": [
+    "Stirling engines: heat into motion",
+    "スターリングエンジン：熱を運動に"
+   ],
+   "group": "engineering",
+   "prereq": [
+    "thermodynamics"
+   ],
+   "cross": [
+    "piston-engines",
+    "gears-mechanisms"
+   ],
+   "labs": [
+    "3D alpha or gamma Stirling engine with displacer, power piston and flywheel, gas coloured by temperature",
+    "p-V loop of the real phase-shifted engine against the ideal Stirling cycle; Schmidt analysis",
+    "Regenerator effectiveness and the efficiency against the Carnot limit"
    ],
    "status": "queued"
   }

@@ -18,7 +18,10 @@ Desktop Commander (zsh; PATH is already set via ~/.zshenv).
 ## 1. Pick the topics
 
 `math-labs/queue.json` has two lists, `math` and `physics`. Take the first entry
-with `"status": "queued"` from each. Skip (and mark `"status": "skipped", "note": "already exists"`) any whose slug is already in `math-labs/content.json`.
+with `"status": "queued"` from each. A third list, `engineering`, holds subjects
+picked to show off 3D mechanisms (rotors, turbines, engines, bridges); take from
+it when an engineering topic is asked for, and give each one a 3D lab the reader
+can operate, not just look at. Skip (and mark `"status": "skipped", "note": "already exists"`) any whose slug is already in `math-labs/content.json`.
 The `labs` field holds starting ideas. Keep them if they are good; replace any
 that would be decorative rather than mechanistic. `prereq` and `cross` slugs that
 do not exist yet in content.json are simply left out of graph.js.

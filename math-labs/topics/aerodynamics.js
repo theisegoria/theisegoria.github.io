@@ -123,51 +123,160 @@
   (window.LabModels = window.LabModels || {})['aerodynamics'] = M;
 
   /* ---------------- 1. Joukowski aerofoil ---------------- */
+  // streamlines of the exact flow, traced in the aerofoil frame from seeds upstream; each point carries the
+  // time the air takes to reach it, so particles can be moved at the true local speed
+  function traceStreams(J, nSeed = 9, h = 0.035) {
+    const ca = Math.cos(J.alpha), sa = Math.sin(J.alpha), out = [];
+    for (let i = 0; i < nSeed; i++) {
+      const yp = -1.5 + 3 * i / (nSeed - 1), xp = -3.4;
+      let p = [xp * ca - yp * sa, xp * sa + yp * ca], t = 0;
+      const pts = [], times = [], speeds = [];
+      for (let k = 0; k < 340; k++) {
+        const v0 = J.velZ(p[0], p[1]); if (!v0) break;
+        const sp = Math.hypot(v0[0], v0[1]);
+        pts.push(p); times.push(t); speeds.push(sp);
+        const unit = (q) => { const w = J.velZ(q[0], q[1]); if (!w) return null; const m = Math.hypot(w[0], w[1]); return m > 1e-9 ? [w[0] / m, w[1] / m] : null; };
+        const k1 = unit(p); if (!k1) break;
+        const k2 = unit([p[0] + h * k1[0] / 2, p[1] + h * k1[1] / 2]); if (!k2) break;
+        const k3 = unit([p[0] + h * k2[0] / 2, p[1] + h * k2[1] / 2]); if (!k3) break;
+        const k4 = unit([p[0] + h * k3[0], p[1] + h * k3[1]]); if (!k4) break;
+        p = [p[0] + h * (k1[0] + 2 * k2[0] + 2 * k3[0] + k4[0]) / 6, p[1] + h * (k1[1] + 2 * k2[1] + 2 * k3[1] + k4[1]) / 6];
+        t += h / Math.max(0.08, sp);
+        if (p[0] * ca + p[1] * sa > 3.6) break;
+      }
+      if (pts.length > 4) out.push({ pts, times, speeds, T: t });
+    }
+    return out;
+  }
   D['joukowski-aerofoil'] = {
+    three: true,
     render(ctx, v) {
+      const st = ctx.state;
+      if (!st.frame || !st.frame.isConnected) {
+        ctx.host.replaceChildren();
+        st.frame = L.h('div', '', ctx.host);
+        const row = L.h('div', 'lab-row is-wide', st.frame);
+        st.c1 = L.h('div', 'lab-col', row); st.c2 = L.h('div', 'lab-col', row);
+        L.h('p', 'lab-cap', st.c1, T('A wind tunnel running the exact potential flow. The wing is painted by its pressure coefficient, blue where the air speeds up and the pressure drops, orange where it slows. Streamlines run at three stations along the span, and the smoke moves at the true local speed: the air over the top arrives first. Drag the gold trailing edge to change the angle of attack.', '厳密なポテンシャル流の風洞です。翼は圧力係数で塗られ、空気が速くなり圧力が下がるところは青、遅くなるところは橙です。流線は翼幅に沿った三か所に描かれ、煙は本当の局所速度で動きます。上面を通る空気が先に着きます。金色の後縁をドラッグすると迎角が変わります。'));
+        st.v3 = L.h('div', '', st.c1);
+        L.h('p', 'lab-cap', st.c1, T('The same flow in the plane of the section, with the pressure field. The streamlines leave the sharp trailing edge smoothly because the circulation is set by the Kutta condition.', '同じ流れを断面の平面で、圧力場とともに示します。流線は鋭い後縁からなめらかに離れていきます。循環がクッタ条件で決まるからです。'));
+        st.p1 = L.h('div', '', st.c1);
+        L.h('p', 'lab-cap', st.c2, T('The circle it comes from, in the ζ-plane. z = ζ + 1/ζ maps this circle to the aerofoil. Drag the centre: left makes the aerofoil thicker, up makes it cambered. The circle always passes through ζ = 1, which becomes the sharp trailing edge.', '元になる ζ 平面の円です。z = ζ + 1/ζ がこの円を翼型に写します。中心をドラッグしてください。左へ動かすと翼型が厚くなり、上へ動かすと反りがつきます。円はいつも ζ = 1 を通り、そこが鋭い後縁になります。'));
+        st.p2 = L.h('div', '', st.c2);
+        L.h('p', 'lab-cap', st.c2, T('Pressure along the chord, plotted upside down as aerodynamicists do: suction (−Cp) up. The area between the upper and lower curves is the section lift coefficient.', '翼弦に沿った圧力を、空気力学の慣習どおり上下逆に描いています。吸い込み（−Cp）が上です。上面と下面の曲線の間の面積が、断面の揚力係数です。'));
+        st.p3 = L.h('div', '', st.c2);
+        st.leg = L.h('div', '', st.frame);
+      }
       const J = joukowski(v.mx, v.my, v.alpha);
-      const row = L.h('div', 'lab-row is-wide', ctx.host);
-      const c1 = L.h('div', 'lab-col', row), c2 = L.h('div', 'lab-col', row);
-      L.h('p', 'lab-cap', c1, T('Exact potential flow past the aerofoil, shaded by the pressure coefficient: blue where the air speeds up and the pressure drops, orange where it slows. The streamlines leave the sharp trailing edge smoothly because the circulation is set by the Kutta condition. The lift comes from the suction over the upper surface.', '翼型を過ぎる厳密なポテンシャル流を、圧力係数で塗り分けています。空気が速くなり圧力が下がるところは青、遅くなるところは橙です。流線は鋭い後縁からなめらかに離れていきます。循環がクッタ条件で決まるからです。揚力は上面の吸い込みから生まれます。'));
-      const W = 2.9, H = 1.55;
-      const f = L.fig(c1, { x: [-W, W], y: [-H, H], equal: true, axes: false, grid: false, maxH: 380 });
-      f.raster((x, y) => { const vv = J.velZ(x, y); if (!vv) return [0.5, 0.5, 0.5]; const cp = 1 - (vv[0] * vv[0] + vv[1] * vv[1]); return Math.max(-1, Math.min(1, cp > 0 ? cp : cp / 3)); }, { cmap: 'div', res: 4 });
-      const seeds = L.seq(15, (i) => [-W + 0.02, -H + 0.12 + (2 * H - 0.24) * i / 14]);
-      f.stream((x, y) => J.velZ(x, y) || [0, 0], seeds, { both: false, c: 'ink', w: 1.1, op: 0.6, h: 0.02, steps: 900, stop: (p) => !J.velZ(p[0], p[1]) });
-      f.poly(J.S0.map((p) => [p.x, p.y]), { c: 'ink', fill: 'plate', fo: 1, w: 1.6 });
       const ca = Math.cos(J.alpha), sa = Math.sin(J.alpha);
-      f.arrow([-W + 0.25, H - 0.3], [-W + 0.25 + 0.7 * ca, H - 0.3 + 0.7 * sa], { c: 'ink', w: 2 });
-      f.text(-W + 0.3, H - 0.3, 'U', { math: true, small: true, dy: -8 });
-      const xm = (J.xmin + J.xmax) / 2;
-      f.arrow([xm - 0.1, 0.15], [xm - 0.1 - 0.9 * sa * Math.sign(J.CL), 0.15 + 0.9 * ca * Math.sign(J.CL)], { c: 'hl', w: 3 });
-      f.text(xm - 0.1, 0.15 + 0.9 * Math.sign(J.CL), T('lift', '揚力'), { small: true, dx: 8, c: 'hl' });
-      // right: the circle plane
-      L.h('p', 'lab-cap', c2, T('The circle it comes from, in the ζ-plane. z = ζ + 1/ζ maps this circle to the aerofoil. Drag the centre: left makes the aerofoil thicker, up makes it cambered. The circle always passes through ζ = 1, which becomes the sharp trailing edge.', '元になる ζ 平面の円です。z = ζ + 1/ζ がこの円を翼型に写します。中心をドラッグしてください。左へ動かすと翼型が厚くなり、上へ動かすと反りがつきます。円はいつも ζ = 1 を通り、そこが鋭い後縁になります。'));
-      const R = 1.9;
-      const g = L.fig(c2, { x: [-R, R], y: [-1.45, 1.45], equal: true, axes: false, grid: false, maxH: 250 });
-      g.hline(0, { c: 'muted', w: 1, op: 0.6 }); g.vline(0, { c: 'muted', w: 1, op: 0.6 });
-      g.stream((x, y) => J.velZeta(x, y) || [0, 0], L.seq(13, (i) => [-R + 0.02, -1.4 + 2.8 * i / 12]), { both: false, c: 'ink', w: 1, op: 0.5, h: 0.015, steps: 700, stop: (p) => !J.velZeta(p[0], p[1]) });
-      g.circle(J.mu[0], J.mu[1], J.a, { c: 'c1', w: 2.2, fill: 'plate', fo: 1 });
-      g.circle(0, 0, 1, { c: 'muted', w: 1, dash: true, fill: false });
-      g.dot(1, 0, { c: 'c2', r: 5 }); g.text(1, 0, T('ζ = 1 → trailing edge', 'ζ = 1 → 後縁'), { small: true, dx: 8, dy: 14 });
-      g.handle(J.mu[0], J.mu[1], { c: 'hl', label: T('circle centre', '円の中心'), bounds: [-0.25, 0, 0, 0.2], snap: 0.005, onDrag: (x, y) => { ctx.set('mx', x, true); ctx.set('my', y); } });
-      // pressure distribution
-      L.h('p', 'lab-cap', c2, T('Pressure along the chord, plotted upside down as aerodynamicists do: suction (−Cp) up. The area between the upper and lower curves is the section lift coefficient.', '翼弦に沿った圧力を、空気力学の慣習どおり上下逆に描いています。吸い込み（−Cp）が上です。上面と下面の曲線の間の面積が、断面の揚力係数です。'));
-      const up = J.S0.slice(1, J.ile).filter((p) => Number.isFinite(p.cp)), lo = J.S0.slice(J.ile, -1).filter((p) => Number.isFinite(p.cp));
-      const xc = (p) => (p.x - J.xmin) / J.chord;
-      const ymax = Math.min(6, Math.max(1.5, ...up.map((p) => -p.cp)) * 1.08);
-      const h = L.fig(c2, { x: [0, 1], y: [-1.2, ymax], aspect: 0.5, maxH: 210, xlabel: 'x / c', ylabel: '−Cp' });
-      h.hline(0, { c: 'ink', w: 1, op: 0.5 });
-      h.line(up.map((p) => [xc(p), Math.min(ymax, -p.cp)]), { c: 'c1', w: 2.4 });
-      h.line(lo.map((p) => [xc(p), Math.min(ymax, -p.cp)]), { c: 'c2', w: 2.4 });
-      L.legend(ctx.host, [{ kind: 'fill', c: 'c1', label: T('suction, Cp < 0 (shading clipped at −3)', '吸い込み Cp < 0（濃淡は −3 で打ち切り）') }, { kind: 'fill', c: 'c2', label: T('pressure above free stream, Cp > 0', '一様流より高い圧力 Cp > 0') }, { c: 'c1', label: T('upper surface', '上面') }, { c: 'c2', label: T('lower surface', '下面') }]);
-      ctx.readout([
-        { k: T('lift coefficient C_L = 2Γ / Uc', '揚力係数 C_L = 2Γ / Uc'), v: fmt(J.CL, 3), tone: 'key' },
-        { k: T('circulation Γ = 4πUa sin(α + β)', '循環 Γ = 4πUa sin(α + β)'), v: fmt(J.G, 3) },
-        { k: T('thin-aerofoil estimate 2π(α + β)', '薄翼理論の見積もり 2π(α + β)'), v: fmt(2 * PI * (J.alpha + J.beta), 3) },
-        { k: T('zero-lift angle', '揚力ゼロの迎角'), v: fmt(J.zeroLift, 2) + '°' },
-        { k: T('thickness / chord', '厚さ / 翼弦'), v: fmt(J.thick * 100, 1) + '%' },
-      ], v.alpha > 12 ? T('In real air the flow would separate from the upper surface around here and the wing would stall; potential flow keeps the lift rising.', '実際の空気では、このあたりで流れが上面からはく離し、翼は失速します。ポテンシャル流では揚力が増えつづけます。') : T('Camber shifts the whole lift curve to the left: a cambered aerofoil lifts even at zero angle of attack.', '反りは揚力曲線全体を左へずらします。反りのある翼型は、迎角ゼロでも揚力を生みます。'));
+      const draw2d = () => {
+        st.p1.replaceChildren(); st.p2.replaceChildren(); st.p3.replaceChildren(); st.leg.replaceChildren();
+        if (st.flat) { st.v3.replaceChildren(); L.h('p', 'lab-cap', st.v3, T('Your browser has no 3D graphics; the section below carries the same flow.', 'このブラウザでは 3D 表示ができません。下の断面が同じ流れを示します。')); }
+        const W = 2.9, H = 1.55;
+        const f = L.fig(st.p1, { x: [-W, W], y: [-H, H], equal: true, axes: false, grid: false, maxH: 300 });
+        f.raster((x, y) => { const vv = J.velZ(x, y); if (!vv) return [0.5, 0.5, 0.5]; const cp = 1 - (vv[0] * vv[0] + vv[1] * vv[1]); return Math.max(-1, Math.min(1, cp > 0 ? cp : cp / 3)); }, { cmap: 'div', res: 4 });
+        const seeds = L.seq(15, (i) => [-W + 0.02, -H + 0.12 + (2 * H - 0.24) * i / 14]);
+        f.stream((x, y) => J.velZ(x, y) || [0, 0], seeds, { both: false, c: 'ink', w: 1.1, op: 0.6, h: 0.02, steps: 900, stop: (p) => !J.velZ(p[0], p[1]) });
+        f.poly(J.S0.map((p) => [p.x, p.y]), { c: 'ink', fill: 'plate', fo: 1, w: 1.6 });
+        f.arrow([-W + 0.25, H - 0.3], [-W + 0.25 + 0.7 * ca, H - 0.3 + 0.7 * sa], { c: 'ink', w: 2 });
+        f.text(-W + 0.3, H - 0.3, 'U', { math: true, small: true, dy: -8 });
+        const xm = (J.xmin + J.xmax) / 2;
+        f.arrow([xm - 0.1, 0.15], [xm - 0.1 - 0.9 * sa * Math.sign(J.CL), 0.15 + 0.9 * ca * Math.sign(J.CL)], { c: 'hl', w: 3 });
+        f.text(xm - 0.1, 0.15 + 0.9 * Math.sign(J.CL), T('lift', '揚力'), { small: true, dx: 8, c: 'hl' });
+        const R = 1.9;
+        const g = L.fig(st.p2, { x: [-R, R], y: [-1.45, 1.45], equal: true, axes: false, grid: false, maxH: 250 });
+        g.hline(0, { c: 'muted', w: 1, op: 0.6 }); g.vline(0, { c: 'muted', w: 1, op: 0.6 });
+        g.stream((x, y) => J.velZeta(x, y) || [0, 0], L.seq(13, (i) => [-R + 0.02, -1.4 + 2.8 * i / 12]), { both: false, c: 'ink', w: 1, op: 0.5, h: 0.015, steps: 700, stop: (p) => !J.velZeta(p[0], p[1]) });
+        g.circle(J.mu[0], J.mu[1], J.a, { c: 'c1', w: 2.2, fill: 'plate', fo: 1 });
+        g.circle(0, 0, 1, { c: 'muted', w: 1, dash: true, fill: false });
+        g.dot(1, 0, { c: 'c2', r: 5 }); g.text(1, 0, T('ζ = 1 → trailing edge', 'ζ = 1 → 後縁'), { small: true, dx: 8, dy: 14 });
+        g.handle(J.mu[0], J.mu[1], { c: 'hl', label: T('circle centre', '円の中心'), bounds: [-0.25, 0, 0, 0.2], snap: 0.005, onDrag: (x, y) => { ctx.set('mx', x, true); ctx.set('my', y); } });
+        const up = J.S0.slice(1, J.ile).filter((p) => Number.isFinite(p.cp)), lo = J.S0.slice(J.ile, -1).filter((p) => Number.isFinite(p.cp));
+        const xc = (p) => (p.x - J.xmin) / J.chord;
+        const ymax = Math.min(6, Math.max(1.5, ...up.map((p) => -p.cp)) * 1.08);
+        const h = L.fig(st.p3, { x: [0, 1], y: [-1.2, ymax], aspect: 0.5, maxH: 210, xlabel: 'x / c', ylabel: '−Cp' });
+        h.hline(0, { c: 'ink', w: 1, op: 0.5 });
+        h.line(up.map((p) => [xc(p), Math.min(ymax, -p.cp)]), { c: 'c1', w: 2.4 });
+        h.line(lo.map((p) => [xc(p), Math.min(ymax, -p.cp)]), { c: 'c2', w: 2.4 });
+        L.legend(st.leg, [{ kind: 'fill', c: 'c1', label: T('suction, Cp < 0 (shading clipped at −3)', '吸い込み Cp < 0（濃淡は −3 で打ち切り）') }, { kind: 'fill', c: 'c2', label: T('pressure above free stream, Cp > 0', '一様流より高い圧力 Cp > 0') }, { c: 'c1', label: T('upper surface', '上面') }, { c: 'c2', label: T('lower surface', '下面') }, { kind: 'dot', c: 'hl', label: T('smoke, moving at the local speed; lift', '局所速度で動く煙、揚力') }]);
+        ctx.readout([
+          { k: T('lift coefficient C_L = 2Γ / Uc', '揚力係数 C_L = 2Γ / Uc'), v: fmt(J.CL, 3), tone: 'key' },
+          { k: T('circulation Γ = 4πUa sin(α + β)', '循環 Γ = 4πUa sin(α + β)'), v: fmt(J.G, 3) },
+          { k: T('thin-aerofoil estimate 2π(α + β)', '薄翼理論の見積もり 2π(α + β)'), v: fmt(2 * PI * (J.alpha + J.beta), 3) },
+          { k: T('zero-lift angle', '揚力ゼロの迎角'), v: fmt(J.zeroLift, 2) + '°' },
+          { k: T('thickness / chord', '厚さ / 翼弦'), v: fmt(J.thick * 100, 1) + '%' },
+        ], v.alpha > 12 ? T('In real air the flow would separate from the upper surface around here and the wing would stall; potential flow keeps the lift rising.', '実際の空気では、このあたりで流れが上面からはく離し、翼は失速します。ポテンシャル流では揚力が増えつづけます。') : T('Camber shifts the whole lift curve to the left: a cambered aerofoil lifts even at zero angle of attack.', '反りは揚力曲線全体を左へずらします。反りのある翼型は、迎角ゼロでも揚力を生みます。'));
+      };
+      // 3D: the aerofoil frame turned so the free stream runs along +x
+      const K = 0.62, SP = 1.45, STATIONS = [-0.95, 0, 0.95], NP = 6;
+      const rot = (x, y) => [K * (x * ca + y * sa), K * (-x * sa + y * ca)];
+      const P3 = (x, y, s) => { const r = rot(x, y); return [r[0], s, r[1]]; };
+      L.view3d(ctx, v, {
+        host: st.v3, aspect: 0.66, maxH: 470, camera: (ctx.host.clientWidth || 900) < 560 ? [-3.4, -7.2, 2.7] : [-2.6, -5.4, 2.1], target: [0.35, 0, 0], fov: 32,
+        init(S) {
+          st.flat = false;
+          const THREE = S.THREE;
+          st.wing = S.surface(() => [0, 0, 0], { u: [0, 1], v: [-SP, SP], nu: 240, nv: 2, c: 'muted', colour: () => S.colour('muted'), rough: 0.28, coat: 0.8 });
+          st.capMat = S.mat('muted', { rough: 0.4, coat: 0.5 });
+          st.caps = [0, 1].map(() => { const m = new THREE.Mesh(new THREE.BufferGeometry(), st.capMat); m.rotation.x = PI / 2; m.castShadow = true; S.add(m); return m; });
+          st.tubes = Array.from({ length: 9 * 3 }, (_, i) => S.tube([[0, 0, 0], [0.001, 0, 0]], { c: i % 3 === 1 ? 'c3' : 'c1', r: 0.009, n: 160 }));
+          st.smoke = S.points([[0, 0, 0]], { colours: [S.colour('#ffffff')], r: 0.022, max: 9 * 3 * NP, rough: 0.3, coat: 0.2, glow: 0.35 });
+          st.lift = S.arrow([0, 0, 0.3], [0, 0, 0.6], { c: 'hl', r: 0.03, glow: 0.2 });
+          st.liftLab = S.label(T('lift', '揚力'), [0, 0, 1], { small: true, align: 'middle' });
+          S.arrow([-2.5, -SP - 0.25, 0.85], [0.6, 0, 0], { c: 'ink', r: 0.02 });
+          S.label('U', [-2.2, -SP - 0.25, 1.02], { small: true, align: 'middle' });
+          st.hdl = S.handle([1.2, SP + 0.12, 0], { plane: [[0, 1, 0], [0, SP + 0.12, 0]], r: 0.09, c: 'hl', onDrag: (q) => {
+            const al = Math.round(Math.min(16, Math.max(-8, Math.atan2(-q.z, q.x) / DEG)) * 2) / 2;
+            if (al !== st.alpha) ctx.set('alpha', al);
+            const a2 = al * DEG; return [K * 2 * Math.cos(a2), SP + 0.12, -K * 2 * Math.sin(a2)];
+          } });
+          st.hdl.labelItem = S.label(T('trailing edge: drag to pitch', '後縁：ドラッグで迎角'), [1.2, SP + 0.12, -0.2], { small: true });
+          S.animate((dt) => {
+            const d = st.flow; if (!d || S.reduced()) return false;
+            st.clock = (st.clock || 0) + Math.min(dt, 0.05) * 0.9;
+            st.placeSmoke(st.clock); return true;
+          });
+        },
+        update(S) {
+          st.alpha = v.alpha;
+          const n = J.S0.length, cps = J.S0.map((p) => p.cp);
+          for (let i = 0; i < n; i++) if (!Number.isFinite(cps[i])) cps[i] = Number.isFinite(cps[i + 1]) ? cps[i + 1] : cps[i - 1] ?? 0;
+          const at = (u) => Math.max(0, Math.min(n - 1, Math.round(u * (n - 1))));
+          st.wing.update((u, s) => { const p = J.S0[at(u)]; return P3(p.x, p.y, s); }, (u) => { const cp = cps[at(u)], q = Math.max(-1, Math.min(1, cp > 0 ? cp : cp / 2.2)); return S.cmap.div(Math.sign(q) * Math.pow(Math.abs(q), 0.55)); });
+          const TH = S.THREE, shape = new TH.Shape(J.S0.map((p) => { const r = rot(p.x, p.y); return new TH.Vector2(r[0], r[1]); }));
+          st.caps.forEach((m, i) => { m.geometry.dispose(); m.geometry = new TH.ShapeGeometry(shape); m.position.y = i ? SP : -SP; });
+          // streamlines, coloured by speed
+          const flow = traceStreams(J);
+          st.tubes.forEach((tb, i) => {
+            const fl = flow[Math.floor(i / 3)], s = STATIONS[i % 3];
+            tb.visible = !!fl;
+            if (fl) tb.update(fl.pts.filter((_, k) => k % 3 === 0 || k === fl.pts.length - 1).map((p) => P3(p[0], p[1], s)));
+          });
+          st.flow = flow;
+          st.placeSmoke = (clock) => {
+            const pts = [], cl = [];
+            flow.forEach((fl, li) => STATIONS.forEach((s, si) => {
+              for (let j = 0; j < NP; j++) {
+                const tt = ((clock * 1.2 + fl.T * (j / NP) + 0.37 * li + 0.21 * si) % fl.T + fl.T) % fl.T;
+                let lo = 0, hi = fl.times.length - 1; while (hi - lo > 1) { const mid = (lo + hi) >> 1; if (fl.times[mid] <= tt) lo = mid; else hi = mid; }
+                const f = (tt - fl.times[lo]) / Math.max(1e-9, fl.times[hi] - fl.times[lo]), a = fl.pts[lo], b = fl.pts[hi];
+                pts.push(P3(a[0] + f * (b[0] - a[0]), a[1] + f * (b[1] - a[1]), s)); cl.push(S.colour('hl'));
+              }
+            }));
+            st.smoke.update(pts, cl, pts.map(() => 0.03));
+          };
+          st.placeSmoke(st.clock || 0);
+          const L3 = Math.max(-0.9, Math.min(1.1, 0.55 * J.CL));
+          st.lift.set([0, 0, 0.32], [0, 0, L3]); st.lift.visible = Math.abs(J.CL) > 0.02;
+          st.liftLab.set([0.08, 0, 0.32 + L3 + (L3 >= 0 ? 0.12 : -0.12)]);
+          const te = [K * 2 * ca, SP + 0.12, -K * 2 * sa];
+          st.hdl.at(te); st.hdl.labelItem.set([te[0] + 0.15, te[1], te[2] - 0.38]);
+          S.invalidate();
+          draw2d();
+        },
+        fallback() { st.flat = true; draw2d(); },
+      });
+      if (!st.__v3 && !st.flat) draw2d();
     },
   };
 
