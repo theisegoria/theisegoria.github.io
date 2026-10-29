@@ -16893,5 +16893,632 @@
         "url": "https://ocw.mit.edu/courses/2-001-mechanics-materials-i-fall-2006/"
       }
     ]
+  },
+  {
+    "slug": "coding-theory",
+    "title": [
+      "Coding theory: correcting errors",
+      "符号理論：誤りを訂正する"
+    ],
+    "description": [
+      "Every stored or transmitted bit can be flipped by noise, so a message is sent with redundancy arranged so that a few flips can be found and undone. The arrangement is geometry: codewords are points in the space of all bit strings, far apart in Hamming distance, the number of positions in which two strings differ. A received word is decoded to the nearest codeword, and a code with minimum distance d corrects any ⌊(d − 1)/2⌋ errors. Hamming built the first such code from three parity checks whose failures spell out the position of the error in binary. Counting how many balls fit in the space limits how good any code can be, and Reed and Solomon replaced bits by values of a polynomial over a finite field, which reaches the best possible distance and protects every CD, QR code and deep-space probe.",
+      "保存したり送ったりするビットは、雑音で反転することがあります。そこでメッセージには冗長性を加え、いくつかの反転を見つけて元に戻せるように並べます。この並べ方は幾何学です。符号語はすべてのビット列の空間の点で、互いにハミング距離、つまり二つの列が異なる位置の数で遠く離れています。受け取った語は最も近い符号語に復号し、最小距離 d の符号は任意の ⌊(d − 1)/2⌋ 個の誤りを訂正します。ハミングは最初の符号を三つのパリティ検査から作り、検査の失敗が誤りの位置を二進数で表すようにしました。空間に球がいくつ入るかを数えると、どの符号の良さにも限界があることが分かります。リードとソロモンはビットを有限体上の多項式の値に置き換え、可能な限り大きな距離を実現しました。この符号は CD や QR コード、深宇宙探査機を守っています。"
+    ],
+    "group": "applications",
+    "prerequisite": [
+      "Binary numbers, vectors and matrices, polynomials, modular arithmetic",
+      "二進数、ベクトルと行列、多項式、合同算術"
+    ],
+    "source": "Guruswami, Rudra and Sudan · Essential Coding Theory",
+    "url": "https://cse.buffalo.edu/faculty/atri/courses/coding-theory/book/",
+    "labs": [
+      {
+        "id": "hamming-74",
+        "title": [
+          "1. Hamming(7,4): the syndrome points at the error",
+          "1. ハミング (7,4)：シンドロームが誤りを指す"
+        ],
+        "body": [
+          "Number the seven bits of a word 1 to 7 and put parity bits at positions 1, 2 and 4. Parity bit 1 makes the bits whose position has a 1 in its last binary digit (1, 3, 5, 7) add to an even number; bit 2 does the same for 2, 3, 6, 7, and bit 4 for 4, 5, 6, 7. Positions 3, 5, 6 and 7 carry the four message bits. If one bit flips, exactly the checks containing its position fail, and reading the failed checks as a binary number gives the position. In the Venn diagram each check is a circle and each position a region. Flip bits and watch the odd circles; then compare the chance that a 4-bit message arrives wrong with and without the code.",
+          "語の七つのビットに 1 から 7 まで番号をつけ、位置 1、2、4 にパリティビットを置きます。パリティビット 1 は、位置の二進表示の最下位の桁が 1 のビット（1、3、5、7）の和を偶数にします。ビット 2 は 2、3、6、7 について、ビット 4 は 4、5、6、7 について同じことをします。位置 3、5、6、7 が四つのメッセージのビットを運びます。あるビットが反転すると、その位置を含む検査だけがちょうど失敗し、失敗した検査を二進数として読むとその位置になります。ベン図では各検査が円、各位置が領域です。ビットを反転させて奇数の円を見てください。そのあと、4 ビットのメッセージが誤って届く確率を、符号を使う場合と使わない場合で比べてください。"
+        ],
+        "formula": "H=\\begin{pmatrix}0&0&0&1&1&1&1\\\\0&1&1&0&0&1&1\\\\1&0&1&0&1&0&1\\end{pmatrix},\\qquad \\mathbf s=H\\mathbf r^{\\mathsf T}=H\\mathbf e^{\\mathsf T},\\qquad P_{\\rm fail}=1-(1-p)^7-7p(1-p)^6",
+        "example": [
+          "The message 1011 goes to positions 3, 5, 6, 7. Check 1 covers positions 3, 5, 7, holding 1, 0, 1, so bit 1 is 0; check 2 covers 3, 6, 7, holding 1, 1, 1, so bit 2 is 1; check 4 covers 5, 6, 7, holding 0, 1, 1, so bit 4 is 0. The codeword is 0110011. If bit 6 flips, the received word is 0110001: check 1 (positions 1, 3, 5, 7: 0, 1, 0, 1) passes, check 2 (positions 2, 3, 6, 7: 1, 1, 0, 1) fails, check 4 (positions 4, 5, 6, 7: 0, 0, 0, 1) fails. The syndrome 110 in binary is 6. With bits flipping independently at \\(p=0.01\\), a raw 4-bit message is wrong with probability \\(1-0.99^4=0.039\\), the coded one only when two or more of seven bits flip: \\(0.0020\\).",
+          "メッセージ 1011 は位置 3、5、6、7 に入ります。検査 1 は位置 3、5、7 を含み、値は 1、0、1 なのでビット 1 は 0 です。検査 2 は 3、6、7 を含み、値は 1、1、1 なのでビット 2 は 1 です。検査 4 は 5、6、7 を含み、値は 0、1、1 なのでビット 4 は 0 です。符号語は 0110011 です。ビット 6 が反転すると受信語は 0110001 で、検査 1（位置 1、3、5、7：0、1、0、1）は通り、検査 2（位置 2、3、6、7：1、1、0、1）と検査 4（位置 4、5、6、7：0、0、0、1）が失敗します。シンドロームは二進数で 110、つまり 6 です。各ビットが独立に \\(p=0.01\\) で反転するとき、そのまま送った 4 ビットのメッセージが誤る確率は \\(1-0.99^4=0.039\\) ですが、符号化すると七つのうち二つ以上が反転したときだけ誤り、\\(0.0020\\) です。"
+        ],
+        "caution": [
+          "The code spends three extra bits for every four, so the comparison is per message, not per use of the channel; at the same energy per message bit the advantage is smaller. Two flips are always miscorrected into a third wrong bit, and three can turn one codeword into another and pass unnoticed. Real channels have bursts, which is why practical systems interleave or use the larger codes of the next two experiments.",
+          "この符号は四ビットごとに三ビットを余分に使うので、比較は通信路の一回の使用あたりではなく、メッセージあたりです。メッセージのビットあたりのエネルギーを同じにすると、利点は小さくなります。二つの反転は必ず誤って訂正され、三つ目の誤ったビットが加わります。三つの反転はある符号語を別の符号語に変え、気づかれずに通ることがあります。実際の通信路では誤りがまとまって起こるので、実用の方式はビットを並べ替えたり、次の二つの実験のような大きな符号を使ったりします。"
+        ],
+        "question": [
+          "Why does the syndrome depend only on the error, not on the message?",
+          "なぜシンドロームはメッセージによらず、誤りだけで決まるのですか？"
+        ],
+        "answer": [
+          "Because every codeword satisfies all three checks, \\(H\\mathbf c^{\\mathsf T}=\\mathbf 0\\), and the checks are linear. The received word is \\(\\mathbf r=\\mathbf c+\\mathbf e\\) (addition mod 2), so \\(H\\mathbf r^{\\mathsf T}=H\\mathbf c^{\\mathsf T}+H\\mathbf e^{\\mathsf T}=H\\mathbf e^{\\mathsf T}\\). For a single error in position \\(i\\) this is column \\(i\\) of \\(H\\), and Hamming chose the columns to be the numbers 1 to 7 in binary.",
+          "どの符号語も三つの検査をすべて満たし、\\(H\\mathbf c^{\\mathsf T}=\\mathbf 0\\) で、検査は線形だからです。受信語は \\(\\mathbf r=\\mathbf c+\\mathbf e\\)（mod 2 の和）なので、\\(H\\mathbf r^{\\mathsf T}=H\\mathbf c^{\\mathsf T}+H\\mathbf e^{\\mathsf T}=H\\mathbf e^{\\mathsf T}\\) です。位置 \\(i\\) の一つの誤りならこれは \\(H\\) の第 \\(i\\) 列で、ハミングは列を 1 から 7 の二進表示に選びました。"
+        ],
+        "params": [
+          [
+            "m",
+            "Message (0 to 15)",
+            "メッセージ（0 から 15）",
+            0,
+            15,
+            1,
+            11
+          ],
+          [
+            "p",
+            "Bit-flip probability p",
+            "ビット反転確率 p",
+            0.0004,
+            0.5,
+            0.0001,
+            0.01
+          ]
+        ],
+        "source": "Guruswami, Rudra and Sudan · Essential Coding Theory",
+        "url": "https://cse.buffalo.edu/faculty/atri/courses/coding-theory/book/"
+      },
+      {
+        "id": "hamming-space",
+        "title": [
+          "2. Balls in Hamming space",
+          "2. ハミング空間の球"
+        ],
+        "body": [
+          "All bit strings of length \\(n\\) form the corners of an \\(n\\)-dimensional cube, with an edge between strings that differ in one bit, so the Hamming distance is the length of the shortest path along edges. A code is a set of corners. If its codewords are at least \\(d\\) apart, the balls of radius \\(t=\\lfloor(d-1)/2\\rfloor\\) around them do not overlap, and a received word inside a ball decodes to its centre. The balls cannot hold more corners than the cube has: \\(M\\,V(n,t)\\le 2^n\\), the Hamming bound. A code that meets it exactly is perfect. Choose a code, move the received word around the cube, and compare the code with the asymptotic limits on the right.",
+          "長さ \\(n\\) のすべてのビット列は \\(n\\) 次元立方体の頂点をなし、一ビットだけ違う列どうしは辺で結ばれます。したがってハミング距離は、辺に沿った最短経路の長さです。符号は頂点の集合です。符号語どうしが少なくとも \\(d\\) 離れていれば、そのまわりの半径 \\(t=\\lfloor(d-1)/2\\rfloor\\) の球は重ならず、球の中に受け取った語はその中心に復号されます。球は立方体の頂点より多くの頂点を含めないので \\(M\\,V(n,t)\\le 2^n\\) で、これがハミング限界です。ちょうど等号になる符号を完全符号といいます。符号を選び、受信語を立方体のあちこちへ動かし、右の漸近的な限界と比べてください。"
+        ],
+        "formula": "V(n,t)=\\sum_{i=0}^{t}\\binom{n}{i},\\qquad M\\,V(n,t)\\le 2^n,\\qquad R=\\frac{\\log_2 M}{n}\\le 1-H_2\\!\\left(\\frac{\\delta}{2}\\right),\\qquad R\\ge 1-H_2(\\delta)\\ \\ \\text{(achievable)}",
+        "example": [
+          "The repetition code {000, 111} has \\(d=3\\), so \\(t=1\\). Each ball holds a codeword and its three neighbours, \\(V(3,1)=1+3=4\\), and two balls hold \\(2\\times4=8=2^3\\) corners: the whole cube, a perfect code. Received 001 decodes to 000. For \\(n=4\\), {0000, 1111} has \\(d=4\\) and still \\(t=1\\); the two balls hold \\(2\\times5=10\\) of the 16 corners, and the six words of weight 2 are tied. Hamming(7,4) has \\(16\\times V(7,1)=16\\times8=128=2^7\\) and is perfect; so is the Golay code, \\(2^{12}\\times V(23,3)=2^{12}\\times2048=2^{23}\\).",
+          "繰り返し符号 {000, 111} は \\(d=3\\) なので \\(t=1\\) です。各球は符号語とその三つの隣を含み \\(V(3,1)=1+3=4\\) で、二つの球は \\(2\\times4=8=2^3\\) 個、つまり立方体全体の頂点を含みます。完全符号です。受信語 001 は 000 に復号されます。\\(n=4\\) の {0000, 1111} は \\(d=4\\) ですが \\(t=1\\) のままで、二つの球は 16 頂点のうち \\(2\\times5=10\\) 個を含み、重み 2 の六つの語は同点になります。ハミング (7,4) は \\(16\\times V(7,1)=16\\times8=128=2^7\\) で完全符号です。ゴレイ符号も \\(2^{12}\\times V(23,3)=2^{12}\\times2048=2^{23}\\) で完全符号です。"
+        ],
+        "caution": [
+          "The 4-cube is drawn as a cube inside a cube; distances along its edges are exact, but straight-line distances in the picture are not Hamming distances. The curves on the right are the limits as \\(n\\to\\infty\\) with \\(d/n\\) fixed. Perfect binary codes are rare: apart from trivial ones, every perfect binary code has the parameters of a Hamming code or of the binary Golay code. Whether the Gilbert–Varshamov bound is the true limit for binary codes is still an open question.",
+          "4 次元立方体は立方体の中の立方体として描いています。辺に沿った距離は正確ですが、図の直線距離はハミング距離ではありません。右の曲線は、\\(d/n\\) を固定して \\(n\\to\\infty\\) としたときの極限です。二元の完全符号はまれで、自明なものを除くと、どれもハミング符号か二元ゴレイ符号と同じパラメータをもちます。ギルバート・ヴァルシャモフ限界が二元符号の本当の限界かどうかは、いまも未解決の問題です。"
+        ],
+        "question": [
+          "Why can a code with d = 4 still correct only one error?",
+          "なぜ d = 4 の符号でも訂正できる誤りは一つだけなのですか？"
+        ],
+        "answer": [
+          "Two errors can land on a word at distance 2 from two codewords at once, halfway between them, and nothing tells the decoder which way to go. Correcting \\(t\\) errors needs the balls of radius \\(t\\) to be disjoint, which needs \\(d\\ge 2t+1\\). The extra distance is not wasted: a \\(d=4\\) code corrects one error and at the same time detects any two.",
+          "二つの誤りで、二つの符号語から同時に距離 2、つまりちょうど中間の語に着くことがあり、復号器にはどちらへ向かうべきか分かりません。\\(t\\) 個の誤りを訂正するには半径 \\(t\\) の球が重ならないことが必要で、それには \\(d\\ge 2t+1\\) が要ります。余分な距離は無駄ではありません。\\(d=4\\) の符号は一つの誤りを訂正し、同時に任意の二つの誤りを検出します。"
+        ],
+        "params": [
+          [
+            "code",
+            "Code",
+            "符号",
+            0,
+            4,
+            1,
+            0,
+            [
+              [
+                "{000, 111}",
+                "{000, 111}"
+              ],
+              [
+                "even weight, n = 3",
+                "偶数重み、n = 3"
+              ],
+              [
+                "{0000, 1111}",
+                "{0000, 1111}"
+              ],
+              [
+                "{0000, 0011, 1100, 1111}",
+                "{0000, 0011, 1100, 1111}"
+              ],
+              [
+                "five words, n = 4",
+                "五語、n = 4"
+              ]
+            ]
+          ],
+          [
+            "recv",
+            "Received word (as a number)",
+            "受信語（数として）",
+            0,
+            15,
+            1,
+            1
+          ]
+        ],
+        "source": "Guruswami, Rudra and Sudan · Essential Coding Theory",
+        "url": "https://cse.buffalo.edu/faculty/atri/courses/coding-theory/book/"
+      },
+      {
+        "id": "reed-solomon",
+        "title": [
+          "3. Reed–Solomon: a polynomial survives damage",
+          "3. リード・ソロモン：多項式は損傷に耐える"
+        ],
+        "body": [
+          "Work in the field of integers mod 13, where every nonzero number has an inverse. Write the \\(k\\) message symbols as the coefficients of a polynomial \\(P\\) of degree below \\(k\\) and send its values at \\(n\\) points. Any \\(k\\) correct values determine \\(P\\), just as two points fix a line, so two codewords agree in at most \\(k-1\\) places and the minimum distance is \\(n-k+1\\), the most the Singleton bound allows. Berlekamp and Welch decode by looking for an error locator \\(E\\), a polynomial vanishing at the bad positions, together with \\(Q=PE\\): the conditions \\(Q(x_i)=y_iE(x_i)\\) are linear, and one division gives \\(P\\). Corrupt or erase symbols and watch the decoder until the budget runs out.",
+          "13 を法とする整数の体で考えます。ここでは 0 でないどの数にも逆数があります。\\(k\\) 個のメッセージの記号を、次数 \\(k\\) 未満の多項式 \\(P\\) の係数とし、\\(n\\) 個の点での値を送ります。正しい値が \\(k\\) 個あれば、二点で直線が決まるように \\(P\\) が決まるので、二つの符号語が一致するのは高々 \\(k-1\\) か所で、最小距離は \\(n-k+1\\) です。これはシングルトン限界が許す最大です。バーレカンプとウェルチは、誤った位置で 0 になる誤り位置多項式 \\(E\\) と \\(Q=PE\\) を合わせて探すことで復号します。条件 \\(Q(x_i)=y_iE(x_i)\\) は線形で、割り算を一回すると \\(P\\) が得られます。記号を誤らせたり消したりして、予算が尽きるまで復号器を見てください。"
+        ],
+        "formula": "c_i=P(x_i),\\ \\ \\deg P<k,\\qquad d=n-k+1,\\qquad Q(x_i)=y_i\\,E(x_i),\\ \\ \\deg E=e,\\ \\deg Q<e+k,\\qquad P=\\frac{Q}{E},\\qquad 2e+s\\le n-k",
+        "example": [
+          "Over GF(13) take \\(P(x)=5+2x^2\\) (\\(k=3\\)) and send its values at \\(x=1,\\dots,9\\): 7, 0, 10, 11, 3, 12, 12, 3, 11, so \\(d=7\\). Change the symbols at \\(x=2\\) and \\(x=5\\) to 4 and 7, and erase the one at \\(x=7\\). Eight values survive, so the decoder can afford \\(\\lfloor(8-3)/2\\rfloor=2\\) errors. Solving the linear system gives \\(E(x)=x^2+6x+10\\), which is \\((x-2)(x-5)\\) because \\(-7\\equiv6\\) mod 13, and dividing \\(Q\\) by \\(E\\) returns \\(5+2x^2\\). One more error would make \\(2e+s=7>6\\), and the decoder can no longer guarantee anything.",
+          "GF(13) 上で \\(P(x)=5+2x^2\\)（\\(k=3\\)）をとり、\\(x=1,\\dots,9\\) での値 7、0、10、11、3、12、12、3、11 を送ります。\\(d=7\\) です。\\(x=2\\) と \\(x=5\\) の記号を 4 と 7 に変え、\\(x=7\\) の記号を消します。残る値は八つなので、復号器は \\(\\lfloor(8-3)/2\\rfloor=2\\) 個の誤りまで払えます。連立一次方程式を解くと \\(E(x)=x^2+6x+10\\) で、mod 13 では \\(-7\\equiv6\\) なのでこれは \\((x-2)(x-5)\\) です。\\(Q\\) を \\(E\\) で割ると \\(5+2x^2\\) に戻ります。もう一つ誤りが増えると \\(2e+s=7>6\\) となり、復号器は何も保証できなくなります。"
+        ],
+        "caution": [
+          "Real Reed–Solomon codes use the field with 256 elements, so that a symbol is a byte, and lengths up to 255; GF(13) keeps the picture small. Past the budget the decoder either reports failure or, less often, lands on a different codeword, as the experiment shows. The grey line joining the decoded values is only a guide for the eye: over a finite field a polynomial is a set of points, not a curve.",
+          "実際のリード・ソロモン符号は 256 個の元をもつ体を使い、記号が 1 バイトになるようにし、長さは 255 までです。GF(13) は図を小さくするためです。予算を超えると、復号器は失敗を報告するか、まれに別の符号語にたどり着きます。この実験でもそれが見られます。復号した値をつなぐ灰色の線は目の助けにすぎません。有限体上の多項式は曲線ではなく、点の集合です。"
+        ],
+        "question": [
+          "Why is an erasure only half as expensive as an error?",
+          "なぜ消失は誤りの半分の費用で済むのですか？"
+        ],
+        "answer": [
+          "An erasure tells the decoder where the damage is, so it costs one unknown value; an error hides its position as well as its value, so it costs two. Deleting the \\(s\\) erased points leaves a Reed–Solomon code of length \\(n-s\\) and distance \\(n-s-k+1\\), which corrects \\(\\lfloor(n-s-k)/2\\rfloor\\) errors. That is the condition \\(2e+s\\le n-k\\).",
+          "消失は損傷の位置を復号器に教えるので、費用は未知の値一つ分です。誤りは値だけでなく位置も隠すので、費用は二つ分です。\\(s\\) 個の消失した点を除くと、長さ \\(n-s\\)、距離 \\(n-s-k+1\\) のリード・ソロモン符号が残り、\\(\\lfloor(n-s-k)/2\\rfloor\\) 個の誤りを訂正できます。これが条件 \\(2e+s\\le n-k\\) です。"
+        ],
+        "params": [
+          [
+            "k",
+            "Message length k",
+            "メッセージの長さ k",
+            2,
+            6,
+            1,
+            3
+          ],
+          [
+            "n",
+            "Code length n",
+            "符号の長さ n",
+            4,
+            12,
+            1,
+            9
+          ],
+          [
+            "seed",
+            "Message (pick one)",
+            "メッセージ（選ぶ）",
+            0,
+            99,
+            1,
+            7
+          ]
+        ],
+        "source": "Guruswami, Rudra and Sudan · Essential Coding Theory",
+        "url": "https://cse.buffalo.edu/faculty/atri/courses/coding-theory/book/"
+      }
+    ]
+  },
+  {
+    "slug": "superconductivity",
+    "title": [
+      "Superconductivity: zero resistance and flux expulsion",
+      "超伝導：ゼロ抵抗と磁束の排除"
+    ],
+    "description": [
+      "Cool lead, niobium or certain ceramics below a critical temperature and two things happen at once: electrical resistance vanishes, and a magnetic field is pushed out of the bulk. The second is the deeper of the two. A perfect conductor would merely trap whatever field it held; a superconductor expels it, so the superconducting state is a phase of matter with its own free energy, not just a very good metal. London explained the expulsion with one equation that ties the supercurrent to the vector potential, and found that a field dies away within a penetration depth of the surface. Ginzburg and Landau described the transition with a complex order parameter whose phase the material must choose, and Abrikosov showed that in many materials the field enters as a lattice of vortices, each carrying exactly one flux quantum h/2e.",
+      "鉛、ニオブ、ある種のセラミックスを臨界温度より下に冷やすと、二つのことが同時に起こります。電気抵抗が消え、磁場が内部から押し出されます。より深いのは後者です。完全導体なら、もっていた磁場を閉じ込めるだけですが、超伝導体は磁場を追い出します。したがって超伝導状態は、非常によい金属というだけではなく、それ自身の自由エネルギーをもつ物質の相です。ロンドンは、超伝導電流をベクトルポテンシャルに結びつける一つの方程式でこの排除を説明し、磁場が表面から侵入長の範囲で消えることを見出しました。ギンツブルグとランダウは、物質がその位相を選ばなければならない複素数の秩序パラメータで転移を記述し、アブリコソフは、多くの物質で磁場が渦糸の格子として入り、それぞれがちょうど一つの磁束量子 h/2e を運ぶことを示しました。"
+    ],
+    "group": "physics",
+    "prerequisite": [
+      "Electromagnetism (Maxwell equations, vector potential), thermodynamics, complex numbers",
+      "電磁気学（マクスウェル方程式、ベクトルポテンシャル）、熱力学、複素数"
+    ],
+    "source": "MIT OpenCourseWare · 6.763 Applied Superconductivity (Fall 2005)",
+    "url": "https://ocw.mit.edu/courses/6-763-applied-superconductivity-fall-2005/",
+    "labs": [
+      {
+        "id": "meissner-sphere",
+        "title": [
+          "1. The Meissner effect on a sphere",
+          "1. 球のマイスナー効果"
+        ],
+        "body": [
+          "London proposed that the supercurrent is proportional to the vector potential, \\(\\mu_0\\lambda^2\\mathbf J=-\\mathbf A\\). Combined with Ampère’s law this gives \\(\\nabla^2\\mathbf B=\\mathbf B/\\lambda^2\\): inside the metal the field decays over the penetration depth \\(\\lambda\\), typically 50 to 500 nm. For a sphere in a uniform field the equation can be solved exactly. Outside, the field is the applied one plus that of a magnetic dipole pointing against it; inside, it is a modified spherical Bessel function that is largest at the surface. The two join smoothly at the surface. Here the sphere’s size is fixed in units of \\(\\lambda_0\\), the depth at zero temperature, and warming it toward Tc makes \\(\\lambda\\) grow until the expulsion fails.",
+          "ロンドンは、超伝導電流がベクトルポテンシャルに比例する \\(\\mu_0\\lambda^2\\mathbf J=-\\mathbf A\\) と提案しました。これをアンペールの法則と組み合わせると \\(\\nabla^2\\mathbf B=\\mathbf B/\\lambda^2\\) となり、金属の内部で磁場は侵入長 \\(\\lambda\\)、ふつう 50 から 500 nm の範囲で減衰します。一様な磁場の中の球では、この方程式を厳密に解けます。外側の磁場は、加えた磁場と、それと逆向きの磁気双極子の磁場の和です。内側は表面で最大になる変形球ベッセル関数で、二つは表面でなめらかにつながります。ここでは球の大きさを、絶対零度での侵入長 \\(\\lambda_0\\) を単位に固定しています。Tc に向けて温めると \\(\\lambda\\) が大きくなり、やがて排除が効かなくなります。"
+        ],
+        "formula": "\\nabla^2\\mathbf B=\\frac{\\mathbf B}{\\lambda^2},\\qquad \\lambda(T)=\\frac{\\lambda_0}{\\sqrt{1-(T/T_c)^4}},\\qquad \\frac{m}{m_{\\rm perfect}}=1-\\frac{3\\lambda}{R}\\coth\\frac{R}{\\lambda}+\\frac{3\\lambda^2}{R^2},\\qquad B_{\\rm equator}=B_0\\Bigl(1+\\frac{m}{2\\,m_{\\rm perfect}}\\Bigr)",
+        "example": [
+          "Take a sphere twelve penetration depths across in radius, \\(R=12\\lambda_0\\), at half the critical temperature. Then \\(\\lambda=\\lambda_0/\\sqrt{1-0.5^4}=1.033\\lambda_0\\) and \\(R/\\lambda=11.62\\). The induced moment is \\(1-3/11.62\\times\\coth11.62+3/11.62^2=0.764\\) of a perfect diamagnet’s, because the outer shell, about one \\(\\lambda\\) thick, is partly penetrated. The field just outside the equator is \\(1.382B_0\\), short of the ideal 1.5, and at the centre it is \\(2\\times10^{-4}B_0\\). Warm to \\(t=0.9\\) and \\(\\lambda\\) grows to \\(1.71\\lambda_0\\): the moment falls to 0.634 and the centre field rises to \\(0.012B_0\\). A sphere forty depths in radius keeps 0.927 at \\(t=0\\).",
+          "半径が侵入長の 12 倍、\\(R=12\\lambda_0\\) の球を、臨界温度の半分の温度で考えます。\\(\\lambda=\\lambda_0/\\sqrt{1-0.5^4}=1.033\\lambda_0\\) で、\\(R/\\lambda=11.62\\) です。誘導モーメントは完全反磁性体の \\(1-3/11.62\\times\\coth11.62+3/11.62^2=0.764\\) 倍です。厚さおよそ \\(\\lambda\\) 一つ分の外殻に、磁場が一部侵入するからです。赤道のすぐ外の磁場は \\(1.382B_0\\) で、理想の 1.5 には届かず、中心では \\(2\\times10^{-4}B_0\\) です。\\(t=0.9\\) まで温めると \\(\\lambda\\) は \\(1.71\\lambda_0\\) に伸び、モーメントは 0.634 に下がり、中心の磁場は \\(0.012B_0\\) に上がります。半径が侵入長の 40 倍の球は、\\(t=0\\) で 0.927 を保ちます。"
+        ],
+        "caution": [
+          "This is the London model with the two-fluid law for \\(\\lambda(T)\\); it treats the superconductor as a local, linear medium and is accurate when \\(\\lambda\\) is much larger than the coherence length (type II, London limit). The applied field is assumed far below the critical field, so the sphere stays wholly superconducting; a real sphere enters an intermediate state when its equator reaches the critical field. Above Tc the normal metal is drawn as nonmagnetic. The screening ring marks the direction of the current, which actually spreads through the outer shell as \\(\\sin\\theta\\).",
+          "これは \\(\\lambda(T)\\) に二流体の法則を使ったロンドンのモデルです。超伝導体を局所的で線形な媒質として扱い、\\(\\lambda\\) がコヒーレンス長よりずっと大きいとき（第二種、ロンドン極限）に正確です。加える磁場は臨界磁場よりずっと小さいと仮定しているので、球は全体が超伝導のままです。実際の球は、赤道の磁場が臨界磁場に達すると中間状態に入ります。Tc より上の常伝導金属は非磁性として描いています。遮蔽電流の輪は電流の向きを表しており、実際の電流は外殻全体に \\(\\sin\\theta\\) に比例して広がっています。"
+        ],
+        "question": [
+          "Why is the field strongest at the equator?",
+          "なぜ赤道で磁場が最も強いのですか？"
+        ],
+        "answer": [
+          "The flux that would have passed through the sphere has to go around it, and it is squeezed into the gap beside the equator. For a perfect diamagnet the normal component of B vanishes on the surface and the tangential component is \\(\\tfrac32B_0\\sin\\theta\\), largest at \\(\\theta=90^\\circ\\). This is why a type I sphere first lets field in at its equator, at two thirds of the critical field.",
+          "球を通り抜けるはずだった磁束は球を回り込まなければならず、赤道の横のすき間に押し込められます。完全反磁性体では表面で B の法線成分がゼロになり、接線成分は \\(\\tfrac32B_0\\sin\\theta\\) で、\\(\\theta=90^\\circ\\) で最大です。第一種の球が、臨界磁場の三分の二でまず赤道から磁場を入れはじめるのはこのためです。"
+        ],
+        "params": [
+          [
+            "t",
+            "Temperature t = T / Tc",
+            "温度 t = T / Tc",
+            0,
+            1.2,
+            0.01,
+            0.5
+          ],
+          [
+            "a0",
+            "Radius R / λ₀",
+            "半径 R / λ₀",
+            2,
+            60,
+            0.5,
+            12
+          ]
+        ],
+        "source": "MIT OpenCourseWare · 6.763 Applied Superconductivity (Fall 2005)",
+        "url": "https://ocw.mit.edu/courses/6-763-applied-superconductivity-fall-2005/"
+      },
+      {
+        "id": "gl-transition",
+        "title": [
+          "2. Ginzburg–Landau: a ring of minima",
+          "2. ギンツブルグ・ランダウ：最小の輪"
+        ],
+        "body": [
+          "Ginzburg and Landau described the superconducting state by a complex order parameter \\(\\psi\\), with \\(|\\psi|^2\\) the density of superconducting electrons and its phase the thing that makes currents flow. Near Tc the free energy can be expanded in powers of \\(|\\psi|^2\\): \\(a|\\psi|^2+\\tfrac b2|\\psi|^4\\), with \\(a\\) changing sign at Tc. Above Tc the minimum is at \\(\\psi=0\\). Below Tc the minimum is a circle, \\(|\\psi|^2=-a/b\\), and the material has to settle at one point of it: the phase symmetry is broken. The energy gained falls as \\((T_c-T)^2\\), so its second derivative, the specific heat, jumps at Tc without any latent heat: a second-order transition.",
+          "ギンツブルグとランダウは、超伝導状態を複素数の秩序パラメータ \\(\\psi\\) で記述しました。\\(|\\psi|^2\\) は超伝導電子の密度で、その位相が電流を流すものです。Tc の近くでは自由エネルギーを \\(|\\psi|^2\\) のべきで展開でき、\\(a|\\psi|^2+\\tfrac b2|\\psi|^4\\) となります。\\(a\\) は Tc で符号を変えます。Tc より上では最小は \\(\\psi=0\\) にあります。Tc より下では最小は円 \\(|\\psi|^2=-a/b\\) になり、物質はその上の一点に落ち着かなければなりません。位相の対称性が破れるのです。得られるエネルギーは \\((T_c-T)^2\\) で下がるので、その二階微分である比熱は、潜熱なしに Tc で跳びます。これが二次転移です。"
+        ],
+        "formula": "f_s-f_n=a|\\psi|^2+\\frac b2|\\psi|^4,\\quad a=a_0(T-T_c),\\qquad |\\psi|^2=\\frac{a_0(T_c-T)}{b},\\qquad f_s-f_n=-\\frac{a_0^2(T_c-T)^2}{2b}=-\\frac{B_c^2}{2\\mu_0},\\qquad \\Delta C=\\frac{a_0^2T_c}{b}",
+        "example": [
+          "In units with \\(a_0T_c=b=1\\), at \\(t=T/T_c=0.6\\) the coefficient is \\(a=-0.4\\), so the minimum sits at \\(|\\psi|^2=0.4\\), \\(|\\psi|=0.632\\), with \\(f_s-f_n=-0.4^2/2=-0.08\\). Halving the distance to Tc, \\(t=0.8\\), halves \\(|\\psi|^2\\) to 0.2 and quarters the condensation energy to \\(-0.02\\). Differentiating \\(-a_0^2(T_c-T)^2/(2b)\\) twice and multiplying by \\(-T\\) gives a heat capacity jump of \\(a_0^2T_c/b\\) at Tc; in aluminium it is about 1.4 times the normal-state \\(\\gamma T_c\\), close to the value 1.43 that the BCS theory predicts. The coherence length grows as \\(\\xi_0/\\sqrt{1-t}\\): 1.58\\(\\xi_0\\) at \\(t=0.6\\).",
+          "\\(a_0T_c=b=1\\) の単位で、\\(t=T/T_c=0.6\\) では係数は \\(a=-0.4\\) なので、最小は \\(|\\psi|^2=0.4\\)、\\(|\\psi|=0.632\\) にあり、\\(f_s-f_n=-0.4^2/2=-0.08\\) です。Tc までの距離を半分の \\(t=0.8\\) にすると、\\(|\\psi|^2\\) は半分の 0.2 になり、凝縮エネルギーは四分の一の \\(-0.02\\) になります。\\(-a_0^2(T_c-T)^2/(2b)\\) を二回微分して \\(-T\\) をかけると、Tc での熱容量の跳びは \\(a_0^2T_c/b\\) です。アルミニウムでは常伝導の \\(\\gamma T_c\\) のおよそ 1.4 倍で、BCS 理論が予言する 1.43 に近い値です。コヒーレンス長は \\(\\xi_0/\\sqrt{1-t}\\) で伸び、\\(t=0.6\\) では 1.58\\(\\xi_0\\) です。"
+        ],
+        "caution": [
+          "The expansion is valid only near Tc, where \\(|\\psi|\\) is small; the curves are drawn down to \\(t=0\\) to show their shape, but the true order parameter saturates and the specific heat falls exponentially at low temperature. The spatial gradient term and the magnetic field, which give the coherence length and the penetration depth, are left out of the surface; only uniform states are shown. The heat capacity is scaled to the weak-coupling BCS jump.",
+          "この展開は、\\(|\\psi|\\) が小さい Tc の近くでだけ成り立ちます。曲線は形を見せるために \\(t=0\\) まで描いていますが、本当の秩序パラメータは飽和し、低温では比熱が指数関数的に下がります。コヒーレンス長と侵入長を与える空間勾配の項と磁場は、曲面には入れていません。示しているのは一様な状態だけです。熱容量は弱結合 BCS の跳びに合わせた尺度です。"
+        ],
+        "question": [
+          "If every phase has the same energy, why does the phase matter?",
+          "どの位相もエネルギーが同じなら、なぜ位相が問題になるのですか？"
+        ],
+        "answer": [
+          "A uniform phase costs nothing, but a phase that varies in space does: the gradient term \\(\\frac{\\hbar^2}{2m^*}|(\\nabla-\\tfrac{2ie}{\\hbar}\\mathbf A)\\psi|^2\\) charges for every twist. A supercurrent is exactly a phase gradient, \\(\\mathbf J\\propto|\\psi|^2(\\hbar\\nabla\\theta-2e\\mathbf A)\\), and because the phase must return to itself around any loop, the flux through a ring of superconductor is quantised in units of \\(h/2e\\).",
+          "一様な位相にはエネルギーがかかりませんが、空間的に変わる位相にはかかります。勾配の項 \\(\\frac{\\hbar^2}{2m^*}|(\\nabla-\\tfrac{2ie}{\\hbar}\\mathbf A)\\psi|^2\\) が、ねじれごとに代価を課します。超伝導電流はまさに位相の勾配で \\(\\mathbf J\\propto|\\psi|^2(\\hbar\\nabla\\theta-2e\\mathbf A)\\) となり、位相はどの輪を一周しても元に戻らなければならないので、超伝導体の輪を通る磁束は \\(h/2e\\) を単位に量子化されます。"
+        ],
+        "params": [
+          [
+            "t",
+            "Temperature t = T / Tc",
+            "温度 t = T / Tc",
+            0,
+            1.4,
+            0.01,
+            0.6
+          ],
+          [
+            "phi",
+            "Phase of ψ (degrees)",
+            "ψ の位相（度）",
+            0,
+            359,
+            1,
+            30
+          ]
+        ],
+        "source": "MIT OpenCourseWare · 6.763 Applied Superconductivity (Fall 2005)",
+        "url": "https://ocw.mit.edu/courses/6-763-applied-superconductivity-fall-2005/"
+      },
+      {
+        "id": "vortex-lattice",
+        "title": [
+          "3. Vortices and the flux quantum",
+          "3. 渦糸と磁束量子"
+        ],
+        "body": [
+          "In a type II superconductor, where the ratio \\(\\kappa=\\lambda/\\xi\\) of the penetration depth to the coherence length exceeds \\(1/\\sqrt2\\), it pays for the field to enter above a lower critical field Hc1 in thin tubes. Each vortex has a normal core of radius \\(\\xi\\), and around it a supercurrent that confines exactly one flux quantum \\(\\Phi_0=h/2e\\) within a few \\(\\lambda\\). In London theory the field of one vortex is \\(\\Phi_0K_0(r/\\lambda)/(2\\pi\\lambda^2)\\). Vortices repel, and Abrikosov showed they form a lattice; the triangular one has the lowest energy. The mean field is one flux quantum per unit cell, so the spacing follows from the field alone. As the field rises toward Hc2 the cores crowd together until superconductivity is lost.",
+          "侵入長とコヒーレンス長の比 \\(\\kappa=\\lambda/\\xi\\) が \\(1/\\sqrt2\\) より大きい第二種超伝導体では、下部臨界磁場 Hc1 より上で、磁場が細い管として入る方が得になります。各渦糸は半径 \\(\\xi\\) の常伝導の芯をもち、そのまわりの超伝導電流が、ちょうど一つの磁束量子 \\(\\Phi_0=h/2e\\) を \\(\\lambda\\) の数倍の範囲に閉じ込めます。ロンドン理論では一つの渦糸の磁場は \\(\\Phi_0K_0(r/\\lambda)/(2\\pi\\lambda^2)\\) です。渦糸は互いに反発し、アブリコソフはそれが格子をなすことを示しました。エネルギーが最も低いのは三角格子です。平均磁場は単位胞あたり一つの磁束量子なので、間隔は磁場だけで決まります。磁場が Hc2 に近づくと芯が密集し、やがて超伝導は失われます。"
+        ],
+        "formula": "\\Phi_0=\\frac{h}{2e}=2.068\\times10^{-15}\\ \\text{Wb},\\qquad B(r)=\\frac{\\Phi_0}{2\\pi\\lambda^2}K_0\\!\\left(\\frac r\\lambda\\right),\\qquad \\bar B=\\frac{\\Phi_0}{\\tfrac{\\sqrt3}{2}a^2},\\qquad H_{c2}=\\frac{\\Phi_0}{2\\pi\\xi^2},\\qquad H_{c1}\\approx\\frac{\\Phi_0\\ln\\kappa}{4\\pi\\lambda^2}",
+        "example": [
+          "Niobium–titanium, the wire of MRI magnets, has \\(\\lambda\\approx300\\) nm and \\(\\kappa=\\lambda/\\xi\\approx60\\), so \\(\\xi=5\\) nm. Its upper critical field is \\(\\Phi_0/(2\\pi\\xi^2)=2.068\\times10^{-15}/(2\\pi\\times25\\times10^{-18})=13.2\\) T, and its lower one about \\(\\Phi_0\\ln60/(4\\pi\\lambda^2)=7.5\\) mT. At a mean field of 0.0395 T the vortex spacing is \\(a=\\sqrt{2\\Phi_0/(\\sqrt3\\bar B)}=246\\) nm, 0.82\\(\\lambda\\). Because the fields of neighbouring vortices overlap, the field between them only dips to 97% of the mean.",
+          "MRI の磁石の線材であるニオブ・チタンは、\\(\\lambda\\approx300\\) nm、\\(\\kappa=\\lambda/\\xi\\approx60\\) なので \\(\\xi=5\\) nm です。上部臨界磁場は \\(\\Phi_0/(2\\pi\\xi^2)=2.068\\times10^{-15}/(2\\pi\\times25\\times10^{-18})=13.2\\) T、下部臨界磁場はおよそ \\(\\Phi_0\\ln60/(4\\pi\\lambda^2)=7.5\\) mT です。平均磁場 0.0395 T では渦糸の間隔は \\(a=\\sqrt{2\\Phi_0/(\\sqrt3\\bar B)}=246\\) nm、つまり 0.82\\(\\lambda\\) です。隣りあう渦糸の磁場が重なるので、間の磁場は平均の 97% までしか下がりません。"
+        ],
+        "caution": [
+          "The London vortex field diverges logarithmically at the centre; the picture cuts it off at the core radius \\(\\xi\\), and the London model is good only while the cores are far apart (\\(\\bar B\\ll H_{c2}\\)). The Hc1 formula is the leading term for large \\(\\kappa\\). Real lattices are pinned and distorted by defects, which is what lets a superconducting wire carry current without the vortices drifting and dissipating energy.",
+          "ロンドンの渦糸の磁場は中心で対数的に発散します。図では芯の半径 \\(\\xi\\) で打ち切っており、ロンドンのモデルが正しいのは芯どうしが十分に離れている間（\\(\\bar B\\ll H_{c2}\\)）だけです。Hc1 の式は \\(\\kappa\\) が大きいときの主要項です。実際の格子は欠陥にピン止めされてゆがんでおり、そのおかげで超伝導線は、渦糸が流されてエネルギーを散逸することなく電流を運べます。"
+        ],
+        "question": [
+          "Why is the flux quantum h/2e rather than h/e?",
+          "なぜ磁束量子は h/e ではなく h/2e なのですか？"
+        ],
+        "answer": [
+          "Because the order parameter describes pairs of electrons with charge \\(2e\\). Going once around a vortex, the phase of \\(\\psi\\) must change by \\(2\\pi\\), and the London current vanishes far from the core only if \\(2e\\oint\\mathbf A\\cdot d\\boldsymbol\\ell=2\\pi\\hbar\\), that is \\(\\Phi=h/2e\\). The measured value, by Deaver and Fairbank and by Doll and Näbauer in 1961, was early direct evidence for Cooper pairing.",
+          "秩序パラメータが電荷 \\(2e\\) の電子の対を表すからです。渦糸を一周すると \\(\\psi\\) の位相は \\(2\\pi\\) 変わらなければならず、芯から遠くでロンドンの電流が消えるのは \\(2e\\oint\\mathbf A\\cdot d\\boldsymbol\\ell=2\\pi\\hbar\\)、つまり \\(\\Phi=h/2e\\) のときだけです。1961 年にディーバーとフェアバンク、ドールとネーバウアーが測った値は、クーパー対の初期の直接的な証拠になりました。"
+        ],
+        "params": [
+          [
+            "kappa",
+            "κ = λ / ξ",
+            "κ = λ / ξ",
+            2,
+            100,
+            1,
+            60
+          ],
+          [
+            "b",
+            "Mean field B̄ / Hc2",
+            "平均磁場 B̄ / Hc2",
+            0.0005,
+            0.4,
+            0.0005,
+            0.003
+          ],
+          [
+            "lam",
+            "Penetration depth λ (nm)",
+            "侵入長 λ（nm）",
+            50,
+            500,
+            10,
+            300
+          ]
+        ],
+        "source": "MIT OpenCourseWare · 6.763 Applied Superconductivity (Fall 2005)",
+        "url": "https://ocw.mit.edu/courses/6-763-applied-superconductivity-fall-2005/"
+      }
+    ]
+  },
+  {
+    "slug": "aerodynamics",
+    "title": [
+      "Aerodynamics: how a wing makes lift",
+      "空気力学：翼はどう揚力を生むか"
+    ],
+    "description": [
+      "A wing works by turning the air that passes it downward, and the air pushes back. Explaining how much it turns takes three ideas. Around an aerofoil section, the flow outside the thin boundary layer is very nearly ideal, and the lift is fixed by one number, the circulation, which the sharp trailing edge selects (the Kutta condition); Joukowski found a conformal map that solves the problem exactly. A wing of finite span leaks air around its tips, so vortices trail behind it, wash the air down, and tilt the lift backwards into induced drag; Prandtl’s lifting line turns this into one integral equation. Finally, an aircraft’s drag polar decides how far it can glide and how slowly it can sink, which is the arithmetic every glider and airliner is designed around.",
+      "翼は通り過ぎる空気を下へ曲げ、空気は翼を押し返します。どれだけ曲げるかを説明するには三つの考えが要ります。翼型断面のまわりでは、薄い境界層の外の流れはほとんど理想流体で、揚力はただ一つの数、循環で決まり、それを鋭い後縁が選びます（クッタ条件）。ジューコフスキーは、この問題を厳密に解く等角写像を見つけました。有限の翼幅の翼では空気が翼端を回り込むので、渦が後ろへ流れ出して空気を吹き下ろし、揚力を後ろへ傾けて誘導抗力を生みます。プラントルの揚力線理論はこれを一つの積分方程式にしました。最後に、機体の抗力極曲線が、どこまで滑空でき、どれだけゆっくり沈下できるかを決めます。グライダーも旅客機も、この計算を中心に設計されています。"
+    ],
+    "group": "engineering",
+    "prerequisite": [
+      "Complex numbers, vector calculus, Fourier series",
+      "複素数、ベクトル解析、フーリエ級数"
+    ],
+    "source": "MIT OpenCourseWare · 16.100 Aerodynamics (Fall 2005)",
+    "url": "https://ocw.mit.edu/courses/16-100-aerodynamics-fall-2005/",
+    "labs": [
+      {
+        "id": "joukowski-aerofoil",
+        "title": [
+          "1. The Joukowski aerofoil: lift by conformal map",
+          "1. ジューコフスキー翼型：等角写像による揚力"
+        ],
+        "body": [
+          "Flow past a circular cylinder is easy: a uniform stream, a doublet and, optionally, a vortex of circulation \\(\\Gamma\\). The map \\(z=\\zeta+1/\\zeta\\) is conformal everywhere except \\(\\zeta=\\pm1\\), so it carries that flow to a flow past whatever shape the circle becomes. A circle through \\(\\zeta=1\\), centred slightly left of the origin and above it, becomes a rounded, cambered aerofoil with a sharp trailing edge at \\(z=2\\). Any \\(\\Gamma\\) gives a valid ideal flow, but only one keeps the velocity finite at the sharp edge: the one that puts the rear stagnation point of the circle exactly at \\(\\zeta=1\\). That is the Kutta condition, and with it the Kutta–Joukowski theorem gives the lift. Move the circle and the angle of attack, and read the pressure.",
+          "円柱を過ぎる流れは簡単です。一様流と二重わき出し、それに必要なら循環 \\(\\Gamma\\) の渦を加えます。写像 \\(z=\\zeta+1/\\zeta\\) は \\(\\zeta=\\pm1\\) を除くどこでも等角なので、その流れを、円が写った形を過ぎる流れに移します。\\(\\zeta=1\\) を通り、中心が原点の少し左かつ上にある円は、丸い前縁と反りをもち、\\(z=2\\) に鋭い後縁をもつ翼型になります。どの \\(\\Gamma\\) も正しい理想流を与えますが、鋭い縁で速度を有限に保つのはただ一つ、円の後ろのよどみ点をちょうど \\(\\zeta=1\\) に置くものだけです。これがクッタ条件で、それを使うとクッタ・ジューコフスキーの定理が揚力を与えます。円と迎角を動かし、圧力を読んでください。"
+        ],
+        "formula": "z=\\zeta+\\frac1\\zeta,\\qquad \\frac{dW}{d\\zeta}=U\\Bigl(e^{-i\\alpha}-\\frac{a^2e^{i\\alpha}}{(\\zeta-\\mu)^2}\\Bigr)+\\frac{i\\Gamma}{2\\pi(\\zeta-\\mu)},\\qquad \\Gamma=4\\pi Ua\\sin(\\alpha+\\beta),\\qquad L^\\prime=\\rho U\\Gamma,\\qquad C_p=1-\\frac{|dW/dz|^2}{U^2}",
+        "example": [
+          "Centre the circle at \\(\\mu=-0.08+0.08i\\). Its radius is \\(a=|1-\\mu|=1.0830\\) and the trailing edge sits at angle \\(\\beta=\\arcsin(0.08/1.083)=4.24^\\circ\\) below the centre, so the aerofoil is 9.7% thick and has zero lift at \\(-4.24^\\circ\\). At \\(\\alpha=5^\\circ\\) the Kutta condition sets \\(\\Gamma=4\\pi\\times1.083\\times\\sin9.24^\\circ=2.184\\) (with \\(U=1\\)). The chord is 4.022, so \\(C_L=2\\Gamma/c=1.086\\). Thin-aerofoil theory, \\(2\\pi(\\alpha+\\beta)=1.013\\), is 7% low: thickness adds lift, roughly in proportion to \\(1+0.77\\,t/c\\). Integrating the pressure around the surface gives the same 1.086.",
+          "円の中心を \\(\\mu=-0.08+0.08i\\) に置きます。半径は \\(a=|1-\\mu|=1.0830\\)、後縁は中心から見て角度 \\(\\beta=\\arcsin(0.08/1.083)=4.24^\\circ\\) 下にあるので、翼型の厚さは 9.7% で、迎角 \\(-4.24^\\circ\\) で揚力がゼロになります。\\(\\alpha=5^\\circ\\) ではクッタ条件により \\(\\Gamma=4\\pi\\times1.083\\times\\sin9.24^\\circ=2.184\\)（\\(U=1\\)）です。翼弦は 4.022 なので \\(C_L=2\\Gamma/c=1.086\\) です。薄翼理論の \\(2\\pi(\\alpha+\\beta)=1.013\\) は 7% 小さく、厚さはおよそ \\(1+0.77\\,t/c\\) に比例して揚力を増やします。表面のまわりで圧力を積分しても同じ 1.086 が得られます。"
+        ],
+        "caution": [
+          "This is inviscid, incompressible flow. It predicts no drag at all (d’Alembert’s paradox) and no stall: real aerofoils separate from the upper surface somewhere between 12° and 18° and lose lift, while here the lift keeps rising. Joukowski aerofoils have a cusped trailing edge with zero angle, unlike practical sections, and their pressure peak near the nose is sharper than a modern section would allow.",
+          "これは非粘性・非圧縮の流れです。抗力はまったく予言されず（ダランベールのパラドックス）、失速もありません。実際の翼型は 12° から 18° のあたりで上面から流れがはく離して揚力を失いますが、ここでは揚力が増えつづけます。ジューコフスキー翼型の後縁は角度ゼロのとがった形で、実用の断面とは違い、前縁近くの圧力のピークも現代の断面より鋭くなります。"
+        ],
+        "question": [
+          "Why does the sharp trailing edge decide the circulation?",
+          "なぜ鋭い後縁が循環を決めるのですか？"
+        ],
+        "answer": [
+          "Ideal flow allows any circulation, and with the wrong one the air would have to whip around the sharp edge, where the speed would be infinite. Real air cannot do that: the viscous boundary layer separates and sheds a starting vortex until the flow leaves the edge smoothly. By Kelvin’s theorem the wing is left with an equal and opposite circulation, and that is exactly the Kutta value.",
+          "理想流はどんな循環も許しますが、誤った循環だと空気は鋭い縁を回り込まなければならず、そこで速度が無限大になります。実際の空気にはそれができません。粘性の境界層がはく離し、流れが縁からなめらかに離れるようになるまで出発渦を放出します。ケルビンの定理により、翼には大きさが等しく向きが逆の循環が残り、それがちょうどクッタの値です。"
+        ],
+        "params": [
+          [
+            "alpha",
+            "Angle of attack α (°)",
+            "迎角 α（°）",
+            -8,
+            16,
+            0.5,
+            5
+          ],
+          [
+            "mx",
+            "Circle centre, real part",
+            "円の中心の実部",
+            -0.25,
+            0,
+            0.005,
+            -0.08
+          ],
+          [
+            "my",
+            "Circle centre, imaginary part",
+            "円の中心の虚部",
+            0,
+            0.2,
+            0.005,
+            0.08
+          ]
+        ],
+        "source": "MIT OpenCourseWare · 16.100 Aerodynamics (Fall 2005)",
+        "url": "https://ocw.mit.edu/courses/16-100-aerodynamics-fall-2005/"
+      },
+      {
+        "id": "finite-wing",
+        "title": [
+          "2. A finite wing: trailing vortices and induced drag",
+          "2. 有限翼：後流渦と誘導抗力"
+        ],
+        "body": [
+          "On a real wing the high pressure underneath spills around the tips, so the lift must fall to zero there. Helmholtz’s theorem says a vortex line cannot end in the air, so wherever the circulation \\(\\Gamma(y)\\) changes along the span, a vortex of strength \\(-d\\Gamma/dy\\) trails away downstream. Together these induce a downward velocity at the wing, the downwash, which lowers each section’s effective angle of attack by \\(\\alpha_i\\) and tilts its lift backwards: induced drag, the price of making lift with a wing of finite span. Prandtl wrote \\(\\Gamma\\) as a sine series and turned the problem into a linear system. Change the planform, the aspect ratio and the twist, and compare the loading with the ideal ellipse.",
+          "実際の翼では、下面の高い圧力が翼端を回り込むので、揚力はそこでゼロにならなければなりません。ヘルムホルツの定理によれば渦線は空中で終われないので、循環 \\(\\Gamma(y)\\) が翼幅に沿って変わるところでは必ず、強さ \\(-d\\Gamma/dy\\) の渦が下流へ流れ出します。これらがあわせて翼に下向きの速度、つまり吹き下ろしを誘導し、各断面の有効迎角を \\(\\alpha_i\\) だけ下げ、揚力を後ろへ傾けます。これが誘導抗力で、有限の翼幅の翼で揚力を作るための代価です。プラントルは \\(\\Gamma\\) を正弦級数で書き、問題を連立一次方程式にしました。平面形、アスペクト比、ねじりを変え、分布を理想の楕円と比べてください。"
+        ],
+        "formula": "\\Gamma(\\theta)=2bU\\sum_n A_n\\sin n\\theta,\\ \\ y=-\\tfrac b2\\cos\\theta,\\qquad \\sum_n A_n\\sin n\\theta\\,\\bigl(n\\mu+\\sin\\theta\\bigr)=\\mu\\,\\alpha\\sin\\theta,\\ \\ \\mu=\\frac{a_0c}{4b},\\qquad C_L=\\pi\\,AR\\,A_1,\\qquad C_{D_i}=\\frac{C_L^2}{\\pi e\\,AR},\\ \\ e=\\frac{A_1^2}{\\sum nA_n^2}",
+        "example": [
+          "An untwisted elliptic wing of aspect ratio 8 has a purely elliptic loading, \\(A_n=0\\) for \\(n>1\\), so \\(e=1\\) and its lift slope is \\(2\\pi/(1+2/8)=5.03\\) per radian instead of the aerofoil’s \\(2\\pi\\). At \\(5^\\circ\\) that is \\(C_L=0.439\\) and \\(C_{D_i}=0.439^2/(8\\pi)=0.0077\\). A rectangular wing of the same aspect ratio loads its tips too heavily for their chord: \\(e=0.937\\), \\(C_L=0.422\\). Tapering it to a tip chord 0.4 of the root brings \\(e\\) back to 0.987, almost elliptic, which is why so many wings are tapered.",
+          "ねじりのないアスペクト比 8 の楕円翼は純粋な楕円分布をもち、\\(n>1\\) で \\(A_n=0\\) なので \\(e=1\\) です。揚力傾斜は翼型の \\(2\\pi\\) ではなく \\(2\\pi/(1+2/8)=5.03\\)（1/rad）です。\\(5^\\circ\\) では \\(C_L=0.439\\)、\\(C_{D_i}=0.439^2/(8\\pi)=0.0077\\) です。同じアスペクト比の矩形翼は、翼端に翼弦の割に重すぎる荷重をかけるので \\(e=0.937\\)、\\(C_L=0.422\\) です。翼端の翼弦を翼根の 0.4 にテーパーをつけると \\(e\\) は 0.987 に戻り、ほぼ楕円になります。多くの翼にテーパーがあるのはこのためです。"
+        ],
+        "caution": [
+          "Lifting-line theory assumes an unswept wing of large aspect ratio (above about 4) with attached flow and a lift slope of \\(2\\pi\\) per radian for every section; it uses straight trailing vortices, which in reality roll up into two tip vortices within a few spans. The drawn vortex thickness is proportional to the square root of the strength shed in each strip. Sections are symmetric, so the zero-lift angle is zero; washout twists the tip nose-down linearly.",
+          "揚力線理論は、後退角がなくアスペクト比の大きい（およそ 4 以上の）翼で、流れが付着し、どの断面も揚力傾斜が \\(2\\pi\\)（1/rad）であると仮定します。後流渦はまっすぐとしていますが、実際には翼幅の数倍のうちに巻き上がって二本の翼端渦になります。描いた渦の太さは、各帯から放出される強さの平方根に比例します。断面は対称なので揚力ゼロの迎角はゼロで、ウォッシュアウトは翼端を直線的に機首下げにねじります。"
+        ],
+        "question": [
+          "Why do gliders have such long, thin wings?",
+          "なぜグライダーの翼はあんなに細長いのですか？"
+        ],
+        "answer": [
+          "Induced drag is \\(C_L^2/(\\pi e\\,AR)\\), so for the same lift it falls in inverse proportion to the aspect ratio. A glider flies slowly at high \\(C_L\\), where induced drag dominates, so an aspect ratio of 20 to 40 pays for its weight and structural difficulty. Physically, a longer span pushes a larger mass of air down more gently, and kinetic energy left in the wake is what the drag pays for.",
+          "誘導抗力は \\(C_L^2/(\\pi e\\,AR)\\) なので、同じ揚力ならアスペクト比に反比例して小さくなります。グライダーは大きな \\(C_L\\) でゆっくり飛び、そこでは誘導抗力が支配的なので、アスペクト比 20 から 40 は重さと構造の難しさに見合います。物理的には、長い翼幅はより大きな質量の空気をよりおだやかに押し下げます。抗力が支払っているのは、後流に残る運動エネルギーです。"
+        ],
+        "params": [
+          [
+            "plan",
+            "Planform",
+            "平面形",
+            0,
+            2,
+            1,
+            1,
+            [
+              [
+                "Rectangular",
+                "矩形"
+              ],
+              [
+                "Tapered",
+                "テーパー"
+              ],
+              [
+                "Elliptic",
+                "楕円"
+              ]
+            ]
+          ],
+          [
+            "taper",
+            "Taper ratio (tip / root chord)",
+            "テーパー比（翼端 / 翼根の翼弦）",
+            0.1,
+            1,
+            0.05,
+            0.4
+          ],
+          [
+            "ar",
+            "Aspect ratio AR",
+            "アスペクト比 AR",
+            3,
+            20,
+            0.5,
+            8
+          ],
+          [
+            "alpha",
+            "Angle of attack α (°)",
+            "迎角 α（°）",
+            -4,
+            12,
+            0.5,
+            5
+          ],
+          [
+            "twist",
+            "Washout at the tip (°)",
+            "翼端のウォッシュアウト（°）",
+            0,
+            6,
+            0.5,
+            0
+          ]
+        ],
+        "source": "MIT OpenCourseWare · 16.100 Aerodynamics (Fall 2005)",
+        "url": "https://ocw.mit.edu/courses/16-100-aerodynamics-fall-2005/"
+      },
+      {
+        "id": "glide-polar",
+        "title": [
+          "3. The glide polar",
+          "3. 滑空の極曲線"
+        ],
+        "body": [
+          "An aircraft’s drag is roughly a constant part, skin friction and form drag, plus the induced part, which grows as the square of the lift coefficient. This parabolic drag polar decides its performance. In a steady glide the lift-to-drag ratio is the glide ratio, so the best glide is at the lift coefficient where induced drag equals parasite drag, found by drawing a tangent from the origin. A glider staying aloft in a thermal wants the least sink rate instead, which comes at a slower speed. Weight, through the wing loading \\(W/S\\), moves the whole speed polar to higher speeds without changing its shape.",
+          "機体の抗力は、おおよそ一定の部分（摩擦抗力と形状抗力）と、揚力係数の二乗で増える誘導抗力の和です。この放物線の抗力極曲線が性能を決めます。定常滑空では揚抗比が滑空比なので、最良の滑空は誘導抗力と有害抗力が等しくなる揚力係数で起こり、原点から接線を引けば見つかります。サーマルの中で高度を保ちたいグライダーは、代わりに最小の沈下率を求め、それはより遅い速度で得られます。重さは翼面荷重 \\(W/S\\) を通して、速度極曲線全体を形を変えずに速い方へずらします。"
+        ],
+        "formula": "C_D=C_{D0}+KC_L^2,\\ \\ K=\\frac1{\\pi e\\,AR},\\qquad \\Bigl(\\frac LD\\Bigr)_{\\max}=\\frac1{2\\sqrt{KC_{D0}}}\\ \\text{at}\\ C_L=\\sqrt{\\frac{C_{D0}}K},\\qquad V=\\sqrt{\\frac{2W/S}{\\rho C_L}},\\qquad w=V\\frac{C_D}{C_L},\\ \\ w_{\\min}\\ \\text{at}\\ C_L=\\sqrt{\\frac{3C_{D0}}K}",
+        "example": [
+          "Take a glider with aspect ratio 18, \\(e=0.9\\), \\(C_{D0}=0.012\\) and wing loading 350 N/m² at sea level. Then \\(K=1/(\\pi\\times0.9\\times18)=0.0196\\), the best glide ratio is \\(1/(2\\sqrt{0.0196\\times0.012})=32.6\\) at \\(C_L=0.781\\), flown at \\(\\sqrt{2\\times350/(1.225\\times0.781)}=27.0\\) m/s with a sink rate of \\(27.0/32.6=0.83\\) m/s. Minimum sink is at \\(C_L=\\sqrt3\\times0.781=1.354\\), at 20.5 m/s, where \\(C_D=4C_{D0}\\) and the sink is 0.73 m/s. Adding ballast to double the wing loading leaves the glide ratio at 32.6 and raises every speed by \\(\\sqrt2\\).",
+          "アスペクト比 18、\\(e=0.9\\)、\\(C_{D0}=0.012\\)、翼面荷重 350 N/m² のグライダーを海面高度で考えます。\\(K=1/(\\pi\\times0.9\\times18)=0.0196\\) で、最良の滑空比は \\(C_L=0.781\\) で \\(1/(2\\sqrt{0.0196\\times0.012})=32.6\\) です。このときの速度は \\(\\sqrt{2\\times350/(1.225\\times0.781)}=27.0\\) m/s、沈下率は \\(27.0/32.6=0.83\\) m/s です。最小沈下は \\(C_L=\\sqrt3\\times0.781=1.354\\)、速度 20.5 m/s で起こり、そこでは \\(C_D=4C_{D0}\\)、沈下率は 0.73 m/s です。バラストを積んで翼面荷重を二倍にしても滑空比は 32.6 のままで、どの速度も \\(\\sqrt2\\) 倍になります。"
+        ],
+        "caution": [
+          "The parabolic polar is an idealisation: \\(C_{D0}\\) actually varies with \\(C_L\\) and with speed (Reynolds number), and a real polar is measured. The stall limit \\(C_{L,\\max}=1.4\\) is a typical value without flaps. The minimum-sink point is close to the stall here, as it is for many gliders, which is why pilots circle in thermals a little faster than the formula says. Air density is the sea-level value.",
+          "放物線の極曲線は理想化です。実際には \\(C_{D0}\\) は \\(C_L\\) や速度（レイノルズ数）によって変わり、本当の極曲線は測定で得ます。失速の限界 \\(C_{L,\\max}=1.4\\) はフラップなしの典型的な値です。ここでは多くのグライダーと同じく最小沈下の点が失速の近くにあり、パイロットがサーマルの中を式より少し速く旋回するのはこのためです。空気の密度は海面高度の値です。"
+        ],
+        "question": [
+          "Why does weight not change the best glide ratio?",
+          "なぜ重さは最良の滑空比を変えないのですか？"
+        ],
+        "answer": [
+          "The glide ratio is \\(L/D=C_L/C_D\\), which depends only on the lift coefficient, not on the weight. A heavier glider simply flies the same \\(C_L\\) faster, since lift \\(\\tfrac12\\rho V^2SC_L\\) must equal the larger weight, so \\(V\\propto\\sqrt{W/S}\\). It covers the same distance per metre of height but more quickly, which wins races in strong conditions.",
+          "滑空比は \\(L/D=C_L/C_D\\) で、揚力係数だけで決まり、重さにはよりません。重いグライダーは同じ \\(C_L\\) で速く飛ぶだけです。揚力 \\(\\tfrac12\\rho V^2SC_L\\) が大きな重さに等しくなければならないので \\(V\\propto\\sqrt{W/S}\\) となります。高度 1 メートルあたり同じ距離を、より速く進みます。条件のよい日にはそれがレースに勝ちます。"
+        ],
+        "params": [
+          [
+            "ar",
+            "Aspect ratio AR",
+            "アスペクト比 AR",
+            5,
+            30,
+            0.5,
+            18
+          ],
+          [
+            "e",
+            "Span efficiency e",
+            "翼幅効率 e",
+            0.6,
+            1,
+            0.01,
+            0.9
+          ],
+          [
+            "cd0",
+            "Parasite drag C_D0",
+            "有害抗力 C_D0",
+            0.005,
+            0.05,
+            0.001,
+            0.012
+          ],
+          [
+            "ws",
+            "Wing loading W/S (N/m²)",
+            "翼面荷重 W/S（N/m²）",
+            150,
+            600,
+            10,
+            350
+          ],
+          [
+            "V",
+            "Airspeed V (m/s)",
+            "対気速度 V（m/s）",
+            15,
+            60,
+            0.5,
+            28
+          ]
+        ],
+        "source": "MIT OpenCourseWare · 16.100 Aerodynamics (Fall 2005)",
+        "url": "https://ocw.mit.edu/courses/16-100-aerodynamics-fall-2005/"
+      }
+    ]
   }
 ]

@@ -127,7 +127,10 @@
     'riemann-surfaces': ['elliptic-curves', 'differential-geometry', 'hyperbolic-geometry'],
     'projective-geometry': ['optics', 'riemann-surfaces', 'hyperbolic-geometry'],
     'stellar-astrophysics': ['statistical-mechanics', 'fluid-dynamics'],
-    'structural-mechanics': ['continuum-mechanics', 'robot-kinematics', 'calculus-of-variations']
+    'structural-mechanics': ['continuum-mechanics', 'robot-kinematics', 'calculus-of-variations'],
+    'coding-theory': ['number-theory', 'probability-inference', 'galois-theory'],
+    'superconductivity': ['statistical-mechanics', 'quantum-mechanics', 'solid-state-physics'],
+    'aerodynamics': ['complex-analysis', 'fluid-dynamics', 'optimization']
   };
   // Topics named in each topic's own prerequisite line (content.json "prerequisite").
   const PREREQ = {
@@ -185,7 +188,10 @@
     'riemann-surfaces': ['complex-analysis', 'algebraic-topology'],      // Complex numbers, the complex logarithm, and the Euler characteristic
     'projective-geometry': ['linear-algebra'],                           // Vectors, planes and matrices
     'stellar-astrophysics': ['thermodynamics', 'nuclear-physics'],       // Ideal gases, radiation, and fusion energetics
-    'structural-mechanics': ['linear-algebra', 'classical-mechanics']    // Statics, linear systems, and the second derivative
+    'structural-mechanics': ['linear-algebra', 'classical-mechanics'],   // Statics, linear systems, and the second derivative
+    'coding-theory': ['information-theory', 'linear-algebra'],           // Binary numbers, vectors and matrices, modular arithmetic
+    'superconductivity': ['electromagnetism', 'thermodynamics'],         // Maxwell equations, vector potential, thermodynamics
+    'aerodynamics': ['fluid-dynamics', 'complex-analysis']               // Complex numbers, vector calculus, Fourier series
   };
 
   let topics = [], bySlug = new Map(), edges = [], drawn = [];
