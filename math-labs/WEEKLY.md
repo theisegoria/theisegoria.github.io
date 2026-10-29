@@ -73,7 +73,12 @@ show the mechanism. Beyond KIT.md's design bar:
   orbital, a mechanism. Keep a 2D graph beside it with `lab-row is-wide`, a
   `fallback` that draws a 2D figure, and direct manipulation with `S.handle`.
   Do not force 3D onto subjects that are flat by nature. The newest topics
-  (gravitational-waves, robot-kinematics, riemann-surfaces) are the reference.
+  (projective-geometry, stellar-astrophysics, structural-mechanics) are the
+  reference. 3D scenes render through the photographic studio automatically
+  (KIT.md, "3D experiments"): use `S.mat(c, { glass: true, thickness, ior })`
+  for translucent shells and spheres, `limb` for stars, and `S.fatLines` for
+  lines that must stay crisp. `math-labs/dev/newtopic-brief.md` is the brief to
+  hand a worker that builds one topic.
 
 ## 4. Build (exact order)
 
