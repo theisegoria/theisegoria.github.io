@@ -17520,5 +17520,516 @@
         "url": "https://ocw.mit.edu/courses/16-100-aerodynamics-fall-2005/"
       }
     ]
+  },
+  {
+    "slug": "adaptive-cycle-engines",
+    "title": [
+      "Adaptive-cycle engines: one engine, two personalities",
+      "アダプティブサイクルエンジン：一基で二つの性格"
+    ],
+    "description": [
+      "A jet engine makes thrust by throwing air backwards faster than it arrived, and there are two ways to do it: a little air very fast, or a lot of air gently. The first gives a great deal of thrust from a small engine; the second wastes less energy in the wake and so burns less fuel. A conventional fighter turbofan has a core stream and one bypass stream and must settle on one compromise for its whole life. The adaptive-cycle engines being developed for sixth-generation fighters add a third, outer stream fed by the front fan stages, and variable geometry (mode valves and variable vanes) that moves air between that stream and the core in flight: high-bypass mode for efficient cruise and loiter, low-bypass mode to push more air through the core for thrust. The third stream is also a heat sink for the aircraft’s electronics and lowers the exhaust temperature. In the United States, GE’s XA100 and Pratt & Whitney’s XA101 were the demonstrators of the Adaptive Engine Transition Program, and GE claimed about 10% more thrust, about 25% better fuel efficiency, about 30% more range and roughly double the thermal management capacity for the XA100; their successors under the Next Generation Adaptive Propulsion programme, GE’s XA102 and Pratt & Whitney’s XA103, both passed Assembly Readiness Review in May 2026, with ground tests later in the decade. Ideal cycle analysis shows why one engine with two personalities is worth the complication.",
+      "ジェットエンジンは、入ってきたときより速く空気を後ろへ投げ出すことで推力を作ります。そのやり方は二つあり、少しの空気をとても速くするか、たくさんの空気をおだやかに押すかです。前者は小さな機関から大きな推力を得られ、後者は後流に捨てるエネルギーが少ないので燃料が少なくてすみます。従来の戦闘機用ターボファンはコアの流れと一つのバイパス流をもち、一生を一つの妥協で過ごさなければなりません。第六世代戦闘機のために開発中のアダプティブサイクルエンジンは、前方のファン段から空気を受ける外側の第三流路と、飛行中にその流路とコアの間で空気を移す可変形状（モード弁と可変翼）を加えます。効率のよい巡航と待機には高バイパスのモード、推力にはより多くの空気をコアに通す低バイパスのモードを使います。第三流路は機体の電子機器の熱を捨てる吸熱源にもなり、排気の温度を下げます。米国では GE の XA100 とプラット・アンド・ホイットニーの XA101 が適応エンジン移行計画の実証機で、GE は XA100 について推力約 10% 増、燃料効率約 25% 向上、航続距離約 30% 増、熱管理能力約二倍をうたいました。その後継である次世代適応推進計画の GE の XA102 とプラット・アンド・ホイットニー XA103 は、2026 年 5 月にどちらも組立準備審査を通過し、地上試験はこの十年の後半に予定されています。理想サイクル解析を使うと、二つの性格をもつ一基の機関がなぜ複雑さに見合うのかがわかります。"
+    ],
+    "group": "engineering",
+    "prerequisite": [
+      "Thermodynamics (the Brayton cycle), elementary calculus",
+      "熱力学（ブレイトンサイクル）、初歩の微積分"
+    ],
+    "source": "MIT OpenCourseWare · 16.50 Introduction to Propulsion Systems (Spring 2012)",
+    "url": "https://ocw.mit.edu/courses/16-50-introduction-to-propulsion-systems-spring-2012/",
+    "labs": [
+      {
+        "id": "bypass-tradeoff",
+        "title": [
+          "1. The bypass trade-off",
+          "1. バイパスのトレードオフ"
+        ],
+        "body": [
+          "In an ideal turbofan the core compresses its air through the overall pressure ratio \\(\\pi_c\\), burns fuel to the turbine inlet temperature \\(T_{t4}\\), and lets the turbine take out just the work the compressor and fan need; whatever enthalpy is left becomes the core jet. The fan pushes \\(\\alpha\\) times as much air round the core at the fan pressure ratio \\(\\pi_f\\). The fuel burned per kilogram of core air does not depend on \\(\\alpha\\) or \\(\\pi_f\\) at all, so everything turns on how the same jet energy is shared: one fast jet wastes more kinetic energy in the wake than two slower ones that give the same push. That is why more bypass air lowers the fuel per unit thrust (TSFC) and also the thrust each kilogram of air gives. For a given bypass ratio the best fan makes the two jets equally fast; for a given fan the best bypass ratio leaves the core jet at the average of the fan jet and the flight speed. Move the gold point over the surface and watch both curves.",
+          "理想的なターボファンでは、コアが空気を全体圧力比 \\(\\pi_c\\) まで圧縮し、タービン入口温度 \\(T_{t4}\\) まで燃料を燃やし、タービンは圧縮機とファンに必要な仕事だけを取り出します。残ったエンタルピーがコアの噴流になります。ファンはコアの \\(\\alpha\\) 倍の空気を、ファン圧力比 \\(\\pi_f\\) でコアの外へ押し出します。コア空気 1 kg あたりに燃やす燃料は \\(\\alpha\\) にも \\(\\pi_f\\) にもまったくよらないので、すべては同じ噴流のエネルギーをどう分けるかで決まります。一本の速い噴流は、同じ押しを与える二本の遅い噴流より多くの運動エネルギーを後流に捨てます。だからバイパス空気を増やすと、推力あたりの燃料（TSFC）が下がり、空気 1 kg が生む推力も下がります。あるバイパス比に最良のファンは二本の噴流を同じ速さにし、あるファンに最良のバイパス比はコアの噴流をファンの噴流と飛行速度の平均にします。金色の点を曲面の上で動かし、二本の曲線を見てください。"
+        ],
+        "formula": "\\begin{gathered}\\tau_r=1+\\tfrac{\\gamma-1}2M_0^2,\\ \\ \\tau_\\lambda=\\frac{T_{t4}}{T_0},\\ \\ \\tau_t=1-\\frac{\\tau_r}{\\tau_\\lambda}\\bigl[(\\tau_c-1)+\\alpha(\\tau_f-1)\\bigr],\\\\ \\frac{V_9}{a_0}=\\sqrt{\\tfrac2{\\gamma-1}\\tfrac{\\tau_\\lambda}{\\tau_r\\tau_c}(\\tau_r\\tau_c\\tau_t-1)},\\ \\ \\frac{V_{19}}{a_0}=\\sqrt{\\tfrac2{\\gamma-1}(\\tau_r\\tau_f-1)},\\\\ \\frac F{\\dot m_0}=\\frac{(V_9-V_0)+\\alpha(V_{19}-V_0)}{1+\\alpha},\\ \\ S=\\frac{f}{(1+\\alpha)F/\\dot m_0},\\ \\ f=\\frac{c_pT_0(\\tau_\\lambda-\\tau_r\\tau_c)}{h_{PR}}\\end{gathered}",
+        "example": [
+          "Fly at Mach 0.85 at 11 km (\\(T_0=216.65\\) K, \\(V_0=250.8\\) m/s) with \\(\\pi_c=30\\) and \\(T_{t4}=1700\\) K, so \\(\\tau_r=1.1445\\), \\(\\tau_\\lambda=7.847\\), \\(\\tau_c=2.643\\) and \\(f=0.02452\\). With no bypass the turbojet’s jet leaves at 1211 m/s: 961 N·s/kg of specific thrust, a TSFC of 25.5 mg/(N·s) and a propulsive efficiency of only 34%. A fan of \\(\\pi_f=3\\) with \\(\\alpha=0.8\\) slows the core jet to 1149 m/s and adds a 497 m/s fan jet: 608 N·s/kg and 22.4 mg/(N·s), 12% less fuel per newton. The best bypass ratio for this fan is 7.23, where the core jet has fallen to 374 m/s, exactly \\((497+251)/2\\): the TSFC halves to 12.9 mg/(N·s), but each kilogram of air gives only 231 N·s/kg. For \\(\\alpha=5\\) the best fan is \\(\\pi_f=3.85\\), with both jets at 545 m/s.",
+          "マッハ 0.85、高度 11 km（\\(T_0=216.65\\) K、\\(V_0=250.8\\) m/s）で \\(\\pi_c=30\\)、\\(T_{t4}=1700\\) K とすると、\\(\\tau_r=1.1445\\)、\\(\\tau_\\lambda=7.847\\)、\\(\\tau_c=2.643\\)、\\(f=0.02452\\) です。バイパスのないターボジェットの噴流は 1211 m/s で出ていき、比推力 961 N·s/kg、TSFC 25.5 mg/(N·s)、推進効率はわずか 34% です。\\(\\pi_f=3\\)、\\(\\alpha=0.8\\) のファンはコアの噴流を 1149 m/s に下げ、497 m/s のファン噴流を加えます。比推力 608 N·s/kg、TSFC 22.4 mg/(N·s) で、1 N あたりの燃料は 12% 少なくなります。このファンに最良のバイパス比は 7.23 で、そこではコアの噴流が 374 m/s、ちょうど \\((497+251)/2\\) まで下がります。TSFC は半分の 12.9 mg/(N·s) になりますが、空気 1 kg あたりの推力は 231 N·s/kg しかありません。\\(\\alpha=5\\) に最良のファンは \\(\\pi_f=3.85\\) で、二本の噴流はどちらも 545 m/s です。"
+        ],
+        "caution": [
+          "Every component is ideal: no compressor, turbine, duct or nozzle losses, complete combustion, fuel mass neglected beside the air, each nozzle expanding exactly to ambient pressure. Real engines therefore burn more fuel per newton than these figures. In the ideal theory the best bypass ratio grows without limit as the fan pressure ratio falls; real fan and duct losses, and the weight and drag of a big nacelle, set a finite optimum. The surface stops where a turbofan would burn more fuel per newton than the plain turbojet with the same core.",
+          "すべての要素は理想的です。圧縮機、タービン、ダクト、ノズルの損失はなく、燃焼は完全で、燃料の質量は空気に比べて無視し、どのノズルもちょうど大気圧まで膨張させます。そのため実際の機関は、1 N あたりこれらの数値より多くの燃料を使います。理想理論では、ファン圧力比を下げるほど最良のバイパス比は限りなく大きくなりますが、実際にはファンとダクトの損失、大きなナセルの重さと抗力が、有限の最適値を決めます。曲面は、同じコアのただのターボジェットより 1 N あたり多くの燃料を使うところで終わります。"
+        ],
+        "question": [
+          "Why does an airliner use a bypass ratio near ten while a fighter uses less than one?",
+          "なぜ旅客機はバイパス比 10 近くを使い、戦闘機は 1 未満を使うのですか？"
+        ],
+        "answer": [
+          "An airliner spends its life in cruise, where fuel is the main cost, so it moves a lot of air gently and accepts a big, low-specific-thrust engine. A fighter must fit its engine inside a slim fuselage and still give high thrust for combat and supersonic flight, which needs high specific thrust: fast jets from a small airflow, and so a higher TSFC.",
+          "旅客機は一生のほとんどを巡航で過ごし、そこでは燃料が主な費用なので、たくさんの空気をおだやかに動かし、大きくて比推力の小さい機関を受け入れます。戦闘機は細い胴体の中に機関を収め、なお戦闘や超音速飛行のための大きな推力を出さなければならず、それには大きな比推力、つまり少ない空気流量からの速い噴流が必要で、その分 TSFC は大きくなります。"
+        ],
+        "params": [
+          [
+            "M0",
+            "Flight Mach number M₀",
+            "飛行マッハ数 M₀",
+            0,
+            2,
+            0.05,
+            0.85
+          ],
+          [
+            "alt",
+            "Altitude (km)",
+            "高度（km）",
+            0,
+            15,
+            0.5,
+            11
+          ],
+          [
+            "pc",
+            "Overall pressure ratio π_c",
+            "全体圧力比 π_c",
+            5,
+            50,
+            1,
+            30
+          ],
+          [
+            "T4",
+            "Turbine inlet temperature Tₜ₄ (K)",
+            "タービン入口温度 Tₜ₄（K）",
+            1200,
+            2100,
+            10,
+            1700
+          ],
+          [
+            "pf",
+            "Fan pressure ratio π_f",
+            "ファン圧力比 π_f",
+            1.2,
+            6,
+            0.05,
+            3
+          ],
+          [
+            "a",
+            "Bypass ratio α",
+            "バイパス比 α",
+            0,
+            10,
+            0.05,
+            0.8
+          ]
+        ],
+        "source": "MIT OpenCourseWare · 16.50 Introduction to Propulsion Systems (Spring 2012)",
+        "url": "https://ocw.mit.edu/courses/16-50-introduction-to-propulsion-systems-spring-2012/"
+      },
+      {
+        "id": "three-stream-engine",
+        "title": [
+          "2. The three-stream engine",
+          "2. 三流路の機関"
+        ],
+        "body": [
+          "Here the front fan stages compress all the air to a modest pressure ratio \\(\\pi_{f3}\\). The outer part, \\(\\alpha_3\\) times the core flow, peels off as the third stream; the rest passes a further fan stage to \\(\\pi_f\\) and splits into the inner bypass, \\(\\alpha_2\\) times the core flow, and the core. One turbine drives all three compressions. The mode valve, a ring of variable vanes at the mouth of the third stream, sets \\(\\alpha_3\\) while the inlet airflow stays the same: closed for combat, so most of the air goes through the core where fuel is burned, open for cruise, so a large share leaves as a slow, cool outer jet. On the right the engine’s performance traces a curve between the corners that fixed engines must choose between. The third stream also passes a heat exchanger: with mass flow \\(\\dot m_3\\) it can absorb \\(\\dot m_3c_p\\Delta T\\) for an allowed temperature rise, and that heat slightly speeds its jet.",
+          "ここでは前方のファン段がすべての空気を控えめな圧力比 \\(\\pi_{f3}\\) まで圧縮します。外側の部分、コア流量の \\(\\alpha_3\\) 倍が第三流路として分かれ、残りはもう一段のファンで \\(\\pi_f\\) まで圧縮されて、コア流量の \\(\\alpha_2\\) 倍の内側バイパスとコアに分かれます。一つのタービンが三つの圧縮をすべて駆動します。モード弁は第三流路の入口にある可変翼の輪で、入口空気流量を変えずに \\(\\alpha_3\\) を決めます。戦闘では閉じて空気の大部分を燃料が燃やされるコアに通し、巡航では開いて大きな割合を遅く冷たい外側の噴流として出します。右の図では、機関の性能が、固定の機関ならどちらかを選ばなければならない二つの隅の間に曲線を描きます。第三流路は熱交換器も通ります。質量流量 \\(\\dot m_3\\) で、許容温度上昇に対して \\(\\dot m_3c_p\\Delta T\\) を吸収でき、その熱は噴流を少し速くします。"
+        ],
+        "formula": "\\begin{gathered}\\tau_t=1-\\frac{\\tau_r}{\\tau_\\lambda}\\bigl[(\\tau_c-1)+\\alpha_2(\\tau_f-1)+\\alpha_3(\\tau_{f3}-1)\\bigr],\\\\ F=\\dot m_c\\bigl[(V_9-V_0)+\\alpha_2(V_{19}-V_0)+\\alpha_3(V_{39}-V_0)\\bigr],\\ \\ \\dot m_c=\\frac{\\dot m_0}{1+\\alpha_2+\\alpha_3},\\\\ V_{39}=\\sqrt{2c_p\\,(T_0\\tau_r\\tau_{f3}+\\Delta T)\\Bigl(1-\\frac1{\\tau_r\\tau_{f3}}\\Bigr)},\\ \\ Q=\\dot m_3c_p\\Delta T,\\qquad \\eta_P=\\frac{2V_0F}{\\sum_i\\dot m_i(V_i^2-V_0^2)}\\end{gathered}",
+        "example": [
+          "Take 100 kg/s of air at Mach 0.9 and 11 km, \\(\\pi_c=30\\), \\(\\pi_f=3.8\\), \\(\\pi_{f3}=2.2\\), \\(\\alpha_2=0.35\\), \\(T_{t4}=1800\\) K and a 400 kW heat load. In combat mode (\\(\\alpha_3=0.1\\)) the core takes 69.0 kg/s and the engine gives 75.0 kN at 24.5 mg/(N·s); the third stream carries only 6.9 kg/s, so the load heats it by \\(400/(6.9\\times1.0045)=57.7\\) K, more than a 30 K allowance, whose capacity is just 208 kW. In cruise mode (\\(\\alpha_3=1.2\\)) the core takes 39.2 kg/s and the third stream 47.1 kg/s: thrust falls 36% to 48.2 kN, the TSFC falls 12% to 21.7 mg/(N·s), the propulsive efficiency rises from 37.5% to 42.3%, and the same load warms the third stream by only 8.5 K, with 1418 kW of capacity at 30 K.",
+          "マッハ 0.9、高度 11 km で空気 100 kg/s、\\(\\pi_c=30\\)、\\(\\pi_f=3.8\\)、\\(\\pi_{f3}=2.2\\)、\\(\\alpha_2=0.35\\)、\\(T_{t4}=1800\\) K、熱負荷 400 kW とします。戦闘モード（\\(\\alpha_3=0.1\\)）ではコアが 69.0 kg/s を受けもち、機関は 75.0 kN を 24.5 mg/(N·s) で出します。第三流路は 6.9 kg/s しか運ばないので、負荷はそれを \\(400/(6.9\\times1.0045)=57.7\\) K 温め、許容の 30 K を超えます。30 K での能力はわずか 208 kW です。巡航モード（\\(\\alpha_3=1.2\\)）ではコアが 39.2 kg/s、第三流路が 47.1 kg/s です。推力は 36% 下がって 48.2 kN、TSFC は 12% 下がって 21.7 mg/(N·s)、推進効率は 37.5% から 42.3% に上がり、同じ負荷で第三流路は 8.5 K しか温まらず、30 K での能力は 1418 kW です。"
+        ],
+        "caution": [
+          "The geometry and the mode schedule are generic and schematic, not those of any real engine, whose figures are not public. Only \\(\\alpha_3\\) changes with mode here; real adaptive engines also reschedule fan pressure ratios, variable vanes in the core and nozzle areas. The cycle is ideal and every point is a design point: an ideal model cannot show the off-design losses a fixed engine suffers when it is throttled back, which is part of what an adaptive engine avoids. Inside the engine the particle speeds are schematic; in the jets they are the computed exhaust speeds.",
+          "形状とモードの予定は一般的な模式で、実在の機関のものではありません。実機の数値は公開されていません。ここではモードで変わるのは \\(\\alpha_3\\) だけですが、実際のアダプティブ機関はファン圧力比、コアの可変翼、ノズル面積も変えます。サイクルは理想的で、どの点も設計点です。固定の機関を絞ったときに受ける設計点外の損失は理想モデルでは示せませんが、アダプティブ機関が避けるものの一部はそれです。機関内部の粒子の速さは模式的で、噴流の中では計算した排気速度です。"
+        ],
+        "question": [
+          "Why keep the inlet airflow constant when the mode changes?",
+          "モードを変えるとき、なぜ入口空気流量を一定に保つのですか？"
+        ],
+        "answer": [
+          "An inlet is sized for the engine’s full airflow. A fixed engine throttled back for cruise swallows less air than the inlet delivers, and the surplus spills round the inlet lip, which costs drag. An adaptive engine sends that surplus through the third stream instead, where it adds a little thrust, carries away heat and cools the exhaust.",
+          "インテークは機関の全空気流量に合わせて作られます。巡航のために絞った固定の機関は、インテークが届けるより少ない空気しか吸い込まず、余りはインテークの縁からあふれて抗力になります。アダプティブ機関はその余りを第三流路に通し、そこで少しの推力を加え、熱を運び去り、排気を冷やします。"
+        ],
+        "params": [
+          [
+            "mode",
+            "Mode: 0 combat, 1 cruise",
+            "モード：0 戦闘、1 巡航",
+            0,
+            1,
+            0.01,
+            0.75
+          ],
+          [
+            "M0",
+            "Flight Mach number M₀",
+            "飛行マッハ数 M₀",
+            0,
+            1.8,
+            0.05,
+            0.9
+          ],
+          [
+            "alt",
+            "Altitude (km)",
+            "高度（km）",
+            0,
+            15,
+            0.5,
+            11
+          ],
+          [
+            "T4",
+            "Turbine inlet temperature Tₜ₄ (K)",
+            "タービン入口温度 Tₜ₄（K）",
+            1500,
+            2050,
+            10,
+            1800
+          ],
+          [
+            "Q",
+            "Aircraft heat load Q (kW)",
+            "機体の熱負荷 Q（kW）",
+            0,
+            1500,
+            10,
+            400
+          ],
+          [
+            "dT",
+            "Allowed third-stream temperature rise ΔT (K)",
+            "第三流路の許容温度上昇 ΔT（K）",
+            10,
+            80,
+            1,
+            30
+          ]
+        ],
+        "source": "MIT OpenCourseWare · 16.50 Introduction to Propulsion Systems (Spring 2012)",
+        "url": "https://ocw.mit.edu/courses/16-50-introduction-to-propulsion-systems-spring-2012/"
+      },
+      {
+        "id": "mission-range",
+        "title": [
+          "3. The mission: cruise like an airliner, fight like a fighter",
+          "3. 任務：旅客機のように巡航し、戦闘機のように戦う"
+        ],
+        "body": [
+          "On a cruise leg the aircraft gets lighter as it burns fuel, and integrating \\(dm/dx=-gSm/(V\\,L/D)\\) gives Breguet’s range equation: distance is proportional to \\(1/S\\) and to the logarithm of the mass ratio. A combat leg instead demands a thrust, and an engine that cannot make it cannot fly the mission at all, however frugal it is. Here three engines with the same core and the same 100 kg/s of air fly out, dash at Mach 1.5 for the set time and fly home: the adaptive engine frozen in combat mode (a fixed low-bypass engine), frozen in cruise mode (a fixed high-bypass engine), and the adaptive engine that cruises in one mode and fights in the other. Drag the required dash thrust and press Play to watch the fuel go.",
+          "巡航区間では、機体は燃料を燃やすにつれて軽くなり、\\(dm/dx=-gSm/(V\\,L/D)\\) を積分するとブレゲーの航続距離の式が得られます。距離は \\(1/S\\) と質量比の対数に比例します。戦闘区間では代わりに推力が求められ、それを出せない機関は、どれほど燃費がよくてもこの任務をまったく飛べません。ここでは同じコアと同じ空気 100 kg/s をもつ三つの機関が進出し、決めた時間だけマッハ 1.5 でダッシュして帰投します。戦闘モードに固定したアダプティブ機関（固定の低バイパス機関）、巡航モードに固定したもの（固定の高バイパス機関）、そして一方のモードで巡航し他方で戦うアダプティブ機関です。要求ダッシュ推力をドラッグし、再生を押して燃料の減り方を見てください。"
+        ],
+        "formula": "R=\\frac{V}{g\\,S}\\,\\frac LD\\,\\ln\\frac{W_0}{W_1},\\qquad m(x)=m_0\\,e^{-gSx/(V\\,L/D)},\\qquad m_{\\text{dash}}=n\\,F_{\\text{req}}\\,S_{\\text{dash}}\\,t,\\qquad F_{\\text{avail}}=\\dot m_0\\Bigl(\\frac F{\\dot m_0}\\Bigr)_{M=1.5}\\ge F_{\\text{req}}",
+        "example": [
+          "A 30-tonne twin-engine aircraft carries 30% of its mass as fuel and cruises at Mach 0.9 and 11 km with \\(L/D=9\\), so each engine must give \\(30000\\times9.807/(9\\times2)=16.3\\) kN. At \\(T_{t4}=1800\\) K the low-bypass engine cruises at 24.6 mg/(N·s) and can give 61.7 kN in the dash; the high-bypass engine cruises at 21.8 mg/(N·s) but gives only 38.8 kN, short of the 50 kN required. With a 4-minute dash (611 kg of fuel) the low-bypass engine reaches 1647 km; the adaptive engine, cruising at 21.8 and dashing at 61.7 kN, reaches 1858 km, 12.9% farther, or flies the shorter mission on 9.1% less fuel. Its 11.4% lower cruise TSFC explains the radius: \\(1/(1-0.114)=1.129\\). By the same arithmetic, 25% less fuel per newton would give \\(1/0.75=1.33\\) times the range, the published pair; the ideal cycle alone supplies a bit under half of it.",
+          "30 トンの双発機が質量の 30% を燃料として積み、\\(L/D=9\\) でマッハ 0.9、高度 11 km を巡航するとき、各機関は \\(30000\\times9.807/(9\\times2)=16.3\\) kN を出さなければなりません。\\(T_{t4}=1800\\) K では、低バイパス機関は 24.6 mg/(N·s) で巡航し、ダッシュで 61.7 kN を出せます。高バイパス機関は 21.8 mg/(N·s) で巡航しますが、出せるのは 38.8 kN だけで、要求の 50 kN に足りません。4 分のダッシュ（燃料 611 kg）で、低バイパス機関は 1647 km まで届きます。21.8 で巡航し 61.7 kN でダッシュするアダプティブ機関は 1858 km まで、12.9% 遠くまで届き、短いほうの任務なら燃料が 9.1% 少なくてすみます。巡航 TSFC が 11.4% 低いことが行動半径を説明します。\\(1/(1-0.114)=1.129\\) です。同じ計算で、1 N あたりの燃料が 25% 少なければ航続距離は \\(1/0.75=1.33\\) 倍となり、これが公表された組です。理想サイクルだけで、その半分弱が説明できます。"
+        ],
+        "caution": [
+          "Each engine’s TSFC at a flight condition is taken from its cycle at the set turbine temperature and held constant when it is throttled back to the cruise thrust, the usual approximation in a first range estimate. The inlet airflow is the same at both flight conditions, \\(L/D\\) is constant, and take-off, climb, reserves and loiter are left out. The published figures compare a complete new engine with an existing one, so they also include improvements that an ideal cycle cannot contain. Nothing here describes a real aircraft.",
+          "飛行条件ごとの各機関の TSFC は、設定したタービン温度でのサイクルから求め、巡航推力まで絞っても一定とします。これは最初の航続距離の見積もりでふつうに使う近似です。入口空気流量は二つの飛行条件で同じとし、\\(L/D\\) は一定、離陸、上昇、予備燃料、待機は含めていません。公表された数値は完全な新しい機関を既存の機関と比べたものなので、理想サイクルには入れられない改良も含んでいます。ここにあるものは、実在の航空機を表すものではありません。"
+        ],
+        "question": [
+          "Why does 25% less fuel per unit thrust give about a third more range, not a quarter?",
+          "推力あたりの燃料が 25% 少ないと、なぜ航続距離は四分の一ではなく約三分の一延びるのですか？"
+        ],
+        "answer": [
+          "Breguet’s equation makes the range inversely proportional to TSFC for the same fuel. Multiplying TSFC by 0.75 multiplies the range by \\(1/0.75=1.33\\). So “about 25% better fuel efficiency” and “about 30% more range” are two faces of one improvement, rounded, and blurred by parts of a mission, such as a dash, that do not scale with cruise TSFC.",
+          "ブレゲーの式では、同じ燃料なら航続距離は TSFC に反比例します。TSFC を 0.75 倍にすると航続距離は \\(1/0.75=1.33\\) 倍になります。つまり「燃料効率約 25% 向上」と「航続距離約 30% 増」は一つの改良の二つの面で、丸めた数値であり、ダッシュのように巡航 TSFC に比例しない任務の部分でぼやけています。"
+        ],
+        "params": [
+          [
+            "T4",
+            "Turbine inlet temperature Tₜ₄ (K)",
+            "タービン入口温度 Tₜ₄（K）",
+            1500,
+            2050,
+            10,
+            1800
+          ],
+          [
+            "ld",
+            "Cruise lift-to-drag ratio L/D",
+            "巡航の揚抗比 L/D",
+            5,
+            14,
+            0.5,
+            9
+          ],
+          [
+            "ff",
+            "Fuel fraction of take-off mass",
+            "離陸質量に対する燃料の割合",
+            0.15,
+            0.4,
+            0.01,
+            0.3
+          ],
+          [
+            "Freq",
+            "Dash thrust required per engine (kN)",
+            "1 基あたりの要求ダッシュ推力（kN）",
+            20,
+            80,
+            1,
+            50
+          ],
+          [
+            "tdash",
+            "Dash time (min)",
+            "ダッシュ時間（分）",
+            0,
+            10,
+            0.5,
+            4
+          ]
+        ],
+        "source": "MIT OpenCourseWare · 16.50 Introduction to Propulsion Systems (Spring 2012)",
+        "url": "https://ocw.mit.edu/courses/16-50-introduction-to-propulsion-systems-spring-2012/"
+      }
+    ]
+  },
+  {
+    "slug": "active-flow-control",
+    "title": [
+      "Active flow control: steering with jets of air",
+      "能動流れ制御：空気の噴流で操る"
+    ],
+    "description": [
+      "A wing changes its lift by changing its circulation, and for a century that has meant moving a flap. Active flow control does it with air instead: a thin jet blown from a slot near the trailing edge. Blown over a rounded edge, the jet clings to the curve, the Coanda effect, because the pressure inside a curved jet sheet must fall to hold it on its curved path, and it drags the point where the flow leaves the wing round with it. That moves the rear stagnation point, which a sharp edge would pin by the Kutta condition, and so changes the circulation and the lift with no moving parts. The jet’s strength is measured by its momentum coefficient Cμ, and a little goes a long way: the lift gained is many times the jet’s own thrust. BAE Systems and the University of Manchester flew the MAGMA UAV with circulation control on its wing and fluidic thrust vectoring in 2017, after DEMON in 2010. DARPA’s CRANE program is building the Aurora Flight Sciences X-65, an uncrewed demonstrator of about Mach 0.7 with fourteen such effectors across its flying surfaces; it keeps conventional control surfaces too, for testing and for expanding its flight envelope, and is expected to fly in 2027. For a stealthy aircraft the attraction is a skin with no hinge lines or gaps, fewer moving parts and less weight. These experiments start from jet-flap theory, build a circulation-control wing on the Joukowski map from the aerodynamics topic, and end with the allocation problem every such aircraft must solve: which jets to blow to get the moment the pilot asks for.",
+      "翼は循環を変えることで揚力を変えます。百年来、それはフラップを動かすことを意味してきました。能動流れ制御は同じことを空気で行います。後縁近くのスロットから吹き出す薄い噴流です。丸い縁の上に吹き出すと、噴流は曲面に沿って張りつきます。これがコアンダ効果で、曲がった噴流の膜を曲がった道筋に保つには膜の内側の圧力が下がらなければならないからです。噴流は、流れが翼を離れる点を引き連れて回り込みます。鋭い縁ならクッタ条件で固定される後方よどみ点が動き、そのため可動部なしで循環と揚力が変わります。噴流の強さは運動量係数 Cμ で測り、少しの吹き出しが大きく効きます。得られる揚力は噴流自身の推力の何倍にもなります。BAE システムズとマンチェスター大学は、2010 年の DEMON に続き、2017 年に翼に循環制御、推力偏向に流体式の方法を使った無人機 MAGMA を飛ばしました。DARPA の CRANE 計画では、オーロラ・フライト・サイエンシズが X-65 を製作しています。速度およそマッハ 0.7 の無人の実証機で、飛行面全体に 14 個のこうした効果器を備えます。試験と飛行範囲の拡大のために通常の操縦翼面も残しており、2027 年に初飛行の予定です。ステルス機にとっての魅力は、ヒンジ線やすき間のない外板、少ない可動部、軽さです。ここでの実験は、ジェットフラップ理論から始め、空気力学のトピックのジューコフスキー写像の上に循環制御翼を組み立て、こうした機体がみな解かなければならない割り当て問題、つまりパイロットが求めるモーメントを得るにはどの噴流を吹けばよいかで終わります。"
+    ],
+    "group": "engineering",
+    "prerequisite": [
+      "Aerodynamics (circulation, the Kutta condition, the Joukowski map), complex numbers, linear algebra",
+      "空気力学（循環、クッタ条件、ジューコフスキー写像）、複素数、線形代数"
+    ],
+    "source": "Williams, Butler & Wood · The Aerodynamics of Jet Flaps, ARC R&M 3304 (1962)",
+    "url": "https://reports.aerade.cranfield.ac.uk/bitstream/handle/1826.2/3884/arc-rm-3304.pdf?sequence=1&isAllowed=y",
+    "labs": [
+      {
+        "id": "jet-flap-lift",
+        "title": [
+          "1. The jet flap: lift from a sheet of air",
+          "1. ジェットフラップ：空気の膜による揚力"
+        ],
+        "body": [
+          "Blow a thin, fast sheet of air out of the trailing edge, turned down at an angle \\(\\tau\\) to the chord. The sheet carries momentum, and it can only curve if the pressure differs across it, so it behaves like a flexible extension of the wing that carries load behind it. Spence solved the thin-aerofoil problem in 1956: the lift grows with the momentum coefficient \\(C_\\mu\\), the jet’s momentum flux divided by the dynamic pressure and the wing area, at first like \\(\\sqrt{C_\\mu}\\). The jet’s own thrust, turned down, supplies only \\(C_\\mu\\sin(\\tau+\\alpha)\\); the rest is supercirculation, extra circulation that the jet induces round the whole wing. Drag the operating point, turn the jet, and compare it with a hinged flap.",
+          "後縁から、翼弦に対して角度 \\(\\tau\\) だけ下に向けた、薄く速い空気の膜を吹き出します。膜は運動量を運び、膜をはさんで圧力が違うときにしか曲がれないので、翼の後ろで荷重を受けもつ、しなやかな翼の延長のようにふるまいます。スペンスは 1956 年にこの薄翼の問題を解きました。揚力は運動量係数 \\(C_\\mu\\)（噴流の運動量流束を動圧と翼面積で割ったもの）とともに、はじめは \\(\\sqrt{C_\\mu}\\) のように増えます。下に向けた噴流自身の推力が担うのは \\(C_\\mu\\sin(\\tau+\\alpha)\\) だけで、残りは超循環、つまり噴流が翼全体のまわりに誘導する余分な循環です。動作点をドラッグし、噴流の向きを変えて、ヒンジ式のフラップと比べてください。"
+        ],
+        "formula": "C_\\mu=\\frac{\\dot mV_j}{q_\\infty S},\\qquad \\frac{\\partial C_L}{\\partial\\tau}=\\Bigl[4\\pi C_\\mu\\bigl(1+0.151C_\\mu^{1/2}+0.139C_\\mu\\bigr)\\Bigr]^{1/2},\\qquad \\frac{\\partial C_L}{\\partial\\alpha}=2\\pi\\bigl(1+0.151C_\\mu^{1/2}+0.219C_\\mu\\bigr),\\qquad C_L=\\tau\\frac{\\partial C_L}{\\partial\\tau}+\\alpha\\frac{\\partial C_L}{\\partial\\alpha},\\qquad \\Delta C_{L,\\mathrm{flap}}=2\\bigl[(\\pi-\\theta_h)+\\sin\\theta_h\\bigr]\\delta,\\ \\ \\cos\\theta_h=2E-1,\\qquad P=\\tfrac12\\dot mV_j^2",
+        "example": [
+          "Blow \\(C_\\mu=0.05\\) at \\(\\tau=30^\\circ\\) on a wing at \\(\\alpha=4^\\circ\\). Then \\(\\partial C_L/\\partial\\tau=0.809\\) and \\(\\partial C_L/\\partial\\alpha=6.564\\) per radian, so \\(C_L=0.5236\\times0.809+0.0698\\times6.564=0.882\\), against \\(2\\pi\\times0.0698=0.439\\) unblown. The jet adds \\(\\Delta C_L=0.443\\), an augmentation ratio \\(\\Delta C_L/C_\\mu\\) of 8.9, and its own reaction, \\(0.05\\sin34^\\circ=0.028\\), is only 6% of that. A plain flap of 25% chord, with a slope of 3.83 per radian, would have to turn 6.6° to do the same. On a 10 m² wing at 50 m/s (\\(q_\\infty=1531\\) Pa) with a 200 m/s jet, the mass flow is 3.83 kg/s and the blowing power \\(\\tfrac12\\dot mV_j^2\\) is 76.6 kW, for 6.78 kN of extra lift.",
+          "迎角 \\(\\alpha=4^\\circ\\) の翼で、\\(\\tau=30^\\circ\\)、\\(C_\\mu=0.05\\) の吹き出しをします。\\(\\partial C_L/\\partial\\tau=0.809\\)、\\(\\partial C_L/\\partial\\alpha=6.564\\)（1/rad）なので、\\(C_L=0.5236\\times0.809+0.0698\\times6.564=0.882\\) となり、吹き出しなしの \\(2\\pi\\times0.0698=0.439\\) と比べられます。噴流が加えるのは \\(\\Delta C_L=0.443\\) で、増強比 \\(\\Delta C_L/C_\\mu\\) は 8.9 です。噴流自身の反力 \\(0.05\\sin34^\\circ=0.028\\) は、そのわずか 6% です。傾きが 3.83（1/rad）の翼弦 25% の普通のフラップなら、同じことをするのに 6.6° 曲げる必要があります。10 m² の翼が 50 m/s（\\(q_\\infty=1531\\) Pa）で飛び、噴流速度が 200 m/s なら、質量流量は 3.83 kg/s、吹き出しの動力 \\(\\tfrac12\\dot mV_j^2\\) は 76.6 kW で、6.78 kN の揚力が増えます。"
+        ],
+        "caution": [
+          "Spence’s theory is linear: small \\(\\tau\\) and \\(\\alpha\\), an infinitely thin jet leaving a sharp edge, attached, incompressible, two-dimensional flow. The interpolation formulas of Williams, Butler and Wood fit his computed values at \\(C_\\mu=1\\) and 4 and as \\(C_\\mu\\to0\\). On a wing of finite span some of the gain is lost to downwash. The jet’s shape in the diagram is schematic; the curves and the arrows are computed.",
+          "スペンスの理論は線形です。\\(\\tau\\) と \\(\\alpha\\) が小さく、無限に薄い噴流が鋭い縁から出て、流れは付着し、非圧縮で二次元だと仮定しています。ウィリアムズ、バトラー、ウッドの内挿公式は、彼の計算値に \\(C_\\mu=1\\) と 4、および \\(C_\\mu\\to0\\) の極限で合わせたものです。有限の翼幅の翼では、増えた分の一部が吹き下ろしで失われます。図の噴流の形は模式的ですが、曲線と矢印は計算したものです。"
+        ],
+        "question": [
+          "Why is the lift gained so much larger than the jet’s thrust?",
+          "なぜ得られる揚力は噴流の推力よりずっと大きいのですか？"
+        ],
+        "answer": [
+          "The jet sheet can only curve if there is a pressure difference across it, so it carries load itself and acts like a flexible flap trailing behind the wing. For the flow to leave the trailing edge in the jet’s direction, the flow round the whole aerofoil must take on extra circulation, and the Kutta–Joukowski lift \\(\\rho U\\Gamma\\) of that supercirculation is many times the jet’s momentum: at small \\(C_\\mu\\), \\(\\Delta C_L/C_\\mu\\approx2\\tau\\sqrt{\\pi/C_\\mu}\\).",
+          "噴流の膜は、膜をはさんで圧力差があるときにしか曲がれないので、自ら荷重を受けもち、翼の後ろに伸びるしなやかなフラップのようにはたらきます。流れが噴流の向きに後縁を離れるには、翼型全体のまわりの流れが余分な循環をもたなければならず、その超循環のクッタ・ジューコフスキー揚力 \\(\\rho U\\Gamma\\) は噴流の運動量の何倍にもなります。\\(C_\\mu\\) が小さいとき \\(\\Delta C_L/C_\\mu\\approx2\\tau\\sqrt{\\pi/C_\\mu}\\) です。"
+        ],
+        "params": [
+          [
+            "cmu",
+            "Momentum coefficient Cμ",
+            "運動量係数 Cμ",
+            0,
+            0.5,
+            0.005,
+            0.05
+          ],
+          [
+            "tau",
+            "Jet deflection τ (°)",
+            "噴流の偏向角 τ（°）",
+            0,
+            80,
+            1,
+            30
+          ],
+          [
+            "alpha",
+            "Angle of attack α (°)",
+            "迎角 α（°）",
+            -4,
+            10,
+            0.5,
+            4
+          ],
+          [
+            "E",
+            "Plain-flap chord fraction E",
+            "普通のフラップの翼弦比 E",
+            0.05,
+            1,
+            0.05,
+            0.25
+          ],
+          [
+            "V",
+            "Airspeed V (m/s)",
+            "対気速度 V（m/s）",
+            20,
+            100,
+            1,
+            50
+          ],
+          [
+            "vj",
+            "Jet speed V_j (m/s)",
+            "噴流速度 V_j（m/s）",
+            100,
+            340,
+            5,
+            200
+          ]
+        ],
+        "source": "Williams, Butler & Wood · The Aerodynamics of Jet Flaps, ARC R&M 3304 (1962)",
+        "url": "https://reports.aerade.cranfield.ac.uk/bitstream/handle/1826.2/3884/arc-rm-3304.pdf?sequence=1&isAllowed=y"
+      },
+      {
+        "id": "coanda-wing",
+        "title": [
+          "2. The Coanda wing: circulation without a sharp edge",
+          "2. コアンダ翼：鋭い縁のない循環"
+        ],
+        "body": [
+          "Round off the trailing edge and the Kutta condition loses its grip: with no sharp edge there is no special point where the flow must leave, and the circulation is free. A circle that clears \\(\\zeta=1\\) by a margin \\(\\varepsilon\\) maps under \\(z=\\zeta+1/\\zeta\\) to a section with a rounded trailing edge. Now blow a thin jet tangentially from a slot just ahead of the edge. Its sheet is curved, and the pressure inside it must fall by about \\(\\rho u_j^2h/R\\) to keep it on the curve, so it clings to the surface, the Coanda effect, and drags the rear stagnation point of the outer flow round to the underside. That is circulation control: where the jet lets go sets \\(\\Gamma\\), and the lift follows from Kutta–Joukowski as before. Drag the separation point round the edge.",
+          "後縁を丸めると、クッタ条件は効かなくなります。鋭い縁がなければ、流れが必ずそこから離れるという特別な点がなく、循環は自由です。\\(\\zeta=1\\) から \\(\\varepsilon\\) だけ離れて通る円は、\\(z=\\zeta+1/\\zeta\\) によって後縁の丸い断面に写ります。ここで、縁のすぐ手前のスロットから、表面に沿って薄い噴流を吹き出します。噴流の膜は曲がっていて、曲がったまま保つには膜の内側の圧力がおよそ \\(\\rho u_j^2h/R\\) だけ下がらなければならないので、膜は表面に張りつき（コアンダ効果）、外側の流れの後方よどみ点を下面側へ引き回します。これが循環制御です。噴流が離れる場所が \\(\\Gamma\\) を決め、揚力はこれまでどおりクッタ・ジューコフスキーの定理から得られます。はく離点を縁に沿ってドラッグしてください。"
+        ],
+        "formula": "z=\\zeta+\\frac1\\zeta,\\qquad a=|1-\\mu|+\\varepsilon,\\qquad q_\\theta=-2U\\sin(\\theta-\\alpha)-\\frac{\\Gamma}{2\\pi a}=0\\ \\text{at}\\ \\theta_s\\ \\Rightarrow\\ \\Gamma=4\\pi Ua\\sin(\\alpha-\\theta_s),\\qquad C_L=\\frac{2\\Gamma}{Uc},\\qquad \\Delta p\\approx\\frac{\\rho u_j^2h}{R},\\qquad C_\\mu=\\frac{2hu_j^2}{cU^2}",
+        "example": [
+          "Take \\(\\mu=0.04i\\) and \\(\\varepsilon=0.2\\), so \\(a=1.2008\\): the section is 18% thick, with an edge radius of 1.6% of the chord. The old sharp-edge direction is \\(\\theta=-2.29^\\circ\\). At \\(\\alpha=4^\\circ\\) a stagnation point there gives \\(\\Gamma=4\\pi\\times1.2008\\times\\sin6.29^\\circ=1.653\\) and, with chord 4.067, \\(C_L=0.813\\). Blow until the jet separates 12° further round, at \\(\\theta_s=-14.29^\\circ\\): \\(\\Gamma=4\\pi\\times1.2008\\times\\sin18.29^\\circ=4.736\\) and \\(C_L=2.329\\), almost three times the lift with nothing moved. Integrating the pressure round the surface gives the same 2.329 and zero drag. The flow now leaves the edge 53.6° below the chord, and jet-flap theory puts the blowing at about \\(C_\\mu=0.18\\). Through a 0.8 mm slot on a 0.5 m chord at 30 m/s that is a 225 m/s jet, holding a pressure drop of \\(C_\\mu q_\\infty c/R=11\\,q_\\infty\\) across itself.",
+          "\\(\\mu=0.04i\\)、\\(\\varepsilon=0.2\\) とすると \\(a=1.2008\\) で、断面の厚さは 18%、縁の半径は翼弦の 1.6% です。もとの鋭い縁の方向は \\(\\theta=-2.29^\\circ\\) です。\\(\\alpha=4^\\circ\\) でよどみ点をそこに置くと \\(\\Gamma=4\\pi\\times1.2008\\times\\sin6.29^\\circ=1.653\\) で、翼弦 4.067 から \\(C_L=0.813\\) です。噴流がさらに 12° 回り込んで \\(\\theta_s=-14.29^\\circ\\) ではく離するまで吹くと、\\(\\Gamma=4\\pi\\times1.2008\\times\\sin18.29^\\circ=4.736\\)、\\(C_L=2.329\\) となり、何も動かさずに揚力がほぼ三倍になります。表面のまわりで圧力を積分しても同じ 2.329 で、抗力はゼロです。流れは翼弦から 53.6° 下向きに縁を離れ、ジェットフラップ理論によれば必要な吹き出しはおよそ \\(C_\\mu=0.18\\) です。翼弦 0.5 m、30 m/s で、0.8 mm のスロットなら噴流速度は 225 m/s で、噴流は自らをはさんで \\(C_\\mu q_\\infty c/R=11\\,q_\\infty\\) の圧力差を支えます。"
+        ],
+        "caution": [
+          "This is potential flow with the stagnation point placed by hand: it says what circulation a given separation point implies, not where the jet separates, which depends on \\(C_\\mu\\), \\(h/R\\) and the boundary layers and is found by experiment. Real jets entrain air and spread, and a jet that is too thick for its curve, or supersonic and underexpanded, detaches. The link to jet-flap theory matches only the direction in which the flow leaves the edge; it is a rough estimate, and measured circulation-control sections usually need less blowing.",
+          "これはよどみ点を手で置いたポテンシャル流です。与えたはく離点がどんな循環を意味するかは分かりますが、噴流がどこではく離するかは分かりません。それは \\(C_\\mu\\)、\\(h/R\\)、境界層によって決まり、実験で求めます。実際の噴流はまわりの空気を巻き込んで広がり、曲率に対して厚すぎる噴流や、不足膨張の超音速噴流は離れてしまいます。ジェットフラップ理論との対応は、流れが縁を離れる向きを合わせただけの大まかな見積もりで、実測の循環制御翼はたいていもっと少ない吹き出しで済みます。"
+        ],
+        "question": [
+          "Why does circulation control need a rounded trailing edge?",
+          "なぜ循環制御には丸い後縁が必要なのですか？"
+        ],
+        "answer": [
+          "A sharp edge fixes the circulation through the Kutta condition: the flow must leave there whatever the jet does, so a jet can only act by turning the flow behind the edge, as a jet flap does. A rounded edge has no such point. The jet can carry the stagnation point round it, and every degree it moves changes \\(\\Gamma\\) continuously, through \\(\\Gamma=4\\pi Ua\\sin(\\alpha-\\theta_s)\\).",
+          "鋭い縁はクッタ条件によって循環を固定します。噴流が何をしても流れはそこから離れなければならないので、噴流は、ジェットフラップのように縁の後ろで流れを曲げることでしか効けません。丸い縁にはそういう点がありません。噴流はよどみ点を縁に沿って運ぶことができ、それが 1 度動くごとに、\\(\\Gamma=4\\pi Ua\\sin(\\alpha-\\theta_s)\\) を通して \\(\\Gamma\\) が連続的に変わります。"
+        ],
+        "params": [
+          [
+            "alpha",
+            "Angle of attack α (°)",
+            "迎角 α（°）",
+            -4,
+            10,
+            0.5,
+            4
+          ],
+          [
+            "eps",
+            "Edge rounding ε",
+            "縁の丸み ε",
+            0.1,
+            0.3,
+            0.01,
+            0.2
+          ],
+          [
+            "sep",
+            "Separation point: degrees round from the old edge",
+            "はく離点：もとの縁から回り込んだ角度（°）",
+            0,
+            45,
+            0.5,
+            12
+          ],
+          [
+            "h",
+            "Slot height h (mm)",
+            "スロットの高さ h（mm）",
+            0.2,
+            2,
+            0.05,
+            0.8
+          ]
+        ],
+        "source": "Williams, Butler & Wood · The Aerodynamics of Jet Flaps, ARC R&M 3304 (1962)",
+        "url": "https://reports.aerade.cranfield.ac.uk/bitstream/handle/1826.2/3884/arc-rm-3304.pdf?sequence=1&isAllowed=y"
+      },
+      {
+        "id": "effector-allocation",
+        "title": [
+          "3. Fourteen jets, three moments: control allocation",
+          "3. 14 の噴流と 3 つのモーメント：制御割り当て"
+        ],
+        "body": [
+          "An aircraft with no ailerons, elevators or rudder still needs roll, pitch and yaw. With fluidic effectors it gets them by blowing: a slot on the lower trailing edge turns the flow down and adds lift there, a slot on the upper surface spoils it, and blowing at a wingtip adds drag that yaws the nose. Each effector’s moment is its force times its lever arm, so the moments are linear in the blowing, \\(m=Bu\\): three equations in fourteen unknowns. Of the infinitely many solutions the controller wants the cheapest, the one with the least \\(\\|u\\|^2\\), subject to one hard fact: a jet can blow but cannot suck, so \\(0\\le u\\le u_{\\max}\\). Fly the stick and watch the allocation; push it far enough and the effectors saturate.",
+          "補助翼も昇降舵も方向舵もない機体でも、ロール、ピッチ、ヨーは必要です。流体式の効果器では、それを吹き出しで得ます。後縁下面のスロットは流れを下に曲げてその場所の揚力を増やし、上面のスロットは揚力を減らし、翼端での吹き出しは抗力を増やして機首を偏揺れさせます。各効果器のモーメントは力と腕の長さの積なので、モーメントは吹き出しの一次式 \\(m=Bu\\) で、未知数 14 個に方程式 3 本です。無数にある解のうち、制御器は最も安いもの、つまり \\(\\|u\\|^2\\) が最小のものを選びたいのですが、一つ動かせない事実があります。噴流は吹けても吸えないので \\(0\\le u\\le u_{\\max}\\) です。操縦桿を動かして割り当てを見てください。十分に倒すと効果器は飽和します。"
+        ],
+        "formula": "\\Delta C_{L,i}=k_iu_i,\\qquad C_l=-\\sum_i\\frac{y_i}{b}\\,\\Delta C_{L,i},\\qquad C_m=\\sum_i\\frac{x_i-x_{cg}}{\\bar c}\\,\\Delta C_{L,i},\\qquad C_n=\\sum_i\\frac{y_i}{b}\\,\\Delta C_{D,i},\\qquad \\min_u\\|u\\|^2\\ \\ \\text{subject to}\\ \\ Bu=m,\\ \\ 0\\le u\\le u_{\\max},\\qquad u^\\ast=B^{\\mathsf T}\\bigl(BB^{\\mathsf T}\\bigr)^{-1}m\\ \\text{without bounds}",
+        "example": [
+          "Yaw alone is the simplest case. Only the two tip effectors make drag, each with a lever arm \\(y/b=0.475\\) and \\(\\Delta C_D=3u\\). A nose-right command \\(C_n=0.002\\) is met by the right tip alone blowing \\(u=0.002/(0.475\\times3)=1.40\\times10^{-3}\\); blowing both tips would only cancel. With the stick at 45% right roll, 30% nose up and 20% right yaw, and limits of \\(2\\times10^{-3}\\), the allocator blows the three right upper slots (0.55, 0.77 and 0.87, in units of \\(10^{-3}\\)) to drop that wing, the left outboard lower slot (0.53, with 0.09 from its neighbour) to raise the other, the left inboard upper slot (0.25) to help lift the nose, and the right tip (0.42) for yaw: \\(3.48\\times10^{-3}\\) in all, about 3.8 kg/s of bleed air at the reference condition.",
+          "ヨーだけの場合がいちばん簡単です。抗力を作るのは翼端の二つの効果器だけで、それぞれ腕の長さは \\(y/b=0.475\\)、\\(\\Delta C_D=3u\\) です。機首右向きの指令 \\(C_n=0.002\\) は、右翼端だけが \\(u=0.002/(0.475\\times3)=1.40\\times10^{-3}\\) を吹けば満たされます。両翼端で吹くと打ち消し合うだけです。操縦桿を右ロール 45%、機首上げ 30%、右ヨー 20% にし、限界を \\(2\\times10^{-3}\\) とすると、割り当て器は右翼を下げるために右の上面スロット三つ（単位 \\(10^{-3}\\) で 0.55、0.77、0.87）を、反対の翼を上げるために左外側の下面スロット（0.53、隣のスロットが 0.09）を、機首上げを助けるために左内側の上面スロット（0.25）を、そしてヨーのために右翼端（0.42）を吹きます。合計 \\(3.48\\times10^{-3}\\) で、基準の飛行状態ではおよそ 3.8 kg/s の抽気になります。"
+        ],
+        "caution": [
+          "The effector strengths \\(k_i\\), their positions and the limits are schematic, chosen to show the mathematics: real effectors are nonlinear, interact with one another, depend on angle of attack and Mach number, and respond with a lag. Here lift effectors make no drag and drag effectors no lift. The change in total lift is left to the angle of attack. The bleed figure assumes a 40 m² wing at 200 m/s at about 10 km, with 300 m/s jets. The aircraft is a generic planform, not any real type.",
+          "効果器の強さ \\(k_i\\)、位置、限界は、数学を見せるために選んだ模式的な値です。実際の効果器は非線形で、互いに干渉し、迎角やマッハ数に依存し、遅れて応答します。ここでは揚力用の効果器は抗力を作らず、抗力用の効果器は揚力を作りません。全揚力の変化は迎角で補うものとしています。抽気量は、40 m² の翼が高度およそ 10 km を 200 m/s で飛び、噴流速度が 300 m/s の場合です。機体は一般的な平面形で、実在のどの機種でもありません。"
+        ],
+        "question": [
+          "Why not simply invert B?",
+          "なぜ B の逆行列を使わないのですか？"
+        ],
+        "answer": [
+          "\\(B\\) is 3 by 14, so it has no inverse: a whole eleven-dimensional family of blowing patterns gives the same moments. The pseudo-inverse picks the least \\(\\|u\\|^2\\), but it happily returns negative entries, which would mean sucking air into a blowing slot. Adding \\(0\\le u\\le u_{\\max}\\) turns the problem into a small quadratic programme, and when the command lies outside what the bounded effectors can reach, the best that can be done is the nearest attainable moment.",
+          "\\(B\\) は 3 行 14 列なので逆行列はなく、同じモーメントを与える吹き出しのパターンが 11 次元分もあります。擬似逆行列は \\(\\|u\\|^2\\) が最小のものを選びますが、平気で負の成分を返します。それは吹き出し用のスロットで空気を吸い込むことを意味します。\\(0\\le u\\le u_{\\max}\\) を加えると問題は小さな二次計画問題になり、指令が上下限つきの効果器の届く範囲の外にあるときは、実現できる最も近いモーメントで満足するしかありません。"
+        ],
+        "params": [
+          [
+            "roll",
+            "Roll command (fraction of full stick, right +)",
+            "ロール指令（最大に対する割合、右が正）",
+            -1,
+            1,
+            0.01,
+            0.45
+          ],
+          [
+            "pitch",
+            "Pitch command (nose up +)",
+            "ピッチ指令（機首上げが正）",
+            -1,
+            1,
+            0.01,
+            0.3
+          ],
+          [
+            "yaw",
+            "Yaw command (nose right +)",
+            "ヨー指令（機首右が正）",
+            -1,
+            1,
+            0.01,
+            0.2
+          ],
+          [
+            "umax",
+            "Effector limit u_max (×10⁻³)",
+            "効果器の限界 u_max（×10⁻³）",
+            0.5,
+            4,
+            0.1,
+            2
+          ]
+        ],
+        "source": "Williams, Butler & Wood · The Aerodynamics of Jet Flaps, ARC R&M 3304 (1962)",
+        "url": "https://reports.aerade.cranfield.ac.uk/bitstream/handle/1826.2/3884/arc-rm-3304.pdf?sequence=1&isAllowed=y"
+      }
+    ]
   }
 ]

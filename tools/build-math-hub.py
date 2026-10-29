@@ -22,7 +22,7 @@ GROUPS = [
     ('geometry', 'Geometry and transformations', '幾何と変換'),
     ('applications', 'Probability, computation, and reference', '確率・計算・参考資料'),
     ('physics', 'Physics', '物理'),
-    ('engineering', 'Engineering: watches and sound', '工学：時計と音'),
+    ('engineering', 'Engineering: machines, power and flight', '工学：機械・動力・飛行'),
 ]
 ATLAS = [('topology', 'Topology', '位相空間'), ('metric', 'Metric spaces', '距離空間'), ('real', 'Real analysis', '実解析'),
          ('complex', 'Complex analysis', '複素解析'), ('functional', 'Functional analysis', '関数解析')]

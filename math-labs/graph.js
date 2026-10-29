@@ -130,7 +130,9 @@
     'structural-mechanics': ['continuum-mechanics', 'robot-kinematics', 'calculus-of-variations'],
     'coding-theory': ['number-theory', 'probability-inference', 'galois-theory'],
     'superconductivity': ['statistical-mechanics', 'quantum-mechanics', 'solid-state-physics'],
-    'aerodynamics': ['complex-analysis', 'fluid-dynamics', 'optimization']
+    'aerodynamics': ['complex-analysis', 'fluid-dynamics', 'optimization'],
+    'active-flow-control': ['fluid-dynamics', 'control-theory', 'optimization'],
+    'adaptive-cycle-engines': ['piston-engines', 'fluid-dynamics', 'optimization']
   };
   // Topics named in each topic's own prerequisite line (content.json "prerequisite").
   const PREREQ = {
@@ -191,7 +193,9 @@
     'structural-mechanics': ['linear-algebra', 'classical-mechanics'],   // Statics, linear systems, and the second derivative
     'coding-theory': ['information-theory', 'linear-algebra'],           // Binary numbers, vectors and matrices, modular arithmetic
     'superconductivity': ['electromagnetism', 'thermodynamics'],         // Maxwell equations, vector potential, thermodynamics
-    'aerodynamics': ['fluid-dynamics', 'complex-analysis']               // Complex numbers, vector calculus, Fourier series
+    'aerodynamics': ['fluid-dynamics', 'complex-analysis'],              // Complex numbers, vector calculus, Fourier series
+    'active-flow-control': ['aerodynamics', 'complex-analysis', 'linear-algebra'], // Circulation and the Joukowski map, complex numbers, linear algebra
+    'adaptive-cycle-engines': ['thermodynamics', 'aerodynamics']         // Thermodynamic cycles, compressible flow, lift and drag
   };
 
   let topics = [], bySlug = new Map(), edges = [], drawn = [];
