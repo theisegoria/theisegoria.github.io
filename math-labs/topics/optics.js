@@ -235,7 +235,7 @@
           S.lines([[[-BEAM - 0.2, 0, 0], [BEAM + 0.3, 0, 0]]], { c: 'muted', opacity: 0.6 });
           S.arrow([BEAM - 0.1, 0, 0], [0.5, 0, 0], { c: 'muted', r: 0.014 });
           st.F = [0, 1, 2].map(() => {
-            const disc = S.disc([0, 0, 0], [1, 0, 0], RF, { c: 'c1', opacity: 0.14, rough: 0.6 });
+            const disc = S.disc([0, 0, 0], [1, 0, 0], RF, { c: 'c1', opacity: 0.14, rough: 0.15, coat: 0.9, glass: true, thickness: 0.03, ior: 1.5 });
             disc.userData.noOcclude = true;
             const rim = S.tube(L.seq(97, (j) => { const a = j / 96 * L.TAU; return [0, RF * Math.sin(a), RF * Math.cos(a)]; }), { c: 'c1', r: 0.016, closed: true });
             const axis = S.tube([[0, 0, -RF], [0, 0, RF]], { c: 'c1', r: 0.014, opacity: 0.85 });
@@ -261,7 +261,7 @@
             F.lab.el.style.display = on ? '' : 'none';
             if (!on) return;
             const x = xs[i], col = S.colour(Q.tones[i]), u = dir3(Q.plates[i]);
-            F.disc.position.x = x; F.rim.position.x = x; F.disc.material.color.copy(col); F.rim.material.color.copy(col);
+            F.disc.position.x = x; F.rim.position.x = x; F.disc.material.color.copy(col); if (F.disc.material.transmission) F.disc.material.color.lerp(S.colour('#ffffff'), 0.72); F.rim.material.color.copy(col);
             F.axis.material.color.copy(col);
             F.axis.update([[x, -RF * u[1], -RF * u[2]], [x, RF * u[1], RF * u[2]]]);
             F.lab.set([x, 0, -RF - 0.06], [T('polariser', '偏光子'), Q.three ? T('middle, θ/2', '中間、θ/2') : T('analyser', '検光子'), T('analyser', '検光子')][i]);

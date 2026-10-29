@@ -262,7 +262,7 @@
           st.flat = false;
           const dark = new S.THREE.MeshPhysicalMaterial({ color: 0x060606, roughness: 0.35, clearcoat: 0.8, clearcoatRoughness: 0.2 });
           st.bh = new S.THREE.Mesh(new S.THREE.SphereGeometry(1, 48, 32), dark); S.add(st.bh);
-          st.ps = S.sphere([0, 0, 0], 1, { c: 'c4', opacity: 0.13, rough: 0.6 });
+          st.ps = S.sphere([0, 0, 0], 1, { c: 'c4', opacity: 0.1, rough: 0.2, coat: 0.8, glass: true, thickness: 0.04, ior: 1.15 });
           st.psRing = S.tube(L.seq(97, (i) => { const a = L.TAU * i / 96; return [Math.cos(a), 0, Math.sin(a)]; }), { c: 'c4', r: 0.012, closed: true });
           st.rays = L.seq(NB, (i) => S.tube([[0, 0, 0], [0, 0, 0.01]], { c: 'hl', r: i === 0 ? 0.05 : 0.022, glow: i === 0 ? 0.35 : 0.15, opacity: i === 0 ? 1 : 0.8 }));
           st.ref = S.lines([[[0, 0, 0], [0, 0, 0]]], { c: 'muted', opacity: 0.8 });

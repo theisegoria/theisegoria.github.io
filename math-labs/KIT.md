@@ -257,6 +257,13 @@ WebGL 2 get MSAA, a 1024 shadow map and no AO. `S.mat` gives a lacquered
 finish (clear coat 0.55 at roughness 0.14) and takes `glass`, `sheen`,
 `iridescence`, `metal`, `coatRough`. Solid parts cast shadows; parts below
 opacity 0.6 do not; `opts.shadows: false` turns them off for a scene.
+Use `glass` only for an empty shell or a thin plate whose contents are opaque
+(Bloch spheres, a photon sphere, polariser sheets): transmission sees only
+opaque objects, so translucent beams, lines and labels behind glass vanish,
+and a glass solid that the reader must see into (a parallelepiped with
+vectors inside, a gain tube holding a beam) should stay plain translucent.
+Glass is tinted 82% toward white; if the code recolours it later, lerp the
+new colour toward white too.
 Query switches: `?studio=0` (old room light), `?shadows=0`, plus the studio's
 own `?lowfx`, `?fx=0..4`, `?ssr=0`. The sandbox's software GPU renders the
 soft shadow very slowly, so shoot with `--q=shadows=0` when checking layout.
