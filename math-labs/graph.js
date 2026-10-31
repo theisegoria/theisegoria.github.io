@@ -132,7 +132,8 @@
     'superconductivity': ['statistical-mechanics', 'quantum-mechanics', 'solid-state-physics'],
     'aerodynamics': ['complex-analysis', 'fluid-dynamics', 'optimization'],
     'active-flow-control': ['fluid-dynamics', 'control-theory', 'optimization'],
-    'adaptive-cycle-engines': ['piston-engines', 'fluid-dynamics', 'optimization']
+    'adaptive-cycle-engines': ['piston-engines', 'fluid-dynamics', 'optimization'],
+    'stirling-engines': ['piston-engines', 'statistical-mechanics', 'fourier-analysis']
   };
   // Topics named in each topic's own prerequisite line (content.json "prerequisite").
   const PREREQ = {
@@ -195,7 +196,8 @@
     'superconductivity': ['electromagnetism', 'thermodynamics'],         // Maxwell equations, vector potential, thermodynamics
     'aerodynamics': ['fluid-dynamics', 'complex-analysis'],              // Complex numbers, vector calculus, Fourier series
     'active-flow-control': ['aerodynamics', 'complex-analysis', 'linear-algebra'], // Circulation and the Joukowski map, complex numbers, linear algebra
-    'adaptive-cycle-engines': ['thermodynamics', 'aerodynamics']         // Thermodynamic cycles, compressible flow, lift and drag
+    'adaptive-cycle-engines': ['thermodynamics', 'aerodynamics'],        // Thermodynamic cycles, compressible flow, lift and drag
+    'stirling-engines': ['thermodynamics', 'classical-mechanics']        // Ideal gas law and thermodynamic cycles, crank kinematics
   };
 
   let topics = [], bySlug = new Map(), edges = [], drawn = [];
