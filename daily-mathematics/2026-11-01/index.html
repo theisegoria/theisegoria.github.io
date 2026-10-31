@@ -1,0 +1,52 @@
+<!doctype html><html lang="en" class="ig-document ig-editorial"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Daily Mathematics solution: 1 November 2026 · Isegoria</title><meta name="description" content="Full solution to the Daily Mathematics card of 1 November 2026: an original math olympiad problem."><link rel="canonical" href="https://theisegoria.github.io/daily-mathematics/2026-11-01/"><link rel="alternate" hreflang="en" href="https://theisegoria.github.io/daily-mathematics/2026-11-01/"><link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/daily-mathematics/2026-11-01/"><link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/daily-mathematics/2026-11-01/"><link rel="icon" href="/assets/favicon.svg"><link rel="stylesheet" href="/assets/isegoria.css?v=20260915"><link rel="stylesheet" href="/analysis-atlas/vendor/katex.min.css"><script defer src="/analysis-atlas/vendor/katex.min.js"></script><script defer src="/analysis-atlas/vendor/contrib/auto-render.min.js"></script><script>document.addEventListener("DOMContentLoaded",function(){if(window.renderMathInElement)renderMathInElement(document.querySelector("main"),{delimiters:[{left:"\\[",right:"\\]",display:true},{left:"\\(",right:"\\)",display:false}],throwOnError:false});});</script><style>
+.dm{max-width:46rem;margin:0 auto;padding:2.5rem 1.25rem 4rem}
+.dm .eyebrow{letter-spacing:.14em;text-transform:uppercase;font-size:.78rem;opacity:.7;margin:0 0 .4rem}
+.dm h1{margin:.1rem 0 .6rem;line-height:1.2}
+.dm .deck{opacity:.85;margin:0 0 2rem}
+.dm .card{margin:2.6rem 0 0;padding-top:1.4rem;border-top:2px solid var(--dm-accent,currentColor)}
+.dm .card h2{margin:.2rem 0 .9rem;line-height:1.3}
+.dm .kind{font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dm-accent);margin:0}
+.dm figure{margin:1rem 0 1.4rem}
+.dm figure img{width:100%;max-width:30rem;height:auto;display:block;border:1px solid rgba(127,127,127,.25)}
+.dm .statement{padding:.9rem 1.1rem;border-left:3px solid var(--dm-accent);background:rgba(127,127,127,.07)}
+.dm details{margin:1.2rem 0}
+.dm summary{cursor:pointer;font-weight:600}
+.dm .answer{margin-top:1.2rem;padding:.8rem 1.1rem;border:1px solid var(--dm-accent)}
+.dm .katex-display{overflow-x:auto;overflow-y:hidden;padding:.2rem 0}
+.dm .days{list-style:none;padding:0;margin:1.5rem 0 0}
+.dm .days li{padding:.9rem 0;border-top:1px solid rgba(127,127,127,.25)}
+.dm .days a.date{font-weight:600}
+.dm .days span{display:block;opacity:.85}
+html[lang=ja] .dm{line-height:1.85}
+</style><script src="/assets/lang.js"></script>
+<!-- ISEGORIA:HEAD -->
+<link rel="stylesheet" href="/assets/site-shell.css?v=c21cd21e82">
+<script src="/assets/site-shell.js?v=c21cd21e82" ></script>
+<!-- /ISEGORIA:HEAD -->
+<script defer data-isegoria-analytics src="/assets/analytics.js?v=c40088a4a53f"></script>
+</head><body class="ig-site" data-site-kind="editorial" data-site-route="/daily-mathematics/2026-11-01/">
+<!-- ISEGORIA:NAV -->
+<a class="ig-skip" href="#ig-content">Skip to content</a>
+<header id="ig-header"><div class="ig-nav-inner">
+<a class="ig-brand" href="/" aria-label="Isegoria, home"><strong>ISEGORIA</strong><span>Benjamin Haire</span></a>
+<div class="ig-header-actions"><a class="ig-language" href="/ja/daily-mathematics/2026-11-01/" hreflang="ja" lang="ja">日本語</a><button class="ig-menu" type="button" aria-expanded="false" aria-controls="ig-primary">Menu</button></div>
+<nav id="ig-primary" aria-label="Primary navigation"><a href="/">Home</a><a href="/library.html">Library</a><a href="/math-encyclopedia/" aria-current="location">Math encyclopedia</a><a href="/#interactive">Interactive</a><a href="/#preoccupations">Research</a><a href="/#books">Books</a><a href="/projects.html">Projects</a><a href="/about.html">About</a><a class="ig-language" href="/ja/daily-mathematics/2026-11-01/" hreflang="ja" lang="ja">日本語</a><button class="ig-theme" type="button" hidden>Theme</button></nav>
+</div></header>
+<nav id="ig-breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><a href="/math-encyclopedia/">Math encyclopedia</a><span aria-hidden="true">/</span><a href="/daily-mathematics/">Daily Mathematics: solutions</a><span aria-hidden="true">/</span><span aria-current="page">Daily Mathematics solution: 1 November 2026</span></nav>
+<span id="ig-content" tabindex="-1"></span>
+<!-- /ISEGORIA:NAV -->
+<main id="main" class="dm"><p class="eyebrow">Daily Mathematics / Solutions</p><h1>Solution for 1 November 2026</h1><p class="deck">The card that day was an original math olympiad problem. Try it first; the solution is folded away below.</p><section class="card" id="competition" style="--dm-accent:#96311F"><p class="kind">Math Olympiad problem</p><h2>Even sets with a prescribed pattern of odd intersections</h2><figure><img src="/daily-mathematics/2026-11-01/competition.png" width="1200" height="1200" loading="lazy" alt="Card: Even sets with a prescribed pattern of odd intersections"></figure><div class="statement"><p>Find the least positive integer \(n\) for which there are subsets \(A_1,\dots,A_{2026}\) of \(\{1,\dots,n\}\), each with an even number of elements, such that, for all \(i\ne j\), \(|A_i\cap A_j|\) is odd if and only if</p>
+\[ i-j\equiv \pm 1 \ \text{or}\ \pm 2 \pmod{2026}. \]</div><details><summary>Show the solution</summary><p><strong>Answer.</strong> \(n=2025\).</p>
+<p><strong>Step 1: translate into linear algebra over \(\mathbb F_2\).</strong> Write \(N=2026\) and let \(v_i\in\mathbb F_2^n\) be the indicator vector of \(A_i\). For any sets, \(|A_i\cap A_j|\equiv v_i\cdot v_j \pmod 2\). Let \(\mathbf 1=(1,\dots,1)\). Since \(v\cdot v=v\cdot\mathbf 1\equiv |A|\pmod 2\), the condition that every \(|A_i|\) is even says exactly that every \(v_i\) lies in the hyperplane \(H=\mathbf 1^{\perp}\). Let \(M\) be the \(N\times N\) matrix over \(\mathbb F_2\) with \(M_{ij}=1\) when \(i-j\equiv\pm1,\pm2\pmod N\) and \(M_{ij}=0\) otherwise (so the diagonal is zero). If \(V\) is the \(N\times n\) matrix with rows \(v_i\), the whole condition reads \(VV^{T}=M\).</p>
+<p>The obvious bound is \(n\ge \operatorname{rank}V\ge\operatorname{rank}M\), and the obvious attempt at a construction is to look for a neat explicit family on about \(N\) points. Neither gives the truth: the rank bound is off by one, and the construction is easiest to obtain abstractly.</p>
+<p><strong>Step 2: the rank of \(M\) is 2024.</strong> \(M\) is a circulant. Identify \(\mathbb F_2^N\) with \(R=\mathbb F_2[x]/(x^N-1)\), coordinate \(k\) corresponding to \(x^k\). Then \(M\) acts as multiplication by \(a(x)=x+x^2+x^{N-1}+x^{N-2}=x^{-2}(1+x+x^3+x^4)=x^{-2}(1+x)^2(1+x+x^2)\), and \(x^{-2}\) is a unit of \(R\). For \(g\in\mathbb F_2[x]\) and \(d=\gcd(g,x^N-1)\), the kernel of multiplication by \(g\) on \(R\) is the set of multiples of \((x^N-1)/d\), which has dimension \(\deg d\). Over \(\mathbb F_2\) we have \(x^{2026}-1=(x^{1013}-1)^2\), divisible by \((1+x)^2\). The polynomial \(1+x+x^2\) is irreducible and its roots are primitive cube roots of unity; it divides \(x^{1013}-1\) only if \(3\mid 1013\), which is false, so it does not divide \((x^{1013}-1)^2\) either. Hence \(d=(1+x)^2\), \(\dim\ker M=2\) and \(\operatorname{rank}M=2024\).</p>
+<p><strong>Step 3: the lower bound \(n\ge 2025\).</strong> All rows of \(V\) lie in \(H\), which has dimension \(n-1\). Therefore \(2024=\operatorname{rank}M=\operatorname{rank}(VV^T)\le\operatorname{rank}V\le n-1\), so \(n\ge 2025\). The evenness of the sets costs exactly one extra dimension beyond the rank.</p>
+<p><strong>Step 4: a construction with \(n=2025\).</strong> Define the bilinear form \(B(x,y)=x^{T}My\) on \(\mathbb F_2^N\). It is symmetric with zero diagonal, so \(B(x,x)=\sum_{i\ne j}M_{ij}x_ix_j=2\sum_{i&lt;j}M_{ij}x_ix_j=0\): the form is alternating. Its radical is \(K=\ker M\), so \(W=\mathbb F_2^N/K\) is a space of dimension 2024 carrying a non-degenerate alternating form.</p>
+<p><em>Lemma.</em> A non-degenerate alternating form on a finite-dimensional space has a symplectic basis \(p_1,q_1,\dots,p_k,q_k\) with \(B(p_s,q_s)=1\) and all other pairings 0. Indeed, pick \(p\ne0\); non-degeneracy gives \(q\) with \(B(p,q)=1\); the orthogonal complement of \(\langle p,q\rangle\) is a complement on which the form is again non-degenerate, and induction finishes. Consequently two such spaces of the same dimension are isometric: send one symplectic basis to the other.</p>
+<p>Now take \(n=2025\) and the hyperplane \(H=\mathbf 1^{\perp}\subset\mathbb F_2^{2025}\) with the ordinary dot product. Every \(x\in H\) satisfies \(x\cdot x=x\cdot\mathbf 1=0\), so the form is alternating on \(H\), and \(\dim H=2024\). Its radical is \(H\cap H^{\perp}=H\cap\langle\mathbf 1\rangle=\{0\}\), because \(\mathbf 1\cdot\mathbf 1=2025=1\) in \(\mathbb F_2\), so \(\mathbf 1\notin H\). This is where the odd value \(n=2025\) matters. By the lemma there is an isometry \(\varphi:W\to H\). Put \(v_i=\varphi(e_i+K)\) and let \(A_i\) be the support of \(v_i\). Then \(v_i\in H\), so \(|A_i|\) is even, and \(v_i\cdot v_j=B(e_i,e_j)=M_{ij}\) for \(i\ne j\), which is exactly the required parity pattern.</p>
+<p><strong>Conclusion.</strong> The least \(n\) is \(2025\), one more than the rank 2024 of the intersection pattern.</p>
+<p><strong>Check.</strong> The rank of the \(2026\times2026\) matrix over \(\mathbb F_2\) was computed by elimination (2024). The construction of Step 4 was implemented (symplectic Gram-Schmidt on both sides) and gave 2026 distinct even subsets of \(\{1,\dots,2025\}\); all \(2026\cdot2025/2\) intersection parities were checked against the condition. For small analogues (2026 replaced by 7, 8, 9) an exhaustive search confirmed that the bound rank plus one is attained and that one fewer point is impossible.</p><div class="answer"><strong>Answer.</strong> \(n=2025\)</div></details></section><p><a href="/daily-mathematics/">All solutions</a> · <a href="/ja/daily-mathematics/2026-11-01/" hreflang="ja" lang="ja">日本語</a></p></main>
+<!-- ISEGORIA:FOOT -->
+<footer id="ig-footer"><div><a href="/">Isegoria · Benjamin Haire</a><nav aria-label="Site links"><a href="/">Back to home</a><a href="/library.html">Browse the library</a><a href="#ig-content">Back to top</a></nav></div></footer>
+<!-- /ISEGORIA:FOOT -->
+</body></html>
