@@ -18306,5 +18306,239 @@
         "url": "https://people.ohio.edu/urieli/stirling/isothermal/Schmidt.html"
       }
     ]
+  },
+  {
+    "slug": "murrays-law",
+    "title": [
+      "Murray’s law: the cube rule of branching vessels",
+      "マレーの法則：分岐する血管の三乗則"
+    ],
+    "description": [
+      "In 1926 the physiologist Cecil Murray asked what size a blood vessel ought to be. A narrow vessel makes the heart work hard, because Poiseuille’s law charges a pumping power that grows as the inverse fourth power of the radius. A wide vessel holds a lot of blood, and blood is expensive tissue to make and keep alive. Balancing the two prices for every vessel gives a startlingly simple answer: the flow through a vessel should be proportional to the cube of its radius. At a branch point the cubes then add up, \\(r_0^3=r_1^3+r_2^3\\), the shear stress on the vessel wall is the same everywhere in the network, and the branches leave at angles fixed by their radii alone. The same rule turns up in the arteries of mammals, the larger airways of the lung, the xylem of some plants and engineered microfluidic networks. These experiments price a single vessel, place a junction where the cost is least, and grow a whole tree to see what the cube law buys and what departing from it costs.",
+      "1926 年、生理学者セシル・マレーは、血管はどれくらいの太さであるべきかを問いました。細い血管では心臓の負担が大きくなります。ポアズイユの法則により、血液を送り出す電力は半径の 4 乗に反比例して増えるからです。太い血管には多くの血液が入りますが、血液は作るのにも生かしておくのにも費用のかかる組織です。どの血管についてもこの二つの費用の釣り合いをとると、驚くほど簡単な答えが得られます。血管を流れる流量は半径の 3 乗に比例すべきだ、というものです。すると分岐点では 3 乗が足し合わされて \\(r_0^3=r_1^3+r_2^3\\) となり、血管壁にかかるずり応力はネットワークのどこでも同じになり、枝は半径だけで決まる角度で分かれます。同じ規則は、哺乳類の動脈、肺の太い気道、一部の植物の木部、人工のマイクロ流路網にも現れます。ここでの実験では、一本の血管の値段を計算し、費用が最小になる場所に分岐点を置き、木全体を育てて、三乗則が何をもたらし、そこから外れると何を失うかを調べます。"
+    ],
+    "group": "physics",
+    "prerequisite": [
+      "Fluid dynamics (Poiseuille flow), minimizing a function of one variable, vectors and forces in the plane",
+      "流体力学（ポアズイユ流）、一変数関数の最小化、平面のベクトルと力"
+    ],
+    "source": "Cecil D. Murray · The physiological principle of minimum work. I. The vascular system and the cost of blood volume, Proc. Natl. Acad. Sci. USA 12, 207–214 (1926)",
+    "url": "https://pdodds.w3.uvm.edu/files/papers/others/1926/murray1926a.pdf",
+    "labs": [
+      {
+        "id": "murray-cost",
+        "title": [
+          "1. One vessel: the price of a radius",
+          "1. 一本の血管：半径の値段"
+        ],
+        "body": [
+          "A vessel of radius \\(r\\) and length \\(l\\) carries a steady flow \\(Q\\) of blood with viscosity \\(\\mu\\). Poiseuille’s law says the pressure drop is \\(8\\mu lQ/(\\pi r^4)\\), so pushing the flow through costs power \\(8\\mu lQ^2/(\\pi r^4)\\). The blood inside also has to be made, oxygenated and kept warm, at a price \\(b\\) per unit volume per second, so filling the vessel costs \\(b\\pi r^2 l\\). One price falls with \\(r\\) and the other rises; their sum has a single minimum. Setting the derivative to zero gives Murray’s law, \\(Q\\propto r^3\\). Drag the radius and watch both the cost curve and the flow profile inside the vessel.",
+          "半径 \\(r\\)、長さ \\(l\\) の血管が、粘性率 \\(\\mu\\) の血液の一定の流れ \\(Q\\) を運んでいます。ポアズイユの法則によれば圧力降下は \\(8\\mu lQ/(\\pi r^4)\\) なので、流れを押し通すには電力 \\(8\\mu lQ^2/(\\pi r^4)\\) がかかります。中の血液も作り、酸素を与え、温めておかなければならず、その費用は単位体積・単位時間あたり \\(b\\) なので、血管を満たしておく費用は \\(b\\pi r^2 l\\) です。一方の費用は \\(r\\) とともに下がり、もう一方は上がります。その和にはただ一つの最小値があります。導関数をゼロとおくと、マレーの法則 \\(Q\\propto r^3\\) が得られます。半径をドラッグして、費用の曲線と血管の中の流速分布の両方を見てください。"
+        ],
+        "formula": "P(r)=\\frac{8\\mu lQ^2}{\\pi r^4}+b\\pi r^2 l,\\qquad \\frac{dP}{dr}=0\\ \\Longrightarrow\\ Q=\\frac{\\pi}{4}\\sqrt{\\frac{b}{\\mu}}\\,r^3,\\qquad r^*=\\Bigl(\\frac{16\\mu Q^2}{\\pi^2 b}\\Bigr)^{1/6},\\qquad \\tau_w=\\frac{4\\mu Q}{\\pi r^3}=\\sqrt{b\\mu},\\qquad \\frac{P_{\\mathrm{pump}}}{P_{\\mathrm{vol}}}\\Big|_{r^*}=\\frac12,\\qquad \\frac{P(\\rho r^*)}{P(r^*)}=\\frac{\\rho^{-4}+2\\rho^2}{3}",
+        "example": [
+          "Take \\(Q=1\\) mL/s of blood with \\(\\mu=3.5\\) mPa·s and Murray’s own estimate of the upkeep, \\(b=19\\,300\\) erg per cm³ per second, which is 1930 W/m³. Then \\(r^*=(16\\mu Q^2/\\pi^2b)^{1/6}=1.197\\) mm. Per metre of vessel the pumping costs 4.34 mW and the upkeep 8.69 mW, exactly twice as much, 13.0 mW in all. The mean speed is \\(Q/\\pi r^{*2}=22.2\\) cm/s and the wall shear stress is \\(\\sqrt{b\\mu}=2.60\\) Pa. A vessel of 0.8 mm carrying the same flow costs 25.6 mW/m, 1.97 times as much, almost all of it pumping, and its wall feels 8.70 Pa. Eight times the flow needs only twice the radius.",
+          "血液 \\(Q=1\\) mL/s、\\(\\mu=3.5\\) mPa·s とし、維持費にはマレー自身の見積もり \\(b=19\\,300\\) erg/(cm³·s)、すなわち 1930 W/m³ を使います。すると \\(r^*=(16\\mu Q^2/\\pi^2b)^{1/6}=1.197\\) mm です。血管 1 m あたり、送り出しの費用は 4.34 mW、維持費は 8.69 mW でちょうどその 2 倍、合計 13.0 mW です。平均速度は \\(Q/\\pi r^{*2}=22.2\\) cm/s、壁ずり応力は \\(\\sqrt{b\\mu}=2.60\\) Pa です。同じ流量を運ぶ半径 0.8 mm の血管は 25.6 mW/m で 1.97 倍の費用がかかり、そのほとんどが送り出しの費用で、壁は 8.70 Pa を受けます。流量が 8 倍になっても、半径は 2 倍で足ります。"
+        ],
+        "caution": [
+          "Poiseuille’s law assumes steady laminar flow of a Newtonian fluid in a long rigid tube. Blood in the aorta and large arteries is pulsatile and its viscosity depends on the vessel size, so measured exponents there are often below 3; the cube law fits best in the middle-sized arteries and arterioles. The value of \\(b\\) is only an estimate, but \\(r^*\\) depends on it weakly, as \\(b^{-1/6}\\). The flow profile is drawn to scale across the vessel and schematic along it.",
+          "ポアズイユの法則は、長くて硬い管の中のニュートン流体の定常な層流を仮定しています。大動脈や太い動脈の血流は拍動し、粘性率も血管の太さによって変わるので、そこで測られる指数は 3 より小さいことがよくあります。三乗則がよく合うのは中くらいの動脈と細動脈です。\\(b\\) の値は見積もりにすぎませんが、\\(r^*\\) は \\(b^{-1/6}\\) のようにしか依存しません。流速分布は血管を横切る方向には縮尺どおり、軸方向には模式的に描いています。"
+        ],
+        "question": [
+          "Why is the wall shear stress the same in every vessel that obeys Murray’s law?",
+          "マレーの法則に従うどの血管でも、壁ずり応力が同じになるのはなぜですか？"
+        ],
+        "answer": [
+          "Poiseuille flow gives a wall shear stress \\(\\tau_w=4\\mu Q/(\\pi r^3)\\). Murray’s law sets \\(Q=\\frac{\\pi}{4}\\sqrt{b/\\mu}\\,r^3\\), and substituting gives \\(\\tau_w=\\sqrt{b\\mu}\\), with no \\(r\\) and no \\(Q\\) left. The cube in the law is exactly the cube in the shear stress, which is why the endothelium can use shear stress as the signal that tells a vessel to widen or narrow.",
+          "ポアズイユ流の壁ずり応力は \\(\\tau_w=4\\mu Q/(\\pi r^3)\\) です。マレーの法則は \\(Q=\\frac{\\pi}{4}\\sqrt{b/\\mu}\\,r^3\\) と定めるので、代入すると \\(\\tau_w=\\sqrt{b\\mu}\\) となり、\\(r\\) も \\(Q\\) も残りません。法則の 3 乗はずり応力の 3 乗とちょうど同じで、そのため内皮はずり応力を、血管を太くするか細くするかの合図として使えます。"
+        ],
+        "params": [
+          [
+            "Q",
+            "Flow Q (mL/s)",
+            "流量 Q（mL/s）",
+            0.05,
+            5,
+            0.05,
+            1
+          ],
+          [
+            "mu",
+            "Viscosity μ (mPa·s)",
+            "粘性率 μ（mPa·s）",
+            1.2,
+            6,
+            0.1,
+            3.5
+          ],
+          [
+            "b",
+            "Upkeep of blood b (W/m³)",
+            "血液の維持費 b（W/m³）",
+            200,
+            5000,
+            10,
+            1930
+          ],
+          [
+            "r",
+            "Vessel radius r (mm)",
+            "血管の半径 r（mm）",
+            0.2,
+            4,
+            0.01,
+            0.8
+          ]
+        ],
+        "source": "Cecil D. Murray · The physiological principle of minimum work. I. The vascular system and the cost of blood volume, Proc. Natl. Acad. Sci. USA 12, 207–214 (1926)",
+        "url": "https://pdodds.w3.uvm.edu/files/papers/others/1926/murray1926a.pdf"
+      },
+      {
+        "id": "murray-bifurcation",
+        "title": [
+          "2. The junction: where should a vessel branch?",
+          "2. 分岐点：血管はどこで分かれるべきか"
+        ],
+        "body": [
+          "A parent vessel must feed two daughters at fixed places, sharing its flow \\(s:1-s\\). Each vessel costs \\(w_i\\) per metre, so the junction should sit where \\(\\sum w_i\\,\\ell_i\\) is least. That is a weighted Fermat point, and at it the three vessels pull on the junction like weighted strings, with forces \\(w_i\\) along their own directions, that exactly balance. When every vessel has its Murray radius its cost per metre is \\(\\frac32 b\\pi r^2\\), so the pulls are proportional to \\(r^2\\), and the triangle of forces gives Murray’s second law of 1926 for the branching angles. Change the radius rule to see the prediction fail when the vessels are not optimal.",
+          "親の血管が、決まった場所にある二本の娘の血管に、流量を \\(s:1-s\\) に分けて送らなければなりません。どの血管も 1 m あたり \\(w_i\\) の費用がかかるので、分岐点は \\(\\sum w_i\\,\\ell_i\\) が最小になる場所に置くべきです。それは重み付きのフェルマー点で、そこでは三本の血管がおもりの付いた糸のように、それぞれの向きに大きさ \\(w_i\\) の力で分岐点を引き、それがちょうど釣り合います。どの血管もマレーの半径をもつと、1 m あたりの費用は \\(\\frac32 b\\pi r^2\\) なので、引く力は \\(r^2\\) に比例し、力の三角形から 1926 年のマレーの第二の法則、分岐角の式が得られます。半径の規則を変えて、血管が最適でないとこの予言が外れるのを見てください。"
+        ],
+        "formula": "C(J)=\\sum_{i=0}^{2}w_i\\,|J-P_i|,\\qquad \\nabla C=0\\iff\\sum_i w_i\\,\\hat u_i=0,\\qquad w_i=\\frac{8\\mu Q_i^2}{\\pi r_i^4}+b\\pi r_i^2=\\tfrac32 b\\pi r_i^2\\ \\text{(Murray radii)},\\qquad r_0^3=r_1^3+r_2^3,\\qquad \\cos\\theta_1=\\frac{r_0^4+r_1^4-r_2^4}{2r_0^2r_1^2},\\quad \\cos\\theta_2=\\frac{r_0^4+r_2^4-r_1^4}{2r_0^2r_2^2}",
+        "example": [
+          "For a symmetric split the cube law gives \\(r_1=r_2=2^{-1/3}r_0=0.794\\,r_0\\), so the pulls are in the ratio \\(1:2^{-2/3}:2^{-2/3}=1:0.630:0.630\\). Then \\(\\cos\\theta=r_0^2/(2r_1^2)=2^{-1/3}=0.794\\) and each daughter leaves at \\(\\theta=37.5^\\circ\\), \\(74.9^\\circ\\) between them. With the parent at \\((0,-4)\\) and the daughters’ ends at \\((\\pm3.2,3)\\), the junction sits at \\((0,-1.18)\\). For an 80 : 20 split the radii are \\(0.928\\,r_0\\) and \\(0.585\\,r_0\\), and the large branch bends only \\(19.4^\\circ\\) while the small one leaves at \\(56.8^\\circ\\): a big branch nearly continues the trunk, a small one leaves almost sideways.",
+          "対称な分岐では、三乗則から \\(r_1=r_2=2^{-1/3}r_0=0.794\\,r_0\\) となり、引く力の比は \\(1:2^{-2/3}:2^{-2/3}=1:0.630:0.630\\) です。すると \\(\\cos\\theta=r_0^2/(2r_1^2)=2^{-1/3}=0.794\\) で、娘はそれぞれ \\(\\theta=37.5^\\circ\\)、二本の間は \\(74.9^\\circ\\) で分かれます。親の端を \\((0,-4)\\)、娘の端を \\((\\pm3.2,3)\\) とすると、分岐点は \\((0,-1.18)\\) にきます。80 : 20 の分岐では半径は \\(0.928\\,r_0\\) と \\(0.585\\,r_0\\) で、太い枝は \\(19.4^\\circ\\) しか曲がらず、細い枝は \\(56.8^\\circ\\) で分かれます。太い枝は幹をほぼそのまま続け、細い枝はほとんど横向きに出ていきます。"
+        ],
+        "caution": [
+          "The model puts all three vessels in one plane and ignores the extra cost of the junction itself and any constraint from the surrounding tissue. Real branching angles scatter widely around Murray’s prediction. The cost bowl is drawn to scale in its shape, but its height is rescaled to fit the figure, and the tube radii are drawn larger than the geometry would make them.",
+          "このモデルは三本の血管を一つの平面に置き、分岐点そのものの余分な費用や周りの組織からの制約を無視しています。実際の分岐角はマレーの予言の周りに大きくばらつきます。費用のお椀は形は縮尺どおりですが、高さは図に収まるように縮めています。管の半径も、幾何学的な大きさより太く描いています。"
+        ],
+        "question": [
+          "Why does a small side branch leave the trunk almost at a right angle?",
+          "細い側枝が幹からほぼ直角に出ていくのはなぜですか？"
+        ],
+        "answer": [
+          "Its pull, proportional to \\(r_2^2\\), is tiny, so it barely deflects the trunk: the parent and the large daughter pull almost head to head and must nearly cancel, which leaves the small branch to point wherever the small remainder points, at right angles to the trunk. In the formula, as \\(r_2\\to0\\) the cube law gives \\(r_1^4\\approx r_0^4-\\frac43r_0r_2^3\\), so \\(\\cos\\theta_2\\approx\\frac23r_2/r_0\\to0\\) and \\(\\theta_2\\to90^\\circ\\).",
+          "その引く力は \\(r_2^2\\) に比例してとても小さいので、幹をほとんど曲げません。親と太い娘はほぼ正面から引き合い、ほとんど打ち消し合わなければならないので、細い枝は残ったわずかな力の向き、つまり幹に直角な向きを向きます。式では、\\(r_2\\to0\\) のとき三乗則から \\(r_1^4\\approx r_0^4-\\frac43r_0r_2^3\\) となるので、\\(\\cos\\theta_2\\approx\\frac23r_2/r_0\\to0\\)、すなわち \\(\\theta_2\\to90^\\circ\\) です。"
+        ],
+        "params": [
+          [
+            "s",
+            "Flow share of daughter 1, s",
+            "娘 1 の流量の割合 s",
+            0.5,
+            0.9,
+            0.01,
+            0.5
+          ],
+          [
+            "k",
+            "Radius rule exponent k (r ∝ Q^(1/k))",
+            "半径の規則の指数 k（r ∝ Q^(1/k)）",
+            2,
+            4,
+            0.05,
+            3
+          ],
+          [
+            "jx",
+            "Junction x",
+            "分岐点の x",
+            -3.5,
+            3.5,
+            0.01,
+            1.2
+          ],
+          [
+            "jy",
+            "Junction y",
+            "分岐点の y",
+            -3.5,
+            2.6,
+            0.01,
+            -2.4
+          ]
+        ],
+        "source": "Cecil D. Murray · The physiological principle of minimum work. I. The vascular system and the cost of blood volume, Proc. Natl. Acad. Sci. USA 12, 207–214 (1926)",
+        "url": "https://pdodds.w3.uvm.edu/files/papers/others/1926/murray1926a.pdf"
+      },
+      {
+        "id": "murray-tree",
+        "title": [
+          "3. The tree: one law, all the way down",
+          "3. 木：どこまでも同じ法則"
+        ],
+        "body": [
+          "Apply the rule at every junction and a whole tree follows. In a symmetric tree the radius shrinks by \\(2^{-1/3}\\) at each generation, the number of vessels doubles, and the total cross-section grows by \\(2^{1/3}\\), so blood slows as it spreads out. The wall shear stress \\(\\tau\\propto Q/r^3\\) is the same in every vessel, which the coloring shows as a single tone. Try other rules \\(r\\propto Q^{1/k}\\): even with the overall scale chosen as well as possible, every exponent other than 3 costs more, and the shear stress drifts up or down towards the smallest vessels.",
+          "どの分岐点でもこの規則を当てはめると、木全体が決まります。対称な木では、世代ごとに半径は \\(2^{-1/3}\\) 倍に縮み、血管の数は 2 倍になり、全断面積は \\(2^{1/3}\\) 倍に増えるので、血液は広がるにつれて遅くなります。壁ずり応力 \\(\\tau\\propto Q/r^3\\) はどの血管でも同じで、色分けではそれが一色に見えます。ほかの規則 \\(r\\propto Q^{1/k}\\) も試してください。全体の尺度をどんなにうまく選んでも、3 以外の指数ではどれも費用が増え、ずり応力は細い血管に向かって上がるか下がるかしていきます。"
+        ],
+        "formula": "r_g=r_0\\,2^{-g/3},\\qquad N_g=2^g,\\qquad \\frac{N_g r_g^2}{r_0^2}=2^{g/3},\\qquad \\frac{\\tau_g}{\\tau_0}=\\Bigl(\\frac{Q_g}{Q_0}\\Bigr)^{1-3/k},\\qquad \\frac{\\bar u_g}{\\bar u_0}=\\Bigl(\\frac{Q_g}{Q_0}\\Bigr)^{1-2/k},\\qquad r_j=c\\,Q_j^{1/k}:\\ \\ P_{\\min}(k)=3A c^{-4},\\quad c^6=\\frac{2A}{B},\\quad A=\\sum_j\\frac{8\\mu l_jQ_j^{2-4/k}}{\\pi},\\quad B=\\sum_j b\\pi l_jQ_j^{2/k}",
+        "example": [
+          "After 7 symmetric generations there are 128 vessels of radius \\(2^{-7/3}r_0=0.198\\,r_0\\) and their total cross-section is \\(2^{7/3}=5.04\\) times the root’s, so the mean speed has dropped to 0.198 of the root’s. With lengths proportional to radius, as drawn here, the best tree with area-preserving branching, \\(k=2\\), costs 29.7% more than the cube law; \\(k=2.5\\) costs 4.5% more, \\(k=3.5\\) 2.3% and \\(k=4\\) 7.1%. Going from a 12.5 mm aorta down to 4 µm capillaries by symmetric cube-law halving would take \\(3\\log_2(12.5/0.004)=34.8\\) generations.",
+          "対称に 7 世代分かれると、半径 \\(2^{-7/3}r_0=0.198\\,r_0\\) の血管が 128 本でき、その全断面積は根もとの \\(2^{7/3}=5.04\\) 倍なので、平均速度は根もとの 0.198 倍に下がります。ここでの描き方のように長さが半径に比例するとき、断面積を保つ分岐 \\(k=2\\) の最良の木は三乗則より 29.7% 費用がかかり、\\(k=2.5\\) では 4.5%、\\(k=3.5\\) では 2.3%、\\(k=4\\) では 7.1% 増えます。半径 12.5 mm の大動脈から 4 µm の毛細血管まで、三乗則で対称に分かれ続けるとすれば、\\(3\\log_2(12.5/0.004)=34.8\\) 世代かかります。"
+        ],
+        "caution": [
+          "A real vascular tree is far from a symmetric binary tree: branching is asymmetric, lengths vary, and the largest arteries do not follow the cube law. The tree here is an idealization in which every junction is optimal and alternate generations branch in perpendicular planes. The radii are drawn relative to the root, and the moving dots travel at each vessel’s mean speed on a common, slowed time scale.",
+          "実際の血管の木は対称な二分木からはほど遠く、分岐は非対称で、長さもまちまちで、最も太い動脈は三乗則に従いません。ここでの木は、どの分岐点も最適で、一世代ごとに互いに垂直な平面で分かれる理想化です。半径は根もとに対する比で描き、動く点は各血管の平均速度で、共通の遅くした時間尺度で動いています。"
+        ],
+        "question": [
+          "Why does blood slow down as it goes deeper into a cube-law tree?",
+          "三乗則の木の奥へ進むにつれて、血液が遅くなるのはなぜですか？"
+        ],
+        "answer": [
+          "The mean speed is \\(Q/(\\pi r^2)\\), and the cube law makes it proportional to \\(r\\): \\(\\bar u=\\frac14\\sqrt{b/\\mu}\\,r\\). Smaller vessels therefore carry slower blood. Equivalently, at each symmetric split the total cross-section grows by \\(2\\cdot2^{-2/3}=2^{1/3}\\), and the same total flow through a larger total area moves more slowly, which gives the time needed for exchange in the capillaries.",
+          "平均速度は \\(Q/(\\pi r^2)\\) で、三乗則によって \\(\\bar u=\\frac14\\sqrt{b/\\mu}\\,r\\) と \\(r\\) に比例します。そのため細い血管ほど血液は遅くなります。言いかえると、対称な分岐のたびに全断面積は \\(2\\cdot2^{-2/3}=2^{1/3}\\) 倍になり、同じ全流量がより広い面積を通るので遅くなります。これが毛細血管での物質交換に必要な時間を生みます。"
+        ],
+        "params": [
+          [
+            "gen",
+            "Generations G",
+            "世代数 G",
+            2,
+            9,
+            1,
+            7
+          ],
+          [
+            "s",
+            "Flow share of the larger branch, s",
+            "太い枝の流量の割合 s",
+            0.5,
+            0.8,
+            0.01,
+            0.5
+          ],
+          [
+            "k",
+            "Radius rule exponent k (r ∝ Q^(1/k))",
+            "半径の規則の指数 k（r ∝ Q^(1/k)）",
+            2,
+            4,
+            0.05,
+            3
+          ],
+          [
+            "show",
+            "Color by",
+            "色分け",
+            0,
+            1,
+            1,
+            0,
+            [
+              [
+                "wall shear stress",
+                "壁ずり応力"
+              ],
+              [
+                "mean speed",
+                "平均速度"
+              ]
+            ]
+          ]
+        ],
+        "source": "Cecil D. Murray · The physiological principle of minimum work. I. The vascular system and the cost of blood volume, Proc. Natl. Acad. Sci. USA 12, 207–214 (1926)",
+        "url": "https://pdodds.w3.uvm.edu/files/papers/others/1926/murray1926a.pdf"
+      }
+    ]
   }
 ]
