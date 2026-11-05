@@ -293,3 +293,9 @@ link; `--check` reports a stale hub. The kit-built topic pages come from
 `math-labs/` (see its README and KIT.md); `math-labs/integrate.py` runs the
 hub builder for you. The same JSON drives the Math encyclopedia breadcrumb
 and library category.
+
+The home pages also carry a **Latest encyclopedia entries** section, written by
+`build-math-hub.py` between `<!-- ENC-LATEST:START -->` and `<!-- ENC-LATEST:END -->`:
+the six newest entries by their `added` timestamp in the JSON. `integrate.py`
+stamps new kit topics; give a hand-added standalone entry an `added` value too,
+or it will never appear there. Do not hand-edit the block.

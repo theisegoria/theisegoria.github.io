@@ -45,7 +45,9 @@ do not exist yet in content.json are simply left out of graph.js.
    moment, Hasse bound, Gauss–Bonnet angle defect). A check must be able to fail.
 4. `math-labs/graph.js`: add S to `PREREQ` (existing prerequisite slugs) and to
    `CROSS` (1 to 3 existing slugs). Keep the comment style.
-5. After integrate.py appends the entry to `tools/math-encyclopedia.json`, edit
+5. integrate.py stamps each new entry with an `added` time; keep it when you move
+   the entry, since it drives the home page's Latest encyclopedia entries section.
+   After integrate.py appends the entry to `tools/math-encyclopedia.json`, edit
    its hub `description`/`description_ja` to one short sentence each, and move
    the entry to sit sensibly within its group (the list is ordered).
 

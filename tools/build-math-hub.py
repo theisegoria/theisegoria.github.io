@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Rebuild the <main> of both math encyclopedia hubs, and the Math encyclopedia
-section of both home pages, from tools/math-encyclopedia.json.
+and Latest encyclopedia entries sections of both home pages, from
+tools/math-encyclopedia.json.
 
 The JSON is the single list of encyclopedia entries: one record per page, in
 reading order, each with a group. This script writes the page-contents nav and
@@ -99,6 +100,42 @@ def home_section(page, ja):
     return page[:m.start()] + m.group(1) + label + head + ''.join(cards) + m.group(3) + page[m.end():]
 
 
+LATEST_N = 6
+MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+
+
+def latest_section(page, ja):
+    """The home page's Latest encyclopedia entries: the newest entries by their
+    `added` timestamp (set by math-labs/integrate.py when a topic is added),
+    written between ENC-LATEST markers just after the Math encyclopedia section."""
+    esc = html.escape
+    names = {g: re.split('[:：]', j if ja else en)[0] for g, en, j in GROUPS}
+    order = {e['route']: i for i, e in enumerate(DATA)}
+    newest = sorted((e for e in DATA if e.get('added')), key=lambda e: (e['added'], order[e['route']]), reverse=True)[:LATEST_N]
+    cards = []
+    for e in newest:
+        y, mo, d = (int(x) for x in e['added'][:10].split('-'))
+        date = f'{y}年{mo}月{d}日' if ja else f'{d} {MONTHS[mo - 1]} {y}'
+        href = e['route_ja'] if ja else e.get('href', e['route'])
+        cards.append(f'<a href="{esc(href)}"><span class="t">{esc(e["title_ja" if ja else "title"])}</span>'
+                     f'<span class="d">{esc(e["description_ja" if ja else "description"])}</span>'
+                     f'<span class="tail"><span>{esc(names.get(e["group"], ""))}</span><span>{date}</span></span></a>')
+    hub = '/ja/math-encyclopedia/' if ja else '/math-encyclopedia/'
+    head = ('<div class="section-head"><h2>' + ('数学百科事典の新着' if ja else 'Latest encyclopedia entries') + '</h2>'
+            + '<p class="label">' + ('新しい順' if ja else 'Newest first') + '</p>'
+            + '<p class="section-note">' + (f'百科事典に最近加わった項目です。すべての項目は<a href="{hub}">分野別の一覧</a>にもあります。' if ja else
+                                            f'The most recent additions to the encyclopedia. Every entry is also filed by subject in the <a href="{hub}">full list</a>.') + '</p></div>')
+    block = ('<!-- ENC-LATEST:START --><section class="section" id="encyclopedia-latest">' + head
+             + '<div class="index">' + ''.join(cards) + '\n    </div></section><!-- ENC-LATEST:END -->')
+    m = re.search(r'<!-- ENC-LATEST:START -->.*?<!-- ENC-LATEST:END -->', page, re.S)
+    if m:
+        return page[:m.start()] + block + page[m.end():]
+    m = re.search(r'<section class="section" id="math-encyclopedia">.*?\n    </div></section>', page, re.S)
+    if not m:
+        sys.exit('home page Math encyclopedia section not found')
+    return page[:m.end()] + '\n  ' + block + page[m.end():]
+
+
 def rebuild(path, ja):
     s = path.read_text()
     new = re.sub(r'<main id="main">.*?</main>', lambda m: main_html(ja), s, count=1, flags=re.S)
@@ -113,8 +150,8 @@ if __name__ == '__main__':
     if dup:
         sys.exit(f'duplicate routes in math-encyclopedia.json: {sorted(dup)}')
     jobs = [('math-encyclopedia/index.html', False, rebuild), ('ja/math-encyclopedia/index.html', True, rebuild),
-            ('index.html', False, lambda p, ja: (p.read_text(), home_section(p.read_text(), ja))),
-            ('ja/index.html', True, lambda p, ja: (p.read_text(), home_section(p.read_text(), ja)))]
+            ('index.html', False, lambda p, ja: (p.read_text(), latest_section(home_section(p.read_text(), ja), ja))),
+            ('ja/index.html', True, lambda p, ja: (p.read_text(), latest_section(home_section(p.read_text(), ja), ja)))]
     for rel, ja, fn in jobs:
         p = ROOT / rel
         old, new = fn(p, ja)

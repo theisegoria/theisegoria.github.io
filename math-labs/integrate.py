@@ -22,7 +22,8 @@ for t in data:
     route = '/' + t['slug'] + '/'
     if not any(e['route'] == route for e in entries):
         entries.append(dict(title=t['title'][0], title_ja=t['title'][1], route=route, route_ja='/ja' + route,
-                            description=t['description'][0], description_ja=t['description'][1], group=t['group']))
+                            description=t['description'][0], description_ja=t['description'][1], group=t['group'],
+                            added=datetime.datetime.now().astimezone().isoformat(timespec='seconds')[:19]))
         added += 1
 p.write_text(json.dumps(entries, ensure_ascii=False, indent=2) + '\n')
 
