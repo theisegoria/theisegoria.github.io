@@ -18540,5 +18540,345 @@
         "url": "https://pdodds.w3.uvm.edu/files/papers/others/1926/murray1926a.pdf"
       }
     ]
+  },
+  {
+    "slug": "convex-geometry",
+    "title": [
+      "Convex geometry: shapes, hulls, and duality",
+      "凸幾何：形・凸包・双対性"
+    ],
+    "description": [
+      "A set is convex if it contains the straight segment between any two of its points. That single rule is enough to build a rich geometry. A convex body is described completely by how far it reaches in every direction, its support function. Two convex bodies can be added shape by shape, and their support functions simply add. Every body that contains the origin has a polar twin that trades vertices for faces and corners for tangent planes. And two convex bodies that do not touch can always be pulled apart by a plane, with the width of the widest gap equal to the shortest distance between them. These facts sit underneath linear programming, the maximum-margin classifier, collision detection in games and the isoperimetric inequality. The three experiments take polar duality apart in three dimensions, add shapes and watch their reach add, and compute the shortest distance between two polyhedra.",
+      "集合が凸であるとは、そのどの二点についても、二点を結ぶ線分がその集合に含まれることです。この一つの規則だけで、豊かな幾何学ができます。凸体は、各方向にどこまで届くか、つまり支持関数によって完全に記述されます。二つの凸体は形のままで足し合わせることができ、その支持関数はただ足し算になります。原点を含む物体にはどれも、頂点と面、角と接平面を入れ替えた極という双子があります。さらに、接していない二つの凸体は、いつも一枚の平面で引き離すことができ、最も広い隙間の幅は二つの間の最短距離に等しくなります。これらの事実は、線形計画、最大マージン分類器、ゲームの衝突判定、等周不等式の土台にあります。三つの実験では、極双対性を 3 次元で分解して見せ、形を足し合わせて届く距離が足し算になるのを確かめ、二つの多面体の最短距離を計算します。"
+    ],
+    "group": "geometry",
+    "prerequisite": [
+      "Vectors and dot products in the plane and in space, area and volume, the maximum of a function over a set",
+      "平面と空間のベクトルと内積、面積と体積、集合の上での関数の最大値"
+    ],
+    "source": "Stephen Boyd and Lieven Vandenberghe · Convex Optimization, Chapter 2: Convex sets (Cambridge University Press, 2004; free PDF from the authors)",
+    "url": "https://web.stanford.edu/~boyd/cvxbook/bv_cvxbook.pdf",
+    "labs": [
+      {
+        "id": "convex-polar",
+        "title": [
+          "1. Polar duality: every point a tangent plane",
+          "1. 極双対性：すべての点が接平面"
+        ],
+        "body": [
+          "For a convex body \\(K\\) containing the origin, the polar \\(K^\\circ\\) is the set of all \\(y\\) with \\(\\langle x,y\\rangle\\le1\\) for every \\(x\\in K\\). Each \\(y\\) stands for the plane \\(\\langle x,y\\rangle=1\\), which misses the interior of \\(K\\); the nearer \\(y\\) is to the boundary of \\(K^\\circ\\), the nearer the plane comes to touching \\(K\\). For the unit ball of a norm the polar is the unit ball of the dual norm, so the \\(\\ell_p\\) ball has the \\(\\ell_q\\) ball as its polar, with \\(1/p+1/q=1\\). Slide \\(s=1/p\\) from the cube (\\(p=\\infty\\)) through the ball (\\(p=2\\)) to the octahedron (\\(p=1\\)) and watch the two bodies trade places. Because scaling \\(K\\) by \\(c\\) scales \\(K^\\circ\\) by \\(1/c\\), the product \\(\\mathrm{vol}K\\cdot\\mathrm{vol}K^\\circ\\), Mahler’s volume product, depends on shape alone. It is least for the cube and octahedron and greatest for the ball.",
+          "原点を含む凸体 \\(K\\) の極 \\(K^\\circ\\) とは、\\(K\\) のすべての \\(x\\) について \\(\\langle x,y\\rangle\\le1\\) となる \\(y\\) の全体です。それぞれの \\(y\\) は平面 \\(\\langle x,y\\rangle=1\\) を表し、この平面は \\(K\\) の内部を通りません。\\(y\\) が \\(K^\\circ\\) の境界に近いほど、その平面は \\(K\\) に触れそうになります。ノルムの単位球の極は双対ノルムの単位球なので、\\(\\ell_p\\) 球の極は \\(1/p+1/q=1\\) を満たす \\(\\ell_q\\) 球です。\\(s=1/p\\) を立方体（\\(p=\\infty\\)）から球（\\(p=2\\)）、正八面体（\\(p=1\\)）まで動かして、二つの物体が入れ替わるのを見てください。\\(K\\) を \\(c\\) 倍すると \\(K^\\circ\\) は \\(1/c\\) 倍になるので、積 \\(\\mathrm{vol}K\\cdot\\mathrm{vol}K^\\circ\\)（マーラーの体積積）は形だけで決まります。この値は立方体と正八面体で最小、球で最大になります。"
+        ],
+        "formula": "K_s=\\{\\|x\\|_p\\le1\\},\\ p=\\tfrac1s;\\qquad K^\\circ=\\{y:\\langle x,y\\rangle\\le1\\ \\forall x\\in K\\}=K_{1-s}=\\{\\|y\\|_q\\le1\\},\\ \\tfrac1p+\\tfrac1q=1;\\qquad h_K(y)=\\max_{x\\in K}\\langle x,y\\rangle=\\|y\\|_q;\\qquad \\mathrm{vol}\\,K_s=\\frac{8\\,\\Gamma(1+s)^3}{\\Gamma(1+3s)};\\qquad \\tfrac{32}{3}\\le\\mathrm{vol}K\\cdot\\mathrm{vol}K^\\circ\\le\\bigl(\\tfrac{4\\pi}{3}\\bigr)^2",
+        "example": [
+          "The cube \\([-1,1]^3\\) has volume 8 and its polar is the octahedron \\(|y_1|+|y_2|+|y_3|\\le1\\) of volume \\(4/3\\), so the product is \\(32/3=10.67\\). The ball and its own polar give \\((4\\pi/3)^2=17.55\\). In between, \\(p=3\\) and \\(q=3/2\\) give \\(8\\Gamma(4/3)^3=5.696\\) and \\(8\\Gamma(5/3)^3/2=2.943\\), product 16.76. For \\(p=3\\) take the point \\(y=3^{-2/3}(1,1,1)\\) of \\(K^\\circ\\). It stands for the plane \\(x_1+x_2+x_3=3^{2/3}=2.080\\), at distance \\(1/|y|=3^{1/6}=1.201\\) from the centre, and that plane touches \\(K\\) at \\(x^*=3^{-1/3}(1,1,1)=(0.693,0.693,0.693)\\), where \\(\\langle x^*,y\\rangle=1\\).",
+          "立方体 \\([-1,1]^3\\) の体積は 8、その極である正八面体 \\(|y_1|+|y_2|+|y_3|\\le1\\) の体積は \\(4/3\\) なので、積は \\(32/3=10.67\\) です。球と、その自分自身である極の積は \\((4\\pi/3)^2=17.55\\) です。その中間の \\(p=3\\)、\\(q=3/2\\) では、体積は \\(8\\Gamma(4/3)^3=5.696\\) と \\(8\\Gamma(5/3)^3/2=2.943\\) で、積は 16.76 です。\\(p=3\\) のとき、\\(K^\\circ\\) の点 \\(y=3^{-2/3}(1,1,1)\\) をとります。これは平面 \\(x_1+x_2+x_3=3^{2/3}=2.080\\) を表し、中心からの距離は \\(1/|y|=3^{1/6}=1.201\\) です。この平面は \\(K\\) に \\(x^*=3^{-1/3}(1,1,1)=(0.693,0.693,0.693)\\) で接し、そこでは \\(\\langle x^*,y\\rangle=1\\) です。"
+        ],
+        "caution": [
+          "The volume formula and the polar of an \\(\\ell_p\\) ball hold for \\(1\\le p\\le\\infty\\), which is why \\(s\\) is limited to \\([0,1]\\). At the cube and the octahedron the surfaces are drawn from a fine grid, so edges look very slightly rounded. That the product is at least \\(32/3\\) for every centrally symmetric body is Mahler’s conjecture: it is proved in dimensions two and three (the three-dimensional case by Iriyeh and Shibata in 2020) and open from dimension four. The upper bound is the Blaschke–Santaló inequality, with equality only for ellipsoids.",
+          "公式と \\(\\ell_p\\) 球の極の関係は \\(1\\le p\\le\\infty\\) で成り立つので、\\(s\\) は \\([0,1]\\) に限っています。立方体と正八面体では、曲面を細かい格子から描いているため、辺がごくわずかに丸く見えます。点対称な凸体の体積積がつねに \\(32/3\\) 以上になるというのがマーラー予想で、2 次元と 3 次元で証明されており（3 次元は 2020 年に入江と柴田）、4 次元以上は未解決です。上からの評価はブラシュケ・サンタロの不等式で、等号は楕円体のときに限ります。"
+        ],
+        "question": [
+          "Why does the polar of the cube turn out to be the octahedron, with six vertices where the cube had six faces?",
+          "立方体の極が正八面体になり、立方体の 6 つの面の代わりに 6 つの頂点が現れるのはなぜですか？"
+        ],
+        "answer": [
+          "Each face of the cube \\([-1,1]^3\\) lies in a plane \\(x_i=\\pm1\\), which is \\(\\langle x,y\\rangle=1\\) for \\(y=\\pm e_i\\): one face gives one vertex of the polar, six in all. Each of the eight corners \\(\\varepsilon=(\\pm1,\\pm1,\\pm1)\\) of the cube gives the condition \\(\\langle\\varepsilon,y\\rangle\\le1\\), which is one face of the polar, eight in all. So vertices and faces trade places, edges correspond to edges, and the counts \\((V,E,F)=(8,12,6)\\) become \\((6,12,8)\\).",
+          "立方体 \\([-1,1]^3\\) の各面は平面 \\(x_i=\\pm1\\) にあり、これは \\(y=\\pm e_i\\) に対する \\(\\langle x,y\\rangle=1\\) です。一つの面が極の一つの頂点を与え、合計 6 個です。立方体の 8 つの角 \\(\\varepsilon=(\\pm1,\\pm1,\\pm1)\\) のそれぞれは条件 \\(\\langle\\varepsilon,y\\rangle\\le1\\) を与え、これは極の一つの面で、合計 8 個です。こうして頂点と面が入れ替わり、辺は辺に対応して、個数 \\((V,E,F)=(8,12,6)\\) は \\((6,12,8)\\) になります。"
+        ],
+        "params": [
+          [
+            "s",
+            "Shape s = 1/p (0 cube, ½ ball, 1 octahedron)",
+            "形 s = 1/p（0 立方体、½ 球、1 正八面体）",
+            0,
+            1,
+            0.01,
+            0.3
+          ],
+          [
+            "az",
+            "Direction of y: azimuth (degrees)",
+            "y の方向：方位角（度）",
+            0,
+            360,
+            1,
+            315
+          ],
+          [
+            "pol",
+            "Direction of y: angle from the vertical (degrees)",
+            "y の方向：鉛直方向からの角（度）",
+            5,
+            175,
+            1,
+            55
+          ]
+        ],
+        "source": "Stephen Boyd and Lieven Vandenberghe · Convex Optimization, Chapter 2: Convex sets (Cambridge University Press, 2004; free PDF from the authors)",
+        "url": "https://web.stanford.edu/~boyd/cvxbook/bv_cvxbook.pdf"
+      },
+      {
+        "id": "convex-minkowski",
+        "title": [
+          "2. Minkowski sums: shapes that add",
+          "2. ミンコフスキー和：足し算できる形"
+        ],
+        "body": [
+          "The Minkowski sum of two sets is \\(A+B=\\{a+b:a\\in A,\\,b\\in B\\}\\): put a copy of \\(B\\) at every point of \\(A\\), or slide \\(B\\) around the edge of \\(A\\) and keep everything it covers. The reach of a body in direction \\(u\\), its support function \\(h_A(u)=\\max_{a\\in A}\\langle a,u\\rangle\\), determines a convex body completely, and under Minkowski addition it behaves like ordinary addition, \\(h_{A+B}=h_A+h_B\\). If \\(B\\) is a disc of radius \\(t\\) the sum is the parallel body of \\(A\\), and its area splits into the area of \\(A\\), a strip along every edge and a circular wedge at every corner: Steiner’s formula. For other \\(B\\) the area is a quadratic in \\(t\\) with a mixed area \\(V(A,B)\\) in the middle, and the Brunn–Minkowski inequality says that square roots of areas always add up at least as fast as the areas of sums allow.",
+          "二つの集合のミンコフスキー和は \\(A+B=\\{a+b:a\\in A,\\,b\\in B\\}\\) です。\\(A\\) のすべての点に \\(B\\) のコピーを置く、または \\(A\\) の縁に沿って \\(B\\) を滑らせて、覆ったところをすべて残す、と考えられます。方向 \\(u\\) への物体の届く距離、すなわち支持関数 \\(h_A(u)=\\max_{a\\in A}\\langle a,u\\rangle\\) は、凸体を完全に決めます。ミンコフスキー和のもとでは普通の足し算のように振る舞い、\\(h_{A+B}=h_A+h_B\\) です。\\(B\\) が半径 \\(t\\) の円板なら和は \\(A\\) の平行体で、その面積は \\(A\\) の面積、各辺に沿った帯、各頂点の扇形に分かれます。これがシュタイナーの公式です。ほかの \\(B\\) では、面積は \\(t\\) の二次式で、真ん中に混合面積 \\(V(A,B)\\) が現れます。ブルン・ミンコフスキーの不等式は、面積の平方根は、和の面積から予想されるよりつねに速く足し合わされる、と述べています。"
+        ],
+        "formula": "A+B=\\{a+b\\},\\qquad h_{A+B}=h_A+h_B,\\qquad |A+tD|=|A|+t\\,P(A)+\\pi t^2,\\qquad |A+tB|=|A|+2t\\,V(A,B)+t^2|B|,\\qquad \\sqrt{|A+B|}\\ge\\sqrt{|A|}+\\sqrt{|B|},\\qquad P=\\int_0^{2\\pi}h\\,d\\theta,\\qquad |A|=\\tfrac12\\int_0^{2\\pi}\\bigl(h^2-(\\partial_\\theta h)^2\\bigr)\\,d\\theta",
+        "example": [
+          "Let \\(A\\) be the square \\([-1,1]^2\\) (area 4, perimeter 8) and \\(B\\) the unit disc with \\(t=0.5\\). In direction \\(\\theta=0\\) the reach is \\(1+0.5=1.5\\). Steiner gives \\(|A+tD|=4+8(0.5)+\\pi(0.5)^2=8.785\\): the square, four strips of area 1 and four wedges of total area 0.785. Two aligned squares of sides 2 and 1 sum to a square of side 3 and area 9, and \\(\\sqrt9=3=\\sqrt4+\\sqrt1\\): equality, since they are homothetic. An equilateral triangle \\(A\\) and its half-turn \\(-A\\) are not: \\(A+(-A)\\) is a hexagon of area \\(6|A|\\), so the ratio is \\(\\sqrt6/2=1.2247\\).",
+          "\\(A\\) を正方形 \\([-1,1]^2\\)（面積 4、周長 8）、\\(B\\) を単位円板で \\(t=0.5\\) とします。方向 \\(\\theta=0\\) の届く距離は \\(1+0.5=1.5\\) です。シュタイナーの公式から \\(|A+tD|=4+8(0.5)+\\pi(0.5)^2=8.785\\) となり、正方形、面積 1 の帯 4 つ、合計面積 0.785 の扇形 4 つに分かれます。向きの揃った一辺 2 と一辺 1 の正方形の和は、一辺 3、面積 9 の正方形で、\\(\\sqrt9=3=\\sqrt4+\\sqrt1\\) と等号が成り立ちます。この二つが相似の位置にあるからです。正三角形 \\(A\\) とその半回転 \\(-A\\) はそうではなく、\\(A+(-A)\\) は面積 \\(6|A|\\) の六角形で、比は \\(\\sqrt6/2=1.2247\\) です。"
+        ],
+        "caution": [
+          "The experiment works with polygons: the disc is a 180-sided polygon, so the Steiner area shown is exact only to about one part in 5000, and a segment has zero area, so its Brunn–Minkowski ratio is just \\(\\sqrt{|A+B|/|A|}\\). The formula for \\(|A|\\) in terms of \\(h\\) needs \\(h\\) to be differentiable, and for polygons it holds as an integral of piecewise smooth pieces. The picture shows the region centred on the origin, so every support function is positive.",
+          "この実験は多角形で計算しています。円板は 180 角形なので、表示するシュタイナーの面積は約 5000 分の 1 の精度でしか厳密ではありません。線分の面積はゼロなので、そのブルン・ミンコフスキー比は \\(\\sqrt{|A+B|/|A|}\\) になります。\\(|A|\\) を \\(h\\) で表す公式は \\(h\\) が微分可能であることを要しますが、多角形では滑らかな区間ごとの積分として成り立ちます。図は領域を原点を中心に描いているので、どの支持関数も正になります。"
+        ],
+        "question": [
+          "When is the Brunn–Minkowski inequality an equality?",
+          "ブルン・ミンコフスキーの不等式で等号が成り立つのはいつですか？"
+        ],
+        "answer": [
+          "Exactly when \\(A\\) and \\(B\\) are homothetic, meaning \\(B\\) is a scaled and translated copy of \\(A\\) (same shape, same way up). Then \\(A+B\\) is just \\(A\\) scaled by \\(1+c\\), its area is \\((1+c)^2|A|\\) and its square root is \\((1+c)\\sqrt{|A|}=\\sqrt{|A|}+\\sqrt{|B|}\\). Any other pair, such as two squares at different angles, or a square and a disc, gives a strict inequality.",
+          "\\(A\\) と \\(B\\) が相似の位置にあるとき、つまり \\(B\\) が \\(A\\) を拡大縮小して平行移動したもの（同じ形で同じ向き）であるときに限ります。このとき \\(A+B\\) は \\(A\\) の \\(1+c\\) 倍で、面積は \\((1+c)^2|A|\\)、その平方根は \\((1+c)\\sqrt{|A|}=\\sqrt{|A|}+\\sqrt{|B|}\\) です。傾きの違う二つの正方形や、正方形と円板など、ほかのどの組でも真の不等式になります。"
+        ],
+        "params": [
+          [
+            "ka",
+            "Body A",
+            "物体 A",
+            0,
+            3,
+            1,
+            0,
+            [
+              [
+                "square",
+                "正方形"
+              ],
+              [
+                "triangle",
+                "三角形"
+              ],
+              [
+                "hexagon",
+                "六角形"
+              ],
+              [
+                "rectangle",
+                "長方形"
+              ]
+            ]
+          ],
+          [
+            "a",
+            "Size of A",
+            "A の大きさ",
+            0.5,
+            1.6,
+            0.05,
+            1
+          ],
+          [
+            "kb",
+            "Body B",
+            "物体 B",
+            0,
+            3,
+            1,
+            0,
+            [
+              [
+                "disc",
+                "円板"
+              ],
+              [
+                "segment",
+                "線分"
+              ],
+              [
+                "triangle",
+                "三角形"
+              ],
+              [
+                "square",
+                "正方形"
+              ]
+            ]
+          ],
+          [
+            "t",
+            "Size of B, t",
+            "B の大きさ t",
+            0,
+            1.6,
+            0.05,
+            0.7
+          ],
+          [
+            "rot",
+            "Rotation of B (degrees)",
+            "B の回転（度）",
+            0,
+            180,
+            5,
+            20
+          ],
+          [
+            "th",
+            "Direction θ (degrees)",
+            "方向 θ（度）",
+            0,
+            360,
+            1,
+            35
+          ]
+        ],
+        "source": "Stephen Boyd and Lieven Vandenberghe · Convex Optimization, Chapter 2: Convex sets (Cambridge University Press, 2004; free PDF from the authors)",
+        "url": "https://web.stanford.edu/~boyd/cvxbook/bv_cvxbook.pdf"
+      },
+      {
+        "id": "convex-separation",
+        "title": [
+          "3. Hulls and separating planes",
+          "3. 凸包と分離平面"
+        ],
+        "body": [
+          "The convex hull of a finite set of points is the smallest convex body containing them: a polyhedron whose corners are some of the points, with Euler’s count \\(V-E+F=2\\). Two disjoint convex bodies can always be separated by a plane. To find the best one, look for the closest pair of points \\(p\\in A\\), \\(q\\in B\\): the plane through the midpoint, perpendicular to \\(q-p\\), leaves a margin of \\(d/2\\) on each side. Equivalently, over all unit directions \\(n\\) the gap \\(\\min_B\\langle n,x\\rangle-\\max_A\\langle n,x\\rangle\\) is largest, equal to the distance \\(d\\), exactly along \\(q-p\\). Tilt the direction and the gap shrinks. The shortest distance and the widest separating slab are one number seen from two sides, which is the geometry of the maximum-margin classifier.",
+          "有限個の点の凸包は、それらを含む最小の凸体で、頂点がそれらの点の一部であるような多面体であり、オイラーの関係 \\(V-E+F=2\\) が成り立ちます。交わらない二つの凸体は、いつも一枚の平面で分離できます。最良の平面を見つけるには、\\(A\\) の点 \\(p\\) と \\(B\\) の点 \\(q\\) の最近の組を探します。中点を通り \\(q-p\\) に垂直な平面は、両側に \\(d/2\\) の余白を残します。同じことですが、単位ベクトル \\(n\\) のうちで隙間 \\(\\min_B\\langle n,x\\rangle-\\max_A\\langle n,x\\rangle\\) が最大になるのは \\(q-p\\) の向きのときで、その値が距離 \\(d\\) です。方向を傾けると隙間は縮みます。最短距離と最も幅の広い分離帯は、同じ数を二つの側から見たもので、これが最大マージン分類器の背後にある幾何学です。"
+        ],
+        "formula": "\\mathrm{conv}(S)=\\Bigl\\{\\textstyle\\sum\\lambda_ix_i:\\lambda_i\\ge0,\\ \\sum\\lambda_i=1\\Bigr\\},\\quad V-E+F=2;\\qquad d=\\min_{p\\in A,\\,q\\in B}|p-q|=\\max_{|n|=1}\\Bigl[\\min_{x\\in B}\\langle n,x\\rangle-\\max_{x\\in A}\\langle n,x\\rangle\\Bigr],\\qquad n^*=\\frac{q-p}{|q-p|}",
+        "example": [
+          "Let \\(A\\) be the cube \\([-1,1]^3\\) and \\(B\\) the same cube moved by \\((3,3,3)\\). The closest points are the corners \\(p=(1,1,1)\\) and \\(q=(2,2,2)\\), so \\(d=\\sqrt3=1.732\\), \\(n^*=(1,1,1)/\\sqrt3\\), and the separating plane is \\(x+y+z=4.5\\) through the midpoint \\((1.5,1.5,1.5)\\), with margin \\(\\sqrt3/2=0.866\\) either side. Along the \\(x\\) axis alone the gap is only \\(3-2=1\\). Moved by \\((3,3,0)\\) instead, two vertical edges face each other and \\(d=\\sqrt2\\). A cube against an octahedron of corner distance 1.4, centred at \\((4,0,0)\\), has \\(d=4-1.4-1=1.6\\), from a tip to a face.",
+          "\\(A\\) を立方体 \\([-1,1]^3\\)、\\(B\\) を同じ立方体を \\((3,3,3)\\) だけ動かしたものとします。最近点は角 \\(p=(1,1,1)\\) と \\(q=(2,2,2)\\) なので、\\(d=\\sqrt3=1.732\\)、\\(n^*=(1,1,1)/\\sqrt3\\) で、分離平面は中点 \\((1.5,1.5,1.5)\\) を通る \\(x+y+z=4.5\\)、余白は両側とも \\(\\sqrt3/2=0.866\\) です。\\(x\\) 軸だけで測った隙間は \\(3-2=1\\) にすぎません。代わりに \\((3,3,0)\\) だけ動かすと、鉛直な二本の辺が向き合い、\\(d=\\sqrt2\\) です。頂点までの距離が 1.4 の正八面体を \\((4,0,0)\\) に置くと、立方体との距離は先端と面の間で \\(d=4-1.4-1=1.6\\) です。"
+        ],
+        "caution": [
+          "The distance is computed exactly for polyhedra, by trying every vertex against every face and every edge against every edge, which is fast for the handful of points here but is not how one treats thousands. For smooth bodies the closest pair is found iteratively instead. The hulls of the cloud are computed afresh each time from its twelve points, three of which are swallowed. When the bodies overlap there is no separating plane and the gap is negative in every direction.",
+          "距離は多面体については厳密に計算しており、すべての頂点とすべての面、すべての辺とすべての辺を組み合わせて調べます。ここにある少数の点なら速いのですが、数千個の点を扱う方法ではありません。滑らかな物体では、最近の組を反復法で求めます。点群の凸包は 12 個の点から毎回計算し直しており、そのうち 3 点は飲み込まれます。物体が重なっているときは分離平面がなく、どの方向でも隙間は負になります。"
+        ],
+        "question": [
+          "Why is the best separating direction the one along the shortest segment between the two bodies?",
+          "最良の分離方向が、二つの物体の間の最短の線分の向きになるのはなぜですか？"
+        ],
+        "answer": [
+          "Any plane that separates \\(A\\) from \\(B\\) must cross every segment from a point of \\(A\\) to a point of \\(B\\), in particular the closest pair \\(p,q\\). The gap along a unit direction \\(n\\) is at most \\(\\langle n,q-p\\rangle\\le|q-p|=d\\), by the Cauchy–Schwarz inequality, with equality exactly when \\(n\\) points along \\(q-p\\). And that direction does achieve \\(d\\), because the planes through \\(p\\) and \\(q\\) perpendicular to \\(q-p\\) support \\(A\\) and \\(B\\), by the minimality of the pair. So \\(d\\) is both an upper bound and attained.",
+          "\\(A\\) と \\(B\\) を分離する平面は、\\(A\\) の点から \\(B\\) の点へ向かうどの線分とも交わらなければならず、最近の組 \\(p,q\\) についても同じです。単位ベクトル \\(n\\) に沿った隙間は、コーシー・シュワルツの不等式により \\(\\langle n,q-p\\rangle\\le|q-p|=d\\) 以下で、等号は \\(n\\) が \\(q-p\\) の向きのときに限ります。そしてその向きは実際に \\(d\\) を達成します。組が最小であることから、\\(p\\) と \\(q\\) を通り \\(q-p\\) に垂直な平面が、それぞれ \\(A\\) と \\(B\\) を支えるからです。したがって \\(d\\) は上界であり、達成もされます。"
+        ],
+        "params": [
+          [
+            "ka",
+            "Body A (at the origin)",
+            "物体 A（原点）",
+            0,
+            4,
+            1,
+            0,
+            [
+              [
+                "cube",
+                "立方体"
+              ],
+              [
+                "octahedron",
+                "正八面体"
+              ],
+              [
+                "tetrahedron",
+                "正四面体"
+              ],
+              [
+                "prism",
+                "角柱"
+              ],
+              [
+                "cloud",
+                "点群"
+              ]
+            ]
+          ],
+          [
+            "kb",
+            "Body B",
+            "物体 B",
+            0,
+            4,
+            1,
+            1,
+            [
+              [
+                "cube",
+                "立方体"
+              ],
+              [
+                "octahedron",
+                "正八面体"
+              ],
+              [
+                "tetrahedron",
+                "正四面体"
+              ],
+              [
+                "prism",
+                "角柱"
+              ],
+              [
+                "cloud",
+                "点群"
+              ]
+            ]
+          ],
+          [
+            "bx",
+            "B position x",
+            "B の位置 x",
+            -5,
+            5,
+            0.1,
+            3.4
+          ],
+          [
+            "by",
+            "B position y",
+            "B の位置 y",
+            -5,
+            5,
+            0.1,
+            1.2
+          ],
+          [
+            "bz",
+            "B position z (height)",
+            "B の位置 z（高さ）",
+            -3,
+            3,
+            0.1,
+            0.4
+          ],
+          [
+            "rz",
+            "Rotation of B about the vertical (degrees)",
+            "B の鉛直軸まわりの回転（度）",
+            0,
+            360,
+            5,
+            25
+          ],
+          [
+            "psi",
+            "Tilt ψ of the direction n (degrees)",
+            "方向 n の傾き ψ（度）",
+            -90,
+            90,
+            1,
+            0
+          ]
+        ],
+        "source": "Stephen Boyd and Lieven Vandenberghe · Convex Optimization, Chapter 2: Convex sets (Cambridge University Press, 2004; free PDF from the authors)",
+        "url": "https://web.stanford.edu/~boyd/cvxbook/bv_cvxbook.pdf"
+      }
+    ]
   }
 ]

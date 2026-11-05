@@ -134,7 +134,8 @@
     'active-flow-control': ['fluid-dynamics', 'control-theory', 'optimization'],
     'adaptive-cycle-engines': ['piston-engines', 'fluid-dynamics', 'optimization'],
     'stirling-engines': ['piston-engines', 'statistical-mechanics', 'fourier-analysis'],
-    'murrays-law': ['calculus-of-variations', 'optimization', 'fractal-geometry']
+    'murrays-law': ['calculus-of-variations', 'optimization', 'fractal-geometry'],
+    'convex-geometry': ['optimization', 'functional-analysis', 'projective-geometry']
   };
   // Topics named in each topic's own prerequisite line (content.json "prerequisite").
   const PREREQ = {
@@ -199,7 +200,8 @@
     'active-flow-control': ['aerodynamics', 'complex-analysis', 'linear-algebra'], // Circulation and the Joukowski map, complex numbers, linear algebra
     'adaptive-cycle-engines': ['thermodynamics', 'aerodynamics'],        // Thermodynamic cycles, compressible flow, lift and drag
     'stirling-engines': ['thermodynamics', 'classical-mechanics'],       // Ideal gas law and thermodynamic cycles, crank kinematics
-    'murrays-law': ['fluid-dynamics', 'optimization']                   // Poiseuille flow, minimising a cost
+    'murrays-law': ['fluid-dynamics', 'optimization'],                  // Poiseuille flow, minimising a cost
+    'convex-geometry': ['linear-algebra']                               // Vectors and dot products, area and volume
   };
 
   let topics = [], bySlug = new Map(), edges = [], drawn = [];
