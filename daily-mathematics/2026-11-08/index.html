@@ -1,0 +1,58 @@
+<!doctype html><html lang="en" class="ig-document ig-editorial"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Daily Mathematics solution: 8 November 2026 · Isegoria</title><meta name="description" content="Full solution to the Daily Mathematics card of 8 November 2026: an original math olympiad problem."><link rel="canonical" href="https://theisegoria.github.io/daily-mathematics/2026-11-08/"><link rel="alternate" hreflang="en" href="https://theisegoria.github.io/daily-mathematics/2026-11-08/"><link rel="alternate" hreflang="ja" href="https://theisegoria.github.io/ja/daily-mathematics/2026-11-08/"><link rel="alternate" hreflang="x-default" href="https://theisegoria.github.io/daily-mathematics/2026-11-08/"><link rel="icon" href="/assets/favicon.svg"><link rel="stylesheet" href="/assets/isegoria.css?v=20260915"><link rel="stylesheet" href="/analysis-atlas/vendor/katex.min.css"><script defer src="/analysis-atlas/vendor/katex.min.js"></script><script defer src="/analysis-atlas/vendor/contrib/auto-render.min.js"></script><script>document.addEventListener("DOMContentLoaded",function(){if(window.renderMathInElement)renderMathInElement(document.querySelector("main"),{delimiters:[{left:"\\[",right:"\\]",display:true},{left:"\\(",right:"\\)",display:false}],throwOnError:false});});</script><style>
+.dm{max-width:46rem;margin:0 auto;padding:2.5rem 1.25rem 4rem}
+.dm .eyebrow{letter-spacing:.14em;text-transform:uppercase;font-size:.78rem;opacity:.7;margin:0 0 .4rem}
+.dm h1{margin:.1rem 0 .6rem;line-height:1.2}
+.dm .deck{opacity:.85;margin:0 0 2rem}
+.dm .card{margin:2.6rem 0 0;padding-top:1.4rem;border-top:2px solid var(--dm-accent,currentColor)}
+.dm .card h2{margin:.2rem 0 .9rem;line-height:1.3}
+.dm .kind{font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dm-accent);margin:0}
+.dm figure{margin:1rem 0 1.4rem}
+.dm figure img{width:100%;max-width:30rem;height:auto;display:block;border:1px solid rgba(127,127,127,.25)}
+.dm .statement{padding:.9rem 1.1rem;border-left:3px solid var(--dm-accent);background:rgba(127,127,127,.07)}
+.dm details{margin:1.2rem 0}
+.dm summary{cursor:pointer;font-weight:600}
+.dm .answer{margin-top:1.2rem;padding:.8rem 1.1rem;border:1px solid var(--dm-accent)}
+.dm .katex-display{overflow-x:auto;overflow-y:hidden;padding:.2rem 0}
+.dm .days{list-style:none;padding:0;margin:1.5rem 0 0}
+.dm .days li{padding:.9rem 0;border-top:1px solid rgba(127,127,127,.25)}
+.dm .days a.date{font-weight:600}
+.dm .days span{display:block;opacity:.85}
+html[lang=ja] .dm{line-height:1.85}
+</style><script src="/assets/lang.js"></script>
+<!-- ISEGORIA:HEAD -->
+<link rel="stylesheet" href="/assets/site-shell.css?v=c21cd21e82">
+<script src="/assets/site-shell.js?v=c21cd21e82" ></script>
+<!-- /ISEGORIA:HEAD -->
+<script defer data-isegoria-analytics src="/assets/analytics.js?v=c40088a4a53f"></script>
+</head><body class="ig-site" data-site-kind="editorial" data-site-route="/daily-mathematics/2026-11-08/">
+<!-- ISEGORIA:NAV -->
+<a class="ig-skip" href="#ig-content">Skip to content</a>
+<header id="ig-header"><div class="ig-nav-inner">
+<a class="ig-brand" href="/" aria-label="Isegoria, home"><strong>ISEGORIA</strong><span>Benjamin Haire</span></a>
+<div class="ig-header-actions"><a class="ig-language" href="/ja/daily-mathematics/2026-11-08/" hreflang="ja" lang="ja">日本語</a><button class="ig-menu" type="button" aria-expanded="false" aria-controls="ig-primary">Menu</button></div>
+<nav id="ig-primary" aria-label="Primary navigation"><a href="/">Home</a><a href="/library.html">Library</a><a href="/math-encyclopedia/" aria-current="location">Math encyclopedia</a><a href="/#interactive">Interactive</a><a href="/#preoccupations">Research</a><a href="/#books">Books</a><a href="/projects.html">Projects</a><a href="/about.html">About</a><a class="ig-language" href="/ja/daily-mathematics/2026-11-08/" hreflang="ja" lang="ja">日本語</a><button class="ig-theme" type="button" hidden>Theme</button></nav>
+</div></header>
+<nav id="ig-breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><a href="/math-encyclopedia/">Math encyclopedia</a><span aria-hidden="true">/</span><a href="/daily-mathematics/">Daily Mathematics: solutions</a><span aria-hidden="true">/</span><span aria-current="page">Daily Mathematics solution: 8 November 2026</span></nav>
+<span id="ig-content" tabindex="-1"></span>
+<!-- /ISEGORIA:NAV -->
+<main id="main" class="dm"><p class="eyebrow">Daily Mathematics / Solutions</p><h1>Solution for 8 November 2026</h1><p class="deck">The card that day was an original math olympiad problem. Try it first; the solution is folded away below.</p><section class="card" id="competition" style="--dm-accent:#96311F"><p class="kind">Math Olympiad problem</p><h2>The expected characteristic polynomial of a random permutation matrix</h2><figure><img src="/daily-mathematics/2026-11-08/competition.png" width="1200" height="1200" loading="lazy" alt="Card: The expected characteristic polynomial of a random permutation matrix"></figure><div class="statement"><p>Let \(n\) be a positive integer and let \(P\) be an \(n\times n\) permutation matrix chosen uniformly at random from all \(n!\) of them. With \(P^{\mathsf T}\) the transpose of \(P\), find all roots of the polynomial</p>\[p(x)=\mathbb{E}\bigl[\det\bigl(xI-P-P^{\mathsf T}\bigr)\bigr].\]</div><details><summary>Show the solution</summary><p>The roots are \(x=2\) and \(x=2\cos(k\pi/n)\) for \(k=1,\dots,n-1\). In fact \(p(x)=(x-2)\,U_{n-1}(x/2)\), where \(U_m\) is the Chebyshev polynomial of the second kind, so \(p\) has \(n\) distinct real roots.</p>
+<p><strong>Why the obvious route fails.</strong> The expectation of a determinant is not the determinant of the expectation. Since \(\mathbb{E}[P]=\frac1n J\) (all entries \(1/n\)), the matrix \(\mathbb{E}[P+P^{\mathsf T}]=\frac2n J\) has characteristic polynomial \(x^{n-1}(x-2)\), which is wrong already for \(n=2\): there \(p(x)=\frac12\bigl((x-2)^2+(x^2-4)\bigr)=x(x-2)\). Averaging \(n!\) characteristic polynomials one by one is hopeless, so we organise the average by cycle type.</p>
+<p><strong>Step 1: one factor per cycle.</strong> Let \(\sigma\) be the permutation of \(P\), with cycles of lengths \(k_1,\dots,k_r\). Relabelling the indices so that every cycle uses consecutive indices conjugates \(P\) by a permutation matrix, which changes no determinant. After relabelling, \(P\) is block diagonal with blocks \(C_{k_1},\dots,C_{k_r}\), where \(C_k\) is the \(k\times k\) cyclic shift (for \(k=1\) it is the \(1\times1\) matrix \((1)\)). Hence</p>
+\[\det\bigl(xI-P-P^{\mathsf T}\bigr)=\prod_{i=1}^r f_{k_i}(x),\qquad f_k(x)=\det\bigl(xI_k-C_k-C_k^{\mathsf T}\bigr).\]
+<p><strong>Step 2: the cycle factor in the variable \(t\).</strong> Write \(x=t+t^{-1}\). The matrix \(C_k\) is orthogonal, so \(C_k^{\mathsf T}=C_k^{-1}\), and it is diagonalisable with eigenvalues \(\omega^j\), \(j=0,\dots,k-1\), where \(\omega=e^{2\pi i/k}\). So \(C_k+C_k^{\mathsf T}\) has eigenvalues \(\omega^j+\omega^{-j}\); this covers \(k=1\) (the block \((2)\)) and \(k=2\) (the block with eigenvalues \(\pm2\)) as well. Using \((t-\omega^j)(t-\omega^{-j})=t\,(x-\omega^j-\omega^{-j})\),</p>
+\[f_k=\prod_{j=0}^{k-1}\bigl(x-\omega^j-\omega^{-j}\bigr)=t^{-k}\prod_{j=0}^{k-1}(t-\omega^j)(t-\omega^{-j})=t^{-k}\,(t^k-1)^2=t^k+t^{-k}-2 .\]
+<p>So every cycle, of any length, contributes the same simple Laurent polynomial in \(t\).</p>
+<p><strong>Step 3: the exponential formula.</strong> The number of permutations of \(\{1,\dots,n\}\) with \(m_k\) cycles of length \(k\) for each \(k\) (where \(\sum k\,m_k=n\)) is \(n!/\prod_k k^{m_k}m_k!\). Therefore</p>
+\[p_n:=p(x)=\sum_{\sum k m_k=n}\ \prod_k\frac{1}{m_k!}\Bigl(\frac{f_k}{k}\Bigr)^{m_k},\]
+<p>which is the coefficient of \(z^n\) in \(\prod_k\exp(f_kz^k/k)\). With \(p_0=1\), as formal power series in \(z\) with coefficients in \(\mathbb{Q}[t,t^{-1}]\),</p>
+\[\sum_{n\ge0}p_nz^n=\exp\Bigl(\sum_{k\ge1}\frac{(tz)^k+(z/t)^k-2z^k}{k}\Bigr)=\frac{(1-z)^2}{(1-tz)(1-z/t)} .\]
+<p><strong>Step 4: extracting the coefficient.</strong> The coefficient of \(z^m\) in \(1/\bigl((1-tz)(1-z/t)\bigr)\) is \(u_m=\sum_{a+b=m}t^{a-b}=\dfrac{t^{m+1}-t^{-m-1}}{t-t^{-1}}\), which is \(U_m(x/2)\). Setting \(u_{-1}=u_{-2}=0\), we get \(p_n=u_n-2u_{n-1}+u_{n-2}\). Now put \(t=e^{i\theta}\) with \(0&lt;\theta&lt;\pi\), so that \(x=2\cos\theta\) runs over \((-2,2)\) and \(u_m=\sin((m+1)\theta)/\sin\theta\). Since \(\sin((n+1)\theta)+\sin((n-1)\theta)=2\sin(n\theta)\cos\theta\),</p>
+\[p_n=\frac{2\sin(n\theta)\,(\cos\theta-1)}{\sin\theta}=(x-2)\,\frac{\sin(n\theta)}{\sin\theta}=(x-2)\,U_{n-1}(x/2).\]
+<p>Both sides are polynomials in \(x\) that agree on the interval \((-2,2)\), so they are equal identically. (Equivalently, \(p(2\cos\theta)=-2\tan(\theta/2)\sin(n\theta)\).)</p>
+<p><strong>Step 5: the roots.</strong> The polynomial \(U_{n-1}(x/2)\) has degree \(n-1\) and vanishes at \(x=2\cos(k\pi/n)\), \(k=1,\dots,n-1\), since \(\sin(k\pi)=0\) while \(\sin(k\pi/n)\ne0\). These are \(n-1\) distinct numbers in \((-2,2)\), hence all its roots. The factor \(x-2\) adds the root \(2\). So \(p\) is monic of degree \(n\) with the \(n\) distinct real roots \(2\) and \(2\cos(k\pi/n)\), \(1\le k\le n-1\).</p>
+<p><strong>Remarks.</strong> The root \(2\) is visible directly: every row of \(P+P^{\mathsf T}\) sums to \(2\), so each individual \(\det(2I-P-P^{\mathsf T})\) vanishes. The other roots are the eigenvalues of the path graph on \(n-1\) vertices, so \(p(x)\) is \(x-2\) times the characteristic polynomial of that path, although no single \(P+P^{\mathsf T}\) need have these eigenvalues.</p>
+<p><strong>Check.</strong> The averaged characteristic polynomial was computed exactly by brute force over all permutations for \(n\le7\), and by the exact cycle recursion \(n\,p_n=\sum_{k=1}^n f_k\,p_{n-k}\) for \(n\le25\); in every case the roots are \(2\) and \(2\cos(k\pi/n)\), and the identity \(p(2\cos\theta)=-2\tan(\theta/2)\sin(n\theta)\) holds at random \(\theta\).</p><div class="answer"><strong>Answer.</strong> \(x=2\) and \(x=2\cos(k\pi/n)\) for \(k=1,\dots,n-1\); indeed \(p(x)=(x-2)\,U_{n-1}(x/2)\).</div></details></section><p><a href="/daily-mathematics/">All solutions</a> · <a href="/ja/daily-mathematics/2026-11-08/" hreflang="ja" lang="ja">日本語</a></p></main>
+<!-- ISEGORIA:FOOT -->
+<footer id="ig-footer"><div><a href="/">Isegoria · Benjamin Haire</a><nav aria-label="Site links"><a href="/">Back to home</a><a href="/library.html">Browse the library</a><a href="#ig-content">Back to top</a></nav></div></footer>
+<!-- /ISEGORIA:FOOT -->
+</body></html>
