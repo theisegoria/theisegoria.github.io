@@ -166,7 +166,7 @@
         label: T('3D balance wheel and hairspring. Drag to rotate; drag the gold knob to move the regulator index.', '3D のてん輪とひげぜんまい。ドラッグで回転、金色のつまみで緩急針を動かせます。'),
         init(S) {
           st.flat = false; st.S = S; watch(S);
-          const THREE = S.THREE, P = st.parts = {}, mB = S.mat('c1', METAL), mI = S.mat('ink', METAL);
+          const THREE = S.THREE, P = st.parts = {}, mB = S.mat('#c9a25a', { metal: 1, rough: 0.22, coat: 0.5 }), mI = S.mat('#2b3240', { metal: 1, rough: 0.25 });   /* Glucydur balance, blued-steel staff */
           // the balance wheel: a rim of rectangular section, three arms, timing screws, the staff and the roller table
           const wheel = P.wheel = new THREE.Group();
           const ann = new THREE.Shape(L.seq(120, (i) => new THREE.Vector2(1.04 * Math.cos((TAU * i) / 120), 1.04 * Math.sin((TAU * i) / 120))));
@@ -174,13 +174,13 @@
           const rimG = new THREE.ExtrudeGeometry(ann, { depth: 0.13, bevelEnabled: false, curveSegments: 4 }); rimG.translate(0, 0, -0.065);
           wheel.add(new THREE.Mesh(rimG, mB));
           for (let k = 0; k < 3; k++) { const a = Math.PI / 2 + (k * TAU) / 3, arm = new THREE.Mesh(new THREE.BoxGeometry(0.9, 0.075, 0.06), mB); arm.position.set(0.5 * Math.cos(a), 0.5 * Math.sin(a), 0); arm.rotation.z = a; wheel.add(arm); }
-          for (let k = 0; k < 8; k++) { const a = (k * TAU) / 8 + Math.PI / 8, sc = new THREE.Mesh(new THREE.CylinderGeometry(0.045, 0.045, 0.1, 16), S.mat('hl', METAL)); sc.position.set(1.08 * Math.cos(a), 1.08 * Math.sin(a), 0); sc.rotation.z = a - Math.PI / 2; wheel.add(sc); }
+          for (let k = 0; k < 8; k++) { const a = (k * TAU) / 8 + Math.PI / 8, sc = new THREE.Mesh(new THREE.CylinderGeometry(0.045, 0.045, 0.1, 16), S.mat('#e2c26a', { metal: 1, rough: 0.15, coat: 0.6 })); sc.position.set(1.08 * Math.cos(a), 1.08 * Math.sin(a), 0); sc.rotation.z = a - Math.PI / 2; wheel.add(sc); }
           const staff = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.03, 0.9, 16).rotateX(Math.PI / 2), mI); staff.position.z = 0.05; wheel.add(staff);
           const collet = new THREE.Mesh(new THREE.CylinderGeometry(SPRING.r0, SPRING.r0, SPRING.h, 24).rotateX(Math.PI / 2), mI); collet.position.z = SPRING.z + SPRING.h / 2; wheel.add(collet);
           const roller = new THREE.Mesh(new THREE.CylinderGeometry(0.17, 0.17, 0.04, 32).rotateX(Math.PI / 2), mI); roller.position.z = -0.24; wheel.add(roller);
-          const jewel = new THREE.Mesh(new THREE.BoxGeometry(0.035, 0.035, 0.09), S.mat('neg', { rough: 0.1, coat: 1 })); jewel.position.set(0, -0.14, -0.29); wheel.add(jewel);
+          const jewel = new THREE.Mesh(new THREE.BoxGeometry(0.035, 0.035, 0.09), S.mat('#c01a3a', { rough: 0.05, coat: 1, opacity: 0.9 })); jewel.position.set(0, -0.14, -0.29); wheel.add(jewel);
           S.add(wheel);
-          P.spring = S.surface((u, w) => springPt(u, 0, SPRING.z + w * SPRING.h), { u: [0, 1], v: [0, 1], nu: 900, nv: 1, c: 'c3', metal: 0.7, rough: 0.3, coat: 0.6 });
+          P.spring = S.surface((u, w) => springPt(u, 0, SPRING.z + w * SPRING.h), { u: [0, 1], v: [0, 1], nu: 900, nv: 1, c: '#c4c8cc', metal: 1, rough: 0.18, coat: 0.6 });
           const stud = new THREE.Mesh(new THREE.BoxGeometry(0.07, 0.09, 0.12), mI); stud.position.set(0, -SPRING.r1 - 0.04, SPRING.z + SPRING.h / 2); S.add(stud);
           // the regulator: an index pivoted on the axis, its pins straddling the outer turn, and its scale
           const index = P.index = new THREE.Group(), mH = S.mat('hl', METAL);

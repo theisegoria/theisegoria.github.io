@@ -85,9 +85,11 @@
     const P = pts.slice(); if (Math.hypot(P[0][0] - P[P.length - 1][0], P[0][1] - P[P.length - 1][1]) < 1e-9) P.pop();
     const sh = new THREE.Shape(P.map(V2));
     holes.forEach((h) => sh.holes.push(new THREE.Path(h.map(V2))));
-    const geo = new THREE.ExtrudeGeometry(sh, { depth: W, bevelEnabled: false, curveSegments: 4 });
-    geo.translate(0, 0, -W / 2);
-    return new THREE.Mesh(geo, S.mat(c, { ...METAL, ...o }));
+    const bs = W * 0.05, geo = new THREE.ExtrudeGeometry(sh, { depth: W - 2 * bs, bevelEnabled: true, bevelThickness: bs, bevelSize: bs, bevelOffset: -bs, bevelSegments: 2, curveSegments: 4 });
+    geo.translate(0, 0, -W / 2 + bs);
+    // real alloys rather than theme colors: the labels name the parts
+    const ALLOY = { c1: ['#aab0b7', { metal: 1, rough: 0.3, coat: 0.2 }], c3: ['#c9a24f', { metal: 1, rough: 0.26, coat: 0.3 }], c2: ['#b5835a', { metal: 1, rough: 0.3, coat: 0.2 }], c4: ['#7b8189', { metal: 1, rough: 0.38 }], muted: ['#50555c', { metal: 0.9, rough: 0.45 }] }[c];
+    const m = new THREE.Mesh(geo, ALLOY ? S.mat(ALLOY[0], { ...ALLOY[1], ...o }) : S.mat(c, { ...METAL, ...o })); m.castShadow = m.receiveShadow = true; return m;
   }
   // holes for a spur gear: a bore, and four lightening holes when the web is large enough
   function gearHoles(G) {
@@ -95,7 +97,7 @@
     if (G.rf > 9) for (let k = 0; k < 4; k++) { const a = Math.PI / 4 + (k * TAU) / 4, rc = G.rf * 0.56; hs.push(ring2(G.rf * 0.2, 40, rc * Math.cos(a), rc * Math.sin(a))); }
     return hs;
   }
-  function shaft(S, r, len, c = 'muted') { const g = new S.THREE.CylinderGeometry(r, r, len, 32); g.rotateX(Math.PI / 2); return new S.THREE.Mesh(g, S.mat(c, METAL)); }
+  function shaft(S, r, len, c = 'muted') { const g = new S.THREE.CylinderGeometry(r, r, len, 32); g.rotateX(Math.PI / 2); return new S.THREE.Mesh(g, c === 'muted' ? S.mat('#c3c8cd', { metal: 1, rough: 0.18 }) : S.mat(c, METAL)); }
 
   /* ---------- 1. involute gearing ---------- */
   const GW = 5; // face width in modules

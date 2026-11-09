@@ -266,10 +266,24 @@
           [-60, -30, 0, 30, 60].forEach((dg) => { const t = dg * Math.PI / 180; G.push([[0, 0, 0], [1.04 * Math.cos(t), 0, 1.04 * Math.sin(t)]]); });
           S.lines(G, { c: 'muted', opacity: 0.55 });
           [-60, -30, 30, 60].forEach((dg) => { const t = dg * Math.PI / 180; S.label(`${dg > 0 ? '+' : '−'}${Math.abs(dg)}°`, [1.16 * Math.cos(t), 0, 1.16 * Math.sin(t)], { small: true, c: 'muted', align: 'middle' }); });
-          st.baffle = S.box([0.03, 0.5, 1], [0, 0, 0], { c: 'muted', opacity: 0.2, rough: 0.8, coat: 0 });
-          st.baffle.userData.noOcclude = true;
-          st.woof = S.disc([0.004, 0, 0], [1, 0, 0], 0.075, { c: 'c1', opacity: 1, rough: 0.5 });
-          st.tw = S.disc([0, 0, 0], [1, 0, 0], 0.04, { c: 'c2', opacity: 1, rough: 0.5 });
+          // a real two-way cabinet: satin-black baffle on a walnut box, a paper-cone woofer with rubber surround and dust cap,
+          // and a silk-dome tweeter on its faceplate. The sound field lives in front (x > 0), so the box sits behind it.
+          const TH = S.THREE;
+          st.baffle = S.box([0.03, 0.5, 1], [0, 0, 0], { c: '#1c1d1f', rough: 0.55, coat: 0.25 });
+          st.cab = S.box([0.36, 0.5, 1], [0, 0, 0], { c: '#5a3922', rough: 0.5, coat: 0.55 });
+          const lathe = (pts, m, seg = 64) => { const g = new TH.LatheGeometry(pts.map(([r, h]) => new TH.Vector2(r, h)), seg); g.rotateZ(-Math.PI / 2); const mesh = new TH.Mesh(g, m); mesh.castShadow = mesh.receiveShadow = true; return mesh; };
+          const arc = (r0, r1, h, n = 10) => Array.from({ length: n + 1 }, (_, i) => { const t = (Math.PI * i) / n; return [(r0 + r1) / 2 + ((r0 - r1) / 2) * Math.cos(t), h + ((r0 - r1) / 2) * Math.sin(t)]; });
+          st.woof = new TH.Group();
+          st.woof.add(lathe([[0.084, 0.0], [0.084, 0.004], [0.078, 0.004]], S.mat('#2a2b2e', { metal: 0.6, rough: 0.35 })));                       // basket ring
+          st.woof.add(lathe(arc(0.078, 0.064, 0.002), S.mat('#141414', { rough: 0.7, sheen: 0.4, sheenColour: '#5a5a5a' })));                                                // half-roll surround
+          st.woof.add(lathe([[0.064, 0.002], [0.045, -0.009], [0.024, -0.022], [0.019, -0.026]], S.mat('#2f2c29', { rough: 0.85, side: TH.DoubleSide })));   // paper cone
+          st.woof.add(lathe(Array.from({ length: 9 }, (_, i) => { const t = (i / 8) * (Math.PI / 2); return [0.024 * Math.cos(t), -0.024 + 0.011 * Math.sin(t)]; }), S.mat('#1b1b1c', { rough: 0.4, coat: 0.6 })));   // dust cap
+          st.woof.position.set(0.004, 0, 0); S.add(st.woof);
+          st.tw = new TH.Group();
+          st.tw.add(lathe([[0.042, 0], [0.042, 0.004], [0.022, 0.004], [0.018, 0.0]], S.mat('#3a3c40', { metal: 0.8, rough: 0.3 })));                // faceplate
+          st.tw.add(lathe(Array.from({ length: 11 }, (_, i) => { const t = (i / 10) * (Math.PI / 2); return [0.0135 * Math.cos(t), 0.0105 * Math.sin(t)]; }), S.mat('#d9d4c8', { rough: 0.75, sheen: 0.6, sheenColour: '#ffffff' })));   // silk dome
+          st.tw.add(lathe([[0.0135, 0], [0.018, 0], [0.018, 0.002]], S.mat('#1a1a1a', { rough: 0.6 })));
+          S.add(st.tw);
           st.woofL = S.label(T('woofer', 'ウーファー'), [0, 0, -0.1], { small: true, align: 'end' });
           st.twL = S.label(T('tweeter', 'ツイーター'), [0, 0, 0], { small: true, align: 'end' });
           // directions: elevation e from the axis in the vertical plane, azimuth az round to the side (y >= 0)
@@ -296,7 +310,8 @@
           st.cut.update(cutOf(ff)); st.lo.update(cutOf(ff / 2)); st.hi.update(cutOf(ff * 2));
           const tw = [-dd * KO, 0, hh * KO];
           st.tw.position.set(tw[0] + 0.004, 0, tw[2]); st.twL.set([tw[0], 0, tw[2] + 0.06]);
-          st.baffle.scale.set(1, 1, (hh * KO + 0.36)); st.baffle.position.set(Math.min(0, -dd * KO) - 0.02, 0, (hh * KO) / 2);
+          st.baffle.scale.set(1, 1, (hh * KO + 0.36)); st.baffle.position.set(Math.min(0, -dd * KO) - 0.016, 0, (hh * KO) / 2);
+          st.cab.scale.set(1, 1.0, (hh * KO + 0.36)); st.cab.position.set(Math.min(0, -dd * KO) - 0.031 - 0.18, 0, (hh * KO) / 2);
           st.hand.at([RL * Math.cos(aa), 0, RL * Math.sin(aa)]);
           st.ray.update([[[0, 0, 0], [RL * Math.cos(aa), 0, RL * Math.sin(aa)]]]);
           const t = lobeTilt(hh, dd) * Math.PI / 180;

@@ -178,16 +178,21 @@
           ? T('A single longitudinal mode: the cavity is short enough that only one resonance fits under the part of the gain curve above threshold. Nudge the mirror by a fraction of a wavelength and the comb slides, and the laser hops to the neighbouring mode.', '単一の縦モードです。共振器が十分短いので、利得曲線のうちしきい値を超える部分には共鳴が一つしか入りません。鏡を波長の何分の一か動かすと櫛が滑り、レーザーは隣のモードへ跳び移ります。')
           : T(`${las.length} modes lase at once. Each sees its own slice of atoms with the right Doppler shift, so in this inhomogeneously broadened gas they do not compete; lengthen the cavity and more resonances fit under the gain.`, `${las.length} 個のモードが同時に発振します。各モードはちょうどよいドップラーずれをもつ原子の一部だけを見るので、この不均一広がりの気体では互いに競合しません。共振器を長くすると、利得の下により多くの共鳴が入ります。`));
       L.view3d(ctx, v, {
-        host: st.v3, aspect: 0.36, maxH: 330, camera: narrowView() ? [0.9, -15.5, 5.1] : [0.5, -6.9, 2.3], target: [0.15, 0, -0.05], fov: 29,
+        host: st.v3, aspect: 0.36, maxH: 330, camera: narrowView() ? [0.9, -15.5, 5.1] : [0.2, -5.5, 1.85], target: [0.15, 0, -0.05], fov: 29,
         init(S) {
           st.flat = false;
-          const cap = (sgn) => S.surface((rho, ph) => [-sgn * rho * rho / (2 * RM * 100 * AX) * 6, rho * Math.cos(ph), rho * Math.sin(ph)], { u: [0, AP], v: [0, 2 * Math.PI], nu: 12, nv: 48, c: 'muted', metal: 0.6, rough: 0.3, coat: 0.6 });
-          st.m1 = cap(1); st.m2 = cap(-1);
-          st.m1.position.x = X0;
-          st.beam = S.surface((u, ph) => [u, 0.1 * Math.cos(ph), 0.1 * Math.sin(ph)], { u: [0, 1], v: [0, 2 * Math.PI], nu: 240, nv: 32, colour: () => S.colour('c1'), opacity: 0.88, rough: 0.5, coat: 0.3, glow: 0.15 });
-          st.tube = S.surface((u, ph) => [u, 0.45 * Math.cos(ph), 0.45 * Math.sin(ph)], { u: [0, 1], v: [0, 2 * Math.PI], nu: 2, nv: 48, c: 'c2', opacity: 0.16, rough: 0.2, coat: 0.8 });
+          const cap = (sgn) => S.surface((rho, ph) => [-sgn * rho * rho / (2 * RM * 100 * AX) * 6, rho * Math.cos(ph), rho * Math.sin(ph)], { u: [0, AP], v: [0, 2 * Math.PI], nu: 12, nv: 48, c: '#cfd6dc', metal: 0.95, rough: 0.07, coat: 0.9, iridescence: 0.7 });
+          // dielectric-coated mirrors in black anodized mounts
+          const TH = S.THREE, mount = (sgn) => { const g = new TH.Group(); const ring = new TH.Mesh(new TH.CylinderGeometry(AP + 0.09, AP + 0.09, 0.16, 64, 1, true).rotateZ(Math.PI / 2), S.mat('#1d1f22', { metal: 0.5, rough: 0.45 })); ring.position.x = sgn * 0.05; g.add(ring); const back = new TH.Mesh(new TH.CylinderGeometry(AP + 0.09, AP + 0.09, 0.03, 64).rotateZ(Math.PI / 2), S.mat('#1d1f22', { metal: 0.5, rough: 0.45 })); back.position.x = sgn * 0.13; g.add(back); S.add(g); return g; };
+          st.m1 = cap(1); st.m2 = cap(-1); st.mt1 = mount(-1); st.mt2 = mount(1);
+          st.m1.position.x = X0; st.mt1.position.x = X0;
+          st.beam = S.surface((u, ph) => [u, 0.1 * Math.cos(ph), 0.1 * Math.sin(ph)], { u: [0, 1], v: [0, 2 * Math.PI], nu: 240, nv: 32, colour: () => S.colour('#b0170c'), opacity: 0.88, rough: 0.5, coat: 0.3, glow: 0.5 });
+          st.tube = S.surface((u, ph) => [u, 0.45 * Math.cos(ph), 0.45 * Math.sin(ph)], { u: [0, 1], v: [0, 2 * Math.PI], nu: 2, nv: 48, c: '#dce8ee', opacity: 0.2, rough: 0.05, coat: 1 });
           st.tube.userData.noOcclude = true;
-          st.out = S.surface((u, ph) => [u, 0.1 * Math.cos(ph), 0.1 * Math.sin(ph)], { u: [0, 1], v: [0, 2 * Math.PI], nu: 2, nv: 24, c: 'hl', opacity: 0.5, glow: 0.6 });
+          // the helium-neon discharge glowing salmon-pink in the capillary bore
+          st.plasma = S.surface((u, ph) => [u, 0.17 * Math.cos(ph), 0.17 * Math.sin(ph)], { u: [0, 1], v: [0, 2 * Math.PI], nu: 2, nv: 32, c: '#ff7a5c', opacity: 0.28, glow: 1.2, rough: 0.6 });
+          st.plasma.userData.noOcclude = true;
+          st.out = S.surface((u, ph) => [u, 0.1 * Math.cos(ph), 0.1 * Math.sin(ph)], { u: [0, 1], v: [0, 2 * Math.PI], nu: 2, nv: 24, c: '#ff2412', opacity: 0.5, glow: 1.4 });
           st.out.userData.noOcclude = true;
           st.lg = S.label(T('gain medium', '利得媒質'), [0, 0, -0.5], { small: true, c: 'c2', align: 'middle', dy: 16 });
           st.lL = S.label('', [0, 0, 0.9], { small: true, c: 'muted', align: 'middle' });
@@ -198,12 +203,13 @@
           const Lc = vv.L, Lmm = Lc / 100, x2 = X0 + Lc * AX, len = x2 - X0, Rr = vv.R, G = vv.G / 100;
           const lasing = modes(Lmm, LAM, SPAN).some((d) => dopplerGain(d, G, FWHM) > thresholdGain(Rr));
           const ex = modes(Lmm, LAM, SPAN).reduce((s, d) => s + Math.max(0, dopplerGain(d, G, FWHM) - thresholdGain(Rr)), 0), pw = clamp(ex / 0.05, 0, 1);
-          st.m2.position.x = x2;
+          st.m2.position.x = x2; st.mt2.position.x = x2;
           const w = (u) => beamW((u - 0.5) * Lmm, Lmm) * WS;
-          const c1 = S.colour('c1'), hl = S.colour('hl'), q = 12;
+          const c1 = S.colour('#3a0703'), hl = S.colour('#ff3b24'), q = 12;
           st.beam.update((u, ph) => [X0 + u * len, w(u) * Math.cos(ph), w(u) * Math.sin(ph)], (u) => { const I = Math.sin(Math.PI * q * u) ** 2; return c1.clone().lerp(hl, lasing ? 0.15 + 0.85 * I : 0.25 * I); });
           st.beam.material.opacity = lasing ? 0.9 : 0.35;
           st.tube.update((u, ph) => [X0 + len * (0.18 + 0.64 * u), 0.42 * Math.cos(ph), 0.42 * Math.sin(ph)]);
+          st.plasma.update((u, ph) => [X0 + len * (0.2 + 0.6 * u), 0.17 * Math.cos(ph), 0.17 * Math.sin(ph)]); st.plasma.material.opacity = 0.1 + 0.2 * clamp(G / 0.05, 0, 1);
           const wo = w(1) * 0.7;
           st.out.visible = lasing; st.lo.el.style.display = lasing ? '' : 'none';
           st.out.update((u, ph) => [x2 + 0.03 + u * Math.max(0.05, 3.4 - x2), wo * Math.cos(ph), wo * Math.sin(ph)]);

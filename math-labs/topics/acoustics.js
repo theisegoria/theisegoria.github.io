@@ -212,15 +212,17 @@
         host: st.v3, aspect: 0.86, maxH: 470, camera: [2.35, -3.3, 2.6], target: [0, 0, -0.1], fov: 31,
         init(S) {
           st.flat = false;
-          st.plate = S.surface((u, w) => [u, w, 0], { u: [-1, 1], v: [-1, 1], nu: 96, nv: 96, colour: () => S.colour('plate'), rough: 0.72, coat: 0.15 });
+          // a brass plate, faintly tinted warm or cool by its displacement, with pale quartz sand
+          const brass = S.colour('#cfae6c');
+          st.plate = S.surface((u, w) => [u, w, 0], { u: [-1, 1], v: [-1, 1], nu: 96, nv: 96, colour: () => brass, metal: 0.45, rough: 0.38, coat: 0.45 });
           st.plate.userData.noOcclude = true;
-          st.edge = S.lines([], { c: 'ink', opacity: 0.9 });
-          st.grains = S.points(L.seq(NS, () => [0, 0, 0]), { c: 'ink', r: 0.011, max: NS, rough: 0.9, coat: 0 });
-          st.post = S.tube([[0, 0, -0.5], [0, 0, -0.02]], { c: 'muted', r: 0.02 });
+          st.edge = S.lines([], { c: '#7a5f33', opacity: 0.9 });
+          st.grains = S.points(L.seq(NS, () => [0, 0, 0]), { c: '#efe4cb', r: 0.013, max: NS, rough: 0.95, coat: 0 });
+          st.post = S.tube([[0, 0, -0.5], [0, 0, -0.02]], { c: '#9aa0a6', r: 0.03, metal: 1, rough: 0.25 });
           st.draw3d = (k, c) => {
             const md = st.mode, A = md.zero ? 0.12 : PA, wn = (x, y) => (md.zero ? 1 : md.w(x, y) / md.amp);
             const Z = (X, Y) => A * c * wn((X + 1) / 2, (Y + 1) / 2);
-            st.plate.update((X, Y) => [X, Y, Z(X, Y)], (X, Y) => S.cmap.div(md.zero ? 0.5 * c : Math.max(-1, Math.min(1, 1.25 * c * wn((X + 1) / 2, (Y + 1) / 2)))));
+            st.plate.update((X, Y) => [X, Y, Z(X, Y)], (X, Y) => brass.clone().lerp(S.cmap.div(md.zero ? 0.5 * c : Math.max(-1, Math.min(1, 1.25 * c * wn((X + 1) / 2, (Y + 1) / 2)))), 0.22));
             const e = []; const N = 48;
             for (let i = 0; i < N; i++) { const a = -1 + 2 * i / N, b = -1 + 2 * (i + 1) / N; e.push([[a, -1, Z(a, -1)], [b, -1, Z(b, -1)]], [[a, 1, Z(a, 1)], [b, 1, Z(b, 1)]], [[-1, a, Z(-1, a)], [-1, b, Z(-1, b)]], [[1, a, Z(1, a)], [1, b, Z(1, b)]]); }
             st.edge.update(e);

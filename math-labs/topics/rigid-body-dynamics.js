@@ -427,12 +427,14 @@
           st.ring = S.lines([[[0, 0, 0], [0, 0, 0]]], { c: 'muted', opacity: 0.9 });
           // the gyroscope: precession and tilt turn gyro, the spin turns wheel inside it
           st.gyro = new TH.Group(); st.wheel = new TH.Group(); st.gyro.add(st.wheel); S.add(st.gyro);
-          const axle = new TH.Mesh(new TH.CylinderGeometry(0.018, 0.018, TIP, 16), S.mat('ink', metal)); axle.rotation.x = PI / 2; axle.position.z = TIP / 2; st.gyro.add(axle);
-          const rim = new TH.Mesh(new TH.TorusGeometry(0.42, 0.032, 18, 120), S.mat('c1', { metal: 0.35, rough: 0.3, coat: 0.8 })); rim.position.z = 0.72; st.wheel.add(rim);
-          const disc = new TH.Mesh(new TH.CircleGeometry(0.41, 72), S.mat('c1', { opacity: 0.2 })); disc.position.z = 0.72; st.wheel.add(disc);
-          const hub = new TH.Mesh(new TH.CylinderGeometry(0.06, 0.06, 0.07, 28), S.mat('muted', metal)); hub.rotation.x = PI / 2; hub.position.z = 0.72; st.wheel.add(hub);
+          const axle = new TH.Mesh(new TH.CylinderGeometry(0.018, 0.018, TIP, 16), S.mat('#c3c8cd', { metal: 1, rough: 0.12 })); axle.rotation.x = PI / 2; axle.position.z = TIP / 2; st.gyro.add(axle);
+          // a turned brass flywheel: heavy rim, thin web, steel hub and axle, one spoke painted so the spin can be seen
+          const brassW = S.mat('#c9a24f', { metal: 1, rough: 0.24, coat: 0.4 });
+          const rim = new TH.Mesh(new TH.TorusGeometry(0.42, 0.04, 24, 120), brassW); rim.position.z = 0.72; st.wheel.add(rim);
+          const disc = new TH.Mesh(new TH.CylinderGeometry(0.41, 0.41, 0.012, 72).rotateX(PI / 2), brassW); disc.position.z = 0.72; st.wheel.add(disc);
+          const hub = new TH.Mesh(new TH.CylinderGeometry(0.06, 0.06, 0.07, 28), S.mat('#c3c8cd', { metal: 1, rough: 0.15 })); hub.rotation.x = PI / 2; hub.position.z = 0.72; st.wheel.add(hub);
           for (let s6 = 0; s6 < 6; s6++) {
-            const a = s6 * PI / 3, sp = new TH.Mesh(new TH.CylinderGeometry(0.012, 0.012, 0.36, 10), S.mat(s6 === 0 ? 'c2' : 'c1', { rough: 0.35 }));
+            const a = s6 * PI / 3, sp = new TH.Mesh(new TH.CylinderGeometry(0.018, 0.018, 0.36, 12), s6 === 0 ? S.mat('#b3261e', { rough: 0.45, coat: 0.6 }) : brassW);
             sp.position.set(0.24 * Math.cos(a), 0.24 * Math.sin(a), 0.72); sp.rotation.z = a - PI / 2; st.wheel.add(sp);
           }
           st.tip = S.sphere([0, 0, TIP], 0.05, { c: 'hl', glow: 0.35 });

@@ -114,17 +114,18 @@
         host: st.v3, aspect: 1.05, maxH: 460, camera: [2.1, -7.4, 3.3], target: [0, 0, 1.12], fov: 32,
         init(S) {
           st.flat = false; st.built = null;
-          const quartz = { c: 'c1', opacity: 0.55, rough: 0.12, coat: 1, metal: 0 };
+          // clear crystalline quartz, vacuum-deposited chrome-silver electrodes and gold tip weights, as on a real watch crystal
+          const quartz = { c: '#e9f0f4', opacity: 0.42, rough: 0.04, coat: 1, metal: 0 };
           // the two tines: four faces each, rebuilt when the controls change, deflected every frame
           st.tines = [-1, 1].map((side) => ({
             side,
             faces: [0, 1, 2, 3].map(() => S.surface(() => [0, 0, 0], { u: [0, 1], v: [0, 1], nu: 40, nv: 1, ...quartz })),
             cap: S.surface(() => [0, 0, 0], { u: [0, 1], v: [0, 1], nu: 1, nv: 1, ...quartz }),
             // electrodes: a strip down each broad face, and one down each side face
-            el: [0, 1, 2, 3].map((j) => S.surface(() => [0, 0, 0], { u: [0, 1], v: [0, 1], nu: 30, nv: 1, c: (j < 2) === (side < 0) ? 'c2' : 'c4', metal: 0.8, rough: 0.3, coat: 0.4 })),
-            tip: [0, 1].map(() => S.surface(() => [0, 0, 0], { u: [0, 1], v: [0, 1], nu: 4, nv: 4, c: 'hl', metal: 0.9, rough: 0.22, coat: 0.6 })),
+            el: [0, 1, 2, 3].map((j) => S.surface(() => [0, 0, 0], { u: [0, 1], v: [0, 1], nu: 30, nv: 1, c: (j < 2) === (side < 0) ? '#d2d6db' : '#b4bac2', metal: 1, rough: 0.2, coat: 0.4 })),
+            tip: [0, 1].map(() => S.surface(() => [0, 0, 0], { u: [0, 1], v: [0, 1], nu: 4, nv: 4, c: '#d9b44a', metal: 1, rough: 0.18, coat: 0.6 })),
           }));
-          st.base = S.box([1, H_WAFER, 0.7], [0, 0, -0.35], { ...quartz, opacity: 0.7 });
+          st.base = S.box([1, H_WAFER, 0.7], [0, 0, -0.35], { ...quartz, opacity: 0.6 });
           st.rest = S.lines([[[0, 0, 0], [0, 0, 0]]], { c: 'ink', opacity: 0.35 });
           st.handle = S.handle([xc, 0, v.L], { plane: [[0, 1, 0], [0, 0, 0]], r: 0.06, onDrag: (q) => { const Ln = Math.round(L.clamp(q.z, 1.8, 3.0) * 10000) / 10000; ctx.set('L', Ln); return [st.xc, 0, Ln]; } });
           st.labs = { base: S.label(T('base, mounted', '根元（固定）'), [0, -H_WAFER / 2, -0.45], { small: true, c: 'c3', align: 'middle' }), el: S.label(T('electrodes', '電極'), [0, 0, 0], { small: true, align: 'end' }), tip: S.label(T('gold tip weights', '金のおもり'), [0, 0, 0], { small: true, c: 'hl', align: 'end' }), len: S.label('', [0, 0, 0], { small: true, c: 'c1' }) };

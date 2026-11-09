@@ -224,9 +224,12 @@
           S.lines(G, { c: 'muted', opacity: 0.55 });
           [0, 30, 60, 90].forEach((dg) => { const t = dg * Math.PI / 180; S.label(`${dg}°`, [1.12 * Math.cos(t), 0, 1.12 * Math.sin(t)], { small: true, c: 'muted', align: 'middle' }); });
           // baffle and piston
-          S.box([0.02, 1.6, 2.1], [-0.012, 0.35, 0], { c: 'muted', opacity: 0.14, rough: 0.8, coat: 0 }).userData.noOcclude = true;
-          st.disc = S.disc([0.004, 0, 0], [1, 0, 0], 1, { c: 'ink', opacity: 0.85, rough: 0.5 });
-          st.rim = S.tube(L.sample(0, TAU, 64, (t) => [0.006, Math.cos(t), Math.sin(t)]), { c: 'ink', r: 0.008, closed: true });
+          // a flat-diaphragm driver (brushed aluminum over honeycomb) with a rubber surround, flush in a satin-black baffle;
+          // the sound field is drawn only in front, so the baffle and the cabinet behind it are solid
+          S.box([0.02, 1.6, 2.1], [-0.012, 0.35, 0], { c: '#1c1d1f', rough: 0.6, coat: 0.2 });
+          S.box([0.16, 1.6, 2.1], [-0.102, 0.35, 0], { c: '#2a2b2e', rough: 0.55, coat: 0.3 });
+          st.disc = S.disc([0.004, 0, 0], [1, 0, 0], 1, { c: '#c6cacf', metal: 0.9, rough: 0.32, coat: 0.4 });
+          st.rim = S.tube(L.sample(0, TAU, 64, (t) => [0.006, Math.cos(t), Math.sin(t)]), { c: '#121213', r: 0.014, closed: true, rough: 0.75, metal: 0 });
           // the balloon: theta from the axis, phi round it, the half behind the cut (y >= 0)
           st.ball = S.surface(() => [0, 0, 0], { u: [0, Math.PI / 2], v: [0, Math.PI], nu: 150, nv: 64, colour: () => S.colour('c1'), rough: 0.45, coat: 0.3, wire: true, wireEvery: 15, wireEveryV: 8 });
           st.cut = S.tube([[0, 0, 0], [0, 0, 0.01]], { c: 'c1', r: 0.011 });

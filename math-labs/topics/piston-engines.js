@@ -98,6 +98,9 @@
 
   /* ---------- 3D parts, built in units of the crank radius ---------- */
   const METAL = { metal: 0.72, rough: 0.3, coat: 0.55 };
+  // real engine alloys: forged steel crank and rods, ground journals and pins, cast aluminum pistons, cast-iron flywheel
+  const STEEL = ['#8a9097', { metal: 1, rough: 0.36, coat: 0.15 }], GROUND = ['#d3d7db', { metal: 1, rough: 0.12, coat: 0.3 }], ROD = ['#767c84', { metal: 1, rough: 0.32, coat: 0.2 }], ALU = ['#c9ccce', { metal: 0.9, rough: 0.38, coat: 0.15 }], IRON = ['#55595e', { metal: 0.9, rough: 0.5 }], RING = ['#3a3d41', { metal: 1, rough: 0.25 }];
+  const real = (S, A) => S.mat(A[0], A[1]);
   const Zaxis = [0, 0, 1];
   // one crank throw with the shaft along local y and the crank pin at local (0, 0, 1); webs at y = ±wy carry counterweights opposite the pin
   function buildThrow(S, o = {}) {
@@ -108,17 +111,17 @@
     for (let i = 0; i <= 24; i++) { const a = (200 + (140 * i) / 24) * RAD; pts.push(new THREE.Vector2(cw * Math.cos(a), cw * Math.sin(a))); }
     const web = new THREE.ExtrudeGeometry(new THREE.Shape(pts), { depth: wt, bevelEnabled: false });
     web.translate(0, 0, -wt / 2); web.rotateX(Math.PI / 2);
-    const mWeb = S.mat(c, METAL);
+    const mWeb = o.c ? S.mat(c, METAL) : real(S, STEEL);
     for (const s of [-1, 1]) { const m = new THREE.Mesh(web, mWeb); m.position.y = s * wy; g.add(m); }
-    const pinLen = wy * 2 + (o.pinOut ?? 0), pin = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.3, pinLen, 28), S.mat(o.pinC ?? 'ink', METAL));
+    const pinLen = wy * 2 + (o.pinOut ?? 0), pin = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.3, pinLen, 28), (o.pinC ? S.mat(o.pinC, METAL) : real(S, GROUND)));
     pin.position.set(0, -(o.pinOut ?? 0) / 2, 1); g.add(pin);
     const jr = 0.38, jl = o.journal ?? 0.5;
-    for (const s of [-1, 1]) { const j = new THREE.Mesh(new THREE.CylinderGeometry(jr, jr, jl, 28), S.mat('muted', METAL)); j.position.y = s * (wy + jl / 2); g.add(j); }
+    for (const s of [-1, 1]) { const j = new THREE.Mesh(new THREE.CylinderGeometry(jr, jr, jl, 28), real(S, GROUND)); j.position.y = s * (wy + jl / 2); g.add(j); }
     return g;
   }
   // a connecting rod from its big end (local origin) to its small end (local z = len); the eyes' axes lie along 'x' or 'y'
-  function buildRod(S, len, axis, c = 'c1') {
-    const THREE = S.THREE, g = new THREE.Group(), mat = S.mat(c, METAL);
+  function buildRod(S, len, axis, c) {
+    const THREE = S.THREE, g = new THREE.Group(), mat = c ? S.mat(c, METAL) : real(S, ROD);
     const sl = Math.max(0.2, len - 0.8), shank = new THREE.Mesh(new THREE.BoxGeometry(axis === 'y' ? 0.3 : 0.2, axis === 'y' ? 0.2 : 0.3, sl), mat);
     shank.position.z = 0.5 + sl / 2; g.add(shank);
     const eye = (R, t, z) => { const geo = new THREE.TorusGeometry(R, t, 14, 40); if (axis === 'y') geo.rotateX(Math.PI / 2); else geo.rotateY(Math.PI / 2); const m = new THREE.Mesh(geo, mat); m.position.z = z; g.add(m); };
@@ -129,8 +132,8 @@
   function buildPiston(S, rad = 0.96) {
     const THREE = S.THREE, g = new THREE.Group();
     const body = new THREE.CylinderGeometry(rad, rad, 1.02, 56); body.rotateX(Math.PI / 2);
-    const m = new THREE.Mesh(body, S.mat('c3', { metal: 0.6, rough: 0.34, coat: 0.6 })); m.position.z = 0.11; g.add(m);
-    for (const z of [0.36, 0.48]) { const ring = new THREE.Mesh(new THREE.TorusGeometry(rad, 0.022, 8, 64), S.mat('ink', METAL)); ring.position.z = z; g.add(ring); }
+    const m = new THREE.Mesh(body, real(S, ALU)); m.position.z = 0.11; g.add(m);
+    for (const z of [0.36, 0.48]) { const ring = new THREE.Mesh(new THREE.TorusGeometry(rad, 0.022, 8, 64), real(S, RING)); ring.position.z = z; g.add(ring); }
     return g;
   }
   // New materials compile in parallel on the WebGL 2 path and are skipped until ready, and on-demand rendering then asks for no
@@ -399,9 +402,9 @@
         }
         // the flywheel at the rear and a nose journal at the front
         const fw = new THREE.CylinderGeometry(2.1, 2.1, 0.42, 72); fw.rotateZ(Math.PI / 2);
-        const fly = new THREE.Mesh(fw, S.mat('muted', METAL)); fly.position.x = -x0 + PITCH / 2 + 0.3; add(fly);
+        const fly = new THREE.Mesh(fw, real(S, IRON)); fly.position.x = -x0 + PITCH / 2 + 0.3; add(fly);
         const nose = new THREE.CylinderGeometry(0.32, 0.32, 1.2, 24); nose.rotateZ(Math.PI / 2);
-        const nm = new THREE.Mesh(nose, S.mat('muted', METAL)); nm.position.x = x0 - PITCH / 2 - 0.6; add(nm);
+        const nm = new THREE.Mesh(nose, real(S, STEEL)); nm.position.x = x0 - PITCH / 2 - 0.6; add(nm);
         P.lFly.set([-x0 + PITCH / 2 + 0.3, 0, -2.3]);
         P.base.update([[[x0 - 2.6, 0, l + 4.1], [-x0 + 0.4, 0, l + 4.1]]]);
         P.lEach.set([x0 + (n > 1 ? PITCH : 0) + 0.3, 0, l + 4.1 + 0.25]);
@@ -409,7 +412,7 @@
         S.look([d * 0.36, -d * 0.86, zc + d * 0.36], [0, 0, zc], true);
       };
       L.view3d(ctx, v, {
-        host: st.v3, aspect: 0.5, maxH: 460, camera: [12, -22, 12], target: [0, 0, 2], fov: 30,
+        host: st.v3, aspect: 0.5, maxH: 460, camera: [8.6, -15.8, 8.4], target: [0, 0, 2.6], fov: 30,
         label: T('3D inline crankshaft with pistons and shaking-force arrows. Drag to rotate.', '3D の直列クランク軸、ピストン、揺さぶり力の矢印。ドラッグで回転できます。'),
         init(S) {
           st.flat = false; st.S = S; watch(S);

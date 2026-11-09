@@ -103,9 +103,9 @@
     const webShape = () => { const pts = []; for (let i = 0; i <= 16; i++) { const t = (i / 16) * PI; pts.push(new TH.Vector2(0.42 * Math.cos(t), 1 + 0.42 * Math.sin(t))); } for (let i = 0; i <= 22; i++) { const t = (200 + (140 * i) / 22) * DEG; pts.push(new TH.Vector2(1.1 * Math.cos(t), 1.1 * Math.sin(t))); } const g = new TH.ExtrudeGeometry(new TH.Shape(pts), { depth: 0.2, bevelEnabled: false }); g.translate(0, 0, -0.1); g.rotateX(PI / 2); g.rotateY(0); return g; };
     const web = webShape();
     const throwG = (y, col) => { const g = new TH.Group(), m = S.mat(col, METAL); for (const dy of [-0.3, 0.3]) { const w = new TH.Mesh(web, m); w.position.y = dy; g.add(w); } const pin = new TH.Mesh(new TH.CylinderGeometry(0.26, 0.26, 0.62, 28), S.mat('ink', METAL)); pin.position.set(0, 0, 1); g.add(pin); g.position.y = y; S.add(g); return g; };
-    P.thC = throwG(Y_C, 'c4'); P.thE = throwG(Y_H, 'c4');
+    P.thC = throwG(Y_C, '#8a9097'); P.thE = throwG(Y_H, '#8a9097');
     const fw = new TH.Group(); fw.position.y = 2.45; S.add(fw);
-    const fwMat = S.mat('ink', { metal: 0.8, rough: 0.28, coat: 0.6 });
+    const fwMat = S.mat('#4e5257', { metal: 0.9, rough: 0.42, coat: 0.3 });
     const rim = new TH.Mesh(new TH.TorusGeometry(2.35, 0.22, 18, 96), fwMat); rim.rotation.x = PI / 2; fw.add(rim);
     const rim2 = new TH.Mesh(new TH.CylinderGeometry(2.42, 2.42, 0.36, 96, 1, true), fwMat); fw.add(rim2);
     const hub = new TH.Mesh(new TH.CylinderGeometry(0.55, 0.55, 0.5, 32), fwMat); fw.add(hub);
@@ -129,15 +129,15 @@
         for (let i = 0; i < 4; i++) { const coil = new TH.Mesh(new TH.TorusGeometry(1.36, 0.06, 10, 72), S.mat('hl', { glow: 0.9, metal: 0.3 })); coil.position.z = HEAD + 0.06 + i * 0.11; g.add(coil); }
       } else {
         const head = new TH.Mesh(cyl(1.3, 0.8), S.mat('muted', METAL)); head.position.z = HEAD + 0.4; g.add(head);
-        for (let i = 0; i < 6; i++) { const fin = new TH.Mesh(cyl(1.95, 0.06, 64), S.mat('c1', { metal: 0.75, rough: 0.28, coat: 0.5 })); fin.position.z = HEAD - 1.0 + i * 0.3; g.add(fin); }
+        for (let i = 0; i < 6; i++) { const fin = new TH.Mesh(cyl(1.95, 0.06, 64), S.mat('#c5c9cc', { metal: 0.95, rough: 0.34, coat: 0.2 })); fin.position.z = HEAD - 1.0 + i * 0.3; g.add(fin); }
       }
       const gas = new TH.Mesh(cyl(1.15, 1, 56), S.mat('pos', { opacity: 0.62, rough: 0.5, coat: 0.2, glow: 0.25 })); gas.castShadow = false; gas.renderOrder = 2; gas.userData.noOcclude = true; g.add(gas);
-      const piston = new TH.Group(), pm = S.mat(hot ? 'muted' : 'c3', { metal: 0.6, rough: 0.34, coat: 0.6 });
+      const piston = new TH.Group(), pm = S.mat(hot ? '#8f8a84' : '#c9ccce', { metal: 0.9, rough: hot ? 0.45 : 0.36, coat: 0.15 });
       const body = new TH.Mesh(cyl(1.15, CROWN + PIN0), pm); body.position.z = (CROWN - PIN0) / 2; piston.add(body);
       for (const z of [CROWN - 0.18, CROWN - 0.34]) { const ring = new TH.Mesh(new TH.TorusGeometry(1.15, 0.025, 8, 64), S.mat('ink', METAL)); ring.position.z = z; piston.add(ring); }
       if (hot) { const cap = new TH.Mesh(cyl(1.12, 0.12), S.mat('pos', { metal: 0.4, rough: 0.4, glow: 0.2 })); cap.position.z = CROWN - 0.06; piston.add(cap); }
       g.add(piston);
-      const rod = new TH.Group(), rm = S.mat('c1', METAL);
+      const rod = new TH.Group(), rm = S.mat('#767c84', { metal: 1, rough: 0.32, coat: 0.2 });
       const sh = new TH.Mesh(new TH.BoxGeometry(0.2, 0.28, ROD - 0.8), rm); sh.position.z = ROD / 2; rod.add(sh);
       for (const [z, rr, tt] of [[0, 0.38, 0.11], [ROD, 0.24, 0.08]]) { const eye = new TH.Mesh(new TH.TorusGeometry(rr, tt, 12, 36).rotateX(PI / 2), rm); eye.position.z = z; rod.add(eye); }
       S.add(rod);
@@ -155,7 +155,7 @@
     const tubeMat = (col, o) => S.mat(col, o);
     const coolTube = new TH.Mesh(new TH.TubeGeometry(cool, 80, 0.26, 16), tubeMat('muted', { opacity: 0.3, rough: 0.15, coat: 1 })); coolTube.castShadow = false; coolTube.userData.noOcclude = true; S.add(coolTube);
     const heatTube = new TH.Mesh(new TH.TubeGeometry(heat, 80, 0.26, 16), tubeMat('pos', { opacity: 0.32, rough: 0.2, coat: 0.6, glow: 0.35 })); heatTube.castShadow = false; heatTube.userData.noOcclude = true; S.add(heatTube);
-    for (let i = 0; i < 9; i++) { const u = 0.08 + i * 0.065, p = cool.getPointAt(u), t = cool.getTangentAt(u), fin = new TH.Mesh(new TH.CylinderGeometry(0.52, 0.52, 0.04, 36), S.mat('c1', { metal: 0.75, rough: 0.28 })); fin.position.copy(p); fin.quaternion.setFromUnitVectors(new TH.Vector3(0, 1, 0), t); S.add(fin); }
+    for (let i = 0; i < 9; i++) { const u = 0.08 + i * 0.065, p = cool.getPointAt(u), t = cool.getTangentAt(u), fin = new TH.Mesh(new TH.CylinderGeometry(0.52, 0.52, 0.04, 36), S.mat('#c5c9cc', { metal: 0.95, rough: 0.3 })); fin.position.copy(p); fin.quaternion.setFromUnitVectors(new TH.Vector3(0, 1, 0), t); S.add(fin); }
     for (let i = 0; i < 7; i++) { const u = 0.3 + i * 0.08, p = heat.getPointAt(u), t = heat.getTangentAt(u), coil = new TH.Mesh(new TH.TorusGeometry(0.33, 0.045, 8, 32), S.mat('hl', { glow: 0.9, metal: 0.3 })); coil.position.copy(p); coil.quaternion.setFromUnitVectors(new TH.Vector3(0, 0, 1), t); S.add(coil); }
     const can = new TH.Mesh(new TH.CylinderGeometry(0.58, 0.58, 2 * RX, 48, 1, true).rotateZ(PI / 2), S.mat('muted', { opacity: 0.22, rough: 0.12, coat: 1 })); can.position.set(0, 0, ZT); can.castShadow = false; can.userData.noOcclude = true; S.add(can);
     for (const x of [RX, -RX]) { const fl = new TH.Mesh(new TH.TorusGeometry(0.6, 0.07, 10, 48).rotateY(PI / 2), S.mat('muted', METAL)); fl.position.set(x, 0, ZT); S.add(fl); }
