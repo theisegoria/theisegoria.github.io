@@ -93,6 +93,8 @@
   const hex = (c) => '#' + c.map((u) => Math.round(u * 255).toString(16).padStart(2, '0')).join('');
   const bbHex = (T) => hex(bbRGB(T));
   // the same colour with its saturation raised, for the glowing spheres: the eye adapts to a star's white point, a picture cannot
+  // the colour a star actually shows: its blackbody chromaticity at full brightness (no extra saturation), for the 3D views
+  const bbTrue = (T) => { const c = bbRGB(T), mx = Math.max(...c), m = (c[0] + c[1] + c[2]) / 3 / mx; return hex(c.map((u) => Math.min(1, Math.max(0, m + 1.15 * (u / mx - m))))); };
   const bbShow = (T) => { const c = bbRGB(T), m = (c[0] + c[1] + c[2]) / 3; return hex(c.map((u) => Math.min(1, Math.max(0, m + 1.7 * (u - m))))); };
   const spClass = (T) => (T >= 30000 ? 'O' : T >= 10000 ? 'B' : T >= 7500 ? 'A' : T >= 6000 ? 'F' : T >= 5200 ? 'G' : T >= 3700 ? 'K' : 'M');
 
@@ -166,7 +168,7 @@
     return [-W / 2 + ra, W / 2 - rb, W];
   }
   // a thin ring that marks a body too small to see at this scale (the camera looks along +y, so the ring lies in the xz plane)
-  const makeRing = (S) => { const r = S.tube(L.seq(49, (i) => [Math.cos(TAU * i / 48), 0, Math.sin(TAU * i / 48)]), { c: 'ink', r: 0.012, closed: true, opacity: 0.8 }); r.visible = false; return r; };
+  const makeRing = (S) => { const r = S.tube(L.seq(49, (i) => [Math.cos(TAU * i / 48), 0, Math.sin(TAU * i / 48)]), { c: '#d8d6cf', r: 0.012, closed: true, opacity: 0.8 }); r.visible = false; return r; };
   const locate = (S, ring, x, rr, W) => { const r = 0.05 * W, on = rr < 0.03 * W; ring.visible = on; if (on) { ring.position.set(x, 0, 0); ring.scale.setScalar(r); } S.invalidate(); return on ? r : rr; };
   // a luminous body: a dim lit surface under an emissive layer of the black-body colour, so it does not wash out to white
   const tint = (m, hex, k = 0.1) => { if (m.material.userData.limb) { m.material.color.set(hex); return; } m.material.color.set(hex).multiplyScalar(k); if (m.material.emissive) m.material.emissive.set(hex); };
@@ -249,12 +251,13 @@
         : T('Every point of the diagram fixes a radius, R/R☉ = √(L/L☉) (T☉/T)². A cool star that is also luminous must be enormous, a hot faint one tiny: this is how giants and white dwarfs were recognised.', '図のどの点にも半径が決まります。R/R☉ = √(L/L☉) (T☉/T)² です。冷たくて明るい星は巨大でなければならず、熱くて暗い星は小さくなければなりません。巨星と白色矮星はこうして見分けられました。'));
       /* the 3D picture */
       const place = (S) => {
-        const R = st.star.R, [xa, xb, W] = aimPair(S, 1, R, 30, 0.62), hx = bbShow(st.star.T);
+        const R = st.star.R, [xa, xb, W] = aimPair(S, 1, R, 30, 0.62), hx = bbTrue(st.star.T);
         const ra = locate(S, st.ringA, xa, 1, W), rb = locate(S, st.ringB, xb, R, W);
-        st.sunM.at([xa, 0, 0]); tint(st.sunM, bbShow(TSUN));
+        st.sunM.at([xa, 0, 0]); tint(st.sunM, bbTrue(TSUN));
         st.starM.scale.setScalar(R); st.starM.at([xb, 0, 0]); tint(st.starM, hx);
-        st.halo1.scale.setScalar(R * 1.05); st.halo1.at([xb, 0, 0]); tint(st.halo1, hx, 1);
-        st.halo2.scale.setScalar(R * 1.2); st.halo2.at([xb, 0, 0]); tint(st.halo2, hx, 1);
+        st.halo1.setR(R); st.halo1.at([xb, 0, 0]); st.halo1.material.color.set(hx);
+        st.halo2.setR(R); st.halo2.at([xb, 0, 0]); st.halo2.material.color.set(hx);
+        st.sunC.at([xa, 0, 0]); st.sunC.material.color.set(bbTrue(TSUN));
         st.lSun.set([xa, 0, ra * 1.04], T('Sun', '太陽'));
         st.lStar.set([xb, 0, rb * 1.04], `${fmtRad(R)} R☉` + (R < 0.5 ? ` = ${fmt(R * RSUN / REARTH, 1)} R⊕` : ''));
         S.fitStage?.(); S.invalidate();
@@ -263,11 +266,14 @@
         host: st.v3, aspect: 0.62, maxH: 430, camera: [0, -9, 1.4], target: [0, 0, 0], fov: 30, minDistance: 0.2, maxDistance: 20000,
         init(S) {
           st.flat = false;
+          S.space();
           const sun = bbShow(TSUN);
-          st.sunM = S.sphere([0, 0, 0], 1, { c: sun, limb: 0.62 });
-          st.starM = S.sphere([0, 0, 0], 1, { c: sun, limb: 0.62 });
-          st.halo1 = S.sphere([0, 0, 0], 1.05, { c: sun, opacity: 0.09, glow: 0.5, coat: 0 });
-          st.halo2 = S.sphere([0, 0, 0], 1.2, { c: sun, opacity: 0.035, glow: 0.5, coat: 0 });
+          st.sunM = S.sphere([0, 0, 0], 1, { c: sun, limb: 0.6, gain: 1.12, map: S.starMap() });
+          st.starM = S.sphere([0, 0, 0], 1, { c: sun, limb: 0.6, gain: 1.12, map: S.starMap() });
+          st.sunM.geometry = st.starM.geometry = new S.THREE.SphereGeometry(1, 96, 48);
+          st.halo1 = S.corona([0, 0, 0], 1, sun, { size: 1.15, strength: 0.32 });
+          st.halo2 = S.corona([0, 0, 0], 1, sun, { size: 1.55, strength: 0.12, falloff: 3 });
+          st.sunC = S.corona([0, 0, 0], 1, sun, { size: 1.15, strength: 0.32 });
           st.lSun = S.label('', [0, 0, 1], { small: true, align: 'middle' }); st.lStar = S.label('', [0, 0, 1], { small: true, align: 'middle' });
           st.ringA = makeRing(S); st.ringB = makeRing(S);
           place(S);
@@ -391,7 +397,7 @@
       const place = (S) => {
         const R = st.cur.Rearth, [xa, xb, W] = aimPair(S, 1, R, 30, 0.62), ra = locate(S, st.ringA, xa, 1, W), rb = locate(S, st.ringB, xb, R, W);
         st.earth.at([xa, 0, 0]);
-        st.wd.scale.setScalar(R); st.wd.at([xb, 0, 0]); tint(st.wd, bbShow(14000)); tint(st.hl1, bbShow(14000), 1); tint(st.hl2, bbShow(14000), 1); st.hl1.scale.setScalar(R * 1.05); st.hl1.at([xb, 0, 0]); st.hl2.scale.setScalar(R * 1.2); st.hl2.at([xb, 0, 0]);
+        st.wd.scale.setScalar(R); st.wd.at([xb, 0, 0]); tint(st.wd, bbTrue(14000)); st.hl1.material.color.set(bbTrue(14000)); st.hl2.material.color.set(bbTrue(14000)); st.hl1.setR(R); st.hl1.at([xb, 0, 0]); st.hl2.setR(R); st.hl2.at([xb, 0, 0]);
         st.lE.set([xa, 0, ra * 1.04], T('Earth', '地球'));
         st.lW.set([xb, 0, rb * 1.04], T(`white dwarf, ${fmt(st.cur.Msun, 2)} M☉`, `白色矮星 ${fmt(st.cur.Msun, 2)} M☉`));
         S.fitStage?.(); S.invalidate();
@@ -401,9 +407,10 @@
         init(S) {
           st.flat = false;
           const hx = bbShow(14000);
-          st.earth = S.sphere([0, 0, 0], 1, { c: 'c1', rough: 0.35, coat: 0.8 });
-          st.wd = S.sphere([0, 0, 0], 1, { c: hx, limb: 0.62 });
-          st.hl1 = S.sphere([0, 0, 0], 1.05, { c: hx, opacity: 0.09, glow: 0.5, coat: 0 }); st.hl2 = S.sphere([0, 0, 0], 1.2, { c: hx, opacity: 0.035, glow: 0.5, coat: 0 });
+          S.space();
+          st.earth = S.earth([0, 0, 0], 1);
+          st.wd = S.sphere([0, 0, 0], 1, { c: hx, limb: 0.45, gain: 1.15 }); st.wd.geometry = new S.THREE.SphereGeometry(1, 96, 48);
+          st.hl1 = S.corona([0, 0, 0], 1, hx, { size: 1.18, strength: 0.55 }); st.hl2 = S.corona([0, 0, 0], 1, hx, { size: 1.7, strength: 0.25, falloff: 3 });
           st.lE = S.label('', [0, 0, 1], { small: true, align: 'middle' }); st.lW = S.label('', [0, 0, 1], { small: true, align: 'middle' });
           st.ringA = makeRing(S); st.ringB = makeRing(S);
           place(S);

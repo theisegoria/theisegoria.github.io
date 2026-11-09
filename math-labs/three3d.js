@@ -16,7 +16,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import { LineSegments2 } from 'three/addons/lines/webgpu/LineSegments2.js';
 import { LineSegmentsGeometry } from 'three/addons/lines/LineSegmentsGeometry.js';
-import { screenUV, vec2, vec3, mix, smoothstep, float, materialColor, normalView, positionView } from 'three/tsl';
+import { screenUV, vec2, vec3, mix, smoothstep, float, materialColor, normalView, positionView, texture, uv } from 'three/tsl';
 
 const TOKENS = ['c1', 'c2', 'c3', 'c4', 'hl', 'ink', 'muted', 'plate', 'grid', 'pos', 'neg', 'zero'];
 const ja = document.documentElement.lang === 'ja';
@@ -54,6 +54,7 @@ export async function create(host, opts = {}) {
   hint.textContent = opts.hint ?? T('Drag to rotate · ctrl + scroll to zoom', 'ドラッグで回転・ctrl + スクロールで拡大');
   const reset = document.createElement('button'); reset.type = 'button'; reset.className = 'lab3d-reset'; reset.textContent = T('Reset view', '視点を戻す');
   wrap.append(canvas, overlay, hint, reset);
+  const wrapEl = wrap;
   host.appendChild(wrap);
 
   let cols = tokens(host);
@@ -193,7 +194,8 @@ export async function create(host, opts = {}) {
     if (o.limb !== undefined) {
       const m = new THREE.MeshBasicNodeMaterial({ color: colour(c), transparent: (o.opacity ?? 1) < 1, opacity: o.opacity ?? 1 });
       const mu = normalView.dot(positionView.normalize().negate()).clamp(0, 1);
-      m.colorNode = materialColor.mul(float(1).sub(float(o.limb).mul(float(1).sub(mu)))).mul(o.gain ?? 1);
+      const base = o.map ? texture(o.map, uv()).rgb.mul(materialColor) : materialColor;
+      m.colorNode = base.mul(float(1).sub(float(o.limb).mul(float(1).sub(mu)))).mul(o.gain ?? 1);
       m.userData.limb = true;
       if (ST) S.studio.glow(m, o.bloom ?? 0.6);
       return m;
@@ -208,11 +210,57 @@ export async function create(host, opts = {}) {
     if (o.glass && ST) { m.transmission = 1; m.color = colour(c).clone().lerp(new THREE.Color(1, 1, 1), 0.82); m.thickness = o.thickness ?? 0.2; m.ior = o.ior ?? 1.45; m.roughness = o.rough ?? 0.06; m.transparent = false; m.opacity = 1; m.depthWrite = true; }
     if (o.sheen) { m.sheen = o.sheen; m.sheenColor = colour(o.sheenColour ?? 'hl'); m.sheenRoughness = 0.5; }
     if (o.iridescence) { m.iridescence = o.iridescence; m.iridescenceIOR = 1.3; }
+    if (o.map) { m.map = o.map; m.color = new THREE.Color(1, 1, 1); }
+    if (o.roughMap) m.roughnessMap = o.roughMap;
+    if (o.bumpMap) { m.bumpMap = o.bumpMap; m.bumpScale = o.bumpScale ?? 1; }
     if (o.glow && ST) S.studio.glow(m, Math.min(1, o.glow));
     return m;
   };
   /* Glass refracts what is behind it, and a transparent canvas has nothing behind it but black. A scene
      with glass therefore paints the figure's own paper sweep (the .lab3d background) into the frame. */
+  /* Space: a night sky for astronomical scenes, an equirectangular starfield (stars with a power-law brightness and their
+     blackbody tints, a faint Milky Way band) behind everything, and white labels over it. */
+  let starfield = null;
+  S.space = () => {
+    if (!starfield) {
+      const W = 2048, H = 1024, cv = document.createElement('canvas'); cv.width = W; cv.height = H;
+      const g = cv.getContext('2d'); g.fillStyle = '#020306'; g.fillRect(0, 0, W, H);
+      let seed = 12345; const rnd = () => ((seed = (seed * 1664525 + 1013904223) >>> 0) / 4294967296);
+      // the galactic band: a tilted great circle of diffuse light with dark lanes
+      const img = g.getImageData(0, 0, W, H), d = img.data;
+      for (let j = 0; j < H; j++) for (let i = 0; i < W; i++) {
+        const lon = (i / W) * 2 * Math.PI, lat = Math.PI / 2 - (j / H) * Math.PI, x = Math.cos(lat) * Math.cos(lon), y = Math.cos(lat) * Math.sin(lon), z = Math.sin(lat);
+        const b = Math.abs(0.46 * x - 0.2 * y + 0.86 * z), band = Math.exp(-((b / 0.16) ** 2)), n = fbm3(x * 5, y * 5, z * 5, 5), lane = fbm3(x * 11 + 3, y * 11, z * 11, 4);
+        const v = band * (0.35 + 0.65 * n) * (1 - 0.6 * Math.max(0, lane - 0.5) * 2), k = 4 * (j * W + i);
+        d[k] += 28 * v; d[k + 1] += 26 * v; d[k + 2] += 34 * v;
+      }
+      g.putImageData(img, 0, 0);
+      const tints = ['#9bb0ff', '#aabfff', '#cad7ff', '#f8f7ff', '#fff4ea', '#ffd2a1', '#ffcc6f'];
+      for (let s = 0; s < 9000; s++) {
+        const u = rnd(), w = Math.acos(2 * rnd() - 1), x = u * W, y = (w / Math.PI) * H, m = Math.pow(rnd(), 7);
+        g.globalAlpha = 0.25 + 0.75 * Math.min(1, m * 3); g.fillStyle = tints[Math.floor(rnd() * tints.length)];
+        const r = 0.3 + 0.75 * m; g.beginPath(); g.arc(x, y, r, 0, 2 * Math.PI); g.fill();
+        if (m > 0.6) { g.globalAlpha = 0.08; g.beginPath(); g.arc(x, y, r * 2.4, 0, 2 * Math.PI); g.fill(); }
+      }
+      g.globalAlpha = 1;
+      starfield = new THREE.CanvasTexture(cv); starfield.mapping = THREE.EquirectangularReflectionMapping; starfield.colorSpace = THREE.SRGBColorSpace;
+    }
+    S.scene.background = starfield; S.scene.backgroundNode = null; S.scene.backgroundIntensity = 1;
+    S.scene.backgroundRotation = new THREE.Euler(Math.PI / 2, 0, 0);   // the texture is Y-up, this world is Z-up
+    wrapEl.classList.add('is-space'); S._space = true; if (S.studio?.floor) S.studio.floor.visible = false;
+    lab.invalidate();
+  };
+  // the glow round a luminous body: an additive shell whose brightness falls from the limb outward
+  S.corona = (p, r = 1, c = '#ffffff', o = {}) => {
+    const k = o.size ?? 1.3, m = new THREE.MeshBasicNodeMaterial({ color: colour(c), transparent: true, depthWrite: false, blending: THREE.AdditiveBlending });
+    const mu = normalView.dot(positionView.normalize().negate()).clamp(0, 1), edge = Math.sqrt(1 - 1 / (k * k));
+    m.colorNode = materialColor; m.opacityNode = mu.div(edge).clamp(0, 1).pow(o.falloff ?? 2.4).mul(o.strength ?? 0.55);
+    const mesh = new THREE.Mesh(new THREE.SphereGeometry(1, 64, 32), m); mesh.scale.setScalar(r * k); mesh.position.copy(V(p)); mesh.userData.k = k;
+    mesh.at = (q) => { mesh.position.copy(V(q)); lab.invalidate(); return mesh; };
+    mesh.setR = (rr) => { mesh.scale.setScalar(rr * k); return mesh; };
+    if (o.add !== false) S.add(mesh);
+    return mesh;
+  };
   let backdropOn = false;
   S.backdrop = () => {
     if (backdropOn) return; backdropOn = true;
@@ -468,6 +516,122 @@ export async function create(host, opts = {}) {
     if (o.add !== false) S.add(g);
     return g;
   };
+  /* ---------- procedural textures: value noise, a canvas texture builder, a real-looking Earth and star surfaces ---------- */
+  const hash3 = (x, y, z) => { let h = (x * 374761393 + y * 668265263 + z * 1274126177) | 0; h = Math.imul(h ^ (h >>> 13), 1274126177); return ((h ^ (h >>> 16)) >>> 0) / 4294967295; };
+  const noise3 = (x, y, z) => {
+    const xi = Math.floor(x), yi = Math.floor(y), zi = Math.floor(z), xf = x - xi, yf = y - yi, zf = z - zi;
+    const s = (t) => t * t * (3 - 2 * t), u = s(xf), v = s(yf), w = s(zf), L2 = (a, b, t) => a + (b - a) * t;
+    const c = (dx, dy, dz) => hash3(xi + dx, yi + dy, zi + dz);
+    return L2(L2(L2(c(0, 0, 0), c(1, 0, 0), u), L2(c(0, 1, 0), c(1, 1, 0), u), v), L2(L2(c(0, 0, 1), c(1, 0, 1), u), L2(c(0, 1, 1), c(1, 1, 1), u), v), w);
+  };
+  const fbm3 = (x, y, z, oct = 5) => { let a = 0, amp = 0.5, f = 1, n = 0; for (let i = 0; i < oct; i++) { a += amp * noise3(x * f, y * f, z * f); n += amp; amp *= 0.5; f *= 2.03; } return a / n; };
+  S.noise = { noise3, fbm3 };
+  // a texture painted per pixel: fn(u, v, x, y, z) returns [r, g, b] or [r, g, b, a] in 0..255, where (x, y, z) is the point on
+  // the unit sphere for equirectangular (u, v), so noise has no seam
+  S.canvasTexture = (w, h, fn, o = {}) => {
+    const cv = document.createElement('canvas'); cv.width = w; cv.height = h;
+    const g = cv.getContext('2d'), img = g.createImageData(w, h), d = img.data;
+    for (let j = 0; j < h; j++) {
+      const lat = Math.PI / 2 - (Math.PI * (j + 0.5)) / h, cl = Math.cos(lat), z = Math.sin(lat);
+      for (let i = 0; i < w; i++) {
+        const lon = -Math.PI + (2 * Math.PI * (i + 0.5)) / w, c = fn((i + 0.5) / w, (j + 0.5) / h, cl * Math.cos(lon), cl * Math.sin(lon), z, i, j), k = 4 * (j * w + i);
+        d[k] = c[0]; d[k + 1] = c[1]; d[k + 2] = c[2]; d[k + 3] = c[3] ?? 255;
+      }
+    }
+    g.putImageData(img, 0, 0);
+    const t = new THREE.CanvasTexture(cv); t.colorSpace = o.linear ? THREE.NoColorSpace : THREE.SRGBColorSpace; t.wrapS = THREE.RepeatWrapping; t.anisotropy = 4; t.needsUpdate = true;
+    return t;
+  };
+  // coarse continental outlines (longitude, latitude in degrees); the coastline detail comes from noise
+  const LAND = [
+    [-167,65,-160,71,-140,70,-120,70,-100,72,-85,70,-80,63,-95,58,-90,57,-82,53,-78,58,-70,61,-64,60,-56,52,-60,47,-66,44,-70,41,-75,37,-76,35,-81,31,-80,25,-82,27,-84,30,-90,30,-97,27,-98,22,-95,18,-91,19,-87,21,-88,16,-84,15,-83,10,-79,9,-80,7,-86,12,-92,15,-105,20,-112,29,-115,31,-110,23,-117,32,-121,35,-124,40,-124,46,-123,49,-130,54,-134,58,-140,60,-150,61,-152,58,-158,57,-165,60],
+    [-73,78,-60,82,-30,83,-20,80,-20,70,-30,68,-42,60,-50,64,-55,70,-68,76],
+    [-80,9,-75,11,-72,12,-62,11,-52,5,-50,0,-44,-2,-35,-5,-35,-9,-39,-13,-41,-22,-48,-26,-53,-34,-57,-36,-62,-39,-65,-45,-68,-52,-70,-55,-74,-50,-75,-42,-73,-36,-71,-28,-70,-18,-76,-14,-81,-6,-80,-1,-78,2,-77,7],
+    [-10,36,-9,43,-2,44,-5,48,-1,49,4,52,8,54,10,54,14,54,20,55,22,58,30,60,30,65,33,66,40,68,44,66,55,69,70,73,80,73,100,77,112,74,130,72,140,72,160,70,170,70,180,67,180,65,170,60,163,58,160,53,156,51,155,57,142,59,135,54,141,51,140,46,133,43,129,41,127,38,126,35,122,40,118,38,122,37,120,32,122,29,118,24,110,21,108,21,106,18,109,12,105,9,103,10,100,13,100,8,103,1,100,3,98,8,98,16,94,17,91,22,87,21,80,16,80,10,77,8,73,16,70,21,67,25,62,25,57,26,56,24,59,22,52,17,44,12,43,15,39,21,35,28,33,30,34,32,36,36,27,37,26,40,23,40,22,37,20,40,19,42,13,45,16,41,18,40,16,38,12,38,12,42,8,44,3,43,-1,37,-5,36],
+    [5,58,10,59,12,56,16,56,19,60,17,62,21,65,25,66,30,70,25,71,16,69,12,65,5,62],
+    [-17,21,-17,15,-12,8,-8,4,-2,5,5,6,9,4,10,-1,12,-6,13,-12,12,-18,15,-27,18,-34,22,-34,27,-33,32,-29,35,-24,35,-18,40,-15,40,-10,39,-6,42,-1,48,5,51,11,44,11,43,13,38,18,33,28,32,31,25,32,20,31,15,32,10,34,10,37,3,37,-2,35,-6,36,-10,30,-14,26],
+    [44,-25,47,-25,50,-15,49,-12,44,-17],
+    [114,-22,114,-26,115,-34,118,-35,124,-34,130,-32,135,-35,138,-35,140,-38,145,-39,150,-37,153,-31,153,-25,149,-21,146,-18,145,-15,142,-11,141,-17,136,-15,137,-12,132,-11,129,-15,126,-14,122,-18],
+    [130,31,132,34,135,34,140,35,141,38,142,41,140,42,141,45,145,44,143,42,140,40,139,36,136,36,133,35],
+    [-5,50,1,51,2,53,-1,55,-2,57,-3,59,-6,58,-5,55,-3,54,-5,52], [-10,52,-6,52,-6,55,-8,55,-10,54],
+    [95,5,98,4,104,-2,106,-6,102,-4,96,2], [109,1,111,-3,116,-4,119,1,117,7,113,4], [105,-6,114,-8,106,-7],
+    [131,-1,138,-2,147,-6,150,-10,143,-9,138,-8,132,-4], [172,-34,178,-38,176,-41,172,-41,167,-46,170,-46,174,-41],
+    [-24,65,-14,66,-14,64,-22,63], [120,18,122,18,124,12,126,7,122,7,120,13], [80,10,82,7,80,6], [-85,22,-74,20,-78,22], [121,25,122,24,120,22],
+    [-72,19,-68,19,-70,18], [118,-8,124,-9,120,-10], [119,-2,125,1,121,-5], [142,53,143,46,141,49], [10,80,25,80,20,77],
+  ];
+  const WATER = [[47,45,50,47,54,44,53,39,50,37,49,40], [28,41,41,41,41,43,37,45,30,46]];
+  let earthCache = null;
+  function earthTextures() {
+    if (earthCache) return earthCache;
+    const W = 1024, H = 512, cv = document.createElement('canvas'); cv.width = W; cv.height = H;
+    const g = cv.getContext('2d'), P = (lon, lat) => [((lon + 180) / 360) * W, ((90 - lat) / 180) * H];
+    const poly = (a) => { g.beginPath(); for (let i = 0; i < a.length; i += 2) { const [x, y] = P(a[i], a[i + 1]); i ? g.lineTo(x, y) : g.moveTo(x, y); } g.closePath(); g.fill(); };
+    const paint = (blur) => {
+      g.filter = blur ? `blur(${blur}px)` : 'none'; g.fillStyle = '#000'; g.fillRect(0, 0, W, H); g.fillStyle = '#fff';
+      LAND.forEach(poly);
+      g.beginPath(); g.moveTo(0, H); for (let lon = -180; lon <= 180; lon += 5) { const lat = lon > -75 && lon < -55 ? -64 + 0.0 * lon : -69 - 3 * Math.sin((lon + 30) * 0.05) - (lon > 160 || lon < -140 ? 8 : 0); const [x, y] = P(lon, lat); g.lineTo(x, y); } g.lineTo(W, H); g.closePath(); g.fill();
+      g.fillStyle = '#000'; WATER.forEach(poly);
+      return g.getImageData(0, 0, W, H).data;
+    };
+    const sharp = paint(2), wide = paint(18);
+    const col = (h) => [parseInt(h.slice(1, 3), 16), parseInt(h.slice(3, 5), 16), parseInt(h.slice(5, 7), 16)];
+    const C = { deep: col('#0a2546'), mid: col('#12406a'), shelf: col('#2a7a96'), forest: col('#2b4f24'), jungle: col('#244a1f'), grass: col('#6b7a3a'), steppe: col('#8f8a55'), desert: col('#c8a46c'), sand: col('#d9bf8c'), rock: col('#6e5d48'), tundra: col('#76735a'), ice: col('#eef3f6') };
+    const mixc = (a, b, t) => [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t, a[2] + (b[2] - a[2]) * t];
+    const sm = (a, b, x) => { const t = Math.min(1, Math.max(0, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
+    const field = new Float32Array(W * H);
+    const map = S.canvasTexture(W, H, (u, v, x, y, z, i, j) => {
+      const k = 4 * (j * W + i), n = fbm3(x * 6 + 11, y * 6, z * 6, 6), m = sm(0.42, 0.58, sharp[k] / 255 + 0.34 * (n - 0.5)), lat = Math.asin(z) * 57.2958, al = Math.abs(lat);
+      field[j * W + i] = m;
+      const coast = wide[k] / 255;
+      const ocean = mixc(mixc(C.deep, C.mid, sm(0.05, 0.4, coast)), C.shelf, sm(0.35, 0.75, coast) * 0.6);
+      const n2 = fbm3(x * 14, y * 14 + 5, z * 14, 5), arid = Math.exp(-(((al - 23) / 10) ** 2)) * sm(0.45, 0.9, coast + 0.35 * (n2 - 0.5)), tropic = sm(18, 4, al), boreal = sm(48, 60, al);
+      let land = mixc(C.grass, C.forest, sm(0.4, 0.7, n2));
+      land = mixc(land, C.jungle, tropic * (1 - arid));
+      land = mixc(land, C.steppe, sm(0.2, 0.5, arid));
+      land = mixc(land, n2 > 0.55 ? C.sand : C.desert, sm(0.45, 0.8, arid));
+      land = mixc(land, C.forest, boreal * (1 - sm(62, 70, al)) * 0.7);
+      land = mixc(land, C.tundra, sm(64, 72, al));
+      land = mixc(land, C.rock, sm(0.62, 0.78, fbm3(x * 9 + 3, y * 9, z * 9, 5)) * 0.55);
+      land = mixc(land, C.ice, sm(73, 78, al) + (lat < -62 ? 1 : 0) + (lon_isGreenland(x, y, z) ? sm(62, 68, al) : 0));
+      const c = mixc(ocean, land, m);
+      return [c[0], c[1], c[2]];
+    });
+    function lon_isGreenland(x, y, z) { const lon = Math.atan2(y, x) * 57.2958, lat = Math.asin(z) * 57.2958; return lon > -75 && lon < -15 && lat > 59; }
+    const rough = S.canvasTexture(W / 2, H / 2, (u, v, x, y, z, i, j) => { const q = field[(2 * j) * W + 2 * i]; const r = 70 + 175 * q; return [r, r, r]; }, { linear: true });
+    const clouds = S.canvasTexture(W, H, (u, v, x, y, z) => {
+      const lat = Math.asin(z) * 57.2958, al = Math.abs(lat);
+      const belt = 0.45 * Math.exp(-((lat / 7) ** 2)) + 0.55 * Math.exp(-(((al - 55) / 14) ** 2)) + 0.2;
+      const swirl = fbm3(x * 3 + fbm3(x * 2, y * 2, z * 2, 3) * 1.6, y * 3, z * 3 + 7, 4), n = fbm3(x * 7 + swirl * 2, y * 7, z * 7, 6);
+      const a = sm(0.56, 0.82, n * 0.72 + swirl * 0.3 + belt * 0.3 - 0.12) * (0.55 + 0.45 * fbm3(x * 18, y * 18, z * 18, 3));
+      return [255, 255, 255, 255 * a * 0.85];
+    });
+    earthCache = { map, rough, clouds };
+    return earthCache;
+  }
+  // the Earth: land and ocean (glossy water, matte land), a cloud deck, a blue atmospheric rim; poles on z, 23.4 degree tilt
+  S.earth = (p, r = 1, o = {}) => {
+    const tx = earthTextures(), grp = new THREE.Group(), geo = new THREE.SphereGeometry(1, 128, 64);
+    const surf = new THREE.Mesh(geo, S.mat('#ffffff', { map: tx.map, roughMap: tx.rough, rough: 1, coat: 0.15, coatRough: 0.4 }));
+    const cl = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ map: tx.clouds, transparent: true, depthWrite: false, roughness: 1 })); cl.scale.setScalar(1.012);
+    const at = new THREE.MeshBasicNodeMaterial({ transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, side: THREE.FrontSide });
+    const mu = normalView.dot(positionView.normalize().negate()).clamp(0, 1);
+    at.colorNode = vec3(0.32, 0.58, 1.0); at.opacityNode = float(1).sub(mu).pow(2.6).mul(o.rim ?? 0.95);
+    const atm = new THREE.Mesh(geo, at); atm.scale.setScalar(1.035);
+    const spin = new THREE.Group(); spin.add(surf, cl); spin.rotation.x = Math.PI / 2; spin.rotation.y = o.lon ?? -0.9;
+    const tilt = new THREE.Group(); tilt.add(spin); tilt.rotation.y = (o.tilt ?? 23.44) * Math.PI / 180;
+    grp.add(tilt, atm); grp.scale.setScalar(r); grp.position.copy(V(p));
+    surf.castShadow = surf.receiveShadow = true;
+    grp.spin = spin; grp.clouds = cl;
+    grp.at = (q) => { grp.position.copy(V(q)); lab.invalidate(); return grp; };
+    if (o.add !== false) S.add(grp);
+    return grp;
+  };
+  // a stellar photosphere: granulation as low-contrast cells, multiplied into the limb-darkened blackbody colour
+  let starCache = null;
+  S.starMap = () => starCache ?? (starCache = S.canvasTexture(512, 256, (u, v, x, y, z) => {
+    const a = fbm3(x * 60, y * 60, z * 60, 2), b = fbm3(x * 140 + 4, y * 140, z * 140, 2), c = 0.93 + 0.05 * a + 0.03 * b;
+    const q = Math.round(255 * Math.min(1, c)); return [q, q, q];
+  }));
   S.sphere = (p, r = 0.08, o = {}) => {
     const m = new THREE.Mesh(new THREE.SphereGeometry(1, 32, 20), S.mat(o.c ?? 'hl', { rough: 0.25, coat: 0.8, ...o }));
     m.scale.setScalar(r); m.position.copy(V(p)); m.castShadow = castOK(m) && !m.material.userData.limb;
@@ -650,7 +814,7 @@ export async function create(host, opts = {}) {
     const R = Math.max(0.5, Math.hypot(sz.x, sz.y) * 0.62 + sz.z * 0.25);
     const z = S._floorZ ?? (box.min.z - Math.max(0.02, R * 0.06));
     const f = look.floor; const r0 = f.geometry.parameters?.radius || 1;
-    f.scale.setScalar((R * 1.25) / r0); f.position.set(c.x, c.y, z); f.visible = true;
+    f.scale.setScalar((R * 1.25) / r0); f.position.set(c.x, c.y, z); f.visible = !S._space;
     const key = look.key, dir = key.position.clone().sub(key.target.position).normalize();
     key.target.position.set(c.x, c.y, (z + box.max.z) / 2); key.target.updateMatrixWorld();
     key.position.copy(key.target.position).addScaledVector(dir, R * 3);

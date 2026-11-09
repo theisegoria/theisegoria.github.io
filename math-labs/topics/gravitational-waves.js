@@ -296,16 +296,36 @@
       };
       const dir = (a, b) => [Math.sin(a) * Math.cos(b), Math.sin(a) * Math.sin(b), Math.cos(a)];
       L.view3d(ctx, v, {
-        host: st.v3, aspect: 0.82, maxH: 470, camera: [3.6, -4.6, 3.0], target: [0, 0, 0.1], fov: 34,
+        host: st.v3, aspect: 0.82, maxH: 470, camera: [3.15, -4.0, 2.45], target: [0.15, 0.15, 0.1], fov: 34,
         init(S) {
           st.flat = false;
-          st.lobe = S.surface((a, b) => { const d = dir(a, b), r = Math.abs(F(a, b)); return [d[0] * r, d[1] * r, d[2] * r]; }, { u: [0, PI], v: [0, TAU], nu: 90, nv: 180, colour: () => S.colour('c1'), rough: 0.35, coat: 0.7, opacity: 0.92 });
-          S.tube([[0, 0, 0], [1.25, 0, 0]], { c: 'ink', r: 0.03 }); S.tube([[0, 0, 0], [0, 1.25, 0]], { c: 'ink', r: 0.03 });
-          S.box([0.14, 0.14, 0.14], [1.25, 0, 0], { c: 'muted', metal: 0.6, rough: 0.3 }); S.box([0.14, 0.14, 0.14], [0, 1.25, 0], { c: 'muted', metal: 0.6, rough: 0.3 });
+          st.lobe = S.surface((a, b) => { const d = dir(a, b), r = Math.abs(F(a, b)); return [d[0] * r, d[1] * r, d[2] * r]; }, { u: [0, PI], v: [0, TAU], nu: 90, nv: 180, colour: () => S.colour('c1'), rough: 0.18, coat: 1, opacity: 0.62 });
+          // the observatory itself, LIGO-style: a corner station, two arms whose beam tubes run under arched concrete covers
+          // on raised berms, mid stations and end stations, all on a patch of desert ground
+          {
+            const TH = S.THREE, A = 1.25;
+            const clad = S.mat('#e3e4df', { rough: 0.55, coat: 0.2 }), roof = S.mat('#8d9397', { metal: 0.6, rough: 0.4 }), conc = S.mat('#c4bdb0', { rough: 0.85 }), berm = S.mat('#b7a27c', { rough: 0.95 }), tubeM = S.mat('#cfd3d7', { metal: 1, rough: 0.2 });
+            const blk = (w, d, h, m, x, y, z) => { const b = new TH.Mesh(new TH.BoxGeometry(w, d, h), m); b.position.set(x, y, z); b.castShadow = b.receiveShadow = true; S.add(b); return b; };
+            const pad = new TH.Mesh(new TH.CylinderGeometry(0.42, 0.42, 0.012, 64).rotateX(Math.PI / 2), S.mat('#c9b48e', { rough: 0.95 })); pad.position.z = -0.016; S.add(pad);
+            for (const [dx, dy] of [[1, 0], [0, 1]]) {
+              const mid = A / 2, len = A - 0.06;
+              blk(dx ? len : 0.13, dy ? len : 0.13, 0.016, berm, dx * (0.03 + len / 2), dy * (0.03 + len / 2), -0.008);
+              const c0 = 0.36, cl = A - 0.08 - c0, cover = new TH.Mesh(new TH.CylinderGeometry(0.045, 0.045, cl, 32, 1, false, 0, Math.PI), conc);
+              if (dx) { cover.rotation.z = Math.PI / 2; cover.rotation.y = 0; cover.rotation.x = Math.PI / 2; } else { cover.rotation.x = 0; cover.rotation.y = -Math.PI / 2; }
+              cover.position.set(dx * (c0 + cl / 2), dy * (c0 + cl / 2), 0); cover.castShadow = true; S.add(cover);
+              // the cover stops short of the corner, so the 1.2 m stainless beam tube shows where it leaves the building
+              const tb = new TH.Mesh(new TH.CylinderGeometry(0.018, 0.018, c0 - 0.08, 24), tubeM); if (dx) tb.rotation.z = Math.PI / 2; tb.position.set(dx * (0.08 + (c0 - 0.08) / 2 + 0.02), dy * (0.08 + (c0 - 0.08) / 2 + 0.02), 0.022); tb.castShadow = true; S.add(tb);
+              for (const s of [0.18, 0.3]) blk(dx ? 0.012 : 0.05, dy ? 0.012 : 0.05, 0.012, conc, dx * s, dy * s, 0.004);
+              blk(0.09, 0.09, 0.05, clad, dx * mid, dy * mid, 0.025); blk(0.095, 0.095, 0.008, roof, dx * mid, dy * mid, 0.054);
+              blk(0.15, 0.15, 0.07, clad, dx * A, dy * A, 0.035); blk(0.155, 0.155, 0.01, roof, dx * A, dy * A, 0.075);
+            }
+            blk(0.2, 0.2, 0.11, clad, 0, 0, 0.055); blk(0.205, 0.205, 0.012, roof, 0, 0, 0.116);
+            blk(0.12, 0.08, 0.06, clad, -0.16, -0.05, 0.03); blk(0.125, 0.085, 0.008, roof, -0.16, -0.05, 0.064);
+          }
           S.label(T('arm x', '腕 x'), [1.3, 0, 0.08], { small: true }); S.label(T('arm y', '腕 y'), [0, 1.3, 0.08], { small: true });
           S.lines(L.seq(96, (i) => { const a = TAU * i / 96, b = TAU * (i + 1) / 96; return [[RS * Math.cos(a), RS * Math.sin(a), 0], [RS * Math.cos(b), RS * Math.sin(b), 0]]; }), { c: 'muted', opacity: 0.4 });
           st.ray = S.arrow([0, 0, 0], [0, 0, 1], { c: 'hl', r: 0.018 });
-          st.wave = S.disc([0, 0, 0], [0, 0, 1], 0.42, { c: 'hl', opacity: 0.22 });
+          st.wave = S.disc([0, 0, 0], [0, 0, 1], 0.42, { c: 'hl', opacity: 0.16, glow: 0.4 });
           st.src = S.handle(dir(th, ph).map((x) => x * RS), { sphere: [[0, 0, 0], RS], r: 0.09, onDrag: (q) => {
             const r = Math.hypot(q.x, q.y, q.z); const t2 = Math.acos(L.clamp(q.z / r, -1, 1)) * 180 / PI; let p2 = Math.atan2(q.y, q.x) * 180 / PI; if (p2 < 0) p2 += 360;
             ctx.set('phi', Math.round(p2), true); ctx.set('theta', Math.round(t2));

@@ -192,7 +192,14 @@
         host: st.v3, aspect: 1, maxH: 560, camera: [2.5, -5.9, 2.7], target: [0, 0.05, 0], fov: 34,
         init(S) {
           st.flat = false; st.coilP = null;
-          const iron = { c: 'muted', metal: 0.55, rough: 0.38, coat: 0.3 };
+          // laminated silicon steel inside a die-cast aluminum housing with cooling fins; copper windings; a nickel-plated magnet rotor
+          const iron = { c: '#5b626b', metal: 0.85, rough: 0.42, coat: 0.25 };
+          const alu = S.mat('#b9bec3', { metal: 0.9, rough: 0.36, coat: 0.2 }), TH = S.THREE;
+          { const hs = new TH.Mesh(new TH.CylinderGeometry(RS + 0.09, RS + 0.09, 2 * LH + 0.1, 120, 1, true), alu); S.add(hs);
+            const fin = new TH.BoxGeometry(0.2, 2 * LH + 0.1, 0.035);
+            for (let i = 0; i < 40; i++) { const a = (TAU * (i + 0.5)) / 40; if (Math.sin(a) < -0.86) continue; const m = new TH.Mesh(fin, alu); m.position.set((RS + 0.18) * Math.cos(a), 0, (RS + 0.18) * Math.sin(a)); m.rotation.y = -a; m.castShadow = m.receiveShadow = true; S.add(m); }
+            const foot = new TH.Mesh(new TH.BoxGeometry(2.6, 2 * LH + 0.3, 0.12), alu); foot.position.set(0, 0, -RS - 0.42); S.add(foot);
+            for (const sx of [-1, 1]) { const leg = new TH.Mesh(new TH.BoxGeometry(0.3, 2 * LH + 0.1, 0.36), alu); leg.position.set(sx * 0.95, 0, -RS - 0.22); S.add(leg); } }
           S.surface((u, w) => PM(RS, w, u), { u: [-LH, LH], v: [0, TAU], nu: 2, nv: 120, ...iron });
           S.surface((u, w) => PM(u, w, -LH), { u: [RB, RS], v: [0, TAU], nu: 2, nv: 120, ...iron });
           S.surface((u, w) => PM(u, w, LH), { u: [RB, RS], v: [0, TAU], nu: 2, nv: 120, ...iron });
@@ -204,17 +211,18 @@
           st.ring = S.surface((u, w) => PM(u, w, -LH - 0.046), { u: [RR + 0.012, RB], v: [0, TAU], nu: 1, nv: 180, colour: () => S.cmap.div(0), rough: 0.6, coat: 0.05 });
           // rotor: a permanent magnet with p pole pairs, coloured by its own radial magnetisation
           st.rotor = new S.THREE.Group();
-          const mag = (w) => S.cmap.div(0.7 * Math.tanh(4 * Math.cos(st.rp * w)));
+          const nickel = S.colour('#c9ccd0'), mag = (w) => nickel.clone().lerp(S.cmap.div(0.7 * Math.tanh(4 * Math.cos(st.rp * w))), 0.45);
           st.rp = p;
           st.rotorSkin = [
-            S.surface((u, w) => PM(RR, w, u), { u: [-LH - 0.04, LH + 0.04], v: [0, TAU], nu: 2, nv: 160, colour: (u, w) => mag(w), add: false, rough: 0.55, coat: 0.15 }),
-            S.surface((u, w) => PM(u, w, -LH - 0.04), { u: [0.12, RR], v: [0, TAU], nu: 2, nv: 160, colour: (u, w) => mag(w), add: false, rough: 0.55, coat: 0.15 }),
-            S.surface((u, w) => PM(u, w, LH + 0.04), { u: [0.12, RR], v: [0, TAU], nu: 2, nv: 160, colour: (u, w) => mag(w), add: false, rough: 0.55, coat: 0.15 }),
+            S.surface((u, w) => PM(RR, w, u), { u: [-LH - 0.04, LH + 0.04], v: [0, TAU], nu: 2, nv: 160, colour: (u, w) => mag(w), add: false, metal: 0.8, rough: 0.22, coat: 0.6 }),
+            S.surface((u, w) => PM(u, w, -LH - 0.04), { u: [0.12, RR], v: [0, TAU], nu: 2, nv: 160, colour: (u, w) => mag(w), add: false, metal: 0.8, rough: 0.22, coat: 0.6 }),
+            S.surface((u, w) => PM(u, w, LH + 0.04), { u: [0.12, RR], v: [0, TAU], nu: 2, nv: 160, colour: (u, w) => mag(w), add: false, metal: 0.8, rough: 0.22, coat: 0.6 }),
           ];
           st.rotorMag = mag;
           st.rotor.add(...st.rotorSkin);
           S.add(st.rotor);
-          S.tube([[0, -LH - 0.75, 0], [0, LH + 0.5, 0]], { c: 'ink', r: 0.11, metal: 0.85, rough: 0.25 });
+          S.tube([[0, -LH - 0.75, 0], [0, LH + 0.5, 0]], { c: '#c6cbd0', r: 0.11, metal: 1, rough: 0.14 });
+          { const key = new S.THREE.Mesh(new S.THREE.BoxGeometry(0.06, 0.4, 0.05), S.mat('#9aa0a6', { metal: 1, rough: 0.3 })); key.position.set(0, -LH - 0.5, 0.11); S.add(key); }
           st.arrows = [0, 1, 2, 3].map(() => S.arrow([0, -LH - 0.06, 0], [0.5, 0, 0], { c: 'hl', r: 0.03, glow: 0.35 }));
           st.coilG = new S.THREE.Group(); S.add(st.coilG);
           st.lab = [0, 1, 2].map((k) => S.label('abc'[k], [0, 0, 0], { math: true, c: PH[k] }));
@@ -227,7 +235,8 @@
             for (const c of [...st.coilG.children]) { st.coilG.remove(c); c.geometry?.dispose(); c.material?.dispose(); }
             st.coilMats = [[], [], []];
             for (let k = 0; k < 3; k++) for (let m = 0; m < p; m++) {
-              const lp = coilLoop(k, m, p), tube = S.tube(lp.pts, { c: PH[k], r: 0.034, closed: true, add: false, glow: 0.3, metal: 0.35, rough: 0.3 });
+              const lp = coilLoop(k, m, p), tube = S.tube(lp.pts, { c: '#b9682f', r: 0.034, closed: true, add: false, metal: 1, rough: 0.24, coat: 0.7 });
+              tube.material.emissive = S.colour(PH[k]).clone();   // enamelled copper; each phase glows in its own color with its current
               st.coilG.add(tube); st.coilMats[k].push(tube.material);
               if (m === 0) st.lab[k].set(lp.mid);
             }

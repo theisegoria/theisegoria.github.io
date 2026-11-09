@@ -109,31 +109,48 @@
     st.leg = L.h('div', '', st.frame);
     return st;
   }
-  // builds a stylised arm; returns set(q1, q2, q3) and set3(points)
+  // a real industrial elbow manipulator: bolted cast pedestal, an orange-painted turret, cast links with motor housings at the
+  // shoulder and elbow (axes along the joint axes), a tool flange and a two-finger aluminum gripper
   function buildArm(S, o = {}) {
-    const opacity = o.opacity ?? 1, metal = { metal: 0.75, rough: 0.28, coat: 0.6, opacity };
-    const g = new S.THREE.Group();
-    const base = S.box([0.34, 0.34, 0.08], [0, 0, 0.04], { c: 'muted', ...metal, add: false });
-    const post = new S.THREE.Mesh(new S.THREE.CylinderGeometry(0.07, 0.09, D1, 32), S.mat('ink', metal));
-    post.rotation.x = PI / 2; post.position.z = D1 / 2;
-    g.add(base, post);
-    const j = [S.sphere([0, 0, D1], 0.075, { c: o.joint ?? 'c2', ...metal, add: false }), S.sphere([0, 0, 0], 0.062, { c: o.joint ?? 'c2', ...metal, add: false })];
-    const link2 = S.tube([[0, 0, 0], [0, 0, 0.1]], { c: o.c ?? 'c1', r: 0.045, add: false, ...metal });
-    const link3 = S.tube([[0, 0, 0], [0, 0, 0.1]], { c: o.c ?? 'c1', r: 0.036, add: false, ...metal });
-    const finger1 = S.tube([[0, 0, 0], [0, 0, 0.1]], { c: 'ink', r: 0.012, add: false, ...metal });
-    const finger2 = S.tube([[0, 0, 0], [0, 0, 0.1]], { c: 'ink', r: 0.012, add: false, ...metal });
-    g.add(...j, link2, link3, finger1, finger2);
+    const TH = S.THREE, opacity = o.opacity ?? 1, ghost = opacity < 1;
+    const paint = S.mat(ghost ? '#9aa0a6' : '#ee7a22', { rough: 0.38, coat: 0.85, coatRough: 0.18, opacity });
+    const cast = S.mat('#3b3f45', { metal: 0.6, rough: 0.45, coat: 0.3, opacity }), steel = S.mat('#c3c8cd', { metal: 1, rough: 0.2, opacity }), alu = S.mat('#bfc4c9', { metal: 0.9, rough: 0.32, opacity });
+    const M = (geo, mat) => { const m = new TH.Mesh(geo, mat); m.castShadow = !ghost; m.receiveShadow = !ghost; return m; };
+    const g = new TH.Group();
+    const ped = M(new TH.CylinderGeometry(0.16, 0.19, 0.08, 64).rotateX(PI / 2), cast); ped.position.z = 0.04; g.add(ped);
+    for (let k = 0; k < 8; k++) { const b = M(new TH.CylinderGeometry(0.012, 0.012, 0.016, 12).rotateX(PI / 2), steel); b.position.set(0.165 * Math.cos(k * PI / 4 + 0.2), 0.165 * Math.sin(k * PI / 4 + 0.2), 0.085); g.add(b); }
+    const turret = new TH.Group(); g.add(turret);
+    const tb = M(new TH.CylinderGeometry(0.115, 0.13, D1 - 0.16, 48).rotateX(PI / 2), paint); tb.position.z = 0.08 + (D1 - 0.16) / 2; turret.add(tb);
+    const ring = M(new TH.CylinderGeometry(0.135, 0.135, 0.025, 48).rotateX(PI / 2), cast); ring.position.z = 0.095; turret.add(ring);
+    // shoulder drive: a horizontal housing along the yaw axis (local y of the turret), motor can on one side
+    const sh = M(new TH.CylinderGeometry(0.09, 0.09, 0.22, 48), paint); sh.position.z = D1; turret.add(sh);
+    const shm = M(new TH.CylinderGeometry(0.06, 0.06, 0.12, 40), cast); shm.position.set(0, -0.17, D1); turret.add(shm);
+    for (const s of [-1, 1]) { const cap = M(new TH.CylinderGeometry(0.075, 0.075, 0.012, 40), cast); cap.position.set(0, s * 0.112, D1); turret.add(cap); }
+    // links: flattened capsules from joint to joint, oriented every update
+    const link2 = M(new TH.CapsuleGeometry(0.058, L2, 8, 32), paint); link2.scale.set(1, 1, 0.72);
+    const link3 = M(new TH.CapsuleGeometry(0.046, L3 - 0.08, 8, 32), paint); link3.scale.set(1, 1, 0.72);
+    const elbow = M(new TH.CylinderGeometry(0.072, 0.072, 0.17, 40), paint), elm = M(new TH.CylinderGeometry(0.048, 0.048, 0.09, 32), cast);
+    const flange = M(new TH.CylinderGeometry(0.045, 0.045, 0.03, 32), cast), palm = M(new TH.BoxGeometry(0.05, 0.035, 0.12), alu);
+    const f1 = M(new TH.BoxGeometry(0.014, 0.075, 0.028), alu), f2 = M(new TH.BoxGeometry(0.014, 0.075, 0.028), alu);
+    g.add(link2, link3, elbow, elm, flange, palm, f1, f2);
     S.add(g);
+    const j = [sh, elbow];
+    const Y = new TH.Vector3(0, 1, 0), q = new TH.Quaternion(), v3 = (a) => new TH.Vector3(a[0], a[1], a[2]);
+    const orient = (m, a, b, along = 0.5) => { const A = v3(a), B = v3(b), d = B.clone().sub(A), L0 = d.length(); q.setFromUnitVectors(Y, d.normalize()); m.quaternion.copy(q); m.position.copy(A.clone().addScaledVector(d, L0 * along)); return d; };
     const sub = (a, b) => [a[0] - b[0], a[1] - b[1], a[2] - b[2]], add = (a, b, k = 1) => [a[0] + k * b[0], a[1] + k * b[1], a[2] + k * b[2]];
     const norm = (v) => { const l = Math.hypot(...v) || 1; return v.map((x) => x / l); };
     g.setQ = (q1, q2, q3) => {
       const P = fk(q1, q2, q3);
-      j[0].position.set(...P.shoulder); j[1].position.set(...P.elbow);
-      link2.update([P.shoulder, P.elbow]); link3.update([P.elbow, P.tool]);
-      const dir = norm(sub(P.tool, P.elbow)), side = norm([-Math.sin(q1), Math.cos(q1), 0]);
-      const root = add(P.tool, dir, -0.01);
-      finger1.update([add(root, side, 0.035), add(add(root, side, 0.03), dir, 0.07)]);
-      finger2.update([add(root, side, -0.035), add(add(root, side, -0.03), dir, 0.07)]);
+      turret.rotation.z = q1;
+      const side = norm([-Math.sin(q1), Math.cos(q1), 0]);
+      // the link's flat face turns with the arm: its local z points along the joint axis
+      const lay = (m, a, b) => { orient(m, a, b); const d = norm(sub(b, a)); const zx = new TH.Vector3(...side), m4 = new TH.Matrix4().makeBasis(new TH.Vector3().crossVectors(new TH.Vector3(...d), zx), new TH.Vector3(...d), zx); m.quaternion.setFromRotationMatrix(m4); };
+      lay(link2, P.shoulder, P.elbow); lay(link3, P.elbow, add(P.tool, norm(sub(P.tool, P.elbow)), -0.06));
+      orient(elbow, add(P.elbow, side, -0.085), add(P.elbow, side, 0.085)); orient(elm, add(P.elbow, side, 0.085), add(P.elbow, side, 0.175));
+      const dir = norm(sub(P.tool, P.elbow));
+      orient(flange, add(P.tool, dir, -0.085), add(P.tool, dir, -0.055));
+      lay(palm, add(P.tool, dir, -0.06), add(P.tool, dir, -0.025)); palm.scale.set(1, 1, 1);
+      orient(f1, add(add(P.tool, side, 0.035), dir, -0.035), add(add(P.tool, side, 0.032), dir, 0.04)); orient(f2, add(add(P.tool, side, -0.035), dir, -0.035), add(add(P.tool, side, -0.032), dir, 0.04));
       S.invalidate();
       return P;
     };
