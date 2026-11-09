@@ -1,3 +1,7 @@
+/* Sharp on high-density screens: the lesson canvases are drawn in fixed logical units (720 x 420, 320 x 320), so their
+   backing store is multiplied by the device pixel ratio and the context pre-scaled the first time it is asked for. */
+(() => { if (HTMLCanvasElement.prototype.__hidpi) return; const get = HTMLCanvasElement.prototype.getContext; HTMLCanvasElement.prototype.__hidpi = true;
+  HTMLCanvasElement.prototype.getContext = function (type, o) { const c = get.call(this, type, o); if (type === '2d' && c && !this.__hd && /\b(lesson|complex)-canvas\b/.test(this.className)) { const d = Math.min(2, window.devicePixelRatio || 1); this.__hd = 1; if (d > 1) { const w = this.width, h = this.height; this.width = Math.round(w * d); this.height = Math.round(h * d); c.scale(d, d); } } return c; }; })();
 (() => {
   const shell = document.querySelector('[data-lesson="derivative-arrays"]');
   if (!shell) return;
@@ -110,7 +114,7 @@
       controls.querySelector('[data-matrix]').innerHTML=[a,b,b,c].map(n=>`<span>${fmt(n)}</span>`).join('');
       const image=ctx.createImageData(720,420); let p=0;
       const base=rgb(colors.card);for(let py=0;py<420;py++){for(let px=0;px<720;px++){const u=(px-360)/95,v=(210-py)/95,q=.5*(a*u*u+2*b*u*v+c*v*v), n=Math.tanh(q/3); const pos=[11,141,160],neg=[223,106,69],mix=n>=0?pos:neg,amt=Math.min(.75,Math.abs(n)*.75); image.data[p++]=base[0]*(1-amt)+mix[0]*amt;image.data[p++]=base[1]*(1-amt)+mix[1]*amt;image.data[p++]=base[2]*(1-amt)+mix[2]*amt;image.data[p++]=255;}}
-      ctx.putImageData(image,0,0); axes(360,210,1.55); arrow(360,210,115*Math.cos(th),115*Math.sin(th),colors.coral,'u');
+      {const o=document.createElement('canvas');o.width=720;o.height=420;o.getContext('2d').putImageData(image,0,0);ctx.drawImage(o,0,0,720,420)} axes(360,210,1.55); arrow(360,210,115*Math.cos(th),115*Math.sin(th),colors.coral,'u');
       ctx.fillStyle=colors.ink;ctx.textAlign='left';ctx.font='800 13px system-ui';ctx.fillText(t('teal: q > 0','青緑：q > 0'),24,30);ctx.fillText(t('coral: q < 0','珊瑚：q < 0'),24,50);
       let kind=t('inconclusive / flat','判定不能・平坦'); if(l2>1e-7)kind=t('local minimum','局所最小');else if(l1< -1e-7)kind=t('local maximum','局所最大');else if(l1>1e-7&&l2< -1e-7)kind=t('saddle','鞍点');
       renderReadouts([[t('Eigenvalue λ₁','固有値 λ₁'),fmt(l1)],[t('Eigenvalue λ₂','固有値 λ₂'),fmt(l2)],['det H',fmt(det)],[t('Critical point','臨界点'),kind]]);

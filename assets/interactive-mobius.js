@@ -1,3 +1,7 @@
+/* Sharp on high-density screens: the lesson canvases are drawn in fixed logical units (720 x 420, 320 x 320), so their
+   backing store is multiplied by the device pixel ratio and the context pre-scaled the first time it is asked for. */
+(() => { if (HTMLCanvasElement.prototype.__hidpi) return; const get = HTMLCanvasElement.prototype.getContext; HTMLCanvasElement.prototype.__hidpi = true;
+  HTMLCanvasElement.prototype.getContext = function (type, o) { const c = get.call(this, type, o); if (type === '2d' && c && !this.__hd && /\b(lesson|complex)-canvas\b/.test(this.className)) { const d = Math.min(2, window.devicePixelRatio || 1); this.__hd = 1; if (d > 1) { const w = this.width, h = this.height; this.width = Math.round(w * d); this.height = Math.round(h * d); c.scale(d, d); } } return c; }; })();
 (() => {
   const shell=document.querySelector('[data-lesson="mobius"]'); if(!shell)return;
   const mount=shell.querySelector('[data-interactive-mount]'); if(!mount)return;
