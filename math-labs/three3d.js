@@ -254,7 +254,7 @@ export async function create(host, opts = {}) {
   S.corona = (p, r = 1, c = '#ffffff', o = {}) => {
     const k = o.size ?? 1.3, m = new THREE.MeshBasicNodeMaterial({ color: colour(c), transparent: true, depthWrite: false, blending: THREE.AdditiveBlending });
     const mu = normalView.dot(positionView.normalize().negate()).clamp(0, 1), edge = Math.sqrt(1 - 1 / (k * k));
-    m.colorNode = materialColor; m.opacityNode = mu.div(edge).clamp(0, 1).pow(o.falloff ?? 2.4).mul(o.strength ?? 0.55);
+    m.colorNode = materialColor; m.opacityNode = (o.rim ? float(1).sub(mu) : mu.div(edge).clamp(0, 1)).pow(o.falloff ?? 2.4).mul(o.strength ?? 0.55);
     const mesh = new THREE.Mesh(new THREE.SphereGeometry(1, 64, 32), m); mesh.scale.setScalar(r * k); mesh.position.copy(V(p)); mesh.userData.k = k;
     mesh.at = (q) => { mesh.position.copy(V(q)); lab.invalidate(); return mesh; };
     mesh.setR = (rr) => { mesh.scale.setScalar(rr * k); return mesh; };

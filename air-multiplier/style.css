@@ -117,6 +117,11 @@ main > section > p + p, .lab > p + p { margin-top: 1em; }
 /* Static figures: the fallback and the cross-section */
 .fb-axis { stroke: var(--rule-firm); stroke-width: 1; stroke-dasharray: 6 5; }
 .fb-loop { fill: color-mix(in oklab, var(--ink) 16%, var(--paper)); stroke: var(--ink-soft); stroke-width: 1; }
+/* the cut face of the moulded ABS loop: satin silver with a light hatch, and the hollow plenum behind it in shadow */
+.xs .fb-loop { fill: url(#xs-abs); stroke: #6d737a; stroke-width: 1.1; filter: drop-shadow(0 3px 5px rgba(0,0,0,.18)); }
+.xs-g0 { stop-color: #eef0f2; } .xs-g1 { stop-color: #c3c8cd; } .xs-g2 { stop-color: #8e959c; }
+.xs-c0 { stop-color: #3c4248; } .xs-c1 { stop-color: #15181b; }
+.xs-hatch { stroke: rgba(0,0,0,.08); stroke-width: 1; }
 .fb-base { fill: color-mix(in oklab, var(--ink) 16%, var(--paper)); stroke: var(--ink-soft); stroke-width: 1; }
 .fb-p path, .fb-path { fill: none; stroke: var(--flow-primary); stroke-width: 2.4; }
 .fb-i path { fill: none; stroke: var(--flow-induced); stroke-width: 1.6; }

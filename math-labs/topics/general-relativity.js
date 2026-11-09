@@ -260,15 +260,16 @@
         host: st.v3, aspect: 0.78, maxH: 440, camera: [-6.3, -22.5, 8.6], target: [0, 0, 0.3], fov: 34,
         init(S) {
           st.flat = false;
-          const dark = new S.THREE.MeshPhysicalMaterial({ color: 0x060606, roughness: 0.35, clearcoat: 0.8, clearcoatRoughness: 0.2 });
-          st.bh = new S.THREE.Mesh(new S.THREE.SphereGeometry(1, 48, 32), dark); S.add(st.bh);
-          st.ps = S.sphere([0, 0, 0], 1, { c: 'c4', opacity: 0.1, rough: 0.2, coat: 0.8, glass: true, thickness: 0.04, ior: 1.15 });
-          st.psRing = S.tube(L.seq(97, (i) => { const a = L.TAU * i / 96; return [Math.cos(a), 0, Math.sin(a)]; }), { c: 'c4', r: 0.012, closed: true });
-          st.rays = L.seq(NB, (i) => S.tube([[0, 0, 0], [0, 0, 0.01]], { c: 'hl', r: i === 0 ? 0.05 : 0.022, glow: i === 0 ? 0.35 : 0.15, opacity: i === 0 ? 1 : 0.8 }));
-          st.ref = S.lines([[[0, 0, 0], [0, 0, 0]]], { c: 'muted', opacity: 0.8 });
-          st.axis = S.lines([[[0, 0, 0], [0, 0, 0]]], { c: 'ink', opacity: 0.35 });
-          st.fdot = S.sphere([0, 0, 0], 0.09, { c: 'ink' });
-          st.labPS = S.label(T('photon sphere', '光子球'), [0, 0, 0], { small: true, c: 'c4', align: 'middle', dy: 20 });
+          // against the night sky: the horizon is perfectly black (nothing comes back out), the photon sphere a faint shell of trapped light
+          S.space();
+          st.bh = new S.THREE.Mesh(new S.THREE.SphereGeometry(1, 64, 48), new S.THREE.MeshBasicMaterial({ color: 0x000000 })); S.add(st.bh);
+          st.ps = S.corona([0, 0, 0], 1, '#ffd9a8', { size: 1, rim: true, strength: 0.6, falloff: 3 });
+          st.psRing = S.tube(L.seq(97, (i) => { const a = L.TAU * i / 96; return [Math.cos(a), 0, Math.sin(a)]; }), { c: '#ffe2b8', r: 0.012, closed: true, glow: 0.8 });
+          st.rays = L.seq(NB, (i) => S.tube([[0, 0, 0], [0, 0, 0.01]], { c: '#ffd27a', r: i === 0 ? 0.05 : 0.022, glow: i === 0 ? 1 : 0.7, opacity: i === 0 ? 1 : 0.85 }));
+          st.ref = S.lines([[[0, 0, 0], [0, 0, 0]]], { c: '#8d93a0', opacity: 0.8 });
+          st.axis = S.lines([[[0, 0, 0], [0, 0, 0]]], { c: '#c9ccd3', opacity: 0.4 });
+          st.fdot = S.sphere([0, 0, 0], 0.09, { c: '#f2efe6', glow: 0.8 });
+          st.labPS = S.label(T('photon sphere', '光子球'), [0, 0, 0], { small: true, c: '#ffe2b8', align: 'middle', dy: 20 });
           st.labA = S.label('', [0, 0, 0], { small: true, c: 'hl', dy: -10 });
           st.labF = S.label(T('rays meet the axis', '光線が軸と交わる'), [0, 0, 0], { small: true, align: 'middle', dy: 22 });
           st.labU = S.label(T('undeflected', '偏向なし'), [0, 0, 0], { small: true, c: 'muted' });
@@ -278,7 +279,7 @@
           // stretch the box downstream far enough to show where the ring of rays meets the axis, when that is not too far
           const X = f !== null && f * 1.12 > 1.35 * EE && f * 1.12 < 3.2 * EE ? f * 1.12 : 1.35 * EE, k = 15 / (X + X0), cx = (X - X0) / 2 * k;
           const W = (q, psi) => [q[0] * k, q[1] * Math.cos(psi) * k, q[1] * Math.sin(psi) * k];
-          st.bh.scale.setScalar(k); st.ps.scale.setScalar(1.5 * k); st.psRing.scale.setScalar(1.5 * k);
+          st.bh.scale.setScalar(k); st.ps.setR(1.5 * k); st.psRing.scale.setScalar(1.5 * k);
           const pts = clip(R.pts, X, Y, 260, X0);
           st.rays.forEach((t, i) => { const psi = Math.PI / 2 + L.TAU * i / NB; t.update(pts.map((q) => W(q, psi))); });
           st.ref.update([[[-X0 * k, 0, bb * k], [X * k, 0, bb * k]]]);
