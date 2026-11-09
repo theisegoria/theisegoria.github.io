@@ -55,9 +55,13 @@ main > section + section { border-top: 1px solid var(--rule); padding-top: 3rem;
 }
 .lab-aside[hidden] { display: none; }
 #unrolled { width: 100%; height: auto; max-height: 168px; display: block; border-radius: 3px; overflow: hidden; }
-#unrolled .u-ring { fill: var(--ink-soft); }
-#unrolled .u-rotor { fill: var(--accent); }
-#unrolled .u-key text { font: 7px var(--sans); fill: var(--paper); letter-spacing: .04em; opacity: .9; }
+/* moulded POM cam rings and the terracotta rotor, lit from above, with the dark housing between them */
+#unrolled .u-ring { stroke: rgba(80,66,48,.45); stroke-width: .5; stroke-linejoin: round; }
+#unrolled .u-up { fill: url(#u-pom-up); }
+#unrolled .u-lo { fill: url(#u-pom-lo); }
+#unrolled .u-rotor { fill: url(#u-rot); stroke: rgba(255,214,190,.55); stroke-width: .5; stroke-linejoin: round; }
+#unrolled .u-key text { font: 600 7px var(--sans); fill: #4a4034; letter-spacing: .04em; }
+#unrolled .u-key text.u-on-rotor { fill: #fff3ea; }
 #u-caption { margin: 0; font: .8125rem/1.5 var(--sans); color: var(--ink-soft); }
 
 .lab-views { display: flex; gap: .4rem; }

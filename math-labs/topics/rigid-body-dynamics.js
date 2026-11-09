@@ -330,9 +330,17 @@
           st.world = new TH.Group(); st.body = new TH.Group(); st.world.add(st.body); S.add(st.world);
           const h = DIMS.map((x) => x / 2);
           const faceMat = (c, o = {}) => S.mat(c, { rough: 0.48, coat: 0.5, ...o });
-          const box = new TH.Mesh(new TH.BoxGeometry(...h), [faceMat('muted'), faceMat('muted'), faceMat('c2'), faceMat('c2'), faceMat('c1'), faceMat('c3')]);
-          const edges = new TH.LineSegments(new TH.EdgesGeometry(box.geometry), new TH.LineBasicMaterial({ color: S.colour('ink'), transparent: true, opacity: 0.55 }));
-          st.body.add(box, edges);
+          // the body is a real thing with these proportions: a clothbound hardcover book, boards over a block of pages
+          const [bx, by, bz] = h, bd = 0.028, cloth = S.mat('#6d1f2c', { rough: 0.78, coat: 0.15, sheen: 0.5, sheenColour: '#c98a8f' });
+          const paper = (horiz) => S.canvasTexture(256, 256, (u, v) => { const t = horiz ? v : u, q = 226 + 14 * Math.sin(t * 900) * Math.sin(t * 37) + 10 * S.noise.noise3(t * 300, 1, 2); return [q + 8, q + 2, q - 14]; });
+          const pm = (horiz) => S.mat('#ffffff', { map: paper(horiz), rough: 0.9, coat: 0 });
+          const pages = new TH.Mesh(new TH.BoxGeometry(bx - 0.03, by - 0.04, bz - 2 * bd), [pm(true), pm(true), pm(false), pm(false), cloth, cloth]); pages.position.x = 0.012;
+          const boardG = new TH.BoxGeometry(bx, by, bd);
+          const b1 = new TH.Mesh(boardG, cloth), b2 = new TH.Mesh(boardG, cloth); b1.position.z = (bz - bd) / 2; b2.position.z = -(bz - bd) / 2;
+          const spine = new TH.Mesh(new TH.CylinderGeometry(bz / 2, bz / 2, by, 32, 1, false, Math.PI, Math.PI), cloth); spine.position.x = -bx / 2 + 0.01; spine.scale.set(0.35, 1, 1);
+          for (const m of [pages, b1, b2, spine]) { m.castShadow = m.receiveShadow = true; st.body.add(m); }
+          const foil = S.mat('#d9b25a', { metal: 1, rough: 0.25 });
+          for (const zz of [-0.06, 0.06]) { const band = new TH.Mesh(new TH.BoxGeometry(0.012, by * 0.9, 0.02), foil); band.position.set(-bx / 2 - 0.006 - bz * 0.17, 0, zz); st.body.add(band); }
           // the body-fixed sphere: its front face writes depth so curves on the far side are hidden
           const shell = new TH.Mesh(new TH.SphereGeometry(RS, 64, 40), S.mat('c4', { opacity: 0.07, rough: 0.2, coat: 0.9, depthWrite: true, glass: true, thickness: 0.04, ior: 1.15 }));
           shell.renderOrder = 1; shell.userData.noOcclude = true; st.body.add(shell);

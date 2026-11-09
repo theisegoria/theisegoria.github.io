@@ -375,13 +375,14 @@
         host: st.v3, aspect: 0.72, maxH: 460, camera: [2.2, -6.4, 2.9], target: [0, 0, 0], fov: 33,
         init(S) {
           st.flat = false;
-          S.tube(L.seq(121, (i) => { const th = i / 120 * TAU; return [0, Math.cos(th), Math.sin(th)]; }), { c: 'ink', r: 0.035, closed: true, metal: 0.6, rough: 0.3 });
+          // an enamelled copper loop, and a classic painted bar magnet: red north, blue-grey south, ground steel ends
+          S.tube(L.seq(121, (i) => { const th = i / 120 * TAU; return [0, Math.cos(th), Math.sin(th)]; }), { c: '#b8672f', r: 0.035, closed: true, metal: 1, rough: 0.22, coat: 0.8 });
           st.disc = S.disc([0, 0, 0], [1, 0, 0], 0.985, { c: 'c1', opacity: 0.2 });
           st.disc.userData.noOcclude = true;
-          st.n = S.box([MAG, 2 * MW, 2 * MW], [MAG / 2, 0, 0], { c: 'c1', rough: 0.35, coat: 0.6 });
-          st.sPole = S.box([MAG, 2 * MW, 2 * MW], [-MAG / 2, 0, 0], { c: 'c2', rough: 0.35, coat: 0.6 });
-          st.lN = S.label('N', [0, 0, 0], { small: true, c: 'c1' });
-          st.lS = S.label('S', [0, 0, 0], { small: true, c: 'c2' });
+          st.n = S.box([MAG, 2 * MW, 2 * MW], [MAG / 2, 0, 0], { c: '#c8302b', rough: 0.4, coat: 0.85 });
+          st.sPole = S.box([MAG, 2 * MW, 2 * MW], [-MAG / 2, 0, 0], { c: '#3d5a8a', rough: 0.4, coat: 0.85 });
+          st.lN = S.label('N', [0, 0, 0], { small: true, c: '#c8302b' });
+          st.lS = S.label('S', [0, 0, 0], { small: true, c: '#3d5a8a' });
           st.thru = S.lines([], { c: 'c1', opacity: 0.95 });
           st.rest = S.lines([], { c: 'c1', opacity: S.dark ? 0.3 : 0.25 });
           st.cur = L.seq(8, () => S.arrow([0, 0, 0], [0, 0, 0.01], { c: 'hl', r: 0.03, glow: 0.4 }));
