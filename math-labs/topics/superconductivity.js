@@ -171,7 +171,13 @@
           st.flat = false;
           const THREE = S.THREE;
           S.backdrop();
-          st.sph = S.sphere([0, 0, 0], 1, { c: 'c3', opacity: 0.1, rough: 0.12, coat: 0.9, glass: true, thickness: 0.6, ior: 1.3 });
+          // a niobium sphere with a quarter cut away toward the viewer, so the screening current under the surface shows
+          {
+            const nb = S.mat('#7f858d', { metal: 1, rough: 0.32, coat: 0.2 }), cut = S.mat('#b3b8bf', { metal: 1, rough: 0.18, coat: 0.5 });
+            const g = new THREE.SphereGeometry(1, 96, 64, (175 * PI) / 180, (270 * PI) / 180); g.rotateX(PI / 2);
+            st.sph = new THREE.Mesh(g, nb); st.sph.castShadow = st.sph.receiveShadow = true; S.add(st.sph);
+            for (const az of [-95, -5]) { const f = new THREE.Mesh(new THREE.CircleGeometry(1, 64, -PI / 2, PI).rotateX(PI / 2).rotateZ((az * PI) / 180), cut); S.add(f); }
+          }
           st.tubes = [];
           RINGS.forEach((r0, ri) => { for (let k = 0; k < AZ; k++) st.tubes.push({ ri, k, m: S.tube([[0, 0, -1], [0, 0, 1]], { c: ri < 3 ? 'c1' : 'c4', r: 0.018, n: 200 }) }); });
           st.ring = S.tube(L.seq(97, (i) => [0.92 * Math.cos(TAU * i / 96), 0.92 * Math.sin(TAU * i / 96), 0]), { c: 'hl', r: 0.03, glow: 0.35 });
@@ -196,8 +202,6 @@
             const dir = new S.THREE.Vector3(Math.sin(ph), -Math.cos(ph), 0);
             m.quaternion.setFromUnitVectors(new S.THREE.Vector3(0, 1, 0), dir);
           });
-          const sm = st.sph.material;
-          if (sm.transmission) sm.color.copy(S.colour(sc ? 'c3' : 'muted')).lerp(S.colour('#ffffff'), 0.8);
           st.lab.set([0, 0, -1.4], sc ? '' : T('normal state', '常伝導'));
           S.invalidate();
           draw2d();

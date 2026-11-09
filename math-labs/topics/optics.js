@@ -235,9 +235,10 @@
           S.lines([[[-BEAM - 0.2, 0, 0], [BEAM + 0.3, 0, 0]]], { c: 'muted', opacity: 0.6 });
           S.arrow([BEAM - 0.1, 0, 0], [0.5, 0, 0], { c: 'muted', r: 0.014 });
           st.F = [0, 1, 2].map(() => {
-            const disc = S.disc([0, 0, 0], [1, 0, 0], RF, { c: 'c1', opacity: 0.14, rough: 0.15, coat: 0.9, glass: true, thickness: 0.03, ior: 1.5 });
+            // a real sheet polariser: grey dichroic film (it passes about 38 % of unpolarised light) in a black anodised mount
+            const disc = S.disc([0, 0, 0], [1, 0, 0], RF, { c: '#2f3236', opacity: 0.5, rough: 0.12, coat: 1 });
             disc.userData.noOcclude = true;
-            const rim = S.tube(L.seq(97, (j) => { const a = j / 96 * L.TAU; return [0, RF * Math.sin(a), RF * Math.cos(a)]; }), { c: 'c1', r: 0.016, closed: true });
+            const rim = S.tube(L.seq(97, (j) => { const a = j / 96 * L.TAU; return [0, RF * Math.sin(a), RF * Math.cos(a)]; }), { c: '#1e1f22', r: 0.045, closed: true, metal: 0.6, rough: 0.4 });
             const axis = S.tube([[0, 0, -RF], [0, 0, RF]], { c: 'c1', r: 0.014, opacity: 0.85 });
             const lab = S.label('', [0, 0, -RF - 0.2], { small: true, align: 'middle', dy: 18 });
             return { disc, rim, axis, lab };
