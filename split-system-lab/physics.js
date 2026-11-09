@@ -38,11 +38,41 @@ export function initPhysics({getState,setMode,showPart}){
   function text(svg,x,y,value,cls='',anchor='middle'){svg.append(svgEl('text',{x,y,class:cls,'text-anchor':anchor},value));}
   function arrow(svg,x1,y1,x2,y2,color,active=false){svg.append(svgEl('path',{d:`M${x1},${y1} L${x2},${y2}`,fill:'none',stroke:color,'stroke-width':active?4:2.5}));const a=Math.atan2(y2-y1,x2-x1),x=(x1+x2)/2,y=(y1+y2)/2;svg.append(svgEl('path',{d:`M${x-8*Math.cos(a-.5)},${y-8*Math.sin(a-.5)} L${x},${y} L${x-8*Math.cos(a+.5)},${y-8*Math.sin(a+.5)}`,fill:'none',stroke:color,'stroke-width':2.5}));}
   const colours=['#c3582c','#bd7a39','#247f89','#2279a0'];
-  function cycleDiagram(v){const heat=getState().mode==='heating';const {svg,w}=svgRoot($('cycle-diagram'),300,'Closed refrigerant loop. Vapour is compressed, condensed to liquid, throttled to a mixture, then evaporated back to vapour.');const left=w*.245,right=w*.755,top=75,bottom=228,bw=Math.min(150,w*.43),bh=66;
+  // Real components rather than boxes: a rotary compressor with its suction accumulator, finned coils with copper return
+  // bends (warm-tinted when condensing, frosted-blue when evaporating), and an electronic expansion valve.
+  function cycleDefs(svg){const d=svgEl('defs');
+    const lg=(id,stops,x2=0,y2=1)=>{const g=svgEl('linearGradient',{id,x1:0,y1:0,x2,y2});stops.forEach(([o,c])=>g.append(svgEl('stop',{offset:o,'stop-color':c})));d.append(g);};
+    lg('cy-shell',[[0,'#3a3f45'],[.28,'#8d949b'],[.42,'#2b2f34'],[1,'#121417']],1,0);lg('cy-cu',[[0,'#e3a37a'],[.45,'#b8672f'],[1,'#7c3e18']],0,1);
+    lg('cy-fin',[[0,'#e9edf0'],[.5,'#c4cbd1'],[1,'#9aa3ab']],1,0);lg('cy-brass',[[0,'#f1d48a'],[.5,'#c79b3e'],[1,'#8a6420']],0,1);lg('cy-coil',[[0,'#40454b'],[.5,'#1c1f22'],[1,'#0c0d0f']],1,0);
+    const f=svgEl('filter',{id:'cy-glow',x:'-20%',y:'-20%',width:'140%',height:'140%'});f.append(svgEl('feDropShadow',{dx:0,dy:2,stdDeviation:3,'flood-color':'#183e52','flood-opacity':.35}));d.append(f);svg.append(d);}
+  function compressorArt(svg,x,y){const g=svgEl('g',{transform:`translate(${x},${y})`});
+    g.append(svgEl('path',{d:'M-2,-22 C-2,-31 12,-31 14,-33 L26,-33',fill:'none',stroke:'url(#cy-cu)','stroke-width':4,'stroke-linecap':'round'}));
+    g.append(svgEl('rect',{x:-14,y:-24,width:28,height:46,rx:13,fill:'url(#cy-shell)'}));
+    g.append(svgEl('line',{x1:-14,y1:-4,x2:14,y2:-4,stroke:'#0b0c0e','stroke-width':1.2,'stroke-opacity':.7}));
+    g.append(svgEl('rect',{x:-30,y:-16,width:11,height:30,rx:5.5,fill:'url(#cy-shell)'}));
+    g.append(svgEl('path',{d:'M-24.5,14 L-24.5,20 Q-24.5,26 -18,26 L-6,26',fill:'none',stroke:'url(#cy-cu)','stroke-width':3,'stroke-linecap':'round'}));
+    g.append(svgEl('rect',{x:-9,y:-30,width:18,height:7,rx:2,fill:'#22262a'}));
+    g.append(svgEl('rect',{x:-11,y:22,width:22,height:4,rx:1.5,fill:'#3c4146'}));svg.append(g);}
+  function coilArt(svg,x,y,warm){const g=svgEl('g',{transform:`translate(${x},${y})`}),W=58,H=36;
+    g.append(svgEl('rect',{x:-W/2,y:-H/2,width:W,height:H,rx:2,fill:'url(#cy-fin)',stroke:'#7d868e','stroke-width':.8}));
+    for(let i=1;i<W/2.4;i++)g.append(svgEl('line',{x1:-W/2+i*2.4,y1:-H/2+1,x2:-W/2+i*2.4,y2:H/2-1,stroke:'#7e878f','stroke-width':.55,'stroke-opacity':.75}));
+    g.append(svgEl('rect',{x:-W/2,y:-H/2,width:W,height:H,rx:2,fill:warm?'#ff8a3d':'#9fd3ff','fill-opacity':warm?.12:.22}));
+    for(let k=0;k<4;k++){const yy=-H/2+5+k*8.7;g.append(svgEl('circle',{cx:-W/2-1.5,cy:yy,r:1.9,fill:'#b8672f'}));if(k%2===0)g.append(svgEl('path',{d:`M${W/2},${yy} a4.35,4.35 0 0 1 0,8.7`,fill:'none',stroke:'url(#cy-cu)','stroke-width':2.6}));}
+    svg.append(g);}
+  function valveArt(svg,x,y){const g=svgEl('g',{transform:`translate(${x},${y})`});
+    g.append(svgEl('line',{x1:-30,y1:8,x2:30,y2:8,stroke:'url(#cy-cu)','stroke-width':4,'stroke-linecap':'round'}));
+    g.append(svgEl('rect',{x:-11,y:-1,width:22,height:18,rx:3,fill:'url(#cy-brass)'}));
+    g.append(svgEl('rect',{x:-9,y:-26,width:18,height:26,rx:3,fill:'url(#cy-coil)'}));
+    g.append(svgEl('path',{d:'M9,-18 C20,-18 22,-26 28,-28',fill:'none',stroke:'#26292d','stroke-width':1.6}));
+    g.append(svgEl('rect',{x:-6,y:-22,width:12,height:3,rx:1,fill:'#5d646b'}));svg.append(g);}
+  function cycleDiagram(v){const heat=getState().mode==='heating';const {svg,w}=svgRoot($('cycle-diagram'),340,'Closed refrigerant loop. Vapour is compressed, condensed to liquid, throttled to a mixture, then evaporated back to vapour.');const left=w*.245,right=w*.755,top=92,bottom=252,bw=Math.min(150,w*.43),bh=104;
+    cycleDefs(svg);
     arrow(svg,left+bw/2,top,right-bw/2,top,colours[0],local.step===0);arrow(svg,right,top+bh/2,right,bottom-bh/2,colours[1],local.step===1);arrow(svg,right-bw/2,bottom,left+bw/2,bottom,colours[2],local.step===2);arrow(svg,left,bottom-bh/2,left,top+bh/2,colours[3],local.step===3);
     const nodes=[[left,top,'Compressor','Vapour → vapour'],[right,top,'Condenser',heat?'Indoor coil':'Outdoor coil'],[right,bottom,'Expansion device','Liquid → mixture'],[left,bottom,'Evaporator',heat?'Outdoor coil':'Indoor coil']];
-    nodes.forEach(([x,y,title,sub],i)=>{svg.append(svgEl('rect',{x:x-bw/2,y:y-bh/2,width:bw,height:bh,rx:8,fill:local.step===i?'#183e52':'#f0f5f8',stroke:local.step===i?'#183e52':'#ccd9e1'}));text(svg,x,y-4,title,local.step===i?'node-title selected':'node-title');text(svg,x,y+17,sub,local.step===i?'node-sub selected':'node-sub');});
-    text(svg,w/2,17,'2 · HIGH-PRESSURE VAPOUR','state-label');text(svg,w/2,292,'4 · LOW-PRESSURE MIXTURE','state-label');text(svg,w/2,143,`${fmt(v.ph)} bar high side`,'diagram-pressure');text(svg,w/2,166,`${fmt(v.pl)} bar low side`,'diagram-pressure');
+    nodes.forEach(([x,y,title,sub],i)=>{const on=local.step===i;svg.append(svgEl('rect',{x:x-bw/2,y:y-bh/2,width:bw,height:bh,rx:10,fill:'var(--cy-card,#f6f9fb)',stroke:on?'#183e52':'#ccd9e1','stroke-width':on?2:1,filter:on?'url(#cy-glow)':''}));
+      if(i===0)compressorArt(svg,x,y-16);else if(i===2)valveArt(svg,x,y-16);else coilArt(svg,x,y-18,i===1);
+      text(svg,x,y+28,title,'node-title');text(svg,x,y+44,sub,'node-sub');});
+    text(svg,w/2,17,'2 · HIGH-PRESSURE VAPOUR','state-label');text(svg,w/2,334,'4 · LOW-PRESSURE MIXTURE','state-label');text(svg,w/2,163,`${fmt(v.ph)} bar high side`,'diagram-pressure');text(svg,w/2,186,`${fmt(v.pl)} bar low side`,'diagram-pressure');
   }
   function phChart(v){const {svg,w}=svgRoot($('ph-chart'),300,`R32 pressure versus specific enthalpy. Low pressure ${fmt(v.pl)} bar, high pressure ${fmt(v.ph)} bar. Selected process ${local.step+1}.`);const L=54,R=w-19,T=18,B=247;const hs=thermoData.dome.flatMap(d=>[d[2],d[3]]).concat([v.h1,v.h2,v.h3]);const hmin=Math.floor((Math.min(...hs)-15)/50)*50,hmax=Math.ceil((Math.max(...hs)+15)/50)*50;const ps=thermoData.dome.map(d=>d[1]).concat([v.pl,v.ph]);const pmin=Math.min(...ps)*.9,pmax=Math.max(...ps)*1.08;const x=h=>L+(h-hmin)/(hmax-hmin)*(R-L),y=p=>B-(Math.log(p)-Math.log(pmin))/(Math.log(pmax)-Math.log(pmin))*(B-T);
     svg.append(svgEl('rect',{x:L,y:T,width:R-L,height:B-T,fill:'none',stroke:'#d4dfe5'}));
