@@ -359,6 +359,68 @@ export async function create(host, opts = {}) {
     return mesh;
   };
   /* thin line, for many curves at once (grids, trails) */
+  /* A cross-section swept along a path: path(u) -> [x, y, z] for u in [0, 1]; section(u) -> closed list of [a, b] in the
+     plane normal to the path, a along the frame's first normal and b along the second (frames are parallel-transported, so
+     they never flip); o.up (vector) fixes the first normal at u = 0. o.colour(u, j) paints vertices. o.caps closes the ends.
+     Returns a mesh with .update(path, section, colour). Good for tapered tubes (dendrites, towers) and blades (aerofoils
+     with chord and twist). */
+  S.sweep = (path, section, o = {}) => {
+    const nU = o.n ?? 120, geo = new THREE.BufferGeometry();
+    const material = S.mat(o.c ?? 'c1', { ...o, vertexColors: !!o.colour });
+    const mesh = new THREE.Mesh(geo, material); mesh.castShadow = castOK(mesh); mesh.receiveShadow = true;
+    const tmp = new THREE.Color();
+    mesh.update = (pth = path, sec = section, col = o.colour) => {
+      path = pth; section = sec;
+      const P = [], T = [];
+      for (let i = 0; i <= nU; i++) P.push(V(pth(i / nU)));
+      for (let i = 0; i <= nU; i++) { const a = P[Math.max(0, i - 1)], b = P[Math.min(nU, i + 1)]; T.push(b.clone().sub(a).normalize()); }
+      // parallel transport of the first normal
+      let N = o.up ? V(o.up).clone() : (Math.abs(T[0].z) < 0.9 ? new THREE.Vector3(0, 0, 1) : new THREE.Vector3(1, 0, 0));
+      N.sub(T[0].clone().multiplyScalar(N.dot(T[0]))).normalize();
+      const Ns = [], Bs = [];
+      for (let i = 0; i <= nU; i++) {
+        if (i > 0) { N.sub(T[i].clone().multiplyScalar(N.dot(T[i]))); if (N.lengthSq() < 1e-12) N = Ns[i - 1].clone(); N.normalize(); }
+        Ns.push(N.clone()); Bs.push(T[i].clone().cross(N).normalize());
+      }
+      const s0 = sec(0), m = s0.length, pos = new Float32Array((nU + 1) * m * 3 + (o.caps ? 6 : 0)), cols = new Float32Array(pos.length), idx = [];
+      for (let i = 0; i <= nU; i++) {
+        const u = i / nU, sc = i === 0 ? s0 : sec(u);
+        for (let j = 0; j < m; j++) {
+          const [a, b] = sc[j], q = (i * m + j) * 3, p = P[i], n = Ns[i], bb = Bs[i];
+          pos[q] = p.x + a * n.x + b * bb.x; pos[q + 1] = p.y + a * n.y + b * bb.y; pos[q + 2] = p.z + a * n.z + b * bb.z;
+          if (col) { const c = col(u, j); tmp.copy(c instanceof THREE.Color ? c : colour(c)); cols[q] = tmp.r; cols[q + 1] = tmp.g; cols[q + 2] = tmp.b; }
+        }
+      }
+      for (let i = 0; i < nU; i++) for (let j = 0; j < m; j++) { const a = i * m + j, b = i * m + ((j + 1) % m), c = a + m, d = b + m; idx.push(a, c, b, b, c, d); }
+      if (o.caps) {
+        const base = (nU + 1) * m;
+        for (const [k, i] of [[0, 0], [1, nU]]) {
+          const ctr = new THREE.Vector3(); for (let j = 0; j < m; j++) ctr.add(new THREE.Vector3(pos[(i * m + j) * 3], pos[(i * m + j) * 3 + 1], pos[(i * m + j) * 3 + 2])); ctr.multiplyScalar(1 / m);
+          const q = (base + k) * 3; pos[q] = ctr.x; pos[q + 1] = ctr.y; pos[q + 2] = ctr.z;
+          if (col) { const c = col(i / nU, 0); tmp.copy(c instanceof THREE.Color ? c : colour(c)); cols[q] = tmp.r; cols[q + 1] = tmp.g; cols[q + 2] = tmp.b; }
+          for (let j = 0; j < m; j++) { const a = i * m + j, b = i * m + ((j + 1) % m); if (k === 0) idx.push(base, b, a); else idx.push(base + 1, a, b); }
+        }
+      }
+      geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+      if (col) geo.setAttribute('color', new THREE.BufferAttribute(cols, 3));
+      geo.setIndex(idx); geo.computeVertexNormals(); geo.computeBoundingSphere();
+      lab.invalidate(); return mesh;
+    };
+    mesh.update();
+    if (o.add !== false) S.add(mesh);
+    return mesh;
+  };
+  // a circle (or ellipse) section with k points, radius r, for S.sweep
+  S.ring = (r, k = 24, r2 = r) => Array.from({ length: k }, (_, j) => [r * Math.cos((2 * Math.PI * j) / k), r2 * Math.sin((2 * Math.PI * j) / k)]);
+  /* NACA four-digit aerofoil (closed, trailing edge to trailing edge over the upper then lower surface), chord 1 along +a
+     from the leading edge at 0, thickness t (0.12 for a 0012), camber m at p; n points per surface */
+  S.naca = (t = 0.12, m = 0, p = 0.4, n = 28) => {
+    const yt = (x) => 5 * t * (0.2969 * Math.sqrt(x) - 0.126 * x - 0.3516 * x * x + 0.2843 * x ** 3 - 0.1036 * x ** 4);
+    const yc = (x) => (m === 0 ? 0 : x < p ? (m / (p * p)) * (2 * p * x - x * x) : (m / ((1 - p) ** 2)) * (1 - 2 * p + 2 * p * x - x * x));
+    const up = [], lo = [];
+    for (let i = 0; i <= n; i++) { const x = (1 - Math.cos((Math.PI * i) / n)) / 2; up.push([x, yc(x) + yt(x)]); lo.push([x, yc(x) - yt(x)]); }
+    return [...up.reverse(), ...lo.slice(1, n)];
+  };
   S.lines = (segments, o = {}) => {
     const line = fatLines(o.c ?? 'muted', o.opacity ?? 0.6, o.w ?? 1.5, !!o.colours);
     line.update = (segs = segments, colours) => {
@@ -482,10 +544,11 @@ export async function create(host, opts = {}) {
     const el = document.createElement('span');
     el.className = 'lab3d-label' + (o.math ? ' is-math' : '') + (o.small ? ' is-small' : '');
     if (o.c) el.style.color = colour(o.c).css ?? '#' + colour(o.c).getHexString();
-    el.textContent = text;
+    const put = (s) => { if (window.Lab?.hasTex?.(s)) el.innerHTML = window.Lab.texHTML(s); else el.textContent = s; };
+    put(text);
     overlay.appendChild(el);
     const item = { el, p: V(p), o };
-    item.set = (q, t) => { if (q) item.p = V(q); if (t !== undefined) el.textContent = t; lab.invalidate(); return item; };
+    item.set = (q, t) => { if (q) item.p = V(q); if (t !== undefined) put(t); lab.invalidate(); return item; };
     item.show = (on) => { el.style.display = on ? '' : 'none'; return item; };
     item.remove = () => { el.remove(); S.labels.splice(S.labels.indexOf(item), 1); };
     S.labels.push(item);

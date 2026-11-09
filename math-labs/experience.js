@@ -26,10 +26,38 @@
     if (parent) parent.appendChild(node);
     return node;
   };
+  /* Authored LaTeX in lab strings: any string containing \( ... \) is typeset with KaTeX wherever the kit puts text
+     (captions, legends, readouts, figure labels, axis labels, 3D labels). Strings without it are plain text, as before. */
+  const TEX_RE = /\\\(([\s\S]*?)\\\)/g;
+  const hasTex = (s) => typeof s === 'string' && s.includes('\\(');
+  const escH = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
+  function texHTML(s) {
+    let out = '', last = 0;
+    for (const m of String(s).matchAll(TEX_RE)) {
+      out += escH(s.slice(last, m.index));
+      let r = null; try { r = window.katex ? window.katex.renderToString(m[1], { throwOnError: false, output: 'html' }) : null; } catch (e) { r = null; }
+      out += r ?? escH(m[1]); last = m.index + m[0].length;
+    }
+    return out + escH(String(s).slice(last));
+  }
+  const setText = (node, s) => { if (hasTex(s)) { node.innerHTML = texHTML(s); node.classList.add('lab-tex'); } else node.textContent = s ?? ''; return node; };
+  // typeset TeX inside an SVG figure: a foreignObject anchored at the text baseline (x, y)
+  function svgTex(parent, x, y, s, anchor, cls, c) {
+    const fo = document.createElementNS('http://www.w3.org/2000/svg', 'foreignObject');
+    fo.setAttribute('x', String(x)); fo.setAttribute('y', String(y - 30)); fo.setAttribute('width', '1'); fo.setAttribute('height', '40');
+    fo.setAttribute('class', 'lab-svgtex'); fo.style.overflow = 'visible';
+    const box = document.createElementNS('http://www.w3.org/1999/xhtml', 'div'); box.className = 'lab-svgtex-box';
+    const sp = document.createElementNS('http://www.w3.org/1999/xhtml', 'span'); sp.className = 'lab-svgtex-in ' + (cls || '');
+    sp.innerHTML = texHTML(s);
+    if (c) sp.style.color = `var(--lab-${c})`;
+    sp.style.transform = anchor === 'middle' ? 'translateX(-50%)' : anchor === 'end' ? 'translateX(-100%)' : 'none';
+    box.appendChild(sp); fo.appendChild(box); parent.appendChild(fo);
+    return fo;
+  }
   const h = (tag, cls, parent, text) => {
     const node = document.createElement(tag);
     if (cls) node.className = cls;
-    if (text !== undefined) node.textContent = text;
+    if (text !== undefined) setText(node, text);
     if (parent) parent.appendChild(node);
     return node;
   };
@@ -158,8 +186,8 @@
       }
       tx.forEach(([v, s]) => { const t = el('text', { x: X(v), y: pad.t + ph + 16, 'text-anchor': 'middle', class: 'lab-tick' }, axisG); t.textContent = s; });
       ty.forEach(([v, s]) => { const t = el('text', { x: pad.l - 7, y: Y(v) + 4, 'text-anchor': 'end', class: 'lab-tick' }, axisG); t.textContent = s; });
-      if (opt.xlabel) { const t = el('text', { x: pad.l + pw / 2, y: H - 6, 'text-anchor': 'middle', class: 'lab-axlabel' }, axisG); t.textContent = opt.xlabel; }
-      if (opt.ylabel) { const t = el('text', { x: pad.l + 6, y: pad.t + 14, class: 'lab-axlabel lab-ylabel' }, axisG); t.textContent = opt.ylabel; }
+      if (opt.xlabel) { if (hasTex(opt.xlabel)) svgTex(axisG, pad.l + pw / 2, H - 6, opt.xlabel, 'middle', 'lab-axlabel'); else { const t = el('text', { x: pad.l + pw / 2, y: H - 6, 'text-anchor': 'middle', class: 'lab-axlabel' }, axisG); t.textContent = opt.xlabel; } }
+      if (opt.ylabel) { if (hasTex(opt.ylabel)) svgTex(axisG, pad.l + 6, pad.t + 14, opt.ylabel, 'start', 'lab-axlabel lab-ylabel'); else { const t = el('text', { x: pad.l + 6, y: pad.t + 14, class: 'lab-axlabel lab-ylabel' }, axisG); t.textContent = opt.ylabel; } }
     }
 
     const style = (o2, kind) => {
@@ -233,6 +261,7 @@
         return el('circle', { cx: X(x), cy: Y(y), r: o2.r ?? 4.5, class: 'lab-dot' + (o2.hollow ? ' is-hollow' : ''), style: o2.hollow ? `stroke:var(--lab-${c});fill:var(--lab-plate)` : `fill:var(--lab-${c})` + (o2.op !== undefined ? `;opacity:${o2.op}` : '') }, o2.layer ? layers[o2.layer] : layers.over);
       },
       text(x, y, s, o2 = {}) {
+        if (hasTex(s)) return svgTex(o2.layer ? layers[o2.layer] : layers.over, X(x) + (o2.dx ?? 0), Y(y) + (o2.dy ?? 0), s, o2.anchor || 'middle', 'lab-label' + (o2.small ? ' is-small' : ''), o2.c);
         const t = el('text', { x: X(x) + (o2.dx ?? 0), y: Y(y) + (o2.dy ?? 0), 'text-anchor': o2.anchor || 'middle', class: 'lab-label' + (o2.math ? ' is-math' : '') + (o2.small ? ' is-small' : ''), style: o2.c ? `fill:var(--lab-${o2.c})` : null }, o2.layer ? layers[o2.layer] : layers.over);
         t.textContent = s;
         return t;
@@ -438,7 +467,7 @@
       const s = h('span', '', row);
       const sw = h('i', 'sw ' + (it.kind || 'line') + (it.dash ? ' is-dash' : ''), s);
       sw.style.setProperty('--sw', `var(--lab-${it.c || 'c1'})`);
-      s.appendChild(document.createTextNode(it.label));
+      s.appendChild(setText(document.createElement('span'), it.label));
     }
     return row;
   }
@@ -498,7 +527,7 @@
    * The experiment's definition sets three: true. init runs once when the scene
    * exists; update runs on every control change. When neither WebGPU nor WebGL 2
    * is available, or ?flat is in the URL, fallback draws the 2D figure instead. */
-  const V3 = '20261029e';
+  const V3 = '20261109a';
   let three3d = null;
   const flat = /[?&]flat\b/.test(location.search);
   function view3d(ctx, v, o) {
@@ -535,5 +564,5 @@
     });
   }
 
-  window.MathExperience = window.Lab = { fig, stage, legend, readout, animator, colours, cmaps, fmt, seq, sample, clamp, el, h, T, ja, TAU, reduced, ticks, view3d, onTheme: (f) => invalidate.push(f) };
+  window.MathExperience = window.Lab = { fig, stage, legend, readout, animator, colours, cmaps, fmt, seq, sample, clamp, el, h, T, ja, texHTML, setText, hasTex, TAU, reduced, ticks, view3d, onTheme: (f) => invalidate.push(f) };
 })();

@@ -132,6 +132,16 @@ Writing rules for any text you add, in figures or in patches:
 - No notes about how the page was made, and no AI or tool mentions.
 - Keep mathematical claims exact. If a figure is schematic or not to scale,
   say so in a caption. Fix wrong mathematics you find in the existing text.
+- Mathematics is LaTeX everywhere, never Unicode imitations (`E_K`, `√(4 − x²)`,
+  `λ₊`). Any string the kit puts on the page (captions via `L.h` or
+  `L.setText`, legends, readout keys and values, `f.text`, `xlabel`/`ylabel`,
+  `S.label`, control labels in the addition file) is typeset with KaTeX when it
+  contains `\( … \)`. Write them with `const tx = String.raw` so backslashes
+  stay single: `T(tx`length constant \(\lambda=\sqrt{R_m d/4R_i}\)`, tx`長さ定数 \(\lambda=\sqrt{R_m d/4R_i}\)`)`.
+  Set caption text with `L.setText(el, s)`, not `textContent`. Units outside
+  formulas (mm, mV, °C) and chemical symbols in prose may stay plain text; a
+  quantity with a subscript or operator is always TeX. Practice questions keep
+  using `$ … $`. Tick labels (`ticksX`/`ticksY`) are plain SVG text.
 
 ## Design bar
 
@@ -245,6 +255,23 @@ KaTeX cannot render, an answer its own checker rejects, `set` keys that do
 not exist or fall outside their range, or too little variety.
 
 ## 3D experiments
+
+**Standing rule: realism and physical accuracy.** Every visualization, and above
+all every 3D scene, must be as realistic and physically accurate as possible and
+meet an exceptionally high quality bar. Build the real object with its real
+geometry, proportions and materials (a neuron with soma, tapered branching
+dendrites, spines and myelinated axon; a rotor head with swashplate rings, servo
+jacks, pitch links and aerofoil blades with twist; a wave flume with glass walls
+and water), not an abstract stand-in made of primitives. Motion comes from the
+model (linkage kinematics, the PDE solution), never from decoration. Use real
+material colours (`S.mat('#c7ccd2', { metal: 0.95, rough: 0.24 })` for
+aluminium) for physical objects and theme tokens for data. `S.sweep(path,
+section, o)` sweeps any cross-section along a path with parallel-transport
+frames (tapered tubes, towers, blades); `S.ring(r, k)` and `S.naca(t, m, p)`
+give circular and NACA aerofoil sections. Anything exaggerated for visibility
+(diameters, heights) is said in a caption. Translucent (opacity < 1) parts
+behind `glass` vanish, so water or tissue seen through glass must be opaque.
+
 
 **Lighting is the photographic studio.** Every 3D scene renders through
 `assets/lab-kit/studio-look.js`, the same pipeline as the watch and speaker

@@ -18880,5 +18880,1510 @@
         "url": "https://web.stanford.edu/~boyd/cvxbook/bv_cvxbook.pdf"
       }
     ]
+  },
+  {
+    "slug": "random-matrices",
+    "title": [
+      "Random matrices: order in the eigenvalues of noise",
+      "ランダム行列：雑音の固有値に現れる秩序"
+    ],
+    "description": [
+      "Fill a large symmetric matrix with independent random numbers and compute its eigenvalues. The entries are pure noise, yet the eigenvalues are not: they fill an exact semicircle, they keep their distance from one another as if they repelled, and the largest of them sits at a sharply predictable edge. Eugene Wigner found the semicircle in the 1950s while modeling the energy levels of heavy nuclei, whose Hamiltonians were too complicated to write down; the same laws now describe zeros of the Riemann zeta function, the spacings of buses in Cuernavaca, and the noise floor that every principal component analysis has to beat. These experiments watch the semicircle assemble itself, look at the geometry that makes eigenvalues avoid each other, and find the exact signal strength below which a real pattern in data is invisible to the sample covariance.",
+      "大きな対称行列を独立な乱数で埋めて、その固有値を計算してみます。成分はただの雑音ですが、固有値はそうではありません。固有値はぴったり半円の形に分布し、互いに反発するかのように距離を保ち、最大のものは鋭く予言できる端に位置します。ユージン・ウィグナーは 1950 年代、ハミルトニアンを書き下せないほど複雑な重い原子核のエネルギー準位をモデル化する中で、この半円を見つけました。同じ法則は今では、リーマンのゼータ関数の零点、クエルナバカのバスの間隔、そしてどんな主成分分析も越えなければならない雑音の床を記述しています。ここでの実験では、半円がひとりでに組み上がる様子を見て、固有値が互いを避ける理由となる幾何を調べ、データの中の本物のパターンが標本共分散から見えなくなる、ちょうどの信号の強さを求めます。"
+    ],
+    "group": "applications",
+    "prerequisite": [
+      "Linear algebra (eigenvalues of symmetric matrices), probability (variance, the central limit theorem)",
+      "線形代数（対称行列の固有値）、確率（分散、中心極限定理）"
+    ],
+    "source": "Alan Edelman and N. Raj Rao · Random matrix theory, Acta Numerica 14, 233–297 (2005)",
+    "url": "https://math.mit.edu/~edelman/publications/random_matrix_theory.pdf",
+    "labs": [
+      {
+        "id": "rmt-semicircle",
+        "title": [
+          "1. The semicircle law",
+          "1. 半円則"
+        ],
+        "body": [
+          "Take an \\(n\\times n\\) matrix \\(A\\) of independent entries with mean 0 and variance 1, and symmetrise it, \\(H=(A+A^{\\mathsf T})/\\sqrt{2n}\\). Its \\(n\\) real eigenvalues are random, but their histogram is not: as \\(n\\) grows it converges to Wigner’s semicircle on \\([-2,2]\\). The proof by moments shows why. The \\(k\\)th moment of the histogram is \\(\\frac1n\\operatorname{tr}H^k\\), a sum over closed walks of length \\(k\\) on the indices, and only the walks that retrace a tree survive the averaging; there are Catalan-many of them. That count does not care whether the entries are Gaussian or coin flips, which is universality. Add matrices and watch the histogram fill the curve.",
+          "平均 0、分散 1 の独立な成分をもつ \\(n\\times n\\) 行列 \\(A\\) をとり、対称化して \\(H=(A+A^{\\mathsf T})/\\sqrt{2n}\\) とします。その \\(n\\) 個の実固有値はランダムですが、ヒストグラムはそうではありません。\\(n\\) が大きくなると、\\([-2,2]\\) 上のウィグナーの半円に収束します。モーメント法による証明がその理由を示します。ヒストグラムの \\(k\\) 次モーメントは \\(\\frac1n\\operatorname{tr}H^k\\) で、添字の上の長さ \\(k\\) の閉じた歩みについての和です。平均をとると、木をたどって戻ってくる歩みだけが生き残り、その数はカタラン数です。この数え方は成分がガウスか硬貨投げかを気にしません。これが普遍性です。行列を追加して、ヒストグラムが曲線を埋めていく様子を見てください。"
+        ],
+        "formula": "\\rho_{sc}(x)=\\frac{\\sqrt{4-x^2}}{2\\pi}\\ (|x|\\le2),\\qquad \\frac1n\\,\\mathbb E\\operatorname{tr}H^{2m}\\longrightarrow C_m=\\frac{1}{m+1}\\binom{2m}{m}=1,2,5,14,\\dots,\\qquad \\frac1n\\,\\mathbb E\\operatorname{tr}H^{2}=1+\\frac1n,\\qquad \\lambda_{\\max}\\to2,\\ \\ \\lambda_{\\max}-2=O(n^{-2/3})",
+        "example": [
+          "For \\(n=100\\) Gaussian entries the expected second moment is exactly \\(1+1/n=1.01\\), and the fourth tends to the Catalan number 2. The fraction of eigenvalues in \\([-1,1]\\) is \\(\\int_{-1}^1\\rho_{sc}=\\frac13+\\frac{\\sqrt3}{2\\pi}=0.609\\), far more than the \\(1/2\\) a uniform spread on \\([-2,2]\\) would give. The largest eigenvalue of a \\(100\\times100\\) matrix is typically within about \\(n^{-2/3}=0.046\\) of 2, which is the Tracy–Widom scale.",
+          "\\(n=100\\) のガウス成分では、2 次モーメントの期待値はちょうど \\(1+1/n=1.01\\) で、4 次はカタラン数 2 に近づきます。\\([-1,1]\\) に入る固有値の割合は \\(\\int_{-1}^1\\rho_{sc}=\\frac13+\\frac{\\sqrt3}{2\\pi}=0.609\\) で、\\([-2,2]\\) に一様に広がった場合の \\(1/2\\) よりずっと多くなります。\\(100\\times100\\) 行列の最大固有値は、ふつう 2 から \\(n^{-2/3}=0.046\\) 程度しか離れません。これがトレイシー・ウィドムの尺度です。"
+        ],
+        "caution": [
+          "The semicircle needs entries of finite variance scaled by \\(1/\\sqrt n\\). With infinite variance, the third choice, a few huge entries dominate and the limit is a different, heavy-tailed law. The histogram converges for each large matrix almost surely, not just on average; the animation adds matrices only to make the bars smooth.",
+          "半円には、有限の分散をもち \\(1/\\sqrt n\\) で尺度をそろえた成分が必要です。三つ目の選択肢のように分散が無限大だと、少数の巨大な成分が支配し、極限は裾の重い別の法則になります。ヒストグラムは平均としてだけでなく、一つ一つの大きな行列についてほとんど確実に収束します。アニメーションで行列を追加するのは、棒をなめらかにするためにすぎません。"
+        ],
+        "question": [
+          "Why are the even moments of the semicircle Catalan numbers?",
+          "半円の偶数次モーメントがカタラン数になるのはなぜですか？"
+        ],
+        "answer": [
+          "The moment \\(\\frac1n\\mathbb E\\operatorname{tr}H^{2m}\\) sums \\(\\mathbb E\\,H_{i_1i_2}H_{i_2i_3}\\cdots H_{i_{2m}i_1}\\) over closed walks. Each entry has mean zero, so every edge must be used at least twice, and to leading order in \\(n\\) each exactly twice, along a tree with \\(m\\) edges walked out and back. Such walks correspond to non-crossing pairings of \\(2m\\) points, which number \\(C_m\\).",
+          "モーメント \\(\\frac1n\\mathbb E\\operatorname{tr}H^{2m}\\) は、閉じた歩みについての \\(\\mathbb E\\,H_{i_1i_2}H_{i_2i_3}\\cdots H_{i_{2m}i_1}\\) の和です。どの成分も平均がゼロなので、どの辺も少なくとも 2 回使われなければならず、\\(n\\) の主要項ではちょうど 2 回ずつ、\\(m\\) 本の辺をもつ木を行って帰る歩みになります。そのような歩みは \\(2m\\) 点の交差しない対の作り方に対応し、その数は \\(C_m\\) です。"
+        ],
+        "params": [
+          [
+            "n",
+            "Matrix size \\(n\\)",
+            "行列の大きさ \\(n\\)",
+            10,
+            150,
+            10,
+            80
+          ],
+          [
+            "kind",
+            "Entries",
+            "成分",
+            0,
+            2,
+            1,
+            0,
+            [
+              [
+                "Gaussian",
+                "ガウス"
+              ],
+              [
+                "coin flips ±1",
+                "硬貨 ±1"
+              ],
+              [
+                "heavy tails",
+                "裾が重い"
+              ]
+            ]
+          ]
+        ],
+        "source": "Alan Edelman and N. Raj Rao · Random matrix theory, Acta Numerica 14, 233–297 (2005)",
+        "url": "https://math.mit.edu/~edelman/publications/random_matrix_theory.pdf"
+      },
+      {
+        "id": "rmt-repulsion",
+        "title": [
+          "2. Level repulsion: why eigenvalues keep apart",
+          "2. 準位反発：固有値が離れている理由"
+        ],
+        "body": [
+          "Independent random points cluster and leave gaps: their spacings follow the Poisson law \\(e^{-s}\\), whose most likely spacing is zero. Eigenvalues of random symmetric matrices almost never come close. The reason is geometric and is visible already in \\(2\\times2\\): the traceless real symmetric matrices \\(\\bigl(\\begin{smallmatrix}a&b\\\\b&-a\\end{smallmatrix}\\bigr)\\) have eigenvalues \\(\\pm\\sqrt{a^2+b^2}\\), a double cone whose tip is the only degenerate matrix. A degeneracy costs two conditions, so the chance of a gap below \\(s\\) shrinks like the area of a disc, and the density like \\(s\\). Wigner’s surmise turns this into a formula that fits large matrices remarkably well.",
+          "独立なランダムな点は群がったり隙間を空けたりします。その間隔はポアソン則 \\(e^{-s}\\) に従い、最も起こりやすい間隔はゼロです。ランダムな対称行列の固有値は、まず近づきません。理由は幾何学的で、\\(2\\times2\\) ですでに見えます。トレースがゼロの実対称行列 \\(\\bigl(\\begin{smallmatrix}a&b\\\\b&-a\\end{smallmatrix}\\bigr)\\) の固有値は \\(\\pm\\sqrt{a^2+b^2}\\) で、二重円錐をなし、その先端だけが縮退した行列です。縮退には二つの条件が必要なので、間隔が \\(s\\) 以下になる確率は円の面積のように、密度は \\(s\\) のように小さくなります。ウィグナーの推測式はこれを公式にしたもので、大きな行列にも驚くほどよく合います。"
+        ],
+        "formula": "\\lambda_\\pm=\\pm\\sqrt{a^2+b^2},\\qquad a,b\\sim N(0,\\tfrac12)\\ \\Rightarrow\\ P_1(s)=\\frac{\\pi}{2}\\,s\\,e^{-\\pi s^2/4},\\qquad P_2(s)=\\frac{32}{\\pi^2}\\,s^2e^{-4s^2/\\pi},\\qquad P_{\\rm Poisson}(s)=e^{-s},\\qquad \\Pr(S<s)\\big|_{\\beta=1}=1-e^{-\\pi s^2/4}",
+        "example": [
+          "For the matrix with \\(a=0.6,\\ b=0.4\\) the eigenvalues are \\(\\pm0.721\\), a gap of \\(1.442\\); the mean gap of the \\(2\\times2\\) ensemble is \\(\\sqrt\\pi=1.772\\), so \\(s=0.814\\). A gap at least this small has probability \\(1-e^{-\\pi(0.814)^2/4}=0.405\\) for real symmetric matrices and \\(1-e^{-0.814}=0.557\\) for independent levels. Near zero the difference is dramatic: \\(\\Pr(S<0.1)\\) is \\(0.0078\\) with repulsion and \\(0.095\\) without, twelve times larger.",
+          "\\(a=0.6,\\ b=0.4\\) の行列の固有値は \\(\\pm0.721\\) で、間隔は \\(1.442\\) です。\\(2\\times2\\) のアンサンブルの平均間隔は \\(\\sqrt\\pi=1.772\\) なので、\\(s=0.814\\) です。間隔がこれ以下になる確率は、実対称行列では \\(1-e^{-\\pi(0.814)^2/4}=0.405\\)、独立な準位では \\(1-e^{-0.814}=0.557\\) です。ゼロの近くでは違いが劇的で、\\(\\Pr(S<0.1)\\) は反発があると \\(0.0078\\)、なければ \\(0.095\\) で 12 倍も大きくなります。"
+        ],
+        "caution": [
+          "The surmise is exact for \\(2\\times2\\) matrices and only an excellent approximation for large ones; the exact large-\\(n\\) law (Gaudin) differs from it by under one percent. Spacings of large matrices are measured after unfolding, rescaling by the local semicircle density so the mean spacing is 1. The 3D cone shows only the real symmetric case; the Hermitian case needs a third real parameter.",
+          "推測式は \\(2\\times2\\) 行列では厳密ですが、大きな行列では非常によい近似にすぎません。\\(n\\) が大きいときの厳密な法則（ゴーダン）との差は 1% 未満です。大きな行列の間隔は、局所的な半円の密度で尺度を直して平均間隔を 1 にする「展開」のあとで測ります。3D の円錐は実対称の場合だけを示しています。エルミートの場合には三つ目の実パラメータが必要です。"
+        ],
+        "question": [
+          "Why does a complex Hermitian matrix repel its levels quadratically?",
+          "複素エルミート行列の準位反発が 2 次になるのはなぜですか？"
+        ],
+        "answer": [
+          "Its traceless \\(2\\times2\\) part is \\(\\bigl(\\begin{smallmatrix}a&b_1+ib_2\\\\b_1-ib_2&-a\\end{smallmatrix}\\bigr)\\) with eigenvalues \\(\\pm\\sqrt{a^2+b_1^2+b_2^2}\\). A degeneracy now needs three conditions, so the matrices with gap below \\(s\\) fill a ball whose volume grows as \\(s^3\\), and the density of gaps grows as \\(s^2\\).",
+          "トレースがゼロの \\(2\\times2\\) 部分は \\(\\bigl(\\begin{smallmatrix}a&b_1+ib_2\\\\b_1-ib_2&-a\\end{smallmatrix}\\bigr)\\) で、固有値は \\(\\pm\\sqrt{a^2+b_1^2+b_2^2}\\) です。縮退には三つの条件が必要になるので、間隔が \\(s\\) 以下の行列は体積が \\(s^3\\) で増える球を埋め、間隔の密度は \\(s^2\\) で増えます。"
+        ],
+        "params": [
+          [
+            "a",
+            "Diagonal entry \\(a\\)",
+            "対角成分 \\(a\\)",
+            -1.6,
+            1.6,
+            0.01,
+            0.6
+          ],
+          [
+            "b",
+            "Off-diagonal entry \\(b\\)",
+            "非対角成分 \\(b\\)",
+            -1.6,
+            1.6,
+            0.01,
+            0.4
+          ],
+          [
+            "ens",
+            "Large-matrix histogram",
+            "大きな行列のヒストグラム",
+            0,
+            2,
+            1,
+            0,
+            [
+              [
+                "real symmetric",
+                "実対称"
+              ],
+              [
+                "complex Hermitian",
+                "複素エルミート"
+              ],
+              [
+                "independent levels",
+                "独立な準位"
+              ]
+            ]
+          ]
+        ],
+        "source": "Alan Edelman and N. Raj Rao · Random matrix theory, Acta Numerica 14, 233–297 (2005)",
+        "url": "https://math.mit.edu/~edelman/publications/random_matrix_theory.pdf"
+      },
+      {
+        "id": "rmt-mp",
+        "title": [
+          "3. Marchenko–Pastur and the hidden signal",
+          "3. マルチェンコ・パストゥールと隠れた信号"
+        ],
+        "body": [
+          "Collect \\(n\\) samples of \\(p\\) variables that are pure noise of variance 1. The true covariance is the identity, yet the sample covariance \\(S=XX^{\\mathsf T}/n\\) has eigenvalues spread over a whole interval, the Marchenko–Pastur law, wider the closer \\(\\gamma=p/n\\) is to 1. Now hide one real direction of variance \\(1+\\theta\\). For a weak signal the top eigenvalue does not move: the signal is lost in the noise. At \\(\\theta=\\sqrt\\gamma\\) a phase transition occurs (Baik, Ben Arous and Péché, 2005), and above it an outlier separates from the bulk at an exactly predictable place, biased above the truth.",
+          "分散 1 の純粋な雑音である \\(p\\) 個の変数について、\\(n\\) 個の標本を集めます。真の共分散は単位行列ですが、標本共分散 \\(S=XX^{\\mathsf T}/n\\) の固有値は区間全体に広がります。これがマルチェンコ・パストゥール則で、\\(\\gamma=p/n\\) が 1 に近いほど広くなります。ここに分散 \\(1+\\theta\\) の本物の方向を一つ隠します。信号が弱いと最大固有値は動かず、信号は雑音に埋もれます。\\(\\theta=\\sqrt\\gamma\\) で相転移が起こり（バイク、ベン・アルース、ペシェ、2005 年）、それより上では外れ値が塊から離れ、ちょうど予言どおりの、真の値より上に偏った位置に現れます。"
+        ],
+        "formula": "\\rho_{MP}(x)=\\frac{\\sqrt{(\\lambda_+-x)(x-\\lambda_-)}}{2\\pi\\gamma x},\\quad \\lambda_\\pm=(1\\pm\\sqrt\\gamma)^2,\\qquad \\lambda_{\\max}\\to\\begin{cases}(1+\\theta)\\Bigl(1+\\dfrac{\\gamma}{\\theta}\\Bigr),&\\theta>\\sqrt\\gamma\\\\[4pt](1+\\sqrt\\gamma)^2,&\\theta\\le\\sqrt\\gamma\\end{cases},\\qquad |\\langle\\hat v,e_1\\rangle|^2\\to\\frac{1-\\gamma/\\theta^2}{1+\\gamma/\\theta}",
+        "example": [
+          "With \\(p=100\\) variables and \\(n=400\\) samples, \\(\\gamma=0.25\\) and the noise eigenvalues spread from \\(0.25\\) to \\(2.25\\), although every true variance is 1. A signal of variance \\(1+\\theta=2.5\\) is well above the threshold \\(\\theta=\\sqrt{0.25}=0.5\\), and its eigenvalue appears at \\(2.5\\times(1+0.25/1.5)=2.917\\), not 2.5; its eigenvector overlaps the true direction with \\(|\\langle\\hat v,e_1\\rangle|^2=0.762\\). A signal of variance 1.4 (\\(\\theta=0.4\\)) leaves no trace in the spectrum at all.",
+          "\\(p=100\\) 変数、\\(n=400\\) 標本では \\(\\gamma=0.25\\) で、真の分散はどれも 1 なのに、雑音の固有値は \\(0.25\\) から \\(2.25\\) まで広がります。分散 \\(1+\\theta=2.5\\) の信号はしきい値 \\(\\theta=\\sqrt{0.25}=0.5\\) を十分に上回り、その固有値は 2.5 ではなく \\(2.5\\times(1+0.25/1.5)=2.917\\) に現れます。その固有ベクトルと真の方向の重なりは \\(|\\langle\\hat v,e_1\\rangle|^2=0.762\\) です。分散 1.4（\\(\\theta=0.4\\)）の信号は、スペクトルにまったく痕跡を残しません。"
+        ],
+        "caution": [
+          "The formulas are limits as \\(p,n\\to\\infty\\) with \\(p/n\\to\\gamma\\); at the sizes used here the edge and the transition are visibly blurred. Data are Gaussian; the bulk law holds for any entries of finite variance, while the outlier location also needs some regularity. For \\(\\gamma>1\\) the matrix has \\(p-n\\) zero eigenvalues in addition to the bulk.",
+          "公式は \\(p/n\\to\\gamma\\) を保って \\(p,n\\to\\infty\\) としたときの極限です。ここで使う大きさでは、端も転移も目に見えてぼやけます。データはガウスです。塊の法則は有限の分散をもつどんな成分でも成り立ちますが、外れ値の位置にはさらにある程度の正則性が必要です。\\(\\gamma>1\\) では塊に加えて \\(p-n\\) 個のゼロ固有値が現れます。"
+        ],
+        "question": [
+          "Why is it a mistake to treat every sample eigenvalue above 1 as signal?",
+          "1 より大きい標本固有値をすべて信号とみなすのが誤りなのはなぜですか？"
+        ],
+        "answer": [
+          "Pure noise of variance 1 already produces sample eigenvalues up to \\((1+\\sqrt\\gamma)^2\\), for example 2.25 when \\(p/n=1/4\\). Only an eigenvalue clearly beyond that edge indicates structure, and even then its size overstates the true variance, which can be recovered by inverting \\(\\lambda=(1+\\theta)(1+\\gamma/\\theta)\\).",
+          "分散 1 の純粋な雑音だけでも、標本固有値は \\((1+\\sqrt\\gamma)^2\\) まで、たとえば \\(p/n=1/4\\) なら 2.25 まで現れます。その端をはっきり越えた固有値だけが構造を示し、その場合でも大きさは真の分散を過大に見せます。真の分散は \\(\\lambda=(1+\\theta)(1+\\gamma/\\theta)\\) を逆に解けば求められます。"
+        ],
+        "params": [
+          [
+            "g",
+            "Aspect ratio \\(\\gamma=p/n\\)",
+            "縦横比 \\(\\gamma=p/n\\)",
+            0.1,
+            1,
+            0.05,
+            0.25
+          ],
+          [
+            "p",
+            "Variables \\(p\\)",
+            "変数の数 \\(p\\)",
+            40,
+            120,
+            20,
+            80
+          ],
+          [
+            "th",
+            "Spike strength \\(\\theta\\)",
+            "スパイクの強さ \\(\\theta\\)",
+            0,
+            4,
+            0.05,
+            1.5
+          ]
+        ],
+        "source": "Alan Edelman and N. Raj Rao · Random matrix theory, Acta Numerica 14, 233–297 (2005)",
+        "url": "https://math.mit.edu/~edelman/publications/random_matrix_theory.pdf"
+      }
+    ]
+  },
+  {
+    "slug": "symmetry-tilings",
+    "title": [
+      "Symmetry and tilings: the seventeen patterns and the ones that never repeat",
+      "対称性とタイリング：十七の模様と、決して繰り返さない模様"
+    ],
+    "description": [
+      "A tiled floor, a printed fabric and a crystal all repeat in two independent directions, and their symmetries form a group. The remarkable fact, proved by Fedorov in 1891 and found long before in the tilework of the Alhambra, is that there are exactly seventeen such groups in the plane: every periodic pattern, however ornate, follows one of seventeen rule books for where its motif may be copied. Behind that number is a constraint on rotations: a lattice can be symmetric under quarter-turns and sixth-turns but never under fifth-turns. For decades fivefold order was therefore thought impossible in matter, until Penrose found tilings with fivefold symmetry that never repeat, and Shechtman found crystals that diffract the same way. These experiments let you draw a motif under each of the seventeen groups, test which rotations a lattice can survive in three dimensions, and grow a Penrose tiling to see its forbidden diffraction pattern.",
+      "タイル張りの床も、プリント生地も、結晶も、二つの独立な方向に繰り返していて、その対称性は群をなします。驚くべきことに、平面のそのような群はちょうど十七個しかありません。1891 年にフェドロフが証明し、それよりはるか以前にアルハンブラ宮殿のタイル細工に現れていた事実です。どんなに凝った周期的な模様も、模様の複製をどこに置いてよいかを定める十七の規則のどれか一つに従います。その数の背後には回転への制約があります。格子は四分の一回転や六分の一回転では対称になれますが、五分の一回転では決して対称になれません。そのため 5 回対称の秩序は長い間、物質には不可能だと考えられていました。やがてペンローズが、5 回対称をもち決して繰り返さないタイリングを見つけ、シェヒトマンが同じように回折する結晶を見つけました。ここでの実験では、十七の群それぞれのもとで模様を描き、3 次元の格子がどの回転に耐えられるかを調べ、ペンローズ・タイリングを育ててその「禁じられた」回折パターンを見ます。"
+    ],
+    "group": "geometry",
+    "prerequisite": [
+      "Group theory (groups, generators), linear algebra (rotation and reflection matrices), vectors in the plane",
+      "群論（群、生成元）、線形代数（回転と反射の行列）、平面のベクトル"
+    ],
+    "source": "Doris Schattschneider · The plane symmetry groups: their recognition and notation, American Mathematical Monthly 85, 439–450 (1978)",
+    "url": "https://doi.org/10.2307/2320063",
+    "labs": [
+      {
+        "id": "wallpaper",
+        "title": [
+          "1. The seventeen wallpaper groups",
+          "1. 十七の壁紙群"
+        ],
+        "body": [
+          "A wallpaper group is a group of isometries of the plane containing two independent translations and no arbitrarily small ones. Each is a lattice together with a finite list of operations \\(x\\mapsto Ax+t\\) taken modulo the lattice: rotations by \\(\\pi\\), \\(2\\pi/3\\), \\(\\pi/2\\) or \\(\\pi/3\\), reflections, and glide reflections, which reflect and then slide along the mirror. Draw a motif with the three gold points and choose a group: the pattern is the motif copied by every operation. Copies by rotations and translations are blue, mirror-image copies orange, so a group without reflections makes a pattern with a handedness. Turn on the symmetry elements to see the mirror lines, the glide lines and the rotation centers marked by their order.",
+          "壁紙群とは、平面の等長変換の群で、二つの独立な並進を含み、いくらでも小さな並進は含まないものです。どの壁紙群も、一つの格子と、格子を法として考えた操作 \\(x\\mapsto Ax+t\\) の有限な一覧からなります。操作は \\(\\pi\\)、\\(2\\pi/3\\)、\\(\\pi/2\\)、\\(\\pi/3\\) の回転、反射、そして鏡映してから鏡に沿って滑らせる映進です。金色の三点で模様を描き、群を選んでください。模様は、すべての操作でその図案を複製したものです。回転と並進による複製は青、鏡像の複製は橙なので、反射を含まない群では向きのある模様ができます。対称要素を表示すると、鏡映線、映進線、そして次数の印をつけた回転の中心が見えます。"
+        ],
+        "formula": "x\\mapsto Ax+t,\\ \\ A\\in O(2),\\qquad g_1g_2:\\ x\\mapsto A_1A_2x+(A_1t_2+t_1),\\qquad \\text{rotation center: }(I-A)c=t,\\qquad \\text{reflection axis }\\hat d:\\ \\text{line }\\tfrac12(t\\cdot\\hat n)\\,\\hat n+s\\hat d,\\ \\ \\text{glide }t\\cdot\\hat d,\\qquad |G/\\Lambda|\\in\\{1,2,3,4,6,8,12\\}",
+        "example": [
+          "In p6m, group 17, one motif becomes 12 copies in each hexagonal cell: 6 by rotations, 6 by reflections. Through every sixfold center pass 6 mirror lines at \\(30^\\circ\\) to each other, and the threefold centers also lie on mirrors. In p4g, group 12, the point group has order 8 like p4m, but the fourfold centers sit off the mirrors, and the mirrors meet only at twofold centers, at right angles. In pg, group 4, no point is fixed by anything: the motif and its mirror image alternate along glide lines, like footprints.",
+          "p6m（群 17）では、一つの図案が六方格子の単位胞ごとに 12 個の複製になります。回転による 6 個と反射による 6 個です。どの 6 回中心にも、互いに \\(30^\\circ\\) をなす 6 本の鏡映線が通り、3 回中心も鏡の上にあります。p4g（群 12）では、点群の位数は p4m と同じ 8 ですが、4 回中心は鏡から外れていて、鏡どうしは 2 回中心でだけ直角に交わります。pg（群 4）では、どの点もどの操作でも固定されません。図案とその鏡像が、足跡のように映進線に沿って交互に並びます。"
+        ],
+        "caution": [
+          "The lattice shapes drawn are representative; within each family (oblique, rectangular, centered rectangular, square, hexagonal) any proportions give the same group. If you draw a motif that itself has a symmetry, the pattern can have more symmetry than the group you chose. Glide lines that are also mirrors are drawn as mirrors.",
+          "描いた格子の形は代表例です。同じ族（斜方、長方、面心長方、正方、六方）の中なら、どんな比率でも同じ群になります。図案そのものが対称性をもつように描くと、模様は選んだ群より大きな対称性をもちえます。鏡映線を兼ねる映進線は鏡映線として描いています。"
+        ],
+        "question": [
+          "Why do p3m1 and p31m count as different groups, although both have threefold rotations and mirrors?",
+          "p3m1 と p31m は、どちらも 3 回回転と鏡をもつのに、別の群として数えるのはなぜですか？"
+        ],
+        "answer": [
+          "Because no change of coordinates turns one into the other. In p3m1 every threefold center lies on mirror lines; in p31m the mirrors pass through only one of the three kinds of threefold center, and the other two sit between mirrors. The mirrors of p31m run along the lattice vectors, those of p3m1 across them.",
+          "座標をどう取り替えても、一方を他方に変えられないからです。p3m1 ではすべての 3 回中心が鏡映線の上にあります。p31m では鏡は三種類の 3 回中心のうち一種類だけを通り、残りの二種類は鏡の間にあります。p31m の鏡は格子ベクトルに沿って走り、p3m1 の鏡はそれを横切ります。"
+        ],
+        "params": [
+          [
+            "grp",
+            "Group number (IUCr 1 to 17)",
+            "群の番号（国際記号の 1 から 17）",
+            1,
+            17,
+            1,
+            17
+          ],
+          [
+            "show",
+            "Symmetry elements",
+            "対称要素",
+            0,
+            1,
+            1,
+            1,
+            [
+              [
+                "hide",
+                "隠す"
+              ],
+              [
+                "show",
+                "表示"
+              ]
+            ]
+          ]
+        ],
+        "source": "Doris Schattschneider · The plane symmetry groups: their recognition and notation, American Mathematical Monthly 85, 439–450 (1978)",
+        "url": "https://doi.org/10.2307/2320063"
+      },
+      {
+        "id": "crystal-restriction",
+        "title": [
+          "2. The crystallographic restriction",
+          "2. 結晶学的制約"
+        ],
+        "body": [
+          "Turn a lattice about an axis by \\(2\\pi/n\\). For the turn to be a symmetry, every lattice point must land on a lattice point, so in the lattice basis the rotation is a matrix of integers and its trace is an integer. But the trace of a rotation by \\(\\theta\\) is \\(2\\cos\\theta\\) in the plane and \\(1+2\\cos\\theta\\) in space. That leaves \\(2\\cos(2\\pi/n)\\in\\{-2,-1,0,1,2\\}\\), so \\(n\\in\\{1,2,3,4,6\\}\\): no lattice, in two dimensions or three, has fivefold, sevenfold or eightfold symmetry. Turn the 3D lattice and watch how many points come home.",
+          "格子をある軸のまわりに \\(2\\pi/n\\) 回します。この回転が対称操作であるためには、すべての格子点が格子点に重ならなければならないので、格子の基底で見た回転は整数を成分とする行列で、そのトレースは整数です。ところが角 \\(\\theta\\) の回転のトレースは、平面では \\(2\\cos\\theta\\)、空間では \\(1+2\\cos\\theta\\) です。すると \\(2\\cos(2\\pi/n)\\in\\{-2,-1,0,1,2\\}\\) となり、\\(n\\in\\{1,2,3,4,6\\}\\) しか残りません。2 次元でも 3 次元でも、5 回、7 回、8 回の対称性をもつ格子はありません。3D の格子を回して、何個の点が元に戻るかを見てください。"
+        ],
+        "formula": "R\\Lambda=\\Lambda\\ \\Rightarrow\\ [R]_{\\text{lattice basis}}\\in GL_3(\\mathbb Z),\\qquad \\operatorname{tr}R=1+2\\cos\\frac{2\\pi}{n}\\in\\mathbb Z\\ \\Longrightarrow\\ n\\in\\{1,2,3,4,6\\},\\qquad \\text{cube: }C_4\\parallel[001],\\ C_3\\parallel[111],\\ C_2\\parallel[110]",
+        "example": [
+          "For \\(n=5\\) the trace would be \\(1+2\\cos72^\\circ=1.618\\), the golden ratio, which is not an integer, so no crystal has a fivefold axis. For \\(n=8\\) it would be \\(1+\\sqrt2=2.414\\). The simple cubic lattice has fourfold axes along the cube edges, threefold axes along the four body diagonals (turning by \\(120^\\circ\\) about \\([111]\\) cycles the three edge vectors) and twofold axes along the six face diagonals; the hexagonal lattice adds the sixfold axis.",
+          "\\(n=5\\) ではトレースは \\(1+2\\cos72^\\circ=1.618\\)、黄金比になりますが、これは整数ではないので、5 回軸をもつ結晶はありません。\\(n=8\\) では \\(1+\\sqrt2=2.414\\) です。単純立方格子は、立方体の辺に沿って 4 回軸、4 本の体対角線に沿って 3 回軸（\\([111]\\) のまわりの \\(120^\\circ\\) 回転は三つの辺ベクトルを巡回させます）、6 本の面対角線に沿って 2 回軸をもちます。六方格子にはさらに 6 回軸があります。"
+        ],
+        "caution": [
+          "The restriction is about lattices, that is, about periodic order. It does not forbid fivefold symmetry of molecules, of finite clusters or of quasicrystals, which are ordered but not periodic. In dimension four and higher other orders appear: \\(n=5\\) is allowed in four dimensions, which is how quasicrystals are described as slices of higher-dimensional lattices.",
+          "この制約は格子、つまり周期的な秩序についてのものです。分子や有限の集まり、周期的ではないが秩序のある準結晶の 5 回対称を禁じるものではありません。4 次元以上ではほかの次数も現れます。\\(n=5\\) は 4 次元では許されます。準結晶を高次元の格子の切り口として記述するのはこのためです。"
+        ],
+        "question": [
+          "Why is the trace of a lattice symmetry an integer, even though the rotation matrix in Cartesian coordinates has irrational entries?",
+          "直交座標での回転行列の成分は無理数なのに、格子の対称操作のトレースが整数になるのはなぜですか？"
+        ],
+        "answer": [
+          "In the lattice basis each basis vector is sent to a lattice vector, an integer combination of the basis, so the matrix has integer entries. The trace does not depend on the basis, being the sum of the eigenvalues, so the Cartesian matrix has the same integer trace, \\(1+2\\cos\\theta\\), even when its individual entries are irrational.",
+          "格子の基底で見ると、各基底ベクトルは格子ベクトル、つまり基底の整数係数の組み合わせに写るので、行列の成分は整数です。トレースは固有値の和で基底によらないので、直交座標の行列も同じ整数のトレース \\(1+2\\cos\\theta\\) をもちます。個々の成分が無理数でも変わりません。"
+        ],
+        "params": [
+          [
+            "lat",
+            "Lattice",
+            "格子",
+            0,
+            1,
+            1,
+            0,
+            [
+              [
+                "simple cubic",
+                "単純立方"
+              ],
+              [
+                "hexagonal",
+                "六方"
+              ]
+            ]
+          ],
+          [
+            "axis",
+            "Axis (cubic)",
+            "軸（立方格子）",
+            0,
+            2,
+            1,
+            1,
+            [
+              [
+                "[001]",
+                "[001]"
+              ],
+              [
+                "[111]",
+                "[111]"
+              ],
+              [
+                "[110]",
+                "[110]"
+              ]
+            ]
+          ],
+          [
+            "n",
+            "Rotation order \\(n\\)",
+            "回転の次数 \\(n\\)",
+            2,
+            8,
+            1,
+            3
+          ]
+        ],
+        "source": "Doris Schattschneider · The plane symmetry groups: their recognition and notation, American Mathematical Monthly 85, 439–450 (1978)",
+        "url": "https://doi.org/10.2307/2320063"
+      },
+      {
+        "id": "penrose",
+        "title": [
+          "3. Penrose tilings: order without repetition",
+          "3. ペンローズ・タイリング：繰り返しのない秩序"
+        ],
+        "body": [
+          "Two rhombs with angles \\(72^\\circ\\) and \\(36^\\circ\\), with matching rules on their edges, tile the plane only non-periodically. The tiling can be grown by deflation: split each tile, drawn here as two Robinson triangles, into smaller triangles in the ratio \\(\\varphi=(1+\\sqrt5)/2\\), and rescale. Each thin triangle becomes one thin and one thick, each thick one becomes one thin and two thick, so the counts follow a Fibonacci-like recursion and their ratio tends to the irrational \\(\\varphi\\). Such a tiling has fivefold symmetry that the crystallographic restriction forbids to any lattice, and still its diffraction pattern shows sharp spots: it is ordered, just not periodic.",
+          "角が \\(72^\\circ\\) と \\(36^\\circ\\) の二種類の菱形は、辺に一致の規則を課すと、平面を非周期的にしか敷き詰められません。このタイリングはデフレーションで育てられます。ここでは二つのロビンソン三角形として描いた各タイルを、比 \\(\\varphi=(1+\\sqrt5)/2\\) で小さな三角形に分け、拡大し直します。細い三角形は細いもの一つと太いもの一つに、太い三角形は細いもの一つと太いもの二つになるので、個数はフィボナッチ数列のような漸化式に従い、その比は無理数 \\(\\varphi\\) に近づきます。このタイリングは、結晶学的制約がどんな格子にも禁じる 5 回対称をもちますが、それでも回折パターンには鋭い点が現れます。秩序はあるのです。ただ周期的ではないだけです。"
+        ],
+        "formula": "\\binom{N_{\\rm thin}}{N_{\\rm thick}}_{k+1}=\\begin{pmatrix}1&1\\\\1&2\\end{pmatrix}\\binom{N_{\\rm thin}}{N_{\\rm thick}}_{k},\\qquad \\frac{N_{\\rm thick}}{N_{\\rm thin}}\\longrightarrow\\varphi=\\frac{1+\\sqrt5}2,\\qquad \\text{eigenvalues }\\varphi^{2},\\ \\varphi^{-2},\\qquad I(\\mathbf k)=\\frac{1}{N^2}\\Bigl|\\sum_j e^{i\\mathbf k\\cdot\\mathbf r_j}\\Bigr|^2",
+        "example": [
+          "Starting from a wheel of 10 thin triangles, five deflations give 340 thin and 550 thick triangles, a ratio 1.6176 against \\(\\varphi=1.6180\\). The substitution matrix has eigenvalues \\(\\varphi^2=2.618\\) and \\(\\varphi^{-2}=0.382\\), so the number of tiles grows by about 2.618 per step while the tiles shrink by \\(\\varphi\\) in length, \\(\\varphi^2\\) in area, keeping the covered area fixed. Because \\(\\varphi\\) is irrational, no finite block can repeat periodically: the frequencies of the two tiles would then be rational.",
+          "10 個の細い三角形の車輪から始めると、5 回のデフレーションで細い三角形が 340 個、太い三角形が 550 個できます。比は 1.6176 で、\\(\\varphi=1.6180\\) に近い値です。置換行列の固有値は \\(\\varphi^2=2.618\\) と \\(\\varphi^{-2}=0.382\\) なので、タイルの数は一回ごとに約 2.618 倍に増え、タイルは長さで \\(\\varphi\\) 分の 1、面積で \\(\\varphi^2\\) 分の 1 に縮み、覆う面積は変わりません。\\(\\varphi\\) が無理数なので、どの有限な部分も周期的に繰り返すことはできません。もし繰り返せば、二種類のタイルの頻度の比は有理数になるはずです。"
+        ],
+        "caution": [
+          "The tiling grown from one wheel has exact fivefold symmetry about its center; a typical Penrose tiling has only statistical fivefold symmetry. The diffraction is computed from a few hundred vertices, so the spots have a finite width and weak side lobes; for the infinite tiling they are true points, dense in the plane but with only finitely many above any intensity. Matching rules on the edges, not drawn here, are what force non-periodicity on someone tiling by hand.",
+          "一つの車輪から育てたタイリングは、中心のまわりに厳密な 5 回対称をもちます。典型的なペンローズ・タイリングがもつのは、統計的な 5 回対称だけです。回折は数百個の頂点から計算しているので、点には有限の幅と弱い副極大があります。無限のタイリングではそれらは本当の点になり、平面に稠密に並びますが、ある強度より強いものは有限個だけです。手でタイルを敷く人に非周期性を強いるのは、ここでは描いていない辺の一致の規則です。"
+        ],
+        "question": [
+          "Why does the diffraction pattern have tenfold symmetry when the tiling has only fivefold symmetry?",
+          "タイリングには 5 回対称しかないのに、回折パターンが 10 回対称になるのはなぜですか？"
+        ],
+        "answer": [
+          "Diffraction measures \\(|\\hat\\rho(\\mathbf k)|^2\\), and for real scatterers \\(\\hat\\rho(-\\mathbf k)=\\overline{\\hat\\rho(\\mathbf k)}\\), so the intensity is always symmetric under \\(\\mathbf k\\mapsto-\\mathbf k\\), a half-turn. A fivefold symmetry combined with the half-turn gives tenfold symmetry, which is what Shechtman saw in 1982 in an aluminium–manganese alloy.",
+          "回折が測るのは \\(|\\hat\\rho(\\mathbf k)|^2\\) で、実数の散乱体では \\(\\hat\\rho(-\\mathbf k)=\\overline{\\hat\\rho(\\mathbf k)}\\) なので、強度は必ず \\(\\mathbf k\\mapsto-\\mathbf k\\)、つまり半回転について対称です。5 回対称と半回転を合わせると 10 回対称になります。シェヒトマンが 1982 年にアルミニウムとマンガンの合金で見たのがこれです。"
+        ],
+        "params": [
+          [
+            "steps",
+            "Deflation steps",
+            "デフレーションの回数",
+            1,
+            6,
+            1,
+            5
+          ]
+        ],
+        "source": "Doris Schattschneider · The plane symmetry groups: their recognition and notation, American Mathematical Monthly 85, 439–450 (1978)",
+        "url": "https://doi.org/10.2307/2320063"
+      }
+    ]
+  },
+  {
+    "slug": "neuron-biophysics",
+    "title": [
+      "Neuron biophysics: the electricity of a nerve cell",
+      "神経の生物物理：神経細胞の電気"
+    ],
+    "description": [
+      "A neuron is a battery, a leaky cable and a switch. The battery is made by ion pumps, which keep potassium concentrated inside the cell and sodium outside; each gradient pulls on the membrane voltage towards its own equilibrium, and the membrane settles where the pulls balance, weighted by how freely each ion can cross. The switch is the voltage-gated sodium channel, which opens when the membrane depolarises and so depolarises it further, until it shuts itself and the potassium channels pull the voltage back down: the action potential that Hodgkin and Huxley captured in four differential equations in 1952. The cable is the dendrite and the axon, along which charge spreads and leaks away. These experiments compute resting potentials from ion concentrations, fire action potentials in the Hodgkin–Huxley model, and follow a steady signal as it fades along a dendrite.",
+      "ニューロンは、電池であり、漏れのあるケーブルであり、スイッチでもあります。電池を作るのはイオンポンプで、カリウムを細胞の内側に、ナトリウムを外側に濃縮しておきます。それぞれの濃度勾配は膜電位を自分の平衡値へと引き寄せ、膜は各イオンがどれだけ自由に膜を通れるかで重みをつけた引き合いの釣り合う点に落ち着きます。スイッチは電位依存性ナトリウムチャネルで、膜が脱分極すると開いてさらに脱分極させ、やがて自分で閉じ、カリウムチャネルが電圧を引き戻します。これが、ホジキンとハクスリーが 1952 年に四つの微分方程式で捉えた活動電位です。ケーブルは樹状突起と軸索で、電荷はそれに沿って広がりながら漏れていきます。ここでの実験では、イオン濃度から静止電位を計算し、ホジキン・ハクスリー・モデルで活動電位を発火させ、樹状突起に沿って弱まっていく一定の信号を追います。"
+    ],
+    "group": "physics",
+    "prerequisite": [
+      "Electric circuits (resistors, capacitors), logarithms and exponentials, ordinary differential equations",
+      "電気回路（抵抗、コンデンサ）、対数と指数関数、常微分方程式"
+    ],
+    "source": "A. L. Hodgkin and A. F. Huxley · A quantitative description of membrane current and its application to conduction and excitation in nerve, Journal of Physiology 117, 500–544 (1952)",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC1392413/",
+    "labs": [
+      {
+        "id": "nernst-ghk",
+        "title": [
+          "1. Resting potential: Nernst and Goldman–Hodgkin–Katz",
+          "1. 静止電位：ネルンストとゴールドマン・ホジキン・カッツ"
+        ],
+        "body": [
+          "A membrane permeable to one ion only charges up until the electrical force on that ion balances its tendency to diffuse down its concentration gradient. The balancing voltage is the Nernst potential, \\(E=\\frac{RT}{zF}\\ln\\frac{[\\text{out}]}{[\\text{in}]}\\): about \\(-89\\) mV for potassium in a mammalian neuron and \\(+67\\) mV for sodium. A real membrane leaks several ions at once, and the Goldman–Hodgkin–Katz equation averages them by permeability. At rest potassium dominates and the cell sits near \\(-70\\) mV; at the peak of an action potential sodium permeability exceeds potassium’s and the voltage swings towards \\(E_{\\rm Na}\\). Drag the gold bar to change the sodium permeability, or the handle on the right to change external potassium.",
+          "一種類のイオンだけを通す膜は、そのイオンにはたらく電気的な力が濃度勾配に沿って拡散しようとする傾向と釣り合うまで帯電します。釣り合う電圧がネルンスト電位 \\(E=\\frac{RT}{zF}\\ln\\frac{[\\text{外}]}{[\\text{内}]}\\) で、哺乳類のニューロンではカリウムが約 \\(-89\\) mV、ナトリウムが \\(+67\\) mV です。実際の膜は何種類ものイオンを同時に漏らし、ゴールドマン・ホジキン・カッツの式はそれらを透過性で平均します。静止時にはカリウムが支配的で、細胞は \\(-70\\) mV 付近にあります。活動電位の頂点ではナトリウムの透過性がカリウムを上回り、電圧は \\(E_{\\rm Na}\\) の側へ振れます。金色の棒をドラッグしてナトリウムの透過性を、右の図の点をドラッグして外液のカリウム濃度を変えてください。"
+        ],
+        "formula": "E_{\\rm ion}=\\frac{RT}{zF}\\ln\\frac{[\\text{ion}]_o}{[\\text{ion}]_i},\\qquad V_m=\\frac{RT}{F}\\ln\\frac{P_{\\rm K}[{\\rm K}^+]_o+P_{\\rm Na}[{\\rm Na}^+]_o+P_{\\rm Cl}[{\\rm Cl}^-]_i}{P_{\\rm K}[{\\rm K}^+]_i+P_{\\rm Na}[{\\rm Na}^+]_i+P_{\\rm Cl}[{\\rm Cl}^-]_o},\\qquad \\frac{RT}{F}\\Big|_{37^\\circ{\\rm C}}=26.7\\ {\\rm mV},\\quad \\frac{RT}{F}\\ln10=61.5\\ {\\rm mV}",
+        "example": [
+          "With \\([{\\rm K}^+]_o=5\\) mM and \\([{\\rm K}^+]_i=140\\) mM at 37 °C, \\(E_{\\rm K}=26.73\\ln(5/140)=-89.1\\) mV; sodium at 145 mM outside and 12 mM inside gives \\(E_{\\rm Na}=+66.6\\) mV. With permeabilities \\(1:0.04:0.45\\) for K, Na and Cl, the GHK equation gives a resting potential of \\(-69.8\\) mV. Doubling external potassium to 10 mM moves \\(E_{\\rm K}\\) by 18.5 mV to \\(-70.5\\) mV, but the resting potential by only 8.2 mV, to \\(-61.6\\) mV. Making sodium 20 times more permeable than potassium, as at the peak of a spike, brings the membrane to \\(+51.1\\) mV.",
+          "37 °C で \\([{\\rm K}^+]_o=5\\) mM、\\([{\\rm K}^+]_i=140\\) mM のとき、\\(E_{\\rm K}=26.73\\ln(5/140)=-89.1\\) mV です。ナトリウムが外 145 mM、内 12 mM なら \\(E_{\\rm Na}=+66.6\\) mV です。K、Na、Cl の透過性を \\(1:0.04:0.45\\) とすると、GHK の式から静止電位は \\(-69.8\\) mV になります。外液のカリウムを 10 mM に倍増すると \\(E_{\\rm K}\\) は 18.5 mV 動いて \\(-70.5\\) mV になりますが、静止電位は 8.2 mV しか動かず \\(-61.6\\) mV です。スパイクの頂点のようにナトリウムをカリウムの 20 倍通しやすくすると、膜は \\(+51.1\\) mV になります。"
+        ],
+        "caution": [
+          "GHK assumes independent ions crossing a uniform field and ignores the electrogenic sodium–potassium pump, which adds a few millivolts of hyperpolarization. Chloride often sits near equilibrium, and its internal concentration varies between cell types and during development. Only a tiny fraction of the ions need to cross to charge the membrane, so the bulk concentrations hardly change during a spike.",
+          "GHK は、一様な電場の中をイオンが独立に横切ることを仮定し、数ミリボルトの過分極を加える起電性のナトリウム・カリウムポンプを無視しています。塩化物イオンは平衡近くにあることが多く、その内液濃度は細胞の種類や発達の段階で変わります。膜を帯電させるのに必要なイオンはごくわずかなので、スパイクの間に全体の濃度はほとんど変わりません。"
+        ],
+        "question": [
+          "Why does high blood potassium endanger the heart?",
+          "血中のカリウムが高いと心臓が危険になるのはなぜですか？"
+        ],
+        "answer": [
+          "Resting potentials are set mostly by \\(E_{\\rm K}=\\frac{RT}{F}\\ln([{\\rm K}^+]_o/[{\\rm K}^+]_i)\\), so raising \\([{\\rm K}^+]_o\\) depolarises every cell. Partial depolarization inactivates sodium channels, which slows conduction and can block it altogether, so the heart’s electrical rhythm fails.",
+          "静止電位はおもに \\(E_{\\rm K}=\\frac{RT}{F}\\ln([{\\rm K}^+]_o/[{\\rm K}^+]_i)\\) で決まるので、\\([{\\rm K}^+]_o\\) が上がるとすべての細胞が脱分極します。部分的な脱分極はナトリウムチャネルを不活性化し、伝導を遅くし、完全に止めてしまうこともあるので、心臓の電気的なリズムが破綻します。"
+        ],
+        "params": [
+          [
+            "ko",
+            "External \\([\\mathrm K^+]_o\\) (mM)",
+            "外液の \\([\\mathrm K^+]_o\\)（mM）",
+            1,
+            20,
+            0.5,
+            5
+          ],
+          [
+            "nao",
+            "External \\([\\mathrm{Na}^+]_o\\) (mM)",
+            "外液の \\([\\mathrm{Na}^+]_o\\)（mM）",
+            50,
+            200,
+            5,
+            145
+          ],
+          [
+            "lp",
+            "\\(\\log_{10}(P_{\\mathrm{Na}}/P_{\\mathrm K})\\)",
+            "\\(\\log_{10}(P_{\\mathrm{Na}}/P_{\\mathrm K})\\)",
+            -3,
+            1.5,
+            0.05,
+            -1.4
+          ],
+          [
+            "temp",
+            "Temperature (°C)",
+            "温度（°C）",
+            6,
+            40,
+            1,
+            37
+          ]
+        ],
+        "source": "A. L. Hodgkin and A. F. Huxley · A quantitative description of membrane current and its application to conduction and excitation in nerve, Journal of Physiology 117, 500–544 (1952)",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC1392413/"
+      },
+      {
+        "id": "hodgkin-huxley",
+        "title": [
+          "2. The action potential: Hodgkin–Huxley",
+          "2. 活動電位：ホジキン・ハクスリー"
+        ],
+        "body": [
+          "Hodgkin and Huxley treated the squid giant axon membrane as a capacitor in parallel with three conductances. The sodium conductance is \\(\\bar g_{\\rm Na}m^3h\\): three fast activation gates \\(m\\) and one slow inactivation gate \\(h\\). The potassium conductance is \\(\\bar g_{\\rm K}n^4\\) with four slow gates \\(n\\). Each gate relaxes towards a voltage-dependent value at a voltage-dependent rate. A small depolarization opens a few \\(m\\) gates, the inward sodium current depolarises the membrane further, and the loop runs away into a spike; \\(h\\) then closes and \\(n\\) opens and the voltage falls below rest. Fire one pulse, then a second, and find how close together two spikes can be.",
+          "ホジキンとハクスリーは、イカの巨大軸索の膜を、コンデンサと三つのコンダクタンスの並列回路として扱いました。ナトリウムのコンダクタンスは \\(\\bar g_{\\rm Na}m^3h\\) で、三つの速い活性化ゲート \\(m\\) と一つの遅い不活性化ゲート \\(h\\) からなります。カリウムのコンダクタンスは \\(\\bar g_{\\rm K}n^4\\) で、四つの遅いゲート \\(n\\) からなります。各ゲートは、電圧で決まる値へ、電圧で決まる速さで近づきます。小さな脱分極でいくつかの \\(m\\) ゲートが開くと、内向きのナトリウム電流が膜をさらに脱分極させ、このループが暴走してスパイクになります。続いて \\(h\\) が閉じ \\(n\\) が開き、電圧は静止値より下がります。パルスを一つ、さらにもう一つ与えて、二つのスパイクがどこまで近づけるかを調べてください。"
+        ],
+        "formula": "C\\frac{dV}{dt}=I_{\\rm stim}-\\bar g_{\\rm Na}m^3h(V-E_{\\rm Na})-\\bar g_{\\rm K}n^4(V-E_{\\rm K})-g_L(V-E_L),\\qquad \\frac{dx}{dt}=\\phi\\,[\\alpha_x(V)(1-x)-\\beta_x(V)\\,x],\\ x\\in\\{m,h,n\\},\\qquad \\phi=3^{(T-6.3)/10}",
+        "example": [
+          "With the original parameters (\\(\\bar g_{\\rm Na}=120\\), \\(\\bar g_{\\rm K}=36\\), \\(g_L=0.3\\) mS/cm², \\(C=1\\) µF/cm², \\(E_{\\rm Na}=50\\), \\(E_{\\rm K}=-77\\) mV) and the membrane at rest at \\(-65\\) mV, where \\(m=0.053\\), \\(h=0.596\\), \\(n=0.318\\), a 1 ms pulse fires a spike only if it is stronger than 6.91 µA/cm² at 6.3 °C. A 10 µA/cm² pulse produces a spike peaking at \\(+39\\) mV. A second identical pulse 12 ms later fails, because \\(h\\) has not recovered; 15 ms later it fires again. Warming the axon to 18.5 °C speeds every gate by \\(\\phi=3.82\\) and raises the threshold to 8.9 µA/cm².",
+          "元のパラメータ（\\(\\bar g_{\\rm Na}=120\\)、\\(\\bar g_{\\rm K}=36\\)、\\(g_L=0.3\\) mS/cm²、\\(C=1\\) µF/cm²、\\(E_{\\rm Na}=50\\)、\\(E_{\\rm K}=-77\\) mV）で、膜が \\(-65\\) mV で静止していて \\(m=0.053\\)、\\(h=0.596\\)、\\(n=0.318\\) のとき、6.3 °C では 1 ms のパルスは 6.91 µA/cm² より強いときだけスパイクを発火させます。10 µA/cm² のパルスで、頂点が \\(+39\\) mV のスパイクができます。12 ms 後の同じ 2 回目のパルスは、\\(h\\) が回復していないので失敗し、15 ms 後なら再び発火します。軸索を 18.5 °C に温めるとすべてのゲートが \\(\\phi=3.82\\) 倍速くなり、しきい値は 8.9 µA/cm² に上がります。"
+        ],
+        "caution": [
+          "The model is the squid axon at a temperature near 6 °C; mammalian neurons carry many more channel types and fire faster spikes. Voltages use the modern convention with rest near \\(-65\\) mV, shifted from the 1952 paper, which measured from rest with the opposite sign. The threshold quoted is for a 1 ms pulse; it depends on the pulse duration.",
+          "モデルは 6 °C 付近のイカの軸索です。哺乳類のニューロンにはずっと多くの種類のチャネルがあり、より速いスパイクを出します。電圧は静止値を \\(-65\\) mV 付近とする現代の慣習で、静止値から逆符号で測った 1952 年の論文の値をずらしています。示したしきい値は 1 ms のパルスについてのもので、パルスの長さによって変わります。"
+        ],
+        "question": [
+          "Why can the membrane not fire a second spike immediately after the first?",
+          "膜が最初のスパイクのすぐあとに 2 回目のスパイクを発火できないのはなぜですか？"
+        ],
+        "answer": [
+          "During the spike the inactivation gate \\(h\\) closes and the potassium gate \\(n\\) opens. Until \\(h\\) reopens, few sodium channels are available, and while \\(n\\) stays high an outward potassium current opposes any depolarization. Both gates are slow, so for several milliseconds no stimulus can fire (absolute refractoriness) and then only a larger one can (relative refractoriness).",
+          "スパイクの間に、不活性化ゲート \\(h\\) は閉じ、カリウムのゲート \\(n\\) は開きます。\\(h\\) が再び開くまでは使えるナトリウムチャネルが少なく、\\(n\\) が高いあいだは外向きのカリウム電流がどんな脱分極にも逆らいます。どちらのゲートも遅いので、数ミリ秒の間はどんな刺激でも発火できず（絶対不応期）、その後しばらくはより大きな刺激でなければ発火できません（相対不応期）。"
+        ],
+        "params": [
+          [
+            "amp",
+            "First pulse (\\(\\mu\\mathrm{A/cm^2}\\))",
+            "1 回目のパルス（\\(\\mu\\mathrm{A/cm^2}\\)）",
+            0,
+            40,
+            0.5,
+            10
+          ],
+          [
+            "amp2",
+            "Second pulse (\\(\\mu\\mathrm{A/cm^2}\\))",
+            "2 回目のパルス（\\(\\mu\\mathrm{A/cm^2}\\)）",
+            0,
+            40,
+            0.5,
+            10
+          ],
+          [
+            "delay",
+            "Delay between pulses (ms)",
+            "パルスの間隔（ms）",
+            2,
+            40,
+            0.5,
+            12
+          ],
+          [
+            "temp",
+            "Temperature (°C)",
+            "温度（°C）",
+            6.3,
+            25,
+            0.1,
+            6.3
+          ]
+        ],
+        "source": "A. L. Hodgkin and A. F. Huxley · A quantitative description of membrane current and its application to conduction and excitation in nerve, Journal of Physiology 117, 500–544 (1952)",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC1392413/"
+      },
+      {
+        "id": "cable-equation",
+        "title": [
+          "3. The cable: how far a signal reaches",
+          "3. ケーブル：信号はどこまで届くか"
+        ],
+        "body": [
+          "A dendrite is a thin tube of salty fluid wrapped in a leaky insulator. Current flows along the core through the axial resistance and leaks out through the membrane resistance, and in the steady state the voltage obeys \\(\\lambda^2V^{\\prime\\prime}=V\\). Its solutions decay over the length constant \\(\\lambda=\\sqrt{R_m d/4R_i}\\), which grows only as the square root of the diameter. On a real neuron the two ends of a dendrite are different: the tip is sealed, so no current escapes there and the voltage flattens, while the soma is a large patch of membrane that drains current. Rall described the soma by the ratio \\(\\rho\\) of its conductance to that of a semi-infinite cable of the same dendrite. The same cable physics limits how fast a bare axon conducts, \\(v\\propto\\sqrt d\\); wrapping the axon in myelin raises \\(R_m\\) and cuts the capacitance, so the signal jumps from one node of Ranvier to the next and speed grows in proportion to \\(d\\).",
+          "樹状突起は、漏れのある絶縁体に包まれた、塩を含む液体の細い管です。電流は芯に沿って軸方向の抵抗を通って流れ、膜の抵抗を通って漏れ出し、定常状態では電圧は \\(\\lambda^2V^{\\prime\\prime}=V\\) に従います。その解は長さ定数 \\(\\lambda=\\sqrt{R_m d/4R_i}\\) の距離で減衰し、\\(\\lambda\\) は直径の平方根でしか増えません。実際のニューロンでは、樹状突起の両端は性質が違います。先端は閉じていて電流が逃げられないので電圧は平らになり、細胞体は電流を吸い込む大きな膜です。ロールは細胞体を、そのコンダクタンスと同じ樹状突起の半無限ケーブルのコンダクタンスの比 \\(\\rho\\) で表しました。同じケーブルの物理が、むき出しの軸索の伝導速度 \\(v\\propto\\sqrt d\\) を制限します。軸索を髄鞘で包むと \\(R_m\\) が上がり容量が下がるので、信号はランビエ絞輪から次の絞輪へ跳び、速度は \\(d\\) に比例して増えます。"
+        ],
+        "formula": "\\lambda^2\\frac{d^2V}{dx^2}=V,\\qquad \\lambda=\\sqrt{\\frac{R_m\\,d}{4R_i}},\\qquad V^{\\prime}(0)=\\frac{\\rho}{\\lambda}V(0),\\quad V^{\\prime}(L)=0,\\qquad V(x)\\propto\\begin{cases}\\Bigl(\\cosh\\dfrac{x}{\\lambda}+\\rho\\sinh\\dfrac{x}{\\lambda}\\Bigr)\\cosh\\dfrac{L-x_0}{\\lambda},&x\\le x_0\\\\[4pt]\\Bigl(\\cosh\\dfrac{x_0}{\\lambda}+\\rho\\sinh\\dfrac{x_0}{\\lambda}\\Bigr)\\cosh\\dfrac{L-x}{\\lambda},&x\\ge x_0\\end{cases},\\qquad v_{\\rm myelin}\\approx6\\ {\\rm m\\,s^{-1}}\\ \\text{per }\\mu\\mathrm{m}",
+        "example": [
+          "With \\(R_m=20\\,000\\ \\Omega\\,{\\rm cm}^2\\), \\(R_i=100\\ \\Omega\\,{\\rm cm}\\) and \\(d=2\\) µm, \\(\\lambda=\\sqrt{20\\,000\\times2\\times10^{-4}/400}=0.1\\) cm \\(=1.00\\) mm. Injecting at the soma end of a 2 mm dendrite, the sealed tip reaches \\(1/\\cosh2=0.266\\) of the injected voltage, twice the infinite-cable value \\(e^{-2}=0.135\\), because the sealed end reflects current. Injecting at the tip instead, the soma sees \\(1/(\\cosh2+\\rho\\sinh2)\\): 0.266 with no soma load, 0.135 for \\(\\rho=1\\), exactly \\(e^{-2}\\) because a soma with \\(\\rho=1\\) looks to the dendrite like an endless continuation of itself, and 0.068 for \\(\\rho=3\\). Quadrupling the diameter only doubles \\(\\lambda\\). A myelinated fiber of 10 µm conducts at about 60 m/s; a bare fiber of the same size, at roughly 3 m/s.",
+          "\\(R_m=20\\,000\\ \\Omega\\,{\\rm cm}^2\\)、\\(R_i=100\\ \\Omega\\,{\\rm cm}\\)、\\(d=2\\) µm なら、\\(\\lambda=\\sqrt{20\\,000\\times2\\times10^{-4}/400}=0.1\\) cm \\(=1.00\\) mm です。長さ 2 mm の樹状突起の細胞体側の端から注入すると、閉じた先端は注入した電圧の \\(1/\\cosh2=0.266\\) に達し、無限ケーブルの値 \\(e^{-2}=0.135\\) の 2 倍になります。閉じた端が電流を跳ね返すからです。逆に先端から注入すると、細胞体に届くのは \\(1/(\\cosh2+\\rho\\sinh2)\\) で、細胞体の負荷がなければ 0.266、\\(\\rho=1\\) では 0.135、\\(\\rho=3\\) では 0.068 です。\\(\\rho=1\\) でちょうど \\(e^{-2}\\) になるのは、\\(\\rho=1\\) の細胞体が樹状突起から見ると自分自身の無限の続きのように見えるからです。直径を 4 倍にしても \\(\\lambda\\) は 2 倍にしかなりません。直径 10 µm の有髄線維は約 60 m/s で伝導し、同じ太さのむき出しの線維は 3 m/s 程度です。"
+        ],
+        "caution": [
+          "The cable here is passive: real dendrites carry voltage-gated channels that can boost or reshape signals, and they branch, which the one-dimensional model ignores. Transient signals decay faster than the steady state shown, because the membrane capacitance also draws current. The two speed laws are empirical rules of thumb, Hursh’s 6 m/s per µm for myelinated mammalian fibers and a \\(\\sqrt d\\) fit for bare ones. In the 3D neuron the diameters, the spines and the myelin are drawn several times thicker than life.",
+          "ここでのケーブルは受動的です。実際の樹状突起には信号を増幅したり形を変えたりする電位依存性チャネルがあり、また枝分かれしますが、1 次元のモデルはそれを無視しています。膜容量も電流を引き込むので、過渡的な信号は示した定常状態より速く減衰します。二つの速度の法則は経験則で、有髄の哺乳類線維にはハーシュの 1 µm あたり 6 m/s、むき出しの線維には \\(\\sqrt d\\) の当てはめを使っています。3D のニューロンでは、直径、スパイン、髄鞘を実物の何倍も太く描いています。"
+        ],
+        "question": [
+          "Why does the length constant grow only as the square root of the diameter?",
+          "長さ定数が直径の平方根でしか増えないのはなぜですか？"
+        ],
+        "answer": [
+          "The axial resistance per unit length falls as the cross-section, \\(4R_i/\\pi d^2\\), but the membrane resistance of a unit length also falls, as \\(R_m/\\pi d\\), because a thicker tube has more surface to leak through. The length constant is the square root of their ratio, \\(\\sqrt{(R_m/\\pi d)/(4R_i/\\pi d^2)}=\\sqrt{R_md/4R_i}\\).",
+          "単位長さあたりの軸方向の抵抗は断面積に反比例して \\(4R_i/\\pi d^2\\) と下がりますが、単位長さあたりの膜の抵抗も \\(R_m/\\pi d\\) と下がります。太い管ほど漏れ出す表面が大きいからです。長さ定数はその比の平方根 \\(\\sqrt{(R_m/\\pi d)/(4R_i/\\pi d^2)}=\\sqrt{R_md/4R_i}\\) です。"
+        ],
+        "params": [
+          [
+            "d",
+            "Diameter \\(d\\) (µm)",
+            "直径 \\(d\\)（µm）",
+            0.5,
+            10,
+            0.1,
+            2
+          ],
+          [
+            "rm",
+            "Membrane resistance \\(R_m\\) (\\(\\Omega\\,\\mathrm{cm}^2\\))",
+            "膜抵抗 \\(R_m\\)（\\(\\Omega\\,\\mathrm{cm}^2\\)）",
+            5000,
+            50000,
+            1000,
+            20000
+          ],
+          [
+            "len",
+            "Length \\(L\\) (mm)",
+            "長さ \\(L\\)（mm）",
+            0.2,
+            5,
+            0.1,
+            2
+          ],
+          [
+            "x0",
+            "Pipette position \\(x_0/L\\)",
+            "ピペットの位置 \\(x_0/L\\)",
+            0,
+            1,
+            0.01,
+            0.75
+          ],
+          [
+            "rho",
+            "Soma load \\(\\rho=G_{\\mathrm{soma}}/G_\\infty\\)",
+            "細胞体の負荷 \\(\\rho=G_{\\mathrm{soma}}/G_\\infty\\)",
+            0,
+            5,
+            0.1,
+            1
+          ]
+        ],
+        "source": "A. L. Hodgkin and A. F. Huxley · A quantitative description of membrane current and its application to conduction and excitation in nerve, Journal of Physiology 117, 500–544 (1952)",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC1392413/"
+      }
+    ]
+  },
+  {
+    "slug": "nonlinear-waves",
+    "title": [
+      "Nonlinear waves: solitons, shocks and the return of energy",
+      "非線形の波：孤立波、衝撃波、そしてエネルギーの帰還"
+    ],
+    "description": [
+      "In a linear wave every component travels independently, and two waves pass through each other by simple addition. Real waves are nonlinear: a taller part of a water wave moves faster than a lower one, so waves steepen. What happens next depends on what opposes the steepening. Viscosity turns it into a shock, a thin front across which the wave jumps. Dispersion, which spreads short wavelengths apart, can balance it exactly and produce a solitary wave that keeps its shape forever, as John Scott Russell saw in 1834 when a wave from a stopped canal boat ran ahead of him for two miles. In 1965 Zabusky and Kruskal found that such waves collide and emerge intact, like particles, and named them solitons; in doing so they explained a puzzle Fermi, Pasta, Ulam and Tsingou had found ten years earlier, a chain of oscillators that refused to share its energy. These experiments follow solitons through a collision in a wave flume, watch a hump of fluid break into a shock, and see that energy come back.",
+      "線形の波では、どの成分も独立に進み、二つの波は単に足し合わさって互いを通り抜けます。現実の波は非線形です。水の波の高い部分は低い部分より速く進むので、波は切り立っていきます。その先どうなるかは、切り立ちに何が逆らうかで決まります。粘性は切り立ちを衝撃波、つまり波が跳ぶ薄い前線に変えます。短い波長を引き離す分散は切り立ちとちょうど釣り合い、形をいつまでも保つ孤立波を作ることがあります。1834 年、ジョン・スコット・ラッセルは、止まった運河船から生じた波が 3 km 以上も自分より先を走り続けるのを見ました。1965 年、ザブスキーとクルスカルは、そのような波が粒子のように衝突して無傷で現れることを見つけ、ソリトンと名づけました。そうして彼らは、その 10 年前にフェルミ、パスタ、ウラム、ツィンゴウが見つけた謎、エネルギーを分け合おうとしない振動子の鎖を説明しました。ここでの実験では、造波水路で孤立波の衝突を追い、流体の山が砕けて衝撃波になるのを見て、そのエネルギーが戻ってくるのを確かめます。"
+    ],
+    "group": "physics",
+    "prerequisite": [
+      "Partial differential equations (the wave and heat equations), Fourier modes, ordinary differential equations",
+      "偏微分方程式（波動方程式と熱方程式）、フーリエモード、常微分方程式"
+    ],
+    "source": "N. J. Zabusky and M. D. Kruskal · Interaction of “solitons” in a collisionless plasma and the recurrence of initial states, Physical Review Letters 15, 240–243 (1965)",
+    "url": "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.15.240",
+    "labs": [
+      {
+        "id": "kdv-solitons",
+        "title": [
+          "1. Solitons: waves that collide like particles",
+          "1. ソリトン：粒子のように衝突する波"
+        ],
+        "body": [
+          "Shallow water waves of small amplitude obey the Korteweg–de Vries equation \\(u_t+6uu_x+u_{xxx}=0\\). The term \\(6uu_x\\) steepens the wave; \\(u_{xxx}\\) disperses it. A single soliton \\(u=\\frac{k^2}{2}\\operatorname{sech}^2\\frac{k(x-k^2t)}{2}\\) balances them: height \\(k^2/2\\), speed \\(k^2\\), width \\(\\sim1/k\\), so taller solitons are narrower and faster. Hirota’s exact two-soliton solution shows what happens when the fast one catches the slow one. The two merge, exchange their identities, and separate again with their original shapes and speeds. The only trace of the collision is a jump in position: the fast soliton ends up ahead of where it would have been, the slow one behind.",
+          "振幅の小さな浅水波は、コルテヴェーグ・ド・フリース方程式 \\(u_t+6uu_x+u_{xxx}=0\\) に従います。\\(6uu_x\\) の項は波を切り立たせ、\\(u_{xxx}\\) は波を分散させます。一つのソリトン \\(u=\\frac{k^2}{2}\\operatorname{sech}^2\\frac{k(x-k^2t)}{2}\\) はこれらを釣り合わせていて、高さ \\(k^2/2\\)、速さ \\(k^2\\)、幅 \\(\\sim1/k\\) です。したがって高いソリトンほど細く、速くなります。広田の厳密な 2 ソリトン解は、速いほうが遅いほうに追いついたとき何が起こるかを示します。二つは一つになり、正体を入れかえ、元の形と速さで再び離れます。衝突の痕跡は位置の飛びだけで、速いソリトンは本来いるはずの場所より前に、遅いソリトンは後ろに来ます。"
+        ],
+        "formula": "u=2\\,\\partial_x^2\\ln\\tau,\\quad \\tau=1+e^{\\eta_1}+e^{\\eta_2}+A\\,e^{\\eta_1+\\eta_2},\\quad \\eta_i=k_ix-k_i^3t,\\quad A=\\Bigl(\\frac{k_1-k_2}{k_1+k_2}\\Bigr)^2,\\qquad \\delta_1=+\\frac{2}{k_1}\\ln\\frac{k_1+k_2}{k_1-k_2},\\quad \\delta_2=-\\frac{2}{k_2}\\ln\\frac{k_1+k_2}{k_1-k_2}",
+        "example": [
+          "With \\(k_1=1.4\\) and \\(k_2=0.8\\) the solitons have speeds 1.96 and 0.64 and heights 0.98 and 0.32. The interaction coefficient is \\(A=(0.6/2.2)^2=0.0744\\) and \\(\\ln(2.2/0.6)=1.299\\), so the fast soliton is pushed forward by \\(\\frac{2}{1.4}\\times1.299=1.856\\) and the slow one back by \\(\\frac{2}{0.8}\\times1.299=3.248\\). The slow soliton, being broader, is displaced further. At the moment of overlap the peak is lower than the taller soliton alone, not the sum of the two.",
+          "\\(k_1=1.4\\)、\\(k_2=0.8\\) のとき、二つのソリトンの速さは 1.96 と 0.64、高さは 0.98 と 0.32 です。相互作用の係数は \\(A=(0.6/2.2)^2=0.0744\\)、\\(\\ln(2.2/0.6)=1.299\\) なので、速いソリトンは \\(\\frac{2}{1.4}\\times1.299=1.856\\) だけ前へ押し出され、遅いほうは \\(\\frac{2}{0.8}\\times1.299=3.248\\) だけ後ろへ下がります。幅の広い遅いソリトンのほうが大きくずれます。重なった瞬間の頂上は、二つの和ではなく、高いソリトン単独より低くなります。"
+        ],
+        "caution": [
+          "The equation is written in scaled units; for water of depth \\(h\\) the physical soliton of height \\(a\\) travels at \\(\\sqrt{g(h+a)}\\) and has width of order \\(h\\sqrt{h/a}\\). KdV holds for long waves of small amplitude moving in one direction, and the heights in the 3D flume are exaggerated for visibility. The dashed curve adds the two solitons at their shifted positions, which is the solution far from the collision but not during it.",
+          "方程式は尺度を直した単位で書いています。深さ \\(h\\) の水では、高さ \\(a\\) の実際のソリトンは \\(\\sqrt{g(h+a)}\\) で進み、幅は \\(h\\sqrt{h/a}\\) 程度です。KdV が成り立つのは、一方向に進む振幅の小さな長い波です。3D の水路では、見やすいように高さを誇張しています。破線は二つのソリトンをずれた位置で足したもので、衝突から遠いところでは解になりますが、衝突の最中にはなりません。"
+        ],
+        "question": [
+          "Why are taller solitons faster?",
+          "高いソリトンほど速いのはなぜですか？"
+        ],
+        "answer": [
+          "In \\(u_t+6uu_x+u_{xxx}=0\\) the local speed of the nonlinear term is \\(6u\\), so a taller wave is carried faster. Balancing this against dispersion fixes the shape \\(\\frac{k^2}{2}\\operatorname{sech}^2\\) and ties the speed to the height: \\(c=k^2=2\\times\\text{height}\\).",
+          "\\(u_t+6uu_x+u_{xxx}=0\\) の非線形項による局所的な速さは \\(6u\\) なので、高い波ほど速く運ばれます。これを分散と釣り合わせると形 \\(\\frac{k^2}{2}\\operatorname{sech}^2\\) が決まり、速さは高さと結びつきます：\\(c=k^2=2\\times\\text{高さ}\\)。"
+        ],
+        "params": [
+          [
+            "k1",
+            "Fast soliton \\(k_1\\)",
+            "速いソリトン \\(k_1\\)",
+            0.6,
+            2,
+            0.05,
+            1.4
+          ],
+          [
+            "k2",
+            "Slow soliton \\(k_2\\)",
+            "遅いソリトン \\(k_2\\)",
+            0.3,
+            1.5,
+            0.05,
+            0.8
+          ]
+        ],
+        "source": "N. J. Zabusky and M. D. Kruskal · Interaction of “solitons” in a collisionless plasma and the recurrence of initial states, Physical Review Letters 15, 240–243 (1965)",
+        "url": "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.15.240"
+      },
+      {
+        "id": "burgers-shock",
+        "title": [
+          "2. Burgers’ equation: how a wave breaks",
+          "2. バーガース方程式：波が砕けるしくみ"
+        ],
+        "body": [
+          "Drop the dispersion and keep the steepening: \\(u_t+uu_x=0\\). Each value of \\(u\\) is carried at speed \\(u\\) along a straight characteristic, so the top of a hump overtakes its front. The profile steepens until, at the breaking time \\(t^*=1/\\max(-u_0^{\\prime})\\), its slope becomes infinite and the characteristics cross; past that the inviscid solution would be three-valued. A little viscosity, \\(u_t+uu_x=\\nu u_{xx}\\), resolves the crossing into a shock. The Cole–Hopf transformation \\(u=-2\\nu\\,\\partial_x\\ln\\varphi\\) turns Burgers’ equation into the heat equation for \\(\\varphi\\), so the viscous solution is known exactly for any initial hump.",
+          "分散を取り除き、切り立ちだけを残すと \\(u_t+uu_x=0\\) です。\\(u\\) の各値は、まっすぐな特性曲線に沿って速さ \\(u\\) で運ばれるので、山の頂上が前のほうを追い越します。形は切り立ち続け、砕波の時刻 \\(t^*=1/\\max(-u_0^{\\prime})\\) で傾きが無限大になって特性曲線が交わります。その先では非粘性の解は 3 価になってしまいます。わずかな粘性 \\(u_t+uu_x=\\nu u_{xx}\\) が交差を衝撃波に変えます。コール・ホップ変換 \\(u=-2\\nu\\,\\partial_x\\ln\\varphi\\) はバーガース方程式を \\(\\varphi\\) の熱方程式に変えるので、どんな初めの山についても粘性のある解が厳密にわかります。"
+        ],
+        "formula": "u_t+uu_x=\\nu u_{xx},\\qquad x=s+u_0(s)\\,t\\ \\ (\\nu=0),\\qquad t^*=\\frac{1}{\\max_s(-u_0^{\\prime}(s))},\\qquad u=-2\\nu\\frac{\\varphi_x}{\\varphi},\\quad \\varphi_t=\\nu\\varphi_{xx},\\qquad s=\\frac{u_L+u_R}{2}",
+        "example": [
+          "For \\(u_0=a\\,e^{-x^2}\\) the steepest downslope is at \\(x=1/\\sqrt2\\), where \\(-u_0^{\\prime}=\\sqrt2\\,a\\,e^{-1/2}\\). With \\(a=1\\) the wave breaks at \\(t^*=\\sqrt e/\\sqrt2=1.166\\). A shock with \\(u_L=0.8\\) behind and \\(u_R=0\\) ahead moves at the Rankine–Hugoniot speed \\((0.8+0)/2=0.4\\), half the speed of the fluid behind it, whatever the viscosity; viscosity only sets its thickness, roughly \\(4\\nu/(u_L-u_R)\\).",
+          "\\(u_0=a\\,e^{-x^2}\\) では、最も急な下り坂は \\(x=1/\\sqrt2\\) にあり、そこで \\(-u_0^{\\prime}=\\sqrt2\\,a\\,e^{-1/2}\\) です。\\(a=1\\) なら波は \\(t^*=\\sqrt e/\\sqrt2=1.166\\) で砕けます。後ろが \\(u_L=0.8\\)、前が \\(u_R=0\\) の衝撃波は、粘性によらずランキン・ユゴニオの速さ \\((0.8+0)/2=0.4\\) で、つまり後ろの流体の半分の速さで動きます。粘性が決めるのはその厚さだけで、およそ \\(4\\nu/(u_L-u_R)\\) です。"
+        ],
+        "caution": [
+          "Burgers’ equation is a model, not the equations of gas dynamics, but it captures their essential balance of steepening and diffusion. The Rankine–Hugoniot speed follows from conserving \\(\\int u\\,dx\\); the steepest slope and the jump are read from the computed profile, so they depend slightly on the plotting resolution. The viscous solution is computed exactly by quadrature of the Cole–Hopf integral.",
+          "バーガース方程式は気体力学の方程式そのものではなくモデルですが、切り立ちと拡散の本質的な釣り合いをとらえています。ランキン・ユゴニオの速さは \\(\\int u\\,dx\\) の保存から導かれます。最大の傾きと飛びは計算した形から読み取るので、作図の分解能にわずかによります。粘性のある解は、コール・ホップの積分を数値積分して厳密に求めています。"
+        ],
+        "question": [
+          "Why does the shock move at the average of the two speeds?",
+          "衝撃波が二つの速さの平均で動くのはなぜですか？"
+        ],
+        "answer": [
+          "Burgers’ equation conserves \\(\\int u\\,dx\\) with flux \\(u^2/2\\). A jump moving at speed \\(s\\) must take in exactly what the fluxes deliver: \\(s(u_L-u_R)=\\frac{u_L^2}{2}-\\frac{u_R^2}{2}\\), so \\(s=\\frac{u_L+u_R}{2}\\).",
+          "バーガース方程式は流束 \\(u^2/2\\) で \\(\\int u\\,dx\\) を保存します。速さ \\(s\\) で動く飛びは、流束が運び込む量をちょうど受け入れなければならないので \\(s(u_L-u_R)=\\frac{u_L^2}{2}-\\frac{u_R^2}{2}\\)、すなわち \\(s=\\frac{u_L+u_R}{2}\\) です。"
+        ],
+        "params": [
+          [
+            "a",
+            "Hump height \\(a\\)",
+            "山の高さ \\(a\\)",
+            0.5,
+            2,
+            0.05,
+            1
+          ],
+          [
+            "nu",
+            "Viscosity \\(\\nu\\)",
+            "粘性 \\(\\nu\\)",
+            0.005,
+            0.2,
+            0.005,
+            0.02
+          ],
+          [
+            "t",
+            "Time \\(t\\)",
+            "時刻 \\(t\\)",
+            0,
+            4,
+            0.01,
+            2
+          ]
+        ],
+        "source": "N. J. Zabusky and M. D. Kruskal · Interaction of “solitons” in a collisionless plasma and the recurrence of initial states, Physical Review Letters 15, 240–243 (1965)",
+        "url": "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.15.240"
+      },
+      {
+        "id": "fput-recurrence",
+        "title": [
+          "3. Fermi–Pasta–Ulam–Tsingou: energy that comes back",
+          "3. フェルミ・パスタ・ウラム・ツィンゴウ：戻ってくるエネルギー"
+        ],
+        "body": [
+          "In 1955, on one of the first computers, Fermi, Pasta, Ulam and Tsingou simulated a chain of masses joined by springs with a small quadratic nonlinearity, expecting it to thermalize: energy put into the lowest mode should spread evenly over all the modes. It did not. The energy moved into the next few modes and then, after about 157 periods of the lowest mode, almost all of it returned. Zabusky and Kruskal later showed that the long-wave limit of the chain is the KdV equation: the initial sine wave breaks up into solitons, which travel around the chain, pass through each other, and briefly reassemble the original shape.",
+          "1955 年、最初期のコンピュータの一台で、フェルミ、パスタ、ウラム、ツィンゴウは、わずかな 2 次の非線形性をもつばねでつながれた質点の鎖を計算しました。彼らは鎖が熱平衡化する、つまり最低次のモードに入れたエネルギーがすべてのモードに均等に広がると予想しました。そうはなりませんでした。エネルギーは次のいくつかのモードに移り、最低次モードの約 157 周期ののち、ほとんどすべてが戻ってきたのです。のちにザブスキーとクルスカルは、この鎖の長波長極限が KdV 方程式であることを示しました。初めの正弦波はソリトンに分かれ、それらが鎖を往復し、互いを通り抜け、つかの間元の形を組み立て直すのです。"
+        ],
+        "formula": "\\ddot x_j=(x_{j+1}-2x_j+x_{j-1})\\bigl[1+\\alpha(x_{j+1}-x_{j-1})\\bigr],\\quad x_0=x_{N+1}=0,\\qquad Q_k=\\sqrt{\\tfrac{2}{N+1}}\\sum_j x_j\\sin\\frac{jk\\pi}{N+1},\\quad \\omega_k=2\\sin\\frac{k\\pi}{2(N+1)},\\quad E_k=\\tfrac12\\bigl(\\dot Q_k^2+\\omega_k^2Q_k^2\\bigr)",
+        "example": [
+          "With \\(N=32\\), \\(\\alpha=0.25\\) and an initial displacement \\(x_j=\\sin(j\\pi/33)\\), the chain holds energy 0.0747. The lowest mode has \\(\\omega_1=2\\sin(\\pi/66)=0.0952\\), a period of 66.0. At its lowest, near \\(t\\approx6900\\), mode 1 keeps only about 8% of the energy; at \\(t\\approx10\\,200\\), about 154 periods, it has 98% of the energy back. With \\(\\alpha=0\\) the modes are exactly independent and nothing moves at all.",
+          "\\(N=32\\)、\\(\\alpha=0.25\\)、初めの変位 \\(x_j=\\sin(j\\pi/33)\\) のとき、鎖のエネルギーは 0.0747 です。最低次モードは \\(\\omega_1=2\\sin(\\pi/66)=0.0952\\)、周期は 66.0 です。モード 1 のエネルギーは最も少ないとき、\\(t\\approx6900\\) 付近で全体の約 8% しかありませんが、\\(t\\approx10\\,200\\)、約 154 周期で 98% を取り戻します。\\(\\alpha=0\\) ではモードは厳密に独立で、何も移りません。"
+        ],
+        "caution": [
+          "The recurrence is not exact and is not the end of the story: over much longer times, or at higher energies, the chain does slowly approach equipartition, and super-recurrences occur on longer scales. The motion is integrated with the velocity Verlet method, step 0.1, which conserves energy to high accuracy over these times. The displacements of the chain are drawn greatly magnified.",
+          "再帰は厳密ではなく、話はここで終わりません。はるかに長い時間や、より高いエネルギーでは、鎖はゆっくりと等分配に近づき、より長い尺度で超再帰も起こります。運動は刻み 0.1 の速度ベルレ法で積分していて、この時間の範囲ではエネルギーを高い精度で保ちます。鎖の変位は大きく拡大して描いています。"
+        ],
+        "question": [
+          "Why does the energy return instead of spreading out?",
+          "エネルギーが広がらずに戻ってくるのはなぜですか？"
+        ],
+        "answer": [
+          "Because the chain is close to an integrable system. Its long-wave dynamics is the KdV equation, whose solitons keep their identities through collisions, so the motion is quasi-periodic rather than chaotic and the initial state is approximately revisited. Chaos and thermalization set in only at higher energies or much longer times.",
+          "鎖が可積分系に近いからです。その長波長のダイナミクスは KdV 方程式で、そのソリトンは衝突しても正体を保つので、運動はカオス的ではなく準周期的になり、初めの状態にほぼ戻ってきます。カオスと熱平衡化が起こるのは、より高いエネルギーか、はるかに長い時間のときだけです。"
+        ],
+        "params": [
+          [
+            "alpha",
+            "Nonlinearity \\(\\alpha\\)",
+            "非線形性 \\(\\alpha\\)",
+            0,
+            0.5,
+            0.01,
+            0.25
+          ],
+          [
+            "amp",
+            "Initial amplitude \\(A\\)",
+            "初めの振幅 \\(A\\)",
+            0.25,
+            2,
+            0.05,
+            1
+          ]
+        ],
+        "source": "N. J. Zabusky and M. D. Kruskal · Interaction of “solitons” in a collisionless plasma and the recurrence of initial states, Physical Review Letters 15, 240–243 (1965)",
+        "url": "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.15.240"
+      }
+    ]
+  },
+  {
+    "slug": "helicopter-rotors",
+    "title": [
+      "Helicopter rotors: lift, control and a safe way down",
+      "ヘリコプターのローター：揚力、操縦、そして安全に降りる方法"
+    ],
+    "description": [
+      "A helicopter hangs from a spinning wing. Each blade is an airfoil swept round at about 200 m/s at its tip, and the whole rotor is steered by twisting the blades as they turn. The mechanism that does it is the swashplate: a pair of rings around the mast, one held still and tilted by the pilot, the other spinning with the blades and pushing their pitch horns up and down once per revolution. In forward flight the rotor faces a deep asymmetry, because the advancing blade meets the airflow at the sum of its own speed and the aircraft’s while the retreating blade meets their difference; hinged blades flap up and down to balance it. And if the engine fails, the rotor can keep turning on the air rising through it and let the aircraft down at a survivable speed. These experiments drive a swashplate, map the angle of attack over a rotor disc in forward flight, and apply momentum theory from hover to autorotation.",
+      "ヘリコプターは回転する翼にぶら下がっています。各ブレードは翼型で、翼端では約 200 m/s で回り、ローター全体はブレードを回しながらねじることで操縦されます。それを行うしくみがスワッシュプレートです。マストのまわりの一対のリングで、一方は止まっていて操縦士に傾けられ、もう一方はブレードとともに回り、1 回転に 1 度ずつブレードのピッチホーンを上下させます。前進飛行では、ローターは大きな非対称に直面します。前進側のブレードは自分の速さと機体の速さの和で気流に当たり、後退側のブレードはその差で当たるからです。ヒンジのあるブレードは上下にフラップしてこれを釣り合わせます。そしてエンジンが止まっても、ローターは下から吹き上がる空気で回り続け、機体を生き延びられる速さで降ろせます。ここでの実験では、スワッシュプレートを動かし、前進飛行中のローター円盤の迎角の分布を描き、ホバーからオートローテーションまで運動量理論を当てはめます。"
+    ],
+    "group": "engineering",
+    "prerequisite": [
+      "Airfoils and lift, momentum conservation, forced oscillators",
+      "翼型と揚力、運動量保存、強制振動"
+    ],
+    "source": "J. Gordon Leishman · Principles of Helicopter Aerodynamics, 2nd edition, Cambridge University Press (2006)",
+    "url": "https://search.worldcat.org/oclc/61463625",
+    "labs": [
+      {
+        "id": "swashplate",
+        "title": [
+          "1. The swashplate: steering by twisting the blades",
+          "1. スワッシュプレート：ブレードをねじって操縦する"
+        ],
+        "body": [
+          "Each blade sits in a grip that can turn about the blade’s own axis, and a short pitch horn sticks out from the grip. A pitch link joins the horn to the rotating ring of the swashplate. Raise the whole plate and every horn rises together: collective pitch \\(\\theta_0\\), more thrust. Tilt the plate and each horn rises on one side of the revolution and falls on the other, so the pitch varies once per turn as \\(\\theta_{1c}\\cos\\psi+\\theta_{1s}\\sin\\psi\\). Because the rotor responds to a once-per-revolution push like a resonant oscillator, about a quarter turn later, the rotor disc tilts in the direction set by the stick and the thrust tilts with it.",
+          "各ブレードは、ブレード自身の軸のまわりに回れるグリップに取り付けられ、グリップからは短いピッチホーンが突き出ています。ピッチリンクがホーンをスワッシュプレートの回転するリングにつなぎます。プレート全体を持ち上げるとすべてのホーンがいっせいに上がります。これがコレクティブピッチ \\(\\theta_0\\) で、推力が増えます。プレートを傾けると、各ホーンは 1 回転のうち一方の側で上がり、反対側で下がるので、ピッチは 1 回転に 1 度 \\(\\theta_{1c}\\cos\\psi+\\theta_{1s}\\sin\\psi\\) のように変わります。ローターは 1 回転に 1 度の押しに共振する振動子のように約 4 分の 1 回転遅れて応答するので、ローター円盤はスティックで決めた向きに傾き、推力もいっしょに傾きます。"
+        ],
+        "formula": "\\theta(\\psi)=\\theta_0+\\theta_{1c}\\cos\\psi+\\theta_{1s}\\sin\\psi,\\qquad z_{\\rm plate}(\\phi)=z_c+r_h\\bigl[\\theta_{1c}\\cos(\\phi-\\delta)+\\theta_{1s}\\sin(\\phi-\\delta)\\bigr],\\qquad \\delta=\\arctan\\frac{r_h}{r_g}",
+        "example": [
+          "With \\(\\theta_0=6^\\circ\\) and forward cyclic \\(\\theta_{1s}=-4^\\circ\\), the advancing blade at \\(\\psi=90^\\circ\\) has \\(6-4=2^\\circ\\) of pitch and the retreating blade at \\(\\psi=270^\\circ\\) has \\(6+4=10^\\circ\\). With a pitch horn of \\(r_h=0.27\\) and a link circle of radius \\(\\sqrt{0.42^2+0.27^2}=0.50\\), a pitch change of \\(4^\\circ\\) needs the link to move \\(0.27\\times4^\\circ\\times\\pi/180=0.019\\), and the plate tilts by \\(\\arctan(0.019/0.50)=2.2^\\circ\\).",
+          "\\(\\theta_0=6^\\circ\\)、前方へのサイクリック \\(\\theta_{1s}=-4^\\circ\\) のとき、\\(\\psi=90^\\circ\\) の前進側ブレードのピッチは \\(6-4=2^\\circ\\)、\\(\\psi=270^\\circ\\) の後退側ブレードは \\(6+4=10^\\circ\\) です。ピッチホーンが \\(r_h=0.27\\)、リンクの円の半径が \\(\\sqrt{0.42^2+0.27^2}=0.50\\) なら、\\(4^\\circ\\) のピッチ変化にはリンクを \\(0.27\\times4^\\circ\\times\\pi/180=0.019\\) 動かす必要があり、プレートは \\(\\arctan(0.019/0.50)=2.2^\\circ\\) 傾きます。"
+        ],
+        "caution": [
+          "The linkage is drawn with the small-angle relation between horn travel and pitch, and with the pitch links at a fixed lead angle \\(\\delta\\); real heads add a phase offset so that the stick and the disc tilt agree, and some have more or fewer blades. The blades are shortened and the head is drawn generically, not as any particular aircraft.",
+          "リンク機構は、ホーンの移動とピッチの小角度の関係と、一定の先行角 \\(\\delta\\) をもつピッチリンクで描いています。実際のヘッドは、スティックと円盤の傾きが一致するように位相のずれを加えていて、ブレードの枚数もさまざまです。ブレードは短く描き、ヘッドは特定の機体ではなく一般的な形にしています。"
+        ],
+        "question": [
+          "Why must the pitch change once per revolution, rather than the whole rotor simply tilting on the mast?",
+          "ローター全体がマストの上で単に傾くのではなく、ピッチが 1 回転に 1 度変わらなければならないのはなぜですか？"
+        ],
+        "answer": [
+          "The rotor is a large spinning mass, and tilting it directly would need enormous gyroscopic moments. Changing each blade’s pitch as it goes round makes the aerodynamic forces themselves tilt the disc, with only small control forces; the swashplate converts the pilot’s steady tilt into that once-per-revolution change.",
+          "ローターは大きな回転する質量で、直接傾けるには巨大なジャイロモーメントが必要です。各ブレードのピッチを回りながら変えれば、空気力そのものが円盤を傾け、小さな操縦力しか要りません。スワッシュプレートは操縦士の一定の傾きを、その 1 回転に 1 度の変化に変換します。"
+        ],
+        "params": [
+          [
+            "th0",
+            "Collective \\(\\theta_0\\) (°)",
+            "コレクティブ \\(\\theta_0\\)（°）",
+            0,
+            14,
+            0.5,
+            6
+          ],
+          [
+            "th1c",
+            "Lateral cyclic \\(\\theta_{1c}\\) (°)",
+            "横のサイクリック \\(\\theta_{1c}\\)（°）",
+            -8,
+            8,
+            0.5,
+            0
+          ],
+          [
+            "th1s",
+            "Longitudinal cyclic \\(\\theta_{1s}\\) (°)",
+            "縦のサイクリック \\(\\theta_{1s}\\)（°）",
+            -8,
+            8,
+            0.5,
+            -4
+          ]
+        ],
+        "source": "J. Gordon Leishman · Principles of Helicopter Aerodynamics, 2nd edition, Cambridge University Press (2006)",
+        "url": "https://search.worldcat.org/oclc/61463625"
+      },
+      {
+        "id": "blade-flapping",
+        "title": [
+          "2. Forward flight: asymmetry, flapping and reverse flow",
+          "2. 前進飛行：非対称、フラッピング、逆流"
+        ],
+        "body": [
+          "At advance ratio \\(\\mu=V/\\Omega R\\) a blade section at radius \\(r\\) meets air at \\(U_T=\\Omega R(r+\\mu\\sin\\psi)\\): faster on the advancing side, slower on the retreating side, and backwards inside a circle of diameter \\(\\mu R\\) on the retreating side. A blade hinged at the root is free to flap. Lift, inertia and centrifugal stiffening make it a resonant oscillator at exactly once per revolution, \\(\\beta^{\\prime\\prime}+\\beta=M_{\\rm aero}\\), damped by the change of angle of attack that flapping itself causes. The solution here is found by integrating that equation until it repeats. The advancing blade rises, the retreating blade falls, and the angle of attack evens out across the disc, until at high speed the retreating blade runs out of angle and stalls.",
+          "前進比 \\(\\mu=V/\\Omega R\\) では、半径 \\(r\\) のブレード断面は \\(U_T=\\Omega R(r+\\mu\\sin\\psi)\\) の気流に当たります。前進側では速く、後退側では遅く、後退側の直径 \\(\\mu R\\) の円の内側では逆向きになります。根もとにヒンジのあるブレードは自由にフラップできます。揚力、慣性、遠心力による剛性によって、ブレードはちょうど 1 回転に 1 度で共振する振動子 \\(\\beta^{\\prime\\prime}+\\beta=M_{\\rm aero}\\) になり、フラップそのものが起こす迎角の変化で減衰します。ここでの解は、この方程式を繰り返しになるまで積分して求めています。前進側のブレードは上がり、後退側のブレードは下がり、迎角は円盤全体でならされます。ところが高速になると、後退側のブレードの迎角が限界に達して失速します。"
+        ],
+        "formula": "\\beta^{\\prime\\prime}+\\beta=\\frac{\\gamma}{2}\\int_0^1\\bigl(U_T^2\\theta-U_PU_T\\bigr)r\\,dr,\\quad U_T=r+\\mu\\sin\\psi,\\quad U_P=\\lambda+r\\beta^{\\prime}+\\mu\\beta\\cos\\psi,\\qquad \\beta_0\\big|_{\\mu=0}=\\gamma\\Bigl(\\frac{\\theta_0}{8}-\\frac{\\lambda}{6}\\Bigr),\\qquad \\alpha=\\theta-\\arctan\\frac{U_P}{U_T}",
+        "example": [
+          "In hover with Lock number \\(\\gamma=8\\), \\(\\theta_0=8^\\circ\\) and inflow \\(\\lambda=0.05\\), the coning angle is \\(8\\,(0.1396/8-0.05/6)=0.0730\\) rad \\(=4.2^\\circ\\). In forward flight at \\(\\mu=0.25\\) with \\(8^\\circ\\) of twist and no cyclic, the computed flapping is \\(\\beta_0=4.3^\\circ\\), \\(\\beta_{1c}=4.0^\\circ\\) and \\(\\beta_{1s}=1.4^\\circ\\): the disc tilts \\(4^\\circ\\) back and the blade is highest at \\(\\psi\\approx205^\\circ\\), over the nose, a quarter turn after the advancing side. Forward cyclic \\(\\theta_{1s}=-4^\\circ\\) cancels almost all of the tilt, leaving \\(\\beta_{1c}=-0.5^\\circ\\). The reverse-flow circle reaches a quarter of the way out along the retreating blade.",
+          "ロック数 \\(\\gamma=8\\)、\\(\\theta_0=8^\\circ\\)、流入比 \\(\\lambda=0.05\\) のホバーでは、コーニング角は \\(8\\,(0.1396/8-0.05/6)=0.0730\\) rad \\(=4.2^\\circ\\) です。\\(\\mu=0.25\\) の前進飛行で、ねじり \\(8^\\circ\\)、サイクリックなしのとき、計算したフラッピングは \\(\\beta_0=4.3^\\circ\\)、\\(\\beta_{1c}=4.0^\\circ\\)、\\(\\beta_{1s}=1.4^\\circ\\) です。円盤は \\(4^\\circ\\) 後ろへ傾き、ブレードが最も高くなるのは \\(\\psi\\approx205^\\circ\\)、つまり前進側から 4 分の 1 回転後の機首の上です。前方へのサイクリック \\(\\theta_{1s}=-4^\\circ\\) を加えるとこの傾きはほとんど打ち消され、\\(\\beta_{1c}=-0.5^\\circ\\) が残ります。逆流域の円は、後退側ブレードの 4 分の 1 まで達します。"
+        ],
+        "caution": [
+          "The model assumes a centrally hinged rigid blade, uniform inflow \\(\\lambda\\), a lift slope independent of Mach number and no stall in the forces; the stall boundary at \\(12^\\circ\\) is drawn from the computed angle of attack only. Inflow in forward flight is in fact far from uniform, which shifts the lateral flapping. The disc map shows angles of attack from 0 to \\(14^\\circ\\).",
+          "モデルは、中心にヒンジのある剛体ブレード、一様な流入 \\(\\lambda\\)、マッハ数によらない揚力傾斜、力に失速を含まないことを仮定しています。\\(12^\\circ\\) の失速の境界は、計算した迎角から描いているだけです。前進飛行での流入は実際には一様からほど遠く、それによって横のフラッピングがずれます。円盤の図は 0 から \\(14^\\circ\\) までの迎角を示します。"
+        ],
+        "question": [
+          "Why does the maximum flap come a quarter of a revolution after the maximum lift?",
+          "フラップの最大が揚力の最大から 4 分の 1 回転遅れるのはなぜですか？"
+        ],
+        "answer": [
+          "A centrally hinged blade has a natural flapping frequency of exactly once per revolution, so the once-per-revolution lift drives it at resonance. A resonantly driven, damped oscillator lags its forcing by \\(90^\\circ\\): the blade is still rising while the extra lift acts and reaches its highest point a quarter turn later.",
+          "中心にヒンジのあるブレードの固有のフラップ振動数はちょうど 1 回転に 1 度なので、1 回転に 1 度の揚力はブレードを共振で駆動します。共振で駆動される減衰振動子は、外力より \\(90^\\circ\\) 遅れます。ブレードは余分な揚力がはたらいている間も上がり続け、4 分の 1 回転後に最も高い点に達します。"
+        ],
+        "params": [
+          [
+            "mu",
+            "Advance ratio \\(\\mu\\)",
+            "前進比 \\(\\mu\\)",
+            0,
+            0.45,
+            0.01,
+            0.25
+          ],
+          [
+            "th0",
+            "Collective \\(\\theta_0\\) (°)",
+            "コレクティブ \\(\\theta_0\\)（°）",
+            2,
+            14,
+            0.5,
+            8
+          ],
+          [
+            "th1s",
+            "Longitudinal cyclic \\(\\theta_{1s}\\) (°)",
+            "縦のサイクリック \\(\\theta_{1s}\\)（°）",
+            -10,
+            2,
+            0.5,
+            0
+          ],
+          [
+            "lam",
+            "Inflow ratio \\(\\lambda\\)",
+            "流入比 \\(\\lambda\\)",
+            0.01,
+            0.12,
+            0.005,
+            0.05
+          ],
+          [
+            "gamma",
+            "Lock number \\(\\gamma\\)",
+            "ロック数 \\(\\gamma\\)",
+            3,
+            12,
+            0.5,
+            8
+          ]
+        ],
+        "source": "J. Gordon Leishman · Principles of Helicopter Aerodynamics, 2nd edition, Cambridge University Press (2006)",
+        "url": "https://search.worldcat.org/oclc/61463625"
+      },
+      {
+        "id": "rotor-momentum",
+        "title": [
+          "3. Momentum theory: hover power and autorotation",
+          "3. 運動量理論：ホバーの動力とオートローテーション"
+        ],
+        "body": [
+          "Treat the rotor as a disc that pushes air downward. In hover the air falls through the disc at the induced velocity \\(v_h\\) and leaves the wake at \\(2v_h\\), so the thrust is \\(T=2\\rho Av_h^2\\) and the ideal power is \\(Tv_h=T^{3/2}/\\sqrt{2\\rho A}\\). Real rotors need about a third more, the figure of merit FM being the ratio of ideal to actual power. Climbing lowers the induced velocity; descending raises it until, between \\(V_c=0\\) and \\(V_c=-2v_h\\), the rotor sinks into its own wake: the vortex ring state, rough and dangerous, where momentum theory breaks down. Below it, the air rises through the disc and can drive the rotor: at ideal autorotation \\(V_c+v_i=0\\) and no power is needed at all.",
+          "ローターを、空気を下へ押す円盤として扱います。ホバーでは空気は誘導速度 \\(v_h\\) で円盤を通り抜け、後流を \\(2v_h\\) で去るので、推力は \\(T=2\\rho Av_h^2\\)、理想の動力は \\(Tv_h=T^{3/2}/\\sqrt{2\\rho A}\\) です。実際のローターはその約 3 分の 1 増しを必要とし、理想の動力と実際の動力の比がフィギュア・オブ・メリット FM です。上昇すると誘導速度は下がり、降下すると上がって、\\(V_c=0\\) と \\(V_c=-2v_h\\) の間でローターは自分の後流の中に沈みます。これがボルテックスリング状態で、荒れて危険であり、運動量理論は成り立ちません。それより下では空気が円盤を下から上へ通り抜けてローターを駆動でき、理想的なオートローテーションでは \\(V_c+v_i=0\\) となり、動力はまったく要りません。"
+        ],
+        "formula": "v_h=\\sqrt{\\frac{T}{2\\rho A}},\\qquad P_{\\rm hover}=\\frac{Tv_h}{\\mathrm{FM}},\\qquad \\frac{v_i}{v_h}=-\\frac{x}{2}+\\sqrt{\\frac{x^2}{4}+1}\\ (x=V_c/v_h\\ge0),\\qquad \\frac{v_i}{v_h}\\approx\\kappa-1.125x-1.372x^2-1.718x^3-0.655x^4\\ (-2\\le x\\le0),\\qquad V_c+v_i=0",
+        "example": [
+          "A 2000 kg helicopter with a rotor of radius 5 m at sea level has disc loading \\(19\\,620/78.5=250\\) N/m² and \\(v_h=\\sqrt{19\\,620/(2\\times1.225\\times78.5)}=10.1\\) m/s. Its ideal hover power is \\(19\\,620\\times10.1=198\\) kW, and with FM = 0.75 it needs 264 kW. With the empirical fit (\\(\\kappa=1\\)), ideal vertical autorotation occurs at \\(V_c=-1.78\\,v_h=-17.9\\) m/s, about 3500 ft/min; in practice pilots autorotate with forward speed, which cuts the descent rate to about half.",
+          "回転半径 5 m のローターをもつ 2000 kg のヘリコプターは、海面高度で円盤荷重 \\(19\\,620/78.5=250\\) N/m²、\\(v_h=\\sqrt{19\\,620/(2\\times1.225\\times78.5)}=10.1\\) m/s です。理想のホバー動力は \\(19\\,620\\times10.1=198\\) kW で、FM = 0.75 なら 264 kW 必要です。経験的な当てはめ（\\(\\kappa=1\\)）では、理想的な垂直オートローテーションは \\(V_c=-1.78\\,v_h=-17.9\\) m/s、約 3500 ft/min で起こります。実際には操縦士は前進速度をもってオートローテーションを行い、それによって降下率はおよそ半分になります。"
+        ],
+        "caution": [
+          "Momentum theory assumes a uniform disc, steady flow and no swirl. In the vortex ring state its assumptions fail, and the dashed curve is Leishman’s empirical fit to flight-test data, used here with \\(\\kappa=1\\) so that it meets momentum theory in hover. Air density falls with altitude in the model as \\(e^{-h/8500\\,\\mathrm{m}}\\).",
+          "運動量理論は、一様な円盤、定常な流れ、旋回のないことを仮定しています。ボルテックスリング状態ではその仮定が崩れ、破線は飛行試験データへのリーシュマンの経験的な当てはめです。ここではホバーで運動量理論とつながるよう \\(\\kappa=1\\) として使っています。モデルでは空気の密度は高度とともに \\(e^{-h/8500\\,\\mathrm{m}}\\) のように下がります。"
+        ],
+        "question": [
+          "Why does doubling the rotor radius cut the ideal hover power by half, not by a quarter?",
+          "回転半径を 2 倍にすると、理想のホバー動力が 4 分の 1 ではなく半分になるのはなぜですか？"
+        ],
+        "answer": [
+          "Ideal power is \\(T^{3/2}/\\sqrt{2\\rho A}\\), and the disc area \\(A=\\pi R^2\\) enters under a square root. Doubling \\(R\\) quadruples \\(A\\) and halves \\(1/\\sqrt A\\): the rotor moves twice as much air at half the speed, and the power, thrust times induced velocity, halves.",
+          "理想の動力は \\(T^{3/2}/\\sqrt{2\\rho A}\\) で、円盤の面積 \\(A=\\pi R^2\\) は平方根の中に入っています。\\(R\\) を 2 倍にすると \\(A\\) は 4 倍、\\(1/\\sqrt A\\) は半分になります。ローターは 2 倍の空気を半分の速さで動かし、推力と誘導速度の積である動力は半分になります。"
+        ],
+        "params": [
+          [
+            "mass",
+            "Mass (kg)",
+            "質量（kg）",
+            500,
+            12000,
+            50,
+            2000
+          ],
+          [
+            "R",
+            "Rotor radius \\(R\\) (m)",
+            "回転半径 \\(R\\)（m）",
+            2,
+            10,
+            0.1,
+            5
+          ],
+          [
+            "vc",
+            "Climb rate \\(V_c\\) (m/s)",
+            "上昇率 \\(V_c\\)（m/s）",
+            -30,
+            20,
+            0.1,
+            0
+          ],
+          [
+            "alt",
+            "Altitude \\(h\\) (m)",
+            "高度 \\(h\\)（m）",
+            0,
+            4000,
+            100,
+            0
+          ],
+          [
+            "fm",
+            "Figure of merit FM",
+            "フィギュア・オブ・メリット FM",
+            0.5,
+            0.85,
+            0.01,
+            0.75
+          ]
+        ],
+        "source": "J. Gordon Leishman · Principles of Helicopter Aerodynamics, 2nd edition, Cambridge University Press (2006)",
+        "url": "https://search.worldcat.org/oclc/61463625"
+      }
+    ]
+  },
+  {
+    "slug": "wind-turbines",
+    "title": [
+      "Wind turbines: how much of the wind can be caught",
+      "風力タービン：風をどれだけ捕まえられるか"
+    ],
+    "description": [
+      "A wind turbine takes energy out of moving air by slowing it down. That simple fact sets a hard limit: if the rotor stopped the air completely there would be no flow through it at all, and if it did not slow the air there would be nothing to extract. In 1919 Albert Betz showed that the best compromise slows the wind to two thirds of its speed at the rotor and captures 16/27, or 59.3%, of the power in the wind passing through the rotor’s area, whatever the design. Real blades approach that limit closely: modern turbines reach about 80% of it. They do it with long, slender, twisted blades turning so that their tips move seven or eight times faster than the wind, which is also why the biggest turbines turn so slowly. These experiments follow the air through the stream tube of a turbine, design a blade by blade element momentum theory, and watch the helical wake its tips leave behind.",
+      "風力タービンは、動く空気を遅くすることでそのエネルギーを取り出します。この単純な事実が厳しい限界を決めます。ローターが空気を完全に止めてしまえば、そもそもローターを通る流れがなくなり、空気を遅くしなければ取り出すものがありません。1919 年、アルベルト・ベッツは、最良の折り合いではローターで風を 3 分の 2 の速さまで遅くし、設計によらず、ローターの面積を通る風のパワーの 16/27、すなわち 59.3% を取り込めることを示しました。実際のブレードはこの限界にかなり近づき、現代の風車はその約 80% に達します。それを可能にしているのは、翼端が風の 7 倍から 8 倍の速さで動くように回る、長く細くねじれたブレードです。そのため最も大きな風車ほどゆっくり回ります。ここでの実験では、風車の流管の中で空気を追い、翼素運動量理論でブレードを設計し、翼端が残すらせん状の後流を見ます。"
+    ],
+    "group": "engineering",
+    "prerequisite": [
+      "Momentum and energy conservation, airfoils and lift, Bernoulli’s equation",
+      "運動量とエネルギーの保存、翼型と揚力、ベルヌーイの式"
+    ],
+    "source": "J. F. Manwell, J. G. McGowan and A. L. Rogers · Wind Energy Explained: Theory, Design and Application, 2nd edition, Wiley (2009)",
+    "url": "https://www.wiley.com/en-us/Wind+Energy+Explained%3A+Theory%2C+Design+and+Application%2C+2nd+Edition-p-9780470015001",
+    "labs": [
+      {
+        "id": "betz-streamtube",
+        "title": [
+          "1. The Betz limit: the stream tube",
+          "1. ベッツの限界：流管"
+        ],
+        "body": [
+          "Follow the air that passes through the rotor. Upstream it moves at \\(U\\); at the rotor it has slowed to \\(U(1-a)\\), and far behind to \\(U(1-2a)\\), where \\(a\\) is the axial induction factor. The tube of air widens as it slows, because the same mass flows through every cross-section. The force on the air is the drop in its momentum and the power taken is that force times the speed at the rotor, which gives \\(C_P=4a(1-a)^2\\). It is largest at \\(a=1/3\\), where the wake moves at a third of the wind speed and the tube has doubled its area: \\(C_P=16/27\\). Asking for more slowing makes the air spill around the rotor instead of through it.",
+          "ローターを通り抜ける空気を追いかけます。上流では空気は \\(U\\) で動き、ローターでは \\(U(1-a)\\)、はるか後ろでは \\(U(1-2a)\\) に遅くなります。\\(a\\) は軸方向誘導係数です。同じ質量がどの断面も流れるので、空気の管は遅くなるにつれて太くなります。空気にはたらく力は運動量の減少で、取り出すパワーはその力とローターでの速さの積なので、\\(C_P=4a(1-a)^2\\) となります。これは \\(a=1/3\\) で最大になり、そのとき後流は風速の 3 分の 1 で動き、管の面積は 2 倍になっていて、\\(C_P=16/27\\) です。それ以上遅くしようとすると、空気はローターを通らずに周りへあふれ出ます。"
+        ],
+        "formula": "C_P=\\frac{P}{\\tfrac12\\rho AU^3}=4a(1-a)^2,\\qquad C_T=4a(1-a),\\qquad \\max C_P=\\frac{16}{27}\\approx0.593\\ \\text{at}\\ a=\\tfrac13,\\qquad \\frac{A_{\\rm wake}}{A}=\\frac{1-a}{1-2a},\\qquad \\frac{u(x)}{U}=1-a\\Bigl(1+\\frac{x}{\\sqrt{x^2+R^2}}\\Bigr)",
+        "example": [
+          "For a rotor of radius 60 m in a 10 m/s wind, the air passing through the disc carries \\(\\tfrac12\\times1.225\\times\\pi\\times60^2\\times10^3=6.93\\) MW. At the Betz optimum the rotor takes 16/27 of it, 4.11 MW; the wind leaves at 3.3 m/s in a tube of twice the rotor’s area, and the thrust coefficient is \\(8/9\\), a force of about 610 kN on the tower top. On the axis one radius ahead of the rotor, the wind has already slowed to \\(\\bigl(1-\\tfrac13(1-1/\\sqrt2)\\bigr)U=0.902\\,U\\).",
+          "半径 60 m のローターに 10 m/s の風が当たると、円盤を通る空気は \\(\\tfrac12\\times1.225\\times\\pi\\times60^2\\times10^3=6.93\\) MW を運んでいます。ベッツの最適点でローターはその 16/27、4.11 MW を取り出します。風は 3.3 m/s でローターの 2 倍の面積の管から出ていき、推力係数は \\(8/9\\)、タワーの上端には約 610 kN の力がかかります。軸上では、ローターの 1 半径前で速さはすでに \\(1-\\tfrac13(1-1/\\sqrt2)=0.902\\,U\\) まで下がっています。"
+        ],
+        "caution": [
+          "The actuator disc ignores the blades, the rotation of the wake and viscous mixing; above \\(a\\approx0.4\\) the simple momentum balance fails and real rotors enter a turbulent wake state. The tube is drawn from the velocity on its axis, which is exact for a uniformly loaded disc only on the axis itself. The turbine is a generic three-bladed design; the smoke speed is slowed for viewing.",
+          "作動円盤はブレード、後流の回転、粘性による混合を無視しています。\\(a\\approx0.4\\) より上では単純な運動量の釣り合いが成り立たず、実際のローターは乱流後流の状態に入ります。管は軸上の速度から描いていて、一様に荷重のかかった円盤について厳密なのは軸上だけです。風車は一般的な 3 枚羽根の設計で、煙の速さは見やすいように遅くしています。"
+        ],
+        "question": [
+          "Why can no turbine extract all of the wind’s energy?",
+          "どんな風車も風のエネルギーをすべて取り出せないのはなぜですか？"
+        ],
+        "answer": [
+          "To take all the energy the air would have to leave at zero speed, but then no air could pass through the rotor to be replaced. The power is the product of the force (which grows as the air is slowed) and the flow through the disc (which shrinks), and that product peaks when the air is slowed by a third at the rotor.",
+          "すべてのエネルギーを取り出すには空気が速さゼロで出ていかなければなりませんが、そうなると新しい空気がローターを通り抜けられません。パワーは、力（空気を遅くするほど大きくなる）と円盤を通る流量（小さくなる）の積で、その積はローターで空気を 3 分の 1 遅くしたとき最大になります。"
+        ],
+        "params": [
+          [
+            "a",
+            "Axial induction \\(a\\)",
+            "軸方向誘導係数 \\(a\\)",
+            0,
+            0.5,
+            0.01,
+            0.33
+          ],
+          [
+            "U",
+            "Wind speed \\(U\\) (m/s)",
+            "風速 \\(U\\)（m/s）",
+            3,
+            25,
+            0.5,
+            10
+          ],
+          [
+            "R",
+            "Rotor radius \\(R\\) (m)",
+            "回転半径 \\(R\\)（m）",
+            10,
+            120,
+            1,
+            60
+          ]
+        ],
+        "source": "J. F. Manwell, J. G. McGowan and A. L. Rogers · Wind Energy Explained: Theory, Design and Application, 2nd edition, Wiley (2009)",
+        "url": "https://www.wiley.com/en-us/Wind+Energy+Explained%3A+Theory%2C+Design+and+Application%2C+2nd+Edition-p-9780470015001"
+      },
+      {
+        "id": "bem-blade",
+        "title": [
+          "2. Blade element momentum: designing the blade",
+          "2. 翼素運動量理論：ブレードを設計する"
+        ],
+        "body": [
+          "Cut the rotor into rings. Each ring of blade sees the wind slowed by \\(a\\) and swirled by \\(a^{\\prime}\\), and the blade section meets the resulting relative wind at the inflow angle \\(\\varphi\\); its lift and drag give a thrust and a torque. Momentum theory gives the same thrust and torque in terms of \\(a\\) and \\(a^{\\prime}\\), and solving the two descriptions together, ring by ring, is blade element momentum theory. For the best performance every ring should run at \\(a\\approx1/3\\), which fixes the ideal chord and twist: wide and steeply twisted near the hub, where the blade moves slowly, slender and nearly flat at the tip. The blade here was designed this way for \\(\\lambda=7\\).",
+          "ローターを輪に切り分けます。各輪のブレードは、\\(a\\) だけ遅くなり \\(a^{\\prime}\\) だけ旋回した風を受け、ブレード断面はその相対風に流入角 \\(\\varphi\\) で当たります。その揚力と抗力から推力とトルクが生まれます。運動量理論も同じ推力とトルクを \\(a\\) と \\(a^{\\prime}\\) で与え、この二つの記述を輪ごとに連立して解くのが翼素運動量理論です。最良の性能のためにはどの輪も \\(a\\approx1/3\\) で動くべきで、それが理想的な翼弦とねじりを決めます。ブレードがゆっくり動くハブの近くでは幅広く大きくねじれ、翼端では細くほぼ平らになります。ここでのブレードは \\(\\lambda=7\\) に向けてこのように設計しています。"
+        ],
+        "formula": "\\tan\\varphi=\\frac{1-a}{\\lambda_r(1+a^{\\prime})},\\quad \\alpha=\\varphi-\\beta,\\qquad \\frac{a}{1-a}=\\frac{\\sigma(C_l\\cos\\varphi+C_d\\sin\\varphi)}{4F\\sin^2\\varphi},\\quad \\frac{a^{\\prime}}{1+a^{\\prime}}=\\frac{\\sigma(C_l\\sin\\varphi-C_d\\cos\\varphi)}{4F\\sin\\varphi\\cos\\varphi},\\qquad \\varphi_{\\rm opt}=\\tfrac23\\arctan\\frac{1}{\\lambda_r},\\quad \\frac{c}{R}=\\frac{8\\pi r(1-\\cos\\varphi_{\\rm opt})}{BC_l}",
+        "example": [
+          "This three-bladed rotor reaches \\(C_P=0.453\\) at \\(\\lambda=7\\) and its best, 0.456, at \\(\\lambda\\approx7.7\\), against Glauert’s ideal 0.579 and the Betz limit 0.593: tip losses, drag and the capped root chord cost about a fifth. A 60 m rotor in a 9 m/s wind at \\(\\lambda=7\\) turns at \\(60\\times7\\times9/(2\\pi\\times60)=10.0\\) rpm and delivers 2.29 MW. At \\(\\lambda=4\\) the root sections see \\(33^\\circ\\) and stall; pitching the blades by \\(10^\\circ\\) at \\(\\lambda=7\\) drops \\(C_P\\) to 0.10.",
+          "この 3 枚羽根のローターは \\(\\lambda=7\\) で \\(C_P=0.453\\) に達し、最良は \\(\\lambda\\approx7.7\\) で 0.456 です。グラウアートの理想は 0.579、ベッツの限界は 0.593 で、翼端損失、抗力、上限で切った根もとの翼弦によっておよそ 5 分の 1 を失っています。半径 60 m のローターは、風速 9 m/s、\\(\\lambda=7\\) で \\(60\\times7\\times9/(2\\pi\\times60)=10.0\\) rpm で回り、2.29 MW を出します。\\(\\lambda=4\\) では根もとの断面は \\(33^\\circ\\) の迎角を受けて失速します。\\(\\lambda=7\\) でブレードのピッチを \\(10^\\circ\\) 変えると \\(C_P\\) は 0.10 に下がります。"
+        ],
+        "caution": [
+          "The airfoil data are a simple model (thin-airfoil lift with a soft stall at \\(12^\\circ\\) and a parabolic drag polar), not a measured section; the theory assumes independent rings, steady flow and no yaw, and uses Prandtl’s tip loss factor \\(F\\) and Glauert’s correction for heavily loaded rings. Results are of the right size for a modern rotor but are not those of any particular machine.",
+          "翼型のデータは単純なモデル（\\(12^\\circ\\) でゆるやかに失速する薄翼理論の揚力と、放物線の抗力極曲線）で、測定した断面ではありません。理論は、輪が独立であること、定常な流れ、ヨーのないことを仮定し、プラントルの翼端損失係数 \\(F\\) と、荷重の大きな輪へのグラウアートの補正を使っています。結果は現代のローターとして妥当な大きさですが、特定の機械のものではありません。"
+        ],
+        "question": [
+          "Why is a wind turbine blade twisted?",
+          "風車のブレードがねじれているのはなぜですか？"
+        ],
+        "answer": [
+          "Each section moves at its own speed \\(\\Omega r\\), so the relative wind arrives at an angle \\(\\varphi\\) that is steep near the hub and shallow near the tip. To keep every section at its best angle of attack, the blade’s angle must follow \\(\\varphi\\), which means a large twist at the root and almost none at the tip.",
+          "各断面は自分の速さ \\(\\Omega r\\) で動くので、相対風はハブの近くでは急な角度、翼端の近くでは浅い角度 \\(\\varphi\\) で当たります。どの断面も最良の迎角に保つには、ブレードの角度が \\(\\varphi\\) に従わなければならず、根もとで大きく、翼端ではほとんどねじれていない形になります。"
+        ],
+        "params": [
+          [
+            "lam",
+            "Tip-speed ratio \\(\\lambda\\)",
+            "周速比 \\(\\lambda\\)",
+            1.5,
+            13,
+            0.1,
+            7
+          ],
+          [
+            "pitch",
+            "Blade pitch (°)",
+            "ブレードのピッチ（°）",
+            -2,
+            25,
+            0.5,
+            0
+          ],
+          [
+            "U",
+            "Wind speed \\(U\\) (m/s)",
+            "風速 \\(U\\)（m/s）",
+            3,
+            25,
+            0.5,
+            9
+          ]
+        ],
+        "source": "J. F. Manwell, J. G. McGowan and A. L. Rogers · Wind Energy Explained: Theory, Design and Application, 2nd edition, Wiley (2009)",
+        "url": "https://www.wiley.com/en-us/Wind+Energy+Explained%3A+Theory%2C+Design+and+Application%2C+2nd+Edition-p-9780470015001"
+      },
+      {
+        "id": "tip-vortex-wake",
+        "title": [
+          "3. Tip-speed ratio and the helical wake",
+          "3. 周速比とらせん状の後流"
+        ],
+        "body": [
+          "Each blade tip sheds a concentrated vortex, and because the rotor turns while the wind carries the vortex away, the three tip vortices wind into interleaved helices. Their pitch is set by the tip-speed ratio \\(\\lambda=\\Omega R/U\\): a fast rotor packs them tightly, which is what lets a few slender blades act on all the air passing through the disc. A rotor that turns slowly must instead deliver its power as a large torque, and the reaction sets the wake swirling, energy that is lost. Glauert’s ideal rotor, which accounts for this, approaches the Betz limit only as \\(\\lambda\\) grows. Tip speed itself is capped by noise and erosion near 80 to 90 m/s, so large rotors turn slowly.",
+          "各ブレードの翼端は集中した渦を放ちます。ローターが回る間に風がその渦を運び去るので、三本の翼端渦は互いに入れ子になったらせんに巻きます。そのピッチは周速比 \\(\\lambda=\\Omega R/U\\) で決まります。速いローターはらせんを密に詰め、そのおかげで数本の細いブレードが円盤を通るすべての空気にはたらきかけられます。ゆっくり回るローターはパワーを大きなトルクとして出さなければならず、その反作用で後流が旋回し、そのエネルギーは失われます。これを考慮したグラウアートの理想ローターは、\\(\\lambda\\) が大きくなってはじめてベッツの限界に近づきます。翼端の速さそのものは騒音と浸食のため 80 から 90 m/s 程度に抑えられるので、大きなローターはゆっくり回ります。"
+        ],
+        "formula": "\\lambda=\\frac{\\Omega R}{U},\\qquad \\Delta x_{\\rm helix}=\\frac{2\\pi(1-a)R}{B\\lambda},\\qquad C_{P,\\max}(\\lambda)=\\frac{8}{\\lambda^2}\\int_0^{\\lambda}a^{\\prime}(1-a)\\lambda_r^3\\,d\\lambda_r,\\quad a^{\\prime}=\\frac{1-3a}{4a-1},\\quad \\lambda_r^2=\\frac{(1-a)(4a-1)^2}{1-3a},\\qquad n=\\frac{60\\lambda U}{2\\pi R}\\ \\mathrm{rpm}",
+        "example": [
+          "At \\(\\lambda=7\\) with \\(a=1/3\\), successive tip vortices from the three blades are \\(2\\pi\\times\\tfrac23/21=0.199\\,R\\) apart along the wake. Glauert’s ideal power coefficient is 0.579 at \\(\\lambda=7\\), 0.512 at \\(\\lambda=2\\) and only 0.416 at \\(\\lambda=1\\). A 60 m rotor at \\(\\lambda=7\\) in a 10 m/s wind turns at 11.1 rpm with a tip speed of 70 m/s; a 120 m rotor at the same tip speed turns at 5.6 rpm.",
+          "\\(\\lambda=7\\)、\\(a=1/3\\) では、三枚のブレードから順に出る翼端渦の間隔は後流に沿って \\(2\\pi\\times\\tfrac23/21=0.199\\,R\\) です。グラウアートの理想のパワー係数は、\\(\\lambda=7\\) で 0.579、\\(\\lambda=2\\) で 0.512、\\(\\lambda=1\\) ではわずか 0.416 です。半径 60 m のローターは、\\(\\lambda=7\\)、風速 10 m/s で 11.1 rpm で回り、翼端の速さは 70 m/s です。同じ翼端の速さの半径 120 m のローターは 5.6 rpm で回ります。"
+        ],
+        "caution": [
+          "The wake is drawn as rigid helices convected at \\(U(1-a)\\) with a modest expansion; real tip vortices also roll up, wander and break down a few diameters downstream. The ideal curve assumes infinitely many blades and no drag.",
+          "後流は、\\(U(1-a)\\) で運ばれ少し広がる剛体のらせんとして描いています。実際の翼端渦は巻き上がり、ふらつき、数直径下流で崩れます。理想の曲線は、無数のブレードと抗力のないことを仮定しています。"
+        ],
+        "question": [
+          "Why does a slowly turning rotor lose efficiency?",
+          "ゆっくり回るローターの効率が下がるのはなぜですか？"
+        ],
+        "answer": [
+          "Power is torque times angular speed, so at low \\(\\Omega\\) the rotor must exert a large torque on the air. The equal and opposite torque sets the wake rotating, and that swirl carries away kinetic energy that the rotor could otherwise have extracted.",
+          "パワーはトルクと角速度の積なので、\\(\\Omega\\) が小さいとローターは空気に大きなトルクを及ぼさなければなりません。その反作用のトルクが後流を回転させ、その旋回が、本来ならローターが取り出せたはずの運動エネルギーを運び去ります。"
+        ],
+        "params": [
+          [
+            "lam",
+            "Tip-speed ratio \\(\\lambda\\)",
+            "周速比 \\(\\lambda\\)",
+            0.5,
+            12,
+            0.1,
+            7
+          ],
+          [
+            "U",
+            "Wind speed \\(U\\) (m/s)",
+            "風速 \\(U\\)（m/s）",
+            4,
+            15,
+            0.5,
+            10
+          ],
+          [
+            "R",
+            "Rotor radius \\(R\\) (m)",
+            "回転半径 \\(R\\)（m）",
+            5,
+            130,
+            1,
+            60
+          ]
+        ],
+        "source": "J. F. Manwell, J. G. McGowan and A. L. Rogers · Wind Energy Explained: Theory, Design and Application, 2nd edition, Wiley (2009)",
+        "url": "https://www.wiley.com/en-us/Wind+Energy+Explained%3A+Theory%2C+Design+and+Application%2C+2nd+Edition-p-9780470015001"
+      }
+    ]
+  },
+  {
+    "slug": "microprocessors",
+    "title": [
+      "Microprocessors: switches, logic and the light that prints them",
+      "マイクロプロセッサ：スイッチ、論理、そしてそれを焼き付ける光"
+    ],
+    "description": [
+      "A modern processor is tens of billions of transistors, each a voltage-controlled switch a few tens of nanometers across, wired into logic gates that flip billions of times a second. The transistor today is a FinFET: a thin silicon fin with the gate wrapped round three of its sides, so that a small change of gate voltage can open or close the channel decisively. Pairs of complementary transistors make CMOS logic, which draws current only while switching, and that is what lets a chip hold billions of gates without melting. The patterns are printed on silicon wafers by projecting light through a mask with lenses of extraordinary precision, layer upon layer, more than eighty times over. These experiments open up a FinFET and its current, build the CMOS inverter at the heart of every logic gate, and follow the light through a lithography scanner to the wafer to see why chipmakers moved to extreme ultraviolet.",
+      "現代のプロセッサは数百億個のトランジスタからなります。どれも幅が数十ナノメートルの電圧で制御されるスイッチで、毎秒何十億回も切り替わる論理ゲートに配線されています。今日のトランジスタは FinFET です。薄いシリコンのフィンの三つの面をゲートが包んでいて、ゲート電圧のわずかな変化でチャネルをはっきりと開け閉めできます。相補的なトランジスタの対が CMOS 論理を作り、それは切り替わりの最中にしか電流を使いません。そのおかげでチップは溶けることなく数十億個のゲートを保てます。パターンは、マスクを通した光を驚くほど精密なレンズでシリコンウエハーに投影して焼き付けられ、層の上に層を重ねて 80 回以上繰り返されます。ここでの実験では、FinFET とその電流の中を開いて見て、あらゆる論理ゲートの中心にある CMOS インバータを組み立て、露光装置の中の光をウエハーまで追って、半導体メーカーが極端紫外線へ移った理由を確かめます。"
+    ],
+    "group": "engineering",
+    "prerequisite": [
+      "Electric circuits, the Boltzmann factor, diffraction and Fourier series",
+      "電気回路、ボルツマン因子、回折とフーリエ級数"
+    ],
+    "source": "Chris A. Mack · Fundamental Principles of Optical Lithography: The Science of Microfabrication, Wiley (2007)",
+    "url": "https://www.lithoguru.com/textbook/",
+    "labs": [
+      {
+        "id": "finfet",
+        "title": [
+          "1. The FinFET: a switch that wraps the channel",
+          "1. FinFET：チャネルを包むスイッチ"
+        ],
+        "body": [
+          "A transistor is a gate electrode separated by a few atoms of insulator from a strip of silicon between a source and a drain. A positive gate voltage pulls electrons into a thin inversion layer at the silicon surface, opening a channel. Below the threshold \\(V_T\\) a few electrons still diffuse over the barrier, and their number follows the Boltzmann factor, so the current rises by a decade for every \\(n(kT/q)\\ln10\\) of gate voltage: at least 60 mV at room temperature, whatever the transistor is made of. In a planar transistor the drain also tugs on the channel and the switch leaks; wrapping the gate round a tall thin fin gives the gate the upper hand. The EKV model used here covers weak and strong inversion in one formula.",
+          "トランジスタは、数原子分の絶縁体を隔てて、ソースとドレインの間のシリコンの帯の上に置かれたゲート電極です。正のゲート電圧はシリコンの表面の薄い反転層に電子を引き寄せ、チャネルを開きます。しきい値 \\(V_T\\) より下でも少数の電子が障壁を越えて拡散し、その数はボルツマン因子に従うので、電流はゲート電圧 \\(n(kT/q)\\ln10\\) ごとに 10 倍に増えます。室温ではトランジスタの材料によらず少なくとも 60 mV です。平面型のトランジスタではドレインもチャネルを引っ張り、スイッチが漏れます。背が高く薄いフィンをゲートで包むと、ゲートが優位に立ちます。ここで使う EKV モデルは、弱反転と強反転を一つの式で扱います。"
+        ],
+        "formula": "I_D=I_S\\Bigl[F\\Bigl(\\frac{V_P}{\\phi_t}\\Bigr)-F\\Bigl(\\frac{V_P-V_D}{\\phi_t}\\Bigr)\\Bigr],\\quad F(v)=\\ln^2\\bigl(1+e^{v/2}\\bigr),\\quad V_P=\\frac{V_G-V_T}{n},\\qquad \\phi_t=\\frac{kT}{q},\\qquad S=n\\,\\phi_t\\ln10,\\qquad V_T=V_{T0}-\\eta V_D",
+        "example": [
+          "With \\(n=1.25\\) at \\(27^\\circ\\)C the subthreshold swing is \\(1.25\\times25.9\\ \\mathrm{mV}\\times2.303=74\\) mV per decade. At \\(V_G=V_D=0.75\\) V each fin carries 113 µA; with the gate at 0 V it still leaks 0.42 nA, an on/off ratio of 270 000. At \\(85^\\circ\\)C the swing widens to 89 mV/decade and the leakage grows to 7.8 nA per fin, nearly twenty times more, which is why hot chips waste power. Across ten billion transistors, a nanoamp each is ten amperes.",
+          "\\(n=1.25\\)、\\(27^\\circ\\)C ではサブスレッショルド・スイングは \\(1.25\\times25.9\\ \\mathrm{mV}\\times2.303=74\\) mV/桁 です。\\(V_G=V_D=0.75\\) V で各フィンは 113 µA を流し、ゲートが 0 V でも 0.42 nA 漏れます。オン/オフ比は 27 万です。\\(85^\\circ\\)C ではスイングは 89 mV/桁 に広がり、漏れ電流はフィン 1 本あたり 7.8 nA と 20 倍近くに増えます。熱いチップが電力を無駄にするのはこのためです。100 億個のトランジスタが 1 nA ずつ漏れれば 10 A になります。"
+        ],
+        "caution": [
+          "The device parameters are representative of a recent FinFET node, not of a particular process; real transistors add series resistance, velocity saturation and quantum confinement in the fin. The 3D drawing is to scale for the fin and gate dimensions; the electrons are a picture of where the inversion charge sits and how fast it flows (on a logarithmic speed scale), not individual carriers.",
+          "デバイスのパラメータは最近の FinFET の世代の代表的な値で、特定の工程のものではありません。実際のトランジスタには、直列抵抗、速度飽和、フィンの中での量子閉じ込めが加わります。3D の図はフィンとゲートの寸法について縮尺どおりです。電子は、反転電荷がどこにあり、どれだけ速く流れるか（速さは対数目盛）を表す絵で、個々のキャリアではありません。"
+        ],
+        "question": [
+          "Why can a transistor not be switched off more sharply than 60 mV per decade at room temperature?",
+          "室温でトランジスタを 1 桁あたり 60 mV より鋭く切れないのはなぜですか？"
+        ],
+        "answer": [
+          "Below threshold the current is carried by electrons with enough thermal energy to cross the source barrier, a population that follows \\(e^{-E/kT}\\). The gate can lower the barrier at best one-for-one with its voltage, so the current changes by at most a factor \\(e\\) per \\(kT/q\\), that is a decade per \\((kT/q)\\ln10=60\\) mV at 300 K.",
+          "しきい値より下では、電流はソースの障壁を越えるだけの熱エネルギーをもつ電子が運び、その数は \\(e^{-E/kT}\\) に従います。ゲートは障壁を、せいぜい自分の電圧と同じだけしか下げられないので、電流は \\(kT/q\\) あたり最大で \\(e\\) 倍、すなわち 300 K で \\((kT/q)\\ln10=60\\) mV あたり 1 桁しか変わりません。"
+        ],
+        "params": [
+          [
+            "vg",
+            "Gate voltage \\(V_G\\) (V)",
+            "ゲート電圧 \\(V_G\\)（V）",
+            0,
+            1,
+            0.01,
+            0.75
+          ],
+          [
+            "vd",
+            "Drain voltage \\(V_D\\) (V)",
+            "ドレイン電圧 \\(V_D\\)（V）",
+            0.05,
+            1,
+            0.01,
+            0.75
+          ],
+          [
+            "vdd",
+            "Supply \\(V_{DD}\\) (V)",
+            "電源電圧 \\(V_{DD}\\)（V）",
+            0.4,
+            1,
+            0.01,
+            0.75
+          ],
+          [
+            "temp",
+            "Temperature (°C)",
+            "温度（°C）",
+            -40,
+            125,
+            1,
+            27
+          ]
+        ],
+        "source": "Chris A. Mack · Fundamental Principles of Optical Lithography: The Science of Microfabrication, Wiley (2007)",
+        "url": "https://www.lithoguru.com/textbook/"
+      },
+      {
+        "id": "cmos-inverter",
+        "title": [
+          "2. CMOS logic: the inverter and the cost of a switch",
+          "2. CMOS 論理：インバータと切り替えのコスト"
+        ],
+        "body": [
+          "Stack an n-type transistor, which conducts when its gate is high, under a p-type transistor, which conducts when its gate is low, and tie their gates together. When the input is low the p-type pulls the output up to \\(V_{DD}\\); when it is high the n-type pulls it down to zero. One of the pair is always off, so in either state the only current is leakage: this complementary arrangement, CMOS, is why logic can be packed by the billion. Every gate, NAND and NOR included, is a variation on it. The price of a switch is the charge on the wiring and gates it drives, \\(CV_{DD}\\), dumped once per cycle, so the power is \\(\\alpha CV_{DD}^2f\\). Lowering \\(V_{DD}\\) saves power quadratically but slows the transistors.",
+          "ゲートが高いときに導通する n 型トランジスタを、ゲートが低いときに導通する p 型トランジスタの下に積み、ゲートどうしをつなぎます。入力が低いと p 型が出力を \\(V_{DD}\\) まで引き上げ、高いと n 型が出力をゼロまで引き下げます。対の一方は常に切れているので、どちらの状態でも流れるのは漏れ電流だけです。この相補的な配置、CMOS のおかげで、論理を数十億個も詰め込めます。NAND や NOR を含むあらゆるゲートは、これの変形です。切り替えの代価は、駆動する配線とゲートの電荷 \\(CV_{DD}\\) で、それを 1 周期に 1 回捨てるので、電力は \\(\\alpha CV_{DD}^2f\\) です。\\(V_{DD}\\) を下げると電力は 2 乗で減りますが、トランジスタは遅くなります。"
+        ],
+        "formula": "I_{n}(V_{\\rm in},V_{\\rm out})=I_{p}(V_{DD}-V_{\\rm in},V_{DD}-V_{\\rm out}),\\qquad P_{\\rm dyn}=\\alpha CV_{DD}^2f,\\qquad E_{\\rm switch}=CV_{DD}^2,\\qquad t_{\\rm delay}\\propto\\frac{CV_{DD}}{I_{\\rm on}}\\propto\\frac{V_{DD}}{(V_{DD}-V_T)^{a}}",
+        "example": [
+          "With \\(V_{DD}=0.75\\) V and the p-type transistor twice as wide as the n-type (holes being about half as mobile as electrons), the switching threshold sits at the midpoint, 0.375 V. A chip with switched capacitance 1 nF, activity 0.1 and clock 4 GHz dissipates \\(0.1\\times10^{-9}\\times0.75^2\\times4\\times10^9=0.225\\) W per nanofarad. Dropping to 0.6 V cuts the energy per switch to \\((0.6/0.75)^2=64\\%\\), but each gate becomes about 1.4 times slower.",
+          "\\(V_{DD}=0.75\\) V で、p 型トランジスタの幅を n 型の 2 倍にすると（正孔の移動度は電子の約半分なので）、スイッチングしきい値はちょうど中点の 0.375 V になります。切り替わる容量 1 nF、活性率 0.1、クロック 4 GHz のチップは \\(0.1\\times10^{-9}\\times0.75^2\\times4\\times10^9=0.225\\) W を消費します。0.6 V に下げると切り替えあたりのエネルギーは \\((0.6/0.75)^2=64\\%\\) になりますが、各ゲートは約 1.4 倍遅くなります。"
+        ],
+        "caution": [
+          "The inverter uses the same compact model for both transistors, with the p-type scaled by its width ratio and a hole mobility half that of electrons; real p-type FinFETs use strained silicon germanium to narrow that gap. The delay curve is the alpha-power law with exponent 1.3, a common empirical fit.",
+          "インバータでは両方のトランジスタに同じコンパクトモデルを使い、p 型は幅の比と、電子の半分の正孔移動度で尺度を変えています。実際の p 型 FinFET はひずみシリコンゲルマニウムを使ってこの差を縮めています。遅延の曲線は指数 1.3 のアルファべき乗則で、よく使われる経験的な当てはめです。"
+        ],
+        "question": [
+          "Why does a CMOS gate draw almost no current when it is not switching?",
+          "CMOS のゲートが切り替わっていないとき、ほとんど電流を使わないのはなぜですか？"
+        ],
+        "answer": [
+          "In either steady state one transistor of each complementary pair is off, so there is no conducting path from \\(V_{DD}\\) to ground; only subthreshold leakage flows. Current flows mainly to charge or discharge the output capacitance during a transition, plus a brief short-circuit current while both transistors are partly on.",
+          "どちらの定常状態でも、相補的な対の一方のトランジスタは切れているので、\\(V_{DD}\\) からグラウンドへの導通経路がなく、流れるのはサブスレッショルドの漏れ電流だけです。電流が流れるのは主に遷移の最中に出力の容量を充放電するときで、それに両方のトランジスタが一部導通している間の短い貫通電流が加わります。"
+        ],
+        "params": [
+          [
+            "vdd",
+            "Supply \\(V_{DD}\\) (V)",
+            "電源電圧 \\(V_{DD}\\)（V）",
+            0.35,
+            1.2,
+            0.01,
+            0.75
+          ],
+          [
+            "vin",
+            "Input \\(V_{\\rm in}\\) (V)",
+            "入力 \\(V_{\\rm in}\\)（V）",
+            0,
+            1.2,
+            0.01,
+            0.3
+          ],
+          [
+            "beta",
+            "Width ratio \\(W_p/W_n\\)",
+            "幅の比 \\(W_p/W_n\\)",
+            0.5,
+            4,
+            0.1,
+            2
+          ]
+        ],
+        "source": "Chris A. Mack · Fundamental Principles of Optical Lithography: The Science of Microfabrication, Wiley (2007)",
+        "url": "https://www.lithoguru.com/textbook/"
+      },
+      {
+        "id": "lithography",
+        "title": [
+          "3. Lithography: printing with light",
+          "3. リソグラフィ：光で焼き付ける"
+        ],
+        "body": [
+          "A scanner shines light through a mask and a lens demagnifies the pattern four times onto a wafer coated with photoresist. A periodic mask diffracts the light into orders leaving at angles \\(\\sin\\theta=m\\lambda/p\\); the lens, of numerical aperture NA, accepts only those within \\(\\sin\\theta\\le\\mathrm{NA}\\). An image needs at least two orders to interfere, so with on-axis light the finest pitch is \\(\\lambda/\\mathrm{NA}\\). Tilting the illumination so that the zeroth order enters at one edge of the pupil lets the first order in at the other, halving the limit to \\(\\lambda/(2\\mathrm{NA})\\) for fully off-axis light. Beyond that only a shorter wavelength helps: from 193 nm argon fluoride light, with water between lens and wafer to reach NA 1.35, to 13.5 nm extreme ultraviolet, reflected from mirrors because no glass transmits it.",
+          "露光装置はマスクに光を通し、レンズがパターンを 4 分の 1 に縮小して、フォトレジストを塗ったウエハーに投影します。周期的なマスクは光を角度 \\(\\sin\\theta=m\\lambda/p\\) の回折次数に分け、開口数 NA のレンズは \\(\\sin\\theta\\le\\mathrm{NA}\\) のものだけを受け入れます。像ができるには少なくとも二つの次数が干渉しなければならないので、軸上の光では最も細かいピッチは \\(\\lambda/\\mathrm{NA}\\) です。0 次光が瞳の一方の端から入るように照明を傾けると、1 次光が反対の端から入れるようになり、完全な軸外し照明では限界は \\(\\lambda/(2\\mathrm{NA})\\) と半分になります。それより先は、短い波長しか助けになりません。193 nm のフッ化アルゴンの光で、レンズとウエハーの間を水で満たして NA 1.35 に達し、さらに 13.5 nm の極端紫外線へ進みます。極端紫外線はどんなガラスも通さないので、鏡で反射させます。"
+        ],
+        "formula": "\\sin\\theta_m=\\frac{m\\lambda}{p}+s,\\quad |\\sin\\theta_m|\\le\\mathrm{NA},\\qquad I(x)=\\Bigl\\langle\\Bigl|\\sum_{m\\ \\text{passed}}c_m\\,e^{2\\pi imx/p}\\Bigr|^2\\Bigr\\rangle_{s},\\quad c_0=\\tfrac12,\\ c_m=\\frac{\\sin(\\pi m/2)}{\\pi m},\\qquad p_{\\min}=\\frac{\\lambda}{(1+\\sigma)\\mathrm{NA}},\\qquad \\tfrac p2=k_1\\frac{\\lambda}{\\mathrm{NA}}",
+        "example": [
+          "For ArF immersion (\\(\\lambda=193\\) nm, NA 1.35) on-axis light resolves pitches down to 143 nm; a dipole at \\(\\sigma=0.9\\) reaches 75 nm, a half-pitch \\(k_1\\) of 0.26, near the practical floor of 0.25. At an 80 nm pitch on-axis light passes only the zeroth order and the image is a flat 0.25 of full brightness, while the dipole gives fringes from 0.03 to 0.67. EUV at NA 0.33 reaches 21.5 nm pitch with the same dipole, and high-NA EUV at 0.55 reaches 12.9 nm.",
+          "ArF 液浸（\\(\\lambda=193\\) nm、NA 1.35）では、軸上の光は 143 nm までのピッチを解像し、\\(\\sigma=0.9\\) の二重極照明では 75 nm、ハーフピッチの \\(k_1\\) で 0.26 に達します。実用上の下限 0.25 の近くです。ピッチ 80 nm では、軸上の光は 0 次光しか通さず、像は全明るさの 0.25 で平らになりますが、二重極照明では 0.03 から 0.67 までの縞ができます。NA 0.33 の EUV は同じ二重極で 21.5 nm のピッチに、NA 0.55 の高 NA EUV は 12.9 nm に達します。"
+        ],
+        "caution": [
+          "The image is computed by Abbe’s method for a one-dimensional grating and a source sampled in one dimension, with an ideal lens and no polarization or resist chemistry; the resist profile is the dose-thresholded image with a small blur. Real processes print below these single-exposure limits by splitting patterns over several exposures and by optical proximity correction of the mask.",
+          "像は、1 次元の格子と 1 次元に標本化した光源について、アッベの方法で計算しています。レンズは理想的で、偏光やレジストの化学は含めていません。レジストの形は、露光量のしきい値で切った像に小さなぼかしを加えたものです。実際の工程は、パターンを何回かの露光に分けたり、マスクを光近接効果補正したりして、これらの単一露光の限界より細かく焼き付けます。"
+        ],
+        "question": [
+          "Why does an image vanish when only the zeroth diffraction order passes through the lens?",
+          "0 次の回折光だけがレンズを通るとき、像が消えるのはなぜですか？"
+        ],
+        "answer": [
+          "The zeroth order is a plane wave traveling straight down; on its own it gives a uniform intensity \\(|c_0|^2\\). Fringes come from the interference of two or more orders traveling at different angles, \\(|c_0+c_1e^{2\\pi ix/p}|^2\\), so without a first order there is nothing to modulate the light and no pattern.",
+          "0 次光はまっすぐ下へ進む平面波で、それだけでは一様な強度 \\(|c_0|^2\\) しか与えません。縞は異なる角度で進む二つ以上の次数の干渉 \\(|c_0+c_1e^{2\\pi ix/p}|^2\\) から生まれるので、1 次光がなければ光を変調するものがなく、パターンはできません。"
+        ],
+        "params": [
+          [
+            "src",
+            "Light source",
+            "光源",
+            0,
+            2,
+            1,
+            0,
+            [
+              [
+                "ArF immersion",
+                "ArF 液浸"
+              ],
+              [
+                "EUV",
+                "EUV"
+              ],
+              [
+                "High-NA EUV",
+                "高 NA EUV"
+              ]
+            ]
+          ],
+          [
+            "pitch",
+            "Pitch \\(p\\) (nm)",
+            "ピッチ \\(p\\)（nm）",
+            10,
+            200,
+            1,
+            80
+          ],
+          [
+            "illum",
+            "Illumination",
+            "照明",
+            0,
+            2,
+            1,
+            2,
+            [
+              [
+                "on-axis",
+                "軸上"
+              ],
+              [
+                "partial \\(\\sigma=0.5\\)",
+                "部分コヒーレント \\(\\sigma=0.5\\)"
+              ],
+              [
+                "dipole \\(\\sigma=0.9\\)",
+                "二重極 \\(\\sigma=0.9\\)"
+              ]
+            ]
+          ],
+          [
+            "dose",
+            "Dose threshold",
+            "露光量のしきい値",
+            0.05,
+            1,
+            0.01,
+            0.3
+          ]
+        ],
+        "source": "Chris A. Mack · Fundamental Principles of Optical Lithography: The Science of Microfabrication, Wiley (2007)",
+        "url": "https://www.lithoguru.com/textbook/"
+      }
+    ]
   }
 ]

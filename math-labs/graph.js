@@ -135,7 +135,12 @@
     'adaptive-cycle-engines': ['piston-engines', 'fluid-dynamics', 'optimization'],
     'stirling-engines': ['piston-engines', 'statistical-mechanics', 'fourier-analysis'],
     'murrays-law': ['calculus-of-variations', 'optimization', 'fractal-geometry'],
-    'convex-geometry': ['optimization', 'functional-analysis', 'projective-geometry']
+    'convex-geometry': ['optimization', 'functional-analysis', 'projective-geometry'],
+    'random-matrices': ['quantum-mechanics', 'number-theory', 'statistics-inference'],
+    'symmetry-tilings': ['solid-state-physics', 'hyperbolic-geometry'],
+    'nonlinear-waves': ['hamiltonian-mechanics', 'optics'],
+    'wind-turbines': ['helicopter-rotors'],
+    'microprocessors': ['switching-converters']
   };
   // Topics named in each topic's own prerequisite line (content.json "prerequisite").
   const PREREQ = {
@@ -201,7 +206,14 @@
     'adaptive-cycle-engines': ['thermodynamics', 'aerodynamics'],        // Thermodynamic cycles, compressible flow, lift and drag
     'stirling-engines': ['thermodynamics', 'classical-mechanics'],       // Ideal gas law and thermodynamic cycles, crank kinematics
     'murrays-law': ['fluid-dynamics', 'optimization'],                  // Poiseuille flow, minimising a cost
-    'convex-geometry': ['linear-algebra']                               // Vectors and dot products, area and volume
+    'convex-geometry': ['linear-algebra'],                              // Vectors and dot products, area and volume
+    'random-matrices': ['linear-algebra', 'probability-inference'],      // Eigenvalues, symmetric matrices, probability densities
+    'symmetry-tilings': ['group-theory', 'linear-algebra'],              // Groups and generators, rotation and reflection matrices
+    'neuron-biophysics': ['electromagnetism', 'dynamical-systems', 'partial-differential-equations'], // Circuits, ODEs, the diffusion equation
+    'nonlinear-waves': ['partial-differential-equations', 'fourier-analysis'], // Wave and diffusion equations, Fourier modes
+    'helicopter-rotors': ['aerodynamics', 'classical-mechanics'],        // Airfoils and lift, momentum conservation, forced oscillators
+    'wind-turbines': ['aerodynamics', 'fluid-dynamics'],                 // Bernoulli and momentum, airfoil lift and drag
+    'microprocessors': ['semiconductor-physics', 'optics']               // Band structure and doping, diffraction
   };
 
   let topics = [], bySlug = new Map(), edges = [], drawn = [];

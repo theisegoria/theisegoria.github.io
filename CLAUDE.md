@@ -153,6 +153,14 @@ sections, pipeline write-ups or project plans to any page: Ben answers
 provenance questions himself, and the site should read as a person's work,
 not as process narration. Removed site-wide on 2026-09-15.
 
+## Visualizations: realism and mathematics
+
+Standing rules for every page: all mathematics is typeset as LaTeX (KaTeX),
+never imitated with Unicode; and every visualization, above all every 3D scene,
+is as realistic and physically accurate as possible, built as the real object
+with real geometry and materials, at an exceptionally high quality bar.
+`math-labs/KIT.md` has the details for the encyclopedia kit.
+
 ## Shared site navigation
 
 Every HTML entry point uses the generated Isegoria header, breadcrumbs and footer.

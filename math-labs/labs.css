@@ -82,7 +82,7 @@
 .lab-stream.is-flowing path{stroke-dasharray:6 10;animation:labflow 1.6s linear infinite}
 @keyframes labflow{to{stroke-dashoffset:-32}}
 .lab-legend{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:.84rem;color:var(--lab-muted);margin:2px 2px 8px}
-.lab-legend span{display:inline-flex;align-items:center;gap:7px}
+.lab-legend>span{display:inline-flex;align-items:center;gap:7px}
 .lab-legend .sw{display:inline-block;width:20px;height:0;border-top:2.5px solid var(--sw)}
 .lab-legend .sw.is-dash{border-top-style:dashed}
 .lab-legend .sw.dot{width:9px;height:9px;border:0;border-radius:50%;background:var(--sw)}
@@ -201,3 +201,12 @@
 .practice-embed>h2{font:400 clamp(1.5rem,3vw,2rem)/1.15 var(--ig-serif,Georgia,serif);margin:0 0 6px}
 .practice-embed>p.pe-lede{color:var(--lab-muted);max-width:68ch;line-height:1.65;margin:0 0 18px}
 .practice-embed h3.pe-h{font:600 .95rem/1.4 var(--ig-sans,system-ui);margin:28px 0 8px;color:var(--lab-ink)}
+
+/* authored TeX in lab strings (captions, legends, readouts, figure and axis labels) */
+.lab-tex .katex,.lab-svgtex-in .katex,.lab3d-label .katex{font-size:1.06em;line-height:1.2}
+.lab-svgtex{pointer-events:none}
+.lab-svgtex-box{height:30px;display:flex;align-items:flex-end;margin:0;padding:0}
+.lab-svgtex-in{display:inline-block;white-space:nowrap;line-height:1.15;color:var(--lab-ink);font:500 12.5px var(--ig-sans,system-ui);text-shadow:0 0 3px var(--lab-plate),0 0 3px var(--lab-plate),0 0 2px var(--lab-plate);transform-origin:left bottom;padding-bottom:1px}
+.lab-svgtex-in.is-small{font-size:11px}
+.lab-svgtex-in.lab-axlabel{color:var(--lab-muted);font:italic 13px var(--ig-serif,Georgia,serif);text-shadow:none}
+.lab-chip .v.lab-tex{font-family:inherit}.lab-chip .v .katex{font-size:1.02em}
