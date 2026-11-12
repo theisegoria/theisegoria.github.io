@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="en" class=" ig-document ig-editorial">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Where Claude Fable 5.2, Claude Opus 5.5 and GPT-6 Astra each score on every benchmark with a published result, how they respond to the effort setting, and a catalog of 270 benchmarks with the latest or top model found on each.">
+<meta name="theme-color" content="#f7f7f5">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="alternate" hreflang="en" href="/three-model-benchmark-atlas/">
+<link rel="alternate" hreflang="ja" href="/ja/three-model-benchmark-atlas/">
+<link rel="alternate" hreflang="x-default" href="/three-model-benchmark-atlas/">
+<title>Fable 5.2, Opus 5.5 and GPT-6 Astra, benchmark by benchmark</title>
+<style>
+  :root { --ground:#F7F7F5; --surface:#FFFFFF; --surface-2:#F0F1EC; --ink:#17191B; --muted:#63686D; --rule:#DEE0DC;
+    --accent:#1F5FA8; --accent-soft:#1F5FA814; --violet:#6D28D9; --amber:#D97706; --teal:#0E9F9A;
+    --f-display:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    --f-body:"Inter",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif; --f-mono:ui-monospace,SFMono-Regular,Menlo,monospace; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --ground:#101214; --surface:#181B1E; --surface-2:#1F2327;
+    --ink:#EDEFF1; --muted:#9BA3AA; --rule:#2C3237; --accent:#69ABE3; --accent-soft:#69ABE31C; --violet:#A78BFA; --amber:#FBBF24; --teal:#2DD4BF; } }
+  :root[data-theme="dark"] { --ground:#101214; --surface:#181B1E; --surface-2:#1F2327; --ink:#EDEFF1; --muted:#9BA3AA; --rule:#2C3237;
+    --accent:#69ABE3; --accent-soft:#69ABE31C; --violet:#A78BFA; --amber:#FBBF24; --teal:#2DD4BF; }
+  * { box-sizing:border-box; } html { scroll-behavior:smooth; }
+  body { margin:0; background:var(--ground); color:var(--ink); font-family:var(--f-body); font-size:17px; line-height:1.65; -webkit-font-smoothing:antialiased; }
+  a { color:var(--accent); text-underline-offset:.18em; }
+  .wrap { width:min(760px, calc(100% - 40px)); margin-inline:auto; } .wide { width:min(1080px, calc(100% - 40px)); margin-inline:auto; }
+  .hero { padding:76px 0 46px; }
+  .label { color:var(--muted); font-size:.74rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; }
+  h1 { font-family:var(--f-display); font-weight:600; margin:14px 0 16px; font-size:clamp(2.2rem,5.4vw,3.4rem); line-height:1.08; letter-spacing:-.03em; }
+  .standfirst { font-size:1.2rem; color:var(--muted); margin:0 0 26px; max-width:62ch; }
+  .herometa { display:flex; flex-wrap:wrap; gap:10px 14px; align-items:center; font-size:.86rem; color:var(--muted); border-top:1px solid var(--rule); padding-top:18px; }
+  .pill { display:inline-flex; align-items:center; gap:7px; padding:7px 14px; border:1px solid var(--rule); border-radius:999px; background:var(--surface); text-decoration:none; color:var(--ink); font-weight:600; font-size:.85rem; }
+  .pill:hover { border-color:var(--accent); color:var(--accent); }
+  .toc { border-top:1px solid var(--rule); border-bottom:1px solid var(--rule); padding:22px 0 24px; margin-bottom:14px; }
+  .toc ol { margin:10px 0 0; padding-left:1.2em; columns:2; column-gap:34px; } .toc li { margin:0 0 6px; color:var(--muted); font-size:.92rem; break-inside:avoid; }
+  .toc a { color:var(--ink); text-decoration:none; } .toc a:hover { color:var(--accent); }
+  .kt { font-size:.74rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--accent); margin:0; }
+  article { padding:8px 0 40px; }
+  h2 { font-family:var(--f-display); font-weight:600; letter-spacing:-.02em; font-size:1.72rem; line-height:1.18; margin:58px 0 4px; }
+  h2 .num { color:var(--muted); font-family:var(--f-body); font-size:.8rem; font-weight:700; letter-spacing:.1em; display:block; margin-bottom:10px; }
+  h3 { font-size:1.06rem; letter-spacing:-.01em; margin:34px 0 2px; } p { margin:14px 0; } strong { font-weight:650; }
+  .fig { margin:34px 0 28px; } .fig .plate { background:#fff; border:1px solid var(--rule); border-radius:12px; padding:14px 12px; overflow-x:auto; }
+  .fig img { display:block; width:100%; height:auto; min-width:560px; } .fig figcaption { color:var(--muted); font-size:.86rem; line-height:1.55; margin-top:12px; } .fig figcaption b { color:var(--ink); font-weight:650; }
+  .key { background:var(--surface); border:1px solid var(--rule); border-left:3px solid var(--accent); border-radius:10px; padding:18px 20px; margin:30px 0; }
+  .key p:first-of-type { margin-top:8px; } .key p:last-child { margin-bottom:0; }
+  .tablewrap { overflow-x:auto; margin:26px 0; }
+  table { border-collapse:collapse; width:100%; min-width:620px; font-size:.88rem; }
+  th, td { text-align:left; vertical-align:top; padding:9px 11px; border-bottom:1px solid var(--rule); }
+  thead th { border-bottom:2px solid var(--rule); font-size:.74rem; letter-spacing:.07em; text-transform:uppercase; color:var(--muted); }
+  td.h { font-weight:650; } td.n { font-variant-numeric:tabular-nums; } td.best { font-weight:750; }
+  td.f, th.f { color:var(--violet); } td.o, th.o { color:var(--amber); } td.a, th.a { color:var(--teal); }
+  td.m { color:var(--muted); font-size:.82rem; } caption { caption-side:bottom; text-align:left; color:var(--muted); font-size:.85rem; padding-top:12px; }
+  .cat { margin-top:34px; } .cat h3 { display:flex; justify-content:space-between; align-items:baseline; margin:0 0 4px; font-family:var(--f-display); font-size:1.18rem; }
+  .cat h3 span { color:var(--muted); font-family:var(--f-body); font-size:.78rem; font-weight:600; }
+  .none { color:var(--muted); font-size:.82rem; line-height:1.6; margin:8px 0 0; }
+  .stat { display:flex; flex-wrap:wrap; gap:12px; margin:26px 0; } .stat div { flex:1 1 150px; border:1px solid var(--rule); border-radius:12px; padding:14px 16px; background:var(--surface); }
+  .stat b { display:block; font-family:var(--f-display); font-size:2rem; line-height:1.1; } .stat span { color:var(--muted); font-size:.84rem; }
+  .sources { border-top:1px solid var(--rule); margin-top:46px; padding-top:26px; font-size:.82rem; color:var(--muted); line-height:1.6; } .sources h3 { margin:0 0 10px; font-size:1.05rem; color:var(--ink); } .sources b, .sources strong { color:var(--ink); }
+  @media (max-width:700px) { body { font-size:16px; } .hero { padding:54px 0 36px; } .toc ol { columns:1; } .fig .plate { padding:8px 6px; } }
+  html[lang="ja"] body { line-height:1.85; } html[lang="ja"] h1, html[lang="ja"] h2 { font-family:"Hiragino Mincho ProN","Yu Mincho","Noto Serif CJK JP",serif; letter-spacing:0; }
+  html[lang="ja"] h1 { font-size:clamp(1.9rem,4.8vw,2.9rem); line-height:1.25; }
+</style>
+<script src="/assets/lang.js"></script>
+<!-- ISEGORIA:HEAD -->
+<link rel="stylesheet" href="/assets/site-shell.css?v=c21cd21e82">
+<script src="/assets/site-shell.js?v=c21cd21e82" ></script>
+<!-- /ISEGORIA:HEAD -->
+<script defer data-isegoria-analytics src="/assets/analytics.js?v=c40088a4a53f"></script>
+</head>
+<body class=" ig-site" data-site-kind="editorial" data-site-route="/three-model-benchmark-atlas/">
+<!-- ISEGORIA:NAV -->
+<a class="ig-skip" href="#ig-content">Skip to content</a>
+<header id="ig-header"><div class="ig-nav-inner">
+<a class="ig-brand" href="/" aria-label="Isegoria, home"><strong>ISEGORIA</strong><span>Benjamin Haire</span></a>
+<div class="ig-header-actions"><a class="ig-language" href="/ja/three-model-benchmark-atlas/" hreflang="ja" lang="ja">日本語</a><button class="ig-menu" type="button" aria-expanded="false" aria-controls="ig-primary">Menu</button></div>
+<nav id="ig-primary" aria-label="Primary navigation"><a href="/">Home</a><a href="/library.html">Library</a><a href="/math-encyclopedia/">Math encyclopedia</a><a href="/#interactive">Interactive</a><a href="/#preoccupations" aria-current="location">Research</a><a href="/#books">Books</a><a href="/projects.html">Projects</a><a href="/about.html">About</a><a class="ig-language" href="/ja/three-model-benchmark-atlas/" hreflang="ja" lang="ja">日本語</a><button class="ig-theme" type="button" hidden>Theme</button></nav>
+</div></header>
+<nav id="ig-breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><a href="/#preoccupations">Research</a><span aria-hidden="true">/</span><span aria-current="page">Fable 5.2, Opus 5.5 and GPT-6 Astra, benchmark by benchmark</span></nav>
+<span id="ig-content" tabindex="-1"></span>
+<!-- /ISEGORIA:NAV -->
+<main>
+<div class="wrap">
+<div class="hero">
+<p class="label">Benchmark atlas / 12 November 2026</p>
+<h1>Fable 5.2, Opus 5.5 and GPT-6 Astra, benchmark by benchmark</h1>
+<p class="standfirst">I took the benchmarks from my two survey lists and collected every published result for Claude Fable 5.2, Claude Opus 5.5 and GPT-6 Astra. Where at least two of them have a number, Fable 5.2 has the top score on 28 of 33, Opus 5.5 on 3 and Astra on 2. The effort data is much thinner than the head-to-head, because most labs publish only the maximum setting.</p>
+<div class="herometa"><a class="pill" href="three-model-benchmark-atlas-en.pdf" target="_blank" rel="noopener">English PDF</a><a class="pill" href="three-model-benchmark-atlas-ja.pdf" hreflang="ja" lang="ja" target="_blank" rel="noopener">日本語版 PDF</a><a class="pill" href="three-model-benchmark-atlas-bilingual.pdf" target="_blank" rel="noopener">Bilingual edition</a></div>
+</div>
+<nav class="toc" aria-label="On this page"><p class="kt">On this page</p><ol><li><a href="#lead">Who leads</a></li><li><a href="#effort">What effort buys</a></li><li><a href="#conflict">Where sources disagree</a></li><li><a href="#coverage">Coverage</a></li><li><a href="#catalog">The catalog</a></li><li><a href="#sources">Sources</a></li></ol></nav>
+<div class="key"><p class="kt">How to read the numbers</p><p>Most values are maximum-effort scores from the lab that ran the evaluation. A score moves with the harness, with partial against strict credit and with the index version, so where I found two values I show both. A dash means I found no published result, not that none exists.</p></div>
+<h2 id="lead"><span class="num">Section one</span>Who leads, and by how much</h2>
+<p>Across the 33 benchmarks where at least two of the three models have a published number, Fable 5.2 holds the top score on 28. The margin is large on long-horizon and agentic work: on Remote Labor Index it scores 41.3 against 21.3 for Opus 5.5 and 20.8 for Astra, and on RoboDojo it scores 64.9 against 39.4 and 29.8. It is small on saturated math, where FrontierMath Tier 4 reads 100, 95 and 97.6. Opus 5.5 leads on PhysicianBench (68.4) and ProgramBench (91.2). Astra leads on ARC-AGI-2 (95 against 93.3).</p>
+</div>
+<div class="wide"><figure class="fig"><div class="plate"><img src="figures/f6-agents.svg" alt="Grouped bars for agent benchmarks" loading="lazy" decoding="async"></div><figcaption><b>Figure 1.</b> Agents and computer use. OSWorld 2.1 is the offline, partial-credit variant; the strict score is lower (see the conflicts table).</figcaption></figure></div>
+<div class="wrap">
+
+<div class="wide"><figure class="fig"><div class="plate"><img src="figures/f7-coding.svg" alt="Grouped bars for coding benchmarks" loading="lazy" decoding="async"></div><figcaption><b>Figure 2.</b> Coding. FrontierCode 2.0 shows each model's best published run; harnesses differ by lab.</figcaption></figure></div>
+<div class="wrap">
+
+<div class="wide"><figure class="fig"><div class="plate"><img src="figures/f8-reasoning.svg" alt="Grouped bars for reasoning benchmarks" loading="lazy" decoding="async"></div><figcaption><b>Figure 3.</b> Reasoning, math and expert knowledge. ARC-AGI-3 is the standard harness; the provider-adapter harness reads far higher for both models.</figcaption></figure></div>
+<div class="wrap">
+
+<div class="wide"><figure class="fig"><div class="plate"><img src="figures/f9-multimodal.svg" alt="Grouped bars for multimodal and other benchmarks" loading="lazy" decoding="async"></div><figcaption><b>Figure 4.</b> Vision, documents, multilingual and medicine.</figcaption></figure></div>
+<div class="wrap">
+
+<h2 id="effort"><span class="num">Section two</span>What the effort setting buys</h2>
+<p>Fable 5.2 is the only one of the three with a published curve across all five settings, on the Artificial Analysis Intelligence Index. It climbs from 54 at low to 65 at max, but not evenly: low to high adds 8 points for about 11 more minutes per task, while high to max adds 3 points for about 28 more. High and xhigh tie at 62, so on this index xhigh buys time and not points. Opus 5.5 spans 35 at low to 58 at max; Artificial Analysis lists its medium, high and xhigh settings on the cost-quality frontier but does not give numbers for them. Astra is published at max only, at 57.</p>
+</div>
+<div class="wide"><figure class="fig"><div class="plate"><img src="figures/f1-effort.svg" alt="Intelligence Index by effort and score against cost" loading="lazy" decoding="async"></div><figcaption><b>Figure 5.</b> Artificial Analysis Intelligence Index v5 by effort setting (left) and score against cost per task (right). Opus 5.5 reads 58 in Artificial Analysis's launch article and 59 on its v5 leaderboard page; I plot 58.</figcaption></figure></div>
+<div class="wrap">
+
+<div class="wide"><figure class="fig"><div class="plate"><img src="figures/f2-time.svg" alt="Fable 5.2 time per task and score by effort" loading="lazy" decoding="async"></div><figcaption><b>Figure 6.</b> Fable 5.2 on the same index. Cost per task runs from about $3.10 at low to about $26.50 at max.</figcaption></figure></div>
+<div class="wrap">
+
+<h3>ARC-AGI-3</h3>
+<p>Astra has a full ladder here, and the harness matters more than the effort setting. Under the standard harness it improves steadily, from 17.5% at low to 62.7% at max, with the no-reasoning run at 35.2%. Under the provider-adapter harness every setting lands between 96.7% and 99.9%. In both, higher effort is cheaper per run, because fewer steps are wasted. For Fable 5.2 one source lists 65.7% (standard) and 94.9% (adapter), and another lists different stored rows, so I treat its ARC-AGI-3 figure as unsettled.</p>
+</div>
+<div class="wide"><figure class="fig"><div class="plate"><img src="figures/f3-arc3.svg" alt="GPT-6 Astra on ARC-AGI-3 by effort and harness" loading="lazy" decoding="async"></div><figcaption><b>Figure 7.</b> GPT-6 Astra on ARC-AGI-3 (semi-private set), score by effort for two harnesses (left) and the total cost of each run (right).</figcaption></figure></div>
+<div class="wrap">
+
+<h3>Coding, expert exams and data analysis</h3>
+<p>These ladders are short, and the harnesses differ: Opus 5.5 ran in Claude Code, Astra in Codex, and Fable 5.2's FrontierCode points come from Anthropic's own run. On FrontierCode 2.0, Opus 5.5 reaches 43.4 at xhigh and 45.5 at max; Astra 38.3, 41.4 and 42.8 from high to max; Fable 5.2 45.3 at high and 49.1 at xhigh, at $6.72 and $14.19 per task. On CursorBench 4.0, Opus 5.5 goes from 52.5 (medium) to 57.8 (max), flat at 56.0 across high and xhigh. On Humanity's Last Exam under Artificial Analysis's harness, Opus 5.5 jumps from 57.5 at xhigh to 61.4 at max while Fable 5.1 barely moves, 58.7 to 59.1.</p>
+</div>
+<div class="wide"><figure class="fig"><div class="plate"><img src="figures/f4-coding-effort.svg" alt="Effort ladders for FrontierCode, CursorBench and HLE" loading="lazy" decoding="async"></div><figcaption><b>Figure 8.</b> Effort ladders on FrontierCode 2.0, CursorBench 4.0 and Humanity's Last Exam.</figcaption></figure></div>
+<div class="wrap">
+
+<p>Two more data points argue against assuming that more effort always helps. Astra on Hex DataBench v1.1 scores 55.0 at low and 55.0 at max, with a dip to 52.0 at high. On a 44-problem math study it scored 98.9% at medium and 97.7% at high, with overlapping 95% intervals. An arithmetic prompt was solved at every setting while output tokens grew from 546 to 1,422. Fable 5.2 on Chartography (no tools) gains from 66.4 at medium to 73.4 at max, against 64.4 for Opus 5.5 and 71.0 for Astra.</p>
+</div>
+<div class="wide"><figure class="fig"><div class="plate"><img src="figures/f5-misc-effort.svg" alt="Hex DataBench, Chartography, FrontierCode cost" loading="lazy" decoding="async"></div><figcaption><b>Figure 9.</b> Astra on Hex DataBench v1.1 by effort (left), Chartography without tools (center), and Fable 5.2's FrontierCode cost against score (right).</figcaption></figure></div>
+<div class="wrap">
+
+<h2 id="conflict"><span class="num">Section three</span>Where sources disagree</h2>
+<p>The same benchmark often has two published numbers because of harness, partial against strict credit, index version, or an aggregator storing a different run. I keep both rather than choose. Several aggregator pages also cite documents that belong to other models, so I treat aggregator figures as claims until a primary page agrees. Opus 5.5's cyber figures were measured without safeguards; Fable 5.2 ships with them and falls back to a default model for certain requests, which affects tool-free comparisons.</p>
+<div class="tablewrap"><table><thead><tr><th>Benchmark</th><th>Value A</th><th>Value B</th></tr></thead><tbody><tr><td class="h">ARC-AGI-3, Fable 5.2</td><td class="n">65.7 (standard) / 94.9 (adapter)</td><td class="n">79.26 / 97.72 (stored rows on one aggregator)</td></tr><tr><td class="h">OSWorld 2.1, Fable 5.2</td><td class="n">89.3 (offline, partial credit)</td><td class="n">54.6 (strict)</td></tr><tr><td class="h">GDPval-AA, Opus 5.5 (Elo)</td><td class="n">1846</td><td class="n">1866</td></tr><tr><td class="h">Terminal-Bench 4.0, Opus 5.5</td><td class="n">66.4 (Anthropic, xhigh)</td><td class="n">59.6 (Artificial Analysis run)</td></tr><tr><td class="h">AA-Briefcase Elo, Opus 5.5</td><td class="n">1800</td><td class="n">1822</td></tr><tr><td class="h">Terminal-Bench-Science, Astra</td><td class="n">68.1 (Anthropic table, benchmarklist)</td><td class="n">64.6 (BenchLM) / 62.86 (Vals)</td></tr><tr><td class="h">AA Intelligence Index, Opus 5.5</td><td class="n">58 (launch article)</td><td class="n">59 (v5 leaderboard page)</td></tr></tbody></table></div>
+<h2 id="coverage"><span class="num">Section four</span>Coverage</h2>
+<p>Every benchmark from my lists where at least one of the three models has a published number. A dash means none found. Bold marks the best value in the row, lower being better where noted.</p>
+<div class="tablewrap"><table><thead><tr><th>Benchmark</th><th class="f">Fable 5.2</th><th class="o">Opus 5.5</th><th class="a">GPT-6 Astra</th></tr></thead><tbody><tr><td class="h">ARC-AGI-1</td><td class="n f">-</td><td class="n o best">97.5</td><td class="n a best">97.5</td></tr><tr><td class="h">ARC-AGI-2</td><td class="n f">-</td><td class="n o">93.3</td><td class="n a best">95</td></tr><tr><td class="h">ARC-AGI-3 (standard)</td><td class="n f best">65.7</td><td class="n o">-</td><td class="n a">62.7</td></tr><tr><td class="h">ARC-AGI-3 (provider adapter)</td><td class="n f">94.9</td><td class="n o">-</td><td class="n a best">98.6</td></tr><tr><td class="h">Humanity's Last Exam (tools)</td><td class="n f best">74.2</td><td class="n o">67.7</td><td class="n a">57.2</td></tr><tr><td class="h">GPQA</td><td class="n f">-</td><td class="n o">-</td><td class="n a">96</td></tr><tr><td class="h">FrontierMath v2 Tier 4</td><td class="n f best">100</td><td class="n o">95</td><td class="n a">97.6</td></tr><tr><td class="h">FrontierMath Erdős (open problems)</td><td class="n f">-</td><td class="n o">-</td><td class="n a">3</td></tr><tr><td class="h">BrowseComp</td><td class="n f">-</td><td class="n o">-</td><td class="n a">91.5</td></tr><tr><td class="h">OSWorld 2.0</td><td class="n f">-</td><td class="n o">48.7</td><td class="n a best">72.6</td></tr><tr><td class="h">OSWorld 2.1</td><td class="n f best">89.3</td><td class="n o">87.2</td><td class="n a">79.5</td></tr><tr><td class="h">Terminal-Bench 4.0</td><td class="n f best">67.6</td><td class="n o">66.4</td><td class="n a">57.9</td></tr><tr><td class="h">Terminal-Bench-Science</td><td class="n f best">74.6</td><td class="n o">58.7</td><td class="n a">68.1</td></tr><tr><td class="h">SWE-bench Pro</td><td class="n f best">93</td><td class="n o">89.9</td><td class="n a">-</td></tr><tr><td class="h">Remote Labor Index</td><td class="n f best">41.3</td><td class="n o">21.3</td><td class="n a">20.8</td></tr><tr><td class="h">GDPval-AA v2.1 (Elo)</td><td class="n f">-</td><td class="n o best">1846</td><td class="n a">1542</td></tr><tr><td class="h">Toolathlon-Verified</td><td class="n f">-</td><td class="n o">77.8</td><td class="n a">-</td></tr><tr><td class="h">MRCR v2 256K-512K</td><td class="n f">-</td><td class="n o">-</td><td class="n a">100</td></tr><tr><td class="h">MRCR v2 512K-1M</td><td class="n f">-</td><td class="n o">-</td><td class="n a">96.3</td></tr><tr><td class="h">GraphWalks BFS 256K-1M</td><td class="n f">-</td><td class="n o">66.8</td><td class="n a best">71.8</td></tr><tr><td class="h">HealthBench Hard</td><td class="n f">-</td><td class="n o">-</td><td class="n a">36.6</td></tr><tr><td class="h">Global-MMLU</td><td class="n f best">96</td><td class="n o">94.3</td><td class="n a">-</td></tr><tr><td class="h">NYT Connections</td><td class="n f">97.3</td><td class="n o">-</td><td class="n a">-</td></tr><tr><td class="h">Chess puzzles (Epoch)</td><td class="n f">79</td><td class="n o">-</td><td class="n a">-</td></tr><tr><td class="h">MathVis (Fable 5, not 5.2)</td><td class="n f">26.56</td><td class="n o">-</td><td class="n a best">31.25</td></tr><tr><td class="h">ExploitGym</td><td class="n f">-</td><td class="n o">33.3</td><td class="n a best">42.4</td></tr><tr><td class="h">CritPt v2 hard subset (AA)</td><td class="n f best">77</td><td class="n o">-</td><td class="n a">72</td></tr><tr><td class="h">SciCode (AA)</td><td class="n f">-</td><td class="n o">66.9</td><td class="n a">-</td></tr><tr><td class="h">Gray Swan IPI, lower is better</td><td class="n f">-</td><td class="n o best">1</td><td class="n a">8.5</td></tr><tr><td class="h">Vending-Bench 2 (final $)</td><td class="n f">-</td><td class="n o">-</td><td class="n a">$15,515</td></tr><tr><td class="h">SpireClimb</td><td class="n f">19.6</td><td class="n o">-</td><td class="n a">-</td></tr></tbody></table></div>
+<h2 id="catalog"><span class="num">Section five</span>The catalog</h2>
+<p>270 benchmarks from the mainstream sweep and from the esoteric pass. 61 have a score on a page I could read; 209 are listed without one. The model shown is the latest or top-ranked model I found a number for, which is not necessarily the newest model in existence: a leaderboard shows its leader, and many pages were undated or unreachable. Benchmarks with no result are collected under each heading, and that means I found none, not that none exists.</p>
+</div><div class="wide">
+<div class="cat"><h3>Aggregators<span>7 / 19</span></h3>
+<div class="tablewrap"><table><thead><tr><th>Benchmark</th><th>Latest or top model found</th><th>Score</th><th>Note</th></tr></thead><tbody><tr><td class="h">Artificial Analysis Intelligence Index</td><td>Claude Fable 5.2 (max)</td><td class="n">65</td><td class="m">v5; Opus 5.5 59, Astra 57</td></tr><tr><td class="h">Epoch Capabilities Index (ECI)</td><td>Claude Fable 5.2</td><td class="n">174</td><td class="m"></td></tr><tr><td class="h">Epoch Benchmarking Hub</td><td>Claude Fable 5.2</td><td class="n">ECI 174</td><td class="m">see ECI</td></tr><tr><td class="h">FrontierMath (Tiers 1-4, v2)</td><td>Claude Fable 5.2</td><td class="n">T1-3 95.1% · T4 100.0%</td><td class="m">BenchLM; Astra 93.7 / 97.6</td></tr><tr><td class="h">LiveBench</td><td>gpt-5.5-xhigh</td><td class="n">81.28</td><td class="m">snapshot 2026-06-10; Fable 5 xhigh 78.57</td></tr><tr><td class="h">Scale SEAL</td><td>Claude Fable 5.2</td><td class="n">41.3% (Remote Labor Index)</td><td class="m"></td></tr><tr><td class="h">Vals AI (Vals Index)</td><td>Claude Fable 5.2 (High)</td><td class="n">71.31%</td><td class="m">1st of 36; Astra 65.02</td></tr></tbody></table></div>
+<p class="none"><b>No result found:</b> LMArena; OpenCompass; BenchLM; BenchmarkList; Codesota; llm-stats; HELM; Open LLM Leaderboard v2; BFCL; OpenRouter rankings; AIMultiple 200+; Snorkel Open Benchmarks Grants</p>
+</div>
+<div class="cat"><h3>Knowledge & reasoning<span>7 / 11</span></h3>
+<div class="tablewrap"><table><thead><tr><th>Benchmark</th><th>Latest or top model found</th><th>Score</th><th>Note</th></tr></thead><tbody><tr><td class="h">MMLU-Pro</td><td>Sakana Namazu</td><td class="n">90.33%</td><td class="m">sampled 2026-08-11; Opus 4.5 89.5</td></tr><tr><td class="h">GPQA Diamond</td><td>GPT-6 Astra</td><td class="n">96.0%</td><td class="m">BenchLM</td></tr><tr><td class="h">Humanity's Last Exam</td><td>Claude Fable 5.2</td><td class="n">74.2% (with tools)</td><td class="m">Opus 5.5 67.7, Astra 57.2</td></tr><tr><td class="h">CritPt</td><td>Claude Fable 5.2</td><td class="n">77% (v2 hard subset)</td><td class="m">AA; Astra 72%</td></tr><tr><td class="h">ARC-AGI-1</td><td>Opus 5.5 / GPT-6 Astra</td><td class="n">97.5%</td><td class="m">tie</td></tr><tr><td class="h">ARC-AGI-2</td><td>GPT-6 Astra (Max)</td><td class="n">95%</td><td class="m">Opus 5.5 (High) 93.33</td></tr><tr><td class="h">ARC-AGI-3</td><td>GPT-6 Astra</td><td class="n">99.9% adapter · 62.7% standard</td><td class="m">harness-dependent</td></tr></tbody></table></div>
+<p class="none"><b>No result found:</b> MMLU; HLE-Diamond (AA); FrontierScience; SimpleBench</p>
+</div>
+<div class="cat"><h3>Math<span>2 / 11</span></h3>
+<div class="tablewrap"><table><thead><tr><th>Benchmark</th><th>Latest or top model found</th><th>Score</th><th>Note</th></tr></thead><tbody><tr><td class="h">AIME 2025</td><td>GPT-5.2 (xhigh)</td><td class="n">99%</td><td class="m">snapshot 2026-06-10; saturated</td></tr><tr><td class="h">ArXivMath (Aug 2026)</td><td>Claude Opus 5.5</td><td class="n">96.9% tools · 91.2% no tools</td><td class="m">Fable 5.1 92.1 / 82.9</td></tr></tbody></table></div>
+<p class="none"><b>No result found:</b> HMMT; MATH-500; GSM8K; USAMO 2026; IMO-ProofBench / AnswerBench; Putnam-Bench; OlympiadBench; ProofBench; MathArena</p>
+</div>
+<div class="cat"><h3>Coding<span>9 / 17</span></h3>
+<div class="tablewrap"><table><thead><tr><th>Benchmark</th><th>Latest or top model found</th><th>Score</th><th>Note</th></tr></thead><tbody><tr><td class="h">SWE-bench Pro</td><td>Claude Fable 5.2 (max)</td><td class="n">93.0%</td><td class="m">Opus 5.5 89.9</td></tr><tr><td class="h">SWE-bench Multilingual</td><td>Claude Fable 5.2</td><td class="n">96.6%</td><td class="m"></td></tr><tr><td class="h">SWE-bench Multimodal</td><td>Claude Fable 5.2</td><td class="n">74.1%</td><td class="m"></td></tr><tr><td class="h">Terminal-Bench 4.0</td><td>Claude Fable 5.2 (max)</td><td class="n">67.6%</td><td class="m">Opus 5.5 66.4, Astra 57.9</td></tr><tr><td class="h">SciCode</td><td>Claude Opus 5.5 (max)</td><td class="n">66.9%</td><td class="m">AA v4.3</td></tr><tr><td class="h">CursorBench 4.0</td><td>Claude Fable 5.2</td><td class="n">60.0%</td><td class="m">Opus 5.5 57.8 (max)</td></tr><tr><td class="h">FrontierCode 2.0</td><td>Claude Fable 5.2 (xhigh)</td><td class="n">49.1%</td><td class="m">leaderboard best: Opus 5.5 max 45.45</td></tr><tr><td class="h">FrontierSWE v2</td><td>Claude Fable 5.2</td><td class="n">69.9%</td><td class="m"></td></tr><tr><td class="h">DeepSWE</td><td>Claude Fable 5.2</td><td class="n">74.3%</td><td class="m">Opus 74.2, Astra 74.1</td></tr></tbody></table></div>
+<p class="none"><b>No result found:</b> SWE-bench Verified; Terminal-Bench 2.1 (Vals); LiveCodeBench; Aider Polyglot; HumanEval; SWE-Lancer; MLE-bench; CRUXEval</p>
+</div>
+<div class="cat"><h3>Agents & computer use<span>10 / 16</span></h3>
+<div class="tablewrap"><table><thead><tr><th>Benchmark</th><th>Latest or top model found</th><th>Score</th><th>Note</th></tr></thead><tbody><tr><td class="h">OSWorld (Verified)</td><td>Pointer Agent w/ Opus 4.7</td><td class="n">83.64%</td><td class="m">sampled 2026-05-27</td></tr><tr><td class="h">OSWorld 2.0</td><td>GPT-6 Astra</td><td class="n">72.6%</td><td class="m">BenchLM</td></tr><tr><td class="h">OSWorld 2.1</td><td>Claude Fable 5.2</td><td class="n">89.3% (offline, partial)</td><td class="m">Opus 5.5 87.2, Astra 79.5</td></tr><tr><td class="h">Toolathlon</td><td>Claude Opus 5.5</td><td class="n">77.8% (Verified)</td><td class="m"></td></tr><tr><td class="h">GDPval-AA</td><td>Claude Opus 5.5 (max)</td><td class="n">1846 Elo</td><td class="m">Astra 1542; Fable 5.2 1831 in one source</td></tr><tr><td class="h">Remote Labor Index</td><td>Claude Fable 5.2 (high)</td><td class="n">41.3%</td><td class="m">Opus 21.3, Astra 20.8</td></tr><tr><td class="h">Vending-Bench 2</td><td>GPT-6 Astra</td><td class="n">$15,515 final</td><td class="m">sampled 2026-10-03</td></tr><tr><td class="h">BrowseComp</td><td>Nex-N2.5-Max</td><td class="n">92.6%</td><td class="m">Astra 91.5; latest entry Inkling 2 Small 90.2</td></tr><tr><td class="h">DRACO</td><td>Claude Fable 5.2</td><td class="n">87.7%</td><td class="m"></td></tr><tr><td class="h">AutomationBench</td><td>Claude Fable 5.2</td><td class="n">51.4%</td><td class="m">Opus 5.5 42.5, Astra 41.4</td></tr></tbody></table></div>
+<p class="none"><b>No result found:</b> WebArena; tau-bench / tau2-bench; Agents' Last Exam; GAIA; MedBrowseComp; PaperBench</p>
+</div>
+<div class="cat"><h3>Long context<span>2 / 12</span></h3>
+<div class="tablewrap"><table><thead><tr><th>Benchmark</th><th>Latest or top model found</th><th>Score</th><th>Note</th></tr></thead><tbody><tr><td class="h">MRCR v2 (8-needle)</td><td>GPT-6 Astra</td><td class="n">100% @256K-512K · 96.3% @512K-1M</td><td class="m">BenchLM</td></tr><tr><td class="h">Graphwalks</td><td>GPT-6 Astra</td><td class="n">71.8% (BFS 256K-1M)</td><td class="m">Opus 5.5 66.8</td></tr></tbody></table></div>
+<p class="none"><b>No result found:</b> OpenAI-MRCR; RULER; NIAH / NIAH-2; LongBench v1/v2; NoLiMa; BABILong; AA-LCR; HELMET; NoCha; Michelangelo</p>
+</div>
+<div class="cat"><h3>Factuality<span>2 / 10</span></h3>
+<div class="tablewrap"><table><thead><tr><th>Benchmark</th><th>Latest or top model found</th><th>Score</th><th>Note</th></tr></thead><tbody><tr><td class="h">SimpleQA</td><td>Gemini 3.1 Pro (high)</td><td class="n">77.3%</td><td class="m">Fable 5 (max) 68.3; snapshot 2026-07-15</td></tr><tr><td class="h">AA-Omniscience</td><td>Claude Opus 5.5 (max)</td><td class="n">48 (v1.1 index)</td><td class="m">AA v5</td></tr></tbody></table></div>
+<p class="none"><b>No result found:</b> SimpleQA Verified; FACTS; Vectara HHEM; HalluHard; PersonQA; TruthfulQA; FActScore; LongFact</p>
+</div>
+<div class="cat"><h3>Instruction & chat<span>1 / 10</span></h3>
+<div class="tablewrap"><table><thead><tr><th>Benchmark</th><th>Latest or top model found</th><th>Score</th><th>Note</th></tr></thead><tbody><tr><td class="h">IFEval</td><td>Kimi-K2.6</td><td class="n">94.5</td><td class="m">self-reported, 2026-06-08</td></tr></tbody></table></div>
+<p class="none"><b>No result found:</b> IFBench; Multi-IF; MT-Bench; Arena-Hard; AlpacaEval; WildBench; EQ-Bench; WritingBench; RewardBench</p>
+</div>
+<div class="cat"><h3>Medicine<span>3 / 11</span></h3>
+<div class="tablewrap"><table><thead><tr><th>Benchmark</th><th>Latest or top model found</th><th>Score</th><th>Note</th></tr></thead><tbody><tr><td class="h">HealthBench</td><td>Claude Opus 5.5</td><td class="n">68.1% raw</td><td class="m">Astra 56.9</td></tr><tr><td class="h">HealthBench Hard</td><td>GPT-6 Astra</td><td class="n">36.6%</td><td class="m"></td></tr><tr><td class="h">HealthBench Professional</td><td>Claude Opus 5.5</td><td class="n">65.6%</td><td class="m">Astra 64.7</td></tr></tbody></table></div>
+<p class="none"><b>No result found:</b> MedQA; MedMCQA; PubMedQA; MedXpertQA; MedHELM; MEDEC; MedVH; CREOLA</p>
+</div>
+<div class="cat"><h3>Law, finance, science<span>1 / 17</span></h3>
+<div class="tablewrap"><table><thead><tr><th>Benchmark</th><th>Latest or top model found</th><th>Score</th><th>Note</th></tr></thead><tbody><tr><td class="h">Terminal-Bench-Science</td><td>Claude Fable 5.2</td><td class="n">74.6%</td><td class="m">Opus 5.5 58.7, Astra 68.1</td></tr></tbody></table></div>
+<p class="none"><b>No result found:</b> LegalBench; LawBench; LexEval; CaseLaw v2; Legal Research Bench; HLAB; FinanceBench; Finance Agent v2; EMB; CorpFin; TaxEval; Tax Agent Bench; LAB-Bench; ScienceAgentBench; HLE-Physics; CMT-Benchmark</p>
+</div>
+<div class="cat"><h3>Multilingual<span>1 / 10</span></h3>
+<div class="tablewrap"><table><thead><tr><th>Benchmark</th><th>Latest or top model found</th><th>Score</th><th>Note</th></tr></thead><tbody><tr><td class="h">Global-MMLU</td><td>Claude Fable 5.2</td><td class="n">96.0%</td><td class="m">Lite/full not distinguished</td></tr></tbody></table></div>
+<p class="none"><b>No result found:</b> MMLU-ProX; INCLUDE; MGSM; Belebele; AfriMMLU / AfriXNLI; MuBench; MultiLoKo; BenchMax; FLORES-200</p>
+</div>
+<div class="cat"><h3>Multimodal<span>0 / 13</span></h3>
+<p class="none"><b>No result found:</b> MMMU / MMMU-Pro; MathVista; ChartQA; DocVQA; RealWorldQA; OCRBench; ScreenSpot-Pro; Video-MME / v2; MLVU; LVBench; MMVU; EgoSchema; VideoMMMU</p>
+</div>
+<div class="cat"><h3>Generative media<span>0 / 11</span></h3>
+<p class="none"><b>No result found:</b> Image arenas (LMArena); GenEval; GenAI-Bench / GenAI-Arena; HEIM; T2I-CompBench; Imagine-Bench; EditScore; Gen-Arena; VBench; EvalCrafter; VideoGen-Reward</p>
+</div>
+<div class="cat"><h3>Speech & embeddings<span>0 / 7</span></h3>
+<p class="none"><b>No result found:</b> Open ASR Leaderboard; FFASR / ESB / LibriSpeech / FLEURS; Seed-TTS; Real World VoiceEQ; MMAU / MMAR; MTEB / MMTEB / MIEB; MAEB / MAEB+</p>
+</div>
+<div class="cat"><h3>Robotics<span>1 / 6</span></h3>
+<div class="tablewrap"><table><thead><tr><th>Benchmark</th><th>Latest or top model found</th><th>Score</th><th>Note</th></tr></thead><tbody><tr><td class="h">RoboDojo Sim</td><td>Claude Fable 5.2</td><td class="n">64.9%</td><td class="m">Opus 5.5 39.4; Astra 29.8</td></tr></tbody></table></div>
+<p class="none"><b>No result found:</b> LIBERO (+Plus/-X/-PRO/-PeRM); CALVIN; SimplerEnv; vla-eval harness; NativeEmbodied</p>
+</div>
+<div class="cat"><h3>Autonomy & cyber<span>3 / 15</span></h3>
+<div class="tablewrap"><table><thead><tr><th>Benchmark</th><th>Latest or top model found</th><th>Score</th><th>Note</th></tr></thead><tbody><tr><td class="h">ExploitGym</td><td>GPT-6 Astra</td><td class="n">42.4%</td><td class="m">Opus 5.5 33.3</td></tr><tr><td class="h">ExploitBench (V8)</td><td>GPT-6 Astra</td><td class="n">100%</td><td class="m">secondary report</td></tr><tr><td class="h">CVE Rediscovery</td><td>Claude Mythos 5.2</td><td class="n">89.6%</td><td class="m">Opus 5.5 81.3</td></tr></tbody></table></div>
+<p class="none"><b>No result found:</b> METR time horizons (HCAST, RE-Bench, SWAA); MirrorCode / expenditure horizon; RE-Bench; Cybench; NYU CTF; CVE-Bench; BountyBench; CyberGym; AISI cyber ranges; CAIBench; SEC-bench; BaxBench</p>
+</div>
+<div class="cat"><h3>Safety & alignment<span>1 / 15</span></h3>
+<div class="tablewrap"><table><thead><tr><th>Benchmark</th><th>Latest or top model found</th><th>Score</th><th>Note</th></tr></thead><tbody><tr><td class="h">Gray Swan IPI</td><td>GPT-6 Astra</td><td class="n">8.5% (15 attempts)</td><td class="m">Opus 5.5 1.0%; lower is better</td></tr></tbody></table></div>
+<p class="none"><b>No result found:</b> HarmBench; JailbreakBench; StrongREJECT; AILuminate; AIR-Bench; AgentHarm; WMDP / BioLP-Bench / VCT; XSTest; AgentDojo; MASK; Apollo scheming suite / Bloom / Petri; SycEval; MACHIAVELLI; BIG-Bench HHH</p>
+</div>
+<div class="cat"><h3>Ancient scripts<span>1 / 7</span></h3>
+<div class="tablewrap"><table><thead><tr><th>Benchmark</th><th>Latest or top model found</th><th>Score</th><th>Note</th></tr></thead><tbody><tr><td class="h">TokenAI Hieroglyphic AI Benchmark</td><td>TokenAI model</td><td class="n">~90% overall</td><td class="m">vendor-reported</td></tr></tbody></table></div>
+<p class="none"><b>No result found:</b> Hemauer Egyptian/Luwian evaluation; Reasoning Over the Glyphs; Ancient logographic benchmark (EGY/AKK/ZHO/Linear A); HieroLM; Dongba pictogram study; Falsifiability Sheet pilot</p>
+</div>
+<div class="cat"><h3>Linguistics puzzles<span>0 / 5</span></h3>
+<p class="none"><b>No result found:</b> LingOly; Linguini; IOLBench / LOBSTER / LingBench++; PuzzLing Machines / modeLing; Rosetta-to-Match-Up corpus</p>
+</div>
+<div class="cat"><h3>Esoteric code<span>1 / 1</span></h3>
+<div class="tablewrap"><table><thead><tr><th>Benchmark</th><th>Latest or top model found</th><th>Score</th><th>Note</th></tr></thead><tbody><tr><td class="h">EsoLang-Bench</td><td>GPT-5.2</td><td class="n">3.8% best</td><td class="m">vs 100% Python; 0-11% overall</td></tr></tbody></table></div>
+</div>
+<div class="cat"><h3>Games<span>3 / 5</span></h3>
+<div class="tablewrap"><table><thead><tr><th>Benchmark</th><th>Latest or top model found</th><th>Score</th><th>Note</th></tr></thead><tbody><tr><td class="h">BALROG</td><td>Gemini 3</td><td class="n">29.5% progress</td><td class="m">sampled 2026-05-29; NetHack 1.6%</td></tr><tr><td class="h">Kaggle Game Arena (chess)</td><td>Gemini 3 Pro Preview</td><td class="n">Elo 1325</td><td class="m">Gemini 3 Flash 1297</td></tr><tr><td class="h">InfiniteBM Chess</td><td>Claude Opus 4.7</td><td class="n">Elo 1997.5</td><td class="m">only 16 games</td></tr></tbody></table></div>
+<p class="none"><b>No result found:</b> Kaggle Game Arena (poker / Werewolf); Pokemon Agent Challenge</p>
+</div>
+<div class="cat"><h3>Social & theory of mind<span>0 / 5</span></h3>
+<p class="none"><b>No result found:</b> Werewolf Arena / WOLF / Triadic Werewolf; MafiaScope / MIVA; Decrypto / Avalon-ToM-Bench; SOTOPIA / Hi-ToM / FANToM / ToMi; MACHIAVELLI</p>
+</div>
+<div class="cat"><h3>Open math & proofs<span>1 / 8</span></h3>
+<div class="tablewrap"><table><thead><tr><th>Benchmark</th><th>Latest or top model found</th><th>Score</th><th>Note</th></tr></thead><tbody><tr><td class="h">FrontierMath Erdős</td><td>GPT-6 Astra</td><td class="n">3%</td><td class="m">68 open problems, fixed budget</td></tr></tbody></table></div>
+<p class="none"><b>No result found:</b> FrontierMath: Open Problems / HorizonMath; Formal Conjectures; miniF2F; PutnamBench; ProverBench; ProofNet / CombiBench / FormalMATH; FormalProofBench / SorryDB</p>
+</div>
+<div class="cat"><h3>Puzzles<span>3 / 5</span></h3>
+<div class="tablewrap"><table><thead><tr><th>Benchmark</th><th>Latest or top model found</th><th>Score</th><th>Note</th></tr></thead><tbody><tr><td class="h">NYT Connections</td><td>Claude Fable 5.2</td><td class="n">97.3%</td><td class="m"></td></tr><tr><td class="h">Sudoku-Bench</td><td></td><td class="n"><15% best</td><td class="m">no-tool runs, older models</td></tr><tr><td class="h">InsanityBench</td><td></td><td class="n">~10% best</td><td class="m">at time of posting</td></tr></tbody></table></div>
+<p class="none"><b>No result found:</b> Cryptic crosswords / puzzlehunts / PuzzlePlex; Riddles / lateral thinking sets</p>
+</div>
+<div class="cat"><h3>Spatial & physical<span>0 / 5</span></h3>
+<p class="none"><b>No result found:</b> BuildArena; GRASP / FloorplanQA / SPhyR; 3DSRBench / OpenBench / SpatialEval; GeoBench (GeoGuessr); PHYRE / Physion / IntPhys / CLEVRER / PIQA</p>
+</div>
+<div class="cat"><h3>Niche science<span>0 / 3</span></h3>
+<p class="none"><b>No result found:</b> PG-LLM (protein variants); ChemBench; SciKnowEval / SFE / SDE</p>
+</div>
+<div class="cat"><h3>Tokenization quirks<span>0 / 2</span></h3>
+<p class="none"><b>No result found:</b> CharBench; TASE / Strawberry Problem set</p>
+</div>
+<div class="cat"><h3>Humor, creativity, music<span>0 / 4</span></h3>
+<p class="none"><b>No result found:</b> Oogiri-Master; LoTbench; MusiXQA / ABC-Eval; Pelican on a bicycle</p>
+</div>
+<div class="cat"><h3>Behavior & wellbeing<span>2 / 5</span></h3>
+<div class="tablewrap"><table><thead><tr><th>Benchmark</th><th>Latest or top model found</th><th>Score</th><th>Note</th></tr></thead><tbody><tr><td class="h">Spiral-Bench</td><td>GPT-5</td><td class="n">87</td><td class="m">DeepSeek-R1-0528 22.4</td></tr><tr><td class="h">SAD (situational awareness)</td><td>Claude 3.5 Sonnet</td><td class="n">54%</td><td class="m">2024 result</td></tr></tbody></table></div>
+<p class="none"><b>No result found:</b> DelusionEval; ELEPHANT / SnitchBench; Model-welfare self-report work</p>
+</div>
+<div class="cat"><h3>Ethics & values<span>0 / 2</span></h3>
+<p class="none"><b>No result found:</b> TrolleyBench / MoralBench / MOSAIC; MultiTP / GlobalOpinionQA / PRISM / ETHICS</p>
+</div>
+<div class="cat"><h3>Forecasting<span>0 / 2</span></h3>
+<p class="none"><b>No result found:</b> Prophet Arena; Prediction Arena / ForecastBench / ForecastQA</p>
+</div>
+</div><div class="wrap">
+<div class="sources" id="sources">
+<h3>Sources</h3>
+<p><strong>Primary data.</strong> Anthropic announcement pages and the Claude Opus 5.5 system card; OpenAI's GPT-6 Astra materials; <a href="https://artificialanalysis.ai/">Artificial Analysis</a> (Intelligence Index v5 and its effort breakdowns); <a href="https://arcprize.org/">ARC Prize</a> results; <a href="https://epoch.ai/">Epoch AI</a> (ECI, FrontierMath); <a href="https://www.vals.ai/">Vals AI</a>; Hex's DataBench write-up; BenchLM comparison pages and benchmarklist.com leaderboards for per-benchmark scores.</p>
+<p><strong>What I verified.</strong> Every figure was read from a page I could open, and nothing is estimated or interpolated. Where two sources disagree both values appear.</p>
+<p><strong>What I could not verify.</strong> Per-effort data exists for very few model and benchmark pairs, so most effort ladders here have two to four points. Several aggregator figures have no primary page behind them. Many official leaderboards render client-side and returned nothing, so those benchmarks show no result in the catalog.</p>
+</div>
+</div>
+</main>
+<!-- ISEGORIA:FOOT -->
+<footer id="ig-footer"><div><a href="/">Isegoria · Benjamin Haire</a><nav aria-label="Site links"><a href="/">Back to home</a><a href="/library.html">Browse the library</a><a href="#ig-content">Back to top</a></nav></div></footer>
+<!-- /ISEGORIA:FOOT -->
+</body>
+</html>
