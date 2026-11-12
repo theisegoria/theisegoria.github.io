@@ -149,7 +149,8 @@
     'noise-cancelling': ['loudspeakers', 'room-acoustics', 'crossovers-filters'],
     'lithium-ion': ['switching-converters', 'electric-motors', 'statistical-mechanics'],
     'touchscreens': ['microprocessors', 'probability-inference', 'camera-lenses'],
-    'led-lighting': ['laser-physics', 'optics', 'lithium-ion']
+    'led-lighting': ['laser-physics', 'optics', 'lithium-ion'],
+    'keyboard-switches': ['touchscreens', 'microprocessors', 'graph-theory']
   };
   // Topics named in each topic's own prerequisite line (content.json "prerequisite").
   const PREREQ = {
@@ -231,7 +232,8 @@
     'noise-cancelling': ['acoustics', 'control-theory'],                 // Superposition of waves, loop gain and stability
     'lithium-ion': ['electromagnetism', 'thermodynamics'],               // Ohm's law and power, Arrhenius temperature dependence
     'touchscreens': ['electromagnetism'],                                // Capacitance, charge and fringing fields
-    'led-lighting': ['semiconductor-physics', 'switching-converters']    // Recombination at a junction, rectifiers and regulators
+    'led-lighting': ['semiconductor-physics', 'switching-converters'],   // Recombination at a junction, rectifiers and regulators
+    'keyboard-switches': ['classical-mechanics']                         // Springs, work and energy
   };
 
   let topics = [], bySlug = new Map(), edges = [], drawn = [];
