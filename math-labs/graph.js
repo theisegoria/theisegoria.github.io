@@ -145,7 +145,8 @@
     'particle-physics': ['group-theory', 'lie-groups', 'nuclear-physics'],
     'bicycles': ['control-theory', 'gears-mechanisms', 'dynamical-systems'],
     'data-storage': ['microprocessors', 'information-theory', 'coding-theory'],
-    'camera-lenses': ['fourier-analysis', 'microprocessors', 'laser-physics']
+    'camera-lenses': ['fourier-analysis', 'microprocessors', 'laser-physics'],
+    'noise-cancelling': ['loudspeakers', 'room-acoustics', 'crossovers-filters']
   };
   // Topics named in each topic's own prerequisite line (content.json "prerequisite").
   const PREREQ = {
@@ -223,7 +224,8 @@
     'particle-physics': ['quantum-mechanics', 'special-relativity', 'representation-theory'], // Four-vectors, SU(3) weights
     'bicycles': ['classical-mechanics', 'rigid-body-dynamics'],          // Torque balance, gyroscopes and rolling
     'data-storage': ['electric-motors', 'semiconductor-physics', 'probability-inference'], // Voice-coil actuator, trapped charge, normal distributions
-    'camera-lenses': ['optics']                                          // Thin lenses and diffraction
+    'camera-lenses': ['optics'],                                         // Thin lenses and diffraction
+    'noise-cancelling': ['acoustics', 'control-theory']                  // Superposition of waves, loop gain and stability
   };
 
   let topics = [], bySlug = new Map(), edges = [], drawn = [];
