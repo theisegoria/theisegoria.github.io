@@ -474,17 +474,16 @@ function drawMotionGraph() {
   g.textAlign = 'right'; for (const [x, t] of [[1e-6, '1 µm'], [1e-5, '10 µm'], [1e-4, '0.1 mm'], [1e-3, '1 mm'], [1e-2, '10 mm']]) g.fillText(t, x0 - 5, yx(x) + 4);
   g.globalAlpha = 0.5; g.setLineDash([4, 4]); g.beginPath(); g.moveTo(fx(FC), y0); g.lineTo(fx(FC), y1); g.stroke(); g.setLineDash([]);
   g.textAlign = 'left'; g.fillText(L('crossover 2.5 kHz', 'クロスオーバー 2.5 kHz'), fx(FC) + 5, y0 + 10);
-  const line = (fn, col) => { g.globalAlpha = 1; g.strokeStyle = col; g.lineWidth = 2.2; g.beginPath(); for (let i = 0; i <= 160; i++) { const f = 40 * Math.pow(500, i / 160), X = fx(f), Y = Math.min(y1, Math.max(y0, yx(fn(f)))); if (i) g.lineTo(X, Y); else g.moveTo(X, Y); } g.stroke(); };
+  const line = (fn, col) => { g.globalAlpha = 1; g.strokeStyle = col; g.lineWidth = 2.2; g.beginPath(); let pen = false; for (let i = 0; i <= 160; i++) { const f = 40 * Math.pow(500, i / 160), X = fx(f), Y = yx(fn(f)); if (Y > y1 || Y < y0) { pen = false; continue; } if (pen) g.lineTo(X, Y); else { g.moveTo(X, Y); pen = true; } } g.stroke(); };
   const cw = '#7b93a8', ct = '#d08a3c';
   line(coneTravel, cw); line(domeTravel, ct);
-  g.globalAlpha = 1; g.fillStyle = cw; g.fillText(L('cone', 'コーン'), fx(60), yx(coneTravel(60)) - 8); g.fillStyle = ct; g.textAlign = 'right'; g.fillText(L('dome', 'ドーム'), fx(15000), yx(domeTravel(15000)) - 8);
+  g.globalAlpha = 1; g.fillStyle = cw; g.fillText(L('cone', 'コーン'), fx(300) + 8, yx(coneTravel(300)) - 6); g.fillStyle = ct; g.fillText(L('dome', 'ドーム'), fx(7000) + 8, yx(domeTravel(7000)) - 6);
   const f = motionFreq(); g.strokeStyle = ink; g.globalAlpha = 0.9; g.lineWidth = 1.2; g.beginPath(); g.moveTo(fx(f), y0); g.lineTo(fx(f), y1); g.stroke();
   for (const [fn, col] of [[coneTravel, cw], [domeTravel, ct]]) { const Y = yx(fn(f)); if (Y < y1 - 1) { g.fillStyle = col; g.beginPath(); g.arc(fx(f), Math.max(y0, Y), 4.5, 0, 7); g.fill(); g.strokeStyle = '#fff'; g.lineWidth = 1.5; g.stroke(); } }
 }
 // keep drawing for a while after anything loads: pipelines and textures finish compiling over several frames, and under
 // reduced motion (render on demand) nothing else would ask for those frames
 function burst(ms = 2000) { if (!lab) return; const end = performance.now() + ms; const tick = () => { lab.invalidate(); if (performance.now() < end) requestAnimationFrame(tick); }; tick(); }
-THREE.DefaultLoadingManager.onLoad = () => burst(1200);
 
 // ------------------------------------------------------------------ camera
 function views(m, which) {
