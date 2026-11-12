@@ -24784,5 +24784,229 @@
         "url": "https://store.doverpublications.com/products/9780486647852"
       }
     ]
+  },
+  {
+    "slug": "pin-tumbler-locks",
+    "title": [
+      "Pin-tumbler locks: five pins and a hundred thousand keys",
+      "ピンタンブラー錠：5 本のピンと 10 万通りの鍵"
+    ],
+    "description": [
+      "The lock on most front doors is a brass cylinder inside a brass cylinder. The inner one, the plug, would turn freely and draw the bolt, except that a row of spring-loaded pins crosses from one into the other. Each pin is cut in two, and the key is a strip of metal whose notches lift every pin by a different amount, so that all the cuts in the pins line up with the gap between the cylinders at once. The idea is four thousand years old and the modern form dates from the 1860s. Its strength is arithmetic: a handful of pins with a handful of heights gives a very large number of keys. Its weakness is manufacture: no two holes are drilled exactly in line. These experiments cut a key for a lock sawn in half, count the keys, and pick the lock one pin at a time.",
+      "ほとんどの玄関の錠は、真鍮の筒の中に入った真鍮の筒です。内側の筒であるプラグは、本来なら自由に回ってかんぬきを引きますが、ばねで押されたピンの列が、一方の筒からもう一方へまたがっています。それぞれのピンは二つに分かれていて、鍵は、刻みによってそれぞれのピンを異なる高さに持ち上げる金属の板です。こうして、すべてのピンの切れ目が、二つの筒のすき間に同時にそろいます。この考え方は 4000 年前からあり、現在の形は 1860 年代に生まれました。強みは算術にあります。数本のピンと数段の高さで、非常に多くの鍵が作れます。弱みは製造にあります。二つの穴を、正確に一直線に開けることはできません。ここでの実験では、半分に切った錠に合わせて鍵を刻み、鍵の数を数え、ピンを 1 本ずつ合わせて錠を開けます。"
+    ],
+    "group": "engineering",
+    "prerequisite": [
+      "Counting arrangements, powers and logarithms",
+      "並べ方の数え上げ、累乗と対数"
+    ],
+    "source": "M. Blaze · Rights amplification in master-keyed mechanical locks (IEEE Security and Privacy, 2003)",
+    "url": "https://doi.org/10.1109/MSECP.2003.1193208",
+    "labs": [
+      {
+        "id": "lock-cutaway",
+        "title": [
+          "1. The lock cut open",
+          "1. 錠の断面"
+        ],
+        "body": [
+          "The boundary between the plug and the shell is called the shear line. With no key in the lock, springs push each stack of pins down until the upper pin, the driver, sits half in the shell and half in the plug, and the plug cannot turn. A key pushed into the slot lifts each stack by the height of the blade under it. The lower pins, the key pins, are made in different lengths, one length for each depth of cut. With the right key, a deep cut under a long pin and a shallow cut under a short one bring the top of every key pin exactly to the shear line. The driver pins are then wholly in the shell, the key pins wholly in the plug, and nothing crosses the gap. A cut one step too shallow leaves its key pin poking up into the shell; one step too deep lets its driver pin hang down into the plug.",
+          "プラグと外筒の境目を、シアラインと呼びます。鍵が入っていないとき、ばねがピンの組を押し下げ、上のピンであるドライバーピンが、半分は外筒に、半分はプラグにまたがるので、プラグは回りません。鍵を差し込むと、それぞれの組は、その下にある鍵の刃の高さだけ持ち上がります。下のピンであるキーピンは、刻みの深さごとに異なる長さで作られています。正しい鍵では、長いピンの下に深い刻み、短いピンの下に浅い刻みが来て、すべてのキーピンの上端が、ちょうどシアラインにそろいます。このとき、ドライバーピンは完全に外筒の中に、キーピンは完全にプラグの中にあり、すき間をまたぐものは何もありません。刻みが 1 段浅すぎると、キーピンが外筒に突き出します。1 段深すぎると、ドライバーピンがプラグに垂れ下がります。"
+        ],
+        "formula": "z_{\\rm join}=z_{\\rm key}(c)+\\ell(k)=R_{\\rm plug}+s\\,(k-c),\\qquad \\text{opens}\\iff c_i=k_i\\ \\text{for every pin}",
+        "example": [
+          "This lock is pinned 3 6 2 7 4 and each step is 0.381 mm. The key cut 3 6 2 5 4 fits four of its pins. Under the fourth, the cut is two steps too shallow, so the key pin stands \\(2\\times0.381=0.76\\) mm into the shell and the plug is held. Cutting that position two steps deeper, to 7, frees it.",
+          "この錠の設定は 3 6 2 7 4 で、1 段は 0.381 mm です。3 6 2 5 4 と刻んだ鍵は、4 本のピンに合います。4 番目では刻みが 2 段浅すぎるので、キーピンが \\(2\\times0.381=0.76\\) mm 外筒に突き出し、プラグは止められます。その位置を 2 段深く、7 まで刻むと、プラグは回ります。"
+        ],
+        "caution": [
+          "The cylinder is a generic five-pin design drawn to scale with ten depths 0.381 mm apart, the spacing of a common American key. The warding of the keyway, the grooves along the blade that stop the wrong blank entering, is left out, and so is the small clearance that lets a slightly worn key still work.",
+          "シリンダーは、一般的な 5 ピンの設計を縮尺どおりに描いたもので、深さは 0.381 mm 間隔の 10 段です。これは、アメリカでよく使われる鍵の間隔です。違う型の鍵が入らないようにする、刃に沿った溝（鍵穴の形）は省いています。少しすり減った鍵でも使えるようにする、わずかな遊びも省いています。"
+        ],
+        "question": [
+          "Why is each stack two pins and not one?",
+          "それぞれの組が、1 本ではなく 2 本のピンでできているのはなぜですか。"
+        ],
+        "answer": [
+          "A single pin would always cross the shear line somewhere along its length. Cutting it in two creates one height at which the stack has a gap, and making the lower piece a different length in each hole puts that gap at a different lift for each pin.",
+          "1 本のピンでは、その長さのどこかが必ずシアラインをまたぎます。二つに切ることで、組にすき間ができる高さが一つ生まれます。下のピンの長さを穴ごとに変えることで、そのすき間ができる持ち上げ量が、ピンごとに異なるようになります。"
+        ],
+        "params": [
+          [
+            "c1",
+            "Cut 1",
+            "刻み 1",
+            0,
+            9,
+            1,
+            3
+          ],
+          [
+            "c2",
+            "Cut 2",
+            "刻み 2",
+            0,
+            9,
+            1,
+            6
+          ],
+          [
+            "c3",
+            "Cut 3",
+            "刻み 3",
+            0,
+            9,
+            1,
+            2
+          ],
+          [
+            "c4",
+            "Cut 4",
+            "刻み 4",
+            0,
+            9,
+            1,
+            5
+          ],
+          [
+            "c5",
+            "Cut 5",
+            "刻み 5",
+            0,
+            9,
+            1,
+            4
+          ]
+        ],
+        "source": "M. Blaze · Rights amplification in master-keyed mechanical locks (IEEE Security and Privacy, 2003)",
+        "url": "https://doi.org/10.1109/MSECP.2003.1193208"
+      },
+      {
+        "id": "key-space",
+        "title": [
+          "2. How many keys",
+          "2. 鍵の数"
+        ],
+        "body": [
+          "Each pin can be set for any one of several depths, independently of the others, so the number of different keys is the number of depths multiplied by itself once for every pin. Adding a pin multiplies the count by the number of depths. Not all of those keys can be made: the cutter leaves a slope between neighbouring cuts, and a very deep cut beside a very shallow one would carve away the shallow one, so makers forbid neighbours that differ by more than a set number of steps. Counting what is left is done one pin at a time, keeping track of how many valid keys end at each depth. Master keying reduces security in a different way. A building owner wants one key to open every door, so a thin wafer is added to some stacks, giving them two joins and so two depths that work. A lock with wafers in \\(k\\) stacks opens to \\(2^{k}\\) different keys.",
+          "それぞれのピンは、ほかのピンと関係なく、数段ある深さのどれにでも設定できます。したがって、異なる鍵の数は、深さの段数を、ピンの本数だけ掛け合わせたものです。ピンを 1 本増やすと、数は段数倍になります。ただし、そのすべての鍵が作れるわけではありません。刃物は、隣り合う刻みの間に斜面を残します。非常に深い刻みの隣に非常に浅い刻みがあると、浅いほうが削り取られてしまいます。そのため、製造者は、隣同士の差が決まった段数を超えることを禁じています。残りを数えるには、ピンを 1 本ずつ進めながら、それぞれの深さで終わる有効な鍵の数を記録します。マスターキーは、別の形で安全性を下げます。建物の所有者は、1 本の鍵ですべての扉を開けたいので、一部の組に薄い板を足して継ぎ目を二つにし、使える深さを二つにします。\\(k\\) 組に板が入った錠は、\\(2^{k}\\) 通りの鍵で開きます。"
+        ],
+        "formula": "N=d^{\\,n},\\qquad N_{\\rm cut}=\\sum_{a}f_n(a),\\quad f_{i+1}(a)=\\sum_{|a-b|\\le m}f_i(b),\\qquad N_{\\rm open}=2^{k}",
+        "example": [
+          "Five pins with ten depths give \\(10^{5}=100\\,000\\) combinations. If neighbouring cuts may differ by at most 7 steps, 79 666 of them can be cut. A sixth pin raises that to 753 754. Master three of the five stacks and \\(2^{3}=8\\) keys open the lock, so the chance that a random key works rises from 1 in 79 666 to about 1 in 9958.",
+          "5 本のピンと 10 段の深さでは、\\(10^{5}=100\\,000\\) 通りの組み合わせがあります。隣り合う刻みの差が最大 7 段までなら、そのうち 79 666 通りが作れます。6 本目のピンを足すと、753 754 通りになります。5 組のうち 3 組をマスター化すると、\\(2^{3}=8\\) 通りの鍵で錠が開くので、でたらめな鍵が合う確率は、79 666 分の 1 から約 9958 分の 1 に上がります。"
+        ],
+        "caution": [
+          "Real makers remove further keys: ones with all cuts alike, ones too close to a key already issued, and ones that fail other rules of their own. Tolerances also mean that a key one step off in one position sometimes works in a worn lock, which reduces the number of keys that are safely different.",
+          "実際の製造者は、さらに鍵を除きます。刻みがすべて同じもの、すでに発行した鍵に近すぎるもの、独自のほかの規則に合わないものです。加工の誤差のために、1 か所で 1 段ずれた鍵が、すり減った錠で使えてしまうこともあり、安全に区別できる鍵の数は、さらに少なくなります。"
+        ],
+        "question": [
+          "Which adds more keys to a five-pin, six-depth lock: a sixth pin, or a seventh depth?",
+          "5 ピン、6 段の錠の鍵の数をより多く増やすのは、6 本目のピンと 7 段目の深さのどちらですか。"
+        ],
+        "answer": [
+          "The sixth pin. It multiplies \\(6^{5}=7776\\) by 6, giving 46 656. A seventh depth gives \\(7^{5}=16\\,807\\), a little over twice as many. Length of key is worth more than depth of cut.",
+          "6 本目のピンです。\\(6^{5}=7776\\) が 6 倍になり、46 656 通りになります。7 段目の深さでは \\(7^{5}=16\\,807\\) 通りで、2 倍強にしかなりません。刻みの深さよりも、鍵の長さのほうが効きます。"
+        ],
+        "params": [
+          [
+            "n",
+            "Number of pins",
+            "ピンの数",
+            3,
+            7,
+            1,
+            5
+          ],
+          [
+            "d",
+            "Depths of cut",
+            "刻みの深さの段数",
+            4,
+            10,
+            1,
+            10
+          ],
+          [
+            "macs",
+            "Largest step between neighbours",
+            "隣り合う刻みの最大の差",
+            1,
+            9,
+            1,
+            7
+          ],
+          [
+            "mk",
+            "Stacks with a master wafer",
+            "マスター用の板を入れた組の数",
+            0,
+            7,
+            1,
+            0
+          ]
+        ],
+        "source": "M. Blaze · Rights amplification in master-keyed mechanical locks (IEEE Security and Privacy, 2003)",
+        "url": "https://doi.org/10.1109/MSECP.2003.1193208"
+      },
+      {
+        "id": "lock-picking",
+        "title": [
+          "3. Why locks can be picked",
+          "3. 錠が破られる理由"
+        ],
+        "body": [
+          "If the five pin holes were drilled perfectly in line, turning the plug gently would press all five driver pins against the edges of their holes at once, and nothing could be learned from outside. They never are. Each hole is a few hundredths of a millimetre ahead of or behind the line, so as the plug starts to turn, one pin is pinched before the others while the rest stay free on their springs. Push the pinched pin upward and, at the moment its join reaches the shear line, it stops resisting: the plug turns a fraction further, the driver pin is left sitting on the ledge of the shell, and a different pin is now the one pinched. Repeat for each pin in turn and the lock is open. The search that would have taken up to a hundred thousand keys takes five pins and at most ten heights each.",
+          "5 つのピン穴が完全に一直線に開いていれば、プラグをそっと回すと、5 本のドライバーピンがすべて同時に穴の縁に押し付けられ、外からは何も分かりません。しかし、そうはなりません。それぞれの穴は、線より数百分の 1 ミリメートル前か後ろにあるので、プラグが回り始めると、1 本のピンだけが先に挟まれ、残りはばねの上で自由なままです。挟まれたピンを押し上げると、継ぎ目がシアラインに届いた瞬間に、抵抗がなくなります。プラグはわずかに回り、ドライバーピンは外筒の縁に載って残り、今度は別のピンが挟まれます。これをピンごとに繰り返すと、錠は開きます。最大 10 万本の鍵が必要だった探索が、5 本のピンと、それぞれ最大 10 段の高さで済みます。"
+        ],
+        "formula": "\\theta_j=\\frac{c+e_{\\max}-e_{(j+1)}}{R_{\\rm plug}},\\qquad \\text{guessing: }d^{\\,n}\\ \\text{keys},\\qquad \\text{picking: at most }n\\,d\\ \\text{positions}",
+        "example": [
+          "With a plug of radius 6.35 mm and 20 μm of clearance round each pin, the plug turns \\(0.020/6.35=3.1\\) milliradians, 0.18°, before the first pin binds. If the next hole is 8 μm further back, the plug turns another \\(0.008/6.35\\) rad, 0.07°, when the first pin sets. Guessing a five-pin, ten-depth key means up to 100 000 tries; picking means at most \\(5\\times10=50\\) positions.",
+          "プラグの半径が 6.35 mm、それぞれのピンの周りの遊びが 20 μm のとき、プラグは、最初のピンが挟まれるまでに \\(0.020/6.35=3.1\\) ミリラジアン、つまり 0.18° 回ります。次の穴がさらに 8 μm 後ろにあれば、最初のピンが合ったとき、プラグはさらに \\(0.008/6.35\\) rad、つまり 0.07° 回ります。5 ピン、10 段の鍵を当てずっぽうで探すと最大 10 万回かかりますが、ピッキングでは最大 \\(5\\times10=50\\) か所です。"
+        ],
+        "caution": [
+          "The hole errors are random numbers drawn for each lock; change the lock number to draw another set. Friction, the spring forces and the skill needed to feel a step of a few hundredths of a degree are left out, as are the security pins, shaped like spools or with grooves, that catch at the shear line and give a false click.",
+          "穴の誤差は、錠ごとに引いた乱数です。錠の番号を変えると、別の組が引かれます。摩擦、ばねの力、数百分の 1 度の段を感じ取るのに必要な技術は扱っていません。糸巻きの形をしたり溝が付いたりしていて、シアラインで引っ掛かって偽の手応えを出すセキュリティピンも扱っていません。"
+        ],
+        "question": [
+          "Why does making the pin holes more accurately not make a lock unpickable?",
+          "ピン穴をより正確に開けても、錠がピッキングできなくならないのはなぜですか。"
+        ],
+        "answer": [
+          "Picking needs only that the holes differ at all, so that the pins bind in some order. Better accuracy shrinks the steps in rotation and makes them harder to feel, but as long as any two errors differ, one pin still binds first.",
+          "ピッキングに必要なのは、穴に少しでも違いがあって、ピンが何らかの順番で挟まれることだけです。精度を上げると、回転の段が小さくなり、感じ取りにくくなります。しかし、二つの誤差が少しでも違う限り、どれか 1 本のピンが先に挟まれます。"
+        ],
+        "params": [
+          [
+            "set",
+            "Pins set so far",
+            "これまでに合わせたピンの数",
+            0,
+            5,
+            1,
+            0
+          ],
+          [
+            "tol",
+            "Accuracy of the holes (± μm)",
+            "穴の精度（± μm）",
+            5,
+            60,
+            5,
+            30
+          ],
+          [
+            "seed",
+            "Lock number",
+            "錠の番号",
+            1,
+            20,
+            1,
+            1
+          ]
+        ],
+        "source": "M. Blaze · Rights amplification in master-keyed mechanical locks (IEEE Security and Privacy, 2003)",
+        "url": "https://doi.org/10.1109/MSECP.2003.1193208"
+      }
+    ]
   }
 ]
