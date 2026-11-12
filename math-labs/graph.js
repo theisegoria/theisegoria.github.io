@@ -140,7 +140,10 @@
     'symmetry-tilings': ['solid-state-physics', 'hyperbolic-geometry'],
     'nonlinear-waves': ['hamiltonian-mechanics', 'optics'],
     'wind-turbines': ['helicopter-rotors'],
-    'microprocessors': ['switching-converters']
+    'microprocessors': ['switching-converters'],
+    'approximation-theory': ['fourier-analysis', 'optimization', 'complex-analysis'],
+    'particle-physics': ['group-theory', 'lie-groups', 'nuclear-physics'],
+    'bicycles': ['control-theory', 'gears-mechanisms', 'dynamical-systems']
   };
   // Topics named in each topic's own prerequisite line (content.json "prerequisite").
   const PREREQ = {
@@ -213,7 +216,10 @@
     'nonlinear-waves': ['partial-differential-equations', 'fourier-analysis'], // Wave and diffusion equations, Fourier modes
     'helicopter-rotors': ['aerodynamics', 'classical-mechanics'],        // Airfoils and lift, momentum conservation, forced oscillators
     'wind-turbines': ['aerodynamics', 'fluid-dynamics'],                 // Bernoulli and momentum, airfoil lift and drag
-    'microprocessors': ['semiconductor-physics', 'optics']               // Band structure and doping, diffraction
+    'microprocessors': ['semiconductor-physics', 'optics'],              // Band structure and doping, diffraction
+    'approximation-theory': ['numerical-analysis', 'functional-analysis'], // Interpolation and norms
+    'particle-physics': ['quantum-mechanics', 'special-relativity', 'representation-theory'], // Four-vectors, SU(3) weights
+    'bicycles': ['classical-mechanics', 'rigid-body-dynamics']           // Torque balance, gyroscopes and rolling
   };
 
   let topics = [], bySlug = new Map(), edges = [], drawn = [];

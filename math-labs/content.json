@@ -20385,5 +20385,1029 @@
         "url": "https://www.lithoguru.com/textbook/"
       }
     ]
+  },
+  {
+    "slug": "approximation-theory",
+    "title": [
+      "Approximation theory: how well polynomials fit",
+      "近似理論：多項式はどこまで合うか"
+    ],
+    "description": [
+      "Every continuous function on an interval can be approximated as closely as we like by polynomials: that is the Weierstrass theorem of 1885. Approximation theory asks the sharper questions. Which polynomial of a given degree is the best, and how do we recognise it? How fast does the error fall as the degree grows, and what property of the function decides the speed? And why does the most obvious method, interpolating at equally spaced points, sometimes get worse the harder we try? The answers are unexpectedly geometric. The best approximation is certified by an error curve that swings evenly between its extremes; convergence is a law of large numbers in disguise; and the fate of interpolation is decided by where the function has singularities in the complex plane, measured against a landscape built from the interpolation points themselves. These ideas sit under every numerical library that evaluates a special function.",
+      "区間上のどんな連続関数も、多項式でいくらでも近く近似できます。これが 1885 年のワイエルシュトラスの定理です。近似理論は、さらに鋭い問いを立てます。与えられた次数の多項式のうちどれが最良で、それをどう見分けるのでしょうか。次数を上げると誤差はどれだけ速く減り、その速さを決めるのは関数のどんな性質でしょうか。そして、等間隔の点で補間するという最も素直な方法が、頑張るほど悪くなることがあるのはなぜでしょうか。答えは意外なほど幾何学的です。最良近似は、両極端の間を均等に振れる誤差曲線によって証明されます。収束は姿を変えた大数の法則です。補間の運命は、関数が複素平面のどこに特異点をもつかで決まり、それは補間点そのものが作る地形に照らして測られます。特殊関数を計算するあらゆる数値計算ライブラリの土台に、これらの考え方があります。"
+    ],
+    "group": "analysis",
+    "prerequisite": [
+      "Calculus, polynomials and uniform convergence; complex numbers for the last experiment",
+      "微分積分、多項式と一様収束。最後の実験では複素数"
+    ],
+    "source": "L. N. Trefethen · Approximation Theory and Approximation Practice, SIAM (2013; extended edition 2019)",
+    "url": "https://people.maths.ox.ac.uk/trefethen/ATAP/",
+    "labs": [
+      {
+        "id": "remez-equioscillation",
+        "title": [
+          "1. The best polynomial: equioscillation",
+          "1. 最良の多項式：等振動"
+        ],
+        "body": [
+          "Among all polynomials of degree at most \\(n\\), exactly one makes the largest error \\(\\lVert f-p\\rVert_\\infty\\) on the interval as small as possible. Chebyshev found how to recognise it: \\(p^{*}\\) is the best approximation if and only if the error \\(f-p^{*}\\) reaches its largest size, with alternating signs, at \\(n+2\\) points or more. The reason is a counting argument. If another polynomial did better, its difference from \\(p^{*}\\) would have to change sign between each pair of those points, giving \\(n+1\\) roots to a polynomial of degree \\(n\\). The Remez algorithm turns this into a method: level the error on \\(n+2\\) trial points, move the points to where the error is really largest, and repeat.",
+          "次数が \\(n\\) 以下のすべての多項式のうち、区間での最大誤差 \\(\\lVert f-p\\rVert_\\infty\\) を最小にするものはちょうど一つあります。チェビシェフはその見分け方を見つけました。\\(p^{*}\\) が最良近似であるのは、誤差 \\(f-p^{*}\\) が \\(n+2\\) 個以上の点で、符号を交互に変えながら最大の大きさに達するとき、かつそのときに限ります。理由は数え上げです。もっと良い多項式があれば、それと \\(p^{*}\\) の差はこれらの点の間ごとに符号を変えなければならず、\\(n\\) 次の多項式が \\(n+1\\) 個の根をもつことになってしまいます。レメズのアルゴリズムはこれを計算法にしたものです。\\(n+2\\) 個の試しの点で誤差をそろえ、誤差が本当に最大になる場所へ点を動かし、これを繰り返します。"
+        ],
+        "formula": "E_n(f)=\\min_{\\deg p\\le n}\\lVert f-p\\rVert_\\infty,\\qquad f(x_i)-p^{*}(x_i)=\\sigma(-1)^iE_n(f),\\quad x_0<x_1<\\dots<x_{n+1},\\ \\sigma=\\pm1,\\qquad E_n\\bigl(x^{n+1}\\bigr)=2^{-n},\\quad p^{*}=x^{n+1}-2^{-n}T_{n+1}(x)",
+        "example": [
+          "For \\(f(x)=|x|\\) and degree 2 the best polynomial is \\(p^{*}(x)=x^2+\\tfrac18\\): the error \\(|x|-x^2-\\tfrac18\\) equals \\(-\\tfrac18\\) at \\(0\\) and \\(\\pm1\\) and \\(+\\tfrac18\\) at \\(\\pm\\tfrac12\\), five alternations, so \\(E_2=\\tfrac18\\). The interpolant at the three Chebyshev points has error 0.217, less than twice as large. For \\(e^x\\) and degree 1 the best line has slope \\(\\sinh 1\\) and \\(E_1=0.2788\\).",
+          "\\(f(x)=|x|\\)、次数 2 のとき、最良の多項式は \\(p^{*}(x)=x^2+\\tfrac18\\) です。誤差 \\(|x|-x^2-\\tfrac18\\) は \\(0\\) と \\(\\pm1\\) で \\(-\\tfrac18\\)、\\(\\pm\\tfrac12\\) で \\(+\\tfrac18\\) となり、5 回交代するので \\(E_2=\\tfrac18\\) です。3 個のチェビシェフ点での補間の誤差は 0.217 で、2 倍にも届きません。\\(e^x\\)、次数 1 のとき、最良の直線の傾きは \\(\\sinh 1\\) で、\\(E_1=0.2788\\) です。"
+        ],
+        "caution": [
+          "Best in the uniform norm is not best in other norms: the least-squares polynomial is different. For an even or odd function the best polynomials of two consecutive degrees coincide. The algorithm works on a fine grid, so the last digits of \\(E_n\\) are limited by the grid and, for very small errors, by rounding.",
+          "一様ノルムで最良でも、他のノルムで最良とは限りません。最小二乗の多項式は別のものです。偶関数や奇関数では、連続する二つの次数の最良多項式が一致します。アルゴリズムは細かい格子の上で動くので、\\(E_n\\) の末尾の桁は格子によって、非常に小さな誤差では丸めによって制限されます。"
+        ],
+        "question": [
+          "How can you tell that a polynomial is the best uniform approximation?",
+          "ある多項式が最良一様近似であることは、どうすれば分かりますか？"
+        ],
+        "answer": [
+          "Look at its error curve. If the error reaches its largest absolute value at \\(n+2\\) points with alternating signs, no polynomial of degree at most \\(n\\) can do better, and that polynomial is the unique best approximation.",
+          "誤差曲線を見ます。誤差が \\(n+2\\) 個の点で符号を交互に変えながら最大の絶対値に達していれば、\\(n\\) 次以下のどの多項式もそれより良くはなれず、その多項式がただ一つの最良近似です。"
+        ],
+        "params": [
+          [
+            "fn",
+            "Function \\(f\\)",
+            "関数 \\(f\\)",
+            0,
+            3,
+            1,
+            0,
+            [
+              [
+                "\\(|x|\\)",
+                "\\(|x|\\)"
+              ],
+              [
+                "\\(e^x\\)",
+                "\\(e^x\\)"
+              ],
+              [
+                "\\(1/(1+25x^2)\\)",
+                "\\(1/(1+25x^2)\\)"
+              ],
+              [
+                "\\(\\sin 4x\\)",
+                "\\(\\sin 4x\\)"
+              ]
+            ]
+          ],
+          [
+            "n",
+            "Degree \\(n\\)",
+            "次数 \\(n\\)",
+            1,
+            10,
+            1,
+            4
+          ],
+          [
+            "k",
+            "Perturb with \\(T_k\\): \\(k\\)",
+            "\\(T_k\\) で摂動：\\(k\\)",
+            0,
+            10,
+            1,
+            0
+          ],
+          [
+            "d",
+            "Perturbation \\(d\\) (units of \\(E_n\\))",
+            "摂動 \\(d\\)（\\(E_n\\) 単位）",
+            -1,
+            1,
+            0.02,
+            0
+          ]
+        ],
+        "source": "L. N. Trefethen · Approximation Theory and Approximation Practice, SIAM (2013; extended edition 2019)",
+        "url": "https://people.maths.ox.ac.uk/trefethen/ATAP/"
+      },
+      {
+        "id": "bernstein-weierstrass",
+        "title": [
+          "2. Bernstein polynomials: Weierstrass by coin tossing",
+          "2. ベルンシュタイン多項式：コイン投げによるワイエルシュトラスの定理"
+        ],
+        "body": [
+          "Toss a coin that lands heads with probability \\(x\\), \\(n\\) times, and evaluate \\(f\\) at the fraction of heads. The expected value is a polynomial in \\(x\\) of degree \\(n\\), the Bernstein polynomial \\(B_nf\\). As \\(n\\) grows the fraction of heads concentrates around \\(x\\) with spread \\(\\sqrt{x(1-x)/n}\\), so \\(B_nf(x)\\) tends to \\(f(x)\\), uniformly, for every continuous \\(f\\). This is Bernstein’s 1912 proof of the Weierstrass theorem. It also shows the cost of so simple a construction: the error is governed by that spread, and falls only like \\(1/n\\) for smooth functions and \\(1/\\sqrt n\\) at a corner, however smooth the function is elsewhere.",
+          "表が出る確率が \\(x\\) のコインを \\(n\\) 回投げ、表の出た割合での \\(f\\) の値を考えます。その期待値は \\(x\\) の \\(n\\) 次多項式で、これがベルンシュタイン多項式 \\(B_nf\\) です。\\(n\\) が大きくなると表の割合は \\(x\\) のまわりに広がり \\(\\sqrt{x(1-x)/n}\\) で集中するので、どんな連続関数 \\(f\\) についても \\(B_nf(x)\\) は \\(f(x)\\) に一様に収束します。これが 1912 年のベルンシュタインによるワイエルシュトラスの定理の証明です。同時に、これほど単純な作り方の代償も見えます。誤差はこの広がりに支配され、滑らかな関数でも \\(1/n\\)、角では \\(1/\\sqrt n\\) でしか減りません。関数が他の場所でどれほど滑らかでも同じです。"
+        ],
+        "formula": "B_nf(x)=\\sum_{k=0}^{n}f\\!\\left(\\tfrac kn\\right)\\binom nk x^k(1-x)^{n-k}=\\mathbb E\\,f\\!\\left(\\tfrac{S_n}{n}\\right),\\qquad B_n(t^2)(x)=x^2+\\frac{x(1-x)}{n},\\qquad \\lim_{n\\to\\infty}n\\bigl(B_nf(x)-f(x)\\bigr)=\\tfrac12x(1-x)f^{\\prime\\prime}(x)",
+        "example": [
+          "For \\(f(x)=|x-\\tfrac12|\\) at \\(x=\\tfrac12\\), \\(B_{100}f(\\tfrac12)\\) is the mean distance of the fraction of heads from one half, \\(\\binom{100}{50}/2^{101}=0.0398\\), close to \\(1/\\sqrt{2\\pi n}=0.0399\\): the error at the corner. Halving it takes four times the degree. For \\(\\sin 2\\pi x\\) the largest error is 0.0385 at \\(n=100\\) and 0.0195 at \\(n=200\\), halving when the degree doubles.",
+          "\\(f(x)=|x-\\tfrac12|\\)、\\(x=\\tfrac12\\) のとき、\\(B_{100}f(\\tfrac12)\\) は表の割合が 2 分の 1 から離れる距離の平均 \\(\\binom{100}{50}/2^{101}=0.0398\\) で、\\(1/\\sqrt{2\\pi n}=0.0399\\) に近い値です。これが角での誤差です。これを半分にするには次数を 4 倍にしなければなりません。\\(\\sin 2\\pi x\\) の最大誤差は \\(n=100\\) で 0.0385、\\(n=200\\) で 0.0195 で、次数を 2 倍にすると半分になります。"
+        ],
+        "caution": [
+          "Bernstein polynomials are not interpolants and not best approximations; they trade accuracy for guaranteed, shape-preserving convergence, which is why they are the basis of Bézier curves. The dashed guide lines show slopes only.",
+          "ベルンシュタイン多項式は補間でも最良近似でもありません。精度と引き換えに、確実で形を保つ収束を得ています。ベジエ曲線の基礎になっているのはそのためです。破線の補助線は傾きだけを示しています。"
+        ],
+        "question": [
+          "Why do Bernstein polynomials converge so slowly?",
+          "ベルンシュタイン多項式の収束が遅いのはなぜですか？"
+        ],
+        "answer": [
+          "\\(B_nf(x)\\) averages \\(f\\) over a window of width about \\(\\sqrt{x(1-x)/n}\\) around \\(x\\). Averaging a curved function over such a window shifts it by an amount proportional to the variance, \\(x(1-x)/n\\), so the error cannot fall faster than \\(1/n\\) unless \\(f\\) is linear.",
+          "\\(B_nf(x)\\) は、\\(x\\) のまわりの幅およそ \\(\\sqrt{x(1-x)/n}\\) の窓で \\(f\\) を平均します。曲がった関数をそのような窓で平均すると、分散 \\(x(1-x)/n\\) に比例する量だけ値がずれるので、\\(f\\) が 1 次式でないかぎり誤差は \\(1/n\\) より速くは減りません。"
+        ],
+        "params": [
+          [
+            "fn",
+            "Function \\(f\\)",
+            "関数 \\(f\\)",
+            0,
+            2,
+            1,
+            0,
+            [
+              [
+                "\\(|x-\\frac12|\\)",
+                "\\(|x-\\frac12|\\)"
+              ],
+              [
+                "\\(\\sin 2\\pi x\\)",
+                "\\(\\sin 2\\pi x\\)"
+              ],
+              [
+                "narrow bump",
+                "細い山"
+              ]
+            ]
+          ],
+          [
+            "n",
+            "Degree \\(n\\)",
+            "次数 \\(n\\)",
+            1,
+            200,
+            1,
+            24
+          ],
+          [
+            "x",
+            "Point \\(x\\)",
+            "点 \\(x\\)",
+            0,
+            1,
+            0.01,
+            0.5
+          ]
+        ],
+        "source": "L. N. Trefethen · Approximation Theory and Approximation Practice, SIAM (2013; extended edition 2019)",
+        "url": "https://people.maths.ox.ac.uk/trefethen/ATAP/"
+      },
+      {
+        "id": "runge-potential",
+        "title": [
+          "3. Runge’s phenomenon and the potential landscape",
+          "3. ルンゲ現象とポテンシャルの地形"
+        ],
+        "body": [
+          "Interpolating a smooth function at more and more equally spaced points can diverge: the polynomials oscillate ever more wildly near the ends. The explanation lives in the complex plane. The size of the node polynomial \\(\\prod(z-x_j)\\) grows like \\(e^{nu(z)}\\), where \\(u\\) is the logarithmic potential of the density of nodes, as if each node carried a charge. The interpolation error at a point \\(x\\) behaves like \\(e^{n(u(x)-u(z_0))}\\), where \\(z_0\\) is the nearest singularity of \\(f\\). For equally spaced nodes the potential sags in the middle of the interval and is highest at its ends, so a pole near the middle lies lower than the ends and the error there grows. For Chebyshev nodes, which crowd towards the ends like \\(1/\\sqrt{1-x^2}\\), the potential is constant along the interval and every singularity lies above it.",
+          "滑らかな関数を、等間隔の点を増やしながら補間していくと、発散することがあります。多項式は端の近くでますます激しく振動します。その説明は複素平面にあります。節点多項式 \\(\\prod(z-x_j)\\) の大きさは \\(e^{nu(z)}\\) のように増えます。\\(u\\) は点の密度の対数ポテンシャルで、各点が電荷をもっているかのように考えます。点 \\(x\\) での補間誤差は \\(e^{n(u(x)-u(z_0))}\\) のようにふるまいます。\\(z_0\\) は \\(f\\) の最も近い特異点です。等間隔の点では、ポテンシャルは区間の中央でたるみ、端で最も高くなるので、中央の近くの極は端より低い位置にあり、端での誤差は増大します。端に向かって \\(1/\\sqrt{1-x^2}\\) のように密になるチェビシェフ点では、ポテンシャルは区間に沿って一定で、どの特異点もそれより上にあります。"
+        ],
+        "formula": "u(z)=\\int_{-1}^{1}\\log|z-t|\\,d\\mu(t),\\qquad u_{\\rm equi}(z)=\\tfrac12\\operatorname{Re}\\bigl[(z+1)\\log(z+1)-(z-1)\\log(z-1)\\bigr]-1,\\qquad u_{\\rm Cheb}(z)=\\log\\bigl|z+\\sqrt{z^2-1}\\bigr|-\\log2,\\qquad |f(x)-p_n(x)|\\approx e^{\\,n\\,(u(x)-u(z_0))}",
+        "example": [
+          "Runge’s function \\(1/(1+25x^2)\\) has poles at \\(\\pm0.2i\\). For equally spaced nodes \\(u(0.2i)=-0.706\\), below the level \\(u(\\pm1)=\\log2-1=-0.307\\), so the error near the ends grows by a factor \\(e^{0.399}=1.49\\) per degree: it is 1.9 at degree 10, 60 at degree 20 and \\(4.9\\times10^{8}\\) at degree 60. The danger region reaches \\(\\pm0.5255i\\) on the imaginary axis. For Chebyshev nodes the same poles lie on the ellipse with \\(\\rho=0.2+\\sqrt{1.04}=1.220\\) and the error falls by that factor per degree: 0.018 at degree 20, \\(6.3\\times10^{-6}\\) at degree 60.",
+          "ルンゲの関数 \\(1/(1+25x^2)\\) は \\(\\pm0.2i\\) に極をもちます。等間隔の点では \\(u(0.2i)=-0.706\\) で、水準 \\(u(\\pm1)=\\log2-1=-0.307\\) より下にあるので、端の近くの誤差は次数 1 ごとに \\(e^{0.399}=1.49\\) 倍になります。次数 10 で 1.9、次数 20 で 60、次数 60 では \\(4.9\\times10^{8}\\) です。危険な領域は虚軸上で \\(\\pm0.5255i\\) まで広がっています。チェビシェフ点では、同じ極は \\(\\rho=0.2+\\sqrt{1.04}=1.220\\) の楕円の上にあり、誤差は次数 1 ごとにその割合で減ります。次数 20 で 0.018、次数 60 で \\(6.3\\times10^{-6}\\) です。"
+        ],
+        "caution": [
+          "The potentials are those of the limiting node densities, so the predicted slopes hold for large \\(n\\); at small \\(n\\) the curves wander. Heights are clipped far from the interval. Even where equally spaced interpolation converges in exact arithmetic, rounding errors are amplified by about \\(2^n\\), which is why the error curve turns upward near degree 50.",
+          "ポテンシャルは点の密度の極限のものなので、予測される傾きが成り立つのは \\(n\\) が大きいときです。\\(n\\) が小さいうちは曲線がふらつきます。区間から遠いところの高さは切り詰めています。等間隔の補間が厳密な計算では収束する場合でも、丸め誤差がおよそ \\(2^n\\) 倍に増幅されるので、誤差曲線は次数 50 のあたりで上向きに転じます。"
+        ],
+        "question": [
+          "Why do Chebyshev points avoid Runge’s phenomenon?",
+          "チェビシェフ点がルンゲ現象を避けられるのはなぜですか？"
+        ],
+        "answer": [
+          "Their density \\(1/(\\pi\\sqrt{1-x^2})\\) is the equilibrium distribution of charge on the interval: it makes the logarithmic potential constant there. With no point of the interval higher than another, any singularity off the interval lies above all of it, and the interpolants converge geometrically everywhere on the interval.",
+          "その密度 \\(1/(\\pi\\sqrt{1-x^2})\\) は、区間上の電荷の平衡分布です。この分布では対数ポテンシャルが区間の上で一定になります。区間のどの点も他の点より高くないので、区間の外のどの特異点も区間全体より上にあり、補間多項式は区間のいたるところで幾何級数的に収束します。"
+        ],
+        "params": [
+          [
+            "nodes",
+            "Nodes",
+            "補間点",
+            0,
+            1,
+            1,
+            0,
+            [
+              [
+                "equally spaced",
+                "等間隔"
+              ],
+              [
+                "Chebyshev",
+                "チェビシェフ"
+              ]
+            ]
+          ],
+          [
+            "n",
+            "Degree \\(n\\)",
+            "次数 \\(n\\)",
+            2,
+            60,
+            2,
+            16
+          ],
+          [
+            "a",
+            "Pole: real part \\(a\\)",
+            "極の実部 \\(a\\)",
+            -1.5,
+            1.5,
+            0.02,
+            0
+          ],
+          [
+            "b",
+            "Pole: imaginary part \\(b\\)",
+            "極の虚部 \\(b\\)",
+            0.06,
+            1.1,
+            0.02,
+            0.2
+          ]
+        ],
+        "source": "L. N. Trefethen · Approximation Theory and Approximation Practice, SIAM (2013; extended edition 2019)",
+        "url": "https://people.maths.ox.ac.uk/trefethen/ATAP/"
+      }
+    ]
+  },
+  {
+    "slug": "particle-physics",
+    "title": [
+      "Particle physics: the Standard Model at a glance",
+      "素粒子物理：標準模型の概観"
+    ],
+    "description": [
+      "Everything that has been seen in a particle collision is described by one theory: six quarks and six leptons, the force carriers that act between them, and the Higgs boson. Most of these particles live for far less than a billionth of a second, so nobody has ever watched one directly. What is measured are the tracks and energy deposits of their decay products, and what is reconstructed from them is a quantity that does not depend on how the parent moved: its mass. The same habit of looking for what stays fixed organises the whole subject. Hadrons fall into patterns fixed by a symmetry among quarks, and the strengths of the forces change with energy in a way fixed by the particles that exist. These experiments rebuild a particle from its tracks in a detector, assemble hadrons from quarks, and follow the three gauge couplings from laboratory energies towards the scale where they nearly meet.",
+      "粒子の衝突でこれまでに観測されたものはすべて、一つの理論で記述されます。6 種類のクォークと 6 種類のレプトン、その間にはたらく力を伝える粒子、そしてヒッグス粒子です。これらの粒子のほとんどは 10 億分の 1 秒よりはるかに短い時間しか生きないので、直接見た人はいません。測定されるのは崩壊で生じた粒子の飛跡とエネルギーの跡で、そこから再構成されるのは、親粒子がどう動いていたかによらない量、すなわち質量です。変わらないものを探すというこの習慣が、分野全体を整理しています。ハドロンはクォークの間の対称性で決まる模様に並び、力の強さは、存在する粒子によって決まる仕方でエネルギーとともに変わります。ここでの実験では、検出器の中の飛跡から粒子を再構成し、クォークからハドロンを組み立て、三つのゲージ結合定数を実験室のエネルギーから、ほぼ一点に集まるスケールへ向かって追いかけます。"
+    ],
+    "group": "physics",
+    "prerequisite": [
+      "Special relativity (energy and momentum), basic quantum mechanics, the Lorentz force",
+      "特殊相対性理論（エネルギーと運動量）、量子力学の基礎、ローレンツ力"
+    ],
+    "source": "S. Navas et al. (Particle Data Group) · Review of Particle Physics, Physical Review D 110, 030001 (2024)",
+    "url": "https://pdg.lbl.gov/",
+    "labs": [
+      {
+        "id": "invariant-mass",
+        "title": [
+          "1. Invariant mass: rebuilding a particle from its tracks",
+          "1. 不変質量：飛跡から粒子を再構成する"
+        ],
+        "body": [
+          "A short-lived particle decays into two charged particles at the centre of a detector. A solenoid fills the tracker with a magnetic field along the beam, so each track is an arc of a circle whose radius gives its momentum across the field, \\(p_T=0.3\\,BR\\) in GeV, tesla and metres. From the two momenta and the known masses of the daughters we form \\(m^2=(E_1+E_2)^2-|\\mathbf p_1+\\mathbf p_2|^2\\). Energy and momentum are conserved in the decay and this combination is the same in every frame, so it equals the squared mass of the parent, however fast it moved and whichever way it broke up. Over many events the values pile into a peak at the parent’s mass, whose width is the natural width \\(\\Gamma=\\hbar/\\tau\\) smeared by the precision of the tracker.",
+          "寿命の短い粒子が、検出器の中心で二つの荷電粒子に崩壊します。ソレノイドが飛跡検出器をビームに沿った磁場で満たしているので、それぞれの飛跡は円弧になり、その半径から磁場に垂直な運動量が \\(p_T=0.3\\,BR\\)（GeV、テスラ、メートル）と分かります。二つの運動量と、娘粒子の既知の質量から \\(m^2=(E_1+E_2)^2-|\\mathbf p_1+\\mathbf p_2|^2\\) を作ります。崩壊ではエネルギーと運動量が保存し、この組み合わせはどの慣性系でも同じなので、親粒子がどれほど速く動いていても、どう壊れても、親粒子の質量の二乗に等しくなります。多くの事象を集めると、値は親粒子の質量のところに山を作ります。その幅は、自然幅 \\(\\Gamma=\\hbar/\\tau\\) が飛跡検出器の精度でぼやけたものです。"
+        ],
+        "formula": "m^2=(E_1+E_2)^2-|\\mathbf p_1+\\mathbf p_2|^2,\\qquad p^{*}=\\sqrt{\\tfrac14M^2-m_d^2},\\qquad E_{1,2}=\\gamma\\bigl(\\tfrac12M\\pm\\beta p^{*}\\cos\\theta^{*}\\bigr),\\qquad R=\\frac{p_T}{0.2998\\,B},\\qquad s=\\frac{0.3\\,BL^2}{8p_T},\\qquad L=\\beta\\gamma c\\tau",
+        "example": [
+          "A \\(\\rho^0\\) of momentum 4 GeV decaying at \\(\\cos\\theta^{*}=0.3\\) gives pions of 2.597 and 1.478 GeV; their sum is \\(\\sqrt{4^2+0.775^2}=4.074\\) GeV and the invariant mass is 0.775 GeV whatever the angle. A \\(Z\\) at rest gives two muons of 45.6 GeV: in a 2 T field their radius is 76 m, so across a 1.1 m tracker the track departs from a straight line by only \\(0.3\\times2\\times1.1^2/(8\\times45.6)=2.0\\) mm. A \\(K^0_S\\) of 3 GeV flies \\(\\beta\\gamma c\\tau=(3/0.4976)\\times2.68=16.2\\) cm on average before its pions appear.",
+          "運動量 4 GeV の \\(\\rho^0\\) が \\(\\cos\\theta^{*}=0.3\\) で崩壊すると、パイ中間子のエネルギーは 2.597 GeV と 1.478 GeV です。その和は \\(\\sqrt{4^2+0.775^2}=4.074\\) GeV で、不変質量は角度によらず 0.775 GeV です。静止した \\(Z\\) は 45.6 GeV のミューオンを二つ出します。2 T の磁場ではその半径は 76 m なので、1.1 m の飛跡検出器を横切る間に飛跡が直線からずれるのは \\(0.3\\times2\\times1.1^2/(8\\times45.6)=2.0\\) mm にすぎません。3 GeV の \\(K^0_S\\) は、パイ中間子が現れるまでに平均 \\(\\beta\\gamma c\\tau=(3/0.4976)\\times2.68=16.2\\) cm 飛びます。"
+        ],
+        "caution": [
+          "The detector is a generic design, not a particular experiment, drawn with half of it removed; the decay is shown in the plane across the beam. The field is taken as uniform inside the solenoid and zero outside, so tracks are straight beyond it. Pions stop in the hadron calorimeter and muons pass through to the muon stations. The histogram uses a simple resolution model (a curvature term proportional to \\(p_T/B\\) and a constant scattering term), and backgrounds are left out.",
+          "検出器は特定の実験ではなく一般的な設計で、半分を取り除いて描いています。崩壊はビームに垂直な面内で示しています。磁場はソレノイドの内側で一様、外側ではゼロとしているので、飛跡はその外で直線です。パイ中間子はハドロンカロリメータで止まり、ミューオンは通り抜けてミューオン検出器に達します。ヒストグラムは単純な分解能のモデル（\\(p_T/B\\) に比例する曲率の項と一定の散乱の項）を使い、背景事象は省いています。"
+        ],
+        "question": [
+          "Why is the invariant mass, rather than the energy, used to identify a decaying particle?",
+          "崩壊した粒子を特定するのに、エネルギーではなく不変質量を使うのはなぜですか？"
+        ],
+        "answer": [
+          "The energies of the decay products depend on the parent’s speed and on the direction of the decay, so they differ from event to event. The invariant mass of the pair is the same in every frame and equals the parent’s mass, so all decays of the same particle land on the same value.",
+          "崩壊で生じた粒子のエネルギーは、親粒子の速さと崩壊の向きによって変わるので、事象ごとに異なります。対の不変質量はどの慣性系でも同じで親粒子の質量に等しいので、同じ粒子の崩壊はすべて同じ値に集まります。"
+        ],
+        "params": [
+          [
+            "part",
+            "Decay",
+            "崩壊",
+            0,
+            3,
+            1,
+            0,
+            [
+              [
+                "\\(\\rho^0\\to\\pi^+\\pi^-\\)",
+                "\\(\\rho^0\\to\\pi^+\\pi^-\\)"
+              ],
+              [
+                "\\(K^0_S\\to\\pi^+\\pi^-\\)",
+                "\\(K^0_S\\to\\pi^+\\pi^-\\)"
+              ],
+              [
+                "\\(J/\\psi\\to\\mu^+\\mu^-\\)",
+                "\\(J/\\psi\\to\\mu^+\\mu^-\\)"
+              ],
+              [
+                "\\(Z\\to\\mu^+\\mu^-\\)",
+                "\\(Z\\to\\mu^+\\mu^-\\)"
+              ]
+            ]
+          ],
+          [
+            "p",
+            "Parent momentum \\(p\\) (GeV)",
+            "親粒子の運動量 \\(p\\)（GeV）",
+            0,
+            40,
+            0.5,
+            3
+          ],
+          [
+            "B",
+            "Magnetic field \\(B\\) (T)",
+            "磁場 \\(B\\)（T）",
+            0.5,
+            4,
+            0.1,
+            2
+          ],
+          [
+            "cth",
+            "Decay angle \\(\\cos\\theta^{*}\\)",
+            "崩壊角 \\(\\cos\\theta^{*}\\)",
+            -1,
+            1,
+            0.02,
+            0.3
+          ]
+        ],
+        "source": "S. Navas et al. (Particle Data Group) · Review of Particle Physics, Physical Review D 110, 030001 (2024)",
+        "url": "https://pdg.lbl.gov/"
+      },
+      {
+        "id": "quark-model",
+        "title": [
+          "2. The quark model: weights that add",
+          "2. クォーク模型：足し合わされるウェイト"
+        ],
+        "body": [
+          "By 1960 dozens of strongly interacting particles were known. Plotted by two conserved labels, isospin \\(I_3\\) and hypercharge \\(Y\\), they fell into hexagons and triangles of eight and ten: the weight diagrams of the symmetry group SU(3). Gell-Mann and Zweig explained the patterns in 1964 with three constituents, the up, down and strange quarks, which form the smallest triangle. A baryon is three quarks and a meson is a quark with an antiquark, and the position of a hadron is simply the sum of its quarks’ positions. The electric charge follows from the position, \\(Q=I_3+\\tfrac12Y\\). Within a pattern the masses are split almost entirely by the number of strange quarks, which is what allowed the tenth member of the decuplet to be predicted before it was seen.",
+          "1960 年までに、強い相互作用をする粒子が数十種類知られていました。保存する二つのラベル、アイソスピン \\(I_3\\) とハイパーチャージ \\(Y\\) で並べると、それらは 8 個の六角形と 10 個の三角形に収まりました。対称性の群 SU(3) のウェイト図です。1964 年、ゲルマンとツワイクは、最小の三角形をなす三つの構成要素、アップ、ダウン、ストレンジのクォークでこの模様を説明しました。バリオンはクォーク三つ、中間子はクォークと反クォークで、ハドロンの位置はクォークの位置の和にすぎません。電荷は位置から \\(Q=I_3+\\tfrac12Y\\) と決まります。一つの模様の中では、質量の違いはほとんどストレンジクォークの個数で決まります。十重項の 10 番目の粒子が、見つかる前に予言できたのはそのためです。"
+        ],
+        "formula": "Q=I_3+\\tfrac12Y,\\qquad Y=B+S,\\qquad 3\\otimes\\bar3=8\\oplus1,\\qquad 3\\otimes3\\otimes3=10\\oplus8\\oplus8\\oplus1,\\qquad 2(m_N+m_\\Xi)=3m_\\Lambda+m_\\Sigma,\\qquad m_{\\Omega}-m_{\\Xi^{*}}=m_{\\Xi^{*}}-m_{\\Sigma^{*}}=m_{\\Sigma^{*}}-m_{\\Delta}",
+        "example": [
+          "The proton is \\(uud\\): \\(I_3=\\tfrac12+\\tfrac12-\\tfrac12=\\tfrac12\\), \\(Y=3\\times\\tfrac13=1\\), so \\(Q=\\tfrac12+\\tfrac12=1\\). In the decuplet the steps are \\(1384.6-1232=152.6\\) and \\(1533.4-1384.6=148.8\\) MeV, so equal spacing puts the \\(sss\\) state at \\(2\\times1533.4-1384.6=1682\\) MeV; the \\(\\Omega^-\\) was found at 1672 MeV. In the octet \\(2(m_N+m_\\Xi)=4514\\) MeV and \\(3m_\\Lambda+m_\\Sigma=4540\\) MeV, agreeing to 0.6%.",
+          "陽子は \\(uud\\) で、\\(I_3=\\tfrac12+\\tfrac12-\\tfrac12=\\tfrac12\\)、\\(Y=3\\times\\tfrac13=1\\) なので \\(Q=\\tfrac12+\\tfrac12=1\\) です。十重項では段の差が \\(1384.6-1232=152.6\\) MeV と \\(1533.4-1384.6=148.8\\) MeV なので、等間隔とすると \\(sss\\) の状態は \\(2\\times1533.4-1384.6=1682\\) MeV になります。\\(\\Omega^-\\) は 1672 MeV で見つかりました。八重項では \\(2(m_N+m_\\Xi)=4514\\) MeV、\\(3m_\\Lambda+m_\\Sigma=4540\\) MeV で、0.6% の精度で一致します。"
+        ],
+        "caution": [
+          "Only the three light flavours are shown; charm, bottom and top extend the scheme but the symmetry among them is badly broken by their masses. The neutral mesons at the centre are mixtures of \\(u\\bar u\\), \\(d\\bar d\\) and \\(s\\bar s\\), not single quark pairs. Isospin multiplets are averaged in the mass plots, and the \\(\\Delta\\) mass is the nominal 1232 MeV.",
+          "ここで示しているのは軽い三つのフレーバーだけです。チャーム、ボトム、トップはこの枠組みを広げますが、質量のためにそれらの間の対称性は大きく破れています。中心にある中性の中間子は、単一のクォーク対ではなく \\(u\\bar u\\)、\\(d\\bar d\\)、\\(s\\bar s\\) の混合です。質量の図ではアイソスピン多重項を平均し、\\(\\Delta\\) の質量は公称値の 1232 MeV としています。"
+        ],
+        "question": [
+          "Why is there no baryon made of three up quarks in the octet that contains the proton?",
+          "陽子を含む八重項に、アップクォーク三つからなるバリオンがないのはなぜですか？"
+        ],
+        "answer": [
+          "Three identical quarks can only be in a flavour state that is symmetric under exchange. The symmetric states of three quarks form the decuplet, with spin three-halves; the octet’s states have mixed symmetry and need at least two different flavours. So \\(uuu\\) appears only as the \\(\\Delta^{++}\\).",
+          "同じクォーク三つは、入れ替えについて対称なフレーバー状態にしかなれません。クォーク三つの対称な状態はスピン 3/2 の十重項をなし、八重項の状態は混合対称で、少なくとも二種類のフレーバーを必要とします。そのため \\(uuu\\) は \\(\\Delta^{++}\\) としてだけ現れます。"
+        ],
+        "params": [
+          [
+            "mult",
+            "Multiplet",
+            "多重項",
+            0,
+            2,
+            1,
+            1,
+            [
+              [
+                "mesons",
+                "中間子"
+              ],
+              [
+                "baryon octet",
+                "バリオン八重項"
+              ],
+              [
+                "baryon decuplet",
+                "バリオン十重項"
+              ]
+            ]
+          ],
+          [
+            "q1",
+            "Quark \\(q_1\\)",
+            "クォーク \\(q_1\\)",
+            0,
+            2,
+            1,
+            0,
+            [
+              [
+                "\\(u\\)",
+                "\\(u\\)"
+              ],
+              [
+                "\\(d\\)",
+                "\\(d\\)"
+              ],
+              [
+                "\\(s\\)",
+                "\\(s\\)"
+              ]
+            ]
+          ],
+          [
+            "q2",
+            "Quark \\(q_2\\)",
+            "クォーク \\(q_2\\)",
+            0,
+            2,
+            1,
+            0,
+            [
+              [
+                "\\(u\\)",
+                "\\(u\\)"
+              ],
+              [
+                "\\(d\\)",
+                "\\(d\\)"
+              ],
+              [
+                "\\(s\\)",
+                "\\(s\\)"
+              ]
+            ]
+          ],
+          [
+            "q3",
+            "Quark \\(q_3\\)",
+            "クォーク \\(q_3\\)",
+            0,
+            2,
+            1,
+            1,
+            [
+              [
+                "\\(u\\)",
+                "\\(u\\)"
+              ],
+              [
+                "\\(d\\)",
+                "\\(d\\)"
+              ],
+              [
+                "\\(s\\)",
+                "\\(s\\)"
+              ]
+            ]
+          ]
+        ],
+        "source": "S. Navas et al. (Particle Data Group) · Review of Particle Physics, Physical Review D 110, 030001 (2024)",
+        "url": "https://pdg.lbl.gov/"
+      },
+      {
+        "id": "running-couplings",
+        "title": [
+          "3. Running couplings: forces that change with energy",
+          "3. 走る結合定数：エネルギーで変わる力"
+        ],
+        "body": [
+          "The strength of a force is not a fixed number. A charge is surrounded by virtual particles that screen or enhance it, so the coupling measured depends on the energy of the probe. At one loop the inverse coupling changes linearly with the logarithm of the energy, with a slope set by counting the particles that carry the charge. For electromagnetism the slope makes the force slowly stronger at high energy. For the strong force the gluons, which carry colour themselves, outweigh the quarks and reverse the sign: the coupling falls at high energy, asymptotic freedom, and grows at low energy until quarks are confined. Extended over fourteen powers of ten, the three gauge couplings of the Standard Model come close to a single value.",
+          "力の強さは決まった数ではありません。電荷のまわりには仮想粒子があって、電荷を遮蔽したり強めたりするので、測定される結合定数は探る側のエネルギーによって変わります。1 ループでは、結合定数の逆数はエネルギーの対数に対して直線的に変わり、その傾きは、その電荷をもつ粒子を数えることで決まります。電磁気力では、この傾きによって力は高エネルギーでゆっくり強くなります。強い力では、自分自身が色をもつグルーオンの寄与がクォークを上回り、符号が逆になります。結合は高エネルギーで弱くなり（漸近的自由性）、低エネルギーではクォークが閉じ込められるまで強くなります。10 の 14 乗にわたって延長すると、標準模型の三つのゲージ結合定数は一つの値に近づきます。"
+        ],
+        "formula": "\\frac{1}{\\alpha_i(\\mu)}=\\frac{1}{\\alpha_i(M_Z)}-\\frac{b_i}{2\\pi}\\ln\\frac{\\mu}{M_Z},\\qquad b_3=-\\bigl(11-\\tfrac23n_f\\bigr),\\qquad (b_1,b_2,b_3)_{\\rm SM}=\\bigl(\\tfrac{41}{10},-\\tfrac{19}{6},-7\\bigr),\\qquad \\alpha_s(Q)=\\frac{2\\pi}{b_0\\ln(Q/\\Lambda)},\\quad b_0=11-\\tfrac23n_f",
+        "example": [
+          "With \\(\\alpha_s(M_Z)=0.118\\) and five flavours, \\(b_0=23/3\\) and \\(1/\\alpha_s(10\\ \\mathrm{GeV})=8.475+\\tfrac{23}{6\\pi}\\ln(10/91.19)=5.78\\), so \\(\\alpha_s=0.173\\); at 1 TeV it has fallen to 0.088, and the one-loop formula diverges at \\(\\Lambda=88\\) MeV. At \\(M_Z\\) the inverse couplings are 59.0, 29.6 and 8.5. In the Standard Model the pairs meet at \\(10^{13.0}\\), \\(10^{14.4}\\) and \\(10^{17.0}\\) GeV; with supersymmetric partners at 1 TeV all three meet between \\(10^{16.0}\\) and \\(10^{16.4}\\) GeV, at \\(1/\\alpha\\approx26\\).",
+          "\\(\\alpha_s(M_Z)=0.118\\)、フレーバー数 5 のとき、\\(b_0=23/3\\) で、\\(1/\\alpha_s(10\\ \\mathrm{GeV})=8.475+\\tfrac{23}{6\\pi}\\ln(10/91.19)=5.78\\) なので \\(\\alpha_s=0.173\\) です。1 TeV では 0.088 まで下がり、1 ループの式は \\(\\Lambda=88\\) MeV で発散します。\\(M_Z\\) での結合定数の逆数は 59.0、29.6、8.5 です。標準模型では、二本ずつの交点は \\(10^{13.0}\\)、\\(10^{14.4}\\)、\\(10^{17.0}\\) GeV にあります。超対称パートナーを 1 TeV に置くと、三本とも \\(10^{16.0}\\) から \\(10^{16.4}\\) GeV の間、\\(1/\\alpha\\approx26\\) で交わります。"
+        ],
+        "caution": [
+          "These are one-loop formulas with a fixed number of flavours and no threshold effects, so they are only a guide: precise work uses four or five loops and changes \\(n_f\\) at each quark mass, which raises the low-energy values. Supersymmetric partners have not been observed; the second curve shows what they would do, not what is known to happen. Whether the couplings unify at all is an open question.",
+          "ここで使っているのは、フレーバー数を固定し、しきい値の効果を入れない 1 ループの式なので、目安にすぎません。精密な計算では 4 ループや 5 ループを使い、クォークの質量ごとに \\(n_f\\) を変えるので、低エネルギーでの値は大きくなります。超対称パートナーは観測されていません。二つ目の曲線は、もし存在すればどうなるかを示すもので、実際に起こると分かっていることではありません。結合定数が本当に統一されるのかどうかは、未解決の問題です。"
+        ],
+        "question": [
+          "Why does the strong force get weaker at high energies when electromagnetism gets stronger?",
+          "電磁気力は高エネルギーで強くなるのに、強い力が弱くなるのはなぜですか？"
+        ],
+        "answer": [
+          "Virtual pairs of charged particles screen an electric charge, so probing closer sees more of it. Quark pairs screen colour in the same way, but gluons carry colour too and their effect is the opposite and larger: with fewer than seventeen flavours the net result is anti-screening, and the coupling shrinks at short distances.",
+          "荷電粒子の仮想的な対は電荷を遮蔽するので、近くから探るほど電荷は大きく見えます。クォークの対も同じように色を遮蔽しますが、グルーオンも色をもち、その効果は逆向きでより大きいのです。フレーバーが 17 より少なければ、全体として反遮蔽になり、短い距離で結合は小さくなります。"
+        ],
+        "params": [
+          [
+            "lq",
+            "\\(\\log_{10}Q\\) (GeV)",
+            "\\(\\log_{10}Q\\)（GeV）",
+            0,
+            3.3,
+            0.02,
+            1
+          ],
+          [
+            "nf",
+            "Quark flavours \\(n_f\\)",
+            "クォークのフレーバー数 \\(n_f\\)",
+            0,
+            18,
+            1,
+            5
+          ],
+          [
+            "model",
+            "Particle content",
+            "粒子の内容",
+            0,
+            1,
+            1,
+            0,
+            [
+              [
+                "Standard Model",
+                "標準模型"
+              ],
+              [
+                "with supersymmetric partners",
+                "超対称パートナーあり"
+              ]
+            ]
+          ],
+          [
+            "ms",
+            "\\(\\log_{10}M_{\\rm SUSY}\\) (GeV)",
+            "\\(\\log_{10}M_{\\rm SUSY}\\)（GeV）",
+            2.5,
+            6,
+            0.1,
+            3
+          ]
+        ],
+        "source": "S. Navas et al. (Particle Data Group) · Review of Particle Physics, Physical Review D 110, 030001 (2024)",
+        "url": "https://pdg.lbl.gov/"
+      }
+    ]
+  },
+  {
+    "slug": "bicycles",
+    "title": [
+      "Bicycles: balance, gears, shifting and brakes",
+      "自転車：バランス、変速、ブレーキ"
+    ],
+    "description": [
+      "A bicycle is the most efficient vehicle ever built, and almost every part of it is a piece of engineering that can be understood with first-year mechanics. It stays upright by steering itself into a fall, which is why a riderless bicycle given a push will run on by itself, and why that works only between two particular speeds. Its gears do not make power; they match the narrow range of speeds at which legs work well to the wide range of speeds at which roads are ridden. The derailleur that changes gear is positioned to a fraction of a millimetre, by a cable and a spring or by a small motor. And its brakes are limited less by their own strength than by the height of the rider above the road. These five experiments take the bicycle apart in that order: balance, gearing and power, shifting by cable and by wire, braking, and the rim and hydraulic disc brakes that do it.",
+      "自転車はこれまでに作られた中で最も効率のよい乗り物で、そのほとんどすべての部分が、大学初年級の力学で理解できる工学です。自転車は、倒れる側へ自分で舵を切ることで立っています。押し出した無人の自転車がひとりでに走り続けるのはそのためで、それが二つの特定の速さの間でだけ成り立つのもそのためです。変速機はパワーを生みません。脚がうまくはたらく狭い回転数の範囲を、道を走る広い速さの範囲に合わせます。変速するディレイラーは、ケーブルとばね、あるいは小さなモーターによって、1 ミリメートルの何分の 1 かの精度で位置決めされます。そしてブレーキは、それ自身の強さよりも、路面からの乗り手の高さによって制限されます。ここでの五つの実験では、自転車をこの順に分解します。バランス、変速比とパワー、ケーブルと電動による変速、制動、そしてそれを担うリムブレーキと油圧ディスクブレーキです。"
+    ],
+    "group": "engineering",
+    "prerequisite": [
+      "Newton’s laws, torque and moments, energy and power; eigenvalues for the first experiment",
+      "ニュートンの法則、トルクとモーメント、エネルギーとパワー。最初の実験では固有値"
+    ],
+    "source": "J. P. Meijaard, J. M. Papadopoulos, A. Ruina and A. L. Schwab · Linearized dynamics equations for the balance and steer of a bicycle: a benchmark and review, Proceedings of the Royal Society A 463 (2007)",
+    "url": "https://royalsocietypublishing.org/doi/10.1098/rspa.2007.1857",
+    "labs": [
+      {
+        "id": "bicycle-self-stability",
+        "title": [
+          "1. Balance: why a moving bicycle stays up",
+          "1. バランス：走る自転車が倒れない理由"
+        ],
+        "body": [
+          "Push a riderless bicycle fast enough and it will not fall: knocked sideways, it wobbles and recovers. The mechanism is that a leaning bicycle steers itself towards the lean, which drives the wheels back under the centre of mass. Three things turn the front assembly into a fall. The front wheel is a gyroscope, and rolling it over makes it precess about the steering axis. The tyre touches the road behind the point where the tilted steering axis meets the ground, a distance called the trail, so the road force twists it. And the mass of the fork and handlebars sits ahead of the steering axis and falls into the turn. Linearised, the motion obeys two coupled equations for the lean \\(\\varphi\\) and the steer \\(\\delta\\), and has four modes: a fast castering mode that always dies away, a weave that oscillates, and a slow capsize. Below the weave speed the oscillation grows; above the capsize speed the bicycle slowly spirals over; between them it balances itself.",
+          "無人の自転車を十分な速さで押し出すと、倒れません。横からたたかれても、ふらついてから立ち直ります。その仕組みは、傾いた自転車が傾いた側へ自分で舵を切り、車輪を重心の下へ戻すことです。前部を倒れる側へ回すものは三つあります。前輪はジャイロスコープで、横に倒すとステアリング軸のまわりに歳差運動をします。タイヤが路面に触れる点は、傾いたステアリング軸が地面と交わる点より後ろにあり（この距離をトレールといいます）、路面からの力が前輪をひねります。そしてフォークとハンドルの質量はステアリング軸より前にあり、曲がる側へ倒れ込みます。線形化すると、運動は傾き \\(\\varphi\\) と舵角 \\(\\delta\\) についての二つの連立方程式に従い、四つのモードをもちます。いつも減衰する速いキャスターモード、振動するウィーブ、ゆっくりしたキャプサイズです。ウィーブ速度より下では振動が成長し、キャプサイズ速度より上では自転車はゆっくりと渦を巻くように倒れ、その間では自分でバランスを取ります。"
+        ],
+        "formula": "\\mathbf M\\ddot{\\mathbf q}+v\\,\\mathbf C_1\\dot{\\mathbf q}+\\bigl(g\\,\\mathbf K_0+v^2\\mathbf K_2\\bigr)\\mathbf q=\\mathbf 0,\\qquad \\mathbf q=\\begin{pmatrix}\\varphi\\\\ \\delta\\end{pmatrix},\\qquad \\det\\bigl(\\mathbf Ms^2+v\\,\\mathbf C_1s+g\\,\\mathbf K_0+v^2\\mathbf K_2\\bigr)=0,\\qquad \\dot\\psi=\\frac{(v\\,\\delta+c\\,\\dot\\delta)\\cos\\lambda}{w}",
+        "example": [
+          "For the benchmark bicycle (wheelbase 1.02 m, trail 0.08 m, steering axis tilted \\(18^\\circ\\), 94 kg with a rigid rider) the weave speed is 4.29 m/s and the capsize speed 6.02 m/s: it is self-stable between 15.5 and 21.7 km/h. At 5 m/s the four eigenvalues are \\(-14.08\\), \\(-0.775\\pm4.465i\\) and \\(-0.323\\) per second, so a knock dies away as a 0.71 Hz weave. With the wheels’ spin removed there is no stable speed at all; with zero trail the stable range shrinks to 2.93 to 3.13 m/s.",
+          "ベンチマークの自転車（ホイールベース 1.02 m、トレール 0.08 m、ステアリング軸の傾き \\(18^\\circ\\)、剛体の乗り手を含めて 94 kg）では、ウィーブ速度は 4.29 m/s、キャプサイズ速度は 6.02 m/s で、15.5 km/h から 21.7 km/h の間で自己安定です。5 m/s では四つの固有値は毎秒 \\(-14.08\\)、\\(-0.775\\pm4.465i\\)、\\(-0.323\\) なので、たたかれた後は 0.71 Hz のウィーブとして減衰します。車輪のスピンをなくすと安定な速さはまったくなくなり、トレールをゼロにすると安定な範囲は 2.93 m/s から 3.13 m/s に縮みます。"
+        ],
+        "caution": [
+          "The equations are the benchmark linearised model: small angles, knife-edge wheels that roll without slipping, a rider rigidly attached to the frame and hands off the bars. The numbers are those of the benchmark bicycle, with only trail, tilt and wheel spin inertia changed; the bicycle drawn is an ordinary road bicycle with that trail and tilt. A real rider balances at any speed by steering, and neither gyroscopic effect nor trail is strictly necessary: bicycles with neither have been built that are still self-stable.",
+          "方程式はベンチマークの線形化モデルです。角度は小さく、車輪は滑らずに転がる薄い円板で、乗り手はフレームに固定され、ハンドルから手を離しています。数値はベンチマークの自転車のもので、トレール、傾き、車輪のスピンの慣性だけを変えています。描いているのは、そのトレールと傾きをもつ普通のロードバイクです。実際の乗り手は舵を切ることでどんな速さでもバランスを取れます。また、ジャイロ効果もトレールも厳密には必要ではなく、どちらもないのに自己安定な自転車が作られています。"
+        ],
+        "question": [
+          "Why does a moving bicycle stay upright while a stationary one falls?",
+          "止まっている自転車は倒れるのに、走っている自転車が立っていられるのはなぜですか？"
+        ],
+        "answer": [
+          "When a moving bicycle starts to lean, its front wheel steers towards the lean, and because the bicycle is moving this carries the wheels back underneath the centre of mass. The correction needs forward speed to work: at rest, steering moves nothing sideways, and too slowly the correction overshoots and the wobble grows.",
+          "走っている自転車が傾き始めると、前輪が傾いた側へ切れ、自転車が進んでいるために車輪が重心の下へ運ばれます。この修正がはたらくには前進する速さが必要です。止まっていると、舵を切っても何も横へ動かず、遅すぎると修正が行き過ぎてふらつきが成長します。"
+        ],
+        "params": [
+          [
+            "v",
+            "Speed \\(v\\) (m/s)",
+            "速さ \\(v\\)（m/s）",
+            0,
+            10,
+            0.1,
+            5
+          ],
+          [
+            "c",
+            "Trail \\(c\\) (m)",
+            "トレール \\(c\\)（m）",
+            -0.02,
+            0.16,
+            0.005,
+            0.08
+          ],
+          [
+            "lam",
+            "Steering axis tilt \\(\\lambda\\) (°)",
+            "ステアリング軸の傾き \\(\\lambda\\)（°）",
+            0,
+            35,
+            1,
+            18
+          ],
+          [
+            "gyro",
+            "Wheel spin inertia (1 = normal, 0 = no gyroscopic effect)",
+            "車輪のスピンの慣性（1 が通常、0 でジャイロ効果なし）",
+            0,
+            2,
+            0.05,
+            1
+          ]
+        ],
+        "source": "J. P. Meijaard, J. M. Papadopoulos, A. Ruina and A. L. Schwab · Linearized dynamics equations for the balance and steer of a bicycle: a benchmark and review, Proceedings of the Royal Society A 463 (2007)",
+        "url": "https://royalsocietypublishing.org/doi/10.1098/rspa.2007.1857"
+      },
+      {
+        "id": "bicycle-gearing",
+        "title": [
+          "2. Gears, cadence and power",
+          "2. 変速比、ケイデンス、パワー"
+        ],
+        "body": [
+          "The chain carries the motion of the chainring to the sprocket tooth for tooth, so one turn of the cranks turns the rear wheel by the ratio of the tooth counts, and the bicycle advances by that ratio times the wheel’s circumference. Changing gear changes how far each pedal stroke carries the bicycle, and so how hard the pedal must be pushed: power is force times speed, and a gear only trades one for the other. What sets the power needed is the road. Air drag grows with the cube of the speed and dominates on the flat; rolling resistance and the work of climbing grow in proportion to speed and dominate on a hill. A trained rider can hold about 200 W for an hour, best at a cadence of 70 to 100 turns per minute, and the gears exist to keep the legs there.",
+          "チェーンはチェーンリングの動きを歯 1 枚ずつスプロケットに伝えるので、クランクが 1 回転すると後輪は歯数の比だけ回転し、自転車はその比に車輪の周長を掛けた距離だけ進みます。変速すると、ペダルの一踏みで自転車が進む距離が変わり、したがってペダルを押す力も変わります。パワーは力と速さの積で、変速機は一方をもう一方と取り替えるだけです。必要なパワーを決めるのは道です。空気抵抗は速さの 3 乗で増え、平地では支配的です。転がり抵抗と登坂の仕事は速さに比例して増え、坂では支配的です。鍛えた乗り手は約 200 W を 1 時間保つことができ、最もよいのは毎分 70 から 100 回転のケイデンスです。変速機は、脚をその範囲に保つためにあります。"
+        ],
+        "formula": "v=\\frac{n}{60}\\,\\frac{N_f}{N_r}\\,C,\\qquad P=\\frac{1}{\\eta}\\Bigl[\\tfrac12\\rho\\,C_dA\\,v^3+C_{rr}\\,mg\\,v\\cos\\theta+mg\\,v\\sin\\theta\\Bigr],\\qquad \\tau=\\frac{P}{2\\pi n/60},\\qquad r=\\frac{p}{2\\sin(\\pi/N)}",
+        "example": [
+          "On the 50-tooth ring and 17-tooth sprocket at 90 rpm the bicycle moves \\(1.5\\times\\tfrac{50}{17}\\times2.105=9.29\\) m/s, 33.4 km/h, which on the flat takes 198 W: 157 W of air drag and 36 W of rolling resistance at the wheel, divided by a drivetrain efficiency of 0.975. Holding 40 km/h takes 320 W. On a 10% climb in the lowest gear, 34/32 at 70 rpm, the speed is 9.4 km/h and the power 223 W, of which 204 W is the work of climbing.",
+          "歯数 50 のリングと歯数 17 のスプロケットで 90 rpm のとき、自転車は \\(1.5\\times\\tfrac{50}{17}\\times2.105=9.29\\) m/s、すなわち 33.4 km/h で進みます。平地でこれに必要なパワーは 198 W です。車輪での空気抵抗 157 W と転がり抵抗 36 W を、駆動系の効率 0.975 で割った値です。40 km/h を保つには 320 W が必要です。勾配 10% の登りで最も軽いギア 34/32、70 rpm のとき、速さは 9.4 km/h、パワーは 223 W で、そのうち 204 W が登坂の仕事です。"
+        ],
+        "caution": [
+          "The rider is a typical one on the brake hoods: 80 kg with the bicycle, \\(C_dA=0.32\\ \\mathrm{m^2}\\), \\(C_{rr}=0.005\\), still air, constant speed. The cassette is an 11 to 32 with a 50/34 crankset and 700×25 tyres. Real chain efficiency varies with load and with how far the chain runs out of line, and the mean pedal force quoted hides a large variation around each turn.",
+          "乗り手は、ブラケットを握った標準的な姿勢を想定しています。自転車と合わせて 80 kg、\\(C_dA=0.32\\ \\mathrm{m^2}\\)、\\(C_{rr}=0.005\\)、無風、一定の速さです。カセットは 11 から 32、クランクは 50/34、タイヤは 700×25 です。実際のチェーンの効率は、負荷やチェーンの斜めがけの度合いで変わります。また、ここで示す平均の踏力は、1 回転の中での大きな変動を隠しています。"
+        ],
+        "question": [
+          "Do lower gears make climbing a hill take less energy?",
+          "軽いギアにすると、坂を登るのに必要なエネルギーは減りますか？"
+        ],
+        "answer": [
+          "No. The work of lifting rider and bicycle up the hill is the same in any gear. A lower gear spreads that work over more pedal turns, so each stroke needs less force and the legs can keep turning at a cadence where they produce power efficiently.",
+          "いいえ。乗り手と自転車を坂の上へ持ち上げる仕事は、どのギアでも同じです。軽いギアは、その仕事をより多くのペダルの回転に分けるので、一踏みあたりの力が小さくなり、脚が効率よくパワーを出せるケイデンスで回し続けられます。"
+        ],
+        "params": [
+          [
+            "ring",
+            "Chainring",
+            "チェーンリング",
+            0,
+            1,
+            1,
+            1,
+            [
+              [
+                "34 teeth",
+                "34 歯"
+              ],
+              [
+                "50 teeth",
+                "50 歯"
+              ]
+            ]
+          ],
+          [
+            "cog",
+            "Rear sprocket (1 = 32 teeth … 11 = 11 teeth)",
+            "リアスプロケット（1 が 32 歯 … 11 が 11 歯）",
+            1,
+            11,
+            1,
+            6
+          ],
+          [
+            "cad",
+            "Cadence (rpm)",
+            "ケイデンス（rpm）",
+            40,
+            130,
+            1,
+            90
+          ],
+          [
+            "grade",
+            "Road grade (%)",
+            "勾配（%）",
+            -6,
+            15,
+            0.5,
+            0
+          ]
+        ],
+        "source": "J. P. Meijaard, J. M. Papadopoulos, A. Ruina and A. L. Schwab · Linearized dynamics equations for the balance and steer of a bicycle: a benchmark and review, Proceedings of the Royal Society A 463 (2007)",
+        "url": "https://royalsocietypublishing.org/doi/10.1098/rspa.2007.1857"
+      },
+      {
+        "id": "bicycle-shifting",
+        "title": [
+          "3. Shifting: indexed cables and electronic derailleurs",
+          "3. 変速：インデックス式のケーブルと電動ディレイラー"
+        ],
+        "body": [
+          "A rear derailleur is a sprung parallelogram that carries the chain sideways from one sprocket to the next. Eleven sprockets sit 3.74 mm apart, and the guide pulley must be centred under the chosen one to within a few tenths of a millimetre or the chain rubs its neighbour. In a mechanical system that position is set by a length of cable: each click of the shifter’s ratchet pulls or releases 2.7 mm of cable, and the linkage turns it into one sprocket spacing of sideways travel. Everything depends on the cable’s length staying true, so a cable that has bedded in, or drags in its housing, shifts every position; the barrel adjuster, a hollow screw that lengthens the housing, takes the slack out. An electronic system removes the cable from the problem. The shifter is a switch, and a geared motor in the derailleur drives the parallelogram to a stored position measured by its own sensor.",
+          "リアディレイラーは、チェーンをスプロケットから隣のスプロケットへ横に運ぶ、ばねの付いた平行四辺形リンクです。11 枚のスプロケットは 3.74 mm 間隔で並び、ガイドプーリーは、選んだスプロケットの真下に 10 分の数ミリメートルの精度で来なければなりません。そうでないとチェーンが隣のスプロケットにこすれます。機械式では、その位置はケーブルの長さで決まります。シフターのラチェットが 1 回クリックするごとにケーブルが 2.7 mm 引かれるかゆるめられ、リンクがそれをスプロケット 1 枚分の横の動きに変えます。すべてはケーブルの長さが正しく保たれることにかかっているので、なじんで伸びたケーブルや、アウターの中でこすれるケーブルは、すべての位置をずらします。アウターを長くする中空のねじであるアジャスターが、そのたるみを取ります。電動式は、この問題からケーブルを取り除きます。シフターはスイッチで、ディレイラーの中の減速機付きモーターが、自分のセンサーで測った記憶位置まで平行四辺形リンクを動かします。"
+        ],
+        "formula": "x_k=R\\,\\bigl[(k-1)\\,\\ell-s+a\\mp f\\bigr],\\qquad e_k=x_k-(k-1)\\,p,\\qquad R\\,\\ell=p\\ \\ (\\text{matched}),\\qquad p=3.74\\ \\mathrm{mm},\\quad \\ell=2.7\\ \\mathrm{mm},\\quad R=\\frac{p}{\\ell}\\approx1.39",
+        "example": [
+          "With 0.5 mm of slack in the cable the pulley sits \\(1.385\\times0.5=0.69\\) mm outboard of every sprocket: the chain ticks against the next smaller sprocket and is slow to climb to a larger one. Lengthening the housing by 0.5 mm with the barrel adjuster removes it. A shifter that pulls 2.5 mm per click moves the pulley 3.46 mm, 0.28 mm short each time, so after ten shifts it is 2.8 mm out, most of a sprocket spacing, and no adjustment can make all eleven gears work.",
+          "ケーブルに 0.5 mm のたるみがあると、プーリーはどのスプロケットに対しても \\(1.385\\times0.5=0.69\\) mm 外側にずれます。チェーンは一つ小さいスプロケットに当たって音を立て、大きいスプロケットへ上がるのが遅くなります。アジャスターでアウターを 0.5 mm 長くすると、ずれはなくなります。1 クリックで 2.5 mm 引くシフターではプーリーは 3.46 mm しか動かず、毎回 0.28 mm 足りないので、10 回変速すると 2.8 mm、スプロケットの間隔の大部分に当たるずれになり、どう調整しても 11 段すべてを使えるようにはなりません。"
+        ],
+        "caution": [
+          "The spacing and cable pull are typical of an 11-speed road group; the quiet band of 0.4 mm and the limit of 1.3 mm are indicative, not a manufacturer’s tolerance. The linkage is drawn schematically and its ratio is taken as constant, whereas real derailleurs vary slightly across their range. Friction is modelled as a fixed lag in the cable. Electronic derailleurs are shown as exact; in practice they are set once with a trim adjustment in steps of a fraction of a millimetre.",
+          "間隔とケーブルの引き量は 11 段変速のロード用コンポーネントの典型的な値です。静かな範囲の 0.4 mm と限界の 1.3 mm は目安で、メーカーの公差ではありません。リンクは模式的に描き、その比は一定としていますが、実際のディレイラーでは動く範囲の中でわずかに変わります。摩擦はケーブルの一定の遅れとしてモデル化しています。電動ディレイラーは誤差なしとして示していますが、実際には 1 ミリメートルの何分の 1 かの刻みのトリム調整で一度合わせます。"
+        ],
+        "question": [
+          "Why does a new gear cable need adjusting after a few rides?",
+          "新しい変速ケーブルは、数回乗った後に調整が必要になるのはなぜですか？"
+        ],
+        "answer": [
+          "The cable strands and the housing ends settle under load, which makes the cable effectively longer. The derailleur’s position is set by cable length, so every gear moves outboard by the slack times the linkage ratio. Turning the barrel adjuster lengthens the housing by the same amount and restores the indexing.",
+          "ケーブルの素線とアウターの端が負荷を受けて落ち着き、ケーブルが実質的に長くなります。ディレイラーの位置はケーブルの長さで決まるので、どの段も、たるみにリンクの比を掛けた分だけ外側へ動きます。アジャスターを回すとアウターが同じ量だけ長くなり、インデックスが元に戻ります。"
+        ],
+        "params": [
+          [
+            "mode",
+            "System",
+            "方式",
+            0,
+            1,
+            1,
+            0,
+            [
+              [
+                "cable, indexed",
+                "ケーブル（インデックス式）"
+              ],
+              [
+                "electronic",
+                "電動"
+              ]
+            ]
+          ],
+          [
+            "gear",
+            "Sprocket (1 = smallest)",
+            "スプロケット（1 が最小）",
+            1,
+            11,
+            1,
+            6
+          ],
+          [
+            "slack",
+            "Cable slack (mm)",
+            "ケーブルのたるみ（mm）",
+            0,
+            1.5,
+            0.05,
+            0.5
+          ],
+          [
+            "adj",
+            "Barrel adjuster (mm)",
+            "アジャスター（mm）",
+            0,
+            2,
+            0.05,
+            0
+          ],
+          [
+            "pull",
+            "Shifter pull per click (mm)",
+            "シフターの 1 クリックの引き量（mm）",
+            2.4,
+            3,
+            0.02,
+            2.7
+          ],
+          [
+            "fric",
+            "Cable friction lag (mm)",
+            "ケーブルの摩擦による遅れ（mm）",
+            0,
+            0.5,
+            0.05,
+            0.1
+          ]
+        ],
+        "source": "J. P. Meijaard, J. M. Papadopoulos, A. Ruina and A. L. Schwab · Linearized dynamics equations for the balance and steer of a bicycle: a benchmark and review, Proceedings of the Royal Society A 463 (2007)",
+        "url": "https://royalsocietypublishing.org/doi/10.1098/rspa.2007.1857"
+      },
+      {
+        "id": "bicycle-braking",
+        "title": [
+          "4. Braking: load transfer, skidding and going over the bars",
+          "4. 制動：荷重移動、滑り、前転"
+        ],
+        "body": [
+          "A braking force acts where the tyres touch the road, well below the centre of mass of rider and bicycle. The pair of forces, braking at the ground and inertia at the centre of mass, tips the bicycle forward, taking load off the rear wheel and putting it on the front by \\(mah/w\\). This decides everything about how to stop. The rear brake can only use the grip of a wheel that is being unloaded as it works, so it gives a weak stop however hard it is squeezed. The front brake gains load as it works and can use almost all the grip available, up to the point where the rear wheel carries nothing and the bicycle begins to rotate over the front wheel. On dry tarmac that point comes before the tyre slides.",
+          "制動力は、タイヤが路面に触れるところ、つまり乗り手と自転車の重心よりずっと下にはたらきます。路面での制動力と重心での慣性力の対は、自転車を前へ倒そうとし、荷重を \\(mah/w\\) だけ後輪から前輪へ移します。どう止まるかはすべてこれで決まります。後ブレーキが使えるのは、効くほど荷重が抜けていく車輪のグリップだけなので、どれほど強く握っても弱い制動にしかなりません。前ブレーキは効くほど荷重が増え、使えるグリップのほぼすべてを使えます。その限界は、後輪の荷重がゼロになって自転車が前輪を軸に回り始める点です。乾いた舗装路では、タイヤが滑るより先にこの点に達します。"
+        ],
+        "formula": "N_f=\\frac{m(g\\,\\ell_r+a\\,h)}{w},\\quad N_r=\\frac{m(g\\,\\ell_f-a\\,h)}{w},\\qquad a_{\\rm front}=\\min\\Bigl(\\frac{\\mu g\\,\\ell_r}{w-\\mu h},\\ \\frac{g\\,\\ell_f}{h}\\Bigr),\\qquad a_{\\rm rear}=\\frac{\\mu g\\,\\ell_f}{w+\\mu h},\\qquad d=\\frac{v^2}{2a}",
+        "example": [
+          "With the centre of mass 1.05 m high and 0.62 m behind the front contact on a 1.02 m wheelbase, the rear wheel lifts at \\(a=0.62/1.05=0.59\\,g\\). On dry tarmac (\\(\\mu=0.8\\)) the front brake reaches that limit and stops from 30 km/h in 6.0 m; the rear brake alone gives \\(0.8\\times0.62/(1.02+0.84)=0.27\\,g\\) and takes 13.3 m. In the wet (\\(\\mu=0.3\\)) the front brake skids at \\(0.17\\,g\\) and both brakes together give \\(0.30\\,g\\). Sliding back and down to 0.75 m and 0.95 m raises the dry limit to \\(0.79\\,g\\).",
+          "ホイールベース 1.02 m で、重心が高さ 1.05 m、前輪の接地点から 0.62 m 後ろにあるとき、後輪は \\(a=0.62/1.05=0.59\\,g\\) で浮きます。乾いた舗装路（\\(\\mu=0.8\\)）では、前ブレーキはこの限界に達し、30 km/h から 6.0 m で止まります。後ブレーキだけでは \\(0.8\\times0.62/(1.02+0.84)=0.27\\,g\\) で、13.3 m かかります。濡れた路面（\\(\\mu=0.3\\)）では、前ブレーキは \\(0.17\\,g\\) で滑り、両方を合わせると \\(0.30\\,g\\) です。体を後ろへ低く移して 0.75 m と 0.95 m にすると、乾いた路面での限界は \\(0.79\\,g\\) に上がります。"
+        ],
+        "caution": [
+          "The bicycle and rider are one rigid body on a level road, the tyres have a single friction coefficient, and air drag is left out. “Both” means the brakes are shared so that both tyres reach their grip together, which is the best any rider could do. In practice the lifting rear wheel gives a warning, and a skilled rider holds the brake just below it.",
+          "自転車と乗り手は水平な路面の上の一つの剛体で、タイヤの摩擦係数は一つとし、空気抵抗は省いています。「両方」は、二つのタイヤが同時にグリップの限界に達するようにブレーキを配分した場合で、乗り手にできる最良のものです。実際には後輪が浮き始めることが警告になり、熟練した乗り手はその直前でブレーキを保ちます。"
+        ],
+        "question": [
+          "Why does the front brake stop a bicycle so much better than the rear?",
+          "前ブレーキが後ブレーキよりずっとよく効くのはなぜですか？"
+        ],
+        "answer": [
+          "Braking shifts weight onto the front wheel and off the rear. Friction is proportional to the load on a tyre, so the front tyre can deliver more braking force the harder the bicycle brakes, while the rear tyre can deliver less and soon skids.",
+          "制動すると、重さは前輪へ移り、後輪から抜けます。摩擦はタイヤにかかる荷重に比例するので、強く制動するほど前のタイヤはより大きな制動力を出せるのに対し、後ろのタイヤは出せる力が小さくなり、すぐに滑ります。"
+        ],
+        "params": [
+          [
+            "mode",
+            "Brake",
+            "ブレーキ",
+            0,
+            2,
+            1,
+            0,
+            [
+              [
+                "front only",
+                "前だけ"
+              ],
+              [
+                "rear only",
+                "後だけ"
+              ],
+              [
+                "both, ideal",
+                "両方（理想配分）"
+              ]
+            ]
+          ],
+          [
+            "mu",
+            "Tyre grip \\(\\mu\\)",
+            "タイヤのグリップ \\(\\mu\\)",
+            0.1,
+            1.1,
+            0.02,
+            0.8
+          ],
+          [
+            "v",
+            "Speed (km/h)",
+            "速さ（km/h）",
+            10,
+            70,
+            1,
+            30
+          ],
+          [
+            "lf",
+            "Centre of mass behind front contact \\(\\ell_f\\) (m)",
+            "前輪接地点から重心までの距離 \\(\\ell_f\\)（m）",
+            0.4,
+            0.85,
+            0.01,
+            0.62
+          ],
+          [
+            "h",
+            "Height of centre of mass \\(h\\) (m)",
+            "重心の高さ \\(h\\)（m）",
+            0.8,
+            1.35,
+            0.01,
+            1.05
+          ]
+        ],
+        "source": "J. P. Meijaard, J. M. Papadopoulos, A. Ruina and A. L. Schwab · Linearized dynamics equations for the balance and steer of a bicycle: a benchmark and review, Proceedings of the Royal Society A 463 (2007)",
+        "url": "https://royalsocietypublishing.org/doi/10.1098/rspa.2007.1857"
+      },
+      {
+        "id": "bicycle-brake-systems",
+        "title": [
+          "5. Brake systems: cable rim brakes and hydraulic discs",
+          "5. ブレーキの方式：ワイヤー式リムブレーキと油圧ディスク"
+        ],
+        "body": [
+          "Every bicycle brake turns the grip of a hand into friction on a surface that turns with the wheel, and the engineering is in how the force is multiplied on the way. A rim brake pulls a steel cable: the lever multiplies the hand’s force about four times, the caliper arms a little more, and rubber pads squeeze the rim, which acts as a brake disc almost as large as the wheel. A hydraulic disc brake pushes fluid: the lever drives a small master piston, and by Pascal’s principle the same pressure acts on two larger pistons in the caliper, multiplying the force by the ratio of their areas. The rotor is far smaller than the rim, so the pads must clamp several times harder to give the same force at the tyre. The price of multiplying force is always movement: the more a brake multiplies, the less its pads travel, and the closer they must run to the braking surface.",
+          "自転車のブレーキはどれも、手の握る力を、車輪とともに回る面の摩擦に変えます。工学的な工夫は、途中で力をどう増やすかにあります。リムブレーキは鋼のワイヤーを引きます。レバーが手の力を約 4 倍にし、キャリパーのアームがさらに少し増やし、ゴムのパッドがリムを挟みます。リムは、車輪とほぼ同じ大きさのブレーキディスクとしてはたらきます。油圧ディスクブレーキは作動油を押します。レバーが小さなマスターピストンを動かし、パスカルの原理によって同じ圧力がキャリパーの二つの大きなピストンにはたらいて、力を面積の比だけ増やします。ローターはリムよりずっと小さいので、タイヤで同じ力を得るには、パッドは何倍も強く挟まなければなりません。力を増やす代償はいつも動きです。ブレーキが力を増やすほどパッドの動きは小さくなり、パッドは制動面のより近くを通らなければなりません。"
+        ],
+        "formula": "F_{\\rm tyre}=2\\mu N\\,\\frac{r_b}{r_{\\rm tyre}},\\qquad N_{\\rm rim}=F_h\\,k_\\ell\\,k_c\\,\\eta,\\qquad N_{\\rm disc}=F_h\\,k_\\ell\\,\\eta\\,\\frac{A_s}{A_m}=F_h\\,k_\\ell\\,\\eta\\Bigl(\\frac{d_s}{d_m}\\Bigr)^2,\\qquad p=\\frac{F_h\\,k_\\ell\\,\\eta}{A_m},\\qquad \\Delta T=\\frac{\\tfrac12mv^2}{m_bc_b}",
+        "example": [
+          "With 60 N at the lever, the rim brake’s cable carries \\(60\\times4\\times0.85=204\\) N, each pad presses with 265 N, and friction (\\(\\mu=0.7\\)) gives \\(2\\times0.7\\times265\\times0.311/0.34=340\\) N at the tyre. The disc brake’s master piston sees \\(60\\times7\\times0.95=399\\) N, a pressure of 51 bar; each 22 mm piston pushes with \\(399\\times(22/10)^2=1931\\) N, and friction (\\(\\mu=0.4\\)) on a 160 mm rotor gives \\(2\\times0.4\\times1931\\times0.068/0.34=309\\) N. In the rain the rim brake falls to 146 N and the disc to 270 N. Stopping 80 kg from 40 km/h turns 4.9 kJ into heat: enough to warm a 450 g aluminium rim by 12 K, or a 130 g steel rotor by 83 K.",
+          "レバーに 60 N をかけると、リムブレーキのワイヤーには \\(60\\times4\\times0.85=204\\) N がかかり、パッドは 1 枚あたり 265 N で押し、摩擦（\\(\\mu=0.7\\)）によってタイヤでは \\(2\\times0.7\\times265\\times0.311/0.34=340\\) N になります。ディスクブレーキのマスターピストンには \\(60\\times7\\times0.95=399\\) N がかかり、圧力は 51 bar です。直径 22 mm のピストンはそれぞれ \\(399\\times(22/10)^2=1931\\) N で押し、160 mm のローターでの摩擦（\\(\\mu=0.4\\)）によって \\(2\\times0.4\\times1931\\times0.068/0.34=309\\) N になります。雨の中では、リムブレーキは 146 N に、ディスクは 270 N に下がります。80 kg を 40 km/h から止めると 4.9 kJ が熱になります。これは 450 g のアルミのリムを 12 K、130 g の鋼のローターを 83 K 温める量です。"
+        ],
+        "caution": [
+          "Lever ratios, efficiencies and friction coefficients are typical values, not those of a particular product, and real pads change their friction with temperature and wear. The force at the tyre is what the brake could deliver: the road and the rider’s height limit what can be used, as the previous experiment shows. The temperature rises assume all the heat stays in the rim or rotor during one stop. The brake drawn is a generic design, with clearances exaggerated as the caption says.",
+          "レバー比、効率、摩擦係数は典型的な値で、特定の製品のものではありません。実際のパッドの摩擦は温度や摩耗で変わります。タイヤでの力は、ブレーキが出しうる力です。実際に使える力は、前の実験で見たように、路面と乗り手の高さで制限されます。温度上昇は、1 回の制動の間、熱がすべてリムまたはローターにとどまると仮定しています。描いているブレーキは一般的な設計で、すき間は説明文のとおり誇張しています。"
+        ],
+        "question": [
+          "Why must a disc brake clamp so much harder than a rim brake?",
+          "ディスクブレーキがリムブレーキよりずっと強く挟まなければならないのはなぜですか？"
+        ],
+        "answer": [
+          "Braking torque is friction force times the radius at which it acts. A rotor’s braking track is about 70 mm from the axle, against about 310 mm for a rim, so for the same torque the friction force, and with it the clamping force, must be four to five times larger. Hydraulics supply that multiplication easily.",
+          "制動トルクは、摩擦力とそれがはたらく半径の積です。ローターの制動面は車軸から約 70 mm、リムでは約 310 mm なので、同じトルクを得るには摩擦力、したがって締め付け力が 4 倍から 5 倍必要です。油圧はこの増力を簡単に実現します。"
+        ],
+        "params": [
+          [
+            "type",
+            "Brake",
+            "ブレーキ",
+            0,
+            1,
+            1,
+            1,
+            [
+              [
+                "cable rim brake",
+                "ワイヤー式リムブレーキ"
+              ],
+              [
+                "hydraulic disc",
+                "油圧ディスク"
+              ]
+            ]
+          ],
+          [
+            "F",
+            "Hand force (N)",
+            "手の力（N）",
+            0,
+            150,
+            2,
+            60
+          ],
+          [
+            "wet",
+            "Conditions",
+            "路面の状態",
+            0,
+            1,
+            1,
+            0,
+            [
+              [
+                "dry",
+                "乾燥"
+              ],
+              [
+                "wet",
+                "雨"
+              ]
+            ]
+          ],
+          [
+            "rotor",
+            "Rotor diameter",
+            "ローターの直径",
+            0,
+            3,
+            1,
+            1,
+            [
+              [
+                "140 mm",
+                "140 mm"
+              ],
+              [
+                "160 mm",
+                "160 mm"
+              ],
+              [
+                "180 mm",
+                "180 mm"
+              ],
+              [
+                "203 mm",
+                "203 mm"
+              ]
+            ]
+          ]
+        ],
+        "source": "J. P. Meijaard, J. M. Papadopoulos, A. Ruina and A. L. Schwab · Linearized dynamics equations for the balance and steer of a bicycle: a benchmark and review, Proceedings of the Royal Society A 463 (2007)",
+        "url": "https://royalsocietypublishing.org/doi/10.1098/rspa.2007.1857"
+      }
+    ]
   }
 ]
