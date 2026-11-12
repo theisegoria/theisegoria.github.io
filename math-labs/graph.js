@@ -168,7 +168,8 @@
     'turbochargers': ['piston-engines', 'thermodynamics', 'adaptive-cycle-engines'],
     'elevators': ['gears-mechanisms', 'disc-brakes', 'zippers'],
     'escalators': ['elevators', 'gears-mechanisms', 'bicycles'],
-    'umbrellas': ['gears-mechanisms', 'structural-mechanics', 'robot-kinematics']
+    'umbrellas': ['gears-mechanisms', 'structural-mechanics', 'robot-kinematics'],
+    'sewing-machines': ['gears-mechanisms', 'zippers', 'piston-engines']
   };
   // Topics named in each topic's own prerequisite line (content.json "prerequisite").
   const PREREQ = {
@@ -269,7 +270,8 @@
     'turbochargers': ['thermodynamics', 'piston-engines'],
     'elevators': ['classical-mechanics'],
     'escalators': ['classical-mechanics'],
-    'umbrellas': ['classical-mechanics']
+    'umbrellas': ['classical-mechanics'],
+    'sewing-machines': ['classical-mechanics']
   };
 
   let topics = [], bySlug = new Map(), edges = [], drawn = [];
