@@ -154,7 +154,8 @@
     'printers': ['camera-lenses', 'laser-physics', 'fluid-dynamics'],
     'electric-toothbrush': ['lithium-ion', 'watch-oscillators', 'quartz-resonators'],
     'microwave-ovens': ['electromagnetism', 'partial-differential-equations', 'plasma-physics'],
-    'induction-cooktops': ['microwave-ovens', 'switching-converters', 'electric-motors']
+    'induction-cooktops': ['microwave-ovens', 'switching-converters', 'electric-motors'],
+    'pressure-cookers': ['thermodynamics', 'induction-cooktops', 'fluid-dynamics']
   };
   // Topics named in each topic's own prerequisite line (content.json "prerequisite").
   const PREREQ = {
@@ -241,7 +242,8 @@
     'printers': ['electromagnetism', 'optics'],                          // Electrostatics, Gaussian beams
     'electric-toothbrush': ['classical-mechanics', 'electric-motors'],    // Driven oscillators, magnetic torque
     'microwave-ovens': ['electromagnetism', 'acoustics'],
-    'induction-cooktops': ['electromagnetism', 'crossovers-filters']
+    'induction-cooktops': ['electromagnetism', 'crossovers-filters'],
+    'pressure-cookers': ['thermodynamics']
   };
 
   let topics = [], bySlug = new Map(), edges = [], drawn = [];
