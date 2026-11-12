@@ -22351,5 +22351,229 @@
         "url": "https://batteryuniversity.com/article/bu-409-charging-lithium-ion"
       }
     ]
+  },
+  {
+    "slug": "touchscreens",
+    "title": [
+      "Touchscreens: sensing a finger through glass",
+      "タッチスクリーン：ガラス越しに指を感じ取る"
+    ],
+    "description": [
+      "A phone screen does not feel pressure. Under the glass lies a grid of transparent wires, rows on one layer and columns on another, and where a row crosses a column the two form a tiny capacitor, about two millionths of a millionth of a farad. Your body conducts, so a fingertip resting on the glass above a crossing draws some of the electric field into itself and that capacitor gets a little smaller. The screen measures every crossing a hundred times a second and looks for the dip. Three things make this work: a way to measure a change of a few hundredths of a picofarad, a way to turn a coarse grid of readings into a position far finer than the grid, and a stack of layers thin enough for the finger’s effect to reach the wires. These experiments find a finger from its readings, measure a picofarad by counting, and take the screen apart.",
+      "スマートフォンの画面は圧力を感じているのではありません。ガラスの下には透明な導線の格子があり、行が一つの層に、列が別の層に並んでいます。行と列が交わるところで、両者は小さなコンデンサーを作ります。その容量は約 2 ピコファラド、1 ファラドの 100 万分の 1 のさらに 100 万分の 2 です。人の体は電気を通すので、交点の上のガラスに置いた指先は電場の一部を自分のほうへ引き込み、そのコンデンサーの容量が少し小さくなります。画面は毎秒 100 回、すべての交点を測り、その凹みを探します。これを可能にしているものは三つあります。100 分の数ピコファラドの変化を測る方法、粗い格子の読み取り値を格子よりはるかに細かい位置に変える方法、そして指の影響が導線に届くほど薄い層の重なりです。ここでの実験では、読み取り値から指を見つけ、数えることでピコファラドを測り、画面を分解します。"
+    ],
+    "group": "engineering",
+    "prerequisite": [
+      "Capacitance and charge, weighted averages, exponentials and logarithms",
+      "静電容量と電荷、加重平均、指数関数と対数"
+    ],
+    "source": "G. Walker · A review of technologies for sensing contact location on the surface of a display (Journal of the Society for Information Display, 2012)",
+    "url": "https://doi.org/10.1002/jsid.100",
+    "labs": [
+      {
+        "id": "touch-centroid",
+        "title": [
+          "1. Finding the finger",
+          "1. 指を見つける"
+        ],
+        "body": [
+          "The electrodes of a touchscreen are several millimetres apart, yet the screen reports where you touch to a fraction of a millimetre. The trick is that a fingertip is wider than the spacing. It lowers the capacitance of the crossing directly beneath it most, and of the crossings around it by smaller amounts that fall off smoothly with distance. If the finger sits exactly over one crossing, its neighbours on either side read the same; move it slightly to the right and the right-hand neighbour reads more, the left-hand one less. The controller takes the readings around the strongest crossing and computes their weighted average position, the centroid, which slides smoothly as the finger does. The limit is noise: every reading jitters a little, and the jitter in the readings becomes jitter in the position.",
+          "タッチスクリーンの電極は数ミリメートル間隔で並んでいますが、画面は触れた位置を 1 ミリメートルより細かく報告します。その仕組みは、指先が電極の間隔より広いことにあります。指先は、真下の交点の静電容量を最も大きく下げ、周りの交点も、距離とともに滑らかに小さくなる量だけ下げます。指がちょうど一つの交点の真上にあれば、両隣の読み取り値は同じです。少し右へ動かすと、右隣の値は増え、左隣の値は減ります。コントローラーは、最も強い交点の周りの読み取り値から、その加重平均の位置、すなわち重心を計算します。重心は指の動きに合わせて滑らかに動きます。限界を決めるのはノイズです。どの読み取り値も少し揺らぎ、その揺らぎが位置の揺らぎになります。"
+        ],
+        "formula": "\\Delta C(d)=\\Delta C_{\\max}\\,e^{-d^{2}/2\\sigma^{2}},\\qquad \\hat x=\\frac{\\sum_k \\Delta C_k\\,x_k}{\\sum_k \\Delta C_k},\\qquad \\hat y=\\frac{\\sum_k \\Delta C_k\\,y_k}{\\sum_k \\Delta C_k}",
+        "example": [
+          "With electrodes 5 mm apart under 0.7 mm of glass, a contact of 4 mm radius lowers the 2 pF of the crossing beneath it by 0.37 pF, 19 per cent, with a spread of 3.3 mm. Wherever the finger is placed away from the edge, the centroid of the nine readings round the peak is within 0.5 mm of the true centre; taking only the strongest crossing would be wrong by up to 3.5 mm. A contact of 2 mm radius gives 0.28 pF, so the same noise disturbs its position more.",
+          "0.7 mm のガラスの下に 5 mm 間隔で電極があるとき、半径 4 mm の接触は、真下の交点の 2 pF を 0.37 pF、すなわち 19 % 下げ、広がりは 3.3 mm です。指を端から離れたどこに置いても、ピークの周りの 9 個の読み取り値の重心は、真の中心から 0.5 mm 以内に収まります。最も強い交点だけを使うと、最大で 3.5 mm ずれます。半径 2 mm の接触では 0.28 pF なので、同じノイズでも位置が大きく乱れます。"
+        ],
+        "caution": [
+          "The bell-shaped profile and its width are a representative model, not a field solution, and the noise is a fixed pattern so that the picture holds still. Real controllers also subtract a slowly updated baseline, filter over time, reject palms and track several fingers at once, and the simple centroid is biased near the edges of the panel, where part of the profile falls off the grid.",
+          "釣鐘形の分布とその幅は代表的なモデルで、電場を解いたものではありません。ノイズは、図が動かないように固定のパターンにしています。実際のコントローラーは、ゆっくり更新する基準値を差し引き、時間方向にフィルターをかけ、手のひらを除外し、複数の指を同時に追跡します。また単純な重心は、分布の一部が格子の外にはみ出すパネルの端の近くで偏ります。"
+        ],
+        "question": [
+          "How can a screen with electrodes 5 mm apart place a touch to within half a millimetre?",
+          "電極が 5 mm 間隔の画面が、タッチの位置を 0.5 mm 以内で求められるのはなぜですか？"
+        ],
+        "answer": [
+          "A fingertip affects several neighbouring crossings at once, each by an amount that depends on its distance from the centre of the contact. The balance between those readings shifts continuously as the finger moves, and their weighted average recovers the centre much more finely than the grid spacing.",
+          "指先は隣り合う複数の交点に同時に影響し、その大きさは接触の中心からの距離で決まります。指が動くと、これらの読み取り値の釣り合いが連続的に変わり、その加重平均から、格子の間隔よりずっと細かく中心が求まります。"
+        ],
+        "params": [
+          [
+            "fx",
+            "Finger position across (mm)",
+            "指の位置：横（mm）",
+            2.5,
+            37.5,
+            0.1,
+            17
+          ],
+          [
+            "fy",
+            "Finger position up (mm)",
+            "指の位置：縦（mm）",
+            2.5,
+            57.5,
+            0.1,
+            33
+          ],
+          [
+            "a",
+            "Contact radius (mm)",
+            "接触の半径（mm）",
+            1,
+            6,
+            0.25,
+            4
+          ],
+          [
+            "nz",
+            "Noise (% of the largest possible signal)",
+            "ノイズ（最大の信号に対する %）",
+            0,
+            20,
+            1,
+            3
+          ]
+        ],
+        "source": "G. Walker · A review of technologies for sensing contact location on the surface of a display (Journal of the Society for Information Display, 2012)",
+        "url": "https://doi.org/10.1002/jsid.100"
+      },
+      {
+        "id": "charge-transfer",
+        "title": [
+          "2. Measuring a picofarad by counting",
+          "2. 数えることでピコファラドを測る"
+        ],
+        "body": [
+          "The capacitance at one crossing is about 2 pF, and a finger changes it by a few tenths of that. No ordinary circuit can read so small a quantity directly, so the controller converts it to a count. It charges the small capacitor to the supply voltage, then connects it to a much larger one and lets the charge share out; the large capacitor’s voltage rises by a tiny step. It repeats this thousands of times, each step a little smaller than the last as the large capacitor fills, and counts the transfers needed to reach a set threshold. A smaller capacitance moves less charge each time and needs more transfers. Because the result depends only on the ratio of the two capacitors, it is steady against changes in supply voltage and temperature, and the resolution can be made as fine as wished by using a larger capacitor and waiting longer.",
+          "一つの交点の静電容量は約 2 pF で、指はそれを 10 分の数だけ変えます。これほど小さな量を直接読める普通の回路はないので、コントローラーはそれを回数に変えます。小さいコンデンサーを電源電圧まで充電し、次にずっと大きいコンデンサーにつないで電荷を分け合わせます。大きいコンデンサーの電圧は、わずかに一段上がります。これを数千回繰り返します。大きいコンデンサーが満ちていくにつれて一段ずつ小さくなり、決めたしきい値に達するまでの転送の回数を数えます。静電容量が小さいほど 1 回に運ぶ電荷が少なく、多くの転送が必要です。結果は二つのコンデンサーの比だけで決まるので、電源電圧や温度の変化に対して安定しています。また、より大きいコンデンサーを使って長く待てば、分解能はいくらでも細かくできます。"
+        ],
+        "formula": "V_n=V_{dd}\\left[1-\\left(\\frac{C_s}{C_s+C_x}\\right)^{n}\\right],\\qquad n=\\frac{\\ln(1-V_{\\rm th}/V_{dd})}{\\ln\\dfrac{C_s}{C_s+C_x}}\\approx\\frac{C_s}{C_x}\\ln\\frac{1}{1-V_{\\rm th}/V_{dd}}",
+        "example": [
+          "With a 1.5 nF capacitor and a threshold at half the supply, an untouched 2 pF crossing takes 521 transfers (close to \\(750\\times\\ln2=520\\)) and a touched one at 1.63 pF takes 639: a difference of 118 counts, so one count is 3.8 fF. At 2 µs per transfer a reading takes 1.3 ms, and reading the twelve rows of the panel one after another, with all eight columns measured at once, takes 15 ms: 65 scans a second. A 10 nF capacitor would give 870 counts of difference but only ten scans a second.",
+          "1.5 nF のコンデンサーを使い、しきい値を電源の半分にすると、触れていない 2 pF の交点では 521 回（\\(750\\times\\ln2=520\\) にほぼ等しい）、触れられて 1.63 pF になった交点では 639 回の転送が必要です。差は 118 カウントなので、1 カウントは 3.8 fF に当たります。1 回の転送が 2 µs なら読み取り 1 回に 1.3 ms かかり、8 列を同時に測りながらパネルの 12 行を順に読むと 15 ms、毎秒 65 回の走査になります。10 nF のコンデンサーなら差は 870 カウントになりますが、走査は毎秒 10 回しかできません。"
+        ],
+        "caution": [
+          "This is the charge-transfer method used by early touch controllers and still used for touch buttons. Phone controllers drive a row with a burst of pulses and integrate the charge arriving on every column with an amplifier, and they change the pulse frequency to avoid interference, but they face the same trade between measuring time and resolution. Stray capacitance and leakage are ignored.",
+          "これは、初期のタッチコントローラーが使い、今もタッチボタンに使われている電荷転送方式です。スマートフォンのコントローラーは、行をパルス列で駆動し、各列に届く電荷をアンプで積分します。干渉を避けるためにパルスの周波数も変えます。それでも、測定時間と分解能の折り合いは同じです。浮遊容量と漏れ電流は無視しています。"
+        ],
+        "question": [
+          "Why does a touch controller measure capacitance by counting charge transfers?",
+          "タッチコントローラーが、電荷の転送を数えることで静電容量を測るのはなぜですか？"
+        ],
+        "answer": [
+          "The capacitance is too small to read directly, but each transfer moves an amount of charge proportional to it. Counting the transfers needed to fill a much larger capacitor turns the tiny capacitance into a large number, and the answer depends only on a ratio of capacitors, so it does not drift with supply voltage.",
+          "静電容量は直接読むには小さすぎますが、1 回の転送で運ばれる電荷はそれに比例します。ずっと大きいコンデンサーを満たすのに必要な転送の回数を数えれば、小さな静電容量が大きな数になります。しかも答えはコンデンサーの比だけで決まるので、電源電圧によって変動しません。"
+        ],
+        "params": [
+          [
+            "cx",
+            "Capacitance of the crossing (pF)",
+            "交点の静電容量（pF）",
+            1,
+            5,
+            0.1,
+            2
+          ],
+          [
+            "dc",
+            "Fall when touched (pF)",
+            "触れたときの低下（pF）",
+            0.05,
+            0.6,
+            0.01,
+            0.37
+          ],
+          [
+            "cs",
+            "Large capacitor (nF)",
+            "大きいコンデンサー（nF）",
+            1,
+            20,
+            0.5,
+            1.5
+          ]
+        ],
+        "source": "G. Walker · A review of technologies for sensing contact location on the surface of a display (Journal of the Society for Information Display, 2012)",
+        "url": "https://doi.org/10.1002/jsid.100"
+      },
+      {
+        "id": "touch-stack",
+        "title": [
+          "3. The stack under the glass",
+          "3. ガラスの下の層"
+        ],
+        "body": [
+          "A touchscreen is a stack. At the bottom is the display. Above it are two layers of indium tin oxide, a ceramic that conducts electricity and is nearly transparent when a few tens of nanometres thick. Each layer is etched into chains of diamonds, rows in one and columns in the other, arranged so the diamonds of one fill the gaps of the other and the chains cross only at narrow bridges. Field lines run from each row diamond over the gap to the neighbouring column diamonds, bulging up into the glass, and that fringe is what a finger disturbs. On top is the cover glass. Its thickness matters twice over: the further the finger is from the electrodes, the less of the fringing field it intercepts, and the more evenly its influence is spread over neighbouring crossings.",
+          "タッチスクリーンは層の重なりです。いちばん下にディスプレイがあります。その上に、酸化インジウムスズの層が 2 枚あります。これは電気を通すセラミックで、厚さが数十ナノメートルならほぼ透明です。それぞれの層は菱形を連ねた形に加工され、一方が行、もう一方が列になっています。一方の菱形がもう一方のすき間を埋め、連なりどうしは細い橋の部分でだけ交わるように並んでいます。電気力線は、行の菱形からすき間を越えて隣の列の菱形へ、ガラスの中へ膨らみながら走ります。指が乱すのは、この膨らんだ部分です。いちばん上がカバーガラスです。その厚さは二重に効きます。指が電極から遠いほど、指が横取りする電場は減り、その影響は隣り合う交点により均等に広がります。"
+        ],
+        "formula": "\\Delta C_{\\max}\\propto\\frac{a^{2}}{a^{2}+4t^{2}},\\qquad \\sigma^{2}=\\Bigl(\\frac{a}{1.5}\\Bigr)^{2}+(1.2\\,t)^{2}+\\Bigl(\\frac{p}{3}\\Bigr)^{2}",
+        "example": [
+          "For a 4 mm contact, 0.4 mm glass gives a fall of 0.40 pF. At 0.7 mm it is 0.37 pF, and at 1.2 mm, 0.31 pF. Add a 2 mm glove to 0.7 mm glass and the finger is 2.7 mm from the electrodes: the fall is 0.15 pF, spread over 4.5 mm instead of 3.3 mm, only seven times a typical noise level of 0.02 pF.",
+          "半径 4 mm の接触では、0.4 mm のガラスで低下は 0.40 pF です。0.7 mm では 0.37 pF、1.2 mm では 0.31 pF です。0.7 mm のガラスに 2 mm の手袋を加えると、指は電極から 2.7 mm 離れます。低下は 0.15 pF で、広がりは 3.3 mm から 4.5 mm になり、典型的なノイズの大きさ 0.02 pF の 7 倍しかありません。"
+        ],
+        "caution": [
+          "The stack is shown pulled apart and with the glass thickness exaggerated; the real layers are bonded with clear adhesive and the electrode films are a tenth of a millimetre thick. Many current phones build the electrodes into the display itself. The dependence on thickness is a representative formula, and the picture on the display is only decoration.",
+          "層は引き離して描き、ガラスの厚さも誇張しています。実際の層は透明な接着剤で貼り合わされ、電極のフィルムの厚さは 10 分の 1 ミリメートルほどです。現在のスマートフォンの多くは、電極をディスプレイそのものに組み込んでいます。厚さへの依存は代表的な式で、ディスプレイに映した絵は飾りにすぎません。"
+        ],
+        "question": [
+          "Why does a touchscreen respond poorly through a thick glove?",
+          "厚い手袋をしていると、タッチスクリーンの反応が悪くなるのはなぜですか？"
+        ],
+        "answer": [
+          "The glove holds the finger further from the electrodes, where the fringing field between rows and columns is weak, so the finger takes less of it and the capacitance changes less. The change is also spread over more crossings. Both make the signal harder to tell from noise.",
+          "手袋は指を電極から遠ざけます。そこでは行と列の間のはみ出した電場が弱いので、指が引き込む量が減り、静電容量の変化が小さくなります。変化はより多くの交点に広がりもします。どちらも、信号とノイズの区別を難しくします。"
+        ],
+        "params": [
+          [
+            "fx",
+            "Finger position across (mm)",
+            "指の位置：横（mm）",
+            2.5,
+            37.5,
+            0.1,
+            17
+          ],
+          [
+            "fy",
+            "Finger position up (mm)",
+            "指の位置：縦（mm）",
+            2.5,
+            57.5,
+            0.1,
+            33
+          ],
+          [
+            "a",
+            "Contact radius (mm)",
+            "接触の半径（mm）",
+            1,
+            6,
+            0.25,
+            4
+          ],
+          [
+            "t",
+            "Cover glass thickness (mm)",
+            "カバーガラスの厚さ（mm）",
+            0.3,
+            2,
+            0.05,
+            0.7
+          ],
+          [
+            "gap",
+            "Glove or screen protector (mm)",
+            "手袋または保護フィルム（mm）",
+            0,
+            2,
+            0.1,
+            0
+          ]
+        ],
+        "source": "G. Walker · A review of technologies for sensing contact location on the surface of a display (Journal of the Society for Information Display, 2012)",
+        "url": "https://doi.org/10.1002/jsid.100"
+      }
+    ]
   }
 ]
