@@ -146,7 +146,8 @@
     'bicycles': ['control-theory', 'gears-mechanisms', 'dynamical-systems'],
     'data-storage': ['microprocessors', 'information-theory', 'coding-theory'],
     'camera-lenses': ['fourier-analysis', 'microprocessors', 'laser-physics'],
-    'noise-cancelling': ['loudspeakers', 'room-acoustics', 'crossovers-filters']
+    'noise-cancelling': ['loudspeakers', 'room-acoustics', 'crossovers-filters'],
+    'lithium-ion': ['switching-converters', 'electric-motors', 'statistical-mechanics']
   };
   // Topics named in each topic's own prerequisite line (content.json "prerequisite").
   const PREREQ = {
@@ -225,7 +226,8 @@
     'bicycles': ['classical-mechanics', 'rigid-body-dynamics'],          // Torque balance, gyroscopes and rolling
     'data-storage': ['electric-motors', 'semiconductor-physics', 'probability-inference'], // Voice-coil actuator, trapped charge, normal distributions
     'camera-lenses': ['optics'],                                         // Thin lenses and diffraction
-    'noise-cancelling': ['acoustics', 'control-theory']                  // Superposition of waves, loop gain and stability
+    'noise-cancelling': ['acoustics', 'control-theory'],                 // Superposition of waves, loop gain and stability
+    'lithium-ion': ['electromagnetism', 'thermodynamics']                // Ohm's law and power, Arrhenius temperature dependence
   };
 
   let topics = [], bySlug = new Map(), edges = [], drawn = [];
