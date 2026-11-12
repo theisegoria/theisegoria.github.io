@@ -159,7 +159,8 @@
     'espresso-machines': ['pressure-cookers', 'fluid-dynamics', 'thermodynamics'],
     'toilets': ['fluid-dynamics', 'espresso-machines', 'pressure-cookers'],
     'washing-machines': ['classical-mechanics', 'electric-toothbrush', 'toilets'],
-    'pin-tumbler-locks': ['combinatorics', 'gears-mechanisms', 'keyboard-switches']
+    'pin-tumbler-locks': ['combinatorics', 'gears-mechanisms', 'keyboard-switches'],
+    'zippers': ['pin-tumbler-locks', 'gears-mechanisms', 'classical-mechanics']
   };
   // Topics named in each topic's own prerequisite line (content.json "prerequisite").
   const PREREQ = {
@@ -251,7 +252,8 @@
     'espresso-machines': ['fluid-dynamics'],
     'toilets': ['fluid-dynamics'],
     'washing-machines': ['classical-mechanics'],
-    'pin-tumbler-locks': ['combinatorics']
+    'pin-tumbler-locks': ['combinatorics'],
+    'zippers': ['classical-mechanics']
   };
 
   let topics = [], bySlug = new Map(), edges = [], drawn = [];
