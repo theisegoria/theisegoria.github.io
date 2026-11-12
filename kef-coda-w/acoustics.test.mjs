@@ -46,4 +46,9 @@ ok(Math.max(...omni) - Math.min(...omni) < 3, 'omni ring within 3 dB at 1 kHz');
 const fld = A.fieldOnPlane(ring, 3000, [0, 0.03, 0], [1, 0, 0], [0, 0, 1], 1, 1, 32);
 ok(fld.db.every(Number.isFinite), 'finite field');
 const pd = A.pathDifference(0.13, 30 * Math.PI / 180, 2, 2500); near(pd.d, 0.13 * Math.sin(30 * Math.PI / 180), 0.003, 'path difference ~ d sin a');
+// box alignments: a B4 vented box is 3 dB down at its tuning, where the cone is nearly still and the port does the work
+{ const v = A.ventedBox(60); near(A.ventedBox(60, { Ql: 1e9 }).total, Math.SQRT1_2, 0.01, 'lossless B4 vented box -3 dB at fb'); ok(v.excursion < 0.12 && v.port > 4 * v.cone, 'cone nearly stopped at tuning');
+  ok(Math.abs(A.ventedBox(2000).total - 1) < 0.01 && A.ventedBox(15).total < 0.02, 'vented: flat above, fourth-order below');
+  near(A.ventedBox(15).total / A.ventedBox(30).total, 1 / 16, 0.03, '24 dB per octave below tuning');
+  const s = A.sealedBox(75, 75, 0.707); near(s.total, 0.707, 0.01, 'sealed -3 dB at fc for Q 0.707'); near(A.sealedBox(15, 75, 0.7).total / A.sealedBox(30, 75, 0.7).total, 0.25, 0.03, '12 dB per octave'); near(A.sealedBox(1, 75, 0.7).excursion, 1, 0.01, 'excursion flat below resonance'); }
 console.log(n, 'acoustics checks passed');

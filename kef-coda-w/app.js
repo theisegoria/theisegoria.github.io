@@ -23,7 +23,7 @@ const L = (en, jp) => (ja ? jp : en);
 const $ = (s) => document.querySelector(s), $$ = (s) => [...document.querySelectorAll(s)];
 const ASSETS = new URL('./assets/', import.meta.url).href;
 const DRACO = new URL('/vendor/three/r186/examples-jsm/libs/draco/', location.href).href;
-const state = { mode: 'product', camera: 'hero', part: 'all', explode: 0, layout: 'coincident', angle: 30, frequency: 2000 };
+const state = { mode: 'product', camera: 'hero', part: 'all', explode: 0, layout: 'coincident', angle: 30, frequency: 2000, mfreq: 15 };
 const FC = 2500, SEP = 0.13, R_LISTEN = 2.0;
 const reduced = matchMedia('(prefers-reduced-motion: reduce)');
 const host = $('#scene');
@@ -51,6 +51,8 @@ const copy = {
     '02 / ドライバーの構造', '2 つのドライバー、<br>1 本の軸。', '第 12 世代 Uni-Q の断面である。25 mm のドームは低中音側のポールの穴の中に据えた専用の小さな磁気回路に載り、コーンの頂点から放射する。その先はコーン、Z-flex エッジ、トリムリングがそのまま導波路になる。ドームの背面の音は中心のポールを貫くダクトから抜ける。部品を分離して、入れ子の構造を見てみよう。', 'Uni-Q 断面 · KEF の公表構成から私が再構成したもの'],
   paths: ['03 / THE GEOMETRY', 'Why the axis matters.', 'A computed two-way response: woofer and tweeter through a fourth-order Linkwitz-Riley crossover at 2.5 kHz, summed at a listener 2 m away. Coincident sources add the same way at every angle. Separated sources add with a path difference that changes with angle, so the crossover region develops a dip that moves as you move.', 'Ideal sources · LR4 crossover · c = 343 m/s',
     '03 / 幾何', '軸が重要な理由。', '計算した 2 ウェイ応答である。ウーファーとツイーターを 2.5 kHz の 4 次リンクウィッツ・ライリー型クロスオーバーに通し、2 m 先の受聴点で足し合わせる。同軸の音源はどの角度でも同じように足し合わさる。離れた音源は角度で変わる経路差をもって足し合わさるので、クロスオーバー帯域に動く谷が生じる。', '理想音源 · LR4 クロスオーバー · c = 343 m/s'],
+  motion: ['04 / THE MOTOR', 'A coil, a magnet,<br>and moving air.', 'The same section, now working. Slide the frequency from the lowest bass to the top of the treble and watch which diaphragm moves and how far: the cone does the long, slow strokes, the dome the tiny fast ones, and the crossover passes the signal between them.', 'Uni-Q section in motion · slowed, travel exaggerated',
+    '04 / 磁気回路', 'コイルと磁石、<br>そして動く空気。', '同じ断面を、今度は動かして見る。周波数を最低音から最高音まで動かして、どちらの振動板がどれだけ動くかを見てほしい。コーンは長くゆっくりした行程を、ドームは小さく速い行程を受け持ち、クロスオーバーが信号を受け渡す。', '動作中の Uni-Q 断面 · 低速表示、振幅は誇張'],
 };
 const partNotes = {
   all: ['The tweeter sits inside the bass/midrange voice coil, at the apex of the cone. Select a part to read its role, or click it in the model.', 'ツイーターは低中音のボイスコイルの内側、コーンの頂点に座る。部品を選ぶか、モデル上でクリックすると役割が読める。'],
@@ -225,6 +227,7 @@ async function loadProduct() {
     const blob = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), new THREE.MeshBasicMaterial({ map: tex, transparent: true, opacity: 0.5, depthWrite: false, toneMapped: false }));
     blob.rotation.x = -Math.PI / 2; blob.position.y = -1.42; blob.scale.set(1.68 * 1.6, 2.68 * 1.45, 1); blob.renderOrder = -1; product.add(blob);
     $('#load').hidden = true; window.modelEvidence = { size: size.toArray(), meshes: 0 }; g.scene.traverse((o) => { if (o.isMesh) window.modelEvidence.meshes++; });
+  burst(3000);
   } catch (e) { console.warn(e); $('#load').textContent = L('The product model could not load. Try “Inside Uni-Q” to explore the driver.', '製品モデルを読み込めなかった。「Inside Uni-Q」でドライバーを見てほしい。'); }
   lab.invalidate();
 }
@@ -413,6 +416,75 @@ function drawMap() {
   ctx.lineWidth = 1; ctx.strokeStyle = '#ffffffaa'; ctx.beginPath(); ctx.moveTo(x0, cy); ctx.lineTo(cx - 7, cy); ctx.moveTo(cx + 7, cy); ctx.lineTo(x1, cy); ctx.moveTo(cx, y0); ctx.lineTo(cx, cy - 7); ctx.moveTo(cx, cy + 7); ctx.lineTo(cx, y1); ctx.stroke();
 }
 
+// ------------------------------------------------------------------ the motor in motion
+// Peak travel a rigid piston of area S needs for a sound pressure p (rms) at distance r, radiating into half space:
+// p = rho S x w^2 / (2 pi r sqrt 2)  =>  x = sqrt2 p 2 pi r / (rho S w^2).  90 dB at 1 m; cone a = 50 mm, dome a = 12.5 mm.
+const MOT = { p: 0.632, r: 1, rho: 1.2, Sw: Math.PI * 0.05 ** 2, St: Math.PI * 0.0125 ** 2 };
+const lr4lo = (f) => 1 / (1 + (f / FC) ** 4), lr4hi = (f) => (f / FC) ** 4 / (1 + (f / FC) ** 4);
+const travel = (f, S) => (Math.SQRT2 * MOT.p * 2 * Math.PI * MOT.r) / (MOT.rho * S * (2 * Math.PI * f) ** 2);   // metres, peak
+const coneTravel = (f) => travel(f, MOT.Sw) * lr4lo(f), domeTravel = (f) => travel(f, MOT.St) * lr4hi(f);
+const motionFreq = () => 40 * Math.pow(500, state.mfreq / 100);                      // 40 Hz .. 20 kHz
+const MOVERS = { mid_cone: 1, mid_glue: 1, mid_decoupler: 1, mid_former: 1, mid_coil: 1, mid_surround: 0.5, mid_spider: 0.5, tweeter_dome: 2, tweeter_coil: 2, tweeter_surround: 1.5 };
+// what the eye can follow: travel from 1 micrometre to 10 mm mapped onto 0 .. 3.2 model millimetres
+const shown = (x) => 3.2 * Math.max(0, Math.min(1, (Math.log10(Math.max(x, 1e-9) * 1e6)) / 4));
+let motionPhase = Math.PI / 2;
+function poseMotion() {
+  if (!uniq) return;
+  const f = motionFreq(), aw = shown(coneTravel(f)), at = shown(domeTravel(f)), s = Math.sin(motionPhase);
+  for (const [name, k] of Object.entries(MOVERS)) {
+    const node = parts.get(name); if (!node) continue;
+    const amp = k >= 1.5 ? at * (k - 1) : aw * k;
+    node.position.copy(node.userData.base); node.position.y += amp * s;
+  }
+}
+function restMotion() { for (const name of Object.keys(MOVERS)) { const node = parts.get(name); if (node && state.explode === 0) node.position.copy(node.userData.base); } }
+function stepMotion(dt) {
+  // slowed: the visible rate rises gently with frequency so bass reads as slow strokes and treble as a quick tremor
+  motionPhase += dt * 2 * Math.PI * (0.45 + 2.4 * state.mfreq / 100);
+  poseMotion();
+}
+function setMotionLabels() {
+  if (!uniq) return;
+  const names = ['mid_coil', 'mid_cone', 'tweeter_dome', 'mid_magnet', 'mid_spider'];
+  callouts.set(names.filter((n) => parts.has(n) && PART_LABEL[n]).map((n) => ({ id: n, text: L(...PART_LABEL[n]), world: anchorOf(n) })));
+  occlusionDirty = true;
+}
+const fmtLen = (x) => (x >= 1e-3 ? (x * 1e3).toFixed(x >= 1e-2 ? 1 : 2) + ' mm' : x >= 1e-6 ? (x * 1e6).toFixed(x >= 1e-5 ? 0 : 1) + ' µm' : (x * 1e9).toFixed(0) + ' nm');
+function updateMotion() {
+  const f = motionFreq(), xw = coneTravel(f), xt = domeTravel(f), lo = lr4lo(f);
+  const o = $('#mfreq-value'); if (!o) return;
+  o.textContent = (f >= 1000 ? (f / 1000).toFixed(f >= 10000 ? 1 : 2) + ' kHz' : Math.round(f) + ' Hz');
+  $('#mx-woofer').textContent = fmtLen(xw); $('#mx-tweeter').textContent = fmtLen(xt);
+  $('#mx-share').textContent = lo > 0.75 ? L('cone', 'コーン') : lo < 0.25 ? L('dome', 'ドーム') : L('both', '両方');
+  poseMotion(); drawMotionGraph(); lab?.invalidate();
+}
+function drawMotionGraph() {
+  const cv = $('#motion-graph'); if (!cv || cv.closest('[hidden]')) return;
+  const r = cv.getBoundingClientRect(); if (!r.width) return;
+  const dpr = Math.min(2, devicePixelRatio || 1), W = Math.round(r.width * dpr), H = Math.round(r.height * dpr);
+  if (cv.width !== W || cv.height !== H) { cv.width = W; cv.height = H; }
+  const g = cv.getContext('2d'); g.setTransform(dpr, 0, 0, dpr, 0, 0); const w = r.width, h = r.height; g.clearRect(0, 0, w, h);
+  const cs = getComputedStyle(cv), ink = cs.color || '#222', x0 = 46, x1 = w - 12, y0 = 12, y1 = h - 30;
+  const fx = (f) => x0 + (Math.log10(f / 40) / Math.log10(500)) * (x1 - x0), yx = (x) => y1 - ((Math.log10(Math.max(x, 1e-7) * 1e6) + 1) / 5.3) * (y1 - y0);   // 0.1 um .. 20 mm
+  g.font = '11px Arial, sans-serif'; g.fillStyle = ink; g.strokeStyle = ink; g.globalAlpha = 0.16; g.lineWidth = 1;
+  for (const f of [100, 1000, 10000]) { g.beginPath(); g.moveTo(fx(f), y0); g.lineTo(fx(f), y1); g.stroke(); }
+  for (const x of [1e-6, 1e-5, 1e-4, 1e-3, 1e-2]) { g.beginPath(); g.moveTo(x0, yx(x)); g.lineTo(x1, yx(x)); g.stroke(); }
+  g.globalAlpha = 0.75; g.textAlign = 'center'; for (const [f, t] of [[40, '40'], [100, '100'], [1000, '1k'], [10000, '10k'], [20000, '20k']]) g.fillText(t, fx(f), y1 + 14);
+  g.fillText(L('frequency, Hz', '周波数（Hz）'), (x0 + x1) / 2, h - 3);
+  g.textAlign = 'right'; for (const [x, t] of [[1e-6, '1 µm'], [1e-5, '10 µm'], [1e-4, '0.1 mm'], [1e-3, '1 mm'], [1e-2, '10 mm']]) g.fillText(t, x0 - 5, yx(x) + 4);
+  g.globalAlpha = 0.5; g.setLineDash([4, 4]); g.beginPath(); g.moveTo(fx(FC), y0); g.lineTo(fx(FC), y1); g.stroke(); g.setLineDash([]);
+  g.textAlign = 'left'; g.fillText(L('crossover 2.5 kHz', 'クロスオーバー 2.5 kHz'), fx(FC) + 5, y0 + 10);
+  const line = (fn, col) => { g.globalAlpha = 1; g.strokeStyle = col; g.lineWidth = 2.2; g.beginPath(); let pen = false; for (let i = 0; i <= 160; i++) { const f = 40 * Math.pow(500, i / 160), X = fx(f), Y = yx(fn(f)); if (Y > y1 || Y < y0) { pen = false; continue; } if (pen) g.lineTo(X, Y); else { g.moveTo(X, Y); pen = true; } } g.stroke(); };
+  const cw = '#7b93a8', ct = '#d08a3c';
+  line(coneTravel, cw); line(domeTravel, ct);
+  g.globalAlpha = 1; g.fillStyle = cw; g.fillText(L('cone', 'コーン'), fx(300) + 8, yx(coneTravel(300)) - 6); g.fillStyle = ct; g.fillText(L('dome', 'ドーム'), fx(7000) + 8, yx(domeTravel(7000)) - 6);
+  const f = motionFreq(); g.strokeStyle = ink; g.globalAlpha = 0.9; g.lineWidth = 1.2; g.beginPath(); g.moveTo(fx(f), y0); g.lineTo(fx(f), y1); g.stroke();
+  for (const [fn, col] of [[coneTravel, cw], [domeTravel, ct]]) { const Y = yx(fn(f)); if (Y < y1 - 1) { g.fillStyle = col; g.beginPath(); g.arc(fx(f), Math.max(y0, Y), 4.5, 0, 7); g.fill(); g.strokeStyle = '#fff'; g.lineWidth = 1.5; g.stroke(); } }
+}
+// keep drawing for a while after anything loads: pipelines and textures finish compiling over several frames, and under
+// reduced motion (render on demand) nothing else would ask for those frames
+function burst(ms = 2000) { if (!lab) return; const end = performance.now() + ms; const tick = () => { lab.invalidate(); if (performance.now() < end) requestAnimationFrame(tick); }; tick(); }
+
 // ------------------------------------------------------------------ camera
 function views(m, which) {
   const ex = state.explode / 100;
@@ -424,8 +496,8 @@ function views(m, which) {
     const n = Math.hypot(...dir);
     return { target: [0, 0.05, 1.4], to: [dir[0] / n * d, 0.05 + dir[1] / n * d, 1.4 + dir[2] / n * d], min: 1.5, max: Math.max(9, d * 1.3) };
   }
-  if (m === 'driver') {
-    const f = which === 'hero' && focusSphere();
+  if (m === 'driver' || m === 'motion') {
+    const f = m === 'driver' && which === 'hero' && focusSphere();
     if (f) {   // frame the selected group: same direction as the hero view, distance to fit
       const t = Math.tan(THREE.MathUtils.degToRad(lab.camera.fov) / 2), asp = Math.min(1, lab.camera.aspect);
       const d = Math.max(1.6, f.radius / (t * asp) * 1.25), dir = new THREE.Vector3(4.3, 2.0, 3.2).normalize();
@@ -457,19 +529,25 @@ function zoom(f) { if (!lab) return; transition = null; const d = lab.camera.pos
 
 // ------------------------------------------------------------------ modes
 function setMode(mode) {
-  state.mode = mode; product.visible = mode === 'product'; driver.visible = mode === 'driver'; paths.visible = mode === 'paths';
+  state.mode = mode; product.visible = mode === 'product'; driver.visible = mode === 'driver' || mode === 'motion'; paths.visible = mode === 'paths';
   $$('[data-mode]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.mode === mode)));
   const c = copy[mode]; const k = ja ? 4 : 0;
   $('#panel-number').textContent = c[k]; $('#panel-title').innerHTML = c[k + 1]; $('#panel-copy').textContent = c[k + 2]; $('#scene-caption').textContent = c[k + 3];
-  $('#product-panel').hidden = mode !== 'product'; $('#driver-panel').hidden = mode !== 'driver'; $('#paths-panel').hidden = mode !== 'paths';
+  $('#product-panel').hidden = mode !== 'product'; $('#driver-panel').hidden = mode !== 'driver'; $('#paths-panel').hidden = mode !== 'paths'; { const mp = $('#motion-panel'); if (mp) mp.hidden = mode !== 'motion'; }
   host.closest('.viewport')?.setAttribute('data-mode', mode);
   const legend = $('#field-legend'); if (legend) legend.hidden = mode !== 'paths';
   if (analysis) analysis.hidden = mode !== 'paths';
   if (look?.floor) look.floor.visible = mode !== 'paths';
   callouts.set([]);
-  if (mode === 'driver') { if (!uniq) loadDriver().then(() => { cameraView(state.camera, false); lab.invalidate(); }); else setDriverLabels(); }
+  if (mode === 'driver' || mode === 'motion') {
+    if (mode === 'motion') { state.explode = 0; state.part = 'all'; const ex = $('#explode'); if (ex) { ex.value = 0; $('#explode-value').textContent = '0%'; } $$('[data-part]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.part === 'all'))); }
+    if (!uniq) loadDriver().then(() => { cameraView(state.camera, false); if (state.mode === 'motion') { layoutDriver(); setMotionLabels(); updateMotion(); } burst(2500); });
+    else { layoutDriver(); if (mode === 'motion') { setMotionLabels(); updateMotion(); } else setDriverLabels(); }
+  }
+  if (mode !== 'motion' && uniq) restMotion();
   if (mode === 'paths') updatePaths();
-  if (spin) { spin.set(mode === 'product'); lab?.setOnDemand(mode !== 'product' || reduced.matches); }
+  if (spin) { spin.set(mode === 'product'); lab?.setOnDemand((mode !== 'product' && mode !== 'motion') || reduced.matches); }
+  burst(1800);
   cameraView('hero'); lab?.invalidate();
 }
 function setPart(part) {
@@ -494,10 +572,11 @@ lab = await mountLab(canvas, {
     controls.addEventListener('change', () => { occlusionDirty = true; L_.invalidate(); }); controls.addEventListener('start', () => { transition = null; userOrbit = true; });
     spin = turntable(controls, canvas, { speed: 0.45, resumeAfter: 9000 });
     return {
-      update() {
+      update(dt) {
         if (transition) { const t = Math.min(1, (performance.now() - transition.start) / 750), s = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; camera.position.lerpVectors(transition.from, transition.to, s); controls.target.lerpVectors(transition.oldTarget, transition.target, s); controls.update(); if (t >= 1) transition = null; else L_.invalidate(); }
         else if (controls.autoRotate && state.mode === 'product') { controls.update(); spin.tick(); }
         else if (state.mode === 'product') spin.tick();
+        if (state.mode === 'motion' && uniq && !reduced.matches) stepMotion(Math.min(0.05, dt || 0.016));
         callouts.update(camera);
         if (occlusionDirty && !transition) { clearTimeout(occlusionTimer); occlusionDirty = false; occlusionTimer = setTimeout(testOcclusion, 160); }
       },
@@ -531,6 +610,7 @@ $('#explode').oninput = (e) => { state.explode = +e.target.value; $('#explode-va
 $('#angle').oninput = (e) => { state.angle = +e.target.value; $('#angle-value').textContent = state.angle + '°'; updatePaths(); lab?.invalidate(); };
 $('#frequency').oninput = (e) => { state.frequency = +e.target.value; $('#frequency-value').textContent = state.frequency.toLocaleString(ja ? 'ja-JP' : 'en-GB') + ' Hz'; updatePaths(); lab?.invalidate(); };
 $('#reset').onclick = () => { state.explode = 0; $('#explode').value = 0; $('#explode-value').textContent = '0%'; state.angle = 30; $('#angle').value = 30; $('#angle-value').textContent = '30°'; state.frequency = 2000; $('#frequency').value = 2000; $('#frequency-value').textContent = '2,000 Hz'; state.layout = 'coincident'; $$('[data-layout]').forEach((x) => x.setAttribute('aria-pressed', String(x.dataset.layout === 'coincident'))); layoutDriver(); if (state.mode === 'paths') updatePaths(); cameraView('hero'); };
+{ const mf = $('#mfreq'); if (mf) mf.oninput = (e) => { state.mfreq = +e.target.value; updateMotion(); }; const mg = $('#motion-graph'); if (mg) new ResizeObserver(() => drawMotionGraph()).observe(mg); }
 $('#zoom-in').onclick = () => zoom(0.85); $('#zoom-out').onclick = () => zoom(1 / 0.85);
 $('#inspect')?.addEventListener('click', () => setMode('driver'));
 window.experience = { state, setMode, cameraView, setPart, lab, callouts };
