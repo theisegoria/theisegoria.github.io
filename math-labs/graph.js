@@ -163,7 +163,8 @@
     'zippers': ['pin-tumbler-locks', 'gears-mechanisms', 'classical-mechanics'],
     'ballpoint-pens': ['fluid-dynamics', 'printers', 'espresso-machines'],
     'car-transmissions': ['gears-mechanisms', 'piston-engines', 'bicycles'],
-    'car-suspension': ['washing-machines', 'control-theory', 'car-transmissions']
+    'car-suspension': ['washing-machines', 'control-theory', 'car-transmissions'],
+    'disc-brakes': ['car-suspension', 'car-transmissions', 'thermodynamics']
   };
   // Topics named in each topic's own prerequisite line (content.json "prerequisite").
   const PREREQ = {
@@ -259,7 +260,8 @@
     'zippers': ['classical-mechanics'],
     'ballpoint-pens': ['fluid-dynamics'],
     'car-transmissions': ['gears-mechanisms', 'classical-mechanics'],
-    'car-suspension': ['classical-mechanics']
+    'car-suspension': ['classical-mechanics'],
+    'disc-brakes': ['classical-mechanics', 'thermodynamics']
   };
 
   let topics = [], bySlug = new Map(), edges = [], drawn = [];
