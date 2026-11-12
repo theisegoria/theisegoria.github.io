@@ -1,0 +1,17 @@
+// Car suspension: natural frequencies follow their formulas; the frequency response is 1 at low frequency, falls
+// off at high frequency and matches a direct simulation; the bump simulation starts and ends at rest; the damper
+// follows a square law below blow-off and is continuous through it.
+module.exports = (M, { ok, near }) => {
+  near(M.rideHz(25000, 350), 1.3451, 1e-4); near(M.hopHz(25000), 11.9366, 1e-3); near(M.cOf(25000, 350, 0.3), 1774.82, 0.01); near(M.rideHz(100000, 350) / M.rideHz(25000, 350), 2, 1e-12);
+  { const r = M.response(0.01, 25000, 350, 0.3); near(r.body, 1, 1e-3); near(r.wheel, 1, 1e-3); near(r.tyre, 0, 1e-4); } near(M.response(200, 25000, 350, 0.3).body, 0, 1e-3);
+  near(M.response(M.rideHz(25000, 350), 25000, 350, 0.3).body, 2.1948, 1e-3); near(M.response(M.hopHz(25000), 25000, 350, 0.3).tyre, 1.8302, 1e-3); near(M.response(M.hopHz(25000), 25000, 350, 0.3).body, 0.10207, 1e-4);
+  ok(M.response(1.35, 25000, 350, 0.1).body > M.response(1.35, 25000, 350, 0.3).body && M.response(1.35, 25000, 350, 0.3).body > M.response(1.35, 25000, 350, 0.8).body, 'more damping, less body resonance');
+  ok(M.response(5, 25000, 350, 0.8).body > M.response(5, 25000, 350, 0.1).body, 'more damping passes more between the resonances'); ok(M.response(11.9, 25000, 350, 0.1).tyre > M.response(11.9, 25000, 350, 0.8).tyre, 'more damping calms wheel hop');
+  { const f = 3, ks = 25000, ms = 350, z = 0.3, c = M.cOf(ks, ms, z), dt = 1e-4; let zs = 0, vs = 0, zu = 0, vu = 0, amp = 0; for (let t = 0; t < 12; t += dt) { const zr = Math.sin(2 * Math.PI * f * t), fs = -ks * (zs - zu) - c * (vs - vu), ft = -M.KT * (zu - zr); vs += fs / ms * dt; vu += (-fs + ft) / M.MU * dt; zs += vs * dt; zu += vu * dt; if (t > 9) amp = Math.max(amp, Math.abs(zs)); } near(amp, M.response(f, ks, ms, z).body, 0.01); }
+  const s = M.bumpSim(25000, 350, 0.3, 0.08, 20 / 3.6); near(s.dur, 0.09, 1e-12); near(s.peak * 1000, 31.74, 0.1); near(s.amax / 9.81, 1.852, 0.01); near(s.settle, 1.47, 0.03); near(s.tr[0].zs, 0, 1e-12); ok(Math.abs(s.tr[s.tr.length - 1].zs) < 0.002, 'settled by the end');
+  ok(Math.max(...s.tr.map((q) => q.zr)) <= 0.08 + 1e-9 && Math.max(...s.tr.map((q) => q.zr)) > 0.079, 'bump has the stated height'); ok(s.peak < 0.08, 'the body rises less than the bump');
+  const lo = M.bumpSim(25000, 350, 0.1, 0.08, 20 / 3.6), hi = M.bumpSim(25000, 350, 0.8, 0.08, 20 / 3.6); ok(lo.settle > s.settle && s.settle > hi.settle, 'damping shortens settling'); ok(hi.amax > s.amax && s.amax > lo.amax, 'damping hardens the first kick'); near(M.bumpSim(25000, 350, 0.3, 0.04, 20 / 3.6).peak / s.peak, 0.5, 1e-6);
+  const Ap = Math.PI * 0.018 ** 2, a = Math.PI * 0.0015 ** 2; near(Ap * 1e4, 10.179, 1e-3); near(M.damperForce(0.1, 36, 3, 1200).F, 425 * (Ap * 0.1 / (0.7 * a)) ** 2 * Ap, 1e-6); near(M.damperForce(0.1, 36, 3, 1200).F, 183.07, 0.01); near(M.damperForce(0.2, 36, 3, 1e9).F / M.damperForce(0.1, 36, 3, 1e9).F, 4, 1e-9);
+  const d = M.damperForce(0.3, 36, 3, 1200); near(d.vb, 0.25603, 1e-4); near(d.F, 1226.38, 0.01); ok(d.open && !M.damperForce(0.2, 36, 3, 1200).open, 'valve lifts above its speed'); near(M.damperForce(d.vb, 36, 3, 1200).F, 1200, 1e-6); near(M.damperForce(-0.3, 36, 3, 1200).F, -2 * d.F, 1e-9);
+  near(M.damperForce(1, 36, 3, 1200).F, 1646.38, 0.01); near(M.damperForce(1, 36, 3, 1e9).F / 1000, 18.307, 0.01); near(d.F * 0.3, 367.9, 0.1); near(M.heatRise(1275), 1, 1e-9);
+};

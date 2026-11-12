@@ -25600,5 +25600,211 @@
         "url": "https://doi.org/10.1007/978-3-642-16214-5"
       }
     ]
+  },
+  {
+    "slug": "car-suspension",
+    "title": [
+      "Car suspension: springs, dampers and the road",
+      "自動車のサスペンション：ばね、ダンパー、路面"
+    ],
+    "description": [
+      "A car’s suspension has two jobs that pull in opposite directions. It must let the wheels follow every rise and dip of the road so that the tyres keep pressing on it, and it must stop those rises and dips reaching the people inside. Springs do the separating: a body on soft springs has a slow rhythm of its own and ignores anything faster. But a spring alone gives back all the energy it takes in, so a sprung body would bounce for ever. The damper is there to throw that energy away as heat. How stiff the damper should be has no single answer, because what calms the body unsettles the wheel. These experiments sweep the road from slow swells to sharp ripples, drive one corner of a car over a bump, and look at the oil and valves inside the damper.",
+      "自動車のサスペンションには、相反する二つの役目があります。タイヤが路面を押し続けられるように、車輪を路面のあらゆる起伏に追従させなければなりません。同時に、その起伏が車内の人に届かないようにしなければなりません。両者を切り離すのは、ばねです。柔らかいばねの上の車体は、ゆっくりした固有の調子を持ち、それより速い動きには反応しません。しかし、ばねだけでは、受け取ったエネルギーをすべて返してしまうので、ばねの上の車体はいつまでも弾み続けます。ダンパーは、そのエネルギーを熱として捨てるためにあります。ダンパーをどれだけ硬くすべきかに、一つの答えはありません。車体を落ち着かせるものが、車輪を落ち着かなくするからです。ここでの実験では、ゆったりしたうねりから細かな凹凸まで路面を変え、車の一つのコーナーで段差を越え、ダンパーの中の油と弁を調べます。"
+    ],
+    "group": "engineering",
+    "prerequisite": [
+      "A mass on a spring, damping and resonance, energy and power",
+      "ばねに付いたおもり、減衰と共振、エネルギーと仕事率"
+    ],
+    "source": "T. D. Gillespie · Fundamentals of Vehicle Dynamics (SAE International, 1992), chapter 5 on ride",
+    "url": "https://doi.org/10.4271/R-114",
+    "labs": [
+      {
+        "id": "ride-frequency",
+        "title": [
+          "1. Comfort against grip",
+          "1. 乗り心地とグリップ"
+        ],
+        "body": [
+          "The simplest useful picture of a suspension is one corner of the car: a share of the body resting on a spring and a damper, which rest on the wheel, which rests on the tyre, itself a short stiff spring. This system has two natural rhythms. The body bounces on the suspension spring about once a second, and the much lighter wheel bounces between the tyre and the suspension about twelve times a second. A road that rises and falls slowly lifts everything together. One that moves near the body’s rhythm makes the body swing further than the road. One that moves much faster is absorbed by the wheel while the body stays level, which is the whole purpose of the spring. The damper limits both resonances, but it also links body and wheel, so a stiff damper passes more of the fast movements through. Comfort is measured by how much the body moves, grip by how much the squash of the tyre varies, and the two respond differently to the same damper.",
+          "サスペンションの最も単純で役に立つ見方は、車の一つのコーナーです。車体の一部が、ばねとダンパーの上に載り、それが車輪の上に載り、車輪はタイヤの上に載っています。タイヤ自身も、短くて硬いばねです。この系には、二つの固有の調子があります。車体は、サスペンションのばねの上で毎秒約 1 回弾み、ずっと軽い車輪は、タイヤとサスペンションの間で毎秒約 12 回弾みます。ゆっくり上下する路面は、すべてを一緒に持ち上げます。車体の調子に近い速さで動く路面は、車体を路面より大きく揺らします。それよりずっと速い動きは車輪が吸収し、車体は水平を保ちます。これこそが、ばねの目的です。ダンパーは両方の共振を抑えますが、同時に車体と車輪をつなぐので、硬いダンパーは速い動きをより多く伝えます。乗り心地は車体の動きで、グリップはタイヤのつぶれの変動で測られ、同じダンパーに対して、両者は異なる反応を示します。"
+        ],
+        "formula": "f_{\\rm body}=\\frac{1}{2\\pi}\\sqrt{\\frac{k_s}{m_s}},\\qquad f_{\\rm wheel}=\\frac{1}{2\\pi}\\sqrt{\\frac{k_s+k_t}{m_u}},\\qquad \\zeta=\\frac{c}{2\\sqrt{k_sm_s}}",
+        "example": [
+          "A body share of 350 kg on a spring of 25 kN/m bounces at \\(\\sqrt{25000/350}/2\\pi=1.35\\) Hz, and sags 137 mm under its own weight. A 40 kg wheel between that spring and a tyre of 200 kN/m hops at \\(\\sqrt{225000/40}/2\\pi=11.9\\) Hz. With a damping ratio of 0.3 the damper is 1775 N s/m; the body then moves 2.2 times as far as the road at 1.35 Hz and only a tenth as far at 11.9 Hz, where the squash of the tyre varies by 1.8 times the road’s movement.",
+          "25 kN/m のばねに載った 350 kg の車体は、\\(\\sqrt{25000/350}/2\\pi=1.35\\) Hz で弾み、自分の重さで 137 mm 沈みます。そのばねと 200 kN/m のタイヤの間にある 40 kg の車輪は、\\(\\sqrt{225000/40}/2\\pi=11.9\\) Hz で弾みます。減衰比 0.3 では、ダンパーは 1775 N s/m です。このとき、車体は 1.35 Hz で路面の 2.2 倍動き、11.9 Hz では 10 分の 1 しか動きません。そこでは、タイヤのつぶれが路面の動きの 1.8 倍変動します。"
+        ],
+        "caution": [
+          "This is the quarter-car model: one wheel, moving only up and down, with a spring and damper that are perfectly linear and a tyre that never leaves the road. Pitch and roll of the whole body, the geometry of the arms, the rubber bushes and the friction in the damper are all left out.",
+          "これは、クォーターカーモデルです。車輪は一つで、上下にだけ動き、ばねとダンパーは完全に線形で、タイヤは路面から離れないとしています。車体全体の前後や左右の傾き、アームの幾何学、ゴムブッシュ、ダンパーの摩擦は、すべて省いています。"
+        ],
+        "question": [
+          "Why are sports cars sprung more stiffly, when stiffer springs let more of the road through?",
+          "硬いばねは路面の動きをより多く伝えるのに、スポーツカーのばねが硬いのはなぜですか。"
+        ],
+        "answer": [
+          "Stiff springs keep the body level in corners and under braking, so the tyres stay square to the road, and they raise the body’s rhythm so that it responds faster to the driver. The price is paid in comfort between the two resonances, which matters less on a smooth track.",
+          "硬いばねは、カーブやブレーキのときに車体を水平に保つので、タイヤが路面に正しく接し続けます。また、車体の調子を速くするので、運転者の操作に素早く反応します。その代償は、二つの共振の間での乗り心地ですが、滑らかなサーキットでは、あまり問題になりません。"
+        ],
+        "params": [
+          [
+            "z",
+            "Damping ratio",
+            "減衰比",
+            0.1,
+            1,
+            0.05,
+            0.3
+          ],
+          [
+            "ks",
+            "Spring rate (kN/m)",
+            "ばね定数（kN/m）",
+            10,
+            60,
+            1,
+            25
+          ],
+          [
+            "ms",
+            "Body mass on this corner (kg)",
+            "このコーナーが支える車体の質量（kg）",
+            200,
+            500,
+            10,
+            350
+          ]
+        ],
+        "source": "T. D. Gillespie · Fundamentals of Vehicle Dynamics (SAE International, 1992), chapter 5 on ride",
+        "url": "https://doi.org/10.4271/R-114"
+      },
+      {
+        "id": "bump-response",
+        "title": [
+          "2. Over a bump",
+          "2. 段差を越える"
+        ],
+        "body": [
+          "Follow one event in time. The tyre meets a bump and is pushed up in a few hundredths of a second. The wheel, being light, goes with it. The spring between wheel and body is squeezed and begins to push the body upward, but the body is heavy and has hardly moved by the time the bump has passed, so the wheel comes down again and most of the push is withdrawn. What the body receives is a short shove, after which it rises and falls at its own slow rhythm. With no damper it would go on doing so. With a damper, each swing is smaller than the last by a fixed fraction, and the fraction is set by the damping ratio: at 0.3 the second swing is about a third of the first, and at 1 the body returns without overshooting at all. Too much damping, though, makes the first shove harder, because the damper resists the wheel’s rise as stiffly as it resists the body’s bounce.",
+          "一つの出来事を、時間を追って見てみます。タイヤが段差に当たり、100 分の数秒で押し上げられます。軽い車輪は、それに従います。車輪と車体の間のばねが縮み、車体を押し上げ始めますが、車体は重く、段差を過ぎるころにはほとんど動いていません。そのため車輪は再び下がり、押す力のほとんどはなくなります。車体が受け取るのは短いひと押しで、その後、車体は自分のゆっくりした調子で上下します。ダンパーがなければ、それが続きます。ダンパーがあると、揺れは 1 回ごとに一定の割合で小さくなり、その割合は減衰比で決まります。0.3 では、2 回目の揺れは 1 回目の約 3 分の 1 で、1 では、車体はまったく行き過ぎずに戻ります。しかし、減衰が強すぎると、最初のひと押しが強くなります。ダンパーは、車体の弾みに抵抗するのと同じ硬さで、車輪の上昇にも抵抗するからです。"
+        ],
+        "formula": "m_s\\ddot z_s=-k_s(z_s-z_u)-c(\\dot z_s-\\dot z_u),\\qquad m_u\\ddot z_u=k_s(z_s-z_u)+c(\\dot z_s-\\dot z_u)-k_t(z_u-z_r)",
+        "example": [
+          "A bump 80 mm high and 0.5 m long crossed at 20 km/h lasts \\(0.5/5.56=90\\) ms. With a damping ratio of 0.3 the body rises 32 mm, 40 per cent of the bump, feels a peak of 1.9 \\(g\\), and has settled within 1.5 s. At 0.1 it rises 33 mm but takes 2.2 s to settle. At 0.8 it rises 47 mm with a peak of 3.0 \\(g\\), and settles in 0.6 s.",
+          "高さ 80 mm、長さ 0.5 m の段差を時速 20 km で越えると、段差の上にいる時間は \\(0.5/5.56=90\\) ms です。減衰比 0.3 では、車体は段差の 40 % にあたる 32 mm 上がり、最大 1.9 \\(g\\) を受け、1.5 秒以内に落ち着きます。0.1 では 33 mm 上がりますが、落ち着くまでに 2.2 秒かかります。0.8 では 47 mm 上がり、最大 3.0 \\(g\\) を受け、0.6 秒で落ち着きます。"
+        ],
+        "caution": [
+          "The corner is a generic strut suspension drawn to scale and shown in slow motion, with 350 kg of body on a 25 kN/m spring. The tyre is a linear spring fixed to the road, so where the model says it unloads by more than its 19 mm of resting squash, a real wheel would leave the ground. The strut moves straight up and down, and its lean and the swing of the lower arm are ignored in the forces.",
+          "コーナーは、一般的なストラット式サスペンションを縮尺どおりに描き、スローモーションで表示しています。25 kN/m のばねに 350 kg の車体が載っています。タイヤは、路面に固定された線形のばねとしています。そのため、静止時のつぶれである 19 mm を超えて荷重が抜けるとモデルが示す場合、実際の車輪は地面から離れます。ストラットはまっすぐ上下に動くとし、その傾きとロアアームの揺れは、力の計算では無視しています。"
+        ],
+        "question": [
+          "A car with worn-out dampers is pushed down on one corner and released. What does it do, and what should a healthy one do?",
+          "ダンパーがへたった車の一つの角を押し下げて、離します。車はどうなりますか。また、正常な車はどうなるべきですか。"
+        ],
+        "answer": [
+          "With little damping the corner rises past its resting height, sinks again and repeats several times. A healthy damper, with a ratio near 0.3, lets it rise, overshoot slightly once, and stop.",
+          "減衰がほとんどないと、角は静止時の高さを通り過ぎて上がり、再び沈み、これを何度も繰り返します。減衰比が 0.3 に近い正常なダンパーでは、角は上がり、一度わずかに行き過ぎて、止まります。"
+        ],
+        "params": [
+          [
+            "z",
+            "Damping ratio",
+            "減衰比",
+            0.05,
+            1,
+            0.05,
+            0.3
+          ],
+          [
+            "h",
+            "Height of the bump (mm)",
+            "段差の高さ（mm）",
+            20,
+            120,
+            10,
+            80
+          ],
+          [
+            "v",
+            "Road speed (km/h)",
+            "速度（km/h）",
+            5,
+            60,
+            5,
+            20
+          ]
+        ],
+        "source": "T. D. Gillespie · Fundamentals of Vehicle Dynamics (SAE International, 1992), chapter 5 on ride",
+        "url": "https://doi.org/10.4271/R-114"
+      },
+      {
+        "id": "damper-valve",
+        "title": [
+          "3. Inside the damper",
+          "3. ダンパーの中"
+        ],
+        "body": [
+          "A damper is a piston in a tube of oil. For the piston to move, oil must pass from one side of it to the other through small holes, and forcing a liquid through a small hole takes a pressure that rises as the square of the flow. A damper with nothing but a fixed hole would therefore be far too soft at low speeds, where it must control the slow bounce of the body, and far too hard at high speeds, where a sharp bump would be passed straight to the body. So the holes are covered by thin sprung discs. At low speed the oil uses a small bleed hole and the force rises steeply; at a set pressure the discs lift, uncovering a larger passage, and the force rises only gently after that. Separate discs for the two directions make the damper firmer when it is pulled out than when it is pushed in. Whatever the curve, the work done against the damper becomes heat in the oil.",
+          "ダンパーは、油の入った筒の中のピストンです。ピストンが動くには、油が小さな穴を通って、ピストンの一方の側から他方へ移らなければなりません。液体を小さな穴に押し通すのに必要な圧力は、流量の 2 乗で増えます。そのため、決まった穴だけのダンパーは、車体のゆっくりした弾みを抑えるべき低速では柔らかすぎ、鋭い段差がそのまま車体に伝わる高速では硬すぎます。そこで、穴は、ばねの働きをする薄い円板で覆われています。低速では、油は小さな抜け穴を通り、力は急に増えます。決まった圧力で円板が持ち上がって大きな通路が開き、その後、力は緩やかにしか増えません。二つの向きに別々の円板を使うことで、ダンパーは、押し込まれるときより引き出されるときに硬くなります。曲線がどうであれ、ダンパーに逆らってなされた仕事は、油の中で熱になります。"
+        ],
+        "formula": "\\Delta p=\\frac{\\rho}{2}\\left(\\frac{A_pv}{C_da}\\right)^{2},\\qquad F=\\Delta p\\,A_p,\\qquad P=Fv,\\qquad \\Delta T=\\frac{E}{\\sum mc}",
+        "example": [
+          "A piston 36 mm across has an area of 10.2 cm². At 0.1 m/s through a 3 mm hole the force is 183 N; by the square law it would be 1650 N at 0.3 m/s, but the valve lifts at 1200 N, reached at 0.26 m/s, and the force at 0.3 m/s is 1226 N pushing in and 2450 N pulling out. At 1 m/s it is 1650 N, where the fixed hole alone would give 18 kN. At 0.3 m/s the damper makes 370 W of heat.",
+          "直径 36 mm のピストンの面積は 10.2 cm² です。3 mm の穴を通して 0.1 m/s で動くとき、力は 183 N です。2 乗の法則では、0.3 m/s で 1650 N になりますが、弁は 0.26 m/s で達する 1200 N で開くので、0.3 m/s での力は、押し込むとき 1226 N、引き出すとき 2450 N です。1 m/s では 1650 N で、決まった穴だけなら 18 kN になります。0.3 m/s のとき、ダンパーは 370 W の熱を生みます。"
+        ],
+        "caution": [
+          "The valve is modelled as a sharp change from a square law to a straight line; real disc stacks open progressively and are tuned shim by shim. The pull-out force is simply twice the push-in force. The gas charge that stops the oil foaming, and the thinning of the oil as it warms, are not included, and the temperature rise ignores cooling by the air.",
+          "弁は、2 乗の法則から直線への急な切り替わりとしてモデル化しています。実際の円板の束は徐々に開き、1 枚ずつ調整されます。引き出すときの力は、単に押し込むときの 2 倍としています。油の泡立ちを防ぐ封入ガスや、温まった油が薄まることは含めていません。温度上昇は、空気による冷却を無視しています。"
+        ],
+        "question": [
+          "Why is a damper made firmer when the wheel drops than when it rises?",
+          "ダンパーが、車輪が上がるときより下がるときに硬く作られているのはなぜですか。"
+        ],
+        "answer": [
+          "When the wheel rises over a bump, a soft damper lets it move out of the way without kicking the body upward. When the spring then pushes the wheel back down, a firm damper stops the stored energy throwing the body up and controls the bounce. Most of the damping is done on the way out.",
+          "車輪が段差で上がるとき、柔らかいダンパーなら、車体を突き上げずに車輪がよけられます。その後、ばねが車輪を押し戻すとき、硬いダンパーは、蓄えられたエネルギーが車体を跳ね上げるのを防ぎ、弾みを抑えます。減衰のほとんどは、伸びるときに行われます。"
+        ],
+        "params": [
+          [
+            "vel",
+            "Piston speed (m/s)",
+            "ピストンの速さ（m/s）",
+            0.05,
+            1.5,
+            0.05,
+            0.3
+          ],
+          [
+            "orifice",
+            "Bleed hole (mm)",
+            "抜け穴の直径（mm）",
+            1.5,
+            5,
+            0.1,
+            3
+          ],
+          [
+            "Fb",
+            "Force at which the valve lifts (N)",
+            "弁が開く力（N）",
+            400,
+            3000,
+            100,
+            1200
+          ],
+          [
+            "piston",
+            "Piston diameter (mm)",
+            "ピストンの直径（mm）",
+            25,
+            50,
+            1,
+            36
+          ]
+        ],
+        "source": "T. D. Gillespie · Fundamentals of Vehicle Dynamics (SAE International, 1992), chapter 5 on ride",
+        "url": "https://doi.org/10.4271/R-114"
+      }
+    ]
   }
 ]
