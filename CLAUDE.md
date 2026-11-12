@@ -307,3 +307,42 @@ The home pages also carry a **Latest encyclopedia entries** section, written by
 the six newest entries by their `added` timestamp in the JSON. `integrate.py`
 stamps new kit topics; give a hand-added standalone entry an `added` value too,
 or it will never appear there. Do not hand-edit the block.
+
+## Catalogue cards and their thumbnails
+
+An `.index` list turns into a grid of cards wherever its entries carry a
+figure (`<span class="th">` as the first child of the link); the rule is
+`.index:has(> a > .th)` in `assets/isegoria.css`, so there is no class to add
+and `check-index.py` still sees an ordinary `<div class="index">`.
+
+`tools/build-math-hub.py` puts a tile on every encyclopedia card (both hubs,
+the home page's subject cards and its Latest encyclopedia entries). The tile is
+`assets/thumbs/<slug>.webp` when that file exists, else a plain tile with the
+title's first letter. To make or refresh tiles, serve the site on port 8770
+and run:
+
+```
+node tools/shoot-thumbs.cjs /tmp/thumbs <slug> [<slug> ...]
+python3 tools/thumbs.py /tmp/thumbs
+python3 tools/build-math-hub.py
+```
+
+`shoot-thumbs.cjs` takes the first 3D scene of a kit topic, or its largest 2D
+figure. A new topic has no tile until this is run, so do it as part of adding
+one. `FACE` in `build-math-hub.py` names the entry whose tile stands for each
+subject on the home page.
+
+## Search, jump links and page transitions
+
+All three live in `assets/site-shell.js` and `assets/site-shell.css`, and all
+are optional layers over ordinary links.
+
+- **Search** (the header button, `/` or Ctrl/Cmd+K) reads the catalogue from
+  `library.html` (or `ja/library.html`) on first use, so anything
+  `tools/update-library.py` lists is searchable and there is no second index.
+- **Jump links** (`nav.ig-page-nav` with three or more in-page links) stick
+  under the header and mark the section in view.
+- **Transitions and prefetch**: `@view-transition` gives a short cross-fade
+  between pages where the browser supports it, and a speculation-rules block
+  prefetches same-site pages on hover. Neither runs inside an iframe, and
+  prefetch is skipped when the reader has asked to save data.

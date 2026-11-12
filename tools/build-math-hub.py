@@ -23,7 +23,7 @@ GROUPS = [
     ('geometry', 'Geometry and transformations', '幾何と変換'),
     ('applications', 'Probability, computation, and reference', '確率・計算・参考資料'),
     ('physics', 'Physics', '物理'),
-    ('engineering', 'Engineering: machines, power and flight', '工学：機械・動力・飛行'),
+    ('engineering', 'Engineering: machines, devices and flight', '工学：機械・機器・飛行'),
 ]
 ATLAS = [('topology', 'Topology', '位相空間'), ('metric', 'Metric spaces', '距離空間'), ('real', 'Real analysis', '実解析'),
          ('complex', 'Complex analysis', '複素解析'), ('functional', 'Functional analysis', '関数解析')]
@@ -31,11 +31,27 @@ PDFS = [('/structure-before-algebra.pdf', 'Structure Before Algebra'), ('/jacobi
         ('/counting-and-probability.pdf', 'Counting &amp; Probability')]
 
 
+THUMBS = ROOT / 'assets/thumbs'
+# the entry whose figure stands for each subject on the home page
+FACE = {'foundations': 'cellular-automata', 'analysis': 'fractal-geometry', 'geometry': 'hyperbolic-geometry',
+        'applications': 'complex-systems', 'physics': 'particle-physics', 'engineering': 'bicycles'}
+
+
+def thumb(e, ja=False):
+    """A figure from the page itself when one has been shot into assets/thumbs
+    (see tools/shoot-thumbs.cjs), else a plain tile with the title's first
+    letter, so the grid stays even."""
+    slug = e['route'].strip('/').replace('/', '-')
+    if (THUMBS / f'{slug}.webp').exists():
+        return f'<span class="th"><img src="/assets/thumbs/{slug}.webp" alt="" width="640" height="400" loading="lazy" decoding="async"></span>'
+    return f'<span class="th is-blank" aria-hidden="true">{html.escape((e["title_ja"] if ja else e["title"])[:1])}</span>'
+
+
 def card(e, ja):
     esc = html.escape
     href = e['route_ja'] if ja else e.get('href', e['route'])
     tail = f'<span class="tail"><span>{esc(e["tail_ja"])}</span></span>' if ja and e.get('tail_ja') else ''
-    return (f'<a href="{esc(href)}"><span class="t">{esc(e["title_ja" if ja else "title"])}</span>'
+    return (f'<a href="{esc(href)}">{thumb(e, ja)}<span class="t">{esc(e["title_ja" if ja else "title"])}</span>'
             f'<span class="d">{esc(e["description_ja" if ja else "description"])}</span>{tail}</a>')
 
 
@@ -88,7 +104,8 @@ def home_section(page, ja):
         else:
             rest = len(names) - len(shown)
             d = f'{len(items)} entries: ' + ', '.join(shown) + (f', and {rest} more' if rest else '')
-        cards.append(f'<a href="{prefix}/math-encyclopedia/#{g}"><span class="t">{esc(j if ja else en)}</span><span class="d">{esc(d)}</span></a>')
+        face = next((e for e in items if e['route'].strip('/') == FACE.get(g)), None) or next((e for e in items if (THUMBS / (e['route'].strip('/').replace('/', '-') + '.webp')).exists()), items[0])
+        cards.append(f'<a href="{prefix}/math-encyclopedia/#{g}">{thumb(face, ja)}<span class="t">{esc(j if ja else en)}</span><span class="d">{esc(d)}</span></a>')
     words = ['Zero', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine']
     label = f'{len(groups)}分野・{len(DATA)}件' if ja else f'{words[len(groups)]} subjects · {len(DATA)} entries'
     m = re.search(r'(<section class="section" id="math-encyclopedia">.*?<p class="label">)[^<]*(</p>.*?<div class="index">).*?(\n    </div></section>)', page, re.S)
@@ -117,7 +134,7 @@ def latest_section(page, ja):
         y, mo, d = (int(x) for x in e['added'][:10].split('-'))
         date = f'{y}年{mo}月{d}日' if ja else f'{d} {MONTHS[mo - 1]} {y}'
         href = e['route_ja'] if ja else e.get('href', e['route'])
-        cards.append(f'<a href="{esc(href)}"><span class="t">{esc(e["title_ja" if ja else "title"])}</span>'
+        cards.append(f'<a href="{esc(href)}">{thumb(e, ja)}<span class="t">{esc(e["title_ja" if ja else "title"])}</span>'
                      f'<span class="d">{esc(e["description_ja" if ja else "description"])}</span>'
                      f'<span class="tail"><span>{esc(names.get(e["group"], ""))}</span><span>{date}</span></span></a>')
     hub = '/ja/math-encyclopedia/' if ja else '/math-encyclopedia/'

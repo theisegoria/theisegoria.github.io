@@ -217,6 +217,44 @@ p { margin: 0; }
 }
 .index .tail span + span::before { content: "·"; margin: 0 .5rem; }
 
+/* the same list as a grid of cards, wherever its entries carry a figure (.th): no class to remember, the markup decides */
+.index:has(> a > .th) {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 16.5rem), 1fr));
+  gap: 2rem 1.75rem; border-top: 0; padding-top: .5rem;
+}
+.index:has(> a > .th) > a {
+  display: flex; flex-direction: column; align-items: stretch; gap: .3rem;
+  margin: 0; padding: 0; border-bottom: 0; background: none;
+}
+.index:has(> a > .th) > a::before { content: none; }
+.index .th {
+  position: relative; display: flex; align-items: center; justify-content: center; flex: none; margin-bottom: .55rem;
+  border: 1px solid var(--rule); border-radius: 8px; overflow: hidden; background: light-dark(#fdfcf9, #1c1a17);
+  transition: border-color .2s ease, box-shadow .2s ease, translate .2s ease;
+}
+.index .th::before { content: ""; width: 0; padding-top: 62.5%; }          /* a 16:10 tile whatever it holds */
+.index .th img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+:root[data-theme="dark"] .index .th img { filter: brightness(.9) contrast(1.02); }
+.index > a:hover .th { border-color: var(--rule-firm); box-shadow: 0 14px 34px rgb(0 0 0 / .1); translate: 0 -3px; }
+.index .th.is-blank {
+  font: italic 2.6rem/1 var(--serif); color: var(--ink-faint);
+  background: repeating-linear-gradient(135deg, transparent 0 11px, light-dark(rgb(0 0 0 / .025), rgb(255 255 255 / .03)) 11px 12px), var(--paper-sunk);
+}
+.index:has(> a > .th) .t { font-size: 1.0625rem; line-height: 1.3; }
+.index:has(> a > .th) .d {
+  font-size: .9rem; line-height: 1.5;
+  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+}
+.index:has(> a > .th) .tail { margin-top: .2rem; }
+@media (max-width: 640px) {
+  .index:has(> a > .th) { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.4rem .9rem; }
+  .index:has(> a > .th) .t { font-size: .95rem; }
+  .index:has(> a > .th) .d { font-size: .8125rem; -webkit-line-clamp: 2; }
+  .index:has(> a > .th) .tail { font-size: .625rem; }
+  .index .th { margin-bottom: .35rem; border-radius: 6px; }
+}
+@media (prefers-reduced-motion: reduce) { .index .th { transition: none; } .index > a:hover .th { translate: none; } }
+
 /* two-column reading list for prose sections */
 .prose-cols { columns: 2; column-gap: 3rem; max-width: 58rem; }
 .prose-cols p { break-inside: avoid; margin-bottom: 1rem; }
