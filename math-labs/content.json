@@ -24220,5 +24220,184 @@
         "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C7732185&Mask=4"
       }
     ]
+  },
+  {
+    "slug": "espresso-machines",
+    "title": [
+      "Espresso machines: nine bar through a centimetre of coffee",
+      "エスプレッソマシン：1 センチのコーヒーに 9 気圧"
+    ],
+    "description": [
+      "Espresso is made by forcing hot water through a tightly packed bed of finely ground coffee in about half a minute. The bed is so fine that water will not pass through it under its own weight; it takes around nine times the pressure of the air, and the whole of that pressure is used up across a layer of coffee a centimetre deep. Three things then decide the drink: how fast the water gets through, which depends on the square of the grain size; how quickly the grains give up what is soluble in them; and how the pump, which weakens as it is asked to push harder, comes to terms with the resistance of the coffee. These experiments set the grind, open the machine from tank to cup, and put the pump, the puck and the relief valve on one diagram.",
+      "エスプレッソは、細かく挽いて固く詰めたコーヒーの粉の層に、熱い湯を約 30 秒で押し通して作ります。この層はとても細かく、水は自分の重さでは通り抜けられません。大気の約 9 倍の圧力が必要で、その圧力はすべて、厚さ 1 センチのコーヒーの層で使い切られます。飲み物の出来を決めるのは、三つのことです。水が通り抜ける速さ（粒の大きさの 2 乗で決まります）、粒が溶ける成分を出す速さ、そして、強く押すほど弱くなるポンプが、コーヒーの抵抗とどう折り合うかです。ここでの実験では、挽き目を決め、タンクからカップまでマシンを開け、ポンプと粉の層と逃がし弁を一つの図に描きます。"
+    ],
+    "group": "engineering",
+    "prerequisite": [
+      "Pressure, viscosity, exponential approach to a limit",
+      "圧力、粘性、指数関数的に限界へ近づく変化"
+    ],
+    "source": "M. I. Cameron et al. · Systematically improving espresso: insights from mathematical modeling and experiment (Matter, 2020)",
+    "url": "https://doi.org/10.1016/j.matt.2019.12.019",
+    "labs": [
+      {
+        "id": "puck-flow",
+        "title": [
+          "1. Flow through the puck",
+          "1. 粉の層を通る流れ"
+        ],
+        "body": [
+          "Water threading its way between packed grains moves slowly enough for viscosity to rule, and the flow then follows Darcy’s law: it is proportional to the pressure difference and to the area of the bed, and inversely proportional to its depth and to the viscosity of the water. Everything about the bed itself is gathered into one number, the permeability \\(k\\), which goes as the square of the size of the gaps and so as the square of the grain size. That is why the grinder is the most sensitive control on the machine. While the water passes, soluble material diffuses out of the grains. The fraction extracted rises quickly at first and then levels off, and smaller grains are emptied sooner. A shot is judged by how much of the dry coffee ends up dissolved, with 18 to 22 per cent the usual target.",
+          "詰まった粒の間を縫って流れる水は十分に遅く、粘性が支配的になります。このとき流れはダルシーの法則に従い、流量は圧力差と層の面積に比例し、層の厚さと水の粘度に反比例します。層そのものの性質は、透過率 \\(k\\) という一つの数にまとめられます。これはすき間の大きさの 2 乗、つまり粒の大きさの 2 乗に比例します。グラインダーがマシンで最も敏感な調整になるのは、このためです。水が通る間に、溶ける成分が粒から拡散して出てきます。抽出された割合は、最初は速く増え、やがて頭打ちになります。小さい粒ほど早く出し切ります。抽出の良し悪しは、乾いた粉のうちどれだけが溶け出したかで判断され、18 % から 22 % が普通の目安です。"
+        ],
+        "formula": "Q=\\frac{kA\\,\\Delta p}{\\mu L},\\qquad k=k_0\\left(\\frac{d}{d_0}\\right)^{2},\\qquad E(t)=E_{\\max}\\left(1-e^{-t/\\tau}\\right),\\quad \\tau\\propto d^{2}",
+        "example": [
+          "An 18 g dose in a 58 mm basket makes a puck 11.0 mm deep. With 300 μm grains, 9 bar and water at 93 °C the flow is 1.51 mL/s, so a 36 g shot takes 24 s and extracts 19.8 per cent of the coffee, giving a drink that is 9.9 per cent dissolved solids. Grind to 250 μm and the same shot takes 34 s and extracts 26.8 per cent; at 350 μm it takes 17.5 s and extracts 13.3 per cent.",
+          "直径 58 mm のバスケットに 18 g の粉を入れると、厚さ 11.0 mm の層になります。粒が 300 μm、圧力が 9 bar、湯が 93 °C のとき、流量は 1.51 mL/s で、36 g の抽出には 24 秒かかり、粉の 19.8 % が抽出されます。飲み物の溶けた固形分は 9.9 % です。250 μm に挽くと、同じ抽出に 34 秒かかって 26.8 % が抽出され、350 μm では 17.5 秒で 13.3 % になります。"
+        ],
+        "caution": [
+          "The permeability is fitted to a normal shot, not predicted from the grain size: a real grind is a mixture of coarse grains and fine dust, the grains swell when wet, and the fines move, so a formula from grain size alone overestimates the flow many times over. Extraction is a single exponential with a ceiling of 30 per cent. Channelling, where water finds an easy path and bypasses most of the bed, is left out.",
+          "透過率は、粒の大きさから予測したものではなく、普通の抽出に合わせて決めた値です。実際の粉は、粗い粒と細かい微粉が混ざり、粒はぬれると膨らみ、微粉は移動します。そのため、粒の大きさだけから求めた式は、流量を何倍も大きく見積もります。抽出は、上限 30 % の一つの指数関数としています。水が通りやすい道を見つけて層の大半を素通りするチャネリングは、扱っていません。"
+        ],
+        "question": [
+          "A shot runs in 15 seconds and tastes sour. Which way should the grind go, and why does a small change do so much?",
+          "抽出が 15 秒で終わり、酸っぱい味がします。挽き目はどちらへ変えるべきですか。また、わずかな変更が大きく効くのはなぜですか。"
+        ],
+        "answer": [
+          "Finer. The flow goes as the square of the grain size, so grains 20 per cent smaller cut the flow by about a third and lengthen the shot by half. The finer grains also extract faster, so both effects push the same way.",
+          "細かくします。流量は粒の大きさの 2 乗に比例するので、粒を 20 % 小さくすると流量は約 3 分の 1 減り、抽出時間は 1.5 倍になります。細かい粒は抽出も速いので、二つの効果が同じ向きに働きます。"
+        ],
+        "params": [
+          [
+            "d",
+            "Grain size (μm)",
+            "粒の大きさ（μm）",
+            200,
+            450,
+            10,
+            300
+          ],
+          [
+            "dose",
+            "Dose of coffee (g)",
+            "粉の量（g）",
+            14,
+            22,
+            0.5,
+            18
+          ],
+          [
+            "bar",
+            "Pressure (bar)",
+            "圧力（bar）",
+            3,
+            12,
+            0.5,
+            9
+          ]
+        ],
+        "source": "M. I. Cameron et al. · Systematically improving espresso: insights from mathematical modeling and experiment (Matter, 2020)",
+        "url": "https://doi.org/10.1016/j.matt.2019.12.019"
+      },
+      {
+        "id": "espresso-machine",
+        "title": [
+          "2. The machine from tank to cup",
+          "2. タンクからカップまで"
+        ],
+        "body": [
+          "The machine does three jobs in a row. A pump takes cold water from the tank and raises its pressure; in small machines it is a vibratory pump, a piston flicked back and forth by an electromagnet fifty times a second. A boiler or heated block then brings the water to just over 90 °C, hot enough to extract well and not so hot as to scald the coffee. Finally the group head spreads the water through a perforated screen onto the top of the puck, which sits in a metal basket locked underneath. Up to that point the water is all at pump pressure. Below the basket it is at the pressure of the room. So the entire pressure drop falls across the coffee, and the puck must be packed evenly or the water will break through at its weakest place.",
+          "マシンは三つの仕事を順に行います。ポンプが冷たい水をタンクから吸い上げて加圧します。小型のマシンでは、電磁石がピストンを毎秒 50 回往復させる振動ポンプが使われます。次に、ボイラーまたは加熱ブロックが、水を 90 °C 強まで熱します。よく抽出できて、しかもコーヒーを焦がさない温度です。最後に、グループヘッドが、穴の開いたスクリーンを通して、粉の層の上面に湯を広げます。粉の層は、下に固定された金属のバスケットに入っています。そこまでの水は、すべてポンプの圧力にあります。バスケットの下は部屋の圧力です。つまり、圧力の降下はすべてコーヒーの中で起こるので、粉は均一に詰めなければなりません。そうしないと、湯は最も弱い場所を突き破ります。"
+        ],
+        "formula": "\\frac{dp}{dx}=-\\frac{\\Delta p}{L},\\qquad v=\\frac{Q}{A\\varepsilon},\\qquad P_{\\rm heat}=\\dot m\\,c\\,(T-T_0),\\qquad F=\\Delta p\\,A",
+        "example": [
+          "At 9 bar across 11.0 mm the gradient is 0.82 bar per millimetre. The flow of 1.51 mL/s through a basket of area 26.4 cm² that is one fifth open space moves between the grains at 2.9 mm/s, so each drop is in the coffee for 3.8 s. Heating that flow from 20 to 93 °C takes \\(0.00151\\times4186\\times73=461\\) W. The water presses on the puck with \\(9\\times10^{5}\\times0.00264=2380\\) N, the weight of 240 kg.",
+          "11.0 mm に 9 bar がかかるので、勾配は 1 mm あたり 0.82 bar です。面積 26.4 cm² で、その 5 分の 1 がすき間であるバスケットを 1.51 mL/s が流れると、水は粒の間を 2.9 mm/s で進み、水滴は 3.8 秒間コーヒーの中にいます。この流量を 20 °C から 93 °C に熱するには、\\(0.00151\\times4186\\times73=461\\) W が必要です。湯は粉の層を \\(9\\times10^{5}\\times0.00264=2380\\) N、つまり 240 kg の重さに当たる力で押します。"
+        ],
+        "caution": [
+          "The machine is a generic single-boiler design drawn to scale with the case opened; real machines add a three-way valve, thermostats and often a second boiler for steam. The open fraction of the puck is taken as one fifth, and the grind is fixed at 300 μm in this experiment.",
+          "マシンは、一般的なシングルボイラー型を縮尺どおりに描き、ケースを開けたものです。実際のマシンには、三方弁やサーモスタットがあり、蒸気用の第二のボイラーを備えるものも多くあります。粉の層のすき間の割合は 5 分の 1 とし、この実験では挽き目を 300 μm に固定しています。"
+        ],
+        "question": [
+          "Why is the coffee pressed down hard and level with a tamper before the shot?",
+          "抽出の前に、タンパーで粉を強く、水平に押し固めるのはなぜですか。"
+        ],
+        "answer": [
+          "All nine bar is lost across the puck, so any thin or loose spot has the same pressure across less resistance and takes far more than its share of the flow. Water rushing through one channel over-extracts the coffee there and leaves the rest hardly touched.",
+          "9 bar はすべて粉の層で失われるので、薄い場所や緩い場所では、同じ圧力がより小さな抵抗にかかり、流れが集中します。一つの通り道に湯が集まると、そこのコーヒーは抽出されすぎ、残りはほとんど抽出されません。"
+        ],
+        "params": [
+          [
+            "bar",
+            "Pump pressure (bar)",
+            "ポンプの圧力（bar）",
+            3,
+            12,
+            0.5,
+            9
+          ],
+          [
+            "temp",
+            "Water temperature (°C)",
+            "湯の温度（°C）",
+            85,
+            96,
+            1,
+            93
+          ]
+        ],
+        "source": "M. I. Cameron et al. · Systematically improving espresso: insights from mathematical modeling and experiment (Matter, 2020)",
+        "url": "https://doi.org/10.1016/j.matt.2019.12.019"
+      },
+      {
+        "id": "pump-and-valve",
+        "title": [
+          "3. Pump, puck and relief valve",
+          "3. ポンプ、粉の層、逃がし弁"
+        ],
+        "body": [
+          "A pump does not supply a fixed pressure. A vibratory pump moves a lot of water against no resistance and less and less as the pressure it works against rises, until at about 15 bar it moves none. The puck behaves the opposite way: the harder it is pushed, the more it passes. Plot both as pressure against flow and the machine must run where the two lines cross, because only there does the pump deliver exactly what the puck accepts. For a normal puck that crossing is well above nine bar. So the machine carries an over-pressure valve, a spring-loaded outlet between pump and boiler that opens at a set pressure and returns water to the tank. With the valve open, the pump sits further along its curve, the puck gets the set pressure, and the difference in flow goes round again.",
+          "ポンプは、決まった圧力を与えるわけではありません。振動ポンプは、抵抗がなければ多くの水を送りますが、逆らう圧力が上がるにつれて流量が減り、約 15 bar ではまったく送れなくなります。粉の層は逆で、強く押されるほど多く流します。両方を、圧力を流量に対して描くと、マシンは二つの線が交わる点で動かなければなりません。ポンプが送る量と粉の層が受け入れる量が一致するのは、そこだけだからです。普通の粉の層では、その交点は 9 bar よりかなり高くなります。そこでマシンには過圧弁があります。ポンプとボイラーの間にあるばね式の出口で、設定した圧力で開き、水をタンクへ戻します。弁が開くと、ポンプは曲線のより先の点で動き、粉の層には設定した圧力がかかり、流量の差は循環します。"
+        ],
+        "formula": "p_{\\rm pump}=p_{\\max}\\left(1-\\frac{Q}{Q_{\\max}}\\right),\\qquad p_{\\rm puck}=RQ,\\qquad p^{*}=\\frac{p_{\\max}RQ_{\\max}}{p_{\\max}+RQ_{\\max}}",
+        "example": [
+          "The pump reaches 15 bar at no flow and 10.8 mL/s at no pressure. A normal puck has a resistance of 5.96 bar per mL/s, so the lines cross at \\(15\\times5.96\\times10.8/(15+5.96\\times10.8)=12.2\\) bar. With the valve set to 9 bar the puck takes 1.51 mL/s, the pump delivers \\(10.8\\times(1-9/15)=4.32\\) mL/s, and 2.81 mL/s goes back to the tank. A coarse 600 μm grind has a quarter of the resistance: the lines cross at 7.8 bar and the valve never opens.",
+          "ポンプは、流量がないとき 15 bar、圧力がないとき 10.8 mL/s に達します。普通の粉の層の抵抗は 1 mL/s あたり 5.96 bar なので、線は \\(15\\times5.96\\times10.8/(15+5.96\\times10.8)=12.2\\) bar で交わります。弁を 9 bar に設定すると、粉の層は 1.51 mL/s を通し、ポンプは \\(10.8\\times(1-9/15)=4.32\\) mL/s を送り、2.81 mL/s がタンクへ戻ります。600 μm の粗挽きでは抵抗が 4 分の 1 になり、線は 7.8 bar で交わって、弁は開きません。"
+        ],
+        "caution": [
+          "The pump curve is a straight line through the two published end points of a common vibratory pump; the real curve bows a little. The puck is taken as a fixed resistance, though in a real shot it falls as the coffee dissolves. Rotary pumps, used in larger machines, hold their flow nearly constant and are regulated by an internal bypass in the same way.",
+          "ポンプの曲線は、よく使われる振動ポンプの公表されている両端の値を結んだ直線で、実際の曲線は少し曲がっています。粉の層の抵抗は一定としていますが、実際の抽出では、コーヒーが溶けるにつれて下がります。大型のマシンで使われるロータリーポンプは流量がほぼ一定で、同じように内部のバイパスで調圧されます。"
+        ],
+        "question": [
+          "A machine with no over-pressure valve is loaded with a very fine grind. What pressure does the puck see, and what does the shot do?",
+          "過圧弁のないマシンに、とても細かく挽いた粉を入れます。粉の層にかかる圧力と、抽出の様子はどうなりますか。"
+        ],
+        "answer": [
+          "The resistance is large, so the crossing point slides up the pump curve toward 15 bar while the flow falls toward zero. The shot drips out slowly at a pressure well above nine bar and over-extracts.",
+          "抵抗が大きいので、交点はポンプの曲線に沿って 15 bar のほうへ上がり、流量はゼロに近づきます。抽出は 9 bar をかなり超える圧力でゆっくり滴り、抽出過多になります。"
+        ],
+        "params": [
+          [
+            "d",
+            "Grain size (μm)",
+            "粒の大きさ（μm）",
+            200,
+            600,
+            10,
+            300
+          ],
+          [
+            "opv",
+            "Valve setting (bar)",
+            "弁の設定値（bar）",
+            6,
+            15,
+            0.5,
+            9
+          ]
+        ],
+        "source": "M. I. Cameron et al. · Systematically improving espresso: insights from mathematical modeling and experiment (Matter, 2020)",
+        "url": "https://doi.org/10.1016/j.matt.2019.12.019"
+      }
+    ]
   }
 ]
