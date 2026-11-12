@@ -156,7 +156,8 @@
     'microwave-ovens': ['electromagnetism', 'partial-differential-equations', 'plasma-physics'],
     'induction-cooktops': ['microwave-ovens', 'switching-converters', 'electric-motors'],
     'pressure-cookers': ['thermodynamics', 'induction-cooktops', 'fluid-dynamics'],
-    'espresso-machines': ['pressure-cookers', 'fluid-dynamics', 'thermodynamics']
+    'espresso-machines': ['pressure-cookers', 'fluid-dynamics', 'thermodynamics'],
+    'toilets': ['fluid-dynamics', 'espresso-machines', 'pressure-cookers']
   };
   // Topics named in each topic's own prerequisite line (content.json "prerequisite").
   const PREREQ = {
@@ -245,7 +246,8 @@
     'microwave-ovens': ['electromagnetism', 'acoustics'],
     'induction-cooktops': ['electromagnetism', 'crossovers-filters'],
     'pressure-cookers': ['thermodynamics'],
-    'espresso-machines': ['fluid-dynamics']
+    'espresso-machines': ['fluid-dynamics'],
+    'toilets': ['fluid-dynamics']
   };
 
   let topics = [], bySlug = new Map(), edges = [], drawn = [];
