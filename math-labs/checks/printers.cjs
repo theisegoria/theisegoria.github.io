@@ -1,0 +1,16 @@
+// Printers: drop diameter inverts the sphere volume; grid coverage agrees with a Monte Carlo-free direct pixel count and
+// has the right limits; landing offset is u h / v; the discharge law has its limits; an erf pixel integrates to the pixel
+// width; development widens monotonically with exposure and vanishes below threshold; engine relations hold exactly.
+module.exports = (M, { ok, near }) => {
+  for (const V of [1, 4, 30]) near((Math.PI / 6) * M.dropDiameter(V) ** 3, 1000 * V, 1e-6); near(M.dropDiameter(4), 19.695, 1e-3); near(M.dropDiameter(8) / M.dropDiameter(1), 2, 1e-12); near(M.pitch(600), 42.333, 1e-3);
+  for (const [r, p] of [[15, 42.3], [21.15, 42.3], [25, 42.3], [28, 42.3], [29.9, 42.3]]) { let inside = 0; const n = 400; for (let i = 0; i < n; i++) for (let j = 0; j < n; j++) { const x = ((i + 0.5) / n) * p, y = ((j + 0.5) / n) * p; if (Math.min(Math.hypot(x, y), Math.hypot(x - p, y), Math.hypot(x, y - p), Math.hypot(x - p, y - p)) <= r) inside++; } near(M.coverage(r, p), inside / (n * n), 2e-3); }
+  near(M.coverage(21.15, 42.3), Math.PI / 4, 1e-9); near(M.coverage(42.3 / Math.SQRT2, 42.3), 1, 1e-9); near(M.coverage(40, 42.3), 1, 1e-12); near(M.coverage(M.dropDiameter(4), M.pitch(600)), 0.68, 0.001);
+  near(M.landingOffset(1, 1.2e-3, 8), 150e-6, 1e-12); near(M.landingOffset(2, 1.2e-3, 8) / M.landingOffset(1, 1.2e-3, 8), 2, 1e-12);
+  near(M.discharge(0), 600, 1e-12); near(M.discharge(50), 60, 1e-6); near(M.discharge(1), 60 + 540 / Math.E, 1e-9); near(M.erf(0.5), 0.5204999, 1e-6); near(M.erf(-1), -0.8427008, 1e-6);
+  { let s = 0; const p = 42.3, n = 4000; for (let i = 0; i < n; i++) s += M.exposureAt(-200 + (500 * (i + 0.5)) / n, [0, 1, 0], 30, p, 1) * (500 / n); near(s, p, 0.02); near(M.exposureAt(63.45, [0, 1, 0], 30, p, 1), M.erf(Math.SQRT2 * 21.15 / 30), 1e-9); }
+  let prev = -1; for (const e of [0.5, 1, 1.5, 2, 3, 4]) { const d = M.develop(M.PATTERNS[0], 30, 42.3, e, 300); ok(d.meanWidth >= prev - 1e-9, 'more light, wider line'); prev = d.meanWidth; ok(d.vs.every((v) => v <= 600 + 1e-9 && v >= 60 - 1e-9), 'voltage between residual and charged'); }
+  ok(M.develop(M.PATTERNS[0], 30, 42.3, 0.5, 300).toner === 0, 'no toner below threshold'); near(M.develop(M.PATTERNS[1], 30, 42.3, 1.5, 300).meanWidth, 39.3, 0.6); near(M.develop(M.PATTERNS[1], 30, 42.3, 1.5, 300).gapMin, 45.3, 0.8); near(M.develop(M.PATTERNS[1], 30, 42.3, 3, 300).meanWidth, 61.6, 0.6);
+  ok(M.develop(M.PATTERNS[1], 30, 42.3, 6, 300).gapMin === Infinity, 'gaps close at high exposure'); ok(M.develop(M.PATTERNS[1], 30, 42.3, 2, 400).meanWidth > M.develop(M.PATTERNS[1], 30, 42.3, 2, 300).meanWidth, 'a higher developer voltage fattens lines'); ok(M.develop(M.PATTERNS[1], 38, 42.3, 2, 300).gapMin < M.develop(M.PATTERNS[1], 30, 42.3, 2, 300).gapMin, 'a larger spot narrows gaps');
+  const e = M.engine(30, 600, 6); near(e.v, 168.5, 1e-9); near(e.lines, 168.5 / 25.4 * 600, 1e-9); near(e.rpm, 60 * e.lines / 6, 1e-9); near(e.rpm, 39803, 1); near(e.clock, 29.01e6, 0.01e6); near(e.fuser, 606.9, 0.1); near(e.drumRpm, 107.27, 0.01); near(e.energy, 1213.8, 0.1);
+  near(M.engine(60, 1200, 6).rpm, 4 * e.rpm, 1e-6); near(M.engine(30, 600, 8).rpm / e.rpm, 0.75, 1e-12); near(M.engine(60, 600, 6).energy, e.energy, 1e-9);
+};

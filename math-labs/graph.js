@@ -150,7 +150,8 @@
     'lithium-ion': ['switching-converters', 'electric-motors', 'statistical-mechanics'],
     'touchscreens': ['microprocessors', 'probability-inference', 'camera-lenses'],
     'led-lighting': ['laser-physics', 'optics', 'lithium-ion'],
-    'keyboard-switches': ['touchscreens', 'microprocessors', 'graph-theory']
+    'keyboard-switches': ['touchscreens', 'microprocessors', 'graph-theory'],
+    'printers': ['camera-lenses', 'laser-physics', 'fluid-dynamics']
   };
   // Topics named in each topic's own prerequisite line (content.json "prerequisite").
   const PREREQ = {
@@ -233,7 +234,8 @@
     'lithium-ion': ['electromagnetism', 'thermodynamics'],               // Ohm's law and power, Arrhenius temperature dependence
     'touchscreens': ['electromagnetism'],                                // Capacitance, charge and fringing fields
     'led-lighting': ['semiconductor-physics', 'switching-converters'],   // Recombination at a junction, rectifiers and regulators
-    'keyboard-switches': ['classical-mechanics']                         // Springs, work and energy
+    'keyboard-switches': ['classical-mechanics'],                        // Springs, work and energy
+    'printers': ['electromagnetism', 'optics']                           // Electrostatics, Gaussian beams
   };
 
   let topics = [], bySlug = new Map(), edges = [], drawn = [];

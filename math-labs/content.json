@@ -23071,5 +23071,321 @@
         "url": "http://www.ganssle.com/debouncing.htm"
       }
     ]
+  },
+  {
+    "slug": "printers",
+    "title": [
+      "Printers: drops of ink and charged powder",
+      "プリンター：インクの液滴と帯電した粉"
+    ],
+    "description": [
+      "There are two ways to put a page of text on paper in a few seconds, and they have almost nothing in common. An inkjet printer throws liquid: a head carrying thousands of nozzles sweeps across the page, and each nozzle fires drops a few thousandths of a millimetre across, tens of thousands of times a second, at spots chosen one by one. A laser printer never touches the paper with a liquid at all. It paints the page in static electricity on a turning drum with a scanning beam of light, lets a fine plastic powder cling to the painted parts, rolls the powder onto the paper and melts it in. One is limited by how small and how accurately a drop can be thrown, the other by how sharply light can be focused and how fast a mirror can spin. These experiments look at the drops, the charge on the drum, and the whole laser engine.",
+      "文字で埋まった 1 ページを数秒で紙に印刷する方法は二つあり、その二つにはほとんど共通点がありません。インクジェットプリンターは液体を飛ばします。数千個のノズルをもつヘッドがページを横切り、それぞれのノズルが、直径 1000 分の数ミリメートルの液滴を、毎秒数万回、一つずつ選んだ位置に打ち出します。レーザープリンターは、紙に液体をまったく触れさせません。走査する光のビームで、回転するドラムの上に静電気でページを描き、描いた部分に細かい樹脂の粉を付着させ、その粉を紙へ転がして移し、溶かして定着させます。一方は、液滴をどれだけ小さく、どれだけ正確に飛ばせるかで制限され、もう一方は、光をどれだけ鋭く絞れるか、鏡をどれだけ速く回せるかで制限されます。ここでの実験では、液滴、ドラムの上の電荷、そしてレーザープリンターのエンジン全体を調べます。"
+    ],
+    "group": "engineering",
+    "prerequisite": [
+      "Volumes of spheres, exponentials, speed and rates",
+      "球の体積、指数関数、速さと割合"
+    ],
+    "source": "D. M. Pai and B. E. Springett · Physics of electrophotography (Reviews of Modern Physics, 1993)",
+    "url": "https://doi.org/10.1103/RevModPhys.65.163",
+    "labs": [
+      {
+        "id": "inkjet-dots",
+        "title": [
+          "1. Inkjet: drops and dots",
+          "1. インクジェット：液滴とドット"
+        ],
+        "body": [
+          "An inkjet nozzle is a tiny chamber with a hole in it. In a thermal head a heater behind the ink boils a film of it in a few millionths of a second, and the bubble pushes a drop out of the hole; in a piezoelectric head a crystal flexes the chamber wall to the same effect. The drop is a sphere of a few picolitres that flies about a millimetre to the paper, where it flattens and soaks in to make a dot about twice its own width. To print a solid colour the dots must overlap enough to leave no paper showing, which fixes the smallest useful drop for each resolution. And because the head is moving while it fires, every drop keeps that sideways speed in flight and lands beyond the point it was fired from, in opposite directions on the outward and return passes.",
+          "インクジェットのノズルは、穴の開いた小さな部屋です。サーマル方式のヘッドでは、インクの後ろにあるヒーターが 100 万分の数秒でインクの薄い層を沸騰させ、泡が穴から液滴を押し出します。ピエゾ方式のヘッドでは、結晶が部屋の壁をたわませて同じことをします。液滴は数ピコリットルの球で、紙まで約 1 ミリメートルを飛び、紙の上でつぶれてしみ込み、自分の直径の約 2 倍のドットになります。ベタ塗りをするには、紙が見えなくなるだけドットが重ならなければなりません。これが、各解像度で役に立つ最小の液滴を決めます。また、ヘッドは打ち出しながら動いているので、液滴は飛んでいる間もその横向きの速さを保ち、打ち出した点の先に着弾します。そのずれは、行きと戻りで逆向きになります。"
+        ],
+        "formula": "d_{\\rm drop}=\\Bigl(\\frac{6V}{\\pi}\\Bigr)^{1/3},\\qquad d_{\\rm dot}=\\beta\\,d_{\\rm drop},\\qquad p=\\frac{25.4\\ \\mathrm{mm}}{\\text{dpi}},\\qquad d_{\\rm dot}\\ge\\sqrt2\\,p,\\qquad \\Delta x=\\frac{u\\,h}{v}",
+        "example": [
+          "A 4 pL drop is a sphere 19.7 µm across and, spreading two-fold, a dot of 39 µm. At 600 dpi the grid spacing is 42.3 µm and full cover needs 59.9 µm, so these dots cover only 68 per cent of the paper; at 1200 dpi they cover all of it. With the head moving at 0.8 m/s, a 1.2 mm gap and drops at 8 m/s, the flight takes 150 µs and each drop drifts 120 µm, so uncorrected the two passes would disagree by 240 µm, nearly six dots. An A4 page at 5 per cent cover and 600 dpi uses about 0.007 mL of ink.",
+          "4 pL の液滴は直径 19.7 µm の球で、2 倍に広がると 39 µm のドットになります。600 dpi では格子の間隔は 42.3 µm で、紙を完全に覆うには 59.9 µm が必要です。そのためこのドットでは紙の 68 % しか覆えません。1200 dpi なら全体を覆えます。ヘッドが 0.8 m/s で動き、すき間が 1.2 mm、液滴が 8 m/s のとき、飛行時間は 150 µs で、液滴は 120 µm ずれます。補正しなければ、行きと戻りで 240 µm、つまりドット約 6 個分ずれます。印字率 5 %、600 dpi の A4 1 枚に使うインクは、約 0.007 mL です。"
+        ],
+        "caution": [
+          "The drops are taken as perfect spheres that land as round dots on a square grid. Real drops trail a thin tail that can break into smaller satellite drops, the spread depends strongly on the paper, and printers overlap several passes and vary the pattern to hide the grid and any failed nozzle. Air drag on the drop is ignored.",
+          "液滴は完全な球で、正方形の格子の上に丸いドットとして着弾するものとしています。実際の液滴は細い尾を引き、それがちぎれて小さな衛星液滴になることがあります。広がり方は紙によって大きく変わります。プリンターは、格子や不良のノズルが目立たないように、複数回の走査を重ね、パターンを変えています。液滴に働く空気抵抗は無視しています。"
+        ],
+        "question": [
+          "Why does an inkjet printer ask you to print an alignment page?",
+          "インクジェットプリンターが、位置合わせ用のページの印刷を求めるのはなぜですか？"
+        ],
+        "answer": [
+          "The head fires while moving, so each drop lands a little beyond the point it was fired from, by an amount that depends on the head’s speed, the gap to the paper and the drop’s speed. On the return pass the shift is in the opposite direction. The alignment page measures the mismatch so the printer can fire early by the right amount.",
+          "ヘッドは動きながら液滴を打つので、液滴は打ち出した点の少し先に着弾します。そのずれは、ヘッドの速さ、紙までのすき間、液滴の速さで決まります。戻りの走査では、ずれは逆向きになります。位置合わせ用のページでこの食い違いを測り、プリンターがちょうどよい分だけ早く打てるようにします。"
+        ],
+        "params": [
+          [
+            "dpi",
+            "Resolution",
+            "解像度",
+            0,
+            3,
+            1,
+            1,
+            [
+              [
+                "300 dpi",
+                "300 dpi"
+              ],
+              [
+                "600 dpi",
+                "600 dpi"
+              ],
+              [
+                "1200 dpi",
+                "1200 dpi"
+              ],
+              [
+                "2400 dpi",
+                "2400 dpi"
+              ]
+            ]
+          ],
+          [
+            "vol",
+            "Drop volume (pL)",
+            "液滴の体積（pL）",
+            0.5,
+            50,
+            0.5,
+            4
+          ],
+          [
+            "beta",
+            "Spread on paper (dot ÷ drop diameter)",
+            "紙の上での広がり（ドット ÷ 液滴の直径）",
+            1.2,
+            3,
+            0.1,
+            2
+          ],
+          [
+            "u",
+            "Head speed (m/s)",
+            "ヘッドの速さ（m/s）",
+            0.2,
+            1.5,
+            0.1,
+            0.8
+          ],
+          [
+            "h",
+            "Gap from nozzle to paper (mm)",
+            "ノズルから紙までのすき間（mm）",
+            0.5,
+            2.5,
+            0.1,
+            1.2
+          ],
+          [
+            "vd",
+            "Drop speed (m/s)",
+            "液滴の速さ（m/s）",
+            4,
+            15,
+            0.5,
+            8
+          ],
+          [
+            "al",
+            "Firing-time correction",
+            "打ち出しのタイミングの補正",
+            0,
+            1,
+            1,
+            0,
+            [
+              [
+                "off",
+                "なし"
+              ],
+              [
+                "on",
+                "あり"
+              ]
+            ]
+          ]
+        ],
+        "source": "D. M. Pai and B. E. Springett · Physics of electrophotography (Reviews of Modern Physics, 1993)",
+        "url": "https://doi.org/10.1103/RevModPhys.65.163"
+      },
+      {
+        "id": "laser-latent-image",
+        "title": [
+          "2. Laser: writing with light on a charged drum",
+          "2. レーザー：帯電したドラムに光で書く"
+        ],
+        "body": [
+          "The drum of a laser printer is coated with a material that is an insulator in the dark and a conductor in the light. A roller first charges its surface evenly to several hundred volts. A laser beam, switched on and off as it sweeps across, then lets the charge leak away wherever it lands, leaving an invisible picture in voltage. Next the drum passes a roller carrying toner, a powder of plastic particles charged with the same sign as the drum and held at a voltage between the charged and discharged levels. The powder is pushed away from the untouched areas and onto the discharged ones. How wide a printed line comes out depends on the size of the laser spot, which is larger than a pixel, on how much light it delivers, and on where the developer voltage sits.",
+          "レーザープリンターのドラムには、暗いところでは絶縁体、光が当たると導体になる材料が塗られています。まずローラーが、その表面を数百ボルトに一様に帯電させます。次に、点灯と消灯を繰り返しながら横切るレーザービームが、当たったところの電荷を逃がし、電圧による目に見えない絵を残します。続いてドラムは、トナーを運ぶローラーの前を通ります。トナーは樹脂の粒子の粉で、ドラムと同じ符号に帯電し、帯電した部分と放電した部分の中間の電圧に保たれています。粉は、光の当たらなかった部分からは押し返され、放電した部分に付着します。印刷される線の幅は、画素より大きいレーザーのスポットの大きさ、スポットが与える光の量、そして現像器の電圧の位置で決まります。"
+        ],
+        "formula": "V(E)=V_r+(V_0-V_r)\\,e^{-E/E_0},\\qquad E(x)=E_{\\rm on}\\sum_{\\text{on}}\\tfrac12\\Bigl[\\operatorname{erf}\\frac{\\sqrt2\\,(x-x_k+p/2)}{w}-\\operatorname{erf}\\frac{\\sqrt2\\,(x-x_k-p/2)}{w}\\Bigr],\\qquad \\text{toner where } V(x)<V_{\\rm bias}",
+        "example": [
+          "With the drum at 600 V, a residual of 60 V and the developer at 300 V, a spot of radius 30 µm writing alternate 42 µm pixels at an exposure of 1.5 prints lines 39 µm wide separated by 45 µm gaps, close to the intended pattern; the lowest voltage reached is 213 V. At an exposure of 3 the lines are 62 µm wide and the gaps 22 µm; at 6 the gaps close completely. At an exposure of 1 the surface only reaches 293 V and the lines are 11 µm wide and barely print.",
+          "ドラムが 600 V、残留電圧が 60 V、現像器が 300 V のとき、半径 30 µm のスポットで 42 µm の画素を一つおきに、露光量 1.5 で書くと、幅 39 µm の線が 45 µm のすき間を空けて印刷され、本来のパターンに近くなります。到達する最低の電圧は 213 V です。露光量 3 では線の幅は 62 µm、すき間は 22 µm になり、6 ではすき間が完全に埋まります。露光量 1 では表面は 293 V までしか下がらず、線の幅は 11 µm で、かろうじて印刷される程度です。"
+        ],
+        "caution": [
+          "Voltages are given as magnitudes; in most printers drum, toner and developer are all negative. The discharge law is the simplest one, development is taken as proportional to the voltage difference, and the profile is shown along the scan direction only. Printers also modulate the laser within a pixel to smooth edges, which is not shown.",
+          "電圧は大きさで示しています。ほとんどのプリンターでは、ドラム、トナー、現像器はすべて負の電圧です。放電の法則は最も単純なものを使い、現像は電圧の差に比例するとし、分布は走査方向についてだけ示しています。プリンターは、縁を滑らかにするために画素の中でもレーザーを変調しますが、それは示していません。"
+        ],
+        "question": [
+          "Why do thin lines from a laser printer get thicker when the print density is turned up?",
+          "レーザープリンターで印字濃度を上げると、細い線が太くなるのはなぜですか？"
+        ],
+        "answer": [
+          "The laser spot is wider than one pixel and fades gradually at its edges. More exposure, or a developer voltage nearer the charged level, means the faint edges of the spot discharge the drum far enough to take toner, so each line grows outwards on both sides.",
+          "レーザーのスポットは 1 画素より広く、縁に向かって徐々に弱くなっています。露光量を増やすか、現像器の電圧を帯電した側に近づけると、スポットの弱い縁の部分でもドラムがトナーの付く電圧まで放電するので、線は両側に広がります。"
+        ],
+        "params": [
+          [
+            "pat",
+            "Pattern",
+            "パターン",
+            0,
+            3,
+            1,
+            1,
+            [
+              [
+                "one pixel line",
+                "1 画素の線"
+              ],
+              [
+                "alternate pixels",
+                "一つおきの画素"
+              ],
+              [
+                "two on, two off",
+                "2 画素ずつ"
+              ],
+              [
+                "two on, one off",
+                "2 画素点灯、1 画素消灯"
+              ]
+            ]
+          ],
+          [
+            "e",
+            "Exposure (units of the layer’s sensitivity)",
+            "露光量（感光層の感度を単位として）",
+            0.1,
+            6,
+            0.1,
+            1.5
+          ],
+          [
+            "w",
+            "Laser spot radius (µm)",
+            "レーザーのスポットの半径（µm）",
+            20,
+            70,
+            1,
+            30
+          ],
+          [
+            "bias",
+            "Developer voltage (V)",
+            "現像器の電圧（V）",
+            150,
+            500,
+            10,
+            300
+          ]
+        ],
+        "source": "D. M. Pai and B. E. Springett · Physics of electrophotography (Reviews of Modern Physics, 1993)",
+        "url": "https://doi.org/10.1103/RevModPhys.65.163"
+      },
+      {
+        "id": "laser-engine",
+        "title": [
+          "3. The print engine",
+          "3. プリントエンジン"
+        ],
+        "body": [
+          "Every part of a laser printer is tied to one speed, the speed of the paper. The drum’s surface must move exactly with it, so the image neither stretches nor smears as it is rolled off. The laser draws the page one line at a time as the drum turns beneath it, sweeping across by reflection from a spinning mirror with several flat faces: each face that passes makes one sweep. Lines must be laid down at the resolution’s spacing, so the number of sweeps per second is the paper speed divided by that spacing, and the mirror’s speed follows from its number of faces. Within each sweep the laser must switch for every pixel across the page. Last, the fuser has to raise the paper and toner by well over a hundred degrees in the fraction of a second they spend in its grip.",
+          "レーザープリンターのすべての部品は、一つの速さ、つまり紙の速さに結び付いています。ドラムの表面は紙とぴったり同じ速さで動かなければなりません。そうでなければ、像が紙に移るときに伸びたりにじんだりします。レーザーは、下で回るドラムの上に、ページを 1 行ずつ描きます。ビームは、平らな面をいくつかもつ回転する鏡で反射して横切り、面が一つ通るたびに 1 回走査します。線は解像度で決まる間隔で並べなければならないので、毎秒の走査の回数は紙の速さをその間隔で割ったもので、鏡の回転数は面の数から決まります。1 回の走査の中で、レーザーはページを横切るすべての画素について切り替わらなければなりません。最後に定着器は、紙とトナーがその間を通る 1 秒に満たない時間で、温度を 100 度以上も上げなければなりません。"
+        ],
+        "formula": "v=\\frac{N_{\\rm ppm}\\,(\\ell+g)}{60},\\qquad f_{\\rm line}=\\frac{v\\cdot\\text{dpi}}{25.4\\ \\mathrm{mm}},\\qquad n_{\\rm mirror}=\\frac{60\\,f_{\\rm line}}{N_{\\rm faces}},\\qquad P_{\\rm fuser}=v\\,w\\,\\rho_A\\,c\\,\\Delta T",
+        "example": [
+          "At 30 A4 pages a minute, with 40 mm between sheets, the paper moves at 168.5 mm/s and a 30 mm drum turns at 107 rpm. At 600 dpi that is 3980 lines a second, so a six-faced mirror must spin at 39 800 rpm, and with 5100 pixels in a line and 70 per cent of each sweep usable the laser switches at up to 29 MHz. Heating 80 g/m² paper by 160 K takes 607 W, 1.2 kJ a page. At 60 pages a minute and 1200 dpi one beam would need 159 000 rpm.",
+          "毎分 30 枚の A4 を、用紙の間隔 40 mm で印刷するとき、紙は 168.5 mm/s で動き、直径 30 mm のドラムは 107 rpm で回ります。600 dpi では毎秒 3980 本の線になるので、6 面の鏡は 39 800 rpm で回らなければなりません。1 本の線に 5100 画素があり、1 回の走査の 70 % が使えるとすると、レーザーは最大 29 MHz で切り替わります。80 g/m² の紙を 160 K 温めるには 607 W、1 枚あたり 1.2 kJ が必要です。毎分 60 枚、1200 dpi では、ビーム 1 本なら 159 000 rpm が必要になります。"
+        ],
+        "caution": [
+          "The engine is a generic single-colour design with representative dimensions, shown at about a fiftieth of its speed, with the beam path simplified to one fold. Colour printers repeat the drum and developer four times. The fuser figure counts only the heat that goes into the paper, not what is lost to the air or spent warming up.",
+          "エンジンは、代表的な寸法をもつ一般的なモノクロの設計で、約 50 分の 1 の速さで示しています。ビームの経路は、折り返し 1 回に単純化しています。カラープリンターは、ドラムと現像器を 4 組もっています。定着器の数値は、紙に入る熱だけを数えたもので、空気へ逃げる分や予熱に使う分は含みません。"
+        ],
+        "question": [
+          "Why do fast laser printers use several laser beams at once?",
+          "高速のレーザープリンターが、複数のレーザービームを同時に使うのはなぜですか？"
+        ],
+        "answer": [
+          "Each face of the spinning mirror gives one sweep of the beam, and the number of sweeps needed each second rises with both paper speed and resolution. One beam would soon need a mirror turning faster than any bearing allows. Two or four beams side by side write that many lines per sweep, so the mirror can turn a half or a quarter as fast.",
+          "回転する鏡の面一つにつき、ビームは 1 回走査します。毎秒必要な走査の回数は、紙の速さと解像度の両方とともに増えます。ビームが 1 本だと、すぐに軸受が耐えられない速さで鏡を回す必要が出てきます。2 本または 4 本のビームを並べれば、1 回の走査でその本数の線を書けるので、鏡の回転数は半分または 4 分の 1 で済みます。"
+        ],
+        "params": [
+          [
+            "ppm",
+            "Pages per minute",
+            "毎分の印刷枚数",
+            5,
+            70,
+            1,
+            30
+          ],
+          [
+            "dpi",
+            "Resolution",
+            "解像度",
+            0,
+            2,
+            1,
+            1,
+            [
+              [
+                "300 dpi",
+                "300 dpi"
+              ],
+              [
+                "600 dpi",
+                "600 dpi"
+              ],
+              [
+                "1200 dpi",
+                "1200 dpi"
+              ]
+            ]
+          ],
+          [
+            "fac",
+            "Mirror faces",
+            "鏡の面の数",
+            0,
+            2,
+            1,
+            1,
+            [
+              [
+                "4",
+                "4"
+              ],
+              [
+                "6",
+                "6"
+              ],
+              [
+                "8",
+                "8"
+              ]
+            ]
+          ]
+        ],
+        "source": "D. M. Pai and B. E. Springett · Physics of electrophotography (Reviews of Modern Physics, 1993)",
+        "url": "https://doi.org/10.1103/RevModPhys.65.163"
+      }
+    ]
   }
 ]
