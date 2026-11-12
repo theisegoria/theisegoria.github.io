@@ -21409,5 +21409,547 @@
         "url": "https://royalsocietypublishing.org/doi/10.1098/rspa.2007.1857"
       }
     ]
+  },
+  {
+    "slug": "data-storage",
+    "title": [
+      "Data storage: spinning discs and trapped charge",
+      "データ記憶装置：回る円盤と閉じ込めた電荷"
+    ],
+    "description": [
+      "A computer keeps its files in one of two ways. A hard disc writes them as magnetised patches on a spinning platter and reaches them with a head on a moving arm, so every read waits for metal to move. A solid-state drive stores them as small amounts of electric charge trapped in billions of transistors, with nothing to move at all, but each of those cells wears a little every time it is rewritten and slowly leaks. Almost everything about how storage behaves follows from those two mechanisms: why a disc manages only about a hundred scattered reads a second, why the outside of a disc is faster than the inside, why cheaper flash holds more bits per cell and wears out sooner, and why the same job can take three seconds on one drive and an hour on another. These experiments open a hard disc, look at the voltage levels inside a flash cell, and run one workload on three kinds of drive.",
+      "コンピュータがファイルを保存する方法は二つあります。ハードディスクは、回転するプラッタの上の磁化した小さな領域として書き込み、動くアームの先のヘッドでそこへ到達するので、読み出しのたびに金属が動くのを待ちます。ソリッドステートドライブは、数十億個のトランジスタに閉じ込めたわずかな電荷として保存し、動く部分はまったくありませんが、各セルは書き換えるたびに少しずつ傷み、ゆっくりと電荷が漏れます。記憶装置のふるまいのほとんどは、この二つの仕組みから決まります。ディスクが散らばった読み出しを毎秒 100 回ほどしかこなせない理由、円盤の外側が内側より速い理由、安価なフラッシュほど 1 セルに多くのビットを詰め込み早く寿命を迎える理由、同じ作業があるドライブでは 3 秒、別のドライブでは 1 時間かかる理由です。ここでの実験では、ハードディスクを開け、フラッシュセルの中の電圧レベルを調べ、一つの作業を三種類のドライブで実行します。"
+    ],
+    "group": "engineering",
+    "prerequisite": [
+      "Rotation and circular motion, basic electricity, probability (normal distributions) for the second experiment",
+      "回転と円運動、電気の基礎。二つ目の実験では確率（正規分布）"
+    ],
+    "source": "R. H. Arpaci-Dusseau and A. C. Arpaci-Dusseau · Operating Systems: Three Easy Pieces (chapters on hard disk drives and flash-based SSDs)",
+    "url": "https://pages.cs.wisc.edu/~remzi/OSTEP/",
+    "labs": [
+      {
+        "id": "hdd-seek",
+        "title": [
+          "1. Inside a hard disc: seek and spin",
+          "1. ハードディスクの中：シークと回転"
+        ],
+        "body": [
+          "A hard disc stores bits as tiny magnetised regions along circular tracks on both sides of each platter. To read a block the drive must do two mechanical things. It swings the arm so the head sits over the right track, the seek, driven by a flat coil in a magnetic field; the arm accelerates for half the move and brakes for the other half, so the time grows as the square root of the distance. Then it waits for the spinning disc to bring the block round to the head, on average half a revolution. Once there, data streams past at the speed of the track, and because bits are written at the same spacing everywhere, an outer track, which moves faster, delivers data faster. The head itself does not touch the disc: it flies a few nanometres above it on the air the platter drags round.",
+          "ハードディスクは、各プラッタの両面にある円形のトラックに沿って、磁化した小さな領域としてビットを記憶します。あるブロックを読むには、ドライブは二つの機械的な動作をしなければなりません。まず、ヘッドが目的のトラックの上に来るようにアームを振ります。これがシークで、磁場の中の平たいコイルが駆動します。アームは移動の前半で加速し、後半で減速するので、時間は距離の平方根に比例して増えます。次に、回転する円盤がブロックをヘッドの下に運んでくるのを待ちます。平均して半回転です。そこに着けば、データはトラックの速さで流れてきます。ビットはどこでも同じ間隔で書かれているので、より速く動く外側のトラックほど、データを速く届けます。ヘッド自体は円盤に触れません。プラッタが引きずる空気に乗って、数ナノメートル上を飛んでいます。"
+        ],
+        "formula": "t_{\\rm seek}=t_{\\rm settle}+(t_{\\rm full}-t_{\\rm settle})\\sqrt{d},\\qquad \\bar t_{\\rm rot}=\\frac12\\cdot\\frac{60}{n},\\qquad \\mathrm{IOPS}\\approx\\frac{1}{\\bar t_{\\rm seek}+\\bar t_{\\rm rot}},\\qquad \\text{rate}=\\frac{n}{60}\\,2\\pi r\\,\\rho_{\\rm bit},\\qquad \\mathbb E\\sqrt{|x-y|}=\\tfrac{8}{15}",
+        "example": [
+          "With a settle time of 0.8 ms and a full-stroke seek of 16 ms, the mean seek between two random tracks is \\(0.8+15.2\\times\\tfrac{8}{15}=8.9\\) ms. At 7200 rpm one turn takes 8.33 ms, so the mean wait is 4.17 ms and the drive manages \\(1/(8.9+4.17\\ \\mathrm{ms})=76\\) random reads a second; at 15000 rpm the wait falls to 2 ms and the figure rises only to 92. At 7200 rpm the outermost track (46 mm) passes the head at 125 km/h and reads 250 MB/s; the innermost (20.5 mm) reads 111 MB/s.",
+          "整定時間 0.8 ms、フルストロークのシーク 16 ms とすると、ランダムな二つのトラックの間の平均シークは \\(0.8+15.2\\times\\tfrac{8}{15}=8.9\\) ms です。7200 rpm では 1 回転に 8.33 ms かかるので、平均の待ち時間は 4.17 ms で、ドライブは毎秒 \\(1/(8.9+4.17\\ \\mathrm{ms})=76\\) 回のランダム読み出しをこなします。15000 rpm では待ち時間は 2 ms に減りますが、この値は 92 にしかなりません。7200 rpm では、最も外側のトラック（46 mm）は時速 125 km でヘッドの下を通り、250 MB/s で読めます。最も内側（20.5 mm）は 111 MB/s です。"
+        ],
+        "caution": [
+          "The drive is a generic 3.5 inch design with three platters, drawn with its cover and upper magnet plate removed, and its spin is slowed about a thousand times. Seek and density figures are typical of a desktop drive, not a particular model; real drives also reorder queued requests and cache data, which the third experiment touches on.",
+          "ドライブは、プラッタ 3 枚の一般的な 3.5 インチの設計で、カバーと上側の磁石の板を外して描いています。回転は約 1000 分の 1 に遅くしています。シークと記録密度の数値はデスクトップ用ドライブの典型的な値で、特定の製品のものではありません。実際のドライブは待ち行列の要求を並べ替えたり、データをキャッシュしたりもします。これは三つ目の実験で少し扱います。"
+        ],
+        "question": [
+          "Why does doubling a disc’s spin speed not double the number of random reads it can do?",
+          "ディスクの回転数を 2 倍にしても、ランダム読み出しの回数が 2 倍にならないのはなぜですか？"
+        ],
+        "answer": [
+          "A random read costs a seek plus a rotational wait, and spinning faster shortens only the wait. With a mean seek of about 9 ms and a wait of about 4 ms, halving the wait removes 2 ms of 13, a gain of under a fifth.",
+          "ランダム読み出しにはシークと回転待ちが必要で、回転を速くして短くなるのは待ち時間だけです。平均シークが約 9 ms、待ち時間が約 4 ms なら、待ち時間を半分にしても 13 ms のうち 2 ms が減るだけで、改善は 5 分の 1 に届きません。"
+        ],
+        "params": [
+          [
+            "rpm",
+            "Spindle speed",
+            "回転数",
+            0,
+            3,
+            1,
+            1,
+            [
+              [
+                "5400 rpm",
+                "5400 rpm"
+              ],
+              [
+                "7200 rpm",
+                "7200 rpm"
+              ],
+              [
+                "10000 rpm",
+                "10000 rpm"
+              ],
+              [
+                "15000 rpm",
+                "15000 rpm"
+              ]
+            ]
+          ],
+          [
+            "r",
+            "Track radius (mm)",
+            "トラックの半径（mm）",
+            20.5,
+            46,
+            0.5,
+            38
+          ]
+        ],
+        "source": "R. H. Arpaci-Dusseau and A. C. Arpaci-Dusseau · Operating Systems: Three Easy Pieces (chapters on hard disk drives and flash-based SSDs)",
+        "url": "https://pages.cs.wisc.edu/~remzi/OSTEP/"
+      },
+      {
+        "id": "nand-levels",
+        "title": [
+          "2. Flash memory: levels of trapped charge",
+          "2. フラッシュメモリ：閉じ込めた電荷のレベル"
+        ],
+        "body": [
+          "A flash cell is a transistor with an extra, electrically isolated layer beside its channel. Electrons forced into that layer stay for years and raise the gate voltage needed to switch the transistor on, its threshold voltage. One bit per cell needs only two states, charged or not. To store more, the drive programs each cell to one of 4, 8 or 16 threshold voltages and reads it back by comparing against reference voltages placed between the levels. The levels are not sharp: cells differ, each write disturbs the insulator a little, and trapped charge slowly leaks, so every level is a bell curve that widens with use and drifts with time. Where neighbouring curves overlap, cells are misread. Packing in more bits narrows the gaps, so the same wear causes far more errors.",
+          "フラッシュセルは、チャネルのそばに電気的に絶縁された層を余分にもつトランジスタです。その層に押し込まれた電子は何年もとどまり、トランジスタをオンにするのに必要なゲート電圧、すなわちしきい値電圧を上げます。1 セルに 1 ビットなら、帯電しているかいないかの二つの状態で足ります。より多く記憶するために、ドライブは各セルを 4、8、または 16 通りのしきい値電圧のどれかに書き込み、レベルの間に置いた参照電圧と比べて読み出します。レベルは鋭くありません。セルには個体差があり、書き込みのたびに絶縁膜が少し傷み、閉じ込めた電荷はゆっくり漏れるので、各レベルは、使うほど広がり時間とともにずれる釣鐘形の分布になります。隣どうしの曲線が重なるところでは、セルが読み誤られます。ビットを多く詰め込むとすき間が狭くなるので、同じ傷みでもはるかに多くの誤りが生じます。"
+        ],
+        "formula": "\\text{levels}=2^{b},\\qquad p_{i\\to i+1}=Q\\!\\left(\\frac{V_{{\\rm ref},i}-\\mu_i}{\\sigma_i}\\right),\\qquad \\mathrm{RBER}=\\frac{1}{b\\,2^{b}}\\sum_i\\bigl(p_{i\\to i+1}+p_{i+1\\to i}\\bigr),\\qquad Q(x)=\\tfrac12\\operatorname{erfc}\\frac{x}{\\sqrt2}",
+        "example": [
+          "Three bits per cell means 8 levels: the seven programmed ones share a window of 4.8 V, 0.8 V apart, and after 1000 cycles each is about 125 mV wide, so a reference halfway between two neighbours is 2.9 standard deviations from each and the raw bit error rate is about \\(8\\times10^{-4}\\). The same cells at 3000 cycles reach \\(5\\times10^{-3}\\), the limit this model takes for error correction. With these representative numbers the limit is reached near 51000 cycles for one bit per cell, 10000 for two, 3000 for three and 1000 for four.",
+          "1 セルあたり 3 ビットでは 8 レベルになります。書き込まれた 7 つのレベルは 4.8 V の窓を 0.8 V 間隔で分け合い、1000 回の書き換えの後には、それぞれの幅が約 125 mV になります。隣どうしの中間に置いた参照電圧はどちらからも標準偏差の 2.9 倍離れていて、生のビット誤り率は約 \\(8\\times10^{-4}\\) です。同じセルは 3000 回で \\(5\\times10^{-3}\\) に達します。これはこのモデルで誤り訂正の限界とした値です。ここで使った代表的な数値では、限界に達するのは 1 ビットで約 51000 回、2 ビットで 10000 回、3 ビットで 3000 回、4 ビットで 1000 回です。"
+        ],
+        "caution": [
+          "The distributions are idealised as Gaussians with widths and drifts chosen to give typical endurance figures; real cells have asymmetric tails, interfere with their neighbours and depend strongly on temperature. The error-correction limit is indicative. Voltages are representative of a NAND cell, not a specification.",
+          "分布は、典型的な書き換え寿命になるように幅とずれを選んだガウス分布として理想化しています。実際のセルの分布は非対称な裾をもち、隣のセルと干渉し、温度に強く依存します。誤り訂正の限界は目安です。電圧は NAND セルの代表的な値で、仕様ではありません。"
+        ],
+        "question": [
+          "Why does flash that stores more bits per cell wear out sooner?",
+          "1 セルあたりのビット数が多いフラッシュほど早く寿命を迎えるのはなぜですか？"
+        ],
+        "answer": [
+          "More bits means more voltage levels inside the same window, so the gaps between them are narrower. Wear widens every level by about the same amount, and a narrow gap is closed, and the data becomes unreadable, after far fewer rewrites than a wide one.",
+          "ビット数が多いと、同じ窓の中により多くの電圧レベルが入るので、その間隔が狭くなります。書き換えによる傷みは、どのレベルもほぼ同じだけ広げます。狭いすき間は、広いすき間よりはるかに少ない書き換え回数で埋まり、データが読めなくなります。"
+        ],
+        "params": [
+          [
+            "bits",
+            "Bits per cell",
+            "1 セルあたりのビット数",
+            1,
+            4,
+            1,
+            3
+          ],
+          [
+            "lc",
+            "Program/erase cycles: \\(\\log_{10}\\)",
+            "書き込み・消去の回数：\\(\\log_{10}\\)",
+            1,
+            5,
+            0.05,
+            3
+          ],
+          [
+            "mo",
+            "Retention time (months)",
+            "保持時間（月）",
+            0,
+            60,
+            1,
+            12
+          ],
+          [
+            "dv",
+            "Shift of the gold reference (V)",
+            "金色の参照電圧のずれ（V）",
+            -0.5,
+            0.5,
+            0.01,
+            0
+          ]
+        ],
+        "source": "R. H. Arpaci-Dusseau and A. C. Arpaci-Dusseau · Operating Systems: Three Easy Pieces (chapters on hard disk drives and flash-based SSDs)",
+        "url": "https://pages.cs.wisc.edu/~remzi/OSTEP/"
+      },
+      {
+        "id": "storage-latency",
+        "title": [
+          "3. One job, three drives",
+          "3. 一つの作業、三つのドライブ"
+        ],
+        "body": [
+          "How long a read takes depends less on how much data there is than on how it is laid out. Data in one long run streams at the drive’s sequential rate. Data scattered in small pieces costs one access each, and here the drives part company. A disc needs about 13 ms of mechanical motion per access. A SATA solid-state drive needs about 90 microseconds and can work on 32 requests at once; an NVMe drive, attached directly to the PCIe bus, needs about 25 microseconds and accepts many more. Queueing helps a disc only a little: it can pick the nearest waiting request, but it still has one arm. So the gap between drives is about thirty-fold for a film copied in one piece and several thousand-fold for a database or an operating system starting up.",
+          "読み出しにかかる時間は、データの量よりも、その並び方で決まります。一続きのデータは、ドライブの連続読み出しの速さで流れてきます。小さな断片に散らばったデータは、断片ごとに 1 回のアクセスが必要で、ここでドライブの差が現れます。ディスクは 1 回のアクセスに約 13 ms の機械的な動きを必要とします。SATA のソリッドステートドライブは約 90 マイクロ秒で、同時に 32 個の要求を処理できます。PCIe バスに直接つながる NVMe ドライブは約 25 マイクロ秒で、さらに多くの要求を受け付けます。待ち行列はディスクをわずかしか助けません。待っている要求のうち最も近いものを選べますが、アームは一本しかないからです。そのため、ドライブの間の差は、一続きでコピーする映画ではおよそ 30 倍、データベースや OS の起動では数千倍になります。"
+        ],
+        "formula": "t=\\frac{N_{\\rm rand}}{\\mathrm{IOPS}}+\\frac{B_{\\rm seq}}{R_{\\rm seq}},\\qquad \\mathrm{IOPS}_{\\rm SSD}=\\frac{\\min(q,\\,q_{\\max})}{t_{\\rm access}},\\qquad \\mathrm{IOPS}_{\\rm disc}=\\frac{1}{\\bar t_{\\rm seek}+\\bar t_{\\rm rot}},\\qquad N_{\\rm rand}=\\frac{B_{\\rm rand}}{4096}",
+        "example": [
+          "One gibibyte is 262144 blocks of 4 KiB. Read in one run it takes 5.4 s on the disc (200 MB/s), 2.0 s on SATA (550 MB/s) and 0.15 s on NVMe (7000 MB/s). Read as scattered blocks one at a time it takes \\(262144/76=3427\\) s, 57 minutes, on the disc, 23.6 s on SATA and 6.6 s on NVMe. With 32 requests in flight the disc improves to 267 reads a second, the SATA drive reaches 356000 and the NVMe drive 1.28 million.",
+          "1 ギビバイトは 4 KiB のブロック 262144 個です。一続きで読むと、ディスク（200 MB/s）で 5.4 s、SATA（550 MB/s）で 2.0 s、NVMe（7000 MB/s）で 0.15 s かかります。散らばったブロックとして 1 個ずつ読むと、ディスクでは \\(262144/76=3427\\) s、すなわち 57 分、SATA では 23.6 s、NVMe では 6.6 s です。同時に 32 個の要求を出すと、ディスクは毎秒 267 回に改善し、SATA ドライブは 356000 回、NVMe ドライブは 128 万回に達します。"
+        ],
+        "caution": [
+          "Access times and rates are round, typical figures. The model ignores caches, read-ahead, the file system and the fact that a busy flash drive must also erase and move data in the background, which can slow sustained writes considerably. The queueing gain for the disc is a simple approximation.",
+          "アクセス時間と速さは、切りのよい典型的な数値です。このモデルは、キャッシュ、先読み、ファイルシステムを無視しています。また、使用中のフラッシュドライブは裏でデータの消去や移動も行わなければならず、連続した書き込みがかなり遅くなることがありますが、それも無視しています。待ち行列によるディスクの改善は単純な近似です。"
+        ],
+        "question": [
+          "Why does replacing a disc with an SSD speed up starting programs far more than copying a large film?",
+          "ディスクを SSD に替えると、大きな映画のコピーよりもプログラムの起動のほうがはるかに速くなるのはなぜですか？"
+        ],
+        "answer": [
+          "A film is one long run, which a disc reads at a steady 200 MB/s, only a few times slower than flash. Starting a program reads thousands of small pieces from all over the drive, and each costs the disc a seek and half a turn but costs flash almost nothing.",
+          "映画は一続きのデータで、ディスクでも 200 MB/s で安定して読めます。フラッシュより数倍遅いだけです。プログラムの起動では、ドライブのあちこちから数千個の小さな断片を読みます。ディスクでは断片ごとにシークと半回転が必要ですが、フラッシュではほとんど何もかかりません。"
+        ],
+        "params": [
+          [
+            "lg",
+            "Data to read: \\(\\log_2\\) bytes",
+            "読み出すデータ量：\\(\\log_2\\) バイト",
+            24,
+            36,
+            1,
+            30
+          ],
+          [
+            "rnd",
+            "Random share (%)",
+            "ランダムな割合（%）",
+            0,
+            100,
+            1,
+            50
+          ],
+          [
+            "lq",
+            "Queue depth: \\(\\log_2 q\\)",
+            "キュー深度：\\(\\log_2 q\\)",
+            0,
+            7,
+            1,
+            0
+          ]
+        ],
+        "source": "R. H. Arpaci-Dusseau and A. C. Arpaci-Dusseau · Operating Systems: Three Easy Pieces (chapters on hard disk drives and flash-based SSDs)",
+        "url": "https://pages.cs.wisc.edu/~remzi/OSTEP/"
+      }
+    ]
+  },
+  {
+    "slug": "camera-lenses",
+    "title": [
+      "Camera lenses and autofocus",
+      "カメラのレンズとオートフォーカス"
+    ],
+    "description": [
+      "A camera lens has one job: to bring the light from each point of a scene back together at one point of the sensor. It can do that exactly for only one distance at a time, so everything nearer or farther is drawn as a small disc instead of a point, and the photographer chooses, with the aperture, how fast those discs grow. The glass itself is a compromise too: spherical surfaces are easy to polish but do not focus perfectly, which is why a good lens has six or more elements where one would seem to do, and why every lens is sharpest a few stops down from wide open. Finding focus quickly is a separate problem, solved by letting the sensor compare the views through the two halves of the lens. These experiments set the depth of field, open a lens to see the glass, the iris and the focusing movement, and focus a camera both ways.",
+      "カメラのレンズの仕事は一つです。被写体の各点から出た光を、センサーの一点に再び集めることです。これを正確にできるのは一度に一つの距離だけなので、それより近いものや遠いものは、点ではなく小さな円として写ります。その円がどれだけ速く大きくなるかを、撮影者は絞りで選びます。ガラスそのものも妥協の産物です。球面は磨きやすい反面、光を完全には集められません。良いレンズが 1 枚で済みそうなところに 6 枚以上のガラスを使うのも、どのレンズも開放から数段絞ったところで最も鮮明になるのも、そのためです。ピントをすばやく見つけるのは別の問題で、レンズの二つの半分を通した眺めをセンサーに比べさせることで解決しています。ここでの実験では、被写界深度を決め、レンズを開けてガラスと絞りとピント合わせの動きを見て、二つの方式でカメラのピントを合わせます。"
+    ],
+    "group": "engineering",
+    "prerequisite": [
+      "Geometric optics (the thin-lens equation), similar triangles, logarithmic scales",
+      "幾何光学（薄レンズの式）、相似な三角形、対数目盛り"
+    ],
+    "source": "R. Kingslake · Optics in Photography (SPIE Press)",
+    "url": "https://spie.org/Publications/Book/6394",
+    "labs": [
+      {
+        "id": "lens-depth-of-field",
+        "title": [
+          "1. Depth of field",
+          "1. 被写界深度"
+        ],
+        "body": [
+          "A lens of focal length \\(f\\) focused at distance \\(s\\) forms a sharp image only of things at that distance. A point at any other distance \\(d\\) comes to a focus in front of or behind the sensor, and on the sensor its light covers a disc. Similar triangles give the size of that disc: it is proportional to the diameter of the aperture, \\(f/N\\), and to how far the point is from the focused distance measured in the way a lens sees distance, \\(|1/d-1/s|\\). If the disc is smaller than the eye can tell from a point in the final picture, about 0.03 mm on a full-frame sensor, the point looks sharp. The range of distances that pass this test is the depth of field. It grows as the aperture closes, shrinks rapidly with focal length, and reaches all the way to infinity once the lens is focused at the hyperfocal distance.",
+          "焦点距離 \\(f\\) のレンズを距離 \\(s\\) に合わせると、鮮明な像を結ぶのはその距離にあるものだけです。別の距離 \\(d\\) にある点は、センサーの手前か奥で焦点を結び、センサー上ではその光が円に広がります。相似な三角形から、この円の大きさが分かります。絞りの直径 \\(f/N\\) に比例し、レンズにとっての距離の測り方 \\(|1/d-1/s|\\) で見た、ピント位置からの離れ具合に比例します。この円が、最終的な写真で目が点と区別できない大きさ、フルサイズセンサーで約 0.03 mm より小さければ、その点は鮮明に見えます。この条件を満たす距離の範囲が被写界深度です。絞るほど広がり、焦点距離が長いほど急に狭くなり、過焦点距離にピントを合わせると無限遠まで届きます。"
+        ],
+        "formula": "\\frac1s+\\frac1v=\\frac1f,\\qquad b=\\frac{f^{2}}{N\\,(s-f)}\\cdot\\frac{|d-s|}{d},\\qquad H=\\frac{f^{2}}{Nc}+f,\\qquad D_{\\rm near}=\\frac{s\\,(H-f)}{H+s-2f},\\qquad D_{\\rm far}=\\frac{s\\,(H-f)}{H-s}",
+        "example": [
+          "A 50 mm lens at \\(f/2.8\\) with \\(c=0.03\\) mm has \\(H=50^2/(2.8\\times0.03)+50=29.8\\) m. Focused at 3 m it is sharp from 2.73 m to 3.33 m, a zone 0.60 m deep. At \\(f/8\\) the hyperfocal distance falls to 10.5 m and the zone widens to 2.34 m to 4.19 m. An 85 mm lens at \\(f/1.8\\) focused at 2 m holds only 1.97 m to 2.03 m, six centimetres, while a 24 mm lens at \\(f/8\\) focused at 3 m is sharp from 1.34 m to infinity.",
+          "50 mm のレンズを \\(f/2.8\\)、\\(c=0.03\\) mm とすると、\\(H=50^2/(2.8\\times0.03)+50=29.8\\) m です。3 m に合わせると 2.73 m から 3.33 m まで鮮明で、深さは 0.60 m です。\\(f/8\\) では過焦点距離は 10.5 m に下がり、範囲は 2.34 m から 4.19 m に広がります。85 mm のレンズを \\(f/1.8\\) で 2 m に合わせると、鮮明なのは 1.97 m から 2.03 m のわずか 6 cm です。24 mm のレンズを \\(f/8\\) で 3 m に合わせると、1.34 m から無限遠まで鮮明です。"
+        ],
+        "caution": [
+          "This is the thin-lens model, which treats the lens as a single surface; it is accurate at ordinary distances and less so for close-up work, where the pupils of a real lens matter. The 0.03 mm criterion assumes a full-frame sensor and a moderate print; a smaller sensor or a larger print needs a stricter one. Diffraction, treated in the next experiment, is left out here.",
+          "これは薄レンズのモデルで、レンズを一つの面として扱います。普通の距離では正確ですが、実際のレンズの瞳の位置が効いてくる接写では精度が下がります。0.03 mm という基準は、フルサイズセンサーと中程度の大きさのプリントを想定しています。センサーが小さい場合やプリントが大きい場合は、より厳しい基準が必要です。次の実験で扱う回折は、ここでは省いています。"
+        ],
+        "question": [
+          "Why does a portrait lens blur the background so much more than a wide-angle lens at the same f-number?",
+          "同じ F 値でも、ポートレート用のレンズが広角レンズよりずっと大きく背景をぼかすのはなぜですか？"
+        ],
+        "answer": [
+          "The blur disc is proportional to \\(f^2/N\\). At the same f-number an 85 mm lens has an opening three and a half times wider than a 24 mm lens and also magnifies the blur more, so its discs are about twelve times larger.",
+          "ぼけの円は \\(f^2/N\\) に比例します。同じ F 値でも、85 mm のレンズは 24 mm のレンズの 3.5 倍の直径の開口をもち、ぼけをより大きく拡大もするので、円は約 12 倍になります。"
+        ],
+        "params": [
+          [
+            "f",
+            "Focal length",
+            "焦点距離",
+            0,
+            4,
+            1,
+            2,
+            [
+              [
+                "24 mm",
+                "24 mm"
+              ],
+              [
+                "35 mm",
+                "35 mm"
+              ],
+              [
+                "50 mm",
+                "50 mm"
+              ],
+              [
+                "85 mm",
+                "85 mm"
+              ],
+              [
+                "135 mm",
+                "135 mm"
+              ]
+            ]
+          ],
+          [
+            "N",
+            "Aperture",
+            "絞り",
+            0,
+            9,
+            1,
+            3,
+            [
+              [
+                "f/1.4",
+                "f/1.4"
+              ],
+              [
+                "f/1.8",
+                "f/1.8"
+              ],
+              [
+                "f/2",
+                "f/2"
+              ],
+              [
+                "f/2.8",
+                "f/2.8"
+              ],
+              [
+                "f/4",
+                "f/4"
+              ],
+              [
+                "f/5.6",
+                "f/5.6"
+              ],
+              [
+                "f/8",
+                "f/8"
+              ],
+              [
+                "f/11",
+                "f/11"
+              ],
+              [
+                "f/16",
+                "f/16"
+              ],
+              [
+                "f/22",
+                "f/22"
+              ]
+            ]
+          ],
+          [
+            "ls",
+            "Focus distance: \\(\\log_{10}\\) metres",
+            "ピント位置：\\(\\log_{10}\\) メートル",
+            -0.52,
+            2,
+            0.02,
+            0.48
+          ]
+        ],
+        "source": "R. Kingslake · Optics in Photography (SPIE Press)",
+        "url": "https://spie.org/Publications/Book/6394"
+      },
+      {
+        "id": "lens-cutaway",
+        "title": [
+          "2. Inside the lens: glass, iris and the sharpest aperture",
+          "2. レンズの中：ガラス、絞り、最も鮮明な絞り"
+        ],
+        "body": [
+          "A single piece of glass with spherical faces does not bring parallel light to one point: rays through its edge cross the axis nearer the lens than rays through its middle. The resulting blur, spherical aberration, shrinks with the cube of the f-number, so stopping down cures it quickly. A photographic lens instead shares the bending among several elements, positive and negative, arranged almost symmetrically about the iris so that the errors of one group cancel those of the other. The iris is a ring of thin curved blades that swing together to leave a nearly circular opening. Closing it also runs into a limit that no design can remove: light passing through a small hole spreads, and the smallest spot it can form, the Airy disc, grows in proportion to the f-number. Between the two limits lies the sharpest aperture.",
+          "球面をもつ 1 枚のガラスは、平行な光を一点に集めません。縁を通る光線は、中心を通る光線よりレンズに近いところで軸と交わります。こうして生じるぼけ、すなわち球面収差は F 値の 3 乗に反比例して小さくなるので、絞ればすぐに消えます。写真用のレンズは、光を曲げる仕事を正と負の複数のレンズに分担させ、絞りをはさんでほぼ対称に並べて、一方の群の誤差をもう一方の群で打ち消します。絞りは、薄い曲がった羽根を輪に並べたもので、いっせいに回ってほぼ円形の開口を残します。絞ると、どんな設計でも取り除けない限界にもぶつかります。小さな穴を通る光は広がり、作れる最小の点であるエアリーディスクは、F 値に比例して大きくなります。二つの限界の間に、最も鮮明な絞りがあります。"
+        ],
+        "formula": "b_{\\rm sph}\\approx\\frac{0.067\\,f}{N^{3}},\\qquad b_{\\rm Airy}=2.44\\,\\lambda N,\\qquad b\\approx\\sqrt{b_{\\rm sph}^{2}+b_{\\rm Airy}^{2}},\\qquad \\Delta=\\frac{f^{2}}{s-f}",
+        "example": [
+          "For a single 50 mm element at \\(f/2.8\\) the aberration blur is \\(0.067\\times50/2.8^3=0.153\\) mm, five times the 0.03 mm that counts as sharp; it falls to 6.5 µm at \\(f/8\\), where the Airy disc for green light is \\(2.44\\times0.55\\ \\mu\\mathrm{m}\\times8=10.7\\) µm, so a single element is at its best there, about 12.6 µm. A six-element design that cuts the aberration forty-fold reaches 5.0 µm at \\(f/3.2\\). To focus from infinity down to 3 m the whole optical group moves forward \\(50^2/(3000-50)=0.85\\) mm; to reach 0.45 m it moves 6.25 mm.",
+          "50 mm のレンズ 1 枚を \\(f/2.8\\) で使うと、収差によるぼけは \\(0.067\\times50/2.8^3=0.153\\) mm で、鮮明とみなせる 0.03 mm の 5 倍です。\\(f/8\\) では 6.5 µm に下がります。そこでは緑の光のエアリーディスクが \\(2.44\\times0.55\\ \\mu\\mathrm{m}\\times8=10.7\\) µm なので、1 枚のレンズはここで最良となり、約 12.6 µm です。収差を 40 分の 1 に抑える 6 枚構成の設計は、\\(f/3.2\\) で 5.0 µm に達します。無限遠から 3 m までピントを移すには、光学系全体が \\(50^2/(3000-50)=0.85\\) mm 前へ動きます。0.45 m まで寄るには 6.25 mm 動きます。"
+        ],
+        "caution": [
+          "The glass is drawn to the proportions of a double-Gauss lens but is not a ray-traced prescription, and the gold rays are a sketch of the cone of light, not exact paths. The forty-fold correction is a representative figure for the centre of the picture; real lenses are also limited by other aberrations that grow towards the corners, and many modern lenses focus by moving a small inner group, not the whole cell.",
+          "ガラスはダブルガウス型レンズの比率で描いていますが、光線追跡した設計値ではありません。金色の光線は光の円錐を模式的に示したもので、正確な経路ではありません。40 分の 1 という補正は画面中心での代表的な値です。実際のレンズは、画面の隅に向かって大きくなる別の収差にも制限されます。また最近のレンズの多くは、鏡筒全体ではなく内側の小さな群を動かしてピントを合わせます。"
+        ],
+        "question": [
+          "Why is a lens not at its sharpest either wide open or fully stopped down?",
+          "レンズが、開放でも最小絞りでも最も鮮明にならないのはなぜですか？"
+        ],
+        "answer": [
+          "Wide open, the outer parts of the glass are in use and their aberrations blur the image; that blur falls as the cube of the f-number. Stopped far down, the small opening spreads the light by diffraction, a blur that rises in proportion to the f-number. The sharpest setting is where the two are about equal.",
+          "開放では、ガラスの外側の部分も使われ、その収差が像をぼかします。このぼけは F 値の 3 乗に反比例して減ります。大きく絞ると、小さな開口が回折によって光を広げ、このぼけは F 値に比例して増えます。両者がほぼ等しくなるところが、最も鮮明な設定です。"
+        ],
+        "params": [
+          [
+            "N",
+            "Aperture",
+            "絞り",
+            0,
+            9,
+            1,
+            3,
+            [
+              [
+                "f/1.4",
+                "f/1.4"
+              ],
+              [
+                "f/1.8",
+                "f/1.8"
+              ],
+              [
+                "f/2",
+                "f/2"
+              ],
+              [
+                "f/2.8",
+                "f/2.8"
+              ],
+              [
+                "f/4",
+                "f/4"
+              ],
+              [
+                "f/5.6",
+                "f/5.6"
+              ],
+              [
+                "f/8",
+                "f/8"
+              ],
+              [
+                "f/11",
+                "f/11"
+              ],
+              [
+                "f/16",
+                "f/16"
+              ],
+              [
+                "f/22",
+                "f/22"
+              ]
+            ]
+          ],
+          [
+            "ls",
+            "Focus distance: \\(\\log_{10}\\) metres",
+            "ピント位置：\\(\\log_{10}\\) メートル",
+            -0.35,
+            2,
+            0.02,
+            0.48
+          ]
+        ],
+        "source": "R. Kingslake · Optics in Photography (SPIE Press)",
+        "url": "https://spie.org/Publications/Book/6394"
+      },
+      {
+        "id": "phase-detect-af",
+        "title": [
+          "3. Autofocus: phase detection and contrast",
+          "3. オートフォーカス：位相差とコントラスト"
+        ],
+        "body": [
+          "There are two ways for a camera to find focus by looking through its own lens. Contrast detection uses the fact that a focused image has the strongest fine detail: the camera moves the lens a little, measures the contrast, and keeps going while it rises. It is accurate but slow, because a single measurement says neither which way to move nor how far, and the peak is recognised only after passing it. Phase detection compares two views. Light from the left half of the lens and light from the right half arrive at the same place on the sensor only when the image is in focus; otherwise the two half-images are displaced sideways, in one direction if the lens is too far forward and the other if it is too far back. Pixels masked to see one half each measure that displacement, and one reading gives the full correction.",
+          "カメラが自分のレンズを通してピントを見つける方法は二つあります。コントラスト検出は、ピントの合った像で細かい模様が最も強くなることを使います。レンズを少し動かし、コントラストを測り、上がっている間は動かし続けます。正確ですが遅い方法です。一回の測定では、どちらへどれだけ動かせばよいかが分からず、頂上は通り過ぎて初めてそれと分かるからです。位相差検出は二つの眺めを比べます。レンズの左半分を通った光と右半分を通った光がセンサーの同じ場所に届くのは、ピントが合っているときだけです。そうでなければ、二つの半分の像は横にずれます。レンズが前に出すぎていれば一方へ、後ろすぎていれば反対へずれます。片方の半分だけが見えるように遮光した画素がこのずれを測り、一回の読み取りで必要な補正がすべて分かります。"
+        ],
+        "formula": "b=\\frac{|\\delta|}{N},\\qquad \\Delta x=\\frac{4}{3\\pi}\\cdot\\frac{\\delta}{N}\\approx0.424\\,\\frac{\\delta}{N},\\qquad C(\\nu)=\\left|\\frac{2J_{1}(\\pi\\nu b)}{\\pi\\nu b}\\right|",
+        "example": [
+          "With the sensor 0.6 mm from focus at \\(f/2.8\\) the blur disc is \\(0.6/2.8=0.214\\) mm across and the two half-aperture images are \\(0.424\\times0.214=0.091\\) mm apart, about 23 pixels of 4 µm, an easy thing to measure. Wide open at \\(f/1.4\\) the same error gives 0.182 mm. The contrast of a pattern of 10 line pairs per mm, by comparison, is under three per cent at that defocus, flat and useless as a guide, and climbs back only within about 0.3 mm of focus.",
+          "\\(f/2.8\\) でセンサーがピントから 0.6 mm ずれていると、ぼけの円の直径は \\(0.6/2.8=0.214\\) mm で、開口の二つの半分が作る像は \\(0.424\\times0.214=0.091\\) mm ずれます。4 µm の画素で約 23 個分で、容易に測れます。\\(f/1.4\\) の開放では、同じずれで 0.182 mm になります。これに対して、1 mm あたり 10 本の模様のコントラストは、このずれでは 3 % に届かず、平らで手がかりになりません。コントラストが戻ってくるのは、ピントから約 0.3 mm 以内に入ってからです。"
+        ],
+        "caution": [
+          "The two half-images are drawn for a simple edge and stripe, with the blur modelled as a uniform disc and each half as a half disc; real phase-detection pixels see overlapping parts of the pupil and need a calibration. The contrast search shown is a plain halving search, simpler than the predictive routines in a real camera, and noise and subject movement are left out.",
+          "二つの半分の像は、単純な縁と縞について描いています。ぼけは一様な円、それぞれの半分は半円としてモデル化しました。実際の位相差画素は瞳の重なり合う部分を見ており、較正が必要です。ここに示したコントラストの探索は、歩幅を半分にしていくだけの単純なもので、実際のカメラの予測的な手順より簡単です。ノイズと被写体の動きは省いています。"
+        ],
+        "question": [
+          "Why can phase detection focus in one movement when contrast detection has to hunt?",
+          "コントラスト検出は行ったり来たりするのに、位相差検出が一回の動きでピントを合わせられるのはなぜですか？"
+        ],
+        "answer": [
+          "The displacement between the two half-aperture images is proportional to the focus error and changes sign with its direction, so one measurement gives both the distance and the way to go. Contrast is the same on both sides of focus and says only how good the present position is, so the camera must move to learn anything.",
+          "開口の二つの半分が作る像のずれは、ピントの誤差に比例し、その向きによって符号が変わります。だから一回の測定で、動かす距離と向きの両方が分かります。コントラストはピントの前後で同じ値をとり、今の位置がどれだけ良いかしか教えてくれないので、カメラは動かしてみなければ何も分かりません。"
+        ],
+        "params": [
+          [
+            "N",
+            "Aperture",
+            "絞り",
+            0,
+            9,
+            1,
+            3,
+            [
+              [
+                "f/1.4",
+                "f/1.4"
+              ],
+              [
+                "f/1.8",
+                "f/1.8"
+              ],
+              [
+                "f/2",
+                "f/2"
+              ],
+              [
+                "f/2.8",
+                "f/2.8"
+              ],
+              [
+                "f/4",
+                "f/4"
+              ],
+              [
+                "f/5.6",
+                "f/5.6"
+              ],
+              [
+                "f/8",
+                "f/8"
+              ],
+              [
+                "f/11",
+                "f/11"
+              ],
+              [
+                "f/16",
+                "f/16"
+              ],
+              [
+                "f/22",
+                "f/22"
+              ]
+            ]
+          ],
+          [
+            "d",
+            "Sensor distance from focus (mm)",
+            "ピント位置からのセンサーのずれ（mm）",
+            -1.5,
+            1.5,
+            0.02,
+            0.6
+          ]
+        ],
+        "source": "R. Kingslake · Optics in Photography (SPIE Press)",
+        "url": "https://spie.org/Publications/Book/6394"
+      }
+    ]
   }
 ]

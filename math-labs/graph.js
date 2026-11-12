@@ -143,7 +143,9 @@
     'microprocessors': ['switching-converters'],
     'approximation-theory': ['fourier-analysis', 'optimization', 'complex-analysis'],
     'particle-physics': ['group-theory', 'lie-groups', 'nuclear-physics'],
-    'bicycles': ['control-theory', 'gears-mechanisms', 'dynamical-systems']
+    'bicycles': ['control-theory', 'gears-mechanisms', 'dynamical-systems'],
+    'data-storage': ['microprocessors', 'information-theory', 'coding-theory'],
+    'camera-lenses': ['fourier-analysis', 'microprocessors', 'laser-physics']
   };
   // Topics named in each topic's own prerequisite line (content.json "prerequisite").
   const PREREQ = {
@@ -219,7 +221,9 @@
     'microprocessors': ['semiconductor-physics', 'optics'],              // Band structure and doping, diffraction
     'approximation-theory': ['numerical-analysis', 'functional-analysis'], // Interpolation and norms
     'particle-physics': ['quantum-mechanics', 'special-relativity', 'representation-theory'], // Four-vectors, SU(3) weights
-    'bicycles': ['classical-mechanics', 'rigid-body-dynamics']           // Torque balance, gyroscopes and rolling
+    'bicycles': ['classical-mechanics', 'rigid-body-dynamics'],          // Torque balance, gyroscopes and rolling
+    'data-storage': ['electric-motors', 'semiconductor-physics', 'probability-inference'], // Voice-coil actuator, trapped charge, normal distributions
+    'camera-lenses': ['optics']                                          // Thin lenses and diffraction
   };
 
   let topics = [], bySlug = new Map(), edges = [], drawn = [];
