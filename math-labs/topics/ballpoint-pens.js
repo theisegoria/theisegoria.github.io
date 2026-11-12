@@ -77,7 +77,7 @@
           S.animate((dt) => { if (S.reduced()) return false; draw(Math.min(0.05, dt || 0.016)); return true; });
         },
         update(S) { st.draw(0); S.invalidate(); },
-        fallback() { st.flat = true; st.v3.replaceChildren(); const f2 = L.fig(st.v3, { x: [-4, 4], y: [-0.5, 9], equal: true, maxH: 340, axes: false, grid: false }); f2.circle(0, 1, 1, { c: 'ink', fill: 'grid', fo: 0.7, w: 1.6 }); f2.poly([[1.1, 0.6], [2.4, 6], [2.4, 9], [1.7, 9], [1.7, 5.2], [0.32, 4.2], [0.32, 2]], { c: 'ink', fill: 'c3', fo: 0.3, w: 1.4 }); f2.poly([[-1.1, 0.6], [-2.4, 6], [-2.4, 9], [-1.7, 9], [-1.7, 5.2], [-0.32, 4.2], [-0.32, 2]], { c: 'ink', fill: 'c3', fo: 0.3, w: 1.4 }); f2.rect(-0.32, 2, 0.64, 2.2, { c: 'c1', fill: 'c1', fo: 0.6, w: 0 }); f2.seg(-4, 0, 4, 0, { c: 'ink', w: 2 }); },
+        fallback() { st.flat = true; st.v3.replaceChildren(); const f2 = L.fig(st.v3, { x: [-4, 4], y: [-0.5, 9], equal: true, maxH: 340, axes: false, grid: false }); f2.circle(0, 1, 1, { c: 'ink', fill: 'grid', fo: 0.7, w: 1.6 }); f2.poly([[1.1, 0.6], [2.4, 6], [2.4, 9], [1.7, 9], [1.7, 5.2], [0.32, 4.2], [0.32, 2]], { c: 'ink', fill: 'c3', fo: 0.3, w: 1.4 }); f2.poly([[-1.1, 0.6], [-2.4, 6], [-2.4, 9], [-1.7, 9], [-1.7, 5.2], [-0.32, 4.2], [-0.32, 2]], { c: 'ink', fill: 'c3', fo: 0.3, w: 1.4 }); f2.rect(-0.32, 2, 0.64, 2.2, { c: 'c1', fill: 'c1', fo: 0.6, w: 0 }); f2.seg([-4, 0], [4, 0], { c: 'ink', w: 2 }); },
       });
     },
   };

@@ -106,7 +106,7 @@
           S.animate((dt) => { if (S.reduced()) return false; draw(Math.min(0.05, dt || 0.016)); return true; });
         },
         update(S) { st.draw(0); S.invalidate(); },
-        fallback() { st.flat = true; st.v3.replaceChildren(); const f2 = L.fig(st.v3, { x: [-4, 8], y: [-0.5, 10.5], equal: true, maxH: 340, axes: false, grid: false }); f2.circle(0, 3.1, 3.1, { c: 'ink', fill: 'ink', fo: 0.7, w: 1.5 }); f2.seg(1.1, 2, 4.6, 2.6, { c: 'ink', w: 3 }); f2.seg(1.1, 4.3, 2.6, 9.15, { c: 'c2', w: 6 }); f2.rect(4.5, 1.9, 2.2, 7.5, { c: 'c1', fill: 'c1', fo: 0.4 }); f2.seg(-4, 0, 8, 0, { c: 'ink', w: 2 }); },
+        fallback() { st.flat = true; st.v3.replaceChildren(); const f2 = L.fig(st.v3, { x: [-4, 8], y: [-0.5, 10.5], equal: true, maxH: 340, axes: false, grid: false }); f2.circle(0, 3.1, 3.1, { c: 'ink', fill: 'ink', fo: 0.7, w: 1.5 }); f2.seg([1.1, 2], [4.6, 2.6], { c: 'ink', w: 3 }); f2.seg([1.1, 4.3], [2.6, 9.15], { c: 'c2', w: 6 }); f2.rect(4.5, 1.9, 2.2, 7.5, { c: 'c1', fill: 'c1', fo: 0.4 }); f2.seg([-4, 0], [8, 0], { c: 'ink', w: 2 }); },
       });
     },
   };

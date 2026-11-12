@@ -62,7 +62,7 @@
       st.g2.replaceChildren();
       const g = L.fig(st.g2, { x: [0.4, 5.6], y: [-3, 3], aspect: 0.8, maxH: 400, xlabel: T('pin, counted from the front of the lock', '錠の手前から数えたピンの番号'), ylabel: T('join above the line (mm)', '継ぎ目の高さ（mm）'), ticksX: [1, 2, 3, 4, 5].map((q) => [q, String(q)]) });
       g.hline(0, { c: 'c2', w: 2 });
-      cuts.forEach((c, i) => { const e = pinError(CODE[i], c); g.seg(i + 1, 0, i + 1, clamp(e, -3, 3), { c: e === 0 ? 'c3' : 'c1', w: 5 });
+      cuts.forEach((c, i) => { const e = pinError(CODE[i], c); g.seg([i + 1, 0], [i + 1, clamp(e, -3, 3)], { c: e === 0 ? 'c3' : 'c1', w: 5 });
         g.handle(i + 1, clamp(e, -3, 3), { c: e === 0 ? 'c3' : 'hl', axis: 'y', bounds: [0.4, 5.6, -3, 3], label: T('cut ' + (i + 1), '刻み ' + (i + 1)), onDrag: (x, y) => ctx.set('c' + (i + 1), clamp(CODE[i] - Math.round(y / STEP), 0, 9)) }); });
       st.leg.replaceChildren(); L.legend(st.leg, [{ c: 'c2', label: T('shear line', '境目（シアライン）') }, { c: 'c1', label: T('pin blocking the line', '境目をふさぐピン') }, { c: 'c3', label: T('pin clear', '通れるピン') }]);
       ctx.readout([
@@ -85,7 +85,7 @@
           S.animate((dt) => { if (S.reduced()) return false; draw(Math.min(0.05, dt || 0.016)); return true; });
         },
         update(S) { st.draw(0); S.invalidate(); },
-        fallback() { st.flat = true; st.v3.replaceChildren(); const f2 = L.fig(st.v3, { x: [-0.5, 3.5], y: [-1.1, 2.1], equal: true, maxH: 320, axes: false, grid: false }); f2.rect(0, -0.9, 3, 2.8, { c: 'ink', fill: 'grid', fo: 0.3, w: 1.4 }); f2.seg(0, 0.635, 3, 0.635, { c: 'c2', w: 2 }); cuts.forEach((c, i) => { const b = zc(c), t = b + lk(CODE[i]); f2.rect(YP(i) - 0.13, b, 0.26, t - b, { c: 'c1', fill: 'c1', fo: 0.5 }); f2.rect(YP(i) - 0.13, t, 0.26, 0.5, { c: 'c2', fill: 'c2', fo: 0.5 }); }); },
+        fallback() { st.flat = true; st.v3.replaceChildren(); const f2 = L.fig(st.v3, { x: [-0.5, 3.5], y: [-1.1, 2.1], equal: true, maxH: 320, axes: false, grid: false }); f2.rect(0, -0.9, 3, 2.8, { c: 'ink', fill: 'grid', fo: 0.3, w: 1.4 }); f2.seg([0, 0.635], [3, 0.635], { c: 'c2', w: 2 }); cuts.forEach((c, i) => { const b = zc(c), t = b + lk(CODE[i]); f2.rect(YP(i) - 0.13, b, 0.26, t - b, { c: 'c1', fill: 'c1', fo: 0.5 }); f2.rect(YP(i) - 0.13, t, 0.26, 0.5, { c: 'c2', fill: 'c2', fo: 0.5 }); }); },
       });
     },
   };
@@ -124,7 +124,7 @@
       a.hline(0, { c: 'muted', dash: '4 4' }); b.e.forEach((e, i) => { const done = b.order.indexOf(i) < k; a.rect(i + 0.65, Math.min(0, e), 0.7, Math.abs(e), { c: i === cur ? 'hl' : done ? 'c3' : 'c1', fill: i === cur ? 'hl' : done ? 'c3' : 'c1', fo: 0.6 }); a.text(i + 1, e + (e >= 0 ? 1 : -1) * (v.tol * 0.12 + 2), String(b.order.indexOf(i) + 1), { small: true, anchor: 'middle' }); });
       L.setText(L.h('p', 'lab-cap', c2), T(tx`How far the plug has turned after each pin is set, in degrees. The staircase is what the picker feels. Each step is a click. After the fifth the plug turns freely. The numbers above the bars on the left give the order in which this lock's pins must be set.`, tx`それぞれのピンを合わせた後に、プラグがどれだけ回ったかを示します。この階段が、ピッキングをする人の指に伝わる感触です。1 段ごとに、かちりと手応えがあります。5 本目の後、プラグは自由に回ります。左の棒の上の数字は、この錠のピンを合わせる順番です。`));
       const deg = b.rot.map((r) => (r * 180) / PI), ymax = Math.max(0.6, deg[n - 1] * 1.25), f = L.fig(c2, { x: [0, 5.6], y: [0, ymax], aspect: 0.7, maxH: 350, xlabel: T('pins set', '合わせたピンの数'), ylabel: T('plug has turned (degrees)', 'プラグの回転（度）'), ticksX: [0, 1, 2, 3, 4, 5].map((q) => [q, String(q)]) });
-      const pts = []; for (let i = 0; i < n; i++) { pts.push([i, deg[i]], [i + 1, deg[i]]); } f.line(pts, { c: 'c1', w: 2.8 }); f.seg(5, deg[n - 1], 5, ymax, { c: 'c3', w: 2.8 });
+      const pts = []; for (let i = 0; i < n; i++) { pts.push([i, deg[i]], [i + 1, deg[i]]); } f.line(pts, { c: 'c1', w: 2.8 }); f.seg([5, deg[n - 1]], [5, ymax], { c: 'c3', w: 2.8 });
       f.handle(k, k < n ? deg[k] : ymax * 0.96, { c: 'hl', axis: 'x', bounds: [0, 5, 0, ymax], label: T('pins set', '合わせたピンの数'), onDrag: (x) => ctx.set('set', clamp(Math.round(x), 0, 5)) });
       L.legend(ctx.host, [{ c: 'hl', kind: 'dot', label: T('pin binding now', 'いま挟まれているピン') }, { c: 'c3', label: T('set; plug free', '合わせ済み、プラグが自由') }, { c: 'c1', label: T('still loose; rotation', 'まだ緩い、回転') }]);
       ctx.readout([

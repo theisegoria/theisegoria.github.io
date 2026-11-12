@@ -92,7 +92,7 @@
           S.animate((dt) => { if (S.reduced()) return false; draw(Math.min(0.05, dt || 0.016)); return true; });
         },
         update(S) { st.draw(0); S.invalidate(); },
-        fallback() { st.flat = true; st.v3.replaceChildren(); const f2 = L.fig(st.v3, { x: [-3, 3], y: [-2, 2], equal: true, maxH: 300, axes: false, grid: false }); f2.circle(-1.05, 0, 1.6, { c: 'c1', fill: 'c1', fo: 0.2, w: 1.6 }); f2.circle(1.05, 0, 1.5, { c: 'c2', fill: 'c2', fo: 0.2, w: 1.6 }); f2.seg(-1.5, 0, 1.5, 0, { c: 'ink', w: 4 }); },
+        fallback() { st.flat = true; st.v3.replaceChildren(); const f2 = L.fig(st.v3, { x: [-3, 3], y: [-2, 2], equal: true, maxH: 300, axes: false, grid: false }); f2.circle(-1.05, 0, 1.6, { c: 'c1', fill: 'c1', fo: 0.2, w: 1.6 }); f2.circle(1.05, 0, 1.5, { c: 'c2', fill: 'c2', fo: 0.2, w: 1.6 }); f2.seg([-1.5, 0], [1.5, 0], { c: 'ink', w: 4 }); },
       });
     },
   };

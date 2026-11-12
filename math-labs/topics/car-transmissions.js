@@ -83,7 +83,7 @@
           S.animate((dt) => { if (S.reduced()) return false; draw(Math.min(0.05, dt || 0.016)); return true; });
         },
         update(S) { st.draw(0); S.invalidate(); },
-        fallback() { st.flat = true; st.v3.replaceChildren(); const f2 = L.fig(st.v3, { x: [-7, 7], y: [-4, 4], equal: true, maxH: 300, axes: false, grid: false }); f2.rect(-1.25, -1.25, 2.5, 2.5, { c: 'ink', fill: 'grid', fo: 0.4, w: 1.4 }); f2.rect(-1.6, -2.3, 0.4, 4.6, { c: 'ink', fill: 'ink', fo: 0.5 }); f2.seg(-6, 0, -0.9, 0, { c: 'c1', w: 5 }); f2.seg(0.9, 0, 6, 0, { c: 'c2', w: 5 }); f2.rect(-6.2, -1.7, 0.8, 3.4, { c: 'ink', fill: 'ink', fo: 0.8 }); f2.rect(5.4, -1.7, 0.8, 3.4, { c: 'ink', fill: 'ink', fo: 0.8 }); },
+        fallback() { st.flat = true; st.v3.replaceChildren(); const f2 = L.fig(st.v3, { x: [-7, 7], y: [-4, 4], equal: true, maxH: 300, axes: false, grid: false }); f2.rect(-1.25, -1.25, 2.5, 2.5, { c: 'ink', fill: 'grid', fo: 0.4, w: 1.4 }); f2.rect(-1.6, -2.3, 0.4, 4.6, { c: 'ink', fill: 'ink', fo: 0.5 }); f2.seg([-6, 0], [-0.9, 0], { c: 'c1', w: 5 }); f2.seg([0.9, 0], [6, 0], { c: 'c2', w: 5 }); f2.rect(-6.2, -1.7, 0.8, 3.4, { c: 'ink', fill: 'ink', fo: 0.8 }); f2.rect(5.4, -1.7, 0.8, 3.4, { c: 'ink', fill: 'ink', fo: 0.8 }); },
       });
     },
   };
@@ -122,7 +122,7 @@
       const a = L.fig(c1, { x: [-11, 27], y: [-12, 12], equal: true, aspect: 0.65, maxH: 340, axes: false, grid: false });
       const r1 = p.r1 * 100, r2 = p.r2 * 100, C = CC * 100, th = Math.asin((r2 - r1) / C);
       a.circle(0, 0, 9.5, { c: 'muted', fill: 'grid', fo: 0.25, w: 1 }); a.circle(C, 0, 9.5, { c: 'muted', fill: 'grid', fo: 0.25, w: 1 }); a.circle(0, 0, r1, { c: 'c1', fill: 'c1', fo: 0.3, w: 2 }); a.circle(C, 0, r2, { c: 'c2', fill: 'c2', fo: 0.3, w: 2 });
-      for (const s of [-1, 1]) a.seg(-r1 * Math.sin(th), s * r1 * Math.cos(th), C - r2 * Math.sin(th), s * r2 * Math.cos(th), { c: 'ink', w: 3 });
+      for (const s of [-1, 1]) a.seg([-r1 * Math.sin(th), s * r1 * Math.cos(th)], [C - r2 * Math.sin(th), s * r2 * Math.cos(th)], { c: 'ink', w: 3 });
       a.line(L.sample(PI / 2 + th, (3 * PI) / 2 - th, 40, (u) => 0).map((_, i) => { const u = PI / 2 + th + ((PI - 2 * th) * i) / 39; return [r1 * Math.cos(u), r1 * Math.sin(u)]; }), { c: 'ink', w: 3 }); a.line(L.sample(0, 1, 40, (u) => 0).map((_, i) => { const u = -PI / 2 - th + ((PI + 2 * th) * i) / 39; return [C + r2 * Math.cos(u), r2 * Math.sin(u)]; }), { c: 'ink', w: 3 });
       a.handle(0, r1, { c: 'hl', axis: 'y', bounds: [-11, 27, 2.5, 9], label: T('driving pulley', '駆動側のプーリー'), onDrag: (x, y) => { let b = v.ratio, bd = 1e9; for (let q = 0.4; q <= 2.501; q += 0.05) { const d = Math.abs(pulleys(q).r1 * 100 - y); if (d < bd) { bd = d; b = q; } } ctx.set('ratio', Math.round(b * 20) / 20); } });
       L.setText(L.h('p', 'lab-cap', c2), T(tx`Engine speed against road speed, accelerating flat out. A box with fixed gears (red) drags the engine up and down through its range, passing its best speed only for a moment in each gear. The CVT (blue) lets the engine climb to \(${fmt(pk, 0)}\) rpm, where it makes most power, and holds it there while the ratio does all the changing.`, tx`全開で加速するときのエンジンの回転数を、速度に対して描いています。段のある変速機（赤）は、エンジンを回転数の範囲の中で上下させ、最も良い回転数は、それぞれのギアで一瞬通過するだけです。CVT（青）は、エンジンを最大出力が出る毎分 \(${fmt(pk, 0)}\) 回転まで上げ、そこに保ったまま、変速比だけを変えていきます。`));
