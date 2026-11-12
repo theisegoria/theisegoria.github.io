@@ -23387,5 +23387,184 @@
         "url": "https://doi.org/10.1103/RevModPhys.65.163"
       }
     ]
+  },
+  {
+    "slug": "electric-toothbrush",
+    "title": [
+      "Electric toothbrushes: resonance in the hand",
+      "電動歯ブラシ：手の中の共振"
+    ],
+    "description": [
+      "A sonic toothbrush moves its bristles five hundred times a second, a hundred times faster than a hand can, and it does so with a motor that has no gears, no brushes and no bearings to wear, running for weeks on a cell the size of a finger. The trick is resonance. The head and its shaft are mounted on a spring and have a natural frequency, like a tuning fork, and the handle pushes them in time with it, so that each push adds to the last. It is also sealed against water, so the energy has to get in without a wire, by a magnetic field passed from a coil in the stand to a coil in the handle. These experiments tune the drive to the brush, charge it through its case, and open the handle.",
+      "音波式の歯ブラシは、毛を毎秒 500 回、手で動かせる速さの 100 倍で動かします。しかも、摩耗する歯車もブラシも軸受もないモーターで、指ほどの大きさのセル一つで何週間も動きます。その仕組みが共振です。ヘッドとその軸はばねに取り付けられていて、音叉のように固有振動数をもちます。ハンドルがそれに合わせて押すので、一回ごとの押しが前の押しに積み重なります。また、水が入らないように密閉されているので、エネルギーは導線なしで入れなければなりません。スタンドのコイルからハンドルのコイルへ渡される磁場によってです。ここでの実験では、駆動をブラシに合わせ、ケース越しに充電し、ハンドルを開けます。"
+    ],
+    "group": "engineering",
+    "prerequisite": [
+      "Simple harmonic motion, sine waves and phase, power and efficiency",
+      "単振動、正弦波と位相、電力と効率"
+    ],
+    "source": "A. Kurs et al. · Wireless power transfer via strongly coupled magnetic resonances (Science, 2007)",
+    "url": "https://doi.org/10.1126/science.1143254",
+    "labs": [
+      {
+        "id": "brush-resonance",
+        "title": [
+          "1. Resonance: why it hums at one note",
+          "1. 共振：一つの音でうなる理由"
+        ],
+        "body": [
+          "Twist the head of a sonic brush and let go, and it would ring back and forth at its own frequency, set by the stiffness of its spring bar and the inertia of the head, dying away over a dozen swings. The drive coils push it with a torque that alternates at a frequency the electronics choose. If that frequency is well below the natural one, the head just follows the push and barely moves. As the two approach, the head lags further behind until, when they match, every push comes exactly when the head is moving fastest in that direction. The swing then grows until friction removes as much energy each cycle as the push supplies, which is the natural swing multiplied by the quality factor. Bristles pressed against teeth add friction and a little stiffness, so the peak drops and shifts, and the electronics can use that to sense how hard the brush is pressed.",
+          "音波式ブラシのヘッドをねじって放すと、ヘッドは固有の振動数で往復し、十数回の往復で止まります。この振動数は、ばねの棒の硬さとヘッドの慣性で決まります。駆動コイルは、電子回路が選んだ周波数で向きを変えるトルクでヘッドを押します。その周波数が固有振動数よりずっと低いと、ヘッドは押しに従うだけで、ほとんど動きません。二つが近づくにつれてヘッドの遅れは大きくなり、一致すると、すべての押しが、ヘッドがその向きに最も速く動いている瞬間に加わります。振れは、摩擦が 1 周期ごとに奪うエネルギーが押しの与えるエネルギーと等しくなるまで大きくなります。その大きさは、ゆっくり押したときの振れに品質係数を掛けたものです。毛を歯に押し付けると、摩擦と少しの硬さが加わるので、山は低くなり、位置がずれます。電子回路はこれを使って、ブラシがどれだけ強く押されているかを知ることができます。"
+        ],
+        "formula": "\\theta_0(f)=\\frac{\\theta_{\\rm res}\\,f_0^{2}/Q_0}{\\sqrt{(f_0^{2}-f^{2})^{2}+(f f_0/Q)^{2}}},\\qquad \\tan\\varphi=\\frac{f f_0/Q}{f_0^{2}-f^{2}},\\qquad v_{\\rm tip}=2\\pi f\\,r\\,\\theta_0,\\qquad P=\\frac{J\\omega_0\\,\\omega^{2}\\theta_0^{2}}{2Q}",
+        "example": [
+          "The free brush has \\(f_0=260\\) Hz and \\(Q_0=12\\). Driven at 260 Hz it swings 6° each way: the bristle tips, 11 mm from the axis, sweep 2.3 mm and reach 1.9 m/s, 31 200 strokes a minute, and 0.40 W is lost in the head. The same torque applied slowly would give 0.5°. Detuned to 230 Hz the swing is 2.2°. Pressed with 1 N, \\(Q\\) falls to 7.2 and \\(f_0\\) rises to 265 Hz: the swing is 3.4° and the tips sweep 1.3 mm. At 3 N the swing is 1.7°.",
+          "空中で自由なブラシは \\(f_0=260\\) Hz、\\(Q_0=12\\) です。260 Hz で駆動すると片側に 6° 振れます。軸から 11 mm の毛先は 2.3 mm の幅で動き、速さは 1.9 m/s に達します。毎分 31 200 ストロークで、ヘッドでは 0.40 W が失われます。同じトルクをゆっくり加えた場合の振れは 0.5° です。230 Hz にずらすと振れは 2.2° になります。1 N で押し付けると、\\(Q\\) は 7.2 に下がり、\\(f_0\\) は 265 Hz に上がります。振れは 3.4°、毛先の幅は 1.3 mm です。3 N では振れは 1.7° になります。"
+        ],
+        "caution": [
+          "The brush is treated as a single linear oscillator with representative values. A real head also bends, the bristles add their own resonances, and the toothpaste and water between bristles and teeth carry some of the motion. Makers tune each handle to its head at the factory, and some track the resonance as the head wears.",
+          "ブラシは、代表的な値をもつ一つの線形振動子として扱っています。実際のヘッドは曲がりもし、毛は独自の共振を加え、毛と歯の間の歯磨き粉と水も動きの一部を伝えます。メーカーは工場でハンドルをヘッドに合わせて調整し、中にはヘッドの摩耗に合わせて共振を追いかけるものもあります。"
+        ],
+        "question": [
+          "Why does a sonic toothbrush run at one particular frequency?",
+          "音波式の歯ブラシが、ある決まった周波数で動くのはなぜですか？"
+        ],
+        "answer": [
+          "Its head is a spring-mounted mass with a natural frequency. Driven at that frequency, each small magnetic push adds to the motion already there, and the swing builds up to many times what the same push would give at any other frequency. That lets a small, efficient actuator produce a large, fast motion.",
+          "ヘッドは、ばねに取り付けられた質量で、固有振動数をもっています。その振動数で駆動すると、小さな磁気的な押しの一つ一つが、すでにある動きに加わり、振れは、同じ押しをほかの周波数で加えたときの何倍にも大きくなります。そのおかげで、小さく効率の良いアクチュエーターで、大きく速い動きを作れます。"
+        ],
+        "params": [
+          [
+            "f",
+            "Drive frequency (Hz)",
+            "駆動周波数（Hz）",
+            120,
+            420,
+            1,
+            260
+          ],
+          [
+            "load",
+            "Force pressing the bristles on the teeth (N)",
+            "毛を歯に押し付ける力（N）",
+            0,
+            4,
+            0.1,
+            1
+          ]
+        ],
+        "source": "A. Kurs et al. · Wireless power transfer via strongly coupled magnetic resonances (Science, 2007)",
+        "url": "https://doi.org/10.1126/science.1143254"
+      },
+      {
+        "id": "induction-charging",
+        "title": [
+          "2. Charging through a sealed case",
+          "2. 密閉したケース越しに充電する"
+        ],
+        "body": [
+          "A changing current in one coil makes a changing magnetic field, and a changing field through a second coil drives a current in it: this is a transformer. In a toothbrush the two halves are in separate plastic shells, so there is a gap of several millimetres where a transformer would have iron, and most of the field made by the stand’s coil never passes through the handle’s. The fraction that does is the coupling \\(k\\). Each coil also wastes power in its own resistance, measured by its quality factor \\(Q\\), the ratio of the energy it stores to the energy it loses per cycle. However the circuit is arranged, the efficiency cannot exceed a limit that depends only on the product \\(k^2Q_1Q_2\\). A small gap or good coils make that product large and the limit close to one.",
+          "一方のコイルの電流が変化すると、変化する磁場ができます。その磁場がもう一方のコイルを貫くと、そこに電流が流れます。これが変圧器です。歯ブラシでは、二つの部分が別々の樹脂の殻に入っているので、変圧器なら鉄心があるところに数ミリメートルのすき間があり、スタンドのコイルが作る磁場の大部分は、ハンドルのコイルを通りません。通る割合が結合 \\(k\\) です。また、それぞれのコイルは自分の抵抗で電力を失います。それを表すのが品質係数 \\(Q\\) で、コイルが蓄えるエネルギーと、1 周期に失うエネルギーの比です。回路をどう組んでも、効率は \\(k^2Q_1Q_2\\) という積だけで決まる限界を超えられません。すき間が小さいか、コイルが良ければ、この積は大きくなり、限界は 1 に近づきます。"
+        ],
+        "formula": "\\eta_{\\max}=\\frac{x}{\\bigl(1+\\sqrt{1+x}\\bigr)^{2}},\\qquad x=k^{2}Q_1Q_2",
+        "example": [
+          "With 3 mm between the coils the coupling is 0.41. For two coils of \\(Q=8\\) the figure of merit is \\(0.41^2\\times64=10.8\\) and the best efficiency is 55 per cent, so putting 1 W into the battery draws 1.8 W and wastes 0.8 W as heat; a 2.6 Wh cell fills in 2.6 hours. At 8 mm the coupling is 0.15 and the limit 22 per cent. Coils of \\(Q=24\\) at 3 mm reach 82 per cent.",
+          "コイルの間が 3 mm のとき、結合は 0.41 です。\\(Q=8\\) のコイル二つでは、性能指数は \\(0.41^2\\times64=10.8\\)、最高の効率は 55 % です。電池に 1 W を入れるには 1.8 W を引き込み、0.8 W が熱として失われます。2.6 Wh のセルは 2.6 時間で満たされます。8 mm では結合は 0.15、限界は 22 % です。\\(Q=24\\) のコイルなら、3 mm で 82 % に達します。"
+        ],
+        "caution": [
+          "The fall of coupling with gap is a representative exponential, not a field calculation, and the efficiency shown is the upper limit for an ideally matched load. Real toothbrush chargers are simple circuits that fall well short of it, and they also lose power in the electronics on each side and trickle a little when the brush is full.",
+          "すき間に対する結合の低下は、代表的な指数関数で表したもので、磁場を計算したものではありません。示した効率は、負荷が理想的に整合したときの上限です。実際の歯ブラシの充電器は単純な回路で、この限界には遠く及びません。両側の電子回路でも電力を失い、ブラシが満充電のときにもわずかに電流を流し続けます。"
+        ],
+        "question": [
+          "Why is wireless charging less efficient than plugging in a cable?",
+          "ワイヤレス充電が、ケーブルをつなぐより効率が低いのはなぜですか？"
+        ],
+        "answer": [
+          "Only part of the magnetic field made by the sending coil passes through the receiving coil, so the sender must build a larger field than is used, and the current that maintains it wastes power in the coil’s resistance. The wider the gap, the smaller the useful part and the larger the waste.",
+          "送る側のコイルが作る磁場のうち、受ける側のコイルを通るのは一部だけです。そのため送る側は、使われる分より大きな磁場を作らなければならず、それを保つ電流がコイルの抵抗で電力を失います。すき間が広いほど、役に立つ部分は小さく、無駄は大きくなります。"
+        ],
+        "params": [
+          [
+            "gap",
+            "Gap between the coils (mm)",
+            "コイルの間のすき間（mm）",
+            1,
+            15,
+            0.5,
+            3
+          ],
+          [
+            "q",
+            "Quality factor of each coil",
+            "各コイルの品質係数",
+            3,
+            60,
+            1,
+            8
+          ],
+          [
+            "pb",
+            "Power into the battery (W)",
+            "電池に入る電力（W）",
+            0.3,
+            3,
+            0.1,
+            1
+          ]
+        ],
+        "source": "A. Kurs et al. · Wireless power transfer via strongly coupled magnetic resonances (Science, 2007)",
+        "url": "https://doi.org/10.1126/science.1143254"
+      },
+      {
+        "id": "toothbrush-cutaway",
+        "title": [
+          "3. Inside the handle",
+          "3. ハンドルの中"
+        ],
+        "body": [
+          "Everything in the handle is arranged along one line. At the bottom a coil sits round a hollow that fits over a peg on the stand, where it picks up the stand’s field. Above it is a single lithium-ion cell and a circuit board that turns the cell’s steady voltage into an alternating current at the head’s frequency. That current flows in two coils wound on an iron frame; between them, on the shaft, is a small block carrying permanent magnets, which the coils’ field rocks one way and then the other. Nothing rotates continuously and nothing rubs: the shaft is held by a thin steel bar that twists, and that bar is the spring of the resonance. The shaft passes out through a rubber seal to the brush head. What matters for cleaning is the speed of the bristle tips across the tooth, which is the number of strokes a second times the length of a stroke.",
+          "ハンドルの中のものは、すべて一本の線に沿って並んでいます。いちばん下には、スタンドの突起にはまるくぼみを囲むコイルがあり、そこでスタンドの磁場を受けます。その上にリチウムイオンのセルが一つと、セルの一定の電圧をヘッドの振動数の交流に変える基板があります。その電流は、鉄の枠に巻いた二つのコイルを流れます。その間の軸には、永久磁石を載せた小さなブロックがあり、コイルの磁場がそれを一方へ、次に反対へと揺らします。回り続けるものも、こすれるものもありません。軸は、ねじれる細い鋼の棒で支えられていて、その棒が共振のばねです。軸はゴムのシールを通って外へ出て、ブラシヘッドにつながります。汚れを落とすうえで大切なのは、歯の表面を横切る毛先の速さで、それは毎秒のストローク数にストロークの長さを掛けたものです。"
+        ],
+        "formula": "\\bar v_{\\rm tip}=\\frac{N_{\\rm strokes}}{60}\\times\\ell_{\\rm stroke},\\qquad N_{\\rm strokes}=2f\\times60,\\qquad \\ell_{\\rm stroke}=2\\,r\\,\\theta_0",
+        "example": [
+          "A hand making 300 strokes a minute of 20 mm moves the bristles at an average of 0.10 m/s. A round head turning 25° each way 8800 times a minute, with tips at 6.5 mm, gives 5.7 mm strokes and 0.83 m/s. The sonic brush in air makes 31 200 strokes a minute of 2.3 mm: 1.20 m/s, twelve times the hand, and 62 400 strokes in two minutes. Pressed with 1 N its strokes shrink to 1.3 mm. A 2.6 Wh cell at 1.5 W lasts 52 two-minute sessions.",
+          "毎分 300 回、20 mm のストロークで磨く手は、毛を平均 0.10 m/s で動かします。毛先が軸から 6.5 mm にある丸いヘッドが、片側 25° ずつ毎分 8800 回動くと、ストロークは 5.7 mm、速さは 0.83 m/s です。空中の音波式ブラシは、2.3 mm のストロークを毎分 31 200 回行います。速さは 1.20 m/s で手の 12 倍、2 分間で 62 400 ストロークです。1 N で押し付けると、ストロークは 1.3 mm に縮みます。2.6 Wh のセルは、1.5 W なら 2 分間の使用 52 回分もちます。"
+        ],
+        "caution": [
+          "The brush is a generic sonic design with representative dimensions, not a particular product, and its swing in the scene is enlarged four times and slowed about two hundred times so it can be seen. Tip speed is a simple measure; real cleaning also depends on bristle stiffness, on the fluid driven between the teeth, and above all on reaching every surface.",
+          "ブラシは、代表的な寸法をもつ一般的な音波式の設計で、特定の製品ではありません。場面の中の振れは、見えるように 4 倍に拡大し、約 200 分の 1 の速さにしています。毛先の速さは単純な目安です。実際の清掃効果は、毛の硬さ、歯の間に送り込まれる液体、そして何よりもすべての面に毛が届くかどうかで変わります。"
+        ],
+        "question": [
+          "Why does pressing a sonic toothbrush harder against the teeth clean no better?",
+          "音波式の歯ブラシを歯に強く押し付けても、よく磨けるようにならないのはなぜですか？"
+        ],
+        "answer": [
+          "The brush cleans by the fast motion of its bristle tips, and that motion is a resonance. Pressing adds friction, which lowers the swing in proportion, so the tips move less far and more slowly. The handle senses the smaller swing and warns that the pressure is too high.",
+          "このブラシは毛先の速い動きで汚れを落とし、その動きは共振によるものです。押し付けると摩擦が加わり、振れはそれに応じて小さくなるので、毛先の動く距離は短く、速さは遅くなります。ハンドルは振れが小さくなったことを検知し、押し付けが強すぎると警告します。"
+        ],
+        "params": [
+          [
+            "f",
+            "Drive frequency (Hz)",
+            "駆動周波数（Hz）",
+            120,
+            420,
+            1,
+            260
+          ],
+          [
+            "load",
+            "Force pressing the bristles on the teeth (N)",
+            "毛を歯に押し付ける力（N）",
+            0,
+            4,
+            0.1,
+            0
+          ]
+        ],
+        "source": "A. Kurs et al. · Wireless power transfer via strongly coupled magnetic resonances (Science, 2007)",
+        "url": "https://doi.org/10.1126/science.1143254"
+      }
+    ]
   }
 ]

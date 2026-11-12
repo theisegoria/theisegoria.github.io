@@ -151,7 +151,8 @@
     'touchscreens': ['microprocessors', 'probability-inference', 'camera-lenses'],
     'led-lighting': ['laser-physics', 'optics', 'lithium-ion'],
     'keyboard-switches': ['touchscreens', 'microprocessors', 'graph-theory'],
-    'printers': ['camera-lenses', 'laser-physics', 'fluid-dynamics']
+    'printers': ['camera-lenses', 'laser-physics', 'fluid-dynamics'],
+    'electric-toothbrush': ['lithium-ion', 'watch-oscillators', 'quartz-resonators']
   };
   // Topics named in each topic's own prerequisite line (content.json "prerequisite").
   const PREREQ = {
@@ -235,7 +236,8 @@
     'touchscreens': ['electromagnetism'],                                // Capacitance, charge and fringing fields
     'led-lighting': ['semiconductor-physics', 'switching-converters'],   // Recombination at a junction, rectifiers and regulators
     'keyboard-switches': ['classical-mechanics'],                        // Springs, work and energy
-    'printers': ['electromagnetism', 'optics']                           // Electrostatics, Gaussian beams
+    'printers': ['electromagnetism', 'optics'],                          // Electrostatics, Gaussian beams
+    'electric-toothbrush': ['classical-mechanics', 'electric-motors']    // Driven oscillators, magnetic torque
   };
 
   let topics = [], bySlug = new Map(), edges = [], drawn = [];
