@@ -166,7 +166,8 @@
     'car-suspension': ['washing-machines', 'control-theory', 'car-transmissions'],
     'disc-brakes': ['car-suspension', 'car-transmissions', 'thermodynamics'],
     'turbochargers': ['piston-engines', 'thermodynamics', 'adaptive-cycle-engines'],
-    'elevators': ['gears-mechanisms', 'disc-brakes', 'zippers']
+    'elevators': ['gears-mechanisms', 'disc-brakes', 'zippers'],
+    'escalators': ['elevators', 'gears-mechanisms', 'bicycles']
   };
   // Topics named in each topic's own prerequisite line (content.json "prerequisite").
   const PREREQ = {
@@ -265,7 +266,8 @@
     'car-suspension': ['classical-mechanics'],
     'disc-brakes': ['classical-mechanics', 'thermodynamics'],
     'turbochargers': ['thermodynamics', 'piston-engines'],
-    'elevators': ['classical-mechanics']
+    'elevators': ['classical-mechanics'],
+    'escalators': ['classical-mechanics']
   };
 
   let topics = [], bySlug = new Map(), edges = [], drawn = [];
