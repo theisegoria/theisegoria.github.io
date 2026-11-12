@@ -200,3 +200,31 @@ export function pathDifference(sep, a, R, f) {
   const d = rL - rH;
   return { d, phaseDeg: 360 * f * d / C };
 }
+
+/* ---------- low-frequency alignments (Thiele-Small small-signal models) ----------
+ * Complex helpers on [re, im] pairs; s = i 2 pi f.  Everything is normalised: the total response tends to 1 well above
+ * resonance and the cone displacement to 1 at zero frequency for the same drive voltage. */
+const cmul = (a, b) => [a[0] * b[0] - a[1] * b[1], a[0] * b[1] + a[1] * b[0]];
+const cdiv = (a, b) => { const d = b[0] * b[0] + b[1] * b[1]; return [(a[0] * b[0] + a[1] * b[1]) / d, (a[1] * b[0] - a[0] * b[1]) / d]; };
+const cabs = (a) => Math.hypot(a[0], a[1]);
+
+/** Closed box of system resonance fc and total Q: second-order high-pass.
+ *  Returns { total, excursion } as magnitudes; excursion is cone displacement relative to its value at 0 Hz. */
+export function sealedBox(f, fc = 70, Q = 0.7) {
+  const x = f / fc, den = [1 - x * x, x / Q];
+  return { total: cabs(cdiv([-x * x, 0], den)), excursion: 1 / cabs(den) };
+}
+
+/** Vented (ported) box after Small (1973): driver fs and Qt, compliance ratio alpha = Vas/Vb, box tuning fb, leakage Ql.
+ *  Returns magnitudes { total, cone, port, excursion }: the far-field pressure, the parts of it contributed by the
+ *  cone and by the port (with opposite phase below tuning, so they do not simply add), and the cone displacement
+ *  relative to 0 Hz.  At fb the cone is nearly stopped and the port radiates almost everything. */
+export function ventedBox(f, { fs = 60, Qt = 0.383, alpha = 1.414, fb = 60, Ql = 7 } = {}) {
+  const w = 2 * Math.PI * f, Ts = 1 / (2 * Math.PI * fs), Tb = 1 / (2 * Math.PI * fb);
+  const s = [0, w], s2 = cmul(s, s), s3 = cmul(s2, s), s4 = cmul(s2, s2);
+  const a4 = Tb * Tb * Ts * Ts, a3 = (Tb * Tb * Ts) / Qt + (Tb * Ts * Ts) / Ql, a2 = (alpha + 1) * Tb * Tb + (Tb * Ts) / (Ql * Qt) + Ts * Ts, a1 = Tb / Ql + Ts / Qt;
+  const D = [s4[0] * a4 + s3[0] * a3 + s2[0] * a2 + 1, s4[1] * a4 + s3[1] * a3 + s2[1] * a2 + s[1] * a1];
+  const boxTerm = [s2[0] * Tb * Tb + 1, s[1] * Tb / Ql];                    // s^2 Tb^2 + s Tb/Ql + 1
+  const X = cdiv(boxTerm, D), cone = cmul([s2[0] * Ts * Ts, 0], X), total = cdiv([s4[0] * a4, 0], D), port = [total[0] - cone[0], total[1] - cone[1]];
+  return { total: cabs(total), cone: cabs(cone), port: cabs(port), excursion: cabs(X) };
+}
