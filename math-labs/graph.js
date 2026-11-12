@@ -164,7 +164,8 @@
     'ballpoint-pens': ['fluid-dynamics', 'printers', 'espresso-machines'],
     'car-transmissions': ['gears-mechanisms', 'piston-engines', 'bicycles'],
     'car-suspension': ['washing-machines', 'control-theory', 'car-transmissions'],
-    'disc-brakes': ['car-suspension', 'car-transmissions', 'thermodynamics']
+    'disc-brakes': ['car-suspension', 'car-transmissions', 'thermodynamics'],
+    'turbochargers': ['piston-engines', 'thermodynamics', 'adaptive-cycle-engines']
   };
   // Topics named in each topic's own prerequisite line (content.json "prerequisite").
   const PREREQ = {
@@ -261,7 +262,8 @@
     'ballpoint-pens': ['fluid-dynamics'],
     'car-transmissions': ['gears-mechanisms', 'classical-mechanics'],
     'car-suspension': ['classical-mechanics'],
-    'disc-brakes': ['classical-mechanics', 'thermodynamics']
+    'disc-brakes': ['classical-mechanics', 'thermodynamics'],
+    'turbochargers': ['thermodynamics', 'piston-engines']
   };
 
   let topics = [], bySlug = new Map(), edges = [], drawn = [];

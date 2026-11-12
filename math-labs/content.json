@@ -26045,5 +26045,202 @@
         "url": "https://doi.org/10.4271/R-398"
       }
     ]
+  },
+  {
+    "slug": "turbochargers",
+    "title": [
+      "Turbochargers: exhaust that feeds the intake",
+      "ターボチャージャー：排気が吸気を送り込む"
+    ],
+    "description": [
+      "An engine’s power is limited by how much air it can draw in, since each gram of fuel needs about fifteen grams of air to burn. A turbocharger pushes more air in. It is two small fans on one shaft: one sits in the stream of hot exhaust and is spun by it, and the other, driven by the first, compresses the air on its way to the cylinders. The energy comes from exhaust that would otherwise be thrown away, which makes the arrangement look like something for nothing. The costs are subtler. Compressed air is hot air, and hot air is thin. And the turbine has no link to the crankshaft, so it must be spun up by the very flow it is supposed to increase. These experiments open a turbocharger, separate pressure from density, and time the lag.",
+      "エンジンの出力は、どれだけの空気を吸い込めるかで決まります。燃料 1 グラムを燃やすには、約 15 グラムの空気が必要だからです。ターボチャージャーは、より多くの空気を押し込みます。それは、1 本の軸に付いた二つの小さな羽根車です。一方は熱い排気の流れの中にあって、排気に回されます。もう一方は、それに駆動されて、シリンダーへ向かう空気を圧縮します。エネルギーは、本来なら捨てられる排気から得られるので、ただで何かが手に入る仕組みに見えます。しかし、代償は見えにくいところにあります。圧縮された空気は熱く、熱い空気は薄くなります。また、タービンはクランク軸とつながっていないので、自分が増やすはずの流れそのものによって回されなければなりません。ここでの実験では、ターボチャージャーを開け、圧力と密度を区別し、遅れの時間を測ります。"
+    ],
+    "group": "engineering",
+    "prerequisite": [
+      "The gas law, adiabatic compression, power and rotational energy",
+      "気体の法則、断熱圧縮、仕事率と回転のエネルギー"
+    ],
+    "source": "N. Watson and M. S. Janota · Turbocharging the Internal Combustion Engine (Macmillan, 1982)",
+    "url": "https://doi.org/10.1007/978-1-349-04024-7",
+    "labs": [
+      {
+        "id": "turbo-cutaway",
+        "title": [
+          "1. The turbocharger",
+          "1. ターボチャージャー"
+        ],
+        "body": [
+          "Both wheels are radial machines. On the hot side, exhaust enters a snail-shaped housing whose passage narrows as it winds inward, so the gas speeds up and strikes the turbine wheel at its rim, turns it, and leaves along the axis cooler and at lower pressure. On the cold side the reverse happens: air enters along the axis, is caught by the blades of the compressor wheel and flung outward, and is then slowed in a widening scroll, where its speed becomes pressure. The work the compressor does on each kilogram of air is set by the speed of its blade tips, about 0.85 times that speed squared, so a wheel only 50 mm across must turn at well over a hundred thousand revolutions a minute. Left alone, boost would go on rising with engine speed until something broke. So a pressure-operated valve, the wastegate, lets part of the exhaust bypass the turbine once the boost reaches its set value.",
+          "二つのホイールは、どちらも半径方向に流れる機械です。熱い側では、排気が、かたつむりの殻の形をしたハウジングに入ります。通路は内側へ巻くにつれて狭くなるので、ガスは加速してタービンホイールの外周に当たり、ホイールを回し、温度と圧力を下げて、軸に沿って出ていきます。冷たい側では、逆のことが起こります。空気は軸に沿って入り、コンプレッサーホイールの羽根に捉えられて外側へ飛ばされ、広がっていく渦巻き室で減速して、速さが圧力に変わります。コンプレッサーが空気 1 kg にする仕事は、羽根の先端の速さで決まり、その速さの 2 乗の約 0.85 倍です。そのため、直径わずか 50 mm のホイールは、毎分 10 万回転を大きく超えて回らなければなりません。何もしなければ、過給圧は、何かが壊れるまで、エンジンの回転数とともに上がり続けます。そこで、圧力で動く弁であるウェイストゲートが、過給圧が設定値に達すると、排気の一部にタービンを迂回させます。"
+        ],
+        "formula": "\\Delta h=c_pT_1\\,\\frac{\\Pi^{(\\gamma-1)/\\gamma}-1}{\\eta_c}\\approx0.85\\,U^{2},\\qquad N=\\frac{U}{\\pi d},\\qquad \\dot m=\\eta_v\\,V_d\\,\\frac{n}{2}\\,\\rho",
+        "example": [
+          "For 1 bar of boost the pressure ratio is 2, and compressing air from 25 °C at 72 per cent efficiency takes \\(1005\\times298\\times(2^{0.286}-1)/0.72=91\\) kJ/kg. That needs a tip speed of \\(\\sqrt{91\\,000/0.85}=327\\) m/s, close to the speed of sound, and so \\(327/(\\pi\\times0.05)=2084\\) turns a second, 125 000 rpm. At 3000 rpm a 2 litre engine then takes in 98 g/s of air in place of 53 g/s and makes 97 kW in place of 53 kW.",
+          "過給圧 1 bar では、圧力比は 2 です。25 °C の空気を効率 72 % で圧縮するには、\\(1005\\times298\\times(2^{0.286}-1)/0.72=91\\) kJ/kg が必要です。そのためには、羽根の先端の速さが \\(\\sqrt{91\\,000/0.85}=327\\) m/s、つまり音速に近い値でなければならず、毎秒 \\(327/(\\pi\\times0.05)=2084\\) 回転、毎分 125 000 回転になります。このとき、2 リットルのエンジンは、毎分 3000 回転で 53 g/s ではなく 98 g/s の空気を吸い込み、53 kW ではなく 97 kW を出します。"
+        ],
+        "caution": [
+          "The turbocharger is a generic single-scroll unit with its bearing housing simplified and the blades drawn as flat plates; real blades are twisted in three dimensions. The compressor and turbine each have one fixed efficiency, where real ones vary across a map of flow and speed and are bounded by surge and choke, and the engine’s efficiency is taken not to change with boost.",
+          "ターボチャージャーは、一般的な単一の渦巻き室を持つもので、軸受けのハウジングを単純化し、羽根を平らな板として描いています。実際の羽根は、三次元にねじれています。コンプレッサーとタービンの効率は、それぞれ一つの固定値としています。実際には、流量と回転数によって変化し、サージとチョークという限界があります。エンジンの効率は、過給によって変わらないとしています。"
+        ],
+        "question": [
+          "Why does a turbocharged engine have a lower compression ratio than a similar engine without one?",
+          "ターボ付きのエンジンの圧縮比が、同じようなターボなしのエンジンより低いのはなぜですか。"
+        ],
+        "answer": [
+          "The air already arrives compressed and warm, and the piston then compresses it further. To keep the temperature at the end of the compression stroke below the point where the mixture ignites by itself, the engine’s own share of the compression is reduced.",
+          "空気は、すでに圧縮されて温まった状態で届き、ピストンがそれをさらに圧縮します。圧縮行程の終わりの温度を、混合気がひとりでに燃える温度より低く保つために、エンジン自身が受け持つ圧縮を減らします。"
+        ],
+        "params": [
+          [
+            "rpm",
+            "Engine speed (rpm)",
+            "エンジンの回転数（rpm）",
+            1000,
+            6500,
+            100,
+            3000
+          ],
+          [
+            "boost",
+            "Wastegate setting (bar)",
+            "ウェイストゲートの設定（bar）",
+            0.4,
+            2,
+            0.1,
+            1
+          ],
+          [
+            "size",
+            "Size of the turbocharger",
+            "ターボの大きさ",
+            0.6,
+            1.6,
+            0.05,
+            1
+          ]
+        ],
+        "source": "N. Watson and M. S. Janota · Turbocharging the Internal Combustion Engine (Macmillan, 1982)",
+        "url": "https://doi.org/10.1007/978-1-349-04024-7"
+      },
+      {
+        "id": "boost-density",
+        "title": [
+          "2. Pressure is not density",
+          "2. 圧力は密度ではない"
+        ],
+        "body": [
+          "An engine does not care about the pressure of its intake air as such. It burns fuel in proportion to the mass of air in the cylinder, and for a given volume that is the density. By the gas law, density is proportional to pressure divided by absolute temperature. Compression raises both. Even a perfect compressor heats air as it squeezes it, by a factor of the pressure ratio raised to the power 0.286, and a real compressor, churning the air as it goes, heats it more. So doubling the pressure gives well under double the density. The cure is to cool the air after it leaves the compressor and before it reaches the engine, in a radiator called an intercooler. Cooling at nearly constant pressure raises the density directly, and an intercooler that removes most of the added heat recovers most of what was lost.",
+          "エンジンにとって、吸気の圧力そのものは問題ではありません。エンジンが燃やせる燃料は、シリンダーの中の空気の質量に比例し、体積が決まっていれば、それは密度です。気体の法則により、密度は、圧力を絶対温度で割ったものに比例します。圧縮は、その両方を上げます。完全なコンプレッサーでも、空気を圧縮すると、圧力比の 0.286 乗の倍率で空気を温めます。空気をかき回しながら圧縮する実際のコンプレッサーは、さらに温めます。そのため、圧力を 2 倍にしても、密度は 2 倍よりかなり小さくなります。解決策は、コンプレッサーを出てエンジンに届く前の空気を、インタークーラーという放熱器で冷やすことです。ほぼ一定の圧力で冷やすと、密度が直接上がります。加わった熱のほとんどを取り除くインタークーラーは、失われた分のほとんどを取り戻します。"
+        ],
+        "formula": "T_2=T_1\\left(1+\\frac{\\Pi^{(\\gamma-1)/\\gamma}-1}{\\eta_c}\\right),\\qquad T_3=T_2-\\varepsilon\\,(T_2-T_1),\\qquad \\frac{\\rho_3}{\\rho_1}=\\Pi\\,\\frac{T_1}{T_3}",
+        "example": [
+          "Compressing 25 °C air to a pressure ratio of 2, a perfect compressor would deliver it at 90 °C and one of 72 per cent efficiency at 116 °C. The density is then \\(2\\times298/389=1.53\\) times that outside, not 2. An intercooler that removes 70 per cent of the rise brings the air to 52 °C and the density to \\(2\\times298/325=1.83\\) times, a gain of 20 per cent in air and so in power.",
+          "25 °C の空気を圧力比 2 まで圧縮すると、完全なコンプレッサーでは 90 °C、効率 72 % のものでは 116 °C で出てきます。このとき、密度は外気の \\(2\\times298/389=1.53\\) 倍で、2 倍ではありません。温度上昇の 70 % を取り除くインタークーラーは、空気を 52 °C まで下げ、密度を \\(2\\times298/325=1.83\\) 倍にします。空気は 20 % 増え、出力もそれだけ増えます。"
+        ],
+        "caution": [
+          "Air is treated as an ideal gas with constant heat capacities, entering at 25 °C. The intercooler is described by one number, the fraction of the temperature rise it removes, and its small loss of pressure is ignored. Heat picked up from the hot housing and pipes is left out.",
+          "空気は、比熱が一定の理想気体とし、25 °C で入るとしています。インタークーラーは、温度上昇のうち取り除く割合という一つの数で表し、そこでのわずかな圧力損失は無視しています。熱いハウジングや配管から受け取る熱は、含めていません。"
+        ],
+        "question": [
+          "A turbocharger is replaced with a more efficient one giving the same boost. The pressure gauge reads the same. Does the engine make more power?",
+          "ターボを、同じ過給圧を出す、より効率の高いものに交換します。圧力計の読みは同じです。エンジンの出力は上がりますか。"
+        ],
+        "answer": [
+          "Yes. At the same pressure a more efficient compressor delivers cooler air, which is denser, so more mass enters the cylinders. It also takes less work from the turbine, so the exhaust is less obstructed.",
+          "上がります。同じ圧力でも、効率の高いコンプレッサーは、より冷たい空気を送ります。冷たい空気は密度が高いので、より多くの質量がシリンダーに入ります。また、タービンから取る仕事が少なくて済むので、排気の妨げも小さくなります。"
+        ],
+        "params": [
+          [
+            "pr",
+            "Pressure ratio",
+            "圧力比",
+            1,
+            3.5,
+            0.05,
+            2
+          ],
+          [
+            "eta",
+            "Compressor efficiency",
+            "コンプレッサーの効率",
+            0.5,
+            0.85,
+            0.01,
+            0.72
+          ],
+          [
+            "eps",
+            "Heat removed by the intercooler (fraction)",
+            "インタークーラーが取り除く熱の割合",
+            0,
+            0.95,
+            0.05,
+            0.7
+          ]
+        ],
+        "source": "N. Watson and M. S. Janota · Turbocharging the Internal Combustion Engine (Macmillan, 1982)",
+        "url": "https://doi.org/10.1007/978-1-349-04024-7"
+      },
+      {
+        "id": "turbo-lag",
+        "title": [
+          "3. Turbo lag",
+          "3. ターボラグ"
+        ],
+        "body": [
+          "When the driver opens the throttle, a naturally aspirated engine responds within one or two turns of the crankshaft. A turbocharged one answers in two stages: at once, with what it can draw in unaided, and then again as the turbocharger comes up to speed. The rotor is light, but at a hundred thousand revolutions a minute it stores kilojoules of energy, and that energy can only come from the difference between the power the turbine takes from the exhaust and the power the compressor spends on the air. Early on that difference is small, because with little boost there is little exhaust. As boost builds, the engine breathes more, the exhaust grows stronger and the turbine pulls harder, so the rise accelerates until the wastegate opens. A small turbocharger has little inertia and a tight turbine that develops pressure from a small flow, so it responds quickly, but it chokes the engine at high speed. A large one does the opposite.",
+          "運転者がスロットルを開けると、自然吸気のエンジンは、クランク軸が 1、2 回転する間に反応します。ターボ付きのエンジンは、2 段階で応えます。まず、助けなしに吸い込める分ですぐに、そして、ターボの回転が上がるにつれてもう一度です。回転体は軽いのですが、毎分 10 万回転では数キロジュールのエネルギーを蓄えます。そのエネルギーは、タービンが排気から取り出す仕事率と、コンプレッサーが空気に使う仕事率の差からしか得られません。最初は、その差は小さいままです。過給がほとんどなければ、排気も少ないからです。過給圧が上がると、エンジンはより多くの空気を吸い、排気は強くなり、タービンはより強く回します。こうして、ウェイストゲートが開くまで、立ち上がりは加速します。小さいターボは慣性が小さく、タービンの通路が狭いので、少ない流量でも圧力が生じ、素早く反応します。しかし、高回転ではエンジンの排気を詰まらせます。大きいターボは、その逆です。"
+        ],
+        "formula": "I\\,\\omega\\,\\frac{d\\omega}{dt}=P_{\\rm turbine}-P_{\\rm compressor},\\qquad P_{\\rm turbine}=\\dot m\\,c_{p,e}T_e\\,\\eta_t\\left(1-\\varepsilon_r^{-(\\gamma_e-1)/\\gamma_e}\\right),\\qquad E=\\tfrac12I\\omega^{2}",
+        "example": [
+          "The rotor has an inertia of \\(3\\times10^{-5}\\) kg m², and at 125 000 rpm, 13 100 rad/s, it holds \\(\\tfrac12\\times3\\times10^{-5}\\times13\\,100^{2}=2.6\\) kJ. At 3000 rpm and full boost the turbine can deliver 17.9 kW against the compressor’s 8.9 kW, and the boost reaches nine tenths of 1 bar after 0.40 s. At 2000 rpm it takes 2.0 s, and at 1500 rpm the boost levels off at 0.36 bar. A unit 30 per cent smaller reaches 90 per cent at 2000 rpm in 0.23 s.",
+          "回転体の慣性は \\(3\\times10^{-5}\\) kg m² で、毎分 125 000 回転、つまり 13 100 rad/s のとき、\\(\\tfrac12\\times3\\times10^{-5}\\times13\\,100^{2}=2.6\\) kJ を蓄えます。毎分 3000 回転、最大過給のとき、タービンは 17.9 kW を出せ、コンプレッサーは 8.9 kW を使います。過給圧は、0.40 秒後に 1 bar の 10 分の 9 に達します。毎分 2000 回転では 2.0 秒かかり、毎分 1500 回転では、過給圧は 0.36 bar で頭打ちになります。30 % 小さいターボは、毎分 2000 回転で、0.23 秒で 90 % に達します。"
+        ],
+        "caution": [
+          "The engine is held at a fixed speed while the turbocharger spools, as on a test bench; in a car the engine speed rises too, which helps. The exhaust is given a fixed temperature of 1100 K and the turbine a simple law for its pressure drop against flow. The gas held in the manifolds, which adds its own delay, and friction in the bearings are ignored, and the rotor’s inertia is scaled as the fifth power of its size.",
+          "ターボの回転が上がる間、エンジンは、試験台の上のように一定の回転数に保たれています。実際の車では、エンジンの回転数も上がり、それが助けになります。排気の温度は 1100 K で一定とし、タービンの圧力降下は、流量に対する単純な法則で与えています。マニホールドにたまるガスによる遅れや、軸受けの摩擦は無視しています。回転体の慣性は、大きさの 5 乗に比例するとしています。"
+        ],
+        "question": [
+          "Some engines use two turbochargers, a small one and a large one, in sequence. What does each do?",
+          "小さいターボと大きいターボを、順に使うエンジンがあります。それぞれの役目は何ですか。"
+        ],
+        "answer": [
+          "The small one has little inertia and builds boost from the modest exhaust flow at low engine speed, giving a quick response. As the flow grows beyond what it can pass, valves bring in the large one, which can feed the engine at high speed without choking the exhaust.",
+          "小さいターボは慣性が小さく、低回転での少ない排気でも過給圧を作るので、素早く反応します。流量がその能力を超えると、弁が大きいターボを加えます。大きいターボは、排気を詰まらせずに、高回転でエンジンに空気を送れます。"
+        ],
+        "params": [
+          [
+            "size",
+            "Size of the turbocharger",
+            "ターボの大きさ",
+            0.6,
+            1.6,
+            0.05,
+            1
+          ],
+          [
+            "rpm",
+            "Engine speed (rpm)",
+            "エンジンの回転数（rpm）",
+            1500,
+            6000,
+            100,
+            3000
+          ],
+          [
+            "boost",
+            "Boost asked for (bar)",
+            "求める過給圧（bar）",
+            0.4,
+            2,
+            0.1,
+            1
+          ]
+        ],
+        "source": "N. Watson and M. S. Janota · Turbocharging the Internal Combustion Engine (Macmillan, 1982)",
+        "url": "https://doi.org/10.1007/978-1-349-04024-7"
+      }
+    ]
   }
 ]
