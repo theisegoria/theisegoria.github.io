@@ -22575,5 +22575,231 @@
         "url": "https://doi.org/10.1002/jsid.100"
       }
     ]
+  },
+  {
+    "slug": "led-lighting",
+    "title": [
+      "LED bulbs and their drivers",
+      "LED 電球と駆動回路"
+    ],
+    "description": [
+      "An LED bulb is three machines in one shell. The first is a set of small blue light-emitting diodes under a phosphor that turns part of their blue into yellow and red, so that the mixture looks white; they convert electricity to light about ten times better than a glowing filament did. The second is a power supply, because an LED wants a few volts of steady direct current and the wall offers a hundred or more volts that reverse direction a hundred times a second. The third is a heat sink: an LED makes less heat than a filament but, unlike a filament, it must stay cool to survive, and nearly all the engineering of a bulb goes into getting six watts of heat out of a shell the size of an egg. These experiments follow the current into white light, turn mains into steady light, and take the bulb’s temperature.",
+      "LED 電球は、一つの殻の中に三つの機械が入ったものです。一つ目は、蛍光体の下に置いた小さな青色発光ダイオードの集まりです。蛍光体が青の一部を黄色と赤に変え、混ざった光が白く見えます。電気を光に変える効率は、光るフィラメントのおよそ 10 倍です。二つ目は電源です。LED が必要とするのは数ボルトの安定した直流ですが、壁のコンセントから来るのは、毎秒 100 回向きを変える 100 ボルト以上の電圧だからです。三つ目はヒートシンクです。LED が出す熱はフィラメントより少ないものの、フィラメントと違って、冷えていなければ長持ちしません。電球の設計のほとんどは、卵ほどの大きさの殻から 6 ワットの熱を逃がすことに費やされています。ここでの実験では、電流が白色光になるまでを追い、電源電圧を安定した光に変え、電球の温度を測ります。"
+    ],
+    "group": "engineering",
+    "prerequisite": [
+      "Ohm’s law and power, sine waves, exponential functions",
+      "オームの法則と電力、正弦波、指数関数"
+    ],
+    "source": "U.S. Department of Energy · Solid-State Lighting R&D Plan (2016)",
+    "url": "https://www.energy.gov/sites/prod/files/2016/06/f32/ssl_rd-plan_%20jun2016_0.pdf",
+    "labs": [
+      {
+        "id": "led-efficacy",
+        "title": [
+          "1. From current to white light",
+          "1. 電流から白色光へ"
+        ],
+        "body": [
+          "Inside an LED, electrons crossing a junction between two kinds of semiconductor drop into empty states and give up their energy. Three things can happen to each one. It can be captured by a defect and its energy lost as heat, at a rate proportional to the number of carriers \\(n\\). It can meet a hole and emit a photon, at a rate proportional to \\(n^2\\). Or three carriers can collide so that one carries the energy away, at a rate proportional to \\(n^3\\). At low current defects win, at high current the three-body process wins, and in between is a peak; the fall beyond it is called droop. The photons are blue, with an energy near 2.7 electron-volts. A phosphor absorbs some and re-emits yellow and red, each time giving up the difference in energy as heat. Finally the eye is far more sensitive to green than to deep red or blue, so the same watt of light is worth more or fewer lumens depending on its colour.",
+          "LED の中では、2 種類の半導体の接合を横切る電子が、空いた状態に落ち込んでエネルギーを手放します。電子 1 個に起こりうることは三つあります。欠陥に捕まり、エネルギーを熱として失うこと。その割合はキャリアの数 \\(n\\) に比例します。正孔と出会って光子を出すこと。その割合は \\(n^2\\) に比例します。あるいは三つのキャリアが衝突し、一つがエネルギーを持ち去ること。その割合は \\(n^3\\) に比例します。電流が小さいと欠陥が勝ち、大きいと三体の過程が勝ち、その間に頂上があります。頂上を越えた後の低下をドループと呼びます。光子は青で、エネルギーは約 2.7 電子ボルトです。蛍光体がその一部を吸収して黄色と赤を出し直し、そのたびにエネルギーの差を熱として失います。最後に、目は深い赤や青より緑にずっと敏感なので、同じ 1 ワットの光でも、色によってルーメンの値が変わります。"
+        ],
+        "formula": "\\eta_{\\rm int}=\\frac{Bn^{2}}{An+Bn^{2}+Cn^{3}}=\\frac{1}{1+q\\,(x+1/x)},\\quad x=\\frac{n}{\\sqrt{A/C}},\\qquad \\frac{\\text{lm}}{\\text{W}}=\\eta_{\\rm int}\\,\\eta_{\\rm extr}\\,\\frac{h\\nu/e}{V}\\;\\eta_{\\rm phosphor}\\;K,\\qquad K=683\\,\\frac{\\int S\\,\\bar y\\,d\\lambda}{\\int S\\,d\\lambda}",
+        "example": [
+          "At 100 mA and a junction temperature of 85 °C the chip drops 2.84 V; 87 per cent of electrons make a photon, and 67 per cent of the electrical power leaves as blue light. A warm-white phosphor (3600 K) keeps 73 per cent of that as light worth 311 lumens per watt of light, so the result is 152 lumens per electrical watt, 43 lumens from this one chip. At its most efficient current of 20 mA the same chip gives 165 lm/W, at 1 A only 107. A cool-white phosphor (6200 K) at 100 mA gives 168 lm/W.",
+          "電流 100 mA、接合部の温度 85 °C のとき、チップの電圧は 2.84 V です。電子の 87 % が光子を生み、電力の 67 % が青い光として出ていきます。暖かい白（3600 K）の蛍光体は、その 73 % を、光 1 W あたり 311 ルーメンの光として残すので、結果は電力 1 W あたり 152 ルーメン、このチップ 1 個で 43 ルーメンです。最も効率の良い 20 mA では同じチップで 165 lm/W、1 A では 107 lm/W しか得られません。冷たい白（6200 K）の蛍光体なら、100 mA で 168 lm/W です。"
+        ],
+        "caution": [
+          "The three-process model with fixed coefficients is the usual first description of droop; the true cause of droop is still argued over. The spectrum is two or three smooth bands, not a measured one, and colour quality (how well the light renders colours) is not computed: adding red improves it at the cost of lumens. The colour-matching functions are a published analytic fit.",
+          "一定の係数をもつ三つの過程のモデルは、ドループを説明する最初の標準的な方法ですが、ドループの本当の原因についてはまだ議論が続いています。スペクトルは、測定値ではなく、二つか三つの滑らかな帯で表しています。演色性（光が色をどれだけ忠実に見せるか）は計算していません。赤を加えると演色性は良くなりますが、ルーメンは減ります。等色関数には、公表されている解析的な近似を使っています。"
+        ],
+        "question": [
+          "Why is a warm-white LED less efficient than a cool-white one made from the same chip?",
+          "同じチップから作っても、暖かい白の LED が冷たい白の LED より効率が低いのはなぜですか？"
+        ],
+        "answer": [
+          "Warm white needs more of the blue light converted to red. Each red photon carries about a quarter less energy than the blue photon that made it, and the difference becomes heat. The eye is also less sensitive to red than to green, so the red light counts for fewer lumens.",
+          "暖かい白にするには、より多くの青い光を赤に変える必要があります。赤い光子 1 個のエネルギーは、それを生んだ青い光子より約 4 分の 1 少なく、その差は熱になります。また、目は緑より赤に対する感度が低いので、赤い光は少ないルーメンにしかなりません。"
+        ],
+        "params": [
+          [
+            "li",
+            "Current: \\(\\log_{10}\\) mA",
+            "電流：\\(\\log_{10}\\) mA",
+            0,
+            3,
+            0.02,
+            2
+          ],
+          [
+            "tj",
+            "Junction temperature (°C)",
+            "接合部の温度（°C）",
+            25,
+            125,
+            5,
+            85
+          ],
+          [
+            "w",
+            "Red phosphor share (%)",
+            "赤い蛍光体の割合（%）",
+            0,
+            100,
+            5,
+            60
+          ]
+        ],
+        "source": "U.S. Department of Energy · Solid-State Lighting R&D Plan (2016)",
+        "url": "https://www.energy.gov/sites/prod/files/2016/06/f32/ssl_rd-plan_%20jun2016_0.pdf"
+      },
+      {
+        "id": "led-driver",
+        "title": [
+          "2. The driver: from mains to steady light",
+          "2. 駆動回路：電源電圧から安定した光へ"
+        ],
+        "body": [
+          "The mains is a sine wave that passes through zero a hundred or a hundred and twenty times a second. An LED responds to its current in well under a millisecond, so unless something stores energy across those zeros, the light goes out each time. The simplest driver rectifies the mains with four diodes and stores charge in a capacitor, which is refilled at each peak and drained in between; its voltage sags by an amount set by how much charge the lamp takes in half a cycle. What happens next decides the quality of the light. If the LEDs are fed through a resistor, their current follows the sag, magnified, and the light flickers at twice the mains frequency. If a switching converter regulates the current, the sag is hidden. Either way the capacitor draws from the wall only in brief pulses near each peak, which is a poor way to load the supply and is measured by the power factor.",
+          "電源電圧は正弦波で、毎秒 100 回または 120 回、0 を通ります。LED は電流の変化に 1 ミリ秒よりずっと速く応答するので、この 0 の間をつなぐエネルギーの蓄えがなければ、そのたびに光が消えます。最も簡単な駆動回路は、4 個のダイオードで電源を整流し、コンデンサーに電荷を蓄えます。コンデンサーは山ごとに充電され、その間に放電します。その電圧は、ランプが半周期の間に取り出す電荷の分だけ下がります。この先で光の質が決まります。LED を抵抗を通して点灯させると、電流は電圧の低下を拡大して写し取り、光は電源周波数の 2 倍でちらつきます。スイッチング式の変換器が電流を制御すれば、低下は隠れます。どちらの場合も、コンデンサーが壁のコンセントから電流を引き込むのは、山の近くの短いパルスの間だけです。これは電源にとって好ましくない負荷のかけ方で、力率で評価されます。"
+        ],
+        "formula": "\\Delta V\\approx\\frac{P}{2fC\\,\\bar V},\\qquad \\text{flicker}=\\frac{L_{\\max}-L_{\\min}}{L_{\\max}+L_{\\min}},\\qquad \\text{power factor}=\\frac{P_{\\rm in}}{V_{\\rm rms}I_{\\rm rms}}",
+        "example": [
+          "On 230 V at 50 Hz, a 9 W lamp with a 4.5 µF capacitor lets the capacitor fall 66 V from its 325 V peak. Fed through a resistor the light swings by 36 per cent at 100 Hz, and the lamp draws 92 mA in pulses for a power factor of 0.55. A 22 µF capacitor cuts the ripple to 20 V and the flicker to 9 per cent, but the power factor falls to 0.41. With a constant-current converter the flicker is zero for any capacitor above about 1.5 µF. On 120 V at 60 Hz the same 4.5 µF lamp with a resistor flickers by 77 per cent, since at the lower voltage the same power needs twice the current.",
+          "230 V、50 Hz の電源で、9 W のランプに 4.5 µF のコンデンサーを使うと、コンデンサーの電圧は 325 V の山から 66 V 下がります。抵抗を通して点灯させると、光は 100 Hz で 36 % 変動し、ランプはパルス状に 92 mA を引き込み、力率は 0.55 です。22 µF のコンデンサーなら、リップルは 20 V、ちらつきは 9 % に減りますが、力率は 0.41 に下がります。定電流の変換器を使えば、約 1.5 µF 以上のどのコンデンサーでも、ちらつきは 0 です。120 V、60 Hz の電源では、同じ 4.5 µF のランプを抵抗で点灯させると、ちらつきは 77 % になります。電圧が低いと、同じ電力に 2 倍の電流が必要だからです。"
+        ],
+        "caution": [
+          "The diodes are ideal and the converter is treated as a load that draws constant power, with no losses of its own beyond a fixed 10 per cent. Real drivers shape the input current to raise the power factor, some put the storage after the converter, and dimmers add problems of their own. Flicker at 100 Hz is not seen directly by most people but can be noticed on moving objects and by cameras.",
+          "ダイオードは理想的なものとし、変換器は一定の電力を引き込む負荷として扱っています。変換器自身の損失は、一定の 10 % だけです。実際の駆動回路は、力率を上げるために入力電流の波形を整え、中には変換器の後ろにエネルギーを蓄えるものもあります。調光器は、また別の問題を加えます。100 Hz のちらつきは、ほとんどの人には直接は見えませんが、動く物体やカメラでは気づくことがあります。"
+        ],
+        "question": [
+          "Why do some cheap LED bulbs flicker when a filament bulb on the same supply did not?",
+          "同じ電源でもフィラメントの電球はちらつかなかったのに、安価な LED 電球の中にちらつくものがあるのはなぜですか？"
+        ],
+        "answer": [
+          "A filament stays hot through the zero crossings of the mains, so its glow barely changes. An LED follows its current instantly. If the driver has only a small capacitor and a resistor, the LED current dips deeply twice per mains cycle and the light dips with it.",
+          "フィラメントは、電源電圧が 0 を通る間も熱いままなので、明るさはほとんど変わりません。LED は電流の変化に即座に従います。駆動回路に小さなコンデンサーと抵抗しかないと、LED の電流は電源の 1 周期に 2 回大きく落ち込み、光も一緒に落ち込みます。"
+        ],
+        "params": [
+          [
+            "mains",
+            "Mains",
+            "電源",
+            0,
+            1,
+            1,
+            0,
+            [
+              [
+                "230 V, 50 Hz",
+                "230 V、50 Hz"
+              ],
+              [
+                "120 V, 60 Hz",
+                "120 V、60 Hz"
+              ]
+            ]
+          ],
+          [
+            "c",
+            "Storage capacitor (µF)",
+            "平滑コンデンサー（µF）",
+            0.5,
+            33,
+            0.5,
+            4.5
+          ],
+          [
+            "p",
+            "LED power (W)",
+            "LED の電力（W）",
+            3,
+            15,
+            0.5,
+            9
+          ],
+          [
+            "drv",
+            "Current set by",
+            "電流を決める方法",
+            0,
+            1,
+            1,
+            0,
+            [
+              [
+                "a series resistor",
+                "直列の抵抗"
+              ],
+              [
+                "a constant-current converter",
+                "定電流の変換器"
+              ]
+            ]
+          ]
+        ],
+        "source": "U.S. Department of Energy · Solid-State Lighting R&D Plan (2016)",
+        "url": "https://www.energy.gov/sites/prod/files/2016/06/f32/ssl_rd-plan_%20jun2016_0.pdf"
+      },
+      {
+        "id": "led-bulb-thermal",
+        "title": [
+          "3. Inside the bulb: heat and life",
+          "3. 電球の中：熱と寿命"
+        ],
+        "body": [
+          "Roughly a third of the power going into a white LED leaves as light. The rest is heat, and unlike a filament, which radiates its heat away at 2500 °C, an LED must shed it by conduction while staying below about 100 °C. Heat flows from the junction through the chip’s package into an aluminium-cored circuit board, from the board into a metal body, and from the body into the room air. Each step behaves like a resistor: the temperature rise across it is the heat flow times its thermal resistance. The last step, from a small surface into still air, is by far the largest. Temperature matters because the processes that dim an LED and dry out the electrolytic capacitor in its driver both speed up exponentially with it, roughly doubling for every ten degrees.",
+          "白色 LED に入る電力のうち、光として出ていくのはおよそ 3 分の 1 です。残りは熱です。フィラメントは 2500 °C で熱を放射して逃がしますが、LED は約 100 °C より低い温度を保ちながら、熱伝導で熱を逃がさなければなりません。熱は、接合部からチップのパッケージを通ってアルミニウム基板へ、基板から金属の本体へ、本体から室内の空気へと流れます。各段階は抵抗のようにふるまい、そこでの温度上昇は、熱の流れに熱抵抗を掛けたものです。小さな表面から静かな空気へという最後の段階が、飛び抜けて大きくなります。温度が重要なのは、LED を暗くする過程と、駆動回路の電解コンデンサーを干上がらせる過程が、どちらも温度とともに指数関数的に速くなり、およそ 10 度ごとに 2 倍になるからです。"
+        ],
+        "formula": "T_j=T_a+P_{\\rm heat}\\,(R_{\\rm sink}+R_{\\rm board}+R_{\\rm chip}),\\qquad P_{\\rm heat}\\approx0.65\\,P,\\qquad L=L_0\\,2^{(T_0-T)/\\Delta T}",
+        "example": [
+          "A 9 W bulb makes 5.9 W of heat. With 12 K/W from heat sink to air and 1.8 K/W inside, in a room at 25 °C the heat sink is at 95 °C and the junction at 106 °C; the light is 84 per cent of its cold value. The LEDs fade to 70 per cent after about 15 000 hours and the capacitor, at 90 °C, lasts about 14 000: thirteen years at three hours a day. In a closed fitting where the air reaches 50 °C the junction is at 131 °C and the capacitor fails after about 2500 hours.",
+          "9 W の電球は 5.9 W の熱を出します。ヒートシンクから空気までが 12 K/W、内部が 1.8 K/W のとき、25 °C の部屋ではヒートシンクは 95 °C、接合部は 106 °C になり、光は冷えているときの 84 % です。LED の光は約 15 000 時間で 70 % まで落ち、コンデンサーは 90 °C で約 14 000 時間もちます。1 日 3 時間使えば 13 年です。空気が 50 °C に達する密閉型の器具では、接合部は 131 °C になり、コンデンサーは約 2500 時間で故障します。"
+        ],
+        "caution": [
+          "The bulb is a generic A60 lamp with representative dimensions, not a particular product, and its glow in the scene only indicates power. The thermal resistances and the life laws are typical round figures; makers rate life from standard tests at fixed temperatures, and a real bulb often fails at a solder joint or a single component well before the figures here.",
+          "電球は代表的な寸法をもつ一般的な A60 形のランプで、特定の製品ではありません。場面の中の光り方は、電力の目安を示すだけです。熱抵抗と寿命の法則は、典型的な切りのよい数値です。メーカーは決まった温度での標準試験から寿命を定めていますが、実際の電球は、はんだ付けの部分や一つの部品が原因で、ここでの数値よりずっと早く故障することも少なくありません。"
+        ],
+        "question": [
+          "Why does an LED bulb last a much shorter time in a closed light fitting?",
+          "密閉型の照明器具では、LED 電球の寿命がずっと短くなるのはなぜですか？"
+        ],
+        "answer": [
+          "The bulb gets rid of its heat by warming the air round it. In a closed fitting that air cannot escape and heats up by tens of degrees, and every part of the bulb sits that much hotter. Since wear roughly doubles for each ten degrees, a rise of 25 degrees cuts life to about a sixth.",
+          "電球は、周りの空気を温めることで熱を逃がします。密閉型の器具ではその空気が逃げられず、数十度も温まり、電球のどの部分もその分だけ熱くなります。劣化は 10 度ごとにおよそ 2 倍になるので、25 度上がると寿命は約 6 分の 1 になります。"
+        ],
+        "params": [
+          [
+            "p",
+            "Power (W)",
+            "電力（W）",
+            3,
+            15,
+            0.5,
+            9
+          ],
+          [
+            "r",
+            "Heat sink to air (K/W)",
+            "ヒートシンクから空気まで（K/W）",
+            5,
+            25,
+            0.5,
+            12
+          ],
+          [
+            "ta",
+            "Air temperature round the bulb (°C)",
+            "電球の周りの気温（°C）",
+            10,
+            70,
+            1,
+            25
+          ]
+        ],
+        "source": "U.S. Department of Energy · Solid-State Lighting R&D Plan (2016)",
+        "url": "https://www.energy.gov/sites/prod/files/2016/06/f32/ssl_rd-plan_%20jun2016_0.pdf"
+      }
+    ]
   }
 ]

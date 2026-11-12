@@ -148,7 +148,8 @@
     'camera-lenses': ['fourier-analysis', 'microprocessors', 'laser-physics'],
     'noise-cancelling': ['loudspeakers', 'room-acoustics', 'crossovers-filters'],
     'lithium-ion': ['switching-converters', 'electric-motors', 'statistical-mechanics'],
-    'touchscreens': ['microprocessors', 'probability-inference', 'camera-lenses']
+    'touchscreens': ['microprocessors', 'probability-inference', 'camera-lenses'],
+    'led-lighting': ['laser-physics', 'optics', 'lithium-ion']
   };
   // Topics named in each topic's own prerequisite line (content.json "prerequisite").
   const PREREQ = {
@@ -229,7 +230,8 @@
     'camera-lenses': ['optics'],                                         // Thin lenses and diffraction
     'noise-cancelling': ['acoustics', 'control-theory'],                 // Superposition of waves, loop gain and stability
     'lithium-ion': ['electromagnetism', 'thermodynamics'],               // Ohm's law and power, Arrhenius temperature dependence
-    'touchscreens': ['electromagnetism']                                 // Capacitance, charge and fringing fields
+    'touchscreens': ['electromagnetism'],                                // Capacitance, charge and fringing fields
+    'led-lighting': ['semiconductor-physics', 'switching-converters']    // Recombination at a junction, rectifiers and regulators
   };
 
   let topics = [], bySlug = new Map(), edges = [], drawn = [];
