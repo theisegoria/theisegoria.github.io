@@ -174,7 +174,8 @@
     'violins': ['guitars', 'acoustics', 'fourier-analysis'],
     'friction': ['classical-mechanics', 'disc-brakes', 'elevators', 'violins', 'zippers'],
     'vibration-resonance': ['classical-mechanics', 'car-suspension', 'washing-machines', 'guitars', 'control-theory'],
-    'heat-transfer': ['thermodynamics', 'disc-brakes', 'pressure-cookers', 'induction-cooktops', 'led-lighting']
+    'heat-transfer': ['thermodynamics', 'disc-brakes', 'pressure-cookers', 'induction-cooktops', 'led-lighting'],
+    'viscous-flow': ['fluid-dynamics', 'espresso-machines', 'ballpoint-pens', 'car-suspension', 'murrays-law']
   };
   // Topics named in each topic's own prerequisite line (content.json "prerequisite").
   const PREREQ = {
@@ -281,7 +282,8 @@
     'violins': ['acoustics', 'fourier-analysis'],
     'friction': ['classical-mechanics'],
     'vibration-resonance': ['classical-mechanics'],
-    'heat-transfer': ['thermodynamics']
+    'heat-transfer': ['thermodynamics'],
+    'viscous-flow': ['fluid-dynamics']
   };
 
   let topics = [], bySlug = new Map(), edges = [], drawn = [];

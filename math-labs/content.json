@@ -28177,5 +28177,248 @@
         "url": "https://ahtt.mit.edu/"
       }
     ]
+  },
+  {
+    "slug": "viscous-flow",
+    "title": [
+      "Viscous flow: pipes, porous beds and capillaries",
+      "粘性流：管、多孔質の層、毛細管"
+    ],
+    "description": [
+      "The fluid dynamics of aircraft and weather is about inertia: fluid that keeps going. In a hypodermic needle, a coffee puck, a sand filter, the ink channel of a pen or the pores of a paper towel, inertia hardly matters. There the fluid moves only as fast as pressure can drag it past the walls against its own stickiness, and stops the moment the pressure does. This is the world of small things and thick liquids, and its laws are simple and severe: flow through a narrow passage falls as the fourth power of its width. At the smallest scales a second effect joins in. The surface of a liquid is under tension, and in a fine enough gap that tension can pull the liquid along with no pump at all.",
+      "飛行機や天気の流体力学は、慣性、つまり、進み続ける流体についてのものです。注射針、コーヒーの粉の層、砂のろ過器、ペンのインクの通り道、ペーパータオルの細孔の中では、慣性はほとんど関係しません。そこでは、流体は、圧力が自分自身の粘り気に逆らって壁の間を引きずれる速さでしか動かず、圧力がなくなった瞬間に止まります。これは、小さなものと、粘り気のある液体の世界です。その法則は、単純で厳しいものです。狭い通路を通る流量は、幅の 4 乗に比例して小さくなります。最も小さい規模では、もう一つの効果が加わります。液体の表面には張力が働いていて、十分に細いすき間では、ポンプがまったくなくても、その張力が液体を引いていきます。"
+    ],
+    "group": "physics",
+    "prerequisite": [
+      "Pressure, force and Newton’s laws",
+      "圧力、力、ニュートンの法則"
+    ],
+    "source": "R. P. Feynman, R. B. Leighton and M. Sands · The Feynman Lectures on Physics, vol. II, ch. 41: The flow of wet water",
+    "url": "https://www.feynmanlectures.caltech.edu/II_41.html",
+    "labs": [
+      {
+        "id": "pipe-flow",
+        "title": [
+          "1. Flow in a pipe",
+          "1. 管の中の流れ"
+        ],
+        "body": [
+          "A real fluid sticks to any surface it touches: at the wall of a pipe its speed is exactly zero. Away from the wall each layer slides over the one outside it, and viscosity is the friction between them, a force proportional to how quickly the speed changes from layer to layer. Balance that friction against the pressure pushing each cylinder of fluid along and the speed comes out as a parabola, greatest on the axis. Adding up the flow across the section gives the law found by Hagen and by Poiseuille around 1840: flow is proportional to the pressure difference and inversely to the length and the viscosity, as common sense suggests, but it goes as the fourth power of the radius. Two of the four powers are the area. The other two come from the walls: in a wider pipe the middle is further from them and so moves faster.",
+          "実際の流体は、触れている面に張り付きます。管の壁では、速さはちょうどゼロです。壁から離れると、各層は外側の層の上を滑ります。粘性は、その間の摩擦で、層から層へ速さが変化する割合に比例する力です。この摩擦と、流体の各円柱を押す圧力とをつり合わせると、速さは、軸で最大になる放物線になります。断面全体で流れを足し合わせると、1840 年ごろにハーゲンとポアズイユが見つけた法則が得られます。流量は、常識どおり、圧力差に比例し、長さと粘性に反比例しますが、半径については 4 乗に比例します。4 乗のうちの二つは、面積です。残りの二つは、壁から来ます。太い管では、中央が壁から遠く、それだけ速く動くからです。"
+        ],
+        "formula": "u(s)=\\frac{\\Delta p\\,(r^{2}-s^{2})}{4\\eta L},\\qquad Q=\\frac{\\pi\\,\\Delta p\\,r^{4}}{8\\eta L},\\qquad \\mathrm{Re}=\\frac{\\rho\\,\\bar u\\,d}{\\eta}",
+        "example": [
+          "Water, of viscosity 0.001 Pa s, in a tube 2 mm wide and 1 m long under 1 kPa flows at \\(\\pi\\times1000\\times0.001^{4}/(8\\times0.001\\times1)=3.9\\times10^{-7}\\) m³/s, or 24 ml a minute. The mean speed is 12.5 cm/s, the speed on the axis 25 cm/s, and the Reynolds number 250, safely laminar. A tube 1 mm wide passes 1.5 ml a minute, a sixteenth as much. Olive oil, 81 times as viscous, flows 81 times more slowly.",
+          "粘性 0.001 Pa s の水は、内径 2 mm、長さ 1 m の管を、1 kPa の圧力差で、\\(\\pi\\times1000\\times0.001^{4}/(8\\times0.001\\times1)=3.9\\times10^{-7}\\) m³/s、つまり毎分 24 ml で流れます。平均の速さは 12.5 cm/s、軸での速さは 25 cm/s、レイノルズ数は 250 で、確実に層流です。内径 1 mm の管では、16 分の 1 の毎分 1.5 ml です。粘性が 81 倍のオリーブ油は、81 分の 1 の速さで流れます。"
+        ],
+        "caution": [
+          "The law holds for steady, laminar flow of a simple liquid in a long, straight, round pipe. Above a Reynolds number of about 2300 the flow turns turbulent and the pressure needed rises roughly as the square of the flow. Near the entrance the profile has not yet formed. Liquids such as ketchup, blood and ballpoint ink, whose viscosity changes with how fast they are sheared, give a blunter profile.",
+          "この法則は、長くまっすぐな丸い管を流れる、単純な液体の、定常の層流で成り立ちます。レイノルズ数が約 2300 を超えると、流れは乱流になり、必要な圧力は、流量のほぼ 2 乗に比例して大きくなります。入口の近くでは、速さの分布がまだできあがっていません。ケチャップ、血液、ボールペンのインクのように、ずらす速さによって粘性が変わる液体では、分布はより平らになります。"
+        ],
+        "question": [
+          "A plaque narrows an artery to 80 per cent of its original width. If the pressure is unchanged, how much flow is left?",
+          "プラークによって、動脈の幅が、元の 80 % に狭くなりました。圧力が変わらないとすると、流量はどれだけ残りますか。"
+        ],
+        "answer": [
+          "\\(0.8^{4}=0.41\\): about two fifths. A modest narrowing costs more than half the flow, which is why the body must raise the pressure, or widen other vessels, to compensate.",
+          "\\(0.8^{4}=0.41\\) で、約 5 分の 2 です。わずかに狭くなるだけで、流量の半分以上が失われます。体が、それを補うために、圧力を上げたり、ほかの血管を広げたりしなければならないのは、このためです。"
+        ],
+        "params": [
+          [
+            "d",
+            "Inside width of the pipe (mm)",
+            "管の内径（mm）",
+            0.2,
+            10,
+            0.1,
+            2
+          ],
+          [
+            "dp",
+            "Pressure difference (kPa)",
+            "圧力差（kPa）",
+            0.1,
+            100,
+            0.1,
+            1
+          ],
+          [
+            "len",
+            "Length of the pipe (m)",
+            "管の長さ（m）",
+            0.05,
+            10,
+            0.05,
+            1
+          ],
+          [
+            "fluid",
+            "Liquid",
+            "液体",
+            0,
+            2,
+            1,
+            0,
+            [
+              [
+                "water",
+                "水"
+              ],
+              [
+                "olive oil",
+                "オリーブ油"
+              ],
+              [
+                "glycerol",
+                "グリセリン"
+              ]
+            ]
+          ]
+        ],
+        "source": "R. P. Feynman, R. B. Leighton and M. Sands · The Feynman Lectures on Physics, vol. II, ch. 41: The flow of wet water",
+        "url": "https://www.feynmanlectures.caltech.edu/II_41.html"
+      },
+      {
+        "id": "porous-bed",
+        "title": [
+          "2. Through a bed of grains",
+          "2. 粒の層を通る流れ"
+        ],
+        "body": [
+          "Sand, soil, ground coffee, a ceramic filter and sandstone are all solids shot through with connected gaps. Following the water through every gap is hopeless, and unnecessary. In 1856 Henry Darcy, designing the fountains of Dijon, ran water through columns of sand and found that the flow was simply proportional to the pressure drop and inversely to the depth of the bed. Everything about the maze of gaps is gathered into one number, the permeability, which has the units of area and is roughly the cross-section of a typical pore. Treating the gaps as a bundle of crooked pipes and applying Poiseuille’s law to each gives an estimate of it, the Kozeny-Carman formula: permeability goes as the square of the grain size, and depends steeply on the porosity, the share of the bed that is empty.",
+          "砂、土、ひいたコーヒー、セラミックのフィルター、砂岩は、どれも、つながったすき間が全体に通っている固体です。水をすべてのすき間で追うことは不可能で、その必要もありません。1856 年、ディジョンの噴水を設計していたアンリ・ダルシーは、砂の柱に水を通し、流量が、単に圧力の低下に比例し、層の深さに反比例することを見つけました。すき間の迷路に関するすべては、浸透率という一つの数にまとめられます。浸透率は面積の単位を持ち、おおよそ、典型的な細孔の断面積です。すき間を、曲がりくねった管の束とみなし、それぞれにポアズイユの法則を当てはめると、その見積もりであるコゼニー・カルマンの式が得られます。浸透率は、粒の大きさの 2 乗に比例し、層のうち空いている割合である空隙率に、強く依存します。"
+        ],
+        "formula": "q=\\frac{k\\,\\Delta p}{\\eta L},\\qquad k=\\frac{d^{2}\\varepsilon^{3}}{180\\,(1-\\varepsilon)^{2}}",
+        "example": [
+          "Sand of 0.5 mm packed to a porosity of 0.4 has a permeability of \\(0.0005^{2}\\times0.4^{3}/(180\\times0.6^{2})=2.5\\times10^{-10}\\) m², or 250 µm². A bed 0.5 m deep under 1 m of water, 9.8 kPa, passes \\(2.5\\times10^{-10}\\times9790/(0.001\\times0.5)=4.8\\) mm/s over its whole area: 17 m³ an hour through each square metre. Between the grains the water moves at 12 mm/s. Loosening the bed from a porosity of 0.35 to 0.45 triples the flow.",
+          "0.5 mm の砂を空隙率 0.4 に詰めると、浸透率は \\(0.0005^{2}\\times0.4^{3}/(180\\times0.6^{2})=2.5\\times10^{-10}\\) m²、つまり 250 µm² です。深さ 0.5 m の層は、1 m の水頭、つまり 9.8 kPa で、全面積あたり \\(2.5\\times10^{-10}\\times9790/(0.001\\times0.5)=4.8\\) mm/s、1 平方メートルあたり毎時 17 m³ を通します。粒の間では、水は 12 mm/s で動きます。層を緩めて空隙率を 0.35 から 0.45 にすると、流量は 3 倍になります。"
+        ],
+        "caution": [
+          "Kozeny-Carman is an estimate for clean, rounded grains of one size, good to perhaps a factor of two. Mixed sizes pack tighter, with fines filling the gaps between coarse grains, and the smallest tenth of the grains largely sets the permeability. Darcy’s law itself fails when the flow in the pores is fast enough for inertia to matter, and when the bed moves or swells, as coffee does.",
+          "コゼニー・カルマンの式は、大きさのそろった、きれいで丸い粒についての見積もりで、精度はせいぜい 2 倍程度です。大きさの混ざった粒は、細かい粒が粗い粒の間のすき間を埋めるので、より密に詰まり、浸透率は、主に、粒のうち最も小さい 10 分の 1 で決まります。ダルシーの法則そのものも、細孔の中の流れが慣性の効くほど速いときや、コーヒーのように層が動いたり膨らんだりするときには、成り立ちません。"
+        ],
+        "question": [
+          "Coffee ground twice as fine is packed into the same basket. Roughly how much longer does the same shot take at the same pressure?",
+          "2 倍細かくひいたコーヒーを、同じバスケットに詰めます。同じ圧力で同じ量を抽出するのに、およそ何倍の時間がかかりますか。"
+        ],
+        "answer": [
+          "About four times, since permeability goes as the square of the grain size. That steepness is why a small turn of a grinder’s adjustment changes a shot from sour and fast to bitter and slow.",
+          "浸透率は粒の大きさの 2 乗に比例するので、約 4 倍です。グラインダーの調整を少し回すだけで、抽出が、酸っぱく速いものから、苦く遅いものに変わるのは、この依存の強さのためです。"
+        ],
+        "params": [
+          [
+            "grain",
+            "Grain size (micrometres)",
+            "粒の大きさ（マイクロメートル）",
+            50,
+            2000,
+            10,
+            500
+          ],
+          [
+            "por",
+            "Porosity",
+            "空隙率",
+            0.25,
+            0.5,
+            0.01,
+            0.4
+          ],
+          [
+            "depth",
+            "Depth of the bed (mm)",
+            "層の深さ（mm）",
+            10,
+            2000,
+            10,
+            500
+          ],
+          [
+            "head",
+            "Head of water above it (m)",
+            "層の上の水頭（m）",
+            0.05,
+            10,
+            0.05,
+            1
+          ]
+        ],
+        "source": "R. P. Feynman, R. B. Leighton and M. Sands · The Feynman Lectures on Physics, vol. II, ch. 41: The flow of wet water",
+        "url": "https://www.feynmanlectures.caltech.edu/II_41.html"
+      },
+      {
+        "id": "capillary-rise",
+        "title": [
+          "3. Capillarity: tension at the surface",
+          "3. 毛細管現象：表面の張力"
+        ],
+        "body": [
+          "Molecules inside a liquid are pulled equally in all directions by their neighbours; those at the surface are pulled only inward and sideways. The surface therefore behaves like a stretched skin, with a tension that is the same everywhere on it. Where a liquid meets a solid it settles at a definite contact angle: small if the liquid is attracted to the solid more than to itself, as water is to clean glass, and more than a right angle if it is not, as water on wax. In a narrow tube that wets, the surface is forced into a cup shape, and its tension, acting all round the rim, pulls upward on the column until the weight hanging from it balances the pull. Laid flat, with no weight to stop it, the liquid keeps going, slowed only by its own viscosity in the ever longer wetted length behind the front.",
+          "液体の内部の分子は、周りの分子から、すべての方向に等しく引かれています。表面の分子は、内側と横にしか引かれません。そのため、表面は、張った膜のようにふるまい、その張力は、表面のどこでも同じです。液体が固体と接するところでは、決まった接触角に落ち着きます。きれいなガラスに対する水のように、液体が、自分自身よりも固体に強く引かれる場合は小さく、ろうの上の水のように、そうでない場合は直角より大きくなります。濡れる細い管の中では、液面はカップの形になります。縁の全周で働く張力が、液柱を上向きに引き、つり下がった重さが、その引く力とつり合うまで、液柱は上がります。管を横にすると、止める重さがないので、液体は進み続けます。それを遅くするのは、先端の後ろで長くなり続ける濡れた部分での、液体自身の粘性だけです。"
+        ],
+        "formula": "h=\\frac{2\\gamma\\cos\\theta}{\\rho g r},\\qquad \\Delta p=\\frac{2\\gamma\\cos\\theta}{r},\\qquad \\ell^{2}=\\frac{\\gamma\\,r\\cos\\theta}{2\\eta}\\,t",
+        "example": [
+          "Water, with a surface tension of 0.073 N/m, wetting a clean glass tube of radius 0.5 mm, rises \\(2\\times0.073/(998\\times9.81\\times0.0005)=30\\) mm. In a pore of radius 10 µm it would rise 1.5 m, drawn by a suction of 14.6 kPa. Laid flat, that pore fills 19 mm in the first second and 190 mm in a hundred. A pore ten times finer pulls ten times harder but fills only 6 mm in a second.",
+          "表面張力 0.073 N/m の水は、きれいなガラスでできた半径 0.5 mm の管を濡らし、\\(2\\times0.073/(998\\times9.81\\times0.0005)=30\\) mm 上がります。半径 10 µm の細孔では、14.6 kPa の吸い込む圧力で引かれ、1.5 m 上がります。横にすると、その細孔は、最初の 1 秒間で 19 mm、100 秒間で 190 mm 満たされます。10 倍細い細孔は、10 倍強く引きますが、1 秒間に 6 mm しか満たされません。"
+        ],
+        "caution": [
+          "A straight round tube with one contact angle. Real pores vary in width, and the front stalls at wide places and jumps at narrow ones. Contact angles depend strongly on how clean the surface is and differ for an advancing and a retreating front. The square-root law leaves out the inertia of the first instants and, in an upright tube, the weight that eventually stops the rise. Trees lift water far higher than the formula’s suction of one atmosphere would suggest, because water in fine pores can sustain tension.",
+          "一つの接触角を持つ、まっすぐな丸い管の場合です。実際の細孔は幅が一定でなく、先端は、広いところで止まり、狭いところで跳びます。接触角は、面の清浄さに強く依存し、進む先端と戻る先端とで違います。平方根の法則は、最初の瞬間の慣性と、立てた管では最終的に上昇を止める重さを、省いています。木は、この式による 1 気圧の吸い込みから予想されるより、はるかに高く水を持ち上げます。細い細孔の中の水は、張力に耐えられるからです。"
+        ],
+        "question": [
+          "A ballpoint pen stops writing when held upside down for long, but a felt-tip pen does not. What is the difference?",
+          "ボールペンは、長く逆さにしていると書けなくなりますが、フェルトペンは書けます。何が違うのですか。"
+        ],
+        "answer": [
+          "The felt tip is a bundle of fine pores, and capillary suction in pores that fine is worth a column of water many centimetres high, so it holds and feeds ink against gravity. A ballpoint’s reservoir is one wide tube, where the capillary pull is small and gravity decides which way the ink goes.",
+          "フェルトの先は、細い細孔の束です。それほど細い細孔での毛細管の吸い込みは、数十センチメートルの水柱に相当するので、重力に逆らってインクを保持し、送り出します。ボールペンのインクの入れ物は 1 本の太い管で、毛細管の引く力は小さく、インクがどちらへ動くかは重力で決まります。"
+        ],
+        "params": [
+          [
+            "r",
+            "Radius of the tube (mm)",
+            "管の半径（mm）",
+            0.001,
+            3,
+            0.001,
+            0.5
+          ],
+          [
+            "th",
+            "Contact angle (degrees)",
+            "接触角（度）",
+            0,
+            150,
+            5,
+            0
+          ],
+          [
+            "fluid",
+            "Liquid",
+            "液体",
+            0,
+            2,
+            1,
+            0,
+            [
+              [
+                "water",
+                "水"
+              ],
+              [
+                "ethanol",
+                "エタノール"
+              ],
+              [
+                "olive oil",
+                "オリーブ油"
+              ]
+            ]
+          ]
+        ],
+        "source": "R. P. Feynman, R. B. Leighton and M. Sands · The Feynman Lectures on Physics, vol. II, ch. 41: The flow of wet water",
+        "url": "https://www.feynmanlectures.caltech.edu/II_41.html"
+      }
+    ]
   }
 ]
