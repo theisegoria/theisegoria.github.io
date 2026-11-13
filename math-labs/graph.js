@@ -170,7 +170,8 @@
     'escalators': ['elevators', 'gears-mechanisms', 'bicycles'],
     'umbrellas': ['gears-mechanisms', 'structural-mechanics', 'robot-kinematics'],
     'sewing-machines': ['gears-mechanisms', 'zippers', 'piston-engines'],
-    'guitars': ['acoustics', 'fourier-analysis', 'loudspeakers']
+    'guitars': ['acoustics', 'fourier-analysis', 'loudspeakers'],
+    'violins': ['guitars', 'acoustics', 'fourier-analysis']
   };
   // Topics named in each topic's own prerequisite line (content.json "prerequisite").
   const PREREQ = {
@@ -273,7 +274,8 @@
     'escalators': ['classical-mechanics'],
     'umbrellas': ['classical-mechanics'],
     'sewing-machines': ['classical-mechanics'],
-    'guitars': ['fourier-analysis', 'acoustics']
+    'guitars': ['fourier-analysis', 'acoustics'],
+    'violins': ['acoustics', 'fourier-analysis']
   };
 
   let topics = [], bySlug = new Map(), edges = [], drawn = [];
