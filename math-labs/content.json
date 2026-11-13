@@ -27586,5 +27586,211 @@
         "url": "https://doi.org/10.1121/1.1913322"
       }
     ]
+  },
+  {
+    "slug": "friction",
+    "title": [
+      "Friction: grip, rope and stick-slip",
+      "摩擦：グリップ、ロープ、スティックスリップ"
+    ],
+    "description": [
+      "Friction is the force that textbooks apologise for and machines depend on. Without it no wheel could drive, no brake could stop, no knot or nail or screw could hold. It is also unlike the other forces of mechanics. It has no fixed size: it gives whatever is needed to prevent sliding, up to a limit, and then gives way to something weaker. Those two facts, a ceiling proportional to the push between the surfaces and a drop once sliding begins, are enough to explain why a slope has a critical angle, why a rope wound round a post can hold a ship, and why doors creak, brakes squeal and violins sing. These experiments take them in turn.",
+      "摩擦は、教科書では厄介者として扱われますが、機械はこれに頼っています。摩擦がなければ、車輪は進めず、ブレーキは止められず、結び目も、釘も、ねじも、留まりません。摩擦は、力学のほかの力とは違ってもいます。決まった大きさがありません。滑りを防ぐのに必要な分だけを、ある限界まで与え、それを超えると、より弱い力に変わります。面どうしを押し付ける力に比例する上限があること、そして、滑り始めると力が下がること。この二つの事実だけで、斜面に臨界の角度があること、柱に巻いたロープが船を止められること、ドアがきしみ、ブレーキが鳴き、バイオリンが歌うことを説明できます。ここでの実験では、これらを順に扱います。"
+    ],
+    "group": "physics",
+    "prerequisite": [
+      "Forces, Newton’s laws, the exponential function",
+      "力、ニュートンの法則、指数関数"
+    ],
+    "source": "R. P. Feynman, R. B. Leighton and M. Sands · The Feynman Lectures on Physics, vol. I, ch. 12: Characteristics of force",
+    "url": "https://www.feynmanlectures.caltech.edu/I_12.html",
+    "labs": [
+      {
+        "id": "friction-incline",
+        "title": [
+          "1. A ceiling, not a force",
+          "1. 力ではなく、上限"
+        ],
+        "body": [
+          "Put a book on a board and tilt the board. For a while nothing happens, although the pull along the slope is growing all the time. Friction is growing with it, exactly matching it. Static friction is a reaction: it supplies whatever is needed to prevent sliding. What the surfaces set is its ceiling, which Amontons found in 1699 to be proportional to the force pressing them together and, surprisingly, independent of the area in contact. The ratio is the coefficient of static friction. On a slope the pressing force falls as the cosine of the angle while the demand rises as the sine, so the book lets go when the tangent of the angle equals the coefficient, whatever the book weighs. Once it moves, friction falls to a smaller, roughly constant fraction of the pressing force. The reason for both laws is that real surfaces touch only at the tips of their roughness, and the true area of contact grows in proportion to the load.",
+          "本を板の上に置いて、板を傾けます。斜面に沿って引く力はずっと大きくなっていくのに、しばらくは何も起こりません。摩擦も一緒に大きくなり、ちょうど同じ大きさになっているからです。静止摩擦は反作用で、滑りを防ぐのに必要な分だけを与えます。面が決めるのは、その上限です。1699 年にアモントンは、この上限が、面どうしを押し付ける力に比例し、意外なことに、接触の面積にはよらないことを見つけました。その比が、静止摩擦係数です。斜面では、押し付ける力は角度の余弦に比例して小さくなり、必要な力は正弦に比例して大きくなります。そのため、本は、重さにかかわらず、角度の正接が係数に等しくなったところで滑り出します。いったん動くと、摩擦は、押し付ける力に対する、より小さく、ほぼ一定の割合に下がります。この二つの法則が成り立つのは、実際の面は粗さの先端だけで触れていて、本当の接触面積が荷重に比例して大きくなるからです。"
+        ],
+        "formula": "F_f\\le\\mu_s N,\\qquad \\tan\\theta_c=\\mu_s,\\qquad a=g\\,(\\sin\\theta-\\mu_k\\cos\\theta)\\ \\text{once sliding}",
+        "example": [
+          "With a coefficient of 0.5 the critical angle is \\(\\arctan 0.5=26.6^\\circ\\). A 5 kg block on a 20° slope needs \\(5\\times9.81\\times\\sin20^\\circ=16.8\\) N and friction could give up to 23.0 N, so it stays. At 35° it slides, and with a sliding coefficient of 0.4 it accelerates at \\(9.81\\,(\\sin35^\\circ-0.4\\cos35^\\circ)=2.4\\) m/s².",
+          "係数が 0.5 のとき、臨界の角度は \\(\\arctan 0.5=26.6^\\circ\\) です。20° の斜面の上にある 5 kg の物体には \\(5\\times9.81\\times\\sin20^\\circ=16.8\\) N が必要で、摩擦は最大で 23.0 N を与えられるので、物体はとどまります。35° では滑り、動摩擦係数が 0.4 のとき、\\(9.81\\,(\\sin35^\\circ-0.4\\cos35^\\circ)=2.4\\) m/s² で加速します。"
+        ],
+        "caution": [
+          "Coulomb’s laws are a good summary for dry, hard surfaces, not a law of nature. Rubber, whose friction depends on area and speed, breaks them; so do lubricated surfaces, where the fluid film carries the load. Coefficients vary with cleanliness, humidity and how long the surfaces have rested together, and tabulated values are good to perhaps twenty per cent.",
+          "クーロンの法則は、乾いた硬い面についての良い要約であって、自然法則ではありません。摩擦が面積と速さによって変わるゴムは、これに従いません。流体の膜が荷重を支える、潤滑された面も同様です。係数は、面の清浄さ、湿度、面どうしが触れ合っていた時間によって変わり、表にある値の精度は、せいぜい 20 % 程度です。"
+        ],
+        "question": [
+          "A heavy crate and a light one, of the same material, sit on the same ramp as it is slowly tilted. Which slides first?",
+          "同じ材料でできた重い箱と軽い箱が、同じ斜面の上に置かれていて、斜面がゆっくり傾けられます。どちらが先に滑りますか。"
+        ],
+        "answer": [
+          "Neither: they go together. The pull along the slope and the ceiling on friction are both proportional to the weight, so the weight cancels and only the angle and the coefficient matter.",
+          "どちらでもなく、同時に滑ります。斜面に沿って引く力も、摩擦の上限も、重さに比例するので、重さは打ち消し合い、角度と係数だけが関係します。"
+        ],
+        "params": [
+          [
+            "th",
+            "Angle of the slope (degrees)",
+            "斜面の角度（度）",
+            0,
+            60,
+            1,
+            20
+          ],
+          [
+            "mus",
+            "Static friction coefficient",
+            "静止摩擦係数",
+            0.1,
+            1.2,
+            0.05,
+            0.5
+          ],
+          [
+            "muk",
+            "Sliding friction coefficient",
+            "動摩擦係数",
+            0.05,
+            1.0,
+            0.05,
+            0.4
+          ],
+          [
+            "m",
+            "Mass of the block (kg)",
+            "物体の質量（kg）",
+            1,
+            20,
+            1,
+            5
+          ]
+        ],
+        "source": "R. P. Feynman, R. B. Leighton and M. Sands · The Feynman Lectures on Physics, vol. I, ch. 12: Characteristics of force",
+        "url": "https://www.feynmanlectures.caltech.edu/I_12.html"
+      },
+      {
+        "id": "capstan",
+        "title": [
+          "2. A rope round a post",
+          "2. 柱に巻いたロープ"
+        ],
+        "body": [
+          "A rope bent round a post presses on it, because the tension pulling along the rope on either side of each small piece has a part directed inward. The tighter the rope, the harder it presses, and so the more friction it can call on. That is a loop: the friction on each piece is proportional to the tension there, and the friction is what changes the tension from piece to piece. A quantity whose rate of change is proportional to itself is an exponential, and so the pull that can be held grows exponentially with the angle of wrap. Three turns with a modest coefficient multiply a hand’s pull several hundred times. The radius of the post cancels: a fat post gives more rope in contact but presses on each piece less. This is how a capstan, a belt drive, a climber’s belay and an elevator’s traction sheave all work, and it is why knots hold.",
+          "柱に巻いたロープは、柱を押します。ロープの小さな各部分を両側から引く張力に、内向きの成分があるからです。ロープがきつく張られているほど、強く押し、それだけ多くの摩擦を使えます。ここに輪ができます。各部分での摩擦はそこでの張力に比例し、その摩擦が、部分から部分へと張力を変えるのです。変化の割合が自分自身に比例する量は、指数関数です。そのため、支えられる力は、巻き付き角とともに指数関数的に大きくなります。控えめな係数でも、3 回巻けば、手の力は数百倍になります。柱の半径は打ち消し合います。太い柱では、接するロープは長くなりますが、各部分を押す力は弱くなるからです。キャプスタン、ベルト駆動、登山のビレイ、エレベーターの綱車は、どれもこの仕組みで働き、結び目がほどけないのも、このためです。"
+        ],
+        "formula": "\\mathrm{d}T=\\mu\\,T\\,\\mathrm{d}\\varphi\\quad\\Longrightarrow\\quad \\frac{T_{\\rm load}}{T_{\\rm hold}}=e^{\\mu\\varphi}",
+        "example": [
+          "With a coefficient of 0.3, one turn multiplies the pull by \\(e^{0.3\\times2\\pi}=6.6\\) and three turns by \\(e^{0.3\\times6\\pi}=286\\). A hand pulling with 100 N then holds 28.6 kN, the weight of 2.9 tonnes. To multiply the pull a thousandfold takes \\(\\ln1000/(2\\pi\\times0.3)=3.7\\) turns.",
+          "係数が 0.3 のとき、1 回巻くと引く力は \\(e^{0.3\\times2\\pi}=6.6\\) 倍、3 回巻くと \\(e^{0.3\\times6\\pi}=286\\) 倍になります。100 N で引く手は、28.6 kN、つまり 2.9 トンの重さを支えます。力を 1000 倍にするには、\\(\\ln1000/(2\\pi\\times0.3)=3.7\\) 回巻きます。"
+        ],
+        "caution": [
+          "The formula gives the largest ratio friction can hold; with a smaller load the rope simply does not slip. It assumes a flexible rope of no weight and one coefficient all the way round. Stiff rope, a grooved or tapered post and turns that ride over one another all change the number, and wet or oily rope can halve the coefficient.",
+          "この式は、摩擦が支えられる最大の比を与えます。荷重がそれより小さければ、ロープは単に滑りません。重さのない柔軟なロープと、全周で一つの係数を仮定しています。硬いロープ、溝やテーパーの付いた柱、重なり合った巻きは、どれも数値を変えます。濡れたロープや油の付いたロープでは、係数が半分になることがあります。"
+        ],
+        "question": [
+          "A sailor wants to let a loaded rope out slowly under control. Should she add turns or take them off?",
+          "船乗りが、荷重のかかったロープを、制御しながらゆっくり繰り出したいと考えています。巻き数を増やすべきですか、減らすべきですか。"
+        ],
+        "answer": [
+          "Take them off, until the ratio the post can hold is only a little more than the ratio between the load and a comfortable pull. Then easing her grip slightly lets the rope slip, and tightening it stops it again.",
+          "減らします。柱が支えられる比が、荷重と無理なく引ける力の比より、わずかに大きい程度になるまで減らします。そうすれば、握りを少し緩めるとロープが滑り、握り直すと再び止まります。"
+        ],
+        "params": [
+          [
+            "turns",
+            "Turns round the post",
+            "柱に巻いた回数",
+            0.25,
+            5,
+            0.25,
+            3
+          ],
+          [
+            "mu",
+            "Friction coefficient",
+            "摩擦係数",
+            0.1,
+            0.6,
+            0.01,
+            0.3
+          ],
+          [
+            "hold",
+            "Pull of the hand (N)",
+            "手が引く力（N）",
+            20,
+            500,
+            10,
+            100
+          ]
+        ],
+        "source": "R. P. Feynman, R. B. Leighton and M. Sands · The Feynman Lectures on Physics, vol. I, ch. 12: Characteristics of force",
+        "url": "https://www.feynmanlectures.caltech.edu/I_12.html"
+      },
+      {
+        "id": "stick-slip",
+        "title": [
+          "3. Stick and slip",
+          "3. 張り付きと滑り"
+        ],
+        "body": [
+          "Drag something springy steadily across a surface and it often refuses to move steadily. A door hinge creaks, chalk judders on a board, a wet finger makes a wine glass ring. The cause is the step down from static to sliding friction. While the surfaces are stuck, the drive winds up the spring. When the spring force reaches the static ceiling, the surfaces let go, and at that instant the opposing friction drops. The spring now has force to spare, so the body is flung back, overshoots the point where sliding friction would balance it, slows relative to the surface and is caught again. Energy comes from the steady drive; the timing comes from the spring and the mass. Slow drive and soft spring give long sticking and a brief jump. Fast drive and stiff spring shorten the sticking until the cycle is nearly the natural vibration of the mass on its spring, and that is how a bow sustains a string.",
+          "弾力のあるものを、一定の速さで面の上を引きずると、多くの場合、一定の速さでは動いてくれません。ドアのちょうつがいはきしみ、チョークは黒板の上で震え、濡れた指はワイングラスを鳴らします。原因は、静止摩擦から動摩擦への段差です。面どうしが張り付いている間、駆動側はばねを巻き上げます。ばねの力が静止摩擦の上限に達すると、面は離れ、その瞬間に、逆らう摩擦が下がります。すると、ばねの力に余りが生じ、物体は跳ね戻されます。物体は、動摩擦とつり合う位置を行き過ぎ、面に対して遅くなり、再びつかまれます。エネルギーは一定の駆動から来て、タイミングは、ばねと質量から来ます。遅い駆動と柔らかいばねでは、張り付きが長く、跳びは短くなります。速い駆動と硬いばねでは、張り付きが短くなり、周期は、ばねに付いた質量の固有振動にほぼ等しくなります。弓が弦を鳴らし続けるのは、この仕組みによります。"
+        ],
+        "formula": "t_{\\rm stick}=\\frac{2(\\mu_s-\\mu_k)\\,mg}{k\\,v},\\qquad t_{\\rm slip}=\\frac{\\pi+2\\alpha}{\\omega},\\quad \\tan\\alpha=\\frac{v\\,\\omega}{(\\mu_s-\\mu_k)\\,g},\\quad \\omega=\\sqrt{k/m}",
+        "example": [
+          "A 1 kg block with coefficients 0.5 and 0.3 on a belt moving at 20 mm/s, held by a spring of 200 N/m, lets go when the spring is stretched \\(0.5\\times9.81/200=24.5\\) mm and is caught again at 4.9 mm. Reloading takes \\(19.6/20=0.98\\) s and the slip 0.24 s, so it jerks 0.82 times a second, though the mass on the spring alone would vibrate at 2.25 Hz. With a spring of 2000 N/m and a belt at 200 mm/s the sticking lasts only 5 ms, and the rate, 7.12 Hz, is the natural frequency.",
+          "係数が 0.5 と 0.3 の 1 kg の物体が、毎秒 20 mm で動くベルトの上にあり、200 N/m のばねで引き止められているとします。物体は、ばねが \\(0.5\\times9.81/200=24.5\\) mm 伸びたところで離れ、4.9 mm のところで再びつかまれます。ばねを伸ばし直すのに \\(19.6/20=0.98\\) s、滑りに 0.24 s かかるので、1 秒に 0.82 回がたつきます。ばねとおもりだけなら、2.25 Hz で振動するはずです。ばねを 2000 N/m、ベルトを毎秒 200 mm にすると、張り付きは 5 ms しか続かず、回数は固有振動数の 7.12 Hz になります。"
+        ],
+        "caution": [
+          "This is the simplest model: two constant coefficients and no damping. With it every drive speed gives stick-slip. Real sliding friction varies with speed, and real systems have damping, so above some speed the motion becomes smooth, which is why a squealing brake falls silent as it is pressed harder or released. The model also treats the body as one rigid mass.",
+          "これは、二つの一定の係数だけを使い、減衰のない、最も単純なモデルです。このモデルでは、どの駆動の速さでもスティックスリップが起こります。実際の動摩擦は速さによって変わり、実際の系には減衰があるので、ある速さを超えると運動は滑らかになります。鳴いているブレーキが、強く踏んだり離したりすると静かになるのは、このためです。また、このモデルは、物体を一つの剛体として扱っています。"
+        ],
+        "question": [
+          "Oiling a creaking hinge silences it. In terms of this model, what has the oil changed?",
+          "きしむちょうつがいに油を差すと、音が止まります。このモデルで言えば、油は何を変えたのですか。"
+        ],
+        "answer": [
+          "It has removed the step between sticking and sliding friction. With a film of oil between the surfaces, friction no longer falls when motion starts (it rises gently with speed instead), so there is nothing to fling the surfaces past their balance point and the motion stays steady.",
+          "静止摩擦と動摩擦の間の段差をなくしました。面の間に油の膜があると、動き始めても摩擦は下がらず、むしろ速さとともに緩やかに上がります。そのため、面をつり合いの位置の先まで跳ばすものがなくなり、運動は一定のままになります。"
+        ],
+        "params": [
+          [
+            "vb",
+            "Speed of the belt (mm/s)",
+            "ベルトの速さ（mm/s）",
+            5,
+            500,
+            5,
+            20
+          ],
+          [
+            "k",
+            "Stiffness of the spring (N/m)",
+            "ばねの硬さ（N/m）",
+            50,
+            5000,
+            50,
+            200
+          ],
+          [
+            "dmu",
+            "Static minus sliding coefficient",
+            "静止摩擦係数と動摩擦係数の差",
+            0.05,
+            0.5,
+            0.05,
+            0.2
+          ]
+        ],
+        "source": "R. P. Feynman, R. B. Leighton and M. Sands · The Feynman Lectures on Physics, vol. I, ch. 12: Characteristics of force",
+        "url": "https://www.feynmanlectures.caltech.edu/I_12.html"
+      }
+    ]
   }
 ]
