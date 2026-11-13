@@ -27104,5 +27104,263 @@
         "url": "https://patents.google.com/patent/US4750A/en"
       }
     ]
+  },
+  {
+    "slug": "guitars",
+    "title": [
+      "Guitars: string, fret, truss rod and pickup",
+      "ギター：弦、フレット、トラスロッド、ピックアップ"
+    ],
+    "description": [
+      "A guitar is six stretched wires and a way of choosing their lengths. The pitch of a string is fixed by three things, its length, its tension and its weight, and the instrument is built round each. The frets set the length, at positions worked out so that every step is the same musical interval. The tension, half a hundredweight in all, bends the neck, so a steel rod inside is tightened to bend it back. And because a solid body makes almost no sound, the electric guitar listens to its strings with magnets, which hear a different mixture of harmonics depending on where along the string they sit. These experiments pluck one string, set the bow of a neck, and move a pickup.",
+      "ギターは、張られた 6 本の線と、その長さを選ぶ仕組みです。弦の音の高さは、長さ、張力、重さの三つで決まり、楽器は、そのそれぞれを中心に作られています。フレットは長さを決め、その位置は、一つ進むごとに同じ音程になるように計算されています。合計で 50 キログラム近い張力は、ネックを曲げるので、中に入った鋼の棒を締めて、曲がりを戻します。そして、板状のボディはほとんど音を出さないので、エレクトリックギターは、磁石で弦の動きを聞き取ります。磁石は、弦のどの位置にあるかによって、異なる倍音の混ざり方を聞きます。ここでの実験では、1 本の弦を弾き、ネックの反りを調整し、ピックアップを動かします。"
+    ],
+    "group": "engineering",
+    "prerequisite": [
+      "Waves on a string, powers of two and logarithms, bending of a beam",
+      "弦を伝わる波、2 の累乗と対数、はりの曲げ"
+    ],
+    "source": "N. H. Fletcher and T. D. Rossing · The Physics of Musical Instruments, second edition (Springer, 1998), chapters 2 and 9",
+    "url": "https://doi.org/10.1007/978-0-387-21603-4",
+    "labs": [
+      {
+        "id": "string-harmonics",
+        "title": [
+          "1. One string",
+          "1. 1 本の弦"
+        ],
+        "body": [
+          "A wave travels along a stretched string at a speed that depends on how tight and how heavy it is: the square root of the tension divided by the mass of each metre. Fixed at both ends, the string can hold only those waves that fit a whole number of half-wavelengths into its length, so its lowest note has a frequency equal to the wave speed divided by twice the length, and above it lies a ladder of harmonics at two, three, four times that frequency. A plucked string sounds all of them at once. How much of each depends on the shape the string is pulled into before it is let go. Pulled at its middle, the shape resembles the fundamental and the even harmonics are absent altogether. Pulled near one end, the sharp corner needs many high harmonics to describe it, and the note is brighter. Halving the length doubles the frequency, which raises the pitch by an octave.",
+          "波は、張られた弦を、弦の張りの強さと重さで決まる速さで伝わります。その速さは、張力を 1 メートルあたりの質量で割ったものの平方根です。両端が固定された弦には、長さの中に半波長がちょうど整数個収まる波しか立ちません。そのため、最も低い音の周波数は、波の速さを、長さの 2 倍で割ったものになります。その上には、その 2 倍、3 倍、4 倍の周波数の倍音が、はしごのように並びます。弾かれた弦は、そのすべてを同時に鳴らします。それぞれがどれだけ含まれるかは、弦を離す前に引いた形で決まります。中央で引くと、形は基音に似ていて、偶数次の倍音はまったく含まれません。端の近くで引くと、鋭い角を表すために多くの高い倍音が必要になり、音は明るくなります。長さを半分にすると周波数は 2 倍になり、音の高さは 1 オクターブ上がります。"
+        ],
+        "formula": "f=\\frac{1}{2L}\\sqrt{\\frac{T}{\\mu}},\\qquad a_n=\\frac{2\\sin(n\\pi p)}{n^{2}\\pi^{2}p\\,(1-p)},\\qquad f_n=n f",
+        "example": [
+          "The top string weighs 0.401 g a metre and sounds E at 329.6 Hz over 648 mm, so its tension is \\(0.000401\\times(2\\times0.648\\times329.6)^{2}=73\\) N and waves run along it at \\(\\sqrt{73/0.000401}=427\\) m/s. Plucked at the middle, the second harmonic is zero and the third is 11 per cent of the first. Plucked a fifth of the way from the bridge, the second is 40 per cent and the third 18 per cent, and the fifth is missing.",
+          "1 弦は、1 メートルあたり 0.401 g で、648 mm の長さで 329.6 Hz の E を鳴らします。したがって、張力は \\(0.000401\\times(2\\times0.648\\times329.6)^{2}=73\\) N で、波は \\(\\sqrt{73/0.000401}=427\\) m/s で伝わります。中央で弾くと、第 2 倍音はゼロで、第 3 倍音は基音の 11 % です。ブリッジから 5 分の 1 の位置で弾くと、第 2 倍音は 40 %、第 3 倍音は 18 % で、第 5 倍音は含まれません。"
+        ],
+        "caution": [
+          "The string is perfectly flexible and is released from rest in a sharp corner. A real string is slightly stiff, which rounds the corner and makes the upper harmonics a little sharp, and a plectrum or fingertip has width, which removes the highest ones. Damping, which makes the high harmonics die away first, is not shown.",
+          "弦は完全に柔軟で、鋭い角の形から静かに離されるとしています。実際の弦にはわずかな剛性があり、角は丸くなり、高い倍音は少し高めにずれます。ピックや指先には幅があるので、最も高い倍音は取り除かれます。高い倍音から先に消えていく減衰は、示していません。"
+        ],
+        "question": [
+          "A guitarist touches a string lightly at the twelfth fret and plucks it. A note an octave higher rings out. Why?",
+          "ギタリストが、12 フレットの位置で弦に軽く触れて弾くと、1 オクターブ高い音が鳴ります。なぜですか。"
+        ],
+        "answer": [
+          "The finger holds the middle of the string still. Every harmonic that must move there, the first, third, fifth and so on, is stopped at once, and only those with a still point at the middle survive: the second, fourth, sixth. Together they form a note at twice the frequency.",
+          "指が、弦の中央を動かないように押さえています。そこで動かなければならない倍音、つまり第 1、第 3、第 5 などは、すぐに止められます。残るのは、中央に節がある第 2、第 4、第 6 などだけです。それらが合わさって、2 倍の周波数の音になります。"
+        ],
+        "params": [
+          [
+            "p",
+            "Plucked at (fraction of the length from the bridge)",
+            "弾く位置（ブリッジからの長さの割合）",
+            0.02,
+            0.5,
+            0.02,
+            0.2
+          ],
+          [
+            "s",
+            "String",
+            "弦",
+            0,
+            5,
+            1,
+            4,
+            [
+              [
+                "1st, E",
+                "1 弦、E"
+              ],
+              [
+                "2nd, B",
+                "2 弦、B"
+              ],
+              [
+                "3rd, G",
+                "3 弦、G"
+              ],
+              [
+                "4th, D",
+                "4 弦、D"
+              ],
+              [
+                "5th, A",
+                "5 弦、A"
+              ],
+              [
+                "6th, E",
+                "6 弦、E"
+              ]
+            ]
+          ],
+          [
+            "fret",
+            "Fret",
+            "フレット",
+            0,
+            21,
+            1,
+            0
+          ]
+        ],
+        "source": "N. H. Fletcher and T. D. Rossing · The Physics of Musical Instruments, second edition (Springer, 1998), chapters 2 and 9",
+        "url": "https://doi.org/10.1007/978-0-387-21603-4"
+      },
+      {
+        "id": "guitar-neck",
+        "title": [
+          "2. Frets and the truss rod",
+          "2. フレットとトラスロッド"
+        ],
+        "body": [
+          "Western music divides the octave into twelve equal steps, each a rise in frequency by the twelfth root of two, about 5.9 per cent. Since frequency goes as one over length, each fret must leave a sounding length shorter than the last by that same factor. The frets are therefore not evenly spaced: the first is 36 mm from the nut, the twelfth is exactly half-way, and beyond it the pattern repeats at half the size. The strings that the frets divide also load the neck. They run a centimetre or so above its centre line, so their combined pull acts as a bending moment that bows the neck forward. A slim wooden neck would creep under that load, so a steel rod is let into a curved channel below the centre line and anchored at both ends. Tightening it shortens the back of the neck and bends it the other way. A little forward bow is left on purpose, to give a vibrating string room to swing.",
+          "西洋音楽は、1 オクターブを 12 の等しい段に分けます。1 段は、周波数が 2 の 12 乗根、つまり約 5.9 % 上がることです。周波数は長さに反比例するので、それぞれのフレットは、鳴る部分の長さを、一つ前より同じ割合だけ短くしなければなりません。そのため、フレットは等間隔ではありません。1 フレットはナットから 36 mm にあり、12 フレットはちょうど中央にあり、その先では、同じ並びが半分の大きさで繰り返されます。フレットが区切る弦は、ネックにも荷重をかけます。弦は、ネックの中心線より 1 センチメートルほど上を通っているので、合計の引く力は、ネックを前へ反らせる曲げモーメントとして働きます。細い木のネックは、その荷重で徐々に変形するので、鋼の棒が、中心線より下の曲がった溝に埋め込まれ、両端で固定されています。棒を締めると、ネックの背面が縮み、逆向きに曲がります。振動する弦が振れる余地を与えるために、わずかな順反りを、わざと残します。"
+        ],
+        "formula": "x_n=L\\left(1-2^{-n/12}\\right),\\qquad \\delta=\\frac{(Fh-Pe)\\,\\ell^{2}}{8EI}",
+        "example": [
+          "On a 648 mm scale the first fret is \\(648\\times(1-2^{-1/12})=36.4\\) mm from the nut and the twelfth 324 mm. A light set of strings pulls with 454 N in total. Acting 12 mm above the centre line it bends the neck with 5.4 N m, and a maple neck with a stiffness of 482 N m² bows by \\(5.4\\times0.45^{2}/(8\\times482)=0.29\\) mm over its 450 mm. A rod 6 mm below the line, tightened to 114 N, takes that down to 0.25 mm; at 908 N the neck is straight.",
+          "648 mm のスケールでは、1 フレットはナットから \\(648\\times(1-2^{-1/12})=36.4\\) mm、12 フレットは 324 mm にあります。細い弦のセットは、合計 454 N で引きます。中心線より 12 mm 上で働くので、ネックを 5.4 N m で曲げます。剛性 482 N m² のメープルのネックは、450 mm の長さで \\(5.4\\times0.45^{2}/(8\\times482)=0.29\\) mm 反ります。中心線より 6 mm 下の棒を 114 N に締めると、これが 0.25 mm になります。908 N で、ネックはまっすぐになります。"
+        ],
+        "caution": [
+          "The guitar is a generic solid-body instrument with a 648 mm scale, drawn to scale except for the swing of the sounding string. The neck is a uniform beam bent by constant moments, and the rod a straight bar at a fixed depth; real rods lie in a curved slot and real necks taper. The small sharpening of pitch that comes from pressing a string down to a fret, which the saddles are set back to correct, is ignored.",
+          "ギターは、スケール 648 mm の一般的なソリッドボディの楽器で、鳴っている弦の振れ幅を除いて、縮尺どおりに描いています。ネックは、一定のモーメントで曲げられる一様なはりとし、棒は、一定の深さにあるまっすぐな棒としています。実際の棒は曲がった溝に収まり、実際のネックは先細りです。弦をフレットに押し下げることで音がわずかに高くなり、それを補正するためにサドルを後ろへずらしますが、これは無視しています。"
+        ],
+        "question": [
+          "After changing to heavier strings a guitar plays with a higher action in the middle of the neck. Which way should the truss rod nut be turned?",
+          "太い弦に替えた後、ネックの中央で弦高が高くなりました。トラスロッドのナットは、どちらへ回すべきですか。"
+        ],
+        "answer": [
+          "Tighter. Heavier strings need more tension for the same notes, so they bow the neck further forward. More tension in the rod supplies a larger opposing moment and brings the relief back to where it was.",
+          "締める向きです。太い弦は、同じ音を出すためにより大きな張力が必要なので、ネックをさらに前へ反らせます。棒の張力を上げると、逆向きのモーメントが大きくなり、反りが元の値に戻ります。"
+        ],
+        "params": [
+          [
+            "rod",
+            "Tension in the truss rod (N)",
+            "トラスロッドの張力（N）",
+            0,
+            1500,
+            10,
+            110
+          ],
+          [
+            "fret",
+            "Fret",
+            "フレット",
+            0,
+            21,
+            1,
+            5
+          ],
+          [
+            "s",
+            "String",
+            "弦",
+            0,
+            5,
+            1,
+            4,
+            [
+              [
+                "1st, E",
+                "1 弦、E"
+              ],
+              [
+                "2nd, B",
+                "2 弦、B"
+              ],
+              [
+                "3rd, G",
+                "3 弦、G"
+              ],
+              [
+                "4th, D",
+                "4 弦、D"
+              ],
+              [
+                "5th, A",
+                "5 弦、A"
+              ],
+              [
+                "6th, E",
+                "6 弦、E"
+              ]
+            ]
+          ],
+          [
+            "heavy",
+            "Weight of the strings (1 = light set)",
+            "弦の重さ（1 = 細いセット）",
+            0.8,
+            1.4,
+            0.05,
+            1
+          ]
+        ],
+        "source": "N. H. Fletcher and T. D. Rossing · The Physics of Musical Instruments, second edition (Springer, 1998), chapters 2 and 9",
+        "url": "https://doi.org/10.1007/978-0-387-21603-4"
+      },
+      {
+        "id": "pickup-tone",
+        "title": [
+          "3. The pickup",
+          "3. ピックアップ"
+        ],
+        "body": [
+          "A magnetic pickup is a permanent magnet inside a coil of several thousand turns of hair-fine wire. A steel string above it becomes part of the path of the magnet’s field, and when the string moves, the field through the coil changes and a voltage appears across it, in proportion to the speed of the string at that point. Two things follow. First, the pickup is deaf to any harmonic that has a still point directly above it, so its place along the string colours the sound: far from the bridge it loses harmonics low in the series, close to the bridge it keeps nearly all of them. Second, the coil is an electrical component in its own right, with a large inductance, and the cable to the amplifier adds capacitance. Together they resonate at a few kilohertz, lifting the frequencies near that point and cutting off those above it. The tone control is a capacitor that can be switched across the coil to remove the lift.",
+          "マグネティックピックアップは、髪の毛ほどの細い電線を数千回巻いたコイルの中に、永久磁石を入れたものです。その上にある鋼の弦は、磁石の磁場が通る道の一部になります。弦が動くと、コイルを貫く磁場が変化し、その場所での弦の速さに比例した電圧が、コイルの両端に現れます。ここから、二つのことが分かります。一つ目に、ピックアップは、真上に節がある倍音を拾えないので、弦に沿った位置が音色を決めます。ブリッジから離れていると、低い番号の倍音を失い、ブリッジに近いと、ほぼすべての倍音を拾います。二つ目に、コイルは、それ自体が大きなインダクタンスを持つ電気部品で、アンプへのケーブルが静電容量を加えます。両者は合わせて数キロヘルツで共振し、その付近の周波数を持ち上げ、それより上を切り落とします。トーンつまみは、コイルに並列につないで、この持ち上がりを取り除けるコンデンサーです。"
+        ],
+        "formula": "V_n\\propto n\\,a_n\\left|\\sin(n\\pi q)\\right|,\\qquad f_0=\\frac{1}{2\\pi\\sqrt{LC}},\\qquad q=\\frac{x_{\\rm pickup}}{L_{\\rm sounding}}",
+        "example": [
+          "A pickup 22 per cent of the way from the bridge, 143 mm on an open string, has its first deaf spot at harmonic \\(1/0.22=4.5\\): it hears little of the fourth and fifth, which on the open A string lie near 500 Hz. A coil of 2.5 H with 620 pF of its own and the cable’s capacitance resonates at \\(1/(2\\pi\\sqrt{2.5\\times620\\times10^{-12}})=4.0\\) kHz and boosts that region 1.5 times. With 1500 pF the peak falls to 2.5 kHz; with the tone control at zero it disappears.",
+          "ブリッジから 22 % の位置、つまり開放弦で 143 mm にあるピックアップは、\\(1/0.22=4.5\\) 番目の倍音で最初に拾えなくなります。第 4、第 5 倍音はほとんど拾えず、開放の A 弦では、これは 500 Hz 付近に当たります。2.5 H のコイルは、自身とケーブルの静電容量 620 pF と合わせて、\\(1/(2\\pi\\sqrt{2.5\\times620\\times10^{-12}})=4.0\\) kHz で共振し、その付近を 1.5 倍に持ち上げます。1500 pF では、山は 2.5 kHz に下がります。トーンつまみをゼロにすると、山はなくなります。"
+        ],
+        "caution": [
+          "The pickup is treated as sensing the string at a single point, where a real one senses a few centimetres and so blurs its deaf spots. The string is plucked 18 per cent of the way from the bridge. The coil is 2.5 H and 6 kΩ with 120 pF of its own, loaded by 200 kΩ; humbucking pairs, which sense two points at once, and the amplifier and loudspeaker that follow are not modelled.",
+          "ピックアップは、弦を 1 点で感じ取るとしています。実際には数センチメートルの範囲を感じ取るので、拾えない倍音の境目はぼやけます。弦は、ブリッジから 18 % の位置で弾いています。コイルは 2.5 H、6 kΩ で、自身の静電容量は 120 pF、負荷は 200 kΩ です。2 点を同時に感じ取るハムバッキング型や、その後のアンプとスピーカーは扱っていません。"
+        ],
+        "question": [
+          "Why does the same guitar sound duller through a six-metre cable than through a one-metre one?",
+          "同じギターでも、1 m のケーブルより 6 m のケーブルを使うと、音がこもるのはなぜですか。"
+        ],
+        "answer": [
+          "Cable has capacitance in proportion to its length. More capacitance across the coil lowers the resonant frequency, so the lift moves down and the cut-off above it removes more of the high harmonics.",
+          "ケーブルの静電容量は、長さに比例します。コイルに並列な静電容量が増えると、共振周波数が下がります。そのため、持ち上がる位置が低くなり、その上の切り落としが、高い倍音をより多く取り除きます。"
+        ],
+        "params": [
+          [
+            "q",
+            "Pickup from the bridge (% of sounding length)",
+            "ブリッジからピックアップまで（鳴る長さに対する %）",
+            6,
+            50,
+            1,
+            22
+          ],
+          [
+            "cable",
+            "Capacitance of the cable (pF)",
+            "ケーブルの静電容量（pF）",
+            100,
+            1500,
+            50,
+            500
+          ],
+          [
+            "tone",
+            "Tone control (0 to 10)",
+            "トーンつまみ（0 から 10）",
+            0,
+            10,
+            1,
+            10
+          ]
+        ],
+        "source": "N. H. Fletcher and T. D. Rossing · The Physics of Musical Instruments, second edition (Springer, 1998), chapters 2 and 9",
+        "url": "https://doi.org/10.1007/978-0-387-21603-4"
+      }
+    ]
   }
 ]
