@@ -28627,5 +28627,275 @@
         "url": "https://www.feynmanlectures.caltech.edu/I_45.html"
       }
     ]
+  },
+  {
+    "slug": "linkages",
+    "title": [
+      "Linkages and cams: motion from geometry",
+      "リンク機構とカム：幾何学から生まれる運動"
+    ],
+    "description": [
+      "A shaft that turns is the cheapest motion there is. Almost every other motion a machine needs, a needle that stabs, a rib that unfolds, a valve that lifts and waits, a wiper that sweeps, is made from it by geometry alone: rigid bars joined by pins, or a shaped plate pushing a follower. No part stretches and nothing is computed, yet the output can pause, reverse, trace a figure of eight or run very nearly along a straight line. The questions are geometric ones. When can a bar make a full turn? What curve does a point on a moving bar draw? How should a profile be shaped so that the follower starts without a shock? These experiments answer them with circles and triangles.",
+      "回転する軸は、最も安く手に入る運動です。機械が必要とする、それ以外のほとんどの運動、つまり、突き刺す針、開く骨、持ち上がって待つ弁、往復するワイパーは、幾何学だけによって、回転から作られます。ピンでつないだ剛体の棒か、従動節を押す、形を付けた板です。どの部品も伸びず、何も計算されないのに、出力は、止まり、逆戻りし、8 の字を描き、ほぼ直線に沿って動くことができます。問いは、幾何学のものです。棒が一回転できるのは、どんなときか。動く棒の上の点は、どんな曲線を描くか。従動節が衝撃なく動き始めるには、輪郭をどんな形にすればよいか。ここでの実験では、円と三角形を使って、これらに答えます。"
+    ],
+    "group": "geometry",
+    "prerequisite": [
+      "Triangles, the cosine rule, circles; derivatives for the cam",
+      "三角形、余弦定理、円。カムでは微分"
+    ],
+    "source": "Y. Zhang, S. Finger and S. Behrens · Introduction to Mechanisms (Carnegie Mellon University)",
+    "url": "https://www.cs.cmu.edu/~rapidproto/mechanisms/tablecontents.html",
+    "labs": [
+      {
+        "id": "four-bar",
+        "title": [
+          "1. Four bars",
+          "1. 4 本の棒"
+        ],
+        "body": [
+          "Three bars pinned in a triangle cannot move at all, and five have too much freedom. Four is the smallest closed chain that moves, and it moves in just one way: fix one bar, set the angle of a second, and the positions of the other two follow, because their free ends must meet. Finding where is a matter of intersecting two circles. What kind of motion results depends only on the four lengths. Grashof’s rule of 1883 says that some bar can turn completely if, and only if, the shortest and longest together are no longer than the other two together. If the shortest is the driven bar, it cranks round while the output rocks, as in a windscreen wiper or a treadle. If the shortest is the fixed bar, both neighbours rotate. Otherwise the linkage only rocks. Any point fixed to the coupler traces a closed curve, and the variety of those curves is what makes the device useful.",
+          "3 本の棒をピンで三角形につなぐと、まったく動きません。5 本では、自由度が多すぎます。4 本は、動くことのできる最も小さい閉じた連鎖で、動き方は一つだけです。1 本を固定し、2 本目の角度を決めると、残りの 2 本の位置は決まります。その自由な端どうしが、出会わなければならないからです。その位置は、二つの円の交点として求まります。どんな運動になるかは、四つの長さだけで決まります。1883 年のグラスホフの規則によれば、最短と最長の和が、ほかの 2 本の和以下であるとき、そしてそのときに限って、ある棒が一回転できます。最短の棒が駆動される棒であれば、その棒は回転し、出力は揺動します。ワイパーや足踏み機構が、この例です。最短の棒が固定された棒であれば、隣の 2 本がどちらも回転します。それ以外では、機構は揺動するだけです。連結棒に固定した点は、どれも閉じた曲線を描きます。その曲線の多様さが、この機構を役立つものにしています。"
+        ],
+        "formula": "s+\\ell\\le p+q\\ \\ \\text{(Grashof)},\\qquad \\cos\\mu=\\frac{b^{2}+c^{2}-\\lvert AQ\\rvert^{2}}{2bc},\\qquad \\lvert AQ\\rvert^{2}=a^{2}+d^{2}-2ad\\cos\\theta",
+        "example": [
+          "Bars of 40, 120, 80 and 110 mm, with the 110 mm bar fixed: \\(40+120=160\\) is less than \\(80+110=190\\), and the shortest bar is the driven one, so it is a crank-rocker. As the crank goes round once, the 80 mm bar swings between 66° and 133°, through 67°, and the transmission angle stays between 34° and 95°. Make the fixed bar 150 mm with three bars of 100 mm, and \\(100+150=250\\) exceeds 200: nothing can turn fully.",
+          "40、120、80、110 mm の棒で、110 mm の棒を固定します。\\(40+120=160\\) は \\(80+110=190\\) より小さく、最短の棒が駆動される棒なので、てこクランク機構です。クランクが 1 回転する間に、80 mm の棒は 66° と 133° の間、つまり 67° の範囲で揺動し、伝達角は 34° と 95° の間にとどまります。固定する棒を 150 mm、残りの 3 本を 100 mm にすると、\\(100+150=250\\) は 200 を超え、どの棒も一回転できません。"
+        ],
+        "caution": [
+          "Rigid bars and perfect pins in one plane. Real pins have clearance, so the output position is slightly uncertain, most of all where the transmission angle is poor. The geometry says nothing of forces or inertia: at speed, the shaking of the moving bars has to be balanced. The linkage can also be assembled the other way up, with the coupler below the line of centres, giving a mirror set of motions.",
+          "一つの平面の中にある、剛体の棒と完全なピンの場合です。実際のピンにはすき間があるので、出力の位置にはわずかな不確かさがあり、伝達角が悪いところで、最も大きくなります。この幾何学は、力や慣性については何も教えません。高速では、動く棒による揺れを、つり合わせる必要があります。また、この機構は、連結棒が中心を結ぶ線の下に来る、逆向きにも組み立てられ、鏡に映した一組の運動が得られます。"
+        ],
+        "question": [
+          "A crank-rocker is used the other way round, the rocker driving the crank, in a treadle sewing machine. Why does it sometimes refuse to start?",
+          "足踏みミシンでは、てこクランク機構を逆向きに、つまり、てこでクランクを駆動する向きに使います。なぜ、動き出さないことがあるのですか。"
+        ],
+        "answer": [
+          "Twice per turn the coupler lines up with the crank. There a push along the coupler has no leverage to turn the crank either way: a dead point. A flywheel carries the machine through, but from rest at a dead point it must be nudged by hand.",
+          "1 回転に 2 回、連結棒がクランクと一直線になります。そこでは、連結棒に沿って押しても、クランクをどちらにも回すてこの作用がありません。これが死点です。はずみ車が、機械に死点を通過させますが、死点で止まった状態からは、手で少し回してやる必要があります。"
+        ],
+        "params": [
+          [
+            "th",
+            "Angle of the driven bar (degrees)",
+            "駆動される棒の角度（度）",
+            0,
+            360,
+            1,
+            60
+          ],
+          [
+            "a",
+            "Driven bar (mm)",
+            "駆動される棒（mm）",
+            20,
+            160,
+            5,
+            40
+          ],
+          [
+            "b",
+            "Coupler (mm)",
+            "連結棒（mm）",
+            20,
+            200,
+            5,
+            120
+          ],
+          [
+            "c",
+            "Output bar (mm)",
+            "出力の棒（mm）",
+            20,
+            160,
+            5,
+            80
+          ],
+          [
+            "d",
+            "Distance between fixed pivots (mm)",
+            "固定された支点の間の距離（mm）",
+            20,
+            200,
+            5,
+            110
+          ],
+          [
+            "p",
+            "Traced point: along the coupler (mm)",
+            "経路を描く点：連結棒に沿った位置（mm）",
+            -40,
+            240,
+            5,
+            60
+          ],
+          [
+            "q",
+            "Traced point: to the side (mm)",
+            "経路を描く点：横への位置（mm）",
+            -80,
+            80,
+            5,
+            40
+          ]
+        ],
+        "source": "Y. Zhang, S. Finger and S. Behrens · Introduction to Mechanisms (Carnegie Mellon University)",
+        "url": "https://www.cs.cmu.edu/~rapidproto/mechanisms/tablecontents.html"
+      },
+      {
+        "id": "straight-line",
+        "title": [
+          "2. A straight line from circles",
+          "2. 円から直線を作る"
+        ],
+        "body": [
+          "A pin joint makes a circle, easily and exactly. A straight line is much harder. In 1784, when James Watt needed the piston rod of his engine to move in a line while the end of the beam it drove moved on an arc, no machine could plane a guide flat enough. His answer was a linkage: two long bars swinging on fixed pivots, joined by a short one whose midpoint moves, over part of its path, almost exactly straight. The whole path is a figure of eight; the straight part is where the two long bars’ opposite curvatures cancel. The search for better and then for exact straight-line linkages occupied mathematicians for a century. Chebyshev built a theory of approximation on it, the same theory now used to design filters. An exact solution, using inversion in a circle, was found by Peaucellier in 1864.",
+          "ピン継手は、円を、簡単に、正確に作ります。直線は、はるかに難しいものです。1784 年、ジェームズ・ワットは、機関のピストン棒を直線の上で動かす必要がありました。ピストン棒が駆動するビームの端は、弧の上を動きます。当時、案内面を十分に平らに削れる機械はありませんでした。彼の答えは、リンク機構でした。固定された支点の周りを揺動する 2 本の長い棒を、短い棒でつなぐと、短い棒の中点は、経路の一部で、ほぼ正確にまっすぐ動きます。経路全体は、8 の字です。直線の部分は、2 本の長い棒の、逆向きの曲がりが打ち消し合うところです。より良い、そして正確な直線のリンク機構を求める探究は、1 世紀にわたって数学者たちの関心を集めました。チェビシェフは、これをもとに近似の理論を築きました。現在、フィルターの設計に使われているのと同じ理論です。円に関する反転を使う正確な解は、1864 年にポースリエが見つけました。"
+        ],
+        "formula": "\\text{deviation}=\\max_{P\\in\\text{stroke}}\\ \\operatorname{dist}\\big(P,\\ \\text{chord}\\big),\\qquad \\text{Peaucellier: }\\ \\lvert OP\\rvert\\cdot\\lvert OP^{\\prime}\\rvert=\\text{const}",
+        "example": [
+          "Watt’s linkage with long bars of 2, a coupler of 1 and pivots offset by 4 and 1: over the straightest third of its travel, a stroke of 1.00, the midpoint strays 0.0006 from the line, one part in 1750. Chebyshev’s, with bars of 2.5, a coupler of 1 and pivots 2 apart, is straight to one part in 1040 over its best third. Hoeken’s, with a crank of 1, bars of 2.5 and pivots 2 apart, gives a stroke of 2.6 straight to one part in 470 from a crank that turns continuously.",
+          "長い棒が 2、連結棒が 1、支点のずれが 4 と 1 のワットのリンク機構では、動きのうち最もまっすぐな 3 分の 1、つまり 1.00 のストロークで、中点の直線からのずれは 0.0006、ストロークの 1750 分の 1 です。棒が 2.5、連結棒が 1、支点の間が 2 のチェビシェフのリンク機構は、最も良い 3 分の 1 で、1040 分の 1 までまっすぐです。クランクが 1、棒が 2.5、支点の間が 2 のヘッケンのリンク機構は、連続して回るクランクから、470 分の 1 までまっすぐな 2.6 のストロークを与えます。"
+        ],
+        "caution": [
+          "The deviation is measured over the straightest third of the point’s travel, as a share of the length of that stretch; a shorter stretch is straighter and a longer one less so. The proportions are the classical ones, not optimised for this measure. Play in the pins and bending of the bars add errors larger than these in any real mechanism.",
+          "ずれは、点の動きのうち最もまっすぐな 3 分の 1 について、その部分の長さに対する割合として測っています。より短い部分はよりまっすぐで、より長い部分はそうではありません。比率は古典的なもので、この尺度に合わせて最適化したものではありません。実際の機構では、ピンのがたや棒のたわみによる誤差のほうが、これらより大きくなります。"
+        ],
+        "question": [
+          "Watt’s linkage is fitted across the rear axle of some cars, with its long bars running to the body on either side. What does it do there?",
+          "ワットのリンク機構は、一部の自動車で、後ろの車軸を横切るように取り付けられ、長い棒が両側で車体につながっています。そこで、何をしていますか。"
+        ],
+        "answer": [
+          "The centre of the short bar is pinned to the axle. As the suspension moves up and down that point travels in a nearly straight vertical line, so the axle cannot shift sideways under the body in a corner, yet is free to rise and fall.",
+          "短い棒の中心が、車軸にピンで留められています。サスペンションが上下に動くと、その点は、ほぼまっすぐな垂直の線の上を動きます。そのため、車軸は、カーブで車体の下を横にずれることができませんが、上下には自由に動けます。"
+        ],
+        "params": [
+          [
+            "pos",
+            "Position along the path (%)",
+            "経路に沿った位置（%）",
+            0,
+            100,
+            0.5,
+            40
+          ],
+          [
+            "kind",
+            "Linkage",
+            "リンク機構",
+            0,
+            2,
+            1,
+            0,
+            [
+              [
+                "Watt",
+                "ワット"
+              ],
+              [
+                "Chebyshev",
+                "チェビシェフ"
+              ],
+              [
+                "Hoeken",
+                "ヘッケン"
+              ]
+            ]
+          ]
+        ],
+        "source": "Y. Zhang, S. Finger and S. Behrens · Introduction to Mechanisms (Carnegie Mellon University)",
+        "url": "https://www.cs.cmu.edu/~rapidproto/mechanisms/tablecontents.html"
+      },
+      {
+        "id": "cam-follower",
+        "title": [
+          "3. Cams: any motion you can draw",
+          "3. カム：描ける運動は何でも"
+        ],
+        "body": [
+          "A linkage gives a limited family of motions. A cam gives any. It is a plate whose radius varies round its edge, turning on a shaft, with a follower pressed against it by a spring: the follower’s lift at each instant is simply the radius there less the smallest radius. So the designer draws the lift wanted against shaft angle, rise, dwell, fall and rest, and wraps the graph round a circle. The subtlety is in how the rise is shaped. The follower has mass, so the force on it is set by its acceleration, the second derivative of the lift curve. A curve that looks perfectly smooth can have an acceleration that jumps, and each jump is a blow that excites vibration and wears the surfaces. Good cam laws are chosen for their second and third derivatives. The cycloidal law, a ramp minus one cycle of a sine, starts and ends with no acceleration at all.",
+          "リンク機構が与える運動は、限られた種類だけです。カムは、どんな運動でも与えます。カムは、縁に沿って半径が変わる板で、軸の上で回り、ばねで押し付けられた従動節がこれに接します。各瞬間の従動節の変位は、単に、そこでの半径から最小の半径を引いたものです。そこで、設計者は、望む変位を軸の角度に対して描き、上昇、停留、下降、休止を並べ、そのグラフを円に巻き付けます。難しいのは、上昇の形です。従動節には質量があるので、それにかかる力は、加速度、つまり変位の曲線の 2 階微分で決まります。完全に滑らかに見える曲線でも、加速度が跳ぶことがあります。跳びの一つ一つが打撃となり、振動を引き起こし、面を摩耗させます。良いカムの法則は、その 2 階と 3 階の微分で選ばれます。傾斜から正弦の 1 周期を引いたサイクロイドの法則は、加速度がまったくない状態で始まり、終わります。"
+        ],
+        "formula": "s=h\\Big(\\frac{\\theta}{\\beta}-\\frac{1}{2\\pi}\\sin\\frac{2\\pi\\theta}{\\beta}\\Big),\\qquad a_{\\max}=\\frac{2\\pi h}{\\beta^{2}}\\,\\omega^{2}\\ \\ \\text{(cycloidal)},\\quad \\frac{\\pi^{2}h}{2\\beta^{2}}\\,\\omega^{2}\\ \\ \\text{(harmonic)},\\quad \\frac{4h}{\\beta^{2}}\\,\\omega^{2}\\ \\ \\text{(parabolic)}",
+        "example": [
+          "A lift of 8 mm in 60° of cam rotation at 3000 turns a minute, 314 rad/s. With the cycloidal law the follower peaks at \\(2\\pi\\times0.008/1.047^{2}\\times314^{2}=4520\\) m/s², 460 times gravity, and at 4.8 m/s. A 100 g follower then needs 450 N. The harmonic law peaks lower, at 3550 m/s², and constant acceleration lower still, at 2880, but both apply it instantly. Doubling the speed quadruples every figure.",
+          "毎分 3000 回転、つまり 314 rad/s で、カムが 60° 回る間に 8 mm 持ち上げるとします。サイクロイドの法則では、従動節の加速度は最大で \\(2\\pi\\times0.008/1.047^{2}\\times314^{2}=4520\\) m/s²、重力の 460 倍で、速さは最大 4.8 m/s です。100 g の従動節には、450 N が必要です。単弦運動のピークはこれより低い 3550 m/s²、等加速度運動はさらに低い 2880 m/s² ですが、どちらも瞬時に加わります。回転数を 2 倍にすると、すべての値が 4 倍になります。"
+        ],
+        "caution": [
+          "The follower is a flat face moving along a line through the shaft, and is treated as rigid. A roller follower needs the profile offset by the roller’s radius, and a rise that is too quick for the base circle makes the profile undercut or the follower jam sideways. Real valve trains flex, so the valve’s motion differs from the cam’s, and modern laws are polynomials chosen to keep the third derivative finite as well.",
+          "従動節は、軸を通る線に沿って動く平らな面で、剛体として扱っています。ローラーの従動節では、輪郭をローラーの半径だけずらす必要があります。また、基礎円に対して上昇が速すぎると、輪郭がえぐれたり、従動節が横に引っかかったりします。実際の動弁機構はたわむので、弁の運動はカムの運動と異なります。現代の法則は、3 階の微分も有限に保つように選んだ多項式です。"
+        ],
+        "question": [
+          "An engine’s valve springs are just strong enough at 6000 turns a minute of the camshaft. Roughly how much stronger must they be at 7000?",
+          "あるエンジンの弁ばねは、カム軸が毎分 6000 回転のとき、ちょうど足りる強さです。7000 回転では、およそ何倍の強さが必要ですか。"
+        ],
+        "answer": [
+          "\\((7000/6000)^{2}=1.36\\): over a third stronger. The acceleration the spring must supply to keep the follower on the closing side of the cam grows as the square of the speed.",
+          "\\((7000/6000)^{2}=1.36\\) で、3 分の 1 以上強くする必要があります。カムの閉じる側で従動節を接触させておくために、ばねが与えなければならない加速度は、回転数の 2 乗に比例して大きくなります。"
+        ],
+        "params": [
+          [
+            "th",
+            "Angle of the cam (degrees)",
+            "カムの角度（度）",
+            0,
+            360,
+            1,
+            30
+          ],
+          [
+            "h",
+            "Lift (mm)",
+            "変位（mm）",
+            2,
+            15,
+            0.5,
+            8
+          ],
+          [
+            "beta",
+            "Angle over which it rises (degrees)",
+            "上昇する角度（度）",
+            30,
+            180,
+            5,
+            60
+          ],
+          [
+            "rpm",
+            "Speed of the shaft (turns per minute)",
+            "軸の回転数（毎分）",
+            100,
+            8000,
+            100,
+            3000
+          ],
+          [
+            "law",
+            "Law of motion",
+            "運動の法則",
+            0,
+            2,
+            1,
+            1,
+            [
+              [
+                "simple harmonic",
+                "単弦運動"
+              ],
+              [
+                "cycloidal",
+                "サイクロイド運動"
+              ],
+              [
+                "constant acceleration",
+                "等加速度運動"
+              ]
+            ]
+          ]
+        ],
+        "source": "Y. Zhang, S. Finger and S. Behrens · Introduction to Mechanisms (Carnegie Mellon University)",
+        "url": "https://www.cs.cmu.edu/~rapidproto/mechanisms/tablecontents.html"
+      }
+    ]
   }
 ]
